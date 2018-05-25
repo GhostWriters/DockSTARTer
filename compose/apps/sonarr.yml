@@ -1,0 +1,17 @@
+version:             "3.6"
+services:
+  sonarr:
+    image:           linuxserver/sonarr
+    container_name:  sonarr
+    hostname:        sonarr
+    restart:         always
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    ports:
+      - "${SONARR_PORT_8989}:8989"
+    volumes:
+      - ${DOCKERCONFDIR}/sonarr:/config
+      - ${DOWNLOADSDIR}:/downloads
+      - ${MEDIADIR_TV}:/tv

@@ -1,0 +1,16 @@
+version:             "3.6"
+services:
+  hydra2:
+    image:           linuxserver/hydra2
+    container_name:  hydra2
+    hostname:        hydra2
+    restart:         always
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    ports:
+      - "${HYDRA2_PORT_5076}:5076"
+    volumes:
+      - ${DOCKERCONFDIR}/hydra2:/config
+      - ${DOWNLOADSDIR}:/downloads

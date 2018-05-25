@@ -1,0 +1,16 @@
+version:             "3.6"
+services:
+  jackett:
+    image:           linuxserver/jackett
+    container_name:  jackett
+    hostname:        jackett
+    restart:         always
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    ports:
+      - "${JACKETT_PORT_9117}:9117"
+    volumes:
+      - ${DOCKERCONFDIR}/jackett:/config
+      - ${DOWNLOADSDIR}:/downloads

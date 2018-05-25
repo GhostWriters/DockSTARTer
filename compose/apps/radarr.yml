@@ -1,0 +1,17 @@
+version:             "3.6"
+services:
+  radarr:
+    image:           linuxserver/radarr
+    container_name:  radarr
+    hostname:        radarr
+    restart:         always
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    ports:
+      - "${RADARR_PORT_7878}:7878"
+    volumes:
+      - ${DOCKERCONFDIR}/radarr:/config
+      - ${DOWNLOADSDIR}:/downloads
+      - ${MEDIADIR_MOVIES}:/movies

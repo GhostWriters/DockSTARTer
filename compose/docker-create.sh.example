@@ -1,0 +1,29 @@
+#!/bin/bash
+
+echo "#!/bin/bash" > ./docker-compose.`hostname`.sh
+echo "docker run --rm -v ${PWD}:/workdir mikefarah/yq yq m \\" >> ./docker-compose.`hostname`.sh
+for f in ./apps/*.yml
+do
+  #[[ -e $f ]] || break
+  if # you must include at least two containers
+  [[ $f =~ \/hydra2\. ]] ||
+  #[[ $f =~ \/jackett\. ]] ||
+  [[ $f =~ \/letsencrypt\. ]] ||
+  [[ $f =~ \/nzbget\. ]] ||
+  [[ $f =~ \/ombi\. ]] ||
+  [[ $f =~ \/organizr\. ]] ||
+  #[[ $f =~ \/plex\. ]] ||
+  [[ $f =~ \/portainer\. ]] ||
+  [[ $f =~ \/radarr\. ]] ||
+  [[ $f =~ \/sonarr\. ]] ||
+  [[ $f =~ \/tautulli\. ]] ||
+  [[ $f =~ \/transmission\. ]] ||
+  [[ $f =~ \/watchtower\. ]]; then # you should almost always include watchtower
+    echo "$f \\" >> ./docker-compose.`hostname`.sh
+  fi
+done
+echo "> ./docker-compose.`hostname`.yml" >> ./docker-compose.`hostname`.sh
+echo "docker-compose -f docker-compose.`hostname`.yml up -d" >> ./docker-compose.`hostname`.sh
+
+bash ./docker-compose.`hostname`.sh
+rm ./docker-compose.`hostname`.sh
