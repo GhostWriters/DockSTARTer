@@ -6,7 +6,7 @@ services:
     hostname:        plex
     restart:         always
     environment:
-      - ADVERTISE_IP=${PLEX_ADVERTISE_IP}
+      - ADVERTISE_IP="http://${PLEX_IP}:${PLEX_PORT_32400}/"
       - PLEX_CLAIM=${PLEX_CLAIM}
       - PLEX_GID=${PGID}
       - PLEX_UID=${PUID}
