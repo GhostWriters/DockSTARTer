@@ -1,0 +1,5 @@
+compose/.env
+compose/*.sh
+compose/*.yml
+!compose/apps/*.yml
+config/
