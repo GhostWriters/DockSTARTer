@@ -1,5 +1,4 @@
 compose/.env
-compose/*.sh
-compose/*.yml
-!compose/apps/*.yml
+compose/*.conf
+compose/generate-yml.*.yml
 config/
