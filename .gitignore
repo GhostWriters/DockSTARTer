@@ -1,4 +1,4 @@
 compose/.env
 compose/*.conf
-compose/generate-yml.*.yml
+compose/docker-compose.*.yml
 config/
