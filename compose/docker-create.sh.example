@@ -9,6 +9,7 @@ do
   [[ $f =~ \/hydra2\. ]] ||
   #[[ $f =~ \/jackett\. ]] ||
   [[ $f =~ \/letsencrypt\. ]] ||
+  [[ $f =~ \/monitorr\. ]] ||
   [[ $f =~ \/nzbget\. ]] ||
   [[ $f =~ \/ombi\. ]] ||
   [[ $f =~ \/organizr\. ]] ||
