@@ -1,0 +1,14 @@
+hydra2
+#jackett
+letsencrypt
+monitorr
+nzbget
+ombi
+organizr
+#plex
+portainer
+radarr
+sonarr
+tautulli
+transmission
+watchtower
