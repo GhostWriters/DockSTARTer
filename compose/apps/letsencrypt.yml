@@ -7,7 +7,7 @@ services:
     restart:         always
     environment:
       - DNSPLUGIN=${LETSENCRYPT_DNSPLUGIN}
-      - EMAIL=${EMAIL}
+      - EMAIL=${EMAIL_TO}
       - EXTRA_DOMAINS=${LETSENCRYPT_EXTRA_DOMAINS}
       - PGID=${PGID}
       - PUID=${PUID}
