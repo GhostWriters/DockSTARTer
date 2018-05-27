@@ -5,6 +5,13 @@ echo "docker run --rm -v ${PWD}:/workdir mikefarah/yq yq m \\" >> ./docker-compo
 echo "./reqs/v1.yml \\" >> ./docker-compose.`hostname`.sh
 echo "./reqs/v2.yml \\" >> ./docker-compose.`hostname`.sh
 while read l || [ -n "$l" ]; do
+  for f in ./apps/*.override.yml
+  do
+    [[ -e $f ]] || break
+    if [[ $f =~ \/$l\.override\. ]]; then
+      echo "$f \\" >> ./docker-compose.`hostname`.sh
+    fi
+  done
   for f in ./apps/*.yml
   do
     [[ -e $f ]] || break
