@@ -44,5 +44,5 @@
 
 ### 1.1
 *(these are plans for the future)*
-- [ ] ???
-- [ ] Profit
+- [ ] [???](http://knowyourmeme.com/memes/profit)
+- [ ] [Profit](http://knowyourmeme.com/memes/profit)
