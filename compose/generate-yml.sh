@@ -1,27 +1,31 @@
 #!/bin/bash
 
-echo "#!/bin/bash" > ./docker-compose.`hostname`.sh
-echo "docker run --rm -v ${PWD}:/workdir mikefarah/yq yq m \\" >> ./docker-compose.`hostname`.sh
-echo "./reqs/v1.yml \\" >> ./docker-compose.`hostname`.sh
-echo "./reqs/v2.yml \\" >> ./docker-compose.`hostname`.sh
+RUNFILE="./docker-compose.`hostname`.sh"
+echo "#!/bin/bash" > $RUNFILE
+echo "mkdir -p ./`hostname`/" >> $RUNFILE
+echo "cp .env ./`hostname`/" >> $RUNFILE
+echo "docker run --rm -v ${PWD}:/workdir mikefarah/yq yq m \\" >> $RUNFILE
+echo "./reqs/v1.yml \\" >> $RUNFILE
+echo "./reqs/v2.yml \\" >> $RUNFILE
 while read l || [ -n "$l" ]; do
   for f in ./apps/*.override.yml
   do
     [[ -e $f ]] || break
     if [[ $f =~ \/$l\.override\. ]]; then
-      echo "$f \\" >> ./docker-compose.`hostname`.sh
+      echo "$f \\" >> $RUNFILE
     fi
   done
   for f in ./apps/*.yml
   do
     [[ -e $f ]] || break
     if [[ $f =~ \/$l\. ]]; then
-      echo "$f \\" >> ./docker-compose.`hostname`.sh
+      echo "$f \\" >> $RUNFILE
     fi
   done
-done <./`hostname`.conf
-echo "> ./docker-compose.`hostname`.yml" >> ./docker-compose.`hostname`.sh
-echo "docker-compose -f ./docker-compose.`hostname`.yml up -d" >> ./docker-compose.`hostname`.sh
+done <"./`hostname`.conf"
+echo "> ./`hostname`/docker-compose.yml" >> $RUNFILE
+echo "cd ./`hostname`/ || exit" >> $RUNFILE
+echo "docker-compose up -d" >> $RUNFILE
 
-bash ./docker-compose.`hostname`.sh
-rm ./docker-compose.`hostname`.sh
+bash $RUNFILE
+rm $RUNFILE
