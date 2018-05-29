@@ -24,5 +24,6 @@ services:
     volumes:
       - ${DOCKERCONFDIR}/plex:/config
       - ${MEDIADIR_MOVIES}:/data/movies
+      - ${MEDIADIR_MUSIC}:/data/music
       - ${MEDIADIR_TV}:/data/tv
       - ${PLEX_TRANSCODEDIR}:/transcode

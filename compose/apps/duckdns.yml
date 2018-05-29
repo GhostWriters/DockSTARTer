@@ -1,0 +1,16 @@
+version:             "3.6"
+services:
+  duckdns:
+    image:           linuxserver/duckdns
+    container_name:  duckdns
+    hostname:        duckdns
+    restart:         always
+    environment:
+      - DUCKDNS_LOG_FILE=${DUCKDNS_LOG_FILE}
+      - DUCKDNS_SUBDOMAINS=${DUCKDNS_SUBDOMAINS}
+      - DUCKDNS_TOKEN=${DUCKDNS_TOKEN}
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    volumes:
+      - ${DOCKERCONFDIR}/duckdns:/config

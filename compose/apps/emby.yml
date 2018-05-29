@@ -1,0 +1,22 @@
+version:             "3.6"
+services:
+  emby:
+    image:           emby/embyserver:latest
+    container_name:  emby
+    hostname:        emby
+    restart:         always
+    environment:
+      - GID=${PGID}
+      - GIDLIST=${PGID}
+      - TZ=${TZ}
+      - UID=${PUID}
+    ports:
+      - "${EMBY_PORT_8096}:8096"
+      - "${EMBY_PORT_8920}:8920"
+    volumes:
+      - ${DOCKERCONFDIR}/emby:/config
+      - ${MEDIADIR_MOVIES}:/data/movies
+      - ${MEDIADIR_MUSIC}:/data/music
+      - ${MEDIADIR_TV}:/data/tv
+    devices:
+      - "/dev/dri/renderD128"
