@@ -10,6 +10,9 @@ _(these are done, will be considered part of 1.0 on release)_
 -   [x] Allow app.override.yml files to be used
 -   [x] Consider alternative handling of `hostname` (maybe subfolder?) to avoid using `-f` in `docker-compose up -d`
 -   [x] Top 10+ LSIO containers (excluding deprecated)
+-   [x] Improve install script
+-   -   [x] Run apt update/upgrade
+-   -   [x] Run as root
 
 ### 1.0
 
@@ -30,8 +33,6 @@ _(this is the active to-do list, not specifically in any order)_
 -   -   [ ] Possibly prompt to select which apps should be configured to use a VPN (depending on how we end up handling VPN)
 -   [ ] More app templates
 -   -   [ ] Include at least one VPN option (and adjust other apps to work through VPN)
--   [ ] Improve install script
--   -   [ ] Run apt update/upgrade
 -   [ ] Include additional configs for letsencrypt container (or PR to their repo for inclusion)
 -   [ ] Documentation
 -   -   [ ] Formally address project goals/mentality
