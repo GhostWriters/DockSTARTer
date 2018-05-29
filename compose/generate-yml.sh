@@ -2,6 +2,7 @@
 
 RUNFILE="./docker-compose.`hostname`.sh"
 echo "#!/bin/bash" > $RUNFILE
+echo "rm -rf ./`hostname`/" >> $RUNFILE
 echo "mkdir -p ./`hostname`/" >> $RUNFILE
 echo "cp .env ./`hostname`/" >> $RUNFILE
 echo "docker run --rm -v ${PWD}:/workdir mikefarah/yq yq m \\" >> $RUNFILE
