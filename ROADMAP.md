@@ -23,6 +23,7 @@ _(this is the active to-do list, not specifically in any order)_
 -   -   -   [ ] Prompt to set folder locations
 -   -   -   [ ] Set permissions on folders/files (755/644)
 -   -   -   [ ] Set ownership on folders/files (user:group)
+-   -   -   [ ] Check for apps using the same port
 -   -   [ ] Prompt to select desired apps
 -   -   -   [ ] Prompt to run `docker-compose up -d` (making it optional)
 -   -   [ ] Prompt to enable/disable reverse proxy per app in letsencrypt config
