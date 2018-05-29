@@ -1,0 +1,17 @@
+version:             "3.6"
+services:
+  sabnzbd:
+    image:           linuxserver/sabnzbd
+    container_name:  sabnzbd
+    hostname:        sabnzbd
+    restart:         always
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    ports:
+      - "${SABNZBD_PORT_9090}:9090"
+    volumes:
+      - ${DOCKERCONFDIR}/sabnzbd:/config
+      - ${DOWNLOADSDIR}:/downloads
+      - ${DOWNLOADSDIR}/incomplete-downloads:/incomplete-downloads
