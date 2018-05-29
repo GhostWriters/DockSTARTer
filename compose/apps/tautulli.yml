@@ -13,4 +13,4 @@ services:
       - "${TAUTULLI_PORT_8181}:8181"
     volumes:
       - ${DOCKERCONFDIR}/tautulli:/config
-      #- ${DOCKERCONFDIR}/tautulli/logs:/logs:ro
+      - ${DOCKERCONFDIR}/plex/Library/Application\ Support/Plex\ Media\ Server/Logs:/logs:ro

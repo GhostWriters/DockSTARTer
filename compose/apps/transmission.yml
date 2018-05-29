@@ -10,9 +10,9 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     ports:
-      - "${TRANSMISSION_PORT_9091}:9091"
       - "${TRANSMISSION_PORT_51413}:51413"
+      - "${TRANSMISSION_PORT_9091}:9091"
     volumes:
       - ${DOCKERCONFDIR}/transmission:/config
       - ${DOWNLOADSDIR}:/downloads
-      #- ${DOWNLOADSDIR}/watch:/watch
+      - ${DOWNLOADSDIR}/watch:/watch
