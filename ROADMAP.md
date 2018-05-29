@@ -8,6 +8,7 @@ _(these are done, will be considered part of 1.0 on release)_
 -   [x] Docker app templates
 -   [x] Config file stores selected apps
 -   [x] Allow app.override.yml files to be used
+-   [x] Consider alternative handling of `hostname` (maybe subfolder?) to avoid using `-f` in `docker-compose up -d`
 
 ### 1.0
 
@@ -31,7 +32,6 @@ _(this is the active to-do list, not specifically in any order)_
 -   [ ] Improve install script
 -   -   [ ] Run apt update/upgrade
 -   [ ] Include additional configs for letsencrypt container (or PR to their repo for inclusion)
--   [ ] Consider alternative handling of `hostname` (maybe subfolder?) to avoid using `-f` in `docker-compose up -d`
 -   [ ] Documentation
 -   -   [ ] Formally address project goals/mentality
 -   -   [ ] Explain how to get started
