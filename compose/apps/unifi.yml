@@ -1,0 +1,23 @@
+version:             "3.6"
+services:
+  unifi:
+    image:           linuxserver/unifi
+    container_name:  unifi
+    hostname:        unifi
+    restart:         always
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    ports:
+      - "${UNIFI_PORT_10001}:10001/udp"
+      - "${UNIFI_PORT_3478}:3478/udp"
+      - "${UNIFI_PORT_6789}:67"
+      - "${UNIFI_PORT_7878}:7878"
+      - "${UNIFI_PORT_8080}:8080"
+      - "${UNIFI_PORT_8081}:8081"
+      - "${UNIFI_PORT_8443}:8443"
+      - "${UNIFI_PORT_8843}:8843"
+      - "${UNIFI_PORT_8880}:8880"
+    volumes:
+      - ${DOCKERCONFDIR}/unifi:/config

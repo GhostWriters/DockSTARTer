@@ -9,6 +9,7 @@ _(these are done, will be considered part of 1.0 on release)_
 -   [x] Config file stores selected apps
 -   [x] Allow app.override.yml files to be used
 -   [x] Consider alternative handling of `hostname` (maybe subfolder?) to avoid using `-f` in `docker-compose up -d`
+-   [x] Top 10+ LSIO containers (excluding deprecated)
 
 ### 1.0
 
@@ -27,7 +28,6 @@ _(this is the active to-do list, not specifically in any order)_
 -   -   [ ] Prompt to enable/disable reverse proxy per app in letsencrypt config
 -   -   [ ] Possibly prompt to select which apps should be configured to use a VPN (depending on how we end up handling VPN)
 -   [ ] More app templates
--   -   [ ] Top 10+ LSIO containers (excluding deprecated)
 -   -   [ ] Include at least one VPN option (and adjust other apps to work through VPN)
 -   [ ] Improve install script
 -   -   [ ] Run apt update/upgrade
