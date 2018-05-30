@@ -1,0 +1,19 @@
+version:             "3.6"
+services:
+  rutorrent:
+    image:           linuxserver/rutorrent
+    container_name:  rutorrent
+    hostname:        rutorrent
+    restart:         always
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    ports:
+      - "${RUTORRENT_PORT_5000}:5000"
+      - "${RUTORRENT_PORT_51413}:51413"
+      - "${RUTORRENT_PORT_6881}:6881/udp"
+      - "${RUTORRENT_PORT_80}:80"
+    volumes:
+      - ${DOCKERCONFDIR}/rutorrent:/config
+      - ${DOWNLOADSDIR}:/downloads
