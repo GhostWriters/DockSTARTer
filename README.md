@@ -1,6 +1,6 @@
 # DockSTARTer
 
-[![Chat Gitter](https://badges.gitter.im/DockSTARTer/Lobby.svg)](https://gitter.im/DockSTARTer/Lobby)
+[![Join the chat at https://gitter.im/GhostWriters/DockSTARTer](https://badges.gitter.im/GhostWriters/DockSTARTer.svg)](https://gitter.im/GhostWriters/DockSTARTer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/GhostWriters/DockSTARTer.svg?branch=master)](https://travis-ci.org/GhostWriters/DockSTARTer)
 
 ### [Roadmap](docs/ROADMAP.md)
@@ -14,5 +14,4 @@ Before we even get to a proper readme I'd like to start giving credits to those 
 
 ## Feature Requests
 Please add new features and vote to help steer the direction of DockSTARTer. Current requests and voting can be seen below.
-
 [![Feature Requests](http://feathub.com/GhostWriters/DockSTARTer?format=svg)](http://feathub.com/GhostWriters/DockSTARTer)
