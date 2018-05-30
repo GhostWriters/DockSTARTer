@@ -1,0 +1,3 @@
+services:
+  radarr:
+    image:  lsioarmhf/radarr-aarch64

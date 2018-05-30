@@ -45,8 +45,9 @@ _(this is the active to-do list, not specifically in any order)_
 -   -   [ ] Contribution guidelines
 -   -   [ ] License
 -   [ ] Testing
--   -   [ ] Travis
--   -   [ ] Shellcheck
+-   -   -   [ ] Travis
+-   -   -   [ ] Shellcheck
+-   -   -   [ ] Bashate 
 
 ### 1.1
 
