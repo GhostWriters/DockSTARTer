@@ -3,7 +3,7 @@
 [![Chat Gitter](https://badges.gitter.im/GhostWriters/DockSTARTer.svg)](https://gitter.im/GhostWriters/DockSTARTer)
 [![Build Status](https://travis-ci.org/GhostWriters/DockSTARTer.svg?branch=master)](https://travis-ci.org/GhostWriters/DockSTARTer)
 
-### [Roadmap](docs/ROADMAP.md)
+### [Roadmap](wiki/Roadmap)
 
 Before we even get to a proper readme I'd like to start giving credits to those that made this project possible:
 
