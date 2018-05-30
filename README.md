@@ -1,6 +1,6 @@
 # DockSTARTer
 
-[![Join the chat at https://gitter.im/GhostWriters/DockSTARTer](https://badges.gitter.im/GhostWriters/DockSTARTer.svg)](https://gitter.im/GhostWriters/DockSTARTer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Chat Gitter](https://badges.gitter.im/GhostWriters/DockSTARTer.svg)](https://gitter.im/GhostWriters/DockSTARTer)
 [![Build Status](https://travis-ci.org/GhostWriters/DockSTARTer.svg?branch=master)](https://travis-ci.org/GhostWriters/DockSTARTer)
 
 ### [Roadmap](docs/ROADMAP.md)
