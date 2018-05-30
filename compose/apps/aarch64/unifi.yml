@@ -1,0 +1,3 @@
+services:
+  unifi:
+    image:  lsioarmhf/unifi-aarch64
