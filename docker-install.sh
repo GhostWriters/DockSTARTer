@@ -1,14 +1,19 @@
 #!/bin/bash
 
+# # Root check
 if [[ $EUID -ne 0 ]] ; then
     echo "Please run this script as root."
     exit 0
 fi
 
+
+# # Updates and dependencies
 apt-get update
 apt-get -y dist-upgrade
+apt-get -qq install curl git
 apt-get -y autoremove
 apt-get -y autoclean
+
 
 # # https://github.com/docker/docker-install
 curl -fsSL get.docker.com -o get-docker.sh
