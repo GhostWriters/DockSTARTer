@@ -6,17 +6,17 @@ echo "rm -rf ./`hostname`/" >> $RUNFILE
 echo "mkdir -p ./`hostname`/" >> $RUNFILE
 echo "cp .env ./`hostname`/" >> $RUNFILE
 echo "docker run --rm -v ${PWD}:/workdir mikefarah/yq yq m \\" >> $RUNFILE
-echo "./reqs/v1.yml \\" >> $RUNFILE
-echo "./reqs/v2.yml \\" >> $RUNFILE
+echo "./.reqs/v1.yml \\" >> $RUNFILE
+echo "./.reqs/v2.yml \\" >> $RUNFILE
 while read l || [ -n "$l" ]; do
-  for f in ./apps/*.override.yml
+  for f in ./.apps/*.override.yml
   do
     [[ -e $f ]] || break
     if [[ $f =~ \/$l\.override\. ]]; then
       echo "$f \\" >> $RUNFILE
     fi
   done
-  for f in ./apps/*.yml
+  for f in ./.apps/*.yml
   do
     [[ -e $f ]] || break
     if [[ $f =~ \/$l\. ]]; then

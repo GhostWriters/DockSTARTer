@@ -1,7 +1,7 @@
 compose/.env
 compose/*.conf
 compose/*/
-!compose/apps/
-!compose/reqs/
-compose/apps/*.override.yml
+!compose/.apps/
+!compose/.reqs/
+compose/.apps/*.override.yml
 config/
