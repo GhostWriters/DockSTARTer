@@ -12,5 +12,5 @@ ENDCOLOR='\033[0m'
 ARCH=""
 case $(uname -m) in
     x86_64) ARCH="amd64" ;;
-    arm)    dpkg --print-architecture | grep -q "arm64" && ARCH="arm64" || ARCH="arm" ;;
+    arm*)    dpkg --print-architecture | grep -q "arm64" && ARCH="arm64" || ARCH="arm" ;;
 esac
