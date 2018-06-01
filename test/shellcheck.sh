@@ -2,7 +2,7 @@
 # Script Name: Shellcheck check
 
 SCRIPTPATH="$(cd -P "$( dirname "$SOURCE" )" && pwd)"
-source "$SCRIPTPATH/common.sh"
+source "$SCRIPTPATH/scripts/common.sh"
 
 shellcheck -V
 
