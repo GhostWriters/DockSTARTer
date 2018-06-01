@@ -14,6 +14,7 @@ apt-get -y autoremove
 apt-get -y autoclean
 
 # # Commons
+# shellcheck disable=SC1091
 source "./scripts/commons.sh"
 
 # # https://github.com/mikefarah/yq
@@ -41,6 +42,6 @@ chmod +x /usr/local/bin/docker-compose
 
 # # https://docs.docker.com/install/linux/linux-postinstall/
 groupadd docker
-usermod -aG docker ${USER}
+usermod -aG docker "${USER}"
 systemctl enable docker
-echo "Don't forget to log out and log back in so that your group membership is re-evaluated"
+echo "Please reboot your system."
