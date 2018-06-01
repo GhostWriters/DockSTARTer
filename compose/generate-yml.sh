@@ -3,12 +3,9 @@
 # # Common
 source "../scripts/common.sh"
 
-RUNFILE="./docker-compose.${HOSTNAME}.sh"
+RUNFILE="./docker-compose.sh"
 echo "#!/bin/bash" > "${RUNFILE}"
 {
-    echo "rm -rf ./${HOSTNAME}/"
-    echo "mkdir -p ./${HOSTNAME}/"
-    echo "cp .env ./${HOSTNAME}/"
     echo "yq m \\"
     echo "./.reqs/v1.yml \\"
     echo "./.reqs/v2.yml \\"
@@ -50,10 +47,9 @@ while read -r l || [ -n "${l}" ]; do
             fi
         fi
     done
-done <"./${HOSTNAME}.conf"
+done <"./apps.conf"
 {
-    echo "> ./${HOSTNAME}/docker-compose.yml"
-    echo "cd ./${HOSTNAME}/ || exit"
+    echo "> ./docker-compose.yml"
     echo "docker-compose up -d"
 } >> "${RUNFILE}"
 
