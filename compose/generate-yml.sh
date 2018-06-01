@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# # Commons
+# # Common
 source "../scripts/common.sh"
 
 RUNFILE="./docker-compose.${HOSTNAME}.sh"

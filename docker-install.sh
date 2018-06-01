@@ -13,7 +13,7 @@ apt-get -qq install curl git grep
 apt-get -y autoremove
 apt-get -y autoclean
 
-# # Commons
+# # Common
 source "./scripts/common.sh"
 
 # # https://github.com/mikefarah/yq
