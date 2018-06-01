@@ -15,15 +15,13 @@ echo "#!/bin/bash" > "${RUNFILE}"
     echo "./.reqs/v2.yml \\"
 } >> "${RUNFILE}"
 while read -r l || [ -n "${l}" ]; do
-    for f in ./.apps/*.override.yml
-    do
+    for f in ./.apps/*.override.yml; do
         [[ -e ${f} ]] || break
         if [[ ${f} =~ /${l}\.override\. ]]; then
             echo "${f} \\" >> "${RUNFILE}"
         fi
     done
-    for f in ./.apps/*.yml
-    do
+    for f in ./.apps/*.yml; do
         [[ -e ${f} ]] || break
         if [[ ${f} =~ /${l}\. ]]; then
             if [[ ${ARCH} == "arm64" ]]; then
