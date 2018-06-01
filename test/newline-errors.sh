@@ -1,5 +1,5 @@
 #!/bin/bash
-# Script Name: Bashate check
+# Script Name: Newline check
 
 # Find double New Lines at the end of files
 if [[ $(find . -type f -exec sh -c '[ -z "$(sed -n "\$p" "$1")" ]' _ {} \; -print | wc -l) -gt 0 ]]; then
