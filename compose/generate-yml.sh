@@ -11,22 +11,7 @@ echo "#!/bin/bash" > ${RUNFILE}
 echo "rm -rf ./${HOSTNAME}/" >> ${RUNFILE}
 echo "mkdir -p ./${HOSTNAME}/" >> ${RUNFILE}
 echo "cp .env ./${HOSTNAME}/" >> ${RUNFILE}
-# # Begin temp fix
-#echo "docker run --rm -v ${PWD}:/workdir mikefarah/yq yq m \\" >> ${RUNFILE}
-if [[ ${ARCH} == "arm64" ]]; then
-  sudo curl -L "https://github.com/mikefarah/yq/releases/download/1.15.0/yq_linux_arm" -o /usr/local/bin/yq
-  sudo chmod +x /usr/local/bin/yq
-fi
-if [[ ${ARCH} == "arm" ]]; then
-  sudo curl -L "https://github.com/mikefarah/yq/releases/download/1.15.0/yq_linux_arm" -o /usr/local/bin/yq
-  sudo chmod +x /usr/local/bin/yq
-fi
-if [[ ${ARCH} == "amd64" ]]; then
-  sudo curl -L "https://github.com/mikefarah/yq/releases/download/1.15.0/yq_linux_amd64" -o /usr/local/bin/yq
-  sudo chmod +x /usr/local/bin/yq
-fi
 echo "yq m \\" >> ${RUNFILE}
-# # End temp fix
 echo "./.reqs/v1.yml \\" >> ${RUNFILE}
 echo "./.reqs/v2.yml \\" >> ${RUNFILE}
 while read l || [ -n "${l}" ]; do
