@@ -29,11 +29,10 @@ while read l || [ -n "${l}" ]; do
       if [[ ${ARCH} == "arm64" ]]; then
         if [[ -f ${f/\.apps\//.apps\/aarch64\/} ]]; then
           echo "${f/\.apps\//.apps\/aarch64\/} \\" >> ${RUNFILE}
+          echo "${f} \\" >> ${RUNFILE}
         fi
         if [[ -f ${f/\.apps\//.apps\/armhf\/} ]]; then
           echo "${f/\.apps\//.apps\/armhf\/} \\" >> ${RUNFILE}
-        fi
-        if [[ -f ${f/\.apps\//.apps\/aarch64\/} ]] || [[ -f ${f/\.apps\//.apps\/armhf\/} ]]; then
           echo "${f} \\" >> ${RUNFILE}
         fi
       fi
