@@ -1,0 +1,23 @@
+dist:
+    trusty
+
+language:
+    generic
+
+sudo:
+    required
+
+group:
+    travis_latest
+
+before_install:
+    - sudo pip install bashate
+    - sudo apt-get install pcregrep
+
+script:
+    - sudo bash ./test/newline-errors.sh
+    - sudo bash ./test/bashate.sh
+    - sudo bash ./test/shellcheck.sh
+
+matrix:
+    fast_finish: true
