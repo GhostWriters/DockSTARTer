@@ -34,6 +34,10 @@ curl -fsSL get.docker.com -o get-docker.sh
 sh get-docker.sh
 rm get-docker.sh
 
+# # https://docs.docker.com/machine/completion/
+AVAILABLE_MACHINE=$(curl -s "https://api.github.com/repos/docker/machine/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")')
+sudo curl -L "https://raw.githubusercontent.com/docker/machine/${AVAILABLE_MACHINE}/contrib/completion/bash/docker-machine.bash" -o /etc/bash_completion.d/docker-machine
+
 # # https://docs.docker.com/compose/install/
 AVAILABLE_COMPOSE=$(curl -s "https://api.github.com/repos/docker/compose/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")')
 curl -L "https://github.com/docker/compose/releases/download/${AVAILABLE_COMPOSE}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
