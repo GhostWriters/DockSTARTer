@@ -14,7 +14,6 @@ apt-get -y autoremove
 apt-get -y autoclean
 
 # # Commons
-# shellcheck disable=SC1091
 source "./scripts/commons.sh"
 
 # # https://github.com/mikefarah/yq

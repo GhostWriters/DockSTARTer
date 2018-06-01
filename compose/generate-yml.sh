@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # # Commons
-# shellcheck disable=SC1091
 source "../scripts/commons.sh"
 
 RUNFILE="./docker-compose.${HOSTNAME}.sh"
