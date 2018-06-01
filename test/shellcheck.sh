@@ -7,10 +7,10 @@ source "$SCRIPTPATH/scripts/common.sh"
 shellcheck -V
 
 # Check for Shellcheck errors in the code.
-NoShellCheckCodeWarningsFound=$(find . -name '*.sh' -print0 | xargs -0 shellcheck)
+NoShellCheckCodeWarningsFound=$(find . -name '*.sh' -print0 | xargs -0 shellcheck  -e SC1090)
 if [[ -n $NoShellCheckCodeWarningsFound ]] ; then
     echo -e "${RED}Shellcheck warnings found$ENDCOLOR"
-    find . -name '*.sh' -print0 | xargs -0 shellcheck
+    find . -name '*.sh' -print0 | xargs -0 shellcheck -e SC1090
     exit 1
 fi
 
