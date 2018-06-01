@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # # Commons
-source "../scripts/commons.sh"
+source "../scripts/common.sh"
 
 RUNFILE="./docker-compose.${HOSTNAME}.sh"
 echo "#!/bin/bash" > "${RUNFILE}"

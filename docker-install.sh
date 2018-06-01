@@ -14,7 +14,7 @@ apt-get -y autoremove
 apt-get -y autoclean
 
 # # Commons
-source "./scripts/commons.sh"
+source "./scripts/common.sh"
 
 # # https://github.com/mikefarah/yq
 AVAILABLE_YQ=$(curl -s "https://api.github.com/repos/mikefarah/yq/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")')
