@@ -6,9 +6,9 @@ services:
     hostname:        duckdns
     restart:         always
     environment:
-      - DUCKDNS_LOG_FILE=${DUCKDNS_LOG_FILE}
-      - DUCKDNS_SUBDOMAINS=${DUCKDNS_SUBDOMAINS}
-      - DUCKDNS_TOKEN=${DUCKDNS_TOKEN}
+      - LOG_FILE=${DUCKDNS_LOG_FILE}
+      - SUBDOMAINS=${DUCKDNS_SUBDOMAINS}
+      - TOKEN=${DUCKDNS_TOKEN}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
