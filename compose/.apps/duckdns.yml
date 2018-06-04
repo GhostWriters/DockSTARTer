@@ -3,7 +3,6 @@ services:
   duckdns:
     image:           linuxserver/duckdns
     container_name:  duckdns
-    hostname:        duckdns
     restart:         always
     environment:
       - LOG_FILE=${DUCKDNS_LOG_FILE}

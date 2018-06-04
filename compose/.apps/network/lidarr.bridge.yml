@@ -1,0 +1,4 @@
+services:
+  lidarr:
+    ports:
+      - "${LIDARR_PORT_8686}:8686"

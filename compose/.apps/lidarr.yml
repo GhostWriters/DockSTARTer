@@ -3,14 +3,11 @@ services:
   lidarr:
     image:           linuxserver/lidarr
     container_name:  lidarr
-    hostname:        lidarr
     restart:         always
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    ports:
-      - "${LIDARR_PORT_8686}:8686"
     volumes:
       - ${DOCKERCONFDIR}/lidarr:/config
       - ${DOWNLOADSDIR}:/downloads

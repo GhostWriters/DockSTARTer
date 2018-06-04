@@ -3,13 +3,10 @@ services:
   monitorr:
     image:           monitorr/monitorr
     container_name:  monitorr
-    hostname:        monitorr
     restart:         always
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    ports:
-      - "${MONITORR_PORT_80}:80"
     volumes:
       - ${DOCKERCONFDIR}/monitorr:/app

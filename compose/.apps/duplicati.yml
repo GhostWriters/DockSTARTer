@@ -3,14 +3,11 @@ services:
   duplicati:
     image:           linuxserver/duplicati
     container_name:  duplicati
-    hostname:        duplicati
     restart:         always
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    ports:
-      - "${DUPLICATI_PORT_8200}:8200"
     volumes:
       - ${DOCKERCONFDIR}/duplicati:/config
       - ${DUPLICATI_BACKUPSDIR}:/backups

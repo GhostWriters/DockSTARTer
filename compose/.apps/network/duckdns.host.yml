@@ -1,0 +1,3 @@
+services:
+  duckdns:
+    network_mode: host

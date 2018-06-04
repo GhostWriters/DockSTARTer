@@ -20,6 +20,8 @@ while read -r line || [ -n "${line}" ]; do
     if [[ ${line} ==  *"_ENABLED=true" ]]; then
         APPNAME=${line/_ENABLED=true/}
         FILENAME=${APPNAME,,}
+        APPNETMODE="${APPNAME}_NETWORK_MODE"
+        #echo "${!APPNETMODE}"
         if [[ -f ./.apps/${FILENAME}.override.yml ]]; then
             echo "./.apps/${FILENAME}.override.yml \\" >> "${RUNFILE}"
             echo "./.apps/${FILENAME}.override.yml has been included."
@@ -28,9 +30,19 @@ while read -r line || [ -n "${line}" ]; do
             if [[ -f ./.apps/architecture/${FILENAME}.aarch64.yml ]] && [[ -f ./.apps/${FILENAME}.yml ]]; then
                 echo "./.apps/architecture/${FILENAME}.aarch64.yml \\" >> "${RUNFILE}"
                 echo "./.apps/${FILENAME}.yml \\" >> "${RUNFILE}"
+                if [[ ${!APPNETMODE} == "bridge" ]] && [[ -f ./.apps/network/${FILENAME}.bridge.yml ]]; then
+                    echo "./.apps/network/${FILENAME}.bridge.yml \\" >> "${RUNFILE}"
+                elif [[ ${!APPNETMODE} == "host" ]] && [[ -f ./.apps/network/${FILENAME}.host.yml ]]; then
+                    echo "./.apps/network/${FILENAME}.host.yml \\" >> "${RUNFILE}"
+                fi
             elif [[ -f ./.apps/architecture/${FILENAME}.armhf.yml ]] && [[ -f ./.apps/${FILENAME}.yml ]]; then
                 echo "./.apps/architecture/${FILENAME}.armhf.yml \\" >> "${RUNFILE}"
                 echo "./.apps/${FILENAME}.yml \\" >> "${RUNFILE}"
+                if [[ ${!APPNETMODE} == "bridge" ]] && [[ -f ./.apps/network/${FILENAME}.bridge.yml ]]; then
+                    echo "./.apps/network/${FILENAME}.bridge.yml \\" >> "${RUNFILE}"
+                elif [[ ${!APPNETMODE} == "host" ]] && [[ -f ./.apps/network/${FILENAME}.host.yml ]]; then
+                    echo "./.apps/network/${FILENAME}.host.yml \\" >> "${RUNFILE}"
+                fi
                 echo "Missing aarch64 option (may not be available) falling back on armhf."
             else
                 echo "Could not find ./.apps/${FILENAME}.yml and either ./.apps/architecture/${FILENAME}.aarch64.yml or ./.apps/architecture/${FILENAME}.armhf.yml"
@@ -40,6 +52,11 @@ while read -r line || [ -n "${line}" ]; do
             if [[ -f ./.apps/architecture/${FILENAME}.armhf.yml ]] && [[ -f ./.apps/${FILENAME}.yml ]]; then
                 echo "./.apps/architecture/${FILENAME}.armhf.yml \\" >> "${RUNFILE}"
                 echo "./.apps/${FILENAME}.yml \\" >> "${RUNFILE}"
+                if [[ ${!APPNETMODE} == "bridge" ]] && [[ -f ./.apps/network/${FILENAME}.bridge.yml ]]; then
+                    echo "./.apps/network/${FILENAME}.bridge.yml \\" >> "${RUNFILE}"
+                elif [[ ${!APPNETMODE} == "host" ]] && [[ -f ./.apps/network/${FILENAME}.host.yml ]]; then
+                    echo "./.apps/network/${FILENAME}.host.yml \\" >> "${RUNFILE}"
+                fi
             else
                 echo "Could not find ./.apps/${FILENAME}.yml and ./.apps/architecture/${FILENAME}.armhf.yml"
             fi
@@ -47,6 +64,11 @@ while read -r line || [ -n "${line}" ]; do
         if [[ ${ARCH} == "amd64" ]]; then
             if [[ -f ./.apps/${FILENAME}.yml ]]; then
                 echo "./.apps/${FILENAME}.yml \\" >> "${RUNFILE}"
+                if [[ ${!APPNETMODE} == "bridge" ]] && [[ -f ./.apps/network/${FILENAME}.bridge.yml ]]; then
+                    echo "./.apps/network/${FILENAME}.bridge.yml \\" >> "${RUNFILE}"
+                elif [[ ${!APPNETMODE} == "host" ]] && [[ -f ./.apps/network/${FILENAME}.host.yml ]]; then
+                    echo "./.apps/network/${FILENAME}.host.yml \\" >> "${RUNFILE}"
+                fi
             else
                 echo "Could not find ./.apps/${FILENAME}.yml"
             fi

@@ -3,14 +3,11 @@ services:
   tautulli:
     image:           linuxserver/tautulli
     container_name:  tautulli
-    hostname:        tautulli
     restart:         always
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    ports:
-      - "${TAUTULLI_PORT_8181}:8181"
     volumes:
       - ${DOCKERCONFDIR}/tautulli:/config
       - ${DOCKERCONFDIR}/plex/Library/Application\ Support/Plex\ Media\ Server/Logs:/logs:ro

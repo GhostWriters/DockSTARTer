@@ -3,15 +3,11 @@ services:
   transmission:
     image:           linuxserver/transmission
     container_name:  transmission
-    hostname:        transmission
     restart:         always
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    ports:
-      - "${TRANSMISSION_PORT_51413}:51413"
-      - "${TRANSMISSION_PORT_9091}:9091"
     volumes:
       - ${DOCKERCONFDIR}/transmission:/config
       - ${DOWNLOADSDIR}:/downloads

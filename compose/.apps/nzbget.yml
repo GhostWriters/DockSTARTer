@@ -3,14 +3,11 @@ services:
   nzbget:
     image:           linuxserver/nzbget
     container_name:  nzbget
-    hostname:        nzbget
     restart:         always
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    ports:
-      - "${NZBGET_PORT_6789}:6789"
     volumes:
       - ${DOCKERCONFDIR}/nzbget:/config
       - ${DOWNLOADSDIR}:/downloads

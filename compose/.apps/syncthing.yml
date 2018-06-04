@@ -3,16 +3,11 @@ services:
   syncthing:
     image:           linuxserver/syncthing
     container_name:  syncthing
-    hostname:        syncthing
     restart:         always
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    ports:
-      - "${SYNCTHING_PORT_21027}:21027/udp"
-      - "${SYNCTHING_PORT_22000}:22000"
-      - "${SYNCTHING_PORT_8384}:8384"
     volumes:
       - ${DOCKERCONFDIR}/syncthing:/config
       - ${SYNCTHING_SOURCEDIR}:/source

@@ -3,14 +3,11 @@ services:
   plexrequests:
     image:           linuxserver/plexrequests
     container_name:  plexrequests
-    hostname:        plexrequests
     restart:         always
     environment:
       - URL_BASE=/plexrequests
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    ports:
-      - "${PLEXREQUESTS_PORT_3000}:3000"
     volumes:
       - ${DOCKERCONFDIR}/plexrequests:/config

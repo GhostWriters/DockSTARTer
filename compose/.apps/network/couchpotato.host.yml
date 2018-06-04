@@ -1,0 +1,3 @@
+services:
+  couchpotato:
+    network_mode: host

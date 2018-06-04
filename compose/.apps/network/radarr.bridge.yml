@@ -1,0 +1,4 @@
+services:
+  radarr:
+    ports:
+      - "${RADARR_PORT_7878}:7878"

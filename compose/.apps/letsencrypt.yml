@@ -3,7 +3,6 @@ services:
   letsencrypt:
     image:           linuxserver/letsencrypt
     container_name:  letsencrypt
-    hostname:        letsencrypt
     restart:         always
     environment:
       - DNSPLUGIN=${LETSENCRYPT_DNSPLUGIN}
@@ -15,8 +14,5 @@ services:
       - TZ=${TZ}
       - URL=${LETSENCRYPT_URL}
       - VALIDATION=${LETSENCRYPT_VALIDATION}
-    ports:
-      - "${LETSENCRYPT_PORT_443}:443"
-      - "${LETSENCRYPT_PORT_80}:80"
     volumes:
       - ${DOCKERCONFDIR}/letsencrypt:/config

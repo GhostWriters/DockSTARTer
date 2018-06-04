@@ -1,0 +1,4 @@
+services:
+  duplicati:
+    ports:
+      - "${DUPLICATI_PORT_8200}:8200"

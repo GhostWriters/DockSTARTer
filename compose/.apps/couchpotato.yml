@@ -3,14 +3,11 @@ services:
   couchpotato:
     image:           linuxserver/couchpotato
     container_name:  couchpotato
-    hostname:        couchpotato
     restart:         always
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    ports:
-      - "${COUCHPOTATO_PORT_5050}:5050"
     volumes:
       - ${DOCKERCONFDIR}/couchpotato:/config
       - ${DOWNLOADSDIR}:/downloads
