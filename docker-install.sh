@@ -1,5 +1,5 @@
 #!/bin/bash
-
+exit #update to check Travis
 # # Root check
 if [[ ${EUID} -ne 0 ]] ; then
     echo "Please run this script as root."
@@ -52,6 +52,6 @@ sudo curl -L "https://raw.githubusercontent.com/docker/compose/${AVAILABLE_COMPO
 
 # # https://docs.docker.com/install/linux/linux-postinstall/
 groupadd docker
-usermod -aG docker "${USER}"
+usermod -aG docker ${USER}
 systemctl enable docker
 echo "Please reboot your system."
