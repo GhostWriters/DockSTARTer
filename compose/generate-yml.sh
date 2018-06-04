@@ -3,6 +3,12 @@
 # # Common
 source "../scripts/common.sh"
 
+# # Environment
+VARS="$(set -o posix ; set)"
+source "./.env"
+SCRIPT_VARS="$(grep -vFe "${VARS}" <<<"$(set -o posix ; set)" | grep -v ^VARS=)"
+unset VARS
+
 RUNFILE="./docker-compose.sh"
 echo "#!/bin/bash" > "${RUNFILE}"
 {
@@ -10,44 +16,48 @@ echo "#!/bin/bash" > "${RUNFILE}"
     echo "./.reqs/v1.yml \\"
     echo "./.reqs/v2.yml \\"
 } >> "${RUNFILE}"
-while read -r l || [ -n "${l}" ]; do
-    for f in ./.apps/*.override.yml; do
-        [[ -e ${f} ]] || break
-        if [[ ${f} =~ /${l}\.override\. ]]; then
-            echo "${f} \\" >> "${RUNFILE}"
-        fi
-    done
-    for f in ./.apps/*.yml; do
-        [[ -e ${f} ]] || break
-        if [[ ${f} =~ /${l}\. ]]; then
-            if [[ ${ARCH} == "arm64" ]]; then
-                if [[ -f ${f/\.apps\//.apps\/aarch64\/} ]]; then
-                    {
-                        echo "${f/\.apps\//.apps\/aarch64\/} \\"
-                        echo "${f} \\"
-                    } >> "${RUNFILE}"
+while read -r line || [ -n "${line}" ]; do
+    if [[ ${line} ==  *"_ENABLED=true" ]]; then
+        APPNAME=${line/_ENABLED=true/}
+        FILENAME=${APPNAME,,}
+        for file in ./.apps/*.override.yml; do
+            [[ -e ${file} ]] || break
+            if [[ ${file} =~ /${FILENAME}\.override\. ]]; then
+                echo "${file} \\" >> "${RUNFILE}"
+            fi
+        done
+        for file in ./.apps/*.yml; do
+            [[ -e ${file} ]] || break
+            if [[ ${file} =~ /${FILENAME}\. ]]; then
+                if [[ ${ARCH} == "arm64" ]]; then
+                    if [[ -f ${file/\.apps\//.apps\/aarch64\/} ]]; then
+                        {
+                            echo "${file/\.apps\//.apps\/aarch64\/} \\"
+                            echo "${file} \\"
+                        } >> "${RUNFILE}"
+                    fi
+                    if [[ -f ${file/\.apps\//.apps\/armhf\/} ]]; then
+                        {
+                            echo "${file/\.apps\//.apps\/armhf\/} \\"
+                            echo "${file} \\"
+                        } >> "${RUNFILE}"
+                    fi
                 fi
-                if [[ -f ${f/\.apps\//.apps\/armhf\/} ]]; then
-                    {
-                        echo "${f/\.apps\//.apps\/armhf\/} \\"
-                        echo "${f} \\"
-                    } >> "${RUNFILE}"
+                if [[ ${ARCH} == "arm" ]]; then
+                    if [[ -f ${file/\.apps\//.apps\/armhf\/} ]]; then
+                        {
+                            echo "${file/\.apps\//.apps\/armhf\/} \\"
+                            echo "${file} \\"
+                        } >> "${RUNFILE}"
+                    fi
+                fi
+                if [[ ${ARCH} == "amd64" ]]; then
+                    echo "${file} \\" >> "${RUNFILE}"
                 fi
             fi
-            if [[ ${ARCH} == "arm" ]]; then
-                if [[ -f ${f/\.apps\//.apps\/armhf\/} ]]; then
-                    {
-                        echo "${f/\.apps\//.apps\/armhf\/} \\"
-                        echo "${f} \\"
-                    } >> "${RUNFILE}"
-                fi
-            fi
-            if [[ ${ARCH} == "amd64" ]]; then
-                echo "${f} \\" >> "${RUNFILE}"
-            fi
-        fi
-    done
-done <"./apps.conf"
+        done
+    fi
+done <<< "${SCRIPT_VARS}"
 {
     echo "> ./docker-compose.yml"
     echo "docker-compose up -d"
