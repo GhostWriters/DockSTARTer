@@ -21,7 +21,6 @@ while read -r line || [ -n "${line}" ]; do
         APPNAME=${line/_ENABLED=true/}
         FILENAME=${APPNAME,,}
         APPNETMODE="${APPNAME}_NETWORK_MODE"
-        #echo "${!APPNETMODE}"
         if [[ -f ./.apps/${FILENAME}.override.yml ]]; then
             echo "./.apps/${FILENAME}.override.yml \\" >> "${RUNFILE}"
             echo "./.apps/${FILENAME}.override.yml has been included."
