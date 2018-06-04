@@ -52,6 +52,6 @@ sudo curl -L "https://raw.githubusercontent.com/docker/compose/${AVAILABLE_COMPO
 
 # # https://docs.docker.com/install/linux/linux-postinstall/
 groupadd docker
-usermod -aG docker "${USER}"
+usermod -aG docker ${USER}
 systemctl enable docker
 echo "Please reboot your system."
