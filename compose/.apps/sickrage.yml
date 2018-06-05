@@ -3,14 +3,11 @@ services:
   sickrage:
     image:           linuxserver/sickrage
     container_name:  sickrage
-    hostname:        sickrage
     restart:         always
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    ports:
-      - "${SICKRAGE_PORT_8081}:8081"
     volumes:
       - ${DOCKERCONFDIR}/sickrage:/config
       - ${DOWNLOADSDIR}:/downloads

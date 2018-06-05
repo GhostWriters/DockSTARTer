@@ -1,0 +1,3 @@
+services:
+  headphones:
+    network_mode: host

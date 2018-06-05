@@ -3,7 +3,6 @@ services:
   watchtower:
     image:           v2tec/watchtower
     container_name:  watchtower
-    hostname:        watchtower
     restart:         always
     environment:
       - TZ=${TZ}

@@ -3,13 +3,11 @@ services:
   deluge:
     image:           linuxserver/deluge
     container_name:  deluge
-    hostname:        deluge
     restart:         always
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    network_mode: host
     volumes:
       - ${DOCKERCONFDIR}/deluge:/config
       - ${DOWNLOADSDIR}:/downloads

@@ -3,14 +3,11 @@ services:
   lazylibrarian:
     image:           linuxserver/lazylibrarian
     container_name:  lazylibrarian
-    hostname:        lazylibrarian
     restart:         always
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    ports:
-      - "${LAZYLIBRARIAN_PORT_5299}:5299"
     volumes:
       - ${DOCKERCONFDIR}/lazylibrarian:/config
       - ${DOWNLOADSDIR}:/downloads

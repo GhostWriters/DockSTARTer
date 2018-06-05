@@ -1,0 +1,3 @@
+services:
+  letsencrypt:
+    network_mode: host

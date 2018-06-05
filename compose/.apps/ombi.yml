@@ -3,13 +3,10 @@ services:
   ombi:
     image:           linuxserver/ombi
     container_name:  ombi
-    hostname:        ombi
     restart:         always
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    ports:
-      - "${OMBI_PORT_3579}:3579"
     volumes:
       - ${DOCKERCONFDIR}/ombi:/config

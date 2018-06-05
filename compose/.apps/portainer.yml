@@ -3,12 +3,9 @@ services:
   portainer:
     image:           portainer/portainer
     container_name:  portainer
-    hostname:        portainer
     restart:         always
     environment:
       - TZ=${TZ}
-    ports:
-      - "${PORTAINER_PORT_9000}:9000"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${DOCKERCONFDIR}/portainer:/data

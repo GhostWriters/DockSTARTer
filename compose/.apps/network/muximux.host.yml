@@ -1,0 +1,3 @@
+services:
+  muximux:
+    network_mode: host

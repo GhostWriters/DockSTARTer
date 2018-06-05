@@ -1,0 +1,3 @@
+services:
+  radarr:
+    network_mode: host

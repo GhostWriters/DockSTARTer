@@ -1,0 +1,3 @@
+services:
+  duplicati:
+    network_mode: host

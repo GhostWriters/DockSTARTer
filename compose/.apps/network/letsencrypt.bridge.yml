@@ -1,0 +1,5 @@
+services:
+  letsencrypt:
+    ports:
+      - "${LETSENCRYPT_PORT_443}:443"
+      - "${LETSENCRYPT_PORT_80}:80"

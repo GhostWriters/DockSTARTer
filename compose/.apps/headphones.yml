@@ -3,14 +3,11 @@ services:
   headphones:
     image:           linuxserver/headphones
     container_name:  headphones
-    hostname:        headphones
     restart:         always
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    ports:
-      - "${HEADPHONES_PORT_8181}:8181"
     volumes:
       - ${DOCKERCONFDIR}/headphones:/config
       - ${DOWNLOADSDIR}:/downloads

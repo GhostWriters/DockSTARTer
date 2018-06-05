@@ -1,0 +1,3 @@
+services:
+  sabnzbd:
+    network_mode: host

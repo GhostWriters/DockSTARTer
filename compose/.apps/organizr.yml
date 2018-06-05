@@ -3,13 +3,10 @@ services:
   organizr:
     image:           lsiocommunity/organizr
     container_name:  organizr
-    hostname:        organizr
     restart:         always
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    ports:
-      - "${ORGANIZR_PORT_80}:80"
     volumes:
       - ${DOCKERCONFDIR}/organizr:/config

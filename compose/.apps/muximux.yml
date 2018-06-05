@@ -3,13 +3,10 @@ services:
   muximux:
     image:           lsiocommunity/muximux
     container_name:  muximux
-    hostname:        muximux
     restart:         always
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    ports:
-      - "${MUXIMUX_PORT_80}:80"
     volumes:
       - ${DOCKERCONFDIR}/muximux:/config

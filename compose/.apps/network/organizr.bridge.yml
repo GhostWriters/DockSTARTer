@@ -1,0 +1,4 @@
+services:
+  organizr:
+    ports:
+      - "${ORGANIZR_PORT_80}:80"
