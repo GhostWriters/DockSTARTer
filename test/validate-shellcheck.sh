@@ -1,5 +1,5 @@
 #!/bin/bash
-# Script Name: Shellcheck check
+# Script Name: Shellcheck validation
 
 SCRIPTPATH="$(cd -P "$( dirname "$SOURCE" )" && pwd)"
 source "$SCRIPTPATH/scripts/common.sh"
