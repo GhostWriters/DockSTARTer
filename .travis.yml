@@ -11,16 +11,18 @@ group:
     travis_latest
 
 before_install:
+    - sudo apt-get update -qq
+    - sudo apt-get install -qq curl git grep pcregrep
     - sudo pip install bashate
-    - sudo apt-get install pcregrep
 
 script:
-    - sudo bash ./test/newline-errors.sh
-    - sudo bash ./test/bashate.sh
-    - sudo bash ./test/shellcheck.sh
+    - sudo bash ./test/validate-newline.sh
+    - sudo bash ./test/validate-bashate.sh
+    - sudo bash ./test/validate-shellcheck.sh
+    - sudo bash ./test/run-docker-install.sh
 
 matrix:
-    fast_finish: true
+    fast_finish:   true
 
 notifications:
-    webhooks: https://www.travisbuddy.com/
+    webhooks:      https://www.travisbuddy.com/
