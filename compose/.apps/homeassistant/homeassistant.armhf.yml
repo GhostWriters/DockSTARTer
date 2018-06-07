@@ -1,0 +1,3 @@
+services:
+  headphones:
+    image:     homeassistant/raspberrypi3-homeassistant
