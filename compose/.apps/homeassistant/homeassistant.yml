@@ -2,8 +2,9 @@ version:             "3.6"
 services:
   homeassistant:
     image:           homeassistant/home-assistant
-    container_name:  home-assistant
+    container_name:  homeassistant
     restart:         always
+    network_mode:    ${HOMEASSISTANT_NETWORK_MODE}
     environment:
       - TZ=${TZ}
     volumes:
