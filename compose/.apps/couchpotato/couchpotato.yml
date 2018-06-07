@@ -4,6 +4,7 @@ services:
     image:           linuxserver/couchpotato
     container_name:  couchpotato
     restart:         always
+    network_mode:    ${COUCHPOTATO_NETWORK_MODE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

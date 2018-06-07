@@ -1,3 +1,0 @@
-services:
-  syncthing:
-    network_mode: host

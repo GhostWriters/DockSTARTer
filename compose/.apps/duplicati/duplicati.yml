@@ -4,6 +4,7 @@ services:
     image:           linuxserver/duplicati
     container_name:  duplicati
     restart:         always
+    network_mode:    ${DUPLICATI_NETWORK_MODE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

@@ -1,3 +1,0 @@
-services:
-  organizr:
-    network_mode: host

@@ -1,3 +1,0 @@
-services:
-  portainer:
-    network_mode: host

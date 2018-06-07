@@ -4,6 +4,7 @@ services:
     image:           linuxserver/lazylibrarian
     container_name:  lazylibrarian
     restart:         always
+    network_mode:    ${LAZYLIBRARIAN_NETWORK_MODE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

@@ -4,6 +4,7 @@ services:
     image:           linuxserver/tautulli
     container_name:  tautulli
     restart:         always
+    network_mode:    ${TAUTULLI_NETWORK_MODE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

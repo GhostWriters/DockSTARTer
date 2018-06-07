@@ -4,6 +4,7 @@ services:
     image:           linuxserver/jackett
     container_name:  jackett
     restart:         always
+    network_mode:    ${JACKETT_NETWORK_MODE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

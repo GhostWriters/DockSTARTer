@@ -4,6 +4,7 @@ services:
     image:           lsiocommunity/muximux
     container_name:  muximux
     restart:         always
+    network_mode:    ${MUXIMUX_NETWORK_MODE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

@@ -4,6 +4,7 @@ services:
     image:           emby/embyserver:latest
     container_name:  emby
     restart:         always
+    network_mode:    ${EMBY_NETWORK_MODE}
     environment:
       - GID=${PGID}
       - GIDLIST=${PGID}

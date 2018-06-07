@@ -4,6 +4,7 @@ services:
     image:           linuxserver/unifi
     container_name:  unifi
     restart:         always
+    network_mode:    ${UNIFI_NETWORK_MODE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

@@ -4,6 +4,7 @@ services:
     image:           linuxserver/sonarr
     container_name:  sonarr
     restart:         always
+    network_mode:    ${SONARR_NETWORK_MODE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

@@ -1,3 +1,0 @@
-services:
-  tautulli:
-    network_mode: host
