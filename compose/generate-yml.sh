@@ -46,12 +46,12 @@ while read -r line || [ -n "${line}" ]; do
                         continue
                     fi
                 fi
-                if [[ ${!APPNETMODE} == "bridge" ]] && [[ -f ./.apps/${FILENAME}/${FILENAME}.bridge.yml ]]; then
-                    echo "./.apps/${FILENAME}/${FILENAME}.bridge.yml \\" >> "${RUNFILE}"
-                elif [[ ${!APPNETMODE} == "host" ]] && [[ -f ./.apps/${FILENAME}/${FILENAME}.host.yml ]]; then
-                    echo "./.apps/${FILENAME}/${FILENAME}.host.yml \\" >> "${RUNFILE}"
-                else
-                    echo "Could not find ./.apps/${FILENAME}/${FILENAME}.bridge.yml file or ./.apps/${FILENAME}/${FILENAME}.host.yml file."
+                if [[ ${!APPNETMODE} == "bridge" ]] || [[ ${!APPNETMODE} == "host" ]]; then
+                    if [[ -f ./.apps/${FILENAME}/${FILENAME}.${!APPNETMODE}.yml ]]; then
+                        echo "./.apps/${FILENAME}/${FILENAME}.${!APPNETMODE}.yml \\" >> "${RUNFILE}"
+                    else
+                        echo "Could not find ./.apps/${FILENAME}/${FILENAME}.${!APPNETMODE}.yml file."
+                    fi
                 fi
                 echo "./.apps/${FILENAME}/${FILENAME}.yml \\" >> "${RUNFILE}"
             else
