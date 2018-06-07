@@ -1,4 +1,4 @@
-compose/.apps/*.override.yml
+compose/.apps/*/*.override.yml
 compose/.env
 compose/docker-compose.yml
 config/

@@ -21,56 +21,44 @@ while read -r line || [ -n "${line}" ]; do
         APPNAME=${line/_ENABLED=true/}
         FILENAME=${APPNAME,,}
         APPNETMODE="${APPNAME}_NETWORK_MODE"
-        if [[ -f ./.apps/${FILENAME}.override.yml ]]; then
-            echo "./.apps/${FILENAME}.override.yml \\" >> "${RUNFILE}"
-            echo "./.apps/${FILENAME}.override.yml has been included."
-        fi
-        if [[ ${ARCH} == "arm64" ]]; then
-            if [[ -f ./.apps/architecture/${FILENAME}.aarch64.yml ]] && [[ -f ./.apps/${FILENAME}.yml ]]; then
-                echo "./.apps/architecture/${FILENAME}.aarch64.yml \\" >> "${RUNFILE}"
-                echo "./.apps/${FILENAME}.yml \\" >> "${RUNFILE}"
-                if [[ ${!APPNETMODE} == "bridge" ]] && [[ -f ./.apps/network/${FILENAME}.bridge.yml ]]; then
-                    echo "./.apps/network/${FILENAME}.bridge.yml \\" >> "${RUNFILE}"
-                elif [[ ${!APPNETMODE} == "host" ]] && [[ -f ./.apps/network/${FILENAME}.host.yml ]]; then
-                    echo "./.apps/network/${FILENAME}.host.yml \\" >> "${RUNFILE}"
-                fi
-            elif [[ -f ./.apps/architecture/${FILENAME}.armhf.yml ]] && [[ -f ./.apps/${FILENAME}.yml ]]; then
-                echo "./.apps/architecture/${FILENAME}.armhf.yml \\" >> "${RUNFILE}"
-                echo "./.apps/${FILENAME}.yml \\" >> "${RUNFILE}"
-                if [[ ${!APPNETMODE} == "bridge" ]] && [[ -f ./.apps/network/${FILENAME}.bridge.yml ]]; then
-                    echo "./.apps/network/${FILENAME}.bridge.yml \\" >> "${RUNFILE}"
-                elif [[ ${!APPNETMODE} == "host" ]] && [[ -f ./.apps/network/${FILENAME}.host.yml ]]; then
-                    echo "./.apps/network/${FILENAME}.host.yml \\" >> "${RUNFILE}"
-                fi
-                echo "Missing aarch64 option (may not be available) falling back on armhf."
-            else
-                echo "Could not find ./.apps/${FILENAME}.yml and either ./.apps/architecture/${FILENAME}.aarch64.yml or ./.apps/architecture/${FILENAME}.armhf.yml"
+        if [[ -d ./.apps/${FILENAME}/ ]]; then
+            if [[ -f ./.apps/${FILENAME}/${FILENAME}.override.yml ]]; then
+                echo "./.apps/${FILENAME}/${FILENAME}.override.yml \\" >> "${RUNFILE}"
+                echo "./.apps/${FILENAME}/${FILENAME}.override.yml has been included."
             fi
-        fi
-        if [[ ${ARCH} == "arm" ]]; then
-            if [[ -f ./.apps/architecture/${FILENAME}.armhf.yml ]] && [[ -f ./.apps/${FILENAME}.yml ]]; then
-                echo "./.apps/architecture/${FILENAME}.armhf.yml \\" >> "${RUNFILE}"
-                echo "./.apps/${FILENAME}.yml \\" >> "${RUNFILE}"
-                if [[ ${!APPNETMODE} == "bridge" ]] && [[ -f ./.apps/network/${FILENAME}.bridge.yml ]]; then
-                    echo "./.apps/network/${FILENAME}.bridge.yml \\" >> "${RUNFILE}"
-                elif [[ ${!APPNETMODE} == "host" ]] && [[ -f ./.apps/network/${FILENAME}.host.yml ]]; then
-                    echo "./.apps/network/${FILENAME}.host.yml \\" >> "${RUNFILE}"
+            if [[ -f ./.apps/${FILENAME}/${FILENAME}.yml ]]; then
+                if [[ ${ARCH} == "arm64" ]]; then
+                    if [[ -f ./.apps/${FILENAME}/${FILENAME}.aarch64.yml ]]; then
+                        echo "./.apps/${FILENAME}/${FILENAME}.aarch64.yml \\" >> "${RUNFILE}"
+                    elif [[ -f ./.apps/${FILENAME}/${FILENAME}.armhf.yml ]]; then
+                        echo "./.apps/${FILENAME}/${FILENAME}.armhf.yml \\" >> "${RUNFILE}"
+                        echo "Missing aarch64 option for ${APPNAME} (may not be available) falling back on armhf."
+                    else
+                        echo "Could not find ./.apps/${FILENAME}/${FILENAME}.aarch64.yml file or ./.apps/${FILENAME}/${FILENAME}.armhf.yml file."
+                        continue
+                    fi
                 fi
-            else
-                echo "Could not find ./.apps/${FILENAME}.yml and ./.apps/architecture/${FILENAME}.armhf.yml"
-            fi
-        fi
-        if [[ ${ARCH} == "amd64" ]]; then
-            if [[ -f ./.apps/${FILENAME}.yml ]]; then
-                echo "./.apps/${FILENAME}.yml \\" >> "${RUNFILE}"
-                if [[ ${!APPNETMODE} == "bridge" ]] && [[ -f ./.apps/network/${FILENAME}.bridge.yml ]]; then
-                    echo "./.apps/network/${FILENAME}.bridge.yml \\" >> "${RUNFILE}"
-                elif [[ ${!APPNETMODE} == "host" ]] && [[ -f ./.apps/network/${FILENAME}.host.yml ]]; then
-                    echo "./.apps/network/${FILENAME}.host.yml \\" >> "${RUNFILE}"
+                if [[ ${ARCH} == "arm" ]]; then
+                    if [[ -f ./.apps/${FILENAME}/${FILENAME}.armhf.yml ]]; then
+                        echo "./.apps/${FILENAME}/${FILENAME}.armhf.yml \\" >> "${RUNFILE}"
+                    else
+                        echo "Could not find ./.apps/${FILENAME}/${FILENAME}.armhf.yml file."
+                        continue
+                    fi
                 fi
+                if [[ ${!APPNETMODE} == "bridge" ]] || [[ ${!APPNETMODE} == "host" ]]; then
+                    if [[ -f ./.apps/${FILENAME}/${FILENAME}.${!APPNETMODE}.yml ]]; then
+                        echo "./.apps/${FILENAME}/${FILENAME}.${!APPNETMODE}.yml \\" >> "${RUNFILE}"
+                    else
+                        echo "Could not find ./.apps/${FILENAME}/${FILENAME}.${!APPNETMODE}.yml file."
+                    fi
+                fi
+                echo "./.apps/${FILENAME}/${FILENAME}.yml \\" >> "${RUNFILE}"
             else
-                echo "Could not find ./.apps/${FILENAME}.yml"
+                echo "Could not find ./.apps/${FILENAME}/${FILENAME}.yml file."
             fi
+        else
+            echo "Could not find ./.apps/${FILENAME}/ directory."
         fi
     fi
 done <<< "${SCRIPT_VARS}"
