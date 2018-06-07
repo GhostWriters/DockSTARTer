@@ -1,3 +1,0 @@
-services:
-  sickrage:
-    network_mode: host

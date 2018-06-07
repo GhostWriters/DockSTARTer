@@ -4,6 +4,7 @@ services:
     image:           linuxserver/nzbget
     container_name:  nzbget
     restart:         always
+    network_mode:    ${NZBGET_NETWORK_MODE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

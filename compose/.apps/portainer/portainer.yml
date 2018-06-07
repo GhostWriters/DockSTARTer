@@ -4,6 +4,7 @@ services:
     image:           portainer/portainer
     container_name:  portainer
     restart:         always
+    network_mode:    ${PORTAINER_NETWORK_MODE}
     environment:
       - TZ=${TZ}
     volumes:

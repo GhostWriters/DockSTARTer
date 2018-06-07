@@ -46,7 +46,7 @@ while read -r line || [ -n "${line}" ]; do
                         continue
                     fi
                 fi
-                if [[ ${!APPNETMODE} == "bridge" ]] || [[ ${!APPNETMODE} == "host" ]]; then
+                if [[ ${!APPNETMODE} == "bridge" ]]; then
                     if [[ -f ./.apps/${FILENAME}/${FILENAME}.${!APPNETMODE}.yml ]]; then
                         echo "./.apps/${FILENAME}/${FILENAME}.${!APPNETMODE}.yml \\" >> "${RUNFILE}"
                     else

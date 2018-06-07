@@ -4,6 +4,7 @@ services:
     image:           linuxserver/syncthing
     container_name:  syncthing
     restart:         always
+    network_mode:    ${SYNCTHING_NETWORK_MODE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

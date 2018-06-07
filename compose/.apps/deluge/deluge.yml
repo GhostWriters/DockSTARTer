@@ -4,6 +4,7 @@ services:
     image:           linuxserver/deluge
     container_name:  deluge
     restart:         always
+    network_mode:    ${DELUGE_NETWORK_MODE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

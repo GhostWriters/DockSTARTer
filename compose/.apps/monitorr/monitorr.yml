@@ -4,6 +4,7 @@ services:
     image:           monitorr/monitorr
     container_name:  monitorr
     restart:         always
+    network_mode:    ${MONITORR_NETWORK_MODE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
