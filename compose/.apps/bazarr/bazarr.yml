@@ -1,0 +1,14 @@
+version:             "3.6"
+services:
+  bazarr:
+    image:           morpheus65535/bazarr
+    container_name:  bazarr
+    restart:         always
+    network_mode:    ${BAZARR_NETWORK_MODE}
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    volumes:
+      - ${DOCKERCONFDIR}/bazarr:/bazarr/data
+      - ${MEDIADIR_TV}:/tv
