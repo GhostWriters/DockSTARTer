@@ -12,7 +12,7 @@ group:
 
 before_install:
     - sudo apt-get update -qq
-    - sudo apt-get install -qq curl git grep pcregrep
+    - sudo apt-get install -qq curl git grep pcregrep sed
     - sudo pip install bashate
 
 script:
@@ -20,6 +20,7 @@ script:
     - sudo bash ./test/validate-bashate.sh
     - sudo bash ./test/validate-shellcheck.sh
     - sudo bash ./test/run-docker-install.sh
+    - sudo bash ./test/run-generate-yml.sh
 
 matrix:
     fast_finish:   true

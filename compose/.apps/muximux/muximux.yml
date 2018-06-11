@@ -1,7 +1,7 @@
 version:             "3.6"
 services:
   muximux:
-    image:           lsiocommunity/muximux
+    image:           linuxserver/muximux
     container_name:  muximux
     restart:         always
     network_mode:    ${MUXIMUX_NETWORK_MODE}
