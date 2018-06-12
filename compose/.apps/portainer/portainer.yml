@@ -5,9 +5,8 @@ services:
     container_name:  portainer
     restart:         always
     network_mode:    ${PORTAINER_NETWORK_MODE}
-    environment:
-      - TZ=${TZ}
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
       - ${DOCKERCONFDIR}/portainer:/data
     command:         -H unix:///var/run/docker.sock
