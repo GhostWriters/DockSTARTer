@@ -62,10 +62,18 @@ while read -r line || [ -n "${line}" ]; do
         fi
     fi
 done <<< "${SCRIPT_VARS}"
-{
-    echo "> ./docker-compose.yml"
-    echo "docker-compose up -d"
-} >> "${RUNFILE}"
+echo "> ./docker-compose.yml" >> "${RUNFILE}"
 
 bash "${RUNFILE}"
 rm "${RUNFILE}"
+
+if [[ ${CI} != true ]] && [[ ${TRAVIS} != true ]]; then
+    while true; do
+        read -rp "Would you like to run your selected containers now? [Yn]" yn
+        case $yn in
+            [Yy]* ) docker-compose up -d; break;;
+            [Nn]* ) exit;;
+            * ) echo "Please answer yes or no.";;
+        esac
+    done
+fi
