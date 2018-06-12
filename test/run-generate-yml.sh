@@ -17,7 +17,6 @@ sed -i "s/UNIFI_PORT_7878=7878/UNIFI_PORT_7878=17878/" .env
 sed -i "s/UNIFI_PORT_8080=8080/UNIFI_PORT_8080=18080/" .env
 sed -i "s/UNIFI_PORT_8081=8081/UNIFI_PORT_8081=18081/" .env
 bash generate-yml.sh
-docker-compose down || exit 1
 echo "###"
 cat docker-compose.yml || exit 1
 echo "###"
