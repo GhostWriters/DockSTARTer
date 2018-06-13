@@ -1,0 +1,23 @@
+version:             "3.6"
+services:
+  sabnzbdvpn:
+    image:           binhex/arch-sabnzbdvpn
+    container_name:  sabnzbdvpn
+    restart:         always
+    network_mode:    ${SABNZBDVPN_NETWORK_MODE}
+    environment:
+      - LAN_NETWORK=${LAN_NETWORK}
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - VPN_ENABLED=${VPN_ENABLE}
+      - VPN_OPTIONS=${VPN_OPTIONS}
+      - VPN_PASS=${VPN_PASS}
+      - VPN_PROV=${VPN_PROV}
+      - VPN_USER=${VPN_USER}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/sabnzbdvpn:/config
+      - ${DOWNLOADSDIR}:/downloads
+    cap_add:
+      - NET_ADMIN
