@@ -17,3 +17,5 @@ services:
       - VALIDATION=${LETSENCRYPT_VALIDATION}
     volumes:
       - ${DOCKERCONFDIR}/letsencrypt:/config
+    cap_add:
+      - NET_ADMIN
