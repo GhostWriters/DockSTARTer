@@ -7,7 +7,6 @@ services:
     network_mode:    ${PLEX_NETWORK_MODE}
     environment:
       - ADVERTISE_IP=${PLEX_ADVERTISE_IP}
-      - ALLOWED_NETWORKS=${PLEX_ALLOWED_NETWORKS}
       - PLEX_CLAIM=${PLEX_CLAIM}
       - PLEX_GID=${PGID}
       - PLEX_UID=${PUID}
