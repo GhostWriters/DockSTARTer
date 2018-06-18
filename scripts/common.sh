@@ -1,19 +1,29 @@
 #!/bin/bash
-# Script Name: Common variables
 
 # # Colors
-CYAN='\e[34m'
-GREEN='\e[32m'
-RED='\e[31m'
-YELLOW='\e[33m'
-ENDCOLOR='\033[0m'
+readonly CYAN='\e[34m'
+readonly GREEN='\e[32m'
+readonly RED='\e[31m'
+readonly YELLOW='\e[33m'
+readonly ENDCOLOR='\033[0m'
 
-# # Arch check
-ARCH=""
-case $(uname -m) in
-    x86_64) ARCH="amd64" ;;
-    arm*)    dpkg --print-architecture | grep -q "arm64" && ARCH="arm64" || ARCH="arm" ;;
-esac
+# # Check Arch
+readonly ARCH=$(dpkg --print-architecture)
 
-# # Systemd check
-[[ -L "/sbin/init" ]] && ISSYSTEMD=true || ISSYSTEMD=false
+# # Check Systemd
+if [[ -L "/sbin/init" ]]; then
+    readonly ISSYSTEMD=true
+else
+    readonly ISSYSTEMD=false
+fi
+
+# # Github Token for Travis CI
+if [[ ${CI} == true ]] && [[ ${TRAVIS} == true ]]; then
+    readonly GH_HEADER="Authorization: token ${GH_TOKEN}"
+fi
+
+# # Runner Function
+run_script () {
+    source "${SCRIPTPATH}/scripts/${1}.sh"
+    ${1};
+}

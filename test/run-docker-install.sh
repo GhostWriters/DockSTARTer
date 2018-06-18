@@ -1,9 +1,9 @@
 #!/bin/bash
-# Script Name: Docker Install run
 
-SCRIPTPATH="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+readonly SCRIPTPATH="$(cd -P "$(dirname "$SOURCE")" && pwd)"
+source "${SCRIPTPATH}/scripts/common.sh"
 
-source "$SCRIPTPATH/docker-install.sh"
+source "${SCRIPTPATH}/docker-install.sh"
 
 yq --version || exit 1
 docker run hello-world || exit 1
