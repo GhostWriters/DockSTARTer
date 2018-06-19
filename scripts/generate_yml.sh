@@ -61,6 +61,6 @@ generate_yml () {
         fi
     done
     echo "> ${SCRIPTPATH}/compose/docker-compose.yml" >> "${RUNFILE}"
-    sh "${RUNFILE}"
+    bash "${RUNFILE}"
     rm "${RUNFILE}"
 }
