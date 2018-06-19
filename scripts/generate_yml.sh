@@ -18,7 +18,7 @@ generate_yml () {
             local FILENAME
             FILENAME=${APPNAME,,}
             local APPNETMODE
-            APPNETMODE="${APPNAME}_NETWORK_MODE"
+            APPNETMODE="$(echo "${ENV_VARS}" | grep -Po "${APPNAME}_NETWORK_MODE=\K.*")"
             if [[ -d ${SCRIPTPATH}/compose/.apps/${FILENAME}/ ]]; then
                 if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.override.yml ]]; then
                     echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.override.yml \\" >> "${RUNFILE}"
@@ -44,11 +44,11 @@ generate_yml () {
                             continue
                         fi
                     fi
-                    if [[ ${!APPNETMODE} == "bridge" ]]; then
-                        if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${!APPNETMODE}.yml ]]; then
-                            echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${!APPNETMODE}.yml \\" >> "${RUNFILE}"
+                    if [[ ${APPNETMODE} == "bridge" ]]; then
+                        if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${APPNETMODE}.yml ]]; then
+                            echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${APPNETMODE}.yml \\" >> "${RUNFILE}"
                         else
-                            echo "Could not find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${!APPNETMODE}.yml file."
+                            echo "Could not find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${APPNETMODE}.yml file."
                         fi
                     fi
                     echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml \\" >> "${RUNFILE}"
