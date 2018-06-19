@@ -1,8 +1,8 @@
 #!/bin/bash
 
-SCRIPTPATH="$(cd -P "$(dirname "$SOURCE")" && pwd)"
+TESTPATH="$(cd -P "$(dirname "$SOURCE")" && pwd)"
 
-sh "${SCRIPTPATH}/docker-install.sh"
+sh "${TESTPATH}/docker-install.sh"
 
 yq --version || exit 1
 docker run hello-world || exit 1

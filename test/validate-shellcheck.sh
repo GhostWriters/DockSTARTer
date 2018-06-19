@@ -1,7 +1,7 @@
 #!/bin/bash
 
-SCRIPTPATH="$(cd -P "$(dirname "$SOURCE")" && pwd)"
-source "${SCRIPTPATH}/scripts/common.sh"
+TESTPATH="$(cd -P "$(dirname "$SOURCE")" && pwd)"
+source "${TESTPATH}/scripts/common.sh"
 
 shellcheck -V
 
@@ -14,9 +14,9 @@ if [[ -n $NoShellCheckCodeWarningsFound ]] ; then
 fi
 
 # Search for ShellCheck Warnings in all the scripts and fail if it finds any
-NoSCDISABLED=$(grep -r '^# shellcheck disable' "${SCRIPTPATH}" | grep -c 'shellcheck disable')
+NoSCDISABLED=$(grep -r '^# shellcheck disable' "${TESTPATH}" | grep -c 'shellcheck disable')
 if [[ $NoSCDISABLED -gt 0 ]] ; then
     echo -e "${RED}Shellcheck disable warnings found$ENDCOLOR"
-    grep -rn "${SCRIPTPATH}" -e '^# shellcheck disable'
+    grep -rn "${TESTPATH}" -e '^# shellcheck disable'
     exit 1
 fi
