@@ -1,7 +1,6 @@
 #!/bin/bash
 
-readonly SCRIPTPATH="$(cd -P "$(dirname "$SOURCE")" && pwd)"
-source "${SCRIPTPATH}/scripts/common.sh"
+SCRIPTPATH="$(cd -P "$(dirname "$SOURCE")" && pwd)"
 
 cp "${SCRIPTPATH}/compose/.env.example" "${SCRIPTPATH}/compose/.env"
 sed -i "s/_ENABLED=false/_ENABLED=true/" "${SCRIPTPATH}/compose/.env"
@@ -16,7 +15,7 @@ sed -i "s/UNIFI_PORT_6789=6789/UNIFI_PORT_6789=16789/" "${SCRIPTPATH}/compose/.e
 sed -i "s/UNIFI_PORT_7878=7878/UNIFI_PORT_7878=17878/" "${SCRIPTPATH}/compose/.env"
 sed -i "s/UNIFI_PORT_8080=8080/UNIFI_PORT_8080=18080/" "${SCRIPTPATH}/compose/.env"
 sed -i "s/UNIFI_PORT_8081=8081/UNIFI_PORT_8081=18081/" "${SCRIPTPATH}/compose/.env"
-source "${SCRIPTPATH}/generate-yml.sh"
+sh "${SCRIPTPATH}/generate-yml.sh"
 echo
 cat "${SCRIPTPATH}/compose/docker-compose.yml" || exit 1
 echo

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-readonly SCRIPTPATH="$(cd -P "$(dirname "$SOURCE")" && pwd)"
+SCRIPTPATH="$(cd -P "$(dirname "$SOURCE")" && pwd)"
 source "${SCRIPTPATH}/scripts/common.sh"
 
 shellcheck -V
