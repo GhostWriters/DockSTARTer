@@ -1,6 +1,8 @@
 #!/bin/bash
 
-readonly SCRIPTPATH="$(cd -P "$(dirname "$SOURCE")" && pwd)"
+readonly SCRIPTNAME="$(basename "$0")"
+readonly SCRIPTPATH="$(readlink -m "$(dirname "$0")")"
+readonly ARGS="$*"
 source "${SCRIPTPATH}/scripts/common.sh"
 
 run_script 'generate_yml';

@@ -1,25 +1,24 @@
 #!/bin/bash
 
-readonly SCRIPTPATH="$(cd -P "$(dirname "$SOURCE")" && pwd)"
-source "${SCRIPTPATH}/scripts/common.sh"
+TESTPATH="$(cd -P "$(dirname "$SOURCE")" && pwd)"
 
-cp "${SCRIPTPATH}/compose/.env.example" "${SCRIPTPATH}/compose/.env"
-sed -i "s/_ENABLED=false/_ENABLED=true/" "${SCRIPTPATH}/compose/.env"
-#sed -i "s/EMBY_ENABLED=true/EMBY_ENABLED=false/" "${SCRIPTPATH}/compose/.env"
-sed -i "s/^\s*devices\:$//" "${SCRIPTPATH}/compose/.apps/emby/emby.yml"
-sed -i "s/^.*renderD128.*$//" "${SCRIPTPATH}/compose/.apps/emby/emby.yml"
-sed -i "s/HEADPHONES_PORT_8181=8181/HEADPHONES_PORT_8181=18181/" "${SCRIPTPATH}/compose/.env"
-sed -i "s/PLEX_PORT_1900=1900/PLEX_PORT_1900=11900/" "${SCRIPTPATH}/compose/.env"
-sed -i "s/RUTORRENT_PORT_51413=51413/RUTORRENT_PORT_51413=41413/" "${SCRIPTPATH}/compose/.env"
-sed -i "s/RUTORRENT_PORT_6881=6881/RUTORRENT_PORT_6881=16881/" "${SCRIPTPATH}/compose/.env"
-sed -i "s/UNIFI_PORT_6789=6789/UNIFI_PORT_6789=16789/" "${SCRIPTPATH}/compose/.env"
-sed -i "s/UNIFI_PORT_7878=7878/UNIFI_PORT_7878=17878/" "${SCRIPTPATH}/compose/.env"
-sed -i "s/UNIFI_PORT_8080=8080/UNIFI_PORT_8080=18080/" "${SCRIPTPATH}/compose/.env"
-sed -i "s/UNIFI_PORT_8081=8081/UNIFI_PORT_8081=18081/" "${SCRIPTPATH}/compose/.env"
-source "${SCRIPTPATH}/generate-yml.sh"
+cp "${TESTPATH}/compose/.env.example" "${TESTPATH}/compose/.env"
+sed -i "s/_ENABLED=false/_ENABLED=true/" "${TESTPATH}/compose/.env"
+#sed -i "s/EMBY_ENABLED=true/EMBY_ENABLED=false/" "${TESTPATH}/compose/.env"
+sed -i "s/^\s*devices\:$//" "${TESTPATH}/compose/.apps/emby/emby.yml"
+sed -i "s/^.*renderD128.*$//" "${TESTPATH}/compose/.apps/emby/emby.yml"
+sed -i "s/HEADPHONES_PORT_8181=8181/HEADPHONES_PORT_8181=18181/" "${TESTPATH}/compose/.env"
+sed -i "s/PLEX_PORT_1900=1900/PLEX_PORT_1900=11900/" "${TESTPATH}/compose/.env"
+sed -i "s/RUTORRENT_PORT_51413=51413/RUTORRENT_PORT_51413=41413/" "${TESTPATH}/compose/.env"
+sed -i "s/RUTORRENT_PORT_6881=6881/RUTORRENT_PORT_6881=16881/" "${TESTPATH}/compose/.env"
+sed -i "s/UNIFI_PORT_6789=6789/UNIFI_PORT_6789=16789/" "${TESTPATH}/compose/.env"
+sed -i "s/UNIFI_PORT_7878=7878/UNIFI_PORT_7878=17878/" "${TESTPATH}/compose/.env"
+sed -i "s/UNIFI_PORT_8080=8080/UNIFI_PORT_8080=18080/" "${TESTPATH}/compose/.env"
+sed -i "s/UNIFI_PORT_8081=8081/UNIFI_PORT_8081=18081/" "${TESTPATH}/compose/.env"
+bash "${TESTPATH}/generate-yml.sh"
 echo
-cat "${SCRIPTPATH}/compose/docker-compose.yml" || exit 1
+cat "${TESTPATH}/compose/docker-compose.yml" || exit 1
 echo
-cd "${SCRIPTPATH}/compose/" || exit 1;
+cd "${TESTPATH}/compose/" || exit 1;
 docker-compose up -d || exit 1;
-cd "${SCRIPTPATH}" || exit 1;
+cd "${TESTPATH}" || exit 1;
