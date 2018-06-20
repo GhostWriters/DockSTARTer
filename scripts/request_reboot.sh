@@ -1,13 +1,14 @@
 #!/bin/bash
 
-request_reboot () {
+request_reboot() {
     if [[ ${CI} != true ]] && [[ ${TRAVIS} != true ]]; then
         echo
+        local YN
         while true; do
-            read -rp "Your system needs to reboot for changes to take effect. Would you like to reboot now? [Yn]" yn
-            case $yn in
+            read -rp "Your system needs to reboot for changes to take effect. Would you like to reboot now? [Yn]" YN
+            case ${YN} in
                 [Yy]* )
-                    sudo reboot;
+                    sudo reboot
                     break
                     ;;
                 [Nn]* )

@@ -1,8 +1,6 @@
 #!/bin/bash
 
-generate_yml () {
-    local ENV_VARS
-    ENV_VARS="$(run_script 'get_env';)"
+generate_yml() {
     local RUNFILE
     RUNFILE="${SCRIPTPATH}/compose/docker-compose.sh"
     echo "#!/bin/bash" > "${RUNFILE}"
@@ -11,14 +9,16 @@ generate_yml () {
         echo "${SCRIPTPATH}/compose/.reqs/v1.yml \\"
         echo "${SCRIPTPATH}/compose/.reqs/v2.yml \\"
     } >> "${RUNFILE}"
-    echo "${ENV_VARS}" | while read -r line || [ -n "${line}" ]; do
-        if [[ ${line} ==  *"_ENABLED=true" ]]; then
-            local APPNAME
-            APPNAME=${line/_ENABLED=true/}
-            local FILENAME
-            FILENAME=${APPNAME,,}
-            local APPNETMODE
-            APPNETMODE="$(echo "${ENV_VARS}" | grep -Po "${APPNAME}_NETWORK_MODE=\K.*")"
+    for line in $(run_script 'get_env'); do
+        local APPNAME
+        APPNAME=${line/_ENABLED=.*/}
+        local APPENABLED
+        APPENABLED=${line/\w+_NETWORK_MODE=\K.*/}
+        local FILENAME
+        FILENAME=${APPNAME,,}
+        local APPNETMODE
+        APPNETMODE="$(${line} | grep -Po "${APPNAME}_NETWORK_MODE=\K.*")"
+        if [[ ${APPENABLED} ==  "true" ]]; then
             if [[ -d ${SCRIPTPATH}/compose/.apps/${FILENAME}/ ]]; then
                 if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.override.yml ]]; then
                     echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.override.yml \\" >> "${RUNFILE}"
