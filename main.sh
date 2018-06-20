@@ -51,7 +51,7 @@ cmdline() {
     for arg
     do
         local delim=""
-        case "$arg" in
+        case "${arg}" in
                 #translate --gnu-long-options to -g (short options)
             --generate)       args="${args}-g " ;;
             --install)        args="${args}-i " ;;
@@ -65,7 +65,7 @@ cmdline() {
     done
 
     #Reset the positional parameters to the short options
-    eval set -- $args
+    eval set -- "${args}"
 
     while getopts "git:vx" OPTION
     do
@@ -115,6 +115,6 @@ cmdline() {
 
 # # Main Function
 main() {
-    cmdline $ARGS
+    cmdline "${ARGS}"
 }
 main
