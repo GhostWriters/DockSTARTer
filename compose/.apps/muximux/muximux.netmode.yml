@@ -1,0 +1,3 @@
+services:
+  muximux:
+    network_mode:  ${MUXIMUX_NETWORK_MODE}

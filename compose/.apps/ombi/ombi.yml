@@ -4,7 +4,6 @@ services:
     image:           linuxserver/ombi
     container_name:  ombi
     restart:         always
-    network_mode:    ${OMBI_NETWORK_MODE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

@@ -4,7 +4,6 @@ services:
     image:           plexinc/pms-docker:${PLEX_TAG}
     container_name:  plex
     restart:         always
-    network_mode:    ${PLEX_NETWORK_MODE}
     environment:
       - ADVERTISE_IP=${PLEX_ADVERTISE_IP}
       - PLEX_CLAIM=${PLEX_CLAIM}

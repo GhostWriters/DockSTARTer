@@ -4,7 +4,6 @@ services:
     image:           morpheus65535/bazarr
     container_name:  bazarr
     restart:         always
-    network_mode:    ${BAZARR_NETWORK_MODE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

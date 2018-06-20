@@ -44,11 +44,18 @@ generate_yml () {
                             continue
                         fi
                     fi
-                    if [[ ${APPNETMODE} == "bridge" ]]; then
-                        if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${APPNETMODE}.yml ]]; then
-                            echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${APPNETMODE}.yml \\" >> "${RUNFILE}"
+                    if [[ ${APPNETMODE} == "" ]] || [[ ${APPNETMODE} == "bridge" ]]; then
+                        if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml ]]; then
+                            echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml \\" >> "${RUNFILE}"
                         else
-                            echo "Could not find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${APPNETMODE}.yml file."
+                            echo "Could not find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml file."
+                        fi
+                    fi
+                    if [[ ${APPNETMODE} != "" ]]; then
+                        if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml ]]; then
+                            echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml \\" >> "${RUNFILE}"
+                        else
+                            echo "Could not find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml file."
                         fi
                     fi
                     echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml \\" >> "${RUNFILE}"

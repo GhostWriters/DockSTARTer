@@ -1,0 +1,3 @@
+services:
+  plexrequests:
+    network_mode:  ${PLEXREQUESTS_NETWORK_MODE}

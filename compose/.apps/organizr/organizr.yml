@@ -4,7 +4,6 @@ services:
     image:           lsiocommunity/organizr
     container_name:  organizr
     restart:         always
-    network_mode:    ${ORGANIZR_NETWORK_MODE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

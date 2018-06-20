@@ -4,7 +4,6 @@ services:
     image:           linuxserver/hydra2
     container_name:  hydra2
     restart:         always
-    network_mode:    ${HYDRA2_NETWORK_MODE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
