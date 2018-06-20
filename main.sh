@@ -67,7 +67,7 @@ cmdline() {
     #Reset the positional parameters to the short options
     eval set -- "${args}"
 
-    while getopts "git:vx" OPTION
+    while getopts "gitvx" OPTION
     do
         case $OPTION in
             g)
