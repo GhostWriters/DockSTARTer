@@ -2,13 +2,22 @@
 
 run_compose () {
     if [[ ${CI} != true ]] && [[ ${TRAVIS} != true ]]; then
+        echo
         while true; do
             read -rp "Would you like to run your selected containers now? [Yn]" yn
             case $yn in
-                [Yy]* ) cd "${SCRIPTPATH}/compose/" || exit 1; docker-compose up -d; cd "${SCRIPTPATH}" || exit 1; break;;
-                [Nn]* ) exit;;
-                * ) echo "Please answer yes or no.";;
+                [Yy]* )
+                    cd "${SCRIPTPATH}/compose/" || return 1;
+                    docker-compose up -d;
+                    cd "${SCRIPTPATH}" || return 1;
+                    break
+                    ;;
+                [Nn]* )
+                    return
+                    ;;
+                * ) echo "Please answer yes or no." ;;
             esac
         done
+        echo
     fi
 }

@@ -53,6 +53,8 @@ cmdline() {
         local delim=""
         case "$arg" in
                 #translate --gnu-long-options to -g (short options)
+            --generate)       args="${args}-g " ;;
+            --install)        args="${args}-i " ;;
             --test)           args="${args}-t " ;;
             --verbose)        args="${args}-v " ;;
             --debug)          args="${args}-x " ;;
@@ -87,8 +89,12 @@ cmdline() {
                 exit 0
                 ;;
             t)
-                RUN_TESTS=$OPTARG
-                verbose VINFO "Running tests"
+                run_test 'validate_newline' || exit 1;
+                run_test 'validate_bashate' || exit 1;
+                run_test 'validate_shellcheck' || exit 1;
+                run_test 'run_install' || exit 1;
+                run_test 'run_generate' || exit 1;
+                exit 0
                 ;;
             v)
                 readonly VERBOSE=1
