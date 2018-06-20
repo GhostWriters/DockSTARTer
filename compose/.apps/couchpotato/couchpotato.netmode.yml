@@ -1,0 +1,3 @@
+services:
+  couchpotato:
+    network_mode:  ${COUCHPOTATO_NETWORK_MODE}

@@ -1,0 +1,3 @@
+services:
+  jackett:
+    network_mode:  ${JACKETT_NETWORK_MODE}

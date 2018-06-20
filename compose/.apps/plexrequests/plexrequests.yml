@@ -4,7 +4,6 @@ services:
     image:           linuxserver/plexrequests
     container_name:  plexrequests
     restart:         always
-    network_mode:    ${PLEXREQUESTS_NETWORK_MODE}
     environment:
       - URL_BASE=/plexrequests
       - PGID=${PGID}

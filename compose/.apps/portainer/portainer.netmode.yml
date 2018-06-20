@@ -1,0 +1,3 @@
+services:
+  portainer:
+    network_mode:  ${PORTAINER_NETWORK_MODE}

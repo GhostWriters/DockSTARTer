@@ -4,7 +4,6 @@ services:
     image:           linuxserver/radarr
     container_name:  radarr
     restart:         always
-    network_mode:    ${RADARR_NETWORK_MODE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

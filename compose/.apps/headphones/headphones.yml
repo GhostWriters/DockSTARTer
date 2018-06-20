@@ -4,7 +4,6 @@ services:
     image:           linuxserver/headphones
     container_name:  headphones
     restart:         always
-    network_mode:    ${HEADPHONES_NETWORK_MODE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

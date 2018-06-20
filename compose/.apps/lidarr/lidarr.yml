@@ -4,7 +4,6 @@ services:
     image:           linuxserver/lidarr
     container_name:  lidarr
     restart:         always
-    network_mode:    ${LIDARR_NETWORK_MODE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

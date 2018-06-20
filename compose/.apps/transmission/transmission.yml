@@ -4,7 +4,6 @@ services:
     image:           linuxserver/transmission
     container_name:  transmission
     restart:         always
-    network_mode:    ${TRANSMISSION_NETWORK_MODE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

@@ -4,7 +4,6 @@ services:
     image:           linuxserver/letsencrypt
     container_name:  letsencrypt
     restart:         always
-    network_mode:    ${LETSENCRYPT_NETWORK_MODE}
     environment:
       - DNSPLUGIN=${LETSENCRYPT_DNSPLUGIN}
       - EMAIL=${EMAIL_TO}
