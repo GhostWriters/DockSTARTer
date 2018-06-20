@@ -1,6 +1,6 @@
 #!/bin/bash
 
-install_yq () {
+install_yq() {
     # # https://github.com/mikefarah/yq
     local AVAILABLE_YQ
     AVAILABLE_YQ=$(curl -H "${GH_HEADER}" -s "https://api.github.com/repos/mikefarah/yq/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")')

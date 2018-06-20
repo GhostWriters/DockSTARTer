@@ -1,6 +1,6 @@
 #!/bin/bash
 
-get_env () {
+get_env() {
     local VARS
     local ENV_VARS
     ENV_VARS=""

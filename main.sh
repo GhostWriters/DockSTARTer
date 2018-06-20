@@ -1,8 +1,8 @@
 #!/bin/bash
 
-readonly SCRIPTNAME="$(basename "$0")"
-readonly SCRIPTPATH="$(readlink -m "$(dirname "$0")")"
-readonly ARGS="$*"
+readonly SCRIPTNAME="$(basename "${0}")"
+readonly SCRIPTPATH="$(readlink -m "$(dirname "${0}")")"
+readonly ARGS=("$@")
 
 # # Colors
 readonly CYAN='\e[34m'
@@ -32,13 +32,13 @@ usage() {
 }
 
 # # Script Runner Function
-run_script () {
+run_script() {
     source "${SCRIPTPATH}/scripts/${1}.sh"
     ${1};
 }
 
 # # Test Runner Function
-run_test () {
+run_test() {
     source "${SCRIPTPATH}/test/${1}.sh"
     ${1};
 }
@@ -47,51 +47,52 @@ run_test () {
 cmdline() {
     # got this idea from here:
     # http://kirk.webfinish.com/2009/10/bash-shell-script-to-use-getopts-with-gnu-style-long-positional-parameters/
-    local arg=
-    for arg; do
-        local delim=""
-        case "${arg}" in
+    local ARG=
+    local LOCAL_ARGS
+    for ARG; do
+        local DELIM=""
+        case "${ARG}" in
                 #translate --gnu-long-options to -g (short options)
-            --generate)       args="${args}-g " ;;
-            --install)        args="${args}-i " ;;
-            --test)           args="${args}-t " ;;
-            --verbose)        args="${args}-v " ;;
-            --debug)          args="${args}-x " ;;
+            --generate)       LOCAL_ARGS="${LOCAL_ARGS}-g " ;;
+            --install)        LOCAL_ARGS="${LOCAL_ARGS}-i " ;;
+            --test)           LOCAL_ARGS="${LOCAL_ARGS}-t " ;;
+            --verbose)        LOCAL_ARGS="${LOCAL_ARGS}-v " ;;
+            --debug)          LOCAL_ARGS="${LOCAL_ARGS}-x " ;;
                 #pass through anything else
-            *) [[ "${arg:0:1}" == "-" ]] || delim="\""
-                args="${args}${delim}${arg}${delim} " ;;
+            *) [[ "${ARG:0:1}" == "-" ]] || DELIM="\""
+                LOCAL_ARGS="${LOCAL_ARGS}${DELIM}${ARG}${DELIM} " ;;
         esac
     done
 
     #Reset the positional parameters to the short options
-    eval set -- "${args}"
+    eval set -- "${LOCAL_ARGS}"
 
     while getopts "gitvx" OPTION; do
         case ${OPTION} in
             g)
-                run_script 'generate_yml';
-                run_script 'run_compose';
+                run_script 'generate_yml'
+                run_script 'run_compose'
                 exit 0
                 ;;
             i)
-                run_script 'root_check';
-                run_script 'run_apt';
-                run_script 'install_yq';
-                run_script 'install_docker';
-                run_script 'install_machine_completion';
-                run_script 'install_compose';
-                run_script 'install_compose_completion';
-                run_script 'setup_docker_group';
-                run_script 'enable_docker_systemd';
-                run_script 'request_reboot';
+                run_script 'root_check'
+                run_script 'run_apt'
+                run_script 'install_yq'
+                run_script 'install_docker'
+                run_script 'install_machine_completion'
+                run_script 'install_compose'
+                run_script 'install_compose_completion'
+                run_script 'setup_docker_group'
+                run_script 'enable_docker_systemd'
+                run_script 'request_reboot'
                 exit 0
                 ;;
             t)
-                run_test 'validate_newline' || exit 1;
-                run_test 'validate_bashate' || exit 1;
-                run_test 'validate_shellcheck' || exit 1;
-                run_test 'run_install' || exit 1;
-                run_test 'run_generate' || exit 1;
+                run_test 'validate_newline' || exit 1
+                run_test 'validate_bashate' || exit 1
+                run_test 'validate_shellcheck' || exit 1
+                run_test 'run_install' || exit 1
+                run_test 'run_generate' || exit 1
                 exit 0
                 ;;
             v)
@@ -107,12 +108,11 @@ cmdline() {
                 ;;
         esac
     done
-
     return 0
 }
 
 # # Main Function
 main() {
-    cmdline "${ARGS}"
+    cmdline "${ARGS[@]}"
 }
 main
