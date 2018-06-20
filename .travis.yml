@@ -16,11 +16,7 @@ before_install:
     - sudo pip install bashate
 
 script:
-    - sudo bash ./test/validate-newline.sh
-    - sudo bash ./test/validate-bashate.sh
-    - sudo bash ./test/validate-shellcheck.sh
-    - sudo bash ./test/run-docker-install.sh
-    - sudo bash ./test/run-generate-yml.sh
+    - sudo bash ./main.sh -t
 
 matrix:
     fast_finish:   true

@@ -1,21 +1,21 @@
 #!/bin/bash
 
-run_compose () {
+request_reboot () {
     if [[ ${CI} != true ]] && [[ ${TRAVIS} != true ]]; then
         echo
         while true; do
-            read -rp "Would you like to run your selected containers now? [Yn]" yn
+            read -rp "Your system needs to reboot for changes to take effect. Would you like to reboot now? [Yn]" yn
             case $yn in
                 [Yy]* )
-                    cd "${SCRIPTPATH}/compose/" || return 1;
-                    docker-compose up -d;
-                    cd "${SCRIPTPATH}" || return 1;
+                    sudo reboot;
                     break
                     ;;
                 [Nn]* )
                     return
                     ;;
-                * ) echo "Please answer yes or no." ;;
+                * )
+                    echo "Please answer yes or no."
+                    ;;
             esac
         done
         echo
