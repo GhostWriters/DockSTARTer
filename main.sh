@@ -48,8 +48,7 @@ cmdline() {
     # got this idea from here:
     # http://kirk.webfinish.com/2009/10/bash-shell-script-to-use-getopts-with-gnu-style-long-positional-parameters/
     local arg=
-    for arg
-    do
+    for arg; do
         local delim=""
         case "${arg}" in
                 #translate --gnu-long-options to -g (short options)
@@ -67,9 +66,8 @@ cmdline() {
     #Reset the positional parameters to the short options
     eval set -- "${args}"
 
-    while getopts "gitvx" OPTION
-    do
-        case $OPTION in
+    while getopts "gitvx" OPTION; do
+        case ${OPTION} in
             g)
                 run_script 'generate_yml';
                 run_script 'run_compose';
