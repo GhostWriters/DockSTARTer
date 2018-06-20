@@ -4,7 +4,6 @@ services:
     image:           haugene/transmission-openvpn:latest-alpine
     container_name:  transmissionvpn
     restart:         always
-    network_mode:    ${TRANSMISSIONVPN_NETWORK_MODE}
     environment:
       - LOCAL_NETWORK=${LAN_NETWORK}
       - OPENVPN_OPTS=${VPN_OPTIONS}

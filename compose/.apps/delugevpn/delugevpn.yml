@@ -4,7 +4,6 @@ services:
     image:           binhex/arch-delugevpn
     container_name:  delugevpn
     restart:         always
-    network_mode:    ${DELUGEVPN_NETWORK_MODE}
     environment:
       - LAN_NETWORK=${LAN_NETWORK}
       - PGID=${PGID}

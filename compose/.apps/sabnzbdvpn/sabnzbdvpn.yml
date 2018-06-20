@@ -4,7 +4,6 @@ services:
     image:           binhex/arch-sabnzbdvpn
     container_name:  sabnzbdvpn
     restart:         always
-    network_mode:    ${SABNZBDVPN_NETWORK_MODE}
     environment:
       - LAN_NETWORK=${LAN_NETWORK}
       - PGID=${PGID}
