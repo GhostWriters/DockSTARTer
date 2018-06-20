@@ -4,7 +4,6 @@ services:
     image:           linuxserver/sabnzbd
     container_name:  sabnzbd
     restart:         always
-    network_mode:    ${SABNZBD_NETWORK_MODE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

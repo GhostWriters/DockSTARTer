@@ -4,7 +4,6 @@ services:
     image:           homeassistant/home-assistant
     container_name:  homeassistant
     restart:         always
-    network_mode:    ${HOMEASSISTANT_NETWORK_MODE}
     environment:
       - TZ=${TZ}
     volumes:

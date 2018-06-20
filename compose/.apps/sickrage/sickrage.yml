@@ -4,7 +4,6 @@ services:
     image:           linuxserver/sickrage
     container_name:  sickrage
     restart:         always
-    network_mode:    ${SICKRAGE_NETWORK_MODE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

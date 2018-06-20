@@ -4,7 +4,6 @@ services:
     image:           linuxserver/rutorrent
     container_name:  rutorrent
     restart:         always
-    network_mode:    ${RUTORRENT_NETWORK_MODE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

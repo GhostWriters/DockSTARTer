@@ -4,7 +4,6 @@ services:
     image:           linuxserver/duckdns
     container_name:  duckdns
     restart:         always
-    network_mode:    ${DUCKDNS_NETWORK_MODE}
     environment:
       - LOG_FILE=${DUCKDNS_LOG_FILE}
       - SUBDOMAINS=${DUCKDNS_SUBDOMAINS}
