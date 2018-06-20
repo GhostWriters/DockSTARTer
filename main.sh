@@ -55,6 +55,7 @@ cmdline() {
             --generate)       args="${args}-g " ;;
             --install)        args="${args}-i " ;;
             --test)           args="${args}-t " ;;
+            --update)         args="${args}-u " ;;
             --verbose)        args="${args}-v " ;;
             --debug)          args="${args}-x " ;;
                 #pass through anything else
@@ -66,7 +67,7 @@ cmdline() {
     #Reset the positional parameters to the short options
     eval set -- "${args}"
 
-    while getopts "gitvx" OPTION; do
+    while getopts "gituvx" OPTION; do
         case ${OPTION} in
             g)
                 run_script 'generate_yml';
@@ -92,6 +93,17 @@ cmdline() {
                 run_test 'validate_shellcheck' || exit 1;
                 run_test 'run_install' || exit 1;
                 run_test 'run_generate' || exit 1;
+                exit 0
+                ;;
+            u)
+                run_script 'update_self';
+                run_script 'root_check';
+                run_script 'run_apt';
+                run_script 'install_yq';
+                run_script 'install_docker';
+                run_script 'install_machine_completion';
+                run_script 'install_compose';
+                run_script 'install_compose_completion';
                 exit 0
                 ;;
             v)
