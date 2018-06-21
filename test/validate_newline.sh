@@ -14,7 +14,7 @@ validate_newline() {
         FOUND=1
     fi
 
-    if [[ -n $FOUND ]]; then
+    if [[ -n ${FOUND} ]]; then
         FOUND=''
         return 1
     fi
