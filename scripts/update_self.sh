@@ -1,7 +1,9 @@
 #!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
 
 update_self() {
-    if [[ ${CI} != true ]] && [[ ${TRAVIS} != true ]]; then
+    if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]]; then
         echo
         local YN
         while true; do
