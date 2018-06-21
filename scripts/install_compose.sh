@@ -1,6 +1,6 @@
 #!/bin/bash
 
-install_compose () {
+install_compose() {
     # # https://docs.docker.com/compose/install/ OR https://github.com/javabean/arm-compose
     local AVAILABLE_COMPOSE
     if [[ ${ARCH} == "arm64" ]] || [[ ${ARCH} == "armhf" ]]; then

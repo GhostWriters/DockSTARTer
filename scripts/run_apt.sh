@@ -1,6 +1,6 @@
 #!/bin/bash
 
-run_apt () {
+run_apt() {
     apt-get update
     if [[ ${CI} != true ]] && [[ ${TRAVIS} != true ]]; then
         apt-get -y dist-upgrade

@@ -1,11 +1,12 @@
 #!/bin/bash
 
-update_self () {
+update_self() {
     if [[ ${CI} != true ]] && [[ ${TRAVIS} != true ]]; then
         echo
+        local YN
         while true; do
-            read -rp "Would you like to update DockSTARTer now? [Yn]" yn
-            case $yn in
+            read -rp "Would you like to update DockSTARTer now? [Yn]" YN
+            case ${YN} in
                 [Yy]* )
                     git -C "${SCRIPTPATH}" fetch --all
                     git -C "${SCRIPTPATH}" reset --hard origin/master
