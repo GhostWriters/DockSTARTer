@@ -16,7 +16,7 @@ generate_yml() {
             local FILENAME
             FILENAME=${APPNAME,,}
             local APPNETMODE
-            APPNETMODE="$(run_script 'get_env' | grep -Po "${APPNAME}_NETWORK_MODE=\K.*")"
+            APPNETMODE="$(run_script 'get_env' | grep -Po "${APPNAME}_NETWORK_MODE=\\K.*")"
             if [[ -d ${SCRIPTPATH}/compose/.apps/${FILENAME}/ ]]; then
                 if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.override.yml ]]; then
                     echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.override.yml \\" >> "${RUNFILE}"
