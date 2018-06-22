@@ -18,9 +18,9 @@ run_generate() {
     sed -i 's/UNIFI_PORT_8081=8081/UNIFI_PORT_8081=18081/' "${SCRIPTPATH}/compose/.env"
     bash "${SCRIPTPATH}/main.sh" -g
     echo
-    cat "${SCRIPTPATH}/compose/docker-compose.yml" || return 1
+    cat "${SCRIPTPATH}/compose/docker-compose.yml" || exit 1
     echo
-    cd "${SCRIPTPATH}/compose/" || return 1
-    docker-compose up -d || return 1
-    cd "${SCRIPTPATH}" || return 1
+    cd "${SCRIPTPATH}/compose/" || exit 1
+    docker-compose up -d || exit 1
+    cd "${SCRIPTPATH}" || exit 1
 }
