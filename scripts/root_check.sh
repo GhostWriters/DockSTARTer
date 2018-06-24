@@ -1,4 +1,6 @@
 #!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
 
 root_check() {
     if [[ ${EUID} -ne 0 ]]; then

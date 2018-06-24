@@ -1,7 +1,9 @@
 #!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
 
 request_reboot() {
-    if [[ ${CI} != true ]] && [[ ${TRAVIS} != true ]]; then
+    if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]]; then
         echo
         local YN
         while true; do

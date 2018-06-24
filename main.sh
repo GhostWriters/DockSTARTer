@@ -1,4 +1,6 @@
 #!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
 
 readonly SCRIPTNAME="$(basename "${0}")"
 readonly SCRIPTPATH="$(readlink -m "$(dirname "${0}")")"
@@ -22,7 +24,7 @@ else
 fi
 
 # # Github Token for Travis CI
-if [[ ${CI} == true ]] && [[ ${TRAVIS} == true ]]; then
+if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
     readonly GH_HEADER="Authorization: token ${GH_TOKEN}"
 fi
 
@@ -61,12 +63,12 @@ cmdline() {
             --debug)          LOCAL_ARGS="${LOCAL_ARGS}-x " ;;
                 #pass through anything else
             *) [[ "${ARG:0:1}" == "-" ]] || DELIM="\""
-                LOCAL_ARGS="${LOCAL_ARGS}${DELIM}${ARG}${DELIM} " ;;
+                LOCAL_ARGS="${LOCAL_ARGS:-}${DELIM}${ARG}${DELIM} " ;;
         esac
     done
 
     #Reset the positional parameters to the short options
-    eval set -- "${LOCAL_ARGS}"
+    eval set -- "${LOCAL_ARGS:-}"
 
     while getopts "gituvx" OPTION; do
         case ${OPTION} in
