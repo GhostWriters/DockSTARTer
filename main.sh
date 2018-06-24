@@ -43,6 +43,12 @@ run_test() {
     ${1};
 }
 
+# # Menu Runner Function 
+run_menu() { 
+    source "${SCRIPTPATH}/scripts/menus/${1}.sh" 
+    ${1}; 
+}
+
 # # Command Line Handler
 cmdline() {
     # got this idea from here:
@@ -126,5 +132,6 @@ cmdline() {
 # # Main Function
 main() {
     cmdline "${ARGS[@]}"
+    run_menu 'menu_main'
 }
 main
