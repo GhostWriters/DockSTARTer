@@ -4,7 +4,6 @@ IFS=$'\n\t'
 
 cmd_update() {
     run_script 'update_self'
-    run_script 'root_check'
     run_script 'run_apt'
     run_script 'install_yq'
     run_script 'install_docker'

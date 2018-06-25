@@ -5,9 +5,10 @@ IFS=$'\n\t'
 update_self() {
     if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]]; then
         echo
+        info "Would you like to update DockSTARTer now?"
         local YN
         while true; do
-            read -rp "Would you like to update DockSTARTer now? [Yn]" YN
+            read -rp "[Yn]" YN
             case ${YN} in
                 [Yy]* )
                     git -C "${SCRIPTPATH}" fetch --all
@@ -18,7 +19,7 @@ update_self() {
                     return
                     ;;
                 * )
-                    echo "Please answer yes or no."
+                    error "Please answer yes or no."
                     ;;
             esac
         done
