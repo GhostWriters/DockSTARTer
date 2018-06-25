@@ -13,31 +13,30 @@ ReplaceString() {
     IGNORE=${4}
     #Check all 3 params at set
     if [[ -z ${FINDSTR} ]]; then
-        echo -e "${RED}ReplaceString Param1 not set${ENDCOLOR}"; exit 1
+        fatal "ReplaceString Param1 not set"
     elif [[ -z ${REPLACESTR} ]]; then
-        echo -e "${RED}ReplaceString Param2 not set${ENDCOLOR}"; exit 1
+        fatal "ReplaceString Param2 not set"
     elif [[ -z ${FILE} ]]; then
-        echo -e "${RED}ReplaceString Param3 not set${ENDCOLOR}"; exit 1
+        fatal "ReplaceString Param3 not set"
     fi
 
     #Check Param3 (FILE) to change exists
     if [[ ! -f ${FILE} ]]; then
-        echo -e "${RED}ReplaceString ${FILE} not found${ENDCOLOR}"; exit 1
+        fatal "ReplaceString ${FILE} not found"
     fi
 
     #Check Param1 exists in the file.
     if ! grep -q "${FINDSTR}" "${FILE}"; then
         if [[ ${IGNORE} != 'IgnoreError' ]]; then
-            echo -e "${RED}ReplaceString ${FINDSTR} not found in ${FILE}${ENDCOLOR}"; exit 1
+            fatal "ReplaceString ${FINDSTR} not found in ${FILE}"
         fi
     else
         #Perform the Replace
-        sed -i "s|${FINDSTR}|${REPLACESTR}|" "${FILE}" || { echo -e "${RED}ReplaceString Replacing Param1 with Param2 in Param3 failed.${ENDCOLOR}"; exit 1; }
+        sed -i "s|${FINDSTR}|${REPLACESTR}|" "${FILE}" || fatal "ReplaceString Replacing Param1 with Param2 in Param3 failed."
 
         #Check Param2 exists in the file after the change
-        if grep -q "${REPLACESTR}" "${FILE}" || \
-            { echo -e "${RED}ReplaceString Param2 not found in Param3${ENDCOLOR}"; exit 1; }; then
-            echo -e "Replaced ${CYAN}${FINDSTR}${ENDCOLOR} with ${CYAN}${REPLACESTR}${ENDCOLOR} in ${CYAN}${FILE}${ENDCOLOR}"
+        if grep -q "${REPLACESTR}" "${FILE}" || fatal "ReplaceString Param2 not found in Param3"; then
+            info "Replaced ${YELLOW}${FINDSTR}${ENDCOLOR} with ${GREEN}${REPLACESTR}${ENDCOLOR} in ${YELLOW}${FILE}${ENDCOLOR}"
         fi
     fi
 }
@@ -53,31 +52,31 @@ SetVariableValue() {
     IGNORE="${4}"
     #Check all 3 params at set
     if [[ -z ${FINDSTR} ]]; then
-        echo -e "${RED}SetVariableValue Param1 not set${ENDCOLOR}"; exit 1
+        fatal "SetVariableValue Param1 not set"
     elif [[ -z ${REPLACESTR} ]]; then
-        echo -e "${RED}SetVariableValue Param2 not set${ENDCOLOR}"; exit 1
+        fatal "SetVariableValue Param2 not set"
     elif [[ -z ${FILE} ]]; then
-        echo -e "${RED}SetVariableValue Param3 not set${ENDCOLOR}"; exit 1
+        fatal "SetVariableValue Param3 not set"
     fi
 
     #Check Param3 (FILE) to change exists
     if [[ ! -f ${FILE} ]]; then
-        echo -e "${RED}SetVariableValue ${FILE} not found${ENDCOLOR}"; exit 1
+        fatal "SetVariableValue ${FILE} not found"
     fi
 
     #Check Param1 exists in the file.
     if ! grep -q "${FINDSTR}" "${FILE}"; then
         if [[ ${IGNORE} != 'IgnoreError' ]]; then
-            echo -e "${RED}SetVariableValue ${FINDSTR} not found in ${FILE}${ENDCOLOR}"; exit 1
+            fatal "SetVariableValue ${FINDSTR} not found in ${FILE}"
+
         fi
     else
         #Perform the Replace
-        sed -i "s|${FINDSTR}=.*|${FINDSTR}=${REPLACESTR}|" "${FILE}" || { echo -e "${RED}SetVariableValue Replacing Param1 with Param2 in Param3 failed.${ENDCOLOR}"; exit 1; }
+        sed -i "s|${FINDSTR}=.*|${FINDSTR}=${REPLACESTR}|" "${FILE}" || fatal "SetVariableValue Replacing Param1 with Param2 in Param3 failed."
 
         #Check Param2 exists in the file after the change
-        if grep -q "${REPLACESTR}" "${FILE}" || \
-            { echo -e "${RED}SetVariableValue Param2 not found in Param3${ENDCOLOR}"; exit 1; }; then
-            echo -e "Set ${CYAN}${FINDSTR}${ENDCOLOR}=${GREEN}${REPLACESTR}${ENDCOLOR} in ${CYAN}${FILE}${ENDCOLOR}"
+        if grep -q "${REPLACESTR}" "${FILE}" || fatal "SetVariableValue Param2 not found in Param3"; then
+            info "Set ${YELLOW}${FINDSTR}${ENDCOLOR}=${GREEN}${REPLACESTR}${ENDCOLOR} in ${YELLOW}${FILE}${ENDCOLOR}"
         fi
     fi
 }

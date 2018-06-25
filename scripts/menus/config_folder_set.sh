@@ -13,6 +13,6 @@ config_folder_set() {
         SetVariableValue "DOCKERCONFDIR" "/home/${UNAME}/.docker/config" "${SCRIPTPATH}/compose/.env"
     else
         #TODO - Prompt for the location
-        echo -e "${RED}Currently not supported${ENDCOLOR}"
+        error "Currently not supported"
     fi
 }

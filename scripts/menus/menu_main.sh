@@ -29,18 +29,18 @@ menu_main() {
                 ;;
             "Install/Update" )
                 #TODO
-                echo -e "${RED}Currently not supported${ENDCOLOR}"
+                error "Currently not supported"
                 ;;
             "Update DockStarter" )
                 #TODO
-                echo -e "${RED}Currently not supported${ENDCOLOR}"
+                error "Currently not supported"
                 ;;
             "Update" )
                 #TODO
-                echo -e "${RED}Currently not supported${ENDCOLOR}"
+                error "Currently not supported"
                 ;;
             *)
-                echo -e "${RED}Invalid Option${ENDCOLOR}"
+                error "Invalid Option"
                 ;; #TODO Exit safely
         esac
     else

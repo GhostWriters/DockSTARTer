@@ -26,7 +26,6 @@ user_group_set() {
         SetVariableValue "PGID" "${GID}" "${SCRIPTPATH}/compose/.env"
     else
         #TODO - Prompt for the username and group to be added.
-        echo -e "${RED}Currently not supported${ENDCOLOR}"
-        exit 1
+        fatal "Currently not supported"
     fi
 }

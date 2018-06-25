@@ -20,7 +20,6 @@ media_folders_set() {
         SetVariableValue "MEDIADIR_TV" "/home/${UNAME}/TV" "${SCRIPTPATH}/compose/.env"
     else
         #TODO - Prompt for the location
-        echo -e "${RED}Currently not supported${ENDCOLOR}"
-        exit 1
+        fatal "Currently not supported"
     fi
 }

@@ -13,6 +13,6 @@ download_folder_set() {
         SetVariableValue "DOWNLOADSDIR" "/home/${UNAME}/Downloads" "${SCRIPTPATH}/compose/.env"
     else
         #TODO - Prompt for the location
-        echo -e "${RED}Currently not supported${ENDCOLOR}"
+        error "Currently not supported"
     fi
 }
