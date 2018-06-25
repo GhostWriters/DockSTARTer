@@ -66,6 +66,7 @@ generate_yml() {
         fi
     done < <(grep '_ENABLED=true' < "${SCRIPTPATH}/compose/.env")
     echo "> ${SCRIPTPATH}/compose/docker-compose.yml" >> "${RUNFILE}"
+    run_script 'install_yq'
     bash "${RUNFILE}"
-    rm "${RUNFILE}"
+    trap 'rm -f "${SCRIPTPATH}/compose/docker-compose.sh"' EXIT
 }
