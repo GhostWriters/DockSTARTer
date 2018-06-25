@@ -72,7 +72,9 @@ menu_app_helper() {
             "watchtower")
                 SupportedAppDescr+=("Watchtower" "Automatically update running Docker containers" "on") ;;
             *)
-                echo -e "${RED}ERROR ${APPNAME} APP DESCRIPTION NOT FOUND${ENDCOLOR}"; exit 1;
+                echo -e "${RED}ERROR ${APPNAME} APP DESCRIPTION NOT FOUND${ENDCOLOR}"
+                exit 1
+                ;;
         esac
     }
 
