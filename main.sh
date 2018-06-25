@@ -29,8 +29,38 @@ if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
 fi
 
 # # Usage Information
+#/ usage: main.sh options
+#/
+#/ This is the main DockSTARTer script.
+#/ For regular usage you can run without providing any options.
+#/
+#/ OPTIONS:
+#/    -g --generate            run the docker-compose yml generator
+#/    -i --install             install docker and dependencies
+#/    -t --test                run unit test to check the program
+#/    -u --update              update DockSTARTer, docker, and dependencies
+#/    -v --verbose             verbose. You can specify more then one -v to have more verbose
+#/    -x --debug               debug
+#/
+#/
+#/ Examples:
+#/    Run installer, updater, or generator: (using their respective options)
+#/    main.sh --install
+#/    or
+#/    main.sh -i
+#/
+#/    Debug or verbose can be combined with any option but should be indicated before other options:
+#/    main.sh --debug --update
+#/    or
+#/    main.sh -du
+#/
+#/    Run Shellcheck test:
+#/    main.sh --test validate_shellcheck
+#/    or
+#/    main.sh -t validate_shellcheck
+#/
 usage() {
-    echo "Hello World"
+    grep '^#/' "${SCRIPTPATH}/${SCRIPTNAME}" | cut -c4-
 }
 
 # # Script Runner Function
