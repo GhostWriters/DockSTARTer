@@ -2,20 +2,17 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-run_compose() {
+update_self() {
     if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]]; then
         echo
-        info "Would you like to run your selected containers now?"
+        info "Would you like to update DockSTARTer now?"
         local YN
         while true; do
             read -rp "[Yn]" YN
             case ${YN} in
                 [Yy]* )
-                    run_script 'install_docker'
-                    run_script 'install_compose'
-                    cd "${SCRIPTPATH}/compose/" || return 1
-                    docker-compose up -d
-                    cd "${SCRIPTPATH}" || return 1
+                    git -C "${SCRIPTPATH}" fetch --all
+                    git -C "${SCRIPTPATH}" reset --hard origin/master
                     break
                     ;;
                 [Nn]* )

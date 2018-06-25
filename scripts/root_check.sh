@@ -1,10 +1,10 @@
 #!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
 
-root_check () {
-    if [[ $EUID -ne 0 ]] ; then
+root_check() {
+    if [[ ${EUID} -ne 0 ]]; then
         echo
-        echo -e "${RED}Please run as root using the command: ${ENDCOLOR}sudo bash $1"
-        echo
-        exit 0
+        fatal "Please run as root using the command: sudo bash ${SCRIPTNAME} ${ARGS}"
     fi
 }

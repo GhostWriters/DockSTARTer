@@ -1,0 +1,13 @@
+version:             "3.6"
+services:
+  logarr:
+    image:           monitorr/logarr
+    container_name:  logarr
+    restart:         always
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    volumes:
+      - ${DOCKERCONFDIR}/logarr:/app
+      - ${DOCKERCONFDIR}:/var/log/logarrlogs:ro

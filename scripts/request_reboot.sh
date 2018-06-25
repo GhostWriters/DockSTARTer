@@ -2,20 +2,16 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-run_compose() {
+request_reboot() {
     if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]]; then
         echo
-        info "Would you like to run your selected containers now?"
+        info "Your system needs to reboot for changes to take effect. Would you like to reboot now?"
         local YN
         while true; do
             read -rp "[Yn]" YN
             case ${YN} in
                 [Yy]* )
-                    run_script 'install_docker'
-                    run_script 'install_compose'
-                    cd "${SCRIPTPATH}/compose/" || return 1
-                    docker-compose up -d
-                    cd "${SCRIPTPATH}" || return 1
+                    sudo reboot
                     break
                     ;;
                 [Nn]* )

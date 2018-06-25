@@ -1,6 +1,8 @@
 #!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
 
-get_env () {
+get_env() {
     local VARS
     local ENV_VARS
     ENV_VARS=""
