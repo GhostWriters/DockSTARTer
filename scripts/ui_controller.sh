@@ -1,4 +1,6 @@
 #!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
 
 ui_controller() {
     source "${SCRIPTPATH}/scripts/sed_helper.sh"

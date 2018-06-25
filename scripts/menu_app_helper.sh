@@ -1,8 +1,12 @@
 #!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
 
 menu_app_helper() {
     GetMenuItem() {
-        case "$1" in
+        local APPNAME
+        APPNAME="${1}"
+        case "${APPNAME}" in
             "bazarr")
                 SupportedAppDescr+=("Bazarr" "Companion to Sonarr to manage and download subtitles" "off") ;;
             "couchpotato")
@@ -68,35 +72,29 @@ menu_app_helper() {
             "watchtower")
                 SupportedAppDescr+=("Watchtower" "Automatically update running Docker containers" "on") ;;
             *)
-            echo -e "${RED}ERROR $1 APP DESCRIPTION NOT FOUND$ENDCOLOR"; exit 1;
+                echo -e "${RED}ERROR ${APPNAME} APP DESCRIPTION NOT FOUND${ENDCOLOR}"; exit 1;
         esac
     }
 
-    VARS="$(set -o posix; set)"
-    source "${SCRIPTPATH}/compose/.env"
-    SCRIPT_VARS="$(grep -vFe "${VARS}" <<<"$(set -o posix; set)" | grep -v ^VARS=)"
-    unset VARS
-
     SupportedAppDescr=()
-    while read -r line || [[ -n "${line}" ]]; do
-        if [[ ${line} == *"_ENABLED"* ]]; then
-            APPNAME=${line/_ENABLED=*}
-            APPNAME="${APPNAME,,}"
-            if [[ ${ARCH} == "arm64" ]]; then
-                if [[ -f ${SCRIPTPATH}/compose/.apps/$APPNAME/$APPNAME.aarch64.yml ]]; then
-                    GetMenuItem "$APPNAME"
-                elif [[ -f ${SCRIPTPATH}/compose/.apps/$APPNAME/$APPNAME.armhf.yml ]]; then
-                    GetMenuItem "$APPNAME"
-                fi
-            elif [[ ${ARCH} == "arm" ]]; then
-                if [[ -f ${SCRIPTPATH}/compose/.apps/$APPNAME/$APPNAME.armhf.yml ]]; then
-                    GetMenuItem "$APPNAME"
-                fi
-            else
-                if [[ -f ${SCRIPTPATH}/compose/.apps/$APPNAME/$APPNAME.yml ]]; then
-                    GetMenuItem "$APPNAME"
-                fi
+    while IFS= read -r line; do
+        local APPNAME
+        APPNAME=${line/_ENABLED=*/}
+        APPNAME="${APPNAME,,}"
+        if [[ ${ARCH} == "arm64" ]]; then
+            if [[ -f ${SCRIPTPATH}/compose/.apps/${APPNAME}/${APPNAME}.arm64.yml ]]; then
+                GetMenuItem "${APPNAME}"
+            elif [[ -f ${SCRIPTPATH}/compose/.apps/${APPNAME}/${APPNAME}.armhf.yml ]]; then
+                GetMenuItem "${APPNAME}"
+            fi
+        elif [[ ${ARCH} == "armhf" ]]; then
+            if [[ -f ${SCRIPTPATH}/compose/.apps/${APPNAME}/${APPNAME}.armhf.yml ]]; then
+                GetMenuItem "${APPNAME}"
+            fi
+        else
+            if [[ -f ${SCRIPTPATH}/compose/.apps/${APPNAME}/${APPNAME}.yml ]]; then
+                GetMenuItem "${APPNAME}"
             fi
         fi
-    done <<< "${SCRIPT_VARS}"
+    done < <(grep '_ENABLED=' < "${SCRIPTPATH}/compose/.env")
 }

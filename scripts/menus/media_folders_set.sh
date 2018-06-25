@@ -1,9 +1,17 @@
 #!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
 
 media_folders_set() {
     if (whiptail --title "Media Locations" --yesno \
-        "The default place for Media files is:\\n/home/${UNAME}/Movies\\n/home/${UNAME}/Music\\n/home/${UNAME}/TV\\n/home/${UNAME}/Books\\n\\nThis will be passed into the applications.\\n\\nWould you like to accept this?" 15 78) then
-        
+            "The default place for Media files is:\\n \
+            /home/${UNAME}/Movies\\n \
+            /home/${UNAME}/Music\\n \
+            /home/${UNAME}/TV\\n \
+            /home/${UNAME}/Books\\n\\n \
+            This will be passed into the applications.\\n\\n \
+            Would you like to accept this?" 15 78); then
+
         #TODO - Should we check if the folder exists?
         #TODO - Should we set permissions on the folder?
         SetVariableValue "MEDIADIR_BOOKS" "/home/${UNAME}/Books" "${SCRIPTPATH}/compose/.env"
@@ -12,7 +20,7 @@ media_folders_set() {
         SetVariableValue "MEDIADIR_TV" "/home/${UNAME}/TV" "${SCRIPTPATH}/compose/.env"
     else
         #TODO - Prompt for the location
-        echo -e "${RED}Currently not supported$ENDCOLOR"
+        echo -e "${RED}Currently not supported${ENDCOLOR}"
         exit 1
     fi
 }
