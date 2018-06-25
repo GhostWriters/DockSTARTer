@@ -1,4 +1,6 @@
 #!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
 
 install_docker() {
     # # https://github.com/docker/docker-install

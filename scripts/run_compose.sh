@@ -1,7 +1,9 @@
 #!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
 
 run_compose() {
-    if [[ ${CI} != true ]] && [[ ${TRAVIS} != true ]]; then
+    if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]]; then
         echo
         local YN
         while true; do

@@ -16,7 +16,11 @@ before_install:
     - sudo pip install bashate
 
 script:
-    - sudo bash ./main.sh -t
+    - sudo bash ./main.sh -xt validate_newline
+    - sudo bash ./main.sh -xt validate_bashate
+    - sudo bash ./main.sh -xt validate_shellcheck
+    - sudo bash ./main.sh -xt run_install
+    - sudo bash ./main.sh -xt run_generate
 
 matrix:
     fast_finish:   true
