@@ -3,7 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 run_install() {
-    bash "${SCRIPTPATH}/main.sh" -i
+    bash "${SCRIPTPATH}/main.sh" -xi
 
     yq --version || exit 1
     docker run hello-world || exit 1
