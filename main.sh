@@ -7,11 +7,11 @@ readonly SCRIPTPATH="$(readlink -m "$(dirname "${0}")")"
 readonly ARGS=("$@")
 
 # # Colors
-readonly CYAN='\e[34m'
+readonly BLUE='\e[34m'
 readonly GREEN='\e[32m'
 readonly RED='\e[31m'
 readonly YELLOW='\e[33m'
-readonly ENDCOLOR='\033[0m'
+readonly ENDCOLOR='\e[0m'
 
 # # Check Arch
 readonly ARCH=$(dpkg --print-architecture)
@@ -28,9 +28,16 @@ if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
     readonly GH_HEADER="Authorization: token ${GH_TOKEN}"
 fi
 
+# # Log Functions
+readonly LOG_FILE="/tmp/dockstarter.log"
+info()    { echo -e "${BLUE}[INFO]${ENDCOLOR}        $*" | tee -a "${LOG_FILE}" >&2 ; }
+warning() { echo -e "${YELLOW}[WARNING]${ENDCOLOR}   $*" | tee -a "${LOG_FILE}" >&2 ; }
+error()   { echo -e "${RED}[ERROR]${ENDCOLOR}        $*" | tee -a "${LOG_FILE}" >&2 ; }
+fatal()   { echo -e "${RED}[FATAL]${ENDCOLOR}        $*" | tee -a "${LOG_FILE}" >&2 ; exit 1 ; }
+
 # # Usage Information
 usage() {
-    echo "Hello World"
+    info "Hello World"
 }
 
 # # Script Runner Function
