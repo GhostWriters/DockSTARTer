@@ -3,7 +3,6 @@ set -euo pipefail
 IFS=$'\n\t'
 
 cmd_install() {
-    run_script 'root_check'
     run_script 'run_apt'
     run_script 'install_yq'
     run_script 'install_docker'

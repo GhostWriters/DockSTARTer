@@ -5,9 +5,10 @@ IFS=$'\n\t'
 request_reboot() {
     if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]]; then
         echo
+        info "Your system needs to reboot for changes to take effect. Would you like to reboot now?"
         local YN
         while true; do
-            read -rp "Your system needs to reboot for changes to take effect. Would you like to reboot now? [Yn]" YN
+            read -rp "[Yn]" YN
             case ${YN} in
                 [Yy]* )
                     sudo reboot
@@ -17,7 +18,7 @@ request_reboot() {
                     return
                     ;;
                 * )
-                    echo "Please answer yes or no."
+                    error "Please answer yes or no."
                     ;;
             esac
         done

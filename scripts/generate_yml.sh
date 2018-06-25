@@ -21,7 +21,7 @@ generate_yml() {
         if [[ -d ${SCRIPTPATH}/compose/.apps/${FILENAME}/ ]]; then
             if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.override.yml ]]; then
                 echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.override.yml \\" >> "${RUNFILE}"
-                echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.override.yml has been included."
+                info "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.override.yml has been included."
             fi
             if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml ]]; then
                 if [[ ${ARCH} == "arm64" ]]; then
@@ -29,9 +29,9 @@ generate_yml() {
                         echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.arm64.yml \\" >> "${RUNFILE}"
                     elif [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.armhf.yml ]]; then
                         echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.armhf.yml \\" >> "${RUNFILE}"
-                        echo "Missing arm64 option for ${APPNAME} (may not be available) falling back on armhf."
+                        info "Missing arm64 option for ${APPNAME} (may not be available) falling back on armhf."
                     else
-                        echo "Could not find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.arm64.yml file or ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.armhf.yml file."
+                        error "Could not find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.arm64.yml file or ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.armhf.yml file."
                         continue
                     fi
                 fi
@@ -39,7 +39,7 @@ generate_yml() {
                     if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.armhf.yml ]]; then
                         echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.armhf.yml \\" >> "${RUNFILE}"
                     else
-                        echo "Could not find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.armhf.yml file."
+                        error "Could not find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.armhf.yml file."
                         continue
                     fi
                 fi
@@ -47,22 +47,22 @@ generate_yml() {
                     if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml ]]; then
                         echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml \\" >> "${RUNFILE}"
                     else
-                        echo "Could not find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml file."
+                        warning "Could not find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml file."
                     fi
                 fi
                 if [[ -n ${APPNETMODE} ]]; then
                     if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml ]]; then
                         echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml \\" >> "${RUNFILE}"
                     else
-                        echo "Could not find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml file."
+                        warning "Could not find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml file."
                     fi
                 fi
                 echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml \\" >> "${RUNFILE}"
             else
-                echo "Could not find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml file."
+                warning "Could not find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml file."
             fi
         else
-            echo "Could not find ${SCRIPTPATH}/compose/.apps/${FILENAME}/ directory."
+            error "Could not find ${SCRIPTPATH}/compose/.apps/${FILENAME}/ directory."
         fi
     done < <(grep '_ENABLED=true' < "${SCRIPTPATH}/compose/.env")
     echo "> ${SCRIPTPATH}/compose/docker-compose.yml" >> "${RUNFILE}"
