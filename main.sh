@@ -57,6 +57,7 @@ run_test() {
 
 # # Main Function
 main() {
+    run_script 'root_check'
     source "${SCRIPTPATH}/scripts/cmdline.sh"
     cmdline "${ARGS[@]}"
 }
