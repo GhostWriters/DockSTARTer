@@ -37,7 +37,7 @@ cmdline() {
                 exit 0
                 ;;
             t)
-                run_test "$OPTARG"
+                run_test "${OPTARG}"
                 exit 0
                 ;;
             u)
