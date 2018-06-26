@@ -11,6 +11,8 @@ run_compose() {
             read -rp "[Yn]" YN
             case ${YN} in
                 [Yy]* )
+                    run_script 'install_docker'
+                    run_script 'install_compose'
                     cd "${SCRIPTPATH}/compose/" || return 1
                     docker-compose up -d
                     cd "${SCRIPTPATH}" || return 1
