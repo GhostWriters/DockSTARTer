@@ -73,8 +73,8 @@ usage() {
 # # Menu Runner Function
 run_menu() {
     local MENUSNAME="${1:-}"
-    if [[ -f ${MENUSNAME}/scripts/menus/${MENUSNAME}.sh ]]; then
-        source "${MENUSNAME}/scripts/menus/${MENUSNAME}.sh"
+    if [[ -f ${SCRIPTPATH}/scripts/menus/${MENUSNAME}.sh ]]; then
+        source "${SCRIPTPATH}/scripts/menus/${MENUSNAME}.sh"
         ${MENUSNAME};
     else
         exit 1

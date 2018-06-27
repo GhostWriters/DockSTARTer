@@ -9,11 +9,11 @@ application_selector() {
 
     # Might need to be adjusted if more applications are added
     local LINES
-    LINES=27
+    LINES=$(stty size | cut '-d ' -f1)
     local COLUMNS
-    COLUMNS=92
+    COLUMNS=$(stty size | cut '-d ' -f2)
     local NETLINES
-    NETLINES=20
+    let "NETLINES=${LINES}-8"
 
     local tempfile
     tempfile=$(mktemp)

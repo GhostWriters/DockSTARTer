@@ -4,17 +4,17 @@ IFS=$'\n\t'
 
 menu_main() {
     local LINES
-    LINES=14
+    LINES=$(stty size | cut '-d ' -f1)
     local COLUMNS
-    COLUMNS=80
+    COLUMNS=$(stty size | cut '-d ' -f2)
     local NETLINES
-    NETLINES=4
+    let "NETLINES=${LINES}-8"
 
     local MAINCHOICE
     MAINCHOICE=$(whiptail --title "DockSTARTer" --menu \
             "What would you like to do?" --backtitle \
-            "${BACKTITLE}" --fb --cancel-button \
-            "Exit" ${LINES} ${COLUMNS} "${NETLINES}" \
+            "${BACKTITLE:-}" --fb --cancel-button \
+            "Exit" ${LINES} ${COLUMNS} ${NETLINES} \
             "Install/reconfigure" "Setup and start applications" \
             "Install/Update" "Latest version of Docker and Docker-Compose" \
             "Update DockStarter" "Get the latest version of DockSTARTer" \
