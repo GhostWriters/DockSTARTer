@@ -1,4 +1,4 @@
 services:
   sabnzbd:
     ports:
-      - "${SABNZBD_PORT_9090}:9090"
+      - "${SABNZBD_PORT_8080}:8080"
