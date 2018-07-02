@@ -14,7 +14,8 @@ install_compose() {
         if [[ ${ARCH} == "arm64" ]] || [[ ${ARCH} == "armhf" ]]; then
             apt-get remove docker-compose
             apt-get -y install python-pip
-            pip install docker-compose
+            pip uninstall docker-py
+            pip install -U docker-compose
         fi
         if [[ ${ARCH} == "amd64" ]]; then
             curl -H "${GH_HEADER:-}" -L "https://github.com/docker/compose/releases/download/${AVAILABLE_COMPOSE}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
