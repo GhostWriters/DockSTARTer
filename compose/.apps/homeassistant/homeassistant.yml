@@ -7,4 +7,5 @@ services:
     environment:
       - TZ=${TZ}
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/homeassistant:/config
