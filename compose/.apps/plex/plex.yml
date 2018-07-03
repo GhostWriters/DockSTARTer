@@ -1,4 +1,3 @@
-version:             "3.6"
 services:
   plex:
     image:           plexinc/pms-docker:${PLEX_TAG}
@@ -11,6 +10,7 @@ services:
       - PLEX_UID=${PUID}
       - TZ=${TZ}
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/plex:/config
       - ${MEDIADIR_MOVIES}:/data/movies
       - ${MEDIADIR_MUSIC}:/data/music

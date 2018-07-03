@@ -83,10 +83,10 @@ run_menu() {
 
 # # Script Runner Function
 run_script() {
-    local SCRIPTSNAME="${1:-}"
+    local SCRIPTSNAME="${1:-}"; shift
     if [[ -f ${SCRIPTPATH}/scripts/${SCRIPTSNAME}.sh ]]; then
         source "${SCRIPTPATH}/scripts/${SCRIPTSNAME}.sh"
-        ${SCRIPTSNAME};
+        ${SCRIPTSNAME} "$@";
     else
         exit 1
     fi
@@ -94,10 +94,10 @@ run_script() {
 
 # # Test Runner Function
 run_test() {
-    local TESTSNAME="${1:-}"
+    local TESTSNAME="${1:-}"; shift
     if [[ -f ${SCRIPTPATH}/tests/${TESTSNAME}.sh ]]; then
         source "${SCRIPTPATH}/tests/${TESTSNAME}.sh"
-        ${TESTSNAME};
+        ${TESTSNAME} "$@";
     else
         exit 1
     fi

@@ -1,4 +1,3 @@
-version:             "3.6"
 services:
   letsencrypt:
     image:           linuxserver/letsencrypt
@@ -15,6 +14,7 @@ services:
       - URL=${LETSENCRYPT_URL}
       - VALIDATION=${LETSENCRYPT_VALIDATION}
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/letsencrypt:/config
     cap_add:
       - NET_ADMIN

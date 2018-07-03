@@ -1,4 +1,3 @@
-version:             "3.6"
 services:
   emby:
     image:           emby/embyserver:latest
@@ -10,6 +9,7 @@ services:
       - TZ=${TZ}
       - UID=${PUID}
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/emby:/config
       - ${MEDIADIR_MOVIES}:/data/movies
       - ${MEDIADIR_MUSIC}:/data/music
