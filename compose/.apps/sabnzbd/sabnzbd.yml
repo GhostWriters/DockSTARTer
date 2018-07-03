@@ -1,4 +1,3 @@
-version:             "3.6"
 services:
   sabnzbd:
     image:           linuxserver/sabnzbd
