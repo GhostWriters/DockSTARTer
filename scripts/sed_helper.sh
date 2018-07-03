@@ -10,7 +10,8 @@ ReplaceString() {
     local FILE
     FILE=${3}
     local IGNORE
-    IGNORE=${4}
+    IGNORE=${4:-}
+
     #Check all 3 params at set
     if [[ -z ${FINDSTR} ]]; then
         fatal "ReplaceString Param1 not set"
@@ -43,13 +44,14 @@ ReplaceString() {
 
 SetVariableValue() {
     local FINDSTR
-    FINDSTR="${1}"
+    FINDSTR=${1}
     local REPLACESTR
-    REPLACESTR="${2}"
+    REPLACESTR=${2}
     local FILE
-    FILE="${3}"
+    FILE=${3}
     local IGNORE
-    IGNORE="${4}"
+    IGNORE=${4:-}
+
     #Check all 3 params at set
     if [[ -z ${FINDSTR} ]]; then
         fatal "SetVariableValue Param1 not set"

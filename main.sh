@@ -72,10 +72,10 @@ usage() {
 
 # # Menu Runner Function
 run_menu() {
-    local MENUSNAME="${1:-}"
+    local MENUSNAME="${1:-}"; shift
     if [[ -f ${SCRIPTPATH}/scripts/menus/${MENUSNAME}.sh ]]; then
         source "${SCRIPTPATH}/scripts/menus/${MENUSNAME}.sh"
-        ${MENUSNAME};
+        ${MENUSNAME} "$@";
     else
         exit 1
     fi
@@ -107,7 +107,7 @@ run_test() {
 main() {
     run_script 'root_check'
     source "${SCRIPTPATH}/scripts/cmdline.sh"
-    cmdline "${ARGS[@]}"
+    cmdline "${ARGS[@]:-}"
     run_menu 'menu_main'
 }
 main

@@ -5,23 +5,20 @@ IFS=$'\n\t'
 # Get the current TimeZone and ask if its ok or they want to change it.
 
 user_group_set() {
+
+    #TODO NEEDS CHANGING NO IDEA HOW RIGHT NOW!
     local UNAME
-    UNAME=$(id -un "$(logname)")
+    UNAME=$(id -un ${SUDO_USER})
     local UGROUP
-    UGROUP=$(id -gn "$(logname)")
+    UGROUP=$(id -gn ${SUDO_USER})
     local PID
-    PID=$(id -u "$(logname)")
+    PID=$(id -u ${SUDO_USER})
     local GID
-    GID=$(id -g "$(logname)")
+    GID=$(id -g ${SUDO_USER})
 
-    #TODO CHECK IF EMBY ENABLED AND SET?
-    # getent group video | cut -d: -f3
+    if (whiptail --title "User and Group"  --fb --yesno --yes-button "OK" --no-button "Cancel" \
+        "The detected User is: ${UNAME}\\nThe detected Group is: ${UGROUP}\\nThis will be passed into the applications.\\n\\n" 13 78); then
 
-    if (whiptail --title "User and Group" --yesno \
-            "The detected User is: ${UNAME}\\n \
-            The detected Group is: ${UGROUP}\\n \
-            This will be passed into the applications.\\n\\n \
-            Would you like to accept this?" 11 78); then
         SetVariableValue "PUID" "${PID}" "${SCRIPTPATH}/compose/.env"
         SetVariableValue "PGID" "${GID}" "${SCRIPTPATH}/compose/.env"
     else

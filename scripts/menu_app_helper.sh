@@ -34,7 +34,7 @@ menu_app_helper() {
             "lidarr")
                 SupportedAppDescr+=("Lidarr" "Music download manager for Usenet and BitTorrent users" "off") ;;
             "logarr")
-                SupportedAppDescr+=("Logarr" "Self-hosted, single-page, log consolidation tool") ;;
+                SupportedAppDescr+=("Logarr" "Self-hosted, single-page, log consolidation tool" "off") ;;
             "monitorr")
                 SupportedAppDescr+=("Monitorr" "Webfront to live display the status of any webapp or service" "off") ;;
             "muximux")

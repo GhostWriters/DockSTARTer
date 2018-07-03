@@ -7,7 +7,7 @@ run_apt() {
     if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]]; then
         apt-get -y dist-upgrade
     fi
-    apt-get -qq install curl git grep sed apt-transport-https
+    apt-get -qq install curl git grep sed apt-transport-https whiptail
     apt-get -y autoremove
     apt-get -y autoclean
 }
