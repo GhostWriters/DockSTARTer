@@ -8,5 +8,6 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/logarr:/app
       - ${DOCKERCONFDIR}:/var/log/logarrlogs:ro

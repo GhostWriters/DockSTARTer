@@ -8,6 +8,7 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/duplicati:/config
       - ${DUPLICATI_BACKUPSDIR}:/backups
       - ${DUPLICATI_SOURCEDIR}:/source

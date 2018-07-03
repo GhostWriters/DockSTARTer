@@ -8,6 +8,7 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/lazylibrarian:/config
       - ${DOWNLOADSDIR}:/downloads
       - ${MEDIADIR_BOOKS}:/books

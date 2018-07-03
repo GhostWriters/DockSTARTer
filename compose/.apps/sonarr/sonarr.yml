@@ -8,6 +8,7 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/sonarr:/config
       - ${DOWNLOADSDIR}:/downloads
       - ${MEDIADIR_TV}:/tv

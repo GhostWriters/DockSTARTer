@@ -8,6 +8,7 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/radarr:/config
       - ${DOWNLOADSDIR}:/downloads
       - ${MEDIADIR_MOVIES}:/movies

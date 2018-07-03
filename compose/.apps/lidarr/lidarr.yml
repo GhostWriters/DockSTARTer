@@ -8,6 +8,7 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/lidarr:/config
       - ${DOWNLOADSDIR}:/downloads
       - ${MEDIADIR_MUSIC}:/music

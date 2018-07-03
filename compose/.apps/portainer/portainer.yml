@@ -3,6 +3,8 @@ services:
     image:           portainer/portainer
     container_name:  portainer
     restart:         always
+    environment:
+      - TZ=${TZ}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock

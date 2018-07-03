@@ -8,6 +8,7 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/sabnzbd:/config
       - ${DOWNLOADSDIR}:/downloads
       - ${DOWNLOADSDIR}/incomplete-downloads:/incomplete-downloads

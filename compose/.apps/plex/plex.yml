@@ -10,6 +10,7 @@ services:
       - PLEX_UID=${PUID}
       - TZ=${TZ}
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/plex:/config
       - ${MEDIADIR_MOVIES}:/data/movies
       - ${MEDIADIR_MUSIC}:/data/music
