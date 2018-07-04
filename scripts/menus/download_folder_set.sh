@@ -14,7 +14,6 @@ download_folder_set() {
         #TODO - Should we set permissions on the folder?
         SetVariableValue "DOWNLOADSDIR" "/home/${UNAME}/Downloads" "${SCRIPTPATH}/compose/.env"
     else
-        #TODO - Prompt for the location
-        error "Currently not supported"
+        run_menu 'input_prompt.sh' 'DOWNLOADSDIR' "${SCRIPTPATH}/compose/.env"
     fi
 }

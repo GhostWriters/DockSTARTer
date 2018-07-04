@@ -6,7 +6,7 @@ IFS=$'\n\t'
 
 user_group_set() {
 
-    #TODO NEEDS CHANGING NO IDEA HOW RIGHT NOW!
+    #TODO NEEDS CHANGING!
     local UNAME
     UNAME=$(id -un ${SUDO_USER})
     local UGROUP
@@ -22,7 +22,6 @@ user_group_set() {
         SetVariableValue "PUID" "${PID}" "${SCRIPTPATH}/compose/.env"
         SetVariableValue "PGID" "${GID}" "${SCRIPTPATH}/compose/.env"
     else
-        #TODO - Prompt for the username and group to be added.
-        fatal "Currently not supported"
+        exit 1
     fi
 }

@@ -14,7 +14,6 @@ config_folder_set() {
         #TODO - Set permissions on the folder?
         SetVariableValue "DOCKERCONFDIR" "/home/${UNAME}/.docker/config" "${SCRIPTPATH}/compose/.env"
     else
-        #TODO - Prompt for the location
-        error "Currently not supported"
+        run_menu 'input_prompt.sh' 'DOCKERCONFDIR' "${SCRIPTPATH}/compose/.env"
     fi
 }
