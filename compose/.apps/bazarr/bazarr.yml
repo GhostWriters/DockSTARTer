@@ -10,4 +10,5 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/bazarr:/bazarr/data
+      - ${MEDIADIR_MOVIES}:/movies
       - ${MEDIADIR_TV}:/tv
