@@ -18,7 +18,7 @@ validate_newline() {
 
     if [[ -n ${FOUND:-} ]]; then
         FOUND=''
-        exit 1
+        fatal "Newline validation failure."
     fi
     FOUND=''
 }

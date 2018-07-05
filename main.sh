@@ -77,7 +77,7 @@ run_script() {
         source "${SCRIPTPATH}/scripts/${SCRIPTSNAME}.sh"
         ${SCRIPTSNAME} "$@";
     else
-        exit 1
+        fatal "${SCRIPTPATH}/scripts/${SCRIPTSNAME}.sh not found."
     fi
 }
 
@@ -88,7 +88,7 @@ run_test() {
         source "${SCRIPTPATH}/tests/${TESTSNAME}.sh"
         ${TESTSNAME} "$@";
     else
-        exit 1
+        fatal "${SCRIPTPATH}/tests/${TESTSNAME}.sh not found."
     fi
 }
 

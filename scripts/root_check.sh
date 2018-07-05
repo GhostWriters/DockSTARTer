@@ -3,8 +3,8 @@ set -euo pipefail
 IFS=$'\n\t'
 
 root_check() {
+    info "Checking root permissions."
     if [[ ${EUID} -ne 0 ]]; then
-        echo
-        fatal "Please run as root using the command: sudo bash ${SCRIPTNAME}"
+        fatal "Please run as root using sudo."
     fi
 }
