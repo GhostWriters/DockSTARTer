@@ -7,10 +7,10 @@ IFS=$'\n\t'
 user_group_set() {
 
     if (whiptail --title "User and Group"  --fb --yesno --yes-button "OK" --no-button "Cancel" \
-            "The detected User is: ${SUNAME}\\nThe detected Group is: ${SUGROUP}\\nThis will be passed into the applications.\\n\\n" 13 78); then
+            "The detected User is: ${DETECTED_UNAME}\\nThe detected Group is: ${DETECTED_UGROUP}\\nThis will be passed into the applications.\\n\\n" 13 78); then
 
-        SetVariableValue 'PUID' "${SPUID}" "${SCRIPTPATH}/compose/.env"
-        SetVariableValue 'PGID' "${SPGID}" "${SCRIPTPATH}/compose/.env"
+        SetVariableValue 'PUID' "${DETECTED_PUID}" "${SCRIPTPATH}/compose/.env"
+        SetVariableValue 'PGID' "${DETECTED_PGID}" "${SCRIPTPATH}/compose/.env"
     else
         exit 1
     fi

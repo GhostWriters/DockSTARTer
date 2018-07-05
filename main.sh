@@ -29,16 +29,16 @@ if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
 fi
 
 # # User/Group Information
-readonly SPUID
-SPUID=${SUDO_UID:-$UID}
-readonly SUNAME
-SUNAME=$(id -un "${SPUID}")
-readonly SPGID
-SPGID=$(id -g "${SPUID}")
-readonly SUGROUP
-SUGROUP=$(id -gn "${SPUID}")
-readonly SHOMEDIR
-SHOMEDIR=$(eval echo "~${SUNAME}")
+readonly DETECTED_PUID
+DETECTED_PUID=${SUDO_UID:-$UID}
+readonly DETECTED_UNAME
+DETECTED_UNAME=$(id -un "${DETECTED_PUID}")
+readonly DETECTED_PGID
+DETECTED_PGID=$(id -g "${DETECTED_PUID}")
+readonly DETECTED_UGROUP
+DETECTED_UGROUP=$(id -gn "${DETECTED_PUID}")
+readonly DETECTED_HOMEDIR
+DETECTED_HOMEDIR=$(eval echo "~${DETECTED_UNAME}")
 
 # # Log Functions
 readonly LOG_FILE="/tmp/dockstarter.log"
