@@ -3,7 +3,6 @@ set -euo pipefail
 IFS=$'\n\t'
 
 menu_main() {
-
     local LINES
     LINES=$(stty size | cut '-d ' -f1)
     LINES=$((LINES<14?LINES:14))

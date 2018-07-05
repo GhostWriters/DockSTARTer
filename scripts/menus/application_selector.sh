@@ -3,7 +3,6 @@ set -euo pipefail
 IFS=$'\n\t'
 
 application_selector() {
-
     run_script 'menu_app_helper'
 
     # Might need to be adjusted if more applications are added

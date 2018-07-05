@@ -6,21 +6,11 @@ IFS=$'\n\t'
 
 user_group_set() {
 
-    #TODO NEEDS CHANGING!
-    local UNAME
-    UNAME=$(id -un ${SUDO_USER})
-    local UGROUP
-    UGROUP=$(id -gn ${SUDO_USER})
-    local PID
-    PID=$(id -u ${SUDO_USER})
-    local GID
-    GID=$(id -g ${SUDO_USER})
-
     if (whiptail --title "User and Group"  --fb --yesno --yes-button "OK" --no-button "Cancel" \
-        "The detected User is: ${UNAME}\\nThe detected Group is: ${UGROUP}\\nThis will be passed into the applications.\\n\\n" 13 78); then
+            "The detected User is: ${SUNAME}\\nThe detected Group is: ${SUGROUP}\\nThis will be passed into the applications.\\n\\n" 13 78); then
 
-        SetVariableValue "PUID" "${PID}" "${SCRIPTPATH}/compose/.env"
-        SetVariableValue "PGID" "${GID}" "${SCRIPTPATH}/compose/.env"
+        SetVariableValue 'PUID' "${SPUID}" "${SCRIPTPATH}/compose/.env"
+        SetVariableValue 'PGID' "${SPGID}" "${SCRIPTPATH}/compose/.env"
     else
         exit 1
     fi

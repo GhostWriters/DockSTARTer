@@ -28,6 +28,18 @@ if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
     readonly GH_HEADER="Authorization: token ${GH_TOKEN}"
 fi
 
+# # User/Group Information
+readonly SPUID
+SPUID=${SUDO_UID:-$UID}
+readonly SUNAME
+SUNAME=$(id -un "${SPUID}")
+readonly SPGID
+SPGID=$(id -g "${SPUID}")
+readonly SUGROUP
+SUGROUP=$(id -gn "${SPUID}")
+readonly SHOMEDIR
+SHOMEDIR=$(eval echo "~${SUNAME}")
+
 # # Log Functions
 readonly LOG_FILE="/tmp/dockstarter.log"
 info()    { echo -e "${BLUE}[INFO]${ENDCOLOR}        $*" | tee -a "${LOG_FILE}" >&2 ; }
