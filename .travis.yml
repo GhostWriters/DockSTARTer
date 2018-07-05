@@ -11,6 +11,8 @@ group:
     travis_latest
 
 before_install:
+    - sudo apt-get install jq
+    - wget --header="${GH_HEADER}" -O ~/codacy-coverage-reporter-assembly-latest.jar $(curl -H "${GH_HEADER}" https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r .assets[0].browser_download_url)
     - sudo apt-get update -qq
     - sudo apt-get install -qq curl git grep pcregrep sed
     - sudo pip install bashate
@@ -21,6 +23,9 @@ script:
     - sudo bash ./main.sh -xt validate_shellcheck
     - sudo bash ./main.sh -xt run_install
     - sudo bash ./main.sh -xt run_generate
+
+after_success:
+    - java -jar ~/codacy-coverage-reporter-assembly-latest.jar report -l Shell -r build/reports/jacoco/test/jacocoTestReport.xml
 
 matrix:
     fast_finish:   true
