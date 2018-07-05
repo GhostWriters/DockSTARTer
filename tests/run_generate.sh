@@ -17,7 +17,7 @@ run_generate() {
     sed -i 's/UNIFI_PORT_8080=8080/UNIFI_PORT_8080=18080/' "${SCRIPTPATH}/compose/.env"
     sed -i 's/UNIFI_PORT_8081=8081/UNIFI_PORT_8081=18081/' "${SCRIPTPATH}/compose/.env"
     info "Running generator."
-    bash "${SCRIPTPATH}/main.sh" -xg
+    bash "${SCRIPTPATH}/main.sh" -g
     echo
     cat "${SCRIPTPATH}/compose/docker-compose.yml" || fatal "${SCRIPTPATH}/compose/docker-compose.yml not found."
     echo

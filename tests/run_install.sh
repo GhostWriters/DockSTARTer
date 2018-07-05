@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 run_install() {
     info "Running installer."
-    bash "${SCRIPTPATH}/main.sh" -xi
+    bash "${SCRIPTPATH}/main.sh" -i
 
     yq --version || fatal "Could not determine yq version."
     docker run hello-world || fatal "Could not run docker hello-world."
