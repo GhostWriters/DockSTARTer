@@ -7,18 +7,21 @@ install_compose() {
     local AVAILABLE_COMPOSE
     AVAILABLE_COMPOSE=$(curl -H "${GH_HEADER:-}" -s "https://api.github.com/repos/docker/compose/releases/latest" | grep -Po '"tag_name": "[Vv]?\K.*?(?=")')
     local INSTALLED_COMPOSE
-    INSTALLED_COMPOSE=$( (docker-compose --version || true) | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
+    INSTALLED_COMPOSE=$( (docker-compose --version > /dev/null 2>&1 || true) | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
     local FORCE
     FORCE=${1:-}
     if [[ "${AVAILABLE_COMPOSE}" != "${INSTALLED_COMPOSE}" ]] || [[ -n ${FORCE} ]]; then
+        info "Installing latest compose."
         if [[ ${ARCH} == "arm64" ]] || [[ ${ARCH} == "armhf" ]]; then
-            apt-get remove docker-compose
-            apt-get -y install python-pip
-            pip install docker-compose
+            #TODO remove the next line...
+            info "ARM architecture detected. Please let us know on Gitter chat if this works for you!"
+            apt-get remove docker-compose > /dev/null 2>&1
+            apt-get -y install python-pip > /dev/null 2>&1
+            pip install docker-compose > /dev/null 2>&1
         fi
         if [[ ${ARCH} == "amd64" ]]; then
-            curl -H "${GH_HEADER:-}" -L "https://github.com/docker/compose/releases/download/${AVAILABLE_COMPOSE}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-            chmod +x /usr/local/bin/docker-compose || true
+            curl -H "${GH_HEADER:-}" -L "https://github.com/docker/compose/releases/download/${AVAILABLE_COMPOSE}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose > /dev/null 2>&1
+            chmod +x /usr/local/bin/docker-compose > /dev/null 2>&1 || true
         fi
     fi
 }
