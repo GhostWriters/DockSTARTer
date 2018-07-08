@@ -3,6 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 generate_yml() {
+    info "Generating docker-compose.yml file."
     local RUNFILE
     RUNFILE="${SCRIPTPATH}/compose/docker-compose.sh"
     echo "#!/bin/bash" > "${RUNFILE}"
@@ -11,6 +12,8 @@ generate_yml() {
         echo "${SCRIPTPATH}/compose/.reqs/v1.yml \\"
         echo "${SCRIPTPATH}/compose/.reqs/v2.yml \\"
     } >> "${RUNFILE}"
+    info "Required files included."
+    info "Checking for enabled apps."
     while IFS= read -r line; do
         local APPNAME
         APPNAME=${line/_ENABLED=true/}
@@ -46,6 +49,7 @@ generate_yml() {
                 if [[ -z ${APPNETMODE} ]] || [[ ${APPNETMODE} == "bridge" ]]; then
                     if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml ]]; then
                         echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml \\" >> "${RUNFILE}"
+                        info "${APPNAME}_NETWORK_MODE supports port mapping. Ports will be included."
                     else
                         warning "Could not find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml file."
                     fi
@@ -53,11 +57,13 @@ generate_yml() {
                 if [[ -n ${APPNETMODE} ]]; then
                     if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml ]]; then
                         echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml \\" >> "${RUNFILE}"
+                        info "${APPNAME}_NETWORK_MODE is set to ${APPNETMODE}."
                     else
                         warning "Could not find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml file."
                     fi
                 fi
                 echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml \\" >> "${RUNFILE}"
+                info "All configurations for ${APPNAME} are included."
             else
                 warning "Could not find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml file."
             fi
@@ -68,5 +74,6 @@ generate_yml() {
     echo "> ${SCRIPTPATH}/compose/docker-compose.yml" >> "${RUNFILE}"
     run_script 'install_yq'
     bash "${RUNFILE}"
+    info "Merging docker-compose.yml complete."
     trap 'rm -f "${SCRIPTPATH}/compose/docker-compose.sh"' EXIT
 }

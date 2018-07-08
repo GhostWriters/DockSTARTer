@@ -15,6 +15,7 @@ request_reboot() {
                     break
                     ;;
                 [Nn]* )
+                    info "Your system will not reboot."
                     return
                     ;;
                 * )

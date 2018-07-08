@@ -11,11 +11,13 @@ update_self() {
             read -rp "[Yn]" YN
             case ${YN} in
                 [Yy]* )
-                    git -C "${SCRIPTPATH}" fetch --all
-                    git -C "${SCRIPTPATH}" reset --hard origin/master
+                    info "Updating DockSTARTer."
+                    git -C "${SCRIPTPATH}" fetch --all > /dev/null 2>&1
+                    git -C "${SCRIPTPATH}" reset --hard origin/master > /dev/null 2>&1
                     break
                     ;;
                 [Nn]* )
+                    info "DockSTARTer will not be updated."
                     return
                     ;;
                 * )
