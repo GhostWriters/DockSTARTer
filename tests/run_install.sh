@@ -3,9 +3,10 @@ set -euo pipefail
 IFS=$'\n\t'
 
 run_install() {
-    bash "${SCRIPTPATH}/main.sh" -xi
+    info "Running installer."
+    bash "${SCRIPTPATH}/main.sh" -i
 
-    yq --version || exit 1
-    docker run hello-world || exit 1
-    docker-compose --version || exit 1
+    yq --version || fatal "Could not determine yq version."
+    docker run hello-world || fatal "Could not run docker hello-world."
+    docker-compose --version || fatal "Could not determine docker-compose version."
 }

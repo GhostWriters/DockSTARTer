@@ -19,6 +19,7 @@ run_compose() {
                     break
                     ;;
                 [Nn]* )
+                    info "Compose will not be run."
                     return
                     ;;
                 * )

@@ -18,11 +18,11 @@ before_install:
     - sudo pip install bashate
 
 script:
-    - sudo bash ./main.sh -xt validate_newline
-    - sudo bash ./main.sh -xt validate_bashate
-    - sudo bash ./main.sh -xt validate_shellcheck
-    - sudo bash ./main.sh -xt run_install
-    - sudo bash ./main.sh -xt run_generate
+    - sudo bash ./main.sh -t validate_newline
+    - sudo bash ./main.sh -t validate_bashate
+    - sudo bash ./main.sh -t validate_shellcheck
+    - sudo bash ./main.sh -t run_install
+    - sudo bash ./main.sh -t run_generate
 
 after_success:
     - java -jar ~/codacy-coverage-reporter-assembly-latest.jar report -l Shell -r build/reports/jacoco/test/jacocoTestReport.xml
