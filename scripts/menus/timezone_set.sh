@@ -11,6 +11,6 @@ timezone_set() {
 
         SetVariableValue 'TZ' "${CURRENTTIMEZONE}" "${SCRIPTPATH}/compose/.env"
     else
-        exit 1
+        fatal "TZ will not be set."
     fi
 }

@@ -84,7 +84,7 @@ run_menu() {
         source "${SCRIPTPATH}/scripts/menus/${MENUSNAME}.sh"
         ${MENUSNAME} "$@";
     else
-        exit 1
+        fatal "${SCRIPTPATH}/scripts/menus/${MENUSNAME}.sh not found."
     fi
 }
 

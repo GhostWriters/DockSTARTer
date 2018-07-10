@@ -12,6 +12,6 @@ user_group_set() {
         SetVariableValue 'PUID' "${DETECTED_PUID}" "${SCRIPTPATH}/compose/.env"
         SetVariableValue 'PGID' "${DETECTED_PGID}" "${SCRIPTPATH}/compose/.env"
     else
-        exit 1
+        fatal "User and Group will not be set."
     fi
 }
