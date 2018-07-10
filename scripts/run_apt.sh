@@ -3,11 +3,16 @@ set -euo pipefail
 IFS=$'\n\t'
 
 run_apt() {
-    apt-get update
+    info "Updating repositories."
+    apt-get update > /dev/null 2>&1
     if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]]; then
-        apt-get -y dist-upgrade
+        info "Upgrading packages."
+        apt-get -y dist-upgrade > /dev/null 2>&1
     fi
-    apt-get -qq install curl git grep sed apt-transport-https whiptail
-    apt-get -y autoremove
-    apt-get -y autoclean
+    info "Installing dependencies."
+    apt-get -qq install curl git grep sed apt-transport-https whiptail > /dev/null 2>&1
+    info "Removing unused packages."
+    apt-get -y autoremove > /dev/null 2>&1
+    info "Cleaning up unused packages."
+    apt-get -y autoclean > /dev/null 2>&1
 }
