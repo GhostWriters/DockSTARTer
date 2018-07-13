@@ -7,7 +7,7 @@ install_compose() {
     local AVAILABLE_COMPOSE
     AVAILABLE_COMPOSE=$(curl -H "${GH_HEADER:-}" -s "https://api.github.com/repos/docker/compose/releases/latest" | grep -Po '"tag_name": "[Vv]?\K.*?(?=")')
     local INSTALLED_COMPOSE
-    INSTALLED_COMPOSE=$( (docker-compose --version > /dev/null 2>&1 || true) | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
+    INSTALLED_COMPOSE=$( (docker-compose --version 2> /dev/null || true) | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
     local FORCE
     FORCE=${1:-}
     if [[ "${AVAILABLE_COMPOSE}" != "${INSTALLED_COMPOSE}" ]] || [[ -n ${FORCE} ]]; then
