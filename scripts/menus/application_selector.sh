@@ -20,22 +20,15 @@ application_selector() {
 
     local tempfile
     tempfile=$(mktemp)
-    trap 'rm -f "${tempfile}"' EXIT
 
-    whiptail --title "Application Selector" --fb --checklist --separate-output "Choose which apps you would like to install:" --fb ${LINES} ${COLUMNS} ${NETLINES} "${SupportedAppDescr[@]}" 2>"${tempfile}"
-
-    local EXITSTATUS
-    EXITSTATUS=${?}
-    if [[ ${EXITSTATUS} == 0 ]]; then
-
-        #TODO - Ask if the user wants the disable the other apps in .env
-
-        while read -r choice; do
-            SetVariableValue "$(echo "${choice^^}" | tr -d ' ')_ENABLED" "true" "${SCRIPTPATH}/compose/.env"
-        done < "${tempfile}"
-    else
-        echo
-        sleep 1
-        exit 0
+    if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]]; then
+        whiptail --title "Application Selector" --fb --checklist --separate-output "Choose which apps you would like to install:" --fb ${LINES} ${COLUMNS} ${NETLINES} "${SupportedAppDescr[@]}" 2>"${tempfile}"
     fi
+    #TODO - Ask if the user wants the disable the other apps in .env
+
+    while read -r choice; do
+        SetVariableValue "$(echo "${choice^^}" | tr -d ' ')_ENABLED" "true" "${SCRIPTPATH}/compose/.env"
+    done < "${tempfile}"
+
+    rm -f "${tempfile}"
 }
