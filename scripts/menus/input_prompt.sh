@@ -8,7 +8,7 @@ input_prompt() {
     else
         INPUT="${2}"
     fi
-    
+
     if [[ -d ${INPUT} ]]; then
         SetVariableValue "${1}" "${INPUT}" "${SCRIPTPATH}/compose/.env"
     else

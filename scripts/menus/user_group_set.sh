@@ -11,7 +11,7 @@ user_group_set() {
     else
         whiptail --title "User and Group"  --fb --yesno --yes-button "OK" --no-button "Cancel" \
             "The detected User is: ${DETECTED_UNAME}\\nThe detected Group is: ${DETECTED_UGROUP}\\n\\nThis will be passed into the applications.\\n\\n" 12 78
-    
+
         SetVariableValue 'PUID' "${DETECTED_PUID}" "${SCRIPTPATH}/compose/.env"
         SetVariableValue 'PGID' "${DETECTED_PGID}" "${SCRIPTPATH}/compose/.env"
     fi
