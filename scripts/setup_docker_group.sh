@@ -7,5 +7,5 @@ setup_docker_group() {
     info "Creating docker group."
     groupadd docker > /dev/null 2>&1 || true
     info "Adding ${DETECTED_UNAME} to docker group."
-    usermod -aG docker "${DETECTED_UNAME}"
+    usermod -aG docker "${DETECTED_UNAME}" > /dev/null 2>&1 || true
 }
