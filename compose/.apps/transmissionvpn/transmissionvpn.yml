@@ -1,0 +1,30 @@
+version:             "3.6"
+services:
+  transmissionvpn:
+    image:           haugene/transmission-openvpn
+    container_name:  transmissionvpn
+    restart:         always
+    environment:
+      - LOCAL_NETWORK=${LAN_NETWORK}
+      - OPENVPN_OPTS=${VPN_OPTIONS}
+      - OPENVPN_PASSWORD=${VPN_PASS}
+      - OPENVPN_PROVIDER=${VPN_PROV}
+      - OPENVPN_USERNAME=${VPN_USER}
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TRANSMISSION_DOWNLOAD_DIR=/downloads/completed
+      - TRANSMISSION_INCOMPLETE_DIR=/downloads/incomplete
+      - TRANSMISSION_WATCH_DIR=/downloads/watch
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/transmissionvpn:/config
+      - ${DOWNLOADSDIR}:/data
+      - ${DOWNLOADSDIR}:/downloads
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
+    dns:
+      - ${NS1}
+      - ${NS2}
