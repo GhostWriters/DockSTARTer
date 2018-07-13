@@ -10,4 +10,5 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/jackett:/config
+      - ${DOWNLOADSDIR}:/data
       - ${DOWNLOADSDIR}:/downloads
