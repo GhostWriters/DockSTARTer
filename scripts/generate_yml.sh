@@ -13,6 +13,7 @@ generate_yml() {
         echo "${SCRIPTPATH}/compose/.reqs/v2.yml \\"
     } >> "${RUNFILE}"
     info "Required files included."
+    run_script 'env_create'
     info "Checking for enabled apps."
     while IFS= read -r line; do
         local APPNAME
@@ -20,7 +21,7 @@ generate_yml() {
         local FILENAME
         FILENAME=${APPNAME,,}
         local APPNETMODE
-        APPNETMODE="$(grep -Po "${APPNAME}"'_NETWORK_MODE=\K.*' "${SCRIPTPATH}/compose/.env" || echo)"
+        APPNETMODE=$(run_script 'env_get' "${APPNAME}_NETWORK_MODE")
         if [[ -d ${SCRIPTPATH}/compose/.apps/${FILENAME}/ ]]; then
             if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.override.yml ]]; then
                 echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.override.yml \\" >> "${RUNFILE}"
