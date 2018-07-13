@@ -10,5 +10,6 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/sonarr:/config
+      - ${DOWNLOADSDIR}:/data
       - ${DOWNLOADSDIR}:/downloads
       - ${MEDIADIR_TV}:/tv
