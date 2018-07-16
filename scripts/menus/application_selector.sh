@@ -27,7 +27,7 @@ application_selector() {
     #TODO - Ask if the user wants the disable the other apps in .env
 
     while read -r choice; do
-        SetVariableValue "$(echo "${choice^^}" | tr -d ' ')_ENABLED" "true" "${SCRIPTPATH}/compose/.env"
+        run_script 'env_set' "$(echo "${choice^^}" | tr -d ' ')_ENABLED" 'true'
     done < "${tempfile}"
 
     rm -f "${tempfile}"
