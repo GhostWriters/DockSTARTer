@@ -31,11 +31,9 @@ menu_main() {
                 run_script 'ui_controller'
                 ;;
             "Install/Update Dependencies" )
-                #TODO
                 run_script 'cmd_install'
                 ;;
             "Update DockStarter" )
-                #TODO
                 run_script 'cmd_update'
                 ;;
             *)
