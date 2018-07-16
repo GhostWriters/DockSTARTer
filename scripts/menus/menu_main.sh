@@ -19,29 +19,24 @@ menu_main() {
             --menu "What would you like to do?" \
             --fb --cancel-button "Exit" \
             ${LINES} ${COLUMNS} ${NETLINES} \
-            "Install/reconfigure" "Setup and start applications" \
-            "Install/Update" "Latest version of Docker and Docker-Compose" \
-            "Update DockStarter" "Get the latest version of DockSTARTer" \
-            "Update" "Host packages" 3>&1 1>&2 2>&3)
+            "Install/Reconfigure" "Setup and start applications" \
+            "Install/Update Dependencies" "Latest version of Docker and Docker-Compose" \
+            "Update DockStarter" "Get the latest version of DockSTARTer" 3>&1 1>&2 2>&3)
 
     local EXITSTATUS
     EXITSTATUS=${?}
     if [[ ${EXITSTATUS} == 0 ]]; then
         case "${MAINCHOICE}" in
-            "Install/reconfigure" )
+            "Install/Reconfigure" )
                 run_script 'ui_controller'
                 ;;
-            "Install/Update" )
+            "Install/Update Dependencies" )
                 #TODO
-                error "Currently not supported"
+                run_script 'cmd_install'
                 ;;
             "Update DockStarter" )
                 #TODO
-                error "Currently not supported"
-                ;;
-            "Update" )
-                #TODO
-                error "Currently not supported"
+                run_script 'cmd_update'
                 ;;
             *)
                 error "Invalid Option"
