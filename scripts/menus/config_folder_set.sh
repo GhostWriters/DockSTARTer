@@ -8,8 +8,8 @@ config_folder_set() {
 
         #TODO - Check if the folder exists?
         #TODO - Set permissions on the folder?
-        SetVariableValue 'DOCKERCONFDIR' "${DETECTED_HOMEDIR}/.docker/config" "${SCRIPTPATH}/compose/.env"
+        run_script 'env_set' 'DOCKERCONFDIR' "${DETECTED_HOMEDIR}/.docker/config"
     else
-        run_menu 'input_prompt' 'DOCKERCONFDIR' "${DETECTED_HOMEDIR}/.docker/config" "${SCRIPTPATH}/compose/.env"
+        run_menu 'input_prompt' 'DOCKERCONFDIR' "${DETECTED_HOMEDIR}/.docker/config"
     fi
 }

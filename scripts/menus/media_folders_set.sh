@@ -8,14 +8,14 @@ media_folders_set() {
 
         #TODO - Should we check if the folder exists?
         #TODO - Should we set permissions on the folder?
-        SetVariableValue 'MEDIADIR_BOOKS' "${DETECTED_HOMEDIR}/Books" "${SCRIPTPATH}/compose/.env"
-        SetVariableValue 'MEDIADIR_MOVIES' "${DETECTED_HOMEDIR}/Movies" "${SCRIPTPATH}/compose/.env"
-        SetVariableValue 'MEDIADIR_MUSIC' "${DETECTED_HOMEDIR}/Music" "${SCRIPTPATH}/compose/.env"
-        SetVariableValue 'MEDIADIR_TV' "${DETECTED_HOMEDIR}/TV" "${SCRIPTPATH}/compose/.env"
+        run_script 'env_set' 'MEDIADIR_BOOKS' "${DETECTED_HOMEDIR}/Books"
+        run_script 'env_set' 'MEDIADIR_MOVIES' "${DETECTED_HOMEDIR}/Movies"
+        run_script 'env_set' 'MEDIADIR_MUSIC' "${DETECTED_HOMEDIR}/Music"
+        run_script 'env_set' 'MEDIADIR_TV' "${DETECTED_HOMEDIR}/TV"
     else
-        run_menu 'input_prompt' 'MEDIADIR_BOOKS' "${DETECTED_HOMEDIR}/Books" "${SCRIPTPATH}/compose/.env"
-        run_menu 'input_prompt' 'MEDIADIR_MOVIES' "${DETECTED_HOMEDIR}/Movies" "${SCRIPTPATH}/compose/.env"
-        run_menu 'input_prompt' 'MEDIADIR_MUSIC' "${DETECTED_HOMEDIR}/Music" "${SCRIPTPATH}/compose/.env"
-        run_menu 'input_prompt' 'MEDIADIR_TV' "${DETECTED_HOMEDIR}/TV" "${SCRIPTPATH}/compose/.env"
+        run_menu 'input_prompt' 'MEDIADIR_BOOKS' "${DETECTED_HOMEDIR}/Books"
+        run_menu 'input_prompt' 'MEDIADIR_MOVIES' "${DETECTED_HOMEDIR}/Movies"
+        run_menu 'input_prompt' 'MEDIADIR_MUSIC' "${DETECTED_HOMEDIR}/Music"
+        run_menu 'input_prompt' 'MEDIADIR_TV' "${DETECTED_HOMEDIR}/TV"
     fi
 }
