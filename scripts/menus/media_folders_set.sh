@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 media_folders_set() {
     if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]] && (whiptail --title "Media Locations" --fb --yesno \
-            "The default place for Media files is:\\n${DETECTED_HOMEDIR}/Books\\n${DETECTED_HOMEDIR}/Movies\\n${DETECTED_HOMEDIR}/Music\\n${DETECTED_HOMEDIR}/TV\\n\\nThis will be passed into the applications.\\n\\nWould you like to accept this?" 15 78); then
+            "The default place for Media files is:\\n${DETECTED_HOMEDIR}/Books\\n${DETECTED_HOMEDIR}/Movies\\n${DETECTED_HOMEDIR}/Music\\n${DETECTED_HOMEDIR}/TV\\n\\nThis will be passed into the applications.\\n\\nWould you like to accept this?" 17 78); then
 
         #TODO - Should we check if the folder exists?
         #TODO - Should we set permissions on the folder?
