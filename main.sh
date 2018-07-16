@@ -28,6 +28,13 @@ if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
     readonly GH_HEADER="Authorization: token ${GH_TOKEN}"
 fi
 
+# # User/Group Information
+readonly DETECTED_PUID=${SUDO_UID:-$UID}
+readonly DETECTED_UNAME=$(id -un "${DETECTED_PUID}" 2> /dev/null || true)
+readonly DETECTED_PGID=$(id -g "${DETECTED_PUID}" 2> /dev/null || true)
+readonly DETECTED_UGROUP=$(id -gn "${DETECTED_PUID}" 2> /dev/null || true)
+readonly DETECTED_HOMEDIR=$(eval echo "~${DETECTED_UNAME}" 2> /dev/null || true)
+
 # # Log Functions
 readonly LOG_FILE="/tmp/dockstarter.log"
 info()    { echo -e "${BLUE}[INFO]${ENDCOLOR}        $*" | tee -a "${LOG_FILE}" >&2 ; }
@@ -96,6 +103,6 @@ run_test() {
 main() {
     run_script 'root_check'
     source "${SCRIPTPATH}/scripts/cmdline.sh"
-    cmdline "${ARGS[@]}"
+    cmdline "${ARGS[@]:-}"
 }
 main

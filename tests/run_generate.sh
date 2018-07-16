@@ -3,8 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 run_generate() {
-    info "Copying .env file from example."
-    cp "${SCRIPTPATH}/compose/.env.example" "${SCRIPTPATH}/compose/.env"
+    run_script 'env_create'
     info "Enabling all apps."
     sed -i 's/_ENABLED=false/_ENABLED=true/' "${SCRIPTPATH}/compose/.env"
     info "Adjusting ports to prevent conflicts."
