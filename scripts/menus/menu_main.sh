@@ -28,13 +28,34 @@ menu_main() {
     if [[ ${EXITSTATUS} == 0 ]]; then
         case "${MAINCHOICE}" in
             "Install/Reconfigure" )
-                run_script 'ui_controller'
+                run_menu 'application_selector'
+                run_menu 'timezone_set'
+                run_menu 'user_group_set'
+                run_menu 'config_folder_set'
+                run_menu 'download_folder_set'
+                run_menu 'media_folders_set'
+                run_script 'generate_yml'
+                run_script 'run_compose' menu
                 ;;
             "Install/Update Dependencies" )
-                run_script 'cmd_install'
+                run_script 'run_apt'
+                run_script 'install_yq' force
+                run_script 'install_docker' force
+                run_script 'install_machine_completion'
+                run_script 'install_compose' force
+                run_script 'install_compose_completion'
+                run_script 'setup_docker_group'
+                run_script 'enable_docker_systemd'
+                run_script 'request_reboot' menu
                 ;;
             "Update DockStarter" )
-                run_script 'cmd_update'
+                run_script 'update_self' menu
+                run_script 'run_apt'
+                run_script 'install_yq' force
+                run_script 'install_docker' force
+                run_script 'install_machine_completion'
+                run_script 'install_compose' force
+                run_script 'install_compose_completion'
                 ;;
             *)
                 error "Invalid Option"
