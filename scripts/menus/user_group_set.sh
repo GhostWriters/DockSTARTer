@@ -2,8 +2,6 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-# Get the current TimeZone and ask if its ok or they want to change it.
-
 user_group_set() {
     if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
         run_script 'env_set' 'PUID' "${DETECTED_PUID}"

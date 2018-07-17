@@ -16,12 +16,12 @@ menu_main() {
 
     local MAINCHOICE
     MAINCHOICE=$(whiptail --title "DockSTARTer" \
-            --menu "What would you like to do?" \
-            --fb --cancel-button "Exit" \
-            ${LINES} ${COLUMNS} ${NETLINES} \
-            "Configure Apps" "Setup and start applications" \
-            "Install Dependencies" "Latest version of Docker and Docker-Compose" \
-        "Update DockStarter" "Get the latest version of DockSTARTer" 3>&1 1>&2 2>&3)
+                --menu "What would you like to do?" \
+                --fb --cancel-button "Exit" \
+                ${LINES} ${COLUMNS} ${NETLINES} \
+                "Configure Apps" "Setup and start applications" \
+                "Install Dependencies" "Latest version of Docker and Docker-Compose" \
+                "Update DockStarter" "Get the latest version of DockSTARTer" 3>&1 1>&2 2>&3)
 
     case "${MAINCHOICE}" in
         "Configure Apps")
