@@ -3,7 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 ui_config() {
-    run_script 'env_create'
+    run_script 'env_create' menu
     run_menu 'application_selector'
     run_menu 'timezone_set'
     run_menu 'user_group_set'
