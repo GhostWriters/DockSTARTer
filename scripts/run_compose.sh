@@ -25,6 +25,11 @@ run_compose() {
             [Yy]* )
                 run_script 'install_docker'
                 run_script 'install_compose'
+                local PUID
+                PUID=$(run_script 'env_get' PUID)
+                local PGID
+                PGID=$(run_script 'env_get' PGID)
+                run_script 'set_permissions' "${SCRIPTPATH}" "${PUID}" "${PGID}"
                 cd "${SCRIPTPATH}/compose/" || return 1
                 docker-compose up -d
                 cd "${SCRIPTPATH}" || return 1
