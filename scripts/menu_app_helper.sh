@@ -6,71 +6,79 @@ menu_app_helper() {
     GetMenuItem() {
         local APPNAME
         APPNAME="${1}"
+        local APPENABLED
+        APPENABLED=$(run_script 'env_get' "${APPNAME}_ENABLED")
+        local APPONOFF
+        if [[ ${APPENABLED} == "true" ]]; then
+            APPONOFF="on"
+        else
+            APPONOFF="off"
+        fi
         case "${APPNAME}" in
             "bazarr")
-                SupportedAppDescr+=("Bazarr" "Companion to Sonarr to manage and download subtitles" "off") ;;
+                SupportedAppDescr+=("Bazarr" "Companion to Sonarr to manage and download subtitles" "${APPONOFF}") ;;
             "couchpotato")
-                SupportedAppDescr+=("Couchpotato" "Movies PVR Client" "off") ;;
+                SupportedAppDescr+=("Couchpotato" "Movies PVR Client" "${APPONOFF}") ;;
             "deluge")
-                SupportedAppDescr+=("Deluge" "Lightweight, Full-featured BitTorrent client" "off") ;;
+                SupportedAppDescr+=("Deluge" "Lightweight, Full-featured BitTorrent client" "${APPONOFF}") ;;
             "duckdns")
-                SupportedAppDescr+=("DuckDNS" "free service which will point a DNS to an IP of your choice" "off") ;;
+                SupportedAppDescr+=("DuckDNS" "free service which will point a DNS to an IP of your choice" "${APPONOFF}") ;;
             "duplicati")
-                SupportedAppDescr+=("Duplicati" "Backup software to store backups online with strong encryption" "off") ;;
+                SupportedAppDescr+=("Duplicati" "Backup software to store backups online with strong encryption" "${APPONOFF}") ;;
             "emby")
-                SupportedAppDescr+=("Emby" "Organize, play, and stream audio and video" "off") ;;
+                SupportedAppDescr+=("Emby" "Organize, play, and stream audio and video" "${APPONOFF}") ;;
             "headphones")
-                SupportedAppDescr+=("Headphones" "Music PVR Client" "off") ;;
+                SupportedAppDescr+=("Headphones" "Music PVR Client" "${APPONOFF}") ;;
             "homeassistant")
-                SupportedAppDescr+=("Home Assistant" "Track and control all devices at home and automate control" "off") ;;
+                SupportedAppDescr+=("Home Assistant" "Track and control all devices at home and automate control" "${APPONOFF}") ;;
             "hydra2")
-                SupportedAppDescr+=("Hydra2" "Meta search for NZB indexers" "off") ;;
+                SupportedAppDescr+=("Hydra2" "Meta search for NZB indexers" "${APPONOFF}") ;;
             "jackett")
-                SupportedAppDescr+=("Jackett" "API Support for your favorite private trackers" "off") ;;
+                SupportedAppDescr+=("Jackett" "API Support for your favorite private trackers" "${APPONOFF}") ;;
             "lazylibrarian")
-                SupportedAppDescr+=("Lazylibrarian" "Book PVR Client" "off") ;;
+                SupportedAppDescr+=("Lazylibrarian" "Book PVR Client" "${APPONOFF}") ;;
             "letsencrypt")
-                SupportedAppDescr+=("Letsencrypt" "Certificate authority that provides free X.509 certificates" "off") ;;
+                SupportedAppDescr+=("Letsencrypt" "Certificate authority that provides free X.509 certificates" "${APPONOFF}") ;;
             "lidarr")
-                SupportedAppDescr+=("Lidarr" "Music download manager for Usenet and BitTorrent users" "off") ;;
+                SupportedAppDescr+=("Lidarr" "Music download manager for Usenet and BitTorrent users" "${APPONOFF}") ;;
             "logarr")
-                SupportedAppDescr+=("Logarr" "Self-hosted, single-page, log consolidation tool" "off") ;;
+                SupportedAppDescr+=("Logarr" "Self-hosted, single-page, log consolidation tool" "${APPONOFF}") ;;
             "monitorr")
-                SupportedAppDescr+=("Monitorr" "Webfront to live display the status of any webapp or service" "off") ;;
+                SupportedAppDescr+=("Monitorr" "Webfront to live display the status of any webapp or service" "${APPONOFF}") ;;
             "muximux")
-                SupportedAppDescr+=("Muximux" "A lightweight way to manage your HTPC" "off") ;;
+                SupportedAppDescr+=("Muximux" "A lightweight way to manage your HTPC" "${APPONOFF}") ;;
             "nzbget")
-                SupportedAppDescr+=("NZBGet" "NZB Newsgrabber / Downloader" "off") ;;
+                SupportedAppDescr+=("NZBGet" "NZB Newsgrabber / Downloader" "${APPONOFF}") ;;
             "ombi")
-                SupportedAppDescr+=("Ombi" "Allow your users to Request Movies, TV Shows and Albums" "off") ;;
+                SupportedAppDescr+=("Ombi" "Allow your users to Request Movies, TV Shows and Albums" "${APPONOFF}") ;;
             "organizr")
-                SupportedAppDescr+=("Organizr" "HTPC/Homelab Services Organizer" "off") ;;
+                SupportedAppDescr+=("Organizr" "HTPC/Homelab Services Organizer" "${APPONOFF}") ;;
             "plex")
-                SupportedAppDescr+=("Plex" "Organizes all of your video, music and photo collections" "off") ;;
+                SupportedAppDescr+=("Plex" "Organizes all of your video, music and photo collections" "${APPONOFF}") ;;
             "plexrequests")
-                SupportedAppDescr+=("Plex Requests" "Automated way for users to request new content for Plex" "off") ;;
+                SupportedAppDescr+=("Plex Requests" "Automated way for users to request new content for Plex" "${APPONOFF}") ;;
             "portainer")
-                SupportedAppDescr+=("Portainer" "Simple management UI for Docker" "on") ;;
+                SupportedAppDescr+=("Portainer" "Simple management UI for Docker" "${APPONOFF}") ;;
             "radarr")
-                SupportedAppDescr+=("Radarr" "Automatically download movies via Usenet and BitTorrent" "off") ;;
+                SupportedAppDescr+=("Radarr" "Automatically download movies via Usenet and BitTorrent" "${APPONOFF}") ;;
             "rutorrent")
-                SupportedAppDescr+=("ruTorrent" "Web front-end for rTorrent" "off") ;;
+                SupportedAppDescr+=("ruTorrent" "Web front-end for rTorrent" "${APPONOFF}") ;;
             "sabnzbd")
-                SupportedAppDescr+=("SABnzbd" "NZB Newsgrabber / Downloader" "off") ;;
+                SupportedAppDescr+=("SABnzbd" "NZB Newsgrabber / Downloader" "${APPONOFF}") ;;
             "sickrage")
-                SupportedAppDescr+=("Sickrage" "Automatic Video Library Manager for TV Shows" "off") ;;
+                SupportedAppDescr+=("Sickrage" "Automatic Video Library Manager for TV Shows" "${APPONOFF}") ;;
             "sonarr")
-                SupportedAppDescr+=("Sonarr" "Smart TV show PVR via Usenet and BitTorrent" "off") ;;
+                SupportedAppDescr+=("Sonarr" "Smart TV show PVR via Usenet and BitTorrent" "${APPONOFF}") ;;
             "syncthing")
-                SupportedAppDescr+=("Syncthing" "Open-source peer-to-peer file synchronization" "off") ;;
+                SupportedAppDescr+=("Syncthing" "Open-source peer-to-peer file synchronization" "${APPONOFF}") ;;
             "tautulli")
-                SupportedAppDescr+=("Tautulli" "Monitoring and tracking tool for Plex Media Server" "off") ;;
+                SupportedAppDescr+=("Tautulli" "Monitoring and tracking tool for Plex Media Server" "${APPONOFF}") ;;
             "transmission")
-                SupportedAppDescr+=("Transmission" "Fast, easy, and free BitTorrent client" "off") ;;
+                SupportedAppDescr+=("Transmission" "Fast, easy, and free BitTorrent client" "${APPONOFF}") ;;
             "unifi")
-                SupportedAppDescr+=("Unifi" "Controller software for wireless networks" "off") ;;
+                SupportedAppDescr+=("Unifi" "Controller software for wireless networks" "${APPONOFF}") ;;
             "watchtower")
-                SupportedAppDescr+=("Watchtower" "Automatically update running Docker containers" "on") ;;
+                SupportedAppDescr+=("Watchtower" "Automatically update running Docker containers" "${APPONOFF}") ;;
             *)
                 error "ERROR ${APPNAME} APP DESCRIPTION NOT FOUND"
                 ;;
