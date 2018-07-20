@@ -10,7 +10,7 @@ run_apt() {
         apt-get -y dist-upgrade > /dev/null 2>&1
     fi
     info "Installing dependencies."
-    apt-get -qq install curl git grep sed apt-transport-https > /dev/null 2>&1
+    apt-get -qq install curl git grep sed apt-transport-https whiptail > /dev/null 2>&1
     info "Removing unused packages."
     apt-get -y autoremove > /dev/null 2>&1
     info "Cleaning up unused packages."
