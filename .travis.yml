@@ -15,12 +15,17 @@ before_install:
     - sudo apt-get install -qq curl git grep pcregrep sed
     - sudo pip install bashate
 
-script:
-    - sudo bash ./main.sh -t validate_newline
-    - sudo bash ./main.sh -t validate_bashate
-    - sudo bash ./main.sh -t validate_shellcheck
-    - sudo bash ./main.sh -t run_install
-    - sudo bash ./main.sh -t run_generate
+jobs:
+    include:
+        - stage: validate
+          script:
+              - sudo bash ./main.sh -t validate_newline
+              - sudo bash ./main.sh -t validate_bashate
+              - sudo bash ./main.sh -t validate_shellcheck
+        - stage: run
+          script: sudo bash ./main.sh -t run_install
+        - stage: run
+          script: sudo bash ./main.sh -t run_generate
 
 matrix:
     fast_finish:   true
