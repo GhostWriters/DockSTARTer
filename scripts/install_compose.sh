@@ -17,7 +17,7 @@ install_compose() {
             info "ARM architecture detected. Please let us know on Gitter chat if this works for you!"
             apt-get remove docker-compose > /dev/null 2>&1
             apt-get -y install python-pip > /dev/null 2>&1
-            pip uninstall docker-py > /dev/null 2>&1
+            pip uninstall docker-py > /dev/null 2>&1 || true
             pip install -U docker-compose > /dev/null 2>&1
         fi
         if [[ ${ARCH} == "amd64" ]]; then
