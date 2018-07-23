@@ -22,6 +22,7 @@ menu_main() {
                 "Configure Apps" "Setup and start applications" \
                 "Install Dependencies" "Latest version of Docker and Docker-Compose" \
                 "Update DockStarter" "Get the latest version of DockSTARTer" 3>&1 1>&2 2>&3)
+    reset || true
 
     case "${MAINCHOICE}" in
         "Configure Apps")
