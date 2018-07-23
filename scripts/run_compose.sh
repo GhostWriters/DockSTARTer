@@ -17,6 +17,7 @@ run_compose() {
             set +e
             ANSWER=$(whiptail --fb --yesno "${QUESTION}" 0 0 3>&1 1>&2 2>&3; echo $?)
             set -e
+            reset || true
             [[ ${ANSWER} == 0 ]] && YN=Y || YN=N
         else
             read -rp "[Yn]" YN

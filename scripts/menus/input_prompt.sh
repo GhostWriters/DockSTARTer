@@ -10,6 +10,7 @@ input_prompt() {
     local INPUT
     if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]]; then
         INPUT=$(whiptail --inputbox "What would you like to set ${SET_VAR} to?" 12 78 "${NEW_VAL}" --fb --title "Set folder" 3>&1 1>&2 2>&3)
+        reset || true
     else
         INPUT="${2}"
     fi
@@ -18,6 +19,7 @@ input_prompt() {
         run_script 'env_set' "${SET_VAR}" "${INPUT}"
     else
         whiptail --title "Error" --msgbox "${INPUT} is not a valid path. Please try again." --fb 9 78
+        reset || true
         input_prompt "${SET_VAR}" "${NEW_VAL}"
     fi
 }

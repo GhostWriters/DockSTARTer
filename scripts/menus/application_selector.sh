@@ -23,6 +23,7 @@ application_selector() {
 
     if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]]; then
         whiptail --title "Application Selector" --fb --checklist --separate-output "Choose which apps you would like to install:" --fb ${LINES} ${COLUMNS} ${NETLINES} "${SupportedAppDescr[@]}" 2>"${tempfile}"
+        reset || true
     fi
     #TODO - Ask if the user wants the disable the other apps in .env
 
