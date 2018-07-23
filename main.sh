@@ -7,10 +7,10 @@ readonly SCRIPTPATH="$(readlink -m "$(dirname "${0}")")"
 readonly ARGS=("$@")
 
 # # Colors
-readonly BLUE='\e[34m'
-readonly GREEN='\e[32m'
+readonly BLU='\e[34m'
+readonly GRN='\e[32m'
 readonly RED='\e[31m'
-readonly YELLOW='\e[33m'
+readonly YLW='\e[33m'
 readonly ENDCOLOR='\e[0m'
 
 # # Check Arch
@@ -37,10 +37,10 @@ readonly DETECTED_HOMEDIR=$(eval echo "~${DETECTED_UNAME}" 2> /dev/null || true)
 
 # # Log Functions
 readonly LOG_FILE="/tmp/dockstarter.log"
-info()    { echo -e "${BLUE}[INFO]${ENDCOLOR}        $*" | tee -a "${LOG_FILE}" >&2 ; }
-warning() { echo -e "${YELLOW}[WARNING]${ENDCOLOR}   $*" | tee -a "${LOG_FILE}" >&2 ; }
-error()   { echo -e "${RED}[ERROR]${ENDCOLOR}        $*" | tee -a "${LOG_FILE}" >&2 ; }
-fatal()   { echo -e "${RED}[FATAL]${ENDCOLOR}        $*" | tee -a "${LOG_FILE}" >&2 ; exit 1 ; }
+info()    { echo -e "$(date +"%F %T") ${BLU}[INFO]${ENDCOLOR}       $*" | tee -a "${LOG_FILE}" >&2 ; }
+warning() { echo -e "$(date +"%F %T") ${YLW}[WARNING]${ENDCOLOR}    $*" | tee -a "${LOG_FILE}" >&2 ; }
+error()   { echo -e "$(date +"%F %T") ${RED}[ERROR]${ENDCOLOR}      $*" | tee -a "${LOG_FILE}" >&2 ; }
+fatal()   { echo -e "$(date +"%F %T") ${RED}[FATAL]${ENDCOLOR}      $*" | tee -a "${LOG_FILE}" >&2 ; exit 1 ; }
 
 # # Usage Information
 #/ usage: main.sh options
