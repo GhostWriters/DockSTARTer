@@ -9,7 +9,7 @@ config_folder_set() {
     ENVDOCCONFDIR="${ENVDOCCONFDIR:-"${DETECTED_HOMEDIR}/.docker/config"}"
 
     if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]] && (whiptail --title "Configs Location" --fb --yesno \
-            "The detected .env parameter or suggested place for config files is:\\n${ENVDOCCONFDIR}\\n\\nThis will be passed into the applications.\\n\\nWould you like to accept this?" 14 78); then
+            "The detected .env parameter or suggested location for config files is:\\n${ENVDOCCONFDIR}\\n\\nThis will be passed into the applications.\\n\\nWould you like to accept this?" 14 78); then
         reset || true
         #TODO - Check if the folder exists?
         #TODO - Set permissions on the folder?

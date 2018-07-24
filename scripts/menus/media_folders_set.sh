@@ -21,7 +21,7 @@ media_folders_set() {
     ENVTV="${ENVTV:-"${DETECTED_HOMEDIR}/TV"}"
 
     if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]] && (whiptail --title "Media Locations" --fb --yesno \
-            "The detected .env parameter or suggested place for Media files is:\\nBooks = ${ENVBOOKS}\\nMovies = ${ENVMOVIES}\\nMusic = ${ENVMUSIC}\\nTV = ${ENVTV}\\n\\nThis will be passed into the applications.\\n\\nWould you like to accept this?" 17 78); then
+            "The detected .env parameter or suggested location for Media files is:\\nBooks = ${ENVBOOKS}\\nMovies = ${ENVMOVIES}\\nMusic = ${ENVMUSIC}\\nTV = ${ENVTV}\\n\\nThis will be passed into the applications.\\n\\nWould you like to accept this?" 17 78); then
         reset || true
         #TODO - Should we check if the folder exists?
         #TODO - Should we set permissions on the folder?

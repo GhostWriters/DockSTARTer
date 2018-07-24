@@ -9,7 +9,7 @@ download_folder_set() {
     ENVDOWNLOADSDIR="${ENVDOWNLOADSDIR:-"${DETECTED_HOMEDIR}/Downloads"}"
 
     if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]] && (whiptail --title "Dowloads Location" --fb --yesno \
-            "The default place for download files is:\\n${ENVDOWNLOADSDIR}\\n\\nThis will be passed into the applications.\\n\\nWould you like to accept this?" 14 78); then
+            "The detected .env parameter or suggested location for download files is:\\n${ENVDOWNLOADSDIR}\\n\\nThis will be passed into the applications.\\n\\nWould you like to accept this?" 14 78); then
         reset || true
         #TODO - Should we check if the folder exists?
         #TODO - Should we set permissions on the folder?
