@@ -11,7 +11,7 @@ timezone_set() {
         run_script 'env_set' 'TZ' "${CURRENTTIMEZONE}"
     else
         whiptail --title "Time Zone" --fb --yesno --yes-button "OK" --no-button "Cancel" \
-            "Your Current Time Zone is: ${CURRENTTIMEZONE} \\nThis will be passed into the applications.\\n\\nIf this is incorrect cancel now and change your system time zone!" 12 78
+            "Your Current Time Zone is: ${CURRENTTIMEZONE}\\n\\nThis will be passed into the applications.\\n\\nIf this is incorrect cancel now and change your system time zone!" 13 78
         reset || true
         run_script 'env_set' 'TZ' "${CURRENTTIMEZONE}"
     fi
