@@ -57,6 +57,9 @@ menu_app_helper() {
             "LOGARR")
                 SupportedAppDescr+=("Logarr" "Self-hosted, single-page, log consolidation tool" "${APPONOFF}")
                 ;;
+            "MEDUSA")
+                SupportedAppDescr+=("Medusa" "Automatic Video Library Manager for TV Shows" "${APPONOFF}")
+                ;;
             "MONITORR")
                 SupportedAppDescr+=("Monitorr" "Webfront to live display the status of any webapp or service" "${APPONOFF}")
                 ;;
