@@ -1,0 +1,4 @@
+services:
+  watcher:
+    ports:
+      - "${WATCHER_PORT_9090}:9090"

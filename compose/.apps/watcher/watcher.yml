@@ -1,0 +1,16 @@
+services:
+  watcher:
+    image:           linuxserver/watcher
+    container_name:  watcher
+    restart:         always
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/watcher:/config
+      - ${DOCKERSHAREDDIR}:/shared
+      - ${DOWNLOADSDIR}:/data
+      - ${DOWNLOADSDIR}:/downloads
+      - ${MEDIADIR_MOVIES}:/movies

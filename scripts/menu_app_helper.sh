@@ -108,6 +108,9 @@ menu_app_helper() {
             "UNIFI")
                 SupportedAppDescr+=("Unifi" "Controller software for wireless networks" "${APPONOFF}")
                 ;;
+            "WATCHER")
+                SupportedAppDescr+=("Watcher" "Automated movie NZB & Torrent searcher and snatcher" "${APPONOFF}")
+                ;;
             "WATCHTOWER")
                 SupportedAppDescr+=("Watchtower" "Automatically update running Docker containers" "${APPONOFF}")
                 ;;
