@@ -11,3 +11,4 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/plexrequests:/config
+      - ${DOCKERSHAREDDIR}:/shared

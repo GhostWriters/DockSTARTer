@@ -8,4 +8,5 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
+      - ${DOCKERSHAREDDIR}:/shared
     command:         --schedule "0 0 4 * * *" --cleanup

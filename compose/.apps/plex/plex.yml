@@ -12,6 +12,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/plex:/config
+      - ${DOCKERSHAREDDIR}:/shared
       - ${MEDIADIR_MOVIES}:/data/movies
       - ${MEDIADIR_MUSIC}:/data/music
       - ${MEDIADIR_TV}:/data/tv

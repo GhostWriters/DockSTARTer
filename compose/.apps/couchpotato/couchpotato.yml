@@ -10,6 +10,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/couchpotato:/config
+      - ${DOCKERSHAREDDIR}:/shared
       - ${DOWNLOADSDIR}:/data
       - ${DOWNLOADSDIR}:/downloads
       - ${MEDIADIR_MOVIES}:/movies

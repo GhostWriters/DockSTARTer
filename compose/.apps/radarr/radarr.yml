@@ -10,6 +10,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/radarr:/config
+      - ${DOCKERSHAREDDIR}:/shared
       - ${DOWNLOADSDIR}:/data
       - ${DOWNLOADSDIR}:/downloads
       - ${MEDIADIR_MOVIES}:/movies

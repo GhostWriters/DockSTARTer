@@ -17,5 +17,6 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/letsencrypt:/config
+      - ${DOCKERSHAREDDIR}:/shared
     cap_add:
       - NET_ADMIN
