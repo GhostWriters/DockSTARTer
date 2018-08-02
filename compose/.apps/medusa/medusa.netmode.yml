@@ -1,0 +1,3 @@
+services:
+  medusa:
+    network_mode:  ${MEDUSA_NETWORK_MODE}
