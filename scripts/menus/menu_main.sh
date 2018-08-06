@@ -21,7 +21,8 @@ menu_main() {
                 ${LINES} ${COLUMNS} ${NETLINES} \
                 "Configure Apps" "Setup and start applications" \
                 "Install Dependencies" "Latest version of Docker and Docker-Compose" \
-                "Update DockStarter" "Get the latest version of DockSTARTer" 3>&1 1>&2 2>&3)
+                "Update DockStarter" "Get the latest version of DockSTARTer" \
+                "Prune Docker System" "Remove all unused containers, networks, volumes, images and build cache" 3>&1 1>&2 2>&3)
     reset || true
 
     case "${MAINCHOICE}" in
@@ -33,6 +34,9 @@ menu_main() {
             ;;
         "Update DockStarter")
             run_script 'ui_update'
+            ;;
+        "Prune Docker System")
+            run_script 'prune_docker' menu
             ;;
         *)
             error "Invalid Option"

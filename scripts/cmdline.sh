@@ -13,6 +13,7 @@ cmdline() {
                 #translate --gnu-long-options to -g (short options)
             --generate)       LOCAL_ARGS="${LOCAL_ARGS}-g " ;;
             --install)        LOCAL_ARGS="${LOCAL_ARGS}-i " ;;
+            --prune)          LOCAL_ARGS="${LOCAL_ARGS}-p " ;;
             --test)           LOCAL_ARGS="${LOCAL_ARGS}-t " ;;
             --update)         LOCAL_ARGS="${LOCAL_ARGS}-u " ;;
             --verbose)        LOCAL_ARGS="${LOCAL_ARGS}-v " ;;
@@ -26,7 +27,7 @@ cmdline() {
     #Reset the positional parameters to the short options
     eval set -- "${LOCAL_ARGS:-}"
 
-    while getopts "git:uvx" OPTION; do
+    while getopts "gipt:uvx" OPTION; do
         case ${OPTION} in
             g)
                 run_script 'cmd_generate'
@@ -34,6 +35,10 @@ cmdline() {
                 ;;
             i)
                 run_script 'cmd_install'
+                exit 0
+                ;;
+            p)
+                run_script 'prune_docker'
                 exit 0
                 ;;
             t)
