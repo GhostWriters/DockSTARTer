@@ -17,7 +17,7 @@ set_permissions() {
     info "Taking ownership of ${CH_PATH} for user ${CH_PUID} and group ${CH_PGID}"
     chown -R "${CH_PUID}":"${CH_PGID}" "${CH_PATH}"
     info "Setting folder permissions in ${CH_PATH} to 755"
-    find "${CH_PATH}" -type d -print0 | xargs -0 chmod 755
+    find "${CH_PATH}" -type d -print0 | xargs -0 chmod 755 || true
     info "Setting file permissions in ${CH_PATH} to 644"
-    find "${CH_PATH}" -type f -print0 | xargs -0 chmod 644
+    find "${CH_PATH}" -type f -print0 | xargs -0 chmod 644 || true
 }
