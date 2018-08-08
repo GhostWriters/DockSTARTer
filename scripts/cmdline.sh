@@ -46,7 +46,7 @@ cmdline() {
                 exit 0
                 ;;
             u)
-                run_script 'cmd_update'
+                run_script 'update_self'
                 exit 0
                 ;;
             v)

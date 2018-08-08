@@ -11,13 +11,13 @@ request_reboot() {
     local YN
     while true; do
         if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
-            YN=N
+            info "Travis will not run this."
+            return
         elif [[ ${PROMPT} == "menu" ]]; then
             local ANSWER
             set +e
-            ANSWER=$(whiptail --fb --yesno "${QUESTION}" 0 0 3>&1 1>&2 2>&3; echo $?)
+            ANSWER=$(whiptail --fb --clear --yesno "${QUESTION}" 0 0 3>&1 1>&2 2>&3; echo $?)
             set -e
-            reset || true
             [[ ${ANSWER} == 0 ]] && YN=Y || YN=N
         else
             read -rp "[Yn]" YN
@@ -29,7 +29,7 @@ request_reboot() {
                 ;;
             [Nn]* )
                 info "Your system will not reboot."
-                return
+                return 1
                 ;;
             * )
                 error "Please answer yes or no."
