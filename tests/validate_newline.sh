@@ -3,6 +3,8 @@ set -euo pipefail
 IFS=$'\n\t'
 
 validate_newline() {
+    apt-get -y install pcregrep sed > /dev/null 2>&1
+
     local FOUND
     # Find double New Lines at the end of files
     if [[ $(find . -type f -exec sh -c '[ -z "$(sed -n "\$p" "$1")" ]' _ {} \; -print | wc -l) -gt 0 ]]; then
