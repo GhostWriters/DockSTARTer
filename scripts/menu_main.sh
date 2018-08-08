@@ -19,6 +19,7 @@ menu_main() {
     MAINOPTIONS+=("Configure Apps" "Setup and start applications")
     MAINOPTIONS+=("Install Dependencies" "Latest version of Docker and Docker-Compose")
     MAINOPTIONS+=("Update DockSTARTer" "Get the latest version of DockSTARTer")
+    MAINOPTIONS+=("Prune Docker System" "Remove all unused containers, networks, volumes, images and build cache")
 
     local MAINCHOICE
     MAINCHOICE=$(whiptail --fb --title "DockSTARTer" --menu "What would you like to do?" --cancel-button "Exit" ${LINES} ${COLUMNS} ${NETLINES} "${MAINOPTIONS[@]}" 3>&1 1>&2 2>&3)
@@ -33,6 +34,9 @@ menu_main() {
             ;;
         "Update DockSTARTer")
             run_script 'ui_update'
+            ;;
+        "Prune Docker System")
+            run_script 'prune_docker' menu
             ;;
         *)
             error "Invalid Option"
