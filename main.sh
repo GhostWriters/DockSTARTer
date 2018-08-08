@@ -77,17 +77,6 @@ usage() {
     grep '^#/' "${SCRIPTPATH}/${SCRIPTNAME}" | cut -c4-
 }
 
-# # Menu Runner Function
-run_menu() {
-    local MENUSNAME="${1:-}"; shift
-    if [[ -f ${SCRIPTPATH}/scripts/menus/${MENUSNAME}.sh ]]; then
-        source "${SCRIPTPATH}/scripts/menus/${MENUSNAME}.sh"
-        ${MENUSNAME} "$@";
-    else
-        fatal "${SCRIPTPATH}/scripts/menus/${MENUSNAME}.sh not found."
-    fi
-}
-
 # # Script Runner Function
 run_script() {
     local SCRIPTSNAME="${1:-}"; shift
@@ -115,6 +104,6 @@ main() {
     run_script 'root_check'
     source "${SCRIPTPATH}/scripts/cmdline.sh"
     cmdline "${ARGS[@]:-}"
-    run_menu 'menu_main'
+    run_script 'menu_main'
 }
 main
