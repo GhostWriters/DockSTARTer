@@ -1,0 +1,11 @@
+services:
+  lxdui:
+    image:           phenonymous/lxdui
+    container_name:  lxdui
+    restart:         always
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - /var/snap/lxd/common/lxd/unix.socket:/var/snap/lxd/common/lxd/unix.socket     
+      - ${DOCKERCONFDIR}/lxdui:/data
+      - ${DOCKERSHAREDDIR}:/shared
