@@ -4,7 +4,7 @@ services:
     container_name: agent
     restart: always
     environment:
-      AGENT_CLUSTER_ADDR: tasks.agent
+      - AGENT_CLUSTER_ADDR: tasks.agent
       - TZ=${TZ}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
