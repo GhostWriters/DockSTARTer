@@ -11,13 +11,13 @@ run_compose() {
     local YN
     while true; do
         if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
-            YN=N
+            info "Travis will not run this."
+            return
         elif [[ ${PROMPT} == "menu" ]]; then
             local ANSWER
             set +e
-            ANSWER=$(whiptail --fb --yesno "${QUESTION}" 0 0 3>&1 1>&2 2>&3; echo $?)
+            ANSWER=$(whiptail --fb --clear --yesno "${QUESTION}" 0 0 3>&1 1>&2 2>&3; echo $?)
             set -e
-            reset || true
             [[ ${ANSWER} == 0 ]] && YN=Y || YN=N
         else
             read -rp "[Yn]" YN
@@ -31,14 +31,14 @@ run_compose() {
                 local PGID
                 PGID=$(run_script 'env_get' PGID)
                 run_script 'set_permissions' "${SCRIPTPATH}" "${PUID}" "${PGID}"
-                cd "${SCRIPTPATH}/compose/" || return 1
+                cd "${SCRIPTPATH}/compose/" || fatal "Unable to change directory to ${SCRIPTPATH}/compose/"
                 docker-compose up -d
-                cd "${SCRIPTPATH}" || return 1
+                cd "${SCRIPTPATH}" || fatal "Unable to change directory to ${SCRIPTPATH}"
                 break
                 ;;
             [Nn]* )
                 info "Compose will not be run."
-                return
+                return 1
                 ;;
             * )
                 error "Please answer yes or no."

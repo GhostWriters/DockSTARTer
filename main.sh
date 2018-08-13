@@ -53,8 +53,8 @@ fatal()   { echo -e "$(date +"%F %T") ${RED}[FATAL]${ENDCOLOR}      $*" | tee -a
 #/    -i --install             install docker and dependencies
 #/    -p --prune               remove all unused containers, networks, volumes, images and build cache
 #/    -t --test                run unit test to check the program
-#/    -u --update              update DockSTARTer, docker, and dependencies
-#/    -v --verbose             verbose. You can specify more then one -v to have more verbose
+#/    -u --update              update DockSTARTer
+#/    -v --verbose             verbose
 #/    -x --debug               debug
 #/
 #/
@@ -76,17 +76,6 @@ fatal()   { echo -e "$(date +"%F %T") ${RED}[FATAL]${ENDCOLOR}      $*" | tee -a
 #/
 usage() {
     grep '^#/' "${SCRIPTPATH}/${SCRIPTNAME}" | cut -c4-
-}
-
-# # Menu Runner Function
-run_menu() {
-    local MENUSNAME="${1:-}"; shift
-    if [[ -f ${SCRIPTPATH}/scripts/menus/${MENUSNAME}.sh ]]; then
-        source "${SCRIPTPATH}/scripts/menus/${MENUSNAME}.sh"
-        ${MENUSNAME} "$@";
-    else
-        fatal "${SCRIPTPATH}/scripts/menus/${MENUSNAME}.sh not found."
-    fi
 }
 
 # # Script Runner Function
@@ -116,6 +105,6 @@ main() {
     run_script 'root_check'
     source "${SCRIPTPATH}/scripts/cmdline.sh"
     cmdline "${ARGS[@]:-}"
-    run_menu 'menu_main'
+    run_script 'menu_main'
 }
 main
