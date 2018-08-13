@@ -11,6 +11,7 @@ cmdline() {
         local DELIM=""
         case "${ARG}" in
                 #translate --gnu-long-options to -g (short options)
+            --backup)         LOCAL_ARGS="${LOCAL_ARGS}-b " ;;
             --generate)       LOCAL_ARGS="${LOCAL_ARGS}-g " ;;
             --install)        LOCAL_ARGS="${LOCAL_ARGS}-i " ;;
             --prune)          LOCAL_ARGS="${LOCAL_ARGS}-p " ;;
@@ -27,8 +28,12 @@ cmdline() {
     #Reset the positional parameters to the short options
     eval set -- "${LOCAL_ARGS:-}"
 
-    while getopts "gipt:uvx" OPTION; do
+    while getopts "bgipt:uvx" OPTION; do
         case ${OPTION} in
+            b)
+                run_script 'env_backup'
+                exit 0
+                ;;
             g)
                 run_script 'cmd_generate'
                 exit 0
