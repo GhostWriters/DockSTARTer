@@ -7,5 +7,4 @@ services:
       - TZ=${TZ}
     volumes:
       - /var/snap/lxd/common/lxd/unix.socket:/var/snap/lxd/common/lxd/unix.socket     
-      - ${DOCKERCONFDIR}/lxdui:/app/conf
       - ${DOCKERSHAREDDIR}:/shared
