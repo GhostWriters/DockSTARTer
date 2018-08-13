@@ -10,10 +10,6 @@ services:
       - /var/lib/docker/volumes:/var/lib/docker/volumes
     networks:
       - portainer_agent
-    deploy:
-      mode: global
-    placement:
-      constraints: [node.platform.os == linux]
 
 networks:
   portainer_agent:
