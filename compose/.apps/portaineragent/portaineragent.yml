@@ -1,6 +1,8 @@
 services:
   agent:
     image: portainer/agent
+    container_name: agent
+    restart: always
     environment:
       AGENT_CLUSTER_ADDR: tasks.agent
     volumes:
