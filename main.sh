@@ -51,6 +51,7 @@ fatal()   { echo -e "$(date +"%F %T") ${RED}[FATAL]${ENDCOLOR}      $*" | tee -a
 #/ OPTIONS:
 #/    -g --generate            run the docker-compose yml generator
 #/    -i --install             install docker and dependencies
+#/    -p --prune               remove all unused containers, networks, volumes, images and build cache
 #/    -t --test                run unit test to check the program
 #/    -u --update              update DockSTARTer
 #/    -v --verbose             verbose
