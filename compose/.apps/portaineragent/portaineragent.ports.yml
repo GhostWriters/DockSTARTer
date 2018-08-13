@@ -1,4 +1,4 @@
 services:
   portainer:
     ports:
-      - "${PORTAINER_AGENT_PORT_9001}:9001"
+      - "${PORTAINERAGENT_PORT_9001}:9001"
