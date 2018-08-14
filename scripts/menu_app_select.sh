@@ -82,6 +82,9 @@ menu_app_select() {
                 "LOGARR")
                     APPLIST+=("Logarr" "Self-hosted, single-page, log consolidation tool" "${APPONOFF}")
                     ;;
+                "LXDUI")
+                    APPLIST+=("LXDui" "Simple management UI for LXD" "${APPONOFF}")
+                    ;;
                 "MEDUSA")
                     APPLIST+=("Medusa" "Automatic Video Library Manager for TV Shows" "${APPONOFF}")
                     ;;
@@ -90,6 +93,9 @@ menu_app_select() {
                     ;;
                 "MUXIMUX")
                     APPLIST+=("Muximux" "A lightweight way to manage your HTPC" "${APPONOFF}")
+                    ;;
+                "MYLAR")
+                    APPLIST+=("Mylar" "Comic book PVR client" "${APPONOFF}")
                     ;;
                 "NZBGET")
                     APPLIST+=("NZBGet" "NZB Newsgrabber / Downloader" "${APPONOFF}")
@@ -109,6 +115,9 @@ menu_app_select() {
                 "PORTAINER")
                     APPLIST+=("Portainer" "Simple management UI for Docker" "${APPONOFF}")
                     ;;
+	        "PORTAINERAGENT")
+                    APPLIST+=("Portaineragent" "Easy connect multiple portainer endpoints" "${APPONOFF}")
+                    ;;	
                 "RADARR")
                     APPLIST+=("Radarr" "Automatically download movies via Usenet and BitTorrent" "${APPONOFF}")
                     ;;
