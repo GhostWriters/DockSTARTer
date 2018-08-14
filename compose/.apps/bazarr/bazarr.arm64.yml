@@ -1,0 +1,3 @@
+services:
+  bazarr:
+    image:      morpheus65535/bazarr:arm64-latest
