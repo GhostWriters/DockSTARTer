@@ -12,8 +12,6 @@ install_docker() {
     FORCE=${1:-}
     if [[ "${AVAILABLE_DOCKER}" != "${INSTALLED_DOCKER}" ]] || [[ -n ${FORCE} ]]; then
         info "Installing latest docker. Please be patient, this will take a while."
-        curl -fsSL get.docker.com -o get-docker.sh > /dev/null 2>&1
-        sh get-docker.sh > /dev/null 2>&1
-        trap 'rm -f get-docker.sh' EXIT
+        curl -fsSL get.docker.com | sh > /dev/null 2>&1
     fi
 }

@@ -76,5 +76,5 @@ generate_yml() {
     run_script 'install_yq'
     bash "${RUNFILE}"
     info "Merging docker-compose.yml complete."
-    trap 'rm -f "${SCRIPTPATH}/compose/docker-compose.sh"' EXIT
+    rm -f "${RUNFILE}"
 }
