@@ -8,6 +8,7 @@ menu_main() {
     MAINOPTIONS+=("Configure Apps" "Setup and start applications")
     MAINOPTIONS+=("Install Dependencies" "Latest version of Docker and Docker-Compose")
     MAINOPTIONS+=("Update DockSTARTer" "Get the latest version of DockSTARTer")
+    MAINOPTIONS+=("Backup Environment" "Create a backup of your .env file")
     MAINOPTIONS+=("Prune Docker System" "Remove all unused containers, networks, volumes, images and build cache")
 
     local MAINCHOICE
@@ -22,6 +23,9 @@ menu_main() {
             ;;
         "Update DockSTARTer")
             run_script 'update_self' menu || run_script 'menu_main'
+            ;;
+        "Backup Environment")
+            run_script 'env_backup' menu || run_script 'menu_main'
             ;;
         "Prune Docker System")
             run_script 'prune_docker' menu || run_script 'menu_main'
