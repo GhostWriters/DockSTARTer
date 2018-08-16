@@ -11,6 +11,11 @@ env_backup() {
         info "${SCRIPTPATH}/compose/.env found. Copying to ${SCRIPTPATH}/compose/.env.backups/.env.${BACKUPTIME}"
         mkdir -p "${SCRIPTPATH}/compose/.env.backups" || fatal "${SCRIPTPATH}/compose/.env.backups folder could not be created."
         cp "${SCRIPTPATH}/compose/.env" "${SCRIPTPATH}/compose/.env.backups/.env.${BACKUPTIME}" || fatal "${SCRIPTPATH}/compose/.env.backups/.env.${BACKUPTIME} could not be copied."
+        local PUID
+        PUID=$(run_script 'env_get' PUID)
+        local PGID
+        PGID=$(run_script 'env_get' PGID)
+        run_script 'set_permissions' "${SCRIPTPATH}" "${PUID}" "${PGID}"
     else
         run_script 'env_create' "${PROMPT}"
     fi
