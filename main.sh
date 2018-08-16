@@ -24,7 +24,7 @@ else
 fi
 
 # # Github Token for Travis CI
-if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
+if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]] && [[ ${TRAVIS_PULL_REQUEST} == false ]]; then
     readonly GH_HEADER="Authorization: token ${GH_TOKEN}"
 fi
 
@@ -49,6 +49,8 @@ fatal()   { echo -e "$(date +"%F %T") ${RED}[FATAL]${ENDCOLOR}      $*" | tee -a
 #/ For regular usage you can run without providing any options.
 #/
 #/ OPTIONS:
+#/    -b --backup              create a backup of your .env file
+#/    -e --env                 update your .env file with new variables
 #/    -g --generate            run the docker-compose yml generator
 #/    -i --install             install docker and dependencies
 #/    -p --prune               remove all unused containers, networks, volumes, images and build cache
