@@ -24,7 +24,7 @@ else
 fi
 
 # # Github Token for Travis CI
-if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
+if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]] && [[ ${TRAVIS_PULL_REQUEST} == false ]]; then
     readonly GH_HEADER="Authorization: token ${GH_TOKEN}"
 fi
 
