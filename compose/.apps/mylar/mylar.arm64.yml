@@ -1,0 +1,3 @@
+services:
+  mylar:
+    image:  lsioarmhf/mylar-aarch64
