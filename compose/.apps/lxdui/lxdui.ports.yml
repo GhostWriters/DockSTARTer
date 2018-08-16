@@ -1,4 +1,0 @@
-services:
-  lxdui:
-    ports:
-      - "${LXDUI_PORT_15151}:15151"

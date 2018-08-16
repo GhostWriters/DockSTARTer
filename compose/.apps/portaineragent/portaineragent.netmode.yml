@@ -1,3 +1,0 @@
-services:
-  agent:
-    network_mode:  ${PORTAINERAGENT_NETWORK_MODE}

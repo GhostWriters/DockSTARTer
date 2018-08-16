@@ -1,3 +1,0 @@
-services:
-  lxdui:
-    network_mode:  ${LXDUI_NETWORK_MODE}
