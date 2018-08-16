@@ -1,0 +1,4 @@
+services:
+  netdata:
+    ports:
+      - "${NETDATA_PORT_19999}:19999"
