@@ -91,6 +91,9 @@ menu_app_select() {
                 "MUXIMUX")
                     APPLIST+=("Muximux" "A lightweight way to manage your HTPC" "${APPONOFF}")
                     ;;
+                "NETDATA")
+                    APPLIST+=("netdata" "Distributed real-time performance and health monitoring" "${APPONOFF}")
+                    ;;
                 "NZBGET")
                     APPLIST+=("NZBGet" "NZB Newsgrabber / Downloader" "${APPONOFF}")
                     ;;
