@@ -91,6 +91,9 @@ menu_app_select() {
                 "MUXIMUX")
                     APPLIST+=("Muximux" "A lightweight way to manage your HTPC" "${APPONOFF}")
                     ;;
+                "MYLAR")
+                    APPLIST+=("Mylar" "Comic book PVR client" "${APPONOFF}")
+                    ;;
                 "NETDATA")
                     APPLIST+=("netdata" "Distributed real-time performance and health monitoring" "${APPONOFF}")
                     ;;
