@@ -1,0 +1,16 @@
+services:
+  mylar:
+    image:           linuxserver/mylar
+    container_name:  mylar
+    restart:         always
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/mylar:/config
+      - ${DOCKERSHAREDDIR}:/shared
+      - ${DOWNLOADSDIR}:/data
+      - ${DOWNLOADSDIR}:/downloads
+      - ${MEDIADIR_COMICS}:/comics
