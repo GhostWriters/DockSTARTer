@@ -1,6 +1,14 @@
 # [DockSTARTer](https://ghostwriters.github.io/DockSTARTer/) [![Chat Gitter](https://badges.gitter.im/GhostWriters/DockSTARTer.svg)](https://gitter.im/GhostWriters/DockSTARTer) [![Build Status](https://travis-ci.com/GhostWriters/DockSTARTer.svg?branch=master)](https://travis-ci.com/GhostWriters/DockSTARTer)
 
-## [Wiki](https://github.com/GhostWriters/DockSTARTer/wiki/)
+The main goal of DockSTARTer is to make it quick and easy to get up and running with Docker.
+
+You may choose to rely on DockSTARTer for various changes to your Docker system, or use DockSTARTer as a stepping stone and learn to do more advanced configurations.
+
+See our [Wiki](https://github.com/GhostWriters/DockSTARTer/wiki/) for more detailed information
+
+![Main Menu](https://i.imgur.com/eFUnl9o.png)
+![App Selection](https://i.imgur.com/iNIRPPc.png)
+![Value Prompt](https://i.imgur.com/XrrYJ4r.png)
 
 ## Feature Requests
 
