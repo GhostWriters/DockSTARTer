@@ -1,0 +1,15 @@
+services:
+  netdata:
+    image:           firehol/netdata
+    container_name:  netdata
+    restart:         always
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${DOCKERSHAREDDIR}:/shared
+    cap_add:
+      - SYS_PTRACE

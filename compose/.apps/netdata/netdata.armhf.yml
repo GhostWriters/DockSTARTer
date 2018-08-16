@@ -1,0 +1,3 @@
+services:
+  netdata:
+    image:  firehol/netdata:armv7hf

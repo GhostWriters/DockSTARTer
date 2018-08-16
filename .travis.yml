@@ -1,29 +1,24 @@
-dist:
-    trusty
-
-language:
-    generic
-
-sudo:
-    required
-
-group:
-    travis_latest
-
+dist: trusty
+language: generic
+sudo: required
+group: travis_latest
+before_install:
+- sudo apt-get update -qq
+- sudo apt-get install -qq curl git grep pcregrep sed
+- sudo pip install bashate
 jobs:
-    include:
-        - stage: validate
-          script:
-              - sudo bash ./main.sh -t validate_newline
-              - sudo bash ./main.sh -t validate_bashate
-              - sudo bash ./main.sh -t validate_shellcheck
-        - stage: run
-          script: sudo bash ./main.sh -t run_install
-        - stage: run
-          script: sudo bash ./main.sh -t run_generate
-
+  include:
+  - stage: validate
+    script:
+    - sudo bash ./main.sh -t validate_newline
+    - sudo bash ./main.sh -t validate_bashate
+    - sudo bash ./main.sh -t validate_shellcheck
+  - stage: run
+    script: sudo bash ./main.sh -t run_install
+  - stage: run
+    script: sudo bash ./main.sh -t run_generate
 matrix:
-    fast_finish:   true
-
-#notifications:
-#    webhooks:      https://www.travisbuddy.com/
+  fast_finish: true
+env:
+  matrix:
+    secure: a8BCb8VvU1UBfEjCXAvkfDDwH0tvtjYX3wbgEfqmZwtrB+siwb7MBKmc9Bul8mqxJVTMBL6wQ8xC99qkSOo7cIqCBNkBxOEcYZDeLQVwryXjqtCYHyrOqFtK169MbXgIEQEh5OiL+ZZywv2XS/N1593iJzEpzKKCcfShGfqh2VQ3+JuJODRfceNA9hL28hwfJBbeyf8UDbcoClfg0Zov1IqTc5ZDV90+JPDlOZtO3rhXck+JvOzmQHKiy9THDRLNCSJ5ViTFouiMHokB7Qld77xcIhPa2/39zu7nuIQT20IMkkU1TvH0PCaPvqCU8k/B3BW23pIxX7b4ZWG1PwYTI7Gd8jnYq0z9Sjpw79qwurm5C/ICJ5NQy8S/dVw2fywpf+UBx7OiEXH9qARX1wEs2flFhdWVWWOaa4k4ewZRBIppQFSu90T4iwVDJk50hpEjWx1jRgtuM8L8PUVhC4aq+YTi9IoM//Xp2IIgneEev7SJ7dtbq4Kx51rID/UCyDHPjEQAp/o4TmZigY7fDkwX3TdHCplzR63Q6Nf4Bc0Fv/y8flOFykmotLXoRHWaseH008tu2hDnOJCjYvu586YRkw3T8izE1JSS0+T1RjlWGum1AP0xSyyYeVqBkh9PDmyoVEvB6zKFAvbZxGNNs42ctpBZdQlpWHz7o+sVUY1dUQ0=
