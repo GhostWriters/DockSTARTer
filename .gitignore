@@ -2,6 +2,9 @@ compose/.apps/*/*.override.yml
 compose/.env
 compose/docker-compose.override.yml
 compose/docker-compose.yml
+compose/.apps/lxdui
+compose/.apps/portaineragent
+compose/.apps/grafana
 config/
 configs/
 share/
