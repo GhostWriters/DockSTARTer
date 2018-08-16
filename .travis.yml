@@ -2,10 +2,6 @@ dist: trusty
 language: generic
 sudo: required
 group: travis_latest
-before_install:
-- sudo apt-get update -qq
-- sudo apt-get install -qq curl git grep pcregrep sed
-- sudo pip install bashate
 jobs:
   include:
   - stage: validate
