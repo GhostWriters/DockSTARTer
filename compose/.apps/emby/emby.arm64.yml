@@ -1,3 +1,0 @@
-services:
-  emby:
-    image:  emby/embyserver_arm32v7:latest
