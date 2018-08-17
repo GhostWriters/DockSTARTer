@@ -1,3 +1,0 @@
-services:
-  watchtower:
-    image:     v2tec/watchtower:armhf-latest
