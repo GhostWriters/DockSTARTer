@@ -49,8 +49,11 @@ menu_app_select() {
                 "DELUGE")
                     APPLIST+=("Deluge" "Lightweight, Full-featured BitTorrent client" "${APPONOFF}")
                     ;;
+                "DELUGEVPN")
+                    APPLIST+=("DelugeVPN" "Deluge, OpenVPN and Privoxy" "${APPONOFF}")
+                    ;;
                 "DUCKDNS")
-                    APPLIST+=("DuckDNS" "free service which will point a DNS to an IP of your choice" "${APPONOFF}")
+                    APPLIST+=("DuckDNS" "Free service which will point a DNS to an IP of your choice" "${APPONOFF}")
                     ;;
                 "DUPLICATI")
                     APPLIST+=("Duplicati" "Backup software to store backups online with strong encryption" "${APPONOFF}")
@@ -141,6 +144,9 @@ menu_app_select() {
                     ;;
                 "TRANSMISSION")
                     APPLIST+=("Transmission" "Fast, easy, and free BitTorrent client" "${APPONOFF}")
+                    ;;
+                "TRANSMISSIONVPN")
+                    APPLIST+=("TransmissionVPN" "Transmission torrent client, WebUI and OpenVPN" "${APPONOFF}")
                     ;;
                 "UNIFI")
                     APPLIST+=("Unifi" "Controller software for wireless networks" "${APPONOFF}")
