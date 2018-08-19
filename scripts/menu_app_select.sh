@@ -115,6 +115,9 @@ menu_app_select() {
                 "PORTAINER")
                     APPLIST+=("Portainer" "Simple management UI for Docker" "${APPONOFF}")
                     ;;
+                "PORTAINERAGENT")
+                    APPLIST+=("Portainer Agent" "An agent used to manage all the resources in a Swarm cluster" "${APPONOFF}")
+                    ;;
                 "RADARR")
                     APPLIST+=("Radarr" "Automatically download movies via Usenet and BitTorrent" "${APPONOFF}")
                     ;;
