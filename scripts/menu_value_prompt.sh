@@ -134,16 +134,32 @@ menu_value_prompt() {
                 fi
                 ;;
             *DIR|*DIR_*)
+                local PUID
+                PUID=$(run_script 'env_get' PUID)
+                local PGID
+                PGID=$(run_script 'env_get' PGID)
                 if [[ -d ${INPUT} ]]; then
                     run_script 'env_set' "${SET_VAR}" "${INPUT}"
-                    local PUID
-                    PUID=$(run_script 'env_get' PUID)
-                    local PGID
-                    PGID=$(run_script 'env_get' PGID)
-                    run_script 'set_permissions' "${INPUT}" "${PUID}" "${PGID}"
+                    local ANSWER
+                    set +e
+                    ANSWER=$(whiptail --fb --clear --yesno "Would you like to set permissions on ${INPUT} ?" 0 0 3>&1 1>&2 2>&3; echo $?)
+                    set -e
+                    if [[ ${ANSWER} == 0 ]]; then
+                        run_script 'set_permissions' "${INPUT}" "${PUID}" "${PGID}"
+                    fi
                 else
-                    whiptail --fb --clear --title "Error" --msgbox "${INPUT} is not a valid path. Please try setting ${SET_VAR} again." 0 0
-                    menu_value_prompt "${SET_VAR}"
+                    local ANSWER
+                    set +e
+                    ANSWER=$(whiptail --fb --clear --yesno "${INPUT} is not a valid path. Would you like to attempt to create it?" 0 0 3>&1 1>&2 2>&3; echo $?)
+                    set -e
+                    if [[ ${ANSWER} == 0 ]]; then
+                        mkdir -p "${INPUT}" || fatal "${INPUT} folder could not be created."
+                        run_script 'set_permissions' "${INPUT}" "${PUID}" "${PGID}"
+                        whiptail --fb --clear --title "Success" --msgbox "${INPUT} folder was created successfully." 0 0
+                    else
+                        whiptail --fb --clear --title "Error" --msgbox "${INPUT} is not a valid path. Please try setting ${SET_VAR} again." 0 0
+                        menu_value_prompt "${SET_VAR}"
+                    fi
                 fi
                 ;;
             P[GU]ID)
