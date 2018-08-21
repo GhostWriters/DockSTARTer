@@ -23,9 +23,14 @@ else
     readonly ISSYSTEMD=false
 fi
 
+echo "${TRAVIS_PULL_REQUEST}"
+echo "${TRAVIS_SECURE_ENV_VARS}"
+echo "Change for no reason"
+
 # # Github Token for Travis CI
 if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]] && [[ ${TRAVIS_PULL_REQUEST} == false ]]; then
     readonly GH_HEADER="Authorization: token ${GH_TOKEN}"
+    echo "${GH_HEADER}"
 fi
 
 # # User/Group Information
