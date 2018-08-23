@@ -27,6 +27,7 @@ update_self() {
                 info "Updating DockSTARTer."
                 git -C "${SCRIPTPATH}" fetch --all > /dev/null 2>&1
                 git -C "${SCRIPTPATH}" reset --hard origin/master > /dev/null 2>&1
+                git -C "${SCRIPTPATH}" pull > /dev/null 2>&1
                 run_script 'env_update'
                 break
                 ;;
