@@ -11,8 +11,11 @@ cmdline() {
         local DELIM=""
         case "${ARG}" in
                 #translate --gnu-long-options to -g (short options)
+            --backup)         LOCAL_ARGS="${LOCAL_ARGS}-b " ;;
+            --env)            LOCAL_ARGS="${LOCAL_ARGS}-e " ;;
             --generate)       LOCAL_ARGS="${LOCAL_ARGS}-g " ;;
             --install)        LOCAL_ARGS="${LOCAL_ARGS}-i " ;;
+            --prune)          LOCAL_ARGS="${LOCAL_ARGS}-p " ;;
             --test)           LOCAL_ARGS="${LOCAL_ARGS}-t " ;;
             --update)         LOCAL_ARGS="${LOCAL_ARGS}-u " ;;
             --verbose)        LOCAL_ARGS="${LOCAL_ARGS}-v " ;;
@@ -26,8 +29,16 @@ cmdline() {
     #Reset the positional parameters to the short options
     eval set -- "${LOCAL_ARGS:-}"
 
-    while getopts "git:uvx" OPTION; do
+    while getopts "begipt:uvx" OPTION; do
         case ${OPTION} in
+            b)
+                run_script 'env_backup'
+                exit 0
+                ;;
+            e)
+                run_script 'env_update'
+                exit 0
+                ;;
             g)
                 run_script 'cmd_generate'
                 exit 0
@@ -36,12 +47,16 @@ cmdline() {
                 run_script 'cmd_install'
                 exit 0
                 ;;
+            p)
+                run_script 'prune_docker'
+                exit 0
+                ;;
             t)
                 run_test "${OPTARG}"
                 exit 0
                 ;;
             u)
-                run_script 'cmd_update'
+                run_script 'update_self'
                 exit 0
                 ;;
             v)

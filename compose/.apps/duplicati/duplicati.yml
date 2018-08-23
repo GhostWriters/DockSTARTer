@@ -10,5 +10,6 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/duplicati:/config
+      - ${DOCKERSHAREDDIR}:/shared
       - ${DUPLICATI_BACKUPSDIR}:/backups
       - ${DUPLICATI_SOURCEDIR}:/source

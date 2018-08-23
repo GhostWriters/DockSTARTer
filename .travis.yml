@@ -1,29 +1,17 @@
-dist:
-    trusty
-
-language:
-    generic
-
-sudo:
-    required
-
-group:
-    travis_latest
-
-before_install:
-    - sudo apt-get update -qq
-    - sudo apt-get install -qq curl git grep pcregrep sed
-    - sudo pip install bashate
-
-script:
+dist: trusty
+language: generic
+sudo: required
+group: travis_latest
+jobs:
+  include:
+  - stage: validate
+    script:
     - sudo bash ./main.sh -t validate_newline
     - sudo bash ./main.sh -t validate_bashate
     - sudo bash ./main.sh -t validate_shellcheck
-    - sudo bash ./main.sh -t run_install
-    - sudo bash ./main.sh -t run_generate
-
+  - stage: run
+    script: sudo bash ./main.sh -t run_install
+  - stage: run
+    script: sudo bash ./main.sh -t run_generate
 matrix:
-    fast_finish:   true
-
-#notifications:
-#    webhooks:      https://www.travisbuddy.com/
+  fast_finish: true

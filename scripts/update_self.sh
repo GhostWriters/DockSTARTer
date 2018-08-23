@@ -11,11 +11,12 @@ update_self() {
     local YN
     while true; do
         if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
-            YN=N
+            info "Travis will not run this."
+            return
         elif [[ ${PROMPT} == "menu" ]]; then
             local ANSWER
             set +e
-            ANSWER=$(whiptail --fb --yesno "${QUESTION}" 0 0 3>&1 1>&2 2>&3; echo $?)
+            ANSWER=$(whiptail --fb --clear --yesno "${QUESTION}" 0 0 3>&1 1>&2 2>&3; echo $?)
             set -e
             [[ ${ANSWER} == 0 ]] && YN=Y || YN=N
         else
@@ -26,11 +27,13 @@ update_self() {
                 info "Updating DockSTARTer."
                 git -C "${SCRIPTPATH}" fetch --all > /dev/null 2>&1
                 git -C "${SCRIPTPATH}" reset --hard origin/master > /dev/null 2>&1
+                git -C "${SCRIPTPATH}" pull > /dev/null 2>&1
+                run_script 'env_update'
                 break
                 ;;
             [Nn]* )
                 info "DockSTARTer will not be updated."
-                return
+                return 1
                 ;;
             * )
                 error "Please answer yes or no."
