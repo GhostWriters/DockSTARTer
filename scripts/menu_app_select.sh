@@ -124,8 +124,11 @@ menu_app_select() {
                 "RADARR")
                     APPLIST+=("Radarr" "Automatically download movies via Usenet and BitTorrent" "${APPONOFF}")
                     ;;
+                "RTORRENTVPN")
+                    APPLIST+=("rTorrentVPN" "rTorrent, Flood or ruTorrent WebUI, OpenVPN and Privoxy" "${APPONOFF}")
+                    ;;
                 "RUTORRENT")
-                    APPLIST+=("ruTorrent" "Web front-end for rTorrent" "${APPONOFF}")
+                    APPLIST+=("ruTorrent" "rTorrent client and ruTorrent WebUI" "${APPONOFF}")
                     ;;
                 "SABNZBD")
                     APPLIST+=("SABnzbd" "NZB Newsgrabber / Downloader" "${APPONOFF}")
@@ -146,7 +149,7 @@ menu_app_select() {
                     APPLIST+=("Transmission" "Fast, easy, and free BitTorrent client" "${APPONOFF}")
                     ;;
                 "TRANSMISSIONVPN")
-                    APPLIST+=("TransmissionVPN" "Transmission torrent client, WebUI and OpenVPN" "${APPONOFF}")
+                    APPLIST+=("TransmissionVPN" "Transmission, WebUI and OpenVPN" "${APPONOFF}")
                     ;;
                 "UNIFI")
                     APPLIST+=("Unifi" "Controller software for wireless networks" "${APPONOFF}")
