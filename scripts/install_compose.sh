@@ -13,9 +13,7 @@ install_compose() {
     if [[ "${AVAILABLE_COMPOSE}" != "${INSTALLED_COMPOSE}" ]] || [[ -n ${FORCE} ]]; then
         info "Installing latest compose."
         if [[ ${ARCH} == "aarch64" ]] || [[ ${ARCH} == "armv7l" ]]; then
-            #TODO remove the next line...
-            info "ARM architecture detected. Please let us know on Gitter chat if this works for you!"
-            apt-get remove docker-compose > /dev/null 2>&1
+            apt-get -y remove docker-compose > /dev/null 2>&1
             apt-get -y install python-pip > /dev/null 2>&1
             pip uninstall docker-py > /dev/null 2>&1 || true
             pip install -U docker-compose > /dev/null 2>&1
