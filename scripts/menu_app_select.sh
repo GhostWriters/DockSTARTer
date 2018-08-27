@@ -12,29 +12,29 @@ menu_app_select() {
         local FILENAME
         FILENAME=${APPNAME,,}
         local APPSUPPORTED
-        APPSUPPORTED="false"
+        APPSUPPORTED=false
         if [[ -d ${SCRIPTPATH}/compose/.apps/${FILENAME}/ ]]; then
             if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml ]]; then
                 if [[ ${ARCH} == "arm64" ]]; then
                     if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.arm64.yml ]]; then
-                        APPSUPPORTED="true"
+                        APPSUPPORTED=true
                     elif [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.armhf.yml ]]; then
-                        APPSUPPORTED="true"
+                        APPSUPPORTED=true
                     fi
                 fi
                 if [[ ${ARCH} == "armhf" ]]; then
                     if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.armhf.yml ]]; then
-                        APPSUPPORTED="true"
+                        APPSUPPORTED=true
                     fi
                 fi
                 if [[ ${ARCH} == "amd64" ]]; then
-                    APPSUPPORTED="true"
+                    APPSUPPORTED=true
                 fi
             fi
         fi
-        if [[ ${APPSUPPORTED} == "true" ]]; then
+        if [[ ${APPSUPPORTED} == true ]]; then
             local APPONOFF
-            if [[ $(run_script 'env_get' "${APPNAME}_ENABLED") == "true" ]]; then
+            if [[ $(run_script 'env_get' "${APPNAME}_ENABLED") == true ]]; then
                 APPONOFF="on"
             else
                 APPONOFF="off"
@@ -174,11 +174,11 @@ menu_app_select() {
             while IFS= read -r line; do
                 local APPNAME
                 APPNAME=${line/_ENABLED=true/}
-                run_script 'env_set' "${APPNAME}_ENABLED" 'false'
+                run_script 'env_set' "${APPNAME}_ENABLED" false
             done < <(grep '_ENABLED=true' < "${SCRIPTPATH}/compose/.env")
             info "Enabling selected apps."
             while IFS= read -r line; do
-                run_script 'env_set' "$(echo "${line^^}" | tr -d ' ')_ENABLED" 'true'
+                run_script 'env_set' "$(echo "${line^^}" | tr -d ' ')_ENABLED" true
             done < <(echo "${SELECTEDAPPS}")
         fi
     fi
