@@ -105,7 +105,7 @@ menu_value_prompt() {
     else
         case "${SET_VAR}" in
             *_ENABLED)
-                if [[ ${INPUT} == "true" ]] || [[ ${INPUT} == "false" ]]; then
+                if [[ ${INPUT} == true ]] || [[ ${INPUT} == false ]]; then
                     run_script 'env_set' "${SET_VAR}" "${INPUT}"
                 else
                     whiptail --fb --clear --title "Error" --msgbox "${INPUT} is not true or false. Please try setting ${SET_VAR} again." 0 0
