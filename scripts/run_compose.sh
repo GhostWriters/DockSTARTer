@@ -32,7 +32,7 @@ run_compose() {
                 PGID=$(run_script 'env_get' PGID)
                 run_script 'set_permissions' "${SCRIPTPATH}" "${PUID}" "${PGID}"
                 cd "${SCRIPTPATH}/compose/" || fatal "Unable to change directory to ${SCRIPTPATH}/compose/"
-                docker-compose up -d
+                su -c "docker-compose up -d" "${DETECTED_UNAME}"
                 cd "${SCRIPTPATH}" || fatal "Unable to change directory to ${SCRIPTPATH}"
                 break
                 ;;
