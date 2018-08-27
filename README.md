@@ -1,3 +1,5 @@
+# JUST A TEST FOR CODACY, DO NOT MERGE
+
 # [DockSTARTer](https://ghostwriters.github.io/DockSTARTer/) [![Chat Gitter](https://badges.gitter.im/GhostWriters/DockSTARTer.svg)](https://gitter.im/GhostWriters/DockSTARTer) [![Build Status](https://travis-ci.com/GhostWriters/DockSTARTer.svg?branch=master)](https://travis-ci.com/GhostWriters/DockSTARTer)
 
 ## [Wiki](https://github.com/GhostWriters/DockSTARTer/wiki/)
