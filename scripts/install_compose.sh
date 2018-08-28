@@ -22,6 +22,9 @@ install_compose() {
         if [[ ${ARCH} == "x86_64" ]]; then
             curl -H "${GH_HEADER:-}" -L "https://github.com/docker/compose/releases/download/${AVAILABLE_COMPOSE}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose > /dev/null 2>&1
             chmod +x /usr/local/bin/docker-compose > /dev/null 2>&1 || true
+            if [[ -n "$(command -v dnf)" ]]; then
+                dnf -y install docker-compose > /dev/null 2>&1
+            fi
         fi
     fi
 }
