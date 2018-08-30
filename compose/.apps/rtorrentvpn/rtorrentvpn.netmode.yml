@@ -1,0 +1,3 @@
+services:
+  rtorrentvpn:
+    network_mode:  ${RTORRENTVPN_NETWORK_MODE}
