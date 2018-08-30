@@ -87,6 +87,7 @@ usage() {
 run_script() {
     local SCRIPTSNAME="${1:-}"; shift
     if [[ -f ${SCRIPTPATH}/scripts/${SCRIPTSNAME}.sh ]]; then
+        # shellcheck source=/dev/null
         source "${SCRIPTPATH}/scripts/${SCRIPTSNAME}.sh"
         ${SCRIPTSNAME} "$@";
     else
@@ -98,6 +99,7 @@ run_script() {
 run_test() {
     local TESTSNAME="${1:-}"; shift
     if [[ -f ${SCRIPTPATH}/tests/${TESTSNAME}.sh ]]; then
+        # shellcheck source=/dev/null
         source "${SCRIPTPATH}/tests/${TESTSNAME}.sh"
         ${TESTSNAME} "$@";
     else
@@ -108,6 +110,7 @@ run_test() {
 # # Main Function
 main() {
     run_script 'root_check'
+    # shellcheck source=scripts/cmdline.sh
     source "${SCRIPTPATH}/scripts/cmdline.sh"
     cmdline "${ARGS[@]:-}"
     run_script 'menu_main'
