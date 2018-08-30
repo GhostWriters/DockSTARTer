@@ -3,7 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 run_generate() {
-    run_script 'run_apt'
+    run_script 'update_system'
     run_script 'env_create'
     info "Running generator."
     bash "${SCRIPTPATH}/main.sh" -g
