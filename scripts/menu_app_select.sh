@@ -15,19 +15,19 @@ menu_app_select() {
         APPSUPPORTED=false
         if [[ -d ${SCRIPTPATH}/compose/.apps/${FILENAME}/ ]]; then
             if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml ]]; then
-                if [[ ${ARCH} == "arm64" ]]; then
+                if [[ ${ARCH} == "aarch64" ]]; then
                     if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.arm64.yml ]]; then
                         APPSUPPORTED=true
                     elif [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.armhf.yml ]]; then
                         APPSUPPORTED=true
                     fi
                 fi
-                if [[ ${ARCH} == "armhf" ]]; then
+                if [[ ${ARCH} == "armv7l" ]]; then
                     if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.armhf.yml ]]; then
                         APPSUPPORTED=true
                     fi
                 fi
-                if [[ ${ARCH} == "amd64" ]]; then
+                if [[ ${ARCH} == "x86_64" ]]; then
                     APPSUPPORTED=true
                 fi
             fi

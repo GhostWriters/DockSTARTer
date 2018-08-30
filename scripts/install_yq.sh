@@ -12,10 +12,10 @@ install_yq() {
     FORCE=${1:-}
     if [[ "${AVAILABLE_YQ}" != "${INSTALLED_YQ}" ]] || [[ -n ${FORCE} ]]; then
         info "Installing latest yq."
-        if [[ ${ARCH} == "arm64" ]] || [[ ${ARCH} == "armhf" ]]; then
+        if [[ ${ARCH} == "aarch64" ]] || [[ ${ARCH} == "armv7l" ]]; then
             curl -H "${GH_HEADER:-}" -L "https://github.com/mikefarah/yq/releases/download/${AVAILABLE_YQ}/yq_linux_arm" -o /usr/local/bin/yq > /dev/null 2>&1
         fi
-        if [[ ${ARCH} == "amd64" ]]; then
+        if [[ ${ARCH} == "x86_64" ]]; then
             curl -H "${GH_HEADER:-}" -L "https://github.com/mikefarah/yq/releases/download/${AVAILABLE_YQ}/yq_linux_amd64" -o /usr/local/bin/yq > /dev/null 2>&1
         fi
         chmod +x /usr/local/bin/yq > /dev/null 2>&1 || true

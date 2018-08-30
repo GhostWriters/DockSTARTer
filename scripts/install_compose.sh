@@ -12,17 +12,20 @@ install_compose() {
     FORCE=${1:-}
     if [[ "${AVAILABLE_COMPOSE}" != "${INSTALLED_COMPOSE}" ]] || [[ -n ${FORCE} ]]; then
         info "Installing latest compose."
-        if [[ ${ARCH} == "arm64" ]] || [[ ${ARCH} == "armhf" ]]; then
-            #TODO remove the next line...
-            info "ARM architecture detected. Please let us know on Gitter chat if this works for you!"
-            apt-get remove docker-compose > /dev/null 2>&1
+        if [[ ${ARCH} == "aarch64" ]] || [[ ${ARCH} == "armv7l" ]]; then
+            apt-get -y remove docker-compose > /dev/null 2>&1
             apt-get -y install python-pip > /dev/null 2>&1
+            pip install -U pip > /dev/null 2>&1
             pip uninstall docker-py > /dev/null 2>&1 || true
+            pip install -U setuptools > /dev/null 2>&1
             pip install -U docker-compose > /dev/null 2>&1
         fi
-        if [[ ${ARCH} == "amd64" ]]; then
+        if [[ ${ARCH} == "x86_64" ]]; then
             curl -H "${GH_HEADER:-}" -L "https://github.com/docker/compose/releases/download/${AVAILABLE_COMPOSE}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose > /dev/null 2>&1
             chmod +x /usr/local/bin/docker-compose > /dev/null 2>&1 || true
+            if [[ -n "$(command -v dnf)" ]]; then
+                dnf -y install docker-compose > /dev/null 2>&1
+            fi
         fi
     fi
 }
