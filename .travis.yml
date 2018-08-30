@@ -12,7 +12,7 @@ jobs:
   - stage: run
     script: sudo bash ./main.sh -t run_install
   - stage: run
-    script: sudo bash ./main.sh -t run_generate
+    script: sudo bash ./main.sh -t run_generate_slim
   - stage: run
     script: sudo bash ./main.sh -t run_generate_full
 matrix:
