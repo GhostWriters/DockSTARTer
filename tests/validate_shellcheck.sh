@@ -15,7 +15,7 @@ validate_shellcheck() {
     local SCERRORS
     SCERRORS=$(find . -name '*.sh' -print0 | xargs -0 shellcheck -e SC1090 -e SC1091 -e SC2034 || true)
     if [[ -n ${SCERRORS} ]]; then
-        find . -name '*.sh' -print0 | xargs -0 shellcheck -e SC1090 -e SC1091 -e SC2034
+        find . -name '*.sh' -print0 | xargs -0 shellcheck -e SC2034
         fatal "Shellcheck validation failure."
     fi
 
