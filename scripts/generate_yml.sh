@@ -28,7 +28,7 @@ generate_yml() {
                 info "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.override.yml has been included."
             fi
             if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml ]]; then
-                if [[ ${ARCH} == "arm64" ]]; then
+                if [[ ${ARCH} == "aarch64" ]]; then
                     if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.arm64.yml ]]; then
                         echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.arm64.yml \\" >> "${RUNFILE}"
                     elif [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.armhf.yml ]]; then
@@ -39,7 +39,7 @@ generate_yml() {
                         continue
                     fi
                 fi
-                if [[ ${ARCH} == "armhf" ]]; then
+                if [[ ${ARCH} == "armv7l" ]]; then
                     if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.armhf.yml ]]; then
                         echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.armhf.yml \\" >> "${RUNFILE}"
                     else
