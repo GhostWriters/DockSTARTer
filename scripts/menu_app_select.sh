@@ -151,6 +151,9 @@ menu_app_select() {
                 "TRANSMISSIONVPN")
                     APPLIST+=("TransmissionVPN" "Transmission, WebUI and OpenVPN" "${APPONOFF}")
                     ;;
+                "UBOOQUITY")
+                    APPLIST+=("Ubooquity" "Home server for your comics and ebooks" "${APPONOFF}")
+                    ;;
                 "UNIFI")
                     APPLIST+=("Unifi" "Controller software for wireless networks" "${APPONOFF}")
                     ;;
