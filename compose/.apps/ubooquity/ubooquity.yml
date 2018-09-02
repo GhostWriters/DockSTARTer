@@ -1,0 +1,17 @@
+services:
+  ubooquity:
+    image:           linuxserver/ubooquity
+    container_name:  ubooquity
+    restart:         always
+    environment:
+      - MAXMEM=${UBOOQUITY_MAXMEM}
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/ubooquity:/config
+      - ${DOCKERSHAREDDIR}:/shared
+      - ${MEDIADIR_BOOKS}:/books
+      - ${MEDIADIR_COMICS}:/comics
+      - ${UBOOQUITY_FILESDIR}:/files
