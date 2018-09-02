@@ -9,6 +9,7 @@ ui_config() {
     run_script 'menu_value_prompt' PUID || return 1
     run_script 'menu_value_prompt' PGID || return 1
     run_script 'menu_value_prompt' DOCKERCONFDIR || return 1
+    run_script 'menu_value_prompt' DOCKERSHAREDDIR || return 1
     run_script 'menu_value_prompt' DOWNLOADSDIR || return 1
     run_script 'menu_value_prompt' MEDIADIR_BOOKS || return 1
     run_script 'menu_value_prompt' MEDIADIR_MOVIES || return 1
