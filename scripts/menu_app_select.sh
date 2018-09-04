@@ -64,6 +64,9 @@ menu_app_select() {
                 "EMBY")
                     APPLIST+=("Emby" "Organize, play, and stream audio and video" "${APPONOFF}")
                     ;;
+                "GUACAMOLE")
+                    APPLIST+=("Guacamole" "Web application that provides access to desktop environments using remote desktop protocols" "${APPONOFF}")
+                    ;;
                 "HEADPHONES")
                     APPLIST+=("Headphones" "Music PVR Client" "${APPONOFF}")
                     ;;
