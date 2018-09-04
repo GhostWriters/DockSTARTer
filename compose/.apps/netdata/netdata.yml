@@ -13,3 +13,5 @@ services:
       - ${DOCKERSHAREDDIR}:/shared
     cap_add:
       - SYS_PTRACE
+    security_opt:
+      - apparmor:unconfined
