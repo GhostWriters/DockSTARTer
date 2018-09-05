@@ -172,7 +172,7 @@ menu_app_select() {
     done < <(grep '_ENABLED=' < "${SCRIPTPATH}/compose/.env")
 
     if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]]; then
-        SELECTEDAPPS=$(whiptail --fb --clear --separate-output --title "Application Selector" --checklist  "Choose which apps you would like to install:" 0 0 0 "${APPLIST[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
+        SELECTEDAPPS=$(whiptail --fb --clear --title "DockSTARTer" --separate-output --checklist  "Choose which apps you would like to install:" 0 0 0 "${APPLIST[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
         if [[ ${SELECTEDAPPS} == "Cancel" ]]; then
             return 1
         else
