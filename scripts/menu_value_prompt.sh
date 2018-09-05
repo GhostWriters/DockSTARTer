@@ -10,7 +10,7 @@ menu_value_prompt() {
     CURRENT_VAL=$(run_script 'env_get' "${SET_VAR}")
 
     local DEFAULT_VAL
-    DEFAULT_VAL=$(grep "${SET_VAR}" "${SCRIPTPATH}/compose/.env.example" | xargs || true)
+    DEFAULT_VAL=$(grep "^${SET_VAR}=" "${SCRIPTPATH}/compose/.env.example" | xargs || true)
     DEFAULT_VAL="${DEFAULT_VAL#*=}"
 
     local SYSTEM_VAL
