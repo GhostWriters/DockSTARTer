@@ -155,6 +155,7 @@ menu_value_prompt() {
                     if [[ ${ANSWER} == 0 ]]; then
                         mkdir -p "${INPUT}" || fatal "${INPUT} folder could not be created."
                         run_script 'set_permissions' "${INPUT}" "${PUID}" "${PGID}"
+                        run_script 'env_set' "${SET_VAR}" "${INPUT}"
                         whiptail --fb --clear --title "DockSTARTer" --msgbox "${INPUT} folder was created successfully." 0 0
                     else
                         whiptail --fb --clear --title "DockSTARTer" --msgbox "${INPUT} is not a valid path. Please try setting ${SET_VAR} again." 0 0
