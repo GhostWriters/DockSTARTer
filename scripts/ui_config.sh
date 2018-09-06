@@ -12,6 +12,7 @@ ui_config() {
     run_script 'menu_value_prompt' DOCKERSHAREDDIR || return 1
     run_script 'menu_value_prompt' DOWNLOADSDIR || return 1
     run_script 'menu_value_prompt' MEDIADIR_BOOKS || return 1
+    run_script 'menu_value_prompt' MEDIADIR_COMICS || return 1
     run_script 'menu_value_prompt' MEDIADIR_MOVIES || return 1
     run_script 'menu_value_prompt' MEDIADIR_MUSIC || return 1
     run_script 'menu_value_prompt' MEDIADIR_TV || return 1

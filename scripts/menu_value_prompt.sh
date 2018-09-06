@@ -10,7 +10,7 @@ menu_value_prompt() {
     CURRENT_VAL=$(run_script 'env_get' "${SET_VAR}")
 
     local DEFAULT_VAL
-    DEFAULT_VAL=$(grep "${SET_VAR}" "${SCRIPTPATH}/compose/.env.example" | xargs || true)
+    DEFAULT_VAL=$(grep "^${SET_VAR}=" "${SCRIPTPATH}/compose/.env.example" | xargs || true)
     DEFAULT_VAL="${DEFAULT_VAL#*=}"
 
     local SYSTEM_VAL
@@ -74,7 +74,7 @@ menu_value_prompt() {
     if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
         SELECTEDVALUE="Keep Current"
     else
-        SELECTEDVALUE=$(whiptail --fb --clear --title "Value Prompt" --menu "What would you like set for ${SET_VAR}?${VALUEDESCRIPTION:-}" 0 0 0 "${VALUEOPTIONS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
+        SELECTEDVALUE=$(whiptail --fb --clear --title "DockSTARTer" --menu "What would you like set for ${SET_VAR}?${VALUEDESCRIPTION:-}" 0 0 0 "${VALUEOPTIONS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
     fi
 
     local INPUT
@@ -89,7 +89,7 @@ menu_value_prompt() {
             INPUT=${SYSTEM_VAL}
             ;;
         "Enter New")
-            INPUT=$(whiptail --fb --clear --title "Enter New" --inputbox "What would you like set for ${SET_VAR}?" 0 0 "${CURRENT_VAL}" 3>&1 1>&2 2>&3 || echo "CancelNewEntry")
+            INPUT=$(whiptail --fb --clear --title "DockSTARTer" --inputbox "What would you like set for ${SET_VAR}?" 0 0 "${CURRENT_VAL}" 3>&1 1>&2 2>&3 || echo "CancelNewEntry")
             ;;
         "Cancel")
             warning "Selection of ${SET_VAR} was canceled."
@@ -108,7 +108,7 @@ menu_value_prompt() {
                 if [[ ${INPUT} == true ]] || [[ ${INPUT} == false ]]; then
                     run_script 'env_set' "${SET_VAR}" "${INPUT}"
                 else
-                    whiptail --fb --clear --title "Error" --msgbox "${INPUT} is not true or false. Please try setting ${SET_VAR} again." 0 0
+                    whiptail --fb --clear --title "DockSTARTer" --msgbox "${INPUT} is not true or false. Please try setting ${SET_VAR} again." 0 0
                     menu_value_prompt "${SET_VAR}"
                 fi
                 ;;
@@ -121,7 +121,7 @@ menu_value_prompt() {
                     [[ ${INPUT} == "container:"* ]]; then
                     run_script 'env_set' "${SET_VAR}" "${INPUT}"
                 else
-                    whiptail --fb --clear --title "Error" --msgbox "${INPUT} is not a valid network mode. Please try setting ${SET_VAR} again." 0 0
+                    whiptail --fb --clear --title "DockSTARTer" --msgbox "${INPUT} is not a valid network mode. Please try setting ${SET_VAR} again." 0 0
                     menu_value_prompt "${SET_VAR}"
                 fi
                 ;;
@@ -129,7 +129,7 @@ menu_value_prompt() {
                 if [[ ${INPUT} =~ ^[0-9]+$ ]] || [[ ${INPUT} -ge 0 ]] || [[ ${INPUT} -le 65535 ]]; then
                     run_script 'env_set' "${SET_VAR}" "${INPUT}"
                 else
-                    whiptail --fb --clear --title "Error" --msgbox "${INPUT} is not a valid port. Please try setting ${SET_VAR} again." 0 0
+                    whiptail --fb --clear --title "DockSTARTer" --msgbox "${INPUT} is not a valid port. Please try setting ${SET_VAR} again." 0 0
                     menu_value_prompt "${SET_VAR}"
                 fi
                 ;;
@@ -142,7 +142,7 @@ menu_value_prompt() {
                     run_script 'env_set' "${SET_VAR}" "${INPUT}"
                     local ANSWER
                     set +e
-                    ANSWER=$(whiptail --fb --clear --yesno "Would you like to set permissions on ${INPUT} ?" 0 0 3>&1 1>&2 2>&3; echo $?)
+                    ANSWER=$(whiptail --fb --clear --title "DockSTARTer" --yesno "Would you like to set permissions on ${INPUT} ?" 0 0 3>&1 1>&2 2>&3; echo $?)
                     set -e
                     if [[ ${ANSWER} == 0 ]]; then
                         run_script 'set_permissions' "${INPUT}" "${PUID}" "${PGID}"
@@ -150,14 +150,15 @@ menu_value_prompt() {
                 else
                     local ANSWER
                     set +e
-                    ANSWER=$(whiptail --fb --clear --yesno "${INPUT} is not a valid path. Would you like to attempt to create it?" 0 0 3>&1 1>&2 2>&3; echo $?)
+                    ANSWER=$(whiptail --fb --clear --title "DockSTARTer" --yesno "${INPUT} is not a valid path. Would you like to attempt to create it?" 0 0 3>&1 1>&2 2>&3; echo $?)
                     set -e
                     if [[ ${ANSWER} == 0 ]]; then
                         mkdir -p "${INPUT}" || fatal "${INPUT} folder could not be created."
                         run_script 'set_permissions' "${INPUT}" "${PUID}" "${PGID}"
-                        whiptail --fb --clear --title "Success" --msgbox "${INPUT} folder was created successfully." 0 0
+                        run_script 'env_set' "${SET_VAR}" "${INPUT}"
+                        whiptail --fb --clear --title "DockSTARTer" --msgbox "${INPUT} folder was created successfully." 0 0
                     else
-                        whiptail --fb --clear --title "Error" --msgbox "${INPUT} is not a valid path. Please try setting ${SET_VAR} again." 0 0
+                        whiptail --fb --clear --title "DockSTARTer" --msgbox "${INPUT} is not a valid path. Please try setting ${SET_VAR} again." 0 0
                         menu_value_prompt "${SET_VAR}"
                     fi
                 fi
@@ -166,7 +167,7 @@ menu_value_prompt() {
                 if [[ ${INPUT} =~ ^[0-9]+$ ]]; then
                     run_script 'env_set' "${SET_VAR}" "${INPUT}"
                 else
-                    whiptail --fb --clear --title "Error" --msgbox "${INPUT} is not a valid ${SET_VAR}. Please try setting ${SET_VAR} again." 0 0
+                    whiptail --fb --clear --title "DockSTARTer" --msgbox "${INPUT} is not a valid ${SET_VAR}. Please try setting ${SET_VAR} again." 0 0
                     menu_value_prompt "${SET_VAR}"
                 fi
                 ;;
