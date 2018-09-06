@@ -24,7 +24,7 @@ env_update() {
             SET_VAR=${line/=*/}
             local SET_VAL
             SET_VAL=${line/*=/}
-            if grep -q "${SET_VAR}" "${SCRIPTPATH}/compose/.env"; then
+            if grep -q "^${SET_VAR}=" "${SCRIPTPATH}/compose/.env"; then
                 run_script 'env_set' "${SET_VAR}" "${SET_VAL}"
             else
                 echo "${line}" >> "${SCRIPTPATH}/compose/.env"
