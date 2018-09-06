@@ -67,14 +67,17 @@ menu_app_select() {
                 "HOMEASSISTANT")
                     APPLIST+=("Home Assistant" "Track and control all devices at home and automate control" "${APPONOFF}")
                     ;;
+                "HTPCMANAGER")
+                    APPLIST+=("HTPC Manager" "Front end for many htpc related applications" "${APPONOFF}")
+                    ;;
                 "HYDRA2")
-                    APPLIST+=("Hydra2" "Meta search for NZB indexers" "${APPONOFF}")
+                    APPLIST+=("NZBHydra 2" "Meta search for NZB indexers" "${APPONOFF}")
                     ;;
                 "JACKETT")
                     APPLIST+=("Jackett" "API Support for your favorite private trackers" "${APPONOFF}")
                     ;;
                 "LAZYLIBRARIAN")
-                    APPLIST+=("Lazylibrarian" "Book PVR Client" "${APPONOFF}")
+                    APPLIST+=("LazyLibrarian" "Book PVR Client" "${APPONOFF}")
                     ;;
                 "LETSENCRYPT")
                     APPLIST+=("Letsencrypt" "Certificate authority that provides free X.509 certificates" "${APPONOFF}")
