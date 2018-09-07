@@ -64,6 +64,9 @@ menu_app_select() {
                 "HEADPHONES")
                     APPLIST+=("Headphones" "Music PVR Client" "${APPONOFF}")
                     ;;
+                "HEIMDALL")
+                    APPLIST+=("Heimdall" "Application dashboard and launcher" "${APPONOFF}")
+                    ;;
                 "HOMEASSISTANT")
                     APPLIST+=("Home Assistant" "Track and control all devices at home and automate control" "${APPONOFF}")
                     ;;
@@ -99,6 +102,9 @@ menu_app_select() {
                     ;;
                 "NETDATA")
                     APPLIST+=("netdata" "Distributed real-time performance and health monitoring" "${APPONOFF}")
+                    ;;
+                "NEXTCLOUD")
+                    APPLIST+=("Nextcloud" "Gives you access to all your files wherever you are" "${APPONOFF}")
                     ;;
                 "NZBGET")
                     APPLIST+=("NZBGet" "NZB Newsgrabber / Downloader" "${APPONOFF}")
@@ -147,6 +153,9 @@ menu_app_select() {
                     ;;
                 "TAUTULLI")
                     APPLIST+=("Tautulli" "Monitoring and tracking tool for Plex Media Server" "${APPONOFF}")
+                    ;;
+                "THELOUNGE")
+                    APPLIST+=("TheLounge" "Web IRC client that you host on your own server" "${APPONOFF}")
                     ;;
                 "TRANSMISSION")
                     APPLIST+=("Transmission" "Fast, easy, and free BitTorrent client" "${APPONOFF}")
