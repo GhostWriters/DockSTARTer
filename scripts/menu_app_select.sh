@@ -145,6 +145,9 @@ menu_app_select() {
                 "SABNZBD")
                     APPLIST+=("SABnzbd" "NZB Newsgrabber / Downloader" "${APPONOFF}")
                     ;;
+                "SABNZBDVPN")
+                    APPLIST+=("SABnzbdVPN" "SABnzbd, OpenVPN and Privoxy" "${APPONOFF}")
+                    ;;
                 "SICKRAGE")
                     APPLIST+=("Sickrage" "Automatic Video Library Manager for TV Shows" "${APPONOFF}")
                     ;;
