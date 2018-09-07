@@ -1,6 +1,6 @@
 services:
   organizr:
-    image:           lsiocommunity/organizr
+    image:           tronyx/docker-organizr-v2:php-fpm
     container_name:  organizr
     restart:         always
     environment:

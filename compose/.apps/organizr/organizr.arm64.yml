@@ -1,3 +1,0 @@
-services:
-  organizr:
-    image:   lsioarmhf/organizr-aarch64
