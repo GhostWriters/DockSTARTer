@@ -1,0 +1,4 @@
+services:
+  nextcloud:
+    ports:
+      - "${NEXTCLOUD_PORT_443}:443"

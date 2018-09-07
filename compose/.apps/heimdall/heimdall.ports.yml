@@ -1,0 +1,5 @@
+services:
+  heimdall:
+    ports:
+      - "${HEIMDALL_PORT_443}:443"
+      - "${HEIMDALL_PORT_80}:80"

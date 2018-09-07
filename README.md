@@ -10,20 +10,34 @@ You may choose to rely on DockSTARTer for various changes to your Docker system,
 
 ## Getting Started
 
-#### One Time Setup (required)
-Update and reboot your system
+### One Time Setup (required)
+Update your system
+#### APT Systems (Debian/Ubuntu/Raspbian/etc)
 ```
 sudo apt-get update
+sudo apt-get install curl git grep sed whiptail
 sudo apt-get dist-upgrade
+```
+#### DNF Systems (Fedora)
+```
+sudo dnf install curl git grep newt sed
+sudo dnf upgrade --refresh
+```
+#### YUM Systems (CentOS)
+```
+sudo yum install curl git grep newt sed
+sudo yum upgrade
+```
+Reboot your system
+```
 sudo reboot
 ```
 After rebooting, clone the repo
 ```
-sudo apt-get install git
 git clone https://github.com/GhostWriters/DockSTARTer ~/.docker
 ```
 
-#### Running DockSTARTer
+### Running DockSTARTer
 ```
 sudo bash ~/.docker/main.sh
 ```

@@ -12,9 +12,16 @@ install_compose() {
     FORCE=${1:-}
     if [[ "${AVAILABLE_COMPOSE}" != "${INSTALLED_COMPOSE}" ]] || [[ -n ${FORCE} ]]; then
         info "Installing latest compose."
-        if [[ ${ARCH} == "aarch64" ]] || [[ ${ARCH} == "armv7l" ]]; then
-            apt-get -y remove docker-compose > /dev/null 2>&1
-            apt-get -y install python-pip > /dev/null 2>&1
+        if [[ -n "$(command -v yum)" ]] || [[ ${ARCH} == "aarch64" ]] || [[ ${ARCH} == "armv7l" ]]; then
+            if [[ -n "$(command -v apt)" ]]; then
+                apt-get -y remove docker-compose > /dev/null 2>&1
+                apt-get -y install python-pip > /dev/null 2>&1
+            fi
+            if [[ -n "$(command -v yum)" ]]; then
+                yum -y install epel-release > /dev/null 2>&1
+                yum -y install python-pip > /dev/null 2>&1
+                yum -y upgrade python* > /dev/null 2>&1
+            fi
             pip install -U pip > /dev/null 2>&1
             pip uninstall docker-py > /dev/null 2>&1 || true
             pip install -U setuptools > /dev/null 2>&1
