@@ -103,6 +103,9 @@ menu_app_select() {
                 "NETDATA")
                     APPLIST+=("netdata" "Distributed real-time performance and health monitoring" "${APPONOFF}")
                     ;;
+                "NEXTCLOUD")
+                    APPLIST+=("Nextcloud" "Gives you access to all your files wherever you are" "${APPONOFF}")
+                    ;;
                 "NZBGET")
                     APPLIST+=("NZBGet" "NZB Newsgrabber / Downloader" "${APPONOFF}")
                     ;;
