@@ -130,6 +130,9 @@ menu_app_select() {
                 "PORTAINERAGENT")
                     APPLIST+=("Portainer Agent" "An agent used to manage all the resources in a Swarm cluster" "${APPONOFF}")
                     ;;
+                "QBITTORRENT")
+                    APPLIST+=("qBittorrent" "Cross-platform free and open-source BitTorrent client" "${APPONOFF}")
+                    ;;
                 "RADARR")
                     APPLIST+=("Radarr" "Automatically download movies via Usenet and BitTorrent" "${APPONOFF}")
                     ;;

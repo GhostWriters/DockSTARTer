@@ -1,0 +1,3 @@
+services:
+  qbittorrent:
+    image:      lsioarmhf/qbittorrent-aarch64
