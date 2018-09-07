@@ -1,0 +1,3 @@
+services:
+  heimdall:
+    network_mode:  ${HEIMDALL_NETWORK_MODE}
