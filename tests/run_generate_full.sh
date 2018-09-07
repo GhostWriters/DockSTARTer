@@ -2,7 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-run_generate() {
+run_generate_full() {
     run_script 'update_system'
     run_script 'env_create'
     info "Enabling all apps."
@@ -13,7 +13,6 @@ run_generate() {
     run_script 'env_set' "DELUGEVPN_PORT_8112" "18112"
     run_script 'env_set' "HEADPHONES_PORT_8181" "18181"
     run_script 'env_set' "PLEX_PORT_1900" "11900"
-    run_script 'env_set' "PLEXREQUESTS_PORT_3000" "13000"
     run_script 'env_set' "RUTORRENT_PORT_51413" "41413"
     run_script 'env_set' "RUTORRENT_PORT_6881" "16881"
     run_script 'env_set' "SICKRAGE_PORT_8081" "28081"
