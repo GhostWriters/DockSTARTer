@@ -1,0 +1,5 @@
+services:
+  sabnzbdvpn:
+    ports:
+      - "${SABNZBDVPN_PORT_8080}:8080"
+      - "${SABNZBDVPN_PORT_8090}:8090"

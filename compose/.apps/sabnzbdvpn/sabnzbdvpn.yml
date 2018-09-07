@@ -1,0 +1,22 @@
+services:
+  sabnzbdvpn:
+    image:           binhex/arch-sabnzbdvpn
+    container_name:  sabnzbdvpn
+    restart:         always
+    environment:
+      - LAN_NETWORK=${LAN_NETWORK}
+      - NAME_SERVERS=${NS1},${NS2}
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - VPN_ENABLED=${VPN_ENABLE}
+      - VPN_OPTIONS=${VPN_OPTIONS}
+      - VPN_PASS=${VPN_PASS}
+      - VPN_PROV=${VPN_PROV}
+      - VPN_USER=${VPN_USER}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/sabnzbdvpn:/config
+      - ${DOWNLOADSDIR}:/data
+    cap_add:
+      - NET_ADMIN
