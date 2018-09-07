@@ -64,17 +64,23 @@ menu_app_select() {
                 "HEADPHONES")
                     APPLIST+=("Headphones" "Music PVR Client" "${APPONOFF}")
                     ;;
+                "HEIMDALL")
+                    APPLIST+=("Heimdall" "Application dashboard and launcher" "${APPONOFF}")
+                    ;;
                 "HOMEASSISTANT")
                     APPLIST+=("Home Assistant" "Track and control all devices at home and automate control" "${APPONOFF}")
                     ;;
+                "HTPCMANAGER")
+                    APPLIST+=("HTPC Manager" "Front end for many htpc related applications" "${APPONOFF}")
+                    ;;
                 "HYDRA2")
-                    APPLIST+=("Hydra2" "Meta search for NZB indexers" "${APPONOFF}")
+                    APPLIST+=("NZBHydra 2" "Meta search for NZB indexers" "${APPONOFF}")
                     ;;
                 "JACKETT")
                     APPLIST+=("Jackett" "API Support for your favorite private trackers" "${APPONOFF}")
                     ;;
                 "LAZYLIBRARIAN")
-                    APPLIST+=("Lazylibrarian" "Book PVR Client" "${APPONOFF}")
+                    APPLIST+=("LazyLibrarian" "Book PVR Client" "${APPONOFF}")
                     ;;
                 "LETSENCRYPT")
                     APPLIST+=("Letsencrypt" "Certificate authority that provides free X.509 certificates" "${APPONOFF}")
@@ -103,6 +109,9 @@ menu_app_select() {
                 "NETDATA")
                     APPLIST+=("netdata" "Distributed real-time performance and health monitoring" "${APPONOFF}")
                     ;;
+                "NEXTCLOUD")
+                    APPLIST+=("Nextcloud" "Gives you access to all your files wherever you are" "${APPONOFF}")
+                    ;;
                 "NZBGET")
                     APPLIST+=("NZBGet" "NZB Newsgrabber / Downloader" "${APPONOFF}")
                     ;;
@@ -123,6 +132,9 @@ menu_app_select() {
                     ;;
                 "PORTAINERAGENT")
                     APPLIST+=("Portainer Agent" "An agent used to manage all the resources in a Swarm cluster" "${APPONOFF}")
+                    ;;
+                "QBITTORRENT")
+                    APPLIST+=("qBittorrent" "Cross-platform free and open-source BitTorrent client" "${APPONOFF}")
                     ;;
                 "RADARR")
                     APPLIST+=("Radarr" "Automatically download movies via Usenet and BitTorrent" "${APPONOFF}")
@@ -147,6 +159,9 @@ menu_app_select() {
                     ;;
                 "TAUTULLI")
                     APPLIST+=("Tautulli" "Monitoring and tracking tool for Plex Media Server" "${APPONOFF}")
+                    ;;
+                "THELOUNGE")
+                    APPLIST+=("TheLounge" "Web IRC client that you host on your own server" "${APPONOFF}")
                     ;;
                 "TRANSMISSION")
                     APPLIST+=("Transmission" "Fast, easy, and free BitTorrent client" "${APPONOFF}")

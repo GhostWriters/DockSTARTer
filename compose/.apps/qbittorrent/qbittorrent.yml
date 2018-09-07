@@ -1,0 +1,15 @@
+services:
+  qbittorrent:
+    image:           linuxserver/qbittorrent
+    container_name:  qbittorrent
+    restart:         always
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - WEBUI_PORT=${QBITTORRENT_PORT_8080}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/qbittorrent:/config
+      - ${DOCKERSHAREDDIR}:/shared
+      - ${DOWNLOADSDIR}:/downloads

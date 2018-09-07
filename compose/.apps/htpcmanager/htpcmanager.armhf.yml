@@ -1,0 +1,3 @@
+services:
+  htpcmanager:
+    image:      lsioarmhf/htpcmanager
