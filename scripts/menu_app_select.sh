@@ -43,6 +43,9 @@ menu_app_select() {
                 "BAZARR")
                     APPLIST+=("Bazarr" "Companion to Sonarr to manage and download subtitles" "${APPONOFF}")
                     ;;
+                "CALIBREWEB")
+                    APPLIST+=("Calibre-Web" "Web app for browsing, reading and downloading eBooks" "${APPONOFF}")
+                    ;;
                 "COUCHPOTATO")
                     APPLIST+=("Couchpotato" "Movies PVR Client" "${APPONOFF}")
                     ;;
