@@ -18,7 +18,7 @@ run_generate_full() {
     run_script 'env_set' "QBITTORRENT_PORT_6881" "16881"
     run_script 'env_set' "QBITTORRENT_PORT_8080" "18080"
     run_script 'env_set' "SABNZBD_PORT_8080" "28080"
-    #run_script 'env_set' "SABNZBDVPN_PORT_8080" "38080"
+    run_script 'env_set' "SABNZBDVPN_PORT_8080" "38080"
     run_script 'env_set' "SICKRAGE_PORT_8081" "28081"
     run_script 'env_set' "THELOUNGE_PORT_9000" "9002"
     run_script 'env_set' "TRANSMISSION_PORT_51413" "51414"
