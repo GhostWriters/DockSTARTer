@@ -47,9 +47,9 @@ See our [Wiki](https://github.com/GhostWriters/DockSTARTer/wiki/) for more detai
 
 ## Feature Requests
 
-Please add new features and vote to help steer the direction of DockSTARTer. Current requests and voting can be seen below.
+We have switched to using GitHub for [Feature Requests](https://github.com/GhostWriters/DockSTARTer/issues/new?template=feature_request.md). Click the link and fill out the information to request a feature.
 
-[![Feature Requests](http://feathub.com/GhostWriters/DockSTARTer?format=svg)](http://feathub.com/GhostWriters/DockSTARTer)
+FeatHub will no longer be checked or maintained.
 
 ## Special Thanks
 
