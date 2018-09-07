@@ -1,0 +1,3 @@
+services:
+  htpcmanager:
+    network_mode:  ${HTPCMANAGER_NETWORK_MODE}
