@@ -64,6 +64,9 @@ menu_app_select() {
                 "HEADPHONES")
                     APPLIST+=("Headphones" "Music PVR Client" "${APPONOFF}")
                     ;;
+                "HEIMDALL")
+                    APPLIST+=("Heimdall" "Application dashboard and launcher" "${APPONOFF}")
+                    ;;
                 "HOMEASSISTANT")
                     APPLIST+=("Home Assistant" "Track and control all devices at home and automate control" "${APPONOFF}")
                     ;;

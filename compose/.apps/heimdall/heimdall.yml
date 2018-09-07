@@ -1,0 +1,13 @@
+services:
+  heimdall:
+    image:           linuxserver/heimdall
+    container_name:  heimdall
+    restart:         always
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/heimdall:/config
+      - ${DOCKERSHAREDDIR}:/shared
