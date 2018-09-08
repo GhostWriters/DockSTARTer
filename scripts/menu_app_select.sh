@@ -178,9 +178,6 @@ menu_app_select() {
                 "UNIFI")
                     APPLIST+=("Unifi" "Controller software for wireless networks" "${APPONOFF}")
                     ;;
-                "WATCHER")
-                    APPLIST+=("Watcher" "Automated movie NZB & Torrent searcher and snatcher" "${APPONOFF}")
-                    ;;
                 "WATCHTOWER")
                     APPLIST+=("Watchtower" "Automatically update running Docker containers" "${APPONOFF}")
                     ;;
