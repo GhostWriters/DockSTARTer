@@ -1,3 +1,0 @@
-services:
-  watcher:
-    network_mode:  ${WATCHER_NETWORK_MODE}
