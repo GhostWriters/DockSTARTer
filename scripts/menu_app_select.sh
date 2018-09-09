@@ -44,7 +44,7 @@ menu_app_select() {
                     APPLIST+=("Bazarr" "Companion to Sonarr to manage and download subtitles" "${APPONOFF}")
                     ;;
                 "CALIBREWEB")
-                    APPLIST+=("Calibre-Web" "Web app for browsing, reading and downloading eBooks" "${APPONOFF}")
+                    APPLIST+=("CalibreWeb" "Web app for browsing, reading and downloading eBooks" "${APPONOFF}")
                     ;;
                 "COUCHPOTATO")
                     APPLIST+=("Couchpotato" "Movies PVR Client" "${APPONOFF}")
@@ -71,13 +71,13 @@ menu_app_select() {
                     APPLIST+=("Heimdall" "Application dashboard and launcher" "${APPONOFF}")
                     ;;
                 "HOMEASSISTANT")
-                    APPLIST+=("Home Assistant" "Track and control all devices at home and automate control" "${APPONOFF}")
+                    APPLIST+=("HomeAssistant" "Track and control all devices at home and automate control" "${APPONOFF}")
                     ;;
                 "HTPCMANAGER")
-                    APPLIST+=("HTPC Manager" "Front end for many htpc related applications" "${APPONOFF}")
+                    APPLIST+=("HTPCManager" "Front end for many htpc related applications" "${APPONOFF}")
                     ;;
                 "HYDRA2")
-                    APPLIST+=("NZBHydra 2" "Meta search for NZB indexers" "${APPONOFF}")
+                    APPLIST+=("Hydra2" "Meta search for NZB indexers" "${APPONOFF}")
                     ;;
                 "JACKETT")
                     APPLIST+=("Jackett" "API Support for your favorite private trackers" "${APPONOFF}")
@@ -86,7 +86,7 @@ menu_app_select() {
                     APPLIST+=("LazyLibrarian" "Book PVR Client" "${APPONOFF}")
                     ;;
                 "LETSENCRYPT")
-                    APPLIST+=("Letsencrypt" "Certificate authority that provides free X.509 certificates" "${APPONOFF}")
+                    APPLIST+=("LetsEncrypt" "Certificate authority that provides free X.509 certificates" "${APPONOFF}")
                     ;;
                 "LIDARR")
                     APPLIST+=("Lidarr" "Music download manager for Usenet and BitTorrent users" "${APPONOFF}")
@@ -125,13 +125,13 @@ menu_app_select() {
                     APPLIST+=("Plex" "Organizes all of your video, music and photo collections" "${APPONOFF}")
                     ;;
                 "PLEXREQUESTS")
-                    APPLIST+=("Plex Requests" "Automated way for users to request new content for Plex" "${APPONOFF}")
+                    APPLIST+=("PlexRequests" "Automated way for users to request new content for Plex" "${APPONOFF}")
                     ;;
                 "PORTAINER")
                     APPLIST+=("Portainer" "Simple management UI for Docker" "${APPONOFF}")
                     ;;
                 "PORTAINERAGENT")
-                    APPLIST+=("Portainer Agent" "An agent used to manage all the resources in a Swarm cluster" "${APPONOFF}")
+                    APPLIST+=("PortainerAgent" "An agent used to manage all the resources in a Swarm cluster" "${APPONOFF}")
                     ;;
                 "QBITTORRENT")
                     APPLIST+=("qBittorrent" "Cross-platform free and open-source BitTorrent client" "${APPONOFF}")
