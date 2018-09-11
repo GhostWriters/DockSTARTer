@@ -97,6 +97,9 @@ menu_app_select() {
                 "MARIADB")
                     APPLIST+=("MariaDB" "One of the most popular database servers" "${APPONOFF}")
                     ;;
+                "MCMYADMIN2")
+                    APPLIST+=("McMyAdmin2" "Minecraft with a web control panel and admin console" "${APPONOFF}")
+                    ;;
                 "MEDUSA")
                     APPLIST+=("Medusa" "Automatic Video Library Manager for TV Shows" "${APPONOFF}")
                     ;;

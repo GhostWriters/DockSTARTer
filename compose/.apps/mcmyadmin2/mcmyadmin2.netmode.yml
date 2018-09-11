@@ -1,0 +1,3 @@
+services:
+  mcmyadmin2:
+    network_mode:  ${MCMYADMIN2_NETWORK_MODE}
