@@ -49,6 +49,9 @@ menu_app_select() {
                 "COUCHPOTATO")
                     APPLIST+=("Couchpotato" "Movies PVR Client" "${APPONOFF}")
                     ;;
+                "DDCLIENT")
+                    APPLIST+=("DDClient" "Update dynamic DNS entries" "${APPONOFF}")
+                    ;;
                 "DELUGE")
                     APPLIST+=("Deluge" "Lightweight, Full-featured BitTorrent client" "${APPONOFF}")
                     ;;
