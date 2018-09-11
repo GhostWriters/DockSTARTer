@@ -64,6 +64,9 @@ menu_app_select() {
                 "EMBY")
                     APPLIST+=("Emby" "Organize, play, and stream audio and video" "${APPONOFF}")
                     ;;
+                "GLANCES")
+                    APPLIST+=("Glances" "Cross-platform system monitoring tool" "${APPONOFF}")
+                    ;;
                 "HEADPHONES")
                     APPLIST+=("Headphones" "Music PVR Client" "${APPONOFF}")
                     ;;
