@@ -1,7 +1,7 @@
 services:
-  organizr:
-    image:           tronyx/docker-organizr-v2:php-fpm
-    container_name:  organizr
+  calibreweb:
+    image:           linuxserver/calibre-web
+    container_name:  calibreweb
     restart:         always
     environment:
       - PGID=${PGID}
@@ -9,5 +9,6 @@ services:
       - TZ=${TZ}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/organizr:/config
+      - ${DOCKERCONFDIR}/calibreweb:/config
       - ${DOCKERSHAREDDIR}:/shared
+      - ${MEDIADIR_BOOKS}:/books

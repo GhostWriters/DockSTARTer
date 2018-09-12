@@ -1,0 +1,3 @@
+services:
+  calibreweb:
+    image:     lsioarmhf/calibreweb-aarch64
