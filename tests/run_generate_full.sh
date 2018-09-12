@@ -12,6 +12,7 @@ run_generate_full() {
     run_script 'env_set' "DELUGEVPN_PORT_58946" "58947"
     run_script 'env_set' "DELUGEVPN_PORT_8112" "18112"
     run_script 'env_set' "HEADPHONES_PORT_8181" "18181"
+    run_script 'env_set' "MARIADB_PORT_3306" "13306"
     run_script 'env_set' "MEDUSA_PORT_8081" "18081"
     run_script 'env_set' "MYLAR_PORT_8090" "18090"
     run_script 'env_set' "PLEXREQUESTS_PORT_3000" "13000"

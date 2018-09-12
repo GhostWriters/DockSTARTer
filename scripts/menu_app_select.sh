@@ -97,6 +97,9 @@ menu_app_select() {
                 "LOGARR")
                     APPLIST+=("Logarr" "Self-hosted, single-page, log consolidation tool" "${APPONOFF}")
                     ;;
+                "MARIADB")
+                    APPLIST+=("MariaDB" "One of the most popular database servers" "${APPONOFF}")
+                    ;;
                 "MEDUSA")
                     APPLIST+=("Medusa" "Automatic Video Library Manager for TV Shows" "${APPONOFF}")
                     ;;
