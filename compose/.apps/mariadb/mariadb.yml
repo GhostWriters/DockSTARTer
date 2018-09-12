@@ -1,0 +1,14 @@
+services:
+  mariadb:
+    image:           linuxserver/mariadb
+    container_name:  mariadb
+    restart:         always
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MARIADB_MYSQL_ROOT_PASSWORD}
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/mariadb:/config
+      - ${DOCKERSHAREDDIR}:/shared
