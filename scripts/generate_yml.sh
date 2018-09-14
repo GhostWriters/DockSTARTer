@@ -71,6 +71,11 @@ generate_yml() {
         else
             error "Could not find ${SCRIPTPATH}/compose/.apps/${FILENAME}/ directory."
         fi
+		if [[ ${FILENAME} == "AIRDCPP" ]]; then
+			echo "Downloading needed config files for Airdd++ Client"
+			wget https://raw.githubusercontent.com/romancin/airdcpp-webclient-docker/master/.airdcpp/DCPlusPlus.xml -O ${DOCKERCONFDIR}/${FILENAME}/DCPlusPlus.xml
+			wget https://raw.githubusercontent.com/romancin/airdcpp-webclient-docker/master/.airdcpp/WebServer.xml -O ${DOCKERCONFDIR}/${FILENAME}/WebServer.xml
+        fi
     done < <(grep '_ENABLED=true' < "${SCRIPTPATH}/compose/.env")
     echo "> ${SCRIPTPATH}/compose/docker-compose.yml" >> "${RUNFILE}"
     run_script 'install_yq'
