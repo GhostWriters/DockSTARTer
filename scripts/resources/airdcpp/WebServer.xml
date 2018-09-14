@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<WebServer>
+	<Config>
+		<Server Port="5600"/>
+		<TLSServer Port="5601"/>
+	</Config>
+	<WebUsers>
+		<WebUser Username="admin" Password="password" LastLogin="0" Permissions="admin"/>
+	</WebUsers>
+</WebServer>

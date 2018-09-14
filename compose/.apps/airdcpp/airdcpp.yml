@@ -11,5 +11,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/airdcpp:/.airdcpp
       - ${DOWNLOADSDIR}:/Downloads
-      - ${AIRDCPPSHAREDIR}:/Share
+      - ${AIRDCPP_SHAREDIR}:/Share
       - ${DOCKERSHAREDDIR}:/shared
+      
