@@ -13,4 +13,3 @@ services:
       - ${DOWNLOADSDIR}:/Downloads
       - ${AIRDCPP_SHAREDIR}:/Share
       - ${DOCKERSHAREDDIR}:/shared
-      
