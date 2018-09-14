@@ -31,6 +31,10 @@ menu_value_prompt() {
         DOWNLOADSDIR)
             SYSTEM_VAL="${DETECTED_HOMEDIR}/Downloads"
             VALUEOPTIONS+=("Use System" "${SYSTEM_VAL}")
+			;;
+        AIRDCPP_SHAREDIR)
+            SYSTEM_VAL="${DETECTED_HOMEDIR}/shared"
+            VALUEOPTIONS+=("Use System" "${SYSTEM_VAL}")
             ;;
         MEDIADIR_BOOKS)
             SYSTEM_VAL="${DETECTED_HOMEDIR}/Books"

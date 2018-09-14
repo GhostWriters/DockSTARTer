@@ -1,0 +1,4 @@
+services:
+  airdcpp:
+    ports:
+      - "${AIRDCPP_PORT_5600}:5600"
