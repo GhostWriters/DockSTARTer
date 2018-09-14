@@ -71,10 +71,6 @@ generate_yml() {
         else
             error "Could not find ${SCRIPTPATH}/compose/.apps/${FILENAME}/ directory."
         fi
-		if [[ ${FILENAME} == "AIRDCPP" ]]; then
-			cp "${SCRIPTPATH}/scripts/resources/DCPlusPlus.xml" "${DOCKERCONFDIR}/${FILENAME}/DCPlusPlus.xml"
-			cp "${SCRIPTPATH}/scripts/resources/WebServer.xml" "${DOCKERCONFDIR}/${FILENAME}/WebServer.xml"
-        fi
     done < <(grep '_ENABLED=true' < "${SCRIPTPATH}/compose/.env")
     echo "> ${SCRIPTPATH}/compose/docker-compose.yml" >> "${RUNFILE}"
     run_script 'install_yq'

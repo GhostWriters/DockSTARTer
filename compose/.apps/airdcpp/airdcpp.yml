@@ -1,6 +1,6 @@
 services:
   airdcpp:
-    image:           romancin/airdcpp-webclient
+    image:           gangefors/airdcpp-webclient
     container_name:  airdcpp
     restart:         always
     environment:
@@ -9,7 +9,7 @@ services:
       - TZ=${TZ}
     volumes:
       - /etc/localtime:/etc/localtime:ro
+      - ${AIRDCPP_SHAREDIR}:/Share
       - ${DOCKERCONFDIR}/airdcpp:/.airdcpp
       - ${DOWNLOADSDIR}:/Downloads
-      - ${AIRDCPP_SHAREDIR}:/Share
       - ${DOCKERSHAREDDIR}:/shared
