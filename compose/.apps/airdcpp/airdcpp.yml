@@ -1,0 +1,15 @@
+services:
+  airdcpp:
+    image:           romancin/airdcpp-webclient
+    container_name:  airdcpp
+    restart:         always
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/airdcpp:/.airdcpp
+      - ${DOWNLOADSDIR}:/Downloads
+      - ${AIRDCPPSHAREDIR}:/Share
+      - ${DOCKERSHAREDDIR}:/shared

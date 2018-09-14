@@ -40,6 +40,8 @@ menu_app_select() {
                 APPONOFF="off"
             fi
             case "${APPNAME}" in
+                "AIRDCPP")
+                    APPLIST+=("Airdc++" "Web Client to connect to DC++ Hubs" "${APPONOFF}")
                 "BAZARR")
                     APPLIST+=("Bazarr" "Companion to Sonarr to manage and download subtitles" "${APPONOFF}")
                     ;;
