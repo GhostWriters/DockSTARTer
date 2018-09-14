@@ -2,6 +2,3 @@ services:
   guacamole:
     ports:
       - "${GUACAMOLE_PORT_8080}:8080"
-  guacd:
-    ports:
-      - "${GUACAMOLE_PORT_4822}:4822"

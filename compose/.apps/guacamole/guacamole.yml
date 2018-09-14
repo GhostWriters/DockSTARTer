@@ -1,24 +1,12 @@
 services:
   guacamole:
-    image:           guacamole/guacamole
+    image:           oznu/guacamole
     container_name:  guacamole
     restart:         always
     environment:
-      - GUACD_HOSTNAME=guacd
-      - GUACD_PORT=4822
-      - MYSQL_DATABASE=${GUACAMOLE_MYSQL_DATABASE}
-      - MYSQL_HOSTNAME=${GUACAMOLE_MYSQL_HOSTNAME}
-      - MYSQL_PASSWORD=${GUACAMOLE_MYSQL_PASSWORD}
-      - MYSQL_PORT=${GUACAMOLE_MYSQL_PORT}
-      - MYSQL_USER=${GUACAMOLE_MYSQL_USER}
+      - EXTENSIONS=${GUACAMOLE_EXTENSIONS}
       - TZ=${TZ}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-  guacd:
-    image:           guacamole/guacd
-    container_name:  guacd
-    restart:         always
-    environment:
-      - TZ=${TZ}
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/guacamole:/config
+      - ${DOCKERSHAREDDIR}:/shared
