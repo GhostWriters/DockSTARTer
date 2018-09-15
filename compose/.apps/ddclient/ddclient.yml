@@ -1,0 +1,13 @@
+services:
+  ddclient:
+    image:           linuxserver/ddclient
+    container_name:  ddclient
+    restart:         always
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/ddclient:/config
+      - ${DOCKERSHAREDDIR}:/shared

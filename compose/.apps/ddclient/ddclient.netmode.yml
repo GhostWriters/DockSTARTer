@@ -1,0 +1,3 @@
+services:
+  ddclient:
+    network_mode:  ${DDCLIENT_NETWORK_MODE}

@@ -49,6 +49,9 @@ menu_app_select() {
                 "COUCHPOTATO")
                     APPLIST+=("Couchpotato" "Movies PVR Client" "${APPONOFF}")
                     ;;
+                "DDCLIENT")
+                    APPLIST+=("DDClient" "Update dynamic DNS entries" "${APPONOFF}")
+                    ;;
                 "DELUGE")
                     APPLIST+=("Deluge" "Lightweight, Full-featured BitTorrent client" "${APPONOFF}")
                     ;;
@@ -63,6 +66,12 @@ menu_app_select() {
                     ;;
                 "EMBY")
                     APPLIST+=("Emby" "Organize, play, and stream audio and video" "${APPONOFF}")
+                    ;;
+                "GLANCES")
+                    APPLIST+=("Glances" "Cross-platform system monitoring tool" "${APPONOFF}")
+                    ;;
+                "GUACAMOLE")
+                    APPLIST+=("Guacamole" "Web application that provides access to desktop environments using remote desktop protocols" "${APPONOFF}")
                     ;;
                 "HEADPHONES")
                     APPLIST+=("Headphones" "Music PVR Client" "${APPONOFF}")
