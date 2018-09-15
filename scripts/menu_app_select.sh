@@ -67,6 +67,9 @@ menu_app_select() {
                 "EMBY")
                     APPLIST+=("Emby" "Organize, play, and stream audio and video" "${APPONOFF}")
                     ;;
+                "GLANCES")
+                    APPLIST+=("Glances" "Cross-platform system monitoring tool" "${APPONOFF}")
+                    ;;
                 "GUACAMOLE")
                     APPLIST+=("Guacamole" "Web application that provides access to desktop environments using remote desktop protocols" "${APPONOFF}")
                     ;;
