@@ -1,0 +1,12 @@
+services:
+  guacamole:
+    image:           oznu/guacamole
+    container_name:  guacamole
+    restart:         always
+    environment:
+      - EXTENSIONS=${GUACAMOLE_EXTENSIONS}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/guacamole:/config
+      - ${DOCKERSHAREDDIR}:/shared
