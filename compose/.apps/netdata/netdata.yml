@@ -4,6 +4,8 @@ services:
     container_name:  netdata
     restart:         always
     environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
       - TZ=${TZ}
     volumes:
       - /etc/localtime:/etc/localtime:ro
