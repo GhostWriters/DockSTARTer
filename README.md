@@ -11,24 +11,24 @@ You may choose to rely on DockSTARTer for various changes to your Docker system,
 ## Getting Started
 
 ### One Time Setup (required)
-Update your system
-#### APT Systems (Debian/Ubuntu/Raspbian/etc)
+##### Update your system
+- APT Systems (Debian/Ubuntu/Raspbian/etc)
 ```
 sudo apt-get update
 sudo apt-get install curl git grep sed whiptail
 sudo apt-get dist-upgrade
 ```
-#### DNF Systems (Fedora)
+- DNF Systems (Fedora)
 ```
 sudo dnf install curl git grep newt sed
 sudo dnf upgrade --refresh
 ```
-#### YUM Systems (CentOS)
+- YUM Systems (CentOS)
 ```
 sudo yum install curl git grep newt sed
 sudo yum upgrade
 ```
-Reboot your system
+##### Reboot your system
 ```
 sudo reboot
 ```

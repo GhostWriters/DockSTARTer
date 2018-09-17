@@ -6,46 +6,46 @@ readonly SCRIPTNAME="$(basename "${0}")"
 readonly SCRIPTPATH="$(readlink -m "$(dirname "${0}")")"
 readonly ARGS=("$@")
 
-# # Colors
+# Colors
 readonly BLU='\e[34m'
 readonly GRN='\e[32m'
 readonly RED='\e[31m'
 readonly YLW='\e[33m'
 readonly ENDCOLOR='\e[0m'
 
-# # Log Functions
+# Log Functions
 readonly LOG_FILE="/tmp/dockstarter.log"
 info()    { echo -e "$(date +"%F %T") ${BLU}[INFO]${ENDCOLOR}       $*" | tee -a "${LOG_FILE}" >&2 ; }
 warning() { echo -e "$(date +"%F %T") ${YLW}[WARNING]${ENDCOLOR}    $*" | tee -a "${LOG_FILE}" >&2 ; }
 error()   { echo -e "$(date +"%F %T") ${RED}[ERROR]${ENDCOLOR}      $*" | tee -a "${LOG_FILE}" >&2 ; }
 fatal()   { echo -e "$(date +"%F %T") ${RED}[FATAL]${ENDCOLOR}      $*" | tee -a "${LOG_FILE}" >&2 ; exit 1 ; }
 
-# # Check Arch
+# Check Arch
 readonly ARCH=$(uname -m)
 if [[ ${ARCH} != "aarch64" ]] && [[ ${ARCH} != "armv7l" ]] && [[ ${ARCH} != "x86_64" ]]; then
     fatal "Unsupported architecture."
 fi
 
-# # User/Group Information
+# User/Group Information
 readonly DETECTED_PUID=${SUDO_UID:-$UID}
 readonly DETECTED_UNAME=$(id -un "${DETECTED_PUID}" 2> /dev/null || true)
 readonly DETECTED_PGID=$(id -g "${DETECTED_PUID}" 2> /dev/null || true)
 readonly DETECTED_UGROUP=$(id -gn "${DETECTED_PUID}" 2> /dev/null || true)
 readonly DETECTED_HOMEDIR=$(eval echo "~${DETECTED_UNAME}" 2> /dev/null || true)
 
-# # Github Token for Travis CI
+# Github Token for Travis CI
 if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS} == true ]]; then
     readonly GH_HEADER="Authorization: token ${GH_TOKEN}"
 fi
 
-# # Check Systemd
+# Check Systemd
 if [[ -L "/sbin/init" ]]; then
     readonly ISSYSTEMD=true
 else
     readonly ISSYSTEMD=false
 fi
 
-# # Usage Information
+# Usage Information
 #/ usage: main.sh options
 #/
 #/ This is the main DockSTARTer script.
@@ -83,7 +83,7 @@ usage() {
     grep '^#/' "${SCRIPTPATH}/${SCRIPTNAME}" | cut -c4-
 }
 
-# # Script Runner Function
+# Script Runner Function
 run_script() {
     local SCRIPTSNAME="${1:-}"; shift
     if [[ -f ${SCRIPTPATH}/scripts/${SCRIPTSNAME}.sh ]]; then
@@ -95,7 +95,7 @@ run_script() {
     fi
 }
 
-# # Test Runner Function
+# Test Runner Function
 run_test() {
     local TESTSNAME="${1:-}"; shift
     if [[ -f ${SCRIPTPATH}/tests/${TESTSNAME}.sh ]]; then
@@ -107,7 +107,7 @@ run_test() {
     fi
 }
 
-# # Main Function
+# Main Function
 main() {
     run_script 'root_check'
     # shellcheck source=scripts/cmdline.sh
