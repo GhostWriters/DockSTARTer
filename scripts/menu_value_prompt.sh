@@ -20,7 +20,11 @@ menu_value_prompt() {
     VALUEOPTIONS+=("Keep Current" "${CURRENT_VAL}")
 
     case "${SET_VAR}" in
-        DOCKERCONFDIR)
+        AIRDCPP_SHAREDIR)
+            SYSTEM_VAL="${DETECTED_HOMEDIR}/shared"
+            VALUEOPTIONS+=("Use System" "${SYSTEM_VAL}")
+            ;;
+		DOCKERCONFDIR)
             SYSTEM_VAL="${DETECTED_HOMEDIR}/.docker/config"
             VALUEOPTIONS+=("Use System" "${SYSTEM_VAL}")
             ;;
@@ -31,7 +35,7 @@ menu_value_prompt() {
         DOWNLOADSDIR)
             SYSTEM_VAL="${DETECTED_HOMEDIR}/Downloads"
             VALUEOPTIONS+=("Use System" "${SYSTEM_VAL}")
-            ;;
+			;;
         MEDIADIR_BOOKS)
             SYSTEM_VAL="${DETECTED_HOMEDIR}/Books"
             VALUEOPTIONS+=("Use System" "${SYSTEM_VAL}")

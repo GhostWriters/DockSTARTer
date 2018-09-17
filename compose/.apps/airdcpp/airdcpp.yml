@@ -1,0 +1,15 @@
+services:
+  airdcpp:
+    image:           gangefors/airdcpp-webclient
+    container_name:  airdcpp
+    restart:         always
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${AIRDCPP_SHAREDIR}:/Share
+      - ${DOCKERCONFDIR}/airdcpp:/.airdcpp
+      - ${DOWNLOADSDIR}:/Downloads
+      - ${DOCKERSHAREDDIR}:/shared
