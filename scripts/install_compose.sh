@@ -3,7 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 install_compose() {
-    # # https://docs.docker.com/compose/install/ OR https://github.com/javabean/arm-compose
+    # https://docs.docker.com/compose/install/ OR https://github.com/javabean/arm-compose
     local AVAILABLE_COMPOSE
     AVAILABLE_COMPOSE=$(curl -H "${GH_HEADER:-}" -s "https://api.github.com/repos/docker/compose/releases/latest" | grep -Po '"tag_name": "[Vv]?\K.*?(?=")')
     local INSTALLED_COMPOSE
