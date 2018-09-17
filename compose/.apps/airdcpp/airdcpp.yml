@@ -4,12 +4,17 @@ services:
     container_name:  airdcpp
     restart:         always
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
+      - GID=${PGID}
+      - HTTP_PORT=${AIRDCPP_PORT_5600}
+      - HTTPS_PORT=${AIRDCPP_PORT_5601}
+      - TCP_PORT=${AIRDCPP_PORT_21248}
+      - TLS_PORT=${AIRDCPP_PORT_21249}
       - TZ=${TZ}
+      - UDP_PORT=${AIRDCPP_PORT_21248}
+      - UID=${PUID}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${AIRDCPP_SHAREDIR}:/Share
       - ${DOCKERCONFDIR}/airdcpp:/.airdcpp
-      - ${DOWNLOADSDIR}:/Downloads
       - ${DOCKERSHAREDDIR}:/shared
+      - ${DOWNLOADSDIR}:/Downloads

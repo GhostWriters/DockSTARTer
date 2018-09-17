@@ -41,8 +41,8 @@ menu_app_select() {
             fi
             case "${APPNAME}" in
                 "AIRDCPP")
-                    APPLIST+=("AirdcPP Web Client to connect to DCPlusPlus Hubs" "${APPONOFF}")
-                    ;;					
+                    APPLIST+=("AirdcPP" "Client for Advanced Direct Connect and Direct Connect networks" "${APPONOFF}")
+                    ;;
                 "BAZARR")
                     APPLIST+=("Bazarr" "Companion to Sonarr to manage and download subtitles" "${APPONOFF}")
                     ;;
