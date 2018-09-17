@@ -1,6 +1,6 @@
 services:
   bazarr:
-    image:           morpheus65535/bazarr
+    image:           linuxserver/bazarr
     container_name:  bazarr
     restart:         always
     environment:
@@ -9,7 +9,7 @@ services:
       - TZ=${TZ}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/bazarr:/bazarr/data
+      - ${DOCKERCONFDIR}/bazarr:/config
       - ${DOCKERSHAREDDIR}:/shared
       - ${MEDIADIR_MOVIES}:/movies
       - ${MEDIADIR_TV}:/tv
