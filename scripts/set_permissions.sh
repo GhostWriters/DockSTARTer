@@ -18,4 +18,5 @@ set_permissions() {
     chown -R "${CH_PUID}":"${CH_PGID}" "${CH_PATH}"
     info "Setting file and folder permissions in ${CH_PATH}"
     chmod -R a=,a+rX,u+w,g+w "${CH_PATH}" > /dev/null 2>&1 || true
+    chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
 }
