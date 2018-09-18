@@ -1,0 +1,19 @@
+services:
+  pihole:
+    image:           pihole/pihole
+    container_name:  pihole
+    restart:         always
+    environment:
+      - DNS1=${NS1}
+      - DNS2=${NS2}
+      - ServerIP=${PIHOLE_SERVERIP}
+      - ServerIPv6=${PIHOLE_SERVERIPV6}
+      - TZ=${TZ}
+      - WEBPASSWORD=${PIHOLE_WEBPASSWORD}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/pihole/dnsmasq.d:/etc/dnsmasq.d
+      - ${DOCKERCONFDIR}/pihole/pihole:/etc/pihole
+      - ${DOCKERSHAREDDIR}:/shared
+    cap_add:
+      - NET_ADMIN
