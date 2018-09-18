@@ -7,7 +7,11 @@ env_update() {
     info "Locating newest .env file backup."
     local NEWEST_ENV
     for f in "${SCRIPTPATH}"/compose/.env.backups/.env.*; do
-        [[ -f "${f}" ]] && NEWEST_ENV=${f} || NEWEST_ENV=false
+        if [[ -f "${f}" ]]; then
+            NEWEST_ENV=${f}
+        else
+            NEWEST_ENV=false
+        fi
     done
     if [[ ${NEWEST_ENV} != false ]]; then
         info "Replacing current .env file with latest template."
