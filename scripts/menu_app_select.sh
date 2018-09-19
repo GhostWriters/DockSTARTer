@@ -136,6 +136,9 @@ menu_app_select() {
                 "ORGANIZR")
                     APPLIST+=("Organizr" "HTPC/Homelab Services Organizer" "${APPONOFF}")
                     ;;
+                "PIHOLE")
+                    APPLIST+=("PiHole" "A black hole for internet advertisements" "${APPONOFF}")
+                    ;;
                 "PLEX")
                     APPLIST+=("Plex" "Organizes all of your video, music and photo collections" "${APPONOFF}")
                     ;;

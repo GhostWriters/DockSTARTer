@@ -1,0 +1,3 @@
+services:
+  pihole:
+    image:  pihole/pihole:v4.0_armhf
