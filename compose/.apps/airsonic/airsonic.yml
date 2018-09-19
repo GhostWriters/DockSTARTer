@@ -1,0 +1,18 @@
+services:
+  airsonic:
+    image:           linuxserver/airsonic
+    container_name:  airsonic
+    restart:         always
+    environment:
+      - CONTEXT_PATH=${AIRSONIC_CONTEXT_PATH}
+      - JAVA_OPTS=${AIRSONIC_JAVA_OPTS}
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/airsonic:/config
+      - ${DOCKERSHAREDDIR}:/shared
+      - ${MEDIADIR_MUSIC}:/music
+      - ${MEDIADIR_MUSIC}/playlists:/playlists
+      - ${MEDIADIR_MUSIC}/podcasts:/podcasts
