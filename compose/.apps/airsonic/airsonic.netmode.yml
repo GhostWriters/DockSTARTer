@@ -1,0 +1,3 @@
+services:
+  heimdall:
+    network_mode: ${AIRSONIC_NETWORK_MODE}

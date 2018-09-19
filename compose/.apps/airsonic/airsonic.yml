@@ -1,0 +1,19 @@
+services:
+  airsonic:
+    image: lsioarmhf/airsonic
+    container_name: airsonic
+    restart: always
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - CONTEXT_PATH=${AIRSONIC_CONTEXT_PATH}
+      - JAVA_OPTS=${AIRSONIC_JAVA_OPTS}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/airsonic:/config
+      - ${DOCKERSHAREDDIR}:/shared
+      - ${DOCKERMUSIC}/music
+      - ${DOCKERPLAYLISTS}/playlists
+      - ${DOCKERPODCASTS}/podcasts
+      - ${DOCKERMEDIA}/media
