@@ -43,6 +43,9 @@ menu_app_select() {
                 "AIRDCPP")
                     APPLIST+=("AirdcPP" "Client for Advanced Direct Connect and Direct Connect networks" "${APPONOFF}")
                     ;;
+                "AIRSONIC")
+                    APPLIST+=("Airsonic" "Web-based media streamer providing ubiquitious access to your music" "${APPOFF}")
+                    ;;
                 "BAZARR")
                     APPLIST+=("Bazarr" "Companion to Sonarr to manage and download subtitles" "${APPONOFF}")
                     ;;
