@@ -35,7 +35,7 @@ readonly ENDCOLOR='\e[0m'
 
 # Log Functions
 readonly LOG_FILE="/tmp/dockstarter.log"
-sudo chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${LOG_FILE}" || true # This is the only line that should always use sudo
+sudo chown -R "${DETECTED_PUID:-$DETECTED_UNAME}":"${DETECTED_PGID:-$DETECTED_UGROUP}" "${LOG_FILE}" > /dev/null 2>&1 || true # This line should always use sudo
 info()    { echo -e "$(date +"%F %T") ${BLU}[INFO]${ENDCOLOR}       $*" | tee -a "${LOG_FILE}" >&2 ; }
 warning() { echo -e "$(date +"%F %T") ${YLW}[WARNING]${ENDCOLOR}    $*" | tee -a "${LOG_FILE}" >&2 ; }
 error()   { echo -e "$(date +"%F %T") ${RED}[ERROR]${ENDCOLOR}      $*" | tee -a "${LOG_FILE}" >&2 ; }
@@ -124,6 +124,9 @@ run_test() {
 # Cleanup Function
 cleanup() {
     chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
+    if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS} == false ]]; then
+        warning "TRAVIS_SECURE_ENV_VARS is false for Pull Requests from remote branches. Please retry failed builds!"
+    fi
 }
 trap cleanup ERR EXIT INT QUIT TERM
 
