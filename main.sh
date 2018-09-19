@@ -125,8 +125,6 @@ run_test() {
 cleanup() {
     if [[ ${SCRIPTPATH} == "${DETECTED_HOMEDIR}/.docker" ]]; then
         chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
-    else
-        (sudo bash "${DETECTED_HOMEDIR}/.docker/main.sh" "${ARGS[@]:-}")
     fi
     if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS} == false ]]; then
         warning "TRAVIS_SECURE_ENV_VARS is false for Pull Requests from remote branches. Please retry failed builds!"
@@ -137,9 +135,12 @@ trap cleanup ERR EXIT INT QUIT TERM
 # Main Function
 main() {
     if [[ ! -d ${DETECTED_HOMEDIR}/.docker/.git ]]; then
-        git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker"
+        warning "Attempting to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
+        git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Could not clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
     fi
     if [[ ${SCRIPTPATH} != "${DETECTED_HOMEDIR}/.docker" ]]; then
+        warning "Attempting to run DockSTARTer from ${DETECTED_HOMEDIR}/.docker location."
+        (sudo bash "${DETECTED_HOMEDIR}/.docker/main.sh" "${ARGS[@]:-}") || true
         exit 0
     fi
     run_script 'root_check'
