@@ -123,12 +123,22 @@ run_test() {
 
 # Cleanup Function
 cleanup() {
-    chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
+    if [[ ${SCRIPTPATH} == "${DETECTED_HOMEDIR}/.docker" ]]; then
+        chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
+    else
+        (sudo bash "${DETECTED_HOMEDIR}/.docker/main.sh" "${ARGS[@]:-}")
+    fi
 }
 trap cleanup ERR EXIT INT QUIT TERM
 
 # Main Function
 main() {
+    if [[ ! -d ${DETECTED_HOMEDIR}/.docker/.git ]]; then
+        git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker"
+    fi
+    if [[ ${SCRIPTPATH} != "${DETECTED_HOMEDIR}/.docker" ]]; then
+        exit 0
+    fi
     run_script 'root_check'
     run_script 'symlink_ds'
     # shellcheck source=scripts/cmdline.sh
