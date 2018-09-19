@@ -1,6 +1,6 @@
 services:
   airsonic:
-    image:           lsioarmhf/airsonic
+    image:           linuxserver/airsonic
     container_name:  airsonic
     restart:         always
     environment:
