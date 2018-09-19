@@ -4,14 +4,14 @@ services:
     container_name:  netdata
     restart:         always
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
+      - PGID=${DOCKERGID}
       - TZ=${TZ}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${DOCKERCONFDIR}/netdata:/etc/netdata
       - ${DOCKERSHAREDDIR}:/shared
     cap_add:
       - SYS_PTRACE

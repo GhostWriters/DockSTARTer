@@ -28,6 +28,7 @@ update_self() {
                 git -C "${SCRIPTPATH}" fetch --all > /dev/null 2>&1
                 git -C "${SCRIPTPATH}" reset --hard origin/master > /dev/null 2>&1
                 git -C "${SCRIPTPATH}" pull > /dev/null 2>&1
+                chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
                 run_script 'env_update'
                 break
                 ;;
