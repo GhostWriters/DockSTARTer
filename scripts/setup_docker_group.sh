@@ -19,7 +19,7 @@ setup_docker_group() {
             usermod -aG "${DOCKER_GROUP}" "${DETECTED_UNAME}" > /dev/null 2>&1 || fatal "Could not add ${DETECTED_UNAME} to ${DOCKER_GROUP} group."
         fi
         info "Setting DOCKERGID to ${DOCKER_GID} in ${SCRIPTPATH}/compose/.env file."
-        run_script 'env_create'
+        run_script 'env_update'
         run_script 'env_set' "DOCKERGID" "${DOCKER_GID}"
     else
         fatal "Docker is not installed correctly. Please retry the installation."
