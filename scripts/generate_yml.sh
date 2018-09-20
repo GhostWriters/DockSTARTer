@@ -13,7 +13,7 @@ generate_yml() {
         echo "${SCRIPTPATH}/compose/.reqs/v2.yml \\"
     } >> "${RUNFILE}"
     info "Required files included."
-    run_script 'env_create'
+    run_script 'env_update'
     info "Checking for enabled apps."
     while IFS= read -r line; do
         local APPNAME

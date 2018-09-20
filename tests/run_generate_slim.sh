@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 run_generate_slim() {
     run_script 'update_system'
-    run_script 'env_create'
+    run_script 'env_update'
     info "Running generator."
     bash "${SCRIPTPATH}/main.sh" -g
     echo
