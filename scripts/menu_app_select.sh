@@ -41,7 +41,7 @@ menu_app_select() {
             fi
             case "${APPNAME}" in
                 "AIRSONIC")
-                    APPLIST+=("Airsonic" "Web-based media streamer providing ubiquitious access to your music" "${APPOFF}")
+                    APPLIST+=("Airsonic" "Web-based media streamer providing ubiquitious access to your music" "${APPONOFF}")
                     ;;
                 "BAZARR")
                     APPLIST+=("Bazarr" "Companion to Sonarr to manage and download subtitles" "${APPONOFF}")
