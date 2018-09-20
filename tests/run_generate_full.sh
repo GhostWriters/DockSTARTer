@@ -3,8 +3,8 @@ set -euo pipefail
 IFS=$'\n\t'
 
 run_generate_full() {
-    run_script 'update_system'
-    run_script 'env_create'
+    #run_script 'update_system'
+    run_script 'env_update'
     info "Enabling all apps."
     sed -i 's/_ENABLED=false/_ENABLED=true/' "${SCRIPTPATH}/compose/.env"
     info "Adjusting ports to prevent conflicts."
@@ -27,12 +27,5 @@ run_generate_full() {
     run_script 'env_set' "TRANSMISSION_PORT_9091" "19091"
     run_script 'env_set' "UNIFI_PORT_6789" "16789"
     run_script 'env_set' "UNIFI_PORT_7878" "17878"
-    info "Running generator."
-    bash "${SCRIPTPATH}/main.sh" -g
-    echo
-    cat "${SCRIPTPATH}/compose/docker-compose.yml" || fatal "${SCRIPTPATH}/compose/docker-compose.yml not found."
-    echo
-    cd "${SCRIPTPATH}/compose/" || fatal "Could not change to ${SCRIPTPATH}/compose/ directory."
-    docker-compose up -d || fatal "Docker Compose failed."
-    cd "${SCRIPTPATH}" || fatal "Could not change to ${SCRIPTPATH} directory."
+    run_test 'run_generate_slim'
 }

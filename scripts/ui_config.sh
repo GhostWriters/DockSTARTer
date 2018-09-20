@@ -3,7 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 ui_config() {
-    run_script 'env_create' menu
+    run_script 'env_update' menu
     run_script 'menu_app_select' || return 1
     run_script 'menu_value_prompt' TZ || return 1
     run_script 'menu_value_prompt' PUID || return 1
