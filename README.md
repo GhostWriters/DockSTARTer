@@ -32,15 +32,11 @@ sudo yum upgrade
 ```
 sudo reboot
 ```
-After rebooting, clone the repo
-```
-git clone https://github.com/GhostWriters/DockSTARTer ~/.docker
-```
 
 ### Running DockSTARTer
 -   First run
 ```
-sudo bash ~/.docker/main.sh
+bash -c "$(curl -fsSL https://git.io/DSdl)"
 ```
 -   Subsequent runs
 ```
