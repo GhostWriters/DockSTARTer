@@ -40,6 +40,9 @@ menu_app_select() {
                 APPONOFF="off"
             fi
             case "${APPNAME}" in
+                "AIRDCPP")
+                    APPLIST+=("AirdcPP" "Client for Advanced Direct Connect and Direct Connect networks" "${APPONOFF}")
+                    ;;
                 "AIRSONIC")
                     APPLIST+=("Airsonic" "Web-based media streamer providing ubiquitious access to your music" "${APPONOFF}")
                     ;;
