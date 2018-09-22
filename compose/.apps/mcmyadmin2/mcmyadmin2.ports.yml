@@ -1,0 +1,5 @@
+services:
+  mcmyadmin2:
+    ports:
+      - "${MCMYADMIN2_PORT_25565}:25565"
+      - "${MCMYADMIN2_PORT_8080}:8080"

@@ -1,0 +1,13 @@
+services:
+  mcmyadmin2:
+    image:           linuxserver/mcmyadmin2
+    container_name:  mcmyadmin2
+    restart:         always
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/mcmyadmin2:/minecraft
+      - ${DOCKERSHAREDDIR}:/shared
