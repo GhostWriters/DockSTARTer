@@ -25,7 +25,7 @@ menu_value_prompt() {
             VALUEOPTIONS+=("Use System" "${SYSTEM_VAL}")
             ;;
         DOCKERSHAREDDIR)
-            SYSTEM_VAL="${DETECTED_HOMEDIR}/.docker/shared"
+            SYSTEM_VAL="${DETECTED_HOMEDIR}/.docker/config/shared"
             VALUEOPTIONS+=("Use System" "${SYSTEM_VAL}")
             ;;
         DOWNLOADSDIR)
@@ -34,6 +34,10 @@ menu_value_prompt() {
             ;;
         MEDIADIR_BOOKS)
             SYSTEM_VAL="${DETECTED_HOMEDIR}/Books"
+            VALUEOPTIONS+=("Use System" "${SYSTEM_VAL}")
+            ;;
+        MEDIADIR_COMICS)
+            SYSTEM_VAL="${DETECTED_HOMEDIR}/Comics"
             VALUEOPTIONS+=("Use System" "${SYSTEM_VAL}")
             ;;
         MEDIADIR_MOVIES)
@@ -61,7 +65,7 @@ menu_value_prompt() {
         TZ)
             SYSTEM_VAL="$(cat /etc/timezone)"
             VALUEOPTIONS+=("Use System" "${SYSTEM_VAL}")
-            VALUEDESCRIPTION="\\n\\n If this is not the correct timezone please exit and set your system timezone using sudo dpkg-reconfigure tzdata"
+            VALUEDESCRIPTION="\\n\\n If this is not the correct timezone please exit and set your system timezone."
             ;;
         *)
             VALUEOPTIONS+=("Use Default" "${DEFAULT_VAL}")
