@@ -1,6 +1,6 @@
 services:
   netdata:
-    image:           firehol/netdata
+    image:           netdata/netdata
     container_name:  netdata
     restart:         always
     environment:
