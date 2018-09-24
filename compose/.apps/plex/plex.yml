@@ -4,11 +4,7 @@ services:
     container_name: plex
     restart: always
     environment:
-      - ADVERTISE_IP=${PLEX_ADVERTISE_IP}
       - PGID=${PGID}
-      - PLEX_CLAIM=${PLEX_CLAIM}
-      - PLEX_GID=${PGID}
-      - PLEX_UID=${PUID}
       - PUID=${PUID}
       - TZ=${TZ}
       - VERSION=${PLEX_VERSION}
