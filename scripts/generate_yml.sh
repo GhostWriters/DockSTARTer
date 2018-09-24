@@ -6,6 +6,7 @@ generate_yml() {
     info "Generating docker-compose.yml file."
     local RUNFILE
     RUNFILE="${SCRIPTPATH}/compose/docker-compose.sh"
+    rm -f "${RUNFILE}" || fatal "Could not remove ${RUNFILE} file."
     echo "#!/bin/bash" > "${RUNFILE}"
     {
         echo "yq m \\"
@@ -76,5 +77,5 @@ generate_yml() {
     run_script 'install_yq'
     bash "${RUNFILE}"
     info "Merging docker-compose.yml complete."
-    rm -f "${RUNFILE}"
+    rm -f "${RUNFILE}" || error "Could not remove ${RUNFILE} file."
 }
