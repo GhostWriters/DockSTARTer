@@ -17,82 +17,106 @@ menu_value_prompt() {
     local VALUEDESCRIPTION
     local VALUEOPTIONS
     VALUEOPTIONS=()
-    VALUEOPTIONS+=("Keep Current" "${CURRENT_VAL}")
+    VALUEOPTIONS+=("Keep Current " "${CURRENT_VAL}")
 
     case "${SET_VAR}" in
         DOCKERCONFDIR)
             SYSTEM_VAL="${DETECTED_HOMEDIR}/.docker/config"
-            VALUEOPTIONS+=("Use System" "${SYSTEM_VAL}")
+            VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
             ;;
         DOCKERSHAREDDIR)
             SYSTEM_VAL="${DETECTED_HOMEDIR}/.docker/config/shared"
-            VALUEOPTIONS+=("Use System" "${SYSTEM_VAL}")
+            VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
             ;;
         DOWNLOADSDIR)
             SYSTEM_VAL="${DETECTED_HOMEDIR}/Downloads"
-            VALUEOPTIONS+=("Use System" "${SYSTEM_VAL}")
+            VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
             ;;
         MEDIADIR_BOOKS)
             SYSTEM_VAL="${DETECTED_HOMEDIR}/Books"
-            VALUEOPTIONS+=("Use System" "${SYSTEM_VAL}")
+            VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
             ;;
         MEDIADIR_COMICS)
             SYSTEM_VAL="${DETECTED_HOMEDIR}/Comics"
-            VALUEOPTIONS+=("Use System" "${SYSTEM_VAL}")
+            VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
             ;;
         MEDIADIR_MOVIES)
             SYSTEM_VAL="${DETECTED_HOMEDIR}/Movies"
-            VALUEOPTIONS+=("Use System" "${SYSTEM_VAL}")
+            VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
             ;;
         MEDIADIR_MUSIC)
             SYSTEM_VAL="${DETECTED_HOMEDIR}/Music"
-            VALUEOPTIONS+=("Use System" "${SYSTEM_VAL}")
+            VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
             ;;
         MEDIADIR_TV)
             SYSTEM_VAL="${DETECTED_HOMEDIR}/TV"
-            VALUEOPTIONS+=("Use System" "${SYSTEM_VAL}")
+            VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
             ;;
         PGID)
             SYSTEM_VAL="${DETECTED_PGID}"
-            VALUEOPTIONS+=("Use System" "${SYSTEM_VAL}")
-            VALUEDESCRIPTION="\\n\\n If this is not the correct user ID please exit and run DockSTARTer as the correct user."
+            VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
             ;;
         PUID)
             SYSTEM_VAL="${DETECTED_PUID}"
-            VALUEOPTIONS+=("Use System" "${SYSTEM_VAL}")
-            VALUEDESCRIPTION="\\n\\n If this is not the correct user group please exit and ensure the user running DockSTARTer is assigned the correct group."
+            VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
             ;;
         TZ)
             SYSTEM_VAL="$(cat /etc/timezone)"
-            VALUEOPTIONS+=("Use System" "${SYSTEM_VAL}")
-            VALUEDESCRIPTION="\\n\\n If this is not the correct timezone please exit and set your system timezone."
+            VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
             ;;
         *)
-            VALUEOPTIONS+=("Use Default" "${DEFAULT_VAL}")
+            VALUEOPTIONS+=("Use Default " "${DEFAULT_VAL}")
             ;;
     esac
 
-    VALUEOPTIONS+=("Enter New" "")
+    VALUEOPTIONS+=("Enter New " "")
+
+    case "${SET_VAR}" in
+        *_ENABLED)
+            VALUEDESCRIPTION="\\n\\n Must be true or false."
+            ;;
+        *_NETWORK_MODE)
+            VALUEDESCRIPTION="\\n\\n Network Mode is usually left blank but can also be bridge, host, none, service: <APPNAME>, or container: <APPNAME>."
+            ;;
+        *_PORT_*)
+            VALUEDESCRIPTION="\\n\\n Must be an unused port between 0 and 65535."
+            ;;
+        *DIR|*DIR_*)
+            VALUEDESCRIPTION="\\n\\n If the directory selected does not exist we will attempt to create it."
+            ;;
+        PGID)
+            VALUEDESCRIPTION="\\n\\n If this is not the correct user ID please exit and run DockSTARTer as the correct user."
+            ;;
+        PUID)
+            VALUEDESCRIPTION="\\n\\n If this is not the correct user group please exit and ensure the user running DockSTARTer is assigned the correct group."
+            ;;
+        TZ)
+            VALUEDESCRIPTION="\\n\\n If this is not the correct timezone please exit and set your system timezone."
+            ;;
+        *)
+            VALUEDESCRIPTION=""
+            ;;
+    esac
 
     local SELECTEDVALUE
     if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
-        SELECTEDVALUE="Keep Current"
+        SELECTEDVALUE="Keep Current "
     else
         SELECTEDVALUE=$(whiptail --fb --clear --title "DockSTARTer" --menu "What would you like set for ${SET_VAR}?${VALUEDESCRIPTION:-}" 0 0 0 "${VALUEOPTIONS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
     fi
 
     local INPUT
     case "${SELECTEDVALUE}" in
-        "Keep Current")
+        "Keep Current ")
             INPUT=${CURRENT_VAL}
             ;;
-        "Use Default")
+        "Use Default ")
             INPUT=${DEFAULT_VAL}
             ;;
-        "Use System")
+        "Use System ")
             INPUT=${SYSTEM_VAL}
             ;;
-        "Enter New")
+        "Enter New ")
             INPUT=$(whiptail --fb --clear --title "DockSTARTer" --inputbox "What would you like set for ${SET_VAR}?" 0 0 "${CURRENT_VAL}" 3>&1 1>&2 2>&3 || echo "CancelNewEntry")
             ;;
         "Cancel")

@@ -5,6 +5,15 @@ IFS=$'\n\t'
 set_permissions() {
     local CH_PATH
     CH_PATH=${1:-$SCRIPTPATH}
+    case "${CH_PATH}" in
+        # https://en.wikipedia.org/wiki/Unix_filesystem
+        "/"|"/bin"|"/boot"|"/dev"|"/etc"|"/home"|"/lib"|"/media"|"/mnt"|"/opt"|"/proc"|"/root"|"/sbin"|"/srv"|"/sys"|"/tmp"|"/unix"|"/usr"|"/var")
+            error "Skipping permissions on ${CH_PATH} because it is a system path."
+            return
+            ;;
+        *)
+            ;;
+    esac
     local CH_PUID
     CH_PUID=${2:-$DETECTED_PUID}
     local CH_PGID

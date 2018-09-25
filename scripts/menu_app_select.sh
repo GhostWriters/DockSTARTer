@@ -229,7 +229,10 @@ menu_app_select() {
             done < <(grep '_ENABLED=true' < "${SCRIPTPATH}/compose/.env")
             info "Enabling selected apps."
             while IFS= read -r line; do
-                run_script 'env_set' "$(echo "${line^^}" | tr -d ' ')_ENABLED" true
+                local APPNAME
+                APPNAME=${line^^}
+                run_script 'env_set' "${APPNAME}_ENABLED" true
+                run_script 'menu_app_vars' "${APPNAME}"
             done < <(echo "${SELECTEDAPPS}")
         fi
     fi
