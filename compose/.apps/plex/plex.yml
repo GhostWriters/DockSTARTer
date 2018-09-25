@@ -1,8 +1,8 @@
 services:
   plex:
-    image: linuxserver/plex
-    container_name: plex
-    restart: always
+    image:           linuxserver/plex
+    container_name:  plex
+    restart:         always
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
