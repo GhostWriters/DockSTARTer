@@ -1,13 +1,14 @@
 services:
   plex:
-    image:           linuxserver/plex
+    image:           plexinc/pms-docker:${PLEX_TAG}
     container_name:  plex
     restart:         always
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
+      - ADVERTISE_IP=${PLEX_ADVERTISE_IP}
+      - PLEX_CLAIM=${PLEX_CLAIM}
+      - PLEX_GID=${PGID}
+      - PLEX_UID=${PUID}
       - TZ=${TZ}
-      - VERSION=${PLEX_VERSION}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/plex:/config
