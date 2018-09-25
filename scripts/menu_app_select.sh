@@ -142,6 +142,9 @@ menu_app_select() {
                 "ORGANIZR")
                     APPLIST+=("Organizr" "HTPC/Homelab Services Organizer" "${APPONOFF}")
                     ;;
+                "PHPMYADMIN")
+                    APPLIST+=("phpMyAdmin" "A web interface for MySQL and MariaDB" "${APPONOFF}")
+                    ;;
                 "PIHOLE")
                     APPLIST+=("PiHole" "A black hole for internet advertisements" "${APPONOFF}")
                     ;;

@@ -1,0 +1,3 @@
+services:
+  phpmyadmin:
+    network_mode:  ${PHPMYADMIN_NETWORK_MODE}

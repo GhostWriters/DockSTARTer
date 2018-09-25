@@ -1,0 +1,14 @@
+services:
+  phpmyadmin:
+    image:           phpmyadmin/phpmyadmin
+    container_name:  phpmyadmin
+    restart:         always
+    environment:
+      - PMA_HOST=mariadb
+      - PMA_PASSWORD=${MARIADB_MYSQL_ROOT_PASSWORD}
+      - PMA_USER=root
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/phpmyadmin:/sessions
+      - ${DOCKERSHAREDDIR}:/shared
