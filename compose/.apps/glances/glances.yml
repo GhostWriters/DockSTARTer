@@ -11,4 +11,4 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ${DOCKERCONFDIR}/glances:/glances/conf/
       - ${DOCKERSHAREDDIR}:/shared
-    pid: host
+    pid:             host
