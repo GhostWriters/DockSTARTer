@@ -2,7 +2,7 @@ services:
   sickrage:
     image:           linuxserver/sickrage
     container_name:  sickrage
-    restart:         always
+    restart:         unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

@@ -2,7 +2,7 @@ services:
   couchpotato:
     image:           linuxserver/couchpotato
     container_name:  couchpotato
-    restart:         always
+    restart:         unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

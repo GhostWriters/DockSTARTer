@@ -2,7 +2,7 @@ services:
   plexrequests:
     image:           linuxserver/plexrequests
     container_name:  plexrequests
-    restart:         always
+    restart:         unless-stopped
     environment:
       - URL_BASE=/plexrequests
       - PGID=${PGID}

@@ -130,7 +130,7 @@ cleanup() {
         warning "TRAVIS_SECURE_ENV_VARS is false for Pull Requests from remote branches. Please retry failed builds!"
     fi
 }
-trap cleanup ERR EXIT INT QUIT TERM
+trap 'cleanup' 0 1 2 3 6 14 15
 
 # Main Function
 main() {
@@ -138,10 +138,10 @@ main() {
         warning "Attempting to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
         git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Could not clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
     fi
-    if [[ ${SCRIPTPATH} != "${DETECTED_HOMEDIR}/.docker" ]]; then
+    if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]] && [[ ${SCRIPTPATH} != "${DETECTED_HOMEDIR}/.docker" ]]; then
         warning "Attempting to run DockSTARTer from ${DETECTED_HOMEDIR}/.docker location."
         (sudo bash "${DETECTED_HOMEDIR}/.docker/main.sh" "${ARGS[@]:-}") || true
-        exit 0
+        exit
     fi
     run_script 'root_check'
     run_script 'symlink_ds'

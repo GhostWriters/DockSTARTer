@@ -2,7 +2,7 @@ services:
   emby:
     image:           emby/embyserver:latest
     container_name:  emby
-    restart:         always
+    restart:         unless-stopped
     environment:
       - GID=${PGID}
       - GIDLIST=${PGID}

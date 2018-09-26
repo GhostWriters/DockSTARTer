@@ -2,7 +2,7 @@ services:
   deluge:
     image:           linuxserver/deluge
     container_name:  deluge
-    restart:         always
+    restart:         unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

@@ -2,7 +2,7 @@ services:
   lidarr:
     image:           linuxserver/lidarr
     container_name:  lidarr
-    restart:         always
+    restart:         unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

@@ -2,7 +2,7 @@ services:
   heimdall:
     image:           linuxserver/heimdall
     container_name:  heimdall
-    restart:         always
+    restart:         unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

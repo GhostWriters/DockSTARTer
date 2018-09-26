@@ -33,31 +33,31 @@ cmdline() {
         case ${OPTION} in
             b)
                 run_script 'env_backup'
-                exit 0
+                exit
                 ;;
             e)
                 run_script 'env_update'
-                exit 0
+                exit
                 ;;
             g)
                 run_script 'cmd_generate'
-                exit 0
+                exit
                 ;;
             i)
                 run_script 'cmd_install'
-                exit 0
+                exit
                 ;;
             p)
                 run_script 'prune_docker'
-                exit 0
+                exit
                 ;;
             t)
                 run_test "${OPTARG}"
-                exit 0
+                exit
                 ;;
             u)
                 run_script 'update_self'
-                exit 0
+                exit
                 ;;
             v)
                 readonly VERBOSE=1
@@ -68,7 +68,7 @@ cmdline() {
                 ;;
             *)
                 usage
-                exit 0
+                exit
                 ;;
         esac
     done

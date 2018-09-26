@@ -2,7 +2,7 @@ services:
   unifi:
     image:           linuxserver/unifi
     container_name:  unifi
-    restart:         always
+    restart:         unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

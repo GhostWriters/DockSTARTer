@@ -2,7 +2,7 @@ services:
   rutorrent:
     image:           linuxserver/rutorrent
     container_name:  rutorrent
-    restart:         always
+    restart:         unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

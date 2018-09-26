@@ -2,7 +2,7 @@ services:
   mylar:
     image:           linuxserver/mylar
     container_name:  mylar
-    restart:         always
+    restart:         unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

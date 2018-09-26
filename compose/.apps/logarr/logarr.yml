@@ -2,7 +2,7 @@ services:
   logarr:
     image:           monitorr/logarr
     container_name:  logarr
-    restart:         always
+    restart:         unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

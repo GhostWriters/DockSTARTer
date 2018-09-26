@@ -2,7 +2,7 @@ services:
   htpcmanager:
     image:           linuxserver/htpcmanager
     container_name:  htpcmanager
-    restart:         always
+    restart:         unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

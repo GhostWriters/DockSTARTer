@@ -2,7 +2,7 @@ services:
   nextcloud:
     image:           linuxserver/nextcloud
     container_name:  nextcloud
-    restart:         always
+    restart:         unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

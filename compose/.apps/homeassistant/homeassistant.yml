@@ -2,7 +2,7 @@ services:
   homeassistant:
     image:           homeassistant/home-assistant
     container_name:  homeassistant
-    restart:         always
+    restart:         unless-stopped
     environment:
       - TZ=${TZ}
     volumes:

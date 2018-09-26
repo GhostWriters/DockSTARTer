@@ -2,7 +2,7 @@ services:
   organizr:
     image:           tronyx/docker-organizr-v2:php-fpm
     container_name:  organizr
-    restart:         always
+    restart:         unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
