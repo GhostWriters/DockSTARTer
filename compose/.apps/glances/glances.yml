@@ -2,7 +2,7 @@ services:
   glances:
     image:           nicolargo/glances
     container_name:  glances
-    restart:         always
+    restart:         unless-stopped
     environment:
       - GLANCES_OPT=-w
       - TZ=${TZ}

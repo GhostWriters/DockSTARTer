@@ -2,7 +2,7 @@ services:
   sabnzbd:
     image:           linuxserver/sabnzbd
     container_name:  sabnzbd
-    restart:         always
+    restart:         unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

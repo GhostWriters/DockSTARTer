@@ -2,7 +2,7 @@ services:
   medusa:
     image:           linuxserver/medusa
     container_name:  medusa
-    restart:         always
+    restart:         unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

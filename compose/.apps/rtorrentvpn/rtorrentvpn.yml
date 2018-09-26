@@ -2,7 +2,7 @@ services:
   rtorrentvpn:
     image:           binhex/arch-rtorrentvpn
     container_name:  rtorrentvpn
-    restart:         always
+    restart:         unless-stopped
     environment:
       - ENABLE_AUTODL_IRSSI=${RTORRENTVPN_ENABLE_AUTODL_IRSSI}
       - ENABLE_FLOOD=${RTORRENTVPN_ENABLE_FLOOD}

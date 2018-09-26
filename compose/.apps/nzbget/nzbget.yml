@@ -2,7 +2,7 @@ services:
   nzbget:
     image:           linuxserver/nzbget
     container_name:  nzbget
-    restart:         always
+    restart:         unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

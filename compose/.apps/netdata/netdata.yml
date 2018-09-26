@@ -2,7 +2,7 @@ services:
   netdata:
     image:           netdata/netdata
     container_name:  netdata
-    restart:         always
+    restart:         unless-stopped
     environment:
       - PGID=${DOCKERGID}
       - TZ=${TZ}

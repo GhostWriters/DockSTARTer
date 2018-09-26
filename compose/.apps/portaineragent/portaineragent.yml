@@ -2,7 +2,7 @@ services:
   portaineragent:
     image:           portainer/agent
     container_name:  portaineragent
-    restart:         always
+    restart:         unless-stopped
     environment:
       - TZ=${TZ}
     volumes:

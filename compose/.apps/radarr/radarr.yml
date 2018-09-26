@@ -2,7 +2,7 @@ services:
   radarr:
     image:           linuxserver/radarr
     container_name:  radarr
-    restart:         always
+    restart:         unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

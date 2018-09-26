@@ -2,7 +2,7 @@ services:
   tautulli:
     image:           linuxserver/tautulli
     container_name:  tautulli
-    restart:         always
+    restart:         unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

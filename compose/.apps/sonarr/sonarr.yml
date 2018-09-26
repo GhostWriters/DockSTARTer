@@ -2,7 +2,7 @@ services:
   sonarr:
     image:           linuxserver/sonarr
     container_name:  sonarr
-    restart:         always
+    restart:         unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

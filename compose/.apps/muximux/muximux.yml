@@ -2,7 +2,7 @@ services:
   muximux:
     image:           linuxserver/muximux
     container_name:  muximux
-    restart:         always
+    restart:         unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

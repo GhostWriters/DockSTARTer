@@ -2,7 +2,7 @@ services:
   qbittorrent:
     image:           linuxserver/qbittorrent
     container_name:  qbittorrent
-    restart:         always
+    restart:         unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

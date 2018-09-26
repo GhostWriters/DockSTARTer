@@ -2,7 +2,7 @@ services:
   watchtower:
     image:           v2tec/watchtower
     container_name:  watchtower
-    restart:         always
+    restart:         unless-stopped
     environment:
       - TZ=${TZ}
     volumes:

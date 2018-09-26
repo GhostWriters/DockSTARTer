@@ -2,7 +2,7 @@ services:
   airsonic:
     image:           linuxserver/airsonic
     container_name:  airsonic
-    restart:         always
+    restart:         unless-stopped
     environment:
       - CONTEXT_PATH=${AIRSONIC_CONTEXT_PATH}
       - JAVA_OPTS=${AIRSONIC_JAVA_OPTS}
