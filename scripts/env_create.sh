@@ -24,7 +24,7 @@ env_create() {
             case ${YN} in
                 [Yy]* )
                     info "Please edit ${SCRIPTPATH}/compose/.env and rerun the script."
-                    exit 0
+                    exit
                     ;;
                 [Nn]* )
                     warning "Defaults from ${SCRIPTPATH}/compose/.env.example will be used."
