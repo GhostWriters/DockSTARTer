@@ -2,7 +2,7 @@ services:
   airdcpp:
     ports:
       - "${AIRDCPP_PORT_21248}:21248"
-      - "${AIRDCPP_PORT_21248}:21248/utp"
+      - "${AIRDCPP_PORT_21248}:21248/udp"
       - "${AIRDCPP_PORT_21249}:21249"
       - "${AIRDCPP_PORT_5600}:5600"
       - "${AIRDCPP_PORT_5601}:5601"
