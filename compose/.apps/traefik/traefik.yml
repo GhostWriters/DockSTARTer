@@ -1,0 +1,30 @@
+services:
+  traefik:
+    image:            traefik
+    container_name:   traefik
+    restart:          unless-stopped
+    command:    
+      - --api  
+      - --defaultEntryPoints=${TRAEFIK_DEFAULT_ENTRYPOINTS}
+      - --docker
+      - --docker.watch
+      - --docker.exposedByDefault=${TRAEFIK_EXPOSED_DEFAULT}
+      - --docker.domain=${TRAEFIK_DOMAIN}
+      - --entryPoints=Name:http Address::${TRAEFIK_PORT_80} Compress:true Redirect.EntryPoint:https
+      - --entryPoints=Name:https Address::${TRAEFIK_PORT_443} Compress:true TLS
+      - --acme.entrypoint=https
+      - --acme.storage=acme.json
+      - --acme.onHostRule=${TRAEFIK_ACME_ENABLE}
+      - --acme=${TRAEFIK_ACME_ENABLE}
+      - --acme.email=${TRAEFIK_ACME_EMAIL}
+      - ${TRAEFIK_ACME_CHALLENGE}
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${DOCKERSHAREDDIR}:/shared
+    cap_add:
+      - NET_ADMIN

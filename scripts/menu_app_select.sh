@@ -193,6 +193,9 @@ menu_app_select() {
                 "THELOUNGE")
                     APPLIST+=("TheLounge" "Web IRC client that you host on your own server" "${APPONOFF}")
                     ;;
+                "TRAEFIK")
+                    APPLIST+=("Traefik" "A reverse proxy / load balancer that's dynamic, automatic, and uses LetsEncrypt." "${APPONOFF}")
+                    ;;
                 "TRANSMISSION")
                     APPLIST+=("Transmission" "Fast, easy, and free BitTorrent client" "${APPONOFF}")
                     ;;
