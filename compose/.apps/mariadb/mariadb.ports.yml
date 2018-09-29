@@ -2,3 +2,5 @@ services:
   mariadb:
     ports:
       - "${MARIADB_PORT_3306}:3306"
+    expose:
+      - ${MARIADB_PORT_3306}

@@ -2,3 +2,5 @@ services:
   guacamole:
     ports:
       - "${GUACAMOLE_PORT_8080}:8080"
+    expose:
+      - ${GUACAMOLE_PORT_8080}

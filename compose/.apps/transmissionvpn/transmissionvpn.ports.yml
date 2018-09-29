@@ -2,3 +2,5 @@ services:
   transmissionvpn:
     ports:
       - "${TRANSMISSIONVPN_PORT_9091}:9091"
+    expose:
+      - ${TRANSMISSIONVPN_PORT_9091}

@@ -2,3 +2,5 @@ services:
   htpcmanager:
     ports:
       - "${HTPCMANAGER_PORT_8085}:8085"
+    expose:
+      - ${HTPCMANAGER_PORT_8085}

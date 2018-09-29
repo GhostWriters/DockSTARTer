@@ -3,3 +3,6 @@ services:
     ports:
       - "${HEIMDALL_PORT_443}:443"
       - "${HEIMDALL_PORT_80}:80"
+    expose:
+      - ${HEIMDALL_PORT_80}
+      - ${HEIMDALL_PORT_443}

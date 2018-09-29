@@ -2,3 +2,5 @@ services:
   bazarr:
     ports:
       - "${BAZARR_PORT_6767}:6767"
+    expose:
+      - ${BAZARR_PORT_6767}

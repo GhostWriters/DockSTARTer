@@ -2,3 +2,5 @@ services:
   phpmyadmin:
     ports:
       - "${PHPMYADMIN_PORT_80}:80"
+    expose:
+      - ${PHPMYADMIN_PORT_80}

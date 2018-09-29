@@ -2,3 +2,5 @@ services:
   calibreweb:
     ports:
       - "${CALIBREWEB_PORT_8083}:8083"
+    expose:
+      - ${CALIBREWEB_PORT_8083}

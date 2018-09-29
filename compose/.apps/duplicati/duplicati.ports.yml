@@ -2,3 +2,5 @@ services:
   duplicati:
     ports:
       - "${DUPLICATI_PORT_8200}:8200"
+    expose: 
+      - ${DUPLICATI_PORT_8200}

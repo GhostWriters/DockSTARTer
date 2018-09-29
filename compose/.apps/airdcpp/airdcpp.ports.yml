@@ -6,3 +6,6 @@ services:
       - "${AIRDCPP_PORT_21249}:21249"
       - "${AIRDCPP_PORT_5600}:5600"
       - "${AIRDCPP_PORT_5601}:5601"
+    expose:
+      - ${AIRDCPP_PORT_5600}
+      - ${AIRDCPP_PORT_5601}

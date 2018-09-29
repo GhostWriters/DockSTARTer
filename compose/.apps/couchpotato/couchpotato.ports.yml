@@ -2,3 +2,5 @@ services:
   couchpotato:
     ports:
       - "${COUCHPOTATO_PORT_5050}:5050"
+    expose:
+      - ${COUCHPOTATO_PORT_5050}

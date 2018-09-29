@@ -4,3 +4,5 @@ services:
       - "${RTORRENTVPN_PORT_3000}:3000"
       - "${RTORRENTVPN_PORT_9080}:9080"
       - "${RTORRENTVPN_PORT_9443}:9443"
+    expose:
+      - ${RTORRENTVPN_PORT_3000}
