@@ -23,6 +23,8 @@ run_generate_full() {
     run_script 'env_set' "SABNZBDVPN_PORT_8080" "38080"
     run_script 'env_set' "SICKRAGE_PORT_8081" "28081"
     run_script 'env_set' "THELOUNGE_PORT_9000" "9002"
+    run_script 'env_set' "TRAEFIK_PORT_80" "1080"
+    run_script 'env_set' "TRAEFIK_PORT_443" "1443"
     run_script 'env_set' "TRAEFIK_PORT_8080" "58080"
     run_script 'env_set' "TRANSMISSION_PORT_51413" "51414"
     run_script 'env_set' "TRANSMISSION_PORT_9091" "19091"
