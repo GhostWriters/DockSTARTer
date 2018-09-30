@@ -18,6 +18,7 @@ services:
       - --acme=${TRAEFIK_ACME_ENABLE}
       - --acme.email=${TRAEFIK_ACME_EMAIL}
       - ${TRAEFIK_ACME_CHALLENGE}
+      - ${TRAEFIK_ACME_CHALLENGE_PROVIDER}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
