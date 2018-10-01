@@ -85,10 +85,10 @@ menu_value_prompt() {
             VALUEDESCRIPTION="\\n\\n If the directory selected does not exist we will attempt to create it."
             ;;
         PGID)
-            VALUEDESCRIPTION="\\n\\n If this is not the correct user ID please exit and run DockSTARTer as the correct user."
+            VALUEDESCRIPTION="\\n\\n If this is not the correct user group please exit and ensure the user running DockSTARTer is assigned the correct group."
             ;;
         PUID)
-            VALUEDESCRIPTION="\\n\\n If this is not the correct user group please exit and ensure the user running DockSTARTer is assigned the correct group."
+            VALUEDESCRIPTION="\\n\\n If this is not the correct user ID please exit and run DockSTARTer as the correct user."
             ;;
         TZ)
             VALUEDESCRIPTION="\\n\\n If this is not the correct timezone please exit and set your system timezone."
