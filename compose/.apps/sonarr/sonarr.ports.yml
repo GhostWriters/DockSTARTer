@@ -2,3 +2,5 @@ services:
   sonarr:
     ports:
       - "${SONARR_PORT_8989}:8989"
+    expose:
+      - ${SONARR_PORT_8989}

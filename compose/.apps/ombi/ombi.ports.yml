@@ -2,3 +2,5 @@ services:
   ombi:
     ports:
       - "${OMBI_PORT_3579}:3579"
+    expose:
+      - ${OMBI_PORT_3579}

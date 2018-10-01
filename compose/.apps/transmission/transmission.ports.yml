@@ -3,3 +3,5 @@ services:
     ports:
       - "${TRANSMISSION_PORT_51413}:51413"
       - "${TRANSMISSION_PORT_9091}:9091"
+    expose:
+      - ${TRANSMISSION_PORT_9091}

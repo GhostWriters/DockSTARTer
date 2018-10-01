@@ -10,3 +10,5 @@ services:
       - "${UNIFI_PORT_8443}:8443"
       - "${UNIFI_PORT_8843}:8843"
       - "${UNIFI_PORT_8880}:8880"
+    expose:
+      - ${UNIFI_PORT_8080}

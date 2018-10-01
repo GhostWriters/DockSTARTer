@@ -3,3 +3,5 @@ services:
     ports:
       - "${EMBY_PORT_8096}:8096"
       - "${EMBY_PORT_8920}:8920"
+    expose:
+      - ${EMBY_PORT_8096}

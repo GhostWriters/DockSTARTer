@@ -2,3 +2,5 @@ services:
   tautulli:
     ports:
       - "${TAUTULLI_PORT_8181}:8181"
+    expose:
+      - ${TAUTULLI_PORT_8181}

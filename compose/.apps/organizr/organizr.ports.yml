@@ -2,3 +2,5 @@ services:
   organizr:
     ports:
       - "${ORGANIZR_PORT_80}:80"
+    expose:
+      - ${ORGANIZR_PORT_80}

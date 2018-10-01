@@ -2,3 +2,5 @@ services:
   sabnzbd:
     ports:
       - "${SABNZBD_PORT_8080}:8080"
+    expose:
+      - ${SABNZBD_PORT_8080}

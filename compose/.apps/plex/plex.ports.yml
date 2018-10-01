@@ -12,3 +12,5 @@ services:
       - "${PLEX_PORT_33400}:33400"
       - "${PLEX_PORT_5353}:5353/udp"
       - "${PLEX_PORT_8324}:8324/tcp"
+    expose:
+      - ${PLEX_PORT_32400}

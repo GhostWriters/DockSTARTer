@@ -3,3 +3,6 @@ services:
     ports:
       - "${GLANCES_PORT_61208}:61208"
       - "${GLANCES_PORT_61209}:61209"
+    expose:
+      - ${GLANCES_PORT_61208}
+      - ${GLANCES_PORT_61209}

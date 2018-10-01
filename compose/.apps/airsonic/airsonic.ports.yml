@@ -2,3 +2,5 @@ services:
   airsonic:
     ports:
       - "${AIRSONIC_PORT_4040}:4040"
+    expose:
+      - ${COUCHPOTATO_PORT_5050}

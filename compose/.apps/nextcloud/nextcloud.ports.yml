@@ -2,3 +2,5 @@ services:
   nextcloud:
     ports:
       - "${NEXTCLOUD_PORT_443}:443"
+    expose:
+      - ${NEXTCLOUD_PORT_443}

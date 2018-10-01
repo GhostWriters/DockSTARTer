@@ -2,3 +2,5 @@ services:
   portainer:
     ports:
       - "${PORTAINER_PORT_9000}:9000"
+    expose:
+      - ${PORTAINER_PORT_9000}

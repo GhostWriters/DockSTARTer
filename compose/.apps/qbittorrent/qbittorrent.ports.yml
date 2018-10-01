@@ -3,3 +3,5 @@ services:
     ports:
       - "${QBITTORRENT_PORT_6881}:6881"
       - "${QBITTORRENT_PORT_8080}:8080"
+    expose:
+      - ${QBITTORRENT_PORT_8080}

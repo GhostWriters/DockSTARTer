@@ -2,3 +2,5 @@ services:
   headphones:
     ports:
       - "${HEADPHONES_PORT_8181}:8181"
+    expose:
+      - ${HEADPHONES_PORT_8181}
