@@ -84,14 +84,26 @@ menu_value_prompt() {
         *DIR|*DIR_*)
             VALUEDESCRIPTION="\\n\\n If the directory selected does not exist we will attempt to create it."
             ;;
+        LAN_NETWORK)
+            VALUEDESCRIPTION="\\n\\n This is used to define your home LAN network, do NOT confuse this with the IP address of your router or your server, the value for this key defines your network NOT a single host. Please Google CIDR Notation to learn more."
+            ;;
         PGID)
-            VALUEDESCRIPTION="\\n\\n If this is not the correct user group please exit and ensure the user running DockSTARTer is assigned the correct group."
+            VALUEDESCRIPTION="\\n\\n This should be your user group ID. If you are unsure, select Use System."
             ;;
         PUID)
-            VALUEDESCRIPTION="\\n\\n If this is not the correct user ID please exit and run DockSTARTer as the correct user."
+            VALUEDESCRIPTION="\\n\\n This should be your user account ID. If you are unsure, select Use System."
             ;;
         TZ)
             VALUEDESCRIPTION="\\n\\n If this is not the correct timezone please exit and set your system timezone."
+            ;;
+        VPN_ENABLE)
+            VALUEDESCRIPTION="\\n\\n Must be yes or no."
+            ;;
+        VPN_OPTIONS)
+            VALUEDESCRIPTION="\\n\\n Additional openvpn cli options."
+            ;;
+        VPN_PROV)
+            VALUEDESCRIPTION="\\n\\n VPN Provider, usually pia, airvpn or custom."
             ;;
         *)
             VALUEDESCRIPTION=""
@@ -166,7 +178,24 @@ menu_value_prompt() {
                 PUID=$(run_script 'env_get' PUID)
                 local PGID
                 PGID=$(run_script 'env_get' PGID)
-                if [[ -d ${INPUT} ]]; then
+                if [[ ${INPUT} == "/" ]]; then
+                    whiptail --fb --clear --title "DockSTARTer" --msgbox "Cannot use / for ${SET_VAR}. Please select another folder." 0 0
+                    menu_value_prompt "${SET_VAR}"
+                elif [[ ${INPUT} == "~*" ]]; then
+                    local CORRECTED_DIR
+                    CORRECTED_DIR="${DETECTED_HOMEDIR}${INPUT/*~/}"
+                    local ANSWER
+                    set +e
+                    ANSWER=$(whiptail --fb --clear --title "DockSTARTer" --yesno "Cannot use the ~ shortcut in ${SET_VAR}. Would you like to use ${CORRECTED_DIR} instead?." 0 0 3>&1 1>&2 2>&3; echo $?)
+                    set -e
+                    if [[ ${ANSWER} == 0 ]]; then
+                        run_script 'env_set' "${SET_VAR}" "${CORRECTED_DIR}"
+                        whiptail --fb --clear --title "DockSTARTer" --msgbox "Returning to the previous menu to confirm selection." 0 0
+                    else
+                        whiptail --fb --clear --title "DockSTARTer" --msgbox "Cannot use the ~ shortcut in ${SET_VAR}. Please select another folder." 0 0
+                    fi
+                    menu_value_prompt "${SET_VAR}"
+                elif [[ -d ${INPUT} ]]; then
                     run_script 'env_set' "${SET_VAR}" "${INPUT}"
                     local ANSWER
                     set +e
@@ -192,7 +221,17 @@ menu_value_prompt() {
                 fi
                 ;;
             P[GU]ID)
-                if [[ ${INPUT} =~ ^[0-9]+$ ]]; then
+                if [[ ${INPUT} == "0" ]]; then
+                    local ANSWER
+                    set +e
+                    ANSWER=$(whiptail --fb --clear --title "DockSTARTer" --yesno "Running as root is not recommended. Would you like to select a different ID?" 0 0 3>&1 1>&2 2>&3; echo $?)
+                    set -e
+                    if [[ ${ANSWER} == 0 ]]; then
+                        menu_value_prompt "${SET_VAR}"
+                    else
+                        run_script 'env_set' "${SET_VAR}" "${INPUT}"
+                    fi
+                elif [[ ${INPUT} =~ ^[0-9]+$ ]]; then
                     run_script 'env_set' "${SET_VAR}" "${INPUT}"
                 else
                     whiptail --fb --clear --title "DockSTARTer" --msgbox "${INPUT} is not a valid ${SET_VAR}. Please try setting ${SET_VAR} again." 0 0

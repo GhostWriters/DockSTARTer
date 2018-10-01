@@ -7,11 +7,21 @@ set_permissions() {
     CH_PATH=${1:-$SCRIPTPATH}
     case "${CH_PATH}" in
         # https://en.wikipedia.org/wiki/Unix_filesystem
-        "/"|"/bin"|"/boot"|"/dev"|"/etc"|"/home"|"/lib"|"/media"|"/mnt"|"/opt"|"/proc"|"/root"|"/sbin"|"/srv"|"/sys"|"/tmp"|"/unix"|"/usr"|"/var")
+        # Split into two in order to keep the lines shorter
+        "/"|"/bin"|"/boot"|"/dev"|"/etc"|"/home"|"/lib"|"/media"|"/mnt"|"/opt"|"/proc"|"/root"|"/sbin"|"/srv"|"/sys"|"/tmp"|"/unix")
             error "Skipping permissions on ${CH_PATH} because it is a system path."
             return
             ;;
+        "/usr"|"/usr/include"|"/usr/lib"|"/usr/libexec"|"/usr/local"|"/usr/share"|"/var"|"/var/log"|"/var/mail"|"/var/spool"|"/var/tmp")
+            error "Skipping permissions on ${CH_PATH} because it is a system path."
+            return
+            ;;
+        ${DETECTED_HOMEDIR}*)
+            info "Setting permissions for ${CH_PATH}"
+            ;;
         *)
+            # TODO: Consider adding a prompt to confirm setting permissions
+            warning "Setting permissions for ${CH_PATH} outside of ${DETECTED_HOMEDIR} may be unsafe."
             ;;
     esac
     local CH_PUID
