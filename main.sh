@@ -27,6 +27,7 @@ readonly DETECTED_UGROUP=$(id -gn "${DETECTED_PUID}" 2> /dev/null || true)
 readonly DETECTED_HOMEDIR=$(eval echo "~${DETECTED_UNAME}" 2> /dev/null || true)
 
 # Colors
+# https://misc.flogisoft.com/bash/tip_colors_and_formatting
 readonly BLU='\e[34m'
 readonly GRN='\e[32m'
 readonly RED='\e[31m'
