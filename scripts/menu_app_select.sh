@@ -217,7 +217,7 @@ menu_app_select() {
     done < <(grep '_ENABLED=' < "${SCRIPTPATH}/compose/.env")
 
     if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]]; then
-        SELECTEDAPPS=$(whiptail --fb --clear --title "DockSTARTer" --separate-output --checklist  "Choose which apps you would like to install:" 0 0 0 "${APPLIST[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
+        SELECTEDAPPS=$(whiptail --fb --clear --title "DockSTARTer" --separate-output --checklist "Choose which apps you would like to install:" 0 0 0 "${APPLIST[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
         if [[ ${SELECTEDAPPS} == "Cancel" ]]; then
             return 1
         else
@@ -232,7 +232,6 @@ menu_app_select() {
                 local APPNAME
                 APPNAME=${line^^}
                 run_script 'env_set' "${APPNAME}_ENABLED" true
-                run_script 'menu_app_vars' "${APPNAME}"
             done < <(echo "${SELECTEDAPPS}")
         fi
     fi

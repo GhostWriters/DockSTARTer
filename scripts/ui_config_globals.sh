@@ -2,9 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-ui_config() {
-    run_script 'env_update' menu
-    run_script 'menu_app_select' || return 1
+ui_config_globals() {
     run_script 'menu_value_prompt' TZ || return 1
     run_script 'menu_value_prompt' PUID || return 1
     run_script 'menu_value_prompt' PGID || return 1
@@ -16,6 +14,4 @@ ui_config() {
     run_script 'menu_value_prompt' MEDIADIR_MOVIES || return 1
     run_script 'menu_value_prompt' MEDIADIR_MUSIC || return 1
     run_script 'menu_value_prompt' MEDIADIR_TV || return 1
-    run_script 'generate_yml'
-    run_script 'run_compose' menu || return 1
 }

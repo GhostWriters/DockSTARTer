@@ -2,6 +2,8 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+readonly ARGS=("$@")
+
 # Script Information
 get_scriptname() {
     local SOURCE
@@ -17,7 +19,6 @@ get_scriptname() {
 
 readonly SCRIPTNAME="$(get_scriptname)"
 readonly SCRIPTPATH="$( cd -P "$( dirname "${SCRIPTNAME}" )" > /dev/null && pwd )"
-readonly ARGS=("$@")
 
 # User/Group Information
 readonly DETECTED_PUID=${SUDO_UID:-$UID}
