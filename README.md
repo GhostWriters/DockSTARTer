@@ -1,4 +1,4 @@
-![DockSTARTer](.github/logo.png)<link rel="shortcut icon" type="image/x-icon" href=".github/favicon.ico">
+![DockSTARTer](https://github.com/GhostWriters/DockSTARTer/raw/master/.github/logo.png)<link rel="shortcut icon" type="image/x-icon" href="https://github.com/GhostWriters/DockSTARTer/raw/master/.github/favicon.ico">
 [![Discord](https://img.shields.io/discord/477959324183035936.svg?logo=discord)](https://discord.gg/YFyJpmH) [![Travis (.com) branch](https://img.shields.io/travis/com/GhostWriters/DockSTARTer/master.svg?logo=travis)](https://travis-ci.com/GhostWriters/DockSTARTer) [![GitHub](https://img.shields.io/github/license/GhostWriters/DockSTARTer.svg)](https://github.com/GhostWriters/DockSTARTer/blob/master/LICENSE.md)
 
 The main goal of DockSTARTer is to make it quick and easy to get up and running with Docker.
