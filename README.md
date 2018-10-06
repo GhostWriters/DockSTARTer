@@ -37,7 +37,7 @@ sudo reboot
 ### Running DockSTARTer
 -   First run
 ```
-bash -c "$(curl -fsSL https://get.dockstarter.com)"
+sudo bash -c "$(curl -fsSL https://get.dockstarter.com)"
 ```
 -   Subsequent runs
 ```
