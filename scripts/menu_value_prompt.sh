@@ -181,7 +181,7 @@ menu_value_prompt() {
                 if [[ ${INPUT} == "/" ]]; then
                     whiptail --fb --clear --title "DockSTARTer" --msgbox "Cannot use / for ${SET_VAR}. Please select another folder." 0 0
                     menu_value_prompt "${SET_VAR}"
-                elif [[ ${INPUT} == "~*" ]]; then
+                elif [[ ${INPUT} == ~* ]]; then
                     local CORRECTED_DIR
                     CORRECTED_DIR="${DETECTED_HOMEDIR}${INPUT/*~/}"
                     local ANSWER
