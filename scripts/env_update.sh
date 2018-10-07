@@ -36,6 +36,6 @@ env_update() {
         done < <(grep '=' < "${NEWEST_ENV}")
         info "Environment file update complete."
     else
-        error "No .env file backups found in ${SCRIPTPATH}/compose/.env.backups/"
+        warning "No .env file backups found in ${SCRIPTPATH}/compose/.env.backups/"
     fi
 }
