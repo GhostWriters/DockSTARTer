@@ -6,6 +6,6 @@ enable_docker_systemd() {
     # https://docs.docker.com/install/linux/linux-postinstall/
     if [[ ${ISSYSTEMD} == true ]]; then
         info "Systemd detected. Enabling docker service."
-        systemctl enable docker > /dev/null 2>&1
+        systemctl enable docker > /dev/null 2>&1 || fatal "Failed to enable docker service."
     fi
 }
