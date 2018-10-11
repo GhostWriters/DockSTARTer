@@ -71,7 +71,7 @@ generate_yml() {
     done < <(grep '_ENABLED=true' < "${SCRIPTPATH}/compose/.env")
     echo "> ${SCRIPTPATH}/compose/docker-compose.yml" >> "${RUNFILE}"
     run_script 'install_yq'
-    bash "${RUNFILE}"
+    bash "${RUNFILE}" || fatal "Failed to run generator."
     info "Merging docker-compose.yml complete."
     rm -f "${RUNFILE}" || error "Could not remove ${RUNFILE} file."
 }

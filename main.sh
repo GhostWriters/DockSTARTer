@@ -96,7 +96,7 @@ fi
 #/    ds -t validate_shellcheck
 #/
 usage() {
-    grep '^#/' "${SCRIPTNAME}" | cut -c4-
+    grep '^#/' "${SCRIPTNAME}" | cut -c4- || fatal "Failed to display usage information."
 }
 
 # Script Runner Function

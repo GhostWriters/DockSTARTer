@@ -3,7 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 validate_newline() {
-    apt-get -y install pcregrep sed > /dev/null 2>&1
+    apt-get -y install pcregrep sed > /dev/null 2>&1 || fatal "Failed to install newline check dependencies from apt."
 
     local FOUND
     # Find double New Lines at the end of files
