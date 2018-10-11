@@ -24,7 +24,7 @@ request_reboot() {
         fi
         case ${YN} in
             [Yy]* )
-                sudo reboot
+                sudo reboot || error "Failed to reboot!"
                 break
                 ;;
             [Nn]* )
