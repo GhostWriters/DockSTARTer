@@ -1,6 +1,6 @@
 services:
   organizr:
-    image:           tronyx/docker-organizr-v2:php-fpm
+    image:           organizrtools/organizr-v2:php-fpm
     container_name:  organizr
     restart:         unless-stopped
     environment:
