@@ -71,6 +71,7 @@ fi
 #/    -b --backup              create a backup of your .env file
 #/    -e --env                 update your .env file with new variables
 #/    -g --generate            run the docker-compose yml generator
+#/    -h --help                show this usage information
 #/    -i --install             install docker and dependencies
 #/    -p --prune               remove all unused containers, networks, volumes, images and build cache
 #/    -t --test <test_name>    run tests to check the program
