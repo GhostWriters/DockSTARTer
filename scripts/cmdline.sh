@@ -14,6 +14,7 @@ cmdline() {
             --backup)         LOCAL_ARGS="${LOCAL_ARGS}-b " ;;
             --env)            LOCAL_ARGS="${LOCAL_ARGS}-e " ;;
             --generate)       LOCAL_ARGS="${LOCAL_ARGS}-g " ;;
+            --help)           LOCAL_ARGS="${LOCAL_ARGS}-h " ;;
             --install)        LOCAL_ARGS="${LOCAL_ARGS}-i " ;;
             --prune)          LOCAL_ARGS="${LOCAL_ARGS}-p " ;;
             --test)           LOCAL_ARGS="${LOCAL_ARGS}-t " ;;
@@ -29,7 +30,7 @@ cmdline() {
     #Reset the positional parameters to the short options
     eval set -- "${LOCAL_ARGS:-}"
 
-    while getopts "begipt:uvx" OPTION; do
+    while getopts "beghipt:uvx" OPTION; do
         case ${OPTION} in
             b)
                 run_script 'env_backup'
@@ -41,6 +42,10 @@ cmdline() {
                 ;;
             g)
                 run_script 'cmd_generate'
+                exit
+                ;;
+            h)
+                usage
                 exit
                 ;;
             i)
