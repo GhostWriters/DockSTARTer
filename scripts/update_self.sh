@@ -3,8 +3,6 @@ set -euo pipefail
 IFS=$'\n\t'
 
 update_self() {
-    local PROMPT
-    PROMPT=${1:-}
     local QUESTION
     QUESTION="Would you like to update DockSTARTer now?"
     info "${QUESTION}"
@@ -13,7 +11,7 @@ update_self() {
         if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
             info "Travis will not run this."
             return
-        elif [[ ${PROMPT} == "menu" ]]; then
+        elif [[ ${PROMPT:-} == "menu" ]]; then
             local ANSWER
             set +e
             ANSWER=$(whiptail --fb --clear --title "DockSTARTer" --yesno "${QUESTION}" 0 0 3>&1 1>&2 2>&3; echo $?)
