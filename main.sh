@@ -150,6 +150,7 @@ main() {
     # shellcheck source=scripts/cmdline.sh
     source "${SCRIPTPATH}/scripts/cmdline.sh"
     cmdline "${ARGS[@]:-}"
+    readonly PROMPT="menu"
     run_script 'menu_main'
 }
 main
