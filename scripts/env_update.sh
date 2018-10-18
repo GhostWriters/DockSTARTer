@@ -3,7 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 env_update() {
-    run_script 'env_backup' menu
+    run_script 'env_backup'
     info "Locating newest .env file backup."
     local NEWEST_ENV
     for f in "${SCRIPTPATH}"/compose/.env.backups/.env.*; do

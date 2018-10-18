@@ -3,8 +3,6 @@ set -euo pipefail
 IFS=$'\n\t'
 
 env_backup() {
-    local PROMPT
-    PROMPT=${1:-}
     if [[ -f ${SCRIPTPATH}/compose/.env ]]; then
         local BACKUPTIME
         BACKUPTIME=$(date +"%Y%m%d%H%M%S")
@@ -19,6 +17,6 @@ env_backup() {
         PGID=$(run_script 'env_get' PGID)
         run_script 'set_permissions' "${SCRIPTPATH}" "${PUID}" "${PGID}"
     else
-        run_script 'env_create' "${PROMPT}"
+        run_script 'env_create'
     fi
 }
