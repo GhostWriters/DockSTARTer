@@ -5,6 +5,7 @@ IFS=$'\n\t'
 root_check() {
     info "Checking root permissions."
     if [[ ${EUID} -ne 0 ]]; then
-        fatal "Please run as root using sudo."
+        sudo bash "${SCRIPTNAME:-}" "${ARGS[@]:-}" || fatal "Please run as root using sudo ds ${ARGS[*]:-}"
+        exit
     fi
 }

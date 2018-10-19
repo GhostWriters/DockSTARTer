@@ -11,5 +11,5 @@ ui_install() {
     run_script 'install_compose_completion'
     run_script 'setup_docker_group'
     run_script 'enable_docker_systemd'
-    run_script 'request_reboot' menu || return 1
+    run_script 'request_reboot' || return 1
 }

@@ -3,8 +3,6 @@ set -euo pipefail
 IFS=$'\n\t'
 
 prune_docker() {
-    local PROMPT
-    PROMPT=${1:-}
     local QUESTION
     QUESTION="Would you like to remove all unused containers, networks, volumes, images and build cache?"
     info "${QUESTION}"
@@ -13,7 +11,7 @@ prune_docker() {
         if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
             info "Travis will not run this."
             return
-        elif [[ ${PROMPT} == "menu" ]]; then
+        elif [[ ${PROMPT:-} == "menu" ]]; then
             local ANSWER
             set +e
             ANSWER=$(whiptail --fb --clear --title "DockSTARTer" --yesno "${QUESTION}" 0 0 3>&1 1>&2 2>&3; echo $?)
