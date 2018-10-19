@@ -21,7 +21,7 @@ run_compose() {
             read -rp "[Yn]" YN
         fi
         case ${YN} in
-            [Yy]* )
+            [Yy]*)
                 run_script 'install_docker'
                 run_script 'install_compose'
                 local PUID
@@ -34,11 +34,11 @@ run_compose() {
                 cd "${SCRIPTPATH}" || fatal "Unable to change directory to ${SCRIPTPATH}"
                 break
                 ;;
-            [Nn]* )
+            [Nn]*)
                 info "Compose will not be run."
                 return 1
                 ;;
-            * )
+            *)
                 error "Please answer yes or no."
                 ;;
         esac

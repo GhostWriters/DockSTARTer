@@ -20,15 +20,15 @@ env_create() {
                 read -rp "[Yn]" YN
             fi
             case ${YN} in
-                [Yy]* )
+                [Yy]*)
                     info "Please edit ${SCRIPTPATH}/compose/.env and rerun the script."
                     exit
                     ;;
-                [Nn]* )
+                [Nn]*)
                     warning "Defaults from ${SCRIPTPATH}/compose/.env.example will be used."
                     break
                     ;;
-                * )
+                *)
                     error "Please answer yes or no."
                     ;;
             esac

@@ -21,15 +21,15 @@ prune_docker() {
             read -rp "[Yn]" YN
         fi
         case ${YN} in
-            [Yy]* )
+            [Yy]*)
                 docker system prune -a --volumes --force || error "Unable to prune unused docker resources."
                 break
                 ;;
-            [Nn]* )
+            [Nn]*)
                 info "Nothing will be removed."
                 return 1
                 ;;
-            * )
+            *)
                 error "Please answer yes or no."
                 ;;
         esac
