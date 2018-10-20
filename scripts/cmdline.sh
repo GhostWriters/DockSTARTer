@@ -30,10 +30,23 @@ cmdline() {
     #Reset the positional parameters to the short options
     eval set -- "${LOCAL_ARGS:-}"
 
-    while getopts "beghipt:uvx" OPTION; do
+    while getopts "b:eghipt:uvx" OPTION; do
         case ${OPTION} in
             b)
-                run_script 'env_backup'
+                case ${OPTARG} in
+                    min)
+                        run_script "backup_min"
+                        ;;
+                    med)
+                        run_script "backup_med"
+                        ;;
+                    max)
+                        run_script "backup_max"
+                        ;;
+                    *)
+                        fatal "Invalid backup option."
+                        ;;
+                esac
                 exit
                 ;;
             e)
