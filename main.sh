@@ -68,23 +68,28 @@ fi
 #/ This is the main DockSTARTer script.
 #/ For regular usage you can run without providing any options.
 #/
-#/    -b --backup              create a backup of your .env file
-#/    -e --env                 update your .env file with new variables
-#/    -g --generate            run the docker-compose yml generator
-#/    -h --help                show this usage information
-#/    -i --install             install docker and dependencies
-#/    -p --prune               remove all unused containers, networks, volumes, images and build cache
-#/    -t --test <test_name>    run tests to check the program
-#/    -u --update              update DockSTARTer
-#/    -v --verbose             verbose
-#/    -x --debug               debug
+#/    -b --backup <min/med/max>     create a backup snapshot of your configs (see wiki more information)
+#/    -e --env                      update your .env file with new variables
+#/    -g --generate                 run the docker-compose yml generator
+#/    -h --help                     show this usage information
+#/    -i --install                  install docker and dependencies
+#/    -p --prune                    remove all unused containers, networks, volumes, images and build cache
+#/    -t --test <test_name>         run tests to check the program
+#/    -u --update                   update DockSTARTer
+#/    -v --verbose                  verbose
+#/    -x --debug                    debug
 #/
 #/
 #/ Examples:
-#/    Run backup, env, generate, install, prune, update:
+#/    Run env, generate, install, prune, update:
 #/    ds --install
 #/    or
 #/    ds -i
+#/
+#/    Run backup:
+#/    ds --backup min
+#/    or
+#/    ds -b min
 #/
 #/    Debug or verbose can be combined with any option but should be indicated before other options:
 #/    ds --debug --update
