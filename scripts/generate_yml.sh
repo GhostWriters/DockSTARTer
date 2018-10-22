@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
 IFS=$'\n\t'
 
@@ -7,7 +7,7 @@ generate_yml() {
     local RUNFILE
     RUNFILE="${SCRIPTPATH}/compose/docker-compose.sh"
     rm -f "${RUNFILE}" || fatal "Could not remove ${RUNFILE} file."
-    echo "#!/bin/bash" > "${RUNFILE}"
+    echo "#!/usr/bin/env bash" > "${RUNFILE}"
     {
         echo "yq m \\"
         echo "${SCRIPTPATH}/compose/.reqs/v1.yml \\"
