@@ -8,7 +8,7 @@ run_dnf() {
         dnf -y upgrade --refresh > /dev/null 2>&1 || fatal "Failed to upgrade packages from dnf."
     fi
     info "Installing dependencies."
-    dnf -y install curl git grep newt sed > /dev/null 2>&1 || fatal "Failed to install dependencies from dnf."
+    dnf -y install curl git grep newt rsync sed > /dev/null 2>&1 || fatal "Failed to install dependencies from dnf."
     info "Removing unused packages."
     dnf -y autoremove > /dev/null 2>&1 || fatal "Failed to remove unused packages from dnf."
     info "Cleaning up package cache."

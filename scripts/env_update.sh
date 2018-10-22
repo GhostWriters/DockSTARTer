@@ -5,8 +5,10 @@ IFS=$'\n\t'
 env_update() {
     run_script 'env_backup'
     info "Locating newest .env file backup."
+    local DOCKERCONFDIR
+    DOCKERCONFDIR=$(run_script 'env_get' DOCKERCONFDIR)
     local NEWEST_ENV
-    for f in "${SCRIPTPATH}"/compose/.env.backups/.env.*; do
+    for f in "${DOCKERCONFDIR}"/.env.backups/.env.*; do
         if [[ -f "${f}" ]]; then
             NEWEST_ENV=${f}
         else
@@ -36,6 +38,6 @@ env_update() {
         done < <(grep '=' < "${NEWEST_ENV}")
         info "Environment file update complete."
     else
-        warning "No .env file backups found in ${SCRIPTPATH}/compose/.env.backups/"
+        warning "No .env file backups found in ${DOCKERCONFDIR}/.env.backups/"
     fi
 }
