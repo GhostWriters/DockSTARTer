@@ -10,7 +10,7 @@ run_apt() {
         apt-get -y dist-upgrade > /dev/null 2>&1 || fatal "Failed to upgrade packages from apt."
     fi
     info "Installing dependencies."
-    apt-get -y install curl git grep sed apt-transport-https whiptail > /dev/null 2>&1 || fatal "Failed to install dependencies from apt."
+    apt-get -y install apt-transport-https curl git grep rsync sed whiptail > /dev/null 2>&1 || fatal "Failed to install dependencies from apt."
     info "Removing unused packages."
     apt-get -y autoremove > /dev/null 2>&1 || fatal "Failed to remove unused packages from apt."
     info "Cleaning up package cache."

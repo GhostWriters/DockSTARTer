@@ -21,15 +21,15 @@ request_reboot() {
             read -rp "[Yn]" YN
         fi
         case ${YN} in
-            [Yy]* )
+            [Yy]*)
                 sudo reboot || error "Failed to reboot!"
                 break
                 ;;
-            [Nn]* )
+            [Nn]*)
                 info "Your system will not reboot."
                 return 1
                 ;;
-            * )
+            *)
                 error "Please answer yes or no."
                 ;;
         esac
