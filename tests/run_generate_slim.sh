@@ -10,7 +10,7 @@ run_generate_slim() {
     echo
     cat "${SCRIPTPATH}/compose/docker-compose.yml" || fatal "${SCRIPTPATH}/compose/docker-compose.yml not found."
     echo
-    cd "${SCRIPTPATH}/compose/" || fatal "Could not change to ${SCRIPTPATH}/compose/ directory."
+    cd "${SCRIPTPATH}/compose/" || fatal "Failed to change to ${SCRIPTPATH}/compose/ directory."
     docker-compose up -d || fatal "Docker Compose failed."
-    cd "${SCRIPTPATH}" || fatal "Could not change to ${SCRIPTPATH} directory."
+    cd "${SCRIPTPATH}" || fatal "Failed to change to ${SCRIPTPATH} directory."
 }

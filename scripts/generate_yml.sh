@@ -6,7 +6,7 @@ generate_yml() {
     info "Generating docker-compose.yml file."
     local RUNFILE
     RUNFILE="${SCRIPTPATH}/compose/docker-compose.sh"
-    rm -f "${RUNFILE}" || fatal "Could not remove ${RUNFILE} file."
+    rm -f "${RUNFILE}" || fatal "Failed to remove ${RUNFILE} file."
     echo "#!/usr/bin/env bash" > "${RUNFILE}"
     {
         echo "yq m \\"
@@ -36,7 +36,7 @@ generate_yml() {
                         echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.armhf.yml \\" >> "${RUNFILE}"
                         info "Missing arm64 option for ${APPNAME} (may not be available) falling back on armhf."
                     else
-                        error "Could not find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.arm64.yml file or ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.armhf.yml file."
+                        error "Failed to find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.arm64.yml file or ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.armhf.yml file."
                         continue
                     fi
                 fi
@@ -44,7 +44,7 @@ generate_yml() {
                     if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.armhf.yml ]]; then
                         echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.armhf.yml \\" >> "${RUNFILE}"
                     else
-                        error "Could not find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.armhf.yml file."
+                        error "Failed to find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.armhf.yml file."
                         continue
                     fi
                 fi
@@ -53,7 +53,7 @@ generate_yml() {
                         echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml \\" >> "${RUNFILE}"
                         info "${APPNAME}_NETWORK_MODE supports port mapping. Ports will be included."
                     else
-                        warning "Could not find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml file."
+                        warning "Failed to find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml file."
                     fi
                 fi
                 if [[ -n ${APPNETMODE} ]]; then
@@ -61,21 +61,21 @@ generate_yml() {
                         echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml \\" >> "${RUNFILE}"
                         info "${APPNAME}_NETWORK_MODE is set to ${APPNETMODE}."
                     else
-                        warning "Could not find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml file."
+                        warning "Failed to find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml file."
                     fi
                 fi
                 echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml \\" >> "${RUNFILE}"
                 info "All configurations for ${APPNAME} are included."
             else
-                warning "Could not find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml file."
+                warning "Failed to find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml file."
             fi
         else
-            error "Could not find ${SCRIPTPATH}/compose/.apps/${FILENAME}/ directory."
+            error "Failed to find ${SCRIPTPATH}/compose/.apps/${FILENAME}/ directory."
         fi
     done < <(grep '_ENABLED=true' < "${SCRIPTPATH}/compose/.env")
     echo "> ${SCRIPTPATH}/compose/docker-compose.yml" >> "${RUNFILE}"
     run_script 'install_yq'
     bash "${RUNFILE}" || fatal "Failed to run generator."
     info "Merging docker-compose.yml complete."
-    rm -f "${RUNFILE}" || error "Could not remove ${RUNFILE} file."
+    rm -f "${RUNFILE}" || error "Failed to remove ${RUNFILE} file."
 }

@@ -11,12 +11,12 @@ setup_docker_group() {
     if [[ -S ${DOCKER_SOCKET} ]]; then
         DOCKER_GID=$(stat -c '%g' ${DOCKER_SOCKET})
         info "Creating ${DOCKER_GROUP} group."
-        groupadd -for -g "${DOCKER_GID}" "${DOCKER_GROUP}" > /dev/null 2>&1 || fatal "Could not create ${DOCKER_GROUP} group."
+        groupadd -for -g "${DOCKER_GID}" "${DOCKER_GROUP}" > /dev/null 2>&1 || fatal "Failed to create ${DOCKER_GROUP} group."
         if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
             info "Skipping usermod on Travis."
         else
             info "Adding ${DETECTED_UNAME} to ${DOCKER_GROUP} group."
-            usermod -aG "${DOCKER_GROUP}" "${DETECTED_UNAME}" > /dev/null 2>&1 || fatal "Could not add ${DETECTED_UNAME} to ${DOCKER_GROUP} group."
+            usermod -aG "${DOCKER_GROUP}" "${DETECTED_UNAME}" > /dev/null 2>&1 || fatal "Failed to add ${DETECTED_UNAME} to ${DOCKER_GROUP} group."
         fi
         info "Setting DOCKERGID to ${DOCKER_GID} in ${SCRIPTPATH}/compose/.env file."
         run_script 'env_update'
