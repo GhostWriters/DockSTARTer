@@ -144,7 +144,7 @@ trap 'cleanup' 0 1 2 3 6 14 15
 main() {
     if [[ ! -d ${DETECTED_HOMEDIR}/.docker/.git ]]; then
         warning "Attempting to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
-        git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Could not clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
+        git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
     fi
     if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]] && [[ ${SCRIPTPATH} != "${DETECTED_HOMEDIR}/.docker" ]]; then
         warning "Attempting to run DockSTARTer from ${DETECTED_HOMEDIR}/.docker location."
