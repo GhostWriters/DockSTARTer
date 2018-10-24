@@ -22,7 +22,7 @@ prune_docker() {
         fi
         case ${YN} in
             [Yy]*)
-                docker system prune -a --volumes --force || error "Could not prune unused docker resources."
+                docker system prune -a --volumes --force || error "Failed to prune unused docker resources."
                 break
                 ;;
             [Nn]*)
