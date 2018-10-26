@@ -54,7 +54,8 @@ cmdline() {
                 exit
                 ;;
             g)
-                run_script 'cmd_generate'
+                run_script 'generate_yml'
+                run_script 'run_compose'
                 exit
                 ;;
             h)
@@ -62,7 +63,7 @@ cmdline() {
                 exit
                 ;;
             i)
-                run_script 'cmd_install'
+                run_script 'run_install'
                 exit
                 ;;
             p)
