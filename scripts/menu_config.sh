@@ -18,9 +18,9 @@ menu_config() {
         "Full Setup ")
             run_script 'env_update'
             run_script 'menu_app_select' || run_script 'menu_config'
-            run_script 'ui_config_apps' || run_script 'menu_config'
-            run_script 'ui_config_vpn' || run_script 'menu_config'
-            run_script 'ui_config_globals' || run_script 'menu_config'
+            run_script 'config_apps' || run_script 'menu_config'
+            run_script 'config_vpn' || run_script 'menu_config'
+            run_script 'config_globals' || run_script 'menu_config'
             ;;
         "Select Apps ")
             run_script 'env_update'
@@ -28,15 +28,15 @@ menu_config() {
             ;;
         "Set App Variables ")
             run_script 'env_update'
-            run_script 'ui_config_apps' || run_script 'menu_config'
+            run_script 'config_apps' || run_script 'menu_config'
             ;;
         "Set VPN Variables ")
             run_script 'env_update'
-            run_script 'ui_config_vpn' || run_script 'menu_config'
+            run_script 'config_vpn' || run_script 'menu_config'
             ;;
         "Set Global Variables ")
             run_script 'env_update'
-            run_script 'ui_config_globals' || run_script 'menu_config'
+            run_script 'config_globals' || run_script 'menu_config'
             ;;
         "Cancel")
             info "Returning to Main Menu."

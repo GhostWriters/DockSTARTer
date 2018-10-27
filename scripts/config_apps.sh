@@ -2,7 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-ui_config_apps() {
+config_apps() {
     while IFS= read -r line; do
         local APPNAME
         APPNAME=${line/_ENABLED=true/}

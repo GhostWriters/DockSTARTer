@@ -2,7 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-ui_config_globals() {
+config_globals() {
     local APPNAME
     APPNAME="Globals"
     local VARNAMES
