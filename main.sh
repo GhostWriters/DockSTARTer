@@ -142,14 +142,19 @@ trap 'cleanup' 0 1 2 3 6 14 15
 
 # Main Function
 main() {
-    if [[ ! -d ${DETECTED_HOMEDIR}/.docker/.git ]] && [[ -z ${ARGS[*]:-} ]]; then
-        warning "Attempting to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
-        git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
-    fi
-    if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]] && [[ ${SCRIPTPATH} != "${DETECTED_HOMEDIR}/.docker" ]] && [[ -z ${ARGS[*]:-} ]]; then
-        warning "Attempting to run DockSTARTer from ${DETECTED_HOMEDIR}/.docker location."
-        (sudo bash "${DETECTED_HOMEDIR}/.docker/main.sh" "${ARGS[@]:-}") || true
-        exit
+    if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]] && [[ -z ${ARGS[*]:-} ]]; then
+        if [[ ! -d ${DETECTED_HOMEDIR}/.docker/.git ]]; then
+            warning "Attempting to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
+            git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
+            info "Performing first run install."
+            (sudo bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-i") || fatal "Failed first run install, please reboot and try again."
+            exit
+        elif [[ ${SCRIPTPATH} != "${DETECTED_HOMEDIR}/.docker" ]]; then
+            (sudo bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-u") || true
+            warning "Attempting to run DockSTARTer from ${DETECTED_HOMEDIR}/.docker location."
+            (sudo bash "${DETECTED_HOMEDIR}/.docker/main.sh") || true
+            exit
+        fi
     fi
     run_script 'root_check'
     run_script 'symlink_ds'
