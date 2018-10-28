@@ -19,7 +19,7 @@ menu_main() {
             run_script 'menu_config' || run_script 'menu_main'
             ;;
         "Install Dependencies ")
-            run_script 'ui_install' || run_script 'menu_main'
+            run_script 'run_install' || run_script 'menu_main'
             ;;
         "Update DockSTARTer ")
             run_script 'update_self' || run_script 'menu_main'

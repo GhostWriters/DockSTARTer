@@ -2,7 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-ui_config_vpn() {
+config_vpn() {
     local APPNAME
     APPNAME="VPN"
     local VARNAMES
