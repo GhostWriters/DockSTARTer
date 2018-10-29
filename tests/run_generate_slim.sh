@@ -6,7 +6,7 @@ run_generate_slim() {
     run_script 'update_system'
     run_script 'env_update'
     info "Running generator."
-    bash "${SCRIPTPATH}/main.sh" -g
+    bash "${SCRIPTPATH}/main.sh" -c
     echo
     cat "${SCRIPTPATH}/compose/docker-compose.yml" || fatal "${SCRIPTPATH}/compose/docker-compose.yml not found."
     echo
