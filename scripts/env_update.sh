@@ -19,11 +19,6 @@ env_update() {
         info "Replacing current .env file with latest template."
         rm -f "${SCRIPTPATH}/compose/.env" || warning "${SCRIPTPATH}/compose/.env could not be removed."
         cp "${SCRIPTPATH}/compose/.env.example" "${SCRIPTPATH}/compose/.env" || fatal "${SCRIPTPATH}/compose/.env could not be copied."
-        local PUID
-        PUID=$(run_script 'env_get' PUID)
-        local PGID
-        PGID=$(run_script 'env_get' PGID)
-        run_script 'set_permissions' "${SCRIPTPATH}" "${PUID}" "${PGID}"
         info "Writing values from .env file backup."
         while IFS= read -r line; do
             local SET_VAR
@@ -36,8 +31,11 @@ env_update() {
                 echo "${line}" >> "${SCRIPTPATH}/compose/.env"
             fi
         done < <(grep '=' < "${NEWEST_ENV}")
+        run_script 'env_sanitize'
         info "Environment file update complete."
     else
         warning "No .env file backups found in ${DOCKERCONFDIR}/.env.backups/"
     fi
+    run_script 'set_permissions' "${SCRIPTPATH}"
+    run_script 'set_permissions' "${DOCKERCONFDIR}"
 }
