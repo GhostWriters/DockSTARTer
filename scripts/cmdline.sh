@@ -12,7 +12,9 @@ cmdline() {
         case "${ARG}" in
                 #translate --gnu-long-options to -g (short options)
             --backup)         LOCAL_ARGS="${LOCAL_ARGS}-b " ;;
+            --compose)        LOCAL_ARGS="${LOCAL_ARGS}-c " ;;
             --env)            LOCAL_ARGS="${LOCAL_ARGS}-e " ;;
+# TODO: Remove after 18.11
             --generate)       LOCAL_ARGS="${LOCAL_ARGS}-g " ;;
             --help)           LOCAL_ARGS="${LOCAL_ARGS}-h " ;;
             --install)        LOCAL_ARGS="${LOCAL_ARGS}-i " ;;
@@ -30,7 +32,7 @@ cmdline() {
     #Reset the positional parameters to the short options
     eval set -- "${LOCAL_ARGS:-}"
 
-    while getopts "b:eghipt:uvx" OPTION; do
+    while getopts "b:ceghipt:uvx" OPTION; do
         case ${OPTION} in
             b)
                 case ${OPTARG} in
@@ -49,10 +51,16 @@ cmdline() {
                 esac
                 exit
                 ;;
+            c)
+                run_script 'generate_yml'
+                run_script 'run_compose'
+                exit
+                ;;
             e)
                 run_script 'env_update'
                 exit
                 ;;
+# TODO: Remove after 18.11
             g)
                 run_script 'generate_yml'
                 run_script 'run_compose'

@@ -43,7 +43,7 @@ bash -c "$(curl -fsSL https://get.dockstarter.com)"
 ```
 sudo ds
 ```
-You should now see the main menu from the screenshot above. On your first run you should choose is `Install Dependencies`. At the end of this you will be prompted to reboot (required). After the reboot run DockSTARTer again using the subsequent runs command above and select `Configuration` and then `Full Setup`. You will be guided through selecting apps and starting the app containers.
+On your first run DockSTARTer should Install Dependencies for you and then prompt you to reboot (required). After the reboot run DockSTARTer again using the subsequent runs command. You should now see the main menu from the screenshots. Select `Configuration` and then `Full Setup` and you will be guided through selecting apps and starting containers.
 
 See our [Wiki](https://github.com/GhostWriters/DockSTARTer/wiki/) for more detailed information.
 
