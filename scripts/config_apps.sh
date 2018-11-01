@@ -3,6 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 config_apps() {
+    info "Configuring .env variables for enabled apps."
     while IFS= read -r line; do
         local APPNAME
         APPNAME=${line/_ENABLED=true/}

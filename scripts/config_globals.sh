@@ -3,6 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 config_globals() {
+    info "Configuring global .env variables."
     local APPNAME
     APPNAME="Globals"
     local VARNAMES

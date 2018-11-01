@@ -23,4 +23,5 @@ validate_newline() {
         fatal "Newline validation failure."
     fi
     FOUND=''
+    info "Newline validation complete."
 }

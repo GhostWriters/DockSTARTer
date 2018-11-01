@@ -9,4 +9,5 @@ run_install() {
     yq --version || fatal "Failed to determine yq version."
     docker run hello-world || fatal "Failed to run docker hello-world."
     docker-compose --version || fatal "Failed to determine docker-compose version."
+    info "Install test complete."
 }

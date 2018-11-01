@@ -3,6 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 backup_max() {
+    info "Backing up all configs."
     local BACKUP_CMD_PRE_RUN
     BACKUP_CMD_PRE_RUN=$(run_script 'env_get' BACKUP_CMD_PRE_RUN)
     eval "${BACKUP_CMD_PRE_RUN}" || error "Failed to execute BACKUP_CMD_PRE_RUN."
