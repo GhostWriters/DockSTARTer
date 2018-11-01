@@ -4,38 +4,29 @@ IFS=$'\n\t'
 
 env_update() {
     run_script 'env_backup'
-    info "Locating newest .env file backup."
+    info "Replacing current .env file with latest template."
+    local CURRENTENV
+    CURRENTENV="$(mktemp)"
+    cp "${SCRIPTPATH}/compose/.env" "${CURRENTENV}" || fatal "${SCRIPTPATH}/compose/.env could not be copied."
+    rm -f "${SCRIPTPATH}/compose/.env" || warning "${SCRIPTPATH}/compose/.env could not be removed."
+    cp "${SCRIPTPATH}/compose/.env.example" "${SCRIPTPATH}/compose/.env" || fatal "${SCRIPTPATH}/compose/.env.example could not be copied."
+    info "Merging previous values into new .env file."
+    while IFS= read -r line; do
+        local SET_VAR
+        SET_VAR=${line/=*/}
+        local SET_VAL
+        SET_VAL=${line/*=/}
+        if grep -q "^${SET_VAR}=" "${SCRIPTPATH}/compose/.env"; then
+            run_script 'env_set' "${SET_VAR}" "${SET_VAL}"
+        else
+            echo "${line}" >> "${SCRIPTPATH}/compose/.env" || error "${line} could not be written to ${SCRIPTPATH}/compose/.env"
+        fi
+    done < <(grep '=' < "${CURRENTENV}")
+    rm -f "${CURRENTENV}" || warning "Temporary .env file could not be removed."
+    run_script 'env_sanitize'
+    info "Environment file update complete."
+    run_script 'set_permissions' "${SCRIPTPATH}"
     local DOCKERCONFDIR
     DOCKERCONFDIR=$(run_script 'env_get' DOCKERCONFDIR)
-    local NEWEST_ENV
-    for f in "${DOCKERCONFDIR}"/.env.backups/.env.*; do
-        if [[ -f "${f}" ]]; then
-            NEWEST_ENV=${f}
-        else
-            NEWEST_ENV=false
-        fi
-    done
-    if [[ ${NEWEST_ENV} != false ]]; then
-        info "Replacing current .env file with latest template."
-        rm -f "${SCRIPTPATH}/compose/.env" || warning "${SCRIPTPATH}/compose/.env could not be removed."
-        cp "${SCRIPTPATH}/compose/.env.example" "${SCRIPTPATH}/compose/.env" || fatal "${SCRIPTPATH}/compose/.env could not be copied."
-        info "Writing values from .env file backup."
-        while IFS= read -r line; do
-            local SET_VAR
-            SET_VAR=${line/=*/}
-            local SET_VAL
-            SET_VAL=${line/*=/}
-            if grep -q "^${SET_VAR}=" "${SCRIPTPATH}/compose/.env"; then
-                run_script 'env_set' "${SET_VAR}" "${SET_VAL}"
-            else
-                echo "${line}" >> "${SCRIPTPATH}/compose/.env"
-            fi
-        done < <(grep '=' < "${NEWEST_ENV}")
-        run_script 'env_sanitize'
-        info "Environment file update complete."
-    else
-        warning "No .env file backups found in ${DOCKERCONFDIR}/.env.backups/"
-    fi
-    run_script 'set_permissions' "${SCRIPTPATH}"
     run_script 'set_permissions' "${DOCKERCONFDIR}"
 }
