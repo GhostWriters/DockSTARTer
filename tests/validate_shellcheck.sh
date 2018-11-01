@@ -5,8 +5,8 @@ IFS=$'\n\t'
 validate_shellcheck() {
     apt-get -y install xz-utils > /dev/null 2>&1 || fatal "Failed to install shellcheck dependencies from apt."
     export scversion="stable" # or "v0.4.7", or "latest"
-    wget "https://storage.googleapis.com/shellcheck/shellcheck-${scversion}.linux.x86_64.tar.xz" || fatal "Failed to download shellcheck."
-    tar --xz -xvf shellcheck-"${scversion}".linux.x86_64.tar.xz || fatal "Failed to extract shellcheck."
+    wget "https://storage.googleapis.com/shellcheck/shellcheck-${scversion}.linux.x86_64.tar.xz" > /dev/null 2>&1 || fatal "Failed to download shellcheck."
+    tar --xz -xvf shellcheck-"${scversion}".linux.x86_64.tar.xz > /dev/null 2>&1 || fatal "Failed to extract shellcheck."
     cp shellcheck-"${scversion}"/shellcheck /usr/bin/ || fatal "Failed to copy shellcheck to bin."
 
     shellcheck --version || fatal "Failed to check shellcheck version."
@@ -26,4 +26,5 @@ validate_shellcheck() {
     #        grep -rn "${SCRIPTPATH}" -e '^# shellcheck disable'
     #        fatal "Shellcheck validation failure."
     #    fi
+    info "Shellcheck validation complete."
 }

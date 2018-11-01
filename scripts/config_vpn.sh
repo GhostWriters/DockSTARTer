@@ -3,6 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 config_vpn() {
+    info "Configuring VPN .env variables."
     local APPNAME
     APPNAME="VPN"
     local VARNAMES
