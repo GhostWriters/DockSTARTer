@@ -25,8 +25,12 @@ env_update() {
     rm -f "${CURRENTENV}" || warning "Temporary .env file could not be removed."
     run_script 'env_sanitize'
     info "Environment file update complete."
-    run_script 'set_permissions' "${SCRIPTPATH}"
+    local PUID
+    PUID=$(run_script 'env_get' PUID)
+    local PGID
+    PGID=$(run_script 'env_get' PGID)
+    run_script 'set_permissions' "${SCRIPTPATH}" "${PUID}" "${PGID}"
     local DOCKERCONFDIR
     DOCKERCONFDIR=$(run_script 'env_get' DOCKERCONFDIR)
-    run_script 'set_permissions' "${DOCKERCONFDIR}"
+    run_script 'set_permissions' "${DOCKERCONFDIR}" "${PUID}" "${PGID}"
 }
