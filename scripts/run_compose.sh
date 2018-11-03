@@ -3,12 +3,21 @@ set -euo pipefail
 IFS=$'\n\t'
 
 run_compose() {
+    local UPDOWN
+    UPDOWN=${1:-up}
     local QUESTION
-    QUESTION="Would you like to run your selected containers now?"
+    if [[ $UPDOWN == "up" ]]; then
+        QUESTION="Would you like to run your selected containers now?"
+        UPDOWN="up -d"
+    else
+        QUESTION="Containers will be stopped and removed."
+    fi
     info "${QUESTION}"
     local YN
     while true; do
-        if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
+        if [[ $UPDOWN == "down" ]]; then
+            YN=Y
+        elif [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
             info "Travis will not run this."
             return
         elif [[ ${PROMPT:-} == "menu" ]]; then
@@ -30,7 +39,7 @@ run_compose() {
                 PGID=$(run_script 'env_get' PGID)
                 run_script 'set_permissions' "${SCRIPTPATH}" "${PUID}" "${PGID}"
                 cd "${SCRIPTPATH}/compose/" || fatal "Failed to change directory to ${SCRIPTPATH}/compose/"
-                su "${DETECTED_UNAME}" -c "docker-compose up -d --remove-orphans" || fatal "Docker Compose failed."
+                su "${DETECTED_UNAME}" -c "docker-compose ${UPDOWN} --remove-orphans" || fatal "Docker Compose failed."
                 cd "${SCRIPTPATH}" || fatal "Failed to change directory to ${SCRIPTPATH}"
                 break
                 ;;

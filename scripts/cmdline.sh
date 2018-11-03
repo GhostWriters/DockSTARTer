@@ -32,7 +32,7 @@ cmdline() {
     #Reset the positional parameters to the short options
     eval set -- "${LOCAL_ARGS:-}"
 
-    while getopts "b:ceghipt:uvx" OPTION; do
+    while getopts ":b:c:eghipt:uvx" OPTION; do
         case ${OPTION} in
             b)
                 case ${OPTARG} in
@@ -52,8 +52,21 @@ cmdline() {
                 exit
                 ;;
             c)
-                run_script 'generate_yml'
-                run_script 'run_compose'
+                case ${OPTARG} in
+                    up)
+                        run_script 'generate_yml'
+                        run_script 'run_compose' up
+                        ;;
+                    down)
+                        run_script 'run_compose' down
+                        ;;
+                    generate)
+                        run_script 'generate_yml'
+                        ;;
+                    *)
+                        fatal "Invalid backup option."
+                        ;;
+                esac
                 exit
                 ;;
             e)
@@ -63,7 +76,7 @@ cmdline() {
 # TODO: Remove after 18.11
             g)
                 run_script 'generate_yml'
-                run_script 'run_compose'
+                run_script 'run_compose' up
                 exit
                 ;;
             h)
@@ -92,6 +105,18 @@ cmdline() {
             x)
                 readonly DEBUG='-x'
                 set -x
+                ;;
+            :)
+                case ${OPTARG} in
+                    c)
+                        run_script 'generate_yml'
+                        run_script 'run_compose' up
+                        ;;
+                    *)
+                        fatal "${OPTARG} requires an option."
+                        ;;
+                esac
+                exit
                 ;;
             *)
                 usage
