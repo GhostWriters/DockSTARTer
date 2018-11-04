@@ -1,3 +1,3 @@
 services:
   duckdns:
-    image:  lsioarmhf/duckdns-aarch64
+    image:  linuxserver/duckdns
