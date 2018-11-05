@@ -27,6 +27,9 @@ request_reboot() {
                 ;;
             [Nn]*)
                 info "Your system will not reboot."
+                warning "If this is your first run the installation will fail."
+                warning "Please run the installation again and choose Yes to reboot at the end."
+                info "If this is not your first run you may disregard this message."
                 return 1
                 ;;
             *)

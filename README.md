@@ -12,38 +12,30 @@ You may choose to rely on DockSTARTer for various changes to your Docker system,
 ## Getting Started
 
 ### One Time Setup (required)
-##### Update your system
 -   APT Systems (Debian/Ubuntu/Raspbian/etc)
 ```
-sudo apt-get update
-sudo apt-get install curl git grep sed whiptail
-sudo apt-get dist-upgrade
+sudo apt-get install git
+bash -c "$(curl -fsSL https://get.dockstarter.com)"
+sudo reboot
 ```
 -   DNF Systems (Fedora)
 ```
-sudo dnf install curl git grep newt sed
-sudo dnf upgrade --refresh
+sudo dnf install git
+bash -c "$(curl -fsSL https://get.dockstarter.com)"
+sudo reboot
 ```
 -   YUM Systems (CentOS)
 ```
-sudo yum install curl git grep newt sed
-sudo yum upgrade
-```
-##### Reboot your system
-```
+sudo yum install git
+bash -c "$(curl -fsSL https://get.dockstarter.com)"
 sudo reboot
 ```
 
 ### Running DockSTARTer
--   First run
-```
-bash -c "$(curl -fsSL https://get.dockstarter.com)"
-```
--   Subsequent runs
 ```
 sudo ds
 ```
-On your first run DockSTARTer should Install Dependencies for you and then prompt you to reboot (required). After the reboot run DockSTARTer again using the subsequent runs command. You should now see the main menu from the screenshots. Select `Configuration` and then `Full Setup` and you will be guided through selecting apps and starting containers.
+To run DockSTARTer use the command above. You should now see the main menu from the screenshots. Select `Configuration` and then `Full Setup` and you will be guided through selecting apps and starting containers.
 
 See our [Wiki](https://github.com/GhostWriters/DockSTARTer/wiki/) for more detailed information.
 
