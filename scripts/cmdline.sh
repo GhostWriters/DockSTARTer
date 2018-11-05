@@ -11,18 +11,18 @@ cmdline() {
         local DELIM=""
         case "${ARG}" in
                 #translate --gnu-long-options to -g (short options)
-            --backup)         LOCAL_ARGS="${LOCAL_ARGS}-b " ;;
-            --compose)        LOCAL_ARGS="${LOCAL_ARGS}-c " ;;
-            --env)            LOCAL_ARGS="${LOCAL_ARGS}-e " ;;
+            --backup)         LOCAL_ARGS="${LOCAL_ARGS:-}-b " ;;
+            --compose)        LOCAL_ARGS="${LOCAL_ARGS:-}-c " ;;
+            --env)            LOCAL_ARGS="${LOCAL_ARGS:-}-e " ;;
 # TODO: Remove after 18.11
-            --generate)       LOCAL_ARGS="${LOCAL_ARGS}-g " ;;
-            --help)           LOCAL_ARGS="${LOCAL_ARGS}-h " ;;
-            --install)        LOCAL_ARGS="${LOCAL_ARGS}-i " ;;
-            --prune)          LOCAL_ARGS="${LOCAL_ARGS}-p " ;;
-            --test)           LOCAL_ARGS="${LOCAL_ARGS}-t " ;;
-            --update)         LOCAL_ARGS="${LOCAL_ARGS}-u " ;;
-            --verbose)        LOCAL_ARGS="${LOCAL_ARGS}-v " ;;
-            --debug)          LOCAL_ARGS="${LOCAL_ARGS}-x " ;;
+            --generate)       LOCAL_ARGS="${LOCAL_ARGS:-}-g " ;;
+            --help)           LOCAL_ARGS="${LOCAL_ARGS:-}-h " ;;
+            --install)        LOCAL_ARGS="${LOCAL_ARGS:-}-i " ;;
+            --prune)          LOCAL_ARGS="${LOCAL_ARGS:-}-p " ;;
+            --test)           LOCAL_ARGS="${LOCAL_ARGS:-}-t " ;;
+            --update)         LOCAL_ARGS="${LOCAL_ARGS:-}-u " ;;
+            --verbose)        LOCAL_ARGS="${LOCAL_ARGS:-}-v " ;;
+            --debug)          LOCAL_ARGS="${LOCAL_ARGS:-}-x " ;;
                 #pass through anything else
             *) [[ "${ARG:0:1}" == "-" ]] || DELIM="\""
                 LOCAL_ARGS="${LOCAL_ARGS:-}${DELIM}${ARG}${DELIM} " ;;
