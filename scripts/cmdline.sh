@@ -53,15 +53,23 @@ cmdline() {
                 ;;
             c)
                 case ${OPTARG} in
-                    up)
-                        run_script 'generate_yml'
-                        run_script 'run_compose' up
-                        ;;
                     down)
                         run_script 'run_compose' down
                         ;;
                     generate)
                         run_script 'generate_yml'
+                        ;;
+                    pull)
+                        run_script 'generate_yml'
+                        run_script 'run_compose' pull
+                        ;;
+                    restart)
+                        run_script 'generate_yml'
+                        run_script 'run_compose' restart
+                        ;;
+                    up)
+                        run_script 'generate_yml'
+                        run_script 'run_compose' up
                         ;;
                     *)
                         fatal "Invalid backup option."
@@ -76,7 +84,7 @@ cmdline() {
 # TODO: Remove after 18.11
             g)
                 run_script 'generate_yml'
-                run_script 'run_compose' up
+                run_script 'run_compose'
                 exit
                 ;;
             h)
@@ -110,7 +118,7 @@ cmdline() {
                 case ${OPTARG} in
                     c)
                         run_script 'generate_yml'
-                        run_script 'run_compose' up
+                        run_script 'run_compose'
                         ;;
                     *)
                         fatal "${OPTARG} requires an option."
