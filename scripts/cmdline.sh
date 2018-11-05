@@ -11,18 +11,18 @@ cmdline() {
         local DELIM=""
         case "${ARG}" in
                 #translate --gnu-long-options to -g (short options)
-            --backup)         LOCAL_ARGS="${LOCAL_ARGS}-b " ;;
-            --compose)        LOCAL_ARGS="${LOCAL_ARGS}-c " ;;
-            --env)            LOCAL_ARGS="${LOCAL_ARGS}-e " ;;
+            --backup)         LOCAL_ARGS="${LOCAL_ARGS:-}-b " ;;
+            --compose)        LOCAL_ARGS="${LOCAL_ARGS:-}-c " ;;
+            --env)            LOCAL_ARGS="${LOCAL_ARGS:-}-e " ;;
 # TODO: Remove after 18.11
-            --generate)       LOCAL_ARGS="${LOCAL_ARGS}-g " ;;
-            --help)           LOCAL_ARGS="${LOCAL_ARGS}-h " ;;
-            --install)        LOCAL_ARGS="${LOCAL_ARGS}-i " ;;
-            --prune)          LOCAL_ARGS="${LOCAL_ARGS}-p " ;;
-            --test)           LOCAL_ARGS="${LOCAL_ARGS}-t " ;;
-            --update)         LOCAL_ARGS="${LOCAL_ARGS}-u " ;;
-            --verbose)        LOCAL_ARGS="${LOCAL_ARGS}-v " ;;
-            --debug)          LOCAL_ARGS="${LOCAL_ARGS}-x " ;;
+            --generate)       LOCAL_ARGS="${LOCAL_ARGS:-}-g " ;;
+            --help)           LOCAL_ARGS="${LOCAL_ARGS:-}-h " ;;
+            --install)        LOCAL_ARGS="${LOCAL_ARGS:-}-i " ;;
+            --prune)          LOCAL_ARGS="${LOCAL_ARGS:-}-p " ;;
+            --test)           LOCAL_ARGS="${LOCAL_ARGS:-}-t " ;;
+            --update)         LOCAL_ARGS="${LOCAL_ARGS:-}-u " ;;
+            --verbose)        LOCAL_ARGS="${LOCAL_ARGS:-}-v " ;;
+            --debug)          LOCAL_ARGS="${LOCAL_ARGS:-}-x " ;;
                 #pass through anything else
             *) [[ "${ARG:0:1}" == "-" ]] || DELIM="\""
                 LOCAL_ARGS="${LOCAL_ARGS:-}${DELIM}${ARG}${DELIM} " ;;
@@ -32,7 +32,7 @@ cmdline() {
     #Reset the positional parameters to the short options
     eval set -- "${LOCAL_ARGS:-}"
 
-    while getopts "b:ceghipt:uvx" OPTION; do
+    while getopts ":b:c:eghipt:uvx" OPTION; do
         case ${OPTION} in
             b)
                 case ${OPTARG} in
@@ -52,8 +52,29 @@ cmdline() {
                 exit
                 ;;
             c)
-                run_script 'generate_yml'
-                run_script 'run_compose'
+                case ${OPTARG} in
+                    down)
+                        run_script 'run_compose' down
+                        ;;
+                    generate)
+                        run_script 'generate_yml'
+                        ;;
+                    pull)
+                        run_script 'generate_yml'
+                        run_script 'run_compose' pull
+                        ;;
+                    restart)
+                        run_script 'generate_yml'
+                        run_script 'run_compose' restart
+                        ;;
+                    up)
+                        run_script 'generate_yml'
+                        run_script 'run_compose' up
+                        ;;
+                    *)
+                        fatal "Invalid backup option."
+                        ;;
+                esac
                 exit
                 ;;
             e)
@@ -92,6 +113,18 @@ cmdline() {
             x)
                 readonly DEBUG='-x'
                 set -x
+                ;;
+            :)
+                case ${OPTARG} in
+                    c)
+                        run_script 'generate_yml'
+                        run_script 'run_compose'
+                        ;;
+                    *)
+                        fatal "${OPTARG} requires an option."
+                        ;;
+                esac
+                exit
                 ;;
             *)
                 usage
