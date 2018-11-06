@@ -79,6 +79,9 @@ menu_app_select() {
                 "GUACAMOLE")
                     APPLIST+=("Guacamole" "Web application that provides access to desktop environments using remote desktop protocols" "${APPONOFF}")
                     ;;
+                "H5AI")
+                    APPLIST+=("h5ai" "Modern file indexer" "${APPONOFF}")
+                    ;;
                 "HEADPHONES")
                     APPLIST+=("Headphones" "Music PVR Client" "${APPONOFF}")
                     ;;

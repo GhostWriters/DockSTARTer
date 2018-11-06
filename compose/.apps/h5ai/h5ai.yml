@@ -1,0 +1,11 @@
+services:
+  h5ai:
+    image:           clue/h5ai
+    container_name:  h5ai
+    restart:         unless-stopped
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERSHAREDDIR}:/shared
+      - ${H5AI_INDEXDIR}:/var/www
