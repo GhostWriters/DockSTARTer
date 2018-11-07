@@ -76,6 +76,9 @@ menu_app_select() {
                 "GLANCES")
                     APPLIST+=("Glances" "Cross-platform system monitoring tool" "${APPONOFF}")
                     ;;
+                "GRAFANA")
+                    APPLIST+=("Grafana" "Metrics dashboard and graph editor" "${APPONOFF}")
+                    ;;
                 "GUACAMOLE")
                     APPLIST+=("Guacamole" "Web application that provides access to desktop environments using remote desktop protocols" "${APPONOFF}")
                     ;;

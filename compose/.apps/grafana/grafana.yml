@@ -1,0 +1,12 @@
+services:
+  grafana:
+    image:           grafana/grafana
+    container_name:  grafana
+    restart:         unless-stopped
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/grafana:/var/lib/grafana
+      - ${DOCKERSHAREDDIR}:/shared
+    user: ${PUID}
