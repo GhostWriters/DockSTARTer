@@ -9,6 +9,6 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ${DOCKERCONFDIR}/glances:/glances/conf/
+      - ${DOCKERCONFDIR}/glances:/glances/conf
       - ${DOCKERSHAREDDIR}:/shared
     pid:             host

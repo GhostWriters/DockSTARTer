@@ -1,0 +1,3 @@
+services:
+  grafana:
+    network_mode:  ${GRAFANA_NETWORK_MODE}
