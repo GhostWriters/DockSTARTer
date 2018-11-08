@@ -1,12 +1,12 @@
 services:
   watchtower:
-    image:           v2tec/watchtower
-    container_name:  watchtower
-    restart:         unless-stopped
+    image: v2tec/watchtower
+    container_name: watchtower
+    restart: unless-stopped
     environment:
       - TZ=${TZ}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
       - ${DOCKERSHAREDDIR}:/shared
-    command:         --schedule "0 0 4 * * *" --cleanup
+    command: --schedule "0 0 4 * * *" --cleanup

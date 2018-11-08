@@ -1,8 +1,8 @@
 services:
   airdcpp:
-    image:           gangefors/airdcpp-webclient
-    container_name:  airdcpp
-    restart:         unless-stopped
+    image: gangefors/airdcpp-webclient
+    container_name: airdcpp
+    restart: unless-stopped
     environment:
       - GID=${PGID}
       - HTTP_PORT=${AIRDCPP_PORT_5600}

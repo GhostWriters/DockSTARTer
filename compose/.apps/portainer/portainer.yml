@@ -1,8 +1,8 @@
 services:
   portainer:
-    image:           portainer/portainer
-    container_name:  portainer
-    restart:         unless-stopped
+    image: portainer/portainer
+    container_name: portainer
+    restart: unless-stopped
     environment:
       - TZ=${TZ}
     volumes:
@@ -10,4 +10,4 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${DOCKERCONFDIR}/portainer:/data
       - ${DOCKERSHAREDDIR}:/shared
-    command:         -H unix:///var/run/docker.sock
+    command: -H unix:///var/run/docker.sock

@@ -1,8 +1,8 @@
 services:
   ubooquity:
-    image:           linuxserver/ubooquity
-    container_name:  ubooquity
-    restart:         unless-stopped
+    image: linuxserver/ubooquity
+    container_name: ubooquity
+    restart: unless-stopped
     environment:
       - MAXMEM=${UBOOQUITY_MAXMEM}
       - PGID=${PGID}

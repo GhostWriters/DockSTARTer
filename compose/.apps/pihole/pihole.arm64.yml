@@ -1,3 +1,3 @@
 services:
   pihole:
-    image:  pihole/pihole:v4.0_aarch64
+    image: pihole/pihole:v4.0_aarch64

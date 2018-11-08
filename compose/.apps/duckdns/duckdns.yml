@@ -1,8 +1,8 @@
 services:
   duckdns:
-    image:           linuxserver/duckdns
-    container_name:  duckdns
-    restart:         unless-stopped
+    image: linuxserver/duckdns
+    container_name: duckdns
+    restart: unless-stopped
     environment:
       - LOG_FILE=${DUCKDNS_LOG_FILE}
       - SUBDOMAINS=${DUCKDNS_SUBDOMAINS}

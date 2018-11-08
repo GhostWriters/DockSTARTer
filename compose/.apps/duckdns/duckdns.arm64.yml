@@ -1,3 +1,3 @@
 services:
   duckdns:
-    image:  linuxserver/duckdns
+    image: linuxserver/duckdns

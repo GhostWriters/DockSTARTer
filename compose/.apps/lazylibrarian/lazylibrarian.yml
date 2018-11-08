@@ -1,8 +1,8 @@
 services:
   lazylibrarian:
-    image:           linuxserver/lazylibrarian
-    container_name:  lazylibrarian
-    restart:         unless-stopped
+    image: linuxserver/lazylibrarian
+    container_name: lazylibrarian
+    restart: unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

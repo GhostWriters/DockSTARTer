@@ -1,8 +1,8 @@
 services:
   letsencrypt:
-    image:           linuxserver/letsencrypt
-    container_name:  letsencrypt
-    restart:         unless-stopped
+    image: linuxserver/letsencrypt
+    container_name: letsencrypt
+    restart: unless-stopped
     environment:
       - DNSPLUGIN=${LETSENCRYPT_DNSPLUGIN}
       - EMAIL=${LETSENCRYPT_EMAIL}

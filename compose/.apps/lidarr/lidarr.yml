@@ -1,8 +1,8 @@
 services:
   lidarr:
-    image:           linuxserver/lidarr
-    container_name:  lidarr
-    restart:         unless-stopped
+    image: linuxserver/lidarr
+    container_name: lidarr
+    restart: unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

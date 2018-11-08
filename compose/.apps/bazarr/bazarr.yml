@@ -1,8 +1,8 @@
 services:
   bazarr:
-    image:           linuxserver/bazarr
-    container_name:  bazarr
-    restart:         unless-stopped
+    image: linuxserver/bazarr
+    container_name: bazarr
+    restart: unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

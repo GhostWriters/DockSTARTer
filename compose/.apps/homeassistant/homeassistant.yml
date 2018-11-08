@@ -1,8 +1,8 @@
 services:
   homeassistant:
-    image:           homeassistant/home-assistant
-    container_name:  homeassistant
-    restart:         unless-stopped
+    image: homeassistant/home-assistant
+    container_name: homeassistant
+    restart: unless-stopped
     environment:
       - TZ=${TZ}
     volumes:

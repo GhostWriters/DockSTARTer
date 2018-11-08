@@ -1,4 +1,5 @@
-[![DockSTARTer](https://github.com/GhostWriters/DockSTARTer/raw/master/.github/logo.png)](https://dockstarter.com/)<link rel="shortcut icon" type="image/x-icon" href="https://github.com/GhostWriters/DockSTARTer/raw/master/.github/favicon.ico">
+# [![DockSTARTer](https://github.com/GhostWriters/DockSTARTer/raw/master/.github/logo.png)](https://dockstarter.com/)
+
 [![Discord](https://img.shields.io/discord/477959324183035936.svg?logo=discord)](https://discord.gg/YFyJpmH) [![Travis (.com) branch](https://img.shields.io/travis/com/GhostWriters/DockSTARTer/master.svg?logo=travis)](https://travis-ci.com/GhostWriters/DockSTARTer) [![GitHub](https://img.shields.io/github/license/GhostWriters/DockSTARTer.svg)](https://github.com/GhostWriters/DockSTARTer/blob/master/LICENSE.md)
 
 The main goal of DockSTARTer is to make it quick and easy to get up and running with Docker.
@@ -12,29 +13,37 @@ You may choose to rely on DockSTARTer for various changes to your Docker system,
 ## Getting Started
 
 ### One Time Setup (required)
--   APT Systems (Debian/Ubuntu/Raspbian/etc)
-```
+
+* APT Systems (Debian/Ubuntu/Raspbian/etc)
+
+```bash
 sudo apt-get install git
 bash -c "$(curl -fsSL https://get.dockstarter.com)"
 sudo reboot
 ```
--   DNF Systems (Fedora)
-```
+
+* DNF Systems (Fedora)
+
+```bash
 sudo dnf install git
 bash -c "$(curl -fsSL https://get.dockstarter.com)"
 sudo reboot
 ```
--   YUM Systems (CentOS)
-```
+
+* YUM Systems (CentOS)
+
+```bash
 sudo yum install git
 bash -c "$(curl -fsSL https://get.dockstarter.com)"
 sudo reboot
 ```
 
 ### Running DockSTARTer
-```
+
+```bash
 sudo ds
 ```
+
 To run DockSTARTer use the command above. You should now see the main menu from the screenshots. Select `Configuration` and then `Full Setup` and you will be guided through selecting apps and starting containers.
 
 See our [Wiki](https://github.com/GhostWriters/DockSTARTer/wiki/) for more detailed information.
@@ -47,8 +56,8 @@ FeatHub will no longer be checked or maintained.
 
 ## Special Thanks
 
--   [SmartHomeBeginner.com](https://www.smarthomebeginner.com/) for creating [AtoMiC-ToolKit](https://github.com/htpcBeginner/AtoMiC-ToolKit) that served as this project's primary inspiration, and later [this](https://www.smarthomebeginner.com/docker-home-media-server-2018-basic/) guide that provided some initial direction with Docker.
--   [LinuxServer.io](https://www.linuxserver.io/) for maintaining the majority of the Docker images used in this project.
+* [SmartHomeBeginner.com](https://www.smarthomebeginner.com/) for creating [AtoMiC-ToolKit](https://github.com/htpcBeginner/AtoMiC-ToolKit) that served as this project's primary inspiration, and later [this](https://www.smarthomebeginner.com/docker-home-media-server-2018-basic/) guide that provided some initial direction with Docker.
+* [LinuxServer.io](https://www.linuxserver.io/) for maintaining the majority of the Docker images used in this project.
 
 ## Supporters [![Beerpay](https://img.shields.io/beerpay/GhostWriters/DockSTARTer.svg)](https://beerpay.io/GhostWriters/DockSTARTer) / Contributors [![GitHub contributors](https://img.shields.io/github/contributors/GhostWriters/DockSTARTer.svg)](https://GitHub.com/GhostWriters/DockSTARTer/graphs/contributors/)
 

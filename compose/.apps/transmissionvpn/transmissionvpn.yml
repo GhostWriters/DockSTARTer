@@ -1,8 +1,8 @@
 services:
   transmissionvpn:
-    image:           haugene/transmission-openvpn
-    container_name:  transmissionvpn
-    restart:         unless-stopped
+    image: haugene/transmission-openvpn
+    container_name: transmissionvpn
+    restart: unless-stopped
     environment:
       - LOCAL_NETWORK=${LAN_NETWORK}
       - OPENVPN_OPTS=${VPN_OPTIONS}

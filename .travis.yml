@@ -4,25 +4,25 @@ sudo: required
 group: travis_latest
 jobs:
   include:
-  - stage: validate
-    env:
-      - TEST=validate
-    script:
-    - sudo bash ./main.sh -t validate_newline
-    - sudo bash ./main.sh -t validate_bashate
-    - sudo bash ./main.sh -t validate_shellcheck
-  - stage: run
-    env: TEST=run_install
-    script: sudo bash ./main.sh -t ${TEST}
-  - stage: run
-    env: TEST=run_generate_slim
-    script: sudo bash ./main.sh -t ${TEST}
-  - stage: run
-    env: TEST=run_generate_full
-    script: sudo bash ./main.sh -t ${TEST}
+    - stage: validate
+      env:
+        - TEST=validate
+      script:
+        - sudo bash ./main.sh -t validate_newline
+        - sudo bash ./main.sh -t validate_bashate
+        - sudo bash ./main.sh -t validate_shellcheck
+    - stage: run
+      env: TEST=run_install
+      script: sudo bash ./main.sh -t ${TEST}
+    - stage: run
+      env: TEST=run_generate_slim
+      script: sudo bash ./main.sh -t ${TEST}
+    - stage: run
+      env: TEST=run_generate_full
+      script: sudo bash ./main.sh -t ${TEST}
 matrix:
   fast_finish: true
   allow_failures:
-  - stage: run
-    env: TEST=run_generate_full
-    script: sudo bash ./main.sh -t ${TEST}
+    - stage: run
+      env: TEST=run_generate_full
+      script: sudo bash ./main.sh -t ${TEST}

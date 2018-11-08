@@ -1,8 +1,8 @@
 services:
   mcmyadmin2:
-    image:           linuxserver/mcmyadmin2
-    container_name:  mcmyadmin2
-    restart:         unless-stopped
+    image: linuxserver/mcmyadmin2
+    container_name: mcmyadmin2
+    restart: unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
