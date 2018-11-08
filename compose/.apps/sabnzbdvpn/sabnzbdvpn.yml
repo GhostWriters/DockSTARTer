@@ -1,8 +1,8 @@
 services:
   sabnzbdvpn:
-    image:           binhex/arch-sabnzbdvpn
-    container_name:  sabnzbdvpn
-    restart:         unless-stopped
+    image: binhex/arch-sabnzbdvpn
+    container_name: sabnzbdvpn
+    restart: unless-stopped
     environment:
       - LAN_NETWORK=${LAN_NETWORK}
       - NAME_SERVERS=${NS1},${NS2}

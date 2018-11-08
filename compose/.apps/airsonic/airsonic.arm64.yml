@@ -1,3 +1,3 @@
 services:
   airsonic:
-    image:   lsioarmhf/airsonic-aarch64
+    image: lsioarmhf/airsonic-aarch64

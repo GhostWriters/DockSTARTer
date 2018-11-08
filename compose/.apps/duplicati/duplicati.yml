@@ -1,8 +1,8 @@
 services:
   duplicati:
-    image:           linuxserver/duplicati
-    container_name:  duplicati
-    restart:         unless-stopped
+    image: linuxserver/duplicati
+    container_name: duplicati
+    restart: unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

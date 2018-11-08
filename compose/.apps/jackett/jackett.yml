@@ -1,8 +1,8 @@
 services:
   jackett:
-    image:           linuxserver/jackett
-    container_name:  jackett
-    restart:         unless-stopped
+    image: linuxserver/jackett
+    container_name: jackett
+    restart: unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

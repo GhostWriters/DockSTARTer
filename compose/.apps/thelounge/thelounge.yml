@@ -1,8 +1,8 @@
 services:
   thelounge:
-    image:           linuxserver/thelounge
-    container_name:  thelounge
-    restart:         unless-stopped
+    image: linuxserver/thelounge
+    container_name: thelounge
+    restart: unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

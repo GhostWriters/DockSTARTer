@@ -1,3 +1,3 @@
 services:
   tautulli:
-    network_mode:  ${TAUTULLI_NETWORK_MODE}
+    network_mode: ${TAUTULLI_NETWORK_MODE}

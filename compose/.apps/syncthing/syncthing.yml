@@ -1,8 +1,8 @@
 services:
   syncthing:
-    image:           linuxserver/syncthing
-    container_name:  syncthing
-    restart:         unless-stopped
+    image: linuxserver/syncthing
+    container_name: syncthing
+    restart: unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

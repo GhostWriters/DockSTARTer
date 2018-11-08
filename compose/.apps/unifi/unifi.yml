@@ -1,8 +1,8 @@
 services:
   unifi:
-    image:           linuxserver/unifi
-    container_name:  unifi
-    restart:         unless-stopped
+    image: linuxserver/unifi
+    container_name: unifi
+    restart: unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

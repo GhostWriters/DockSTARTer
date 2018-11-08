@@ -1,8 +1,8 @@
 services:
   guacamole:
-    image:           oznu/guacamole
-    container_name:  guacamole
-    restart:         unless-stopped
+    image: oznu/guacamole
+    container_name: guacamole
+    restart: unless-stopped
     environment:
       - EXTENSIONS=${GUACAMOLE_EXTENSIONS}
       - TZ=${TZ}

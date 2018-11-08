@@ -1,8 +1,8 @@
 services:
   pihole:
-    image:           pihole/pihole
-    container_name:  pihole
-    restart:         unless-stopped
+    image: pihole/pihole
+    container_name: pihole
+    restart: unless-stopped
     environment:
       - DNS1=${NS1}
       - DNS2=${NS2}

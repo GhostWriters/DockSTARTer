@@ -1,8 +1,8 @@
 services:
   mariadb:
-    image:           linuxserver/mariadb
-    container_name:  mariadb
-    restart:         unless-stopped
+    image: linuxserver/mariadb
+    container_name: mariadb
+    restart: unless-stopped
     environment:
       - MYSQL_ROOT_PASSWORD=${MARIADB_MYSQL_ROOT_PASSWORD}
       - PGID=${PGID}

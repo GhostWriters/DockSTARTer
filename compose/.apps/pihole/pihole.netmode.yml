@@ -1,3 +1,3 @@
 services:
   pihole:
-    network_mode:  ${PIHOLE_NETWORK_MODE}
+    network_mode: ${PIHOLE_NETWORK_MODE}

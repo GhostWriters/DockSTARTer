@@ -1,8 +1,8 @@
 services:
   ddclient:
-    image:           linuxserver/ddclient
-    container_name:  ddclient
-    restart:         unless-stopped
+    image: linuxserver/ddclient
+    container_name: ddclient
+    restart: unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

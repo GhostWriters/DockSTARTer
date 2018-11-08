@@ -1,8 +1,8 @@
 services:
   phpmyadmin:
-    image:           phpmyadmin/phpmyadmin
-    container_name:  phpmyadmin
-    restart:         unless-stopped
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: unless-stopped
     environment:
       - PMA_HOST=mariadb
       - PMA_PASSWORD=${MARIADB_MYSQL_ROOT_PASSWORD}

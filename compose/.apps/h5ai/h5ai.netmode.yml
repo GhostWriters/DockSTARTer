@@ -1,3 +1,3 @@
 services:
   h5ai:
-    network_mode:  ${H5AI_NETWORK_MODE}
+    network_mode: ${H5AI_NETWORK_MODE}

@@ -1,8 +1,8 @@
 services:
   headphones:
-    image:           linuxserver/headphones
-    container_name:  headphones
-    restart:         unless-stopped
+    image: linuxserver/headphones
+    container_name: headphones
+    restart: unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

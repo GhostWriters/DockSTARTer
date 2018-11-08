@@ -1,3 +1,3 @@
 services:
   sickrage:
-    image:   lsioarmhf/sickrage
+    image: lsioarmhf/sickrage

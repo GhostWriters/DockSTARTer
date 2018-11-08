@@ -1,8 +1,8 @@
 services:
   plex:
-    image:           plexinc/pms-docker:${PLEX_TAG}
-    container_name:  plex
-    restart:         unless-stopped
+    image: plexinc/pms-docker:${PLEX_TAG}
+    container_name: plex
+    restart: unless-stopped
     environment:
       - ADVERTISE_IP=${PLEX_ADVERTISE_IP}
       - PLEX_CLAIM=${PLEX_CLAIM}
