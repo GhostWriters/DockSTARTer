@@ -1,0 +1,13 @@
+services:
+  vsftpd:
+    image: fauria/vsftpd
+    container_name: vsftpd
+    restart: unless-stopped
+    environment:
+      - FTP_USER=${VSFTPD_FTP_USER}
+      - FTP_PASS=${VSFTPD_FTP_PASS}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERSHAREDDIR}:/shared
+      - ${VSFTPD_DATADIR}:/home/vsftpd

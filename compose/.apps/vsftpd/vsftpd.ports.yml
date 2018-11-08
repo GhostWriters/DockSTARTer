@@ -1,0 +1,4 @@
+services:
+  vsftpd:
+    ports:
+      - "${VSFTPD_PORT_21}:21"

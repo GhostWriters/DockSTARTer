@@ -211,6 +211,9 @@ menu_app_select() {
                 "UNIFI")
                     APPLIST+=("Unifi" "Controller software for wireless networks" "${APPONOFF}")
                     ;;
+                "VSFTPD")
+                    APPLIST+=("vsftpd" "Probably the most secure and fastest FTP server for UNIX-like systems" "${APPONOFF}")
+                    ;;
                 "WATCHTOWER")
                     APPLIST+=("Watchtower" "Automatically update running Docker containers" "${APPONOFF}")
                     ;;
