@@ -1,3 +1,5 @@
+#/APPNICENAME=Bazarr
+#/APPDESCRIPTION=Companion to Sonarr to manage and download subtitles
 services:
   bazarr:
     image: linuxserver/bazarr

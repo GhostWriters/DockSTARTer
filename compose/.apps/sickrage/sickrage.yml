@@ -1,3 +1,5 @@
+#/APPNICENAME=Sickrage
+#/APPDESCRIPTION=Automatic Video Library Manager for TV Shows
 services:
   sickrage:
     image: linuxserver/sickrage

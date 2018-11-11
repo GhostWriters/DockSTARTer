@@ -1,3 +1,5 @@
+#/APPNICENAME=CalibreWeb
+#/APPDESCRIPTION=Web app for browsing, reading and downloading eBooks
 services:
   calibreweb:
     image: linuxserver/calibre-web

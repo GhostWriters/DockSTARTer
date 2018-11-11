@@ -1,3 +1,5 @@
+#/APPNICENAME=Guacamole
+#/APPDESCRIPTION=Web application that provides access to desktop environments using remote desktop protocols
 services:
   guacamole:
     image: oznu/guacamole

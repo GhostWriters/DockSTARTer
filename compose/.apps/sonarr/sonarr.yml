@@ -1,3 +1,5 @@
+#/APPNICENAME=Sonarr
+#/APPDESCRIPTION=Smart TV show PVR via Usenet and BitTorrent
 services:
   sonarr:
     image: linuxserver/sonarr

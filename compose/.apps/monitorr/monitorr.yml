@@ -1,3 +1,5 @@
+#/APPNICENAME=Monitorr
+#/APPDESCRIPTION=Webfront to live display the status of any webapp or service
 services:
   monitorr:
     image: monitorr/monitorr

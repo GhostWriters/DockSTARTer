@@ -1,3 +1,5 @@
+#/APPNICENAME=Mylar
+#/APPDESCRIPTION=Comic book PVR client
 services:
   mylar:
     image: linuxserver/mylar

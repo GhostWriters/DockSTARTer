@@ -1,3 +1,5 @@
+#/APPNICENAME=PiHole
+#/APPDESCRIPTION=A black hole for internet advertisements
 services:
   pihole:
     image: pihole/pihole

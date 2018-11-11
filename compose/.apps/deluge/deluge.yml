@@ -1,3 +1,5 @@
+#/APPNICENAME=Deluge
+#/APPDESCRIPTION=Lightweight, Full-featured BitTorrent client
 services:
   deluge:
     image: linuxserver/deluge

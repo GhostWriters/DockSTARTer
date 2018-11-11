@@ -1,3 +1,5 @@
+#/APPNICENAME=Couchpotato
+#/APPDESCRIPTION=Movies PVR Client
 services:
   couchpotato:
     image: linuxserver/couchpotato

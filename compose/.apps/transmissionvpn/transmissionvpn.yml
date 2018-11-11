@@ -1,3 +1,5 @@
+#/APPNICENAME=TransmissionVPN
+#/APPDESCRIPTION=Transmission, WebUI and OpenVPN
 services:
   transmissionvpn:
     image: haugene/transmission-openvpn

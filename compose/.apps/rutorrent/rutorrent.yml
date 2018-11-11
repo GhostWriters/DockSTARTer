@@ -1,3 +1,5 @@
+#/APPNICENAME=ruTorrent
+#/APPDESCRIPTION=rTorrent client and ruTorrent WebUI
 services:
   rutorrent:
     image: linuxserver/rutorrent

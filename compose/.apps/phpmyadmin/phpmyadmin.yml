@@ -1,3 +1,5 @@
+#/APPNICENAME=phpMyAdmin
+#/APPDESCRIPTION=A web interface for MySQL and MariaDB
 services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin

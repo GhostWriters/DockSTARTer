@@ -1,3 +1,5 @@
+#/APPNICENAME=Nextcloud
+#/APPDESCRIPTION=Gives you access to all your files wherever you are
 services:
   nextcloud:
     image: linuxserver/nextcloud

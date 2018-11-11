@@ -1,3 +1,5 @@
+#/APPNICENAME=SABnzbdVPN
+#/APPDESCRIPTION=SABnzbd, OpenVPN and Privoxy
 services:
   sabnzbdvpn:
     image: binhex/arch-sabnzbdvpn

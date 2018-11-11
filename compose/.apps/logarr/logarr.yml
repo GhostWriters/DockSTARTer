@@ -1,3 +1,5 @@
+#/APPNICENAME=Logarr
+#/APPDESCRIPTION=Self-hosted, single-page, log consolidation tool
 services:
   logarr:
     image: monitorr/logarr

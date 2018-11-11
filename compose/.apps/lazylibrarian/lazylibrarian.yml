@@ -1,3 +1,5 @@
+#/APPNICENAME=LazyLibrarian
+#/APPDESCRIPTION=Book PVR Client
 services:
   lazylibrarian:
     image: linuxserver/lazylibrarian

@@ -1,3 +1,5 @@
+#/APPNICENAME=DuckDNS
+#/APPDESCRIPTION=Free service which will point a DNS to an IP of your choice
 services:
   duckdns:
     image: linuxserver/duckdns

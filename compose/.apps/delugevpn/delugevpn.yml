@@ -1,3 +1,5 @@
+#/APPNICENAME=DelugeVPN
+#/APPDESCRIPTION=Deluge, OpenVPN and Privoxy
 services:
   delugevpn:
     image: binhex/arch-delugevpn
