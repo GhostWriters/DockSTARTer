@@ -19,5 +19,10 @@ install_yq() {
             curl -H "${GH_HEADER:-}" -L "https://github.com/mikefarah/yq/releases/download/${AVAILABLE_YQ}/yq_linux_amd64" -o /usr/local/bin/yq > /dev/null 2>&1 || fatal "Failed to install yq."
         fi
         chmod +x /usr/local/bin/yq > /dev/null 2>&1 || true
+        local UPDATED_YQ
+        UPDATED_YQ=$( (yq --version 2> /dev/null || true) | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
+        if [[ "${AVAILABLE_YQ}" != "${UPDATED_YQ}" ]]; then
+            fatal "Failed to install the latest yq."
+        fi
     fi
 }
