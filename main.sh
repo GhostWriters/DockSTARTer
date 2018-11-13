@@ -108,24 +108,24 @@ usage() {
 # Script Runner Function
 run_script() {
     local SCRIPTSNAME="${1:-}"; shift
-    if [[ -f ${SCRIPTPATH}/scripts/${SCRIPTSNAME}.sh ]]; then
+    if [[ -f ${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh ]]; then
         # shellcheck source=/dev/null
-        source "${SCRIPTPATH}/scripts/${SCRIPTSNAME}.sh"
+        source "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh"
         ${SCRIPTSNAME} "$@";
     else
-        fatal "${SCRIPTPATH}/scripts/${SCRIPTSNAME}.sh not found."
+        fatal "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh not found."
     fi
 }
 
 # Test Runner Function
 run_test() {
     local TESTSNAME="${1:-}"; shift
-    if [[ -f ${SCRIPTPATH}/tests/${TESTSNAME}.sh ]]; then
+    if [[ -f ${SCRIPTPATH}/.tests/${TESTSNAME}.sh ]]; then
         # shellcheck source=/dev/null
-        source "${SCRIPTPATH}/tests/${TESTSNAME}.sh"
+        source "${SCRIPTPATH}/.tests/${TESTSNAME}.sh"
         ${TESTSNAME} "$@";
     else
-        fatal "${SCRIPTPATH}/tests/${TESTSNAME}.sh not found."
+        fatal "${SCRIPTPATH}/.tests/${TESTSNAME}.sh not found."
     fi
 }
 
@@ -142,6 +142,10 @@ trap 'cleanup' 0 1 2 3 6 14 15
 
 # Main Function
 main() {
+    # Root Check
+    if [[ ${DETECTED_PUID} == "0" ]] || [[ ${DETECTED_HOMEDIR} == "/root" ]]; then
+        fatal "Running as root is not supported. Please run as a standard user with sudo."
+    fi
     if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]] && [[ -z ${ARGS[*]:-} ]]; then
         if [[ ! -d ${DETECTED_HOMEDIR}/.docker/.git ]]; then
             warning "Attempting to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
@@ -156,10 +160,14 @@ main() {
             exit
         fi
     fi
-    run_script 'root_check'
+    # Sudo Check
+    if [[ ${EUID} != "0" ]]; then
+        (sudo bash "${SCRIPTNAME:-}" "${ARGS[@]:-}") || true
+        exit
+    fi
     run_script 'symlink_ds'
-    # shellcheck source=scripts/cmdline.sh
-    source "${SCRIPTPATH}/scripts/cmdline.sh"
+    # shellcheck source=.scripts/cmdline.sh
+    source "${SCRIPTPATH}/.scripts/cmdline.sh"
     cmdline "${ARGS[@]:-}"
     readonly PROMPT="menu"
     run_script 'menu_main'
