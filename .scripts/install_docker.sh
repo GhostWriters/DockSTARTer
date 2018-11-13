@@ -10,12 +10,12 @@ install_docker() {
     INSTALLED_DOCKER=$( (docker --version 2> /dev/null || true) | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
     local FORCE
     FORCE=${1:-}
-    if [[ "${AVAILABLE_DOCKER}" != "${INSTALLED_DOCKER}" ]] || [[ -n ${FORCE} ]]; then
+    if [[ ${AVAILABLE_DOCKER} != "${INSTALLED_DOCKER}" ]] || [[ -n ${FORCE} ]]; then
         info "Installing latest docker. Please be patient, this will take a while."
         curl -fsSL get.docker.com | sh > /dev/null 2>&1 || fatal "Failed to install Docker."
         local UPDATED_DOCKER
         UPDATED_DOCKER=$( (docker --version 2> /dev/null || true) | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
-        if [[ "${AVAILABLE_DOCKER}" != "${UPDATED_DOCKER}" ]]; then
+        if [[ ${AVAILABLE_DOCKER} != "${UPDATED_DOCKER}" ]]; then
             #TODO: Better detection of most recently available version is required before this can be used.
             echo # placeholder
             #fatal "Failed to install the latest docker."

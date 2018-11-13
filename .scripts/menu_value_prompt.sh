@@ -73,37 +73,37 @@ menu_value_prompt() {
 
     case "${SET_VAR}" in
         *_ENABLED)
-            VALUEDESCRIPTION="\\n\\n Must be true or false."
+            VALUEDESCRIPTION='\n\n Must be true or false.'
             ;;
         *_NETWORK_MODE)
-            VALUEDESCRIPTION="\\n\\n Network Mode is usually left blank but can also be bridge, host, none, service: <APPNAME>, or container: <APPNAME>."
+            VALUEDESCRIPTION='\n\n Network Mode is usually left blank but can also be bridge, host, none, service: <APPNAME>, or container: <APPNAME>.'
             ;;
         *_PORT_*)
-            VALUEDESCRIPTION="\\n\\n Must be an unused port between 0 and 65535."
+            VALUEDESCRIPTION='\n\n Must be an unused port between 0 and 65535.'
             ;;
-        *DIR|*DIR_*)
-            VALUEDESCRIPTION="\\n\\n If the directory selected does not exist we will attempt to create it."
+        *DIR | *DIR_*)
+            VALUEDESCRIPTION='\n\n If the directory selected does not exist we will attempt to create it.'
             ;;
         LAN_NETWORK)
-            VALUEDESCRIPTION="\\n\\n This is used to define your home LAN network, do NOT confuse this with the IP address of your router or your server, the value for this key defines your network NOT a single host. Please Google CIDR Notation to learn more."
+            VALUEDESCRIPTION='\n\n This is used to define your home LAN network, do NOT confuse this with the IP address of your router or your server, the value for this key defines your network NOT a single host. Please Google CIDR Notation to learn more.'
             ;;
         PGID)
-            VALUEDESCRIPTION="\\n\\n This should be your user group ID. If you are unsure, select Use System."
+            VALUEDESCRIPTION='\n\n This should be your user group ID. If you are unsure, select Use System.'
             ;;
         PUID)
-            VALUEDESCRIPTION="\\n\\n This should be your user account ID. If you are unsure, select Use System."
+            VALUEDESCRIPTION='\n\n This should be your user account ID. If you are unsure, select Use System.'
             ;;
         TZ)
-            VALUEDESCRIPTION="\\n\\n If this is not the correct timezone please exit and set your system timezone."
+            VALUEDESCRIPTION='\n\n If this is not the correct timezone please exit and set your system timezone.'
             ;;
         VPN_ENABLE)
-            VALUEDESCRIPTION="\\n\\n Must be yes or no."
+            VALUEDESCRIPTION='\n\n Must be yes or no.'
             ;;
         VPN_OPTIONS)
-            VALUEDESCRIPTION="\\n\\n Additional openvpn cli options."
+            VALUEDESCRIPTION='\n\n Additional openvpn cli options.'
             ;;
         VPN_PROV)
-            VALUEDESCRIPTION="\\n\\n VPN Provider, usually pia, airvpn or custom."
+            VALUEDESCRIPTION='\n\n VPN Provider, usually pia, airvpn or custom.'
             ;;
         *)
             VALUEDESCRIPTION=""
@@ -153,12 +153,14 @@ menu_value_prompt() {
                 fi
                 ;;
             *_NETWORK_MODE)
-                if [[ -z ${INPUT} ]] || \
+                if
+                    [[ -z ${INPUT} ]] || \
                     [[ ${INPUT} == "bridge" ]] || \
                     [[ ${INPUT} == "host" ]] || \
                     [[ ${INPUT} == "none" ]] || \
                     [[ ${INPUT} == "service:"* ]] || \
-                    [[ ${INPUT} == "container:"* ]]; then
+                    [[ ${INPUT} == "container:"* ]]
+                then
                     run_script 'env_set' "${SET_VAR}" "${INPUT}"
                 else
                     whiptail --fb --clear --title "DockSTARTer" --msgbox "${INPUT} is not a valid network mode. Please try setting ${SET_VAR} again." 0 0
@@ -173,7 +175,7 @@ menu_value_prompt() {
                     menu_value_prompt "${SET_VAR}"
                 fi
                 ;;
-            *DIR|*DIR_*)
+            *DIR | *DIR_*)
                 local PUID
                 PUID=$(run_script 'env_get' PUID)
                 local PGID
@@ -186,7 +188,10 @@ menu_value_prompt() {
                     CORRECTED_DIR="${DETECTED_HOMEDIR}${INPUT/*~/}"
                     local ANSWER
                     set +e
-                    ANSWER=$(whiptail --fb --clear --title "DockSTARTer" --yesno "Cannot use the ~ shortcut in ${SET_VAR}. Would you like to use ${CORRECTED_DIR} instead?." 0 0 3>&1 1>&2 2>&3; echo $?)
+                    ANSWER=$(
+                        whiptail --fb --clear --title "DockSTARTer" --yesno "Cannot use the ~ shortcut in ${SET_VAR}. Would you like to use ${CORRECTED_DIR} instead?." 0 0 3>&1 1>&2 2>&3
+                        echo $?
+                    )
                     set -e
                     if [[ ${ANSWER} == 0 ]]; then
                         run_script 'env_set' "${SET_VAR}" "${CORRECTED_DIR}"
@@ -199,7 +204,10 @@ menu_value_prompt() {
                     run_script 'env_set' "${SET_VAR}" "${INPUT}"
                     local ANSWER
                     set +e
-                    ANSWER=$(whiptail --fb --clear --title "DockSTARTer" --yesno "Would you like to set permissions on ${INPUT} ?" 0 0 3>&1 1>&2 2>&3; echo $?)
+                    ANSWER=$(
+                        whiptail --fb --clear --title "DockSTARTer" --yesno "Would you like to set permissions on ${INPUT} ?" 0 0 3>&1 1>&2 2>&3
+                        echo $?
+                    )
                     set -e
                     if [[ ${ANSWER} == 0 ]]; then
                         run_script 'set_permissions' "${INPUT}" "${PUID}" "${PGID}"
@@ -207,7 +215,10 @@ menu_value_prompt() {
                 else
                     local ANSWER
                     set +e
-                    ANSWER=$(whiptail --fb --clear --title "DockSTARTer" --yesno "${INPUT} is not a valid path. Would you like to attempt to create it?" 0 0 3>&1 1>&2 2>&3; echo $?)
+                    ANSWER=$(
+                        whiptail --fb --clear --title "DockSTARTer" --yesno "${INPUT} is not a valid path. Would you like to attempt to create it?" 0 0 3>&1 1>&2 2>&3
+                        echo $?
+                    )
                     set -e
                     if [[ ${ANSWER} == 0 ]]; then
                         mkdir -p "${INPUT}" || fatal "${INPUT} folder could not be created."
@@ -224,7 +235,10 @@ menu_value_prompt() {
                 if [[ ${INPUT} == "0" ]]; then
                     local ANSWER
                     set +e
-                    ANSWER=$(whiptail --fb --clear --title "DockSTARTer" --yesno "Running as root is not recommended. Would you like to select a different ID?" 0 0 3>&1 1>&2 2>&3; echo $?)
+                    ANSWER=$(
+                        whiptail --fb --clear --title "DockSTARTer" --yesno "Running as root is not recommended. Would you like to select a different ID?" 0 0 3>&1 1>&2 2>&3
+                        echo $?
+                    )
                     set -e
                     if [[ ${ANSWER} == 0 ]]; then
                         menu_value_prompt "${SET_VAR}"

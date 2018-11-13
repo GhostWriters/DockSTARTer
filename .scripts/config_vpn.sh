@@ -14,11 +14,17 @@ config_vpn() {
     local ANSWER
     if grep -q 'VPN_ENABLED=true$' "${SCRIPTPATH}/compose/.env"; then
         set +e
-        ANSWER=$(whiptail --fb --clear --title "DockSTARTer" --defaultno --yesno "Would you like to keep these settings for ${APPNAME}?\\n\\n${APPVARS}" 0 0 3>&1 1>&2 2>&3; echo $?)
+        ANSWER=$(
+            whiptail --fb --clear --title "DockSTARTer" --defaultno --yesno "Would you like to keep these settings for ${APPNAME}?\\n\\n${APPVARS}" 0 0 3>&1 1>&2 2>&3
+            echo $?
+        )
         set -e
     else
         set +e
-        ANSWER=$(whiptail --fb --clear --title "DockSTARTer" --yesno "Would you like to keep these settings for ${APPNAME}?\\n\\n${APPVARS}" 0 0 3>&1 1>&2 2>&3; echo $?)
+        ANSWER=$(
+            whiptail --fb --clear --title "DockSTARTer" --yesno "Would you like to keep these settings for ${APPNAME}?\\n\\n${APPVARS}" 0 0 3>&1 1>&2 2>&3
+            echo $?
+        )
         set -e
     fi
     if [[ ${ANSWER} != 0 ]]; then
