@@ -1,3 +1,5 @@
+#/APPNICENAME=DDClient
+#/APPDESCRIPTION=Update dynamic DNS entries
 services:
   ddclient:
     image: linuxserver/ddclient

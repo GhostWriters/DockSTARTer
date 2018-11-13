@@ -1,3 +1,5 @@
+#/APPNICENAME=Jackett
+#/APPDESCRIPTION=API Support for your favorite private trackers
 services:
   jackett:
     image: linuxserver/jackett

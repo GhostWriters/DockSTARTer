@@ -17,26 +17,36 @@ menu_config() {
     case "${CONFIGCHOICE}" in
         "Full Setup ")
             run_script 'env_update'
-            run_script 'menu_app_select' || run_script 'menu_config'
-            run_script 'config_apps' || run_script 'menu_config'
-            run_script 'config_vpn' || run_script 'menu_config'
-            run_script 'config_globals' || run_script 'menu_config'
+            run_script 'menu_app_select'
+            run_script 'config_apps'
+            run_script 'config_vpn'
+            run_script 'config_globals'
+            run_script 'generate_yml'
+            run_script 'run_compose'
             ;;
         "Select Apps ")
             run_script 'env_update'
-            run_script 'menu_app_select' || run_script 'menu_config'
+            run_script 'menu_app_select'
+            run_script 'generate_yml'
+            run_script 'run_compose'
             ;;
         "Set App Variables ")
             run_script 'env_update'
-            run_script 'config_apps' || run_script 'menu_config'
+            run_script 'config_apps'
+            run_script 'generate_yml'
+            run_script 'run_compose'
             ;;
         "Set VPN Variables ")
             run_script 'env_update'
-            run_script 'config_vpn' || run_script 'menu_config'
+            run_script 'config_vpn'
+            run_script 'generate_yml'
+            run_script 'run_compose'
             ;;
         "Set Global Variables ")
             run_script 'env_update'
-            run_script 'config_globals' || run_script 'menu_config'
+            run_script 'config_globals'
+            run_script 'generate_yml'
+            run_script 'run_compose'
             ;;
         "Cancel")
             info "Returning to Main Menu."
@@ -46,7 +56,4 @@ menu_config() {
             error "Invalid Option"
             ;;
     esac
-
-    run_script 'generate_yml' || return 1
-    run_script 'run_compose' || return 1
 }

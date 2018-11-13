@@ -1,3 +1,5 @@
+#/APPNICENAME=PlexRequests
+#/APPDESCRIPTION=Automated way for users to request new content for Plex
 services:
   plexrequests:
     image: linuxserver/plexrequests

@@ -1,3 +1,5 @@
+#/APPNICENAME=Hydra2
+#/APPDESCRIPTION=Meta search for NZB indexers
 services:
   hydra2:
     image: linuxserver/hydra2

@@ -7,33 +7,35 @@ The main goal of DockSTARTer is to make it quick and easy to get up and running 
 You may choose to rely on DockSTARTer for various changes to your Docker system, or use DockSTARTer as a stepping stone and learn to do more advanced configurations.
 
 ![Main Menu](https://i.imgur.com/odfRk0j.png)
+
 ![App Select](https://i.imgur.com/tFsu2Hh.png)
+
 ![Value Prompt](https://i.imgur.com/k1bdAoQ.png)
 
 ## Getting Started
 
 ### One Time Setup (required)
 
-* APT Systems (Debian/Ubuntu/Raspbian/etc)
+- APT Systems (Debian/Ubuntu/Raspbian/etc)
 
 ```bash
-sudo apt-get install git
+sudo apt-get install curl git
 bash -c "$(curl -fsSL https://get.dockstarter.com)"
 sudo reboot
 ```
 
-* DNF Systems (Fedora)
+- DNF Systems (Fedora)
 
 ```bash
-sudo dnf install git
+sudo dnf install curl git
 bash -c "$(curl -fsSL https://get.dockstarter.com)"
 sudo reboot
 ```
 
-* YUM Systems (CentOS)
+- YUM Systems (CentOS)
 
 ```bash
-sudo yum install git
+sudo yum install curl git
 bash -c "$(curl -fsSL https://get.dockstarter.com)"
 sudo reboot
 ```
@@ -56,8 +58,8 @@ FeatHub will no longer be checked or maintained.
 
 ## Special Thanks
 
-* [SmartHomeBeginner.com](https://www.smarthomebeginner.com/) for creating [AtoMiC-ToolKit](https://github.com/htpcBeginner/AtoMiC-ToolKit) that served as this project's primary inspiration, and later [this](https://www.smarthomebeginner.com/docker-home-media-server-2018-basic/) guide that provided some initial direction with Docker.
-* [LinuxServer.io](https://www.linuxserver.io/) for maintaining the majority of the Docker images used in this project.
+- [SmartHomeBeginner.com](https://www.smarthomebeginner.com/) for creating [AtoMiC-ToolKit](https://github.com/htpcBeginner/AtoMiC-ToolKit) that served as this project's primary inspiration, and later [this](https://www.smarthomebeginner.com/docker-home-media-server-2018-basic/) guide that provided some initial direction with Docker.
+- [LinuxServer.io](https://www.linuxserver.io/) for maintaining the majority of the Docker images used in this project.
 
 ## Supporters [![Beerpay](https://img.shields.io/beerpay/GhostWriters/DockSTARTer.svg)](https://beerpay.io/GhostWriters/DockSTARTer) / Contributors [![GitHub contributors](https://img.shields.io/github/contributors/GhostWriters/DockSTARTer.svg)](https://GitHub.com/GhostWriters/DockSTARTer/graphs/contributors/)
 

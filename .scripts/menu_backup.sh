@@ -15,7 +15,7 @@ menu_backup() {
 
     case "${CONFIGCHOICE}" in
         "Settings ")
-            run_script 'menu_app_vars' BACKUP || run_script 'menu_backup'
+            run_script 'menu_app_vars' BACKUP
             ;;
         "MIN ")
             run_script 'backup_min'

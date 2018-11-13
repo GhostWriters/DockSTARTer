@@ -1,3 +1,5 @@
+#/APPNICENAME=PortainerAgent
+#/APPDESCRIPTION=An agent used to manage all the resources in a Swarm cluster
 services:
   portaineragent:
     image: portainer/agent
