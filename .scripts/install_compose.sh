@@ -34,5 +34,10 @@ install_compose() {
                 dnf -y install docker-compose > /dev/null 2>&1 || fatal "Failed to install docker-compose from dnf."
             fi
         fi
+        local UPDATED_COMPOSE
+        UPDATED_COMPOSE=$( (docker-compose --version 2> /dev/null || true) | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
+        if [[ "${AVAILABLE_COMPOSE}" != "${UPDATED_COMPOSE}" ]]; then
+            fatal "Failed to install the latest compose."
+        fi
     fi
 }
