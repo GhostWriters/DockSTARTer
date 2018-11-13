@@ -14,7 +14,10 @@ prune_docker() {
         elif [[ ${PROMPT:-} == "menu" ]]; then
             local ANSWER
             set +e
-            ANSWER=$(whiptail --fb --clear --title "DockSTARTer" --yesno "${QUESTION}" 0 0 3>&1 1>&2 2>&3; echo $?)
+            ANSWER=$(
+                whiptail --fb --clear --title "DockSTARTer" --yesno "${QUESTION}" 0 0 3>&1 1>&2 2>&3
+                echo $?
+            )
             set -e
             [[ ${ANSWER} == 0 ]] && YN=Y || YN=N
         else

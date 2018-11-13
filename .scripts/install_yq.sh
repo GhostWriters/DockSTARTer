@@ -10,7 +10,7 @@ install_yq() {
     INSTALLED_YQ=$( (yq --version 2> /dev/null || true) | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
     local FORCE
     FORCE=${1:-}
-    if [[ "${AVAILABLE_YQ}" != "${INSTALLED_YQ}" ]] || [[ -n ${FORCE} ]]; then
+    if [[ ${AVAILABLE_YQ} != "${INSTALLED_YQ}" ]] || [[ -n ${FORCE} ]]; then
         info "Installing latest yq."
         if [[ ${ARCH} == "aarch64" ]] || [[ ${ARCH} == "armv7l" ]]; then
             curl -H "${GH_HEADER:-}" -L "https://github.com/mikefarah/yq/releases/download/${AVAILABLE_YQ}/yq_linux_arm" -o /usr/local/bin/yq > /dev/null 2>&1 || fatal "Failed to install yq."
@@ -21,7 +21,7 @@ install_yq() {
         chmod +x /usr/local/bin/yq > /dev/null 2>&1 || true
         local UPDATED_YQ
         UPDATED_YQ=$( (yq --version 2> /dev/null || true) | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
-        if [[ "${AVAILABLE_YQ}" != "${UPDATED_YQ}" ]]; then
+        if [[ ${AVAILABLE_YQ} != "${UPDATED_YQ}" ]]; then
             fatal "Failed to install the latest yq."
         fi
     fi

@@ -13,7 +13,10 @@ config_globals() {
 
     local ANSWER
     set +e
-    ANSWER=$(whiptail --fb --clear --title "DockSTARTer" --defaultno --yesno "Would you like to keep these settings for ${APPNAME}?\\n\\n${APPVARS}" 0 0 3>&1 1>&2 2>&3; echo $?)
+    ANSWER=$(
+        whiptail --fb --clear --title "DockSTARTer" --defaultno --yesno "Would you like to keep these settings for ${APPNAME}?\\n\\n${APPVARS}" 0 0 3>&1 1>&2 2>&3
+        echo $?
+    )
     set -e
     if [[ ${ANSWER} != 0 ]]; then
         while IFS= read -r line; do
