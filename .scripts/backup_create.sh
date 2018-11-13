@@ -33,7 +33,7 @@ backup_create() {
     local CHATTR
     CHATTR=1 # to use 'chattr' command and protect the backups again modification and deletion
     local DU
-    DU=1 # to use 'du' command and calculate the size of existing backups, disable it if you have many backups and it is getting too slow
+    DU=1          # to use 'du' command and calculate the size of existing backups, disable it if you have many backups and it is getting too slow
 
     # ------------- initialization -----------------------------------------
     shopt -s extglob #enable extended pattern matching operators
@@ -81,7 +81,7 @@ backup_create() {
     local a
     local f
     while IFS= read -r b; do
-        a=$((b/2+1))
+        a=$((b / 2 + 1))
         f=0 #this flag is set to 1 when we find the 1st snapshot in the range b..a
         for i in $(seq -f'%03g' "${b}" -1 "${a}"); do
             if [ -d "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}" ]; then
@@ -190,12 +190,12 @@ backup_create() {
             fi
         done
         eval rsync \
-            --dry-run \
-            "${OPTION}" \
-            "${LNKDST}" \
-            "${SNAPSHOT_SRC}" "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space" >> "${LOG}" || fatal "Snapshot space estimation failed."
+        --dry-run \
+        "${OPTION}" \
+        "${LNKDST}" \
+        "${SNAPSHOT_SRC}" "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space" >> "${LOG}" || fatal "Snapshot space estimation failed."
 
-        i=$(($(tail -100 "${LOG}" | grep 'Total transferred file size:' | cut -d " " -f5 | sed -e 's/\,//g')/1048576))
+        i=$(($(tail -100 "${LOG}" | grep 'Total transferred file size:' | cut -d " " -f5 | sed -e 's/\,//g') / 1048576))
         info "${i} MiB needed."
         rm -rf "${LOG}" "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space" || fatal "Failed to remove ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space"
         remove_snapshot $((MIN_MIBSIZE + i)) $((MAX_MIBSIZE - i))
@@ -251,9 +251,9 @@ backup_create() {
         rm -f "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last" || error "Failed to create ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last"
     fi
     local j
-    for i in $(seq -f'%03g' "$((BACKUP_RETENTION_MAX-1))" -1 000); do
+    for i in $(seq -f'%03g' "$((BACKUP_RETENTION_MAX - 1))" -1 000); do
         if [ -d "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}" ]; then
-            j=$((${i##+(0)}+1))
+            j=$((${i##+(0)} + 1))
             j=$(printf "%.3d" "${j}")
             info "Renaming ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i} into ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${j} ..."
             if [ "${CHATTR}" -eq 1 ]; then

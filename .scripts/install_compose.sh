@@ -10,7 +10,7 @@ install_compose() {
     INSTALLED_COMPOSE=$( (docker-compose --version 2> /dev/null || true) | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
     local FORCE
     FORCE=${1:-}
-    if [[ "${AVAILABLE_COMPOSE}" != "${INSTALLED_COMPOSE}" ]] || [[ -n ${FORCE} ]]; then
+    if [[ ${AVAILABLE_COMPOSE} != "${INSTALLED_COMPOSE}" ]] || [[ -n ${FORCE} ]]; then
         info "Installing latest compose."
         if [[ -n "$(command -v yum)" ]] || [[ ${ARCH} == "aarch64" ]] || [[ ${ARCH} == "armv7l" ]]; then
             if [[ -n "$(command -v apt)" ]]; then
@@ -36,7 +36,7 @@ install_compose() {
         fi
         local UPDATED_COMPOSE
         UPDATED_COMPOSE=$( (docker-compose --version 2> /dev/null || true) | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
-        if [[ "${AVAILABLE_COMPOSE}" != "${UPDATED_COMPOSE}" ]]; then
+        if [[ ${AVAILABLE_COMPOSE} != "${UPDATED_COMPOSE}" ]]; then
             fatal "Failed to install the latest compose."
         fi
     fi

@@ -10,7 +10,7 @@ generate_yml() {
     rm -f "${RUNFILE}" || fatal "Failed to remove ${RUNFILE} file."
     echo "#!/usr/bin/env bash" > "${RUNFILE}"
     {
-        echo "yq m \\"
+        echo 'yq m '\\
         echo "${SCRIPTPATH}/compose/.reqs/v1.yml \\"
         echo "${SCRIPTPATH}/compose/.reqs/v2.yml \\"
     } >> "${RUNFILE}"

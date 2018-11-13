@@ -9,8 +9,8 @@ get_scriptname() {
     local SOURCE
     local DIR
     SOURCE="${BASH_SOURCE[0]}"
-    while [[ -h "${SOURCE}" ]]; do # resolve ${SOURCE} until the file is no longer a symlink
-        DIR="$( cd -P "$( dirname "${SOURCE}" )" > /dev/null && pwd )"
+    while [[ -L ${SOURCE} ]]; do # resolve ${SOURCE} until the file is no longer a symlink
+        DIR="$(cd -P "$(dirname "${SOURCE}")" > /dev/null && pwd)"
         SOURCE="$(readlink "${SOURCE}")"
         [[ ${SOURCE} != /* ]] && SOURCE="${DIR}/${SOURCE}" # if ${SOURCE} was a relative symlink, we need to resolve it relative to the path where the symlink file was located
     done
@@ -18,7 +18,7 @@ get_scriptname() {
 }
 
 readonly SCRIPTNAME="$(get_scriptname)"
-readonly SCRIPTPATH="$( cd -P "$( dirname "${SCRIPTNAME}" )" > /dev/null && pwd )"
+readonly SCRIPTPATH="$(cd -P "$(dirname "${SCRIPTNAME}")" > /dev/null && pwd)"
 
 # User/Group Information
 readonly DETECTED_PUID=${SUDO_UID:-$UID}
@@ -38,10 +38,13 @@ readonly ENDCOLOR='\e[0m'
 # Log Functions
 readonly LOG_FILE="/tmp/dockstarter.log"
 sudo chown "${DETECTED_PUID:-$DETECTED_UNAME}":"${DETECTED_PGID:-$DETECTED_UGROUP}" "${LOG_FILE}" > /dev/null 2>&1 || true # This line should always use sudo
-info()    { echo -e "$(date +"%F %T") ${BLU}[INFO]${ENDCOLOR}       $*" | tee -a "${LOG_FILE}" >&2 ; }
-warning() { echo -e "$(date +"%F %T") ${YLW}[WARNING]${ENDCOLOR}    $*" | tee -a "${LOG_FILE}" >&2 ; }
-error()   { echo -e "$(date +"%F %T") ${RED}[ERROR]${ENDCOLOR}      $*" | tee -a "${LOG_FILE}" >&2 ; }
-fatal()   { echo -e "$(date +"%F %T") ${RED}[FATAL]${ENDCOLOR}      $*" | tee -a "${LOG_FILE}" >&2 ; exit 1 ; }
+info() { echo -e "$(date +"%F %T") ${BLU}[INFO]${ENDCOLOR}       $*" | tee -a "${LOG_FILE}" >&2; }
+warning() { echo -e "$(date +"%F %T") ${YLW}[WARNING]${ENDCOLOR}    $*" | tee -a "${LOG_FILE}" >&2; }
+error() { echo -e "$(date +"%F %T") ${RED}[ERROR]${ENDCOLOR}      $*" | tee -a "${LOG_FILE}" >&2; }
+fatal() {
+    echo -e "$(date +"%F %T") ${RED}[FATAL]${ENDCOLOR}      $*" | tee -a "${LOG_FILE}" >&2
+    exit 1
+}
 
 # Check Arch
 readonly ARCH=$(uname -m)
@@ -107,11 +110,12 @@ usage() {
 
 # Script Runner Function
 run_script() {
-    local SCRIPTSNAME="${1:-}"; shift
+    local SCRIPTSNAME="${1:-}"
+    shift
     if [[ -f ${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh ]]; then
         # shellcheck source=/dev/null
         source "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh"
-        ${SCRIPTSNAME} "$@";
+        ${SCRIPTSNAME} "$@"
     else
         fatal "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh not found."
     fi
@@ -119,11 +123,12 @@ run_script() {
 
 # Test Runner Function
 run_test() {
-    local TESTSNAME="${1:-}"; shift
+    local TESTSNAME="${1:-}"
+    shift
     if [[ -f ${SCRIPTPATH}/.tests/${TESTSNAME}.sh ]]; then
         # shellcheck source=/dev/null
         source "${SCRIPTPATH}/.tests/${TESTSNAME}.sh"
-        ${TESTSNAME} "$@";
+        ${TESTSNAME} "$@"
     else
         fatal "${SCRIPTPATH}/.tests/${TESTSNAME}.sh not found."
     fi
