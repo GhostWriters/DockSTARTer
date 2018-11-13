@@ -3,6 +3,18 @@ set -euo pipefail
 IFS=$'\n\t'
 
 run_dnf() {
+    # https://docs.docker.com/install/linux/docker-ce/fedora/
+    info "Removing old Docker packages."
+    dnf -y remove docker \
+        docker-client \
+        docker-client-latest \
+        docker-common \
+        docker-latest \
+        docker-latest-logrotate \
+        docker-logrotate \
+        docker-selinux \
+        docker-engine-selinux \
+        docker-engine > /dev/null 2>&1 || true
     if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]]; then
         info "Upgrading packages."
         dnf -y upgrade --refresh > /dev/null 2>&1 || fatal "Failed to upgrade packages from dnf."

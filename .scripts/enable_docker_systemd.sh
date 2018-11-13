@@ -7,5 +7,7 @@ enable_docker_systemd() {
     if [[ ${ISSYSTEMD} == true ]]; then
         info "Systemd detected. Enabling docker service."
         systemctl enable docker > /dev/null 2>&1 || fatal "Failed to enable docker service."
+        systemctl stop docker > /dev/null 2>&1 || true
+        systemctl start docker > /dev/null 2>&1 || fatal "Failed to start docker service."
     fi
 }

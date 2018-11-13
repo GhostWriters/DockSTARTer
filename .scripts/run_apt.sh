@@ -3,6 +3,10 @@ set -euo pipefail
 IFS=$'\n\t'
 
 run_apt() {
+    # https://docs.docker.com/install/linux/docker-ce/debian/
+    # https://docs.docker.com/install/linux/docker-ce/ubuntu/
+    info "Removing old Docker packages."
+    apt-get -y remove docker docker-engine docker.io > /dev/null 2>&1 || true
     info "Updating repositories."
     apt-get -y update > /dev/null 2>&1 || fatal "Failed to get updates from apt."
     if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]]; then
