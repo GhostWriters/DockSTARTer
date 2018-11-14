@@ -1,0 +1,14 @@
+#/APPNICENAME=CloudCMD
+#/APPDESCRIPTION=A web file manager with console and editor
+services:
+  cloudcmd:
+    image: coderaiser/cloudcmd
+    container_name: cloudcmd
+    restart: unless-stopped
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/cloudcmd:/root
+      - ${DOCKERSHAREDDIR}:/shared
+      - ${CLOUDCMD_FSDIR}:/mnt/fs
