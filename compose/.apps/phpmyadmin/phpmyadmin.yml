@@ -6,9 +6,9 @@ services:
     container_name: phpmyadmin
     restart: unless-stopped
     environment:
-      - PMA_HOST=mariadb
-      - PMA_PASSWORD=${MARIADB_MYSQL_ROOT_PASSWORD}
-      - PMA_USER=root
+      - PMA_HOST=${PHPMYADMIN_PMA_HOST}
+      - PMA_PASSWORD=${PHPMYADMIN_PMA_PASSWORD}
+      - PMA_USER=${PHPMYADMIN_PMA_USER}
       - TZ=${TZ}
     volumes:
       - /etc/localtime:/etc/localtime:ro
