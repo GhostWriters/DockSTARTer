@@ -1,0 +1,17 @@
+#/APPNICENAME=Tvheadend
+#/APPDESCRIPTION=TV streaming server and recorder
+services:
+  tvheadend:
+    image: linuxserver/tvheadend
+    container_name: tvheadend
+    restart: unless-stopped
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - RUN_OPTS=${TVHEADEND_RUN_OPTS}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/tvheadend:/config
+      - ${DOCKERSHAREDDIR}:/shared
+      - ${TVHEADEND_RECORDINGSDIR}:/recordings
