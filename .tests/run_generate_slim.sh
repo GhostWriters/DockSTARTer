@@ -9,7 +9,7 @@ run_generate_slim() {
     cd "${SCRIPTPATH}/compose/" || fatal "Failed to change to ${SCRIPTPATH}/compose/ directory."
     docker-compose config || fatal "Failed to validate ${SCRIPTPATH}/compose/docker-compose.yml file."
     echo
-    docker-compose up -d || fatal "Docker Compose failed."
+    docker-compose up -d --remove-orphans || fatal "Docker Compose failed."
     cd "${SCRIPTPATH}" || fatal "Failed to change to ${SCRIPTPATH} directory."
     info "Generator test complete."
 }
