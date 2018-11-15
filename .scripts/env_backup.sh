@@ -12,5 +12,5 @@ env_backup() {
     mkdir -p "${DOCKERCONFDIR}/.env.backups" || fatal "${DOCKERCONFDIR}/.env.backups folder could not be created."
     cp "${SCRIPTPATH}/compose/.env" "${DOCKERCONFDIR}/.env.backups/.env.${BACKUPTIME}" || fatal "${DOCKERCONFDIR}/.env.backups/.env.${BACKUPTIME} could not be copied."
     info "Removing old .env backups."
-    find "${DOCKERCONFDIR}/.env.backups/.env.*" -mtime +3 -type f -delete > /dev/null 2>&1 || warning "Old .env backups not removed."
+    find "${DOCKERCONFDIR}/.env.backups" -type f -name ".env.*" -mtime +3 -delete > /dev/null 2>&1 || warning "Old .env backups not removed."
 }
