@@ -8,7 +8,6 @@ jobs:
       env:
         - TEST=validate
       script:
-        - sudo bash ./main.sh -t validate_newline
         - sudo bash ./main.sh -t validate_bashate
         - sudo bash ./main.sh -t validate_shellcheck
     - stage: run

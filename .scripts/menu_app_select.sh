@@ -14,7 +14,7 @@ menu_app_select() {
         local APPSUPPORTED
         APPSUPPORTED=false
         local APPNICENAME
-        local APPDESCRIPTIOM
+        local APPDESCRIPTION
         if [[ -d ${SCRIPTPATH}/compose/.apps/${FILENAME}/ ]]; then
             if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml ]]; then
                 APPNICENAME=$(grep '^#/APPNICENAME=' "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml" | cut -c15- || echo "${APPNAME}")
