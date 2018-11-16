@@ -3,7 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 cmdline() {
-    # got this idea from here:
+    # http://www.kfirlavi.com/blog/2012/11/14/defensive-bash-programming/
     # http://kirk.webfinish.com/2009/10/bash-shell-script-to-use-getopts-with-gnu-style-long-positional-parameters/
     local ARG=
     local LOCAL_ARGS

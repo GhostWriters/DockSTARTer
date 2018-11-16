@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 enable_docker_systemd() {
     # https://docs.docker.com/install/linux/linux-postinstall/
-    if [[ ${ISSYSTEMD} == true ]]; then
+    if [[ -L "/sbin/init" ]]; then
         info "Systemd detected. Enabling docker service."
         systemctl enable docker > /dev/null 2>&1 || fatal "Failed to enable docker service."
         systemctl stop docker > /dev/null 2>&1 || true
