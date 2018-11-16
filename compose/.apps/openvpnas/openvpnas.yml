@@ -1,0 +1,16 @@
+#/APPNICENAME=OpenVPNAS
+#/APPDESCRIPTION=Secure network tunneling VPN
+services:
+  openvpnas:
+    image: linuxserver/openvpn-as
+    container_name: openvpnas
+    restart: unless-stopped
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/openvpnas:/config
+      - ${DOCKERSHAREDDIR}:/shared
+    privileged: true
