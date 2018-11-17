@@ -21,11 +21,11 @@ validate_shellcheck() {
     # https://github.com/caarlos0/shell-ci-build
     echo "Linting all executables and .*sh files with ${VALIDATOR}..."
     while IFS= read -r line; do
-        if grep -q -E -w "sh|bash|dash|ksh" "${line}"; then
+        if head -n1 "${line}" | grep -q -E -w "sh|bash|dash|ksh"; then
             eval "${VALIDATOR} ${VALIDATIONFLAGS} ${SCRIPTPATH}/${line}" || fatal "Linting ${line}"
             info "Linting ${line}"
         else
-            info "Skipping ${line}..."
+            warning "Skipping ${line}..."
         fi
     done < <(git ls-tree -r HEAD | grep -E '^1007|.*\..*sh$' | awk '{print $4}')
     info "${VALIDATOR} validation complete."
