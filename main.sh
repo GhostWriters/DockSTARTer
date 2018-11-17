@@ -2,6 +2,34 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+# Usage Information
+#/ Usage: sudo ds [OPTION]
+#/ NOTE: ds shortcut is only available after the first run of sudo bash ~/.docker/main.sh
+#/
+#/ This is the main DockSTARTer script.
+#/ For regular usage you can run without providing any options.
+#/
+#/  -b --backup <min/med/max>             backup your configs (see wiki more information)
+#/  -c --compose <up/down/restart/pull>   run docker-compose commands
+#/  -e --env                              update your .env file with new variables
+#/  -h --help                             show this usage information
+#/  -i --install                          install docker and dependencies
+#/  -p --prune                            remove unused docker resources
+#/  -t --test <test_name>                 run tests to check the program
+#/  -u --update                           update DockSTARTer
+##/ -v --verbose                          verbose
+#/  -x --debug                            debug
+#/
+usage() {
+    grep '^#/' "${SCRIPTNAME}" | cut -c4- || echo "Failed to display usage information."
+    exit
+}
+
+# Github Token for Travis CI
+if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS} == true ]]; then
+    readonly GH_HEADER="Authorization: token ${GH_TOKEN}"
+fi
+
 readonly ARGS=("$@")
 
 # Script Information
@@ -46,68 +74,6 @@ fatal() {
     exit 1
 }
 
-# Check Arch
-readonly ARCH=$(uname -m)
-if [[ ${ARCH} != "aarch64" ]] && [[ ${ARCH} != "armv7l" ]] && [[ ${ARCH} != "x86_64" ]]; then
-    fatal "Unsupported architecture."
-fi
-
-# Github Token for Travis CI
-if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS} == true ]]; then
-    readonly GH_HEADER="Authorization: token ${GH_TOKEN}"
-fi
-
-# Check Systemd
-if [[ -L "/sbin/init" ]]; then
-    readonly ISSYSTEMD=true
-else
-    readonly ISSYSTEMD=false
-fi
-
-# Usage Information
-#/ Usage: sudo ds [OPTION]
-#/ NOTE: ds shortcut is only available after the first run of sudo bash ~/.docker/main.sh
-#/
-#/ This is the main DockSTARTer script.
-#/ For regular usage you can run without providing any options.
-#/
-#/    -b --backup <min/med/max>     create a backup snapshot of your configs (see wiki more information)
-#/    -c --compose                  run the docker-compose yml generator
-#/    -e --env                      update your .env file with new variables
-#/    -h --help                     show this usage information
-#/    -i --install                  install docker and dependencies
-#/    -p --prune                    remove all unused containers, networks, volumes, images and build cache
-#/    -t --test <test_name>         run tests to check the program
-#/    -u --update                   update DockSTARTer
-##/    -v --verbose                  verbose
-#/    -x --debug                    debug
-#/
-#/
-#/ Examples:
-#/    Run compose, env, help, install, prune, update:
-#/    ds --compose
-#/    or
-#/    ds -c
-#/
-#/    Run backup:
-#/    ds --backup min
-#/    or
-#/    ds -b min
-#/
-#/    Debug can be combined with any option but should be indicated before other options:
-#/    ds --debug --update
-#/    or
-#/    ds -xu
-#/
-#/    Run Shellcheck test:
-#/    ds --test validate_shellcheck
-#/    or
-#/    ds -t validate_shellcheck
-#/
-usage() {
-    grep '^#/' "${SCRIPTNAME}" | cut -c4- || fatal "Failed to display usage information."
-}
-
 # Script Runner Function
 run_script() {
     local SCRIPTSNAME="${1:-}"
@@ -147,6 +113,11 @@ trap 'cleanup' 0 1 2 3 6 14 15
 
 # Main Function
 main() {
+    # Arch Check
+    readonly ARCH=$(uname -m)
+    if [[ ${ARCH} != "aarch64" ]] && [[ ${ARCH} != "armv7l" ]] && [[ ${ARCH} != "x86_64" ]]; then
+        fatal "Unsupported architecture."
+    fi
     # Root Check
     if [[ ${DETECTED_PUID} == "0" ]] || [[ ${DETECTED_HOMEDIR} == "/root" ]]; then
         fatal "Running as root is not supported. Please run as a standard user with sudo."
