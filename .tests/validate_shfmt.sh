@@ -21,7 +21,7 @@ validate_shfmt() {
     VALIDATIONFLAGS="-s -i 4 -ci -sr -d"
 
     # https://github.com/caarlos0/shell-ci-build
-    echo "Linting all executables and .*sh files with ${VALIDATOR}..."
+    info "Linting all executables and .*sh files with ${VALIDATOR}..."
     while IFS= read -r line; do
         if head -n1 "${line}" | grep -q -E -w "sh|bash|dash|ksh"; then
             eval "${VALIDATOR} ${VALIDATIONFLAGS} ${SCRIPTPATH}/${line}" || fatal "Linting ${line}"

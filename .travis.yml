@@ -1,6 +1,6 @@
 dist: trusty
 group: travis_latest
-language: generic
+language: minimal
 jobs:
   include:
     - stage: validate
