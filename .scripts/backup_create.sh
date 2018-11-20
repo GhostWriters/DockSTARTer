@@ -33,7 +33,7 @@ backup_create() {
     local CHATTR
     CHATTR=1 # to use 'chattr' command and protect the backups again modification and deletion
     local DU
-    DU=1          # to use 'du' command and calculate the size of existing backups, disable it if you have many backups and it is getting too slow
+    DU=1             # to use 'du' command and calculate the size of existing backups, disable it if you have many backups and it is getting too slow
 
     # ------------- initialization -----------------------------------------
     shopt -s extglob #enable extended pattern matching operators
@@ -190,10 +190,10 @@ backup_create() {
             fi
         done
         eval rsync \
-        --dry-run \
-        "${OPTION}" \
-        "${LNKDST}" \
-        "${SNAPSHOT_SRC}" "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space" >> "${LOG}" || fatal "Snapshot space estimation failed."
+            --dry-run \
+            "${OPTION}" \
+            "${LNKDST}" \
+            "${SNAPSHOT_SRC}" "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space" >> "${LOG}" || fatal "Snapshot space estimation failed."
 
         i=$(($(tail -100 "${LOG}" | grep 'Total transferred file size:' | cut -d " " -f5 | sed -e 's/\,//g') / 1048576))
         info "${i} MiB needed."
@@ -222,10 +222,10 @@ backup_create() {
         info "Not hardlinked ..."
     fi
     eval rsync \
-    -vv \
-    "${OPTION}" \
-    "${LNKDST}" \
-    "${SNAPSHOT_SRC}" "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.000" > /dev/null 2>&1 || fatal "Snapshot failed."
+        -vv \
+        "${OPTION}" \
+        "${LNKDST}" \
+        "${SNAPSHOT_SRC}" "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.000" > /dev/null 2>&1 || fatal "Snapshot failed."
     for i in ${LNKDST//--link-dest=/}; do
         if [ -d "${i}" ] && [ "${CHATTR}" -eq 1 ] && [ "$(lsattr -d "${i}" | cut -b5)" != "i" ]; then
             chattr -R +i "${i}" > /dev/null 2>&1 || warning "Failed to make ${i} backup immutable. Backup files may be overwritten by future backups." #undo unprotection that was needed to use hardlinks

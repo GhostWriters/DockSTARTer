@@ -1,7 +1,6 @@
 dist: trusty
-language: generic
-sudo: required
 group: travis_latest
+language: generic
 jobs:
   include:
     - stage: validate
@@ -10,6 +9,7 @@ jobs:
       script:
         - sudo bash ./main.sh -t validate_bashate
         - sudo bash ./main.sh -t validate_shellcheck
+        - sudo bash ./main.sh -t validate_shfmt
     - stage: run
       env: TEST=run_install
       script: sudo bash ./main.sh -t ${TEST}

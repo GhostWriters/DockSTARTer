@@ -153,19 +153,15 @@ menu_value_prompt() {
                 fi
                 ;;
             *_NETWORK_MODE)
-                if
-                    [[ -z ${INPUT} ]] || \
-                    [[ ${INPUT} == "bridge" ]] || \
-                    [[ ${INPUT} == "host" ]] || \
-                    [[ ${INPUT} == "none" ]] || \
-                    [[ ${INPUT} == "service:"* ]] || \
-                    [[ ${INPUT} == "container:"* ]]
-                then
-                    run_script 'env_set' "${SET_VAR}" "${INPUT}"
-                else
-                    whiptail --fb --clear --title "DockSTARTer" --msgbox "${INPUT} is not a valid network mode. Please try setting ${SET_VAR} again." 0 0
-                    menu_value_prompt "${SET_VAR}"
-                fi
+                case "${INPUT}" in
+                    "" | "bridge" | "host" | "none" | "service:"* | "container:"*)
+                        run_script 'env_set' "${SET_VAR}" "${INPUT}"
+                        ;;
+                    *)
+                        whiptail --fb --clear --title "DockSTARTer" --msgbox "${INPUT} is not a valid network mode. Please try setting ${SET_VAR} again." 0 0
+                        menu_value_prompt "${SET_VAR}"
+                        ;;
+                esac
                 ;;
             *_PORT_*)
                 if [[ ${INPUT} =~ ^[0-9]+$ ]] || [[ ${INPUT} -ge 0 ]] || [[ ${INPUT} -le 65535 ]]; then
