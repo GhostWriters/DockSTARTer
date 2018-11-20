@@ -3,9 +3,6 @@ set -euo pipefail
 IFS=$'\n\t'
 
 run_generate_full() {
-    if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS} == true ]]; then
-        service mysql stop
-    fi
     run_script 'env_update'
     while IFS= read -r line; do
         local APPNAME
