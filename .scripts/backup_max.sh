@@ -19,7 +19,7 @@ backup_max() {
         BACKUP_CMD_PRE_APP=$(run_script 'env_get' BACKUP_CMD_PRE_APP)
         eval "${BACKUP_CMD_PRE_APP}" || error "Failed to execute BACKUP_CMD_PRE_APP."
         local RUNNING
-        RUNNING=$(docker inspect "${FILENAME}" | grep -Po '"Running": \Ktrue')
+        RUNNING=$(docker inspect "${FILENAME}" 2> /dev/null | grep -Po '"Running": \Ktrue' || echo "false")
         if [[ ${RUNNING} == true ]]; then
             docker stop "${FILENAME}" > /dev/null 2>&1 || error "Unable to stop ${FILENAME}."
         fi
@@ -30,7 +30,7 @@ backup_max() {
         local BACKUP_CMD_POST_APP
         BACKUP_CMD_POST_APP=$(run_script 'env_get' BACKUP_CMD_POST_APP)
         eval "${BACKUP_CMD_POST_APP}" || error "Failed to execute BACKUP_CMD_POST_APP."
-    done < <(ls -a "${DOCKERCONFDIR}")
+    done < <(ls -A "${DOCKERCONFDIR}")
     local BACKUP_CMD_POST_RUN
     BACKUP_CMD_POST_RUN=$(run_script 'env_get' BACKUP_CMD_POST_RUN)
     eval "${BACKUP_CMD_POST_RUN}" || error "Failed to execute BACKUP_CMD_POST_RUN."
