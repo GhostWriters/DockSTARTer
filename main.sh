@@ -25,14 +25,16 @@ usage() {
     exit
 }
 
+# Command Line Arguments
+readonly ARGS=("$@")
+
 # Github Token for Travis CI
 if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS} == true ]]; then
     readonly GH_HEADER="Authorization: token ${GH_TOKEN}"
 fi
 
-readonly ARGS=("$@")
-
 # Script Information
+# https://stackoverflow.com/a/246128/1384186
 get_scriptname() {
     local SOURCE
     local DIR
@@ -44,7 +46,6 @@ get_scriptname() {
     done
     echo "${SOURCE}"
 }
-
 readonly SCRIPTNAME="$(get_scriptname)"
 readonly SCRIPTPATH="$(cd -P "$(dirname "${SCRIPTNAME}")" > /dev/null && pwd)"
 
@@ -61,16 +62,16 @@ readonly BLU='\e[34m'
 readonly GRN='\e[32m'
 readonly RED='\e[31m'
 readonly YLW='\e[33m'
-readonly ENDCOLOR='\e[0m'
+readonly NC='\e[0m'
 
 # Log Functions
 readonly LOG_FILE="/tmp/dockstarter.log"
 sudo chown "${DETECTED_PUID:-$DETECTED_UNAME}":"${DETECTED_PGID:-$DETECTED_UGROUP}" "${LOG_FILE}" > /dev/null 2>&1 || true # This line should always use sudo
-info() { echo -e "$(date +"%F %T") ${BLU}[INFO]${ENDCOLOR}       $*" | tee -a "${LOG_FILE}" >&2; }
-warning() { echo -e "$(date +"%F %T") ${YLW}[WARNING]${ENDCOLOR}    $*" | tee -a "${LOG_FILE}" >&2; }
-error() { echo -e "$(date +"%F %T") ${RED}[ERROR]${ENDCOLOR}      $*" | tee -a "${LOG_FILE}" >&2; }
+info() { echo -e "$(date +"%F %T") ${BLU}[INFO]${NC}       $*" | tee -a "${LOG_FILE}" >&2; }
+warning() { echo -e "$(date +"%F %T") ${YLW}[WARNING]${NC}    $*" | tee -a "${LOG_FILE}" >&2; }
+error() { echo -e "$(date +"%F %T") ${RED}[ERROR]${NC}      $*" | tee -a "${LOG_FILE}" >&2; }
 fatal() {
-    echo -e "$(date +"%F %T") ${RED}[FATAL]${ENDCOLOR}      $*" | tee -a "${LOG_FILE}" >&2
+    echo -e "$(date +"%F %T") ${RED}[FATAL]${NC}      $*" | tee -a "${LOG_FILE}" >&2
     exit 1
 }
 
