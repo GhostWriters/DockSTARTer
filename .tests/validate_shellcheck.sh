@@ -3,20 +3,14 @@ set -euo pipefail
 IFS=$'\n\t'
 
 validate_shellcheck() {
-    info "Installing shellcheck."
-    apt-get -y install xz-utils > /dev/null 2>&1 || fatal "Failed to install shellcheck dependencies from apt."
-    export scversion="stable" # or "v0.4.7", or "latest"
-    wget "https://storage.googleapis.com/shellcheck/shellcheck-${scversion}.linux.x86_64.tar.xz" > /dev/null 2>&1 || fatal "Failed to download shellcheck."
-    tar --xz -xvf "shellcheck-${scversion}.linux.x86_64.tar.xz" > /dev/null 2>&1 || fatal "Failed to extract shellcheck."
-    cp "shellcheck-${scversion}/shellcheck" /usr/bin/ || fatal "Failed to copy shellcheck to bin."
-    rm -rf "shellcheck-${scversion}.linux.x86_64.tar.xz" "shellcheck-${scversion}/shellcheck" || true
-
-    shellcheck --version || fatal "Failed to check shellcheck version."
-
     local VALIDATOR
-    VALIDATOR=shellcheck
+    VALIDATOR="docker run --rm -v ${SCRIPTPATH}:${SCRIPTPATH} koalaman/shellcheck"
     local VALIDATIONFLAGS
     VALIDATIONFLAGS="-x"
+    local VALIDATORVERFLAG
+    VALIDATORVERFLAG="--version"
+
+    eval "${VALIDATOR} ${VALIDATORVERFLAG}" || fatal "Failed to check ${VALIDATOR} version."
 
     # https://github.com/caarlos0/shell-ci-build
     info "Linting all executables and .*sh files with ${VALIDATOR}..."

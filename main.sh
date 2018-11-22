@@ -143,7 +143,7 @@ main() {
         exit
     fi
     run_script 'symlink_ds'
-    # shellcheck source=.scripts/cmdline.sh
+    # shellcheck source=/dev/null
     source "${SCRIPTPATH}/.scripts/cmdline.sh"
     cmdline "${ARGS[@]:-}"
     readonly PROMPT="menu"

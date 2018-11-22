@@ -3,15 +3,14 @@ set -euo pipefail
 IFS=$'\n\t'
 
 validate_bashate() {
-    info "Installing bashate."
-    pip install -U bashate > /dev/null 2>&1 || fatal "Failed to install bashate from pip."
-
-    bashate --show || fatal "Failed to check bashate version."
-
     local VALIDATOR
-    VALIDATOR=bashate
+    VALIDATOR="docker run --rm -v ${SCRIPTPATH}:${SCRIPTPATH} textclean/bashate"
     local VALIDATIONFLAGS
     VALIDATIONFLAGS="-i E006"
+    local VALIDATORVERFLAG
+    VALIDATORVERFLAG="--show"
+
+    eval "${VALIDATOR} ${VALIDATORVERFLAG}" || fatal "Failed to check ${VALIDATOR} version."
 
     # https://github.com/caarlos0/shell-ci-build
     info "Linting all executables and .*sh files with ${VALIDATOR}..."
