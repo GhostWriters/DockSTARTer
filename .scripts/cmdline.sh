@@ -74,7 +74,7 @@ cmdline() {
                         run_script 'run_compose' up
                         ;;
                     *)
-                        fatal "Invalid backup option."
+                        fatal "Invalid compose option."
                         ;;
                 esac
                 exit
