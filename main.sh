@@ -38,7 +38,7 @@ fi
 get_scriptname() {
     local SOURCE
     local DIR
-    SOURCE="${BASH_SOURCE[0]}"
+    SOURCE="${BASH_SOURCE[0]:-$0}" # https://stackoverflow.com/questions/35006457/choosing-between-0-and-bash-source
     while [[ -L ${SOURCE} ]]; do # resolve ${SOURCE} until the file is no longer a symlink
         DIR="$(cd -P "$(dirname "${SOURCE}")" > /dev/null && pwd)"
         SOURCE="$(readlink "${SOURCE}")"
