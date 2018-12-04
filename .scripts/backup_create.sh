@@ -158,10 +158,10 @@ backup_create() {
                                     if [ -d "${j}" ] && [ "${CHATTR}" -eq 1 ] && [ "$(lsattr -d "${j}" | cut -b5)" != "i" ]; then
                                         chattr -R +i "${j}" > /dev/null 2>&1 || warning "Failed to make ${j} backup immutable. Backup files may be overwritten by future backups." #undo unprotection that was needed to use hardlinks
                                     fi
+                                    if [ ! -h "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last" ]; then
+                                        ln -s "${SNAPSHOT_NAME}.${j}" "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last" || warning "Failed to create link for ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last"
+                                    fi
                                 done
-                                if [ ! -h "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last" ]; then
-                                    ln -s "${SNAPSHOT_NAME}.${j}" "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last" || warning "Failed to create link for ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last"
-                                fi
                                 fatal "Sorry, free disk space will be smaller than ${MIN_MIBSIZE} MiB. Exiting..."
                             fi
                         elif [ ${d} -eq 2 ]; then #snapshot.001 causes that disk space used by snapshots is too big
