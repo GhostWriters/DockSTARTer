@@ -6,20 +6,21 @@ services:
     container_name: samba
     restart: unless-stopped
     environment:
-      - USERID=${PUID}
       - GROUPID=${PGID}
-      - TZ=${TZ}
-      - USER=${SAMBA_USERNAME}:${SAMBA_PASSWORD}
       - SHARE=Books;/data/books;yes;no;no;${SAMBA_USERNAME}
       - SHARE=Comics;/data/comics;yes;no;no;${SAMBA_USERNAME}
+      - SHARE=Downloads;/data/downloads;yes;no;no;${SAMBA_USERNAME}
       - SHARE=Movies;/data/movies;yes;no;no;${SAMBA_USERNAME}
       - SHARE=Music;/data/music;yes;no;no;${SAMBA_USERNAME}
       - SHARE=TV;/data/tv;yes;no;no;${SAMBA_USERNAME}
-      - SHARE=Downloads;/data/downloads;yes;no;no;${SAMBA_USERNAME}
+      - TZ=${TZ}
+      - USER=${SAMBA_USERNAME}:${SAMBA_PASSWORD}
+      - USERID=${PUID}
     volumes:
-      - ${MEDIADIR_MOVIES}:/data/books
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOWNLOADSDIR}:/data/downloads
       - ${MEDIADIR_COMICS}:/data/comics
+      - ${MEDIADIR_MOVIES}:/data/books
       - ${MEDIADIR_MOVIES}:/data/movies
       - ${MEDIADIR_MUSIC}:/data/music
       - ${MEDIADIR_TV}:/data/tv
-      - ${DOWNLOADSDIR}:/data/downloads
