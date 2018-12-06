@@ -1,0 +1,7 @@
+services:
+  samba:
+    ports:
+      - "${SAMBA_139}:139/tcp"
+      - "${SAMBA_139}:139/udp"
+      - "${SAMBA_445}:445/udp"
+      - "${SAMBA_445}:445/tcp"
