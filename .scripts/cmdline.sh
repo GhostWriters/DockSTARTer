@@ -14,8 +14,6 @@ cmdline() {
             --backup) LOCAL_ARGS="${LOCAL_ARGS:-}-b " ;;
             --compose) LOCAL_ARGS="${LOCAL_ARGS:-}-c " ;;
             --env) LOCAL_ARGS="${LOCAL_ARGS:-}-e " ;;
-            # TODO: Remove after 18.11
-            --generate) LOCAL_ARGS="${LOCAL_ARGS:-}-g " ;;
             --help) LOCAL_ARGS="${LOCAL_ARGS:-}-h " ;;
             --install) LOCAL_ARGS="${LOCAL_ARGS:-}-i " ;;
             --prune) LOCAL_ARGS="${LOCAL_ARGS:-}-p " ;;
@@ -81,12 +79,6 @@ cmdline() {
                 ;;
             e)
                 run_script 'env_update'
-                exit
-                ;;
-            # TODO: Remove after 18.11
-            g)
-                run_script 'generate_yml'
-                run_script 'run_compose'
                 exit
                 ;;
             h)
