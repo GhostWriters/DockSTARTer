@@ -7,6 +7,7 @@ run_generate_full() {
     while IFS= read -r line; do
         local APPNAME
         APPNAME=${line/_ENABLED=*/}
+        info "Testing ${APPNAME}."
         sed -i 's/_ENABLED=true/_ENABLED=false/' "${SCRIPTPATH}/compose/.env"
         run_script 'env_set' "${APPNAME}_ENABLED" true
         run_test 'run_generate_slim'

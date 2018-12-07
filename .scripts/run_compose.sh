@@ -49,7 +49,11 @@ run_compose() {
                     echo $?
                 )
                 set -e
-                [[ ${ANSWER} == 0 ]] && YN=Y || YN=N
+                if [[ ${ANSWER} == 0 ]]; then
+                    YN=Y
+                else
+                    YN=N
+                fi
             else
                 read -rp "[Yn]" YN
             fi
