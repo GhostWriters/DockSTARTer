@@ -67,11 +67,11 @@ readonly NC='\e[0m'
 # Log Functions
 readonly LOG_FILE="/tmp/dockstarter.log"
 sudo chown "${DETECTED_PUID:-$DETECTED_UNAME}":"${DETECTED_PGID:-$DETECTED_UGROUP}" "${LOG_FILE}" > /dev/null 2>&1 || true # This line should always use sudo
-info() { echo -e "$(date +"%F %T") ${BLU}[INFO]${NC}       $*" | tee -a "${LOG_FILE}" >&2; }
-warning() { echo -e "$(date +"%F %T") ${YLW}[WARNING]${NC}    $*" | tee -a "${LOG_FILE}" >&2; }
-error() { echo -e "$(date +"%F %T") ${RED}[ERROR]${NC}      $*" | tee -a "${LOG_FILE}" >&2; }
+info() { echo -e "${NC}$(date +"%F %T") ${BLU}[INFO]${NC}       $*${NC}" | tee -a "${LOG_FILE}" >&2; }
+warning() { echo -e "${NC}$(date +"%F %T") ${YLW}[WARNING]${NC}    $*${NC}" | tee -a "${LOG_FILE}" >&2; }
+error() { echo -e "${NC}$(date +"%F %T") ${RED}[ERROR]${NC}      $*${NC}" | tee -a "${LOG_FILE}" >&2; }
 fatal() {
-    echo -e "$(date +"%F %T") ${RED}[FATAL]${NC}      $*" | tee -a "${LOG_FILE}" >&2
+    echo -e "${NC}$(date +"%F %T") ${RED}[FATAL]${NC}      $*${NC}" | tee -a "${LOG_FILE}" >&2
     exit 1
 }
 
