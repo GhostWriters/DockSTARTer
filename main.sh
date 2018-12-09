@@ -120,8 +120,10 @@ main() {
         fatal "Unsupported architecture."
     fi
     # Root Check
-    if [[ ${DETECTED_PUID} == "0" ]] || [[ ${DETECTED_HOMEDIR} == "/root" ]]; then
-        fatal "Running as root is not supported. Please run as a standard user with sudo."
+    if [[ -n ${PS1:-} ]] || [[ ${-} == *"i"* ]]; then
+        if [[ ${DETECTED_PUID} == "0" ]] || [[ ${DETECTED_HOMEDIR} == "/root" ]]; then
+            fatal "Running as root is not supported. Please run as a standard user with sudo."
+        fi
     fi
     if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]] && [[ -z ${ARGS[*]:-} ]]; then
         if [[ ! -d ${DETECTED_HOMEDIR}/.docker/.git ]]; then
