@@ -1,4 +1,3 @@
-dist: xenial
 language: minimal
 jobs:
   include:
