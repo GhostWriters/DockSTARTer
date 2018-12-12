@@ -1,0 +1,3 @@
+services:
+  ttrss:
+    network_mode: ${TTRSS_NETWORK_MODE}
