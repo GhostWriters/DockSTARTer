@@ -1,4 +1,4 @@
-#/APPNICENAME=ttrss
+#/APPNICENAME=TTRSS
 #/APPDESCRIPTION=News feed (RSS/Atom) reader and aggregator
 services:
   ttrss:
