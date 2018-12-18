@@ -1,0 +1,24 @@
+#/APPNICENAME=NZBGetVPN
+#/APPDESCRIPTION=NZBGet, OpenVPN and Privoxy
+services:
+  nzbgetvpn:
+    image: jshridha/docker-nzbgetvpn
+    container_name: nzbgetvpn
+    restart: unless-stopped
+    environment:
+      - LAN_NETWORK=${LAN_NETWORK}
+      - NAME_SERVERS=${NS1},${NS2}
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - VPN_ENABLED=${VPN_ENABLE}
+      - VPN_OPTIONS=${VPN_OPTIONS}
+      - VPN_PASS=${VPN_PASS}
+      - VPN_PROV=${VPN_PROV}
+      - VPN_USER=${VPN_USER}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/nzbgetvpn:/config
+      - ${DOWNLOADSDIR}:/data
+    cap_add:
+      - NET_ADMIN

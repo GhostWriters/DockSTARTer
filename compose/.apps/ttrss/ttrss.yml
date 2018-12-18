@@ -1,0 +1,15 @@
+#/APPNICENAME=TTRSS
+#/APPDESCRIPTION=News feed (RSS/Atom) reader and aggregator
+services:
+  ttrss:
+    image: linuxserver/tt-rss
+    container_name: ttrss
+    restart: unless-stopped
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/ttrss:/config
+      - ${DOCKERSHAREDDIR}:/shared

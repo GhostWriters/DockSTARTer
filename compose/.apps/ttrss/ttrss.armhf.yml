@@ -1,0 +1,3 @@
+services:
+  ttrss:
+    image: lsioarmhf/tt-rss
