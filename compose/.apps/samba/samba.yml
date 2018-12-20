@@ -1,0 +1,29 @@
+#/APPNICENAME=Samba
+#/APPDESCRIPTION=Access media directories and Docker config over Samba
+services:
+  samba:
+    image: dperson/samba
+    container_name: samba
+    command:
+      - -u "${SAMBA_USERNAME};${SAMBA_PASSWORD}" \
+        -s "Books;/data/books;yes;no;no;${SAMBA_USERNAME}" \
+        -s "Comics;/data/comics;yes;no;no;${SAMBA_USERNAME}" \
+        -s "Docker Config;/data/docker/config;yes;no;no;${SAMBA_USERNAME}" \
+        -s "Downloads;/data/downloads;yes;no;no;${SAMBA_USERNAME}" \
+        -s "Movies;/data/movies;yes;no;no;${SAMBA_USERNAME}" \
+        -s "Music;/data/music;yes;no;no;${SAMBA_USERNAME}" \
+        -s "TV;/data/tv;yes;no;no;${SAMBA_USERNAME}"
+    restart: unless-stopped
+    environment:
+      - GROUPID=${PGID}
+      - TZ=${TZ}
+      - USERID=${PUID}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}:/data/docker/config
+      - ${DOWNLOADSDIR}:/data/downloads
+      - ${MEDIADIR_COMICS}:/data/comics
+      - ${MEDIADIR_BOOKS}:/data/books
+      - ${MEDIADIR_MOVIES}:/data/movies
+      - ${MEDIADIR_MUSIC}:/data/music
+      - ${MEDIADIR_TV}:/data/tv

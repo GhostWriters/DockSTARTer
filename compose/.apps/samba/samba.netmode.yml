@@ -1,0 +1,3 @@
+services:
+  samba:
+    network_mode: ${SAMBA_NETWORK_MODE}
