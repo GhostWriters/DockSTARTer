@@ -1,0 +1,16 @@
+#/APPNICENAME=Telegraf
+#/APPDESCRIPTION=Agent for collecting metrics and writing them to InfluxDB or other outputs
+services:
+  telegraf:
+    image: telegraf
+    container_name: telegraf
+    restart: unless-stopped
+    environment:
+      - HOST_PROC=/host/proc
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /proc:/host/proc:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${DOCKERCONFDIR}/telegraf:/var/lib/telegraf
+      - ${DOCKERSHAREDDIR}:/shared

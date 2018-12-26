@@ -1,0 +1,6 @@
+services:
+  telegraf:
+    ports:
+      - "${TELEGRAF_PORT_8092}:8092/udp"
+      - "${TELEGRAF_PORT_8094}:8094/tcp"
+      - "${TELEGRAF_PORT_8125}:8125"
