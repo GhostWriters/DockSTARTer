@@ -1,0 +1,15 @@
+#/APPNICENAME=varken
+#/APPDESCRIPTION=Standalone command-line utility to aggregate data from the Plex ecosystem into InfluxDB
+services:
+  varken:
+    image: boerderij/varken
+    container_name: varken
+    restart: unless-stopped
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/varken:/config
+      - ${DOCKERSHAREDDIR}:/shared
