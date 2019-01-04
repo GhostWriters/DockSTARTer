@@ -6,6 +6,7 @@ services:
     container_name: grafana
     restart: unless-stopped
     environment:
+      - GF_INSTALL_PLUGINS=${GRAFANA_GF_INSTALL_PLUGINS}
       - TZ=${TZ}
     volumes:
       - /etc/localtime:/etc/localtime:ro
