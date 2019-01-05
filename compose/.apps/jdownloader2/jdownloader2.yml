@@ -1,12 +1,9 @@
 #/APPNICENAME=Jdownloader2
 #/APPDESCRIPTION=Download Manager
 services:
-  jdownloader-2:
+  jdownloader2:
     container_name: jdownloader
     image: jlesage/jdownloader-2
-    ports:
-      - "5800:5800"
-      - "3129:3129"
     volumes:
-      - /mnt/Other_Stuff/Downloads/Jdownloader:/downloads
+      - ${DOWNLOADSDIR}:/downloads
       - ${DOCKERCONFDIR}/jdownloader-2:/config
