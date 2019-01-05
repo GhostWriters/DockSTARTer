@@ -4,6 +4,7 @@ services:
   jdownloader2:
     container_name: jdownloader
     image: jlesage/jdownloader-2
+    restart: unless-stopped
     volumes:
       - ${DOWNLOADSDIR}:/downloads
       - ${DOCKERCONFDIR}/jdownloader-2:/config
