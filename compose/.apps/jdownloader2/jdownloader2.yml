@@ -1,5 +1,5 @@
 #/APPNICENAME=Jdownloader2
-#/APPDESCRIPTION=Download Manager
+#/APPDESCRIPTION=JDownloader Download Manager
 services:
   jdownloader2:
     container_name: jdownloader

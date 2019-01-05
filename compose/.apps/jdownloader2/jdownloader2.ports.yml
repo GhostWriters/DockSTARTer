@@ -1,5 +1,5 @@
 services:
   jdownloader2:
     ports:
-      - "${JDOWNLOADERPORT_PORT_5800}:5800"
-      - "${JDOWNLOADERPORT_PORT_3129}:3129"
+      - "${JDOWNLOADERPORT_5800}:5800"
+      - "${JDOWNLOADERPORT_3129}:3129"
