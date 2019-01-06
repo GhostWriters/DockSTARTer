@@ -1,0 +1,11 @@
+#/APPNICENAME=LogitechMediaServer
+#/APPDESCRIPTION=LogitechMediaServer(SqueezeBox)
+services:
+  logitechmediaserver:
+    container_name: logitechmediaserver
+    image: larsks/logitech-media-server
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${LOGITECHMEDIASERVER_MUSICDIR}:/music
+      - ${DOCKERCONFDIR}/logitechmediaserver:/srv/squeezebox/
+    restart: always
