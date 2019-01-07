@@ -5,5 +5,9 @@ services:
     container_name: KodiHeadless
     image: linuxserver/kodi-headless:${KODIHEADLESSVERSION}
     restart: unless-stopped
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
     volumes:
       - ${DOCKERCONFDIR}/kodiheadless:/config/.kodi
