@@ -1,0 +1,14 @@
+#/APPNICENAME=pyLoad
+#/APPDESCRIPTION=Python Download Manager alternative to JDownloader
+services:
+  pyload:
+    container_name: pyload
+    image: lesage/jdownloader-2
+    restart: unless-stopped
+     environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    volumes:
+      - ${DOWNLOADSDIR}:/opt/pyload/Downloads
+      - ${DOCKERCONFDIR}/pyload:/opt/pyload/pyload-config

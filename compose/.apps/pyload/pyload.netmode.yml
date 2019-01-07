@@ -1,0 +1,3 @@
+services:
+  pyload:
+    network_mode: ${PYLOAD_NETWORK_MODE}
