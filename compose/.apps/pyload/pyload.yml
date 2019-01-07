@@ -5,7 +5,7 @@ services:
     container_name: pyload
     image: writl/pyload:latest
     restart: unless-stopped
-     environment:
+    environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
