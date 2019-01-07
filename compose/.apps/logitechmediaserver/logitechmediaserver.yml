@@ -6,6 +6,6 @@ services:
     image: larsks/logitech-media-server
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${LOGITECHMEDIASERVER_MUSICDIR}:/music
+      - ${MEDIADIR_MUSIC}:/music
       - ${DOCKERCONFDIR}/logitechmediaserver:/srv/squeezebox/
     restart: always
