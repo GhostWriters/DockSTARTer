@@ -101,6 +101,13 @@ run_test() {
     fi
 }
 
+# Root Check
+root_check() {
+    if [[ ${DETECTED_PUID} == "0" ]] || [[ ${DETECTED_HOMEDIR} == "/root" ]]; then
+        fatal "Running as root is not supported. Please run as a standard user with sudo."
+    fi
+}
+
 # Cleanup Function
 cleanup() {
     if [[ ${SCRIPTPATH} == "${DETECTED_HOMEDIR}/.docker" ]]; then
@@ -119,13 +126,12 @@ main() {
     if [[ ${ARCH} != "aarch64" ]] && [[ ${ARCH} != "armv7l" ]] && [[ ${ARCH} != "x86_64" ]]; then
         fatal "Unsupported architecture."
     fi
-    # Root Check
+    # Terminal Check
     if [[ -n ${PS1:-} ]] || [[ ${-} == *"i"* ]]; then
-        if [[ ${DETECTED_PUID} == "0" ]] || [[ ${DETECTED_HOMEDIR} == "/root" ]]; then
-            fatal "Running as root is not supported. Please run as a standard user with sudo."
-        fi
+        root_check
     fi
     if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]] && [[ -z ${ARGS[*]:-} ]]; then
+        root_check
         if [[ ! -d ${DETECTED_HOMEDIR}/.docker/.git ]]; then
             warning "Attempting to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
             git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
