@@ -16,6 +16,9 @@ services:
       - ${DOCKERCONFDIR}/plex:/config
       - ${DOCKERSHAREDDIR}:/shared
       - ${MEDIADIR_MOVIES}:/data/movies
+      - ${MEDIADIR_MOVIES}:/movies
       - ${MEDIADIR_MUSIC}:/data/music
+      - ${MEDIADIR_MUSIC}:/music
       - ${MEDIADIR_TV}:/data/tv
+      - ${MEDIADIR_TV}:/tv
       - ${PLEX_TRANSCODEDIR}:/transcode
