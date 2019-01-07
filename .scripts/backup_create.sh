@@ -23,17 +23,17 @@ backup_create() {
 
     # ------------- tuning options, file locations and constants -----------
     local MIN_MIBSIZE
-    MIN_MIBSIZE=5000 # older snapshots (except snapshot.001) are removed if free disk <= MIN_MIBSIZE. the script may exit without performing a backup if free disk is still short.
+    MIN_MIBSIZE=$(run_script 'env_get' BACKUP_MIN_MIBSIZE)
     local OVERWRITE_LAST
-    OVERWRITE_LAST=0 # if free disk space is too small, then this option let us remove snapshot.001 as well and retry once
+    OVERWRITE_LAST=$(run_script 'env_get' BACKUP_OVERWRITE_LAST)
     local MAX_MIBSIZE
-    MAX_MIBSIZE=80000 # older snapshots (except snapshot.001) are removed if their size >= MAX_MIBSIZE. the script performs a backup even if their size is too big.
+    MAX_MIBSIZE=$(run_script 'env_get' BACKUP_MAX_MIBSIZE)
     local BWLIMIT
-    BWLIMIT=100000 # bandwidth limit in KiB/s. 0 does not use slow-down. this allows to avoid rsync consuming too much system performance
+    BWLIMIT=$(run_script 'env_get' BACKUP_BWLIMIT)
     local CHATTR
-    CHATTR=1 # to use 'chattr' command and protect the backups again modification and deletion
+    CHATTR=$(run_script 'env_get' BACKUP_CHATTR)
     local DU
-    DU=1             # to use 'du' command and calculate the size of existing backups, disable it if you have many backups and it is getting too slow
+    DU=$(run_script 'env_get' BACKUP_DU)
 
     # ------------- initialization -----------------------------------------
     shopt -s extglob #enable extended pattern matching operators

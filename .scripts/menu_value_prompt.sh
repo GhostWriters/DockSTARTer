@@ -84,6 +84,24 @@ menu_value_prompt() {
         *DIR | *DIR_*)
             VALUEDESCRIPTION='\n\n If the directory selected does not exist we will attempt to create it.'
             ;;
+        BACKUP_BWLIMIT)
+            VALUEDESCRIPTION='\n\n This keeps rsync from consuming too much system resources. 0 to disaable.'
+            ;;
+        BACKUP_CHATTR)
+            VALUEDESCRIPTION='\n\n Use linux file system attributes to protect backups from deletion or modification.'
+            ;;
+        BACKUP_DU)
+            VALUEDESCRIPTION='\n\n Calculate the size of existing backups. 0 to disable.'
+            ;;
+        BACKUP_MAX_MIBSIZE)
+            VALUEDESCRIPTION='\n\n Remove older snapshots (except .001) if their size is >= MAX.'
+            ;;
+        BACKUP_MIN_MIBSIZE)
+            VALUEDESCRIPTION='\n\n Remove older snapshots (except .001) if free disk space is <= MIN.'
+            ;;
+        BACKUP_OVERWRITE_LAST)
+            VALUEDESCRIPTION='\n\n Allow .001 to be removed in order to attempt a new backup (not recommended).'
+            ;;
         LAN_NETWORK)
             VALUEDESCRIPTION='\n\n This is used to define your home LAN network, do NOT confuse this with the IP address of your router or your server, the value for this key defines your network NOT a single host. Please Google CIDR Notation to learn more.'
             ;;
