@@ -1,0 +1,3 @@
+services:
+  jdownloader2:
+    network_mode: ${JDOWNLOADER2_NETWORK_MODE}

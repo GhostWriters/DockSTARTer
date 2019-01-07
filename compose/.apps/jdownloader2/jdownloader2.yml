@@ -1,0 +1,10 @@
+#/APPNICENAME=Jdownloader2
+#/APPDESCRIPTION=JDownloader Download Manager
+services:
+  jdownloader2:
+    container_name: jdownloader2
+    image: jlesage/jdownloader-2
+    restart: unless-stopped
+    volumes:
+      - ${DOWNLOADSDIR}:/downloads
+      - ${DOCKERCONFDIR}/jdownloader2:/config
