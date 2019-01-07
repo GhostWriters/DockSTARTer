@@ -1,0 +1,3 @@
+services:
+  kodiheadless:
+    network_mode: ${KODIHEADLESS_NETWORK_MODE}

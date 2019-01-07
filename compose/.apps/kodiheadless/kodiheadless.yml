@@ -1,0 +1,9 @@
+#/APPNICENAME=KodiHeadless
+#/APPDESCRIPTION=KodiHeadless for background kodi tasks
+services:
+  kodiheadless:
+    container_name: KodiHeadless
+    image: linuxserver/kodi-headless:${KODIHEADLESSVERSION}
+    restart: unless-stopped
+    volumes:
+      - ${DOCKERCONFDIR}/kodiheadless:/config/.kodi

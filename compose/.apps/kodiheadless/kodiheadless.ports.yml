@@ -1,0 +1,7 @@
+services:
+  kodiheadless:
+    ports:
+      - "${KODIHEADLESS_PORT_8080}:8080"
+      - "${KODIHEADLESS_PORT_9090}:9090"
+      - "${KODIHEADLESS_PORT_9777}:9777/udp"
+
