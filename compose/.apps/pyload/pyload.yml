@@ -3,7 +3,7 @@
 services:
   pyload:
     container_name: pyload
-    image: lesage/jdownloader-2
+    image: writl/pyload:latest
     restart: unless-stopped
      environment:
       - PGID=${PGID}
