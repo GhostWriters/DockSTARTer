@@ -1,5 +1,5 @@
-#/APPNICENAME=Portainer
-#/APPDESCRIPTION=Simple management UI for Docker
+# APPNICENAME=Portainer
+# APPDESCRIPTION=Simple management UI for Docker
 services:
   portainer:
     image: portainer/portainer

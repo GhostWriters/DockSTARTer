@@ -1,5 +1,5 @@
-#/APPNICENAME=Samba
-#/APPDESCRIPTION=Access media directories and Docker config over Samba
+# APPNICENAME=Samba
+# APPDESCRIPTION=Access media directories and Docker config over Samba
 services:
   samba:
     image: dperson/samba

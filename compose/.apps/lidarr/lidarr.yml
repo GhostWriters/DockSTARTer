@@ -1,5 +1,5 @@
-#/APPNICENAME=Lidarr
-#/APPDESCRIPTION=Music download manager for Usenet and BitTorrent users
+# APPNICENAME=Lidarr
+# APPDESCRIPTION=Music download manager for Usenet and BitTorrent users
 services:
   lidarr:
     image: linuxserver/lidarr

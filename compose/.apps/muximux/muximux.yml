@@ -1,5 +1,5 @@
-#/APPNICENAME=Muximux
-#/APPDESCRIPTION=A lightweight way to manage your HTPC
+# APPNICENAME=Muximux
+# APPDESCRIPTION=A lightweight way to manage your HTPC
 services:
   muximux:
     image: linuxserver/muximux

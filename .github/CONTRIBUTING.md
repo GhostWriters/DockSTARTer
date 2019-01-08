@@ -21,8 +21,8 @@ More important than being beautiful is being functional. This repository is prim
 - Should be formatted with [https://prettier.io/](https://prettier.io/)
 - Are separated into multiple files:
   - `<appname>.yml` is the main YAML template for an app and should have elements in the following order:
-    - `#/APPNICENAME` comment on line 1, must match <appname> exactly but can have mixed case. Ex: Portainer vs PORTAINER
-    - `#/APPDESCRIPTION` comment on line 2, will show the description in the menus
+    - `# APPNICENAME` comment on line 1, must match <appname> exactly but can have mixed case. Ex: Portainer vs PORTAINER
+    - `# APPDESCRIPTION` comment on line 2, will show the description in the menus
     - `image` should be the x86_64 image
     - `container_name` should match `<appname>`
     - `restart` should be `unless-stopped` or should include a comment about why another option is used

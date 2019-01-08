@@ -1,5 +1,5 @@
-#/APPNICENAME=Plex
-#/APPDESCRIPTION=Organizes all of your video, music and photo collections
+# APPNICENAME=Plex
+# APPDESCRIPTION=Organizes all of your video, music and photo collections
 services:
   plex:
     image: plexinc/pms-docker:${PLEX_TAG}

@@ -1,5 +1,5 @@
-#/APPNICENAME=Watchtower
-#/APPDESCRIPTION=Automatically update running Docker containers
+# APPNICENAME=Watchtower
+# APPDESCRIPTION=Automatically update running Docker containers
 services:
   watchtower:
     image: v2tec/watchtower

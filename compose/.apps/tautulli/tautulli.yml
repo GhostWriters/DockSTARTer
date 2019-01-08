@@ -1,5 +1,5 @@
-#/APPNICENAME=Tautulli
-#/APPDESCRIPTION=Monitoring and tracking tool for Plex Media Server
+# APPNICENAME=Tautulli
+# APPDESCRIPTION=Monitoring and tracking tool for Plex Media Server
 services:
   tautulli:
     image: linuxserver/tautulli

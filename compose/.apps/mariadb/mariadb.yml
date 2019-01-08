@@ -1,5 +1,5 @@
-#/APPNICENAME=MariaDB
-#/APPDESCRIPTION=One of the most popular database servers
+# APPNICENAME=MariaDB
+# APPDESCRIPTION=One of the most popular database servers
 services:
   mariadb:
     image: linuxserver/mariadb

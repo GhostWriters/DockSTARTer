@@ -1,5 +1,5 @@
-#/APPNICENAME=Unifi
-#/APPDESCRIPTION=Controller software for wireless networks
+# APPNICENAME=Unifi
+# APPDESCRIPTION=Controller software for wireless networks
 services:
   unifi:
     image: linuxserver/unifi

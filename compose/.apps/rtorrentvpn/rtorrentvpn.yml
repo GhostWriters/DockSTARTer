@@ -1,5 +1,5 @@
-#/APPNICENAME=rTorrentVPN
-#/APPDESCRIPTION=rTorrent, Flood or ruTorrent WebUI, OpenVPN and Privoxy
+# APPNICENAME=rTorrentVPN
+# APPDESCRIPTION=rTorrent, Flood or ruTorrent WebUI, OpenVPN and Privoxy
 services:
   rtorrentvpn:
     image: binhex/arch-rtorrentvpn

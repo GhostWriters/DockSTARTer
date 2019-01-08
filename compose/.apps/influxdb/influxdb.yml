@@ -1,5 +1,5 @@
-#/APPNICENAME=InfluxDB
-#/APPDESCRIPTION=Time series database for recording metrics, events, and analytics
+# APPNICENAME=InfluxDB
+# APPDESCRIPTION=Time series database for recording metrics, events, and analytics
 services:
   influxdb:
     image: influxdb

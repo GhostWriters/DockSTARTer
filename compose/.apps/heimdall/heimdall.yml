@@ -1,5 +1,5 @@
-#/APPNICENAME=Heimdall
-#/APPDESCRIPTION=Application dashboard and launcher
+# APPNICENAME=Heimdall
+# APPDESCRIPTION=Application dashboard and launcher
 services:
   heimdall:
     image: linuxserver/heimdall

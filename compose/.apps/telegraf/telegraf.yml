@@ -1,5 +1,5 @@
-#/APPNICENAME=Telegraf
-#/APPDESCRIPTION=Agent for collecting metrics and writing them to InfluxDB or other outputs
+# APPNICENAME=Telegraf
+# APPDESCRIPTION=Agent for collecting metrics and writing them to InfluxDB or other outputs
 services:
   telegraf:
     image: telegraf

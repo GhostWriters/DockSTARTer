@@ -1,5 +1,5 @@
-#/APPNICENAME=Syncthing
-#/APPDESCRIPTION=Open-source peer-to-peer file synchronization
+# APPNICENAME=Syncthing
+# APPDESCRIPTION=Open-source peer-to-peer file synchronization
 services:
   syncthing:
     image: linuxserver/syncthing

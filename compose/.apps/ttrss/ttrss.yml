@@ -1,5 +1,5 @@
-#/APPNICENAME=TTRSS
-#/APPDESCRIPTION=News feed (RSS/Atom) reader and aggregator
+# APPNICENAME=TTRSS
+# APPDESCRIPTION=News feed (RSS/Atom) reader and aggregator
 services:
   ttrss:
     image: linuxserver/tt-rss

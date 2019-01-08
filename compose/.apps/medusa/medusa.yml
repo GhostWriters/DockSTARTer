@@ -1,5 +1,5 @@
-#/APPNICENAME=Medusa
-#/APPDESCRIPTION=Automatic Video Library Manager for TV Shows
+# APPNICENAME=Medusa
+# APPDESCRIPTION=Automatic Video Library Manager for TV Shows
 services:
   medusa:
     image: linuxserver/medusa
