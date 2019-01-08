@@ -7,4 +7,4 @@ services:
     restart: unless-stopped
     volumes:
       - ${DOWNLOADSDIR}:/downloads
-      - ${DOCKERCONFDIR}/jdownloader2:/config
+      - ${DOCKERCONFDIR}/jdownloader2_gui:/config
