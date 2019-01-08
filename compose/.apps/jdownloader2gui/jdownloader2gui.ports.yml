@@ -1,6 +1,0 @@
-services:
-  jdownloader2gui:
-    ports:
-      - "${JDOWNLOADER2GUI_PORT_5800}:5800"
-      - "${JDOWNLOADER2GUI_PORT_3129}:3129"
-

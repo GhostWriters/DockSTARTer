@@ -1,7 +1,7 @@
-#/APPNICENAME=Jdownloader2 (GUI)
+#/APPNICENAME=Jdownloader2_GUI
 #/APPDESCRIPTION=JDownloader Download Manager with GUI
 services:
-  jdownloader2gui:
+  jdownloader2_gui:
     container_name: jdownloader2_gui
     image: jlesage/jdownloader-2
     restart: unless-stopped
