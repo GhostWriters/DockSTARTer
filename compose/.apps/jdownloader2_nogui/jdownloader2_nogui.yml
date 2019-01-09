@@ -11,7 +11,7 @@ services:
       - TZ=${TZ}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/jdownloader2_nogui:/opt/JDownloader/
       - ${DOCKERSHAREDDIR}:/shared
       - ${DOWNLOADSDIR}:/root/Downloads
+      - ${DOCKERCONFDIR}/jdownloader2_nogui:/opt/JDownloader/cfg
       
