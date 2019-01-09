@@ -1,0 +1,17 @@
+#/APPNICENAME=JDownloader_NOGUI
+#/APPDESCRIPTION=JDownloader Download Manager without GUI
+services:
+  jdownloader2_nogui:
+    image: jaymoulin/jdownloader
+    container_name: jdownloader2_nogui
+    restart: unless-stopped
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/jdownloader2_nogui:/opt/JDownloader/cfg
+      - ${DOCKERSHAREDDIR}:/shared
+      - ${DOWNLOADSDIR}:/root/Downloads
+      

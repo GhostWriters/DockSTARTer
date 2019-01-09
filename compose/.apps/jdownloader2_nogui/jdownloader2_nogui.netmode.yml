@@ -1,0 +1,3 @@
+services:
+  jdownloader2_nogui:
+    network_mode: ${JDOWNLOADER2_NOGUI_NETWORK_MODE}

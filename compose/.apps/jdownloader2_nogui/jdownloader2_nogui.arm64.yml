@@ -1,0 +1,3 @@
+services:
+  jodwnloader2_nogui:
+    image: jaymoulin/jdownloader:latest

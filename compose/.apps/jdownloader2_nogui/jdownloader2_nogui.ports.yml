@@ -1,0 +1,4 @@
+services:
+  jdownloader2_nogui:
+    ports:
+      - "${JDOWNLOADER2_NOGUI_PORT_3129}:3129"
