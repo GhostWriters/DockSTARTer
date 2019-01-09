@@ -10,4 +10,6 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERSHAREDDIR}:/shared
       - ${DOCKERCONFDIR}/kodiheadless:/config/.kodi
