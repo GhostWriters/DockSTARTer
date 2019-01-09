@@ -5,6 +5,12 @@ services:
     container_name: jdownloader2_gui
     image: jlesage/jdownloader-2
     restart: unless-stopped
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
     volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERSHAREDDIR}:/shared
       - ${DOWNLOADSDIR}:/downloads
       - ${DOCKERCONFDIR}/jdownloader2_gui:/config
