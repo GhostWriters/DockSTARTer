@@ -1,4 +1,4 @@
-#/APPNICENAME=JDownloader_NOGUI
+#/APPNICENAME=JDownloader2_NOGUI
 #/APPDESCRIPTION=JDownloader Download Manager without GUI
 services:
   jdownloader2_nogui:
