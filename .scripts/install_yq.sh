@@ -5,7 +5,7 @@ IFS=$'\n\t'
 install_yq() {
     # https://github.com/mikefarah/yq
     local AVAILABLE_YQ
-    AVAILABLE_YQ=$(curl -H "${GH_HEADER:-}" -s "https://api.github.com/repos/mikefarah/yq/releases/latest" | grep -Po '"tag_name": "[Vv]?\K.*?(?=")')
+    AVAILABLE_YQ=$( (curl -H "${GH_HEADER:-}" -s "https://api.github.com/repos/mikefarah/yq/releases/latest" || fatal "Failed to check latest available yq version.") | grep -Po '"tag_name": "[Vv]?\K.*?(?=")')
     local INSTALLED_YQ
     INSTALLED_YQ=$( (yq --version 2> /dev/null || true) | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
     local FORCE

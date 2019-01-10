@@ -5,13 +5,13 @@ IFS=$'\n\t'
 install_compose() {
     # https://docs.docker.com/compose/install/ OR https://github.com/javabean/arm-compose
     local AVAILABLE_COMPOSE
-    AVAILABLE_COMPOSE=$(curl -H "${GH_HEADER:-}" -s "https://api.github.com/repos/docker/compose/releases/latest" | grep -Po '"tag_name": "[Vv]?\K.*?(?=")')
+    AVAILABLE_COMPOSE=$( (curl -H "${GH_HEADER:-}" -s "https://api.github.com/repos/docker/compose/releases/latest" || fatal "Failed to check latest available docker-compose version.") | grep -Po '"tag_name": "[Vv]?\K.*?(?=")')
     local INSTALLED_COMPOSE
     INSTALLED_COMPOSE=$( (docker-compose --version 2> /dev/null || true) | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
     local FORCE
     FORCE=${1:-}
     if [[ ${AVAILABLE_COMPOSE} != "${INSTALLED_COMPOSE}" ]] || [[ -n ${FORCE} ]]; then
-        info "Installing latest compose."
+        info "Installing latest docker-compose."
         if [[ -n "$(command -v yum)" ]] || [[ ${ARCH} == "aarch64" ]] || [[ ${ARCH} == "armv7l" ]]; then
             if [[ -n "$(command -v apt)" ]]; then
                 apt-get -y remove docker-compose > /dev/null 2>&1 || fatal "Failed to remove docker-compose from apt."
@@ -37,7 +37,7 @@ install_compose() {
         local UPDATED_COMPOSE
         UPDATED_COMPOSE=$( (docker-compose --version 2> /dev/null || true) | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
         if [[ ${AVAILABLE_COMPOSE} != "${UPDATED_COMPOSE}" ]]; then
-            fatal "Failed to install the latest compose."
+            fatal "Failed to install the latest docker-compose."
         fi
     fi
 }
