@@ -11,6 +11,6 @@ services:
       - TZ=${TZ}
     volumes:
       - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/pyload:/opt/pyload/pyload-config
       - ${DOCKERSHAREDDIR}:/shared
       - ${DOWNLOADSDIR}:/opt/pyload/Downloads
-      - ${DOCKERCONFDIR}/pyload:/opt/pyload/pyload-config
