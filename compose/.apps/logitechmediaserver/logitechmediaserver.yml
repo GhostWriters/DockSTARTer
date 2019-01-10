@@ -1,0 +1,16 @@
+#/APPNICENAME=LogitechMediaServer
+#/APPDESCRIPTION=LogitechMediaServer(SqueezeBox)
+services:
+  logitechmediaserver:
+    container_name: logitechmediaserver
+    image: larsks/logitech-media-server
+    restart: unless-stopped
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/logitechmediaserver:/srv/squeezebox/
+      - ${DOCKERSHAREDDIR}:/shared
+      - ${MEDIADIR_MUSIC}:/music

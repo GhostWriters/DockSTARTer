@@ -1,0 +1,7 @@
+services:
+  logitechmediaserver:
+    ports:
+      - "${LOGITECHMEDIASERVER_PORT_3483}:3483"
+      - "${LOGITECHMEDIASERVER_PORT_3483}:3483/udp"
+      - "${LOGITECHMEDIASERVER_PORT_9000}:9000"
+      - "${LOGITECHMEDIASERVER_PORT_9090}:9090"
