@@ -19,6 +19,7 @@ You may choose to rely on DockSTARTer for various changes to your Docker system,
 - APT Systems (Debian/Ubuntu/Raspbian/etc)
 
 ```bash
+# NOTE: Ubuntu 18.10 is known to have issues with the installation process, 18.04 is recommended
 sudo apt-get install curl git
 bash -c "$(curl -fsSL https://get.dockstarter.com)"
 sudo reboot

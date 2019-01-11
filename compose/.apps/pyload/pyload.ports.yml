@@ -1,0 +1,4 @@
+services:
+  pyload:
+    ports:
+      - "${PYLOAD_PORT_8000}:8000"

@@ -1,0 +1,16 @@
+#/APPNICENAME=pyLoad
+#/APPDESCRIPTION=Python Download Manager alternative to JDownloader
+services:
+  pyload:
+    container_name: pyload
+    image: writl/pyload:latest
+    restart: unless-stopped
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/pyload:/opt/pyload/pyload-config
+      - ${DOCKERSHAREDDIR}:/shared
+      - ${DOWNLOADSDIR}:/opt/pyload/Downloads
