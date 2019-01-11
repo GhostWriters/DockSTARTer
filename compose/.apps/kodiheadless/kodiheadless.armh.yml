@@ -1,0 +1,3 @@
+services:
+  kodiheadless:
+    image: lsioarmhf/kodi-headless
