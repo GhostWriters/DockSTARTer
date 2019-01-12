@@ -29,6 +29,9 @@ install_compose() {
         fi
         if [[ ${ARCH} == "x86_64" ]]; then
             curl -H "${GH_HEADER:-}" -L "https://github.com/docker/compose/releases/download/${AVAILABLE_COMPOSE}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose > /dev/null 2>&1 || fatal "Failed to install docker-compose."
+            if [[ ! -L "/usr/bin/docker-compose" ]]; then
+                ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose || fatal "Failed to create /usr/bin/docker-compose symlink."
+            fi
             chmod +x /usr/local/bin/docker-compose > /dev/null 2>&1 || true
             if [[ -n "$(command -v dnf)" ]]; then
                 dnf -y install docker-compose > /dev/null 2>&1 || fatal "Failed to install docker-compose from dnf."
