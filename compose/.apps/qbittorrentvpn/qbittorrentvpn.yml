@@ -23,5 +23,4 @@ services:
       - ${DOCKERCONFDIR}/qbittorrentvpn:/config
       - ${DOCKERSHAREDDIR}:/shared
       - ${DOWNLOADSDIR}:/data
-    cap_add:
-      - NET_ADMIN
+    privileged: true
