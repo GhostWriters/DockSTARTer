@@ -2,5 +2,6 @@ services:
   rtorrentvpn:
     ports:
       - "${RTORRENTVPN_PORT_3000}:3000"
+      - "${RTORRENTVPN_PORT_8118}:8118"
       - "${RTORRENTVPN_PORT_9080}:9080"
       - "${RTORRENTVPN_PORT_9443}:9443"
