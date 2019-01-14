@@ -3,3 +3,4 @@ services:
     ports:
       - "${SABNZBDVPN_PORT_8080}:8080"
       - "${SABNZBDVPN_PORT_8090}:8090"
+      - "${SABNZBDVPN_PORT_8118}:8118"
