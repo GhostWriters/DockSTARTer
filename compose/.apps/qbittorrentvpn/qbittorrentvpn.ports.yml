@@ -1,0 +1,7 @@
+services:
+  qbittorrentvpn:
+    ports:
+      - "${QBITTORRENTVPN_PORT_6881}:6881"
+      - "${QBITTORRENTVPN_PORT_6881}:6881/udp"
+      - "${QBITTORRENTVPN_PORT_8080}:${QBITTORRENTVPN_PORT_8080}"
+      - "${QBITTORRENTVPN_PORT_8118}:8118"
