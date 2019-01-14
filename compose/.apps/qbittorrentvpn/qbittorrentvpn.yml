@@ -1,0 +1,27 @@
+#/APPNICENAME=qBittorrentVPN
+#/APPDESCRIPTION=qBittorrent, OpenVPN and Privoxy
+services:
+  qbittorrentvpn:
+    image: binhex/arch-qbittorrentvpn
+    container_name: qbittorrentvpn
+    restart: unless-stopped
+    environment:
+      - ENABLE_PRIVOXY=${QBITTORRENTVPN_ENABLE_PRIVOXY}
+      - LAN_NETWORK=${LAN_NETWORK}
+      - NAME_SERVERS=${NS1},${NS2}
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - VPN_ENABLED=${VPN_ENABLE}
+      - VPN_OPTIONS=${VPN_OPTIONS}
+      - VPN_PASS=${VPN_PASS}
+      - VPN_PROV=${VPN_PROV}
+      - VPN_USER=${VPN_USER}
+      - WEBUI_PORT=${QBITTORRENTVPN_PORT_8080}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/qbittorrentvpn:/config
+      - ${DOCKERSHAREDDIR}:/shared
+      - ${DOWNLOADSDIR}:/data
+    cap_add:
+      - NET_ADMIN
