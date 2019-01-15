@@ -11,6 +11,6 @@ services:
       - TZ=${TZ}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/logarr:/app
+      - ${DOCKERCONFDIR}/logarr:/config
       - ${DOCKERCONFDIR}:/var/log/logarrlogs:ro
       - ${DOCKERSHAREDDIR}:/shared
