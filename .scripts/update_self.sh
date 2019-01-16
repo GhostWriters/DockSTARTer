@@ -30,9 +30,10 @@ update_self() {
         case ${YN} in
             [Yy]*)
                 info "Updating DockSTARTer."
-                git -C "${SCRIPTPATH}" fetch --all > /dev/null 2>&1 || fatal "Failed to fetch recent changes from git."
-                git -C "${SCRIPTPATH}" reset --hard origin/master > /dev/null 2>&1 || fatal "Failed to reset to master."
-                git -C "${SCRIPTPATH}" pull > /dev/null 2>&1 || fatal "Failed to pull recent changes from git."
+                cd "${SCRIPTPATH}" || fatal "Failed to change to ${SCRIPTPATH} directory."
+                git fetch --all > /dev/null 2>&1 || fatal "Failed to fetch recent changes from git."
+                git reset --hard origin/master > /dev/null 2>&1 || fatal "Failed to reset to master."
+                git pull > /dev/null 2>&1 || fatal "Failed to pull recent changes from git."
                 chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
                 run_script 'env_update'
                 break

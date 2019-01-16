@@ -50,6 +50,7 @@ More important than being beautiful is being functional. This repository is prim
     - Apps should have sub sections commented as `### <APPNAME>` (in caps)
     - App sub sections should be in the following order
       - `<APPNAME>_ENABLED=false` is always included and defaults to false for everything except Portainer and Watchtower
+      - `<APPNAME>_BACKUP_CONFIG=` is always included and defaults to true
       - `<APPNAME>_NETWORK_MODE=` is always included and defaults to blank
       - `<APPNAME>_PORT_<ORIGINAL_PORT>=<USER_PORT>` (optional) is included based on what is needed by the app. There can be multiple ports. Ports should be sorted numerically. `<ORIGINAL_PORT>` is whatever port the app uses inside the container. `<USER_PORT>` is the port the user will use, and should default to be the same as the `<ORIGINAL_PORT>` unless it is a [Well-known port](https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Well-known_ports) in which case it should be moved to another port. Certain rare exceptions are made where the primary function of an app requires it be using a specific port
       - `<APPNAME>_ANYTHING_ELSE` (optional) is any other variable needed by the app. There can be multiple additional variables. Additional variables should be sorted alphabetically

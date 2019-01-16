@@ -6,6 +6,7 @@ services:
     container_name: nzbgetvpn
     restart: unless-stopped
     environment:
+      - ENABLE_PRIVOXY=${NZBGETVPN_ENABLE_PRIVOXY}
       - LAN_NETWORK=${LAN_NETWORK}
       - NAME_SERVERS=${NS1},${NS2}
       - PGID=${PGID}

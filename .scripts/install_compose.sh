@@ -5,7 +5,7 @@ IFS=$'\n\t'
 install_compose() {
     # https://docs.docker.com/compose/install/ OR https://github.com/javabean/arm-compose
     local AVAILABLE_COMPOSE
-    AVAILABLE_COMPOSE=$( (curl -H "${GH_HEADER:-}" -s "https://api.github.com/repos/docker/compose/releases/latest" || fatal "Failed to check latest available docker-compose version.") | grep -Po '"tag_name": "[Vv]?\K.*?(?=")')
+    AVAILABLE_COMPOSE=$(curl -H "${GH_HEADER:-}" -s "https://api.github.com/repos/docker/compose/releases/latest" | grep -Po '"tag_name": "[Vv]?\K.*?(?=")') || fatal "Failed to check latest available docker-compose version."
     local INSTALLED_COMPOSE
     INSTALLED_COMPOSE=$( (docker-compose --version 2> /dev/null || true) | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
     local FORCE
@@ -29,6 +29,9 @@ install_compose() {
         fi
         if [[ ${ARCH} == "x86_64" ]]; then
             curl -H "${GH_HEADER:-}" -L "https://github.com/docker/compose/releases/download/${AVAILABLE_COMPOSE}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose > /dev/null 2>&1 || fatal "Failed to install docker-compose."
+            if [[ ! -L "/usr/bin/docker-compose" ]]; then
+                ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose || fatal "Failed to create /usr/bin/docker-compose symlink."
+            fi
             chmod +x /usr/local/bin/docker-compose > /dev/null 2>&1 || true
             if [[ -n "$(command -v dnf)" ]]; then
                 dnf -y install docker-compose > /dev/null 2>&1 || fatal "Failed to install docker-compose from dnf."

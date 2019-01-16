@@ -5,12 +5,16 @@ IFS=$'\n\t'
 install_docker() {
     # https://github.com/docker/docker-install
     local AVAILABLE_DOCKER
-    AVAILABLE_DOCKER=$( (curl -H "${GH_HEADER:-}" -s "https://api.github.com/repos/docker/docker-ce/releases/latest" || fatal "Failed to check latest available docker version.") | grep -Po '"tag_name": "[Vv]?\K.*?(?=")')
+    AVAILABLE_DOCKER=$(curl -H "${GH_HEADER:-}" -s "https://api.github.com/repos/docker/docker-ce/releases/latest" | grep -Po '"tag_name": "[Vv]?\K.*?(?=")') || fatal "Failed to check latest available docker version."
     local INSTALLED_DOCKER
     INSTALLED_DOCKER=$( (docker --version 2> /dev/null || true) | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
     local FORCE
     FORCE=${1:-}
     if [[ ${AVAILABLE_DOCKER} != "${INSTALLED_DOCKER}" ]] || [[ -n ${FORCE} ]]; then
+        if [[ -n "$(command -v snap)" ]]; then
+            info "Removing snap Docker package."
+            snap remove docker > /dev/null 2>&1 || true
+        fi
         info "Installing latest docker. Please be patient, this will take a while."
         curl -fsSL get.docker.com | sh > /dev/null 2>&1 || fatal "Failed to install docker."
         local UPDATED_DOCKER
