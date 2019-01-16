@@ -134,7 +134,7 @@ menu_value_prompt() {
             ;;
     esac
 
-    if [[ -n ${SYSTEM_VAL} ]]; then
+    if [[ -n ${SYSTEM_VAL:-} ]]; then
         VALUEDESCRIPTION="\n\n System detected values are recommended.${VALUEDESCRIPTION}"
     fi
 
