@@ -11,6 +11,10 @@ install_docker() {
     local FORCE
     FORCE=${1:-}
     if [[ ${AVAILABLE_DOCKER} != "${INSTALLED_DOCKER}" ]] || [[ -n ${FORCE} ]]; then
+        if [[ -n "$(command -v snap)" ]]; then
+            info "Removing snap Docker package."
+            snap remove docker > /dev/null 2>&1 || true
+        fi
         info "Installing latest docker. Please be patient, this will take a while."
         curl -fsSL get.docker.com | sh > /dev/null 2>&1 || fatal "Failed to install docker."
         local UPDATED_DOCKER
