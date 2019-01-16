@@ -33,24 +33,24 @@ menu_value_prompt() {
             VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
             ;;
         MEDIADIR_BOOKS)
-            SYSTEM_VAL="${DETECTED_HOMEDIR}/Books"
-            VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
+            HOME_VAL="${DETECTED_HOMEDIR}/Books"
+            VALUEOPTIONS+=("Use Home " "${HOME_VAL}")
             ;;
         MEDIADIR_COMICS)
-            SYSTEM_VAL="${DETECTED_HOMEDIR}/Comics"
-            VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
+            HOME_VAL="${DETECTED_HOMEDIR}/Comics"
+            VALUEOPTIONS+=("Use Home " "${HOME_VAL}")
             ;;
         MEDIADIR_MOVIES)
-            SYSTEM_VAL="${DETECTED_HOMEDIR}/Movies"
-            VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
+            HOME_VAL="${DETECTED_HOMEDIR}/Movies"
+            VALUEOPTIONS+=("Use Home " "${HOME_VAL}")
             ;;
         MEDIADIR_MUSIC)
-            SYSTEM_VAL="${DETECTED_HOMEDIR}/Music"
-            VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
+            HOME_VAL="${DETECTED_HOMEDIR}/Music"
+            VALUEOPTIONS+=("Use Home " "${HOME_VAL}")
             ;;
         MEDIADIR_TV)
-            SYSTEM_VAL="${DETECTED_HOMEDIR}/TV"
-            VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
+            HOME_VAL="${DETECTED_HOMEDIR}/TV"
+            VALUEOPTIONS+=("Use Home " "${HOME_VAL}")
             ;;
         PGID)
             SYSTEM_VAL="${DETECTED_PGID}"
@@ -127,6 +127,10 @@ menu_value_prompt() {
             VALUEDESCRIPTION=""
             ;;
     esac
+
+    if [[ -n ${SYSTEM_VAL} ]]; then
+        VALUEDESCRIPTION="\n\n System detected values are recommended.${VALUEDESCRIPTION}"
+    fi
 
     local SELECTEDVALUE
     if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
