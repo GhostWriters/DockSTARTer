@@ -1,5 +1,5 @@
-#/APPNICENAME=SABnzbd
-#/APPDESCRIPTION=NZB Newsgrabber / Downloader
+# APPNICENAME=SABnzbd
+# APPDESCRIPTION=NZB Newsgrabber / Downloader
 services:
   sabnzbd:
     image: linuxserver/sabnzbd

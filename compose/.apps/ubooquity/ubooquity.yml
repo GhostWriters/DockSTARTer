@@ -1,5 +1,5 @@
-#/APPNICENAME=Ubooquity
-#/APPDESCRIPTION=Home server for your comics and ebooks
+# APPNICENAME=Ubooquity
+# APPDESCRIPTION=Home server for your comics and ebooks
 services:
   ubooquity:
     image: linuxserver/ubooquity

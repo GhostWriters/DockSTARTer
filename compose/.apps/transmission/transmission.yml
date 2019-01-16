@@ -1,5 +1,5 @@
-#/APPNICENAME=Transmission
-#/APPDESCRIPTION=Fast, easy, and free BitTorrent client
+# APPNICENAME=Transmission
+# APPDESCRIPTION=Fast, easy, and free BitTorrent client
 services:
   transmission:
     image: linuxserver/transmission

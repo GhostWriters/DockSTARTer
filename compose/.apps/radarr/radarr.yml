@@ -1,5 +1,5 @@
-#/APPNICENAME=Radarr
-#/APPDESCRIPTION=Automatically download movies via Usenet and BitTorrent
+# APPNICENAME=Radarr
+# APPDESCRIPTION=Automatically download movies via Usenet and BitTorrent
 services:
   radarr:
     image: linuxserver/radarr

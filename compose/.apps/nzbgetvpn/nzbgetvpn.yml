@@ -1,5 +1,5 @@
-#/APPNICENAME=NZBGetVPN
-#/APPDESCRIPTION=NZBGet, OpenVPN and Privoxy
+# APPNICENAME=NZBGetVPN
+# APPDESCRIPTION=NZBGet, OpenVPN and Privoxy
 services:
   nzbgetvpn:
     image: jshridha/docker-nzbgetvpn

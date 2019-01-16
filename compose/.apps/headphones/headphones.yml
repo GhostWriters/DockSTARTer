@@ -1,5 +1,5 @@
-#/APPNICENAME=Headphones
-#/APPDESCRIPTION=Music PVR Client
+# APPNICENAME=Headphones
+# APPDESCRIPTION=Music PVR Client
 services:
   headphones:
     image: linuxserver/headphones

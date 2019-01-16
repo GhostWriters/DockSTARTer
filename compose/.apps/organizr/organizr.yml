@@ -1,5 +1,5 @@
-#/APPNICENAME=Organizr
-#/APPDESCRIPTION=HTPC/Homelab Services Organizer
+# APPNICENAME=Organizr
+# APPDESCRIPTION=HTPC/Homelab Services Organizer
 services:
   organizr:
     image: organizrtools/organizr-v2:php-fpm

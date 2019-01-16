@@ -1,5 +1,5 @@
-#/APPNICENAME=OpenVPNAS
-#/APPDESCRIPTION=Secure network tunneling VPN
+# APPNICENAME=OpenVPNAS
+# APPDESCRIPTION=Secure network tunneling VPN
 services:
   openvpnas:
     image: linuxserver/openvpn-as

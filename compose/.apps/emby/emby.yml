@@ -1,5 +1,5 @@
-#/APPNICENAME=Emby
-#/APPDESCRIPTION=Organize, play, and stream audio and video
+# APPNICENAME=Emby
+# APPDESCRIPTION=Organize, play, and stream audio and video
 services:
   emby:
     image: emby/embyserver:latest

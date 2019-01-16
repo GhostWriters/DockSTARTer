@@ -17,8 +17,8 @@ menu_app_select() {
         local APPDESCRIPTION
         if [[ -d ${SCRIPTPATH}/compose/.apps/${FILENAME}/ ]]; then
             if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml ]]; then
-                APPNICENAME=$(grep '^#/APPNICENAME=' "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml" | cut -c15- || echo "${APPNAME}")
-                APPDESCRIPTION=$(grep '^#/APPDESCRIPTION=' "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml" | cut -c18- || echo "! Missing description !")
+                APPNICENAME=$(grep '^# APPNICENAME=' "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml" | cut -c15- || echo "${APPNAME}")
+                APPDESCRIPTION=$(grep '^# APPDESCRIPTION=' "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml" | cut -c18- || echo "! Missing description !")
                 if [[ ${ARCH} == "aarch64" ]]; then
                     if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.arm64.yml ]]; then
                         APPSUPPORTED=true

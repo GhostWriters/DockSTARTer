@@ -1,5 +1,5 @@
-#/APPNICENAME=qBittorrentVPN
-#/APPDESCRIPTION=qBittorrent, OpenVPN and Privoxy
+# APPNICENAME=qBittorrentVPN
+# APPDESCRIPTION=qBittorrent, OpenVPN and Privoxy
 services:
   qbittorrentvpn:
     image: binhex/arch-qbittorrentvpn

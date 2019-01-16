@@ -1,5 +1,5 @@
-#/APPNICENAME=vsftpd
-#/APPDESCRIPTION=Probably the most secure and fastest FTP server for UNIX-like systems
+# APPNICENAME=vsftpd
+# APPDESCRIPTION=Probably the most secure and fastest FTP server for UNIX-like systems
 services:
   vsftpd:
     image: fauria/vsftpd
