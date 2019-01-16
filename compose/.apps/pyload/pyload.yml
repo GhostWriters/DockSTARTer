@@ -1,5 +1,5 @@
-#/APPNICENAME=pyLoad
-#/APPDESCRIPTION=Python Download Manager alternative to JDownloader
+# APPNICENAME=pyLoad
+# APPDESCRIPTION=Python Download Manager alternative to JDownloader
 services:
   pyload:
     container_name: pyload

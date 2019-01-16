@@ -1,5 +1,5 @@
-#/APPNICENAME=LogitechMediaServer
-#/APPDESCRIPTION=LogitechMediaServer(SqueezeBox)
+# APPNICENAME=LogitechMediaServer
+# APPDESCRIPTION=LogitechMediaServer(SqueezeBox)
 services:
   logitechmediaserver:
     container_name: logitechmediaserver
