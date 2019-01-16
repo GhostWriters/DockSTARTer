@@ -14,13 +14,19 @@ backup_med() {
         APPNAME=${line/_ENABLED=true/}
         local FILENAME
         FILENAME=${APPNAME,,}
-        local BACKUP_CMD_PRE_APP
-        BACKUP_CMD_PRE_APP=$(run_script 'env_get' BACKUP_CMD_PRE_APP)
-        eval "${BACKUP_CMD_PRE_APP}" || error "Failed to execute BACKUP_CMD_PRE_APP."
-        run_script 'backup_create' "${FILENAME}" || return 1
-        local BACKUP_CMD_POST_APP
-        BACKUP_CMD_POST_APP=$(run_script 'env_get' BACKUP_CMD_POST_APP)
-        eval "${BACKUP_CMD_POST_APP}" || error "Failed to execute BACKUP_CMD_POST_APP."
+        local BACKUP_CONFIG
+        BACKUP_CONFIG=$(run_script 'env_get' "${APPNAME}_BACKUP_CONFIG")
+        if [[ ${BACKUP_CONFIG} != false ]]; then
+            local BACKUP_CMD_PRE_APP
+            BACKUP_CMD_PRE_APP=$(run_script 'env_get' BACKUP_CMD_PRE_APP)
+            eval "${BACKUP_CMD_PRE_APP}" || error "Failed to execute BACKUP_CMD_PRE_APP."
+            run_script 'backup_create' "${FILENAME}" || return 1
+            local BACKUP_CMD_POST_APP
+            BACKUP_CMD_POST_APP=$(run_script 'env_get' BACKUP_CMD_POST_APP)
+            eval "${BACKUP_CMD_POST_APP}" || error "Failed to execute BACKUP_CMD_POST_APP."
+        else
+            warning "${APPNAME}_BACKUP_CONFIG is false. ${APPNAME} will not be backed up."
+        fi
     done < <(grep '_ENABLED=true' < "${SCRIPTPATH}/compose/.env")
     local BACKUP_CMD_POST_RUN
     BACKUP_CMD_POST_RUN=$(run_script 'env_get' BACKUP_CMD_POST_RUN)
