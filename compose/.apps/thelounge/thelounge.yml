@@ -1,5 +1,5 @@
-#/APPNICENAME=TheLounge
-#/APPDESCRIPTION=Web IRC client that you host on your own server
+# APPNICENAME=TheLounge
+# APPDESCRIPTION=Web IRC client that you host on your own server
 services:
   thelounge:
     image: linuxserver/thelounge

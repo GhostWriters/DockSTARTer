@@ -1,0 +1,3 @@
+services:
+  varken:
+    image: boerderij/varken

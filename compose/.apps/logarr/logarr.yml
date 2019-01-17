@@ -1,5 +1,5 @@
-#/APPNICENAME=Logarr
-#/APPDESCRIPTION=Self-hosted, single-page, log consolidation tool
+# APPNICENAME=Logarr
+# APPDESCRIPTION=Self-hosted, single-page, log consolidation tool
 services:
   logarr:
     image: monitorr/logarr
@@ -11,6 +11,6 @@ services:
       - TZ=${TZ}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/logarr:/app
+      - ${DOCKERCONFDIR}/logarr:/config
       - ${DOCKERCONFDIR}:/var/log/logarrlogs:ro
       - ${DOCKERSHAREDDIR}:/shared

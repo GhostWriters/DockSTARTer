@@ -1,5 +1,5 @@
-#/APPNICENAME=Airsonic
-#/APPDESCRIPTION=Web-based media streamer providing ubiquitious access to your music
+# APPNICENAME=Airsonic
+# APPDESCRIPTION=Web-based media streamer providing ubiquitious access to your music
 services:
   airsonic:
     image: linuxserver/airsonic

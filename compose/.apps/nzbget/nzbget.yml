@@ -1,5 +1,5 @@
-#/APPNICENAME=NZBGet
-#/APPDESCRIPTION=NZB Newsgrabber / Downloader
+# APPNICENAME=NZBGet
+# APPDESCRIPTION=NZB Newsgrabber / Downloader
 services:
   nzbget:
     image: linuxserver/nzbget

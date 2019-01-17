@@ -1,5 +1,5 @@
-#/APPNICENAME=Glances
-#/APPDESCRIPTION=Cross-platform system monitoring tool
+# APPNICENAME=Glances
+# APPDESCRIPTION=Cross-platform system monitoring tool
 services:
   glances:
     image: nicolargo/glances

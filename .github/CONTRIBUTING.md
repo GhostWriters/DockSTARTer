@@ -21,8 +21,8 @@ More important than being beautiful is being functional. This repository is prim
 - Should be formatted with [https://prettier.io/](https://prettier.io/)
 - Are separated into multiple files:
   - `<appname>.yml` is the main YAML template for an app and should have elements in the following order:
-    - `#/APPNICENAME` comment on line 1, must match <appname> exactly but can have mixed case. Ex: Portainer vs PORTAINER
-    - `#/APPDESCRIPTION` comment on line 2, will show the description in the menus
+    - `# APPNICENAME` comment on line 1, must match <appname> exactly but can have mixed case. Ex: Portainer vs PORTAINER
+    - `# APPDESCRIPTION` comment on line 2, will show the description in the menus
     - `image` should be the x86_64 image
     - `container_name` should match `<appname>`
     - `restart` should be `unless-stopped` or should include a comment about why another option is used
@@ -50,6 +50,7 @@ More important than being beautiful is being functional. This repository is prim
     - Apps should have sub sections commented as `### <APPNAME>` (in caps)
     - App sub sections should be in the following order
       - `<APPNAME>_ENABLED=false` is always included and defaults to false for everything except Portainer and Watchtower
+      - `<APPNAME>_BACKUP_CONFIG=` is always included and defaults to true
       - `<APPNAME>_NETWORK_MODE=` is always included and defaults to blank
       - `<APPNAME>_PORT_<ORIGINAL_PORT>=<USER_PORT>` (optional) is included based on what is needed by the app. There can be multiple ports. Ports should be sorted numerically. `<ORIGINAL_PORT>` is whatever port the app uses inside the container. `<USER_PORT>` is the port the user will use, and should default to be the same as the `<ORIGINAL_PORT>` unless it is a [Well-known port](https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Well-known_ports) in which case it should be moved to another port. Certain rare exceptions are made where the primary function of an app requires it be using a specific port
       - `<APPNAME>_ANYTHING_ELSE` (optional) is any other variable needed by the app. There can be multiple additional variables. Additional variables should be sorted alphabetically

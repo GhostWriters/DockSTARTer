@@ -1,5 +1,5 @@
-#/APPNICENAME=Ombi
-#/APPDESCRIPTION=Allow your users to Request Movies, TV Shows and Albums
+# APPNICENAME=Ombi
+# APPDESCRIPTION=Allow your users to Request Movies, TV Shows and Albums
 services:
   ombi:
     image: linuxserver/ombi

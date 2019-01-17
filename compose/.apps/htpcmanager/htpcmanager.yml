@@ -1,5 +1,5 @@
-#/APPNICENAME=HTPCManager
-#/APPDESCRIPTION=Front end for many htpc related applications
+# APPNICENAME=HTPCManager
+# APPDESCRIPTION=Front end for many htpc related applications
 services:
   htpcmanager:
     image: linuxserver/htpcmanager

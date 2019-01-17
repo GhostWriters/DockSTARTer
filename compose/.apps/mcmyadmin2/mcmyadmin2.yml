@@ -1,5 +1,5 @@
-#/APPNICENAME=McMyAdmin2
-#/APPDESCRIPTION=Minecraft with a web control panel and admin console
+# APPNICENAME=McMyAdmin2
+# APPDESCRIPTION=Minecraft with a web control panel and admin console
 services:
   mcmyadmin2:
     image: linuxserver/mcmyadmin2

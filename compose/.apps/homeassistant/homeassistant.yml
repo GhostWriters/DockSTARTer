@@ -1,5 +1,5 @@
-#/APPNICENAME=HomeAssistant
-#/APPDESCRIPTION=Track and control all devices at home and automate control
+# APPNICENAME=HomeAssistant
+# APPDESCRIPTION=Track and control all devices at home and automate control
 services:
   homeassistant:
     image: homeassistant/home-assistant

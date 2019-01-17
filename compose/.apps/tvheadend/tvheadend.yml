@@ -1,5 +1,5 @@
-#/APPNICENAME=Tvheadend
-#/APPDESCRIPTION=TV streaming server and recorder
+# APPNICENAME=Tvheadend
+# APPDESCRIPTION=TV streaming server and recorder
 services:
   tvheadend:
     image: linuxserver/tvheadend

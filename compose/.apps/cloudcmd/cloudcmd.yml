@@ -1,5 +1,5 @@
-#/APPNICENAME=CloudCMD
-#/APPDESCRIPTION=A web file manager with console and editor
+# APPNICENAME=CloudCMD
+# APPDESCRIPTION=A web file manager with console and editor
 services:
   cloudcmd:
     image: coderaiser/cloudcmd

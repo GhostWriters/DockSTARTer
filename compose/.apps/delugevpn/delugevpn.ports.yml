@@ -4,3 +4,4 @@ services:
       - "${DELUGEVPN_PORT_58846}:58846"
       - "${DELUGEVPN_PORT_58946}:58946"
       - "${DELUGEVPN_PORT_8112}:8112"
+      - "${DELUGEVPN_PORT_8118}:8118"

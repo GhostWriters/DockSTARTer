@@ -1,5 +1,5 @@
-#/APPNICENAME=Duplicati
-#/APPDESCRIPTION=Backup software to store backups online with strong encryption
+# APPNICENAME=Duplicati
+# APPDESCRIPTION=Backup software to store backups online with strong encryption
 services:
   duplicati:
     image: linuxserver/duplicati

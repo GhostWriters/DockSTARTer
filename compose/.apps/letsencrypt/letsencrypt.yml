@@ -1,5 +1,5 @@
-#/APPNICENAME=LetsEncrypt
-#/APPDESCRIPTION=Certificate authority that provides free X.509 certificates
+# APPNICENAME=LetsEncrypt
+# APPDESCRIPTION=Certificate authority that provides free X.509 certificates
 services:
   letsencrypt:
     image: linuxserver/letsencrypt
