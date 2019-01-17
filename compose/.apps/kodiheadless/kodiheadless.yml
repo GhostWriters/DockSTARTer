@@ -1,5 +1,5 @@
-#/APPNICENAME=KodiHeadless
-#/APPDESCRIPTION=KodiHeadless for background kodi tasks
+# APPNICENAME=KodiHeadless
+# APPDESCRIPTION=KodiHeadless for background kodi tasks
 services:
   kodiheadless:
     container_name: KodiHeadless
