@@ -23,7 +23,7 @@ env_update() {
             echo "${line}" >> "${SCRIPTPATH}/compose/.env" || error "${line} could not be written to ${SCRIPTPATH}/compose/.env"
         fi
     done < <(grep '=' < "${CURRENTENV}")
-    rm -f "${CURRENTENV}" || warning "Temporary .env file could not be removed."
+    run_cmd rm -f "${CURRENTENV}" || warning "Temporary .env file could not be removed."
     run_script 'env_sanitize'
     info "Environment file update complete."
     local PUID

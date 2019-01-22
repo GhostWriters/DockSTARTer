@@ -13,10 +13,10 @@ install_docker() {
     if [[ ${AVAILABLE_DOCKER} != "${INSTALLED_DOCKER}" ]] || [[ -n ${FORCE} ]]; then
         if [[ -n "$(command -v snap)" ]]; then
             info "Removing snap Docker package."
-            snap remove docker > /dev/null 2>&1 || true
+            run_cmd snap remove docker || true
         fi
         info "Installing latest docker. Please be patient, this will take a while."
-        curl -fsSL get.docker.com | sh > /dev/null 2>&1 || fatal "Failed to install docker."
+        run_cmd curl -fsSL get.docker.com | sh || fatal "Failed to install docker."
         local UPDATED_DOCKER
         UPDATED_DOCKER=$( (docker --version 2> /dev/null || true) | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
         if [[ ${AVAILABLE_DOCKER} != "${UPDATED_DOCKER}" ]]; then

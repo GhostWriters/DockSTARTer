@@ -13,15 +13,15 @@ install_yq() {
     if [[ ${AVAILABLE_YQ} != "${INSTALLED_YQ}" ]] || [[ -n ${FORCE} ]]; then
         info "Installing latest yq."
         if [[ ${ARCH} == "aarch64" ]] || [[ ${ARCH} == "armv7l" ]]; then
-            curl -H "${GH_HEADER:-}" -L "https://github.com/mikefarah/yq/releases/download/${AVAILABLE_YQ}/yq_linux_arm" -o /usr/local/bin/yq > /dev/null 2>&1 || fatal "Failed to install yq."
+            run_cmd curl -H "${GH_HEADER:-}" -L "https://github.com/mikefarah/yq/releases/download/${AVAILABLE_YQ}/yq_linux_arm" -o /usr/local/bin/yq || fatal "Failed to install yq."
         fi
         if [[ ${ARCH} == "x86_64" ]]; then
-            curl -H "${GH_HEADER:-}" -L "https://github.com/mikefarah/yq/releases/download/${AVAILABLE_YQ}/yq_linux_amd64" -o /usr/local/bin/yq > /dev/null 2>&1 || fatal "Failed to install yq."
+            run_cmd curl -H "${GH_HEADER:-}" -L "https://github.com/mikefarah/yq/releases/download/${AVAILABLE_YQ}/yq_linux_amd64" -o /usr/local/bin/yq || fatal "Failed to install yq."
         fi
         if [[ ! -L "/usr/bin/yq" ]]; then
             ln -s /usr/local/bin/yq /usr/bin/yq || fatal "Failed to create /usr/bin/yq symlink."
         fi
-        chmod +x /usr/local/bin/yq > /dev/null 2>&1 || true
+        run_cmd chmod +x /usr/local/bin/yq || true
         local UPDATED_YQ
         UPDATED_YQ=$( (yq --version 2> /dev/null || true) | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
         if [[ ${AVAILABLE_YQ} != "${UPDATED_YQ}" ]]; then

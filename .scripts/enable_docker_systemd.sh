@@ -6,8 +6,8 @@ enable_docker_systemd() {
     # https://docs.docker.com/install/linux/linux-postinstall/
     if [[ -L "/sbin/init" ]]; then
         info "Systemd detected. Enabling docker service."
-        systemctl enable docker > /dev/null 2>&1 || fatal "Failed to enable docker service."
-        systemctl stop docker > /dev/null 2>&1 || true
-        systemctl start docker > /dev/null 2>&1 || fatal "Failed to start docker service."
+        run_cmd systemctl enable docker || fatal "Failed to enable docker service."
+        run_cmd systemctl stop docker || true
+        run_cmd systemctl start docker || fatal "Failed to start docker service."
     fi
 }

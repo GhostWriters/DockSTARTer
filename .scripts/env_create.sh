@@ -7,7 +7,7 @@ env_create() {
         info "${SCRIPTPATH}/compose/.env found."
     else
         warning "${SCRIPTPATH}/compose/.env not found. Copying example template."
-        cp "${SCRIPTPATH}/compose/.env.example" "${SCRIPTPATH}/compose/.env" || fatal "${SCRIPTPATH}/compose/.env could not be copied."
+        run_cmd cp "${SCRIPTPATH}/compose/.env.example" "${SCRIPTPATH}/compose/.env" || fatal "${SCRIPTPATH}/compose/.env could not be copied."
     fi
     run_script 'env_sanitize'
 }

@@ -9,9 +9,9 @@ compose_override_backup() {
         local BACKUPTIME
         BACKUPTIME=$(date +"%Y%m%d%H%M%S")
         info "Copying docker-compose.override.yml file to ${DOCKERCONFDIR}/.env.backups/docker-compose.override.yml.${BACKUPTIME}"
-        mkdir -p "${DOCKERCONFDIR}/.env.backups" || fatal "${DOCKERCONFDIR}/.env.backups folder could not be created."
-        cp "${SCRIPTPATH}/compose/docker-compose.override.yml" "${DOCKERCONFDIR}/.env.backups/docker-compose.override.yml.${BACKUPTIME}" || fatal "${DOCKERCONFDIR}/.env.backups/docker-compose.override.yml.${BACKUPTIME} could not be copied."
+        run_cmd mkdir -p "${DOCKERCONFDIR}/.env.backups" || fatal "${DOCKERCONFDIR}/.env.backups folder could not be created."
+        run_cmd cp "${SCRIPTPATH}/compose/docker-compose.override.yml" "${DOCKERCONFDIR}/.env.backups/docker-compose.override.yml.${BACKUPTIME}" || fatal "${DOCKERCONFDIR}/.env.backups/docker-compose.override.yml.${BACKUPTIME} could not be copied."
         info "Removing old docker-compose.override.yml backups."
-        find "${DOCKERCONFDIR}/.env.backups" -type f -name "docker-compose.override.yml.*" -mtime +3 -delete > /dev/null 2>&1 || warning "Old docker-compose.override.yml backups not removed."
+        run_cmd find "${DOCKERCONFDIR}/.env.backups" -type f -name "docker-compose.override.yml.*" -mtime +3 -delete || warning "Old docker-compose.override.yml backups not removed."
     fi
 }

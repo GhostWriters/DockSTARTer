@@ -10,18 +10,18 @@ symlink_ds() {
     fi
     if [[ ! -L "/usr/bin/ds" ]]; then
         info "Creating /usr/bin/ds symbolic link for DockSTARTer."
-        ln -s -T "${SCRIPTNAME}" /usr/bin/ds || fatal "Failed to create /usr/bin/ds symlink."
-        chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
+        run_cmd ln -s -T "${SCRIPTNAME}" /usr/bin/ds || fatal "Failed to create /usr/bin/ds symlink."
+        run_cmd chmod +x "${SCRIPTNAME}" || fatal "ds must be executable."
     fi
 
     # /usr/local/bin/ds
     if [[ -L "/usr/local/bin/ds" ]] && [[ ${SCRIPTNAME} != "$(readlink -f /usr/local/bin/ds)" ]]; then
         info "Attempting to remove /usr/local/bin/ds symlink."
-        rm "/usr/local/bin/ds" || fatal "Failed to remove /usr/local/bin/ds"
+        run_cmd rm "/usr/local/bin/ds" || fatal "Failed to remove /usr/local/bin/ds"
     fi
     if [[ ! -L "/usr/local/bin/ds" ]]; then
         info "Creating /usr/local/bin/ds symbolic link for DockSTARTer."
-        ln -s -T "${SCRIPTNAME}" /usr/local/bin/ds || fatal "Failed to create /usr/local/bin/ds symlink."
-        chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
+        run_cmd ln -s -T "${SCRIPTNAME}" /usr/local/bin/ds || fatal "Failed to create /usr/local/bin/ds symlink."
+        run_cmd chmod +x "${SCRIPTNAME}" || fatal "ds must be executable."
     fi
 }

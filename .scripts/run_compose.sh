@@ -69,9 +69,9 @@ run_compose() {
                 local PGID
                 PGID=$(run_script 'env_get' PGID)
                 run_script 'set_permissions' "${SCRIPTPATH}" "${PUID}" "${PGID}"
-                cd "${SCRIPTPATH}/compose/" || fatal "Failed to change directory to ${SCRIPTPATH}/compose/"
-                su "${DETECTED_UNAME}" -c "docker-compose ${COMPOSECOMMAND}" || fatal "Docker Compose failed."
-                cd "${SCRIPTPATH}" || fatal "Failed to change directory to ${SCRIPTPATH}"
+                run_cmd cd "${SCRIPTPATH}/compose/" || fatal "Failed to change directory to ${SCRIPTPATH}/compose/"
+                run_cmd su "${DETECTED_UNAME}" -c "docker-compose ${COMPOSECOMMAND}" || fatal "Docker Compose failed."
+                run_cmd cd "${SCRIPTPATH}" || fatal "Failed to change directory to ${SCRIPTPATH}"
                 break
                 ;;
             [Nn]*)

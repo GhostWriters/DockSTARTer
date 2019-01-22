@@ -13,5 +13,5 @@ env_set() {
     SED_FIND=$(echo "${VAR_VAL}" | sed -e 's/[\/&]/\\&/g')
     local SED_REPLACE
     SED_REPLACE=$(echo "${SET_VAR}=${NEW_VAL}" | sed -e 's/[\/&]/\\&/g')
-    sed -i "s/^${SED_FIND}$/${SED_REPLACE}/" "${SCRIPTPATH}/compose/.env" || fatal "Failed to set ${SED_REPLACE}"
+    run_cmd sed -i "s/^${SED_FIND}$/${SED_REPLACE}/" "${SCRIPTPATH}/compose/.env" || fatal "Failed to set ${SED_REPLACE}"
 }

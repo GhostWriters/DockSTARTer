@@ -102,7 +102,14 @@ cmdline() {
                 exit
                 ;;
             v)
-                readonly VERBOSE=1
+                case ${OPTARG} in
+                    [0-4])
+                        readonly VERBOSE=${OPTARG}
+                        ;;
+                    *)
+                        fatal "Invalid verbose option."
+                        ;;
+                esac
                 ;;
             x)
                 readonly DEBUG='-x'
@@ -113,6 +120,9 @@ cmdline() {
                     c)
                         run_script 'generate_yml'
                         run_script 'run_compose'
+                        ;;
+                    v)
+                        readonly VERBOSE=0
                         ;;
                     *)
                         fatal "${OPTARG} requires an option."

@@ -72,7 +72,7 @@ backup_create() {
     # make sure we have a correct snapshot folder
     if [ ! -d "${SNAPSHOT_DST}" ]; then
         info "${SNAPSHOT_DST} folder not found. Attempting to create it."
-        mkdir -p "${SNAPSHOT_DST}" || fatal "${SNAPSHOT_DST} folder could not be created."
+        run_cmd mkdir -p "${SNAPSHOT_DST}" || fatal "${SNAPSHOT_DST} folder could not be created."
         run_script 'set_permissions' "${SNAPSHOT_DST}" "${PUID}" "${PGID}"
     fi
 
@@ -90,9 +90,9 @@ backup_create() {
                 else
                     info "Removing ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i} ..."
                     if [ "${CHATTR}" -eq 1 ]; then
-                        chattr -R -i "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}" > /dev/null 2>&1 || warning "Failed to remove immutable flag from ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}"
+                        run_cmd chattr -R -i "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}" || warning "Failed to remove immutable flag from ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}"
                     fi
-                    rm -rf "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}" || error "Failed to remove ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}"
+                    run_cmd rm -rf "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}" || error "Failed to remove ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}"
                 fi
             fi
         done
@@ -137,11 +137,11 @@ backup_create() {
                     if [ "${i}" -ne 1 ]; then
                         info "Removing ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i} ..."
                         if [ "${CHATTR}" -eq 1 ]; then
-                            chattr -R -i "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}" > /dev/null 2>&1 || warning "Failed to remove immutable flag from ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}"
+                            run_cmd chattr -R -i "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}" || warning "Failed to remove immutable flag from ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}"
                         fi
-                        rm -rf "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}" || error "Failed to remove ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}"
+                        run_cmd rm -rf "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}" || error "Failed to remove ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}"
                         if [ -h "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last" ]; then
-                            rm -f "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last" || error "Failed to remove ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last"
+                            run_cmd rm -f "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last" || error "Failed to remove ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last"
                         fi
                     else # all snapshots except snapshot.001 are removed
                         if [ ${d} -eq 1 ]; then # snapshot.001 causes that free space is too small
@@ -149,17 +149,17 @@ backup_create() {
                                 OVERWRITE_LAST=0
                                 warning "Warning, free disk space will be smaller than ${MIN_MIBSIZE} MiB."
                                 info "OVERWRITE_LAST enabled. Removing ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.001 ..."
-                                rm -rf "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.001" || error "Failed to remove ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.001"
+                                run_cmd rm -rf "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.001" || error "Failed to remove ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.001"
                                 if [ -h "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last" ]; then
-                                    rm -f "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last" || error "Failed to remove ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last"
+                                    run_cmd rm -f "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last" || error "Failed to remove ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last"
                                 fi
                             else
                                 for j in ${LNKDST//--link-dest=/}; do
                                     if [ -d "${j}" ] && [ "${CHATTR}" -eq 1 ] && [ "$(lsattr -d "${j}" | cut -b5)" != "i" ]; then
-                                        chattr -R +i "${j}" > /dev/null 2>&1 || warning "Failed to make ${j} backup immutable. Backup files may be overwritten by future backups." # undo unprotection that was needed to use hardlinks
+                                        run_cmd chattr -R +i "${j}" || warning "Failed to make ${j} backup immutable. Backup files may be overwritten by future backups." # undo unprotection that was needed to use hardlinks
                                     fi
                                     if [ ! -h "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last" ]; then
-                                        ln -s "${SNAPSHOT_NAME}.${j}" "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last" || warning "Failed to create link for ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last"
+                                        run_cmd ln -s "${SNAPSHOT_NAME}.${j}" "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last" || warning "Failed to create link for ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last"
                                     fi
                                 done
                                 fatal "Sorry, free disk space will be smaller than ${MIN_MIBSIZE} MiB. Exiting..."
@@ -180,13 +180,13 @@ backup_create() {
     while :; do # this loop is executed a 2nd time if OVERWRITE_LAST was ==1 and snapshot.001 got removed
         OOVERWRITE_LAST="${OVERWRITE_LAST}"
         info "Testing needed free disk space ..."
-        mkdir -p "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space" || fatal "Failed to create ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space"
-        chmod -R 775 "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space" || fatal "Failed to set permissions on ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space"
+        run_cmd mkdir -p "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space" || fatal "Failed to create ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space"
+        run_cmd chmod -R 775 "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space" || fatal "Failed to set permissions on ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space"
         LOG="$(mktemp)"
         LNKDST=$(find "${SNAPSHOT_DST}/" -maxdepth 2 -type d -name "${SNAPSHOT_NAME}.001" -printf " --link-dest=%p")
         for i in ${LNKDST//--link-dest=/}; do
             if [ -d "${i}" ] && [ "${CHATTR}" -eq 1 ] && [ "$(lsattr -d "${i}" | cut -b5)" == "i" ]; then
-                chattr -R -i "${i}" > /dev/null 2>&1 || warning "Failed to remove immutable flag from ${i}" # unprotect last snapshots to use hardlinks
+                run_cmd chattr -R -i "${i}" || warning "Failed to remove immutable flag from ${i}" # unprotect last snapshots to use hardlinks
             fi
         done
         eval rsync \
@@ -197,7 +197,7 @@ backup_create() {
 
         i=$(($(tail -100 "${LOG}" | grep 'Total transferred file size:' | cut -d " " -f5 | sed -e 's/\,//g') / 1048576))
         info "${i} MiB needed."
-        rm -rf "${LOG}" "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space" || fatal "Failed to remove ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space"
+        run_cmd rm -rf "${LOG}" "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space" || fatal "Failed to remove ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space"
         remove_snapshot $((MIN_MIBSIZE + i)) $((MAX_MIBSIZE - i))
         if [ "${OOVERWRITE_LAST}" == "${OVERWRITE_LAST}" ]; then # no need to retry
             break
@@ -213,22 +213,22 @@ backup_create() {
     #   -use --link-dest to hard-link when possible with previous snapshot,
     #    timestamps, permissions and ownerships are preserved
     info "Creating folder ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.000 ..."
-    mkdir -p "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.000"
-    chmod 775 "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.000"
+    run_cmd mkdir -p "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.000"
+    run_cmd chmod 775 "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.000"
     info "Creating backup of ${SNAPSHOT_NAME} into ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.000"
     if [ -n "${LNKDST}" ]; then
         info "Hardlinked with${LNKDST//--link-dest=/} ..."
     else
         info "Not hardlinked ..."
     fi
-    eval rsync \
+    run_cmd eval rsync \
         -vv \
         "${OPTION}" \
         "${LNKDST}" \
-        "${SNAPSHOT_SRC}" "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.000" > /dev/null 2>&1 || fatal "Snapshot failed."
+        "${SNAPSHOT_SRC}" "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.000" || fatal "Snapshot failed."
     for i in ${LNKDST//--link-dest=/}; do
         if [ -d "${i}" ] && [ "${CHATTR}" -eq 1 ] && [ "$(lsattr -d "${i}" | cut -b5)" != "i" ]; then
-            chattr -R +i "${i}" > /dev/null 2>&1 || warning "Failed to make ${i} backup immutable. Backup files may be overwritten by future backups." # undo unprotection that was needed to use hardlinks
+            run_cmd chattr -R +i "${i}" || warning "Failed to make ${i} backup immutable. Backup files may be overwritten by future backups." # undo unprotection that was needed to use hardlinks
         fi
     done
 
@@ -236,19 +236,19 @@ backup_create() {
     # protect the backup against modification with chattr +immutable
     if [ "${CHATTR}" -eq 1 ]; then
         info "Setting recursively immutable flag of ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.000 ..."
-        chattr -R +i "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.000" > /dev/null 2>&1 || warning "Failed to make ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.000 backup immutable. Backup files may be overwritten by future backups."
+        run_cmd chattr -R +i "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.000" || warning "Failed to make ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.000 backup immutable. Backup files may be overwritten by future backups."
     fi
 
     # rotate the backups
     if [ -d "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${BACKUP_RETENTION_MAX}" ]; then # remove snapshot.${BACKUP_RETENTION_MAX}
         info "Removing ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${BACKUP_RETENTION_MAX} ..."
         if [ "${CHATTR}" -eq 1 ]; then
-            chattr -R -i "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${BACKUP_RETENTION_MAX}" > /dev/null 2>&1 || warning "Failed to remove immutable flag from ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${BACKUP_RETENTION_MAX}"
+            run_cmd chattr -R -i "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${BACKUP_RETENTION_MAX}" || warning "Failed to remove immutable flag from ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${BACKUP_RETENTION_MAX}"
         fi
-        rm -rf "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${BACKUP_RETENTION_MAX}" || error "Failed to create ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${BACKUP_RETENTION_MAX}"
+        run_cmd rm -rf "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${BACKUP_RETENTION_MAX}" || error "Failed to create ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${BACKUP_RETENTION_MAX}"
     fi
     if [ -h "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last" ]; then
-        rm -f "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last" || error "Failed to create ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last"
+        run_cmd rm -f "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last" || error "Failed to create ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last"
     fi
     local j
     for i in $(seq -f'%03g' "$((BACKUP_RETENTION_MAX - 1))" -1 000); do
@@ -257,14 +257,14 @@ backup_create() {
             j=$(printf "%.3d" "${j}")
             info "Renaming ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i} into ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${j} ..."
             if [ "${CHATTR}" -eq 1 ]; then
-                chattr -i "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}" > /dev/null 2>&1 || warning "Failed to remove immutable flag from ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}"
+                run_cmd chattr -i "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}" || warning "Failed to remove immutable flag from ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}"
             fi
-            mv "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}" "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${j}"
+            run_cmd mv "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}" "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${j}"
             if [ "${CHATTR}" -eq 1 ]; then
-                chattr +i "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${j}" > /dev/null 2>&1 || warning "Failed to make ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${j} backup immutable. Backup files may be overwritten by future backups."
+                run_cmd chattr +i "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${j}" || warning "Failed to make ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${j} backup immutable. Backup files may be overwritten by future backups."
             fi
             if [ ! -h "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last" ]; then
-                ln -s "${SNAPSHOT_NAME}.${j}" "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last" || warning "Failed to create link for ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last"
+                run_cmd ln -s "${SNAPSHOT_NAME}.${j}" "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last" || warning "Failed to create link for ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last"
             fi
         fi
     done

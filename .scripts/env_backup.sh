@@ -9,8 +9,8 @@ env_backup() {
     local BACKUPTIME
     BACKUPTIME=$(date +"%Y%m%d%H%M%S")
     info "Copying .env file to ${DOCKERCONFDIR}/.env.backups/.env.${BACKUPTIME}"
-    mkdir -p "${DOCKERCONFDIR}/.env.backups" || fatal "${DOCKERCONFDIR}/.env.backups folder could not be created."
-    cp "${SCRIPTPATH}/compose/.env" "${DOCKERCONFDIR}/.env.backups/.env.${BACKUPTIME}" || fatal "${DOCKERCONFDIR}/.env.backups/.env.${BACKUPTIME} could not be copied."
+    run_cmd mkdir -p "${DOCKERCONFDIR}/.env.backups" || fatal "${DOCKERCONFDIR}/.env.backups folder could not be created."
+    run_cmd cp "${SCRIPTPATH}/compose/.env" "${DOCKERCONFDIR}/.env.backups/.env.${BACKUPTIME}" || fatal "${DOCKERCONFDIR}/.env.backups/.env.${BACKUPTIME} could not be copied."
     info "Removing old .env backups."
-    find "${DOCKERCONFDIR}/.env.backups" -type f -name ".env.*" -mtime +3 -delete > /dev/null 2>&1 || warning "Old .env backups not removed."
+    run_cmd find "${DOCKERCONFDIR}/.env.backups" -type f -name ".env.*" -mtime +3 -delete || warning "Old .env backups not removed."
 }
