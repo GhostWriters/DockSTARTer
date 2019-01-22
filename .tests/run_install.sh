@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 run_install() {
     info "Running installer."
-    run_cmd bash "${SCRIPTPATH}/main.sh" -i
+    run_cmd bash "${SCRIPTPATH}/main.sh" -v 4 -i
 
     run_cmd docker run hello-world || fatal "Failed to run docker hello-world."
 
