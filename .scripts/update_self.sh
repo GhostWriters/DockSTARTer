@@ -30,7 +30,7 @@ update_self() {
         case ${YN} in
             [Yy]*)
                 info "Updating DockSTARTer."
-                cd "${SCRIPTPATH}" || fatal "Failed to change to ${SCRIPTPATH} directory."
+                run_cmd cd "${SCRIPTPATH}" || fatal "Failed to change to ${SCRIPTPATH} directory."
                 run_cmd git fetch --all || fatal "Failed to fetch recent changes from git."
                 run_cmd git reset --hard origin/master || fatal "Failed to reset to master."
                 run_cmd git pull || fatal "Failed to pull recent changes from git."
