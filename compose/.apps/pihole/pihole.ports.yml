@@ -2,7 +2,7 @@ services:
   pihole:
     ports:
       - "${PIHOLE_PORT_443}:443"
-      - "${PIHOLE_PORT_53}:53/tcp"
+      - "${PIHOLE_PORT_53}:53"
       - "${PIHOLE_PORT_53}:53/udp"
       - "${PIHOLE_PORT_67}:67/udp"
       - "${PIHOLE_PORT_80}:80"
