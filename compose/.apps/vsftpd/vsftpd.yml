@@ -5,6 +5,11 @@ services:
     image: fauria/vsftpd
     container_name: vsftpd
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - FTP_USER=${VSFTPD_FTP_USER}
       - FTP_PASS=${VSFTPD_FTP_PASS}

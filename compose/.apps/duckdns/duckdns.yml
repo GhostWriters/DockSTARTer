@@ -5,6 +5,11 @@ services:
     image: linuxserver/duckdns
     container_name: duckdns
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - LOG_FILE=${DUCKDNS_LOG_FILE}
       - SUBDOMAINS=${DUCKDNS_SUBDOMAINS}

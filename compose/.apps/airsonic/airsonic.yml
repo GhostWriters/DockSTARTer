@@ -5,6 +5,11 @@ services:
     image: linuxserver/airsonic
     container_name: airsonic
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - CONTEXT_PATH=${AIRSONIC_CONTEXT_PATH}
       - JAVA_OPTS=${AIRSONIC_JAVA_OPTS}
