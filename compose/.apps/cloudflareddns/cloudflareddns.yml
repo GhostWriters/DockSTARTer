@@ -1,0 +1,24 @@
+# APPNICENAME=CloudFlareDDNS
+# APPDESCRIPTION=Free service which will point a DNS to an IP of your choice
+services:
+  cloudflareddns:
+    image: oznu/cloudflare-ddns
+    container_name: cloudflareddns
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    environment:
+      - API_KEY=${CLOUDFLAREDDNS_API_KEY}
+      - DELETE_ON_STOP=${CLOUDFLAREDDNS_DELETE_ON_STOP}
+      - EMAIL=${CLOUDFLAREDDNS_EMAIL}
+      - PROXIED=${CLOUDFLAREDDNS_PROXIED}
+      - RRTYPE=${CLOUDFLAREDDNS_RRTYPE}
+      - SUBDOMAIN=${CLOUDFLAREDDNS_SUBDOMAIN}
+      - TZ=${TZ}
+      - ZONE=${CLOUDFLAREDDNS_ZONE}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERSHAREDDIR}:/shared

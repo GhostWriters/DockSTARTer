@@ -5,6 +5,11 @@ services:
     image: binhex/arch-delugevpn
     container_name: delugevpn
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - ENABLE_PRIVOXY=${DELUGEVPN_ENABLE_PRIVOXY}
       - LAN_NETWORK=${LAN_NETWORK}

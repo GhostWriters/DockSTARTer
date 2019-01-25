@@ -5,6 +5,11 @@ services:
     image: emby/embyserver:latest
     container_name: emby
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - GID=${PGID}
       - GIDLIST=${PGID}

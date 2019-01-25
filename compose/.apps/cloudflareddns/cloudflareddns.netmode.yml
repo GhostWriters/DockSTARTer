@@ -1,0 +1,3 @@
+services:
+  cloudflareddns:
+    network_mode: ${CLOUDFLAREDDNS_NETWORK_MODE}
