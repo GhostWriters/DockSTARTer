@@ -5,6 +5,11 @@ services:
     image: binhex/arch-qbittorrentvpn
     container_name: qbittorrentvpn
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - ENABLE_PRIVOXY=${QBITTORRENTVPN_ENABLE_PRIVOXY}
       - LAN_NETWORK=${LAN_NETWORK}

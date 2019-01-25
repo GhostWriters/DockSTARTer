@@ -5,6 +5,11 @@ services:
     image: linuxserver/plexrequests
     container_name: plexrequests
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - URL_BASE=/plexrequests
       - PGID=${PGID}

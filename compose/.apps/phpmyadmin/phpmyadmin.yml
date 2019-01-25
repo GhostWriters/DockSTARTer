@@ -5,6 +5,11 @@ services:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PMA_HOST=${PHPMYADMIN_PMA_HOST}
       - PMA_PASSWORD=${PHPMYADMIN_PMA_PASSWORD}
