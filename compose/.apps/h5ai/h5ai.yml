@@ -5,6 +5,11 @@ services:
     image: clue/h5ai
     container_name: h5ai
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - TZ=${TZ}
     volumes:

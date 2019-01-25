@@ -5,6 +5,11 @@ services:
     image: portainer/agent
     container_name: portaineragent
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - TZ=${TZ}
     volumes:

@@ -5,6 +5,11 @@ services:
     image: linuxserver/ubooquity
     container_name: ubooquity
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - MAXMEM=${UBOOQUITY_MAXMEM}
       - PGID=${PGID}

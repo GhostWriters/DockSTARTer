@@ -5,6 +5,11 @@ services:
     image: oznu/guacamole
     container_name: guacamole
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - EXTENSIONS=${GUACAMOLE_EXTENSIONS}
       - TZ=${TZ}
