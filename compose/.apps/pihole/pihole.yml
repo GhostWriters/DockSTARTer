@@ -5,6 +5,11 @@ services:
     image: pihole/pihole
     container_name: pihole
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - DNS1=${NS1}
       - DNS2=${NS2}
