@@ -78,5 +78,6 @@ Support development with [Beerpay](https://beerpay.io/GhostWriters/DockSTARTer)!
 
 ## Special Thanks
 
+- [HTPCGuides.com](https://www.htpcguides.com/) for having a bunch of good information about HTPC software.
 - [SmartHomeBeginner.com](https://www.smarthomebeginner.com/) for creating [AtoMiC-ToolKit](https://github.com/htpcBeginner/AtoMiC-ToolKit) that served as this project's primary inspiration, and later [this](https://www.smarthomebeginner.com/docker-home-media-server-2018-basic/) guide that provided some initial direction with Docker.
 - [LinuxServer.io](https://www.linuxserver.io/) for maintaining the majority of the Docker images used in this project.
