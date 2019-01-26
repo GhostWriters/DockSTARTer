@@ -1,0 +1,3 @@
+services:
+  ouroboros:
+    image: pyouroboros/ouroboros
