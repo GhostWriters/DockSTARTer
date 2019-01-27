@@ -26,6 +26,7 @@ More important than being beautiful is being functional. This repository is prim
     - `image` should be the x86_64 image
     - `container_name` should match `<appname>`
     - `restart` should be `unless-stopped` or should include a comment about why another option is used
+    - `logging` should and the items beneath it should be included exactly as shown in other apps
     - `environment` should contain an alphabetically sorted list of environment variables used by the app
       - `- TZ=${TZ}` is always included even if not needed unless some other form of timezone variable is used
     - `volumes` should contain an alphabetically sorted list of volumes used by the app
