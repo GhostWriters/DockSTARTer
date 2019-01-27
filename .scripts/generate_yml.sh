@@ -18,7 +18,7 @@ generate_yml() {
     info "Checking for enabled apps."
     while IFS= read -r line; do
         local APPNAME
-        APPNAME=${line/_ENABLED=true/}
+        APPNAME=${line%%_ENABLED=true}
         local FILENAME
         FILENAME=${APPNAME,,}
         local APPNETMODE
@@ -68,7 +68,7 @@ generate_yml() {
         else
             error "Failed to find ${SCRIPTPATH}/compose/.apps/${FILENAME}/ directory."
         fi
-    done < <(grep '_ENABLED=true' < "${SCRIPTPATH}/compose/.env")
+    done < <(grep '_ENABLED=true$' < "${SCRIPTPATH}/compose/.env")
     echo "> ${SCRIPTPATH}/compose/docker-compose.yml" >> "${RUNFILE}"
     run_script 'install_yq'
     bash "${RUNFILE}" || fatal "Failed to run generator."

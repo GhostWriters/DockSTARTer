@@ -29,7 +29,7 @@ config_vpn() {
     fi
     if [[ ${ANSWER} != 0 ]]; then
         while IFS= read -r line; do
-            SET_VAR=${line/=*/}
+            SET_VAR=${line%%=*}
             run_script 'menu_value_prompt' "${SET_VAR}" || return 1
         done < <(echo "${APPVARS}")
     fi
