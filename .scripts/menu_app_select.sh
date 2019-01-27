@@ -8,7 +8,7 @@ menu_app_select() {
 
     while IFS= read -r line; do
         local APPNAME
-        APPNAME=${line/_ENABLED=*/}
+        APPNAME=${line%%_ENABLED=*}
         local FILENAME
         FILENAME=${APPNAME,,}
         local APPSUPPORTED
@@ -55,9 +55,9 @@ menu_app_select() {
             info "Disabling all apps."
             while IFS= read -r line; do
                 local APPNAME
-                APPNAME=${line/_ENABLED=true/}
+                APPNAME=${line%%_ENABLED=true}
                 run_script 'env_set' "${APPNAME}_ENABLED" false
-            done < <(grep '_ENABLED=true' < "${SCRIPTPATH}/compose/.env")
+            done < <(grep '_ENABLED=true$' < "${SCRIPTPATH}/compose/.env")
             info "Enabling selected apps."
             while IFS= read -r line; do
                 local APPNAME
