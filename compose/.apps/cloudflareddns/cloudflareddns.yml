@@ -10,11 +10,6 @@ services:
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - API_KEY=${CLOUDFLAREDDNS_API_KEY}
       - DELETE_ON_STOP=${CLOUDFLAREDDNS_DELETE_ON_STOP}
