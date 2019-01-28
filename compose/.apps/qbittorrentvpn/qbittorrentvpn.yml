@@ -2,7 +2,6 @@
 # APPDESCRIPTION=qBittorrent, OpenVPN and Privoxy
 services:
   qbittorrentvpn:
-    image: binhex/arch-qbittorrentvpn
     container_name: qbittorrentvpn
     restart: unless-stopped
     logging:

@@ -1,0 +1,3 @@
+services:
+  ombi:
+    image: linuxserver/ombi

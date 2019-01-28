@@ -1,0 +1,3 @@
+services:
+  plexrequests:
+    image: linuxserver/plexrequests

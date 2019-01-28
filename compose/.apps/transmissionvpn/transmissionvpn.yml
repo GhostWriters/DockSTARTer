@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Transmission, WebUI and OpenVPN
 services:
   transmissionvpn:
-    image: haugene/transmission-openvpn
     container_name: transmissionvpn
     restart: unless-stopped
     logging:

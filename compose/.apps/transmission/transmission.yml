@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Fast, easy, and free BitTorrent client
 services:
   transmission:
-    image: linuxserver/transmission
     container_name: transmission
     restart: unless-stopped
     logging:

@@ -2,7 +2,6 @@
 # APPDESCRIPTION=TV streaming server and recorder
 services:
   tvheadend:
-    image: linuxserver/tvheadend
     container_name: tvheadend
     restart: unless-stopped
     logging:

@@ -1,0 +1,3 @@
+services:
+  transmission:
+    image: linuxserver/transmission

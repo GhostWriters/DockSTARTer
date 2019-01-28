@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Monitoring and tracking tool for Plex Media Server
 services:
   tautulli:
-    image: linuxserver/tautulli
     container_name: tautulli
     restart: unless-stopped
     logging:

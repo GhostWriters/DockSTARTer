@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Smart TV show PVR via Usenet and BitTorrent
 services:
   sonarr:
-    image: linuxserver/sonarr
     container_name: sonarr
     restart: unless-stopped
     logging:

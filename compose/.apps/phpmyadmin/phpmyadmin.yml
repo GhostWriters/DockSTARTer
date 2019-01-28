@@ -2,7 +2,6 @@
 # APPDESCRIPTION=A web interface for MySQL and MariaDB
 services:
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
     restart: unless-stopped
     logging:

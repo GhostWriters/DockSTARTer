@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Controller software for wireless networks
 services:
   unifi:
-    image: linuxserver/unifi
     container_name: unifi
     restart: unless-stopped
     logging:

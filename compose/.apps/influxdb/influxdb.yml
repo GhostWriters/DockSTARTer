@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Time series database for recording metrics, events, and analytics
 services:
   influxdb:
-    image: influxdb
     container_name: influxdb
     restart: unless-stopped
     logging:

@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Automated way for users to request new content for Plex
 services:
   plexrequests:
-    image: linuxserver/plexrequests
     container_name: plexrequests
     restart: unless-stopped
     logging:

@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Automatically update running Docker containers
 services:
   watchtower:
-    image: v2tec/watchtower
     container_name: watchtower
     restart: unless-stopped
     logging:

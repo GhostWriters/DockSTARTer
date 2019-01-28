@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Companion to Sonarr to manage and download subtitles
 services:
   bazarr:
-    image: linuxserver/bazarr
     container_name: bazarr
     restart: unless-stopped
     logging:

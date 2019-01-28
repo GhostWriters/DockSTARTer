@@ -1,0 +1,3 @@
+services:
+  deluge:
+    image: linuxserver/deluge

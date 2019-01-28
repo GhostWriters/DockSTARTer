@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Standalone command-line utility to aggregate data from the Plex ecosystem into InfluxDB
 services:
   varken:
-    image: boerderij/varken
     container_name: varken
     restart: unless-stopped
     logging:

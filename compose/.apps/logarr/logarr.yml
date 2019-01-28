@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Self-hosted, single-page, log consolidation tool
 services:
   logarr:
-    image: monitorr/logarr
     container_name: logarr
     restart: unless-stopped
     logging:

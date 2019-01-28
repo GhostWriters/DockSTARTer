@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Secure network tunneling VPN
 services:
   openvpnas:
-    image: linuxserver/openvpn-as
     container_name: openvpnas
     restart: unless-stopped
     logging:

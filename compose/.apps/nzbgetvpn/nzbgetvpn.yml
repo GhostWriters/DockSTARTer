@@ -2,7 +2,6 @@
 # APPDESCRIPTION=NZBGet, OpenVPN and Privoxy
 services:
   nzbgetvpn:
-    image: jshridha/docker-nzbgetvpn
     container_name: nzbgetvpn
     restart: unless-stopped
     logging:

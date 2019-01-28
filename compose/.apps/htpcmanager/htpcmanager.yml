@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Front end for many htpc related applications
 services:
   htpcmanager:
-    image: linuxserver/htpcmanager
     container_name: htpcmanager
     restart: unless-stopped
     logging:

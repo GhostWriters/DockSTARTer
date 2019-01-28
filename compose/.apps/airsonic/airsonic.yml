@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Web-based media streamer providing ubiquitious access to your music
 services:
   airsonic:
-    image: linuxserver/airsonic
     container_name: airsonic
     restart: unless-stopped
     logging:

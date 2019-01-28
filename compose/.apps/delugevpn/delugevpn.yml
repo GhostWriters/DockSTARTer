@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Deluge, OpenVPN and Privoxy
 services:
   delugevpn:
-    image: binhex/arch-delugevpn
     container_name: delugevpn
     restart: unless-stopped
     logging:

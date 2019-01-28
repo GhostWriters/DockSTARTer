@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Automatic Video Library Manager for TV Shows
 services:
   sickrage:
-    image: linuxserver/sickrage
     container_name: sickrage
     restart: unless-stopped
     logging:

@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Track and control all devices at home and automate control
 services:
   homeassistant:
-    image: homeassistant/home-assistant
     container_name: homeassistant
     restart: unless-stopped
     logging:

@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Minecraft with a web control panel and admin console
 services:
   mcmyadmin2:
-    image: linuxserver/mcmyadmin2
     container_name: mcmyadmin2
     restart: unless-stopped
     logging:

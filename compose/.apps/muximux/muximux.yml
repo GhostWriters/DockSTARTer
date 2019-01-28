@@ -2,7 +2,6 @@
 # APPDESCRIPTION=A lightweight way to manage your HTPC
 services:
   muximux:
-    image: linuxserver/muximux
     container_name: muximux
     restart: unless-stopped
     logging:

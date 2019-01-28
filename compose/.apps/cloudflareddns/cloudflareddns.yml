@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Free service which will point a DNS to an IP of your choice
 services:
   cloudflareddns:
-    image: oznu/cloudflare-ddns
     container_name: cloudflareddns
     restart: unless-stopped
     logging:

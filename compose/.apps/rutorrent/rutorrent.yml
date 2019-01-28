@@ -2,7 +2,6 @@
 # APPDESCRIPTION=rTorrent client and ruTorrent WebUI
 services:
   rutorrent:
-    image: linuxserver/rutorrent
     container_name: rutorrent
     restart: unless-stopped
     logging:

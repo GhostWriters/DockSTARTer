@@ -2,7 +2,6 @@
 # APPDESCRIPTION=News feed (RSS/Atom) reader and aggregator
 services:
   ttrss:
-    image: linuxserver/tt-rss
     container_name: ttrss
     restart: unless-stopped
     logging:

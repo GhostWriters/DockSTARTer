@@ -2,7 +2,6 @@
 # APPDESCRIPTION=rTorrent, Flood or ruTorrent WebUI, OpenVPN and Privoxy
 services:
   rtorrentvpn:
-    image: binhex/arch-rtorrentvpn
     container_name: rtorrentvpn
     restart: unless-stopped
     logging:

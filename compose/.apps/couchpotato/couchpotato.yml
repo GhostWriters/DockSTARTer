@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Movies PVR Client
 services:
   couchpotato:
-    image: linuxserver/couchpotato
     container_name: couchpotato
     restart: unless-stopped
     logging:

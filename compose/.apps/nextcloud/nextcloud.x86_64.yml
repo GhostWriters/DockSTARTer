@@ -1,0 +1,3 @@
+services:
+  nextcloud:
+    image: linuxserver/nextcloud

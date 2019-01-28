@@ -1,0 +1,3 @@
+services:
+  influxdb:
+    image: influxdb
