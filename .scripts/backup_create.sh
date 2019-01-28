@@ -15,7 +15,7 @@ backup_create() {
     local BACKUP_RETENTION
     BACKUP_RETENTION=$(run_script 'env_get' BACKUP_RETENTION)
     local BACKUP_RETENTION_MAX
-    BACKUP_RETENTION_MAX="${BACKUP_RETENTION/ */}"
+    BACKUP_RETENTION_MAX="${BACKUP_RETENTION%% *}"
     local PUID
     PUID=$(run_script 'env_get' PUID)
     local PGID
