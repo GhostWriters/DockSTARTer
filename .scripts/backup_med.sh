@@ -8,7 +8,7 @@ backup_med() {
     BACKUP_CMD_PRE_RUN=$(run_script 'env_get' BACKUP_CMD_PRE_RUN)
     eval "${BACKUP_CMD_PRE_RUN}" || error "Failed to execute BACKUP_CMD_PRE_RUN."
     run_script 'env_update'
-    run_script 'backup_create' ".env.backups"
+    run_script 'backup_create' ".compose.backups"
     while IFS= read -r line; do
         local APPNAME
         APPNAME=${line%%_ENABLED=true}

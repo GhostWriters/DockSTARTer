@@ -209,7 +209,7 @@ menu_value_prompt() {
                     menu_value_prompt "${SET_VAR}"
                 elif [[ ${INPUT} == ~* ]]; then
                     local CORRECTED_DIR
-                    CORRECTED_DIR="${DETECTED_HOMEDIR}${INPUT/*~/}"
+                    CORRECTED_DIR="${DETECTED_HOMEDIR}${INPUT#*~}"
                     local ANSWER
                     set +e
                     ANSWER=$(
