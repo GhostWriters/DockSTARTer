@@ -5,6 +5,11 @@ services:
     image: linuxserver/letsencrypt
     container_name: letsencrypt
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - DNSPLUGIN=${LETSENCRYPT_DNSPLUGIN}
       - DUCKDNSTOKEN=${LETSENCRYPT_DUCKDNSTOKEN}

@@ -5,6 +5,11 @@ services:
     image: nicolargo/glances
     container_name: glances
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - GLANCES_OPT=-w
       - TZ=${TZ}

@@ -5,6 +5,11 @@ services:
     image: netdata/netdata
     container_name: netdata
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${DOCKERGID}
       - TZ=${TZ}

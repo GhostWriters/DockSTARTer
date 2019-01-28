@@ -14,9 +14,9 @@ env_update() {
     info "Merging previous values into new .env file."
     while IFS= read -r line; do
         local SET_VAR
-        SET_VAR=${line/=*/}
+        SET_VAR=${line%%=*}
         local SET_VAL
-        SET_VAL=${line/*=/}
+        SET_VAL=${line#*=}
         if grep -q "^${SET_VAR}=" "${SCRIPTPATH}/compose/.env"; then
             run_script 'env_set' "${SET_VAR}" "${SET_VAL}"
         else

@@ -1,0 +1,27 @@
+# APPNICENAME=Ouroboros
+# APPDESCRIPTION=Automatically update running Docker containers
+services:
+  ouroboros:
+    image: pyouroboros/ouroboros
+    container_name: ouroboros
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    environment:
+      - CLEANUP=${OUROBOROS_CLEANUP}
+      - IGNORE=${OUROBOROS_IGNORE}
+      - INTERVAL=${OUROBOROS_INTERVAL}
+      - LOG_LEVEL=${OUROBOROS_LOG_LEVEL}
+      - MONITOR=${OUROBOROS_MONITOR}
+      - NOTIFIERS=${OUROBOROS_NOTIFIERS}
+      - REPO_PASS=${OUROBOROS_REPO_PASS}
+      - REPO_USER=${OUROBOROS_REPO_USER}
+      - SELF_UPDATE=${OUROBOROS_SELF_UPDATE}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${DOCKERSHAREDDIR}:/shared
