@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Music PVR Client
 services:
   headphones:
-    image: linuxserver/headphones
     container_name: headphones
     restart: unless-stopped
     logging:

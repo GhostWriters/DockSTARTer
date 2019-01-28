@@ -1,0 +1,3 @@
+services:
+  qbittorrentvpn:
+    image: binhex/arch-qbittorrentvpn

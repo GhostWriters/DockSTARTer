@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Organizes all of your video, music and photo collections
 services:
   plex:
-    image: plexinc/pms-docker:${PLEX_TAG}
     container_name: plex
     restart: unless-stopped
     logging:

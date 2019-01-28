@@ -3,7 +3,6 @@
 services:
   pyload:
     container_name: pyload
-    image: writl/pyload:latest
     restart: unless-stopped
     logging:
       driver: "json-file"

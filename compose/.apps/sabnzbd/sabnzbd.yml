@@ -2,7 +2,6 @@
 # APPDESCRIPTION=NZB Newsgrabber / Downloader
 services:
   sabnzbd:
-    image: linuxserver/sabnzbd
     container_name: sabnzbd
     restart: unless-stopped
     logging:

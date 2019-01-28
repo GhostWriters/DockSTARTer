@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Probably the most secure and fastest FTP server for UNIX-like systems
 services:
   vsftpd:
-    image: fauria/vsftpd
     container_name: vsftpd
     restart: unless-stopped
     logging:

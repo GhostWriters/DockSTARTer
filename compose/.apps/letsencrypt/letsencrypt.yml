@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Certificate authority that provides free X.509 certificates
 services:
   letsencrypt:
-    image: linuxserver/letsencrypt
     container_name: letsencrypt
     restart: unless-stopped
     logging:

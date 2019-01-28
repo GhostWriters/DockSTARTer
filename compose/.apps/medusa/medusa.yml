@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Automatic Video Library Manager for TV Shows
 services:
   medusa:
-    image: linuxserver/medusa
     container_name: medusa
     restart: unless-stopped
     logging:

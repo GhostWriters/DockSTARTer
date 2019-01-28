@@ -1,0 +1,3 @@
+services:
+  muximux:
+    image: linuxserver/muximux

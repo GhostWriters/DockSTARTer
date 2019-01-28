@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Book PVR Client
 services:
   lazylibrarian:
-    image: linuxserver/lazylibrarian
     container_name: lazylibrarian
     restart: unless-stopped
     logging:

@@ -2,7 +2,6 @@
 # APPDESCRIPTION=One of the most popular database servers
 services:
   mariadb:
-    image: linuxserver/mariadb
     container_name: mariadb
     restart: unless-stopped
     logging:

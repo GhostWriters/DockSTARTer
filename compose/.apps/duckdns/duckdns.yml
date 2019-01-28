@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Free service which will point a DNS to an IP of your choice
 services:
   duckdns:
-    image: linuxserver/duckdns
     container_name: duckdns
     restart: unless-stopped
     logging:

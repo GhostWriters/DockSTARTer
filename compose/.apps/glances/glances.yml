@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Cross-platform system monitoring tool
 services:
   glances:
-    image: nicolargo/glances
     container_name: glances
     restart: unless-stopped
     logging:

@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Webfront to live display the status of any webapp or service
 services:
   monitorr:
-    image: monitorr/monitorr
     container_name: monitorr
     restart: unless-stopped
     logging:

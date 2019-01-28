@@ -2,7 +2,6 @@
 # APPDESCRIPTION=SABnzbd, OpenVPN and Privoxy
 services:
   sabnzbdvpn:
-    image: binhex/arch-sabnzbdvpn
     container_name: sabnzbdvpn
     restart: unless-stopped
     logging:

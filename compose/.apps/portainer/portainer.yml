@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Simple management UI for Docker
 services:
   portainer:
-    image: portainer/portainer
     container_name: portainer
     restart: unless-stopped
     logging:

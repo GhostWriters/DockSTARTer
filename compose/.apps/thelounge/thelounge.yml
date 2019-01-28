@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Web IRC client that you host on your own server
 services:
   thelounge:
-    image: linuxserver/thelounge
     container_name: thelounge
     restart: unless-stopped
     logging:

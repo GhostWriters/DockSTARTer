@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Open-source peer-to-peer file synchronization
 services:
   syncthing:
-    image: linuxserver/syncthing
     container_name: syncthing
     restart: unless-stopped
     logging:

@@ -1,0 +1,3 @@
+services:
+  heimdall:
+    image: linuxserver/heimdall

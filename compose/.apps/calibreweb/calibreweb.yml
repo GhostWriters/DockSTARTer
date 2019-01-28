@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Web app for browsing, reading and downloading eBooks
 services:
   calibreweb:
-    image: linuxserver/calibre-web
     container_name: calibreweb
     restart: unless-stopped
     logging:

@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Web application that provides access to desktop environments using remote desktop protocols
 services:
   guacamole:
-    image: oznu/guacamole
     container_name: guacamole
     restart: unless-stopped
     logging:

@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Distributed real-time performance and health monitoring
 services:
   netdata:
-    image: netdata/netdata
     container_name: netdata
     restart: unless-stopped
     logging:

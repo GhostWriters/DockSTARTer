@@ -1,0 +1,3 @@
+services:
+  rutorrent:
+    image: linuxserver/rutorrent

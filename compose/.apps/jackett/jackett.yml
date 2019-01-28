@@ -2,7 +2,6 @@
 # APPDESCRIPTION=API Support for your favorite private trackers
 services:
   jackett:
-    image: linuxserver/jackett
     container_name: jackett
     restart: unless-stopped
     logging:

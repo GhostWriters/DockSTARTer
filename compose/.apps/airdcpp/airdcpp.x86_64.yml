@@ -1,0 +1,3 @@
+services:
+  airdcpp:
+    image: gangefors/airdcpp-webclient

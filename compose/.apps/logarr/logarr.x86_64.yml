@@ -1,0 +1,3 @@
+services:
+  logarr:
+    image: monitorr/logarr

@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Modern file indexer
 services:
   h5ai:
-    image: clue/h5ai
     container_name: h5ai
     restart: unless-stopped
     logging:

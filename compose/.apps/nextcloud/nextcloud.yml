@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Gives you access to all your files wherever you are
 services:
   nextcloud:
-    image: linuxserver/nextcloud
     container_name: nextcloud
     restart: unless-stopped
     logging:

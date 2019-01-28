@@ -1,0 +1,3 @@
+services:
+  hydra2:
+    image: linuxserver/hydra2

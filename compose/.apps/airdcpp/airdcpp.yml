@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Client for Advanced Direct Connect and Direct Connect networks
 services:
   airdcpp:
-    image: gangefors/airdcpp-webclient
     container_name: airdcpp
     restart: unless-stopped
     logging:

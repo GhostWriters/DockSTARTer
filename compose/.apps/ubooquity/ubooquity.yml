@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Home server for your comics and ebooks
 services:
   ubooquity:
-    image: linuxserver/ubooquity
     container_name: ubooquity
     restart: unless-stopped
     logging:

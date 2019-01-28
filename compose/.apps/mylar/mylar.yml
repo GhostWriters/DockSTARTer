@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Comic book PVR client
 services:
   mylar:
-    image: linuxserver/mylar
     container_name: mylar
     restart: unless-stopped
     logging:

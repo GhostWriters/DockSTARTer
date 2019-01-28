@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Automatically update running Docker containers
 services:
   ouroboros:
-    image: pyouroboros/ouroboros
     container_name: ouroboros
     restart: unless-stopped
     logging:

@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Cross-platform free and open-source BitTorrent client
 services:
   qbittorrent:
-    image: linuxserver/qbittorrent
     container_name: qbittorrent
     restart: unless-stopped
     logging:

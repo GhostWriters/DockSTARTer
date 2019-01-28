@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Access media directories and Docker config over Samba
 services:
   samba:
-    image: dperson/samba
     container_name: samba
     command:
       - -u "${SAMBA_USERNAME};${SAMBA_PASSWORD}" \

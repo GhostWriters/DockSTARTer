@@ -1,0 +1,3 @@
+services:
+  rtorrentvpn:
+    image: binhex/arch-rtorrentvpn

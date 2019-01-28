@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Backup software to store backups online with strong encryption
 services:
   duplicati:
-    image: linuxserver/duplicati
     container_name: duplicati
     restart: unless-stopped
     logging:

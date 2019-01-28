@@ -1,0 +1,3 @@
+services:
+  sabnzbdvpn:
+    image: binhex/arch-sabnzbdvpn

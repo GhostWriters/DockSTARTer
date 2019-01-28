@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Meta search for NZB indexers
 services:
   hydra2:
-    image: linuxserver/hydra2
     container_name: hydra2
     restart: unless-stopped
     logging:

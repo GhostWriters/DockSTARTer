@@ -2,7 +2,6 @@
 # APPDESCRIPTION=A black hole for internet advertisements
 services:
   pihole:
-    image: pihole/pihole
     container_name: pihole
     restart: unless-stopped
     logging:

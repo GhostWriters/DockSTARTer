@@ -1,0 +1,3 @@
+services:
+  transmissionvpn:
+    image: haugene/transmission-openvpn
