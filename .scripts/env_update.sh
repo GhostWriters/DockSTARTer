@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 env_update() {
     run_script 'env_backup'
-    run_script 'compose_override_backup'
+    run_script 'override_backup'
     info "Replacing current .env file with latest template."
     local CURRENTENV
     CURRENTENV="$(mktemp)"
