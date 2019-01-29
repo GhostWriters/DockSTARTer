@@ -36,7 +36,7 @@ update_self() {
                 git fetch > /dev/null 2>&1 || fatal "Failed to fetch recent changes from git."
                 git reset --hard "${BRANCH}" > /dev/null 2>&1 || fatal "Failed to reset to ${BRANCH}."
                 git pull > /dev/null 2>&1 || fatal "Failed to pull recent changes from git."
-                git for-each-ref --format '%(refname:short)' refs/heads | grep -v master | xargs git branch -D || fatal "Failed to remove unused git branches."
+                git for-each-ref --format '%(refname:short)' refs/heads | grep -v master | xargs git branch -D || true
                 chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
                 run_script 'env_update'
                 break
