@@ -3,8 +3,10 @@ set -euo pipefail
 IFS=$'\n\t'
 
 update_self() {
+    local BRANCH
+    BRANCH=${1:-}
     local QUESTION
-    QUESTION="Would you like to update DockSTARTer now?"
+    QUESTION="Would you like to update DockSTARTer to ${BRANCH} now?"
     info "${QUESTION}"
     local YN
     while true; do
@@ -31,9 +33,10 @@ update_self() {
             [Yy]*)
                 info "Updating DockSTARTer."
                 cd "${SCRIPTPATH}" || fatal "Failed to change to ${SCRIPTPATH} directory."
-                git fetch --all > /dev/null 2>&1 || fatal "Failed to fetch recent changes from git."
-                git reset --hard origin/master > /dev/null 2>&1 || fatal "Failed to reset to master."
+                git fetch > /dev/null 2>&1 || fatal "Failed to fetch recent changes from git."
+                git reset --hard "${BRANCH}" > /dev/null 2>&1 || fatal "Failed to reset to ${BRANCH}."
                 git pull > /dev/null 2>&1 || fatal "Failed to pull recent changes from git."
+                git for-each-ref --format '%(refname:short)' refs/heads | grep -v master | xargs git branch -D || true
                 chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
                 run_script 'env_update'
                 break

@@ -32,7 +32,7 @@ cmdline() {
     #Reset the positional parameters to the short options
     eval set -- "${LOCAL_ARGS:-}"
 
-    while getopts ":b:c:eghipt:uvx" OPTION; do
+    while getopts ":b:c:eghipt:u:vx" OPTION; do
         case ${OPTION} in
             b)
                 case ${OPTARG} in
@@ -98,7 +98,7 @@ cmdline() {
                 exit
                 ;;
             u)
-                run_script 'update_self'
+                run_script 'update_self' "${OPTARG}"
                 exit
                 ;;
             v)
@@ -113,6 +113,9 @@ cmdline() {
                     c)
                         run_script 'generate_yml'
                         run_script 'run_compose'
+                        ;;
+                    u)
+                        run_script 'update_self' "origin/master"
                         ;;
                     *)
                         fatal "${OPTARG} requires an option."
