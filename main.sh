@@ -4,21 +4,36 @@ IFS=$'\n\t'
 
 # Usage Information
 #/ Usage: sudo ds [OPTION]
-#/ NOTE: ds shortcut is only available after the first run of sudo bash ~/.docker/main.sh
+#/ NOTE: ds shortcut is only available after the first run of
+#/       sudo bash ~/.docker/main.sh
 #/
 #/ This is the main DockSTARTer script.
 #/ For regular usage you can run without providing any options.
 #/
-#/  -b --backup <min/med/max>             backup your configs (see wiki more information)
-#/  -c --compose <up/down/restart/pull>   run docker-compose commands
-#/  -e --env                              update your .env file with new variables
-#/  -h --help                             show this usage information
-#/  -i --install                          install docker and dependencies
-#/  -p --prune                            remove unused docker resources
-#/  -t --test <test_name>                 run tests to check the program
-#/  -u --update                           update DockSTARTer
-##/ -v --verbose                          verbose
-#/  -x --debug                            debug
+#/  -b --backup <min/med/max>
+#/      backup your configs (see wiki more information)
+#/  -c --compose
+#/      run docker-compose up with confirmation prompt
+#/  -c --compose <up/down/restart/pull>
+#/      run docker-compose commands without confirmation prompts
+#/  -e --env
+#/      update your .env file with new variables
+#/  -h --help
+#/      show this usage information
+#/  -i --install
+#/      install/update docker, docker-compose, yq and all dependencies
+#/  -p --prune
+#/      remove unused docker resources
+#/  -t --test <test_name>
+#/      run tests to check the program
+#/  -u --update
+#/      update DockSTARTer to the latest stable commits
+#/  -u --update <branch>
+#/      update DockSTARTer to the latest commits from the specified branch
+##/ -v --verbose
+##/     verbose
+#/  -x --debug
+#/      debug
 #/
 usage() {
     grep '^#/' "${SCRIPTNAME}" | cut -c4- || echo "Failed to display usage information."
