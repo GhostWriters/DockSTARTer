@@ -1,0 +1,3 @@
+services:
+  smokeping:
+    image: linuxserver/smokeping
