@@ -150,6 +150,9 @@ menu_value_prompt() {
         "Keep Current ")
             INPUT=${CURRENT_VAL}
             ;;
+        "Use Home ")
+            INPUT=${HOME_VAL}
+            ;;
         "Use Default ")
             INPUT=${DEFAULT_VAL}
             ;;
