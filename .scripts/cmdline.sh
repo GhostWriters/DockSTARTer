@@ -115,7 +115,7 @@ cmdline() {
                         run_script 'run_compose'
                         ;;
                     u)
-                        run_script 'update_self' "origin/master"
+                        run_script 'update_self'
                         ;;
                     *)
                         fatal "${OPTARG} requires an option."

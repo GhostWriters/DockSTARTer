@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 update_self() {
     local BRANCH
-    BRANCH=${1:-}
+    BRANCH=${1:-origin/master}
     local QUESTION
     QUESTION="Would you like to update DockSTARTer to ${BRANCH} now?"
     info "${QUESTION}"
