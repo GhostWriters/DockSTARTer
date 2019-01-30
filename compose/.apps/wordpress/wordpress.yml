@@ -1,0 +1,20 @@
+# APPNICENAME=WordPress
+# APPDESCRIPTION=Blogging tool and a content management system
+services:
+  wordpress:
+    container_name: wordpress
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    environment:
+      - TZ=${TZ}
+      - WORDPRESS_DB_HOST=${WORDPRESS_DB_HOST}
+      - WORDPRESS_DB_NAME=${WORDPRESS_DB_NAME}
+      - WORDPRESS_DB_PASSWORD=${WORDPRESS_DB_PASSWORD}
+      - WORDPRESS_DB_USER=${WORDPRESS_DB_USER}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERSHAREDDIR}:/shared
