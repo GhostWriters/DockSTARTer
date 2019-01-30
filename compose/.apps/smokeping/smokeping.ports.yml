@@ -1,0 +1,4 @@
+services:
+  smokeping:
+    ports:
+      - "${SMOKEPING_PORT_80}:80"

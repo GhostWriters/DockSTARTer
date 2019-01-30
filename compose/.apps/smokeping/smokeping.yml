@@ -1,0 +1,20 @@
+# APPNICENAME=smokeping
+# APPDESCRIPTION=Free service which will point a DNS to an IP of your choice
+services:
+  smokeping:
+    container_name: smokeping
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/smokeping:/config
+      - ${DOCKERSHAREDDIR}:/shared
+      - ${SMOKEPING_DATADIR}:/data
