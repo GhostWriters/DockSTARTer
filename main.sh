@@ -90,6 +90,15 @@ fatal() {
     exit 1
 }
 
+# Sed Functions
+# https://stackoverflow.com/a/29613573/1384186
+sed_find() {
+    sed 's/[^^]/[&]/g; s/\^/\\^/g' <<< "${1:-}"
+}
+sed_replace() {
+    sed 's/[&/\]/\\&/g' <<< "${1:-}"
+}
+
 # Script Runner Function
 run_script() {
     local SCRIPTSNAME="${1:-}"
