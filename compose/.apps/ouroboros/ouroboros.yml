@@ -11,6 +11,7 @@ services:
         max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - CLEANUP=${OUROBOROS_CLEANUP}
+      - CRON=${OUROBOROS_CRON}
       - IGNORE=${OUROBOROS_IGNORE}
       - INTERVAL=${OUROBOROS_INTERVAL}
       - LOG_LEVEL=${OUROBOROS_LOG_LEVEL}
