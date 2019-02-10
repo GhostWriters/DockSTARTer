@@ -2,9 +2,13 @@
 # APPDESCRIPTION=Simple management UI for Docker
 services:
   portainer:
-    image: portainer/portainer
     container_name: portainer
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - TZ=${TZ}
     volumes:

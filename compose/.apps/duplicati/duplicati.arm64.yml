@@ -1,3 +1,0 @@
-services:
-  duplicati:
-    image: lsioarmhf/duplicati-aarch64

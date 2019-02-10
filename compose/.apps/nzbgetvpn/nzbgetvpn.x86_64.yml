@@ -1,0 +1,3 @@
+services:
+  nzbgetvpn:
+    image: jshridha/docker-nzbgetvpn

@@ -1,0 +1,3 @@
+services:
+  organizr:
+    image: organizrtools/organizr-v2:php-fpm

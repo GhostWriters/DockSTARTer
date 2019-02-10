@@ -4,7 +4,6 @@ services:
       - "${UNIFI_PORT_10001}:10001/udp"
       - "${UNIFI_PORT_3478}:3478/udp"
       - "${UNIFI_PORT_6789}:6789"
-      - "${UNIFI_PORT_7878}:7878"
       - "${UNIFI_PORT_8080}:8080"
       - "${UNIFI_PORT_8081}:8081"
       - "${UNIFI_PORT_8443}:8443"

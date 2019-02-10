@@ -2,9 +2,13 @@
 # APPDESCRIPTION=Backup software to store backups online with strong encryption
 services:
   duplicati:
-    image: linuxserver/duplicati
     container_name: duplicati
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

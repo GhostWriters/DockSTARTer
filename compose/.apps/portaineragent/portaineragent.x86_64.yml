@@ -1,0 +1,3 @@
+services:
+  portaineragent:
+    image: portainer/agent

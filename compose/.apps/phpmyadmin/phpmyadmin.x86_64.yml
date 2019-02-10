@@ -1,0 +1,3 @@
+services:
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin

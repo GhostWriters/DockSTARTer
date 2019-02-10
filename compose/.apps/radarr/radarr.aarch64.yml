@@ -1,0 +1,3 @@
+services:
+  radarr:
+    image: linuxserver/radarr

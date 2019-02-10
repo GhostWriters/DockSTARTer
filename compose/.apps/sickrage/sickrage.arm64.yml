@@ -1,3 +1,0 @@
-services:
-  sickrage:
-    image: lsioarmhf/sickrage-aarch64

@@ -1,3 +1,0 @@
-services:
-  qbittorrent:
-    image: lsioarmhf/qbittorrent

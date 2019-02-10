@@ -1,0 +1,3 @@
+services:
+  cloudcmd:
+    image: coderaiser/cloudcmd

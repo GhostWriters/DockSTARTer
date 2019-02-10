@@ -2,9 +2,13 @@
 # APPDESCRIPTION=Client for Advanced Direct Connect and Direct Connect networks
 services:
   airdcpp:
-    image: gangefors/airdcpp-webclient
     container_name: airdcpp
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - GID=${PGID}
       - HTTP_PORT=${AIRDCPP_PORT_5600}

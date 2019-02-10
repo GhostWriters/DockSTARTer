@@ -2,9 +2,13 @@
 # APPDESCRIPTION=NZBGet, OpenVPN and Privoxy
 services:
   nzbgetvpn:
-    image: jshridha/docker-nzbgetvpn
     container_name: nzbgetvpn
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - ENABLE_PRIVOXY=${NZBGETVPN_ENABLE_PRIVOXY}
       - LAN_NETWORK=${LAN_NETWORK}

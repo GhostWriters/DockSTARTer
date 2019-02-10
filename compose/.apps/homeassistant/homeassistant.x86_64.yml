@@ -1,0 +1,3 @@
+services:
+  homeassistant:
+    image: homeassistant/home-assistant

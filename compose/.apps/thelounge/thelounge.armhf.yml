@@ -1,3 +1,0 @@
-services:
-  thelounge:
-    image: lsioarmhf/thelounge

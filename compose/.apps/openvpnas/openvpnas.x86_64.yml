@@ -1,0 +1,3 @@
+services:
+  openvpnas:
+    image: linuxserver/openvpn-as

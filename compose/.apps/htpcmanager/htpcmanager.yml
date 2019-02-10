@@ -2,9 +2,13 @@
 # APPDESCRIPTION=Front end for many htpc related applications
 services:
   htpcmanager:
-    image: linuxserver/htpcmanager
     container_name: htpcmanager
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

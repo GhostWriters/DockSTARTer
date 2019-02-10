@@ -1,3 +1,0 @@
-services:
-  sonarr:
-    image: lsioarmhf/sonarr

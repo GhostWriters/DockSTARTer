@@ -1,3 +1,0 @@
-services:
-  couchpotato:
-    image: lsioarmhf/couchpotato-aarch64

@@ -1,0 +1,3 @@
+services:
+  duplicati:
+    image: linuxserver/duplicati

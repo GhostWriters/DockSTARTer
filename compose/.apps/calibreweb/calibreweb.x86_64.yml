@@ -1,0 +1,3 @@
+services:
+  calibreweb:
+    image: linuxserver/calibre-web

@@ -2,9 +2,13 @@
 # APPDESCRIPTION=A web file manager with console and editor
 services:
   cloudcmd:
-    image: coderaiser/cloudcmd
     container_name: cloudcmd
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - TZ=${TZ}
     volumes:

@@ -2,9 +2,13 @@
 # APPDESCRIPTION=HTPC/Homelab Services Organizer
 services:
   organizr:
-    image: organizrtools/organizr-v2:php-fpm
     container_name: organizr
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

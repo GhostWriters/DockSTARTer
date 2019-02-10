@@ -2,9 +2,13 @@
 # APPDESCRIPTION=Track and control all devices at home and automate control
 services:
   homeassistant:
-    image: homeassistant/home-assistant
     container_name: homeassistant
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - TZ=${TZ}
     volumes:

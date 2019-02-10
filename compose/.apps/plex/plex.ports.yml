@@ -2,13 +2,13 @@ services:
   plex:
     ports:
       - "${PLEX_PORT_1900}:1900/udp"
-      - "${PLEX_PORT_3005}:3005/tcp"
-      - "${PLEX_PORT_32400}:32400/tcp"
+      - "${PLEX_PORT_3005}:3005"
+      - "${PLEX_PORT_32400}:32400"
       - "${PLEX_PORT_32410}:32410/udp"
       - "${PLEX_PORT_32412}:32412/udp"
       - "${PLEX_PORT_32413}:32413/udp"
       - "${PLEX_PORT_32414}:32414/udp"
-      - "${PLEX_PORT_32469}:32469/tcp"
+      - "${PLEX_PORT_32469}:32469"
       - "${PLEX_PORT_33400}:33400"
       - "${PLEX_PORT_5353}:5353/udp"
-      - "${PLEX_PORT_8324}:8324/tcp"
+      - "${PLEX_PORT_8324}:8324"

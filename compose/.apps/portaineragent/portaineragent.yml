@@ -2,9 +2,13 @@
 # APPDESCRIPTION=An agent used to manage all the resources in a Swarm cluster
 services:
   portaineragent:
-    image: portainer/agent
     container_name: portaineragent
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - TZ=${TZ}
     volumes:

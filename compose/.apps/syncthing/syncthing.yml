@@ -2,9 +2,13 @@
 # APPDESCRIPTION=Open-source peer-to-peer file synchronization
 services:
   syncthing:
-    image: linuxserver/syncthing
     container_name: syncthing
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

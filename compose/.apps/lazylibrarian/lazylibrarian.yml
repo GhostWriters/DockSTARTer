@@ -2,9 +2,13 @@
 # APPDESCRIPTION=Book PVR Client
 services:
   lazylibrarian:
-    image: linuxserver/lazylibrarian
     container_name: lazylibrarian
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

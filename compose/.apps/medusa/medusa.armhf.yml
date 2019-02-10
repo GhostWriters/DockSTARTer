@@ -1,3 +1,0 @@
-services:
-  medusa:
-    image: lsioarmhf/medusa

@@ -2,9 +2,13 @@
 # APPDESCRIPTION=Lightweight, Full-featured BitTorrent client
 services:
   deluge:
-    image: linuxserver/deluge
     container_name: deluge
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

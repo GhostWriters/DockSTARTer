@@ -1,3 +1,0 @@
-services:
-  tautulli:
-    image: lsioarmhf/tautulli

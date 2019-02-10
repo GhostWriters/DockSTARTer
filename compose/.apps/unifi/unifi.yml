@@ -2,9 +2,13 @@
 # APPDESCRIPTION=Controller software for wireless networks
 services:
   unifi:
-    image: linuxserver/unifi
     container_name: unifi
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

@@ -1,0 +1,3 @@
+services:
+  lidarr:
+    image: linuxserver/lidarr

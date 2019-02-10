@@ -2,9 +2,13 @@
 # APPDESCRIPTION=Web app for browsing, reading and downloading eBooks
 services:
   calibreweb:
-    image: linuxserver/calibre-web
     container_name: calibreweb
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

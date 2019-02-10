@@ -2,9 +2,13 @@
 # APPDESCRIPTION=Comic book PVR client
 services:
   mylar:
-    image: linuxserver/mylar
     container_name: mylar
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

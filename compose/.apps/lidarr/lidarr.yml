@@ -2,9 +2,13 @@
 # APPDESCRIPTION=Music download manager for Usenet and BitTorrent users
 services:
   lidarr:
-    image: linuxserver/lidarr
     container_name: lidarr
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

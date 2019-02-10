@@ -1,3 +1,0 @@
-services:
-  headphones:
-    image: lsioarmhf/headphones-aarch64

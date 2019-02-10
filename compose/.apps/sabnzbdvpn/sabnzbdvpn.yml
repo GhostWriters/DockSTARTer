@@ -2,9 +2,13 @@
 # APPDESCRIPTION=SABnzbd, OpenVPN and Privoxy
 services:
   sabnzbdvpn:
-    image: binhex/arch-sabnzbdvpn
     container_name: sabnzbdvpn
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - ENABLE_PRIVOXY=${SABNZBDVPN_ENABLE_PRIVOXY}
       - LAN_NETWORK=${LAN_NETWORK}

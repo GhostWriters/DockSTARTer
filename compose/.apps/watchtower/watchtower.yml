@@ -2,13 +2,17 @@
 # APPDESCRIPTION=Automatically update running Docker containers
 services:
   watchtower:
-    image: v2tec/watchtower
     container_name: watchtower
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - TZ=${TZ}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
       - ${DOCKERSHAREDDIR}:/shared
-    command: --schedule "0 0 4 * * *" --cleanup
+    command: --schedule "${WATCHTOWER_CRON}" --cleanup

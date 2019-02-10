@@ -2,11 +2,16 @@
 # APPDESCRIPTION=Certificate authority that provides free X.509 certificates
 services:
   letsencrypt:
-    image: linuxserver/letsencrypt
     container_name: letsencrypt
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - DNSPLUGIN=${LETSENCRYPT_DNSPLUGIN}
+      - DUCKDNSTOKEN=${LETSENCRYPT_DUCKDNSTOKEN}
       - EMAIL=${LETSENCRYPT_EMAIL}
       - EXTRA_DOMAINS=${LETSENCRYPT_EXTRA_DOMAINS}
       - ONLY_SUBDOMAINS=${LETSENCRYPT_ONLY_SUBDOMAINS}

@@ -2,9 +2,13 @@
 # APPDESCRIPTION=Metrics dashboard and graph editor
 services:
   grafana:
-    image: grafana/grafana
     container_name: grafana
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - GF_INSTALL_PLUGINS=${GRAFANA_GF_INSTALL_PLUGINS}
       - TZ=${TZ}

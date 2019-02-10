@@ -1,3 +1,0 @@
-services:
-  jackett:
-    image: lsioarmhf/jackett

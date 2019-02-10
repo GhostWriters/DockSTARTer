@@ -2,9 +2,13 @@
 # APPDESCRIPTION=Cross-platform free and open-source BitTorrent client
 services:
   qbittorrent:
-    image: linuxserver/qbittorrent
     container_name: qbittorrent
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

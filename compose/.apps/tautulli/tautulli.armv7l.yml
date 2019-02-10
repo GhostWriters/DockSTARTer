@@ -1,0 +1,3 @@
+services:
+  tautulli:
+    image: linuxserver/tautulli

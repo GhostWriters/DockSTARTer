@@ -9,6 +9,7 @@ run_dnf() {
         docker-client \
         docker-client-latest \
         docker-common \
+        docker-compose \
         docker-latest \
         docker-latest-logrotate \
         docker-logrotate \
@@ -16,11 +17,13 @@ run_dnf() {
         docker-engine-selinux \
         docker-engine > /dev/null 2>&1 || true
     if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]]; then
-        info "Upgrading packages."
+        info "Upgrading packages. Please be patient, this can take a while."
         dnf -y upgrade --refresh > /dev/null 2>&1 || fatal "Failed to upgrade packages from dnf."
     fi
     info "Installing dependencies."
-    dnf -y install curl git grep newt rsync sed > /dev/null 2>&1 || fatal "Failed to install dependencies from dnf."
+    dnf -y install curl git grep newt python python-pip rsync sed > /dev/null 2>&1 || fatal "Failed to install dependencies from dnf."
+    # https://cryptography.io/en/latest/installation/#building-cryptography-on-linux
+    dnf -y install redhat-rpm-config gcc libffi-devel python-devel openssl-devel > /dev/null 2>&1 || fatal "Failed to install python cryptography dependencies from dnf."
     info "Removing unused packages."
     dnf -y autoremove > /dev/null 2>&1 || fatal "Failed to remove unused packages from dnf."
     info "Cleaning up package cache."

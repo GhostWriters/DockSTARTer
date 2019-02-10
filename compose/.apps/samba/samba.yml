@@ -2,7 +2,6 @@
 # APPDESCRIPTION=Access media directories and Docker config over Samba
 services:
   samba:
-    image: dperson/samba
     container_name: samba
     command:
       - -u "${SAMBA_USERNAME};${SAMBA_PASSWORD}" \
@@ -14,6 +13,11 @@ services:
         -s "Music;/data/music;yes;no;no;${SAMBA_USERNAME}" \
         -s "TV;/data/tv;yes;no;no;${SAMBA_USERNAME}"
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - GROUPID=${PGID}
       - TZ=${TZ}

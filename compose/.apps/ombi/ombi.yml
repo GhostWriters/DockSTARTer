@@ -2,9 +2,13 @@
 # APPDESCRIPTION=Allow your users to Request Movies, TV Shows and Albums
 services:
   ombi:
-    image: linuxserver/ombi
     container_name: ombi
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

@@ -2,9 +2,13 @@
 # APPDESCRIPTION=API Support for your favorite private trackers
 services:
   jackett:
-    image: linuxserver/jackett
     container_name: jackett
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
