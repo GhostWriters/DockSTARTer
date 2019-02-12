@@ -1,0 +1,4 @@
+services:
+  freshrss:
+    ports:
+      - "${FRESHRSS_PORT_80}:80"
