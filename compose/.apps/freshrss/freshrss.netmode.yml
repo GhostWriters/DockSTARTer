@@ -1,0 +1,3 @@
+services:
+  freshrss:
+    network_mode: ${FRESHRSS_NETWORK_MODE}
