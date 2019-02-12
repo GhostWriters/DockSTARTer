@@ -1,8 +1,8 @@
-# APPNICENAME=OpenVPNAS
-# APPDESCRIPTION=Secure network tunneling VPN
+# APPNICENAME=FreshRSS
+# APPDESCRIPTION=Free, self-hostable aggregator for rss feeds
 services:
-  openvpnas:
-    container_name: openvpnas
+  freshrss:
+    container_name: freshrss
     restart: unless-stopped
     logging:
       driver: "json-file"
@@ -10,13 +10,10 @@ services:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
-      - INTERFACE=${OPENVPNAS_INTERFACE}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/openvpnas:/config
+      - ${DOCKERCONFDIR}/freshrss:/config
       - ${DOCKERSHAREDDIR}:/shared
-    cap_add:
-      - NET_ADMIN
