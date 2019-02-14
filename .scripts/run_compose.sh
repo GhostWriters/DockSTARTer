@@ -64,11 +64,6 @@ run_compose() {
             [Yy]*)
                 run_script 'install_docker'
                 run_script 'install_compose'
-                local PUID
-                PUID=$(run_script 'env_get' PUID)
-                local PGID
-                PGID=$(run_script 'env_get' PGID)
-                run_script 'set_permissions' "${SCRIPTPATH}" "${PUID}" "${PGID}"
                 cd "${SCRIPTPATH}/compose/" || fatal "Failed to change directory to ${SCRIPTPATH}/compose/"
                 su "${DETECTED_UNAME}" -c "docker-compose ${COMPOSECOMMAND}" || fatal "Docker Compose failed."
                 cd "${SCRIPTPATH}" || fatal "Failed to change directory to ${SCRIPTPATH}"

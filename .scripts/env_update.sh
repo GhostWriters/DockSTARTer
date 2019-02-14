@@ -33,5 +33,7 @@ env_update() {
     run_script 'set_permissions' "${SCRIPTPATH}" "${PUID}" "${PGID}"
     local DOCKERCONFDIR
     DOCKERCONFDIR=$(run_script 'env_get' DOCKERCONFDIR)
-    run_script 'set_permissions' "${DOCKERCONFDIR}" "${PUID}" "${PGID}"
+    if [[ ${DOCKERCONFDIR} != ${SCRIPTPATH}* ]]; then
+        run_script 'set_permissions' "${DOCKERCONFDIR}" "${PUID}" "${PGID}"
+    fi
 }
