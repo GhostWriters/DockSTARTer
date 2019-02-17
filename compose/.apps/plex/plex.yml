@@ -4,6 +4,8 @@ services:
   plex:
     container_name: plex
     restart: unless-stopped
+    devices:
+    - /dev/dri:/dev/dri
     logging:
       driver: "json-file"
       options:
