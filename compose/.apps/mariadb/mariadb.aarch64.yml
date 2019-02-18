@@ -1,3 +1,3 @@
 services:
   mariadb:
-    image: lsioarmhf/mariadb-aarch64
+    image: linuxserver/mariadb

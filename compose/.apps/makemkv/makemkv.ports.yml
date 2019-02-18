@@ -1,0 +1,4 @@
+services:
+  makemkv:
+    ports:
+      - "${MAKEMKV_PORT_5800}:5800"
