@@ -3,6 +3,7 @@
 services:
   freshrss:
     container_name: freshrss
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

@@ -3,6 +3,7 @@
 services:
   sabnzbdvpn:
     container_name: sabnzbdvpn
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

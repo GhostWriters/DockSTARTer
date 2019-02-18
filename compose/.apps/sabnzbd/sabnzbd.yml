@@ -3,6 +3,7 @@
 services:
   sabnzbd:
     container_name: sabnzbd
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

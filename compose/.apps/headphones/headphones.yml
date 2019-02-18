@@ -3,6 +3,7 @@
 services:
   headphones:
     container_name: headphones
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

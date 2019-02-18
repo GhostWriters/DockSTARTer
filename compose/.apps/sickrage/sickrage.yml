@@ -3,6 +3,7 @@
 services:
   sickrage:
     container_name: sickrage
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"
