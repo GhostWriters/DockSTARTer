@@ -3,6 +3,7 @@
 services:
   muximux:
     container_name: muximux
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

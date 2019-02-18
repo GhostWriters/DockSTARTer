@@ -3,6 +3,7 @@
 services:
   deluge:
     container_name: deluge
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

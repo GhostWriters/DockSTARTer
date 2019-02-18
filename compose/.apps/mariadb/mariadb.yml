@@ -3,6 +3,7 @@
 services:
   mariadb:
     container_name: mariadb
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

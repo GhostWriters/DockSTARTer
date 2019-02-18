@@ -3,6 +3,7 @@
 services:
   phpmyadmin:
     container_name: phpmyadmin
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

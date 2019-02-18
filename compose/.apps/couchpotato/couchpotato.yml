@@ -3,6 +3,7 @@
 services:
   couchpotato:
     container_name: couchpotato
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

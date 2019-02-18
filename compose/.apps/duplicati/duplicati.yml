@@ -3,6 +3,7 @@
 services:
   duplicati:
     container_name: duplicati
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

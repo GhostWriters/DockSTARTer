@@ -24,6 +24,14 @@ menu_value_prompt() {
             SYSTEM_VAL="${DETECTED_HOMEDIR}/.docker/config"
             VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
             ;;
+        DOCKERGID)
+            SYSTEM_VAL=$(cut -d: -f3 < <(getent group docker))
+            VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
+            ;;
+        DOCKERHOSTNAME)
+            SYSTEM_VAL=${HOSTNAME}
+            VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
+            ;;
         DOCKERSHAREDDIR)
             SYSTEM_VAL="${DETECTED_HOMEDIR}/.docker/config/shared"
             VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
