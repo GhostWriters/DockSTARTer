@@ -3,6 +3,7 @@
 services:
   ombi:
     container_name: ombi
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

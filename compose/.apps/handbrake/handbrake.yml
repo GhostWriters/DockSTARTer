@@ -1,0 +1,22 @@
+# APPNICENAME=HandBrake
+# APPDESCRIPTION=Tool for converting video from nearly any format to a selection of modern, widely supported codecs
+services:
+  handbrake:
+    container_name: handbrake
+    hostname: ${DOCKERHOSTNAME}
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    environment:
+      - GROUP_ID=${PGID}
+      - USER_ID=${PUID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/handbrake:/config
+      - ${DOCKERSHAREDDIR}:/shared
+      - ${HANDBRAKE_OUTPUTDIR}:/output
+      - ${HANDBRAKE_WATCHDIR}:/watch

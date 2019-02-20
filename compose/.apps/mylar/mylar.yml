@@ -3,6 +3,7 @@
 services:
   mylar:
     container_name: mylar
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

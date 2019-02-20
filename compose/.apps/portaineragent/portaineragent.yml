@@ -3,6 +3,7 @@
 services:
   portaineragent:
     container_name: portaineragent
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

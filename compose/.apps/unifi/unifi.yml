@@ -3,6 +3,7 @@
 services:
   unifi:
     container_name: unifi
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

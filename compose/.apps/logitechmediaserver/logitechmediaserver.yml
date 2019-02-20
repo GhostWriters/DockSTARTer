@@ -3,6 +3,7 @@
 services:
   logitechmediaserver:
     container_name: logitechmediaserver
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

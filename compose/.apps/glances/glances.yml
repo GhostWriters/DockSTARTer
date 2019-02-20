@@ -3,6 +3,7 @@
 services:
   glances:
     container_name: glances
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

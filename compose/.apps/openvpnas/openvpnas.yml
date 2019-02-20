@@ -3,6 +3,7 @@
 services:
   openvpnas:
     container_name: openvpnas
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"
@@ -18,4 +19,5 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/openvpnas:/config
       - ${DOCKERSHAREDDIR}:/shared
-    privileged: true
+    cap_add:
+      - NET_ADMIN

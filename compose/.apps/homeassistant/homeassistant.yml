@@ -3,6 +3,7 @@
 services:
   homeassistant:
     container_name: homeassistant
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

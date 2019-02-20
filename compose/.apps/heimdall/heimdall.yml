@@ -3,6 +3,7 @@
 services:
   heimdall:
     container_name: heimdall
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

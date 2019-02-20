@@ -3,6 +3,7 @@
 services:
   rtorrentvpn:
     container_name: rtorrentvpn
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

@@ -3,6 +3,7 @@
 services:
   thelounge:
     container_name: thelounge
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

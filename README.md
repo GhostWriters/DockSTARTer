@@ -17,6 +17,8 @@ You may choose to rely on DockSTARTer for various changes to your Docker system,
 
 ![Value Prompt](https://i.imgur.com/k1bdAoQ.png)
 
+![Command Line Interface](https://i.imgur.com/Y8F3uT2.png)
+
 ## Getting Started
 
 ### One Time Setup (required)
@@ -45,6 +47,25 @@ sudo yum install curl git
 bash -c "$(curl -fsSL https://get.dockstarter.com)"
 sudo reboot
 ```
+
+<details>
+  <summary>Advanced install (any system)</summary>
+
+The standard install above downloads the initial script using a method with some known risks. For those concerned with the security of the above method here is an alternative:
+
+<pre><code class="bash">
+# NOTE: Run the appropriate command for your distro
+sudo apt-get install curl git
+sudo dnf install curl git
+sudo yum install curl git
+
+# NOTE: Do not sudo the next line.
+git clone https://github.com/GhostWriters/DockSTARTer "/home/${USER}/.docker"
+sudo bash /home/${USER}/.docker/main.sh -i
+sudo reboot
+</code></pre>
+
+</details>
 
 ### Running DockSTARTer
 

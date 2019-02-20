@@ -3,6 +3,7 @@
 services:
   monitorr:
     container_name: monitorr
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"
