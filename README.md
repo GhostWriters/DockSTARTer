@@ -53,7 +53,7 @@ sudo reboot
 
 The standard install above downloads the initial script using a method with some known risks. For those concerned with the security of the above method here is an alternative:
 
-```bash
+<pre><code class="bash">
 # NOTE: Run the appropriate command for your distro
 sudo apt-get install curl git
 sudo dnf install curl git
@@ -63,7 +63,7 @@ sudo yum install curl git
 git clone https://github.com/GhostWriters/DockSTARTer "/home/${USER}/.docker"
 sudo bash /home/${USER}/.docker/main.sh -i
 sudo reboot
-```
+</code></pre>
 
 </details>
 
