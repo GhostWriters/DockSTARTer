@@ -12,7 +12,11 @@ menu_main() {
     MAINOPTS+=("Prune Docker System " "Remove all unused containers, networks, volumes, images and build cache")
 
     local MAINCHOICE
-    MAINCHOICE=$(whiptail --fb --clear --title "DockSTARTer" --cancel-button "Exit" --menu "What would you like to do?" 0 0 0 "${MAINOPTS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
+    if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
+        MAINCHOICE="Cancel"
+    else
+        MAINCHOICE=$(whiptail --fb --clear --title "DockSTARTer" --cancel-button "Exit" --menu "What would you like to do?" 0 0 0 "${MAINOPTS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
+    fi
 
     case "${MAINCHOICE}" in
         "Configuration ")
@@ -22,13 +26,13 @@ menu_main() {
             run_script 'run_install' || run_script 'menu_main'
             ;;
         "Update DockSTARTer ")
-            run_script 'update_self' || run_script 'menu_main'
+            run_script 'update_self' "${INTERFACE:-false}" || run_script 'menu_main'
             ;;
         "Backup Configs ")
             run_script 'menu_backup' || run_script 'menu_main'
             ;;
         "Prune Docker System ")
-            run_script 'prune_docker' || run_script 'menu_main'
+            run_script 'prune_docker' "${INTERFACE:-false}" || run_script 'menu_main'
             ;;
         "Cancel")
             info "Exiting DockSTARTer."

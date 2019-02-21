@@ -54,22 +54,22 @@ cmdline() {
             c)
                 case ${OPTARG} in
                     down)
-                        run_script 'run_compose' down
+                        run_script 'run_compose' "${INTERFACE:-false}" down
                         ;;
                     generate)
                         run_script 'generate_yml'
                         ;;
                     pull)
                         run_script 'generate_yml'
-                        run_script 'run_compose' pull
+                        run_script 'run_compose' "${INTERFACE:-false}" pull
                         ;;
                     restart)
                         run_script 'generate_yml'
-                        run_script 'run_compose' restart
+                        run_script 'run_compose' "${INTERFACE:-false}" restart
                         ;;
                     up)
                         run_script 'generate_yml'
-                        run_script 'run_compose' up
+                        run_script 'run_compose' "${INTERFACE:-false}" up
                         ;;
                     *)
                         fatal "Invalid compose option."
@@ -90,7 +90,7 @@ cmdline() {
                 exit
                 ;;
             p)
-                run_script 'prune_docker'
+                run_script 'prune_docker' "${INTERFACE:-false}"
                 exit
                 ;;
             t)
@@ -98,7 +98,7 @@ cmdline() {
                 exit
                 ;;
             u)
-                run_script 'update_self' "${OPTARG}"
+                run_script 'update_self' "${INTERFACE:-false}" "${OPTARG}"
                 exit
                 ;;
             v)
@@ -112,10 +112,10 @@ cmdline() {
                 case ${OPTARG} in
                     c)
                         run_script 'generate_yml'
-                        run_script 'run_compose'
+                        run_script 'run_compose' "${INTERFACE:-false}"
                         ;;
                     u)
-                        run_script 'update_self'
+                        run_script 'update_self' "${INTERFACE:-false}"
                         ;;
                     *)
                         fatal "${OPTARG} requires an option."

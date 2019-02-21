@@ -44,7 +44,7 @@ usage() {
 readonly ARGS=("$@")
 
 # Github Token for Travis CI
-if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS} == true ]]; then
+if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == true ]]; then
     readonly GH_HEADER="Authorization: token ${GH_TOKEN}"
 fi
 
@@ -135,7 +135,7 @@ cleanup() {
     if [[ ${SCRIPTPATH} == "${DETECTED_HOMEDIR}/.docker" ]]; then
         chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
     fi
-    if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS} == false ]]; then
+    if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == false ]]; then
         warning "TRAVIS_SECURE_ENV_VARS is false for Pull Requests from remote branches. Please retry failed builds!"
     fi
 }
@@ -176,7 +176,7 @@ main() {
     # shellcheck source=/dev/null
     source "${SCRIPTPATH}/.scripts/cmdline.sh"
     cmdline "${ARGS[@]:-}"
-    readonly PROMPT="menu"
+    readonly INTERFACE="GUI"
     run_script 'menu_main'
 }
 main
