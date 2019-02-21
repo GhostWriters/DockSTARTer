@@ -17,9 +17,9 @@ install_compose() {
         pip uninstall docker-py > /dev/null 2>&1 || true
 
         info "Installing latest docker-compose."
-        pip install -IU setuptools > /dev/null 2>&1 || warning "Failed to install setuptools from pip."
-        pip install -IU "urllib3[secure]" > /dev/null 2>&1 || warning "Failed to install urllib3[secure] from pip."
-        pip install -IU docker-compose > /dev/null 2>&1 || fatal "Failed to install docker-compose from pip."
+        pip install -IUq setuptools > /dev/null 2>&1 || warning "Failed to install setuptools from pip. This can usually be ignored."
+        pip install -IUq "urllib3[secure]" > /dev/null 2>&1 || warning "Failed to install urllib3[secure] from pip. This can usually be ignored."
+        pip install -IUq docker-compose > /dev/null 2>&1 || fatal "Failed to install docker-compose from pip."
 
         local UPDATED_COMPOSE
         UPDATED_COMPOSE=$( (docker-compose --version 2> /dev/null || true) | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
