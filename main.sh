@@ -90,6 +90,13 @@ fatal() {
     exit 1
 }
 
+# Root Check
+root_check() {
+    if [[ ${DETECTED_PUID} == "0" ]] || [[ ${DETECTED_HOMEDIR} == "/root" ]]; then
+        fatal "Running as root is not supported. Please run as a standard user with sudo."
+    fi
+}
+
 # Script Runner Function
 run_script() {
     local SCRIPTSNAME="${1:-}"
@@ -116,12 +123,12 @@ run_test() {
     fi
 }
 
-# Root Check
-root_check() {
-    if [[ ${DETECTED_PUID} == "0" ]] || [[ ${DETECTED_HOMEDIR} == "/root" ]]; then
-        fatal "Running as root is not supported. Please run as a standard user with sudo."
-    fi
-}
+# Version functions
+# https://stackoverflow.com/questions/4023830/how-to-compare-two-strings-in-dot-separated-version-format-in-bash#comment92693604_4024263
+vergte() { printf '%s\n%s' "${2}" "${1}" | sort -C -V; }
+vergt() { ! verlte "${1}" "${2}"; }
+verlte() { printf '%s\n%s' "${1}" "${2}" | sort -C -V; }
+verlt() { ! verlte "${2}" "${1}"; }
 
 # Cleanup Function
 cleanup() {
