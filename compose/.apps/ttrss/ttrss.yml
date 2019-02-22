@@ -3,6 +3,7 @@
 services:
   ttrss:
     container_name: ttrss
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

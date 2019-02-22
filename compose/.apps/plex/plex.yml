@@ -3,6 +3,7 @@
 services:
   plex:
     container_name: plex
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     devices:
       - /dev/dri:/dev/dri

@@ -3,6 +3,7 @@
 services:
   h5ai:
     container_name: h5ai
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

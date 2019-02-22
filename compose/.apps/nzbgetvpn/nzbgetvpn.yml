@@ -3,6 +3,7 @@
 services:
   nzbgetvpn:
     container_name: nzbgetvpn
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

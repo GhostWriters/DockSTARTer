@@ -3,6 +3,7 @@
 services:
   airsonic:
     container_name: airsonic
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

@@ -3,6 +3,7 @@
 services:
   nextcloud:
     container_name: nextcloud
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"
