@@ -30,24 +30,26 @@ menu_app_select() {
         fi
     done < <(grep '_ENABLED=' < "${SCRIPTPATH}/compose/.env")
 
-    if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]]; then
-        local SELECTEDAPPS
+    local SELECTEDAPPS
+    if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
+        SELECTEDAPPS="Cancel"
+    else
         SELECTEDAPPS=$(whiptail --fb --clear --title "DockSTARTer" --separate-output --checklist 'Choose which apps you would like to install:\n Use [up], [down], and [space] to select apps, and [tab] to switch to the buttons at the bottom.' 0 0 0 "${APPLIST[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
-        if [[ ${SELECTEDAPPS} == "Cancel" ]]; then
-            return 1
-        else
-            info "Disabling all apps."
-            while IFS= read -r line; do
-                local APPNAME
-                APPNAME=${line%%_ENABLED=true}
-                run_script 'env_set' "${APPNAME}_ENABLED" false
-            done < <(grep '_ENABLED=true$' < "${SCRIPTPATH}/compose/.env")
-            info "Enabling selected apps."
-            while IFS= read -r line; do
-                local APPNAME
-                APPNAME=${line^^}
-                run_script 'env_set' "${APPNAME}_ENABLED" true
-            done < <(echo "${SELECTEDAPPS}")
-        fi
+    fi
+    if [[ ${SELECTEDAPPS} == "Cancel" ]]; then
+        return 1
+    else
+        info "Disabling all apps."
+        while IFS= read -r line; do
+            local APPNAME
+            APPNAME=${line%%_ENABLED=true}
+            run_script 'env_set' "${APPNAME}_ENABLED" false
+        done < <(grep '_ENABLED=true$' < "${SCRIPTPATH}/compose/.env")
+        info "Enabling selected apps."
+        while IFS= read -r line; do
+            local APPNAME
+            APPNAME=${line^^}
+            run_script 'env_set' "${APPNAME}_ENABLED" true
+        done < <(echo "${SELECTEDAPPS}")
     fi
 }
