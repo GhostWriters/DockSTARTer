@@ -3,18 +3,16 @@ set -euo pipefail
 IFS=$'\n\t'
 
 question_prompt() {
-    local PROMPT
-    PROMPT=${1:-false}
     local DEFAULT
-    DEFAULT=${2:-Y}
+    DEFAULT=${1:-Y}
     local QUESTION
-    QUESTION=${3:-}
+    QUESTION=${2:-}
     local YN
     while true; do
-        if [[ ${PROMPT} == "CLI" ]]; then
+        if [[ ${PROMPT:-} == "CLI" ]]; then
             info "${QUESTION}"
             read -rp "[Yn]" YN
-        elif [[ ${PROMPT} == "GUI" ]]; then
+        elif [[ ${PROMPT:-} == "GUI" ]]; then
             local WHIPTAIL_DEFAULT
             if [[ ${DEFAULT} == "N" ]]; then
                 WHIPTAIL_DEFAULT=" --defaultno "

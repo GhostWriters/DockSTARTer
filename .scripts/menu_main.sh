@@ -26,13 +26,13 @@ menu_main() {
             run_script 'run_install' || run_script 'menu_main'
             ;;
         "Update DockSTARTer ")
-            run_script 'update_self' "${INTERFACE:-false}" || run_script 'menu_main'
+            run_script 'update_self' || run_script 'menu_main'
             ;;
         "Backup Configs ")
             run_script 'menu_backup' || run_script 'menu_main'
             ;;
         "Prune Docker System ")
-            run_script 'prune_docker' "${INTERFACE:-false}" || run_script 'menu_main'
+            run_script 'prune_docker' || run_script 'menu_main'
             ;;
         "Cancel")
             info "Exiting DockSTARTer."
