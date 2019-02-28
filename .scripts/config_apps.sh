@@ -10,3 +10,8 @@ config_apps() {
         run_script 'menu_app_vars' "${APPNAME}" || return 1
     done < <(grep '_ENABLED=true$' < "${SCRIPTPATH}/compose/.env")
 }
+
+test_config_apps() {
+    # run_script 'config_apps'
+    warning "Travis does not test config_apps."
+}

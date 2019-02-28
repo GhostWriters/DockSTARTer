@@ -9,3 +9,7 @@ env_get() {
     VAR_VAL=$(grep "^${GET_VAR}=" "${SCRIPTPATH}/compose/.env" | xargs || true)
     echo "${VAR_VAL#*=}"
 }
+
+test_env_get() {
+    run_script 'env_get' DOCKERCONFDIR
+}

@@ -33,3 +33,7 @@ backup_med() {
     eval "${BACKUP_CMD_POST_RUN}" || error "Failed to execute BACKUP_CMD_POST_RUN."
     info "All backups complete."
 }
+
+test_backup_med() {
+    run_script 'backup_med'
+}

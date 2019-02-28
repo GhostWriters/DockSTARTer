@@ -114,12 +114,18 @@ run_script() {
 run_test() {
     local TESTSNAME="${1:-}"
     shift
-    if [[ -f ${SCRIPTPATH}/.tests/${TESTSNAME}.sh ]]; then
-        # shellcheck source=/dev/null
-        source "${SCRIPTPATH}/.tests/${TESTSNAME}.sh"
-        ${TESTSNAME} "$@"
+    if [[ -f ${SCRIPTPATH}/.scripts/${TESTSNAME}.sh ]]; then
+        if grep -q "test_${TESTSNAME}" "${SCRIPTPATH}/.scripts/${TESTSNAME}.sh"; then
+            info "Testing ${TESTSNAME}."
+            # shellcheck source=/dev/null
+            source "${SCRIPTPATH}/.scripts/${TESTSNAME}.sh"
+            eval "test_${TESTSNAME}" "$@" || fatal "Failed to run ${TESTSNAME}."
+            info "Completed testing ${TESTSNAME}."
+        else
+            fatal "Test function in ${SCRIPTPATH}/.scripts/${TESTSNAME}.sh not found."
+        fi
     else
-        fatal "${SCRIPTPATH}/.tests/${TESTSNAME}.sh not found."
+        fatal "${SCRIPTPATH}/.scripts/${TESTSNAME}.sh not found."
     fi
 }
 

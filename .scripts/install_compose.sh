@@ -28,3 +28,8 @@ install_compose() {
         fi
     fi
 }
+
+test_install_compose() {
+    run_script 'install_compose'
+    docker-compose --version || fatal "Failed to determine docker-compose version."
+}

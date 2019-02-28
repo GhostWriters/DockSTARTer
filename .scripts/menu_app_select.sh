@@ -53,3 +53,8 @@ menu_app_select() {
         done < <(echo "${SELECTEDAPPS}")
     fi
 }
+
+test_menu_app_select() {
+    # run_script 'menu_app_select'
+    warning "Travis does not test menu_app_select."
+}

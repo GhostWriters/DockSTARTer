@@ -11,3 +11,7 @@ prune_docker() {
     fi
     docker system prune -a --volumes --force || error "Failed to remove unused docker resources."
 }
+
+test_prune_docker() {
+    run_script 'prune_docker'
+}

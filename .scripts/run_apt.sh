@@ -25,3 +25,7 @@ run_apt() {
     info "Cleaning up package cache."
     apt-get -y autoclean > /dev/null 2>&1 || fatal "Failed to cleanup cache from apt."
 }
+
+test_run_apt() {
+    run_script 'run_apt'
+}

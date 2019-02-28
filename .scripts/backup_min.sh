@@ -14,3 +14,7 @@ backup_min() {
     eval "${BACKUP_CMD_POST_RUN}" || error "Failed to execute BACKUP_CMD_POST_RUN."
     info "All backups complete."
 }
+
+test_backup_min() {
+    run_script 'backup_min'
+}
