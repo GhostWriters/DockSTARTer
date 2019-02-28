@@ -3,10 +3,8 @@ set -euo pipefail
 IFS=$'\n\t'
 
 run_compose() {
-    local PROMPT
-    PROMPT=${1:-false}
     local COMMAND
-    COMMAND=${2:-}
+    COMMAND=${1:-}
     local COMPOSECOMMAND
     local COMMANDINFO
     case ${COMMAND} in
@@ -31,7 +29,7 @@ run_compose() {
             COMMANDINFO="Creating containers for all enabled services."
             ;;
     esac
-    if run_script 'question_prompt' "${PROMPT}" Y "Would you like to run compose now?"; then
+    if run_script 'question_prompt' Y "Would you like to run compose now?"; then
         info "${COMMANDINFO}"
     else
         info "Compose will not be run."

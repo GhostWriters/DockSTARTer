@@ -3,11 +3,9 @@ set -euo pipefail
 IFS=$'\n\t'
 
 update_self() {
-    local PROMPT
-    PROMPT=${1:-false}
     local BRANCH
-    BRANCH=${2:-origin/master}
-    if run_script 'question_prompt' "${PROMPT}" Y "Would you like to update DockSTARTer to ${BRANCH} now?"; then
+    BRANCH=${1:-origin/master}
+    if run_script 'question_prompt' Y "Would you like to update DockSTARTer to ${BRANCH} now?"; then
         info "Updating DockSTARTer to ${BRANCH}."
     else
         info "DockSTARTer will not be updated to ${BRANCH}."

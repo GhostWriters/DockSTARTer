@@ -176,7 +176,7 @@ main() {
     # shellcheck source=/dev/null
     source "${SCRIPTPATH}/.scripts/cmdline.sh"
     cmdline "${ARGS[@]:-}"
-    readonly INTERFACE="GUI"
+    readonly PROMPT="GUI"
     run_script 'menu_main'
 }
 main
