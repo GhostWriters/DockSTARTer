@@ -59,6 +59,10 @@ get_scriptname() {
         SOURCE="$(readlink "${SOURCE}")"
         [[ ${SOURCE} != /* ]] && SOURCE="${DIR}/${SOURCE}" # if ${SOURCE} was a relative symlink, we need to resolve it relative to the path where the symlink file was located
     done
+    if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
+        echo "${TRAVIS_BUILD_DIR:-}/main.sh"
+        return
+    fi
     echo "${SOURCE}"
 }
 readonly SCRIPTNAME="$(get_scriptname)"
