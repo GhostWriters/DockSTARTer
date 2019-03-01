@@ -29,8 +29,3 @@ run_dnf() {
     info "Cleaning up package cache."
     dnf -y clean all > /dev/null 2>&1 || fatal "Failed to cleanup cache from dnf."
 }
-
-test_run_dnf() {
-    # run_script 'run_dnf'
-    warning "Travis does not test run_dnf."
-}
