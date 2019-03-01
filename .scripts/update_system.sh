@@ -16,3 +16,7 @@ update_system() {
         fatal "Package manager not detected!"
     fi
 }
+
+test_update_system() {
+    run_script 'update_system'
+}

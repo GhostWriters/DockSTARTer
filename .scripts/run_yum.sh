@@ -30,3 +30,8 @@ run_yum() {
     info "Cleaning up package cache."
     yum -y clean all > /dev/null 2>&1 || fatal "Failed to cleanup cache from yum."
 }
+
+test_run_yum() {
+    # run_script 'run_yum'
+    warning "Travis does not test run_yum."
+}

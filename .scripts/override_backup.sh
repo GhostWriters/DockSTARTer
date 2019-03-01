@@ -15,3 +15,7 @@ override_backup() {
         find "${DOCKERCONFDIR}/.compose.backups" -type f -name "docker-compose.override.yml.*" -mtime +3 -delete > /dev/null 2>&1 || warning "Old docker-compose.override.yml backups not removed."
     fi
 }
+
+test_override_backup() {
+    run_script 'override_backup'
+}

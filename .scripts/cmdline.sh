@@ -131,3 +131,8 @@ cmdline() {
     done
     return 0
 }
+
+test_cmdline() {
+    # run_script 'cmdline'
+    warning "Travis does not test cmdline."
+}

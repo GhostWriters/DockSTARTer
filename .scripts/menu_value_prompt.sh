@@ -265,3 +265,8 @@ menu_value_prompt() {
         esac
     fi
 }
+
+test_menu_value_prompt() {
+    # run_script 'menu_value_prompt'
+    warning "Travis does not test menu_value_prompt."
+}

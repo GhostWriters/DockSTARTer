@@ -19,3 +19,7 @@ update_self() {
     chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
     run_script 'env_update'
 }
+
+test_update_self() {
+    run_script 'update_self' "${TRAVIS_COMMIT:-}"
+}

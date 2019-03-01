@@ -13,3 +13,7 @@ setup_docker_group() {
         usermod -aG docker "${DETECTED_UNAME}" > /dev/null 2>&1 || fatal "Failed to add ${DETECTED_UNAME} to docker group."
     fi
 }
+
+test_setup_docker_group() {
+    run_script 'setup_docker_group'
+}

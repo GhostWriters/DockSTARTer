@@ -61,3 +61,8 @@ menu_config() {
             ;;
     esac
 }
+
+test_menu_config() {
+    # run_script 'menu_config'
+    warning "Travis does not test menu_config."
+}

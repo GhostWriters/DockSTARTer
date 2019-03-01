@@ -9,3 +9,7 @@ request_reboot() {
     warning "Failure to reboot on first run can cause errors with other operations."
     info "If this is not your first run you may disregard this message."
 }
+
+test_request_reboot() {
+    run_script 'request_reboot'
+}

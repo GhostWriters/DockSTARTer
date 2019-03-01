@@ -11,3 +11,8 @@ enable_docker_systemd() {
         systemctl start docker > /dev/null 2>&1 || fatal "Failed to start docker service."
     fi
 }
+
+test_enable_docker_systemd() {
+    run_script 'install_docker'
+    run_script 'enable_docker_systemd'
+}

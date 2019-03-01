@@ -45,3 +45,7 @@ question_prompt() {
         esac
     done
 }
+
+test_question_prompt() {
+    run_script 'question_prompt'
+}

@@ -39,3 +39,8 @@ menu_backup() {
             ;;
     esac
 }
+
+test_menu_backup() {
+    # run_script 'menu_backup'
+    warning "Travis does not test menu_backup."
+}

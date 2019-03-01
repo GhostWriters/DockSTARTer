@@ -43,3 +43,8 @@ menu_main() {
             ;;
     esac
 }
+
+test_menu_main() {
+    # run_script 'menu_main'
+    warning "Travis does not test menu_main."
+}

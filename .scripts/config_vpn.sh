@@ -30,3 +30,8 @@ config_vpn() {
         done < <(echo "${APPVARS}")
     fi
 }
+
+test_config_vpn() {
+    # run_script 'config_vpn'
+    warning "Travis does not test config_vpn."
+}

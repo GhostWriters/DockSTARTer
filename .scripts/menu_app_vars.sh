@@ -26,3 +26,8 @@ menu_app_vars() {
         done < <(echo "${APPVARS}")
     fi
 }
+
+test_menu_app_vars() {
+    # run_script 'menu_app_vars'
+    warning "Travis does not test menu_app_vars."
+}
