@@ -28,3 +28,7 @@ env_sanitize() {
         run_script 'env_set' WATCHTOWER_NETWORK_MODE ""
     fi
 }
+
+test_env_sanitize() {
+    run_script 'env_sanitize'
+}

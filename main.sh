@@ -44,7 +44,7 @@ usage() {
 readonly ARGS=("$@")
 
 # Github Token for Travis CI
-if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS} == true ]]; then
+if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == true ]]; then
     readonly GH_HEADER="Authorization: token ${GH_TOKEN}"
 fi
 
@@ -59,6 +59,10 @@ get_scriptname() {
         SOURCE="$(readlink "${SOURCE}")"
         [[ ${SOURCE} != /* ]] && SOURCE="${DIR}/${SOURCE}" # if ${SOURCE} was a relative symlink, we need to resolve it relative to the path where the symlink file was located
     done
+    if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
+        echo "${TRAVIS_BUILD_DIR:-}/$(basename "${SOURCE}")"
+        return
+    fi
     echo "${SOURCE}"
 }
 readonly SCRIPTNAME="$(get_scriptname)"
@@ -90,6 +94,13 @@ fatal() {
     exit 1
 }
 
+# Root Check
+root_check() {
+    if [[ ${DETECTED_PUID} == "0" ]] || [[ ${DETECTED_HOMEDIR} == "/root" ]]; then
+        fatal "Running as root is not supported. Please run as a standard user with sudo."
+    fi
+}
+
 # Script Runner Function
 run_script() {
     local SCRIPTSNAME="${1:-}"
@@ -107,28 +118,34 @@ run_script() {
 run_test() {
     local TESTSNAME="${1:-}"
     shift
-    if [[ -f ${SCRIPTPATH}/.tests/${TESTSNAME}.sh ]]; then
-        # shellcheck source=/dev/null
-        source "${SCRIPTPATH}/.tests/${TESTSNAME}.sh"
-        ${TESTSNAME} "$@"
+    if [[ -f ${SCRIPTPATH}/.scripts/${TESTSNAME}.sh ]]; then
+        if grep -q "test_${TESTSNAME}" "${SCRIPTPATH}/.scripts/${TESTSNAME}.sh"; then
+            info "Testing ${TESTSNAME}."
+            # shellcheck source=/dev/null
+            source "${SCRIPTPATH}/.scripts/${TESTSNAME}.sh"
+            eval "test_${TESTSNAME}" "$@" || fatal "Failed to run ${TESTSNAME}."
+            info "Completed testing ${TESTSNAME}."
+        else
+            fatal "Test function in ${SCRIPTPATH}/.scripts/${TESTSNAME}.sh not found."
+        fi
     else
-        fatal "${SCRIPTPATH}/.tests/${TESTSNAME}.sh not found."
+        fatal "${SCRIPTPATH}/.scripts/${TESTSNAME}.sh not found."
     fi
 }
 
-# Root Check
-root_check() {
-    if [[ ${DETECTED_PUID} == "0" ]] || [[ ${DETECTED_HOMEDIR} == "/root" ]]; then
-        fatal "Running as root is not supported. Please run as a standard user with sudo."
-    fi
-}
+# Version functions
+# https://stackoverflow.com/questions/4023830/how-to-compare-two-strings-in-dot-separated-version-format-in-bash#comment92693604_4024263
+vergte() { printf '%s\n%s' "${2}" "${1}" | sort -C -V; }
+vergt() { ! verlte "${1}" "${2}"; }
+verlte() { printf '%s\n%s' "${1}" "${2}" | sort -C -V; }
+verlt() { ! verlte "${2}" "${1}"; }
 
 # Cleanup Function
 cleanup() {
     if [[ ${SCRIPTPATH} == "${DETECTED_HOMEDIR}/.docker" ]]; then
         chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
     fi
-    if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS} == false ]]; then
+    if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == false ]]; then
         warning "TRAVIS_SECURE_ENV_VARS is false for Pull Requests from remote branches. Please retry failed builds!"
     fi
 }
@@ -169,7 +186,7 @@ main() {
     # shellcheck source=/dev/null
     source "${SCRIPTPATH}/.scripts/cmdline.sh"
     cmdline "${ARGS[@]:-}"
-    readonly PROMPT="menu"
+    readonly PROMPT="GUI"
     run_script 'menu_main'
 }
 main

@@ -3,6 +3,7 @@
 services:
   jackett:
     container_name: jackett
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

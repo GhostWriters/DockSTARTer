@@ -3,6 +3,7 @@
 services:
   ddclient:
     container_name: ddclient
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

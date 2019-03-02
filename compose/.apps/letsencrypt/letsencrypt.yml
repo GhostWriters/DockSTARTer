@@ -3,6 +3,7 @@
 services:
   letsencrypt:
     container_name: letsencrypt
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

@@ -3,6 +3,7 @@
 services:
   plex:
     container_name: plex
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

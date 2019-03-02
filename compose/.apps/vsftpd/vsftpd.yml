@@ -3,6 +3,7 @@
 services:
   vsftpd:
     container_name: vsftpd
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

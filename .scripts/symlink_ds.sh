@@ -25,3 +25,7 @@ symlink_ds() {
         chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
     fi
 }
+
+test_symlink_ds() {
+    run_script 'symlink_ds'
+}

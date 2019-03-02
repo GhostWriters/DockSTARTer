@@ -3,6 +3,7 @@
 services:
   transmission:
     container_name: transmission
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

@@ -11,3 +11,7 @@ env_create() {
     fi
     run_script 'env_sanitize'
 }
+
+test_env_create() {
+    run_script 'env_create'
+}

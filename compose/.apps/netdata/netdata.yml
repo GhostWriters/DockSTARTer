@@ -3,6 +3,7 @@
 services:
   netdata:
     container_name: netdata
+    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

@@ -12,7 +12,11 @@ menu_main() {
     MAINOPTS+=("Prune Docker System " "Remove all unused containers, networks, volumes, images and build cache")
 
     local MAINCHOICE
-    MAINCHOICE=$(whiptail --fb --clear --title "DockSTARTer" --cancel-button "Exit" --menu "What would you like to do?" 0 0 0 "${MAINOPTS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
+    if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
+        MAINCHOICE="Cancel"
+    else
+        MAINCHOICE=$(whiptail --fb --clear --title "DockSTARTer" --cancel-button "Exit" --menu "What would you like to do?" 0 0 0 "${MAINOPTS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
+    fi
 
     case "${MAINCHOICE}" in
         "Configuration ")
@@ -38,4 +42,9 @@ menu_main() {
             error "Invalid Option"
             ;;
     esac
+}
+
+test_menu_main() {
+    # run_script 'menu_main'
+    warning "Travis does not test menu_main."
 }

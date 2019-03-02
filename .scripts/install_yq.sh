@@ -7,10 +7,10 @@ install_yq() {
     local AVAILABLE_YQ
     AVAILABLE_YQ=$(curl -H "${GH_HEADER:-}" -s "https://api.github.com/repos/mikefarah/yq/releases/latest" | grep -Po '"tag_name": "[Vv]?\K.*?(?=")') || fatal "Failed to check latest available yq version."
     local INSTALLED_YQ
-    INSTALLED_YQ=$( (yq --version 2> /dev/null || true) | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
+    INSTALLED_YQ=$( (yq --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
     local FORCE
     FORCE=${1:-}
-    if [[ ${AVAILABLE_YQ} != "${INSTALLED_YQ}" ]] || [[ -n ${FORCE} ]]; then
+    if vergt "${AVAILABLE_YQ}" "${INSTALLED_YQ}" || [[ -n ${FORCE} ]]; then
         info "Installing latest yq."
         if [[ ${ARCH} == "aarch64" ]] || [[ ${ARCH} == "armv7l" ]]; then
             curl -H "${GH_HEADER:-}" -L "https://github.com/mikefarah/yq/releases/download/${AVAILABLE_YQ}/yq_linux_arm" -o /usr/local/bin/yq > /dev/null 2>&1 || fatal "Failed to install yq."
@@ -23,9 +23,14 @@ install_yq() {
         fi
         chmod +x /usr/local/bin/yq > /dev/null 2>&1 || true
         local UPDATED_YQ
-        UPDATED_YQ=$( (yq --version 2> /dev/null || true) | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
-        if [[ ${AVAILABLE_YQ} != "${UPDATED_YQ}" ]]; then
+        UPDATED_YQ=$( (yq --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
+        if vergt "${AVAILABLE_YQ}" "${UPDATED_YQ}"; then
             fatal "Failed to install the latest yq."
         fi
     fi
+}
+
+test_install_yq() {
+    run_script 'install_yq'
+    yq --version || fatal "Failed to determine yq version."
 }
