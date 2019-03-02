@@ -37,13 +37,13 @@ cmdline() {
             b)
                 case ${OPTARG} in
                     min)
-                        run_script "backup_min"
+                        run_script 'backup_min'
                         ;;
                     med)
-                        run_script "backup_med"
+                        run_script 'backup_med'
                         ;;
                     max)
-                        run_script "backup_max"
+                        run_script 'backup_max'
                         ;;
                     *)
                         fatal "Invalid backup option."
@@ -130,4 +130,9 @@ cmdline() {
         esac
     done
     return 0
+}
+
+test_cmdline() {
+    # run_script 'cmdline'
+    warning "Travis does not test cmdline."
 }

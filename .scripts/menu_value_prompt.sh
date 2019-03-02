@@ -221,14 +221,7 @@ menu_value_prompt() {
                 elif [[ ${INPUT} == ~* ]]; then
                     local CORRECTED_DIR
                     CORRECTED_DIR="${DETECTED_HOMEDIR}${INPUT#*~}"
-                    local ANSWER
-                    set +e
-                    ANSWER=$(
-                        whiptail --fb --clear --title "DockSTARTer" --yesno "Cannot use the ~ shortcut in ${SET_VAR}. Would you like to use ${CORRECTED_DIR} instead?." 0 0 3>&1 1>&2 2>&3
-                        echo $?
-                    )
-                    set -e
-                    if [[ ${ANSWER} == 0 ]]; then
+                    if run_script 'question_prompt' Y "Cannot use the ~ shortcut in ${SET_VAR}. Would you like to use ${CORRECTED_DIR} instead?"; then
                         run_script 'env_set' "${SET_VAR}" "${CORRECTED_DIR}"
                         whiptail --fb --clear --title "DockSTARTer" --msgbox "Returning to the previous menu to confirm selection." 0 0
                     else
@@ -237,25 +230,11 @@ menu_value_prompt() {
                     menu_value_prompt "${SET_VAR}"
                 elif [[ -d ${INPUT} ]]; then
                     run_script 'env_set' "${SET_VAR}" "${INPUT}"
-                    local ANSWER
-                    set +e
-                    ANSWER=$(
-                        whiptail --fb --clear --title "DockSTARTer" --yesno "Would you like to set permissions on ${INPUT} ?" 0 0 3>&1 1>&2 2>&3
-                        echo $?
-                    )
-                    set -e
-                    if [[ ${ANSWER} == 0 ]]; then
+                    if run_script 'question_prompt' Y "Would you like to set permissions on ${INPUT} ?"; then
                         run_script 'set_permissions' "${INPUT}" "${PUID}" "${PGID}"
                     fi
                 else
-                    local ANSWER
-                    set +e
-                    ANSWER=$(
-                        whiptail --fb --clear --title "DockSTARTer" --yesno "${INPUT} is not a valid path. Would you like to attempt to create it?" 0 0 3>&1 1>&2 2>&3
-                        echo $?
-                    )
-                    set -e
-                    if [[ ${ANSWER} == 0 ]]; then
+                    if run_script 'question_prompt' Y "${INPUT} is not a valid path. Would you like to attempt to create it?"; then
                         mkdir -p "${INPUT}" || fatal "${INPUT} folder could not be created."
                         run_script 'set_permissions' "${INPUT}" "${PUID}" "${PGID}"
                         run_script 'env_set' "${SET_VAR}" "${INPUT}"
@@ -268,14 +247,7 @@ menu_value_prompt() {
                 ;;
             P[GU]ID)
                 if [[ ${INPUT} == "0" ]]; then
-                    local ANSWER
-                    set +e
-                    ANSWER=$(
-                        whiptail --fb --clear --title "DockSTARTer" --yesno "Running as root is not recommended. Would you like to select a different ID?" 0 0 3>&1 1>&2 2>&3
-                        echo $?
-                    )
-                    set -e
-                    if [[ ${ANSWER} == 0 ]]; then
+                    if run_script 'question_prompt' Y "Running as root is not recommended. Would you like to select a different ID?"; then
                         menu_value_prompt "${SET_VAR}"
                     else
                         run_script 'env_set' "${SET_VAR}" "${INPUT}"
@@ -292,4 +264,9 @@ menu_value_prompt() {
                 ;;
         esac
     fi
+}
+
+test_menu_value_prompt() {
+    # run_script 'menu_value_prompt'
+    warning "Travis does not test menu_value_prompt."
 }

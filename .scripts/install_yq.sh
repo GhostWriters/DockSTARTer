@@ -29,3 +29,8 @@ install_yq() {
         fi
     fi
 }
+
+test_install_yq() {
+    run_script 'install_yq'
+    yq --version || fatal "Failed to determine yq version."
+}

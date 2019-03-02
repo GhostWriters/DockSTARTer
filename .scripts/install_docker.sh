@@ -26,3 +26,8 @@ install_docker() {
         fi
     fi
 }
+
+test_install_docker() {
+    run_script 'install_docker'
+    docker --version || fatal "Failed to determine docker version."
+}

@@ -20,3 +20,7 @@ env_backup() {
         rm -rf "${DOCKERCONFDIR}/.env.backups" || fatal "Failed to remove the ${DOCKERCONFDIR}/.env.backups folder."
     fi
 }
+
+test_env_backup() {
+    run_script 'env_backup'
+}

@@ -37,3 +37,7 @@ env_update() {
         run_script 'set_permissions' "${DOCKERCONFDIR}" "${PUID}" "${PGID}"
     fi
 }
+
+test_env_update() {
+    run_script 'env_update'
+}

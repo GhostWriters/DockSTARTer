@@ -16,3 +16,8 @@ env_set() {
     SED_REPLACE=$(sed 's/[&/\]/\\&/g' <<< "${SET_VAR}=${NEW_VAL}")
     sed -i "s/^${SED_FIND}$/${SED_REPLACE}/" "${SCRIPTPATH}/compose/.env" || fatal "Failed to set ${SED_REPLACE}"
 }
+
+test_env_set() {
+    run_script 'env_set' PORTAINER_ENABLED false
+    run_script 'env_get' PORTAINER_ENABLED
+}

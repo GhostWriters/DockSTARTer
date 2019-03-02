@@ -12,7 +12,11 @@ menu_config() {
     CONFIGOPTS+=("Set Global Variables " "")
 
     local CONFIGCHOICE
-    CONFIGCHOICE=$(whiptail --fb --clear --title "DockSTARTer" --menu "What would you like to do?" 0 0 0 "${CONFIGOPTS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
+    if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
+        CONFIGCHOICE="Cancel"
+    else
+        CONFIGCHOICE=$(whiptail --fb --clear --title "DockSTARTer" --menu "What would you like to do?" 0 0 0 "${CONFIGOPTS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
+    fi
 
     case "${CONFIGCHOICE}" in
         "Full Setup ")
@@ -20,7 +24,7 @@ menu_config() {
             run_script 'menu_app_select'
             run_script 'config_apps'
             run_script 'config_vpn'
-            run_script 'config_globals'
+            run_script 'config_global'
             run_script 'generate_yml'
             run_script 'run_compose'
             ;;
@@ -44,7 +48,7 @@ menu_config() {
             ;;
         "Set Global Variables ")
             run_script 'env_update'
-            run_script 'config_globals'
+            run_script 'config_global'
             run_script 'generate_yml'
             run_script 'run_compose'
             ;;
@@ -56,4 +60,9 @@ menu_config() {
             error "Invalid Option"
             ;;
     esac
+}
+
+test_menu_config() {
+    # run_script 'menu_config'
+    warning "Travis does not test menu_config."
 }

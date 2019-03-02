@@ -9,3 +9,7 @@ install_machine_completion() {
     info "Installing docker machine completion."
     curl -H "${GH_HEADER:-}" -L "https://raw.githubusercontent.com/docker/machine/${AVAILABLE_MACHINE_COMPLETION}/contrib/completion/bash/docker-machine.bash" -o /etc/bash_completion.d/docker-machine > /dev/null 2>&1 || fatal "Failed to install docker machine completion."
 }
+
+test_install_machine_completion() {
+    run_script 'install_machine_completion'
+}

@@ -39,3 +39,7 @@ set_permissions() {
     chmod -R a=,a+rX,u+w,g+w "${CH_PATH}" > /dev/null 2>&1 || true
     chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
 }
+
+test_set_permissions() {
+    run_script 'set_permissions'
+}

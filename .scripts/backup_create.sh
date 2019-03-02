@@ -275,3 +275,8 @@ backup_create() {
     run_script 'set_permissions' "${SNAPSHOT_DST}" "${PUID}" "${PGID}"
     info "Snapshot backup successfully done in $(($(date +%s) - STARTDATE)) sec."
 }
+
+test_backup_create() {
+    run_script 'env_update'
+    run_script 'backup_create' ".compose.backups"
+}
