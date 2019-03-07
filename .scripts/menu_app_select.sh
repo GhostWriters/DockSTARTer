@@ -15,9 +15,9 @@ menu_app_select() {
             if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml ]]; then
                 if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${ARCH}.yml ]]; then
                     local APPNICENAME
-                    APPNICENAME=$(grep '^# APPNICENAME=' "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml" | cut -c15- || echo "${APPNAME}")
+                    APPNICENAME=$(grep -Po '^# APPNICENAME=\K.*' "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml" | xargs || echo "${APPNAME}")
                     local APPDESCRIPTION
-                    APPDESCRIPTION=$(grep '^# APPDESCRIPTION=' "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml" | cut -c18- || echo "! Missing description !")
+                    APPDESCRIPTION=$(grep -Po '^# APPDESCRIPTION=\K.*' "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml" | xargs || echo "! Missing description !")
                     local APPONOFF
                     if [[ $(run_script 'env_get' "${APPNAME}_ENABLED") == true ]]; then
                         APPONOFF="on"
