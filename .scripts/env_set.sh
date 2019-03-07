@@ -8,7 +8,7 @@ env_set() {
     local NEW_VAL
     NEW_VAL=${2:-}
     local VAR_VAL
-    VAR_VAL=$(grep "^${SET_VAR}=" "${SCRIPTPATH}/compose/.env" | xargs) || fatal "Failed to find ${SET_VAR} in ${SCRIPTPATH}/compose/.env"
+    VAR_VAL=$(grep --color=never "^${SET_VAR}=" "${SCRIPTPATH}/compose/.env") || fatal "Failed to find ${SET_VAR} in ${SCRIPTPATH}/compose/.env"
     # https://stackoverflow.com/a/29613573/1384186
     local SED_FIND
     SED_FIND=$(sed 's/[^^]/[&]/g; s/\^/\\^/g' <<< "${VAR_VAL}")
