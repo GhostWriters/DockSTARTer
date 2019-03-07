@@ -36,7 +36,7 @@ IFS=$'\n\t'
 #/      debug
 #/
 usage() {
-    grep -Po '^#/\K.*' "${SCRIPTNAME}" | xargs || echo "Failed to display usage information."
+    grep -Po '^#/\K.*' "${SCRIPTNAME}" | xargs -d \n || echo "Failed to display usage information."
     exit
 }
 
