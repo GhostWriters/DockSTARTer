@@ -36,7 +36,7 @@ IFS=$'\n\t'
 #/      debug
 #/
 usage() {
-    grep '^#/' "${SCRIPTNAME}" | cut -c4- || echo "Failed to display usage information."
+    grep --color=never -Po '^#/\K.*' "${SCRIPTNAME}" || echo "Failed to display usage information."
     exit
 }
 
