@@ -10,7 +10,7 @@ run_compose() {
     case ${COMMAND} in
         down)
             COMPOSECOMMAND="down --remove-orphans"
-            COMMANDINFO="Stoping and removing containers, networks, volumes, and images created by DockSTARTer."
+            COMMANDINFO="Stopping and removing containers, networks, volumes, and images created by DockSTARTer."
             ;;
         pull)
             COMPOSECOMMAND="pull --include-deps"
