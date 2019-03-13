@@ -1,0 +1,4 @@
+services:
+  freshrss:
+    ports:
+      - "${BEETS_PORT_8337}:8337"
