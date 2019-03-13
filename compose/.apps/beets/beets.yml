@@ -1,5 +1,5 @@
-# APPNICENAME=FreshRSS
-# APPDESCRIPTION=Free, self-hostable aggregator for rss feeds
+# APPNICENAME=Beets
+# APPDESCRIPTION=music library manager and MusicBrainz tagger
 services:
   beets:
     container_name: beets
