@@ -1,5 +1,5 @@
 # APPNICENAME=Beets
-# APPDESCRIPTION=music library manager and MusicBrainz tagger
+# APPDESCRIPTION=Music library manager and MusicBrainz tagger
 services:
   beets:
     container_name: beets
@@ -18,5 +18,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/beets:/config
       - ${DOCKERSHAREDDIR}:/shared
-      - ${MEDIADIR_MUSIC}:/music
+      - ${DOWNLOADSDIR}:/data
       - ${DOWNLOADSDIR}:/downloads
+      - ${MEDIADIR_MUSIC}:/music
+
