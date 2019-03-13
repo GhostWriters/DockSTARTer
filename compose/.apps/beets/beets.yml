@@ -21,4 +21,3 @@ services:
       - ${DOWNLOADSDIR}:/data
       - ${DOWNLOADSDIR}:/downloads
       - ${MEDIADIR_MUSIC}:/music
-
