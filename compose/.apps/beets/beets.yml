@@ -1,0 +1,23 @@
+# APPNICENAME=Beets
+# APPDESCRIPTION=Music library manager and MusicBrainz tagger
+services:
+  beets:
+    container_name: beets
+    hostname: ${DOCKERHOSTNAME}
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/beets:/config
+      - ${DOCKERSHAREDDIR}:/shared
+      - ${DOWNLOADSDIR}:/data
+      - ${DOWNLOADSDIR}:/downloads
+      - ${MEDIADIR_MUSIC}:/music
