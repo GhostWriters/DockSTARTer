@@ -1,0 +1,3 @@
+services:
+  beets:
+    network_mode: ${BEETS_NETWORK_MODE}
