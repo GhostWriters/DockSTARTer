@@ -18,4 +18,4 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/resilio-sync:/config
       - ${DOCKERSHAREDDIR}:/shared
-      - ${RESILIO_SOURCEDIR}:/source
+      - ${RESILIO-SYNC_SOURCEDIR}:/source
