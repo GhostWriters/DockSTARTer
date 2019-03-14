@@ -65,8 +65,8 @@ get_scriptname() {
     fi
     echo "${SOURCE}"
 }
-readonly SCRIPTNAME="$(get_scriptname)"
-readonly SCRIPTPATH="$(cd -P "$(dirname "${SCRIPTNAME}")" > /dev/null && pwd)"
+readonly SCRIPTPATH="$(cd -P "$(dirname "$(get_scriptname)")" > /dev/null && pwd)"
+readonly SCRIPTNAME="${SCRIPTPATH}/$(basename "$(get_scriptname)")"
 
 # User/Group Information
 readonly DETECTED_PUID=${SUDO_UID:-$UID}
