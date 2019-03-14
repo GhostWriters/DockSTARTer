@@ -1,5 +1,5 @@
 # APPNICENAME=Resilio-sync
-# APPDESCRIPTION=Resilio Sync is a fast, reliable, and simple file sync and share solution, powered by P2P technology
+# APPDESCRIPTION=A fast, reliable, and simple file sync and share solution, powered by P2P technology
 services:
   resilio-sync:
     container_name: resilio-sync
@@ -18,4 +18,4 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/resilio-sync:/config
       - ${DOCKERSHAREDDIR}:/shared
-      - ${RESILIO-SYNC_SOURCEDIR}:/source
+      - ${RESILIOSYNC_SOURCEDIR}:/source

@@ -1,5 +1,5 @@
 services:
   resilio-sync:
     ports:
-      - "${RESILIO-SYNC_PORT_8888}:8888"
-      - "${RESILIO-SYNC_PORT_55555}:55555"
+      - "${RESILIOSYNC_PORT_8888}:8888"
+      - "${RESILIOSYNC_PORT_55555}:55555"
