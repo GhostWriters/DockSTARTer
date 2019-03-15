@@ -1,3 +1,3 @@
 services:
   netdata:
-    image: netdata/netdata:aarch64
+    image: netdata/netdata

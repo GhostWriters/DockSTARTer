@@ -8,8 +8,8 @@ env_set() {
     local NEW_VAL
     NEW_VAL=${2:-}
     local VAR_VAL
-    VAR_VAL=$(grep "^${SET_VAR}=" "${SCRIPTPATH}/compose/.env" | xargs) || fatal "Failed to find ${SET_VAR} in ${SCRIPTPATH}/compose/.env"
-    # https://stackoverflow.com/a/29613573/1384186
+    VAR_VAL=$(grep --color=never "^${SET_VAR}=" "${SCRIPTPATH}/compose/.env") || fatal "Failed to find ${SET_VAR} in ${SCRIPTPATH}/compose/.env"
+    # https://stackoverflow.com/questions/29613304/is-it-possible-to-escape-regex-metacharacters-reliably-with-sed/29613573#29613573
     local SED_FIND
     SED_FIND=$(sed 's/[^^]/[&]/g; s/\^/\\^/g' <<< "${VAR_VAL}")
     local SED_REPLACE
