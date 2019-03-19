@@ -25,17 +25,9 @@ env_update() {
     done < <(grep '=' < "${CURRENTENV}")
     rm -f "${CURRENTENV}" || warning "Temporary .env file could not be removed."
     run_script 'env_sanitize'
+    run_script 'set_permissions' "${SCRIPTPATH}/compose/.env"
+    run_script 'set_permissions' "${SCRIPTNAME}"
     info "Environment file update complete."
-    local PUID
-    PUID=$(run_script 'env_get' PUID)
-    local PGID
-    PGID=$(run_script 'env_get' PGID)
-    run_script 'set_permissions' "${SCRIPTPATH}" "${PUID}" "${PGID}"
-    local DOCKERCONFDIR
-    DOCKERCONFDIR=$(run_script 'env_get' DOCKERCONFDIR)
-    if [[ ${DOCKERCONFDIR} != ${SCRIPTPATH}* ]]; then
-        run_script 'set_permissions' "${DOCKERCONFDIR}" "${PUID}" "${PGID}"
-    fi
 }
 
 test_env_update() {

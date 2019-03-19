@@ -210,10 +210,6 @@ menu_value_prompt() {
                 fi
                 ;;
             *DIR | *DIR_*)
-                local PUID
-                PUID=$(run_script 'env_get' PUID)
-                local PGID
-                PGID=$(run_script 'env_get' PGID)
                 if [[ ${INPUT} == "/" ]]; then
                     whiptail --fb --clear --title "DockSTARTer" --msgbox "Cannot use / for ${SET_VAR}. Please select another folder." 0 0
                     menu_value_prompt "${SET_VAR}"
@@ -230,12 +226,12 @@ menu_value_prompt() {
                 elif [[ -d ${INPUT} ]]; then
                     run_script 'env_set' "${SET_VAR}" "${INPUT}"
                     if run_script 'question_prompt' Y "Would you like to set permissions on ${INPUT} ?"; then
-                        run_script 'set_permissions' "${INPUT}" "${PUID}" "${PGID}"
+                        run_script 'set_permissions' "${INPUT}"
                     fi
                 else
                     if run_script 'question_prompt' Y "${INPUT} is not a valid path. Would you like to attempt to create it?"; then
                         mkdir -p "${INPUT}" || fatal "${INPUT} folder could not be created."
-                        run_script 'set_permissions' "${INPUT}" "${PUID}" "${PGID}"
+                        run_script 'set_permissions' "${INPUT}"
                         run_script 'env_set' "${SET_VAR}" "${INPUT}"
                         whiptail --fb --clear --title "DockSTARTer" --msgbox "${INPUT} folder was created successfully." 0 0
                     else

@@ -16,10 +16,6 @@ backup_create() {
     BACKUP_RETENTION=$(run_script 'env_get' BACKUP_RETENTION)
     local BACKUP_RETENTION_MAX
     BACKUP_RETENTION_MAX="${BACKUP_RETENTION%% *}"
-    local PUID
-    PUID=$(run_script 'env_get' PUID)
-    local PGID
-    PGID=$(run_script 'env_get' PGID)
 
     # ------------- tuning options, file locations and constants -----------
     local MIN_MIBSIZE
@@ -73,7 +69,7 @@ backup_create() {
     if [ ! -d "${SNAPSHOT_DST}" ]; then
         info "${SNAPSHOT_DST} folder not found. Attempting to create it."
         mkdir -p "${SNAPSHOT_DST}" || fatal "${SNAPSHOT_DST} folder could not be created."
-        run_script 'set_permissions' "${SNAPSHOT_DST}" "${PUID}" "${PGID}"
+        run_script 'set_permissions' "${SNAPSHOT_DST}"
     fi
 
     # ------------- remove some old backups --------------------------------
@@ -272,7 +268,7 @@ backup_create() {
     # remove additional backups if free disk space is short
     OVERWRITE_LAST=0 # next call of remove_snapshot() will not remove snapshot.001
     remove_snapshot "${MIN_MIBSIZE}" "${MAX_MIBSIZE}"
-    run_script 'set_permissions' "${SNAPSHOT_DST}" "${PUID}" "${PGID}"
+    run_script 'set_permissions' "${SNAPSHOT_DST}"
     info "Snapshot backup successfully done in $(($(date +%s) - STARTDATE)) sec."
 }
 

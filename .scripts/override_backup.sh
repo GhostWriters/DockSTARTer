@@ -13,6 +13,7 @@ override_backup() {
         cp "${SCRIPTPATH}/compose/docker-compose.override.yml" "${DOCKERCONFDIR}/.compose.backups/docker-compose.override.yml.${BACKUPTIME}" || fatal "${DOCKERCONFDIR}/.compose.backups/docker-compose.override.yml.${BACKUPTIME} could not be copied."
         info "Removing old docker-compose.override.yml backups."
         find "${DOCKERCONFDIR}/.compose.backups" -type f -name "docker-compose.override.yml.*" -mtime +3 -delete > /dev/null 2>&1 || warning "Old docker-compose.override.yml backups not removed."
+        run_script 'set_permissions' "${DOCKERCONFDIR}/.compose.backups"
     fi
 }
 

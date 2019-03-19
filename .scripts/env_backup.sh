@@ -13,6 +13,7 @@ env_backup() {
     cp "${SCRIPTPATH}/compose/.env" "${DOCKERCONFDIR}/.compose.backups/.env.${BACKUPTIME}" || fatal "${DOCKERCONFDIR}/.compose.backups/.env.${BACKUPTIME} could not be copied."
     info "Removing old .env backups."
     find "${DOCKERCONFDIR}/.compose.backups" -type f -name ".env.*" -mtime +3 -delete > /dev/null 2>&1 || warning "Old .env backups not removed."
+    run_script 'set_permissions' "${DOCKERCONFDIR}/.compose.backups"
 
     # Backup location has moved
     if [[ -d "${DOCKERCONFDIR}/.env.backups" ]]; then
