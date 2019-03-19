@@ -26,7 +26,6 @@ env_update() {
     rm -f "${CURRENTENV}" || warning "Temporary .env file could not be removed."
     run_script 'env_sanitize'
     run_script 'set_permissions' "${SCRIPTPATH}/compose/.env"
-    run_script 'set_permissions' "${SCRIPTNAME}"
     info "Environment file update complete."
 }
 
