@@ -11,7 +11,7 @@ symlink_ds() {
     if [[ ! -L "/usr/bin/ds" ]]; then
         info "Creating /usr/bin/ds symbolic link for DockSTARTer."
         ln -s -T "${SCRIPTNAME}" /usr/bin/ds || fatal "Failed to create /usr/bin/ds symlink."
-        chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
+        run_script 'set_permissions' "${SCRIPTNAME}"
     fi
 
     # /usr/local/bin/ds
@@ -22,7 +22,7 @@ symlink_ds() {
     if [[ ! -L "/usr/local/bin/ds" ]]; then
         info "Creating /usr/local/bin/ds symbolic link for DockSTARTer."
         ln -s -T "${SCRIPTNAME}" /usr/local/bin/ds || fatal "Failed to create /usr/local/bin/ds symlink."
-        chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
+        run_script 'set_permissions' "${SCRIPTNAME}"
     fi
 }
 

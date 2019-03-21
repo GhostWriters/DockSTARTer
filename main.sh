@@ -139,7 +139,7 @@ verlt() { ! verlte "${2}" "${1}"; }
 # Cleanup Function
 cleanup() {
     if [[ ${SCRIPTPATH} == "${DETECTED_HOMEDIR}/.docker" ]]; then
-        chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
+        run_script 'set_permissions' "${SCRIPTNAME}"
     fi
     if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == false ]]; then
         warning "TRAVIS_SECURE_ENV_VARS is false for Pull Requests from remote branches. Please retry failed builds!"
