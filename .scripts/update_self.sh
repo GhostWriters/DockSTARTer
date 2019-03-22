@@ -17,8 +17,9 @@ update_self() {
     git pull > /dev/null 2>&1 || fatal "Failed to pull recent changes from git."
     git for-each-ref --format '%(refname:short)' refs/heads | grep -v master | xargs git branch -D > /dev/null 2>&1 || true
     while IFS= read -r line; do
-        chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${line}" > /dev/null 2>&1 || true
-    done < <(git ls-tree -r HEAD | grep -E '^1007|.*\..*sh$' | awk '{print $4}')
+        info "Taking ownership of ${line} for user ${DETECTED_PUID} and group ${DETECTED_PGID}"
+        chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${line}" || true #> /dev/null 2>&1 || true
+    done < <(git ls-tree -r HEAD | awk '{print $4}')
     run_script 'env_update'
 }
 
