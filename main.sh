@@ -162,7 +162,7 @@ main() {
         root_check
         if [[ ! -d ${DETECTED_HOMEDIR}/.docker/.git ]]; then
             # Anti Sudo Check
-            if [[ ${EUID} = "0" ]]; then
+            if [[ ${EUID} == "0" ]]; then
                 fatal "Using sudo during cloning on first run is not supported."
             fi
             warning "Attempting to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
