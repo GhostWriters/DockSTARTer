@@ -81,7 +81,7 @@ readonly NC='\e[0m'
 
 # Log Functions
 readonly LOG_FILE="/tmp/dockstarter.log"
-sudo chown "${DETECTED_PUID:-$DETECTED_UNAME}":"${DETECTED_PGID:-$DETECTED_UGROUP}" "${LOG_FILE}" > /dev/null 2>&1 || true # This line should always use sudo
+sudo chown "${DETECTED_PUID:-$DETECTED_UNAME}":"${DETECTED_PGID:-$DETECTED_UGROUP}" "${LOG_FILE}" > /dev/null 2>&1 || true
 info() { echo -e "${NC}$(date +"%F %T") ${BLU}[INFO]${NC}       $*${NC}" | tee -a "${LOG_FILE}" >&2; }
 warning() { echo -e "${NC}$(date +"%F %T") ${YLW}[WARNING]${NC}    $*${NC}" | tee -a "${LOG_FILE}" >&2; }
 error() { echo -e "${NC}$(date +"%F %T") ${RED}[ERROR]${NC}      $*${NC}" | tee -a "${LOG_FILE}" >&2; }
@@ -139,7 +139,7 @@ verlt() { ! verlte "${2}" "${1}"; }
 # Cleanup Function
 cleanup() {
     if [[ ${SCRIPTPATH} == "${DETECTED_HOMEDIR}/.docker" ]]; then
-        chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
+        sudo chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
     fi
     if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == false ]]; then
         warning "TRAVIS_SECURE_ENV_VARS is false for Pull Requests from remote branches. Please retry failed builds!"
