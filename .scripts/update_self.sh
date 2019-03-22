@@ -12,10 +12,13 @@ update_self() {
         return 1
     fi
     cd "${SCRIPTPATH}" || fatal "Failed to change to ${SCRIPTPATH} directory."
-    su "${DETECTED_UNAME}" -c "git fetch --all --prune" > /dev/null 2>&1 || fatal "Failed to fetch recent changes from git."
-    su "${DETECTED_UNAME}" -c "git reset --hard ${BRANCH}" > /dev/null 2>&1 || fatal "Failed to reset to ${BRANCH}."
-    su "${DETECTED_UNAME}" -c "git pull" > /dev/null 2>&1 || fatal "Failed to pull recent changes from git."
-    su "${DETECTED_UNAME}" -c "git for-each-ref --format '%(refname:short)' refs/heads | grep -v master | xargs git branch -D" > /dev/null 2>&1 || true
+    git fetch --all --prune > /dev/null 2>&1 || fatal "Failed to fetch recent changes from git."
+    git reset --hard "${BRANCH}" > /dev/null 2>&1 || fatal "Failed to reset to ${BRANCH}."
+    git pull > /dev/null 2>&1 || fatal "Failed to pull recent changes from git."
+    git for-each-ref --format '%(refname:short)' refs/heads | grep -v master | xargs git branch -D > /dev/null 2>&1 || true
+    while IFS= read -r line; do
+        chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${line}" > /dev/null 2>&1 || true
+    done < <(git ls-tree -r HEAD | grep -E '^1007|.*\..*sh$' | awk '{print $4}')
     run_script 'env_update'
 }
 
