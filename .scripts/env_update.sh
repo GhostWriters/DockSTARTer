@@ -11,6 +11,7 @@ env_update() {
     cp "${SCRIPTPATH}/compose/.env" "${CURRENTENV}" || fatal "${SCRIPTPATH}/compose/.env could not be copied."
     rm -f "${SCRIPTPATH}/compose/.env" || warning "${SCRIPTPATH}/compose/.env could not be removed."
     cp "${SCRIPTPATH}/compose/.env.example" "${SCRIPTPATH}/compose/.env" || fatal "${SCRIPTPATH}/compose/.env.example could not be copied."
+    run_script 'set_permissions' "${SCRIPTPATH}/compose/.env"
     info "Merging previous values into new .env file."
     while IFS= read -r line; do
         local SET_VAR
@@ -25,7 +26,6 @@ env_update() {
     done < <(grep '=' < "${CURRENTENV}")
     rm -f "${CURRENTENV}" || warning "Temporary .env file could not be removed."
     run_script 'env_sanitize'
-    run_script 'set_permissions' "${SCRIPTPATH}/compose/.env"
     info "Environment file update complete."
 }
 

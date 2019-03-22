@@ -38,7 +38,7 @@ run_compose() {
     run_script 'install_docker'
     run_script 'install_compose'
     cd "${SCRIPTPATH}/compose/" || fatal "Failed to change directory to ${SCRIPTPATH}/compose/"
-    su "${DETECTED_UNAME}" -c "docker-compose ${COMPOSECOMMAND}" || fatal "Docker Compose failed."
+    eval docker-compose "${COMPOSECOMMAND}" || fatal "Docker Compose failed."
     cd "${SCRIPTPATH}" || fatal "Failed to change directory to ${SCRIPTPATH}"
 }
 
