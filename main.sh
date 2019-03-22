@@ -161,6 +161,10 @@ main() {
     if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]] && [[ -z ${ARGS[*]:-} ]]; then
         root_check
         if [[ ! -d ${DETECTED_HOMEDIR}/.docker/.git ]]; then
+            # Anti Sudo Check
+            if [[ ${EUID} = "0" ]]; then
+                fatal "Using sudo during cloning on first run is not supported."
+            fi
             warning "Attempting to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
             git clone -b permissions https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
             #git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
