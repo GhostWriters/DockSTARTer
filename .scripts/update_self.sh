@@ -16,7 +16,6 @@ update_self() {
     git reset --hard "${BRANCH}" > /dev/null 2>&1 || fatal "Failed to reset to ${BRANCH}."
     git pull > /dev/null 2>&1 || fatal "Failed to pull recent changes from git."
     git for-each-ref --format '%(refname:short)' refs/heads | grep -v master | xargs git branch -D > /dev/null 2>&1 || true
-    run_script 'set_permissions' "${SCRIPTNAME}"
     run_script 'env_update'
 }
 
