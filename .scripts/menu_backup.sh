@@ -19,6 +19,7 @@ menu_backup() {
 
     case "${BACKUPCHOICE}" in
         "Settings ")
+            run_script 'env_update'
             run_script 'menu_app_vars' BACKUP
             ;;
         "MIN ")
