@@ -1,3 +1,3 @@
 services:
   ddclient:
-    image: linuxserver/ddclient
+    image: linuxserver/ddclient:${ddclient_TAG}

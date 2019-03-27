@@ -1,3 +1,3 @@
 services:
   delugevpn:
-    image: binhex/arch-delugevpn
+    image: binhex/arch-delugevpn:${delugevpn_TAG}

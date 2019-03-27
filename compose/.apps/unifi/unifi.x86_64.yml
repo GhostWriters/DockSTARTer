@@ -1,3 +1,3 @@
 services:
   unifi:
-    image: linuxserver/unifi-controller
+    image: linuxserver/unifi-controller:${unifi_TAG}

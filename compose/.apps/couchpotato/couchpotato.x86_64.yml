@@ -1,3 +1,3 @@
 services:
   couchpotato:
-    image: linuxserver/couchpotato
+    image: linuxserver/couchpotato:${couchpotato_TAG}
