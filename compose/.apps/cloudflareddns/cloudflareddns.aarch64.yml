@@ -1,3 +1,3 @@
 services:
   cloudflareddns:
-    image: oznu/cloudflare-ddns:aarch64:${cloudflareddns_TAG}
+    image: oznu/cloudflare-ddns:aarch64:${CLOUDFLAREDDNS_TAG}

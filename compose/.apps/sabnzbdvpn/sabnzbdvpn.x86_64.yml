@@ -1,3 +1,3 @@
 services:
   sabnzbdvpn:
-    image: binhex/arch-sabnzbdvpn:${sabnzbdvpn_TAG}
+    image: binhex/arch-sabnzbdvpn:${SABNZBDVPN_TAG}

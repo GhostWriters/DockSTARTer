@@ -1,3 +1,3 @@
 services:
   nzbgetvpn:
-    image: jshridha/docker-nzbgetvpn:${nzbgetvpn_TAG}
+    image: jshridha/docker-nzbgetvpn:${NZBGETVPN_TAG}

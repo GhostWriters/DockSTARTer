@@ -1,3 +1,3 @@
 services:
   watchtower:
-    image: v2tec/watchtower:armhf-latest:${watchtower_TAG}
+    image: v2tec/watchtower:armhf-latest:${WATCHTOWER_TAG}

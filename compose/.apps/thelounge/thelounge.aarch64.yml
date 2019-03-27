@@ -1,3 +1,3 @@
 services:
   thelounge:
-    image: linuxserver/thelounge:${thelounge_TAG}
+    image: linuxserver/thelounge:${THELOUNGE_TAG}

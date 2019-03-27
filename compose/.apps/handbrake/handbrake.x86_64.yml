@@ -1,3 +1,3 @@
 services:
   handbrake:
-    image: jlesage/handbrake:${handbrake_TAG}
+    image: jlesage/handbrake:${HANDBRAKE_TAG}

@@ -1,3 +1,3 @@
 services:
   sickrage:
-    image: linuxserver/sickrage:${sickrage_TAG}
+    image: linuxserver/sickrage:${SICKRAGE_TAG}
