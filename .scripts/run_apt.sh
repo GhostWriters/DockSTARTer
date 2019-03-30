@@ -17,7 +17,7 @@ run_apt() {
         apt-get -y dist-upgrade > /dev/null 2>&1 || fatal "Failed to upgrade packages from apt."
     fi
     info "Installing dependencies."
-    apt-get -y install apt-transport-https curl git grep python python-pip rsync sed whiptail > /dev/null 2>&1 || fatal "Failed to install dependencies from apt."
+    apt-get -y install apt-transport-https curl git grep python3 python3-pip rsync sed whiptail > /dev/null 2>&1 || fatal "Failed to install dependencies from apt."
     # https://cryptography.io/en/latest/installation/#building-cryptography-on-linux
     apt-get -y install build-essential libssl-dev libffi-dev python3-dev > /dev/null 2>&1 || fatal "Failed to install python cryptography dependencies from apt."
     info "Removing unused packages."
