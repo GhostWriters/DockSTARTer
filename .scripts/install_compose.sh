@@ -11,6 +11,9 @@ install_compose() {
     local FORCE
     FORCE=${1:-}
     if vergt "${AVAILABLE_COMPOSE}" "${INSTALLED_COMPOSE}" || [[ -n ${FORCE} ]]; then
+        info "Installing latest python pip."
+        python3 -m pip install -IUq pip > /dev/null 2>&1 || warning "Failed to install pip from pip. This can be ignored for now."
+
         info "Removing old docker-compose."
         rm /usr/local/bin/docker-compose > /dev/null 2>&1 || true
         rm /usr/bin/docker-compose > /dev/null 2>&1 || true
