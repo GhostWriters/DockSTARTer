@@ -20,7 +20,7 @@ run_python() {
         fatal "Python3 manager not detected!"
     fi
 
-    eval "${PYTHON_CMD}" "$@" > /dev/null 2>&1 || return 1
+    eval "${PYTHON_CMD}" "$@" || return 1
 }
 
 test_run_python() {
