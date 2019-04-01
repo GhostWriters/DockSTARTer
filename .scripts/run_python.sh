@@ -3,21 +3,24 @@ set -euo pipefail
 IFS=$'\n\t'
 
 run_python() {
+    # https://devguide.python.org/#status-of-python-branches
+    local PYTHON_CMD
     if [[ -n "$(command -v python3.7)" ]]; then
-        eval python3.7 "$@"
+        PYTHON_CMD="python3.7"
+        # EOL: 2023-06-27
     elif [[ -n "$(command -v python3.6)" ]]; then
-        eval python3.6 "$@"
+        PYTHON_CMD="python3.6"
+        # EOL: 2021-12-23
     elif [[ -n "$(command -v python3.5)" ]]; then
-        eval python3.5 "$@"
-    elif [[ -n "$(command -v python3.4)" ]]; then
-        eval python3.4 "$@"
-    elif [[ -n "$(command -v python3.3)" ]]; then
-        eval python3.3 "$@"
+        PYTHON_CMD="python3.5"
+        # EOL: 2020-09-13
     elif [[ -n "$(command -v python3)" ]]; then
-        eval python3 "$@"
+        PYTHON_CMD="python3"
     else
         fatal "Python3 manager not detected!"
     fi
+
+    eval "${PYTHON_CMD}" "$@" > /dev/null 2>&1 || return 1
 }
 
 test_run_python() {
