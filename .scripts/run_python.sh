@@ -26,5 +26,4 @@ run_python() {
 test_run_python() {
     run_script 'run_python' --version
     run_script 'run_python' -m pip --version
-    warning "Travis does not test run_python."
 }
