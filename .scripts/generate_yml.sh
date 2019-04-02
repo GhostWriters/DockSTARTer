@@ -57,8 +57,8 @@ generate_yml() {
     echo "> ${SCRIPTPATH}/compose/docker-compose.yml" >> "${RUNFILE}"
     run_script 'install_yq'
     bash "${RUNFILE}" > /dev/null 2>&1 || fatal "Failed to run generator."
-    info "Merging docker-compose.yml complete."
     rm -f "${RUNFILE}" || warning "Temporary yml generator file could not be removed."
+    info "Merging docker-compose.yml complete."
 }
 
 test_generate_yml() {
