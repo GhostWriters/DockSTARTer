@@ -6,8 +6,7 @@ generate_yml() {
     run_script 'env_update'
     info "Generating docker-compose.yml file."
     local RUNFILE
-    RUNFILE="${SCRIPTPATH}/compose/docker-compose.sh"
-    rm -f "${RUNFILE}" || fatal "Failed to remove ${RUNFILE} file."
+    RUNFILE="$(mktemp)"
     echo "#!/usr/bin/env bash" > "${RUNFILE}"
     {
         echo 'yq m '\\
@@ -57,9 +56,9 @@ generate_yml() {
     done < <(grep '_ENABLED=true$' < "${SCRIPTPATH}/compose/.env")
     echo "> ${SCRIPTPATH}/compose/docker-compose.yml" >> "${RUNFILE}"
     run_script 'install_yq'
-    bash "${RUNFILE}" || fatal "Failed to run generator."
+    bash "${RUNFILE}" > /dev/null 2>&1 || fatal "Failed to run generator."
     info "Merging docker-compose.yml complete."
-    rm -f "${RUNFILE}" || error "Failed to remove ${RUNFILE} file."
+    rm -f "${RUNFILE}" || warning "Temporary yml generator file could not be removed."
 }
 
 test_generate_yml() {
