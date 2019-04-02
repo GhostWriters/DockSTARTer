@@ -8,8 +8,10 @@ install_yq() {
     AVAILABLE_YQ=$( (curl -H "${GH_HEADER:-}" -s "https://api.github.com/repos/mikefarah/yq/releases/latest" || echo "0") | grep -Po '"tag_name": "[Vv]?\K.*?(?=")')
     local INSTALLED_YQ
     INSTALLED_YQ=$( (yq --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
+    local FORCE
+    FORCE=${1:-}
     if [[ ${AVAILABLE_YQ} == "0" ]]; then
-        if [[ ${INSTALLED_YQ} == "0" ]]; then
+        if [[ ${INSTALLED_YQ} == "0" ]] || [[ -n ${FORCE} ]]; then
             warning "Failed to check latest available yq version."
             fatal "yq is required but cannot be installed. Please check https://api.github.com/rate_limit"
         else
@@ -17,8 +19,6 @@ install_yq() {
             return
         fi
     fi
-    local FORCE
-    FORCE=${1:-}
     if vergt "${AVAILABLE_YQ}" "${INSTALLED_YQ}" || [[ -n ${FORCE} ]]; then
         info "Installing latest yq."
         if [[ ${ARCH} == "aarch64" ]] || [[ ${ARCH} == "armv7l" ]]; then

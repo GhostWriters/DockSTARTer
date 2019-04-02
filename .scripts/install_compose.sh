@@ -8,8 +8,10 @@ install_compose() {
     AVAILABLE_COMPOSE=$( (curl -H "${GH_HEADER:-}" -s "https://api.github.com/repos/docker/compose/releases/latest" || echo "0") | grep -Po '"tag_name": "[Vv]?\K.*?(?=")')
     local INSTALLED_COMPOSE
     INSTALLED_COMPOSE=$( (docker-compose --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
+    local FORCE
+    FORCE=${1:-}
     if [[ ${AVAILABLE_COMPOSE} == "0" ]]; then
-        if [[ ${INSTALLED_COMPOSE} == "0" ]]; then
+        if [[ ${INSTALLED_COMPOSE} == "0" ]] || [[ -n ${FORCE} ]]; then
             warning "Failed to check latest available docker-compose version."
             fatal "docker-compose is required but cannot be installed. Please check https://api.github.com/rate_limit"
         else
@@ -17,8 +19,6 @@ install_compose() {
             return
         fi
     fi
-    local FORCE
-    FORCE=${1:-}
     if vergt "${AVAILABLE_COMPOSE}" "${INSTALLED_COMPOSE}" || [[ -n ${FORCE} ]]; then
         info "Installing latest python pip."
         python3 -m pip install -IUq pip > /dev/null 2>&1 || warning "Failed to install pip from pip. This can be ignored for now."

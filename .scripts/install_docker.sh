@@ -8,8 +8,10 @@ install_docker() {
     AVAILABLE_DOCKER=$( (curl -H "${GH_HEADER:-}" -s "https://api.github.com/repos/docker/docker-ce/releases/latest" || echo "0") | grep -Po '"tag_name": "[Vv]?\K.*?(?=")')
     local INSTALLED_DOCKER
     INSTALLED_DOCKER=$( (docker --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
+    local FORCE
+    FORCE=${1:-}
     if [[ ${AVAILABLE_DOCKER} == "0" ]]; then
-        if [[ ${INSTALLED_DOCKER} == "0" ]]; then
+        if [[ ${INSTALLED_DOCKER} == "0" ]] || [[ -n ${FORCE} ]]; then
             warning "Failed to check latest available docker version."
             fatal "docker is required but cannot be installed. Please check https://api.github.com/rate_limit"
         else
