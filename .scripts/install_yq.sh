@@ -12,10 +12,9 @@ install_yq() {
     FORCE=${1:-}
     if [[ ${AVAILABLE_YQ} == "0" ]]; then
         if [[ ${INSTALLED_YQ} == "0" ]] || [[ -n ${FORCE} ]]; then
-            warning "Failed to check latest available yq version."
-            fatal "yq is required but cannot be installed. Please check https://api.github.com/rate_limit"
+            fatal "The latest available version of yq could not be confirmed. This is usually caused by exhausting the rate limit on GitHub's API. Please check https://api.github.com/rate_limit"
         else
-            warning "Failed to check latest available yq version."
+            warning "Failed to check latest available yq version. This can be ignored for now."
             return
         fi
     fi

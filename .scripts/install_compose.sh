@@ -12,10 +12,9 @@ install_compose() {
     FORCE=${1:-}
     if [[ ${AVAILABLE_COMPOSE} == "0" ]]; then
         if [[ ${INSTALLED_COMPOSE} == "0" ]] || [[ -n ${FORCE} ]]; then
-            warning "Failed to check latest available docker-compose version."
-            fatal "docker-compose is required but cannot be installed. Please check https://api.github.com/rate_limit"
+            fatal "The latest available version of docker-compose could not be confirmed. This is usually caused by exhausting the rate limit on GitHub's API. Please check https://api.github.com/rate_limit"
         else
-            warning "Failed to check latest available docker-compose version."
+            warning "Failed to check latest available docker-compose version. This can be ignored for now."
             return
         fi
     fi
