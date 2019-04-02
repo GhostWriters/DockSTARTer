@@ -18,8 +18,6 @@ install_docker() {
             return
         fi
     fi
-    local FORCE
-    FORCE=${1:-}
     if vergt "${AVAILABLE_DOCKER}" "${INSTALLED_DOCKER}" || [[ -n ${FORCE} ]]; then
         if [[ -n "$(command -v snap)" ]]; then
             info "Removing snap Docker package."
