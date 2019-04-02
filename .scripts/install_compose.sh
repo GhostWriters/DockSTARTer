@@ -5,7 +5,7 @@ IFS=$'\n\t'
 install_compose() {
     # https://docs.docker.com/compose/install/
     local AVAILABLE_COMPOSE
-    AVAILABLE_COMPOSE=$( (curl -H "${GH_HEADER:-}" -s "https://api.github.com/repos/docker/compose/releases/latest" | grep -Po '"tag_name": "[Vv]?\K.*?(?=")') || echo "0")
+    AVAILABLE_COMPOSE=$( (curl -H "${GH_HEADER:-}" -fsL "https://api.github.com/repos/docker/compose/releases/latest" | grep -Po '"tag_name": "[Vv]?\K.*?(?=")') || echo "0")
     local INSTALLED_COMPOSE
     INSTALLED_COMPOSE=$( (docker-compose --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
     local FORCE
