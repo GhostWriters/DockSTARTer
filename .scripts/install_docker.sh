@@ -26,7 +26,11 @@ install_docker() {
             snap remove docker > /dev/null 2>&1 || true
         fi
         info "Installing latest docker. Please be patient, this can take a while."
-        curl -fsSL get.docker.com | sh > /dev/null 2>&1 || fatal "Failed to install docker."
+        local GET_DOCKER
+        GET_DOCKER="$(mktemp)"
+        curl -fsSL get.docker.com -o "${GET_DOCKER}" > /dev/null 2>&1 || fatal "Failed to get docker install script."
+        sh "${GET_DOCKER}" > /dev/null 2>&1 || fatal "Failed to install docker."
+        rm -f "${GET_DOCKER}" || warning "Temporary get.docker.com file could not be removed."
         local UPDATED_DOCKER
         UPDATED_DOCKER=$( (docker --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
         if vergt "${AVAILABLE_DOCKER}" "${UPDATED_DOCKER}"; then

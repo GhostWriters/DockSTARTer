@@ -197,7 +197,8 @@ backup_create() {
 
         i=$(($(tail -100 "${LOG}" | grep 'Total transferred file size:' | cut -d " " -f5 | sed -e 's/\,//g') / 1048576))
         info "${i} MiB needed."
-        rm -rf "${LOG}" "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space" || fatal "Failed to remove ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space"
+        rm -rf "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space" || fatal "Failed to remove ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space"
+        rm -rf "${LOG}" || warning "Temporary backup log file could not be removed."
         remove_snapshot $((MIN_MIBSIZE + i)) $((MAX_MIBSIZE - i))
         if [ "${OOVERWRITE_LAST}" == "${OVERWRITE_LAST}" ]; then # no need to retry
             break
