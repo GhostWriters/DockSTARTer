@@ -5,9 +5,18 @@ IFS=$'\n\t'
 install_yq() {
     # https://github.com/mikefarah/yq
     local AVAILABLE_YQ
-    AVAILABLE_YQ=$(curl -H "${GH_HEADER:-}" -s "https://api.github.com/repos/mikefarah/yq/releases/latest" | grep -Po '"tag_name": "[Vv]?\K.*?(?=")') || fatal "Failed to check latest available yq version."
+    AVAILABLE_YQ=$( (curl -H "${GH_HEADER:-}" -s "https://api.github.com/repos/mikefarah/yq/releases/latest" || echo "0") | grep -Po '"tag_name": "[Vv]?\K.*?(?=")')
     local INSTALLED_YQ
     INSTALLED_YQ=$( (yq --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
+    if [[ ${AVAILABLE_YQ} == "0" ]]; then
+        if [[ ${INSTALLED_YQ} == "0" ]]; then
+            warning "Failed to check latest available yq version."
+            fatal "yq is required but cannot be installed. Please check https://api.github.com/rate_limit"
+        else
+            warning "Failed to check latest available yq version."
+            return
+        fi
+    fi
     local FORCE
     FORCE=${1:-}
     if vergt "${AVAILABLE_YQ}" "${INSTALLED_YQ}" || [[ -n ${FORCE} ]]; then

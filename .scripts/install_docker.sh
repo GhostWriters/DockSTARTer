@@ -5,9 +5,18 @@ IFS=$'\n\t'
 install_docker() {
     # https://github.com/docker/docker-install
     local AVAILABLE_DOCKER
-    AVAILABLE_DOCKER=$(curl -H "${GH_HEADER:-}" -s "https://api.github.com/repos/docker/docker-ce/releases/latest" | grep -Po '"tag_name": "[Vv]?\K.*?(?=")') || fatal "Failed to check latest available docker version."
+    AVAILABLE_DOCKER=$( (curl -H "${GH_HEADER:-}" -s "https://api.github.com/repos/docker/docker-ce/releases/latest" || echo "0") | grep -Po '"tag_name": "[Vv]?\K.*?(?=")')
     local INSTALLED_DOCKER
     INSTALLED_DOCKER=$( (docker --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
+    if [[ ${AVAILABLE_DOCKER} == "0" ]]; then
+        if [[ ${INSTALLED_DOCKER} == "0" ]]; then
+            warning "Failed to check latest available docker version."
+            fatal "docker is required but cannot be installed. Please check https://api.github.com/rate_limit"
+        else
+            warning "Failed to check latest available docker version."
+            return
+        fi
+    fi
     local FORCE
     FORCE=${1:-}
     if vergt "${AVAILABLE_DOCKER}" "${INSTALLED_DOCKER}" || [[ -n ${FORCE} ]]; then

@@ -5,9 +5,18 @@ IFS=$'\n\t'
 install_compose() {
     # https://docs.docker.com/compose/install/
     local AVAILABLE_COMPOSE
-    AVAILABLE_COMPOSE=$(curl -H "${GH_HEADER:-}" -s "https://api.github.com/repos/docker/compose/releases/latest" | grep -Po '"tag_name": "[Vv]?\K.*?(?=")') || fatal "Failed to check latest available docker-compose version."
+    AVAILABLE_COMPOSE=$( (curl -H "${GH_HEADER:-}" -s "https://api.github.com/repos/docker/compose/releases/latest" || echo "0") | grep -Po '"tag_name": "[Vv]?\K.*?(?=")')
     local INSTALLED_COMPOSE
     INSTALLED_COMPOSE=$( (docker-compose --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
+    if [[ ${AVAILABLE_COMPOSE} == "0" ]]; then
+        if [[ ${INSTALLED_COMPOSE} == "0" ]]; then
+            warning "Failed to check latest available docker-compose version."
+            fatal "docker-compose is required but cannot be installed. Please check https://api.github.com/rate_limit"
+        else
+            warning "Failed to check latest available docker-compose version."
+            return
+        fi
+    fi
     local FORCE
     FORCE=${1:-}
     if vergt "${AVAILABLE_COMPOSE}" "${INSTALLED_COMPOSE}" || [[ -n ${FORCE} ]]; then
