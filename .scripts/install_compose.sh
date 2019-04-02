@@ -5,11 +5,19 @@ IFS=$'\n\t'
 install_compose() {
     # https://docs.docker.com/compose/install/
     local AVAILABLE_COMPOSE
-    AVAILABLE_COMPOSE=$(curl -H "${GH_HEADER:-}" -s "https://api.github.com/repos/docker/compose/releases/latest" | grep -Po '"tag_name": "[Vv]?\K.*?(?=")') || fatal "Failed to check latest available docker-compose version."
+    AVAILABLE_COMPOSE=$( (curl -H "${GH_HEADER:-}" -fsL "https://api.github.com/repos/docker/compose/releases/latest" | grep -Po '"tag_name": "[Vv]?\K.*?(?=")') || echo "0")
     local INSTALLED_COMPOSE
     INSTALLED_COMPOSE=$( (docker-compose --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
     local FORCE
     FORCE=${1:-}
+    if [[ ${AVAILABLE_COMPOSE} == "0" ]]; then
+        if [[ ${INSTALLED_COMPOSE} == "0" ]] || [[ -n ${FORCE} ]]; then
+            fatal "The latest available version of docker-compose could not be confirmed. This is usually caused by exhausting the rate limit on GitHub's API. Please check https://api.github.com/rate_limit"
+        else
+            warning "Failed to check latest available docker-compose version. This can be ignored for now."
+            return
+        fi
+    fi
     if vergt "${AVAILABLE_COMPOSE}" "${INSTALLED_COMPOSE}" || [[ -n ${FORCE} ]]; then
         info "Installing latest python pip."
         python3 -m pip install -IUq pip > /dev/null 2>&1 || warning "Failed to install pip from pip. This can be ignored for now."
