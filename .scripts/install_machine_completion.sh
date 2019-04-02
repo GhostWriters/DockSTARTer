@@ -5,7 +5,7 @@ IFS=$'\n\t'
 install_machine_completion() {
     # https://docs.docker.com/machine/completion/
     local AVAILABLE_MACHINE_COMPLETION
-    AVAILABLE_MACHINE_COMPLETION=$( (curl -H "${GH_HEADER:-}" -s "https://api.github.com/repos/docker/machine/releases/latest" || echo "0") | grep -Po '"tag_name": "\K.*?(?=")')
+    AVAILABLE_MACHINE_COMPLETION=$( (curl -H "${GH_HEADER:-}" -s "https://api.github.com/repos/docker/machine/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")') || echo "0")
     if [[ ${AVAILABLE_MACHINE_COMPLETION} == "0" ]]; then
         warning "Failed to check latest available docker machine completion version."
         return
