@@ -24,7 +24,7 @@ run_yum() {
         yum -y upgrade > /dev/null 2>&1 || fatal "Failed to upgrade packages from yum."
     fi
     info "Installing dependencies."
-    yum -y install curl git grep newt python3 python3-pip rsync sed > /dev/null 2>&1 || fatal "Failed to install dependencies from yum."
+    yum -y install curl git grep newt python36u python36u-pip rsync sed > /dev/null 2>&1 || fatal "Failed to install dependencies from yum."
     # https://cryptography.io/en/latest/installation/#building-cryptography-on-linux
     yum -y install redhat-rpm-config gcc libffi-devel python3-devel openssl-devel > /dev/null 2>&1 || fatal "Failed to install python cryptography dependencies from yum."
     info "Removing unused packages."
