@@ -27,5 +27,6 @@ services:
       - ${DOCKERCONFDIR}/delugevpn:/config
       - ${DOCKERSHAREDDIR}:/shared
       - ${DOWNLOADSDIR}:/data
+      - ${DOWNLOADSDIR}:/downloads
     cap_add:
       - NET_ADMIN

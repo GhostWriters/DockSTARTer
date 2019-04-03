@@ -26,9 +26,16 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}:/data/docker/config
+      - ${DOCKERSHAREDDIR}:/shared
       - ${DOWNLOADSDIR}:/data/downloads
-      - ${MEDIADIR_COMICS}:/data/comics
+      - ${DOWNLOADSDIR}:/downloads
+      - ${MEDIADIR_BOOKS}:/books
       - ${MEDIADIR_BOOKS}:/data/books
+      - ${MEDIADIR_COMICS}:/comics
+      - ${MEDIADIR_COMICS}:/data/comics
       - ${MEDIADIR_MOVIES}:/data/movies
+      - ${MEDIADIR_MOVIES}:/movies
       - ${MEDIADIR_MUSIC}:/data/music
+      - ${MEDIADIR_MUSIC}:/music
       - ${MEDIADIR_TV}:/data/tv
+      - ${MEDIADIR_TV}:/tv

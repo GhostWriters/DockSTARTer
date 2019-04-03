@@ -19,3 +19,4 @@ services:
       - ${DOCKERCONFDIR}/pyload:/opt/pyload/pyload-config
       - ${DOCKERSHAREDDIR}:/shared
       - ${DOWNLOADSDIR}:/opt/pyload/Downloads
+      - ${DOWNLOADSDIR}:/downloads
