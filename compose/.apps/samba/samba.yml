@@ -26,6 +26,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}:/data/docker/config
+      - ${DOCKERSHAREDDIR}:/shared
       - ${DOWNLOADSDIR}:/data/downloads
       - ${DOWNLOADSDIR}:/downloads
       - ${MEDIADIR_BOOKS}:/books
