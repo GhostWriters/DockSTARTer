@@ -26,5 +26,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/sabnzbdvpn:/config
       - ${DOWNLOADSDIR}:/data
+      - ${DOWNLOADSDIR}:/downloads
     cap_add:
       - NET_ADMIN
