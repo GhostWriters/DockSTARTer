@@ -1,0 +1,19 @@
+# APPNICENAME=NodeRED
+# APPDESCRIPTION=A visual tool for wiring the Internet of Things
+services:
+  nodered:
+    container_name: nodered
+    hostname: ${DOCKERHOSTNAME}
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/nodered:/data
+      - ${DOCKERSHAREDDIR}:/shared
+    user: ${PUID}:${PGID}
