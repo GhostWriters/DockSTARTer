@@ -19,5 +19,5 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/booksonic:/config
       - ${DOCKERSHAREDDIR}:/shared
-      - ${MEDIADIR_BOOKS}/audiobooks:/books
+      - ${MEDIADIR_AUDIOBOOKS}:/audiobooks
       - ${MEDIADIR_MUSIC}/podcasts:/podcasts

@@ -20,4 +20,5 @@ services:
       - ${DOCKERSHAREDDIR}:/shared
       - ${DOWNLOADSDIR}:/data
       - ${DOWNLOADSDIR}:/downloads
+      - ${MEDIADIR_AUDIOBOOKS}:/audiobooks
       - ${MEDIADIR_BOOKS}:/books
