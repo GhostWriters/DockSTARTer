@@ -1,0 +1,23 @@
+# APPNICENAME=Booksonic
+# APPDESCRIPTION=Web-based streamer for your audiobooks.
+services:
+  booksonic:
+    container_name: booksonic
+    hostname: ${DOCKERHOSTNAME}
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    environment:
+      - CONTEXT_PATH=${BOOKSONIC_CONTEXT_PATH}
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/booksonic:/config
+      - ${DOCKERSHAREDDIR}:/shared
+      - ${MEDIADIR_BOOKS}/audiobooks:/books
+      - ${MEDIADIR_MUSIC}/podcasts:/podcasts
