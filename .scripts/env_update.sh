@@ -11,6 +11,7 @@ env_update() {
     cp "${SCRIPTPATH}/compose/.env" "${CURRENTENV}" || fatal "${SCRIPTPATH}/compose/.env could not be copied."
     rm -f "${SCRIPTPATH}/compose/.env" || warning "${SCRIPTPATH}/compose/.env could not be removed."
     cp "${SCRIPTPATH}/compose/.env.example" "${SCRIPTPATH}/compose/.env" || fatal "${SCRIPTPATH}/compose/.env.example could not be copied."
+    run_script 'set_permissions' "${SCRIPTPATH}/compose/.env"
     info "Merging previous values into new .env file."
     while IFS= read -r line; do
         local SET_VAR
@@ -26,16 +27,6 @@ env_update() {
     rm -f "${CURRENTENV}" || warning "Temporary .env file could not be removed."
     run_script 'env_sanitize'
     info "Environment file update complete."
-    local PUID
-    PUID=$(run_script 'env_get' PUID)
-    local PGID
-    PGID=$(run_script 'env_get' PGID)
-    run_script 'set_permissions' "${SCRIPTPATH}" "${PUID}" "${PGID}"
-    local DOCKERCONFDIR
-    DOCKERCONFDIR=$(run_script 'env_get' DOCKERCONFDIR)
-    if [[ ${DOCKERCONFDIR} != ${SCRIPTPATH}* ]]; then
-        run_script 'set_permissions' "${DOCKERCONFDIR}" "${PUID}" "${PGID}"
-    fi
 }
 
 test_env_update() {

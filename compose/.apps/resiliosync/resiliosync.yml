@@ -1,8 +1,8 @@
-# APPNICENAME=pyLoad
-# APPDESCRIPTION=Python Download Manager alternative to JDownloader
+# APPNICENAME=Resiliosync
+# APPDESCRIPTION=A fast, reliable, and simple file sync and share solution, powered by P2P technology
 services:
-  pyload:
-    container_name: pyload
+  resiliosync:
+    container_name: resiliosync
     hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
@@ -16,7 +16,6 @@ services:
       - TZ=${TZ}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/pyload:/opt/pyload/pyload-config
+      - ${DOCKERCONFDIR}/resiliosync:/config
       - ${DOCKERSHAREDDIR}:/shared
-      - ${DOWNLOADSDIR}:/opt/pyload/Downloads
-      - ${DOWNLOADSDIR}:/downloads
+      - ${RESILIOSYNC_SOURCEDIR}:/source

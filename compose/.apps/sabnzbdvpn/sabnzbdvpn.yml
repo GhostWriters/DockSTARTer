@@ -25,6 +25,8 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/sabnzbdvpn:/config
+      - ${DOCKERSHAREDDIR}:/shared
       - ${DOWNLOADSDIR}:/data
+      - ${DOWNLOADSDIR}:/downloads
     cap_add:
       - NET_ADMIN
