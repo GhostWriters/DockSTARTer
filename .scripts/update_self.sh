@@ -16,7 +16,9 @@ update_self() {
     git reset --hard "${BRANCH}" > /dev/null 2>&1 || fatal "Failed to reset to ${BRANCH}."
     git pull > /dev/null 2>&1 || fatal "Failed to pull recent changes from git."
     git for-each-ref --format '%(refname:short)' refs/heads | grep -v master | xargs git branch -D > /dev/null 2>&1 || true
-    chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
+    while IFS= read -r line; do
+        chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${line}" > /dev/null 2>&1 || true
+    done < <(git ls-tree -r HEAD | awk '{print $4}')
     run_script 'env_update'
 }
 

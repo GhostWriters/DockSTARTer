@@ -11,7 +11,6 @@ run_install() {
     run_script 'install_compose' force
     run_script 'install_compose_completion'
     run_script 'install_yq' force
-    run_script 'set_permissions'
     run_script 'request_reboot'
 }
 

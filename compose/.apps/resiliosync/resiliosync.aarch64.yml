@@ -1,0 +1,3 @@
+services:
+  resiliosync:
+    image: linuxserver/resilio-sync
