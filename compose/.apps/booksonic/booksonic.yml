@@ -1,8 +1,8 @@
-# APPNICENAME=LazyLibrarian
-# APPDESCRIPTION=Book PVR Client
+# APPNICENAME=Booksonic
+# APPDESCRIPTION=Web-based streamer for your audiobooks.
 services:
-  lazylibrarian:
-    container_name: lazylibrarian
+  booksonic:
+    container_name: booksonic
     hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
@@ -11,14 +11,13 @@ services:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
+      - CONTEXT_PATH=${BOOKSONIC_CONTEXT_PATH}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/lazylibrarian:/config
+      - ${DOCKERCONFDIR}/booksonic:/config
       - ${DOCKERSHAREDDIR}:/shared
-      - ${DOWNLOADSDIR}:/data
-      - ${DOWNLOADSDIR}:/downloads
       - ${MEDIADIR_AUDIOBOOKS}:/audiobooks
-      - ${MEDIADIR_BOOKS}:/books
+      - ${MEDIADIR_MUSIC}/podcasts:/podcasts
