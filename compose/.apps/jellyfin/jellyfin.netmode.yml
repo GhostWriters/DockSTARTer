@@ -1,0 +1,3 @@
+services:
+  jellyfin:
+    network_mode: ${JELLYFIN_NETWORK_MODE}
