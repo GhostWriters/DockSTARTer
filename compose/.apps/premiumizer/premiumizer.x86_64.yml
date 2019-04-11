@@ -1,0 +1,3 @@
+services:
+  premiumizer:
+    image: piejanssens/premiumizer

@@ -1,0 +1,4 @@
+services:
+  premiumizer:
+    ports:
+      - "${PREMIUMIZER_PORT_5000}:5000"

@@ -1,0 +1,22 @@
+# APPNICENAME=Premiumizer
+# APPDESCRIPTION=Download management tool for premiumize.me
+services:
+  premiumizer:
+    container_name: premiumizer
+    hostname: ${DOCKERHOSTNAME}
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/premiumizer:/premiumizer/conf
+      - ${DOCKERSHAREDDIR}:/shared
+      - ${DOWNLOADSDIR}:/blackhole
+      - ${DOWNLOADSDIR}:/downloads

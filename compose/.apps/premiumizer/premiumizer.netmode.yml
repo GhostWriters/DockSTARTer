@@ -1,0 +1,3 @@
+services:
+  premiumizer:
+    network_mode: ${PREMIUMIZER_NETWORK_MODE}
