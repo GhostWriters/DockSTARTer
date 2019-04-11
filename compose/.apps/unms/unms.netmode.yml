@@ -1,0 +1,3 @@
+services:
+  unms:
+    network_mode: ${UNMS_NETWORK_MODE}

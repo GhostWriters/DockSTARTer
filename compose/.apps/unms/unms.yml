@@ -1,0 +1,18 @@
+# APPNICENAME=UNMS
+# APPDESCRIPTION=Configure, monitor, upgrade, and back up your UBNT devices
+services:
+  unms:
+    container_name: unms
+    hostname: ${DOCKERHOSTNAME}
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/unms:/config
+      - ${DOCKERSHAREDDIR}:/shared

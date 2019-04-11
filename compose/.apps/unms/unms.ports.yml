@@ -1,0 +1,6 @@
+services:
+  unms:
+    ports:
+      - "${UNMS_PORT_2055}:2055/udp"
+      - "${UNMS_PORT_443}:443"
+      - "${UNMS_PORT_80}:80"
