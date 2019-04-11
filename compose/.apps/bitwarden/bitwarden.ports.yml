@@ -1,0 +1,4 @@
+services:
+  bitwarden:
+    ports:
+      - "${BITWARDEN_PORT_8080}:${BITWARDEN_PORT_8080}"

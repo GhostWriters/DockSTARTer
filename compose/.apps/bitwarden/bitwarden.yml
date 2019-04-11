@@ -1,0 +1,21 @@
+# APPNICENAME=bitwarden
+# APPDESCRIPTION=Companion to Sonarr to manage and download subtitles
+services:
+  bitwarden:
+    container_name: bitwarden
+    hostname: ${DOCKERHOSTNAME}
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    environment:
+      - ROCKET_PORT=${BITWARDEN_PORT_8080}
+      - SIGNUPS_ALLOWED=${BITWARDEN_SIGNUPS_ALLOWED}
+      - WEBSOCKET_ENABLED=${BITWARDEN_WEBSOCKET_ENABLED}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/bitwarden:/data
+      - ${DOCKERSHAREDDIR}:/shared
+    user: ${PUID}:${PGID}

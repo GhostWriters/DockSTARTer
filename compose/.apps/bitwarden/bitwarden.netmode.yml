@@ -1,0 +1,3 @@
+services:
+  bitwarden:
+    network_mode: ${BITWARDEN_NETWORK_MODE}
