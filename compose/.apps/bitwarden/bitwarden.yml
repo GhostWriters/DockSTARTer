@@ -1,5 +1,5 @@
-# APPNICENAME=bitwarden
-# APPDESCRIPTION=Companion to Sonarr to manage and download subtitles
+# APPNICENAME=Bitwarden
+# APPDESCRIPTION=Free and open source password management solution
 services:
   bitwarden:
     container_name: bitwarden
