@@ -13,6 +13,7 @@ services:
     environment:
       - ROCKET_PORT=${BITWARDEN_PORT_8080}
       - SIGNUPS_ALLOWED=${BITWARDEN_SIGNUPS_ALLOWED}
+      - TZ=${TZ}
       - WEBSOCKET_ENABLED=${BITWARDEN_WEBSOCKET_ENABLED}
     volumes:
       - /etc/localtime:/etc/localtime:ro
