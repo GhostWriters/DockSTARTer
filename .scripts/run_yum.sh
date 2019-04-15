@@ -22,7 +22,7 @@ run_yum() {
     local GET_IUS
     GET_IUS="$(mktemp)"
     curl -fsSL setup.ius.io -o "${GET_IUS}" > /dev/null 2>&1 || fatal "Failed to get IUS install script."
-    bash "${GET_IUS}" > /dev/null 2>&1 || fatal "Failed to install IUS."
+    bash "${GET_IUS}" > /dev/null 2>&1 || warning "Failed to install IUS."
     rm -f "${GET_IUS}" || warning "Temporary setup.ius.io file could not be removed."
     if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]]; then
         info "Upgrading packages. Please be patient, this can take a while."
