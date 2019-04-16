@@ -17,7 +17,9 @@ run_yum() {
         docker-engine-selinux \
         docker-engine \
         python-cryptography \
-        python3-cryptography > /dev/null 2>&1 || true
+        python3-cryptography \
+        python36 \
+        python36-pip > /dev/null 2>&1 || true
     info "Installing EPEL and IUS repositories."
     local GET_IUS
     GET_IUS="$(mktemp)"
