@@ -5,7 +5,7 @@ IFS=$'\n\t'
 # Usage Information
 #/ Usage: sudo ds [OPTION]
 #/ NOTE: ds shortcut is only available after the first run of
-#/       sudo bash ~/.docker/main.sh
+#/       sudo bash main.sh
 #/
 #/ This is the main DockSTARTer script.
 #/ For regular usage you can run without providing any options.
@@ -90,6 +90,14 @@ fatal() {
     exit 1
 }
 
+repo_exists() {
+    if [[ -d ${SCRIPTPATH}/.git ]] && [[ -d ${SCRIPTPATH}/.scripts ]]; then
+        return
+    else
+        return 1
+    fi
+}
+
 # Root Check
 root_check() {
     if [[ ${DETECTED_PUID} == "0" ]] || [[ ${DETECTED_HOMEDIR} == "/root" ]]; then
@@ -138,7 +146,7 @@ verlt() { ! verlte "${2}" "${1}"; }
 
 # Cleanup Function
 cleanup() {
-    if [[ ${SCRIPTPATH} == "${DETECTED_HOMEDIR}/.docker" ]]; then
+    if repo_exists; then
         sudo chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
     fi
     if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == false ]]; then
@@ -158,35 +166,51 @@ main() {
     if [[ -n ${PS1:-} ]] || [[ ${-} == *"i"* ]]; then
         root_check
     fi
-    if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]] && [[ -z ${ARGS[*]:-} ]]; then
-        root_check
-        if [[ ! -d ${DETECTED_HOMEDIR}/.docker/.git ]]; then
+    local PROMPT
+    local DS_COMMAND
+    DS_COMMAND="$(command -v ds || true)"
+    if [[ -L ${DS_COMMAND} ]]; then
+        local DS_SYMLINK
+        DS_SYMLINK="$(readlink -f "${DS_COMMAND}")"
+        if [[ ${SCRIPTNAME} != "${DS_SYMLINK}" ]]; then
+            if repo_exists; then
+                if [[ ${PROMPT:-} != "GUI" ]]; then
+                    PROMPT="CLI"
+                fi
+                if run_script 'question_prompt' N "DockSTARTer installation found at ${DS_SYMLINK} location. Would you like to run ${SCRIPTNAME} instead?"; then
+                    run_script 'symlink_ds'
+                    DS_COMMAND="$(command -v ds || true)"
+                    DS_SYMLINK="$(readlink -f "${DS_COMMAND}")"
+                fi
+                unset PROMPT
+            fi
+            warning "Attempting to run DockSTARTer from ${DS_SYMLINK} location."
+            (sudo bash "${DS_SYMLINK}" "${ARGS[@]:-}") || true
+            exit
+        fi
+    else
+        if ! repo_exists; then
+            warning "Attempting to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
             # Anti Sudo Check
             if [[ ${EUID} == "0" ]]; then
                 fatal "Using sudo during cloning on first run is not supported."
             fi
-            warning "Attempting to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
             git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
             info "Performing first run install."
             (sudo bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-i") || fatal "Failed first run install, please reboot and try again."
-            exit
-        elif [[ ${SCRIPTPATH} != "${DETECTED_HOMEDIR}/.docker" ]]; then
-            (sudo bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-u") || true
-            warning "Attempting to run DockSTARTer from ${DETECTED_HOMEDIR}/.docker location."
-            (sudo bash "${DETECTED_HOMEDIR}/.docker/main.sh") || true
             exit
         fi
     fi
     # Sudo Check
     if [[ ${EUID} != "0" ]]; then
-        (sudo bash "${SCRIPTNAME:-}" "${ARGS[@]:-}") || true
+        (sudo bash "${SCRIPTNAME}" "${ARGS[@]:-}") || true
         exit
     fi
     run_script 'symlink_ds'
     # shellcheck source=/dev/null
     source "${SCRIPTPATH}/.scripts/cmdline.sh"
     cmdline "${ARGS[@]:-}"
-    readonly PROMPT="GUI"
+    PROMPT="GUI"
     run_script 'menu_main'
 }
 main
