@@ -146,12 +146,17 @@ verlt() { ! verlte "${2}" "${1}"; }
 
 # Cleanup Function
 cleanup() {
+    readonly EXIT_CODE="$?"
     if repo_exists; then
         sudo chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
     fi
     if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == false ]]; then
         warning "TRAVIS_SECURE_ENV_VARS is false for Pull Requests from remote branches. Please retry failed builds!"
     fi
+    if [[ ${EXIT_CODE} != "0" ]]; then
+        error "DockSTARTer did not finish running successfully."
+    fi
+    exit ${EXIT_CODE}
 }
 trap 'cleanup' 0 1 2 3 6 14 15
 
@@ -185,8 +190,7 @@ main() {
                 unset PROMPT
             fi
             warning "Attempting to run DockSTARTer from ${DS_SYMLINK} location."
-            (sudo bash "${DS_SYMLINK}" "${ARGS[@]:-}") || true
-            exit
+            exec sudo bash "${DS_SYMLINK}" "${ARGS[@]:-}"
         fi
     else
         if ! repo_exists; then
@@ -197,14 +201,12 @@ main() {
             fi
             git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
             info "Performing first run install."
-            (sudo bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-i") || fatal "Failed first run install, please reboot and try again."
-            exit
+            exec sudo bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-i"
         fi
     fi
     # Sudo Check
     if [[ ${EUID} != "0" ]]; then
-        (sudo bash "${SCRIPTNAME}" "${ARGS[@]:-}") || true
-        exit
+        exec sudo bash "${SCRIPTNAME}" "${ARGS[@]:-}"
     fi
     run_script 'symlink_ds'
     # shellcheck source=/dev/null

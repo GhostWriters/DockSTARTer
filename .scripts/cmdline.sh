@@ -129,7 +129,7 @@ cmdline() {
                 ;;
         esac
     done
-    return 0
+    return
 }
 
 test_cmdline() {
