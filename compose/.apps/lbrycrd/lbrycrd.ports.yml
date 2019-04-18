@@ -1,0 +1,5 @@
+services:
+  lbrycrd:
+    ports:
+      - ${LBRYCRD_PORT_9245}:9245
+      - ${LBRYCRD_PORT_9246}:9246

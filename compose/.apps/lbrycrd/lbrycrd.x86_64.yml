@@ -1,0 +1,3 @@
+services:
+  lbrycrd:
+    image: lbry/lbry-docker:lbrycrd-production
