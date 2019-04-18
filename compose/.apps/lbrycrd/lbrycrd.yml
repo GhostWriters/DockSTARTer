@@ -1,0 +1,28 @@
+# APPNICENAME=Lbrycrd
+# APPDESCRIPTION=LBRYcrd uses a blockchain similar to bitcoin's to implement an index and payment system for content on the LBRY network. It is a fork of bitcoin core.
+version: '3.4'
+services:
+#############
+## Lbrycrd ##
+#############
+  lbrycrd:
+    environment:
+      - RUN_MODE=${LBRYCRD_RUN_MODE}
+      - RPC_USER=${LBRYCRD_RPC_USER}
+      - RPC_PASSWORD=${LBRYCRD_RPC_PASSWORD}
+      - RPC_ALLOW_IP=${$LBRYCRD_RPC_ALLOW_IP}
+      - GID=${PGID}
+      - GIDLIST=${PGID}
+      - TZ=${TZ}
+      - UID=${PUID}
+    ## host volumes for persistent data such as wallet private keys.
+    volumes:
+      - "./data:/data"
+    ## DockSTARTer specifics.
+    hostname: ${DOCKERHOSTNAME}
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
