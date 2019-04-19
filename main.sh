@@ -155,7 +155,7 @@ cleanup() {
         warning "TRAVIS_SECURE_ENV_VARS is false for Pull Requests from remote branches. Please retry failed builds!"
     fi
 
-    if [[ ${EXIT_CODE} != 0 ]]; then
+    if [[ ${EXIT_CODE} -ne 0 ]]; then
         error "DockSTARTer did not finish running successfully."
     fi
     exit ${EXIT_CODE}
@@ -199,7 +199,7 @@ main() {
         if ! repo_exists; then
             warning "Attempting to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
             # Anti Sudo Check
-            if [[ ${EUID} == "0" ]]; then
+            if [[ ${EUID} -eq 0 ]]; then
                 fatal "Using sudo during cloning on first run is not supported."
             fi
             git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
@@ -208,7 +208,7 @@ main() {
         fi
     fi
     # Sudo Check
-    if [[ ${EUID} != "0" ]]; then
+    if [[ ${EUID} -ne 0 ]]; then
         exec sudo bash "${SCRIPTNAME}" "${ARGS[@]:-}"
     fi
     run_script 'symlink_ds'
