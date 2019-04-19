@@ -146,17 +146,20 @@ verlt() { ! verlte "${2}" "${1}"; }
 
 # Cleanup Function
 cleanup() {
-    readonly EXIT_CODE="$?"
+    local -ri EXIT_CODE=$?
+
     if repo_exists; then
         sudo chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
     fi
     if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == false ]]; then
         warning "TRAVIS_SECURE_ENV_VARS is false for Pull Requests from remote branches. Please retry failed builds!"
     fi
-    if [[ ${EXIT_CODE} != "0" ]]; then
+
+    if [[ ${EXIT_CODE} != 0 ]]; then
         error "DockSTARTer did not finish running successfully."
     fi
     exit ${EXIT_CODE}
+    trap - 0 1 2 3 6 14 15
 }
 trap 'cleanup' 0 1 2 3 6 14 15
 
