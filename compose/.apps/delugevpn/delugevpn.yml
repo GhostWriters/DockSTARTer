@@ -22,6 +22,11 @@ services:
       - VPN_PASS=${VPN_PASS}
       - VPN_PROV=${VPN_PROV}
       - VPN_USER=${VPN_USER}
+      - VPN_REMOTE=${VPN_REMOTE}
+      - VPN_PORT=${VPN_PORT}
+      - VPN_PROTOCOL=${VPN_PROTOCOL}
+      - VPN_DEVICE_TYPE=${VPN_DEVICE_TYPE}
+      - STRONG_CERTS=${STRONG_CERTS}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/delugevpn:/config
