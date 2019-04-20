@@ -16,17 +16,17 @@ services:
       - NAME_SERVERS=${NS1},${NS2}
       - PGID=${PGID}
       - PUID=${PUID}
+      - STRONG_CERTS=${STRONG_CERTS}
       - TZ=${TZ}
+      - VPN_DEVICE_TYPE=${VPN_DEVICE_TYPE}
       - VPN_ENABLED=${VPN_ENABLE}
       - VPN_OPTIONS=${VPN_OPTIONS}
       - VPN_PASS=${VPN_PASS}
-      - VPN_PROV=${VPN_PROV}
-      - VPN_USER=${VPN_USER}
-      - VPN_REMOTE=${VPN_REMOTE}
       - VPN_PORT=${VPN_PORT}
       - VPN_PROTOCOL=${VPN_PROTOCOL}
-      - VPN_DEVICE_TYPE=${VPN_DEVICE_TYPE}
-      - STRONG_CERTS=${STRONG_CERTS}
+      - VPN_PROV=${VPN_PROV}
+      - VPN_REMOTE=${VPN_REMOTE}
+      - VPN_USER=${VPN_USER}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/delugevpn:/config
