@@ -36,7 +36,7 @@ menu_main() {
             ;;
         "Cancel")
             info "Exiting DockSTARTer."
-            return 1
+            return
             ;;
         *)
             error "Invalid Option"
