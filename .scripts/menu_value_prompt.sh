@@ -136,6 +136,21 @@ menu_value_prompt() {
         VPN_PROV)
             VALUEDESCRIPTION='\n\n VPN Provider, usually pia, airvpn or custom.'
             ;;
+        VPN_REMOTE)
+            VALUEDESCRIPTION='\n\n VPN remote ip or address.  Only valid with VPN_PROV=custom.'
+            ;;
+        VPN_PORT)
+            VALUEDESCRIPTION='\n\n VPN port number (udp or tcp.)  Only valid with VPN_PROV=custom.'
+            ;;
+        VPN_PROTOCOL)
+            VALUEDESCRIPTION='\n\n VPN protocol, must be udp or tcp.  Only valid with VPN_PROV=custom.'
+            ;;
+        VPN_DEVICE_TYPE)
+            VALUEDESCRIPTION='\n\n VPN device type, probably tun.  Only valid with VPN_PROV=custom.'
+            ;;
+        STRONG_CERTS)
+            VALUEDESCRIPTION='\n\n VPN use strong certificates, yes or no.  Only valid with VPN_PROV=custom.'
+            ;;
         *)
             VALUEDESCRIPTION=""
             ;;
