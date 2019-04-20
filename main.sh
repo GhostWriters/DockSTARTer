@@ -71,13 +71,25 @@ readonly DETECTED_PGID=$(id -g "${DETECTED_PUID}" 2> /dev/null || true)
 readonly DETECTED_UGROUP=$(id -gn "${DETECTED_PUID}" 2> /dev/null || true)
 readonly DETECTED_HOMEDIR=$(eval echo "~${DETECTED_UNAME}" 2> /dev/null || true)
 
-# Colors
-# https://misc.flogisoft.com/bash/tip_colors_and_formatting
-readonly BLU='\e[34m'
-readonly GRN='\e[32m'
-readonly RED='\e[31m'
-readonly YLW='\e[33m'
-readonly NC='\e[0m'
+# Terminal Check
+if [[ -t 1 ]] || [[ ${TRAVIS:-} == true ]]; then
+    # Colors
+    #- Reference for colornumbers used by most terminals can be found here: https://jonasjacek.github.io/colors/
+    #- The actual color depends on the color scheme set by the current terminal-emulator
+    #- For capabilities, see terminfo(5)
+    if [[ $(tput colors) -ge 8 ]]; then
+        BLU="$(tput setaf 4)"
+        GRN="$(tput setaf 2)"
+        RED="$(tput setaf 1)"
+        YLW="$(tput setaf 3)"
+        NC="$(tput sgr0)"
+    fi
+fi
+readonly BLU="${BLU:-}"
+readonly GRN="${GRN:-}"
+readonly RED="${RED:-}"
+readonly YLW="${YLW:-}"
+readonly NC="${NC:-}"
 
 # Log Functions
 readonly LOG_FILE="/tmp/dockstarter.log"
@@ -171,7 +183,7 @@ main() {
         fatal "Unsupported architecture."
     fi
     # Terminal Check
-    if [[ -n ${PS1:-} ]] || [[ ${-} == *"i"* ]]; then
+    if [[ -t 1 ]]; then
         root_check
     fi
     local PROMPT
