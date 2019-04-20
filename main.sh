@@ -78,7 +78,6 @@ if [[ -t 1 ]] || [[ ${TRAVIS:-} == true ]]; then
     #- The actual color depends on the color scheme set by the current terminal-emulator
     #- For capabilities, see terminfo(5)
     if [[ $(tput colors) -ge 8 ]]; then
-        tput initc || true # Initialize colors to ensure we have colors
         BLU="$(tput setaf 4)"
         GRN="$(tput setaf 2)"
         RED="$(tput setaf 1)"
