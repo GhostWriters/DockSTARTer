@@ -3,10 +3,8 @@ set -euo pipefail
 IFS=$'\n\t'
 
 question_prompt() {
-    local DEFAULT
-    DEFAULT=${1:-Y}
-    local QUESTION
-    QUESTION=${2:-}
+    local DEFAULT=${1:-Y}
+    local QUESTION=${2:-}
     local YN
     while true; do
         if [[ ${PROMPT:-} == "CLI" ]]; then

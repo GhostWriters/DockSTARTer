@@ -11,10 +11,8 @@ backup_max() {
     local DOCKERCONFDIR
     DOCKERCONFDIR=$(run_script 'env_get' DOCKERCONFDIR)
     while IFS= read -r line; do
-        local APPNAME
-        APPNAME=${line}
-        local FILENAME
-        FILENAME=${APPNAME,,}
+        local APPNAME=${line}
+        local FILENAME=${APPNAME,,}
         local BACKUP_CONFIG
         BACKUP_CONFIG=$(run_script 'env_get' "${APPNAME}_BACKUP_CONFIG")
         if [[ ${BACKUP_CONFIG} != false ]]; then

@@ -3,8 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 menu_app_vars() {
-    local APPNAME
-    APPNAME=${1:-}
+    local APPNAME=${1:-}
     local APPVARS
     APPVARS=$(grep -v "^${APPNAME}_ENABLED=" "${SCRIPTPATH}/compose/.env" | grep "^${APPNAME}_")
     if [[ -z ${APPVARS} ]]; then
@@ -21,7 +20,7 @@ menu_app_vars() {
     else
         info "Configuring ${APPNAME} .env variables."
         while IFS= read -r line; do
-            SET_VAR=${line%%=*}
+            local SET_VAR=${line%%=*}
             run_script 'menu_value_prompt' "${SET_VAR}" || return 1
         done < <(echo "${APPVARS}")
     fi
