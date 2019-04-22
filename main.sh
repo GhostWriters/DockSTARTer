@@ -70,12 +70,11 @@ readonly DETECTED_PGID=$(id -g "${DETECTED_PUID}" 2> /dev/null || true)
 readonly DETECTED_UGROUP=$(id -gn "${DETECTED_PUID}" 2> /dev/null || true)
 readonly DETECTED_HOMEDIR=$(eval echo "~${DETECTED_UNAME}" 2> /dev/null || true)
 
-# Terminal Check
+# Terminal Colors
 if [[ -t 1 ]] || [[ ${TRAVIS:-} == true ]]; then
-    # Colors
-    #- Reference for colornumbers used by most terminals can be found here: https://jonasjacek.github.io/colors/
-    #- The actual color depends on the color scheme set by the current terminal-emulator
-    #- For capabilities, see terminfo(5)
+    # Reference for colornumbers used by most terminals can be found here: https://jonasjacek.github.io/colors/
+    # The actual color depends on the color scheme set by the current terminal-emulator
+    # For capabilities, see terminfo(5)
     if [[ $(tput colors) -ge 8 ]]; then
         BLU="$(tput setaf 4)"
         GRN="$(tput setaf 2)"
@@ -101,6 +100,7 @@ fatal() {
     exit 1
 }
 
+# Repo Exists Function
 repo_exists() {
     if [[ -d ${SCRIPTPATH}/.git ]] && [[ -d ${SCRIPTPATH}/.scripts ]]; then
         return
@@ -109,7 +109,7 @@ repo_exists() {
     fi
 }
 
-# Root Check
+# Root Check Function
 root_check() {
     if [[ ${DETECTED_PUID} == "0" ]] || [[ ${DETECTED_HOMEDIR} == "/root" ]]; then
         fatal "Running as root is not supported. Please run as a standard user with sudo."
@@ -148,7 +148,7 @@ run_test() {
     fi
 }
 
-# Version functions
+# Version Functions
 # https://stackoverflow.com/questions/4023830/how-to-compare-two-strings-in-dot-separated-version-format-in-bash#comment92693604_4024263
 vergte() { printf '%s\n%s' "${2}" "${1}" | sort -C -V; }
 vergt() { ! vergte "${2}" "${1}"; }
