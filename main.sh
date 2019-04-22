@@ -51,7 +51,7 @@ fi
 # Script Information
 declare PATHCMD
 { command -v realpath > /dev/null && PATHCMD='realpath -ePq'; } || { command -v readlink > /dev/null && PATHCMD='readlink -esq'; }
-SCRIPTNAME=$($PATHCMD "${BASH_SOURCE[0]:-$0}")
+SCRIPTNAME=$(eval "${PATHCMD}" "${BASH_SOURCE[0]:-$0}")
 SCRIPTPATH=$(dirname "${SCRIPTNAME}")
 readonly SCRIPTNAME SCRIPTPATH
 unset PATHCMD
