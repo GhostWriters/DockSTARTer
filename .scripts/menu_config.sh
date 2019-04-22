@@ -3,8 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 menu_config() {
-    local CONFIGOPTS
-    CONFIGOPTS=()
+    local CONFIGOPTS=()
     CONFIGOPTS+=("Full Setup " "")
     CONFIGOPTS+=("Select Apps " "")
     CONFIGOPTS+=("Set App Variables " "")

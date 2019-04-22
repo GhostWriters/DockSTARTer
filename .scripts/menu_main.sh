@@ -3,8 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 menu_main() {
-    local MAINOPTS
-    MAINOPTS=()
+    local MAINOPTS=()
     MAINOPTS+=("Configuration " "Setup and start applications")
     MAINOPTS+=("Install Dependencies " "Latest version of Docker and Docker-Compose")
     MAINOPTS+=("Update DockSTARTer " "Get the latest version of DockSTARTer")

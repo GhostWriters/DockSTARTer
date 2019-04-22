@@ -3,8 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 run_compose() {
-    local COMMAND
-    COMMAND=${1:-}
+    local COMMAND=${1:-}
     local COMPOSECOMMAND
     local COMMANDINFO
     case ${COMMAND} in
