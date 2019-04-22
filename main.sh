@@ -49,9 +49,12 @@ if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_
 fi
 
 # Script Information
-SCRIPTNAME=$(realpath -ePq "${BASH_SOURCE[0]:-$0}")
+declare PATHCMD
+{ command -v realpath > /dev/null && PATHCMD='realpath -ePq'; } || { command -v readlink > /dev/null && PATHCMD='readlink -esq'; }
+SCRIPTNAME=$($PATHCMD "${BASH_SOURCE[0]:-$0}")
 SCRIPTPATH=$(dirname "${SCRIPTNAME}")
 readonly SCRIPTNAME SCRIPTPATH
+unset PATHCMD
 
 # User/Group Information
 readonly DETECTED_PUID=${SUDO_UID:-$UID}
