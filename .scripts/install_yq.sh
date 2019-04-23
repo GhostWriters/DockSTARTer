@@ -38,6 +38,6 @@ install_yq() {
 }
 
 test_install_yq() {
-    run_script 'install_yq'
+    run_script 'install_yq' FORCE
     yq --version || fatal "Failed to determine yq version."
 }
