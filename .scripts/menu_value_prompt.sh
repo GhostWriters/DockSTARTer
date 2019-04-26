@@ -19,7 +19,7 @@ menu_value_prompt() {
 
     case "${SET_VAR}" in
         DOCKERCONFDIR)
-            HOME_VAL="${DETECTED_HOMEDIR}/.config/docker"
+            HOME_VAL="${DETECTED_HOMEDIR}/.config/appdata"
             VALUEOPTIONS+=("Use Home " "${HOME_VAL}")
             ;;
         DOCKERGID)
@@ -31,7 +31,7 @@ menu_value_prompt() {
             VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
             ;;
         DOCKERSHAREDDIR)
-            HOME_VAL="${DETECTED_HOMEDIR}/.config/docker/shared"
+            HOME_VAL="${DETECTED_HOMEDIR}/.config/appdata/shared"
             VALUEOPTIONS+=("Use Home " "${HOME_VAL}")
             ;;
         DOWNLOADSDIR)
