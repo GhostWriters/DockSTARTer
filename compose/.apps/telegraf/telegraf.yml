@@ -11,11 +11,18 @@ services:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
+      - HOST_ETC=/host/etc
+      - HOST_MOUNT_PREFIX=/host
       - HOST_PROC=/host/proc
+      - HOST_SYS=/host/sys
       - TZ=${TZ}
     volumes:
+      - /:/host:ro
+      - /etc:/host/etc:ro
       - /etc/localtime:/etc/localtime:ro
       - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/run/utmp:/var/run/utmp:ro
       - ${DOCKERCONFDIR}/telegraf:/var/lib/telegraf
       - ${DOCKERSHAREDDIR}:/shared
