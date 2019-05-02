@@ -1,17 +1,19 @@
 language: minimal
-branches: docs # Set the branch to build from
+branches:
+  only:
+    - docs
 
 before_deploy:
-    - "docker run --rm -v ${PWD}/site:/site -v ${PWD}:/docs squidfunk/mkdocs-material build --verbose --clean --strict" # Build a local version of the docs
+  - "docker run --rm -v ${PWD}/site:/site -v ${PWD}:/docs squidfunk/mkdocs-material build --verbose --clean --strict" # Build a local version of the docs
 
 deploy:
-    provider: pages
-    skip_cleanup: true
-    github_token: $GH_TOKEN  # Set in the settings page of your repository, as a secure variable
-    keep_history: true
-    on:
-        branch: docs
-    local_dir: site
+  provider: pages
+  skip_cleanup: true
+  github_token: $GH_TOKEN # Set in the settings page of your repository, as a secure variable
+  keep_history: true
+  on:
+    branch: docs
+  local_dir: site
 
 matrix:
   fast_finish: true
