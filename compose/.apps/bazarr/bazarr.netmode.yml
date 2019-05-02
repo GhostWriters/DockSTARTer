@@ -1,3 +1,0 @@
-services:
-  bazarr:
-    network_mode: ${BAZARR_NETWORK_MODE}

@@ -1,3 +1,0 @@
-services:
-  openvpnas:
-    network_mode: ${OPENVPNAS_NETWORK_MODE}

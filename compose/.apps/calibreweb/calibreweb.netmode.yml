@@ -1,3 +1,0 @@
-services:
-  calibreweb:
-    network_mode: ${CALIBREWEB_NETWORK_MODE}

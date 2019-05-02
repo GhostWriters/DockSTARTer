@@ -1,3 +1,0 @@
-services:
-  mcmyadmin2:
-    image: linuxserver/mcmyadmin2

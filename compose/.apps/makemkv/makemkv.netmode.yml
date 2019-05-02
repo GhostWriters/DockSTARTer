@@ -1,3 +1,0 @@
-services:
-  makemkv:
-    network_mode: ${MAKEMKV_NETWORK_MODE}

@@ -1,3 +1,0 @@
-services:
-  airdcpp:
-    network_mode: ${AIRDCPP_NETWORK_MODE}

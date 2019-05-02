@@ -1,4 +1,0 @@
-services:
-  cloudcmd:
-    ports:
-      - "${CLOUDCMD_PORT_8000}:8000"

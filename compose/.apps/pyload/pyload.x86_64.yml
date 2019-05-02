@@ -1,3 +1,0 @@
-services:
-  pyload:
-    image: writl/pyload:latest

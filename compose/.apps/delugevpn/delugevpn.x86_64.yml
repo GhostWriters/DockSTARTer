@@ -1,3 +1,0 @@
-services:
-  delugevpn:
-    image: binhex/arch-delugevpn

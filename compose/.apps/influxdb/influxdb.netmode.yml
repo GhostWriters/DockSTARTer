@@ -1,3 +1,0 @@
-services:
-  influxdb:
-    network_mode: ${INFLUXDB_NETWORK_MODE}

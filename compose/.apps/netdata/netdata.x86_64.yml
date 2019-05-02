@@ -1,3 +1,0 @@
-services:
-  netdata:
-    image: netdata/netdata

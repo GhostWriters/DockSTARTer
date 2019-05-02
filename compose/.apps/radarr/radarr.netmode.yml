@@ -1,3 +1,0 @@
-services:
-  radarr:
-    network_mode: ${RADARR_NETWORK_MODE}

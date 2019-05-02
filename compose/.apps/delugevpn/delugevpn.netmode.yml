@@ -1,3 +1,0 @@
-services:
-  delugevpn:
-    network_mode: ${DELUGEVPN_NETWORK_MODE}

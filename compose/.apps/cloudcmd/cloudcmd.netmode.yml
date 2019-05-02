@@ -1,3 +1,0 @@
-services:
-  cloudcmd:
-    network_mode: ${CLOUDCMD_NETWORK_MODE}

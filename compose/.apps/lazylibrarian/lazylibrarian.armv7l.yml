@@ -1,3 +1,0 @@
-services:
-  lazylibrarian:
-    image: linuxserver/lazylibrarian

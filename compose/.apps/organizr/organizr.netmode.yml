@@ -1,3 +1,0 @@
-services:
-  organizr:
-    network_mode: ${ORGANIZR_NETWORK_MODE}

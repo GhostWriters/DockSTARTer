@@ -1,3 +1,0 @@
-services:
-  varken:
-    network_mode: ${VARKEN_NETWORK_MODE}

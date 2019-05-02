@@ -1,3 +1,0 @@
-services:
-  netdata:
-    network_mode: ${NETDATA_NETWORK_MODE}

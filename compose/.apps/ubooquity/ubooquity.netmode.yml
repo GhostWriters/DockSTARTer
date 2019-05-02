@@ -1,3 +1,0 @@
-services:
-  ubooquity:
-    network_mode: ${UBOOQUITY_NETWORK_MODE}

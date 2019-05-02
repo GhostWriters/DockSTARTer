@@ -1,3 +1,0 @@
-services:
-  letsencrypt:
-    network_mode: ${LETSENCRYPT_NETWORK_MODE}

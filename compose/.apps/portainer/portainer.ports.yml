@@ -1,4 +1,0 @@
-services:
-  portainer:
-    ports:
-      - "${PORTAINER_PORT_9000}:9000"

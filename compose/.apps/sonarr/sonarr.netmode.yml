@@ -1,3 +1,0 @@
-services:
-  sonarr:
-    network_mode: ${SONARR_NETWORK_MODE}

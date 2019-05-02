@@ -1,3 +1,0 @@
-services:
-  resiliosync:
-    network_mode: ${RESILIO_NETWORK_MODE}

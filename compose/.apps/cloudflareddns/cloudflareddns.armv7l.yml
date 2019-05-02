@@ -1,3 +1,0 @@
-services:
-  cloudflareddns:
-    image: oznu/cloudflare-ddns:armhf

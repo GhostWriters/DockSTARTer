@@ -1,7 +1,0 @@
-compose/.env
-compose/docker-compose.override.yml
-compose/docker-compose.yml
-config/
-configs/
-share/
-shared/

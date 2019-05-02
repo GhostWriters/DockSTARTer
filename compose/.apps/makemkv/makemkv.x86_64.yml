@@ -1,3 +1,0 @@
-services:
-  makemkv:
-    image: jlesage/makemkv

@@ -1,3 +1,0 @@
-services:
-  logarr:
-    network_mode: ${LOGARR_NETWORK_MODE}

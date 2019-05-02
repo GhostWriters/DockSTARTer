@@ -1,3 +1,0 @@
-services:
-  hydra2:
-    network_mode: ${HYDRA2_NETWORK_MODE}

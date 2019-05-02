@@ -1,3 +1,0 @@
-services:
-  telegraf:
-    network_mode: ${TELEGRAF_NETWORK_MODE}

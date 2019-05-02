@@ -1,4 +1,0 @@
-services:
-  h5ai:
-    ports:
-      - "${H5AI_PORT_80}:80"

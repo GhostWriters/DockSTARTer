@@ -1,3 +1,0 @@
-services:
-  glances:
-    network_mode: ${GLANCES_NETWORK_MODE}

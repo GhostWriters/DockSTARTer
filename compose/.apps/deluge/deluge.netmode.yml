@@ -1,3 +1,0 @@
-services:
-  deluge:
-    network_mode: ${DELUGE_NETWORK_MODE}

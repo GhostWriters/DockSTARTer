@@ -1,3 +1,0 @@
-services:
-  smokeping:
-    network_mode: ${SMOKEPING_NETWORK_MODE}

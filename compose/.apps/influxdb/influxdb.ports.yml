@@ -1,4 +1,0 @@
-services:
-  influxdb:
-    ports:
-      - "${INFLUXDB_PORT_8086}:8086"

@@ -1,3 +1,0 @@
-services:
-  nzbget:
-    network_mode: ${NZBGET_NETWORK_MODE}

@@ -1,3 +1,0 @@
-services:
-  monitorr:
-    network_mode: ${MONITORR_NETWORK_MODE}

@@ -1,3 +1,0 @@
-services:
-  headphones:
-    network_mode: ${HEADPHONES_NETWORK_MODE}

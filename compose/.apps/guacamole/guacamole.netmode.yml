@@ -1,3 +1,0 @@
-services:
-  guacamole:
-    network_mode: ${GUACAMOLE_NETWORK_MODE}

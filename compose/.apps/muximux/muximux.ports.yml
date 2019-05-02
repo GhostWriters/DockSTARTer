@@ -1,4 +1,0 @@
-services:
-  muximux:
-    ports:
-      - "${MUXIMUX_PORT_80}:80"

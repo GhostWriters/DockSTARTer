@@ -1,3 +1,0 @@
-services:
-  watchtower:
-    network_mode: ${WATCHTOWER_NETWORK_MODE}

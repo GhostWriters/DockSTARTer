@@ -1,3 +1,0 @@
-services:
-  plex:
-    image: plexinc/pms-docker:${PLEX_TAG}

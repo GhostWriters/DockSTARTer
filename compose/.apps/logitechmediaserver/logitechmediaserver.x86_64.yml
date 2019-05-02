@@ -1,3 +1,0 @@
-services:
-  logitechmediaserver:
-    image: larsks/logitech-media-server

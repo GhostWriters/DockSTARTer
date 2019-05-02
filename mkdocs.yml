@@ -1,0 +1,62 @@
+# Project information
+site_name: 'DockSTARTer'
+site_description: 'DockSTARTer helps you get started with home server apps running in Docker.'
+site_author: 'GhostWriters'
+site_url: 'https://dockstarter.com/'
+
+# Repository
+repo_name: 'GhostWriters/DockSTARTer'
+repo_url: 'https://github.com/GhostWriters/DockSTARTer'
+edit_uri: 'edit/docs/docs/'
+
+# Copyright
+copyright: 'Copyright &copy; 2018 - 2019 GhostWriters'
+
+# Configuration
+theme:
+  name: 'material'
+  language: 'en'
+  palette:
+    primary: 'blue grey'
+    accent: 'indigo'
+  font:
+    text: 'Roboto'
+    code: 'Roboto Mono'
+  logo: 'img/icon.png'
+  favicon: 'img/favicon.ico'
+
+# Navigation
+nav:
+  - Home: index.md
+  - Basics:
+    - Advanced Usage: Advanced-Usage.md
+    - How to Migrate to DS: Migration.md
+    - Frequently Asked Questions: Frequently-Asked-Questions.md
+  - Application Specifics:
+    - AirDCpp: AirDCpp.md
+    - ddclient: ddclient.md
+    - DelugeVPN: DelugeVPN.md
+    - Duplicati: Duplicati.md
+    - Home Assistant: Home-Assistant.md
+    - Let's Encrypt (Certbot): Let's-Encrypt-(Certbot).md
+    - Logarr: Logarr.md
+    - Netdata: Netdata.md
+    - NextCloud: NextCloud.md
+    - Ouroboros: Ouroboros.md
+    - Pi‐hole: Pi‐hole.md
+    - Plex: Plex.md
+    - Portainer: Portainer.md
+    - Samba: Samba.md
+    - Watchtower: Watchtower.md
+  - Various Topics:
+    - SMB Mounting: SMB-Mounting.md
+    - VPN Information: VPN-Information.md
+  - Videos/Walkthroughs:
+    - Video - Getting Started: https://www.youtube.com/watch?v=6pkbS07CAnU
+  - Other Pages:
+    - Advanced Usage: Advanced-Usage.md
+    - Available Applications: Available-Applications.md
+    - Backups: Backups.md
+    - Overrides: Overrides.md
+    - Setting Up a Domain: Setting-Up-a-Domain.md
+    - Technical Info: Technical-Info.md

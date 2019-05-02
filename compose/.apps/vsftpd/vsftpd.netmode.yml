@@ -1,3 +1,0 @@
-services:
-  vsftpd:
-    network_mode: ${VSFTPD_NETWORK_MODE}

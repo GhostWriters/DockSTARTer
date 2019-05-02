@@ -1,3 +1,0 @@
-services:
-  nextcloud:
-    network_mode: ${NEXTCLOUD_NETWORK_MODE}

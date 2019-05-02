@@ -1,3 +1,0 @@
-services:
-  sabnzbd:
-    image: linuxserver/sabnzbd

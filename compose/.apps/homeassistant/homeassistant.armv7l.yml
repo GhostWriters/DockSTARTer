@@ -1,3 +1,0 @@
-services:
-  homeassistant:
-    image: homeassistant/raspberrypi3-homeassistant
