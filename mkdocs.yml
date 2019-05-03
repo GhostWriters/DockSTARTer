@@ -36,6 +36,7 @@ nav:
     - Port Conflicts: basics/port-conflicts.md
   - App Specifics:
     - AirDCpp: apps/airdcpp.md
+    - BitWarden: apps/bitwarden.md
     - ddclient: apps/ddclient.md
     - DelugeVPN: apps/delugevpn.md
     - Duplicati: apps/duplicati.md
