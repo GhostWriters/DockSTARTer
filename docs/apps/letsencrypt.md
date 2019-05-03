@@ -9,17 +9,17 @@ To configure your reverse proxy, consider if you want to use subfolders (ie. dom
 
 The first thing to setup is your domain and email settings in `.docker/compose/.env` under LETSENCRYPT. Set the `LETSENCRYPT_EMAIL` and `LETSENCRYPT_URL`. If using subdomains ensure to add each subdomain to `LETSENCRYPT_SUBDOMAINS` as each subdomain prefix (ie. `LETSENCRYPT_SUBDOMAINS=portainer,deluge,pihole`.
 
-There are a number of sample proxy configuration files found in `.docker/config/letsencrypt/nginx/proxy-confs/` and in most cases will just need the .sample removed from the filename. Currently not every applicable app has an example configuration and are still being tested.
+There are a number of sample proxy configuration files found in `~/.config/appdata/letsencrypt/nginx/proxy-confs/` and in most cases will just need the .sample removed from the filename. Currently not every applicable app has an example configuration and are still being tested.
 
 Subfolder Example:
 ```
-cp ~/.docker/config/letsencrypt/nginx/proxy-confs/portainer.subfolder.conf.sample ~/.docker/config/letsencrypt/nginx/proxy-confs/portainer.subfolder.conf
+cp ~/.config/appdata/letsencrypt/nginx/proxy-confs/portainer.subfolder.conf.sample ~/.config/appdata/letsencrypt/nginx/proxy-confs/portainer.subfolder.conf
 ```
 This will make Portainer available at `domain.com/portainer`
 
 Subdomain Example:
 ```
-cp ~/.docker/config/letsencrypt/nginx/proxy-confs/portainer.subdomain.conf.sample ~/.docker/config/letsencrypt/nginx/proxy-confs/portainer.subdomain.conf
+cp ~/.config/appdata/letsencrypt/nginx/proxy-confs/portainer.subdomain.conf.sample ~/.config/appdata/letsencrypt/nginx/proxy-confs/portainer.subdomain.conf
 ```
 and will enable the service at `portainer.domain.com`
 
@@ -40,8 +40,8 @@ LETSENCRYPT_SUBDOMAINS=
 LETSENCRYPT_EMAIL=user@domain.com
 LETSENCRYPT_URL=appropriateaddress.com
 ```
-3. `cp organizr.subfolder.conf.sample organizr.subfolder.conf` in ~/.docker/config/letsencrypt/nginx/proxy-confs
-4. Edit ~/.docker/config/letsencrypt/nginx/site-confs/default and comment out the following (As shown):
+3. `cp organizr.subfolder.conf.sample organizr.subfolder.conf` in ~/.config/appdata/letsencrypt/nginx/proxy-confs
+4. Edit ~/.config/appdata/letsencrypt/nginx/site-confs/default and comment out the following (As shown):
 ```
 #       location / {
 #               try_files $uri $uri/ /index.html /index.php?$args =404;
@@ -55,7 +55,7 @@ Generally speaking, your configuration _does_ point to the port you specify, whi
 
 This change will make it so that if you type http://blahblah it will redirect to https://blahblah
 
-1. Edit /config/nginx/site-confs/default
+1. Edit ~/.config/appdata/nginx/site-confs/default
 
 2. Uncomment the relevant part of the file (see below)
 ```
@@ -76,8 +76,8 @@ server {
 
 If you want https://mydomain.duckdns.org to load organizr you can do the following.
 
-1. Goto ~.docker/config/letsencrypt/www
-2. Replace index.html with index.php
+1. Goto `~/.config/appdata/letsencrypt/www`
+2. Replace `index.html` with `index.php`
 3. Edit index.php and replace it with the following single line
 ```
 <?php header("Location: https://organizr.mydomain.duckdns.org"); ?>
