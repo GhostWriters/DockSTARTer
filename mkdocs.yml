@@ -33,6 +33,7 @@ nav:
     - Available Applications: basics/available-apps.md
     - How to Migrate to DS: basics/migration.md
     - Frequently Asked Questions: basics/faq.md
+    - Port Conflicts: basics/port-conflicts.md
   - App Specifics:
     - AirDCpp: apps/airdcpp.md
     - ddclient: apps/ddclient.md
@@ -43,8 +44,9 @@ nav:
     - Logarr: apps/logarr.md
     - Netdata: apps/netdata.md
     - NextCloud: apps/nextcloud.md
+    - OpenVPN-AS: apps/openvpnas.md
     - Ouroboros: apps/ouroboros.md
-    - Pi‐hole: apps/pihole.md
+    - Pi-hole: apps/pihole.md
     - Plex: apps/plex.md
     - Portainer: apps/portainer.md
     - Samba: apps/samba.md
@@ -57,3 +59,4 @@ nav:
     - SMB Mounting: advanced/smb-mounting.md
     - Technical Info: advanced/technical-info.md
     - VPN Information: advanced/vpn-info.md
+    - Uninstall: advanced/uninstall.md
