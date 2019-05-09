@@ -3,7 +3,7 @@ layout: default
 ---
 
 ## General Setup
-Out of the box, the LetsEncrypt container provided performs both certificate renewals and reverse proxy functions. More on this container can be found [here](https://hub.docker.com/r/linuxserver/letsencrypt/).
+Out of the box, the LetsEncrypt container created by [linuxserver.io](https://www.linuxserver.io/) performs reverse proxy functions using [NGINX](https://www.nginx.com/) and automatic https encrypted connections using certificates provided by [LetsEncrypt](https://letsencrypt.org/). More on this container can be found [here](https://hub.docker.com/r/linuxserver/letsencrypt/).
 
 To configure your reverse proxy, consider if you want to use subfolders (ie. domain.com/portainer) or subdomains (ie. portainer.domain.com). Subdomains will take more configuration, as DNS entries and certificate subject alternate names are required.
 
