@@ -13,6 +13,26 @@ echo "tun" | sudo tee /etc/modules-load.d/tun.conf
 sudo reboot
 ```
 
+## Access VPN containers remotely using LetsEncrypt
+If you're attempting to access the Web UI for one of your VPN containers (e.g. TransmissionVPN, DelugeVPN, etc.) from outside of your home network using LetsEncrypt, you will need to modify the LetsEncrypt configuration file to support the name difference. The sample configs are controlled by [LSIO](https://www.linuxserver.io/), not by DockSTARTer. So this change is required to get the VPN containers running remotely.
+
+The sample proxy configuration files found in `.docker/config/letsencrypt/nginx/proxy-confs/` will need to be modified and as usual, have the .sample removed from the filename.
+
+You will also need to edit the appropriate proxy `.conf`. The below example uses the TransmissionVPN container as an example:
+
+Enter either `sudo nano transmission.subfolder.conf` or `sudo nano transmission.subdomain.conf` depending on your configuration desires and change the below line:
+
+Original
+```
+   set $upstream_transmission transmission;
+```
+Modified
+```
+   set $upstream_transmission transmissionvpn;
+```
+
+Save the file out and then restart your containers with a `ds -c` command.
+
 ## How can I check if my VPN is working?
 
 * https://torguard.net/checkmytorrentipaddress.php
