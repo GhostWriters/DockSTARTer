@@ -2,7 +2,7 @@
 site_name: 'DockSTARTer'
 site_description: 'DockSTARTer helps you get started with home server apps running in Docker.'
 site_author: 'GhostWriters'
-site_url: 'https://dockstarter.com/'
+site_url: 'https://dockstarter.com'
 
 # Repository
 repo_name: 'GhostWriters/DockSTARTer'
@@ -29,34 +29,35 @@ theme:
 nav:
   - Home: index.md
   - Basics:
-    - Advanced Usage: Advanced-Usage.md
-    - How to Migrate to DS: Migration.md
-    - Frequently Asked Questions: Frequently-Asked-Questions.md
-  - Application Specifics:
-    - AirDCpp: AirDCpp.md
-    - ddclient: ddclient.md
-    - DelugeVPN: DelugeVPN.md
-    - Duplicati: Duplicati.md
-    - Home Assistant: Home-Assistant.md
-    - Let's Encrypt (Certbot): Let's-Encrypt-(Certbot).md
-    - Logarr: Logarr.md
-    - Netdata: Netdata.md
-    - NextCloud: NextCloud.md
-    - Ouroboros: Ouroboros.md
-    - Pi‐hole: Pi‐hole.md
-    - Plex: Plex.md
-    - Portainer: Portainer.md
-    - Samba: Samba.md
-    - Watchtower: Watchtower.md
-  - Various Topics:
-    - SMB Mounting: SMB-Mounting.md
-    - VPN Information: VPN-Information.md
-  - Videos/Walkthroughs:
-    - Video - Getting Started: https://www.youtube.com/watch?v=6pkbS07CAnU
-  - Other Pages:
-    - Advanced Usage: Advanced-Usage.md
-    - Available Applications: Available-Applications.md
-    - Backups: Backups.md
-    - Overrides: Overrides.md
-    - Setting Up a Domain: Setting-Up-a-Domain.md
-    - Technical Info: Technical-Info.md
+    - Getting Started (Video): https://www.youtube.com/watch?v=6pkbS07CAnU
+    - Available Applications: basics/available-apps.md
+    - How to Migrate to DS: basics/migration.md
+    - Frequently Asked Questions: basics/faq.md
+    - Port Conflicts: basics/port-conflicts.md
+  - App Specifics:
+    - AirDCpp: apps/airdcpp.md
+    - BitWarden: apps/bitwarden.md
+    - ddclient: apps/ddclient.md
+    - DelugeVPN: apps/delugevpn.md
+    - Duplicati: apps/duplicati.md
+    - Home Assistant: apps/homeassistant.md
+    - Let's Encrypt (Certbot): apps/letsencrypt.md
+    - Logarr: apps/logarr.md
+    - Netdata: apps/netdata.md
+    - NextCloud: apps/nextcloud.md
+    - OpenVPN-AS: apps/openvpnas.md
+    - Ouroboros: apps/ouroboros.md
+    - Pi-hole: apps/pihole.md
+    - Plex: apps/plex.md
+    - Portainer: apps/portainer.md
+    - Samba: apps/samba.md
+    - Watchtower: apps/watchtower.md
+  - Advanced:
+    - Advanced Usage: advanced/advanced-usage.md
+    - Backups: advanced/backups.md
+    - Overrides: advanced/overrides.md
+    - Setting Up a Domain: advanced/domain-info.md
+    - SMB Mounting: advanced/smb-mounting.md
+    - Technical Info: advanced/technical-info.md
+    - VPN Information: advanced/vpn-info.md
+    - Uninstall: advanced/uninstall.md

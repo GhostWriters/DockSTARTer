@@ -6,10 +6,10 @@ layout: default
 Upon starting up Plex for the first time, it's very likely you'll need to follow these steps:
 > **NOTE - You have 5 minutes from the time you generate your Claim Token to get Plex back up and running, so you may need to work fast!)**
 1. Run `docker stop plex && docker rm plex`
-2. Run `mv ~/.docker/config/plex/ ~/.docker/config/plex.bak/`
+2. Run `mv ~/.config/appdata/plex/ ~/.config/appdata/plex.bak/`
 3. Grab your Plex Claim Token from here: [https://www.plex.tv/claim](https://www.plex.tv/claim)
-4. Edit ~/.docker/compose/.env
-5. Set PLEX_CLAIM=    to use the claim token you generated from the link.
+4. Edit `~/.docker/compose/.env`
+5. Set `PLEX_CLAIM=` to use the claim token you generated from the link.
 6. Run `sudo ds -c up`
 7. Go back to http://x.x.x.x:32400/web (x.x.x.x being the IP of your Plex server) and you should be able to complete FTS.
 

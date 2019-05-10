@@ -27,7 +27,7 @@ sudo ds -c
 ```
 This script verifies the dependencies above and installs or updates them as needed, then creates a file `~/.docker/compose/docker-compose.yml` based on the variables you configured in your `.env` file. The generator script will prompt to run your selected containers after creating the file.
 
-We encourage you to have a look at the generated `docker-compose.yml` file, however if you wish to make changes please consider using overrides. Please review the [Technical Info](https://github.com/GhostWriters/DockSTARTer/wiki/Technical-Info) and [Overrides](https://github.com/GhostWriters/DockSTARTer/wiki/Overrides) pages.
+We encourage you to have a look at the generated `docker-compose.yml` file, however if you wish to make changes please consider using overrides. Please review the [Technical Info](https://dockstarter.com/technical-info) and [Overrides](https://dockstarter.com/overrides) pages.
 
 If you make any changes to your `.env` file (such as changing a port or enabling a new app) you need to rerun the generator which will rebuild only the affected containers.
 
@@ -60,8 +60,6 @@ Folders should be set to a location that actually exists even if you do not inte
 
 Inside **DOCKERCONFDIR**, a folder for each app will be created for it's configuration.
 
-On Raspbian and perhaps other flavours, configs may have been saved in `/home/root/.docker/config` or `/root/.docker/config` regardless of what PUID and PGID are set. In this case, move the folder to `/home/YOUR_ACTUAL_USERNAME/.docker/config` and set the full path in `~/.docker/compose/.env` without using the '~/` shortcut.
-
 > * thanks to Patrick for letting us know!
 
 **${TZ}** You should make sure your system's timezone is set correctly, and then also supply your timezone in the `TZ` variable (see [List of tz database time zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)).
@@ -74,7 +72,7 @@ You may also need to fill in or adjust any other variables prefixed with the `AP
 
 * This is the best place to change your default ports.
 * Please note, Portainer and Ouroboros are enabled by default. [Portainer](https://hub.docker.com/r/portainer/portainer/) provides a snazzy management interface at `your.ip.address:9000` and [Ouroboros](https://hub.docker.com/r/pyouroboros/uroboros/) checks for updates to the Containers you are using, __NOT__ DockSTARTer itself.
-See [here](https://github.com/GhostWriters/DockSTARTer/wiki/Frequently-Asked-Questions#ouroboros-and-portainer-i-didnt-select-them-but-they-installed-anyway) for a (little) more or you can disable them if you wish.
+See [here](https://dockstarter.com/faq#ouroboros-and-portainer-i-didnt-select-them-but-they-installed-anyway) for a (little) more or you can disable them if you wish.
 
 #### To clean up DockSTARTer any previous images at any time:
 ```

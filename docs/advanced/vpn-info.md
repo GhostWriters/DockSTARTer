@@ -41,7 +41,7 @@ Save the file out and then restart your containers with a `ds -c` command.
 * http://test.torrentprivacy.com/
 
 ### What if I want to use a VPN for _everything_?
-If you require VPN on all connections it is recommended to install OpenVPN as you normally would ( in /etc/openvpn etc etc) and then having the Docker service started and stopped by the up / down scripts.
+If you require VPN on all connections it is recommended to install OpenVPN as you normally would ( in `/etc/openvpn` etc etc) and then having the Docker service started and stopped by the up / down scripts.
 
 You can disable auto starting of the containers by disabling the docker service. On Ubuntu, I used
 
@@ -68,7 +68,7 @@ fi
 ```
 
 
-* If you make changes to the `.env`ironment file, you will need to run the generator again. If you stop the OpenVPN service, thereby stopping Docker, the generation might not work. Start your OpenVPN service and run the generation again if it didn't work.
+* If you make changes to the `.env` file, you will need to run the generator again. If you stop the OpenVPN service, thereby stopping Docker, the generation might not work. Start your OpenVPN service and run the generation again if it didn't work.
 ```
 cd ~/.docker/compose
 sudo ds -c
@@ -80,4 +80,4 @@ For PIA VPN Configuration:
 These pages come in handy -
 * https://github.com/haugene/docker-transmission-openvpn/blob/master/README.md#network-configuration-options
 
-If you run into slow VPN issues, it may be the container is using a default .ovpn config. So you'd use something like this in a [Override](https://github.com/GhostWriters/DockSTARTer/wiki/Overrides): `OPENVPN_CONFIG=UK Southampton` depending on your region/location.
+If you run into slow VPN issues, it may be the container is using a default .ovpn config. So you'd use something like this in a [Override](https://dockstarter.com/overrides): `OPENVPN_CONFIG=UK Southampton` depending on your region/location.
