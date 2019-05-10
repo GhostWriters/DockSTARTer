@@ -30,12 +30,12 @@ GoAccess:
 ```
   goaccess:
     image: gregyankovoy/goaccess
-    hostname: stats.netstacked.com
+    hostname: stats.domain.com
     ports:
     - 7889:7889
     volumes:
     - /etc/localtime:/etc/localtime:ro
-    - /home/matt/.docker/config/letsencrypt/log/nginx:/opt/log:ro
-    - /home/matt/.docker/config/goaccess:/config:rw
+    - /home/username/.docker/config/letsencrypt/log/nginx:/opt/log:ro
+    - /home/username/.docker/config/goaccess:/config:rw
     container_name: goaccess
 ```
