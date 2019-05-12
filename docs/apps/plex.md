@@ -17,8 +17,8 @@ If the above does not work repeat the steps a second time but also with step 4 i
 
 ### Everything's gone to crap, and I need to re-make my server. What do I do?
 Thankfully, some of this information is well documented (but not easily found) over on Plex's website here!
-1. Moving an installation to another system: https://support.plex.tv/articles/201370363-move-an-install-to-another-system/
-2. Where is the Plex Media Server data directory? https://support.plex.tv/articles/202915258-where-is-the-plex-media-server-data-directory-located/
+1. Moving an installation to another system: [https://support.plex.tv/articles/201370363-move-an-install-to-another-system/](https://support.plex.tv/articles/201370363-move-an-install-to-another-system/)
+2. Where is the Plex Media Server data directory? [https://support.plex.tv/articles/202915258-where-is-the-plex-media-server-data-directory-located/](https://support.plex.tv/articles/202915258-where-is-the-plex-media-server-data-directory-located/)
 
 If you would like to have Plex use a GPU that is attached to your DockSTARTer host, you can do this using an override like so:
 ```
