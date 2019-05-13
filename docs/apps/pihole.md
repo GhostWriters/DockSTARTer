@@ -10,7 +10,7 @@ On Ubuntu 18.04 and newer you will have `netplan` controlling your network and s
 
 ## Resolvconf
 
-On Ubuntu 18.04, resolveconf was removed as the default means to control DNS.  In addition to the settings mentioned regarding netplan, we recommend setting up resolvconf.
+On Ubuntu 18.04, resolvconf was removed as the default means to control DNS.  In addition to the settings mentioned regarding netplan, we recommend setting up resolvconf.
 
 To install run `sudo apt install resolvconf`
 
