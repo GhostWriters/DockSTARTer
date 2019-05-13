@@ -19,4 +19,4 @@ Replace `host` with your DNS or IP-address of your Docker host.
 
 ### Related
 #### Mounting Windows share in Linux
-See [[SMB Mounting]].
+See [SMB Mounting](https://dockstarter.com/advanced/smb-mounting/).
