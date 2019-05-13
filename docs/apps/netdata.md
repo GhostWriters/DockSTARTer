@@ -5,7 +5,7 @@ layout: default
 
 By default, netdata will pull from a UID for the container itself to display in the list of netdata servers you have, so you would see something like '0f2342dac'. To define this and make it more readable/recognizable for you (In case you have multiple netdata servers):
 1. Stop the netdata container.
-2. Edit or Create this file: [~/.docker/compose/docker-compose.override.yml](https://gist.github.com/mattgphoto/1e7afc85931ca98002a87abdc8bb257e) and change `${HOSTNAME}` to `friendlynamefornetdata`.
+2. Edit or Create this file: [~/.docker/compose/docker-compose.override.yml](https://gist.github.com/mattgphoto/1e7afc85931ca98002a87abdc8bb257e) and change `newnetdataname` to `friendlynamefornetdata`.
 3. Once this is done, re-run `sudo ds -c`
 
 For Reverse Proxy configuration, we'll use this template from guys who already thought of this at [organizrTools](https://github.com/organizrTools).
