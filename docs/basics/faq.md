@@ -8,7 +8,7 @@ DockSTARTer is a program that starts a bunch of different containers within a co
 
 ### System Requirements
 #### Supported Operating Systems
-We imagine DockSTARTer will behave nicely on any systems supported by the https://get.docker.com/ script. Your experiences with individual containers may vary though based primarily on the availability of the container for your hardware architecture.
+We imagine DockSTARTer will behave nicely on any systems supported by the [https://get.docker.com/](https://get.docker.com/) script. Your experiences with individual containers may vary though based primarily on the availability of the container for your hardware architecture.
 
 #### Supported Hardware
 Raspberry Pi or better? ARM architecture will be limited compared to x86_64 as far as app selection.
