@@ -78,7 +78,7 @@ Instead, if you want to run multiple download containers, configure Transmission
 
 Change them all to `/downloads/transmission/incomplete`,`/downloads/transmission/complete` etc etc. Then it has it's own folder but can still report the same root path.
 
-**Again**, do not edit the default YML files, instead, see the section on _Overrides_, below. (Assuming you are reading this page from start to finish for the first time) there is a reason you haven't seen their location yet ;)
+**Again**, do not edit the default YML files, instead, see the section on [_Overrides_](https://dockstarter.com/advanced/overrides/). (Assuming you are reading this page from start to finish for the first time) there is a reason you haven't seen their location yet ;)
 ### Ports
 The ports for access to (and from) your apps are manipulated in your `.env`ironment settings. I use the Sonarr example a lot but if you're not familiar, it's default port is `8989`.
 
