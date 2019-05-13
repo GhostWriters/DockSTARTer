@@ -35,4 +35,4 @@ EnableOplocks REG_DWORD 0
 
 ### Related
 #### Start a Samba server
-See [[Samba]].
+See [Samba](https://dockstarter.com/apps/samba/).
