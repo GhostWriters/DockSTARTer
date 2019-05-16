@@ -41,6 +41,7 @@ nav:
     - DelugeVPN: apps/delugevpn.md
     - Duplicati: apps/duplicati.md
     - Home Assistant: apps/homeassistant.md
+    - Jackett: apps/jackett.md
     - Let's Encrypt (Certbot): apps/letsencrypt.md
     - Logarr: apps/logarr.md
     - Netdata: apps/netdata.md
