@@ -36,22 +36,85 @@ nav:
     - Port Conflicts: basics/port-conflicts.md
   - App Specifics:
     - AirDCpp: apps/airdcpp.md
+    - airsonic: apps/airsonic.md
+    - bazarr: apps/bazarr.md
+    - beets: apps/beets.md
     - BitWarden: apps/bitwarden.md
+    - booksonic: apps/booksonic.md
+    - calibreweb: apps/calibreweb.md
+    - cloudcmd: apps/cloudcmd.md
+    - cloudflareddns: apps/cloudflareddns.md
+    - couchpotato: apps/couchpotato.md
     - ddclient: apps/ddclient.md
+    - deluge: apps/deluge.md
     - DelugeVPN: apps/delugevpn.md
+    - duckdns: apps/duckdns.md
     - Duplicati: apps/duplicati.md
+    - emby: apps/emby.md
+    - freshrss: apps/freshrss.md
+    - glances: apps/glances.md
+    - grafana: apps/grafana.md
+    - guacamole: apps/guacamole.md
+    - h5ai: apps/h5ai.md
+    - handbrake: apps/handbrake.md
+    - headphones: apps/headphones.md
+    - heimdall: apps/heimdall.md
     - Home Assistant: apps/homeassistant.md
+    - htpcmanager: apps/htpcmanager.md
+    - hydra2: apps/hydra2.md
+    - influxdb: apps/influxdb.md
     - Jackett: apps/jackett.md
+    - lazylibrarian: apps/lazylibrarian.md
     - Let's Encrypt (Certbot): apps/letsencrypt.md
+    - lidarr: apps/lidarr.md
     - Logarr: apps/logarr.md
+    - logitechmediaserver: apps/logitechmediaserver.md
+    - makemkv: apps/makemkv.md
+    - mariadb: apps/mariadb.md
+    - mcmyadmin2: apps/mcmyadmin2.md
+    - medusa: apps/medusa.md
+    - monitorr: apps/monitorr.md
+    - muximux: apps/muximux.md
+    - mylar: apps/mylar.md
     - Netdata: apps/netdata.md
     - NextCloud: apps/nextcloud.md
+    - nzbget: apps/nzbget.md
+    - nzbgetvpn: apps/nzbgetvpn.md
+    - ombi: apps/ombi.md
     - OpenVPN-AS: apps/openvpnas.md
+    - organizr: apps/organizr.md
     - Ouroboros: apps/ouroboros.md
+    - phpmyadmin: apps/phpmyadmin.md
     - Pi-hole: apps/pihole.md
     - Plex: apps/plex.md
+    - plexrequests: apps/plexrequests.md
     - Portainer: apps/portainer.md
+    - portaineragent: apps/portaineragent.md
+    - pyload: apps/pyload.md
+    - qbittorrent: apps/qbittorrent.md
+    - qbittorrentvpn: apps/qbittorrentvpn.md
+    - radarr: apps/radarr.md
+    - resiliosync: apps/resiliosync.md
+    - rtorrentvpn: apps/rtorrentvpn.md
+    - rutorrent: apps/rutorrent.md
+    - sabnzbd: apps/sabnzbd.md
+    - sabnzbdvpn: apps/sabnzbdvpn.md
     - Samba: apps/samba.md
+    - sickrage: apps/sickrage.md
+    - smokeping: apps/smokeping.md
+    - sonarr: apps/sonarr.md
+    - syncthing: apps/syncthing.md
+    - tautulli: apps/tautulli.md
+    - telegraf: apps/telegraf.md
+    - thelounge: apps/thelounge.md
+    - transmission: apps/transmission.md
+    - transmissionvpn: apps/transmissionvpn.md
+    - ttrss: apps/ttrss.md
+    - tvheadend: apps/tvheadend.md
+    - ubooquity: apps/ubooquity.md
+    - unifi: apps/unifi.md
+    - varken: apps/varken.md
+    - vsftpd: apps/vsftpd.md
     - Watchtower: apps/watchtower.md
   - Advanced:
     - Advanced Usage: advanced/advanced-usage.md
