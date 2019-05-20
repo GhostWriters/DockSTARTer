@@ -3,10 +3,8 @@ set -euo pipefail
 IFS=$'\n\t'
 
 config_vpn() {
-    local APPNAME
-    APPNAME="VPN"
-    local VARNAMES
-    VARNAMES=(LAN_NETWORK NS1 NS2 VPN_ENABLE VPN_USER VPN_PASS VPN_PROV VPN_OPTIONS)
+    local APPNAME="VPN"
+    local VARNAMES=(LAN_NETWORK NS1 NS2 VPN_ENABLE VPN_USER VPN_PASS VPN_PROV VPN_OPTIONS)
     local APPVARS
     APPVARS=$(for v in "${VARNAMES[@]}"; do echo "${v}=$(run_script 'env_get' "${v}")"; done)
 
@@ -25,7 +23,7 @@ config_vpn() {
     else
         info "Configuring ${APPNAME} .env variables."
         while IFS= read -r line; do
-            SET_VAR=${line%%=*}
+            local SET_VAR=${line%%=*}
             run_script 'menu_value_prompt' "${SET_VAR}" || return 1
         done < <(echo "${APPVARS}")
     fi

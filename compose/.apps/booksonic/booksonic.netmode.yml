@@ -1,0 +1,3 @@
+services:
+  booksonic:
+    network_mode: ${BOOKSONIC_NETWORK_MODE}

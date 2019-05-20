@@ -4,18 +4,15 @@ IFS=$'\n\t'
 
 backup_create() {
     # http://www.pointsoftware.ch/en/howto-local-and-remote-snapshot-backup-using-rsync-with-hard-links/
-    local SNAPSHOT_NAME
-    SNAPSHOT_NAME="${1:-}"
+    local SNAPSHOT_NAME="${1:-}"
     local SNAPSHOT_DST
     SNAPSHOT_DST=$(run_script 'env_get' BACKUP_CONFDIR)
     local DOCKERCONFDIR
     DOCKERCONFDIR=$(run_script 'env_get' DOCKERCONFDIR)
-    local SNAPSHOT_SRC
-    SNAPSHOT_SRC="${DOCKERCONFDIR}/${SNAPSHOT_NAME}"
+    local SNAPSHOT_SRC="${DOCKERCONFDIR}/${SNAPSHOT_NAME}"
     local BACKUP_RETENTION
     BACKUP_RETENTION=$(run_script 'env_get' BACKUP_RETENTION)
-    local BACKUP_RETENTION_MAX
-    BACKUP_RETENTION_MAX="${BACKUP_RETENTION%% *}"
+    local BACKUP_RETENTION_MAX="${BACKUP_RETENTION%% *}"
     local PUID
     PUID=$(run_script 'env_get' PUID)
     local PGID
@@ -38,8 +35,7 @@ backup_create() {
     # ------------- initialization -----------------------------------------
     shopt -s extglob # enable extended pattern matching operators
 
-    local OPTION
-    OPTION="--stats \
+    local OPTION="--stats \
     --recursive \
     --links \
     --perms \
@@ -78,11 +74,10 @@ backup_create() {
 
     # ------------- remove some old backups --------------------------------
     # remove certain snapshots to achieve an exponential distribution in time of the backups (1,2,4,8,...)
-    local a
-    local f
     while IFS= read -r b; do
+        local a
         a=$((b / 2 + 1))
-        f=0 # this flag is set to 1 when we find the 1st snapshot in the range b..a
+        local f=0 # this flag is set to 1 when we find the 1st snapshot in the range b..a
         for i in $(seq -f'%03g' "${b}" -1 "${a}"); do
             if [ -d "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}" ]; then
                 if [ "${f}" -eq 0 ]; then
@@ -100,19 +95,16 @@ backup_create() {
 
     # remove additional backups if free disk space is short
     remove_snapshot() {
-        local MIN_MIBSIZE2
-        MIN_MIBSIZE2=${1:-}
-        local MAX_MIBSIZE2
-        MAX_MIBSIZE2=${2:-}
-        local d
-        local FREEDISK
+        local MIN_MIBSIZE2=${1:-}
+        local MAX_MIBSIZE2=${2:-}
         for i in $(seq -f'%03g' "${BACKUP_RETENTION_MAX}" -1 001); do
             if [ -d "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}" ] || [ "${i}" -eq 1 ]; then
                 if [ ! -h "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last" ] && [ -d "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}" ]; then
                     ln -s "${SNAPSHOT_NAME}.${i}" "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last" || warning "Failed to create link for ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last"
                 fi
-                d=0 # disk space used by snapshots and free disk space are ok
+                local d=0 # disk space used by snapshots and free disk space are ok
                 info "Checking free disk space..."
+                local FREEDISK
                 FREEDISK=$(df -m "${SNAPSHOT_DST}" | tail -1 | sed -e 's/  */ /g' | cut -d" " -f4 | sed -e 's/M*//g')
                 info "${FREEDISK} MiB free."
                 if [ "${FREEDISK}" -ge "${MIN_MIBSIZE2}" ]; then
@@ -174,15 +166,14 @@ backup_create() {
     }
 
     # perform an estimation of required disk space for the new backup
-    local LNKDST
-    local OOVERWRITE_LAST
-    local LOG
     while :; do # this loop is executed a 2nd time if OVERWRITE_LAST was ==1 and snapshot.001 got removed
-        OOVERWRITE_LAST="${OVERWRITE_LAST}"
+        local OOVERWRITE_LAST="${OVERWRITE_LAST}"
         info "Testing needed free disk space ..."
         mkdir -p "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space" || fatal "Failed to create ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space"
         chmod -R 775 "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space" || fatal "Failed to set permissions on ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space"
+        local LOG
         LOG="$(mktemp)"
+        local LNKDST
         LNKDST=$(find "${SNAPSHOT_DST}/" -maxdepth 2 -type d -name "${SNAPSHOT_NAME}.001" -printf " --link-dest=%p")
         for i in ${LNKDST//--link-dest=/}; do
             if [ -d "${i}" ] && [ "${CHATTR}" -eq 1 ] && [ "$(lsattr -d "${i}" | cut -b5)" == "i" ]; then
@@ -251,9 +242,9 @@ backup_create() {
     if [ -h "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last" ]; then
         rm -f "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last" || error "Failed to create ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last"
     fi
-    local j
     for i in $(seq -f'%03g' "$((BACKUP_RETENTION_MAX - 1))" -1 000); do
         if [ -d "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}" ]; then
+            local j
             j=$((${i##+(0)} + 1))
             j=$(printf "%.3d" "${j}")
             info "Renaming ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i} into ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${j} ..."

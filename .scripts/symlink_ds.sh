@@ -3,6 +3,8 @@ set -euo pipefail
 IFS=$'\n\t'
 
 symlink_ds() {
+    run_script 'set_permissions' "${SCRIPTNAME}"
+
     # /usr/bin/ds
     if [[ -L "/usr/bin/ds" ]] && [[ ${SCRIPTNAME} != "$(readlink -f /usr/bin/ds)" ]]; then
         info "Attempting to remove /usr/bin/ds symlink."
