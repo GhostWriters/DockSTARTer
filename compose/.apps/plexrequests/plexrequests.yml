@@ -1,5 +1,5 @@
 # APPNICENAME=PlexRequests
-# APPDESCRIPTION=Automated way for users to request new content for Plex
+# APPDESCRIPTION=!DEPRECATED! Use Ombi
 services:
   plexrequests:
     container_name: plexrequests

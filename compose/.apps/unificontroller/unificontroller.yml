@@ -1,8 +1,8 @@
-# APPNICENAME=McMyAdmin2
-# APPDESCRIPTION=!DEPRECATED! No replacement
+# APPNICENAME=UnifiController
+# APPDESCRIPTION=Controller software for wireless networks
 services:
-  mcmyadmin2:
-    container_name: mcmyadmin2
+  unificontroller:
+    container_name: unificontroller
     hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
@@ -16,5 +16,5 @@ services:
       - TZ=${TZ}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/mcmyadmin2:/minecraft
+      - ${DOCKERCONFDIR}/unificontroller:/config
       - ${DOCKERSHAREDDIR}:/shared
