@@ -10,10 +10,8 @@ backup_med() {
     run_script 'env_update'
     run_script 'backup_create' ".compose.backups"
     while IFS= read -r line; do
-        local APPNAME
-        APPNAME=${line%%_ENABLED=true}
-        local FILENAME
-        FILENAME=${APPNAME,,}
+        local APPNAME=${line%%_ENABLED=true}
+        local FILENAME=${APPNAME,,}
         local BACKUP_CONFIG
         BACKUP_CONFIG=$(run_script 'env_get' "${APPNAME}_BACKUP_CONFIG")
         if [[ ${BACKUP_CONFIG} != false ]]; then

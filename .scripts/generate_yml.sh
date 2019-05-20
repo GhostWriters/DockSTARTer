@@ -16,10 +16,8 @@ generate_yml() {
     info "Required files included."
     info "Checking for enabled apps."
     while IFS= read -r line; do
-        local APPNAME
-        APPNAME=${line%%_ENABLED=true}
-        local FILENAME
-        FILENAME=${APPNAME,,}
+        local APPNAME=${line%%_ENABLED=true}
+        local FILENAME=${APPNAME,,}
         if [[ -d ${SCRIPTPATH}/compose/.apps/${FILENAME}/ ]]; then
             if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml ]]; then
                 if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${ARCH}.yml ]]; then

@@ -8,8 +8,7 @@ install_compose() {
     AVAILABLE_COMPOSE=$( (curl -H "${GH_HEADER:-}" -fsL "https://api.github.com/repos/docker/compose/releases/latest" | grep -Po '"tag_name": "[Vv]?\K.*?(?=")') || echo "0")
     local INSTALLED_COMPOSE
     INSTALLED_COMPOSE=$( (docker-compose --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
-    local FORCE
-    FORCE=${1:-}
+    local FORCE=${1:-}
     if [[ ${AVAILABLE_COMPOSE} == "0" ]]; then
         if [[ ${INSTALLED_COMPOSE} == "0" ]] || [[ -n ${FORCE} ]]; then
             fatal "The latest available version of docker-compose could not be confirmed. This is usually caused by exhausting the rate limit on GitHub's API. Please check https://api.github.com/rate_limit"

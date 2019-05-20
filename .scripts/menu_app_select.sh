@@ -3,14 +3,11 @@ set -euo pipefail
 IFS=$'\n\t'
 
 menu_app_select() {
-    local APPLIST
-    APPLIST=()
+    local APPLIST=()
 
     while IFS= read -r line; do
-        local APPNAME
-        APPNAME=${line%%_ENABLED=*}
-        local FILENAME
-        FILENAME=${APPNAME,,}
+        local APPNAME=${line%%_ENABLED=*}
+        local FILENAME=${APPNAME,,}
         if [[ -d ${SCRIPTPATH}/compose/.apps/${FILENAME}/ ]]; then
             if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml ]]; then
                 if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${ARCH}.yml ]]; then
@@ -41,14 +38,12 @@ menu_app_select() {
     else
         info "Disabling all apps."
         while IFS= read -r line; do
-            local APPNAME
-            APPNAME=${line%%_ENABLED=true}
+            local APPNAME=${line%%_ENABLED=true}
             run_script 'env_set' "${APPNAME}_ENABLED" false
         done < <(grep '_ENABLED=true$' < "${SCRIPTPATH}/compose/.env")
         info "Enabling selected apps."
         while IFS= read -r line; do
-            local APPNAME
-            APPNAME=${line^^}
+            local APPNAME=${line^^}
             run_script 'env_set' "${APPNAME}_ENABLED" true
         done < <(echo "${SELECTEDAPPS}")
     fi

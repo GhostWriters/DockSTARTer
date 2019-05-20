@@ -1,12 +1,12 @@
-# [![DockSTARTer](https://github.com/GhostWriters/DockSTARTer/raw/master/.github/logo.png)](https://dockstarter.com/)
+# [![DockSTARTer](https://github.com/GhostWriters/DockSTARTer/raw/master/.github/logo.png)](https://dockstarter.com)
 
 [![Backers on Open Collective](https://img.shields.io/opencollective/backers/DockSTARTer.svg)](#backers)
 [![Sponsors on Open Collective](https://img.shields.io/opencollective/sponsors/DockSTARTer.svg)](#sponsors)
 [![Beerpay support](https://img.shields.io/beerpay/GhostWriters/DockSTARTer.svg)](https://beerpay.io/GhostWriters/DockSTARTer)
 [![Discord chat](https://img.shields.io/discord/477959324183035936.svg?logo=discord)](https://discord.gg/YFyJpmH)
 [![GitHub contributors](https://img.shields.io/github/contributors/GhostWriters/DockSTARTer.svg)](https://github.com/GhostWriters/DockSTARTer/graphs/contributors)
-[![Wiki contributors](https://img.shields.io/github/contributors/GhostWriters/DockSTARTer-wiki.svg?label=wiki%20contributors)](https://github.com/GhostWriters/DockSTARTer-wiki/graphs/contributors)
-[![GitHub last commit](https://img.shields.io/github/last-commit/GhostWriters/DockSTARTer/master.svg)](https://github.com/GhostWriters/DockSTARTer/commits/master)
+[![GitHub last commit master](https://img.shields.io/github/last-commit/GhostWriters/DockSTARTer/master.svg?label=code%20committed)](https://github.com/GhostWriters/DockSTARTer/commits/master)
+[![GitHub last commit docs](https://img.shields.io/github/last-commit/GhostWriters/DockSTARTer/docs.svg?label=docs%20committed)](https://github.com/GhostWriters/DockSTARTer/commits/docs)
 [![GitHub license](https://img.shields.io/github/license/GhostWriters/DockSTARTer.svg)](https://github.com/GhostWriters/DockSTARTer/blob/master/LICENSE.md)
 [![Travis (.com) branch](https://img.shields.io/travis/com/GhostWriters/DockSTARTer/master.svg?logo=travis)](https://travis-ci.com/GhostWriters/DockSTARTer)
 
@@ -52,7 +52,7 @@ sudo reboot
 ```
 
 <details>
-  <summary>Advanced install (any system)</summary>
+  <summary>Alternate install (any system)</summary>
 
 The standard install above downloads the initial script using a method with some known risks. For those concerned with the security of the above method here is an alternative:
 
@@ -78,7 +78,7 @@ sudo ds
 
 To run DockSTARTer use the command above. You should now see the main menu from the screenshots. Select `Configuration` and then `Full Setup` and you will be guided through selecting apps and starting containers.
 
-See our [Wiki](https://github.com/GhostWriters/DockSTARTer/wiki/) for more detailed information.
+See our [documentation](https://dockstarter.com) for more detailed information.
 
 ## Support
 
@@ -91,7 +91,6 @@ Click the chat badge to join us on Discord for support!
 ## Contributors
 
 [![GitHub contributors](https://img.shields.io/github/contributors/GhostWriters/DockSTARTer.svg)](https://github.com/GhostWriters/DockSTARTer/graphs/contributors)
-[![Wiki contributors](https://img.shields.io/github/contributors/GhostWriters/DockSTARTer-wiki.svg?label=wiki%20contributors)](https://github.com/GhostWriters/DockSTARTer-wiki/graphs/contributors)
 
 This project exists thanks to all the people who contribute.
 [![GitHub contributors](https://opencollective.com/DockSTARTer/contributors.svg?button=false)](https://GitHub.com/GhostWriters/DockSTARTer/graphs/contributors)
@@ -116,5 +115,5 @@ Support development with [Beerpay](https://beerpay.io/GhostWriters/DockSTARTer)!
 
 ## Special Thanks
 
-- [SmartHomeBeginner.com](https://www.smarthomebeginner.com/) for creating [AtoMiC-ToolKit](https://github.com/htpcBeginner/AtoMiC-ToolKit) that served as this project's primary inspiration, and later [this](https://www.smarthomebeginner.com/docker-home-media-server-2018-basic/) guide that provided some initial direction with Docker.
-- [LinuxServer.io](https://www.linuxserver.io/) for maintaining the majority of the Docker images used in this project.
+- [SmartHomeBeginner.com](https://www.smarthomebeginner.com) for creating [AtoMiC-ToolKit](https://github.com/htpcBeginner/AtoMiC-ToolKit) that served as this project's primary inspiration, and later [this](https://www.smarthomebeginner.com/docker-home-media-server-2018-basic/) guide that provided some initial direction with Docker.
+- [LinuxServer.io](https://www.linuxserver.io) for maintaining the majority of the Docker images used in this project.
