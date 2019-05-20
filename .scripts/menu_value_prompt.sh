@@ -3,8 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 menu_value_prompt() {
-    local SET_VAR
-    SET_VAR=${1:-}
+    local SET_VAR=${1:-}
 
     local CURRENT_VAL
     CURRENT_VAL=$(run_script 'env_get' "${SET_VAR}")
@@ -12,16 +11,16 @@ menu_value_prompt() {
     local DEFAULT_VAL
     DEFAULT_VAL=$(grep --color=never -Po "^${SET_VAR}=\K.*" "${SCRIPTPATH}/compose/.env.example" || true)
 
+    local HOME_VAL
     local SYSTEM_VAL
     local VALUEDESCRIPTION
-    local VALUEOPTIONS
-    VALUEOPTIONS=()
+    local VALUEOPTIONS=()
     VALUEOPTIONS+=("Keep Current " "${CURRENT_VAL}")
 
     case "${SET_VAR}" in
         DOCKERCONFDIR)
-            SYSTEM_VAL="${DETECTED_HOMEDIR}/.docker/config"
-            VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
+            HOME_VAL="${DETECTED_HOMEDIR}/.config/appdata"
+            VALUEOPTIONS+=("Use Home " "${HOME_VAL}")
             ;;
         DOCKERGID)
             SYSTEM_VAL=$(cut -d: -f3 < <(getent group docker))
@@ -32,8 +31,8 @@ menu_value_prompt() {
             VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
             ;;
         DOCKERSHAREDDIR)
-            SYSTEM_VAL="${DETECTED_HOMEDIR}/.docker/config/shared"
-            VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
+            HOME_VAL="${DETECTED_HOMEDIR}/.config/appdata/shared"
+            VALUEOPTIONS+=("Use Home " "${HOME_VAL}")
             ;;
         DOWNLOADSDIR)
             SYSTEM_VAL="${DETECTED_HOMEDIR}/Downloads"
@@ -214,8 +213,7 @@ menu_value_prompt() {
                     whiptail --fb --clear --title "DockSTARTer" --msgbox "Cannot use / for ${SET_VAR}. Please select another folder." 0 0
                     menu_value_prompt "${SET_VAR}"
                 elif [[ ${INPUT} == ~* ]]; then
-                    local CORRECTED_DIR
-                    CORRECTED_DIR="${DETECTED_HOMEDIR}${INPUT#*~}"
+                    local CORRECTED_DIR="${DETECTED_HOMEDIR}${INPUT#*~}"
                     if run_script 'question_prompt' Y "Cannot use the ~ shortcut in ${SET_VAR}. Would you like to use ${CORRECTED_DIR} instead?"; then
                         run_script 'env_set' "${SET_VAR}" "${CORRECTED_DIR}"
                         whiptail --fb --clear --title "DockSTARTer" --msgbox "Returning to the previous menu to confirm selection." 0 0

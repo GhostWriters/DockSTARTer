@@ -3,8 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 menu_backup() {
-    local BACKUPOPTS
-    BACKUPOPTS=()
+    local BACKUPOPTS=()
     BACKUPOPTS+=("Settings " "Configure backup settings")
     BACKUPOPTS+=("MIN " "Backup your .env")
     BACKUPOPTS+=("MED " "Backup configs for enabled apps")
