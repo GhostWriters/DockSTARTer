@@ -3,7 +3,6 @@
 services:
   handbrake:
     container_name: handbrake
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

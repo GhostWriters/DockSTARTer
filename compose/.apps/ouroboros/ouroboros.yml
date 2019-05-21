@@ -3,7 +3,6 @@
 services:
   ouroboros:
     container_name: ouroboros
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

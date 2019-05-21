@@ -14,7 +14,6 @@ generate_yml() {
         echo "${SCRIPTPATH}/compose/.reqs/v2.yml \\"
     } >> "${RUNFILE}"
     info "Required files included."
-    info "Checking for enabled apps."
     while IFS= read -r line; do
         local APPNAME=${line%%_ENABLED=true}
         local FILENAME=${APPNAME,,}
@@ -23,33 +22,36 @@ generate_yml() {
                 if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${ARCH}.yml ]]; then
                     echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${ARCH}.yml \\" >> "${RUNFILE}"
                 else
-                    error "Failed to find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${ARCH}.yml file."
+                    error "Failed to include ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${ARCH}.yml file."
                     continue
                 fi
                 local APPNETMODE
                 APPNETMODE=$(run_script 'env_get' "${APPNAME}_NETWORK_MODE")
                 if [[ -z ${APPNETMODE} ]] || [[ ${APPNETMODE} == "bridge" ]]; then
+                    if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.hostname.yml ]]; then
+                        echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.hostname.yml \\" >> "${RUNFILE}"
+                    else
+                        warning "Failed to include ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.hostname.yml file."
+                    fi
                     if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml ]]; then
                         echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml \\" >> "${RUNFILE}"
-                        info "${APPNAME}_NETWORK_MODE supports port mapping. Ports will be included."
                     else
-                        warning "Failed to find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml file."
+                        warning "Failed to include ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml file."
                     fi
                 elif [[ -n ${APPNETMODE} ]]; then
                     if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml ]]; then
                         echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml \\" >> "${RUNFILE}"
-                        info "${APPNAME}_NETWORK_MODE is set to ${APPNETMODE}."
                     else
-                        warning "Failed to find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml file."
+                        warning "Failed to include ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml file."
                     fi
                 fi
                 echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml \\" >> "${RUNFILE}"
                 info "All configurations for ${APPNAME} are included."
             else
-                warning "Failed to find ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml file."
+                warning "Failed to include ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml file."
             fi
         else
-            error "Failed to find ${SCRIPTPATH}/compose/.apps/${FILENAME}/ directory."
+            error "Failed to include ${SCRIPTPATH}/compose/.apps/${FILENAME}/ directory."
         fi
     done < <(grep '_ENABLED=true$' < "${SCRIPTPATH}/compose/.env")
     echo "> ${SCRIPTPATH}/compose/docker-compose.yml" >> "${RUNFILE}"

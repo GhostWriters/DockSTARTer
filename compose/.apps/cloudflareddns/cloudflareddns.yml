@@ -3,7 +3,6 @@
 services:
   cloudflareddns:
     container_name: cloudflareddns
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

@@ -1,0 +1,3 @@
+services:
+  watchtower:
+    hostname: ${DOCKERHOSTNAME}

@@ -1,0 +1,3 @@
+services:
+  monitorr:
+    hostname: ${DOCKERHOSTNAME}

@@ -3,7 +3,6 @@
 services:
   sonarr:
     container_name: sonarr
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

@@ -1,0 +1,3 @@
+services:
+  glances:
+    hostname: ${DOCKERHOSTNAME}
