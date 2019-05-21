@@ -79,3 +79,32 @@ See [here](https://dockstarter.com/faq#ouroboros-and-portainer-i-didnt-select-th
 sudo ds -p
 ```
 This cleans up the DS install, p stands for prune in this case. This recovers space from old images if they were somehow left over.
+
+#### What is this appdata thing?
+
+If you've heard other people talk about an `appdata` folder and not been sure what they meant, it's what we have had as our default `~/.docker/config` since the beginning of DockSTARTer.
+
+As of today that has changed. For new installs the default `DOCKERCONFDIR` will be `~/.config/appdata` instead of `~/.docker/config`. For existing users nothing changes! You can keep your config folder right where it is.
+
+If you'd like to move your existing config to the new default location (even though you don't have to) you can do the following:
+Edit `~/. docker/compose/.env` (in any text editor) and set
+```
+DOCKERCONFDIR=~/.config/appdata
+```
+And
+```
+DOCKERSHAREDDIR=~/.config/appdata/shared
+```
+If you're using duplicati you will also need to set
+```
+DUPLICATI_BACKUPSDIR=~/.config/appdata/backups
+DUPLICATI_SOURCEDIR=~/.config/appdata
+```
+(Unless you have these set somewhere else on purpose). Then run the following commands:
+```
+ds -u
+ds -c down
+sudo mv ~/.docker/config ~/.config/appdata
+ds -c
+```
+That's it! Your containers should fire right back up as if nothing has changed. If you have any issues feel free to ask for help in #ds-support
