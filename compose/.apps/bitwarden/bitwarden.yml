@@ -3,7 +3,6 @@
 services:
   bitwarden:
     container_name: bitwarden
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

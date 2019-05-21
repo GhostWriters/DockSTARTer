@@ -3,7 +3,6 @@
 services:
   ubooquity:
     container_name: ubooquity
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

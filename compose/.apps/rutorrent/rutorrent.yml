@@ -3,7 +3,6 @@
 services:
   rutorrent:
     container_name: rutorrent
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

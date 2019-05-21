@@ -1,0 +1,3 @@
+services:
+  qbittorrentvpn:
+    hostname: ${DOCKERHOSTNAME}

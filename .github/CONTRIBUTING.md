@@ -21,19 +21,20 @@ More important than being beautiful is being functional. This repository is prim
 - Should be formatted with [https://prettier.io/](https://prettier.io/)
 - Are separated into multiple files:
   - `<appname>.yml` is the main YAML template for an app and should have elements in the following order:
-    - `# APPNICENAME` comment on line 1, must match <appname> exactly but can have mixed case. Ex: Portainer vs PORTAINER
+    - `# APPNICENAME` comment on line 1, must match `<appname>` exactly but can have mixed case. Ex: Portainer vs PORTAINER
     - `# APPDESCRIPTION` comment on line 2, will show the description in the menus
     - `container_name` should match `<appname>`
     - `restart` should be `unless-stopped` or should include a comment about why another option is used
-    - `logging` should and the items beneath it should be included exactly as shown in other apps
+    - `logging` and the items beneath it should be included exactly as shown in other apps
     - `environment` should contain an alphabetically sorted list of environment variables used by the app
       - `- TZ=${TZ}` is always included even if not needed unless some other form of timezone variable is used
     - `volumes` should contain an alphabetically sorted list of volumes used by the app
       - `- /etc/localtime:/etc/localtime:ro` is always included
       - `- ${DOCKERSHAREDDIR}:/shared` is always included
       - `${DOCKERCONFDIR}/<appname>` should be used to define the primary config directory for the app
-  - `<appname>.netmode.yml` contains the `<APPNAME>_NETWORK_MODE` variable.
-  - `<appname>.ports.yml` contains the ports used by the app. If no ports are required by an app then a [placeholder](https://github.com/GhostWriters/DockSTARTer/blob/master/compose/.reqs/v1.yml) file should be used.
+  - `<appname>.hostname.yml` sets the hostname to use the `${DOCKERHOSTNAME}` variable
+  - `<appname>.netmode.yml` contains the `<APPNAME>_NETWORK_MODE` variable
+  - `<appname>.ports.yml` contains the ports used by the app or a [placeholder](https://github.com/GhostWriters/DockSTARTer/blob/master/compose/.reqs/v1.yml) file if no ports are required
   - At least one of the following files must be included:
     - `<appname>.aarch64.yml` defines the aarch64 or arm64 image
     - `<appname>.armv7l.yml` defines the armv7l or armhf image

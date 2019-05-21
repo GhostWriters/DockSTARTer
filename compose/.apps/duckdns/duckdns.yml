@@ -3,7 +3,6 @@
 services:
   duckdns:
     container_name: duckdns
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"
