@@ -3,7 +3,6 @@
 services:
   influxdb:
     container_name: influxdb
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

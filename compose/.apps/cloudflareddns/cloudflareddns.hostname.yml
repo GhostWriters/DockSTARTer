@@ -1,0 +1,3 @@
+services:
+  cloudflareddns:
+    hostname: ${DOCKERHOSTNAME}

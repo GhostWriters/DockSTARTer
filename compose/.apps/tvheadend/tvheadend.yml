@@ -3,7 +3,6 @@
 services:
   tvheadend:
     container_name: tvheadend
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

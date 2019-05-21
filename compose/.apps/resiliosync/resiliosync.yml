@@ -3,7 +3,6 @@
 services:
   resiliosync:
     container_name: resiliosync
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

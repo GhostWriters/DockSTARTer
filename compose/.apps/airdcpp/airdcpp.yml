@@ -3,7 +3,6 @@
 services:
   airdcpp:
     container_name: airdcpp
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

@@ -1,0 +1,3 @@
+services:
+  letsencrypt:
+    hostname: ${DOCKERHOSTNAME}

@@ -3,7 +3,6 @@
 services:
   medusa:
     container_name: medusa
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

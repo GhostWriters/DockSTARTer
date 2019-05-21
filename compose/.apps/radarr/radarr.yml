@@ -3,7 +3,6 @@
 services:
   radarr:
     container_name: radarr
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

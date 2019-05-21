@@ -3,7 +3,6 @@
 services:
   qbittorrentvpn:
     container_name: qbittorrentvpn
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

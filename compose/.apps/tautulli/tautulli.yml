@@ -3,7 +3,6 @@
 services:
   tautulli:
     container_name: tautulli
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"
