@@ -3,7 +3,6 @@
 services:
   nzbget:
     container_name: nzbget
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

@@ -3,7 +3,6 @@
 services:
   smokeping:
     container_name: smokeping
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

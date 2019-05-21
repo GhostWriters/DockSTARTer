@@ -3,7 +3,6 @@
 services:
   varken:
     container_name: varken
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

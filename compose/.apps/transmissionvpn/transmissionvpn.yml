@@ -3,7 +3,6 @@
 services:
   transmissionvpn:
     container_name: transmissionvpn
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

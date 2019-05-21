@@ -3,7 +3,6 @@
 services:
   syncthing:
     container_name: syncthing
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

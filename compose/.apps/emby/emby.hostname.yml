@@ -1,0 +1,3 @@
+services:
+  emby:
+    hostname: ${DOCKERHOSTNAME}

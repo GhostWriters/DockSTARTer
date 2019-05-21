@@ -1,0 +1,3 @@
+services:
+  nextcloud:
+    hostname: ${DOCKERHOSTNAME}

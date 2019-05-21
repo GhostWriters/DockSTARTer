@@ -1,0 +1,3 @@
+services:
+  duplicati:
+    hostname: ${DOCKERHOSTNAME}
