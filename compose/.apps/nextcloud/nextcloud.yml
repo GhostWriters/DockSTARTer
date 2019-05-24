@@ -1,18 +1,19 @@
-# APPNICENAME=Nextcloud
-# APPDESCRIPTION=Gives you access to all your files wherever you are
 services:
   nextcloud:
     container_name: nextcloud
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.nextcloud_description: Gives you access to all your files wherever you are
+      com.dockstarter.nextcloud_nicename: Nextcloud
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/nextcloud:/config

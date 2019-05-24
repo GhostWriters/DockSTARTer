@@ -1,4 +1,4 @@
 services:
   cloudcmd:
     ports:
-      - "${CLOUDCMD_PORT_8000}:8000"
+      - ${CLOUDCMD_PORT_8000}:8000

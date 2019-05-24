@@ -1,16 +1,17 @@
-# APPNICENAME=h5ai
-# APPDESCRIPTION=Modern file indexer
 services:
   h5ai:
     container_name: h5ai
-    restart: unless-stopped
+    environment:
+      - TZ=${TZ}
+    labels:
+      com.dockstarter.h5ai_description: Modern file indexer
+      com.dockstarter.h5ai_nicename: h5ai
     logging:
-      driver: "json-file"
+      driver: json-file
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    environment:
-      - TZ=${TZ}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERSHAREDDIR}:/shared

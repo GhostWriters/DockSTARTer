@@ -1,18 +1,19 @@
-# APPNICENAME=Lidarr
-# APPDESCRIPTION=Music download manager for Usenet and BitTorrent users
 services:
   lidarr:
     container_name: lidarr
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.lidarr_description: Music download manager for Usenet and BitTorrent users
+      com.dockstarter.lidarr_nicename: Lidarr
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/lidarr:/config

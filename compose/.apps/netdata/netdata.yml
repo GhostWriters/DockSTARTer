@@ -1,17 +1,22 @@
-# APPNICENAME=netdata
-# APPDESCRIPTION=Distributed real-time performance and health monitoring
 services:
   netdata:
+    cap_add:
+      - SYS_PTRACE
     container_name: netdata
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${DOCKERGID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.netdata_description: Distributed real-time performance and health monitoring
+      com.dockstarter.netdata_nicename: netdata
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    security_opt:
+      - apparmor:unconfined
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /proc:/host/proc:ro
@@ -19,7 +24,3 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ${DOCKERCONFDIR}/netdata:/etc/netdata
       - ${DOCKERSHAREDDIR}:/shared
-    cap_add:
-      - SYS_PTRACE
-    security_opt:
-      - apparmor:unconfined

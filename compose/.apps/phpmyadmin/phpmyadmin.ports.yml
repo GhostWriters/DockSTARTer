@@ -1,4 +1,4 @@
 services:
   phpmyadmin:
     ports:
-      - "${PHPMYADMIN_PORT_80}:80"
+      - ${PHPMYADMIN_PORT_80}:80

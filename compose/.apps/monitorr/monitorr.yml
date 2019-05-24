@@ -1,18 +1,19 @@
-# APPNICENAME=Monitorr
-# APPDESCRIPTION=Webfront to live display the status of any webapp or service
 services:
   monitorr:
     container_name: monitorr
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.monitorr_description: Webfront to live display the status of any webapp or service
+      com.dockstarter.monitorr_nicename: Monitorr
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/monitorr:/app

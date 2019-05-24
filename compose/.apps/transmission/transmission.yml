@@ -1,18 +1,19 @@
-# APPNICENAME=Transmission
-# APPDESCRIPTION=Fast, easy, and free BitTorrent client
 services:
   transmission:
     container_name: transmission
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.transmission_description: Fast, easy, and free BitTorrent client
+      com.dockstarter.transmission_nicename: Transmission
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/transmission:/config

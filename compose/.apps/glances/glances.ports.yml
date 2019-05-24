@@ -1,5 +1,5 @@
 services:
   glances:
     ports:
-      - "${GLANCES_PORT_61208}:61208"
-      - "${GLANCES_PORT_61209}:61209"
+      - ${GLANCES_PORT_61208}:61208
+      - ${GLANCES_PORT_61209}:61209

@@ -1,20 +1,21 @@
-# APPNICENAME=Airsonic
-# APPDESCRIPTION=Web-based media streamer providing ubiquitious access to your music
 services:
   airsonic:
     container_name: airsonic
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - CONTEXT_PATH=${AIRSONIC_CONTEXT_PATH}
       - JAVA_OPTS=${AIRSONIC_JAVA_OPTS}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.airsonic_description: Web-based media streamer providing ubiquitious access to your music
+      com.dockstarter.airsonic_nicename: Airsonic
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/airsonic:/config

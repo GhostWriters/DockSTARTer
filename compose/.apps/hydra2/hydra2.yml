@@ -1,18 +1,19 @@
-# APPNICENAME=Hydra2
-# APPDESCRIPTION=Meta search for NZB indexers
 services:
   hydra2:
     container_name: hydra2
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.hydra2_description: Meta search for NZB indexers
+      com.dockstarter.hydra2_nicename: Hydra2
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/hydra2:/config

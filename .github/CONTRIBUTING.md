@@ -19,19 +19,21 @@ More important than being beautiful is being functional. This repository is prim
 ## YAML files
 
 - Should be formatted with [https://prettier.io/](https://prettier.io/)
+- Should be sorted alphabetically
 - Are separated into multiple files:
   - `<appname>.yml` is the main YAML template for an app and should have elements in the following order:
-    - `# APPNICENAME` comment on line 1, must match `<appname>` exactly but can have mixed case. Ex: Portainer vs PORTAINER
-    - `# APPDESCRIPTION` comment on line 2, will show the description in the menus
     - `container_name` should match `<appname>`
-    - `restart` should be `unless-stopped` or should include a comment about why another option is used
-    - `logging` and the items beneath it should be included exactly as shown in other apps
-    - `environment` should contain an alphabetically sorted list of environment variables used by the app
+    - `environment` should contain the environment variables used by the app
       - `- TZ=${TZ}` is always included even if not needed unless some other form of timezone variable is used
-    - `volumes` should contain an alphabetically sorted list of volumes used by the app
+    - `labels` should contain the labels used by the app
+      - `com.dockstarter.<appname>_description: <Description>` will show the description in the menus
+      - `com.dockstarter.<appname>_nicename: <AppName>` must match `<appname>` exactly but can have mixed case. Ex: Portainer vs PORTAINER
+    - `logging` and the items beneath it should be included exactly as shown in other apps
+    - `restart` should be `unless-stopped` or should include a comment about why another option is used
+    - `volumes` should contain the volumes used by the app
       - `- /etc/localtime:/etc/localtime:ro` is always included
+      - `- ${DOCKERCONFDIR}/<appname>:<container_config>` should be used to define the primary config directory for the app
       - `- ${DOCKERSHAREDDIR}:/shared` is always included
-      - `${DOCKERCONFDIR}/<appname>` should be used to define the primary config directory for the app
   - `<appname>.hostname.yml` sets the hostname to use the `${DOCKERHOSTNAME}` variable
   - `<appname>.netmode.yml` contains the `<APPNAME>_NETWORK_MODE` variable
   - `<appname>.ports.yml` contains the ports used by the app or a [placeholder](https://github.com/GhostWriters/DockSTARTer/blob/master/compose/.reqs/v1.yml) file if no ports are required

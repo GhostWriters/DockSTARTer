@@ -1,18 +1,19 @@
-# APPNICENAME=Watchtower
-# APPDESCRIPTION=Automatically update running Docker containers
 services:
   watchtower:
+    command: --schedule "${WATCHTOWER_CRON}" --cleanup
     container_name: watchtower
-    restart: unless-stopped
+    environment:
+      - TZ=${TZ}
+    labels:
+      com.dockstarter.watchtower_description: Automatically update running Docker containers
+      com.dockstarter.watchtower_nicename: Watchtower
     logging:
-      driver: "json-file"
+      driver: json-file
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    environment:
-      - TZ=${TZ}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
       - ${DOCKERSHAREDDIR}:/shared
-    command: --schedule "${WATCHTOWER_CRON}" --cleanup

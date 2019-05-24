@@ -1,18 +1,19 @@
-# APPNICENAME=DDClient
-# APPDESCRIPTION=Update dynamic DNS entries
 services:
   ddclient:
     container_name: ddclient
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.ddclient_description: Update dynamic DNS entries
+      com.dockstarter.ddclient_nicename: DDClient
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/ddclient:/config

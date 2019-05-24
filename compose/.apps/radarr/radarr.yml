@@ -1,18 +1,19 @@
-# APPNICENAME=Radarr
-# APPDESCRIPTION=Automatically download movies via Usenet and BitTorrent
 services:
   radarr:
     container_name: radarr
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.radarr_description: Automatically download movies via Usenet and BitTorrent
+      com.dockstarter.radarr_nicename: Radarr
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/radarr:/config

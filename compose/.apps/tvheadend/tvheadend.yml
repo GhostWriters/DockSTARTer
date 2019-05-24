@@ -1,19 +1,20 @@
-# APPNICENAME=Tvheadend
-# APPDESCRIPTION=TV streaming server and recorder
 services:
   tvheadend:
     container_name: tvheadend
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - RUN_OPTS=${TVHEADEND_RUN_OPTS}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.tvheadend_description: TV streaming server and recorder
+      com.dockstarter.tvheadend_nicename: Tvheadend
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/tvheadend:/config

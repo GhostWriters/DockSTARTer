@@ -1,20 +1,23 @@
-# APPNICENAME=Tautulli
-# APPDESCRIPTION=Monitoring and tracking tool for Plex Media Server
 services:
   tautulli:
     container_name: tautulli
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.tautulli_description: Monitoring and tracking tool for Plex Media Server
+      com.dockstarter.tautulli_nicename: Tautulli
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/tautulli:/config
-      - ${DOCKERCONFDIR}/plex/Library/Application Support/Plex Media Server/Logs:/logs:ro
+      - >-
+        ${DOCKERCONFDIR}/plex/Library/Application Support/Plex Media
+        Server/Logs:/logs:ro
       - ${DOCKERSHAREDDIR}:/shared

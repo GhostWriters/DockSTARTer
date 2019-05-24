@@ -1,18 +1,19 @@
-# APPNICENAME=smokeping
-# APPDESCRIPTION=Free service which will point a DNS to an IP of your choice
 services:
   smokeping:
     container_name: smokeping
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.smokeping_description: Free service which will point a DNS to an IP of your choice
+      com.dockstarter.smokeping_nicename: SmokePing
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/smokeping:/config

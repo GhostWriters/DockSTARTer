@@ -1,18 +1,19 @@
-# APPNICENAME=Jackett
-# APPDESCRIPTION=API Support for your favorite private trackers
 services:
   jackett:
     container_name: jackett
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.jackett_description: API Support for your favorite private trackers
+      com.dockstarter.jackett_nicename: Jackett
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/jackett:/config

@@ -1,20 +1,21 @@
-# APPNICENAME=Glances
-# APPDESCRIPTION=Cross-platform system monitoring tool
 services:
   glances:
     container_name: glances
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - GLANCES_OPT=-w
       - TZ=${TZ}
+    labels:
+      com.dockstarter.glances_description: Cross-platform system monitoring tool
+      com.dockstarter.glances_nicename: Glances
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    pid: host
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ${DOCKERCONFDIR}/glances:/glances/conf
       - ${DOCKERSHAREDDIR}:/shared
-    pid: host

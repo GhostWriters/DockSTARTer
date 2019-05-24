@@ -1,16 +1,18 @@
-# APPNICENAME=Jellyfin
-# APPDESCRIPTION=Free Software Media Browser
 services:
   jellyfin:
     container_name: jellyfin
-    restart: unless-stopped
+    environment:
+      - TZ=${TZ}
+    labels:
+      com.dockstarter.jellyfin_description: Free Software Media Browser
+      com.dockstarter.jellyfin_nicename: Jellyfin
     logging:
-      driver: "json-file"
+      driver: json-file
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    environment:
-      - TZ=${TZ}
+    restart: unless-stopped
+    user: ${PUID}:${PGID}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/jellyfin:/config
@@ -22,4 +24,3 @@ services:
       - ${MEDIADIR_MUSIC}:/music
       - ${MEDIADIR_TV}:/media/tv
       - ${MEDIADIR_TV}:/tv
-    user: ${PUID}:${PGID}

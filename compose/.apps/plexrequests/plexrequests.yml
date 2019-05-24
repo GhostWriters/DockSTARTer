@@ -1,19 +1,20 @@
-# APPNICENAME=PlexRequests
-# APPDESCRIPTION=!DEPRECATED! Use Ombi
 services:
   plexrequests:
     container_name: plexrequests
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - URL_BASE=/plexrequests
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.plexrequests_description: (DEPRECATED) Use Ombi
+      com.dockstarter.plexrequests_nicename: PlexRequests
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/plexrequests:/config

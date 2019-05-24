@@ -1,18 +1,19 @@
-# APPNICENAME=McMyAdmin2
-# APPDESCRIPTION=!DEPRECATED! No replacement
 services:
   mcmyadmin2:
     container_name: mcmyadmin2
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.mcmyadmin2_description: (DEPRECATED) No replacement
+      com.dockstarter.mcmyadmin2_nicename: McMyAdmin2
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/mcmyadmin2:/minecraft

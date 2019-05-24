@@ -1,19 +1,20 @@
-# APPNICENAME=Grafana
-# APPDESCRIPTION=Metrics dashboard and graph editor
 services:
   grafana:
     container_name: grafana
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - GF_INSTALL_PLUGINS=${GRAFANA_GF_INSTALL_PLUGINS}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.grafana_description: Metrics dashboard and graph editor
+      com.dockstarter.grafana_nicename: Grafana
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    user: ${PUID}:${PGID}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/grafana:/var/lib/grafana
       - ${DOCKERSHAREDDIR}:/shared
-    user: ${PUID}:${PGID}

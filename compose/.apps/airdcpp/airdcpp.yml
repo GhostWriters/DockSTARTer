@@ -1,14 +1,6 @@
-# APPNICENAME=AirdcPP
-# APPDESCRIPTION=Client for Advanced Direct Connect and Direct Connect networks
 services:
   airdcpp:
     container_name: airdcpp
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - GID=${PGID}
       - HTTP_PORT=${AIRDCPP_PORT_5600}
@@ -18,6 +10,15 @@ services:
       - TZ=${TZ}
       - UDP_PORT=${AIRDCPP_PORT_21248}
       - UID=${PUID}
+    labels:
+      com.dockstarter.airdcpp_description: Client for Advanced Direct Connect and Direct Connect networks
+      com.dockstarter.airdcpp_nicename: AirdcPP
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${AIRDCPP_SHAREDIR}:/Share

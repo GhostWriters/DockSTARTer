@@ -1,18 +1,19 @@
-# APPNICENAME=LogitechMediaServer
-# APPDESCRIPTION=LogitechMediaServer(SqueezeBox)
 services:
   logitechmediaserver:
     container_name: logitechmediaserver
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.logitechmediaserver_description: LogitechMediaServer(SqueezeBox)
+      com.dockstarter.logitechmediaserver_nicename: LogitechMediaServer
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/logitechmediaserver:/srv/squeezebox/

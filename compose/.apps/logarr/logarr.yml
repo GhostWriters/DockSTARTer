@@ -1,18 +1,19 @@
-# APPNICENAME=Logarr
-# APPDESCRIPTION=Self-hosted, single-page, log consolidation tool
 services:
   logarr:
     container_name: logarr
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.logarr_description: Self-hosted, single-page, log consolidation tool
+      com.dockstarter.logarr_nicename: Logarr
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/logarr:/config
