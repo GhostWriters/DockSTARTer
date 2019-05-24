@@ -11,8 +11,8 @@ services:
       - TZ=${TZ}
       - ZONE=${CLOUDFLAREDDNS_ZONE}
     labels:
-      com.dockstarter.cloudflareddns_description: Free service which will point a DNS to an IP of your choice
-      com.dockstarter.cloudflareddns_nicename: CloudFlareDDNS
+      com.dockstarter.cloudflareddns_description: "Free service which will point a DNS to an IP of your choice"
+      com.dockstarter.cloudflareddns_nicename: "CloudFlareDDNS"
     logging:
       driver: json-file
       options:

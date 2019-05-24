@@ -11,8 +11,8 @@ services:
       - UDP_PORT=${AIRDCPP_PORT_21248}
       - UID=${PUID}
     labels:
-      com.dockstarter.airdcpp_description: Client for Advanced Direct Connect and Direct Connect networks
-      com.dockstarter.airdcpp_nicename: AirdcPP
+      com.dockstarter.airdcpp_description: "Client for Advanced Direct Connect and Direct Connect networks"
+      com.dockstarter.airdcpp_nicename: "AirdcPP"
     logging:
       driver: json-file
       options:

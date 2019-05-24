@@ -6,8 +6,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.muximux_description: A lightweight way to manage your HTPC
-      com.dockstarter.muximux_nicename: Muximux
+      com.dockstarter.muximux_description: "A lightweight way to manage your HTPC"
+      com.dockstarter.muximux_nicename: "Muximux"
     logging:
       driver: json-file
       options:

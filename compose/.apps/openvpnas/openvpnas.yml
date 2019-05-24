@@ -9,8 +9,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.openvpnas_description: Secure network tunneling VPN
-      com.dockstarter.openvpnas_nicename: OpenVPNAS
+      com.dockstarter.openvpnas_description: "Secure network tunneling VPN"
+      com.dockstarter.openvpnas_nicename: "OpenVPNAS"
     logging:
       driver: json-file
       options:

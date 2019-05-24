@@ -7,8 +7,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.booksonic_description: Web-based streamer for your audiobooks.
-      com.dockstarter.booksonic_nicename: Booksonic
+      com.dockstarter.booksonic_description: "Web-based streamer for your audiobooks."
+      com.dockstarter.booksonic_nicename: "Booksonic"
     logging:
       driver: json-file
       options:

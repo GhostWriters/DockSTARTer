@@ -9,8 +9,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.duckdns_description: Free service which will point a DNS to an IP of your choice
-      com.dockstarter.duckdns_nicename: DuckDNS
+      com.dockstarter.duckdns_description: "Free service which will point a DNS to an IP of your choice"
+      com.dockstarter.duckdns_nicename: "DuckDNS"
     logging:
       driver: json-file
       options:

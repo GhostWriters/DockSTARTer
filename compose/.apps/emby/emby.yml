@@ -7,8 +7,8 @@ services:
       - TZ=${TZ}
       - UID=${PUID}
     labels:
-      com.dockstarter.emby_description: Organize, play, and stream audio and video
-      com.dockstarter.emby_nicename: Emby
+      com.dockstarter.emby_description: "Organize, play, and stream audio and video"
+      com.dockstarter.emby_nicename: "Emby"
     logging:
       driver: json-file
       options:

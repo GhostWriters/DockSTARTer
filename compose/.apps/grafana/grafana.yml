@@ -5,8 +5,8 @@ services:
       - GF_INSTALL_PLUGINS=${GRAFANA_GF_INSTALL_PLUGINS}
       - TZ=${TZ}
     labels:
-      com.dockstarter.grafana_description: Metrics dashboard and graph editor
-      com.dockstarter.grafana_nicename: Grafana
+      com.dockstarter.grafana_description: "Metrics dashboard and graph editor"
+      com.dockstarter.grafana_nicename: "Grafana"
     logging:
       driver: json-file
       options:

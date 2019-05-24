@@ -14,8 +14,8 @@ services:
       - SELF_UPDATE=${OUROBOROS_SELF_UPDATE}
       - TZ=${TZ}
     labels:
-      com.dockstarter.ouroboros_description: Automatically update running Docker containers
-      com.dockstarter.ouroboros_nicename: Ouroboros
+      com.dockstarter.ouroboros_description: "Automatically update running Docker containers"
+      com.dockstarter.ouroboros_nicename: "Ouroboros"
     logging:
       driver: json-file
       options:

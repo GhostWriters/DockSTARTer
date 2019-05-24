@@ -7,8 +7,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.mariadb_description: One of the most popular database servers
-      com.dockstarter.mariadb_nicename: MariaDB
+      com.dockstarter.mariadb_description: "One of the most popular database servers"
+      com.dockstarter.mariadb_nicename: "MariaDB"
     logging:
       driver: json-file
       options:

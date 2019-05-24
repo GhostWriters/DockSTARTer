@@ -6,8 +6,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.logitechmediaserver_description: LogitechMediaServer(SqueezeBox)
-      com.dockstarter.logitechmediaserver_nicename: LogitechMediaServer
+      com.dockstarter.logitechmediaserver_description: "LogitechMediaServer(SqueezeBox)"
+      com.dockstarter.logitechmediaserver_nicename: "LogitechMediaServer"
     logging:
       driver: json-file
       options:

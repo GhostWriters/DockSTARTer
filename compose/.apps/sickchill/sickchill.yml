@@ -6,8 +6,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.sickchill_description: Automatic Video Library Manager for TV Shows
-      com.dockstarter.sickchill_nicename: SickChill
+      com.dockstarter.sickchill_description: "Automatic Video Library Manager for TV Shows"
+      com.dockstarter.sickchill_nicename: "SickChill"
     logging:
       driver: json-file
       options:

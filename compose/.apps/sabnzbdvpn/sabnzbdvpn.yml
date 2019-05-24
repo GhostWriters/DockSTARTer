@@ -16,8 +16,8 @@ services:
       - VPN_PROV=${VPN_PROV}
       - VPN_USER=${VPN_USER}
     labels:
-      com.dockstarter.sabnzbdvpn_description: SABnzbd, OpenVPN and Privoxy
-      com.dockstarter.sabnzbdvpn_nicename: SABnzbdVPN
+      com.dockstarter.sabnzbdvpn_description: "SABnzbd, OpenVPN and Privoxy"
+      com.dockstarter.sabnzbdvpn_nicename: "SABnzbdVPN"
     logging:
       driver: json-file
       options:

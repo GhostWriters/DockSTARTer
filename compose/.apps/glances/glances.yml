@@ -5,8 +5,8 @@ services:
       - GLANCES_OPT=-w
       - TZ=${TZ}
     labels:
-      com.dockstarter.glances_description: Cross-platform system monitoring tool
-      com.dockstarter.glances_nicename: Glances
+      com.dockstarter.glances_description: "Cross-platform system monitoring tool"
+      com.dockstarter.glances_nicename: "Glances"
     logging:
       driver: json-file
       options:

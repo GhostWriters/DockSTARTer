@@ -5,8 +5,8 @@ services:
       - SIGNUPS_ALLOWED=${BITWARDEN_SIGNUPS_ALLOWED}
       - TZ=${TZ}
     labels:
-      com.dockstarter.bitwarden_description: Free and open source password management solution
-      com.dockstarter.bitwarden_nicename: Bitwarden
+      com.dockstarter.bitwarden_description: "Free and open source password management solution"
+      com.dockstarter.bitwarden_nicename: "Bitwarden"
     logging:
       driver: json-file
       options:

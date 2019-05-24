@@ -6,8 +6,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.lidarr_description: Music download manager for Usenet and BitTorrent users
-      com.dockstarter.lidarr_nicename: Lidarr
+      com.dockstarter.lidarr_description: "Music download manager for Usenet and BitTorrent users"
+      com.dockstarter.lidarr_nicename: "Lidarr"
     logging:
       driver: json-file
       options:

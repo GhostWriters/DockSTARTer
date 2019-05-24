@@ -6,8 +6,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.calibreweb_description: Web app for browsing, reading and downloading eBooks
-      com.dockstarter.calibreweb_nicename: CalibreWeb
+      com.dockstarter.calibreweb_description: "Web app for browsing, reading and downloading eBooks"
+      com.dockstarter.calibreweb_nicename: "CalibreWeb"
     logging:
       driver: json-file
       options:

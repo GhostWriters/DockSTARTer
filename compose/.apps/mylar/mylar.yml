@@ -6,8 +6,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.mylar_description: Comic book PVR client
-      com.dockstarter.mylar_nicename: Mylar
+      com.dockstarter.mylar_description: "Comic book PVR client"
+      com.dockstarter.mylar_nicename: "Mylar"
     logging:
       driver: json-file
       options:

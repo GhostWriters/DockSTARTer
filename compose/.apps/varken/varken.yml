@@ -6,10 +6,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.varken_description: >-
-        Standalone command-line utility to aggregate data from the Plex
-        ecosystem into InfluxDB
-      com.dockstarter.varken_nicename: Varken
+      com.dockstarter.varken_description: "Utility to aggregate data from the Plex ecosystem"
+      com.dockstarter.varken_nicename: "Varken"
     logging:
       driver: json-file
       options:

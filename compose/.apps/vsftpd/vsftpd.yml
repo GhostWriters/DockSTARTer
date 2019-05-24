@@ -6,8 +6,8 @@ services:
       - FTP_PASS=${VSFTPD_FTP_PASS}
       - TZ=${TZ}
     labels:
-      com.dockstarter.vsftpd_description: Probably the most secure and fastest FTP server for UNIX-like systems
-      com.dockstarter.vsftpd_nicename: vsftpd
+      com.dockstarter.vsftpd_description: "Probably the most secure and fastest FTP server for UNIX-like systems"
+      com.dockstarter.vsftpd_nicename: "vsftpd"
     logging:
       driver: json-file
       options:

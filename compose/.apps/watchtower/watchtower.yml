@@ -12,8 +12,8 @@ services:
       - WATCHTOWER_SCHEDULE=${WATCHTOWER_SCHEDULE}
       - WATCHTOWER_TIMEOUT=${WATCHTOWER_TIMEOUT}
     labels:
-      com.dockstarter.watchtower_description: Automatically update running Docker containers
-      com.dockstarter.watchtower_nicename: Watchtower
+      com.dockstarter.watchtower_description: "Automatically update running Docker containers"
+      com.dockstarter.watchtower_nicename: "Watchtower"
     logging:
       driver: json-file
       options:

@@ -5,8 +5,8 @@ services:
     environment:
       - TZ=${TZ}
     labels:
-      com.dockstarter.portainer_description: Simple management UI for Docker
-      com.dockstarter.portainer_nicename: Portainer
+      com.dockstarter.portainer_description: "Simple management UI for Docker"
+      com.dockstarter.portainer_nicename: "Portainer"
     logging:
       driver: json-file
       options:

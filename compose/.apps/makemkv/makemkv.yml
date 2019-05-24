@@ -6,8 +6,8 @@ services:
       - USER_ID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.makemkv_description: Convert video that you own into free and patents-unencumbered format
-      com.dockstarter.makemkv_nicename: MakeMKV
+      com.dockstarter.makemkv_description: "Convert video that you own into free and patents-unencumbered format"
+      com.dockstarter.makemkv_nicename: "MakeMKV"
     logging:
       driver: json-file
       options:

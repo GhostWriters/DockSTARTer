@@ -6,8 +6,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.rutorrent_description: rTorrent client and ruTorrent WebUI
-      com.dockstarter.rutorrent_nicename: ruTorrent
+      com.dockstarter.rutorrent_description: "rTorrent client and ruTorrent WebUI"
+      com.dockstarter.rutorrent_nicename: "ruTorrent"
     logging:
       driver: json-file
       options:

@@ -6,8 +6,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.nextcloud_description: Gives you access to all your files wherever you are
-      com.dockstarter.nextcloud_nicename: Nextcloud
+      com.dockstarter.nextcloud_description: "Gives you access to all your files wherever you are"
+      com.dockstarter.nextcloud_nicename: "Nextcloud"
     logging:
       driver: json-file
       options:

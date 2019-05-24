@@ -6,8 +6,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.heimdall_description: Application dashboard and launcher
-      com.dockstarter.heimdall_nicename: Heimdall
+      com.dockstarter.heimdall_description: "Application dashboard and launcher"
+      com.dockstarter.heimdall_nicename: "Heimdall"
     logging:
       driver: json-file
       options:

@@ -4,8 +4,8 @@ services:
     environment:
       - TZ=${TZ}
     labels:
-      com.dockstarter.influxdb_description: Time series database for recording metrics, events, and analytics
-      com.dockstarter.influxdb_nicename: InfluxDB
+      com.dockstarter.influxdb_description: "Time series database for recording metrics, events, and analytics"
+      com.dockstarter.influxdb_nicename: "InfluxDB"
     logging:
       driver: json-file
       options:

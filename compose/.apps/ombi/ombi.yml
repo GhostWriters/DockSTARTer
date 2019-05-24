@@ -6,8 +6,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.ombi_description: Allow your users to Request Movies, TV Shows and Albums
-      com.dockstarter.ombi_nicename: Ombi
+      com.dockstarter.ombi_description: "Allow your users to Request Movies, TV Shows and Albums"
+      com.dockstarter.ombi_nicename: "Ombi"
     logging:
       driver: json-file
       options:

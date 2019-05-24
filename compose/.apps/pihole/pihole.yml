@@ -15,8 +15,8 @@ services:
       - TZ=${TZ}
       - WEBPASSWORD=${PIHOLE_WEBPASSWORD}
     labels:
-      com.dockstarter.pihole_description: A black hole for internet advertisements
-      com.dockstarter.pihole_nicename: PiHole
+      com.dockstarter.pihole_description: "A black hole for internet advertisements"
+      com.dockstarter.pihole_nicename: "PiHole"
     logging:
       driver: json-file
       options:

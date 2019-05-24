@@ -5,10 +5,8 @@ services:
       - EXTENSIONS=${GUACAMOLE_EXTENSIONS}
       - TZ=${TZ}
     labels:
-      com.dockstarter.guacamole_description: >-
-        Web application that provides access to desktop environments using
-        remote desktop protocols
-      com.dockstarter.guacamole_nicename: Guacamole
+      com.dockstarter.guacamole_description: "Web application to remote desktop"
+      com.dockstarter.guacamole_nicename: "Guacamole"
     logging:
       driver: json-file
       options:

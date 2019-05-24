@@ -7,8 +7,8 @@ services:
       - PGID=${DOCKERGID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.netdata_description: Distributed real-time performance and health monitoring
-      com.dockstarter.netdata_nicename: netdata
+      com.dockstarter.netdata_description: "Distributed real-time performance and health monitoring"
+      com.dockstarter.netdata_nicename: "netdata"
     logging:
       driver: json-file
       options:

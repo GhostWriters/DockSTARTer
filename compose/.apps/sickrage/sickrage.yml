@@ -6,8 +6,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.sickrage_description: (DEPRECATED) Use SickChill
-      com.dockstarter.sickrage_nicename: SiCKRAGE
+      com.dockstarter.sickrage_description: "(DEPRECATED) Use SickChill"
+      com.dockstarter.sickrage_nicename: "SiCKRAGE"
     logging:
       driver: json-file
       options:

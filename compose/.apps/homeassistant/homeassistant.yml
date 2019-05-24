@@ -4,8 +4,8 @@ services:
     environment:
       - TZ=${TZ}
     labels:
-      com.dockstarter.homeassistant_description: Track and control all devices at home and automate control
-      com.dockstarter.homeassistant_nicename: HomeAssistant
+      com.dockstarter.homeassistant_description: "Track and control all devices at home and automate control"
+      com.dockstarter.homeassistant_nicename: "HomeAssistant"
     logging:
       driver: json-file
       options:
