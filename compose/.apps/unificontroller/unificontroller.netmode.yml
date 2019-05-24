@@ -1,0 +1,3 @@
+services:
+  unificontroller:
+    network_mode: ${UNIFICONTROLLER_NETWORK_MODE}

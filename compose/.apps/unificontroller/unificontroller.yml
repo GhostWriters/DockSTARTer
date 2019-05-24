@@ -1,8 +1,8 @@
-# APPNICENAME=PlexRequests
-# APPDESCRIPTION=!DEPRECATED! Use Ombi
+# APPNICENAME=UnifiController
+# APPDESCRIPTION=Controller software for wireless networks
 services:
-  plexrequests:
-    container_name: plexrequests
+  unificontroller:
+    container_name: unificontroller
     restart: unless-stopped
     logging:
       driver: "json-file"
@@ -10,11 +10,10 @@ services:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
-      - URL_BASE=/plexrequests
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/plexrequests:/config
+      - ${DOCKERCONFDIR}/unificontroller:/config
       - ${DOCKERSHAREDDIR}:/shared
