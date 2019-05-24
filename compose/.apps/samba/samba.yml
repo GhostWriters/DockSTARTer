@@ -1,5 +1,5 @@
 # APPNICENAME=Samba
-# APPDESCRIPTION=Access media directories and Docker config over Samba
+# APPDESCRIPTION=!DEPRECATED! No replacement
 services:
   samba:
     container_name: samba
