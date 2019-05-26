@@ -1,0 +1,4 @@
+services:
+  jellyfin:
+    ports:
+      - "${JELLYFIN_PORT_8096}:8096"
