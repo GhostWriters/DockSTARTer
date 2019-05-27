@@ -3,7 +3,6 @@
 services:
   plex:
     container_name: plex
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"
@@ -11,11 +10,10 @@ services:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
-      - ADVERTISE_IP=${PLEX_ADVERTISE_IP}
-      - PLEX_CLAIM=${PLEX_CLAIM}
-      - PLEX_GID=${PGID}
-      - PLEX_UID=${PUID}
+      - PGID=${PGID}
+      - PUID=${PUID}
       - TZ=${TZ}
+      - VERSION=${PLEX_VERSION}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/plex:/config

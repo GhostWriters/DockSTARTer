@@ -3,7 +3,6 @@
 services:
   lidarr:
     container_name: lidarr
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

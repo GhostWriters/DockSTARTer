@@ -3,7 +3,6 @@
 services:
   grafana:
     container_name: grafana
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

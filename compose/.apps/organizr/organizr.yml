@@ -3,7 +3,6 @@
 services:
   organizr:
     container_name: organizr
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

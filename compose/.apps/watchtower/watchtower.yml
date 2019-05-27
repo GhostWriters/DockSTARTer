@@ -3,7 +3,6 @@
 services:
   watchtower:
     container_name: watchtower
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

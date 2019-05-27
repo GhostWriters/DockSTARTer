@@ -1,0 +1,3 @@
+services:
+  mcmyadmin2:
+    hostname: ${DOCKERHOSTNAME}

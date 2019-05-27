@@ -3,7 +3,6 @@
 services:
   makemkv:
     container_name: makemkv
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

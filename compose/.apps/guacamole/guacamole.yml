@@ -3,7 +3,6 @@
 services:
   guacamole:
     container_name: guacamole
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

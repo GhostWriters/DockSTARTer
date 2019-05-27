@@ -1,0 +1,3 @@
+services:
+  grafana:
+    hostname: ${DOCKERHOSTNAME}

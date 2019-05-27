@@ -1,5 +1,5 @@
 # APPNICENAME=Samba
-# APPDESCRIPTION=Access media directories and Docker config over Samba
+# APPDESCRIPTION=!DEPRECATED! No replacement
 services:
   samba:
     container_name: samba
@@ -12,7 +12,6 @@ services:
         -s "Movies;/data/movies;yes;no;no;${SAMBA_USERNAME}" \
         -s "Music;/data/music;yes;no;no;${SAMBA_USERNAME}" \
         -s "TV;/data/tv;yes;no;no;${SAMBA_USERNAME}"
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

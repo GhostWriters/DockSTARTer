@@ -1,0 +1,3 @@
+services:
+  telegraf:
+    hostname: ${DOCKERHOSTNAME}

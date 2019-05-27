@@ -3,7 +3,6 @@
 services:
   cloudcmd:
     container_name: cloudcmd
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

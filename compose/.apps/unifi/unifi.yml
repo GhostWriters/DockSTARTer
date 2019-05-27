@@ -1,9 +1,8 @@
 # APPNICENAME=Unifi
-# APPDESCRIPTION=Controller software for wireless networks
+# APPDESCRIPTION=!DEPRECATED! Use UnifiController
 services:
   unifi:
     container_name: unifi
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

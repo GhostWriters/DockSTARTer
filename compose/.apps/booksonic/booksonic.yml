@@ -3,7 +3,6 @@
 services:
   booksonic:
     container_name: booksonic
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

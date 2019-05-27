@@ -3,7 +3,6 @@
 services:
   bazarr:
     container_name: bazarr
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

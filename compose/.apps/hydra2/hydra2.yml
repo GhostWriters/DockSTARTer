@@ -3,7 +3,6 @@
 services:
   hydra2:
     container_name: hydra2
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

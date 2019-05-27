@@ -3,7 +3,6 @@
 services:
   lazylibrarian:
     container_name: lazylibrarian
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

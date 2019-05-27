@@ -3,7 +3,6 @@
 services:
   beets:
     container_name: beets
-    hostname: ${DOCKERHOSTNAME}
     restart: unless-stopped
     logging:
       driver: "json-file"

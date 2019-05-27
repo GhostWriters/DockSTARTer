@@ -1,0 +1,3 @@
+services:
+  sabnzbd:
+    hostname: ${DOCKERHOSTNAME}

@@ -1,0 +1,3 @@
+services:
+  delugevpn:
+    hostname: ${DOCKERHOSTNAME}
