@@ -18,7 +18,7 @@ appvar_create() {
             continue
         else
             local DEFAULT_VAL
-            DEFAULT_VAL=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.dockstarter.${VAR_LABEL}]" || true)
+            DEFAULT_VAL=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.dockstarter.appvars.${VAR_LABEL}]" || true)
             echo "${SET_VAR}=" >> "${SCRIPTPATH}/compose/.env"
             run_script 'env_set' "${SET_VAR}" "${DEFAULT_VAL}"
         fi

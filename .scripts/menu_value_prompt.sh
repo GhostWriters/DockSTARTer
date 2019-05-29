@@ -13,7 +13,7 @@ menu_value_prompt() {
     local VAR_LABEL=${SET_VAR,,}
 
     local DEFAULT_VAL
-    DEFAULT_VAL=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.dockstarter.${VAR_LABEL}]" || true)
+    DEFAULT_VAL=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.dockstarter.appvars.${VAR_LABEL}]" || true)
 
     local HOME_VAL
     local SYSTEM_VAL
