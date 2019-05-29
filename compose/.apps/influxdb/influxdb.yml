@@ -1,16 +1,17 @@
-# APPNICENAME=InfluxDB
-# APPDESCRIPTION=Time series database for recording metrics, events, and analytics
 services:
   influxdb:
     container_name: influxdb
-    restart: unless-stopped
+    environment:
+      - TZ=${TZ}
+    labels:
+      com.dockstarter.influxdb_description: Time series database for recording metrics, events, and analytics
+      com.dockstarter.influxdb_nicename: InfluxDB
     logging:
-      driver: "json-file"
+      driver: json-file
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    environment:
-      - TZ=${TZ}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/influxdb:/var/lib/influxdb

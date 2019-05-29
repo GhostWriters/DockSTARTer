@@ -1,18 +1,19 @@
-# APPNICENAME=SABnzbd
-# APPDESCRIPTION=NZB Newsgrabber / Downloader
 services:
   sabnzbd:
     container_name: sabnzbd
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.sabnzbd_description: NZB Newsgrabber / Downloader
+      com.dockstarter.sabnzbd_nicename: SABnzbd
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/sabnzbd:/config

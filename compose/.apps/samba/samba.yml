@@ -1,27 +1,29 @@
-# APPNICENAME=Samba
-# APPDESCRIPTION=!DEPRECATED! No replacement
 services:
   samba:
-    container_name: samba
     command:
-      - -u "${SAMBA_USERNAME};${SAMBA_PASSWORD}" \
-        -s "Books;/data/books;yes;no;no;${SAMBA_USERNAME}" \
-        -s "Comics;/data/comics;yes;no;no;${SAMBA_USERNAME}" \
-        -s "Docker Config;/data/docker/config;yes;no;no;${SAMBA_USERNAME}" \
-        -s "Downloads;/data/downloads;yes;no;no;${SAMBA_USERNAME}" \
-        -s "Movies;/data/movies;yes;no;no;${SAMBA_USERNAME}" \
-        -s "Music;/data/music;yes;no;no;${SAMBA_USERNAME}" \
-        -s "TV;/data/tv;yes;no;no;${SAMBA_USERNAME}"
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
+      - >-
+        -u "${SAMBA_USERNAME};${SAMBA_PASSWORD}" \ -s
+        "Books;/data/books;yes;no;no;${SAMBA_USERNAME}" \ -s
+        "Comics;/data/comics;yes;no;no;${SAMBA_USERNAME}" \ -s "Docker
+        Config;/data/docker/config;yes;no;no;${SAMBA_USERNAME}" \ -s
+        "Downloads;/data/downloads;yes;no;no;${SAMBA_USERNAME}" \ -s
+        "Movies;/data/movies;yes;no;no;${SAMBA_USERNAME}" \ -s
+        "Music;/data/music;yes;no;no;${SAMBA_USERNAME}" \ -s
+        "TV;/data/tv;yes;no;no;${SAMBA_USERNAME}"
+    container_name: samba
     environment:
       - GROUPID=${PGID}
       - TZ=${TZ}
       - USERID=${PUID}
+    labels:
+      com.dockstarter.samba_description: (DEPRECATED) No replacement
+      com.dockstarter.samba_nicename: Samba
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}:/data/docker/config

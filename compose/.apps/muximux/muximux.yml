@@ -1,18 +1,19 @@
-# APPNICENAME=Muximux
-# APPDESCRIPTION=A lightweight way to manage your HTPC
 services:
   muximux:
     container_name: muximux
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.muximux_description: A lightweight way to manage your HTPC
+      com.dockstarter.muximux_nicename: Muximux
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/muximux:/config

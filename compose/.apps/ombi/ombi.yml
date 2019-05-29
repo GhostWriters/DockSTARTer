@@ -1,18 +1,19 @@
-# APPNICENAME=Ombi
-# APPDESCRIPTION=Allow your users to Request Movies, TV Shows and Albums
 services:
   ombi:
     container_name: ombi
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.ombi_description: Allow your users to Request Movies, TV Shows and Albums
+      com.dockstarter.ombi_nicename: Ombi
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/ombi:/config

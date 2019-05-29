@@ -1,17 +1,18 @@
-# APPNICENAME=Bitwarden
-# APPDESCRIPTION=Free and open source password management solution
 services:
   bitwarden:
     container_name: bitwarden
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - SIGNUPS_ALLOWED=${BITWARDEN_SIGNUPS_ALLOWED}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.bitwarden_description: Free and open source password management solution
+      com.dockstarter.bitwarden_nicename: Bitwarden
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/bitwarden:/data

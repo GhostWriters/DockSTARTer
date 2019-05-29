@@ -1,4 +1,4 @@
 services:
   lidarr:
     ports:
-      - "${LIDARR_PORT_8686}:8686"
+      - ${LIDARR_PORT_8686}:8686

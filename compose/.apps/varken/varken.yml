@@ -1,18 +1,21 @@
-# APPNICENAME=varken
-# APPDESCRIPTION=Standalone command-line utility to aggregate data from the Plex ecosystem into InfluxDB
 services:
   varken:
     container_name: varken
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.varken_description: >-
+        Standalone command-line utility to aggregate data from the Plex
+        ecosystem into InfluxDB
+      com.dockstarter.varken_nicename: Varken
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/varken:/config

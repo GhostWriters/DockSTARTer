@@ -1,19 +1,20 @@
-# APPNICENAME=qBittorrent
-# APPDESCRIPTION=Cross-platform free and open-source BitTorrent client
 services:
   qbittorrent:
     container_name: qbittorrent
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
       - WEBUI_PORT=${QBITTORRENT_PORT_8080}
+    labels:
+      com.dockstarter.qbittorrent_description: Cross-platform free and open-source BitTorrent client
+      com.dockstarter.qbittorrent_nicename: qBittorrent
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/qbittorrent:/config

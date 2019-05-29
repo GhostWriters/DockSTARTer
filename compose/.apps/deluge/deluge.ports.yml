@@ -1,6 +1,6 @@
 services:
   deluge:
     ports:
-      - "${DELUGE_PORT_58846}:58846"
-      - "${DELUGE_PORT_58946}:58946"
-      - "${DELUGE_PORT_8112}:8112"
+      - ${DELUGE_PORT_58846}:58846
+      - ${DELUGE_PORT_58946}:58946
+      - ${DELUGE_PORT_8112}:8112

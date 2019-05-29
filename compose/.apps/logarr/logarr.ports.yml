@@ -1,4 +1,4 @@
 services:
   logarr:
     ports:
-      - "${LOGARR_PORT_80}:80"
+      - ${LOGARR_PORT_80}:80

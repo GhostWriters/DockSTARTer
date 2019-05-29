@@ -1,14 +1,6 @@
-# APPNICENAME=CloudFlareDDNS
-# APPDESCRIPTION=Free service which will point a DNS to an IP of your choice
 services:
   cloudflareddns:
     container_name: cloudflareddns
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - API_KEY=${CLOUDFLAREDDNS_API_KEY}
       - DELETE_ON_STOP=${CLOUDFLAREDDNS_DELETE_ON_STOP}
@@ -18,6 +10,15 @@ services:
       - SUBDOMAIN=${CLOUDFLAREDDNS_SUBDOMAIN}
       - TZ=${TZ}
       - ZONE=${CLOUDFLAREDDNS_ZONE}
+    labels:
+      com.dockstarter.cloudflareddns_description: Free service which will point a DNS to an IP of your choice
+      com.dockstarter.cloudflareddns_nicename: CloudFlareDDNS
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERSHAREDDIR}:/shared

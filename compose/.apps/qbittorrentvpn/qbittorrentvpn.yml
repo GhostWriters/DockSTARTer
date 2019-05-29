@@ -1,14 +1,6 @@
-# APPNICENAME=qBittorrentVPN
-# APPDESCRIPTION=qBittorrent, OpenVPN and Privoxy
 services:
   qbittorrentvpn:
     container_name: qbittorrentvpn
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - ENABLE_PRIVOXY=${QBITTORRENTVPN_ENABLE_PRIVOXY}
       - LAN_NETWORK=${LAN_NETWORK}
@@ -22,10 +14,19 @@ services:
       - VPN_PROV=${VPN_PROV}
       - VPN_USER=${VPN_USER}
       - WEBUI_PORT=${QBITTORRENTVPN_PORT_8080}
+    labels:
+      com.dockstarter.qbittorrentvpn_description: qBittorrent, OpenVPN and Privoxy
+      com.dockstarter.qbittorrentvpn_nicename: qBittorrentVPN
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    privileged: true
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/qbittorrentvpn:/config
       - ${DOCKERSHAREDDIR}:/shared
       - ${DOWNLOADSDIR}:/data
       - ${DOWNLOADSDIR}:/downloads
-    privileged: true

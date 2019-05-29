@@ -1,14 +1,13 @@
-# APPNICENAME=TransmissionVPN
-# APPDESCRIPTION=Transmission, WebUI and OpenVPN
 services:
   transmissionvpn:
+    cap_add:
+      - NET_ADMIN
     container_name: transmissionvpn
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
+    devices:
+      - /dev/net/tun
+    dns:
+      - ${NS1}
+      - ${NS2}
     environment:
       - LOCAL_NETWORK=${LAN_NETWORK}
       - OPENVPN_OPTS=${VPN_OPTIONS}
@@ -21,16 +20,18 @@ services:
       - TRANSMISSION_INCOMPLETE_DIR=/downloads/incomplete
       - TRANSMISSION_WATCH_DIR=/downloads/watch
       - TZ=${TZ}
+    labels:
+      com.dockstarter.transmissionvpn_description: Transmission, WebUI and OpenVPN
+      com.dockstarter.transmissionvpn_nicename: TransmissionVPN
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/transmissionvpn:/config
       - ${DOCKERSHAREDDIR}:/shared
       - ${DOWNLOADSDIR}:/data
       - ${DOWNLOADSDIR}:/downloads
-    cap_add:
-      - NET_ADMIN
-    devices:
-      - /dev/net/tun
-    dns:
-      - ${NS1}
-      - ${NS2}

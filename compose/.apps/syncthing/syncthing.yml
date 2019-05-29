@@ -1,18 +1,19 @@
-# APPNICENAME=Syncthing
-# APPDESCRIPTION=Open-source peer-to-peer file synchronization
 services:
   syncthing:
     container_name: syncthing
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.syncthing_description: Open-source peer-to-peer file synchronization
+      com.dockstarter.syncthing_nicename: Syncthing
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/syncthing:/config

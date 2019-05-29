@@ -1,18 +1,19 @@
-# APPNICENAME=Duplicati
-# APPDESCRIPTION=Backup software to store backups online with strong encryption
 services:
   duplicati:
     container_name: duplicati
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.duplicati_description: Backup software to store backups online with strong encryption
+      com.dockstarter.duplicati_nicename: Duplicati
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/duplicati:/config

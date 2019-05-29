@@ -1,19 +1,20 @@
-# APPNICENAME=phpMyAdmin
-# APPDESCRIPTION=A web interface for MySQL and MariaDB
 services:
   phpmyadmin:
     container_name: phpmyadmin
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PMA_HOST=${PHPMYADMIN_PMA_HOST}
       - PMA_PASSWORD=${PHPMYADMIN_PMA_PASSWORD}
       - PMA_USER=${PHPMYADMIN_PMA_USER}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.phpmyadmin_description: A web interface for MySQL and MariaDB
+      com.dockstarter.phpmyadmin_nicename: phpMyAdmin
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/phpmyadmin:/sessions

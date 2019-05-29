@@ -1,18 +1,19 @@
-# APPNICENAME=vsftpd
-# APPDESCRIPTION=Probably the most secure and fastest FTP server for UNIX-like systems
 services:
   vsftpd:
     container_name: vsftpd
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - FTP_USER=${VSFTPD_FTP_USER}
       - FTP_PASS=${VSFTPD_FTP_PASS}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.vsftpd_description: Probably the most secure and fastest FTP server for UNIX-like systems
+      com.dockstarter.vsftpd_nicename: vsftpd
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERSHAREDDIR}:/shared

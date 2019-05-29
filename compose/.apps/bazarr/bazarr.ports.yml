@@ -1,4 +1,4 @@
 services:
   bazarr:
     ports:
-      - "${BAZARR_PORT_6767}:6767"
+      - ${BAZARR_PORT_6767}:6767
