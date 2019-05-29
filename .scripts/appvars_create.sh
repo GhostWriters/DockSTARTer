@@ -15,10 +15,6 @@ appvars_create() {
 
         if grep --color=never "^${SET_VAR}=" "${SCRIPTPATH}/compose/.env"; then
             continue
-        elif [[ ${SET_VAR} == "${APPNAME}_NICENAME" ]]; then
-            continue
-        elif [[ ${SET_VAR} == "${APPNAME}_DESCRIPTION" ]]; then
-            continue
         else
             local DEFAULT_VAL
             DEFAULT_VAL=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.dockstarter.appvars.${VAR_LABEL}]" || true)
