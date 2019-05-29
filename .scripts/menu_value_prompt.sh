@@ -8,8 +8,12 @@ menu_value_prompt() {
     local CURRENT_VAL
     CURRENT_VAL=$(run_script 'env_get' "${SET_VAR}")
 
+    local APPNAME=${SET_VAR%%_*}
+    local FILENAME=${APPNAME,,}
+    local VAR_LABEL=${SET_VAR,,}
+
     local DEFAULT_VAL
-    DEFAULT_VAL=$(grep --color=never -Po "^${SET_VAR}=\K.*" "${SCRIPTPATH}/compose/.env.example" || true)
+    DEFAULT_VAL=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.dockstarter.${VAR_LABEL}]" || true)
 
     local HOME_VAL
     local SYSTEM_VAL
