@@ -1,24 +1,25 @@
-# APPNICENAME=BookStack
-# APPDESCRIPTION=Platform for storing and organising information and documentation
 services:
   bookstack:
     container_name: bookstack
     environment:
-      - APP_URL=${BOOTSTACK_URL}
-      - DB_HOST=${BOOKSTACK_DB_HOST}
-      - DB_USER=${BOOKSTACK_DB_USER}
-      - DB_PASS=${BOOKSTACK_DB_PASS}
+      - APP_URL=${BOOTSTACK_APP_URL}
       - DB_DATABASE=${BOOKSTACK_DB_DATABASE}
-      - PUID=${PUID}
+      - DB_HOST=${BOOKSTACK_DB_HOST}
+      - DB_PASS=${BOOKSTACK_DB_PASS}
+      - DB_USER=${BOOKSTACK_DB_USER}
       - PGID=${PGID}
+      - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.bookstack_description: Platform for storing and organising information and documentation
+      com.dockstarter.bookstack_nicename: BookStack
     logging:
-      driver: "json-file"
+      driver: json-file
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}   
-    restart: unless-stopped   
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
-      - ${DOCKERCONFDIR}/bookstack:/config
       - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/bookstack:/config
       - ${DOCKERSHAREDDIR}:/shared
