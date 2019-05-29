@@ -2,7 +2,7 @@ services:
   bookstack:
     container_name: bookstack
     environment:
-      - APP_URL=${BOOTSTACK_APP_URL}
+      - APP_URL=${BOOKSTACK_APP_URL}
       - DB_DATABASE=${BOOKSTACK_DB_DATABASE}
       - DB_HOST=${BOOKSTACK_DB_HOST}
       - DB_PASS=${BOOKSTACK_DB_PASS}
