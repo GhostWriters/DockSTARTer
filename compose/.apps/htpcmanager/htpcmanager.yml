@@ -1,18 +1,19 @@
-# APPNICENAME=HTPCManager
-# APPDESCRIPTION=Front end for many htpc related applications
 services:
   htpcmanager:
     container_name: htpcmanager
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.htpcmanager_description: Front end for many htpc related applications
+      com.dockstarter.htpcmanager_nicename: HTPCManager
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/htpcmanager:/config

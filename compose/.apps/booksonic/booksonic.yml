@@ -1,19 +1,20 @@
-# APPNICENAME=Booksonic
-# APPDESCRIPTION=Web-based streamer for your audiobooks.
 services:
   booksonic:
     container_name: booksonic
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - CONTEXT_PATH=${BOOKSONIC_CONTEXT_PATH}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.booksonic_description: Web-based streamer for your audiobooks.
+      com.dockstarter.booksonic_nicename: Booksonic
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/booksonic:/config

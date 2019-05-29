@@ -1,14 +1,6 @@
-# APPNICENAME=DuckDNS
-# APPDESCRIPTION=Free service which will point a DNS to an IP of your choice
 services:
   duckdns:
     container_name: duckdns
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - LOG_FILE=${DUCKDNS_LOG_FILE}
       - SUBDOMAINS=${DUCKDNS_SUBDOMAINS}
@@ -16,6 +8,15 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.duckdns_description: Free service which will point a DNS to an IP of your choice
+      com.dockstarter.duckdns_nicename: DuckDNS
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/duckdns:/config

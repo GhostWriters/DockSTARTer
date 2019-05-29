@@ -1,18 +1,19 @@
-# APPNICENAME=MakeMKV
-# APPDESCRIPTION=Convert video that you own into free and patents-unencumbered format
 services:
   makemkv:
     container_name: makemkv
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - GROUP_ID=${PGID}
       - USER_ID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.makemkv_description: Convert video that you own into free and patents-unencumbered format
+      com.dockstarter.makemkv_nicename: MakeMKV
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/makemkv:/config

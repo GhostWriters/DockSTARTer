@@ -1,19 +1,20 @@
-# APPNICENAME=Portainer
-# APPDESCRIPTION=Simple management UI for Docker
 services:
   portainer:
+    command: -H unix:///var/run/docker.sock
     container_name: portainer
-    restart: unless-stopped
+    environment:
+      - TZ=${TZ}
+    labels:
+      com.dockstarter.portainer_description: Simple management UI for Docker
+      com.dockstarter.portainer_nicename: Portainer
     logging:
-      driver: "json-file"
+      driver: json-file
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    environment:
-      - TZ=${TZ}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
       - ${DOCKERCONFDIR}/portainer:/data
       - ${DOCKERSHAREDDIR}:/shared
-    command: -H unix:///var/run/docker.sock

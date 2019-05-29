@@ -1,4 +1,4 @@
 services:
   vsftpd:
     ports:
-      - "${VSFTPD_PORT_21}:21"
+      - ${VSFTPD_PORT_21}:21

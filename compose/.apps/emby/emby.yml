@@ -1,19 +1,20 @@
-# APPNICENAME=Emby
-# APPDESCRIPTION=Organize, play, and stream audio and video
 services:
   emby:
     container_name: emby
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - GID=${PGID}
       - GIDLIST=${PGID}
       - TZ=${TZ}
       - UID=${PUID}
+    labels:
+      com.dockstarter.emby_description: Organize, play, and stream audio and video
+      com.dockstarter.emby_nicename: Emby
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/emby:/config

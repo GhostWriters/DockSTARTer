@@ -1,14 +1,8 @@
-# APPNICENAME=NZBGetVPN
-# APPDESCRIPTION=NZBGet, OpenVPN and Privoxy
 services:
   nzbgetvpn:
+    cap_add:
+      - NET_ADMIN
     container_name: nzbgetvpn
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - ENABLE_PRIVOXY=${NZBGETVPN_ENABLE_PRIVOXY}
       - LAN_NETWORK=${LAN_NETWORK}
@@ -21,11 +15,18 @@ services:
       - VPN_PASS=${VPN_PASS}
       - VPN_PROV=${VPN_PROV}
       - VPN_USER=${VPN_USER}
+    labels:
+      com.dockstarter.nzbgetvpn_description: NZBGet, OpenVPN and Privoxy
+      com.dockstarter.nzbgetvpn_nicename: NZBGetVPN
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/nzbgetvpn:/config
       - ${DOCKERSHAREDDIR}:/shared
       - ${DOWNLOADSDIR}:/data
       - ${DOWNLOADSDIR}:/downloads
-    cap_add:
-      - NET_ADMIN

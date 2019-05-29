@@ -1,18 +1,19 @@
-# APPNICENAME=ruTorrent
-# APPDESCRIPTION=rTorrent client and ruTorrent WebUI
 services:
   rutorrent:
     container_name: rutorrent
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.rutorrent_description: rTorrent client and ruTorrent WebUI
+      com.dockstarter.rutorrent_nicename: ruTorrent
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/rutorrent:/config

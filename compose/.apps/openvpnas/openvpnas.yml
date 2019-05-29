@@ -1,22 +1,23 @@
-# APPNICENAME=OpenVPNAS
-# APPDESCRIPTION=Secure network tunneling VPN
 services:
   openvpnas:
+    cap_add:
+      - NET_ADMIN
     container_name: openvpnas
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - INTERFACE=${OPENVPNAS_INTERFACE}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.openvpnas_description: Secure network tunneling VPN
+      com.dockstarter.openvpnas_nicename: OpenVPNAS
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/openvpnas:/config
       - ${DOCKERSHAREDDIR}:/shared
-    cap_add:
-      - NET_ADMIN

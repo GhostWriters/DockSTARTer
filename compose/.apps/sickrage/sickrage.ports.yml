@@ -1,4 +1,4 @@
 services:
   sickrage:
     ports:
-      - "${SICKRAGE_PORT_8081}:8081"
+      - ${SICKRAGE_PORT_8081}:8081

@@ -1,19 +1,20 @@
-# APPNICENAME=Ubooquity
-# APPDESCRIPTION=Home server for your comics and ebooks
 services:
   ubooquity:
     container_name: ubooquity
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - MAXMEM=${UBOOQUITY_MAXMEM}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.ubooquity_description: Home server for your comics and ebooks
+      com.dockstarter.ubooquity_nicename: Ubooquity
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/ubooquity:/config

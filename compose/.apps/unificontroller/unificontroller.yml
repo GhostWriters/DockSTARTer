@@ -1,18 +1,19 @@
-# APPNICENAME=UnifiController
-# APPDESCRIPTION=Controller software for wireless networks
 services:
   unificontroller:
     container_name: unificontroller
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.unificontroller_description: Controller software for wireless networks
+      com.dockstarter.unificontroller_nicename: UnifiController
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/unificontroller:/config

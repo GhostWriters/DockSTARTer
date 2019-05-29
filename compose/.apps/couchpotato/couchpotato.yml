@@ -1,18 +1,19 @@
-# APPNICENAME=Couchpotato
-# APPDESCRIPTION=Movies PVR Client
 services:
   couchpotato:
     container_name: couchpotato
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.couchpotato_description: Movies PVR Client
+      com.dockstarter.couchpotato_nicename: CouchPotato
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/couchpotato:/config

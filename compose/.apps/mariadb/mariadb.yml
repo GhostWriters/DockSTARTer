@@ -1,19 +1,20 @@
-# APPNICENAME=MariaDB
-# APPDESCRIPTION=One of the most popular database servers
 services:
   mariadb:
     container_name: mariadb
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - MYSQL_ROOT_PASSWORD=${MARIADB_MYSQL_ROOT_PASSWORD}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.mariadb_description: One of the most popular database servers
+      com.dockstarter.mariadb_nicename: MariaDB
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/mariadb:/config

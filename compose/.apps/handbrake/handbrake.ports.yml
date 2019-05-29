@@ -1,4 +1,4 @@
 services:
   handbrake:
     ports:
-      - "${HANDBRAKE_PORT_5800}:5800"
+      - ${HANDBRAKE_PORT_5800}:5800

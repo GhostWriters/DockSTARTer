@@ -1,16 +1,17 @@
-# APPNICENAME=PortainerAgent
-# APPDESCRIPTION=An agent used to manage all the resources in a Swarm cluster
 services:
   portaineragent:
     container_name: portaineragent
-    restart: unless-stopped
+    environment:
+      - TZ=${TZ}
+    labels:
+      com.dockstarter.portaineragent_description: An agent used to manage all the resources in a Swarm cluster
+      com.dockstarter.portaineragent_nicename: PortainerAgent
     logging:
-      driver: "json-file"
+      driver: json-file
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    environment:
-      - TZ=${TZ}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock

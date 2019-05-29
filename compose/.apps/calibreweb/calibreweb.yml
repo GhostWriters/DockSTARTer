@@ -1,18 +1,19 @@
-# APPNICENAME=CalibreWeb
-# APPDESCRIPTION=Web app for browsing, reading and downloading eBooks
 services:
   calibreweb:
     container_name: calibreweb
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.calibreweb_description: Web app for browsing, reading and downloading eBooks
+      com.dockstarter.calibreweb_nicename: CalibreWeb
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/calibreweb:/config

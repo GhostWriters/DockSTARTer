@@ -1,14 +1,12 @@
-# APPNICENAME=PiHole
-# APPDESCRIPTION=A black hole for internet advertisements
 services:
   pihole:
+    cap_add:
+      - NET_ADMIN
     container_name: pihole
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
+    dns:
+      - 127.0.0.1
+      - ${NS1}
+      - ${NS2}
     environment:
       - DNS1=${NS1}
       - DNS2=${NS2}
@@ -16,14 +14,17 @@ services:
       - ServerIPv6=${PIHOLE_SERVERIPV6}
       - TZ=${TZ}
       - WEBPASSWORD=${PIHOLE_WEBPASSWORD}
+    labels:
+      com.dockstarter.pihole_description: A black hole for internet advertisements
+      com.dockstarter.pihole_nicename: PiHole
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/pihole/dnsmasq.d:/etc/dnsmasq.d
       - ${DOCKERCONFDIR}/pihole/pihole:/etc/pihole
       - ${DOCKERSHAREDDIR}:/shared
-    cap_add:
-      - NET_ADMIN
-    dns:
-      - 127.0.0.1
-      - ${NS1}
-      - ${NS2}

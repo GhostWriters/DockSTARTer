@@ -1,4 +1,4 @@
 services:
   calibreweb:
     ports:
-      - "${CALIBREWEB_PORT_8083}:8083"
+      - ${CALIBREWEB_PORT_8083}:8083

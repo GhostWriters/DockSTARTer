@@ -1,4 +1,4 @@
 services:
   thelounge:
     ports:
-      - "${THELOUNGE_PORT_9000}:9000"
+      - ${THELOUNGE_PORT_9000}:9000

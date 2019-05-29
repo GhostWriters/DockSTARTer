@@ -1,18 +1,19 @@
-# APPNICENAME=Sickrage
-# APPDESCRIPTION=Automatic Video Library Manager for TV Shows
 services:
   sickrage:
     container_name: sickrage
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    labels:
+      com.dockstarter.sickrage_description: Automatic Video Library Manager for TV Shows
+      com.dockstarter.sickrage_nicename: SiCKRAGE
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/sickrage:/config
