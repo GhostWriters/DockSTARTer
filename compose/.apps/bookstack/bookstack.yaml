@@ -10,6 +10,6 @@ services:
       - DB_USER=${BOOKSTACK_DB_USER}
       - DB_PASS=${BOOKSTACK_DB_PASS}
       - DB_DATABASE=${BOOKSTACK_DB_DATABASE}
-      - APP_URL=${BOOTSTACK_URL}
+      - APP_URL=${BOOKSTACK_URL}
     volumes:
       - ${DOCKERCONFDIR}/bookstack:/config
