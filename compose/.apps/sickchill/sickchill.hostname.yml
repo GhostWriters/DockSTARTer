@@ -1,0 +1,3 @@
+services:
+  sickchill:
+    hostname: ${DOCKERHOSTNAME}
