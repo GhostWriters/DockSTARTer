@@ -7,7 +7,10 @@ appvar_create() {
     local FILENAME=${APPNAME,,}
     while IFS= read -r line; do
         local VAR_LABEL
-        VAR_LABEL=$(echo "${line}" | grep --color=never -Po "^com\.dockstarter\.\K[\w]+")
+        VAR_LABEL=$(echo "${line}" | grep --color=never -Po "^com\.dockstarter\.appvars\K[\w]+" || true)
+        if [[ -z ${VAR_LABEL} ]]; then
+            continue
+        fi
         local SET_VAR=${VAR_LABEL^^}
 
         if grep --color=never "^${SET_VAR}=" "${SCRIPTPATH}/compose/.env"; then
