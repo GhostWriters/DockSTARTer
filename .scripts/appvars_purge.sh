@@ -2,7 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-appvar_purge() {
+appvars_purge() {
     local APPNAME=${1:-}
     local APPVARS
     APPVARS=$(grep "^${APPNAME}_" "${SCRIPTPATH}/compose/.env" || true)
@@ -23,7 +23,7 @@ appvar_purge() {
     fi
 }
 
-test_appvar_purge() {
-    run_script 'appvar_purge' WATCHTOWER
+test_appvars_purge() {
+    run_script 'appvars_purge' WATCHTOWER
     error "TESTS ARE NOT YET CREATED."
 }

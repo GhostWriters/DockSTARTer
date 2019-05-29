@@ -2,7 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-appvar_create() {
+appvars_create() {
     local APPNAME=${1:-}
     local FILENAME=${APPNAME,,}
     while IFS= read -r line; do
@@ -29,7 +29,7 @@ appvar_create() {
     done < <(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels" || true)
 }
 
-test_appvar_create() {
-    run_script 'appvar_create' WATCHTOWER
+test_appvars_create() {
+    run_script 'appvars_create' WATCHTOWER
     error "TESTS ARE NOT YET CREATED."
 }
