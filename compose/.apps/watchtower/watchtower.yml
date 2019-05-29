@@ -1,9 +1,16 @@
 services:
   watchtower:
-    command: --schedule "${WATCHTOWER_CRON}" --cleanup
     container_name: watchtower
     environment:
+      - REPO_PASS=${WATCHTOWER_REPO_PASS}
+      - REPO_USER=${WATCHTOWER_REPO_USER}
       - TZ=${TZ}
+      - WATCHTOWER_CLEANUP=${WATCHTOWER_CLEANUP}
+      - WATCHTOWER_INCLUDE_STOPPED=${WATCHTOWER_INCLUDE_STOPPED}
+      - WATCHTOWER_MONITOR_ONLY=${WATCHTOWER_MONITOR_ONLY}
+      - WATCHTOWER_POLL_INTERVAL=${WATCHTOWER_POLL_INTERVAL}
+      - WATCHTOWER_SCHEDULE=${WATCHTOWER_SCHEDULE}
+      - WATCHTOWER_TIMEOUT=${WATCHTOWER_TIMEOUT}
     labels:
       com.dockstarter.watchtower_description: Automatically update running Docker containers
       com.dockstarter.watchtower_nicename: Watchtower
