@@ -6,7 +6,7 @@ appvar_purge() {
     local APPNAME=${1:-}
     local APPVARS
     APPVARS=$(grep "^${APPNAME}_" "${SCRIPTPATH}/compose/.env" || true)
-    if [[ -z ${APPVARS} ]]; then
+    if [[ -n ${APPVARS} ]]; then
         if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
             warning "${APPNAME} has no variables."
         else
