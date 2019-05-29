@@ -1,0 +1,3 @@
+services:
+  bookstack:
+    network_mode: ${BOOKSTACK_NETWORK_MODE}
