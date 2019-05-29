@@ -16,8 +16,8 @@ services:
       - VPN_PROV=${VPN_PROV}
       - VPN_USER=${VPN_USER}
     labels:
-      com.dockstarter.delugevpn_description: "Deluge, OpenVPN and Privoxy"
-      com.dockstarter.delugevpn_nicename: "DelugeVPN"
+      com.dockstarter.appinfo.description: "Deluge, OpenVPN and Privoxy"
+      com.dockstarter.appinfo.nicename: "DelugeVPN"
     logging:
       driver: json-file
       options:

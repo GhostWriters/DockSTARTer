@@ -6,8 +6,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.monitorr_description: "Webfront to live display the status of any webapp or service"
-      com.dockstarter.monitorr_nicename: "Monitorr"
+      com.dockstarter.appinfo.description: "Webfront to live display the status of any webapp or service"
+      com.dockstarter.appinfo.nicename: "Monitorr"
     logging:
       driver: json-file
       options:

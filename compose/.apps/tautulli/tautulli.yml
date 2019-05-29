@@ -6,8 +6,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.tautulli_description: "Monitoring and tracking tool for Plex Media Server"
-      com.dockstarter.tautulli_nicename: "Tautulli"
+      com.dockstarter.appinfo.description: "Monitoring and tracking tool for Plex Media Server"
+      com.dockstarter.appinfo.nicename: "Tautulli"
     logging:
       driver: json-file
       options:

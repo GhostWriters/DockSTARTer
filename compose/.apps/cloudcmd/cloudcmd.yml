@@ -4,8 +4,8 @@ services:
     environment:
       - TZ=${TZ}
     labels:
-      com.dockstarter.cloudcmd_description: "A web file manager with console and editor"
-      com.dockstarter.cloudcmd_nicename: "CloudCMD"
+      com.dockstarter.appinfo.description: "A web file manager with console and editor"
+      com.dockstarter.appinfo.nicename: "CloudCMD"
     logging:
       driver: json-file
       options:

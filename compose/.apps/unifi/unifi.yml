@@ -6,8 +6,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.unifi_description: "(DEPRECATED) Use UnifiController"
-      com.dockstarter.unifi_nicename: "Unifi"
+      com.dockstarter.appinfo.description: "(DEPRECATED) Use UnifiController"
+      com.dockstarter.appinfo.nicename: "Unifi"
     logging:
       driver: json-file
       options:

@@ -6,8 +6,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.radarr_description: "Automatically download movies via Usenet and BitTorrent"
-      com.dockstarter.radarr_nicename: "Radarr"
+      com.dockstarter.appinfo.description: "Automatically download movies via Usenet and BitTorrent"
+      com.dockstarter.appinfo.nicename: "Radarr"
     logging:
       driver: json-file
       options:

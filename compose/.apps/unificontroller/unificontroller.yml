@@ -6,8 +6,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.unificontroller_description: "Controller software for wireless networks"
-      com.dockstarter.unificontroller_nicename: "UnifiController"
+      com.dockstarter.appinfo.description: "Controller software for wireless networks"
+      com.dockstarter.appinfo.nicename: "UnifiController"
     logging:
       driver: json-file
       options:

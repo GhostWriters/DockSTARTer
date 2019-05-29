@@ -6,8 +6,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.smokeping_description: "Free service which will point a DNS to an IP of your choice"
-      com.dockstarter.smokeping_nicename: "SmokePing"
+      com.dockstarter.appinfo.description: "Free service which will point a DNS to an IP of your choice"
+      com.dockstarter.appinfo.nicename: "SmokePing"
     logging:
       driver: json-file
       options:

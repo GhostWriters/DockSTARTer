@@ -7,8 +7,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.ubooquity_description: "Home server for your comics and ebooks"
-      com.dockstarter.ubooquity_nicename: "Ubooquity"
+      com.dockstarter.appinfo.description: "Home server for your comics and ebooks"
+      com.dockstarter.appinfo.nicename: "Ubooquity"
     logging:
       driver: json-file
       options:

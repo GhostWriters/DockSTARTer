@@ -6,8 +6,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.medusa_description: "Automatic Video Library Manager for TV Shows"
-      com.dockstarter.medusa_nicename: "Medusa"
+      com.dockstarter.appinfo.description: "Automatic Video Library Manager for TV Shows"
+      com.dockstarter.appinfo.nicename: "Medusa"
     logging:
       driver: json-file
       options:

@@ -6,8 +6,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.logarr_description: "Self-hosted, single-page, log consolidation tool"
-      com.dockstarter.logarr_nicename: "Logarr"
+      com.dockstarter.appinfo.description: "Self-hosted, single-page, log consolidation tool"
+      com.dockstarter.appinfo.nicename: "Logarr"
     logging:
       driver: json-file
       options:

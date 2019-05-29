@@ -6,8 +6,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.lazylibrarian_description: "Book PVR Client"
-      com.dockstarter.lazylibrarian_nicename: "LazyLibrarian"
+      com.dockstarter.appinfo.description: "Book PVR Client"
+      com.dockstarter.appinfo.nicename: "LazyLibrarian"
     logging:
       driver: json-file
       options:

@@ -8,8 +8,8 @@ services:
       - HOST_SYS=/host/sys
       - TZ=${TZ}
     labels:
-      com.dockstarter.telegraf_description: "Agent for collecting metrics and writing them to InfluxDB"
-      com.dockstarter.telegraf_nicename: "Telegraf"
+      com.dockstarter.appinfo.description: "Agent for collecting metrics and writing them to InfluxDB"
+      com.dockstarter.appinfo.nicename: "Telegraf"
     logging:
       driver: json-file
       options:

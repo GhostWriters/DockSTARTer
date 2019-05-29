@@ -7,8 +7,8 @@ services:
       - TZ=${TZ}
       - VERSION=${PLEX_VERSION}
     labels:
-      com.dockstarter.plex_description: "Organizes all of your video, music and photo collections"
-      com.dockstarter.plex_nicename: "Plex"
+      com.dockstarter.appinfo.description: "Organizes all of your video, music and photo collections"
+      com.dockstarter.appinfo.nicename: "Plex"
     logging:
       driver: json-file
       options:

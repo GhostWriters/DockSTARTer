@@ -6,8 +6,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.pyload_description: "Python Download Manager alternative to JDownloader"
-      com.dockstarter.pyload_nicename: "pyLoad"
+      com.dockstarter.appinfo.description: "Python Download Manager alternative to JDownloader"
+      com.dockstarter.appinfo.nicename: "pyLoad"
     logging:
       driver: json-file
       options:

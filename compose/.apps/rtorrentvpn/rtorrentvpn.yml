@@ -19,8 +19,8 @@ services:
       - VPN_PROV=${VPN_PROV}
       - VPN_USER=${VPN_USER}
     labels:
-      com.dockstarter.rtorrentvpn_description: "rTorrent, Flood or ruTorrent WebUI, OpenVPN and Privoxy"
-      com.dockstarter.rtorrentvpn_nicename: "rTorrentVPN"
+      com.dockstarter.appinfo.description: "rTorrent, Flood or ruTorrent WebUI, OpenVPN and Privoxy"
+      com.dockstarter.appinfo.nicename: "rTorrentVPN"
     logging:
       driver: json-file
       options:

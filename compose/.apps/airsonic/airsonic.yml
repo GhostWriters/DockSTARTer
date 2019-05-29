@@ -8,8 +8,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.airsonic_description: "Web-based media streamer providing ubiquitious access to your music"
-      com.dockstarter.airsonic_nicename: "Airsonic"
+      com.dockstarter.appinfo.description: "Web-based media streamer providing ubiquitious access to your music"
+      com.dockstarter.appinfo.nicename: "Airsonic"
     logging:
       driver: json-file
       options:

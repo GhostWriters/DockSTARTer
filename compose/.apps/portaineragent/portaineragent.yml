@@ -4,8 +4,8 @@ services:
     environment:
       - TZ=${TZ}
     labels:
-      com.dockstarter.portaineragent_description: "An agent used to manage all the resources in a Swarm cluster"
-      com.dockstarter.portaineragent_nicename: "PortainerAgent"
+      com.dockstarter.appinfo.description: "An agent used to manage all the resources in a Swarm cluster"
+      com.dockstarter.appinfo.nicename: "PortainerAgent"
     logging:
       driver: json-file
       options:

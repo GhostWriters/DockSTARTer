@@ -6,8 +6,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.ddclient_description: "Update dynamic DNS entries"
-      com.dockstarter.ddclient_nicename: "DDClient"
+      com.dockstarter.appinfo.description: "Update dynamic DNS entries"
+      com.dockstarter.appinfo.nicename: "DDClient"
     logging:
       driver: json-file
       options:

@@ -6,8 +6,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.duplicati_description: "Backup software to store backups online with strong encryption"
-      com.dockstarter.duplicati_nicename: "Duplicati"
+      com.dockstarter.appinfo.description: "Backup software to store backups online with strong encryption"
+      com.dockstarter.appinfo.nicename: "Duplicati"
     logging:
       driver: json-file
       options:

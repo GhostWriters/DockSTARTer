@@ -21,8 +21,8 @@ services:
       - TRANSMISSION_WATCH_DIR=/downloads/watch
       - TZ=${TZ}
     labels:
-      com.dockstarter.transmissionvpn_description: "Transmission, WebUI and OpenVPN"
-      com.dockstarter.transmissionvpn_nicename: "TransmissionVPN"
+      com.dockstarter.appinfo.description: "Transmission, WebUI and OpenVPN"
+      com.dockstarter.appinfo.nicename: "TransmissionVPN"
     logging:
       driver: json-file
       options:

@@ -26,8 +26,8 @@ More important than being beautiful is being functional. This repository is prim
     - `environment` should contain the environment variables used by the app
       - `- TZ=${TZ}` is always included even if not needed unless some other form of timezone variable is used
     - `labels` should contain the labels used by the app
-      - `com.dockstarter.<appname>_description: "<Description>"` will show the description in the menus
-      - `com.dockstarter.<appname>_nicename: "<AppName>"` must match `<appname>` exactly but can have mixed case. Ex: Portainer vs PORTAINER
+      - `com.dockstarter.appinfo.description: "<Description>"` will show the description in the menus
+      - `com.dockstarter.appinfo.nicename: "<AppName>"` must match `<appname>` exactly but can have mixed case. Ex: Portainer vs PORTAINER
     - `logging` and the items beneath it should be included exactly as shown in other apps
     - `restart` should be `unless-stopped` or should include a comment about why another option is used
     - `volumes` should contain the volumes used by the app

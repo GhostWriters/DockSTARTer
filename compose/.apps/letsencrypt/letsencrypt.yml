@@ -16,8 +16,8 @@ services:
       - URL=${LETSENCRYPT_URL}
       - VALIDATION=${LETSENCRYPT_VALIDATION}
     labels:
-      com.dockstarter.letsencrypt_description: "Certificate authority that provides free X.509 certificates"
-      com.dockstarter.letsencrypt_nicename: "LetsEncrypt"
+      com.dockstarter.appinfo.description: "Certificate authority that provides free X.509 certificates"
+      com.dockstarter.appinfo.nicename: "LetsEncrypt"
     logging:
       driver: json-file
       options:

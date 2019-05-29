@@ -6,8 +6,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.beets_description: "Music library manager and MusicBrainz tagger"
-      com.dockstarter.beets_nicename: "Beets"
+      com.dockstarter.appinfo.description: "Music library manager and MusicBrainz tagger"
+      com.dockstarter.appinfo.nicename: "Beets"
     logging:
       driver: json-file
       options:

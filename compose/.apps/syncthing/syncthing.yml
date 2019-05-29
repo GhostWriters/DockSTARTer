@@ -6,8 +6,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.syncthing_description: "Open-source peer-to-peer file synchronization"
-      com.dockstarter.syncthing_nicename: "Syncthing"
+      com.dockstarter.appinfo.description: "Open-source peer-to-peer file synchronization"
+      com.dockstarter.appinfo.nicename: "Syncthing"
     logging:
       driver: json-file
       options:

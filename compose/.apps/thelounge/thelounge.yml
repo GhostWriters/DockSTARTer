@@ -6,8 +6,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.thelounge_description: "Web IRC client that you host on your own server"
-      com.dockstarter.thelounge_nicename: "TheLounge"
+      com.dockstarter.appinfo.description: "Web IRC client that you host on your own server"
+      com.dockstarter.appinfo.nicename: "TheLounge"
     logging:
       driver: json-file
       options:

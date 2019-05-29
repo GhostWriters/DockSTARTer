@@ -4,8 +4,8 @@ services:
     environment:
       - TZ=${TZ}
     labels:
-      com.dockstarter.h5ai_description: "Modern file indexer"
-      com.dockstarter.h5ai_nicename: "h5ai"
+      com.dockstarter.appinfo.description: "Modern file indexer"
+      com.dockstarter.appinfo.nicename: "h5ai"
     logging:
       driver: json-file
       options:

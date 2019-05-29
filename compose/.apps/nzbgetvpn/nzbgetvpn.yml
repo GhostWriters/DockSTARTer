@@ -16,8 +16,8 @@ services:
       - VPN_PROV=${VPN_PROV}
       - VPN_USER=${VPN_USER}
     labels:
-      com.dockstarter.nzbgetvpn_description: "NZBGet, OpenVPN and Privoxy"
-      com.dockstarter.nzbgetvpn_nicename: "NZBGetVPN"
+      com.dockstarter.appinfo.description: "NZBGet, OpenVPN and Privoxy"
+      com.dockstarter.appinfo.nicename: "NZBGetVPN"
     logging:
       driver: json-file
       options:

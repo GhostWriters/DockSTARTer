@@ -6,8 +6,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.sonarr_description: "Smart TV show PVR via Usenet and BitTorrent"
-      com.dockstarter.sonarr_nicename: "Sonarr"
+      com.dockstarter.appinfo.description: "Smart TV show PVR via Usenet and BitTorrent"
+      com.dockstarter.appinfo.nicename: "Sonarr"
     logging:
       driver: json-file
       options:

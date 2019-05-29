@@ -4,8 +4,8 @@ services:
     environment:
       - TZ=${TZ}
     labels:
-      com.dockstarter.jellyfin_description: "Free Software Media Browser"
-      com.dockstarter.jellyfin_nicename: "Jellyfin"
+      com.dockstarter.appinfo.description: "Free Software Media Browser"
+      com.dockstarter.appinfo.nicename: "Jellyfin"
     logging:
       driver: json-file
       options:

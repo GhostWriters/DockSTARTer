@@ -7,8 +7,8 @@ services:
       - PMA_USER=${PHPMYADMIN_PMA_USER}
       - TZ=${TZ}
     labels:
-      com.dockstarter.phpmyadmin_description: "A web interface for MySQL and MariaDB"
-      com.dockstarter.phpmyadmin_nicename: "phpMyAdmin"
+      com.dockstarter.appinfo.description: "A web interface for MySQL and MariaDB"
+      com.dockstarter.appinfo.nicename: "phpMyAdmin"
     logging:
       driver: json-file
       options:

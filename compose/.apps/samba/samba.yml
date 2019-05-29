@@ -16,8 +16,8 @@ services:
       - TZ=${TZ}
       - USERID=${PUID}
     labels:
-      com.dockstarter.samba_description: "(DEPRECATED) No replacement"
-      com.dockstarter.samba_nicename: "Samba"
+      com.dockstarter.appinfo.description: "(DEPRECATED) No replacement"
+      com.dockstarter.appinfo.nicename: "Samba"
     logging:
       driver: json-file
       options:

@@ -6,8 +6,8 @@ services:
       - USER_ID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.handbrake_description: "Tool for converting video"
-      com.dockstarter.handbrake_nicename: "HandBrake"
+      com.dockstarter.appinfo.description: "Tool for converting video"
+      com.dockstarter.appinfo.nicename: "HandBrake"
     logging:
       driver: json-file
       options:
