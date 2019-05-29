@@ -1,4 +1,4 @@
 services:
   bookstack:
     ports:
-      - "${BOOKSTACK_PORT_6875}:80"
+      - "${BOOKSTACK_PORT_80}:80"
