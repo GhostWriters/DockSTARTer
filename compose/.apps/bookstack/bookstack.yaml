@@ -1,0 +1,15 @@
+services:
+  bookstack:
+    image: linuxserver/bookstack
+    container_name: bookstack
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - DB_HOST=${BOOKSTACK_DB_HOST}
+      - DB_USER=${BOOKSTACK_DB_USER}
+      - DB_PASS=${BOOKSTACK_DB_PASS}
+      - DB_DATABASE=${BOOKSTACK_DB_DATABASE}
+      - APP_URL=${BOOTSTACK_URL}
+    volumes:
+      - ${DOCKERCONFDIR}/bookstack:/config
