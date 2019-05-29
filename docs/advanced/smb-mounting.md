@@ -18,7 +18,7 @@ Then once that's done, you should be able to mount your SMB/Windows Share like s
 sudo mount -t cifs //<host>/Downloads /mnt/downloads -o uid=1000,gid=1000,credentials=/home/<your home user>/.credentials,rw,vers=3.0
 ```
 And to make sure that sticks, you're going to put this entry in your `/etc/fstab` file (You'll probably want to put it at the bottom) to match:
-`//<host>/Downloads /mnt/downloads cifs uid=1000,gid=1000,credentials=/home/<your home user>/.mount-creds,rw,vers=3.0`
+`//<host>/Downloads /mnt/downloads cifs uid=1000,gid=1000,credentials=/home/<your home user>/.credentials,rw,vers=3.0`
 
 You should be able to reboot to test the mount, but you should now be able to `ls -al /mnt/Downloads` (in my example) and see the files in your Shared Downloads folder!
 
