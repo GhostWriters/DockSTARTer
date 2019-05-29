@@ -1,13 +1,13 @@
 services:
-  sickrage:
-    container_name: sickrage
+  sickchill:
+    container_name: sickchill
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
     labels:
-      com.dockstarter.sickrage_description: (DEPRECATED) Use SickChill
-      com.dockstarter.sickrage_nicename: SiCKRAGE
+      com.dockstarter.sickchill_description: Automatic Video Library Manager for TV Shows
+      com.dockstarter.sickchill_nicename: SickChill
     logging:
       driver: json-file
       options:
@@ -16,7 +16,7 @@ services:
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/sickrage:/config
+      - ${DOCKERCONFDIR}/sickchill:/config
       - ${DOCKERSHAREDDIR}:/shared
       - ${DOWNLOADSDIR}:/data
       - ${DOWNLOADSDIR}:/downloads
