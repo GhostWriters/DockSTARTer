@@ -7,7 +7,7 @@ menu_app_select() {
     local APPLIST=()
 
     while IFS= read -r line; do
-        local APPNAME=${line%%_ENABLED=*}
+        local APPNAME=${line^^}
         local FILENAME=${APPNAME,,}
         if [[ -d ${SCRIPTPATH}/compose/.apps/${FILENAME}/ ]]; then
             if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml ]]; then
@@ -26,7 +26,7 @@ menu_app_select() {
                 fi
             fi
         fi
-    done < <(grep '_ENABLED=' < "${SCRIPTPATH}/compose/.env")
+    done < <(ls -A "${SCRIPTPATH}/compose/.apps/")
 
     local SELECTEDAPPS
     if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
@@ -42,11 +42,19 @@ menu_app_select() {
             local APPNAME=${line%%_ENABLED=true}
             run_script 'env_set' "${APPNAME}_ENABLED" false
         done < <(grep '_ENABLED=true$' < "${SCRIPTPATH}/compose/.env")
+
         info "Enabling selected apps."
         while IFS= read -r line; do
             local APPNAME=${line^^}
+            run_script 'appvars_create' "${APPNAME}"
             run_script 'env_set' "${APPNAME}_ENABLED" true
         done < <(echo "${SELECTEDAPPS}")
+
+        info "Purging disabled app variables."
+        while IFS= read -r line; do
+            local APPNAME=${line%%_ENABLED=false}
+            run_script 'appvars_purge' "${APPNAME}"
+        done < <(grep '_ENABLED=false$' < "${SCRIPTPATH}/compose/.env")
     fi
 }
 
