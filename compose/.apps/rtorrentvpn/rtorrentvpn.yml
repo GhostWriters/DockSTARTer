@@ -21,6 +21,16 @@ services:
     labels:
       com.dockstarter.appinfo.description: "rTorrent, Flood or ruTorrent WebUI, OpenVPN and Privoxy"
       com.dockstarter.appinfo.nicename: "rTorrentVPN"
+      com.dockstarter.appvars.rtorrentvpn_backup_config: "true"
+      com.dockstarter.appvars.rtorrentvpn_enable_autodl_irssi: "no"
+      com.dockstarter.appvars.rtorrentvpn_enable_flood: "both"
+      com.dockstarter.appvars.rtorrentvpn_enable_privoxy: "no"
+      com.dockstarter.appvars.rtorrentvpn_enabled: "false"
+      com.dockstarter.appvars.rtorrentvpn_network_mode: ""
+      com.dockstarter.appvars.rtorrentvpn_port_3000: "3000"
+      com.dockstarter.appvars.rtorrentvpn_port_8118: "8118"
+      com.dockstarter.appvars.rtorrentvpn_port_9080: "9080"
+      com.dockstarter.appvars.rtorrentvpn_port_9443: "9443"
     logging:
       driver: json-file
       options:

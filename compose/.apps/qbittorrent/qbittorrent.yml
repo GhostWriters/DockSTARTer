@@ -9,6 +9,11 @@ services:
     labels:
       com.dockstarter.appinfo.description: "Cross-platform free and open-source BitTorrent client"
       com.dockstarter.appinfo.nicename: "qBittorrent"
+      com.dockstarter.appvars.qbittorrent_backup_config: "true"
+      com.dockstarter.appvars.qbittorrent_enabled: "false"
+      com.dockstarter.appvars.qbittorrent_network_mode: ""
+      com.dockstarter.appvars.qbittorrent_port_6881: "6881"
+      com.dockstarter.appvars.qbittorrent_port_8080: "8080"
     logging:
       driver: json-file
       options:

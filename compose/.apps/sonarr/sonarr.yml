@@ -8,6 +8,10 @@ services:
     labels:
       com.dockstarter.appinfo.description: "Smart TV show PVR via Usenet and BitTorrent"
       com.dockstarter.appinfo.nicename: "Sonarr"
+      com.dockstarter.appvars.sonarr_backup_config: "true"
+      com.dockstarter.appvars.sonarr_enabled: "false"
+      com.dockstarter.appvars.sonarr_network_mode: ""
+      com.dockstarter.appvars.sonarr_port_8989: "8989"
     logging:
       driver: json-file
       options:

@@ -7,6 +7,10 @@ services:
     labels:
       com.dockstarter.appinfo.description: "Simple management UI for Docker"
       com.dockstarter.appinfo.nicename: "Portainer"
+      com.dockstarter.appvars.portainer_backup_config: "true"
+      com.dockstarter.appvars.portainer_enabled: "true"
+      com.dockstarter.appvars.portainer_network_mode: ""
+      com.dockstarter.appvars.portainer_port_9000: "9000"
     logging:
       driver: json-file
       options:

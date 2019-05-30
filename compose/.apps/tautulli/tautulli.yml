@@ -8,6 +8,10 @@ services:
     labels:
       com.dockstarter.appinfo.description: "Monitoring and tracking tool for Plex Media Server"
       com.dockstarter.appinfo.nicename: "Tautulli"
+      com.dockstarter.appvars.tautulli_backup_config: "true"
+      com.dockstarter.appvars.tautulli_enabled: "false"
+      com.dockstarter.appvars.tautulli_network_mode: ""
+      com.dockstarter.appvars.tautulli_port_8181: "8181"
     logging:
       driver: json-file
       options:

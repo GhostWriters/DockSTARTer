@@ -8,6 +8,10 @@ services:
     labels:
       com.dockstarter.appinfo.description: "Automatic Video Library Manager for TV Shows"
       com.dockstarter.appinfo.nicename: "SickChill"
+      com.dockstarter.appvars.sickchill_backup_config: "true"
+      com.dockstarter.appvars.sickchill_enabled: "false"
+      com.dockstarter.appvars.sickchill_network_mode: ""
+      com.dockstarter.appvars.sickchill_port_8081: "8081"
     logging:
       driver: json-file
       options:

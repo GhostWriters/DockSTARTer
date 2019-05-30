@@ -11,6 +11,13 @@ services:
     labels:
       com.dockstarter.appinfo.description: "Web client for Quassel. A Quassel-Core instance is required"
       com.dockstarter.appinfo.nicename: "QuasselWeb"
+      com.dockstarter.appvars.quasselweb_backup_config: "true"
+      com.dockstarter.appvars.quasselweb_enabled: "false"
+      com.dockstarter.appvars.quasselweb_network_mode: ""
+      com.dockstarter.appvars.quasselweb_port_64080: "64080"
+      com.dockstarter.appvars.quasselweb_quassel_core: "quasselcore"
+      com.dockstarter.appvars.quasselweb_quassel_port: "4242"
+      com.dockstarter.appvars.quasselweb_url_base: "/quassel"
     logging:
       driver: json-file
       options:

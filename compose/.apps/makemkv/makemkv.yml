@@ -8,6 +8,12 @@ services:
     labels:
       com.dockstarter.appinfo.description: "Convert video that you own into free and patents-unencumbered format"
       com.dockstarter.appinfo.nicename: "MakeMKV"
+      com.dockstarter.appvars.makemkv_backup_config: "true"
+      com.dockstarter.appvars.makemkv_enabled: "false"
+      com.dockstarter.appvars.makemkv_network_mode: ""
+      com.dockstarter.appvars.makemkv_outputdir: "/mnt/makemkv/output"
+      com.dockstarter.appvars.makemkv_port_5800: "5800"
+      com.dockstarter.appvars.makemkv_storagedir: "/mnt/makemkv/storage"
     logging:
       driver: json-file
       options:

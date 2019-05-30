@@ -13,6 +13,15 @@ services:
     labels:
       com.dockstarter.appinfo.description: "Platform for storing and organising information and documentation"
       com.dockstarter.appinfo.nicename: "BookStack"
+      com.dockstarter.appvars.bookstack_app_url: ""
+      com.dockstarter.appvars.bookstack_backup_config: "true"
+      com.dockstarter.appvars.bookstack_db_database: ""
+      com.dockstarter.appvars.bookstack_db_host: ""
+      com.dockstarter.appvars.bookstack_db_pass: ""
+      com.dockstarter.appvars.bookstack_db_user: ""
+      com.dockstarter.appvars.bookstack_enabled: "false"
+      com.dockstarter.appvars.bookstack_network_mode: ""
+      com.dockstarter.appvars.bookstack_port_80: "6875"
     logging:
       driver: json-file
       options:

@@ -8,6 +8,17 @@ services:
     labels:
       com.dockstarter.appinfo.description: "Controller software for wireless networks"
       com.dockstarter.appinfo.nicename: "UnifiController"
+      com.dockstarter.appvars.unificontroller_backup_config: "true"
+      com.dockstarter.appvars.unificontroller_enabled: "false"
+      com.dockstarter.appvars.unificontroller_network_mode: ""
+      com.dockstarter.appvars.unificontroller_port_10001: "10001"
+      com.dockstarter.appvars.unificontroller_port_3478: "3478"
+      com.dockstarter.appvars.unificontroller_port_6789: "6789"
+      com.dockstarter.appvars.unificontroller_port_8080: "8080"
+      com.dockstarter.appvars.unificontroller_port_8081: "8081"
+      com.dockstarter.appvars.unificontroller_port_8443: "8443"
+      com.dockstarter.appvars.unificontroller_port_8843: "8843"
+      com.dockstarter.appvars.unificontroller_port_8880: "8880"
     logging:
       driver: json-file
       options:

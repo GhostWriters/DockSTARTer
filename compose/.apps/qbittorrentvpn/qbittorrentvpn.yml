@@ -17,6 +17,13 @@ services:
     labels:
       com.dockstarter.appinfo.description: "qBittorrent, OpenVPN and Privoxy"
       com.dockstarter.appinfo.nicename: "qBittorrentVPN"
+      com.dockstarter.appvars.qbittorrentvpn_backup_config: "true"
+      com.dockstarter.appvars.qbittorrentvpn_enable_privoxy: "no"
+      com.dockstarter.appvars.qbittorrentvpn_enabled: "false"
+      com.dockstarter.appvars.qbittorrentvpn_network_mode: ""
+      com.dockstarter.appvars.qbittorrentvpn_port_6881: "6881"
+      com.dockstarter.appvars.qbittorrentvpn_port_8080: "8080"
+      com.dockstarter.appvars.qbittorrentvpn_port_8118: "8118"
     logging:
       driver: json-file
       options:

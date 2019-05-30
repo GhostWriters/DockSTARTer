@@ -8,6 +8,10 @@ services:
     labels:
       com.dockstarter.appinfo.description: "Companion to Sonarr to manage and download subtitles"
       com.dockstarter.appinfo.nicename: "Bazarr"
+      com.dockstarter.appvars.bazarr_backup_config: "true"
+      com.dockstarter.appvars.bazarr_enabled: "false"
+      com.dockstarter.appvars.bazarr_network_mode: ""
+      com.dockstarter.appvars.bazarr_port_6767: "6767"
     logging:
       driver: json-file
       options:

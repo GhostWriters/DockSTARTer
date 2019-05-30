@@ -9,6 +9,13 @@ services:
     labels:
       com.dockstarter.appinfo.description: "A web interface for MySQL and MariaDB"
       com.dockstarter.appinfo.nicename: "phpMyAdmin"
+      com.dockstarter.appvars.phpmyadmin_backup_config: "true"
+      com.dockstarter.appvars.phpmyadmin_enabled: "false"
+      com.dockstarter.appvars.phpmyadmin_network_mode: ""
+      com.dockstarter.appvars.phpmyadmin_pma_host: "mariadb"
+      com.dockstarter.appvars.phpmyadmin_pma_password: ""
+      com.dockstarter.appvars.phpmyadmin_pma_user: "root"
+      com.dockstarter.appvars.phpmyadmin_port_80: "8007"
     logging:
       driver: json-file
       options:

@@ -8,6 +8,13 @@ services:
     labels:
       com.dockstarter.appinfo.description: "Open-source peer-to-peer file synchronization"
       com.dockstarter.appinfo.nicename: "Syncthing"
+      com.dockstarter.appvars.syncthing_backup_config: "true"
+      com.dockstarter.appvars.syncthing_enabled: "false"
+      com.dockstarter.appvars.syncthing_network_mode: ""
+      com.dockstarter.appvars.syncthing_port_21027: "21027"
+      com.dockstarter.appvars.syncthing_port_22000: "22000"
+      com.dockstarter.appvars.syncthing_port_8384: "8384"
+      com.dockstarter.appvars.syncthing_sourcedir: "/mnt/syncthing"
     logging:
       driver: json-file
       options:

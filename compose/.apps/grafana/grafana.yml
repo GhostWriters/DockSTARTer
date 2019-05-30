@@ -7,6 +7,11 @@ services:
     labels:
       com.dockstarter.appinfo.description: "Metrics dashboard and graph editor"
       com.dockstarter.appinfo.nicename: "Grafana"
+      com.dockstarter.appvars.grafana_backup_config: "true"
+      com.dockstarter.appvars.grafana_enabled: "false"
+      com.dockstarter.appvars.grafana_gf_install_plugins: "grafana-piechart-panel,grafana-worldmap-panel"
+      com.dockstarter.appvars.grafana_network_mode: ""
+      com.dockstarter.appvars.grafana_port_3000: "3000"
     logging:
       driver: json-file
       options:

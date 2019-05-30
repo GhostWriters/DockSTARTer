@@ -8,6 +8,10 @@ services:
     labels:
       com.dockstarter.appinfo.description: "Front end for many htpc related applications"
       com.dockstarter.appinfo.nicename: "HTPCManager"
+      com.dockstarter.appvars.htpcmanager_backup_config: "true"
+      com.dockstarter.appvars.htpcmanager_enabled: "false"
+      com.dockstarter.appvars.htpcmanager_network_mode: ""
+      com.dockstarter.appvars.htpcmanager_port_8085: "8085"
     logging:
       driver: json-file
       options:

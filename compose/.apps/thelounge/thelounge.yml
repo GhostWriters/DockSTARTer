@@ -8,6 +8,10 @@ services:
     labels:
       com.dockstarter.appinfo.description: "Web IRC client that you host on your own server"
       com.dockstarter.appinfo.nicename: "TheLounge"
+      com.dockstarter.appvars.thelounge_backup_config: "true"
+      com.dockstarter.appvars.thelounge_enabled: "false"
+      com.dockstarter.appvars.thelounge_network_mode: ""
+      com.dockstarter.appvars.thelounge_port_9000: "9100"
     logging:
       driver: json-file
       options:

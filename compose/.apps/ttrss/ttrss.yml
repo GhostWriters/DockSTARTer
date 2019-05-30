@@ -8,6 +8,10 @@ services:
     labels:
       com.dockstarter.appinfo.description: "News feed (RSS/Atom) reader and aggregator"
       com.dockstarter.appinfo.nicename: "TTRSS"
+      com.dockstarter.appvars.ttrss_backup_config: "true"
+      com.dockstarter.appvars.ttrss_enabled: "false"
+      com.dockstarter.appvars.ttrss_network_mode: ""
+      com.dockstarter.appvars.ttrss_port_80: "8010"
     logging:
       driver: json-file
       options:

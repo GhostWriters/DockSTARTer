@@ -8,6 +8,10 @@ services:
     labels:
       com.dockstarter.appinfo.description: "Automatically download movies via Usenet and BitTorrent"
       com.dockstarter.appinfo.nicename: "Radarr"
+      com.dockstarter.appvars.radarr_backup_config: "true"
+      com.dockstarter.appvars.radarr_enabled: "false"
+      com.dockstarter.appvars.radarr_network_mode: ""
+      com.dockstarter.appvars.radarr_port_7878: "7878"
     logging:
       driver: json-file
       options:

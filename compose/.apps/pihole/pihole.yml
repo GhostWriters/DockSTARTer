@@ -17,6 +17,16 @@ services:
     labels:
       com.dockstarter.appinfo.description: "A black hole for internet advertisements"
       com.dockstarter.appinfo.nicename: "PiHole"
+      com.dockstarter.appvars.pihole_backup_config: "true"
+      com.dockstarter.appvars.pihole_enabled: "false"
+      com.dockstarter.appvars.pihole_network_mode: ""
+      com.dockstarter.appvars.pihole_port_443: "446"
+      com.dockstarter.appvars.pihole_port_53: "53"
+      com.dockstarter.appvars.pihole_port_67: "67"
+      com.dockstarter.appvars.pihole_port_80: "8008"
+      com.dockstarter.appvars.pihole_serverip: "192.168.x.x"
+      com.dockstarter.appvars.pihole_serveripv6: ""
+      com.dockstarter.appvars.pihole_webpassword: ""
     logging:
       driver: json-file
       options:

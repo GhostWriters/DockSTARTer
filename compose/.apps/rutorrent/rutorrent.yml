@@ -8,6 +8,13 @@ services:
     labels:
       com.dockstarter.appinfo.description: "rTorrent client and ruTorrent WebUI"
       com.dockstarter.appinfo.nicename: "ruTorrent"
+      com.dockstarter.appvars.rutorrent_backup_config: "true"
+      com.dockstarter.appvars.rutorrent_enabled: "false"
+      com.dockstarter.appvars.rutorrent_network_mode: ""
+      com.dockstarter.appvars.rutorrent_port_5000: "5000"
+      com.dockstarter.appvars.rutorrent_port_51413: "51413"
+      com.dockstarter.appvars.rutorrent_port_6881: "6881"
+      com.dockstarter.appvars.rutorrent_port_80: "8009"
     logging:
       driver: json-file
       options:

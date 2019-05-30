@@ -9,6 +9,11 @@ services:
     labels:
       com.dockstarter.appinfo.description: "Web-based streamer for your audiobooks."
       com.dockstarter.appinfo.nicename: "Booksonic"
+      com.dockstarter.appvars.booksonic_backup_config: "true"
+      com.dockstarter.appvars.booksonic_context_path: "/booksonic"
+      com.dockstarter.appvars.booksonic_enabled: "false"
+      com.dockstarter.appvars.booksonic_network_mode: ""
+      com.dockstarter.appvars.booksonic_port_4040: "4040"
     logging:
       driver: json-file
       options:

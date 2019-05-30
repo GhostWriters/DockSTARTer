@@ -8,6 +8,9 @@ services:
     labels:
       com.dockstarter.appinfo.description: "Utility to aggregate data from the Plex ecosystem"
       com.dockstarter.appinfo.nicename: "Varken"
+      com.dockstarter.appvars.varken_backup_config: "true"
+      com.dockstarter.appvars.varken_enabled: "false"
+      com.dockstarter.appvars.varken_network_mode: ""
     logging:
       driver: json-file
       options:

@@ -23,6 +23,10 @@ services:
     labels:
       com.dockstarter.appinfo.description: "Transmission, WebUI and OpenVPN"
       com.dockstarter.appinfo.nicename: "TransmissionVPN"
+      com.dockstarter.appvars.transmissionvpn_backup_config: "true"
+      com.dockstarter.appvars.transmissionvpn_enabled: "false"
+      com.dockstarter.appvars.transmissionvpn_network_mode: ""
+      com.dockstarter.appvars.transmissionvpn_port_9091: "9091"
     logging:
       driver: json-file
       options:

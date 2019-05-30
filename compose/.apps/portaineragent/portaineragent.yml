@@ -6,6 +6,10 @@ services:
     labels:
       com.dockstarter.appinfo.description: "An agent used to manage all the resources in a Swarm cluster"
       com.dockstarter.appinfo.nicename: "PortainerAgent"
+      com.dockstarter.appvars.portaineragent_backup_config: "true"
+      com.dockstarter.appvars.portaineragent_enabled: "false"
+      com.dockstarter.appvars.portaineragent_network_mode: ""
+      com.dockstarter.appvars.portaineragent_port_9001: "9001"
     logging:
       driver: json-file
       options:

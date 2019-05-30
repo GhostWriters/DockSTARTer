@@ -8,6 +8,13 @@ services:
     labels:
       com.dockstarter.appinfo.description: "Probably the most secure and fastest FTP server for UNIX-like systems"
       com.dockstarter.appinfo.nicename: "vsftpd"
+      com.dockstarter.appvars.vsftpd_backup_config: "true"
+      com.dockstarter.appvars.vsftpd_datadir: "/mnt/vsftpd"
+      com.dockstarter.appvars.vsftpd_enabled: "false"
+      com.dockstarter.appvars.vsftpd_ftp_pass: ""
+      com.dockstarter.appvars.vsftpd_ftp_user: ""
+      com.dockstarter.appvars.vsftpd_network_mode: ""
+      com.dockstarter.appvars.vsftpd_port_21: "21"
     logging:
       driver: json-file
       options:

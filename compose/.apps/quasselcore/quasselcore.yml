@@ -8,6 +8,11 @@ services:
     labels:
       com.dockstarter.appinfo.description: "Modern, cross-platform, distributed IRC client"
       com.dockstarter.appinfo.nicename: "QuasselCore"
+      com.dockstarter.appvars.quasselcore_backup_config: "true"
+      com.dockstarter.appvars.quasselcore_enabled: "false"
+      com.dockstarter.appvars.quasselcore_network_mode: ""
+      com.dockstarter.appvars.quasselcore_port_10113: "10113"
+      com.dockstarter.appvars.quasselcore_port_4242: "4242"
     logging:
       driver: json-file
       options:

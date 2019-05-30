@@ -9,6 +9,13 @@ services:
     labels:
       com.dockstarter.appinfo.description: "TV streaming server and recorder"
       com.dockstarter.appinfo.nicename: "Tvheadend"
+      com.dockstarter.appvars.tvheadend_backup_config: "true"
+      com.dockstarter.appvars.tvheadend_enabled: "false"
+      com.dockstarter.appvars.tvheadend_network_mode: ""
+      com.dockstarter.appvars.tvheadend_port_9981: "9981"
+      com.dockstarter.appvars.tvheadend_port_9982: "9982"
+      com.dockstarter.appvars.tvheadend_recordingsdir: "/mnt/recordings"
+      com.dockstarter.appvars.tvheadend_run_opts: ""
     logging:
       driver: json-file
       options:

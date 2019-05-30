@@ -8,6 +8,11 @@ services:
     labels:
       com.dockstarter.appinfo.description: "Free service which will point a DNS to an IP of your choice"
       com.dockstarter.appinfo.nicename: "SmokePing"
+      com.dockstarter.appvars.smokeping_backup_config: "true"
+      com.dockstarter.appvars.smokeping_datadir: "/mnt/smokeping"
+      com.dockstarter.appvars.smokeping_enabled: "false"
+      com.dockstarter.appvars.smokeping_network_mode: ""
+      com.dockstarter.appvars.smokeping_port_80: "8011"
     logging:
       driver: json-file
       options:

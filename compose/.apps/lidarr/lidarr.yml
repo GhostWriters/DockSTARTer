@@ -8,6 +8,10 @@ services:
     labels:
       com.dockstarter.appinfo.description: "Music download manager for Usenet and BitTorrent users"
       com.dockstarter.appinfo.nicename: "Lidarr"
+      com.dockstarter.appvars.lidarr_backup_config: "true"
+      com.dockstarter.appvars.lidarr_enabled: "false"
+      com.dockstarter.appvars.lidarr_network_mode: ""
+      com.dockstarter.appvars.lidarr_port_8686: "8686"
     logging:
       driver: json-file
       options:

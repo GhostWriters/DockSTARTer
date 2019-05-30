@@ -18,6 +18,13 @@ services:
     labels:
       com.dockstarter.appinfo.description: "SABnzbd, OpenVPN and Privoxy"
       com.dockstarter.appinfo.nicename: "SABnzbdVPN"
+      com.dockstarter.appvars.sabnzbdvpn_backup_config: "true"
+      com.dockstarter.appvars.sabnzbdvpn_enable_privoxy: "no"
+      com.dockstarter.appvars.sabnzbdvpn_enabled: "false"
+      com.dockstarter.appvars.sabnzbdvpn_network_mode: ""
+      com.dockstarter.appvars.sabnzbdvpn_port_8080: "8080"
+      com.dockstarter.appvars.sabnzbdvpn_port_8090: "8090"
+      com.dockstarter.appvars.sabnzbdvpn_port_8118: "8118"
     logging:
       driver: json-file
       options:
