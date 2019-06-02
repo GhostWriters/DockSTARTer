@@ -1,12 +1,12 @@
 [![DockSTARTer](https://github.com/GhostWriters/DockSTARTer/raw/master/.github/logo.png)](https://dockstarter.com)
 
-[![Supporters on Open Collective](https://img.shields.io/opencollective/all/DockSTARTer.svg)](#supporters)
-[![Discord chat](https://img.shields.io/discord/477959324183035936.svg?logo=discord)](https://discord.gg/YFyJpmH)
-[![GitHub contributors](https://img.shields.io/github/contributors/GhostWriters/DockSTARTer.svg)](https://github.com/GhostWriters/DockSTARTer/graphs/contributors)
-[![GitHub last commit master](https://img.shields.io/github/last-commit/GhostWriters/DockSTARTer/master.svg?label=code%20committed)](https://github.com/GhostWriters/DockSTARTer/commits/master)
-[![GitHub last commit docs](https://img.shields.io/github/last-commit/GhostWriters/DockSTARTer/docs.svg?label=docs%20committed)](https://github.com/GhostWriters/DockSTARTer/commits/docs)
-[![GitHub license](https://img.shields.io/github/license/GhostWriters/DockSTARTer.svg)](https://github.com/GhostWriters/DockSTARTer/blob/master/LICENSE.md)
-[![Travis (.com) branch](https://img.shields.io/travis/com/GhostWriters/DockSTARTer/master.svg?logo=travis)](https://travis-ci.com/GhostWriters/DockSTARTer)
+[![Supporters on Open Collective](https://img.shields.io/opencollective/all/DockSTARTer.svg?style=flat-square&color=607D8B)](#supporters)
+[![Discord chat](https://img.shields.io/discord/477959324183035936.svg?style=flat-square&color=607D8B&logo=discord)](https://discord.gg/YFyJpmH)
+[![GitHub contributors](https://img.shields.io/github/contributors/GhostWriters/DockSTARTer.svg?style=flat-square&color=607D8B)](https://github.com/GhostWriters/DockSTARTer/graphs/contributors)
+[![GitHub last commit master](https://img.shields.io/github/last-commit/GhostWriters/DockSTARTer/master.svg?style=flat-square&color=607D8B&label=code%20committed)](https://github.com/GhostWriters/DockSTARTer/commits/master)
+[![GitHub last commit docs](https://img.shields.io/github/last-commit/GhostWriters/DockSTARTer.com/master.svg?style=flat-square&color=607D8B&label=docs%20committed)](https://github.com/GhostWriters/DockSTARTer.com/commits/master)
+[![GitHub license](https://img.shields.io/github/license/GhostWriters/DockSTARTer.svg?style=flat-square&color=607D8B)](https://github.com/GhostWriters/DockSTARTer/blob/master/LICENSE.md)
+[![Travis (.com) branch](https://img.shields.io/travis/com/GhostWriters/DockSTARTer/master.svg?style=flat-square&color=607D8B&logo=travis)](https://travis-ci.com/GhostWriters/DockSTARTer)
 
 The main goal of DockSTARTer is to make it quick and easy to get up and running with Docker.
 
@@ -80,7 +80,7 @@ See our [documentation](https://dockstarter.com) for more detailed information.
 
 ## Support
 
-[![Discord chat](https://img.shields.io/discord/477959324183035936.svg?logo=discord)](https://discord.gg/YFyJpmH)
+[![Discord chat](https://img.shields.io/discord/477959324183035936.svg?style=flat-square&color=607D8B&logo=discord)](https://discord.gg/YFyJpmH)
 
 Click the chat badge to join us on Discord for support!
 
@@ -88,7 +88,7 @@ Click the chat badge to join us on Discord for support!
 
 ## Contributors
 
-[![GitHub contributors](https://img.shields.io/github/contributors/GhostWriters/DockSTARTer.svg)](https://github.com/GhostWriters/DockSTARTer/graphs/contributors)
+[![GitHub contributors](https://img.shields.io/github/contributors/GhostWriters/DockSTARTer.svg?style=flat-square&color=607D8B)](https://github.com/GhostWriters/DockSTARTer/graphs/contributors)
 
 This project exists thanks to all the people who contribute.
 [![GitHub contributors](https://opencollective.com/DockSTARTer/contributors.svg?button=false)](https://GitHub.com/GhostWriters/DockSTARTer/graphs/contributors)
@@ -99,7 +99,7 @@ Support the project by donating on Open Collective.
 
 ### Backers
 
-![Backers on Open Collective](https://img.shields.io/opencollective/backers/DockSTARTer.svg)
+![Backers on Open Collective](https://img.shields.io/opencollective/backers/DockSTARTer.svg?style=flat-square&color=607D8B)
 
 Thank you to all our backers! [[Become a backer](https://opencollective.com/DockSTARTer#backer)]
 
@@ -107,7 +107,7 @@ Thank you to all our backers! [[Become a backer](https://opencollective.com/Dock
 
 ### Sponsors
 
-![Sponsors on Open Collective](https://img.shields.io/opencollective/sponsors/DockSTARTer.svg)
+![Sponsors on Open Collective](https://img.shields.io/opencollective/sponsors/DockSTARTer.svg?style=flat-square&color=607D8B)
 
 Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/DockSTARTer#sponsor)]
 
