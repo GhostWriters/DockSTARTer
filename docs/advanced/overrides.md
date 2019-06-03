@@ -39,4 +39,3 @@ GoAccess:
     - /home/username/.docker/config/goaccess:/config:rw
     container_name: goaccess
 ```
-test
