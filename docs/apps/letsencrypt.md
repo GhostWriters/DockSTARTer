@@ -71,16 +71,3 @@ server {
 
 3. Restart the letsencrypt container
 `docker restart letsencrypt`
-
-## How do i redirect the main index.html page to organizr?
-
-If you want https://mydomain.duckdns.org to load organizr you can do the following.
-
-1. Goto `~/.config/appdata/letsencrypt/www`
-2. Replace `index.html` with `index.php`
-3. Edit index.php and replace it with the following single line
-```
-<?php header("Location: https://organizr.mydomain.duckdns.org"); ?>
-```
-4. Restart the letsencrypt container
-`docker restart letsencrypt`
