@@ -1,0 +1,3 @@
+services:
+  znc:
+    image: linuxserver/znc

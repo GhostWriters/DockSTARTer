@@ -1,0 +1,20 @@
+services:
+  znc:
+    container_name: znc
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    labels:
+      com.dockstarter.appinfo.description: "IRC network bouncer or BNC"
+      com.dockstarter.appinfo.nicename: "ZNC"
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/znc:/config
+      - ${DOCKERSHAREDDIR}:/shared
