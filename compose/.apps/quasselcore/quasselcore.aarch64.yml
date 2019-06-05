@@ -1,0 +1,3 @@
+services:
+  quasselcore:
+    image: linuxserver/quassel-core

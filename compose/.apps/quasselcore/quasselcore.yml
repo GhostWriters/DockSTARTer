@@ -1,0 +1,20 @@
+services:
+  quasselcore:
+    container_name: quasselcore
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    labels:
+      com.dockstarter.appinfo.description: "Modern, cross-platform, distributed IRC client"
+      com.dockstarter.appinfo.nicename: "QuasselCore"
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/quasselcore:/config
+      - ${DOCKERSHAREDDIR}:/shared
