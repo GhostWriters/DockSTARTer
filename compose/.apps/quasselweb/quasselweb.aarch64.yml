@@ -1,0 +1,3 @@
+services:
+  quasselweb:
+    image: linuxserver/quassel-web

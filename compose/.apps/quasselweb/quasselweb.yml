@@ -1,0 +1,23 @@
+services:
+  quasselweb:
+    container_name: quasselweb
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - QUASSEL_CORE=${QUASSELWEB_QUASSEL_CORE}
+      - QUASSEL_PORT=${QUASSELWEB_QUASSEL_PORT}
+      - TZ=${TZ}
+      - URL_BASE=${QUASSELWEB_URL_BASE}
+    labels:
+      com.dockstarter.appinfo.description: "Web client for Quassel. A Quassel-Core instance is required"
+      com.dockstarter.appinfo.nicename: "QuasselWeb"
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/quasselweb:/config
+      - ${DOCKERSHAREDDIR}:/shared
