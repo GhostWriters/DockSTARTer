@@ -3,18 +3,10 @@ set -euo pipefail
 IFS=$'\n\t'
 
 update_system() {
-    if [[ -n "$(command -v apt-get)" ]]; then
-        info "apt package manager detected."
-        run_script 'run_apt'
-    elif [[ -n "$(command -v dnf)" ]]; then
-        info "dnf package manager detected."
-        run_script 'run_dnf'
-    elif [[ -n "$(command -v yum)" ]]; then
-        info "yum package manager detected."
-        run_script 'run_yum'
-    else
-        fatal "Package manager not detected!"
-    fi
+    run_script 'package_manager_run' repos
+    run_script 'package_manager_run' upgrade
+    run_script 'package_manager_run' install
+    run_script 'package_manager_run' clean
 }
 
 test_update_system() {
