@@ -5,7 +5,7 @@ IFS=$'\n\t'
 install_yq() {
     local MINIMUM_YQ="2.0.0"
     local INSTALLED_YQ
-    INSTALLED_YQ=$( (yq --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
+    INSTALLED_YQ=$( (/usr/local/bin/yq --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
     if vergt "${MINIMUM_YQ}" "${INSTALLED_YQ}"; then
         local AVAILABLE_YQ
         AVAILABLE_YQ=$( (curl -H "${GH_HEADER:-}" -fsL "https://api.github.com/repos/mikefarah/yq/releases/latest" | grep -Po '"tag_name": "[Vv]?\K.*?(?=")') || echo "0")
@@ -31,7 +31,7 @@ install_yq() {
             fi
             chmod +x /usr/local/bin/yq > /dev/null 2>&1 || true
             local UPDATED_YQ
-            UPDATED_YQ=$( (yq --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
+            UPDATED_YQ=$( (/usr/local/bin/yq --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
             if vergt "${AVAILABLE_YQ}" "${UPDATED_YQ}"; then
                 fatal "Failed to install the latest yq."
             fi
@@ -41,5 +41,5 @@ install_yq() {
 
 test_install_yq() {
     run_script 'install_yq'
-    yq --version || fatal "Failed to determine yq version."
+    /usr/local/bin/yq --version || fatal "Failed to determine yq version."
 }
