@@ -99,7 +99,7 @@ Support the project by donating on Open Collective.
 
 ### Backers
 
-![Backers on Open Collective](https://img.shields.io/opencollective/backers/DockSTARTer.svg?style=flat-square&color=607D8B)
+[![Backers on Open Collective](https://img.shields.io/opencollective/backers/DockSTARTer.svg?style=flat-square&color=607D8B)](https://opencollective.com/DockSTARTer#backer)
 
 Thank you to all our backers! [[Become a backer](https://opencollective.com/DockSTARTer#backer)]
 
@@ -107,7 +107,7 @@ Thank you to all our backers! [[Become a backer](https://opencollective.com/Dock
 
 ### Sponsors
 
-![Sponsors on Open Collective](https://img.shields.io/opencollective/sponsors/DockSTARTer.svg?style=flat-square&color=607D8B)
+[![Sponsors on Open Collective](https://img.shields.io/opencollective/sponsors/DockSTARTer.svg?style=flat-square&color=607D8B)](https://opencollective.com/DockSTARTer#sponsor)
 
 Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/DockSTARTer#sponsor)]
 
