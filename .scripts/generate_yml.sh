@@ -9,7 +9,7 @@ generate_yml() {
     RUNFILE="$(mktemp)"
     echo "#!/usr/bin/env bash" > "${RUNFILE}"
     {
-        echo 'yq m '\\
+        echo '/usr/local/bin/yq-go m '\\
         echo "${SCRIPTPATH}/compose/.reqs/v1.yml \\"
         echo "${SCRIPTPATH}/compose/.reqs/v2.yml \\"
     } >> "${RUNFILE}"

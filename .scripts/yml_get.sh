@@ -6,8 +6,8 @@ yml_get() {
     local APPNAME=${1:-}
     local GET_VAR=${2:-}
     local FILENAME=${APPNAME,,}
-    if yq r "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml" "${GET_VAR}" > /dev/null 2>&1; then
-        yq r "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml" "${GET_VAR}" | grep -v '^null$'
+    if /usr/local/bin/yq-go r "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml" "${GET_VAR}" > /dev/null 2>&1; then
+        /usr/local/bin/yq-go r "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml" "${GET_VAR}" | grep -v '^null$'
     else
         return 1
     fi
