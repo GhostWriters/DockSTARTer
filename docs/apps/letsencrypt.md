@@ -1,7 +1,3 @@
----
-layout: default
----
-
 ## General Setup
 Out of the box, the LetsEncrypt container created by [linuxserver.io](https://www.linuxserver.io/) performs reverse proxy functions using [NGINX](https://www.nginx.com/) and automatic https encrypted connections using certificates provided by [LetsEncrypt](https://letsencrypt.org/). More on this container can be found [here](https://hub.docker.com/r/linuxserver/letsencrypt/).
 

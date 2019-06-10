@@ -1,7 +1,3 @@
----
-layout: default
----
-
 ### Plex is telling me to login and then not directing me to the server I just set up, why?
 Upon starting up Plex for the first time, it's very likely you'll need to follow these steps:
 

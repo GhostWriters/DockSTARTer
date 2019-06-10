@@ -1,7 +1,3 @@
----
-layout: default
----
-
 # Issue/Problem:
 
 During configuration the script exits with an error like the following:

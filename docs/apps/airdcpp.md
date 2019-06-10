@@ -1,7 +1,3 @@
----
-layout: default
----
-
 If you see the following error:
 
 > No valid configuration found. Run the application with --configure parameter to set up initial configuration.

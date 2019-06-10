@@ -1,7 +1,3 @@
----
-layout: default
----
-
 # Advanced Settings
 
 
@@ -12,7 +8,7 @@ layout: default
 DockSTARTer works by generating the configuration that **[Compose](https://docs.docker.com/compose/)** uses. A linux "pro" might use Compose to do what DockSTARTer does themselves but it would still take a lot longer.
 > Compose is a tool for defining and running multi-container Docker applications. To learn more about Compose refer to the following [documentation](https://docs.docker.com/compose/).
 
-_Compose_ works by reading [YAML (*.yml)](https://en.wikipedia.org/wiki/YAML#Example) configuration files with the paths, ports and parameters each Container should run with.  
+_Compose_ works by reading [YAML (*.yml)](https://en.wikipedia.org/wiki/YAML#Example) configuration files with the paths, ports and parameters each Container should run with.
 
 ## YML Files
 * **DO NOT EDIT THESE FILES DIRECTLY.** _Overriding_ these settings is easy but you must create a new file first. See the section, _Overrides_, below.

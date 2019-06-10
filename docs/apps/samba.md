@@ -1,7 +1,3 @@
----
-layout: default
----
-
 ### Description
 Samba is using the `SMB` protocol to share Linux mounts, which then are accessible and mountable on e.g. a Windows computer.
 

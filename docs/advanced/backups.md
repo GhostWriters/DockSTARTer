@@ -1,7 +1,3 @@
----
-layout: default
----
-
 # Creating backups
 
 DockSTARTer menu has an option for `Backup Config`, or you can use one of `sudo ds -b min` / `sudo ds -b med` / `sudo ds -b max` to create backups.
