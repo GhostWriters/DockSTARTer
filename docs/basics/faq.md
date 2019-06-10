@@ -1,7 +1,3 @@
----
-layout: default
----
-
 ### What Is DockSTARTer ?
 DockSTARTer is a program that starts a bunch of different containers within a common framework to make it easy to install all your favorite apps and tools.
 

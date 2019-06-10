@@ -1,7 +1,3 @@
----
-layout: default
----
-
 Pi-hole takes over the local DNS service and may conflict with existing DNS services on your server. Ubuntu 18.04 currently uses systemd-resolv to server DNS and needs to be configured to either give up port 53 or be disabled.
 
 ## Netplan setup

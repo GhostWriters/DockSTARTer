@@ -1,7 +1,3 @@
----
-layout: default
----
-
 Blurb from our Discord follows: It's already "normal" in the sense that you can remove more or less everything in `~/.docker` with exception to `~/.docker/config` (which you may not have if your config is at `~/.config/appdata`). However, you may want to consider keeping the `~/.docker/compose/docker-compose.yml` and `~/.docker/compose/.env` to rebuild it using `sudo docker-compose` and pass the envs.
 
 Otherwise, you should see your running/created containers in `docker ps` or GUI such as Portainer.

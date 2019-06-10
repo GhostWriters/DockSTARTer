@@ -1,7 +1,3 @@
----
-layout: default
----
-
 Information pulled from [Docker Hub](https://hub.docker.com/r/linuxserver/openvpn-as/) and edited for relevance.
 
 ## Setting up the application

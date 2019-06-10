@@ -1,7 +1,3 @@
----
-layout: default
----
-
 ## What VPN Services are available to use through DockSTARTer?
 At the moment VPN is only available where we have found a easily configured container that runs as its own self contained unit. TransmissionVPN, SabNzbDVPN, DelugeVPN & rTorrentVPN are currently available.
 
