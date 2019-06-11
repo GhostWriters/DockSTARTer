@@ -99,19 +99,19 @@ Support the project by donating on Open Collective.
 
 ### Backers
 
-[![Backers on Open Collective](https://img.shields.io/opencollective/backers/DockSTARTer.svg?style=flat-square&color=607D8B)](https://opencollective.com/DockSTARTer#backer)
+[![Backers on Open Collective](https://img.shields.io/opencollective/tier/DockSTARTer/7408.svg?style=flat-square&color=607D8B)](https://opencollective.com/DockSTARTer#backer)
 
 Thank you to all our backers! [[Become a backer](https://opencollective.com/DockSTARTer#backer)]
 
-[![Backers on Open Collective](https://opencollective.com/DockSTARTer/backers.svg)](https://opencollective.com/DockSTARTer#backers)
+[![Backers on Open Collective](https://opencollective.com/DockSTARTer/tiers/backer.svg)](https://opencollective.com/DockSTARTer#backers)
 
 ### Sponsors
 
-[![Sponsors on Open Collective](https://img.shields.io/opencollective/sponsors/DockSTARTer.svg?style=flat-square&color=607D8B)](https://opencollective.com/DockSTARTer#sponsor)
+[![Sponsors on Open Collective](https://img.shields.io/opencollective/tier/DockSTARTer/7409.svg?style=flat-square&color=607D8B)](https://opencollective.com/DockSTARTer#sponsor)
 
 Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/DockSTARTer#sponsor)]
 
-[![Sponsors on Open Collective](https://opencollective.com/DockSTARTer/sponsor/0/avatar.svg)](https://opencollective.com/DockSTARTer/sponsor/0/website) [![Sponsors on Open Collective](https://opencollective.com/DockSTARTer/sponsor/1/avatar.svg)](https://opencollective.com/DockSTARTer/sponsor/1/website) [![Sponsors on Open Collective](https://opencollective.com/DockSTARTer/sponsor/2/avatar.svg)](https://opencollective.com/DockSTARTer/sponsor/2/website) [![Sponsors on Open Collective](https://opencollective.com/DockSTARTer/sponsor/3/avatar.svg)](https://opencollective.com/DockSTARTer/sponsor/3/website) [![Sponsors on Open Collective](https://opencollective.com/DockSTARTer/sponsor/4/avatar.svg)](https://opencollective.com/DockSTARTer/sponsor/4/website) [![Sponsors on Open Collective](https://opencollective.com/DockSTARTer/sponsor/5/avatar.svg)](https://opencollective.com/DockSTARTer/sponsor/5/website) [![Sponsors on Open Collective](https://opencollective.com/DockSTARTer/sponsor/6/avatar.svg)](https://opencollective.com/DockSTARTer/sponsor/6/website) [![Sponsors on Open Collective](https://opencollective.com/DockSTARTer/sponsor/7/avatar.svg)](https://opencollective.com/DockSTARTer/sponsor/7/website) [![Sponsors on Open Collective](https://opencollective.com/DockSTARTer/sponsor/8/avatar.svg)](https://opencollective.com/DockSTARTer/sponsor/8/website) [![Sponsors on Open Collective](https://opencollective.com/DockSTARTer/sponsor/9/avatar.svg)](https://opencollective.com/DockSTARTer/sponsor/9/website)
+[![Sponsors on Open Collective](https://opencollective.com/DockSTARTer/tiers/sponsor/0/avatar.svg)](https://opencollective.com/DockSTARTer/tiers/sponsor/0/website) [![Sponsors on Open Collective](https://opencollective.com/DockSTARTer/tiers/sponsor/1/avatar.svg)](https://opencollective.com/DockSTARTer/tiers/sponsor/1/website) [![Sponsors on Open Collective](https://opencollective.com/DockSTARTer/tiers/sponsor/2/avatar.svg)](https://opencollective.com/DockSTARTer/tiers/sponsor/2/website) [![Sponsors on Open Collective](https://opencollective.com/DockSTARTer/tiers/sponsor/3/avatar.svg)](https://opencollective.com/DockSTARTer/tiers/sponsor/3/website) [![Sponsors on Open Collective](https://opencollective.com/DockSTARTer/tiers/sponsor/4/avatar.svg)](https://opencollective.com/DockSTARTer/tiers/sponsor/4/website) [![Sponsors on Open Collective](https://opencollective.com/DockSTARTer/tiers/sponsor/5/avatar.svg)](https://opencollective.com/DockSTARTer/tiers/sponsor/5/website) [![Sponsors on Open Collective](https://opencollective.com/DockSTARTer/tiers/sponsor/6/avatar.svg)](https://opencollective.com/DockSTARTer/tiers/sponsor/6/website) [![Sponsors on Open Collective](https://opencollective.com/DockSTARTer/tiers/sponsor/7/avatar.svg)](https://opencollective.com/DockSTARTer/tiers/sponsor/7/website) [![Sponsors on Open Collective](https://opencollective.com/DockSTARTer/tiers/sponsor/8/avatar.svg)](https://opencollective.com/DockSTARTer/tiers/sponsor/8/website) [![Sponsors on Open Collective](https://opencollective.com/DockSTARTer/tiers/sponsor/9/avatar.svg)](https://opencollective.com/DockSTARTer/tiers/sponsor/9/website)
 
 ## Special Thanks
 
