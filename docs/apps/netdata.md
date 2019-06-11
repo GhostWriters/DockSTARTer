@@ -1,3 +1,10 @@
+### Current issue
+*** current issues with upstream container ***
+There is currently a possible issue that prevents the container starting up properly. “addgroup: gid '999' in use”
+Reference: https://github.com/netdata/netdata/issues/6251
+Fix is simple: nano ~/.docker/compose/.apps/netdata/netdata.yml 
+- Comment out this line: - PGID=${DOCKERGID}
+- run ds -c
 
 By default, netdata will pull from a UID for the container itself to display in the list of netdata servers you have, so you would see something like '0f2342dac'. To define this and make it more readable/recognizable for you (In case you have multiple netdata servers):
 1. Stop the netdata container.
