@@ -107,7 +107,7 @@ Thank you to all our backers! [[Become a backer](https://opencollective.com/Dock
 
 ### Sponsors
 
-[![Sponsors on Open Collective](https://img.shields.io/opencollective/tier/DockSTARTer/7409.svg?style=flat-square&color=607D8B)](https://opencollective.com/DockSTARTer#sponsor)
+[![Sponsors on Open Collective](https://img.shields.io/opencollective/tier/DockSTARTer/7409.svg?style=flat-square&color=607D8B&label=sponsors)](https://opencollective.com/DockSTARTer#sponsor)
 
 Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/DockSTARTer#sponsor)]
 
