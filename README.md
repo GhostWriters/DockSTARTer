@@ -99,7 +99,7 @@ Support the project by donating on Open Collective.
 
 ### Backers
 
-[![Backers on Open Collective](https://img.shields.io/opencollective/tier/DockSTARTer/7408.svg?style=flat-square&color=607D8B)](https://opencollective.com/DockSTARTer#backer)
+[![Backers on Open Collective](https://img.shields.io/opencollective/tier/DockSTARTer/7408.svg?style=flat-square&color=607D8B&label=backers)](https://opencollective.com/DockSTARTer#backer)
 
 Thank you to all our backers! [[Become a backer](https://opencollective.com/DockSTARTer#backer)]
 
