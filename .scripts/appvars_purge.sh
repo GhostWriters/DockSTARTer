@@ -29,6 +29,6 @@ appvars_purge() {
 }
 
 test_appvars_purge() {
-    run_script 'appvars_purge' WATCHTOWER
-    error "TESTS ARE NOT YET CREATED."
+    run_script 'appvars_purge' PORTAINER
+    cat "${SCRIPTPATH}/compose/.env"
 }

@@ -15,4 +15,5 @@ env_create() {
 
 test_env_create() {
     run_script 'env_create'
+    cat "${SCRIPTPATH}/compose/.env"
 }

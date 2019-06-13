@@ -16,6 +16,8 @@ env_set() {
 }
 
 test_env_set() {
+    run_script 'appvars_create' PORTAINER
     run_script 'env_set' PORTAINER_ENABLED false
     run_script 'env_get' PORTAINER_ENABLED
+    run_script 'appvars_purge' PORTAINER
 }

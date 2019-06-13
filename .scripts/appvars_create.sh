@@ -26,6 +26,6 @@ appvars_create() {
 }
 
 test_appvars_create() {
-    run_script 'appvars_create' WATCHTOWER
-    error "TESTS ARE NOT YET CREATED."
+    run_script 'appvars_create' PORTAINER
+    cat "${SCRIPTPATH}/compose/.env"
 }

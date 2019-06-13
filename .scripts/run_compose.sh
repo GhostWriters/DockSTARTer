@@ -43,8 +43,8 @@ run_compose() {
 
 test_run_compose() {
     run_script 'generate_yml'
-    run_script 'run_compose'
     cd "${SCRIPTPATH}/compose/" || fatal "Failed to change to ${SCRIPTPATH}/compose/ directory."
     docker-compose config || fatal "Failed to validate ${SCRIPTPATH}/compose/docker-compose.yml file."
     cd "${SCRIPTPATH}" || fatal "Failed to change to ${SCRIPTPATH} directory."
+    run_script 'run_compose'
 }
