@@ -6,6 +6,7 @@ yml_get() {
     local APPNAME=${1:-}
     local GET_VAR=${2:-}
     local FILENAME=${APPNAME,,}
+    run_script 'install_yq'
     if /usr/local/bin/yq-go r "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml" "${GET_VAR}" > /dev/null 2>&1; then
         /usr/local/bin/yq-go r "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml" "${GET_VAR}" | grep -v '^null$'
     else
