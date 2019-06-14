@@ -64,6 +64,7 @@ generate_yml() {
 test_generate_yml() {
     run_script 'update_system'
     run_script 'appvars_create' PORTAINER
+    cat "${SCRIPTPATH}/compose/.env"
     run_script 'generate_yml'
     cd "${SCRIPTPATH}/compose/" || fatal "Failed to change to ${SCRIPTPATH}/compose/ directory."
     docker-compose config || fatal "Failed to validate ${SCRIPTPATH}/compose/docker-compose.yml file."
