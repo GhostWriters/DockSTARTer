@@ -13,7 +13,7 @@ appvars_create() {
         fi
         local SET_VAR=${VAR_LABEL^^}
 
-        if grep --color=never "^${SET_VAR}=" "${SCRIPTPATH}/compose/.env"; then
+        if grep -q "^${SET_VAR}=" "${SCRIPTPATH}/compose/.env"; then
             continue
         else
             local DEFAULT_VAL
