@@ -50,16 +50,7 @@ menu_app_select() {
             run_script 'env_set' "${APPNAME}_ENABLED" true
         done < <(echo "${SELECTEDAPPS}")
 
-        if grep -q '_ENABLED=false$' "${SCRIPTPATH}/compose/.env"; then
-            if run_script 'question_prompt' N "Would you like to purge variables for disabled apps?"; then
-                info "Purging disabled app variables."
-                while IFS= read -r line; do
-                    local APPNAME=${line%%_ENABLED=false}
-                    run_script 'appvars_purge' "${APPNAME}"
-                done < <(grep '_ENABLED=false$' < "${SCRIPTPATH}/compose/.env")
-            fi
-        fi
-
+        run_script 'appvars_purge_all'
         run_script 'env_update'
     fi
 }

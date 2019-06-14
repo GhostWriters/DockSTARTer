@@ -125,15 +125,21 @@ cmdline() {
                     c)
                         run_script 'generate_yml'
                         run_script 'run_compose'
+                        exit
+                        ;;
+                    r)
+                        run_script 'appvars_purge_all'
+                        exit
                         ;;
                     u)
                         run_script 'update_self'
+                        exit
                         ;;
                     *)
                         fatal "${OPTARG} requires an option."
+                        exit
                         ;;
                 esac
-                exit
                 ;;
             *)
                 usage
