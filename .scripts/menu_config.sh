@@ -11,7 +11,7 @@ menu_config() {
     CONFIGOPTS+=("Set Global Variables " "")
 
     local CONFIGCHOICE
-    if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
+    if [[ ${CI:-} == true ]]; then
         CONFIGCHOICE="Cancel"
     else
         CONFIGCHOICE=$(whiptail --fb --clear --title "DockSTARTer" --menu "What would you like to do?" 0 0 0 "${CONFIGOPTS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")

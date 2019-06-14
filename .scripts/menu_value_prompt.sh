@@ -153,7 +153,7 @@ menu_value_prompt() {
     fi
 
     local SELECTEDVALUE
-    if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
+    if [[ ${CI:-} == true ]]; then
         SELECTEDVALUE="Keep Current "
     else
         SELECTEDVALUE=$(whiptail --fb --clear --title "DockSTARTer" --menu "What would you like set for ${SET_VAR}?${VALUEDESCRIPTION:-}" 0 0 0 "${VALUEOPTIONS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")

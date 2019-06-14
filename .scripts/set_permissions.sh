@@ -25,7 +25,7 @@ set_permissions() {
     esac
     local CH_PUID=${2:-$DETECTED_PUID}
     local CH_PGID=${3:-$DETECTED_PGID}
-    if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
+    if [[ ${CI:-} == true ]]; then
         info "Overriding PUID and PGID for Travis."
         CH_PUID=${DETECTED_UNAME}
         CH_PGID=${DETECTED_UGROUP}
