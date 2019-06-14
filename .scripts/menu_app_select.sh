@@ -59,6 +59,8 @@ menu_app_select() {
                 done < <(grep '_ENABLED=false$' < "${SCRIPTPATH}/compose/.env")
             fi
         fi
+
+        run_script 'env_update'
     fi
 }
 
