@@ -1,0 +1,15 @@
+services:
+  cloudflareddns:
+    labels:
+      com.dockstarter.appinfo.description: "Free service which will point a DNS to an IP of your choice"
+      com.dockstarter.appinfo.nicename: "CloudFlareDDNS"
+      com.dockstarter.appvars.cloudflareddns_api_key: ""
+      com.dockstarter.appvars.cloudflareddns_backup_config: "false"
+      com.dockstarter.appvars.cloudflareddns_delete_on_stop: "false"
+      com.dockstarter.appvars.cloudflareddns_email: ""
+      com.dockstarter.appvars.cloudflareddns_enabled: "false"
+      com.dockstarter.appvars.cloudflareddns_network_mode: ""
+      com.dockstarter.appvars.cloudflareddns_proxied: "false"
+      com.dockstarter.appvars.cloudflareddns_rrtype: "a"
+      com.dockstarter.appvars.cloudflareddns_subdomain: ""
+      com.dockstarter.appvars.cloudflareddns_zone: ""

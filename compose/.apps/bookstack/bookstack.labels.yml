@@ -1,15 +1,5 @@
 services:
   bookstack:
-    container_name: bookstack
-    environment:
-      - APP_URL=${BOOKSTACK_APP_URL}
-      - DB_DATABASE=${BOOKSTACK_DB_DATABASE}
-      - DB_HOST=${BOOKSTACK_DB_HOST}
-      - DB_PASS=${BOOKSTACK_DB_PASS}
-      - DB_USER=${BOOKSTACK_DB_USER}
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
     labels:
       com.dockstarter.appinfo.description: "Platform for storing and organising information and documentation"
       com.dockstarter.appinfo.nicename: "BookStack"
@@ -22,13 +12,3 @@ services:
       com.dockstarter.appvars.bookstack_enabled: "false"
       com.dockstarter.appvars.bookstack_network_mode: ""
       com.dockstarter.appvars.bookstack_port_80: "6875"
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
-    restart: unless-stopped
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/bookstack:/config
-      - ${DOCKERSHAREDDIR}:/shared

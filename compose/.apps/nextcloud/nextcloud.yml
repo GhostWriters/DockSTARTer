@@ -5,14 +5,6 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    labels:
-      com.dockstarter.appinfo.description: "Gives you access to all your files wherever you are"
-      com.dockstarter.appinfo.nicename: "Nextcloud"
-      com.dockstarter.appvars.nextcloud_backup_config: "true"
-      com.dockstarter.appvars.nextcloud_datadir: "/mnt/nextcloud"
-      com.dockstarter.appvars.nextcloud_enabled: "false"
-      com.dockstarter.appvars.nextcloud_network_mode: ""
-      com.dockstarter.appvars.nextcloud_port_443: "444"
     logging:
       driver: json-file
       options:

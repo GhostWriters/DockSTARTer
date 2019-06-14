@@ -1,0 +1,9 @@
+services:
+  monitorr:
+    labels:
+      com.dockstarter.appinfo.description: "Webfront to live display the status of any webapp or service"
+      com.dockstarter.appinfo.nicename: "Monitorr"
+      com.dockstarter.appvars.monitorr_backup_config: "true"
+      com.dockstarter.appvars.monitorr_enabled: "false"
+      com.dockstarter.appvars.monitorr_network_mode: ""
+      com.dockstarter.appvars.monitorr_port_80: "8004"

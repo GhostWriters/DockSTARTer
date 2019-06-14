@@ -5,15 +5,6 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    labels:
-      com.dockstarter.appinfo.description: "Lightweight, Full-featured BitTorrent client"
-      com.dockstarter.appinfo.nicename: "Deluge"
-      com.dockstarter.appvars.deluge_backup_config: "true"
-      com.dockstarter.appvars.deluge_enabled: "false"
-      com.dockstarter.appvars.deluge_network_mode: ""
-      com.dockstarter.appvars.deluge_port_58846: "58846"
-      com.dockstarter.appvars.deluge_port_58946: "58946"
-      com.dockstarter.appvars.deluge_port_8112: "8112"
     logging:
       driver: json-file
       options:

@@ -5,13 +5,6 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    labels:
-      com.dockstarter.appinfo.description: "Comic book PVR client"
-      com.dockstarter.appinfo.nicename: "Mylar"
-      com.dockstarter.appvars.mylar_backup_config: "true"
-      com.dockstarter.appvars.mylar_enabled: "false"
-      com.dockstarter.appvars.mylar_network_mode: ""
-      com.dockstarter.appvars.mylar_port_8090: "8090"
     logging:
       driver: json-file
       options:

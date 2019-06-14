@@ -1,0 +1,18 @@
+services:
+  ouroboros:
+    labels:
+      com.dockstarter.appinfo.description: "Automatically update running Docker containers"
+      com.dockstarter.appinfo.nicename: "Ouroboros"
+      com.dockstarter.appvars.ouroboros_backup_config: "false"
+      com.dockstarter.appvars.ouroboros_cleanup: "true"
+      com.dockstarter.appvars.ouroboros_cron: "0 4 * * *"
+      com.dockstarter.appvars.ouroboros_enabled: "true"
+      com.dockstarter.appvars.ouroboros_ignore: ""
+      com.dockstarter.appvars.ouroboros_interval: "300"
+      com.dockstarter.appvars.ouroboros_log_level: "info"
+      com.dockstarter.appvars.ouroboros_monitor: ""
+      com.dockstarter.appvars.ouroboros_network_mode: ""
+      com.dockstarter.appvars.ouroboros_notifiers: ""
+      com.dockstarter.appvars.ouroboros_repo_pass: ""
+      com.dockstarter.appvars.ouroboros_repo_user: ""
+      com.dockstarter.appvars.ouroboros_self_update: "true"

@@ -3,14 +3,6 @@ services:
     container_name: h5ai
     environment:
       - TZ=${TZ}
-    labels:
-      com.dockstarter.appinfo.description: "Modern file indexer"
-      com.dockstarter.appinfo.nicename: "h5ai"
-      com.dockstarter.appvars.h5ai_backup_config: "true"
-      com.dockstarter.appvars.h5ai_enabled: "false"
-      com.dockstarter.appvars.h5ai_indexdir: "/mnt/h5ai"
-      com.dockstarter.appvars.h5ai_network_mode: ""
-      com.dockstarter.appvars.h5ai_port_8080: "8080"
     logging:
       driver: json-file
       options:

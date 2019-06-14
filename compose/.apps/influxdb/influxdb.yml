@@ -3,13 +3,6 @@ services:
     container_name: influxdb
     environment:
       - TZ=${TZ}
-    labels:
-      com.dockstarter.appinfo.description: "Time series database for recording metrics, events, and analytics"
-      com.dockstarter.appinfo.nicename: "InfluxDB"
-      com.dockstarter.appvars.influxdb_backup_config: "true"
-      com.dockstarter.appvars.influxdb_enabled: "false"
-      com.dockstarter.appvars.influxdb_network_mode: ""
-      com.dockstarter.appvars.influxdb_port_8086: "8086"
     logging:
       driver: json-file
       options:

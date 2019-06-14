@@ -6,14 +6,6 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    labels:
-      com.dockstarter.appinfo.description: "One of the most popular database servers"
-      com.dockstarter.appinfo.nicename: "MariaDB"
-      com.dockstarter.appvars.mariadb_backup_config: "true"
-      com.dockstarter.appvars.mariadb_enabled: "false"
-      com.dockstarter.appvars.mariadb_mysql_root_password: ""
-      com.dockstarter.appvars.mariadb_network_mode: ""
-      com.dockstarter.appvars.mariadb_port_3306: "3306"
     logging:
       driver: json-file
       options:

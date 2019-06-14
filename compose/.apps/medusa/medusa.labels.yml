@@ -1,0 +1,9 @@
+services:
+  medusa:
+    labels:
+      com.dockstarter.appinfo.description: "Automatic Video Library Manager for TV Shows"
+      com.dockstarter.appinfo.nicename: "Medusa"
+      com.dockstarter.appvars.medusa_backup_config: "true"
+      com.dockstarter.appvars.medusa_enabled: "false"
+      com.dockstarter.appvars.medusa_network_mode: ""
+      com.dockstarter.appvars.medusa_port_8081: "8081"

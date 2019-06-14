@@ -5,15 +5,6 @@ services:
       - GROUP_ID=${PGID}
       - USER_ID=${PUID}
       - TZ=${TZ}
-    labels:
-      com.dockstarter.appinfo.description: "Tool for converting video"
-      com.dockstarter.appinfo.nicename: "HandBrake"
-      com.dockstarter.appvars.handbrake_backup_config: "true"
-      com.dockstarter.appvars.handbrake_enabled: "false"
-      com.dockstarter.appvars.handbrake_network_mode: ""
-      com.dockstarter.appvars.handbrake_outputdir: "/mnt/handbrake/output"
-      com.dockstarter.appvars.handbrake_port_5800: "5800"
-      com.dockstarter.appvars.handbrake_watchdir: "/mnt/handbrake/watch"
     logging:
       driver: json-file
       options:

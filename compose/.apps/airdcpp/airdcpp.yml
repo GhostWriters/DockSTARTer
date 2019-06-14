@@ -10,17 +10,6 @@ services:
       - TZ=${TZ}
       - UDP_PORT=${AIRDCPP_PORT_21248}
       - UID=${PUID}
-    labels:
-      com.dockstarter.appinfo.description: "Client for Advanced Direct Connect and Direct Connect networks"
-      com.dockstarter.appinfo.nicename: "AirdcPP"
-      com.dockstarter.appvars.airdcpp_backup_config: "true"
-      com.dockstarter.appvars.airdcpp_enabled: "false"
-      com.dockstarter.appvars.airdcpp_network_mode: ""
-      com.dockstarter.appvars.airdcpp_port_21248: "21248"
-      com.dockstarter.appvars.airdcpp_port_21249: "21249"
-      com.dockstarter.appvars.airdcpp_port_5600: "5600"
-      com.dockstarter.appvars.airdcpp_port_5601: "5601"
-      com.dockstarter.appvars.airdcpp_sharedir: "/mnt/airdcpp"
     logging:
       driver: json-file
       options:

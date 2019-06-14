@@ -15,22 +15,6 @@ services:
       - TZ=${TZ}
       - URL=${LETSENCRYPT_URL}
       - VALIDATION=${LETSENCRYPT_VALIDATION}
-    labels:
-      com.dockstarter.appinfo.description: "Certificate authority that provides free X.509 certificates"
-      com.dockstarter.appinfo.nicename: "LetsEncrypt"
-      com.dockstarter.appvars.letsencrypt_backup_config: "true"
-      com.dockstarter.appvars.letsencrypt_dnsplugin: ""
-      com.dockstarter.appvars.letsencrypt_duckdnstoken: ""
-      com.dockstarter.appvars.letsencrypt_email: ""
-      com.dockstarter.appvars.letsencrypt_enabled: "false"
-      com.dockstarter.appvars.letsencrypt_extra_domains: ""
-      com.dockstarter.appvars.letsencrypt_network_mode: ""
-      com.dockstarter.appvars.letsencrypt_only_subdomains: "false"
-      com.dockstarter.appvars.letsencrypt_port_443: "443"
-      com.dockstarter.appvars.letsencrypt_port_80: "80"
-      com.dockstarter.appvars.letsencrypt_subdomains: "plex,portainer,www"
-      com.dockstarter.appvars.letsencrypt_url: ""
-      com.dockstarter.appvars.letsencrypt_validation: "http"
     logging:
       driver: json-file
       options:

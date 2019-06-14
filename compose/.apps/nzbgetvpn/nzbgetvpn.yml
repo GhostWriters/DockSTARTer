@@ -15,15 +15,6 @@ services:
       - VPN_PASS=${VPN_PASS}
       - VPN_PROV=${VPN_PROV}
       - VPN_USER=${VPN_USER}
-    labels:
-      com.dockstarter.appinfo.description: "NZBGet, OpenVPN and Privoxy"
-      com.dockstarter.appinfo.nicename: "NZBGetVPN"
-      com.dockstarter.appvars.nzbgetvpn_backup_config: "true"
-      com.dockstarter.appvars.nzbgetvpn_enable_privoxy: "no"
-      com.dockstarter.appvars.nzbgetvpn_enabled: "false"
-      com.dockstarter.appvars.nzbgetvpn_network_mode: ""
-      com.dockstarter.appvars.nzbgetvpn_port_6789: "6789"
-      com.dockstarter.appvars.nzbgetvpn_port_8118: "8118"
     logging:
       driver: json-file
       options:

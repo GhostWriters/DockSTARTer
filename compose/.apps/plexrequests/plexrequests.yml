@@ -6,9 +6,6 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    labels:
-      com.dockstarter.appinfo.description: "(DEPRECATED) Use Ombi"
-      com.dockstarter.appinfo.nicename: "PlexRequests"
     logging:
       driver: json-file
       options:

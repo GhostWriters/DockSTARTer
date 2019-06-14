@@ -1,0 +1,9 @@
+services:
+  organizr:
+    labels:
+      com.dockstarter.appinfo.description: "HTPC/Homelab Services Organizer"
+      com.dockstarter.appinfo.nicename: "Organizr"
+      com.dockstarter.appvars.organizr_backup_config: "true"
+      com.dockstarter.appvars.organizr_enabled: "false"
+      com.dockstarter.appvars.organizr_network_mode: ""
+      com.dockstarter.appvars.organizr_port_80: "8006"
