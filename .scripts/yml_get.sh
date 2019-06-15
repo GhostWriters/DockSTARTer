@@ -7,11 +7,7 @@ yml_get() {
     local GET_VAR=${2:-}
     local FILENAME=${APPNAME,,}
     run_script 'install_yq'
-    if /usr/local/bin/yq-go r "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml" "${GET_VAR}" > /dev/null 2>&1; then
-        /usr/local/bin/yq-go r "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml" "${GET_VAR}" | grep -v '^null$'
-    else
-        return 1
-    fi
+    /usr/local/bin/yq-go m "${SCRIPTPATH}"/compose/.apps/"${FILENAME}"/*.yml | /usr/local/bin/yq-go r - "${GET_VAR}" | grep -v '^null$' || return 1
 }
 
 test_yml_get() {
