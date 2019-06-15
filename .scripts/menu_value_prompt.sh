@@ -13,10 +13,10 @@ menu_value_prompt() {
     local VAR_LABEL=${SET_VAR,,}
 
     local DEFAULT_VAL
-    if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml ]]; then
-        DEFAULT_VAL=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.dockstarter.appvars.${VAR_LABEL}]" || true)
-    else
+    if grep -q -Po "^${SET_VAR}=\K.*" "${SCRIPTPATH}/compose/.env.example"; then
         DEFAULT_VAL=$(grep --color=never -Po "^${SET_VAR}=\K.*" "${SCRIPTPATH}/compose/.env.example" || true)
+    else
+        DEFAULT_VAL=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.dockstarter.appvars.${VAR_LABEL}]" || true)
     fi
 
     local HOME_VAL
