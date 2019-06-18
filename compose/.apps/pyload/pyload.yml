@@ -13,7 +13,6 @@ services:
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/pyload:/opt/pyload/pyload-config
+      - ${DOCKERCONFDIR}/pyload:/config
       - ${DOCKERSHAREDDIR}:/shared
-      - ${DOWNLOADSDIR}:/opt/pyload/Downloads
       - ${DOWNLOADSDIR}:/downloads
