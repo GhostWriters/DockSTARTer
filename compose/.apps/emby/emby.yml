@@ -2,10 +2,9 @@ services:
   emby:
     container_name: emby
     environment:
-      - GID=${PGID}
-      - GIDLIST=${PGID}
+      - PGID=${PGID}
+      - PUID=${PUID}
       - TZ=${TZ}
-      - UID=${PUID}
     labels:
       com.dockstarter.appinfo.description: "Organize, play, and stream audio and video"
       com.dockstarter.appinfo.nicename: "Emby"
@@ -19,9 +18,10 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/emby:/config
       - ${DOCKERSHAREDDIR}:/shared
+      - ${EMBY_TRANSCODEDIR}:/transcode
       - ${MEDIADIR_MOVIES}:/data/movies
       - ${MEDIADIR_MOVIES}:/movies
       - ${MEDIADIR_MUSIC}:/data/music
       - ${MEDIADIR_MUSIC}:/music
-      - ${MEDIADIR_TV}:/data/tv
+      - ${MEDIADIR_TV}:/data/tvshow
       - ${MEDIADIR_TV}:/tv
