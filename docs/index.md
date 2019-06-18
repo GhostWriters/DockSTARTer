@@ -22,18 +22,21 @@ You may choose to rely on DockSTARTer for various changes to your Docker system,
 
 ## Getting Started
 
+### System Requirements
+
+You must be running a [Supported platform](https://docs.docker.com/install/#supported-platforms) or an operating system based on one of the supported platforms listed. Each platform named below will be linked to documentation listing specific compatible versions.
+
 ### One Time Setup (required)
 
-- APT Systems (Debian/Ubuntu/Raspbian/etc)
+- APT Systems ([Debian](https://docs.docker.com/install/linux/docker-ce/debian/#os-requirements)/[Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/#os-requirements)/Raspbian/etc)
 
 ```bash
-## NOTE: Ubuntu 18.10 is known to have issues with the installation process, 18.04 is recommended
 sudo apt-get install curl git
 bash -c "$(curl -fsSL https://get.dockstarter.com)"
 sudo reboot
 ```
 
-- DNF Systems (Fedora)
+- DNF Systems ([Fedora](https://docs.docker.com/install/linux/docker-ce/fedora/#os-requirements))
 
 ```bash
 sudo dnf install curl git
@@ -41,7 +44,7 @@ bash -c "$(curl -fsSL https://get.dockstarter.com)"
 sudo reboot
 ```
 
-- YUM Systems (CentOS)
+- YUM Systems ([CentOS](https://docs.docker.com/install/linux/docker-ce/centos/#os-requirements))
 
 ```bash
 sudo yum install curl git
