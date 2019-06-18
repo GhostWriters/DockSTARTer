@@ -1,4 +1,5 @@
 services:
   pyload:
     ports:
+      - ${PYLOAD_PORT_7227}:7227
       - ${PYLOAD_PORT_8000}:8000
