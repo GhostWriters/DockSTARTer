@@ -4,6 +4,7 @@ IFS=$'\n\t'
 
 appvars_create() {
     local APPNAME=${1:-}
+    APPNAME=${APPNAME^^}
     local FILENAME=${APPNAME,,}
     while IFS= read -r line; do
         local VAR_LABEL

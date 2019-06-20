@@ -4,6 +4,7 @@ IFS=$'\n\t'
 
 appvars_purge() {
     local APPNAME=${1:-}
+    APPNAME=${APPNAME^^}
     local APPVARS
     APPVARS=$(grep "^${APPNAME}_" "${SCRIPTPATH}/compose/.env" || true)
     if [[ -z ${APPVARS} ]]; then
