@@ -129,6 +129,7 @@ cmdline() {
                         ;;
                     r)
                         run_script 'appvars_purge_all'
+                        run_script 'env_update'
                         exit
                         ;;
                     u)

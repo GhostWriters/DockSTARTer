@@ -202,7 +202,7 @@ main() {
                 if [[ ${PROMPT:-} != "GUI" ]]; then
                     PROMPT="CLI"
                 fi
-                if run_script 'question_prompt' N "DockSTARTer installation found at ${DS_SYMLINK} location. Would you like to run ${SCRIPTNAME} instead?"; then
+                if run_script 'question_prompt' "${PROMPT:-}" N "DockSTARTer installation found at ${DS_SYMLINK} location. Would you like to run ${SCRIPTNAME} instead?"; then
                     run_script 'symlink_ds'
                     DS_COMMAND="$(command -v ds || true)"
                     DS_SYMLINK="$(readlink -f "${DS_COMMAND}")"

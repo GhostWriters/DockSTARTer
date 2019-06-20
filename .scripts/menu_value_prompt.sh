@@ -222,7 +222,7 @@ menu_value_prompt() {
                     menu_value_prompt "${SET_VAR}"
                 elif [[ ${INPUT} == ~* ]]; then
                     local CORRECTED_DIR="${DETECTED_HOMEDIR}${INPUT#*~}"
-                    if run_script 'question_prompt' Y "Cannot use the ~ shortcut in ${SET_VAR}. Would you like to use ${CORRECTED_DIR} instead?"; then
+                    if run_script 'question_prompt' "${PROMPT:-}" Y "Cannot use the ~ shortcut in ${SET_VAR}. Would you like to use ${CORRECTED_DIR} instead?"; then
                         run_script 'env_set' "${SET_VAR}" "${CORRECTED_DIR}"
                         whiptail --fb --clear --title "DockSTARTer" --msgbox "Returning to the previous menu to confirm selection." 0 0
                     else
@@ -231,11 +231,11 @@ menu_value_prompt() {
                     menu_value_prompt "${SET_VAR}"
                 elif [[ -d ${INPUT} ]]; then
                     run_script 'env_set' "${SET_VAR}" "${INPUT}"
-                    if run_script 'question_prompt' Y "Would you like to set permissions on ${INPUT} ?"; then
+                    if run_script 'question_prompt' "${PROMPT:-}" Y "Would you like to set permissions on ${INPUT} ?"; then
                         run_script 'set_permissions' "${INPUT}"
                     fi
                 else
-                    if run_script 'question_prompt' Y "${INPUT} is not a valid path. Would you like to attempt to create it?"; then
+                    if run_script 'question_prompt' "${PROMPT:-}" Y "${INPUT} is not a valid path. Would you like to attempt to create it?"; then
                         mkdir -p "${INPUT}" || fatal "${INPUT} folder could not be created."
                         run_script 'set_permissions' "${INPUT}"
                         run_script 'env_set' "${SET_VAR}" "${INPUT}"
@@ -248,7 +248,7 @@ menu_value_prompt() {
                 ;;
             P[GU]ID)
                 if [[ ${INPUT} == "0" ]]; then
-                    if run_script 'question_prompt' Y "Running as root is not recommended. Would you like to select a different ID?"; then
+                    if run_script 'question_prompt' "${PROMPT:-}" Y "Running as root is not recommended. Would you like to select a different ID?"; then
                         menu_value_prompt "${SET_VAR}"
                     else
                         run_script 'env_set' "${SET_VAR}" "${INPUT}"

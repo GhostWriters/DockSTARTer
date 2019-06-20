@@ -15,7 +15,7 @@ menu_app_vars() {
         return
     fi
 
-    if run_script 'question_prompt' Y "Would you like to keep these settings for ${APPNAME}?\\n\\n${APPVARS}"; then
+    if run_script 'question_prompt' "${PROMPT:-}" Y "Would you like to keep these settings for ${APPNAME}?\\n\\n${APPVARS}"; then
         info "Keeping ${APPNAME} .env variables."
     else
         info "Configuring ${APPNAME} .env variables."
