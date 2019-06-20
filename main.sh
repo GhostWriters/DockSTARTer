@@ -10,6 +10,8 @@ IFS=$'\n\t'
 #/ This is the main DockSTARTer script.
 #/ For regular usage you can run without providing any options.
 #/
+#/  -a --add <appname>
+#/      add the default .env variables for the app specified
 #/  -b --backup <min/med/max>
 #/      backup your configs (see wiki more information)
 #/  -c --compose
@@ -24,6 +26,10 @@ IFS=$'\n\t'
 #/      install/update docker, docker-compose, yq-go and all dependencies
 #/  -p --prune
 #/      remove unused docker resources
+#/  -r --remove
+#/      prompt to remove .env variables for all disabled apps
+#/  -r --remove <appname>
+#/      prompt to remove the .env variables for the app specified
 #/  -t --test <test_name>
 #/      run tests to check the program
 #/  -u --update
