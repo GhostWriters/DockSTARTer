@@ -5,11 +5,16 @@ Since DockSTARTer uses Oznu's image for Guacamole, it only generates logs inside
 You can find Gilbn's tutorial [here](https://technicalramblings.com/blog/remotely-accessing-the-unraid-gui-with-guacamole-and-vnc-web-browser/). You will need to follow it after completing the following steps:
 
 1. Create a `logback.xml` file inside `~/.config/appdata/guacamole/guacamole`
-    1. `touch ~/config/appdata/guacamole/guacamole`
-  <br> or
+    1. `touch ~/.config/appdata/guacamole/guacamole`
+  
+  or
+  
     1. `sudo nano ~/.config/appdata/guacamole/guacamole/logback.xml`
 1. Open the file with your favorite editor and place the following contents inside of it: 
- <br> **NOTE: Make sure to make changes to the timezone accordingly. Check the `php-local.ini` file in `~/.config/appdata/letsencrypt/php` if you are not sure what your timezone is.** 
+
+
+    **NOTE: Make sure to make changes to the timezone accordingly. Check the `php-local.ini` file in `~/.config/appdata/letsencrypt/php` if you are not sure what your timezone is.** 
+
  ```
  <configuration>
         <!-- Appender for debugging -->
@@ -35,7 +40,7 @@ You can find Gilbn's tutorial [here](https://technicalramblings.com/blog/remotel
 ```
 3. Restart the Guacamole container so it creates the /usr/local/tomcat/logs/guacd.log file inside of the container.
 1. Create an empty, corresponding file in the Guacamole appdata dir: 
-    1. touch `~.config/appdata/guacamole/guacd.log`
+    1. touch `~/.config/appdata/guacamole/guacd.log`
 1. Modify your docker-compose.override.yml in `~/.docker/compose/docker-compose.override.yml` file to mount the new log to LetsEncrypt
     1. Example: 
     ```
