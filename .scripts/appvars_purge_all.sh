@@ -16,6 +16,8 @@ appvars_purge_all() {
             done < <(grep '_ENABLED=false$' < "${SCRIPTPATH}/compose/.env")
         fi
         PROMPT=${PREPROMPT:-}
+    else
+        info "${SCRIPTPATH}/compose/.env does not contain any disabled apps."
     fi
 }
 
