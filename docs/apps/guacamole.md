@@ -5,7 +5,7 @@ Since DockSTARTer uses Oznu's image for Guacamole, it only generates logs inside
 You can find Gilbn's tutorial [here](https://technicalramblings.com/blog/remotely-accessing-the-unraid-gui-with-guacamole-and-vnc-web-browser/). You will need to follow it after completing the following steps:
 
 1. Create a `logback.xml` file inside `~/.config/appdata/guacamole/guacamole`
-    * `touch ~/.config/appdata/guacamole/guacamole`
+    * `touch ~/.config/appdata/guacamole/guacamole/logback.xml`
             
           or
             
