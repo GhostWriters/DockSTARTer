@@ -1,4 +1,4 @@
-<h1>This guide will help you follow Gilbn's tutorial to protect your Guacamole install with F2B.</h1>
+# This guide will help you follow Gilbn's tutorial to protect your Guacamole install with F2B.
 
 Since DockSTARTer uses Oznu's image for Guacamole, it only generates logs inside the container itself. Following these steps will allow you to get the Guacamole container to generate a log file in `~/.config/appdata/guacamole` which you can then mount to the LetsEncrypt container so F2B can monitor it and ban malicious IPs.
 
