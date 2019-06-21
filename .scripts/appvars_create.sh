@@ -23,7 +23,7 @@ appvars_create() {
             run_script 'env_set' "${SET_VAR}" "${DEFAULT_VAL}"
         fi
 
-    done < <(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels" || fatal "Unable to find labels for ${APPNAME}")
+    done < <(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels" || error "Unable to find labels for ${APPNAME}")
 }
 
 test_appvars_create() {
