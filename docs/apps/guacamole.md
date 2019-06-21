@@ -1,8 +1,10 @@
-# This guide will help you follow Gilbn's tutorial to protect your Guacamole install with F2B.
+# This guide will help you replicate Gilbn's tutorial to protect your Guacamole install with F2B.
 
 Since DockSTARTer uses Oznu's image for Guacamole, it only generates logs inside the container itself. Following these steps will allow you to get the Guacamole container to generate a log file in `~/.config/appdata/guacamole` which you can then mount to the LetsEncrypt container so F2B can monitor it and ban malicious IPs.
 
-You can find Gilbn's tutorial [here](https://technicalramblings.com/blog/remotely-accessing-the-unraid-gui-with-guacamole-and-vnc-web-browser/). You will need to follow it after completing the following steps:
+You can find Gilbn's tutorial [here](https://technicalramblings.com/blog/remotely-accessing-the-unraid-gui-with-guacamole-and-vnc-web-browser/). We recommend you read it over so you get a basic understanding of what you will be doing:
+
+## Configuring Guacamole
 
 1. Create a `logback.xml` file inside `~/.config/appdata/guacamole/guacamole`
     * `touch ~/.config/appdata/guacamole/guacamole/logback.xml`
@@ -10,7 +12,7 @@ You can find Gilbn's tutorial [here](https://technicalramblings.com/blog/remotel
           or
             
     * `sudo nano ~/.config/appdata/guacamole/guacamole/logback.xml`
-1. Open the file with your favorite editor and place the following contents inside of it: 
+2. Open the file with your favorite editor and place the following contents inside of it: 
 
 
     **NOTE: Make sure to make changes to the timezone accordingly. Check the `php-local.ini` file in `~/.config/appdata/letsencrypt/php` if you are not sure what your timezone is.** 
@@ -39,31 +41,50 @@ You can find Gilbn's tutorial [here](https://technicalramblings.com/blog/remotel
 
 ```
 3. Restart the Guacamole container so it creates the /usr/local/tomcat/logs/guacd.log file inside of the container.
-1. Create an empty, corresponding file in the Guacamole appdata dir: 
+4. Create an empty, corresponding file in the Guacamole appdata dir: 
     1. touch `~/.config/appdata/guacamole/guacd.log`
-1. Modify your docker-compose.override.yml in `~/.docker/compose/docker-compose.override.yml` file to mount the new log to LetsEncrypt
+5. Modify your docker-compose.override.yml in `~/.docker/compose/docker-compose.override.yml` file to mount the new log to letsencrypt
     1. Example: 
     ```
     letsencrypt:
-    volumes:
-      - ${DOCKERCONFDIR}/guacamole:/var/log/guacamole
+      volumes:
+         - ${DOCKERCONFDIR}/guacamole:/var/log/guacamole
      ```
+   **NOTE: From here on out, we will be using `/var/log/guacamole` to refer to where the guacd.log lives. This is just an example, you can mount your log file wherever you want inside the letsencrypt container.
+
 6. Recreate your container by running `ds -c up`
-1. Perform an invalid login attempt on Guacamole
-1. Check the new guacd.log file located in `~/.config/appdata/guacamole` to verify the failed login attempt
+7. Perform an invalid login attempt on Guacamole
+8. Check the new guacd.log file located in `~/.config/appdata/guacamole` to verify the failed login attempt
     1. Example: 
     ```
     grep -i nzbget /home/guacamole/config/guacamole/guacd.log | grep failed 
     15:03:17.762 [http-nio-8080-exec-1] WARN  o.a.g.r.auth.AuthenticationService - Authentication attempt from [x.x.x.x, x.x.x.x, x.x.x.x]
     for user "nzbget" failed.
     ```
-9. Follow Gilbn's guide, which again can be located [here](https://technicalramblings.com/blog/remotely-accessing-the-unraid-gui-with-guacamole-and-vnc-web-browser/).
+## Configuring F2B
 
-Your regex might need some tweaking, you can try the one Gilbn suggests or you can try this one:
-  * `\bAuthentication attempt from <HOST> for user "[^"]*" failed\.$`
+9. Navigate to `~/.config/appdata/letsencrypt/fail2ban`, in there you will see (2) folders `action.d` and `filter.d`, as well as other files, we are going to focus on the file called `jail.local` for now.
+   1. Go ahead and open `jail.local` with your favorite editor as root and copy/paste the following:
+   ```
+     [guacamole-auth]
+   
+      enabled = true
+      port = http,https
+      filter = guacamole-auth
+      logpath = /var/log/guacd.log
+      ignoreip = 192.168.1.0/24
+   ```
+**NOTE: The ignore IP is so that fail2ban won’t ban your local IP. Check out https://www.aelius.com/njh/subnet_sheet.html if you are wondering what your CIDR notation is. Most often it will be /24 (netmask 255.255.255.0)
+To find your netmask run `ipconfig /all` on windows or `ifconfig | grep netmask` on linux.
 
-10. Perform an invalid login attempt and check fail2ban's regex for Guacamole with the following command: 
+10. Next we are going to navigate to `~/.config/appdata/letsencrypt/fail2ban/filter.d` and in there you will see a file called `guacamole.conf`. We can't use this file because the regex in there will not work for our purposes.
+11. Open `guacamole.conf` with your favorite text editor as root and modify the regex line called `failregex` to match this:
+     * `\bAuthentication attempt from <HOST> for user "[^"]*" failed\.$`
+12. Next save the file and name it `guacamole-auth.conf`
+13. Perform an invalid login attempt and check fail2ban's regex for Guacamole with the following command: 
   `docker exec -it letsencrypt fail2ban-regex /var/log/guacamole/guacd.log /config/fail2ban/filter.d/guacamole-auth.conf`
+14. If you want to ban yourself, you can comment out the `ignoreip` line on `jail.local`.
 
+BONUS: Want to see notifications when someone gets the hammer? Check out this cool [Discord guide](https://technicalramblings.com/blog/adding-ban-unban-notifications-from-fail2ban-to-discord/) or this [Pushover guide](https://technicalramblings.com/blog/adding-ban-unban-notifications-from-fail2ban-with-pushover/)
 
 Credits @halianelf, @christronyxyocum and @gilbN
