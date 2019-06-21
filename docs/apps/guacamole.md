@@ -7,7 +7,7 @@ You can find Gilbn's tutorial [here](https://technicalramblings.com/blog/remotel
 1. Create a `logback.xml` file inside `~/.config/appdata/guacamole/guacamole`
     1. `touch ~/.config/appdata/guacamole/guacamole`
   
-  or
+        or
   
     1. `sudo nano ~/.config/appdata/guacamole/guacamole/logback.xml`
 1. Open the file with your favorite editor and place the following contents inside of it: 
