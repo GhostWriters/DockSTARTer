@@ -46,7 +46,7 @@ You can find Gilbn's tutorial [here](https://technicalramblings.com/blog/remotel
     ```
     letsencrypt:
     volumes:
-      -  ~/.config/appdata/guacamole:/var/log/guacamole
+      - ${DOCKERCONFDIR}/guacamole:/var/log/guacamole
      ```
 6. Recreate your container by running `ds -c up`
 1. Perform an invalid login attempt on Guacamole
