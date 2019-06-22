@@ -27,7 +27,7 @@ You can find Gilbn's tutorial [here](https://technicalramblings.com/blog/remotel
         </appender>
         <!-- Appender for debugging in a file-->
         <appender name="GUAC-DEBUG_FILE" class="ch.qos.logback.core.FileAppender">
-                <file>/usr/local/tomcat/logs/guacd.log</file>
+                <file>/config/guacamole/guacd.log</file>
                 <encoder>
                         <pattern>%d{HH:mm:ss.SSS, America/New_York} [%thread] %-5level %logger{36} - %msg%n</pattern>
                 </encoder>
@@ -41,9 +41,7 @@ You can find Gilbn's tutorial [here](https://technicalramblings.com/blog/remotel
 
 ```
 3. Restart the Guacamole container so it creates the /usr/local/tomcat/logs/guacd.log file inside of the container.
-4. Create an empty, corresponding file in the Guacamole appdata dir: 
-    1. touch `~/.config/appdata/guacamole/guacd.log`
-5. Modify your docker-compose.override.yml in `~/.docker/compose/docker-compose.override.yml` file to mount the new log to letsencrypt
+4. Modify your docker-compose.override.yml in `~/.docker/compose/docker-compose.override.yml` file to mount the new log to letsencrypt
     1. Example: 
     ```
     letsencrypt:
@@ -52,9 +50,9 @@ You can find Gilbn's tutorial [here](https://technicalramblings.com/blog/remotel
      ```
    **NOTE: From here on out, we will be using `/var/log/guacamole` to refer to where the guacd.log lives. This is just an example, you can mount your log file wherever you want inside the letsencrypt container.
 
-6. Recreate your container by running `ds -c up`
-7. Perform an invalid login attempt on Guacamole
-8. Check the new guacd.log file located in `~/.config/appdata/guacamole` to verify the failed login attempt
+5. Recreate your container by running `ds -c up`
+6. Perform an invalid login attempt on Guacamole
+7. Check the new guacd.log file located in `~/.config/appdata/guacamole` to verify the failed login attempt
     1. Example: 
     ```
     grep -i nzbget /home/guacamole/config/guacamole/guacd.log | grep failed 
@@ -63,7 +61,7 @@ You can find Gilbn's tutorial [here](https://technicalramblings.com/blog/remotel
     ```
 ## Configuring F2B
 
-9. Navigate to `~/.config/appdata/letsencrypt/fail2ban`, in there you will see (2) folders `action.d` and `filter.d`, as well as other files, we are going to focus on the file called `jail.local` for now.
+1. Navigate to `~/.config/appdata/letsencrypt/fail2ban`, in there you will see (2) folders `action.d` and `filter.d`, as well as other files, we are going to focus on the file called `jail.local` for now.
    1. Go ahead and open `jail.local` with your favorite editor as root and copy/paste the following:
    ```
      [guacamole-auth]
@@ -77,14 +75,14 @@ You can find Gilbn's tutorial [here](https://technicalramblings.com/blog/remotel
 **NOTE: The ignore IP is so that fail2ban won’t ban your local IP. Check out https://www.aelius.com/njh/subnet_sheet.html if you are wondering what your CIDR notation is. Most often it will be /24 (netmask 255.255.255.0)
 To find your netmask run `ipconfig /all` on windows or `ifconfig | grep netmask` on linux.
 
-10. Next we are going to navigate to `~/.config/appdata/letsencrypt/fail2ban/filter.d` and in there you will see a file called `guacamole.conf`. We can't use this file because the regex in there will not work for our purposes.
-11. Open `guacamole.conf` with your favorite text editor as root and modify the regex line called `failregex` to match this:
+2. Next we are going to navigate to `~/.config/appdata/letsencrypt/fail2ban/filter.d` and in there you will see a file called `guacamole.conf`. We can't use this file because the regex in there will not work for our purposes.
+3. Open `guacamole.conf` with your favorite text editor as root and modify the regex line called `failregex` to match this:
      * `\bAuthentication attempt from <HOST> for user "[^"]*" failed\.$`
-12. Next save the file and name it `guacamole-auth.conf`
-13. Perform an invalid login attempt and check fail2ban's regex for Guacamole with the following command: 
+4. Next save the file and name it `guacamole-auth.conf`
+5. Perform an invalid login attempt and check fail2ban's regex for Guacamole with the following command: 
   `docker exec -it letsencrypt fail2ban-regex /var/log/guacamole/guacd.log /config/fail2ban/filter.d/guacamole-auth.conf`
-14. If you want to ban yourself, you can comment out the `ignoreip` line on `jail.local`.
+6. If you want to ban yourself, you can comment out the `ignoreip` line on `jail.local`.
 
 BONUS: Want to see notifications when someone gets the hammer? Check out this cool [Discord guide](https://technicalramblings.com/blog/adding-ban-unban-notifications-from-fail2ban-to-discord/) or this [Pushover guide](https://technicalramblings.com/blog/adding-ban-unban-notifications-from-fail2ban-with-pushover/)
 
-Credits @halianelf, @christronyxyocum and @gilbN
+Credits @halianelf, @christronyxyocum, @gilbN and @iXNyne
