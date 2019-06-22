@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 backup_create() {
     # http://www.pointsoftware.ch/en/howto-local-and-remote-snapshot-backup-using-rsync-with-hard-links/
-    local SNAPSHOT_NAME="${1:-}"
+    local SNAPSHOT_NAME=${1:-}
     local SNAPSHOT_DST
     SNAPSHOT_DST=$(run_script 'env_get' BACKUP_CONFDIR)
     local DOCKERCONFDIR
@@ -12,7 +12,7 @@ backup_create() {
     local SNAPSHOT_SRC="${DOCKERCONFDIR}/${SNAPSHOT_NAME}"
     local BACKUP_RETENTION
     BACKUP_RETENTION=$(run_script 'env_get' BACKUP_RETENTION)
-    local BACKUP_RETENTION_MAX="${BACKUP_RETENTION%% *}"
+    local BACKUP_RETENTION_MAX=${BACKUP_RETENTION%% *}
     local PUID
     PUID=$(run_script 'env_get' PUID)
     local PGID
@@ -167,12 +167,12 @@ backup_create() {
 
     # perform an estimation of required disk space for the new backup
     while :; do # this loop is executed a 2nd time if OVERWRITE_LAST was ==1 and snapshot.001 got removed
-        local OOVERWRITE_LAST="${OVERWRITE_LAST}"
+        local OOVERWRITE_LAST=${OVERWRITE_LAST}
         info "Testing needed free disk space ..."
         mkdir -p "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space" || fatal "Failed to create ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space"
         chmod -R 775 "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space" || fatal "Failed to set permissions on ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space"
         local LOG
-        LOG="$(mktemp)"
+        LOG=$(mktemp) || fatal "Failed to create temporary storage for backup log."
         local LNKDST
         LNKDST=$(find "${SNAPSHOT_DST}/" -maxdepth 2 -type d -name "${SNAPSHOT_NAME}.001" -printf " --link-dest=%p")
         for i in ${LNKDST//--link-dest=/}; do

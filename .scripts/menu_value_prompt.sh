@@ -73,15 +73,15 @@ menu_value_prompt() {
             VALUEOPTIONS+=("Use Home " "${HOME_VAL}")
             ;;
         PGID)
-            SYSTEM_VAL="${DETECTED_PGID}"
+            SYSTEM_VAL=${DETECTED_PGID}
             VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
             ;;
         PUID)
-            SYSTEM_VAL="${DETECTED_PUID}"
+            SYSTEM_VAL=${DETECTED_PUID}
             VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
             ;;
         TZ)
-            SYSTEM_VAL="$(cat /etc/timezone)"
+            SYSTEM_VAL=$(cat /etc/timezone)
             VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
             ;;
         *)

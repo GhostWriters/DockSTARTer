@@ -6,7 +6,7 @@ generate_yml() {
     run_script 'env_update'
     info "Generating docker-compose.yml file."
     local RUNFILE
-    RUNFILE="$(mktemp)"
+    RUNFILE=$(mktemp) || fatal "Failed to create temporary storage for yml generator."
     echo "#!/usr/bin/env bash" > "${RUNFILE}"
     {
         echo '/usr/local/bin/yq-go m '\\

@@ -57,16 +57,17 @@ fi
 # Script Information
 # https://stackoverflow.com/questions/59895/get-the-source-directory-of-a-bash-script-from-within-the-script-itself/246128#246128
 get_scriptname() {
-    local SOURCE="${BASH_SOURCE[0]:-$0}" # https://stackoverflow.com/questions/35006457/choosing-between-0-and-bash-source/35006505#35006505
+    # https://stackoverflow.com/questions/35006457/choosing-between-0-and-bash-source/35006505#35006505
+    local SOURCE=${BASH_SOURCE[0]:-$0}
     while [[ -L ${SOURCE} ]]; do # resolve ${SOURCE} until the file is no longer a symlink
         local DIR
-        DIR="$(cd -P "$(dirname "${SOURCE}")" > /dev/null 2>&1 && pwd)"
-        SOURCE="$(readlink "${SOURCE}")"
+        DIR=$(cd -P "$(dirname "${SOURCE}")" > /dev/null 2>&1 && pwd)
+        SOURCE=$(readlink "${SOURCE}")
         [[ ${SOURCE} != /* ]] && SOURCE="${DIR}/${SOURCE}" # if ${SOURCE} was a relative symlink, we need to resolve it relative to the path where the symlink file was located
     done
     echo "${SOURCE}"
 }
-readonly SCRIPTPATH="$(cd -P "$(dirname "$(get_scriptname)")" > /dev/null 2>&1 && pwd)"
+readonly SCRIPTPATH=$(cd -P "$(dirname "$(get_scriptname)")" > /dev/null 2>&1 && pwd)
 readonly SCRIPTNAME="${SCRIPTPATH}/$(basename "$(get_scriptname)")"
 
 # User/Group Information
@@ -82,18 +83,18 @@ if [[ ${CI:-} == true ]] || [[ -t 1 ]]; then
     # The actual color depends on the color scheme set by the current terminal-emulator
     # For capabilities, see terminfo(5)
     if [[ $(tput colors) -ge 8 ]]; then
-        BLU="$(tput setaf 4)"
-        GRN="$(tput setaf 2)"
-        RED="$(tput setaf 1)"
-        YLW="$(tput setaf 3)"
-        NC="$(tput sgr0)"
+        BLU=$(tput setaf 4)
+        GRN=$(tput setaf 2)
+        RED=$(tput setaf 1)
+        YLW=$(tput setaf 3)
+        NC=$(tput sgr0)
     fi
 fi
-readonly BLU="${BLU:-}"
-readonly GRN="${GRN:-}"
-readonly RED="${RED:-}"
-readonly YLW="${YLW:-}"
-readonly NC="${NC:-}"
+readonly BLU=${BLU:-}
+readonly GRN=${GRN:-}
+readonly RED=${RED:-}
+readonly YLW=${YLW:-}
+readonly NC=${NC:-}
 
 # Log Functions
 readonly LOG_FILE="/tmp/dockstarter.log"
@@ -124,7 +125,7 @@ root_check() {
 
 # Script Runner Function
 run_script() {
-    local SCRIPTSNAME="${1:-}"
+    local SCRIPTSNAME=${1:-}
     shift
     if [[ -f ${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh ]]; then
         # shellcheck source=/dev/null
@@ -137,7 +138,7 @@ run_script() {
 
 # Test Runner Function
 run_test() {
-    local TESTSNAME="${1:-}"
+    local TESTSNAME=${1:-}
     shift
     if [[ -f ${SCRIPTPATH}/.scripts/${TESTSNAME}.sh ]]; then
         if grep -q "test_${TESTSNAME}" "${SCRIPTPATH}/.scripts/${TESTSNAME}.sh"; then
@@ -193,10 +194,10 @@ main() {
     fi
     local PROMPT
     local DS_COMMAND
-    DS_COMMAND="$(command -v ds || true)"
+    DS_COMMAND=$(command -v ds || true)
     if [[ -L ${DS_COMMAND} ]]; then
         local DS_SYMLINK
-        DS_SYMLINK="$(readlink -f "${DS_COMMAND}")"
+        DS_SYMLINK=$(readlink -f "${DS_COMMAND}")
         if [[ ${SCRIPTNAME} != "${DS_SYMLINK}" ]]; then
             if repo_exists; then
                 if [[ ${PROMPT:-} != "GUI" ]]; then
@@ -204,8 +205,8 @@ main() {
                 fi
                 if run_script 'question_prompt' "${PROMPT:-}" N "DockSTARTer installation found at ${DS_SYMLINK} location. Would you like to run ${SCRIPTNAME} instead?"; then
                     run_script 'symlink_ds'
-                    DS_COMMAND="$(command -v ds || true)"
-                    DS_SYMLINK="$(readlink -f "${DS_COMMAND}")"
+                    DS_COMMAND=$(command -v ds || true)
+                    DS_SYMLINK=$(readlink -f "${DS_COMMAND}")
                 fi
                 unset PROMPT
             fi
