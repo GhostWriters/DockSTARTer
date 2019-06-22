@@ -27,7 +27,7 @@ You can find Gilbn's tutorial [here](https://technicalramblings.com/blog/remotel
         </appender>
         <!-- Appender for debugging in a file-->
         <appender name="GUAC-DEBUG_FILE" class="ch.qos.logback.core.FileAppender">
-                <file>/config/guacamole/guacd.log</file>
+                <file>/config/logs/guacd.log</file>
                 <encoder>
                         <pattern>%d{HH:mm:ss.SSS, America/New_York} [%thread] %-5level %logger{36} - %msg%n</pattern>
                 </encoder>
@@ -40,22 +40,22 @@ You can find Gilbn's tutorial [here](https://technicalramblings.com/blog/remotel
 </configuration> 
 
 ```
-3. Restart the Guacamole container so it creates the /usr/local/tomcat/logs/guacd.log file inside of the container.
+3. Restart the Guacamole container so it creates `guacd.log` in `~/.config/appdata/guacamole/logs/`
 4. Modify your docker-compose.override.yml in `~/.docker/compose/docker-compose.override.yml` file to mount the new log to letsencrypt
     1. Example: 
     ```
     letsencrypt:
       volumes:
-         - ${DOCKERCONFDIR}/guacamole:/var/log/guacamole
+         - ${DOCKERCONFDIR}/guacamole/logs/guacd.log:/var/log/guacamole
      ```
-   **NOTE: From here on out, we will be using `/var/log/guacamole` to refer to where the guacd.log lives. This is just an example, you can mount your log file wherever you want inside the letsencrypt container.
+   **NOTE: From here on out, we will be using `/var/log/guacamole` to refer to where the guacd.log lives within letsencrypt. This is just an example, you can mount your log file wherever you want inside the letsencrypt container.
 
 5. Recreate your container by running `ds -c up`
 6. Perform an invalid login attempt on Guacamole
-7. Check the new guacd.log file located in `~/.config/appdata/guacamole` to verify the failed login attempt
+7. Check the new guacd.log file located in `~/.config/appdata/guacamole/logs` to verify the failed login attempt
     1. Example: 
     ```
-    grep -i nzbget /home/guacamole/config/guacamole/guacd.log | grep failed 
+    grep -i nzbget ~/.config/appdata/guacamole/logs/guacd.log | grep failed 
     15:03:17.762 [http-nio-8080-exec-1] WARN  o.a.g.r.auth.AuthenticationService - Authentication attempt from [x.x.x.x, x.x.x.x, x.x.x.x]
     for user "nzbget" failed.
     ```
