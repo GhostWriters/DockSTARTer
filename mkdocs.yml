@@ -28,8 +28,10 @@ theme:
 # Navigation
 nav:
   - Home: index.md
+  - Introduction: introduction.md
   - Basics:
       - Getting Started (Video): https://www.youtube.com/watch?v=6pkbS07CAnU
+      - Software Version Control Visualization of DockSTARTer (Video): https://youtu.be/25UzG8fQzO8
       - Available Applications: basics/available-apps.md
       - How to Migrate to DS: basics/migration.md
       - Frequently Asked Questions: basics/faq.md
