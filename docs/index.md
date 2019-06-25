@@ -24,7 +24,8 @@ You may choose to rely on DockSTARTer for various changes to your Docker system,
 
 ### System Requirements
 
-You must be running a [Supported platform](https://docs.docker.com/install/#supported-platforms) or an operating system based on one of the supported platforms listed. Each platform named below will be linked to documentation listing specific compatible versions.
+- You must be running a [Supported platform](https://docs.docker.com/install/#supported-platforms) or an operating system based on a supported platform. Platforms named below will link to documentation listing compatible versions.
+- You must be logged in as a non-root user with sudo permissions.
 
 ### One Time Setup (required)
 
@@ -79,7 +80,7 @@ sudo ds
 
 To run DockSTARTer use the command above. You should now see the main menu from the screenshots. Select `Configuration` and then `Full Setup` and you will be guided through selecting apps and starting containers.
 
-See our [documentation](https://dockstarter.com) for more detailed information.
+See our [documentation](https://dockstarter.com/introduction/) for more detailed information.
 
 ## Support
 

@@ -1,17 +1,16 @@
-# Issue/Problem:
+# Port Conflicts
+
+## Issue/Problem:
 
 During configuration the script exits with an error like the following:
-```
-  ERROR: for plex  cannot start service plex: driver failed programming external connectivity on endpoint plex
-  (5a4d78fd5ff6c4c1a978ef31): Error starting userland proxy: listen udp 0.0.0.0:5353: bind: address already in use
-  ERROR: Encountered errors while bringing up the project.
-  2019-02-13 17:38:19 [FATAL]      Docker Compose failed.
-```
+> ERROR: for plex cannot start service plex: driver failed programming external connectivity on endpoint plex
+> (5a4d78fd5ff6c4c1a978ef31): Error starting userland proxy: listen udp 0.0.0.0:5353: bind: address already in use
+> ERROR: Encountered errors while bringing up the project.
+> 2019-02-13 17:38:19 [FATAL]      Docker Compose failed.
 
 This is due to another service that has occupied that port disallowing DockSTARTer from installing a service on that port.
 
-
-# Troubleshooting Methods:
+## Troubleshooting Methods:
 
 As DockSTARTer will check and fail if another service is occupying the port, it is necessary to locate and deal with the conflict.
 
@@ -21,8 +20,7 @@ One way is to locate the service currently occupying the port. You can do the fo
 
 Once you locate the offending service then you can choose what to do.
 
-
-# Resolutions/Solutions:
+## Resolutions/Solutions:
 
 **Example:** If you have avahi-daemon installed this will conflict with _udp/5353_ port usage for iTunes in Plex if selected.  This will cause the script to exit with an [ERROR] and a [FATAL].
 
