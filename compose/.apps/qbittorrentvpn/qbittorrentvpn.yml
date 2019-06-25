@@ -14,9 +14,6 @@ services:
       - VPN_PROV=${VPN_PROV}
       - VPN_USER=${VPN_USER}
       - WEBUI_PORT=${QBITTORRENTVPN_PORT_8080}
-    labels:
-      com.dockstarter.appinfo.description: "qBittorrent, OpenVPN and Privoxy"
-      com.dockstarter.appinfo.nicename: "qBittorrentVPN"
     logging:
       driver: json-file
       options:

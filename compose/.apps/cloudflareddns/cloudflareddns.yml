@@ -10,9 +10,6 @@ services:
       - SUBDOMAIN=${CLOUDFLAREDDNS_SUBDOMAIN}
       - TZ=${TZ}
       - ZONE=${CLOUDFLAREDDNS_ZONE}
-    labels:
-      com.dockstarter.appinfo.description: "Free service which will point a DNS to an IP of your choice"
-      com.dockstarter.appinfo.nicename: "CloudFlareDDNS"
     logging:
       driver: json-file
       options:

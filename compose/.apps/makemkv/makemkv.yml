@@ -5,9 +5,6 @@ services:
       - GROUP_ID=${PGID}
       - USER_ID=${PUID}
       - TZ=${TZ}
-    labels:
-      com.dockstarter.appinfo.description: "Convert video that you own into free and patents-unencumbered format"
-      com.dockstarter.appinfo.nicename: "MakeMKV"
     logging:
       driver: json-file
       options:

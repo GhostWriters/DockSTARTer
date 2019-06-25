@@ -5,9 +5,6 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    labels:
-      com.dockstarter.appinfo.description: "Utility to aggregate data from the Plex ecosystem"
-      com.dockstarter.appinfo.nicename: "Varken"
     logging:
       driver: json-file
       options:

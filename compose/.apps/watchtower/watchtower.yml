@@ -11,9 +11,6 @@ services:
       - WATCHTOWER_POLL_INTERVAL=${WATCHTOWER_POLL_INTERVAL}
       - WATCHTOWER_SCHEDULE=${WATCHTOWER_SCHEDULE}
       - WATCHTOWER_TIMEOUT=${WATCHTOWER_TIMEOUT}
-    labels:
-      com.dockstarter.appinfo.description: "Automatically update running Docker containers"
-      com.dockstarter.appinfo.nicename: "Watchtower"
     logging:
       driver: json-file
       options:

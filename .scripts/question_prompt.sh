@@ -3,13 +3,16 @@ set -euo pipefail
 IFS=$'\n\t'
 
 question_prompt() {
-    local DEFAULT=${1:-Y}
-    local QUESTION=${2:-}
+    local PROMPT=${1:-}
+    local DEFAULT=${2:-Y}
+    local QUESTION=${3:-}
     local YN
     while true; do
-        if [[ ${PROMPT:-} == "CLI" ]]; then
+        if [[ ${CI:-} == true ]]; then
+            YN=${DEFAULT}
+        elif [[ ${PROMPT:-} == "CLI" ]]; then
             info "${QUESTION}"
-            read -rp "[Yn]" YN
+            read -rp "[Yn]" YN < /dev/tty
         elif [[ ${PROMPT:-} == "GUI" ]]; then
             local WHIPTAIL_DEFAULT
             if [[ ${DEFAULT} == "N" ]]; then
@@ -32,7 +35,7 @@ question_prompt() {
         fi
         case ${YN} in
             [Yy]*)
-                break
+                return
                 ;;
             [Nn]*)
                 return 1

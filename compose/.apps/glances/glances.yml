@@ -4,9 +4,6 @@ services:
     environment:
       - GLANCES_OPT=-w
       - TZ=${TZ}
-    labels:
-      com.dockstarter.appinfo.description: "Cross-platform system monitoring tool"
-      com.dockstarter.appinfo.nicename: "Glances"
     logging:
       driver: json-file
       options:

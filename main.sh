@@ -10,6 +10,8 @@ IFS=$'\n\t'
 #/ This is the main DockSTARTer script.
 #/ For regular usage you can run without providing any options.
 #/
+#/  -a --add <appname>
+#/      add the default .env variables for the app specified
 #/  -b --backup <min/med/max>
 #/      backup your configs (see wiki more information)
 #/  -c --compose
@@ -24,6 +26,10 @@ IFS=$'\n\t'
 #/      install/update docker, docker-compose, yq-go and all dependencies
 #/  -p --prune
 #/      remove unused docker resources
+#/  -r --remove
+#/      prompt to remove .env variables for all disabled apps
+#/  -r --remove <appname>
+#/      prompt to remove the .env variables for the app specified
 #/  -t --test <test_name>
 #/      run tests to check the program
 #/  -u --update
@@ -44,23 +50,24 @@ usage() {
 readonly ARGS=("$@")
 
 # Github Token for Travis CI
-if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == true ]]; then
+if [[ ${CI:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == true ]]; then
     readonly GH_HEADER="Authorization: token ${GH_TOKEN}"
 fi
 
 # Script Information
 # https://stackoverflow.com/questions/59895/get-the-source-directory-of-a-bash-script-from-within-the-script-itself/246128#246128
 get_scriptname() {
-    local SOURCE="${BASH_SOURCE[0]:-$0}" # https://stackoverflow.com/questions/35006457/choosing-between-0-and-bash-source/35006505#35006505
+    # https://stackoverflow.com/questions/35006457/choosing-between-0-and-bash-source/35006505#35006505
+    local SOURCE=${BASH_SOURCE[0]:-$0}
     while [[ -L ${SOURCE} ]]; do # resolve ${SOURCE} until the file is no longer a symlink
         local DIR
-        DIR="$(cd -P "$(dirname "${SOURCE}")" > /dev/null 2>&1 && pwd)"
-        SOURCE="$(readlink "${SOURCE}")"
+        DIR=$(cd -P "$(dirname "${SOURCE}")" > /dev/null 2>&1 && pwd)
+        SOURCE=$(readlink "${SOURCE}")
         [[ ${SOURCE} != /* ]] && SOURCE="${DIR}/${SOURCE}" # if ${SOURCE} was a relative symlink, we need to resolve it relative to the path where the symlink file was located
     done
     echo "${SOURCE}"
 }
-readonly SCRIPTPATH="$(cd -P "$(dirname "$(get_scriptname)")" > /dev/null 2>&1 && pwd)"
+readonly SCRIPTPATH=$(cd -P "$(dirname "$(get_scriptname)")" > /dev/null 2>&1 && pwd)
 readonly SCRIPTNAME="${SCRIPTPATH}/$(basename "$(get_scriptname)")"
 
 # User/Group Information
@@ -71,23 +78,23 @@ readonly DETECTED_UGROUP=$(id -gn "${DETECTED_PUID}" 2> /dev/null || true)
 readonly DETECTED_HOMEDIR=$(eval echo "~${DETECTED_UNAME}" 2> /dev/null || true)
 
 # Terminal Colors
-if [[ -t 1 ]] || [[ ${TRAVIS:-} == true ]]; then
+if [[ ${CI:-} == true ]] || [[ -t 1 ]]; then
     # Reference for colornumbers used by most terminals can be found here: https://jonasjacek.github.io/colors/
     # The actual color depends on the color scheme set by the current terminal-emulator
     # For capabilities, see terminfo(5)
     if [[ $(tput colors) -ge 8 ]]; then
-        BLU="$(tput setaf 4)"
-        GRN="$(tput setaf 2)"
-        RED="$(tput setaf 1)"
-        YLW="$(tput setaf 3)"
-        NC="$(tput sgr0)"
+        BLU=$(tput setaf 4)
+        GRN=$(tput setaf 2)
+        RED=$(tput setaf 1)
+        YLW=$(tput setaf 3)
+        NC=$(tput sgr0)
     fi
 fi
-readonly BLU="${BLU:-}"
-readonly GRN="${GRN:-}"
-readonly RED="${RED:-}"
-readonly YLW="${YLW:-}"
-readonly NC="${NC:-}"
+readonly BLU=${BLU:-}
+readonly GRN=${GRN:-}
+readonly RED=${RED:-}
+readonly YLW=${YLW:-}
+readonly NC=${NC:-}
 
 # Log Functions
 readonly LOG_FILE="/tmp/dockstarter.log"
@@ -118,7 +125,7 @@ root_check() {
 
 # Script Runner Function
 run_script() {
-    local SCRIPTSNAME="${1:-}"
+    local SCRIPTSNAME=${1:-}
     shift
     if [[ -f ${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh ]]; then
         # shellcheck source=/dev/null
@@ -131,7 +138,7 @@ run_script() {
 
 # Test Runner Function
 run_test() {
-    local TESTSNAME="${1:-}"
+    local TESTSNAME=${1:-}
     shift
     if [[ -f ${SCRIPTPATH}/.scripts/${TESTSNAME}.sh ]]; then
         if grep -q "test_${TESTSNAME}" "${SCRIPTPATH}/.scripts/${TESTSNAME}.sh"; then
@@ -162,7 +169,7 @@ cleanup() {
     if repo_exists; then
         sudo chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
     fi
-    if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == false ]]; then
+    if [[ ${CI:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == false ]]; then
         warning "TRAVIS_SECURE_ENV_VARS is false for Pull Requests from remote branches. Please retry failed builds!"
     fi
 
@@ -187,19 +194,19 @@ main() {
     fi
     local PROMPT
     local DS_COMMAND
-    DS_COMMAND="$(command -v ds || true)"
+    DS_COMMAND=$(command -v ds || true)
     if [[ -L ${DS_COMMAND} ]]; then
         local DS_SYMLINK
-        DS_SYMLINK="$(readlink -f "${DS_COMMAND}")"
+        DS_SYMLINK=$(readlink -f "${DS_COMMAND}")
         if [[ ${SCRIPTNAME} != "${DS_SYMLINK}" ]]; then
             if repo_exists; then
                 if [[ ${PROMPT:-} != "GUI" ]]; then
                     PROMPT="CLI"
                 fi
-                if run_script 'question_prompt' N "DockSTARTer installation found at ${DS_SYMLINK} location. Would you like to run ${SCRIPTNAME} instead?"; then
+                if run_script 'question_prompt' "${PROMPT:-}" N "DockSTARTer installation found at ${DS_SYMLINK} location. Would you like to run ${SCRIPTNAME} instead?"; then
                     run_script 'symlink_ds'
-                    DS_COMMAND="$(command -v ds || true)"
-                    DS_SYMLINK="$(readlink -f "${DS_COMMAND}")"
+                    DS_COMMAND=$(command -v ds || true)
+                    DS_SYMLINK=$(readlink -f "${DS_COMMAND}")
                 fi
                 unset PROMPT
             fi

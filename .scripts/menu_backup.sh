@@ -10,7 +10,7 @@ menu_backup() {
     BACKUPOPTS+=("MAX " "Backup all configs, stop/start running apps during backups")
 
     local BACKUPCHOICE
-    if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
+    if [[ ${CI:-} == true ]]; then
         BACKUPCHOICE="Cancel"
     else
         BACKUPCHOICE=$(whiptail --fb --clear --title "DockSTARTer" --menu "What would you like to do?" 0 0 0 "${BACKUPOPTS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")

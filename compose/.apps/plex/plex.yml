@@ -6,9 +6,6 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
       - VERSION=${PLEX_VERSION}
-    labels:
-      com.dockstarter.appinfo.description: "Organizes all of your video, music and photo collections"
-      com.dockstarter.appinfo.nicename: "Plex"
     logging:
       driver: json-file
       options:

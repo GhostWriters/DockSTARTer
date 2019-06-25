@@ -6,9 +6,6 @@ services:
     environment:
       - PGID=${DOCKERGID}
       - TZ=${TZ}
-    labels:
-      com.dockstarter.appinfo.description: "Distributed real-time performance and health monitoring"
-      com.dockstarter.appinfo.nicename: "netdata"
     logging:
       driver: json-file
       options:

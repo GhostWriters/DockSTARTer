@@ -28,7 +28,7 @@ run_compose() {
             COMMANDINFO="Creating containers for all enabled services."
             ;;
     esac
-    if run_script 'question_prompt' Y "Would you like to run compose now?"; then
+    if run_script 'question_prompt' "${PROMPT:-}" Y "Would you like to run compose now?"; then
         info "${COMMANDINFO}"
     else
         info "Compose will not be run."
@@ -42,9 +42,10 @@ run_compose() {
 }
 
 test_run_compose() {
+    cat "${SCRIPTPATH}/compose/.env"
     run_script 'generate_yml'
-    run_script 'run_compose'
     cd "${SCRIPTPATH}/compose/" || fatal "Failed to change to ${SCRIPTPATH}/compose/ directory."
     docker-compose config || fatal "Failed to validate ${SCRIPTPATH}/compose/docker-compose.yml file."
     cd "${SCRIPTPATH}" || fatal "Failed to change to ${SCRIPTPATH} directory."
+    run_script 'run_compose'
 }

@@ -20,9 +20,6 @@ services:
       - TRANSMISSION_INCOMPLETE_DIR=/downloads/incomplete
       - TRANSMISSION_WATCH_DIR=/downloads/watch
       - TZ=${TZ}
-    labels:
-      com.dockstarter.appinfo.description: "Transmission, WebUI and OpenVPN"
-      com.dockstarter.appinfo.nicename: "TransmissionVPN"
     logging:
       driver: json-file
       options:

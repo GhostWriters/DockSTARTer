@@ -10,9 +10,6 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    labels:
-      com.dockstarter.appinfo.description: "Platform for storing and organising information and documentation"
-      com.dockstarter.appinfo.nicename: "BookStack"
     logging:
       driver: json-file
       options:

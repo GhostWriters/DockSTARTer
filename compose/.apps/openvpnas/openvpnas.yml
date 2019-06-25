@@ -8,9 +8,6 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    labels:
-      com.dockstarter.appinfo.description: "Secure network tunneling VPN"
-      com.dockstarter.appinfo.nicename: "OpenVPNAS"
     logging:
       driver: json-file
       options:

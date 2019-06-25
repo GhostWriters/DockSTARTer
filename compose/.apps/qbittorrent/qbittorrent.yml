@@ -6,9 +6,6 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
       - WEBUI_PORT=${QBITTORRENT_PORT_8080}
-    labels:
-      com.dockstarter.appinfo.description: "Cross-platform free and open-source BitTorrent client"
-      com.dockstarter.appinfo.nicename: "qBittorrent"
     logging:
       driver: json-file
       options:

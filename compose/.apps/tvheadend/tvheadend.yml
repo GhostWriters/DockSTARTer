@@ -6,9 +6,6 @@ services:
       - PUID=${PUID}
       - RUN_OPTS=${TVHEADEND_RUN_OPTS}
       - TZ=${TZ}
-    labels:
-      com.dockstarter.appinfo.description: "TV streaming server and recorder"
-      com.dockstarter.appinfo.nicename: "Tvheadend"
     logging:
       driver: json-file
       options:

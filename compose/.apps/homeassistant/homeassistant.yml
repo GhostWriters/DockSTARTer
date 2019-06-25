@@ -3,9 +3,6 @@ services:
     container_name: homeassistant
     environment:
       - TZ=${TZ}
-    labels:
-      com.dockstarter.appinfo.description: "Track and control all devices at home and automate control"
-      com.dockstarter.appinfo.nicename: "HomeAssistant"
     logging:
       driver: json-file
       options:

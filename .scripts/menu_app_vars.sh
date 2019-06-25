@@ -7,15 +7,15 @@ menu_app_vars() {
     local APPVARS
     APPVARS=$(grep -v "^${APPNAME}_ENABLED=" "${SCRIPTPATH}/compose/.env" | grep "^${APPNAME}_")
     if [[ -z ${APPVARS} ]]; then
-        if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
-            warning "${APPNAME} has no variables to configure."
+        if [[ ${CI:-} == true ]]; then
+            warning "${APPNAME} has no variables."
         else
-            whiptail --fb --clear --title "DockSTARTer" --msgbox "${APPNAME} has no variables to configure." 0 0
+            whiptail --fb --clear --title "DockSTARTer" --msgbox "${APPNAME} has no variables." 0 0
         fi
         return
     fi
 
-    if run_script 'question_prompt' Y "Would you like to keep these settings for ${APPNAME}?\\n\\n${APPVARS}"; then
+    if run_script 'question_prompt' "${PROMPT:-}" Y "Would you like to keep these settings for ${APPNAME}?\\n\\n${APPVARS}"; then
         info "Keeping ${APPNAME} .env variables."
     else
         info "Configuring ${APPNAME} .env variables."

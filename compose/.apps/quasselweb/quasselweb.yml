@@ -8,9 +8,6 @@ services:
       - QUASSEL_PORT=${QUASSELWEB_QUASSEL_PORT}
       - TZ=${TZ}
       - URL_BASE=${QUASSELWEB_URL_BASE}
-    labels:
-      com.dockstarter.appinfo.description: "Web client for Quassel. A Quassel-Core instance is required"
-      com.dockstarter.appinfo.nicename: "QuasselWeb"
     logging:
       driver: json-file
       options:

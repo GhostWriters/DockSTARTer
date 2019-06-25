@@ -1,0 +1,8 @@
+services:
+  ddclient:
+    labels:
+      com.dockstarter.appinfo.description: "Update dynamic DNS entries"
+      com.dockstarter.appinfo.nicename: "DDClient"
+      com.dockstarter.appvars.ddclient_backup_config: "true"
+      com.dockstarter.appvars.ddclient_enabled: "false"
+      com.dockstarter.appvars.ddclient_network_mode: ""

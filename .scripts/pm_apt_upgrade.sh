@@ -3,7 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 pm_apt_upgrade() {
-    if [[ ${CI:-} != true ]] && [[ ${TRAVIS:-} != true ]]; then
+    if [[ ${CI:-} != true ]]; then
         info "Upgrading packages. Please be patient, this can take a while."
         apt-get -y dist-upgrade > /dev/null 2>&1 || fatal "Failed to upgrade packages from apt."
     fi

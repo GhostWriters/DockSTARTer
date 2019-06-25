@@ -1,0 +1,5 @@
+services:
+  unifi:
+    labels:
+      com.dockstarter.appinfo.description: "(DEPRECATED) Use UnifiController"
+      com.dockstarter.appinfo.nicename: "Unifi"

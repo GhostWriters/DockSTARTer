@@ -11,16 +11,18 @@ cmdline() {
         local DELIM=""
         case "${ARG}" in
             #translate --gnu-long-options to -g (short options)
+            --add) LOCAL_ARGS="${LOCAL_ARGS:-}-a " ;;
             --backup) LOCAL_ARGS="${LOCAL_ARGS:-}-b " ;;
             --compose) LOCAL_ARGS="${LOCAL_ARGS:-}-c " ;;
+            --debug) LOCAL_ARGS="${LOCAL_ARGS:-}-x " ;;
             --env) LOCAL_ARGS="${LOCAL_ARGS:-}-e " ;;
             --help) LOCAL_ARGS="${LOCAL_ARGS:-}-h " ;;
             --install) LOCAL_ARGS="${LOCAL_ARGS:-}-i " ;;
             --prune) LOCAL_ARGS="${LOCAL_ARGS:-}-p " ;;
+            --remove) LOCAL_ARGS="${LOCAL_ARGS:-}-r " ;;
             --test) LOCAL_ARGS="${LOCAL_ARGS:-}-t " ;;
             --update) LOCAL_ARGS="${LOCAL_ARGS:-}-u " ;;
             --verbose) LOCAL_ARGS="${LOCAL_ARGS:-}-v " ;;
-            --debug) LOCAL_ARGS="${LOCAL_ARGS:-}-x " ;;
             #pass through anything else
             *)
                 [[ ${ARG:0:1} == "-" ]] || DELIM='"'
@@ -32,8 +34,13 @@ cmdline() {
     #Reset the positional parameters to the short options
     eval set -- "${LOCAL_ARGS:-}"
 
-    while getopts ":b:c:eghipt:u:vx" OPTION; do
+    while getopts ":a:b:c:eghipr:t:u:vx" OPTION; do
         case ${OPTION} in
+            a)
+                run_script 'appvars_create' "${OPTARG}"
+                run_script 'env_update'
+                exit
+                ;;
             b)
                 case ${OPTARG} in
                     min)
@@ -93,6 +100,11 @@ cmdline() {
                 run_script 'prune_docker'
                 exit
                 ;;
+            r)
+                run_script 'appvars_purge' "${OPTARG}"
+                run_script 'env_update'
+                exit
+                ;;
             t)
                 run_test "${OPTARG}"
                 exit
@@ -113,15 +125,22 @@ cmdline() {
                     c)
                         run_script 'generate_yml'
                         run_script 'run_compose'
+                        exit
+                        ;;
+                    r)
+                        run_script 'appvars_purge_all'
+                        run_script 'env_update'
+                        exit
                         ;;
                     u)
                         run_script 'update_self'
+                        exit
                         ;;
                     *)
                         fatal "${OPTARG} requires an option."
+                        exit
                         ;;
                 esac
-                exit
                 ;;
             *)
                 usage

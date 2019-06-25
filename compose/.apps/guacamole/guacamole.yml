@@ -4,9 +4,6 @@ services:
     environment:
       - EXTENSIONS=${GUACAMOLE_EXTENSIONS}
       - TZ=${TZ}
-    labels:
-      com.dockstarter.appinfo.description: "Web application to remote desktop"
-      com.dockstarter.appinfo.nicename: "Guacamole"
     logging:
       driver: json-file
       options:

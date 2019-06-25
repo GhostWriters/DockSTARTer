@@ -5,9 +5,6 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    labels:
-      com.dockstarter.appinfo.description: "Front end for many htpc related applications"
-      com.dockstarter.appinfo.nicename: "HTPCManager"
     logging:
       driver: json-file
       options:

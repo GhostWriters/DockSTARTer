@@ -7,8 +7,8 @@ env_update() {
     run_script 'override_backup'
     info "Replacing current .env file with latest template."
     local CURRENTENV
-    CURRENTENV="$(mktemp)"
-    cp "${SCRIPTPATH}/compose/.env" "${CURRENTENV}" || fatal "${SCRIPTPATH}/compose/.env could not be copied."
+    CURRENTENV=$(mktemp) || fatal "Failed to create temporary storage for .env update."
+    sort "${SCRIPTPATH}/compose/.env" > "${CURRENTENV}" || fatal "${SCRIPTPATH}/compose/.env could not be copied."
     rm -f "${SCRIPTPATH}/compose/.env" || warning "${SCRIPTPATH}/compose/.env could not be removed."
     cp "${SCRIPTPATH}/compose/.env.example" "${SCRIPTPATH}/compose/.env" || fatal "${SCRIPTPATH}/compose/.env.example could not be copied."
     run_script 'set_permissions' "${SCRIPTPATH}/compose/.env"

@@ -13,9 +13,6 @@ services:
       - REPO_USER=${OUROBOROS_REPO_USER}
       - SELF_UPDATE=${OUROBOROS_SELF_UPDATE}
       - TZ=${TZ}
-    labels:
-      com.dockstarter.appinfo.description: "Automatically update running Docker containers"
-      com.dockstarter.appinfo.nicename: "Ouroboros"
     logging:
       driver: json-file
       options:

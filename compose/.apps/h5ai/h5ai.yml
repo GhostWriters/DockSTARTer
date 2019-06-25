@@ -3,9 +3,6 @@ services:
     container_name: h5ai
     environment:
       - TZ=${TZ}
-    labels:
-      com.dockstarter.appinfo.description: "Modern file indexer"
-      com.dockstarter.appinfo.nicename: "h5ai"
     logging:
       driver: json-file
       options:

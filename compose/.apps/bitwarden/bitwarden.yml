@@ -4,9 +4,6 @@ services:
     environment:
       - SIGNUPS_ALLOWED=${BITWARDEN_SIGNUPS_ALLOWED}
       - TZ=${TZ}
-    labels:
-      com.dockstarter.appinfo.description: "Free and open source password management solution"
-      com.dockstarter.appinfo.nicename: "Bitwarden"
     logging:
       driver: json-file
       options:

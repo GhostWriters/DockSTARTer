@@ -10,9 +10,6 @@ services:
       - TZ=${TZ}
       - UDP_PORT=${AIRDCPP_PORT_21248}
       - UID=${PUID}
-    labels:
-      com.dockstarter.appinfo.description: "Client for Advanced Direct Connect and Direct Connect networks"
-      com.dockstarter.appinfo.nicename: "AirdcPP"
     logging:
       driver: json-file
       options:

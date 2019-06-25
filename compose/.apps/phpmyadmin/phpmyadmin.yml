@@ -6,9 +6,6 @@ services:
       - PMA_PASSWORD=${PHPMYADMIN_PMA_PASSWORD}
       - PMA_USER=${PHPMYADMIN_PMA_USER}
       - TZ=${TZ}
-    labels:
-      com.dockstarter.appinfo.description: "A web interface for MySQL and MariaDB"
-      com.dockstarter.appinfo.nicename: "phpMyAdmin"
     logging:
       driver: json-file
       options:

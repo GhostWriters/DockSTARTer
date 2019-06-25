@@ -3,9 +3,6 @@ services:
     container_name: cloudcmd
     environment:
       - TZ=${TZ}
-    labels:
-      com.dockstarter.appinfo.description: "A web file manager with console and editor"
-      com.dockstarter.appinfo.nicename: "CloudCMD"
     logging:
       driver: json-file
       options:

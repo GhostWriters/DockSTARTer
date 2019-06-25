@@ -6,7 +6,7 @@ generate_yml() {
     run_script 'env_update'
     info "Generating docker-compose.yml file."
     local RUNFILE
-    RUNFILE="$(mktemp)"
+    RUNFILE=$(mktemp) || fatal "Failed to create temporary storage for yml generator."
     echo "#!/usr/bin/env bash" > "${RUNFILE}"
     {
         echo '/usr/local/bin/yq-go m '\\
@@ -63,8 +63,11 @@ generate_yml() {
 
 test_generate_yml() {
     run_script 'update_system'
+    run_script 'appvars_create' PORTAINER
+    cat "${SCRIPTPATH}/compose/.env"
     run_script 'generate_yml'
     cd "${SCRIPTPATH}/compose/" || fatal "Failed to change to ${SCRIPTPATH}/compose/ directory."
     docker-compose config || fatal "Failed to validate ${SCRIPTPATH}/compose/docker-compose.yml file."
     cd "${SCRIPTPATH}" || fatal "Failed to change to ${SCRIPTPATH} directory."
+    run_script 'appvars_purge' PORTAINER
 }

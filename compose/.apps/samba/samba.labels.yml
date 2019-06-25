@@ -1,0 +1,5 @@
+services:
+  samba:
+    labels:
+      com.dockstarter.appinfo.description: "(DEPRECATED) No replacement"
+      com.dockstarter.appinfo.nicename: "Samba"

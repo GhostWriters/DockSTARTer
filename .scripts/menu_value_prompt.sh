@@ -8,8 +8,16 @@ menu_value_prompt() {
     local CURRENT_VAL
     CURRENT_VAL=$(run_script 'env_get' "${SET_VAR}")
 
+    local APPNAME=${SET_VAR%%_*}
+    local FILENAME=${APPNAME,,}
+    local VAR_LABEL=${SET_VAR,,}
+
     local DEFAULT_VAL
-    DEFAULT_VAL=$(grep --color=never -Po "^${SET_VAR}=\K.*" "${SCRIPTPATH}/compose/.env.example" || true)
+    if grep -q -Po "^${SET_VAR}=\K.*" "${SCRIPTPATH}/compose/.env.example"; then
+        DEFAULT_VAL=$(grep --color=never -Po "^${SET_VAR}=\K.*" "${SCRIPTPATH}/compose/.env.example" || true)
+    else
+        DEFAULT_VAL=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.dockstarter.appvars.${VAR_LABEL}]" || true)
+    fi
 
     local HOME_VAL
     local SYSTEM_VAL
@@ -65,15 +73,15 @@ menu_value_prompt() {
             VALUEOPTIONS+=("Use Home " "${HOME_VAL}")
             ;;
         PGID)
-            SYSTEM_VAL="${DETECTED_PGID}"
+            SYSTEM_VAL=${DETECTED_PGID}
             VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
             ;;
         PUID)
-            SYSTEM_VAL="${DETECTED_PUID}"
+            SYSTEM_VAL=${DETECTED_PUID}
             VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
             ;;
         TZ)
-            SYSTEM_VAL="$(cat /etc/timezone)"
+            SYSTEM_VAL=$(cat /etc/timezone)
             VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
             ;;
         *)
@@ -145,7 +153,7 @@ menu_value_prompt() {
     fi
 
     local SELECTEDVALUE
-    if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
+    if [[ ${CI:-} == true ]]; then
         SELECTEDVALUE="Keep Current "
     else
         SELECTEDVALUE=$(whiptail --fb --clear --title "DockSTARTer" --menu "What would you like set for ${SET_VAR}?${VALUEDESCRIPTION:-}" 0 0 0 "${VALUEOPTIONS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
@@ -214,7 +222,7 @@ menu_value_prompt() {
                     menu_value_prompt "${SET_VAR}"
                 elif [[ ${INPUT} == ~* ]]; then
                     local CORRECTED_DIR="${DETECTED_HOMEDIR}${INPUT#*~}"
-                    if run_script 'question_prompt' Y "Cannot use the ~ shortcut in ${SET_VAR}. Would you like to use ${CORRECTED_DIR} instead?"; then
+                    if run_script 'question_prompt' "${PROMPT:-}" Y "Cannot use the ~ shortcut in ${SET_VAR}. Would you like to use ${CORRECTED_DIR} instead?"; then
                         run_script 'env_set' "${SET_VAR}" "${CORRECTED_DIR}"
                         whiptail --fb --clear --title "DockSTARTer" --msgbox "Returning to the previous menu to confirm selection." 0 0
                     else
@@ -223,11 +231,11 @@ menu_value_prompt() {
                     menu_value_prompt "${SET_VAR}"
                 elif [[ -d ${INPUT} ]]; then
                     run_script 'env_set' "${SET_VAR}" "${INPUT}"
-                    if run_script 'question_prompt' Y "Would you like to set permissions on ${INPUT} ?"; then
+                    if run_script 'question_prompt' "${PROMPT:-}" Y "Would you like to set permissions on ${INPUT} ?"; then
                         run_script 'set_permissions' "${INPUT}"
                     fi
                 else
-                    if run_script 'question_prompt' Y "${INPUT} is not a valid path. Would you like to attempt to create it?"; then
+                    if run_script 'question_prompt' "${PROMPT:-}" Y "${INPUT} is not a valid path. Would you like to attempt to create it?"; then
                         mkdir -p "${INPUT}" || fatal "${INPUT} folder could not be created."
                         run_script 'set_permissions' "${INPUT}"
                         run_script 'env_set' "${SET_VAR}" "${INPUT}"
@@ -240,7 +248,7 @@ menu_value_prompt() {
                 ;;
             P[GU]ID)
                 if [[ ${INPUT} == "0" ]]; then
-                    if run_script 'question_prompt' Y "Running as root is not recommended. Would you like to select a different ID?"; then
+                    if run_script 'question_prompt' "${PROMPT:-}" Y "Running as root is not recommended. Would you like to select a different ID?"; then
                         menu_value_prompt "${SET_VAR}"
                     else
                         run_script 'env_set' "${SET_VAR}" "${INPUT}"

@@ -6,9 +6,6 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    labels:
-      com.dockstarter.appinfo.description: "One of the most popular database servers"
-      com.dockstarter.appinfo.nicename: "MariaDB"
     logging:
       driver: json-file
       options:

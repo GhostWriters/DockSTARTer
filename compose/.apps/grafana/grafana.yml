@@ -4,9 +4,6 @@ services:
     environment:
       - GF_INSTALL_PLUGINS=${GRAFANA_GF_INSTALL_PLUGINS}
       - TZ=${TZ}
-    labels:
-      com.dockstarter.appinfo.description: "Metrics dashboard and graph editor"
-      com.dockstarter.appinfo.nicename: "Grafana"
     logging:
       driver: json-file
       options:

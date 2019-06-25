@@ -9,10 +9,13 @@ env_create() {
         warning "${SCRIPTPATH}/compose/.env not found. Copying example template."
         cp "${SCRIPTPATH}/compose/.env.example" "${SCRIPTPATH}/compose/.env" || fatal "${SCRIPTPATH}/compose/.env could not be copied."
         run_script 'set_permissions' "${SCRIPTPATH}/compose/.env"
+        run_script 'appvars_create' PORTAINER
+        run_script 'appvars_create' OUROBOROS
     fi
     run_script 'env_sanitize'
 }
 
 test_env_create() {
     run_script 'env_create'
+    cat "${SCRIPTPATH}/compose/.env"
 }
