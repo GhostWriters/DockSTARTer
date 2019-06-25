@@ -3,7 +3,7 @@
 ## Issue/Problem:
 
 During configuration the script exits with an error like the following:
-> ERROR: for plex  Cannot start service plex: driver failed programming external connectivity on endpoint plex
+> ERROR: for plex cannot start service plex: driver failed programming external connectivity on endpoint plex
 > (5a4d78fd5ff6c4c1a978ef31): Error starting userland proxy: listen udp 0.0.0.0:5353: bind: address already in use
 > ERROR: Encountered errors while bringing up the project.
 > 2019-02-13 17:38:19 [FATAL]      Docker Compose failed.
