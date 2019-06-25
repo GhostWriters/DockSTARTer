@@ -3,6 +3,10 @@ Upon starting up Plex for the first time, it's very likely you'll need to follow
 
 Edit `~/.docker/compose/.env` and set `PLEX_NETWORK_MODE=host`. After claiming your server set `PLEX_NETWORK_MODE=` (back to blank).
 
+### Which variable do I need to change if I'm a Plex Pass user?
+
+PLEX_VERSION=plexpass
+
 ### Everything's gone to crap, and I need to re-make my server. What do I do?
 Thankfully, some of this information is well documented (but not easily found) over on Plex's website here!
 1. Moving an installation to another system: [https://support.plex.tv/articles/201370363-move-an-install-to-another-system/](https://support.plex.tv/articles/201370363-move-an-install-to-another-system/)
