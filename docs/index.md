@@ -80,7 +80,7 @@ sudo ds
 
 To run DockSTARTer use the command above. You should now see the main menu from the screenshots. Select `Configuration` and then `Full Setup` and you will be guided through selecting apps and starting containers.
 
-See our [documentation](https://dockstarter.com) for more detailed information.
+See our [documentation](https://dockstarter.com/introduction/) for more detailed information.
 
 ## Support
 
