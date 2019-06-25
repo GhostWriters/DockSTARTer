@@ -34,6 +34,15 @@ nav:
       - How to Migrate to DS: basics/migration.md
       - Frequently Asked Questions: basics/faq.md
       - Port Conflicts: basics/port-conflicts.md
+  - Advanced:
+      - Advanced Usage: advanced/advanced-usage.md
+      - Backups: advanced/backups.md
+      - Overrides: advanced/overrides.md
+      - Setting Up a Domain: advanced/domain-info.md
+      - SMB Mounting: advanced/smb-mounting.md
+      - Technical Info: advanced/technical-info.md
+      - VPN Information: advanced/vpn-info.md
+      - Uninstall: advanced/uninstall.md
   - App Specifics:
       - AirdcPP: apps/airdcpp.md
       - Airsonic: apps/airsonic.md
@@ -123,12 +132,3 @@ nav:
       - vsftpd: apps/vsftpd.md
       - Watchtower: apps/watchtower.md
       - ZNC: apps/znc.md
-  - Advanced:
-      - Advanced Usage: advanced/advanced-usage.md
-      - Backups: advanced/backups.md
-      - Overrides: advanced/overrides.md
-      - Setting Up a Domain: advanced/domain-info.md
-      - SMB Mounting: advanced/smb-mounting.md
-      - Technical Info: advanced/technical-info.md
-      - VPN Information: advanced/vpn-info.md
-      - Uninstall: advanced/uninstall.md
