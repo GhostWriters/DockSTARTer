@@ -46,7 +46,7 @@ You can find Gilbn's tutorial [here](https://technicalramblings.com/blog/remotel
 ```yaml
   letsencrypt:
     volumes:
-      - ${DOCKERCONFDIR}/guacamole/logs/guacd.log:/var/log/guacamole
+      - ${DOCKERCONFDIR}/guacamole/logs/:/var/log/guacamole/
 ```
 
    **NOTE: From here on out, we will be using `/var/log/guacamole` to refer to where the guacd.log lives within letsencrypt. This is just an example, you can mount your log file wherever you want inside the letsencrypt container.
@@ -73,7 +73,7 @@ for user "nzbget" failed.
 enabled = true
 port = http,https
 filter = guacamole-auth
-logpath = /var/log/guacd.log
+logpath = /var/log/guacamole/guacd.log
 ignoreip = 192.168.1.0/24
 ```
 
