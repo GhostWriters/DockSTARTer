@@ -90,4 +90,4 @@ To find your netmask run `ipconfig /all` on windows or `ifconfig | grep netmask`
 
 BONUS: Want to see notifications when someone gets the hammer? Check out this cool [Discord guide](https://technicalramblings.com/blog/adding-ban-unban-notifications-from-fail2ban-to-discord/) or this [Pushover guide](https://technicalramblings.com/blog/adding-ban-unban-notifications-from-fail2ban-with-pushover/)
 
-Credits @halianelf, @christronyxyocum, @gilbN and @iXNyne
+Credits @halianelf, @christronyxyocum, @gilbN and @iXNyNe
