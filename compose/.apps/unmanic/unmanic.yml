@@ -1,0 +1,22 @@
+services:
+  unmanic:
+    container_name: unmanic
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/unmanic:/config
+      - ${DOCKERSHAREDDIR}:/shared
+      - ${UNMANIC_ENCODEDIR}:/tmp/unmanic
+      - ${MEDIADIR_MOVIES}:/library/movies
+      - ${MEDIADIR_MOVIES}:/movies
+      - ${MEDIADIR_TV}:/library/tvshows
+      - ${MEDIADIR_TV}:/tv
