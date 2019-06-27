@@ -1,0 +1,3 @@
+services:
+  unmanic:
+    hostname: ${DOCKERHOSTNAME}
