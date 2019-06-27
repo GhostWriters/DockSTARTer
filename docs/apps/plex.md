@@ -1,4 +1,4 @@
-#Plex
+# Plex
 
 ## Cannot Setup Server On First Run
 
