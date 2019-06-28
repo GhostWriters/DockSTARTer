@@ -1,0 +1,4 @@
+services:
+  filebot:
+    ports:
+      - ${FILEBOT_PORT_5800}:5800
