@@ -1,3 +1,7 @@
+## LinuxServer's NGINX/LetsEncrypt Starter Guide
+
+If this is your first time learning about NGINX and LetsEncrypt, we highly recommend you read over their official guide, which can be found [here](https://blog.linuxserver.io/2019/04/25/letsencrypt-nginx-starter-guide/)
+
 ## General Setup
 Out of the box, the LetsEncrypt container created by [linuxserver.io](https://www.linuxserver.io/) performs reverse proxy functions using [NGINX](https://www.nginx.com/) and automatic https encrypted connections using certificates provided by [LetsEncrypt](https://letsencrypt.org/). More on this container can be found [here](https://hub.docker.com/r/linuxserver/letsencrypt/).
 
