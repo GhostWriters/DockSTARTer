@@ -1,6 +1,8 @@
 # Watchtower
 
-**Override for Notifications to your favorite method (E-mail, Slack/Discord, MS Teams are supported in Watchtower currently):**
+## Notifications
+
+You can use an override for notifications to your favorite method (E-mail, Slack/Discord, MS Teams are supported in Watchtower currently):
 
 You would want to put this in your docker-compose.override.yml
 
