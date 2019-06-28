@@ -44,7 +44,7 @@ Modified
 
 Save the file out and then restart your containers with a `ds -c` command.
 
-## How can I check if my VPN is working?
+## How to check if the VPN is working
 
 - [https://torguard.net/checkmytorrentipaddress.php](https://torguard.net/checkmytorrentipaddress.php)
 - [http://www.doileak.com/](http://www.doileak.com/)

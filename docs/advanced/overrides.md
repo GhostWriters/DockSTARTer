@@ -13,7 +13,7 @@ You can use this to modify existing apps (such as changing which image an app us
 
 ***
 
-### Example:
+## Example
 
 ```yaml
 version: "3.4"  # this must match the version in docker-compose.yml

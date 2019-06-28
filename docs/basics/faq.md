@@ -1,8 +1,8 @@
 # FAQ
 
-## Ouroboros and Portainer: I didn't select them but they installed anyway?
+## Ouroboros And Portainer Enabled By Default
 
-They are installed by default and the below blurbs from their official documentation should explain why but you can disable either or both of them if you want.
+These tools are extremely useful for people getting used to running docker. Their official documentation should explain why but you can disable either or both of them if you want.
 
 > [Ouroboros](https://hub.docker.com/r/pyouroboros/ouroboros/) will monitor (all or specified) running docker containers and update them to the (latest or tagged) available image in the remote registry.
 >
