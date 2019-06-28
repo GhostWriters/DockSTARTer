@@ -4,6 +4,7 @@ IFS=$'\n\t'
 
 generate_yml() {
     run_script 'env_update'
+    run_script 'appvars_create_all'
     info "Generating docker-compose.yml file."
     local RUNFILE
     RUNFILE=$(mktemp) || fatal "Failed to create temporary storage for yml generator."

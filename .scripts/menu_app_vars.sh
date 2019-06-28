@@ -4,6 +4,7 @@ IFS=$'\n\t'
 
 menu_app_vars() {
     local APPNAME=${1:-}
+    run_script 'appvars_create' "${APPNAME}"
     local APPVARS
     APPVARS=$(grep -v "^${APPNAME}_ENABLED=" "${SCRIPTPATH}/compose/.env" | grep "^${APPNAME}_")
     if [[ -z ${APPVARS} ]]; then

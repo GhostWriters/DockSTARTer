@@ -24,6 +24,7 @@ appvars_create() {
         fi
 
     done < <(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels" || error "Unable to find labels for ${APPNAME}")
+    run_script 'env_set' "${APPNAME}_ENABLED" true
 }
 
 test_appvars_create() {
