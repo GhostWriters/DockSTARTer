@@ -8,3 +8,4 @@ services:
       com.dockstarter.appvars.emby_network_mode: ""
       com.dockstarter.appvars.emby_port_8096: "8096"
       com.dockstarter.appvars.emby_port_8920: "8920"
+      com.dockstarter.appvars.emby_transcodedir: "/tmp"
