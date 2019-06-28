@@ -86,6 +86,7 @@ cmdline() {
                 ;;
             e)
                 run_script 'env_update'
+                run_script 'appvars_create_all'
                 exit
                 ;;
             h)

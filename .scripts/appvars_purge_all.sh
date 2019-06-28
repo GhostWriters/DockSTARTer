@@ -22,6 +22,7 @@ appvars_purge_all() {
 }
 
 test_appvars_purge_all() {
+    run_script 'env_update'
     run_script 'appvars_purge_all'
     cat "${SCRIPTPATH}/compose/.env"
 }

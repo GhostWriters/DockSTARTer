@@ -19,6 +19,7 @@ update_self() {
         chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${line}" > /dev/null 2>&1 || true
     done < <(git ls-tree -r HEAD | awk '{print $4}')
     run_script 'env_update'
+    run_script 'appvars_create_all'
 }
 
 test_update_self() {
