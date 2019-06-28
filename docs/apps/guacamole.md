@@ -40,7 +40,7 @@ You can find Gilbn's tutorial [here](https://technicalramblings.com/blog/remotel
 ```
 
 1. Restart the Guacamole container so it creates `guacd.log` in `~/.config/appdata/guacamole/logs/`
-2. Modify your docker-compose.override.yml in `~/.docker/compose/docker-compose.override.yml` file to mount the new log to letsencrypt
+1. Modify your docker-compose.override.yml in `~/.docker/compose/docker-compose.override.yml` file to mount the new log to letsencrypt
 
 Example:
 
@@ -67,7 +67,7 @@ for user "nzbget" failed.
 ## Configuring F2B
 
 1. Navigate to `~/.config/appdata/letsencrypt/fail2ban`, in there you will see (2) folders `action.d` and `filter.d`, as well as other files, we are going to focus on the file called `jail.local` for now.
-2. Go ahead and open `jail.local` with your favorite editor as root and copy/paste the following:
+1. Go ahead and open `jail.local` with your favorite editor as root and copy/paste the following:
 
 ```ini
 [guacamole-auth]
@@ -83,11 +83,9 @@ ignoreip = 192.168.1.0/24
 To find your netmask run `ipconfig /all` on windows or `ifconfig | grep netmask` on linux.
 
 1. Next we are going to navigate to `~/.config/appdata/letsencrypt/fail2ban/filter.d` and in there you will see a file called `guacamole.conf`. We can't use this file because the regex in there will not work for our purposes.
-1. Open `guacamole.conf` with your favorite text editor as root and modify the regex line called `failregex` to match this:
-   * `\bAuthentication attempt from <HOST> for user "[^"]*" failed\.$`
+1. Open `guacamole.conf` with your favorite text editor as root and modify the regex line called `failregex` to match this: `\bAuthentication attempt from <HOST> for user "[^"]*" failed\.$`
 1. Next save the file and name it `guacamole-auth.conf`
-1. Perform an invalid login attempt and check fail2ban's regex for Guacamole with the following command:
-   * `docker exec -it letsencrypt fail2ban-regex /var/log/guacamole/guacd.log /config/fail2ban/filter.d/guacamole-auth.conf`
+1. Perform an invalid login attempt and check fail2ban's regex for Guacamole with the following command: `docker exec -it letsencrypt fail2ban-regex /var/log/guacamole/guacd.log /config/fail2ban/filter.d/guacamole-auth.conf`
 1. If you want to ban yourself, you can comment out the `ignoreip` line on `jail.local`.
 
 BONUS: Want to see notifications when someone gets the hammer? Check out this cool [Discord guide](https://technicalramblings.com/blog/adding-ban-unban-notifications-from-fail2ban-to-discord/) or this [Pushover guide](https://technicalramblings.com/blog/adding-ban-unban-notifications-from-fail2ban-with-pushover/)
