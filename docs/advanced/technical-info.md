@@ -1,6 +1,6 @@
 # Technical Info
 
-## How Does DockSTARTer Work?
+## How Does DockSTARTer Work
 
 DockSTARTer works by generating the configuration that **[Compose](https://docs.docker.com/compose/)** uses. A linux "pro" might use Compose to do what DockSTARTer does themselves but it would still take a lot longer.
 > Compose is a tool for defining and running multi-container Docker applications. To learn more about Compose refer to the following [documentation](https://docs.docker.com/compose/).

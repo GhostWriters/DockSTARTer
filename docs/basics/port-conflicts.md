@@ -1,6 +1,6 @@
 # Port Conflicts
 
-## Issue/Problem:
+## Issue/Problem
 
 During configuration the script exits with an error like the following:
 > ERROR: for plex cannot start service plex: driver failed programming external connectivity on endpoint plex
@@ -10,7 +10,7 @@ During configuration the script exits with an error like the following:
 
 This is due to another service that has occupied that port disallowing DockSTARTer from installing a service on that port.
 
-## Troubleshooting Methods:
+## Troubleshooting Methods
 
 As DockSTARTer will check and fail if another service is occupying the port, it is necessary to locate and deal with the conflict.
 
@@ -20,7 +20,7 @@ One way is to locate the service currently occupying the port. You can do the fo
 
 Once you locate the offending service then you can choose what to do.
 
-## Resolutions/Solutions:
+## Resolutions/Solutions
 
 **Example:** If you have avahi-daemon installed this will conflict with _udp/5353_ port usage for iTunes in Plex if selected.  This will cause the script to exit with an [ERROR] and a [FATAL].
 
