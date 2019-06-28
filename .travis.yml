@@ -1,6 +1,7 @@
 language: minimal
 
 script:
+  - "docker run --rm -v ${PWD}:/data mivok/markdownlint --rules ~MD013,~MD033 $(git ls-files '*.md')"
   - "docker run --rm -v ${PWD}/site:/site -v ${PWD}:/docs squidfunk/mkdocs-material build --verbose --clean --strict" # Build a local version of the docs
 
 before_deploy:
