@@ -1,4 +1,4 @@
-#
+# <!-- Home -->
 
 [![DockSTARTer](https://github.com/GhostWriters/DockSTARTer/raw/master/.github/logo.png)](https://dockstarter.com)
 
@@ -31,7 +31,7 @@ You may choose to rely on DockSTARTer for various changes to your Docker system,
 
 ### One Time Setup (required)
 
-- APT Systems ([Debian](https://docs.docker.com/install/linux/docker-ce/debian/#os-requirements)/[Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/#os-requirements)/Raspbian/etc)
+- APT Systems ([Debian](https://docs.docker.com/install/linux/docker-ce/debian/#os-requirements), [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/#os-requirements), Raspbian, etc)
 
 ```bash
 sudo apt-get install curl git

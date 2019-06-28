@@ -16,7 +16,11 @@ As DockSTARTer will check and fail if another service is occupying the port, it 
 
 One way is to locate the service currently occupying the port. You can do the following:
 
-  _`sudo netstat -ltunp | grep -w ':<port>'`    example: `sudo netstat -ltunp | grep -w ':8080'`_
+```bash
+# sudo netstat -ltunp | grep -w ':<port>'
+## Example:
+sudo netstat -ltunp | grep -w ':8080'
+```
 
 Once you locate the offending service then you can choose what to do.
 
