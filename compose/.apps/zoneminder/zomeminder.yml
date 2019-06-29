@@ -1,0 +1,20 @@
+services:
+  zoneminder:
+    container_name: zoneminder
+    environment:
+      - MYSQL_ROOT_PASSWORD=${ZONEMINDER_MYSQL_ROOT_PASSWORD}
+      - MYSQL_ROOT=${ZONEMINDER_MYSQL_ROOT}
+      - TZ=${TZ}
+      - ZM_DB_HOST=${ZONEMINDER_ZM_DB_HOST}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/zoneminder:/config
+      - ${DOCKERSHAREDDIR}:/shared
+      - ${ZONEMINDER_BACKUPSDIR}:/var/cache/zoneminder
+      - ${ZONEMINDER_CACHEDIR}:/var/backups

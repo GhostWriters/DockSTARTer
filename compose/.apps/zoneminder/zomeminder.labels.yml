@@ -1,0 +1,14 @@
+services:
+  zoneminder:
+    labels:
+      com.dockstarter.appinfo.description: "Video surveillance software"
+      com.dockstarter.appinfo.nicename: "ZoneMinder"
+      com.dockstarter.appvars.zoneminder_backup_config: "true"
+      com.dockstarter.appvars.zoneminder_backupsdir: "/mnt/zoneminder/backups"
+      com.dockstarter.appvars.zoneminder_cachedir: "/mnt/zoneminder/cache"
+      com.dockstarter.appvars.zoneminder_enabled: "false"
+      com.dockstarter.appvars.zoneminder_mysql_root: "root"
+      com.dockstarter.appvars.zoneminder_mysql_root_password: ""
+      com.dockstarter.appvars.zoneminder_network_mode: ""
+      com.dockstarter.appvars.zoneminder_port_80: "8015"
+      com.dockstarter.appvars.zoneminder_zm_db_host: "mariadb"

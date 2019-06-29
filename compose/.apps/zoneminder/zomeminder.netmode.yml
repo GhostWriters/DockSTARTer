@@ -1,0 +1,3 @@
+services:
+  zoneminder:
+    network_mode: ${ZONEMINDER_NETWORK_MODE}

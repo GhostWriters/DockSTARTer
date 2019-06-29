@@ -1,0 +1,4 @@
+services:
+  zoneminder:
+    ports:
+      - ${ZONEMINDER_PORT_80}:80

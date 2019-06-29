@@ -1,0 +1,3 @@
+services:
+  zoneminder:
+    image: quantumobject/docker-zoneminder
