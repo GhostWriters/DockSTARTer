@@ -4,6 +4,7 @@ IFS=$'\n\t'
 
 install_docker() {
     local MINIMUM_DOCKER="17.09.0"
+    run_script 'remove_snap_docker'
     local INSTALLED_DOCKER
     INSTALLED_DOCKER=$( (docker --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
     # Find minimum compatible version at https://docs.docker.com/engine/release-notes/
@@ -20,10 +21,6 @@ install_docker() {
         fi
         if vergt "${AVAILABLE_DOCKER}" "${INSTALLED_DOCKER}"; then
             run_script 'package_manager_run' remove_docker
-            if [[ -n "$(command -v snap)" ]]; then
-                info "Removing snap Docker package."
-                snap remove docker > /dev/null 2>&1 || true
-            fi
             # https://github.com/docker/docker-install
             info "Installing latest docker. Please be patient, this can take a while."
             local GET_DOCKER
