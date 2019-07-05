@@ -3,9 +3,9 @@ jobs:
   include:
     - stage: validate
       script:
-        - curl -fsSL https://raw.githubusercontent.com/nemchik/ShellSuite/master/shellsuite.sh -o shellsuite.sh && bash shellsuite.sh -p "${PWD}" -v "bashate" -f " -i E006"
-        - curl -fsSL https://raw.githubusercontent.com/nemchik/ShellSuite/master/shellsuite.sh -o shellsuite.sh && bash shellsuite.sh -p "${PWD}" -v "shellcheck" -f " -x"
-        - curl -fsSL https://raw.githubusercontent.com/nemchik/ShellSuite/master/shellsuite.sh -o shellsuite.sh && bash shellsuite.sh -p "${PWD}" -v "shfmt" -f " -s -i 4 -ci -sr -d"
+        - curl -fsSL https://raw.githubusercontent.com/nemchik/ShellSuite/master/shellsuite.sh -o shellsuite-${TRAVIS_COMMIT}.sh && bash shellsuite-${TRAVIS_COMMIT}.sh -p "${PWD}" -v "bashate" -f " -i E006"
+        - curl -fsSL https://raw.githubusercontent.com/nemchik/ShellSuite/master/shellsuite.sh -o shellsuite-${TRAVIS_COMMIT}.sh && bash shellsuite-${TRAVIS_COMMIT}.sh -p "${PWD}" -v "shellcheck" -f " -x"
+        - curl -fsSL https://raw.githubusercontent.com/nemchik/ShellSuite/master/shellsuite.sh -o shellsuite-${TRAVIS_COMMIT}.sh && bash shellsuite-${TRAVIS_COMMIT}.sh -p "${PWD}" -v "shfmt" -f " -s -i 4 -ci -sr -d"
         - "docker run --rm -v ${PWD}:/code pipelinecomponents/yamllint yamllint -d '{extends: default, rules: {document-start: {present: false}, line-length: disable}}' $(git ls-files '*.yaml' '*.yml')"
     - stage: run
       script: while IFS= read -r line; do echo; sudo bash ./main.sh -t "${line}" || exit 1; echo; done < <(ls -A .scripts | sed 's/\.sh$//')
