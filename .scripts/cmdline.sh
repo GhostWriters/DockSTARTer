@@ -115,10 +115,10 @@ cmdline() {
                 exit
                 ;;
             v)
-                readonly VERBOSE=1
+                # readonly VERBOSE=1
                 ;;
             x)
-                readonly DEBUG='-x'
+                # readonly DEBUG='-x'
                 set -x
                 ;;
             :)

@@ -52,6 +52,7 @@ readonly ARGS=("$@")
 # Github Token for Travis CI
 if [[ ${CI:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == true ]]; then
     readonly GH_HEADER="Authorization: token ${GH_TOKEN}"
+    echo "${GH_HEADER}" > /dev/null 2>&1 || true # Ridiculous workaround for SC2034 where the variable is used in other files called by this script
 fi
 
 # Script Information
