@@ -3,9 +3,9 @@ set -euo pipefail
 IFS=$'\n\t'
 
 env_sanitize() {
-    if grep -q '=~' "${SCRIPTPATH}/compose/.env"; then
+    if grep -q -E '^\w+DIR=~/' "${SCRIPTPATH}/compose/.env"; then
         info "Replacing ~ with ${DETECTED_HOMEDIR} in ${SCRIPTPATH}/compose/.env file."
-        sed -i "s/=~/=$(sed 's/[&/\]/\\&/g' <<< "${DETECTED_HOMEDIR}")/g" "${SCRIPTPATH}/compose/.env" | warning "Please verify that ~ is not used in ${SCRIPTPATH}/compose/.env file."
+        sed -i -E "s/^(\w+DIR)=~\//\1=$(sed 's/[&/\]/\\&/g' <<< "${DETECTED_HOMEDIR}")\//g" "${SCRIPTPATH}/compose/.env" | warning "Please verify that ~ is not used in ${SCRIPTPATH}/compose/.env file."
     fi
 
     local OUROBOROS_ENABLED
