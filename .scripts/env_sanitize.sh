@@ -8,6 +8,14 @@ env_sanitize() {
         sed -i -E "s/^(\w+DIR)=~\//\1=$(sed 's/[&/\]/\\&/g' <<< "${DETECTED_HOMEDIR}")\//g" "${SCRIPTPATH}/compose/.env" | warning "Please verify that ~ is not used in ${SCRIPTPATH}/compose/.env file."
     fi
 
+    local LAN_NETWORK
+    LAN_NETWORK=$(run_script 'env_get' LAN_NETWORK)
+    if echo "${LAN_NETWORK}" | grep -q 'x'; then
+        local DETECTED_LAN_NETWORK
+        DETECTED_LAN_NETWORK=$(run_script 'detect_lan_network')
+        run_script 'env_set' LAN_NETWORK "${DETECTED_LAN_NETWORK}"
+    fi
+
     local OUROBOROS_ENABLED
     OUROBOROS_ENABLED=$(run_script 'env_get' OUROBOROS_ENABLED)
     local WATCHTOWER_ENABLED
