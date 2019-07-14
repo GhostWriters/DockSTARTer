@@ -3,9 +3,17 @@ set -euo pipefail
 IFS=$'\n\t'
 
 env_sanitize() {
-    if grep -q '=~' "${SCRIPTPATH}/compose/.env"; then
+    if grep -q -E '^\w+DIR=~/' "${SCRIPTPATH}/compose/.env"; then
         info "Replacing ~ with ${DETECTED_HOMEDIR} in ${SCRIPTPATH}/compose/.env file."
-        sed -i "s/=~/=$(sed 's/[&/\]/\\&/g' <<< "${DETECTED_HOMEDIR}")/g" "${SCRIPTPATH}/compose/.env" | warning "Please verify that ~ is not used in ${SCRIPTPATH}/compose/.env file."
+        sed -i -E "s/^(\w+DIR)=~\//\1=$(sed 's/[&/\]/\\&/g' <<< "${DETECTED_HOMEDIR}")\//g" "${SCRIPTPATH}/compose/.env" | warning "Please verify that ~ is not used in ${SCRIPTPATH}/compose/.env file."
+    fi
+
+    local LAN_NETWORK
+    LAN_NETWORK=$(run_script 'env_get' LAN_NETWORK)
+    if echo "${LAN_NETWORK}" | grep -q 'x'; then
+        local DETECTED_LAN_NETWORK
+        DETECTED_LAN_NETWORK=$(run_script 'detect_lan_network')
+        run_script 'env_set' LAN_NETWORK "${DETECTED_LAN_NETWORK}"
     fi
 
     local OUROBOROS_ENABLED
