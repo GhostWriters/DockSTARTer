@@ -35,6 +35,19 @@ env_sanitize() {
     if [[ ${WATCHTOWER_NETWORK_MODE} == "none" ]]; then
         run_script 'env_set' WATCHTOWER_NETWORK_MODE ""
     fi
+
+    # TEMPORARY
+    # There is no good place to put this code that makes sense to keep permanently
+    # This code should be removed after allowing a period of time for existing users to upgrade
+    local VPN_OVPNDIR
+    VPN_OVPNDIR=$(run_script 'env_get' VPN_OVPNDIR)
+    if grep -q 'VPN_ENABLED=true$' "${SCRIPTPATH}/compose/.env" && [[ ${VPN_OVPNDIR} != "" ]]; then
+        mkdir -p "${VPN_OVPNDIR}" || fatal "${VPN_OVPNDIR} folder could not be created."
+        run_script 'set_permissions' "${VPN_OVPNDIR}"
+        local DOCKERCONFDIR
+        DOCKERCONFDIR=$(run_script 'env_get' DOCKERCONFDIR)
+        find "${DOCKERCONFDIR}" -regex '.*\/openvpn\/.*\.ovpn$' -exec cp {} "${VPN_OVPNDIR}" \;
+    fi
 }
 
 test_env_sanitize() {
