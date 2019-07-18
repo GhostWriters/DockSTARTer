@@ -1,0 +1,4 @@
+services:
+  wallabag:
+    ports:
+      - ${WALLABAG_PORT_80}:80

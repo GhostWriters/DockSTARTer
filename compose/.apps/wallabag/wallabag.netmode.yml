@@ -1,0 +1,3 @@
+services:
+  wallabag:
+    network_mode: ${WALLABAG_NETWORK_MODE}

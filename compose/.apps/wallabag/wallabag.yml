@@ -1,0 +1,28 @@
+services:
+  wallabag:
+    container_name: wallabag
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - SYMFONY__ENV__DATABASE_DRIVER=${WALLABAG_DATABASE_DRIVER}
+      - SYMFONY__ENV__DATABASE_HOST=${WALLABAG_DATABASE_HOST}
+      - SYMFONY__ENV__DATABASE_PORT=${WALLABAG_DATABASE_PORT}
+      - SYMFONY__ENV__DATABASE_NAME=${WALLABAG_DATABASE_NAME}
+      - SYMFONY__ENV__DATABASE_USER=${WALLABAG_DATABASE_USER}
+      - SYMFONY__ENV__DATABASE_PASSWORD=${WALLABAG_DATABASE_PASSWORD}
+      - SYMFONY__ENV__SECRET=${WALLABAG_SECRET}
+      - SYMFONY__ENV__LOCALE=${WALLABAG_LOCALE}
+      - SYMFONY__ENV__FOSUSER_REGISTRATION=${WALLABAG_FOSUSER_REGISTRATION}
+      - SYMFONY__ENV__FOSUSER_CONFIRMATION=${WALLABAG_FOSUSER_CONFIRMATION}
+      - SYMFONY__ENV__DOMAIN_NAME=${WALLABAG_DOMAIN_NAME}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/freshrss:/config
+      - ${DOCKERSHAREDDIR}:/shared

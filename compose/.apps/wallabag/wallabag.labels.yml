@@ -1,0 +1,20 @@
+services:
+  wallabag:
+    labels:
+      com.dockstarter.appinfo.description: "Save and classify articles. Read them later."
+      com.dockstarter.appinfo.nicename: "Wallabag"
+      com.dockstarter.appvars.wallabag_backup_config: "true"
+      com.dockstarter.appvars.wallabag_enabled: "false"
+      com.dockstarter.appvars.wallabag_network_mode: ""
+      com.dockstarter.appvars.wallabag_port_80: "8022"
+      com.dockstarter.appvars.wallabag_database_driver: "pdo_mysql"
+      com.dockstarter.appvars.wallabag_database_host: "mariadb"
+      com.dockstarter.appvars.wallabag_database_port: "3306"
+      com.dockstarter.appvars.wallabag_database_name: "wallabag"
+      com.dockstarter.appvars.wallabag_database_user: "wallabag"
+      com.dockstarter.appvars.wallabag_database_password: ""
+      com.dockstarter.appvars.wallabag_secret: ""
+      com.dockstarter.appvars.wallabag_locale: "en"
+      com.dockstarter.appvars.wallabag_fosuser_registration: "false"
+      com.dockstarter.appvars.wallabag_fosuser_confirmation: "false"
+      com.dockstarter.appvars.wallabag_domain_name: ""
