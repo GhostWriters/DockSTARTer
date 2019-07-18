@@ -1,4 +1,6 @@
-# Fix for permission problems
+# Grafana
+
+## Fix for permission problems
 
 If you see the following error:
 
