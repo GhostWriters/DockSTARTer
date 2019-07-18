@@ -13,7 +13,7 @@ Run the following command to fix it:
 
 Where UID and GID is the one configured on DockSTARTer, and Grafana's appdata folder is DockSTARTer's appdata folder appended with /grafana/ (e.g.: /home/username/.config/appdata/grafana/).
 
-### Checking your variables
+## Checking your variables
 
 If you don't know the variables needed above, is rather simple to check:
 
