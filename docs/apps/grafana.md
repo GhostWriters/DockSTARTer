@@ -11,7 +11,7 @@ GF_PATHS_DATA='/var/lib/grafana' is not writable.
 
 Run the following command to fix it:
 
-`sudo chown $USER:$USER [Grafana/appdata/folder]`
+`sudo chown -R $USER:$USER ~/.config/appdata/grafana`
 
 Where UID and GID is the one configured on DockSTARTer, and Grafana's appdata folder is DockSTARTer's appdata folder appended with /grafana/ (e.g.: /home/username/.config/appdata/grafana/).
 
