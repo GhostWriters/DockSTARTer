@@ -1,4 +1,4 @@
-## Fix for permission problems
+# Fix for permission problems
 
 If you see the following error:
 
@@ -18,13 +18,12 @@ Where UID and GID is the one configured on DockSTARTer, and Grafana's appdata fo
 If you don't know the variables needed above, is rather simple to check:
 
 1. Run DockSTARTer (`sudo ds`)
-2. Chooses `Configuration`
-3. Select `Set Global Variables`
-4. Your DockSTARTer variables will be displayed, you're looking for the `PUID=`, `PGID=` and `DOCKERCONFDIR=`values.
+1. Chooses `Configuration`
+1. Select `Set Global Variables`
+1. Your DockSTARTer variables will be displayed, you're looking for the `PUID=`, `PGID=` and `DOCKERCONFDIR=`values.
 
 > `PUID` is UID;
-
+>
 > `PGID` is GID;
-
+>
 > `DOCKERCONFDIR` is DS' appdata folder, just append `/grafana/` to get Grafana's appdata folder.
-
