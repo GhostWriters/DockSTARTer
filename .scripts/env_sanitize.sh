@@ -46,7 +46,7 @@ env_sanitize() {
         run_script 'set_permissions' "${VPN_OVPNDIR}"
         local DOCKERCONFDIR
         DOCKERCONFDIR=$(run_script 'env_get' DOCKERCONFDIR)
-        find "${DOCKERCONFDIR}" -regex '.*\/openvpn\/.*\.ovpn$' -exec cp {} "${VPN_OVPNDIR}" \;
+        find "${DOCKERCONFDIR}" -regex '.*\/openvpn\/.*\.ovpn$' -exec cp {} "${VPN_OVPNDIR}" \; | info "No ovpn files to found."
     fi
 }
 
