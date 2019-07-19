@@ -2,7 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-generate_yml() {
+yml_merge() {
     run_script 'env_update'
     run_script 'appvars_create_all'
     info "Generating docker-compose.yml file."
@@ -62,11 +62,11 @@ generate_yml() {
     info "Merging docker-compose.yml complete."
 }
 
-test_generate_yml() {
+test_yml_merge() {
     run_script 'update_system'
     run_script 'appvars_create' PORTAINER
     cat "${SCRIPTPATH}/compose/.env"
-    run_script 'generate_yml'
+    run_script 'yml_merge'
     cd "${SCRIPTPATH}/compose/" || fatal "Failed to change to ${SCRIPTPATH}/compose/ directory."
     docker-compose config || fatal "Failed to validate ${SCRIPTPATH}/compose/docker-compose.yml file."
     cd "${SCRIPTPATH}" || fatal "Failed to change to ${SCRIPTPATH} directory."

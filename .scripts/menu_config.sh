@@ -24,32 +24,32 @@ menu_config() {
             run_script 'config_apps'
             run_script 'config_vpn'
             run_script 'config_global'
-            run_script 'generate_yml'
-            run_script 'run_compose'
+            run_script 'yml_merge'
+            run_script 'docker_compose'
             ;;
         "Select Apps ")
             run_script 'env_update'
             run_script 'menu_app_select'
-            run_script 'generate_yml'
-            run_script 'run_compose'
+            run_script 'yml_merge'
+            run_script 'docker_compose'
             ;;
         "Set App Variables ")
             run_script 'env_update'
             run_script 'config_apps'
-            run_script 'generate_yml'
-            run_script 'run_compose'
+            run_script 'yml_merge'
+            run_script 'docker_compose'
             ;;
         "Set VPN Variables ")
             run_script 'env_update'
             run_script 'config_vpn'
-            run_script 'generate_yml'
-            run_script 'run_compose'
+            run_script 'yml_merge'
+            run_script 'docker_compose'
             ;;
         "Set Global Variables ")
             run_script 'env_update'
             run_script 'config_global'
-            run_script 'generate_yml'
-            run_script 'run_compose'
+            run_script 'yml_merge'
+            run_script 'docker_compose'
             ;;
         "Cancel")
             info "Returning to Main Menu."
