@@ -61,22 +61,22 @@ cmdline() {
             c)
                 case ${OPTARG} in
                     down)
-                        run_script 'run_compose' down
+                        run_script 'docker_compose' down
                         ;;
                     generate)
-                        run_script 'generate_yml'
+                        run_script 'yml_merge'
                         ;;
                     pull)
-                        run_script 'generate_yml'
-                        run_script 'run_compose' pull
+                        run_script 'yml_merge'
+                        run_script 'docker_compose' pull
                         ;;
                     restart)
-                        run_script 'generate_yml'
-                        run_script 'run_compose' restart
+                        run_script 'yml_merge'
+                        run_script 'docker_compose' restart
                         ;;
                     up)
-                        run_script 'generate_yml'
-                        run_script 'run_compose' up
+                        run_script 'yml_merge'
+                        run_script 'docker_compose' up
                         ;;
                     *)
                         fatal "Invalid compose option."
@@ -98,7 +98,7 @@ cmdline() {
                 exit
                 ;;
             p)
-                run_script 'prune_docker'
+                run_script 'docker_prune'
                 exit
                 ;;
             r)
@@ -124,8 +124,8 @@ cmdline() {
             :)
                 case ${OPTARG} in
                     c)
-                        run_script 'generate_yml'
-                        run_script 'run_compose'
+                        run_script 'yml_merge'
+                        run_script 'docker_compose'
                         exit
                         ;;
                     r)

@@ -2,7 +2,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-run_compose() {
+docker_compose() {
     local COMMAND=${1:-}
     local COMPOSECOMMAND
     local COMMANDINFO
@@ -41,11 +41,11 @@ run_compose() {
     cd "${SCRIPTPATH}" || fatal "Failed to change directory to ${SCRIPTPATH}"
 }
 
-test_run_compose() {
+test_docker_compose() {
     cat "${SCRIPTPATH}/compose/.env"
-    run_script 'generate_yml'
+    run_script 'yml_merge'
     cd "${SCRIPTPATH}/compose/" || fatal "Failed to change to ${SCRIPTPATH}/compose/ directory."
     docker-compose config || fatal "Failed to validate ${SCRIPTPATH}/compose/docker-compose.yml file."
     cd "${SCRIPTPATH}" || fatal "Failed to change to ${SCRIPTPATH} directory."
-    run_script 'run_compose'
+    run_script 'docker_compose'
 }
