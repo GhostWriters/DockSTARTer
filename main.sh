@@ -80,31 +80,54 @@ readonly DETECTED_HOMEDIR=$(eval echo "~${DETECTED_UNAME}" 2> /dev/null || true)
 
 # Terminal Colors
 if [[ ${CI:-} == true ]] || [[ -t 1 ]]; then
-    # Reference for colornumbers used by most terminals can be found here: https://jonasjacek.github.io/colors/
-    # The actual color depends on the color scheme set by the current terminal-emulator
-    # For capabilities, see terminfo(5)
+    # http://linuxcommand.org/lc3_adv_tput.php
     if [[ $(tput colors) -ge 8 ]]; then
-        BLU=$(tput setaf 4)
-        GRN=$(tput setaf 2)
-        RED=$(tput setaf 1)
-        YLW=$(tput setaf 3)
+        # B = Blue
+        # C = Cyan
+        # G = Green
+        # K = Black
+        # M = Magenta
+        # R = Red
+        # W = White
+        # Y = Yellow
+        B_B=$(tput setab 4)
+        B_C=$(tput setab 6)
+        B_G=$(tput setab 2)
+        B_K=$(tput setab 0)
+        B_M=$(tput setab 5)
+        B_R=$(tput setab 1)
+        B_W=$(tput setab 7)
+        B_Y=$(tput setab 3)
+        F_B=$(tput setaf 4)
+        F_C=$(tput setaf 6)
+        F_G=$(tput setaf 2)
+        F_K=$(tput setaf 0)
+        F_M=$(tput setaf 5)
+        F_R=$(tput setaf 1)
+        F_W=$(tput setaf 7)
+        F_Y=$(tput setaf 3)
         NC=$(tput sgr0)
     fi
 fi
-readonly BLU=${BLU:-}
-readonly GRN=${GRN:-}
-readonly RED=${RED:-}
-readonly YLW=${YLW:-}
+readonly F_K=${F_K:-}
+readonly F_B=${F_B:-}
+readonly F_C=${F_C:-}
+readonly F_G=${F_G:-}
+readonly F_M=${F_M:-}
+readonly F_R=${F_R:-}
+readonly F_W=${F_W:-}
+readonly F_Y=${F_Y:-}
 readonly NC=${NC:-}
 
 # Log Functions
 readonly LOG_FILE="/tmp/dockstarter.log"
 sudo chown "${DETECTED_PUID:-$DETECTED_UNAME}":"${DETECTED_PGID:-$DETECTED_UGROUP}" "${LOG_FILE}" > /dev/null 2>&1 || true
-info() { echo -e "${NC}$(date +"%F %T") ${BLU}[INFO]${NC}       $*${NC}" | tee -a "${LOG_FILE}" >&2; }
-warning() { echo -e "${NC}$(date +"%F %T") ${YLW}[WARNING]${NC}    $*${NC}" | tee -a "${LOG_FILE}" >&2; }
-error() { echo -e "${NC}$(date +"%F %T") ${RED}[ERROR]${NC}      $*${NC}" | tee -a "${LOG_FILE}" >&2; }
+info() { echo -e "${NC}$(date +"%F %T") ${F_B}[INFO  ]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2; }
+notice() { echo -e "${NC}$(date +"%F %T") ${F_G}[NOTICE]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2; }
+warn() { echo -e "${NC}$(date +"%F %T") ${F_Y}[WARN  ]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2; }
+error() { echo -e "${NC}$(date +"%F %T") ${F_R}[ERROR ]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2; }
 fatal() {
-    echo -e "${NC}$(date +"%F %T") ${RED}[FATAL]${NC}      $*${NC}" | tee -a "${LOG_FILE}" >&2
+    echo -e "${NC}$(date +"%F %T") ${B_R}${F_W}[FATAL ]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2
     exit 1
 }
 
@@ -171,7 +194,7 @@ cleanup() {
         sudo chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
     fi
     if [[ ${CI:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == false ]]; then
-        warning "TRAVIS_SECURE_ENV_VARS is false for Pull Requests from remote branches. Please retry failed builds!"
+        warn "TRAVIS_SECURE_ENV_VARS is false for Pull Requests from remote branches. Please retry failed builds!"
     fi
 
     if [[ ${EXIT_CODE} -ne 0 ]]; then
@@ -211,12 +234,12 @@ main() {
                 fi
                 unset PROMPT
             fi
-            warning "Attempting to run DockSTARTer from ${DS_SYMLINK} location."
+            warn "Attempting to run DockSTARTer from ${DS_SYMLINK} location."
             exec sudo bash "${DS_SYMLINK}" "${ARGS[@]:-}"
         fi
     else
         if ! repo_exists; then
-            warning "Attempting to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
+            warn "Attempting to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
             # Anti Sudo Check
             if [[ ${EUID} -eq 0 ]]; then
                 fatal "Using sudo during cloning on first run is not supported."
