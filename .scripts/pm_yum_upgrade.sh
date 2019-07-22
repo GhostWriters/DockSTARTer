@@ -11,5 +11,5 @@ pm_yum_upgrade() {
 
 test_pm_yum_upgrade() {
     # run_script 'pm_yum_upgrade'
-    warning "Travis does not test pm_yum_upgrade."
+    warn "Travis does not test pm_yum_upgrade."
 }

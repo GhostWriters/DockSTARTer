@@ -7,7 +7,7 @@ install_compose_completion() {
     local AVAILABLE_COMPOSE_COMPLETION
     AVAILABLE_COMPOSE_COMPLETION=$( (curl -H "${GH_HEADER:-}" -fsL "https://api.github.com/repos/docker/compose/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")') || echo "0")
     if [[ ${AVAILABLE_COMPOSE_COMPLETION} == "0" ]]; then
-        warning "Failed to check latest available docker-compose completion version. This can be ignored for now."
+        warn "Failed to check latest available docker-compose completion version. This can be ignored for now."
         return
     fi
     info "Installing docker-compose completion."

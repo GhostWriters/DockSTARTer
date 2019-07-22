@@ -32,24 +32,24 @@ yml_merge() {
                     if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.hostname.yml ]]; then
                         echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.hostname.yml \\" >> "${RUNFILE}"
                     else
-                        warning "Failed to include ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.hostname.yml file."
+                        warn "Failed to include ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.hostname.yml file."
                     fi
                     if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml ]]; then
                         echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml \\" >> "${RUNFILE}"
                     else
-                        warning "Failed to include ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml file."
+                        warn "Failed to include ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml file."
                     fi
                 elif [[ -n ${APPNETMODE} ]]; then
                     if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml ]]; then
                         echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml \\" >> "${RUNFILE}"
                     else
-                        warning "Failed to include ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml file."
+                        warn "Failed to include ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml file."
                     fi
                 fi
                 echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml \\" >> "${RUNFILE}"
                 info "All configurations for ${APPNAME} are included."
             else
-                warning "Failed to include ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml file."
+                warn "Failed to include ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml file."
             fi
         else
             error "Failed to include ${SCRIPTPATH}/compose/.apps/${FILENAME}/ directory."
@@ -58,7 +58,7 @@ yml_merge() {
     echo "> ${SCRIPTPATH}/compose/docker-compose.yml" >> "${RUNFILE}"
     run_script 'install_yq'
     bash "${RUNFILE}" > /dev/null 2>&1 || fatal "Failed to run generator."
-    rm -f "${RUNFILE}" || warning "Temporary yml generator file could not be removed."
+    rm -f "${RUNFILE}" || warn "Temporary yml generator file could not be removed."
     info "Merging docker-compose.yml complete."
 }
 

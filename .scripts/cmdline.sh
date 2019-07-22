@@ -154,5 +154,5 @@ cmdline() {
 
 test_cmdline() {
     # run_script 'cmdline'
-    warning "Travis does not test cmdline."
+    warn "Travis does not test cmdline."
 }

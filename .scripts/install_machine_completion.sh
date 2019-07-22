@@ -7,7 +7,7 @@ install_machine_completion() {
     local AVAILABLE_MACHINE_COMPLETION
     AVAILABLE_MACHINE_COMPLETION=$( (curl -H "${GH_HEADER:-}" -fsL "https://api.github.com/repos/docker/machine/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")') || echo "0")
     if [[ ${AVAILABLE_MACHINE_COMPLETION} == "0" ]]; then
-        warning "Failed to check latest available docker machine completion version. This can be ignored for now."
+        warn "Failed to check latest available docker machine completion version. This can be ignored for now."
         return
     fi
     info "Installing docker machine completion."

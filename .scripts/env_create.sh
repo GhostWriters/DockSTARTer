@@ -6,7 +6,7 @@ env_create() {
     if [[ -f ${SCRIPTPATH}/compose/.env ]]; then
         info "${SCRIPTPATH}/compose/.env found."
     else
-        warning "${SCRIPTPATH}/compose/.env not found. Copying example template."
+        warn "${SCRIPTPATH}/compose/.env not found. Copying example template."
         cp "${SCRIPTPATH}/compose/.env.example" "${SCRIPTPATH}/compose/.env" || fatal "${SCRIPTPATH}/compose/.env could not be copied."
         run_script 'set_permissions' "${SCRIPTPATH}/compose/.env"
         run_script 'appvars_create' PORTAINER

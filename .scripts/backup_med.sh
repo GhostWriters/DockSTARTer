@@ -23,7 +23,7 @@ backup_med() {
             BACKUP_CMD_POST_APP=$(run_script 'env_get' BACKUP_CMD_POST_APP)
             eval "${BACKUP_CMD_POST_APP}" || error "Failed to execute BACKUP_CMD_POST_APP."
         else
-            warning "${APPNAME}_BACKUP_CONFIG is false. ${APPNAME} will not be backed up."
+            warn "${APPNAME}_BACKUP_CONFIG is false. ${APPNAME} will not be backed up."
         fi
     done < <(grep '_ENABLED=true$' < "${SCRIPTPATH}/compose/.env")
     local BACKUP_CMD_POST_RUN

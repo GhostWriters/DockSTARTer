@@ -9,7 +9,7 @@ menu_app_vars() {
     APPVARS=$(grep -v "^${APPNAME}_ENABLED=" "${SCRIPTPATH}/compose/.env" | grep "^${APPNAME}_")
     if [[ -z ${APPVARS} ]]; then
         if [[ ${CI:-} == true ]]; then
-            warning "${APPNAME} has no variables."
+            warn "${APPNAME} has no variables."
         else
             whiptail --fb --clear --title "DockSTARTer" --msgbox "${APPNAME} has no variables." 0 0
         fi
@@ -29,5 +29,5 @@ menu_app_vars() {
 
 test_menu_app_vars() {
     # run_script 'menu_app_vars'
-    warning "Travis does not test menu_app_vars."
+    warn "Travis does not test menu_app_vars."
 }

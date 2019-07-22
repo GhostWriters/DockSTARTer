@@ -57,5 +57,5 @@ menu_app_select() {
 
 test_menu_app_select() {
     # run_script 'menu_app_select'
-    warning "Travis does not test menu_app_select."
+    warn "Travis does not test menu_app_select."
 }

@@ -21,5 +21,5 @@ config_global() {
 
 test_config_global() {
     # run_script 'config_global'
-    warning "Travis does not test config_global."
+    warn "Travis does not test config_global."
 }

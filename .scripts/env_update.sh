@@ -9,7 +9,7 @@ env_update() {
     local CURRENTENV
     CURRENTENV=$(mktemp) || fatal "Failed to create temporary storage for .env update."
     sort "${SCRIPTPATH}/compose/.env" > "${CURRENTENV}" || fatal "${SCRIPTPATH}/compose/.env could not be copied."
-    rm -f "${SCRIPTPATH}/compose/.env" || warning "${SCRIPTPATH}/compose/.env could not be removed."
+    rm -f "${SCRIPTPATH}/compose/.env" || warn "${SCRIPTPATH}/compose/.env could not be removed."
     cp "${SCRIPTPATH}/compose/.env.example" "${SCRIPTPATH}/compose/.env" || fatal "${SCRIPTPATH}/compose/.env.example could not be copied."
     run_script 'set_permissions' "${SCRIPTPATH}/compose/.env"
     info "Merging previous values into new .env file."
@@ -22,7 +22,7 @@ env_update() {
             echo "${line}" >> "${SCRIPTPATH}/compose/.env" || error "${line} could not be written to ${SCRIPTPATH}/compose/.env"
         fi
     done < <(grep '=' < "${CURRENTENV}")
-    rm -f "${CURRENTENV}" || warning "Temporary .env file could not be removed."
+    rm -f "${CURRENTENV}" || warn "Temporary .env file could not be removed."
     run_script 'env_sanitize'
     info "Environment file update complete."
 }
