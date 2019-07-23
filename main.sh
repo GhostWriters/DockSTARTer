@@ -48,6 +48,124 @@ usage() {
 
 # Command Line Arguments
 readonly ARGS=("$@")
+cmdline() {
+    # http://www.kfirlavi.com/blog/2012/11/14/defensive-bash-programming/
+    # http://kirk.webfinish.com/2009/10/bash-shell-script-to-use-getopts-with-gnu-style-long-positional-parameters/
+    local ARG=
+    local LOCAL_ARGS
+    for ARG; do
+        local DELIM=""
+        case "${ARG}" in
+            #translate --gnu-long-options to -g (short options)
+            --add) LOCAL_ARGS="${LOCAL_ARGS:-}-a " ;;
+            --backup) LOCAL_ARGS="${LOCAL_ARGS:-}-b " ;;
+            --compose) LOCAL_ARGS="${LOCAL_ARGS:-}-c " ;;
+            --debug) LOCAL_ARGS="${LOCAL_ARGS:-}-x " ;;
+            --env) LOCAL_ARGS="${LOCAL_ARGS:-}-e " ;;
+            --help) LOCAL_ARGS="${LOCAL_ARGS:-}-h " ;;
+            --install) LOCAL_ARGS="${LOCAL_ARGS:-}-i " ;;
+            --prune) LOCAL_ARGS="${LOCAL_ARGS:-}-p " ;;
+            --remove) LOCAL_ARGS="${LOCAL_ARGS:-}-r " ;;
+            --test) LOCAL_ARGS="${LOCAL_ARGS:-}-t " ;;
+            --update) LOCAL_ARGS="${LOCAL_ARGS:-}-u " ;;
+            --verbose) LOCAL_ARGS="${LOCAL_ARGS:-}-v " ;;
+            #pass through anything else
+            *)
+                [[ ${ARG:0:1} == "-" ]] || DELIM='"'
+                LOCAL_ARGS="${LOCAL_ARGS:-}${DELIM}${ARG}${DELIM} "
+                ;;
+        esac
+    done
+
+    #Reset the positional parameters to the short options
+    eval set -- "${LOCAL_ARGS:-}"
+
+    while getopts ":a:b:c:eghipr:t:u:vx" OPTION; do
+        case ${OPTION} in
+            a)
+                readonly ADD=${OPTARG}
+                ;;
+            b)
+                case ${OPTARG} in
+                    min | med | max)
+                        readonly BACKUP=${OPTARG}
+                        ;;
+                    *)
+                        echo "Invalid backup option."
+                        exit 1
+                        ;;
+                esac
+                ;;
+            c)
+                case ${OPTARG} in
+                    down | generate | pull | restart | up)
+                        readonly COMPOSE=${OPTARG}
+                        ;;
+                    *)
+                        echo "Invalid compose option."
+                        exit 1
+                        ;;
+                esac
+                ;;
+            e)
+                readonly ENV=true
+                ;;
+            h)
+                usage
+                exit
+                ;;
+            i)
+                readonly INSTALL=true
+                ;;
+            p)
+                readonly PRUNE=true
+                ;;
+            r)
+                readonly REMOVE=${OPTARG}
+                ;;
+            t)
+                readonly TEST=${OPTARG}
+                exit
+                ;;
+            u)
+                readonly UPDATE=${OPTARG}
+                ;;
+            v)
+                readonly VERBOSE=1
+                ;;
+            x)
+                readonly DEBUG=1
+                set -x
+                ;;
+            :)
+                case ${OPTARG} in
+                    c)
+                        readonly COMPOSE=true
+                        ;;
+                    r)
+                        readonly REMOVE=true
+                        ;;
+                    u)
+                        readonly UPDATE=true
+                        ;;
+                    *)
+                        echo "${OPTARG} requires an option."
+                        exit 1
+                        ;;
+                esac
+                ;;
+            *)
+                usage
+                exit
+                ;;
+        esac
+    done
+    return
+}
+cmdline "${ARGS[@]:-}"
+if [[ -n ${DEBUG:-} ]] && [[ -n ${VERBOSE:-} ]]; then
+    readonly TRACE=1
+fi
 
 # Github Token for Travis CI
 if [[ ${CI:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == true ]]; then
@@ -90,44 +208,62 @@ if [[ ${CI:-} == true ]] || [[ -t 1 ]]; then
         # R = Red
         # W = White
         # Y = Yellow
-        B_B=$(tput setab 4)
-        B_C=$(tput setab 6)
-        B_G=$(tput setab 2)
-        B_K=$(tput setab 0)
-        B_M=$(tput setab 5)
-        B_R=$(tput setab 1)
-        B_W=$(tput setab 7)
-        B_Y=$(tput setab 3)
-        F_B=$(tput setaf 4)
-        F_C=$(tput setaf 6)
-        F_G=$(tput setaf 2)
-        F_K=$(tput setaf 0)
-        F_M=$(tput setaf 5)
-        F_R=$(tput setaf 1)
-        F_W=$(tput setaf 7)
-        F_Y=$(tput setaf 3)
+        declare -A B=(
+            [B]=$(tput setab 4)
+            [C]=$(tput setab 6)
+            [G]=$(tput setab 2)
+            [K]=$(tput setab 0)
+            [M]=$(tput setab 5)
+            [R]=$(tput setab 1)
+            [W]=$(tput setab 7)
+            [Y]=$(tput setab 3)
+        )
+        declare -A F=(
+            [B]=$(tput setaf 4)
+            [C]=$(tput setaf 6)
+            [G]=$(tput setaf 2)
+            [K]=$(tput setaf 0)
+            [M]=$(tput setaf 5)
+            [R]=$(tput setaf 1)
+            [W]=$(tput setaf 7)
+            [Y]=$(tput setaf 3)
+        )
         NC=$(tput sgr0)
     fi
 fi
-readonly F_K=${F_K:-}
-readonly F_B=${F_B:-}
-readonly F_C=${F_C:-}
-readonly F_G=${F_G:-}
-readonly F_M=${F_M:-}
-readonly F_R=${F_R:-}
-readonly F_W=${F_W:-}
-readonly F_Y=${F_Y:-}
+declare -Agr B=(
+    [B]=${B[B]:-}
+    [C]=${B[C]:-}
+    [G]=${B[G]:-}
+    [K]=${B[K]:-}
+    [M]=${B[M]:-}
+    [R]=${B[R]:-}
+    [W]=${B[W]:-}
+    [Y]=${B[Y]:-}
+)
+declare -Agr F=(
+    [B]=${F[B]:-}
+    [C]=${F[C]:-}
+    [G]=${F[G]:-}
+    [K]=${F[K]:-}
+    [M]=${F[M]:-}
+    [R]=${F[R]:-}
+    [W]=${F[W]:-}
+    [Y]=${F[Y]:-}
+)
 readonly NC=${NC:-}
 
 # Log Functions
 readonly LOG_FILE="/tmp/dockstarter.log"
 sudo chown "${DETECTED_PUID:-$DETECTED_UNAME}":"${DETECTED_PGID:-$DETECTED_UGROUP}" "${LOG_FILE}" > /dev/null 2>&1 || true
-info() { echo -e "${NC}$(date +"%F %T") ${F_B}[INFO  ]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2; }
-notice() { echo -e "${NC}$(date +"%F %T") ${F_G}[NOTICE]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2; }
-warn() { echo -e "${NC}$(date +"%F %T") ${F_Y}[WARN  ]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2; }
-error() { echo -e "${NC}$(date +"%F %T") ${F_R}[ERROR ]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2; }
+trace() { [[ -n ${TRACE:-} ]] && echo -e "${NC}$(date +"%F %T") ${F[B]}[TRACE ]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2; }
+debug() { [[ -n ${DEBUG:-} ]] && echo -e "${NC}$(date +"%F %T") ${F[B]}[DEBUG ]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2; }
+info() { [[ -n ${VERBOSE:-} ]] && echo -e "${NC}$(date +"%F %T") ${F[B]}[INFO  ]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2; }
+notice() { echo -e "${NC}$(date +"%F %T") ${F[G]}[NOTICE]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2; }
+warn() { echo -e "${NC}$(date +"%F %T") ${F[Y]}[WARN  ]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2; }
+error() { echo -e "${NC}$(date +"%F %T") ${F[R]}[ERROR ]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2; }
 fatal() {
-    echo -e "${NC}$(date +"%F %T") ${B_R}${F_W}[FATAL ]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2
+    echo -e "${NC}$(date +"%F %T") ${B[R]}${F[W]}[FATAL ]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2
     exit 1
 }
 
@@ -194,11 +330,11 @@ cleanup() {
         sudo chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
     fi
     if [[ ${CI:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == false ]]; then
-        warn "TRAVIS_SECURE_ENV_VARS is false for Pull Requests from remote branches. Please retry failed builds!"
+        echo "TRAVIS_SECURE_ENV_VARS is false for Pull Requests from remote branches. Please retry failed builds!"
     fi
 
     if [[ ${EXIT_CODE} -ne 0 ]]; then
-        error "DockSTARTer did not finish running successfully."
+        echo "DockSTARTer did not finish running successfully."
     fi
     exit ${EXIT_CODE}
     trap - 0 1 2 3 6 14 15
@@ -254,9 +390,85 @@ main() {
         exec sudo bash "${SCRIPTNAME}" "${ARGS[@]:-}"
     fi
     run_script 'symlink_ds'
-    # shellcheck source=/dev/null
-    source "${SCRIPTPATH}/.scripts/cmdline.sh"
-    cmdline "${ARGS[@]:-}"
+    ###
+    if [[ -n ${ADD:-} ]]; then
+        run_script 'appvars_create' "${ADD}"
+        run_script 'env_update'
+        exit
+    fi
+    if [[ -n ${BACKUP:-} ]]; then
+        run_script "backup_${BACKUP}"
+        exit
+    fi
+    if [[ -n ${COMPOSE:-} ]]; then
+        if [[ ${COMPOSE} == true ]]; then
+            run_script 'yml_merge'
+            run_script 'docker_compose'
+            exit
+        fi
+        case ${COMPOSE} in
+            down)
+                run_script 'docker_compose' down
+                ;;
+            generate)
+                run_script 'yml_merge'
+                ;;
+            pull)
+                run_script 'yml_merge'
+                run_script 'docker_compose' pull
+                ;;
+            restart)
+                run_script 'yml_merge'
+                run_script 'docker_compose' restart
+                ;;
+            up)
+                run_script 'yml_merge'
+                run_script 'docker_compose' up
+                ;;
+            *)
+                fatal "Invalid compose option."
+                ;;
+        esac
+        exit
+        exit
+    fi
+    if [[ -n ${ENV:-} ]]; then
+        run_script 'env_update'
+        run_script 'appvars_create_all'
+        exit
+    fi
+    if [[ -n ${INSTALL:-} ]]; then
+        run_script 'run_install'
+        exit
+    fi
+    if [[ -n ${PRUNE:-} ]]; then
+        run_script 'docker_prune'
+        exit
+    fi
+    if [[ -n ${REMOVE:-} ]]; then
+        if [[ ${REMOVE} == true ]]; then
+            run_script 'appvars_purge_all'
+            run_script 'env_update'
+            exit
+        fi
+        run_script 'appvars_purge' "${REMOVE}"
+        run_script 'env_update'
+        exit
+    fi
+    if [[ -n ${TEST:-} ]]; then
+        run_test "${TEST}"
+        exit
+    fi
+    if [[ -n ${UPDATE:-} ]]; then
+        if [[ ${UPDATE} == true ]]; then
+            run_script 'update_self'
+            exit
+        fi
+        run_script 'update_self' "${UPDATE}"
+        exit
+    fi
+
+    ###
     PROMPT="GUI"
     run_script 'menu_main'
 }
