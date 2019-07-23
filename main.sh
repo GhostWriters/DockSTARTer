@@ -352,6 +352,7 @@ main() {
     if [[ -t 1 ]]; then
         root_check
     fi
+    # Repo Check
     local PROMPT
     local DS_COMMAND
     DS_COMMAND=$(command -v ds || true)
@@ -389,8 +390,9 @@ main() {
     if [[ ${EUID} -ne 0 ]]; then
         exec sudo bash "${SCRIPTNAME}" "${ARGS[@]:-}"
     fi
+    # Create Symlink
     run_script 'symlink_ds'
-    ###
+    # Execute CLI Argument Functions
     if [[ -n ${ADD:-} ]]; then
         run_script 'appvars_create' "${ADD}"
         run_script 'env_update'
@@ -467,8 +469,7 @@ main() {
         run_script 'update_self' "${UPDATE}"
         exit
     fi
-
-    ###
+    # Run Menus
     PROMPT="GUI"
     run_script 'menu_main'
 }
