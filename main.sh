@@ -42,7 +42,7 @@ IFS=$'\n\t'
 #/      debug
 #/
 usage() {
-    grep --color=never -Po '^#/\K.*' "${SCRIPTNAME}" || echo "Failed to display usage information."
+    grep --color=never -Po '^#/\K.*' "${BASH_SOURCE[0]:-$0}" || echo "Failed to display usage information."
     exit
 }
 
