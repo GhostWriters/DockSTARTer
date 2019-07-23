@@ -22,10 +22,12 @@ backup_max() {
             local RUNNING
             RUNNING=$(docker inspect "${FILENAME}" 2> /dev/null | grep -Po '"Running": \Ktrue' || echo "false")
             if [[ ${RUNNING} == true ]]; then
+                info "Stopping ${FILENAME} container."
                 docker stop "${FILENAME}" > /dev/null 2>&1 || error "Unable to stop ${FILENAME}."
             fi
             run_script 'backup_create' "${FILENAME}" || return 1
             if [[ ${RUNNING} == true ]]; then
+                info "Starting ${FILENAME} container."
                 docker start "${FILENAME}" > /dev/null 2>&1 || error "Unable to start ${FILENAME}."
             fi
             local BACKUP_CMD_POST_APP

@@ -28,10 +28,12 @@ install_compose() {
             rm /usr/bin/docker-compose > /dev/null 2>&1 || true
             run_script 'run_python' -m pip uninstall docker-py > /dev/null 2>&1 || true
 
+            info "Installing latest setuptools."
+            run_script 'run_python' -m pip install -IUq setuptools > /dev/null 2>&1 || warn "Failed to install setuptools from pip. This can be ignored for now."
+            info "Installing latest urllib3[secure]."
+            run_script 'run_python' -m pip install -IUq "urllib3[secure]" > /dev/null 2>&1 || warn "Failed to install urllib3[secure] from pip. This can be ignored for now."
             # https://docs.docker.com/compose/install/
             info "Installing latest docker-compose."
-            run_script 'run_python' -m pip install -IUq setuptools > /dev/null 2>&1 || warn "Failed to install setuptools from pip. This can be ignored for now."
-            run_script 'run_python' -m pip install -IUq "urllib3[secure]" > /dev/null 2>&1 || warn "Failed to install urllib3[secure] from pip. This can be ignored for now."
             run_script 'run_python' -m pip install -IUq docker-compose > /dev/null 2>&1 || warn "Failed to install docker-compose from pip. This can be ignored for now."
 
             local UPDATED_COMPOSE

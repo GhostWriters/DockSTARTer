@@ -85,6 +85,7 @@ backup_create() {
                 else
                     info "Removing ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i} ..."
                     if [ "${CHATTR}" -eq 1 ]; then
+                        info "Removing immutable attribute from ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i} ..."
                         chattr -R -i "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}" > /dev/null 2>&1 || warn "Failed to remove immutable flag from ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}"
                     fi
                     rm -rf "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}" || error "Failed to remove ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}"
@@ -129,6 +130,7 @@ backup_create() {
                     if [ "${i}" -ne 1 ]; then
                         info "Removing ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i} ..."
                         if [ "${CHATTR}" -eq 1 ]; then
+                            info "Removing immutable attribute from ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i} ..."
                             chattr -R -i "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}" > /dev/null 2>&1 || warn "Failed to remove immutable flag from ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}"
                         fi
                         rm -rf "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}" || error "Failed to remove ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}"
@@ -148,6 +150,7 @@ backup_create() {
                             else
                                 for j in ${LNKDST//--link-dest=/}; do
                                     if [ -d "${j}" ] && [ "${CHATTR}" -eq 1 ] && [ "$(lsattr -d "${j}" | cut -b5)" != "i" ]; then
+                                        info "Adding immutable attribute to ${j} ..."
                                         chattr -R +i "${j}" > /dev/null 2>&1 || warn "Failed to make ${j} backup immutable. Backup files may be overwritten by future backups." # undo unprotection that was needed to use hardlinks
                                     fi
                                     if [ ! -h "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last" ]; then
@@ -177,6 +180,7 @@ backup_create() {
         LNKDST=$(find "${SNAPSHOT_DST}/" -maxdepth 2 -type d -name "${SNAPSHOT_NAME}.001" -printf " --link-dest=%p")
         for i in ${LNKDST//--link-dest=/}; do
             if [ -d "${i}" ] && [ "${CHATTR}" -eq 1 ] && [ "$(lsattr -d "${i}" | cut -b5)" == "i" ]; then
+                info "Removing immutable attribute from ${j} ..."
                 chattr -R -i "${i}" > /dev/null 2>&1 || warn "Failed to remove immutable flag from ${i}" # unprotect last snapshots to use hardlinks
             fi
         done
@@ -220,6 +224,7 @@ backup_create() {
         "${SNAPSHOT_SRC}" "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.000" > /dev/null 2>&1 || fatal "Snapshot failed."
     for i in ${LNKDST//--link-dest=/}; do
         if [ -d "${i}" ] && [ "${CHATTR}" -eq 1 ] && [ "$(lsattr -d "${i}" | cut -b5)" != "i" ]; then
+            info "Adding immutable attribute to ${i} ..."
             chattr -R +i "${i}" > /dev/null 2>&1 || warn "Failed to make ${i} backup immutable. Backup files may be overwritten by future backups." # undo unprotection that was needed to use hardlinks
         fi
     done
@@ -235,6 +240,7 @@ backup_create() {
     if [ -d "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${BACKUP_RETENTION_MAX}" ]; then # remove snapshot.${BACKUP_RETENTION_MAX}
         info "Removing ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${BACKUP_RETENTION_MAX} ..."
         if [ "${CHATTR}" -eq 1 ]; then
+            info "Removing immutable attribute from ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${BACKUP_RETENTION_MAX} ..."
             chattr -R -i "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${BACKUP_RETENTION_MAX}" > /dev/null 2>&1 || warn "Failed to remove immutable flag from ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${BACKUP_RETENTION_MAX}"
         fi
         rm -rf "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${BACKUP_RETENTION_MAX}" || error "Failed to create ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${BACKUP_RETENTION_MAX}"
@@ -249,10 +255,12 @@ backup_create() {
             j=$(printf "%.3d" "${j}")
             info "Renaming ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i} into ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${j} ..."
             if [ "${CHATTR}" -eq 1 ]; then
+                info "Removing immutable attribute from ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i} ..."
                 chattr -i "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}" > /dev/null 2>&1 || warn "Failed to remove immutable flag from ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}"
             fi
             mv "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${i}" "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${j}"
             if [ "${CHATTR}" -eq 1 ]; then
+                info "Adding immutable attribute to ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${j} ..."
                 chattr +i "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${j}" > /dev/null 2>&1 || warn "Failed to make ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.${j} backup immutable. Backup files may be overwritten by future backups."
             fi
             if [ ! -h "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last" ]; then

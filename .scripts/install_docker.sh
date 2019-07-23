@@ -25,7 +25,9 @@ install_docker() {
             notice "Installing latest docker. Please be patient, this can take a while."
             local GET_DOCKER
             GET_DOCKER=$(mktemp) || fatal "Failed to create temporary storage for docker install."
+            info "Downloading docker install script."
             curl -fsSL get.docker.com -o "${GET_DOCKER}" > /dev/null 2>&1 || fatal "Failed to get docker install script."
+            info "Running docker install script."
             sh "${GET_DOCKER}" > /dev/null 2>&1 || fatal "Failed to install docker."
             rm -f "${GET_DOCKER}" || warn "Temporary get.docker.com file could not be removed."
             local UPDATED_DOCKER

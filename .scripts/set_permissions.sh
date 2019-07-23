@@ -36,6 +36,7 @@ set_permissions() {
         info "Setting file and folder permissions in ${CH_PATH}"
         chmod -R a=,a+rX,u+w,g+w "${CH_PATH}" > /dev/null 2>&1 || true
     fi
+    info "Setting executable permission on ${SCRIPTNAME}"
     chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
 }
 

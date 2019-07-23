@@ -311,14 +311,15 @@ cleanup() {
     local -ri EXIT_CODE=$?
 
     if repo_exists; then
+        info "Setting executable permission on ${SCRIPTNAME}"
         sudo chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
     fi
     if [[ ${CI:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == false ]]; then
-        echo "TRAVIS_SECURE_ENV_VARS is false for Pull Requests from remote branches. Please retry failed builds!"
+        warn "TRAVIS_SECURE_ENV_VARS is false for Pull Requests from remote branches. Please retry failed builds!"
     fi
 
     if [[ ${EXIT_CODE} -ne 0 ]]; then
-        echo "DockSTARTer did not finish running successfully."
+        error "DockSTARTer did not finish running successfully."
     fi
     exit ${EXIT_CODE}
     trap - 0 1 2 3 6 14 15
