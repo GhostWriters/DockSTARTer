@@ -36,8 +36,8 @@ IFS=$'\n\t'
 #/      update DockSTARTer to the latest stable commits
 #/  -u --update <branch>
 #/      update DockSTARTer to the latest commits from the specified branch
-##/ -v --verbose
-##/     verbose
+#/  -v --verbose
+#/      verbose
 #/  -x --debug
 #/      debug
 #/
@@ -125,7 +125,6 @@ cmdline() {
                 ;;
             t)
                 readonly TEST=${OPTARG}
-                exit
                 ;;
             u)
                 readonly UPDATE=${OPTARG}
