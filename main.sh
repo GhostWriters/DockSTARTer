@@ -302,11 +302,11 @@ run_test() {
     shift
     if [[ -f ${SCRIPTPATH}/.scripts/${TESTSNAME}.sh ]]; then
         if grep -q "test_${TESTSNAME}" "${SCRIPTPATH}/.scripts/${TESTSNAME}.sh"; then
-            info "Testing ${TESTSNAME}."
+            notice "Testing ${TESTSNAME}."
             # shellcheck source=/dev/null
             source "${SCRIPTPATH}/.scripts/${TESTSNAME}.sh"
             eval "test_${TESTSNAME}" "$@" || fatal "Failed to run ${TESTSNAME}."
-            info "Completed testing ${TESTSNAME}."
+            notice "Completed testing ${TESTSNAME}."
         else
             fatal "Test function in ${SCRIPTPATH}/.scripts/${TESTSNAME}.sh not found."
         fi
@@ -382,7 +382,7 @@ main() {
                 fatal "Using sudo during cloning on first run is not supported."
             fi
             git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
-            info "Performing first run install."
+            notice "Performing first run install."
             exec sudo bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-i"
         fi
     fi

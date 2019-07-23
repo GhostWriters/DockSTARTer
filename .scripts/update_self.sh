@@ -5,9 +5,9 @@ IFS=$'\n\t'
 update_self() {
     local BRANCH=${1:-origin/master}
     if run_script 'question_prompt' "${PROMPT:-}" Y "Would you like to update DockSTARTer to ${BRANCH} now?"; then
-        info "Updating DockSTARTer to ${BRANCH}."
+        notice "Updating DockSTARTer to ${BRANCH}."
     else
-        info "DockSTARTer will not be updated to ${BRANCH}."
+        notice "DockSTARTer will not be updated to ${BRANCH}."
         return 1
     fi
     cd "${SCRIPTPATH}" || fatal "Failed to change to ${SCRIPTPATH} directory."

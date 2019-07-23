@@ -22,7 +22,7 @@ install_docker() {
         if vergt "${AVAILABLE_DOCKER}" "${INSTALLED_DOCKER}"; then
             run_script 'package_manager_run' remove_docker
             # https://github.com/docker/docker-install
-            info "Installing latest docker. Please be patient, this can take a while."
+            notice "Installing latest docker. Please be patient, this can take a while."
             local GET_DOCKER
             GET_DOCKER=$(mktemp) || fatal "Failed to create temporary storage for docker install."
             curl -fsSL get.docker.com -o "${GET_DOCKER}" > /dev/null 2>&1 || fatal "Failed to get docker install script."
