@@ -388,11 +388,6 @@ main() {
         exit
     fi
     if [[ -n ${COMPOSE:-} ]]; then
-        if [[ ${COMPOSE} == true ]]; then
-            run_script 'yml_merge'
-            run_script 'docker_compose'
-            exit
-        fi
         case ${COMPOSE} in
             down)
                 run_script 'docker_compose' down
@@ -408,7 +403,7 @@ main() {
                 run_script 'yml_merge'
                 run_script 'docker_compose' restart
                 ;;
-            up)
+            up | true)
                 run_script 'yml_merge'
                 run_script 'docker_compose' up
                 ;;
@@ -416,7 +411,6 @@ main() {
                 fatal "Invalid compose option."
                 ;;
         esac
-        exit
         exit
     fi
     if [[ -n ${ENV:-} ]]; then
@@ -436,10 +430,10 @@ main() {
         if [[ ${REMOVE} == true ]]; then
             run_script 'appvars_purge_all'
             run_script 'env_update'
-            exit
+        else
+            run_script 'appvars_purge' "${REMOVE}"
+            run_script 'env_update'
         fi
-        run_script 'appvars_purge' "${REMOVE}"
-        run_script 'env_update'
         exit
     fi
     if [[ -n ${TEST:-} ]]; then
@@ -449,9 +443,9 @@ main() {
     if [[ -n ${UPDATE:-} ]]; then
         if [[ ${UPDATE} == true ]]; then
             run_script 'update_self'
-            exit
+        else
+            run_script 'update_self' "${UPDATE}"
         fi
-        run_script 'update_self' "${UPDATE}"
         exit
     fi
     # Run Menus
