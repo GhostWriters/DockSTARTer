@@ -28,7 +28,11 @@ install_docker() {
             info "Downloading docker install script."
             curl -fsSL get.docker.com -o "${GET_DOCKER}" > /dev/null 2>&1 || fatal "Failed to get docker install script."
             info "Running docker install script."
-            sh "${GET_DOCKER}" > /dev/null 2>&1 || fatal "Failed to install docker."
+            local REDIRECT
+            if run_script 'question_prompt' "${PROMPT:-}" N "Would you like to display the command output?"; then
+                REDIRECT="> /dev/null 2>&1"
+            fi
+            eval sh "${GET_DOCKER}" "${REDIRECT}" || fatal "Failed to install docker."
             rm -f "${GET_DOCKER}" || warn "Temporary get.docker.com file could not be removed."
             local UPDATED_DOCKER
             UPDATED_DOCKER=$( (docker --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
