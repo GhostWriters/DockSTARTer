@@ -1,0 +1,19 @@
+services:
+  codeserver:
+    container_name: codeserver
+    environment:
+      - PASSWORD=${CODESERVER_PASSWORD}
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - SUDO_PASSWORD=${CODESERVER_SUDO_PASSWORD}
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/codeserver:/config
+      - ${DOCKERSHAREDDIR}:/shared
