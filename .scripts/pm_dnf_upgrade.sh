@@ -5,7 +5,11 @@ IFS=$'\n\t'
 pm_dnf_upgrade() {
     if [[ ${CI:-} != true ]]; then
         notice "Upgrading packages. Please be patient, this can take a while."
-        dnf -y upgrade --refresh > /dev/null 2>&1 || fatal "Failed to upgrade packages from dnf."
+        local REDIRECT="> /dev/null 2>&1"
+        if run_script 'question_prompt' "${PROMPT:-}" N "Would you like to display the command output?"; then
+            REDIRECT=""
+        fi
+        eval dnf -y upgrade --refresh "${REDIRECT}" || fatal "Failed to upgrade packages from dnf."
     fi
 }
 
