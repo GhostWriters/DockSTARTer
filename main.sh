@@ -98,7 +98,7 @@ cmdline() {
                 ;;
             c)
                 case ${OPTARG} in
-                    down | generate | pull | restart | up)
+                    down | generate | merge | pull | restart | up)
                         readonly COMPOSE=${OPTARG}
                         ;;
                     *)
@@ -392,7 +392,7 @@ main() {
             down)
                 run_script 'docker_compose' down
                 ;;
-            generate)
+            generate | merge)
                 run_script 'yml_merge'
                 ;;
             pull)

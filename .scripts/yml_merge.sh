@@ -5,9 +5,9 @@ IFS=$'\n\t'
 yml_merge() {
     run_script 'env_update'
     run_script 'appvars_create_all'
-    info "Generating docker-compose.yml file."
+    info "Merging docker-compose.yml file."
     local RUNFILE
-    RUNFILE=$(mktemp) || fatal "Failed to create temporary storage for yml generator."
+    RUNFILE=$(mktemp) || fatal "Failed to create temporary script for yml merge."
     echo "#!/usr/bin/env bash" > "${RUNFILE}"
     {
         echo '/usr/local/bin/yq-go m '\\
@@ -57,9 +57,9 @@ yml_merge() {
     done < <(grep '_ENABLED=true$' < "${SCRIPTPATH}/compose/.env")
     echo "> ${SCRIPTPATH}/compose/docker-compose.yml" >> "${RUNFILE}"
     run_script 'install_yq'
-    info "Running compiled script to generate docker-compose.yml file."
-    bash "${RUNFILE}" > /dev/null 2>&1 || fatal "Failed to run generator."
-    rm -f "${RUNFILE}" || warn "Temporary yml generator file could not be removed."
+    info "Running compiled script to merge docker-compose.yml file."
+    bash "${RUNFILE}" > /dev/null 2>&1 || fatal "Failed to run yml merge script."
+    rm -f "${RUNFILE}" || warn "Failed to remove temporary script for yml merge."
     info "Merging docker-compose.yml complete."
 }
 
