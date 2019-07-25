@@ -175,7 +175,7 @@ backup_create() {
         mkdir -p "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space" || fatal "Failed to create ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space"
         chmod -R 775 "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space" || fatal "Failed to set permissions on ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space"
         local LOG
-        LOG=$(mktemp) || fatal "Failed to create temporary storage for backup log."
+        LOG=$(mktemp) || fatal "Failed to create temporary backup log."
         local LNKDST
         LNKDST=$(find "${SNAPSHOT_DST}/" -maxdepth 2 -type d -name "${SNAPSHOT_NAME}.001" -printf " --link-dest=%p")
         for i in ${LNKDST//--link-dest=/}; do
@@ -193,7 +193,7 @@ backup_create() {
         i=$(($(tail -100 "${LOG}" | grep 'Total transferred file size:' | cut -d " " -f5 | sed -e 's/\,//g') / 1048576))
         info "${i} MiB needed."
         rm -rf "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space" || fatal "Failed to remove ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.test-free-disk-space"
-        rm -rf "${LOG}" || warn "Temporary backup log file could not be removed."
+        rm -rf "${LOG}" || warn "Failed to remove temporary backup log."
         remove_snapshot $((MIN_MIBSIZE + i)) $((MAX_MIBSIZE - i))
         if [ "${OOVERWRITE_LAST}" == "${OVERWRITE_LAST}" ]; then # no need to retry
             break

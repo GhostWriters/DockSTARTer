@@ -24,7 +24,7 @@ install_docker() {
             # https://github.com/docker/docker-install
             notice "Installing latest docker. Please be patient, this can take a while."
             local GET_DOCKER
-            GET_DOCKER=$(mktemp) || fatal "Failed to create temporary storage for docker install."
+            GET_DOCKER=$(mktemp) || fatal "Failed to create temporary docker install script."
             info "Downloading docker install script."
             curl -fsSL get.docker.com -o "${GET_DOCKER}" > /dev/null 2>&1 || fatal "Failed to get docker install script."
             info "Running docker install script."
@@ -33,7 +33,7 @@ install_docker() {
                 REDIRECT=""
             fi
             eval sh "${GET_DOCKER}" "${REDIRECT}" || fatal "Failed to install docker."
-            rm -f "${GET_DOCKER}" || warn "Temporary get.docker.com file could not be removed."
+            rm -f "${GET_DOCKER}" || warn "Failed to remove temporary docker install script."
             local UPDATED_DOCKER
             UPDATED_DOCKER=$( (docker --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
             if vergt "${AVAILABLE_DOCKER}" "${UPDATED_DOCKER}"; then

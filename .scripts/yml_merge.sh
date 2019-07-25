@@ -7,7 +7,7 @@ yml_merge() {
     run_script 'appvars_create_all'
     info "Merging docker-compose.yml file."
     local RUNFILE
-    RUNFILE=$(mktemp) || fatal "Failed to create temporary script for yml merge."
+    RUNFILE=$(mktemp) || fatal "Failed to create temporary yml merge script."
     echo "#!/usr/bin/env bash" > "${RUNFILE}"
     {
         echo '/usr/local/bin/yq-go m '\\
@@ -59,7 +59,7 @@ yml_merge() {
     run_script 'install_yq'
     info "Running compiled script to merge docker-compose.yml file."
     bash "${RUNFILE}" > /dev/null 2>&1 || fatal "Failed to run yml merge script."
-    rm -f "${RUNFILE}" || warn "Failed to remove temporary script for yml merge."
+    rm -f "${RUNFILE}" || warn "Failed to remove temporary yml merge script."
     info "Merging docker-compose.yml complete."
 }
 
