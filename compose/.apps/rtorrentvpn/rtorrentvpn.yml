@@ -30,3 +30,4 @@ services:
       - ${DOCKERSHAREDDIR}:/shared
       - ${DOWNLOADSDIR}:/data
       - ${DOWNLOADSDIR}:/downloads
+      - ${VPN_OVPNDIR}:/config/openvpn

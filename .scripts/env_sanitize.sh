@@ -10,7 +10,7 @@ env_sanitize() {
 
     local LAN_NETWORK
     LAN_NETWORK=$(run_script 'env_get' LAN_NETWORK)
-    if echo "${LAN_NETWORK}" | grep -q 'x'; then
+    if echo "${LAN_NETWORK}" | grep -q 'x' || [[ ${LAN_NETWORK} == "" ]]; then
         local DETECTED_LAN_NETWORK
         DETECTED_LAN_NETWORK=$(run_script 'detect_lan_network')
         run_script 'env_set' LAN_NETWORK "${DETECTED_LAN_NETWORK}"
@@ -34,6 +34,20 @@ env_sanitize() {
     WATCHTOWER_NETWORK_MODE=$(run_script 'env_get' WATCHTOWER_NETWORK_MODE)
     if [[ ${WATCHTOWER_NETWORK_MODE} == "none" ]]; then
         run_script 'env_set' WATCHTOWER_NETWORK_MODE ""
+    fi
+
+    # TEMPORARY
+    # There is no good place to put this code that makes sense to keep permanently
+    # This code should be removed after allowing a period of time for existing users to upgrade
+    local VPN_OVPNDIR
+    VPN_OVPNDIR=$(run_script 'env_get' VPN_OVPNDIR)
+    if grep -q 'VPN_ENABLED=true$' "${SCRIPTPATH}/compose/.env" && [[ ${VPN_OVPNDIR} != "" ]]; then
+        mkdir -p "${VPN_OVPNDIR}" || fatal "${VPN_OVPNDIR} folder could not be created."
+        run_script 'set_permissions' "${VPN_OVPNDIR}"
+        local DOCKERCONFDIR
+        DOCKERCONFDIR=$(run_script 'env_get' DOCKERCONFDIR)
+        find "${DOCKERCONFDIR}" -regex '.*\/openvpn\/.*\.ovpn$' -exec cp {} "${VPN_OVPNDIR}" \; | info "No ovpn files to found."
+        find "${DOCKERCONFDIR}" -regex '.*\/openvpn\/.*\.crt$' -exec cp {} "${VPN_OVPNDIR}" \; | info "No crt files to found."
     fi
 }
 

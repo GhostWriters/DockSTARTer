@@ -10,5 +10,6 @@ pm_apt_install() {
 }
 
 test_pm_apt_install() {
+    run_script 'pm_apt_repos'
     run_script 'pm_apt_install'
 }
