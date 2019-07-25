@@ -29,7 +29,7 @@ install_docker() {
             curl -fsSL get.docker.com -o "${GET_DOCKER}" > /dev/null 2>&1 || fatal "Failed to get docker install script."
             info "Running docker install script."
             local REDIRECT="> /dev/null 2>&1"
-            if run_script 'question_prompt' "${PROMPT:-}" N "Would you like to display the command output?"; then
+            if [[ -n ${VERBOSE:-} ]] || run_script 'question_prompt' "${PROMPT:-}" N "Would you like to display the command output?"; then
                 REDIRECT=""
             fi
             eval sh "${GET_DOCKER}" "${REDIRECT}" || fatal "Failed to install docker."
