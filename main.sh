@@ -207,22 +207,26 @@ if [[ ${CI:-} == true ]] || [[ -t 1 ]]; then
         # R = Red
         # W = White
         # Y = Yellow
-        readonly B_B=$(tput setab 4)
-        readonly B_C=$(tput setab 6)
-        readonly B_G=$(tput setab 2)
-        readonly B_K=$(tput setab 0)
-        readonly B_M=$(tput setab 5)
-        readonly B_R=$(tput setab 1)
-        readonly B_W=$(tput setab 7)
-        readonly B_Y=$(tput setab 3)
-        readonly F_B=$(tput setaf 4)
-        readonly F_C=$(tput setaf 6)
-        readonly F_G=$(tput setaf 2)
-        readonly F_K=$(tput setaf 0)
-        readonly F_M=$(tput setaf 5)
-        readonly F_R=$(tput setaf 1)
-        readonly F_W=$(tput setaf 7)
-        readonly F_Y=$(tput setaf 3)
+        declare -Agr B=(
+            [B]=$(tput setab 4)
+            [C]=$(tput setab 6)
+            [G]=$(tput setab 2)
+            [K]=$(tput setab 0)
+            [M]=$(tput setab 5)
+            [R]=$(tput setab 1)
+            [W]=$(tput setab 7)
+            [Y]=$(tput setab 3)
+        )
+        declare -Agr F=(
+            [B]=$(tput setaf 4)
+            [C]=$(tput setaf 6)
+            [G]=$(tput setaf 2)
+            [K]=$(tput setaf 0)
+            [M]=$(tput setaf 5)
+            [R]=$(tput setaf 1)
+            [W]=$(tput setaf 7)
+            [Y]=$(tput setaf 3)
+        )
         readonly NC=$(tput sgr0)
     fi
 fi
@@ -231,19 +235,19 @@ fi
 readonly LOG_FILE="/tmp/dockstarter.log"
 sudo chown "${DETECTED_PUID:-$DETECTED_UNAME}":"${DETECTED_PGID:-$DETECTED_UGROUP}" "${LOG_FILE}" > /dev/null 2>&1 || true
 trace() { if [[ -n ${TRACE:-} ]]; then
-    echo -e "${NC:-}$(date +"%F %T") ${F_B:-}[TRACE ]${NC:-}   $*${NC:-}" | tee -a "${LOG_FILE}" >&2
+    echo -e "${NC:-}$(date +"%F %T") ${F[B]:-}[TRACE ]${NC:-}   $*${NC:-}" | tee -a "${LOG_FILE}" >&2
 fi; }
 debug() { if [[ -n ${DEBUG:-} ]]; then
-    echo -e "${NC:-}$(date +"%F %T") ${F_B:-}[DEBUG ]${NC:-}   $*${NC:-}" | tee -a "${LOG_FILE}" >&2
+    echo -e "${NC:-}$(date +"%F %T") ${F[B]:-}[DEBUG ]${NC:-}   $*${NC:-}" | tee -a "${LOG_FILE}" >&2
 fi; }
 info() { if [[ -n ${VERBOSE:-} ]]; then
-    echo -e "${NC:-}$(date +"%F %T") ${F_B:-}[INFO  ]${NC:-}   $*${NC:-}" | tee -a "${LOG_FILE}" >&2
+    echo -e "${NC:-}$(date +"%F %T") ${F[B]:-}[INFO  ]${NC:-}   $*${NC:-}" | tee -a "${LOG_FILE}" >&2
 fi; }
-notice() { echo -e "${NC:-}$(date +"%F %T") ${F_G:-}[NOTICE]${NC:-}   $*${NC:-}" | tee -a "${LOG_FILE}" >&2; }
-warn() { echo -e "${NC:-}$(date +"%F %T") ${F_Y:-}[WARN  ]${NC:-}   $*${NC:-}" | tee -a "${LOG_FILE}" >&2; }
-error() { echo -e "${NC:-}$(date +"%F %T") ${F_R:-}[ERROR ]${NC:-}   $*${NC:-}" | tee -a "${LOG_FILE}" >&2; }
+notice() { echo -e "${NC:-}$(date +"%F %T") ${F[G]:-}[NOTICE]${NC:-}   $*${NC:-}" | tee -a "${LOG_FILE}" >&2; }
+warn() { echo -e "${NC:-}$(date +"%F %T") ${F[Y]:-}[WARN  ]${NC:-}   $*${NC:-}" | tee -a "${LOG_FILE}" >&2; }
+error() { echo -e "${NC:-}$(date +"%F %T") ${F[R]:-}[ERROR ]${NC:-}   $*${NC:-}" | tee -a "${LOG_FILE}" >&2; }
 fatal() {
-    echo -e "${NC:-}$(date +"%F %T") ${B_R:-}${F_W:-}[FATAL ]${NC:-}   $*${NC:-}" | tee -a "${LOG_FILE}" >&2
+    echo -e "${NC:-}$(date +"%F %T") ${B[R]:-}${F[W]:-}[FATAL ]${NC:-}   $*${NC:-}" | tee -a "${LOG_FILE}" >&2
     exit 1
 }
 
