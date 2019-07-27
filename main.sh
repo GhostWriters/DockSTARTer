@@ -235,26 +235,26 @@ tcolor() {
     fi
 }
 declare -Agr B=(
-    [B]="$(tcolor B B)"
-    [C]="$(tcolor B C)"
-    [G]="$(tcolor B G)"
-    [K]="$(tcolor B K)"
-    [M]="$(tcolor B M)"
-    [R]="$(tcolor B R)"
-    [W]="$(tcolor B W)"
-    [Y]="$(tcolor B Y)"
+    [B]=$(tcolor B B)
+    [C]=$(tcolor B C)
+    [G]=$(tcolor B G)
+    [K]=$(tcolor B K)
+    [M]=$(tcolor B M)
+    [R]=$(tcolor B R)
+    [W]=$(tcolor B W)
+    [Y]=$(tcolor B Y)
 )
 declare -Agr F=(
-    [B]="$(tcolor F B)"
-    [C]="$(tcolor F C)"
-    [G]="$(tcolor F G)"
-    [K]="$(tcolor F K)"
-    [M]="$(tcolor F M)"
-    [R]="$(tcolor F R)"
-    [W]="$(tcolor F W)"
-    [Y]="$(tcolor F Y)"
+    [B]=$(tcolor F B)
+    [C]=$(tcolor F C)
+    [G]=$(tcolor F G)
+    [K]=$(tcolor F K)
+    [M]=$(tcolor F M)
+    [R]=$(tcolor F R)
+    [W]=$(tcolor F W)
+    [Y]=$(tcolor F Y)
 )
-readonly NC="$(tcolor NC)"
+readonly NC=$(tcolor NC)
 
 # Log Functions
 readonly LOG_FILE="/tmp/dockstarter.log"
