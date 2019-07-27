@@ -235,19 +235,19 @@ fi
 readonly LOG_FILE="/tmp/dockstarter.log"
 sudo chown "${DETECTED_PUID:-$DETECTED_UNAME}":"${DETECTED_PGID:-$DETECTED_UGROUP}" "${LOG_FILE}" > /dev/null 2>&1 || true
 trace() { if [[ -n ${TRACE:-} ]]; then
-    echo -e "${NC:-}$(date +"%F %T") ${F[B]:-}[TRACE ]${NC:-}   $*${NC:-}" | tee -a "${LOG_FILE}" >&2
+    echo -e "${NC:-}$(date +"%F %T") ${F[B:-]:-}[TRACE ]${NC:-}   $*${NC:-}" | tee -a "${LOG_FILE}" >&2
 fi; }
 debug() { if [[ -n ${DEBUG:-} ]]; then
-    echo -e "${NC:-}$(date +"%F %T") ${F[B]:-}[DEBUG ]${NC:-}   $*${NC:-}" | tee -a "${LOG_FILE}" >&2
+    echo -e "${NC:-}$(date +"%F %T") ${F[B:-]:-}[DEBUG ]${NC:-}   $*${NC:-}" | tee -a "${LOG_FILE}" >&2
 fi; }
 info() { if [[ -n ${VERBOSE:-} ]]; then
-    echo -e "${NC:-}$(date +"%F %T") ${F[B]:-}[INFO  ]${NC:-}   $*${NC:-}" | tee -a "${LOG_FILE}" >&2
+    echo -e "${NC:-}$(date +"%F %T") ${F[B:-]:-}[INFO  ]${NC:-}   $*${NC:-}" | tee -a "${LOG_FILE}" >&2
 fi; }
-notice() { echo -e "${NC:-}$(date +"%F %T") ${F[G]:-}[NOTICE]${NC:-}   $*${NC:-}" | tee -a "${LOG_FILE}" >&2; }
-warn() { echo -e "${NC:-}$(date +"%F %T") ${F[Y]:-}[WARN  ]${NC:-}   $*${NC:-}" | tee -a "${LOG_FILE}" >&2; }
-error() { echo -e "${NC:-}$(date +"%F %T") ${F[R]:-}[ERROR ]${NC:-}   $*${NC:-}" | tee -a "${LOG_FILE}" >&2; }
+notice() { echo -e "${NC:-}$(date +"%F %T") ${F[G:-]:-}[NOTICE]${NC:-}   $*${NC:-}" | tee -a "${LOG_FILE}" >&2; }
+warn() { echo -e "${NC:-}$(date +"%F %T") ${F[Y:-]:-}[WARN  ]${NC:-}   $*${NC:-}" | tee -a "${LOG_FILE}" >&2; }
+error() { echo -e "${NC:-}$(date +"%F %T") ${F[R:-]:-}[ERROR ]${NC:-}   $*${NC:-}" | tee -a "${LOG_FILE}" >&2; }
 fatal() {
-    echo -e "${NC:-}$(date +"%F %T") ${B[R]:-}${F[W]:-}[FATAL ]${NC:-}   $*${NC:-}" | tee -a "${LOG_FILE}" >&2
+    echo -e "${NC:-}$(date +"%F %T") ${B[R:-]:-}${F[W:-]:-}[FATAL ]${NC:-}   $*${NC:-}" | tee -a "${LOG_FILE}" >&2
     exit 1
 }
 
