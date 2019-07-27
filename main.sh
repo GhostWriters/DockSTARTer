@@ -254,7 +254,7 @@ declare -Agr F=(
     [W]="$(tcolor F W)"
     [Y]="$(tcolor F Y)"
 )
-readonly NC="$(tcolor NC || true)"
+readonly NC="$(tcolor NC)"
 
 # Log Functions
 readonly LOG_FILE="/tmp/dockstarter.log"
