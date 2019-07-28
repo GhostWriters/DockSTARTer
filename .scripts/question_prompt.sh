@@ -11,7 +11,7 @@ question_prompt() {
         if [[ ${CI:-} == true ]]; then
             YN=${DEFAULT}
         elif [[ ${PROMPT:-} == "CLI" ]]; then
-            info "${QUESTION}"
+            notice "${QUESTION}"
             read -rp "[Yn]" YN < /dev/tty
         elif [[ ${PROMPT:-} == "GUI" ]]; then
             local WHIPTAIL_DEFAULT

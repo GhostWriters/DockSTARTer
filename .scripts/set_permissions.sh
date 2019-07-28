@@ -20,7 +20,7 @@ set_permissions() {
             ;;
         *)
             # TODO: Consider adding a prompt to confirm setting permissions
-            warning "Setting permissions for ${CH_PATH} outside of ${DETECTED_HOMEDIR} may be unsafe."
+            warn "Setting permissions for ${CH_PATH} outside of ${DETECTED_HOMEDIR} may be unsafe."
             ;;
     esac
     local CH_PUID=${2:-$DETECTED_PUID}
@@ -31,6 +31,7 @@ set_permissions() {
         info "Setting file and folder permissions in ${CH_PATH}"
         chmod -R a=,a+rX,u+w,g+w "${CH_PATH}" > /dev/null 2>&1 || true
     fi
+    info "Setting executable permission on ${SCRIPTNAME}"
     chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
 }
 

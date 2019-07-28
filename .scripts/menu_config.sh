@@ -63,5 +63,5 @@ menu_config() {
 
 test_menu_config() {
     # run_script 'menu_config'
-    warning "Travis does not test menu_config."
+    warn "Travis does not test menu_config."
 }

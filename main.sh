@@ -36,18 +36,135 @@ IFS=$'\n\t'
 #/      update DockSTARTer to the latest stable commits
 #/  -u --update <branch>
 #/      update DockSTARTer to the latest commits from the specified branch
-##/ -v --verbose
-##/     verbose
+#/  -v --verbose
+#/      verbose
 #/  -x --debug
 #/      debug
 #/
 usage() {
-    grep --color=never -Po '^#/\K.*' "${SCRIPTNAME}" || echo "Failed to display usage information."
+    grep --color=never -Po '^#/\K.*' "${BASH_SOURCE[0]:-$0}" || echo "Failed to display usage information."
     exit
 }
 
 # Command Line Arguments
 readonly ARGS=("$@")
+cmdline() {
+    # http://www.kfirlavi.com/blog/2012/11/14/defensive-bash-programming/
+    # http://kirk.webfinish.com/2009/10/bash-shell-script-to-use-getopts-with-gnu-style-long-positional-parameters/
+    local ARG=
+    local LOCAL_ARGS
+    for ARG; do
+        local DELIM=""
+        case "${ARG}" in
+            #translate --gnu-long-options to -g (short options)
+            --add) LOCAL_ARGS="${LOCAL_ARGS:-}-a " ;;
+            --backup) LOCAL_ARGS="${LOCAL_ARGS:-}-b " ;;
+            --compose) LOCAL_ARGS="${LOCAL_ARGS:-}-c " ;;
+            --debug) LOCAL_ARGS="${LOCAL_ARGS:-}-x " ;;
+            --env) LOCAL_ARGS="${LOCAL_ARGS:-}-e " ;;
+            --help) LOCAL_ARGS="${LOCAL_ARGS:-}-h " ;;
+            --install) LOCAL_ARGS="${LOCAL_ARGS:-}-i " ;;
+            --prune) LOCAL_ARGS="${LOCAL_ARGS:-}-p " ;;
+            --remove) LOCAL_ARGS="${LOCAL_ARGS:-}-r " ;;
+            --test) LOCAL_ARGS="${LOCAL_ARGS:-}-t " ;;
+            --update) LOCAL_ARGS="${LOCAL_ARGS:-}-u " ;;
+            --verbose) LOCAL_ARGS="${LOCAL_ARGS:-}-v " ;;
+            #pass through anything else
+            *)
+                [[ ${ARG:0:1} == "-" ]] || DELIM='"'
+                LOCAL_ARGS="${LOCAL_ARGS:-}${DELIM}${ARG}${DELIM} "
+                ;;
+        esac
+    done
+
+    #Reset the positional parameters to the short options
+    eval set -- "${LOCAL_ARGS:-}"
+
+    while getopts ":a:b:c:eghipr:t:u:vx" OPTION; do
+        case ${OPTION} in
+            a)
+                readonly ADD=${OPTARG}
+                ;;
+            b)
+                case ${OPTARG} in
+                    min | med | max)
+                        readonly BACKUP=${OPTARG}
+                        ;;
+                    *)
+                        echo "Invalid backup option."
+                        exit 1
+                        ;;
+                esac
+                ;;
+            c)
+                case ${OPTARG} in
+                    down | generate | merge | pull | restart | up)
+                        readonly COMPOSE=${OPTARG}
+                        ;;
+                    *)
+                        echo "Invalid compose option."
+                        exit 1
+                        ;;
+                esac
+                ;;
+            e)
+                readonly ENV=true
+                ;;
+            h)
+                usage
+                exit
+                ;;
+            i)
+                readonly INSTALL=true
+                ;;
+            p)
+                readonly PRUNE=true
+                ;;
+            r)
+                readonly REMOVE=${OPTARG}
+                ;;
+            t)
+                readonly TEST=${OPTARG}
+                ;;
+            u)
+                readonly UPDATE=${OPTARG}
+                ;;
+            v)
+                readonly VERBOSE=1
+                ;;
+            x)
+                readonly DEBUG=1
+                set -x
+                ;;
+            :)
+                case ${OPTARG} in
+                    c)
+                        readonly COMPOSE=true
+                        ;;
+                    r)
+                        readonly REMOVE=true
+                        ;;
+                    u)
+                        readonly UPDATE=true
+                        ;;
+                    *)
+                        echo "${OPTARG} requires an option."
+                        exit 1
+                        ;;
+                esac
+                ;;
+            *)
+                usage
+                exit
+                ;;
+        esac
+    done
+    return
+}
+cmdline "${ARGS[@]:-}"
+if [[ -n ${DEBUG:-} ]] && [[ -n ${VERBOSE:-} ]]; then
+    readonly TRACE=1
+fi
 
 # Github Token for Travis CI
 if [[ ${CI:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == true ]]; then
@@ -80,31 +197,82 @@ readonly DETECTED_HOMEDIR=$(eval echo "~${DETECTED_UNAME}" 2> /dev/null || true)
 
 # Terminal Colors
 if [[ ${CI:-} == true ]] || [[ -t 1 ]]; then
-    # Reference for colornumbers used by most terminals can be found here: https://jonasjacek.github.io/colors/
-    # The actual color depends on the color scheme set by the current terminal-emulator
-    # For capabilities, see terminfo(5)
-    if [[ $(tput colors) -ge 8 ]]; then
-        BLU=$(tput setaf 4)
-        GRN=$(tput setaf 2)
-        RED=$(tput setaf 1)
-        YLW=$(tput setaf 3)
-        NC=$(tput sgr0)
-    fi
+    readonly SCRIPTTERM=true
 fi
-readonly BLU=${BLU:-}
-readonly GRN=${GRN:-}
-readonly RED=${RED:-}
-readonly YLW=${YLW:-}
-readonly NC=${NC:-}
+tcolor() {
+    if [[ -n ${SCRIPTTERM:-} ]]; then
+        # http://linuxcommand.org/lc3_adv_tput.php
+        local BF=${1:-}
+        local CAP
+        case ${BF} in
+            [Bb]) CAP=setab ;;
+            [Ff]) CAP=setaf ;;
+            [Nn][Cc]) CAP=sgr0 ;;
+            *) return ;;
+        esac
+        local COLOR_IN=${2:-}
+        local VAL
+        if [[ ${CAP} != "sgr0" ]]; then
+            case ${COLOR_IN} in
+                [Bb4]) VAL=4 ;; # Blue
+                [Cc6]) VAL=6 ;; # Cyan
+                [Gg2]) VAL=2 ;; # Green
+                [Kk0]) VAL=0 ;; # Black
+                [Mm5]) VAL=5 ;; # Magenta
+                [Rr1]) VAL=1 ;; # Red
+                [Ww7]) VAL=7 ;; # White
+                [Yy3]) VAL=3 ;; # Yellow
+                *) return ;;
+            esac
+        fi
+        local COLOR_OUT
+        if [[ $(tput colors) -ge 8 ]]; then
+            COLOR_OUT=$(eval tput ${CAP:-} ${VAL:-})
+        fi
+        echo "${COLOR_OUT:-}"
+    else
+        return
+    fi
+}
+declare -Agr B=(
+    [B]=$(tcolor B B)
+    [C]=$(tcolor B C)
+    [G]=$(tcolor B G)
+    [K]=$(tcolor B K)
+    [M]=$(tcolor B M)
+    [R]=$(tcolor B R)
+    [W]=$(tcolor B W)
+    [Y]=$(tcolor B Y)
+)
+declare -Agr F=(
+    [B]=$(tcolor F B)
+    [C]=$(tcolor F C)
+    [G]=$(tcolor F G)
+    [K]=$(tcolor F K)
+    [M]=$(tcolor F M)
+    [R]=$(tcolor F R)
+    [W]=$(tcolor F W)
+    [Y]=$(tcolor F Y)
+)
+readonly NC=$(tcolor NC)
 
 # Log Functions
 readonly LOG_FILE="/tmp/dockstarter.log"
 sudo chown "${DETECTED_PUID:-$DETECTED_UNAME}":"${DETECTED_PGID:-$DETECTED_UGROUP}" "${LOG_FILE}" > /dev/null 2>&1 || true
-info() { echo -e "${NC}$(date +"%F %T") ${BLU}[INFO]${NC}       $*${NC}" | tee -a "${LOG_FILE}" >&2; }
-warning() { echo -e "${NC}$(date +"%F %T") ${YLW}[WARNING]${NC}    $*${NC}" | tee -a "${LOG_FILE}" >&2; }
-error() { echo -e "${NC}$(date +"%F %T") ${RED}[ERROR]${NC}      $*${NC}" | tee -a "${LOG_FILE}" >&2; }
+trace() { if [[ -n ${TRACE:-} ]]; then
+    echo -e "${NC}$(date +"%F %T") ${F[B]}[TRACE ]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2
+fi; }
+debug() { if [[ -n ${DEBUG:-} ]]; then
+    echo -e "${NC}$(date +"%F %T") ${F[B]}[DEBUG ]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2
+fi; }
+info() { if [[ -n ${VERBOSE:-} ]]; then
+    echo -e "${NC}$(date +"%F %T") ${F[B]}[INFO  ]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2
+fi; }
+notice() { echo -e "${NC}$(date +"%F %T") ${F[G]}[NOTICE]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2; }
+warn() { echo -e "${NC}$(date +"%F %T") ${F[Y]}[WARN  ]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2; }
+error() { echo -e "${NC}$(date +"%F %T") ${F[R]}[ERROR ]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2; }
 fatal() {
-    echo -e "${NC}$(date +"%F %T") ${RED}[FATAL]${NC}      $*${NC}" | tee -a "${LOG_FILE}" >&2
+    echo -e "${NC}$(date +"%F %T") ${B[R]}${F[W]}[FATAL ]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2
     exit 1
 }
 
@@ -143,11 +311,11 @@ run_test() {
     shift
     if [[ -f ${SCRIPTPATH}/.scripts/${TESTSNAME}.sh ]]; then
         if grep -q "test_${TESTSNAME}" "${SCRIPTPATH}/.scripts/${TESTSNAME}.sh"; then
-            info "Testing ${TESTSNAME}."
+            notice "Testing ${TESTSNAME}."
             # shellcheck source=/dev/null
             source "${SCRIPTPATH}/.scripts/${TESTSNAME}.sh"
             eval "test_${TESTSNAME}" "$@" || fatal "Failed to run ${TESTSNAME}."
-            info "Completed testing ${TESTSNAME}."
+            notice "Completed testing ${TESTSNAME}."
         else
             fatal "Test function in ${SCRIPTPATH}/.scripts/${TESTSNAME}.sh not found."
         fi
@@ -168,10 +336,11 @@ cleanup() {
     local -ri EXIT_CODE=$?
 
     if repo_exists; then
+        info "Setting executable permission on ${SCRIPTNAME}"
         sudo chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
     fi
     if [[ ${CI:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == false ]]; then
-        warning "TRAVIS_SECURE_ENV_VARS is false for Pull Requests from remote branches. Please retry failed builds!"
+        warn "TRAVIS_SECURE_ENV_VARS is false for Pull Requests from remote branches. Please retry failed builds!"
     fi
 
     if [[ ${EXIT_CODE} -ne 0 ]]; then
@@ -193,6 +362,7 @@ main() {
     if [[ -t 1 ]]; then
         root_check
     fi
+    # Repo Check
     local PROMPT
     local DS_COMMAND
     DS_COMMAND=$(command -v ds || true)
@@ -211,18 +381,18 @@ main() {
                 fi
                 unset PROMPT
             fi
-            warning "Attempting to run DockSTARTer from ${DS_SYMLINK} location."
+            warn "Attempting to run DockSTARTer from ${DS_SYMLINK} location."
             exec sudo bash "${DS_SYMLINK}" "${ARGS[@]:-}"
         fi
     else
         if ! repo_exists; then
-            warning "Attempting to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
+            warn "Attempting to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
             # Anti Sudo Check
             if [[ ${EUID} -eq 0 ]]; then
                 fatal "Using sudo during cloning on first run is not supported."
             fi
             git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
-            info "Performing first run install."
+            notice "Performing first run install."
             exec sudo bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-i"
         fi
     fi
@@ -230,10 +400,80 @@ main() {
     if [[ ${EUID} -ne 0 ]]; then
         exec sudo bash "${SCRIPTNAME}" "${ARGS[@]:-}"
     fi
+    # Create Symlink
     run_script 'symlink_ds'
-    # shellcheck source=/dev/null
-    source "${SCRIPTPATH}/.scripts/cmdline.sh"
-    cmdline "${ARGS[@]:-}"
+    # Execute CLI Argument Functions
+    if [[ -n ${ADD:-} ]]; then
+        run_script 'appvars_create' "${ADD}"
+        run_script 'env_update'
+        exit
+    fi
+    if [[ -n ${BACKUP:-} ]]; then
+        run_script "backup_${BACKUP}"
+        exit
+    fi
+    if [[ -n ${COMPOSE:-} ]]; then
+        case ${COMPOSE} in
+            down)
+                run_script 'docker_compose' down
+                ;;
+            generate | merge)
+                run_script 'yml_merge'
+                ;;
+            pull)
+                run_script 'yml_merge'
+                run_script 'docker_compose' pull
+                ;;
+            restart)
+                run_script 'yml_merge'
+                run_script 'docker_compose' restart
+                ;;
+            up | true)
+                run_script 'yml_merge'
+                run_script 'docker_compose' up
+                ;;
+            *)
+                fatal "Invalid compose option."
+                ;;
+        esac
+        exit
+    fi
+    if [[ -n ${ENV:-} ]]; then
+        run_script 'env_update'
+        run_script 'appvars_create_all'
+        exit
+    fi
+    if [[ -n ${INSTALL:-} ]]; then
+        run_script 'run_install'
+        exit
+    fi
+    if [[ -n ${PRUNE:-} ]]; then
+        run_script 'docker_prune'
+        exit
+    fi
+    if [[ -n ${REMOVE:-} ]]; then
+        if [[ ${REMOVE} == true ]]; then
+            run_script 'appvars_purge_all'
+            run_script 'env_update'
+        else
+            run_script 'appvars_purge' "${REMOVE}"
+            run_script 'env_update'
+        fi
+        exit
+    fi
+    if [[ -n ${TEST:-} ]]; then
+        run_test "${TEST}"
+        exit
+    fi
+    if [[ -n ${UPDATE:-} ]]; then
+        if [[ ${UPDATE} == true ]]; then
+            run_script 'update_self'
+        else
+            run_script 'update_self' "${UPDATE}"
+        fi
+        exit
+    fi
+    # Run Menus
     PROMPT="GUI"
     run_script 'menu_main'
 }
