@@ -7,7 +7,7 @@ setup_docker_group() {
     info "Creating docker group."
     groupadd -f docker > /dev/null 2>&1 || fatal "Failed to create docker group."
     if [[ ${CI:-} == true ]]; then
-        info "Skipping usermod on Travis."
+        notice "Skipping usermod on Travis."
     else
         info "Adding ${DETECTED_UNAME} to docker group."
         usermod -aG docker "${DETECTED_UNAME}" > /dev/null 2>&1 || fatal "Failed to add ${DETECTED_UNAME} to docker group."

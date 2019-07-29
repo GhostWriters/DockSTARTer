@@ -5,9 +5,9 @@ IFS=$'\n\t'
 yml_merge() {
     run_script 'env_update'
     run_script 'appvars_create_all'
-    info "Generating docker-compose.yml file."
+    info "Merging docker-compose.yml file."
     local RUNFILE
-    RUNFILE=$(mktemp) || fatal "Failed to create temporary storage for yml generator."
+    RUNFILE=$(mktemp) || fatal "Failed to create temporary yml merge script."
     echo "#!/usr/bin/env bash" > "${RUNFILE}"
     {
         echo '/usr/local/bin/yq-go m '\\
@@ -32,24 +32,24 @@ yml_merge() {
                     if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.hostname.yml ]]; then
                         echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.hostname.yml \\" >> "${RUNFILE}"
                     else
-                        warning "Failed to include ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.hostname.yml file."
+                        warn "Failed to include ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.hostname.yml file."
                     fi
                     if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml ]]; then
                         echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml \\" >> "${RUNFILE}"
                     else
-                        warning "Failed to include ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml file."
+                        warn "Failed to include ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml file."
                     fi
                 elif [[ -n ${APPNETMODE} ]]; then
                     if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml ]]; then
                         echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml \\" >> "${RUNFILE}"
                     else
-                        warning "Failed to include ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml file."
+                        warn "Failed to include ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml file."
                     fi
                 fi
                 echo "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml \\" >> "${RUNFILE}"
                 info "All configurations for ${APPNAME} are included."
             else
-                warning "Failed to include ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml file."
+                warn "Failed to include ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml file."
             fi
         else
             error "Failed to include ${SCRIPTPATH}/compose/.apps/${FILENAME}/ directory."
@@ -57,8 +57,9 @@ yml_merge() {
     done < <(grep '_ENABLED=true$' < "${SCRIPTPATH}/compose/.env")
     echo "> ${SCRIPTPATH}/compose/docker-compose.yml" >> "${RUNFILE}"
     run_script 'install_yq'
-    bash "${RUNFILE}" > /dev/null 2>&1 || fatal "Failed to run generator."
-    rm -f "${RUNFILE}" || warning "Temporary yml generator file could not be removed."
+    info "Running compiled script to merge docker-compose.yml file."
+    bash "${RUNFILE}" > /dev/null 2>&1 || fatal "Failed to run yml merge script."
+    rm -f "${RUNFILE}" || warn "Failed to remove temporary yml merge script."
     info "Merging docker-compose.yml complete."
 }
 

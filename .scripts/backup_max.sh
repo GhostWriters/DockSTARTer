@@ -22,17 +22,19 @@ backup_max() {
             local RUNNING
             RUNNING=$(docker inspect "${FILENAME}" 2> /dev/null | grep -Po '"Running": \Ktrue' || echo "false")
             if [[ ${RUNNING} == true ]]; then
+                info "Stopping ${FILENAME} container."
                 docker stop "${FILENAME}" > /dev/null 2>&1 || error "Unable to stop ${FILENAME}."
             fi
             run_script 'backup_create' "${FILENAME}" || return 1
             if [[ ${RUNNING} == true ]]; then
+                info "Starting ${FILENAME} container."
                 docker start "${FILENAME}" > /dev/null 2>&1 || error "Unable to start ${FILENAME}."
             fi
             local BACKUP_CMD_POST_APP
             BACKUP_CMD_POST_APP=$(run_script 'env_get' BACKUP_CMD_POST_APP)
             eval "${BACKUP_CMD_POST_APP}" || error "Failed to execute BACKUP_CMD_POST_APP."
         else
-            warning "${APPNAME}_BACKUP_CONFIG is false. ${APPNAME} will not be backed up."
+            warn "${APPNAME}_BACKUP_CONFIG is false. ${APPNAME} will not be backed up."
         fi
     done < <(ls -A "${DOCKERCONFDIR}")
     local BACKUP_CMD_POST_RUN
