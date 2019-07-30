@@ -9,6 +9,7 @@ services:
       - ${NS1}
       - ${NS2}
     environment:
+      - CREATE_TUN_DEVICE=true
       - LOCAL_NETWORK=${LAN_NETWORK}
       - OPENVPN_OPTS=${VPN_OPTIONS}
       - OPENVPN_PASSWORD=${VPN_PASS}
@@ -17,6 +18,7 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TRANSMISSION_DOWNLOAD_DIR=/downloads/completed
+      - TRANSMISSION_HOME=/config
       - TRANSMISSION_INCOMPLETE_DIR=/downloads/incomplete
       - TRANSMISSION_WATCH_DIR=/downloads/watch
       - TZ=${TZ}
@@ -32,4 +34,5 @@ services:
       - ${DOCKERSHAREDDIR}:/shared
       - ${DOWNLOADSDIR}:/data
       - ${DOWNLOADSDIR}:/downloads
+      - ${VPN_OVPNDIR}:/config/openvpn
       - ${VPN_OVPNDIR}:/etc/openvpn/custom/
