@@ -17,4 +17,4 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/goaccess:/config
       - ${DOCKERSHAREDDIR}:/shared
-      - ${GOACCESS_LOGSDIR}:/opt/log
+      - ${GOACCESS_LOGSDIR}:/opt/log:ro
