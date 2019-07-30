@@ -4,7 +4,7 @@ services:
     environment:
       - GROUPID=${PGID}
       - NMBD=${SAMBA_NMBD}
-      - SHARE=${DOCKERHOSTNAME};/${DOCKERHOSTNAME}/;yes;no;yes;all;${SAMBA_USERNAME}
+      - SHARE=${SAMBA_SHARENAME};/${SAMBA_SHARENAME};yes;no;no;all;${SAMBA_USERNAME}
       - TZ=${TZ}
       - USER=${SAMBA_USERNAME};${SAMBA_PASSWORD}
       - USERID=${PUID}
@@ -16,21 +16,21 @@ services:
         max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: unless-stopped
     volumes:
-      - ./:/${DOCKERHOSTNAME}/compose
+      - ./:/${SAMBA_SHARENAME}/compose
       - /etc/localtime:/etc/localtime:ro
-      - ${BACKUP_CONFDIR}:/${DOCKERHOSTNAME}/backup
-      - ${DOCKERCONFDIR}:/${DOCKERHOSTNAME}/config
-      - ${DOCKERSHAREDDIR}:/${DOCKERHOSTNAME}/shared
+      - ${BACKUP_CONFDIR}:/${SAMBA_SHARENAME}/backup
+      - ${DOCKERCONFDIR}:/${SAMBA_SHARENAME}/config
+      - ${DOCKERSHAREDDIR}:/${SAMBA_SHARENAME}/shared
       - ${DOCKERSHAREDDIR}:/shared
-      - ${DOWNLOADSDIR}:/${DOCKERHOSTNAME}/downloads
+      - ${DOWNLOADSDIR}:/${SAMBA_SHARENAME}/downloads
       - ${DOWNLOADSDIR}:/downloads
-      - ${MEDIADIR_BOOKS}:/${DOCKERHOSTNAME}/books
+      - ${MEDIADIR_BOOKS}:/${SAMBA_SHARENAME}/books
       - ${MEDIADIR_BOOKS}:/books
-      - ${MEDIADIR_COMICS}:/${DOCKERHOSTNAME}/comics
+      - ${MEDIADIR_COMICS}:/${SAMBA_SHARENAME}/comics
       - ${MEDIADIR_COMICS}:/comics
-      - ${MEDIADIR_MOVIES}:/${DOCKERHOSTNAME}/movies
+      - ${MEDIADIR_MOVIES}:/${SAMBA_SHARENAME}/movies
       - ${MEDIADIR_MOVIES}:/movies
-      - ${MEDIADIR_MUSIC}:/${DOCKERHOSTNAME}/music
+      - ${MEDIADIR_MUSIC}:/${SAMBA_SHARENAME}/music
       - ${MEDIADIR_MUSIC}:/music
-      - ${MEDIADIR_TV}:/${DOCKERHOSTNAME}/tv
+      - ${MEDIADIR_TV}:/${SAMBA_SHARENAME}/tv
       - ${MEDIADIR_TV}:/tv
