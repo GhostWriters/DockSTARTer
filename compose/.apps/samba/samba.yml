@@ -1,20 +1,14 @@
 services:
   samba:
-    command:
-      - >-
-        -u "${SAMBA_USERNAME};${SAMBA_PASSWORD}"
-        -s "Books;/data/books;yes;no;no;${SAMBA_USERNAME}"
-        -s "Comics;/data/comics;yes;no;no;${SAMBA_USERNAME}"
-        -s "Docker Config;/data/docker/config;yes;no;no;${SAMBA_USERNAME}"
-        -s "Downloads;/data/downloads;yes;no;no;${SAMBA_USERNAME}"
-        -s "Movies;/data/movies;yes;no;no;${SAMBA_USERNAME}"
-        -s "Music;/data/music;yes;no;no;${SAMBA_USERNAME}"
-        -s "TV;/data/tv;yes;no;no;${SAMBA_USERNAME}"
     container_name: samba
     environment:
       - GROUPID=${PGID}
+      - NMBD=${SAMBA_NMBD}
+      - SHARE=${DOCKERHOSTNAME};/${DOCKERHOSTNAME}/;yes;no;yes;all;${SAMBA_USERNAME}
       - TZ=${TZ}
+      - USER=${SAMBA_USERNAME};${SAMBA_PASSWORD}
       - USERID=${PUID}
+      - WORKGROUP=${SAMBA_WORKGROUP}
     logging:
       driver: json-file
       options:
@@ -22,18 +16,21 @@ services:
         max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: unless-stopped
     volumes:
+      - ./:/${DOCKERHOSTNAME}/compose
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}:/data/docker/config
+      - ${BACKUP_CONFDIR}:/${DOCKERHOSTNAME}/backup
+      - ${DOCKERCONFDIR}:/${DOCKERHOSTNAME}/config
+      - ${DOCKERSHAREDDIR}:/${DOCKERHOSTNAME}/shared
       - ${DOCKERSHAREDDIR}:/shared
-      - ${DOWNLOADSDIR}:/data/downloads
+      - ${DOWNLOADSDIR}:/${DOCKERHOSTNAME}/downloads
       - ${DOWNLOADSDIR}:/downloads
+      - ${MEDIADIR_BOOKS}:/${DOCKERHOSTNAME}/books
       - ${MEDIADIR_BOOKS}:/books
-      - ${MEDIADIR_BOOKS}:/data/books
+      - ${MEDIADIR_COMICS}:/${DOCKERHOSTNAME}/comics
       - ${MEDIADIR_COMICS}:/comics
-      - ${MEDIADIR_COMICS}:/data/comics
-      - ${MEDIADIR_MOVIES}:/data/movies
+      - ${MEDIADIR_MOVIES}:/${DOCKERHOSTNAME}/movies
       - ${MEDIADIR_MOVIES}:/movies
-      - ${MEDIADIR_MUSIC}:/data/music
+      - ${MEDIADIR_MUSIC}:/${DOCKERHOSTNAME}/music
       - ${MEDIADIR_MUSIC}:/music
-      - ${MEDIADIR_TV}:/data/tv
+      - ${MEDIADIR_TV}:/${DOCKERHOSTNAME}/tv
       - ${MEDIADIR_TV}:/tv
