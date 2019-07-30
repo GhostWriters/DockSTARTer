@@ -16,7 +16,7 @@ services:
         max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: unless-stopped
     volumes:
-      - ./:/${DOCKERHOSTNAME}/compose
+      - ../compose/:/${DOCKERHOSTNAME}/compose
       - /etc/localtime:/etc/localtime:ro
       - ${BACKUP_CONFDIR}:/${DOCKERHOSTNAME}/backup
       - ${DOCKERCONFDIR}:/${DOCKERHOSTNAME}/config
