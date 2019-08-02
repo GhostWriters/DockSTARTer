@@ -393,7 +393,7 @@ main() {
             fi
             git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
             notice "Performing first run install."
-            exec sudo bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-i"
+            exec sudo bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-vi"
         fi
     fi
     # Sudo Check
