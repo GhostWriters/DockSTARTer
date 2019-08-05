@@ -6,10 +6,12 @@ pm_apt_remove_docker() {
     # https://docs.docker.com/install/linux/docker-ce/debian/
     # https://docs.docker.com/install/linux/docker-ce/ubuntu/
     info "Removing conflicting Docker packages."
-    apt-get -y remove docker \
+    apt-get -y remove containerd \
+        docker \
         docker-compose \
         docker-engine \
-        docker.io > /dev/null 2>&1 || true
+        docker.io \
+        runc > /dev/null 2>&1 || true
 }
 
 test_pm_apt_remove_docker() {
