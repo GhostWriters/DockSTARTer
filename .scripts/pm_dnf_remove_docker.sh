@@ -10,12 +10,12 @@ pm_dnf_remove_docker() {
         docker-client-latest \
         docker-common \
         docker-compose \
+        docker-engine \
+        docker-engine-selinux \
         docker-latest \
         docker-latest-logrotate \
         docker-logrotate \
-        docker-selinux \
-        docker-engine-selinux \
-        docker-engine > /dev/null 2>&1 || true
+        docker-selinux > /dev/null 2>&1 || true
 }
 
 test_pm_dnf_remove_docker() {
