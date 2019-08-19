@@ -2,4 +2,5 @@ services:
   transmission:
     ports:
       - ${TRANSMISSION_PORT_51413}:51413
+      - ${TRANSMISSION_PORT_51413}:51413/udp
       - ${TRANSMISSION_PORT_9091}:9091
