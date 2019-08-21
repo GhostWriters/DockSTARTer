@@ -1,59 +1,58 @@
 name: CI
 
-on: [push]
+on: push
 
 jobs:
-
   variable_dump:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: variable_dump_name
-      env:
-        CI: true
-      run: |
-        echo "HOME: ${HOME}"
-        echo
-        echo "GITHUB_WORKFLOW: ${GITHUB_WORKFLOW}"
-        echo
-        echo "GITHUB_ACTION: ${GITHUB_ACTION}"
-        echo
-        echo "GITHUB_ACTOR: ${GITHUB_ACTOR}"
-        echo
-        echo "GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}"
-        echo
-        echo "GITHUB_EVENT_NAME: ${GITHUB_EVENT_NAME}"
-        echo
-        echo "GITHUB_EVENT_PATH: ${GITHUB_EVENT_PATH}"
-        echo
-        echo "GITHUB_WORKSPACE: ${GITHUB_WORKSPACE}"
-        echo
-        echo "GITHUB_SHA: ${GITHUB_SHA}"
-        echo
-        echo "GITHUB_REF: ${GITHUB_REF}"
-        echo
-        echo "GITHUB_HEAD_REF: ${GITHUB_HEAD_REF}"
-        echo
-        echo "GITHUB_BASE_REF: ${GITHUB_BASE_REF}"
+      - uses: actions/checkout@v1
+      - name: variable_dump_name
+        env:
+          CI: true
+        run: |
+          echo "HOME: ${HOME}"
+          echo
+          echo "GITHUB_WORKFLOW: ${GITHUB_WORKFLOW}"
+          echo
+          echo "GITHUB_ACTION: ${GITHUB_ACTION}"
+          echo
+          echo "GITHUB_ACTOR: ${GITHUB_ACTOR}"
+          echo
+          echo "GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}"
+          echo
+          echo "GITHUB_EVENT_NAME: ${GITHUB_EVENT_NAME}"
+          echo
+          echo "GITHUB_EVENT_PATH: ${GITHUB_EVENT_PATH}"
+          echo
+          echo "GITHUB_WORKSPACE: ${GITHUB_WORKSPACE}"
+          echo
+          echo "GITHUB_SHA: ${GITHUB_SHA}"
+          echo
+          echo "GITHUB_REF: ${GITHUB_REF}"
+          echo
+          echo "GITHUB_HEAD_REF: ${GITHUB_HEAD_REF}"
+          echo
+          echo "GITHUB_BASE_REF: ${GITHUB_BASE_REF}"
 
   validate:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: validate
-      env:
-        CI: true
-      run: |
-        curl -fsSL https://raw.githubusercontent.com/nemchik/ShellSuite/master/shellsuite.sh -o shellsuite-${GITHUB_SHA}.sh && bash shellsuite-${GITHUB_SHA}.sh -p "${PWD}" -v "bashate" -f " -i E006"
-        curl -fsSL https://raw.githubusercontent.com/nemchik/ShellSuite/master/shellsuite.sh -o shellsuite-${GITHUB_SHA}.sh && bash shellsuite-${GITHUB_SHA}.sh -p "${PWD}" -v "shellcheck" -f " -x"
-        curl -fsSL https://raw.githubusercontent.com/nemchik/ShellSuite/master/shellsuite.sh -o shellsuite-${GITHUB_SHA}.sh && bash shellsuite-${GITHUB_SHA}.sh -p "${PWD}" -v "shfmt" -f " -s -i 4 -ci -sr -d"
-        while IFS= read -r line; do echo; docker run --rm -v ${PWD}:/code pipelinecomponents/yamllint yamllint -d '{extends: default, rules: {document-start: {present: false}, line-length: disable}}' "${line}" || exit 1; echo; done < <(git ls-files '*.yaml' '*.yml')
+      - uses: actions/checkout@v1
+      - name: validate
+        env:
+          CI: true
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/nemchik/ShellSuite/master/shellsuite.sh -o shellsuite-${GITHUB_SHA}.sh && bash shellsuite-${GITHUB_SHA}.sh -p "${PWD}" -v "bashate" -f " -i E006"
+          curl -fsSL https://raw.githubusercontent.com/nemchik/ShellSuite/master/shellsuite.sh -o shellsuite-${GITHUB_SHA}.sh && bash shellsuite-${GITHUB_SHA}.sh -p "${PWD}" -v "shellcheck" -f " -x"
+          curl -fsSL https://raw.githubusercontent.com/nemchik/ShellSuite/master/shellsuite.sh -o shellsuite-${GITHUB_SHA}.sh && bash shellsuite-${GITHUB_SHA}.sh -p "${PWD}" -v "shfmt" -f " -s -i 4 -ci -sr -d"
+          while IFS= read -r line; do echo "Linting ${line}"; docker run --rm -v ${PWD}:/code pipelinecomponents/yamllint yamllint -d '{extends: default, rules: {document-start: {present: false}, line-length: disable}}' "${line}" || exit 1; echo; done < <(git ls-files '*.yaml' '*.yml')
 
   run:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: run
-      env:
-        CI: true
-      run: while IFS= read -r line; do echo; sudo bash ./main.sh -vt "${line}" || exit 1; echo; done < <(git ls-files '.scripts/*.sh' | sed -E 's/^\.scripts\/(\w+)\.sh$/\1/')
+      - uses: actions/checkout@v1
+      - name: run
+        env:
+          CI: true
+        run: while IFS= read -r line; do echo; sudo bash ./main.sh -vt "${line}" || exit 1; echo; done < <(git ls-files '.scripts/*.sh' | sed -E 's/^\.scripts\/(\w+)\.sh$/\1/')
