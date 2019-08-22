@@ -6,5 +6,6 @@ services:
       com.dockstarter.appvars.qbittorrent_backup_config: "true"
       com.dockstarter.appvars.qbittorrent_enabled: "false"
       com.dockstarter.appvars.qbittorrent_network_mode: ""
+      com.dockstarter.appvars.qbittorrent_port_51413: "51413"
       com.dockstarter.appvars.qbittorrent_port_6881: "6881"
       com.dockstarter.appvars.qbittorrent_port_8080: "8080"

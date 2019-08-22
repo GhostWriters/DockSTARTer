@@ -7,4 +7,5 @@ services:
       com.dockstarter.appvars.transmission_enabled: "false"
       com.dockstarter.appvars.transmission_network_mode: ""
       com.dockstarter.appvars.transmission_port_51413: "51413"
+      com.dockstarter.appvars.transmission_port_6881: "6881"
       com.dockstarter.appvars.transmission_port_9091: "9091"
