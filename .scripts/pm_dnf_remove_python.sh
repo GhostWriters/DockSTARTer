@@ -10,5 +10,5 @@ pm_dnf_remove_python() {
 
 test_pm_dnf_remove_python() {
     # run_script 'pm_dnf_remove_python'
-    warn "Travis does not test pm_dnf_remove_python."
+    warn "CI does not test pm_dnf_remove_python."
 }

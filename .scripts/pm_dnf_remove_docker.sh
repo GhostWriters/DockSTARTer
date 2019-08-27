@@ -20,5 +20,5 @@ pm_dnf_remove_docker() {
 
 test_pm_dnf_remove_docker() {
     # run_script 'pm_dnf_remove_docker'
-    warn "Travis does not test pm_dnf_remove_docker."
+    warn "CI does not test pm_dnf_remove_docker."
 }

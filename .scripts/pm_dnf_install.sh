@@ -12,5 +12,5 @@ pm_dnf_install() {
 
 test_pm_dnf_install() {
     # run_script 'pm_dnf_install'
-    warn "Travis does not test pm_dnf_install."
+    warn "CI does not test pm_dnf_install."
 }
