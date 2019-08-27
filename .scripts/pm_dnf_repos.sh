@@ -8,5 +8,5 @@ pm_dnf_repos() {
 
 test_pm_dnf_repos() {
     # run_script 'pm_dnf_repos'
-    warn "Travis does not test pm_dnf_repos."
+    warn "CI does not test pm_dnf_repos."
 }

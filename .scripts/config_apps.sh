@@ -13,5 +13,5 @@ config_apps() {
 
 test_config_apps() {
     # run_script 'config_apps'
-    warn "Travis does not test config_apps."
+    warn "CI does not test config_apps."
 }
