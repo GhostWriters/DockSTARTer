@@ -19,5 +19,5 @@ pm_yum_repos() {
 
 test_pm_yum_repos() {
     # run_script 'pm_yum_repos'
-    warn "Travis does not test pm_yum_repos."
+    warn "CI does not test pm_yum_repos."
 }

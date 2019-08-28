@@ -267,5 +267,5 @@ menu_value_prompt() {
 
 test_menu_value_prompt() {
     # run_script 'menu_value_prompt'
-    warn "Travis does not test menu_value_prompt."
+    warn "CI does not test menu_value_prompt."
 }

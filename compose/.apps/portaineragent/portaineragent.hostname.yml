@@ -1,4 +1,4 @@
 services:
   portaineragent:
-    #hostname: ${DOCKERHOSTNAME}
-    # This causes issues, leave it commented out
+  #  hostname: ${DOCKERHOSTNAME}
+  # This causes issues, leave it commented out
