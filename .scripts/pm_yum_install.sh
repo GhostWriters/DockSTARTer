@@ -12,5 +12,5 @@ pm_yum_install() {
 
 test_pm_yum_install() {
     # run_script 'pm_yum_install'
-    warn "Travis does not test pm_yum_install."
+    warn "CI does not test pm_yum_install."
 }

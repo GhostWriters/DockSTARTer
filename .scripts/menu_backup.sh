@@ -42,5 +42,5 @@ menu_backup() {
 
 test_menu_backup() {
     # run_script 'menu_backup'
-    warn "Travis does not test menu_backup."
+    warn "CI does not test menu_backup."
 }

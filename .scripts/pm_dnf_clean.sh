@@ -11,5 +11,5 @@ pm_dnf_clean() {
 
 test_pm_dnf_clean() {
     # run_script 'pm_dnf_clean'
-    warn "Travis does not test pm_dnf_clean."
+    warn "CI does not test pm_dnf_clean."
 }

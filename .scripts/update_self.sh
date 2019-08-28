@@ -15,8 +15,10 @@ update_self() {
     git fetch --all --prune > /dev/null 2>&1 || fatal "Failed to fetch recent changes from git."
     info "Resetting to ${BRANCH}."
     git reset --hard "${BRANCH}" > /dev/null 2>&1 || fatal "Failed to reset to ${BRANCH}."
-    info "Pulling recent changes from git."
-    git pull > /dev/null 2>&1 || fatal "Failed to pull recent changes from git."
+    if [[ ${CI:-} != true ]]; then
+        info "Pulling recent changes from git."
+        git pull > /dev/null 2>&1 || fatal "Failed to pull recent changes from git."
+    fi
     info "Removing unused branches."
     git for-each-ref --format '%(refname:short)' refs/heads | grep -v master | xargs git branch -D > /dev/null 2>&1 || true
     while IFS= read -r line; do
@@ -28,5 +30,5 @@ update_self() {
 }
 
 test_update_self() {
-    run_script 'update_self' "${TRAVIS_COMMIT:-}"
+    run_script 'update_self' "${COMMIT_SHA:-}"
 }

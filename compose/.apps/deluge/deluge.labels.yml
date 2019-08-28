@@ -6,6 +6,8 @@ services:
       com.dockstarter.appvars.deluge_backup_config: "true"
       com.dockstarter.appvars.deluge_enabled: "false"
       com.dockstarter.appvars.deluge_network_mode: ""
+      com.dockstarter.appvars.deluge_port_51413: "51413"
       com.dockstarter.appvars.deluge_port_58846: "58846"
       com.dockstarter.appvars.deluge_port_58946: "58946"
+      com.dockstarter.appvars.deluge_port_6881: "6881"
       com.dockstarter.appvars.deluge_port_8112: "8112"

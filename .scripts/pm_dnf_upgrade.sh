@@ -15,5 +15,5 @@ pm_dnf_upgrade() {
 
 test_pm_dnf_upgrade() {
     # run_script 'pm_dnf_upgrade'
-    warn "Travis does not test pm_dnf_upgrade."
+    warn "CI does not test pm_dnf_upgrade."
 }

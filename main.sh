@@ -232,8 +232,8 @@ tcolor() {
             esac
         fi
         local COLOR_OUT
-        if [[ $(tput colors) -ge 8 ]]; then
-            COLOR_OUT=$(eval tput ${CAP:-} ${VAL:-})
+        if [[ $(tput colors 2> /dev/null) -ge 8 ]]; then
+            COLOR_OUT=$(eval tput ${CAP:-} ${VAL:-} 2> /dev/null)
         fi
         echo "${COLOR_OUT:-}"
     else

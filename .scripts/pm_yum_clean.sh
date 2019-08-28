@@ -11,5 +11,5 @@ pm_yum_clean() {
 
 test_pm_yum_clean() {
     # run_script 'pm_yum_clean'
-    warn "Travis does not test pm_yum_clean."
+    warn "CI does not test pm_yum_clean."
 }
