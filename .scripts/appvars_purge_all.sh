@@ -17,7 +17,7 @@ appvars_purge_all() {
         fi
         PROMPT=${PREPROMPT:-}
     else
-        info "${SCRIPTPATH}/compose/.env does not contain any disabled apps."
+        notice "${SCRIPTPATH}/compose/.env does not contain any disabled apps."
     fi
 }
 

@@ -154,7 +154,7 @@ menu_value_prompt() {
     if [[ ${CI:-} == true ]]; then
         SELECTEDVALUE="Keep Current "
     else
-        SELECTEDVALUE=$(whiptail --fb --clear --title "DockSTARTer" --menu "What would you like set for ${SET_VAR}?${VALUEDESCRIPTION:-}" 0 0 0 "${VALUEOPTIONS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
+        SELECTEDVALUE=$(whiptail --fb --clear --title "DockSTARTer" --menu "What would you like set for ${SET_VAR}?${VALUEDESCRIPTION}" 0 0 0 "${VALUEOPTIONS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
     fi
 
     local INPUT
@@ -172,10 +172,10 @@ menu_value_prompt() {
             INPUT=${SYSTEM_VAL}
             ;;
         "Enter New ")
-            INPUT=$(whiptail --fb --clear --title "DockSTARTer" --inputbox "What would you like set for ${SET_VAR}?" 0 0 "${CURRENT_VAL}" 3>&1 1>&2 2>&3 || echo "CancelNewEntry")
+            INPUT=$(whiptail --fb --clear --title "DockSTARTer" --inputbox "What would you like set for ${SET_VAR}?${VALUEDESCRIPTION}" 0 0 "${CURRENT_VAL}" 3>&1 1>&2 2>&3 || echo "CancelNewEntry")
             ;;
         "Cancel")
-            warning "Selection of ${SET_VAR} was canceled."
+            warn "Selection of ${SET_VAR} was canceled."
             return 1
             ;;
         *)
@@ -267,5 +267,5 @@ menu_value_prompt() {
 
 test_menu_value_prompt() {
     # run_script 'menu_value_prompt'
-    warning "Travis does not test menu_value_prompt."
+    warn "CI does not test menu_value_prompt."
 }

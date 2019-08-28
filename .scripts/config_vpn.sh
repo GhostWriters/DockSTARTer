@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 config_vpn() {
     local APPNAME="VPN"
-    local VARNAMES=(LAN_NETWORK NS1 NS2 VPN_ENABLE VPN_USER VPN_PASS VPN_PROV VPN_OPTIONS)
+    local VARNAMES=(LAN_NETWORK NS1 NS2 VPN_ENABLE VPN_USER VPN_PASS VPN_PROV VPN_OVPNDIR VPN_OPTIONS)
     local APPVARS
     APPVARS=$(for v in "${VARNAMES[@]}"; do echo "${v}=$(run_script 'env_get' "${v}")"; done)
 
@@ -31,5 +31,5 @@ config_vpn() {
 
 test_config_vpn() {
     # run_script 'config_vpn'
-    warning "Travis does not test config_vpn."
+    warn "CI does not test config_vpn."
 }

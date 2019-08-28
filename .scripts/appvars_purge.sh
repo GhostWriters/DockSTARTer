@@ -11,7 +11,7 @@ appvars_purge() {
         if [[ ${PROMPT:-} == "GUI" ]]; then
             whiptail --fb --clear --title "DockSTARTer" --msgbox "${APPNAME} has no variables." 0 0
         else
-            warning "${APPNAME} has no variables."
+            warn "${APPNAME} has no variables."
         fi
         return
     fi

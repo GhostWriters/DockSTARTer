@@ -1,7 +1,7 @@
 services:
   samba:
     ports:
-      - ${SAMBA_PORT_139}:139/tcp
+      - ${SAMBA_PORT_139}:139
       - ${SAMBA_PORT_139}:139/udp
-      - ${SAMBA_PORT_445}:445/tcp
+      - ${SAMBA_PORT_445}:445
       - ${SAMBA_PORT_445}:445/udp

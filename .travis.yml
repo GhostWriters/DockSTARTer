@@ -1,13 +1,18 @@
 language: minimal
+env:
+  global:
+    - CI=true
+    - COMMIT_SHA=${TRAVIS_COMMIT}
 jobs:
   include:
     - stage: validate
-      script:
-        - curl -fsSL https://raw.githubusercontent.com/nemchik/ShellSuite/master/shellsuite.sh -o shellsuite-${TRAVIS_COMMIT}.sh && bash shellsuite-${TRAVIS_COMMIT}.sh -p "${PWD}" -v "bashate" -f " -i E006"
-        - curl -fsSL https://raw.githubusercontent.com/nemchik/ShellSuite/master/shellsuite.sh -o shellsuite-${TRAVIS_COMMIT}.sh && bash shellsuite-${TRAVIS_COMMIT}.sh -p "${PWD}" -v "shellcheck" -f " -x"
-        - curl -fsSL https://raw.githubusercontent.com/nemchik/ShellSuite/master/shellsuite.sh -o shellsuite-${TRAVIS_COMMIT}.sh && bash shellsuite-${TRAVIS_COMMIT}.sh -p "${PWD}" -v "shfmt" -f " -s -i 4 -ci -sr -d"
-        - "docker run --rm -v ${PWD}:/code pipelinecomponents/yamllint yamllint -d '{extends: default, rules: {document-start: {present: false}, line-length: disable}}' $(git ls-files '*.yaml' '*.yml')"
+      script: |
+        curl -fsSL https://raw.githubusercontent.com/nemchik/ShellSuite/master/shellsuite.sh -o shellsuite-${COMMIT_SHA}.sh && bash shellsuite-${COMMIT_SHA}.sh -p "${PWD}" -v "bashate" -f " -i E006"
+        curl -fsSL https://raw.githubusercontent.com/nemchik/ShellSuite/master/shellsuite.sh -o shellsuite-${COMMIT_SHA}.sh && bash shellsuite-${COMMIT_SHA}.sh -p "${PWD}" -v "shellcheck" -f " -x"
+        curl -fsSL https://raw.githubusercontent.com/nemchik/ShellSuite/master/shellsuite.sh -o shellsuite-${COMMIT_SHA}.sh && bash shellsuite-${COMMIT_SHA}.sh -p "${PWD}" -v "shfmt" -f " -s -i 4 -ci -sr -d"
+        while IFS= read -r line; do echo "Linting ${line}"; docker run --rm -v ${PWD}:/code pipelinecomponents/yamllint yamllint -d '{extends: default, rules: {document-start: {present: false}, line-length: disable}}' "${line}" || exit 1; done < <(git ls-files '*.yaml' '*.yml')
     - stage: run
-      script: while IFS= read -r line; do echo; sudo bash ./main.sh -t "${line}" || exit 1; echo; done < <(ls -A .scripts/*.sh | sed -E 's/^\.scripts\/(\w+)\.sh$/\1/')
+      script: |
+        while IFS= read -r line; do echo; sudo -E bash ./main.sh -vt "${line}" || exit 1; echo; done < <(git ls-files '.scripts/*.sh' | sed -E 's/^\.scripts\/(\w+)\.sh$/\1/')
 matrix:
   fast_finish: true

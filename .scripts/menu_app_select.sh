@@ -16,6 +16,9 @@ menu_app_select() {
                     APPNICENAME=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.dockstarter.appinfo.nicename]" || echo "${APPNAME}")
                     local APPDESCRIPTION
                     APPDESCRIPTION=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.dockstarter.appinfo.description]" || echo "! Missing description !")
+                    if echo "${APPDESCRIPTION}" | grep -q '(DEPRECATED)'; then
+                        continue
+                    fi
                     local APPONOFF
                     if [[ $(run_script 'env_get' "${APPNAME}_ENABLED") == true ]]; then
                         APPONOFF="on"
@@ -57,5 +60,5 @@ menu_app_select() {
 
 test_menu_app_select() {
     # run_script 'menu_app_select'
-    warning "Travis does not test menu_app_select."
+    warn "CI does not test menu_app_select."
 }

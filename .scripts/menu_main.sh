@@ -31,7 +31,7 @@ menu_main() {
             run_script 'menu_backup' || run_script 'menu_main'
             ;;
         "Prune Docker System ")
-            run_script 'prune_docker' || run_script 'menu_main'
+            run_script 'docker_prune' || run_script 'menu_main'
             ;;
         "Cancel")
             info "Exiting DockSTARTer."
@@ -45,5 +45,5 @@ menu_main() {
 
 test_menu_main() {
     # run_script 'menu_main'
-    warning "Travis does not test menu_main."
+    warn "CI does not test menu_main."
 }
