@@ -1,0 +1,54 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: bashate
+        env:
+          CI: true
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/nemchik/ShellSuite/master/shellsuite.sh -o shellsuite-${COMMIT_SHA}.sh && bash shellsuite-${COMMIT_SHA}.sh -p "${PWD}" -v "bashate" -f " -i E006"
+      - name: shellcheck
+        env:
+          CI: true
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/nemchik/ShellSuite/master/shellsuite.sh -o shellsuite-${COMMIT_SHA}.sh && bash shellsuite-${GITHUB_SHA}.sh -p "${PWD}" -v "shellcheck" -f " -x"
+      - name: shfmt
+        env:
+          CI: true
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/nemchik/ShellSuite/master/shellsuite.sh -o shellsuite-${COMMIT_SHA}.sh && bash shellsuite-${COMMIT_SHA}.sh -p "${PWD}" -v "shfmt" -f " -s -i 4 -ci -sr -d"
+      - name: yamllint
+        env:
+          CI: true
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          while IFS= read -r line; do echo "Linting ${line}"; docker run --rm -v ${PWD}:/code pipelinecomponents/yamllint yamllint -d '{extends: default, rules: {document-start: {present: false}, line-length: disable}}' "${line}" || exit 1; done < <(git ls-files '*.yaml' '*.yml')
+      # - name: markdownlint
+      #   env:
+      #     CI: true
+      #     COMMIT_SHA: ${{ github.sha }}
+      #   run: |
+      #     while IFS= read -r line; do echo "Linting ${line}"; docker run --rm -v ${PWD}:/data mivok/markdownlint --rules ~MD013,~MD033,~MD034 "${line}" || exit 1; done < <(git ls-files '*.md')
+
+  run:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-16.04, ubuntu-18.04]
+    steps:
+      - uses: actions/checkout@v1
+      - name: run
+        env:
+          CI: true
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          while IFS= read -r line; do echo; sudo -E bash ./main.sh -vt "${line}" || exit 1; echo; done < <(git ls-files '.scripts/*.sh' | sed -E 's/^\.scripts\/(\w+)\.sh$/\1/')

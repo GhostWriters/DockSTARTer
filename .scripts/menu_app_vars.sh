@@ -29,5 +29,5 @@ menu_app_vars() {
 
 test_menu_app_vars() {
     # run_script 'menu_app_vars'
-    warn "Travis does not test menu_app_vars."
+    warn "CI does not test menu_app_vars."
 }

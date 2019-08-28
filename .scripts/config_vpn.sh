@@ -31,5 +31,5 @@ config_vpn() {
 
 test_config_vpn() {
     # run_script 'config_vpn'
-    warn "Travis does not test config_vpn."
+    warn "CI does not test config_vpn."
 }

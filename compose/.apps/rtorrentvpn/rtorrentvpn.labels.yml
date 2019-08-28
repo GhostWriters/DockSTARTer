@@ -10,6 +10,8 @@ services:
       com.dockstarter.appvars.rtorrentvpn_enabled: "false"
       com.dockstarter.appvars.rtorrentvpn_network_mode: ""
       com.dockstarter.appvars.rtorrentvpn_port_3000: "3000"
+      com.dockstarter.appvars.rtorrentvpn_port_51413: "51413"
+      com.dockstarter.appvars.rtorrentvpn_port_6881: "6881"
       com.dockstarter.appvars.rtorrentvpn_port_8118: "8118"
       com.dockstarter.appvars.rtorrentvpn_port_9080: "9080"
       com.dockstarter.appvars.rtorrentvpn_port_9443: "9443"
