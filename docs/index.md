@@ -31,10 +31,21 @@ You may choose to rely on DockSTARTer for various changes to your Docker system,
 
 ### One Time Setup (required)
 
-- APT Systems ([Debian](https://docs.docker.com/install/linux/docker-ce/debian/#os-requirements), [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/#os-requirements), Raspbian, etc)
+- APT Systems ([Debian](https://docs.docker.com/install/linux/docker-ce/debian/#os-requirements), [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/#os-requirements), etc)
 
 ```bash
 sudo apt-get install curl git
+bash -c "$(curl -fsSL https://get.dockstarter.com)"
+sudo reboot
+```
+
+> Requires a few extra commands
+
+```bash
+sudo apt-get update
+sudo apt-get dist-upgrade
+sudo apt-get install curl git
+bash -c "$(curl -fsSL https://get.docker.com)"
 bash -c "$(curl -fsSL https://get.dockstarter.com)"
 sudo reboot
 ```
