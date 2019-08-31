@@ -382,6 +382,8 @@ main() {
                 unset PROMPT
             fi
             warn "Attempting to run DockSTARTer from ${DS_SYMLINK} location."
+            sudo bash "${DS_SYMLINK}" -vu
+            sudo bash "${DS_SYMLINK}" -vi
             exec sudo bash "${DS_SYMLINK}" "${ARGS[@]:-}"
         fi
     else
