@@ -1,3 +1,5 @@
+# <!-- Home -->
+
 [![DockSTARTer](https://github.com/GhostWriters/DockSTARTer/raw/master/.github/logo.png)](https://dockstarter.com)
 
 [![Supporters on Open Collective](https://img.shields.io/opencollective/all/DockSTARTer.svg?style=flat-square&color=607D8B)](#supporters)
@@ -29,10 +31,21 @@ You may choose to rely on DockSTARTer for various changes to your Docker system,
 
 ### One Time Setup (required)
 
-- APT Systems ([Debian](https://docs.docker.com/install/linux/docker-ce/debian/#os-requirements)/[Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/#os-requirements)/Raspbian/etc)
+- APT Systems ([Debian](https://docs.docker.com/install/linux/docker-ce/debian/#os-requirements), [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/#os-requirements), etc)
 
 ```bash
 sudo apt-get install curl git
+bash -c "$(curl -fsSL https://get.dockstarter.com)"
+sudo reboot
+```
+
+> Raspbian requires a few extra commands
+
+```bash
+sudo apt-get update
+sudo apt-get dist-upgrade
+sudo apt-get install curl git
+bash -c "$(curl -fsSL https://get.docker.com)"
 bash -c "$(curl -fsSL https://get.dockstarter.com)"
 sudo reboot
 ```
@@ -58,7 +71,7 @@ sudo reboot
 
 The standard install above downloads the initial script using a method with some known risks. For those concerned with the security of the above method here is an alternative:
 
-<pre><code class="bash">
+```bash
 ## NOTE: Run the appropriate command for your distro
 sudo apt-get install curl git
 sudo dnf install curl git
@@ -68,7 +81,7 @@ sudo yum install curl git
 git clone https://github.com/GhostWriters/DockSTARTer "/home/${USER}/.docker"
 sudo bash /home/${USER}/.docker/main.sh -i
 sudo reboot
-</code></pre>
+```
 
 </details>
 
