@@ -39,7 +39,7 @@ bash -c "$(curl -fsSL https://get.dockstarter.com)"
 sudo reboot
 ```
 
-> Requires a few extra commands
+> Raspbian requires a few extra commands
 
 ```bash
 sudo apt-get update
