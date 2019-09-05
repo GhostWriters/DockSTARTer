@@ -2,7 +2,7 @@ services:
   codeserver:
     labels:
       com.dockstarter.appinfo.description: "VS Code running on a remote server, accessible through the browser"
-      com.dockstarter.appinfo.nicename: "code-server"
+      com.dockstarter.appinfo.nicename: "codeserver"
       com.dockstarter.appvars.codeserver_backup_config: "true"
       com.dockstarter.appvars.codeserver_enabled: "false"
       com.dockstarter.appvars.codeserver_network_mode: ""
