@@ -1,0 +1,11 @@
+services:
+  filebot:
+    labels:
+      com.dockstarter.appinfo.description: "Tool for organizing your media"
+      com.dockstarter.appinfo.nicename: "FileBot"
+      com.dockstarter.appvars.filebot_backup_config: "true"
+      com.dockstarter.appvars.filebot_enabled: "false"
+      com.dockstarter.appvars.filebot_network_mode: ""
+      com.dockstarter.appvars.filebot_outputdir: "/mnt/filebot/output"
+      com.dockstarter.appvars.filebot_port_5800: "5800"
+      com.dockstarter.appvars.filebot_watchdir: "/mnt/filebot/watch"
