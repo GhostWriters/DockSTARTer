@@ -2,7 +2,7 @@
 
 [DuckDNS](https://www.duckdns.org/) is a free service which will point a DNS (sub domains of duckdns.org) to an IP of your choice. The service is completely free, and doesn't require reactivation or forum posts to maintain its existence.
 
-The GIT Repository for Booksonic is located at [https://github.com/linuxserver/docker-duckdns](https://github.com/linuxserver/docker-duckdns)
+The GIT Repository for DuskDNS is located at [https://github.com/linuxserver/docker-duckdns](https://github.com/linuxserver/docker-duckdns)
 
 ## DuckDNS Install
 
