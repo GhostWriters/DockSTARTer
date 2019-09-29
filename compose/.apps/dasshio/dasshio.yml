@@ -2,9 +2,9 @@ services:
   dasshio:
     container_name: dasshio
     environment:
-      - TZ=${TZ}
       - HA_BASE_URL=${DASSHIO_HOMEASSISTANT_URL}
       - HASSIO_TOKEN=${DASSHIO_HOMEASSISTANT_AUTH_TOKEN}
+      - TZ=${TZ}
     logging:
       driver: json-file
       options:
