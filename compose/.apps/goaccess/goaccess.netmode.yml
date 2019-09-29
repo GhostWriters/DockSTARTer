@@ -1,0 +1,3 @@
+services:
+  goaccess:
+    network_mode: ${GOACCESS_NETWORK_MODE}
