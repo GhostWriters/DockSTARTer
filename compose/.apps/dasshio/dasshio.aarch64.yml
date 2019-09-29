@@ -1,0 +1,3 @@
+services:
+  dasshio:
+    image: danimtb/aarch64-dasshio
