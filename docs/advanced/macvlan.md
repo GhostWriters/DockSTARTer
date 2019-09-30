@@ -18,11 +18,11 @@ One solution might be to use Docker's `host` network. This however, increases th
 
 2. Configure DHCP so it will not assign address in a given range. That range will be occupied by our container's addresses.
 
- The rest of this tutorial assumes addresses above X.X.X.190 will be free.
+ The rest of this tutorial assumes addresses above `X.X.X.190` will be free.
 
 ### On Your Docker Host
 
-1. Create the macvlan network[^1]:
+1. Create the macvlan network<sup>1</sup>:
 
  ```bash
  docker network create -d macvlan -o parent=<myinterface> --subnet X.X.X.0/24 --gateway X.X.X.1
@@ -47,7 +47,7 @@ One solution might be to use Docker's `host` network. This however, increases th
 
 3. Reboot
 
-[^1]: You may be wondering why we don't create the network in Docker compose. Newer versions of compose have issues with using `aux-address` and `ip-range`.
+<sup>1</sup>You may be wondering why we don't create the network in Docker compose. Newer versions of compose have issues with using `aux-address` and `ip-range`.
 
 ### In Your DockSTARTer Overrides
 
