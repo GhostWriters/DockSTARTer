@@ -24,15 +24,15 @@ One solution might be to use Docker's `host` network. This however, increases th
 
 1. Create the macvlan network<sup>1</sup>:
 
-   ```bash
-   docker network create -d macvlan -o parent=<myinterface> --subnet X.X.X.0/24 --gateway X.X.X.1
-   --ip-range X.X.X.192/27 --aux-address 'host=X.X.X.Y' mymacvlan
-   ```
+ ```bash
+ docker network create -d macvlan -o parent=<myinterface> --subnet X.X.X.0/24 --gateway X.X.X.1
+ --ip-range X.X.X.192/27 --aux-address 'host=X.X.X.Y' mymacvlan
+ ```
 
- * `<myinterface>` is the network interface your device is receiving data from. Run `ifconfig` for a listing of possible interfaces. Ex: `eth0`
- * `subnet` and `gateway` are specific to your LAN subnet
- * `ip-range` is the range in which Docker will assign IP addresses. This example goes from `X.X.X.192` to `X.X.X.223`
- * `X.X.X.Y` following `host` should be the IP address of your Docker host.
+* `<myinterface>` is the network interface your device is receiving data from. Run `ifconfig` for a listing of possible interfaces. Ex: `eth0`
+* `subnet` and `gateway` are specific to your LAN subnet
+* `ip-range` is the range in which Docker will assign IP addresses. This example goes from `X.X.X.192` to `X.X.X.223`
+* `X.X.X.Y` following `host` should be the IP address of your Docker host.
 
 1. Add the following to `/etc/network/interfaces` after replacing information as needed:
 
