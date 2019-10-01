@@ -5,7 +5,10 @@ IFS=$'\n\t'
 run_python() {
     # https://devguide.python.org/#status-of-python-branches
     local PYTHON_CMD
-    if [[ -n "$(command -v python3.7)" ]]; then
+    if [[ -n "$(command -v python3.8)" ]]; then
+        PYTHON_CMD="python3.8"
+        # EOL: 2024-10-??
+    elif [[ -n "$(command -v python3.7)" ]]; then
         PYTHON_CMD="python3.7"
         # EOL: 2023-06-27
     elif [[ -n "$(command -v python3.6)" ]]; then
