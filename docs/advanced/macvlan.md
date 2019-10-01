@@ -2,7 +2,7 @@
 
 It may help to read the [official documentation](https://docs.docker.com/v17.09/engine/userguide/networking/get-started-macvlan/#macvlan-8021q-trunk-bridge-mode-example-usage) on Macvlan networks, as well as [this tutorial](https://blog.oddbit.com/post/2018-03-12-using-docker-macvlan-networks/) which this page is based on.
 
-## Motivation 
+## Motivation
 
 There are a few different types of Docker networks. DockSTARTer by default uses a 'bridge' network, which is a virtual network that provides isolation from other networks, but allows containers to communicate with each other.
 
@@ -16,7 +16,7 @@ One solution might be to use Docker's `host` network. This however, increases th
 
 1. Take note of the IP address of your Docker host and create a DHCP reservation for the IP if there isn't one already.
 
-2. Configure DHCP so it will not assign address in a given range. That range will be occupied by our container's addresses.
+1. Configure DHCP so it will not assign address in a given range. That range will be occupied by our container's addresses.
 
  The rest of this tutorial assumes addresses above `X.X.X.190` will be free.
 
@@ -28,12 +28,13 @@ One solution might be to use Docker's `host` network. This however, increases th
  docker network create -d macvlan -o parent=<myinterface> --subnet X.X.X.0/24 --gateway X.X.X.1
  --ip-range X.X.X.192/27 --aux-address 'host=X.X.X.Y' mymacvlan
  ```
+
  * `<myinterface>` is the network interface your device is receiving data from. Run `ifconfig` for a listing of possible interfaces. Ex: `eth0`
  * `subnet` and `gateway` are specific to your LAN subnet
  * `ip-range` is the range in which Docker will assign IP addresses. This example goes from `X.X.X.192` to `X.X.X.223`
  * `X.X.X.Y` following `host` should be the IP address of your Docker host.
 
-2. Add the following to `/etc/network/interfaces` after replacing information as needed:
+1. Add the following to `/etc/network/interfaces` after replacing information as needed:
 
  ```bash
  # Create new macvlan interface on the host
@@ -45,7 +46,7 @@ One solution might be to use Docker's `host` network. This however, increases th
  ip route add 192.168.86.192/27 dev mymacvlanshim
  ```
 
-3. Reboot
+1. Reboot
 
 <sup>1</sup>You may be wondering why we don't create the network in Docker compose. Newer versions of compose have issues with using `aux-address` and `ip-range`.
 
