@@ -24,10 +24,10 @@ One solution might be to use Docker's `host` network. This however, increases th
 
 1. Create the macvlan network<sup>1</sup>:
 
- ```bash
- docker network create -d macvlan -o parent=<myinterface> --subnet X.X.X.0/24 --gateway X.X.X.1
- --ip-range X.X.X.192/27 --aux-address 'host=X.X.X.Y' mymacvlan
- ```
+   ```bash
+   docker network create -d macvlan -o parent=<myinterface> --subnet X.X.X.0/24 --gateway X.X.X.1
+   --ip-range X.X.X.192/27 --aux-address 'host=X.X.X.Y' mymacvlan
+   ```
 
  * `<myinterface>` is the network interface your device is receiving data from. Run `ifconfig` for a listing of possible interfaces. Ex: `eth0`
  * `subnet` and `gateway` are specific to your LAN subnet
@@ -68,6 +68,7 @@ We could connect our containers to `mymacvlan` and call it a day, but it's very 
        name: mymacvlan
  version: "3.4"
  ```
+
  The `ipv4` address should fall in the range you reserved.
  Unfortunately, it's necessary to do this when adding new containers if you want them on the same network.
 
