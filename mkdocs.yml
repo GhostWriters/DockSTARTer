@@ -37,6 +37,7 @@ nav:
   - Advanced:
       - Advanced Usage: advanced/advanced-usage.md
       - Backups: advanced/backups.md
+      - Macvlan Networking: advanced/macvlan.md
       - Overrides: advanced/overrides.md
       - Setting Up a Domain: advanced/domain-info.md
       - SMB Mounting: advanced/smb-mounting.md
