@@ -1,0 +1,11 @@
+services:
+  nginxproxymanager:
+    labels:
+      com.dockstarter.appinfo.description: "Easy to use Webinterface for NGINX"
+      com.dockstarter.appinfo.nicename: "NGINX-Proxy-Manager"
+      com.dockstarter.appvars.nginxproxymanager_backup_config: "true"
+      com.dockstarter.appvars.nginxproxymanager_enabled: "false"
+      com.dockstarter.appvars.nginxproxymanager_network_mode: ""
+      com.dockstarter.appvars.nginxproxymanager_port_8181: "8181"
+      com.dockstarter.appvars.nginxproxymanager_port_8080: "8080"
+      com.dockstarter.appvars.nginxproxymanager_port_4443: "4443"

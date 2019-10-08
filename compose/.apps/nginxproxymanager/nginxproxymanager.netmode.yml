@@ -1,0 +1,3 @@
+services:
+  nginxproxymanager:
+    network_mode: ${NGINXPROXYMANAGER_NETWORK_MODE}
