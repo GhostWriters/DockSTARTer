@@ -13,4 +13,4 @@ services:
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /docker/appdata/nginx-proxy-manager:/config:rw
+      - ${DOCKERCONFDIR}/nginx-proxy-manager:/config:rw
