@@ -1,0 +1,6 @@
+services:
+  nginxproxymanager:
+    ports:
+      - ${NGINXPROXYMANAGER_PORT_8181}:8181
+      - ${NGINXPROXYMANAGER_PORT_8080}:8080
+      - ${NGINXPROXYMANAGER_PORT_4443}:4443

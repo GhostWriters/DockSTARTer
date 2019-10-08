@@ -1,0 +1,3 @@
+services:
+  nginxproxymanager:
+    image: jlesage/nginx-proxy-manager
