@@ -1,9 +1,3 @@
----
-name: Pull request
-about: Suggest an edit for this project
-
----
-
 **Purpose**
 Describe the problem or feature in addition to a link to the issues.
 
