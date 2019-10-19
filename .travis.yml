@@ -8,9 +8,15 @@ jobs:
     - stage: validate
       script: |
         curl -fsSL https://raw.githubusercontent.com/nemchik/ShellSuite/master/shellsuite.sh -o shellsuite-${COMMIT_SHA}.sh && bash shellsuite-${COMMIT_SHA}.sh -p "${PWD}" -v "bashate" -f " -i E006"
+    - script: |
         curl -fsSL https://raw.githubusercontent.com/nemchik/ShellSuite/master/shellsuite.sh -o shellsuite-${COMMIT_SHA}.sh && bash shellsuite-${COMMIT_SHA}.sh -p "${PWD}" -v "shellcheck" -f " -x"
+    - script: |
         curl -fsSL https://raw.githubusercontent.com/nemchik/ShellSuite/master/shellsuite.sh -o shellsuite-${COMMIT_SHA}.sh && bash shellsuite-${COMMIT_SHA}.sh -p "${PWD}" -v "shfmt" -f " -s -i 4 -ci -sr -d"
+    - script: |
         while IFS= read -r line; do echo "Linting ${line}"; docker run --rm -v ${PWD}:/code pipelinecomponents/yamllint yamllint -d '{extends: default, rules: {document-start: {present: false}, line-length: disable}}' "${line}" || exit 1; done < <(git ls-files '*.yaml' '*.yml')
+    - script: |
+        while IFS= read -r line; do echo "Linting ${line}"; docker run --rm -v ${PWD}:/data mivok/markdownlint --rules ~MD013,~MD033,~MD034 "${line}" || exit 1; done < <(git ls-files '*.md')
+
     - stage: run
       script: |
         while IFS= read -r line; do echo; sudo -E bash ./main.sh -vt "${line}" || exit 1; echo; done < <(git ls-files '.scripts/*.sh' | sed -E 's/^\.scripts\/(\w+)\.sh$/\1/')
