@@ -15,4 +15,5 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/resiliosync:/config
       - ${DOCKERSHAREDDIR}:/shared
-      - ${RESILIOSYNC_SOURCEDIR}:/source
+      - ${DOWNLOADSDIR}:/downloads
+      - ${RESILIOSYNC_SYNCDIR}:/sync
