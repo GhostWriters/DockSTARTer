@@ -10,6 +10,6 @@ services:
       com.dockstarter.appvars.cloudflareddns_enabled: "false"
       com.dockstarter.appvars.cloudflareddns_network_mode: ""
       com.dockstarter.appvars.cloudflareddns_proxied: "false"
-      com.dockstarter.appvars.cloudflareddns_rrtype: "a"
+      com.dockstarter.appvars.cloudflareddns_rrtype: "A"
       com.dockstarter.appvars.cloudflareddns_subdomain: ""
       com.dockstarter.appvars.cloudflareddns_zone: ""
