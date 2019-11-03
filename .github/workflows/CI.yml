@@ -32,12 +32,12 @@ jobs:
           COMMIT_SHA: ${{ github.sha }}
         run: |
           while IFS= read -r line; do echo "Linting ${line}"; docker run --rm -v ${PWD}:/code pipelinecomponents/yamllint yamllint -d '{extends: default, rules: {document-start: {present: false}, line-length: disable}}' "${line}" || exit 1; done < <(git ls-files '*.yaml' '*.yml')
-      # - name: markdownlint
-      #   env:
-      #     CI: true
-      #     COMMIT_SHA: ${{ github.sha }}
-      #   run: |
-      #     while IFS= read -r line; do echo "Linting ${line}"; docker run --rm -v ${PWD}:/data mivok/markdownlint --rules ~MD013,~MD033,~MD034 "${line}" || exit 1; done < <(git ls-files '*.md')
+      - name: markdownlint
+        env:
+          CI: true
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          while IFS= read -r line; do echo "Linting ${line}"; docker run --rm -v ${PWD}:/data mivok/markdownlint --rules ~MD013,~MD033,~MD034 "${line}" || exit 1; done < <(git ls-files '*.md')
 
   run:
     runs-on: ${{ matrix.os }}

@@ -1,6 +1,6 @@
 services:
-  resiliosync:
-    container_name: resiliosync
+  goaccess:
+    container_name: goaccess
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
@@ -11,9 +11,10 @@ services:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: unless-stopped
+    security_opt:
+      - apparmor:unconfined
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/resiliosync:/config
+      - ${DOCKERCONFDIR}/goaccess:/config
       - ${DOCKERSHAREDDIR}:/shared
-      - ${DOWNLOADSDIR}:/downloads
-      - ${RESILIOSYNC_SYNCDIR}:/sync
+      - ${GOACCESS_LOGSDIR}:/opt/log:ro

@@ -1,0 +1,4 @@
+services:
+  goaccess:
+    ports:
+      - ${GOACCESS_PORT_7889}:7889

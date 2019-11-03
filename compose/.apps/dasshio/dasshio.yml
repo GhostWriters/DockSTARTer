@@ -1,9 +1,9 @@
 services:
-  resiliosync:
-    container_name: resiliosync
+  dasshio:
+    container_name: dasshio
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
+      - HA_BASE_URL=${DASSHIO_HOMEASSISTANT_URL}
+      - HASSIO_TOKEN=${DASSHIO_HOMEASSISTANT_AUTH_TOKEN}
       - TZ=${TZ}
     logging:
       driver: json-file
@@ -13,7 +13,5 @@ services:
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/resiliosync:/config
+      - ${DOCKERCONFDIR}/dasshio:/data
       - ${DOCKERSHAREDDIR}:/shared
-      - ${DOWNLOADSDIR}:/downloads
-      - ${RESILIOSYNC_SYNCDIR}:/sync
