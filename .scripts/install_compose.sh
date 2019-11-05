@@ -19,7 +19,7 @@ install_compose() {
             fi
         fi
         if vergt "${AVAILABLE_COMPOSE}" "${INSTALLED_COMPOSE}"; then
-            run_script 'package_manager_run' remove_python
+            run_script 'package_manager_run' remove_python_conflicts
             info "Installing latest python pip."
             run_script 'run_python' -m pip install -IUq pip > /dev/null 2>&1 || warn "Failed to install pip from pip. This can be ignored for now."
 
