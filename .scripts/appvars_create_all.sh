@@ -9,7 +9,7 @@ appvars_create_all() {
             run_script 'appvars_create' "${APPNAME}"
         done < <(grep '_ENABLED=true$' < "${SCRIPTPATH}/compose/.env")
     else
-        notice "${SCRIPTPATH}/compose/.env does not contain any disabled apps."
+        notice "${SCRIPTPATH}/compose/.env does not contain any enabled apps."
     fi
 }
 
