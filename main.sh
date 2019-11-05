@@ -258,7 +258,7 @@ readonly NC=$(tcolor NC)
 
 # Log Functions
 readonly LOG_FILE="/tmp/dockstarter.log"
-sudo chown "${DETECTED_PUID:-$DETECTED_UNAME}":"${DETECTED_PGID:-$DETECTED_UGROUP}" "${LOG_FILE}" > /dev/null 2>&1 || true
+sudo -E chown "${DETECTED_PUID:-$DETECTED_UNAME}":"${DETECTED_PGID:-$DETECTED_UGROUP}" "${LOG_FILE}" > /dev/null 2>&1 || true
 trace() { if [[ -n ${TRACE:-} ]]; then
     echo -e "${NC}$(date +"%F %T") ${F[B]}[TRACE ]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2
 fi; }
@@ -337,7 +337,7 @@ cleanup() {
 
     if repo_exists; then
         info "Setting executable permission on ${SCRIPTNAME}"
-        sudo chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
+        sudo -E chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
     fi
     if [[ ${CI:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == false ]]; then
         warn "TRAVIS_SECURE_ENV_VARS is false for Pull Requests from remote branches. Please retry failed builds!"
@@ -382,9 +382,9 @@ main() {
                 unset PROMPT
             fi
             warn "Attempting to run DockSTARTer from ${DS_SYMLINK} location."
-            sudo bash "${DS_SYMLINK}" -vu
-            sudo bash "${DS_SYMLINK}" -vi
-            exec sudo bash "${DS_SYMLINK}" "${ARGS[@]:-}"
+            sudo -E bash "${DS_SYMLINK}" -vu
+            sudo -E bash "${DS_SYMLINK}" -vi
+            exec sudo -E bash "${DS_SYMLINK}" "${ARGS[@]:-}"
         fi
     else
         if ! repo_exists; then
@@ -395,12 +395,12 @@ main() {
             fi
             git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
             notice "Performing first run install."
-            exec sudo bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-vi"
+            exec sudo -E bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-vi"
         fi
     fi
     # Sudo Check
     if [[ ${EUID} -ne 0 ]]; then
-        exec sudo bash "${SCRIPTNAME}" "${ARGS[@]:-}"
+        exec sudo -E bash "${SCRIPTNAME}" "${ARGS[@]:-}"
     fi
     # Create Symlink
     run_script 'symlink_ds'
