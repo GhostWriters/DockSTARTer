@@ -71,7 +71,7 @@ cmdline() {
             --debug) LOCAL_ARGS="${LOCAL_ARGS:-}-x " ;;
             --env) LOCAL_ARGS="${LOCAL_ARGS:-}-e " ;;
             --env-*)
-                readonly ENVMETHOD=${ARG%=*}
+                readonly ENVMETHOD=${ARG%%=*}
                 readonly ENVARG=${ARG#*=}
                 if [[ ${ENVMETHOD:-} == "${ENVARG:-}" ]]; then
                     echo "Invalid usage. Must be on of the following:"
@@ -79,7 +79,7 @@ cmdline() {
                     echo "  --env-get with variable name ('--env-get=VAR')"
                     exit
                 else
-                    readonly ENVVAR=${ENVARG%,*}
+                    readonly ENVVAR=${ENVARG%%,*}
                     readonly ENVVAL=${ENVARG#*,}
                 fi
                 ;;
@@ -91,7 +91,7 @@ cmdline() {
             --update) LOCAL_ARGS="${LOCAL_ARGS:-}-u " ;;
             --verbose) LOCAL_ARGS="${LOCAL_ARGS:-}-v " ;;
             --yml-*)
-                readonly YMLMETHOD=${ARG%=*}
+                readonly YMLMETHOD=${ARG%%=*}
                 readonly YMLARG=${ARG#*=}
                 if [[ ${YMLMETHOD:-} == "${YMLARG:-}" ]]; then
                     echo "Invalid usage. Must be one of the following:"
@@ -99,7 +99,7 @@ cmdline() {
                     echo "  --yml-get with app name and variable name '--yml-get=<appname>,<ymlpath>'"
                     exit
                 else
-                    YMLAPPNAME=${YMLARG%,*}
+                    YMLAPPNAME=${YMLARG%%,*}
                     readonly YMLVAR=${YMLARG#*,}
                 fi
                 ;;
