@@ -20,6 +20,10 @@ IFS=$'\n\t'
 #/      run docker-compose commands without confirmation prompts
 #/  -e --env
 #/      update your .env file with new variables
+#/  --env-get=<var>
+#/      get the value of a <var>iable in .env
+#/  --env-set=<var>,<val>
+#/      Set the <val>ue of a <var>iable in .env
 #/  -h --help
 #/      show this usage information
 #/  -i --install
@@ -38,6 +42,10 @@ IFS=$'\n\t'
 #/      update DockSTARTer to the latest commits from the specified branch
 #/  -v --verbose
 #/      verbose
+#/  --yml-get=<ymlvariable>
+#/      Gets the value of a <ymlpath> for the app in the yml path (must start with 'services.<appname>.')
+#/  --yml-get=<appname>,<ymlpath>
+#/      Gets the value of a <ymlvariable> for the app specified
 #/  -x --debug
 #/      debug
 #/
@@ -62,6 +70,19 @@ cmdline() {
             --compose) LOCAL_ARGS="${LOCAL_ARGS:-}-c " ;;
             --debug) LOCAL_ARGS="${LOCAL_ARGS:-}-x " ;;
             --env) LOCAL_ARGS="${LOCAL_ARGS:-}-e " ;;
+            --env-*)
+                readonly ENVMETHOD=${ARG%=*}
+                readonly ENVARG=${ARG#*=}
+                if [[ ${ENVMETHOD:-} == ${ENVARG:-} ]]; then
+                    echo "Invalid usage. Must be on of the following:"
+                    echo "  --env-set with variable name ('--env-set=VAR,VAL') and value"
+                    echo "  --env-get with variable name ('--env-get=VAR')"
+                    exit
+                else
+                    readonly ENVVAR=${ENVARG%,*}
+                    readonly ENVVAL=${ENVARG#*,}
+                fi
+                ;;
             --help) LOCAL_ARGS="${LOCAL_ARGS:-}-h " ;;
             --install) LOCAL_ARGS="${LOCAL_ARGS:-}-i " ;;
             --prune) LOCAL_ARGS="${LOCAL_ARGS:-}-p " ;;
@@ -69,6 +90,19 @@ cmdline() {
             --test) LOCAL_ARGS="${LOCAL_ARGS:-}-t " ;;
             --update) LOCAL_ARGS="${LOCAL_ARGS:-}-u " ;;
             --verbose) LOCAL_ARGS="${LOCAL_ARGS:-}-v " ;;
+            --yml-*)
+                readonly YMLMETHOD=${ARG%=*}
+                readonly YMLARG=${ARG#*=}
+                if [[ ${YMLMETHOD:-} == ${YMLARG:-} ]]; then
+                    echo "Invalid usage. Must be one of the following:"
+                    echo "  --yml-get with variable name '--yml-get=<ymlpath>' (must start with 'services.<appname>.')"
+                    echo "  --yml-get with app name and variable name '--yml-get=<appname>,<ymlpath>'"
+                    exit
+                else
+                    YMLAPPNAME=${YMLARG%,*}
+                    readonly YMLVAR=${YMLARG#*,}
+                fi
+                ;;
             #pass through anything else
             *)
                 [[ ${ARG:0:1} == "-" ]] || DELIM='"'
@@ -412,6 +446,48 @@ main() {
     fi
     if [[ -n ${BACKUP:-} ]]; then
         run_script "backup_${BACKUP}"
+        exit
+    fi
+    if [[ -n ${ENVMETHOD:-} ]]; then
+        case "${ENVMETHOD:-}" in
+            --env-get)
+                if [[ ${ENVVAR:-} != "" ]]; then
+                    run_script 'env_get' "${ENVVAR}"
+                else
+                    echo "Invalid usage. Must be"
+                    echo "  --env-get with variable name ('--env-get=VAR')"
+                fi
+                ;;
+            --env-set)
+                if [[ ${ENVVAR:-} != "" && ${ENVVAL:-} != "" ]]; then
+                    run_script 'env_set' "${ENVVAR}" "${ENVVAL}"
+                else
+                    echo "Invalid usage. Must be"
+                    echo "  --env-set with variable name and value ('--env-set=VAR,VAL')"
+                fi
+                ;;
+            *)
+                echo "Invalid option: '${ENVMETHOD:-}'"
+                ;;
+        esac
+        exit
+    fi
+    if [[ -n ${YMLMETHOD:-} ]]; then
+        if [[ ${YMLAPPNAME:-} == "${YMLVAR:-}" ]]; then
+            if [[ ${YMLVAR:-} != "" && ${YMLVAR:-} =~ services* ]]; then
+                YMLAPPNAME=${YMLVAR#services.}
+                YMLAPPNAME=${YMLAPPNAME%%.*}
+            else
+                YMLAPPNAME=""
+            fi
+        fi
+        if [[ ${YMLAPPNAME:-} != "" && ${YMLVAR:-} != "" ]]; then
+            run_script 'yml_get' "${YMLAPPNAME}" "${YMLVAR}" || error "Could not find '${YMLVAR}' in '${YMLAPPNAME}'"
+        else
+            echo "Invalid usage. Must be one of the following:"
+            echo "  --yml-get with variable name '--yml-get=<ymlvar>' (must start with 'services.<appname>.')"
+            echo "  --yml-get with app name and variable name '--yml-get=<appname>,<ymlvar>'"
+        fi
         exit
     fi
     if [[ -n ${COMPOSE:-} ]]; then
