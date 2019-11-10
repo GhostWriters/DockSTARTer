@@ -73,7 +73,7 @@ cmdline() {
             --env-*)
                 readonly ENVMETHOD=${ARG%=*}
                 readonly ENVARG=${ARG#*=}
-                if [[ ${ENVMETHOD:-} == ${ENVARG:-} ]]; then
+                if [[ ${ENVMETHOD:-} == "${ENVARG:-}" ]]; then
                     echo "Invalid usage. Must be on of the following:"
                     echo "  --env-set with variable name ('--env-set=VAR,VAL') and value"
                     echo "  --env-get with variable name ('--env-get=VAR')"
@@ -93,7 +93,7 @@ cmdline() {
             --yml-*)
                 readonly YMLMETHOD=${ARG%=*}
                 readonly YMLARG=${ARG#*=}
-                if [[ ${YMLMETHOD:-} == ${YMLARG:-} ]]; then
+                if [[ ${YMLMETHOD:-} == "${YMLARG:-}" ]]; then
                     echo "Invalid usage. Must be one of the following:"
                     echo "  --yml-get with variable name '--yml-get=<ymlpath>' (must start with 'services.<appname>.')"
                     echo "  --yml-get with app name and variable name '--yml-get=<appname>,<ymlpath>'"
