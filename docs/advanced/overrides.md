@@ -19,12 +19,12 @@ You can use this to modify existing apps (such as changing which image an app us
 version: "3.4"  # this must match the version in docker-compose.yml
 services:
   sonarr:
-    image: hotio/suitarr:sonarr
+    image: hotio/sonarr
     volumes:
       - ${MEDIADIR_TV}:/media
 ```
 
-This will change Sonarr to use hotio's suitarr image for Sonarr and add a /media volume. Everything else from the original config such as the remaining volumes and environment variables will merge together.
+This will change Sonarr to use hotio's image for Sonarr and add a /media volume. Everything else from the original config such as the remaining volumes and environment variables will merge together.
 
 ***
 GoAccess:
