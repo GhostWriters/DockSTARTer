@@ -1,12 +1,18 @@
 # Guacamole
 
+[Guacamole](https://grafana.com/) is a Docker Container for [Apache Guacamole](https://guacamole.apache.org/), a client-less remote desktop gateway. It supports standard protocols like VNC, RDP, and SSH over HTML5.
+
+The GIT Repository for Guacamole is located at [https://github.com/oznu/docker-guacamole](https://github.com/oznu/docker-guacamole).
+
+## Configuring Guacamole
+
 This guide will help you replicate Gilbn's tutorial to protect your Guacamole install with F2B
 
 Since DockSTARTer uses Oznu's image for Guacamole, it only generates logs inside the container itself. Following these steps will allow you to get the Guacamole container to generate a log file in `~/.config/appdata/guacamole` which you can then mount to the LetsEncrypt container so F2B can monitor it and ban malicious IPs.
 
 You can find Gilbn's tutorial [here](https://technicalramblings.com/blog/remotely-accessing-the-unraid-gui-with-guacamole-and-vnc-web-browser/). We recommend you read it over so you get a basic understanding of what you will be doing:
 
-## Configuring Guacamole
+
 
 1. Create a `logback.xml` file inside `~/.config/appdata/guacamole/guacamole`
     * `touch ~/.config/appdata/guacamole/guacamole/logback.xml`
