@@ -1,5 +1,5 @@
 apps:
-  - "compose/**/*.yml"
+  - "compose/.apps/**/*.yml"
 
 ci:
   - ".github/workflows/*.yml"
