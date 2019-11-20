@@ -50,7 +50,7 @@ Netdata will not pick up cpu temp per default for raspberry pi. To activate char
 
 ## Get data for home assistant
 
-To identify the correct data group and element to input in netdata home assistant component use http://yournetdataip:19999/api/v1/allmetrics?format=json
+To identify the correct data group and element to input in netdata home assistant component use <http://yournetdataip:19999/api/v1/allmetrics?format=json>
 
 ## Monitor services with netdata
 
