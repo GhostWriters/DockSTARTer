@@ -42,7 +42,7 @@ IFS=$'\n\t'
 #/      debug
 #/
 usage() {
-   grep --color=never -Po '^#/\K.*' ${BASH_SOURCE[0]:-$0} || echo "Failed to display usage information."
+    grep --color=never -Po '^#/\K.*' "${BASH_SOURCE[0]:-$0}" || echo "Failed to display usage information."
     exit
 }
 
@@ -369,15 +369,15 @@ main() {
     if [[ -L ${DS_COMMAND} ]]; then
         local DS_SYMLINK
         DS_SYMLINK=$(readlink -f "${DS_COMMAND}")
-        if [[ ${SCRIPTNAME} != ${DS_SYMLINK} ]]; then
+        if [[ ${SCRIPTNAME} != "${DS_SYMLINK}" ]]; then
             if repo_exists; then
-                if [[ ${PROMPT:-} != GUI ]]; then
+                if [[ ${PROMPT:-} != "GUI" ]]; then
                     PROMPT="CLI"
                 fi
                 if run_script 'question_prompt' "${PROMPT:-}" N "DockSTARTer installation found at ${DS_SYMLINK} location. Would you like to run ${SCRIPTNAME} instead?"; then
                     run_script 'symlink_ds'
                     DS_COMMAND=$(command -v ds || true)
-                    DS_SYMLINK=$(readlink -f ${DS_COMMAND})
+                    DS_SYMLINK=$(readlink -f "${DS_COMMAND}")
                 fi
                 unset PROMPT
             fi
