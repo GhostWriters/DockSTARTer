@@ -1,9 +1,6 @@
 name: CI
 
-on:
-  push:
-    branches:
-      - master
+on: [push, pull_request]
 
 jobs:
 
@@ -25,6 +22,7 @@ jobs:
           while IFS= read -r line; do echo "Linting ${line}"; docker run --rm -v "${PWD}:/markdown" -v "${PWD}:${PWD}" 06kellyjac/markdownlint-cli "${PWD}/${line}" || exit 1; done < <(git ls-files '*.md')
 
   deploy:
+    if: github.ref == 'master'
     needs: [yamllint, markdownlint]
     runs-on: ubuntu-latest
     steps:
