@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: yamllint
         run: |
-          while IFS= read -r line; do echo "Linting ${line}"; docker run --rm -v ${PWD}:/yaml sdesbure/yamllint yamllint -d '{extends: default, rules: {document-start: {present: false}, line-length: disable}}' "${line}" || exit 1; done < <(git ls-files '*.yaml' '*.yml')
+          while IFS= read -r line; do echo "Linting ${line}"; docker run --rm -v "${PWD}:${PWD}" sdesbure/yamllint yamllint -d '{extends: default, rules: {document-start: {present: false}, line-length: disable}}' "${PWD}/${line}" || exit 1; done < <(git ls-files '*.yaml' '*.yml')
 
   markdownlint:
     runs-on: ubuntu-latest
@@ -22,7 +22,7 @@ jobs:
       - name: markdownlint
         run: |
           echo '{"default": true,"line_length": false,"no-inline-html": false,"first-line-h1": false}' > .markdownlint.json
-          while IFS= read -r line; do echo "Linting ${line}"; docker run --rm -v ${PWD}:/markdown 06kellyjac/markdownlint-cli "${line}" || exit 1; done < <(git ls-files '*.md')
+          while IFS= read -r line; do echo "Linting ${line}"; docker run --rm -v "${PWD}:/markdown" -v "${PWD}:${PWD}" 06kellyjac/markdownlint-cli "${PWD}/${line}" || exit 1; done < <(git ls-files '*.md')
 
   deploy:
     needs: [yamllint, markdownlint]
