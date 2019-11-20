@@ -72,7 +72,7 @@ Generally speaking, your configuration _does_ point to the port you specify, whi
 
 ## Redirect HTTP to HTTPS
 
-This change will make it so that if you type http://blahblah it will redirect to https://blahblah
+This change will make it so that if you type <http://blahblah> it will redirect to <https://blahblah>
 
 1. Edit ~/.config/appdata/nginx/site-confs/default
 
