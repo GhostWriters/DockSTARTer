@@ -8,7 +8,7 @@ The GIT Repository for Grafana is located at [https://github.com/grafana/grafana
 
 If you see the following error:
 
-```
+```log
 mkdir: cannot create directory '/var/lib/grafana/plugins': Permission denied,
 GF_PATHS_DATA='/var/lib/grafana' is not writable.
 ```
