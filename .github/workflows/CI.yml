@@ -4,14 +4,6 @@ on: [push, pull_request]
 
 jobs:
 
-  yamllint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: yamllint
-        run: |
-          while IFS= read -r line; do echo "Linting ${line}"; docker run --rm -v "${PWD}:${PWD}" sdesbure/yamllint yamllint -d '{extends: default, rules: {document-start: {present: false}, line-length: disable}}' "${PWD}/${line}" || exit 1; done < <(git ls-files '*.yaml' '*.yml')
-
   markdownlint:
     runs-on: ubuntu-latest
     steps:
@@ -30,9 +22,17 @@ jobs:
           docker run --rm -v ${PWD}/site:/site -v ${PWD}:/docs squidfunk/mkdocs-material build --verbose --clean --strict
           cp ./CNAME ./site/CNAME
 
+  yamllint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: yamllint
+        run: |
+          while IFS= read -r line; do echo "Linting ${line}"; docker run --rm -v "${PWD}:${PWD}" sdesbure/yamllint yamllint -d '{extends: default, rules: {document-start: {present: false}, line-length: disable}}' "${PWD}/${line}" || exit 1; done < <(git ls-files '*.yaml' '*.yml')
+
   deploy:
     if: github.ref == 'master'
-    needs: [yamllint, markdownlint]
+    needs: [markdownlint, mkdocs, yamllint]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
