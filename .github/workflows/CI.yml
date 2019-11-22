@@ -28,7 +28,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: mkdocs
         run: |
-          docker run --rm -v ${PWD}/site:/site -v ${PWD}:/docs squidfunk/mkdocs-material build --verbose --clean --strict
+          docker run --rm -v ./site:/site -v ${PWD}:/docs squidfunk/mkdocs-material build --verbose --clean --strict
           sudo cp ${PWD}/CNAME ${PWD}/site/
       - name: deploy
         if: github.ref == 'refs/heads/master'
@@ -38,6 +38,6 @@ jobs:
           # PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
           # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PUBLISH_BRANCH: gh-pages
-          PUBLISH_DIR: ${PWD}/site
+          PUBLISH_DIR: ./site
         with:
           emptyCommits: "false"
