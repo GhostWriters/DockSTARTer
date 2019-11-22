@@ -31,7 +31,7 @@ jobs:
           while IFS= read -r line; do echo "Linting ${line}"; docker run --rm -v "${PWD}:${PWD}" sdesbure/yamllint yamllint -d '{extends: default, rules: {document-start: {present: false}, line-length: disable}}' "${PWD}/${line}" || exit 1; done < <(git ls-files '*.yaml' '*.yml')
 
   deploy:
-    if: github.ref == 'master'
+    if: github.ref == 'refs/heads/master'
     needs: [markdownlint, mkdocs, yamllint]
     runs-on: ubuntu-latest
     steps:
