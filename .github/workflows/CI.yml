@@ -15,6 +15,18 @@ jobs:
         run: |
           while IFS= read -r line; do echo "Linting ${line}"; docker run --rm -v "${PWD}:${PWD}" textclean/bashate -i E006 "${PWD}/${line}" || exit 1; done < <(git ls-files '*.sh')
 
+  markdownlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: markdownlint
+        env:
+          CI: true
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          echo '{"default": true,"line_length": false,"no-inline-html": false,"first-line-h1": false}' > .markdownlint.json
+          while IFS= read -r line; do echo "Linting ${line}"; docker run --rm -v "${PWD}:/markdown" -v "${PWD}:${PWD}" 06kellyjac/markdownlint-cli "${PWD}/${line}" || exit 1; done < <(git ls-files '*.md')
+
   shellcheck:
     runs-on: ubuntu-latest
     steps:
@@ -47,18 +59,6 @@ jobs:
           COMMIT_SHA: ${{ github.sha }}
         run: |
           while IFS= read -r line; do echo "Linting ${line}"; docker run --rm -v "${PWD}:${PWD}" sdesbure/yamllint yamllint -d '{extends: default, rules: {document-start: {present: false}, line-length: disable}}' "${PWD}/${line}" || exit 1; done < <(git ls-files '*.yaml' '*.yml')
-
-  markdownlint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: markdownlint
-        env:
-          CI: true
-          COMMIT_SHA: ${{ github.sha }}
-        run: |
-          echo '{"default": true,"line_length": false,"no-inline-html": false,"first-line-h1": false}' > .markdownlint.json
-          while IFS= read -r line; do echo "Linting ${line}"; docker run --rm -v "${PWD}:/markdown" -v "${PWD}:${PWD}" 06kellyjac/markdownlint-cli "${PWD}/${line}" || exit 1; done < <(git ls-files '*.md')
 
   run:
     runs-on: ${{ matrix.os }}
