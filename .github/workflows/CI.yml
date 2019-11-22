@@ -20,7 +20,7 @@ jobs:
       - name: mkdocs
         run: |
           docker run --rm -v ${PWD}/site:/site -v ${PWD}:/docs squidfunk/mkdocs-material build --verbose --clean --strict
-          cp ./CNAME ./site/CNAME
+          sudo cp ${PWD}/CNAME ${PWD}/site/
 
   yamllint:
     runs-on: ubuntu-latest
