@@ -6,7 +6,7 @@ The GIT Repository for Bazarr is located at [https://github.com/linuxserver/dock
 
 By default, the DockSTARTer configuration of Bazarr will map to the following volumes:
 
-```
+```yaml
       - ${DOCKERSHAREDDIR}:/shared
       - ${MEDIADIR_MOVIES}:/movies
       - ${MEDIADIR_TV}:/tv
