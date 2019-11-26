@@ -1,4 +1,4 @@
-# VPNN Info
+# VPN Info
 
 ## VPN Services available to use through DockSTARTer
 

@@ -56,12 +56,14 @@ nav:
       - CloudCMD: apps/cloudcmd.md
       - CloudFlareDDNS: apps/cloudflareddns.md
       - CouchPotato: apps/couchpotato.md
+      - Dasshio: apps/dasshio.md
       - DDClient: apps/ddclient.md
       - Deluge: apps/deluge.md
       - DelugeVPN: apps/delugevpn.md
       - DuckDNS: apps/duckdns.md
       - Duplicati: apps/duplicati.md
       - Emby: apps/emby.md
+      - Filebot: apps/filebot.md
       - FreshRSS: apps/freshrss.md
       - Glances: apps/glances.md
       - Grafana: apps/grafana.md
