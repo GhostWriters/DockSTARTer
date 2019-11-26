@@ -1,12 +1,16 @@
-# LetsEncrypt
+# Let's Encrypt
 
-## LinuxServer's NGINX/LetsEncrypt Starter Guide
+[Let's Encrypt](https://letsencrypt.org/) sets up an Nginx webserver and reverse proxy with php support and a built-in letsencrypt client that automates free SSL server certificate generation and renewal processes. It also contains fail2ban for intrusion prevention.
 
-If this is your first time learning about NGINX and LetsEncrypt, we highly recommend you read over their official guide, which can be found [here](https://blog.linuxserver.io/2019/04/25/letsencrypt-nginx-starter-guide/)
+The GIT Repository for Let's Encrypt is located at [https://github.com/linuxserver/docker-letsencrypt](https://github.com/linuxserver/docker-letsencrypt).
+
+## LinuxServer's NGINX/Let's Encrypt Starter Guide
+
+If this is your first time learning about NGINX and Let's Encrypt, we highly recommend you read over their official guide, which can be found [here](https://blog.linuxserver.io/2019/04/25/letsencrypt-nginx-starter-guide/)
 
 ## General Setup
 
-Out of the box, the LetsEncrypt container created by [linuxserver.io](https://www.linuxserver.io/) performs reverse proxy functions using [NGINX](https://www.nginx.com/) and automatic https encrypted connections using certificates provided by [LetsEncrypt](https://letsencrypt.org/). More on this container can be found [here](https://hub.docker.com/r/linuxserver/letsencrypt/).
+Out of the box, the Let's Encrypt container created by [linuxserver.io](https://www.linuxserver.io/) performs reverse proxy functions using [NGINX](https://www.nginx.com/) and automatic https encrypted connections using certificates provided by [LetsEncrypt](https://letsencrypt.org/). More on this container can be found [here](https://hub.docker.com/r/linuxserver/letsencrypt/).
 
 To configure your reverse proxy, consider if you want to use subfolders (ie. domain.com/portainer) or subdomains (ie. portainer.domain.com). Subdomains will take more configuration, as DNS entries and certificate subject alternate names are required.
 
@@ -68,7 +72,7 @@ Generally speaking, your configuration _does_ point to the port you specify, whi
 
 ## Redirect HTTP to HTTPS
 
-This change will make it so that if you type http://blahblah it will redirect to https://blahblah
+This change will make it so that if you type <http://blahblah> it will redirect to <https://blahblah>
 
 1. Edit ~/.config/appdata/nginx/site-confs/default
 

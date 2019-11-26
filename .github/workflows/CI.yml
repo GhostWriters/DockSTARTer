@@ -1,0 +1,43 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+
+  markdownlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: markdownlint
+        run: |
+          echo '{"default": true,"line_length": false,"no-inline-html": false,"first-line-h1": false}' > .markdownlint.json
+          while IFS= read -r line; do echo "Linting ${line}"; docker run --rm -v "${PWD}:/markdown" -v "${PWD}:${PWD}" 06kellyjac/markdownlint-cli "${PWD}/${line}" || exit 1; done < <(git ls-files '*.md')
+
+  yamllint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: yamllint
+        run: |
+          while IFS= read -r line; do echo "Linting ${line}"; docker run --rm -v "${PWD}:${PWD}" sdesbure/yamllint yamllint -d '{extends: default, rules: {document-start: {present: false}, line-length: disable}}' "${PWD}/${line}" || exit 1; done < <(git ls-files '*.yaml' '*.yml')
+
+  deploy:
+    needs: [markdownlint, yamllint]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: mkdocs
+        run: |
+          docker run --rm -v ${PWD}/site:/site -v ${PWD}:/docs squidfunk/mkdocs-material build --verbose --clean --strict
+          sudo cp ${PWD}/CNAME ${PWD}/site/
+      - name: deploy
+        if: github.ref == 'refs/heads/master'
+        uses: peaceiris/actions-gh-pages@v2.5.0
+        env:
+          ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          # PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+          # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_BRANCH: gh-pages
+          PUBLISH_DIR: ./site
+        with:
+          emptyCommits: "false"
