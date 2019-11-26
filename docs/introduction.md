@@ -12,7 +12,7 @@
 ## What DockSTARTer Is Not
 
 - DockSTARTer is not a premade set of apps that run an exact way (you get to choose what to run and how to run it).
-- DockSTARTer does not configure apps for you (think of it more like installing apps as a service, settings inside the app are still up to you, although our documentation will have reocmmendations).
+- DockSTARTer does not configure apps for you (think of it more like installing apps as a service, settings inside the app are still up to you, although our documentation will have recommendations).
 - DockSTARTer does not configure storage for you (you may use local storage, or cloud storage, multiple disks, raid, etc).
 
 ## System Requirements
