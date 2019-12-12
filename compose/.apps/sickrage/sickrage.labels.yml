@@ -1,5 +1,0 @@
-services:
-  sickrage:
-    labels:
-      com.dockstarter.appinfo.description: "(DEPRECATED) Use SickChill"
-      com.dockstarter.appinfo.nicename: "SiCKRAGE"
