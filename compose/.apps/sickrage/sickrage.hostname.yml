@@ -1,3 +1,0 @@
-services:
-  sickrage:
-    hostname: ${DOCKERHOSTNAME}
