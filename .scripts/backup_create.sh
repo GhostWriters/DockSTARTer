@@ -137,8 +137,8 @@ backup_create() {
                         if [ -h "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last" ]; then
                             rm -f "${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last" || error "Failed to remove ${SNAPSHOT_DST}/${SNAPSHOT_NAME}.last"
                         fi
-                    else # all snapshots except snapshot.001 are removed
-                        if [ ${d} -eq 1 ]; then # snapshot.001 causes that free space is too small
+                    else                                           # all snapshots except snapshot.001 are removed
+                        if [ ${d} -eq 1 ]; then                    # snapshot.001 causes that free space is too small
                             if [ "${OVERWRITE_LAST}" -eq 1 ]; then # last chance: remove snapshot.001 and retry once
                                 OVERWRITE_LAST=0
                                 warn "Warning, free disk space will be smaller than ${MIN_MIBSIZE} MiB."
