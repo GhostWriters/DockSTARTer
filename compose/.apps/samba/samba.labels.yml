@@ -3,7 +3,6 @@ services:
     labels:
       com.dockstarter.appinfo.description: "File and print services"
       com.dockstarter.appinfo.nicename: "Samba"
-      com.dockstarter.appvars.samba_backup_config: "true"
       com.dockstarter.appvars.samba_enabled: "false"
       com.dockstarter.appvars.samba_network_mode: ""
       com.dockstarter.appvars.samba_nmbd: "true"

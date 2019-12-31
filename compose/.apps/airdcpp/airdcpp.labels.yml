@@ -3,7 +3,6 @@ services:
     labels:
       com.dockstarter.appinfo.description: "Client for Advanced Direct Connect and Direct Connect networks"
       com.dockstarter.appinfo.nicename: "AirdcPP"
-      com.dockstarter.appvars.airdcpp_backup_config: "true"
       com.dockstarter.appvars.airdcpp_enabled: "false"
       com.dockstarter.appvars.airdcpp_network_mode: ""
       com.dockstarter.appvars.airdcpp_port_21248: "21248"
