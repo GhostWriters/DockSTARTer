@@ -3,7 +3,6 @@ services:
     labels:
       com.dockstarter.appinfo.description: "Secure network tunneling VPN"
       com.dockstarter.appinfo.nicename: "OpenVPNAS"
-      com.dockstarter.appvars.openvpnas_backup_config: "true"
       com.dockstarter.appvars.openvpnas_enabled: "false"
       com.dockstarter.appvars.openvpnas_interface: "eth0"
       com.dockstarter.appvars.openvpnas_network_mode: ""

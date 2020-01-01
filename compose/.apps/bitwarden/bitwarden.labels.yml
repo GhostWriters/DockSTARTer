@@ -3,7 +3,6 @@ services:
     labels:
       com.dockstarter.appinfo.description: "Free and open source password management solution"
       com.dockstarter.appinfo.nicename: "Bitwarden"
-      com.dockstarter.appvars.bitwarden_backup_config: "true"
       com.dockstarter.appvars.bitwarden_domain: ""
       com.dockstarter.appvars.bitwarden_enabled: "false"
       com.dockstarter.appvars.bitwarden_invitations_allowed: "false"

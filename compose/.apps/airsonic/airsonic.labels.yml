@@ -3,7 +3,6 @@ services:
     labels:
       com.dockstarter.appinfo.description: "Web-based media streamer providing ubiquitious access to your music"
       com.dockstarter.appinfo.nicename: "Airsonic"
-      com.dockstarter.appvars.airsonic_backup_config: "true"
       com.dockstarter.appvars.airsonic_context_path: "/airsonic"
       com.dockstarter.appvars.airsonic_enabled: "false"
       com.dockstarter.appvars.airsonic_java_opts: ""

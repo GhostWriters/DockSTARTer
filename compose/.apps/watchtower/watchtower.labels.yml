@@ -3,7 +3,6 @@ services:
     labels:
       com.dockstarter.appinfo.description: "Automatically update running Docker containers"
       com.dockstarter.appinfo.nicename: "Watchtower"
-      com.dockstarter.appvars.watchtower_backup_config: "false"
       com.dockstarter.appvars.watchtower_cleanup: "true"
       com.dockstarter.appvars.watchtower_enabled: "false"
       com.dockstarter.appvars.watchtower_include_stopped: "false"
