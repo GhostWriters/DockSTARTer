@@ -20,12 +20,17 @@ install_yq() {
         if vergt "${AVAILABLE_YQ}" "${INSTALLED_YQ}"; then
             # https://github.com/mikefarah/yq
             info "Installing latest yq-go."
-            if [[ ${ARCH} == "aarch64" ]] || [[ ${ARCH} == "armv7l" ]]; then
-                curl -fsL "https://github.com/mikefarah/yq/releases/download/${AVAILABLE_YQ}/yq_linux_arm" -o /usr/local/bin/yq-go > /dev/null 2>&1 || fatal "Failed to install yq-go."
+            local YQ_ARCH
+            if [[ ${ARCH} == "aarch64" ]]; then
+                YQ_ARCH="yq_linux_arm64"
+            fi
+            if [[ ${ARCH} == "armv7l" ]]; then
+                YQ_ARCH="yq_linux_arm"
             fi
             if [[ ${ARCH} == "x86_64" ]]; then
-                curl -fsL "https://github.com/mikefarah/yq/releases/download/${AVAILABLE_YQ}/yq_linux_amd64" -o /usr/local/bin/yq-go > /dev/null 2>&1 || fatal "Failed to install yq-go."
+                YQ_ARCH="yq_linux_amd64"
             fi
+            curl -fsL "https://github.com/mikefarah/yq/releases/download/${AVAILABLE_YQ}/${YQ_ARCH}" -o /usr/local/bin/yq-go > /dev/null 2>&1 || fatal "Failed to install yq-go."
             if [[ ! -L "/usr/bin/yq-go" ]]; then
                 ln -s /usr/local/bin/yq-go /usr/bin/yq-go || fatal "Failed to create /usr/bin/yq-go symlink."
             fi
