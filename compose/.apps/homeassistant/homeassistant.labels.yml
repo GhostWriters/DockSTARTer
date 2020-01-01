@@ -3,7 +3,6 @@ services:
     labels:
       com.dockstarter.appinfo.description: "Track and control all devices at home and automate control"
       com.dockstarter.appinfo.nicename: "HomeAssistant"
-      com.dockstarter.appvars.homeassistant_backup_config: "true"
       com.dockstarter.appvars.homeassistant_enabled: "false"
       com.dockstarter.appvars.homeassistant_network_mode: ""
       com.dockstarter.appvars.homeassistant_port_8123: "8123"
