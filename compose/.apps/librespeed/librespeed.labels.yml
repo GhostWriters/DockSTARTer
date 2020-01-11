@@ -1,0 +1,14 @@
+services:
+  librespeed:
+    labels:
+      com.dockstarter.appinfo.description: "Lightweight Speedtest implementation"
+      com.dockstarter.appinfo.nicename: "LibreSpeed"
+      com.dockstarter.appvars.librespeed_db_hostname: ""
+      com.dockstarter.appvars.librespeed_db_name: ""
+      com.dockstarter.appvars.librespeed_db_password: ""
+      com.dockstarter.appvars.librespeed_db_type: "sqlite"
+      com.dockstarter.appvars.librespeed_db_username: ""
+      com.dockstarter.appvars.librespeed_enabled: "false"
+      com.dockstarter.appvars.librespeed_network_mode: ""
+      com.dockstarter.appvars.librespeed_password: ""
+      com.dockstarter.appvars.librespeed_port_80: "8013"

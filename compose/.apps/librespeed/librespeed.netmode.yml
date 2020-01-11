@@ -1,0 +1,3 @@
+services:
+  librespeed:
+    network_mode: ${LIBRESPEED_NETWORK_MODE}

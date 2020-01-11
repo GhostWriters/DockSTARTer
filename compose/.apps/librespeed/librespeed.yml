@@ -1,0 +1,23 @@
+services:
+  librespeed:
+    container_name: librespeed
+    environment:
+      - DB_HOSTNAME=${LIBRESPEED_DB_HOSTNAME}
+      - DB_NAME=${LIBRESPEED_DB_NAME}
+      - DB_PASSWORD=${LIBRESPEED_DB_PASSWORD}
+      - DB_TYPE=${LIBRESPEED_DB_TYPE}
+      - DB_USERNAME=${LIBRESPEED_DB_USERNAME}
+      - PASSWORD=${LIBRESPEED_PASSWORD}
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/librespeed:/config
+      - ${DOCKERSHAREDDIR}:/shared
