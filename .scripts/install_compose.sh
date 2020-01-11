@@ -41,6 +41,9 @@ install_compose() {
             if vergt "${AVAILABLE_COMPOSE}" "${UPDATED_COMPOSE}"; then
                 fatal "Failed to install the latest docker-compose."
             fi
+            if vergt "${MINIMUM_COMPOSE}" "${UPDATED_COMPOSE}"; then
+                fatal "Failed to install the minimum required docker-compose."
+            fi
         fi
     fi
 }

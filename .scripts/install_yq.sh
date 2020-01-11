@@ -40,6 +40,9 @@ install_yq() {
             if vergt "${AVAILABLE_YQ}" "${UPDATED_YQ}"; then
                 fatal "Failed to install the latest yq-go."
             fi
+            if vergt "${MINIMUM_YQ}" "${UPDATED_YQ}"; then
+                fatal "Failed to install the minimum required yq-go."
+            fi
         fi
     fi
 }
