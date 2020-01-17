@@ -1,0 +1,3 @@
+services:
+  limnoria:
+    network_mode: ${LIMNORIA_NETWORK_MODE}
