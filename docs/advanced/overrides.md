@@ -25,19 +25,3 @@ services:
 ```
 
 This will change Sonarr to use hotio's image for Sonarr and add a /media volume. Everything else from the original config such as the remaining volumes and environment variables will merge together.
-
-***
-GoAccess:
-
-```yaml
-  goaccess:
-    image: gregyankovoy/goaccess
-    hostname: stats.domain.com
-    ports:
-    - 7889:7889
-    volumes:
-    - /etc/localtime:/etc/localtime:ro
-    - /home/username/.docker/config/letsencrypt/log/nginx:/opt/log:ro
-    - /home/username/.docker/config/goaccess:/config:rw
-    container_name: goaccess
-```
