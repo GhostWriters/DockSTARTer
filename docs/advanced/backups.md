@@ -1,5 +1,7 @@
 # Backups
 
+## THIS IS DEPRECATED AND REMOVED FROM DOCKSTARTER AS OF 01/01/2020
+
 ## Creating backups
 
 DockSTARTer menu has an option for `Backup Config`, or you can use one of `sudo ds -b min` / `sudo ds -b med` / `sudo ds -b max` to create backups.
