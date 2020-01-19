@@ -11,6 +11,8 @@ services:
       - DETECTION_MODE=${CLOUDFLAREDDNS_DETECTION_MODE}
       - INTERVAL=${CLOUDFLAREDDNS_INTERVAL}
       - LOG_LEVEL=${CLOUDFLAREDDNS_LOG_LEVEL}
+      - PGID=${PGID}
+      - PUID=${PUID}
       - TZ=${TZ}
     logging:
       driver: json-file
