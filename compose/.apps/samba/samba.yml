@@ -16,7 +16,6 @@ services:
         max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: unless-stopped
     volumes:
-      - ./:/${SAMBA_SHARENAME}/compose
       - /etc/localtime:/etc/localtime:ro
       - ${BACKUP_CONFDIR}:/${SAMBA_SHARENAME}/backup
       - ${DOCKERCONFDIR}:/${SAMBA_SHARENAME}/config
