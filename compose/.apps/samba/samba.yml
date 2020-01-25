@@ -17,7 +17,6 @@ services:
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${BACKUP_CONFDIR}:/${SAMBA_SHARENAME}/backup
       - ${DOCKERCONFDIR}:/${SAMBA_SHARENAME}/config
       - ${DOCKERSHAREDDIR}:/${SAMBA_SHARENAME}/shared
       - ${DOCKERSHAREDDIR}:/shared
