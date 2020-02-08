@@ -9,6 +9,8 @@ install_yq() {
     if vergt "${MINIMUM_YQ}" "${INSTALLED_YQ}"; then
         local AVAILABLE_YQ
         AVAILABLE_YQ=$( (curl -H "${GH_HEADER:-}" -fsL "https://api.github.com/repos/mikefarah/yq/releases/latest" | grep -Po '"tag_name": "[Vv]?\K.*?(?=")') || echo "0")
+        # Pin to 3.0.1 while investigating issues with newer versions
+        AVAILABLE_YQ=3.0.1
         if [[ ${AVAILABLE_YQ} == "0" ]]; then
             if [[ ${INSTALLED_YQ} == "0" ]]; then
                 fatal "The latest available version of yq-go could not be confirmed. This is usually caused by exhausting the rate limit on GitHub's API. Please check https://api.github.com/rate_limit"
