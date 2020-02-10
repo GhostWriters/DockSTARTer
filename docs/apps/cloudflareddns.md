@@ -1,7 +1,5 @@
 # CloudFlareDDNS
 
-## Update Frequency
+## Documentation
 
-Every 5 minutes or when the container restarts.
-
-[Source](https://github.com/oznu/docker-cloudflare-ddns/issues/11)
+Documentation for settings and use can be found at https://github.com/oznu/docker-cloudflare-ddns
