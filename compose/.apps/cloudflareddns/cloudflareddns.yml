@@ -3,6 +3,7 @@ services:
     container_name: cloudflareddns
     environment:
       - ARGS=${CLOUDFLAREDDNS_ARGS}
+      - CF_APITOKEN=${CLOUDFLAREDDNS_APITOKEN}
       - CF_APIKEY=${CLOUDFLAREDDNS_APIKEY}
       - CF_HOSTS=${CLOUDFLAREDDNS_HOSTS}
       - CF_RECORDTYPES=${CLOUDFLAREDDNS_RECORDTYPES}
