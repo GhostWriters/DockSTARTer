@@ -74,7 +74,7 @@ Generally speaking, your configuration _does_ point to the port you specify, whi
 
 This change will make it so that if you type <http://blahblah> it will redirect to <https://blahblah>
 
-1. Edit ~/.config/appdata/nginx/site-confs/default
+1. Edit ~/.config/appdata/letsencrypt/nginx/site-confs/default
 
 1. Uncomment the relevant part of the file (see below)
 
