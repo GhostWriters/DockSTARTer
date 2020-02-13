@@ -25,7 +25,7 @@ docker_overrides_validate() {
             else
                 error "${path//${DOCKER_OVERRIDES_DIR}\//} is not valid yml. See errors below."
                 yq-go v ${path}
-                VALIDATION_ERRORS=((VALIDATION_ERRORS + 1))
+                VALIDATION_ERRORS=$((VALIDATION_ERRORS + 1))
             fi
         fi
     done < <(find ${DOCKER_OVERRIDES_DIR}/* -type f -prune)

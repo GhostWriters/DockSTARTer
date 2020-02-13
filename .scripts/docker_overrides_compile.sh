@@ -50,7 +50,7 @@ docker_overrides_compile() {
                 info "${path//${DOCKER_OVERRIDES_DIR}\//} included"
             else
                 warn "${path//${DOCKER_OVERRIDES_DIR}\//} is not valid yml and has not been included. Please check your syntax."
-                VALIDATION_ERRORS=((VALIDATION_ERRORS + 1))
+                VALIDATION_ERRORS=$((VALIDATION_ERRORS + 1))
             fi
         fi
     done < <(find ${DOCKER_OVERRIDES_DIR}/* -type f -not -name "original_overrides.yml" -prune)
@@ -62,7 +62,7 @@ docker_overrides_compile() {
             echo "${DOCKER_OVERRIDES_DIR}/original_overrides.yml \\" >> "${RUNFILE}"
         else
             warn "original_overrides.yml is not valid yml. Please check your syntax."
-            VALIDATION_ERRORS=((VALIDATION_ERRORS + 1))
+            VALIDATION_ERRORS=$((VALIDATION_ERRORS + 1))
         fi
     fi
 
