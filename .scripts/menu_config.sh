@@ -9,6 +9,12 @@ menu_config() {
     CONFIGOPTS+=("Set App Variables " "")
     CONFIGOPTS+=("Set VPN Variables " "")
     CONFIGOPTS+=("Set Global Variables " "")
+    local DOCKER_OVERRIDES_DIR
+    DOCKER_OVERRIDES_DIR=$(run_script 'env_get' DOCKEROVERRIDESDIR)
+    if [[ -d ${DOCKER_OVERRIDES_DIR} && $(find "${DOCKER_OVERRIDES_DIR}"/* -type f -prune | wc -l) -gt 0 ]]; then
+        CONFIGOPTS+=("Compile Overrides " "")
+        CONFIGOPTS+=("Validate Overrides " "")
+    fi
 
     local CONFIGCHOICE
     if [[ ${CI:-} == true ]]; then
@@ -50,6 +56,12 @@ menu_config() {
             run_script 'config_global'
             run_script 'yml_merge'
             run_script 'docker_compose'
+            ;;
+        "Compile Overrides ")
+            run_script 'docker_overrides_compile'
+            ;;
+        "Validate Overrides ")
+            run_script 'docker_overrides_validate'
             ;;
         "Cancel")
             info "Returning to Main Menu."

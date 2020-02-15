@@ -61,6 +61,7 @@ cmdline() {
             --env) LOCAL_ARGS="${LOCAL_ARGS:-}-e " ;;
             --help) LOCAL_ARGS="${LOCAL_ARGS:-}-h " ;;
             --install) LOCAL_ARGS="${LOCAL_ARGS:-}-i " ;;
+            --overrides) LOCAL_ARGS="${LOCAL_ARGS:-}-o " ;;
             --prune) LOCAL_ARGS="${LOCAL_ARGS:-}-p " ;;
             --remove) LOCAL_ARGS="${LOCAL_ARGS:-}-r " ;;
             --test) LOCAL_ARGS="${LOCAL_ARGS:-}-t " ;;
@@ -77,7 +78,7 @@ cmdline() {
     #Reset the positional parameters to the short options
     eval set -- "${LOCAL_ARGS:-}"
 
-    while getopts ":a:c:eghipr:t:u:vx" OPTION; do
+    while getopts ":a:c:eghio:pr:t:u:vx" OPTION; do
         case ${OPTION} in
             a)
                 readonly ADD=${OPTARG}
@@ -103,6 +104,17 @@ cmdline() {
             i)
                 readonly INSTALL=true
                 ;;
+            o)
+                case ${OPTARG} in
+                    generate | validate)
+                        readonly OVERRIDES=${OPTARG}
+                        ;;
+                    *)
+                        echo "Invalid overrides option."
+                        exit 1
+                        ;;
+                esac
+                ;;
             p)
                 readonly PRUNE=true
                 ;;
@@ -126,6 +138,9 @@ cmdline() {
                 case ${OPTARG} in
                     c)
                         readonly COMPOSE=true
+                        ;;
+                    o)
+                        readonly OVERRIDES=true
                         ;;
                     r)
                         readonly REMOVE=true
@@ -429,6 +444,23 @@ main() {
     fi
     if [[ -n ${INSTALL:-} ]]; then
         run_script 'run_install'
+        exit
+    fi
+    if [[ -n ${OVERRIDES:-} ]]; then
+        if [[ ${PROMPT:-} != "GUI" ]]; then
+            PROMPT="CLI"
+        fi
+        case ${OVERRIDES} in
+            generate | merge | true)
+                run_script 'docker_overrides_compile'
+                ;;
+            validate)
+                run_script 'docker_overrides_validate'
+                ;;
+            *)
+                fatal "Invalid overrides option."
+                ;;
+        esac
         exit
     fi
     if [[ -n ${PRUNE:-} ]]; then
