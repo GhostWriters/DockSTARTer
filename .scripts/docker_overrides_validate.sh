@@ -4,7 +4,8 @@ IFS=$'\n\t'
 
 docker_overrides_validate() {
     run_script 'env_update'
-    local DOCKER_OVERRIDES_DIR=$(run_script 'env_get' DOCKEROVERRIDESDIR)
+    local DOCKER_OVERRIDES_DIR
+    DOCKER_OVERRIDES_DIR=$(run_script 'env_get' DOCKEROVERRIDESDIR)
     local VALIDATION_ERRORS=0
 
     info "Running Docker Overrides Validator"
