@@ -3,7 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 docker_overrides_validate() {
-    run_script 'env_update'
+    local PREVAL=${1:-N}
     local DOCKER_OVERRIDES_DIR
     DOCKER_OVERRIDES_DIR=$(run_script 'env_get' DOCKEROVERRIDESDIR)
     local VALIDATION_ERRORS=0
@@ -25,20 +25,24 @@ docker_overrides_validate() {
             if yq-go v "${path}" > /dev/null 2>&1; then
                 info "${path//${DOCKER_OVERRIDES_DIR}\//} valid!"
             else
-                error "${path//${DOCKER_OVERRIDES_DIR}\//} is not valid yml. See errors below."
-                yq-go v "${path}"
+                error "${path//${DOCKER_OVERRIDES_DIR}\//} is not valid yml and will not be included when generating. See errors below."
+                yq-go v "${path}" || true
                 VALIDATION_ERRORS=$((VALIDATION_ERRORS + 1))
             fi
         fi
     done < <(find "${DOCKER_OVERRIDES_DIR}"/* -type f -prune)
     shopt -u dotglob
 
-    info "Validation complete."
-
-    # TODO: Prompt user if ther are validation errors
-    # if [[ ${VALIDATION_ERRORS} -gt 0 ]]; then
-    #
-    # fi
+    # Output final status
+    if [[ ${VALIDATION_ERRORS} -gt 0 ]]; then
+        error "Validation errors were found. See errors above for more information."
+        # Only return status code 1 if this is running as pre-validation
+        if [[ ${PREVAL:-N} == "Y" ]]; then
+            return 1
+        fi
+    else
+        notice "Validation completed without errors!"
+    fi
 }
 
 test_docker_overrides_validate() {
