@@ -22,7 +22,7 @@ docker_overrides_validate() {
     shopt -s dotglob
     while IFS= read -r path; do
         if [[ -f ${path} ]]; then
-            if yq-go v ${path} > /dev/null 2>&1; then
+            if yq-go v "${path}" > /dev/null 2>&1; then
                 info "${path//${DOCKER_OVERRIDES_DIR}\//} valid!"
             else
                 error "${path//${DOCKER_OVERRIDES_DIR}\//} is not valid yml. See errors below."
