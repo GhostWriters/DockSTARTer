@@ -5,8 +5,6 @@ IFS=$'\n\t'
 docker_overrides_compile() {
     run_script 'env_update'
     local FILES_INCLUDED=0
-    local DOCKERCONFDIR
-    DOCKERCONFDIR=$(run_script 'env_get' DOCKERCONFDIR)
     local DOCKER_OVERRIDES_DIR
     DOCKER_OVERRIDES_DIR=$(run_script 'env_get' DOCKEROVERRIDESDIR)
 
