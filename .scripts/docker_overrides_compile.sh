@@ -4,9 +4,20 @@ IFS=$'\n\t'
 
 docker_overrides_compile() {
     run_script 'env_update'
+    local FILES_INCLUDED=0
     local DOCKER_OVERRIDES_DIR
     DOCKER_OVERRIDES_DIR=$(run_script 'env_get' DOCKEROVERRIDESDIR)
-    local VALIDATION_ERRORS=0
+
+    if ! run_script "docker_overrides_validate" Y; then
+        if run_script 'question_prompt' "${PROMPT:-}" N "Validation errors were found. Do you want to continue?"; then
+            info "Continuing with validation errors."
+        else
+            info "Docker Overrides Compiler will not be run."
+            exit
+        fi
+    else
+        info "Pre-compiler validation had no errors!"
+    fi
 
     info "Running Docker Overrides Compiler"
     # Move the user's existing docker-compose.override.yml, if it exists
@@ -51,9 +62,7 @@ docker_overrides_compile() {
             if yq-go v "${path}" > /dev/null 2>&1; then
                 echo "${path} \\" >> "${RUNFILE}"
                 info "${path//${DOCKER_OVERRIDES_DIR}\//} included"
-            else
-                warn "${path//${DOCKER_OVERRIDES_DIR}\//} is not valid yml and has not been included. Please check your syntax."
-                VALIDATION_ERRORS=$((VALIDATION_ERRORS + 1))
+                FILES_INCLUDED=$((FILES_INCLUDED + 1))
             fi
         fi
     done < <(find "${DOCKER_OVERRIDES_DIR}"/* -type f -not -name "original_overrides.yml" -prune)
@@ -65,21 +74,24 @@ docker_overrides_compile() {
             echo "${DOCKER_OVERRIDES_DIR}/original_overrides.yml \\" >> "${RUNFILE}"
         else
             warn "original_overrides.yml is not valid yml. Please check your syntax."
-            VALIDATION_ERRORS=$((VALIDATION_ERRORS + 1))
         fi
     fi
 
-    # TODO: Prompt user if there are validation errors
-    # if [[ ${VALIDATION_ERRORS} -gt 0 ]]; then
-    #
-    # fi
-
     echo ">> ${SCRIPTPATH}/compose/docker-compose.override.yml" >> "${RUNFILE}"
-    run_script 'install_yq'
-    info "Running compiled script to merge docker-compose.overrides.yml file."
-    bash "${RUNFILE}" > /dev/null 2>&1 || fatal "Failed to run yml merge script."
+    if [[ ${FILES_INCLUDED} -gt 0 ]]; then
+        run_script 'install_yq'
+        info "Running compiled script to merge docker-compose.overrides.yml file."
+        bash "${RUNFILE}" > /dev/null 2>&1 || fatal "Failed to run yml merge script."
+        COMPLETEMSG="Merging docker-compose.override.yml complete."
+    else
+        COMPLETEMSG="No valid yml files to include. Not generating an overrides file."
+    fi
     rm -f "${RUNFILE}" || warn "Failed to remove temporary yml merge script."
-    info "Merging docker-compose.override.yml complete."
+    if [[ ${FILES_INCLUDED} -gt 0 ]]; then
+        notice "${COMPLETEMSG}"
+    else
+        warn "${COMPLETEMSG}"
+    fi
 }
 
 test_docker_overrides_compile() {
