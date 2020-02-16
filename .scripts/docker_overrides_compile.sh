@@ -46,7 +46,7 @@ docker_overrides_compile() {
                 FILES_INCLUDED=$((FILES_INCLUDED + 1))
             fi
         fi
-    done < <(find "${DOCKER_OVERRIDES_DIR}"/* -type f  -name '*.yml' -not -name "docker-compose.override.original.yml" -prune 2> /dev/null)
+    done < <(find "${DOCKER_OVERRIDES_DIR}"/* -type f -name '*.yml' -not -name "docker-compose.override.original.yml" -prune 2> /dev/null)
     shopt -u dotglob
 
     # Include the user's original overrides, if they existed
