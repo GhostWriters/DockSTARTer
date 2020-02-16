@@ -106,7 +106,7 @@ cmdline() {
                 ;;
             o)
                 case ${OPTARG} in
-                    generate | validate)
+                    generate | initialize | validate)
                         readonly OVERRIDES=${OPTARG}
                         ;;
                     *)
@@ -451,6 +451,9 @@ main() {
             PROMPT="CLI"
         fi
         case ${OVERRIDES} in
+            initialize)
+                run_script 'docker_overrides_initialize'
+                ;;
             generate | merge | true)
                 run_script 'docker_overrides_compile'
                 ;;
