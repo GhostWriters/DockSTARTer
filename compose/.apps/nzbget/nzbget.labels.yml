@@ -3,7 +3,6 @@ services:
     labels:
       com.dockstarter.appinfo.description: "NZB Newsgrabber / Downloader"
       com.dockstarter.appinfo.nicename: "NZBGet"
-      com.dockstarter.appvars.nzbget_backup_config: "true"
       com.dockstarter.appvars.nzbget_enabled: "false"
       com.dockstarter.appvars.nzbget_network_mode: ""
       com.dockstarter.appvars.nzbget_port_6789: "6789"

@@ -1,4 +1,0 @@
-services:
-  ttrss:
-    ports:
-      - ${TTRSS_PORT_80}:80

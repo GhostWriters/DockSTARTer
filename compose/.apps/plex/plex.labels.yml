@@ -3,7 +3,7 @@ services:
     labels:
       com.dockstarter.appinfo.description: "Organizes all of your video, music and photo collections"
       com.dockstarter.appinfo.nicename: "Plex"
-      com.dockstarter.appvars.plex_backup_config: "true"
+      com.dockstarter.appvars.plex_claim: "https://plex.tv/claim"
       com.dockstarter.appvars.plex_enabled: "false"
       com.dockstarter.appvars.plex_network_mode: ""
       com.dockstarter.appvars.plex_port_1900: "1900"
@@ -17,5 +17,4 @@ services:
       com.dockstarter.appvars.plex_port_33400: "33400"
       com.dockstarter.appvars.plex_port_5353: "5353"
       com.dockstarter.appvars.plex_port_8324: "8324"
-      com.dockstarter.appvars.plex_transcodedir: "/tmp"
       com.dockstarter.appvars.plex_version: "docker"
