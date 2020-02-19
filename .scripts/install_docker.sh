@@ -41,6 +41,9 @@ install_docker() {
                 echo # placeholder
                 #fatal "Failed to install the latest docker."
             fi
+            if vergt "${MINIMUM_DOCKER}" "${UPDATED_DOCKER}"; then
+                fatal "Failed to install the minimum required docker."
+            fi
         fi
     fi
 }

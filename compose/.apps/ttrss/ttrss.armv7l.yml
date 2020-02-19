@@ -1,3 +1,0 @@
-services:
-  ttrss:
-    image: linuxserver/tt-rss

@@ -3,7 +3,6 @@ services:
     labels:
       com.dockstarter.appinfo.description: "rTorrent client and ruTorrent WebUI"
       com.dockstarter.appinfo.nicename: "ruTorrent"
-      com.dockstarter.appvars.rutorrent_backup_config: "true"
       com.dockstarter.appvars.rutorrent_enabled: "false"
       com.dockstarter.appvars.rutorrent_network_mode: ""
       com.dockstarter.appvars.rutorrent_port_5000: "5000"
