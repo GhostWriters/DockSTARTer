@@ -467,9 +467,7 @@ main() {
         exit
     fi
     # Run Menus
-    if [[ ${PROMPT:-} != "FORCE" ]]; then
-        PROMPT="GUI"
-    fi
+    PROMPT="GUI"
     run_script 'menu_main'
 }
 main
