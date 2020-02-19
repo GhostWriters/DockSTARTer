@@ -371,7 +371,7 @@ main() {
     # Repo Check
     local PROMPT
     if [[ ${FORCE:-} == true ]]; then
-        PROMPT="FORCED"
+        PROMPT="FORCE"
     fi
     local DS_COMMAND
     DS_COMMAND=$(command -v ds || true)
@@ -485,7 +485,7 @@ main() {
         exit
     fi
     # Run Menus
-    if [[ ${PROMPT:-} != "FORCED" ]]; then
+    if [[ ${PROMPT:-} != "FORCE" ]]; then
         PROMPT="GUI"
     fi
     run_script 'menu_main'
