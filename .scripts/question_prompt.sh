@@ -7,6 +7,9 @@ question_prompt() {
     local DEFAULT=${2:-Y}
     local QUESTION=${3:-}
     local YN
+    if [[ ${PROMPT:-} != "FORCED" ]] && [[ ${PROMPT:-} != "GUI" ]]; then
+        PROMPT="CLI"
+    fi
     while true; do
         if [[ ${CI:-} == true ]]; then
             YN=${DEFAULT}
