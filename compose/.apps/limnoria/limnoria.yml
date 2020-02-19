@@ -1,6 +1,6 @@
 services:
-  ttrss:
-    container_name: ttrss
+  limnoria:
+    container_name: limnoria
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
@@ -13,5 +13,5 @@ services:
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/ttrss:/config
+      - ${DOCKERCONFDIR}/limnoria:/config
       - ${DOCKERSHAREDDIR}:/shared

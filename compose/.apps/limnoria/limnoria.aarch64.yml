@@ -1,0 +1,3 @@
+services:
+  limnoria:
+    image: linuxserver/limnoria

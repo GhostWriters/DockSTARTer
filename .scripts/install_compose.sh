@@ -19,7 +19,7 @@ install_compose() {
             fi
         fi
         if vergt "${AVAILABLE_COMPOSE}" "${INSTALLED_COMPOSE}"; then
-            run_script 'package_manager_run' remove_python
+            run_script 'package_manager_run' remove_python_conflicts
             info "Installing latest python pip."
             run_script 'run_python' -m pip install -IUq pip > /dev/null 2>&1 || warn "Failed to install pip from pip. This can be ignored for now."
 
@@ -40,6 +40,9 @@ install_compose() {
             UPDATED_COMPOSE=$( (docker-compose --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
             if vergt "${AVAILABLE_COMPOSE}" "${UPDATED_COMPOSE}"; then
                 fatal "Failed to install the latest docker-compose."
+            fi
+            if vergt "${MINIMUM_COMPOSE}" "${UPDATED_COMPOSE}"; then
+                fatal "Failed to install the minimum required docker-compose."
             fi
         fi
     fi

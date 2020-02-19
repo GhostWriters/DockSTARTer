@@ -3,7 +3,6 @@ services:
     labels:
       com.dockstarter.appinfo.description: "Certificate authority that provides free X.509 certificates"
       com.dockstarter.appinfo.nicename: "LetsEncrypt"
-      com.dockstarter.appvars.letsencrypt_backup_config: "true"
       com.dockstarter.appvars.letsencrypt_dnsplugin: ""
       com.dockstarter.appvars.letsencrypt_duckdnstoken: ""
       com.dockstarter.appvars.letsencrypt_email: ""
