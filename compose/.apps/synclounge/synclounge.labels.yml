@@ -1,0 +1,13 @@
+services:
+  synclounge:
+    labels:
+      com.dockstarter.appinfo.description: "(Read the docs for setup) Watch Plex in sync with your friends/family, wherever you are."
+      com.dockstarter.appinfo.nicename: "SyncLounge"
+      com.dockstarter.appvars.synclounge_enabled: "false"
+      com.dockstarter.appvars.synclounge_network_mode: ""
+      com.dockstarter.appvars.synclounge_port_8088: "8088"
+      com.dockstarter.appvars.synclounge_port_8089: "8089"
+      com.dockstarter.appvars.synclounge_domain: "synclounge.yourdomain.com"
+      com.dockstarter.appvars.synclounge_auto_join: "true"
+      com.dockstarter.appvars.synclounge_web_root: "lounge"
+      com.dockstarter.appvars.synclounge_server_root: "server"

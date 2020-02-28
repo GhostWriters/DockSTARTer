@@ -1,0 +1,3 @@
+services:
+  synclounge:
+    image: starbix/synclounge

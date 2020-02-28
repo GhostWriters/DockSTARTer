@@ -1,0 +1,21 @@
+services:
+  synclounge:
+    container_name: synclounge
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - DOMAIN=${SYNCLOUNGE_DOMAIN}
+      - accessUrl=https://${SYNCLOUNGE_DOMAIN}/${SYNCLOUNGE_WEB_ROOT}
+      - autoJoin=${SYNCLOUNGE_AUTO_JOIN}
+      - autoJoinServer=https://${SYNCLOUNGE_DOMAIN}/${SYNCLOUNGE_SERVER_ROOT}
+      - webroot=/${SYNCLOUNGE_WEB_ROOT}
+      - serverroot=/${SYNCLOUNGE_SERVER_ROOT}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
