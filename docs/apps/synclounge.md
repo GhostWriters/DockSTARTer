@@ -13,6 +13,7 @@ The below steps assume that you already have the [Let's Encrypt](https://docksta
 1. Select SyncLounge from the DockSTARTer menu
     Note: If this is your first time running and configuring SyncLounge, keep the default settings. If you want to change these, see the **Issues** and **Advanced** sections below.
 2. Copy and paste the following into a file called `synclounge.subdomain.conf` in your [Let's Encrypt](https://dockstarter.com/apps/letsencrypt/) `proxy-confs` folder.
+
     ```nginx
     server {
        listen 443 ssl;
@@ -101,14 +102,16 @@ The below steps assume that you already have the [Let's Encrypt](https://docksta
 
     }
     ```
-1. Restart the letsencrypt container
+
+3. Restart the letsencrypt container
    `docker restart letsencrypt`
 
 You should now be able to go to `synclouge.yourdomain.com` and use SyncLounge!
 
 ## Issues
 
-There are a number of issues found when setting this up.
+These are some issue found when setting this up.
+
 1. The docker container doesn't properly respect `web_root` and `server_root` settings for some paths. These are noted in the sample nginx config above.
 2. Auto Join has a bug that causes it to not work most of the time.
 3. Some of the settings are a bit finicky. For instance, `web_root` and `server_root` don't like to be set to `/` and they if they are empty, they will get set to defaults `/slweb` and `/slserver`.
