@@ -6,11 +6,11 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
       - DOMAIN=${SYNCLOUNGE_DOMAIN}
-      - accessUrl=https://${SYNCLOUNGE_DOMAIN}/${SYNCLOUNGE_WEB_ROOT}
+      - accessUrl=${SYNCLOUNGE_ACCESS_URL}
       - autoJoin=${SYNCLOUNGE_AUTO_JOIN}
-      - autoJoinServer=https://${SYNCLOUNGE_DOMAIN}/${SYNCLOUNGE_SERVER_ROOT}
-      - webroot=/${SYNCLOUNGE_WEB_ROOT}
-      - serverroot=/${SYNCLOUNGE_SERVER_ROOT}
+      - autoJoinServer=${SYNCLOUNGE_AUTO_JOIN_SERVER}
+      - webroot=${SYNCLOUNGE_WEB_ROOT}
+      - serverroot=${SYNCLOUNGE_SERVER_ROOT}
     logging:
       driver: json-file
       options:
