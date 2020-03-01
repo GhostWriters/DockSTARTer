@@ -3,7 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 install_yq() {
-    local MINIMUM_YQ="3.1.0"
+    local MINIMUM_YQ="3.2.1"
     local INSTALLED_YQ
     INSTALLED_YQ=$( (/usr/local/bin/yq-go --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
     if vergt "${MINIMUM_YQ}" "${INSTALLED_YQ}"; then
