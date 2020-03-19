@@ -4,7 +4,6 @@
 
 The GIT Repository for CloudFlare DDNS is located at [https://github.com/hotio/docker-cloudflare-ddns](https://github.com/hotio/docker-cloudflare-ddns).
 
-
 ## Documentation
 
 Documentation for settings and use can be found at [https://github.com/oznu/docker-cloudflare-ddns](https://github.com/oznu/docker-cloudflare-ddns)
