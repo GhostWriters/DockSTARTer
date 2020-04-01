@@ -1,0 +1,19 @@
+services:
+  minecraft_bedrock_server:
+    container_name: minecraft_bedrock_server
+    environment:
+      - EULA=${MINECRAFT_BEDROCK_SERVER_EULA}
+      - GID=${PGID}
+      - TZ=${TZ}
+      - UID=${PUID}
+      - VERSION=${MINECRAFT_BEDROCK_SERVER_VERSION}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/minecraft_bedrock_server:/data
+      - ${DOCKERSHAREDDIR}:/shared
