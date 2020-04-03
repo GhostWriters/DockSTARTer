@@ -1,0 +1,20 @@
+services:
+  minecraft_server:
+    container_name: minecraft_server
+    environment:
+      - EULA=${MINECRAFT_SERVER_EULA}
+      - GID=${PGID}
+      - TYPE=${MINECRAFT_SERVER_TYPE}
+      - TZ=${TZ}
+      - UID=${PUID}
+      - VERSION=${MINECRAFT_SERVER_VERSION}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/minecraft_server:/data
+      - ${DOCKERSHAREDDIR}:/shared
