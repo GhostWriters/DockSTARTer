@@ -36,6 +36,10 @@ install_compose() {
             info "Installing latest docker-compose."
             run_script 'run_python' -m pip install -IUq docker-compose > /dev/null 2>&1 || warn "Failed to install docker-compose from pip. This can be ignored for now."
 
+            if [[ ! -L "/usr/bin/docker-compose" ]]; then
+                ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose || fatal "Failed to create /usr/bin/docker-compose symlink."
+            fi
+
             local UPDATED_COMPOSE
             UPDATED_COMPOSE=$( (docker-compose --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
             if vergt "${AVAILABLE_COMPOSE}" "${UPDATED_COMPOSE}"; then
