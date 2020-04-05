@@ -1,0 +1,11 @@
+services:
+  minecraft_server:
+    labels:
+      com.dockstarter.appinfo.description: "Minecraft Java Edition Server"
+      com.dockstarter.appinfo.nicename: "Minecraft_server"
+      com.dockstarter.appvars.minecraft_server_enabled: "false"
+      com.dockstarter.appvars.minecraft_server_network_mode: ""
+      com.dockstarter.appvars.minecraft_server_port_25565: "25565"
+      com.dockstarter.appvars.minecraft_server_eula: "TRUE"
+      com.dockstarter.appvars.minecraft_server_version: "LATEST"
+      com.dockstarter.appvars.minecraft_server_type: "VANILLA"

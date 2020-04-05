@@ -8,7 +8,7 @@
 [![GitHub last commit master](https://img.shields.io/github/last-commit/GhostWriters/DockSTARTer/master.svg?style=flat-square&color=607D8B&label=code%20committed)](https://github.com/GhostWriters/DockSTARTer/commits/master)
 [![GitHub last commit docs](https://img.shields.io/github/last-commit/GhostWriters/DockSTARTer.com/master.svg?style=flat-square&color=607D8B&label=docs%20committed)](https://github.com/GhostWriters/DockSTARTer.com/commits/master)
 [![GitHub license](https://img.shields.io/github/license/GhostWriters/DockSTARTer.svg?style=flat-square&color=607D8B)](https://github.com/GhostWriters/DockSTARTer/blob/master/LICENSE.md)
-[![Travis (.com) branch](https://img.shields.io/travis/com/GhostWriters/DockSTARTer/master.svg?style=flat-square&color=607D8B&logo=travis)](https://travis-ci.com/GhostWriters/DockSTARTer)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/GhostWriters/DockSTARTer/CI/master?style=flat-square&color=607D8B&logo=github)](https://github.com/GhostWriters/DockSTARTer/actions?query=workflow%3ACI+branch%3Amaster)
 
 The main goal of DockSTARTer is to make it quick and easy to get up and running with Docker.
 
