@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 appvars_purge_all() {
     if grep -q '_ENABLED=false$' "${SCRIPTPATH}/compose/.env"; then
-        if [[ ${CI:-} == true ]] || run_script 'question_prompt' "${PROMPT:-}" N "Would you like to purge variables for all disabled apps?"; then
+        if [[ ${CI:-} == true ]] || run_script 'question_prompt' "${PROMPT:-}" Y "Would you like to purge variables for all disabled apps?"; then
             info "Purging disabled app variables."
             while IFS= read -r line; do
                 local APPNAME=${line%%_ENABLED=false}
