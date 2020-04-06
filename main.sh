@@ -18,6 +18,8 @@ IFS=$'\n\t'
 #/      run docker-compose commands without confirmation prompts
 #/  -e --env
 #/      update your .env file with new variables
+#/  -f --force
+#/      force certain install/upgrade actions to run even if they would not be needed
 #/  -h --help
 #/      show this usage information
 #/  -i --install
@@ -59,6 +61,7 @@ cmdline() {
             --compose) LOCAL_ARGS="${LOCAL_ARGS:-}-c " ;;
             --debug) LOCAL_ARGS="${LOCAL_ARGS:-}-x " ;;
             --env) LOCAL_ARGS="${LOCAL_ARGS:-}-e " ;;
+            --force) LOCAL_ARGS="${LOCAL_ARGS:-}-f " ;;
             --help) LOCAL_ARGS="${LOCAL_ARGS:-}-h " ;;
             --install) LOCAL_ARGS="${LOCAL_ARGS:-}-i " ;;
             --prune) LOCAL_ARGS="${LOCAL_ARGS:-}-p " ;;
@@ -77,7 +80,7 @@ cmdline() {
     #Reset the positional parameters to the short options
     eval set -- "${LOCAL_ARGS:-}"
 
-    while getopts ":a:c:eghipr:t:u:vx" OPTION; do
+    while getopts ":a:c:efghipr:t:u:vx" OPTION; do
         case ${OPTION} in
             a)
                 readonly ADD=${OPTARG}
@@ -95,6 +98,9 @@ cmdline() {
                 ;;
             e)
                 readonly ENV=true
+                ;;
+            f)
+                readonly FORCE=true
                 ;;
             h)
                 usage
@@ -355,6 +361,9 @@ main() {
     fi
     # Repo Check
     local PROMPT
+    if [[ ${FORCE:-} == true ]]; then
+        PROMPT="FORCE"
+    fi
     local DS_COMMAND
     DS_COMMAND=$(command -v ds || true)
     if [[ -L ${DS_COMMAND} ]]; then

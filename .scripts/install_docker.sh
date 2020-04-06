@@ -4,10 +4,14 @@ IFS=$'\n\t'
 
 install_docker() {
     local MINIMUM_DOCKER="17.09.0"
+    # Find minimum compatible version at https://docs.docker.com/engine/release-notes/
     run_script 'remove_snap_docker'
     local INSTALLED_DOCKER
-    INSTALLED_DOCKER=$( (docker --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
-    # Find minimum compatible version at https://docs.docker.com/engine/release-notes/
+    if [[ ${FORCE:-} == true ]]; then
+        INSTALLED_DOCKER="0"
+    else
+        INSTALLED_DOCKER=$( (docker --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
+    fi
     if vergt "${MINIMUM_DOCKER}" "${INSTALLED_DOCKER}"; then
         local AVAILABLE_DOCKER
         AVAILABLE_DOCKER=$( (curl -H "${GH_HEADER:-}" -fsL "https://api.github.com/repos/docker/docker-ce/releases/latest" | grep -Po '"tag_name": "[Vv]?\K.*?(?=")') || echo "0")
