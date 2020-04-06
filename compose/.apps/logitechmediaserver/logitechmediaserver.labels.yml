@@ -8,3 +8,4 @@ services:
       com.dockstarter.appvars.logitechmediaserver_port_3483: "3483"
       com.dockstarter.appvars.logitechmediaserver_port_9000: "9000"
       com.dockstarter.appvars.logitechmediaserver_port_9090: "9090"
+      com.dockstarter.appvars.logitechmediaserver_tag: "latest-7.9.2"
