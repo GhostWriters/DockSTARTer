@@ -3,7 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 question_prompt() {
-    local PROMPT=${1:-}
+    local PROMPT=${1:-CLI}
     local DEFAULT=${2:-Y}
     local QUESTION=${3:-}
     local YN
@@ -30,6 +30,8 @@ question_prompt() {
             else
                 YN=N
             fi
+        elif [[ ${PROMPT:-} == "FORCE" ]]; then
+            YN=${DEFAULT}
         else
             YN=${DEFAULT}
         fi

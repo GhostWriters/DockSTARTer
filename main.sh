@@ -18,6 +18,8 @@ IFS=$'\n\t'
 #/      run docker-compose commands without confirmation prompts
 #/  -e --env
 #/      update your .env file with new variables
+#/  -f --force
+#/      force certain install/upgrade actions to run even if they would not be needed
 #/  -h --help
 #/      show this usage information
 #/  -i --install
@@ -59,6 +61,7 @@ cmdline() {
             --compose) LOCAL_ARGS="${LOCAL_ARGS:-}-c " ;;
             --debug) LOCAL_ARGS="${LOCAL_ARGS:-}-x " ;;
             --env) LOCAL_ARGS="${LOCAL_ARGS:-}-e " ;;
+            --force) LOCAL_ARGS="${LOCAL_ARGS:-}-f " ;;
             --help) LOCAL_ARGS="${LOCAL_ARGS:-}-h " ;;
             --install) LOCAL_ARGS="${LOCAL_ARGS:-}-i " ;;
             --prune) LOCAL_ARGS="${LOCAL_ARGS:-}-p " ;;
@@ -77,7 +80,7 @@ cmdline() {
     #Reset the positional parameters to the short options
     eval set -- "${LOCAL_ARGS:-}"
 
-    while getopts ":a:c:eghipr:t:u:vx" OPTION; do
+    while getopts ":a:c:efghipr:t:u:vx" OPTION; do
         case ${OPTION} in
             a)
                 readonly ADD=${OPTARG}
@@ -95,6 +98,9 @@ cmdline() {
                 ;;
             e)
                 readonly ENV=true
+                ;;
+            f)
+                readonly FORCE=true
                 ;;
             h)
                 usage
@@ -245,20 +251,25 @@ readonly NC=$(tcolor NC)
 # Log Functions
 readonly LOG_FILE="/tmp/dockstarter.log"
 sudo -E chown "${DETECTED_PUID:-$DETECTED_UNAME}":"${DETECTED_PGID:-$DETECTED_UGROUP}" "${LOG_FILE}" > /dev/null 2>&1 || true
-trace() { if [[ -n ${TRACE:-} ]]; then
-    echo -e "${NC}$(date +"%F %T") ${F[B]}[TRACE ]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2
-fi; }
-debug() { if [[ -n ${DEBUG:-} ]]; then
-    echo -e "${NC}$(date +"%F %T") ${F[B]}[DEBUG ]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2
-fi; }
-info() { if [[ -n ${VERBOSE:-} ]]; then
-    echo -e "${NC}$(date +"%F %T") ${F[B]}[INFO  ]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2
-fi; }
-notice() { echo -e "${NC}$(date +"%F %T") ${F[G]}[NOTICE]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2; }
-warn() { echo -e "${NC}$(date +"%F %T") ${F[Y]}[WARN  ]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2; }
-error() { echo -e "${NC}$(date +"%F %T") ${F[R]}[ERROR ]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2; }
+log() {
+    local TOTERM=${1:-}
+    local MESSAGE=${2:-}
+    echo -e "${MESSAGE:-}" | (
+        if [[ -n ${TOTERM} ]]; then
+            tee -a "${LOG_FILE}" >&2
+        else
+            cat >> "${LOG_FILE}" 2>&1
+        fi
+    )
+}
+trace() { log "${TRACE:-}" "${NC}$(date +"%F %T") ${F[B]}[TRACE ]${NC}   $*${NC}"; }
+debug() { log "${DEBUG:-}" "${NC}$(date +"%F %T") ${F[B]}[DEBUG ]${NC}   $*${NC}"; }
+info() { log "${VERBOSE:-}" "${NC}$(date +"%F %T") ${F[B]}[INFO  ]${NC}   $*${NC}"; }
+notice() { log "true" "${NC}$(date +"%F %T") ${F[G]}[NOTICE]${NC}   $*${NC}"; }
+warn() { log "true" "${NC}$(date +"%F %T") ${F[Y]}[WARN  ]${NC}   $*${NC}"; }
+error() { log "true" "${NC}$(date +"%F %T") ${F[R]}[ERROR ]${NC}   $*${NC}"; }
 fatal() {
-    echo -e "${NC}$(date +"%F %T") ${B[R]}${F[W]}[FATAL ]${NC}   $*${NC}" | tee -a "${LOG_FILE}" >&2
+    log "true" "${NC}$(date +"%F %T") ${B[R]}${F[W]}[FATAL ]${NC}   $*${NC}"
     exit 1
 }
 
@@ -350,6 +361,9 @@ main() {
     fi
     # Repo Check
     local PROMPT
+    if [[ ${FORCE:-} == true ]]; then
+        PROMPT="FORCE"
+    fi
     local DS_COMMAND
     DS_COMMAND=$(command -v ds || true)
     if [[ -L ${DS_COMMAND} ]]; then
