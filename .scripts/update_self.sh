@@ -21,10 +21,8 @@ update_self() {
     fi
     info "Removing unused branches."
     git for-each-ref --format '%(refname:short)' refs/heads | grep -v master | xargs git branch -D > /dev/null 2>&1 || true
-    while IFS= read -r line; do
-        info "Setting file ownership on ${line}"
-        chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${line}" > /dev/null 2>&1 || true
-    done < <(git ls-tree -r HEAD | awk '{print $4}')
+    info "Setting file ownership on repository files"
+    git ls-tree -r HEAD | awk '{print $4}' | xargs chown "${DETECTED_PUID}":"${DETECTED_PGID}" > /dev/null 2>&1 || true
     run_script 'env_update'
     run_script 'appvars_create_all'
 }

@@ -4,9 +4,13 @@ IFS=$'\n\t'
 
 install_compose() {
     local MINIMUM_COMPOSE="1.17.0"
-    local INSTALLED_COMPOSE
-    INSTALLED_COMPOSE=$( (docker-compose --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
     # Find minimum compatible version at https://docs.docker.com/release-notes/docker-compose/
+    local INSTALLED_COMPOSE
+    if [[ ${FORCE:-} == true ]]; then
+        INSTALLED_COMPOSE="0"
+    else
+        INSTALLED_COMPOSE=$( (docker-compose --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
+    fi
     if vergt "${MINIMUM_COMPOSE}" "${INSTALLED_COMPOSE}"; then
         local AVAILABLE_COMPOSE
         AVAILABLE_COMPOSE=$( (curl -H "${GH_HEADER:-}" -fsL "https://api.github.com/repos/docker/compose/releases/latest" | grep -Po '"tag_name": "[Vv]?\K.*?(?=")') || echo "0")
@@ -35,6 +39,10 @@ install_compose() {
             # https://docs.docker.com/compose/install/
             info "Installing latest docker-compose."
             run_script 'run_python' -m pip install -IUq docker-compose > /dev/null 2>&1 || warn "Failed to install docker-compose from pip. This can be ignored for now."
+
+            if [[ ! -L "/usr/bin/docker-compose" ]]; then
+                ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose || fatal "Failed to create /usr/bin/docker-compose symlink."
+            fi
 
             local UPDATED_COMPOSE
             UPDATED_COMPOSE=$( (docker-compose --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
