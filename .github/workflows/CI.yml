@@ -32,7 +32,7 @@ jobs:
           sudo cp ${PWD}/CNAME ${PWD}/site/
       - name: deploy
         if: github.ref == 'refs/heads/master'
-        uses: peaceiris/actions-gh-pages@v2.5.0
+        uses: peaceiris/actions-gh-pages@v3.5.7
         env:
           ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           # PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
