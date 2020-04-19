@@ -2,6 +2,7 @@ services:
   thelounge:
     labels:
       com.dockstarter.appinfo.description: "Web IRC client that you host on your own server"
+      com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.nicename: "TheLounge"
       com.dockstarter.appvars.thelounge_enabled: "false"
       com.dockstarter.appvars.thelounge_network_mode: ""

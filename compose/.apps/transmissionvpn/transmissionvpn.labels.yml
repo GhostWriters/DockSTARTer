@@ -2,6 +2,7 @@ services:
   transmissionvpn:
     labels:
       com.dockstarter.appinfo.description: "Transmission, WebUI and OpenVPN"
+      com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.nicename: "TransmissionVPN"
       com.dockstarter.appvars.transmissionvpn_enabled: "false"
       com.dockstarter.appvars.transmissionvpn_network_mode: ""
