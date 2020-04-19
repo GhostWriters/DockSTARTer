@@ -2,6 +2,7 @@ services:
   organizr:
     labels:
       com.dockstarter.appinfo.description: "HTPC/Homelab Services Organizer"
+      com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.nicename: "Organizr"
       com.dockstarter.appvars.organizr_enabled: "false"
       com.dockstarter.appvars.organizr_network_mode: ""

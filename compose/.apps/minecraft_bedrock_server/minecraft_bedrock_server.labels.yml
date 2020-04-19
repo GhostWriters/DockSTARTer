@@ -2,6 +2,7 @@ services:
   minecraft_bedrock_server:
     labels:
       com.dockstarter.appinfo.description: "Minecraft Bedrock Server"
+      com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.nicename: "Minecraft_Bedrock_Server"
       com.dockstarter.appvars.minecraft_bedrock_server_enabled: "false"
       com.dockstarter.appvars.minecraft_bedrock_server_network_mode: ""

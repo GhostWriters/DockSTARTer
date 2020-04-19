@@ -2,6 +2,7 @@ services:
   logarr:
     labels:
       com.dockstarter.appinfo.description: "Self-hosted, single-page, log consolidation tool"
+      com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.nicename: "Logarr"
       com.dockstarter.appvars.logarr_enabled: "false"
       com.dockstarter.appvars.logarr_network_mode: ""

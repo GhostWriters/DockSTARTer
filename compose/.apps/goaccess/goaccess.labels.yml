@@ -2,6 +2,7 @@ services:
   goaccess:
     labels:
       com.dockstarter.appinfo.description: "Real-time web log analyzer"
+      com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.nicename: "GoAccess"
       com.dockstarter.appvars.goaccess_enabled: "false"
       com.dockstarter.appvars.goaccess_logsdir: "/mnt/goaccess/logs"

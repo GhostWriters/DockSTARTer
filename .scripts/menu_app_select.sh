@@ -16,7 +16,9 @@ menu_app_select() {
                     APPNICENAME=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.dockstarter.appinfo.nicename]" || echo "${APPNAME}")
                     local APPDESCRIPTION
                     APPDESCRIPTION=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.dockstarter.appinfo.description]" || echo "! Missing description !")
-                    if echo "${APPDESCRIPTION}" | grep -q '(DEPRECATED)'; then
+                    local APPDEPRECATED
+                    APPDEPRECATED=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.dockstarter.appinfo.deprecated]" || echo "false")
+                    if [[ ${APPDEPRECATED} == "true" ]]; then
                         continue
                     fi
                     local APPONOFF

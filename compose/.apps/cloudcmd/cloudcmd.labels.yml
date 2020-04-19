@@ -2,6 +2,7 @@ services:
   cloudcmd:
     labels:
       com.dockstarter.appinfo.description: "A web file manager with console and editor"
+      com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.nicename: "CloudCMD"
       com.dockstarter.appvars.cloudcmd_enabled: "false"
       com.dockstarter.appvars.cloudcmd_fsdir: "/mnt/cloudcmd"
