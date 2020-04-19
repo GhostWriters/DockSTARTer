@@ -1,0 +1,3 @@
+services:
+  nzbhydra2:
+    hostname: ${DOCKERHOSTNAME}
