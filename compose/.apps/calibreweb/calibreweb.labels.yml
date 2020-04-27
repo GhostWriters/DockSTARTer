@@ -2,6 +2,7 @@ services:
   calibreweb:
     labels:
       com.dockstarter.appinfo.description: "Web app for browsing, reading and downloading eBooks"
+      com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.nicename: "CalibreWeb"
       com.dockstarter.appvars.calibreweb_enabled: "false"
       com.dockstarter.appvars.calibreweb_network_mode: ""

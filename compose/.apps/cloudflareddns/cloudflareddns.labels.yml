@@ -2,6 +2,7 @@ services:
   cloudflareddns:
     labels:
       com.dockstarter.appinfo.description: "Free service which will point a DNS to an IP of your choice"
+      com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.nicename: "CloudFlareDDNS"
       com.dockstarter.appvars.cloudflareddns_apitoken: ""
       com.dockstarter.appvars.cloudflareddns_apikey: ""

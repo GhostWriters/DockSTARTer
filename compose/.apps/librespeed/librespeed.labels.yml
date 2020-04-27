@@ -2,6 +2,7 @@ services:
   librespeed:
     labels:
       com.dockstarter.appinfo.description: "Lightweight Speedtest implementation"
+      com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.nicename: "LibreSpeed"
       com.dockstarter.appvars.librespeed_db_hostname: ""
       com.dockstarter.appvars.librespeed_db_name: ""

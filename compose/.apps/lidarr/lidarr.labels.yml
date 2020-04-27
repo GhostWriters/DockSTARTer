@@ -2,6 +2,7 @@ services:
   lidarr:
     labels:
       com.dockstarter.appinfo.description: "Music download manager for Usenet and BitTorrent users"
+      com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.nicename: "Lidarr"
       com.dockstarter.appvars.lidarr_enabled: "false"
       com.dockstarter.appvars.lidarr_network_mode: ""

@@ -2,6 +2,7 @@ services:
   makemkv:
     labels:
       com.dockstarter.appinfo.description: "Convert video that you own into free and patents-unencumbered format"
+      com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.nicename: "MakeMKV"
       com.dockstarter.appvars.makemkv_enabled: "false"
       com.dockstarter.appvars.makemkv_network_mode: ""
