@@ -1,16 +1,16 @@
 services:
   synclounge:
+    image: lsiodev/synclounge # This will change after testing
     container_name: synclounge
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
       - TZ=${TZ}
-      - DOMAIN=${SYNCLOUNGE_DOMAIN}
-      - accessUrl=${SYNCLOUNGE_ACCESS_URL}
-      - autoJoin=${SYNCLOUNGE_AUTO_JOIN}
-      - autoJoinServer=${SYNCLOUNGE_AUTO_JOIN_SERVER}
-      - webroot=${SYNCLOUNGE_WEB_ROOT}
-      - serverroot=${SYNCLOUNGE_SERVER_ROOT}
+      - EXTERNAL_URL=${SYNCLOUNGE_EXTERNAL_URL}
+      - EXTERNAL_SERVER_PORT=${SYNCLOUNGE_EXTERNAL_SERVER_PORT}
+      - WEB_ROOT=${SYNCLOUNGE_WEB_ROOT}
+      - AUTH_LIST=${SYNCLOUNGE_AUTH_LIST}
+      - AUTOJOIN_ENABLED=${SYNCLOUNGE_AUTOJOIN_ENABLED}
+      - AUTOJOIN_ROOM=${SYNCLOUNGE_AUTOJOIN_ROOM}
+      - AUTOJOIN_PASSWORD=${SYNCLOUNGE_AUTOJOIN_PASSWORD}
     logging:
       driver: json-file
       options:
