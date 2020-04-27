@@ -31,7 +31,7 @@ If you want to override the Servers List you'll need to create an [Override](htt
 
 1. Create a file called `servers.json` in your SyncLounge folder and [populate it with servers](http://docs.synclounge.tv/self-hosted/settings/#customize-the-entire-list).
 
-    Note: Your servers.json file should NOT include `"servers": `. Only `[]` and the server objects inside.
+    Note: Your servers.json file should NOT include `"servers":` prefix (that is for the settings file which isn't used here). Only `[]` and the server objects inside should be included.
 
 1. Add or update your overrides file to include the example below
 1. Restart your SyncLounge container: `docker restart synclounge`
