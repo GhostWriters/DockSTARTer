@@ -4,32 +4,44 @@
 
 The GIT Repository for SyncLounge is located at [https://github.com/samcm/synclounge](https://github.com/samcm/synclounge).
 
+The GIT Repository for the LSIO SyncLounge container is located at [https://github.com/linuxserver/docker-synclounge](https://github.com/linuxserver/docker-synclounge).
+
 ## General Setup
 
-SyncLounge works best if you have a domain to use and due to some issues (see **Issues** section below) it is recommended that you use this with the [Let's Encrypt](https://dockstarter.com/apps/letsencrypt/) container supported by DockSTARTer.
+SyncLounge works best if you have a domain to use and it is recommended that you use this with the [Let's Encrypt](https://dockstarter.com/apps/letsencrypt/) container supported by DockSTARTer.
 
 The below steps assume that you already have the [Let's Encrypt](https://dockstarter.com/apps/letsencrypt/) container selected, configured, and running. If not, do that first or along with steps 1 & 2 below.
 
 1. Select SyncLounge from the DockSTARTer menu
-    Note: If this is your first time running and configuring SyncLounge, keep the default settings. If you want to change these, see the **Issues** and **Advanced** sections below.
-2. Complete the DockSTARTer configuration and run Docker Compose.
-    Note: If you change either `web_root` and `server_root`, **DO NOT** include the leading `/`. This is handled for you.
-3. Find the file called `synclounge.subdomain.conf.sample` in your [Let's Encrypt](https://dockstarter.com/apps/letsencrypt/) `proxy-confs` folder and rename it to `synclounge.subdomain.conf`.
-4. Restart the letsencrypt container
+
+    Note: If this is your first time running and configuring SyncLounge, keep the default settings to make sure everything works before making modifications
+
+1. Complete the DockSTARTer configuration and run Docker Compose.
+1. Find the file called `synclounge.subdomain.conf.sample` in your [Let's Encrypt](https://dockstarter.com/apps/letsencrypt/) `proxy-confs` folder and rename it to `synclounge.subdomain.conf`.
+1. Restart the letsencrypt container
    `docker restart letsencrypt`
 
-You should now be able to go to `synclouge.yourdomain.com` and use SyncLounge!
-
-## Issues
-
-These are some issue found when setting this up.
-
-1. The application doesn't properly respect `web_root` and `server_root` settings for some paths. These are noted in the sample nginx config.
-2. Auto Join has a bug that causes it to not work most of the time.
-3. Some of the settings are a bit finicky. For instance, `server_root` doesn't currently like to be set to `/`. If it is empty, it will get set to default `/slserver`.
+You should now be able to go to `synclouge.yourdomain.tld` and use SyncLounge!
 
 ## Advanced
 
-Read **Issues** above first.
+### Override Servers List
 
-When changing any of the settings on the container, you need to make sure to change the respective values in the nginx configuratiion above. Example: You change `web_root` to `web` the you will need to change `location / {` in the configuration to `location /web {`.
+If you want to override the Servers List you'll need to create an [Override](https://dockstarter.com/advanced/overrides/) to mount your servers file.
+
+1. Create a file called `servers.json` in your SyncLounge folder and [populate it with servers](http://docs.synclounge.tv/self-hosted/settings/#customize-the-entire-list).
+
+    Note: Your servers.json file should NOT include `"servers": `. Only `[]` and the server objects inside.
+
+1. Add or update your overrides file to include the example below
+1. Restart your SyncLounge container: `docker restart synclounge`
+
+#### Example
+
+```yaml
+version: "3.4" # this must match the version in docker-compose.yml
+services:
+  synclounge:
+    volumes:
+        - ${DOCKERSHAREDDIR}/synclounge/servers.json:/defaults/servers.json
+```
