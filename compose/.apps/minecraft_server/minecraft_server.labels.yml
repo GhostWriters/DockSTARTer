@@ -2,6 +2,7 @@ services:
   minecraft_server:
     labels:
       com.dockstarter.appinfo.description: "Minecraft Java Edition Server"
+      com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.nicename: "Minecraft_server"
       com.dockstarter.appvars.minecraft_server_enabled: "false"
       com.dockstarter.appvars.minecraft_server_network_mode: ""

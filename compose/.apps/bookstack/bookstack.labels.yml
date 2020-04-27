@@ -2,6 +2,7 @@ services:
   bookstack:
     labels:
       com.dockstarter.appinfo.description: "Platform for storing and organising information and documentation"
+      com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.nicename: "BookStack"
       com.dockstarter.appvars.bookstack_app_url: ""
       com.dockstarter.appvars.bookstack_db_database: ""

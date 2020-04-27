@@ -2,6 +2,7 @@ services:
   vsftpd:
     labels:
       com.dockstarter.appinfo.description: "Probably the most secure and fastest FTP server for UNIX-like systems"
+      com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.nicename: "vsftpd"
       com.dockstarter.appvars.vsftpd_datadir: "/mnt/vsftpd"
       com.dockstarter.appvars.vsftpd_enabled: "false"

@@ -2,6 +2,7 @@ services:
   airdcpp:
     labels:
       com.dockstarter.appinfo.description: "Client for Advanced Direct Connect and Direct Connect networks"
+      com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.nicename: "AirdcPP"
       com.dockstarter.appvars.airdcpp_enabled: "false"
       com.dockstarter.appvars.airdcpp_network_mode: ""

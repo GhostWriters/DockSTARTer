@@ -2,6 +2,7 @@ services:
   htpcmanager:
     labels:
       com.dockstarter.appinfo.description: "Front end for many htpc related applications"
+      com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.nicename: "HTPCManager"
       com.dockstarter.appvars.htpcmanager_enabled: "false"
       com.dockstarter.appvars.htpcmanager_network_mode: ""

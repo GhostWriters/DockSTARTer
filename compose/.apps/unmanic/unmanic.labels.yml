@@ -2,6 +2,7 @@ services:
   unmanic:
     labels:
       com.dockstarter.appinfo.description: "Tool for optimising your video library to a single format"
+      com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.nicename: "Unmanic"
       com.dockstarter.appvars.unmanic_enabled: "false"
       com.dockstarter.appvars.unmanic_network_mode: ""

@@ -2,6 +2,7 @@ services:
   qbittorrentvpn:
     labels:
       com.dockstarter.appinfo.description: "qBittorrent, OpenVPN and Privoxy"
+      com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.nicename: "qBittorrentVPN"
       com.dockstarter.appvars.qbittorrentvpn_enable_privoxy: "no"
       com.dockstarter.appvars.qbittorrentvpn_enabled: "false"
