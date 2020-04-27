@@ -15,9 +15,12 @@ services:
     security_opt:
       - apparmor:unconfined
     volumes:
+      - /etc/group:/host/etc/group:ro
       - /etc/localtime:/etc/localtime:ro
+      - /etc/lsb-release:/host/etc/lsb-release:ro
+      - /etc/os-release:/host/etc/os-release:ro
+      - /etc/passwd:/host/etc/passwd:ro
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ${DOCKERCONFDIR}/netdata:/etc/netdata
       - ${DOCKERSHAREDDIR}:/shared
