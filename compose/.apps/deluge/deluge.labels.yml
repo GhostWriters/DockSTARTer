@@ -2,6 +2,7 @@ services:
   deluge:
     labels:
       com.dockstarter.appinfo.description: "Lightweight, Full-featured BitTorrent client"
+      com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.nicename: "Deluge"
       com.dockstarter.appvars.deluge_enabled: "false"
       com.dockstarter.appvars.deluge_network_mode: ""

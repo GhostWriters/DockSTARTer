@@ -2,6 +2,7 @@ services:
   portaineragent:
     labels:
       com.dockstarter.appinfo.description: "An agent used to manage all the resources in a Swarm cluster"
+      com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.nicename: "PortainerAgent"
       com.dockstarter.appvars.portaineragent_enabled: "false"
       com.dockstarter.appvars.portaineragent_network_mode: ""

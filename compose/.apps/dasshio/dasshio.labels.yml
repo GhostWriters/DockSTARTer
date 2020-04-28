@@ -2,6 +2,7 @@ services:
   dasshio:
     labels:
       com.dockstarter.appinfo.description: "Use Amazon Dash buttons to communicate with Home Assistant."
+      com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.nicename: "Dasshio"
       com.dockstarter.appvars.dasshio_enabled: "false"
       com.dockstarter.appvars.dasshio_homeassistant_auth_token: ""

@@ -2,6 +2,7 @@ services:
   ubooquity:
     labels:
       com.dockstarter.appinfo.description: "Home server for your comics and ebooks"
+      com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.nicename: "Ubooquity"
       com.dockstarter.appvars.ubooquity_enabled: "false"
       com.dockstarter.appvars.ubooquity_filesdir: "/mnt/ubooquity"

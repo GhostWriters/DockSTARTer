@@ -2,6 +2,7 @@ services:
   delugevpn:
     labels:
       com.dockstarter.appinfo.description: "Deluge, OpenVPN and Privoxy"
+      com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.nicename: "DelugeVPN"
       com.dockstarter.appvars.delugevpn_enable_privoxy: "no"
       com.dockstarter.appvars.delugevpn_enabled: "false"

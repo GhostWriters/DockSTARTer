@@ -2,6 +2,7 @@ services:
   sabnzbdvpn:
     labels:
       com.dockstarter.appinfo.description: "SABnzbd, OpenVPN and Privoxy"
+      com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.nicename: "SABnzbdVPN"
       com.dockstarter.appvars.sabnzbdvpn_enable_privoxy: "no"
       com.dockstarter.appvars.sabnzbdvpn_enabled: "false"
