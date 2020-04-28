@@ -1,6 +1,5 @@
 services:
   synclounge:
-    image: lsiodev/synclounge # This will change after testing
     container_name: synclounge
     environment:
       - TZ=${TZ}
