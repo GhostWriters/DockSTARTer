@@ -2,13 +2,13 @@ services:
   synclounge:
     container_name: synclounge
     environment:
-      - TZ=${TZ}
       - AUTH_LIST=${SYNCLOUNGE_AUTH_LIST}
       - AUTOJOIN_ENABLED=${SYNCLOUNGE_AUTOJOIN_ENABLED}
-      - AUTOJOIN_ROOM=${SYNCLOUNGE_AUTOJOIN_ROOM}
       - AUTOJOIN_PASSWORD=${SYNCLOUNGE_AUTOJOIN_PASSWORD}
-      - EXTERNAL_URL=${SYNCLOUNGE_EXTERNAL_URL}
+      - AUTOJOIN_ROOM=${SYNCLOUNGE_AUTOJOIN_ROOM}
       - EXTERNAL_SERVER_PORT=${SYNCLOUNGE_EXTERNAL_SERVER_PORT}
+      - EXTERNAL_URL=${SYNCLOUNGE_EXTERNAL_URL}
+      - TZ=${TZ}
     logging:
       driver: json-file
       options:
