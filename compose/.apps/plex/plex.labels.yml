@@ -16,6 +16,5 @@ services:
       com.dockstarter.appvars.plex_port_32414: "32414"
       com.dockstarter.appvars.plex_port_32469: "32469"
       com.dockstarter.appvars.plex_port_33400: "33400"
-      com.dockstarter.appvars.plex_port_5353: "5353"
       com.dockstarter.appvars.plex_port_8324: "8324"
       com.dockstarter.appvars.plex_version: "docker"
