@@ -42,7 +42,7 @@ If you want to override the Servers List you'll need to create an [Override](htt
     Note: Your servers.json file should NOT include `"servers":` prefix (that is for the settings file which isn't used here). Only `[]` and the server objects inside should be included.
 
 1. Add or update your overrides file to include the example below
-1. Restart your SyncLounge container: `docker restart synclounge`
+1. Run docker compose: `ds -c`
 
 #### Example
 
