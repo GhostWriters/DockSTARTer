@@ -1,0 +1,20 @@
+services:
+  synclounge:
+    container_name: synclounge
+    environment:
+      - AUTH_LIST=${SYNCLOUNGE_AUTH_LIST}
+      - AUTOJOIN_ENABLED=${SYNCLOUNGE_AUTOJOIN_ENABLED}
+      - AUTOJOIN_PASSWORD=${SYNCLOUNGE_AUTOJOIN_PASSWORD}
+      - AUTOJOIN_ROOM=${SYNCLOUNGE_AUTOJOIN_ROOM}
+      - EXTERNAL_SERVER_PORT=${SYNCLOUNGE_EXTERNAL_SERVER_PORT}
+      - EXTERNAL_URL=${SYNCLOUNGE_EXTERNAL_URL}
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERSHAREDDIR}:/shared
