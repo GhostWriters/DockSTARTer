@@ -7,7 +7,7 @@ services:
       com.dockstarter.appvars.synclounge_autojoin_enabled: "false"
       com.dockstarter.appvars.synclounge_autojoin_room: ""
       com.dockstarter.appvars.synclounge_autojoin_password: ""
-      com.dockstarter.appvars.synclounge_enabled: ""
+      com.dockstarter.appvars.synclounge_enabled: "false"
       com.dockstarter.appvars.synclounge_external_url: ""
       com.dockstarter.appvars.synclounge_external_server_port: ""
       com.dockstarter.appvars.synclounge_network_mode: ""
