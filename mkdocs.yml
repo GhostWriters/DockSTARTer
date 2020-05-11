@@ -120,6 +120,7 @@ nav:
       - SiCKRAGE: apps/sickrage.md
       - SmokePing: apps/smokeping.md
       - Sonarr: apps/sonarr.md
+      - SyncLounge: apps/synclounge.md
       - Syncthing: apps/syncthing.md
       - Tautulli: apps/tautulli.md
       - Telegraf: apps/telegraf.md
