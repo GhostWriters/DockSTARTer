@@ -10,5 +10,4 @@ services:
       - ${PLEX_PORT_32414}:32414/udp
       - ${PLEX_PORT_32469}:32469
       - ${PLEX_PORT_33400}:33400
-      - ${PLEX_PORT_5353}:5353/udp
       - ${PLEX_PORT_8324}:8324
