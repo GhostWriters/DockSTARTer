@@ -288,7 +288,6 @@ echo "DockSTARTer Log" > "${LOG_TEMP}"
 log() {
     local TOTERM=${1:-}
     local MESSAGE=${2:-}
-    sudo -E chown "${DETECTED_PUID:-$DETECTED_UNAME}":"${DETECTED_PGID:-$DETECTED_UGROUP}" "${LOG_TEMP}" > /dev/null 2>&1 || true
     echo -e "${MESSAGE:-}" | (
         if [[ -n ${TOTERM} ]]; then
             tee -a "${LOG_TEMP}" >&2
