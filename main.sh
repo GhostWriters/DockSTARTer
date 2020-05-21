@@ -195,7 +195,7 @@ fi
 # Github Token for Travis CI
 if [[ ${CI:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == true ]]; then
     readonly GH_HEADER="Authorization: token ${GH_TOKEN}"
-    echo "${GH_HEADER}" > /dev/null 2>&1 || true # Ridiculous workaround for SC2034 where the variable is used in other files called by this script
+    echo "${GH_HEADER}" > /dev/null 2>&1 || true # Workaround SC2034
 fi
 
 # Script Information
@@ -218,7 +218,9 @@ readonly SCRIPTNAME="${SCRIPTPATH}/$(basename "$(get_scriptname)")"
 readonly DETECTED_PUID=${SUDO_UID:-$UID}
 readonly DETECTED_UNAME=$(id -un "${DETECTED_PUID}" 2> /dev/null || true)
 readonly DETECTED_PGID=$(id -g "${DETECTED_PUID}" 2> /dev/null || true)
+echo "${DETECTED_PGID}" > /dev/null 2>&1 || true # Workaround SC2034
 readonly DETECTED_UGROUP=$(id -gn "${DETECTED_PUID}" 2> /dev/null || true)
+echo "${DETECTED_UGROUP}" > /dev/null 2>&1 || true # Workaround SC2034
 readonly DETECTED_HOMEDIR=$(eval echo "~${DETECTED_UNAME}" 2> /dev/null || true)
 
 # Terminal Colors
@@ -283,16 +285,16 @@ declare -Agr F=(
 readonly NC=$(tcolor NC)
 
 # Log Functions
-readonly LOG_FILE="/tmp/dockstarter.log"
-sudo -E chown "${DETECTED_PUID:-$DETECTED_UNAME}":"${DETECTED_PGID:-$DETECTED_UGROUP}" "${LOG_FILE}" > /dev/null 2>&1 || true
+readonly LOG_TEMP=$(mktemp) || echo "Failed to create temporary log file."
+echo "DockSTARTer Log" > "${LOG_TEMP}"
 log() {
     local TOTERM=${1:-}
     local MESSAGE=${2:-}
     echo -e "${MESSAGE:-}" | (
         if [[ -n ${TOTERM} ]]; then
-            tee -a "${LOG_FILE}" >&2
+            tee -a "${LOG_TEMP}" >&2
         else
-            cat >> "${LOG_FILE}" 2>&1
+            cat >> "${LOG_TEMP}" 2>&1
         fi
     )
 }
