@@ -23,30 +23,13 @@ install_compose() {
             fi
         fi
         if vergt "${AVAILABLE_COMPOSE}" "${INSTALLED_COMPOSE}"; then
-            # run_script 'package_manager_run' remove_python_conflicts
-            # info "Installing latest python pip."
-            # run_script 'run_python' -m pip install -IUq pip > /dev/null 2>&1 || warn "Failed to install pip from pip. This can be ignored for now."
-
-            # info "Removing old docker-compose."
-            # rm /usr/local/bin/docker-compose > /dev/null 2>&1 || true
-            # rm /usr/bin/docker-compose > /dev/null 2>&1 || true
-            # run_script 'run_python' -m pip uninstall docker-py > /dev/null 2>&1 || true
-
-            # info "Installing latest setuptools."
-            # run_script 'run_python' -m pip install -IUq setuptools > /dev/null 2>&1 || warn "Failed to install setuptools from pip. This can be ignored for now."
-            # info "Installing latest urllib3[secure]."
-            # run_script 'run_python' -m pip install -IUq "urllib3[secure]" > /dev/null 2>&1 || warn "Failed to install urllib3[secure] from pip. This can be ignored for now."
-
             # https://docs.docker.com/compose/install/
             info "Installing latest docker-compose."
-            # run_script 'run_python' -m pip install -IUq docker-compose > /dev/null 2>&1 || warn "Failed to install docker-compose from pip. This can be ignored for now."
-
             curl -fsL "https://raw.githubusercontent.com/linuxserver/docker-docker-compose/master/run.sh" -o /usr/local/bin/docker-compose > /dev/null 2>&1 || fatal "Failed to install docker-compose."
             if [[ ! -L "/usr/bin/docker-compose" ]]; then
                 ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose || fatal "Failed to create /usr/bin/docker-compose symlink."
             fi
             chmod +x /usr/local/bin/docker-compose > /dev/null 2>&1 || true
-
             local UPDATED_COMPOSE
             UPDATED_COMPOSE=$( (/usr/local/bin/docker-compose --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
             if vergt "${AVAILABLE_COMPOSE}" "${UPDATED_COMPOSE}"; then
