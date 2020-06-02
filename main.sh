@@ -379,6 +379,9 @@ cleanup() {
     if [[ ${EXIT_CODE} -ne 0 ]]; then
         error "DockSTARTer did not finish running successfully."
     fi
+
+    sudo sh -c "cat ${LOG_TEMP} >> ${SCRIPTPATH}/dockstarter.log" || true
+
     exit ${EXIT_CODE}
     trap - 0 1 2 3 6 14 15
 }
