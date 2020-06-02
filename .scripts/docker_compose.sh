@@ -3,7 +3,9 @@ set -euo pipefail
 IFS=$'\n\t'
 
 docker_compose() {
-    local COMMAND=${1:-}
+    local COMPOSEINPUT=${1:-}
+    local COMMAND=${COMPOSEINPUT%% *}
+    local APPNAME=${COMPOSEINPUT#* }
     local COMPOSECOMMAND
     local COMMANDINFO
     case ${COMMAND} in
@@ -12,16 +14,16 @@ docker_compose() {
             COMMANDINFO="Stopping and removing containers, networks, volumes, and images created by DockSTARTer."
             ;;
         pull)
-            COMPOSECOMMAND="pull --include-deps"
-            COMMANDINFO="Pulling the latest images for all enabled services."
+            COMPOSECOMMAND="pull --include-deps ${APPNAME}"
+            COMMANDINFO="Pulling the latest images for ${APPNAME:-all enabled services}."
             ;;
         restart)
-            COMPOSECOMMAND="restart"
-            COMMANDINFO="Restarting all stopped and running services."
+            COMPOSECOMMAND="restart ${APPNAME}"
+            COMMANDINFO="Restarting ${APPNAME:-all stopped and running services}."
             ;;
         up)
-            COMPOSECOMMAND="up -d --remove-orphans"
-            COMMANDINFO="Creating containers for all enabled services."
+            COMPOSECOMMAND="up -d --remove-orphans ${APPNAME}"
+            COMMANDINFO="Creating ${APPNAME:-containers for all enabled services}."
             ;;
         *)
             COMPOSECOMMAND="up -d --remove-orphans"
