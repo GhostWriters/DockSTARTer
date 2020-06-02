@@ -125,7 +125,7 @@ cmdline() {
                         local MULTIOPT
                         MULTIOPT=("$OPTARG")
                         until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
-                            MULTIOPT+=($(eval "echo \${$OPTIND}"))
+                            MULTIOPT+=("$(eval "echo \${$OPTIND}")")
                             OPTIND=$((OPTIND + 1))
                         done
                         readonly COMPOSE=$(printf "%s " "${MULTIOPT[@]}")
