@@ -5,7 +5,7 @@ IFS=$'\n\t'
 install_yq() {
     local MINIMUM_YQ="3.2.1"
     local INSTALLED_YQ
-    if [[ ${FORCE:-} == true ]]; then
+    if [[ ${FORCE:-} == true ]] && [[ -n ${INSTALL:-} ]]; then
         INSTALLED_YQ="0"
     else
         INSTALLED_YQ=$( (/usr/local/bin/yq-go --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
