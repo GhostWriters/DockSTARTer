@@ -121,8 +121,14 @@ cmdline() {
                 ;;
             c)
                 case ${OPTARG} in
-                    down | generate | merge | pull | restart | up)
-                        readonly COMPOSE=${OPTARG}
+                    down | generate | merge | pull* | restart* | up*)
+                        local MULTIOPT
+                        MULTIOPT=("$OPTARG")
+                        until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
+                            MULTIOPT+=("$(eval "echo \${$OPTIND}")")
+                            OPTIND=$((OPTIND + 1))
+                        done
+                        readonly COMPOSE=$(printf "%s " "${MULTIOPT[@]}" | xargs)
                         ;;
                     *)
                         echo "Invalid compose option."
@@ -165,7 +171,7 @@ cmdline() {
             :)
                 case ${OPTARG} in
                     c)
-                        readonly COMPOSE=true
+                        readonly COMPOSE=up
                         ;;
                     r)
                         readonly REMOVE=true
@@ -452,22 +458,14 @@ main() {
     if [[ -n ${COMPOSE:-} ]]; then
         case ${COMPOSE} in
             down)
-                run_script 'docker_compose' down
+                run_script 'docker_compose' "${COMPOSE}"
                 ;;
             generate | merge)
                 run_script 'yml_merge'
                 ;;
-            pull)
+            pull* | restart* | up*)
                 run_script 'yml_merge'
-                run_script 'docker_compose' pull
-                ;;
-            restart)
-                run_script 'yml_merge'
-                run_script 'docker_compose' restart
-                ;;
-            up | true)
-                run_script 'yml_merge'
-                run_script 'docker_compose' up
+                run_script 'docker_compose' "${COMPOSE}"
                 ;;
             *)
                 fatal "Invalid compose option."
