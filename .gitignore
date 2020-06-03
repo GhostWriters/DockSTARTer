@@ -3,5 +3,6 @@ compose/docker-compose.override.yml
 compose/docker-compose.yml
 config/
 configs/
+dockstarter.log
 share/
 shared/
