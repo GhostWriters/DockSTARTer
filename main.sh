@@ -121,14 +121,14 @@ cmdline() {
                 ;;
             c)
                 case ${OPTARG} in
-                    down* | generate* | merge* | pull* | restart* | up*)
+                    down | generate | merge | pull* | restart* | up*)
                         local MULTIOPT
                         MULTIOPT=("$OPTARG")
                         until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
                             MULTIOPT+=("$(eval "echo \${$OPTIND}")")
                             OPTIND=$((OPTIND + 1))
                         done
-                        readonly COMPOSE=$(printf "%s " "${MULTIOPT[@]}")
+                        readonly COMPOSE=$(printf "%s " "${MULTIOPT[@]}" | xargs)
                         ;;
                     *)
                         echo "Invalid compose option."
@@ -171,7 +171,7 @@ cmdline() {
             :)
                 case ${OPTARG} in
                     c)
-                        readonly COMPOSE=true
+                        readonly COMPOSE=up
                         ;;
                     r)
                         readonly REMOVE=true
@@ -454,19 +454,15 @@ main() {
     fi
     if [[ -n ${COMPOSE:-} ]]; then
         case ${COMPOSE} in
-            down*)
+            down)
                 run_script 'docker_compose' "${COMPOSE}"
                 ;;
-            generate* | merge*)
+            generate | merge)
                 run_script 'yml_merge'
                 ;;
             pull* | restart* | up*)
                 run_script 'yml_merge'
                 run_script 'docker_compose' "${COMPOSE}"
-                ;;
-            true)
-                run_script 'yml_merge'
-                run_script 'docker_compose' up
                 ;;
             *)
                 fatal "Invalid compose option."
