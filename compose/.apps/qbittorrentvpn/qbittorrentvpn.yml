@@ -1,5 +1,7 @@
 services:
   qbittorrentvpn:
+    cap_add:
+      - NET_ADMIN
     container_name: qbittorrentvpn
     environment:
       - ENABLE_PRIVOXY=${QBITTORRENTVPN_ENABLE_PRIVOXY}
@@ -19,7 +21,6 @@ services:
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    privileged: true
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
