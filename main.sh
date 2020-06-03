@@ -121,7 +121,7 @@ cmdline() {
                 ;;
             c)
                 case ${OPTARG} in
-                    down | generate | merge | pull* | restart* | up*)
+                    down* | generate* | merge* | pull* | restart* | up*)
                         local MULTIOPT
                         MULTIOPT=("$OPTARG")
                         until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
@@ -454,10 +454,10 @@ main() {
     fi
     if [[ -n ${COMPOSE:-} ]]; then
         case ${COMPOSE} in
-            down)
+            down*)
                 run_script 'docker_compose' "${COMPOSE}"
                 ;;
-            generate | merge)
+            generate* | merge*)
                 run_script 'yml_merge'
                 ;;
             pull* | restart* | up*)
