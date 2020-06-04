@@ -10,7 +10,7 @@ pm_yum_repos() {
     curl -fsSL setup.ius.io -o "${GET_IUS}" > /dev/null 2>&1 || fatal "Failed to get IUS install script."
     info "Running IUS install script."
     local REDIRECT="> /dev/null 2>&1"
-    if [[ -n ${VERBOSE:-} ]] || run_script 'question_prompt' "${PROMPT:-}" N "Would you like to display the command output?"; then
+    if [[ -n ${VERBOSE:-} ]] || run_script 'question_prompt' "${PROMPT:-CLI}" N "Would you like to display the command output?"; then
         REDIRECT=""
     fi
     eval bash "${GET_IUS}" "${REDIRECT}" || warn "Failed to install IUS."

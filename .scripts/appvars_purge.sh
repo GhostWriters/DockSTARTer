@@ -16,7 +16,7 @@ appvars_purge() {
         return
     fi
 
-    if [[ ${CI:-} == true ]] || run_script 'question_prompt' "${PROMPT:-}" Y "Would you like to purge these settings for ${APPNAME}?\\n\\n${APPVARS}"; then
+    if [[ ${CI:-} == true ]] || run_script 'question_prompt' "${PROMPT:-CLI}" Y "Would you like to purge these settings for ${APPNAME}?\\n\\n${APPVARS}"; then
         info "Purging ${APPNAME} .env variables."
         sed -i "/^${APPNAME}_/d" "${SCRIPTPATH}/compose/.env" || fatal "Failed to purge ${APPNAME} variables."
     else
