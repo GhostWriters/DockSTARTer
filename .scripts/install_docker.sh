@@ -41,9 +41,7 @@ install_docker() {
             local UPDATED_DOCKER
             UPDATED_DOCKER=$( (docker --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
             if vergt "${AVAILABLE_DOCKER}" "${UPDATED_DOCKER}"; then
-                #TODO: Better detection of most recently available version is required before this can be used.
-                echo # placeholder
-                #fatal "Failed to install the latest docker."
+                error "Failed to install the latest docker."
             fi
             if vergt "${MINIMUM_DOCKER}" "${UPDATED_DOCKER}"; then
                 fatal "Failed to install the minimum required docker."

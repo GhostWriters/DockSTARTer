@@ -23,7 +23,9 @@ install_compose() {
             fi
         fi
         if vergt "${AVAILABLE_COMPOSE}" "${INSTALLED_COMPOSE}"; then
-            # https://docs.docker.com/compose/install/
+            info "Removing previous docker-compose image."
+            docker image rm linuxserver/docker-compose:latest || true
+            # https://github.com/linuxserver/docker-docker-compose/blob/master/README.md#recommended-method
             info "Installing latest docker-compose."
             curl -fsL "https://raw.githubusercontent.com/linuxserver/docker-docker-compose/master/run.sh" -o /usr/local/bin/docker-compose > /dev/null 2>&1 || fatal "Failed to install docker-compose."
             if [[ ! -L "/usr/bin/docker-compose" ]]; then
@@ -33,7 +35,7 @@ install_compose() {
             local UPDATED_COMPOSE
             UPDATED_COMPOSE=$( (/usr/local/bin/docker-compose --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
             if vergt "${AVAILABLE_COMPOSE}" "${UPDATED_COMPOSE}"; then
-                fatal "Failed to install the latest docker-compose."
+                error "Failed to install the latest docker-compose."
             fi
             if vergt "${MINIMUM_COMPOSE}" "${UPDATED_COMPOSE}"; then
                 fatal "Failed to install the minimum required docker-compose."

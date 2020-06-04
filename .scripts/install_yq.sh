@@ -42,7 +42,7 @@ install_yq() {
             local UPDATED_YQ
             UPDATED_YQ=$( (/usr/local/bin/yq-go --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
             if vergt "${AVAILABLE_YQ}" "${UPDATED_YQ}"; then
-                fatal "Failed to install the latest yq-go."
+                error "Failed to install the latest yq-go."
             fi
             if vergt "${MINIMUM_YQ}" "${UPDATED_YQ}"; then
                 fatal "Failed to install the minimum required yq-go."
