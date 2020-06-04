@@ -3,7 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 question_prompt() {
-    local PROMPT=${1:-CLI}
+    local PROMPT=${1:-}
     local DEFAULT=${2:-Y}
     local QUESTION=${3:-}
     local YN

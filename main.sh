@@ -416,15 +416,11 @@ main() {
         DS_SYMLINK=$(readlink -f "${DS_COMMAND}")
         if [[ ${SCRIPTNAME} != "${DS_SYMLINK}" ]]; then
             if repo_exists; then
-                if [[ ${PROMPT:-} != "GUI" ]]; then
-                    PROMPT="CLI"
-                fi
-                if run_script 'question_prompt' "${PROMPT:-}" N "DockSTARTer installation found at ${DS_SYMLINK} location. Would you like to run ${SCRIPTNAME} instead?"; then
+                if run_script 'question_prompt' "${PROMPT:-CLI}" N "DockSTARTer installation found at ${DS_SYMLINK} location. Would you like to run ${SCRIPTNAME} instead?"; then
                     run_script 'symlink_ds'
                     DS_COMMAND=$(command -v ds || true)
                     DS_SYMLINK=$(readlink -f "${DS_COMMAND}")
                 fi
-                unset PROMPT
             fi
             warn "Attempting to run DockSTARTer from ${DS_SYMLINK} location."
             sudo -E bash "${DS_SYMLINK}" -vu
@@ -489,7 +485,7 @@ main() {
                 fi
                 ;;
             --env-set)
-                if [[ ${ENVVAR:-} != "" && ${ENVVAL:-} != "" ]]; then
+                if [[ ${ENVVAR:-} != "" ]] && [[ ${ENVVAL:-} != "" ]]; then
                     run_script 'env_set' "${ENVVAR}" "${ENVVAL}"
                 else
                     echo "Invalid usage. Must be"
@@ -534,14 +530,14 @@ main() {
     fi
     if [[ -n ${YMLMETHOD:-} ]]; then
         if [[ ${YMLAPPNAME:-} == "${YMLVAR:-}" ]]; then
-            if [[ ${YMLVAR:-} != "" && ${YMLVAR:-} =~ services* ]]; then
+            if [[ ${YMLVAR:-} != "" ]] && [[ ${YMLVAR:-} =~ services* ]]; then
                 YMLAPPNAME=${YMLVAR#services.}
                 YMLAPPNAME=${YMLAPPNAME%%.*}
             else
                 YMLAPPNAME=""
             fi
         fi
-        if [[ ${YMLAPPNAME:-} != "" && ${YMLVAR:-} != "" ]]; then
+        if [[ ${YMLAPPNAME:-} != "" ]] && [[ ${YMLVAR:-} != "" ]]; then
             run_script 'yml_get' "${YMLAPPNAME}" "${YMLVAR}" || error "Could not find '${YMLVAR}' in '${YMLAPPNAME}'"
         else
             echo "Invalid usage. Must be one of the following:"

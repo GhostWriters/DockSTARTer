@@ -7,7 +7,7 @@ install_docker() {
     # Find minimum compatible version at https://docs.docker.com/engine/release-notes/
     run_script 'remove_snap_docker'
     local INSTALLED_DOCKER
-    if [[ ${FORCE:-} == true ]]; then
+    if [[ ${FORCE:-} == true ]] && [[ -n ${INSTALL:-} ]]; then
         INSTALLED_DOCKER="0"
     else
         INSTALLED_DOCKER=$( (docker --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
@@ -33,7 +33,7 @@ install_docker() {
             curl -fsSL get.docker.com -o "${GET_DOCKER}" > /dev/null 2>&1 || fatal "Failed to get docker install script."
             info "Running docker install script."
             local REDIRECT="> /dev/null 2>&1"
-            if [[ -n ${VERBOSE:-} ]] || run_script 'question_prompt' "${PROMPT:-}" N "Would you like to display the command output?"; then
+            if [[ -n ${VERBOSE:-} ]] || run_script 'question_prompt' "${PROMPT:-CLI}" N "Would you like to display the command output?"; then
                 REDIRECT=""
             fi
             eval sh "${GET_DOCKER}" "${REDIRECT}" || fatal "Failed to install docker."

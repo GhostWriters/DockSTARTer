@@ -6,7 +6,7 @@ install_compose() {
     local MINIMUM_COMPOSE="1.17.0"
     # Find minimum compatible version at https://docs.docker.com/release-notes/docker-compose/
     local INSTALLED_COMPOSE
-    if [[ ${FORCE:-} == true ]]; then
+    if [[ ${FORCE:-} == true ]] && [[ -n ${INSTALL:-} ]]; then
         INSTALLED_COMPOSE="0"
     else
         INSTALLED_COMPOSE=$( (/usr/local/bin/docker-compose --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
