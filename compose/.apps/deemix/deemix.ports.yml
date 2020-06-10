@@ -1,4 +1,4 @@
 services:
   deemix:
     ports:
-      - ${DEEMIX_PORT_33333}:33333
+      - ${DEEMIX_PORT_9666}:9666
