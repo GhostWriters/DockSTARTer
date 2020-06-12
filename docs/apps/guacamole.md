@@ -87,7 +87,7 @@ ignoreip = 192.168.1.0/24
 To find your netmask run `ipconfig /all` on windows or `ifconfig | grep netmask` on linux.
 
 1. Next we are going to navigate to `~/.config/appdata/letsencrypt/fail2ban/filter.d` and in there you will see a file called `guacamole.conf`. We can't use this file because the regex in there will not work for our purposes.
-1. Open `guacamole.conf` with your favorite text editor as root and modify the regex line called `failregex` to match this: `\bAuthentication attempt from <HOST> for user "[^"]*" failed\.$`
+1. Open `guacamole.conf` with your favorite text editor as root and modify the regex line called `failregex` to match this: `\bAuthentication attempt from (?:\[)?<HOST>(?:,.*)?(?:\])? for user "[^"]*" failed\.$`
 1. Next save the file and name it `guacamole-auth.conf`
 1. Perform an invalid login attempt and check fail2ban's regex for Guacamole with the following command: `docker exec -it letsencrypt fail2ban-regex /var/log/guacamole/guacd.log /config/fail2ban/filter.d/guacamole-auth.conf`
 1. If you want to ban yourself, you can comment out the `ignoreip` line on `jail.local`.
