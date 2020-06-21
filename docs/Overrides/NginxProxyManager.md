@@ -1,11 +1,11 @@
 # Nginx Proxy Manager
 
-[Booksonic](https://booksonic.org/) is a server and an app for streaming your audiobooks to any pc or android phone. Most of the functionality is also availiable on other platforms that have apps for subsonic.
+[Nginx Proxy Manager](https://[https://nginxproxymanager.com/](https://nginxproxymanager.com/)) is a server and an app for streaming your audiobooks to any pc or android phone. Most of the functionality is also availiable on other platforms that have apps for subsonic.
 
 The GIT Repository for Booksonic is located at [https://github.com/linuxserver/docker-booksonic](https://github.com/linuxserver/docker-booksonic)
 
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5ODg5MjQ0MzcsLTIyMDM4MjQwM119
+eyJoaXN0b3J5IjpbMjg2MTEyNzUyLC0yMjAzODI0MDNdfQ==
 -->
