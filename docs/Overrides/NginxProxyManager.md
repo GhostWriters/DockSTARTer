@@ -1,6 +1,6 @@
 # Nginx Proxy Manager
 
-[Nginx Proxy Manager](https://[https://nginxproxymanager.com/](https://nginxproxymanager.com/)) 
+[Nginx Proxy Manager](https://[https://nginxproxymanager.com/](https://nginxproxymanager.com/))  is  Docker container for managing Nginx proxy hosts and SSL Certificates with a simple, powerful interface
 
 ## Get Connected
 
@@ -31,5 +31,6 @@ The GIT Repository for Booksonic is located at [https://github.com/linuxserver/d
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTE3MDgxNjE3OCwtMjIwMzgyNDAzXX0=
+eyJoaXN0b3J5IjpbLTE3MzE1MDU0NjIsMTE3MDgxNjE3OCwtMj
+IwMzgyNDAzXX0=
 -->
