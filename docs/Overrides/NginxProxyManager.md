@@ -19,11 +19,12 @@ Built in Let’s Encrypt support allows you to secure your Web services at no co
 ### Multiple Users
 Configure other users to either view or manage their own hosts. Full access permissions are available.
 
-The GIT Repository for Nginx Proxy Manager is located at [[https://github.com/jc21/nginx-proxy-manager](https://github.com/jc21/nginx-proxy-manager)
+The GIT Repository for Nginx Proxy Manager is located at [[https://github.com/jc21/nginx-proxy-manager](https://github.com/jc21/nginx-proxy-manager)]
 
 ## Example Docker Compose Override
 
-    ##### NGINX Proxy Manager with LetsEncrypt https://github.com/jc21/nginx-proxy-manager #####
+    ````yaml
+##### NGINX Proxy Manager with LetsEncrypt https://github.com/jc21/nginx-proxy-manager #####
     version: "3.4"  # this must match the version in docker-compose.yml
     services:
         proxymanager:
@@ -75,7 +76,8 @@ The GIT Repository for Nginx Proxy Manager is located at [[https://github.com/jc
         volumes:
           - /opt/appdata/mariadb:/var/lib/mysql
           - ${DOCKERSHAREDDIR}:/shared
-        restart: unless-stopped`
+        restart: unless-stopped
+````
 
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMjA0MDgzNzEyNywtNzA1Mjk2MDYwLDExNz
