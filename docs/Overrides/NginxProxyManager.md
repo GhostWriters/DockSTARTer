@@ -32,23 +32,15 @@ services:
    container_name: proxymanager
    labels:
 	    - "com.dockstarter.appinfo.description: NGINX Proxy Manager with LetsEncrypt included"
-    - "com.dockstarter.appinfo.nicename: NGINX Proxy Manager"
-    
+	    - "com.dockstarter.appinfo.nicename: NGINX Proxy Manager"
     logging:
-    
-    driver: json-file
-    
-    options:
-    
-    max-file: ${DOCKERLOGGING_MAXFILE}
-    
-    max-size: ${DOCKERLOGGING_MAXSIZE}
-    
-    ports:
-    
-    - "80:80"
-    
-    - "81:81"
+		driver: json-file
+		options:
+		    max-file: ${DOCKERLOGGING_MAXFILE}
+		    max-size: ${DOCKERLOGGING_MAXSIZE}
+	 ports:
+		  - "80:80"
+		  - "81:81"
     
     - "443:443"
     
@@ -120,6 +112,6 @@ services:
     restart: unless-stopped
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEzODQyNzA3MzksLTcwNTI5NjA2MCwxMT
-cwODE2MTc4LC0yMjAzODI0MDNdfQ==
+eyJoaXN0b3J5IjpbMTkxMjMwNTUxMywtNzA1Mjk2MDYwLDExNz
+A4MTYxNzgsLTIyMDM4MjQwM119
 -->
