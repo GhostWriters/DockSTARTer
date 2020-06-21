@@ -23,95 +23,61 @@ The GIT Repository for Nginx Proxy Manager is located at [[https://github.com/jc
 
 ## Example Docker Compose Override
 
-####NGINX Proxy Manager with LetsEncrypt https://github.com/jc21/nginx-proxy-manager
+    ##### NGINX Proxy Manager with LetsEncrypt https://github.com/jc21/nginx-proxy-manager #####
+    version: "3.4"  # this must match the version in docker-compose.yml
+    services:
+        proxymanager:
+        image: jc21/nginx-proxy-manager:latest
+        container_name: proxymanager
+        labels:
+          - "com.dockstarter.appinfo.description: NGINX Proxy Manager with LetsEncrypt included"
+          - "com.dockstarter.appinfo.nicename: NGINX Proxy Manager"
+        logging:
+          driver: json-file
+          options:
+            max-file: ${DOCKERLOGGING_MAXFILE}
+            max-size: ${DOCKERLOGGING_MAXSIZE}
+        ports:
+          - "80:80"
+          - "81:81"
+          - "443:443"
+        environment:
+          - FORCE_COLOR=1
+          - NODE_ENV=config
+        volumes:
+          - /opt/appdata/proxymanager/config.json:/app/config/config.json
+          - /opt/appdata/proxymanager/data:/data
+          - /opt/appdata/proxymanager/letsencrypt:/etc/letsencrypt
+          - ${DOCKERSHAREDDIR}:/shared
+        depends_on:
+          - mariadb
+        restart: unless-stopped
     
-version: "3.4" # this must match the version in docker-compose.yml
-services:
-   proxymanager:
-   image: jc21/nginx-proxy-manager:latest
-   container_name: proxymanager
-   labels:
-	    - "com.dockstarter.appinfo.description: NGINX Proxy Manager with LetsEncrypt included"
-	    - "com.dockstarter.appinfo.nicename: NGINX Proxy Manager"
-    logging:
-		driver: json-file
-		options:
-		    max-file: ${DOCKERLOGGING_MAXFILE}
-		    max-size: ${DOCKERLOGGING_MAXSIZE}
-	 ports:
-		  - "80:80"
-		  - "81:81"
-    
-    - "443:443"
-    
-    environment:
-    
-    - FORCE_COLOR=1
-    
-    - NODE_ENV=config
-    
-    volumes:
-    
-    - /opt/appdata/proxymanager/config.json:/app/config/config.json
-    
-    - /opt/appdata/proxymanager/data:/data
-    
-    - /opt/appdata/proxymanager/letsencrypt:/etc/letsencrypt
-    
-    - ${DOCKERSHAREDDIR}:/shared
-    
-    depends_on:
-    
-    - mariadb
-    
-    restart: unless-stopped
-    
-    mariadb:
-    
-    container_name: mariadb
-    
-    image: mariadb:latest
-    
-    labels:
-    
-    - "com.dockstarter.appinfo.description: MariaDB for NGINX Proxy Manager"
-    
-    - "com.dockstarter.appinfo.nicename: DB NGINX Proxy Manager"
-    
-    logging:
-    
-    driver: json-file
-    
-    options:
-    
-    max-file: ${DOCKERLOGGING_MAXFILE}
-    
-    max-size: ${DOCKERLOGGING_MAXSIZE}
-    
-    ports:
-    
-    - "3306:3306"
-    
-    environment:
-    
-    - "MYSQL_ROOT_PASSWORD:ChangeMe"
-    
-    - "MYSQL_DATABASE:proxymgr"
-    
-    - "MYSQL_USER:ChangeMe"
-    
-    - "MYSQL_PASSWORD:ChangeMe"
-    
-    - "FORCE_COLOR:1"
-    
-    volumes:
-    
-    - /opt/appdata/mariadb:/var/lib/mysql
-    
-    - ${DOCKERSHAREDDIR}:/shared
-    restart: unless-stopped
+      mariadb:
+        container_name: mariadb
+        image: mariadb:latest
+        labels:
+          - "com.dockstarter.appinfo.description: MariaDB for NGINX Proxy Manager"
+          - "com.dockstarter.appinfo.nicename: DB NGINX Proxy Manager"
+        logging:
+          driver: json-file
+          options:
+            max-file: ${DOCKERLOGGING_MAXFILE}
+            max-size: ${DOCKERLOGGING_MAXSIZE}
+        ports:
+          - "3306:3306"
+        environment:
+          - "MYSQL_ROOT_PASSWORD:ChangeMe"
+          - "MYSQL_DATABASE:proxymgr"
+          - "MYSQL_USER:ChangeMe"
+          - "MYSQL_PASSWORD:ChangeMe"
+          - "FORCE_COLOR:1"
+        volumes:
+          - /opt/appdata/mariadb:/var/lib/mysql
+          - ${DOCKERSHAREDDIR}:/shared
+        restart: unless-stopped`
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTkxMjMwNTUxMywtNzA1Mjk2MDYwLDExNz
+eyJoaXN0b3J5IjpbMjA0MDgzNzEyNywtNzA1Mjk2MDYwLDExNz
 A4MTYxNzgsLTIyMDM4MjQwM119
 -->
