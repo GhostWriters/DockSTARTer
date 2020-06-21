@@ -23,9 +23,9 @@ The GIT Repository for Nginx Proxy Manager is located at [[https://github.com/jc
 
 ## Example Docker Compose Override
 
-
+    enter code here
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTYzMDkyMjIyNiwtNzA1Mjk2MDYwLDExNz
-A4MTYxNzgsLTIyMDM4MjQwM119
+eyJoaXN0b3J5IjpbLTIxMTU0MDAzNDksLTcwNTI5NjA2MCwxMT
+cwODE2MTc4LC0yMjAzODI0MDNdfQ==
 -->
