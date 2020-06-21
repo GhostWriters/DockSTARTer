@@ -23,22 +23,15 @@ The GIT Repository for Nginx Proxy Manager is located at [[https://github.com/jc
 
 ## Example Docker Compose Override
 
- # NGINX Proxy Manager with LetsEncrypt https://github.com/jc21/nginx-proxy-manager
+####NGINX Proxy Manager with LetsEncrypt https://github.com/jc21/nginx-proxy-manager
     
-    version: "3.4" # this must match the version in docker-compose.yml
-    
-    services:
-    
-    proxymanager:
-    
-    image: jc21/nginx-proxy-manager:latest
-    
-    container_name: proxymanager
-    
-    labels:
-    
-    - "com.dockstarter.appinfo.description: NGINX Proxy Manager with LetsEncrypt included"
-    
+version: "3.4" # this must match the version in docker-compose.yml
+services:
+   proxymanager:
+   image: jc21/nginx-proxy-manager:latest
+   container_name: proxymanager
+   labels:
+	    - "com.dockstarter.appinfo.description: NGINX Proxy Manager with LetsEncrypt included"
     - "com.dockstarter.appinfo.nicename: NGINX Proxy Manager"
     
     logging:
@@ -127,6 +120,6 @@ The GIT Repository for Nginx Proxy Manager is located at [[https://github.com/jc
     restart: unless-stopped
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIyMjkxOTU1MCwtNzA1Mjk2MDYwLDExNz
-A4MTYxNzgsLTIyMDM4MjQwM119
+eyJoaXN0b3J5IjpbLTEzODQyNzA3MzksLTcwNTI5NjA2MCwxMT
+cwODE2MTc4LC0yMjAzODI0MDNdfQ==
 -->
