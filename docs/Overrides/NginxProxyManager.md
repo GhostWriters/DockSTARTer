@@ -27,11 +27,10 @@ Built in Let’s Encrypt support allows you to secure your Web services at no co
 
 Configure other users to either view or manage their own hosts. Full access permissions are available.
 
-The GIT Repository for Nginx Proxy Manager is located at [https://github.com/linuxserver/docker-booksonic](https://github.com/linuxserver/docker-booksonic)
-
+The GIT Repository for Nginx Proxy Manager is located at [[https://github.com/jc21/nginx-proxy-manager](https://github.com/jc21/nginx-proxy-manager)
 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTQ0NDUxNzU1OSwxMTcwODE2MTc4LC0yMj
+eyJoaXN0b3J5IjpbLTcwNTI5NjA2MCwxMTcwODE2MTc4LC0yMj
 AzODI0MDNdfQ==
 -->
