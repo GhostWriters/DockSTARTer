@@ -21,8 +21,9 @@ Configure other users to either view or manage their own hosts. Full access perm
 
 The GIT Repository for Nginx Proxy Manager is located at [[https://github.com/jc21/nginx-proxy-manager](https://github.com/jc21/nginx-proxy-manager)
 
+## Example Docker Compose Override
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE1NzA2NjgwMjAsLTcwNTI5NjA2MCwxMT
+eyJoaXN0b3J5IjpbLTE5ODExMTQzNDYsLTcwNTI5NjA2MCwxMT
 cwODE2MTc4LC0yMjAzODI0MDNdfQ==
 -->
