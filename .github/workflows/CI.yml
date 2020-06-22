@@ -7,7 +7,7 @@ jobs:
   bashate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2.3.1
       - name: bashate
         env:
           CI: true
@@ -18,7 +18,7 @@ jobs:
   markdownlint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2.3.1
       - name: markdownlint
         env:
           CI: true
@@ -30,7 +30,7 @@ jobs:
   shellcheck:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2.3.1
       - name: shellcheck
         env:
           CI: true
@@ -41,7 +41,7 @@ jobs:
   shfmt:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2.3.1
       - name: shfmt
         env:
           CI: true
@@ -52,7 +52,7 @@ jobs:
   yamllint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2.3.1
       - name: yamllint
         env:
           CI: true
@@ -66,7 +66,7 @@ jobs:
       matrix:
         os: [ubuntu-16.04, ubuntu-18.04]
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2.3.1
       - name: run
         env:
           CI: true
