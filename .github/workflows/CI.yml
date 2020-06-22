@@ -31,7 +31,7 @@ jobs:
           docker run --rm -v ${PWD}/site:/site -v ${PWD}:/docs squidfunk/mkdocs-material build --verbose --clean --strict
       - name: deploy
         if: github.ref == 'refs/heads/master'
-        uses: peaceiris/actions-gh-pages@v3.5.7
+        uses: peaceiris/actions-gh-pages@v3.6.1
         with:
           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           publish_dir: ./site
