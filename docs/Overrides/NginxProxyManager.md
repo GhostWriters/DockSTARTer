@@ -19,10 +19,24 @@ Built in Let’s Encrypt support allows you to secure your Web services at no co
 Configure other users to either view or manage their own hosts. Full access permissions are available.
 
 The GIT Repository for Nginx Proxy Manager is located at [[https://github.com/jc21/nginx-proxy-manager](https://github.com/jc21/nginx-proxy-manager)]
+### Config File
+Nginx Proxy Manager requires a Configuration file named `config.json`. This file needs to be in the appdata folder for NPM before it is started.
 
+```json
+{
+  "database": {
+    "engine": "mysql",
+    "host": "db",
+    "name": "npm",
+    "user": "npm",
+    "password": "npm",
+    "port": "3306"
+  }
+}
+```
 ## Example Docker Compose Override
 
-````yaml
+```yaml
 #NGINX Proxy Manager with LetsEncrypt https://github.com/jc21/nginx-proxy-manager
     version: "3.4"  # this must match the version in docker-compose.yml
     services:
@@ -76,7 +90,7 @@ The GIT Repository for Nginx Proxy Manager is located at [[https://github.com/jc
           - /opt/appdata/mariadb:/var/lib/mysql
           - ${DOCKERSHAREDDIR}:/shared
         restart: unless-stopped
-````
+```
 
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMjA0MDgzNzEyNywtNzA1Mjk2MDYwLDExNz
