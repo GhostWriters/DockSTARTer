@@ -136,3 +136,6 @@ nav:
       - vsftpd: apps/vsftpd.md
       - Watchtower: apps/watchtower.md
       - ZNC: apps/znc.md
+ 
+  - Docker Compose Overrides
+      - NGINX Proxy Manger: /Overrides/NginxProxyManager.md
