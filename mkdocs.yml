@@ -1,3 +1,4 @@
+---
 # Project information
 site_name: "DockSTARTer"
 site_description: "DockSTARTer helps you get started with home server apps running in Docker."
@@ -38,7 +39,6 @@ nav:
       - Advanced Usage: advanced/advanced-usage.md
       - Backups: advanced/backups.md
       - Macvlan Networking: advanced/macvlan.md
-      - Overrides: advanced/overrides.md
       - Setting Up a Domain: advanced/domain-info.md
       - SMB Mounting: advanced/smb-mounting.md
       - Technical Info: advanced/technical-info.md
@@ -136,6 +136,6 @@ nav:
       - vsftpd: apps/vsftpd.md
       - Watchtower: apps/watchtower.md
       - ZNC: apps/znc.md
- 
-  - Docker Compose Overrides
-      - NGINX Proxy Manger: /Overrides/NginxProxyManager.md
+  - Overrides:
+    - Introduction: overrides/overridesintro.md  
+    - NGINX Proxy Manger: overrides/nginxproxymanager.md

@@ -9,11 +9,13 @@ If you would like to make some adjustments the best way is to use a `docker-comp
 
 Docker Compose will look for `~/.docker/compose/docker-compose.override.yml`. Anything you set in this file will be merged in and take priority over the regular configurations.
 
+## 
+
 You can use this to modify existing apps (such as changing which image an app uses) or adding all the compose configurations needed to run an entirely new app that's not included in DockSTARTer.
 
 ***
 
-## Example
+### Example
 
 ```yaml
 version: "3.4"  # this must match the version in docker-compose.yml
@@ -25,3 +27,31 @@ services:
 ```
 
 This will change Sonarr to use hotio's image for Sonarr and add a /media volume. Everything else from the original config such as the remaining volumes and environment variables will merge together.
+
+You can also use overrides to add a app that is not in DS already.
+
+***
+
+## Example 
+
+```yaml
+version: "3.4"  # this must match the version in docker-compose.yml
+services:
+  alltube:
+    container_name: alltube
+    image: rudloff/alltube
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    ports:
+      - "1234:80"
+    environment:
+      - "PUID:1000"
+      - "PGID:1000"
+    volumes:
+      - ${DOCKERCONFDIR}/alltube:/var/www/html/config
+      - ${DOCKERSHAREDDIR}:/share
+    restart: unless-stopped
+    ```
