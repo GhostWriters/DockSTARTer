@@ -3,7 +3,7 @@
  
 The GIT Repository for Nginx Proxy Manager is located at [[https://github.com/jc21/nginx-proxy-manager](https://github.com/jc21/nginx-proxy-manager)]
 
-### Config File
+## Config File
 Nginx Proxy Manager requires a Configuration file named `config.json`. This file needs to be in the appdata folder for NPM before it is started.
 
 ```json
