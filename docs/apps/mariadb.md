@@ -4,7 +4,9 @@
 
 The GIT Repository for MariaDB is located at [https://github.com/linuxserver/docker-mariadb](https://github.com/linuxserver/docker-mariadb).
 
-For security purposes you need to set a root password after adding the container. You can do this my editing the `.env` file located at `~/.docker/compose/.env`. Look for this line `MARIADB_MYSQL_ROOT_PASSWORD`. However, while documenting usage of this app we noticed that if you set a password in `MARIADB_MYSQL_ROOT_PASSWORD` and `PHPMYADMIN_PMA_PASSWORD` after running `ds -c up` the variable `PHPMYADMIN_PMA_PASSWORD` does not update the necessary files inside the `phpmyadmin` container. Our recommendation is to follow these steps:
+For security purposes you need to set a root password after adding the container. You can do this my editing the `.env` file located at `~/.docker/compose/.env`. Look for this line `MARIADB_MYSQL_ROOT_PASSWORD`. However, while documenting usage of this app we noticed that if you set a password in `MARIADB_MYSQL_ROOT_PASSWORD` and `PHPMYADMIN_PMA_PASSWORD` after running `ds -c up` the variable `PHPMYADMIN_PMA_PASSWORD` does not update the necessary files inside the `phpmyadmin` container. 
+
+Our recommendation to avoid headaches is to follow these steps:
 
 1. From your terminal run `ds -a phpmyadmin && ds -a mariadb`
 2. Open your `.env` file and paste your password to `MARIADB_MYSQL_ROOT_PASSWORD` and `PHPMYADMIN_PMA_PASSWORD`. Save the file.
