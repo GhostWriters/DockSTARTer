@@ -50,6 +50,10 @@ menu_value_prompt() {
             SYSTEM_VAL=$(run_script 'detect_lan_network')
             VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
             ;;
+        MEDIADIR_AUDIOBOOKS)
+            HOME_VAL="${DETECTED_HOMEDIR}/Audiobooks"
+            VALUEOPTIONS+=("Use Home " "${HOME_VAL}")
+            ;;
         MEDIADIR_BOOKS)
             HOME_VAL="${DETECTED_HOMEDIR}/Books"
             VALUEOPTIONS+=("Use Home " "${HOME_VAL}")
