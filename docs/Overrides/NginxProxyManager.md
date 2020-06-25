@@ -1,6 +1,6 @@
 # Nginx Proxy Manager
 [Nginx Proxy Manager](https://[https://nginxproxymanager.com/](https://nginxproxymanager.com/))  is  Docker container for managing Nginx proxy hosts and SSL Certificates with a simple, powerful interface.
- 
+
 The GIT Repository for Nginx Proxy Manager is located at [[https://github.com/jc21/nginx-proxy-manager](https://github.com/jc21/nginx-proxy-manager)]
 
 ## Config File
