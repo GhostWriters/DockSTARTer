@@ -9,13 +9,15 @@ If you would like to make some adjustments the best way is to use a `docker-comp
 
 Docker Compose will look for `~/.docker/compose/docker-compose.override.yml`. Anything you set in this file will be merged in and take priority over the regular configurations.
 
-## 
+## 2 Types of Overrides
 
-You can use this to modify existing apps (such as changing which image an app uses) or adding all the compose configurations needed to run an entirely new app that's not included in DockSTARTer.
+You can use overrides to modify existing apps (such as changing which image an app uses) or adding all the compose configurations needed to run an entirely new app that's not included in DockSTARTer.
 
 ***
 
-### Example
+The below example will change Sonarr to use hotio's image for Sonarr and add a /media volume. Everything else from the original config such as the remaining volumes and environment variables will merge together.
+
+### Partial Override Merge Example
 
 ```yaml
 version: "3.4"  # this must match the version in docker-compose.yml
@@ -26,13 +28,11 @@ services:
       - ${MEDIADIR_TV}:/media
 ```
 
-This will change Sonarr to use hotio's image for Sonarr and add a /media volume. Everything else from the original config such as the remaining volumes and environment variables will merge together.
-
-You can also use overrides to add a app that is not in DS already.
-
 ***
 
-## Example 
+The below example will use the override file to add a app that is not in DS already. This option will need all required docker compose yaml code for the specific app.
+
+### Full App Override Example
 
 ```yaml
 version: "3.4"  # this must match the version in docker-compose.yml
@@ -54,4 +54,4 @@ services:
       - ${DOCKERCONFDIR}/alltube:/var/www/html/config
       - ${DOCKERSHAREDDIR}:/share
     restart: unless-stopped
-    ```
+```
