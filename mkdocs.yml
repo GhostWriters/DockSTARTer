@@ -27,112 +27,113 @@ theme:
 
 # Navigation
 nav:
-  - Home: index.md
-  - Introduction: introduction.md
+  - Home: "index.md"
+  - "introduction.md"
   - Basics:
-      - Available Applications: basics/available-apps.md
-      - How to Migrate to DS: basics/migration.md
-      - Frequently Asked Questions: basics/faq.md
-      - Port Conflicts: basics/port-conflicts.md
+    - "basics/available-apps.md"
+    - "basics/migration.md"
+    - "basics/env-var-info.md"
+    - "basics/faq.md"
+    - "basics/port-conflicts.md"
   - Advanced:
-      - Advanced Usage: advanced/advanced-usage.md
-      - Backups: advanced/backups.md
-      - Macvlan Networking: advanced/macvlan.md
-      - Overrides: advanced/overrides.md
-      - Setting Up a Domain: advanced/domain-info.md
-      - SMB Mounting: advanced/smb-mounting.md
-      - Technical Info: advanced/technical-info.md
-      - VPN Information: advanced/vpn-info.md
-      - Uninstall: advanced/uninstall.md
+    - "advanced/advanced-usage.md"
+    - "advanced/backups.md"
+    - "advanced/macvlan.md"
+    - "advanced/overrides.md"
+    - "advanced/domain-info.md"
+    - "advanced/smb-mounting.md"
+    - "advanced/technical-info.md"
+    - "advanced/vpn-info.md"
+    - "advanced/uninstall.md"
   - App Specifics:
-      - AirdcPP: apps/airdcpp.md
-      - Airsonic: apps/airsonic.md
-      - Bazarr: apps/bazarr.md
-      - Beets: apps/beets.md
-      - Bitwarden: apps/bitwarden.md
-      - Booksonic: apps/booksonic.md
-      - BookStack: apps/bookstack.md
-      - CalibreWeb: apps/calibreweb.md
-      - CloudCMD: apps/cloudcmd.md
-      - CloudFlareDDNS: apps/cloudflareddns.md
-      - CouchPotato: apps/couchpotato.md
-      - Dasshio: apps/dasshio.md
-      - DDClient: apps/ddclient.md
-      - Deluge: apps/deluge.md
-      - DelugeVPN: apps/delugevpn.md
-      - DuckDNS: apps/duckdns.md
-      - Duplicati: apps/duplicati.md
-      - Emby: apps/emby.md
-      - Filebot: apps/filebot.md
-      - FreshRSS: apps/freshrss.md
-      - Glances: apps/glances.md
-      - Grafana: apps/grafana.md
-      - Guacamole: apps/guacamole.md
-      - h5ai: apps/h5ai.md
-      - HandBrake: apps/handbrake.md
-      - Headphones: apps/headphones.md
-      - Heimdall: apps/heimdall.md
-      - HomeAssistant: apps/homeassistant.md
-      - HTPCManager: apps/htpcmanager.md
-      - Hydra2: apps/hydra2.md
-      - InfluxDB: apps/influxdb.md
-      - Jackett: apps/jackett.md
-      - Jellyfin: apps/jellyfin.md
-      - LazyLibrarian: apps/lazylibrarian.md
-      - LetsEncrypt: apps/letsencrypt.md
-      - Lidarr: apps/lidarr.md
-      - Logarr: apps/logarr.md
-      - LogitechMediaServer: apps/logitechmediaserver.md
-      - MakeMKV: apps/makemkv.md
-      - MariaDB: apps/mariadb.md
-      - McMyAdmin2: apps/mcmyadmin2.md
-      - Medusa: apps/medusa.md
-      - Monitorr: apps/monitorr.md
-      - Muximux: apps/muximux.md
-      - Mylar: apps/mylar.md
-      - netdata: apps/netdata.md
-      - Nextcloud: apps/nextcloud.md
-      - NZBGet: apps/nzbget.md
-      - NZBGetVPN: apps/nzbgetvpn.md
-      - Ombi: apps/ombi.md
-      - OpenVPNAS: apps/openvpnas.md
-      - Organizr: apps/organizr.md
-      - Ouroboros: apps/ouroboros.md
-      - phpMyAdmin: apps/phpmyadmin.md
-      - PiHole: apps/pihole.md
-      - Plex: apps/plex.md
-      - PlexRequests: apps/plexrequests.md
-      - Portainer: apps/portainer.md
-      - PortainerAgent: apps/portaineragent.md
-      - pyLoad: apps/pyload.md
-      - qBittorrent: apps/qbittorrent.md
-      - qBittorrentVPN: apps/qbittorrentvpn.md
-      - QuasselCore: apps/quasselcore.md
-      - QuasselWeb: apps/quasselweb.md
-      - Radarr: apps/radarr.md
-      - ResilioSync: apps/resiliosync.md
-      - rTorrentVPN: apps/rtorrentvpn.md
-      - ruTorrent: apps/rutorrent.md
-      - SABnzbd: apps/sabnzbd.md
-      - SABnzbdVPN: apps/sabnzbdvpn.md
-      - Samba: apps/samba.md
-      - SickChill: apps/sickchill.md
-      - SiCKRAGE: apps/sickrage.md
-      - SmokePing: apps/smokeping.md
-      - Sonarr: apps/sonarr.md
-      - SyncLounge: apps/synclounge.md
-      - Syncthing: apps/syncthing.md
-      - Tautulli: apps/tautulli.md
-      - Telegraf: apps/telegraf.md
-      - TheLounge: apps/thelounge.md
-      - Transmission: apps/transmission.md
-      - TransmissionVPN: apps/transmissionvpn.md
-      - TTRSS: apps/ttrss.md
-      - Tvheadend: apps/tvheadend.md
-      - Ubooquity: apps/ubooquity.md
-      - Unifi: apps/unifi.md
-      - UnifiController: apps/unificontroller.md
-      - Varken: apps/varken.md
-      - vsftpd: apps/vsftpd.md
-      - Watchtower: apps/watchtower.md
-      - ZNC: apps/znc.md
+    - "apps/airdcpp.md"
+    - "apps/airsonic.md"
+    - "apps/bazarr.md"
+    - "apps/beets.md"
+    - "apps/bitwarden.md"
+    - "apps/booksonic.md"
+    - "apps/bookstack.md"
+    - "apps/calibreweb.md"
+    - "apps/cloudcmd.md"
+    - "apps/cloudflareddns.md"
+    - "apps/couchpotato.md"
+    - "apps/dasshio.md"
+    - "apps/ddclient.md"
+    - "apps/deluge.md"
+    - "apps/delugevpn.md"
+    - "apps/duckdns.md"
+    - "apps/duplicati.md"
+    - "apps/emby.md"
+    - "apps/filebot.md"
+    - "apps/freshrss.md"
+    - "apps/glances.md"
+    - "apps/grafana.md"
+    - "apps/guacamole.md"
+    - "apps/h5ai.md"
+    - "apps/handbrake.md"
+    - "apps/headphones.md"
+    - "apps/heimdall.md"
+    - "apps/homeassistant.md"
+    - "apps/htpcmanager.md"
+    - "apps/hydra2.md"
+    - "apps/influxdb.md"
+    - "apps/jackett.md"
+    - "apps/jellyfin.md"
+    - "apps/lazylibrarian.md"
+    - "apps/letsencrypt.md"
+    - "apps/lidarr.md"
+    - "apps/logarr.md"
+    - "apps/logitechmediaserver.md"
+    - "apps/makemkv.md"
+    - "apps/mariadb.md"
+    - "apps/mcmyadmin2.md"
+    - "apps/medusa.md"
+    - "apps/monitorr.md"
+    - "apps/muximux.md"
+    - "apps/mylar.md"
+    - "apps/netdata.md"
+    - "apps/nextcloud.md"
+    - "apps/nzbget.md"
+    - "apps/nzbgetvpn.md"
+    - "apps/ombi.md"
+    - "apps/openvpnas.md"
+    - "apps/organizr.md"
+    - "apps/ouroboros.md"
+    - "apps/phpmyadmin.md"
+    - "apps/pihole.md"
+    - "apps/plex.md"
+    - "apps/plexrequests.md"
+    - "apps/portainer.md"
+    - "apps/portaineragent.md"
+    - "apps/pyload.md"
+    - "apps/qbittorrent.md"
+    - "apps/qbittorrentvpn.md"
+    - "apps/quasselcore.md"
+    - "apps/quasselweb.md"
+    - "apps/radarr.md"
+    - "apps/resiliosync.md"
+    - "apps/rtorrentvpn.md"
+    - "apps/rutorrent.md"
+    - "apps/sabnzbd.md"
+    - "apps/sabnzbdvpn.md"
+    - "apps/samba.md"
+    - "apps/sickchill.md"
+    - "apps/sickrage.md"
+    - "apps/smokeping.md"
+    - "apps/sonarr.md"
+    - "apps/synclounge.md"
+    - "apps/syncthing.md"
+    - "apps/tautulli.md"
+    - "apps/telegraf.md"
+    - "apps/thelounge.md"
+    - "apps/transmission.md"
+    - "apps/transmissionvpn.md"
+    - "apps/ttrss.md"
+    - "apps/tvheadend.md"
+    - "apps/ubooquity.md"
+    - "apps/unifi.md"
+    - "apps/unificontroller.md"
+    - "apps/varken.md"
+    - "apps/vsftpd.md"
+    - "apps/watchtower.md"
+    - "apps/znc.md"
