@@ -1,10 +1,10 @@
-DockSTARTer Variable Information
+# DockSTARTer Variable Information
 
 ## COMPOSE_HTTP_TIMEOUT
 * Default value: `60`
 
 Description:
-See https://docs.docker.com/compose/reference/envvars/#compose_http_timeout
+See [Compose HTTP Timeout](https://docs.docker.com/compose/reference/envvars/#compose_http_timeout)
 This can be increased if you are seeing timeout issues when running compose. It is uncommon to need to adjust this option, but has been seen most commonly on very low powered CPU systems (older raspberry pi) or systems with failing storage (hard drives).
 
 ## DOCKERCONFDIR
@@ -19,7 +19,7 @@ Description: This is the directory where all your docker configuration is saved 
 
 * Default value: `999`
 
-Description: Default ID given to the `docker` group when it is created by [https://get.docker.com](https://get.docker.com)
+Description: Default ID given to the `docker` group when it is created by [Docker](https://get.docker.com)
 
 ## DOCKERHOSTNAME
 * System Detected value:
@@ -31,7 +31,7 @@ Description: All containers will default to having this hostname.
 ## DOCKERLOGGING_MAXFILE
 * Default value: `10`
 
-Description: 
+Description:
 
 ## DOCKERLOGGING_MAXSIZE
 * Default value: `200k`
@@ -43,7 +43,7 @@ Description: Maximum size in kilobytes that the log file will be before it is ro
 
 * Default value: `~/.config/appdata/shared`
 
-Description: This is the default shared folder between all containers. You can place anything here and it can be accessed from any other container, such as scripts. 
+Description: This is the default shared folder between all containers. You can place anything here and it can be accessed from any other container, such as scripts.
 
 ## DOWNLOADSDIR
 * System Detected value: `~/Downloads`
@@ -128,7 +128,7 @@ Description:
 ## NS2
 * Default value: `8.8.8.8`
 
-Description: 
+Description:
 
 ## VPN_ENABLE
 * Default value: `yes`
@@ -153,7 +153,7 @@ Description: This is the password you use to login to your VPN provider.
 ## VPN_PROV
 * Default value: `custom`
 
-Description: 
+Description:
 
 ## VPN_USER
 * Default value: No default value
