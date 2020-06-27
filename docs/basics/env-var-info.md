@@ -1,4 +1,4 @@
-# `.env` Variable Info
+# .env Variable Info
 
 ## COMPOSE_HTTP_TIMEOUT
 * Default value: `60`
