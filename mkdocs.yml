@@ -32,20 +32,20 @@ nav:
   - "introduction.md"
   - Basics:
     - "basics/available-apps.md"
-    - "basics/migration.md"
     - "basics/env-var-info.md"
     - "basics/faq.md"
+    - "basics/migration.md"
     - "basics/port-conflicts.md"
   - Advanced:
     - "advanced/advanced-usage.md"
     - "advanced/backups.md"
+    - "advanced/domain-info.md"
     - "advanced/macvlan.md"
     - "advanced/overrides.md"
-    - "advanced/domain-info.md"
     - "advanced/smb-mounting.md"
     - "advanced/technical-info.md"
-    - "advanced/vpn-info.md"
     - "advanced/uninstall.md"
+    - "advanced/vpn-info.md"
   - App Specifics:
     - "apps/airdcpp.md"
     - "apps/airsonic.md"
