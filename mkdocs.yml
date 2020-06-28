@@ -1,3 +1,4 @@
+---
 # Project information
 site_name: "DockSTARTer"
 site_description: "DockSTARTer helps you get started with home server apps running in Docker."
@@ -148,3 +149,6 @@ nav:
     - "apps/vsftpd.md"
     - "apps/watchtower.md"
     - "apps/znc.md"
+  - Overrides:
+    - "overrides/introduction.md"
+    - "overrides/nginxproxymanager.md"

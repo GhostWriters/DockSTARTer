@@ -15,7 +15,7 @@ The below steps assume that you already have the [Let's Encrypt](https://docksta
 1. Select SyncLounge from the DockSTARTer menu
 1. Complete the DockSTARTer configuration.
 
-    Make sure to set the SYNCLOUNGE_EXTERNAL_URL setting to the appropriate domain. E.g. - `synclouge.yourdomain.tld`  
+    Make sure to set the SYNCLOUNGE_EXTERNAL_URL setting to the appropriate domain. E.g. - `synclouge.yourdomain.tld`
     Otherwise, keep the default settings until you make sure everything is working okay
 
 1. Run Docker Compose.
@@ -35,7 +35,7 @@ If you would rather have SyncLounge running under a different domain as a subfol
 
 ### Override Servers List
 
-If you want to override the Servers List you'll need to create an [Override](https://dockstarter.com/advanced/overrides/) to mount your servers file.
+If you want to override the Servers List you'll need to create an override using [Overrides / Introduction](https://dockstarter.com/overrides/introduction) to mount your servers file.
 
 1. Create a file called `servers.json` in your SyncLounge folder (`~/.config/appdata/synclounge/`) and [populate it with servers](http://docs.synclounge.tv/self-hosted/settings/#customize-the-entire-list).
 
