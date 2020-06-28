@@ -12,4 +12,4 @@ By default, the DockSTARTer configuration of Bazarr will map to the following vo
       - ${MEDIADIR_TV}:/tv
 ```
 
-If you have any media outside of those locations, you'll need to create an [Override](https://dockstarter.com/advanced/overrides/) specifically for those volumes.
+If you have any media outside of those locations, you'll need to create an override using [Overrides / Introduction](https://dockstarter.com/overrides/introduction) specifically for those volumes.

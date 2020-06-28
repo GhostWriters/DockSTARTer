@@ -9,7 +9,7 @@ _Compose_ works by reading [YAML (*.yml)](https://en.wikipedia.org/wiki/YAML#Exa
 
 ## YML Files
 
-* **DO NOT EDIT THESE FILES DIRECTLY.** _Overriding_ these settings is easy but you must create a new file first. See the [Overrides](https://dockstarter.com/advanced/overrides/) page.
+* **DO NOT EDIT THESE FILES DIRECTLY.** _Overriding_ these settings is easy but you must create a new file first. See the [Overrides / Introduction](https://dockstarter.com/overrides/introduction) page.
 
 YML files are akin to XML files and below is an example:
 
@@ -75,7 +75,7 @@ Instead, if you want to run multiple download containers, configure Transmission
 
 Change them all to `/downloads/transmission/incomplete`,`/downloads/transmission/complete` etc etc. Then it has it's own folder but can still report the same root path.
 
-**Again**, do not edit the default YML files, instead, see the section on [_Overrides_](https://dockstarter.com/advanced/overrides/). (Assuming you are reading this page from start to finish for the first time) there is a reason you haven't seen their location yet ;)
+**Again**, do not edit the default YML files, instead, see the section on [Overrides / Introduction](https://dockstarter.com/overrides/introduction). (Assuming you are reading this page from start to finish for the first time) there is a reason you haven't seen their location yet ;)
 
 ## Ports
 

@@ -90,4 +90,4 @@ These pages come in handy -
 
 - [https://github.com/haugene/docker-transmission-openvpn/blob/master/README.md#network-configuration-options](https://github.com/haugene/docker-transmission-openvpn/blob/master/README.md#network-configuration-options)
 
-If you run into slow VPN issues, it may be the container is using a default .ovpn config. So you'd use something like this in a [Override](https://dockstarter.com/overrides): `OPENVPN_CONFIG=UK Southampton` depending on your region/location.
+If you run into slow VPN issues, it may be the container is using a default .ovpn config. So you'd use something like this with [Overrides / Introduction](https://dockstarter.com/overrides/introduction): `OPENVPN_CONFIG=UK Southampton` depending on your region/location.

@@ -30,7 +30,7 @@ sudo ds -c
 
 This script verifies the dependencies above and installs or updates them as needed, then creates a file `~/.docker/compose/docker-compose.yml` based on the variables you configured in your `~/.docker/compose/.env` file. The generator script will prompt to run your selected containers after creating the file.
 
-We encourage you to have a look at the generated `docker-compose.yml` file, however if you wish to make changes please consider using overrides. Please review the [Technical Info](https://dockstarter.com/advanced/technical-info) and [Overrides](https://dockstarter.com/advanced/overrides) pages.
+We encourage you to have a look at the generated `docker-compose.yml` file, however if you wish to make changes please consider using overrides. Please review the [Technical Info](https://dockstarter.com/advanced/technical-info) and [Overrides / Introduction](https://dockstarter.com/overrides/introduction) pages.
 
 If you make any changes to your `.env` file (such as changing a port or enabling a new app) you need to rerun the generator which will rebuild only the affected containers.
 
