@@ -14,7 +14,7 @@ This can be increased if you are seeing timeout issues when running compose. It 
 * Default value: `~/.config/appdata`
 
 Description:
-This is the directory where all your docker configuration is saved to.
+This is the directory where all your containers' configuration is saved to.
 
 ## DOCKERGID
 
@@ -37,13 +37,14 @@ All containers will default to having this hostname.
 * Default value: `10`
 
 Description:
+The maximum number of log files that can be present. If rolling the logs creates excess files, the oldest file is removed.
 
 ## DOCKERLOGGING_MAXSIZE
 
 * Default value: `200k`
 
 Description:
-Maximum size in kilobytes that the log file will be before it is rotated.
+The maximum size of the log before it is rotated. Size is specified in kilobytes.
 
 ## DOCKERSHAREDDIR
 
@@ -51,7 +52,7 @@ Maximum size in kilobytes that the log file will be before it is rotated.
 * Default value: `~/.config/appdata/shared`
 
 Description:
-This is the default shared folder between all containers. You can place anything here and it can be accessed from any other container, such as scripts.
+This directory will be mounted under `/shared` inside every container across DS. There is no specific use for this directory, it can be used however you like.
 
 ## DOWNLOADSDIR
 
@@ -59,7 +60,7 @@ This is the default shared folder between all containers. You can place anything
 * Default value: `/mnt/downloads`
 
 Description:
-This is the default folder where all your downloads are located. To be used with SABnzbd, NZBGet, and any torrent clients.
+This directory will be mounted under `/downloads` inside any container that is used for downloading. Do **not** use this directory as permanent storage for your media. See below for `MEDIADIR` directories.
 
 ## MEDIADIR_AUDIOBOOKS
 
@@ -67,7 +68,7 @@ This is the default folder where all your downloads are located. To be used with
 * Default value: `/mnt/medialibrary/audiobooks`
 
 Description:
-This is the default folder where all audiobooks are stored.
+This directory will be mounted under `/audiobooks` inside any container that is used to access your audiobooks library. This directory is meant to store media permanently.
 
 ## MEDIADIR_BOOKS
 
@@ -75,7 +76,7 @@ This is the default folder where all audiobooks are stored.
 * Default value: `/mnt/medialibrary/books`
 
 Description:
-This is the default folder where all books are stored.
+This directory will be mounted under `/books` inside any container that is used to access your books library. This directory is meant to store media permanently.
 
 ## MEDIADIR_COMICS
 
@@ -83,7 +84,7 @@ This is the default folder where all books are stored.
 * Default value: `/mnt/medialibrary/comics`
 
 Description:
-This is the default folder where all comics are stored.
+This directory will be mounted under `/comics` inside any container that is used to access your comics library. This directory is meant to store media permanently.
 
 ## MEDIADIR_MOVIES
 
@@ -91,7 +92,7 @@ This is the default folder where all comics are stored.
 * Default value: `/mnt/medialibrary/movies`
 
 Description:
-This is the default folder where all movies are stored. To be used with Radarr, Bazarr, etc.
+This directory will be mounted under `/movies` inside any container that is used to access your movie library. This directory is meant to store media permanently.
 
 ## MEDIADIR_MUSIC
 
@@ -99,7 +100,7 @@ This is the default folder where all movies are stored. To be used with Radarr, 
 * Default value: `/mnt/medialibrary/music`
 
 Description:
-This is the default folder where all movies are stored. To be used with Lidarr.
+This directory will be mounted under `/music` inside any container that is used to access your music library. This directory is meant to store media permanently.
 
 ## MEDIADIR_TV
 
@@ -107,7 +108,7 @@ This is the default folder where all movies are stored. To be used with Lidarr.
 * Default value: `/mnt/medialibrary/tv`
 
 Description:
-This is the default folder where all movies are stored. To be used with Sonarr, Bazarr, etc.
+This directory will be mounted under `/tv` inside any container that is used to access your TV library. This directory is meant to store media permanently.
 
 ## PGID
 
@@ -138,7 +139,7 @@ Description:
 * Default value: `192.168.x.x/24`
 
 Description:
-Only accepts values in these ranges 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16. If this value is blank or contains `x` DockSTARTer will automatically replace it with the System Detected value.
+If this value is blank or contains `x` DockSTARTer will automatically replace it with the System Detected value. Only accepts values in these ranges 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16.
 
 ## NS1
 
@@ -157,6 +158,7 @@ Description:
 * Default value: `yes`
 
 Description:
+Only accepts `yes` or `no`. It specifies whether the VPN is enabled or not to be used by VPN enabled containers.
 
 ## VPN_OPTIONS
 
@@ -169,7 +171,7 @@ Description:
 * Default value: `~/.config/appdata/.openvpn`
 
 Description:
-Directory where you will save your `ovpn` configuration so any VPN enabled containers use this VPN configuration.
+This directory will be used to store `ovpn` configurations that will be used by containers that are VPN enabled.
 
 ## VPN_PASS
 
