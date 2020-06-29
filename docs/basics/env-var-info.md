@@ -62,6 +62,8 @@ This directory will be mounted under `/shared` inside every container across DS.
 Description:
 This directory will be mounted under `/downloads` inside any container that is used for downloading. Do **not** use this directory as permanent storage for your media. See below for `MEDIADIR` directories.
 
+**NOTE: `DOWNLOADSDIR` also gets mounted to `/data` inside some containers because that is what [binhex](https://hub.docker.com/u/binhex/) containers use. They will not work as intended otherwise.**
+
 ## MEDIADIR_AUDIOBOOKS
 
 * System Detected value: `~/Audioooks`
