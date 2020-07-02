@@ -19,8 +19,9 @@ update_self() {
         info "Pulling recent changes from git."
         git pull > /dev/null 2>&1 || fatal "Failed to pull recent changes from git."
     fi
-    info "Removing unused branches."
-    git for-each-ref --format '%(refname:short)' refs/heads | grep -v master | xargs git branch -D > /dev/null 2>&1 || true
+    info "Cleaning up unnecessary files and optimizing the local repository."
+    git gc > /dev/null 2>&1 || true
+    # git for-each-ref --format '%(refname:short)' refs/heads | grep -v master | xargs git branch -D > /dev/null 2>&1 || true
     info "Setting file ownership on repository files"
     git ls-tree -r HEAD | awk '{print $4}' | xargs chown "${DETECTED_PUID}":"${DETECTED_PGID}" > /dev/null 2>&1 || true
     run_script 'env_update'
