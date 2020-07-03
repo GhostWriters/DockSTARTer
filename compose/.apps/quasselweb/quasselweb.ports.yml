@@ -1,0 +1,4 @@
+services:
+  quasselweb:
+    ports:
+      - ${QUASSELWEB_PORT_64080}:64080

@@ -8,7 +8,7 @@ config_global() {
     local APPVARS
     APPVARS=$(for v in "${VARNAMES[@]}"; do echo "${v}=$(run_script 'env_get' "${v}")"; done)
 
-    if run_script 'question_prompt' N "Would you like to keep these settings for ${APPNAME}?\\n\\n${APPVARS}"; then
+    if run_script 'question_prompt' "${PROMPT:-}" N "Would you like to keep these settings for ${APPNAME}?\\n\\n${APPVARS}"; then
         info "Keeping ${APPNAME} .env variables."
     else
         info "Configuring ${APPNAME} .env variables."
@@ -21,5 +21,5 @@ config_global() {
 
 test_config_global() {
     # run_script 'config_global'
-    warning "Travis does not test config_global."
+    warn "CI does not test config_global."
 }

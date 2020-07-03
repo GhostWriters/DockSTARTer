@@ -1,40 +1,34 @@
-# APPNICENAME=Samba
-# APPDESCRIPTION=!DEPRECATED! No replacement
 services:
   samba:
     container_name: samba
-    command:
-      - -u "${SAMBA_USERNAME};${SAMBA_PASSWORD}" \
-        -s "Books;/data/books;yes;no;no;${SAMBA_USERNAME}" \
-        -s "Comics;/data/comics;yes;no;no;${SAMBA_USERNAME}" \
-        -s "Docker Config;/data/docker/config;yes;no;no;${SAMBA_USERNAME}" \
-        -s "Downloads;/data/downloads;yes;no;no;${SAMBA_USERNAME}" \
-        -s "Movies;/data/movies;yes;no;no;${SAMBA_USERNAME}" \
-        -s "Music;/data/music;yes;no;no;${SAMBA_USERNAME}" \
-        -s "TV;/data/tv;yes;no;no;${SAMBA_USERNAME}"
-    restart: unless-stopped
+    environment:
+      - GROUPID=${PGID}
+      - NMBD=${SAMBA_NMBD}
+      - SHARE=${SAMBA_SHARENAME};/${SAMBA_SHARENAME};yes;no;no;all;${SAMBA_USERNAME}
+      - TZ=${TZ}
+      - USER=${SAMBA_USERNAME};${SAMBA_PASSWORD}
+      - USERID=${PUID}
+      - WORKGROUP=${SAMBA_WORKGROUP}
     logging:
-      driver: "json-file"
+      driver: json-file
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    environment:
-      - GROUPID=${PGID}
-      - TZ=${TZ}
-      - USERID=${PUID}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}:/data/docker/config
+      - ${DOCKERCONFDIR}:/${SAMBA_SHARENAME}/config
+      - ${DOCKERSHAREDDIR}:/${SAMBA_SHARENAME}/shared
       - ${DOCKERSHAREDDIR}:/shared
-      - ${DOWNLOADSDIR}:/data/downloads
+      - ${DOWNLOADSDIR}:/${SAMBA_SHARENAME}/downloads
       - ${DOWNLOADSDIR}:/downloads
+      - ${MEDIADIR_BOOKS}:/${SAMBA_SHARENAME}/books
       - ${MEDIADIR_BOOKS}:/books
-      - ${MEDIADIR_BOOKS}:/data/books
+      - ${MEDIADIR_COMICS}:/${SAMBA_SHARENAME}/comics
       - ${MEDIADIR_COMICS}:/comics
-      - ${MEDIADIR_COMICS}:/data/comics
-      - ${MEDIADIR_MOVIES}:/data/movies
+      - ${MEDIADIR_MOVIES}:/${SAMBA_SHARENAME}/movies
       - ${MEDIADIR_MOVIES}:/movies
-      - ${MEDIADIR_MUSIC}:/data/music
+      - ${MEDIADIR_MUSIC}:/${SAMBA_SHARENAME}/music
       - ${MEDIADIR_MUSIC}:/music
-      - ${MEDIADIR_TV}:/data/tv
+      - ${MEDIADIR_TV}:/${SAMBA_SHARENAME}/tv
       - ${MEDIADIR_TV}:/tv

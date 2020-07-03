@@ -1,0 +1,3 @@
+services:
+  grocy:
+    hostname: ${DOCKERHOSTNAME}

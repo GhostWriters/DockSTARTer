@@ -1,4 +1,4 @@
 services:
   mylar:
     ports:
-      - "${MYLAR_PORT_8090}:8090"
+      - ${MYLAR_PORT_8090}:8090

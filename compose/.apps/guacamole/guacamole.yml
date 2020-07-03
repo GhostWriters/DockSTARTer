@@ -1,17 +1,15 @@
-# APPNICENAME=Guacamole
-# APPDESCRIPTION=Web application that provides access to desktop environments using remote desktop protocols
 services:
   guacamole:
     container_name: guacamole
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - EXTENSIONS=${GUACAMOLE_EXTENSIONS}
       - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/guacamole:/config

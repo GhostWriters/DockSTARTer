@@ -1,0 +1,3 @@
+services:
+  sickchill:
+    image: linuxserver/sickchill

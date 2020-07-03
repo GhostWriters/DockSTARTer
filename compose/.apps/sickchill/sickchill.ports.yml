@@ -1,0 +1,4 @@
+services:
+  sickchill:
+    ports:
+      - ${SICKCHILL_PORT_8081}:8081

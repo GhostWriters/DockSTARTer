@@ -1,25 +1,24 @@
-# APPNICENAME=Jellyfin
-# APPDESCRIPTION=Free Software Media Browser
 services:
   jellyfin:
     container_name: jellyfin
-    restart: unless-stopped
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
     logging:
-      driver: "json-file"
+      driver: json-file
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    environment:
-      - TZ=${TZ}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/jellyfin:/config
       - ${DOCKERSHAREDDIR}:/shared
-      - ${JELLYFIN_CACHEDIR}:/cache
-      - ${MEDIADIR_MOVIES}:/media/movies
+      - ${JELLYFIN_TRANSCODEDIR}:/transcode
+      - ${MEDIADIR_MOVIES}:/data/movies
       - ${MEDIADIR_MOVIES}:/movies
-      - ${MEDIADIR_MUSIC}:/media/music
+      - ${MEDIADIR_MUSIC}:/data/music
       - ${MEDIADIR_MUSIC}:/music
-      - ${MEDIADIR_TV}:/media/tv
+      - ${MEDIADIR_TV}:/data/tvshows
       - ${MEDIADIR_TV}:/tv
-    user: ${PUID}:${PGID}

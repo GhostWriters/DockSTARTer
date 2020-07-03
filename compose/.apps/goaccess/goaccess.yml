@@ -1,0 +1,20 @@
+services:
+  goaccess:
+    container_name: goaccess
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    security_opt:
+      - apparmor:unconfined
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/goaccess:/config
+      - ${DOCKERSHAREDDIR}:/shared
+      - ${GOACCESS_LOGSDIR}:/opt/log:ro

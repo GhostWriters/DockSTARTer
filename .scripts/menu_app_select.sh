@@ -3,18 +3,24 @@ set -euo pipefail
 IFS=$'\n\t'
 
 menu_app_select() {
+    run_script 'install_yq'
     local APPLIST=()
 
     while IFS= read -r line; do
-        local APPNAME=${line%%_ENABLED=*}
+        local APPNAME=${line^^}
         local FILENAME=${APPNAME,,}
         if [[ -d ${SCRIPTPATH}/compose/.apps/${FILENAME}/ ]]; then
             if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml ]]; then
                 if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${ARCH}.yml ]]; then
                     local APPNICENAME
-                    APPNICENAME=$(grep --color=never -Po '^# APPNICENAME=\K.*' "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml" || echo "${APPNAME}")
+                    APPNICENAME=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.dockstarter.appinfo.nicename]" || echo "${APPNAME}")
                     local APPDESCRIPTION
-                    APPDESCRIPTION=$(grep --color=never -Po '^# APPDESCRIPTION=\K.*' "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml" || echo "! Missing description !")
+                    APPDESCRIPTION=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.dockstarter.appinfo.description]" || echo "! Missing description !")
+                    local APPDEPRECATED
+                    APPDEPRECATED=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.dockstarter.appinfo.deprecated]" || echo "false")
+                    if [[ ${APPDEPRECATED} == "true" ]]; then
+                        continue
+                    fi
                     local APPONOFF
                     if [[ $(run_script 'env_get' "${APPNAME}_ENABLED") == true ]]; then
                         APPONOFF="on"
@@ -25,10 +31,10 @@ menu_app_select() {
                 fi
             fi
         fi
-    done < <(grep '_ENABLED=' < "${SCRIPTPATH}/compose/.env")
+    done < <(ls -A "${SCRIPTPATH}/compose/.apps/")
 
     local SELECTEDAPPS
-    if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
+    if [[ ${CI:-} == true ]]; then
         SELECTEDAPPS="Cancel"
     else
         SELECTEDAPPS=$(whiptail --fb --clear --title "DockSTARTer" --separate-output --checklist 'Choose which apps you would like to install:\n Use [up], [down], and [space] to select apps, and [tab] to switch to the buttons at the bottom.' 0 0 0 "${APPLIST[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
@@ -41,15 +47,20 @@ menu_app_select() {
             local APPNAME=${line%%_ENABLED=true}
             run_script 'env_set' "${APPNAME}_ENABLED" false
         done < <(grep '_ENABLED=true$' < "${SCRIPTPATH}/compose/.env")
+
         info "Enabling selected apps."
         while IFS= read -r line; do
             local APPNAME=${line^^}
+            run_script 'appvars_create' "${APPNAME}"
             run_script 'env_set' "${APPNAME}_ENABLED" true
         done < <(echo "${SELECTEDAPPS}")
+
+        run_script 'appvars_purge_all'
+        run_script 'env_update'
     fi
 }
 
 test_menu_app_select() {
     # run_script 'menu_app_select'
-    warning "Travis does not test menu_app_select."
+    warn "CI does not test menu_app_select."
 }

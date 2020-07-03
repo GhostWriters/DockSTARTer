@@ -1,21 +1,18 @@
-# APPNICENAME=pyLoad
-# APPDESCRIPTION=Python Download Manager alternative to JDownloader
 services:
   pyload:
     container_name: pyload
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/pyload:/opt/pyload/pyload-config
+      - ${DOCKERCONFDIR}/pyload:/config
       - ${DOCKERSHAREDDIR}:/shared
-      - ${DOWNLOADSDIR}:/opt/pyload/Downloads
       - ${DOWNLOADSDIR}:/downloads

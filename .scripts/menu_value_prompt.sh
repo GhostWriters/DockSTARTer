@@ -8,8 +8,16 @@ menu_value_prompt() {
     local CURRENT_VAL
     CURRENT_VAL=$(run_script 'env_get' "${SET_VAR}")
 
+    local APPNAME=${SET_VAR%%_*}
+    local FILENAME=${APPNAME,,}
+    local VAR_LABEL=${SET_VAR,,}
+
     local DEFAULT_VAL
-    DEFAULT_VAL=$(grep --color=never -Po "^${SET_VAR}=\K.*" "${SCRIPTPATH}/compose/.env.example" || true)
+    if grep -q -Po "^${SET_VAR}=\K.*" "${SCRIPTPATH}/compose/.env.example"; then
+        DEFAULT_VAL=$(grep --color=never -Po "^${SET_VAR}=\K.*" "${SCRIPTPATH}/compose/.env.example" || true)
+    else
+        DEFAULT_VAL=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.dockstarter.appvars.${VAR_LABEL}]" || true)
+    fi
 
     local HOME_VAL
     local SYSTEM_VAL
@@ -39,10 +47,12 @@ menu_value_prompt() {
             VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
             ;;
         LAN_NETWORK)
-            # https://github.com/tom472/mediabox/commit/d6a3317c9513ac9907715c76fb4459cba426da18
-            # https://stackoverflow.com/questions/13322485/how-to-get-the-primary-ip-address-of-the-local-machine-on-linux-and-os-x#comment89955893_25851186
-            SYSTEM_VAL=$(ip a | grep -Po "$(ip route get 1 | sed -n 's/^.*src \([0-9.]*\) .*$/\1/p')\/\d+" | sed 's/[0-9]*\//0\//')
+            SYSTEM_VAL=$(run_script 'detect_lan_network')
             VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
+            ;;
+        MEDIADIR_AUDIOBOOKS)
+            HOME_VAL="${DETECTED_HOMEDIR}/Audiobooks"
+            VALUEOPTIONS+=("Use Home " "${HOME_VAL}")
             ;;
         MEDIADIR_BOOKS)
             HOME_VAL="${DETECTED_HOMEDIR}/Books"
@@ -65,15 +75,15 @@ menu_value_prompt() {
             VALUEOPTIONS+=("Use Home " "${HOME_VAL}")
             ;;
         PGID)
-            SYSTEM_VAL="${DETECTED_PGID}"
+            SYSTEM_VAL=${DETECTED_PGID}
             VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
             ;;
         PUID)
-            SYSTEM_VAL="${DETECTED_PUID}"
+            SYSTEM_VAL=${DETECTED_PUID}
             VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
             ;;
         TZ)
-            SYSTEM_VAL="$(cat /etc/timezone)"
+            SYSTEM_VAL=$(cat /etc/timezone)
             VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
             ;;
         *)
@@ -95,24 +105,6 @@ menu_value_prompt() {
             ;;
         *DIR | *DIR_*)
             VALUEDESCRIPTION='\n\n If the directory selected does not exist we will attempt to create it.'
-            ;;
-        BACKUP_BWLIMIT)
-            VALUEDESCRIPTION='\n\n This keeps rsync from consuming too much system resources. 0 to disaable.'
-            ;;
-        BACKUP_CHATTR)
-            VALUEDESCRIPTION='\n\n Use linux file system attributes to protect backups from deletion or modification.'
-            ;;
-        BACKUP_DU)
-            VALUEDESCRIPTION='\n\n Calculate the size of existing backups. 0 to disable.'
-            ;;
-        BACKUP_MAX_MIBSIZE)
-            VALUEDESCRIPTION='\n\n Remove older snapshots (except .001) if their size is >= MAX.'
-            ;;
-        BACKUP_MIN_MIBSIZE)
-            VALUEDESCRIPTION='\n\n Remove older snapshots (except .001) if free disk space is <= MIN.'
-            ;;
-        BACKUP_OVERWRITE_LAST)
-            VALUEDESCRIPTION='\n\n Allow .001 to be removed in order to attempt a new backup (not recommended).'
             ;;
         LAN_NETWORK)
             VALUEDESCRIPTION='\n\n This is used to define your home LAN network, do NOT confuse this with the IP address of your router or your server, the value for this key defines your network NOT a single host. Please Google CIDR Notation to learn more.'
@@ -145,10 +137,10 @@ menu_value_prompt() {
     fi
 
     local SELECTEDVALUE
-    if [[ ${CI:-} == true ]] && [[ ${TRAVIS:-} == true ]]; then
+    if [[ ${CI:-} == true ]]; then
         SELECTEDVALUE="Keep Current "
     else
-        SELECTEDVALUE=$(whiptail --fb --clear --title "DockSTARTer" --menu "What would you like set for ${SET_VAR}?${VALUEDESCRIPTION:-}" 0 0 0 "${VALUEOPTIONS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
+        SELECTEDVALUE=$(whiptail --fb --clear --title "DockSTARTer" --menu "What would you like set for ${SET_VAR}?${VALUEDESCRIPTION}" 0 0 0 "${VALUEOPTIONS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
     fi
 
     local INPUT
@@ -166,10 +158,10 @@ menu_value_prompt() {
             INPUT=${SYSTEM_VAL}
             ;;
         "Enter New ")
-            INPUT=$(whiptail --fb --clear --title "DockSTARTer" --inputbox "What would you like set for ${SET_VAR}?" 0 0 "${CURRENT_VAL}" 3>&1 1>&2 2>&3 || echo "CancelNewEntry")
+            INPUT=$(whiptail --fb --clear --title "DockSTARTer" --inputbox "What would you like set for ${SET_VAR}?${VALUEDESCRIPTION}" 0 0 "${CURRENT_VAL}" 3>&1 1>&2 2>&3 || echo "CancelNewEntry")
             ;;
         "Cancel")
-            warning "Selection of ${SET_VAR} was canceled."
+            warn "Selection of ${SET_VAR} was canceled."
             return 1
             ;;
         *)
@@ -214,7 +206,7 @@ menu_value_prompt() {
                     menu_value_prompt "${SET_VAR}"
                 elif [[ ${INPUT} == ~* ]]; then
                     local CORRECTED_DIR="${DETECTED_HOMEDIR}${INPUT#*~}"
-                    if run_script 'question_prompt' Y "Cannot use the ~ shortcut in ${SET_VAR}. Would you like to use ${CORRECTED_DIR} instead?"; then
+                    if run_script 'question_prompt' "${PROMPT:-}" Y "Cannot use the ~ shortcut in ${SET_VAR}. Would you like to use ${CORRECTED_DIR} instead?"; then
                         run_script 'env_set' "${SET_VAR}" "${CORRECTED_DIR}"
                         whiptail --fb --clear --title "DockSTARTer" --msgbox "Returning to the previous menu to confirm selection." 0 0
                     else
@@ -223,11 +215,11 @@ menu_value_prompt() {
                     menu_value_prompt "${SET_VAR}"
                 elif [[ -d ${INPUT} ]]; then
                     run_script 'env_set' "${SET_VAR}" "${INPUT}"
-                    if run_script 'question_prompt' Y "Would you like to set permissions on ${INPUT} ?"; then
+                    if run_script 'question_prompt' "${PROMPT:-}" Y "Would you like to set permissions on ${INPUT} ?"; then
                         run_script 'set_permissions' "${INPUT}"
                     fi
                 else
-                    if run_script 'question_prompt' Y "${INPUT} is not a valid path. Would you like to attempt to create it?"; then
+                    if run_script 'question_prompt' "${PROMPT:-}" Y "${INPUT} is not a valid path. Would you like to attempt to create it?"; then
                         mkdir -p "${INPUT}" || fatal "${INPUT} folder could not be created."
                         run_script 'set_permissions' "${INPUT}"
                         run_script 'env_set' "${SET_VAR}" "${INPUT}"
@@ -240,7 +232,7 @@ menu_value_prompt() {
                 ;;
             P[GU]ID)
                 if [[ ${INPUT} == "0" ]]; then
-                    if run_script 'question_prompt' Y "Running as root is not recommended. Would you like to select a different ID?"; then
+                    if run_script 'question_prompt' "${PROMPT:-}" Y "Running as root is not recommended. Would you like to select a different ID?"; then
                         menu_value_prompt "${SET_VAR}"
                     else
                         run_script 'env_set' "${SET_VAR}" "${INPUT}"
@@ -261,5 +253,5 @@ menu_value_prompt() {
 
 test_menu_value_prompt() {
     # run_script 'menu_value_prompt'
-    warning "Travis does not test menu_value_prompt."
+    warn "CI does not test menu_value_prompt."
 }

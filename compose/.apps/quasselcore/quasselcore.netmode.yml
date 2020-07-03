@@ -1,0 +1,3 @@
+services:
+  quasselcore:
+    network_mode: ${QUASSELCORE_NETWORK_MODE}

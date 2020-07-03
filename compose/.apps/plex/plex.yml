@@ -1,19 +1,18 @@
-# APPNICENAME=Plex
-# APPDESCRIPTION=Organizes all of your video, music and photo collections
 services:
   plex:
     container_name: plex
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
+      - PLEX_CLAIM=${PLEX_CLAIM}
       - PUID=${PUID}
       - TZ=${TZ}
       - VERSION=${PLEX_VERSION}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/plex:/config
@@ -24,4 +23,3 @@ services:
       - ${MEDIADIR_MUSIC}:/music
       - ${MEDIADIR_TV}:/data/tv
       - ${MEDIADIR_TV}:/tv
-      - ${PLEX_TRANSCODEDIR}:/transcode

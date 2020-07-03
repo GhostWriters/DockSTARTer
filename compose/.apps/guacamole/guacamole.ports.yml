@@ -1,4 +1,4 @@
 services:
   guacamole:
     ports:
-      - "${GUACAMOLE_PORT_8080}:8080"
+      - ${GUACAMOLE_PORT_8080}:8080

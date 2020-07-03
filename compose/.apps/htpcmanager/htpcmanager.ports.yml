@@ -1,4 +1,4 @@
 services:
   htpcmanager:
     ports:
-      - "${HTPCMANAGER_PORT_8085}:8085"
+      - ${HTPCMANAGER_PORT_8085}:8085

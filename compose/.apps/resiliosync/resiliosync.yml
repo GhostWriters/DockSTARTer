@@ -1,20 +1,19 @@
-# APPNICENAME=Resiliosync
-# APPDESCRIPTION=A fast, reliable, and simple file sync and share solution, powered by P2P technology
 services:
   resiliosync:
     container_name: resiliosync
-    restart: unless-stopped
-    logging:
-      driver: "json-file"
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/resiliosync:/config
       - ${DOCKERSHAREDDIR}:/shared
-      - ${RESILIOSYNC_SOURCEDIR}:/source
+      - ${DOWNLOADSDIR}:/downloads
+      - ${RESILIOSYNC_SYNCDIR}:/sync

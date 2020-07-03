@@ -1,0 +1,3 @@
+services:
+  quasselweb:
+    hostname: ${DOCKERHOSTNAME}

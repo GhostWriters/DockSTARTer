@@ -1,0 +1,25 @@
+services:
+  filebot:
+    container_name: filebot
+    environment:
+      - GROUP_ID=${PGID}
+      - USER_ID=${PUID}
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/filebot:/config
+      - ${DOCKERSHAREDDIR}:/shared
+      - ${FILEBOT_OUTPUTDIR}:/output
+      - ${FILEBOT_WATCHDIR}:/watch
+      - ${MEDIADIR_MOVIES}:/movies
+      - ${MEDIADIR_MOVIES}:/storage/movies
+      - ${MEDIADIR_MUSIC}:/music
+      - ${MEDIADIR_MUSIC}:/storage/music
+      - ${MEDIADIR_TV}:/storage/tv
+      - ${MEDIADIR_TV}:/tv

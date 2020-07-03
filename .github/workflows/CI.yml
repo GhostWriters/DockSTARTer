@@ -1,0 +1,41 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+
+  bashate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.3.1
+      - name: bashate
+        env:
+          CI: true
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          while IFS= read -r line; do echo "Linting ${line}"; docker run --rm -v "${PWD}:${PWD}" textclean/bashate -i E006 "${PWD}/${line}" || exit 1; done < <(git ls-files '*.sh')
+
+  shfmt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.3.1
+      - name: shfmt
+        env:
+          CI: true
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          while IFS= read -r line; do echo "Linting ${line}"; docker run --rm -v "${PWD}:${PWD}" mvdan/shfmt -s -i 4 -ci -sr -d "${PWD}/${line}" || exit 1; done < <(git ls-files '*.sh')
+
+  run:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-16.04, ubuntu-18.04]
+    steps:
+      - uses: actions/checkout@v2.3.1
+      - name: run
+        env:
+          CI: true
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          while IFS= read -r line; do echo; sudo -E bash ./main.sh -vt "${line}" || exit 1; echo; done < <(git ls-files '.scripts/*.sh' | sed -E 's/^\.scripts\/(\w+)\.sh$/\1/')
