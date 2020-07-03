@@ -1,5 +1,8 @@
 # FAQ
 
+## Support
+Refer to our [Support Page](Support.md) for our Support Channels and Tutorials we have found users have made with DockSTARTer!
+
 ## Ouroboros And Portainer Enabled By Default
 
 These tools are extremely useful for people getting used to running docker. Their official documentation should explain why but you can disable either or both of them if you want.
