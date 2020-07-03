@@ -11,7 +11,7 @@ repo_url: "https://github.com/GhostWriters/DockSTARTer"
 edit_uri: "https://github.com/GhostWriters/DockSTARTer.com/edit/master/docs/"
 
 # Copyright
-copyright: "Copyright &copy; 2018 - 2019 GhostWriters"
+copyright: "Copyright &copy; 2018 - 2020 GhostWriters"
 
 # Configuration
 theme:
@@ -35,6 +35,7 @@ nav:
       - How to Migrate to DS: basics/migration.md
       - Frequently Asked Questions: basics/faq.md
       - Port Conflicts: basics/port-conflicts.md
+      - Support: basics/support.md
   - Advanced:
       - Advanced Usage: advanced/advanced-usage.md
       - Backups: advanced/backups.md
