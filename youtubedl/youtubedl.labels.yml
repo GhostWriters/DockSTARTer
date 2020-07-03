@@ -1,0 +1,9 @@
+services:
+  youtube-dl:
+    labels:
+      com.dockstarter.appinfo.description: "Simple Web and REST interface for downloading youtube videos onto a server."
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.nicename: "YoutubeDLServer"
+      com.dockstarter.appvars.youtubedl_enabled: "false"
+      com.dockstarter.appvars.youtubedl_network_mode: ""
+      com.dockstarter.appvars.youtube_dl_server_port_8080: "8080"

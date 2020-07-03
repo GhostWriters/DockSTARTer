@@ -1,0 +1,3 @@
+services:
+  youtube-dl:
+    image: nbr23/youtube-dl-server
