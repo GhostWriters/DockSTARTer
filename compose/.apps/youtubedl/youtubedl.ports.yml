@@ -1,4 +1,4 @@
 services:
   youtube-dl:
     ports:
-      - ${YOUTUBE_DL_SERVER_PORT_8080}:8080
+      - ${YOUTUBE_DL_PORT_8080}:8080
