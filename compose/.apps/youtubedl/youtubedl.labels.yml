@@ -6,4 +6,4 @@ services:
       com.dockstarter.appinfo.nicename: "YoutubeDLServer"
       com.dockstarter.appvars.youtubedl_enabled: "false"
       com.dockstarter.appvars.youtubedl_network_mode: ""
-      com.dockstarter.appvars.youtubedl_server_8080: "8080"
+      com.dockstarter.appvars.youtubedl_port_8080: "8080"
