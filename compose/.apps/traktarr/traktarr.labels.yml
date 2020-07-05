@@ -6,4 +6,3 @@ services:
       com.dockstarter.appinfo.nicename: "Traktarr"
       com.dockstarter.appvars.traktarr_enabled: "false"
       com.dockstarter.appvars.traktarr_network_mode: ""
-      
