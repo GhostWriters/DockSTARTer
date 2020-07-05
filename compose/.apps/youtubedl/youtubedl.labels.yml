@@ -1,5 +1,5 @@
 services:
-  youtube-dl:
+  youtubedl:
     labels:
       com.dockstarter.appinfo.description: "Simple Web and REST interface for downloading YouTube videos onto a server."
       com.dockstarter.appinfo.deprecated: "false"
