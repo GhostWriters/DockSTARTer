@@ -3,8 +3,8 @@ services:
     container_name: traktarr
     environment:
       - PGID=${PGID}
-      - TZ=${TZ}
       - PUID=${PUID}
+      - TZ=${TZ}
     logging:
       driver: json-file
       options:
