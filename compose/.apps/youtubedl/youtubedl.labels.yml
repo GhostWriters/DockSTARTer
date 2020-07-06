@@ -7,4 +7,4 @@ services:
       com.dockstarter.appvars.youtubedl_enabled: "false"
       com.dockstarter.appvars.youtubedl_network_mode: ""
       com.dockstarter.appvars.youtubedl_port_8080: "8080"
-      com.dockstarter.appvars.youtubedl_output_template:"%(title)s.%(ext)s"
+      com.dockstarter.appvars.youtubedl_output_template: "%(title)s.%(ext)s"
