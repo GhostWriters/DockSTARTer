@@ -5,7 +5,8 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-      - YDL_OUTPUT_TEMPLATE=/downloads/%(title)s.%(ext)s
+      - YDL_OUTPUT_TEMPLATE=/downloads/${YOUTUBEDL_OUTPUT_TEMPLATE}
+      - YDL_OUTPUT_TEMPLATE_PLAYLIST=/downloads/${YOUTUBEDL_OUTPUT_TEMPLATE_PLAYLIST}
     logging:
       driver: json-file
       options:
@@ -16,3 +17,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/youtube-dl:/youtube-dl
       - ${DOWNLOADSDIR}/youtube-dl:/downloads
+environment:
+  - YDL_OUTPUT_TEMPLATE=/downloads/${YOUTUBEDL_OUTPUT_TEMPLATE}
+  
