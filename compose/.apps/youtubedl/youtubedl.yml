@@ -1,19 +1,18 @@
-services:
-  youtubedl:
+services: 
+  youtubedl: 
     container_name: youtubedl
-    environment:
+    environment: 
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    logging:
+      - YDL_OUTPUT_TEMPLATE=/downloads/%(title)s.%(ext)s
+    logging: 
       driver: json-file
-      options:
+      options: 
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: unless-stopped
-    volumes:
+    volumes: 
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/youtubedl/.ydl-metadata.db:/youtube-dl/.ydl-metadata.db
-      - ${DOWNLOADSDIR}/youtubedl/:/youtube-dl
-      - ${DOCKERSHAREDDIR}:/shared
-
+      - ${DOCKERCONFDIR}/youtube-dl:/youtube-dl
+      - ${DOWNLOADSDIR}/youtube-dl:/downloads
