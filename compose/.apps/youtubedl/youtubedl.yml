@@ -17,6 +17,4 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/youtube-dl:/youtube-dl
       - ${DOWNLOADSDIR}/youtube-dl:/downloads
-environment:
-  - YDL_OUTPUT_TEMPLATE=/downloads/${YOUTUBEDL_OUTPUT_TEMPLATE}
-  
+ 
