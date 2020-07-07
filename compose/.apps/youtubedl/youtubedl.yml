@@ -18,4 +18,3 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/youtube-dl:/youtube-dl
       - ${DOWNLOADSDIR}/youtube-dl:/downloads
- 
