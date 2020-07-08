@@ -7,7 +7,7 @@
 - DockSTARTer can be operated through a friendly GUI of terminal menus.
 - DockSTARTer can be operated through commands for more advanced users who do not prefer the GUI.
 - DockSTARTer is here to give you the freedom to choose what you want to run.
-- DockSTARTer allows you to run apps that are not included using [Overrides](https://dockstarter.com/advanced/overrides/).
+- DockSTARTer allows you to run apps that are not included using [Overrides / Introduction](https://dockstarter.com/overrides/introduction).
 
 ## What DockSTARTer Is Not
 
