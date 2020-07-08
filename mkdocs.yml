@@ -36,6 +36,7 @@ nav:
     - "basics/faq.md"
     - "basics/migration.md"
     - "basics/port-conflicts.md"
+    - "basics/support.md"
   - Advanced:
     - "advanced/advanced-usage.md"
     - "advanced/backups.md"

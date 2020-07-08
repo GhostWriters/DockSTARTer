@@ -103,6 +103,8 @@ Click the chat badge to join us on Discord for support!
 
 [[Feature Request](https://github.com/GhostWriters/DockSTARTer/issues/new?template=feature_request.md)] [[Bug Report](https://github.com/GhostWriters/DockSTARTer/issues/new?template=bug_report.md)]
 
+Additional information can be found on our [Support page](https://dockstarter.com/basics/support/).
+
 ## Contributors
 
 [![GitHub contributors](https://img.shields.io/github/contributors/GhostWriters/DockSTARTer.svg?style=flat-square&color=607D8B)](https://github.com/GhostWriters/DockSTARTer/graphs/contributors)
