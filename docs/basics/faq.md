@@ -1,7 +1,7 @@
 # FAQ
 
 ## Support
-Refer to our [Support Page](Support.md) for our Support Channels and Tutorials we have found users have made with DockSTARTer!
+Refer to our [Support Page](https://dockstarter.com/basics/support/) for our Support Channels and Tutorials we have found users have made with DockSTARTer!
 
 ## Ouroboros And Portainer Enabled By Default
 
