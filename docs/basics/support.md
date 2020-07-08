@@ -1,6 +1,6 @@
-# DockSTARTer Videos, Tutorials, Guides, and Blogs
+# Support
 
-## For Support
+## Official Support
 
 [![Discord chat](https://img.shields.io/discord/477959324183035936.svg?style=flat-square&color=607D8B&logo=discord)](https://discord.gg/YFyJpmH)
 
@@ -12,11 +12,9 @@ Also Check out our SubReddit [/R/DockSTARTer](https://www.reddit.com/r/DockSTART
 
 [To Submit Bug Reports](https://github.com/GhostWriters/DockSTARTer/issues/new?template=bug_report.md)
 
-***
+## External Information
 
 Below you will find links to various Tutorial Videos, Blogs , And Guides users have made.
-
-***
 
 * DBTech.com - [Raspberry Pi 4: Ultimate Home Server with DockerSTARTer Blog Post & Video Tutorial](https://dbte.ch/dockstarter)
 * MakeUseOf.com - [How to Set Up a Linux Media Server in Under One Hour Tutorial](https://www.makeuseof.com/tag/setup-linux-media-server/)
