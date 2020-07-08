@@ -6,7 +6,7 @@
 
 Click the chat badge to join us on Discord for support!
 
-Also Check out our SubReddit [/R/DockSTARTer](https://www.reddit.com/r/DockSTARTer/)
+Also Check out our SubReddit [/r/DockSTARTer](https://www.reddit.com/r/DockSTARTer/)
 
 [To Submit Feature Requests](https://github.com/GhostWriters/DockSTARTer/issues/new?template=feature_request.md)
 
