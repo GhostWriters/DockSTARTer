@@ -201,7 +201,7 @@ fi
 # Github Token for Travis CI
 if [[ ${CI:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == true ]]; then
     readonly GH_HEADER="Authorization: token ${GH_TOKEN}"
-    echo "${GH_HEADER}" > /dev/null 2>&1 || true # Workaround SC2034
+    export GH_HEADER
 fi
 
 # Script Information
@@ -224,9 +224,9 @@ readonly SCRIPTNAME="${SCRIPTPATH}/$(basename "$(get_scriptname)")"
 readonly DETECTED_PUID=${SUDO_UID:-$UID}
 readonly DETECTED_UNAME=$(id -un "${DETECTED_PUID}" 2> /dev/null || true)
 readonly DETECTED_PGID=$(id -g "${DETECTED_PUID}" 2> /dev/null || true)
-echo "${DETECTED_PGID}" > /dev/null 2>&1 || true # Workaround SC2034
+export DETECTED_PGID
 readonly DETECTED_UGROUP=$(id -gn "${DETECTED_PUID}" 2> /dev/null || true)
-echo "${DETECTED_UGROUP}" > /dev/null 2>&1 || true # Workaround SC2034
+export DETECTED_UGROUP
 readonly DETECTED_HOMEDIR=$(eval echo "~${DETECTED_UNAME}" 2> /dev/null || true)
 
 # Terminal Colors

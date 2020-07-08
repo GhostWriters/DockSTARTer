@@ -1,0 +1,4 @@
+services:
+  youtubedl:
+    ports:
+      - ${YOUTUBEDL_PORT_8080}:8080
