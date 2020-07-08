@@ -13,6 +13,6 @@ services:
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/traktarr/:/config
+      - ${DOCKERCONFDIR}/traktarr:/config
       - ${DOCKERSHAREDDIR}:/shared
 
