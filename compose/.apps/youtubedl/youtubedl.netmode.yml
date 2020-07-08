@@ -1,0 +1,3 @@
+services:
+  youtubedl:
+    network_mode: ${YOUTUBEDL_NETWORK_MODE}
