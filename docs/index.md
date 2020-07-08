@@ -97,7 +97,13 @@ See our [documentation](https://dockstarter.com/introduction/) for more detailed
 
 ## Support
 
-See our [Support Page](basics/support.md)
+[![Discord chat](https://img.shields.io/discord/477959324183035936.svg?style=flat-square&color=607D8B&logo=discord)](https://discord.gg/YFyJpmH)
+
+Click the chat badge to join us on Discord for support!
+
+[[Feature Request](https://github.com/GhostWriters/DockSTARTer/issues/new?template=feature_request.md)] [[Bug Report](https://github.com/GhostWriters/DockSTARTer/issues/new?template=bug_report.md)]
+
+Additional information can be found on our [Support page](https://dockstarter.com/basics/support/).
 
 ## Contributors
 
