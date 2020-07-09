@@ -153,3 +153,4 @@ nav:
   - Overrides:
     - "overrides/introduction.md"
     - "overrides/nginxproxymanager.md"
+    - "overrides/yacreader.md"
