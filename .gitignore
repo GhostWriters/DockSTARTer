@@ -1,6 +1,7 @@
 compose/.env
 compose/docker-compose.override.yml
 compose/docker-compose.yml
+config.json
 config/
 configs/
 dockstarter.log
