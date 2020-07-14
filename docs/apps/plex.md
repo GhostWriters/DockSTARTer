@@ -11,7 +11,7 @@ docker stop plex
 docker rm plex
 
 sudo nano ~/.docker/compose/.env
-# with the nano file editor open locate the PLEX_CLAIM variable 
+# with the nano file editor open locate the PLEX_CLAIM variable
 # go to https://www.plex.tv/claim/ in your browser and get the claim token set your PLEX_CLAIM variable
 # the token expires in 5 minutes, so we'll want to get the rest done quickly
 # ctrl+x to save and exit nano
