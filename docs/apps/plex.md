@@ -10,6 +10,10 @@ If you are starting the Plex container for the first time and cannot claim your 
 docker stop plex
 docker rm plex
 
+# remove the config folder for plex
+# !WARNING! do NOT do this if you have already setup your plex server and are having issues connecting to it, skip to option 3 instead
+rm -Rf ~/.config/appdata/plex
+
 sudo nano ~/.docker/compose/.env
 # with the nano file editor open locate the PLEX_CLAIM variable
 # go to https://www.plex.tv/claim/ in your browser and get the claim token set your PLEX_CLAIM variable
