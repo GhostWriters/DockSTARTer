@@ -7,7 +7,7 @@ services:
       - TZ=${TZ}
       - YDL_OUTPUT_TEMPLATE=/downloads/youtubedl/${YOUTUBEDL_OUTPUT_TEMPLATE}
       - YDL_OUTPUT_TEMPLATE_PLAYLIST=/downloads/youtubedl/${YOUTUBEDL_OUTPUT_TEMPLATE_PLAYLIST}
-      - YDL_DEBUG=${YOUTUBEDL_DEBUG]
+      - YDL_DEBUG=${YOUTUBEDL_DEBUG}
     logging:
       driver: json-file
       options:
