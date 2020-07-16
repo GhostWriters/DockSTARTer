@@ -1,6 +1,6 @@
 # <!-- Home -->
 
-[![DockSTARTer](https://github.com/GhostWriters/DockSTARTer/raw/master/.github/logo.png)](https://dockstarter.com)
+[![DockSTARTer](https://github.com/GhostWriters/DockSTARTer/raw/master/docs/img/logo.png)](https://dockstarter.com)
 
 [![Supporters on Open Collective](https://img.shields.io/opencollective/all/DockSTARTer.svg?style=flat-square&color=607D8B)](#supporters)
 [![Discord chat](https://img.shields.io/discord/477959324183035936.svg?style=flat-square&color=607D8B&logo=discord)](https://discord.gg/YFyJpmH)
@@ -26,7 +26,7 @@ You may choose to rely on DockSTARTer for various changes to your Docker system,
 
 ### System Requirements
 
-- You must be running a [Supported platform](https://docs.docker.com/install/#supported-platforms) or an operating system based on a supported platform. Platforms named below will link to documentation listing compatible versions.
+- You must be running a [supported platform](https://docs.docker.com/install/#supported-platforms) or an operating system based on a supported platform. Platforms named below will link to documentation listing compatible versions.
 - You must be logged in as a non-root user with sudo permissions.
 
 ### One Time Setup (required)
@@ -101,7 +101,9 @@ See our [documentation](https://dockstarter.com/introduction/) for more detailed
 
 Click the chat badge to join us on Discord for support!
 
-[[Feature Request](https://github.com/GhostWriters/DockSTARTer/issues/new?template=feature_request.md)] [[Bug Report](https://github.com/GhostWriters/DockSTARTer/issues/new?template=bug_report.md)]
+[Feature Request](https://github.com/GhostWriters/DockSTARTer/issues/new?template=feature_request.md) | [Bug Report](https://github.com/GhostWriters/DockSTARTer/issues/new?template=bug_report.md)
+
+Additional information can be found on our [Support Page](https://dockstarter.com/basics/support/).
 
 ## Contributors
 
@@ -112,13 +114,13 @@ This project exists thanks to all the people who contribute.
 
 ## Supporters
 
-Support the project by donating on Open Collective.
+Support the project by donating on [Open Collective](https://opencollective.com/DockSTARTer#donation).
 
 ### Backers
 
 [![Backers on Open Collective](https://img.shields.io/opencollective/tier/DockSTARTer/7408.svg?style=flat-square&color=607D8B&label=backers)](https://opencollective.com/DockSTARTer#backer)
 
-Thank you to all our backers! [[Become a backer](https://opencollective.com/DockSTARTer#backer)]
+Thank you to all our backers! [Become a backer](https://opencollective.com/DockSTARTer#backer).
 
 [![Backers on Open Collective](https://opencollective.com/DockSTARTer/tiers/backer.svg)](https://opencollective.com/DockSTARTer#backers)
 
@@ -126,7 +128,7 @@ Thank you to all our backers! [[Become a backer](https://opencollective.com/Dock
 
 [![Sponsors on Open Collective](https://img.shields.io/opencollective/tier/DockSTARTer/7409.svg?style=flat-square&color=607D8B&label=sponsors)](https://opencollective.com/DockSTARTer#sponsor)
 
-Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/DockSTARTer#sponsor)]
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [Become a sponsor](https://opencollective.com/DockSTARTer#sponsor).
 
 [![Sponsors on Open Collective](https://opencollective.com/DockSTARTer/tiers/sponsor/0/avatar.svg)](https://opencollective.com/DockSTARTer/tiers/sponsor/0/website)
 [![Sponsors on Open Collective](https://opencollective.com/DockSTARTer/tiers/sponsor/1/avatar.svg)](https://opencollective.com/DockSTARTer/tiers/sponsor/1/website)

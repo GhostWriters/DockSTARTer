@@ -1,13 +1,13 @@
 services:
-  youtubedl:
-    container_name: youtubedl
+  calibre:
+    container_name: calibre
     environment:
+      - CLI_ARGS=${CALIBRE_CLI_ARGS}
+      - GUAC_PASS=${CALIBRE_GUAC_PASS}
+      - GUAC_USER=${CALIBRE_GUAC_USER}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-      - YDL_OUTPUT_TEMPLATE=/downloads/youtubedl/${YOUTUBEDL_OUTPUT_TEMPLATE}
-      - YDL_OUTPUT_TEMPLATE_PLAYLIST=/downloads/youtubedl/${YOUTUBEDL_OUTPUT_TEMPLATE_PLAYLIST}
-      - YDL_DEBUG=${YOUTUBEDL_DEBUG}
     logging:
       driver: json-file
       options:
@@ -16,6 +16,5 @@ services:
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/youtubedl:/youtube-dl
+      - ${DOCKERCONFDIR}/calibre:/config
       - ${DOCKERSHAREDDIR}:/shared
-      - ${DOWNLOADSDIR}:/downloads

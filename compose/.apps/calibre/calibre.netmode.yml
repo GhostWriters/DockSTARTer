@@ -1,0 +1,3 @@
+services:
+  calibre:
+    network_mode: ${CALIBRE_NETWORK_MODE}

@@ -8,7 +8,7 @@ site_url: "https://dockstarter.com"
 # Repository
 repo_name: "GhostWriters/DockSTARTer"
 repo_url: "https://github.com/GhostWriters/DockSTARTer"
-edit_uri: "https://github.com/GhostWriters/DockSTARTer.com/edit/master/docs/"
+edit_uri: "https://github.com/GhostWriters/DockSTARTer/edit/master/docs/"
 
 # Copyright
 copyright: "Copyright &copy; 2020 GhostWriters"
@@ -153,3 +153,4 @@ nav:
   - Overrides:
     - "overrides/introduction.md"
     - "overrides/nginxproxymanager.md"
+    - "overrides/yacreader.md"
