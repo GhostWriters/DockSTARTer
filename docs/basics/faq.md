@@ -15,6 +15,12 @@ In short, Ouroboros keeps your Containers up to date and Portainer gives you a W
 
 DockSTARTer previously enabled Watchtower by default before Ouroboros. The two do almost the same thing, but Ouroboros has more options.
 
+## Ouroboros/Watchtower FAQ
+
+### When I run `ds -c` and it recreates some of the containers, is that because they have had updates from last run?
+
+With Ouroboros (or Watchtower) your containers will be updated to the latest images automatically. However, docker-compose has no idea what's updated, docker-compose keeps track of things independently from Ouroboros/Watchtower. Additionally, Ouroboros/Watchtower don't update docker-compose's method of tracking, therefore, compose might "recreate" containers that are already up to date. This is not a big deal it's basically just a container restart, and you were planning on running `ds -c` expecting some kind of updates anyway.
+
 ## General troubleshooting help
 
 You can see the (quite helpful) logs of each container with a Quick action in Portainer:
