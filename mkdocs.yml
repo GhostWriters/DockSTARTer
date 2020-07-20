@@ -1,19 +1,18 @@
 ---
-# Project information
 site_name: "DockSTARTer"
 site_description: "DockSTARTer helps you get started with home server apps running in Docker."
 site_author: "GhostWriters"
 site_url: "https://dockstarter.com"
 
-# Repository
 repo_name: "GhostWriters/DockSTARTer"
 repo_url: "https://github.com/GhostWriters/DockSTARTer"
 edit_uri: "https://github.com/GhostWriters/DockSTARTer/edit/master/docs/"
 
-# Copyright
 copyright: "Copyright &copy; 2020 GhostWriters"
 
-# Configuration
+markdown_extensions:
+  - meta
+
 theme:
   name: "material"
   language: "en"
@@ -26,7 +25,6 @@ theme:
   logo: "img/icon.png"
   favicon: "img/favicon.ico"
 
-# Navigation
 nav:
   - Home: "index.md"
   - "introduction.md"
