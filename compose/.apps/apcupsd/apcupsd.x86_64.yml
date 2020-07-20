@@ -1,0 +1,3 @@
+services:
+  apcupsd:
+    image: linuxserver/apcupsd

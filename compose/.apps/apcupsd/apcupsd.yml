@@ -1,0 +1,25 @@
+services:
+  apcupsd:
+    container_name: apcupsd
+    environment:
+      - APCUPSD_HOST=${APCUPSD_HOST}
+      - INFLUXDB_HOST=${INFLUXDB_HOST}
+      - INFLUXDB_DATABASE=${APCUPSD_INFLUXDB_DATABASE}
+      - INFLUXDB_PASSWORD=${APCUPSD_INFLUXDB_PASSWORD}
+      - INFLUXDB_PORT=${INFLUXDB_PORT}
+      - INFLUXDB_USER=${APCUPSD_INFLUXDB_USER}
+      - INTERVAL=${APCUPSD_INTERVAL}
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - VERBOSE=${APCUPSD_DEBUG}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/apcupsd:/config
+      - ${DOCKERSHAREDDIR}:/shared
