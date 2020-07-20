@@ -8,4 +8,4 @@ By default `acpupsd` it is set to listen on `127.0.0.1`. DockSTARTer (DS) does n
 
 The docker image DS uses makes uses of `NOMPOWER` on your UPS. If your UPS **does not have** `NOMPOWER`, you will need to add an [override](https://dockstarter.com/overrides/introduction/) to your existing DS installation and set a new environment variable called `WATTS` under `environemtn` which will need to equal the rated max power for your UPS, e.g: `1000`. To find whether your UPS has `NOMPOWER` or not, you can run `apcaccess | grep "NOMPOWER"`.
 
-[Here](https://technicalramblings.com/blog/monitoring-your-ups-stats-and-cost-with-influxdb-and-grafana-on-unraid-2019-edition/) is a great guide for exporting the influxdb data to Grafana. Scroll down and start reading from "UPS Dashboard" on.
+[Here](https://technicalramblings.com/blog/monitoring-your-ups-stats-and-cost-with-influxdb-and-grafana-on-unraid-2019-edition/#ups-dashboard) is a great guide for exporting the influxdb data to Grafana.
