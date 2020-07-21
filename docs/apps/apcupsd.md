@@ -1,5 +1,7 @@
 # APCUPSD
 
+## Description
+
 [apcupsd](https://github.com/atribe/apcupsd-influxdb-exporter) is a dockerized Python script that will send data from apcupsd to influxdb. You can then visualize the influxdb data in [Grafana](https://grafana.com/)/[Prometheus](https://prometheus.io/).
 
 First you need to install `apcupsd` on your host. The command will vary depending on what Linux OS you are using. After you install `apcupsd` on your host, there are some changes that need to take place in your `apcupsd.conf` file. Again, the location of this file varies by OS, however, for Ubuntu based systems you can find this file in `/etc/apcupsd/`.
