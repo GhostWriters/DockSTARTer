@@ -22,7 +22,7 @@ You can set up additional shares using an[override](https://dockstarter.com/over
 
 3. On your override file under `environment` you need to copy the following.
 
-   ```
+   ```yml
     environment:
         - SHARE2=${SAMBA_SHARENAME};/${SAMBA_SHARENAME};yes;no;no;all;${SAMBA_USERNAME}
    ```
@@ -33,7 +33,7 @@ You can set up additional shares using an[override](https://dockstarter.com/over
 
 4. On your override file under `volumes` you will need to mount the variable from Step 1 to a path inside the container. For example it will look as such:
 
-    ```
+    ```yml
     volumes:
         - ${SAMBA_xxx}:/path/inside/container
     ```
