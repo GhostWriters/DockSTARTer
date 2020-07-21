@@ -1,8 +1,10 @@
 # Dozzle
 
+## Description
+
 Dozzle is a simple, lightweight application that provides you with a web based interface to monitor your Docker container logs live. It doesn’t store log information, it is for live monitoring of your container logs only.
 
-## Dozzle's Security
+### Dozzle's Security
 
 Dozzle **doesn't support** authentication out of the box.
 
