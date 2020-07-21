@@ -1,3 +1,3 @@
 services:
   bitwarden:
-    image: bitwardenrs/server:raspberry
+    image: bitwardenrs/server
