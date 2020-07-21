@@ -7,3 +7,8 @@ services:
       com.dockstarter.appvars.dozzle_enabled: "false"
       com.dockstarter.appvars.dozzle_network_mode: ""
       com.dockstarter.appvars.dozzle_port_8080: "8080"
+      com.dockstarter.appvars.dozzle_base: "/"
+      com.dockstarter.appvars.dozzle_level: "info"
+      com.dockstarter.appvars.dozzle_tailsize: "300"
+      com.dockstarter.appvars.dozzle_filter: ""
+
