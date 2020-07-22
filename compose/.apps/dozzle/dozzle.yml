@@ -2,13 +2,13 @@ services:
   dozzle:
     container_name: dozzle
     environment:
+      - DOZZLE_BASE${DOZZLE_BASE}
+      - DOZZLE_FILTER=${DOZZLE_FILTER}
+      - DOZZLE_LEVEL=${DOZZLE_LEVEL}
+      - DOZZLE_TAILSIZE=${DOZZLE_TAILSIZE}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-      - DOZZLE_BASE${DOZZLE_BASE}
-      - DOZZLE_LEVEL=${DOZZLE_LEVEL}
-      - DOZZLE_TAILSIZE=${DOZZLE_TAILSIZE}
-      - DOZZLE_FILTER=${DOZZLE_FILTER}
     logging:
       driver: json-file
       options:
