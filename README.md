@@ -6,7 +6,6 @@
 [![Discord chat](https://img.shields.io/discord/477959324183035936.svg?style=flat-square&color=607D8B&logo=discord)](https://discord.gg/YFyJpmH)
 [![GitHub contributors](https://img.shields.io/github/contributors/GhostWriters/DockSTARTer.svg?style=flat-square&color=607D8B)](https://github.com/GhostWriters/DockSTARTer/graphs/contributors)
 [![GitHub last commit master](https://img.shields.io/github/last-commit/GhostWriters/DockSTARTer/master.svg?style=flat-square&color=607D8B&label=code%20committed)](https://github.com/GhostWriters/DockSTARTer/commits/master)
-[![GitHub last commit docs](https://img.shields.io/github/last-commit/GhostWriters/DockSTARTer.com/master.svg?style=flat-square&color=607D8B&label=docs%20committed)](https://github.com/GhostWriters/DockSTARTer.com/commits/master)
 [![GitHub license](https://img.shields.io/github/license/GhostWriters/DockSTARTer.svg?style=flat-square&color=607D8B)](https://github.com/GhostWriters/DockSTARTer/blob/master/LICENSE.md)
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/GhostWriters/DockSTARTer/CI/master?style=flat-square&color=607D8B&logo=github)](https://github.com/GhostWriters/DockSTARTer/actions?query=workflow%3ACI+branch%3Amaster)
 
