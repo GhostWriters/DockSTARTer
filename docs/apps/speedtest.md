@@ -16,7 +16,7 @@ As usual, we **strongly discourage** having this application be public facing wi
 
 ### Notifications
 
-This application supports notifications to some of the most popular services such as Telegram and Discord. For Telegram, the `Bot Token` and `Telegram Chat ID` can be filled in using the Web GUI, however, for the Slack/Discord webhook it will need to be filled in using an environment variable on an [override](https://dockstarter.com/overrides/introduction).
+This application supports notifications to some of the most popular services such as Telegram and Discord. For Telegram, the `Bot Token` and `Telegram Chat ID` can be filled in using the Web GUI. However, for the Slack/Discord webhook it will need to be filled in using an environment variable on an [override](https://dockstarter.com/overrides/introduction).
 
 #### Resources
 
