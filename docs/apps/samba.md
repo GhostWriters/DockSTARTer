@@ -27,9 +27,9 @@ You can set up additional shares using an[override](https://dockstarter.com/over
         - SHARE2=${SAMBA_SHARENAME};/${SAMBA_SHARENAME};yes;no;no;all;${SAMBA_USERNAME}
    ```
 
-   * Make sure to **update what is inside `${}`** to match whatever you used in Step 2.
+    * Make sure to **update what is inside `${}`** to match whatever you used in Step 2.
 
-   * If you want to add additional shares in the future just add a number at the end of the `SHARE` and just copy and paste everything after the `=`. Don't forget to update what is inside the `${}`.
+    * If you want to add additional shares in the future just add a number at the end of the `SHARE` and just copy and paste everything after the `=`. Don't forget to update what is inside the `${}`.
 
 4. On your override file under `volumes` you will need to mount the variable from Step 1 to a path inside the container. For example it will look as such:
 
