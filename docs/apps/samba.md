@@ -31,6 +31,7 @@ You can set up additional shares using an[override](https://dockstarter.com/over
     volumes:
         - ${SAMBA_xxx}:/path/inside/container
 ```
+
 * Make sure to **update what is inside `${}`** to match whatever you used in Step 2.
 
 * If you want to add additional shares in the future just add a number at the end of the `SHARE` and just copy and paste everything after the `=`. Don't forget to update what is inside the `${}`.
