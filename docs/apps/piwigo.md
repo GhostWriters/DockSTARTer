@@ -1,1 +1,1 @@
-# piwigo
+# Piwigo
