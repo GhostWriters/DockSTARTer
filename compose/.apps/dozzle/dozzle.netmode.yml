@@ -1,0 +1,3 @@
+services:
+  dozzle:
+    network_mode: ${DOZZLE_NETWORK_MODE}
