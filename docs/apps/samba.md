@@ -22,21 +22,17 @@ You can set up additional shares using an[override](https://dockstarter.com/over
 
 3. On your override file under `environment` and `volumes` you will you need to copy the following:
 
-```yaml
-    environment:
-        - SHARE2=${SAMBA_SHARENAME};/${SAMBA_SHARENAME};yes;no;no;all;${SAMBA_USERNAME}
-```
+        environment:
+            - SHARE2=${SAMBA_SHARENAME};/${SAMBA_SHARENAME};yes;no;no;all;${SAMBA_USERNAME}
 
-```yml
-    volumes:
-        - ${SAMBA_xxx}:/path/inside/container
-```
+        volumes:
+            - ${SAMBA_xxx}:/path/inside/container
 
-* Make sure to **update what is inside `${}`** to match whatever you used in Step 2.
+    * Make sure to **update what is inside `${}`** to match whatever you used in Step 2.
 
-* If you want to add additional shares in the future just add a number at the end of the `SHARE` and just copy and paste everything after the `=`. Don't forget to update what is inside the `${}`.
+    * If you want to add additional shares in the future just add a number at the end of the `SHARE` and just copy and paste everything after the `=`. Don't forget to update what is inside the `${}`.
 
-* Run `ds -c up samba` to recreate the container and the new share can be generated.
+4. Run `ds -c up samba` to recreate the container and the new share can be generated.
 
 ## Related
 
