@@ -1,3 +1,0 @@
-services:
-  apcupsd:
-    image: atribe/apcupsd-influxdb-exporter
