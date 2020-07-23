@@ -1,0 +1,3 @@
+services:
+  speedtest:
+    network_mode: ${SPEEDTEST_NETWORK_MODE}
