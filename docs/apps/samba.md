@@ -14,7 +14,7 @@ Replace `host` with your DNS or IP-address of your Docker host.
 
 ## Setting Up Additional Shares
 
-You can set up additional shares using an[override](https://dockstarter.com/overrides/introduction/). To do so, you need to do the following:
+You can set up additional shares using an [override](https://dockstarter.com/overrides/introduction/). To do so, you need to do the following:
 
 1. Create a new variable in your `.env` file that will be the path to your new share on the host e.g. `/path/to/your/share` and give it an easily recognizable name e.g. `SAMBA_xxxx=/path/to/share`.
 
