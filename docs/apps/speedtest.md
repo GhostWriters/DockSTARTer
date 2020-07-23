@@ -1,5 +1,8 @@
 # Speedtest
 
+[![Docker Pulls](https://img.shields.io/docker/pulls/henrywhitaker3/speedtest-tracker?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/henrywhitaker3/speedtest-tracker)
+[![GitHub Stars](https://img.shields.io/github/stars/henrywhitaker3/Speedtest-Tracker?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/henrywhitaker3/Speedtest-Tracker)
+
 ## Description
 
 This program runs a speedtest check every hour and graphs the results. The back-end is written in `Laravel` and the front-end uses React. It uses the Ookla's Speedtest cli package to get the data and uses `Chart.js` to plot the results.
@@ -17,9 +20,3 @@ As usual, we **strongly discourage** having this application be public facing wi
 ### Notifications
 
 This application supports notifications to some of the most popular services such as Telegram and Discord. Both of these services can be configured either using the application's Web GUI or environment variables through an [override](https://dockstarter.com/overrides/introduction).
-
-#### Resources
-
-##### [GitHub](https://github.com/henrywhitaker3/Speedtest-Tracker)
-
-##### [Docker Hub](https://hub.docker.com/r/henrywhitaker3/speedtest-tracker/tags)
