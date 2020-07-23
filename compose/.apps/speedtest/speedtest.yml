@@ -1,13 +1,11 @@
 services:
-  dozzle:
-    container_name: dozzle
+  speedtest:
+    container_name: speedtest
     environment:
-      - DOZZLE_BASE=${DOZZLE_BASE}
-      - DOZZLE_FILTER=${DOZZLE_FILTER}
-      - DOZZLE_LEVEL=${DOZZLE_LEVEL}
-      - DOZZLE_TAILSIZE=${DOZZLE_TAILSIZE}
       - PGID=${PGID}
       - PUID=${PUID}
+      - SPEEDTEST_BASE_PATH=${SPEEDTEST_BASE_PATH}
+      - SPEEDTEST_OOKLA_EULA=${SPEEDTEST_OOKLA_EULA}
       - TZ=${TZ}
     logging:
       driver: json-file
@@ -17,4 +15,5 @@ services:
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock
+      - ${DOCKERCONFDIR}/speedtest:/config
+      - ${DOCKERSHAREDDIR}:/shared
