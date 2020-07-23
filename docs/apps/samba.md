@@ -4,7 +4,7 @@
 
 Samba is using the `SMB` protocol to share Linux mounts, which then are accessible and mountable on a Windows computer.
 
-By default, Samba will share all media directories and [Docker config directory](https://dockstarter.com/basics/env-var-info/#dockerconfdir) over SMB on the host. All of these directories will be placed inside whatever share name is specified for `SAMBA_SHARENAME` on your `.env` file. These shares are protected with username `ds` and password `ds` by default, but **can and should be** changed on your `.env` file.
+By default, Samba will share all media directories and [Docker Config Directory](https://dockstarter.com/basics/env-var-info/#dockerconfdir) over SMB on the host. All of these directories will be placed inside whatever share name is specified for `SAMBA_SHARENAME` on your `.env` file. These shares are protected with username `ds` and password `ds` by default, but **can and should be** changed on your `.env` file.
 
 ## Access Shares
 
