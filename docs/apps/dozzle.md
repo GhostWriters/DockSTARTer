@@ -1,5 +1,8 @@
 # Dozzle
 
+[![Docker Pulls](https://img.shields.io/docker/pulls/amir20/dozzle?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/amir20/dozzle)
+[![GitHub Stars](https://img.shields.io/github/stars/amir20/dozzle?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/amir20/dozzle)
+
 ## Description
 
 Dozzle is a simple, lightweight application that provides you with a web based interface to monitor your Docker container logs live. It doesn’t store log information, it is for live monitoring of your container logs only.
