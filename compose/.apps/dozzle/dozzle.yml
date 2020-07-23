@@ -2,7 +2,7 @@ services:
   dozzle:
     container_name: dozzle
     environment:
-      - DOZZLE_BASE${DOZZLE_BASE}
+      - DOZZLE_BASE=${DOZZLE_BASE}
       - DOZZLE_FILTER=${DOZZLE_FILTER}
       - DOZZLE_LEVEL=${DOZZLE_LEVEL}
       - DOZZLE_TAILSIZE=${DOZZLE_TAILSIZE}
