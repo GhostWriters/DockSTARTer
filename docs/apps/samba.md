@@ -34,7 +34,7 @@ You can set up additional shares using an [override](https://dockstarter.com/ove
 
 4. Run `ds -c up samba` to recreate the container and the new share can be generated.
 
-## How To Mount Windows Share in Linux
+### How To Mount Windows Share in Linux
 
 See [SMB Mounting](https://dockstarter.com/advanced/smb-mounting/).
 
