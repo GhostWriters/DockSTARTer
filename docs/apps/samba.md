@@ -38,8 +38,8 @@ You can set up additional shares using an [override](https://dockstarter.com/ove
 
 See [SMB Mounting](https://dockstarter.com/advanced/smb-mounting/).
 
-### Resources
+#### Resources
 
-#### [GitHub](https://github.com/dperson/samba)
+##### [GitHub](https://github.com/dperson/samba)
 
-#### [DockerHub](https://hub.docker.com/r/dperson/samba)
+##### [DockerHub](https://hub.docker.com/r/dperson/samba)
