@@ -1,5 +1,8 @@
 # Samba
 
+[![Docker Pulls](https://img.shields.io/docker/pulls/dperson/samba?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/dperson/samba)
+[![GitHub Stars](https://img.shields.io/github/stars/dperson/samba?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/dperson/samba)
+
 ## Description
 
 Samba is using the `SMB` protocol to share Linux mounts, which then are accessible and mountable on a Windows computer.
@@ -34,12 +37,6 @@ You can set up additional shares using an [override](https://dockstarter.com/ove
 
 4. Run `ds -c up samba` to recreate the container and the new share can be generated.
 
-## How To Mount Windows Share in Linux
+### How To Mount Windows Share in Linux
 
 See [SMB Mounting](https://dockstarter.com/advanced/smb-mounting/).
-
-### Resources
-
-#### [GitHub](https://github.com/dperson/samba)
-
-#### [DockerHub](https://hub.docker.com/r/dperson/samba)
