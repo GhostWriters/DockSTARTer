@@ -1,5 +1,8 @@
 # Medusa
 
-[Medusa](https://pymedusa.com/) is an automatic Video Library Manager for TV Shows. It watches for new episodes of your favorite shows, and when they are posted it does its magic.
+[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/medusa?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/linuxserver/medusa)
+[![GitHub Stars](https://img.shields.io/github/stars/linuxserver/docker-medusa?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/linuxserver/docker-medusa)
 
-The GIT Repository for Medusa is located at [https://github.com/linuxserver/docker-medusa](https://github.com/linuxserver/docker-medusa).
+## Description
+
+[Medusa](https://pymedusa.com/) is an automatic Video Library Manager for TV Shows. It watches for new episodes of your favorite shows, and when they are posted it does its magic.
