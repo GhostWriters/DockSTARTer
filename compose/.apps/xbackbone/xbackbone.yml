@@ -18,5 +18,5 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/xbackbone:/app/resources/database
       - ${DOCKERCONFDIR}/xbackbone/logs:/app/logs
-      - ${XBACKBONE_UPLOADDIR}:/app/storage
       - ${DOCKERSHAREDDIR}:/shared
+      - ${XBACKBONE_UPLOADDIR}:/app/storage
