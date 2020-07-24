@@ -19,3 +19,4 @@ services:
       - ${DOCKERCONFDIR}/xbackbone:/app/resources/database
       - ${DOCKERCONFDIR}/xbackbone/logs:/app/logs
       - ${XBACKBONE_UPLOADDIR}:/app/storage
+      - ${DOCKERSHAREDDIR}:/shared
