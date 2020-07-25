@@ -1,3 +1,4 @@
-# Overrides
-
-This page has been relocated to [Overrides / Introduction](https://dockstarter.com/overrides/introduction)
+---
+title: Overrides
+redirect: https://dockstarter.com/overrides/introduction
+---

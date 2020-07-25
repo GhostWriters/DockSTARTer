@@ -2,7 +2,36 @@
 
 ## Cannot Claim Server On First Run
 
-Upon starting up Plex for the first time, it's very likely you'll need to follow these steps:
+If you are starting the Plex container for the first time and cannot claim your server to set it up there are 3 methods you can try to resolve the issue:
+
+### 1. Set the PLEX_CLAIM variable
+
+```bash
+docker stop plex
+docker rm plex
+
+# remove the config folder for plex
+# !WARNING! do NOT do this if you have already setup your plex server and are having issues connecting to it, skip to option 3 instead
+rm -Rf ~/.config/appdata/plex
+
+sudo nano ~/.docker/compose/.env
+# with the nano file editor open locate the PLEX_CLAIM variable
+# go to https://www.plex.tv/claim/ in your browser and get the claim token set your PLEX_CLAIM variable
+# the token expires in 5 minutes, so we'll want to get the rest done quickly
+# ctrl+x to save and exit nano
+
+ds -c
+```
+
+Then try again to claim the server by visiting `http://your.server.ip:32400/web/index.html`
+
+### 2. Host network mode
+
+If the first method does not work, edit your `.env` and set `PLEX_NETWORK_MODE=host`. Run `ds -c` and then attempt to claim your server. After claiming your server set `PLEX_NETWORK_MODE=` (back to blank).
+
+### 3. Claim helper script
+
+If the first and second methods both have not worked this script should make it happen.
 
 ```bash
 docker exec -it plex /bin/bash
@@ -20,10 +49,6 @@ exit
 
 docker restart plex
 ```
-
-Alternatively if that doesn't work, try:
-
-Edit `~/.docker/compose/.env` and set `PLEX_NETWORK_MODE=host`. After claiming your server set `PLEX_NETWORK_MODE=` (back to blank).
 
 ## How To Run Plex Pass Versions
 

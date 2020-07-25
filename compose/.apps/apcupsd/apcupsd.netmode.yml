@@ -1,0 +1,3 @@
+services:
+  apcupsd:
+    network_mode: ${APCUPSD_NETWORK_MODE}
