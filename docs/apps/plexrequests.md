@@ -1,5 +1,3 @@
-# Plex Requests
-=======
 ---
 title: PlexRequests
 redirect: https://dockstarter.com/apps/ombi/
