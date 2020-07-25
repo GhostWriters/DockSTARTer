@@ -1,3 +1,6 @@
 # UniFi
-
-## This container has been DEPRECATED
+=======
+---
+title: Unifi
+redirect: https://dockstarter.com/apps/unificontroller/
+---
