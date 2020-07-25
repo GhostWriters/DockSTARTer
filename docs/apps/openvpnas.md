@@ -3,7 +3,7 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/openvpn-as?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/linuxserver/openvpn-as)
 [![GitHub Stars](https://img.shields.io/github/stars/linuxserver/docker-openvpn-as?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/linuxserver/docker-openvpn-as)
 
-## Descriptiopn
+## Description
 
 [OpenVPN-AS](https://openvpn.net/index.php/access-server/overview.html) is a full featured secure network tunneling VPN software solution that integrates OpenVPN server capabilities, enterprise management capabilities, simplified OpenVPN Connect UI, and OpenVPN Client software packages that accommodate Windows, MAC, Linux, Android, and iOS environments. OpenVPN Access Server supports a wide range of configurations, including secure and granular remote access to internal network and/ or private cloud network resources and applications with fine-grained access control.
 

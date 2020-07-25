@@ -5,7 +5,7 @@
 
 ## Description
 
-Docker build script for Arch Linux base with ruTorrent, rTorrent, autodl-irssi, Privoxy and OpenVPN.
+rTorrentVPN is a Docker build script for Arch Linux base with [rtorrent-ps](https://github.com/pyroscope/rtorrent-ps), [ruTorrent](https://github.com/Novik/ruTorrent), [autodl-irssi](https://github.com/autodl-community/autodl-irssi), [Privoxy](http://www.privoxy.org/) and [OpenVPN](https://openvpn.net/) all included in one image.
 
 The support forum for rTorrentVPN is located [here](https://forums.unraid.net/topic/46127-support-binhex-rtorrentvpn/).
 

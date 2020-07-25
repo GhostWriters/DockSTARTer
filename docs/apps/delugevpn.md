@@ -5,7 +5,7 @@
 
 ## Description
 
-[DelugeVPN](http://deluge-torrent.org/) is a Docker build script for Arch Linux base with [Deluge](http://deluge-torrent.org/), [Privoxy](http://www.privoxy.org/) and [OpenVPN](https://openvpn.net/) all included in one image.
+DelugeVPN is a Docker build script for Arch Linux base with [Deluge](http://deluge-torrent.org/), [Privoxy](http://www.privoxy.org/) and [OpenVPN](https://openvpn.net/) all included in one image.
 
 The support forum for DelugeVPN is located [here](https://forums.unraid.net/topic/44109-support-binhex-delugevpn/).
 

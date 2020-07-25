@@ -22,10 +22,15 @@ The below steps assume that you already have the [Let's Encrypt](https://docksta
     - Make sure to set the `SYNCLOUNGE_EXTERNAL_URL` setting to the appropriate domain. E.g. - `synclouge.yourdomain.tld`
     Otherwise, keep the default settings until you make sure everything is working okay
 
-3. Run Docker Compose.
+3. Recreate the container so settings get applied:
+
+        ds -c up synclounge
+
 4. Find the file called `synclounge.subdomain.conf.sample` in your [Let's Encrypt](https://dockstarter.com/apps/letsencrypt/) `proxy-confs` folder and rename it to `synclounge.subdomain.conf` (By default, this has HTTP and HTTPS enabled).
 
-5. Restart the letsencrypt container: `docker restart letsencrypt`
+5. Restart the letsencrypt container:
+
+        docker restart letsencrypt
 
 You should now be able to go to `synclouge.yourdomain.tld` and use SyncLounge!
 

@@ -5,7 +5,7 @@
 
 ## Description
 
-Logarr is a self-hosted, single-page, log consolidation tool written in PHP.
+[Logarr](https://github.com/Monitorr/logarr) is a self-hosted, single-page, log consolidation tool written in PHP.
 
 ## Logarr Configuration
 

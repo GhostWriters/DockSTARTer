@@ -5,4 +5,4 @@
 
 ## Description
 
-CloudFlareDDNS is a small Docker image that allows you to use the free [CloudFlare DNS Service](https://www.cloudflare.com/dns/) as a Dynamic DNS Provider ([DDNS](https://en.wikipedia.org/wiki/Dynamic_DNS)).
+[CloudFlareDDNS](https://www.cloudflare.com/dns/) is a small Docker image that allows you to use the free CloudFlare DNS Service as a Dynamic DNS Provider ([DDNS](https://en.wikipedia.org/wiki/Dynamic_DNS)).

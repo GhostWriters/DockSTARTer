@@ -5,6 +5,10 @@
 
 ## Description
 
-[Nzbget](https://nzbget.net/) is a usenet downloader, written in C++ and designed with performance in mind to achieve maximum download speed by using very little system resources.
+NZBGetVPN is a combination of binhex's [NZBGet](https://github.com/binhex/arch-nzbget) docker with [OpenVPN](https://openvpn.net/).
 
-This specific container is a combination of [binhex's](https://github.com/binhex) NZBGet docker with OpenVPN access.
+The support forum for NZBGetVPN is located [here](https://forums.unraid.net/topic/37252-support-bungys-docker-repository/).
+
+### NZBGetVPN WebUI Access
+
+If you're attempting to get access to the NZBGetVPN WebUI remotely outside of your home network, you are going to have to do this through a reverse proxy using LetsEncrypt. Full details and steps are outlined here [VPN Information](https://dockstarter.com/advanced/vpn-info/).

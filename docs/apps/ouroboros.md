@@ -5,6 +5,4 @@
 
 ## Description
 
-Automatically update your running Docker containers to the latest available image.
-
-The de-facto standard for docker update automation
+[Ouroboros](https://github.com/pyouroboros/ouroboros) will automatically update your running Docker containers to the latest available image.

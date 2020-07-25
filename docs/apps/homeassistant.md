@@ -9,6 +9,12 @@
 
 ### Environment Variable
 
-You may want to override `homeassistant` with environment variable `PYTHONWARNINGS="ignore:Unverified HTTPS request"` if you receive warning each 10 second for e.g. device tracking of self-signed Unifi Controller SSL certificated.
+You may want to create an override for `homeassistant` with the following if you are receiving a warning every 10 seconds for:
+>device tracking of self-signed Unifi Controller SSL certificated.
+
+``` yml
+        environment:
+            - PYTHONWARNINGS="ignore:Unverified HTTPS request"
+```
 
 Reference: [Endless InsecureRequestWarning errors with UniFi](https://community.home-assistant.io/t/endless-insecurerequestwarning-errors-with-unifi/31831/12)
