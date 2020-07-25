@@ -1,19 +1,18 @@
 ---
-# Project information
 site_name: "DockSTARTer"
 site_description: "DockSTARTer helps you get started with home server apps running in Docker."
 site_author: "GhostWriters"
 site_url: "https://dockstarter.com"
 
-# Repository
 repo_name: "GhostWriters/DockSTARTer"
 repo_url: "https://github.com/GhostWriters/DockSTARTer"
 edit_uri: "https://github.com/GhostWriters/DockSTARTer/edit/master/docs/"
 
-# Copyright
 copyright: "Copyright &copy; 2020 GhostWriters"
 
-# Configuration
+markdown_extensions:
+  - meta
+
 theme:
   name: "material"
   language: "en"
@@ -26,7 +25,6 @@ theme:
   logo: "img/icon.png"
   favicon: "img/favicon.ico"
 
-# Navigation
 nav:
   - Home: "index.md"
   - "introduction.md"
@@ -50,6 +48,7 @@ nav:
   - App Specifics:
     - "apps/airdcpp.md"
     - "apps/airsonic.md"
+    - "apps/apcupsd.md"
     - "apps/bazarr.md"
     - "apps/beets.md"
     - "apps/bitwarden.md"
@@ -65,6 +64,7 @@ nav:
     - "apps/deemix.md"
     - "apps/deluge.md"
     - "apps/delugevpn.md"
+    - "apps/dozzle.md"
     - "apps/duckdns.md"
     - "apps/duplicati.md"
     - "apps/emby.md"
@@ -133,6 +133,7 @@ nav:
     - "apps/sickrage.md"
     - "apps/smokeping.md"
     - "apps/sonarr.md"
+    - "apps/speedtest.md"
     - "apps/synclounge.md"
     - "apps/syncthing.md"
     - "apps/tautulli.md"
@@ -149,6 +150,7 @@ nav:
     - "apps/varken.md"
     - "apps/vsftpd.md"
     - "apps/watchtower.md"
+    - "apps/xbackbone.md"
     - "apps/znc.md"
   - Overrides:
     - "overrides/introduction.md"

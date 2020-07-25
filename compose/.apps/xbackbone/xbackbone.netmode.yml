@@ -1,0 +1,3 @@
+services:
+  xbackbone:
+    network_mode: ${XBACKBONE_NETWORK_MODE}
