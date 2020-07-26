@@ -1,0 +1,20 @@
+services:
+  xteve:
+    container_name: xteve
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - XTEVE_BRACH=${XTEVE_BRANCH}
+      - XTEVE_DEBUG=${XTEVE_DEBUG}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/xteve:/config
+      - ${DOCKERCONFDIR}/xteve/tmp:/tmp/xteve
+      - ${DOCKERSHAREDDIR}:/shared
