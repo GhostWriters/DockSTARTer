@@ -9,12 +9,12 @@ name: Labeler
 on: [pull_request]
 
 jobs:
+  if: github.repository == 'GhostWriters/DockSTARTer'
   label:
 
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/labeler@v2.1.1
-      if: github.repository == 'GhostWriters/DockSTARTer'
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
