@@ -1,0 +1,19 @@
+services:
+  photoshow:
+    container_name: photoshow
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/photoshow:/config
+      - ${DOCKERSHAREDDIR}:/shared
+      - ${PHOTOSHOW_IMAGES_DIR}:/Pictures:ro
+      - ${PHOTOSHOW_THUMBS_DIR}:/Thumbs
