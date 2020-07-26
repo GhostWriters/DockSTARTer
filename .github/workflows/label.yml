@@ -9,8 +9,8 @@ name: Labeler
 on: [pull_request]
 
 jobs:
-  if: github.repository == 'GhostWriters/DockSTARTer'
   label:
+    if: github.repository == 'GhostWriters/DockSTARTer'
 
     runs-on: ubuntu-latest
 
