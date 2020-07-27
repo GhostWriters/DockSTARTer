@@ -7,3 +7,4 @@ services:
       com.dockstarter.appvars.tdarr_enabled: "false"
       com.dockstarter.appvars.tdarr_network_mode: ""
       com.dockstarter.appvars.tdarr_port_8265: "8265"
+      com.dockstarter.appvars.tdarr_transcode_cache: ""

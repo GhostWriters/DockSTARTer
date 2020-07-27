@@ -13,8 +13,9 @@ services:
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/tdarr:/config
+      - ${DOCKERCONFDIR}/tdarr:/home/Tdarr/Documents/Tdarr
       - ${DOCKERCONFDIR}/tdarr/DB:/var/lib/mongodb
       - ${DOCKERSHAREDDIR}:/shared
       - ${MEDIADIR_MOVIES}:/movies
       - ${MEDIADIR_TV}:/tv
+      - ${TDARR_TRANSCODE_CACHE}:/home/Tdarr/cache
