@@ -2,6 +2,8 @@ services:
   organizr:
     container_name: organizr
     environment:
+      - branch=${ORGANIZR_BRANCH}
+      - fpm=${ORGANIZR_FPM}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
