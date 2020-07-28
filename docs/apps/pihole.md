@@ -1,35 +1,52 @@
 # PiHole
 
-Pi-hole takes over the local DNS service and may conflict with existing DNS services on your server. Ubuntu 18.04 currently uses systemd-resolv to server DNS and needs to be configured to either give up port 53 or be disabled.
+[![Docker Pulls](https://img.shields.io/docker/pulls/pihole/pihole?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/pihole/pihole)
+[![GitHub Stars](https://img.shields.io/github/stars/linuxserver/docker-duplicati?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/linuxserver/docker-duplicati)
 
-## Netplan setup
+## Description
 
-On Ubuntu 18.04 and newer you will have `netplan` controlling your network and should see [https://netplan.io/](https://netplan.io/) for examples on how to configure it. You need to set your nameserver to use your LAN's DNS or a public DNS such as `1.1.1.1` before proceeding with any instructions below.
+[Pi-hole](https://pi-hole.net/) takes over the local DNS service and may conflict with existing DNS services on your server. Ubuntu 18.04 currently uses systemd-resolv to server DNS and needs to be configured to either give up port 53 or be disabled.
 
-## Resolvconf
+### Netplan Setup
+
+On Ubuntu 18.04 and newer you will have `netplan` controlling your network. You can search [their site](https://netplan.io/) for examples on how to configure it. You need to set your nameserver to use your LAN's DNS or a public DNS such as `1.1.1.1` before proceeding with any instructions below.
+
+### Resolvconf
 
 On Ubuntu 18.04, resolvconf was removed as the default means to control DNS.  In addition to the settings mentioned regarding netplan, we recommend setting up resolvconf.
 
-To install run `sudo apt install resolvconf`
+To install `resolvconf` run:
 
-Edit `/etc/resolvconf/resolv.conf.d/head` using sudo and enter `nameserver 1.1.1.1` on the first uncommented line.
+```bash
+sudo apt install resolvconf
+```
 
-Restart the service `sudo service resolvconf restart`
+- Edit `/etc/resolvconf/resolv.conf.d/head` using sudo and enter `nameserver 1.1.1.1` on the first uncommented line.
 
-## Stop systemd-resolv from listening on port 53
+Restart the `resolvconf` service:
 
-Edit `/etc/systemd/resolved.conf` and set `DNSStubListener=no` (make sure it is not commented out with a `#` at the beginning of the line) and then run `sudo systemctl restart systemd-resolved`
+```bash
+sudo service resolvconf restart
+```
+
+### Stop systemd-resolv from listening on port 53
+
+Edit `/etc/systemd/resolved.conf` and set `DNSStubListener=no` (make sure it is not commented out with a `#` at the beginning of the line) and then run:
+
+ ```bash
+ sudo systemctl restart systemd-resolved
+ ```
 
 If that does not work you can try the following:
 
-## Stop and disable systemd-resolv (only if the above does not work)
+### Stop and disable systemd-resolv (only if the above does not work)
 
 ```bash
 sudo systemctl stop systemd-resolv.service
 sudo systemctl disable systemd-resolv.service
 ```
 
-## Name resolution for localhost
+### Name resolution for localhost
 
 In most cases it might be required to set your localhost name in `/etc/hosts`
 

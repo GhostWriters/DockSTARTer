@@ -1,5 +1,8 @@
 # Jackett
 
-[Jackett](https://github.com/Jackett/Jackett) works as a proxy server: it translates queries from apps (Sonarr, SickRage, CouchPotato, Mylar, etc) into tracker-site-specific http queries, parses the html response, then sends results back to the requesting software. This allows for getting recent uploads (like RSS) and performing searches. Jackett is a single repository of maintained indexer scraping & translation logic - removing the burden from other apps.
+[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/jackett?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/linuxserver/jackett)
+[![GitHub Stars](https://img.shields.io/github/stars/linuxserver/docker-jackett?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/linuxserver/docker-jackett)
 
-The GIT Repository for Jackett is located at [https://github.com/linuxserver/docker-jackett](https://github.com/linuxserver/docker-jackett).
+## Description
+
+[Jackett](https://github.com/Jackett/Jackett) works as a proxy server: it translates queries from apps (Sonarr, SickRage, CouchPotato, Mylar, etc) into tracker-site-specific http queries, parses the html response, then sends results back to the requesting software. This allows for getting recent uploads (like RSS) and performing searches. Jackett is a single repository of maintained indexer scraping & translation logic - removing the burden from other apps.

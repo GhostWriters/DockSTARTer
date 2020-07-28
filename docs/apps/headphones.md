@@ -1,5 +1,8 @@
 # Headphones
 
-[Headphones](https://github.com/rembo10/headphones) is an automated music downloader for NZB and Torrent, written in Python. It supports SABnzbd, NZBget, Transmission, µTorrent and Blackhole.
+[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/headphones?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/linuxserver/headphones)
+[![GitHub Stars](https://img.shields.io/github/stars/linuxserver/docker-headphones?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/linuxserver/docker-headphones)
 
-The GIT Repository for Headphones is located at [https://github.com/linuxserver/docker-headphones](https://github.com/linuxserver/docker-headphones).
+## Description
+
+[Headphones](https://github.com/rembo10/headphones) is an automated music downloader for NZB and Torrent, written in Python. It supports SABnzbd, NZBget, Transmission, µTorrent and Blackhole.
