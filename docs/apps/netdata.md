@@ -1,16 +1,28 @@
 # Netdata
 
-By default, netdata will pull from a UID for the container itself to display in the list of netdata servers you have, so you would see something like '0f2342dac'. To define this and make it more readable/recognizable for you (In case you have multiple netdata servers):
+[![Docker Pulls](https://img.shields.io/docker/pulls/netdata/netdata?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/netdata/netdata)
+[![GitHub Stars](https://img.shields.io/github/stars/netdata/netdata?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/linuxserver/netdata/netdata)
+
+## Description
+
+[Netdata](https://www.netdata.cloud/) is distributed, real-time performance and health monitoring for systems and applications. It is a highly-optimized monitoring agent you install on all your systems and containers.
+
+### Changing Netdata's Hostname
+
+By default, Netdata will pull from a UID for the container itself to display in the list of Netdata servers you have, so you would see something like '0f2342dac'. To define this and make it more readable/recognizable for you (In case you have multiple Netdata servers):
 
 1. Stop the netdata container.
-1. Edit or Create this file: [~/.docker/compose/docker-compose.override.yml](https://gist.github.com/mattgphoto/1e7afc85931ca98002a87abdc8bb257e) and change `newnetdataname` to `friendlynamefornetdata`.
-1. Once this is done, re-run `sudo ds -c`
+1. Create or edit your [override file](https://dockstarter.com/overrides/introduction/), you can also use [this file](https://gist.github.com/mattgphoto/1e7afc85931ca98002a87abdc8bb257e) for reference.
+    - Change `newnetdataname` to `friendlynamefornetdata`.
+1. Once this is done, run `sudo ds -c netdata`
 
-For Reverse Proxy configuration, we'll use this template from guys who already thought of this at [organizrTools](https://github.com/organizrTools).
+### Hosting Netdata Behind a Reverse Proxy
 
-[Template from OrganizrTools](https://github.com/organizrTools/Config-Collections-for-Nginx/blob/master/Apps/netdata.conf)
+For reverse proxy configuration, we'll use this template from guys who already thought of this at [organizrTools](https://github.com/organizrTools).
 
-Example:
+[Subdomain Template from OrganizrTools](https://github.com/organizrTools/Config-Collections-for-Nginx/blob/master/Apps/netdata.conf)
+
+Subdomain Example:
 
 ```nginx
 location = /netdata {
@@ -37,24 +49,24 @@ location ~ /netdata/(?<ndpath>.*) {
 }
 ```
 
-## Notifications
+### Notifications
 
-Add [health_alarm_notify.conf](https://github.com/netdata/netdata/blob/master/health/notifications/health_alarm_notify.conf) to your netdata config directory. Populate the notification service(s) you want with login, tokens or similar that is applicable. Instructions found in [health_alarm_notify.conf](https://github.com/netdata/netdata/blob/master/health/notifications/health_alarm_notify.conf).
+Add [this file](https://github.com/netdata/netdata/blob/master/health/notifications/health_alarm_notify.conf) to your Netdata config directory. Populate the notification service(s) you want with login, tokens, or whichever is appropriate. Instructions can be found in [here](https://github.com/netdata/netdata/blob/master/health/notifications/health_alarm_notify.conf).
 
-Create health.d directory in netdata config directory. Add conf files from [health.d](https://github.com/netdata/netdata/tree/master/health/health.d) for which modules you want alarms. Also note that one can remove specific alarms by commenting them in .conf files.
+Create `health.d` directory in the Netdata config directory. Add `.conf` files from [here](https://github.com/netdata/netdata/tree/master/health/health.d) and select which modules you want alarms for. Also note that one can remove specific alarms by commenting them in the `.conf` files.
 
-## Get CPU temp from raspberry pi
+#### How To Get CPU Temp From Raspberry Pi
 
-Netdata will not pick up cpu temp per default for raspberry pi. To activate chart for pi cpu temp add a file with name charts.d.conf in netdata config directory and add the following line.
+Netdata will not pick up CPU temps by default from a Raspberry Pi. To activate chart for the Pi's CPU temp add a file with name `charts.d.conf` in the Netdata config directory and add the following line.
 `sensors=force`
 
-## Get data for home assistant
+#### How To Get Data From Netdata To HomeAssistant
 
-To identify the correct data group and element to input in netdata home assistant component use <http://yournetdataip:19999/api/v1/allmetrics?format=json>
+To identify the correct data group and element to input in netdata home assistant component use `http://yournetdataip:19999/api/v1/allmetrics?format=json`
 
-## Monitor services with netdata
+#### Monitor services with Netdata
 
-Create python.d directory in netdata config directory. Add [httpcheck.conf](https://github.com/netdata/netdata/blob/master/health/health.d/httpcheck.conf) to your python.d directory. Edit according to instructions in file, suggestion is to add after last line in conf file. See example below.
+Create python.d directory in Netdata config directory. Add [this file](https://github.com/netdata/netdata/blob/master/health/health.d/httpcheck.conf) to your python.d directory. Edit according to instructions in file. Our suggestion is to add after the last line in the `.conf` file. See example below:
 
 ```conf
 # This plugin is intended for simple cases. Currently, the accuracy of the response time is low and should be used as reference only.
@@ -76,10 +88,6 @@ Ombi:
     regex: '.*ombi.*'
 ```
 
-You will now get charts in netdata for ombi and hydra. Please add your ip and ports accordingly.
+You will now get charts in Netdata for Ombi and NZBHydra. Please add your IP and ports accordingly.
 
-To get alarms add [httpcheck.conf](https://github.com/netdata/netdata/blob/master/health/health.d/httpcheck.conf) to your health.d directory. Don't forget to comment the unwanted alarms. Slow response alarm can be quite annoying.
-
-## Netdata badges
-
-Coming soon.
+To get alarms add [this file](https://github.com/netdata/netdata/blob/master/health/health.d/httpcheck.conf) to your health.d directory. Don't forget to comment the unwanted alarms. Slow response alarms can be quite annoying.

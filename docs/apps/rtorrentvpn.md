@@ -1,14 +1,17 @@
 # rTorrentVPN
 
-[rTorrentVPN](http://deluge-torrent.org/) is a Docker build script for Arch Linux base with [rTorrent-ps](https://github.com/pyroscope/rtorrent-ps), [ruTorrent](https://github.com/Novik/ruTorrent), [autodl-irssi](https://github.com/autodl-community/autodl-irssi), [OpenVPN](https://openvpn.net/) and [Privoxy](http://www.privoxy.org/) all included in one image.
+[![Docker Pulls](https://img.shields.io/docker/pulls/binhex/arch-rtorrentvpn?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/binhex/arch-rtorrentvpn)
+[![GitHub Stars](https://img.shields.io/github/stars/binhex/arch-rtorrentvpn?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/binhex/arch-rtorrentvpn)
 
-The support forum for rTorrentVPN is located at [https://forums.unraid.net/topic/46127-support-binhex-rtorrentvpn/](https://forums.unraid.net/topic/46127-support-binhex-rtorrentvpn/).
+## Description
 
-The GIT Repository for rTorrentVPN is located at [https://github.com/binhex/arch-rtorrentvpn](https://github.com/binhex/arch-rtorrentvpn).
+rTorrentVPN is a Docker build script for Arch Linux base with [rtorrent-ps](https://github.com/pyroscope/rtorrent-ps), [ruTorrent](https://github.com/Novik/ruTorrent), [autodl-irssi](https://github.com/autodl-community/autodl-irssi), [Privoxy](http://www.privoxy.org/) and [OpenVPN](https://openvpn.net/) all included in one image.
 
-## rTorrentVPN WebUI Access
+The support forum for rTorrentVPN is located [here](https://forums.unraid.net/topic/46127-support-binhex-rtorrentvpn/).
 
-If you're attempting to get access to the rTorrentVPN WebUI remotely outside of your home network, you are going to have to do this through a Proxy using LetsEncrypt. Full details and steps are outlined here [VPN Information](https://dockstarter.com/advanced/vpn-info/).
+### rTorrentVPN WebUI Access
+
+If you're attempting to get access to the rTorrentVPN WebUI remotely outside of your home network, you are going to have to do this through a reverse proxy using LetsEncrypt. Full details and steps are outlined here [VPN Information](https://dockstarter.com/advanced/vpn-info/).
 
 The sample proxy configuration files found in `.docker/config/letsencrypt/nginx/proxy-confs/` will need to be modified and as usual, have the .sample removed from the filename.
 
@@ -28,4 +31,8 @@ Modified
    proxy_pass http://$upstream_rutorrent:9080;
 ```
 
-Save the file out and then restart your containers with a `ds -c` command.
+Save the file and restart your container by running:
+
+```bash
+docker restart letsencrypt
+```
