@@ -1,5 +1,8 @@
 # Portainer
 
-To give Portainer the ability to go directly to your IP name of your server
+[![Docker Pulls](https://img.shields.io/docker/pulls/portainer/portainer?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/portainer/portainer)
+[![GitHub Stars](https://img.shields.io/github/stars/portainer/portainer?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/portainer/portainer)
 
-Log onto your Portainer server and then select Settings > Endpoints > your local endpoint (mine was primary) > and change "Public IP" it'll update those links to work put whatever IP you want to use in the link eg: 192.168.1.X
+## Description
+
+[Portainer](https://www.portainer.io/) is a lightweight management UI which allows you to easily manage your Docker host or Swarm cluster.

@@ -7,7 +7,7 @@
 
 This program runs a speedtest check every hour and graphs the results. The back-end is written in `Laravel` and the front-end uses React. It uses the Ookla's Speedtest cli package to get the data and uses `Chart.js` to plot the results.
 
-This program can also be used a home page item in [Organizr](https://docs.organizr.app/).
+This program can also be used a home page item in [Organizr](https://organizr.app).
 
 *Disclaimer: You will need to accept Ookla's EULA and privacy agreements in order to use this container.*
 

@@ -5,6 +5,4 @@
 
 ## Description
 
-This is the Docker image for [XBackBone](https://github.com/SergiX44/XBackBone).
-
-Most the usage documentation for XBackBone can be found on their [website](https://sergix44.github.io/XBackBone/).
+[XBackBone]((https://sergix44.github.io/XBackBone/)) is a simple and lightweight PHP file manager that support the instant sharing tool ShareX and *NIX systems. It supports uploading and displaying images, GIF, video, code, formatted text, pdf, and file downloading and uploading. Also have a web UI with multi user management, media gallery and search support.

@@ -11,7 +11,7 @@
 
 ## What DockSTARTer Is Not
 
-- DockSTARTer is not a premade set of apps that run an exact way (you get to choose what to run and how to run it).
+- DockSTARTer is not a pre-made set of apps that run an exact way (you get to choose what to run and how to run it).
 - DockSTARTer does not configure apps for you (think of it more like installing apps as a service, settings inside the app are still up to you, although our documentation will have recommendations).
 - DockSTARTer does not configure storage for you (you may use local storage, or cloud storage, multiple disks, raid, etc).
 
@@ -19,14 +19,14 @@
 
 ### Supported Operating Systems
 
-You must be running a [Supported platform](https://docs.docker.com/install/#supported-platforms) or an operating system based on a supported platform. Platforms named below will link to documentation listing compatible versions.
+You must be running a [Supported Platform](https://docs.docker.com/install/#supported-platforms) or an operating system based on a supported platform. Platforms named below will link to documentation listing compatible versions.
 
 - [CentOS](https://docs.docker.com/install/linux/docker-ce/centos/#os-requirements)
 - [Debian](https://docs.docker.com/install/linux/docker-ce/debian/#os-requirements)
 - [Fedora](https://docs.docker.com/install/linux/docker-ce/fedora/#os-requirements)
 - [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/#os-requirements)
 
-Any operating system based on one of the above (ex: Raspbian) should also work as long as you can install the officially supported [https://get.docker.com/](https://get.docker.com/) script. DockSTARTer will attempt to perform this install for you if possible.
+Any operating system based on one of the above (ex: Raspbian) should also work as long as you can install the [officially supported script](https://get.docker.com/). DockSTARTer will attempt to perform this install for you if possible.
 
 ### Supported Hardware
 

@@ -1,5 +1,8 @@
 # Cloud Commander
 
-[Cloud Commander](https://cloudcmd.io/) is a file manager for the web. It includes a command-line console and a text editor. Cloud Commander helps you manage your server and work with files, directories and programs in a web browser from any computer, mobile or tablet.
+[![Docker Pulls](https://img.shields.io/docker/pulls/coderaiser/cloudcmd?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/coderaiser/cloudcmd)
+[![GitHub Stars](https://img.shields.io/github/stars/coderaiser/cloudcmd?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/coderaiser/cloudcmd)
 
-The GIT Repository for Cloud Commander is located at [https://github.com/coderaiser/cloudcmd](https://github.com/coderaiser/cloudcmd)
+## Description
+
+[Cloud Commander](https://cloudcmd.io/) is a file manager for the web. It includes a command-line console and a text editor. Cloud Commander helps you manage your server and work with files, directories and programs in a web browser from any computer, mobile or tablet.
