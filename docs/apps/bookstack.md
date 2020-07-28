@@ -1,9 +1,8 @@
 # BookStack
 
-[BookStack](https://github.com/BookStackApp/BookStack) is a free and open source Wiki designed for creating beautiful documentation. Feauturing a simple, but powerful WYSIWYG editor it allows for teams to create detailed and useful documentation with ease.
+[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/bookstack?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/linuxserver/bookstack)
+[![GitHub Stars](https://img.shields.io/github/stars/linuxserver/docker-bookstack?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/linuxserver/docker-bookstack)
 
-Powered by SQL and including a Markdown editor for those who prefer it, BookStack is geared towards making documentation more of a pleasure than a chore.
+## Description
 
-For more information on BookStack visit their website and check it out: [https://www.bookstackapp.com](https://www.bookstackapp.com)
-
-The GIT Repository for BookStack is located at [https://github.com/linuxserver/docker-bookstack](https://github.com/linuxserver/docker-bookstack)
+[BookStack](https://www.bookstackapp.com) is a free and open source Wiki designed for creating beautiful documentation. Feauturing a simple, but powerful WYSIWYG editor it allows for teams to create detailed and useful documentation with ease.

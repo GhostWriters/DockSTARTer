@@ -1,8 +1,13 @@
 # MariaDB
 
+[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/mariadb?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/linuxserver/mariadb)
+[![GitHub Stars](https://img.shields.io/github/stars/linuxserver/docker-mariadb?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/linuxserver/docker-mariadb)
+
+## Description
+
 [MariaDB](https://mariadb.org/) is one of the most popular database servers. Made by the original developers of MySQL.
 
-The GIT Repository for MariaDB is located at [https://github.com/linuxserver/docker-mariadb](https://github.com/linuxserver/docker-mariadb).
+### Configuring MariaDB
 
 For security purposes you need to set a root password after adding the container. You can do this my editing the `.env` file located at `~/.docker/compose/.env`. Look for this line `MARIADB_MYSQL_ROOT_PASSWORD`. However, while documenting usage of this app we noticed that if you set a password in `MARIADB_MYSQL_ROOT_PASSWORD` and `PHPMYADMIN_PMA_PASSWORD` after running `ds -c up` the variable `PHPMYADMIN_PMA_PASSWORD` does not update the necessary files inside the `phpmyadmin` container.
 

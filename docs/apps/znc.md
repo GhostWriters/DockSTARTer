@@ -1,1 +1,8 @@
 # ZNC
+
+[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/znc?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/linuxserver/znc)
+[![GitHub Stars](https://img.shields.io/github/stars/linuxserver/docker-znc?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/linuxserver/docker-znc)
+
+## Description
+
+[ZNC](http://wiki.znc.in/ZNC) is an IRC network bouncer or BNC. It can detach the client from the actual IRC server, and also from selected channels. Multiple clients from different locations can connect to a single ZNC account simultaneously and therefore appear under the same nickname on IRC.
