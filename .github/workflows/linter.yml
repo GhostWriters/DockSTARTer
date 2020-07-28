@@ -19,3 +19,4 @@ jobs:
         uses: docker://github/super-linter:v3.4.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_EDITORCONFIG: true
