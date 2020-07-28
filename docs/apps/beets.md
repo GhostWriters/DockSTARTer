@@ -1,5 +1,8 @@
 # Beets
 
-[Beets](http://beets.io/) is a music library manager and not, for the most part, a music player. It does include a simple player plugin and an experimental Web-based player, but it generally leaves actual sound-reproduction to specialized tools.
+[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/beets?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/linuxserver/beets)
+[![GitHub Stars](https://img.shields.io/github/stars/linuxserver/docker-beets?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/linuxserver/docker-beets)
 
-The GIT Repository for Beets is located at [https://github.com/linuxserver/docker-beets](https://github.com/linuxserver/docker-beets)
+## Description
+
+[Beets](http://beets.io/) is a music library manager and not, for the most part, a music player. It does include a simple player plugin and an experimental Web-based player, but it generally leaves actual sound-reproduction to specialized tools.
