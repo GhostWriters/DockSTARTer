@@ -12,5 +12,5 @@ services:
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/bazarr:/config
+      - ${DOCKERCONFDIR}/prometheus:/config
       - ${DOCKERSHAREDDIR}:/shared
