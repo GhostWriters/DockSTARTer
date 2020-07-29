@@ -10,11 +10,14 @@ on: [pull_request]
 
 jobs:
   label:
-    if: github.repository == 'GhostWriters/DockSTARTer'
 
     runs-on: ubuntu-latest
+    continue-on-error: true
 
     steps:
     - uses: actions/labeler@v2.1.1
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
+    - name: Allow pull request failure
+      if: ${{ failure() && github.event_name == 'pull_request' }}
+      run: echo "Pull requests will be labeled by another workflow."
