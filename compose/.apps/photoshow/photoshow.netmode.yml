@@ -1,0 +1,3 @@
+services:
+  photoshow:
+    network_mode: ${PHOTOSHOW_NETWORK_MODE}

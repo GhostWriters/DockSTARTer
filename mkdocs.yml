@@ -110,6 +110,7 @@ nav:
     - "apps/openvpnas.md"
     - "apps/organizr.md"
     - "apps/ouroboros.md"
+    - "apps/photoshow.md"
     - "apps/phpmyadmin.md"
     - "apps/pihole.md"
     - "apps/piwigo.md"
@@ -152,6 +153,7 @@ nav:
     - "apps/vsftpd.md"
     - "apps/watchtower.md"
     - "apps/xbackbone.md"
+    - "apps/xteve.md"
     - "apps/znc.md"
   - Overrides:
     - "overrides/introduction.md"
