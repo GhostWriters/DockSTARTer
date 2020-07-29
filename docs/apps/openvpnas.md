@@ -23,6 +23,6 @@ The `admin` account is a system account (PAM) and after container update or recr
 
 Make sure to change Hostname or IP Address to your public IP or public DNS name.  It defaults to the docker internal IP.  Also, this goes without saying, make sure to forward the correct ports on your firewall to your host IP.
 
-### LetsEncrypt Subdomain Config
+### SWAG Subdomain Config
 
-[Sample LetsEncrypt Config Here](https://pastebin.com/kMQ7f70f)
+[Sample SWAG Config Here](https://pastebin.com/kMQ7f70f)
