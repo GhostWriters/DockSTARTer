@@ -1,0 +1,3 @@
+services:
+  prometheus:
+    network_mode: ${PROMETHEUS_NETWORK_MODE}
