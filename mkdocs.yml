@@ -81,6 +81,7 @@ nav:
     - "apps/heimdall.md"
     - "apps/homeassistant.md"
     - "apps/htpcmanager.md"
+    - "apps/httpserver.md"
     - "apps/hydra2.md"
     - "apps/influxdb.md"
     - "apps/jackett.md"

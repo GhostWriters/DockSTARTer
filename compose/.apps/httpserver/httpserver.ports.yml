@@ -1,0 +1,4 @@
+services:
+  httpserver:
+    ports:
+      - ${httpserver_PORT_5000}:5000

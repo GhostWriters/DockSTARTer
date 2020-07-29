@@ -1,0 +1,18 @@
+services:
+  httpserver:
+    container_name: httpserver
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - FILE_SERVER_TITLE=${HTTPSERVER_FILE_SERVER_TITLE}
+      - FILE_SERVER_COLOR_SET=${HTTPSERVER_FILE_SERVER_COLOR_SET}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERSHAREDDIR}:/html/shared

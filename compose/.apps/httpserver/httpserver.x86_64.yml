@@ -1,0 +1,3 @@
+services:
+  httpserver:
+    image: patrickdappollonio/docker-http-server
