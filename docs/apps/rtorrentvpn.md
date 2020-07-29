@@ -13,7 +13,7 @@ The support forum for rTorrentVPN is located [here](https://forums.unraid.net/to
 
 If you're attempting to get access to the rTorrentVPN WebUI remotely outside of your home network, you are going to have to do this through a reverse proxy using SWAG. Full details and steps are outlined here [VPN Information](https://dockstarter.com/advanced/vpn-info/).
 
-The sample proxy configuration files found in `.docker/config/swag/nginx/proxy-confs/` will need to be modified and as usual, have the .sample removed from the filename.
+The sample proxy configuration files found in `.config/appdata/swag/nginx/proxy-confs/` will need to be modified and as usual, have the .sample removed from the filename.
 
 You will need to edit the appropriate proxy `.conf`. Enter either `sudo nano rutorrent.subfolder.conf` or `sudo nano rutorrent.subdomain.conf` depending on your configuration desires and change the below lines. NOTE: There will be multiple lines that need to be changed.
 

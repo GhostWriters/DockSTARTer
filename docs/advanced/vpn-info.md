@@ -24,7 +24,7 @@ sudo reboot
 
 If you're attempting to access the Web UI for one of your VPN containers (e.g. TransmissionVPN, DelugeVPN, etc.) from outside of your home network using SWAG, you will need to modify the SWAG configuration file to support the name difference. The sample configs are controlled by [LSIO](https://www.linuxserver.io/), not by DockSTARTer. So this change is required to get the VPN containers running remotely.
 
-The sample proxy configuration files found in `.docker/config/swag/nginx/proxy-confs/` will need to be modified and as usual, have the .sample removed from the filename.
+The sample proxy configuration files found in `.config/appdata/swag/nginx/proxy-confs/` will need to be modified and as usual, have the .sample removed from the filename.
 
 You will also need to edit the appropriate proxy `.conf`. The below example uses the TransmissionVPN container as an example:
 
