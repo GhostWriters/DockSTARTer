@@ -151,6 +151,7 @@ nav:
     - "apps/vsftpd.md"
     - "apps/watchtower.md"
     - "apps/xbackbone.md"
+    - "apps/xteve.md"
     - "apps/znc.md"
   - Overrides:
     - "overrides/introduction.md"
