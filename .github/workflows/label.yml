@@ -10,9 +10,9 @@ on: [pull_request]
 
 jobs:
   label:
-    if: github.repository == 'GhostWriters/DockSTARTer'
 
     runs-on: ubuntu-latest
+    continue-on-error: true
 
     steps:
     - uses: actions/labeler@v2.1.1
