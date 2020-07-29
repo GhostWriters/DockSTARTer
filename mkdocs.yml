@@ -118,6 +118,7 @@ nav:
     - "apps/plexrequests.md"
     - "apps/portainer.md"
     - "apps/portaineragent.md"
+    - "apps/prometheus.md"
     - "apps/pyload.md"
     - "apps/qbittorrent.md"
     - "apps/qbittorrentvpn.md"
