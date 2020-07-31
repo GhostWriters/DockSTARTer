@@ -12,7 +12,7 @@ services:
       com.dockstarter.appvars.bitwarden_enabled: "false"
       com.dockstarter.appvars.bitwarden_invitations_allowed: "false"
       com.dockstarter.appvars.bitwarden_network_mode: ""
-      com.dockstarter.appvars.bitwarden_port_80: "8013"
+      com.dockstarter.appvars.bitwarden_port_80: "80"
       com.dockstarter.appvars.bitwarden_show_password_hint: "false"
       com.dockstarter.appvars.bitwarden_signups_allowed: "false"
       com.dockstarter.appvars.bitwarden_signups_verify: "false"
