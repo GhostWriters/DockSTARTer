@@ -2,11 +2,11 @@ services:
   httpserver:
     container_name: httpserver
     environment:
+      - FILE_SERVER_COLOR_SET=${HTTPSERVER_FILE_SERVER_COLOR_SET}
+      - FILE_SERVER_TITLE=${HTTPSERVER_FILE_SERVER_TITLE}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-      - FILE_SERVER_TITLE=${HTTPSERVER_FILE_SERVER_TITLE}
-      - FILE_SERVER_COLOR_SET=${HTTPSERVER_FILE_SERVER_COLOR_SET}
     logging:
       driver: json-file
       options:
@@ -15,4 +15,5 @@ services:
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERSHAREDDIR}:/html/shared
+      - ${DOCKERSHAREDDIR}:/shared
+      - ${HTTP_HTML_DIR}/html
