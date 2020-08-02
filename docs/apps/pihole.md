@@ -33,9 +33,9 @@ sudo service resolvconf restart
 
 Edit `/etc/systemd/resolved.conf` and set `DNSStubListener=no` (make sure it is not commented out with a `#` at the beginning of the line) and then run:
 
- ```bash
- sudo systemctl restart systemd-resolved
- ```
+```bash
+sudo systemctl restart systemd-resolved
+```
 
 If that does not work you can try the following:
 
