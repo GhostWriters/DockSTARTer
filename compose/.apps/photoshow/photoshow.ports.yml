@@ -1,4 +1,4 @@
 services:
   photoshow:
     ports:
-      - ${PHOTOSHOW_PORT_6767}:6767
+      - ${PHOTOSHOW_PORT_80}:80
