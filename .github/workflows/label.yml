@@ -6,7 +6,9 @@
 # https://github.com/actions/labeler
 
 name: Labeler
-on: [pull_request_target]
+on:
+  workflow_run:
+    workflows: ["Label Trigger"]
 
 jobs:
   label:
@@ -14,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - if: ${{ github.event_name == 'pull_request_target' }}
     - uses: actions/labeler@v2.1.1
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
