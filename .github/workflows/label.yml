@@ -17,6 +17,6 @@ jobs:
 
     steps:
     - if: ${{ github.event_name == 'pull_request_target' }}
-    - uses: actions/labeler@v2.1.1
+      uses: actions/labeler@v2.1.1
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
