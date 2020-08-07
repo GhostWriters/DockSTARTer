@@ -7,5 +7,5 @@ services:
       com.dockstarter.appvars.photoshow_enabled: "false"
       com.dockstarter.appvars.photoshow_images_dir: "/mnt/photoshow/pictures"
       com.dockstarter.appvars.photoshow_network_mode: ""
-      com.dockstarter.appvars.photoshow_port_6767: "6767"
+      com.dockstarter.appvars.photoshow_port_80: "80"
       com.dockstarter.appvars.photoshow_thumbs_dir: "/mnt/photoshow/thumbs"
