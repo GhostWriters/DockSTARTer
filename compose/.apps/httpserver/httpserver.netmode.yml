@@ -1,0 +1,3 @@
+services:
+  httpserver:
+    network_mode: ${HTTPSERVER_NETWORK_MODE}
