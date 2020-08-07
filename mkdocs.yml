@@ -10,6 +10,18 @@ edit_uri: "https://github.com/GhostWriters/DockSTARTer/edit/master/docs/"
 
 copyright: "Copyright &copy; 2020 GhostWriters"
 
+extra:
+  manifest: manifest.webmanifest
+  social:
+    - icon: fontawesome/brands/discord-square
+      link: https://discord.gg/YFyJpmH
+    - icon: fontawesome/brands/github-square
+      link: https://github.com/GhostWriters/DockSTARTer
+
+google_analytics:
+  - UA-8908801-4
+  - auto
+
 markdown_extensions:
   - meta
 
