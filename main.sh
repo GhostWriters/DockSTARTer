@@ -2,6 +2,10 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+#####################
+# BS! DO NOT MERGE! #
+#####################
+
 # Usage Information
 #/ Usage: sudo ds [OPTION]
 #/ NOTE: ds shortcut is only available after the first run of
