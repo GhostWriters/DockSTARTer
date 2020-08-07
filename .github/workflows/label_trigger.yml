@@ -1,0 +1,10 @@
+name: Label Trigger
+on: [pull_request]
+
+jobs:
+  label_trigger:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - run: echo
