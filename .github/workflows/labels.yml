@@ -2,6 +2,9 @@ name: "Label PRs from globs"
 on:
   schedule:
   - cron: "0 * * * *"
+  workflow_run:
+    workflows: ["Label Trigger"]
+
 
 jobs:
   execute:
