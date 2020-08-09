@@ -18,9 +18,9 @@ extra:
     - icon: fontawesome/brands/github-square
       link: https://github.com/GhostWriters/DockSTARTer
 
-google_analytics:	
-  - UA-8908801-4	
-  - auto	
+google_analytics:
+  - UA-8908801-4
+  - auto
 
 markdown_extensions:
   - meta
