@@ -60,6 +60,7 @@ nav:
   - App Specifics:
     - "apps/airdcpp.md"
     - "apps/airsonic.md"
+    - "apps/amd.md"
     - "apps/apcupsd.md"
     - "apps/bazarr.md"
     - "apps/beets.md"
