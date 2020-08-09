@@ -6,9 +6,7 @@
 # https://github.com/actions/labeler
 
 name: Labeler
-on:
-  workflow_run:
-    workflows: ["Label Trigger"]
+on: [pull_request_target]
 
 jobs:
   label:
