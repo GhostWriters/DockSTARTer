@@ -1,4 +1,4 @@
-name: Label Trigger
+name: Labels Trigger
 on: [pull_request]
 
 jobs:
