@@ -13,7 +13,7 @@ copyright: "Copyright &copy; 2020 GhostWriters"
 extra:
   manifest: manifest.webmanifest
   social:
-    - icon: fontawesome/brands/discord-square
+    - icon: fontawesome/brands/discord
       link: https://discord.gg/YFyJpmH
     - icon: fontawesome/brands/github-square
       link: https://github.com/GhostWriters/DockSTARTer
