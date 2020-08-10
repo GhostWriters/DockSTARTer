@@ -3,15 +3,13 @@
 ## Support
 Refer to our [Support Page](https://dockstarter.com/basics/support/) for our Support Channels and Tutorials we have found users have made with DockSTARTer!
 
-## Ouroboros And Portainer Enabled By Default
+## Ouroboros Enabled By Default
 
-These tools are extremely useful for people getting used to running docker. Their official documentation should explain why but you can disable either or both of them if you want.
+This tool is extremely useful for people getting used to running docker. It's official documentation should explain why but you can disable it if you want.
 
 > [Ouroboros](https://hub.docker.com/r/pyouroboros/ouroboros/) will monitor (all or specified) running docker containers and update them to the (latest or tagged) available image in the remote registry.
->
-> [Portainer](https://hub.docker.com/r/portainer/portainer/) allows you to manage your Docker stacks, containers, images, volumes, networks and more! It is compatible with the standalone Docker engine and with Docker Swarm.
 
-In short, Ouroboros keeps your Containers up to date and Portainer gives you a WebGUI for starting and stopping Containers. Have a look, at `www.appropriateaddress.com:9000` .
+In short, Ouroboros keeps your Containers up to date.
 
 DockSTARTer previously enabled Watchtower by default before Ouroboros. The two do almost the same thing, but Ouroboros has more options.
 
@@ -23,8 +21,7 @@ With Ouroboros (or Watchtower) your containers will be updated to the latest ima
 
 ## General troubleshooting help
 
-You can see the (quite helpful) logs of each container with a Quick action in Portainer:
-![Portainer log quick action](https://gist.github.com/juligreen/aaf72244b8b4a9c09fc80112ba25e79d/raw/05b94051569fa4fc3c73593069de6293af5dfa50/Portainer%2520quick.PNG)
+You can see the (quite helpful) logs of each container with the `docker logs <appname>` command.
 
 ## Reported Issues
 
