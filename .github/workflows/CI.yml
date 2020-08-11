@@ -7,7 +7,7 @@ jobs:
   bashate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.3.1
+      - uses: actions/checkout@v2.3.2
       - name: bashate
         env:
           CI: true
@@ -18,7 +18,7 @@ jobs:
   shfmt:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.3.1
+      - uses: actions/checkout@v2.3.2
       - name: shfmt
         env:
           CI: true
@@ -32,7 +32,7 @@ jobs:
       matrix:
         os: [ubuntu-16.04, ubuntu-18.04]
     steps:
-      - uses: actions/checkout@v2.3.1
+      - uses: actions/checkout@v2.3.2
       - name: run
         env:
           CI: true
