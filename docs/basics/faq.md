@@ -1,6 +1,7 @@
 # FAQ
 
 ## Support
+
 Refer to our [Support Page](https://dockstarter.com/basics/support/) for our Support Channels and Tutorials we have found users have made with DockSTARTer!
 
 ## Ouroboros Enabled By Default
@@ -15,13 +16,15 @@ DockSTARTer previously enabled Watchtower by default before Ouroboros. The two d
 
 ## Ouroboros/Watchtower FAQ
 
-### When I run `ds -c` and it recreates some of the containers, is that because they have had updates from last run?
+### When I run `ds -c` and it recreates some of the containers, is that because they have had updates from last run
 
 With Ouroboros (or Watchtower) your containers will be updated to the latest images automatically. However, docker-compose has no idea what's updated, docker-compose keeps track of things independently from Ouroboros/Watchtower. Additionally, Ouroboros/Watchtower don't update docker-compose's method of tracking, therefore, compose might "recreate" containers that are already up to date. This is not a big deal it's basically just a container restart, and you were planning on running `ds -c` expecting some kind of updates anyway.
 
 ## General troubleshooting help
 
 You can see the (quite helpful) logs of each container with the `docker logs <appname>` command.
+
+Additionally, you can also use [Dozzle](https://dockstarter.com/apps/dozzle/) if you prefer to view logs using your browser.
 
 ## Reported Issues
 
