@@ -72,11 +72,11 @@ yml_merge() {
 
 test_yml_merge() {
     run_script 'update_system'
-    run_script 'appvars_create' PORTAINER
+    run_script 'appvars_create' WATCHTOWER
     cat "${SCRIPTPATH}/compose/.env"
     run_script 'yml_merge'
     cd "${SCRIPTPATH}/compose/" || fatal "Failed to change to ${SCRIPTPATH}/compose/ directory."
     docker-compose config || fatal "Failed to validate ${SCRIPTPATH}/compose/docker-compose.yml file."
     cd "${SCRIPTPATH}" || fatal "Failed to change to ${SCRIPTPATH} directory."
-    run_script 'appvars_purge' PORTAINER
+    run_script 'appvars_purge' WATCHTOWER
 }
