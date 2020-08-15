@@ -1,0 +1,16 @@
+services:
+    amd:
+        labels:
+            com.dockstarter.appinfo.description: "Lidarr companion script to automatically download music for Lidarr"
+            com.dockstarter.appinfo.deprecated: "false"
+            com.dockstarter.appinfo.nicename: "AMD"
+            com.dockstarter.appvars.amd_arl_token: ""
+            com.dockstarter.appvars.amd_autostart: "true"
+            com.dockstarter.appvars.amd_concurrency: "3"
+            com.dockstarter.appvars.amd_enabled: "false"
+            com.dockstarter.appvars.amd_explicit_preferred: "true"
+            com.dockstarter.appvars.amd_lidarr_api_key: ""
+            com.dockstarter.appvars.amd_lidarr_url: "lidarr:8686"
+            com.dockstarter.appvars.amd_match_distance: "10"
+            com.dockstarter.appvars.amd_network_mode: ""
+            com.dockstarter.appvars.amd_quality: "FLAC"

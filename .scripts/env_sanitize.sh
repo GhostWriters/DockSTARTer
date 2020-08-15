@@ -21,7 +21,7 @@ env_sanitize() {
     local WATCHTOWER_ENABLED
     WATCHTOWER_ENABLED=$(run_script 'env_get' WATCHTOWER_ENABLED)
     if [[ ${OUROBOROS_ENABLED} == true ]] && [[ ${WATCHTOWER_ENABLED} == true ]]; then
-        run_script 'env_set' WATCHTOWER_ENABLED false
+        run_script 'env_set' OUROBOROS_ENABLED false
     fi
 
     local OUROBOROS_NETWORK_MODE
@@ -41,6 +41,6 @@ test_env_sanitize() {
     run_script 'appvars_create' OUROBOROS
     run_script 'appvars_create' WATCHTOWER
     run_script 'env_sanitize'
-    run_script 'appvars_purge' PORTAINER
+    run_script 'appvars_purge' OUROBOROS
     run_script 'appvars_purge' WATCHTOWER
 }
