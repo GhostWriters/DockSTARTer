@@ -1,0 +1,3 @@
+services:
+  swag:
+    image: linuxserver/swag

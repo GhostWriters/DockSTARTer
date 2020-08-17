@@ -9,7 +9,7 @@
 
 ### Configuring Nextcloud
 
-If you are running the DockSTARTer Nextcloud container behind a LetsEncrypt reverse proxy, you may need to add a extra line to the NextCloud config.php file so it can find it.
+If you are running the DockSTARTer Nextcloud container behind a SWAG reverse proxy, you may need to add a extra line to the NextCloud config.php file so it can find it.
 
 Without configuring this you will be able to access the web page, but apps may timeout or return an invalid password.
 
