@@ -13,6 +13,6 @@ services:
       com.dockstarter.appvars.swag_only_subdomains: "false"
       com.dockstarter.appvars.swag_port_443: "443"
       com.dockstarter.appvars.swag_port_80: "80"
-      com.dockstarter.appvars.swag_subdomains: "plex,portainer,www"
+      com.dockstarter.appvars.swag_subdomains: "www"
       com.dockstarter.appvars.swag_url: ""
       com.dockstarter.appvars.swag_validation: "http"
