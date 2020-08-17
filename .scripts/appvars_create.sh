@@ -29,6 +29,6 @@ appvars_create() {
 
 test_appvars_create() {
     run_script 'env_update'
-    run_script 'appvars_create' PORTAINER
+    run_script 'appvars_create' WATCHTOWER
     cat "${SCRIPTPATH}/compose/.env"
 }

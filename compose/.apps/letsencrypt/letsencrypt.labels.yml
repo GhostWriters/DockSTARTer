@@ -13,6 +13,6 @@ services:
       com.dockstarter.appvars.letsencrypt_only_subdomains: "false"
       com.dockstarter.appvars.letsencrypt_port_443: "443"
       com.dockstarter.appvars.letsencrypt_port_80: "80"
-      com.dockstarter.appvars.letsencrypt_subdomains: "plex,portainer,www"
+      com.dockstarter.appvars.letsencrypt_subdomains: "www"
       com.dockstarter.appvars.letsencrypt_url: ""
       com.dockstarter.appvars.letsencrypt_validation: "http"
