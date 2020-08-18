@@ -9,9 +9,9 @@
 
 ### General Setup
 
-SyncLounge works best if you have a domain to use and it is recommended that you use this with the [Let's Encrypt](https://dockstarter.com/apps/letsencrypt/) container supported by DockSTARTer. Also, since some Plex clients can only operate over HTTP, SyncLounge needs to be accessible by HTTP or your users will need to enable mixed content in their browser for ONLY the domain SyncLounge is on.
+SyncLounge works best if you have a domain to use and it is recommended that you use this with the [SWAG](https://dockstarter.com/apps/swag/) container supported by DockSTARTer. Also, since some Plex clients can only operate over HTTP, SyncLounge needs to be accessible by HTTP or your users will need to enable mixed content in their browser for ONLY the domain SyncLounge is on.
 
-The below steps assume that you already have the [Let's Encrypt](https://dockstarter.com/apps/letsencrypt/) container selected, configured, and running. If not, do that first or along with steps 1 & 2 below.
+The below steps assume that you already have the [SWAG](https://dockstarter.com/apps/swag/) container selected, configured, and running. If not, do that first or along with steps 1 & 2 below.
 
 1. Enable `SyncLounge` by running:
 
@@ -26,11 +26,11 @@ The below steps assume that you already have the [Let's Encrypt](https://docksta
 
         ds -c up synclounge
 
-4. Find the file called `synclounge.subdomain.conf.sample` in your [Let's Encrypt](https://dockstarter.com/apps/letsencrypt/) `proxy-confs` folder and rename it to `synclounge.subdomain.conf` (By default, this has HTTP and HTTPS enabled).
+4. Find the file called `synclounge.subdomain.conf.sample` in your [SWAG](https://dockstarter.com/apps/swag/) `proxy-confs` folder and rename it to `synclounge.subdomain.conf` (By default, this has HTTP and HTTPS enabled).
 
-5. Restart the letsencrypt container:
+5. Restart the SWAG container:
 
-        docker restart letsencrypt
+        docker restart swag
 
 You should now be able to go to `synclouge.yourdomain.tld` and use SyncLounge!
 

@@ -10,6 +10,18 @@ edit_uri: "https://github.com/GhostWriters/DockSTARTer/edit/master/docs/"
 
 copyright: "Copyright &copy; 2020 GhostWriters"
 
+extra:
+  manifest: manifest.webmanifest
+  social:
+    - icon: fontawesome/brands/discord
+      link: https://discord.gg/YFyJpmH
+    - icon: fontawesome/brands/github-square
+      link: https://github.com/GhostWriters/DockSTARTer
+
+google_analytics:
+  - UA-8908801-4
+  - auto
+
 markdown_extensions:
   - meta
 
@@ -48,6 +60,7 @@ nav:
   - App Specifics:
     - "apps/airdcpp.md"
     - "apps/airsonic.md"
+    - "apps/amd.md"
     - "apps/apcupsd.md"
     - "apps/bazarr.md"
     - "apps/beets.md"
@@ -81,6 +94,7 @@ nav:
     - "apps/heimdall.md"
     - "apps/homeassistant.md"
     - "apps/htpcmanager.md"
+    - "apps/httpserver.md"
     - "apps/hydra2.md"
     - "apps/influxdb.md"
     - "apps/jackett.md"
@@ -136,6 +150,7 @@ nav:
     - "apps/smokeping.md"
     - "apps/sonarr.md"
     - "apps/speedtest.md"
+    - "apps/swag.md"
     - "apps/synclounge.md"
     - "apps/syncthing.md"
     - "apps/tautulli.md"

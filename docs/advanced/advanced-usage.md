@@ -92,8 +92,8 @@ You may also need to fill in or adjust any other variables prefixed with the `AP
 
 This is the best place to change your default ports.
 
-Please note, Portainer and Ouroboros are enabled by default. [Portainer](https://hub.docker.com/r/portainer/portainer/) provides a snazzy management interface at `your.ip.address:9000` and [Ouroboros](https://hub.docker.com/r/pyouroboros/uroboros/) checks for updates to the Containers you are using, __NOT__ DockSTARTer itself.
-See [here](https://dockstarter.com/faq#ouroboros-and-portainer-i-didnt-select-them-but-they-installed-anyway) for a (little) more or you can disable them if you wish.
+Please note, Ouroboros is enabled by default. [Ouroboros](https://hub.docker.com/r/pyouroboros/uroboros/) checks for updates to the Containers you are using, __NOT__ DockSTARTer itself.
+See [here](https://dockstarter.com/faq) for a (little) more or you can disable it if you wish.
 
 #### Removing Apps
 

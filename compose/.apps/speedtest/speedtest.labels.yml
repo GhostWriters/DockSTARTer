@@ -7,5 +7,5 @@ services:
       com.dockstarter.appvars.speedtest_base_path: "/"
       com.dockstarter.appvars.speedtest_enabled: "false"
       com.dockstarter.appvars.speedtest_network_mode: ""
-      com.dockstarter.appvars.speedtest_ookla_eula: "true"
+      com.dockstarter.appvars.speedtest_ookla_eula_gdpr: "true"
       com.dockstarter.appvars.speedtest_port_80: "80"

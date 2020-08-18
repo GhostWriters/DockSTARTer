@@ -1,0 +1,5 @@
+services:
+  swag:
+    ports:
+      - ${SWAG_PORT_443}:443
+      - ${SWAG_PORT_80}:80
