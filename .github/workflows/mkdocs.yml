@@ -17,7 +17,7 @@ jobs:
         run: cp README.md docs/index.md
 
       - name: Deploy docs
-        uses: mhausenblas/mkdocs-deploy-gh-pages@1.12
+        uses: mhausenblas/mkdocs-deploy-gh-pages@1.13
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CUSTOM_DOMAIN: dockstarter.com

@@ -1,0 +1,3 @@
+services:
+  swag:
+    network_mode: ${SWAG_NETWORK_MODE}
