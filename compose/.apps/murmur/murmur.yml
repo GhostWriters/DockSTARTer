@@ -13,5 +13,5 @@ services:
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/murmur:/data
+      - ${DOCKERCONFDIR}/murmur:/opt/murmur
       - ${DOCKERSHAREDDIR}:/shared
