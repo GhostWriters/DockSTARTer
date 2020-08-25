@@ -28,7 +28,7 @@ install_compose() {
             # https://github.com/linuxserver/docker-docker-compose/blob/master/README.md#recommended-method
             info "Installing latest docker-compose."
             curl -fsL "https://raw.githubusercontent.com/linuxserver/docker-docker-compose/master/run.sh" -o /usr/local/bin/docker-compose > /dev/null 2>&1 || fatal "Failed to install docker-compose."
-            if [[ ! -L "/usr/bin/docker-compose" ]]; then
+            if [[ ! -e "/usr/bin/docker-compose" ]]; then
                 ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose || fatal "Failed to create /usr/bin/docker-compose symlink."
             fi
             chmod +x /usr/local/bin/docker-compose > /dev/null 2>&1 || true
