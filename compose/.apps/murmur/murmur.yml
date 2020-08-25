@@ -15,6 +15,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/murmur/cert:/opt/murmur/cert
       - ${DOCKERCONFDIR}/murmur/config:/opt/murmur/config
-      - ${DOCKERCONFDIR}/murmur//data:/opt/murmur/data
-      - ${DOCKERCONFDIR}/murmur//log:/opt/murmur/log
+      - ${DOCKERCONFDIR}/murmur/data:/opt/murmur/data
+      - ${DOCKERCONFDIR}/murmur/log:/opt/murmur/log
       - ${DOCKERSHAREDDIR}:/shared
