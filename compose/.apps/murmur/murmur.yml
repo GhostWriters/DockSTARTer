@@ -5,6 +5,7 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+      - MURMUR_SUPW=${MURMUR_SUPW}
     logging:
       driver: json-file
       options:
