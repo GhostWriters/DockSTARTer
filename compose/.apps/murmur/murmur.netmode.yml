@@ -1,0 +1,3 @@
+services:
+  murmur:
+    network_mode: ${MURMUR_NETWORK_MODE}
