@@ -73,8 +73,6 @@ bash -c "$(curl -fsSL https://get.dockstarter.com)"
 sudo reboot
 ```
 
-
-
 <details>
   <summary>Alternate install (any system)</summary>
 
