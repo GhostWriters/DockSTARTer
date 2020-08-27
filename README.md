@@ -3,7 +3,7 @@
 [![DockSTARTer](https://github.com/GhostWriters/DockSTARTer/raw/master/docs/img/logo.png)](https://dockstarter.com)
 
 [![Supporters on Open Collective](https://img.shields.io/opencollective/all/DockSTARTer.svg?style=flat-square&color=607D8B)](#supporters)
-[![Discord chat](https://img.shields.io/discord/477959324183035936.svg?style=flat-square&color=607D8B&logo=discord)](https://discord.gg/YFyJpmH)
+[![Discord chat](https://img.shields.io/discord/477959324183035936.svg?style=flat-square&color=607D8B&logo=discord)](https://dockstarter.com/discord)
 [![GitHub contributors](https://img.shields.io/github/contributors/GhostWriters/DockSTARTer.svg?style=flat-square&color=607D8B)](https://github.com/GhostWriters/DockSTARTer/graphs/contributors)
 [![GitHub last commit master](https://img.shields.io/github/last-commit/GhostWriters/DockSTARTer/master.svg?style=flat-square&color=607D8B&label=code%20committed)](https://github.com/GhostWriters/DockSTARTer/commits/master)
 [![GitHub license](https://img.shields.io/github/license/GhostWriters/DockSTARTer.svg?style=flat-square&color=607D8B)](https://github.com/GhostWriters/DockSTARTer/blob/master/LICENSE.md)
@@ -96,7 +96,7 @@ See our [documentation](https://dockstarter.com/introduction/) for more detailed
 
 ## Support
 
-[![Discord chat](https://img.shields.io/discord/477959324183035936.svg?style=flat-square&color=607D8B&logo=discord)](https://discord.gg/YFyJpmH)
+[![Discord chat](https://img.shields.io/discord/477959324183035936.svg?style=flat-square&color=607D8B&logo=discord)](https://dockstarter.com/discord)
 
 Click the chat badge to join us on Discord for support!
 

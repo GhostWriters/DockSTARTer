@@ -2,7 +2,7 @@
 
 ## Official Support
 
-[![Discord chat](https://img.shields.io/discord/477959324183035936.svg?style=flat-square&color=607D8B&logo=discord)](https://discord.gg/YFyJpmH)
+[![Discord chat](https://img.shields.io/discord/477959324183035936.svg?style=flat-square&color=607D8B&logo=discord)](https://dockstarter.com/discord)
 
 Click the chat badge to join us on Discord for support!
 
