@@ -121,7 +121,7 @@ sudo ds -p
 
 This cleans up the DS install, p stands for prune in this case. This recovers space from old images if they were somehow left over.
 
-### What Is appdata
+### What is `appdata`
 
 If you've heard other people talk about an `appdata` folder and not been sure what they meant, it's what we have had as our default `~/.docker/config` since the beginning of DockSTARTer.
 
