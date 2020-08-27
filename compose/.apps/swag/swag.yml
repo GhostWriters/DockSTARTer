@@ -1,0 +1,27 @@
+services:
+  swag:
+    cap_add:
+      - NET_ADMIN
+    container_name: swag
+    environment:
+      - DNSPLUGIN=${SWAG_DNSPLUGIN}
+      - DUCKDNSTOKEN=${SWAG_DUCKDNSTOKEN}
+      - EMAIL=${SWAG_EMAIL}
+      - EXTRA_DOMAINS=${SWAG_EXTRA_DOMAINS}
+      - ONLY_SUBDOMAINS=${SWAG_ONLY_SUBDOMAINS}
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - SUBDOMAINS=${SWAG_SUBDOMAINS}
+      - TZ=${TZ}
+      - URL=${SWAG_URL}
+      - VALIDATION=${SWAG_VALIDATION}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/swag:/config
+      - ${DOCKERSHAREDDIR}:/shared

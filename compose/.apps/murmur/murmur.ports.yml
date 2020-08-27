@@ -1,0 +1,5 @@
+services:
+  murmur:
+    ports:
+      - ${MURMUR_PORT_64738}:64738
+      - ${MURMUR_PORT_64738}:64738/udp

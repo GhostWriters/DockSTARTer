@@ -1,11 +1,10 @@
 services:
-  speedtest:
-    container_name: speedtest
+  murmur:
+    container_name: murmur
     environment:
-      - OOKLA_EULA_GDPR=${SPEEDTEST_OOKLA_EULA_GDPR}
+      - MURMUR_SUPW=${MURMUR_SUPW}
       - PGID=${PGID}
       - PUID=${PUID}
-      - SPEEDTEST_BASE_PATH=${SPEEDTEST_BASE_PATH}
       - TZ=${TZ}
     logging:
       driver: json-file
@@ -15,5 +14,8 @@ services:
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/speedtest:/config
+      - ${DOCKERCONFDIR}/murmur/cert:/opt/murmur/cert
+      - ${DOCKERCONFDIR}/murmur/config:/opt/murmur/config
+      - ${DOCKERCONFDIR}/murmur/data:/opt/murmur/data
+      - ${DOCKERCONFDIR}/murmur/log:/opt/murmur/log
       - ${DOCKERSHAREDDIR}:/shared

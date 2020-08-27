@@ -11,4 +11,4 @@ The support forum for qBittorrentVPN is located [here](https://forums.unraid.net
 
 ### qBittorrentVPN WebUI Access
 
-If you're attempting to get access to the qBittorrentVPN WebUI remotely outside of your home network, you are going to have to do this through a reverse proxy using LetsEncrypt. Full details and steps are outlined here [VPN Information](https://dockstarter.com/advanced/vpn-info/).
+If you're attempting to get access to the qBittorrentVPN WebUI remotely outside of your home network, you are going to have to do this through a reverse proxy using SWAG. Full details and steps are outlined here [VPN Information](https://dockstarter.com/advanced/vpn-info/).
