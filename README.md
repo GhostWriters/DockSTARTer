@@ -65,10 +65,10 @@ bash -c "$(curl -fsSL https://get.dockstarter.com)"
 sudo reboot
 ```
 
-- Arch-based Systems (Arch, Manjaro, EndeavourOS, etc.)
+- Not officially supported: Arch-based Systems (Arch, Manjaro, EndeavourOS, etc.)
 
 ```bash
-sudo pacman -Sy curl git
+sudo pacman -Sy curl git docker docker-compose
 bash -c "$(curl -fsSL https://get.dockstarter.com)"
 sudo reboot
 ```
