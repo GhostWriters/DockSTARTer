@@ -65,7 +65,9 @@ bash -c "$(curl -fsSL https://get.dockstarter.com)"
 sudo reboot
 ```
 
-- Not officially supported: Arch-based Systems (Arch, Manjaro, EndeavourOS, etc.)
+- Pacman Systems (Arch, Manjaro, EndeavourOS, etc)
+
+> Note that systems with the `pacman` package manager will not install `docker` via the [https://get.docker.com](https://get.docker.com) script that is used for other distros. The instructions below provide information on installing all required packages manually prior to installing DockSTARTer.
 
 ```bash
 sudo pacman -Sy curl git docker docker-compose
