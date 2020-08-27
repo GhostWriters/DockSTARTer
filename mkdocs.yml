@@ -153,6 +153,7 @@ nav:
     - "apps/synclounge.md"
     - "apps/syncthing.md"
     - "apps/tautulli.md"
+    - "apps/tdarr.md"
     - "apps/telegraf.md"
     - "apps/thelounge.md"
     - "apps/transmission.md"
