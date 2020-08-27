@@ -1,0 +1,3 @@
+services:
+  element:
+    hostname: ${DOCKERHOSTNAME}

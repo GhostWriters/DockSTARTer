@@ -1,0 +1,4 @@
+services:
+  element:
+    ports:
+      - ${ELEMENT_PORT_80}:80

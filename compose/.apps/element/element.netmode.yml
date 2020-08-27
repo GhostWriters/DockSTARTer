@@ -1,0 +1,3 @@
+services:
+  element:
+    network_mode: ${ELEMENT_NETWORK_MODE}

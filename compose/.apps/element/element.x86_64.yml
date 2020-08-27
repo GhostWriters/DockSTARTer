@@ -1,0 +1,3 @@
+services:
+  element:
+    image: vectorim/riot-web

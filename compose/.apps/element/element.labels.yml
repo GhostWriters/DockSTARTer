@@ -1,0 +1,9 @@
+services:
+  element:
+    labels:
+      com.dockstarter.appinfo.description: "Element (formerly Riot.im) is a Matrix web client."
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.nicename: "Element"
+      com.dockstarter.appvars.element_enabled: "false"
+      com.dockstarter.appvars.element_network_mode: ""
+      com.dockstarter.appvars.element_port_80: "8010"
