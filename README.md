@@ -65,6 +65,16 @@ bash -c "$(curl -fsSL https://get.dockstarter.com)"
 sudo reboot
 ```
 
+- Arch-based Systems (Arch, Manjaro, EndeavourOS, etc.)
+
+```bash
+sudo pacman -Sy curl git
+bash -c "$(curl -fsSL https://get.dockstarter.com)"
+sudo reboot
+```
+
+
+
 <details>
   <summary>Alternate install (any system)</summary>
 
