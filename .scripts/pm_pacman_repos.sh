@@ -3,7 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 pm_pacman_repos() {
-    return # All packages needed are in the Arch repos
+    info "This script does not manage pacman repositories for you. All packages needed should be in the default Arch repos."
 }
 
 test_pm_pacman_repos() {

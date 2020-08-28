@@ -11,7 +11,6 @@ package_manager_run() {
     elif [[ -n "$(command -v yum)" ]]; then
         run_script "pm_yum_${ACTION}"
     elif [[ -n "$(command -v pacman)" ]]; then
-        info "Docker packages for Arch Linux based distributions are not installed automatically."
         run_script "pm_pacman_${ACTION}"
     else
         fatal "Supported package manager not detected!"
