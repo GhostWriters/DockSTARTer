@@ -88,7 +88,7 @@ sudo yum install curl git
 
 ## NOTE: Do not sudo the next line.
 git clone https://github.com/GhostWriters/DockSTARTer "/home/${USER}/.docker"
-sudo bash /home/${USER}/.docker/main.sh -i
+sudo bash /home/${USER}/.docker/main.sh -vi
 sudo reboot
 ```
 
