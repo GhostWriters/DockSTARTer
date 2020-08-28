@@ -3,7 +3,7 @@
 [![DockSTARTer](https://github.com/GhostWriters/DockSTARTer/raw/master/docs/img/logo.png)](https://dockstarter.com)
 
 [![Supporters on Open Collective](https://img.shields.io/opencollective/all/DockSTARTer.svg?style=flat-square&color=607D8B)](#supporters)
-[![Discord chat](https://img.shields.io/discord/477959324183035936.svg?style=flat-square&color=607D8B&logo=discord)](https://discord.gg/YFyJpmH)
+[![Discord chat](https://img.shields.io/discord/477959324183035936.svg?style=flat-square&color=607D8B&logo=discord)](https://dockstarter.com/discord)
 [![GitHub contributors](https://img.shields.io/github/contributors/GhostWriters/DockSTARTer.svg?style=flat-square&color=607D8B)](https://github.com/GhostWriters/DockSTARTer/graphs/contributors)
 [![GitHub last commit master](https://img.shields.io/github/last-commit/GhostWriters/DockSTARTer/master.svg?style=flat-square&color=607D8B&label=code%20committed)](https://github.com/GhostWriters/DockSTARTer/commits/master)
 [![GitHub license](https://img.shields.io/github/license/GhostWriters/DockSTARTer.svg?style=flat-square&color=607D8B)](https://github.com/GhostWriters/DockSTARTer/blob/master/LICENSE.md)
@@ -65,6 +65,16 @@ bash -c "$(curl -fsSL https://get.dockstarter.com)"
 sudo reboot
 ```
 
+- Pacman Systems (Arch, Manjaro, EndeavourOS, etc)
+
+> Note that systems with the `pacman` package manager will not install `docker` via the [https://get.docker.com](https://get.docker.com) script that is used for other distros. The instructions below provide information on installing all required packages manually prior to installing DockSTARTer.
+
+```bash
+sudo pacman -Sy curl docker git
+bash -c "$(curl -fsSL https://get.dockstarter.com)"
+sudo reboot
+```
+
 <details>
   <summary>Alternate install (any system)</summary>
 
@@ -78,7 +88,7 @@ sudo yum install curl git
 
 ## NOTE: Do not sudo the next line.
 git clone https://github.com/GhostWriters/DockSTARTer "/home/${USER}/.docker"
-sudo bash /home/${USER}/.docker/main.sh -i
+sudo bash /home/${USER}/.docker/main.sh -vi
 sudo reboot
 ```
 
@@ -96,7 +106,7 @@ See our [documentation](https://dockstarter.com/introduction/) for more detailed
 
 ## Support
 
-[![Discord chat](https://img.shields.io/discord/477959324183035936.svg?style=flat-square&color=607D8B&logo=discord)](https://discord.gg/YFyJpmH)
+[![Discord chat](https://img.shields.io/discord/477959324183035936.svg?style=flat-square&color=607D8B&logo=discord)](https://dockstarter.com/discord)
 
 Click the chat badge to join us on Discord for support!
 

@@ -10,7 +10,7 @@ yml_merge() {
     RUNFILE=$(mktemp) || fatal "Failed to create temporary yml merge script."
     echo "#!/usr/bin/env bash" > "${RUNFILE}"
     {
-        echo '/usr/local/bin/yq-go m '\\
+        echo 'yq-go m '\\
         echo "\"${SCRIPTPATH}/compose/.reqs/v1.yml\" \\"
         echo "\"${SCRIPTPATH}/compose/.reqs/v2.yml\" \\"
     } >> "${RUNFILE}"

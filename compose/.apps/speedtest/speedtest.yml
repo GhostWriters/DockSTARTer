@@ -2,10 +2,10 @@ services:
   speedtest:
     container_name: speedtest
     environment:
+      - OOKLA_EULA_GDPR=${SPEEDTEST_OOKLA_EULA_GDPR}
       - PGID=${PGID}
       - PUID=${PUID}
       - SPEEDTEST_BASE_PATH=${SPEEDTEST_BASE_PATH}
-      - SPEEDTEST_OOKLA_EULA_GDPR=${SPEEDTEST_OOKLA_EULA_GDPR}
       - TZ=${TZ}
     logging:
       driver: json-file

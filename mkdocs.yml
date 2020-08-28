@@ -14,7 +14,7 @@ extra:
   manifest: manifest.webmanifest
   social:
     - icon: fontawesome/brands/discord
-      link: https://discord.gg/YFyJpmH
+      link: https://dockstarter.com/discord
     - icon: fontawesome/brands/github-square
       link: https://github.com/GhostWriters/DockSTARTer
 
@@ -155,6 +155,7 @@ nav:
     - "apps/synclounge.md"
     - "apps/syncthing.md"
     - "apps/tautulli.md"
+    - "apps/tdarr.md"
     - "apps/telegraf.md"
     - "apps/thelounge.md"
     - "apps/transmission.md"
