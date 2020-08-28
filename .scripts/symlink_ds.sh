@@ -8,7 +8,7 @@ symlink_ds() {
     # /usr/bin/ds
     if [[ -L "/usr/bin/ds" ]] && [[ ${SCRIPTNAME} != "$(readlink -f /usr/bin/ds)" ]]; then
         info "Attempting to remove /usr/bin/ds symlink."
-        rm "/usr/bin/ds" || fatal "Failed to remove /usr/bin/ds"
+        rm -f "/usr/bin/ds" || fatal "Failed to remove /usr/bin/ds"
     fi
     if [[ ! -L "/usr/bin/ds" ]]; then
         info "Creating /usr/bin/ds symbolic link for DockSTARTer."
@@ -18,7 +18,7 @@ symlink_ds() {
     # /usr/local/bin/ds
     if [[ -L "/usr/local/bin/ds" ]] && [[ ${SCRIPTNAME} != "$(readlink -f /usr/local/bin/ds)" ]]; then
         info "Attempting to remove /usr/local/bin/ds symlink."
-        rm "/usr/local/bin/ds" || fatal "Failed to remove /usr/local/bin/ds"
+        rm -f "/usr/local/bin/ds" || fatal "Failed to remove /usr/local/bin/ds"
     fi
     if [[ ! -L "/usr/local/bin/ds" ]]; then
         info "Creating /usr/local/bin/ds symbolic link for DockSTARTer."
