@@ -65,6 +65,16 @@ bash -c "$(curl -fsSL https://get.dockstarter.com)"
 sudo reboot
 ```
 
+- Pacman Systems (Arch, Manjaro, EndeavourOS, etc)
+
+> Note that systems with the `pacman` package manager will not install `docker` via the [https://get.docker.com](https://get.docker.com) script that is used for other distros. The instructions below provide information on installing all required packages manually prior to installing DockSTARTer.
+
+```bash
+sudo pacman -Sy curl docker git
+bash -c "$(curl -fsSL https://get.dockstarter.com)"
+sudo reboot
+```
+
 <details>
   <summary>Alternate install (any system)</summary>
 
@@ -75,10 +85,11 @@ The standard install above downloads the initial script using a method with some
 sudo apt-get install curl git
 sudo dnf install curl git
 sudo yum install curl git
+sudo pacman -Sy curl docker git
 
 ## NOTE: Do not sudo the next line.
 git clone https://github.com/GhostWriters/DockSTARTer "/home/${USER}/.docker"
-sudo bash /home/${USER}/.docker/main.sh -i
+sudo bash /home/${USER}/.docker/main.sh -vi
 sudo reboot
 ```
 
