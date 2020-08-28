@@ -85,6 +85,7 @@ The standard install above downloads the initial script using a method with some
 sudo apt-get install curl git
 sudo dnf install curl git
 sudo yum install curl git
+sudo pacman -Sy curl docker git
 
 ## NOTE: Do not sudo the next line.
 git clone https://github.com/GhostWriters/DockSTARTer "/home/${USER}/.docker"
