@@ -22,3 +22,4 @@ services:
       com.dockstarter.appvars.bitwarden_smtp_port: "587"
       com.dockstarter.appvars.bitwarden_smtp_ssl: "true"
       com.dockstarter.appvars.bitwarden_smtp_username: ""
+      com.dockstarter.appvars.bitwarden_websocket_enable: "true"
