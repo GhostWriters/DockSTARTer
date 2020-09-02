@@ -15,6 +15,7 @@ services:
       - TZ=${TZ}
       - URL=${SWAG_URL}
       - VALIDATION=${SWAG_VALIDATION}
+      - MAXMINDDB_LICENSE_KEY=${SWAG_MAXMINDDB_LICENSE_KEY}
     logging:
       driver: json-file
       options:
