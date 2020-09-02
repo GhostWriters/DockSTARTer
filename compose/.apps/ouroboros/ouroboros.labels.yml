@@ -8,7 +8,6 @@ services:
       com.dockstarter.appvars.ouroboros_cron: "0 4 * * *"
       com.dockstarter.appvars.ouroboros_enabled: "false"
       com.dockstarter.appvars.ouroboros_ignore: ""
-      com.dockstarter.appvars.ouroboros_interval: "300"
       com.dockstarter.appvars.ouroboros_log_level: "info"
       com.dockstarter.appvars.ouroboros_monitor: ""
       com.dockstarter.appvars.ouroboros_network_mode: ""
