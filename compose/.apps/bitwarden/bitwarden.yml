@@ -18,6 +18,7 @@ services:
       - SMTP_SSL=${BITWARDEN_SMTP_SSL}
       - SMTP_USERNAME=${BITWARDEN_SMTP_USERNAME}
       - TZ=${TZ}
+      - WEBSOCKET_ENABLED=${BITWARDEN_WEBSOCKET_ENABLE}
     logging:
       driver: json-file
       options:
