@@ -40,11 +40,11 @@ jobs:
         run: |
           while IFS= read -r line; do echo; sudo -E bash ./main.sh -vt "${line}" || exit 1; echo; done < <(git ls-files '.scripts/*.sh' | sed -E 's/^\.scripts\/(\w+)\.sh$/\1/')
 
-  mainfests:
+  validate-images:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2.3.2
-      - name: validate
+      - name: Validate Images
         working-directory: compose
         env:
           CI: true
