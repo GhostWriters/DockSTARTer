@@ -26,6 +26,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/qbittorrentvpn:/config
       - ${DOCKERSHAREDDIR}:/shared
+      - ${DOWNLOADSDIR}:/config/qBittorrent/downloads
       - ${DOWNLOADSDIR}:/data
       - ${DOWNLOADSDIR}:/downloads
       - ${VPN_OVPNDIR}:/config/openvpn
