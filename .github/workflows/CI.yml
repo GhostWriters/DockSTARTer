@@ -47,5 +47,5 @@ jobs:
       - name: Validate Images
         working-directory: compose
         run: |
-          dirname -- $(grep -Rl 'deprecated: "true"' .) | xargs rm -rf
+          dirname -- $(grep -Rl 'deprecated: "true"') | xargs rm -rf
           for image in $(grep -RPoh "image: \K.*" | sort -u | grep -v '${'); do echo "Image: $image" && DOCKER_CLI_EXPERIMENTAL=enabled docker manifest inspect $image; done
