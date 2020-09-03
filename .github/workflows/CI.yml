@@ -39,3 +39,16 @@ jobs:
           COMMIT_SHA: ${{ github.sha }}
         run: |
           while IFS= read -r line; do echo; sudo -E bash ./main.sh -vt "${line}" || exit 1; echo; done < <(git ls-files '.scripts/*.sh' | sed -E 's/^\.scripts\/(\w+)\.sh$/\1/')
+
+  mainfests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.3.2
+      - name: validate
+        working-directory: compose
+        env:
+          CI: true
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          dirname -- $(grep -Rl 'deprecated: "true"' .) | xargs rm -rf
+          for image in $(grep -RPoh "image: \K.*" | sort -u | grep -v '${'); do echo "Image: $image" && DOCKER_CLI_EXPERIMENTAL=enabled docker manifest inspect $image; done
