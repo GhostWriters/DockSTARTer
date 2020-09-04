@@ -1,0 +1,3 @@
+services:
+  photostructure:
+    image: photostructure/server

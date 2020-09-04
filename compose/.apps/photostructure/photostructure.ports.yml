@@ -1,0 +1,4 @@
+services:
+  photostructure:
+    ports:
+      - ${PHOTOSTRUCTURE_PORT_1787}:1787
