@@ -3,7 +3,7 @@ services:
         labels:
             com.dockstarter.appinfo.description: "http-server is a simple binary to provide a static http server from a given folder."
             com.dockstarter.appinfo.deprecated: "false"
-            com.dockstarter.appinfo.nicename: "Httpserver"
+            com.dockstarter.appinfo.nicename: "httpserver"
             com.dockstarter.appvars.httpserver_enabled: "false"
             com.dockstarter.appvars.httpserver_file_server_color_set: "indigo-red"
             com.dockstarter.appvars.httpserver_file_server_title: "DockSTARTer"
