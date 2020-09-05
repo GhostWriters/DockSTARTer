@@ -5,7 +5,7 @@ services:
       - OOKLA_EULA_GDPR=${SPEEDTEST_OOKLA_EULA_GDPR}
       - PGID=${PGID}
       - PUID=${PUID}
-      - SPEEDTEST_BASE_PATH=${SPEEDTEST_BASE_PATH}
+      - BASE_PATH=${SPEEDTEST_BASE_PATH}
       - TZ=${TZ}
     logging:
       driver: json-file
