@@ -4,14 +4,21 @@ services:
         environment:
             - ARL_TOKEN=${AMD_ARL_TOKEN}
             - AUTOSTART=${AMD_AUTOSTART}
+            - BITRATE={$AMD_BITRATE}
             - CONCURRENCY=${AMD_CONCURRENCY}
+            - DOWNLOADMODE=${AMD_DOWNLOAD_MODE}
             - EXPLICITPREFERRED=${AMD_EXPLICIT_PREFERRED}
+            - FORMAT=${AMD_FORMAT}
             - LIDARRAPIKEY=${AMD_LIDARR_API_KEY}
             - LIDARRURL=${AMD_LIDARR_URL}
+            - LIST=${AMD_LIST}
             - MATCHDISTANCE=${AMD_MATCH_DISTANCE}
             - PGID=${PGID}
             - PUID=${PUID}
-            - QUALITY=${AMD_QUALITY}
+            - REPLAYAGAIN=${AMD_REPLAY_AGAIN}
+            - REQUIREDQUALITY=${AMD_REQUIRED_QUALITY}
+            - SCRIPTINTERVAL=${AMD_SCRIPT_INTERVAL}
+            - SEARCHTYPE=${AMD_SEARCH_TYPE}
             - TZ=${TZ}
         logging:
             driver: json-file
@@ -23,5 +30,5 @@ services:
             - /etc/localtime:/etc/localtime:ro
             - ${DOCKERCONFDIR}/amd:/config
             - ${DOCKERSHAREDDIR}:/shared
-            - ${DOWNLOADSDIR}:/downloads
+            - ${DOWNLOADSDIR}:/downloads-amd
             - ${MEDIADIR_MUSIC}:/music
