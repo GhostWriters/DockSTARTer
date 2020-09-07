@@ -9,6 +9,7 @@ services:
             - DOWNLOADMODE=${AMD_DOWNLOAD_MODE}
             - FORMAT=${AMD_FORMAT}
             - LidarrAPIkey=${AMD_LIDARR_API_KEY}
+            - LIDARRREMOTEPATH=${AMD_LIDARR_REMOTE_PATH}
             - LidarrUrl=${AMD_LIDARR_URL}
             - LIST=${AMD_LIST}
             - MatchDistance=${AMD_MATCH_DISTANCE}
