@@ -4,11 +4,11 @@
 
 Refer to our [Support Page](https://dockstarter.com/basics/support/) for our Support Channels and Tutorials we have found users have made with DockSTARTer!
 
-## What is `appdata`
+## Relocating `appdata`
 
 If you've heard other people talk about an `appdata` folder and not been sure what they meant, it's what we have had as our default `~/.docker/config` since the beginning of DockSTARTer.
 
-As of today that has changed. For new installs the default `DOCKERCONFDIR` will be `~/.config/appdata` instead of `~/.docker/config`. For existing users nothing changes! You can keep your config folder right where it is.
+As time went on, we realized it was more effective to separate `appdata` from the overall `compose` directory. For new installs the default `DOCKERCONFDIR` will be `~/.config/appdata` instead of `~/.docker/config`. For existing users nothing changes! You can keep your config folder right where it is.
 
 If you'd like to move your existing config to the new default location (even though you don't have to) you can do the following:
 Edit `~/. docker/compose/.env` (in any text editor) and set
@@ -21,13 +21,6 @@ And
 
 ```bash
 DOCKERSHAREDDIR=~/.config/appdata/shared
-```
-
-If you're using Duplicati you will also need to set
-
-```bash
-DUPLICATI_BACKUPSDIR=~/.config/appdata/backups
-DUPLICATI_SOURCEDIR=~/.config/appdata
 ```
 
 (Unless you have these set somewhere else on purpose). Then run the following commands:
