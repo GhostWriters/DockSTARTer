@@ -42,13 +42,13 @@ nav:
   - "introduction.md"
   - Basics:
     - "basics/available-apps.md"
+    - "basics/command-line-usage.md"
     - "basics/env-var-info.md"
     - "basics/faq.md"
     - "basics/migration.md"
     - "basics/port-conflicts.md"
     - "basics/support.md"
   - Advanced:
-    - "advanced/advanced-usage.md"
     - "advanced/backups.md"
     - "advanced/domain-info.md"
     - "advanced/macvlan.md"

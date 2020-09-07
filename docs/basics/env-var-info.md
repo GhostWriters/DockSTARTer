@@ -118,7 +118,7 @@ This directory will be mounted under `/tv` inside any container that is used to 
 * Default value: `1000` because this is the most common default on supported OS
 
 Description:
-This value can be obtained by using `id $user`.
+This value can be obtained by using `id -g $user`.
 
 ## PUID
 
@@ -126,7 +126,7 @@ This value can be obtained by using `id $user`.
 * Default value: `1000` because this is the most common default on supported OS
 
 Description:
-This value can be obtained by using `id $user`.
+This value can be obtained by using `id -u $user`.
 
 ## TZ
 
@@ -134,6 +134,7 @@ This value can be obtained by using `id $user`.
 * Default value: `America/Chicago` because that's @nemchik's timezone (CST)
 
 Description:
+System timezone, see [list of TZ Database Time Zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
 
 ## LAN_NETWORK
 
