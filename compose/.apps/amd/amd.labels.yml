@@ -13,6 +13,7 @@ services:
             com.dockstarter.appvars.amd_explicit_preferred: "true"
             com.dockstarter.appvars.amd_format: "FLAC"
             com.dockstarter.appvars.amd_lidarr_api_key: ""
+            com.dockstarter.appvars.amd_lidarr_remote_path: ""
             com.dockstarter.appvars.amd_lidarr_url: "http://lidarr:8686"
             com.dockstarter.appvars.amd_list: "both"
             com.dockstarter.appvars.amd_match_distance: "10"
