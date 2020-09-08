@@ -137,7 +137,7 @@ DOCKERCONFDIR=~/.config/appdata
 And
 
 ```bash
-DOCKERSHAREDDIR=~/.config/appdata/shared
+DOCKERSTORAGEDIR=~/storage
 ```
 
 If you're using duplicati you will also need to set

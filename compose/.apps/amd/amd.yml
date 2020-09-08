@@ -1,34 +1,34 @@
 services:
-    amd:
-        container_name: amd
-        environment:
-            - ARL_TOKEN=${AMD_ARL_TOKEN}
-            - AUTOSTART=${AMD_AUTOSTART}
-            - BITRATE={$AMD_BITRATE}
-            - Concurrency=${AMD_CONCURRENCY}
-            - DOWNLOADMODE=${AMD_DOWNLOAD_MODE}
-            - FORMAT=${AMD_FORMAT}
-            - LidarrAPIkey=${AMD_LIDARR_API_KEY}
-            - LIDARRREMOTEPATH=${AMD_LIDARR_REMOTE_PATH}
-            - LidarrUrl=${AMD_LIDARR_URL}
-            - LIST=${AMD_LIST}
-            - MatchDistance=${AMD_MATCH_DISTANCE}
-            - PGID=${PGID}
-            - PUID=${PUID}
-            - replaygain=${AMD_REPLAY_AGAIN}
-            - requirequality=${AMD_REQUIRED_QUALITY}
-            - SCRIPTINTERVAL=${AMD_SCRIPT_INTERVAL}
-            - SEARCHTYPE=${AMD_SEARCH_TYPE}
-            - TZ=${TZ}
-        logging:
-            driver: json-file
-            options:
-                max-file: ${DOCKERLOGGING_MAXFILE}
-                max-size: ${DOCKERLOGGING_MAXSIZE}
-        restart: unless-stopped
-        volumes:
-            - /etc/localtime:/etc/localtime:ro
-            - ${DOCKERCONFDIR}/amd:/config
-            - ${DOCKERSHAREDDIR}:/shared
-            - ${DOWNLOADSDIR}:/downloads-amd
-            - ${MEDIADIR_MUSIC}:/music
+  amd:
+    container_name: amd
+    environment:
+      - ARL_TOKEN=${AMD_ARL_TOKEN}
+      - AUTOSTART=${AMD_AUTOSTART}
+      - BITRATE={$AMD_BITRATE}
+      - Concurrency=${AMD_CONCURRENCY}
+      - DOWNLOADMODE=${AMD_DOWNLOAD_MODE}
+      - FORMAT=${AMD_FORMAT}
+      - LidarrAPIkey=${AMD_LIDARR_API_KEY}
+      - LIDARRREMOTEPATH=${AMD_LIDARR_REMOTE_PATH}
+      - LidarrUrl=${AMD_LIDARR_URL}
+      - LIST=${AMD_LIST}
+      - MatchDistance=${AMD_MATCH_DISTANCE}
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - replaygain=${AMD_REPLAY_AGAIN}
+      - requirequality=${AMD_REQUIRED_QUALITY}
+      - SCRIPTINTERVAL=${AMD_SCRIPT_INTERVAL}
+      - SEARCHTYPE=${AMD_SEARCH_TYPE}
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      max-file: ${DOCKERLOGGING_MAXFILE}
+      max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/amd:/config
+      - ${DOCKERSHAREDDIR}:/shared
+      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOWNLOADSDIR}:/downloads-amd
+      - ${MEDIADIR_MUSIC}:/music

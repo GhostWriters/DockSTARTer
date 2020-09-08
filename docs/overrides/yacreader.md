@@ -23,10 +23,9 @@ services:
     container_name: yacreader-server
     restart: unless-stopped
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/YACReaderLibraryServer:/config
-      - ${DOCKERSHAREDDIR}:/shared
-      - ${MEDIADIR_COMICS}:/comics
-      - ${DOWNLOADSDIR}:/downloads
+      - ${DOCKERSTORAGEDIR}:/storage
     ports:
       - "${YACREADER_PORT_8080}:8080"
 ```

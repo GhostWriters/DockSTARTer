@@ -45,6 +45,6 @@ services:
       - ${DOCKERCONFDIR}/proxymanager/config.json:/app/config/config.json
       - ${DOCKERCONFDIR}/proxymanager/data:/data
       - ${DOCKERCONFDIR}/proxymanager/letsencrypt:/etc/letsencrypt
-      - ${DOCKERSHAREDDIR}:/shared
+      - ${DOCKERSTORAGEDIR}:/storage
     restart: unless-stopped
 ```

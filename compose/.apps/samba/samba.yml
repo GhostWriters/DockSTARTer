@@ -18,8 +18,9 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}:/${SAMBA_SHARENAME}/config
-      - ${DOCKERSHAREDDIR}:/${SAMBA_SHARENAME}/shared
+      - ${DOCKERSTORAGEDIR}:/${SAMBA_SHARENAME}/storage
       - ${DOCKERSHAREDDIR}:/shared
+      - ${DOCKERSTORAGEDIR}:/storage
       - ${DOWNLOADSDIR}:/${SAMBA_SHARENAME}/downloads
       - ${DOWNLOADSDIR}:/downloads
       - ${MEDIADIR_BOOKS}:/${SAMBA_SHARENAME}/books

@@ -15,5 +15,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/photoshow:/config
       - ${DOCKERSHAREDDIR}:/shared
+      - ${DOCKERSTORAGEDIR}:/storage
       - ${PHOTOSHOW_IMAGES_DIR}:/Pictures:ro
       - ${PHOTOSHOW_THUMBS_DIR}:/Thumbs

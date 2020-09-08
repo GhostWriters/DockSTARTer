@@ -15,5 +15,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/sabnzbd:/config
       - ${DOCKERSHAREDDIR}:/shared
+      - ${DOCKERSTORAGEDIR}:/storage
       - ${DOWNLOADSDIR}:/downloads
       - ${DOWNLOADSDIR}/incomplete-downloads:/incomplete-downloads

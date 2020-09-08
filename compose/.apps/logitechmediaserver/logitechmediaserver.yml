@@ -15,4 +15,5 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/logitechmediaserver:/srv/squeezebox/
       - ${DOCKERSHAREDDIR}:/shared
+      - ${DOCKERSTORAGEDIR}:/storage
       - ${MEDIADIR_MUSIC}:/music
