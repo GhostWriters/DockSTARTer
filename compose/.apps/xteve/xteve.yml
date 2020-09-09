@@ -5,7 +5,7 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-      - XTEVE_BRACH=${XTEVE_BRANCH}
+      - XTEVE_BRANCH=${XTEVE_BRANCH}
       - XTEVE_DEBUG=${XTEVE_DEBUG}
     logging:
       driver: json-file
@@ -15,6 +15,6 @@ services:
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/xteve:/config
+      - ${DOCKERCONFDIR}/xteve:/home/xteve/conf
       - ${DOCKERCONFDIR}/xteve/tmp:/tmp/xteve
       - ${DOCKERSHAREDDIR}:/shared
