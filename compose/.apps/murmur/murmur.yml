@@ -19,3 +19,4 @@ services:
       - ${DOCKERCONFDIR}/murmur/data:/opt/murmur/data
       - ${DOCKERCONFDIR}/murmur/log:/opt/murmur/log
       - ${DOCKERSHAREDDIR}:/shared
+      - ${DOCKERSTORAGEDIR}:/storage

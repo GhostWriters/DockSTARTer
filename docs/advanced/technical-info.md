@@ -25,9 +25,10 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/sonarr:/config
-      - ${DOWNLOADSDIR}:/downloads
-      - ${MEDIADIR_TV}:/tv
+      - ${DOCKERSTORAGEDIR}:/storage
+
 ```
 
 In the example above,
@@ -44,36 +45,7 @@ The path to Sonarr's config in the above example, broken up, is `${DOCKERCONFDIR
 
 `${DOCKERCONFDIR}/sonarr` is the path on your computer that Sonarr will see when it looks in `/config`. In this way, all your Containers will have their own private folder in your global config mount.
 
-The `${DOWNLOADSDIR}` location is public to all apps that need it. That means Sonarr will be writing and reading from the same `${DOWNLOADSDIR}:/downloads` mounts as Radarr, SickBeard etc AND your download clients. Here's mine!
-
-```bash
-p2p@p2pmachine:/mnt/p2pDownloads$ ls -la
-total 13496
-drwxr-xr-x 14 p2p  p2p      4096 Jun 25 19:08 .
-drwxr-xr-x  6 root root     4096 Jun 23 16:20 ..
-drwxr-xr-x  3 p2p  p2p      4096 Jun 24 08:26 complete
-drwxr-xr-x  5 p2p  p2p      4096 Jun 30 08:31 completed
-drwxr-xr-x  2 p2p  p2p      4096 Jun 24 08:26 incoming
-drwxr-xr-x  4 p2p  p2p      4096 Jun 30 19:53 incomplete
-drwxr-xr-x  4 p2p  p2p      4096 Jun 30 14:04 intermediate
-drwxr-xr-x  2 p2p  p2p     16384 Jun 23 15:32 lost+found
-drwxr-xr-x  2 p2p  p2p      4096 Jun 30 14:03 nzb
--rw-r--r--  1 p2p  p2p  13726266 Jun 30 20:10 nzbget.log
-drwxr-xr-x  2 p2p  p2p     20480 Jun 30 14:04 queue
-drwxr-xr-x  2 p2p  p2p      4096 Jun 30 14:03 tmp
-drwxr-xr-x  7 p2p  p2p      4096 Jun 30 19:53 transmission
-drwxr-xr-x  2 p2p  p2p      4096 Jun 23 16:43 watch
-drwxr-xr-x  2 p2p  p2p      4096 Jun 24 08:26 watched
-p2p@p2pmachine:/mnt/p2pDownloads$
-```
-
-The downside to this is that your root downloads location will start to look very messy if you have a lot of downloaders, with multiple complete and incomplete folders, some even being used by different download clients.
-
-Ineligant as that is, and a lot of those folders _could_ be deleted, from unused testing etc, this is the default behavior because Sonarr and (for instance) Transmission need to refer to the same paths in order to seamlessly move files around. Sonarr and Radarr both support path mapping but having DS configure them is outside the scope of this project.
-
-Instead, if you want to run multiple download containers, configure Transmissions download directories itself (at `ip.add.ress:9091/transmission/`).
-
-Change them all to `/downloads/transmission/incomplete`,`/downloads/transmission/complete` etc etc. Then it has it's own folder but can still report the same root path.
+The `${DOCKERSTORAGEDIR}` location is public to all apps that need it. That means Sonarr will be writing and reading from the same `${DOCKERSTORAGEDIR}:/storage` mounts as Radarr, SickBeard etc AND your download clients.
 
 **Again**, do not edit the default YML files, instead, see the section on [Overrides / Introduction](https://dockstarter.com/overrides/introduction). (Assuming you are reading this page from start to finish for the first time) there is a reason you haven't seen their location yet ;)
 

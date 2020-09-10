@@ -18,3 +18,4 @@ services:
       - ${DOCKERCONFDIR}/xteve:/home/xteve/conf
       - ${DOCKERCONFDIR}/xteve/tmp:/tmp/xteve
       - ${DOCKERSHAREDDIR}:/shared
+      - ${DOCKERSTORAGEDIR}:/storage

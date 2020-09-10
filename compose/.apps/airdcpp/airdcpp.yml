@@ -21,5 +21,6 @@ services:
       - ${AIRDCPP_SHAREDIR}:/Share
       - ${DOCKERCONFDIR}/airdcpp:/.airdcpp
       - ${DOCKERSHAREDDIR}:/shared
+      - ${DOCKERSTORAGEDIR}:/storage
       - ${DOWNLOADSDIR}:/Downloads
       - ${DOWNLOADSDIR}:/downloads

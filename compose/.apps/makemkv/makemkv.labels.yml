@@ -8,4 +8,3 @@ services:
       com.dockstarter.appvars.makemkv_network_mode: ""
       com.dockstarter.appvars.makemkv_outputdir: "/mnt/makemkv/output"
       com.dockstarter.appvars.makemkv_port_5800: "5800"
-      com.dockstarter.appvars.makemkv_storagedir: "/mnt/makemkv/storage"
