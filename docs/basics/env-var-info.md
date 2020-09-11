@@ -131,7 +131,7 @@ This directory will be mounted under `/tv` inside any container that is used to 
 * Default value: `1000` because this is the most common default on supported OS
 
 Description:
-This value can be obtained by using `id -g $user`.
+This value can be obtained by using `id -g $USER`.
 
 ## PUID
 
@@ -139,7 +139,7 @@ This value can be obtained by using `id -g $user`.
 * Default value: `1000` because this is the most common default on supported OS
 
 Description:
-This value can be obtained by using `id -u $user`.
+This value can be obtained by using `id -u $USER`.
 
 ## TZ
 
