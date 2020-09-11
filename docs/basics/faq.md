@@ -20,6 +20,7 @@ DOCKERCONFDIR=~/.config/appdata
 ```bash
 ds -u
 ds -c down
+# Move your current config folder to the new location, ex:
 sudo mv ~/.docker/config ~/.config/appdata
 ds -c
 ```
