@@ -4,13 +4,37 @@
 
 Refer to our [Support Page](https://dockstarter.com/basics/support/) for our Support Channels and Tutorials we have found users have made with DockSTARTer!
 
+## Relocating `appdata`
+
+If you've heard other people talk about an `appdata` folder and not been sure what they meant, it's what we have had as our default `~/.docker/config` since the beginning of DockSTARTer.
+
+As time went on, we realized it was more effective to separate `appdata` from the overall `compose` directory. For new installs the default `DOCKERCONFDIR` will be `~/.config/appdata` instead of `~/.docker/config`. For existing users nothing changes! You can keep your config folder right where it is.
+
+If you'd like to move your existing config to the new default location (even though you don't have to) you can do the following:
+Edit `~/. docker/compose/.env` (in any text editor) and set
+
+```bash
+DOCKERCONFDIR=~/.config/appdata
+```
+
+(Unless you have it set somewhere else on purpose). Then run the following commands:
+
+```bash
+ds -u
+ds -c down
+sudo mv ~/.docker/config ~/.config/appdata
+ds -c
+```
+
+That's it! Your containers should fire right back up as if nothing has changed. If you have any issues feel free to ask for help in `#ds-support`
+
 ## Ouroboros Enabled By Default
 
-This tool is extremely useful for people getting used to running docker. It's official documentation should explain why but you can disable it if you want.
+This tool is extremely useful for people getting used to running Docker. Its official documentation should explain why but you can disable it if you want.
 
-> [Ouroboros](https://hub.docker.com/r/pyouroboros/ouroboros/) will monitor (all or specified) running docker containers and update them to the (latest or tagged) available image in the remote registry.
+> [Ouroboros](https://hub.docker.com/r/pyouroboros/ouroboros/) will monitor (all or specified) running Docker containers and update them to the (latest or tagged) available image in the remote registry.
 
-In short, Ouroboros keeps your Containers up to date.
+In short, Ouroboros keeps your containers up to date.
 
 DockSTARTer previously enabled Watchtower by default before Ouroboros. The two do almost the same thing, but Ouroboros has more options.
 
@@ -34,7 +58,7 @@ This error can occur if your connected to a VPN while setting up the containers.
 
 ### Starting containers and getting the following or a similar error message: "listen udp 0.0.0.0:5353: bind: address already in use"
 
-As you could probably guess this means an application (most likely plex) is trying to use a port that is already in use.
+As you could probably guess this means an application (most likely Plex) is trying to use a port that is already in use.
 You can check which application it is with:
 
 ```bash
