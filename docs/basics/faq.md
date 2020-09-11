@@ -15,7 +15,9 @@ Edit `~/. docker/compose/.env` (in any text editor) and set
 DOCKERCONFDIR=~/.config/appdata
 ```
 
-(Unless you have it set somewhere else on purpose). Then run the following commands:
+(You can choose anywhere to save configs, this example only shows the default location).
+
+Then run the following commands:
 
 ```bash
 ds -u
