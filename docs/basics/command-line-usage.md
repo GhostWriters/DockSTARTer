@@ -17,7 +17,7 @@ This script does the following:
 - Installs [yq](https://github.com/mikefarah/yq) - by downloading the binary from source and installing it locally, used for piecing together YAML files
 - Installs [docker](https://github.com/docker/docker-install) - by downloading via the official docker-install script, used to run containers
 - Installs [docker machine completion](https://docs.docker.com/machine/completion/) - by downloading the binary from source and installing it locally, provides tab completion for docker in bash shell (just a nice extra to have)
-- Installs [docker-compose](https://docs.docker.com/compose/install/) - using python3 pip, allows configuring of containers to be run together instead of individually running each one
+- Installs [docker-compose](https://github.com/linuxserver/docker-docker-compose#recommended-method) - by installing LSIO's helper script to run `docker-compose` from inside a docker container, allows configuring of containers to be run together instead of individually running each one
 - Installs [docker compose completion](https://docs.docker.com/compose/completion/) - by downloading the binary from source and installing it locally, provides tab completion for docker-compose in bash shell (just a nice extra to have)
 
 When the script finishes it will display a message informing you to reboot if this is the first time you've ran it.
