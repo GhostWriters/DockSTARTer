@@ -95,6 +95,7 @@ nav:
     - "apps/homeassistant.md"
     - "apps/htpcmanager.md"
     - "apps/httpserver.md"
+    - "apps/huginn.md"
     - "apps/hydra2.md"
     - "apps/influxdb.md"
     - "apps/jackett.md"

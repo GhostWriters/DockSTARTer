@@ -1,0 +1,21 @@
+services:
+  huginn:
+    container_name: huginn
+    environment:
+      - HUGINN_DATABASE_HOST=${HUGINN_DATABASE_HOST}
+      - HUGINN_DATABASE_NAME=${HUGINN_DATABASE_NAME}
+      - HUGINN_DATABASE_PASSWORD=${HUGINN_DATABASE_PASSWORD}
+      - HUGINN_DATABASE_PORT=${HUGINN_DATABASE_PORT}
+      - HUGINN_DATABASE_USERNAME=${HUGINN_DATABASE_USERNAME}
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERSTORAGEDIR}:/storage

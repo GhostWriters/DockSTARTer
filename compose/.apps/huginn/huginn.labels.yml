@@ -1,0 +1,14 @@
+services:
+  huginn:
+    labels:
+      com.dockstarter.appinfo.description: "Huginn is a system for building agents that perform automated tasks for you online."
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.nicename: "Huginn"
+      com.dockstarter.appvars.huginn_database_host: "mariadb"
+      com.dockstarter.appvars.huginn_database_name: "huginn"
+      com.dockstarter.appvars.huginn_database_password: ""
+      com.dockstarter.appvars.huginn_database_port: "3306"
+      com.dockstarter.appvars.huginn_database_username: "huginn"
+      com.dockstarter.appvars.huginn_enabled: "false"
+      com.dockstarter.appvars.huginn_network_mode: ""
+      com.dockstarter.appvars.huginn_port_3000: "3000"
