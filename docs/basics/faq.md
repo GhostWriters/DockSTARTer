@@ -35,7 +35,6 @@ This tool is extremely useful for people getting used to running Docker. Its off
 
 In short, Ouroboros keeps your containers up to date.
 
-DockSTARTer previously enabled Watchtower by default before Ouroboros. The two do almost the same thing, but Ouroboros has more options.
 
 ## Ouroboros/Watchtower FAQ
 
