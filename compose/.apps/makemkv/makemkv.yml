@@ -15,5 +15,5 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/makemkv:/config
       - ${DOCKERSHAREDDIR}:/shared
+      - ${DOCKERSTORAGEDIR}:/storage
       - ${MAKEMKV_OUTPUTDIR}:/output
-      - ${MAKEMKV_STORAGEDIR}:/storage:ro

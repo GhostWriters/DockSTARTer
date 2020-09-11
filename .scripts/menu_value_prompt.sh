@@ -38,41 +38,13 @@ menu_value_prompt() {
             SYSTEM_VAL=${HOSTNAME}
             VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
             ;;
-        DOCKERSHAREDDIR)
-            HOME_VAL="${DETECTED_HOMEDIR}/.config/appdata/shared"
+        DOCKERSTORAGEDIR)
+            HOME_VAL="${DETECTED_HOMEDIR}/storage"
             VALUEOPTIONS+=("Use Home " "${HOME_VAL}")
-            ;;
-        DOWNLOADSDIR)
-            SYSTEM_VAL="${DETECTED_HOMEDIR}/Downloads"
-            VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
             ;;
         LAN_NETWORK)
             SYSTEM_VAL=$(run_script 'detect_lan_network')
             VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
-            ;;
-        MEDIADIR_AUDIOBOOKS)
-            HOME_VAL="${DETECTED_HOMEDIR}/Audiobooks"
-            VALUEOPTIONS+=("Use Home " "${HOME_VAL}")
-            ;;
-        MEDIADIR_BOOKS)
-            HOME_VAL="${DETECTED_HOMEDIR}/Books"
-            VALUEOPTIONS+=("Use Home " "${HOME_VAL}")
-            ;;
-        MEDIADIR_COMICS)
-            HOME_VAL="${DETECTED_HOMEDIR}/Comics"
-            VALUEOPTIONS+=("Use Home " "${HOME_VAL}")
-            ;;
-        MEDIADIR_MOVIES)
-            HOME_VAL="${DETECTED_HOMEDIR}/Movies"
-            VALUEOPTIONS+=("Use Home " "${HOME_VAL}")
-            ;;
-        MEDIADIR_MUSIC)
-            HOME_VAL="${DETECTED_HOMEDIR}/Music"
-            VALUEOPTIONS+=("Use Home " "${HOME_VAL}")
-            ;;
-        MEDIADIR_TV)
-            HOME_VAL="${DETECTED_HOMEDIR}/TV"
-            VALUEOPTIONS+=("Use Home " "${HOME_VAL}")
             ;;
         PGID)
             SYSTEM_VAL=${DETECTED_PGID}

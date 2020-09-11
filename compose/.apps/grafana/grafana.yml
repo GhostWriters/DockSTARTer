@@ -15,3 +15,4 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/grafana:/var/lib/grafana
       - ${DOCKERSHAREDDIR}:/shared
+      - ${DOCKERSTORAGEDIR}:/storage

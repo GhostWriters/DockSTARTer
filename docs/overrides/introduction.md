@@ -25,7 +25,9 @@ services:
   sonarr:
     image: hotio/sonarr
     volumes:
-      - ${MEDIADIR_TV}:/media
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/sonarr:/config
+      - ${DOCKERSTORAGEDIR}:/storage
 ```
 
 ***
@@ -39,6 +41,9 @@ version: "3.4"  # this must match the version in docker-compose.yml
 services:
   alltube:
     container_name: alltube
+    environment:
+      - PGID=1000
+      - PUID=1000
     image: rudloff/alltube
     logging:
       driver: json-file
@@ -47,11 +52,9 @@ services:
         max-size: ${DOCKERLOGGING_MAXSIZE}
     ports:
       - "1234:80"
-    environment:
-      - "PUID:1000"
-      - "PGID:1000"
-    volumes:
-      - ${DOCKERCONFDIR}/alltube:/var/www/html/config
-      - ${DOCKERSHAREDDIR}:/share
     restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/alltube:/var/www/html/config
+      - ${DOCKERSTORAGEDIR}:/storage
 ```

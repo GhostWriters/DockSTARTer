@@ -18,5 +18,6 @@ services:
       - ${DOCKERCONFDIR}/photostructure:/ps/config
       - ${DOCKERCONFDIR}/photostructure/logs:/ps/logs
       - ${DOCKERSHAREDDIR}:/shared
+      - ${DOCKERSTORAGEDIR}:/storage
       - ${PHOTOSTRUCTURE_CACHE_DIRECTORY}:/ps/tmp
       - ${PHOTOSTRUCTURE_LIBRARY}:/ps/library

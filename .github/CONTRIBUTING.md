@@ -25,15 +25,19 @@ More important than being beautiful is being functional. This repository is prim
     - `container_name` should match `<appname>`
     - `environment` should contain the environment variables used by the app
       - `- TZ=${TZ}` is always included even if not needed unless some other form of timezone variable is used
-    - `labels` should contain the labels used by the app
+    - `labels` should contain the labels used by the app. `appvars` should be lowercase in the labels file and are converted to uppercase automatically to become variables in `.env`. The values in the labels file become the default values in `.env`
+      - `com.dockstarter.appinfo.deprecated: "<true|false>"` indicates if an app is deprecated
       - `com.dockstarter.appinfo.description: "<Description>"` will show the description in the menus
       - `com.dockstarter.appinfo.nicename: "<AppName>"` must match `<appname>` exactly but can have mixed case. Ex: Portainer vs PORTAINER
+      - `com.dockstarter.appvars.<appname>_enabled: "false"` must be included and default to false. Users pick which apps are enabled
+      - `com.dockstarter.appvars.<appname>_network_mode: ""` must be included and default to blank.
+      - `com.dockstarter.appvars.<appname>_<var_name>: "<var_value>"` one entry for each variable specific to the app environment. See existing apps for examples
     - `logging` and the items beneath it should be included exactly as shown in other apps
     - `restart` should be `unless-stopped` or should include a comment about why another option is used
     - `volumes` should contain the volumes used by the app
       - `- /etc/localtime:/etc/localtime:ro` is always included
       - `- ${DOCKERCONFDIR}/<appname>:<container_config>` should be used to define the primary config directory for the app
-      - `- ${DOCKERSHAREDDIR}:/shared` is always included
+      - `- ${DOCKERSTORAGEDIR}:/storage` is always included
   - `<appname>.hostname.yml` sets the hostname to use the `${DOCKERHOSTNAME}` variable
   - `<appname>.netmode.yml` contains the `<APPNAME>_NETWORK_MODE` variable
   - `<appname>.ports.yml` contains the ports used by the app or a [placeholder](https://github.com/GhostWriters/DockSTARTer/blob/master/compose/.reqs/v1.yml) file if no ports are required

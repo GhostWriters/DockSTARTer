@@ -15,6 +15,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/unmanic:/config
       - ${DOCKERSHAREDDIR}:/shared
+      - ${DOCKERSTORAGEDIR}:/storage
       - ${UNMANIC_ENCODEDIR}:/tmp/unmanic
       - ${MEDIADIR_MOVIES}:/library/movies
       - ${MEDIADIR_MOVIES}:/movies

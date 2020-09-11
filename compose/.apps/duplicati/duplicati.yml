@@ -15,5 +15,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/duplicati:/config
       - ${DOCKERSHAREDDIR}:/shared
+      - ${DOCKERSTORAGEDIR}:/storage
       - ${DUPLICATI_BACKUPSDIR}:/backups
       - ${DUPLICATI_SOURCEDIR}:/source

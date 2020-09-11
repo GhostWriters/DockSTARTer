@@ -16,3 +16,4 @@ services:
       - ${DOCKERCONFDIR}/logarr:/config
       - ${DOCKERCONFDIR}:/var/log/logarrlogs:ro
       - ${DOCKERSHAREDDIR}:/shared
+      - ${DOCKERSTORAGEDIR}:/storage

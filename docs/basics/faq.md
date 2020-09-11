@@ -105,7 +105,7 @@ We are looking for the following line:
 
 The part you care about is the `noexec` bit. You will need to remove that string. Save the file and per [OMV documentation](https://openmediavault.readthedocs.io/en/5.x/various/fs_env_vars.html) you need to run `omv-salt deploy run fstab`. To verify that the `noexec` flag was removed from your drive run `cat /proc/mounts` and find your drive on the list. You can also run `cat /proc/mounts | grep partial_drive_name`. If the `noexec` flag is present, you skipped a step.
 
-We are now going to work on creating the directories for DS to use. You will need to create 4 shared folders and allow "Everyone read/write". The 4 directories will be called `appdata`, `shared`, `medialibrary` and `home`.
+We are now going to work on creating the directories for DS to use. You will need to create 4 shared folders and allow "Everyone read/write". The 4 directories will be called `appdata`, `storage`, `medialibrary` and `home`.
 
 The last directory should be where you store your user directories and you should not be using the system disk for that. If you do not know how to create a user and assign it a home directory; look up the OMV documentation as that is outside of the scope of this guide.
 
@@ -115,4 +115,4 @@ Once the above requirements have been met, you will need to SSH to your OMV host
 `bash -c "$(curl -fsSL https://get.dockstarter.com)"`
 `sudo reboot`
 
-After the reboot is complete, SSH back to your host using your user account and run `ds`, type your password and select "Configuration". Select "Set Global Variables" and select "No" on the next prompt. The only thing we recommend changing is the `PGID` to `Use System 100`. On the next screen, please take note of the path that starts with `/srv/dev-disk-by-label-XXX`. You are going to want to remember this path to set your `appdata`, `shared`, `media` and `downloads` folder to that path, for instance: `/srv/dev-disk-by-label-DS/appdata/`, `/srv/dev-disk-by-label-DS/media/movies`, etc.
+After the reboot is complete, SSH back to your host using your user account and run `ds`, type your password and select "Configuration". Select "Set Global Variables" and select "No" on the next prompt. The only thing we recommend changing is the `PGID` to `Use System 100`. On the next screen, please take note of the path that starts with `/srv/dev-disk-by-label-XXX`. You are going to want to remember this path to set your `appdata`, `storage`, `media` and `downloads` folder to that path, for instance: `/srv/dev-disk-by-label-DS/appdata/`, `/srv/dev-disk-by-label-DS/media/movies`, etc.

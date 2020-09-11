@@ -24,3 +24,4 @@ services:
       - ${DOCKERCONFDIR}/pihole/dnsmasq.d:/etc/dnsmasq.d
       - ${DOCKERCONFDIR}/pihole/pihole:/etc/pihole
       - ${DOCKERSHAREDDIR}:/shared
+      - ${DOCKERSTORAGEDIR}:/storage

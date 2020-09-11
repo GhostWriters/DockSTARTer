@@ -46,17 +46,18 @@ The maximum number of log files that can be present. If rolling the logs creates
 Description:
 The maximum size of the log before it is rotated. Size is specified in kilobytes.
 
-## DOCKERSHAREDDIR
+## DOCKERSTORAGEDIR
 
-* System Detected value: `~/.config/appdata/shared`
-* Default value: `~/.config/appdata/shared`
+* System Detected value: `~/storage`
+* Default value: `~/storage`
 
 Description:
-This directory will be mounted under `/shared` inside every container across DS. There is no specific use for this directory, it can be used however you like.
+This directory will be mounted under `/storage` inside every container across DS. There is no specific use for this directory, it can be used however you like.
 
-## DOWNLOADSDIR
+## !DEPRECATED! DOWNLOADSDIR
 
-* System Detected value: `~/Downloads`
+DEPRECATION NOTICE: This variable is now deprecated in favor of `DOCKERSTORAGEDIR` which is mounted as a volume in all containers as `/storage`. This variable will be completely removed from all DockSTARTer app templates and no longer mounted as a volume at the end of 2020. The variable will not be removed from your `.env` file, however it will be sorted into the application specific variables at the bottom. If you require the volume you can continue using it via an [override](https://dockstarter.com/overrides/introduction).
+
 * Default value: `/mnt/downloads`
 
 Description:
@@ -64,7 +65,9 @@ This directory will be mounted under `/downloads` inside any container that is u
 
 **NOTE: `DOWNLOADSDIR` also gets mounted to `/data` inside some containers because that is what [binhex](https://hub.docker.com/u/binhex/) containers use. They will not work as intended otherwise.**
 
-## MEDIADIR_AUDIOBOOKS
+## !DEPRECATED! MEDIADIR_AUDIOBOOKS
+
+DEPRECATION NOTICE: This variable is now deprecated in favor of `DOCKERSTORAGEDIR` which is mounted as a volume in all containers as `/storage`. This variable will be completely removed from all DockSTARTer app templates and no longer mounted as a volume at the end of 2020. The variable will not be removed from your `.env` file, however it will be sorted into the application specific variables at the bottom. If you require the volume you can continue using it via an [override](https://dockstarter.com/overrides/introduction).
 
 * System Detected value: `~/Audioooks`
 * Default value: `/mnt/medialibrary/audiobooks`
@@ -72,7 +75,9 @@ This directory will be mounted under `/downloads` inside any container that is u
 Description:
 This directory will be mounted under `/audiobooks` inside any container that is used to access your audiobooks library. This directory is meant to store media permanently.
 
-## MEDIADIR_BOOKS
+## !DEPRECATED! MEDIADIR_BOOKS
+
+DEPRECATION NOTICE: This variable is now deprecated in favor of `DOCKERSTORAGEDIR` which is mounted as a volume in all containers as `/storage`. This variable will be completely removed from all DockSTARTer app templates and no longer mounted as a volume at the end of 2020. The variable will not be removed from your `.env` file, however it will be sorted into the application specific variables at the bottom. If you require the volume you can continue using it via an [override](https://dockstarter.com/overrides/introduction).
 
 * System Detected value: `~/Books`
 * Default value: `/mnt/medialibrary/books`
@@ -80,7 +85,9 @@ This directory will be mounted under `/audiobooks` inside any container that is 
 Description:
 This directory will be mounted under `/books` inside any container that is used to access your books library. This directory is meant to store media permanently.
 
-## MEDIADIR_COMICS
+## !DEPRECATED! MEDIADIR_COMICS
+
+DEPRECATION NOTICE: This variable is now deprecated in favor of `DOCKERSTORAGEDIR` which is mounted as a volume in all containers as `/storage`. This variable will be completely removed from all DockSTARTer app templates and no longer mounted as a volume at the end of 2020. The variable will not be removed from your `.env` file, however it will be sorted into the application specific variables at the bottom. If you require the volume you can continue using it via an [override](https://dockstarter.com/overrides/introduction).
 
 * System Detected value: `~/Comics`
 * Default value: `/mnt/medialibrary/comics`
@@ -88,7 +95,9 @@ This directory will be mounted under `/books` inside any container that is used 
 Description:
 This directory will be mounted under `/comics` inside any container that is used to access your comics library. This directory is meant to store media permanently.
 
-## MEDIADIR_MOVIES
+## !DEPRECATED! MEDIADIR_MOVIES
+
+DEPRECATION NOTICE: This variable is now deprecated in favor of `DOCKERSTORAGEDIR` which is mounted as a volume in all containers as `/storage`. This variable will be completely removed from all DockSTARTer app templates and no longer mounted as a volume at the end of 2020. The variable will not be removed from your `.env` file, however it will be sorted into the application specific variables at the bottom. If you require the volume you can continue using it via an [override](https://dockstarter.com/overrides/introduction).
 
 * System Detected value: `~/Movies`
 * Default value: `/mnt/medialibrary/movies`
@@ -96,7 +105,9 @@ This directory will be mounted under `/comics` inside any container that is used
 Description:
 This directory will be mounted under `/movies` inside any container that is used to access your movie library. This directory is meant to store media permanently.
 
-## MEDIADIR_MUSIC
+## !DEPRECATED! MEDIADIR_MUSIC
+
+DEPRECATION NOTICE: This variable is now deprecated in favor of `DOCKERSTORAGEDIR` which is mounted as a volume in all containers as `/storage`. This variable will be completely removed from all DockSTARTer app templates and no longer mounted as a volume at the end of 2020. The variable will not be removed from your `.env` file, however it will be sorted into the application specific variables at the bottom. If you require the volume you can continue using it via an [override](https://dockstarter.com/overrides/introduction).
 
 * System Detected value: `~/Music`
 * Default value: `/mnt/medialibrary/music`
@@ -104,7 +115,9 @@ This directory will be mounted under `/movies` inside any container that is used
 Description:
 This directory will be mounted under `/music` inside any container that is used to access your music library. This directory is meant to store media permanently.
 
-## MEDIADIR_TV
+## !DEPRECATED! MEDIADIR_TV
+
+DEPRECATION NOTICE: This variable is now deprecated in favor of `DOCKERSTORAGEDIR` which is mounted as a volume in all containers as `/storage`. This variable will be completely removed from all DockSTARTer app templates and no longer mounted as a volume at the end of 2020. The variable will not be removed from your `.env` file, however it will be sorted into the application specific variables at the bottom. If you require the volume you can continue using it via an [override](https://dockstarter.com/overrides/introduction).
 
 * System Detected value: `~/TV`
 * Default value: `/mnt/medialibrary/tv`
