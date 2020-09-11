@@ -20,7 +20,7 @@ This script does the following:
 - Installs [docker-compose](https://docs.docker.com/compose/install/) - using python3 pip, allows configuring of containers to be run together instead of individually running each one
 - Installs [docker compose completion](https://docs.docker.com/compose/completion/) - by downloading the binary from source and installing it locally, provides tab completion for docker-compose in bash shell (just a nice extra to have)
 
-When the script finishes it will prompt you to reboot if this is the first time you've ran it.
+When the script finishes it will display a message informing you to reboot if this is the first time you've ran it.
 
 ### Run The Compose Generator
 
