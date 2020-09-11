@@ -8,7 +8,7 @@ Refer to our [Support Page](https://dockstarter.com/basics/support/) for our Sup
 
 For new installs the default `DOCKERCONFDIR` is `~/.config/appdata`. Users who ran DockSTARTer before this location became the default may have `~/.docker/config`, and we advise relocating.
 
-If you'd like to move your existing config to the new default location (even though you don't have to) you can do the following:
+If you'd like to move your existing config to a new location you can do the following:
 Edit `~/. docker/compose/.env` (in any text editor) and set
 
 ```bash
