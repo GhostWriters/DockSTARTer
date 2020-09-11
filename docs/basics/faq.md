@@ -27,7 +27,7 @@ ds -c
 
 That's it! Your containers should fire right back up as if nothing has changed. If you have any issues feel free to ask for help in `#ds-support`
 
-## Ouroboros Enabled By Default
+## Ouroboros or Watchtower Enabled By Default
 
 This tool is extremely useful for people getting used to running Docker. Its official documentation should explain why but you can disable it if you want.
 
