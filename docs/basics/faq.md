@@ -33,7 +33,7 @@ This tool is extremely useful for people getting used to running Docker. Its off
 
 > [Ouroboros](https://hub.docker.com/r/pyouroboros/ouroboros/) will monitor (all or specified) running Docker containers and update them to the (latest or tagged) available image in the remote registry.
 
-In short, Ouroboros keeps your containers up to date.
+In short, Ouroboros and Watchtower do the same thing: keeps your containers up to date.
 
 
 ## Ouroboros/Watchtower FAQ
