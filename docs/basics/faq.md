@@ -4,15 +4,39 @@
 
 Refer to our [Support Page](https://dockstarter.com/basics/support/) for our Support Channels and Tutorials we have found users have made with DockSTARTer!
 
-## Ouroboros Enabled By Default
+## Relocating `appdata`
 
-This tool is extremely useful for people getting used to running docker. It's official documentation should explain why but you can disable it if you want.
+For new installs the default `DOCKERCONFDIR` is `~/.config/appdata`. Users who ran DockSTARTer before this location became the default may have `~/.docker/config`, and we advise relocating.
 
-> [Ouroboros](https://hub.docker.com/r/pyouroboros/ouroboros/) will monitor (all or specified) running docker containers and update them to the (latest or tagged) available image in the remote registry.
+If you'd like to move your existing config to a new location you can do the following:
+Edit `~/. docker/compose/.env` (in any text editor) and set
 
-In short, Ouroboros keeps your Containers up to date.
+```bash
+DOCKERCONFDIR=~/.config/appdata
+```
 
-DockSTARTer previously enabled Watchtower by default before Ouroboros. The two do almost the same thing, but Ouroboros has more options.
+(You can choose anywhere to save configs, this example only shows the default location).
+
+Then run the following commands:
+
+```bash
+ds -u
+ds -c down
+# Move your current config folder to the new location, ex:
+sudo mv ~/.docker/config ~/.config/appdata
+ds -c
+```
+
+That's it! Your containers should fire right back up as if nothing has changed. If you have any issues feel free to ask for help in `#ds-support`
+
+## Ouroboros or Watchtower Enabled By Default
+
+This tool is extremely useful for people getting used to running Docker. Its official documentation should explain why but you can disable it if you want.
+
+> [Ouroboros](https://hub.docker.com/r/pyouroboros/ouroboros/) will monitor (all or specified) running Docker containers and update them to the (latest or tagged) available image in the remote registry.
+> [Watchtower](https://hub.docker.com/r/containrrr/watchtower) will pull down your new image, gracefully shut down your existing container and restart it with the same options that were used when it was deployed initially.
+
+In short, Ouroboros and Watchtower do the same thing: keeps your containers up to date.
 
 ## Ouroboros/Watchtower FAQ
 
@@ -34,7 +58,7 @@ This error can occur if your connected to a VPN while setting up the containers.
 
 ### Starting containers and getting the following or a similar error message: "listen udp 0.0.0.0:5353: bind: address already in use"
 
-As you could probably guess this means an application (most likely plex) is trying to use a port that is already in use.
+As you could probably guess this means an application (most likely Plex) is trying to use a port that is already in use.
 You can check which application it is with:
 
 ```bash
