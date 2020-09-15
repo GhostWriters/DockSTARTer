@@ -51,7 +51,7 @@ The `${DOCKERSTORAGEDIR}` location is public to all apps that need it. That mean
 
 ## Ports
 
-The ports for access to (and from) your apps are manipulated in your `.env`ironment settings. I use the Sonarr example a lot but if you're not familiar, it's default port is `8989`.
+The ports for access to (and from) your apps are manipulated in your `.env` settings. I use the Sonarr example a lot but if you're not familiar, it's default port is `8989`.
 
 `SONARR_PORT_8989=6969`
 
