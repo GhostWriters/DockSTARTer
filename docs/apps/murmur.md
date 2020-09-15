@@ -5,7 +5,7 @@
 
 ## Description
 
-[Murmur](https://github.com/mumble-voip/mumble) is an VoIP server for Mumble. It is an open-source application that is similar to programs such as Ventrilo or TeamSpeak.
+[Murmur](https://github.com/mumble-voip/mumble) is a VoIP server for Mumble. It is an open-source application that is similar to programs such as Ventrilo or TeamSpeak.
 
 ### SuperUser Password
 
