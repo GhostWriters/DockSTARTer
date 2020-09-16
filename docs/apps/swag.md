@@ -9,7 +9,9 @@ SWAG (Secure Web-server And Gateway) sets up an NGINX webserver and reverse prox
 
 ### LinuxServer's SWAG Starter Guide
 
-If this is your first time learning about NGINX and Let's Encrypt, we highly recommend you read over their official guide, which can be found [here](https://blog.linuxserver.io/2019/04/25/swag-nginx-starter-guide/)
+[Official Guide](https://docs.linuxserver.io/general/swag)
+
+If this is your first time learning about NGINX, proxies, or and Let's Encrypt, we highly recommend you read over the official guide for the container.
 
 #### General Setup
 

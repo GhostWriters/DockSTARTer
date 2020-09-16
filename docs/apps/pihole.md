@@ -5,52 +5,8 @@
 
 ## Description
 
-[Pi-hole](https://pi-hole.net/) takes over the local DNS service and may conflict with existing DNS services on your server. Ubuntu 18.04 currently uses systemd-resolv to server DNS and needs to be configured to either give up port 53 or be disabled.
+[Pi-hole](https://pi-hole.net/) is a DNS server that is used to filter out advertisements and other unwanted content on a network-wide level.
 
-### Netplan Setup
+### Pi-hole Server IP Setup
 
-On Ubuntu 18.04 and newer you will have `netplan` controlling your network. You can search [their site](https://netplan.io/) for examples on how to configure it. You need to set your nameserver to use your LAN's DNS or a public DNS such as `1.1.1.1` before proceeding with any instructions below.
-
-### Resolvconf
-
-On Ubuntu 18.04, resolvconf was removed as the default means to control DNS.  In addition to the settings mentioned regarding netplan, we recommend setting up resolvconf.
-
-To install `resolvconf` run:
-
-```bash
-sudo apt install resolvconf
-```
-
-- Edit `/etc/resolvconf/resolv.conf.d/head` using sudo and enter `nameserver 1.1.1.1` on the first uncommented line.
-
-Restart the `resolvconf` service:
-
-```bash
-sudo service resolvconf restart
-```
-
-### Stop systemd-resolv from listening on port 53
-
-Edit `/etc/systemd/resolved.conf` and set `DNSStubListener=no` (make sure it is not commented out with a `#` at the beginning of the line) and then run:
-
-```bash
-sudo systemctl restart systemd-resolved
-```
-
-If that does not work you can try the following:
-
-### Stop and disable systemd-resolv (only if the above does not work)
-
-```bash
-sudo systemctl stop systemd-resolv.service
-sudo systemctl disable systemd-resolv.service
-```
-
-### Name resolution for localhost
-
-In most cases it might be required to set your localhost name in `/etc/hosts`
-
-```hosts
-127.0.0.1    machinename.localhost    machinename
-127.0.0.1    domain.com
-```
+By default, Pi-hole is configured to bind to `0.0.0.0` on port 53. While this configuration should work out of the box for many people, if you encounter issues with this, it is recommended that you set the `PIHOLE_SERVER_IP` variable to your server's IP address (e.g. 192.168.1.5). If you still encounter difficulties getting Pi-hole to work, you may need to disable or reconfigure any conflicting services running on port 53, such as `systemd-resolved`. Although this is a more advanced configuration, you can also configure systemd-resolved to not listen on port 53 by setting `DNSStubListener=no` in `/etc/systemd/resolved.conf`.

@@ -1,8 +1,9 @@
 # Nginx Proxy Manager
 
-[Nginx Proxy Manager](https://nginxproxymanager.com/) is a Docker container for managing Nginx proxy hosts and SSL Certificates with a simple, powerful interface.
+[![Docker Pulls](https://img.shields.io/docker/pulls/jc21/nginx-proxy-manager?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/jc21/nginx-proxy-manager)
+[![GitHub Stars](https://img.shields.io/github/stars/jc21/nginx-proxy-manager?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/jc21/nginx-proxy-manager)
 
-The GIT Repository for Nginx Proxy Manager is located at [https://github.com/jc21/nginx-proxy-manager](https://github.com/jc21/nginx-proxy-manager)
+[Nginx Proxy Manager](https://nginxproxymanager.com/) is a Docker container for managing Nginx proxy hosts and SSL Certificates with a simple, powerful interface.
 
 ## Config File
 
@@ -21,7 +22,7 @@ Nginx Proxy Manager requires a Configuration file named `config.json`. This file
 }
 ```
 
-## Example Docker Compose Override
+### Example Docker Compose Override
 
 ```yaml
 version: "3.4"
@@ -42,8 +43,8 @@ services:
 
     volumes:
       - ${DOCKERCONFDIR}/proxymanager/config.json:/app/config/config.json
-      - ${DOCKERCONFDIR}proxymanager/data:/data
+      - ${DOCKERCONFDIR}/proxymanager/data:/data
       - ${DOCKERCONFDIR}/proxymanager/letsencrypt:/etc/letsencrypt
-      - ${DOCKERSHAREDDIR}:/shared
+      - ${DOCKERSTORAGEDIR}:/storage
     restart: unless-stopped
 ```

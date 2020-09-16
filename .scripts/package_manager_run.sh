@@ -10,8 +10,10 @@ package_manager_run() {
         run_script "pm_dnf_${ACTION}"
     elif [[ -n "$(command -v yum)" ]]; then
         run_script "pm_yum_${ACTION}"
+    elif [[ -n "$(command -v pacman)" ]]; then
+        run_script "pm_pacman_${ACTION}"
     else
-        fatal "Package manager not detected!"
+        fatal "Supported package manager not detected!"
     fi
 }
 

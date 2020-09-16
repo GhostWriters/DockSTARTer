@@ -30,7 +30,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-16.04, ubuntu-18.04]
+        os: [ubuntu-16.04, ubuntu-18.04, ubuntu-20.04, ubuntu-latest]
     steps:
       - uses: actions/checkout@v2.3.2
       - name: run
@@ -39,3 +39,13 @@ jobs:
           COMMIT_SHA: ${{ github.sha }}
         run: |
           while IFS= read -r line; do echo; sudo -E bash ./main.sh -vt "${line}" || exit 1; echo; done < <(git ls-files '.scripts/*.sh' | sed -E 's/^\.scripts\/(\w+)\.sh$/\1/')
+
+  validate-images:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.3.2
+      - name: Validate Images
+        working-directory: compose
+        run: |
+          dirname -- $(grep -Rl 'deprecated: "true"') | xargs rm -rf
+          for image in $(grep -RPoh "image: \K.*" | sort -u | grep -v '${'); do echo "Image: $image" && DOCKER_CLI_EXPERIMENTAL=enabled docker manifest inspect $image; done

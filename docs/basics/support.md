@@ -2,19 +2,19 @@
 
 ## Official Support
 
-[![Discord chat](https://img.shields.io/discord/477959324183035936.svg?style=flat-square&color=607D8B&logo=discord)](https://discord.gg/YFyJpmH)
+[![Discord chat](https://img.shields.io/discord/477959324183035936.svg?style=flat-square&color=607D8B&logo=discord)](https://dockstarter.com/discord)
 
 Click the chat badge to join us on Discord for support!
 
-Also Check out our SubReddit [/r/DockSTARTer](https://www.reddit.com/r/DockSTARTer/)
+Also check out our subreddit, [/r/DockSTARTer](https://www.reddit.com/r/DockSTARTer/)
 
-[To Submit Feature Requests](https://github.com/GhostWriters/DockSTARTer/issues/new?template=feature_request.md)
+[Submit a Feature Request](https://github.com/GhostWriters/DockSTARTer/issues/new?template=feature_request.md)
 
-[To Submit Bug Reports](https://github.com/GhostWriters/DockSTARTer/issues/new?template=bug_report.md)
+[Submit a Bug Report](https://github.com/GhostWriters/DockSTARTer/issues/new?template=bug_report.md)
 
 ## External Information
 
-Below you will find links to various Tutorial Videos, Blogs , And Guides users have made.
+Below you will find links to various tutorial videos, blogs, and guides users have made.
 
 * DBTech.com - [Raspberry Pi 4: Ultimate Home Server with DockerSTARTer Blog Post & Video Tutorial](https://dbte.ch/dockstarter)
 * MakeUseOf.com - [How to Set Up a Linux Media Server in Under One Hour Tutorial](https://www.makeuseof.com/tag/setup-linux-media-server/)

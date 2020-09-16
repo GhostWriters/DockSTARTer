@@ -2,10 +2,10 @@ services:
   speedtest:
     container_name: speedtest
     environment:
+      - OOKLA_EULA_GDPR=${SPEEDTEST_OOKLA_EULA_GDPR}
       - PGID=${PGID}
       - PUID=${PUID}
-      - SPEEDTEST_BASE_PATH=${SPEEDTEST_BASE_PATH}
-      - SPEEDTEST_OOKLA_EULA_GDPR=${SPEEDTEST_OOKLA_EULA_GDPR}
+      - BASE_PATH=${SPEEDTEST_BASE_PATH}
       - TZ=${TZ}
     logging:
       driver: json-file
@@ -17,3 +17,4 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/speedtest:/config
       - ${DOCKERSHAREDDIR}:/shared
+      - ${DOCKERSTORAGEDIR}:/storage

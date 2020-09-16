@@ -13,7 +13,6 @@ services:
       com.dockstarter.appvars.watchtower_notification_url: ""
       com.dockstarter.appvars.watchtower_notifications_level: "info"
       com.dockstarter.appvars.watchtower_notifications: "shoutrrr"
-      com.dockstarter.appvars.watchtower_poll_interval: "300"
       com.dockstarter.appvars.watchtower_repo_pass: ""
       com.dockstarter.appvars.watchtower_repo_user: ""
       com.dockstarter.appvars.watchtower_schedule: "0 0 4 * * *"

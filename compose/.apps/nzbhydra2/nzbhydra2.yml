@@ -15,5 +15,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/nzbhydra2:/config
       - ${DOCKERSHAREDDIR}:/shared
+      - ${DOCKERSTORAGEDIR}:/storage
       - ${DOWNLOADSDIR}:/data
       - ${DOWNLOADSDIR}:/downloads

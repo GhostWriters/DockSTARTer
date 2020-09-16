@@ -15,6 +15,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/jellyfin:/config
       - ${DOCKERSHAREDDIR}:/shared
+      - ${DOCKERSTORAGEDIR}:/storage
       - ${JELLYFIN_TRANSCODEDIR}:/transcode
       - ${MEDIADIR_MOVIES}:/data/movies
       - ${MEDIADIR_MOVIES}:/movies

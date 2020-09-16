@@ -4,15 +4,39 @@
 
 Refer to our [Support Page](https://dockstarter.com/basics/support/) for our Support Channels and Tutorials we have found users have made with DockSTARTer!
 
-## Ouroboros Enabled By Default
+## Relocating `appdata`
 
-This tool is extremely useful for people getting used to running docker. It's official documentation should explain why but you can disable it if you want.
+For new installs the default `DOCKERCONFDIR` is `~/.config/appdata`. Users who ran DockSTARTer before this location became the default may have `~/.docker/config`, and we advise relocating.
 
-> [Ouroboros](https://hub.docker.com/r/pyouroboros/ouroboros/) will monitor (all or specified) running docker containers and update them to the (latest or tagged) available image in the remote registry.
+If you'd like to move your existing config to a new location you can do the following:
+Edit `~/. docker/compose/.env` (in any text editor) and set
 
-In short, Ouroboros keeps your Containers up to date.
+```bash
+DOCKERCONFDIR=~/.config/appdata
+```
 
-DockSTARTer previously enabled Watchtower by default before Ouroboros. The two do almost the same thing, but Ouroboros has more options.
+(You can choose anywhere to save configs, this example only shows the default location).
+
+Then run the following commands:
+
+```bash
+ds -u
+ds -c down
+# Move your current config folder to the new location, ex:
+sudo mv ~/.docker/config ~/.config/appdata
+ds -c
+```
+
+That's it! Your containers should fire right back up as if nothing has changed. If you have any issues feel free to ask for help in `#ds-support`
+
+## Ouroboros or Watchtower Enabled By Default
+
+This tool is extremely useful for people getting used to running Docker. Its official documentation should explain why but you can disable it if you want.
+
+> [Ouroboros](https://hub.docker.com/r/pyouroboros/ouroboros/) will monitor (all or specified) running Docker containers and update them to the (latest or tagged) available image in the remote registry.
+> [Watchtower](https://hub.docker.com/r/containrrr/watchtower) will pull down your new image, gracefully shut down your existing container and restart it with the same options that were used when it was deployed initially.
+
+In short, Ouroboros and Watchtower do the same thing: keeps your containers up to date.
 
 ## Ouroboros/Watchtower FAQ
 
@@ -34,7 +58,7 @@ This error can occur if your connected to a VPN while setting up the containers.
 
 ### Starting containers and getting the following or a similar error message: "listen udp 0.0.0.0:5353: bind: address already in use"
 
-As you could probably guess this means an application (most likely plex) is trying to use a port that is already in use.
+As you could probably guess this means an application (most likely Plex) is trying to use a port that is already in use.
 You can check which application it is with:
 
 ```bash
@@ -53,7 +77,7 @@ which will show you that Google Chrome is using the port you need. In this case 
 
 We have had a recent influx of users asking for assistance in how to make OMV work with DockSTARTer (DS). DS staff have tested and confirmed the following installation method on OMV version 5.5.
 
-If you are a Linux noobie, we *strongly discourage* this approach because of all the issues that might arise with how OMV is built, and troubleshooting issues in OMV can be a pain. However, if you feel comfortable with Linux and want to continue down this route you will need to ensure the following:
+If you are a Linux newbie, we *strongly discourage* this approach because of all the issues that might arise with how OMV is built, and troubleshooting issues in OMV can be a pain. However, if you feel comfortable with Linux and want to continue down this route you will need to ensure the following:
 
 1. You have installed all the necessary updates that are pending in your system.
 
@@ -75,7 +99,7 @@ We are looking for the following line:
 
 The part you care about is the `noexec` bit. You will need to remove that string. Save the file and per [OMV documentation](https://openmediavault.readthedocs.io/en/5.x/various/fs_env_vars.html) you need to run `omv-salt deploy run fstab`. To verify that the `noexec` flag was removed from your drive run `cat /proc/mounts` and find your drive on the list. You can also run `cat /proc/mounts | grep partial_drive_name`. If the `noexec` flag is present, you skipped a step.
 
-We are now going to work on creating the directories for DS to use. You will need to create 4 shared folders and allow "Everyone read/write". The 4 directories will be called `appdata`, `shared`, `medialibrary` and `home`.
+We are now going to work on creating the directories for DS to use. You will need to create 4 shared folders and allow "Everyone read/write". The 4 directories will be called `appdata`, `storage`, `medialibrary` and `home`.
 
 The last directory should be where you store your user directories and you should not be using the system disk for that. If you do not know how to create a user and assign it a home directory; look up the OMV documentation as that is outside of the scope of this guide.
 
@@ -85,4 +109,4 @@ Once the above requirements have been met, you will need to SSH to your OMV host
 `bash -c "$(curl -fsSL https://get.dockstarter.com)"`
 `sudo reboot`
 
-After the reboot is complete, SSH back to your host using your user account and run `ds`, type your password and select "Configuration". Select "Set Global Variables" and select "No" on the next prompt. The only thing we recommend changing is the `PGID` to `Use System 100`. On the next screen, please take note of the path that starts with `/srv/dev-disk-by-label-XXX`. You are going to want to remember this path to set your `appdata`, `shared`, `media` and `downloads` folder to that path, for instance: `/srv/dev-disk-by-label-DS/appdata/`, `/srv/dev-disk-by-label-DS/media/movies`, etc.
+After the reboot is complete, SSH back to your host using your user account and run `ds`, type your password and select "Configuration". Select "Set Global Variables" and select "No" on the next prompt. The only thing we recommend changing is the `PGID` to `Use System 100`. On the next screen, please take note of the path that starts with `/srv/dev-disk-by-label-XXX`. You are going to want to remember this path to set your `appdata`, `storage`, `media` and `downloads` folder to that path, for instance: `/srv/dev-disk-by-label-DS/appdata/`, `/srv/dev-disk-by-label-DS/media/movies`, etc.

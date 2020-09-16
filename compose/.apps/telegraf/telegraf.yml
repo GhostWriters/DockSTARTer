@@ -23,3 +23,4 @@ services:
       - /var/run/utmp:/var/run/utmp:ro
       - ${DOCKERCONFDIR}/telegraf:/var/lib/telegraf
       - ${DOCKERSHAREDDIR}:/shared
+      - ${DOCKERSTORAGEDIR}:/storage

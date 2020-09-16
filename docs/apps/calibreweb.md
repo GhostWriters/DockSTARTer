@@ -9,4 +9,4 @@
 
 ### Calibre-Web installation
 
-The Calibre-Web docker is only a web front end to the actual Calibre application/database itself. You still need a Calibre  metadata.db file for Calibre Web to function. To get this, you have to install [Calibre](https://calibre-ebook.com/download) somewhere and you can move the metadata.db file into either your /books or /shared folder.
+The Calibre-Web docker is only a web front end to the actual Calibre application/database itself. You still need a Calibre  metadata.db file for Calibre Web to function. To get this, you have to install [Calibre](https://calibre-ebook.com/download) somewhere and you can move the metadata.db file into your /storage folder.
