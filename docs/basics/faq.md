@@ -42,7 +42,7 @@ In short, Ouroboros and Watchtower do the same thing: keeps your containers up t
 
 ### When I run `ds -c` and it recreates some of the containers, is that because they have had updates from last run
 
-With Ouroboros (or Watchtower) your containers will be updated to the latest images automatically. However, docker-compose has no idea what's updated, docker-compose keeps track of things independently from Ouroboros/Watchtower. Additionally, Ouroboros/Watchtower don't update docker-compose's method of tracking, therefore, compose might "recreate" containers that are already up to date. This is not a big deal it's basically just a container restart, and you were planning on running `ds -c` expecting some kind of updates anyway.
+With Ouroboros (or Watchtower) your containers will be updated to the latest images automatically. However, docker-compose has no idea what's updated, docker-compose keeps track of things independently from Ouroboros/Watchtower. Additionally, Ouroboros/Watchtower doesn't update docker-compose's method of tracking, therefore, compose might "recreate" containers that are already up to date. This is not a big deal it's basically just a container restart, and you were planning on running `ds -c` expecting some kind of updates anyway.
 
 ## General troubleshooting help
 
