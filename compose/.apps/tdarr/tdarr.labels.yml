@@ -4,7 +4,7 @@ services:
       com.dockstarter.appinfo.description: "Tdarr is a self hosted web-app for automating media library transcode/remux management"
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.nicename: "Tdarr"
-      com.dockstarter.appvars.tdarr_db: "/home/$USER/.config/appdata/tdarr"
+      com.dockstarter.appvars.tdarr_db: "~/.config/appdata/tdarr"
       com.dockstarter.appvars.tdarr_enabled: "false"
       com.dockstarter.appvars.tdarr_network_mode: ""
       com.dockstarter.appvars.tdarr_port_8265: "8265"
