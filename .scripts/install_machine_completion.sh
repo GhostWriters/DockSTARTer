@@ -10,6 +10,10 @@ install_machine_completion() {
         warn "Failed to check latest available docker machine completion version. This can be ignored for now."
         return
     fi
+    if [ ! -d "/etc/bash_completion.d/" ]; then
+        echo "/etc/bash_completion.d/ does not exist; attempting to create it."
+        mkdir -p /etc/bash_completion.d/
+    fi
     info "Installing docker machine completion."
     curl -fsL "https://raw.githubusercontent.com/docker/machine/${AVAILABLE_MACHINE_COMPLETION}/contrib/completion/bash/docker-machine.bash" -o /etc/bash_completion.d/docker-machine > /dev/null 2>&1 || fatal "Failed to install docker machine completion."
 }
