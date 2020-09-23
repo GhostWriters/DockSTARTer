@@ -14,7 +14,7 @@ jobs:
 
       - run: cp README.md docs/index.md
 
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v2.1.2
         with:
           python-version: 3.x
 
