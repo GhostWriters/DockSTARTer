@@ -10,14 +10,14 @@ jobs:
     name: Deploy docs
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2.3.2
+      - uses: actions/checkout@v2.3.2
 
-      - name: Copy README.md to docs/index.md
-        run: cp README.md docs/index.md
+      - run: cp README.md docs/index.md
 
-      - name: Deploy docs
-        uses: mhausenblas/mkdocs-deploy-gh-pages@1.14
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CUSTOM_DOMAIN: dockstarter.com
+      - uses: actions/setup-python@v2.1.2
+        with:
+          python-version: 3.x
+
+      - run: pip install mkdocs-material
+
+      - run: mkdocs gh-deploy --force
