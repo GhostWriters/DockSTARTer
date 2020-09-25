@@ -2,6 +2,7 @@ services:
   calibre:
     container_name: calibre
     environment:
+      - CALIBRE_USE_DARK_PALETTE=${CALIBRE__USE_DARK_PALETTE}
       - CLI_ARGS=${CALIBRE_CLI_ARGS}
       - GUAC_PASS=${CALIBRE_GUAC_PASS}
       - GUAC_USER=${CALIBRE_GUAC_USER}
