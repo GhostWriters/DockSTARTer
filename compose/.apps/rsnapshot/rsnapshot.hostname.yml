@@ -1,0 +1,3 @@
+services:
+  rsnapshot:
+    hostname: ${DOCKERHOSTNAME}

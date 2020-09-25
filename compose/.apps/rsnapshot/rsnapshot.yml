@@ -1,0 +1,21 @@
+services:
+  rsnapshot:
+    container_name: rsnapshot
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/rsnapshot:/config
+      - ${DOCKERSHAREDDIR}:/shared
+      - ${DOCKERSTORAGEDIR}:/storage
+      - ${RSNAPSHOT_DATADIR}:/data
+      - ${RSNAPSHOT_ROOT_SSH}:/root/.ssh:ro
+      - ${RSNAPSHOT_SNAPSHOTSDIR}:/.snapshots
