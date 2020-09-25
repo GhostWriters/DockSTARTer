@@ -1,8 +1,8 @@
 services:
   ombi:
     labels:
-      com.dockstarter.appinfo.description: "Allow your users to Request Movies, TV Shows and Albums"
       com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Allow your users to Request Movies, TV Shows and Albums"
       com.dockstarter.appinfo.nicename: "Ombi"
       com.dockstarter.appvars.ombi_enabled: "false"
       com.dockstarter.appvars.ombi_network_mode: ""

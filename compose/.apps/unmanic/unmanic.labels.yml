@@ -1,10 +1,10 @@
 services:
   unmanic:
     labels:
-      com.dockstarter.appinfo.description: "Tool for optimising your video library to a single format"
       com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Tool for optimising your video library to a single format"
       com.dockstarter.appinfo.nicename: "Unmanic"
       com.dockstarter.appvars.unmanic_enabled: "false"
+      com.dockstarter.appvars.unmanic_encodedir: "/tmp"
       com.dockstarter.appvars.unmanic_network_mode: ""
       com.dockstarter.appvars.unmanic_port_8888: "8888"
-      com.dockstarter.appvars.unmanic_encodedir: "/tmp"

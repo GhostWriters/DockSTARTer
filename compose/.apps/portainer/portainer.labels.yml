@@ -1,8 +1,8 @@
 services:
   portainer:
     labels:
-      com.dockstarter.appinfo.description: "Simple management UI for Docker"
       com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Simple management UI for Docker"
       com.dockstarter.appinfo.nicename: "Portainer"
       com.dockstarter.appvars.portainer_enabled: "false"
       com.dockstarter.appvars.portainer_network_mode: ""

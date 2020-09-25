@@ -1,8 +1,8 @@
 services:
   lazylibrarian:
     labels:
-      com.dockstarter.appinfo.description: "Book PVR Client"
       com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Book PVR Client"
       com.dockstarter.appinfo.nicename: "LazyLibrarian"
       com.dockstarter.appvars.lazylibrarian_enabled: "false"
       com.dockstarter.appvars.lazylibrarian_network_mode: ""

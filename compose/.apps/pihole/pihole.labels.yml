@@ -1,8 +1,8 @@
 services:
   pihole:
     labels:
-      com.dockstarter.appinfo.description: "A black hole for internet advertisements"
       com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "A black hole for internet advertisements"
       com.dockstarter.appinfo.nicename: "PiHole"
       com.dockstarter.appvars.pihole_enabled: "false"
       com.dockstarter.appvars.pihole_network_mode: ""

@@ -1,8 +1,8 @@
 services:
   amd:
     labels:
-      com.dockstarter.appinfo.description: "Lidarr companion script to automatically download music for Lidarr"
       com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Lidarr companion script to automatically download music for Lidarr"
       com.dockstarter.appinfo.nicename: "AMD"
       com.dockstarter.appvars.amd_arl_token: ""
       com.dockstarter.appvars.amd_autostart: "true"
