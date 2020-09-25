@@ -1,0 +1,8 @@
+# Rsnapshot
+
+[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/rsnapshot?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/linuxserver/rsnapshot)
+[![GitHub Stars](https://img.shields.io/github/stars/linuxserver/docker-rsnapshot?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/linuxserver/docker-rsnapshot)
+
+## Description
+
+[Rsnapshot](http://www.rsnapshot.org/) is a filesystem snapshot utility based on rsync. rsnapshot makes it easy to make periodic snapshots of local machines, and remote machines over ssh. The code makes extensive use of hard links whenever possible, to greatly reduce the disk space required.
