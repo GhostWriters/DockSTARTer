@@ -1,8 +1,8 @@
 services:
   nzbhydra2:
     labels:
-      com.dockstarter.appinfo.description: "Meta search for NZB indexers"
       com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Meta search for NZB indexers"
       com.dockstarter.appinfo.nicename: "NZBHydra2"
       com.dockstarter.appvars.nzbhydra2_enabled: "false"
       com.dockstarter.appvars.nzbhydra2_network_mode: ""

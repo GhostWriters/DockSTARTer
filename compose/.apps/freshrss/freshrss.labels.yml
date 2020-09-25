@@ -1,8 +1,8 @@
 services:
   freshrss:
     labels:
-      com.dockstarter.appinfo.description: "Free, self-hostable aggregator for rss feeds"
       com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Free, self-hostable aggregator for rss feeds"
       com.dockstarter.appinfo.nicename: "FreshRSS"
       com.dockstarter.appvars.freshrss_enabled: "false"
       com.dockstarter.appvars.freshrss_network_mode: ""

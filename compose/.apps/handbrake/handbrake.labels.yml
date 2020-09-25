@@ -1,8 +1,8 @@
 services:
   handbrake:
     labels:
-      com.dockstarter.appinfo.description: "Tool for converting video"
       com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Tool for converting video"
       com.dockstarter.appinfo.nicename: "HandBrake"
       com.dockstarter.appvars.handbrake_enabled: "false"
       com.dockstarter.appvars.handbrake_network_mode: ""

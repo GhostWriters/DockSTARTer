@@ -1,8 +1,8 @@
 services:
   calibre:
     labels:
-      com.dockstarter.appinfo.description: "Easy to use e-book manager"
       com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Easy to use e-book manager"
       com.dockstarter.appinfo.nicename: "Calibre"
       com.dockstarter.appvars.calibre_cli_args: ""
       com.dockstarter.appvars.calibre_enabled: "false"

@@ -1,8 +1,8 @@
 services:
   speedtest:
     labels:
-      com.dockstarter.appinfo.description: "This program runs a speedtest check every hour and graphs the results."
       com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "This program runs a speedtest check every hour and graphs the results."
       com.dockstarter.appinfo.nicename: "speedtest"
       com.dockstarter.appvars.speedtest_base_path: "/"
       com.dockstarter.appvars.speedtest_enabled: "false"

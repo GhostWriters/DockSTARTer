@@ -1,8 +1,8 @@
 services:
   h5ai:
     labels:
-      com.dockstarter.appinfo.description: "Modern file indexer"
       com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Modern file indexer"
       com.dockstarter.appinfo.nicename: "h5ai"
       com.dockstarter.appvars.h5ai_enabled: "false"
       com.dockstarter.appvars.h5ai_indexdir: "/mnt/h5ai"

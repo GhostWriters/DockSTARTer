@@ -1,8 +1,8 @@
 services:
   varken:
     labels:
-      com.dockstarter.appinfo.description: "Utility to aggregate data from the Plex ecosystem"
       com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Utility to aggregate data from the Plex ecosystem"
       com.dockstarter.appinfo.nicename: "Varken"
       com.dockstarter.appvars.varken_enabled: "false"
       com.dockstarter.appvars.varken_network_mode: ""

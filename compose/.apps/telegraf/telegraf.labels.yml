@@ -1,8 +1,8 @@
 services:
   telegraf:
     labels:
-      com.dockstarter.appinfo.description: "Agent for collecting metrics and writing them to InfluxDB"
       com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Agent for collecting metrics and writing them to InfluxDB"
       com.dockstarter.appinfo.nicename: "Telegraf"
       com.dockstarter.appvars.telegraf_enabled: "false"
       com.dockstarter.appvars.telegraf_network_mode: ""

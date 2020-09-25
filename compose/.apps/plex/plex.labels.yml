@@ -1,8 +1,8 @@
 services:
   plex:
     labels:
-      com.dockstarter.appinfo.description: "Organizes all of your video, music and photo collections"
       com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Organizes all of your video, music and photo collections"
       com.dockstarter.appinfo.nicename: "Plex"
       com.dockstarter.appvars.plex_claim: "https://plex.tv/claim"
       com.dockstarter.appvars.plex_enabled: "false"

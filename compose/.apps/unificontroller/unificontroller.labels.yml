@@ -1,8 +1,8 @@
 services:
   unificontroller:
     labels:
-      com.dockstarter.appinfo.description: "Controller software for wireless networks"
       com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Controller software for wireless networks"
       com.dockstarter.appinfo.nicename: "UnifiController"
       com.dockstarter.appvars.unificontroller_enabled: "false"
       com.dockstarter.appvars.unificontroller_network_mode: ""

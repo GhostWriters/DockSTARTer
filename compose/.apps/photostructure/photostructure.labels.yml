@@ -1,8 +1,8 @@
 services:
   photostructure:
     labels:
-      com.dockstarter.appinfo.description: "PhotoStructure is your new home for all your photos & videos."
       com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "PhotoStructure is your new home for all your photos & videos."
       com.dockstarter.appinfo.nicename: "PhotoStructure"
       com.dockstarter.appvars.photostructure_cache_directory: "/tmp/photostructure-docker-tmp"
       com.dockstarter.appvars.photostructure_enabled: "false"

@@ -1,8 +1,8 @@
 services:
   duplicati:
     labels:
-      com.dockstarter.appinfo.description: "Backup software to store backups online with strong encryption"
       com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Backup software to store backups online with strong encryption"
       com.dockstarter.appinfo.nicename: "Duplicati"
       com.dockstarter.appvars.duplicati_backupsdir: "~/.config/appdata/backups"
       com.dockstarter.appvars.duplicati_enabled: "false"

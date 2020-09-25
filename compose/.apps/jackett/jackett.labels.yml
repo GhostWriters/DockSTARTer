@@ -1,8 +1,8 @@
 services:
   jackett:
     labels:
-      com.dockstarter.appinfo.description: "API Support for your favorite private trackers"
       com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "API Support for your favorite private trackers"
       com.dockstarter.appinfo.nicename: "Jackett"
       com.dockstarter.appvars.jackett_enabled: "false"
       com.dockstarter.appvars.jackett_network_mode: ""

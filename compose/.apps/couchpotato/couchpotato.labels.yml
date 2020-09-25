@@ -1,8 +1,8 @@
 services:
   couchpotato:
     labels:
-      com.dockstarter.appinfo.description: "Movies PVR Client"
       com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Movies PVR Client"
       com.dockstarter.appinfo.nicename: "CouchPotato"
       com.dockstarter.appvars.couchpotato_enabled: "false"
       com.dockstarter.appvars.couchpotato_network_mode: ""
