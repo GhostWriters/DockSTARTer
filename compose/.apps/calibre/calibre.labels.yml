@@ -11,3 +11,4 @@ services:
       com.dockstarter.appvars.calibre_network_mode: ""
       com.dockstarter.appvars.calibre_port_8080: "8080"
       com.dockstarter.appvars.calibre_port_8081: "8081"
+      com.dockstarter.appvars.calibre_use_dark_palette: "1"
