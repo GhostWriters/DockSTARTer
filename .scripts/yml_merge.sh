@@ -11,8 +11,8 @@ yml_merge() {
     echo "#!/usr/bin/env bash" > "${RUNFILE}"
     {
         echo 'yq-go m '\\
-        echo "\"${SCRIPTPATH}/compose/.reqs/v1.yml\" \\"
-        echo "\"${SCRIPTPATH}/compose/.reqs/v2.yml\" \\"
+        echo "\"${SCRIPTPATH}/compose/.reqs/r1.yml\" \\"
+        echo "\"${SCRIPTPATH}/compose/.reqs/r2.yml\" \\"
     } >> "${RUNFILE}"
     info "Required files included."
     while IFS= read -r line; do
