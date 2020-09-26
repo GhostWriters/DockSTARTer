@@ -11,7 +11,7 @@ yml_merge() {
     echo "#!/usr/bin/env bash" > "${RUNFILE}"
     {
         echo "export YQ_OPTIONS=\"${YQ_OPTIONS:-} -v ${SCRIPTPATH}:${SCRIPTPATH}\""
-        echo "yq -y -s 'reduce .[] as \$item ({}; . * \$item)' "\\
+        echo "yq -y -s 'reduce .[] as \$item ({}; . * \$item) | del(.version)' "\\
         echo "\"${SCRIPTPATH}/compose/.reqs/r1.yml\" \\"
         echo "\"${SCRIPTPATH}/compose/.reqs/r2.yml\" \\"
     } >> "${RUNFILE}"
@@ -29,7 +29,7 @@ yml_merge() {
                     warn "Please edit ${SCRIPTPATH}/compose/.env and set ${APPNAME}_ENABLED to false."
                     continue
                 fi
-                if [[ ! -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${ARCH}.yml ]]; then
+                if [[ ! -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${ARCH}.yml ]] || [[ $(< "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${ARCH}.yml") == "---" ]]; then
                     error "Failed to include ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${ARCH}.yml file."
                     continue
                 fi
@@ -37,18 +37,18 @@ yml_merge() {
                 local APPNETMODE
                 APPNETMODE=$(run_script 'env_get' "${APPNAME}_NETWORK_MODE")
                 if [[ -z ${APPNETMODE} ]] || [[ ${APPNETMODE} == "bridge" ]]; then
-                    if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.hostname.yml ]]; then
+                    if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.hostname.yml ]] && [[ $(< "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.hostname.yml") != "---" ]]; then
                         echo "\"${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.hostname.yml\" \\" >> "${RUNFILE}"
                     else
                         warn "Failed to include ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.hostname.yml file."
                     fi
-                    if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml ]]; then
+                    if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml ]] && [[ $(< "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml") != "---" ]]; then
                         echo "\"${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml\" \\" >> "${RUNFILE}"
                     else
                         warn "Failed to include ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml file."
                     fi
                 elif [[ -n ${APPNETMODE} ]]; then
-                    if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml ]]; then
+                    if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml ]] && [[ $(< "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml") != "---" ]]; then
                         echo "\"${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml\" \\" >> "${RUNFILE}"
                     else
                         warn "Failed to include ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml file."
