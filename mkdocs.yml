@@ -143,6 +143,7 @@ nav:
     - "apps/quasselweb.md"
     - "apps/radarr.md"
     - "apps/resiliosync.md"
+    - "apps/rsnapshot.md"
     - "apps/rtorrentvpn.md"
     - "apps/rutorrent.md"
     - "apps/sabnzbd.md"
