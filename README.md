@@ -34,7 +34,7 @@ You may choose to rely on DockSTARTer for various changes to your Docker system,
 
 ```bash
 sudo apt-get install curl git
-bash -c "$(curl -fsSL https://get.dockstarter.com)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/GunayAnach/DockSTARTer/master/main.sh)"
 sudo reboot
 ```
 
