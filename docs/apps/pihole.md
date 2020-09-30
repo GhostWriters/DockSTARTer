@@ -10,3 +10,9 @@
 ### Pi-hole Server IP Setup
 
 By default, Pi-hole is configured to bind to `0.0.0.0` on port 53. While this configuration should work out of the box for many people, if you encounter issues with this, it is recommended that you set the `PIHOLE_SERVER_IP` variable to your server's IP address (e.g. 192.168.1.5). If you still encounter difficulties getting Pi-hole to work, you may need to disable or reconfigure any conflicting services running on port 53, such as `systemd-resolved`. Although this is a more advanced configuration, you can also configure systemd-resolved to not listen on port 53 by setting `DNSStubListener=no` in `/etc/systemd/resolved.conf`.
+
+    $ sudo nano /etc/systemd/resolved.conf and change #DNSStubListener=yes to DNSStubListener=no (make sure you uncomment the line).
+    $ sudo systemctl disable systemd-resolved.service
+    $ sudo systemctl stop systemd-resolved
+    $ sudo rm /etc/resolv.conf
+    $ sudo shutdown now -r
