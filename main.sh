@@ -434,7 +434,7 @@ main() {
             if [[ ${EUID} -eq 0 ]]; then
                 fatal "Using sudo during cloning on first run is not supported."
             fi
-            git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
+            git clone https://github.com/GunayAnach/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
             notice "Performing first run install."
             exec sudo -E bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-vi"
         fi
