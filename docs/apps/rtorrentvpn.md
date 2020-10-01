@@ -20,15 +20,15 @@ You will need to edit the appropriate proxy `.conf`. Enter either `sudo nano rut
 Original
 
 ```nginx
-   set $upstream_rutorrent rutorrent;
-   proxy_pass http://$upstream_rutorrent:80;
+set $upstream_rutorrent rutorrent;
+proxy_pass http://$upstream_rutorrent:80;
 ```
 
 Modified
 
 ```nginx
-   set $upstream_rutorrent rtorrentvpn;
-   proxy_pass http://$upstream_rutorrent:9080;
+set $upstream_rutorrent rtorrentvpn;
+proxy_pass http://$upstream_rutorrent:9080;
 ```
 
 Save the file and restart your container by running:

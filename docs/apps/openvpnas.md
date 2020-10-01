@@ -15,9 +15,9 @@ During first login, make sure that the "Authentication" in the Web GUI is set to
 
 The `admin` account is a system account (PAM) and after container update or recreation, its password reverts back to the default. It is highly recommended to block this user's access for security reasons. To restrict this account do the following:
 
-1. Set another user as an `admin`.
-2. Delete the `admin` user in the GUI.
-3. Modify the `as.conf` on your host located under `~/.compose/appdata/openvpnas/config/etc` and replace the line boot_pam_users.0=admin with #boot_pam_users.0=admin (this only has to be done once and will survive container recreation).
+- Set another user as an `admin`.
+- Delete the `admin` user in the GUI.
+- Modify the `as.conf` on your host located under `~/.compose/appdata/openvpnas/config/etc` and replace the line boot_pam_users.0=admin with #boot_pam_users.0=admin (this only has to be done once and will survive container recreation).
 
 ### Server Network Settings
 

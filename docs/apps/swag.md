@@ -49,9 +49,9 @@ docker restart swag
 
 This change will make it so that if you type <http://blahblah> it will redirect to <https://blahblah>
 
-1. Edit ~/.config/appdata/swag/nginx/site-confs/default
+- Edit ~/.config/appdata/swag/nginx/site-confs/default
 
-1. Uncomment the relevant part of the file (see below)
+- Uncomment the relevant part of the file (see below)
 
 ```nginx
 # listening on port 80 disabled by default, remove the "#" signs to enable
@@ -64,7 +64,7 @@ server {
 }
 ```
 
-1. Restart the swag container
+- Restart the swag container
 
 ```bash
 docker restart swag

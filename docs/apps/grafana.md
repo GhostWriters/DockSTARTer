@@ -16,4 +16,6 @@ GF_PATHS_DATA='/var/lib/grafana' is not writable.
 
 Run the following command to fix it:
 
-    sudo chown -R $USER:$USER ~/.config/appdata/grafana
+```bash
+sudo chown -R $USER:$USER ~/.config/appdata/grafana
+```

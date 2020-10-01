@@ -18,7 +18,7 @@ docker logs tdarr
 If you see the following error on the console:
 
 >* Starting database mongodb
-   ...fail
+> ...fail
 
 Permissions are likely not set correctly on your `TDARR_DB` variable location, run the following:
 

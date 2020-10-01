@@ -11,10 +11,10 @@
 
 By default, Netdata will pull from a UID for the container itself to display in the list of Netdata servers you have, so you would see something like '0f2342dac'. To define this and make it more readable/recognizable for you (In case you have multiple Netdata servers):
 
-1. Stop the netdata container.
-1. Create or edit your [override file](https://dockstarter.com/overrides/introduction/), you can also use [this file](https://gist.github.com/mattgphoto/1e7afc85931ca98002a87abdc8bb257e) for reference.
-    - Change `newnetdataname` to `friendlynamefornetdata`.
-1. Once this is done, run `sudo ds -c netdata`
+- Stop the netdata container.
+- Create or edit your [override file](https://dockstarter.com/overrides/introduction/), you can also use [this file](https://gist.github.com/mattgphoto/1e7afc85931ca98002a87abdc8bb257e) for reference.
+  - Change `newnetdataname` to `friendlynamefornetdata`.
+- Once this is done, run `sudo ds -c netdata`
 
 ### Hosting Netdata Behind a Reverse Proxy
 
