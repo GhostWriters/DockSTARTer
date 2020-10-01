@@ -1,0 +1,15 @@
+name: Validate
+
+on: [push, pull_request]
+
+jobs:
+
+  validate-images:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.3.3
+      - name: Validate Images
+        working-directory: compose
+        run: |
+          dirname -- $(grep -Rl 'deprecated: "true"') | xargs rm -rf
+          for image in $(grep -RPoh "image: \K.*" | sort -u | grep -v '${'); do echo "Image: $image" && DOCKER_CLI_EXPERIMENTAL=enabled docker manifest inspect $image; done

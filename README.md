@@ -86,8 +86,11 @@ sudo apt-get install curl git
 sudo dnf install curl git
 sudo yum install curl git
 sudo pacman -Sy curl docker git
+```
 
-## NOTE: Do not sudo the next line.
+Then
+
+```bash
 git clone https://github.com/GhostWriters/DockSTARTer "/home/${USER}/.docker"
 sudo bash /home/${USER}/.docker/main.sh -vi
 sudo reboot

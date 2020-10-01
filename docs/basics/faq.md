@@ -34,6 +34,7 @@ That's it! Your containers should fire right back up as if nothing has changed. 
 This tool is extremely useful for people getting used to running Docker. Its official documentation should explain why but you can disable it if you want.
 
 > [Ouroboros](https://hub.docker.com/r/pyouroboros/ouroboros/) will monitor (all or specified) running Docker containers and update them to the (latest or tagged) available image in the remote registry.
+>
 > [Watchtower](https://hub.docker.com/r/containrrr/watchtower) will pull down your new image, gracefully shut down your existing container and restart it with the same options that were used when it was deployed initially.
 
 In short, Ouroboros and Watchtower do the same thing: keeps your containers up to date.
@@ -79,15 +80,11 @@ We have had a recent influx of users asking for assistance in how to make OMV wo
 
 If you are a Linux newbie, we *strongly discourage* this approach because of all the issues that might arise with how OMV is built, and troubleshooting issues in OMV can be a pain. However, if you feel comfortable with Linux and want to continue down this route you will need to ensure the following:
 
-1. You have installed all the necessary updates that are pending in your system.
-
-2. You have set a DNS server in your Web GUI.
-
-3. You have created a user **with a home directory** outside of the system disk that has `sudo` and `ssh` permissions. See below in how to do that.
-
-4. You have a secondary disk other than the system drive mounted and formatted to anything other than NTFS.
-
-5. We recommend you set up a specific "Shared Folder" for your home directory. `appdata` directory should **only** be used to store container configurations, not home directories.
+- You have installed all the necessary updates that are pending in your system.
+- You have set a DNS server in your Web GUI.
+- You have created a user **with a home directory** outside of the system disk that has `sudo` and `ssh` permissions. See below in how to do that.
+- You have a secondary disk other than the system drive mounted and formatted to anything other than NTFS.
+- We recommend you set up a specific "Shared Folder" for your home directory. `appdata` directory should **only** be used to store container configurations, not home directories.
 
 **SSH to your host as root.** You will need to edit a system config file in order to avoid issues in the future. Run the following command (you can use your favorite text editor for this portion):
 

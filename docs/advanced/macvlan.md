@@ -14,62 +14,62 @@ One solution might be to use Docker's `host` network. This however, increases th
 
 ### On Your Router
 
-1. Take note of the IP address of your Docker host and create a DHCP reservation for the IP if there isn't one already.
+- Take note of the IP address of your Docker host and create a DHCP reservation for the IP if there isn't one already.
 
-1. Configure DHCP so it will not assign address in a given range. That range will be occupied by our container's addresses.
+- Configure DHCP so it will not assign address in a given range. That range will be occupied by our container's addresses.
 
- The rest of this tutorial assumes addresses above `X.X.X.190` will be free.
+The rest of this tutorial assumes addresses above `X.X.X.190` will be free.
 
 ### On Your Docker Host
 
-1. Create the macvlan network<sup>1</sup>:
+- Create the macvlan network (see Note 1):
 
- ```bash
- docker network create -d macvlan -o parent=<myinterface> --subnet X.X.X.0/24 --gateway X.X.X.1
- --ip-range X.X.X.192/27 --aux-address 'host=X.X.X.Y' mymacvlan
- ```
+  ```bash
+  docker network create -d macvlan -o parent=<myinterface> --subnet X.X.X.0/24 --gateway X.X.X.1
+  --ip-range X.X.X.192/27 --aux-address 'host=X.X.X.Y' mymacvlan
+  ```
 
-* `<myinterface>` is the network interface your device is receiving data from. Run `ifconfig` for a listing of possible interfaces. Ex: `eth0`
-* `subnet` and `gateway` are specific to your LAN subnet
-* `ip-range` is the range in which Docker will assign IP addresses. This example goes from `X.X.X.192` to `X.X.X.223`
-* `X.X.X.Y` following `host` should be the IP address of your Docker host.
+- `<myinterface>` is the network interface your device is receiving data from. Run `ifconfig` for a listing of possible -nterfaces. Ex: `eth0`
+- `subnet` and `gateway` are specific to your LAN subnet
+- `ip-range` is the range in which Docker will assign IP addresses. This example goes from `X.X.X.192` to `X.X.X.223`
+- `X.X.X.Y` following `host` should be the IP address of your Docker host.
 
-1. Add the following to `/etc/network/interfaces` after replacing information as needed:
+- Add the following to `/etc/network/interfaces` after replacing information as needed:
 
- ```bash
- # Create new macvlan interface on the host
- ip link add mymacvlanshim link myinterface type macvlan mode bridge
- # Add the host address and bring up the interface
- ip addr add X.X.X.Y/32 dev mymacvlanshim
- ip link set mymacvlanshim up
- # Tell our host to use that interface to communicate with containers
- ip route add 192.168.86.192/27 dev mymacvlanshim
- ```
+  ```bash
+  # Create new macvlan interface on the host
+  ip link add mymacvlanshim link myinterface type macvlan mode bridge
+  # Add the host address and bring up the interface
+  ip addr add X.X.X.Y/32 dev mymacvlanshim
+  ip link set mymacvlanshim up
+  # Tell our host to use that interface to communicate with containers
+  ip route add 192.168.86.192/27 dev mymacvlanshim
+  ```
 
-1. Reboot
+- Reboot
 
-<sup>1</sup>You may be wondering why we don't create the network in Docker compose. Newer versions of compose have issues with using `aux-address` and `ip-range`.
+**Note 1** You may be wondering why we don't create the network in Docker compose. Newer versions of compose have issues with using `aux-address` and `ip-range`.
 
 ### In Your DockSTARTer Overrides
 
 We could connect our containers to `mymacvlan` and call it a day, but it's very useful to reserve IPs for each container so we can reach web endpoints in a consistent way.
 
-1. Add something similar to this to your `docker-compose.override.yml` file for each container:
+- Add something similar to this to your `docker-compose.override.yml` file for each container:
 
- ```yaml
- services:
-   ouroboros:
-     networks:
-       composemacvlan:
-         ipv4_address: X.X.X.201
- networks:
-   composemacvlan:
-     external:
-       name: mymacvlan
- version: "3.4"
- ```
+  ```yaml
+  services:
+    ouroboros:
+      networks:
+        composemacvlan:
+          ipv4_address: X.X.X.201
+  networks:
+    composemacvlan:
+      external:
+        name: mymacvlan
+  version: "3.4"
+  ```
 
- The `ipv4` address should fall in the range you reserved.
- Unfortunately, it's necessary to do this when adding new containers if you want them on the same network.
+  The `ipv4` address should fall in the range you reserved.
+  Unfortunately, it's necessary to do this when adding new containers if you want them on the same network.
 
 After this, you should be able to compose (`sudo ds -c`) and have a new shiny macvlan network! The containers will be available at the addresses you specified.

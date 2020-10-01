@@ -13,24 +13,30 @@ SyncLounge works best if you have a domain to use and it is recommended that you
 
 The below steps assume that you already have the [SWAG](https://dockstarter.com/apps/swag/) container selected, configured, and running. If not, do that first or along with steps 1 & 2 below.
 
-1. Enable `SyncLounge` by running:
+- Enable `SyncLounge` by running:
 
-        ds -a synclounge
+```bash
+ds -a synclounge
+```
 
-2. Complete the DockSTARTer configuration.
+- Complete the DockSTARTer configuration.
 
-    - Make sure to set the `SYNCLOUNGE_EXTERNAL_URL` setting to the appropriate domain. E.g. - `synclouge.yourdomain.tld`
+  - Make sure to set the `SYNCLOUNGE_EXTERNAL_URL` setting to the appropriate domain. E.g. - `synclouge.yourdomain.tld`
     Otherwise, keep the default settings until you make sure everything is working okay
 
-3. Recreate the container so settings get applied:
+- Recreate the container so settings get applied:
 
-        ds -c up synclounge
+```bash
+ds -c up synclounge
+```
 
-4. Find the file called `synclounge.subdomain.conf.sample` in your [SWAG](https://dockstarter.com/apps/swag/) `proxy-confs` folder and rename it to `synclounge.subdomain.conf` (By default, this has HTTP and HTTPS enabled).
+- Find the file called `synclounge.subdomain.conf.sample` in your [SWAG](https://dockstarter.com/apps/swag/) `proxy-confs` folder and rename it to `synclounge.subdomain.conf` (By default, this has HTTP and HTTPS enabled).
 
-5. Restart the SWAG container:
+- Restart the SWAG container:
 
-        docker restart swag
+```bash
+docker restart swag
+```
 
 You should now be able to go to `synclouge.yourdomain.tld` and use SyncLounge!
 
@@ -44,18 +50,22 @@ If you would rather have SyncLounge running under a different domain as a subfol
 
 If you want to override the Servers List you'll need to create an [override](https://dockstarter.com/overrides/introduction) to mount your servers file.
 
-1. Create a file called `servers.json` in your SyncLounge folder (`~/.config/appdata/synclounge/`) and populate it with servers by following [this guide](http://docs.synclounge.tv/self-hosted/settings/#customize-the-entire-list).
+- Create a file called `servers.json` in your SyncLounge folder (`~/.config/appdata/synclounge/`) and populate it with servers by following [this guide](http://docs.synclounge.tv/self-hosted/settings/#customize-the-entire-list).
 
-    - Your servers.json file should NOT include the `"servers":` prefix (that is for the settings file which isn't used here). Only `[]` and the server objects inside should be included.
+  - Your servers.json file should NOT include the `"servers":` prefix (that is for the settings file which isn't used here). Only `[]` and the server objects inside should be included.
 
-2. Add or update your override file to include the example below:
+- Add or update your override file to include the example below:
 
-        version: "3.4"
-            services:
-                synclounge:
-                    volumes:
-                        - ${DOCKERCONFDIR}/synclounge/servers.json:/defaults/servers.json
+  ```yaml
+  version: "3.4"
+  services:
+    synclounge:
+      volumes:
+        - ${DOCKERCONFDIR}/synclounge/servers.json:/defaults/servers.json
+  ```
 
-3. Recreate your container:
+- Recreate your container:
 
-        ds -c up synclounge
+```bash
+ds -c up synclounge
+```
