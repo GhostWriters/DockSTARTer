@@ -58,3 +58,5 @@ services:
       - ${DOCKERCONFDIR}/alltube:/var/www/html/config
       - ${DOCKERSTORAGEDIR}:/storage
 ```
+
+#### Make sure to run `ds -c` or `ds -c up <appname>` after you make changes to your override file
