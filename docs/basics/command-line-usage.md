@@ -67,7 +67,7 @@ Edit the file using something like `nano ~/.docker/compose/.env` (CTRL+X will pr
 You can add the variables required to run an app by running:
 
 ```bash
- sudo ds -a <APPNAME>
+sudo ds -a <APPNAME>
 ```
 
 ```bash
@@ -86,7 +86,7 @@ This is the best place to change the app's external default ports.
 You can remove the variables for an app by running:
 
 ```bash
- sudo ds -r <APPNAME>
+sudo ds -r <APPNAME>
 ```
 
 ```bash
