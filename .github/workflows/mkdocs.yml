@@ -18,6 +18,9 @@ jobs:
 
       - run: pip install mkdocs-material
       - run: pip install mkdocs-redirects
+      - run: pip install Markdown
+      - run: pip install Pygments
+      - run: pip install pymdown-extensions
 
       - run: cp README.md docs/index.md
 
