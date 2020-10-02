@@ -17,6 +17,5 @@ services:
       - /srv:/srv
       - ${DOCKERCONFDIR}/rclone:/config/rclone
       - ${DOCKERSTORAGEDIR}/rclone:/logs
-      - ${DOCKERCONFDIR}/rclone:/config
       - ${DOCKERSHAREDDIR}:/shared
       - ${DOCKERSTORAGEDIR}:/storage
