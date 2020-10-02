@@ -14,11 +14,11 @@ jobs:
           for image in $(ls compose/.apps/); do
               if ! ls -d docs/apps/* | grep -q "docs/apps/$image.md"; then
                   echo "Missing documentation for $image"
-                  exit
+                  exit 1
               fi
               if ! grep -q "apps/$image.md" mkdocs.yml; then
                   echo "Missing link for $image"
-                  exit
+                  exit 1
               fi
           done
 
@@ -29,7 +29,7 @@ jobs:
       - name: Validate Images
         run: |
           dirname -- $(grep -Rl 'deprecated: "true"' compose/) | xargs rm -rf
-          for image in $(grep -RPoh "image: \K.*" | sort -u | grep -v '${'); do
+          for image in $(grep -RPoh "image: \K.*" compose/ | sort -u | grep -v '${'); do
               echo "Image: $image"
               DOCKER_CLI_EXPERIMENTAL=enabled docker manifest inspect $image
           done
