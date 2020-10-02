@@ -80,6 +80,7 @@ nav:
       - apps/bitwarden.md
       - apps/booksonic.md
       - apps/bookstack.md
+      - apps/calibre.md
       - apps/calibreweb.md
       - apps/cloudcmd.md
       - apps/cloudflareddns.md
@@ -171,6 +172,7 @@ nav:
       - apps/tdarr.md
       - apps/telegraf.md
       - apps/thelounge.md
+      - apps/traktarr.md
       - apps/transmission.md
       - apps/transmissionvpn.md
       - apps/tvheadend.md
@@ -182,6 +184,7 @@ nav:
       - apps/watchtower.md
       - apps/xbackbone.md
       - apps/xteve.md
+      - apps/youtubedl.md
       - apps/znc.md
   - Overrides:
       - overrides/introduction.md
