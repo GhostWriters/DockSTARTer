@@ -184,6 +184,7 @@ nav:
       - apps/watchtower.md
       - apps/xbackbone.md
       - apps/xteve.md
+      - apps/youtubedl.md
       - apps/znc.md
   - Overrides:
       - overrides/introduction.md
