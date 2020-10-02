@@ -21,6 +21,11 @@ google_analytics:
   - UA-8908801-4
   - auto
 
+markdown_extensions:
+  - pymdownx.keys
+  - pymdownx.snippets
+  - pymdownx.superfences
+
 plugins:
   - search
   - redirects:
