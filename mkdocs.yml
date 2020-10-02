@@ -64,6 +64,7 @@ nav:
       - advanced/backups.md
       - advanced/domain-info.md
       - advanced/macvlan.md
+      - advanced/openmediavault.md
       - advanced/overrides.md
       - advanced/smb-mounting.md
       - advanced/technical-info.md
