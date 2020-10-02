@@ -7,7 +7,7 @@
 [![GitHub contributors](https://img.shields.io/github/contributors/GhostWriters/DockSTARTer.svg?style=flat-square&color=607D8B)](https://github.com/GhostWriters/DockSTARTer/graphs/contributors)
 [![GitHub last commit master](https://img.shields.io/github/last-commit/GhostWriters/DockSTARTer/master.svg?style=flat-square&color=607D8B&label=code%20committed)](https://github.com/GhostWriters/DockSTARTer/commits/master)
 [![GitHub license](https://img.shields.io/github/license/GhostWriters/DockSTARTer.svg?style=flat-square&color=607D8B)](https://github.com/GhostWriters/DockSTARTer/blob/master/LICENSE.md)
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/GhostWriters/DockSTARTer/CI/master?style=flat-square&color=607D8B&logo=github)](https://github.com/GhostWriters/DockSTARTer/actions?query=workflow%3ACI+branch%3Amaster)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/GhostWriters/DockSTARTer/Run%20Tests/master?style=flat-square&color=607D8B&logo=github)](https://github.com/GhostWriters/DockSTARTer/actions?query=workflow%3ARun%20Tests+branch%3Amaster)
 
 The main goal of DockSTARTer is to make it quick and easy to get up and running with Docker.
 
