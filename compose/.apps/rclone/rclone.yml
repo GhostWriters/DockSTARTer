@@ -1,6 +1,6 @@
 services:
   rclone:
-    command: rcd --rc-web-gui-no-open-browser --rc-addr :5572 --rc-no-auth
+    command: rcd --rc-web-gui-no-open-browser --rc-addr :5572 --rc-user admin --rc-pass admin
     container_name: rclone
     environment:
       - PGID=${PGID}
