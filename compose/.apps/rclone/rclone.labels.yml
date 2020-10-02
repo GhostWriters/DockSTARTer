@@ -1,0 +1,11 @@
+services:
+  rclone:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Rclone syncs your files to cloud storage"
+      com.dockstarter.appinfo.nicename: "RClone"
+      com.dockstarter.appvars.rclone_backupsdir: "~/.config/appdata/backups"
+      com.dockstarter.appvars.rclone_enabled: "false"
+      com.dockstarter.appvars.rclone_network_mode: ""
+      com.dockstarter.appvars.rclone_port_5572: "5572"
+      com.dockstarter.appvars.rclone_sourcedir: "~/.config/appdata"

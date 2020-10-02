@@ -1,0 +1,4 @@
+services:
+  rclone:
+    ports:
+      - ${RCLONE_PORT_5572}:5572
