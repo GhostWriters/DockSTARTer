@@ -7,7 +7,7 @@
 [![GitHub contributors](https://img.shields.io/github/contributors/GhostWriters/DockSTARTer.svg?style=flat-square&color=607D8B)](https://github.com/GhostWriters/DockSTARTer/graphs/contributors)
 [![GitHub last commit master](https://img.shields.io/github/last-commit/GhostWriters/DockSTARTer/master.svg?style=flat-square&color=607D8B&label=code%20committed)](https://github.com/GhostWriters/DockSTARTer/commits/master)
 [![GitHub license](https://img.shields.io/github/license/GhostWriters/DockSTARTer.svg?style=flat-square&color=607D8B)](https://github.com/GhostWriters/DockSTARTer/blob/master/LICENSE.md)
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/GhostWriters/DockSTARTer/CI/master?style=flat-square&color=607D8B&logo=github)](https://github.com/GhostWriters/DockSTARTer/actions?query=workflow%3ACI+branch%3Amaster)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/GhostWriters/DockSTARTer/Run%20Tests/master?style=flat-square&color=607D8B&logo=github)](https://github.com/GhostWriters/DockSTARTer/actions?query=workflow%3ARun%20Tests+branch%3Amaster)
 
 The main goal of DockSTARTer is to make it quick and easy to get up and running with Docker.
 
@@ -32,48 +32,50 @@ You may choose to rely on DockSTARTer for various changes to your Docker system,
 
 - APT Systems ([Debian](https://docs.docker.com/install/linux/docker-ce/debian/#os-requirements), [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/#os-requirements), etc)
 
-```bash
-sudo apt-get install curl git
-bash -c "$(curl -fsSL https://get.dockstarter.com)"
-sudo reboot
-```
+  ```bash
+  sudo apt-get install curl git
+  bash -c "$(curl -fsSL https://get.dockstarter.com)"
+  sudo reboot
+  ```
 
-> Raspbian requires a few extra commands
+  > Raspbian requires a few extra commands
 
-```bash
-sudo apt-get update
-sudo apt-get dist-upgrade
-sudo apt-get install curl git
-bash -c "$(curl -fsSL https://get.docker.com)"
-bash -c "$(curl -fsSL https://get.dockstarter.com)"
-sudo reboot
-```
+  ```bash
+  sudo apt-get update
+  sudo apt-get dist-upgrade
+  sudo apt-get install curl git
+  bash -c "$(curl -fsSL https://get.docker.com)"
+  bash -c "$(curl -fsSL https://get.dockstarter.com)"
+  sudo reboot
+  ```
+
+  > OpenMediaVault (OMV) requires [special instructions found here](https://dockstarter.com/advanced/openmediavault/)
 
 - DNF Systems ([Fedora](https://docs.docker.com/install/linux/docker-ce/fedora/#os-requirements))
 
-```bash
-sudo dnf install curl git
-bash -c "$(curl -fsSL https://get.dockstarter.com)"
-sudo reboot
-```
+  ```bash
+  sudo dnf install curl git
+  bash -c "$(curl -fsSL https://get.dockstarter.com)"
+  sudo reboot
+  ```
 
 - YUM Systems ([CentOS](https://docs.docker.com/install/linux/docker-ce/centos/#os-requirements))
 
-```bash
-sudo yum install curl git
-bash -c "$(curl -fsSL https://get.dockstarter.com)"
-sudo reboot
-```
+  ```bash
+  sudo yum install curl git
+  bash -c "$(curl -fsSL https://get.dockstarter.com)"
+  sudo reboot
+  ```
 
 - Pacman Systems (Arch, Manjaro, EndeavourOS, etc)
 
-> Note that systems with the `pacman` package manager will not install `docker` via the [https://get.docker.com](https://get.docker.com) script that is used for other distros. The instructions below provide information on installing all required packages manually prior to installing DockSTARTer.
+  > Note that systems with the `pacman` package manager will not install `docker` via the [https://get.docker.com](https://get.docker.com) script that is used for other distros. The instructions below provide information on installing all required packages manually prior to installing DockSTARTer.
 
-```bash
-sudo pacman -Sy curl docker git
-bash -c "$(curl -fsSL https://get.dockstarter.com)"
-sudo reboot
-```
+  ```bash
+  sudo pacman -Sy curl docker git
+  bash -c "$(curl -fsSL https://get.dockstarter.com)"
+  sudo reboot
+  ```
 
 <details>
   <summary>Alternate install (any system)</summary>
