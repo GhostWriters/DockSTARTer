@@ -9,3 +9,7 @@ services:
       com.dockstarter.appvars.transmissionvpn_port_51413: "51413"
       com.dockstarter.appvars.transmissionvpn_port_6881: "6881"
       com.dockstarter.appvars.transmissionvpn_port_9091: "9091"
+      com.dockstarter.appvars.transmissionvpn_download_dir: ""
+      com.dockstarter.appvars.transmissionvpn_home: ""
+      com.dockstarter.appvars.transmissionvpn_incomplete_dir: ""
+      com.dockstarter.appvars.transmissionvpn_watch_dir: ""
