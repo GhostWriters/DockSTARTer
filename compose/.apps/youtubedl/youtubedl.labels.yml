@@ -7,6 +7,6 @@ services:
       com.dockstarter.appvars.youtubedl_debug: "false"
       com.dockstarter.appvars.youtubedl_enabled: "false"
       com.dockstarter.appvars.youtubedl_network_mode: ""
-      com.dockstarter.appvars.youtubedl_output_template_playlist: "%(playlist_title)s/%(title)s [%(id)s].%(ext)s"
-      com.dockstarter.appvars.youtubedl_output_template: "%(title)s [%(id)s].%(ext)s"
+      com.dockstarter.appvars.youtubedl_output_template_playlist: "/storage/downloads/youtubedl/%(playlist_title)s/%(title)s [%(id)s].%(ext)s"
+      com.dockstarter.appvars.youtubedl_output_template: "/storage/downloads/youtubedl/%(title)s [%(id)s].%(ext)s"
       com.dockstarter.appvars.youtubedl_port_8080: "8080"
