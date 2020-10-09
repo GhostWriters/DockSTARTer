@@ -11,6 +11,9 @@ services:
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
+      - /srv:/srv
+      - /home:/home
+      - /export:/export      
       - ${DOCKERCONFDIR}/cloudcmd:/root
       - ${DOCKERSHAREDDIR}:/shared
       - ${DOCKERSTORAGEDIR}:/storage
