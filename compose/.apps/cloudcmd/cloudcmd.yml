@@ -10,10 +10,7 @@ services:
         max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: unless-stopped
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /srv:/srv
-      - /home:/home
-      - /export:/export      
+      - /etc/localtime:/etc/localtime:ro   
       - ${DOCKERCONFDIR}/cloudcmd:/root
       - ${DOCKERSHAREDDIR}:/shared
       - ${DOCKERSTORAGEDIR}:/storage
