@@ -13,7 +13,6 @@ services:
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /srv:/srv
       - ${DOCKERCONFDIR}/duplicati:/config
       - ${DOCKERSHAREDDIR}:/shared
       - ${DOCKERSTORAGEDIR}:/storage
