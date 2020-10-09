@@ -14,7 +14,6 @@ services:
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /srv:/srv
       - ${DOCKERCONFDIR}/rclone:/config/rclone
       - ${DOCKERSTORAGEDIR}/rclone:/logs
       - ${DOCKERSHAREDDIR}:/shared
