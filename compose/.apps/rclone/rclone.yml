@@ -1,6 +1,6 @@
 services:
   rclone:
-    command: rcd --rc-web-gui --rc-web-gui-force-update --rc-no-auth
+    command: rcd --rc-web-gui --rc-user ${RCLONE_USER} --rc-pass ${RCLONE_PASSWORD} --rc-addr 0.0.0.0:${RCLONE_PORT_5572}
     container_name: rclone
     environment:
       - PGID=${PGID}
