@@ -9,7 +9,7 @@ install_compose() {
     if [[ ${FORCE:-} == true ]] && [[ -n ${INSTALL:-} ]]; then
         INSTALLED_COMPOSE="0"
     else
-        INSTALLED_COMPOSE=$( (docker-compose --version 2> /dev/null || echo "0") | sed -E 's/(\S+ )(version )?([\d\w.]*)(, build .*)?/\1/')
+        INSTALLED_COMPOSE=$( (docker-compose --version 2> /dev/null || echo "0") | sed -E 's/(\S+ )(version )?([\d\w.]*)(, build .*)?/\3/')
     fi
     if vergt "${MINIMUM_COMPOSE}" "${INSTALLED_COMPOSE}"; then
         local AVAILABLE_COMPOSE
@@ -34,7 +34,7 @@ install_compose() {
                 ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose || fatal "Failed to create /usr/bin/docker-compose symlink."
             fi
             local UPDATED_COMPOSE
-            UPDATED_COMPOSE=$( (docker-compose --version 2> /dev/null || echo "0") | sed -E 's/(\S+ )(version )?([\d\w.]*)(, build .*)?/\1/')
+            UPDATED_COMPOSE=$( (docker-compose --version 2> /dev/null || echo "0") | sed -E 's/(\S+ )(version )?([\d\w.]*)(, build .*)?/\3/')
             if vergt "${AVAILABLE_COMPOSE}" "${UPDATED_COMPOSE}"; then
                 error "Failed to install the latest docker-compose."
             fi

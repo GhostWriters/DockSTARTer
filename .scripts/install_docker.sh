@@ -10,7 +10,7 @@ install_docker() {
     if [[ ${FORCE:-} == true ]] && [[ -n ${INSTALL:-} ]]; then
         INSTALLED_DOCKER="0"
     else
-        INSTALLED_DOCKER=$( (docker --version 2> /dev/null || echo "0") | sed -E 's/(\S+ )(version )?([\d\w.]*)(, build .*)?/\1/')
+        INSTALLED_DOCKER=$( (docker --version 2> /dev/null || echo "0") | sed -E 's/(\S+ )(version )?([\d\w.]*)(, build .*)?/\3/')
     fi
     if vergt "${MINIMUM_DOCKER}" "${INSTALLED_DOCKER}"; then
         local AVAILABLE_DOCKER
@@ -39,7 +39,7 @@ install_docker() {
             eval sh "${GET_DOCKER}" "${REDIRECT}" || fatal "Failed to install docker."
             rm -f "${GET_DOCKER}" || warn "Failed to remove temporary docker install script."
             local UPDATED_DOCKER
-            UPDATED_DOCKER=$( (docker --version 2> /dev/null || echo "0") | sed -E 's/(\S+ )(version )?([\d\w.]*)(, build .*)?/\1/')
+            UPDATED_DOCKER=$( (docker --version 2> /dev/null || echo "0") | sed -E 's/(\S+ )(version )?([\d\w.]*)(, build .*)?/\3/')
             if vergt "${AVAILABLE_DOCKER}" "${UPDATED_DOCKER}"; then
                 error "Failed to install the latest docker."
             fi
