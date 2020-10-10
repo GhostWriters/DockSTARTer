@@ -10,7 +10,7 @@ install_yq() {
     else
         INSTALLED_YQ=$( (yq --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
     fi
-    if ! yq --help | grep -q kislyuk; then
+    if ! (yq --help | grep -q kislyuk); then
         INSTALLED_YQ="0"
         warn "Wrong version of yq detected. https://github.com/kislyuk/yq will be installed."
     fi
