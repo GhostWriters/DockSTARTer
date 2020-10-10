@@ -10,6 +10,10 @@ install_yq() {
     else
         INSTALLED_YQ=$( (yq --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
     fi
+    if ! yq --help | grep -q kislyuk; then
+        INSTALLED_YQ="0"
+        warn "Wrong version of yq detected. https://github.com/kislyuk/yq will be installed."
+    fi
     if vergt "${MINIMUM_YQ}" "${INSTALLED_YQ}"; then
         local AVAILABLE_YQ
         AVAILABLE_YQ=$( (curl -H "${GH_HEADER:-}" -fsL "https://api.github.com/repos/kislyuk/yq/releases/latest" | grep -Po '"tag_name": "[Vv]?\K.*?(?=")') || echo "0")
