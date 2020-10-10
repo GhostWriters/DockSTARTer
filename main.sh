@@ -27,7 +27,7 @@ IFS=$'\n\t'
 #/  -h --help
 #/      show this usage information
 #/  -i --install
-#/      install/update docker, docker-compose, yq-go and all dependencies
+#/      install/update docker, docker-compose, yq and all dependencies
 #/  -p --prune
 #/      remove unused docker resources
 #/  -r --remove

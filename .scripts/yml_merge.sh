@@ -10,7 +10,7 @@ yml_merge() {
     RUNFILE=$(mktemp) || fatal "Failed to create temporary yml merge script."
     echo "#!/usr/bin/env bash" > "${RUNFILE}"
     {
-        echo 'yq-go m '\\
+        echo "yq -y -s 'reduce .[] as $item ({}; . * $item)' "\\
         echo "\"${SCRIPTPATH}/compose/.reqs/v1.yml\" \\"
         echo "\"${SCRIPTPATH}/compose/.reqs/v2.yml\" \\"
     } >> "${RUNFILE}"
@@ -21,7 +21,7 @@ yml_merge() {
         if [[ -d ${SCRIPTPATH}/compose/.apps/${FILENAME}/ ]]; then
             if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml ]]; then
                 local APPDEPRECATED
-                APPDEPRECATED=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.dockstarter.appinfo.deprecated]" || echo "false")
+                APPDEPRECATED=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[\"com.dockstarter.appinfo.deprecated\"]" || echo "false")
                 if [[ ${APPDEPRECATED} == "true" ]]; then
                     warn "${APPNAME} IS DEPRECATED!"
                     warn "Please edit ${SCRIPTPATH}/compose/.env and set ${APPNAME}_ENABLED to false."
