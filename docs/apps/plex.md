@@ -7,7 +7,30 @@
 
 [Plex](https://plex.tv/) organizes video, music and photos from personal media libraries and streams them to smart TVs, streaming boxes and mobile devices. This container is packaged as a standalone Plex Media Server. has always been a top priority. Straightforward design and bulk actions mean getting things done faster.
 
-### Common Error: "Cannot Claim Server on First Run"
+## Install/Setup
+
+### Common Issue: Playback fails for certain media
+
+One possible resolution to this issue is to remove the codecs folder:
+
+```bash
+rm -rf "~/.config/appdata/plex/Library/Application Support/Plex Media Server/Codecs"
+```
+
+Or place a custom init script in your config (ex: `~/.config/appdata/plex/custom-cont-init.d/00-plex-remove-codecs`):
+
+```bash
+#!/usr/bin/with-contenv bash
+set -euo pipefail
+IFS=$'\n\t'
+
+rm -rf "/config/Library/Application Support/Plex Media Server/Codecs"
+echo "Codecs removed."
+```
+
+This will run every time the container restarts.
+
+### Common Issue: Cannot Claim Server on First Run
 
 If you are starting the Plex container for the first time and cannot claim your server to set it up there are 3 methods you can try to resolve the issue:
 
@@ -100,7 +123,7 @@ Thankfully, some of this information is well documented (but not easily found) o
 - Moving an installation to another system: [https://support.plex.tv/articles/201370363-move-an-install-to-another-system/](https://support.plex.tv/articles/201370363-move-an-install-to-another-system/)
 - Where is the Plex Media Server data directory? [https://support.plex.tv/articles/202915258-where-is-the-plex-media-server-data-directory-located/](https://support.plex.tv/articles/202915258-where-is-the-plex-media-server-data-directory-located/)
 
-#### Hardware Transcoding
+### Hardware Transcoding
 
 If you would like to have Plex use a GPU that is attached to your DockSTARTer host, you can do this using an [override](https://dockstarter.com/overrides/introduction/) like so:
 

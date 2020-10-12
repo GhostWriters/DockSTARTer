@@ -22,11 +22,12 @@ Nginx Proxy Manager requires a Configuration file named `config.json`. This file
 }
 ```
 
-### Example Docker Compose Override
+## Example Docker Compose Override
 
 ```yaml
 version: "3.4"
 services:
+
   proxymanager:
     image: jc21/nginx-proxy-manager:latest
     container_name: proxymanager
@@ -35,16 +36,14 @@ services:
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-
     ports:
       - "80:80"
       - "81:81"
       - "443:443"
-
+    restart: unless-stopped
     volumes:
       - ${DOCKERCONFDIR}/proxymanager/config.json:/app/config/config.json
       - ${DOCKERCONFDIR}/proxymanager/data:/data
       - ${DOCKERCONFDIR}/proxymanager/letsencrypt:/etc/letsencrypt
       - ${DOCKERSTORAGEDIR}:/storage
-    restart: unless-stopped
 ```

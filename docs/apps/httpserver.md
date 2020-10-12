@@ -7,7 +7,7 @@
 
 [http-server](https://github.com/patrickdappollonio/http-server) is a simple binary to provide a static http server from a given folder.
 
-### Configuration
+## Install/Setup
 
 The variable `HTTPSERVER_FILE_SERVER_COLOR_SET` can be modified to use any of the colors listed on [here](https://getmdl.io/customize/index.html).
 

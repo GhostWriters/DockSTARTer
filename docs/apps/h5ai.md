@@ -1,7 +1,7 @@
 # H5ai
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/bixidock/h5ai?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/bixidock/h5ai)
-[![GitHub Stars](https://img.shields.io/github/stars/linuxserver/docker-duplicati?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/PixiBixi/dockerfiles/tree/master/h5ai)
+[![GitHub Stars](https://img.shields.io/github/stars/PixiBixi/dockerfiles?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/PixiBixi/dockerfiles/tree/master/h5ai)
 
 ## Description
 

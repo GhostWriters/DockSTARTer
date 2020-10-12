@@ -1,7 +1,7 @@
 # InfluxDB
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/_/influxdb?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/_/influxdb)
-[![GitHub Stars](https://img.shields.io/github/stars/linuxserver/docker-duplicati?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/linuxserver/docker-duplicati)
+[![GitHub Stars](https://img.shields.io/github/stars/influxdata/influxdata-docker?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/influxdata/influxdata-docker)
 
 ## Description
 

@@ -13,6 +13,8 @@ A demo is available [here](https://speedtest.henrywhitaker.com).
 
 *Disclaimer: You will need to accept Ookla's EULA and privacy agreements in order to use this container.*
 
+## Install/Setup
+
 ### Base Path
 
 You can set a base path for this application if you want to host it behind a reverse proxy. By default it binds to `/`, but you can change the variable called `SPEEDTEST_BASE_PATH` in your `.env` file to whatever you want and run `ds -c up speedtest` afterwards.

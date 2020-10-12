@@ -7,6 +7,8 @@
 
 [Murmur](https://github.com/mumble-voip/mumble) is a VoIP server for Mumble. It is an open-source application that is similar to programs such as Ventrilo or TeamSpeak.
 
+## Install/Setup
+
 ### SuperUser Password
 
 The default user on a Murmur server is called 'SuperUser'. An initial password is generated for this user on first run, and you can find it by looking at the Docker logs for the Murmur container. It will be in a line that looks like `Password for 'SuperUser' set to 'something'`. You can use this password to login.

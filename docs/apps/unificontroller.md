@@ -7,6 +7,8 @@
 
 [UniFi Controller](https://www.ubnt.com/enterprise/#unifi) software is a powerful, enterprise wireless software engine ideal for high-density client deployments requiring low latency and high uptime performance.
 
+## Install/Setup
+
 ### Devices Get Stuck In "Adopting" State
 
 When you first log in to your controller, you need to change the controller's IP address under `Settings > Controller Settings > Advanced Configuration`. On the right hand side, you will see `Controller Hostname/IP`, change this to your Docker host's IP address or hostname.
