@@ -1,11 +1,11 @@
-# kitana
+# Kitana
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/pannal/kitana?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/pannal/kitana)
 [![GitHub Stars](https://img.shields.io/github/stars/pannal/kitana?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/pannal/kitana)
 
 ## Description
 
-[kitana](https://github.com/pannal/kitana) is a responsive Plex plugin web frontend.
+[Kitana](https://github.com/pannal/kitana) is a responsive Plex plugin web frontend.
 
 ## Install/Setup
 
