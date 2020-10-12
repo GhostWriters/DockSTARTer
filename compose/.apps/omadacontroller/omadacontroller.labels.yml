@@ -1,0 +1,15 @@
+services:
+  omadacontroller:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Docker image based off of Ubuntu:18.04 for TP-Link Omada Controller to control TP-Link Omada EAP Series Wireless Access Points"
+      com.dockstarter.appinfo.nicename: "OmadaController"
+      com.dockstarter.appvars.omadacontroller_enabled: "false"
+      com.dockstarter.appvars.omadacontroller_manage_http_port_8088: "8088"
+      com.dockstarter.appvars.omadacontroller_manage_https_port_8043: "8043"
+      com.dockstarter.appvars.omadacontroller_network_mode: ""
+      com.dockstarter.appvars.omadacontroller_portal_http_port_8088: "8088"
+      com.dockstarter.appvars.omadacontroller_portal_https_port_8843: "8443"
+      com.dockstarter.appvars.omadacontroller_show_mongodb_logs: "false"
+      com.dockstarter.appvars.omadacontroller_show_server_logs: "true"
+      com.dockstarter.appvars.omadacontroller_small_files: "false"
