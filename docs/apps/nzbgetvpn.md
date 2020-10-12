@@ -9,6 +9,8 @@ NZBGetVPN is a combination of binhex's [NZBGet](https://github.com/binhex/arch-n
 
 The support forum for NZBGetVPN is located [here](https://forums.unraid.net/topic/37252-support-bungys-docker-repository/).
 
+## Install/Setup
+
 ### NZBGetVPN WebUI Access
 
-If you're attempting to get access to the NZBGetVPN WebUI remotely outside of your home network, you are going to have to do this through a reverse proxy using SWAG. Full details and steps are outlined here [VPN Information](https://dockstarter.com/advanced/vpn-info/).
+If you're attempting to get access to the NZBGetVPN WebUI remotely outside of your home network, you are going to have to do this through a reverse proxy using [SWAG](https://dockstarter.com/apps/swag/). Full details and steps are outlined here [VPN Information](https://dockstarter.com/advanced/vpn-info/).

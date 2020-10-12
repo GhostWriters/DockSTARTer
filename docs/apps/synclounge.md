@@ -7,7 +7,7 @@
 
 [SyncLounge](https://synclounge.tv/) is a third party tool that allows you to watch Plex in sync with your friends/family, wherever you are.
 
-### General Setup
+## Install/Setup
 
 SyncLounge works best if you have a domain to use and it is recommended that you use this with the [SWAG](https://dockstarter.com/apps/swag/) container supported by DockSTARTer. Also, since some Plex clients can only operate over HTTP, SyncLounge needs to be accessible by HTTP or your users will need to enable mixed content in their browser for ONLY the domain SyncLounge is on.
 
@@ -32,7 +32,7 @@ ds -c up synclounge
 
 - Find the file called `synclounge.subdomain.conf.sample` in your [SWAG](https://dockstarter.com/apps/swag/) `proxy-confs` folder and rename it to `synclounge.subdomain.conf` (By default, this has HTTP and HTTPS enabled).
 
-- Restart the SWAG container:
+- Restart the [SWAG](https://dockstarter.com/apps/swag/) container:
 
 ```bash
 docker restart swag

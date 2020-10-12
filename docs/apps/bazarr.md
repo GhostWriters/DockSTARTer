@@ -7,6 +7,8 @@
 
 [Bazarr](https://www.bazarr.media/) is a companion application to Sonarr and Radarr. It can manage and download subtitles based on your requirements. You define your preferences by TV show or movie and Bazarr takes care of everything for you.
 
+## Install/Setup
+
 By default, the DockSTARTer configuration of Bazarr will map to the following volumes:
 
 ```yaml

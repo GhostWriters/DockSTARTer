@@ -7,6 +7,8 @@
 
 [XBackBone]((https://sergix44.github.io/XBackBone/)) is a simple and lightweight PHP file manager that support the instant sharing tool ShareX and *NIX systems. It supports uploading and displaying images, GIF, video, code, formatted text, pdf, and file downloading and uploading. Also have a web UI with multi user management, media gallery and search support.
 
+## Install/Setup
+
 ### Common Issues
 
 After adding XBackBone and configuring the variables in your `.env` file when you try to access `http://<hostname>:80` you get a `Connection Timed Out` error. Make sure to check the app logs by running:
