@@ -1,0 +1,22 @@
+services:
+  duplicacy:
+    container_name: duplicacy
+    environment:
+      - GRP_ID=${PGID}
+      - TZ=${TZ}
+      - USR_ID=${PUID}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/duplicacy/cache:/cache
+      - ${DOCKERCONFDIR}/duplicacy/config:/config
+      - ${DOCKERCONFDIR}/duplicacy/logs:/logs
+      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DUPLICACY_APPDATA_DIR}:/backuproot/appdata:ro
+      - ${DUPLICACY_BACKUP_DIR}:/backup
+      - ${DUPLICACY_DOCKER_DIR}:/backuproot/docker:ro
