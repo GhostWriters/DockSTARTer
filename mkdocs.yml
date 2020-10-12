@@ -187,9 +187,11 @@ nav:
       - apps/znc.md
   - Overrides:
       - overrides/introduction.md
+      - overrides/autoscan.md
       - overrides/bw_plex.md
       - overrides/dashmachine.md
       - overrides/fireflyiii.md
+      - overrides/kitana.md
       - overrides/nginxproxymanager.md
       - overrides/plpp.md
       - overrides/requestrr.md
