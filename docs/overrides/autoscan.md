@@ -1,11 +1,11 @@
-# autoscan
+# Autoscan
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/cloudb0x/autoscan?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/cloudb0x/autoscan)
 [![GitHub Stars](https://img.shields.io/github/stars/Cloudbox/autoscan?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/Cloudbox/autoscan)
 
 ## Description
 
-[autoscan](https://github.com/Cloudbox/autoscan) replaces the default Plex and Emby behaviour for picking up changes on the file system.
+[Autoscan](https://github.com/Cloudbox/autoscan) replaces the default Plex and Emby behaviour for picking up changes on the file system.
 
 ## Install/Setup
 
