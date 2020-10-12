@@ -1,8 +1,8 @@
 services:
   booksonic:
     labels:
-      com.dockstarter.appinfo.description: "Web-based streamer for your audiobooks."
       com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Web-based streamer for your audiobooks."
       com.dockstarter.appinfo.nicename: "Booksonic"
       com.dockstarter.appvars.booksonic_context_path: "/booksonic"
       com.dockstarter.appvars.booksonic_enabled: "false"

@@ -1,8 +1,8 @@
 services:
   filebot:
     labels:
-      com.dockstarter.appinfo.description: "Tool for organizing your media"
       com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Tool for organizing your media"
       com.dockstarter.appinfo.nicename: "FileBot"
       com.dockstarter.appvars.filebot_enabled: "false"
       com.dockstarter.appvars.filebot_network_mode: ""

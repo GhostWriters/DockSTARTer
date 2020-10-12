@@ -1,8 +1,8 @@
 services:
   jellyfin:
     labels:
-      com.dockstarter.appinfo.description: "Free Software Media Browser"
       com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Free Software Media Browser"
       com.dockstarter.appinfo.nicename: "Jellyfin"
       com.dockstarter.appvars.jellyfin_enabled: "false"
       com.dockstarter.appvars.jellyfin_network_mode: ""

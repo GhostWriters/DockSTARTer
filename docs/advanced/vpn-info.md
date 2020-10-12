@@ -33,13 +33,13 @@ Enter either `sudo nano transmission.subfolder.conf` or `sudo nano transmission.
 Original
 
 ```nginx
-   set $upstream_transmission transmission;
+set $upstream_transmission transmission;
 ```
 
 Modified
 
 ```nginx
-   set $upstream_transmission transmissionvpn;
+set $upstream_transmission transmissionvpn;
 ```
 
 Save the file out and then restart your containers with a `ds -c` command.

@@ -1,8 +1,8 @@
 services:
   glances:
     labels:
-      com.dockstarter.appinfo.description: "Cross-platform system monitoring tool"
       com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Cross-platform system monitoring tool"
       com.dockstarter.appinfo.nicename: "Glances"
       com.dockstarter.appvars.glances_enabled: "false"
       com.dockstarter.appvars.glances_network_mode: ""

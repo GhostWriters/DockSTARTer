@@ -1,16 +1,16 @@
 services:
   synclounge:
     labels:
-      com.dockstarter.appinfo.description: "Watch Plex in sync with your friends/family, wherever you are."
       com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Watch Plex in sync with your friends/family, wherever you are."
       com.dockstarter.appinfo.nicename: "SyncLounge"
       com.dockstarter.appvars.synclounge_auth_list: ""
       com.dockstarter.appvars.synclounge_autojoin_enabled: "false"
-      com.dockstarter.appvars.synclounge_autojoin_room: ""
       com.dockstarter.appvars.synclounge_autojoin_password: ""
+      com.dockstarter.appvars.synclounge_autojoin_room: ""
       com.dockstarter.appvars.synclounge_enabled: "false"
-      com.dockstarter.appvars.synclounge_external_url: ""
       com.dockstarter.appvars.synclounge_external_server_port: ""
+      com.dockstarter.appvars.synclounge_external_url: ""
       com.dockstarter.appvars.synclounge_network_mode: ""
       com.dockstarter.appvars.synclounge_port_8088: "8088"
       com.dockstarter.appvars.synclounge_port_8089: "8089"

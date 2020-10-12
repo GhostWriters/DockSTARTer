@@ -1,8 +1,8 @@
 services:
   heimdall:
     labels:
-      com.dockstarter.appinfo.description: "Application dashboard and launcher"
       com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Application dashboard and launcher"
       com.dockstarter.appinfo.nicename: "Heimdall"
       com.dockstarter.appvars.heimdall_enabled: "false"
       com.dockstarter.appvars.heimdall_network_mode: ""

@@ -1,0 +1,11 @@
+services:
+  rsnapshot:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Make periodic snapshots of local machines, and remote machines over ssh"
+      com.dockstarter.appinfo.nicename: "Rsnapshot"
+      com.dockstarter.appvars.rsnapshot_datadir: "~/.config/appdata"
+      com.dockstarter.appvars.rsnapshot_enabled: "false"
+      com.dockstarter.appvars.rsnapshot_network_mode: ""
+      com.dockstarter.appvars.rsnapshot_root_ssh: "/root/.ssh"
+      com.dockstarter.appvars.rsnapshot_snapshotsdir: "/mnt/rsnapshot/snapshots"
