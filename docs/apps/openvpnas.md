@@ -7,7 +7,7 @@
 
 [OpenVPN-AS](https://openvpn.net/index.php/access-server/overview.html) is a full featured secure network tunneling VPN software solution that integrates OpenVPN server capabilities, enterprise management capabilities, simplified OpenVPN Connect UI, and OpenVPN Client software packages that accommodate Windows, MAC, Linux, Android, and iOS environments. OpenVPN Access Server supports a wide range of configurations, including secure and granular remote access to internal network and/ or private cloud network resources and applications with fine-grained access control.
 
-### Setting up the application
+## Install/Setup
 
 The admin interface is available at `https://<ip>:943/admin` with a default user/password of admin/password
 
@@ -22,7 +22,3 @@ The `admin` account is a system account (PAM) and after container update or recr
 ### Server Network Settings
 
 Make sure to change Hostname or IP Address to your public IP or public DNS name.  It defaults to the docker internal IP.  Also, this goes without saying, make sure to forward the correct ports on your firewall to your host IP.
-
-### SWAG Subdomain Config
-
-[Sample SWAG Config Here](https://pastebin.com/kMQ7f70f)

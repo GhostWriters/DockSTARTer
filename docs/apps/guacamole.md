@@ -7,6 +7,6 @@
 
 Guacamole is a Docker container for [Apache Guacamole](https://guacamole.apache.org/), a client-less remote desktop gateway. It supports standard protocols like VNC, RDP, and SSH over HTML5.
 
-### Configuring Guacamole
+## Install/Setup
 
 You can read through a great guide [here](https://web.archive.org/web/20200724134537/https://technicalramblings.com/blog/remotely-accessing-the-unraid-gui-with-guacamole-and-vnc-web-browser/) which will go over how to protect your Guacamole instance if you ever want it to be accessible over the Internet.
