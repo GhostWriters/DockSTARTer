@@ -13,4 +13,3 @@ services:
       com.dockstarter.appvars.omadacontroller_show_mongodb_logs: "false"
       com.dockstarter.appvars.omadacontroller_show_server_logs: "true"
       com.dockstarter.appvars.omadacontroller_small_files: "false"
-git
