@@ -1,0 +1,27 @@
+services:
+  omadacontroller:
+    container_name: omadacontroller
+    environment:
+      - MANAGE_HTTP_PORT=${OMADACONTROLLER_MANAGE_HTTP_PORT_8088}
+      - MANAGE_HTTPS_PORT=${OMADACONTROLLER_MANAGE_HTTPS_PORT_8043}
+      - PGID=${PGID}
+      - PORTAL_HTTP_PORT${OMADACONTROLLER_PORTAL_HTTP_PORT_8088}
+      - PORTAL_HTTPS_PORT=${OMADACONTROLLER_PORTAL_HTTPS_PORT_8843}
+      - PUID=${PUID}
+      - SHOW_MONGODB_LOGS=${OMADACONTROLLER_SHOW_MONGODB_LOGS}
+      - SHOW_SERVER_LOGS=${OMADACONTROLLER_SHOW_SERVER_LOGS}
+      - SMALL_FILES=${OMADACONTROLLER_SMALL_FILES}
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/omadacontroller:/opt/tplink/EAPController/data
+      - ${DOCKERCONFDIR}/omadacontroller/logs:/opt/tplink/EAPController/logs
+      - ${DOCKERCONFDIR}/omadacontroller/work:/opt/tplink/EAPController/work
+      - ${DOCKERSHAREDDIR}:/shared
+      - ${DOCKERSTORAGEDIR}:/storage

@@ -1,0 +1,3 @@
+services:
+  omadacontroller:
+    network_mode: ${OMADACONTROLLER_NETWORK_MODE}
