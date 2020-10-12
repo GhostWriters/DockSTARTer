@@ -3,9 +3,13 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/jc21/nginx-proxy-manager?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/jc21/nginx-proxy-manager)
 [![GitHub Stars](https://img.shields.io/github/stars/jc21/nginx-proxy-manager?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/jc21/nginx-proxy-manager)
 
+## Description
+
 [Nginx Proxy Manager](https://nginxproxymanager.com/) is a Docker container for managing Nginx proxy hosts and SSL Certificates with a simple, powerful interface.
 
-## Config File
+## Install/Setup
+
+### Config File
 
 Nginx Proxy Manager requires a Configuration file named `config.json`. This file needs to be in the appdata folder for NPM before it is started.
 
@@ -22,7 +26,7 @@ Nginx Proxy Manager requires a Configuration file named `config.json`. This file
 }
 ```
 
-## Example Docker Compose Override
+### Example Docker Compose Override
 
 ```yaml
 version: "3.4"

@@ -3,9 +3,13 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/hellowlol/bw_plex?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/hellowlol/bw_plex)
 [![GitHub Stars](https://img.shields.io/github/stars/Hellowlol/bw_plex?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/Hellowlol/bw_plex)
 
+## Description
+
 [bw_plex](https://github.com/Hellowlol/bw_plex) is a tool for skipping intro and outro for plex.
 
-## ENV Variable
+## Install/Setup
+
+### ENV Variable
 
 The bw_plex override uses Variables that you will need to update your `.env` with the below example.
 
@@ -14,7 +18,7 @@ BW_PLEX_TOKEN=your_plex_x_token
 BW_PLEX_URL=http://plex:32400
 ```
 
-## Example Docker Compose Override
+### Example Docker Compose Override
 
 ```yaml
 version: "3.4"
