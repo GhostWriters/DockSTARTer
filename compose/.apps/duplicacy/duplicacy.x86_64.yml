@@ -1,0 +1,3 @@
+services:
+  duplicacy:
+    image: saspus/duplicacy-web

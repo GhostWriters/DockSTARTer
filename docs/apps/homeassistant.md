@@ -1,11 +1,13 @@
 # Home Assistant
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/homeassistant/home-assistant?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/homeassistant/home-assistant)
-[![GitHub Stars](https://img.shields.io/github/stars/linuxserver/docker-duplicati?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/home-assistant/core)
+[![GitHub Stars](https://img.shields.io/github/stars/home-assistant/core?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/home-assistant/core)
 
 ## Description
 
 [Home Assistant](https://www.home-assistant.io/) is a home automation platform running on Python 3 that puts local control and privacy first. It is able to track and control all devices at home and offer a platform for automating control. Powered by a worldwide community of tinkerers and DIY enthusiasts. Perfect to run on a Raspberry Pi or a local server.
+
+## Install/Setup
 
 ### Environment Variable
 

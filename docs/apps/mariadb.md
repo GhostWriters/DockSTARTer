@@ -7,6 +7,8 @@
 
 [MariaDB](https://mariadb.org/) is one of the most popular database servers. Made by the original developers of MySQL.
 
+## Install/Setup
+
 You can create and manage databases directly from inside the MariaDB container but we recommend you use [phpMyAdmin](https://dockstarter.com/apps/phpmyadmin) to manage your databases.
 
 We **heavily** recommend that if you spin up a container that requires a database you create a user for that container in [phpMyAdmin](https://dockstarter.com/apps/phpmyadmin). You should **NEVER** use the root account for anything other than database management.

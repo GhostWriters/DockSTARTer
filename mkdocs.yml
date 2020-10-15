@@ -92,6 +92,7 @@ nav:
       - apps/delugevpn.md
       - apps/dozzle.md
       - apps/duckdns.md
+      - apps/duplicacy.md
       - apps/duplicati.md
       - apps/emby.md
       - apps/filebot.md
@@ -134,6 +135,7 @@ nav:
       - apps/nzbgetvpn.md
       - apps/nzbhydra2.md
       - apps/ombi.md
+      - apps/omadacontroller.md
       - apps/openvpnas.md
       - apps/organizr.md
       - apps/ouroboros.md
@@ -187,5 +189,12 @@ nav:
       - apps/znc.md
   - Overrides:
       - overrides/introduction.md
+      - overrides/autoscan.md
+      - overrides/bw_plex.md
+      - overrides/dashmachine.md
+      - overrides/fireflyiii.md
+      - overrides/kitana.md
       - overrides/nginxproxymanager.md
+      - overrides/plpp.md
+      - overrides/requestrr.md
       - overrides/yacreader.md

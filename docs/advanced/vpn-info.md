@@ -20,11 +20,11 @@ echo "tun" | sudo tee /etc/modules-load.d/tun.conf
 sudo reboot
 ```
 
-## Access VPN containers remotely using SWAG
+## Access VPN containers remotely
 
-If you're attempting to access the Web UI for one of your VPN containers (e.g. TransmissionVPN, DelugeVPN, etc.) from outside of your home network using SWAG, you will need to modify the SWAG configuration file to support the name difference. The sample configs are controlled by [LSIO](https://www.linuxserver.io/), not by DockSTARTer. So this change is required to get the VPN containers running remotely.
+If you're attempting to access the Web UI for one of your VPN containers (e.g. TransmissionVPN, DelugeVPN, etc.) from outside of your home network using [SWAG](https://dockstarter.com/apps/swag/), you will need to modify the [SWAG](https://dockstarter.com/apps/swag/) configuration file to support the name difference. The sample configs are controlled by [LSIO](https://www.linuxserver.io/), not by DockSTARTer. So this change is required to get the VPN containers running remotely.
 
-The sample proxy configuration files found in `.config/appdata/swag/nginx/proxy-confs/` will need to be modified and as usual, have the .sample removed from the filename.
+The sample proxy configuration files found in `~/.config/appdata/swag/nginx/proxy-confs/` will need to be modified and as usual, have the .sample removed from the filename.
 
 You will also need to edit the appropriate proxy `.conf`. The below example uses the TransmissionVPN container as an example:
 
@@ -33,13 +33,13 @@ Enter either `sudo nano transmission.subfolder.conf` or `sudo nano transmission.
 Original
 
 ```nginx
-set $upstream_transmission transmission;
+set $upstream_app transmission;
 ```
 
 Modified
 
 ```nginx
-set $upstream_transmission transmissionvpn;
+set $upstream_app transmissionvpn;
 ```
 
 Save the file out and then restart your containers with a `ds -c` command.

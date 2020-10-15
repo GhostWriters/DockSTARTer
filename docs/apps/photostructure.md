@@ -7,7 +7,7 @@
 
 [PhotoStructure](https://photostructure.com/) is your new home for all your photos & videos.
 
-### Configuration
+## Install/Setup
 
 There are a few directories that get mounted on PhotoStructure that require a bit of a breakdown per the developer.
 
