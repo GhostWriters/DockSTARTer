@@ -10,7 +10,7 @@ yml_get() {
     yq -y -s 'reduce .[] as '\$'item ({}; . * '\$'item)' \
         "${SCRIPTPATH}"/compose/.apps/"${FILENAME}"/*.yml 2> /dev/null |
         yq -y -r ".${GET_VAR}" 2> /dev/null |
-        sed -E '$s/^\.\.\.$//' ||
+        sed -E '$s/^\.\.\.$//;/^$/d' ||
         return 1
 }
 
