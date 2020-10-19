@@ -74,6 +74,7 @@ nav:
       - apps/airsonic.md
       - apps/amd.md
       - apps/apcupsd.md
+      - apps/apprise.md
       - apps/bazarr.md
       - apps/beets.md
       - apps/bitwarden.md
