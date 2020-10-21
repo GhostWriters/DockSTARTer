@@ -10,4 +10,4 @@ services:
       com.dockstarter.appvars.filebrowser_log: "/config/filebrowser.log"
       com.dockstarter.appvars.filebrowser_network_mode: ""
       com.dockstarter.appvars.filebrowser_port_80: "80"
-      com.dockstarter.appvars.filebrowser_share_dir: "~/.config/appdata/filebrowser"
+      com.dockstarter.appvars.filebrowser_share_dir: "~/.config/appdata/filebrowser/share"
