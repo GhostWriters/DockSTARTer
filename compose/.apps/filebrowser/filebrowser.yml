@@ -5,7 +5,7 @@ services:
       - FB_BASEURL=${FILEBROWSER_BASEURL}
       - FB_DATABASE=${FILEBROWSER_DATABASE}
       - FB_LOG=${FILEBROWSER_LOG}
-      - FB_PORT=${FILEBROWSER_PORT_80}
+      - FB_PORT=${FILEBROWSER_PORT_8080}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
@@ -15,6 +15,7 @@ services:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: unless-stopped
+    user: ${PUID}:${PGID}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/filebrowser:/config
