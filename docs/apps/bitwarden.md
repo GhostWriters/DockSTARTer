@@ -2,6 +2,7 @@
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/bitwardenrs/server?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/bitwardenrs/server)
 [![GitHub Stars](https://img.shields.io/github/stars/dani-garcia/bitwarden_rs?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/dani-garcia/bitwarden_rs)
+[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/bitwarden)
 
 ## Description
 
