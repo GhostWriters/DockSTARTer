@@ -6,7 +6,7 @@
 
 ## Description
 
-Guacamole is a Docker container for [Apache Guacamole](https://guacamole.apache.org/), a client-less remote desktop gateway. It supports standard protocols like VNC, RDP, and SSH over HTML5.
+[Guacamole](https://guacamole.apache.org/) is a client-less remote desktop gateway. It supports standard protocols like VNC, RDP, and SSH over HTML5.
 
 ## Install/Setup
 

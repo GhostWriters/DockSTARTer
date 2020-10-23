@@ -6,4 +6,4 @@
 
 ## Description
 
-This docker image provides a Minecraft Server that will automatically download the latest stable version at startup. Bedrock Dedicated Server is official server software to host your own server for Minecraft (Bedrock).
+[Minecraft Bedrock Server](https://www.minecraft.net/en-us/download/server/bedrock) will automatically download the latest stable version at startup. Bedrock Dedicated Server is official server software to host your own server for Minecraft (Bedrock).

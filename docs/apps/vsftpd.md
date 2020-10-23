@@ -6,4 +6,4 @@
 
 ## Description
 
-This Docker container implements a [vsftpd server](https://security.appspot.com/vsftpd.html#about).
+[vsftpd](https://security.appspot.com/vsftpd.html) is an FTP server for Unix-like systems.

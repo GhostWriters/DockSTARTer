@@ -6,4 +6,4 @@
 
 ## Description
 
-Run [VS Code](https://github.com/Microsoft/vscode) on any machine anywhere and access it in the browser.
+[Code-server](https://coder.com/) is VS Code running on a remote server, accessible through the browser.

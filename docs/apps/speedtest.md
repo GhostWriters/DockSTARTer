@@ -6,7 +6,7 @@
 
 ## Description
 
-This program runs a speedtest check every hour and graphs the results. The back-end is written in `Laravel` and the front-end uses `React`. It uses the Ookla's Speedtest cli package to get the data and uses `Chart.js` to plot the results.
+[Speedtest Tracker](https://github.com/henrywhitaker3/Speedtest-Tracker) runs a speedtest check every hour and graphs the results. The back-end is written in `Laravel` and the front-end uses `React`. It uses the Ookla's Speedtest cli package to get the data and uses `Chart.js` to plot the results.
 
 This program can also be used a home page item in [Organizr](https://organizr.app).
 

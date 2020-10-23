@@ -6,4 +6,4 @@
 
 ## Description
 
-Automatic Music Downloader (AMD) is a Lidarr companion script to automatically download music for Lidarr.
+[Automatic Music Downloader (AMD)](https://github.com/RandomNinjaAtk/docker-amd) is a Lidarr companion script to automatically download music for Lidarr.
