@@ -34,6 +34,7 @@ plugins:
         apps/hydra2.md: https://dockstarter.com/apps/nzbhydra2/
         apps/letsencrypt.md: https://dockstarter.com/apps/swag/
         apps/plexrequests.md: https://dockstarter.com/apps/ombi/
+        apps/sickrage.md: https://dockstarter.com/apps/sickchill/
         apps/ttrss.md: https://dockstarter.com/apps/freshrss/
         apps/unifi.md: https://dockstarter.com/apps/unificontroller/
         discord.md: https://discord.gg/xR3cyUb
