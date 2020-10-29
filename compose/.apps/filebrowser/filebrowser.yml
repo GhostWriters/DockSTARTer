@@ -6,8 +6,6 @@ services:
       - FB_DATABASE=${FILEBROWSER_DATABASE}
       - FB_LOG=${FILEBROWSER_LOG}
       - FB_PORT=${FILEBROWSER_PORT_8080}
-      - PGID=${PGID}
-      - PUID=${PUID}
       - TZ=${TZ}
     logging:
       driver: json-file
