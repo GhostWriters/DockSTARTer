@@ -2,6 +2,7 @@
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/pe46dro/xbackbone-docker?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/pe46dro/xbackbone-docker)
 [![GitHub Stars](https://img.shields.io/github/stars/Pe46dro/XBackBone-docker?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/Pe46dro/XBackBone-docker)
+[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/xbackbone)
 
 ## Description
 

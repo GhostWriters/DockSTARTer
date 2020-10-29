@@ -1,0 +1,19 @@
+services:
+  mosquitto:
+    container_name: mosquitto
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/mosquitto:/mosquitto/config
+      - ${DOCKERCONFDIR}/mosquitto/data:/mosquitto/data
+      - ${DOCKERCONFDIR}/mosquitto/log:/mosquitto/log
+      - ${DOCKERSTORAGEDIR}:/storage
