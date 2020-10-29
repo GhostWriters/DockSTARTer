@@ -127,6 +127,7 @@ nav:
       - apps/minecraft_bedrock_server.md
       - apps/minecraft_server.md
       - apps/monitorr.md
+      - apps/mosquitto.md
       - apps/murmur.md
       - apps/muximux.md
       - apps/mylar.md
