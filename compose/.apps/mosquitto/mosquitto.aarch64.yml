@@ -1,0 +1,3 @@
+services:
+  mosquitto:
+    image: eclipse-mosquitto
