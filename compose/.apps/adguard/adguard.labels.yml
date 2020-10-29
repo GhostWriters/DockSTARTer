@@ -1,0 +1,16 @@
+services:
+  adguard:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Network-wide ads & trackers blocking DNS server"
+      com.dockstarter.appinfo.nicename: "Adguard"
+      com.dockstarter.appvars.adguard_enabled: "false"
+      com.dockstarter.appvars.adguard_network_mode: ""
+      com.dockstarter.appvars.adguard_port_3000: "3000"
+      com.dockstarter.appvars.adguard_port_443: "446"
+      com.dockstarter.appvars.adguard_port_53: "53"
+      com.dockstarter.appvars.adguard_port_67: "67"
+      com.dockstarter.appvars.adguard_port_68: "68"
+      com.dockstarter.appvars.adguard_port_80: "8008"
+      com.dockstarter.appvars.adguard_port_853: "853"
+      com.dockstarter.appvars.adguard_serverip: "0.0.0.0"

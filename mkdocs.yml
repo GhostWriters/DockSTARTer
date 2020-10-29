@@ -71,6 +71,7 @@ nav:
       - advanced/uninstall.md
       - advanced/vpn-info.md
   - App Specifics:
+      - apps/adguard.md
       - apps/airdcpp.md
       - apps/airsonic.md
       - apps/amd.md

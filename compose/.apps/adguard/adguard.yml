@@ -1,0 +1,16 @@
+services:
+  adguard:
+    container_name: adguard
+    environment:
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/adguard/work:/opt/adguardhome/work
+      - ${DOCKERCONFDIR}/adguard/conf:/opt/adguardhome/conf
+      - ${DOCKERSTORAGEDIR}:/storage
