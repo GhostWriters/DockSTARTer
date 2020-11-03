@@ -1,3 +1,3 @@
 services:
   freshrss:
-    image: linuxserver/freshrss
+    image: ghcr.io/linuxserver/freshrss

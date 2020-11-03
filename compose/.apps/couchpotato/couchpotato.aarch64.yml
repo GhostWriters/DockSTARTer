@@ -1,3 +1,3 @@
 services:
   couchpotato:
-    image: linuxserver/couchpotato
+    image: ghcr.io/linuxserver/couchpotato

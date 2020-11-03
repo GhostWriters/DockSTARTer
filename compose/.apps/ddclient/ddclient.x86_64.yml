@@ -1,3 +1,3 @@
 services:
   ddclient:
-    image: linuxserver/ddclient
+    image: ghcr.io/linuxserver/ddclient
