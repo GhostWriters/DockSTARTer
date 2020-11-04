@@ -1,3 +1,3 @@
 services:
   beets:
-    image: ghcr.io/linuxserver/beets
+    image: linuxserver/beets
