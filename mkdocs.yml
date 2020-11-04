@@ -33,6 +33,7 @@ plugins:
         advanced/overrides.md: https://dockstarter.com/overrides/introduction
         apps/hydra2.md: https://dockstarter.com/apps/nzbhydra2/
         apps/letsencrypt.md: https://dockstarter.com/apps/swag/
+        apps/mylar.md: https://dockstarter.com/apps/mylar3/
         apps/plexrequests.md: https://dockstarter.com/apps/ombi/
         apps/sickrage.md: https://dockstarter.com/apps/sickchill/
         apps/ttrss.md: https://dockstarter.com/apps/freshrss/
@@ -132,7 +133,7 @@ nav:
       - apps/mosquitto.md
       - apps/murmur.md
       - apps/muximux.md
-      - apps/mylar.md
+      - apps/mylar3.md
       - apps/netdata.md
       - apps/nextcloud.md
       - apps/nzbget.md
