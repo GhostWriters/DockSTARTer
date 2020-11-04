@@ -1,3 +1,3 @@
 services:
   synclounge:
-    image: linuxserver/synclounge
+    image: ghcr.io/linuxserver/synclounge
