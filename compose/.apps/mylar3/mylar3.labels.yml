@@ -1,0 +1,9 @@
+services:
+  mylar3:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Comic book PVR client"
+      com.dockstarter.appinfo.nicename: "Mylar3"
+      com.dockstarter.appvars.mylar3_enabled: "false"
+      com.dockstarter.appvars.mylar3_network_mode: ""
+      com.dockstarter.appvars.mylar3_port_8090: "8090"
