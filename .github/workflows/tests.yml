@@ -16,4 +16,4 @@ jobs:
           CI: true
           COMMIT_SHA: ${{ github.sha }}
         run: |
-          while IFS= read -r line; do echo; sudo -E bash -x ./main.sh -xvt "${line}" || exit 1; echo; done < <(git ls-files '.scripts/*.sh' | sed -E 's/^\.scripts\/(\w+)\.sh$/\1/')
+          while IFS= read -r line; do echo; sudo -E bash ./main.sh -vt "${line}" || exit 1; echo; done < <(git ls-files '.scripts/*.sh' | sed -E 's/^\.scripts\/(\w+)\.sh$/\1/')
