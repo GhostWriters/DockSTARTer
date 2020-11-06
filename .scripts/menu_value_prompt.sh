@@ -192,7 +192,7 @@ menu_value_prompt() {
                     fi
                 else
                     if run_script 'question_prompt' "${PROMPT:-}" Y "${INPUT} is not a valid path. Would you like to attempt to create it?"; then
-                        mkdir -p "${INPUT}" || fatal "${INPUT} folder could not be created."
+                        mkdir -p "${INPUT}" || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p \"${INPUT}\""
                         run_script 'set_permissions' "${INPUT}"
                         run_script 'env_set' "${SET_VAR}" "${INPUT}"
                         whiptail --fb --clear --title "DockSTARTer" --msgbox "${INPUT} folder was created successfully." 0 0

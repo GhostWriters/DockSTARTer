@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 pm_pacman_install() {
     info "Installing dependencies."
-    pacman -Sy --noconfirm curl git grep libnewt sed > /dev/null 2>&1 || fatal "Failed to install dependencies using pacman."
+    pacman -Sy --noconfirm curl git grep libnewt sed > /dev/null 2>&1 || fatal "Failed to install dependencies using pacman.\nFailing command: ${F[C]}pacman -Sy --noconfirm curl git grep libnewt sed"
 }
 
 test_pm_pacman_install() {

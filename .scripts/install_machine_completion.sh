@@ -11,8 +11,8 @@ install_machine_completion() {
         return
     fi
     info "Installing docker machine completion."
-    mkdir -p /etc/bash_completion.d/ || fatal "/etc/bash_completion.d/ folder could not be created."
-    curl -fsL "https://raw.githubusercontent.com/docker/machine/${AVAILABLE_MACHINE_COMPLETION}/contrib/completion/bash/docker-machine.bash" -o /etc/bash_completion.d/docker-machine > /dev/null 2>&1 || fatal "Failed to install docker machine completion."
+    mkdir -p /etc/bash_completion.d/ || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p /etc/bash_completion.d/"
+    curl -fsL "https://raw.githubusercontent.com/docker/machine/${AVAILABLE_MACHINE_COMPLETION}/contrib/completion/bash/docker-machine.bash" -o /etc/bash_completion.d/docker-machine > /dev/null 2>&1 || fatal "Failed to install docker machine completion.\nFailing command: ${F[C]}curl -fsL \"https://raw.githubusercontent.com/docker/machine/${AVAILABLE_MACHINE_COMPLETION}/contrib/completion/bash/docker-machine.bash\" -o /etc/bash_completion.d/docker-machine"
 }
 
 test_install_machine_completion() {

@@ -7,7 +7,7 @@ yml_merge() {
     run_script 'appvars_create_all'
     info "Merging docker-compose.yml file."
     local RUNFILE
-    RUNFILE=$(mktemp) || fatal "Failed to create temporary yml merge script."
+    RUNFILE=$(mktemp) || fatal "Failed to create temporary yml merge script.\nFailing command: ${F[C]}mktemp"
     echo "#!/usr/bin/env bash" > "${RUNFILE}"
     {
         echo 'yq-go m '\\
@@ -65,7 +65,7 @@ yml_merge() {
     echo "> \"${SCRIPTPATH}/compose/docker-compose.yml\"" >> "${RUNFILE}"
     run_script 'install_yq'
     info "Running compiled script to merge docker-compose.yml file."
-    bash "${RUNFILE}" > /dev/null 2>&1 || fatal "Failed to run yml merge script."
+    bash "${RUNFILE}" > /dev/null 2>&1 || fatal "Failed to run yml merge script.\nFailing command: ${F[C]}bash \"${RUNFILE}\""
     rm -f "${RUNFILE}" || warn "Failed to remove temporary yml merge script."
     info "Merging docker-compose.yml complete."
 }
@@ -75,8 +75,8 @@ test_yml_merge() {
     run_script 'appvars_create' WATCHTOWER
     cat "${SCRIPTPATH}/compose/.env"
     run_script 'yml_merge'
-    cd "${SCRIPTPATH}/compose/" || fatal "Failed to change to ${SCRIPTPATH}/compose/ directory."
-    docker-compose config || fatal "Failed to validate ${SCRIPTPATH}/compose/docker-compose.yml file."
-    cd "${SCRIPTPATH}" || fatal "Failed to change to ${SCRIPTPATH} directory."
+    cd "${SCRIPTPATH}/compose/" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}/compose/\""
+    docker-compose config || fatal "Failed to validate ${SCRIPTPATH}/compose/docker-compose.yml file.\nFailing command: ${F[C]}docker-compose config"
+    cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
     run_script 'appvars_purge' WATCHTOWER
 }

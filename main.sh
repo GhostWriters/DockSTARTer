@@ -376,7 +376,7 @@ cleanup() {
 
     if repo_exists; then
         info "Setting executable permission on ${SCRIPTNAME}"
-        sudo -E chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
+        sudo -E chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable.\nFailing command: ${F[C]}sudo -E chmod +x \"${SCRIPTNAME}\""
     fi
     if [[ ${CI:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == false ]]; then
         warn "TRAVIS_SECURE_ENV_VARS is false for Pull Requests from remote branches. Please retry failed builds!"
@@ -434,7 +434,7 @@ main() {
             if [[ ${EUID} -eq 0 ]]; then
                 fatal "Using sudo during cloning on first run is not supported."
             fi
-            git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
+            git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone DockSTARTer repo.\nFailing command: ${F[C]}git clone https://github.com/GhostWriters/DockSTARTer \"${DETECTED_HOMEDIR}/.docker\""
             notice "Performing first run install."
             exec sudo -E bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-vi"
         fi
