@@ -34,11 +34,11 @@ install_yq() {
             if [[ ${ARCH} == "x86_64" ]]; then
                 YQ_ARCH="yq_linux_amd64"
             fi
-            curl -fsL "https://github.com/mikefarah/yq/releases/download/${AVAILABLE_YQ}/${YQ_ARCH}" -o /usr/local/bin/yq-go > /dev/null 2>&1 || fatal "Failed to install yq-go."
+            curl -fsL "https://github.com/mikefarah/yq/releases/download/${AVAILABLE_YQ}/${YQ_ARCH}" -o /usr/local/bin/yq-go > /dev/null 2>&1 || fatal "Failed to install yq-go.\nFailing command: ${F[C]}curl -fsL \"https://github.com/mikefarah/yq/releases/download/${AVAILABLE_YQ}/${YQ_ARCH}\" -o /usr/local/bin/yq-go"
             chmod +x /usr/local/bin/yq-go > /dev/null 2>&1 || true
             if [[ ! -L "/usr/bin/yq-go" ]]; then
                 rm -f /usr/bin/yq-go || warn "Failed to remove /usr/bin/yq-go"
-                ln -s /usr/local/bin/yq-go /usr/bin/yq-go || fatal "Failed to create /usr/bin/yq-go symlink."
+                ln -s /usr/local/bin/yq-go /usr/bin/yq-go || fatal "Failed to create symlink.\nFailing command: ${F[C]}ln -s /usr/local/bin/yq-go /usr/bin/yq-go"
             fi
             local UPDATED_YQ
             UPDATED_YQ=$( (yq-go --version 2> /dev/null || echo "0") | sed -E 's/.* version ([^,]*)(, build .*)?/\1/')
@@ -54,5 +54,5 @@ install_yq() {
 
 test_install_yq() {
     run_script 'install_yq'
-    yq-go --version || fatal "Failed to determine yq-go version."
+    yq-go --version || fatal "Failed to determine yq-go version.\nFailing command: ${F[C]}yq-go --version"
 }

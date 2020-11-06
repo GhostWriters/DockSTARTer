@@ -10,12 +10,12 @@ update_self() {
         notice "DockSTARTer will not be updated to ${BRANCH}."
         return 1
     fi
-    cd "${SCRIPTPATH}" || fatal "Failed to change to ${SCRIPTPATH} directory."
+    cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
     info "Fetching recent changes from git."
-    git fetch --all --prune > /dev/null 2>&1 || fatal "Failed to fetch recent changes from git."
+    git fetch --all --prune > /dev/null 2>&1 || fatal "Failed to fetch recent changes from git.\nFailing command: ${F[C]}git fetch --all --prune"
     if [[ ${CI:-} != true ]]; then
         info "Resetting to ${BRANCH}."
-        git reset --hard "${BRANCH}" > /dev/null 2>&1 || fatal "Failed to reset to ${BRANCH}."
+        git reset --hard "${BRANCH}" > /dev/null 2>&1 || fatal "Failed to reset to ${BRANCH}.\nFailing command: ${F[C]}git reset --hard \"${BRANCH}\""
         info "Pulling recent changes from git."
         git pull > /dev/null 2>&1 || fatal "Failed to pull recent changes from git."
     fi
