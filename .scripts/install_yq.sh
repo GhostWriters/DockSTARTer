@@ -8,7 +8,7 @@ install_yq() {
     if [[ ${FORCE:-} == true ]] && [[ -n ${INSTALL:-} ]]; then
         INSTALLED_YQ="0"
     else
-        INSTALLED_YQ=$( (yq --version 2> /dev/null || echo "0") | sed -E 's/(\S+ )(version )?([\d\w.]*)(, build .*)?/\3/')
+        INSTALLED_YQ=$( (yq --version 2> /dev/null || echo "0") | sed -E 's/(\S+ )(version )?([0-9][a-zA-Z0-9_.-]*)(, build .*)?/\3/')
     fi
     if [[ ${INSTALLED_YQ:-} != "0" ]] && ! yq --help 2> /dev/null | grep -q 'kislyuk'; then
         INSTALLED_YQ="0"
@@ -37,7 +37,7 @@ install_yq() {
                 ln -s /usr/local/bin/yq /usr/bin/yq || fatal "Failed to create /usr/bin/yq symlink.\nFailing command: ${F[C]}ln -s /usr/local/bin/yq /usr/bin/yq"
             fi
             local UPDATED_YQ
-            UPDATED_YQ=$( (yq --version 2> /dev/null || echo "0") | sed -E 's/(\S+ )(version )?([\d\w.]*)(, build .*)?/\3/')
+            UPDATED_YQ=$( (yq --version 2> /dev/null || echo "0") | sed -E 's/(\S+ )(version )?([0-9][a-zA-Z0-9_.-]*)(, build .*)?/\3/')
             if vergt "${AVAILABLE_YQ}" "${UPDATED_YQ}"; then
                 error "Failed to install the latest yq."
             fi
