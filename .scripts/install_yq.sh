@@ -27,7 +27,7 @@ install_yq() {
         fi
         if vergt "${AVAILABLE_YQ}" "${INSTALLED_YQ}"; then
             info "Removing previous yq image."
-            docker image rm ghcr.io/linuxserver/yq:latest || true
+            docker image rm ghcr.io/linuxserver/yq:latest > /dev/null 2>&1 || true
             # https://github.com/linuxserver/docker-yq/blob/master/README.md#recommended-method
             info "Installing latest yq."
             curl -fsL "https://raw.githubusercontent.com/linuxserver/docker-yq/master/run-yq.sh" -o /usr/local/bin/yq > /dev/null 2>&1 || fatal "Failed to install yq.\nFailing command: ${F[C]}curl -fsL \"https://raw.githubusercontent.com/linuxserver/docker-yq/master/run-yq.sh\" -o /usr/local/bin/yq"
