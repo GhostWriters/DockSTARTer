@@ -28,15 +28,15 @@ install_docker() {
             # https://github.com/docker/docker-install
             notice "Installing latest docker. Please be patient, this can take a while."
             local GET_DOCKER
-            GET_DOCKER=$(mktemp) || fatal "Failed to create temporary docker install script."
+            GET_DOCKER=$(mktemp) || fatal "Failed to create temporary docker install script.\nFailing command: ${F[C]}mktemp"
             info "Downloading docker install script."
-            curl -fsSL get.docker.com -o "${GET_DOCKER}" > /dev/null 2>&1 || fatal "Failed to get docker install script."
+            curl -fsSL get.docker.com -o "${GET_DOCKER}" > /dev/null 2>&1 || fatal "Failed to get docker install script.\nFailing command: ${F[C]}curl -fsSL get.docker.com -o \"${GET_DOCKER}\""
             info "Running docker install script."
             local REDIRECT="> /dev/null 2>&1"
             if [[ -n ${VERBOSE:-} ]] || run_script 'question_prompt' "${PROMPT:-CLI}" N "Would you like to display the command output?"; then
                 REDIRECT=""
             fi
-            eval sh "${GET_DOCKER}" "${REDIRECT}" || fatal "Failed to install docker."
+            eval sh "${GET_DOCKER}" "${REDIRECT}" || fatal "Failed to install docker.\nFailing command: ${F[C]}eval sh \"${GET_DOCKER}\" \"${REDIRECT}\""
             rm -f "${GET_DOCKER}" || warn "Failed to remove temporary docker install script."
             local UPDATED_DOCKER
             UPDATED_DOCKER=$( (docker --version 2> /dev/null || echo "0") | sed -E 's/(\S+ )(version )?([\d\w.]*)(, build .*)?/\3/')
@@ -52,5 +52,5 @@ install_docker() {
 
 test_install_docker() {
     run_script 'install_docker'
-    docker --version || fatal "Failed to determine docker version."
+    docker --version || fatal "Failed to determine docker version.\nFailing command: ${F[C]}docker --version"
 }

@@ -11,8 +11,8 @@ install_compose_completion() {
         return
     fi
     info "Installing docker-compose completion."
-    mkdir -p /etc/bash_completion.d/ || fatal "/etc/bash_completion.d/ folder could not be created."
-    curl -fsL "https://raw.githubusercontent.com/docker/compose/${AVAILABLE_COMPOSE_COMPLETION}/contrib/completion/bash/docker-compose" -o /etc/bash_completion.d/docker-compose > /dev/null 2>&1 || fatal "Failed to install docker-compose completion."
+    mkdir -p /etc/bash_completion.d/ || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p /etc/bash_completion.d/"
+    curl -fsL "https://raw.githubusercontent.com/docker/compose/${AVAILABLE_COMPOSE_COMPLETION}/contrib/completion/bash/docker-compose" -o /etc/bash_completion.d/docker-compose > /dev/null 2>&1 || fatal "Failed to install docker-compose completion.\nFailing command: ${F[C]}curl -fsL \"https://raw.githubusercontent.com/docker/compose/${AVAILABLE_COMPOSE_COMPLETION}/contrib/completion/bash/docker-compose\" -o /etc/bash_completion.d/docker-compose"
 }
 
 test_install_compose_completion() {

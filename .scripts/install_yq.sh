@@ -30,11 +30,11 @@ install_yq() {
             docker image rm linuxserver/yq:latest || true
             # https://github.com/linuxserver/docker-yq/blob/master/README.md#recommended-method
             info "Installing latest yq."
-            curl -fsL "https://raw.githubusercontent.com/linuxserver/docker-yq/master/run-yq.sh" -o /usr/local/bin/yq > /dev/null 2>&1 || fatal "Failed to install yq."
+            curl -fsL "https://raw.githubusercontent.com/linuxserver/docker-yq/master/run-yq.sh" -o /usr/local/bin/yq > /dev/null 2>&1 || fatal "Failed to install yq.\nFailing command: ${F[C]}curl -fsL \"https://raw.githubusercontent.com/linuxserver/docker-yq/master/run-yq.sh\" -o /usr/local/bin/yq"
             chmod +x /usr/local/bin/yq > /dev/null 2>&1 || true
             if [[ ! -L "/usr/bin/yq" ]]; then
                 rm -f /usr/bin/yq || warn "Failed to remove /usr/bin/yq"
-                ln -s /usr/local/bin/yq /usr/bin/yq || fatal "Failed to create /usr/bin/yq symlink."
+                ln -s /usr/local/bin/yq /usr/bin/yq || fatal "Failed to create /usr/bin/yq symlink.\nFailing command: ${F[C]}ln -s /usr/local/bin/yq /usr/bin/yq"
             fi
             local UPDATED_YQ
             UPDATED_YQ=$( (yq --version 2> /dev/null || echo "0") | sed -E 's/(\S+ )(version )?([\d\w.]*)(, build .*)?/\3/')
@@ -50,5 +50,5 @@ install_yq() {
 
 test_install_yq() {
     run_script 'install_yq'
-    yq --version || fatal "Failed to determine yq version."
+    yq --version || fatal "Failed to determine yq version.\nFailing command: ${F[C]}yq --version"
 }

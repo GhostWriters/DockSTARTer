@@ -5,7 +5,7 @@ services:
       - FB_BASEURL=${FILEBROWSER_BASEURL}
       - FB_DATABASE=${FILEBROWSER_DATABASE}
       - FB_LOG=${FILEBROWSER_LOG}
-      - FB_PORT=${FILEBROWSER_PORT_8080}
+      - FB_PORT=${FILEBROWSER_PORT_80}
       - TZ=${TZ}
     logging:
       driver: json-file

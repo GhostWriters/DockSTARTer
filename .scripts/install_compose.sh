@@ -27,11 +27,11 @@ install_compose() {
             docker image rm linuxserver/docker-compose:latest || true
             # https://github.com/linuxserver/docker-docker-compose/blob/master/README.md#recommended-method
             info "Installing latest docker-compose."
-            curl -fsL "https://raw.githubusercontent.com/linuxserver/docker-docker-compose/master/run.sh" -o /usr/local/bin/docker-compose > /dev/null 2>&1 || fatal "Failed to install docker-compose."
+            curl -fsL "https://raw.githubusercontent.com/linuxserver/docker-docker-compose/master/run.sh" -o /usr/local/bin/docker-compose > /dev/null 2>&1 || fatal "Failed to install docker-compose.\nFailing command: ${F[C]}curl -fsL \"https://raw.githubusercontent.com/linuxserver/docker-docker-compose/master/run.sh\" -o /usr/local/bin/docker-compose"
             chmod +x /usr/local/bin/docker-compose > /dev/null 2>&1 || true
             if [[ ! -L "/usr/bin/docker-compose" ]]; then
                 rm -f /usr/bin/docker-compose || warn "Failed to remove /usr/bin/docker-compose"
-                ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose || fatal "Failed to create /usr/bin/docker-compose symlink."
+                ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose || fatal "Failed to create symlink.\nFailing command: ${F[C]}ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose"
             fi
             local UPDATED_COMPOSE
             UPDATED_COMPOSE=$( (docker-compose --version 2> /dev/null || echo "0") | sed -E 's/(\S+ )(version )?([\d\w.]*)(, build .*)?/\3/')
@@ -47,5 +47,5 @@ install_compose() {
 
 test_install_compose() {
     run_script 'install_compose'
-    docker-compose --version || fatal "Failed to determine docker-compose version."
+    docker-compose --version || fatal "Failed to determine docker-compose version.\nFailing command: ${F[C]}docker-compose --version"
 }

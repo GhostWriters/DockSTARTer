@@ -52,9 +52,9 @@ env_sanitize() {
         notice "Moving config folder."
         local DOCKERCONFDIR
         DOCKERCONFDIR=$(run_script 'env_get' DOCKERCONFDIR)
-        mv "${DOCKERCONFDIR}/letsencrypt" "${DOCKERCONFDIR}/swag" || fatal "Failed to move config folder from ${DOCKERCONFDIR}/letsencrypt to ${DOCKERCONFDIR}/swag"
+        mv "${DOCKERCONFDIR}/letsencrypt" "${DOCKERCONFDIR}/swag" || fatal "Failed to move folder.\nFailing command: ${F[C]}mv \"${DOCKERCONFDIR}/letsencrypt\" \"${DOCKERCONFDIR}/swag\""
         notice "Migrating vars."
-        sed -i "s/^LETSENCRYPT_/SWAG_/" "${SCRIPTPATH}/compose/.env" || fatal "Failed to migrate vars from LETSENCRYPT_ to SWAG_"
+        sed -i "s/^LETSENCRYPT_/SWAG_/" "${SCRIPTPATH}/compose/.env" || fatal "Failed to migrate vars from LETSENCRYPT_ to SWAG_\nFailing command: ${F[C]}sed -i \"s/^LETSENCRYPT_/SWAG_/\" \"${SCRIPTPATH}/compose/.env\""
         run_script 'appvars_create' SWAG
         notice "Completed migrating from LETSENCRYPT to SWAG. Run ${F[C]}ds -c${NC} to create the new container."
     fi
