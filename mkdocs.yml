@@ -45,8 +45,8 @@ theme:
   features:
     - navigation.instant
   language: en
-  favicon: img/favicon.ico
-  logo: img/icon.png
+  favicon: images/favicon.ico
+  logo: images/icon.png
   palette:
     primary: blue grey
     accent: indigo
