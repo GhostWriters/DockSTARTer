@@ -10,7 +10,7 @@ install_yq() {
     else
         INSTALLED_YQ=$( (yq --version 2> /dev/null || echo "0") | sed -E 's/(\S+ )(version )?([0-9][a-zA-Z0-9_.-]*)(, build .*)?/\3/')
     fi
-    if [[ ${INSTALLED_YQ:-} != "0" ]] && ! yq --help 2> /dev/null | grep -q 'kislyuk'; then
+    if ! yq --help 2> /dev/null | grep -q 'kislyuk'; then
         INSTALLED_YQ="0"
         warn "Wrong version of yq detected. https://github.com/kislyuk/yq will be installed."
     fi
@@ -26,8 +26,6 @@ install_yq() {
             fi
         fi
         if vergt "${AVAILABLE_YQ}" "${INSTALLED_YQ}"; then
-            info "Removing previous yq image."
-            docker image rm ghcr.io/linuxserver/yq:latest > /dev/null 2>&1 || true
             # https://github.com/linuxserver/docker-yq/blob/master/README.md#recommended-method
             info "Installing latest yq."
             curl -fsL "https://raw.githubusercontent.com/linuxserver/docker-yq/master/run-yq.sh" -o /usr/local/bin/yq > /dev/null 2>&1 || fatal "Failed to install yq.\nFailing command: ${F[C]}curl -fsL \"https://raw.githubusercontent.com/linuxserver/docker-yq/master/run-yq.sh\" -o /usr/local/bin/yq"
