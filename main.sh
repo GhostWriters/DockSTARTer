@@ -128,7 +128,8 @@ cmdline() {
                             MULTIOPT+=("$(eval "echo \${$OPTIND}")")
                             OPTIND=$((OPTIND + 1))
                         done
-                        readonly COMPOSE=$(printf "%s " "${MULTIOPT[@]}" | xargs)
+                        COMPOSE=$(printf "%s " "${MULTIOPT[@]}" | xargs)
+                        readonly COMPOSE
                         ;;
                     *)
                         echo "Invalid compose option."
@@ -217,17 +218,23 @@ get_scriptname() {
     done
     echo "${SOURCE}"
 }
-readonly SCRIPTPATH=$(cd -P "$(dirname "$(get_scriptname)")" > /dev/null 2>&1 && pwd)
-readonly SCRIPTNAME="${SCRIPTPATH}/$(basename "$(get_scriptname)")"
+SCRIPTPATH=$(cd -P "$(dirname "$(get_scriptname)")" > /dev/null 2>&1 && pwd)
+readonly SCRIPTPATH
+SCRIPTNAME="${SCRIPTPATH}/$(basename "$(get_scriptname)")"
+readonly SCRIPTNAME
 
 # User/Group Information
 readonly DETECTED_PUID=${SUDO_UID:-$UID}
-readonly DETECTED_UNAME=$(id -un "${DETECTED_PUID}" 2> /dev/null || true)
-readonly DETECTED_PGID=$(id -g "${DETECTED_PUID}" 2> /dev/null || true)
+DETECTED_UNAME=$(id -un "${DETECTED_PUID}" 2> /dev/null || true)
+readonly DETECTED_UNAME
+DETECTED_PGID=$(id -g "${DETECTED_PUID}" 2> /dev/null || true)
+readonly DETECTED_PGID
 export DETECTED_PGID
-readonly DETECTED_UGROUP=$(id -gn "${DETECTED_PUID}" 2> /dev/null || true)
+DETECTED_UGROUP=$(id -gn "${DETECTED_PUID}" 2> /dev/null || true)
+readonly DETECTED_UGROUP
 export DETECTED_UGROUP
-readonly DETECTED_HOMEDIR=$(eval echo "~${DETECTED_UNAME}" 2> /dev/null || true)
+DETECTED_HOMEDIR=$(eval echo "~${DETECTED_UNAME}" 2> /dev/null || true)
+readonly DETECTED_HOMEDIR
 
 # Terminal Colors
 if [[ ${CI:-} == true ]] || [[ -t 1 ]]; then
@@ -288,10 +295,12 @@ declare -Agr F=(
     [W]=$(tcolor F W)
     [Y]=$(tcolor F Y)
 )
-readonly NC=$(tcolor NC)
+NC=$(tcolor NC)
+readonly NC
 
 # Log Functions
-readonly LOG_TEMP=$(mktemp) || echo "Failed to create temporary log file."
+LOG_TEMP=$(mktemp) || echo "Failed to create temporary log file."
+readonly LOG_TEMP
 echo "DockSTARTer Log" > "${LOG_TEMP}"
 log() {
     local TOTERM=${1:-}
@@ -396,7 +405,8 @@ trap 'cleanup' 0 1 2 3 6 14 15
 # Main Function
 main() {
     # Arch Check
-    readonly ARCH=$(uname -m)
+    ARCH=$(uname -m)
+    readonly ARCH
     if [[ ${ARCH} != "aarch64" ]] && [[ ${ARCH} != "armv7l" ]] && [[ ${ARCH} != "x86_64" ]]; then
         fatal "Unsupported architecture."
     fi
