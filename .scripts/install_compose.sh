@@ -23,8 +23,6 @@ install_compose() {
             fi
         fi
         if vergt "${AVAILABLE_COMPOSE}" "${INSTALLED_COMPOSE}"; then
-            info "Removing previous docker-compose image."
-            docker image rm linuxserver/docker-compose:latest || true
             # https://github.com/linuxserver/docker-docker-compose/blob/master/README.md#recommended-method
             info "Installing latest docker-compose."
             curl -fsL "https://raw.githubusercontent.com/linuxserver/docker-docker-compose/master/run.sh" -o /usr/local/bin/docker-compose > /dev/null 2>&1 || fatal "Failed to install docker-compose.\nFailing command: ${F[C]}curl -fsL \"https://raw.githubusercontent.com/linuxserver/docker-docker-compose/master/run.sh\" -o /usr/local/bin/docker-compose"
