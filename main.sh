@@ -347,7 +347,7 @@ run_script() {
     if [[ -f ${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh ]]; then
         # shellcheck source=/dev/null
         source "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh"
-        ${SCRIPTSNAME} "$@"
+        ${SCRIPTSNAME} "$@" < /dev/null
     else
         fatal "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh not found."
     fi
@@ -362,7 +362,7 @@ run_test() {
             notice "Testing ${TESTSNAME}."
             # shellcheck source=/dev/null
             source "${SCRIPTPATH}/.scripts/${TESTSNAME}.sh"
-            eval "test_${TESTSNAME}" "$@" || fatal "Failed to run ${TESTSNAME}."
+            eval "test_${TESTSNAME}" "$@" < /dev/null || fatal "Failed to run ${TESTSNAME}."
             notice "Completed testing ${TESTSNAME}."
         else
             fatal "Test function in ${SCRIPTPATH}/.scripts/${TESTSNAME}.sh not found."
