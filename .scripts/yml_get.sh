@@ -14,5 +14,5 @@ yml_get() {
 }
 
 test_yml_get() {
-    run_script 'yml_get' WATCHTOWER "services.watchtower.labels[\"com.dockstarter.appinfo.nicename\"]"
+    run_script 'yml_get' WATCHTOWER 'services.watchtower.labels["com.dockstarter.appinfo.nicename"]'
 }
