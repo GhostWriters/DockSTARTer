@@ -65,8 +65,6 @@ yml_merge() {
     echo "> \"${SCRIPTPATH}/compose/docker-compose.yml\"" >> "${RUNFILE}"
     run_script 'install_yq'
     info "Running compiled script to merge docker-compose.yml file."
-    cp "${RUNFILE}" /home/baines/temp.sh
-    exit
     bash "${RUNFILE}" > /dev/null 2>&1 || fatal "Failed to run yml merge script.\nFailing command: ${F[C]}bash \"${RUNFILE}\""
     rm -f "${RUNFILE}" || warn "Failed to remove temporary yml merge script."
     info "Merging docker-compose.yml complete."
