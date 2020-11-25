@@ -7,7 +7,7 @@ yml_get() {
     local GET_VAR=${2:-}
     local FILENAME=${APPNAME,,}
     run_script 'install_yq'
-    yq -y -r -s "reduce .[] as \$item ({}; . * \$item)|.${GET_VAR}" \
+    yq -y -s "reduce .[] as \$item ({}; . * \$item)|.${GET_VAR}" \
         "${SCRIPTPATH}"/compose/.apps/"${FILENAME}"/*.yml 2> /dev/null |
         sed -E '$s/^\.\.\.$//;/^$/d' ||
         return 1
