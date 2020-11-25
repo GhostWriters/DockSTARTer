@@ -3,7 +3,6 @@ set -euo pipefail
 IFS=$'\n\t'
 
 menu_app_select() {
-    run_script 'install_yq'
     local APPLIST=()
 
     while IFS= read -r line; do

@@ -3,17 +3,17 @@ set -euo pipefail
 IFS=$'\n\t'
 
 install_yq() {
-    local MINIMUM_YQ="2.11.1"
+    local MINIMUM_YQ="2.0"
     local INSTALLED_YQ
     if [[ ${FORCE:-} == true ]] && [[ -n ${INSTALL:-} ]]; then
         INSTALLED_YQ="0"
     else
         INSTALLED_YQ=$( (yq --version 2> /dev/null || echo "0") | sed -E 's/(\S+ )(version )?([0-9][a-zA-Z0-9_.-]*)(, build .*)?/\3/')
     fi
-    # if ! yq --help 2> /dev/null | grep -q 'kislyuk'; then
-    #     INSTALLED_YQ="0"
-    #     warn "Wrong version of yq detected. https://github.com/kislyuk/yq will be installed."
-    # fi
+    if ! yq --help 2> /dev/null || true | grep -q 'kislyuk'; then
+        INSTALLED_YQ="0"
+        warn "Wrong version of yq detected. https://github.com/kislyuk/yq will be installed."
+    fi
     if vergt "${MINIMUM_YQ}" "${INSTALLED_YQ}"; then
         local AVAILABLE_YQ
         AVAILABLE_YQ=$( (curl -H "${GH_HEADER:-}" -fsL "https://api.github.com/repos/kislyuk/yq/releases/latest" | grep -Po '"tag_name": "[Vv]?\K.*?(?=")') || echo "0")

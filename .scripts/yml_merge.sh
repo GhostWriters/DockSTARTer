@@ -15,6 +15,7 @@ yml_merge() {
         echo "\"${SCRIPTPATH}/compose/.reqs/v2.yml\" \\"
     } >> "${RUNFILE}"
     info "Required files included."
+    notice "Adding compose configurations for enabled apps. Please be patient, this can take a while."
     while IFS= read -r line; do
         local APPNAME=${line%%_ENABLED=true}
         local FILENAME=${APPNAME,,}
@@ -63,7 +64,6 @@ yml_merge() {
         fi
     done < <(grep '_ENABLED=true$' < "${SCRIPTPATH}/compose/.env")
     echo "> \"${SCRIPTPATH}/compose/docker-compose.yml\"" >> "${RUNFILE}"
-    run_script 'install_yq'
     info "Running compiled script to merge docker-compose.yml file."
     bash "${RUNFILE}" > /dev/null 2>&1 || fatal "Failed to run yml merge script.\nFailing command: ${F[C]}bash \"${RUNFILE}\""
     rm -f "${RUNFILE}" || warn "Failed to remove temporary yml merge script."
