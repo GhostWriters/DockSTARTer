@@ -6,11 +6,7 @@ appvars_create() {
     local APPNAME=${1:-}
     APPNAME=${APPNAME^^}
     local FILENAME=${APPNAME,,}
-    count=0
     while IFS= read -r line; do
-        let count++
-        echo "$count $line"
-        echo
         local VAR_LABEL
         VAR_LABEL=$(echo "${line}" | grep --color=never -Po "^com\.dockstarter\.appvars\.\K[\w]+" || true)
         if [[ -z ${VAR_LABEL} ]]; then
