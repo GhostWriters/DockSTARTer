@@ -6,7 +6,11 @@ appvars_create() {
     local APPNAME=${1:-}
     APPNAME=${APPNAME^^}
     local FILENAME=${APPNAME,,}
+    count=0
     while IFS= read -r line; do
+        let count++
+        echo "$count $line"
+        echo
         local VAR_LABEL
         VAR_LABEL=$(echo "${line}" | grep --color=never -Po "^com\.dockstarter\.appvars\.\K[\w]+" || true)
         if [[ -z ${VAR_LABEL} ]]; then
@@ -18,7 +22,7 @@ appvars_create() {
             continue
         else
             local DEFAULT_VAL
-            DEFAULT_VAL=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels["'"'"com.dockstarter.appvars.${VAR_LABEL}"'"'"]" || true)
+            DEFAULT_VAL=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[\"com.dockstarter.appvars.${VAR_LABEL}\"]" || true)
             echo "${SET_VAR}=" >> "${SCRIPTPATH}/compose/.env"
             run_script 'env_set' "${SET_VAR}" "${DEFAULT_VAL}"
         fi
