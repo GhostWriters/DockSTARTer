@@ -10,7 +10,9 @@ yml_merge() {
     RUNFILE=$(mktemp) || fatal "Failed to create temporary yml merge script.\nFailing command: ${F[C]}mktemp"
     echo "#!/usr/bin/env bash" > "${RUNFILE}"
     {
-        echo "yq -y -s '"'reduce .[] as $item ({}; . * $item)'"' "\\
+        echo "yq -y -s '" \
+            'reduce .[] as $item ({}; . * $item)' \
+            "' "\\
         echo "\"${SCRIPTPATH}/compose/.reqs/v1.yml\" \\"
         echo "\"${SCRIPTPATH}/compose/.reqs/v2.yml\" \\"
     } >> "${RUNFILE}"
