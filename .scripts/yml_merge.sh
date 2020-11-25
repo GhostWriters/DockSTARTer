@@ -21,7 +21,7 @@ yml_merge() {
         if [[ -d ${SCRIPTPATH}/compose/.apps/${FILENAME}/ ]]; then
             if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml ]]; then
                 local APPDEPRECATED
-                APPDEPRECATED=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[\"com.dockstarter.appinfo.deprecated\"]" || echo "false")
+                APPDEPRECATED=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels["'"'"com.dockstarter.appinfo.deprecated"'"'"]" || echo "false")
                 if [[ ${APPDEPRECATED} == "true" ]]; then
                     warn "${APPNAME} IS DEPRECATED!"
                     warn "Please edit ${SCRIPTPATH}/compose/.env and set ${APPNAME}_ENABLED to false."
