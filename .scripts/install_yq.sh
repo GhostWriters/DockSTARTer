@@ -21,7 +21,7 @@ install_yq() {
             if [[ ${INSTALLED_YQ} == "0" ]]; then
                 fatal "The latest available version of yq could not be confirmed. This is usually caused by exhausting the rate limit on GitHub's API. Please check https://api.github.com/rate_limit"
             else
-                # warn "Failed to check latest available yq version. This can be ignored for now."
+                warn "Failed to check latest available yq version. This can be ignored for now."
                 return
             fi
         fi
