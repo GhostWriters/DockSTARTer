@@ -12,11 +12,11 @@ menu_app_select() {
             if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml ]]; then
                 if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${ARCH}.yml ]]; then
                     local APPNICENAME
-                    APPNICENAME=$(run_script 'yml_get' "${APPNAME}" ".services.${FILENAME}.labels[\"com.dockstarter.appinfo.nicename\"]" || echo "${APPNAME}")
+                    APPNICENAME=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.nicename: \K.*" "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.labels.yml" | xargs || echo "${APPNAME}")
                     local APPDESCRIPTION
-                    APPDESCRIPTION=$(run_script 'yml_get' "${APPNAME}" ".services.${FILENAME}.labels[\"com.dockstarter.appinfo.description\"]" || echo "! Missing description !")
+                    APPDESCRIPTION=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.description: \K.*" "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.labels.yml" | xargs || echo "! Missing description !")
                     local APPDEPRECATED
-                    APPDEPRECATED=$(run_script 'yml_get' "${APPNAME}" ".services.${FILENAME}.labels[\"com.dockstarter.appinfo.deprecated\"]" || echo "false")
+                    APPDEPRECATED=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.labels.yml" | xargs || echo "false")
                     if [[ ${APPDEPRECATED} == "true" ]]; then
                         continue
                     fi
