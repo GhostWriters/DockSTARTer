@@ -10,29 +10,29 @@ yml_merge() {
     RUNFILE=$(mktemp) || fatal "Failed to create temporary yml merge script.\nFailing command: ${F[C]}mktemp"
     echo "#!/usr/bin/env bash" > "${RUNFILE}"
     {
-        echo 'yq-go m '\\
+        echo "yq -y -s 'reduce .[] as \$item ({}; . * \$item)' "\\
         echo "\"${SCRIPTPATH}/compose/.reqs/v1.yml\" \\"
         echo "\"${SCRIPTPATH}/compose/.reqs/v2.yml\" \\"
     } >> "${RUNFILE}"
     info "Required files included."
+    notice "Adding compose configurations for enabled apps. Please be patient, this can take a while."
     while IFS= read -r line; do
         local APPNAME=${line%%_ENABLED=true}
         local FILENAME=${APPNAME,,}
         if [[ -d ${SCRIPTPATH}/compose/.apps/${FILENAME}/ ]]; then
             if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml ]]; then
                 local APPDEPRECATED
-                APPDEPRECATED=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.dockstarter.appinfo.deprecated]" || echo "false")
+                APPDEPRECATED=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.labels.yml" | xargs || echo "false")
                 if [[ ${APPDEPRECATED} == "true" ]]; then
                     warn "${APPNAME} IS DEPRECATED!"
                     warn "Please edit ${SCRIPTPATH}/compose/.env and set ${APPNAME}_ENABLED to false."
                     continue
                 fi
-                if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${ARCH}.yml ]]; then
-                    echo "\"${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${ARCH}.yml\" \\" >> "${RUNFILE}"
-                else
+                if [[ ! -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${ARCH}.yml ]]; then
                     error "Failed to include ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${ARCH}.yml file."
                     continue
                 fi
+                echo "\"${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${ARCH}.yml\" \\" >> "${RUNFILE}"
                 local APPNETMODE
                 APPNETMODE=$(run_script 'env_get' "${APPNAME}_NETWORK_MODE")
                 if [[ -z ${APPNETMODE} ]] || [[ ${APPNETMODE} == "bridge" ]]; then
