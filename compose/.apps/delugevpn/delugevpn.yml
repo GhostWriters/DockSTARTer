@@ -2,7 +2,6 @@ services:
   delugevpn:
     cap_add:
       - NET_ADMIN
-      - SYS_MODULE
     container_name: delugevpn
     environment:
       - ENABLE_PRIVOXY=${DELUGEVPN_ENABLE_PRIVOXY}
@@ -22,8 +21,6 @@ services:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: unless-stopped
-    sysctls:
-      - net.ipv4.conf.all.src_valid_mark=1
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/delugevpn:/config
