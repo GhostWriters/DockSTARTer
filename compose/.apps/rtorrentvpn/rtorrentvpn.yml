@@ -2,6 +2,7 @@ services:
   rtorrentvpn:
     cap_add:
       - NET_ADMIN
+      - SYS_MODULE
     container_name: rtorrentvpn
     environment:
       - ENABLE_AUTODL_IRSSI=${RTORRENTVPN_ENABLE_AUTODL_IRSSI}
@@ -31,6 +32,8 @@ services:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: unless-stopped
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/rtorrentvpn:/config
