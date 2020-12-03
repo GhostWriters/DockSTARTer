@@ -11,6 +11,7 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+      - VPN_CLIENT=${VPN_CLIENT}
       - VPN_ENABLED=${VPN_ENABLE}
       - VPN_OPTIONS=${VPN_OPTIONS}
       - VPN_PASS=${VPN_PASS}
