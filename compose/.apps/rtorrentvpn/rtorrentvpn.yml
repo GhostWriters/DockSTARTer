@@ -2,6 +2,7 @@ services:
   rtorrentvpn:
     cap_add:
       - NET_ADMIN
+      - SYS_MODULE
     container_name: rtorrentvpn
     environment:
       - ENABLE_AUTODL_IRSSI=${RTORRENTVPN_ENABLE_AUTODL_IRSSI}
@@ -18,6 +19,7 @@ services:
       - RPC2_PASS=${RTORRENTVPN_RPC2_PASS}
       - RPC2_USER=${RTORRENTVPN_RPC2_USER}
       - TZ=${TZ}
+      - VPN_CLIENT=${VPN_CLIENT}
       - VPN_ENABLED=${VPN_ENABLE}
       - VPN_OPTIONS=${VPN_OPTIONS}
       - VPN_PASS=${VPN_PASS}
@@ -31,6 +33,8 @@ services:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: unless-stopped
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/rtorrentvpn:/config
@@ -39,3 +43,4 @@ services:
       - ${DOWNLOADSDIR}:/data
       - ${DOWNLOADSDIR}:/downloads
       - ${VPN_OVPNDIR}:/config/openvpn
+      - ${VPN_WGDIR}:/config/wireguard

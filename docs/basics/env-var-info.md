@@ -169,6 +169,13 @@ Description:
 
 Description:
 
+## VPN_CLIENT
+
+* Default value: `openvpn`
+
+Description:
+Only accepts `openvpn` or `wireguard`.
+
 ## VPN_ENABLE
 
 * Default value: `yes`
@@ -208,3 +215,10 @@ Description:
 
 Description:
 This is the username you use to login with to your VPN provider.
+
+## VPN_WGDIR
+
+* Default value: `~/.config/appdata/.wireguard`
+
+Description:
+This directory will be used to store the `wg0.conf` file that will be used by containers that are VPN enabled.
