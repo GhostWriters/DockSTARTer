@@ -2,6 +2,7 @@ services:
   sabnzbdvpn:
     cap_add:
       - NET_ADMIN
+      - SYS_MODULE
     container_name: sabnzbdvpn
     environment:
       - ENABLE_PRIVOXY=${SABNZBDVPN_ENABLE_PRIVOXY}
@@ -10,6 +11,7 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+      - VPN_CLIENT=${VPN_CLIENT}
       - VPN_ENABLED=${VPN_ENABLE}
       - VPN_OPTIONS=${VPN_OPTIONS}
       - VPN_PASS=${VPN_PASS}
@@ -21,6 +23,8 @@ services:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: unless-stopped
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/sabnzbdvpn:/config
@@ -29,3 +33,4 @@ services:
       - ${DOWNLOADSDIR}:/data
       - ${DOWNLOADSDIR}:/downloads
       - ${VPN_OVPNDIR}:/config/openvpn
+      - ${VPN_WGDIR}:/config/wireguard

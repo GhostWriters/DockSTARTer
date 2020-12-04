@@ -27,7 +27,7 @@ IFS=$'\n\t'
 #/  -h --help
 #/      show this usage information
 #/  -i --install
-#/      install/update docker, docker-compose, yq-go and all dependencies
+#/      install/update docker, docker-compose, yq and all dependencies
 #/  -p --prune
 #/      remove unused docker resources
 #/  -r --remove
@@ -42,10 +42,6 @@ IFS=$'\n\t'
 #/      update DockSTARTer to the latest commits from the specified branch
 #/  -v --verbose
 #/      verbose
-#/  --yml-get=<ymlvariable>
-#/      Gets the value of a <ymlpath> for the app in the yml path (must start with 'services.<appname>.')
-#/  --yml-get=<appname>,<ymlpath>
-#/      Gets the value of a <ymlvariable> for the app specified
 #/  -x --debug
 #/      debug
 #/
@@ -90,19 +86,6 @@ cmdline() {
             --test) LOCAL_ARGS="${LOCAL_ARGS:-}-t " ;;
             --update) LOCAL_ARGS="${LOCAL_ARGS:-}-u " ;;
             --verbose) LOCAL_ARGS="${LOCAL_ARGS:-}-v " ;;
-            --yml-*)
-                readonly YMLMETHOD=${ARG%%=*}
-                readonly YMLARG=${ARG#*=}
-                if [[ ${YMLMETHOD:-} == "${YMLARG:-}" ]]; then
-                    echo "Invalid usage. Must be one of the following:"
-                    echo "  --yml-get with variable name '--yml-get=<ymlpath>' (must start with 'services.<appname>.')"
-                    echo "  --yml-get with app name and variable name '--yml-get=<appname>,<ymlpath>'"
-                    exit
-                else
-                    YMLAPPNAME=${YMLARG%%,*}
-                    readonly YMLVAR=${YMLARG#*,}
-                fi
-                ;;
             #pass through anything else
             *)
                 [[ ${ARG:0:1} == "-" ]] || DELIM='"'
@@ -347,7 +330,7 @@ run_script() {
     if [[ -f ${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh ]]; then
         # shellcheck source=/dev/null
         source "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh"
-        ${SCRIPTSNAME} "$@"
+        ${SCRIPTSNAME} "$@" < /dev/null
     else
         fatal "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh not found."
     fi
@@ -362,7 +345,7 @@ run_test() {
             notice "Testing ${TESTSNAME}."
             # shellcheck source=/dev/null
             source "${SCRIPTPATH}/.scripts/${TESTSNAME}.sh"
-            eval "test_${TESTSNAME}" "$@" || fatal "Failed to run ${TESTSNAME}."
+            eval "test_${TESTSNAME}" "$@" < /dev/null || fatal "Failed to run ${TESTSNAME}."
             notice "Completed testing ${TESTSNAME}."
         else
             fatal "Test function in ${SCRIPTPATH}/.scripts/${TESTSNAME}.sh not found."
@@ -535,24 +518,6 @@ main() {
             run_script 'update_self'
         else
             run_script 'update_self' "${UPDATE}"
-        fi
-        exit
-    fi
-    if [[ -n ${YMLMETHOD:-} ]]; then
-        if [[ ${YMLAPPNAME:-} == "${YMLVAR:-}" ]]; then
-            if [[ ${YMLVAR:-} != "" ]] && [[ ${YMLVAR:-} =~ services* ]]; then
-                YMLAPPNAME=${YMLVAR#services.}
-                YMLAPPNAME=${YMLAPPNAME%%.*}
-            else
-                YMLAPPNAME=""
-            fi
-        fi
-        if [[ ${YMLAPPNAME:-} != "" ]] && [[ ${YMLVAR:-} != "" ]]; then
-            run_script 'yml_get' "${YMLAPPNAME}" "${YMLVAR}" || error "Could not find '${YMLVAR}' in '${YMLAPPNAME}'"
-        else
-            echo "Invalid usage. Must be one of the following:"
-            echo "  --yml-get with variable name '--yml-get=<ymlvar>' (must start with 'services.<appname>.')"
-            echo "  --yml-get with app name and variable name '--yml-get=<appname>,<ymlvar>'"
         fi
         exit
     fi
