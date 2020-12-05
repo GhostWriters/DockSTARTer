@@ -27,7 +27,7 @@ IFS=$'\n\t'
 #/  -h --help
 #/      show this usage information
 #/  -i --install
-#/      install/update docker, docker-compose, yq-go and all dependencies
+#/      install/update docker, docker-compose, yq and all dependencies
 #/  -p --prune
 #/      remove unused docker resources
 #/  -r --remove
@@ -42,10 +42,6 @@ IFS=$'\n\t'
 #/      update DockSTARTer to the latest commits from the specified branch
 #/  -v --verbose
 #/      verbose
-#/  --yml-get=<ymlvariable>
-#/      Gets the value of a <ymlpath> for the app in the yml path (must start with 'services.<appname>.')
-#/  --yml-get=<appname>,<ymlpath>
-#/      Gets the value of a <ymlvariable> for the app specified
 #/  -x --debug
 #/      debug
 #/
@@ -90,19 +86,6 @@ cmdline() {
             --test) LOCAL_ARGS="${LOCAL_ARGS:-}-t " ;;
             --update) LOCAL_ARGS="${LOCAL_ARGS:-}-u " ;;
             --verbose) LOCAL_ARGS="${LOCAL_ARGS:-}-v " ;;
-            --yml-*)
-                readonly YMLMETHOD=${ARG%%=*}
-                readonly YMLARG=${ARG#*=}
-                if [[ ${YMLMETHOD:-} == "${YMLARG:-}" ]]; then
-                    echo "Invalid usage. Must be one of the following:"
-                    echo "  --yml-get with variable name '--yml-get=<ymlpath>' (must start with 'services.<appname>.')"
-                    echo "  --yml-get with app name and variable name '--yml-get=<appname>,<ymlpath>'"
-                    exit
-                else
-                    YMLAPPNAME=${YMLARG%%,*}
-                    readonly YMLVAR=${YMLARG#*,}
-                fi
-                ;;
             #pass through anything else
             *)
                 [[ ${ARG:0:1} == "-" ]] || DELIM='"'
@@ -128,7 +111,8 @@ cmdline() {
                             MULTIOPT+=("$(eval "echo \${$OPTIND}")")
                             OPTIND=$((OPTIND + 1))
                         done
-                        readonly COMPOSE=$(printf "%s " "${MULTIOPT[@]}" | xargs)
+                        COMPOSE=$(printf "%s " "${MULTIOPT[@]}" | xargs)
+                        readonly COMPOSE
                         ;;
                     *)
                         echo "Invalid compose option."
@@ -217,17 +201,23 @@ get_scriptname() {
     done
     echo "${SOURCE}"
 }
-readonly SCRIPTPATH=$(cd -P "$(dirname "$(get_scriptname)")" > /dev/null 2>&1 && pwd)
-readonly SCRIPTNAME="${SCRIPTPATH}/$(basename "$(get_scriptname)")"
+SCRIPTPATH=$(cd -P "$(dirname "$(get_scriptname)")" > /dev/null 2>&1 && pwd)
+readonly SCRIPTPATH
+SCRIPTNAME="${SCRIPTPATH}/$(basename "$(get_scriptname)")"
+readonly SCRIPTNAME
 
 # User/Group Information
 readonly DETECTED_PUID=${SUDO_UID:-$UID}
-readonly DETECTED_UNAME=$(id -un "${DETECTED_PUID}" 2> /dev/null || true)
-readonly DETECTED_PGID=$(id -g "${DETECTED_PUID}" 2> /dev/null || true)
+DETECTED_UNAME=$(id -un "${DETECTED_PUID}" 2> /dev/null || true)
+readonly DETECTED_UNAME
+DETECTED_PGID=$(id -g "${DETECTED_PUID}" 2> /dev/null || true)
+readonly DETECTED_PGID
 export DETECTED_PGID
-readonly DETECTED_UGROUP=$(id -gn "${DETECTED_PUID}" 2> /dev/null || true)
+DETECTED_UGROUP=$(id -gn "${DETECTED_PUID}" 2> /dev/null || true)
+readonly DETECTED_UGROUP
 export DETECTED_UGROUP
-readonly DETECTED_HOMEDIR=$(eval echo "~${DETECTED_UNAME}" 2> /dev/null || true)
+DETECTED_HOMEDIR=$(eval echo "~${DETECTED_UNAME}" 2> /dev/null || true)
+readonly DETECTED_HOMEDIR
 
 # Terminal Colors
 if [[ ${CI:-} == true ]] || [[ -t 1 ]]; then
@@ -288,10 +278,12 @@ declare -Agr F=(
     [W]=$(tcolor F W)
     [Y]=$(tcolor F Y)
 )
-readonly NC=$(tcolor NC)
+NC=$(tcolor NC)
+readonly NC
 
 # Log Functions
-readonly LOG_TEMP=$(mktemp) || echo "Failed to create temporary log file."
+LOG_TEMP=$(mktemp) || echo "Failed to create temporary log file."
+readonly LOG_TEMP
 echo "DockSTARTer Log" > "${LOG_TEMP}"
 log() {
     local TOTERM=${1:-}
@@ -338,7 +330,7 @@ run_script() {
     if [[ -f ${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh ]]; then
         # shellcheck source=/dev/null
         source "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh"
-        ${SCRIPTSNAME} "$@"
+        ${SCRIPTSNAME} "$@" < /dev/null
     else
         fatal "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh not found."
     fi
@@ -353,7 +345,7 @@ run_test() {
             notice "Testing ${TESTSNAME}."
             # shellcheck source=/dev/null
             source "${SCRIPTPATH}/.scripts/${TESTSNAME}.sh"
-            eval "test_${TESTSNAME}" "$@" || fatal "Failed to run ${TESTSNAME}."
+            eval "test_${TESTSNAME}" "$@" < /dev/null || fatal "Failed to run ${TESTSNAME}."
             notice "Completed testing ${TESTSNAME}."
         else
             fatal "Test function in ${SCRIPTPATH}/.scripts/${TESTSNAME}.sh not found."
@@ -376,7 +368,7 @@ cleanup() {
 
     if repo_exists; then
         info "Setting executable permission on ${SCRIPTNAME}"
-        sudo -E chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable."
+        sudo -E chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable.\nFailing command: ${F[C]}sudo -E chmod +x \"${SCRIPTNAME}\""
     fi
     if [[ ${CI:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == false ]]; then
         warn "TRAVIS_SECURE_ENV_VARS is false for Pull Requests from remote branches. Please retry failed builds!"
@@ -396,7 +388,8 @@ trap 'cleanup' 0 1 2 3 6 14 15
 # Main Function
 main() {
     # Arch Check
-    readonly ARCH=$(uname -m)
+    ARCH=$(uname -m)
+    readonly ARCH
     if [[ ${ARCH} != "aarch64" ]] && [[ ${ARCH} != "armv7l" ]] && [[ ${ARCH} != "x86_64" ]]; then
         fatal "Unsupported architecture."
     fi
@@ -434,7 +427,7 @@ main() {
             if [[ ${EUID} -eq 0 ]]; then
                 fatal "Using sudo during cloning on first run is not supported."
             fi
-            git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
+            git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone DockSTARTer repo.\nFailing command: ${F[C]}git clone https://github.com/GhostWriters/DockSTARTer \"${DETECTED_HOMEDIR}/.docker\""
             notice "Performing first run install."
             exec sudo -E bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-vi"
         fi
@@ -525,24 +518,6 @@ main() {
             run_script 'update_self'
         else
             run_script 'update_self' "${UPDATE}"
-        fi
-        exit
-    fi
-    if [[ -n ${YMLMETHOD:-} ]]; then
-        if [[ ${YMLAPPNAME:-} == "${YMLVAR:-}" ]]; then
-            if [[ ${YMLVAR:-} != "" ]] && [[ ${YMLVAR:-} =~ services* ]]; then
-                YMLAPPNAME=${YMLVAR#services.}
-                YMLAPPNAME=${YMLAPPNAME%%.*}
-            else
-                YMLAPPNAME=""
-            fi
-        fi
-        if [[ ${YMLAPPNAME:-} != "" ]] && [[ ${YMLVAR:-} != "" ]]; then
-            run_script 'yml_get' "${YMLAPPNAME}" "${YMLVAR}" || error "Could not find '${YMLVAR}' in '${YMLAPPNAME}'"
-        else
-            echo "Invalid usage. Must be one of the following:"
-            echo "  --yml-get with variable name '--yml-get=<ymlvar>' (must start with 'services.<appname>.')"
-            echo "  --yml-get with app name and variable name '--yml-get=<appname>,<ymlvar>'"
         fi
         exit
     fi

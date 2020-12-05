@@ -7,10 +7,10 @@ env_update() {
     run_script 'override_backup'
     info "Replacing current .env file with latest template."
     local CURRENTENV
-    CURRENTENV=$(mktemp) || fatal "Failed to create temporary .env update file."
-    sort "${SCRIPTPATH}/compose/.env" > "${CURRENTENV}" || fatal "${SCRIPTPATH}/compose/.env could not be copied."
+    CURRENTENV=$(mktemp) || fatal "Failed to create temporary .env update file.\nFailing command: ${F[C]}mktemp"
+    sort "${SCRIPTPATH}/compose/.env" > "${CURRENTENV}" || fatal "Failed to sort to new file.\nFailing command: ${F[C]}sort \"${SCRIPTPATH}/compose/.env\" > \"${CURRENTENV}\""
     rm -f "${SCRIPTPATH}/compose/.env" || warn "${SCRIPTPATH}/compose/.env could not be removed."
-    cp "${SCRIPTPATH}/compose/.env.example" "${SCRIPTPATH}/compose/.env" || fatal "${SCRIPTPATH}/compose/.env.example could not be copied."
+    cp "${SCRIPTPATH}/compose/.env.example" "${SCRIPTPATH}/compose/.env" || fatal "Failed to copy file.\nFailing command: ${F[C]}cp \"${SCRIPTPATH}/compose/.env.example\" \"${SCRIPTPATH}/compose/.env\""
     run_script 'set_permissions' "${SCRIPTPATH}/compose/.env"
     info "Merging previous values into new .env file."
     while IFS= read -r line; do

@@ -33,7 +33,9 @@ plugins:
         advanced/overrides.md: https://dockstarter.com/overrides/introduction
         apps/hydra2.md: https://dockstarter.com/apps/nzbhydra2/
         apps/letsencrypt.md: https://dockstarter.com/apps/swag/
+        apps/mylar.md: https://dockstarter.com/apps/mylar3/
         apps/plexrequests.md: https://dockstarter.com/apps/ombi/
+        apps/sickrage.md: https://dockstarter.com/apps/sickchill/
         apps/ttrss.md: https://dockstarter.com/apps/freshrss/
         apps/unifi.md: https://dockstarter.com/apps/unificontroller/
         discord.md: https://discord.gg/xR3cyUb
@@ -43,8 +45,8 @@ theme:
   features:
     - navigation.instant
   language: en
-  favicon: img/favicon.ico
-  logo: img/icon.png
+  favicon: images/favicon.ico
+  logo: images/icon.png
   palette:
     primary: blue grey
     accent: indigo
@@ -70,6 +72,7 @@ nav:
       - advanced/uninstall.md
       - advanced/vpn-info.md
   - App Specifics:
+      - apps/adguard.md
       - apps/airdcpp.md
       - apps/airsonic.md
       - apps/amd.md
@@ -97,6 +100,7 @@ nav:
       - apps/duplicati.md
       - apps/emby.md
       - apps/filebot.md
+      - apps/filebrowser.md
       - apps/freshrss.md
       - apps/glances.md
       - apps/goaccess.md
@@ -127,9 +131,10 @@ nav:
       - apps/minecraft_bedrock_server.md
       - apps/minecraft_server.md
       - apps/monitorr.md
+      - apps/mosquitto.md
       - apps/murmur.md
       - apps/muximux.md
-      - apps/mylar.md
+      - apps/mylar3.md
       - apps/netdata.md
       - apps/nextcloud.md
       - apps/nzbget.md

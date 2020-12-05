@@ -16,7 +16,7 @@ menu_value_prompt() {
     if grep -q -Po "^${SET_VAR}=\K.*" "${SCRIPTPATH}/compose/.env.example"; then
         DEFAULT_VAL=$(grep --color=never -Po "^${SET_VAR}=\K.*" "${SCRIPTPATH}/compose/.env.example" || true)
     else
-        DEFAULT_VAL=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.dockstarter.appvars.${VAR_LABEL}]" || true)
+        DEFAULT_VAL=$(grep --color=never -Po "\scom\.dockstarter\.appvars\.${VAR_LABEL}: \K.*" "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.labels.yml" | xargs || true)
     fi
 
     local HOME_VAL
@@ -192,7 +192,7 @@ menu_value_prompt() {
                     fi
                 else
                     if run_script 'question_prompt' "${PROMPT:-}" Y "${INPUT} is not a valid path. Would you like to attempt to create it?"; then
-                        mkdir -p "${INPUT}" || fatal "${INPUT} folder could not be created."
+                        mkdir -p "${INPUT}" || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p \"${INPUT}\""
                         run_script 'set_permissions' "${INPUT}"
                         run_script 'env_set' "${SET_VAR}" "${INPUT}"
                         whiptail --fb --clear --title "DockSTARTer" --msgbox "${INPUT} folder was created successfully." 0 0

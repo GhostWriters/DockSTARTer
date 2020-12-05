@@ -1,0 +1,15 @@
+{
+    "name": "DockSTARTer",
+    "short_name": "DS",
+    "description": "DockSTARTer helps you get started with home server apps running in Docker.",
+    "icons": [
+      {
+        "src": "/images/icon.png",
+        "sizes": "306x306",
+        "type": "image/png"
+      }
+    ],
+    "theme_color": "#546d78",
+    "background_color": "#ffffff",
+    "display": "standalone"
+  }

@@ -1,0 +1,3 @@
+services:
+  filebrowser:
+    hostname: ${DOCKERHOSTNAME}
