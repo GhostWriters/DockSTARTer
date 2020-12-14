@@ -3,7 +3,6 @@ script.src = "https://www.googletagmanager.com/gtag/js?id=G-QVNLHE95FS";
 document.head.appendChild(script);
 
 app.location$.subscribe(function (url) {
-  url = url; // workaround not using url
   window.dataLayer = window.dataLayer || [];
   function gtag() {
     dataLayer.push(arguments);
