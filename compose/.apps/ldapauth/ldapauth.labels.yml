@@ -11,3 +11,4 @@ services:
       com.dockstarter.appvars.ldapauth_network_mode: ""
       com.dockstarter.appvars.ldapauth_port_8888: "8888"
       com.dockstarter.appvars.ldapauth_port_9000: "9000"
+      
