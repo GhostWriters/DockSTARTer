@@ -118,11 +118,13 @@ nav:
       - apps/jackett.md
       - apps/jellyfin.md
       - apps/lazylibrarian.md
+      - apps/ldapauth.md
       - apps/librespeed.md
       - apps/lidarr.md
       - apps/limnoria.md
       - apps/logarr.md
       - apps/logitechmediaserver.md
+      - apps/ldapauth.md
       - apps/makemkv.md
       - apps/mariadb.md
       - apps/mcmyadmin2.md
