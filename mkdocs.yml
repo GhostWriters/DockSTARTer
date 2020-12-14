@@ -117,6 +117,7 @@ nav:
       - apps/influxdb.md
       - apps/jackett.md
       - apps/jellyfin.md
+      - apps/jfago.md
       - apps/lazylibrarian.md
       - apps/librespeed.md
       - apps/lidarr.md
