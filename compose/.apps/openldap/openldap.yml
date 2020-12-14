@@ -24,5 +24,4 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/openldap/database:/var/lib/ldap
       - ${DOCKERCONFDIR}/openldap/config:/etc/ldap/
-      - ${DOCKERSHAREDDIR}:/shared
       - ${DOCKERSTORAGEDIR}:/storage
