@@ -135,3 +135,19 @@ If you would like to have Plex use a GPU that is attached to your DockSTARTer ho
 ```
 
 Refer to this forum post for details: [Using Hardware Acceleration in Docker](https://forums.plex.tv/t/using-hardware-acceleration-in-docker/229702/3)
+
+### Using fast or large storage for specific Plex configs
+
+By default Plex will Cache, Log, Transcode, and store metadata to the config folder for Plex (usually `~/.config/appdata/plex/`). You may wish to use other disks that are faster, or have more space available for these things. You can do this using an [override](https://dockstarter.com/overrides/introduction/) like so:
+
+```yaml
+  plex:
+    volumes:
+      - "/mnt/fastDisk/cache:/config/Library/Application Support/Plex Media Server/Cache"
+      - "/mnt/bigDisk/logs:/config/Library/Application Support/Plex Media Server/Logs"
+      - "/mnt/bigDisk/media:/config/Library/Application Support/Plex Media Server/Media"
+      - "/mnt/bigDisk/metadata:/config/Library/Application Support/Plex Media Server/Metadata"
+      - "/mnt/fastDisk/transcode:/config/Library/Application Support/Plex Media Server/Cache/Transcode/Sessions"
+```
+
+These volumes are all optional. If your config folder runs on an SSD with enough space you might not need any of them. If your config is stored on an SSD with very little space, you might only relocate the ones above that mention `bigDisk`. If your config is stored on a slower disk with plenty of space you might only relocate the ones above that mention `fastDisk`.
