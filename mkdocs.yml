@@ -140,6 +140,7 @@ nav:
       - apps/nzbhydra2.md
       - apps/ombi.md
       - apps/omadacontroller.md
+      - apps/openldap.md
       - apps/openvpnas.md
       - apps/organizr.md
       - apps/ouroboros.md
