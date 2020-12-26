@@ -220,7 +220,7 @@ if [[ -n ${DEBUG:-} ]] && [[ -n ${VERBOSE:-} ]]; then
 fi
 
 # Terminal Colors
-declare -Agr B=( # Background
+declare -Agr B=(# Background
     [B]=$(tput setab 4 || echo -e "\e[44m") # Blue
     [C]=$(tput setab 6 || echo -e "\e[46m") # Cyan
     [G]=$(tput setab 2 || echo -e "\e[42m") # Green
@@ -230,7 +230,7 @@ declare -Agr B=( # Background
     [W]=$(tput setab 7 || echo -e "\e[47m") # White
     [Y]=$(tput setab 3 || echo -e "\e[43m") # Yellow
 )
-declare -Agr F=( # Foreground
+declare -Agr F=(# Foreground
     [B]=$(tput setaf 4 || echo -e "\e[34m") # Blue
     [C]=$(tput setaf 6 || echo -e "\e[36m") # Cyan
     [G]=$(tput setaf 2 || echo -e "\e[32m") # Green
