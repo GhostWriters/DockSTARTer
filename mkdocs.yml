@@ -117,6 +117,7 @@ nav:
       - apps/jackett.md
       - apps/jellyfin.md
       - apps/lazylibrarian.md
+      - apps/ldapauth.md
       - apps/librespeed.md
       - apps/lidarr.md
       - apps/limnoria.md

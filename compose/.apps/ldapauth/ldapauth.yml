@@ -1,0 +1,17 @@
+services:
+  ldapauth:
+    container_name: ldapauth
+    environment:
+      - CERTFILE=${LDAPAUTH_CERTFILE}
+      - FERNETKEY=${LDAPAUTH_FERNETKEY}
+      - KEYFILE=${LDAPAUTH_KEYFILE}
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERSTORAGEDIR}:/storage
