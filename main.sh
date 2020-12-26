@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 usage() {
-    cat <<EOF
+    cat << EOF
 Usage: ds [OPTION]
 NOTE: ds shortcut is only available after the first run of
     bash main.sh
