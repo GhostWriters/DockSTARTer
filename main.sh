@@ -220,60 +220,27 @@ if [[ -n ${DEBUG:-} ]] && [[ -n ${VERBOSE:-} ]]; then
 fi
 
 # Terminal Colors
-tcolor() {
-    if [[ ${CI:-} == true || -t 1 ]] && [[ $(tput colors 2> /dev/null) -ge 8 ]]; then
-        # http://linuxcommand.org/lc3_adv_tput.php
-        local BF=${1:-}
-        local CAP
-        case ${BF} in
-            [Bb]) CAP=setab ;;
-            [Ff]) CAP=setaf ;;
-            [Nn][Cc]) CAP=sgr0 ;;
-            *) return ;;
-        esac
-        local COLOR_IN=${2:-}
-        local VAL
-        if [[ ${CAP} != "sgr0" ]]; then
-            case ${COLOR_IN} in
-                [Bb4]) VAL=4 ;; # Blue
-                [Cc6]) VAL=6 ;; # Cyan
-                [Gg2]) VAL=2 ;; # Green
-                [Kk0]) VAL=0 ;; # Black
-                [Mm5]) VAL=5 ;; # Magenta
-                [Rr1]) VAL=1 ;; # Red
-                [Ww7]) VAL=7 ;; # White
-                [Yy3]) VAL=3 ;; # Yellow
-                *) return ;;
-            esac
-        fi
-        local COLOR_OUT
-        COLOR_OUT=$(eval tput ${CAP:-} ${VAL:-} 2> /dev/null)
-        echo "${COLOR_OUT:-}"
-    else
-        return
-    fi
-}
-declare -Agr B=(
-    [B]=$(tcolor B B)
-    [C]=$(tcolor B C)
-    [G]=$(tcolor B G)
-    [K]=$(tcolor B K)
-    [M]=$(tcolor B M)
-    [R]=$(tcolor B R)
-    [W]=$(tcolor B W)
-    [Y]=$(tcolor B Y)
+declare -Agr B=( # Background
+    [B]=$(tput setab 4 || echo -e "\e[44m") # Blue
+    [C]=$(tput setab 6 || echo -e "\e[46m") # Cyan
+    [G]=$(tput setab 2 || echo -e "\e[42m") # Green
+    [K]=$(tput setab 0 || echo -e "\e[40m") # Black
+    [M]=$(tput setab 5 || echo -e "\e[45m") # Magenta
+    [R]=$(tput setab 1 || echo -e "\e[41m") # Red
+    [W]=$(tput setab 7 || echo -e "\e[47m") # White
+    [Y]=$(tput setab 3 || echo -e "\e[43m") # Yellow
 )
-declare -Agr F=(
-    [B]=$(tcolor F B)
-    [C]=$(tcolor F C)
-    [G]=$(tcolor F G)
-    [K]=$(tcolor F K)
-    [M]=$(tcolor F M)
-    [R]=$(tcolor F R)
-    [W]=$(tcolor F W)
-    [Y]=$(tcolor F Y)
+declare -Agr F=( # Foreground
+    [B]=$(tput setaf 4 || echo -e "\e[34m") # Blue
+    [C]=$(tput setaf 6 || echo -e "\e[36m") # Cyan
+    [G]=$(tput setaf 2 || echo -e "\e[32m") # Green
+    [K]=$(tput setaf 0 || echo -e "\e[30m") # Black
+    [M]=$(tput setaf 5 || echo -e "\e[35m") # Magenta
+    [R]=$(tput setaf 1 || echo -e "\e[31m") # Red
+    [W]=$(tput setaf 7 || echo -e "\e[37m") # White
+    [Y]=$(tput setaf 3 || echo -e "\e[33m") # Yellow
 )
-NC=$(tcolor NC)
+NC=$(tput sgr0 || echo -e "\e[0m")
 readonly NC
 
 # Log Functions
