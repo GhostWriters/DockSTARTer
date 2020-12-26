@@ -16,8 +16,4 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/airsonic:/config
-      - ${DOCKERSHAREDDIR}:/shared
       - ${DOCKERSTORAGEDIR}:/storage
-      - ${MEDIADIR_MUSIC}:/music
-      - ${MEDIADIR_MUSIC}/playlists:/playlists
-      - ${MEDIADIR_MUSIC}/podcasts:/podcasts

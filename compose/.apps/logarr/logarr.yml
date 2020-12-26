@@ -15,5 +15,4 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/logarr:/config
       - ${DOCKERCONFDIR}:/var/log/logarrlogs:ro
-      - ${DOCKERSHAREDDIR}:/shared
       - ${DOCKERSTORAGEDIR}:/storage

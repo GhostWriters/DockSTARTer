@@ -14,7 +14,6 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/handbrake:/config
-      - ${DOCKERSHAREDDIR}:/shared
       - ${DOCKERSTORAGEDIR}:/storage
       - ${HANDBRAKE_OUTPUTDIR}:/output
       - ${HANDBRAKE_WATCHDIR}:/watch
