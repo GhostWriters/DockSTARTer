@@ -22,7 +22,7 @@ Or place a custom init script in your config (ex: `~/.config/appdata/plex/custom
 
 ```bash
 #!/usr/bin/with-contenv bash
-set -euo pipefail
+set -Eeuo pipefail
 IFS=$'\n\t'
 
 rm -rf "/config/Library/Application Support/Plex Media Server/Codecs"
