@@ -70,7 +70,7 @@ readonly SCRIPTNAME
 # Cleanup Function
 cleanup() {
     local -ri EXIT_CODE=$?
-    sudo sh -c "cat ${LOG_TEMP:-} >> ${SCRIPTPATH}/dockstarter.log" || true
+    sudo sh -c "cat ${LOG_TEMP:-/dev/null} >> ${SCRIPTPATH}/dockstarter.log" || true
     sudo -E chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || true
 
     if [[ ${CI:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == false ]]; then
