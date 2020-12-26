@@ -86,7 +86,6 @@ cleanup() {
 }
 trap 'cleanup' ERR EXIT SIGABRT SIGALRM SIGHUP SIGINT SIGQUIT SIGTERM
 
-
 # Command Line Arguments
 readonly ARGS=("$@")
 cmdline() {
