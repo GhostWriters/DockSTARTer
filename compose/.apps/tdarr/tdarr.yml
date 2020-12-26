@@ -14,9 +14,6 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/tdarr:/home/Tdarr/Documents/Tdarr
-      - ${DOCKERSHAREDDIR}:/shared
       - ${DOCKERSTORAGEDIR}:/storage
-      - ${MEDIADIR_MOVIES}:/movies
-      - ${MEDIADIR_TV}:/tv
       - ${TDARR_DB}:/var/lib/mongodb
       - ${TDARR_TRANSCODE_CACHE}:/home/Tdarr/cache

@@ -14,7 +14,6 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/rsnapshot:/config
-      - ${DOCKERSHAREDDIR}:/shared
       - ${DOCKERSTORAGEDIR}:/storage
       - ${RSNAPSHOT_DATADIR}:/data
       - ${RSNAPSHOT_ROOT_SSH}:/root/.ssh:ro

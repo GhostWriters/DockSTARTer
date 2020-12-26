@@ -23,5 +23,4 @@ services:
       - ${DOCKERCONFDIR}/omadacontroller:/opt/tplink/EAPController/data
       - ${DOCKERCONFDIR}/omadacontroller/logs:/opt/tplink/EAPController/logs
       - ${DOCKERCONFDIR}/omadacontroller/work:/opt/tplink/EAPController/work
-      - ${DOCKERSHAREDDIR}:/shared
       - ${DOCKERSTORAGEDIR}:/storage

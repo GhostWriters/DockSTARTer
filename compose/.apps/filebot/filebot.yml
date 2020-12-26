@@ -14,10 +14,6 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/filebot:/config
-      - ${DOCKERSHAREDDIR}:/shared
       - ${DOCKERSTORAGEDIR}:/storage
       - ${FILEBOT_OUTPUTDIR}:/output
       - ${FILEBOT_WATCHDIR}:/watch
-      - ${MEDIADIR_MOVIES}:/movies
-      - ${MEDIADIR_MUSIC}:/music
-      - ${MEDIADIR_TV}:/tv

@@ -14,9 +14,4 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/lazylibrarian:/config
-      - ${DOCKERSHAREDDIR}:/shared
       - ${DOCKERSTORAGEDIR}:/storage
-      - ${DOWNLOADSDIR}:/data
-      - ${DOWNLOADSDIR}:/downloads
-      - ${MEDIADIR_AUDIOBOOKS}:/audiobooks
-      - ${MEDIADIR_BOOKS}:/books

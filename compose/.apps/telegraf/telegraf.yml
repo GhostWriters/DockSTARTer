@@ -22,5 +22,4 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /var/run/utmp:/var/run/utmp:ro
       - ${DOCKERCONFDIR}/telegraf:/var/lib/telegraf
-      - ${DOCKERSHAREDDIR}:/shared
       - ${DOCKERSTORAGEDIR}:/storage
