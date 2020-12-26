@@ -118,6 +118,7 @@ nav:
       - apps/jellyfin.md
       - apps/jfago.md
       - apps/lazylibrarian.md
+      - apps/ldapauth.md
       - apps/librespeed.md
       - apps/lidarr.md
       - apps/limnoria.md
@@ -141,6 +142,7 @@ nav:
       - apps/nzbhydra2.md
       - apps/ombi.md
       - apps/omadacontroller.md
+      - apps/openldap.md
       - apps/openvpnas.md
       - apps/organizr.md
       - apps/ouroboros.md
