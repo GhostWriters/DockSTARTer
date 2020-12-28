@@ -1,0 +1,3 @@
+services:
+  yacht:
+    network_mode: ${YACHT_NETWORK_MODE}

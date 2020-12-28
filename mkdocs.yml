@@ -193,6 +193,7 @@ nav:
       - apps/xbackbone.md
       - apps/xteve.md
       - apps/youtubedl.md
+      - apps/yacht.md
       - apps/znc.md
   - Overrides:
       - overrides/introduction.md
