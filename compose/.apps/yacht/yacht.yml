@@ -1,0 +1,20 @@
+services:
+  yacht:
+    container_name: yacht
+    environment:
+      - ADMIN_EMAIL=${YACHT_ADMIN_EMAIL}
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - SECRET_KEY=${YACHT_SECRET_KEY}
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${DOCKERCONFDIR}/yacht:/config
+      - ${DOCKERSTORAGEDIR}:/storage
