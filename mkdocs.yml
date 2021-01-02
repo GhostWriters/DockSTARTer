@@ -190,6 +190,7 @@ nav:
       - apps/varken.md
       - apps/vsftpd.md
       - apps/watchtower.md
+      - apps/wireguard.md
       - apps/xbackbone.md
       - apps/xteve.md
       - apps/yacht.md
