@@ -5,7 +5,7 @@ title: ''
 labels: 'apps, docs, enhancement'
 assignees: ''
 ---
-## Name of the application
+# Name of the application
 
 ## GitHuh
 
