@@ -19,3 +19,5 @@ sudo chown -R owner:group ~/.config/appdata/bitwarden
 ```
 
 Having the owner group change will allow you to edit the files if required without running into permission issues.
+
+## Install/Setup

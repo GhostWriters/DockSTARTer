@@ -7,3 +7,5 @@
 ## Description
 
 [Cloud Commander](https://cloudcmd.io/) is a file manager for the web. It includes a command-line console and a text editor. Cloud Commander helps you manage your server and work with files, directories and programs in a web browser from any computer, mobile or tablet.
+
+## Install/Setup

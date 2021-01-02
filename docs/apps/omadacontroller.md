@@ -7,3 +7,5 @@
 ## Description
 
 Docker image based off of Ubuntu 18.04 for [TP-Link Omada Controller](https://www.tp-link.com/en/products/details/EAP-Controller.html) to control [TP-Link Omada EAP Series Wireless Access Points](https://www.tp-link.com/en/omada/).
+
+## Install/Setup

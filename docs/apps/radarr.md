@@ -7,3 +7,5 @@
 ## Description
 
 [Radarr](https://github.com/Radarr/Radarr) a fork of Sonarr to work with movies à la Couchpotato.
+
+## Install/Setup

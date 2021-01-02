@@ -9,3 +9,5 @@
 [Varken](https://github.com/Boerderij/Varken) is a standalone application to aggregate data from the Plex ecosystem into InfluxDB using Grafana for a frontend
 
 Fun fact: Varken is Dutch for pig. `PIG` is an acronym for Plex/InfluxDB/Grafana
+
+## Install/Setup

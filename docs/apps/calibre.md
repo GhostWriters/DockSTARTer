@@ -7,3 +7,5 @@
 ## Description
 
 [Calibre](https://calibre-ebook.com/) is a powerful and easy to use e-book manager.
+
+## Install/Setup

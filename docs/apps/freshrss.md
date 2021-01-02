@@ -7,3 +7,5 @@
 ## Description
 
 [FreshRSS](https://freshrss.org/) is a free, self-hostable aggregator for RSS feeds.
+
+## Install/Setup

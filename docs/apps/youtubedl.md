@@ -7,3 +7,5 @@
 ## Description
 
 [youtube-dl-server](https://github.com/nbr23/youtube-dl-server) is very spartan Web and REST interface for downloading youtube videos onto a server. [`bottle`](https://github.com/bottlepy/bottle) + [`youtube-dl`](https://github.com/ytdl-org/youtube-dl).
+
+## Install/Setup

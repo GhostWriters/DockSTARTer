@@ -7,3 +7,5 @@
 ## Description
 
 [Unmanic](https://github.com/josh5/unmanic) is a simple tool for optimizing your video library to a single format. The ultimate goal of Unmanic is to take the complexity out of converting your whole media library. The idea is to simply point Unmanic at your library and let it manage it.
+
+## Install/Setup

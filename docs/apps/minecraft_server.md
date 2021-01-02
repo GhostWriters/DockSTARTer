@@ -7,3 +7,5 @@
 ## Description
 
 [Minecraft Server](https://www.minecraft.net/en-us/download/server) will automatically download the latest stable version at startup. You can also run/upgrade to any specific version or the latest snapshot.
+
+## Install/Setup

@@ -7,3 +7,5 @@
 ## Description
 
 [TheLounge](https://thelounge.chat/) is a web IRC client that you host on your own server.
+
+## Install/Setup

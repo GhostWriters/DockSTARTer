@@ -6,4 +6,6 @@
 
 ## Description
 
-[Dasshio](https://github.com/danimtb/dasshio) is a [Hass.io](https://www.home-assistant.io/hassio/) add-on to easily use Amazon Dash Buttons with Home Assistant
+[Dasshio](https://github.com/danimtb/dasshio) is a [Hass.io](https://www.home-assistant.io/hassio/) add-on to easily use Amazon Dash Buttons with Home Assistant.
+
+## Install/Setup

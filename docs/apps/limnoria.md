@@ -7,3 +7,5 @@
 ## Description
 
 [Limnoria](https://github.com/ProgVal/limnoria) a robust, full-featured, and user/programmer-friendly Python IRC bot, with many existing plugins. Successor of the well-known Supybot.
+
+## Install/Setup

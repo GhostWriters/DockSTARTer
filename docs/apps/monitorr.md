@@ -7,3 +7,5 @@
 ## Description
 
 [Monitorr](https://github.com/monitorr/monitorr) is a webfront to live display the status of any webapp or service.
+
+## Install/Setup

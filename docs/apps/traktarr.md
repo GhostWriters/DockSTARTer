@@ -7,3 +7,5 @@
 ## Description
 
 [Traktarr](https://github.com/l3uddz/Traktarr) is script to add new series & movies to Sonarr/Radarr based on Trakt lists.
+
+## Install/Setup

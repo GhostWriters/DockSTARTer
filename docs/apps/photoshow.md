@@ -7,3 +7,5 @@
 ## Description
 
 [Photoshow](https://github.com/thibaud-rohmer/PhotoShow) is a gallery software at its easiest, it doesn't even require a database.
+
+## Install/Setup

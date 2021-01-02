@@ -7,3 +7,5 @@
 ## Description
 
 [Code-server](https://coder.com/) is VS Code running on a remote server, accessible through the browser.
+
+## Install/Setup

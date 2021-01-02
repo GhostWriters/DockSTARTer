@@ -7,3 +7,5 @@
 ## Description
 
 [Grocy](https://github.com/grocy/grocy) is an ERP system for your kitchen! Cut down on food waste, and manage your chores with this brilliant utility. Keep track of your purchases, how much food you are wasting, what chores need doing and what batteries need charging.
+
+## Install/Setup

@@ -7,3 +7,5 @@
 ## Description
 
 [phpMyAdmin](https://www.phpmyadmin.net/) is a free software tool written in PHP, intended to handle the administration of MySQL over the Web.
+
+## Install/Setup

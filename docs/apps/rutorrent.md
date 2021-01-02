@@ -7,3 +7,5 @@
 ## Description
 
 [ruTorrent](https://github.com/Novik/ruTorrent) is a popular [rTorrent](http://rakshasa.github.io/rtorrent) client with a webui for ease of use.
+
+## Install/Setup
