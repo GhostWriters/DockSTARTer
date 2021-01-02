@@ -1,5 +1,6 @@
 services:
   plexanisync:
+    command: /runsync.sh
     container_name: plexanisync
     environment:
       - PGID=${PGID}
