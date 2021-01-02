@@ -4,14 +4,10 @@ about: Suggest a new application to be added to the DockSTARTer repository
 title: ''
 labels: 'apps, docs, enhancement'
 assignees: ''
-
 ---
-
 **Name of the application**
 
-
 **GitHub**
-
 
 **Docker Hub/GitHub Registry**
 
