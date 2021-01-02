@@ -7,7 +7,7 @@ assignees: ''
 ---
 # Name of the application
 
-## GitHuh
+## GitHub
 
 ## Docker Hub/GitHub Registry
 
