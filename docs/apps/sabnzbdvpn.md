@@ -15,5 +15,3 @@ The support forum for SABnzbdVPN is located [here](https://forums.unraid.net/top
 ### DelugeVPN WebUI Access
 
 If you're attempting to get access to the DelugeVPN WebUI remotely outside of your home network using [SWAG](https://dockstarter.com/apps/swag/) you must follow the steps outlined in [VPN Information](https://dockstarter.com/advanced/vpn-info/).
-
-## Install/Setup

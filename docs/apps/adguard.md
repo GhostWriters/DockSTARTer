@@ -8,5 +8,4 @@
 
 [Adguard](https://www.github.com/AdguardTeam/AdGuardHome) is a network-wide ads & trackers blocking DNS server.
 
-
 ## Install/Setup

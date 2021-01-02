@@ -151,5 +151,3 @@ By default Plex will Cache, Log, Transcode, and store metadata to the config fol
 ```
 
 These volumes are all optional. If your config folder runs on an SSD with enough space you might not need any of them. If your config is stored on an SSD with very little space, you might only relocate the ones above that mention `bigDisk`. If your config is stored on a slower disk with plenty of space you might only relocate the ones above that mention `fastDisk`.
-
-## Install/Setup
