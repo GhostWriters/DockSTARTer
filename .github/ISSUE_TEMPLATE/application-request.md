@@ -1,7 +1,7 @@
 ---
 name: Application Request
 about: Suggest a new application to be added to the DockSTARTer repository
-title: ''
+title: '[Application Request]'
 labels: 'apps, docs, enhancement'
 assignees: ''
 ---
