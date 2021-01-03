@@ -1,3 +1,0 @@
-services:
-  wireguard:
-    network_mode: ${WIREGUARD_NETWORK_MODE}
