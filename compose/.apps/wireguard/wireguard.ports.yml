@@ -1,0 +1,4 @@
+services:
+  wireguard:
+    ports:
+      - ${WIREGUARD_PORT_51820}:51820/udp

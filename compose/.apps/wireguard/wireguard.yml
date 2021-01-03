@@ -1,0 +1,29 @@
+services:
+  wireguard:
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    container_name: wireguard
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - SERVERURL=${WIREGUARD_SERVER_URL}
+      - SERVERPORT=${WIREGUARD_SERVER_PORT}
+      - PEERS=${WIREGUARD_PEERS}
+      - PEERDNS=${WIREGUARD_PEER_DNS}
+      - INTERNAL_SUBNET=${WIREGUARD_INTERNAL_SUBNET}
+      - ALLOWEDIPS=${WIREGUARD_ALLOWED_IPS}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /lib/modules:/lib/modules
+      - ${DOCKERCONFDIR}/wireguard:/config
+      - ${DOCKERSTORAGEDIR}:/storage
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
