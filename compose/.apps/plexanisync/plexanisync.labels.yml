@@ -9,6 +9,6 @@ services:
       com.dockstarter.appvars.plexanisync_plex_section: "Anime"
       com.dockstarter.appvars.plexanisync_plex_url: "http://plex:32400"
       com.dockstarter.appvars.plexanisync_plex_token: ""
-      com.dockstarter.appvars.plex_anisync_ani_username: ""
+      com.dockstarter.appvars.plexanisync_ani_username: ""
       com.dockstarter.appvars.plexanisync_ani_token: ""
       com.dockstarter.appvars.plexanisync_interval: "3600"
