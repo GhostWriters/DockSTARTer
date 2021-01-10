@@ -1,0 +1,4 @@
+services:
+  requestrr:
+    ports:
+      - ${REQUESTRR_PORT_4545}:4545
