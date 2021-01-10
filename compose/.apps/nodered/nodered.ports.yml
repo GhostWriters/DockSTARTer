@@ -1,0 +1,4 @@
+services:
+  nodered:
+    ports:
+      - ${NODERED_PORT_1880}:1880
