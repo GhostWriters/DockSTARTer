@@ -1,0 +1,3 @@
+services:
+  unpackerr:
+    image: ghcr.io/hotio/unpackerr
