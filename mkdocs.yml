@@ -161,6 +161,7 @@ nav:
       - apps/quasselcore.md
       - apps/quasselweb.md
       - apps/radarr.md
+      - apps/requestrr.md
       - apps/resiliosync.md
       - apps/rsnapshot.md
       - apps/rtorrentvpn.md
