@@ -7,7 +7,7 @@ site_url: https://dockstarter.com
 repo_url: https://github.com/GhostWriters/DockSTARTer
 repo_name: GhostWriters/DockSTARTer
 
-copyright: Copyright &copy; 2020 GhostWriters
+copyright: Copyright &copy; 2021 GhostWriters
 
 extra:
   manifest: manifest.webmanifest
@@ -162,6 +162,7 @@ nav:
       - apps/quasselcore.md
       - apps/quasselweb.md
       - apps/radarr.md
+      - apps/requestrr.md
       - apps/resiliosync.md
       - apps/rsnapshot.md
       - apps/rtorrentvpn.md
