@@ -1,6 +1,8 @@
 services:
   nodered:
     container_name: nodered
+    environment:
+      - TZ=${TZ}
     logging:
       driver: json-file
       options:
