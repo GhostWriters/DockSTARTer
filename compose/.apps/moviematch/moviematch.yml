@@ -2,12 +2,12 @@ services:
   moviematch:
     container_name: moviematch
     environment:
+      - LOG_LEVEL=${MOVIEMATCH_LOG_LEVEL}
       - PGID=${PGID}
+      - PLEX_TOKEN=${MOVIEMATCH_PLEX_TOKEN}
+      - PLEX_URL=${MOVIEMATCH_PLEX_URL}
       - PUID=${PUID}
       - TZ=${TZ}
-      - PLEX_URL=${MOVIEMATCH_PLEX_URL}
-      - PLEX_TOKEN=${MOVIEMATCH_PLEX_TOKEN}
-      - LOG_LEVEL=${MOVIEMATCH_LOG_LEVEL}
     logging:
       driver: json-file
       options:
