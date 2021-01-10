@@ -137,6 +137,7 @@ nav:
       - apps/mylar3.md
       - apps/netdata.md
       - apps/nextcloud.md
+      - apps/nodered.md
       - apps/nzbget.md
       - apps/nzbgetvpn.md
       - apps/nzbhydra2.md
@@ -161,6 +162,7 @@ nav:
       - apps/quasselcore.md
       - apps/quasselweb.md
       - apps/radarr.md
+      - apps/requestrr.md
       - apps/resiliosync.md
       - apps/rsnapshot.md
       - apps/rtorrentvpn.md
