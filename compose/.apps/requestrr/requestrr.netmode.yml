@@ -1,0 +1,3 @@
+services:
+  requestrr:
+    network_mode: ${REQUESTRR_NETWORK_MODE}
