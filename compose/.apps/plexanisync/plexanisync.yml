@@ -3,15 +3,15 @@ services:
     command: /runsync.sh
     container_name: plexanisync
     environment:
+      - ANI_TOKEN=${PLEXANISYNC_ANI_TOKEN}
+      - ANI_USERNAME=${PLEX_ANISYNC_ANI_USERNAME}
+      - INTERVAL=${PLEXANISYNC_INTERVAL}
       - PGID=${PGID}
+      - PLEX_SECTION=${PLEXANISYNC_PLEX_SECTION}
+      - PLEX_TOKEN=${PLEXANISYNC_PLEX_TOKEN}
+      - PLEX_URL=${PLEXANISYNC_PLEX_URL}
       - PUID=${PUID}
       - TZ=${TZ}
-      - PLEX_SECTION=${PLEXANISYNC_PLEX_SECTION}
-      - PLEX_URL=${PLEXANISYNC_PLEX_URL}
-      - PLEX_TOKEN=${PLEXANISYNC_PLEX_TOKEN}
-      - ANI_USERNAME=${PLEX_ANISYNC_ANI_USERNAME}
-      - ANI_TOKEN=${PLEXANISYNC_ANI_TOKEN}
-      - INTERVAL=${PLEXANISYNC_INTERVAL}
     logging:
       driver: json-file
       options:
