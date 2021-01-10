@@ -220,26 +220,26 @@ fi
 
 # Terminal Colors
 declare -Agr B=(# Background
-    [B]=$(tput setab 4 || echo -e "\e[44m") # Blue
-    [C]=$(tput setab 6 || echo -e "\e[46m") # Cyan
-    [G]=$(tput setab 2 || echo -e "\e[42m") # Green
-    [K]=$(tput setab 0 || echo -e "\e[40m") # Black
-    [M]=$(tput setab 5 || echo -e "\e[45m") # Magenta
-    [R]=$(tput setab 1 || echo -e "\e[41m") # Red
-    [W]=$(tput setab 7 || echo -e "\e[47m") # White
-    [Y]=$(tput setab 3 || echo -e "\e[43m") # Yellow
+    [B]=$(tput setab 4 2> /dev/null || echo -e "\e[44m") # Blue
+    [C]=$(tput setab 6 2> /dev/null || echo -e "\e[46m") # Cyan
+    [G]=$(tput setab 2 2> /dev/null || echo -e "\e[42m") # Green
+    [K]=$(tput setab 0 2> /dev/null || echo -e "\e[40m") # Black
+    [M]=$(tput setab 5 2> /dev/null || echo -e "\e[45m") # Magenta
+    [R]=$(tput setab 1 2> /dev/null || echo -e "\e[41m") # Red
+    [W]=$(tput setab 7 2> /dev/null || echo -e "\e[47m") # White
+    [Y]=$(tput setab 3 2> /dev/null || echo -e "\e[43m") # Yellow
 )
 declare -Agr F=(# Foreground
-    [B]=$(tput setaf 4 || echo -e "\e[34m") # Blue
-    [C]=$(tput setaf 6 || echo -e "\e[36m") # Cyan
-    [G]=$(tput setaf 2 || echo -e "\e[32m") # Green
-    [K]=$(tput setaf 0 || echo -e "\e[30m") # Black
-    [M]=$(tput setaf 5 || echo -e "\e[35m") # Magenta
-    [R]=$(tput setaf 1 || echo -e "\e[31m") # Red
-    [W]=$(tput setaf 7 || echo -e "\e[37m") # White
-    [Y]=$(tput setaf 3 || echo -e "\e[33m") # Yellow
+    [B]=$(tput setaf 4 2> /dev/null || echo -e "\e[34m") # Blue
+    [C]=$(tput setaf 6 2> /dev/null || echo -e "\e[36m") # Cyan
+    [G]=$(tput setaf 2 2> /dev/null || echo -e "\e[32m") # Green
+    [K]=$(tput setaf 0 2> /dev/null || echo -e "\e[30m") # Black
+    [M]=$(tput setaf 5 2> /dev/null || echo -e "\e[35m") # Magenta
+    [R]=$(tput setaf 1 2> /dev/null || echo -e "\e[31m") # Red
+    [W]=$(tput setaf 7 2> /dev/null || echo -e "\e[37m") # White
+    [Y]=$(tput setaf 3 2> /dev/null || echo -e "\e[33m") # Yellow
 )
-NC=$(tput sgr0 || echo -e "\e[0m")
+NC=$(tput sgr0 2> /dev/null || echo -e "\e[0m")
 readonly NC
 
 # Log Functions
