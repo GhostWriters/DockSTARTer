@@ -11,7 +11,7 @@
 
 The main goal of DockSTARTer is to make it quick and easy to get up and running with Docker.
 
-You may choose to rely on DockSTARTer for various changes to your Docker system, or use DockSTARTer as a stepping stone and learn to do more advanced configurations.
+You may choose to rely on DockSTARTer for various changes to your Docker system or use DockSTARTer as a stepping stone and learn to do more advanced configurations.
 
 ![Main Menu](https://i.imgur.com/odfRk0j.png)
 
@@ -67,9 +67,9 @@ You may choose to rely on DockSTARTer for various changes to your Docker system,
   sudo reboot
   ```
 
-- Pacman Systems (Arch, Manjaro, EndeavourOS, etc)
+- Pacman Systems (Arch, Manjaro, EndeavourOS, etc.)
 
-  > Note that systems with the `pacman` package manager will not install `docker` via the [https://get.docker.com](https://get.docker.com) script that is used for other distros. The instructions below provide information on installing all required packages manually prior to installing DockSTARTer.
+  > Note that systems with the `pacman` package manager will not install `docker` via the [https://get.docker.com](https://get.docker.com) script that is used for other distros. The instructions below provide information on installing all the required packages manually before installing DockSTARTer.
 
   ```bash
   sudo pacman -Sy curl docker git
@@ -80,7 +80,7 @@ You may choose to rely on DockSTARTer for various changes to your Docker system,
 <details>
   <summary>Alternate install (any system)</summary>
 
-The standard install above downloads the initial script using a method with some known risks. For those concerned with the security of the above method here is an alternative:
+The standard install above downloads the initial script using a method with some known risks. For those concerned with the security of the above method, here is an alternative:
 
 ```bash
 ## NOTE: Run the appropriate command for your distro
@@ -94,7 +94,7 @@ Then
 
 ```bash
 git clone https://github.com/GhostWriters/DockSTARTer "/home/${USER}/.docker"
-sudo bash /home/${USER}/.docker/main.sh -vi
+sudo bash /home/"${USER}"/.docker/main.sh -vi
 sudo reboot
 ```
 
@@ -106,7 +106,7 @@ sudo reboot
 ds
 ```
 
-To run DockSTARTer use the command above. You should now see the main menu from the screenshots. Select `Configuration` and then `Full Setup` and you will be guided through selecting apps and starting containers.
+To run DockSTARTer, use the command above. You should now see the main menu from the screenshots. Select `Configuration` and then `Full Setup`, and you will be guided through selecting apps and starting containers.
 
 See our [documentation](https://dockstarter.com/introduction/) for more detailed information.
 
@@ -159,4 +159,4 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 ## Special Thanks
 
 - [SmartHomeBeginner.com](https://www.smarthomebeginner.com) for creating [AtoMiC-ToolKit](https://github.com/htpcBeginner/AtoMiC-ToolKit) that served as this project's primary inspiration, and later [this](https://www.smarthomebeginner.com/docker-home-media-server-2018-basic/) guide that provided some initial direction with Docker.
-- [LinuxServer.io](https://www.linuxserver.io) for maintaining the majority of the Docker images used in this project.
+- [LinuxServer.io](https://www.linuxserver.io) for maintaining most Docker images used in this project.
