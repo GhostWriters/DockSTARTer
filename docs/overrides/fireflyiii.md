@@ -36,7 +36,7 @@ services:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
     ports:
-      - 8001:80
+      - 8001:8080
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
