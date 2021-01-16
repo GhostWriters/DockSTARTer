@@ -1,0 +1,19 @@
+services:
+  picard:
+    container_name: picard
+    environment:
+      - GROUP_ID=${PGID}
+      - USER_ID=${PUID}
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/picard:/config
+      - ${DOCKERSTORAGEDIR}:/storage
+      - ${PICARD_OUTPUTDIR}:/output
+      - ${PICARD_WATCHDIR}:/watch
