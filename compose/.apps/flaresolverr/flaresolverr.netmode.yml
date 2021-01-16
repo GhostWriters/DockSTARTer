@@ -1,0 +1,3 @@
+services:
+  flaresolverr:
+    network_mode: ${FLARESOLVERR_NETWORK_MODE}

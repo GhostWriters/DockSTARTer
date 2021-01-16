@@ -1,0 +1,18 @@
+services:
+  flaresolverr:
+    container_name: flaresolverr
+    environment:
+      - LOG_LEVEL=${FLARESOLVERR_LOG_LEVEL}
+      - LOG_HTML=${FLARESOLVERR_LOG_HTML}
+      - PORT=${FLARESOLVERR_PORT_8191}
+      - CAPTCHA_SOLVER=${FLARESOLVER_CAPTCHA_SOLVER}
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERSTORAGEDIR}:/storage
