@@ -97,9 +97,9 @@ nav:
       - apps/duplicacy.md
       - apps/duplicati.md
       - apps/emby.md
-      - apps/falresolverr.md
       - apps/filebot.md
       - apps/filebrowser.md
+      - apps/flaresolverr.md
       - apps/freshrss.md
       - apps/glances.md
       - apps/goaccess.md
