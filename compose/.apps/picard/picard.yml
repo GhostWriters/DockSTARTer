@@ -3,8 +3,8 @@ services:
     container_name: picard
     environment:
       - GROUP_ID=${PGID}
-      - USER_ID=${PUID}
       - TZ=${TZ}
+      - USER_ID=${PUID}      
     logging:
       driver: json-file
       options:
@@ -15,5 +15,3 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/picard:/config
       - ${DOCKERSTORAGEDIR}:/storage
-      - ${PICARD_OUTPUTDIR}:/output
-      - ${PICARD_WATCHDIR}:/watch
