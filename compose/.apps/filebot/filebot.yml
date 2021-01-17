@@ -3,8 +3,8 @@ services:
     container_name: filebot
     environment:
       - GROUP_ID=${PGID}
-      - USER_ID=${PUID}
       - TZ=${TZ}
+      - USER_ID=${PUID}
     logging:
       driver: json-file
       options:
