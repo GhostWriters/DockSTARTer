@@ -4,7 +4,7 @@ services:
     environment:
       - GROUP_ID=${PGID}
       - TZ=${TZ}
-      - USER_ID=${PUID}      
+      - USER_ID=${PUID}
     logging:
       driver: json-file
       options:
