@@ -1,0 +1,29 @@
+services:
+  unpackerr:
+    container_name: unpackerr
+    environment:
+      - DEBUG=${UNPACKERR_DEBUG}
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - UN_FOLDER_0_DELETE_AFTER=${UNPACKERR_DELETE_AFTER}
+      - UN_FOLDER_0_DELETE_ORIGINAL=${UNPACKERR_DELETE_ORIGINAL}
+      - UN_FOLDER_0_MOVE_BACK=${UNPACKERR_MOVE_BACK}
+      - UN_FOLDER_0_PATH=${UNPACKERR_FOLDER_PATH}
+      - UN_INTERVAL=${UNPACKERR_INTERVAL}
+      - UN_LIDARR_0_API_KEY=${UNPACKERR_LIDARR_API_KEY}
+      - UN_LIDARR_0_URL=${UNPACKERR_LIDARR_URL}
+      - UN_RADARR_0_API_KEY=${UNPACKERR_RADARR_API_KEY}
+      - UN_RADARR_0_URL=${UNPACKERR_RADARR_URL}
+      - UN_SONARR_0_API_KEY=${UNPACKERR_SONARR_API_KEY}
+      - UN_SONARR_0_URL=${UNPACKERR_SONARR_URL}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/unpackerr:/config
+      - ${DOCKERSTORAGEDIR}:/storage
