@@ -10,7 +10,18 @@
 
 ## Install/Setup
 
-This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).
+When you first set up Nextcloud and navigate to `http://<ip>:444` you will be presented with a login screen. This login screen will have the following warning:
+
+```html
+Performance warning
+You chose SQLite as database.
+
+SQLite should only be used for minimal and development instances. For production we recommend a different database backend.
+
+If you use clients for file syncing, the use of SQLite is highly discouraged.
+```
+
+From there you can click on the dropdown next to `Storage & database` and you will have 3 options, `SQLite`, `MySQL/MariaDB` and `PostgreSQL`. Pick whichever database driver you like to work with and fill in the necessary fields. Keep in mind that whatever database driver you pick will need to already be installed and/or configured.
 
 ### Configuring Nextcloud
 
