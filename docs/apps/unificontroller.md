@@ -10,7 +10,9 @@
 
 ## Install/Setup
 
-### Devices Get Stuck In "Adopting" State
+This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).
+
+### Common Issue: Devices Get Stuck In "Adopting" State
 
 To prevent your devices getting stuck on an "Adopting" loop, log in to your controller and update how the controller sends the inform command. This can be achieved by going to `Settings > Controller Settings`. On the right hand side, you will see `Controller Hostname/IP`, change this to your Docker host's IP address or hostname. Additionally, make sure to toggle (it is `off` by default) the option that says `Override inform Host`. This will make it so the inform command is `http://<xxx.xxx.xxx.xxx>:8080/inform` where `xxx.xxx.xxx.xxx` is your Docker host's IP and not an internal docker address.
 

@@ -11,3 +11,5 @@
 This container handles the IRC connection (quasselcore) and requires a desktop client (quasselclient) to be used and configured. It is designed to be always on and will keep your identity present in IRC even when your clients cannot be online. Backlog (history) is downloaded by your client upon reconnection allowing infinite scrollback through time.
 
 ## Install/Setup
+
+This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).

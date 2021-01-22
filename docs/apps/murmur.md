@@ -10,6 +10,8 @@
 
 ## Install/Setup
 
+This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).
+
 ### SuperUser Password
 
 The default user on a Murmur server is called 'SuperUser'. An initial password is generated for this user on first run, and you can find it by looking at the Docker logs for the Murmur container. It will be in a line that looks like `Password for 'SuperUser' set to 'something'`. You can use this password to login.

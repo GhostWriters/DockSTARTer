@@ -12,6 +12,8 @@ The support forum for DelugeVPN is located [here](https://forums.unraid.net/topi
 
 ## Install/Setup
 
+This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).
+
 ### DelugeVPN WebUI Access
 
 If you're attempting to get access to the DelugeVPN WebUI remotely outside of your home network using [SWAG](https://dockstarter.com/apps/swag/) you must follow the steps outlined in [VPN Information](https://dockstarter.com/advanced/vpn-info/).

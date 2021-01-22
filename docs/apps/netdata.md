@@ -10,6 +10,8 @@
 
 ## Install/Setup
 
+This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).
+
 ### Changing Netdata's Hostname
 
 By default, Netdata will pull from a UID for the container itself to display in the list of Netdata servers you have, so you would see something like '0f2342dac'. To define this and make it more readable/recognizable for you (In case you have multiple Netdata servers):

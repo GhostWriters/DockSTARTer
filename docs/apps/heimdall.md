@@ -10,6 +10,8 @@
 
 ## Install/Setup
 
+This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).
+
 ### Reverse Proxy as homepage via SWAG
 
 In order to reverse proxy the Heimdall container as your homepage via [SWAG](https://dockstarter.com/apps/swag/) you will need to rename the subfolder proxy sample with the following command:

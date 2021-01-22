@@ -16,6 +16,8 @@ A demo is available [here](https://speedtest.henrywhitaker.com).
 
 ## Install/Setup
 
+This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).
+
 ### Base Path
 
 You can set a base path for this application if you want to host it behind a reverse proxy. By default it binds to `/`, but you can change the variable called `SPEEDTEST_BASE_PATH` in your `.env` file to whatever you want and run `ds -c up speedtest` afterwards.

@@ -10,9 +10,11 @@
 
 ## Install/Setup
 
-### Environment Variable
+This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).
 
-You may want to create an override for `homeassistant` with the following if you are receiving a warning every 10 seconds for:
+### Suggestions
+
+You may want to create an [override](https://dockstarter.com/overrides/introduction/) for `homeassistant` with the following if you are receiving a warning every 10 seconds for:
 >device tracking of self-signed Unifi Controller SSL certificated.
 
 ``` yml

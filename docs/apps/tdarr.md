@@ -10,21 +10,21 @@
 
 ## Install/Setup
 
-### Common Errors
+When installing the Tdarr container, the installer will install under the `appdata` directory as the root user and you will see errors as such:
 
-If you start up the container for the first time and can't get the UI to load please check the logs by running:
-
-```yml
-docker logs tdarr
-```
-
-If you see the following error on the console:
-
+```bash
 >* Starting database mongodb
 > ...fail
+```
 
 Permissions are likely not set correctly on your `TDARR_DB` variable location, run the following:
 
 ```bash
-sudo chown -R $USER:$USER /path/to/location
+sudo chown -R $USER:$GROUP /path/to/location
+```
+
+Restart your container by running:
+
+```bash
+docker restart tdarr
 ```

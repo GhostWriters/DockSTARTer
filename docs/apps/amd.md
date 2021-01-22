@@ -9,3 +9,5 @@
 [Automatic Music Downloader (AMD)](https://github.com/RandomNinjaAtk/docker-amd) is a Lidarr companion script to automatically download music for Lidarr.
 
 ## Install/Setup
+
+This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).

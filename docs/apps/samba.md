@@ -12,6 +12,8 @@ By default, Samba will share all media directories and [Docker config directory]
 
 ## Install/Setup
 
+This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).
+
 ### Access Shares
 
 Replace `host` with your DNS or IP-address of your Docker host.

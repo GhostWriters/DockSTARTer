@@ -12,6 +12,8 @@ It provides a browser-based editor that makes it easy to wire together flows usi
 
 ## Install/Setup
 
+This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).
+
 ## Common Issues
 
 When you first spin up Node-RED, check your container logs `docker logs nodered` and you might see something like this:

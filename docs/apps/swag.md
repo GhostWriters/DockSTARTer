@@ -10,8 +10,6 @@
 
 ## Install/Setup
 
-### LinuxServer's SWAG Starter Guide
-
 [Official Guide](https://docs.linuxserver.io/general/swag)
 
 If this is your first time learning about NGINX, proxies, or and Let's Encrypt, we highly recommend you read over the official guide for the container.

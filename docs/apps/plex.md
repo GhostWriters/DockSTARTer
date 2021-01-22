@@ -10,6 +10,8 @@
 
 ## Install/Setup
 
+This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).
+
 ### Common Issue: Playback fails for certain media
 
 One possible resolution to this issue is to remove the codecs folder:

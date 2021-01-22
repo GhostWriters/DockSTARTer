@@ -9,3 +9,5 @@
 [Radarr](https://github.com/Radarr/Radarr) a fork of Sonarr to work with movies à la Couchpotato.
 
 ## Install/Setup
+
+This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).

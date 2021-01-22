@@ -9,3 +9,5 @@
 [Ouroboros](https://github.com/pyouroboros/ouroboros) will automatically update your running Docker containers to the latest available image.
 
 ## Install/Setup
+
+This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).

@@ -9,3 +9,5 @@
 [ruTorrent](https://github.com/Novik/ruTorrent) is a popular [rTorrent](http://rakshasa.github.io/rtorrent) client with a webui for ease of use.
 
 ## Install/Setup
+
+This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).

@@ -10,12 +10,18 @@
 
 ## Install/Setup
 
-When installing the Bitwarden container, the installer will install under Appdata directory as the root user, however once it is installed you can change the owner/group of it to whatever is required
+When installing the Bitwarden container, the installer will install under `appdata` directory as the root user, however once it is installed you can change the owner/group of it to whatever is required
 
-Run the below command (from a terminal) to change the permissions if required.
+Run the below command from a terminal to change the permissions if required:
 
 ```bash
-sudo chown -R owner:group ~/.config/appdata/bitwarden
+sudo chown -R $USER:$GROUP ~/.config/appdata/bitwarden
+```
+
+Restart your container by running:
+
+```bash
+docker restart bitwarden
 ```
 
 Having the owner group change will allow you to edit the files if required without running into permission issues.
