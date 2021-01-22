@@ -6,8 +6,13 @@
 
 ## Description
 
-[Muximux](https://github.com/mescon/Muximux) is a lightweight portal to view & manage your HTPC apps without having to run anything more than a PHP enabled webserver. With Muximux you don't need to keep multiple tabs open, or bookmark the URL to all of your apps.
+[Muximux](https://github.com/mescon/Muximux) is a lightweight portal to view &
+manage your HTPC apps without having to run anything more than a PHP enabled
+webserver. With Muximux you don't need to keep multiple tabs open, or bookmark
+the URL to all of your apps.
 
 ## Install/Setup
 
-This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).
+This application does not have any specific setup instructions documented. If
+you need assistance setting up this application please visit our
+[support page](https://dockstarter.com/basics/support/).

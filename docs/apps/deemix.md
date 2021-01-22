@@ -6,8 +6,12 @@
 
 ## Description
 
-[Deemix](https://gitlab.com/Bockiii/deemix-docker) is a deezer downloader built from the ashes of Deezloader Remix. The base library (or core) can be used as a stand alone CLI app or implemented in an UI using the API.
+[Deemix](https://gitlab.com/Bockiii/deemix-docker) is a deezer downloader built
+from the ashes of Deezloader Remix. The base library (or core) can be used as a
+stand alone CLI app or implemented in an UI using the API.
 
 ## Install/Setup
 
-This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).
+This application does not have any specific setup instructions documented. If
+you need assistance setting up this application please visit our
+[support page](https://dockstarter.com/basics/support/).

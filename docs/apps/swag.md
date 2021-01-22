@@ -6,23 +6,39 @@
 
 ## Description
 
-[SWAG (Secure Web-server And Gateway)](https://github.com/linuxserver/docker-swag) sets up an NGINX webserver and reverse proxy with PHP support and a built-in swag client that automates free SSL server certificate generation and renewal processes. It also contains fail2ban for intrusion prevention.
+[SWAG (Secure Web-server And Gateway)](https://github.com/linuxserver/docker-swag)
+sets up an NGINX webserver and reverse proxy with PHP support and a built-in
+swag client that automates free SSL server certificate generation and renewal
+processes. It also contains fail2ban for intrusion prevention.
 
 ## Install/Setup
 
 [Official Guide](https://docs.linuxserver.io/general/swag)
 
-If this is your first time learning about NGINX, proxies, or and Let's Encrypt, we highly recommend you read over the official guide for the container.
+If this is your first time learning about NGINX, proxies, or and Let's Encrypt,
+we highly recommend you read over the official guide for the container.
 
 ### General Setup
 
-Out of the box, the SWAG container created by [linuxserver.io](https://www.linuxserver.io/) performs reverse proxy functions using [NGINX](https://www.nginx.com/) and automatic https encrypted connections using certificates provided by [Let's Encrypt](https://letsencrypt.org/).
+Out of the box, the SWAG container created by
+[linuxserver.io](https://www.linuxserver.io/) performs reverse proxy functions
+using [NGINX](https://www.nginx.com/) and automatic https encrypted connections
+using certificates provided by [Let's Encrypt](https://letsencrypt.org/).
 
-To configure your reverse proxy, consider if you want to use subfolders (ie. domain.com/portainer) or subdomains (ie. portainer.domain.com). Subdomains will take more configuration, as DNS entries and certificate subject alternate names are required.
+To configure your reverse proxy, consider if you want to use subfolders (ie.
+domain.com/portainer) or subdomains (ie. portainer.domain.com). Subdomains will
+take more configuration, as DNS entries and certificate subject alternate names
+are required.
 
-The first thing to setup is your domain and email settings in `.docker/compose/.env` under `SWAG`. Set the `SWAG_EMAIL` and `SWAG_URL`. If using subdomains ensure to add each subdomain to `SWAG_SUBDOMAINS` as each subdomain prefix (e.g. `SWAG_SUBDOMAINS=portainer,deluge,pihole`.
+The first thing to setup is your domain and email settings in
+`.docker/compose/.env` under `SWAG`. Set the `SWAG_EMAIL` and `SWAG_URL`. If
+using subdomains ensure to add each subdomain to `SWAG_SUBDOMAINS` as each
+subdomain prefix (e.g. `SWAG_SUBDOMAINS=portainer,deluge,pihole`.
 
-There are a number of sample proxy configuration files found in `~/.config/appdata/swag/nginx/proxy-confs/` and in most cases will just need the .sample removed from the filename. Currently not every applicable app has an example configuration and are still being tested.
+There are a number of sample proxy configuration files found in
+`~/.config/appdata/swag/nginx/proxy-confs/` and in most cases will just need the
+.sample removed from the filename. Currently not every applicable app has an
+example configuration and are still being tested.
 
 Subfolder Example:
 
@@ -40,7 +56,8 @@ cp ~/.config/appdata/swag/nginx/proxy-confs/portainer.subdomain.conf.sample ~/.c
 
 and will enable the service at `portainer.domain.com`
 
-Each time you change a proxy conf file you will need to restart the Swag container:
+Each time you change a proxy conf file you will need to restart the Swag
+container:
 
 ```bash
 docker restart swag

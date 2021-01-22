@@ -6,8 +6,12 @@
 
 ## Description
 
-jfa-go is a user management app for Jellyfin that provides invite-based account creation as well as other features that make one's instance much easier to manage.
+jfa-go is a user management app for Jellyfin that provides invite-based account
+creation as well as other features that make one's instance much easier to
+manage.
 
 ## Install/Setup
 
-This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).
+This application does not have any specific setup instructions documented. If
+you need assistance setting up this application please visit our
+[support page](https://dockstarter.com/basics/support/).

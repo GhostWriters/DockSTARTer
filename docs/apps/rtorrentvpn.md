@@ -6,21 +6,37 @@
 
 ## Description
 
-rTorrentVPN is a Docker build script for Arch Linux base with [rtorrent-ps](https://github.com/pyroscope/rtorrent-ps), [ruTorrent](https://github.com/Novik/ruTorrent), [autodl-irssi](https://github.com/autodl-community/autodl-irssi), [Privoxy](http://www.privoxy.org/) and [OpenVPN](https://openvpn.net/) all included in one image.
+rTorrentVPN is a Docker build script for Arch Linux base with
+[rtorrent-ps](https://github.com/pyroscope/rtorrent-ps),
+[ruTorrent](https://github.com/Novik/ruTorrent),
+[autodl-irssi](https://github.com/autodl-community/autodl-irssi),
+[Privoxy](http://www.privoxy.org/) and [OpenVPN](https://openvpn.net/) all
+included in one image.
 
-The support forum for rTorrentVPN is located [here](https://forums.unraid.net/topic/46127-support-binhex-rtorrentvpn/).
+The support forum for rTorrentVPN is located
+[here](https://forums.unraid.net/topic/46127-support-binhex-rtorrentvpn/).
 
 ## Install/Setup
 
-This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).
+This application does not have any specific setup instructions documented. If
+you need assistance setting up this application please visit our
+[support page](https://dockstarter.com/basics/support/).
 
 ### rTorrentVPN WebUI Access
 
-If you're attempting to get access to the rTorrentVPN WebUI remotely outside of your home network, you are going to have to do this through a reverse proxy using [SWAG](https://dockstarter.com/apps/swag/). Full details and steps are outlined here [VPN Information](https://dockstarter.com/advanced/vpn-info/).
+If you're attempting to get access to the rTorrentVPN WebUI remotely outside of
+your home network, you are going to have to do this through a reverse proxy
+using [SWAG](https://dockstarter.com/apps/swag/). Full details and steps are
+outlined here [VPN Information](https://dockstarter.com/advanced/vpn-info/).
 
-The sample proxy configuration files found in `~/.config/appdata/swag/nginx/proxy-confs/` will need to be modified and as usual, have the .sample removed from the filename.
+The sample proxy configuration files found in
+`~/.config/appdata/swag/nginx/proxy-confs/` will need to be modified and as
+usual, have the .sample removed from the filename.
 
-You will need to edit the appropriate proxy `.conf`. Enter either `sudo nano rutorrent.subfolder.conf` or `sudo nano rutorrent.subdomain.conf` depending on your configuration desires and change the below lines. NOTE: There will be multiple lines that need to be changed.
+You will need to edit the appropriate proxy `.conf`. Enter either
+`sudo nano rutorrent.subfolder.conf` or `sudo nano rutorrent.subdomain.conf`
+depending on your configuration desires and change the below lines. NOTE: There
+will be multiple lines that need to be changed.
 
 Original
 

@@ -6,17 +6,23 @@
 
 ## Description
 
-[Node-RED](https://nodered.org/)  is a programming tool for wiring together hardware devices, APIs and online services in new and interesting ways.
+[Node-RED](https://nodered.org/) is a programming tool for wiring together
+hardware devices, APIs and online services in new and interesting ways.
 
-It provides a browser-based editor that makes it easy to wire together flows using the wide range of nodes in the palette that can be deployed to its runtime in a single-click.
+It provides a browser-based editor that makes it easy to wire together flows
+using the wide range of nodes in the palette that can be deployed to its runtime
+in a single-click.
 
 ## Install/Setup
 
-This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).
+This application does not have any specific setup instructions documented. If
+you need assistance setting up this application please visit our
+[support page](https://dockstarter.com/basics/support/).
 
 ## Common Issues
 
-When you first spin up Node-RED, check your container logs `docker logs nodered` and you might see something like this:
+When you first spin up Node-RED, check your container logs `docker logs nodered`
+and you might see something like this:
 
 ```bash
 > node-red-docker@1.2.6 start /usr/src/node-red

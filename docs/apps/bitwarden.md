@@ -6,11 +6,19 @@
 
 ## Description
 
-[Bitwarden](https://bitwarden.com/) is a free and open-source password management service that stores sensitive information such as website credentials in an encrypted vault. This is a Bitwarden server API implementation written in Rust compatible with [upstream Bitwarden clients](https://bitwarden.com/#download), perfect for self-hosted deployment where running the official resource-heavy service might not be ideal.
+[Bitwarden](https://bitwarden.com/) is a free and open-source password
+management service that stores sensitive information such as website credentials
+in an encrypted vault. This is a Bitwarden server API implementation written in
+Rust compatible with
+[upstream Bitwarden clients](https://bitwarden.com/#download), perfect for
+self-hosted deployment where running the official resource-heavy service might
+not be ideal.
 
 ## Install/Setup
 
-When installing the Bitwarden container, the installer will install under `appdata` directory as the root user, however once it is installed you can change the owner/group of it to whatever is required
+When installing the Bitwarden container, the installer will install under
+`appdata` directory as the root user, however once it is installed you can
+change the owner/group of it to whatever is required
 
 Run the below command from a terminal to change the permissions if required:
 
@@ -24,4 +32,5 @@ Restart your container by running:
 docker restart bitwarden
 ```
 
-Having the owner group change will allow you to edit the files if required without running into permission issues.
+Having the owner group change will allow you to edit the files if required
+without running into permission issues.

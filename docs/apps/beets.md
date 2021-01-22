@@ -6,8 +6,13 @@
 
 ## Description
 
-[Beets](http://beets.io/) is a music library manager and not, for the most part, a music player. It does include a simple player plugin and an experimental Web-based player, but it generally leaves actual sound-reproduction to specialized tools.
+[Beets](http://beets.io/) is a music library manager and not, for the most part,
+a music player. It does include a simple player plugin and an experimental
+Web-based player, but it generally leaves actual sound-reproduction to
+specialized tools.
 
 ## Install/Setup
 
-This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).
+This application does not have any specific setup instructions documented. If
+you need assistance setting up this application please visit our
+[support page](https://dockstarter.com/basics/support/).

@@ -6,8 +6,12 @@
 
 ## Description
 
-[SickChill](https://github.com/SickChill/SickChill) is an Automatic Video Library Manager for TV Shows. It watches for new episodes of your favorite shows, and when they are posted it does its magic.
+[SickChill](https://github.com/SickChill/SickChill) is an Automatic Video
+Library Manager for TV Shows. It watches for new episodes of your favorite
+shows, and when they are posted it does its magic.
 
 ## Install/Setup
 
-This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).
+This application does not have any specific setup instructions documented. If
+you need assistance setting up this application please visit our
+[support page](https://dockstarter.com/basics/support/).

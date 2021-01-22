@@ -6,8 +6,13 @@
 
 ## Description
 
-[Prometheus](https://prometheus.io) is a systems and service monitoring system. It collects metrics from configured targets at given intervals, evaluates rule expressions, displays the results, and can trigger alerts if some condition is observed to be true.
+[Prometheus](https://prometheus.io) is a systems and service monitoring system.
+It collects metrics from configured targets at given intervals, evaluates rule
+expressions, displays the results, and can trigger alerts if some condition is
+observed to be true.
 
 ## Install/Setup
 
-This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).
+This application does not have any specific setup instructions documented. If
+you need assistance setting up this application please visit our
+[support page](https://dockstarter.com/basics/support/).

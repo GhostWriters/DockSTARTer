@@ -6,8 +6,13 @@
 
 ## Description
 
-[BookStack](https://www.bookstackapp.com) is a free and open source Wiki designed for creating beautiful documentation. Feauturing a simple, but powerful WYSIWYG editor it allows for teams to create detailed and useful documentation with ease.
+[BookStack](https://www.bookstackapp.com) is a free and open source Wiki
+designed for creating beautiful documentation. Feauturing a simple, but powerful
+WYSIWYG editor it allows for teams to create detailed and useful documentation
+with ease.
 
 ## Install/Setup
 
-This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).
+This application does not have any specific setup instructions documented. If
+you need assistance setting up this application please visit our
+[support page](https://dockstarter.com/basics/support/).

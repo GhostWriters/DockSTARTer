@@ -6,18 +6,26 @@
 
 ## Description
 
-[Netdata](https://www.netdata.cloud/) is distributed, real-time performance and health monitoring for systems and applications. It is a highly-optimized monitoring agent you install on all your systems and containers.
+[Netdata](https://www.netdata.cloud/) is distributed, real-time performance and
+health monitoring for systems and applications. It is a highly-optimized
+monitoring agent you install on all your systems and containers.
 
 ## Install/Setup
 
-This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).
+This application does not have any specific setup instructions documented. If
+you need assistance setting up this application please visit our
+[support page](https://dockstarter.com/basics/support/).
 
 ### Changing Netdata's Hostname
 
-By default, Netdata will pull from a UID for the container itself to display in the list of Netdata servers you have, so you would see something like '0f2342dac'. To define this and make it more readable/recognizable for you (In case you have multiple Netdata servers):
+By default, Netdata will pull from a UID for the container itself to display in
+the list of Netdata servers you have, so you would see something like
+'0f2342dac'. To define this and make it more readable/recognizable for you (In
+case you have multiple Netdata servers):
 
 - Stop the netdata container.
-- Create or edit your [override file](https://dockstarter.com/overrides/introduction/)
+- Create or edit your
+  [override file](https://dockstarter.com/overrides/introduction/)
 
   ```yaml
   services:
@@ -30,22 +38,35 @@ By default, Netdata will pull from a UID for the container itself to display in 
 
 ### Notifications
 
-Add [this file](https://github.com/netdata/netdata/blob/master/health/notifications/health_alarm_notify.conf) to your Netdata config directory. Populate the notification service(s) you want with login, tokens, or whichever is appropriate. Instructions can be found in [here](https://github.com/netdata/netdata/blob/master/health/notifications/health_alarm_notify.conf).
+Add
+[this file](https://github.com/netdata/netdata/blob/master/health/notifications/health_alarm_notify.conf)
+to your Netdata config directory. Populate the notification service(s) you want
+with login, tokens, or whichever is appropriate. Instructions can be found in
+[here](https://github.com/netdata/netdata/blob/master/health/notifications/health_alarm_notify.conf).
 
-Create `health.d` directory in the Netdata config directory. Add `.conf` files from [here](https://github.com/netdata/netdata/tree/master/health/health.d) and select which modules you want alarms for. Also note that one can remove specific alarms by commenting them in the `.conf` files.
+Create `health.d` directory in the Netdata config directory. Add `.conf` files
+from [here](https://github.com/netdata/netdata/tree/master/health/health.d) and
+select which modules you want alarms for. Also note that one can remove specific
+alarms by commenting them in the `.conf` files.
 
 ### How To Get CPU Temp From Raspberry Pi
 
-Netdata will not pick up CPU temps by default from a Raspberry Pi. To activate chart for the Pi's CPU temp add a file with name `charts.d.conf` in the Netdata config directory and add the following line.
-`sensors=force`
+Netdata will not pick up CPU temps by default from a Raspberry Pi. To activate
+chart for the Pi's CPU temp add a file with name `charts.d.conf` in the Netdata
+config directory and add the following line. `sensors=force`
 
 ### How To Get Data From Netdata To HomeAssistant
 
-To identify the correct data group and element to input in netdata home assistant component use `http://yournetdataip:19999/api/v1/allmetrics?format=json`
+To identify the correct data group and element to input in netdata home
+assistant component use
+`http://yournetdataip:19999/api/v1/allmetrics?format=json`
 
 ### Monitor services with Netdata
 
-Create python.d directory in Netdata config directory. Add [this file](https://github.com/netdata/netdata/blob/master/health/health.d/httpcheck.conf) to your python.d directory. Edit according to instructions in file. Our suggestion is to add after the last line in the `.conf` file. See example below:
+Create python.d directory in Netdata config directory. Add
+[this file](https://github.com/netdata/netdata/blob/master/health/health.d/httpcheck.conf)
+to your python.d directory. Edit according to instructions in file. Our
+suggestion is to add after the last line in the `.conf` file. See example below:
 
 ```conf
 # This plugin is intended for simple cases. Currently, the accuracy of the response time is low and should be used as reference only.
@@ -67,6 +88,10 @@ Ombi:
     regex: '.*ombi.*'
 ```
 
-You will now get charts in Netdata for Ombi and NZBHydra. Please add your IP and ports accordingly.
+You will now get charts in Netdata for Ombi and NZBHydra. Please add your IP and
+ports accordingly.
 
-To get alarms add [this file](https://github.com/netdata/netdata/blob/master/health/health.d/httpcheck.conf) to your health.d directory. Don't forget to comment the unwanted alarms. Slow response alarms can be quite annoying.
+To get alarms add
+[this file](https://github.com/netdata/netdata/blob/master/health/health.d/httpcheck.conf)
+to your health.d directory. Don't forget to comment the unwanted alarms. Slow
+response alarms can be quite annoying.

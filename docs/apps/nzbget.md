@@ -6,8 +6,12 @@
 
 ## Description
 
-[Nzbget](https://nzbget.net/) is a usenet downloader, written in C++ and designed with performance in mind to achieve maximum download speed by using very little system resources.
+[Nzbget](https://nzbget.net/) is a usenet downloader, written in C++ and
+designed with performance in mind to achieve maximum download speed by using
+very little system resources.
 
 ## Install/Setup
 
-This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).
+This application does not have any specific setup instructions documented. If
+you need assistance setting up this application please visit our
+[support page](https://dockstarter.com/basics/support/).

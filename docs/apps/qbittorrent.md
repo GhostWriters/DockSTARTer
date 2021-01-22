@@ -6,8 +6,12 @@
 
 ## Description
 
-[qBittorrent](https://www.qbittorrent.org/) project aims to provide an open-source software alternative to µTorrent. qBittorrent is based on the Qt toolkit and libtorrent-rasterbar library.
+[qBittorrent](https://www.qbittorrent.org/) project aims to provide an
+open-source software alternative to µTorrent. qBittorrent is based on the Qt
+toolkit and libtorrent-rasterbar library.
 
 ## Install/Setup
 
-This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).
+This application does not have any specific setup instructions documented. If
+you need assistance setting up this application please visit our
+[support page](https://dockstarter.com/basics/support/).

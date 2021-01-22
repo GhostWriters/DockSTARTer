@@ -6,8 +6,13 @@
 
 ## Description
 
-[NZBHydra 2](https://github.com/theotherp/nzbhydra2) is a meta search for NZB indexers. It provides easy access to a number of raw and newznab based indexers. You can search all your indexers from one place and use it as an indexer source for tools like Sonarr, Radarr or CouchPotato.
+[NZBHydra 2](https://github.com/theotherp/nzbhydra2) is a meta search for NZB
+indexers. It provides easy access to a number of raw and newznab based indexers.
+You can search all your indexers from one place and use it as an indexer source
+for tools like Sonarr, Radarr or CouchPotato.
 
 ## Install/Setup
 
-This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).
+This application does not have any specific setup instructions documented. If
+you need assistance setting up this application please visit our
+[support page](https://dockstarter.com/basics/support/).

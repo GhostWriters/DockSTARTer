@@ -6,20 +6,30 @@
 
 ## Description
 
-[Home Assistant](https://www.home-assistant.io/) is a home automation platform running on Python 3 that puts local control and privacy first. It is able to track and control all devices at home and offer a platform for automating control. Powered by a worldwide community of tinkerers and DIY enthusiasts. Perfect to run on a Raspberry Pi or a local server.
+[Home Assistant](https://www.home-assistant.io/) is a home automation platform
+running on Python 3 that puts local control and privacy first. It is able to
+track and control all devices at home and offer a platform for automating
+control. Powered by a worldwide community of tinkerers and DIY enthusiasts.
+Perfect to run on a Raspberry Pi or a local server.
 
 ## Install/Setup
 
-This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).
+This application does not have any specific setup instructions documented. If
+you need assistance setting up this application please visit our
+[support page](https://dockstarter.com/basics/support/).
 
 ### Suggestions
 
-You may want to create an [override](https://dockstarter.com/overrides/introduction/) for `homeassistant` with the following if you are receiving a warning every 10 seconds for:
->device tracking of self-signed Unifi Controller SSL certificated.
+You may want to create an
+[override](https://dockstarter.com/overrides/introduction/) for `homeassistant`
+with the following if you are receiving a warning every 10 seconds for:
 
-``` yml
-        environment:
-            - PYTHONWARNINGS="ignore:Unverified HTTPS request"
+> device tracking of self-signed Unifi Controller SSL certificated.
+
+```yml
+environment:
+  - PYTHONWARNINGS="ignore:Unverified HTTPS request"
 ```
 
-Reference: [Endless InsecureRequestWarning errors with UniFi](https://community.home-assistant.io/t/endless-insecurerequestwarning-errors-with-unifi/31831/12)
+Reference:
+[Endless InsecureRequestWarning errors with UniFi](https://community.home-assistant.io/t/endless-insecurerequestwarning-errors-with-unifi/31831/12)

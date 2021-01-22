@@ -6,21 +6,30 @@
 
 ## Description
 
-[Heimdall](https://heimdall.site/) is a dashboard for all your web applications. It doesn't need to be limited to applications though, you can add links to anything you like. Heimdall is an elegant solution to organize all your web applications. It’s dedicated to this purpose so you won’t lose your links in a sea of bookmarks.
+[Heimdall](https://heimdall.site/) is a dashboard for all your web applications.
+It doesn't need to be limited to applications though, you can add links to
+anything you like. Heimdall is an elegant solution to organize all your web
+applications. It’s dedicated to this purpose so you won’t lose your links in a
+sea of bookmarks.
 
 ## Install/Setup
 
-This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).
+This application does not have any specific setup instructions documented. If
+you need assistance setting up this application please visit our
+[support page](https://dockstarter.com/basics/support/).
 
 ### Reverse Proxy as homepage via SWAG
 
-In order to reverse proxy the Heimdall container as your homepage via [SWAG](https://dockstarter.com/apps/swag/) you will need to rename the subfolder proxy sample with the following command:
+In order to reverse proxy the Heimdall container as your homepage via
+[SWAG](https://dockstarter.com/apps/swag/) you will need to rename the subfolder
+proxy sample with the following command:
 
 ```bash
 cp ~/.config/appdata/swag/nginx/proxy-confs/heimdall.subfolder.conf.sample ~/.config/appdata/swag/nginx/proxy-confs/heimdall.subfolder.conf
 ```
 
-Then edit `~/.config/appdata/swag/nginx/site-confs/default` to comment out the `location / {` and `location ~ \.php$ {` blocks down to their ending `}`.
+Then edit `~/.config/appdata/swag/nginx/site-confs/default` to comment out the
+`location / {` and `location ~ \.php$ {` blocks down to their ending `}`.
 
 Example Before:
 
@@ -62,7 +71,11 @@ docker restart swag
 
 #### Pre-modified default site-conf
 
-This example is based on the default site config included in SWAG found [here](https://github.com/linuxserver/docker-swag/blob/master/root/defaults/default). It has been modified to remove a lot of example comments and allow Heimdall to take the place of your home page and replace the "Welcome to our server" page. This example may not be up to date with the most recent changes from upstream.
+This example is based on the default site config included in SWAG found
+[here](https://github.com/linuxserver/docker-swag/blob/master/root/defaults/default).
+It has been modified to remove a lot of example comments and allow Heimdall to
+take the place of your home page and replace the "Welcome to our server" page.
+This example may not be up to date with the most recent changes from upstream.
 
 ```nginx
 ## Version 2020/05/23 - Changelog: https://github.com/linuxserver/docker-swag/commits/master/root/defaults/default
