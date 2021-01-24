@@ -156,6 +156,7 @@ nav:
       - apps/pihole.md
       - apps/piwigo.md
       - apps/plex.md
+      - apps/plexanisync.md
       - apps/portainer.md
       - apps/portaineragent.md
       - apps/prometheus.md
