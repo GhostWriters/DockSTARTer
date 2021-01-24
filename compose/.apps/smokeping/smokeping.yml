@@ -1,6 +1,9 @@
 services:
   smokeping:
     container_name: smokeping
+    dns:
+      - ${NS1}
+      - ${NS2}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
@@ -14,6 +17,5 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/smokeping:/config
-      - ${DOCKERSHAREDDIR}:/shared
       - ${DOCKERSTORAGEDIR}:/storage
       - ${SMOKEPING_DATADIR}:/data

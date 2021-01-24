@@ -17,5 +17,4 @@ services:
       - >-
         ${DOCKERCONFDIR}/plex/Library/Application Support/Plex Media
         Server/Logs:/logs:ro
-      - ${DOCKERSHAREDDIR}:/shared
       - ${DOCKERSTORAGEDIR}:/storage

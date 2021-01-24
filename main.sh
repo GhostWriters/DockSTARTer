@@ -1,54 +1,90 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -Eeuo pipefail
 IFS=$'\n\t'
 
-# Usage Information
-#/ Usage: sudo ds [OPTION]
-#/ NOTE: ds shortcut is only available after the first run of
-#/       sudo bash main.sh
-#/
-#/ This is the main DockSTARTer script.
-#/ For regular usage you can run without providing any options.
-#/
-#/  -a --add <appname>
-#/      add the default .env variables for the app specified
-#/  -c --compose
-#/      run docker-compose up with confirmation prompt
-#/  -c --compose <up/down/restart/pull>
-#/      run docker-compose commands without confirmation prompts
-#/  -e --env
-#/      update your .env file with new variables
-#/  --env-get=<var>
-#/      get the value of a <var>iable in .env
-#/  --env-set=<var>,<val>
-#/      Set the <val>ue of a <var>iable in .env
-#/  -f --force
-#/      force certain install/upgrade actions to run even if they would not be needed
-#/  -h --help
-#/      show this usage information
-#/  -i --install
-#/      install/update docker, docker-compose, yq and all dependencies
-#/  -p --prune
-#/      remove unused docker resources
-#/  -r --remove
-#/      prompt to remove .env variables for all disabled apps
-#/  -r --remove <appname>
-#/      prompt to remove the .env variables for the app specified
-#/  -t --test <test_name>
-#/      run tests to check the program
-#/  -u --update
-#/      update DockSTARTer to the latest stable commits
-#/  -u --update <branch>
-#/      update DockSTARTer to the latest commits from the specified branch
-#/  -v --verbose
-#/      verbose
-#/  -x --debug
-#/      debug
-#/
 usage() {
-    grep --color=never -Po '^#/\K.*' "${BASH_SOURCE[0]:-$0}" || echo "Failed to display usage information."
+    cat << EOF
+Usage: ds [OPTION]
+NOTE: ds shortcut is only available after the first run of
+    bash main.sh
+
+This is the main DockSTARTer script.
+For regular usage you can run without providing any options.
+
+-a --add <appname>
+    add the default .env variables for the app specified
+-c --compose
+    run docker-compose up with confirmation prompt
+-c --compose <up/down/restart/pull>
+    run docker-compose commands without confirmation prompts
+-e --env
+    update your .env file with new variables
+--env-get=<var>
+    get the value of a <var>iable in .env
+--env-set=<var>,<val>
+    Set the <val>ue of a <var>iable in .env
+-f --force
+    force certain install/upgrade actions to run even if they would not be needed
+-h --help
+    show this usage information
+-i --install
+    install/update docker, docker-compose, yq and all dependencies
+-p --prune
+    remove unused docker resources
+-r --remove
+    prompt to remove .env variables for all disabled apps
+-r --remove <appname>
+    prompt to remove the .env variables for the app specified
+-t --test <test_name>
+    run tests to check the program
+-u --update
+    update DockSTARTer to the latest stable commits
+-u --update <branch>
+    update DockSTARTer to the latest commits from the specified branch
+-v --verbose
+    verbose
+-x --debug
+    debug
+EOF
     exit
 }
+
+# Script Information
+# https://stackoverflow.com/questions/59895/get-the-source-directory-of-a-bash-script-from-within-the-script-itself/246128#246128
+get_scriptname() {
+    # https://stackoverflow.com/questions/35006457/choosing-between-0-and-bash-source/35006505#35006505
+    local SOURCE=${BASH_SOURCE[0]:-$0}
+    while [[ -L ${SOURCE} ]]; do # resolve ${SOURCE} until the file is no longer a symlink
+        local DIR
+        DIR=$(cd -P "$(dirname "${SOURCE}")" > /dev/null 2>&1 && pwd)
+        SOURCE=$(readlink "${SOURCE}")
+        [[ ${SOURCE} != /* ]] && SOURCE="${DIR}/${SOURCE}" # if ${SOURCE} was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+    done
+    echo "${SOURCE}"
+}
+SCRIPTPATH=$(cd -P "$(dirname "$(get_scriptname)")" > /dev/null 2>&1 && pwd)
+readonly SCRIPTPATH
+SCRIPTNAME="${SCRIPTPATH}/$(basename "$(get_scriptname)")"
+readonly SCRIPTNAME
+
+# Cleanup Function
+cleanup() {
+    local -ri EXIT_CODE=$?
+    sudo sh -c "cat ${LOG_TEMP:-/dev/null} >> ${SCRIPTPATH}/dockstarter.log" || true
+    sudo -E chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || true
+
+    if [[ ${CI:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == false ]]; then
+        echo "TRAVIS_SECURE_ENV_VARS is false for Pull Requests from remote branches. Please retry failed builds!"
+    fi
+
+    if [[ ${EXIT_CODE} -ne 0 ]]; then
+        echo "DockSTARTer did not finish running successfully."
+    fi
+
+    exit ${EXIT_CODE}
+    trap - ERR EXIT SIGABRT SIGALRM SIGHUP SIGINT SIGQUIT SIGTERM
+}
+trap 'cleanup' ERR EXIT SIGABRT SIGALRM SIGHUP SIGINT SIGQUIT SIGTERM
 
 # Command Line Arguments
 readonly ARGS=("$@")
@@ -182,103 +218,28 @@ if [[ -n ${DEBUG:-} ]] && [[ -n ${VERBOSE:-} ]]; then
     readonly TRACE=1
 fi
 
-# Github Token for Travis CI
-if [[ ${CI:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == true ]]; then
-    readonly GH_HEADER="Authorization: token ${GH_TOKEN}"
-    export GH_HEADER
-fi
-
-# Script Information
-# https://stackoverflow.com/questions/59895/get-the-source-directory-of-a-bash-script-from-within-the-script-itself/246128#246128
-get_scriptname() {
-    # https://stackoverflow.com/questions/35006457/choosing-between-0-and-bash-source/35006505#35006505
-    local SOURCE=${BASH_SOURCE[0]:-$0}
-    while [[ -L ${SOURCE} ]]; do # resolve ${SOURCE} until the file is no longer a symlink
-        local DIR
-        DIR=$(cd -P "$(dirname "${SOURCE}")" > /dev/null 2>&1 && pwd)
-        SOURCE=$(readlink "${SOURCE}")
-        [[ ${SOURCE} != /* ]] && SOURCE="${DIR}/${SOURCE}" # if ${SOURCE} was a relative symlink, we need to resolve it relative to the path where the symlink file was located
-    done
-    echo "${SOURCE}"
-}
-SCRIPTPATH=$(cd -P "$(dirname "$(get_scriptname)")" > /dev/null 2>&1 && pwd)
-readonly SCRIPTPATH
-SCRIPTNAME="${SCRIPTPATH}/$(basename "$(get_scriptname)")"
-readonly SCRIPTNAME
-
-# User/Group Information
-readonly DETECTED_PUID=${SUDO_UID:-$UID}
-DETECTED_UNAME=$(id -un "${DETECTED_PUID}" 2> /dev/null || true)
-readonly DETECTED_UNAME
-DETECTED_PGID=$(id -g "${DETECTED_PUID}" 2> /dev/null || true)
-readonly DETECTED_PGID
-export DETECTED_PGID
-DETECTED_UGROUP=$(id -gn "${DETECTED_PUID}" 2> /dev/null || true)
-readonly DETECTED_UGROUP
-export DETECTED_UGROUP
-DETECTED_HOMEDIR=$(eval echo "~${DETECTED_UNAME}" 2> /dev/null || true)
-readonly DETECTED_HOMEDIR
-
 # Terminal Colors
-if [[ ${CI:-} == true ]] || [[ -t 1 ]]; then
-    readonly SCRIPTTERM=true
-fi
-tcolor() {
-    if [[ -n ${SCRIPTTERM:-} ]]; then
-        # http://linuxcommand.org/lc3_adv_tput.php
-        local BF=${1:-}
-        local CAP
-        case ${BF} in
-            [Bb]) CAP=setab ;;
-            [Ff]) CAP=setaf ;;
-            [Nn][Cc]) CAP=sgr0 ;;
-            *) return ;;
-        esac
-        local COLOR_IN=${2:-}
-        local VAL
-        if [[ ${CAP} != "sgr0" ]]; then
-            case ${COLOR_IN} in
-                [Bb4]) VAL=4 ;; # Blue
-                [Cc6]) VAL=6 ;; # Cyan
-                [Gg2]) VAL=2 ;; # Green
-                [Kk0]) VAL=0 ;; # Black
-                [Mm5]) VAL=5 ;; # Magenta
-                [Rr1]) VAL=1 ;; # Red
-                [Ww7]) VAL=7 ;; # White
-                [Yy3]) VAL=3 ;; # Yellow
-                *) return ;;
-            esac
-        fi
-        local COLOR_OUT
-        if [[ $(tput colors 2> /dev/null) -ge 8 ]]; then
-            COLOR_OUT=$(eval tput ${CAP:-} ${VAL:-} 2> /dev/null)
-        fi
-        echo "${COLOR_OUT:-}"
-    else
-        return
-    fi
-}
-declare -Agr B=(
-    [B]=$(tcolor B B)
-    [C]=$(tcolor B C)
-    [G]=$(tcolor B G)
-    [K]=$(tcolor B K)
-    [M]=$(tcolor B M)
-    [R]=$(tcolor B R)
-    [W]=$(tcolor B W)
-    [Y]=$(tcolor B Y)
+declare -Agr B=(# Background
+    [B]=$(tput setab 4 2> /dev/null || echo -e "\e[44m") # Blue
+    [C]=$(tput setab 6 2> /dev/null || echo -e "\e[46m") # Cyan
+    [G]=$(tput setab 2 2> /dev/null || echo -e "\e[42m") # Green
+    [K]=$(tput setab 0 2> /dev/null || echo -e "\e[40m") # Black
+    [M]=$(tput setab 5 2> /dev/null || echo -e "\e[45m") # Magenta
+    [R]=$(tput setab 1 2> /dev/null || echo -e "\e[41m") # Red
+    [W]=$(tput setab 7 2> /dev/null || echo -e "\e[47m") # White
+    [Y]=$(tput setab 3 2> /dev/null || echo -e "\e[43m") # Yellow
 )
-declare -Agr F=(
-    [B]=$(tcolor F B)
-    [C]=$(tcolor F C)
-    [G]=$(tcolor F G)
-    [K]=$(tcolor F K)
-    [M]=$(tcolor F M)
-    [R]=$(tcolor F R)
-    [W]=$(tcolor F W)
-    [Y]=$(tcolor F Y)
+declare -Agr F=(# Foreground
+    [B]=$(tput setaf 4 2> /dev/null || echo -e "\e[34m") # Blue
+    [C]=$(tput setaf 6 2> /dev/null || echo -e "\e[36m") # Cyan
+    [G]=$(tput setaf 2 2> /dev/null || echo -e "\e[32m") # Green
+    [K]=$(tput setaf 0 2> /dev/null || echo -e "\e[30m") # Black
+    [M]=$(tput setaf 5 2> /dev/null || echo -e "\e[35m") # Magenta
+    [R]=$(tput setaf 1 2> /dev/null || echo -e "\e[31m") # Red
+    [W]=$(tput setaf 7 2> /dev/null || echo -e "\e[37m") # White
+    [Y]=$(tput setaf 3 2> /dev/null || echo -e "\e[33m") # Yellow
 )
-NC=$(tcolor NC)
+NC=$(tput sgr0 2> /dev/null || echo -e "\e[0m")
 readonly NC
 
 # Log Functions
@@ -306,6 +267,19 @@ fatal() {
     log "true" "${NC}$(date +"%F %T") ${B[R]}${F[W]}[FATAL ]${NC}   $*${NC}"
     exit 1
 }
+
+# User/Group Information
+readonly DETECTED_PUID=${SUDO_UID:-$UID}
+DETECTED_UNAME=$(id -un "${DETECTED_PUID}" 2> /dev/null || true)
+readonly DETECTED_UNAME
+DETECTED_PGID=$(id -g "${DETECTED_PUID}" 2> /dev/null || true)
+readonly DETECTED_PGID
+export DETECTED_PGID
+DETECTED_UGROUP=$(id -gn "${DETECTED_PUID}" 2> /dev/null || true)
+readonly DETECTED_UGROUP
+export DETECTED_UGROUP
+DETECTED_HOMEDIR=$(eval echo "~${DETECTED_UNAME}" 2> /dev/null || true)
+readonly DETECTED_HOMEDIR
 
 # Repo Exists Function
 repo_exists() {
@@ -362,28 +336,11 @@ vergt() { ! vergte "${2}" "${1}"; }
 verlte() { printf '%s\n%s' "${1}" "${2}" | sort -C -V; }
 verlt() { ! verlte "${2}" "${1}"; }
 
-# Cleanup Function
-cleanup() {
-    local -ri EXIT_CODE=$?
-
-    if repo_exists; then
-        info "Setting executable permission on ${SCRIPTNAME}"
-        sudo -E chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable.\nFailing command: ${F[C]}sudo -E chmod +x \"${SCRIPTNAME}\""
-    fi
-    if [[ ${CI:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == false ]]; then
-        warn "TRAVIS_SECURE_ENV_VARS is false for Pull Requests from remote branches. Please retry failed builds!"
-    fi
-
-    if [[ ${EXIT_CODE} -ne 0 ]]; then
-        error "DockSTARTer did not finish running successfully."
-    fi
-
-    sudo sh -c "cat ${LOG_TEMP} >> ${SCRIPTPATH}/dockstarter.log" || true
-
-    exit ${EXIT_CODE}
-    trap - 0 1 2 3 6 14 15
-}
-trap 'cleanup' 0 1 2 3 6 14 15
+# Github Token for Travis CI
+if [[ ${CI:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == true ]]; then
+    readonly GH_HEADER="Authorization: token ${GH_TOKEN}"
+    export GH_HEADER
+fi
 
 # Main Function
 main() {

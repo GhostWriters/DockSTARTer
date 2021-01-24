@@ -14,7 +14,5 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/resiliosync:/config
-      - ${DOCKERSHAREDDIR}:/shared
       - ${DOCKERSTORAGEDIR}:/storage
-      - ${DOWNLOADSDIR}:/downloads
       - ${RESILIOSYNC_SYNCDIR}:/sync

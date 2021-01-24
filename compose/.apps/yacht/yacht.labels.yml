@@ -1,0 +1,11 @@
+services:
+  yacht:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Yacht is a container management UI with a focus on templates and 1-click deployments."
+      com.dockstarter.appinfo.nicename: "Yacht"
+      com.dockstarter.appvars.yacht_enabled: "false"
+      com.dockstarter.appvars.yacht_network_mode: ""
+      com.dockstarter.appvars.yacht_port_8000: "8000"
+      com.dockstarter.appvars.yacht_secret_key: ""
+      com.dockstarter.appvars.yacht_admin_email: ""

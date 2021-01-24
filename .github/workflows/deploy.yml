@@ -1,0 +1,19 @@
+name: Deploy docs to GitHub Pages via mkdocs
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    name: Deploy docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.3.4
+      - uses: actions/setup-python@v2.2.1
+        with:
+          python-version: 3.x
+      - run: pip install -r docs/requirements.txt
+      - run: cp README.md docs/index.md
+      - run: mkdocs gh-deploy --force

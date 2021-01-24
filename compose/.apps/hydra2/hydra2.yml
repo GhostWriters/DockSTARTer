@@ -14,7 +14,4 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/hydra2:/config
-      - ${DOCKERSHAREDDIR}:/shared
       - ${DOCKERSTORAGEDIR}:/storage
-      - ${DOWNLOADSDIR}:/data
-      - ${DOWNLOADSDIR}:/downloads

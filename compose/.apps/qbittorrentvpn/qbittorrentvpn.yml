@@ -29,10 +29,6 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/qbittorrentvpn:/config
-      - ${DOCKERSHAREDDIR}:/shared
       - ${DOCKERSTORAGEDIR}:/storage
-      - ${DOWNLOADSDIR}:/config/qBittorrent/downloads
-      - ${DOWNLOADSDIR}:/data
-      - ${DOWNLOADSDIR}:/downloads
       - ${VPN_OVPNDIR}:/config/openvpn
       - ${VPN_WGDIR}:/config/wireguard

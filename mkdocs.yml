@@ -7,7 +7,7 @@ site_url: https://dockstarter.com
 repo_url: https://github.com/GhostWriters/DockSTARTer
 repo_name: GhostWriters/DockSTARTer
 
-copyright: Copyright &copy; 2020 GhostWriters
+copyright: Copyright &copy; 2021 GhostWriters
 
 extra:
   manifest: manifest.webmanifest
@@ -17,9 +17,8 @@ extra:
     - icon: fontawesome/brands/github-square
       link: https://github.com/GhostWriters/DockSTARTer
 
-google_analytics:
-  - UA-8908801-4
-  - auto
+extra_javascript:
+  - javascripts/extra.js
 
 markdown_extensions:
   - pymdownx.keys
@@ -118,7 +117,9 @@ nav:
       - apps/influxdb.md
       - apps/jackett.md
       - apps/jellyfin.md
+      - apps/jfago.md
       - apps/lazylibrarian.md
+      - apps/ldapauth.md
       - apps/librespeed.md
       - apps/lidarr.md
       - apps/limnoria.md
@@ -137,11 +138,13 @@ nav:
       - apps/mylar3.md
       - apps/netdata.md
       - apps/nextcloud.md
+      - apps/nodered.md
       - apps/nzbget.md
       - apps/nzbgetvpn.md
       - apps/nzbhydra2.md
       - apps/ombi.md
       - apps/omadacontroller.md
+      - apps/openldap.md
       - apps/openvpnas.md
       - apps/organizr.md
       - apps/ouroboros.md
@@ -160,6 +163,7 @@ nav:
       - apps/quasselcore.md
       - apps/quasselweb.md
       - apps/radarr.md
+      - apps/requestrr.md
       - apps/resiliosync.md
       - apps/rsnapshot.md
       - apps/rtorrentvpn.md
@@ -186,11 +190,13 @@ nav:
       - apps/ubooquity.md
       - apps/unificontroller.md
       - apps/unmanic.md
+      - apps/unpackerr.md
       - apps/varken.md
       - apps/vsftpd.md
       - apps/watchtower.md
       - apps/xbackbone.md
       - apps/xteve.md
+      - apps/yacht.md
       - apps/youtubedl.md
       - apps/znc.md
   - Overrides:

@@ -15,8 +15,5 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/ubooquity:/config
-      - ${DOCKERSHAREDDIR}:/shared
       - ${DOCKERSTORAGEDIR}:/storage
-      - ${MEDIADIR_BOOKS}:/books
-      - ${MEDIADIR_COMICS}:/comics
       - ${UBOOQUITY_FILESDIR}:/files

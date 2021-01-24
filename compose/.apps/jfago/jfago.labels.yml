@@ -1,0 +1,9 @@
+services:
+  jfago:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "User management app for Jellyfin"
+      com.dockstarter.appinfo.nicename: "jfago"
+      com.dockstarter.appvars.jfago_enabled: "false"
+      com.dockstarter.appvars.jfago_network_mode: ""
+      com.dockstarter.appvars.jfago_port_8056: "8056"
