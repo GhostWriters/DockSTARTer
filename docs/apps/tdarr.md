@@ -21,10 +21,9 @@ manually.
 When installing the Tdarr container, the installer will install under the
 `appdata` directory as the root user and you will see errors as such:
 
-```bash
 >* Starting database mongodb
+>
 > ...fail
-```
 
 Permissions are likely not set correctly on your `TDARR_DB` variable location,
 run the following:
