@@ -30,7 +30,7 @@ Permissions are likely not set correctly on your `TDARR_DB` variable location,
 run the following:
 
 ```bash
-sudo chown -R $USER:$GROUP /path/to/location
+sudo chown -R $USER:$USER /path/to/location
 ```
 
 Restart your container by running:
