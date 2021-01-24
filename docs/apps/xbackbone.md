@@ -28,7 +28,7 @@ You need to update the permissions in your `appdata` folder for XBackBone. You
 can do so by running:
 
 ```bash
-sudo chown -R $USER:$GROUP ~/.config/appdata/xbackbone/
+sudo chown -R $USER:$USER ~/.config/appdata/xbackbone/
 ```
 
 Restart your container by running:
