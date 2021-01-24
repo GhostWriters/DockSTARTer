@@ -3,6 +3,7 @@ services:
     container_name: yacht
     environment:
       - ADMIN_EMAIL=${YACHT_ADMIN_EMAIL}
+      - DISABLE_AUTH=${YACHT_DISABLE_AUTH}
       - PGID=${PGID}
       - PUID=${PUID}
       - SECRET_KEY=${YACHT_SECRET_KEY}
