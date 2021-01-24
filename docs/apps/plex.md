@@ -148,9 +148,9 @@ host, you can do this using an
 [override](https://dockstarter.com/overrides/introduction/) like so:
 
 ```yaml
-plex:
-  devices:
-    - /dev/dri:/dev/dri
+  plex:
+    devices:
+      - /dev/dri:/dev/dri
 ```
 
 Refer to this forum post for details:
