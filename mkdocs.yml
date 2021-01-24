@@ -133,6 +133,7 @@ nav:
       - apps/minecraft_server.md
       - apps/monitorr.md
       - apps/mosquitto.md
+      - apps/moviematch.md
       - apps/murmur.md
       - apps/muximux.md
       - apps/mylar3.md
@@ -195,6 +196,7 @@ nav:
       - apps/varken.md
       - apps/vsftpd.md
       - apps/watchtower.md
+      - apps/wireguard.md
       - apps/xbackbone.md
       - apps/xteve.md
       - apps/yacht.md
