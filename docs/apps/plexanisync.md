@@ -6,6 +6,9 @@
 
 ## Description
 
-Sync your Plex libraries with [AniList](https://anilist.co/). Unwatched Anime in Plex will not be synced so only those that have at least one watched episode, updates to AniList are only send with changes so need to worry about messing up watch history.
+Sync your Plex libraries with [AniList](https://anilist.co/). Unwatched Anime in
+Plex will not be synced so only those that have at least one watched episode,
+updates to AniList are only send with changes so need to worry about messing up
+watch history.
 
 ## Install/Setup
