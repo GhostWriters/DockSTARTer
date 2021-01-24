@@ -6,8 +6,10 @@
 
 ## Description
 
-[Apprise](https://github.com/caronc/apprise) is push notifications that work with just about every platform!
+[Apprise](https://github.com/caronc/apprise) is push notifications that work
+with just about every platform!
 
-[Apprise API](https://github.com/caronc/apprise-api) is a lightweight REST framework that wraps the Apprise Notification Library.
+[Apprise API](https://github.com/caronc/apprise-api) is a lightweight REST
+framework that wraps the Apprise Notification Library.
 
 This container runs Apprise API which allows you to send apprise notifications.
