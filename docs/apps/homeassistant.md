@@ -27,8 +27,8 @@ with the following if you are receiving a warning every 10 seconds for:
 > device tracking of self-signed Unifi Controller SSL certificated.
 
 ```yml
-environment:
-  - PYTHONWARNINGS="ignore:Unverified HTTPS request"
+    environment:
+      - PYTHONWARNINGS="ignore:Unverified HTTPS request"
 ```
 
 Reference:
