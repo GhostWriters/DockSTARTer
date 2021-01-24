@@ -23,7 +23,7 @@ change the owner/group of it to whatever is required
 Run the below command from a terminal to change the permissions if required:
 
 ```bash
-sudo chown -R $USER:$GROUP ~/.config/appdata/bitwarden
+sudo chown -R $USER:$USER ~/.config/appdata/bitwarden
 ```
 
 Restart your container by running:
