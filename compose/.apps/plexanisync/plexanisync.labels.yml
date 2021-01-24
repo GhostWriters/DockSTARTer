@@ -1,0 +1,14 @@
+services:
+  plexanisync:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Sync anime watched status from Plex to AniList"
+      com.dockstarter.appinfo.nicename: "Plexanisync"
+      com.dockstarter.appvars.plexanisync_ani_token: ""
+      com.dockstarter.appvars.plexanisync_ani_username: ""
+      com.dockstarter.appvars.plexanisync_enabled: "false"
+      com.dockstarter.appvars.plexanisync_interval: "3600"
+      com.dockstarter.appvars.plexanisync_network_mode: ""
+      com.dockstarter.appvars.plexanisync_plex_section: "Anime"
+      com.dockstarter.appvars.plexanisync_plex_token: ""
+      com.dockstarter.appvars.plexanisync_plex_url: "http://plex:32400"
