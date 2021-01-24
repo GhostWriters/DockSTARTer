@@ -21,7 +21,7 @@ However once it is installed you can change the owner/group of it to whatever is
 required. Run the following command to fix it:
 
 ```bash
-sudo chown -R $USER:$GROUP ~/.config/appdata/grafana
+sudo chown -R $USER:$USER ~/.config/appdata/grafana
 ```
 
 Restart your container by running:
