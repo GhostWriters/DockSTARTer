@@ -2,10 +2,10 @@ services:
   flaresolverr:
     container_name: flaresolverr
     environment:
-      - LOG_LEVEL=${FLARESOLVERR_LOG_LEVEL}
-      - LOG_HTML=${FLARESOLVERR_LOG_HTML}
-      - PORT=${FLARESOLVERR_PORT_8191}
       - CAPTCHA_SOLVER=${FLARESOLVERR_CAPTCHA_SOLVER}
+      - LOG_HTML=${FLARESOLVERR_LOG_HTML}
+      - LOG_LEVEL=${FLARESOLVERR_LOG_LEVEL}
+      - PORT=${FLARESOLVERR_PORT_8191}
       - TZ=${TZ}
     logging:
       driver: json-file
