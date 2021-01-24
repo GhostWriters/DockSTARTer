@@ -5,15 +5,15 @@ services:
       - SYS_MODULE
     container_name: wireguard
     environment:
+      - ALLOWEDIPS=${WIREGUARD_ALLOWED_IPS}
+      - INTERNAL_SUBNET=${WIREGUARD_INTERNAL_SUBNET}
+      - PEERDNS=${WIREGUARD_PEER_DNS}
+      - PEERS=${WIREGUARD_PEERS}
       - PGID=${PGID}
       - PUID=${PUID}
-      - TZ=${TZ}
-      - SERVERURL=${WIREGUARD_SERVER_URL}
       - SERVERPORT=${WIREGUARD_SERVER_PORT_51820}
-      - PEERS=${WIREGUARD_PEERS}
-      - PEERDNS=${WIREGUARD_PEER_DNS}
-      - INTERNAL_SUBNET=${WIREGUARD_INTERNAL_SUBNET}
-      - ALLOWEDIPS=${WIREGUARD_ALLOWED_IPS}
+      - SERVERURL=${WIREGUARD_SERVER_URL}
+      - TZ=${TZ}
     logging:
       driver: json-file
       options:
