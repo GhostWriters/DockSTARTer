@@ -165,18 +165,13 @@ this using an [override](https://dockstarter.com/overrides/introduction/) like
 so:
 
 ```yaml
-plex:
-  volumes:
-    - "/mnt/fastDisk/cache:/config/Library/Application Support/Plex Media
-      Server/Cache"
-    - "/mnt/bigDisk/logs:/config/Library/Application Support/Plex Media
-      Server/Logs"
-    - "/mnt/bigDisk/media:/config/Library/Application Support/Plex Media
-      Server/Media"
-    - "/mnt/bigDisk/metadata:/config/Library/Application Support/Plex Media
-      Server/Metadata"
-    - "/mnt/fastDisk/transcode:/config/Library/Application Support/Plex Media
-      Server/Cache/Transcode/Sessions"
+  plex:
+    volumes:
+      - "/mnt/fastDisk/cache:/config/Library/Application Support/Plex Media Server/Cache"
+      - "/mnt/bigDisk/logs:/config/Library/Application Support/Plex Media Server/Logs"
+      - "/mnt/bigDisk/media:/config/Library/Application Support/Plex Media Server/Media"
+      - "/mnt/bigDisk/metadata:/config/Library/Application Support/Plex Media Server/Metadata"
+      - "/mnt/fastDisk/transcode:/config/Library/Application Support/Plex Media Server/Cache/Transcode/Sessions"
 ```
 
 These volumes are all optional. If your config folder runs on an SSD with enough
