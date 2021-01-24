@@ -4,7 +4,7 @@ services:
     container_name: plexanisync
     environment:
       - ANI_TOKEN=${PLEXANISYNC_ANI_TOKEN}
-      - ANI_USERNAME=${PLEX_ANISYNC_ANI_USERNAME}
+      - ANI_USERNAME=${PLEXANISYNC_ANI_USERNAME}
       - INTERVAL=${PLEXANISYNC_INTERVAL}
       - PGID=${PGID}
       - PLEX_SECTION=${PLEXANISYNC_PLEX_SECTION}
