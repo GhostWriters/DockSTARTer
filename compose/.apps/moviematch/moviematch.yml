@@ -1,0 +1,20 @@
+services:
+  moviematch:
+    container_name: moviematch
+    environment:
+      - LOG_LEVEL=${MOVIEMATCH_LOG_LEVEL}
+      - PGID=${PGID}
+      - PLEX_TOKEN=${MOVIEMATCH_PLEX_TOKEN}
+      - PLEX_URL=${MOVIEMATCH_PLEX_URL}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/moviematch:/config
+      - ${DOCKERSTORAGEDIR}:/storage
