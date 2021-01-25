@@ -16,8 +16,7 @@ This program can also be used a home page item in
 
 A demo is available [here](https://speedtest.henrywhitaker.com).
 
-_Disclaimer: You will need to accept Ookla's EULA and privacy agreements in
-order to use this container._
+_Disclaimer: You will need to accept Ookla's EULA and privacy agreements in order to use this container._
 
 ## Install/Setup
 
