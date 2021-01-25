@@ -1,0 +1,12 @@
+services:
+  moviematch:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Have you ever spent longer deciding on a movie than it'd take to just watch a random movie? This is an app that helps you and your friends pick a movie to watch from a Plex server."
+      com.dockstarter.appinfo.nicename: "Moviematch"
+      com.dockstarter.appvars.moviematch_enabled: "false"
+      com.dockstarter.appvars.moviematch_log_level: "INFO"
+      com.dockstarter.appvars.moviematch_network_mode: ""
+      com.dockstarter.appvars.moviematch_plex_token: ""
+      com.dockstarter.appvars.moviematch_plex_url: ""
+      com.dockstarter.appvars.moviematch_port_8000: "8000"
