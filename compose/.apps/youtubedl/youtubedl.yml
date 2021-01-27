@@ -16,5 +16,4 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/youtubedl:/youtube-dl
-      - ${DOCKERCONFDIR}/youtube-dl/config:/config
       - ${DOCKERSTORAGEDIR}:/storage
