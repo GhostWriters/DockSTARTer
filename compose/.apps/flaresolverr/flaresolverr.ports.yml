@@ -1,0 +1,4 @@
+services:
+  flaresolverr:
+    ports:
+      - ${FLARESOLVERR_PORT_8191}:${FLARESOLVERR_PORT_8191}
