@@ -1,12 +1,11 @@
 services:
-  yacht:
-    container_name: yacht
+  flaresolverr:
+    container_name: flaresolverr
     environment:
-      - ADMIN_EMAIL=${YACHT_ADMIN_EMAIL}
-      - DISABLE_AUTH=${YACHT_DISABLE_AUTH}
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - SECRET_KEY=${YACHT_SECRET_KEY}
+      - CAPTCHA_SOLVER=${FLARESOLVERR_CAPTCHA_SOLVER}
+      - LOG_HTML=${FLARESOLVERR_LOG_HTML}
+      - LOG_LEVEL=${FLARESOLVERR_LOG_LEVEL}
+      - PORT=${FLARESOLVERR_PORT_8191}
       - TZ=${TZ}
     logging:
       driver: json-file
@@ -16,6 +15,4 @@ services:
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ${DOCKERCONFDIR}/yacht:/config
       - ${DOCKERSTORAGEDIR}:/storage
