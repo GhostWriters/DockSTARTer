@@ -1,13 +1,15 @@
 services:
-  tdarr:
-    container_name: tdarr
+  tdarrnode:
+    container_name: tdarrnode
     environment:
+      - nodeID=${TDARRNODE_ID}
+      - nodeIP=${TDARRNODE_NODE_IP}
+      - nodePort=${TDARRNODE_NODE_PORT}
       - PGID=${PGID}
       - PUID=${PUID}
-      - serverIP=${TDARR_SERVERIP}
-      - serverPort=${TDARR_SERVERPORT}
+      - serverIP=${TDARRNODE_SERVERIP}
+      - serverPort=${TDARRNODE_SERVERPORT}
       - TZ=${TZ}
-      - webUIPort=${TDARR_WEBUIPORT}
     logging:
       driver: json-file
       options:
@@ -16,6 +18,5 @@ services:
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/tdarr:/app/server
       - ${DOCKERSTORAGEDIR}:/storage
-      - ${TDARR_TRANSCODE_CACHE}:/temp
+      - ${TDARRNODE_TRANSCODE_CACHE}:/temp

@@ -1,0 +1,3 @@
+services:
+  tdarrnode:
+    network_mode: ${TDARRNODE_NETWORK_MODE}
