@@ -1,12 +1,16 @@
 services:
-  yacht:
-    container_name: yacht
+  plexanisync:
+    command: /runsync.sh
+    container_name: plexanisync
     environment:
-      - ADMIN_EMAIL=${YACHT_ADMIN_EMAIL}
-      - DISABLE_AUTH=${YACHT_DISABLE_AUTH}
+      - ANI_TOKEN=${PLEXANISYNC_ANI_TOKEN}
+      - ANI_USERNAME=${PLEXANISYNC_ANI_USERNAME}
+      - INTERVAL=${PLEXANISYNC_INTERVAL}
       - PGID=${PGID}
+      - PLEX_SECTION=${PLEXANISYNC_PLEX_SECTION}
+      - PLEX_TOKEN=${PLEXANISYNC_PLEX_TOKEN}
+      - PLEX_URL=${PLEXANISYNC_PLEX_URL}
       - PUID=${PUID}
-      - SECRET_KEY=${YACHT_SECRET_KEY}
       - TZ=${TZ}
     logging:
       driver: json-file
@@ -16,6 +20,4 @@ services:
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ${DOCKERCONFDIR}/yacht:/config
       - ${DOCKERSTORAGEDIR}:/storage
