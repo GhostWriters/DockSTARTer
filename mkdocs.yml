@@ -99,6 +99,7 @@ nav:
       - apps/emby.md
       - apps/filebot.md
       - apps/filebrowser.md
+      - apps/flaresolverr.md
       - apps/freshrss.md
       - apps/glances.md
       - apps/goaccess.md
@@ -132,6 +133,7 @@ nav:
       - apps/minecraft_server.md
       - apps/monitorr.md
       - apps/mosquitto.md
+      - apps/moviematch.md
       - apps/murmur.md
       - apps/muximux.md
       - apps/mylar3.md
@@ -150,9 +152,11 @@ nav:
       - apps/photoshow.md
       - apps/photostructure.md
       - apps/phpmyadmin.md
+      - apps/picard.md
       - apps/pihole.md
       - apps/piwigo.md
       - apps/plex.md
+      - apps/plexanisync.md
       - apps/portainer.md
       - apps/portaineragent.md
       - apps/prometheus.md
@@ -193,6 +197,7 @@ nav:
       - apps/varken.md
       - apps/vsftpd.md
       - apps/watchtower.md
+      - apps/wireguard.md
       - apps/xbackbone.md
       - apps/xteve.md
       - apps/yacht.md
