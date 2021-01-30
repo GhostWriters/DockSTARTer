@@ -6,7 +6,7 @@ services:
       com.dockstarter.appinfo.nicename: "Duplicacy"
       com.dockstarter.appvars.duplicacy_appdata_dir: "~/.config/appdata"
       com.dockstarter.appvars.duplicacy_backup_dir: "~/backup"
-      com.dockstarter.appvars.duplicacy_debug: "no"
+      com.dockstarter.appvars.duplicacy_debug: "yes"
       com.dockstarter.appvars.duplicacy_docker_dir: "~/.docker/"
       com.dockstarter.appvars.duplicacy_enabled: "false"
       com.dockstarter.appvars.duplicacy_network_mode: ""
