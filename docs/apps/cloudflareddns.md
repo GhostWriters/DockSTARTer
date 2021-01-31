@@ -1,7 +1,7 @@
 # CloudFlare DDNS
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/hotio/cloudflare-ddns?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/hotio/cloudflare-ddns)
-[![GitHub Stars](https://img.shields.io/github/stars/hotio/docker-cloudflare-ddns?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/hotio/docker-cloudflare-ddns)
+[![Docker Pulls](https://img.shields.io/docker/pulls/hotio/cloudflareddns?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/hotio/cloudflareddns)
+[![GitHub Stars](https://img.shields.io/github/stars/hotio/cloudflareddns?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/hotio/cloudflareddns)
 [![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/cloudflareddns)
 
 ## Description
