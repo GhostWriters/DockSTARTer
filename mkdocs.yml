@@ -211,6 +211,7 @@ nav:
       - overrides/fireflyiii.md
       - overrides/kitana.md
       - overrides/nginxproxymanager.md
+      - overrides/overseerr.md
       - overrides/plpp.md
       - overrides/requestrr.md
       - overrides/yacreader.md
