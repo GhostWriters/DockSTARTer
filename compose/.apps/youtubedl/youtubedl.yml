@@ -5,9 +5,8 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-      - YDL_OUTPUT_TEMPLATE=${YOUTUBEDL_OUTPUT_TEMPLATE}
-      - YDL_OUTPUT_TEMPLATE_PLAYLIST=${YOUTUBEDL_OUTPUT_TEMPLATE_PLAYLIST}
       - YDL_DEBUG=${YOUTUBEDL_DEBUG}
+      - YDL_CONFIG_PATH=${YOUTUBEDL_CONFIG_PATH}
     logging:
       driver: json-file
       options:

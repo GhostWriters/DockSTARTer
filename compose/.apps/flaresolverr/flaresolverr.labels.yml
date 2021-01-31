@@ -1,0 +1,12 @@
+services:
+  flaresolverr:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "FlareSolverr is a proxy server to bypass Cloudflare protection"
+      com.dockstarter.appinfo.nicename: "Flaresolverr"
+      com.dockstarter.appvars.flaresolverr_captcha_solver: "none"
+      com.dockstarter.appvars.flaresolverr_enabled: "false"
+      com.dockstarter.appvars.flaresolverr_log_html: "false"
+      com.dockstarter.appvars.flaresolverr_log_level: "info"
+      com.dockstarter.appvars.flaresolverr_network_mode: ""
+      com.dockstarter.appvars.flaresolverr_port_8191: "8191"

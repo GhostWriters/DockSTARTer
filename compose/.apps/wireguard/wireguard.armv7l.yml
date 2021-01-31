@@ -1,0 +1,3 @@
+services:
+  wireguard:
+    image: ghcr.io/linuxserver/wireguard
