@@ -14,19 +14,33 @@
 
 You can use an override for notifications to your favorite method (E-mail, Slack/Discord, MS Teams are supported in Watchtower currently):
 
-You would want to put this in your [override](https://dockstarter.com/overrides/introduction/)
-
 - For Discord/Slack:
 
-```yaml
-  watchtower:
-    environment:
-      - WATCHTOWER_NOTIFICATIONS=slack
-      - WATCHTOWER_NOTIFICATION_SLACK_HOOK_URL=https://url.discord.com/slack
-      - WATCHTOWER_NOTIFICATION_SLACK_IDENTIFIER=watchtower-server-1
+The default notification library is [shoutrrr](https://containrrr.dev/shoutrrr/)
+#### URL Format
+
+Your Discord Webhook-URL will look like this:
+> https://discordapp.com/api/webhooks/__`channel`__/__`token`__  
+
+The WATCHTOWER_NOTIFICATION_URL variable should look like this:  
+> discord://__`token`__@__`channel`__
+
+[Instructions on Creating a webhook in Discord from Shoutrrr](https://containrrr.dev/shoutrrr/services/discord/#creating_a_webhook_in_discord)
+
+Format the service URL
+```
+https://discordapp.com/api/webhooks/693853386302554172/W3dE2OZz4C13_4z_uHfDOoC7BqTW288s-z1ykqI0iJnY_HjRqMGO8Sc7YDqvf_KVKjhJ
+                                    └────────────────┘ └──────────────────────────────────────────────────────────────────┘
+                                        webhook id                                    token
+
+discord://W3dE2OZz4C13_4z_uHfDOoC7BqTW288s-z1ykqI0iJnY_HjRqMGO8Sc7YDqvf_KVKjhJ@693853386302554172
+          └──────────────────────────────────────────────────────────────────┘ └────────────────┘
+                                          token                                    webhook id
 ```
 
 - For E-Mail:
+
+You would want to put this in your [override](https://dockstarter.com/overrides/introduction/)
 
 ```yaml
   watchtower:
