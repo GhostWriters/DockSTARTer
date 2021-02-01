@@ -13,6 +13,7 @@
 ### Notifications
 
 The default notification library is [Shoutrrr](https://containrrr.dev/shoutrrr/)
+>Shoutrrr offers notifications via *Discord*, *Hangout Chats*, *Pushover*, *Teams*, *Telegram*, and *Zulip Chat*.
 
 - For [Discord/Slack](https://containrrr.dev/shoutrrr/services/discord/) via [Shoutrrr](https://containrrr.dev/shoutrrr/):
 
