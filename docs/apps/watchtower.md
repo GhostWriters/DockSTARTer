@@ -35,7 +35,7 @@ discord://W3dE2OZz4C13_4z_uHfDOoC7BqTW288s-z1ykqI0iJnY_HjRqMGO8Sc7YDqvf_KVKjhJ@6
           └──────────────────────────────────────────────────────────────────┘ └────────────────┘
                                           token                                    webhook id
 ```
-[Instructions on Creating a webhook in Discord from Shoutrrr](https://containrrr.dev/shoutrrr/services/discord/#creating_a_webhook_in_discord)
+[Instructions on "Creating a webhook in Discord" from Shoutrrr](https://containrrr.dev/shoutrrr/services/discord/#creating_a_webhook_in_discord)
 
 - For E-Mail:
 
