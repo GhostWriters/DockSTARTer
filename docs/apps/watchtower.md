@@ -22,7 +22,7 @@ The default notification library is [Shoutrrr](https://containrrr.dev/shoutrrr/)
 Your Discord Webhook-URL will look like this:
 > https://discordapp.com/api/webhooks/__`channel`__/__`token`__  
 
-The WATCHTOWER_NOTIFICATION_URL variable should look like this:  
+The `WATCHTOWER_NOTIFICATION_URL` variable should look like this:  
 > discord://__`token`__@__`channel`__
 
 Format the service URL
