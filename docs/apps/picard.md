@@ -6,4 +6,10 @@
 
 ## Description
 
-[MusicBrainz Picard](https://github.com/mikenye/docker-picard) is a cross-platform music file tagger written in Python.  Your music files don’t just contain music. They also contain “metadata”, consisting of “tags” which consist of a tag name or type and associated data, for example the album or track name, the name of the artist, the record label, the year of issue etc.  [MusicBrainz](https://musicbrainz.org/) is the database, and [Picard](https://picard.musicbrainz.org/) is the tool that tags the music files.
+[MusicBrainz Picard](https://github.com/mikenye/docker-picard) is a
+cross-platform music file tagger written in Python. Your music files don’t just
+contain music. They also contain “metadata”, consisting of “tags” which consist
+of a tag name or type and associated data, for example the album or track name,
+the name of the artist, the record label, the year of issue etc.
+[MusicBrainz](https://musicbrainz.org/) is the database, and
+[Picard](https://picard.musicbrainz.org/) is the tool that tags the music files.
