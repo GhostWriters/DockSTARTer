@@ -16,7 +16,7 @@ You can use an override for notifications to your favorite method (E-mail, Slack
 
 - For Discord/Slack:
 
-The default notification library is [shoutrrr](https://containrrr.dev/shoutrrr/)
+The default notification library is [Shoutrrr](https://containrrr.dev/shoutrrr/)
 #### URL Format
 
 Your Discord Webhook-URL will look like this:
