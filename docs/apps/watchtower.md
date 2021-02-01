@@ -12,53 +12,94 @@
 
 ### Notifications
 
-You can use an override for notifications to your favorite method (E-mail, Slack/Discord, MS Teams are supported in Watchtower currently):
+The default notification library is [Shoutrrr](https://containrrr.dev/shoutrrr/). Shoutrrr offers notifications via Discord/Slack, Pushover, Telegram, Email, and [several others](https://containrrr.dev/shoutrrr/services/overview/).
 
-You would want to put this in your [override](https://dockstarter.com/overrides/introduction/)
+- For Discord/Slack via [Shoutrrr](https://containrrr.dev/shoutrrr/services/discord/)
+  - First create a [Discord webhook](https://containrrr.dev/shoutrrr/services/discord/#creating_a_webhook_in_discord)
 
-- For Discord/Slack:
+Your Discord Webhook-URL will look like this:
 
-```yaml
-  watchtower:
-    environment:
-      - WATCHTOWER_NOTIFICATIONS=slack
-      - WATCHTOWER_NOTIFICATION_SLACK_HOOK_URL=https://url.discord.com/slack
-      - WATCHTOWER_NOTIFICATION_SLACK_IDENTIFIER=watchtower-server-1
+> `https://discordapp.com/api/webhooks/__channel__/__token__`
+
+The `WATCHTOWER_NOTIFICATION_URL` variable should look like this:
+> `discord://__token__@__channel__`
+
+The example below provides you a visual of what you get when you first create a Discord webhook and what you need to change it to when you put it in the `WATCHTOWER_NOTIFICATION_URL` variable.
+
+```bash
+https://discordapp.com/api/webhooks/693853386302554172/W3dE2OZz4C13_4z_uHfDOoC7BqTW288s-z1ykqI0iJnY_HjRqMGO8Sc7YDqvf_KVKjhJ
+                                    └────────────────┘ └──────────────────────────────────────────────────────────────────┘
+                                        webhook id                                    token
 ```
 
-- For E-Mail:
-
-```yaml
-  watchtower:
-    environment:
-      - WATCHTOWER_NOTIFICATION_EMAIL_FROM=myemail@gmail.com
-      - WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PASSWORD=secretPassword
-      - WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PORT=587
-      - WATCHTOWER_NOTIFICATION_EMAIL_SERVER_USER=myemail@gmail.com
-      - WATCHTOWER_NOTIFICATION_EMAIL_SERVER=smtp.gmail.com
-      - WATCHTOWER_NOTIFICATION_EMAIL_TO=myemail@gmail.com
-      - WATCHTOWER_NOTIFICATIONS=email
+```bash
+discord://W3dE2OZz4C13_4z_uHfDOoC7BqTW288s-z1ykqI0iJnY_HjRqMGO8Sc7YDqvf_KVKjhJ@693853386302554172
+          └──────────────────────────────────────────────────────────────────┘ └────────────────┘
+                                          token                                    webhook id
 ```
 
-This is what you **could have had** in your override **previously**:
+- For Pushover via [Shoutrrr](https://containrrr.dev/shoutrrr/services/pushover/)
+  - First you need to [get the keys from Pushover](https://containrrr.dev/shoutrrr/services/pushover/#getting_the_keys_from_pushover)
 
-```yaml
-version: "3.4"  # this must match the version in docker-compose.yml
-services:
-    netdata:
-      hostname: newhostname
-```
+The `WATCHTOWER_NOTIFICATION_URL` variable should look like this:
+> pushover://shoutrrr:__`apiToken`__@__`userKey`__/?devices=__`device1`__[,__`device2`__, ...]
 
-So **now** your override would look like this:
+- For Telegram via [Shoutrrr](https://containrrr.dev/shoutrrr/services/telegram/)
+  - First you will need to [get a Token for Telegram](https://containrrr.dev/shoutrrr/services/telegram/#getting_a_token_for_telegram)
 
-```yaml
-version: "3.4" # this must match the version in docker-compose.yml
-services:
-  netdata:
-    hostname: newhostname
-  watchtower:
-    environment:
-      - WATCHTOWER_NOTIFICATIONS=slack
-      - WATCHTOWER_NOTIFICATION_SLACK_HOOK_URL=https://url.discord.com/slack
-      - WATCHTOWER_NOTIFICATION_SLACK_IDENTIFIER=watchtower-server-1
-```
+The `WATCHTOWER_NOTIFICATION_URL` variable should look like this:
+> telegram://__`token`__@telegram?channels=__`channel-1`__[,__`channel-2`__,...]
+
+- For Email via [Shoutrrr](https://containrrr.dev/shoutrrr/services/overview/):
+
+The `WATCHTOWER_NOTIFICATION_URL` variable should look like this:
+> smtp://__`username`__:__`password`__@__`host`__:__`port`__/?fromAddress=__`fromAddress`__&toAddresses=__`recipient1`__[,__`recipient2`__,...]
+
+- For Gotify via [Shoutrrr](https://containrrr.dev/shoutrrr/services/overview/):
+
+The `WATCHTOWER_NOTIFICATION_URL` variable should look like this:
+> gotify://__`gotify-host`__/__`token`__
+
+- For Hangouts Chat via [Shoutrrr](https://containrrr.dev/shoutrrr/services/hangouts/):
+  - First create a [Hangoust Chat webhook](https://containrrr.dev/shoutrrr/services/hangouts/#creating_an_incoming_webhook_in_hangouts_chat)
+
+The `WATCHTOWER_NOTIFICATION_URL` variable should look like this:
+> hangouts://chat.googleapis.com/v1/spaces/FOO/messages?key=bar&token=baz
+
+- For IFTTT via [Shoutrrr](https://containrrr.dev/shoutrrr/services/overview/):
+
+The `WATCHTOWER_NOTIFICATION_URL` variable should look like this:
+> ifttt://__`key`__/?events=__`event1`__[,__`event2`__,...]&value1=__`value1`__&value2=__`value2`__&value3=__`value3`__
+
+- For Join via [Shoutrrr](https://containrrr.dev/shoutrrr/services/overview/):
+
+The `WATCHTOWER_NOTIFICATION_URL` variable should look like this:
+> join://shoutrrr:__`api-key`__@join/?devices=__`device1`__[,__`device2`__, ...][&icon=__`icon`__][&title=__`title`__]
+
+- For Mattermost via [Shoutrrr](https://containrrr.dev/shoutrrr/services/overview/):
+
+The `WATCHTOWER_NOTIFICATION_URL` variable should look like this:
+> mattermost://[__`username`__@]__`mattermost-host`__/__`token`__[/__`channel`__]
+
+- For Microsoft Teams via [Shoutrrr](https://containrrr.dev/shoutrrr/services/teams/):
+  - First create a [Microsoft Teams webhook](https://containrrr.dev/shoutrrr/services/teams/#setting_up_a_webhook)
+
+The `WATCHTOWER_NOTIFICATION_URL` variable should look like this:
+
+> teams://__`token-a`__/__`token-b`__/__`token-c`__
+
+- For Pushbullet via [Shoutrrr](https://containrrr.dev/shoutrrr/services/overview/):
+
+The `WATCHTOWER_NOTIFICATION_URL` variable should look like this:
+
+> pushbullet://__`api-token`__[/__`device`__/#__`channel`__/__`email`__]
+
+- For Rocketchat via [Shoutrrr](https://containrrr.dev/shoutrrr/services/rocketchat/):
+
+The `WATCHTOWER_NOTIFICATION_URL` variable should look like this:
+> rocketchat://[__`username`__@]__`rocketchat-host`__/__`token`__[/__`channel`&#124;`@recipient`__]
+
+- For Zulip Chat via [Shoutrrr](https://containrrr.dev/shoutrrr/services/zulip/):
+
+The `WATCHTOWER_NOTIFICATION_URL` variable should look like this:
+> zulip://__`bot-mail`__:__`bot-key`__@__`zulip-domain`__/?stream=__`name-or-id`__&topic=__`name`__
