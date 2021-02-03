@@ -19,5 +19,5 @@ The default notification library is [Shoutrrr](https://containrrr.dev/shoutrrr/)
 | [Discord](https://containrrr.dev/shoutrrr/services/discord/) | discord://__token__@__channel__ |
 | [Email](https://containrrr.dev/shoutrrr/services/overview/) | smtp://__`username`__:__`password`__@__`host`__:__`port`__/?fromAddress=__`fromAddress`__&toAddresses=__`recipient1`__[,__`recipient2`__,...] |
 | [Pushover](https://containrrr.dev/shoutrrr/services/pushover/) | pushover://shoutrrr:__`apiToken`__@__`userKey`__/?devices=__`device1`__[,__`device2`__, ...] |
- [Slack](./not-documented.md)      | *slack://[__`botname`__@]__`token-a`__/__`token-b`__/__`token-c`__* |
+| [Slack](./not-documented.md)      | *slack://[__`botname`__@]__`token-a`__/__`token-b`__/__`token-c`__* |
 | [Telegram](https://containrrr.dev/shoutrrr/services/telegram/) | telegram://__`token`__@telegram?channels=__`channel-1`__[,__`channel-2`__,...] |
