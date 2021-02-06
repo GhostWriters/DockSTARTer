@@ -25,7 +25,7 @@ install_compose() {
         if vergt "${AVAILABLE_COMPOSE}" "${INSTALLED_COMPOSE}"; then
             local PREVIOUS_COMPOSE
             PREVIOUS_COMPOSE=$(docker images | grep 'compose' || true)
-            if [[ -n "${PREVIOUS_COMPOSE}" ]]; then
+            if [[ -n ${PREVIOUS_COMPOSE} ]]; then
                 info "Removing previous docker-compose images."
                 docker rmi "${PREVIOUS_COMPOSE}" 2> /dev/null || true
             fi
