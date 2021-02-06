@@ -40,7 +40,7 @@ More important than being beautiful is being functional. This repository is prim
       - `- ${DOCKERSTORAGEDIR}:/storage` is always included
   - `<appname>.hostname.yml` sets the hostname to use the `${DOCKERHOSTNAME}` variable
   - `<appname>.netmode.yml` contains the `<APPNAME>_NETWORK_MODE` variable
-  - `<appname>.ports.yml` contains the ports used by the app or a [placeholder](https://github.com/GhostWriters/DockSTARTer/blob/master/compose/.reqs/v1.yml) file if no ports are required
+  - `<appname>.ports.yml` contains the ports used by the app or a [placeholder](https://github.com/GhostWriters/DockSTARTer/blob/master/compose/.reqs/r1.yml) file if no ports are required
   - At least one of the following files must be included:
     - `<appname>.aarch64.yml` defines the aarch64 or arm64 image
     - `<appname>.armv7l.yml` defines the armv7l or armhf image
