@@ -58,7 +58,6 @@ If you want to override the Servers List you'll need to create an [override](htt
 - Add or update your override file to include the example below:
 
   ```yaml
-  version: "3.4"
   services:
     synclounge:
       volumes:

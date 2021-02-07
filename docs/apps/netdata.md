@@ -31,7 +31,6 @@ case you have multiple Netdata servers):
   services:
     netdata:
       hostname: newnetdataname
-  version: "3.4"
   ```
 
 - Once this is done, run `sudo ds -c netdata`
