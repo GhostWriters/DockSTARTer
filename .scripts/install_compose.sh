@@ -24,7 +24,7 @@ install_compose() {
         fi
         if vergt "${AVAILABLE_COMPOSE}" "${INSTALLED_COMPOSE}"; then
             local PREVIOUS_COMPOSE
-            PREVIOUS_COMPOSE=$(docker images --no-trunc --format '{{.ID}} {{.Repository}}' | grep 'compose' | awk '{ print $1 }' | xargs)
+            PREVIOUS_COMPOSE=$(docker images --no-trunc --format '{{.ID}} {{.Repository}}' | grep 'compose' | awk '{ print $1 }' | xargs) || true
             if [[ -n ${PREVIOUS_COMPOSE} ]]; then
                 info "Removing previous docker-compose images."
                 docker rmi "${PREVIOUS_COMPOSE}" 2> /dev/null || true
