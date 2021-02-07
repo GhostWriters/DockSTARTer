@@ -20,55 +20,12 @@ you need assistance setting up this application please visit our
 
 ### Notifications
 
-You can use an override for notifications to your favorite method (E-mail,
-Slack/Discord, MS Teams are supported in Watchtower currently):
+The default notification library is [Shoutrrr](https://containrrr.dev/shoutrrr/). Shoutrrr offers notifications via Discord, Email, Pushover, Slack, Telegram, and [several others](https://containrrr.dev/shoutrrr/services/overview/). Click on the service for a more thorough explanation.
 
-You would want to put this in your
-[override](https://dockstarter.com/overrides/introduction/)
-
-- For Discord/Slack:
-
-```yaml
-  watchtower:
-    environment:
-      - WATCHTOWER_NOTIFICATIONS=slack
-      - WATCHTOWER_NOTIFICATION_SLACK_HOOK_URL=https://url.discord.com/slack
-      - WATCHTOWER_NOTIFICATION_SLACK_IDENTIFIER=watchtower-server-1
-```
-
-- For E-Mail:
-
-```yaml
-  watchtower:
-    environment:
-      - WATCHTOWER_NOTIFICATION_EMAIL_FROM=myemail@gmail.com
-      - WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PASSWORD=secretPassword
-      - WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PORT=587
-      - WATCHTOWER_NOTIFICATION_EMAIL_SERVER_USER=myemail@gmail.com
-      - WATCHTOWER_NOTIFICATION_EMAIL_SERVER=smtp.gmail.com
-      - WATCHTOWER_NOTIFICATION_EMAIL_TO=myemail@gmail.com
-      - WATCHTOWER_NOTIFICATIONS=email
-```
-
-This is what you **could have had** in your override **previously**:
-
-```yaml
-version: "3.4" # this must match the version in docker-compose.yml
-services:
-  netdata:
-    hostname: newhostname
-```
-
-So **now** your override would look like this:
-
-```yaml
-version: "3.4" # this must match the version in docker-compose.yml
-services:
-  netdata:
-    hostname: newhostname
-  watchtower:
-    environment:
-      - WATCHTOWER_NOTIFICATIONS=slack
-      - WATCHTOWER_NOTIFICATION_SLACK_HOOK_URL=https://url.discord.com/slack
-      - WATCHTOWER_NOTIFICATION_SLACK_IDENTIFIER=watchtower-server-1
-```
+| Notification Application | Your DockSTARTer `WATCHTOWER_NOTIFICATION_URL` should follow this: |
+| ------------- |----------------------------------------------------------------------------------------------|
+| [Discord](https://containrrr.dev/shoutrrr/services/discord/) | discord://__token__@__channel__ |
+| [Email](https://containrrr.dev/shoutrrr/services/overview/) | smtp://__`username`__:__`password`__@__`host`__:__`port`__/?fromAddress=__`fromAddress`__&toAddresses=__`recipient1`__[,__`recipient2`__,...] |
+| [Pushover](https://containrrr.dev/shoutrrr/services/pushover/) | pushover://shoutrrr:__`apiToken`__@__`userKey`__/?devices=__`device1`__[,__`device2`__, ...] |
+| [Slack](./not-documented.md)      | slack://[__`botname`__@]__`token-a`__/__`token-b`__/__`token-c`__* |
+| [Telegram](https://containrrr.dev/shoutrrr/services/telegram/) | telegram://__`token`__@telegram?channels=__`channel-1`__[,__`channel-2`__,...] |
