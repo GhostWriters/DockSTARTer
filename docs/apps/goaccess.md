@@ -6,4 +6,16 @@
 
 ## Description
 
-[GoAccess](https://goaccess.io/) is an Alpine linux container which builds GoAccess including GeoIP. It reverse proxies the GoAccess HTML files and websockets through NGINX, allowing GoAccess content to be viewed without any other setup. GoAccess itself is an open source real-time web log analyzer and interactive viewer that runs in a terminal in Linux systems or through your browser. It provides fast and valuable HTTP statistics for system administrators that require a visual server report on the fly.
+[GoAccess](https://goaccess.io/) is an Alpine linux container which builds
+GoAccess including GeoIP. It reverse proxies the GoAccess HTML files and
+websockets through NGINX, allowing GoAccess content to be viewed without any
+other setup. GoAccess itself is an open source real-time web log analyzer and
+interactive viewer that runs in a terminal in Linux systems or through your
+browser. It provides fast and valuable HTTP statistics for system administrators
+that require a visual server report on the fly.
+
+## Install/Setup
+
+This application does not have any specific setup instructions documented. If
+you need assistance setting up this application please visit our
+[support page](https://dockstarter.com/basics/support/).

@@ -6,4 +6,13 @@
 
 ## Description
 
-[Minecraft Bedrock Server](https://www.minecraft.net/en-us/download/server/bedrock) will automatically download the latest stable version at startup. Bedrock Dedicated Server is official server software to host your own server for Minecraft (Bedrock).
+[Minecraft Bedrock Server](https://www.minecraft.net/en-us/download/server/bedrock)
+will automatically download the latest stable version at startup. Bedrock
+Dedicated Server is official server software to host your own server for
+Minecraft (Bedrock).
+
+## Install/Setup
+
+This application does not have any specific setup instructions documented. If
+you need assistance setting up this application please visit our
+[support page](https://dockstarter.com/basics/support/).
