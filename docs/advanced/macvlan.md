@@ -66,7 +66,6 @@ We could connect our containers to `mymacvlan` and call it a day, but it's very 
     composemacvlan:
       external:
         name: mymacvlan
-  version: "3.4"
   ```
 
   The `ipv4` address should fall in the range you reserved.

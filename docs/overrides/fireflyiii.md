@@ -12,7 +12,6 @@
 ### Example Docker Compose Override
 
 ```yaml
-version: "3.4"
 services:
 
   fireflyiii:
