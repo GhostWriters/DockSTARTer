@@ -6,9 +6,17 @@
 
 ## Description
 
-[Plex](https://plex.tv/) organizes video, music and photos from personal media libraries and streams them to smart TVs, streaming boxes and mobile devices. This container is packaged as a standalone Plex Media Server. has always been a top priority. Straightforward design and bulk actions mean getting things done faster.
+[Plex](https://plex.tv/) organizes video, music and photos from personal media
+libraries and streams them to smart TVs, streaming boxes and mobile devices.
+This container is packaged as a standalone Plex Media Server. has always been a
+top priority. Straightforward design and bulk actions mean getting things done
+faster.
 
 ## Install/Setup
+
+This application does not have any specific setup instructions documented. If
+you need assistance setting up this application please visit our
+[support page](https://dockstarter.com/basics/support/).
 
 ### Common Issue: Playback fails for certain media
 
@@ -18,7 +26,8 @@ One possible resolution to this issue is to remove the codecs folder:
 rm -rf "~/.config/appdata/plex/Library/Application Support/Plex Media Server/Codecs"
 ```
 
-Or place a custom init script in your config (ex: `~/.config/appdata/plex/custom-cont-init.d/00-plex-remove-codecs`):
+Or place a custom init script in your config (ex:
+`~/.config/appdata/plex/custom-cont-init.d/00-plex-remove-codecs`):
 
 ```bash
 #!/usr/bin/with-contenv bash
@@ -33,7 +42,8 @@ This will run every time the container restarts.
 
 ### Common Issue: Cannot Claim Server on First Run
 
-If you are starting the Plex container for the first time and cannot claim your server to set it up there are 3 methods you can try to resolve the issue:
+If you are starting the Plex container for the first time and cannot claim your
+server to set it up there are 3 methods you can try to resolve the issue:
 
 #### 1. Set the PLEX_CLAIM variable
 
@@ -60,15 +70,19 @@ sudo nano ~/.docker/compose/.env
 ds -c up plex
 ```
 
-Then try again to claim the server by visiting `http://yourserverip:32400/web/index.html`
+Then try again to claim the server by visiting
+`http://yourserverip:32400/web/index.html`
 
 #### 2. Host Network Mode
 
-If the first method does not work, edit your `.env` and set `PLEX_NETWORK_MODE=host`. Run `ds -c` and then attempt to claim your server. After claiming your server set `PLEX_NETWORK_MODE=` (back to blank).
+If the first method does not work, edit your `.env` and set
+`PLEX_NETWORK_MODE=host`. Run `ds -c` and then attempt to claim your server.
+After claiming your server set `PLEX_NETWORK_MODE=` (back to blank).
 
 #### 3. Claim helper script
 
-If the first and second methods both have not worked this script should make it happen.
+If the first and second methods both have not worked this script should make it
+happen.
 
 ```bash
 docker exec -it plex /bin/bash
@@ -119,14 +133,19 @@ ds -c up plex
 
 ### Rebuilding From Scratch
 
-Thankfully, some of this information is well documented (but not easily found) over on Plex's website here!
+Thankfully, some of this information is well documented (but not easily found)
+over on Plex's website here!
 
-- Moving an installation to another system: [https://support.plex.tv/articles/201370363-move-an-install-to-another-system/](https://support.plex.tv/articles/201370363-move-an-install-to-another-system/)
-- Where is the Plex Media Server data directory? [https://support.plex.tv/articles/202915258-where-is-the-plex-media-server-data-directory-located/](https://support.plex.tv/articles/202915258-where-is-the-plex-media-server-data-directory-located/)
+- Moving an installation to another system:
+  [https://support.plex.tv/articles/201370363-move-an-install-to-another-system/](https://support.plex.tv/articles/201370363-move-an-install-to-another-system/)
+- Where is the Plex Media Server data directory?
+  [https://support.plex.tv/articles/202915258-where-is-the-plex-media-server-data-directory-located/](https://support.plex.tv/articles/202915258-where-is-the-plex-media-server-data-directory-located/)
 
 ### Hardware Transcoding
 
-If you would like to have Plex use a GPU that is attached to your DockSTARTer host, you can do this using an [override](https://dockstarter.com/overrides/introduction/) like so:
+If you would like to have Plex use a GPU that is attached to your DockSTARTer
+host, you can do this using an
+[override](https://dockstarter.com/overrides/introduction/) like so:
 
 ```yaml
   plex:
@@ -134,11 +153,16 @@ If you would like to have Plex use a GPU that is attached to your DockSTARTer ho
       - /dev/dri:/dev/dri
 ```
 
-Refer to this forum post for details: [Using Hardware Acceleration in Docker](https://forums.plex.tv/t/using-hardware-acceleration-in-docker/229702/3)
+Refer to this forum post for details:
+[Using Hardware Acceleration in Docker](https://forums.plex.tv/t/using-hardware-acceleration-in-docker/229702/3)
 
 ### Using fast or large storage for specific Plex configs
 
-By default Plex will Cache, Log, Transcode, and store metadata to the config folder for Plex (usually `~/.config/appdata/plex/`). You may wish to use other disks that are faster, or have more space available for these things. You can do this using an [override](https://dockstarter.com/overrides/introduction/) like so:
+By default Plex will Cache, Log, Transcode, and store metadata to the config
+folder for Plex (usually `~/.config/appdata/plex/`). You may wish to use other
+disks that are faster, or have more space available for these things. You can do
+this using an [override](https://dockstarter.com/overrides/introduction/) like
+so:
 
 ```yaml
   plex:
@@ -150,4 +174,8 @@ By default Plex will Cache, Log, Transcode, and store metadata to the config fol
       - "/mnt/fastDisk/transcode:/config/Library/Application Support/Plex Media Server/Cache/Transcode/Sessions"
 ```
 
-These volumes are all optional. If your config folder runs on an SSD with enough space you might not need any of them. If your config is stored on an SSD with very little space, you might only relocate the ones above that mention `bigDisk`. If your config is stored on a slower disk with plenty of space you might only relocate the ones above that mention `fastDisk`.
+These volumes are all optional. If your config folder runs on an SSD with enough
+space you might not need any of them. If your config is stored on an SSD with
+very little space, you might only relocate the ones above that mention
+`bigDisk`. If your config is stored on a slower disk with plenty of space you
+might only relocate the ones above that mention `fastDisk`.

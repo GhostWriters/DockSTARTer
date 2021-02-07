@@ -6,4 +6,13 @@
 
 ## Description
 
-[CouchPotato](https://couchpota.to/) is an automatic NZB and torrent downloader. You can keep a movies `I Want` list and it will search for NZBs/torrents of these movies every X hours. Once a movie is found, it will send it to SABnzbd or download the torrent to a specified directory.
+[CouchPotato](https://couchpota.to/) is an automatic NZB and torrent downloader.
+You can keep a movies `I Want` list and it will search for NZBs/torrents of
+these movies every X hours. Once a movie is found, it will send it to SABnzbd or
+download the torrent to a specified directory.
+
+## Install/Setup
+
+This application does not have any specific setup instructions documented. If
+you need assistance setting up this application please visit our
+[support page](https://dockstarter.com/basics/support/).
