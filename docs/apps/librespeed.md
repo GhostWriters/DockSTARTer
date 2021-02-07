@@ -6,4 +6,12 @@
 
 ## Description
 
-[Librespeed](https://github.com/librespeed/speedtest) is a very lightweight Speedtest implemented in Javascript, using XMLHttpRequest and Web Workers. No Flash, No Java, No Websocket, No Bullshit.
+[Librespeed](https://github.com/librespeed/speedtest) is a very lightweight
+Speedtest implemented in Javascript, using XMLHttpRequest and Web Workers. No
+Flash, No Java, No Websocket, No Bullshit.
+
+## Install/Setup
+
+This application does not have any specific setup instructions documented. If
+you need assistance setting up this application please visit our
+[support page](https://dockstarter.com/basics/support/).

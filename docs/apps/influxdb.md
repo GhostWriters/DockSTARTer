@@ -6,4 +6,13 @@
 
 ## Description
 
-[InfluxDB](https://www.influxdata.com/) is an open source time series platform. This includes APIs for storing and querying data, processing it in the background for ETL or monitoring and alerting purposes, user dashboards, and visualizing and exploring the data and more.
+[InfluxDB](https://www.influxdata.com/) is an open source time series platform.
+This includes APIs for storing and querying data, processing it in the
+background for ETL or monitoring and alerting purposes, user dashboards, and
+visualizing and exploring the data and more.
+
+## Install/Setup
+
+This application does not have any specific setup instructions documented. If
+you need assistance setting up this application please visit our
+[support page](https://dockstarter.com/basics/support/).
