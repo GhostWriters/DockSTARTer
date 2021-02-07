@@ -6,4 +6,12 @@
 
 ## Description
 
-[Ubooquity](https://vaemendis.net/ubooquity/) is a free, lightweight and easy-to-use home server for your comics and ebooks. Use it to access your files from anywhere, with a tablet, an e-reader, a phone or a computer.
+[Ubooquity](https://vaemendis.net/ubooquity/) is a free, lightweight and
+easy-to-use home server for your comics and ebooks. Use it to access your files
+from anywhere, with a tablet, an e-reader, a phone or a computer.
+
+## Install/Setup
+
+This application does not have any specific setup instructions documented. If
+you need assistance setting up this application please visit our
+[support page](https://dockstarter.com/basics/support/).

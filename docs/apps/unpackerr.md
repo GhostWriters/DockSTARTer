@@ -6,6 +6,15 @@
 
 ## Description
 
-Unpackerr runs as a daemon on your download host. It checks for completed downloads and extracts them so Radarr, Lidarr, Sonarr, and Readarr may import them. There are a handful of options out there for extracting and deleting files after your client downloads them. I just didn't care for any of them, so I wrote my own. I wanted a small single-binary with reasonable logging that can extract downloaded archives and clean up the mess after they've been imported.
+Unpackerr runs as a daemon on your download host. It checks for completed
+downloads and extracts them so Radarr, Lidarr, Sonarr, and Readarr may import
+them. There are a handful of options out there for extracting and deleting files
+after your client downloads them. I just didn't care for any of them, so I wrote
+my own. I wanted a small single-binary with reasonable logging that can extract
+downloaded archives and clean up the mess after they've been imported.
 
 ## Install/Setup
+
+This application does not have any specific setup instructions documented. If
+you need assistance setting up this application please visit our
+[support page](https://dockstarter.com/basics/support/).

@@ -6,4 +6,12 @@
 
 ## Description
 
-[Booksonic](https://booksonic.org/) is a server and an app for streaming your audiobooks to any pc or android phone. Most of the functionality is also available on other platforms that have apps for subsonic.
+[Booksonic](https://booksonic.org/) is a server and an app for streaming your
+audiobooks to any pc or android phone. Most of the functionality is also
+available on other platforms that have apps for subsonic.
+
+## Install/Setup
+
+This application does not have any specific setup instructions documented. If
+you need assistance setting up this application please visit our
+[support page](https://dockstarter.com/basics/support/).
