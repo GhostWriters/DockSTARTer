@@ -9,3 +9,4 @@ share/
 shared/
 site/
 debug.log
+.vscode
