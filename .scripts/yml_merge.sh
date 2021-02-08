@@ -12,8 +12,8 @@ yml_merge() {
     {
         echo "export YQ_OPTIONS=\"${YQ_OPTIONS:-} -v ${SCRIPTPATH}:${SCRIPTPATH}\""
         echo "yq -y -s 'reduce .[] as \$item ({}; . * \$item)' "\\
-        echo "\"${SCRIPTPATH}/compose/.reqs/v1.yml\" \\"
-        echo "\"${SCRIPTPATH}/compose/.reqs/v2.yml\" \\"
+        echo "\"${SCRIPTPATH}/compose/.reqs/r1.yml\" \\"
+        echo "\"${SCRIPTPATH}/compose/.reqs/r2.yml\" \\"
     } >> "${RUNFILE}"
     info "Required files included."
     notice "Adding compose configurations for enabled apps. Please be patient, this can take a while."

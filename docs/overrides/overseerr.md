@@ -12,7 +12,6 @@
 ### Example Docker Compose Override
 
 ```yaml
-version: "3.4"
   overseerr:
     container_name: overseerr
     image: ghcr.io/hotio/overseerr

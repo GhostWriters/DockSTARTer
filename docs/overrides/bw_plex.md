@@ -21,7 +21,6 @@ BW_PLEX_URL=http://plex:32400
 ### Example Docker Compose Override
 
 ```yaml
-version: "3.4"
 services:
 
   bw_plex:

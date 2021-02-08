@@ -6,4 +6,14 @@
 
 ## Description
 
-[Lidarr](https://lidarr.audio/) is a music collection manager for Usenet and BitTorrent users. It can monitor multiple RSS feeds for new tracks from your favorite artists and will grab, sort and rename them. It can also be configured to automatically upgrade the quality of files already downloaded when a better quality format becomes available.
+[Lidarr](https://lidarr.audio/) is a music collection manager for Usenet and
+BitTorrent users. It can monitor multiple RSS feeds for new tracks from your
+favorite artists and will grab, sort and rename them. It can also be configured
+to automatically upgrade the quality of files already downloaded when a better
+quality format becomes available.
+
+## Install/Setup
+
+This application does not have any specific setup instructions documented. If
+you need assistance setting up this application please visit our
+[support page](https://dockstarter.com/basics/support/).

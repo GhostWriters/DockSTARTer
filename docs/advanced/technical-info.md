@@ -14,12 +14,11 @@ _Compose_ works by reading [YAML (*.yml)](https://en.wikipedia.org/wiki/YAML#Exa
 YML files are akin to XML files and below is an example:
 
 ```yaml
-version:             "3.6"
 services:
   sonarr:
-    image:           containers_author/sonarr
+    image: containers_author/sonarr
     container_name:  sonarr
-    restart:         unless-stopped
+    restart: unless-stopped
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

@@ -20,7 +20,6 @@ The below example will change Sonarr to use hotio's image for Sonarr and add a /
 ### Partial Override Merge Example
 
 ```yaml
-version: "3.4"  # this must match the version in docker-compose.yml
 services:
   sonarr:
     image: hotio/sonarr
@@ -37,7 +36,6 @@ The below example will use the override file to add a app that is not in DS alre
 ### Full App Override Example
 
 ```yaml
-version: "3.4"  # this must match the version in docker-compose.yml
 services:
   alltube:
     container_name: alltube

@@ -29,7 +29,6 @@ Nginx Proxy Manager requires a Configuration file named `config.json`. This file
 ### Example Docker Compose Override
 
 ```yaml
-version: "3.4"
 services:
 
   proxymanager:
