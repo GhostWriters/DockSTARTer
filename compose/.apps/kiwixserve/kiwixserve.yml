@@ -2,10 +2,10 @@ services:
   kiwixserve:
     container_name: kiwixserve
     environment:
+      - DOWNLOAD=${KIWIXSERVE_DOWNLOAD}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-      - "DOWNLOAD=${KIWIXSERVE_DOWNLOAD}"
     logging:
       driver: json-file
       options:
