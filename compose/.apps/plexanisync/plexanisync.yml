@@ -1,6 +1,5 @@
 services:
   plexanisync:
-    command: /runsync.sh
     container_name: plexanisync
     environment:
       - ANI_TOKEN=${PLEXANISYNC_ANI_TOKEN}
