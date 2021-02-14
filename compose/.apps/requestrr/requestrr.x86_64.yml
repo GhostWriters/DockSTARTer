@@ -1,3 +1,3 @@
 services:
   requestrr:
-    image: hotio/requestrr
+    image: gchr.io/hotio/requestrr

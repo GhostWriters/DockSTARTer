@@ -2,7 +2,6 @@ services:
   unpackerr:
     container_name: unpackerr
     environment:
-      - DEBUG=${UNPACKERR_DEBUG}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
