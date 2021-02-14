@@ -1,15 +1,14 @@
 services:
-  plexanisync:
-    container_name: plexanisync
+  tdarrnode:
+    container_name: tdarrnode
     environment:
-      - ANI_TOKEN=${PLEXANISYNC_ANI_TOKEN}
-      - ANI_USERNAME=${PLEXANISYNC_ANI_USERNAME}
-      - INTERVAL=${PLEXANISYNC_INTERVAL}
+      - nodeID=${TDARRNODE_ID}
+      - nodeIP=${TDARRNODE_NODE_IP}
+      - nodePort=${TDARRNODE_NODE_PORT}
       - PGID=${PGID}
-      - PLEX_SECTION=${PLEXANISYNC_PLEX_SECTION}
-      - PLEX_TOKEN=${PLEXANISYNC_PLEX_TOKEN}
-      - PLEX_URL=${PLEXANISYNC_PLEX_URL}
       - PUID=${PUID}
+      - serverIP=${TDARRNODE_SERVERIP}
+      - serverPort=${TDARRNODE_SERVERPORT}
       - TZ=${TZ}
     logging:
       driver: json-file
@@ -20,3 +19,4 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERSTORAGEDIR}:/storage
+      - ${TDARRNODE_TRANSCODE_CACHE}:/temp
