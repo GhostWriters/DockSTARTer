@@ -2,7 +2,6 @@ services:
   duplicacy:
     container_name: duplicacy
     environment:
-      - DEBUG={DUPLICACY_DEBUG}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}

@@ -17,4 +17,3 @@ services:
       com.dockstarter.appvars.unpackerr_radarr_url: "http://radarr:7878"
       com.dockstarter.appvars.unpackerr_sonarr_api_key: ""
       com.dockstarter.appvars.unpackerr_sonarr_url: "http://sonarr:8989"
-      com.dockstarter.appvars.unpackerr_debug: "yes"
