@@ -2,7 +2,6 @@ services:
   requestrr:
     container_name: requestrr
     environment:
-      - DEBUG=${REQUESTRR_DEBUG}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
