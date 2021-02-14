@@ -15,4 +15,3 @@ services:
       com.dockstarter.appvars.cloudflareddns_recordtypes: "A"
       com.dockstarter.appvars.cloudflareddns_user: ""
       com.dockstarter.appvars.cloudflareddns_zones: ""
-      com.dockstarter.appvars.cloudflareddns_debug: "yes"
