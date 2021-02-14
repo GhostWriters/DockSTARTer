@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 install_docker() {
-    local MINIMUM_DOCKER="17.09.0"
+    local MINIMUM_DOCKER="19.03.0"
     # Find minimum compatible version at https://docs.docker.com/engine/release-notes/
     run_script 'remove_snap_docker'
     local INSTALLED_DOCKER
