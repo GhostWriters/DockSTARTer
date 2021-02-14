@@ -184,6 +184,7 @@ nav:
       - apps/syncthing.md
       - apps/tautulli.md
       - apps/tdarr.md
+      - apps/tdarrnode.md
       - apps/telegraf.md
       - apps/thelounge.md
       - apps/traktarr.md
