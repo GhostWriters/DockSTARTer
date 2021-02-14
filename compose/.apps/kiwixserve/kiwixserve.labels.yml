@@ -1,0 +1,10 @@
+services:
+  kiwixserve:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Kiwix HTTP daemon"
+      com.dockstarter.appinfo.nicename: "Kiwixserve"
+      com.dockstarter.appvars.kiwixserve_downloads: "https://download.kiwix.org/zim/wikipedia_en_all_maxi.zim"
+      com.dockstarter.appvars.kiwixserve_enabled: "false"
+      com.dockstarter.appvars.kiwixserve_network_mode: ""
+      com.dockstarter.appvars.kiwixserve_port_80: "80"
