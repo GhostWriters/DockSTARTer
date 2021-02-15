@@ -5,7 +5,7 @@ services:
       com.dockstarter.appinfo.description: "Tdarr Node is a self hosted module used for encoding in conjuction with Tdarr"
       com.dockstarter.appinfo.nicename: "TdarrNode"
       com.dockstarter.appvars.tdarrnode_enabled: "false"
-      com.dockstarter.appvars.tdarrnode_id: "Tdarr Node"
+      com.dockstarter.appvars.tdarrnode_id: "TdarrNode"
       com.dockstarter.appvars.tdarrnode_network_mode: ""
       com.dockstarter.appvars.tdarrnode_node_ip: "tdarrnode"
       com.dockstarter.appvars.tdarrnode_node_port: "8267"
