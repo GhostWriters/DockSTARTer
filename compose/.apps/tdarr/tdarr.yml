@@ -5,9 +5,9 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - serverIP=${TDARR_SERVERIP}
-      - serverPort=${TDARR_SERVERPORT}
+      - serverPort=${TDARR_PORT_8266}
       - TZ=${TZ}
-      - webUIPort=${TDARR_WEBUIPORT}
+      - webUIPort=${TDARR_PORT_8265}
     logging:
       driver: json-file
       options:
