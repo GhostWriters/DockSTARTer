@@ -209,6 +209,7 @@ nav:
       - overrides/introduction.md
       - overrides/autoscan.md
       - overrides/bw_plex.md
+      - overrides/conreq.md
       - overrides/dashmachine.md
       - overrides/fireflyiii.md
       - overrides/kitana.md
