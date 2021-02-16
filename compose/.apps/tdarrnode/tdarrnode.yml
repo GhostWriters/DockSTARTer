@@ -2,9 +2,9 @@ services:
   tdarrnode:
     container_name: tdarrnode
     environment:
-      - nodeID=${TDARRNODE_ID}
-      - nodeIP=${TDARRNODE_NODE_IP}
-      - nodePort=${TDARRNODE_NODE_PORT}
+      - nodeID=${TDARRNODE_NODEID}
+      - nodeIP=${TDARRNODE_NODEIP}
+      - nodePort=${TDARRNODE_PORT_8267}
       - PGID=${PGID}
       - PUID=${PUID}
       - serverIP=${TDARRNODE_SERVERIP}
