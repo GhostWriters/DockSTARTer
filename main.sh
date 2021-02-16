@@ -71,9 +71,7 @@ readonly SCRIPTNAME
 cleanup() {
     local -ri EXIT_CODE=$?
     sudo sh -c "cat ${LOG_TEMP:-/dev/null} >> ${SCRIPTPATH}/dockstarter.log" || true
-    local TRUNCATED_LOG
-    TRUNCATED_LOG=$(tail -1000 "${SCRIPTPATH}/dockstarter.log")
-    sudo sh -c "echo \"${TRUNCATED_LOG}\" > ${SCRIPTPATH}/dockstarter.log" || true
+    sudo sh -c "echo \"$(tail -1000 "${SCRIPTPATH}/dockstarter.log")\" > ${SCRIPTPATH}/dockstarter.log" || true
     sudo -E chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || true
 
     if [[ ${CI:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == false ]]; then
