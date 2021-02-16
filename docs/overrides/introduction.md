@@ -21,6 +21,7 @@ The below example will change Sonarr to use hotio's image for Sonarr and add a /
 
 ```yaml
 services:
+
   sonarr:
     image: hotio/sonarr
     volumes:
@@ -37,6 +38,7 @@ The below example will use the override file to add a app that is not in DS alre
 
 ```yaml
 services:
+
   alltube:
     container_name: alltube
     environment:
