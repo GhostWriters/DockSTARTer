@@ -4,11 +4,11 @@ IFS=$'\n\t'
 
 menu_config() {
     local CONFIGOPTS=()
-    CONFIGOPTS+=("Full Setup " "")
-    CONFIGOPTS+=("Select Apps " "")
-    CONFIGOPTS+=("Set App Variables " "")
-    CONFIGOPTS+=("Set VPN Variables " "")
-    CONFIGOPTS+=("Set Global Variables " "")
+    CONFIGOPTS+=("Full Setup " "This goes through all menus below. Recommended for first run")
+    CONFIGOPTS+=("Select Apps " "Select which apps to run. Previously enabled apps are remembered")
+    CONFIGOPTS+=("Set App Variables " "Review and adjust variables for enabled apps")
+    CONFIGOPTS+=("Set VPN Variables " "Review and adjust VPN specific variables")
+    CONFIGOPTS+=("Set Global Variables " "Review and adjust global variables")
 
     local CONFIGCHOICE
     if [[ ${CI:-} == true ]]; then
