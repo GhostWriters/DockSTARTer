@@ -23,4 +23,5 @@ services:
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/cloudflareddns:/config
       - ${DOCKERSTORAGEDIR}:/storage
