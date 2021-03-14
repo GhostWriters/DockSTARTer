@@ -2,7 +2,7 @@ services:
   kiwixserve:
     container_name: kiwixserve
     environment:
-      - DOWNLOAD=${KIWIXSERVE_DOWNLOAD}
+      - DOWNLOAD=${KIWIXSERVE_DOWNLOADS}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
