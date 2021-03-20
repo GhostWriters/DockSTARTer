@@ -215,6 +215,7 @@ nav:
       - overrides/kitana.md
       - overrides/nginxproxymanager.md
       - overrides/overseerr.md
+      - overrides/petio.md
       - overrides/plpp.md
       - overrides/requestrr.md
       - overrides/yacreader.md
