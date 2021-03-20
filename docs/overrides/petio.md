@@ -15,27 +15,37 @@
 services:
 
   petio:
-    image: ghcr.io/hotio/petio
-    hostname: ${DOCKERHOSTNAME}
     container_name: petio
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
       - TZ=${TZ}
+    hostname: ${DOCKERHOSTNAME}
+    image: ghcr.io/hotio/petio
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
     ports:
-      - "7777:7777"
+      - 7777:7777
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/petio:/config
   mongo:
-    image: mongo
-    hostname: ${DOCKERHOSTNAME}
     container_name: mongo
-    user: "1000:1000"
     environment:
       - TZ=${TZ}
+    hostname: ${DOCKERHOSTNAME}
+    image: mongo
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    ports:
+      - 27017:27017
     restart: unless-stopped
+    user: ${PUID}:${PGID}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/mongo:/data/configdb
