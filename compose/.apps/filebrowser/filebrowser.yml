@@ -19,3 +19,5 @@ services:
       - ${DOCKERCONFDIR}/filebrowser:/config
       - ${DOCKERSTORAGEDIR}:/storage
       - ${FILEBROWSER_SHARE_DIR}:/srv
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fs http://localhost:${FILEBROWSER_PORT_80}/health || exit 1"]
