@@ -2,9 +2,10 @@ services:
   guacamole:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Web application to remote desktop"
-      com.dockstarter.appinfo.nicename: "Guacamole"
+      com.dockstarter.appinfo.description: Web application to remote desktop
+      com.dockstarter.appinfo.nicename: Guacamole
       com.dockstarter.appvars.guacamole_enabled: "false"
       com.dockstarter.appvars.guacamole_extensions: ""
       com.dockstarter.appvars.guacamole_network_mode: ""
       com.dockstarter.appvars.guacamole_port_8080: "8080"
+      com.dockstarter.appvars.guacamole_restart: unless-stopped

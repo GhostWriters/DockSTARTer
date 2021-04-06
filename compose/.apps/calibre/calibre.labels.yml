@@ -2,8 +2,8 @@ services:
   calibre:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Easy to use e-book manager"
-      com.dockstarter.appinfo.nicename: "Calibre"
+      com.dockstarter.appinfo.description: Easy to use e-book manager
+      com.dockstarter.appinfo.nicename: Calibre
       com.dockstarter.appvars.calibre_cli_args: ""
       com.dockstarter.appvars.calibre_enabled: "false"
       com.dockstarter.appvars.calibre_guac_pass: ""
@@ -11,4 +11,5 @@ services:
       com.dockstarter.appvars.calibre_network_mode: ""
       com.dockstarter.appvars.calibre_port_8080: "8080"
       com.dockstarter.appvars.calibre_port_8081: "8081"
+      com.dockstarter.appvars.calibre_restart: unless-stopped
       com.dockstarter.appvars.calibre_use_dark_palette: "1"

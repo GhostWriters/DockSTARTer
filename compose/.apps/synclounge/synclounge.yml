@@ -3,7 +3,7 @@ services:
     container_name: synclounge
     environment:
       - AUTH_LIST=${SYNCLOUNGE_AUTH_LIST}
-      - AUTOJOIN_ENABLED=${SYNCLOUNGE_AUTOJOIN_ENABLED}
+      - AUTOJOIN_ENABLED=${SYNCLOUNGE_AUTOJOIN_ENABLE}
       - AUTOJOIN_PASSWORD=${SYNCLOUNGE_AUTOJOIN_PASSWORD}
       - AUTOJOIN_ROOM=${SYNCLOUNGE_AUTOJOIN_ROOM}
       - EXTERNAL_SERVER_PORT=${SYNCLOUNGE_EXTERNAL_SERVER_PORT}
@@ -14,7 +14,7 @@ services:
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    restart: unless-stopped
+    restart: ${SYNCLOUNGE_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERSTORAGEDIR}:/storage

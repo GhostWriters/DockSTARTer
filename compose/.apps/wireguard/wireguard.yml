@@ -19,7 +19,7 @@ services:
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    restart: unless-stopped
+    restart: ${WIREGUARD_RESTART}
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
     volumes:

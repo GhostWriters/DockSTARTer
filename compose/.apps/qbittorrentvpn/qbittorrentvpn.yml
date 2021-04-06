@@ -24,7 +24,7 @@ services:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
     privileged: true
-    restart: unless-stopped
+    restart: ${QBITTORRENTVPN_RESTART}
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
     volumes:

@@ -11,7 +11,7 @@ services:
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    restart: unless-stopped
+    restart: ${NETDATA_RESTART}
     security_opt:
       - apparmor:unconfined
     volumes:
