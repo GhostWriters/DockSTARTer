@@ -2,11 +2,11 @@ services:
   airsonic:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Web-based media streamer providing ubiquitious access to your music"
-      com.dockstarter.appinfo.nicename: "Airsonic"
-      com.dockstarter.appvars.airsonic_context_path: "/airsonic"
+      com.dockstarter.appinfo.description: Web-based media streamer providing ubiquitious access to your music
+      com.dockstarter.appinfo.nicename: Airsonic
+      com.dockstarter.appvars.airsonic_context_path: /airsonic
       com.dockstarter.appvars.airsonic_enabled: "false"
-      com.dockstarter.appvars.airsonic_restart: "unless-stopped"
       com.dockstarter.appvars.airsonic_java_opts: ""
       com.dockstarter.appvars.airsonic_network_mode: ""
       com.dockstarter.appvars.airsonic_port_4040: "4040"
+      com.dockstarter.appvars.airsonic_restart: unless-stopped

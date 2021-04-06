@@ -2,11 +2,11 @@ services:
   codeserver:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "VS Code running on a remote server, accessible through the browser"
-      com.dockstarter.appinfo.nicename: "codeserver"
+      com.dockstarter.appinfo.description: VS Code running on a remote server, accessible through the browser
+      com.dockstarter.appinfo.nicename: codeserver
       com.dockstarter.appvars.codeserver_enabled: "false"
-      com.dockstarter.appvars.codeserver_restart: "unless-stopped"
       com.dockstarter.appvars.codeserver_network_mode: ""
       com.dockstarter.appvars.codeserver_password: ""
       com.dockstarter.appvars.codeserver_port_8443: "8443"
+      com.dockstarter.appvars.codeserver_restart: unless-stopped
       com.dockstarter.appvars.codeserver_sudo_password: ""

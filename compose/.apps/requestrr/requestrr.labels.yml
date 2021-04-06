@@ -2,9 +2,9 @@ services:
   requestrr:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Requestrr is a chatbot used to simplify using services like Sonarr/Radarr/Ombi via the use of chat!"
-      com.dockstarter.appinfo.nicename: "Requestrr"
+      com.dockstarter.appinfo.description: Requestrr is a chatbot used to simplify using services like Sonarr/Radarr/Ombi via the use of chat!
+      com.dockstarter.appinfo.nicename: Requestrr
       com.dockstarter.appvars.requestrr_enabled: "false"
-      com.dockstarter.appvars.requestrr_restart: "unless-stopped"
       com.dockstarter.appvars.requestrr_network_mode: ""
       com.dockstarter.appvars.requestrr_port_4545: "4545"
+      com.dockstarter.appvars.requestrr_restart: unless-stopped

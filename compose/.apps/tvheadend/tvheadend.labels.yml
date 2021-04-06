@@ -2,12 +2,12 @@ services:
   tvheadend:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "TV streaming server and recorder"
-      com.dockstarter.appinfo.nicename: "Tvheadend"
+      com.dockstarter.appinfo.description: TV streaming server and recorder
+      com.dockstarter.appinfo.nicename: Tvheadend
       com.dockstarter.appvars.tvheadend_enabled: "false"
-      com.dockstarter.appvars.tvheadend_restart: "unless-stopped"
       com.dockstarter.appvars.tvheadend_network_mode: ""
       com.dockstarter.appvars.tvheadend_port_9981: "9981"
       com.dockstarter.appvars.tvheadend_port_9982: "9982"
-      com.dockstarter.appvars.tvheadend_recordingsdir: "/mnt/recordings"
+      com.dockstarter.appvars.tvheadend_recordingsdir: /mnt/recordings
+      com.dockstarter.appvars.tvheadend_restart: unless-stopped
       com.dockstarter.appvars.tvheadend_run_opts: ""

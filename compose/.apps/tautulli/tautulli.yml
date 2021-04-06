@@ -14,7 +14,5 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/tautulli:/config
-      - >-
-        ${DOCKERCONFDIR}/plex/Library/Application Support/Plex Media
-        Server/Logs:/logs:ro
+      - ${DOCKERCONFDIR}/plex/Library/Application Support/Plex Media Server/Logs:/logs:ro
       - ${DOCKERSTORAGEDIR}:/storage

@@ -2,10 +2,10 @@ services:
   heimdall:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Application dashboard and launcher"
-      com.dockstarter.appinfo.nicename: "Heimdall"
+      com.dockstarter.appinfo.description: Application dashboard and launcher
+      com.dockstarter.appinfo.nicename: Heimdall
       com.dockstarter.appvars.heimdall_enabled: "false"
-      com.dockstarter.appvars.heimdall_restart: "unless-stopped"
       com.dockstarter.appvars.heimdall_network_mode: ""
       com.dockstarter.appvars.heimdall_port_443: "447"
       com.dockstarter.appvars.heimdall_port_80: "8002"
+      com.dockstarter.appvars.heimdall_restart: unless-stopped

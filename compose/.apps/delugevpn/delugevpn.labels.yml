@@ -2,11 +2,10 @@ services:
   delugevpn:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Deluge, OpenVPN and Privoxy"
-      com.dockstarter.appinfo.nicename: "DelugeVPN"
+      com.dockstarter.appinfo.description: Deluge, OpenVPN and Privoxy
+      com.dockstarter.appinfo.nicename: DelugeVPN
       com.dockstarter.appvars.delugevpn_enable_privoxy: "no"
       com.dockstarter.appvars.delugevpn_enabled: "false"
-      com.dockstarter.appvars.delugevpn_restart: "unless-stopped"
       com.dockstarter.appvars.delugevpn_network_mode: ""
       com.dockstarter.appvars.delugevpn_port_51413: "51413"
       com.dockstarter.appvars.delugevpn_port_58846: "58846"
@@ -14,3 +13,4 @@ services:
       com.dockstarter.appvars.delugevpn_port_6881: "6881"
       com.dockstarter.appvars.delugevpn_port_8112: "8112"
       com.dockstarter.appvars.delugevpn_port_8118: "8118"
+      com.dockstarter.appvars.delugevpn_restart: unless-stopped

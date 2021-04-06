@@ -7,6 +7,10 @@ services:
       - FB_LOG=${FILEBROWSER_LOG}
       - FB_PORT=${FILEBROWSER_PORT_80}
       - TZ=${TZ}
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - curl -fs http://localhost:${FILEBROWSER_PORT_80}/health || exit 1
     logging:
       driver: json-file
       options:
@@ -19,5 +23,3 @@ services:
       - ${DOCKERCONFDIR}/filebrowser:/config
       - ${DOCKERSTORAGEDIR}:/storage
       - ${FILEBROWSER_SHARE_DIR}:/srv
-    healthcheck:
-      test: ["CMD-SHELL", "curl -fs http://localhost:${FILEBROWSER_PORT_80}/health || exit 1"]

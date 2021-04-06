@@ -1,6 +1,6 @@
 services:
   portainer:
-    command: -H unix:///var/run/docker.sock
+    command: "-H unix:///var/run/docker.sock"
     container_name: portainer
     environment:
       - TZ=${TZ}

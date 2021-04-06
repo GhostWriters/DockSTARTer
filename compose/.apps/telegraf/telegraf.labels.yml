@@ -2,11 +2,11 @@ services:
   telegraf:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Agent for collecting metrics and writing them to InfluxDB"
-      com.dockstarter.appinfo.nicename: "Telegraf"
+      com.dockstarter.appinfo.description: Agent for collecting metrics and writing them to InfluxDB
+      com.dockstarter.appinfo.nicename: Telegraf
       com.dockstarter.appvars.telegraf_enabled: "false"
-      com.dockstarter.appvars.telegraf_restart: "unless-stopped"
       com.dockstarter.appvars.telegraf_network_mode: ""
       com.dockstarter.appvars.telegraf_port_8092: "8092"
       com.dockstarter.appvars.telegraf_port_8094: "8094"
       com.dockstarter.appvars.telegraf_port_8125: "8125"
+      com.dockstarter.appvars.telegraf_restart: unless-stopped
