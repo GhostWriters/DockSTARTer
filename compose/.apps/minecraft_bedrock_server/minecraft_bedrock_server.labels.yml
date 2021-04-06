@@ -5,6 +5,7 @@ services:
       com.dockstarter.appinfo.description: "Minecraft Bedrock Server"
       com.dockstarter.appinfo.nicename: "Minecraft_Bedrock_Server"
       com.dockstarter.appvars.minecraft_bedrock_server_enabled: "false"
+      com.dockstarter.appvars.minecraft_bedrock_server_restart: "unless-stopped"
       com.dockstarter.appvars.minecraft_bedrock_server_eula: "TRUE"
       com.dockstarter.appvars.minecraft_bedrock_server_network_mode: ""
       com.dockstarter.appvars.minecraft_bedrock_server_port_19132: "19132"

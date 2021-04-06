@@ -6,6 +6,7 @@ services:
       com.dockstarter.appinfo.nicename: "Watchtower"
       com.dockstarter.appvars.watchtower_cleanup: "true"
       com.dockstarter.appvars.watchtower_enabled: "true"
+      com.dockstarter.appvars.watchtower_restart: "unless-stopped"
       com.dockstarter.appvars.watchtower_include_stopped: "false"
       com.dockstarter.appvars.watchtower_monitor_only: "false"
       com.dockstarter.appvars.watchtower_network_mode: ""

@@ -11,6 +11,7 @@ services:
       com.dockstarter.appvars.amd_download_mode: "wanted"
       com.dockstarter.appvars.amd_downloads: "/storage/downloads"
       com.dockstarter.appvars.amd_enabled: "false"
+      com.dockstarter.appvars.amd_restart: "unless-stopped"
       com.dockstarter.appvars.amd_file_permissions: "666"
       com.dockstarter.appvars.amd_folder_permissions: "766"
       com.dockstarter.appvars.amd_format: "FLAC"

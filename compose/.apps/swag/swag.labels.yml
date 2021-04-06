@@ -8,6 +8,7 @@ services:
       com.dockstarter.appvars.swag_duckdnstoken: ""
       com.dockstarter.appvars.swag_email: ""
       com.dockstarter.appvars.swag_enabled: "false"
+      com.dockstarter.appvars.swag_restart: "unless-stopped"
       com.dockstarter.appvars.swag_extra_domains: ""
       com.dockstarter.appvars.swag_maxminddb_license_key: ""
       com.dockstarter.appvars.swag_network_mode: ""

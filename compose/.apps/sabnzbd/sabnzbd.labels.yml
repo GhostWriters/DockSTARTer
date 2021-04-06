@@ -5,5 +5,6 @@ services:
       com.dockstarter.appinfo.description: "NZB Newsgrabber / Downloader"
       com.dockstarter.appinfo.nicename: "SABnzbd"
       com.dockstarter.appvars.sabnzbd_enabled: "false"
+      com.dockstarter.appvars.sabnzbd_restart: "unless-stopped"
       com.dockstarter.appvars.sabnzbd_network_mode: ""
       com.dockstarter.appvars.sabnzbd_port_8080: "8080"

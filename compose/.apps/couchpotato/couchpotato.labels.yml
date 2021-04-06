@@ -5,5 +5,6 @@ services:
       com.dockstarter.appinfo.description: "Movies PVR Client"
       com.dockstarter.appinfo.nicename: "CouchPotato"
       com.dockstarter.appvars.couchpotato_enabled: "false"
+      com.dockstarter.appvars.couchpotato_restart: "unless-stopped"
       com.dockstarter.appvars.couchpotato_network_mode: ""
       com.dockstarter.appvars.couchpotato_port_5050: "5050"

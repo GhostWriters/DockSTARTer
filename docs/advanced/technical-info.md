@@ -18,7 +18,7 @@ services:
   sonarr:
     image: containers_author/sonarr
     container_name:  sonarr
-    restart: unless-stopped
+    restart: ${SONARR_RESTART}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

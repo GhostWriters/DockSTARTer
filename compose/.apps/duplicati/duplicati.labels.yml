@@ -6,6 +6,7 @@ services:
       com.dockstarter.appinfo.nicename: "Duplicati"
       com.dockstarter.appvars.duplicati_backupsdir: "~/.config/appdata/backups"
       com.dockstarter.appvars.duplicati_enabled: "false"
+      com.dockstarter.appvars.duplicati_restart: "unless-stopped"
       com.dockstarter.appvars.duplicati_network_mode: ""
       com.dockstarter.appvars.duplicati_port_8200: "8200"
       com.dockstarter.appvars.duplicati_sourcedir: "~/.config/appdata"

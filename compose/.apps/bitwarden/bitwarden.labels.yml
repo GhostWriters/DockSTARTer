@@ -10,6 +10,7 @@ services:
       com.dockstarter.appvars.bitwarden_domain: ""
       com.dockstarter.appvars.bitwarden_enable_db_wal: "true"
       com.dockstarter.appvars.bitwarden_enabled: "false"
+      com.dockstarter.appvars.bitwarden_restart: "unless-stopped"
       com.dockstarter.appvars.bitwarden_invitations_allowed: "false"
       com.dockstarter.appvars.bitwarden_network_mode: ""
       com.dockstarter.appvars.bitwarden_port_3012: "3012"

@@ -10,5 +10,6 @@ services:
       com.dockstarter.appvars.bookstack_db_pass: ""
       com.dockstarter.appvars.bookstack_db_user: ""
       com.dockstarter.appvars.bookstack_enabled: "false"
+      com.dockstarter.appvars.bookstack_restart: "unless-stopped"
       com.dockstarter.appvars.bookstack_network_mode: ""
       com.dockstarter.appvars.bookstack_port_80: "6875"

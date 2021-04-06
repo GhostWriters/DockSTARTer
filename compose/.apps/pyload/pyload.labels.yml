@@ -5,6 +5,7 @@ services:
       com.dockstarter.appinfo.description: "Python Download Manager alternative to JDownloader"
       com.dockstarter.appinfo.nicename: "pyLoad"
       com.dockstarter.appvars.pyload_enabled: "false"
+      com.dockstarter.appvars.pyload_restart: "unless-stopped"
       com.dockstarter.appvars.pyload_network_mode: ""
       com.dockstarter.appvars.pyload_port_7227: "7227"
       com.dockstarter.appvars.pyload_port_8000: "8000"

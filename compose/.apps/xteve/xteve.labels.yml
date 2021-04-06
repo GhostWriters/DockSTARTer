@@ -7,5 +7,6 @@ services:
       com.dockstarter.appvars.xteve_branch: "master"
       com.dockstarter.appvars.xteve_debug: "0"
       com.dockstarter.appvars.xteve_enabled: "false"
+      com.dockstarter.appvars.xteve_restart: "unless-stopped"
       com.dockstarter.appvars.xteve_network_mode: ""
       com.dockstarter.appvars.xteve_port_34400: "34400"

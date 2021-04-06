@@ -5,5 +5,6 @@ services:
       com.dockstarter.appinfo.description: "Front end for many htpc related applications"
       com.dockstarter.appinfo.nicename: "HTPCManager"
       com.dockstarter.appvars.htpcmanager_enabled: "false"
+      com.dockstarter.appvars.htpcmanager_restart: "unless-stopped"
       com.dockstarter.appvars.htpcmanager_network_mode: ""
       com.dockstarter.appvars.htpcmanager_port_8085: "8085"

@@ -5,6 +5,7 @@ services:
       com.dockstarter.appinfo.description: "Fast, easy, and free BitTorrent client"
       com.dockstarter.appinfo.nicename: "Transmission"
       com.dockstarter.appvars.transmission_enabled: "false"
+      com.dockstarter.appvars.transmission_restart: "unless-stopped"
       com.dockstarter.appvars.transmission_network_mode: ""
       com.dockstarter.appvars.transmission_port_51413: "51413"
       com.dockstarter.appvars.transmission_port_6881: "6881"

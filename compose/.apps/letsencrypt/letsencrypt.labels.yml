@@ -8,6 +8,7 @@ services:
       com.dockstarter.appvars.letsencrypt_duckdnstoken: ""
       com.dockstarter.appvars.letsencrypt_email: ""
       com.dockstarter.appvars.letsencrypt_enabled: "false"
+      com.dockstarter.appvars.letsencrypt_restart: "unless-stopped"
       com.dockstarter.appvars.letsencrypt_extra_domains: ""
       com.dockstarter.appvars.letsencrypt_network_mode: ""
       com.dockstarter.appvars.letsencrypt_only_subdomains: "false"

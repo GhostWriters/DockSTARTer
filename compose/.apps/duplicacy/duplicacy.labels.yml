@@ -8,5 +8,6 @@ services:
       com.dockstarter.appvars.duplicacy_backup_dir: "~/backup"
       com.dockstarter.appvars.duplicacy_docker_dir: "~/.docker/"
       com.dockstarter.appvars.duplicacy_enabled: "false"
+      com.dockstarter.appvars.duplicacy_restart: "unless-stopped"
       com.dockstarter.appvars.duplicacy_network_mode: ""
       com.dockstarter.appvars.duplicacy_port_3875: "3875"

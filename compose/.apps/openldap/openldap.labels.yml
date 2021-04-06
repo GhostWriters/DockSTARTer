@@ -9,6 +9,7 @@ services:
       com.dockstarter.appvars.openldap_config_password: "config"
       com.dockstarter.appvars.openldap_domain: "example.org"
       com.dockstarter.appvars.openldap_enabled: "false"
+      com.dockstarter.appvars.openldap_restart: "unless-stopped"
       com.dockstarter.appvars.openldap_gid: "1000"
       com.dockstarter.appvars.openldap_network_mode: ""
       com.dockstarter.appvars.openldap_organisation: "example inc."

@@ -6,6 +6,7 @@ services:
       com.dockstarter.appinfo.nicename: "SABnzbdVPN"
       com.dockstarter.appvars.sabnzbdvpn_enable_privoxy: "no"
       com.dockstarter.appvars.sabnzbdvpn_enabled: "false"
+      com.dockstarter.appvars.sabnzbdvpn_restart: "unless-stopped"
       com.dockstarter.appvars.sabnzbdvpn_network_mode: ""
       com.dockstarter.appvars.sabnzbdvpn_port_8080: "8080"
       com.dockstarter.appvars.sabnzbdvpn_port_8090: "8090"

@@ -5,4 +5,5 @@ services:
       com.dockstarter.appinfo.description: "Utility to aggregate data from the Plex ecosystem"
       com.dockstarter.appinfo.nicename: "Varken"
       com.dockstarter.appvars.varken_enabled: "false"
+      com.dockstarter.appvars.varken_restart: "unless-stopped"
       com.dockstarter.appvars.varken_network_mode: ""

@@ -5,6 +5,7 @@ services:
       com.dockstarter.appinfo.description: "LogitechMediaServer(SqueezeBox)"
       com.dockstarter.appinfo.nicename: "LogitechMediaServer"
       com.dockstarter.appvars.logitechmediaserver_enabled: "false"
+      com.dockstarter.appvars.logitechmediaserver_restart: "unless-stopped"
       com.dockstarter.appvars.logitechmediaserver_network_mode: ""
       com.dockstarter.appvars.logitechmediaserver_port_3483: "3483"
       com.dockstarter.appvars.logitechmediaserver_port_9000: "9000"

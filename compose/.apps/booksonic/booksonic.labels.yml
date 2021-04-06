@@ -6,5 +6,6 @@ services:
       com.dockstarter.appinfo.nicename: "Booksonic"
       com.dockstarter.appvars.booksonic_context_path: "/booksonic"
       com.dockstarter.appvars.booksonic_enabled: "false"
+      com.dockstarter.appvars.booksonic_restart: "unless-stopped"
       com.dockstarter.appvars.booksonic_network_mode: ""
       com.dockstarter.appvars.booksonic_port_4040: "4040"

@@ -5,6 +5,7 @@ services:
       com.dockstarter.appinfo.description: "XBackBone is a simple, self-hosted, lightweight PHP file manager that support the instant sharing tool ShareX"
       com.dockstarter.appinfo.nicename: "xbackbone"
       com.dockstarter.appvars.xbackbone_enabled: "false"
+      com.dockstarter.appvars.xbackbone_restart: "unless-stopped"
       com.dockstarter.appvars.xbackbone_network_mode: ""
       com.dockstarter.appvars.xbackbone_php_post_max_size: "1024M"
       com.dockstarter.appvars.xbackbone_php_upload_max_filesize: "1024M"

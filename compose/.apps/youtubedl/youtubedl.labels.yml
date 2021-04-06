@@ -6,6 +6,7 @@ services:
       com.dockstarter.appinfo.nicename: "YoutubeDL"
       com.dockstarter.appvars.youtubedl_debug: "false"
       com.dockstarter.appvars.youtubedl_enabled: "false"
+      com.dockstarter.appvars.youtubedl_restart: "unless-stopped"
       com.dockstarter.appvars.youtubedl_network_mode: ""
       com.dockstarter.appvars.youtubedl_port_8080: "8080"
       com.dockstarter.appvars.youtubedl_config_path: "/youtube-dl/config.yml"

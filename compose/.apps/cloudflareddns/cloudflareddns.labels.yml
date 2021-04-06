@@ -9,6 +9,7 @@ services:
       com.dockstarter.appvars.cloudflareddns_args: ""
       com.dockstarter.appvars.cloudflareddns_detection_mode: "dig-google.com"
       com.dockstarter.appvars.cloudflareddns_enabled: "false"
+      com.dockstarter.appvars.cloudflareddns_restart: "unless-stopped"
       com.dockstarter.appvars.cloudflareddns_hosts: ""
       com.dockstarter.appvars.cloudflareddns_interval: "300"
       com.dockstarter.appvars.cloudflareddns_log_level: "2"

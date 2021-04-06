@@ -5,5 +5,6 @@ services:
       com.dockstarter.appinfo.description: "Web app for browsing, reading and downloading eBooks"
       com.dockstarter.appinfo.nicename: "CalibreWeb"
       com.dockstarter.appvars.calibreweb_enabled: "false"
+      com.dockstarter.appvars.calibreweb_restart: "unless-stopped"
       com.dockstarter.appvars.calibreweb_network_mode: ""
       com.dockstarter.appvars.calibreweb_port_8083: "8083"

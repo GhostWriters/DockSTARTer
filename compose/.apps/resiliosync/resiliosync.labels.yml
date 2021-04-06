@@ -5,6 +5,7 @@ services:
       com.dockstarter.appinfo.description: "A fast, reliable, and simple P2P file sync and share solution"
       com.dockstarter.appinfo.nicename: "ResilioSync"
       com.dockstarter.appvars.resiliosync_enabled: "false"
+      com.dockstarter.appvars.resiliosync_restart: "unless-stopped"
       com.dockstarter.appvars.resiliosync_network_mode: ""
       com.dockstarter.appvars.resiliosync_port_55555: "55555"
       com.dockstarter.appvars.resiliosync_port_8888: "8888"

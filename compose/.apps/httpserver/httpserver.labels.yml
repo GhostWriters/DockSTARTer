@@ -5,6 +5,7 @@ services:
       com.dockstarter.appinfo.description: "http-server is a simple binary to provide a static http server from a given folder."
       com.dockstarter.appinfo.nicename: "httpserver"
       com.dockstarter.appvars.httpserver_enabled: "false"
+      com.dockstarter.appvars.httpserver_restart: "unless-stopped"
       com.dockstarter.appvars.httpserver_file_server_color_set: "indigo-red"
       com.dockstarter.appvars.httpserver_file_server_title: "DockSTARTer"
       com.dockstarter.appvars.httpserver_html_dir: ""

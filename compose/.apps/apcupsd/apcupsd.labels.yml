@@ -6,6 +6,7 @@ services:
       com.dockstarter.appinfo.nicename: "apcupsd"
       com.dockstarter.appvars.apcupsd_debug: "false"
       com.dockstarter.appvars.apcupsd_enabled: "false"
+      com.dockstarter.appvars.apcupsd_restart: "unless-stopped"
       com.dockstarter.appvars.apcupsd_host: ""
       com.dockstarter.appvars.apcupsd_infuxdb_database: "apcupsd"
       com.dockstarter.appvars.apcupsd_infuxdb_host: "influxdb"

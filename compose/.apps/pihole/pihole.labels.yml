@@ -5,6 +5,7 @@ services:
       com.dockstarter.appinfo.description: "A black hole for internet advertisements"
       com.dockstarter.appinfo.nicename: "PiHole"
       com.dockstarter.appvars.pihole_enabled: "false"
+      com.dockstarter.appvars.pihole_restart: "unless-stopped"
       com.dockstarter.appvars.pihole_network_mode: ""
       com.dockstarter.appvars.pihole_port_443: "446"
       com.dockstarter.appvars.pihole_port_53: "53"

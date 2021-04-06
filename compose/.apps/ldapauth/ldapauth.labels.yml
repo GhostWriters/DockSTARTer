@@ -6,6 +6,7 @@ services:
       com.dockstarter.appinfo.nicename: "ldapauth"
       com.dockstarter.appvars.ldapauth_certfile: ""
       com.dockstarter.appvars.ldapauth_enabled: "false"
+      com.dockstarter.appvars.ldapauth_restart: "unless-stopped"
       com.dockstarter.appvars.ldapauth_fernetkey: ""
       com.dockstarter.appvars.ldapauth_keyfile: ""
       com.dockstarter.appvars.ldapauth_network_mode: ""

@@ -5,5 +5,6 @@ services:
       com.dockstarter.appinfo.description: "Book PVR Client"
       com.dockstarter.appinfo.nicename: "LazyLibrarian"
       com.dockstarter.appvars.lazylibrarian_enabled: "false"
+      com.dockstarter.appvars.lazylibrarian_restart: "unless-stopped"
       com.dockstarter.appvars.lazylibrarian_network_mode: ""
       com.dockstarter.appvars.lazylibrarian_port_5299: "5299"

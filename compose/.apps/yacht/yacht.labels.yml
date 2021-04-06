@@ -7,6 +7,7 @@ services:
       com.dockstarter.appvars.yacht_admin_email: "admin@yacht.local"
       com.dockstarter.appvars.yacht_disable_auth: "false"
       com.dockstarter.appvars.yacht_enabled: "false"
+      com.dockstarter.appvars.yacht_restart: "unless-stopped"
       com.dockstarter.appvars.yacht_network_mode: ""
       com.dockstarter.appvars.yacht_port_8000: "8000"
       com.dockstarter.appvars.yacht_secret_key: "pass"
