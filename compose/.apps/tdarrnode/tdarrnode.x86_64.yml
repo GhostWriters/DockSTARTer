@@ -1,0 +1,3 @@
+services:
+  tdarrnode:
+    image: haveagitgat/tdarr_node

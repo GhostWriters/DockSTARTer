@@ -1,0 +1,22 @@
+services:
+  plexanisync:
+    container_name: plexanisync
+    environment:
+      - ANI_TOKEN=${PLEXANISYNC_ANI_TOKEN}
+      - ANI_USERNAME=${PLEXANISYNC_ANI_USERNAME}
+      - INTERVAL=${PLEXANISYNC_INTERVAL}
+      - PGID=${PGID}
+      - PLEX_SECTION=${PLEXANISYNC_PLEX_SECTION}
+      - PLEX_TOKEN=${PLEXANISYNC_PLEX_TOKEN}
+      - PLEX_URL=${PLEXANISYNC_PLEX_URL}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: ${PLEXANISYNC_RESTART}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERSTORAGEDIR}:/storage

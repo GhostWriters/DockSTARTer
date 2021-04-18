@@ -10,7 +10,7 @@ services:
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    restart: unless-stopped
+    restart: ${GOACCESS_RESTART}
     security_opt:
       - apparmor:unconfined
     volumes:

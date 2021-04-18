@@ -2,8 +2,9 @@ services:
   radarr:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Automatically download movies via Usenet and BitTorrent"
-      com.dockstarter.appinfo.nicename: "Radarr"
+      com.dockstarter.appinfo.description: Automatically download movies via Usenet and BitTorrent
+      com.dockstarter.appinfo.nicename: Radarr
       com.dockstarter.appvars.radarr_enabled: "false"
       com.dockstarter.appvars.radarr_network_mode: ""
       com.dockstarter.appvars.radarr_port_7878: "7878"
+      com.dockstarter.appvars.radarr_restart: unless-stopped

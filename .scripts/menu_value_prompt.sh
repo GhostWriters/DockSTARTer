@@ -16,7 +16,7 @@ menu_value_prompt() {
     if grep -q -Po "^${SET_VAR}=\K.*" "${SCRIPTPATH}/compose/.env.example"; then
         DEFAULT_VAL=$(grep --color=never -Po "^${SET_VAR}=\K.*" "${SCRIPTPATH}/compose/.env.example" || true)
     else
-        DEFAULT_VAL=$(grep --color=never -Po "\scom\.dockstarter\.appvars\.${VAR_LABEL}: \K.*" "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.labels.yml" | xargs || true)
+        DEFAULT_VAL=$(grep --color=never -Po "\scom\.dockstarter\.appvars\.${VAR_LABEL}: \K.*" "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || true)
     fi
 
     local HOME_VAL
@@ -74,6 +74,9 @@ menu_value_prompt() {
             ;;
         *_PORT_*)
             VALUEDESCRIPTION='\n\n Must be an unused port between 0 and 65535.'
+            ;;
+        *_RESTART)
+            VALUEDESCRIPTION='\n\n Restart is usually unless-stopped but can also be no, always, or on-failure.'
             ;;
         *DIR | *DIR_*)
             VALUEDESCRIPTION='\n\n If the directory selected does not exist we will attempt to create it.'
@@ -171,6 +174,17 @@ menu_value_prompt() {
                     whiptail --fb --clear --title "DockSTARTer" --msgbox "${INPUT} is not a valid port. Please try setting ${SET_VAR} again." 0 0
                     menu_value_prompt "${SET_VAR}"
                 fi
+                ;;
+            *_RESTART)
+                case "${INPUT}" in
+                    "no" | "always" | "on-failure" | "unless-stopped")
+                        run_script 'env_set' "${SET_VAR}" "${INPUT}"
+                        ;;
+                    *)
+                        whiptail --fb --clear --title "DockSTARTer" --msgbox "${INPUT} is not a valid restart value. Please try setting ${SET_VAR} again." 0 0
+                        menu_value_prompt "${SET_VAR}"
+                        ;;
+                esac
                 ;;
             *DIR | *DIR_*)
                 if [[ ${INPUT} == "/" ]]; then

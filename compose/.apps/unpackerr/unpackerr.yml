@@ -2,7 +2,6 @@ services:
   unpackerr:
     container_name: unpackerr
     environment:
-      - DEBUG=${UNPACKERR_DEBUG}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
@@ -22,7 +21,7 @@ services:
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    restart: unless-stopped
+    restart: ${UNPACKERR_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/unpackerr:/config

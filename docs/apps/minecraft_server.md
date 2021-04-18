@@ -6,4 +6,12 @@
 
 ## Description
 
-[Minecraft Server](https://www.minecraft.net/en-us/download/server) will automatically download the latest stable version at startup. You can also run/upgrade to any specific version or the latest snapshot.
+[Minecraft Server](https://www.minecraft.net/en-us/download/server) will
+automatically download the latest stable version at startup. You can also
+run/upgrade to any specific version or the latest snapshot.
+
+## Install/Setup
+
+This application does not have any specific setup instructions documented. If
+you need assistance setting up this application please visit our
+[support page](https://dockstarter.com/basics/support/).

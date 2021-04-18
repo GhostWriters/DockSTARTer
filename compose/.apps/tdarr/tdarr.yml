@@ -4,16 +4,18 @@ services:
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
+      - serverIP=${TDARR_SERVERIP}
+      - serverPort=${TDARR_PORT_8266}
       - TZ=${TZ}
+      - webUIPort=${TDARR_PORT_8265}
     logging:
       driver: json-file
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    restart: unless-stopped
+    restart: ${TDARR_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/tdarr:/home/Tdarr/Documents/Tdarr
+      - ${DOCKERCONFDIR}/tdarr:/app/server
       - ${DOCKERSTORAGEDIR}:/storage
-      - ${TDARR_DB}:/var/lib/mongodb
-      - ${TDARR_TRANSCODE_CACHE}:/home/Tdarr/cache
+      - ${TDARR_TRANSCODE_CACHE}:/temp

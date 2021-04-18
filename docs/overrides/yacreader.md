@@ -10,7 +10,6 @@
 ## Example Docker Compose Override
 
 ```yaml
-version: "3.4"  # this must match the version in docker-compose.yml
 services:
 
   yacreaderlibraryserver:

@@ -3,8 +3,8 @@ services:
     container_name: cloudflareddns
     environment:
       - ARGS=${CLOUDFLAREDDNS_ARGS}
-      - CF_APITOKEN=${CLOUDFLAREDDNS_APITOKEN}
       - CF_APIKEY=${CLOUDFLAREDDNS_APIKEY}
+      - CF_APITOKEN=${CLOUDFLAREDDNS_APITOKEN}
       - CF_HOSTS=${CLOUDFLAREDDNS_HOSTS}
       - CF_RECORDTYPES=${CLOUDFLAREDDNS_RECORDTYPES}
       - CF_USER=${CLOUDFLAREDDNS_USER}
@@ -20,7 +20,8 @@ services:
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    restart: unless-stopped
+    restart: ${CLOUDFLAREDDNS_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/cloudflareddns:/config
       - ${DOCKERSTORAGEDIR}:/storage

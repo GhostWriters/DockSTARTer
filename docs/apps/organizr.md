@@ -6,19 +6,30 @@
 
 ## Description
 
-[Organizr](https://organizr.app) allows you to setup "Tabs" that will be loaded all in one webpage. You can then work on your server with ease. Want to give users access to some Tabs? No problem, just enable user support and have them make an account. Want guests to be able to visit too? Enable Guest support for those tabs.
+[Organizr](https://organizr.app) allows you to setup "Tabs" that will be loaded
+all in one webpage. You can then work on your server with ease. Want to give
+users access to some Tabs? No problem, just enable user support and have them
+make an account. Want guests to be able to visit too? Enable Guest support for
+those tabs.
 
 ## Install/Setup
 
+This application does not have any specific setup instructions documented. If
+you need assistance setting up this application please visit our
+[support page](https://dockstarter.com/basics/support/).
+
 ### Reverse Proxy as homepage via SWAG
 
-In order to reverse proxy the Organizr container as your homepage via [SWAG](https://dockstarter.com/apps/swag/) you will need to rename the subfolder proxy sample with the following command:
+In order to reverse proxy the Organizr container as your homepage via
+[SWAG](https://dockstarter.com/apps/swag/) you will need to rename the subfolder
+proxy sample with the following command:
 
 ```bash
 cp ~/.config/appdata/swag/nginx/proxy-confs/organizr.subfolder.conf.sample ~/.config/appdata/swag/nginx/proxy-confs/organizr.subfolder.conf
 ```
 
-Then edit `~/.config/appdata/swag/nginx/site-confs/default` to comment out the `location / {` and `location ~ \.php$ {` blocks down to their ending `}`.
+Then edit `~/.config/appdata/swag/nginx/site-confs/default` to comment out the
+`location / {` and `location ~ \.php$ {` blocks down to their ending `}`.
 
 Example Before:
 
@@ -60,7 +71,11 @@ docker restart swag
 
 #### Pre-modified default site-conf
 
-This example is based on the default site config included in SWAG found [here](https://github.com/linuxserver/docker-swag/blob/master/root/defaults/default). It has been modified to remove a lot of example comments and allow Organizr to take the place of your home page and replace the "Welcome to our server" page. This example may not be up to date with the most recent changes from upstream.
+This example is based on the default site config included in SWAG found
+[here](https://github.com/linuxserver/docker-swag/blob/master/root/defaults/default).
+It has been modified to remove a lot of example comments and allow Organizr to
+take the place of your home page and replace the "Welcome to our server" page.
+This example may not be up to date with the most recent changes from upstream.
 
 ```nginx
 ## Version 2020/05/23 - Changelog: https://github.com/linuxserver/docker-swag/commits/master/root/defaults/default

@@ -2,15 +2,15 @@ services:
   duplicacy:
     container_name: duplicacy
     environment:
-      - GRP_ID=${PGID}
+      - PGID=${PGID}
+      - PUID=${PUID}
       - TZ=${TZ}
-      - USR_ID=${PUID}
     logging:
       driver: json-file
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    restart: unless-stopped
+    restart: ${DUPLICACY_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/duplicacy/cache:/cache

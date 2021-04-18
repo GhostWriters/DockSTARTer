@@ -12,7 +12,7 @@ services:
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    restart: unless-stopped
+    restart: ${TELEGRAF_RESTART}
     volumes:
       - /:/host:ro
       - /etc:/host/etc:ro

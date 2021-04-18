@@ -2,8 +2,9 @@ services:
   headphones:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Music PVR Client"
-      com.dockstarter.appinfo.nicename: "Headphones"
+      com.dockstarter.appinfo.description: Music PVR Client
+      com.dockstarter.appinfo.nicename: Headphones
       com.dockstarter.appvars.headphones_enabled: "false"
       com.dockstarter.appvars.headphones_network_mode: ""
       com.dockstarter.appvars.headphones_port_8181: "8181"
+      com.dockstarter.appvars.headphones_restart: unless-stopped

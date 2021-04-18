@@ -2,12 +2,13 @@ services:
   dozzle:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Dozzle is a simple, lightweight application that provides you with a web based interface to monitor your Docker container logs live."
-      com.dockstarter.appinfo.nicename: "Dozzle"
-      com.dockstarter.appvars.dozzle_base: "/"
+      com.dockstarter.appinfo.description: Dozzle is a simple, lightweight application that provides you with a web based interface to monitor your Docker container logs live.
+      com.dockstarter.appinfo.nicename: Dozzle
+      com.dockstarter.appvars.dozzle_base: /
       com.dockstarter.appvars.dozzle_enabled: "false"
       com.dockstarter.appvars.dozzle_filter: ""
-      com.dockstarter.appvars.dozzle_level: "info"
+      com.dockstarter.appvars.dozzle_level: info
       com.dockstarter.appvars.dozzle_network_mode: ""
       com.dockstarter.appvars.dozzle_port_8080: "8080"
+      com.dockstarter.appvars.dozzle_restart: unless-stopped
       com.dockstarter.appvars.dozzle_tailsize: "300"

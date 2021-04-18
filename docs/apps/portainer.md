@@ -6,4 +6,11 @@
 
 ## Description
 
-[Portainer](https://www.portainer.io/) is a lightweight management UI which allows you to easily manage your Docker host or Swarm cluster.
+[Portainer](https://www.portainer.io/) is a lightweight management UI which
+allows you to easily manage your Docker host or Swarm cluster.
+
+## Install/Setup
+
+This application does not have any specific setup instructions documented. If
+you need assistance setting up this application please visit our
+[support page](https://dockstarter.com/basics/support/).

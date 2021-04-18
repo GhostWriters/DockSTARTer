@@ -7,22 +7,25 @@ env_update() {
     run_script 'override_backup'
     info "Replacing current .env file with latest template."
     local CURRENTENV
-    CURRENTENV=$(mktemp) || fatal "Failed to create temporary .env update file.\nFailing command: ${F[C]}mktemp"
+    CURRENTENV=$(mktemp) || fatal "Failed to create temporary current .env file.\nFailing command: ${F[C]}mktemp"
     sort "${SCRIPTPATH}/compose/.env" > "${CURRENTENV}" || fatal "Failed to sort to new file.\nFailing command: ${F[C]}sort \"${SCRIPTPATH}/compose/.env\" > \"${CURRENTENV}\""
-    rm -f "${SCRIPTPATH}/compose/.env" || warn "${SCRIPTPATH}/compose/.env could not be removed."
-    cp "${SCRIPTPATH}/compose/.env.example" "${SCRIPTPATH}/compose/.env" || fatal "Failed to copy file.\nFailing command: ${F[C]}cp \"${SCRIPTPATH}/compose/.env.example\" \"${SCRIPTPATH}/compose/.env\""
-    run_script 'set_permissions' "${SCRIPTPATH}/compose/.env"
-    info "Merging previous values into new .env file."
+    local UPDATEDENV
+    UPDATEDENV=$(mktemp) || fatal "Failed to create temporary update .env file.\nFailing command: ${F[C]}mktemp"
+    cp "${SCRIPTPATH}/compose/.env.example" "${UPDATEDENV}" || fatal "Failed to copy file.\nFailing command: ${F[C]}cp \"${SCRIPTPATH}/compose/.env.example\" \"${UPDATEDENV}\""
+    info "Merging current values into updated .env file."
     while IFS= read -r line; do
         local SET_VAR=${line%%=*}
         local SET_VAL=${line#*=}
-        if grep -q "^${SET_VAR}=" "${SCRIPTPATH}/compose/.env"; then
-            run_script 'env_set' "${SET_VAR}" "${SET_VAL}"
+        if grep -q "^${SET_VAR}=" "${UPDATEDENV}"; then
+            run_script 'env_set' "${SET_VAR}" "${SET_VAL}" "${UPDATEDENV}"
         else
-            echo "${line}" >> "${SCRIPTPATH}/compose/.env" || error "${line} could not be written to ${SCRIPTPATH}/compose/.env"
+            echo "${line}" >> "${UPDATEDENV}" || error "${line} could not be written to ${UPDATEDENV}"
         fi
     done < <(grep '=' < "${CURRENTENV}")
+    cp -f "${UPDATEDENV}" "${SCRIPTPATH}/compose/.env" || fatal "Failed to copy file.\nFailing command: ${F[C]}cp -f \"${UPDATEDENV}\" \"${SCRIPTPATH}/compose/.env\""
+    run_script 'set_permissions' "${SCRIPTPATH}/compose/.env"
     rm -f "${CURRENTENV}" || warn "Failed to remove temporary .env update file."
+    rm -f "${UPDATEDENV}" || warn "Failed to remove temporary .env update file."
     run_script 'env_sanitize'
     info "Environment file update complete."
 }

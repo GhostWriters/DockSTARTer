@@ -2,8 +2,9 @@ services:
   grocy:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Groceries & household management"
-      com.dockstarter.appinfo.nicename: "grocy"
+      com.dockstarter.appinfo.description: Groceries & household management
+      com.dockstarter.appinfo.nicename: grocy
       com.dockstarter.appvars.grocy_enabled: "false"
       com.dockstarter.appvars.grocy_network_mode: ""
       com.dockstarter.appvars.grocy_port_80: "8001"
+      com.dockstarter.appvars.grocy_restart: unless-stopped

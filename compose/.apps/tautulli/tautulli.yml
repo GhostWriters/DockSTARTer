@@ -10,11 +10,9 @@ services:
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    restart: unless-stopped
+    restart: ${TAUTULLI_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/tautulli:/config
-      - >-
-        ${DOCKERCONFDIR}/plex/Library/Application Support/Plex Media
-        Server/Logs:/logs:ro
+      - ${DOCKERCONFDIR}/plex/Library/Application Support/Plex Media Server/Logs:/logs:ro
       - ${DOCKERSTORAGEDIR}:/storage

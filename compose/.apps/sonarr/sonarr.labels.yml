@@ -2,8 +2,9 @@ services:
   sonarr:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Smart TV show PVR via Usenet and BitTorrent"
-      com.dockstarter.appinfo.nicename: "Sonarr"
+      com.dockstarter.appinfo.description: Smart TV show PVR via Usenet and BitTorrent
+      com.dockstarter.appinfo.nicename: Sonarr
       com.dockstarter.appvars.sonarr_enabled: "false"
       com.dockstarter.appvars.sonarr_network_mode: ""
       com.dockstarter.appvars.sonarr_port_8989: "8989"
+      com.dockstarter.appvars.sonarr_restart: unless-stopped

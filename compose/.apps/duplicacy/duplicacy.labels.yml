@@ -2,11 +2,12 @@ services:
   duplicacy:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Duplicacy is built on top of a new idea called Lock-Free Deduplication"
-      com.dockstarter.appinfo.nicename: "Duplicacy"
+      com.dockstarter.appinfo.description: Duplicacy is built on top of a new idea called Lock-Free Deduplication
+      com.dockstarter.appinfo.nicename: Duplicacy
+      com.dockstarter.appvars.duplicacy_appdata_dir: ~/.config/appdata
+      com.dockstarter.appvars.duplicacy_backup_dir: ~/backup
+      com.dockstarter.appvars.duplicacy_docker_dir: ~/.docker/
       com.dockstarter.appvars.duplicacy_enabled: "false"
       com.dockstarter.appvars.duplicacy_network_mode: ""
       com.dockstarter.appvars.duplicacy_port_3875: "3875"
-      com.dockstarter.appvars.duplicacy_appdata_dir: "~/.config/appdata"
-      com.dockstarter.appvars.duplicacy_docker_dir: "~/.docker/"
-      com.dockstarter.appvars.duplicacy_backup_dir: "~/backup"
+      com.dockstarter.appvars.duplicacy_restart: unless-stopped
