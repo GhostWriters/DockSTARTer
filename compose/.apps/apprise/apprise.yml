@@ -2,12 +2,6 @@ services:
   apprise:
     container_name: apprise
     environment:
-      - APPRISE_STATELESS_URLS=${APPRISE_STATELESS_URLS}
-      - APPRISE_STATEFUL_MODE=${APPRISE_STATEFUL_MODE}
-      - SECRET_KEY=${APPRISE_SECRET_KEY}
-      - ALLOWED_HOSTS=${APPRISE_ALLOWED_HOSTS}
-      - BASE_URL=${APPRISE_BASE_URL}
-      - DEBUG=${APPRISE_DEBUG}
       - TZ=${TZ}
     logging:
       driver: json-file
