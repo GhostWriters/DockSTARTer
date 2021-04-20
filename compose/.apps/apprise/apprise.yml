@@ -1,0 +1,15 @@
+services:
+  apprise:
+    container_name: apprise
+    environment:
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/apprise:/config
+      - ${DOCKERSTORAGEDIR}:/storage

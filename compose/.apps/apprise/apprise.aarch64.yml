@@ -1,0 +1,3 @@
+services:
+  apprise:
+    image: ghcr.io/linuxserver/apprise-api
