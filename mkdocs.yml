@@ -29,7 +29,7 @@ plugins:
   - search
   - redirects:
       redirect_maps:
-        advanced/overrides.md: https://dockstarter.com/overrides/introduction
+        advanced/overrides.md: https://dockstarter.com/overrides/introduction/
         apps/hydra2.md: https://dockstarter.com/apps/nzbhydra2/
         apps/letsencrypt.md: https://dockstarter.com/apps/swag/
         apps/mylar.md: https://dockstarter.com/apps/mylar3/
@@ -37,6 +37,7 @@ plugins:
         apps/sickrage.md: https://dockstarter.com/apps/sickchill/
         apps/ttrss.md: https://dockstarter.com/apps/freshrss/
         apps/unifi.md: https://dockstarter.com/apps/unificontroller/
+        apps/vaultwarden.md: https://dockstarter.com/apps/bitwarden/
         discord.md: https://discord.gg/xR3cyUb
 
 theme:
@@ -145,8 +146,8 @@ nav:
       - apps/nzbget.md
       - apps/nzbgetvpn.md
       - apps/nzbhydra2.md
-      - apps/ombi.md
       - apps/omadacontroller.md
+      - apps/ombi.md
       - apps/openldap.md
       - apps/openvpnas.md
       - apps/organizr.md
