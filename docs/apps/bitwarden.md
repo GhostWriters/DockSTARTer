@@ -1,4 +1,4 @@
-# Vaultwarden
+# Bitwarden
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/vaultwarden/server?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/vaultwarden/server)
 [![GitHub Stars](https://img.shields.io/github/stars/dani-garcia/vaultwarden?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/dani-garcia/vaultwarden)
@@ -10,11 +10,13 @@
 management service that stores sensitive information such as website credentials
 in an encrypted vault.
 
-Vaultwarden is an alternative implementation of the Bitwarden server API written in Rust and compatible with upstream [upstream Bitwarden clients](https://bitwarden.com/#download), perfect for self-hosted deployment where running the official resource-heavy service might not be ideal.
+[Vaultwarden](https://github.com/dani-garcia/vaultwarden) is an alternative implementation of the Bitwarden server API written in Rust and compatible with upstream [upstream Bitwarden clients](https://bitwarden.com/#download), perfect for self-hosted deployment where running the official resource-heavy service might not be ideal.
+
+DockSTARTer uses the Vaultwarden image to create a Bitwarden container.
 
 ## Install/Setup
 
-When installing the Vaultwarden container, the installer will install under
+When installing the Bitwarden container, the installer will install under
 `appdata` directory as the root user, however once it is installed you can
 change the owner/group of it to whatever is required
 
