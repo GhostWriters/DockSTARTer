@@ -79,7 +79,6 @@ nav:
       - apps/apprise.md
       - apps/bazarr.md
       - apps/beets.md
-      - apps/bitwarden.md
       - apps/booksonic.md
       - apps/bookstack.md
       - apps/calibre.md
@@ -145,8 +144,8 @@ nav:
       - apps/nzbget.md
       - apps/nzbgetvpn.md
       - apps/nzbhydra2.md
-      - apps/ombi.md
       - apps/omadacontroller.md
+      - apps/ombi.md
       - apps/openldap.md
       - apps/openvpnas.md
       - apps/organizr.md
@@ -198,6 +197,7 @@ nav:
       - apps/unmanic.md
       - apps/unpackerr.md
       - apps/varken.md
+      - apps/vaultwarden.md
       - apps/vsftpd.md
       - apps/watchtower.md
       - apps/wireguard.md
