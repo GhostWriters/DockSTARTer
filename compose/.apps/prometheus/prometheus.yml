@@ -1,5 +1,6 @@
 services:
   prometheus:
+    container_name: prometheus
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
