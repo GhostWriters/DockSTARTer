@@ -28,7 +28,7 @@ For regular usage you can run without providing any options.
 -h --help
     show this usage information
 -i --install
-    install/update docker, docker-compose, yq and all dependencies
+    install/update docker, docker-compose and all dependencies
 -p --prune
     remove unused docker resources
 -r --remove

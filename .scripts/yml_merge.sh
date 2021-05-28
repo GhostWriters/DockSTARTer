@@ -10,8 +10,11 @@ yml_merge() {
     RUNFILE=$(mktemp) || fatal "Failed to create temporary yml merge script.\nFailing command: ${F[C]}mktemp"
     echo "#!/usr/bin/env bash" > "${RUNFILE}"
     {
-        echo "export YQ_OPTIONS=\"${YQ_OPTIONS:-} -v ${SCRIPTPATH}:${SCRIPTPATH}\""
-        echo "yq -y -s 'reduce .[] as \$item ({}; . * \$item) | del(.version)' "\\
+        echo "docker run --rm -t \\"
+        echo "-v \"${SCRIPTPATH}:${SCRIPTPATH}\" \\"
+        #echo "-v \"\${PWD}:\${PWD}\" -w \"\${PWD}\" \\"
+        echo "--entrypoint yq ghcr.io/linuxserver/yq:latest \\"
+        echo "-y -s 'reduce .[] as \$item ({}; . * \$item) | del(.version)' "\\
         echo "\"${SCRIPTPATH}/compose/.reqs/r1.yml\" \\"
         echo "\"${SCRIPTPATH}/compose/.reqs/r2.yml\" \\"
     } >> "${RUNFILE}"
@@ -64,7 +67,6 @@ yml_merge() {
         fi
     done < <(grep '_ENABLED=true$' < "${SCRIPTPATH}/compose/.env")
     echo "> \"${SCRIPTPATH}/compose/docker-compose.yml\"" >> "${RUNFILE}"
-    run_script 'install_yq'
     info "Running compiled script to merge docker-compose.yml file."
     bash "${RUNFILE}" > /dev/null 2>&1 || fatal "Failed to run yml merge script.\nFailing command: ${F[C]}bash \"${RUNFILE}\""
     rm -f "${RUNFILE}" || warn "Failed to remove temporary yml merge script."

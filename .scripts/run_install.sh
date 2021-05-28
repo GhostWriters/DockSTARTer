@@ -10,7 +10,6 @@ run_install() {
     run_script 'enable_docker_systemd'
     run_script 'install_compose'
     run_script 'install_compose_completion'
-    run_script 'install_yq'
     run_script 'request_reboot'
 }
 
