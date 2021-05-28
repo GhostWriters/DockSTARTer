@@ -10,10 +10,10 @@ yml_merge() {
     RUNFILE=$(mktemp) || fatal "Failed to create temporary yml merge script.\nFailing command: ${F[C]}mktemp"
     echo "#!/usr/bin/env bash" > "${RUNFILE}"
     {
-        echo "docker run --rm -t \\"
+        echo "docker run --rm -t "\\
         echo "-v \"${SCRIPTPATH}:${SCRIPTPATH}\" \\"
         #echo "-v \"\${PWD}:\${PWD}\" -w \"\${PWD}\" \\"
-        echo "--entrypoint yq ghcr.io/linuxserver/yq:latest \\"
+        echo "--entrypoint yq ghcr.io/linuxserver/yq:latest "\\
         echo "-y -s 'reduce .[] as \$item ({}; . * \$item) | del(.version)' "\\
         echo "\"${SCRIPTPATH}/compose/.reqs/r1.yml\" \\"
         echo "\"${SCRIPTPATH}/compose/.reqs/r2.yml\" \\"
