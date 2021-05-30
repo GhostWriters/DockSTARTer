@@ -16,7 +16,7 @@ yml_merge() {
     echo "#!/usr/bin/env bash" > "${RUNFILE}"
     {
         echo "export YQ_OPTIONS=\"${YQ_OPTIONS:-} -v ${SCRIPTPATH}:${SCRIPTPATH}\""
-        echo "eval sh \"${GET_RUN_YQ}\" -y -s 'reduce .[] as \$item ({}; . * \$item) | del(.version)' "\\
+        echo "sh \"${GET_RUN_YQ}\" -y -s 'reduce .[] as \$item ({}; . * \$item) | del(.version)' "\\
         echo "\"${SCRIPTPATH}/compose/.reqs/r1.yml\" \\"
         echo "\"${SCRIPTPATH}/compose/.reqs/r2.yml\" \\"
     } >> "${RUNFILE}"
