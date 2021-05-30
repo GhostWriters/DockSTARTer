@@ -32,6 +32,7 @@ install_compose() {
             # https://github.com/linuxserver/docker-docker-compose/blob/master/README.md#recommended-method
             info "Installing latest docker-compose."
             curl -fsL "https://raw.githubusercontent.com/linuxserver/docker-docker-compose/master/run.sh" -o /usr/local/bin/docker-compose > /dev/null 2>&1 || fatal "Failed to install docker-compose.\nFailing command: ${F[C]}curl -fsL \"https://raw.githubusercontent.com/linuxserver/docker-docker-compose/master/run.sh\" -o /usr/local/bin/docker-compose"
+            docker pull ghcr.io/linuxserver/docker-compose:latest || fatal "Failed to pull latest docker-compose image."
             chmod +x /usr/local/bin/docker-compose > /dev/null 2>&1 || true
             if [[ ! -L "/usr/bin/docker-compose" ]]; then
                 rm -f /usr/bin/docker-compose || warn "Failed to remove /usr/bin/docker-compose"
