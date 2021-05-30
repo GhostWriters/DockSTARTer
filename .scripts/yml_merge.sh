@@ -6,14 +6,18 @@ yml_merge() {
     run_script 'env_update'
     run_script 'appvars_create_all'
     info "Merging docker-compose.yml file."
+
+    local GET_RUN_YQ
+    GET_RUN_YQ=$(mktemp) || fatal "Failed to create temporary run compose script.\nFailing command: ${F[C]}mktemp"
+    info "Downloading run compose script."
+    curl -fsSL https://raw.githubusercontent.com/linuxserver/docker-yq/master/run-yq.sh -o "${GET_RUN_YQ}" > /dev/null 2>&1 || fatal "Failed to get docker install script.\nFailing command: ${F[C]}curl -fsSL https://raw.githubusercontent.com/linuxserver/docker-yq/master/run-yq.sh -o \"${GET_RUN_YQ}\""
+
     local RUNFILE
     RUNFILE=$(mktemp) || fatal "Failed to create temporary yml merge script.\nFailing command: ${F[C]}mktemp"
     echo "#!/usr/bin/env bash" > "${RUNFILE}"
     {
-        echo "docker run --rm -t "\\
-        echo "-v \"${SCRIPTPATH}:${SCRIPTPATH}\" \\"
-        #echo "-v \"\${PWD}:\${PWD}\" -w \"\${PWD}\" \\"
-        echo "--entrypoint yq ghcr.io/linuxserver/yq:latest "\\
+        echo "export YQ_OPTIONS=\"${YQ_OPTIONS:-} -v ${SCRIPTPATH}:${SCRIPTPATH}\""
+        echo "eval sh \"${GET_RUN_YQ}\" \\"
         echo "-y -s 'reduce .[] as \$item ({}; . * \$item) | del(.version)' "\\
         echo "\"${SCRIPTPATH}/compose/.reqs/r1.yml\" \\"
         echo "\"${SCRIPTPATH}/compose/.reqs/r2.yml\" \\"
