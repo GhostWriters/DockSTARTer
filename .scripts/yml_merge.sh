@@ -6,12 +6,10 @@ yml_merge() {
     run_script 'env_update'
     run_script 'appvars_create_all'
     info "Merging docker-compose.yml file."
-
     local GET_RUN_YQ
     GET_RUN_YQ=$(mktemp) || fatal "Failed to create temporary run compose script.\nFailing command: ${F[C]}mktemp"
     info "Downloading run compose script."
     curl -fsSL https://raw.githubusercontent.com/linuxserver/docker-yq/master/run-yq.sh -o "${GET_RUN_YQ}" > /dev/null 2>&1 || fatal "Failed to get docker install script.\nFailing command: ${F[C]}curl -fsSL https://raw.githubusercontent.com/linuxserver/docker-yq/master/run-yq.sh -o \"${GET_RUN_YQ}\""
-
     local RUNFILE
     RUNFILE=$(mktemp) || fatal "Failed to create temporary yml merge script.\nFailing command: ${F[C]}mktemp"
     echo "#!/usr/bin/env bash" > "${RUNFILE}"
