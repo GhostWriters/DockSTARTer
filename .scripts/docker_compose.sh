@@ -47,8 +47,8 @@ docker_compose() {
     docker pull ghcr.io/linuxserver/docker-compose:latest || fatal "Failed to pull latest docker-compose image.\nFailing command: ${F[C]}docker pull ghcr.io/linuxserver/docker-compose:latest"
     cd "${SCRIPTPATH}/compose/" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}/compose/\""
     eval sh "${MKTEMP_RUN_COMPOSE}" "${COMPOSECOMMAND}" || fatal "Docker Compose failed.\nFailing command: ${F[C]}eval sh \"${MKTEMP_RUN_COMPOSE}\" \"${COMPOSECOMMAND}\""
-    cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
     rm -f "${MKTEMP_RUN_COMPOSE}" || warn "Failed to remove temporary run compose script."
+    cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
 }
 
 test_docker_compose() {
