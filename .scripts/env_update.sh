@@ -22,10 +22,10 @@ env_update() {
             echo "${line}" >> "${MKTEMP_ENV_UPDATED}" || error "${line} could not be written to ${MKTEMP_ENV_UPDATED}"
         fi
     done < <(grep '=' < "${MKTEMP_ENV_CURRENT}")
-    cp -f "${MKTEMP_ENV_UPDATED}" "${SCRIPTPATH}/compose/.env" || fatal "Failed to copy file.\nFailing command: ${F[C]}cp -f \"${MKTEMP_ENV_UPDATED}\" \"${SCRIPTPATH}/compose/.env\""
-    run_script 'set_permissions' "${SCRIPTPATH}/compose/.env"
     rm -f "${MKTEMP_ENV_CURRENT}" || warn "Failed to remove temporary .env update file."
+    cp -f "${MKTEMP_ENV_UPDATED}" "${SCRIPTPATH}/compose/.env" || fatal "Failed to copy file.\nFailing command: ${F[C]}cp -f \"${MKTEMP_ENV_UPDATED}\" \"${SCRIPTPATH}/compose/.env\""
     rm -f "${MKTEMP_ENV_UPDATED}" || warn "Failed to remove temporary .env update file."
+    run_script 'set_permissions' "${SCRIPTPATH}/compose/.env"
     run_script 'env_sanitize'
     info "Environment file update complete."
 }
