@@ -9,7 +9,7 @@ yml_merge() {
     local MKTEMP_RUN_YQ
     MKTEMP_RUN_YQ=$(mktemp) || fatal "Failed to create temporary run compose script.\nFailing command: ${F[C]}mktemp"
     info "Downloading run compose script."
-    curl -fsSL https://raw.githubusercontent.com/linuxserver/docker-yq/master/run-yq.sh -o "${MKTEMP_RUN_YQ}" > /dev/null 2>&1 || fatal "Failed to get docker install script.\nFailing command: ${F[C]}curl -fsSL https://raw.githubusercontent.com/linuxserver/docker-yq/master/run-yq.sh -o \"${MKTEMP_RUN_YQ}\""
+    curl -fsSL https://raw.githubusercontent.com/linuxserver/docker-yq/master/run-yq.sh -o "${MKTEMP_RUN_YQ}" > /dev/null 2>&1 || fatal "Failed to get run yq script.\nFailing command: ${F[C]}curl -fsSL https://raw.githubusercontent.com/linuxserver/docker-yq/master/run-yq.sh -o \"${MKTEMP_RUN_YQ}\""
     docker pull ghcr.io/linuxserver/yq:latest || fatal "Failed to pull latest yq image.\nFailing command: ${F[C]}docker pull ghcr.io/linuxserver/yq:latest"
     local MKTEMP_YML_MERGE
     MKTEMP_YML_MERGE=$(mktemp) || fatal "Failed to create temporary yml merge script.\nFailing command: ${F[C]}mktemp"
@@ -85,7 +85,7 @@ test_yml_merge() {
     local MKTEMP_RUN_COMPOSE
     MKTEMP_RUN_COMPOSE=$(mktemp) || fatal "Failed to create temporary run compose script.\nFailing command: ${F[C]}mktemp"
     info "Downloading run compose script."
-    curl -fsSL https://raw.githubusercontent.com/linuxserver/docker-docker-compose/master/run.sh -o "${MKTEMP_RUN_COMPOSE}" > /dev/null 2>&1 || fatal "Failed to get docker install script.\nFailing command: ${F[C]}curl -fsSL https://raw.githubusercontent.com/linuxserver/docker-docker-compose/master/run.sh -o \"${MKTEMP_RUN_COMPOSE}\""
+    curl -fsSL https://raw.githubusercontent.com/linuxserver/docker-docker-compose/master/run.sh -o "${MKTEMP_RUN_COMPOSE}" > /dev/null 2>&1 || fatal "Failed to get run yq script.\nFailing command: ${F[C]}curl -fsSL https://raw.githubusercontent.com/linuxserver/docker-docker-compose/master/run.sh -o \"${MKTEMP_RUN_COMPOSE}\""
     docker pull ghcr.io/linuxserver/docker-compose:latest || fatal "Failed to pull latest docker-compose image.\nFailing command: ${F[C]}docker pull ghcr.io/linuxserver/docker-compose:latest"
     eval sh "${MKTEMP_RUN_COMPOSE}" config || fatal "Failed to validate ${SCRIPTPATH}/compose/docker-compose.yml file.\nFailing command: ${F[C]}eval sh \"${MKTEMP_RUN_COMPOSE}\" config"
     rm -f "${MKTEMP_RUN_COMPOSE}" || warn "Failed to remove temporary run compose script."
