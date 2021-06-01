@@ -17,7 +17,7 @@ update_self() {
         info "Resetting to ${BRANCH}."
         git reset --hard "${BRANCH}" > /dev/null 2>&1 || fatal "Failed to reset to ${BRANCH}.\nFailing command: ${F[C]}git reset --hard \"${BRANCH}\""
         info "Pulling recent changes from git."
-        git pull > /dev/null 2>&1 || fatal "Failed to pull recent changes from git."
+        git pull > /dev/null 2>&1 || fatal "Failed to pull recent changes from git.\nFailing command: ${F[C]}git pull"
     fi
     info "Cleaning up unnecessary files and optimizing the local repository."
     git gc > /dev/null 2>&1 || true

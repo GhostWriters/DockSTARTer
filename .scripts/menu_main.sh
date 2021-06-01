@@ -5,7 +5,7 @@ IFS=$'\n\t'
 menu_main() {
     local MAINOPTS=()
     MAINOPTS+=("Configuration " "Setup and start applications")
-    MAINOPTS+=("Install Dependencies " "Latest version of Docker and Docker-Compose")
+    MAINOPTS+=("Install Dependencies " "Install required components")
     MAINOPTS+=("Update DockSTARTer " "Get the latest version of DockSTARTer")
     MAINOPTS+=("Prune Docker System " "Remove all unused containers, networks, volumes, images and build cache")
 
