@@ -2,6 +2,8 @@ services:
   apprise:
     container_name: apprise
     environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
       - TZ=${TZ}
     logging:
       driver: json-file
