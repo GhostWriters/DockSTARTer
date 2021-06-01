@@ -16,4 +16,5 @@ jobs:
           python-version: 3.x
       - run: pip install -r docs/requirements.txt
       - run: cp README.md docs/index.md
+      - run: echo "libera-coihoant" > docs/.well-known/libera-coihoant.txt
       - run: mkdocs gh-deploy --force
