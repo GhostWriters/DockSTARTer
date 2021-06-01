@@ -6,15 +6,20 @@ yml_merge() {
     run_script 'env_update'
     run_script 'appvars_create_all'
     info "Merging docker-compose.yml file."
-    local RUNFILE
-    RUNFILE=$(mktemp) || fatal "Failed to create temporary yml merge script.\nFailing command: ${F[C]}mktemp"
-    echo "#!/usr/bin/env bash" > "${RUNFILE}"
+    local MKTEMP_RUN_YQ
+    MKTEMP_RUN_YQ=$(mktemp) || fatal "Failed to create temporary run compose script.\nFailing command: ${F[C]}mktemp"
+    info "Downloading run compose script."
+    curl -fsSL https://raw.githubusercontent.com/linuxserver/docker-yq/master/run-yq.sh -o "${MKTEMP_RUN_YQ}" > /dev/null 2>&1 || fatal "Failed to get run yq script.\nFailing command: ${F[C]}curl -fsSL https://raw.githubusercontent.com/linuxserver/docker-yq/master/run-yq.sh -o \"${MKTEMP_RUN_YQ}\""
+    docker pull ghcr.io/linuxserver/yq:latest || fatal "Failed to pull latest yq image.\nFailing command: ${F[C]}docker pull ghcr.io/linuxserver/yq:latest"
+    local MKTEMP_YML_MERGE
+    MKTEMP_YML_MERGE=$(mktemp) || fatal "Failed to create temporary yml merge script.\nFailing command: ${F[C]}mktemp"
+    echo "#!/usr/bin/env bash" > "${MKTEMP_YML_MERGE}"
     {
         echo "export YQ_OPTIONS=\"${YQ_OPTIONS:-} -v ${SCRIPTPATH}:${SCRIPTPATH}\""
-        echo "yq -y -s 'reduce .[] as \$item ({}; . * \$item) | del(.version)' "\\
+        echo "sh \"${MKTEMP_RUN_YQ}\" -y -s 'reduce .[] as \$item ({}; . * \$item) | del(.version)' "\\
         echo "\"${SCRIPTPATH}/compose/.reqs/r1.yml\" \\"
         echo "\"${SCRIPTPATH}/compose/.reqs/r2.yml\" \\"
-    } >> "${RUNFILE}"
+    } >> "${MKTEMP_YML_MERGE}"
     info "Required files included."
     notice "Adding compose configurations for enabled apps. Please be patient, this can take a while."
     while IFS= read -r line; do
@@ -33,28 +38,28 @@ yml_merge() {
                     error "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${ARCH}.yml does not exist."
                     continue
                 fi
-                echo "\"${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${ARCH}.yml\" \\" >> "${RUNFILE}"
+                echo "\"${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${ARCH}.yml\" \\" >> "${MKTEMP_YML_MERGE}"
                 local APPNETMODE
                 APPNETMODE=$(run_script 'env_get' "${APPNAME}_NETWORK_MODE")
                 if [[ -z ${APPNETMODE} ]] || [[ ${APPNETMODE} == "bridge" ]]; then
                     if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.hostname.yml ]]; then
-                        echo "\"${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.hostname.yml\" \\" >> "${RUNFILE}"
+                        echo "\"${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.hostname.yml\" \\" >> "${MKTEMP_YML_MERGE}"
                     else
                         info "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.hostname.yml does not exist."
                     fi
                     if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml ]]; then
-                        echo "\"${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml\" \\" >> "${RUNFILE}"
+                        echo "\"${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml\" \\" >> "${MKTEMP_YML_MERGE}"
                     else
                         info "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml does not exist."
                     fi
                 elif [[ -n ${APPNETMODE} ]]; then
                     if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml ]]; then
-                        echo "\"${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml\" \\" >> "${RUNFILE}"
+                        echo "\"${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml\" \\" >> "${MKTEMP_YML_MERGE}"
                     else
                         info "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml does not exist."
                     fi
                 fi
-                echo "\"${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml\" \\" >> "${RUNFILE}"
+                echo "\"${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml\" \\" >> "${MKTEMP_YML_MERGE}"
                 info "All configurations for ${APPNAME} are included."
             else
                 warn "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml does not exist."
@@ -63,11 +68,11 @@ yml_merge() {
             error "${SCRIPTPATH}/compose/.apps/${FILENAME}/ does not exist."
         fi
     done < <(grep '_ENABLED=true$' < "${SCRIPTPATH}/compose/.env")
-    echo "> \"${SCRIPTPATH}/compose/docker-compose.yml\"" >> "${RUNFILE}"
-    run_script 'install_yq'
+    echo "> \"${SCRIPTPATH}/compose/docker-compose.yml\"" >> "${MKTEMP_YML_MERGE}"
     info "Running compiled script to merge docker-compose.yml file."
-    bash "${RUNFILE}" > /dev/null 2>&1 || fatal "Failed to run yml merge script.\nFailing command: ${F[C]}bash \"${RUNFILE}\""
-    rm -f "${RUNFILE}" || warn "Failed to remove temporary yml merge script."
+    bash "${MKTEMP_YML_MERGE}" > /dev/null 2>&1 || fatal "Failed to run yml merge script.\nFailing command: ${F[C]}bash \"${MKTEMP_YML_MERGE}\""
+    rm -f "${MKTEMP_YML_MERGE}" || warn "Failed to remove temporary yml merge script."
+    rm -f "${MKTEMP_RUN_YQ}" || warn "Failed to remove temporary run yq script."
     info "Merging docker-compose.yml complete."
 }
 
@@ -77,7 +82,13 @@ test_yml_merge() {
     cat "${SCRIPTPATH}/compose/.env"
     run_script 'yml_merge'
     cd "${SCRIPTPATH}/compose/" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}/compose/\""
-    docker-compose config || fatal "Failed to validate ${SCRIPTPATH}/compose/docker-compose.yml file.\nFailing command: ${F[C]}docker-compose config"
+    local MKTEMP_RUN_COMPOSE
+    MKTEMP_RUN_COMPOSE=$(mktemp) || fatal "Failed to create temporary run compose script.\nFailing command: ${F[C]}mktemp"
+    info "Downloading run compose script."
+    curl -fsSL https://raw.githubusercontent.com/linuxserver/docker-docker-compose/master/run.sh -o "${MKTEMP_RUN_COMPOSE}" > /dev/null 2>&1 || fatal "Failed to get run yq script.\nFailing command: ${F[C]}curl -fsSL https://raw.githubusercontent.com/linuxserver/docker-docker-compose/master/run.sh -o \"${MKTEMP_RUN_COMPOSE}\""
+    docker pull ghcr.io/linuxserver/docker-compose:latest || fatal "Failed to pull latest docker-compose image.\nFailing command: ${F[C]}docker pull ghcr.io/linuxserver/docker-compose:latest"
+    eval sh "${MKTEMP_RUN_COMPOSE}" config || fatal "Failed to validate ${SCRIPTPATH}/compose/docker-compose.yml file.\nFailing command: ${F[C]}eval sh \"${MKTEMP_RUN_COMPOSE}\" config"
+    rm -f "${MKTEMP_RUN_COMPOSE}" || warn "Failed to remove temporary run compose script."
     cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
     run_script 'appvars_purge' WATCHTOWER
 }
