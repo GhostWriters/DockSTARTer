@@ -7,8 +7,8 @@ yml_merge() {
     run_script 'appvars_create_all'
     info "Merging docker-compose.yml file."
     local MKTEMP_RUN_YQ
-    MKTEMP_RUN_YQ=$(mktemp) || fatal "Failed to create temporary run compose script.\nFailing command: ${F[C]}mktemp"
-    info "Downloading run compose script."
+    MKTEMP_RUN_YQ=$(mktemp) || fatal "Failed to create temporary run yq script.\nFailing command: ${F[C]}mktemp"
+    info "Downloading run yq script."
     curl -fsSL https://raw.githubusercontent.com/linuxserver/docker-yq/master/run-yq.sh -o "${MKTEMP_RUN_YQ}" > /dev/null 2>&1 || fatal "Failed to get run yq script.\nFailing command: ${F[C]}curl -fsSL https://raw.githubusercontent.com/linuxserver/docker-yq/master/run-yq.sh -o \"${MKTEMP_RUN_YQ}\""
     docker pull ghcr.io/linuxserver/yq:latest || fatal "Failed to pull latest yq image.\nFailing command: ${F[C]}docker pull ghcr.io/linuxserver/yq:latest"
     local MKTEMP_YML_MERGE
