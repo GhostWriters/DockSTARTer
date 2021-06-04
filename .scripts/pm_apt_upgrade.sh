@@ -9,7 +9,7 @@ pm_apt_upgrade() {
         if [[ -n ${VERBOSE:-} ]] || run_script 'question_prompt' "${PROMPT:-CLI}" N "Would you like to display the command output?"; then
             REDIRECT=""
         fi
-        eval apt-get -y dist-upgrade "${REDIRECT}" || fatal "Failed to upgrade packages from apt.\nFailing command: ${F[C]}eval apt-get -y dist-upgrade \"${REDIRECT}\""
+        eval apt-get -y dist-upgrade "${REDIRECT}" || fatal "Failed to upgrade packages from apt.\nFailing command: ${F[C]}apt-get -y dist-upgrade \"${REDIRECT}\""
     fi
 }
 

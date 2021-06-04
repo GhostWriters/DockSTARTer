@@ -9,7 +9,7 @@ pm_yum_upgrade() {
         if [[ -n ${VERBOSE:-} ]] || run_script 'question_prompt' "${PROMPT:-CLI}" N "Would you like to display the command output?"; then
             REDIRECT=""
         fi
-        eval yum -y upgrade "${REDIRECT}" || fatal "Failed to upgrade packages from yum.\nFailing command: ${F[C]}eval yum -y upgrade \"${REDIRECT}\""
+        eval yum -y upgrade "${REDIRECT}" || fatal "Failed to upgrade packages from yum.\nFailing command: ${F[C]}yum -y upgrade \"${REDIRECT}\""
     fi
 }
 

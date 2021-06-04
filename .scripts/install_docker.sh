@@ -36,7 +36,7 @@ install_docker() {
             if [[ -n ${VERBOSE:-} ]] || run_script 'question_prompt' "${PROMPT:-CLI}" N "Would you like to display the command output?"; then
                 REDIRECT=""
             fi
-            eval sh "${MKTEMP_GET_DOCKER}" "${REDIRECT}" || fatal "Failed to install docker.\nFailing command: ${F[C]}eval sh \"${MKTEMP_GET_DOCKER}\" \"${REDIRECT}\""
+            eval sh "${MKTEMP_GET_DOCKER}" "${REDIRECT}" || fatal "Failed to install docker.\nFailing command: ${F[C]}sh \"${MKTEMP_GET_DOCKER}\" \"${REDIRECT}\""
             rm -f "${MKTEMP_GET_DOCKER}" || warn "Failed to remove temporary docker install script."
             local UPDATED_DOCKER
             UPDATED_DOCKER=$( (docker --version 2> /dev/null || echo "0") | sed -E 's/(\S+ )(version )?([0-9][a-zA-Z0-9_.-]*)(, build .*)?/\3/')

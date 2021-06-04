@@ -9,7 +9,7 @@ pm_dnf_upgrade() {
         if [[ -n ${VERBOSE:-} ]] || run_script 'question_prompt' "${PROMPT:-CLI}" N "Would you like to display the command output?"; then
             REDIRECT=""
         fi
-        eval dnf -y upgrade --refresh "${REDIRECT}" || fatal "Failed to upgrade packages from dnf.\nFailing command: ${F[C]}eval dnf -y upgrade --refresh \"${REDIRECT}\""
+        eval dnf -y upgrade --refresh "${REDIRECT}" || fatal "Failed to upgrade packages from dnf.\nFailing command: ${F[C]}dnf -y upgrade --refresh \"${REDIRECT}\""
     fi
 }
 
