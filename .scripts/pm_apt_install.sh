@@ -3,8 +3,12 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 pm_apt_install() {
-    info "Installing dependencies."
-    apt-get -y install apt-transport-https curl git grep sed whiptail > /dev/null 2>&1 || fatal "Failed to install dependencies from apt.\nFailing command: ${F[C]}apt-get -y install apt-transport-https curl git grep sed whiptail"
+    notice "Installing dependencies. Please be patient, this can take a while."
+    local REDIRECT="> /dev/null 2>&1"
+    if [[ -n ${VERBOSE:-} ]] || run_script 'question_prompt' "${PROMPT:-CLI}" N "Would you like to display the command output?"; then
+        REDIRECT=""
+    fi
+    eval apt-get -y install apt-transport-https curl git grep sed whiptail "${REDIRECT}" || fatal "Failed to install dependencies from apt.\nFailing command: ${F[C]}apt-get -y install apt-transport-https curl git grep sed whiptail"
 }
 
 test_pm_apt_install() {
