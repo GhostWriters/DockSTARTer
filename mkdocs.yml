@@ -10,15 +10,15 @@ repo_name: GhostWriters/DockSTARTer
 copyright: Copyright &copy; 2021 GhostWriters
 
 extra:
+  analytics:
+    provider: google
+    property: G-QVNLHE95FS
   manifest: manifest.webmanifest
   social:
     - icon: fontawesome/brands/discord
       link: https://dockstarter.com/discord
     - icon: fontawesome/brands/github-square
       link: https://github.com/GhostWriters/DockSTARTer
-
-extra_javascript:
-  - javascripts/extra.js
 
 markdown_extensions:
   - pymdownx.keys
