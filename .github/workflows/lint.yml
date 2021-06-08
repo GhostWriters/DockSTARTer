@@ -7,7 +7,7 @@ jobs:
   editorconfig-checker:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.3.4
+      - uses: actions/checkout@v2
       - name: editorconfig-checker
         run: |
           docker run --rm -v ${GITHUB_WORKSPACE}:/check mstruebing/editorconfig-checker
@@ -15,7 +15,7 @@ jobs:
   markdownlint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.3.4
+      - uses: actions/checkout@v2
       - name: markdownlint
         run: |
           find ~+ ${github_workspace} -name '*.md' | xargs docker run --rm -v ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} markdownlint/markdownlint -r ~MD013,~MD033,~MD034
@@ -23,7 +23,7 @@ jobs:
   shellcheck:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.3.4
+      - uses: actions/checkout@v2
       - name: shellcheck
         run: |
           find ~+ ${github_workspace} -name '*.sh' | xargs docker run --rm -v ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} koalaman/shellcheck
@@ -31,7 +31,7 @@ jobs:
   shfmt:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.3.4
+      - uses: actions/checkout@v2
       - name: shfmt
         run: |
           find ~+ ${github_workspace} -name '*.sh' | xargs docker run --rm -v ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} mvdan/shfmt -s -d
@@ -39,7 +39,7 @@ jobs:
   yamllint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2.3.4
+      - uses: actions/checkout@v2
       - name: yamllint
         run: |
           find ~+ ${github_workspace} -name '*.yaml' -o -name '*.yml' | xargs docker run --rm -v ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} peterdavehello/yamllint yamllint -d '{extends: default, rules: {document-start: {present: false}, line-length: disable}}'
