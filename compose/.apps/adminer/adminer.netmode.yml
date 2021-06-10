@@ -1,0 +1,3 @@
+services:
+  adminer:
+    network_mode: ${ADMINER_NETWORK_MODE}
