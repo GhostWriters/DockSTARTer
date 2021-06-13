@@ -6,8 +6,5 @@ services:
       com.dockstarter.appinfo.nicename: xbackbone
       com.dockstarter.appvars.xbackbone_enabled: "false"
       com.dockstarter.appvars.xbackbone_network_mode: ""
-      com.dockstarter.appvars.xbackbone_php_post_max_size: 1024M
-      com.dockstarter.appvars.xbackbone_php_upload_max_filesize: 1024M
       com.dockstarter.appvars.xbackbone_port_80: "80"
       com.dockstarter.appvars.xbackbone_uploaddir: /mnt/xbackbone
-      com.dockstarter.appvars.xbackbone_url: ""

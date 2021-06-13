@@ -2,10 +2,7 @@ services:
   xbackbone:
     container_name: xbackbone
     environment:
-      - BASE_URL=${XBACKBONE_URL}
       - PGID=${PGID}
-      - PHP_POST_MAX_SIZE=${XBACKBONE_PHP_POST_MAX_SIZE}
-      - PHP_UPLOAD_MAX_FILESIZE=${XBACKBONE_PHP_UPLOAD_MAX_FILESIZE}
       - PUID=${PUID}
       - TZ=${TZ}
     logging:
@@ -18,4 +15,4 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/xbackbone:/config
       - ${DOCKERSTORAGEDIR}:/storage
-      - ${XBACKBONE_UPLOADDIR}:/config/www/xbackbone/storage
+      - ${XBACKBONE_UPLOAD_DIR}:/config/www/xbackbone/storage
