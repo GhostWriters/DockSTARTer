@@ -1,0 +1,4 @@
+services:
+  adminer:
+    ports:
+      - ${ADMINER_PORT_8080}:8080
