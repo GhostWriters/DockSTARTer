@@ -7,4 +7,4 @@ services:
       com.dockstarter.appvars.xbackbone_enabled: "false"
       com.dockstarter.appvars.xbackbone_network_mode: ""
       com.dockstarter.appvars.xbackbone_port_80: "80"
-      com.dockstarter.appvars.xbackbone_upload_dir: /mnt/xbackbone
+      com.dockstarter.appvars.xbackbone_uploaddir: /mnt/xbackbone
