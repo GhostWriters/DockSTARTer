@@ -73,6 +73,7 @@ nav:
       - advanced/vpn-info.md
   - App Specifics:
       - apps/adguard.md
+      - apps/adminer.md
       - apps/airdcpp.md
       - apps/airsonic.md
       - apps/amd.md
