@@ -15,4 +15,4 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/xbackbone:/config
       - ${DOCKERSTORAGEDIR}:/storage
-      - ${XBACKBONE_UPLOAD_DIR}:/config/www/xbackbone/storage
+      - ${XBACKBONE_UPLOADDIR}:/config/www/xbackbone/storage
