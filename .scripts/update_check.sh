@@ -2,7 +2,6 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-
 update_check() {
     log "Checking for script updates."
     local REPO
