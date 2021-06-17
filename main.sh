@@ -380,9 +380,7 @@ main() {
             exec sudo -E bash "${DS_SYMLINK}" "${ARGS[@]:-}"
         fi
     else
-        if repo_exists; then
-            run_script 'update_check'
-        else
+        if ! repo_exists; then
             warn "Attempting to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
             # Anti Sudo Check
             if [[ ${EUID} -eq 0 ]]; then
@@ -397,6 +395,8 @@ main() {
     if [[ ${EUID} -ne 0 ]]; then
         exec sudo -E bash "${SCRIPTNAME}" "${ARGS[@]:-}"
     fi
+    # Update check
+    run_script 'update_check'
     # Create Symlink
     run_script 'symlink_ds'
     # Execute CLI Argument Functions
