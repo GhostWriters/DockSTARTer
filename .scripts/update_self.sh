@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 update_self() {
     local BRANCH=${1:-origin/master}
-    if run_script 'question_prompt' "${PROMPT:-}" Y "Would you like to update DockSTARTer to ${BRANCH} now?"; then
+    if run_script 'question_prompt' "${PROMPT:-CLI}" Y "Would you like to update DockSTARTer to ${BRANCH} now?"; then
         notice "Updating DockSTARTer to ${BRANCH}."
     else
         notice "DockSTARTer will not be updated to ${BRANCH}."
