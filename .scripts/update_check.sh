@@ -27,7 +27,7 @@ update_check() {
     elif [ "${REMOTE_DIFF}" != "" ]; then
         warn "New changes are available for ${BRANCH} branch."
         warn "Review the changes: ${REPO%/}/compare/${LOCAL_COMMIT}...${BRANCH}"
-        read -r -p "Press any key to continue." || fatal "Update canceled. Exiting."
+        read -rp "Press any key to continue." < /dev/tty
         run_script 'update_self' "${BRANCH}"
     else
         info "${BRANCH} branch is up to date."
