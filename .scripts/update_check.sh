@@ -27,6 +27,7 @@ update_check() {
     elif [ "${REMOTE_DIFF}" != "" ]; then
         warn "New changes are available for ${BRANCH} branch."
         warn "Review the changes: ${REPO%/}/compare/${LOCAL_COMMIT}...${BRANCH}"
+        warn "If the above link does not show any changes, you may be using a testing branch."
         read -rp "Press any key to continue." < /dev/tty
         run_script 'update_self' "${BRANCH}"
     else
