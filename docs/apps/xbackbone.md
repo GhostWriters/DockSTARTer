@@ -1,16 +1,16 @@
 # XBackBone
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/pe46dro/xbackbone-docker?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/pe46dro/xbackbone-docker)
-[![GitHub Stars](https://img.shields.io/github/stars/Pe46dro/XBackBone-docker?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/Pe46dro/XBackBone-docker)
+[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/xbackbone?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/linuxserver/xbackbone)
+[![GitHub Stars](https://img.shields.io/github/stars/linuxserver/docker-xbackbone?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/linuxserver/docker-xbackbone)
 [![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/xbackbone)
 
 ## Description
 
 [XBackBone](<(https://sergix44.github.io/XBackBone/)>) is a simple and
-lightweight PHP file manager that support the instant sharing tool ShareX and
-\*NIX systems. It supports uploading and displaying images, GIF, video, code,
-formatted text, pdf, and file downloading and uploading. Also have a web UI with
-multi user management, media gallery and search support.
+lightweight PHP file manager that supports the instant sharing tool ShareX and
+\*NIX systems. It supports uploading and displaying images, GIFs, video, code,
+formatted text, pdf, and file downloading and uploading. Also has a web UI with
+multi-user management, media gallery and search support.
 
 ## Install/Setup
 
