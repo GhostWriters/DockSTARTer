@@ -21,7 +21,7 @@ own server.
 * `docker exec -it thelounge s6-setuidgid abc thelounge add <user>`
 * You will be prompted to enter a password that will not be echoed.
 * Saving logs to disk is the default, this consumes more space but allows scrollback.
-* To log in to the application, browse to `http://<hostip>:9000`
+* To log in to the application, browse to `http://<hostip>:9100` or `http://<container>:9000`
 * You should now be prompted for a username and password on the webinterface.
 * Once logged in, you can add an IRC network. Some defaults are preset for Freenode.
 
