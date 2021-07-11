@@ -6,5 +6,5 @@ services:
       com.dockstarter.appinfo.nicename: TheLounge
       com.dockstarter.appvars.thelounge_enabled: "false"
       com.dockstarter.appvars.thelounge_network_mode: ""
-      com.dockstarter.appvars.thelounge_port_9000: "9100"
+      com.dockstarter.appvars.thelounge_port_9000: "9000"
       com.dockstarter.appvars.thelounge_restart: unless-stopped
