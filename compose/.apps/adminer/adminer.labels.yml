@@ -1,0 +1,12 @@
+services:
+  adminer:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: A full-featured database management tool
+      com.dockstarter.appinfo.nicename: adminer
+      com.dockstarter.appvars.adminer_enabled: "false"
+      com.dockstarter.appvars.adminer_network_mode: ""
+      com.dockstarter.appvars.adminer_design: ""
+      com.dockstarter.appvars.adminer_plugins: ""
+      com.dockstarter.appvars.adminer_port_8080: "8080"
+      com.dockstarter.appvars.adminer_restart: unless-stopped

@@ -1,4 +1,3 @@
----
 site_name: DockSTARTer
 site_description: DockSTARTer helps you get started with home server apps running in Docker.
 site_author: GhostWriters
@@ -48,8 +47,20 @@ theme:
   favicon: images/favicon.ico
   logo: images/icon.png
   palette:
-    primary: blue grey
-    accent: indigo
+    - media: "(prefers-color-scheme: light)"
+      primary: blue grey
+      accent: indigo
+      scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      primary: blue grey
+      accent: indigo
+      scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
 
 nav:
   - Home: index.md
@@ -73,6 +84,7 @@ nav:
       - advanced/vpn-info.md
   - App Specifics:
       - apps/adguard.md
+      - apps/adminer.md
       - apps/airdcpp.md
       - apps/airsonic.md
       - apps/amd.md

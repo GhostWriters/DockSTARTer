@@ -18,3 +18,14 @@ indexer scraping & translation logic - removing the burden from other apps.
 This application does not have any specific setup instructions documented. If
 you need assistance setting up this application please visit our
 [support page](https://dockstarter.com/basics/support/).
+
+## Configuring VPN tunnel
+
+When attempting to use private trackers the address which requested the .torrent file must also be the address that initiates the download. Often this is an issue if you have your torrent downloader behind a VPN while the Jackett instance is not behind it.
+
+To solve this issue:
+
+- Enable the Privoxy option on the associated Torrent+VPN combination you choose.
+- Inside the Jackett webui, set proxy type to `HTTP`
+- Set Proxy URL to `servicename` example: `rtorrentvpn`
+- Set Proxy port to `8118`
