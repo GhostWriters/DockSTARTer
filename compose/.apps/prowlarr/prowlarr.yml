@@ -14,3 +14,4 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/prowlarr:/config
+      - ${DOCKERSTORAGEDIR}:/storage
