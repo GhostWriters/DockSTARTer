@@ -1,0 +1,3 @@
+services:
+  prowlarr:
+    network_mode: ${PROWLARR_NETWORK_MODE}

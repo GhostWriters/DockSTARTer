@@ -1,0 +1,3 @@
+services:
+  prowlarr:
+    image: ghcr.io/linuxserver/prowlarr:develop

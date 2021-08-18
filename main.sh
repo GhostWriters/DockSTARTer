@@ -314,20 +314,21 @@ run_script() {
 
 # Test Runner Function
 run_test() {
-    local TESTSNAME=${1:-}
+    local SCRIPTSNAME=${1:-}
     shift
-    if [[ -f ${SCRIPTPATH}/.scripts/${TESTSNAME}.sh ]]; then
-        if grep -q "test_${TESTSNAME}" "${SCRIPTPATH}/.scripts/${TESTSNAME}.sh"; then
-            notice "Testing ${TESTSNAME}."
+    local TESTSNAME="test_${SCRIPTSNAME}"
+    if [[ -f ${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh ]]; then
+        if grep -q "${TESTSNAME}" "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh"; then
+            notice "Testing ${SCRIPTSNAME}."
             # shellcheck source=/dev/null
-            source "${SCRIPTPATH}/.scripts/${TESTSNAME}.sh"
-            eval "test_${TESTSNAME}" "$@" < /dev/null || fatal "Failed to run ${TESTSNAME}."
+            source "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh"
+            "${TESTSNAME}" "$@" < /dev/null || fatal "Failed to run ${TESTSNAME}."
             notice "Completed testing ${TESTSNAME}."
         else
-            fatal "Test function in ${SCRIPTPATH}/.scripts/${TESTSNAME}.sh not found."
+            fatal "Test function in ${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh not found."
         fi
     else
-        fatal "${SCRIPTPATH}/.scripts/${TESTSNAME}.sh not found."
+        fatal "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh not found."
     fi
 }
 
