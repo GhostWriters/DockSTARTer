@@ -1,0 +1,17 @@
+services:
+  prowlarr:
+    container_name: prowlarr
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: ${PROWLARR_RESTART}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/prowlarr:/config
+      - ${DOCKERSTORAGEDIR}:/storage
