@@ -1,7 +1,7 @@
 markdown==3.3.4
 mkdocs-material-extensions==1.0.3
-mkdocs-material==7.2.6
-mkdocs-minify-plugin==0.4.0
+mkdocs-material==7.2.8
+mkdocs-minify-plugin==0.4.1
 mkdocs-redirects==1.0.3
 mkdocs==1.2.2
 pygments==2.10.0
