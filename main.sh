@@ -2,6 +2,8 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+export LC_ALL=C
+
 usage() {
     cat << EOF
 Usage: ds [OPTION]

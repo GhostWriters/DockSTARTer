@@ -1,3 +1,3 @@
 services:
   emby:
-    image: ghcr.io/linuxserver/emby
+    image: lscr.io/linuxserver/emby
