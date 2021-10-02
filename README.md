@@ -44,7 +44,6 @@ You may choose to rely on DockSTARTer for various changes to your Docker system 
   sudo apt-get update
   sudo apt-get dist-upgrade
   sudo apt-get install curl git
-  bash -c "$(curl -fsSL https://get.docker.com)"
   bash -c "$(curl -fsSL https://get.dockstarter.com)"
   sudo reboot
   ```
@@ -59,20 +58,18 @@ You may choose to rely on DockSTARTer for various changes to your Docker system 
   sudo reboot
   ```
 
-- YUM Systems ([CentOS](https://docs.docker.com/install/linux/docker-ce/centos/#os-requirements))
+- Pacman Systems (Arch, Manjaro, EndeavourOS, etc.)
 
   ```bash
-  sudo yum install curl git
+  sudo pacman -Sy curl docker git
   bash -c "$(curl -fsSL https://get.dockstarter.com)"
   sudo reboot
   ```
 
-- Pacman Systems (Arch, Manjaro, EndeavourOS, etc.)
-
-  > Note that systems with the `pacman` package manager will not install `docker` via the [https://get.docker.com](https://get.docker.com) script that is used for other distros. The instructions below provide information on installing all the required packages manually before installing DockSTARTer.
+- YUM Systems ([CentOS](https://docs.docker.com/install/linux/docker-ce/centos/#os-requirements))
 
   ```bash
-  sudo pacman -Sy curl docker git
+  sudo yum install curl git
   bash -c "$(curl -fsSL https://get.dockstarter.com)"
   sudo reboot
   ```
@@ -86,8 +83,8 @@ The standard install above downloads the initial script using a method with some
 ## NOTE: Run the appropriate command for your distro
 sudo apt-get install curl git
 sudo dnf install curl git
-sudo yum install curl git
 sudo pacman -Sy curl git
+sudo yum install curl git
 ```
 
 Then
