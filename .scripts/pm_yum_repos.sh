@@ -15,6 +15,10 @@ pm_yum_repos() {
     fi
     eval bash "${MKTEMP_GET_IUS}" "${REDIRECT}" || warn "Failed to install IUS."
     rm -f "${MKTEMP_GET_IUS}" || warn "Failed to remove temporary IUS repo install script."
+    info "Installing yum-utils"
+    yum -y install yum-utils || fatal "Failed to install yum-utils from yum.\nFailing command: ${F[C]}yum -y install yum-utils"
+    info "Setting up docker repository."
+    yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo || fatal "Failed to set up docker repository.\nFailing command: ${F[C]}yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo"
 }
 
 test_pm_yum_repos() {
