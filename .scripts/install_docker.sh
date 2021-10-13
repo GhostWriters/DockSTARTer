@@ -12,7 +12,7 @@ install_docker() {
     else
         INSTALLED_DOCKER=$( (docker --version 2> /dev/null || echo "0") | sed -E 's/(\S+ )(version )?([0-9][a-zA-Z0-9_.-]*)(, build .*)?/\3/')
     fi
-    if vergt "${MINIMUM_DOCKER}" "${INSTALLED_DOCKER}"; then
+    if vergte "${MINIMUM_DOCKER}" "${INSTALLED_DOCKER}"; then
         run_script 'package_manager_run' install_docker
     fi
 }
