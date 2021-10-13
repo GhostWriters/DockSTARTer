@@ -3,7 +3,8 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 pm_apt_repos() {
-    local MINIMUM_LIBSECCOMP2="2.4"
+    local MINIMUM_LIBSECCOMP2="2.4.4"
+    # Note compatibility from https://wiki.alpinelinux.org/wiki/Release_Notes_for_Alpine_3.14.0
     local INSTALLED_LIBSECCOMP2
     INSTALLED_LIBSECCOMP2=$(apt-cache policy libseccomp2 | grep -Po 'Installed: \K.*')
     if vergt "${MINIMUM_LIBSECCOMP2}" "${INSTALLED_LIBSECCOMP2}"; then
