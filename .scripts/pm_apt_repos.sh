@@ -12,7 +12,8 @@ pm_apt_repos() {
         info "Installing APT transport for downloading via the HTTP Secure protocol (HTTPS)."
         apt-get -y install apt-transport-https > /dev/null 2>&1 || fatal "Failed to install apt-transport-https from apt.\nFailing command: ${F[C]}apt-get -y install apt-transport-https"
     fi
-    local MINIMUM_LIBSECCOMP2="2.4"
+    local MINIMUM_LIBSECCOMP2="2.4.4"
+    # Note compatibility from https://wiki.alpinelinux.org/wiki/Release_Notes_for_Alpine_3.14.0
     local INSTALLED_LIBSECCOMP2
     INSTALLED_LIBSECCOMP2=$(apt-cache policy libseccomp2 | grep -Po 'Installed: \K.*')
     if vergt "${MINIMUM_LIBSECCOMP2}" "${INSTALLED_LIBSECCOMP2}"; then
