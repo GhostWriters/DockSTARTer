@@ -3,8 +3,9 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 install_docker() {
-    local MINIMUM_DOCKER="19.03.0"
+    local MINIMUM_DOCKER="20.10.0"
     # Find minimum compatible version at https://docs.docker.com/engine/release-notes/
+    # Note compatibility from https://wiki.alpinelinux.org/wiki/Release_Notes_for_Alpine_3.14.0
     run_script 'remove_snap_docker'
     local INSTALLED_DOCKER
     if [[ ${FORCE:-} == true ]] && [[ -n ${INSTALL:-} ]]; then
