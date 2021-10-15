@@ -8,7 +8,7 @@ config_apps() {
     while IFS= read -r line; do
         local APPNAME=${line%%_ENABLED=*}
         run_script 'menu_app_vars' "${APPNAME}" || return 1
-    done < <(grep --color=never -E '_ENABLED="?true"?$' "${SCRIPTPATH}/compose/.env")
+    done < <(grep --color=never -P '_ENABLED="?true"?$' "${SCRIPTPATH}/compose/.env")
 }
 
 test_config_apps() {
