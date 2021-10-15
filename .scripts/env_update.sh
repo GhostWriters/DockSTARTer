@@ -17,11 +17,11 @@ env_update() {
         local SET_VAR=${line%%=*}
         local SET_VAL
         SET_VAL=$(run_script 'env_get' "${SET_VAR}" "${MKTEMP_ENV_CURRENT}")
-        if ! grep -q "^${SET_VAR}=" "${MKTEMP_ENV_UPDATED}"; then
+        if ! grep -q -P "^${SET_VAR}=" "${MKTEMP_ENV_UPDATED}"; then
             echo "${line}" >> "${MKTEMP_ENV_UPDATED}" || error "${line} could not be written to ${MKTEMP_ENV_UPDATED}"
         fi
         run_script 'env_set' "${SET_VAR}" "${SET_VAL}" "${MKTEMP_ENV_UPDATED}"
-    done < <(grep -v '^#' "${MKTEMP_ENV_CURRENT}" | grep '=')
+    done < <(grep -v -P '^#' "${MKTEMP_ENV_CURRENT}" | grep '=')
     rm -f "${MKTEMP_ENV_CURRENT}" || warn "Failed to remove temporary .env update file."
     cp -f "${MKTEMP_ENV_UPDATED}" "${SCRIPTPATH}/compose/.env" || fatal "Failed to copy file.\nFailing command: ${F[C]}cp -f \"${MKTEMP_ENV_UPDATED}\" \"${SCRIPTPATH}/compose/.env\""
     rm -f "${MKTEMP_ENV_UPDATED}" || warn "Failed to remove temporary .env update file."
