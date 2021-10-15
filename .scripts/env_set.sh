@@ -7,7 +7,7 @@ env_set() {
     local NEW_VAL=${2:-}
     local VAR_FILE=${3:-$SCRIPTPATH/compose/.env}
     local VAR_VAL
-    VAR_VAL=$(grep "^${SET_VAR}=" "${VAR_FILE}") || fatal "Failed to find ${SET_VAR} in ${VAR_FILE}\nFailing command: ${F[C]}grep \"^${SET_VAR}=\" \"${VAR_FILE}\""
+    VAR_VAL=$(grep --color=never "^${SET_VAR}=" "${VAR_FILE}") || fatal "Failed to find ${SET_VAR} in ${VAR_FILE}\nFailing command: ${F[C]}grep --color=never \"^${SET_VAR}=\" \"${VAR_FILE}\""
     # https://stackoverflow.com/questions/29613304/is-it-possible-to-escape-regex-metacharacters-reliably-with-sed/29613573#29613573
     local SED_FIND
     SED_FIND=$(sed 's/[^^]/[&]/g; s/\^/\\^/g' <<< "${VAR_VAL}")
