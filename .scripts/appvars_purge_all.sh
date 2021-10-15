@@ -9,7 +9,7 @@ appvars_purge_all() {
             while IFS= read -r line; do
                 local APPNAME=${line%%_ENABLED=false}
                 run_script 'appvars_purge' "${APPNAME}"
-            done < <(grep '_ENABLED=false$' < "${SCRIPTPATH}/compose/.env")
+            done < <(grep '_ENABLED=false$' "${SCRIPTPATH}/compose/.env")
         fi
     else
         notice "${SCRIPTPATH}/compose/.env does not contain any disabled apps."

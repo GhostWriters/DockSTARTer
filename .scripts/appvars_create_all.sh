@@ -9,7 +9,7 @@ appvars_create_all() {
             local APPNAME=${line%%_ENABLED=true}
             run_script 'appvars_create' "${APPNAME}"
             info "Environment variables created for ${APPNAME}."
-        done < <(grep '_ENABLED=true$' < "${SCRIPTPATH}/compose/.env")
+        done < <(grep '_ENABLED=true$' "${SCRIPTPATH}/compose/.env")
     else
         notice "${SCRIPTPATH}/compose/.env does not contain any enabled apps."
     fi

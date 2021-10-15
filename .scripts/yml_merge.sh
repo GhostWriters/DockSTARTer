@@ -18,7 +18,7 @@ yml_merge() {
         if [[ -d ${SCRIPTPATH}/compose/.apps/${FILENAME}/ ]]; then
             if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml ]]; then
                 local APPDEPRECATED
-                APPDEPRECATED=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo "false")
+                APPDEPRECATED=$(grep -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo "false")
                 if [[ ${APPDEPRECATED} == "true" ]]; then
                     warn "${APPNAME} IS DEPRECATED!"
                     warn "Please edit ${SCRIPTPATH}/compose/.env and set ${APPNAME}_ENABLED to false."
@@ -57,7 +57,7 @@ yml_merge() {
         else
             error "${SCRIPTPATH}/compose/.apps/${FILENAME}/ does not exist."
         fi
-    done < <(grep '_ENABLED=true$' < "${SCRIPTPATH}/compose/.env")
+    done < <(grep '_ENABLED=true$' "${SCRIPTPATH}/compose/.env")
     YML_ARGS="${YML_ARGS:-} > \"${SCRIPTPATH}/compose/docker-compose.yml\""
     info "Running compiled arguments to merge docker-compose.yml file."
     export YQ_OPTIONS="${YQ_OPTIONS:-} -v ${SCRIPTPATH}:${SCRIPTPATH}"
