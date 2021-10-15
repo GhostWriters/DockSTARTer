@@ -10,7 +10,7 @@ config_vpn() {
 
     local DEFAULT
     local MESSAGE
-    if grep -q 'VPN_ENABLED="?true"?$' "${SCRIPTPATH}/compose/.env"; then
+    if grep -q -P 'VPN_ENABLED="?true"?$' "${SCRIPTPATH}/compose/.env"; then
         DEFAULT="N"
         MESSAGE="Would you like to keep these settings for ${APPNAME}?\\n You have apps enabled that will use these variables.\\n\\n${APPVARS}"
     else
