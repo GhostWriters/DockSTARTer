@@ -6,7 +6,7 @@ menu_app_vars() {
     local APPNAME=${1:-}
     run_script 'appvars_create' "${APPNAME}"
     local APPVARS
-    APPVARS=$(grep -v "^${APPNAME}_ENABLED=" "${SCRIPTPATH}/compose/.env" | grep --color=never "^${APPNAME}_")
+    APPVARS=$(grep -v -P "^${APPNAME}_ENABLED=" "${SCRIPTPATH}/compose/.env" | grep --color=never "^${APPNAME}_")
     if [[ -z ${APPVARS} ]]; then
         if [[ ${CI:-} == true ]]; then
             warn "${APPNAME} has no variables."
