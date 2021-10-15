@@ -11,7 +11,7 @@ services:
       com.dockstarter.appvars.openldap_enabled: "false"
       com.dockstarter.appvars.openldap_gid: "1000"
       com.dockstarter.appvars.openldap_network_mode: ""
-      com.dockstarter.appvars.openldap_organisation: example inc.
+      com.dockstarter.appvars.openldap_organisation: "\"example inc.\""
       com.dockstarter.appvars.openldap_port_389: "389"
       com.dockstarter.appvars.openldap_port_636: "636"
       com.dockstarter.appvars.openldap_readonly_user: "false"

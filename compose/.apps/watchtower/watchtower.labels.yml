@@ -9,12 +9,12 @@ services:
       com.dockstarter.appvars.watchtower_include_stopped: "false"
       com.dockstarter.appvars.watchtower_monitor_only: "false"
       com.dockstarter.appvars.watchtower_network_mode: ""
-      com.dockstarter.appvars.watchtower_notification_template: "{{range .}}{{.Message}}{{println}}{{end}}"
+      com.dockstarter.appvars.watchtower_notification_template: "\"{{range .}}{{.Message}}{{println}}{{end}}\""
       com.dockstarter.appvars.watchtower_notification_url: ""
       com.dockstarter.appvars.watchtower_notifications: shoutrrr
       com.dockstarter.appvars.watchtower_notifications_level: info
       com.dockstarter.appvars.watchtower_repo_pass: ""
       com.dockstarter.appvars.watchtower_repo_user: ""
       com.dockstarter.appvars.watchtower_restart: unless-stopped
-      com.dockstarter.appvars.watchtower_schedule: 0 0 4 * * *
+      com.dockstarter.appvars.watchtower_schedule: "\"0 0 4 * * *\""
       com.dockstarter.appvars.watchtower_timeout: 10s
