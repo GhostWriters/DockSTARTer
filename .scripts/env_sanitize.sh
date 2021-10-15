@@ -23,7 +23,7 @@ env_sanitize() {
     OUROBOROS_ENABLED=$(run_script 'env_get' OUROBOROS_ENABLED)
     local WATCHTOWER_ENABLED
     WATCHTOWER_ENABLED=$(run_script 'env_get' WATCHTOWER_ENABLED)
-    if [[ ${OUROBOROS_ENABLED} == true ]] && [[ ${WATCHTOWER_ENABLED} == true ]]; then
+    if [[ ${OUROBOROS_ENABLED} == "true" ]] && [[ ${WATCHTOWER_ENABLED} == "true" ]]; then
         run_script 'env_set' OUROBOROS_ENABLED false
     fi
 

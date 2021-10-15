@@ -21,7 +21,7 @@ menu_app_select() {
                         continue
                     fi
                     local APPONOFF
-                    if [[ $(run_script 'env_get' "${APPNAME}_ENABLED") == true ]]; then
+                    if [[ $(run_script 'env_get' "${APPNAME}_ENABLED") == "true" ]]; then
                         APPONOFF="on"
                     else
                         APPONOFF="off"
