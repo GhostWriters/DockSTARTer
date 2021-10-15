@@ -14,9 +14,9 @@ env_set() {
     local SED_REPLACE
     SED_REPLACE=$(sed 's/[&/\]/\\&/g' <<< "${SET_VAR}=${NEW_VAL}")
     if [[ "${NEW_VAL}" =~ " " ]]; then
-        SED_REPLACE=$(sed 's/[&/\]/\\&/g' <<< "${SET_VAR}=${NEW_VAL@Q}")
+        SED_REPLACE=$(sed 's/[&/\]/\\&/g' <<< "${SET_VAR}=\"${NEW_VAL}\"")
     fi
-    sed -i "s/^${SED_FIND}$/${SED_REPLACE@Q}/" "${VAR_FILE}" || fatal "Failed to set ${SED_REPLACE}\nFailing command: ${F[C]}sed -i \"s/^${SED_FIND}$/${SED_REPLACE}/\" \"${VAR_FILE}\""
+    sed -i "s/^${SED_FIND}$/${SED_REPLACE}/" "${VAR_FILE}" || fatal "Failed to set ${SED_REPLACE}\nFailing command: ${F[C]}sed -i \"s/^${SED_FIND}$/${SED_REPLACE}/\" \"${VAR_FILE}\""
 }
 
 test_env_set() {
