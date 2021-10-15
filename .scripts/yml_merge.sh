@@ -13,7 +13,7 @@ yml_merge() {
     info "Required files included."
     notice "Adding compose configurations for enabled apps. Please be patient, this can take a while."
     while IFS= read -r line; do
-        local APPNAME=${line%%_ENABLED=true}
+        local APPNAME=${line%%_ENABLED=*}
         local FILENAME=${APPNAME,,}
         if [[ -d ${SCRIPTPATH}/compose/.apps/${FILENAME}/ ]]; then
             if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml ]]; then
@@ -57,7 +57,7 @@ yml_merge() {
         else
             error "${SCRIPTPATH}/compose/.apps/${FILENAME}/ does not exist."
         fi
-    done < <(grep '_ENABLED=true$' "${SCRIPTPATH}/compose/.env")
+    done < <(grep -E '_ENABLED="?true"?$' "${SCRIPTPATH}/compose/.env")
     YML_ARGS="${YML_ARGS:-} > \"${SCRIPTPATH}/compose/docker-compose.yml\""
     info "Running compiled arguments to merge docker-compose.yml file."
     export YQ_OPTIONS="${YQ_OPTIONS:-} -v ${SCRIPTPATH}:${SCRIPTPATH}"
