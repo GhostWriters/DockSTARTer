@@ -10,7 +10,7 @@ env_set() {
     VAR_VAL=$(grep --color=never "^${SET_VAR}=" "${VAR_FILE}") || fatal "Failed to find ${SET_VAR} in ${VAR_FILE}\nFailing command: ${F[C]}grep --color=never \"^${SET_VAR}=\" \"${VAR_FILE}\""
     # https://stackoverflow.com/questions/29613304/is-it-possible-to-escape-regex-metacharacters-reliably-with-sed/29613573#29613573
     if [[ ${NEW_VAL} =~ " " ]]; then
-        NEW_VAL="\"${NEW_VAL}\""
+        NEW_VAL="'${NEW_VAL}'"
     fi
     local SED_FIND
     SED_FIND=$(sed 's/[^^]/[&]/g; s/\^/\\^/g' <<< "${VAR_VAL}")
