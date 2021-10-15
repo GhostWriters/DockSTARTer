@@ -16,12 +16,12 @@ menu_app_select() {
                     local APPDESCRIPTION
                     APPDESCRIPTION=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.description: \K.*" "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo "! Missing description !")
                     local APPDEPRECATED
-                    APPDEPRECATED=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo "false")
-                    if [[ ${APPDEPRECATED} == "true" ]]; then
+                    APPDEPRECATED=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo false)
+                    if [[ ${APPDEPRECATED} == true ]]; then
                         continue
                     fi
                     local APPONOFF
-                    if [[ $(run_script 'env_get' "${APPNAME}_ENABLED") == "true" ]]; then
+                    if [[ $(run_script 'env_get' "${APPNAME}_ENABLED") == true ]]; then
                         APPONOFF="on"
                     else
                         APPONOFF="off"
