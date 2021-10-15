@@ -6,7 +6,7 @@ appvars_purge() {
     local APPNAME=${1:-}
     APPNAME=${APPNAME^^}
     local APPVARS
-    APPVARS=$(grep --color=never "^${APPNAME}_" "${SCRIPTPATH}/compose/.env" || true)
+    APPVARS=$(grep --color=never -P "^${APPNAME}_" "${SCRIPTPATH}/compose/.env" || true)
     if [[ -z ${APPVARS} ]]; then
         if [[ ${PROMPT:-} == "GUI" ]]; then
             whiptail --fb --clear --title "DockSTARTer" --msgbox "${APPNAME} has no variables." 0 0
