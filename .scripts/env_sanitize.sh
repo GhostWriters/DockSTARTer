@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 env_sanitize() {
     # Replace ~ with /home/username
-    if grep -q -E '^\w+DIR=~/' "${SCRIPTPATH}/compose/.env"; then
+    if grep -q -P '^\w+DIR=~/' "${SCRIPTPATH}/compose/.env"; then
         info "Replacing ~ with ${DETECTED_HOMEDIR} in ${SCRIPTPATH}/compose/.env file."
         sed -i -E "s/^(\w+DIR)=~\//\1=$(sed 's/[&/\]/\\&/g' <<< "${DETECTED_HOMEDIR}")\//g" "${SCRIPTPATH}/compose/.env" | warn "Please verify that ~ is not used in ${SCRIPTPATH}/compose/.env file."
     fi
