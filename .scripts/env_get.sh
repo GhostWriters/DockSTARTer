@@ -6,8 +6,8 @@ env_get() {
     local GET_VAR=${1:-}
     local VAR_FILE=${2:-$SCRIPTPATH/compose/.env}
     eval "${GET_VAR}=\"\""
-    eval "$(grep --color=never -P "^${GET_VAR}=.*" "${VAR_FILE}" || true)"
-    echo "${!GET_VAR}" || true
+    # shellcheck source=/dev/null
+    (source "${VAR_FILE}" && echo "${!GET_VAR}") || true
 }
 
 test_env_get() {
