@@ -5,9 +5,7 @@ IFS=$'\n\t'
 env_get() {
     local GET_VAR=${1:-}
     local VAR_FILE=${2:-$SCRIPTPATH/compose/.env}
-    eval "${GET_VAR}=\"\""
-    # shellcheck source=/dev/null
-    (source "${VAR_FILE}" && echo "${!GET_VAR}") || true
+    grep --color=never -Po "^${GET_VAR}=\K.*" "${VAR_FILE}" || true
 }
 
 test_env_get() {
