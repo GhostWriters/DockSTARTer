@@ -6,6 +6,7 @@ appvars_create() {
     local APPNAME=${1:-}
     APPNAME=${APPNAME^^}
     local FILENAME=${APPNAME,,}
+    local APPTEMPLATES="${SCRIPTPATH}/compose/.apps/${FILENAME}"
     info "Creating environment variables for ${APPNAME}."
     while IFS= read -r line; do
         local VAR_LABEL
@@ -20,10 +21,10 @@ appvars_create() {
         fi
 
         local DEFAULT_VAL
-        DEFAULT_VAL=$(grep --color=never -Po "\scom\.dockstarter\.appvars\.${VAR_LABEL}: \K.*" "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || true)
+        DEFAULT_VAL=$(grep --color=never -Po "\scom\.dockstarter\.appvars\.${VAR_LABEL}: \K.*" "${APPTEMPLATES}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || true)
         echo "${SET_VAR}=" >> "${SCRIPTPATH}/compose/.env"
         run_script 'env_set' "${SET_VAR}" "${DEFAULT_VAL}"
-    done < <(grep --color=never -Po "\s\Kcom\.dockstarter\.appvars\..*" "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.labels.yml" || error "Unable to find labels for ${APPNAME}")
+    done < <(grep --color=never -Po "\s\Kcom\.dockstarter\.appvars\..*" "${APPTEMPLATES}/${FILENAME}.labels.yml" || error "Unable to find labels for ${APPNAME}")
     run_script 'env_set' "${APPNAME}_ENABLED" true
 }
 

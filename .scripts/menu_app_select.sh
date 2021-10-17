@@ -8,15 +8,16 @@ menu_app_select() {
     while IFS= read -r line; do
         local APPNAME=${line^^}
         local FILENAME=${APPNAME,,}
-        if [[ -d ${SCRIPTPATH}/compose/.apps/${FILENAME}/ ]]; then
-            if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml ]]; then
-                if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${ARCH}.yml ]]; then
+        local APPTEMPLATES="${SCRIPTPATH}/compose/.apps/${FILENAME}"
+        if [[ -d ${APPTEMPLATES}/ ]]; then
+            if [[ -f ${APPTEMPLATES}/${FILENAME}.yml ]]; then
+                if [[ -f ${APPTEMPLATES}/${FILENAME}.${ARCH}.yml ]]; then
                     local APPNICENAME
-                    APPNICENAME=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.nicename: \K.*" "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo "${APPNAME}")
+                    APPNICENAME=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.nicename: \K.*" "${APPTEMPLATES}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo "${APPNAME}")
                     local APPDESCRIPTION
-                    APPDESCRIPTION=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.description: \K.*" "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo "! Missing description !")
+                    APPDESCRIPTION=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.description: \K.*" "${APPTEMPLATES}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo "! Missing description !")
                     local APPDEPRECATED
-                    APPDEPRECATED=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo false)
+                    APPDEPRECATED=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" "${APPTEMPLATES}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo false)
                     if [[ ${APPDEPRECATED} == true ]]; then
                         continue
                     fi

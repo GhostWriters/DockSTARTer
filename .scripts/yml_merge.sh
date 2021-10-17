@@ -15,47 +15,48 @@ yml_merge() {
     while IFS= read -r line; do
         local APPNAME=${line%%_ENABLED=*}
         local FILENAME=${APPNAME,,}
-        if [[ -d ${SCRIPTPATH}/compose/.apps/${FILENAME}/ ]]; then
-            if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml ]]; then
+        local APPTEMPLATES="${SCRIPTPATH}/compose/.apps/${FILENAME}"
+        if [[ -d ${APPTEMPLATES}/ ]]; then
+            if [[ -f ${APPTEMPLATES}/${FILENAME}.yml ]]; then
                 local APPDEPRECATED
-                APPDEPRECATED=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo false)
+                APPDEPRECATED=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" "${APPTEMPLATES}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo false)
                 if [[ ${APPDEPRECATED} == true ]]; then
                     warn "${APPNAME} IS DEPRECATED!"
                     warn "Please edit ${SCRIPTPATH}/compose/.env and set ${APPNAME}_ENABLED to false."
                     continue
                 fi
-                if [[ ! -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${ARCH}.yml ]]; then
-                    error "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${ARCH}.yml does not exist."
+                if [[ ! -f ${APPTEMPLATES}/${FILENAME}.${ARCH}.yml ]]; then
+                    error "${APPTEMPLATES}/${FILENAME}.${ARCH}.yml does not exist."
                     continue
                 fi
-                YML_ARGS="${YML_ARGS:-} \"${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${ARCH}.yml\""
+                YML_ARGS="${YML_ARGS:-} \"${APPTEMPLATES}/${FILENAME}.${ARCH}.yml\""
                 local APPNETMODE
                 APPNETMODE=$(run_script 'env_get' "${APPNAME}_NETWORK_MODE")
                 if [[ -z ${APPNETMODE} ]] || [[ ${APPNETMODE} == "bridge" ]]; then
-                    if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.hostname.yml ]]; then
-                        YML_ARGS="${YML_ARGS:-} \"${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.hostname.yml\""
+                    if [[ -f ${APPTEMPLATES}/${FILENAME}.hostname.yml ]]; then
+                        YML_ARGS="${YML_ARGS:-} \"${APPTEMPLATES}/${FILENAME}.hostname.yml\""
                     else
-                        info "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.hostname.yml does not exist."
+                        info "${APPTEMPLATES}/${FILENAME}.hostname.yml does not exist."
                     fi
-                    if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml ]]; then
-                        YML_ARGS="${YML_ARGS:-} \"${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml\""
+                    if [[ -f ${APPTEMPLATES}/${FILENAME}.ports.yml ]]; then
+                        YML_ARGS="${YML_ARGS:-} \"${APPTEMPLATES}/${FILENAME}.ports.yml\""
                     else
-                        info "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.ports.yml does not exist."
+                        info "${APPTEMPLATES}/${FILENAME}.ports.yml does not exist."
                     fi
                 elif [[ -n ${APPNETMODE} ]]; then
-                    if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml ]]; then
-                        YML_ARGS="${YML_ARGS:-} \"${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml\""
+                    if [[ -f ${APPTEMPLATES}/${FILENAME}.netmode.yml ]]; then
+                        YML_ARGS="${YML_ARGS:-} \"${APPTEMPLATES}/${FILENAME}.netmode.yml\""
                     else
-                        info "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.netmode.yml does not exist."
+                        info "${APPTEMPLATES}/${FILENAME}.netmode.yml does not exist."
                     fi
                 fi
-                YML_ARGS="${YML_ARGS:-} \"${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml\""
+                YML_ARGS="${YML_ARGS:-} \"${APPTEMPLATES}/${FILENAME}.yml\""
                 info "All configurations for ${APPNAME} are included."
             else
-                warn "${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml does not exist."
+                warn "${APPTEMPLATES}/${FILENAME}.yml does not exist."
             fi
         else
-            error "${SCRIPTPATH}/compose/.apps/${FILENAME}/ does not exist."
+            error "${APPTEMPLATES}/ does not exist."
         fi
     done < <(grep --color=never -P '_ENABLED="?true"?$' "${SCRIPTPATH}/compose/.env")
     YML_ARGS="${YML_ARGS:-} > \"${SCRIPTPATH}/compose/docker-compose.yml\""
