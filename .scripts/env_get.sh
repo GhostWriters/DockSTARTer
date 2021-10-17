@@ -5,7 +5,7 @@ IFS=$'\n\t'
 env_get() {
     local GET_VAR=${1:-}
     local VAR_FILE=${2:-$COMPOSE_ENV}
-    grep --color=never -Po "^${GET_VAR}=\K.*" "${VAR_FILE}" || true
+    grep --color=never -Po "^${GET_VAR}=\K.*" "${VAR_FILE}" | xargs || true
 }
 
 test_env_get() {
