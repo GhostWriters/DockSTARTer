@@ -16,9 +16,10 @@ env_update() {
     while IFS= read -r line; do
         local SET_VAR=${line%%=*}
         local SET_VAL
+        local VAR_VAL="${line}"
         SET_VAL=$(run_script 'env_get' "${SET_VAR}" "${MKTEMP_ENV_CURRENT}")
         if ! grep -q -P "^${SET_VAR}=" "${MKTEMP_ENV_UPDATED}"; then
-            echo "${line}" >> "${MKTEMP_ENV_UPDATED}" || error "${line} could not be written to ${MKTEMP_ENV_UPDATED}"
+            echo "${VAR_VAL}" >> "${MKTEMP_ENV_UPDATED}" || error "${VAR_VAL} could not be written to ${MKTEMP_ENV_UPDATED}"
         fi
         run_script 'env_set' "${SET_VAR}" "${SET_VAL}" "${MKTEMP_ENV_UPDATED}"
     done < <(grep -v -P '^#' "${MKTEMP_ENV_CURRENT}" | grep '=')
