@@ -58,7 +58,7 @@ yml_merge() {
         else
             error "${APPTEMPLATES}/ does not exist."
         fi
-    done < <(grep --color=never -P '_ENABLED="?true"?$' "${COMPOSE_ENV}")
+    done < <(grep --color=never -P '_ENABLED='"'"'?true'"'"'?$' "${COMPOSE_ENV}")
     YML_ARGS="${YML_ARGS:-} > \"${SCRIPTPATH}/compose/docker-compose.yml\""
     info "Running compiled arguments to merge docker-compose.yml file."
     export YQ_OPTIONS="${YQ_OPTIONS:-} -v ${SCRIPTPATH}:${SCRIPTPATH}"
