@@ -14,8 +14,8 @@ menu_value_prompt() {
     local VAR_LABEL=${SET_VAR,,}
 
     local DEFAULT_VAL
-    if grep -q -Po "^${SET_VAR}=\K.*" "${SCRIPTPATH}/compose/.env.example"; then
-        DEFAULT_VAL=$(grep --color=never -Po "^${SET_VAR}=\K.*" "${SCRIPTPATH}/compose/.env.example" || true)
+    if grep -q -Po "^${SET_VAR}=\K.*" "${COMPOSE_ENV}.example"; then
+        DEFAULT_VAL=$(grep --color=never -Po "^${SET_VAR}=\K.*" "${COMPOSE_ENV}.example" || true)
     else
         DEFAULT_VAL=$(grep --color=never -Po "\scom\.dockstarter\.appvars\.${VAR_LABEL}: \K.*" "${APPTEMPLATES}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || true)
     fi

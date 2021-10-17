@@ -68,6 +68,8 @@ SCRIPTPATH=$(cd -P "$(dirname "$(get_scriptname)")" > /dev/null 2>&1 && pwd)
 readonly SCRIPTPATH
 SCRIPTNAME="${SCRIPTPATH}/$(basename "$(get_scriptname)")"
 readonly SCRIPTNAME
+readonly COMPOSE_ENV="${SCRIPTPATH}/compose/.env"
+export COMPOSE_ENV
 
 # Cleanup Function
 cleanup() {

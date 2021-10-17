@@ -22,7 +22,7 @@ yml_merge() {
                 APPDEPRECATED=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" "${APPTEMPLATES}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo false)
                 if [[ ${APPDEPRECATED} == true ]]; then
                     warn "${APPNAME} IS DEPRECATED!"
-                    warn "Please edit ${SCRIPTPATH}/compose/.env and set ${APPNAME}_ENABLED to false."
+                    warn "Please edit ${COMPOSE_ENV} and set ${APPNAME}_ENABLED to false."
                     continue
                 fi
                 if [[ ! -f ${APPTEMPLATES}/${FILENAME}.${ARCH}.yml ]]; then
@@ -58,7 +58,7 @@ yml_merge() {
         else
             error "${APPTEMPLATES}/ does not exist."
         fi
-    done < <(grep --color=never -P '_ENABLED="?true"?$' "${SCRIPTPATH}/compose/.env")
+    done < <(grep --color=never -P '_ENABLED="?true"?$' "${COMPOSE_ENV}")
     YML_ARGS="${YML_ARGS:-} > \"${SCRIPTPATH}/compose/docker-compose.yml\""
     info "Running compiled arguments to merge docker-compose.yml file."
     export YQ_OPTIONS="${YQ_OPTIONS:-} -v ${SCRIPTPATH}:${SCRIPTPATH}"
@@ -68,7 +68,7 @@ yml_merge() {
 
 test_yml_merge() {
     run_script 'appvars_create' WATCHTOWER
-    cat "${SCRIPTPATH}/compose/.env"
+    cat "${COMPOSE_ENV}"
     run_script 'yml_merge'
     cd "${SCRIPTPATH}/compose/" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}/compose/\""
     run_script 'run_compose' "config"

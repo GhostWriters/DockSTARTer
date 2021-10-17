@@ -4,9 +4,9 @@ IFS=$'\n\t'
 
 env_sanitize() {
     # Replace ~ with /home/username
-    if grep -q -P '^\w+DIR=~/' "${SCRIPTPATH}/compose/.env"; then
-        info "Replacing ~ with ${DETECTED_HOMEDIR} in ${SCRIPTPATH}/compose/.env file."
-        sed -i -E "s/^(\w+DIR)=~\//\1=$(sed 's/[&/\]/\\&/g' <<< "${DETECTED_HOMEDIR}")\//g" "${SCRIPTPATH}/compose/.env" | warn "Please verify that ~ is not used in ${SCRIPTPATH}/compose/.env file."
+    if grep -q -P '^\w+DIR=~/' "${COMPOSE_ENV}"; then
+        info "Replacing ~ with ${DETECTED_HOMEDIR} in ${COMPOSE_ENV} file."
+        sed -i -E "s/^(\w+DIR)=~\//\1=$(sed 's/[&/\]/\\&/g' <<< "${DETECTED_HOMEDIR}")\//g" "${COMPOSE_ENV}" | warn "Please verify that ~ is not used in ${COMPOSE_ENV} file."
     fi
 
     # Set LAN_NETWORK using detect_lan_network
@@ -54,7 +54,7 @@ env_sanitize() {
         DOCKERCONFDIR=$(run_script 'env_get' DOCKERCONFDIR)
         mv "${DOCKERCONFDIR}/letsencrypt" "${DOCKERCONFDIR}/swag" || fatal "Failed to move folder.\nFailing command: ${F[C]}mv \"${DOCKERCONFDIR}/letsencrypt\" \"${DOCKERCONFDIR}/swag\""
         notice "Migrating vars."
-        sed -i "s/^LETSENCRYPT_/SWAG_/" "${SCRIPTPATH}/compose/.env" || fatal "Failed to migrate vars from LETSENCRYPT_ to SWAG_\nFailing command: ${F[C]}sed -i \"s/^LETSENCRYPT_/SWAG_/\" \"${SCRIPTPATH}/compose/.env\""
+        sed -i "s/^LETSENCRYPT_/SWAG_/" "${COMPOSE_ENV}" || fatal "Failed to migrate vars from LETSENCRYPT_ to SWAG_\nFailing command: ${F[C]}sed -i \"s/^LETSENCRYPT_/SWAG_/\" \"${COMPOSE_ENV}\""
         run_script 'appvars_create' SWAG
         notice "Completed migrating from LETSENCRYPT to SWAG. Run ${F[C]}ds -c${NC} to create the new container."
     fi
