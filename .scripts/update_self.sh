@@ -21,7 +21,6 @@ update_self() {
     fi
     info "Cleaning up unnecessary files and optimizing the local repository."
     git gc > /dev/null 2>&1 || true
-    # git for-each-ref --format '%(refname:short)' refs/heads | grep -v master | xargs git branch -D > /dev/null 2>&1 || true
     info "Setting file ownership on repository files"
     git ls-tree -r HEAD | awk '{print $4}' | xargs chown "${DETECTED_PUID}":"${DETECTED_PGID}" > /dev/null 2>&1 || true
     chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}/.git" > /dev/null 2>&1 || true

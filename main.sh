@@ -322,7 +322,7 @@ run_test() {
     shift
     local TESTSNAME="test_${SCRIPTSNAME}"
     if [[ -f ${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh ]]; then
-        if grep -q "${TESTSNAME}" "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh"; then
+        if grep -q -P "${TESTSNAME}" "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh"; then
             notice "Testing ${SCRIPTSNAME}."
             # shellcheck source=/dev/null
             source "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh"

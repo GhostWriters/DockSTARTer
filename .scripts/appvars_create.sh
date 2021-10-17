@@ -11,7 +11,7 @@ appvars_create() {
     while IFS= read -r line; do
         local VAR_LABEL=${line}
         local SET_VAR=${VAR_LABEL^^}
-        if grep -q "^${SET_VAR}=" "${COMPOSE_ENV}"; then
+        if grep -q -P "^${SET_VAR}=" "${COMPOSE_ENV}"; then
             continue
         fi
 
