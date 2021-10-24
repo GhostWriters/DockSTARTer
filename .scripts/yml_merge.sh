@@ -60,7 +60,7 @@ yml_merge() {
         fi
     done < <(grep --color=never -P '_ENABLED='"'"'?true'"'"'?$' "${COMPOSE_ENV}")
     info "Running yq to create docker-compose.yml file from enabled templates."
-    export YQ_OPTIONS="${YQ_OPTIONS:-} -v ${SCRIPTPATH}:${SCRIPTPATH}"
+    export YQ_OPTIONS="${YQ_OPTIONS:-} -v ${ENABLED_TEMPLATES}:${ENABLED_TEMPLATES}"
     run_script 'run_yq' "${YML_ARGS:-} -y -s 'reduce .[] as \$item ({}; . * \$item) | del(.version)' ${ENABLED_TEMPLATES}/*.yml > ${SCRIPTPATH}/compose/docker-compose.yml"
     rm -rf "${ENABLED_TEMPLATES}" || warn "Failed to remove temporary directory for enabled templates."
     info "Merging docker-compose.yml complete."
