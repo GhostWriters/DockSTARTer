@@ -2,6 +2,8 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+export LC_ALL=C
+
 usage() {
     cat << EOF
 Usage: ds [OPTION]
@@ -66,6 +68,8 @@ SCRIPTPATH=$(cd -P "$(dirname "$(get_scriptname)")" > /dev/null 2>&1 && pwd)
 readonly SCRIPTPATH
 SCRIPTNAME="${SCRIPTPATH}/$(basename "$(get_scriptname)")"
 readonly SCRIPTNAME
+readonly COMPOSE_ENV="${SCRIPTPATH}/compose/.env"
+export COMPOSE_ENV
 
 # Cleanup Function
 cleanup() {
@@ -262,11 +266,11 @@ log() {
 trace() { log "${TRACE:-}" "${NC}$(date +"%F %T") ${F[B]}[TRACE ]${NC}   $*${NC}"; }
 debug() { log "${DEBUG:-}" "${NC}$(date +"%F %T") ${F[B]}[DEBUG ]${NC}   $*${NC}"; }
 info() { log "${VERBOSE:-}" "${NC}$(date +"%F %T") ${F[B]}[INFO  ]${NC}   $*${NC}"; }
-notice() { log "true" "${NC}$(date +"%F %T") ${F[G]}[NOTICE]${NC}   $*${NC}"; }
-warn() { log "true" "${NC}$(date +"%F %T") ${F[Y]}[WARN  ]${NC}   $*${NC}"; }
-error() { log "true" "${NC}$(date +"%F %T") ${F[R]}[ERROR ]${NC}   $*${NC}"; }
+notice() { log true "${NC}$(date +"%F %T") ${F[G]}[NOTICE]${NC}   $*${NC}"; }
+warn() { log true "${NC}$(date +"%F %T") ${F[Y]}[WARN  ]${NC}   $*${NC}"; }
+error() { log true "${NC}$(date +"%F %T") ${F[R]}[ERROR ]${NC}   $*${NC}"; }
 fatal() {
-    log "true" "${NC}$(date +"%F %T") ${B[R]}${F[W]}[FATAL ]${NC}   $*${NC}"
+    log true "${NC}$(date +"%F %T") ${B[R]}${F[W]}[FATAL ]${NC}   $*${NC}"
     exit 1
 }
 
@@ -318,7 +322,7 @@ run_test() {
     shift
     local TESTSNAME="test_${SCRIPTSNAME}"
     if [[ -f ${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh ]]; then
-        if grep -q "${TESTSNAME}" "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh"; then
+        if grep -q -P "${TESTSNAME}" "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh"; then
             notice "Testing ${SCRIPTSNAME}."
             # shellcheck source=/dev/null
             source "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh"

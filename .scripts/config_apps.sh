@@ -6,9 +6,9 @@ config_apps() {
     info "Configuring .env variables for enabled apps."
     run_script 'appvars_create_all'
     while IFS= read -r line; do
-        local APPNAME=${line%%_ENABLED=true}
+        local APPNAME=${line%%_ENABLED=*}
         run_script 'menu_app_vars' "${APPNAME}" || return 1
-    done < <(grep '_ENABLED=true$' < "${SCRIPTPATH}/compose/.env")
+    done < <(grep --color=never -P '_ENABLED='"'"'?true'"'"'?$' "${COMPOSE_ENV}")
 }
 
 test_config_apps() {

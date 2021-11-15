@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-pm_dnf_remove_docker() {
+pm_dnf_install_docker() {
     # https://docs.docker.com/install/linux/docker-ce/fedora/
     info "Removing conflicting Docker packages."
     dnf -y remove docker \
@@ -16,9 +16,11 @@ pm_dnf_remove_docker() {
         docker-latest-logrotate \
         docker-logrotate \
         docker-selinux > /dev/null 2>&1 || true
+    run_script 'remove_snap_docker'
+    run_script 'get_docker'
 }
 
-test_pm_dnf_remove_docker() {
-    # run_script 'pm_dnf_remove_docker'
-    warn "CI does not test pm_dnf_remove_docker."
+test_pm_dnf_install_docker() {
+    # run_script 'pm_dnf_install_docker'
+    warn "CI does not test pm_dnf_install_docker."
 }

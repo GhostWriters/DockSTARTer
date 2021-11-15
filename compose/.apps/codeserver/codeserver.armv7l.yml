@@ -1,3 +1,3 @@
 services:
   codeserver:
-    image: ghcr.io/linuxserver/code-server
+    image: lscr.io/linuxserver/code-server
