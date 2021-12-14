@@ -12,7 +12,7 @@ env_sanitize() {
     # Set LAN_NETWORK using detect_lan_network
     local LAN_NETWORK
     LAN_NETWORK=$(run_script 'env_get' LAN_NETWORK)
-    if echo "${LAN_NETWORK}" | grep -q -P 'x' || [[ ${LAN_NETWORK} == "" ]]; then
+    if grep -q -P 'x' <<< "${LAN_NETWORK}" || [[ ${LAN_NETWORK} == "" ]]; then
         local DETECTED_LAN_NETWORK
         DETECTED_LAN_NETWORK=$(run_script 'detect_lan_network')
         run_script 'env_set' LAN_NETWORK "${DETECTED_LAN_NETWORK}"
