@@ -19,7 +19,7 @@ services:
     environment:
       - TZ=${TZ}
     hostname: ${DOCKERHOSTNAME}
-    image: ghcr.io/hotio/petio
+    image: cr.hotio.dev/hotio/petio
     logging:
       driver: json-file
       options:
