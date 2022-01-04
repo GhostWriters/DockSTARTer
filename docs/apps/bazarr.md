@@ -1,7 +1,7 @@
 # Bazarr
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/bazarr?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/linuxserver/bazarr)
-[![GitHub Stars](https://img.shields.io/github/stars/morpheus65535/bazarr?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/morpheus65535/bazarr)
+[![GitHub Stars](https://img.shields.io/github/stars/linuxserver/docker-bazarr?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/linuxserver/docker-bazarr)
 [![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/bazarr)
 
 ## Description
