@@ -1,7 +1,7 @@
 # Prowlarr
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/prowlarr.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&label=pulls&logo=docker)](https://hub.docker.com/r/linuxserver/prowlarr)
-[![GitHub Stars](https://img.shields.io/github/stars/linuxserver/docker-prowlarr.svg?color=94398d&labelColor=555555&logoColor=ffffff&style=for-the-badge&logo=github)](https://github.com/linuxserver/docker-prowlarr)
+[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/prowlarr?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/linuxserver/prowlarr)
+[![GitHub Stars](https://img.shields.io/github/stars/linuxserver/docker-prowlarr?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/linuxserver/docker-prowlarr)
 [![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/prowlarr)
 
 ## Description
