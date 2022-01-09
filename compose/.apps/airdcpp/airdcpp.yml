@@ -2,14 +2,14 @@ services:
   airdcpp:
     container_name: airdcpp
     environment:
-      - GID=${PGID}
+      - PGID=${PGID}
       - HTTP_PORT=${AIRDCPP_PORT_5600}
       - HTTPS_PORT=${AIRDCPP_PORT_5601}
       - TCP_PORT=${AIRDCPP_PORT_21248}
       - TLS_PORT=${AIRDCPP_PORT_21249}
       - TZ=${TZ}
       - UDP_PORT=${AIRDCPP_PORT_21248}
-      - UID=${PUID}
+      - PUID=${PUID}
     logging:
       driver: json-file
       options:
