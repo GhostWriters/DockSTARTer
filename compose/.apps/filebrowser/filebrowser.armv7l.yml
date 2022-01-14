@@ -1,0 +1,3 @@
+services:
+  filebrowser:
+    image: filebrowser/filebrowser
