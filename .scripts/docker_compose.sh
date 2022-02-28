@@ -48,7 +48,7 @@ docker_compose() {
 test_docker_compose() {
     run_script 'appvars_create' WATCHTOWER
     cat "${COMPOSE_ENV}"
-    run_script 'yml_merge'
+    run_script 'compose_merge'
     cd "${SCRIPTPATH}/compose/" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}/compose/\""
     run_script 'run_compose' "config"
     cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
