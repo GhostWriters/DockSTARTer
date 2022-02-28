@@ -19,7 +19,7 @@ services:
     environment:
       - TZ=${TZ}
     hostname: ${DOCKERHOSTNAME}
-    image: ghcr.io/hotio/petio
+    image: cr.hotio.dev/hotio/petio
     logging:
       driver: json-file
       options:
@@ -31,6 +31,9 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/petio:/config
+    depends_on:
+      mongo:
+        condition: service_healthy
   mongo:
     container_name: mongo
     environment:
@@ -50,4 +53,10 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/mongo:/data/configdb
       - ${DOCKERCONFDIR}/mongo/db:/data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
 ```

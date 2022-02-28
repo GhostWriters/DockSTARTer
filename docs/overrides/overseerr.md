@@ -21,7 +21,7 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     hostname: ${DOCKERHOSTNAME}
-    image: ghcr.io/hotio/overseerr
+    image: cr.hotio.dev/hotio/overseerr
     logging:
       driver: json-file
       options:
