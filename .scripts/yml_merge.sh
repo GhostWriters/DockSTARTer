@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-merge_compose() {
+yml_merge() {
     run_script 'env_update'
     run_script 'appvars_create_all'
     info "Compiling enabled templates to merge docker-compose.yml file."
@@ -64,10 +64,10 @@ merge_compose() {
     info "Merging docker-compose.yml complete."
 }
 
-test_merge_compose() {
+test_yml_merge() {
     #run_script 'appvars_create' WATCHTOWER
     cat "${COMPOSE_ENV}"
-    run_script 'merge_compose'
+    run_script 'yml_merge'
     cd "${SCRIPTPATH}/compose/" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}/compose/\""
     run_script 'run_compose' "config"
     cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""

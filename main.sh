@@ -414,10 +414,10 @@ main() {
                 run_script 'docker_compose' "${COMPOSE}"
                 ;;
             generate | merge)
-                run_script 'merge_compose'
+                run_script 'yml_merge'
                 ;;
             pull* | restart* | up*)
-                run_script 'merge_compose'
+                run_script 'yml_merge'
                 run_script 'docker_compose' "${COMPOSE}"
                 ;;
             *)
