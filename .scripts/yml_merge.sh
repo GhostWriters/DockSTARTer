@@ -58,9 +58,9 @@ yml_merge() {
             error "${APPTEMPLATES}/ does not exist."
         fi
     done < <(grep --color=never -P '_ENABLED='"'"'?true'"'"'?$' "${COMPOSE_ENV}")
-    info "Running docker compose config to create docker-compose.yml file from enabled templates."
+    info "Running compose config to create docker-compose.yml file from enabled templates."
     export COMPOSE_FILE="${COMPOSE_FILE}"
-    docker compose config > "${SCRIPTPATH}/compose/docker-compose-config.yml"
+    run_script 'run_compose' "config" > "${SCRIPTPATH}/compose/docker-compose-config.yml"
     info "Merging docker-compose.yml complete."
 }
 
