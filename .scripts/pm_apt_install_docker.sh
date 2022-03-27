@@ -19,7 +19,7 @@ pm_apt_install_docker() {
     if [[ -n ${VERBOSE:-} ]] || run_script 'question_prompt' "${PROMPT:-CLI}" N "Would you like to display the command output?"; then
         REDIRECT=""
     fi
-    eval apt-get -y install docker-compose-plugin "${REDIRECT}" || fatal "Failed to install docker-compose-plugin from apt.\nFailing command: ${F[C]}apt-get -y install docker-compose-plugin"
+    eval "apt-get -y install docker-compose-plugin ${REDIRECT}" || fatal "Failed to install docker-compose-plugin from apt.\nFailing command: ${F[C]}apt-get -y install docker-compose-plugin"
 }
 
 test_pm_apt_install_docker() {

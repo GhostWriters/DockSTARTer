@@ -23,7 +23,7 @@ pm_dnf_install_docker() {
     if [[ -n ${VERBOSE:-} ]] || run_script 'question_prompt' "${PROMPT:-CLI}" N "Would you like to display the command output?"; then
         REDIRECT=""
     fi
-    eval dnf -y install docker-compose-plugin "${REDIRECT}" || fatal "Failed to install docker-compose-plugin from dnf.\nFailing command: ${F[C]}dnf -y install docker-compose-plugin"
+    eval "dnf -y install docker-compose-plugin ${REDIRECT}" || fatal "Failed to install docker-compose-plugin from dnf.\nFailing command: ${F[C]}dnf -y install docker-compose-plugin"
 }
 
 test_pm_dnf_install_docker() {

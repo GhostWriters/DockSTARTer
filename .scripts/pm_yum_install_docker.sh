@@ -21,7 +21,7 @@ pm_yum_install_docker() {
     if [[ -n ${VERBOSE:-} ]] || run_script 'question_prompt' "${PROMPT:-CLI}" N "Would you like to display the command output?"; then
         REDIRECT=""
     fi
-    eval yum -y install docker-compose-plugin "${REDIRECT}" || fatal "Failed to install docker-compose-plugin from yum.\nFailing command: ${F[C]}yum -y install docker-compose-plugin"
+    eval "yum -y install docker-compose-plugin ${REDIRECT}" || fatal "Failed to install docker-compose-plugin from yum.\nFailing command: ${F[C]}yum -y install docker-compose-plugin"
 }
 
 test_pm_yum_install_docker() {
