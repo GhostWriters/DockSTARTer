@@ -41,7 +41,7 @@ docker_compose() {
     fi
     run_script 'require_docker'
     cd "${SCRIPTPATH}/compose/" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}/compose/\""
-    run_script 'run_compose' "${COMPOSECOMMAND}"
+    docker compose "${COMPOSECOMMAND}"
     cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
 }
 
@@ -50,7 +50,7 @@ test_docker_compose() {
     cat "${COMPOSE_ENV}"
     run_script 'yml_merge'
     cd "${SCRIPTPATH}/compose/" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}/compose/\""
-    run_script 'run_compose' "config"
+    docker compose "config"
     cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
     run_script 'docker_compose'
 }

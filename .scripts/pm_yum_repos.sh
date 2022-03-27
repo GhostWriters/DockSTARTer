@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 pm_yum_repos() {
-    info "Installing EPEL and IUS repositories."
+    notice "Installing EPEL and IUS repositories."
     local MKTEMP_GET_IUS
     MKTEMP_GET_IUS=$(mktemp) || fatal "Failed to create temporary IUS repo install script.\nFailing command: ${F[C]}mktemp"
     info "Downloading IUS install script."

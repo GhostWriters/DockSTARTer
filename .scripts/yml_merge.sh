@@ -60,7 +60,7 @@ yml_merge() {
     done < <(grep --color=never -P '_ENABLED='"'"'?true'"'"'?$' "${COMPOSE_ENV}")
     info "Running compose config to create docker-compose.yml file from enabled templates."
     export COMPOSE_FILE="${COMPOSE_FILE}"
-    run_script 'run_compose' "config" > "${SCRIPTPATH}/compose/docker-compose-config.yml"
+    docker compose "config" > "${SCRIPTPATH}/compose/docker-compose-config.yml"
     info "Merging docker-compose.yml complete."
 }
 
@@ -69,7 +69,7 @@ test_yml_merge() {
     cat "${COMPOSE_ENV}"
     run_script 'yml_merge'
     cd "${SCRIPTPATH}/compose/" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}/compose/\""
-    run_script 'run_compose' "config"
+    docker compose "config"
     cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
     run_script 'appvars_purge' WATCHTOWER
 }
