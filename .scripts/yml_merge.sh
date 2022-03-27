@@ -60,7 +60,7 @@ yml_merge() {
     done < <(grep --color=never -P '_ENABLED='"'"'?true'"'"'?$' "${COMPOSE_ENV}")
     info "Running compose config to create docker-compose.yml file from enabled templates."
     export COMPOSE_FILE="${COMPOSE_FILE}"
-    docker compose config > "${SCRIPTPATH}/compose/docker-compose-config.yml" || fatal "Failed to output compose config.\nFailing command: ${F[C]}docker compose config > \"${SCRIPTPATH}/compose/docker-compose-config.yml\""
+    docker compose config > "${SCRIPTPATH}/compose/docker-compose.yml" || fatal "Failed to output compose config.\nFailing command: ${F[C]}docker compose config > \"${SCRIPTPATH}/compose/docker-compose.yml\""
     info "Merging docker-compose.yml complete."
 }
 
