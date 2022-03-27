@@ -40,7 +40,7 @@ docker_compose() {
         return 1
     fi
     run_script 'require_docker'
-    eval "docker compose --project-directory ${SCRIPTPATH}/compose/ ${COMPOSECOMMAND}" || fatal "Failed to change directory.\nFailing command: ${F[C]}docker compose --project-directory ${SCRIPTPATH}/compose/ ${COMPOSECOMMAND}"
+    eval "docker compose --project-directory ${SCRIPTPATH}/compose/ ${COMPOSECOMMAND}" || fatal "Failed to run compose.\nFailing command: ${F[C]}docker compose --project-directory ${SCRIPTPATH}/compose/ ${COMPOSECOMMAND}"
 }
 
 test_docker_compose() {
