@@ -14,7 +14,7 @@ get_docker() {
     if [[ -n ${VERBOSE:-} ]] || run_script 'question_prompt' "${PROMPT:-CLI}" N "Would you like to display the command output?"; then
         REDIRECT=""
     fi
-    eval sh "${MKTEMP_GET_DOCKER}" "${REDIRECT}" || fatal "Failed to install docker.\nFailing command: ${F[C]}sh \"${MKTEMP_GET_DOCKER}\" \"${REDIRECT}\""
+    eval "sh ${MKTEMP_GET_DOCKER} ${REDIRECT}" || fatal "Failed to install docker.\nFailing command: ${F[C]}sh ${MKTEMP_GET_DOCKER}"
     rm -f "${MKTEMP_GET_DOCKER}" || warn "Failed to remove temporary docker install script."
 }
 
