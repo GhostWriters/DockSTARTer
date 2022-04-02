@@ -6,10 +6,9 @@ yml_merge() {
     run_script 'env_update'
     run_script 'appvars_create_all'
     info "Compiling enabled templates to merge docker-compose.yml file."
-    local ENABLED_TEMPLATES
-    ENABLED_TEMPLATES=$(mktemp -d) || fatal "Failed to create temporary directory for enabled templates.\nFailing command: ${F[C]}mktemp -d"
-    cp "${SCRIPTPATH}/compose/.reqs/r1.yml" "${ENABLED_TEMPLATES}" || fatal "Failed to copy required files to temporary directory for enabled templates.\nFailing command: ${F[C]}cp \"${SCRIPTPATH}/compose/.reqs/r1.yml\" \"${ENABLED_TEMPLATES}\""
-    cp "${SCRIPTPATH}/compose/.reqs/r2.yml" "${ENABLED_TEMPLATES}" || fatal "Failed to copy required files to temporary directory for enabled templates.\nFailing command: ${F[C]}cp \"${SCRIPTPATH}/compose/.reqs/r2.yml\" \"${ENABLED_TEMPLATES}\""
+    local COMPOSE_FILE
+    COMPOSE_FILE="${SCRIPTPATH}/compose/.reqs/r1.yml"
+    COMPOSE_FILE="${COMPOSE_FILE}:${SCRIPTPATH}/compose/.reqs/r2.yml"
     info "Required files included."
     notice "Adding compose configurations for enabled apps. Please be patient, this can take a while."
     while IFS= read -r line; do
@@ -29,28 +28,28 @@ yml_merge() {
                     error "${APPTEMPLATES}/${FILENAME}.${ARCH}.yml does not exist."
                     continue
                 fi
-                cp "${APPTEMPLATES}/${FILENAME}.${ARCH}.yml" "${ENABLED_TEMPLATES}" || fatal "Failed to copy required files to temporary directory for enabled templates.\nFailing command: ${F[C]}cp \"${APPTEMPLATES}/${FILENAME}.${ARCH}.yml\" \"${ENABLED_TEMPLATES}\""
+                COMPOSE_FILE="${COMPOSE_FILE}:${APPTEMPLATES}/${FILENAME}.${ARCH}.yml"
                 local APPNETMODE
                 APPNETMODE=$(run_script 'env_get' "${APPNAME}_NETWORK_MODE")
                 if [[ -z ${APPNETMODE} ]] || [[ ${APPNETMODE} == "bridge" ]]; then
                     if [[ -f ${APPTEMPLATES}/${FILENAME}.hostname.yml ]]; then
-                        cp "${APPTEMPLATES}/${FILENAME}.hostname.yml" "${ENABLED_TEMPLATES}" || fatal "Failed to copy required files to temporary directory for enabled templates.\nFailing command: ${F[C]}cp \"${APPTEMPLATES}/${FILENAME}.hostname.yml\" \"${ENABLED_TEMPLATES}\""
+                        COMPOSE_FILE="${COMPOSE_FILE}:${APPTEMPLATES}/${FILENAME}.hostname.yml"
                     else
                         info "${APPTEMPLATES}/${FILENAME}.hostname.yml does not exist."
                     fi
                     if [[ -f ${APPTEMPLATES}/${FILENAME}.ports.yml ]]; then
-                        cp "${APPTEMPLATES}/${FILENAME}.ports.yml" "${ENABLED_TEMPLATES}" || fatal "Failed to copy required files to temporary directory for enabled templates.\nFailing command: ${F[C]}cp \"${APPTEMPLATES}/${FILENAME}.ports.yml\" \"${ENABLED_TEMPLATES}\""
+                        COMPOSE_FILE="${COMPOSE_FILE}:${APPTEMPLATES}/${FILENAME}.ports.yml"
                     else
                         info "${APPTEMPLATES}/${FILENAME}.ports.yml does not exist."
                     fi
                 elif [[ -n ${APPNETMODE} ]]; then
                     if [[ -f ${APPTEMPLATES}/${FILENAME}.netmode.yml ]]; then
-                        cp "${APPTEMPLATES}/${FILENAME}.netmode.yml" "${ENABLED_TEMPLATES}" || fatal "Failed to copy required files to temporary directory for enabled templates.\nFailing command: ${F[C]}cp \"${APPTEMPLATES}/${FILENAME}.netmode.yml\" \"${ENABLED_TEMPLATES}\""
+                        COMPOSE_FILE="${COMPOSE_FILE}:${APPTEMPLATES}/${FILENAME}.netmode.yml"
                     else
                         info "${APPTEMPLATES}/${FILENAME}.netmode.yml does not exist."
                     fi
                 fi
-                cp "${APPTEMPLATES}/${FILENAME}.yml" "${ENABLED_TEMPLATES}" || fatal "Failed to copy required files to temporary directory for enabled templates.\nFailing command: ${F[C]}cp \"${APPTEMPLATES}/${FILENAME}.yml\" \"${ENABLED_TEMPLATES}\""
+                COMPOSE_FILE="${COMPOSE_FILE}:${APPTEMPLATES}/${FILENAME}.yml"
                 info "All configurations for ${APPNAME} are included."
             else
                 warn "${APPTEMPLATES}/${FILENAME}.yml does not exist."
@@ -59,10 +58,9 @@ yml_merge() {
             error "${APPTEMPLATES}/ does not exist."
         fi
     done < <(grep --color=never -P '_ENABLED='"'"'?true'"'"'?$' "${COMPOSE_ENV}")
-    info "Running yq to create docker-compose.yml file from enabled templates."
-    export YQ_OPTIONS="${YQ_OPTIONS:-} -v ${ENABLED_TEMPLATES}:${ENABLED_TEMPLATES} -v ${SCRIPTPATH}:${SCRIPTPATH}"
-    run_script 'run_yq' "${YML_ARGS:-} -y -s 'reduce .[] as \$item ({}; . * \$item) | del(.version)' ${ENABLED_TEMPLATES}/*.yml > ${SCRIPTPATH}/compose/docker-compose.yml"
-    rm -rf "${ENABLED_TEMPLATES}" || warn "Failed to remove temporary directory for enabled templates."
+    info "Running compose config to create docker-compose.yml file from enabled templates."
+    export COMPOSE_FILE="${COMPOSE_FILE}"
+    eval "docker compose --project-directory ${SCRIPTPATH}/compose/ config > ${SCRIPTPATH}/compose/docker-compose.yml" || fatal "Failed to output compose config.\nFailing command: ${F[C]}docker compose --project-directory ${SCRIPTPATH}/compose/ config > \"${SCRIPTPATH}/compose/docker-compose.yml\""
     info "Merging docker-compose.yml complete."
 }
 
@@ -70,8 +68,6 @@ test_yml_merge() {
     run_script 'appvars_create' WATCHTOWER
     cat "${COMPOSE_ENV}"
     run_script 'yml_merge'
-    cd "${SCRIPTPATH}/compose/" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}/compose/\""
-    run_script 'run_compose' "config"
-    cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
+    eval "docker compose --project-directory ${SCRIPTPATH}/compose/ config" || fatal "Failed to display compose config.\nFailing command: ${F[C]}docker compose --project-directory ${SCRIPTPATH}/compose/ config"
     run_script 'appvars_purge' WATCHTOWER
 }

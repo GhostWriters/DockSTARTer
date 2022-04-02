@@ -14,6 +14,12 @@ pm_apt_install_docker() {
         runc > /dev/null 2>&1 || true
     run_script 'remove_snap_docker'
     run_script 'get_docker'
+    notice "Installing docker compose plugin."
+    local REDIRECT="> /dev/null 2>&1"
+    if [[ -n ${VERBOSE:-} ]] || run_script 'question_prompt' "${PROMPT:-CLI}" N "Would you like to display the command output?"; then
+        REDIRECT=""
+    fi
+    eval "apt-get -y install docker-compose-plugin ${REDIRECT}" || fatal "Failed to install docker-compose-plugin from apt.\nFailing command: ${F[C]}apt-get -y install docker-compose-plugin"
 }
 
 test_pm_apt_install_docker() {

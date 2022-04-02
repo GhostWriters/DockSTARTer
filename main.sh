@@ -16,9 +16,9 @@ For regular usage you can run without providing any options.
 -a --add <appname>
     add the default .env variables for the app specified
 -c --compose
-    run docker-compose up with confirmation prompt
+    run docker compose up with confirmation prompt
 -c --compose <up/down/restart/pull>
-    run docker-compose commands without confirmation prompts
+    run docker compose commands without confirmation prompts
 -e --env
     update your .env file with new variables
 --env-get=<var>
