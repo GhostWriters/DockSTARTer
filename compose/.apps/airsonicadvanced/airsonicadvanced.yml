@@ -1,9 +1,9 @@
 services:
-  airsonic:
-    container_name: airsonic
+  airsonicadvanced:
+    container_name: airsonicadvanced
     environment:
-      - CONTEXT_PATH=${AIRSONIC_CONTEXT_PATH}
-      - JAVA_OPTS=${AIRSONIC_JAVA_OPTS}
+      - CONTEXT_PATH=${AIRSONICADVANCED_CONTEXT_PATH}
+      - JAVA_OPTS=${AIRSONICADVANCED_JAVA_OPTS}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
@@ -12,8 +12,8 @@ services:
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    restart: ${AIRSONIC_RESTART}
+    restart: ${AIRSONICADVANCED_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/airsonic:/config
+      - ${DOCKERCONFDIR}/airsonicadvanced:/config
       - ${DOCKERSTORAGEDIR}:/storage
