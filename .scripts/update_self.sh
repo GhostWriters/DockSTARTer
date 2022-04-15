@@ -12,8 +12,8 @@ update_self() {
     fi
     cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
     info "Setting file ownership on current repository files"
-    chown "${USER}":"${USER}" "${SCRIPTPATH}" > /dev/null 2>&1 || true
     chown -R "${USER}":"${USER}" "${SCRIPTPATH}/.git" > /dev/null 2>&1 || true
+    chown "${USER}":"${USER}" "${SCRIPTPATH}" > /dev/null 2>&1 || true
     git ls-tree -r --name-only HEAD | xargs chown "${USER}":"${USER}" > /dev/null 2>&1 || true
     info "Fetching recent changes from git."
     git fetch --all --prune > /dev/null 2>&1 || fatal "Failed to fetch recent changes from git.\nFailing command: ${F[C]}git fetch --all --prune"
@@ -26,9 +26,9 @@ update_self() {
     info "Cleaning up unnecessary files and optimizing the local repository."
     git gc > /dev/null 2>&1 || true
     info "Setting file ownership on new repository files"
-    chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}" > /dev/null 2>&1 || true
-    chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}/.git" > /dev/null 2>&1 || true
     git ls-tree -r --name-only "${BRANCH}" | xargs chown "${DETECTED_PUID}":"${DETECTED_PGID}" > /dev/null 2>&1 || true
+    chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}/.git" > /dev/null 2>&1 || true
+    chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}" > /dev/null 2>&1 || true
     exec bash "${SCRIPTNAME}" -e
 }
 
