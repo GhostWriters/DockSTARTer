@@ -380,9 +380,9 @@ main() {
                 fi
             fi
             warn "Attempting to run DockSTARTer from ${DS_SYMLINK} location."
-            sudo -E bash "${DS_SYMLINK}" -vu
-            sudo -E bash "${DS_SYMLINK}" -vi
-            exec sudo -E bash "${DS_SYMLINK}" "${ARGS[@]:-}"
+            sudo -H -E bash "${DS_SYMLINK}" -vu
+            sudo -H -E bash "${DS_SYMLINK}" -vi
+            exec sudo -H -E bash "${DS_SYMLINK}" "${ARGS[@]:-}"
         fi
     else
         if ! repo_exists; then
@@ -393,12 +393,12 @@ main() {
             fi
             git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone DockSTARTer repo.\nFailing command: ${F[C]}git clone https://github.com/GhostWriters/DockSTARTer \"${DETECTED_HOMEDIR}/.docker\""
             notice "Performing first run install."
-            exec sudo -E bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-vi"
+            exec sudo -H -E bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-vi"
         fi
     fi
     # Sudo Check
     if [[ ${EUID} -ne 0 ]]; then
-        exec sudo -E bash "${SCRIPTNAME}" "${ARGS[@]:-}"
+        exec sudo -H -E bash "${SCRIPTNAME}" "${ARGS[@]:-}"
     fi
     # Create Symlink
     run_script 'symlink_ds'
