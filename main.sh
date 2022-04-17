@@ -2,6 +2,8 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+export LC_ALL=C
+
 usage() {
     cat << EOF
 Usage: ds [OPTION]
@@ -14,9 +16,9 @@ For regular usage you can run without providing any options.
 -a --add <appname>
     add the default .env variables for the app specified
 -c --compose
-    run docker-compose up with confirmation prompt
+    run docker compose up with confirmation prompt
 -c --compose <up/down/restart/pull>
-    run docker-compose commands without confirmation prompts
+    run docker compose commands without confirmation prompts
 -e --env
     update your .env file with new variables
 --env-get=<var>
@@ -66,6 +68,8 @@ SCRIPTPATH=$(cd -P "$(dirname "$(get_scriptname)")" > /dev/null 2>&1 && pwd)
 readonly SCRIPTPATH
 SCRIPTNAME="${SCRIPTPATH}/$(basename "$(get_scriptname)")"
 readonly SCRIPTNAME
+readonly COMPOSE_ENV="${SCRIPTPATH}/compose/.env"
+export COMPOSE_ENV
 
 # Cleanup Function
 cleanup() {
@@ -221,7 +225,7 @@ if [[ -n ${DEBUG:-} ]] && [[ -n ${VERBOSE:-} ]]; then
 fi
 
 # Terminal Colors
-declare -Agr B=(# Background
+declare -Agr B=( # Background
     [B]=$(tput setab 4 2> /dev/null || echo -e "\e[44m") # Blue
     [C]=$(tput setab 6 2> /dev/null || echo -e "\e[46m") # Cyan
     [G]=$(tput setab 2 2> /dev/null || echo -e "\e[42m") # Green
@@ -231,7 +235,7 @@ declare -Agr B=(# Background
     [W]=$(tput setab 7 2> /dev/null || echo -e "\e[47m") # White
     [Y]=$(tput setab 3 2> /dev/null || echo -e "\e[43m") # Yellow
 )
-declare -Agr F=(# Foreground
+declare -Agr F=( # Foreground
     [B]=$(tput setaf 4 2> /dev/null || echo -e "\e[34m") # Blue
     [C]=$(tput setaf 6 2> /dev/null || echo -e "\e[36m") # Cyan
     [G]=$(tput setaf 2 2> /dev/null || echo -e "\e[32m") # Green
@@ -262,11 +266,11 @@ log() {
 trace() { log "${TRACE:-}" "${NC}$(date +"%F %T") ${F[B]}[TRACE ]${NC}   $*${NC}"; }
 debug() { log "${DEBUG:-}" "${NC}$(date +"%F %T") ${F[B]}[DEBUG ]${NC}   $*${NC}"; }
 info() { log "${VERBOSE:-}" "${NC}$(date +"%F %T") ${F[B]}[INFO  ]${NC}   $*${NC}"; }
-notice() { log "true" "${NC}$(date +"%F %T") ${F[G]}[NOTICE]${NC}   $*${NC}"; }
-warn() { log "true" "${NC}$(date +"%F %T") ${F[Y]}[WARN  ]${NC}   $*${NC}"; }
-error() { log "true" "${NC}$(date +"%F %T") ${F[R]}[ERROR ]${NC}   $*${NC}"; }
+notice() { log true "${NC}$(date +"%F %T") ${F[G]}[NOTICE]${NC}   $*${NC}"; }
+warn() { log true "${NC}$(date +"%F %T") ${F[Y]}[WARN  ]${NC}   $*${NC}"; }
+error() { log true "${NC}$(date +"%F %T") ${F[R]}[ERROR ]${NC}   $*${NC}"; }
 fatal() {
-    log "true" "${NC}$(date +"%F %T") ${B[R]}${F[W]}[FATAL ]${NC}   $*${NC}"
+    log true "${NC}$(date +"%F %T") ${B[R]}${F[W]}[FATAL ]${NC}   $*${NC}"
     exit 1
 }
 
@@ -314,20 +318,21 @@ run_script() {
 
 # Test Runner Function
 run_test() {
-    local TESTSNAME=${1:-}
+    local SCRIPTSNAME=${1:-}
     shift
-    if [[ -f ${SCRIPTPATH}/.scripts/${TESTSNAME}.sh ]]; then
-        if grep -q "test_${TESTSNAME}" "${SCRIPTPATH}/.scripts/${TESTSNAME}.sh"; then
-            notice "Testing ${TESTSNAME}."
+    local TESTSNAME="test_${SCRIPTSNAME}"
+    if [[ -f ${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh ]]; then
+        if grep -q -P "${TESTSNAME}" "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh"; then
+            notice "Testing ${SCRIPTSNAME}."
             # shellcheck source=/dev/null
-            source "${SCRIPTPATH}/.scripts/${TESTSNAME}.sh"
-            eval "test_${TESTSNAME}" "$@" < /dev/null || fatal "Failed to run ${TESTSNAME}."
+            source "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh"
+            "${TESTSNAME}" "$@" < /dev/null || fatal "Failed to run ${TESTSNAME}."
             notice "Completed testing ${TESTSNAME}."
         else
-            fatal "Test function in ${SCRIPTPATH}/.scripts/${TESTSNAME}.sh not found."
+            fatal "Test function in ${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh not found."
         fi
     else
-        fatal "${SCRIPTPATH}/.scripts/${TESTSNAME}.sh not found."
+        fatal "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh not found."
     fi
 }
 
@@ -375,9 +380,9 @@ main() {
                 fi
             fi
             warn "Attempting to run DockSTARTer from ${DS_SYMLINK} location."
-            sudo -E bash "${DS_SYMLINK}" -vu
-            sudo -E bash "${DS_SYMLINK}" -vi
-            exec sudo -E bash "${DS_SYMLINK}" "${ARGS[@]:-}"
+            sudo -H -E bash "${DS_SYMLINK}" -vu
+            sudo -H -E bash "${DS_SYMLINK}" -vi
+            exec sudo -H -E bash "${DS_SYMLINK}" "${ARGS[@]:-}"
         fi
     else
         if ! repo_exists; then
@@ -388,12 +393,12 @@ main() {
             fi
             git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone DockSTARTer repo.\nFailing command: ${F[C]}git clone https://github.com/GhostWriters/DockSTARTer \"${DETECTED_HOMEDIR}/.docker\""
             notice "Performing first run install."
-            exec sudo -E bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-vi"
+            exec sudo -H -E bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-vi"
         fi
     fi
     # Sudo Check
     if [[ ${EUID} -ne 0 ]]; then
-        exec sudo -E bash "${SCRIPTNAME}" "${ARGS[@]:-}"
+        exec sudo -H -E bash "${SCRIPTNAME}" "${ARGS[@]:-}"
     fi
     # Create Symlink
     run_script 'symlink_ds'

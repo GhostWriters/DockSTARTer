@@ -16,5 +16,5 @@ services:
       com.dockstarter.appvars.watchtower_repo_pass: ""
       com.dockstarter.appvars.watchtower_repo_user: ""
       com.dockstarter.appvars.watchtower_restart: unless-stopped
-      com.dockstarter.appvars.watchtower_schedule: 0 0 4 * * *
+      com.dockstarter.appvars.watchtower_schedule: "0 0 4 * * *"
       com.dockstarter.appvars.watchtower_timeout: 10s

@@ -3,12 +3,12 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 env_create() {
-    if [[ -f ${SCRIPTPATH}/compose/.env ]]; then
-        info "${SCRIPTPATH}/compose/.env found."
+    if [[ -f ${COMPOSE_ENV} ]]; then
+        info "${COMPOSE_ENV} found."
     else
-        warn "${SCRIPTPATH}/compose/.env not found. Copying example template."
-        cp "${SCRIPTPATH}/compose/.env.example" "${SCRIPTPATH}/compose/.env" || fatal "Failed to copy file.\nFailing command: ${F[C]}cp \"${SCRIPTPATH}/compose/.env.example\" \"${SCRIPTPATH}/compose/.env\""
-        run_script 'set_permissions' "${SCRIPTPATH}/compose/.env"
+        warn "${COMPOSE_ENV} not found. Copying example template."
+        cp "${COMPOSE_ENV}.example" "${COMPOSE_ENV}" || fatal "Failed to copy file.\nFailing command: ${F[C]}cp \"${COMPOSE_ENV}.example\" \"${COMPOSE_ENV}\""
+        run_script 'set_permissions' "${COMPOSE_ENV}"
         run_script 'appvars_create' WATCHTOWER
     fi
     run_script 'env_sanitize'
@@ -16,5 +16,5 @@ env_create() {
 
 test_env_create() {
     run_script 'env_create'
-    cat "${SCRIPTPATH}/compose/.env"
+    cat "${COMPOSE_ENV}"
 }
