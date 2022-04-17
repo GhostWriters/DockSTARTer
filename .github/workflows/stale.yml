@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/stale@v3
+      - uses: actions/stale@v5
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           stale-issue-message: "This issue has been automatically marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions."
@@ -18,5 +18,5 @@ jobs:
           stale-pr-label: "no-pr-activity"
           days-before-stale: 90
           days-before-close: 15
-          exempt-issue-labels: 'awaiting-approval,work-in-progress'
-          exempt-pr-labels: 'awaiting-approval,work-in-progress'
+          exempt-issue-labels: 'under-consideration,work-in-progress'
+          exempt-pr-labels: 'under-consideration,work-in-progress'

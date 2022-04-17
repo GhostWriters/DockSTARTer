@@ -39,18 +39,14 @@ docker_compose() {
         info "Compose will not be run."
         return 1
     fi
-    run_script 'install_docker'
-    cd "${SCRIPTPATH}/compose/" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}/compose/\""
-    run_script 'run_compose' "${COMPOSECOMMAND}"
-    cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
+    run_script 'require_docker'
+    eval "docker compose --project-directory ${SCRIPTPATH}/compose/ ${COMPOSECOMMAND}" || fatal "Failed to run compose.\nFailing command: ${F[C]}docker compose --project-directory ${SCRIPTPATH}/compose/ ${COMPOSECOMMAND}"
 }
 
 test_docker_compose() {
     run_script 'appvars_create' WATCHTOWER
-    cat "${SCRIPTPATH}/compose/.env"
+    cat "${COMPOSE_ENV}"
     run_script 'yml_merge'
-    cd "${SCRIPTPATH}/compose/" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}/compose/\""
-    run_script 'run_compose' "config"
-    cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
+    eval "docker compose --project-directory ${SCRIPTPATH}/compose/ config" || fatal "Failed to display compose config.\nFailing command: ${F[C]}docker compose --project-directory ${SCRIPTPATH}/compose/ config"
     run_script 'docker_compose'
 }

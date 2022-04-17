@@ -90,17 +90,17 @@ nav:
       - apps/amd.md
       - apps/apcupsd.md
       - apps/apprise.md
+      - apps/azuracast.md
       - apps/bazarr.md
       - apps/beets.md
       - apps/bitwarden.md
-      - apps/booksonic.md
+      - apps/booksonicair.md
       - apps/bookstack.md
       - apps/calibre.md
       - apps/calibreweb.md
       - apps/cloudcmd.md
       - apps/cloudflareddns.md
       - apps/codeserver.md
-      - apps/couchpotato.md
       - apps/dasshio.md
       - apps/ddclient.md
       - apps/deemix.md
@@ -174,6 +174,7 @@ nav:
       - apps/portainer.md
       - apps/portaineragent.md
       - apps/prometheus.md
+      - apps/prowlarr.md
       - apps/pyload.md
       - apps/qbittorrent.md
       - apps/qbittorrentvpn.md

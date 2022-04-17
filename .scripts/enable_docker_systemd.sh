@@ -13,6 +13,6 @@ enable_docker_systemd() {
 }
 
 test_enable_docker_systemd() {
-    run_script 'install_docker'
+    run_script 'require_docker'
     run_script 'enable_docker_systemd'
 }
