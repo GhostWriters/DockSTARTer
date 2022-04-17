@@ -225,7 +225,7 @@ if [[ -n ${DEBUG:-} ]] && [[ -n ${VERBOSE:-} ]]; then
 fi
 
 # Terminal Colors
-declare -Agr B=(# Background
+declare -Agr B=( # Background
     [B]=$(tput setab 4 2> /dev/null || echo -e "\e[44m") # Blue
     [C]=$(tput setab 6 2> /dev/null || echo -e "\e[46m") # Cyan
     [G]=$(tput setab 2 2> /dev/null || echo -e "\e[42m") # Green
@@ -235,7 +235,7 @@ declare -Agr B=(# Background
     [W]=$(tput setab 7 2> /dev/null || echo -e "\e[47m") # White
     [Y]=$(tput setab 3 2> /dev/null || echo -e "\e[43m") # Yellow
 )
-declare -Agr F=(# Foreground
+declare -Agr F=( # Foreground
     [B]=$(tput setaf 4 2> /dev/null || echo -e "\e[34m") # Blue
     [C]=$(tput setaf 6 2> /dev/null || echo -e "\e[36m") # Cyan
     [G]=$(tput setaf 2 2> /dev/null || echo -e "\e[32m") # Green
@@ -380,9 +380,9 @@ main() {
                 fi
             fi
             warn "Attempting to run DockSTARTer from ${DS_SYMLINK} location."
-            sudo -E bash "${DS_SYMLINK}" -vu
-            sudo -E bash "${DS_SYMLINK}" -vi
-            exec sudo -E bash "${DS_SYMLINK}" "${ARGS[@]:-}"
+            sudo -H -E bash "${DS_SYMLINK}" -vu
+            sudo -H -E bash "${DS_SYMLINK}" -vi
+            exec sudo -H -E bash "${DS_SYMLINK}" "${ARGS[@]:-}"
         fi
     else
         if ! repo_exists; then
@@ -393,12 +393,12 @@ main() {
             fi
             git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone DockSTARTer repo.\nFailing command: ${F[C]}git clone https://github.com/GhostWriters/DockSTARTer \"${DETECTED_HOMEDIR}/.docker\""
             notice "Performing first run install."
-            exec sudo -E bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-vi"
+            exec sudo -H -E bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-vi"
         fi
     fi
     # Sudo Check
     if [[ ${EUID} -ne 0 ]]; then
-        exec sudo -E bash "${SCRIPTNAME}" "${ARGS[@]:-}"
+        exec sudo -H -E bash "${SCRIPTNAME}" "${ARGS[@]:-}"
     fi
     # Create Symlink
     run_script 'symlink_ds'

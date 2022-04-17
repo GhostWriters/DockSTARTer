@@ -90,6 +90,7 @@ nav:
       - apps/amd.md
       - apps/apcupsd.md
       - apps/apprise.md
+      - apps/azuracast.md
       - apps/bazarr.md
       - apps/beets.md
       - apps/bitwarden.md
