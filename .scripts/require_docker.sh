@@ -16,7 +16,7 @@ require_docker() {
         INSTALLED_DOCKER=$( (docker --version 2> /dev/null | grep --color=never -Po "Docker version \K([0-9][a-zA-Z0-9_.-]*)") || echo "0")
         INSTALLED_COMPOSE=$( (docker compose version 2> /dev/null | grep --color=never -Po "Docker Compose version v\K([0-9][a-zA-Z0-9_.-]*)") || echo "0")
     fi
-    if vergt "${MINIMUM_DOCKER}" "${INSTALLED_DOCKER}" || vergt "${MINIMUM_COMPOSE}" "${INSTALLED_COMPOSE}"; then
+    if vergt "${MINIMUM_DOCKER}" "${INSTALLED_DOCKER:-0}" || vergt "${MINIMUM_COMPOSE}" "${INSTALLED_COMPOSE:-0}"; then
         run_script 'package_manager_run' install_docker
     fi
 }
