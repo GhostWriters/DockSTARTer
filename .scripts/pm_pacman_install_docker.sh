@@ -8,7 +8,7 @@ pm_pacman_install_docker() {
     if [[ -n ${VERBOSE:-} ]] || run_script 'question_prompt' "${PROMPT:-CLI}" N "Would you like to display the command output?"; then
         REDIRECT=""
     fi
-    eval "pacman -Sy --noconfirm docker docker-compose ${REDIRECT}" || fatal "Failed to install docker and docker-compose using pacman.\nFailing command: ${F[C]}pacman -Sy --noconfirm docker docker-compose"
+    eval "sudo pacman -Sy --noconfirm docker docker-compose ${REDIRECT}" || fatal "Failed to install docker and docker-compose using pacman.\nFailing command: ${F[C]}sudo pacman -Sy --noconfirm docker docker-compose"
 }
 
 test_pm_pacman_install_docker() {

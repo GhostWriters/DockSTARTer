@@ -6,7 +6,7 @@ remove_snap_docker() {
     if [[ -n "$(command -v snap)" ]]; then
         if snap services docker > /dev/null 2>&1; then
             info "Removing snap Docker package."
-            snap remove docker > /dev/null 2>&1 || true
+            sudo snap remove docker > /dev/null 2>&1 || true
         fi
     fi
 }

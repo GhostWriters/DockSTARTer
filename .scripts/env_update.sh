@@ -23,9 +23,9 @@ env_update() {
         fi
         run_script 'env_set' "${SET_VAR}" "${SET_VAL}" "${MKTEMP_ENV_UPDATED}"
     done < <(grep -v -P '^#' "${MKTEMP_ENV_CURRENT}" | grep '=')
-    rm -f "${MKTEMP_ENV_CURRENT}" || warn "Failed to remove temporary .env update file."
+    rm -f "${MKTEMP_ENV_CURRENT}" || warn "Failed to remove temporary .env update file.\nFailing command: ${F[C]}rm -f \"${MKTEMP_ENV_CURRENT}\""
     cp -f "${MKTEMP_ENV_UPDATED}" "${COMPOSE_ENV}" || fatal "Failed to copy file.\nFailing command: ${F[C]}cp -f \"${MKTEMP_ENV_UPDATED}\" \"${COMPOSE_ENV}\""
-    rm -f "${MKTEMP_ENV_UPDATED}" || warn "Failed to remove temporary .env update file."
+    rm -f "${MKTEMP_ENV_UPDATED}" || warn "Failed to remove temporary .env update file.\nFailing command: ${F[C]}rm -f \"${MKTEMP_ENV_UPDATED}\""
     run_script 'set_permissions' "${COMPOSE_ENV}"
     run_script 'env_sanitize'
     info "Environment file update complete."

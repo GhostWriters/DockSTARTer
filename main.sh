@@ -68,8 +68,6 @@ SCRIPTPATH=$(cd -P "$(dirname "$(get_scriptname)")" > /dev/null 2>&1 && pwd)
 readonly SCRIPTPATH
 SCRIPTNAME="${SCRIPTPATH}/$(basename "$(get_scriptname)")"
 readonly SCRIPTNAME
-readonly COMPOSE_ENV="${SCRIPTPATH}/compose/.env"
-export COMPOSE_ENV
 
 # Cleanup Function
 cleanup() {
@@ -249,7 +247,7 @@ NC=$(tput sgr0 2> /dev/null || echo -e "\e[0m")
 readonly NC
 
 # Log Functions
-MKTEMP_LOG=$(mktemp) || echo "Failed to create temporary log file."
+MKTEMP_LOG=$(mktemp) || echo -e "Failed to create temporary log file.\nFailing command: ${F[C]}mktemp"
 readonly MKTEMP_LOG
 echo "DockSTARTer Log" > "${MKTEMP_LOG}"
 log() {
@@ -274,6 +272,14 @@ fatal() {
     exit 1
 }
 
+# Arch Information
+ARCH=$(uname -m)
+readonly ARCH
+
+# Environment Information
+readonly COMPOSE_ENV="${SCRIPTPATH}/compose/.env"
+export COMPOSE_ENV
+
 # User/Group Information
 readonly DETECTED_PUID=${SUDO_UID:-$UID}
 DETECTED_UNAME=$(id -un "${DETECTED_PUID}" 2> /dev/null || true)
@@ -286,6 +292,13 @@ readonly DETECTED_UGROUP
 export DETECTED_UGROUP
 DETECTED_HOMEDIR=$(eval echo "~${DETECTED_UNAME}" 2> /dev/null || true)
 readonly DETECTED_HOMEDIR
+
+# Arch Check Function
+arch_check() {
+    if [[ ${ARCH} != "aarch64" ]] && [[ ${ARCH} != "armv7l" ]] && [[ ${ARCH} != "x86_64" ]]; then
+        fatal "Unsupported architecture."
+    fi
+}
 
 # Repo Exists Function
 repo_exists() {
@@ -336,6 +349,13 @@ run_test() {
     fi
 }
 
+# Sudo Check Function
+sudo_check() {
+    if [[ ${EUID} -eq 0 ]]; then
+        fatal "Using sudo during cloning on first run is not supported."
+    fi
+}
+
 # Version Functions
 # https://stackoverflow.com/questions/4023830/how-to-compare-two-strings-in-dot-separated-version-format-in-bash#comment92693604_4024263
 vergte() { printf '%s\n%s' "${2}" "${1}" | sort -C -V; }
@@ -351,15 +371,11 @@ fi
 
 # Main Function
 main() {
-    # Arch Check
-    ARCH=$(uname -m)
-    readonly ARCH
-    if [[ ${ARCH} != "aarch64" ]] && [[ ${ARCH} != "armv7l" ]] && [[ ${ARCH} != "x86_64" ]]; then
-        fatal "Unsupported architecture."
-    fi
+    arch_check
     # Terminal Check
     if [[ -t 1 ]]; then
         root_check
+        sudo_check
     fi
     # Repo Check
     local PROMPT
@@ -380,25 +396,17 @@ main() {
                 fi
             fi
             warn "Attempting to run DockSTARTer from ${DS_SYMLINK} location."
-            sudo -H -E bash "${DS_SYMLINK}" -vu
-            sudo -H -E bash "${DS_SYMLINK}" -vi
-            exec sudo -H -E bash "${DS_SYMLINK}" "${ARGS[@]:-}"
+            bash "${DS_SYMLINK}" -vu
+            bash "${DS_SYMLINK}" -vi
+            exec bash "${DS_SYMLINK}" "${ARGS[@]:-}"
         fi
     else
         if ! repo_exists; then
             warn "Attempting to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
-            # Anti Sudo Check
-            if [[ ${EUID} -eq 0 ]]; then
-                fatal "Using sudo during cloning on first run is not supported."
-            fi
             git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone DockSTARTer repo.\nFailing command: ${F[C]}git clone https://github.com/GhostWriters/DockSTARTer \"${DETECTED_HOMEDIR}/.docker\""
             notice "Performing first run install."
-            exec sudo -H -E bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-vi"
+            exec bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-vi"
         fi
-    fi
-    # Sudo Check
-    if [[ ${EUID} -ne 0 ]]; then
-        exec sudo -H -E bash "${SCRIPTNAME}" "${ARGS[@]:-}"
     fi
     # Create Symlink
     run_script 'symlink_ds'

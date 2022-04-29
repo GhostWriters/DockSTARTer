@@ -48,7 +48,7 @@ env_sanitize() {
     SWAG_ENABLED=$(run_script 'env_get' SWAG_ENABLED)
     if [[ ${LETSENCRYPT_ENABLED} == true ]] && [[ ${SWAG_ENABLED} != true ]]; then
         notice "Migrating from LETSENCRYPT to SWAG."
-        docker stop letsencrypt || warn "Failed to stop letsencrypt container."
+        docker stop letsencrypt || warn "Failed to stop letsencrypt container.\nFailing command: ${F[C]}docker stop letsencrypt"
         notice "Moving config folder."
         local DOCKERCONFDIR
         DOCKERCONFDIR=$(run_script 'env_get' DOCKERCONFDIR)

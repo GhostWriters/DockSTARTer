@@ -9,7 +9,7 @@ docker_prune() {
         info "Nothing will be removed."
         return 1
     fi
-    docker system prune -a --volumes --force || error "Failed to remove unused docker resources."
+    docker system prune -a --volumes --force || error "Failed to remove unused docker resources.\nFailing command: ${F[C]}docker system prune -a --volumes --force"
 }
 
 test_docker_prune() {
