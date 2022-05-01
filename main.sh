@@ -272,9 +272,10 @@ fatal() {
     exit 1
 }
 
-# Arch Information
+# System Information
 ARCH=$(uname -m)
 readonly ARCH
+export ARCH
 
 # Environment Information
 readonly COMPOSE_ENV="${SCRIPTPATH}/compose/.env"
@@ -282,8 +283,10 @@ export COMPOSE_ENV
 
 # User/Group Information
 readonly DETECTED_PUID=${SUDO_UID:-$UID}
+export DETECTED_PUID
 DETECTED_UNAME=$(id -un "${DETECTED_PUID}" 2> /dev/null || true)
 readonly DETECTED_UNAME
+export DETECTED_UNAME
 DETECTED_PGID=$(id -g "${DETECTED_PUID}" 2> /dev/null || true)
 readonly DETECTED_PGID
 export DETECTED_PGID
@@ -292,16 +295,17 @@ readonly DETECTED_UGROUP
 export DETECTED_UGROUP
 DETECTED_HOMEDIR=$(eval echo "~${DETECTED_UNAME}" 2> /dev/null || true)
 readonly DETECTED_HOMEDIR
+export DETECTED_HOMEDIR
 
-# Arch Check Function
-arch_check() {
+# Check for supported CPU architecture
+check_arch() {
     if [[ ${ARCH} != "aarch64" ]] && [[ ${ARCH} != "armv7l" ]] && [[ ${ARCH} != "x86_64" ]]; then
         fatal "Unsupported architecture."
     fi
 }
 
-# Repo Exists Function
-repo_exists() {
+# Check if the repo exists relative to the SCRIPTPATH
+check_repo() {
     if [[ -d ${SCRIPTPATH}/.git ]] && [[ -d ${SCRIPTPATH}/.scripts ]]; then
         return
     else
@@ -309,10 +313,17 @@ repo_exists() {
     fi
 }
 
-# Root Check Function
-root_check() {
+# Check if running as root
+check_root() {
     if [[ ${DETECTED_PUID} == "0" ]] || [[ ${DETECTED_HOMEDIR} == "/root" ]]; then
         fatal "Running as root is not supported. Please run as a standard user with sudo."
+    fi
+}
+
+# Check if running with sudo
+check_sudo() {
+    if [[ ${EUID} -eq 0 ]]; then
+        fatal "Running with sudo is not supported. Commands requiring sudo will prompt automatically when required."
     fi
 }
 
@@ -349,13 +360,6 @@ run_test() {
     fi
 }
 
-# Sudo Check Function
-sudo_check() {
-    if [[ ${EUID} -eq 0 ]]; then
-        fatal "Using sudo during cloning on first run is not supported."
-    fi
-}
-
 # Version Functions
 # https://stackoverflow.com/questions/4023830/how-to-compare-two-strings-in-dot-separated-version-format-in-bash#comment92693604_4024263
 vergte() { printf '%s\n%s' "${2}" "${1}" | sort -C -V; }
@@ -371,11 +375,11 @@ fi
 
 # Main Function
 main() {
-    arch_check
+    check_arch
     # Terminal Check
     if [[ -t 1 ]]; then
-        root_check
-        sudo_check
+        check_root
+        check_sudo
     fi
     # Repo Check
     local PROMPT
@@ -388,7 +392,7 @@ main() {
         local DS_SYMLINK
         DS_SYMLINK=$(readlink -f "${DS_COMMAND}")
         if [[ ${SCRIPTNAME} != "${DS_SYMLINK}" ]]; then
-            if repo_exists; then
+            if check_repo; then
                 if run_script 'question_prompt' "${PROMPT:-CLI}" N "DockSTARTer installation found at ${DS_SYMLINK} location. Would you like to run ${SCRIPTNAME} instead?"; then
                     run_script 'symlink_ds'
                     DS_COMMAND=$(command -v ds || true)
@@ -401,7 +405,7 @@ main() {
             exec bash "${DS_SYMLINK}" "${ARGS[@]:-}"
         fi
     else
-        if ! repo_exists; then
+        if ! check_repo; then
             warn "Attempting to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
             git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone DockSTARTer repo.\nFailing command: ${F[C]}git clone https://github.com/GhostWriters/DockSTARTer \"${DETECTED_HOMEDIR}/.docker\""
             notice "Performing first run install."
