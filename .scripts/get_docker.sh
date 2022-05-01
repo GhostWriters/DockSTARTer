@@ -22,4 +22,5 @@ test_get_docker() {
     run_script 'remove_snap_docker'
     run_script 'get_docker'
     docker --version || fatal "Failed to determine docker version.\nFailing command: ${F[C]}docker --version"
+    docker compose version || fatal "Failed to determine docker compose version.\nFailing command: ${F[C]}docker compose version"
 }
