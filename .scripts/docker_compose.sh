@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 docker_compose() {
-    local COMPOSEINPUT=${1:-}
+    local COMPOSEINPUT=${1-}
     local COMMAND=${COMPOSEINPUT%% *}
     local APPNAME
     if [[ ${COMPOSEINPUT} == *" "* ]]; then
@@ -17,15 +17,15 @@ docker_compose() {
             COMMANDINFO="Stopping and removing containers, networks, volumes, and images created by DockSTARTer."
             ;;
         pull)
-            COMPOSECOMMAND="pull --include-deps ${APPNAME:-}"
+            COMPOSECOMMAND="pull --include-deps ${APPNAME-}"
             COMMANDINFO="Pulling the latest images for ${APPNAME:-all enabled services}."
             ;;
         restart)
-            COMPOSECOMMAND="restart ${APPNAME:-}"
+            COMPOSECOMMAND="restart ${APPNAME-}"
             COMMANDINFO="Restarting ${APPNAME:-all stopped and running services}."
             ;;
         up)
-            COMPOSECOMMAND="up -d --remove-orphans ${APPNAME:-}"
+            COMPOSECOMMAND="up -d --remove-orphans ${APPNAME-}"
             COMMANDINFO="Creating ${APPNAME:-containers for all enabled services}."
             ;;
         *)
@@ -33,7 +33,7 @@ docker_compose() {
             COMMANDINFO="Creating containers for all enabled services."
             ;;
     esac
-    if run_script 'question_prompt' "${PROMPT:-}" Y "Would you like to run compose now?"; then
+    if run_script 'question_prompt' "${PROMPT-}" Y "Would you like to run compose now?"; then
         info "${COMMANDINFO}"
     else
         info "Compose will not be run."
