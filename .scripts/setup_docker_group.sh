@@ -6,7 +6,7 @@ setup_docker_group() {
     # https://docs.docker.com/install/linux/linux-postinstall/
     info "Creating docker group."
     sudo groupadd -f docker > /dev/null 2>&1 || fatal "Failed to create docker group.\nFailing command: ${F[C]}sudo groupadd -f docker"
-    if [[ ${CI:-} == true ]]; then
+    if [[ ${CI-} == true ]]; then
         notice "Skipping usermod in CI."
     else
         info "Adding ${DETECTED_UNAME} to docker group."

@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 docker_prune() {
-    if run_script 'question_prompt' "${PROMPT:-}" Y "Would you like to remove all unused containers, networks, volumes, images and build cache?"; then
+    if run_script 'question_prompt' "${PROMPT-}" Y "Would you like to remove all unused containers, networks, volumes, images and build cache?"; then
         info "Removing unused docker resources."
     else
         info "Nothing will be removed."

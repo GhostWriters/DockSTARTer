@@ -10,7 +10,7 @@ pm_yum_repos() {
     curl -fsSL setup.ius.io -o "${MKTEMP_GET_IUS}" > /dev/null 2>&1 || fatal "Failed to get IUS install script.\nFailing command: ${F[C]}curl -fsSL setup.ius.io -o \"${MKTEMP_GET_IUS}\""
     info "Running IUS install script."
     local REDIRECT="> /dev/null 2>&1"
-    if [[ -n ${VERBOSE:-} ]] || run_script 'question_prompt' "${PROMPT:-CLI}" N "Would you like to display the command output?"; then
+    if [[ -n ${VERBOSE-} ]] || run_script 'question_prompt' "${PROMPT:-CLI}" N "Would you like to display the command output?"; then
         REDIRECT=""
     fi
     eval "sudo bash ${MKTEMP_GET_IUS} ${REDIRECT}" || warn "Failed to install IUS.\nFailing command: ${F[C]}sudo bash ${MKTEMP_GET_IUS}"

@@ -9,7 +9,7 @@ require_docker() {
     # Note compatibility from https://wiki.alpinelinux.org/wiki/Release_Notes_for_Alpine_3.14.0
     local INSTALLED_DOCKER
     local INSTALLED_COMPOSE
-    if [[ ${FORCE:-} == true ]] && [[ -n ${INSTALL:-} ]]; then
+    if [[ ${FORCE-} == true ]] && [[ -n ${INSTALL-} ]]; then
         INSTALLED_DOCKER="0"
         INSTALLED_COMPOSE="0"
     else

@@ -3,12 +3,12 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_app_vars() {
-    local APPNAME=${1:-}
+    local APPNAME=${1-}
     run_script 'appvars_create' "${APPNAME}"
     local APPVARS
     APPVARS=$(grep -v -P "^${APPNAME}_ENABLED=" "${COMPOSE_ENV}" | grep --color=never -P "^${APPNAME}_")
     if [[ -z ${APPVARS} ]]; then
-        if [[ ${CI:-} == true ]]; then
+        if [[ ${CI-} == true ]]; then
             warn "${APPNAME} has no variables."
         else
             whiptail --fb --clear --title "DockSTARTer" --msgbox "${APPNAME} has no variables." 0 0
@@ -16,7 +16,7 @@ menu_app_vars() {
         return
     fi
 
-    if run_script 'question_prompt' "${PROMPT:-}" Y "Would you like to keep these settings for ${APPNAME}?\\n\\n${APPVARS}"; then
+    if run_script 'question_prompt' "${PROMPT-}" Y "Would you like to keep these settings for ${APPNAME}?\\n\\n${APPVARS}"; then
         info "Keeping ${APPNAME} .env variables."
     else
         info "Configuring ${APPNAME} .env variables."
