@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 update_self() {
     local BRANCH=${1:-origin/master}
-    if run_script 'question_prompt' "${PROMPT:-}" Y "Would you like to update DockSTARTer to ${BRANCH} now?"; then
+    if run_script 'question_prompt' "${PROMPT-}" Y "Would you like to update DockSTARTer to ${BRANCH} now?"; then
         notice "Updating DockSTARTer to ${BRANCH}."
     else
         notice "DockSTARTer will not be updated to ${BRANCH}."
@@ -17,7 +17,7 @@ update_self() {
     git ls-tree -rt --name-only HEAD | xargs chown "$(id -u)":"$(id -g)" > /dev/null 2>&1 || true
     info "Fetching recent changes from git."
     git fetch --all --prune > /dev/null 2>&1 || fatal "Failed to fetch recent changes from git.\nFailing command: ${F[C]}git fetch --all --prune"
-    if [[ ${CI:-} != true ]]; then
+    if [[ ${CI-} != true ]]; then
         info "Resetting to ${BRANCH}."
         git reset --hard "${BRANCH}" > /dev/null 2>&1 || fatal "Failed to reset to ${BRANCH}.\nFailing command: ${F[C]}git reset --hard \"${BRANCH}\""
         info "Pulling recent changes from git."
@@ -33,5 +33,5 @@ update_self() {
 }
 
 test_update_self() {
-    run_script 'update_self' "${COMMIT_SHA:-}"
+    run_script 'update_self' "${COMMIT_SHA-}"
 }

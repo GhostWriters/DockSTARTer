@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_value_prompt() {
-    local SET_VAR=${1:-}
+    local SET_VAR=${1-}
 
     local CURRENT_VAL
     CURRENT_VAL=$(run_script 'env_get' "${SET_VAR}")
@@ -108,12 +108,12 @@ menu_value_prompt() {
             ;;
     esac
 
-    if [[ -n ${SYSTEM_VAL:-} ]]; then
+    if [[ -n ${SYSTEM_VAL-} ]]; then
         VALUEDESCRIPTION="\n\n System detected values are recommended.${VALUEDESCRIPTION}"
     fi
 
     local SELECTEDVALUE
-    if [[ ${CI:-} == true ]]; then
+    if [[ ${CI-} == true ]]; then
         SELECTEDVALUE="Keep Current "
     else
         SELECTEDVALUE=$(whiptail --fb --clear --title "DockSTARTer" --menu "What would you like set for ${SET_VAR}?${VALUEDESCRIPTION}" 0 0 0 "${VALUEOPTIONS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
@@ -193,7 +193,7 @@ menu_value_prompt() {
                     menu_value_prompt "${SET_VAR}"
                 elif [[ ${INPUT} == ~* ]]; then
                     local CORRECTED_DIR="${DETECTED_HOMEDIR}${INPUT#*~}"
-                    if run_script 'question_prompt' "${PROMPT:-}" Y "Cannot use the ~ shortcut in ${SET_VAR}. Would you like to use ${CORRECTED_DIR} instead?"; then
+                    if run_script 'question_prompt' "${PROMPT-}" Y "Cannot use the ~ shortcut in ${SET_VAR}. Would you like to use ${CORRECTED_DIR} instead?"; then
                         run_script 'env_set' "${SET_VAR}" "${CORRECTED_DIR}"
                         whiptail --fb --clear --title "DockSTARTer" --msgbox "Returning to the previous menu to confirm selection." 0 0
                     else
@@ -202,11 +202,11 @@ menu_value_prompt() {
                     menu_value_prompt "${SET_VAR}"
                 elif [[ -d ${INPUT} ]]; then
                     run_script 'env_set' "${SET_VAR}" "${INPUT}"
-                    if run_script 'question_prompt' "${PROMPT:-}" Y "Would you like to set permissions on ${INPUT} ?"; then
+                    if run_script 'question_prompt' "${PROMPT-}" Y "Would you like to set permissions on ${INPUT} ?"; then
                         run_script 'set_permissions' "${INPUT}"
                     fi
                 else
-                    if run_script 'question_prompt' "${PROMPT:-}" Y "${INPUT} is not a valid path. Would you like to attempt to create it?"; then
+                    if run_script 'question_prompt' "${PROMPT-}" Y "${INPUT} is not a valid path. Would you like to attempt to create it?"; then
                         mkdir -p "${INPUT}" || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p \"${INPUT}\""
                         run_script 'set_permissions' "${INPUT}"
                         run_script 'env_set' "${SET_VAR}" "${INPUT}"
@@ -219,7 +219,7 @@ menu_value_prompt() {
                 ;;
             P[GU]ID)
                 if [[ ${INPUT} == "0" ]]; then
-                    if run_script 'question_prompt' "${PROMPT:-}" Y "Running as root is not recommended. Would you like to select a different ID?"; then
+                    if run_script 'question_prompt' "${PROMPT-}" Y "Running as root is not recommended. Would you like to select a different ID?"; then
                         menu_value_prompt "${SET_VAR}"
                     else
                         run_script 'env_set' "${SET_VAR}" "${INPUT}"
