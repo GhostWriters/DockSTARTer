@@ -10,7 +10,7 @@ menu_main() {
     MAINOPTS+=("Prune Docker System " "Remove all unused containers, networks, volumes, images and build cache")
 
     local MAINCHOICE
-    if [[ ${CI:-} == true ]]; then
+    if [[ ${CI-} == true ]]; then
         MAINCHOICE="Cancel"
     else
         MAINCHOICE=$(whiptail --fb --clear --title "DockSTARTer" --cancel-button "Exit" --menu "What would you like to do?" 0 0 0 "${MAINOPTS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")

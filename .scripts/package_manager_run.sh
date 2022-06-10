@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 package_manager_run() {
-    local ACTION=${1:-}
+    local ACTION=${1-}
     if [[ -n "$(command -v apt-get)" ]]; then
         run_script "pm_apt_${ACTION}"
     elif [[ -n "$(command -v dnf)" ]]; then
