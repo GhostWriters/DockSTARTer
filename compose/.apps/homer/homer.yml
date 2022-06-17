@@ -16,4 +16,4 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERSTORAGEDIR}:/storage
-      - ${HOMER_ASSETS}:/www/assets
+      - ${DOCKERCONFDIR}/homer:/www/assets

@@ -12,13 +12,11 @@
 
 Be sure to read the [app specific documentation](https://github.com/bastienwirtz/homer) on github as the environment variables below are an extension of those explained in the documentation.
 
+Note that your configuration files and homer assets are located in `${DOCKERCONFDIR}/homer`
+
 ### Environment Variables
 
-#### HOMER_ASSETS
-
-Path to homer assets. If `HOMER_INIT_ASSETS="1"` then this may be an empty directory and the assets will be downloaded. If you already have assets here you should set `HOMER_INIT_ASSETS="0"`
-
-#### HOMER_INIT_ASSETS
+#### HOMER\_INIT_ASSETS
 
 `1` (default) Install example configuration file & assets (favicons, ...) to help you get started.
 
