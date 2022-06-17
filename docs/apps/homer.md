@@ -10,6 +10,16 @@
 
 ## Install/Setup
 
-This application does not have any specific setup instructions documented. If
-you need assistance setting up this application please visit our
-[support page](https://dockstarter.com/basics/support/).
+Be sure to read the [app specific documentation](https://github.com/bastienwirtz/homer) on github as the environment variables below are an extension of those explained in the documentation.
+
+### Environment Variables
+
+#### HOMER_ASSETS
+
+Path to homer assets. If `HOMER_INIT_ASSETS="1"` then this may be an empty directory and the assets will be downloaded. If you already have assets here you should set `HOMER_INIT_ASSETS="0"`
+
+#### HOMER_INIT_ASSETS
+
+`1` (default) Install example configuration file & assets (favicons, ...) to help you get started.
+
+`0` Don't install assets. Use existing files. This is the suggested value after you first launch homer and assets are installed.
