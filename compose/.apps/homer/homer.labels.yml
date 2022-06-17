@@ -9,5 +9,5 @@ services:
       com.dockstarter.appvars.homer_init_assets: "1"
       com.dockstarter.appvars.homer_network_mode: ""
       com.dockstarter.appvars.homer_port_http: "8080"
-      com.dockstarter.appvars.homer_restart: always
+      com.dockstarter.appvars.homer_restart: unless-stopped
       com.dockstarter.appvars.homer_subfolder: ""
