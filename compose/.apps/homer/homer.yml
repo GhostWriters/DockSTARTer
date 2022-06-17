@@ -14,4 +14,6 @@ services:
         max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${HOMER_RESTART}
     volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERSTORAGEDIR}:/storage
       - ${HOMER_ASSETS}:/www/assets
