@@ -5,6 +5,7 @@ services:
       - INIT_ASSETS=${HOMER_INIT_ASSETS}
       - PGID=${PGID}
       - PUID=${PUID}
+      - SUBFOLDER=${HOMER_SUBFOLDER}
       - TZ=${TZ}
     logging:
       driver: json-file

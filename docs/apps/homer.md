@@ -23,3 +23,7 @@ Path to homer assets. If `HOMER_INIT_ASSETS="1"` then this may be an empty direc
 `1` (default) Install example configuration file & assets (favicons, ...) to help you get started.
 
 `0` Don't install assets. Use existing files. This is the suggested value after you first launch homer and assets are installed.
+
+#### HOMER_SUBFOLDER
+
+(default: `''`) If you would like to host Homer in a subfolder, (ex: http://my-domain/homer), set this to the subfolder path (ex /homer).
