@@ -1,0 +1,12 @@
+services:
+  homer:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: A dead simple static HOMepage for your servER
+      com.dockstarter.appinfo.nicename: Homer
+      com.dockstarter.appvars.homer_enabled: "false"
+      com.dockstarter.appvars.homer_assets: ""
+      com.dockstarter.appvars.homer_init_assets: "1"
+      com.dockstarter.appvars.homer_network_mode: ""
+      com.dockstarter.appvars.homer_port_http: "8080"
+      com.dockstarter.appvars.homer_restart: always
