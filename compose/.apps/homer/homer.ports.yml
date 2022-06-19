@@ -1,4 +1,4 @@
 services:
   homer:
     ports:
-      - ${HOMER_PORT_HTTP}:8080
+      - ${HOMER_PORT_8080}:8080
