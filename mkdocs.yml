@@ -127,6 +127,7 @@ nav:
       - apps/headphones.md
       - apps/heimdall.md
       - apps/homeassistant.md
+      - apps/homer.md
       - apps/htpcmanager.md
       - apps/httpserver.md
       - apps/huginn.md
