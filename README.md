@@ -120,7 +120,7 @@ Additional information can be found on our [Support Page](https://dockstarter.co
 
 ## Contributing
 
-Want to help develop DockSTARTer? Check out our [contributing documentation](https://github.com/GhostWriters/DockSTARTer/blob/master/.github/CONTRIBUTING.md).
+Want to help develop DockSTARTer? Check out our [contributing guidelines](https://github.com/GhostWriters/DockSTARTer/blob/master/.github/CONTRIBUTING.md) and [code of conduct](https://github.com/GhostWriters/DockSTARTer/blob/master/.github/CODE_OF_CONDUCT.md).
 
 ### Contributors
 
