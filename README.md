@@ -118,7 +118,11 @@ Click the chat badge to join us on Discord for support!
 
 Additional information can be found on our [Support Page](https://dockstarter.com/basics/support/).
 
-## Contributors
+## Contributing
+
+Want to help develop DockSTARTer? Check out our [contributing guidelines](https://github.com/GhostWriters/DockSTARTer/blob/master/.github/CONTRIBUTING.md) and [code of conduct](https://github.com/GhostWriters/DockSTARTer/blob/master/.github/CODE_OF_CONDUCT.md).
+
+### Contributors
 
 [![GitHub contributors](https://img.shields.io/github/contributors/GhostWriters/DockSTARTer.svg?style=flat-square&color=607D8B)](https://github.com/GhostWriters/DockSTARTer/graphs/contributors)
 
