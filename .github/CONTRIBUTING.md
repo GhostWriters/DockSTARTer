@@ -87,3 +87,8 @@ Look at the **App Specifics** list in the **nav** section and add a new line for
   - `# Global Settings`
   - `# VPN Settings`
   - `# END OF DEFAULT SETTINGS` should be the last non-blank line in the file and followed by a blank line. Variables for apps enabled by DS will be placed alphabetically beneath this like. Users may also define their own variables after this point in their .env file
+
+## Markdown files
+
+- Should be checked with [markdownlint](https://github.com/markdownlint/markdownlint)
+  - [Rules](https://github.com/markdownlint/markdownlint/blob/master/docs/RULES.md#rules) MD013, MD033, and MD034 are exempted from linting. E.g. running from the CLI `mdl -r ~MD013,~MD033,~MD034 <.md file path>`
