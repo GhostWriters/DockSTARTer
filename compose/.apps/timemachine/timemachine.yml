@@ -9,6 +9,8 @@ services:
       - HIDE_SHARES=${TIMEMACHINE_HIDE_SHARES}
       - MIMIC_MODEL=${TIMEMACHINE_MIMIC_MODEL}
       - PASSWORD=${TIMEMACHINE_PASSWORD}
+      - PGID=${PGID}
+      - PUID=${PUID}
       - SET_PERMISSIONS=${TIMEMACHINE_SET_PERMISSIONS}
       - SHARE_NAME=${TIMEMACHINE_SHARE_NAME}
       - SMB_INHERIT_PERMISSIONS=${TIMEMACHINE_SMB_INHERIT_PERMISSIONS}
@@ -16,9 +18,7 @@ services:
       - SMB_NFS_ACES=${TIMEMACHINE_SMB_NFS_ACES}
       - SMB_PORT=${TIMEMACHINE_SMB_PORT}
       - SMB_VFS_OBJECTS=${TIMEMACHINE_SMB_VFS_OBJECTS}
-      - TM_GID=${TIMEMACHINE_TM_GID}
       - TM_GROUPNAME=${TIMEMACHINE_TM_GROUPNAME}
-      - TM_UID=${TIMEMACHINE_TM_UID}
       - TM_USERNAME=${TIMEMACHINE_TM_USERNAME}
       - TZ=${TZ}
       - VOLUME_SIZE_LIMIT=${TIMEMACHINE_VOLUME_SIZE_LIMIT}
@@ -31,8 +31,8 @@ services:
     restart: ${TIMEMACHINE_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/timemachine/data:/opt/timemachine
       - ${DOCKERCONFDIR}/timemachine/var-lib-samba:/var/lib/samba
       - ${DOCKERCONFDIR}/timemachine/var-cache-samba:/var/cache/samba
       - ${DOCKERCONFDIR}/timemachine/run-samba:/run/samba
       - ${DOCKERSTORAGEDIR}:/storage
+      - ${TIMEMACHINE_DATADIR}:/opt/timemachine

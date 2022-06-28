@@ -7,6 +7,7 @@ services:
       com.dockstarter.appvars.timemachine_enabled: "false"
       com.dockstarter.appvars.timemachine_custom_smb_conf: "false"
       com.dockstarter.appvars.timemachine_custom_user: "false"
+      com.dockstarter.appvars.timemachine_datadir: /opt/timemachine
       com.dockstarter.appvars.timemachine_debug_level: "1"
       com.dockstarter.appvars.timemachine_external_conf: ""
       com.dockstarter.appvars.timemachine_hide_shares: "no"
@@ -25,9 +26,7 @@ services:
       com.dockstarter.appvars.timemachine_smb_nfs_aces: "yes"
       com.dockstarter.appvars.timemachine_smb_port: "445"
       com.dockstarter.appvars.timemachine_smb_vfs_objects: "acl_xattr fruit streams_xattr"
-      com.dockstarter.appvars.timemachine_tm_gid: "1000"
       com.dockstarter.appvars.timemachine_tm_groupname: "timemachine"
-      com.dockstarter.appvars.timemachine_tm_uid: "1000"
       com.dockstarter.appvars.timemachine_tm_username: "timemachine"
       com.dockstarter.appvars.timemachine_volume_size_limit: "0"
       com.dockstarter.appvars.timemachine_workgroup: "WORKGROUP"
