@@ -4,7 +4,7 @@ All code in this repository should be neat and tidy.
 
 More important than being beautiful is being functional. This repository is primarily shell scripts and YAML files.
 
-We use [GitHub Actions](https://github.com/GhostWriters/DockSTARTer/actions) to run [tests](https://github.com/GhostWriters/DockSTARTer/tree/master/.github/workflows) on the code in the repository. Code must pass tests run by GitHub Actions in order to merge to the `master` branch of the repository.
+We use [GitHub Actions](https://github.com/GhostWriters/DockSTARTer/actions) to run [checks](https://github.com/GhostWriters/DockSTARTer/tree/master/.github/workflows) on the code in the repository. Code must pass checks run by GitHub Actions in order to merge to the `master` branch of the repository.
 
 Try not to [code like a cowboy](https://en.wikipedia.org/wiki/Cowboy_coding).
 
