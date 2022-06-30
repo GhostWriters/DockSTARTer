@@ -11,13 +11,17 @@ Try not to [code like a cowboy](https://en.wikipedia.org/wiki/Cowboy_coding).
 ## Setting up your Dev Environment
 
 1. Fork this repository and clone it onto your system. In later steps we'll refer to the location of your local repository as `/path/to/your/ds-repo`
-1. Install DockSTARTer
-1. Delete the DockSTARTer installed docs folder so we can create a symlink in the next step:  `rm -rf ~/.docker/docs`
-1. Point DockSTARTer to the docs directory in your cloned repo: `ln -s /path/to/your/ds-repo/docs ~/.docker/docs`
-1. Delete the DockSTARTer installed .apps folder so we can create a symlink in the next step: `rm -rf ~/.docker/compose/.apps`
-1. Point DockSTARTer to the .apps directory in your cloned repo: `ln -s /path/to/your/ds-repo/compose/.apps ~/.docker/compose/.apps`
+1. Run `bash /path/to/your/ds-repo/main.sh`
+1. The `ds` symlink should be created but let's verify. We'll run `whereis` to see where `ds` is and then run `ls -l` on this path to ensure the symlink points to `/path/to/your/ds-repo/main.sh`. E.g:
 
-You should now have an environment where the DockSTARTer GUI and CLI use files you are editing in your local git repository. Eg. if you add a new app into `/path/to/your/ds-repo/compose/.apps` you should be able to see it in the GUI and `ds -a <your new app>`
+```
+dev0@dev0:~/gitsource/DockSTARTer$ whereis ds
+ds: /usr/bin/ds /usr/local/bin/ds
+dev0@dev0:~/gitsource/DockSTARTer$ ls -l /usr/bin/ds
+lrwxrwxrwx 1 root root 40 Jun 30 12:36 /usr/bin/ds -> /path/to/your/ds-repo/main.sh
+```
+
+Now you are free to develop and test as usual. All changes in your git repo can be tested in the ds GUI and with `ds` in the CLI.
 
 ## Adding an App
 
