@@ -2,9 +2,9 @@ services:
   traefik:
     container_name: traefik
     environment:
-    - PGID=${PGID}
-    - PUID=${PUID}
-    - TZ=${TZ}
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
     logging:
       driver: json-file
       options:
@@ -12,7 +12,7 @@ services:
         max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${TRAEFIK_RESTART}
     volumes:
-    - ${DOCKERCONFDIR}/traefik/traefik.yml:/etc/traefik/traefik.yml
-    - ${DOCKERSTORAGEDIR}:/storage
-    - /etc/localtime:/etc/localtime:ro
-    - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${DOCKERCONFDIR}/traefik/traefik.yml:/etc/traefik/traefik.yml
+      - ${DOCKERSTORAGEDIR}:/storage
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
