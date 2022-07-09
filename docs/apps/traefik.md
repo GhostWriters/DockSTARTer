@@ -10,7 +10,7 @@
 
 ## Install/Setup
 
-This container itself is quite simple but note that lots of customization will be needed for the client apps you will be routing with Traefik. You'll need to use [DockSTARTer overrides](https://dockstarter.com/overrides/introduction/), more specifically editing `docker-compose.override.yml` to add labels, etc, to your client apps to configure Traefik routing. 
+This container itself is quite simple but note that lots of customization will be needed for the client apps you will be routing with Traefik. You'll need to use [DockSTARTer overrides](https://dockstarter.com/overrides/introduction/), more specifically editing `docker-compose.override.yml` to add labels, etc, to your client apps to configure Traefik routing.
 
 ### traefik.yml
 
