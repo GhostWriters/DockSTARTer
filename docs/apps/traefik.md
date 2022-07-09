@@ -12,6 +12,10 @@
 
 This container itself is quite simple but note that lots of customization will be needed for the client apps you will be routing with Traefik. You'll need to use [DockSTARTer overrides](https://dockstarter.com/overrides/introduction/), more specifically editing `docker-compose.override.yml` to add labels, etc, to your client apps to configure Traefik routing. 
 
+### traefik.yml
+
+You can configure Traefik itself with a `traefik.yml` file. You should create this at `${DOCKERCONFDIR}/traefik/traefik.yml` which is by default volume mapped to `/etc/traefik/traefik.yml` inside the container.
+
 ## Suggested Reading
 
 [Traefik Documentation](https://doc.traefik.io/traefik/)
