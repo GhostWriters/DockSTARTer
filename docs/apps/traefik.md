@@ -14,7 +14,7 @@ This container itself is quite simple but note that lots of customization will b
 
 ### traefik.yml
 
-You can configure Traefik itself with a `traefik.yml` file. You should create this at `${DOCKERCONFDIR}/traefik/traefik.yml` which is by default volume mapped to `/etc/traefik/traefik.yml` inside the container.
+You can configure Traefik itself with a `traefik.yml` file. You should create this at `${DOCKERCONFDIR}/traefik` which is by default volume mapped to `/etc/traefik` inside the container.
 
 ## Suggested Reading
 
