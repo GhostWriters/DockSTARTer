@@ -1,6 +1,6 @@
 services:
-  rustdesk:
-    container_name: rustdesk
+  rustdesk_hbbs:
+    container_name: rustdesk_hbbs
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
@@ -10,8 +10,8 @@ services:
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    restart: ${RUSTDESK_RESTART}
+    restart: ${RUSTDESK_HBBS_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/rustdesk:/config
+      - ${DOCKERCONFDIR}/rustdesk_hbbs:/config
       - ${DOCKERSTORAGEDIR}:/storage

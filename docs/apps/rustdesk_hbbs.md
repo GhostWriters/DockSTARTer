@@ -8,6 +8,8 @@
 
 [RustDesk](https://rustdesk.com) is an open-source, self-hosted TeamViewer alternative.
 
+hbbs is the RustDesk ID/Rendezvous server. You will need both hbbs and hbbr for a functional deployment.
+
 ## Install/Setup
 
 This application does not have any specific setup instructions documented. If

@@ -1,0 +1,3 @@
+services:
+  rustdesk_hbbr:
+    hostname: ${DOCKERHOSTNAME}

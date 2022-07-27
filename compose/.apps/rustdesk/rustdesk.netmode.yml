@@ -1,3 +1,0 @@
-services:
-  rustdesk:
-    network_mode: ${RUSTDESK_NETWORK_MODE}

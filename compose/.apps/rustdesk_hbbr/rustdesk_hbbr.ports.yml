@@ -1,0 +1,5 @@
+services:
+  rustdesk_hbbr:
+    ports:
+      - ${RUSTDESK_HBBR_PORT_21117}:21117
+      - ${RUSTDESK_HBBR_PORT_21119}:21119

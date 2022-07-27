@@ -1,0 +1,3 @@
+services:
+  rustdesk_hbbs:
+    image: rustdesk/rustdesk-server
