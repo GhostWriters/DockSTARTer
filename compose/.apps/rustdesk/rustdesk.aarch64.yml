@@ -1,3 +1,3 @@
 services:
   rustdesk:
-    image: rustdesk/rustdesk-server
+    image: rustdesk/rustdesk-server:latest-arm64v8
