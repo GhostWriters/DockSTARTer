@@ -1,3 +1,0 @@
-services:
-  rustdesk:
-    image: rustdesk/rustdesk-server
