@@ -1,0 +1,18 @@
+services:
+  uptime-kuma:
+    container_name: uptime-kuma
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: ${UPTIME-KUMA_RESTART}
+    volumes:
+      - ${DOCKERCONFDIR}/uptime-kuma:/app/data
+      - ${DOCKERSTORAGEDIR}:/storage
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/localtime:/etc/localtime:ro
