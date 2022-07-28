@@ -48,7 +48,6 @@ For regular usage you can run without providing any options.
 -x --debug
     debug
 EOF
-    exit
 }
 
 # Script Information
@@ -72,6 +71,7 @@ readonly SCRIPTNAME
 # Cleanup Function
 cleanup() {
     local -ri EXIT_CODE=$?
+    trap - ERR EXIT SIGABRT SIGALRM SIGHUP SIGINT SIGQUIT SIGTERM
     sudo sh -c "cat ${MKTEMP_LOG:-/dev/null} >> ${SCRIPTPATH}/dockstarter.log" || true
     sudo rm -f "${MKTEMP_LOG}" || true
     sudo sh -c "echo \"$(tail -1000 "${SCRIPTPATH}/dockstarter.log")\" > ${SCRIPTPATH}/dockstarter.log" || true
@@ -86,7 +86,6 @@ cleanup() {
     fi
 
     exit ${EXIT_CODE}
-    trap - ERR EXIT SIGABRT SIGALRM SIGHUP SIGINT SIGQUIT SIGTERM
 }
 trap 'cleanup' ERR EXIT SIGABRT SIGALRM SIGHUP SIGINT SIGQUIT SIGTERM
 
