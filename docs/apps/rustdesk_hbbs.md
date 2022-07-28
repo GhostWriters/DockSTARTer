@@ -16,7 +16,7 @@ When hbbs is first run, it will generate a public/private keypair for the client
 INFO [src/common.rs:133] Private/public key written to id_ed25519/id_ed25519.pub
 ```
 
-You can view the contents of this key by browsing to your config folder, for instance, `~/.config/appdata/rustdesk_hbbs`. 
+You can view the contents of this key by browsing to your config folder, for instance, `~/.config/appdata/rustdesk_hbbs`.
 
 ## Install/Setup
 
