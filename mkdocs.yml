@@ -208,6 +208,7 @@ nav:
       - apps/thelounge.md
       - apps/timemachine.md
       - apps/traktarr.md
+      - apps/traefik.md
       - apps/transmission.md
       - apps/transmissionvpn.md
       - apps/tvheadend.md
