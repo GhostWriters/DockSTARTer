@@ -1,17 +1,17 @@
 services:
-  rustdesk_hbbr:
-    container_name: rustdesk_hbbr
+  rustdesk:
+    container_name: rustdesk
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+      - RELAY=${RUSTDESK_RELAY_SERVER}
     logging:
       driver: json-file
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    restart: ${RUSTDESK_HBBR_RESTART}
+    restart: ${RUSTDESK_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/rustdesk_hbbr:/root
-    command: hbbr
+      - ${DOCKERCONFDIR}/rustdesk:/data

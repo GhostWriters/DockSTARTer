@@ -1,3 +1,0 @@
-services:
-  rustdesk_hbbs:
-    network_mode: ${RUSTDESK_HBBS_NETWORK_MODE}

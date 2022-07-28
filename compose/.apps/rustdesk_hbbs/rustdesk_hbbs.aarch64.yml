@@ -1,3 +1,0 @@
-services:
-  rustdesk_hbbs:
-    image: rustdesk/rustdesk-server:latest-arm64v8

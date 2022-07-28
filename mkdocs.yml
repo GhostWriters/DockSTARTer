@@ -189,8 +189,7 @@ nav:
       - apps/rsnapshot.md
       - apps/rtorrentvpn.md
       - apps/rutorrent.md
-      - apps/rustdesk_hbbs.md
-      - apps/rustdesk_hbbr.md
+      - apps/rustdesk.md
       - apps/sabnzbd.md
       - apps/sabnzbdvpn.md
       - apps/samba.md

@@ -1,7 +1,0 @@
-services:
-  rustdesk_hbbs:
-    ports:
-      - ${RUSTDESK_HBBS_PORT_21115}:21115
-      - ${RUSTDESK_HBBS_PORT_21116}:21116
-      - ${RUSTDESK_HBBS_PORT_21116}:21116/udp
-      - ${RUSTDESK_HBBS_PORT_21118}:21118
