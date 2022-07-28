@@ -4,8 +4,8 @@ services:
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
-      - TZ=${TZ}
       - RELAY=${RUSTDESK_RELAY_SERVER}
+      - TZ=${TZ}
     logging:
       driver: json-file
       options:
