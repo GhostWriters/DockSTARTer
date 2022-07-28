@@ -1,0 +1,3 @@
+services:
+  airsonic:
+    network_mode: ${AIRSONIC_NETWORK_MODE}

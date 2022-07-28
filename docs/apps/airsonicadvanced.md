@@ -10,6 +10,4 @@
 
 ## Install/Setup
 
-This application does not have any specific setup instructions documented. If
-you need assistance setting up this application please visit our
-[support page](https://dockstarter.com/basics/support/).
+Please refer to the container [Application Setup](https://github.com/linuxserver/docker-airsonic-advanced#application-setup) documentation. Note that upgrading from Airsonic to Airsonic-Advanced is not officially supported, however it may work. Be sure to backup your config folder before attempting an upgrade. After making a backup, you may be able to copy your Airsonic config to the Airsonic-Advanced config folder, and see if the container logs report any issues.

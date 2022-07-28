@@ -1,0 +1,4 @@
+services:
+  airsonic:
+    ports:
+      - ${AIRSONIC_PORT_4040}:4040
