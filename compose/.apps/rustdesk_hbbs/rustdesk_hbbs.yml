@@ -14,4 +14,4 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/rustdesk_hbbs:/root
-    command: hbbs -r ${DOCKERHOSTNAME}:${RUSTDESK_HBBR_PORT_21117}
+    command: hbbs -r ${RUSTDESK_HBBR_HOST}:${RUSTDESK_HBBR_PORT_21117}
