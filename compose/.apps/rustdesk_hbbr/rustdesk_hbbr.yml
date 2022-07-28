@@ -13,6 +13,5 @@ services:
     restart: ${RUSTDESK_HBBR_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/rustdesk_hbbr:/config
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKERCONFDIR}/rustdesk_hbbr:/root
     command: hbbr

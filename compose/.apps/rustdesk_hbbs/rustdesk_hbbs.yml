@@ -13,6 +13,5 @@ services:
     restart: ${RUSTDESK_HBBS_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/rustdesk_hbbs:/config
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKERCONFDIR}/rustdesk_hbbs:/root
     command: hbbs -r ${DOCKERHOSTNAME}:${RUSTDESK_HBBR_PORT_21117}
