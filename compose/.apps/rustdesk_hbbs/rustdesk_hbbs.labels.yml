@@ -8,7 +8,5 @@ services:
       com.dockstarter.appvars.rustdesk_hbbs_network_mode: ""
       com.dockstarter.appvars.rustdesk_hbbs_port_21115: "21115"
       com.dockstarter.appvars.rustdesk_hbbs_port_21116: "21116"
-      com.dockstarter.appvars.rustdesk_hbbs_port_21117: "21117"
       com.dockstarter.appvars.rustdesk_hbbs_port_21118: "21118"
-      com.dockstarter.appvars.rustdesk_hbbs_port_21119: "21119"
       com.dockstarter.appvars.rustdesk_hbbs_restart: unless-stopped

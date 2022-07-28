@@ -6,9 +6,6 @@ services:
       com.dockstarter.appinfo.nicename: RustDesk hbbr
       com.dockstarter.appvars.rustdesk_hbbr_enabled: "false"
       com.dockstarter.appvars.rustdesk_hbbr_network_mode: ""
-      com.dockstarter.appvars.rustdesk_hbbr_port_21115: "21115"
-      com.dockstarter.appvars.rustdesk_hbbr_port_21116: "21116"
       com.dockstarter.appvars.rustdesk_hbbr_port_21117: "21117"
-      com.dockstarter.appvars.rustdesk_hbbr_port_21118: "21118"
       com.dockstarter.appvars.rustdesk_hbbr_port_21119: "21119"
       com.dockstarter.appvars.rustdesk_hbbr_restart: unless-stopped
