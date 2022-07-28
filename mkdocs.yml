@@ -88,7 +88,6 @@ nav:
   - App Specifics:
       - apps/adguard.md
       - apps/adminer.md
-      - apps/airdcpp.md
       - apps/airsonicadvanced.md
       - apps/amd.md
       - apps/apcupsd.md
