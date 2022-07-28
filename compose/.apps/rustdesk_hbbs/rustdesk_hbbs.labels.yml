@@ -3,7 +3,7 @@ services:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: The ID/rendezvous server for RustDesk, an open-source self-hosted TeamViewer alternative
-      com.dockstarter.appinfo.nicename: RustDesk hbbs
+      com.dockstarter.appinfo.nicename: RustDesk_hbbs
       com.dockstarter.appvars.rustdesk_hbbr_port_21117: "21117"
       com.dockstarter.appvars.rustdesk_hbbr_host: ${DOCKERHOSTNAME}
       com.dockstarter.appvars.rustdesk_hbbs_enabled: "false"
