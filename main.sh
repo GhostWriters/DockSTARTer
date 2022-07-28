@@ -48,7 +48,6 @@ For regular usage you can run without providing any options.
 -x --debug
     debug
 EOF
-    exit
 }
 
 # Script Information
@@ -74,12 +73,13 @@ export COMPOSE_ENV
 # Cleanup Function
 cleanup() {
     local -ri EXIT_CODE=$?
+    trap - ERR EXIT SIGABRT SIGALRM SIGHUP SIGINT SIGQUIT SIGTERM
     sudo sh -c "cat ${MKTEMP_LOG:-/dev/null} >> ${SCRIPTPATH}/dockstarter.log" || true
     sudo rm -f "${MKTEMP_LOG}" || true
     sudo sh -c "echo \"$(tail -1000 "${SCRIPTPATH}/dockstarter.log")\" > ${SCRIPTPATH}/dockstarter.log" || true
     sudo -E chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || true
 
-    if [[ ${CI:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == false ]]; then
+    if [[ ${CI-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS-} == false ]]; then
         echo "TRAVIS_SECURE_ENV_VARS is false for Pull Requests from remote branches. Please retry failed builds!"
     fi
 
@@ -88,7 +88,6 @@ cleanup() {
     fi
 
     exit ${EXIT_CODE}
-    trap - ERR EXIT SIGABRT SIGALRM SIGHUP SIGINT SIGQUIT SIGTERM
 }
 trap 'cleanup' ERR EXIT SIGABRT SIGALRM SIGHUP SIGINT SIGQUIT SIGTERM
 
@@ -103,14 +102,14 @@ cmdline() {
         local DELIM=""
         case "${ARG}" in
             #translate --gnu-long-options to -g (short options)
-            --add) LOCAL_ARGS="${LOCAL_ARGS:-}-a " ;;
-            --compose) LOCAL_ARGS="${LOCAL_ARGS:-}-c " ;;
-            --debug) LOCAL_ARGS="${LOCAL_ARGS:-}-x " ;;
-            --env) LOCAL_ARGS="${LOCAL_ARGS:-}-e " ;;
+            --add) LOCAL_ARGS="${LOCAL_ARGS-}-a " ;;
+            --compose) LOCAL_ARGS="${LOCAL_ARGS-}-c " ;;
+            --debug) LOCAL_ARGS="${LOCAL_ARGS-}-x " ;;
+            --env) LOCAL_ARGS="${LOCAL_ARGS-}-e " ;;
             --env-*)
                 readonly ENVMETHOD=${ARG%%=*}
                 readonly ENVARG=${ARG#*=}
-                if [[ ${ENVMETHOD:-} == "${ENVARG:-}" ]]; then
+                if [[ ${ENVMETHOD-} == "${ENVARG-}" ]]; then
                     echo "Invalid usage. Must be on of the following:"
                     echo "  --env-set with variable name ('--env-set=VAR,VAL') and value"
                     echo "  --env-get with variable name ('--env-get=VAR')"
@@ -120,24 +119,24 @@ cmdline() {
                     readonly ENVVAL=${ENVARG#*,}
                 fi
                 ;;
-            --force) LOCAL_ARGS="${LOCAL_ARGS:-}-f " ;;
-            --help) LOCAL_ARGS="${LOCAL_ARGS:-}-h " ;;
-            --install) LOCAL_ARGS="${LOCAL_ARGS:-}-i " ;;
-            --prune) LOCAL_ARGS="${LOCAL_ARGS:-}-p " ;;
-            --remove) LOCAL_ARGS="${LOCAL_ARGS:-}-r " ;;
-            --test) LOCAL_ARGS="${LOCAL_ARGS:-}-t " ;;
-            --update) LOCAL_ARGS="${LOCAL_ARGS:-}-u " ;;
-            --verbose) LOCAL_ARGS="${LOCAL_ARGS:-}-v " ;;
+            --force) LOCAL_ARGS="${LOCAL_ARGS-}-f " ;;
+            --help) LOCAL_ARGS="${LOCAL_ARGS-}-h " ;;
+            --install) LOCAL_ARGS="${LOCAL_ARGS-}-i " ;;
+            --prune) LOCAL_ARGS="${LOCAL_ARGS-}-p " ;;
+            --remove) LOCAL_ARGS="${LOCAL_ARGS-}-r " ;;
+            --test) LOCAL_ARGS="${LOCAL_ARGS-}-t " ;;
+            --update) LOCAL_ARGS="${LOCAL_ARGS-}-u " ;;
+            --verbose) LOCAL_ARGS="${LOCAL_ARGS-}-v " ;;
             #pass through anything else
             *)
                 [[ ${ARG:0:1} == "-" ]] || DELIM='"'
-                LOCAL_ARGS="${LOCAL_ARGS:-}${DELIM}${ARG}${DELIM} "
+                LOCAL_ARGS="${LOCAL_ARGS-}${DELIM}${ARG}${DELIM} "
                 ;;
         esac
     done
 
     #Reset the positional parameters to the short options
-    eval set -- "${LOCAL_ARGS:-}"
+    eval set -- "${LOCAL_ARGS-}"
 
     while getopts ":a:c:efghipr:t:u:vx" OPTION; do
         case ${OPTION} in
@@ -219,8 +218,8 @@ cmdline() {
     done
     return
 }
-cmdline "${ARGS[@]:-}"
-if [[ -n ${DEBUG:-} ]] && [[ -n ${VERBOSE:-} ]]; then
+cmdline "${ARGS[@]-}"
+if [[ -n ${DEBUG-} ]] && [[ -n ${VERBOSE-} ]]; then
     readonly TRACE=1
 fi
 
@@ -253,9 +252,9 @@ MKTEMP_LOG=$(mktemp) || echo "Failed to create temporary log file."
 readonly MKTEMP_LOG
 echo "DockSTARTer Log" > "${MKTEMP_LOG}"
 log() {
-    local TOTERM=${1:-}
-    local MESSAGE=${2:-}
-    echo -e "${MESSAGE:-}" | (
+    local TOTERM=${1-}
+    local MESSAGE=${2-}
+    echo -e "${MESSAGE-}" | (
         if [[ -n ${TOTERM} ]]; then
             tee -a "${MKTEMP_LOG}" >&2
         else
@@ -263,9 +262,9 @@ log() {
         fi
     )
 }
-trace() { log "${TRACE:-}" "${NC}$(date +"%F %T") ${F[B]}[TRACE ]${NC}   $*${NC}"; }
-debug() { log "${DEBUG:-}" "${NC}$(date +"%F %T") ${F[B]}[DEBUG ]${NC}   $*${NC}"; }
-info() { log "${VERBOSE:-}" "${NC}$(date +"%F %T") ${F[B]}[INFO  ]${NC}   $*${NC}"; }
+trace() { log "${TRACE-}" "${NC}$(date +"%F %T") ${F[B]}[TRACE ]${NC}   $*${NC}"; }
+debug() { log "${DEBUG-}" "${NC}$(date +"%F %T") ${F[B]}[DEBUG ]${NC}   $*${NC}"; }
+info() { log "${VERBOSE-}" "${NC}$(date +"%F %T") ${F[B]}[INFO  ]${NC}   $*${NC}"; }
 notice() { log true "${NC}$(date +"%F %T") ${F[G]}[NOTICE]${NC}   $*${NC}"; }
 warn() { log true "${NC}$(date +"%F %T") ${F[Y]}[WARN  ]${NC}   $*${NC}"; }
 error() { log true "${NC}$(date +"%F %T") ${F[R]}[ERROR ]${NC}   $*${NC}"; }
@@ -305,7 +304,7 @@ root_check() {
 
 # Script Runner Function
 run_script() {
-    local SCRIPTSNAME=${1:-}
+    local SCRIPTSNAME=${1-}
     shift
     if [[ -f ${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh ]]; then
         # shellcheck source=/dev/null
@@ -318,7 +317,7 @@ run_script() {
 
 # Test Runner Function
 run_test() {
-    local SCRIPTSNAME=${1:-}
+    local SCRIPTSNAME=${1-}
     shift
     local TESTSNAME="test_${SCRIPTSNAME}"
     if [[ -f ${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh ]]; then
@@ -344,7 +343,7 @@ verlte() { printf '%s\n%s' "${1}" "${2}" | sort -C -V; }
 verlt() { ! verlte "${2}" "${1}"; }
 
 # Github Token for CI
-if [[ ${CI:-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS:-} == true ]]; then
+if [[ ${CI-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS-} == true ]]; then
     readonly GH_HEADER="Authorization: token ${GH_TOKEN}"
     export GH_HEADER
 fi
@@ -363,7 +362,7 @@ main() {
     fi
     # Repo Check
     local PROMPT
-    if [[ ${FORCE:-} == true ]]; then
+    if [[ ${FORCE-} == true ]]; then
         PROMPT="FORCE"
     fi
     local DS_COMMAND
@@ -382,7 +381,7 @@ main() {
             warn "Attempting to run DockSTARTer from ${DS_SYMLINK} location."
             sudo -H -E bash "${DS_SYMLINK}" -vu
             sudo -H -E bash "${DS_SYMLINK}" -vi
-            exec sudo -H -E bash "${DS_SYMLINK}" "${ARGS[@]:-}"
+            exec sudo -H -E bash "${DS_SYMLINK}" "${ARGS[@]-}"
         fi
     else
         if ! repo_exists; then
@@ -398,17 +397,17 @@ main() {
     fi
     # Sudo Check
     if [[ ${EUID} -ne 0 ]]; then
-        exec sudo -H -E bash "${SCRIPTNAME}" "${ARGS[@]:-}"
+        exec sudo -H -E bash "${SCRIPTNAME}" "${ARGS[@]-}"
     fi
     # Create Symlink
     run_script 'symlink_ds'
     # Execute CLI Argument Functions
-    if [[ -n ${ADD:-} ]]; then
+    if [[ -n ${ADD-} ]]; then
         run_script 'appvars_create' "${ADD}"
         run_script 'env_update'
         exit
     fi
-    if [[ -n ${COMPOSE:-} ]]; then
+    if [[ -n ${COMPOSE-} ]]; then
         case ${COMPOSE} in
             down)
                 run_script 'docker_compose' "${COMPOSE}"
@@ -426,15 +425,15 @@ main() {
         esac
         exit
     fi
-    if [[ -n ${ENV:-} ]]; then
+    if [[ -n ${ENV-} ]]; then
         run_script 'env_update'
         run_script 'appvars_create_all'
         exit
     fi
-    if [[ -n ${ENVMETHOD:-} ]]; then
-        case "${ENVMETHOD:-}" in
+    if [[ -n ${ENVMETHOD-} ]]; then
+        case "${ENVMETHOD-}" in
             --env-get)
-                if [[ ${ENVVAR:-} != "" ]]; then
+                if [[ ${ENVVAR-} != "" ]]; then
                     run_script 'env_get' "${ENVVAR}"
                 else
                     echo "Invalid usage. Must be"
@@ -442,7 +441,7 @@ main() {
                 fi
                 ;;
             --env-set)
-                if [[ ${ENVVAR:-} != "" ]] && [[ ${ENVVAL:-} != "" ]]; then
+                if [[ ${ENVVAR-} != "" ]] && [[ ${ENVVAL-} != "" ]]; then
                     run_script 'env_set' "${ENVVAR}" "${ENVVAL}"
                 else
                     echo "Invalid usage. Must be"
@@ -450,20 +449,20 @@ main() {
                 fi
                 ;;
             *)
-                echo "Invalid option: '${ENVMETHOD:-}'"
+                echo "Invalid option: '${ENVMETHOD-}'"
                 ;;
         esac
         exit
     fi
-    if [[ -n ${INSTALL:-} ]]; then
+    if [[ -n ${INSTALL-} ]]; then
         run_script 'run_install'
         exit
     fi
-    if [[ -n ${PRUNE:-} ]]; then
+    if [[ -n ${PRUNE-} ]]; then
         run_script 'docker_prune'
         exit
     fi
-    if [[ -n ${REMOVE:-} ]]; then
+    if [[ -n ${REMOVE-} ]]; then
         if [[ ${REMOVE} == true ]]; then
             run_script 'appvars_purge_all'
             run_script 'env_update'
@@ -473,11 +472,11 @@ main() {
         fi
         exit
     fi
-    if [[ -n ${TEST:-} ]]; then
+    if [[ -n ${TEST-} ]]; then
         run_test "${TEST}"
         exit
     fi
-    if [[ -n ${UPDATE:-} ]]; then
+    if [[ -n ${UPDATE-} ]]; then
         if [[ ${UPDATE} == true ]]; then
             run_script 'update_self'
         else

@@ -1,28 +1,37 @@
 site_name: DockSTARTer
-site_description: DockSTARTer helps you get started with home server apps running in Docker.
-site_author: GhostWriters
 site_url: https://dockstarter.com
+site_author: GhostWriters
+site_description: DockSTARTer helps you get started with home server apps running in Docker.
 
-repo_url: https://github.com/GhostWriters/DockSTARTer
 repo_name: GhostWriters/DockSTARTer
+repo_url: https://github.com/GhostWriters/DockSTARTer
 
-copyright: Copyright &copy; 2021 GhostWriters
+copyright: Copyright &copy; 2022 GhostWriters
 
-extra:
-  analytics:
-    provider: google
-    property: G-QVNLHE95FS
-  manifest: manifest.webmanifest
-  social:
-    - icon: fontawesome/brands/discord
-      link: https://dockstarter.com/discord
-    - icon: fontawesome/brands/github-square
-      link: https://github.com/GhostWriters/DockSTARTer
-
-markdown_extensions:
-  - pymdownx.keys
-  - pymdownx.snippets
-  - pymdownx.superfences
+theme:
+  name: material
+  include_search_page: false
+  search_index_only: true
+  language: en
+  features:
+    - navigation.instant
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue grey
+      accent: indigo
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue grey
+      accent: indigo
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+  favicon: images/favicon.ico
+  logo: images/icon.png
 
 plugins:
   - search
@@ -38,29 +47,23 @@ plugins:
         apps/unifi.md: https://dockstarter.com/apps/unificontroller/
         apps/vaultwarden.md: https://dockstarter.com/apps/bitwarden/
         discord.md: https://discord.gg/xR3cyUb
+  - minify:
+      minify_html: true
 
-theme:
-  name: material
-  features:
-    - navigation.instant
-  language: en
-  favicon: images/favicon.ico
-  logo: images/icon.png
-  palette:
-    - media: "(prefers-color-scheme: light)"
-      primary: blue grey
-      accent: indigo
-      scheme: default
-      toggle:
-        icon: material/toggle-switch-off-outline
-        name: Switch to dark mode
-    - media: "(prefers-color-scheme: dark)"
-      primary: blue grey
-      accent: indigo
-      scheme: slate
-      toggle:
-        icon: material/toggle-switch
-        name: Switch to light mode
+extra:
+  analytics:
+    provider: google
+    property: G-QVNLHE95FS
+  social:
+    - icon: fontawesome/brands/discord
+      link: https://dockstarter.com/discord
+    - icon: fontawesome/brands/github-square
+      link: https://github.com/GhostWriters/DockSTARTer
+
+markdown_extensions:
+  - pymdownx.keys
+  - pymdownx.snippets
+  - pymdownx.superfences
 
 nav:
   - Home: index.md
@@ -125,6 +128,7 @@ nav:
       - apps/headphones.md
       - apps/heimdall.md
       - apps/homeassistant.md
+      - apps/homer.md
       - apps/htpcmanager.md
       - apps/httpserver.md
       - apps/huginn.md
@@ -186,6 +190,7 @@ nav:
       - apps/rsnapshot.md
       - apps/rtorrentvpn.md
       - apps/rutorrent.md
+      - apps/rustdesk.md
       - apps/sabnzbd.md
       - apps/sabnzbdvpn.md
       - apps/samba.md
@@ -202,7 +207,9 @@ nav:
       - apps/tdarrnode.md
       - apps/telegraf.md
       - apps/thelounge.md
+      - apps/timemachine.md
       - apps/traktarr.md
+      - apps/traefik.md
       - apps/transmission.md
       - apps/transmissionvpn.md
       - apps/tvheadend.md
