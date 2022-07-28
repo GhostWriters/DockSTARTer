@@ -10,6 +10,14 @@
 
 hbbs is the RustDesk ID/Rendezvous server. You will need both hbbs and hbbr for a functional deployment.
 
+When hbbs is first run, it will generate a public/private keypair for the clients to use. You can see this take place in the logs:
+
+```
+INFO [src/common.rs:133] Private/public key written to id_ed25519/id_ed25519.pub
+```
+
+You can view the contents of this key by browsing to your config folder, for instance, `~/.config/appdata/rustdesk_hbbs`. 
+
 ## Install/Setup
 
 This application does not have any specific setup instructions documented. If
