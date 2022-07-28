@@ -2,7 +2,7 @@ services:
   rustdesk_hbbr:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: hbbr component for RustDesk, an open-source self-hosted TeamViewer alternative
+      com.dockstarter.appinfo.description: The relay server component for RustDesk, an open-source self-hosted TeamViewer alternative
       com.dockstarter.appinfo.nicename: RustDesk hbbr
       com.dockstarter.appvars.rustdesk_hbbr_enabled: "false"
       com.dockstarter.appvars.rustdesk_hbbr_network_mode: ""
