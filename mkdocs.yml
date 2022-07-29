@@ -88,7 +88,7 @@ nav:
   - App Specifics:
       - apps/adguard.md
       - apps/adminer.md
-      - apps/airsonic.md
+      - apps/airsonicadvanced.md
       - apps/amd.md
       - apps/apcupsd.md
       - apps/apprise.md
@@ -189,6 +189,7 @@ nav:
       - apps/rsnapshot.md
       - apps/rtorrentvpn.md
       - apps/rutorrent.md
+      - apps/rustdesk.md
       - apps/sabnzbd.md
       - apps/sabnzbdvpn.md
       - apps/samba.md
@@ -207,6 +208,7 @@ nav:
       - apps/thelounge.md
       - apps/timemachine.md
       - apps/traktarr.md
+      - apps/traefik.md
       - apps/transmission.md
       - apps/transmissionvpn.md
       - apps/tvheadend.md

@@ -1,0 +1,3 @@
+services:
+  airsonicadvanced:
+    image: lscr.io/linuxserver/airsonic-advanced
