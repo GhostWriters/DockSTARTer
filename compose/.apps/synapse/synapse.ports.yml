@@ -1,0 +1,4 @@
+services:
+  synapse:
+    ports:
+      - ${SYNCLOUNGE_PORT_8008}:${SYNCLOUNGE_PORT_8008}

@@ -1,0 +1,20 @@
+services:
+  synapse:
+    container_name: synapse
+    environment:
+      - GID=${PGID}
+      - SYNAPSE_SERVER_NAME=${DOCKERHOSTNAME}
+      - SYNAPSE_REPORT_STATS=${SYNAPSE_REPORT_STATS}
+      - SYNAPSE_HTTP_PORT=${SYNAPSE_PORT_8008}
+      - TZ=${TZ}
+      - UID=${PUID}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: ${SYNAPSE_RESTART}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFIGDIR}/synapse:/data
+      - ${DOCKERSTORAGEDIR}:/storage

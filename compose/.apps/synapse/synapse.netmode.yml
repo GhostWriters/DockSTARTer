@@ -1,0 +1,3 @@
+services:
+  synapse:
+    network_mode: ${SYNCLOUNGE_NETWORK_MODE}

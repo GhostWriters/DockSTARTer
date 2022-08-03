@@ -1,0 +1,13 @@
+services:
+  synapse:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: Matrix homeserver written in Python 3/Twisted.
+      com.dockstarter.appinfo.nicename: Synapse
+      com.dockstarter.appvars.synapse_enabled: "false"
+      com.dockstarter.appvars.synapse_external_server_port: ""
+      com.dockstarter.appvars.synapse_external_url: ""
+      com.dockstarter.appvars.synapse_network_mode: ""
+      com.dockstarter.appvars.synapse_port_8008: "8008"
+      com.dockstarter.appvars.synapse_report_stats: "false"
+      com.dockstarter.appvars.synapse_restart: unless-stopped
