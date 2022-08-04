@@ -28,7 +28,7 @@ services:
       - TRUSTED_PROXIES=**
       - TZ=${TZ}
     hostname: ${DOCKERHOSTNAME}
-    image: jc5x/firefly-iii
+    image: fireflyiii/core
     logging:
       driver: json-file
       options:

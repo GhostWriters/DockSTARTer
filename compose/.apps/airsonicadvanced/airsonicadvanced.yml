@@ -1,0 +1,19 @@
+services:
+  airsonicadvanced:
+    container_name: airsonicadvanced
+    environment:
+      - CONTEXT_PATH=${AIRSONICADVANCED_CONTEXT_PATH}
+      - JAVA_OPTS=${AIRSONICADVANCED_JAVA_OPTS}
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: ${AIRSONICADVANCED_RESTART}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/airsonicadvanced:/config
+      - ${DOCKERSTORAGEDIR}:/storage

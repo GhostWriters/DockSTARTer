@@ -18,7 +18,7 @@ config_vpn() {
         MESSAGE="Would you like to keep these settings for ${APPNAME}?\\n You do not have apps enabled that will use these variables.\\n\\n${APPVARS}"
     fi
 
-    if run_script 'question_prompt' "${PROMPT:-}" "${DEFAULT}" "${MESSAGE}"; then
+    if run_script 'question_prompt' "${PROMPT-}" "${DEFAULT}" "${MESSAGE}"; then
         info "Keeping ${APPNAME} .env variables."
     else
         info "Configuring ${APPNAME} .env variables."

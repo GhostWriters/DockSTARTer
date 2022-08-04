@@ -1,0 +1,6 @@
+services:
+  traefik:
+    ports:
+      - ${TRAEFIK_PORT_443}:443
+      - ${TRAEFIK_PORT_8080}:8080
+      - ${TRAEFIK_PORT_80}:80

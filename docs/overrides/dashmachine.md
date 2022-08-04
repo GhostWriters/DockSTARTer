@@ -5,7 +5,7 @@
 
 ## Description
 
-[Dashmachine](https://github.com/rmountjoy92/DashMachine) is a chatbot used to simplify using services like Sonarr/Radarr/Ombi via the use of chat. Current platform is Discord only, but the bot was built around the ideology of quick adaptation for new features as well as new platforms.
+[Dashmachine](https://github.com/rmountjoy92/DashMachine) is a web application bookmark dashboard, with fun features.
 
 ## Install/Setup
 

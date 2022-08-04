@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 appvars_create() {
-    local APPNAME=${1:-}
+    local APPNAME=${1-}
     APPNAME=${APPNAME^^}
     local FILENAME=${APPNAME,,}
     local APPTEMPLATES="${SCRIPTPATH}/compose/.apps/${FILENAME}"
