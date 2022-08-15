@@ -117,6 +117,7 @@ nav:
       - apps/filebrowser.md
       - apps/flaresolverr.md
       - apps/freshrss.md
+      - apps/gitea.md
       - apps/glances.md
       - apps/goaccess.md
       - apps/grafana.md
