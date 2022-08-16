@@ -1,25 +1,14 @@
 # <!-- Home -->
 
-[![DockSTARTer](https://github.com/GhostWriters/DockSTARTer/raw/master/docs/images/logo.png)](https://dockstarter.com)
+[![TrunkStarter]()](https://trunkstarter.com)
 
-[![Supporters on Open Collective](https://img.shields.io/opencollective/all/DockSTARTer.svg?style=flat-square&color=607D8B)](#supporters)
-[![Discord chat](https://img.shields.io/discord/477959324183035936.svg?style=flat-square&color=607D8B&logo=discord)](https://dockstarter.com/discord)
-[![GitHub contributors](https://img.shields.io/github/contributors/GhostWriters/DockSTARTer.svg?style=flat-square&color=607D8B)](https://github.com/GhostWriters/DockSTARTer/graphs/contributors)
-[![GitHub last commit master](https://img.shields.io/github/last-commit/GhostWriters/DockSTARTer/master.svg?style=flat-square&color=607D8B&label=code%20committed)](https://github.com/GhostWriters/DockSTARTer/commits/master)
-[![GitHub license](https://img.shields.io/github/license/GhostWriters/DockSTARTer.svg?style=flat-square&color=607D8B)](https://github.com/GhostWriters/DockSTARTer/blob/master/LICENSE.md)
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/GhostWriters/DockSTARTer/Run%20Tests/master?style=flat-square&color=607D8B&logo=github)](https://github.com/GhostWriters/DockSTARTer/actions?query=workflow%3ARun%20Tests+branch%3Amaster)
+[![Discord chat](https://img.shields.io/discord/477959324183035936.svg?style=flat-square&color=607D8B&logo=discord)](https://discord.gg/trunk-recorder)
 
-The main goal of DockSTARTer is to make it quick and easy to get up and running with Docker.
 
-You may choose to rely on DockSTARTer for various changes to your Docker system or use DockSTARTer as a stepping stone and learn to do more advanced configurations.
+The main goal of TrunkSTARTer is to make it quick and easy to get up and running with SDR apps on Docker.
 
-![Main Menu](https://i.imgur.com/odfRk0j.png)
+You may choose to rely on TrunkSTARTer for various changes to your Docker system or use TrunkSTARTer as a stepping stone and learn to do more advanced configurations.
 
-![App Select](https://i.imgur.com/tFsu2Hh.png)
-
-![Value Prompt](https://i.imgur.com/k1bdAoQ.png)
-
-![Command Line Interface](https://i.imgur.com/Y8F3uT2.png)
 
 ## Getting Started
 
@@ -34,7 +23,7 @@ You may choose to rely on DockSTARTer for various changes to your Docker system 
 
   ```bash
   sudo apt-get install curl git
-  bash -c "$(curl -fsSL https://get.dockstarter.com)"
+  bash -c "$(curl -fsSL )"
   sudo reboot
   ```
 
@@ -45,17 +34,17 @@ You may choose to rely on DockSTARTer for various changes to your Docker system 
   sudo apt-get dist-upgrade
   sudo apt-get install curl git
   bash -c "$(curl -fsSL https://get.docker.com)"
-  bash -c "$(curl -fsSL https://get.dockstarter.com)"
+  bash -c "$(curl -fsSL )"
   sudo reboot
   ```
 
-  > OpenMediaVault (OMV) requires [special instructions found here](https://dockstarter.com/advanced/openmediavault/)
+  > OpenMediaVault (OMV) requires [special instructions found here](https://trunkstarter.com/advanced/openmediavault/)
 
 - DNF Systems ([Fedora](https://docs.docker.com/install/linux/docker-ce/fedora/#os-requirements))
 
   ```bash
   sudo dnf install curl git
-  bash -c "$(curl -fsSL https://get.dockstarter.com)"
+  bash -c "$(curl -fsSL )"
   sudo reboot
   ```
 
@@ -63,7 +52,7 @@ You may choose to rely on DockSTARTer for various changes to your Docker system 
 
   ```bash
   sudo pacman -Sy curl docker git
-  bash -c "$(curl -fsSL https://get.dockstarter.com)"
+  bash -c "$(curl -fsSL )"
   sudo reboot
   ```
 
@@ -71,7 +60,7 @@ You may choose to rely on DockSTARTer for various changes to your Docker system 
 
   ```bash
   sudo yum install curl git
-  bash -c "$(curl -fsSL https://get.dockstarter.com)"
+  bash -c "$(curl -fsSL )"
   sudo reboot
   ```
 
@@ -91,43 +80,38 @@ sudo yum install curl git
 Then
 
 ```bash
-git clone https://github.com/GhostWriters/DockSTARTer "/home/${USER}/.docker"
+git clone https://github.com/jodfie/TrunkSTARTer "/home/${USER}/.docker"
 sudo bash /home/"${USER}"/.docker/main.sh -vi
 sudo reboot
 ```
 
 </details>
 
-### Running DockSTARTer
+### Running TrunkSTARTer
 
 ```bash
-ds
+ts
 ```
 
-To run DockSTARTer, use the command above. You should now see the main menu from the screenshots. Select `Configuration` and then `Full Setup`, and you will be guided through selecting apps and starting containers.
+To run TrunkSTARTer, use the command above. You should now see the main menu from the screenshots. Select `Configuration` and then `Full Setup`, and you will be guided through selecting apps and starting containers.
 
-See our [documentation](https://dockstarter.com/introduction/) for more detailed information.
+See our [documentation](https://trunkstarter.com/introduction/) for more detailed information.
 
 ## Support
 
-[![Discord chat](https://img.shields.io/discord/477959324183035936.svg?style=flat-square&color=607D8B&logo=discord)](https://dockstarter.com/discord)
+[![Discord chat](https://img.shields.io/discord/477959324183035936.svg?style=flat-square&color=607D8B&logo=discord)](https://discord.gg/trunk-recorder)
 
 Click the chat badge to join us on Discord for support!
 
-[Feature Request](https://github.com/GhostWriters/DockSTARTer/issues/new?template=feature_request.md) | [Bug Report](https://github.com/GhostWriters/DockSTARTer/issues/new?template=bug_report.md)
+[Feature Request](https://github.com/jodfie/TrunkSTARTer/issues/new?template=feature_request.md) | [Bug Report](https://github.com/jodfie/TrunkSTARTer/issues/new?template=bug_report.md)
 
-Additional information can be found on our [Support Page](https://dockstarter.com/basics/support/).
+Additional information can be found on our [Support Page](https://trunkstarter.com/basics/support/).
 
 ## Contributing
 
-Want to help develop DockSTARTer? Check out our [contributing guidelines](https://github.com/GhostWriters/DockSTARTer/blob/master/.github/CONTRIBUTING.md) and [code of conduct](https://github.com/GhostWriters/DockSTARTer/blob/master/.github/CODE_OF_CONDUCT.md).
+Want to help develop DockSTARTer? Check out our [contributing guidelines](https://github.com/jodfie/TrunkSTARTer/blob/master/.github/CONTRIBUTING.md) and [code of conduct](https://github.com/jodfie/TrunkSTARTer/blob/master/.github/CODE_OF_CONDUCT.md).
 
 ### Contributors
-
-[![GitHub contributors](https://img.shields.io/github/contributors/GhostWriters/DockSTARTer.svg?style=flat-square&color=607D8B)](https://github.com/GhostWriters/DockSTARTer/graphs/contributors)
-
-This project exists thanks to all the people who contribute.
-[![GitHub contributors](https://opencollective.com/DockSTARTer/contributors.svg?button=false)](https://GitHub.com/GhostWriters/DockSTARTer/graphs/contributors)
 
 ## Supporters
 
@@ -149,5 +133,5 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 
 ## Special Thanks
 
-- [SmartHomeBeginner.com](https://www.smarthomebeginner.com) for creating [AtoMiC-ToolKit](https://github.com/htpcBeginner/AtoMiC-ToolKit) that served as this project's primary inspiration, and later [this](https://www.smarthomebeginner.com/docker-home-media-server-2018-basic/) guide that provided some initial direction with Docker.
-- [LinuxServer.io](https://www.linuxserver.io) for maintaining most Docker images used in this project.
+- [nemchik (iXNyne)](https://github.com/nemchik) for creating [DockSTARter](https://github.com/Ghostwriters/Dockstarter) that served as this project's primary codebase and nemchik and the rest of the DS staffs support in my constant bothering with questions.
+- [LinuxServer.io](https://www.linuxserver.io) for maintaining some of the Docker images used in this project.
