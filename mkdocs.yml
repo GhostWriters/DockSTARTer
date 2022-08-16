@@ -57,7 +57,7 @@ extra:
   social:
     - icon: fontawesome/brands/discord
       link: https://dockstarter.com/discord
-    - icon: fontawesome/brands/github-square
+    - icon: fontawesome/brands/square-github
       link: https://github.com/GhostWriters/DockSTARTer
 
 markdown_extensions:
@@ -88,7 +88,7 @@ nav:
   - App Specifics:
       - apps/adguard.md
       - apps/adminer.md
-      - apps/airsonic.md
+      - apps/airsonicadvanced.md
       - apps/amd.md
       - apps/apcupsd.md
       - apps/apprise.md
@@ -117,6 +117,7 @@ nav:
       - apps/filebrowser.md
       - apps/flaresolverr.md
       - apps/freshrss.md
+      - apps/gitea.md
       - apps/glances.md
       - apps/goaccess.md
       - apps/grafana.md
@@ -189,6 +190,7 @@ nav:
       - apps/rsnapshot.md
       - apps/rtorrentvpn.md
       - apps/rutorrent.md
+      - apps/rustdesk.md
       - apps/sabnzbd.md
       - apps/sabnzbdvpn.md
       - apps/samba.md
@@ -205,7 +207,9 @@ nav:
       - apps/tdarrnode.md
       - apps/telegraf.md
       - apps/thelounge.md
+      - apps/timemachine.md
       - apps/traktarr.md
+      - apps/traefik.md
       - apps/transmission.md
       - apps/transmissionvpn.md
       - apps/tvheadend.md
@@ -213,6 +217,7 @@ nav:
       - apps/unificontroller.md
       - apps/unmanic.md
       - apps/unpackerr.md
+      - apps/uptimekuma.md
       - apps/varken.md
       - apps/vsftpd.md
       - apps/watchtower.md

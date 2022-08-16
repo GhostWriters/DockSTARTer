@@ -1,0 +1,3 @@
+services:
+  gitea:
+    network_mode: ${GITEA_NETWORK_MODE}

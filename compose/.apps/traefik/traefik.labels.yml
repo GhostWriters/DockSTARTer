@@ -1,0 +1,12 @@
+services:
+  traefik:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: A modern HTTP reverse proxy and load balancer that makes deploying microservices easy
+      com.dockstarter.appinfo.nicename: Traefik
+      com.dockstarter.appvars.traefik_enabled: "false"
+      com.dockstarter.appvars.traefik_network_mode: ""
+      com.dockstarter.appvars.traefik_port_443: "443"
+      com.dockstarter.appvars.traefik_port_80: "80"
+      com.dockstarter.appvars.traefik_port_8080: "8080"
+      com.dockstarter.appvars.traefik_restart: unless-stopped

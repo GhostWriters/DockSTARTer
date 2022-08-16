@@ -1,0 +1,3 @@
+services:
+  timemachine:
+    network_mode: ${TIMEMACHINE_NETWORK_MODE}
