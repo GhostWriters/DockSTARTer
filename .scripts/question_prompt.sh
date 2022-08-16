@@ -21,7 +21,7 @@ question_prompt() {
             local ANSWER
             set +e
             ANSWER=$(
-                eval whiptail --fb --clear --title "DockSTARTer" "${WHIPTAIL_DEFAULT-}" --yesno \""${QUESTION}"\" 0 0 3>&1 1>&2 2>&3
+                eval whiptail --fb --clear --title "TrunkSTARTer" "${WHIPTAIL_DEFAULT-}" --yesno \""${QUESTION}"\" 0 0 3>&1 1>&2 2>&3
                 echo $?
             )
             set -e

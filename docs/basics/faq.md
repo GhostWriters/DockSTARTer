@@ -2,17 +2,17 @@
 
 ## Support
 
-Refer to our [Support Page](https://dockstarter.com/basics/support/) for our Support Channels and Tutorials we have found users have made with DockSTARTer!
+Refer to our Discord Server [Trunk-Recorder Discord](https://discord.gg/trunk-recorder)
 
-## Relocating `appdata`
+## Relocating `trunkdata`
 
-For new installs the default `DOCKERCONFDIR` is `~/.config/appdata`. Users who ran DockSTARTer before this location became the default may have `~/.docker/config`, and we advise relocating.
+For new installs the default `DOCKERCONFDIR` is `~/.config/trunkdata`.
 
 If you'd like to move your existing config to a new location you can do the following:
-Edit `~/. docker/compose/.env` (in any text editor) and set
+Edit `~/.docker/compose/.env` (in any text editor) and set
 
 ```bash
-DOCKERCONFDIR=~/.config/appdata
+DOCKERCONFDIR=~/.config/trunkdata
 ```
 
 (You can choose anywhere to save configs, this example only shows the default location).
@@ -20,14 +20,14 @@ DOCKERCONFDIR=~/.config/appdata
 Then run the following commands:
 
 ```bash
-ds -u
-ds -c down
+ts -u
+ts -c down
 # Move your current config folder to the new location, ex:
-sudo mv ~/.docker/config ~/.config/appdata
-ds -c
+sudo mv ~/.docker/config ~/.config/trunkdata
+ts -c
 ```
 
-That's it! Your containers should fire right back up as if nothing has changed. If you have any issues feel free to ask for help in `#ds-support`
+That's it! Your containers should fire right back up as if nothing has changed. If you have any issues feel free to ask for help in `#ts-support`
 
 ## Ouroboros or Watchtower Enabled By Default
 
@@ -41,15 +41,15 @@ In short, Ouroboros and Watchtower do the same thing: keeps your containers up t
 
 ## Ouroboros/Watchtower FAQ
 
-### When I run `ds -c` and it recreates some of the containers, is that because they have had updates from last run
+### When I run `ts -c` and it recreates some of the containers, is that because they have had updates from last run
 
-With Ouroboros (or Watchtower) your containers will be updated to the latest images automatically. However, docker-compose has no idea what's updated, docker-compose keeps track of things independently from Ouroboros/Watchtower. Additionally, Ouroboros/Watchtower doesn't update docker-compose's method of tracking, therefore, compose might "recreate" containers that are already up to date. This is not a big deal it's basically just a container restart, and you were planning on running `ds -c` expecting some kind of updates anyway.
+With Ouroboros (or Watchtower) your containers will be updated to the latest images automatically. However, docker-compose has no idea what's updated, docker-compose keeps track of things independently from Ouroboros/Watchtower. Additionally, Ouroboros/Watchtower doesn't update docker-compose's method of tracking, therefore, compose might "recreate" containers that are already up to date. This is not a big deal it's basically just a container restart, and you were planning on running `ts -c` expecting some kind of updates anyway.
 
 ## General troubleshooting help
 
 You can see the (quite helpful) logs of each container with the `docker logs <appname>` command.
 
-Additionally, you can also use [Dozzle](https://dockstarter.com/apps/dozzle/) if you prefer to view logs using your browser.
+Additionally, you can also use one of the log viewing apps if you prefer to view logs using your browser.
 
 ## Reported Issues
 

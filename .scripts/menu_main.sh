@@ -6,14 +6,14 @@ menu_main() {
     local MAINOPTS=()
     MAINOPTS+=("Configuration " "Setup and start applications")
     MAINOPTS+=("Install Dependencies " "Install required components")
-    MAINOPTS+=("Update DockSTARTer " "Get the latest version of DockSTARTer")
+    MAINOPTS+=("Update TrunkSTARTer " "Get the latest version of TrunkSTARTer")
     MAINOPTS+=("Prune Docker System " "Remove all unused containers, networks, volumes, images and build cache")
 
     local MAINCHOICE
     if [[ ${CI-} == true ]]; then
         MAINCHOICE="Cancel"
     else
-        MAINCHOICE=$(whiptail --fb --clear --title "DockSTARTer" --cancel-button "Exit" --menu "What would you like to do?" 0 0 0 "${MAINOPTS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
+        MAINCHOICE=$(whiptail --fb --clear --title "TrunkSTARTer" --cancel-button "Exit" --menu "What would you like to do?" 0 0 0 "${MAINOPTS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
     fi
 
     case "${MAINCHOICE}" in
@@ -30,7 +30,7 @@ menu_main() {
             run_script 'docker_prune' || run_script 'menu_main'
             ;;
         "Cancel")
-            info "Exiting DockSTARTer."
+            info "Exiting TrunkSTARTer."
             return
             ;;
         *)

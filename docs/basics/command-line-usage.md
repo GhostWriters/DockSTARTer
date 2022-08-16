@@ -1,13 +1,13 @@
 # Command Line Usage
 
-Assuming you already followed the installation steps in the readme, there are also a number of command line switches you can use with DockSTARTer.
+Assuming you already followed the installation steps in the readme, there are also a number of command line switches you can use with TrunkSTARTer.
 
 ## Command Line Switches
 
 ### Run The Install Script
 
 ```bash
-sudo ds -i
+sudo ts -i
 ```
 
 This script does the following:
@@ -21,7 +21,7 @@ When the script finishes it will display a message informing you to reboot if th
 ### Run The Compose Generator
 
 ```bash
-sudo ds -c
+sudo ts -c
 ```
 
 This script verifies the dependencies above and installs or updates them as needed, then creates a file `~/.docker/compose/docker-compose.yml` based on the variables you configured in your `~/.docker/compose/.env` file. The generator script will run your selected containers after creating the file.
@@ -33,15 +33,15 @@ If you make any changes to your `.env` file (such as changing a port or enabling
 ### Update DockSTARTer
 
 ```bash
-sudo ds -u
+sudo ts -u
 ```
 
-This should get you the latest changes to DockSTARTer. This will also backup and update your `.env` file.
+This should get you the latest changes to TrunkSTARTer. This will also backup and update your `.env` file.
 
 You may separately backup and update your `.env` file with the following command.
 
 ```bash
-sudo ds -e
+sudo ts -e
 ```
 
 Then you may want to edit your `.env` file and run the generator again to bring up new apps or changes to existing apps.
@@ -51,7 +51,7 @@ Then you may want to edit your `.env` file and run the generator again to bring 
 If you do not yet have a `~/.docker/compose/.env` file:
 
 ```bash
-sudo ds -e
+sudo ts -e
 ```
 
 Edit the file using something like `nano ~/.docker/compose/.env` (CTRL+X will prompt to save and exit the nano editor)
@@ -63,12 +63,12 @@ Edit the file using something like `nano ~/.docker/compose/.env` (CTRL+X will pr
 You can add the variables required to run an app by running:
 
 ```bash
-sudo ds -a <APPNAME>
+sudo ts -a <APPNAME>
 ```
 
 ```bash
 ## Example:
-sudo ds -a sonarr
+sudo ts -a trunk-recorder
 ```
 
 Then your `.env` file fill have a variable named `<APPNAME>_ENABLED` that you can set to `true` and then run the Compose Generator to start the app.
@@ -82,18 +82,18 @@ This is the best place to change the app's external default ports.
 You can remove the variables for an app by running:
 
 ```bash
-sudo ds -r <APPNAME>
+sudo ts -r <APPNAME>
 ```
 
 ```bash
 ## Example:
-sudo ds -r sonarr
+sudo ts -r trunk-recorder
 ```
 
 You can also remove all variables for all apps that are disabled by running:
 
 ```bash
-sudo ds -r
+sudo ts -r
 ```
 
 You will be prompted individually for each app and shown what will be removed.
@@ -101,7 +101,7 @@ You will be prompted individually for each app and shown what will be removed.
 ### Cleanup Unused Docker Resources
 
 ```bash
-sudo ds -p
+sudo ts -p
 ```
 
-This cleans up the DS install, `p` stands for prune in this case. This recovers space from old images if they were somehow left over.
+This cleans up the TS install, `p` stands for prune in this case. This recovers space from old images if they were somehow left over.

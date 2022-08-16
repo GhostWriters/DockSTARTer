@@ -9,7 +9,7 @@ appvars_purge() {
     APPVARS=$(grep --color=never -P "^${APPNAME}_" "${COMPOSE_ENV}" || true)
     if [[ -z ${APPVARS} ]]; then
         if [[ ${PROMPT-} == "GUI" ]]; then
-            whiptail --fb --clear --title "DockSTARTer" --msgbox "${APPNAME} has no variables." 0 0
+            whiptail --fb --clear --title "TrunkSTARTer" --msgbox "${APPNAME} has no variables." 0 0
         else
             warn "${APPNAME} has no variables."
         fi

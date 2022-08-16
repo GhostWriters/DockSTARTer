@@ -11,7 +11,7 @@ menu_app_vars() {
         if [[ ${CI-} == true ]]; then
             warn "${APPNAME} has no variables."
         else
-            whiptail --fb --clear --title "DockSTARTer" --msgbox "${APPNAME} has no variables." 0 0
+            whiptail --fb --clear --title "TrunkSTARTer" --msgbox "${APPNAME} has no variables." 0 0
         fi
         return
     fi

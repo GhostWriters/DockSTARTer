@@ -17,7 +17,7 @@ menu_value_prompt() {
     if grep -q -Po "^${SET_VAR}=\K.*" "${COMPOSE_ENV}.example"; then
         DEFAULT_VAL=$(grep --color=never -Po "^${SET_VAR}=\K.*" "${COMPOSE_ENV}.example" || true)
     else
-        DEFAULT_VAL=$(grep --color=never -Po "\scom\.dockstarter\.appvars\.${VAR_LABEL}: \K.*" "${APPTEMPLATES}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || true)
+        DEFAULT_VAL=$(grep --color=never -Po "\scom\.trunkstarter\.appvars\.${VAR_LABEL}: \K.*" "${APPTEMPLATES}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || true)
     fi
 
     local HOME_VAL
@@ -28,7 +28,7 @@ menu_value_prompt() {
 
     case "${SET_VAR}" in
         DOCKERCONFDIR)
-            HOME_VAL="${DETECTED_HOMEDIR}/.config/appdata"
+            HOME_VAL="${DETECTED_HOMEDIR}/.config/trunkdata"
             VALUEOPTIONS+=("Use Home " "${HOME_VAL}")
             ;;
         DOCKERGID)
@@ -116,7 +116,7 @@ menu_value_prompt() {
     if [[ ${CI-} == true ]]; then
         SELECTEDVALUE="Keep Current "
     else
-        SELECTEDVALUE=$(whiptail --fb --clear --title "DockSTARTer" --menu "What would you like set for ${SET_VAR}?${VALUEDESCRIPTION}" 0 0 0 "${VALUEOPTIONS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
+        SELECTEDVALUE=$(whiptail --fb --clear --title "TrunkSTARTer" --menu "What would you like set for ${SET_VAR}?${VALUEDESCRIPTION}" 0 0 0 "${VALUEOPTIONS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
     fi
 
     local INPUT
@@ -134,7 +134,7 @@ menu_value_prompt() {
             INPUT=${SYSTEM_VAL}
             ;;
         "Enter New ")
-            INPUT=$(whiptail --fb --clear --title "DockSTARTer" --inputbox "What would you like set for ${SET_VAR}?${VALUEDESCRIPTION}" 0 0 "${CURRENT_VAL}" 3>&1 1>&2 2>&3 || echo "CancelNewEntry")
+            INPUT=$(whiptail --fb --clear --title "TrunkSTARTer" --inputbox "What would you like set for ${SET_VAR}?${VALUEDESCRIPTION}" 0 0 "${CURRENT_VAL}" 3>&1 1>&2 2>&3 || echo "CancelNewEntry")
             ;;
         "Cancel")
             warn "Selection of ${SET_VAR} was canceled."
@@ -153,7 +153,7 @@ menu_value_prompt() {
                 if [[ ${INPUT} == true ]] || [[ ${INPUT} == false ]]; then
                     run_script 'env_set' "${SET_VAR}" "${INPUT}"
                 else
-                    whiptail --fb --clear --title "DockSTARTer" --msgbox "${INPUT} is not true or false. Please try setting ${SET_VAR} again." 0 0
+                    whiptail --fb --clear --title "TrunkSTARTer" --msgbox "${INPUT} is not true or false. Please try setting ${SET_VAR} again." 0 0
                     menu_value_prompt "${SET_VAR}"
                 fi
                 ;;
@@ -163,7 +163,7 @@ menu_value_prompt() {
                         run_script 'env_set' "${SET_VAR}" "${INPUT}"
                         ;;
                     *)
-                        whiptail --fb --clear --title "DockSTARTer" --msgbox "${INPUT} is not a valid network mode. Please try setting ${SET_VAR} again." 0 0
+                        whiptail --fb --clear --title "TrunkSTARTer" --msgbox "${INPUT} is not a valid network mode. Please try setting ${SET_VAR} again." 0 0
                         menu_value_prompt "${SET_VAR}"
                         ;;
                 esac
@@ -172,7 +172,7 @@ menu_value_prompt() {
                 if [[ ${INPUT} =~ ^[0-9]+$ ]] || [[ ${INPUT} -ge 0 ]] || [[ ${INPUT} -le 65535 ]]; then
                     run_script 'env_set' "${SET_VAR}" "${INPUT}"
                 else
-                    whiptail --fb --clear --title "DockSTARTer" --msgbox "${INPUT} is not a valid port. Please try setting ${SET_VAR} again." 0 0
+                    whiptail --fb --clear --title "TrunkSTARTer" --msgbox "${INPUT} is not a valid port. Please try setting ${SET_VAR} again." 0 0
                     menu_value_prompt "${SET_VAR}"
                 fi
                 ;;
@@ -182,22 +182,22 @@ menu_value_prompt() {
                         run_script 'env_set' "${SET_VAR}" "${INPUT}"
                         ;;
                     *)
-                        whiptail --fb --clear --title "DockSTARTer" --msgbox "${INPUT} is not a valid restart value. Please try setting ${SET_VAR} again." 0 0
+                        whiptail --fb --clear --title "TrunkSTARTer" --msgbox "${INPUT} is not a valid restart value. Please try setting ${SET_VAR} again." 0 0
                         menu_value_prompt "${SET_VAR}"
                         ;;
                 esac
                 ;;
             *DIR | *DIR_*)
                 if [[ ${INPUT} == "/" ]]; then
-                    whiptail --fb --clear --title "DockSTARTer" --msgbox "Cannot use / for ${SET_VAR}. Please select another folder." 0 0
+                    whiptail --fb --clear --title "TrunkSTARTer" --msgbox "Cannot use / for ${SET_VAR}. Please select another folder." 0 0
                     menu_value_prompt "${SET_VAR}"
                 elif [[ ${INPUT} == ~* ]]; then
                     local CORRECTED_DIR="${DETECTED_HOMEDIR}${INPUT#*~}"
                     if run_script 'question_prompt' "${PROMPT-}" Y "Cannot use the ~ shortcut in ${SET_VAR}. Would you like to use ${CORRECTED_DIR} instead?"; then
                         run_script 'env_set' "${SET_VAR}" "${CORRECTED_DIR}"
-                        whiptail --fb --clear --title "DockSTARTer" --msgbox "Returning to the previous menu to confirm selection." 0 0
+                        whiptail --fb --clear --title "TrunkSTARTer" --msgbox "Returning to the previous menu to confirm selection." 0 0
                     else
-                        whiptail --fb --clear --title "DockSTARTer" --msgbox "Cannot use the ~ shortcut in ${SET_VAR}. Please select another folder." 0 0
+                        whiptail --fb --clear --title "TrunkSTARTer" --msgbox "Cannot use the ~ shortcut in ${SET_VAR}. Please select another folder." 0 0
                     fi
                     menu_value_prompt "${SET_VAR}"
                 elif [[ -d ${INPUT} ]]; then
@@ -210,9 +210,9 @@ menu_value_prompt() {
                         mkdir -p "${INPUT}" || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p \"${INPUT}\""
                         run_script 'set_permissions' "${INPUT}"
                         run_script 'env_set' "${SET_VAR}" "${INPUT}"
-                        whiptail --fb --clear --title "DockSTARTer" --msgbox "${INPUT} folder was created successfully." 0 0
+                        whiptail --fb --clear --title "TrunkSTARTer" --msgbox "${INPUT} folder was created successfully." 0 0
                     else
-                        whiptail --fb --clear --title "DockSTARTer" --msgbox "${INPUT} is not a valid path. Please try setting ${SET_VAR} again." 0 0
+                        whiptail --fb --clear --title "TrunkSTARTer" --msgbox "${INPUT} is not a valid path. Please try setting ${SET_VAR} again." 0 0
                         menu_value_prompt "${SET_VAR}"
                     fi
                 fi
@@ -227,7 +227,7 @@ menu_value_prompt() {
                 elif [[ ${INPUT} =~ ^[0-9]+$ ]]; then
                     run_script 'env_set' "${SET_VAR}" "${INPUT}"
                 else
-                    whiptail --fb --clear --title "DockSTARTer" --msgbox "${INPUT} is not a valid ${SET_VAR}. Please try setting ${SET_VAR} again." 0 0
+                    whiptail --fb --clear --title "TrunkSTARTer" --msgbox "${INPUT} is not a valid ${SET_VAR}. Please try setting ${SET_VAR} again." 0 0
                     menu_value_prompt "${SET_VAR}"
                 fi
                 ;;

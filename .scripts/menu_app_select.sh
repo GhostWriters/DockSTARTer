@@ -37,7 +37,7 @@ menu_app_select() {
     if [[ ${CI-} == true ]]; then
         SELECTEDAPPS="Cancel"
     else
-        SELECTEDAPPS=$(whiptail --fb --clear --title "DockSTARTer" --separate-output --checklist 'Choose which apps you would like to install:\n Use [up], [down], and [space] to select apps, and [tab] to switch to the buttons at the bottom.' 0 0 0 "${APPLIST[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
+        SELECTEDAPPS=$(whiptail --fb --clear --title "TrunkSTARTer" --separate-output --checklist 'Choose which apps you would like to install:\n Use [up], [down], and [space] to select apps, and [tab] to switch to the buttons at the bottom.' 0 0 0 "${APPLIST[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
     fi
     if [[ ${SELECTEDAPPS} == "Cancel" ]]; then
         return 1

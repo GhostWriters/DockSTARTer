@@ -4,12 +4,6 @@
 
 VPN use is only available where we have found a easily configured container that runs as its own self contained unit.
 
-- DelugeVPN
-- qBittorrentVPN
-- rTorrentVPN
-- SABnzbdVPN
-- TransmissionVPN
-
 ## VPN tun driver
 
 The VPN containers require an adjustment to your host system:

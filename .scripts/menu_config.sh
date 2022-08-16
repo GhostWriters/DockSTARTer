@@ -14,7 +14,7 @@ menu_config() {
     if [[ ${CI-} == true ]]; then
         CONFIGCHOICE="Cancel"
     else
-        CONFIGCHOICE=$(whiptail --fb --clear --title "DockSTARTer" --menu "What would you like to do?" 0 0 0 "${CONFIGOPTS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
+        CONFIGCHOICE=$(whiptail --fb --clear --title "TrunkSTARTer" --menu "What would you like to do?" 0 0 0 "${CONFIGOPTS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
     fi
 
     case "${CONFIGCHOICE}" in

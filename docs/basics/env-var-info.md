@@ -10,8 +10,8 @@ This can be increased if you are seeing timeout issues when running compose. It 
 
 ## DOCKERCONFDIR
 
-* System Detected value: `~/.config/appdata`
-* Default value: `~/.config/appdata`
+* System Detected value: `~/.config/trunkdata`
+* Default value: `~/.config/trunkdata`
 
 Description:
 This is the directory where all your containers' configuration is saved to.
@@ -27,7 +27,7 @@ Default ID given to the `docker` group when it is created by [Docker](https://ge
 ## DOCKERHOSTNAME
 
 * System Detected value: The hostname of your system
-* Default value: `DockSTARTer` (because we don't want it to be accidentally blank)
+* Default value: `TrunkSTARTer` (because we don't want it to be accidentally blank)
 
 Description:
 All containers will default to having this hostname.
@@ -54,77 +54,6 @@ The maximum size of the log before it is rotated. Size is specified in kilobytes
 Description:
 This directory will be mounted under `/storage` inside every container across DS. There is no specific use for this directory, it can be used however you like.
 
-## !DEPRECATED! DOWNLOADSDIR
-
-DEPRECATION NOTICE: This variable is now deprecated in favor of `DOCKERSTORAGEDIR` which is mounted as a volume in all containers as `/storage`. This variable will be completely removed from all DockSTARTer app templates and no longer mounted as a volume at the end of 2020. The variable will not be removed from your `.env` file, however it will be sorted into the application specific variables at the bottom. If you require the volume you can continue using it via an [override](https://dockstarter.com/overrides/introduction).
-
-* Default value: `/mnt/downloads`
-
-Description:
-This directory will be mounted under `/downloads` inside any container that is used for downloading. Do **not** use this directory as permanent storage for your media. See below for `MEDIADIR` directories.
-
-**NOTE: `DOWNLOADSDIR` also gets mounted to `/data` inside some containers because that is what [binhex](https://hub.docker.com/u/binhex/) containers use. They will not work as intended otherwise.**
-
-## !DEPRECATED! MEDIADIR_AUDIOBOOKS
-
-DEPRECATION NOTICE: This variable is now deprecated in favor of `DOCKERSTORAGEDIR` which is mounted as a volume in all containers as `/storage`. This variable will be completely removed from all DockSTARTer app templates and no longer mounted as a volume at the end of 2020. The variable will not be removed from your `.env` file, however it will be sorted into the application specific variables at the bottom. If you require the volume you can continue using it via an [override](https://dockstarter.com/overrides/introduction).
-
-* System Detected value: `~/Audioooks`
-* Default value: `/mnt/medialibrary/audiobooks`
-
-Description:
-This directory will be mounted under `/audiobooks` inside any container that is used to access your audiobooks library. This directory is meant to store media permanently.
-
-## !DEPRECATED! MEDIADIR_BOOKS
-
-DEPRECATION NOTICE: This variable is now deprecated in favor of `DOCKERSTORAGEDIR` which is mounted as a volume in all containers as `/storage`. This variable will be completely removed from all DockSTARTer app templates and no longer mounted as a volume at the end of 2020. The variable will not be removed from your `.env` file, however it will be sorted into the application specific variables at the bottom. If you require the volume you can continue using it via an [override](https://dockstarter.com/overrides/introduction).
-
-* System Detected value: `~/Books`
-* Default value: `/mnt/medialibrary/books`
-
-Description:
-This directory will be mounted under `/books` inside any container that is used to access your books library. This directory is meant to store media permanently.
-
-## !DEPRECATED! MEDIADIR_COMICS
-
-DEPRECATION NOTICE: This variable is now deprecated in favor of `DOCKERSTORAGEDIR` which is mounted as a volume in all containers as `/storage`. This variable will be completely removed from all DockSTARTer app templates and no longer mounted as a volume at the end of 2020. The variable will not be removed from your `.env` file, however it will be sorted into the application specific variables at the bottom. If you require the volume you can continue using it via an [override](https://dockstarter.com/overrides/introduction).
-
-* System Detected value: `~/Comics`
-* Default value: `/mnt/medialibrary/comics`
-
-Description:
-This directory will be mounted under `/comics` inside any container that is used to access your comics library. This directory is meant to store media permanently.
-
-## !DEPRECATED! MEDIADIR_MOVIES
-
-DEPRECATION NOTICE: This variable is now deprecated in favor of `DOCKERSTORAGEDIR` which is mounted as a volume in all containers as `/storage`. This variable will be completely removed from all DockSTARTer app templates and no longer mounted as a volume at the end of 2020. The variable will not be removed from your `.env` file, however it will be sorted into the application specific variables at the bottom. If you require the volume you can continue using it via an [override](https://dockstarter.com/overrides/introduction).
-
-* System Detected value: `~/Movies`
-* Default value: `/mnt/medialibrary/movies`
-
-Description:
-This directory will be mounted under `/movies` inside any container that is used to access your movie library. This directory is meant to store media permanently.
-
-## !DEPRECATED! MEDIADIR_MUSIC
-
-DEPRECATION NOTICE: This variable is now deprecated in favor of `DOCKERSTORAGEDIR` which is mounted as a volume in all containers as `/storage`. This variable will be completely removed from all DockSTARTer app templates and no longer mounted as a volume at the end of 2020. The variable will not be removed from your `.env` file, however it will be sorted into the application specific variables at the bottom. If you require the volume you can continue using it via an [override](https://dockstarter.com/overrides/introduction).
-
-* System Detected value: `~/Music`
-* Default value: `/mnt/medialibrary/music`
-
-Description:
-This directory will be mounted under `/music` inside any container that is used to access your music library. This directory is meant to store media permanently.
-
-## !DEPRECATED! MEDIADIR_TV
-
-DEPRECATION NOTICE: This variable is now deprecated in favor of `DOCKERSTORAGEDIR` which is mounted as a volume in all containers as `/storage`. This variable will be completely removed from all DockSTARTer app templates and no longer mounted as a volume at the end of 2020. The variable will not be removed from your `.env` file, however it will be sorted into the application specific variables at the bottom. If you require the volume you can continue using it via an [override](https://dockstarter.com/overrides/introduction).
-
-* System Detected value: `~/TV`
-* Default value: `/mnt/medialibrary/tv`
-
-Description:
-This directory will be mounted under `/tv` inside any container that is used to access your TV library. This directory is meant to store media permanently.
-
 ## PGID
 
 * System Detected value: Detects the ID of your group
@@ -144,7 +73,7 @@ This value can be obtained by using `id -u $USER`.
 ## TZ
 
 * System Detected value: Uses the value found in `/etc/timezone`
-* Default value: `America/Chicago` because that's @nemchik's timezone (CST)
+* Default value: `America/New_York` because that's @jodfie's timezone (EST)
 
 Description:
 System timezone, see [list of TZ Database Time Zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
@@ -152,10 +81,10 @@ System timezone, see [list of TZ Database Time Zones](https://en.wikipedia.org/w
 ## LAN_NETWORK
 
 * System Detected value: Detects your local IP range.
-* Default value: `192.168.x.x/24`
+* Default value: `10.0.x.x/24`
 
 Description:
-If this value is blank or contains `x` DockSTARTer will automatically replace it with the System Detected value. Only accepts values in these ranges 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16.
+If this value is blank or contains `x` TrunkSTARTer will automatically replace it with the System Detected value. Only accepts values in these ranges 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16.
 
 ## NS1
 
@@ -191,7 +120,7 @@ Description:
 
 ## VPN_OVPNDIR
 
-* Default value: `~/.config/appdata/.openvpn`
+* Default value: `~/.config/trunkdata/.openvpn`
 
 Description:
 This directory will be used to store `ovpn` configurations that will be used by containers that are VPN enabled.
@@ -218,7 +147,7 @@ This is the username you use to login with to your VPN provider.
 
 ## VPN_WGDIR
 
-* Default value: `~/.config/appdata/.wireguard`
+* Default value: `~/.config/trunkdata/.wireguard`
 
 Description:
 This directory will be used to store the `wg0.conf` file that will be used by containers that are VPN enabled.

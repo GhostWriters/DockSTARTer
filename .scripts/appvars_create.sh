@@ -16,10 +16,10 @@ appvars_create() {
         fi
 
         local DEFAULT_VAL
-        DEFAULT_VAL=$(grep --color=never -Po "\scom\.dockstarter\.appvars\.${VAR_LABEL}: \K.*" "${APPTEMPLATES}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || true)
+        DEFAULT_VAL=$(grep --color=never -Po "\scom\.trunkstarter\.appvars\.${VAR_LABEL}: \K.*" "${APPTEMPLATES}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || true)
         echo "${SET_VAR}=" >> "${COMPOSE_ENV}"
         run_script 'env_set' "${SET_VAR}" "${DEFAULT_VAL}"
-    done < <(grep --color=never -Po "\scom\.dockstarter\.appvars\.\K[\w]+" "${APPTEMPLATES}/${FILENAME}.labels.yml" || error "Unable to find labels for ${APPNAME}")
+    done < <(grep --color=never -Po "\scom\.trunkstarter\.appvars\.\K[\w]+" "${APPTEMPLATES}/${FILENAME}.labels.yml" || error "Unable to find labels for ${APPNAME}")
     run_script 'env_set' "${APPNAME}_ENABLED" true
 }
 

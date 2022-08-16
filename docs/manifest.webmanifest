@@ -1,7 +1,7 @@
 {
-    "name": "DockSTARTer",
-    "short_name": "DS",
-    "description": "DockSTARTer helps you get started with home server apps running in Docker.",
+    "name": "TrunkSTARTer",
+    "short_name": "TS",
+    "description": "TrunkSTARTer helps you get started with SDR apps running in Docker.",
     "icons": [
       {
         "src": "/images/icon.png",

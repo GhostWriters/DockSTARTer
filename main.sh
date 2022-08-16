@@ -6,11 +6,11 @@ export LC_ALL=C
 
 usage() {
     cat << EOF
-Usage: ds [OPTION]
-NOTE: ds shortcut is only available after the first run of
+Usage: ts [OPTION]
+NOTE: ts shortcut is only available after the first run of
     bash main.sh
 
-This is the main DockSTARTer script.
+This is the main TrunkSTARTer script.
 For regular usage you can run without providing any options.
 
 -a --add <appname>
@@ -40,9 +40,9 @@ For regular usage you can run without providing any options.
 -t --test <test_name>
     run tests to check the program
 -u --update
-    update DockSTARTer to the latest stable commits
+    update TrunkSTARTer to the latest stable commits
 -u --update <branch>
-    update DockSTARTer to the latest commits from the specified branch
+    update TrunkTARTer to the latest commits from the specified branch
 -v --verbose
     verbose
 -x --debug
@@ -74,9 +74,9 @@ export COMPOSE_ENV
 cleanup() {
     local -ri EXIT_CODE=$?
     trap - ERR EXIT SIGABRT SIGALRM SIGHUP SIGINT SIGQUIT SIGTERM
-    sudo sh -c "cat ${MKTEMP_LOG:-/dev/null} >> ${SCRIPTPATH}/dockstarter.log" || true
+    sudo sh -c "cat ${MKTEMP_LOG:-/dev/null} >> ${SCRIPTPATH}/trunkstarter.log" || true
     sudo rm -f "${MKTEMP_LOG}" || true
-    sudo sh -c "echo \"$(tail -1000 "${SCRIPTPATH}/dockstarter.log")\" > ${SCRIPTPATH}/dockstarter.log" || true
+    sudo sh -c "echo \"$(tail -1000 "${SCRIPTPATH}/trunkstarter.log")\" > ${SCRIPTPATH}/trunkstarter.log" || true
     sudo -E chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || true
 
     if [[ ${CI-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS-} == false ]]; then
@@ -84,7 +84,7 @@ cleanup() {
     fi
 
     if [[ ${EXIT_CODE} -ne 0 ]]; then
-        echo "DockSTARTer did not finish running successfully."
+        echo "TrunkSTARTer did not finish running successfully."
     fi
 
     exit ${EXIT_CODE}
@@ -372,7 +372,7 @@ main() {
         DS_SYMLINK=$(readlink -f "${DS_COMMAND}")
         if [[ ${SCRIPTNAME} != "${DS_SYMLINK}" ]]; then
             if repo_exists; then
-                if run_script 'question_prompt' "${PROMPT:-CLI}" N "DockSTARTer installation found at ${DS_SYMLINK} location. Would you like to run ${SCRIPTNAME} instead?"; then
+                if run_script 'question_prompt' "${PROMPT:-CLI}" N "TrunkSTARTer installation found at ${DS_SYMLINK} location. Would you like to run ${SCRIPTNAME} instead?"; then
                     run_script 'symlink_ds'
                     DS_COMMAND=$(command -v ds || true)
                     DS_SYMLINK=$(readlink -f "${DS_COMMAND}")
@@ -385,12 +385,12 @@ main() {
         fi
     else
         if ! repo_exists; then
-            warn "Attempting to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
+            warn "Attempting to clone TrunkSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
             # Anti Sudo Check
             if [[ ${EUID} -eq 0 ]]; then
                 fatal "Using sudo during cloning on first run is not supported."
             fi
-            git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone DockSTARTer repo.\nFailing command: ${F[C]}git clone https://github.com/GhostWriters/DockSTARTer \"${DETECTED_HOMEDIR}/.docker\""
+            git clone https://github.com/jodfie/TrunkSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone TrunkSTARTer repo.\nFailing command: ${F[C]}git clone https://github.com/jodfie/TrunkSTARTer \"${DETECTED_HOMEDIR}/.docker\""
             notice "Performing first run install."
             exec sudo -H -E bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-vi"
         fi

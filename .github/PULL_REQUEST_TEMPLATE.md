@@ -18,5 +18,5 @@ Links to blog posts, patterns, libraries or addons used to solve this problem
 **Requirements**
 Check all boxes as they are completed
 
-- [ ] These changes meet the standards for [contributing](https://github.com/GhostWriters/DockSTARTer/blob/master/.github/CONTRIBUTING.md).
-- [ ] I have read the [code of conduct](https://github.com/GhostWriters/DockSTARTer/blob/master/.github/CODE_OF_CONDUCT.md).
+- [ ] These changes meet the standards for [contributing](https://github.com/jodfie/TrunkSTARTer/blob/master/.github/CONTRIBUTING.md).
+- [ ] I have read the [code of conduct](https://github.com/jodfie/TrunkSTARTer/blob/master/.github/CODE_OF_CONDUCT.md).
