@@ -1,3 +1,0 @@
-services:
-  picard:
-    network_mode: ${PICARD_NETWORK_MODE}

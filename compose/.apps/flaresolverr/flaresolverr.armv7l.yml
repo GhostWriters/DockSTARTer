@@ -1,3 +1,0 @@
-services:
-  flaresolverr:
-    image: ghcr.io/flaresolverr/flaresolverr

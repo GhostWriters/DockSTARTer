@@ -1,3 +1,0 @@
-services:
-  hydra2:
-    hostname: ${DOCKERHOSTNAME}

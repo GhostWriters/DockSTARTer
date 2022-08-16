@@ -1,4 +1,0 @@
-services:
-  moviematch:
-    ports:
-      - ${MOVIEMATCH_PORT_8000}:8000

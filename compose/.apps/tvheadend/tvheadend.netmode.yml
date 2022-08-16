@@ -1,3 +1,0 @@
-services:
-  tvheadend:
-    network_mode: ${TVHEADEND_NETWORK_MODE}

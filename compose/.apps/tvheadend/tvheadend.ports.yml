@@ -1,5 +1,0 @@
-services:
-  tvheadend:
-    ports:
-      - ${TVHEADEND_PORT_9981}:9981
-      - ${TVHEADEND_PORT_9982}:9982

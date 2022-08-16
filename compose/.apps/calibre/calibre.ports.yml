@@ -1,5 +1,0 @@
-services:
-  calibre:
-    ports:
-      - ${CALIBRE_PORT_8080}:8080
-      - ${CALIBRE_PORT_8081}:8081

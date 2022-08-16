@@ -1,4 +1,0 @@
-services:
-  minecraft_bedrock_server:
-    ports:
-      - ${MINECRAFT_BEDROCK_SERVER_PORT_19132}:19132/udp

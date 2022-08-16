@@ -1,3 +1,0 @@
-services:
-  adguard:
-    image: adguard/adguardhome

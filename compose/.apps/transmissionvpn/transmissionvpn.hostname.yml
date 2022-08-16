@@ -1,3 +1,0 @@
-services:
-  transmissionvpn:
-    hostname: ${DOCKERHOSTNAME}

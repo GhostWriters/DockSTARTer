@@ -1,4 +1,0 @@
-services:
-  xteve:
-    ports:
-      - ${XTEVE_PORT_34400}:34400

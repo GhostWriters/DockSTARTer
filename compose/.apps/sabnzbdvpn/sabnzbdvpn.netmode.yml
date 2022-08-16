@@ -1,3 +1,0 @@
-services:
-  sabnzbdvpn:
-    network_mode: ${SABNZBDVPN_NETWORK_MODE}

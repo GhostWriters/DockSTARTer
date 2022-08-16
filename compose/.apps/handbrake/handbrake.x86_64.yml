@@ -1,3 +1,0 @@
-services:
-  handbrake:
-    image: jlesage/handbrake

@@ -1,5 +1,0 @@
-services:
-  ubooquity:
-    ports:
-      - ${UBOOQUITY_PORT_2202}:2202
-      - ${UBOOQUITY_PORT_2203}:2203

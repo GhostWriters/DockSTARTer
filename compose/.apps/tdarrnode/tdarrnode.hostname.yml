@@ -1,3 +1,0 @@
-services:
-  tdarrnode:
-    hostname: ${DOCKERHOSTNAME}

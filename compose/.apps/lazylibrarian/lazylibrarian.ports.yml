@@ -1,4 +1,0 @@
-services:
-  lazylibrarian:
-    ports:
-      - ${LAZYLIBRARIAN_PORT_5299}:5299

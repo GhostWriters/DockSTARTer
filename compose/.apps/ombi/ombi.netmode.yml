@@ -1,3 +1,0 @@
-services:
-  ombi:
-    network_mode: ${OMBI_NETWORK_MODE}

@@ -1,3 +1,0 @@
-services:
-  handbrake:
-    network_mode: ${HANDBRAKE_NETWORK_MODE}

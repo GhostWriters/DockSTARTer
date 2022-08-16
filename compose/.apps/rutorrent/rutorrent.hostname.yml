@@ -1,3 +1,0 @@
-services:
-  rutorrent:
-    hostname: ${DOCKERHOSTNAME}

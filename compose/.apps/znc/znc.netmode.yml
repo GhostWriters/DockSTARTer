@@ -1,3 +1,0 @@
-services:
-  znc:
-    network_mode: ${znc_NETWORK_MODE}

@@ -1,3 +1,0 @@
-services:
-  unmanic:
-    network_mode: ${UNMANIC_NETWORK_MODE}

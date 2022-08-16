@@ -1,3 +1,0 @@
-services:
-  quasselweb:
-    network_mode: ${QUASSELWEB_NETWORK_MODE}

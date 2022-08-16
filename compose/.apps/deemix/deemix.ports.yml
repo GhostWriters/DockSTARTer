@@ -1,4 +1,0 @@
-services:
-  deemix:
-    ports:
-      - ${DEEMIX_PORT_6595}:6595

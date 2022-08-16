@@ -1,3 +1,0 @@
-services:
-  xteve:
-    network_mode: ${XTEVE_NETWORK_MODE}

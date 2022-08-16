@@ -1,3 +1,0 @@
-services:
-  piwigo:
-    network_mode: ${PIWIGO_NETWORK_MODE}

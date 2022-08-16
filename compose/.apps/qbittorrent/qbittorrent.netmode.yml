@@ -1,3 +1,0 @@
-services:
-  qbittorrent:
-    network_mode: ${QBITTORRENT_NETWORK_MODE}

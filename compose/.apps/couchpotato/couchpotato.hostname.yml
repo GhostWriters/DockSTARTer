@@ -1,3 +1,0 @@
-services:
-  couchpotato:
-    hostname: ${DOCKERHOSTNAME}

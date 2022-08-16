@@ -1,3 +1,0 @@
-services:
-  omadacontroller:
-    hostname: ${DOCKERHOSTNAME}

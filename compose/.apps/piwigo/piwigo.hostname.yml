@@ -1,3 +1,0 @@
-services:
-  piwigo:
-    hostname: ${DOCKERHOSTNAME}

@@ -1,3 +1,0 @@
-services:
-  logitechmediaserver:
-    network_mode: ${LOGITECHMEDIASERVER_NETWORK_MODE}

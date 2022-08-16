@@ -1,4 +1,0 @@
-services:
-  nzbget:
-    ports:
-      - ${NZBGET_PORT_6789}:6789

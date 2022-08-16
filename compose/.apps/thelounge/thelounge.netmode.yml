@@ -1,3 +1,0 @@
-services:
-  thelounge:
-    network_mode: ${THELOUNGE_NETWORK_MODE}

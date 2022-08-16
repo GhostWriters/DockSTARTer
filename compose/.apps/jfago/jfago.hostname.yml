@@ -1,3 +1,0 @@
-services:
-  jfago:
-    hostname: ${DOCKERHOSTNAME}

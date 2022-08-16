@@ -1,3 +1,0 @@
-services:
-  amd:
-    network_mode: ${AMD_NETWORK_MODE}

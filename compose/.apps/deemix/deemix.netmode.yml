@@ -1,3 +1,0 @@
-services:
-  deemix:
-    network_mode: ${DEEMIX_NETWORK_MODE}

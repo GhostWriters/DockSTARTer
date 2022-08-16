@@ -1,9 +1,0 @@
-services:
-  rutorrent:
-    ports:
-      - ${RUTORRENT_PORT_5000}:5000
-      - ${RUTORRENT_PORT_51413}:51413
-      - ${RUTORRENT_PORT_51413}:51413/udp
-      - ${RUTORRENT_PORT_6881}:6881
-      - ${RUTORRENT_PORT_6881}:6881/udp
-      - ${RUTORRENT_PORT_80}:80

@@ -1,4 +1,0 @@
-services:
-  dasshio:
-    ports:
-      - ${DASSHIO_PORT_6565}:6565

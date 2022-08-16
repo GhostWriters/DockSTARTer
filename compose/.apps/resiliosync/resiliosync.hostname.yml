@@ -1,3 +1,0 @@
-services:
-  resiliosync:
-    hostname: ${DOCKERHOSTNAME}

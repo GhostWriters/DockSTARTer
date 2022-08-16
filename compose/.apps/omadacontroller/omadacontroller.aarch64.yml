@@ -1,3 +1,0 @@
-services:
-  omadacontroller:
-    image: mbentley/omada-controller

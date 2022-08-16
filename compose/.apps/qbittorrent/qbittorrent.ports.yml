@@ -1,8 +1,0 @@
-services:
-  qbittorrent:
-    ports:
-      - ${QBITTORRENT_PORT_51413}:51413
-      - ${QBITTORRENT_PORT_51413}:51413/udp
-      - ${QBITTORRENT_PORT_6881}:6881
-      - ${QBITTORRENT_PORT_6881}:6881/udp
-      - ${QBITTORRENT_PORT_8080}:${QBITTORRENT_PORT_8080}

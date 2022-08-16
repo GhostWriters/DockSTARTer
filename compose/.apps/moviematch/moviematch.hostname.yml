@@ -1,3 +1,0 @@
-services:
-  moviematch:
-    hostname: ${DOCKERHOSTNAME}

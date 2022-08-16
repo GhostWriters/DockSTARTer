@@ -1,4 +1,0 @@
-services:
-  plexrequests:
-    ports:
-      - ${PLEXREQUESTS_PORT_3000}:3000

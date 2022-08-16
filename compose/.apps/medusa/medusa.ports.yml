@@ -1,4 +1,0 @@
-services:
-  medusa:
-    ports:
-      - ${MEDUSA_PORT_8081}:8081

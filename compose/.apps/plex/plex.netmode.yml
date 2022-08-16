@@ -1,3 +1,0 @@
-services:
-  plex:
-    network_mode: ${PLEX_NETWORK_MODE}

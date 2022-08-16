@@ -1,3 +1,0 @@
-services:
-  dasshio:
-    network_mode: ${DASSHIO_NETWORK_MODE}

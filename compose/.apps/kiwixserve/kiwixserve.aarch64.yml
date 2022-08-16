@@ -1,3 +1,0 @@
-services:
-  kiwixserve:
-    image: kiwix/kiwix-serve

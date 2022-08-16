@@ -1,3 +1,0 @@
-services:
-  murmur:
-    hostname: ${DOCKERHOSTNAME}

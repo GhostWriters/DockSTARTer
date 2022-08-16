@@ -1,3 +1,0 @@
-services:
-  ubooquity:
-    hostname: ${DOCKERHOSTNAME}

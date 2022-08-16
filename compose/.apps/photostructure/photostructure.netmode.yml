@@ -1,3 +1,0 @@
-services:
-  photostructure:
-    network_mode: ${PHOTOSTRUCTURE_NETWORK_MODE}

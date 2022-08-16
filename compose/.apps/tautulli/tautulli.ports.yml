@@ -1,4 +1,0 @@
-services:
-  tautulli:
-    ports:
-      - ${TAUTULLI_PORT_8181}:8181

@@ -1,3 +1,0 @@
-services:
-  xteve:
-    image: dnsforge/xteve

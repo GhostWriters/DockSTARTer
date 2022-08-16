@@ -1,3 +1,0 @@
-services:
-  booksonic:
-    hostname: ${DOCKERHOSTNAME}

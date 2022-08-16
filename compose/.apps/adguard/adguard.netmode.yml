@@ -1,3 +1,0 @@
-services:
-  adguard:
-    network_mode: ${ADGUARD_NETWORK_MODE}

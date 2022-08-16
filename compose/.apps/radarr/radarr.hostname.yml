@@ -1,3 +1,0 @@
-services:
-  radarr:
-    hostname: ${DOCKERHOSTNAME}

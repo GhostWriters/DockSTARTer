@@ -1,3 +1,0 @@
-services:
-  grocy:
-    network_mode: ${GROCY_NETWORK_MODE}

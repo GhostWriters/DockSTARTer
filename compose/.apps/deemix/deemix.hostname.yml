@@ -1,3 +1,0 @@
-services:
-  deemix:
-    hostname: ${DOCKERHOSTNAME}

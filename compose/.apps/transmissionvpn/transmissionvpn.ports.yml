@@ -1,8 +1,0 @@
-services:
-  transmissionvpn:
-    ports:
-      - ${TRANSMISSIONVPN_PORT_51413}:51413
-      - ${TRANSMISSIONVPN_PORT_51413}:51413/udp
-      - ${TRANSMISSIONVPN_PORT_6881}:6881
-      - ${TRANSMISSIONVPN_PORT_6881}:6881/udp
-      - ${TRANSMISSIONVPN_PORT_9091}:9091

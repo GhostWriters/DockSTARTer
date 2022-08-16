@@ -1,3 +1,0 @@
-services:
-  homeassistant:
-    network_mode: ${HOMEASSISTANT_NETWORK_MODE}

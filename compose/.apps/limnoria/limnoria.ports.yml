@@ -1,4 +1,0 @@
-services:
-  limnoria:
-    ports:
-      - ${LIMNORIA_PORT_8080}:8080

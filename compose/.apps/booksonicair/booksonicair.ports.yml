@@ -1,4 +1,0 @@
-services:
-  booksonicair:
-    ports:
-      - ${BOOKSONICAIR_PORT_4040}:4040

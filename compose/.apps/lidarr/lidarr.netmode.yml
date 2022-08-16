@@ -1,3 +1,0 @@
-services:
-  lidarr:
-    network_mode: ${LIDARR_NETWORK_MODE}

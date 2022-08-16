@@ -1,4 +1,0 @@
-services:
-  hydra2:
-    ports:
-      - ${HYDRA2_PORT_5076}:5076

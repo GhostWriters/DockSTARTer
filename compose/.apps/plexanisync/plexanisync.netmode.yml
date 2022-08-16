@@ -1,3 +1,0 @@
-services:
-  plexanisync:
-    network_mode: ${PLEXANISYNC_NETWORK_MODE}

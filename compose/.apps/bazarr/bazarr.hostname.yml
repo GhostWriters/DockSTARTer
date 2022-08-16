@@ -1,3 +1,0 @@
-services:
-  bazarr:
-    hostname: ${DOCKERHOSTNAME}

@@ -1,4 +1,0 @@
-services:
-  piwigo:
-    ports:
-      - ${PIWIGO_PORT_80}:80

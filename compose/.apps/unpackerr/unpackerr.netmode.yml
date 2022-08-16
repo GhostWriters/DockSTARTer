@@ -1,3 +1,0 @@
-services:
-  unpackerr:
-    network_mode: ${UNPACKERR_NETWORK_MODE}

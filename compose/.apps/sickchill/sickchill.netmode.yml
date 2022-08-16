@@ -1,3 +1,0 @@
-services:
-  sickchill:
-    network_mode: ${SICKCHILL_NETWORK_MODE}
