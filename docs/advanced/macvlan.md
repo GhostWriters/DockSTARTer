@@ -4,9 +4,9 @@ It may help to read the [official documentation](https://docs.docker.com/v17.09/
 
 ## Motivation
 
-There are a few different types of Docker networks. DockSTARTer by default uses a 'bridge' network, which is a virtual network that provides isolation from other networks, but allows containers to communicate with each other.
+There are a few different types of Docker networks. TrunkSTARTer by default uses a 'bridge' network, which is a virtual network that provides isolation from other networks, but allows containers to communicate with each other.
 
-However, some applications require access to the physical network. Both Home Assistant and Plex need physical network access for discovery (the former will have issues communicating with IoT devices otherwise).
+However, some applications require access to the physical network.
 
 One solution might be to use Docker's `host` network. This however, increases the odds of port conflicts as more containers are added. Docker introduced a Macvlan network for this case which assigns a unique IP and MAC address for attached containers.
 
@@ -50,7 +50,7 @@ The rest of this tutorial assumes addresses above `X.X.X.190` will be free.
 
 **Note 1** You may be wondering why we don't create the network in Docker compose. Newer versions of compose have issues with using `aux-address` and `ip-range`.
 
-### In Your DockSTARTer Overrides
+### In Your TrunkSTARTer Overrides
 
 We could connect our containers to `mymacvlan` and call it a day, but it's very useful to reserve IPs for each container so we can reach web endpoints in a consistent way.
 
@@ -71,4 +71,4 @@ We could connect our containers to `mymacvlan` and call it a day, but it's very 
   The `ipv4` address should fall in the range you reserved.
   Unfortunately, it's necessary to do this when adding new containers if you want them on the same network.
 
-After this, you should be able to compose (`sudo ds -c`) and have a new shiny macvlan network! The containers will be available at the addresses you specified.
+After this, you should be able to compose (`sudo ts -c`) and have a new shiny macvlan network! The containers will be available at the addresses you specified.

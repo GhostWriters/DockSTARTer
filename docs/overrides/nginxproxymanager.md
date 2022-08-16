@@ -11,7 +11,7 @@
 
 ### Config File
 
-Nginx Proxy Manager requires a Configuration file named `config.json`. This file needs to be in the appdata folder for NPM before it is started.
+Nginx Proxy Manager requires a Configuration file named `config.json`. This file needs to be in the trunkdata folder for NPM before it is started.
 
 ```json
 {

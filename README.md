@@ -4,11 +4,9 @@
 
 [![Discord chat](https://img.shields.io/discord/477959324183035936.svg?style=flat-square&color=607D8B&logo=discord)](https://discord.gg/trunk-recorder)
 
-
 The main goal of TrunkSTARTer is to make it quick and easy to get up and running with SDR apps on Docker.
 
 You may choose to rely on TrunkSTARTer for various changes to your Docker system or use TrunkSTARTer as a stepping stone and learn to do more advanced configurations.
-
 
 ## Getting Started
 
