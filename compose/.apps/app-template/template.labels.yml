@@ -1,0 +1,9 @@
+services:
+  app-name:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: 
+      com.dockstarter.appinfo.nicename: 
+      com.dockstarter.appvars.app-name_network_mode: ""
+      com.dockstarter.appvars.app-name_port_#: ""
+      com.dockstarter.appvars.app-name_restart: unless-stopped

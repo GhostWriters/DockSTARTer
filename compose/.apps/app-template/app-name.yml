@@ -1,0 +1,15 @@
+services:
+  app-name:
+    container_name: app-name
+    environment:
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: ${APP-NAME_RESTART}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/app-name:/
+      - ${DOCKERSTORAGEDIR}:/storage
