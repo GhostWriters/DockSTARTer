@@ -461,6 +461,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://dockstarter.com/apps/openspeedtest/</loc>
+         <lastmod>2022-08-31</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://dockstarter.com/apps/openvpnas/</loc>
          <lastmod>2022-08-31</lastmod>
          <changefreq>daily</changefreq>
