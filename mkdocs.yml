@@ -164,6 +164,7 @@ nav:
       - apps/omadacontroller.md
       - apps/ombi.md
       - apps/openldap.md
+      - apps/openspeedtest.md
       - apps/openvpnas.md
       - apps/organizr.md
       - apps/ouroboros.md
