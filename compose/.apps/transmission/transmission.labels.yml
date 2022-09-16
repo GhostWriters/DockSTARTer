@@ -10,4 +10,4 @@ services:
       com.dockstarter.appvars.transmission_port_6881: "6881"
       com.dockstarter.appvars.transmission_port_9091: "9091"
       com.dockstarter.appvars.transmission_restart: unless-stopped
-      com.dockstarter.appvars.transmission_web_home: /combustion-release/
+      com.dockstarter.appvars.transmission_web_home: ""

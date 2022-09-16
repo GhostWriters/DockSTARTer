@@ -13,4 +13,4 @@ services:
       com.dockstarter.appvars.transmissionvpn_port_9091: "9091"
       com.dockstarter.appvars.transmissionvpn_restart: unless-stopped
       com.dockstarter.appvars.transmissionvpn_watch_dir: /storage/downloads/watch
-      com.dockstarter.appvars.transmissionvpn_web_home: /combustion-release/
+      com.dockstarter.appvars.transmissionvpn_web_home: ""
