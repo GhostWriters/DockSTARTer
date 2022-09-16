@@ -5,6 +5,7 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
+      - TRANSMISSION_WEB_HOME=${TRANSMISSION_WEB_HOME}
     logging:
       driver: json-file
       options:
