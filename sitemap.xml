@@ -216,6 +216,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://dockstarter.com/apps/flame/</loc>
+         <lastmod>2022-10-03</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://dockstarter.com/apps/flaresolverr/</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
