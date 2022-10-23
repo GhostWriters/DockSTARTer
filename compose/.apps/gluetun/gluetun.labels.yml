@@ -1,0 +1,10 @@
+services:
+  gluetun:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: VPN client in a thin Docker container for multiple VPN providers, written in Go, and using OpenVPN or Wireguard, DNS over TLS, with a few proxy servers built-in. 
+      com.dockstarter.appinfo.nicename: Gluetun
+      com.dockstarter.appvars.gluetun_enabled: "false"
+      com.dockstarter.appvars.gluetun_network_mode: ""
+      com.dockstarter.appvars.gluetun_port_9117: "9117"
+      com.dockstarter.appvars.gluetun_restart: unless-stopped
