@@ -2,7 +2,7 @@ services:
   kanboard:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: Kiwix HTTP daemon
+      com.dockstarter.appinfo.description: Kanboard is a free and open source Kanban project management software.
       com.dockstarter.appinfo.nicename: Kanboard
       com.dockstarter.appvars.kanboard_enabled: "false"
       com.dockstarter.appvars.kanboard_network_mode: ""
