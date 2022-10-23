@@ -1,3 +1,3 @@
 services:
-  goaccess:
-    network_mode: ${GOACCESS_NETWORK_MODE}
+  gluetun:
+    network_mode: ${GLUETUN_NETWORK_MODE}
