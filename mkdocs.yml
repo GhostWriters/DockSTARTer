@@ -120,6 +120,7 @@ nav:
       - apps/freshrss.md
       - apps/gitea.md
       - apps/glances.md
+      - apps/gluetun.md
       - apps/goaccess.md
       - apps/grafana.md
       - apps/grocy.md
