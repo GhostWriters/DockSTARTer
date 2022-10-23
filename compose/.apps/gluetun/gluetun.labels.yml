@@ -6,5 +6,11 @@ services:
       com.dockstarter.appinfo.nicename: Gluetun
       com.dockstarter.appvars.gluetun_enabled: "false"
       com.dockstarter.appvars.gluetun_network_mode: ""
+      com.dockstarter.appvars.gluetun_openvpn_user: ""
+      com.dockstarter.appvars.gluetun_openvpn_password: ""
       com.dockstarter.appvars.gluetun_port_9117: "9117"
       com.dockstarter.appvars.gluetun_restart: unless-stopped
+      com.dockstarter.appvars.gluetun_vpn_service_provider: ""
+      com.dockstarter.appvars.gluetun_vpn_type: ""
+      com.dockstarter.appvars.gluetun_wireguard_private_key: ""
+      com.dockstarter.appvars.gluetun_wireguard_addresses: ""
