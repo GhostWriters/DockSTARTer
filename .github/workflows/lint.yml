@@ -24,7 +24,7 @@ jobs:
             docker run --rm \
             -v "${GITHUB_WORKSPACE}":"${GITHUB_WORKSPACE}" \
             markdownlint/markdownlint \
-            -r ~MD013,~MD033,~MD034 \
+            -r ~MD007,~MD013,~MD033,~MD034 \
             {} +
 
   shellcheck:
