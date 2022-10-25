@@ -1,0 +1,3 @@
+services:
+  gluetun:
+    image: qmcgaw/gluetun
