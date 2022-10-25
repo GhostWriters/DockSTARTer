@@ -15,4 +15,3 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/kanboard:/var/www/app
       - ${DOCKERSTORAGEDIR}:/storage
-
