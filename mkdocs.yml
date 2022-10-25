@@ -138,6 +138,7 @@ nav:
       - apps/jackett.md
       - apps/jellyfin.md
       - apps/jfago.md
+      - apps/kanboard.md
       - apps/kiwixserve.md
       - apps/lazylibrarian.md
       - apps/ldapauth.md
