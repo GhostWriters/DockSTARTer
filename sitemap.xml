@@ -241,6 +241,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://dockstarter.com/apps/gluetun/</loc>
+         <lastmod>2022-10-25</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://dockstarter.com/apps/goaccess/</loc>
          <lastmod>2022-10-25</lastmod>
          <changefreq>daily</changefreq>
