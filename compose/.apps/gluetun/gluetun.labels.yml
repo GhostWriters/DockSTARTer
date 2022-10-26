@@ -6,5 +6,4 @@ services:
       com.dockstarter.appinfo.nicename: Gluetun
       com.dockstarter.appvars.gluetun_enabled: "false"
       com.dockstarter.appvars.gluetun_network_mode: ""
-      com.dockstarter.appvars.gluetun_port_9117: "9117"
       com.dockstarter.appvars.gluetun_restart: unless-stopped
