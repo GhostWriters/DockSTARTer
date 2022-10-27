@@ -57,7 +57,7 @@ extra:
   social:
     - icon: fontawesome/brands/discord
       link: https://dockstarter.com/discord
-    - icon: fontawesome/brands/github-square
+    - icon: fontawesome/brands/square-github
       link: https://github.com/GhostWriters/DockSTARTer
 
 markdown_extensions:
@@ -88,7 +88,7 @@ nav:
   - App Specifics:
       - apps/adguard.md
       - apps/adminer.md
-      - apps/airsonic.md
+      - apps/airsonicadvanced.md
       - apps/amd.md
       - apps/apcupsd.md
       - apps/apprise.md
@@ -115,9 +115,12 @@ nav:
       - apps/emby.md
       - apps/filebot.md
       - apps/filebrowser.md
+      - apps/flame.md
       - apps/flaresolverr.md
       - apps/freshrss.md
+      - apps/gitea.md
       - apps/glances.md
+      - apps/gluetun.md
       - apps/goaccess.md
       - apps/grafana.md
       - apps/grocy.md
@@ -135,6 +138,7 @@ nav:
       - apps/jackett.md
       - apps/jellyfin.md
       - apps/jfago.md
+      - apps/kanboard.md
       - apps/kiwixserve.md
       - apps/lazylibrarian.md
       - apps/ldapauth.md
@@ -163,6 +167,7 @@ nav:
       - apps/omadacontroller.md
       - apps/ombi.md
       - apps/openldap.md
+      - apps/openspeedtest.md
       - apps/openvpnas.md
       - apps/organizr.md
       - apps/ouroboros.md
@@ -189,6 +194,7 @@ nav:
       - apps/rsnapshot.md
       - apps/rtorrentvpn.md
       - apps/rutorrent.md
+      - apps/rustdesk.md
       - apps/sabnzbd.md
       - apps/sabnzbdvpn.md
       - apps/samba.md
@@ -207,6 +213,7 @@ nav:
       - apps/thelounge.md
       - apps/timemachine.md
       - apps/traktarr.md
+      - apps/traefik.md
       - apps/transmission.md
       - apps/transmissionvpn.md
       - apps/tvheadend.md
@@ -214,6 +221,7 @@ nav:
       - apps/unificontroller.md
       - apps/unmanic.md
       - apps/unpackerr.md
+      - apps/uptimekuma.md
       - apps/varken.md
       - apps/vsftpd.md
       - apps/watchtower.md

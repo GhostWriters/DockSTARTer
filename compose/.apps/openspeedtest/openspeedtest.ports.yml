@@ -1,0 +1,5 @@
+services:
+  openspeedtest:
+    ports:
+      - ${OPENSPEEDTEST_PORT_3000}:3000
+      - ${OPENSPEEDTEST_PORT_3001}:3001

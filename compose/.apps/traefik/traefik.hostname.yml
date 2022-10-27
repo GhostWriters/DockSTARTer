@@ -1,0 +1,3 @@
+services:
+  traefik:
+    hostname: ${DOCKERHOSTNAME}
