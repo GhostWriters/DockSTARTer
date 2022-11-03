@@ -57,7 +57,7 @@ extra:
   social:
     - icon: fontawesome/brands/discord
       link: https://dockstarter.com/discord
-    - icon: fontawesome/brands/github-square
+    - icon: fontawesome/brands/square-github
       link: https://github.com/GhostWriters/DockSTARTer
 
 markdown_extensions:
@@ -115,9 +115,12 @@ nav:
       - apps/emby.md
       - apps/filebot.md
       - apps/filebrowser.md
+      - apps/flame.md
       - apps/flaresolverr.md
       - apps/freshrss.md
+      - apps/gitea.md
       - apps/glances.md
+      - apps/gluetun.md
       - apps/goaccess.md
       - apps/grafana.md
       - apps/grocy.md
@@ -135,6 +138,7 @@ nav:
       - apps/jackett.md
       - apps/jellyfin.md
       - apps/jfago.md
+      - apps/kanboard.md
       - apps/kiwixserve.md
       - apps/lazylibrarian.md
       - apps/ldapauth.md
@@ -163,6 +167,7 @@ nav:
       - apps/omadacontroller.md
       - apps/ombi.md
       - apps/openldap.md
+      - apps/openspeedtest.md
       - apps/openvpnas.md
       - apps/organizr.md
       - apps/ouroboros.md
