@@ -17,7 +17,8 @@ jobs:
           key: ${{ github.ref }}
           path: .cache
       - run: pip install -r docs/requirements.txt
-      - run: cp README.md docs/index.md
+      - run: |
+          cp README.md docs/index.md
       - run: mkdocs build
 
   deploy:
@@ -37,5 +38,6 @@ jobs:
           key: ${{ github.ref }}
           path: .cache
       - run: pip install -r docs/requirements.txt
-      - run: cp README.md docs/index.md
+      - run: |
+          cp README.md docs/index.md
       - run: mkdocs gh-deploy --force
