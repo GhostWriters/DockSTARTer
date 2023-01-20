@@ -15,6 +15,7 @@ theme:
   language: en
   features:
     - navigation.instant
+    - content.code.copy
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
