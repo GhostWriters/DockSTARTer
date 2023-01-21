@@ -14,8 +14,9 @@ theme:
   search_index_only: true
   language: en
   features:
-    - navigation.instant
+    - content.action.edit
     - content.code.copy
+    - navigation.instant
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
