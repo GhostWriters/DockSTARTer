@@ -8,4 +8,3 @@ services:
       com.dockstarter.appvars.recyclarr_network_mode: ""
       com.dockstarter.appvars.recyclarr_restart: unless-stopped
       com.dockstarter.appvars.recyclarr_create_config: "true"
-
