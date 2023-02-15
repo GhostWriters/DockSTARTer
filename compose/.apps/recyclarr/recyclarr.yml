@@ -16,3 +16,4 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERSTORAGEDIR}:/storage
       - ${DOCKERCONFDIR}/recyclarr:/config
+
