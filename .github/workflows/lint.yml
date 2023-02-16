@@ -3,7 +3,6 @@ name: Lint
 on: [push, pull_request]
 
 jobs:
-
   editorconfig-checker:
     runs-on: ubuntu-latest
     steps:
@@ -12,7 +11,8 @@ jobs:
         run: |
           docker run --rm \
             -v "${GITHUB_WORKSPACE}":/check \
-            mstruebing/editorconfig-checker
+            mstruebing/editorconfig-checker \
+            --exclude .git
 
   markdownlint:
     runs-on: ubuntu-latest
