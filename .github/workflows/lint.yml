@@ -11,8 +11,7 @@ jobs:
         run: |
           docker run --rm \
             -v "${GITHUB_WORKSPACE}":/check \
-            mstruebing/editorconfig-checker \
-            --exclude .git
+            mstruebing/editorconfig-checker
 
   markdownlint:
     runs-on: ubuntu-latest
