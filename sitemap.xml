@@ -591,6 +591,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://dockstarter.com/apps/recyclarr/</loc>
+         <lastmod>2023-02-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://dockstarter.com/apps/requestrr/</loc>
          <lastmod>2023-02-26</lastmod>
          <changefreq>daily</changefreq>
