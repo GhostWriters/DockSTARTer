@@ -12,6 +12,7 @@ jobs:
         run: |
           docker run --rm \
             -v "${GITHUB_WORKSPACE}":/check \
+            -u "$(id -u):$(id -g)" \
             mstruebing/editorconfig-checker
 
   markdownlint:

@@ -1,0 +1,3 @@
+services:
+  audiobookshelf:
+    network_mode: ${AUDIOBOOKSHELF_NETWORK_MODE}
