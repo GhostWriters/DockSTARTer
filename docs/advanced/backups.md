@@ -4,7 +4,7 @@
 
 ## Creating backups
 
-DockSTARTer menu has an option for `Backup Config`, or you can use one of `sudo ds -b min` / `sudo ds -b med` / `sudo ds -b max` to create backups.
+DockSTARTer menu has an option for `Backup Config`, or you can use one of `ds -b min` / `ds -b med` / `ds -b max` to create backups.
 
 > Min: Backs up your .env file
 > Med: Backs up your .env file and the config folder for any enabled app

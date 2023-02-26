@@ -33,7 +33,7 @@ case you have multiple Netdata servers):
       hostname: newnetdataname
   ```
 
-- Once this is done, run `sudo ds -c netdata`
+- Once this is done, run `ds -c netdata`
 
 ### Notifications
 

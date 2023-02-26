@@ -71,4 +71,4 @@ We could connect our containers to `mymacvlan` and call it a day, but it's very 
   The `ipv4` address should fall in the range you reserved.
   Unfortunately, it's necessary to do this when adding new containers if you want them on the same network.
 
-After this, you should be able to compose (`sudo ds -c`) and have a new shiny macvlan network! The containers will be available at the addresses you specified.
+After this, you should be able to compose (`ds -c`) and have a new shiny macvlan network! The containers will be available at the addresses you specified.
