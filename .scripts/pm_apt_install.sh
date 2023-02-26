@@ -8,7 +8,7 @@ pm_apt_install() {
     if [[ -n ${VERBOSE-} ]] || run_script 'question_prompt' "${PROMPT:-CLI}" N "Would you like to display the command output?"; then
         REDIRECT=""
     fi
-    eval "apt-get -y install curl git grep sed whiptail ${REDIRECT}" || fatal "Failed to install dependencies from apt.\nFailing command: ${F[C]}apt-get -y install curl git grep sed whiptail"
+    eval "sudo apt-get -y install curl git grep sed whiptail ${REDIRECT}" || fatal "Failed to install dependencies from apt.\nFailing command: ${F[C]}sudo apt-get -y install curl git grep sed whiptail"
 }
 
 test_pm_apt_install() {

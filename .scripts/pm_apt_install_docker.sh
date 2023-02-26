@@ -6,7 +6,7 @@ pm_apt_install_docker() {
     # https://docs.docker.com/install/linux/docker-ce/debian/
     # https://docs.docker.com/install/linux/docker-ce/ubuntu/
     info "Removing conflicting Docker packages."
-    apt-get -y remove containerd \
+    sudo apt-get -y remove containerd \
         docker \
         docker-compose \
         docker-engine \

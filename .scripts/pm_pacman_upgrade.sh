@@ -9,7 +9,7 @@ pm_pacman_upgrade() {
         if [[ -n ${VERBOSE-} ]] || run_script 'question_prompt' "${PROMPT:-CLI}" N "Would you like to display the command output?"; then
             REDIRECT=""
         fi
-        eval "pacman -Syu --noconfirm ${REDIRECT}" || fatal "Failed to upgrade packages from pacman.\nFailing command: ${F[C]}pacman -Syu --noconfirm"
+        eval "sudo pacman -Syu --noconfirm ${REDIRECT}" || fatal "Failed to upgrade packages from pacman.\nFailing command: ${F[C]}sudo pacman -Syu --noconfirm"
     fi
 }
 

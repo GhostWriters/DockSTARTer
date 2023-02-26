@@ -13,8 +13,8 @@ pm_yum_repos() {
     if [[ -n ${VERBOSE-} ]] || run_script 'question_prompt' "${PROMPT:-CLI}" N "Would you like to display the command output?"; then
         REDIRECT=""
     fi
-    eval "bash ${MKTEMP_GET_IUS} ${REDIRECT}" || warn "Failed to install IUS.\nFailing command: ${F[C]}bash ${MKTEMP_GET_IUS}"
-    rm -f "${MKTEMP_GET_IUS}" || warn "Failed to remove temporary IUS repo install script."
+    eval "sudo bash ${MKTEMP_GET_IUS} ${REDIRECT}" || warn "Failed to install IUS.\nFailing command: ${F[C]}sudo bash ${MKTEMP_GET_IUS}"
+    rm -f "${MKTEMP_GET_IUS}" || warn "Failed to remove temporary IUS repo install script.\nFailing command: ${F[C]}rm -f \"${MKTEMP_GET_IUS}\""
 }
 
 test_pm_yum_repos() {

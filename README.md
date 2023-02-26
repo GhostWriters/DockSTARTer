@@ -92,7 +92,7 @@ Then
 
 ```bash
 git clone https://github.com/GhostWriters/DockSTARTer "/home/${USER}/.docker"
-sudo bash /home/"${USER}"/.docker/main.sh -vi
+bash /home/"${USER}"/.docker/main.sh -vi
 sudo reboot
 ```
 

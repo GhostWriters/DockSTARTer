@@ -7,7 +7,7 @@ env_backup() {
     local DOCKERCONFDIR
     DOCKERCONFDIR=$(run_script 'env_get' DOCKERCONFDIR)
     info "Taking ownership of ${DOCKERCONFDIR} (non-recursive)."
-    chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${DOCKERCONFDIR}" > /dev/null 2>&1 || true
+    sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${DOCKERCONFDIR}" > /dev/null 2>&1 || true
     local BACKUPTIME
     BACKUPTIME=$(date +"%Y%m%d%H%M%S")
     info "Copying .env file to ${DOCKERCONFDIR}/.compose.backups/.env.${BACKUPTIME}"

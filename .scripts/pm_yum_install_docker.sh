@@ -5,7 +5,7 @@ IFS=$'\n\t'
 pm_yum_install_docker() {
     # https://docs.docker.com/install/linux/docker-ce/centos/
     info "Removing conflicting Docker packages."
-    yum -y remove docker \
+    sudo yum -y remove docker \
         docker-client \
         docker-client-latest \
         docker-common \

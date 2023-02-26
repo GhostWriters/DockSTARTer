@@ -15,7 +15,7 @@ get_docker() {
         REDIRECT=""
     fi
     eval "sh ${MKTEMP_GET_DOCKER} ${REDIRECT}" || fatal "Failed to install docker.\nFailing command: ${F[C]}sh ${MKTEMP_GET_DOCKER}"
-    rm -f "${MKTEMP_GET_DOCKER}" || warn "Failed to remove temporary docker install script."
+    rm -f "${MKTEMP_GET_DOCKER}" || warn "Failed to remove temporary docker install script.\nFailing command: ${F[C]}rm -f \"${MKTEMP_GET_DOCKER}\""
 }
 
 test_get_docker() {
