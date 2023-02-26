@@ -14,6 +14,8 @@ theme:
   search_index_only: true
   language: en
   features:
+    - content.action.edit
+    - content.code.copy
     - navigation.instant
   palette:
     - media: "(prefers-color-scheme: light)"
@@ -57,7 +59,7 @@ extra:
   social:
     - icon: fontawesome/brands/discord
       link: https://dockstarter.com/discord
-    - icon: fontawesome/brands/github-square
+    - icon: fontawesome/brands/square-github
       link: https://github.com/GhostWriters/DockSTARTer
 
 markdown_extensions:
@@ -92,6 +94,7 @@ nav:
       - apps/amd.md
       - apps/apcupsd.md
       - apps/apprise.md
+      - apps/audiobookshelf.md
       - apps/azuracast.md
       - apps/bazarr.md
       - apps/beets.md
@@ -113,11 +116,15 @@ nav:
       - apps/duplicacy.md
       - apps/duplicati.md
       - apps/emby.md
+      - apps/fail2ban.md
       - apps/filebot.md
       - apps/filebrowser.md
+      - apps/flame.md
       - apps/flaresolverr.md
       - apps/freshrss.md
+      - apps/gitea.md
       - apps/glances.md
+      - apps/gluetun.md
       - apps/goaccess.md
       - apps/grafana.md
       - apps/grocy.md
@@ -135,6 +142,7 @@ nav:
       - apps/jackett.md
       - apps/jellyfin.md
       - apps/jfago.md
+      - apps/kanboard.md
       - apps/kiwixserve.md
       - apps/lazylibrarian.md
       - apps/ldapauth.md
@@ -163,6 +171,7 @@ nav:
       - apps/omadacontroller.md
       - apps/ombi.md
       - apps/openldap.md
+      - apps/openspeedtest.md
       - apps/openvpnas.md
       - apps/organizr.md
       - apps/ouroboros.md
@@ -184,17 +193,17 @@ nav:
       - apps/quasselcore.md
       - apps/quasselweb.md
       - apps/radarr.md
+      - apps/recyclarr.md
       - apps/requestrr.md
       - apps/resiliosync.md
       - apps/rsnapshot.md
       - apps/rtorrentvpn.md
-      - apps/rutorrent.md
       - apps/rustdesk.md
+      - apps/rutorrent.md
       - apps/sabnzbd.md
       - apps/sabnzbdvpn.md
       - apps/samba.md
       - apps/sickchill.md
-      - apps/sickrage.md
       - apps/smokeping.md
       - apps/sonarr.md
       - apps/speedtest.md
@@ -207,8 +216,8 @@ nav:
       - apps/telegraf.md
       - apps/thelounge.md
       - apps/timemachine.md
-      - apps/traktarr.md
       - apps/traefik.md
+      - apps/traktarr.md
       - apps/transmission.md
       - apps/transmissionvpn.md
       - apps/tvheadend.md

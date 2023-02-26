@@ -1,6 +1,8 @@
 services:
   calibre:
     container_name: calibre
+    security_opt:
+      - seccomp:unconfined #optional
     environment:
       - CALIBRE_USE_DARK_PALETTE=${CALIBRE_USE_DARK_PALETTE}
       - CLI_ARGS=${CALIBRE_CLI_ARGS}

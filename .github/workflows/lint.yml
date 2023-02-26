@@ -3,43 +3,64 @@ name: Lint
 on: [push, pull_request]
 
 jobs:
-
   editorconfig-checker:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.3.0
       - name: editorconfig-checker
         run: |
-          docker run --rm -v ${GITHUB_WORKSPACE}:/check mstruebing/editorconfig-checker
+          docker run --rm \
+            -v "${GITHUB_WORKSPACE}":/check \
+            -u "$(id -u):$(id -g)" \
+            mstruebing/editorconfig-checker
 
   markdownlint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.3.0
       - name: markdownlint
         run: |
-          find ~+ ${github_workspace} -name '*.md' | xargs docker run --rm -v ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} markdownlint/markdownlint -r ~MD013,~MD033,~MD034
+          find "${GITHUB_WORKSPACE}" -name '*.md' -exec \
+            docker run --rm \
+              -v "${GITHUB_WORKSPACE}":"${GITHUB_WORKSPACE}" \
+              markdownlint/markdownlint \
+              -r ~MD007,~MD013,~MD033,~MD034 \
+              {} +
 
   shellcheck:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.3.0
       - name: shellcheck
         run: |
-          find ~+ ${github_workspace} -name '*.sh' | xargs docker run --rm -v ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} koalaman/shellcheck
+          find "${GITHUB_WORKSPACE}" -name '*.sh' -exec \
+            docker run --rm \
+              -v "${GITHUB_WORKSPACE}":"${GITHUB_WORKSPACE}" \
+              koalaman/shellcheck \
+              {} +
 
   shfmt:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.3.0
       - name: shfmt
         run: |
-          find ~+ ${github_workspace} -name '*.sh' | xargs docker run --rm -v ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} mvdan/shfmt -s -d
+          find "${GITHUB_WORKSPACE}" -name '*.sh' -exec \
+            docker run --rm \
+              -v "${GITHUB_WORKSPACE}":"${GITHUB_WORKSPACE}" \
+              mvdan/shfmt \
+              -s -d \
+              {} +
 
   yamllint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.3.0
       - name: yamllint
         run: |
-          find ~+ ${github_workspace} -name '*.yaml' -o -name '*.yml' | xargs docker run --rm -v ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} peterdavehello/yamllint yamllint -d '{extends: default, rules: {document-start: {present: false}, line-length: disable}}'
+          find "${GITHUB_WORKSPACE}" -name '*.yaml' -o -name '*.yml' -exec \
+            docker run --rm \
+              -v "${GITHUB_WORKSPACE}":"${GITHUB_WORKSPACE}" \
+              peterdavehello/yamllint \
+              yamllint -d '{"extends":"default","rules":{"document-start":{"present":false},"line-length":"disable","truthy":{"check-keys":false}}}' \
+              {} +
