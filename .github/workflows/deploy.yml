@@ -8,16 +8,17 @@ jobs:
     name: Build docs
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - uses: actions/checkout@v3.3.0
+      - uses: actions/setup-python@v4.5.0
         with:
           python-version: 3.x
-      - uses: actions/cache@v3
+      - uses: actions/cache@v3.2.6
         with:
           key: ${{ github.ref }}
           path: .cache
       - run: pip install -r docs/requirements.txt
-      - run: cp README.md docs/index.md
+      - run: |
+          cp README.md docs/index.md
       - run: mkdocs build
 
   deploy:
@@ -26,16 +27,17 @@ jobs:
     name: Deploy docs
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.3.0
         with:
           fetch-depth: '0'
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v4.5.0
         with:
           python-version: 3.x
-      - uses: actions/cache@v3
+      - uses: actions/cache@v3.2.6
         with:
           key: ${{ github.ref }}
           path: .cache
       - run: pip install -r docs/requirements.txt
-      - run: cp README.md docs/index.md
+      - run: |
+          cp README.md docs/index.md
       - run: mkdocs gh-deploy --force
