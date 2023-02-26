@@ -14,6 +14,8 @@ theme:
   search_index_only: true
   language: en
   features:
+    - content.action.edit
+    - content.code.copy
     - navigation.instant
   palette:
     - media: "(prefers-color-scheme: light)"
@@ -92,6 +94,7 @@ nav:
       - apps/amd.md
       - apps/apcupsd.md
       - apps/apprise.md
+      - apps/audiobookshelf.md
       - apps/azuracast.md
       - apps/bazarr.md
       - apps/beets.md
@@ -189,6 +192,7 @@ nav:
       - apps/quasselcore.md
       - apps/quasselweb.md
       - apps/radarr.md
+      - apps/recyclarr.md
       - apps/requestrr.md
       - apps/resiliosync.md
       - apps/rsnapshot.md
