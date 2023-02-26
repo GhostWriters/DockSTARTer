@@ -5,13 +5,13 @@ services:
       - RECYCLARR_CREATE_CONFIG=${RECYCLARR_CREATE_CONFIG}
       - TZ=${TZ}
     image: ghcr.io/recyclarr/recyclarr
-    user: ${PUID}:${PGID}
     logging:
       driver: json-file
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${RECYCLARR_RESTART}
+    user: ${PUID}:${PGID}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERSTORAGEDIR}:/storage
