@@ -3,8 +3,9 @@ services:
     container_name: audiobookshelf
     environment:
       - CONFIG_PATH=/config
+      - HOME=/config/.home
       - LOG_LEVEL=info
-      - METADATA_PATH=${AUDIOBOOKSHELF_METADATA_PATH}
+      - METADATA_PATH=/metadata
       - TZ=${TZ}
     logging:
       driver: json-file
@@ -16,4 +17,5 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/audiobookshelf:/config
+      - ${DOCKERCONFDIR}/audiobookshelf/.metadata:/metadata
       - ${DOCKERSTORAGEDIR}:/storage

@@ -5,7 +5,6 @@ services:
       com.dockstarter.appinfo.description: Self-hosted audiobook and podcast server
       com.dockstarter.appinfo.nicename: audiobookshelf
       com.dockstarter.appvars.audiobookshelf_enabled: "false"
-      com.dockstarter.appvars.audiobookshelf_metadata_path: "/config/.metadata"
       com.dockstarter.appvars.audiobookshelf_network_mode: ""
       com.dockstarter.appvars.audiobookshelf_port_80: "13378"
       com.dockstarter.appvars.audiobookshelf_restart: unless-stopped
