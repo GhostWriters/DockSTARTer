@@ -11,6 +11,7 @@ jobs:
         run: |
           docker run --rm \
             -v "${GITHUB_WORKSPACE}":/check \
+            -u "$(id -u):$(id -g)" \
             mstruebing/editorconfig-checker
 
   markdownlint:
@@ -21,10 +22,10 @@ jobs:
         run: |
           find "${GITHUB_WORKSPACE}" -name '*.md' -exec \
             docker run --rm \
-            -v "${GITHUB_WORKSPACE}":"${GITHUB_WORKSPACE}" \
-            markdownlint/markdownlint \
-            -r ~MD007,~MD013,~MD033,~MD034 \
-            {} +
+              -v "${GITHUB_WORKSPACE}":"${GITHUB_WORKSPACE}" \
+              markdownlint/markdownlint \
+              -r ~MD007,~MD013,~MD033,~MD034 \
+              {} +
 
   shellcheck:
     runs-on: ubuntu-latest
@@ -34,9 +35,9 @@ jobs:
         run: |
           find "${GITHUB_WORKSPACE}" -name '*.sh' -exec \
             docker run --rm \
-            -v "${GITHUB_WORKSPACE}":"${GITHUB_WORKSPACE}" \
-            koalaman/shellcheck \
-            {} +
+              -v "${GITHUB_WORKSPACE}":"${GITHUB_WORKSPACE}" \
+              koalaman/shellcheck \
+              {} +
 
   shfmt:
     runs-on: ubuntu-latest
@@ -45,11 +46,11 @@ jobs:
       - name: shfmt
         run: |
           find "${GITHUB_WORKSPACE}" -name '*.sh' -exec \
-          docker run --rm \
-          -v "${GITHUB_WORKSPACE}":"${GITHUB_WORKSPACE}" \
-          mvdan/shfmt \
-          -s -d \
-          {} +
+            docker run --rm \
+              -v "${GITHUB_WORKSPACE}":"${GITHUB_WORKSPACE}" \
+              mvdan/shfmt \
+              -s -d \
+              {} +
 
   yamllint:
     runs-on: ubuntu-latest
@@ -59,7 +60,7 @@ jobs:
         run: |
           find "${GITHUB_WORKSPACE}" -name '*.yaml' -o -name '*.yml' -exec \
             docker run --rm \
-            -v "${GITHUB_WORKSPACE}":"${GITHUB_WORKSPACE}" \
-            peterdavehello/yamllint \
-            yamllint -d '{"extends":"default","rules":{"document-start":{"present":false},"line-length":"disable","truthy":{"check-keys":false}}}' \
-            {} +
+              -v "${GITHUB_WORKSPACE}":"${GITHUB_WORKSPACE}" \
+              peterdavehello/yamllint \
+              yamllint -d '{"extends":"default","rules":{"document-start":{"present":false},"line-length":"disable","truthy":{"check-keys":false}}}' \
+              {} +
