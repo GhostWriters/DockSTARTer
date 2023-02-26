@@ -14,6 +14,8 @@ theme:
   search_index_only: true
   language: en
   features:
+    - content.action.edit
+    - content.code.copy
     - navigation.instant
   palette:
     - media: "(prefers-color-scheme: light)"
@@ -114,6 +116,7 @@ nav:
       - apps/duplicacy.md
       - apps/duplicati.md
       - apps/emby.md
+      - apps/fail2ban.md
       - apps/filebot.md
       - apps/filebrowser.md
       - apps/flame.md
@@ -190,17 +193,17 @@ nav:
       - apps/quasselcore.md
       - apps/quasselweb.md
       - apps/radarr.md
+      - apps/recyclarr.md
       - apps/requestrr.md
       - apps/resiliosync.md
       - apps/rsnapshot.md
       - apps/rtorrentvpn.md
-      - apps/rutorrent.md
       - apps/rustdesk.md
+      - apps/rutorrent.md
       - apps/sabnzbd.md
       - apps/sabnzbdvpn.md
       - apps/samba.md
       - apps/sickchill.md
-      - apps/sickrage.md
       - apps/smokeping.md
       - apps/sonarr.md
       - apps/speedtest.md
@@ -213,8 +216,8 @@ nav:
       - apps/telegraf.md
       - apps/thelounge.md
       - apps/timemachine.md
-      - apps/traktarr.md
       - apps/traefik.md
+      - apps/traktarr.md
       - apps/transmission.md
       - apps/transmissionvpn.md
       - apps/tvheadend.md
