@@ -116,6 +116,7 @@ nav:
       - apps/duplicacy.md
       - apps/duplicati.md
       - apps/emby.md
+      - apps/fail2ban.md
       - apps/filebot.md
       - apps/filebrowser.md
       - apps/flame.md
@@ -197,8 +198,8 @@ nav:
       - apps/resiliosync.md
       - apps/rsnapshot.md
       - apps/rtorrentvpn.md
-      - apps/rutorrent.md
       - apps/rustdesk.md
+      - apps/rutorrent.md
       - apps/sabnzbd.md
       - apps/sabnzbdvpn.md
       - apps/samba.md
@@ -215,8 +216,8 @@ nav:
       - apps/telegraf.md
       - apps/thelounge.md
       - apps/timemachine.md
-      - apps/traktarr.md
       - apps/traefik.md
+      - apps/traktarr.md
       - apps/transmission.md
       - apps/transmissionvpn.md
       - apps/tvheadend.md
