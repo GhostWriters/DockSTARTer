@@ -3,6 +3,7 @@ services:
     container_name: audiobookshelf
     environment:
       - CONFIG_PATH=/config
+      - HOME=/config/.home
       - LOG_LEVEL=info
       - METADATA_PATH=${AUDIOBOOKSHELF_METADATA_PATH}
       - TZ=${TZ}
