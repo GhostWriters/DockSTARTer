@@ -2,7 +2,7 @@ services:
   tdarrnode:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: Tdarr Node is a self hosted module used for encoding in conjuction with Tdarr
+      com.dockstarter.appinfo.description: Tdarr Node is a self hosted module used for encoding in conjunction with Tdarr
       com.dockstarter.appinfo.nicename: TdarrNode
       com.dockstarter.appvars.tdarrnode_enabled: "false"
       com.dockstarter.appvars.tdarrnode_network_mode: ""

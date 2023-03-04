@@ -10,4 +10,4 @@
 
 ## Install/Setup
 
-Huginn is extremely configurable. By default DS only includes variables for the database. The container will run the default variables that are included in their `.env.example` in the container. However, you can pick and choose which [enviroment variables](https://github.com/huginn/huginn/blob/master/.env.example) you want to configure and include them in an [override](https://dockstarter.com/overrides/introduction/).
+Huginn is extremely configurable. By default DS only includes variables for the database. The container will run the default variables that are included in their `.env.example` in the container. However, you can pick and choose which [environment variables](https://github.com/huginn/huginn/blob/master/.env.example) you want to configure and include them in an [override](https://dockstarter.com/overrides/introduction/).
