@@ -2,7 +2,7 @@ services:
   airsonic:
     labels:
       com.dockstarter.appinfo.deprecated: "true"
-      com.dockstarter.appinfo.description: Web-based media streamer providing ubiquitious access to your music
+      com.dockstarter.appinfo.description: Web-based media streamer providing ubiquitous access to your music
       com.dockstarter.appinfo.nicename: Airsonic
       com.dockstarter.appvars.airsonic_context_path: /airsonic
       com.dockstarter.appvars.airsonic_enabled: "false"

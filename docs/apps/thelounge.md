@@ -15,7 +15,7 @@ own server.
 * Stop the container
 * Now from the host, edit `~/.config/appdata/thelounge/config.js`, or wherever you've mapped it
 * In most cases you want the value `public: false` to allow named users only
-  * This will allow for persistant connections to the servers you configure for each account
+  * This will allow for persistent connections to the servers you configure for each account
 * Setting the two prefetch values to `true` improves usability, but uses more storage
 * Once you have the configuration you want, save it and start the container again
 * For each user, run the command
