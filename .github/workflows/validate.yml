@@ -3,7 +3,6 @@ name: Validate
 on: [push, pull_request]
 
 jobs:
-
   validate-docs:
     runs-on: ubuntu-latest
     steps:
@@ -12,12 +11,12 @@ jobs:
         run: |
           dirname -- $(grep -Rl 'deprecated: "true"' compose/) | xargs rm -rf
           for image in $(ls compose/.apps/); do
-              if ! ls -d docs/apps/* | grep -q "docs/apps/$image.md"; then
-                  echo "Missing documentation for $image"
+              if ! ls -d docs/apps/* | grep -q "docs/apps/${image}.md"; then
+                  echo "Missing documentation for ${image}"
                   exit 1
               fi
-              if ! grep -q "apps/$image.md" mkdocs.yml; then
-                  echo "Missing link for $image"
+              if ! grep -q "apps/${image}.md" mkdocs.yml; then
+                  echo "Missing link for ${image}"
                   exit 1
               fi
           done
@@ -30,6 +29,9 @@ jobs:
         run: |
           dirname -- $(grep -Rl 'deprecated: "true"' compose/) | xargs rm -rf
           for image in $(grep -RPoh "image: \K.*" compose/ | sort -u | grep -v '${'); do
-              echo "Image: $image"
-              DOCKER_CLI_EXPERIMENTAL=enabled docker manifest inspect $image
+              echo "Image: ${image}"
+              if [[ ${image} != *":"* ]]; then
+                  image="${image}:latest"
+              fi
+              docker run --rm mplatform/mquery "${image}"
           done
