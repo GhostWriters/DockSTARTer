@@ -301,6 +301,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://dockstarter.com/apps/homebridge/</loc>
+         <lastmod>2023-03-06</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://dockstarter.com/apps/homer/</loc>
          <lastmod>2023-03-06</lastmod>
          <changefreq>daily</changefreq>
