@@ -134,6 +134,7 @@ nav:
       - apps/headphones.md
       - apps/heimdall.md
       - apps/homeassistant.md
+      - apps/homebridge.md
       - apps/homer.md
       - apps/htpcmanager.md
       - apps/httpserver.md

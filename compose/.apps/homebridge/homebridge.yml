@@ -1,0 +1,20 @@
+services:
+  homebridge:
+    container_name: homebridge
+    environment:
+      - ENABLE_AVAHI=${HOMEBRIDGE_ENABLE_AVAHI}
+      - HOMEBRIDGE_CONFIG_UI=${HOMEBRIDGE_CONFIG_UI}
+      - HOMEBRIDGE_CONFIG_UI_PORT=${HOMEBRIDGE_CONFIG_UI_PORT_8581}
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: ${HOMEBRIDGE_RESTART}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/homebridge:/homebridge
+      - ${DOCKERSTORAGEDIR}:/storage
