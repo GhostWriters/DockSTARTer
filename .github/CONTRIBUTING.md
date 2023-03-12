@@ -44,7 +44,7 @@ Look at the **App Specifics** list in the **nav** section and add a new line for
 
 ## Shell scripts
 
-- Remeber [Shell Scripts Matter](https://dev.to/thiht/shell-scripts-matter)
+- Remember [Shell Scripts Matter](https://dev.to/thiht/shell-scripts-matter)
 - [Use the Unofficial Bash Strict Mode](http://redsymbol.net/articles/unofficial-bash-strict-mode/)
 - Follow the [Shell Style Guide](https://google.github.io/styleguide/shell.xml)
 - Use [Defensive BASH Programming](https://web.archive.org/web/20180917174959/http://www.kfirlavi.com/blog/2012/11/14/defensive-bash-programming/)
