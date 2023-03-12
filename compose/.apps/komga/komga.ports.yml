@@ -2,4 +2,3 @@ services:
   ubooquity:
     ports:
       - ${KOMGA_PORT_8080}:8080
-
