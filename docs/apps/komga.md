@@ -6,7 +6,7 @@
 
 ## Description
 
-[Komga](https://komga.org) Komga is a media server for your comics, mangas, BDs and magazines.
+[Komga](https://komga.org) is a media server for your comics, mangas, BDs and magazines.
 
 ## Install/Setup
 
