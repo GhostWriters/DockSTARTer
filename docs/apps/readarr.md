@@ -6,7 +6,7 @@
 
 ## Description
 
-[Readarr](https://github.com/Readarr/Readarr) ais an ebook and audiobook collection manager for Usenet and BitTorrent users.
+[Readarr](https://github.com/Readarr/Readarr) is an ebook and audiobook collection manager for Usenet and BitTorrent users.
 
 ## Install/Setup
 
