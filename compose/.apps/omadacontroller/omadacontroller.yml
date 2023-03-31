@@ -18,6 +18,10 @@ services:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${OMADACONTROLLER_RESTART}
+    ulimits:
+      nofile:
+        soft: 4096
+        hard: 8192
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/omadacontroller:/opt/tplink/EAPController/data
