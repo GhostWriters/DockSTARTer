@@ -195,6 +195,7 @@ nav:
       - apps/quasselcore.md
       - apps/quasselweb.md
       - apps/radarr.md
+      - apps/readarr.md
       - apps/recyclarr.md
       - apps/requestrr.md
       - apps/resiliosync.md
