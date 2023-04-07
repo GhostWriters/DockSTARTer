@@ -10,6 +10,25 @@
 
 ## Install/Setup
 
-This application does not have any specific setup instructions documented. If
+When installing the Recyclarr container, the installer will install under
+`appdata` directory as the root user, however once it is installed you can
+change the owner/group of it to whatever is required
+
+Run the below command from a terminal to change the permissions if required:
+
+```bash
+sudo chown -R $USER:$USER ~/.config/appdata/recyclarr
+```
+
+Restart your container by running:
+
+```bash
+docker restart recyclarr
+```
+
+Having the owner group change will allow you to edit the files if required
+without running into permission issues.
+
+This application does not have any further specific setup instructions documented. If
 you need assistance setting up this application please visit our
 [support page](https://dockstarter.com/basics/support/).
