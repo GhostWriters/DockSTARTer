@@ -3,7 +3,7 @@ services:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: Wizarr is a automatic user invitation system for Plex, Jellyfin and Emby.
-      com.dockstarter.appinfo.nicename: wizarr
+      com.dockstarter.appinfo.nicename: Wizarr
       com.dockstarter.appvars.wizarr_enabled: "false"
       com.dockstarter.appvars.wizarr_network_mode: ""
       com.dockstarter.appvars.wizarr_restart: unless-stopped
