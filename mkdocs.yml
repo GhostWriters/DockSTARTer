@@ -95,6 +95,7 @@ nav:
       - apps/apcupsd.md
       - apps/apprise.md
       - apps/audiobookshelf.md
+      - apps/autobrr.md
       - apps/azuracast.md
       - apps/bazarr.md
       - apps/beets.md
