@@ -1,6 +1,6 @@
 # autobrr
 
-[![GitHub Downloads](https://img.shields.io/github/downloads/autobrr/autobrr/total?color=607D8B&logo=github&style=flat-square](https://hub.docker.com/r/linuxserver/airsonic-advanced)
+[![GitHub Downloads](https://img.shields.io/github/downloads/autobrr/autobrr/total?color=607D8B&logo=github&style=flat-square)](https://hub.docker.com/r/linuxserver/airsonic-advanced)
 [![GitHub Stars](https://img.shields.io/github/stars/autobrr/autobrr?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/autobrr/autobrr)
 [![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/autobrr)
 
