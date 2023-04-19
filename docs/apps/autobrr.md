@@ -10,4 +10,22 @@
 
 ## Install/Setup
 
-Please refer to the container [Application Setup](https://autobrr.com/installation/docker) documentation.
+When installing the autobrr container, the installer will install under the
+`appdata` directory as the root user and you will see errors as such:
+
+> error creating file: "open /config/config.toml: permission denied"
+
+However once it is installed you can change the owner/group of it to whatever is
+required. Run the following command to fix it:
+
+```bash
+sudo chown -R $USER:$USER ~/.config/appdata/autobrr
+```
+
+Restart your container by running:
+
+```bash
+docker restart autobrr
+```
+
+For other issues please refer to the container [Application Setup](https://autobrr.com/installation/docker) documentation.
