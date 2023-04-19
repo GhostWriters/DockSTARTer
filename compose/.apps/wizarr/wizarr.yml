@@ -1,0 +1,20 @@
+services:
+  wizarr:
+    container_name: wizarr
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+      - APP_URL=${WIZARR_APP_URL}
+      - DISABLE_BUILTIN_AUTH=${WIZARR_DISABLE_BUILTIN_AUTH}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: ${WIZARR_RESTART}
+    user: ${PGID}:${PUID}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/wizarr:/data/database
+      - ${DOCKERSTORAGEDIR}:/storage

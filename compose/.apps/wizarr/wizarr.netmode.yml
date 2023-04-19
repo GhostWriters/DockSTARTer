@@ -1,0 +1,3 @@
+services:
+  wizarr:
+    network_mode: ${WIZARR_NETWORK_MODE}

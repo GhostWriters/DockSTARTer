@@ -1,0 +1,4 @@
+services:
+  wizarr:
+    ports:
+      - ${WIZARR_PORT_5690}:5690
