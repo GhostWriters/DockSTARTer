@@ -1,6 +1,6 @@
 # Wizarr
 
-[![Github Downloads](https://img.shields.io/github/downloads/Wizarrrr/wizarr/total?color=607D8B&label=github%20downloads&logo=github&style=flat-square)](https://github.com/Wizarrrr/wizarr)
+[![GitHub Downloads](https://img.shields.io/github/downloads/Wizarrrr/wizarr/total?color=607D8B&label=github%20downloads&logo=github&style=flat-square)](https://github.com/Wizarrrr/wizarr)
 [![GitHub Stars](https://img.shields.io/github/stars/Wizarrrr/wizarr?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/Wizarrrr/wizarr)
 [![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/wizarr)
 
