@@ -11,3 +11,7 @@
 ## Install/Setup
 
 This application does not have any specific setup instructions documented. If you need assistance setting up this application please visit the [official documentation](https://docs.wizarr.dev/getting-started/installation) or our [support page](https://dockstarter.com/basics/support/).
+
+## Reverse Proxy
+
+To set up in a reverse proxy (SWAG/Traefik/NPM/etc.) see the instructions listed [in the documentation.](https://docs.wizarr.dev/getting-started/reverse-proxy) Wizarr is only designed to work as a subdomain application, not as a subfolder.
