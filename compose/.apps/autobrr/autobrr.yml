@@ -2,8 +2,6 @@ services:
   autobrr:
     container_name: autobrr
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
       - TZ=${TZ}
     user: ${PGID}:${PUID}
     logging:
