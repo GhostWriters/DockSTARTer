@@ -7,3 +7,4 @@ services:
       com.dockstarter.appvars.autobrr_enabled: "false"
       com.dockstarter.appvars.autobrr_network_mode: ""
       com.dockstarter.appvars.autobrr_port_7474: "7474"
+      com.dockstarter.appvars.autobrr_restart: "unless-stopped"
