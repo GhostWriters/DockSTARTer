@@ -22,10 +22,10 @@ you need assistance setting up this application please visit our
 
 The default notification library is [Shoutrrr](https://containrrr.dev/shoutrrr/). Shoutrrr offers notifications via Discord, Email, Pushover, Slack, Telegram, and [several others](https://containrrr.dev/shoutrrr/services/overview/). Click on the service for a more thorough explanation.
 
-| Notification Application | Your DockSTARTer `WATCHTOWER_NOTIFICATION_URL` should follow this: |
-| ------------- |----------------------------------------------------------------------------------------------|
-| [Discord](https://containrrr.dev/shoutrrr/services/discord/) | discord://__token__@__channel__ |
-| [Email](https://containrrr.dev/shoutrrr/services/overview/) | smtp://__`username`__:__`password`__@__`host`__:__`port`__/?fromAddress=__`fromAddress`__&toAddresses=__`recipient1`__[,__`recipient2`__,...] |
-| [Pushover](https://containrrr.dev/shoutrrr/services/pushover/) | pushover://shoutrrr:__`apiToken`__@__`userKey`__/?devices=__`device1`__[,__`device2`__, ...] |
-| [Slack](./not-documented.md)      | slack://[__`botname`__@]__`token-a`__/__`token-b`__/__`token-c`__* |
-| [Telegram](https://containrrr.dev/shoutrrr/services/telegram/) | telegram://__`token`__@telegram?channels=__`channel-1`__[,__`channel-2`__,...] |
+| Notification Application                                       | Your DockSTARTer `WATCHTOWER_NOTIFICATION_URL` should follow this:                                                                            |
+| -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Discord](https://containrrr.dev/shoutrrr/services/discord/)   | discord://**token**@**channel**                                                                                                               |
+| [Email](https://containrrr.dev/shoutrrr/services/overview/)    | smtp://**`username`**:**`password`**@**`host`**:**`port`**/?fromAddress=**`fromAddress`**&toAddresses=**`recipient1`**[,__`recipient2`__,...] |
+| [Pushover](https://containrrr.dev/shoutrrr/services/pushover/) | pushover://shoutrrr:**`apiToken`**@**`userKey`**/?devices=**`device1`**[,__`device2`__, ...]                                                  |
+| [Slack](./not-documented.md)                                   | slack://[__`botname`__@]**`token-a`**/**`token-b`**/**`token-c`**\*                                                                           |
+| [Telegram](https://containrrr.dev/shoutrrr/services/telegram/) | telegram://**`token`**@telegram?channels=**`channel-1`**[,__`channel-2`__,...]                                                                |

@@ -1,9 +1,8 @@
-
 # OpenMediaVault (OMV)
 
 OpenMediaVault (OMV) requires some special setup in order to install DockSTARTer (DS). DS staff have tested and confirmed the following installation method on OMV version 5.5.
 
-If you are a Linux newbie, we *strongly discourage* this approach because of all the issues that might arise with how OMV is built, and troubleshooting issues in OMV can be a pain. However, if you feel comfortable with Linux and want to continue down this route you will need to ensure the following:
+If you are a Linux newbie, we _strongly discourage_ this approach because of all the issues that might arise with how OMV is built, and troubleshooting issues in OMV can be a pain. However, if you feel comfortable with Linux and want to continue down this route you will need to ensure the following:
 
 - You have installed all the necessary updates that are pending in your system.
 - You have set a DNS server in your Web GUI.

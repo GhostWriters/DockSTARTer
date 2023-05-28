@@ -13,7 +13,6 @@
 
 ```yaml
 services:
-
   plpp:
     container_name: plpp
     environment:

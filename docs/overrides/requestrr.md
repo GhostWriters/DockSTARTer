@@ -13,7 +13,6 @@
 
 ```yaml
 services:
-
   requestrr:
     container_name: requestrr
     environment:

@@ -13,7 +13,6 @@
 
 ```yaml
 services:
-
   dashmachine:
     container_name: dashmachine
     hostname: ${DOCKERHOSTNAME}

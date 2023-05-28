@@ -22,7 +22,6 @@ BW_PLEX_URL=http://plex:32400
 
 ```yaml
 services:
-
   bw_plex:
     image: hellowlol/bw_plex
     container_name: bw_plex

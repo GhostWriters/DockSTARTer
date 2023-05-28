@@ -13,7 +13,6 @@
 
 ```yaml
 services:
-
   petio:
     container_name: petio
     environment:

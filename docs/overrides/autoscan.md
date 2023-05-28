@@ -13,7 +13,6 @@
 
 ```yaml
 services:
-
   autoscan:
     image: cloudb0x/autoscan
     hostname: ${DOCKERHOSTNAME}
