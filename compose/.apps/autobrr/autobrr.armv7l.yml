@@ -1,0 +1,3 @@
+services:
+  autobrr:
+    image: ghcr.io/autobrr/autobrr
