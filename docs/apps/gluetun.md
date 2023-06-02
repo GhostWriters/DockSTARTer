@@ -14,7 +14,7 @@ Wireguard, DNS over TLS, with a few proxy servers built-in.
 
 Check the [wiki](https://github.com/qdm12/gluetun/wiki) for the relevant
 environment variables for your VPN provider that should be placed in
-your ``docker-compose.override.yml``.
+your `docker-compose.override.yml`.
 
 ## Example
 

@@ -13,7 +13,6 @@
 
 ```yaml
 services:
-
   conreq:
     container_name: conreq
     environment:

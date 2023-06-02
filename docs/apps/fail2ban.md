@@ -20,7 +20,6 @@ Example:
 
 ```yaml
 services:
-
   fail2ban:
     volumes:
       - "${DOCKERCONFDIR}/filebrowser/filebrowser.log:/remotelogs/filebrowser/filebrowser.log:ro"

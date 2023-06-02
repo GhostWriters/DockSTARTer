@@ -16,7 +16,7 @@ Note that your configuration files and homer assets are located in `${DOCKERCONF
 
 ### Environment Variables
 
-#### HOMER\_INIT_ASSETS
+#### HOMER_INIT_ASSETS
 
 `1` (default) Install example configuration file & assets (favicons, ...) to help you get started.
 

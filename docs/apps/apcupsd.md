@@ -6,7 +6,7 @@
 
 ## Description
 
-[Apcupsd]((http://www.apcupsd.org/)) is a dockerized Python script that will send data from apcupsd to influxdb. You can then visualize the influxdb data in [Grafana](https://grafana.com/)/[Prometheus](https://prometheus.io/).
+[Apcupsd](http://www.apcupsd.org/) is a dockerized Python script that will send data from apcupsd to influxdb. You can then visualize the influxdb data in [Grafana](https://grafana.com/)/[Prometheus](https://prometheus.io/).
 
 ## Install/Setup
 
