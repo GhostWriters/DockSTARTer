@@ -1,6 +1,7 @@
 # Uninstalling
 
 Blurb from our Discord follows:
+
 > ... you can remove everything in `~/.docker` with exception to `~/.docker/config` (which you may not have if your config is at `~/.config/appdata`). However, you may want to consider keeping the `~/.docker/compose/docker-compose.yml` and `~/.docker/compose/.env` to rebuild it using `sudo docker-compose` and pass the envs.
 >
 > ... you should see your containers in `docker ps -a` or GUI such as Portainer.

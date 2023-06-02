@@ -13,7 +13,7 @@
 By default, the DockSTARTer configuration of Bazarr will map to the following volumes:
 
 ```yaml
-      - ${DOCKERSTORAGEDIR}:/storage
+- ${DOCKERSTORAGEDIR}:/storage
 ```
 
 If you have any media outside of those locations, you'll need to create an override using [override](https://dockstarter.com/overrides/introduction) specifically for those volumes.

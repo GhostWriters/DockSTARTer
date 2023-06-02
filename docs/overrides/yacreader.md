@@ -11,7 +11,6 @@
 
 ```yaml
 services:
-
   yacreaderlibraryserver:
     image: muallin/yacreaderlibrary-server-docker
     container_name: yacreaderlibraryserver

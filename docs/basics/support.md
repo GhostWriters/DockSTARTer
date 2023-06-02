@@ -16,7 +16,7 @@ Also check out our subreddit, [/r/DockSTARTer](https://www.reddit.com/r/DockSTAR
 
 Below you will find links to various tutorial videos, blogs, and guides users have made.
 
-* DBTech - [Raspberry Pi 4: Ultimate Home Server with DockerSTARTer Blog Post & Video Tutorial](https://dbte.ch/dockstarter)
-* MakeUseOf.com - [How to Set Up a Linux Media Server in Under One Hour Tutorial](https://www.makeuseof.com/tag/setup-linux-media-server/)
-* Borked.io - [Docker In Your HomeLab - Getting Started Tutorial](https://borked.io/2019/02/13/docker-in-your-homelab.html)
-* Servermania.com - [How to Setup and Use a Plex Media Server for Movies and TV Tutorial](https://www.servermania.com/kb/articles/how-to-use-plex-media-server/)
+- DBTech - [Raspberry Pi 4: Ultimate Home Server with DockerSTARTer Blog Post & Video Tutorial](https://dbte.ch/dockstarter)
+- MakeUseOf.com - [How to Set Up a Linux Media Server in Under One Hour Tutorial](https://www.makeuseof.com/tag/setup-linux-media-server/)
+- Borked.io - [Docker In Your HomeLab - Getting Started Tutorial](https://borked.io/2019/02/13/docker-in-your-homelab.html)
+- Servermania.com - [How to Setup and Use a Plex Media Server for Movies and TV Tutorial](https://www.servermania.com/kb/articles/how-to-use-plex-media-server/)

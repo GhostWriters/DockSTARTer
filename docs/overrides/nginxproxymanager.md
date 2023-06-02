@@ -30,7 +30,6 @@ Nginx Proxy Manager requires a Configuration file named `config.json`. This file
 
 ```yaml
 services:
-
   proxymanager:
     image: jc21/nginx-proxy-manager:latest
     container_name: proxymanager

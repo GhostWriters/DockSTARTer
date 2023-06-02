@@ -13,7 +13,6 @@
 
 ```yaml
 services:
-
   fireflyiii:
     container_name: fireflyiii
     environment:

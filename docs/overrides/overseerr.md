@@ -13,7 +13,6 @@
 
 ```yaml
 services:
-
   overseerr:
     container_name: overseerr
     environment:

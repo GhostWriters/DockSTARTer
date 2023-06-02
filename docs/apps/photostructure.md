@@ -14,7 +14,7 @@ There are a few directories that get mounted on PhotoStructure that require a bi
 
 `/ps/tmp` is PhotoStructure’s “scratch” directory.
 
-* It **must** be on a local disk, preferably an SSD.
-* This volume should have at least 16-32 GB free.
+- It **must** be on a local disk, preferably an SSD.
+- This volume should have at least 16-32 GB free.
 
 If your PhotoStructure library is hosted somewhere over the network, then you must set the `.env` variable `PS_FORCE_LOCAL_DB_REPLICA` to a `1`. It currently defaults to a `0`.

@@ -13,7 +13,7 @@
 When installing the Tdarr container, the installer will install under the
 `appdata` directory as the root user and you will see errors as such:
 
->* Starting database mongodb
+> - Starting database mongodb
 >
 > ...fail
 

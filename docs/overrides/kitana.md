@@ -13,11 +13,10 @@
 
 ```yaml
 services:
-
   kitana:
     container_name: kitana
     environment:
-    - TZ=${TZ}
+      - TZ=${TZ}
     image: pannal/kitana
     logging:
       driver: json-file
@@ -25,10 +24,10 @@ services:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
     ports:
-    - 31337:31337
+      - 31337:31337
     restart: unless-stopped
     volumes:
-    - /etc/localtime:/etc/localtime:ro
-    - ${DOCKERCONFDIR}/kitana:/app/data
-    - ${DOCKERSTORAGEDIR}:/storage
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/kitana:/app/data
+      - ${DOCKERSTORAGEDIR}:/storage
 ```
