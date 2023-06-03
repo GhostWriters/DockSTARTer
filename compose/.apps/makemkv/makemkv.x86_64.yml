@@ -1,3 +1,3 @@
 services:
   makemkv:
-    image: jlesage/makemkv
+    image: jlesage/makemkv:latest

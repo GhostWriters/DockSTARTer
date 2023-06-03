@@ -1,3 +1,3 @@
 services:
   pyload:
-    image: lscr.io/linuxserver/pyload
+    image: lscr.io/linuxserver/pyload:latest

@@ -1,3 +1,3 @@
 services:
   letsencrypt:
-    image: lscr.io/linuxserver/letsencrypt
+    image: lscr.io/linuxserver/letsencrypt:latest

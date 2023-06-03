@@ -1,3 +1,3 @@
 services:
   couchpotato:
-    image: lscr.io/linuxserver/couchpotato
+    image: lscr.io/linuxserver/couchpotato:latest

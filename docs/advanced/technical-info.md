@@ -17,7 +17,7 @@ YML files are akin to XML files and below is an example:
 ```yaml
 services:
   sonarr:
-    image: containers_author/sonarr
+    image: containers_author/sonarr:latest
     container_name: sonarr
     restart: ${SONARR_RESTART}
     environment:

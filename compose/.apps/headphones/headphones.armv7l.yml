@@ -1,3 +1,3 @@
 services:
   headphones:
-    image: lscr.io/linuxserver/headphones
+    image: lscr.io/linuxserver/headphones:latest

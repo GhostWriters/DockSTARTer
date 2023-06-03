@@ -20,7 +20,7 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     hostname: ${DOCKERHOSTNAME}
-    image: tronyx/docker-plpp
+    image: tronyx/docker-plpp:latest
     logging:
       driver: json-file
       options:

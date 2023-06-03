@@ -14,7 +14,7 @@
 ```yaml
 services:
   autoscan:
-    image: cloudb0x/autoscan
+    image: cloudb0x/autoscan:latest
     hostname: ${DOCKERHOSTNAME}
     ports:
       - 3030:3030

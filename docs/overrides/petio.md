@@ -18,7 +18,7 @@ services:
     environment:
       - TZ=${TZ}
     hostname: ${DOCKERHOSTNAME}
-    image: cr.hotio.dev/hotio/petio
+    image: cr.hotio.dev/hotio/petio:latest
     logging:
       driver: json-file
       options:
@@ -38,7 +38,7 @@ services:
     environment:
       - TZ=${TZ}
     hostname: ${DOCKERHOSTNAME}
-    image: mongo
+    image: mongo:latest
     logging:
       driver: json-file
       options:

@@ -1,3 +1,3 @@
 services:
   moviematch:
-    image: lukechannings/moviematch
+    image: lukechannings/moviematch:latest
