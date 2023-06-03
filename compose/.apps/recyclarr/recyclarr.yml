@@ -4,7 +4,6 @@ services:
     environment:
       - RECYCLARR_CREATE_CONFIG=${RECYCLARR_CREATE_CONFIG}
       - TZ=${TZ}
-    image: ghcr.io/recyclarr/recyclarr:latest
     logging:
       driver: json-file
       options:
@@ -14,5 +13,5 @@ services:
     user: ${PUID}:${PGID}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERSTORAGEDIR}:/storage
       - ${DOCKERCONFDIR}/recyclarr:/config
+      - ${DOCKERSTORAGEDIR}:/storage
