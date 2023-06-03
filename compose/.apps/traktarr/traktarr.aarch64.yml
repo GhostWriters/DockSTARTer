@@ -1,3 +1,3 @@
 services:
   traktarr:
-    image: eafxx/traktarr
+    image: eafxx/traktarr:latest

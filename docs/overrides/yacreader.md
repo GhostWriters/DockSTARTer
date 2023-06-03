@@ -12,7 +12,7 @@
 ```yaml
 services:
   yacreaderlibraryserver:
-    image: muallin/yacreaderlibrary-server-docker
+    image: muallin/yacreaderlibrary-server-docker:latest
     container_name: yacreaderlibraryserver
     restart: unless-stopped
     volumes:

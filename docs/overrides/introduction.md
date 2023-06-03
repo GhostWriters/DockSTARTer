@@ -25,7 +25,7 @@ The example below will change Sonarr to use hotio's image for Sonarr and add a /
 ```yaml
 services:
   sonarr:
-    image: cr.hotio.dev/hotio/sonarr
+    image: cr.hotio.dev/hotio/sonarr:latest
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/sonarr:/config
@@ -45,7 +45,7 @@ services:
     environment:
       - PGID=1000
       - PUID=1000
-    image: rudloff/alltube
+    image: rudloff/alltube:latest
     logging:
       driver: json-file
       options:
