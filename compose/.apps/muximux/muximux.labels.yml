@@ -1,8 +1,8 @@
 services:
   muximux:
     labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: A lightweight way to manage your HTPC
+      com.dockstarter.appinfo.deprecated: "true"
+      com.dockstarter.appinfo.description: (DEPRECATED) Use Heimdall or Organizr
       com.dockstarter.appinfo.nicename: Muximux
       com.dockstarter.appvars.muximux_enabled: "false"
       com.dockstarter.appvars.muximux_network_mode: ""

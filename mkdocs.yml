@@ -163,13 +163,10 @@ nav:
       - apps/mosquitto.md
       - apps/moviematch.md
       - apps/murmur.md
-      - apps/muximux.md
       - apps/mylar3.md
       - apps/netdata.md
       - apps/nextcloud.md
       - apps/nodered.md
-      - apps/nzbget.md
-      - apps/nzbgetvpn.md
       - apps/nzbhydra2.md
       - apps/omadacontroller.md
       - apps/ombi.md
@@ -178,7 +175,6 @@ nav:
       - apps/openvpnas.md
       - apps/organizr.md
       - apps/ouroboros.md
-      - apps/photoshow.md
       - apps/photostructure.md
       - apps/phpmyadmin.md
       - apps/picard.md
@@ -198,7 +194,6 @@ nav:
       - apps/radarr.md
       - apps/readarr.md
       - apps/recyclarr.md
-      - apps/requestrr.md
       - apps/resiliosync.md
       - apps/rsnapshot.md
       - apps/rtorrentvpn.md
@@ -251,5 +246,4 @@ nav:
       - overrides/overseerr.md
       - overrides/petio.md
       - overrides/plpp.md
-      - overrides/requestrr.md
       - overrides/yacreader.md

@@ -1,8 +1,8 @@
 services:
   nzbget:
     labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: NZB Newsgrabber / Downloader
+      com.dockstarter.appinfo.deprecated: "true"
+      com.dockstarter.appinfo.description: (DEPRECATED) Use SabNZBd
       com.dockstarter.appinfo.nicename: NZBGet
       com.dockstarter.appvars.nzbget_enabled: "false"
       com.dockstarter.appvars.nzbget_network_mode: ""

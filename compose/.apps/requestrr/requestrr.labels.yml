@@ -1,8 +1,8 @@
 services:
   requestrr:
     labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: Requestrr is a chatbot used to simplify using services like Sonarr/Radarr/Ombi via the use of chat!
+      com.dockstarter.appinfo.deprecated: "true"
+      com.dockstarter.appinfo.description: (DEPRECATED) Use Doplarr
       com.dockstarter.appinfo.nicename: Requestrr
       com.dockstarter.appvars.requestrr_enabled: "false"
       com.dockstarter.appvars.requestrr_network_mode: ""
