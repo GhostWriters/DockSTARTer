@@ -6,7 +6,7 @@ jobs:
   validate-docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.5.2
+      - uses: actions/checkout@v3.5.3
       - name: Validate Documentation
         run: |
           dirname -- $(grep -Rl 'deprecated: "true"' compose/) | xargs rm -rf
@@ -24,7 +24,7 @@ jobs:
   validate-images:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.5.2
+      - uses: actions/checkout@v3.5.3
       - name: Validate Images
         run: |
           dirname -- $(grep -Rl 'deprecated: "true"' compose/) | xargs rm -rf
