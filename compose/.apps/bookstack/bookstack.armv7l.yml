@@ -1,3 +1,0 @@
-services:
-  bookstack:
-    image: lscr.io/linuxserver/bookstack:latest

@@ -1,3 +1,0 @@
-services:
-  heimdall:
-    image: lscr.io/linuxserver/heimdall:latest

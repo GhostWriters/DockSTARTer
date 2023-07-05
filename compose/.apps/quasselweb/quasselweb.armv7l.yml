@@ -1,3 +1,0 @@
-services:
-  quasselweb:
-    image: lscr.io/linuxserver/quassel-web:latest

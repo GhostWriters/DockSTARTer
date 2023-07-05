@@ -1,3 +1,0 @@
-services:
-  mariadb:
-    image: lscr.io/linuxserver/mariadb:latest

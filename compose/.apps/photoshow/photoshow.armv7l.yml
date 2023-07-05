@@ -1,3 +1,0 @@
-services:
-  photoshow:
-    image: lscr.io/linuxserver/photoshow:latest

@@ -1,3 +1,0 @@
-services:
-  mylar:
-    image: lscr.io/linuxserver/mylar:latest

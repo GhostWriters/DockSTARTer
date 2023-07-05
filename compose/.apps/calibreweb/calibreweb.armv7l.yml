@@ -1,3 +1,0 @@
-services:
-  calibreweb:
-    image: lscr.io/linuxserver/calibre-web:latest

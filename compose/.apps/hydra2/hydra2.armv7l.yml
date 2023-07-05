@@ -1,3 +1,0 @@
-services:
-  hydra2:
-    image: lscr.io/linuxserver/hydra2:latest

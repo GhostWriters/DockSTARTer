@@ -1,3 +1,0 @@
-services:
-  komga:
-    image: gotson/komga:latest

@@ -1,3 +1,0 @@
-services:
-  requestrr:
-    image: lscr.io/linuxserver/requestrr:latest

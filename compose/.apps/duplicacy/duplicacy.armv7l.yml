@@ -1,3 +1,0 @@
-services:
-  duplicacy:
-    image: cr.hotio.dev/hotio/duplicacy:latest

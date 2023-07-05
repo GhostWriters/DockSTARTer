@@ -1,3 +1,0 @@
-services:
-  deluge:
-    image: lscr.io/linuxserver/deluge:latest

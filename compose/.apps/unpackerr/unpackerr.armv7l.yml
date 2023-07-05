@@ -1,3 +1,0 @@
-services:
-  unpackerr:
-    image: cr.hotio.dev/hotio/unpackerr:latest

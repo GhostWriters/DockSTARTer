@@ -1,3 +1,0 @@
-services:
-  swag:
-    image: lscr.io/linuxserver/swag:latest

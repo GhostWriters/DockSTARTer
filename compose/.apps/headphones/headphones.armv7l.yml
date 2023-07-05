@@ -1,3 +1,0 @@
-services:
-  headphones:
-    image: lscr.io/linuxserver/headphones:latest

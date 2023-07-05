@@ -1,3 +1,0 @@
-services:
-  medusa:
-    image: lscr.io/linuxserver/medusa:latest

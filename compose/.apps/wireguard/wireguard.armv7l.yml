@@ -1,3 +1,0 @@
-services:
-  wireguard:
-    image: lscr.io/linuxserver/wireguard:latest

@@ -1,3 +1,0 @@
-services:
-  kiwixserve:
-    image: ghcr.io/kiwix/kiwix-serve:latest
