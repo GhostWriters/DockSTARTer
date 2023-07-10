@@ -1,3 +1,0 @@
-services:
-  limnoria:
-    image: lscr.io/linuxserver/limnoria:latest

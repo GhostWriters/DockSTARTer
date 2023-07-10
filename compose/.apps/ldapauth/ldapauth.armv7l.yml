@@ -1,3 +1,0 @@
-services:
-  ldapauth:
-    image: lscr.io/linuxserver/ldap-auth:latest

@@ -1,3 +1,0 @@
-services:
-  tautulli:
-    image: lscr.io/linuxserver/tautulli:latest

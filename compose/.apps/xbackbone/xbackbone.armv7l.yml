@@ -1,3 +1,0 @@
-services:
-  xbackbone:
-    image: ghcr.io/linuxserver/xbackbone:latest

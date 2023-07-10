@@ -30,7 +30,7 @@ Any operating system based on one of the above (ex: Raspbian) should also work a
 
 ### Supported Hardware
 
-Any `x86_64`, `armv7l`, or `aarch64` system should be able to run one of the supported operating systems listed above. ARM CPUs may have a limited selection of supported containers.
+Any `x86_64` or `aarch64` system should be able to run one of the supported operating systems listed above. ARM CPUs may have a limited selection of supported containers.
 
 ### Windows Support
 

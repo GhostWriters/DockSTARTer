@@ -1,3 +1,0 @@
-services:
-  smokeping:
-    image: lscr.io/linuxserver/smokeping:latest

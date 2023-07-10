@@ -1,3 +1,0 @@
-services:
-  uptimekuma:
-    image: louislam/uptime-kuma:latest

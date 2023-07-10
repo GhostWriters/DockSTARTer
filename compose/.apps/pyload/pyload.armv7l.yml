@@ -1,3 +1,0 @@
-services:
-  pyload:
-    image: lscr.io/linuxserver/pyload-ng:latest

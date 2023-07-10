@@ -1,3 +1,0 @@
-services:
-  homebridge:
-    image: oznu/homebridge:ubuntu

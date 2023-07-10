@@ -79,7 +79,6 @@ Look at the **App Specifics** list in the **nav** section and add a new line for
   - `<appname>.ports.yml` contains the ports used by the app. This file can be excluded if the app does not require ports
   - At least one of the following files must be included:
     - `<appname>.aarch64.yml` defines the aarch64 or arm64 image, should include an image tag (default is `latest`)
-    - `<appname>.armv7l.yml` defines the armv7l or armhf image, should include an image tag (default is `latest`)
     - `<appname>.x86_64.yml` defines the x86_64 image, should include an image tag (default is `latest`)
 
 ## .env.example file

@@ -1,3 +1,0 @@
-services:
-  librespeed:
-    image: lscr.io/linuxserver/librespeed:latest

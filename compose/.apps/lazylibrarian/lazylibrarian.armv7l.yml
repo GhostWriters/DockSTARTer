@@ -1,3 +1,0 @@
-services:
-  lazylibrarian:
-    image: lscr.io/linuxserver/lazylibrarian:latest

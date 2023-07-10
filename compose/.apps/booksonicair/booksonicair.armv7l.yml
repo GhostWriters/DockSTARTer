@@ -1,3 +1,0 @@
-services:
-  booksonicair:
-    image: lscr.io/linuxserver/booksonic-air:latest

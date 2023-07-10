@@ -1,3 +1,0 @@
-services:
-  codeserver:
-    image: lscr.io/linuxserver/code-server:latest

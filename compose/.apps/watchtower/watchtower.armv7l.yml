@@ -1,3 +1,0 @@
-services:
-  watchtower:
-    image: ghcr.io/containrrr/watchtower:armhf-latest

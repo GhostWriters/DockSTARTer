@@ -1,3 +1,0 @@
-services:
-  openspeedtest:
-    image: openspeedtest/latest:latest

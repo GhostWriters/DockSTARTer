@@ -1,3 +1,0 @@
-services:
-  piwigo:
-    image: lscr.io/linuxserver/piwigo:latest

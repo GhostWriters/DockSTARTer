@@ -1,3 +1,0 @@
-services:
-  jackett:
-    image: lscr.io/linuxserver/jackett:latest

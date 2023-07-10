@@ -298,7 +298,7 @@ export DETECTED_HOMEDIR
 
 # Check for supported CPU architecture
 check_arch() {
-    if [[ ${ARCH} != "aarch64" ]] && [[ ${ARCH} != "armv7l" ]] && [[ ${ARCH} != "x86_64" ]]; then
+    if [[ ${ARCH} != "aarch64" ]] && [[ ${ARCH} != "x86_64" ]]; then
         fatal "Unsupported architecture."
     fi
 }

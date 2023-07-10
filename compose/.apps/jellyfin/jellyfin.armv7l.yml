@@ -1,3 +1,0 @@
-services:
-  jellyfin:
-    image: lscr.io/linuxserver/jellyfin:latest

@@ -1,3 +1,0 @@
-services:
-  thelounge:
-    image: lscr.io/linuxserver/thelounge:latest

@@ -1,3 +1,0 @@
-services:
-  nzbhydra2:
-    image: lscr.io/linuxserver/nzbhydra2:latest

@@ -1,3 +1,0 @@
-services:
-  rsnapshot:
-    image: lscr.io/linuxserver/rsnapshot:latest

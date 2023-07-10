@@ -1,3 +1,0 @@
-services:
-  flame:
-    image: pawelmalak/flame:multiarch
