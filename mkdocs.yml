@@ -55,6 +55,8 @@ extra_javascript:
   - javascripts/tablesort.js
 
 markdown_extensions:
+  - admonition
+  - pymdownx.details
   - pymdownx.extra
   - pymdownx.highlight:
       anchor_linenums: true
