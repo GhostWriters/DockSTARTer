@@ -57,6 +57,7 @@ extra_javascript:
 markdown_extensions:
   - admonition
   - pymdownx.details
+  - pymdownx.escapeall
   - pymdownx.extra
   - pymdownx.highlight:
       anchor_linenums: true
@@ -70,6 +71,8 @@ markdown_extensions:
       permalink: true
 
 plugins:
+  - git-revision-date-localized:
+      enable_creation_date: true
   - minify:
       minify_html: true
   - redirects:
