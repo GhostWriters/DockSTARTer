@@ -9,3 +9,4 @@ services:
       com.dockstarter.appvars.murmur_port_64738: "64738"
       com.dockstarter.appvars.murmur_restart: unless-stopped
       com.dockstarter.appvars.murmur_supw: ""
+      com.dockstarter.appvars.murmur_verbose: "false"
