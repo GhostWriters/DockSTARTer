@@ -1,3 +1,0 @@
-services:
-  letsencrypt:
-    image: lscr.io/linuxserver/letsencrypt

@@ -1,3 +1,0 @@
-services:
-  speedtest:
-    image: henrywhitaker3/speedtest-tracker:latest-arm

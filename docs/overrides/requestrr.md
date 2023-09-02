@@ -17,7 +17,7 @@ services:
     container_name: requestrr
     environment:
       - TZ=${TZ}
-    image: darkalfx/requestrr
+    image: darkalfx/requestrr:latest
     logging:
       driver: json-file
       options:

@@ -1,3 +1,0 @@
-services:
-  yacht:
-    image: selfhostedpro/yacht

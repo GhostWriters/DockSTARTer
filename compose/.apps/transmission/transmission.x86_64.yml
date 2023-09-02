@@ -1,3 +1,3 @@
 services:
   transmission:
-    image: lscr.io/linuxserver/transmission
+    image: lscr.io/linuxserver/transmission:latest

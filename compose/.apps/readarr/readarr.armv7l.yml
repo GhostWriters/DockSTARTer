@@ -1,3 +1,0 @@
-services:
-  readarr:
-    image: lscr.io/linuxserver/readarr:develop

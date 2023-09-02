@@ -16,7 +16,7 @@ services:
   dashmachine:
     container_name: dashmachine
     hostname: ${DOCKERHOSTNAME}
-    image: rmountjoy/dashmachine
+    image: rmountjoy/dashmachine:latest
     logging:
       driver: json-file
       options:

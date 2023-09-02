@@ -20,7 +20,7 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     hostname: ${DOCKERHOSTNAME}
-    image: ghcr.io/roxedus/conreq
+    image: ghcr.io/roxedus/conreq:latest
     logging:
       driver: json-file
       options:

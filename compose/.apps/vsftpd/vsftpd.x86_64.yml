@@ -1,3 +1,3 @@
 services:
   vsftpd:
-    image: fauria/vsftpd
+    image: fauria/vsftpd:latest

@@ -1,6 +1,6 @@
 # <!-- Home -->
 
-[![DockSTARTer](https://github.com/GhostWriters/DockSTARTer/raw/master/docs/images/logo.png)](https://dockstarter.com)
+[![DockSTARTer](https://github.com/GhostWriters/DockSTARTer/raw/master/docs/assets/logo.png)](https://dockstarter.com)
 
 [![Supporters on Open Collective](https://img.shields.io/opencollective/all/DockSTARTer.svg?style=flat-square&color=607D8B&logo=opencollective&logoColor=white)](#supporters)
 [![Discord chat](https://img.shields.io/discord/477959324183035936.svg?style=flat-square&color=607D8B&logo=discord&logoColor=white)](https://dockstarter.com/discord)

@@ -1,3 +1,0 @@
-services:
-  pihole:
-    image: pihole/pihole

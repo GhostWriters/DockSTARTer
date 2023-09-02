@@ -17,7 +17,7 @@ services:
     container_name: kitana
     environment:
       - TZ=${TZ}
-    image: pannal/kitana
+    image: pannal/kitana:latest
     logging:
       driver: json-file
       options:

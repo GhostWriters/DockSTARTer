@@ -1,3 +1,0 @@
-services:
-  nodered:
-    image: nodered/node-red

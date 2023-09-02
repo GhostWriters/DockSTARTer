@@ -1,3 +1,3 @@
 services:
   netdata:
-    image: netdata/netdata
+    image: netdata/netdata:latest

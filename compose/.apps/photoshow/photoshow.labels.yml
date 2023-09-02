@@ -1,8 +1,8 @@
 services:
   photoshow:
     labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: Photoshow is a gallery software at its easiest, it doesn't even require a database.
+      com.dockstarter.appinfo.deprecated: "true"
+      com.dockstarter.appinfo.description: (DEPRECATED) No replacement
       com.dockstarter.appinfo.nicename: PhotoShow
       com.dockstarter.appvars.photoshow_enabled: "false"
       com.dockstarter.appvars.photoshow_images_dir: /mnt/photoshow/pictures

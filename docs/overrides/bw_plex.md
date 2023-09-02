@@ -23,7 +23,7 @@ BW_PLEX_URL=http://plex:32400
 ```yaml
 services:
   bw_plex:
-    image: hellowlol/bw_plex
+    image: hellowlol/bw_plex:latest
     container_name: bw_plex
     restart: unless-stopped
     volumes:

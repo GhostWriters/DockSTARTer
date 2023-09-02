@@ -1,3 +1,0 @@
-services:
-  organizr:
-    image: ghcr.io/organizr/organizr

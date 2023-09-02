@@ -6,37 +6,75 @@ site_description: DockSTARTer helps you get started with home server apps runnin
 repo_name: GhostWriters/DockSTARTer
 repo_url: https://github.com/GhostWriters/DockSTARTer
 
-copyright: Copyright &copy; 2022 GhostWriters
+copyright: Copyright &copy; 2023 GhostWriters
 
 theme:
   name: material
-  include_search_page: false
-  search_index_only: true
-  language: en
   features:
     - content.action.edit
     - content.code.copy
+    - navigation.footer
     - navigation.instant
+    - navigation.prune
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+    - toc.follow
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
       primary: blue grey
       accent: indigo
       toggle:
-        icon: material/toggle-switch-off-outline
+        icon: material/brightness-7
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       primary: blue grey
       accent: indigo
       toggle:
-        icon: material/toggle-switch
+        icon: material/brightness-4
         name: Switch to light mode
-  favicon: images/favicon.ico
-  logo: images/icon.png
+  favicon: assets/favicon.ico
+  logo: assets/icon.png
+
+extra:
+  analytics:
+    provider: google
+    property: G-QVNLHE95FS
+  social:
+    - icon: fontawesome/brands/discord
+      link: https://dockstarter.com/discord
+    - icon: fontawesome/brands/github
+      link: https://github.com/GhostWriters/DockSTARTer
+
+extra_javascript:
+  - https://unpkg.com/tablesort@5.3.0/dist/tablesort.min.js
+  - javascripts/tablesort.js
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.escapeall
+  - pymdownx.extra
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - tables
+  - toc:
+      permalink: true
 
 plugins:
-  - search
+  - git-revision-date-localized:
+      enable_creation_date: true
+  - minify:
+      minify_html: true
   - redirects:
       redirect_maps:
         advanced/overrides.md: https://dockstarter.com/overrides/introduction/
@@ -49,23 +87,7 @@ plugins:
         apps/unifi.md: https://dockstarter.com/apps/unificontroller/
         apps/vaultwarden.md: https://dockstarter.com/apps/bitwarden/
         discord.md: https://discord.gg/xR3cyUb
-  - minify:
-      minify_html: true
-
-extra:
-  analytics:
-    provider: google
-    property: G-QVNLHE95FS
-  social:
-    - icon: fontawesome/brands/discord
-      link: https://dockstarter.com/discord
-    - icon: fontawesome/brands/square-github
-      link: https://github.com/GhostWriters/DockSTARTer
-
-markdown_extensions:
-  - pymdownx.keys
-  - pymdownx.snippets
-  - pymdownx.superfences
+  - search
 
 nav:
   - Home: index.md
@@ -95,6 +117,7 @@ nav:
       - apps/apcupsd.md
       - apps/apprise.md
       - apps/audiobookshelf.md
+      - apps/autobrr.md
       - apps/azuracast.md
       - apps/bazarr.md
       - apps/beets.md
@@ -162,13 +185,10 @@ nav:
       - apps/mosquitto.md
       - apps/moviematch.md
       - apps/murmur.md
-      - apps/muximux.md
       - apps/mylar3.md
       - apps/netdata.md
       - apps/nextcloud.md
       - apps/nodered.md
-      - apps/nzbget.md
-      - apps/nzbgetvpn.md
       - apps/nzbhydra2.md
       - apps/omadacontroller.md
       - apps/ombi.md
@@ -177,7 +197,6 @@ nav:
       - apps/openvpnas.md
       - apps/organizr.md
       - apps/ouroboros.md
-      - apps/photoshow.md
       - apps/photostructure.md
       - apps/phpmyadmin.md
       - apps/picard.md
@@ -197,7 +216,6 @@ nav:
       - apps/radarr.md
       - apps/readarr.md
       - apps/recyclarr.md
-      - apps/requestrr.md
       - apps/resiliosync.md
       - apps/rsnapshot.md
       - apps/rtorrentvpn.md
@@ -251,5 +269,4 @@ nav:
       - overrides/overseerr.md
       - overrides/petio.md
       - overrides/plpp.md
-      - overrides/requestrr.md
       - overrides/yacreader.md
