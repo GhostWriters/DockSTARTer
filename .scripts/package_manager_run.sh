@@ -4,7 +4,9 @@ IFS=$'\n\t'
 
 package_manager_run() {
     local ACTION=${1-}
-    if [[ -n "$(command -v apt-get)" ]]; then
+    if [[ -n "$(command -v apk)" ]]; then
+        run_script "pm_apk_${ACTION}"
+    elif [[ -n "$(command -v apt-get)" ]]; then
         run_script "pm_apt_${ACTION}"
     elif [[ -n "$(command -v dnf)" ]]; then
         run_script "pm_dnf_${ACTION}"
