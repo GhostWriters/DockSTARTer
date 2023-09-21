@@ -14,7 +14,7 @@ hbbs is the RustDesk ID/Rendezvous server. hbbr is the RustDesk relay server. Bo
 
 When hbbs is first run, it will generate a public/private key pair for the clients to use. You can see this take place in the logs:
 
-```
+```env
 INFO [src/common.rs:133] Private/public key written to id_ed25519/id_ed25519.pub
 ```
 

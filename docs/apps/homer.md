@@ -24,4 +24,4 @@ Note that your configuration files and homer assets are located in `${DOCKERCONF
 
 #### HOMER_SUBFOLDER
 
-(default: `''`) If you would like to host Homer in a subfolder, (ex: http://my-domain/homer), set this to the subfolder path (ex /homer).
+(default: `''`) If you would like to host Homer in a subfolder, (ex: `http://my-domain/homer`), set this to the subfolder path (ex /homer).
