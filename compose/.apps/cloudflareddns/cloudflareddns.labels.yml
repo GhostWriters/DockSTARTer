@@ -2,17 +2,18 @@ services:
   cloudflareddns:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: Free service which will point a DNS to an IP of your choice
-      com.dockstarter.appinfo.nicename: CloudFlareDDNS
+      com.dockstarter.appinfo.description: "Free service which will point a DNS to an IP of your choice"
+      com.dockstarter.appinfo.nicename: "CloudFlareDDNS"
       com.dockstarter.appvars.cloudflareddns_apikey: ""
       com.dockstarter.appvars.cloudflareddns_apitoken: ""
       com.dockstarter.appvars.cloudflareddns_args: ""
-      com.dockstarter.appvars.cloudflareddns_detection_mode: dig-google.com
+      com.dockstarter.appvars.cloudflareddns_detection_mode: "dig-google.com"
       com.dockstarter.appvars.cloudflareddns_enabled: "false"
       com.dockstarter.appvars.cloudflareddns_hosts: ""
       com.dockstarter.appvars.cloudflareddns_interval: "300"
       com.dockstarter.appvars.cloudflareddns_log_level: "2"
-      com.dockstarter.appvars.cloudflareddns_recordtypes: A
-      com.dockstarter.appvars.cloudflareddns_restart: unless-stopped
+      com.dockstarter.appvars.cloudflareddns_recordtypes: "A"
+      com.dockstarter.appvars.cloudflareddns_restart: "unless-stopped"
+      com.dockstarter.appvars.cloudflareddns_tag: "latest"
       com.dockstarter.appvars.cloudflareddns_user: ""
       com.dockstarter.appvars.cloudflareddns_zones: ""

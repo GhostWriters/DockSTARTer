@@ -2,10 +2,11 @@ services:
   booksonicair:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: Web-based streamer for your audiobooks.
-      com.dockstarter.appinfo.nicename: Booksonicair
-      com.dockstarter.appvars.booksonicair_context_path: /booksonicair
+      com.dockstarter.appinfo.description: "Web-based streamer for your audiobooks."
+      com.dockstarter.appinfo.nicename: "Booksonicair"
+      com.dockstarter.appvars.booksonicair_context_path: "/booksonicair"
       com.dockstarter.appvars.booksonicair_enabled: "false"
       com.dockstarter.appvars.booksonicair_network_mode: ""
       com.dockstarter.appvars.booksonicair_port_4040: "4040"
-      com.dockstarter.appvars.booksonicair_restart: unless-stopped
+      com.dockstarter.appvars.booksonicair_restart: "unless-stopped"
+      com.dockstarter.appvars.booksonicair_tag: "latest"

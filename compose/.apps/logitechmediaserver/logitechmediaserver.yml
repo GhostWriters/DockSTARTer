@@ -13,5 +13,5 @@ services:
     restart: ${LOGITECHMEDIASERVER_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/logitechmediaserver:/srv/squeezebox/
+      - ${DOCKERCONFDIR}/logitechmediaserver:/config
       - ${DOCKERSTORAGEDIR}:/storage

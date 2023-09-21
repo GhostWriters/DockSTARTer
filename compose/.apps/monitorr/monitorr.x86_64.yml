@@ -1,3 +1,3 @@
 services:
   monitorr:
-    image: monitorr/monitorr:latest
+    image: monitorr/monitorr:${MONITORR_TAG}
