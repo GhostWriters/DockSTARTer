@@ -14,7 +14,7 @@ enable_docker_service() {
         DOCKER_SERVICE_ENABLE="rc-update add docker boot"
         DOCKER_SERVICE_START="service docker start"
     fi
-    if [[ -n "${DOCKER_SERVICE_ENABLE}" ]]; then
+    if [[ -n ${DOCKER_SERVICE_ENABLE} ]]; then
         info "Enabling docker service."
         eval "sudo ${DOCKER_SERVICE_ENABLE}" > /dev/null 2>&1 || fatal "Failed to enable docker service.\nFailing command: ${F[C]}${DOCKER_SERVICE_ENABLE}"
         info "Starting docker service."
