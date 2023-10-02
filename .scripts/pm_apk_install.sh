@@ -8,7 +8,7 @@ pm_apk_install() {
     if [[ -n ${VERBOSE-} ]] || run_script 'question_prompt' "${PROMPT:-CLI}" N "Would you like to display the command output?"; then
         REDIRECT=""
     fi
-    eval "sudo apk add coreutils curl git grep newt sed ${REDIRECT}" || fatal "Failed to install dependencies from apk.\nFailing command: ${F[C]}sudo apk add coreutils curl git grep newt sed"
+    eval "sudo apk add coreutils curl git grep newt openrc sed ${REDIRECT}" || fatal "Failed to install dependencies from apk.\nFailing command: ${F[C]}sudo apk add coreutils curl git grep newt sed"
 }
 
 test_pm_apk_install() {
