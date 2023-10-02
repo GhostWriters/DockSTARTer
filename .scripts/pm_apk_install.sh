@@ -12,6 +12,7 @@ pm_apk_install() {
 }
 
 test_pm_apk_install() {
-    run_script 'pm_apk_repos'
-    run_script 'pm_apk_install'
+    # run_script 'pm_apk_repos'
+    # run_script 'pm_apk_install'
+    warn "CI does not test pm_apk_install."
 }

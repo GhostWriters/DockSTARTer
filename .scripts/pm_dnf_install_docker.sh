@@ -21,6 +21,7 @@ pm_dnf_install_docker() {
 }
 
 test_pm_dnf_install_docker() {
+    # run_script 'pm_dnf_repos'
     # run_script 'pm_dnf_install_docker'
     warn "CI does not test pm_dnf_install_docker."
 }

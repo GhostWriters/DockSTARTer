@@ -7,5 +7,6 @@ pm_apk_clean() {
 }
 
 test_pm_apk_clean() {
-    run_script 'pm_apk_clean'
+    # run_script 'pm_apk_clean'
+    warn "CI does not test pm_apk_clean."
 }

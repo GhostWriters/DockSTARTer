@@ -12,6 +12,7 @@ pm_pacman_install() {
 }
 
 test_pm_pacman_install() {
+    # run_script 'pm_pacman_repos'
     # run_script 'pm_pacman_install'
     warn "CI does not test pm_pacman_install."
 }

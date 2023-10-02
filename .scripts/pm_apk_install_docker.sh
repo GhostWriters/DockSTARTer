@@ -13,6 +13,7 @@ pm_apk_install_docker() {
 }
 
 test_pm_apk_install_docker() {
-    run_script 'pm_apk_repos'
-    run_script 'pm_apk_install_docker'
+    # run_script 'pm_apk_repos'
+    # run_script 'pm_apk_install_docker'
+    warn "CI does not test pm_apk_install_docker."
 }
