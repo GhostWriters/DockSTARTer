@@ -1,0 +1,39 @@
+services:
+  privoxyvpn:
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    container_name: privoxyvpn
+    devices:
+      - /dev/net/tun
+    environment:
+      - ENABLE_PRIVOXY=${PRIVOXYVPN_ENABLE_PRIVOXY}
+      - ENABLE_SOCKS=${PRIVOXYVPN_ENABLE_SOCKS}
+      - LAN_NETWORK=${PRIVOXYVPN_LAN_NETWORK}
+      - NAME_SERVERS=${PRIVOXYVPN_NAME_SERVERS}
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - SOCKS_PASS=${PRIVOXYVPN_SOCKS_PASS}
+      - SOCKS_USER=${PRIVOXYVPN_SOCKS_USER}
+      - TZ=${TZ}
+      - VPN_CLIENT=${PRIVOXYVPN_VPN_CLIENT}
+      - VPN_ENABLED=${PRIVOXYVPN_VPN_ENABLE}
+      - VPN_INPUT_PORTS=${PRIVOXYVPN_VPN_INPUT_PORTS}
+      - VPN_OPTIONS=${PRIVOXYVPN_VPN_OPTIONS}
+      - VPN_OUTPUT_PORTS=${PRIVOXYVPN_VPN_OUTPUT_PORTS}
+      - VPN_PASS=${PRIVOXYVPN_VPN_PASS}
+      - VPN_PROV=${PRIVOXYVPN_VPN_PROV}
+      - VPN_USER=${PRIVOXYVPN_VPN_USER}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    privileged: true
+    restart: ${PRIVOXYVPN_RESTART}
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/privoxyvpn:/config
+      - ${DOCKERSTORAGEDIR}:/storage
