@@ -2,8 +2,8 @@ services:
   qbittorrentvpn:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: qBittorrent, OpenVPN and Privoxy
-      com.dockstarter.appinfo.nicename: qBittorrentVPN
+      com.dockstarter.appinfo.description: "qBittorrent, OpenVPN and Privoxy"
+      com.dockstarter.appinfo.nicename: "qBittorrentVPN"
       com.dockstarter.appvars.qbittorrentvpn_enable_privoxy: "no"
       com.dockstarter.appvars.qbittorrentvpn_enabled: "false"
       com.dockstarter.appvars.qbittorrentvpn_network_mode: ""
@@ -11,4 +11,5 @@ services:
       com.dockstarter.appvars.qbittorrentvpn_port_6881: "6881"
       com.dockstarter.appvars.qbittorrentvpn_port_8080: "8080"
       com.dockstarter.appvars.qbittorrentvpn_port_8118: "8118"
-      com.dockstarter.appvars.qbittorrentvpn_restart: unless-stopped
+      com.dockstarter.appvars.qbittorrentvpn_restart: "unless-stopped"
+      com.dockstarter.appvars.qbittorrentvpn_tag: "latest"

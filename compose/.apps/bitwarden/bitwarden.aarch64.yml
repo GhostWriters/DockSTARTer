@@ -1,3 +1,3 @@
 services:
   bitwarden:
-    image: vaultwarden/server:latest
+    image: vaultwarden/server:${BITWARDEN_TAG}

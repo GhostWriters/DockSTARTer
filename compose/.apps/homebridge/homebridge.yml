@@ -3,10 +3,6 @@ services:
     container_name: homebridge
     environment:
       - ENABLE_AVAHI=${HOMEBRIDGE_ENABLE_AVAHI}
-      - HOMEBRIDGE_CONFIG_UI=${HOMEBRIDGE_CONFIG_UI}
-      - HOMEBRIDGE_CONFIG_UI_PORT=${HOMEBRIDGE_CONFIG_UI_PORT_8581}
-      - PGID=${PGID}
-      - PUID=${PUID}
       - TZ=${TZ}
     logging:
       driver: json-file

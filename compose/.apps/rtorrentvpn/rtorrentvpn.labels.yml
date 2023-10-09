@@ -2,8 +2,8 @@ services:
   rtorrentvpn:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: rTorrent, Flood or ruTorrent WebUI, OpenVPN and Privoxy
-      com.dockstarter.appinfo.nicename: rTorrentVPN
+      com.dockstarter.appinfo.description: "rTorrent, Flood or ruTorrent WebUI, OpenVPN and Privoxy"
+      com.dockstarter.appinfo.nicename: "rTorrentVPN"
       com.dockstarter.appvars.rtorrentvpn_enable_autodl_irssi: "no"
       com.dockstarter.appvars.rtorrentvpn_enable_privoxy: "no"
       com.dockstarter.appvars.rtorrentvpn_enable_rpc2: "yes"
@@ -16,8 +16,9 @@ services:
       com.dockstarter.appvars.rtorrentvpn_port_8118: "8118"
       com.dockstarter.appvars.rtorrentvpn_port_9080: "9080"
       com.dockstarter.appvars.rtorrentvpn_port_9443: "9443"
-      com.dockstarter.appvars.rtorrentvpn_restart: unless-stopped
-      com.dockstarter.appvars.rtorrentvpn_rpc2_pass: rutorrent
-      com.dockstarter.appvars.rtorrentvpn_rpc2_user: admin
-      com.dockstarter.appvars.rtorrentvpn_webui_pass: rutorrent
-      com.dockstarter.appvars.rtorrentvpn_webui_user: admin
+      com.dockstarter.appvars.rtorrentvpn_restart: "unless-stopped"
+      com.dockstarter.appvars.rtorrentvpn_rpc2_pass: "rutorrent"
+      com.dockstarter.appvars.rtorrentvpn_rpc2_user: "admin"
+      com.dockstarter.appvars.rtorrentvpn_tag: "latest"
+      com.dockstarter.appvars.rtorrentvpn_webui_pass: "rutorrent"
+      com.dockstarter.appvars.rtorrentvpn_webui_user: "admin"

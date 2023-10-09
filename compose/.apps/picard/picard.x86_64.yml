@@ -1,3 +1,3 @@
 services:
   picard:
-    image: mikenye/picard:latest
+    image: mikenye/picard:${PICARD_TAG}

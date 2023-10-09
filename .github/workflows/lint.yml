@@ -11,7 +11,6 @@ jobs:
         run: |
           docker run --rm \
             -v "${GITHUB_WORKSPACE}":/check \
-            -u "$(id -u):$(id -g)" \
             mstruebing/editorconfig-checker
 
   markdownlint:
@@ -20,12 +19,12 @@ jobs:
       - uses: actions/checkout@v4.1.0
       - name: markdownlint
         run: |
-          find "${GITHUB_WORKSPACE}" -name '*.md' -exec \
-            docker run --rm \
-              -v "${GITHUB_WORKSPACE}":"${GITHUB_WORKSPACE}" \
-              markdownlint/markdownlint \
-              -r ~MD007,~MD013,~MD033,~MD034 \
-              {} +
+          docker run --rm \
+            -v "${GITHUB_WORKSPACE}":/workdir \
+            ghcr.io/igorshubovych/markdownlint-cli \
+            --ignore "docs/index.md" \
+            --disable MD013 MD033 -- \
+            "**/*.md"
 
   shellcheck:
     runs-on: ubuntu-latest
@@ -58,9 +57,9 @@ jobs:
       - uses: actions/checkout@v4.1.0
       - name: yamllint
         run: |
-          find "${GITHUB_WORKSPACE}" -name '*.yaml' -o -name '*.yml' -exec \
-            docker run --rm \
-              -v "${GITHUB_WORKSPACE}":"${GITHUB_WORKSPACE}" \
-              peterdavehello/yamllint \
-              yamllint -d '{"extends":"default","rules":{"document-start":{"present":false},"line-length":"disable","truthy":{"check-keys":false}}}' \
-              {} +
+          docker run --rm \
+            -v "${PWD}":/yaml \
+            peterdavehello/yamllint \
+            yamllint \
+            -d '{"extends":"default","rules":{"document-start":{"present":false},"line-length":"disable","truthy":{"check-keys":false}}}' \
+            "."

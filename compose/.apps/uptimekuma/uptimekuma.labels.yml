@@ -2,9 +2,10 @@ services:
   uptimekuma:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: A self-hosted monitoring tool like Uptime Robot
-      com.dockstarter.appinfo.nicename: UptimeKuma
+      com.dockstarter.appinfo.description: "A self-hosted monitoring tool like Uptime Robot"
+      com.dockstarter.appinfo.nicename: "UptimeKuma"
       com.dockstarter.appvars.uptimekuma_enabled: "false"
       com.dockstarter.appvars.uptimekuma_network_mode: ""
       com.dockstarter.appvars.uptimekuma_port_3001: "3001"
-      com.dockstarter.appvars.uptimekuma_restart: unless-stopped
+      com.dockstarter.appvars.uptimekuma_restart: "unless-stopped"
+      com.dockstarter.appvars.uptimekuma_tag: "latest"

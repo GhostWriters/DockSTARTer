@@ -2,9 +2,10 @@ services:
   sickchill:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: Automatic Video Library Manager for TV Shows
-      com.dockstarter.appinfo.nicename: SickChill
+      com.dockstarter.appinfo.description: "Automatic Video Library Manager for TV Shows"
+      com.dockstarter.appinfo.nicename: "SickChill"
       com.dockstarter.appvars.sickchill_enabled: "false"
       com.dockstarter.appvars.sickchill_network_mode: ""
       com.dockstarter.appvars.sickchill_port_8081: "8081"
-      com.dockstarter.appvars.sickchill_restart: unless-stopped
+      com.dockstarter.appvars.sickchill_restart: "unless-stopped"
+      com.dockstarter.appvars.sickchill_tag: "latest"
