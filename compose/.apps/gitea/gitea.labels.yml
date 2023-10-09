@@ -2,9 +2,10 @@ services:
   gitea:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: A painless self-hosted Git service
-      com.dockstarter.appinfo.nicename: Gitea
+      com.dockstarter.appinfo.description: "A painless self-hosted Git service"
+      com.dockstarter.appinfo.nicename: "Gitea"
       com.dockstarter.appvars.gitea_enabled: "false"
       com.dockstarter.appvars.gitea_network_mode: ""
       com.dockstarter.appvars.gitea_port_3000: "3000"
-      com.dockstarter.appvars.gitea_restart: unless-stopped
+      com.dockstarter.appvars.gitea_restart: "unless-stopped"
+      com.dockstarter.appvars.gitea_tag: "latest"

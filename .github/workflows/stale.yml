@@ -18,5 +18,5 @@ jobs:
           stale-pr-label: "no-pr-activity"
           days-before-stale: 90
           days-before-close: 15
-          exempt-issue-labels: 'under-consideration,work-in-progress'
-          exempt-pr-labels: 'under-consideration,work-in-progress'
+          exempt-issue-labels: "under-consideration,work-in-progress"
+          exempt-pr-labels: "under-consideration,work-in-progress"

@@ -2,11 +2,12 @@ services:
   dasshio:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: Use Amazon Dash buttons to communicate with Home Assistant.
-      com.dockstarter.appinfo.nicename: Dasshio
+      com.dockstarter.appinfo.description: "Use Amazon Dash buttons to communicate with Home Assistant."
+      com.dockstarter.appinfo.nicename: "Dasshio"
       com.dockstarter.appvars.dasshio_enabled: "false"
       com.dockstarter.appvars.dasshio_homeassistant_auth_token: ""
       com.dockstarter.appvars.dasshio_homeassistant_url: ""
       com.dockstarter.appvars.dasshio_network_mode: ""
       com.dockstarter.appvars.dasshio_port_6565: "6565"
-      com.dockstarter.appvars.dasshio_restart: unless-stopped
+      com.dockstarter.appvars.dasshio_restart: "unless-stopped"
+      com.dockstarter.appvars.dasshio_tag: "latest"

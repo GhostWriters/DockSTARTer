@@ -2,8 +2,8 @@ services:
   rustdesk:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: RustDesk server software including hbbs (rendezvous server) and hbbr (relay server) program, an open-source self-hosted TeamViewer alternative
-      com.dockstarter.appinfo.nicename: RustDesk
+      com.dockstarter.appinfo.description: "RustDesk server software including hbbs (rendezvous server) and hbbr (relay server) program, an open-source self-hosted TeamViewer alternative"
+      com.dockstarter.appinfo.nicename: "RustDesk"
       com.dockstarter.appvars.rustdesk_enabled: "false"
       com.dockstarter.appvars.rustdesk_network_mode: ""
       com.dockstarter.appvars.rustdesk_port_21115: "21115"
@@ -11,5 +11,6 @@ services:
       com.dockstarter.appvars.rustdesk_port_21117: "21117"
       com.dockstarter.appvars.rustdesk_port_21118: "21118"
       com.dockstarter.appvars.rustdesk_port_21119: "21119"
-      com.dockstarter.appvars.rustdesk_relay_server: 0.0.0.0
-      com.dockstarter.appvars.rustdesk_restart: unless-stopped
+      com.dockstarter.appvars.rustdesk_relay_server: "0.0.0.0"
+      com.dockstarter.appvars.rustdesk_restart: "unless-stopped"
+      com.dockstarter.appvars.rustdesk_tag: "latest"

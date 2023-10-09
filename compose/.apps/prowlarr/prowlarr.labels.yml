@@ -2,9 +2,10 @@ services:
   prowlarr:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: Indexer manager/proxy to integrate with your various PVR apps.
-      com.dockstarter.appinfo.nicename: Prowlarr
+      com.dockstarter.appinfo.description: "Indexer manager/proxy to integrate with your various PVR apps."
+      com.dockstarter.appinfo.nicename: "Prowlarr"
       com.dockstarter.appvars.prowlarr_enabled: "false"
       com.dockstarter.appvars.prowlarr_network_mode: ""
       com.dockstarter.appvars.prowlarr_port_9696: "9696"
-      com.dockstarter.appvars.prowlarr_restart: unless-stopped
+      com.dockstarter.appvars.prowlarr_restart: "unless-stopped"
+      com.dockstarter.appvars.prowlarr_tag: "latest"
