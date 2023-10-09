@@ -2,12 +2,13 @@ services:
   tdarr:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: Audio/Video Library Analytics & Transcode/Remux Automation
-      com.dockstarter.appinfo.nicename: Tdarr
+      com.dockstarter.appinfo.description: "Audio/Video Library Analytics & Transcode/Remux Automation"
+      com.dockstarter.appinfo.nicename: "Tdarr"
       com.dockstarter.appvars.tdarr_enabled: "false"
       com.dockstarter.appvars.tdarr_network_mode: ""
       com.dockstarter.appvars.tdarr_port_8265: "8265"
       com.dockstarter.appvars.tdarr_port_8266: "8266"
-      com.dockstarter.appvars.tdarr_restart: unless-stopped
-      com.dockstarter.appvars.tdarr_serverip: tdarr
-      com.dockstarter.appvars.tdarr_transcode_cache: ~/.config/appdata/tdarr/cache
+      com.dockstarter.appvars.tdarr_restart: "unless-stopped"
+      com.dockstarter.appvars.tdarr_serverip: "tdarr"
+      com.dockstarter.appvars.tdarr_tag: "latest"
+      com.dockstarter.appvars.tdarr_transcode_cache: "~/.config/appdata/tdarr/cache"

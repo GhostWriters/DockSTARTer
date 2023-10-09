@@ -2,10 +2,10 @@ services:
   bitwarden:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: Free and open source password management solution
-      com.dockstarter.appinfo.nicename: Bitwarden
+      com.dockstarter.appinfo.description: "Free and open source password management solution"
+      com.dockstarter.appinfo.nicename: "Bitwarden"
       com.dockstarter.appvars.bitwarden_admin_token: ""
-      com.dockstarter.appvars.bitwarden_database_url: data/db.sqlite3
+      com.dockstarter.appvars.bitwarden_database_url: "data/db.sqlite3"
       com.dockstarter.appvars.bitwarden_disable_admin_token: "false"
       com.dockstarter.appvars.bitwarden_domain: ""
       com.dockstarter.appvars.bitwarden_enable_db_wal: "true"
@@ -14,8 +14,9 @@ services:
       com.dockstarter.appvars.bitwarden_network_mode: ""
       com.dockstarter.appvars.bitwarden_port_3012: "3012"
       com.dockstarter.appvars.bitwarden_port_80: "8013"
-      com.dockstarter.appvars.bitwarden_restart: unless-stopped
+      com.dockstarter.appvars.bitwarden_restart: "unless-stopped"
       com.dockstarter.appvars.bitwarden_show_password_hint: "false"
       com.dockstarter.appvars.bitwarden_signups_allowed: "false"
       com.dockstarter.appvars.bitwarden_signups_verify: "false"
+      com.dockstarter.appvars.bitwarden_tag: "latest"
       com.dockstarter.appvars.bitwarden_websocket_enable: "true"

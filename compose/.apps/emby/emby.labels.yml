@@ -2,11 +2,12 @@ services:
   emby:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: Organize, play, and stream audio and video
-      com.dockstarter.appinfo.nicename: Emby
+      com.dockstarter.appinfo.description: "Organize, play, and stream audio and video"
+      com.dockstarter.appinfo.nicename: "Emby"
       com.dockstarter.appvars.emby_enabled: "false"
       com.dockstarter.appvars.emby_network_mode: ""
       com.dockstarter.appvars.emby_port_8096: "8096"
       com.dockstarter.appvars.emby_port_8920: "8920"
-      com.dockstarter.appvars.emby_restart: unless-stopped
-      com.dockstarter.appvars.emby_transcodedir: /tmp
+      com.dockstarter.appvars.emby_restart: "unless-stopped"
+      com.dockstarter.appvars.emby_tag: "latest"
+      com.dockstarter.appvars.emby_transcodedir: "/tmp"

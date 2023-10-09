@@ -2,9 +2,10 @@ services:
   piwigo:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: Photo gallery software for the web
-      com.dockstarter.appinfo.nicename: Piwigo
+      com.dockstarter.appinfo.description: "Photo gallery software for the web"
+      com.dockstarter.appinfo.nicename: "Piwigo"
       com.dockstarter.appvars.piwigo_enabled: "false"
       com.dockstarter.appvars.piwigo_network_mode: ""
       com.dockstarter.appvars.piwigo_port_80: "80"
-      com.dockstarter.appvars.piwigo_restart: unless-stopped
+      com.dockstarter.appvars.piwigo_restart: "unless-stopped"
+      com.dockstarter.appvars.piwigo_tag: "latest"

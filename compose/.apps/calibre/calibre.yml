@@ -1,8 +1,6 @@
 services:
   calibre:
     container_name: calibre
-    security_opt:
-      - seccomp:unconfined #optional
     environment:
       - CALIBRE_USE_DARK_PALETTE=${CALIBRE_USE_DARK_PALETTE}
       - CLI_ARGS=${CALIBRE_CLI_ARGS}
@@ -17,6 +15,8 @@ services:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${CALIBRE_RESTART}
+    security_opt:
+      - seccomp:unconfined
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/calibre:/config

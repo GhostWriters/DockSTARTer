@@ -1,3 +1,3 @@
 services:
   minecraft_bedrock_server:
-    image: itzg/minecraft-bedrock-server:latest
+    image: itzg/minecraft-bedrock-server:${MINECRAFT_BEDROCK_SERVER_TAG}

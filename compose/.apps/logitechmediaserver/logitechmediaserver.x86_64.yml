@@ -1,3 +1,3 @@
 services:
   logitechmediaserver:
-    image: doliana/logitech-media-server:${LOGITECHMEDIASERVER_TAG}
+    image: lmscommunity/logitechmediaserver:${LOGITECHMEDIASERVER_TAG}

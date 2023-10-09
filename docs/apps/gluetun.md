@@ -20,7 +20,7 @@ your `docker-compose.override.yml`.
 
 .env
 
-```
+```env
 ...
 TRANSMISSION_NETWORK_MODE="container:gluetun"
 ...

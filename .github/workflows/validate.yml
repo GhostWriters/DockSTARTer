@@ -6,17 +6,21 @@ jobs:
   validate-docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.5.3
+      - uses: actions/checkout@v4.1.0
       - name: Validate Documentation
         run: |
-          dirname -- $(grep -Rl 'deprecated: "true"' compose/) | xargs rm -rf
-          for image in $(ls compose/.apps/); do
-              if ! ls -d docs/apps/* | grep -q "docs/apps/${image}.md"; then
-                  echo "Missing documentation for ${image}"
+          for APPFOLDER in compose/.apps/*; do
+              APPNAME=$(basename "${APPFOLDER}")
+              APPDEPRECATED=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" "compose/.apps/${APPNAME}/${APPNAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo false)
+              if [[ ${APPDEPRECATED} == true ]]; then
+                  continue
+              fi
+              if [[ ! -f "docs/apps/${APPNAME}.md" ]]; then
+                  echo "Missing documentation for ${APPNAME}"
                   exit 1
               fi
-              if ! grep -q "apps/${image}.md" mkdocs.yml; then
-                  echo "Missing link for ${image}"
+              if ! grep -q "apps/${APPNAME}.md" mkdocs.yml; then
+                  echo "Missing link for ${APPNAME}"
                   exit 1
               fi
           done
@@ -24,14 +28,17 @@ jobs:
   validate-images:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.5.3
+      - uses: actions/checkout@v4.1.0
       - name: Validate Images
         run: |
-          dirname -- $(grep -Rl 'deprecated: "true"' compose/) | xargs rm -rf
-          for image in $(grep -RPoh "image: \K.*" compose/ | sort -u | grep -v '${'); do
-              echo "Image: ${image}"
-              if [[ ${image} != *":"* ]]; then
-                  image="${image}:latest"
+          for APPFOLDER in compose/.apps/*; do
+              APPNAME=$(basename "${APPFOLDER}")
+              APPDEPRECATED=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" "compose/.apps/${APPNAME}/${APPNAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo false)
+              if [[ ${APPDEPRECATED} == true ]]; then
+                  continue
               fi
-              docker run --rm mplatform/mquery "${image}"
+              APPIMAGE=$(grep --color=never -Po "\simage: \K.*" "compose/.apps/${APPNAME}/${APPNAME}.x86_64.yml" | sed -E 's/([^:]+):[^:]+/\1/' | xargs || echo false)
+              APPTAG=$(grep --color=never -Po "\scom\.dockstarter\.appvars\.${APPNAME}_tag: \K.*" "compose/.apps/${APPNAME}/${APPNAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo false)
+              echo "Image: ${APPIMAGE}:${APPTAG}"
+              docker run --rm mplatform/mquery "${APPIMAGE}:${APPTAG}"
           done

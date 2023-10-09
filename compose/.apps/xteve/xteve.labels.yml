@@ -2,11 +2,12 @@ services:
   xteve:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: xTeVe is a M3U proxy server for Plex, Emby and any client and provider which supports the .TS and .M3U8 (HLS) streaming formats.
-      com.dockstarter.appinfo.nicename: xTeVe
-      com.dockstarter.appvars.xteve_branch: master
+      com.dockstarter.appinfo.description: "xTeVe is a M3U proxy server for Plex, Emby and any client and provider which supports the .TS and .M3U8 (HLS) streaming formats."
+      com.dockstarter.appinfo.nicename: "xTeVe"
+      com.dockstarter.appvars.xteve_branch: "master"
       com.dockstarter.appvars.xteve_debug: "0"
       com.dockstarter.appvars.xteve_enabled: "false"
       com.dockstarter.appvars.xteve_network_mode: ""
       com.dockstarter.appvars.xteve_port_34400: "34400"
-      com.dockstarter.appvars.xteve_restart: unless-stopped
+      com.dockstarter.appvars.xteve_restart: "unless-stopped"
+      com.dockstarter.appvars.xteve_tag: "latest"

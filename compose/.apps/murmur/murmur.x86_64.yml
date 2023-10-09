@@ -1,3 +1,3 @@
 services:
   murmur:
-    image: mumblevoip/mumble-server:latest
+    image: mumblevoip/mumble-server:${MURMUR_TAG}
