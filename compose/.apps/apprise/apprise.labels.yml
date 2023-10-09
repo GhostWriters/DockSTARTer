@@ -7,3 +7,5 @@ services:
       com.dockstarter.appvars.apprise_enabled: "false"
       com.dockstarter.appvars.apprise_network_mode: ""
       com.dockstarter.appvars.apprise_port_8000: "8000"
+      com.dockstarter.appvars.apprise_restart: "unless-stopped"
+      com.dockstarter.appvars.apprise_tag: "latest"
