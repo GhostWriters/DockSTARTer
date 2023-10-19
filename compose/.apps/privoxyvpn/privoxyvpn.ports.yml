@@ -1,0 +1,5 @@
+services:
+  privoxyvpn:
+    ports:
+      - ${PRIVOXYVPN_PORT_8118}:8118
+      - ${PRIVOXYVPN_PORT_9118}:9118
