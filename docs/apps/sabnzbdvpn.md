@@ -19,9 +19,9 @@ This application does not have any specific setup instructions documented. If
 you need assistance setting up this application please visit our
 [support page](https://dockstarter.com/basics/support/).
 
-### DelugeVPN WebUI Access
+### SABnzbdVPN WebUI Access
 
-If you're attempting to get access to the DelugeVPN WebUI remotely outside of
+If you're attempting to get access to the SABnzbdVPN WebUI remotely outside of
 your home network using [SWAG](https://dockstarter.com/apps/swag/) you must
 follow the steps outlined in
 [VPN Information](https://dockstarter.com/advanced/vpn-info/).
