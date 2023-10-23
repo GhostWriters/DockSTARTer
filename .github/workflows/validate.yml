@@ -6,7 +6,7 @@ jobs:
   validate-docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.0
+      - uses: actions/checkout@v4.1.1
       - name: Validate Documentation
         run: |
           for APPFOLDER in compose/.apps/*; do
@@ -28,7 +28,7 @@ jobs:
   validate-images:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.0
+      - uses: actions/checkout@v4.1.1
       - name: Validate Images
         run: |
           for APPFOLDER in compose/.apps/*; do
