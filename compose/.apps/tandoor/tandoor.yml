@@ -18,4 +18,5 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/tandoor/staticfiles:/opt/recipes/staticfiles
       - ${DOCKERCONFDIR}/tandoor/mediafiles:/opt/recipes/mediafiles
+      - ${DOCKERCONFDIR}/tandoor/db.sqlite3:/opt/recipes/db.sqlite3
       - ${DOCKERSTORAGEDIR}:/storage

@@ -12,6 +12,30 @@ Share and collaborate with your friends and family using a mobile friendly web i
 
 ## Install/Setup
 
-This application does not have any specific setup instructions documented. If
-you need assistance setting up this application please visit our
-[support page](https://dockstarter.com/basics/support/).
+This application has extensive customization options, most docker env variables are documented in the [.env.template](https://raw.githubusercontent.com/vabene1111/recipes/master/.env.template)
+If you run into any issues, enable debug mode to collect logs before opening a ticket.
+```
+  tandoor:
+    environment:
+    - DEBUG=1
+```
+
+### Running with PostgreSQL
+It is highly recommended to use this application with a PostgreSQL database.
+To setup with postgres, after installing a postgres server (or enabling the DockSTARTer app) create a database and edit docker-compose.override.yml similar to below.
+```
+  tandoor:
+    environment:
+    - DB_ENGINE=django.db.backends.postgresql
+    - POSTGRES_HOST=postgres
+    - POSTGRES_PORT=5432
+    - POSTGRES_USER=tandoor_user
+    - POSTGRES_PASSWORD=tandoor_user_password
+    - POSTGRES_DB=tandoor_db
+    depends_on: //optional: if using a postgres container
+      - db_recipes
+```
+
+### Running with SWAG
+It is also highly recommended to serve media files with a web server.  If you are already using SWAG you can use nginx to accomplish this.
+Edit the docker-compose.override.yml similar to below.
