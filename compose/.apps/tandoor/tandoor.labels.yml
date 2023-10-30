@@ -7,6 +7,7 @@ services:
       com.dockstarter.appvars.tandoor: "false"
       com.dockstarter.appvars.tandoor_network_mode: ""
       com.dockstarter.appvars.tandoor_secret_key: "change_me"
+      com.dockstarter.appvars.tandoor_allowed_hosts: "*"
       com.dockstarter.appvars.tandoor_port_8080: "8080"
       com.dockstarter.appvars.tandoor_restart: "unless-stopped"
       com.dockstarter.appvars.tandoor_tag: "latest"

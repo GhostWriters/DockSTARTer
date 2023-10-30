@@ -3,6 +3,7 @@ services:
     container_name: tandoor
     environment:
       - SECRET_KEY=${TANDOOR_SECRET_KEY}
+      - ALLOWED_HOSTS=${TANDOOR_ALLOWED_HOSTS}
       - TZ=${TZ}
       - TIMEZONE=${TZ}
     logging:
