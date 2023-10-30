@@ -1,4 +1,4 @@
-# MariaDB
+# PostgresSQL
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/_/postgres?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/_/postgres)
 [![GitHub Stars](https://img.shields.io/github/stars/docker-library/postgres?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/docker-library/postgres)
