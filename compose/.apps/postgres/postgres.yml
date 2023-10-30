@@ -2,7 +2,6 @@ services:
   postgres:
     container_name: postgres
     environment:
-      - ALLOWED_HOSTS=${POSTGRES_ALLOWED_HOSTS}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - TZ=${TZ}
