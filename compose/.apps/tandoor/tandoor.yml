@@ -1,9 +1,11 @@
 services:
-  postgres:
+  tandoor:
     container_name: tandoor
     environment:
       - SECRET_KEY=${TANDOOR_SECRET_KEY}
       - ALLOWED_HOSTS=${TANDOOR_ALLOWED_HOSTS}
+      - DB_ENGINE=django.db.backends.sqlite3
+      - GUNICORN_MEDIA=1
       - TZ=${TZ}
       - TIMEZONE=${TZ}
     logging:
