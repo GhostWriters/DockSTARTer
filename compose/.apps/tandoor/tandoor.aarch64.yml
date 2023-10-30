@@ -1,0 +1,3 @@
+services:
+  tandoor:
+    image: docker.io/vabene1111/recipes:${POSTGRES_TAG}
