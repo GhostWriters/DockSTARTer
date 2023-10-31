@@ -4,7 +4,7 @@ services:
     environment:
       - SECRET_KEY=${TANDOOR_SECRET_KEY}
       - ALLOWED_HOSTS=${TANDOOR_ALLOWED_HOSTS}
-      - DB_ENGINE=django.db.backends.sqlite3
+      - DATABASE_URL=sqlite://localhost/data/db.sqlite3
       - GUNICORN_MEDIA=1
       - TZ=${TZ}
       - TIMEZONE=${TZ}
@@ -18,5 +18,5 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/tandoor/staticfiles:/opt/recipes/staticfiles
       - ${DOCKERCONFDIR}/tandoor/mediafiles:/opt/recipes/mediafiles
-      - ${DOCKERCONFDIR}/tandoor/db.sqlite3:/opt/recipes/db.sqlite3
+      - ${DOCKERCONFDIR}/tandoor/data:/opt/recipes/data
       - ${DOCKERSTORAGEDIR}:/storage
