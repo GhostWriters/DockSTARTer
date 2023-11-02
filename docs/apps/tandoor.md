@@ -26,16 +26,22 @@ To setup with postgres, after installing a postgres server (or enabling the Dock
 ```
   tandoor:
     environment:
-    - DB_ENGINE=django.db.backends.postgresql
-    - POSTGRES_HOST=postgres
-    - POSTGRES_PORT=5432
-    - POSTGRES_USER=tandoor_user
-    - POSTGRES_PASSWORD=tandoor_user_password
-    - POSTGRES_DB=tandoor_db
+    - DATABASE_URL=postgresql://tandoor_user:tandoor_user_password@postgres_host/tandoor_db:5432
     depends_on: //optional: if using a postgres container
-      - db_recipes
+      - postgres_host
 ```
 
 ### Running with SWAG
 It is also highly recommended to serve media files with a web server.  If you are already using SWAG you can use nginx to accomplish this.
 Edit the docker-compose.override.yml similar to below.
+
+```
+  tandoor:
+    environment:
+      - GUNICORN_MEDIA=0
+  swag:
+    volumes:
+    - ${DOCKERCONFDIR}/recipes/mediafiles:/media
+```
+
+Copy `swag/nginx/proxy-confs/recipes.subdomain.conf.sample` to recipes.subdomain.conf editing as necessary to match your setup and restart swag.
