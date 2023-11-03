@@ -1,4 +1,4 @@
-# Sonarr
+# Tandoor
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/vabene1111/recipes?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/vabene1111/recipes)
 [![GitHub Stars](https://img.shields.io/github/stars/vabene1111/recipes?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com//vabene1111/recipes)
