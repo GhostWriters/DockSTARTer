@@ -22,12 +22,13 @@ If you run into any issues, enable debug mode to collect logs before opening a t
 
 ### Running with PostgreSQL
 It is highly recommended to use this application with a PostgreSQL database.
-To setup with postgres, after installing a postgres server (or enabling the DockSTARTer app) create a database and edit docker-compose.override.yml similar to below.
+To setup with postgres, after installing a postgres server (or enabling the DockSTARTer app) create a database and edit .env to use postgres instead of sqlite.
+`postgresql://<postgres_user>:<postgres_password>@<postgres_host>/<tandoor_db>:5432`
+
+Optionally, make tandoor dependent on the postgres container
 ```
   tandoor:
-    environment:
-    - DATABASE_URL=postgresql://tandoor_user:tandoor_user_password@postgres_host/tandoor_db:5432
-    depends_on: //optional: if using a postgres container
+    depends_on:
       - postgres_host
 ```
 

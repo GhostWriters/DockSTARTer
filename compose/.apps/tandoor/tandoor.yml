@@ -4,7 +4,7 @@ services:
     environment:
       - SECRET_KEY=${TANDOOR_SECRET_KEY}
       - ALLOWED_HOSTS=${TANDOOR_ALLOWED_HOSTS}
-      - DATABASE_URL=sqlite://localhost/data/db.sqlite3
+      - DATABASE_URL=${TANDOOR_DATABASE_URL}
       - GUNICORN_MEDIA=1
       - TZ=${TZ}
       - TIMEZONE=${TZ}
