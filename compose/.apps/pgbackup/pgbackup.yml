@@ -20,5 +20,4 @@ services:
     restart: ${PGBACKUP_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/pgbackup:/backups
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKERSTORAGEDIR}/backups/postgres:/storage

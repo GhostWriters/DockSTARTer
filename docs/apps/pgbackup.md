@@ -26,3 +26,8 @@ user: 1024:users
 
     depends_on:
         - postgres
+
+manual backup
+docker exec -it pgbackup ./backup.sh
+
+restore from latest
