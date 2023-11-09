@@ -21,16 +21,19 @@ Strongly consider also installing [pgAdmin](https://github.com/GhostWriters/Dock
 ## Common Activities
 
 ### Create user
+
 ```
 CREATE USER newuser WITH PASSWORD 'password123';
 ```
 
 ### Make user a superuser
+
 ```
 CREATE USER newadmin WITH PASSWORD 'password123';
 ALTER USER newadmin WITH SUPERUSER;
 ```
 
 ### Create a database and owner to the new user
+
 CREATE DATABASE newdatabase;
 ALTER DATABASE newdatabase OWNER TO newuser;
