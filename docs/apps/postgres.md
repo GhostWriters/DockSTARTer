@@ -16,6 +16,8 @@ There is a wealth of information to be found describing how to [install](https:/
 
 We **heavily** recommend that if you spin up a container that requires a database you create a user for that container. You should **NEVER** use the root account for anything other than database management.
 
+Strongly consider also installing [pgAdmin](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/pgadmin) for adminsitration and [pgBackup](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/pgbackup) for periodic rotating backups.
+
 ## Common Activities
 
 ### Create user

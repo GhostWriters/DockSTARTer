@@ -6,28 +6,31 @@
 
 ## Description
 
-[Postgres](https://www.postgresql.org/): The World's Most Advanced Open Source Relational Database
+[pgBackup](https://hub.docker.com/r/prodrigestivill/postgres-backup-local): Backup PostgresSQL to the local filesystem with periodic rotating backups
 
 ## Install/Setup
 
-PostgreSQL is a powerful, open source object-relational database system with over 35 years of active development that has earned it a strong reputation for reliability, feature robustness, and performance.
+Set your postgres host, username and password in the .env file along with a comma seperated list of databases you want to backup.
 
-There is a wealth of information to be found describing how to [install](https://www.postgresql.org/download/) and [use](https://www.postgresql.org/docs/) PostgreSQL through the [official documentation](https://www.postgresql.org/docs/). The [open source community](https://www.postgresql.org/community/) provides many helpful places to become familiar with PostgreSQL, discover how it works.
+By default, backups run daily.  Change PGBACKUP_SCHEDULE to any valid [cron schedule](http://godoc.org/github.com/robfig/cron#hdr-Predefined_schedules) to modify the default.
 
-We **heavily** recommend that if you spin up a container that requires a database you create a user for that container. You should **NEVER** use the root account for anything other than database management.
+### Recommended docker-compose overrides
+For extra security, it is recommended to limit permissions on the backup folder to a priviledged user.  Modify docker-compose.override.yml as below.
 
+If you are using postgres docker container, add a dependency to the container
 
-user: 1024:users
-      - SCHEDULE=${PGBACKUP_SCHEDULE}
-      - BACKUP_KEEP_DAYS=${PGBACKUP_KEEP_DAYS}
-      - BACKUP_KEEP_WEEKS=${PGBACKUP_KEEP_WEEKS}
-      - BACKUP_KEEP_MONTHS=${PGBACKUP_KEEP_MONTHS}
-      - POSTGRES_DB=${PGBACKUP_POSTGRES_DB}
-
+```
+  pgbackup:
+    user: postgres:postgres
     depends_on:
         - postgres
+```
 
-manual backup
-docker exec -it pgbackup ./backup.sh
+## Manually trigger a backup
+`docker exec -it pgbackup ./backup.sh`
 
-restore from latest
+## Restore from latest backup
+If the database already exists, drop it.
+Create a database <db_name>
+
+`docker exec -it <postgres_container> /bin/sh -c "zcat /storage/backups/postgres/last/<db_name>-latest.sql.gz | psql --username=<username> --dbname=<db_name> -W"`
