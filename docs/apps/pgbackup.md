@@ -1,8 +1,8 @@
 # PostgresSQL
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/_/postgres?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/_/postgres)
-[![GitHub Stars](https://img.shields.io/github/stars/docker-library/postgres?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/docker-library/postgres)
-[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/postgres)
+[![Docker Pulls](https://img.shields.io/docker/pulls/prodrigestivill/postgres-backup-local?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/prodrigestivill/postgres-backup-local)
+[![GitHub Stars](https://img.shields.io/github/stars/prodrigestivill/docker-postgres-backup-local?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/prodrigestivill/docker-postgres-backup-local)
+[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/pgbackup)
 
 ## Description
 
@@ -16,19 +16,13 @@ There is a wealth of information to be found describing how to [install](https:/
 
 We **heavily** recommend that if you spin up a container that requires a database you create a user for that container. You should **NEVER** use the root account for anything other than database management.
 
-## Common Activities
 
-### Create user
-```
-CREATE USER newuser WITH PASSWORD 'password123';
-```
+user: 1024:users
+      - SCHEDULE=${PGBACKUP_SCHEDULE}
+      - BACKUP_KEEP_DAYS=${PGBACKUP_KEEP_DAYS}
+      - BACKUP_KEEP_WEEKS=${PGBACKUP_KEEP_WEEKS}
+      - BACKUP_KEEP_MONTHS=${PGBACKUP_KEEP_MONTHS}
+      - POSTGRES_DB=${PGBACKUP_POSTGRES_DB}
 
-### Make user a superuser
-```
-CREATE USER newadmin WITH PASSWORD 'password123';
-ALTER USER newadmin WITH SUPERUSER;
-```
-
-### Create a database and owner to the new user
-CREATE DATABASE newdatabase;
-ALTER DATABASE newdatabase OWNER TO newuser;
+    depends_on:
+        - postgres

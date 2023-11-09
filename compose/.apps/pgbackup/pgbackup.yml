@@ -11,7 +11,6 @@ services:
       - BACKUP_KEEP_DAYS=${PGBACKUP_KEEP_DAYS}
       - BACKUP_KEEP_WEEKS=${PGBACKUP_KEEP_WEEKS}
       - BACKUP_KEEP_MONTHS=${PGBACKUP_KEEP_MONTHS}
-      - HEALTHCHECK_PORT=${PGBACKUP_HEALTHCHECK_PORT}
       - TZ=${TZ}
     logging:
       driver: json-file
