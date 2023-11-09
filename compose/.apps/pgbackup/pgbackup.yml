@@ -1,5 +1,5 @@
 services:
-  pgbckup:
+  pgbackup:
     container_name: pgbackup
     environment:
       - POSTGRES_HOST=${PGBACKUP_POSTGRES_HOST}
