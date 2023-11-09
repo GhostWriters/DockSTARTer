@@ -1,4 +1,4 @@
-# PostgresSQL
+# pgBackup
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/prodrigestivill/postgres-backup-local?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/prodrigestivill/postgres-backup-local)
 [![GitHub Stars](https://img.shields.io/github/stars/prodrigestivill/docker-postgres-backup-local?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/prodrigestivill/docker-postgres-backup-local)
