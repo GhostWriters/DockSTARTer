@@ -20,7 +20,3 @@ services:
       - ${DOCKERCONFDIR}/tandoor/mediafiles:/opt/recipes/mediafiles
       - ${DOCKERCONFDIR}/tandoor/data:/opt/recipes/data
       - ${DOCKERSTORAGEDIR}:/storage
-
-
-## TODO
-- test add remove with swag -> update documentation
