@@ -1,6 +1,6 @@
 services:
-  postgres:
-    container_name: pgpackup
+  pgbckup:
+    container_name: pgbackup
     environment:
       - POSTGRES_HOST=${PGBACKUP_POSTGRES_HOST}
       - POSTGRES_DB=${PGBACKUP_POSTGRES_DB}
@@ -20,4 +20,5 @@ services:
     restart: ${PGBACKUP_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERSTORAGEDIR}/backups/postgres:/storage
+      - ${DOCKERSTORAGEDIR}/backups/postgres:/backups
+      - ${DOCKERSTORAGEDIR}:/storage
