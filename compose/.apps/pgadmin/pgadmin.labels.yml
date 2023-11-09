@@ -11,4 +11,3 @@ services:
       com.dockstarter.appvars.pgadmin_port_5050: "5050"
       com.dockstarter.appvars.pgadmin_restart: unless-stopped
       com.dockstarter.appvars.pgadmin_tag: "latest"
-
