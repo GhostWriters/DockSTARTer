@@ -196,6 +196,8 @@ nav:
       - apps/openvpnas.md
       - apps/organizr.md
       - apps/ouroboros.md
+      - apps/pgadmin.md
+      - apps/pgbackup.md
       - apps/photostructure.md
       - apps/phpmyadmin.md
       - apps/picard.md

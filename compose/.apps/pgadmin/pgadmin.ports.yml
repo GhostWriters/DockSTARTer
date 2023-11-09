@@ -1,0 +1,4 @@
+services:
+  pgadmin:
+    ports:
+      - ${PGADMIN_PORT_5050}:5050
