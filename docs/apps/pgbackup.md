@@ -20,7 +20,7 @@ For extra security, it is recommended to limit permissions on the backup folder 
 
 If you are using postgres docker container, add a dependency to the container
 
-```
+```yaml
   pgbackup:
     user: postgres:postgres
     depends_on:
