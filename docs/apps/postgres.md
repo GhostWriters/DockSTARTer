@@ -22,13 +22,13 @@ Strongly consider also installing [pgAdmin](https://github.com/GhostWriters/Dock
 
 ### Create user
 
-```
+``` sql
 CREATE USER newuser WITH PASSWORD 'password123';
 ```
 
 ### Make user a superuser
 
-```
+``` sql
 CREATE USER newadmin WITH PASSWORD 'password123';
 ALTER USER newadmin WITH SUPERUSER;
 ```
