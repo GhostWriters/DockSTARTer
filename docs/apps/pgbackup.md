@@ -36,4 +36,6 @@ If you are using postgres docker container, add a dependency to the container
 If the database already exists, drop it.
 Create a database <db_name>
 
-`docker exec -it <postgres_container> /bin/sh -c "zcat /storage/backups/postgres/last/<db_name>-latest.sql.gz | psql --username=<username> --dbname=<db_name> -W"`
+```bash
+docker exec -it <postgres_container> /bin/sh -c "zcat /storage/backups/postgres/last/<db_name>-latest.sql.gz | psql --username=<username> --dbname=<db_name> -W"
+```
