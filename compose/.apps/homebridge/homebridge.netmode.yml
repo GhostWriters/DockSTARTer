@@ -1,0 +1,3 @@
+services:
+  homebridge:
+    network_mode: ${HOMEBRIDGE_NETWORK_MODE}

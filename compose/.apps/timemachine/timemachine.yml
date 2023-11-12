@@ -1,0 +1,38 @@
+services:
+  timemachine:
+    container_name: timemachine
+    environment:
+      - CUSTOM_SMB_CONF=${TIMEMACHINE_CUSTOM_SMB_CONF}
+      - CUSTOM_USER=${TIMEMACHINE_CUSTOM_USER}
+      - DEBUG_LEVEL=${TIMEMACHINE_DEBUG_LEVEL}
+      - EXTERNAL_CONF=${TIMEMACHINE_EXTERNAL_CONF}
+      - HIDE_SHARES=${TIMEMACHINE_HIDE_SHARES}
+      - MIMIC_MODEL=${TIMEMACHINE_MIMIC_MODEL}
+      - PASSWORD=${TIMEMACHINE_PASSWORD}
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - SET_PERMISSIONS=${TIMEMACHINE_SET_PERMISSIONS}
+      - SHARE_NAME=${TIMEMACHINE_SHARE_NAME}
+      - SMB_INHERIT_PERMISSIONS=${TIMEMACHINE_SMB_INHERIT_PERMISSIONS}
+      - SMB_METADATA=${TIMEMACHINE_SMB_METADATA}
+      - SMB_NFS_ACES=${TIMEMACHINE_SMB_NFS_ACES}
+      - SMB_PORT=${TIMEMACHINE_SMB_PORT}
+      - SMB_VFS_OBJECTS=${TIMEMACHINE_SMB_VFS_OBJECTS}
+      - TM_GROUPNAME=${TIMEMACHINE_TM_GROUPNAME}
+      - TM_USERNAME=${TIMEMACHINE_TM_USERNAME}
+      - TZ=${TZ}
+      - VOLUME_SIZE_LIMIT=${TIMEMACHINE_VOLUME_SIZE_LIMIT}
+      - WORKGROUP=${TIMEMACHINE_WORKGROUP}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: ${TIMEMACHINE_RESTART}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/timemachine/var-lib-samba:/var/lib/samba
+      - ${DOCKERCONFDIR}/timemachine/var-cache-samba:/var/cache/samba
+      - ${DOCKERCONFDIR}/timemachine/run-samba:/run/samba
+      - ${DOCKERSTORAGEDIR}:/storage
+      - ${TIMEMACHINE_DATADIR}:/opt/timemachine

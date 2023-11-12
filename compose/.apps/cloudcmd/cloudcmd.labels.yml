@@ -8,3 +8,5 @@ services:
       com.dockstarter.appvars.cloudcmd_fsdir: "/mnt/cloudcmd"
       com.dockstarter.appvars.cloudcmd_network_mode: ""
       com.dockstarter.appvars.cloudcmd_port_8000: "8000"
+      com.dockstarter.appvars.cloudcmd_restart: "unless-stopped"
+      com.dockstarter.appvars.cloudcmd_tag: "latest"

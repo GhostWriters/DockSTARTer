@@ -1,0 +1,3 @@
+services:
+  kiwixserve:
+    network_mode: ${KIWIXSERVE_NETWORK_MODE}

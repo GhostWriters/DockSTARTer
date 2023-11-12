@@ -4,7 +4,7 @@
 
 ## Creating backups
 
-DockSTARTer menu has an option for `Backup Config`, or you can use one of `sudo ds -b min` / `sudo ds -b med` / `sudo ds -b max` to create backups.
+DockSTARTer menu has an option for `Backup Config`, or you can use one of `ds -b min` / `ds -b med` / `ds -b max` to create backups.
 
 > Min: Backs up your .env file
 > Med: Backs up your .env file and the config folder for any enabled app
@@ -38,7 +38,7 @@ Which would make a daily backup at 2 AM.
 ## Backup retention
 
 The snapshot backup is created into `${BACKUP_CONFDIR}/<appname>.001`. If the folder `<appname>.001` exists already it is rotated to `<appname>.002` and so on, up to `<appname>.512` by default (this can be adjusted), thereafter it is removed. So if you create one backup per night, for example with a cronjob, then this retention policy gives you 512 days of retention. This is useful but this can require to much disk space, that is why we have included a non-linear distribution policy. In short, we keep only the oldest backup in the range 257-512, and also in the range 129-256, and so on. This exponential distribution in time of the backups retains more backups in the short term and less in the long term; it keeps only 10 or 11 backups but spans a retention of 257-512 days.
-In the following table you can see on each column the different steps of the rotation, where each column shows the current set of snapshots (limited from <appname>.1 to <appname>.16 in this example):
+In the following table you can see on each column the different steps of the rotation, where each column shows the current set of snapshots (limited from `<appname>.1` to `<appname>.16` in this example):
 
 ```bash
 1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1

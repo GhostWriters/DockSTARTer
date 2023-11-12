@@ -1,0 +1,3 @@
+services:
+  openldap:
+    network_mode: ${OPENLDAP_NETWORK_MODE}

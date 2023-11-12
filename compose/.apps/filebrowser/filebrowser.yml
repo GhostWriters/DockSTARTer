@@ -1,0 +1,25 @@
+services:
+  filebrowser:
+    container_name: filebrowser
+    environment:
+      - FB_BASEURL=${FILEBROWSER_BASEURL}
+      - FB_DATABASE=${FILEBROWSER_DATABASE}
+      - FB_LOG=${FILEBROWSER_LOG}
+      - FB_PORT=${FILEBROWSER_PORT_80}
+      - TZ=${TZ}
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - curl -fs http://localhost:${FILEBROWSER_PORT_80}/health || exit 1
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: ${FILEBROWSER_RESTART}
+    user: ${PUID}:${PGID}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/filebrowser:/config
+      - ${DOCKERSTORAGEDIR}:/storage
+      - ${FILEBROWSER_SHARE_DIR}:/srv

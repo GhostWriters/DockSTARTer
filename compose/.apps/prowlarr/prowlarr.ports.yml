@@ -1,0 +1,4 @@
+services:
+  prowlarr:
+    ports:
+      - ${PROWLARR_PORT_9696}:9696

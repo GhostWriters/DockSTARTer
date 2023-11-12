@@ -11,7 +11,7 @@ services:
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    restart: unless-stopped
+    restart: ${NETDATA_RESTART}
     security_opt:
       - apparmor:unconfined
     volumes:
@@ -23,5 +23,4 @@ services:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ${DOCKERSHAREDDIR}:/shared
       - ${DOCKERSTORAGEDIR}:/storage

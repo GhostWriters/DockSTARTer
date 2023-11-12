@@ -1,0 +1,3 @@
+services:
+  readarr:
+    hostname: ${DOCKERHOSTNAME}

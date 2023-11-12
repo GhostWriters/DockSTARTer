@@ -1,3 +1,0 @@
-services:
-  photoshow:
-    image: linuxserver/photoshow

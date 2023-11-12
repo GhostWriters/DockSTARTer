@@ -7,3 +7,5 @@ services:
       com.dockstarter.appvars.htpcmanager_enabled: "false"
       com.dockstarter.appvars.htpcmanager_network_mode: ""
       com.dockstarter.appvars.htpcmanager_port_8085: "8085"
+      com.dockstarter.appvars.htpcmanager_restart: "unless-stopped"
+      com.dockstarter.appvars.htpcmanager_tag: "latest"

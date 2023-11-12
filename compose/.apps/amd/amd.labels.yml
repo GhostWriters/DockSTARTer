@@ -23,5 +23,7 @@ services:
       com.dockstarter.appvars.amd_network_mode: ""
       com.dockstarter.appvars.amd_replay_again: "true"
       com.dockstarter.appvars.amd_required_quality: "false"
+      com.dockstarter.appvars.amd_restart: "unless-stopped"
       com.dockstarter.appvars.amd_script_interval: "1h"
       com.dockstarter.appvars.amd_search_type: "both"
+      com.dockstarter.appvars.amd_tag: "latest"

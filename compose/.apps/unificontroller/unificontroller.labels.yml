@@ -14,3 +14,5 @@ services:
       com.dockstarter.appvars.unificontroller_port_8443: "8443"
       com.dockstarter.appvars.unificontroller_port_8843: "8843"
       com.dockstarter.appvars.unificontroller_port_8880: "8880"
+      com.dockstarter.appvars.unificontroller_restart: "unless-stopped"
+      com.dockstarter.appvars.unificontroller_tag: "latest"

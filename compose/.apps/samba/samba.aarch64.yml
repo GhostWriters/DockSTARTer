@@ -1,3 +1,3 @@
 services:
   samba:
-    image: dperson/samba:aarch64
+    image: dperson/samba:${SAMBA_TAG}

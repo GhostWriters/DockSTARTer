@@ -2,60 +2,30 @@
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/containrrr/watchtower?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/containrrr/watchtower)
 [![GitHub Stars](https://img.shields.io/github/stars/containrrr/watchtower?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/containrrr/watchtower)
+[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/watchtower)
 
 ## Description
 
-[Watchtower](https://containrrr.dev/watchtower/) can update the running version of your containerized app simply by pushing a new image to the Docker Hub or your own image registry. Watchtower will pull down your new image, gracefully shut down your existing container and restart it with the same options that were used when it was deployed initially.
+[Watchtower](https://containrrr.dev/watchtower/) can update the running version
+of your containerized app simply by pushing a new image to the Docker Hub or
+your own image registry. Watchtower will pull down your new image, gracefully
+shut down your existing container and restart it with the same options that were
+used when it was deployed initially.
+
+## Install/Setup
+
+This application does not have any specific setup instructions documented. If
+you need assistance setting up this application please visit our
+[support page](https://dockstarter.com/basics/support/).
 
 ### Notifications
 
-You can use an override for notifications to your favorite method (E-mail, Slack/Discord, MS Teams are supported in Watchtower currently):
+The default notification library is [Shoutrrr](https://containrrr.dev/shoutrrr/). Shoutrrr offers notifications via Discord, Email, Pushover, Slack, Telegram, and [several others](https://containrrr.dev/shoutrrr/services/overview/). Click on the service for a more thorough explanation.
 
-You would want to put this in your [override](https://dockstarter.com/overrides/introduction/)
-
-- For Discord/Slack:
-
-```yaml
-  watchtower:
-    environment:
-      - WATCHTOWER_NOTIFICATIONS=slack
-      - WATCHTOWER_NOTIFICATION_SLACK_HOOK_URL=https://url.discord.com/slack
-      - WATCHTOWER_NOTIFICATION_SLACK_IDENTIFIER=watchtower-server-1
-```
-
-- For E-Mail:
-
-```yaml
-  watchtower:
-    environment:
-      - WATCHTOWER_NOTIFICATION_EMAIL_FROM=myemail@gmail.com
-      - WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PASSWORD=secretPassword
-      - WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PORT=587
-      - WATCHTOWER_NOTIFICATION_EMAIL_SERVER_USER=myemail@gmail.com
-      - WATCHTOWER_NOTIFICATION_EMAIL_SERVER=smtp.gmail.com
-      - WATCHTOWER_NOTIFICATION_EMAIL_TO=myemail@gmail.com
-      - WATCHTOWER_NOTIFICATIONS=email
-```
-
-This is what you **could have had** in your override **previously**:
-
-```yaml
-version: "3.4"  # this must match the version in docker-compose.yml
-services:
-    netdata:
-      hostname: newhostname
-```
-
-So **now** your override would look like this:
-
-```yaml
-version: "3.4" # this must match the version in docker-compose.yml
-services:
-  netdata:
-    hostname: newhostname
-  watchtower:
-    environment:
-      - WATCHTOWER_NOTIFICATIONS=slack
-      - WATCHTOWER_NOTIFICATION_SLACK_HOOK_URL=https://url.discord.com/slack
-      - WATCHTOWER_NOTIFICATION_SLACK_IDENTIFIER=watchtower-server-1
-```
+| Notification Application                                       | Your DockSTARTer `WATCHTOWER_NOTIFICATION_URL` should follow this:                                                                            |
+| -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Discord](https://containrrr.dev/shoutrrr/services/discord/)   | discord://**token**@**channel**                                                                                                               |
+| [Email](https://containrrr.dev/shoutrrr/services/overview/)    | smtp://**`username`**:**`password`**@**`host`**:**`port`**/?fromAddress=**`fromAddress`**&toAddresses=**`recipient1`**[,**`recipient2`**,...] |
+| [Pushover](https://containrrr.dev/shoutrrr/services/pushover/) | pushover://shoutrrr:**`apiToken`**@**`userKey`**/?devices=**`device1`**[,**`device2`**, ...]                                                  |
+| [Slack](./not-documented.md)                                   | slack://[**`botname`**@]**`token-a`**/**`token-b`**/**`token-c`**\*                                                                           |
+| [Telegram](https://containrrr.dev/shoutrrr/services/telegram/) | telegram://**`token`**@telegram?channels=**`channel-1`**[,**`channel-2`**,...]                                                                |

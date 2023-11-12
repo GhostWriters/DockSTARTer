@@ -7,25 +7,21 @@ Assuming you already followed the installation steps in the readme, there are al
 ### Run The Install Script
 
 ```bash
-sudo ds -i
+ds -i
 ```
 
 This script does the following:
 
 - Updates your system using `apt-get`
 - Installs `curl`, `git`, `grep`, and `sed` (git should already be installed if you started with the install instructions on the main page, but it's here just in case)
-- Installs [yq](https://github.com/mikefarah/yq) - by downloading the binary from source and installing it locally, used for piecing together YAML files
 - Installs [docker](https://github.com/docker/docker-install) - by downloading via the official docker-install script, used to run containers
-- Installs [docker machine completion](https://docs.docker.com/machine/completion/) - by downloading the binary from source and installing it locally, provides tab completion for docker in bash shell (just a nice extra to have)
-- Installs [docker-compose](https://github.com/linuxserver/docker-docker-compose#recommended-method) - by installing LSIO's helper script to run `docker-compose` from inside a docker container, allows configuring of containers to be run together instead of individually running each one
-- Installs [docker compose completion](https://docs.docker.com/compose/completion/) - by downloading the binary from source and installing it locally, provides tab completion for docker-compose in bash shell (just a nice extra to have)
 
 When the script finishes it will display a message informing you to reboot if this is the first time you've ran it.
 
 ### Run The Compose Generator
 
 ```bash
-sudo ds -c
+ds -c
 ```
 
 This script verifies the dependencies above and installs or updates them as needed, then creates a file `~/.docker/compose/docker-compose.yml` based on the variables you configured in your `~/.docker/compose/.env` file. The generator script will run your selected containers after creating the file.
@@ -37,7 +33,7 @@ If you make any changes to your `.env` file (such as changing a port or enabling
 ### Update DockSTARTer
 
 ```bash
-sudo ds -u
+ds -u
 ```
 
 This should get you the latest changes to DockSTARTer. This will also backup and update your `.env` file.
@@ -45,7 +41,7 @@ This should get you the latest changes to DockSTARTer. This will also backup and
 You may separately backup and update your `.env` file with the following command.
 
 ```bash
-sudo ds -e
+ds -e
 ```
 
 Then you may want to edit your `.env` file and run the generator again to bring up new apps or changes to existing apps.
@@ -55,7 +51,7 @@ Then you may want to edit your `.env` file and run the generator again to bring 
 If you do not yet have a `~/.docker/compose/.env` file:
 
 ```bash
-sudo ds -e
+ds -e
 ```
 
 Edit the file using something like `nano ~/.docker/compose/.env` (CTRL+X will prompt to save and exit the nano editor)
@@ -67,12 +63,12 @@ Edit the file using something like `nano ~/.docker/compose/.env` (CTRL+X will pr
 You can add the variables required to run an app by running:
 
 ```bash
- sudo ds -a <APPNAME>
+ds -a <APPNAME>
 ```
 
 ```bash
 ## Example:
-sudo ds -a sonarr
+ds -a sonarr
 ```
 
 Then your `.env` file fill have a variable named `<APPNAME>_ENABLED` that you can set to `true` and then run the Compose Generator to start the app.
@@ -86,18 +82,18 @@ This is the best place to change the app's external default ports.
 You can remove the variables for an app by running:
 
 ```bash
- sudo ds -r <APPNAME>
+ds -r <APPNAME>
 ```
 
 ```bash
 ## Example:
-sudo ds -r sonarr
+ds -r sonarr
 ```
 
 You can also remove all variables for all apps that are disabled by running:
 
 ```bash
-sudo ds -r
+ds -r
 ```
 
 You will be prompted individually for each app and shown what will be removed.
@@ -105,7 +101,7 @@ You will be prompted individually for each app and shown what will be removed.
 ### Cleanup Unused Docker Resources
 
 ```bash
-sudo ds -p
+ds -p
 ```
 
 This cleans up the DS install, `p` stands for prune in this case. This recovers space from old images if they were somehow left over.

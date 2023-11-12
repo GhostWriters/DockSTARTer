@@ -1,0 +1,3 @@
+services:
+  autobrr:
+    network_mode: ${AUTOBRR_NETWORK_MODE}

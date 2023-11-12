@@ -1,0 +1,17 @@
+services:
+  adminer:
+    container_name: adminer
+    environment:
+      - ADMINER_DESIGN=${ADMINER_DESIGN}
+      - ADMINER_PLUGINS=${ADMINER_PLUGINS}
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: ${ADMINER_RESTART}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/adminer:/sessions
+      - ${DOCKERSTORAGEDIR}:/storage

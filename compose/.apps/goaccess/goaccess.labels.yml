@@ -8,3 +8,5 @@ services:
       com.dockstarter.appvars.goaccess_logsdir: "~/.config/appdata/swag/log/nginx"
       com.dockstarter.appvars.goaccess_network_mode: ""
       com.dockstarter.appvars.goaccess_port_7889: "7889"
+      com.dockstarter.appvars.goaccess_restart: "unless-stopped"
+      com.dockstarter.appvars.goaccess_tag: "latest"

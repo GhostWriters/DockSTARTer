@@ -8,9 +8,8 @@ services:
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    restart: unless-stopped
+    restart: ${H5AI_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERSHAREDDIR}:/shared
       - ${DOCKERSTORAGEDIR}:/storage
       - ${H5AI_INDEXDIR}:/var/www

@@ -1,0 +1,5 @@
+services:
+  mosquitto:
+    ports:
+      - ${MOSQUITTO_PORT_1883}:1883
+      - ${MOSQUITTO_PORT_9001}:9001

@@ -1,0 +1,3 @@
+services:
+  apprise:
+    network_mode: ${APPRISE_NETWORK_MODE}

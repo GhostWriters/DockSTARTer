@@ -1,3 +1,0 @@
-services:
-  cloudflareddns:
-    image: hotio/cloudflare-ddns

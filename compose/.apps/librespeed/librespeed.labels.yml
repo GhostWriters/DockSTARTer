@@ -13,3 +13,5 @@ services:
       com.dockstarter.appvars.librespeed_network_mode: ""
       com.dockstarter.appvars.librespeed_password: ""
       com.dockstarter.appvars.librespeed_port_80: "8013"
+      com.dockstarter.appvars.librespeed_restart: "unless-stopped"
+      com.dockstarter.appvars.librespeed_tag: "latest"

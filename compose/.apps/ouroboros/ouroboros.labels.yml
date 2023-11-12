@@ -14,4 +14,6 @@ services:
       com.dockstarter.appvars.ouroboros_notifiers: ""
       com.dockstarter.appvars.ouroboros_repo_pass: ""
       com.dockstarter.appvars.ouroboros_repo_user: ""
+      com.dockstarter.appvars.ouroboros_restart: "unless-stopped"
       com.dockstarter.appvars.ouroboros_self_update: "true"
+      com.dockstarter.appvars.ouroboros_tag: "latest"

@@ -7,3 +7,5 @@ services:
       com.dockstarter.appvars.jackett_enabled: "false"
       com.dockstarter.appvars.jackett_network_mode: ""
       com.dockstarter.appvars.jackett_port_9117: "9117"
+      com.dockstarter.appvars.jackett_restart: "unless-stopped"
+      com.dockstarter.appvars.jackett_tag: "latest"

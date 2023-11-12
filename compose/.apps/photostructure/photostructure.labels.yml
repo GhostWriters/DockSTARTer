@@ -11,3 +11,5 @@ services:
       com.dockstarter.appvars.photostructure_library: "/mnt/photostructure"
       com.dockstarter.appvars.photostructure_network_mode: ""
       com.dockstarter.appvars.photostructure_port_1787: "1787"
+      com.dockstarter.appvars.photostructure_restart: "unless-stopped"
+      com.dockstarter.appvars.photostructure_tag: "latest"

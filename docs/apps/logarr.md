@@ -2,12 +2,13 @@
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/monitorr/logarr?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/monitorr/logarr/)
 [![GitHub Stars](https://img.shields.io/github/stars/monitorr/logarr?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/Monitorr/logarr)
+[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/logarr)
 
 ## Description
 
 [Logarr](https://github.com/Monitorr/logarr) is a self-hosted, single-page, log consolidation tool written in PHP.
 
-## Logarr Configuration
+## Install/Setup
 
 Logarr configuration has sharing to the logs enabled by default. From within the Logarr container, this is accessible via the `/var/log/logarrlogs` path. Which is mapped to your `~/.config/appdata` path of your host machine.
 

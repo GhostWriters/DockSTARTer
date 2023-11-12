@@ -1,24 +1,24 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_app_select() {
-    run_script 'install_yq'
     local APPLIST=()
-
+    notice "Preparing app menu. Please be patient, this can take a while."
     while IFS= read -r line; do
         local APPNAME=${line^^}
         local FILENAME=${APPNAME,,}
-        if [[ -d ${SCRIPTPATH}/compose/.apps/${FILENAME}/ ]]; then
-            if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.yml ]]; then
-                if [[ -f ${SCRIPTPATH}/compose/.apps/${FILENAME}/${FILENAME}.${ARCH}.yml ]]; then
+        local APPTEMPLATES="${SCRIPTPATH}/compose/.apps/${FILENAME}"
+        if [[ -d ${APPTEMPLATES}/ ]]; then
+            if [[ -f ${APPTEMPLATES}/${FILENAME}.yml ]]; then
+                if [[ -f ${APPTEMPLATES}/${FILENAME}.${ARCH}.yml ]]; then
                     local APPNICENAME
-                    APPNICENAME=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.dockstarter.appinfo.nicename]" || echo "${APPNAME}")
+                    APPNICENAME=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.nicename: \K.*" "${APPTEMPLATES}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo "${APPNAME}")
                     local APPDESCRIPTION
-                    APPDESCRIPTION=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.dockstarter.appinfo.description]" || echo "! Missing description !")
+                    APPDESCRIPTION=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.description: \K.*" "${APPTEMPLATES}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo "! Missing description !")
                     local APPDEPRECATED
-                    APPDEPRECATED=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.dockstarter.appinfo.deprecated]" || echo "false")
-                    if [[ ${APPDEPRECATED} == "true" ]]; then
+                    APPDEPRECATED=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" "${APPTEMPLATES}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo false)
+                    if [[ ${APPDEPRECATED} == true ]]; then
                         continue
                     fi
                     local APPONOFF
@@ -34,7 +34,7 @@ menu_app_select() {
     done < <(ls -A "${SCRIPTPATH}/compose/.apps/")
 
     local SELECTEDAPPS
-    if [[ ${CI:-} == true ]]; then
+    if [[ ${CI-} == true ]]; then
         SELECTEDAPPS="Cancel"
     else
         SELECTEDAPPS=$(whiptail --fb --clear --title "DockSTARTer" --separate-output --checklist 'Choose which apps you would like to install:\n Use [up], [down], and [space] to select apps, and [tab] to switch to the buttons at the bottom.' 0 0 0 "${APPLIST[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
@@ -44,9 +44,9 @@ menu_app_select() {
     else
         info "Disabling all apps."
         while IFS= read -r line; do
-            local APPNAME=${line%%_ENABLED=true}
+            local APPNAME=${line%%_ENABLED=*}
             run_script 'env_set' "${APPNAME}_ENABLED" false
-        done < <(grep '_ENABLED=true$' < "${SCRIPTPATH}/compose/.env")
+        done < <(grep --color=never -P '_ENABLED='"'"'?true'"'"'?$' "${COMPOSE_ENV}")
 
         info "Enabling selected apps."
         while IFS= read -r line; do

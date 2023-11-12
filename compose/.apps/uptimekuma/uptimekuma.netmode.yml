@@ -1,0 +1,3 @@
+services:
+  uptimekuma:
+    network_mode: ${UPTIMEKUMA_NETWORK_MODE}

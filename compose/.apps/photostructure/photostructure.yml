@@ -12,12 +12,11 @@ services:
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    restart: unless-stopped
+    restart: ${PHOTOSTRUCTURE_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/photostructure:/ps/config
       - ${DOCKERCONFDIR}/photostructure/logs:/ps/logs
-      - ${DOCKERSHAREDDIR}:/shared
       - ${DOCKERSTORAGEDIR}:/storage
       - ${PHOTOSTRUCTURE_CACHE_DIRECTORY}:/ps/tmp
       - ${PHOTOSTRUCTURE_LIBRARY}:/ps/library

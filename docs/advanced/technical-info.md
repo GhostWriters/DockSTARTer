@@ -3,23 +3,23 @@
 ## How Does DockSTARTer Work
 
 DockSTARTer works by generating the configuration that **[Compose](https://docs.docker.com/compose/)** uses. A linux "pro" might use Compose to do what DockSTARTer does themselves but it would still take a lot longer.
+
 > Compose is a tool for defining and running multi-container Docker applications. To learn more about Compose refer to the following [documentation](https://docs.docker.com/compose/).
 
-_Compose_ works by reading [YAML (*.yml)](https://en.wikipedia.org/wiki/YAML#Example) configuration files with the paths, ports and parameters each Container should run with.
+_Compose_ works by reading [YAML (\*.yml)](https://en.wikipedia.org/wiki/YAML#Example) configuration files with the paths, ports and parameters each Container should run with.
 
 ## YML Files
 
-* **DO NOT EDIT THESE FILES DIRECTLY.** _Overriding_ these settings is easy but you must create a new file first. See the [Overrides / Introduction](https://dockstarter.com/overrides/introduction) page.
+- **DO NOT EDIT THESE FILES DIRECTLY.** _Overriding_ these settings is easy but you must create a new file first. See the [Overrides / Introduction](https://dockstarter.com/overrides/introduction) page.
 
 YML files are akin to XML files and below is an example:
 
 ```yaml
-version:             "3.6"
 services:
   sonarr:
-    image:           containers_author/sonarr
-    container_name:  sonarr
-    restart:         unless-stopped
+    image: containers_author/sonarr:latest
+    container_name: sonarr
+    restart: ${SONARR_RESTART}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
@@ -28,7 +28,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/sonarr:/config
       - ${DOCKERSTORAGEDIR}:/storage
-
 ```
 
 In the example above,
@@ -57,4 +56,4 @@ The ports for access to (and from) your apps are manipulated in your `.env` sett
 
 If you were to edit the `.env` for sonarr to the above, and run the generator again, you would then access Sonarr at `http://app.address:6969/calendar` instead of the default port, 8989.
 
-* **Do not change your apps internal ports unless you know what you are doing.** For instance, if you change Sonarr's internal port to 4545, it will still listen on 8989 by default. So then, you won't be able to access the WebGUI and without that, I don't even know where to begin changing the port in Sonarr's config files. And unless you want to run Transmission and RuTorrent side by side, I can't think of a good reason to change them in `.env` either.
+- **Do not change your apps internal ports unless you know what you are doing.** For instance, if you change Sonarr's internal port to 4545, it will still listen on 8989 by default. So then, you won't be able to access the WebGUI and without that, I don't even know where to begin changing the port in Sonarr's config files. And unless you want to run Transmission and RuTorrent side by side, I can't think of a good reason to change them in `.env` either.

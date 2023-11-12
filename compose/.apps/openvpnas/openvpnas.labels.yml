@@ -10,3 +10,5 @@ services:
       com.dockstarter.appvars.openvpnas_port_1194: "1194"
       com.dockstarter.appvars.openvpnas_port_943: "943"
       com.dockstarter.appvars.openvpnas_port_9443: "9443"
+      com.dockstarter.appvars.openvpnas_restart: "unless-stopped"
+      com.dockstarter.appvars.openvpnas_tag: "latest"

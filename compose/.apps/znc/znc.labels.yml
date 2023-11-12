@@ -7,3 +7,5 @@ services:
       com.dockstarter.appvars.znc_enabled: "false"
       com.dockstarter.appvars.znc_network_mode: ""
       com.dockstarter.appvars.znc_port_6501: "6501"
+      com.dockstarter.appvars.znc_restart: "unless-stopped"
+      com.dockstarter.appvars.znc_tag: "latest"

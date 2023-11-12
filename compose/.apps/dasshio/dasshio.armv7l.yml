@@ -1,3 +1,0 @@
-services:
-  dasshio:
-    image: danimtb/armv7-dasshio

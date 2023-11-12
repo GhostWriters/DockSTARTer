@@ -11,3 +11,5 @@ services:
       com.dockstarter.appvars.deluge_port_58946: "58946"
       com.dockstarter.appvars.deluge_port_6881: "6881"
       com.dockstarter.appvars.deluge_port_8112: "8112"
+      com.dockstarter.appvars.deluge_restart: "unless-stopped"
+      com.dockstarter.appvars.deluge_tag: "latest"

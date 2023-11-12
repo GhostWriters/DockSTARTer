@@ -8,3 +8,5 @@ services:
       com.dockstarter.appvars.nextcloud_enabled: "false"
       com.dockstarter.appvars.nextcloud_network_mode: ""
       com.dockstarter.appvars.nextcloud_port_443: "444"
+      com.dockstarter.appvars.nextcloud_restart: "unless-stopped"
+      com.dockstarter.appvars.nextcloud_tag: "latest"

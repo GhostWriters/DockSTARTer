@@ -8,10 +8,9 @@ services:
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    restart: unless-stopped
+    restart: ${CLOUDCMD_RESTART}
     volumes:
-      - /etc/localtime:/etc/localtime:ro   
+      - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/cloudcmd:/root
-      - ${DOCKERSHAREDDIR}:/shared
       - ${DOCKERSTORAGEDIR}:/storage
       - ${CLOUDCMD_FSDIR}:/mnt/fs

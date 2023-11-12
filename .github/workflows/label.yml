@@ -10,10 +10,9 @@ on: [pull_request_target]
 
 jobs:
   label:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/labeler@2.2.0
-      with:
-        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+      - uses: actions/labeler@v4.3.0
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"

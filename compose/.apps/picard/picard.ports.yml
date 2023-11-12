@@ -1,0 +1,4 @@
+services:
+  picard:
+    ports:
+      - ${PICARD_PORT_5800}:5800

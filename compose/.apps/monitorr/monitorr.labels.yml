@@ -7,3 +7,5 @@ services:
       com.dockstarter.appvars.monitorr_enabled: "false"
       com.dockstarter.appvars.monitorr_network_mode: ""
       com.dockstarter.appvars.monitorr_port_80: "8004"
+      com.dockstarter.appvars.monitorr_restart: "unless-stopped"
+      com.dockstarter.appvars.monitorr_tag: "latest"

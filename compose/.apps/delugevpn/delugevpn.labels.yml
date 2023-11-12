@@ -13,3 +13,5 @@ services:
       com.dockstarter.appvars.delugevpn_port_6881: "6881"
       com.dockstarter.appvars.delugevpn_port_8112: "8112"
       com.dockstarter.appvars.delugevpn_port_8118: "8118"
+      com.dockstarter.appvars.delugevpn_restart: "unless-stopped"
+      com.dockstarter.appvars.delugevpn_tag: "latest"

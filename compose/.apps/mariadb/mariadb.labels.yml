@@ -8,3 +8,5 @@ services:
       com.dockstarter.appvars.mariadb_mysql_root_password: ""
       com.dockstarter.appvars.mariadb_network_mode: ""
       com.dockstarter.appvars.mariadb_port_3306: "3306"
+      com.dockstarter.appvars.mariadb_restart: "unless-stopped"
+      com.dockstarter.appvars.mariadb_tag: "latest"

@@ -1,3 +1,0 @@
-services:
-  syncthing:
-    image: linuxserver/syncthing

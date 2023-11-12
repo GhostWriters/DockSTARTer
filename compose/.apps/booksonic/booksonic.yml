@@ -11,11 +11,8 @@ services:
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    restart: unless-stopped
+    restart: ${BOOKSONIC_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/booksonic:/config
-      - ${DOCKERSHAREDDIR}:/shared
       - ${DOCKERSTORAGEDIR}:/storage
-      - ${MEDIADIR_AUDIOBOOKS}:/audiobooks
-      - ${MEDIADIR_MUSIC}/podcasts:/podcasts

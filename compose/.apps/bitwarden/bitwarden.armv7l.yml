@@ -1,3 +1,0 @@
-services:
-  bitwarden:
-    image: bitwardenrs/server

@@ -1,0 +1,21 @@
+services:
+  audiobookshelf:
+    container_name: audiobookshelf
+    environment:
+      - CONFIG_PATH=/config
+      - HOME=/config/.home
+      - LOG_LEVEL=info
+      - METADATA_PATH=/metadata
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: ${AUDIOBOOKSHELF_RESTART}
+    user: ${PUID}:${PGID}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/audiobookshelf:/config
+      - ${DOCKERCONFDIR}/audiobookshelf/.metadata:/metadata
+      - ${DOCKERSTORAGEDIR}:/storage

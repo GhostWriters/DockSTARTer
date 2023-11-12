@@ -1,0 +1,4 @@
+services:
+  gitea:
+    ports:
+      - ${GITEA_PORT_3000}:3000

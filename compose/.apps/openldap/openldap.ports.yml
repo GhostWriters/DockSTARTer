@@ -1,0 +1,5 @@
+services:
+  openldap:
+    ports:
+      - ${OPENLDAP_PORT_389}:389
+      - ${OPENLDAP_PORT_636}:636

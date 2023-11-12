@@ -12,6 +12,8 @@ services:
       com.dockstarter.appvars.samba_port_138: "138"
       com.dockstarter.appvars.samba_port_139: "139"
       com.dockstarter.appvars.samba_port_445: "445"
+      com.dockstarter.appvars.samba_restart: "unless-stopped"
       com.dockstarter.appvars.samba_sharename: "DockSTARTer"
+      com.dockstarter.appvars.samba_tag: "latest"
       com.dockstarter.appvars.samba_username: "ds"
       com.dockstarter.appvars.samba_workgroup: "WORKGROUP"

@@ -7,3 +7,5 @@ services:
       com.dockstarter.appvars.netdata_enabled: "false"
       com.dockstarter.appvars.netdata_network_mode: ""
       com.dockstarter.appvars.netdata_port_19999: "19999"
+      com.dockstarter.appvars.netdata_restart: "unless-stopped"
+      com.dockstarter.appvars.netdata_tag: "latest"

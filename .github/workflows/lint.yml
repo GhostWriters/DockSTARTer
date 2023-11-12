@@ -1,0 +1,65 @@
+name: Lint
+
+on: [push, pull_request]
+
+jobs:
+  editorconfig-checker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.1
+      - name: editorconfig-checker
+        run: |
+          docker run --rm \
+            -v "${GITHUB_WORKSPACE}":/check \
+            mstruebing/editorconfig-checker
+
+  markdownlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.1
+      - name: markdownlint
+        run: |
+          docker run --rm \
+            -v "${GITHUB_WORKSPACE}":/workdir \
+            ghcr.io/igorshubovych/markdownlint-cli \
+            --ignore "docs/index.md" \
+            --disable MD013 MD033 -- \
+            "**/*.md"
+
+  shellcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.1
+      - name: shellcheck
+        run: |
+          find "${GITHUB_WORKSPACE}" -name '*.sh' -exec \
+            docker run --rm \
+              -v "${GITHUB_WORKSPACE}":"${GITHUB_WORKSPACE}" \
+              koalaman/shellcheck \
+              {} +
+
+  shfmt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.1
+      - name: shfmt
+        run: |
+          find "${GITHUB_WORKSPACE}" -name '*.sh' -exec \
+            docker run --rm \
+              -v "${GITHUB_WORKSPACE}":"${GITHUB_WORKSPACE}" \
+              mvdan/shfmt \
+              -s -d \
+              {} +
+
+  yamllint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.1
+      - name: yamllint
+        run: |
+          docker run --rm \
+            -v "${PWD}":/yaml \
+            peterdavehello/yamllint \
+            yamllint \
+            -d '{"extends":"default","rules":{"document-start":{"present":false},"line-length":"disable","truthy":{"check-keys":false}}}' \
+            "."

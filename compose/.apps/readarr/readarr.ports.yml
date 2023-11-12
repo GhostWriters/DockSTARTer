@@ -1,0 +1,4 @@
+services:
+  readarr:
+    ports:
+      - ${READARR_PORT_8787}:8787

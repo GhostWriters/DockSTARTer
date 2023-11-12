@@ -1,0 +1,19 @@
+services:
+  gluetun:
+    cap_add:
+      - NET_ADMIN
+    container_name: gluetun
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: ${GLUETUN_RESTART}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/gluetun:/config
+      - ${DOCKERSTORAGEDIR}:/storage

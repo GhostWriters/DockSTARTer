@@ -1,0 +1,18 @@
+services:
+  rustdesk:
+    container_name: rustdesk
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - RELAY=${RUSTDESK_RELAY_SERVER}
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: ${RUSTDESK_RESTART}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/rustdesk:/data
+      - ${DOCKERSTORAGEDIR}:/storage

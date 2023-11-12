@@ -11,12 +11,11 @@ services:
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    restart: unless-stopped
+    restart: ${MURMUR_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/murmur/cert:/opt/murmur/cert
       - ${DOCKERCONFDIR}/murmur/config:/opt/murmur/config
       - ${DOCKERCONFDIR}/murmur/data:/opt/murmur/data
       - ${DOCKERCONFDIR}/murmur/log:/opt/murmur/log
-      - ${DOCKERSHAREDDIR}:/shared
       - ${DOCKERSTORAGEDIR}:/storage

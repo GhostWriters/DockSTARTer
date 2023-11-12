@@ -8,4 +8,6 @@ services:
       com.dockstarter.appvars.duplicati_enabled: "false"
       com.dockstarter.appvars.duplicati_network_mode: ""
       com.dockstarter.appvars.duplicati_port_8200: "8200"
+      com.dockstarter.appvars.duplicati_restart: "unless-stopped"
       com.dockstarter.appvars.duplicati_sourcedir: "~/.config/appdata"
+      com.dockstarter.appvars.duplicati_tag: "latest"

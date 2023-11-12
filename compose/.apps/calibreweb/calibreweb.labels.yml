@@ -7,3 +7,5 @@ services:
       com.dockstarter.appvars.calibreweb_enabled: "false"
       com.dockstarter.appvars.calibreweb_network_mode: ""
       com.dockstarter.appvars.calibreweb_port_8083: "8083"
+      com.dockstarter.appvars.calibreweb_restart: "unless-stopped"
+      com.dockstarter.appvars.calibreweb_tag: "latest"

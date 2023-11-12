@@ -1,3 +1,0 @@
-services:
-  nzbhydra2:
-    image: linuxserver/nzbhydra2

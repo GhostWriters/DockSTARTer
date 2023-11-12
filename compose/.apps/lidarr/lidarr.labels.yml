@@ -7,3 +7,5 @@ services:
       com.dockstarter.appvars.lidarr_enabled: "false"
       com.dockstarter.appvars.lidarr_network_mode: ""
       com.dockstarter.appvars.lidarr_port_8686: "8686"
+      com.dockstarter.appvars.lidarr_restart: "unless-stopped"
+      com.dockstarter.appvars.lidarr_tag: "latest"

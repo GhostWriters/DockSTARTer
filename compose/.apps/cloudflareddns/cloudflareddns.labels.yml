@@ -13,5 +13,7 @@ services:
       com.dockstarter.appvars.cloudflareddns_interval: "300"
       com.dockstarter.appvars.cloudflareddns_log_level: "2"
       com.dockstarter.appvars.cloudflareddns_recordtypes: "A"
+      com.dockstarter.appvars.cloudflareddns_restart: "unless-stopped"
+      com.dockstarter.appvars.cloudflareddns_tag: "latest"
       com.dockstarter.appvars.cloudflareddns_user: ""
       com.dockstarter.appvars.cloudflareddns_zones: ""

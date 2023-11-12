@@ -1,0 +1,26 @@
+services:
+  openldap:
+    container_name: openldap
+    environment:
+      - LDAP_ADMIN_PASSWORD=${OPENLDAP_ADMIN_PASSWORD}
+      - LDAP_BACKEND=${OPENLDAP_BACKEND}
+      - LDAP_CONFIG_PASSWORD=${OPENLDAP_CONFIG_PASSWORD}
+      - LDAP_DOMAIN=${OPENLDAP_DOMAIN}
+      - LDAP_OPENLDAP_GID=${OPENLDAP_GID}
+      - LDAP_OPENLDAP_UID=${OPENLDAP_UID}
+      - LDAP_ORGANISATION=${OPENLDAP_ORGANISATION}
+      - LDAP_READONLY_USER_PASSWORD=${OPENLDAP_READONLY_USER_PASSWORD}
+      - LDAP_READONLY_USER_USERNAME=${OPENLDAP_READONLY_USER_USERNAME}
+      - LDAP_READONLY_USER=${OPENLDAP_READONLY_USER}
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: ${OPENLDAP_RESTART}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/openldap/database:/var/lib/ldap
+      - ${DOCKERCONFDIR}/openldap/config:/etc/ldap/
+      - ${DOCKERSTORAGEDIR}:/storage

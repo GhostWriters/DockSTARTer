@@ -8,3 +8,5 @@ services:
       com.dockstarter.appvars.unmanic_encodedir: "/tmp"
       com.dockstarter.appvars.unmanic_network_mode: ""
       com.dockstarter.appvars.unmanic_port_8888: "8888"
+      com.dockstarter.appvars.unmanic_restart: "unless-stopped"
+      com.dockstarter.appvars.unmanic_tag: "latest"

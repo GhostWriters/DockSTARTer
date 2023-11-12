@@ -6,3 +6,5 @@ services:
       com.dockstarter.appinfo.nicename: "Varken"
       com.dockstarter.appvars.varken_enabled: "false"
       com.dockstarter.appvars.varken_network_mode: ""
+      com.dockstarter.appvars.varken_restart: "unless-stopped"
+      com.dockstarter.appvars.varken_tag: "latest"

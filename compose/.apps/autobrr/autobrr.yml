@@ -1,0 +1,16 @@
+services:
+  autobrr:
+    container_name: autobrr
+    environment:
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: ${AUTOBRR_RESTART}
+    user: ${PGID}:${PUID}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/autobrr:/config
+      - ${DOCKERSTORAGEDIR}:/storage

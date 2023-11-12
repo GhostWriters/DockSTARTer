@@ -7,3 +7,5 @@ services:
       com.dockstarter.appvars.prometheus_enabled: "false"
       com.dockstarter.appvars.prometheus_network_mode: ""
       com.dockstarter.appvars.prometheus_port_9090: "9090"
+      com.dockstarter.appvars.prometheus_restart: "unless-stopped"
+      com.dockstarter.appvars.prometheus_tag: "latest"

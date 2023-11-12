@@ -1,3 +1,0 @@
-services:
-  rclone:
-    network_mode: ${RCLONE_NETWORK_MODE}

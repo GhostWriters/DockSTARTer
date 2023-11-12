@@ -1,0 +1,3 @@
+services:
+  unpackerr:
+    hostname: ${DOCKERHOSTNAME}

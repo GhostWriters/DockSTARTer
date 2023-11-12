@@ -8,3 +8,5 @@ services:
       com.dockstarter.appvars.h5ai_indexdir: "/mnt/h5ai"
       com.dockstarter.appvars.h5ai_network_mode: ""
       com.dockstarter.appvars.h5ai_port_8080: "8080"
+      com.dockstarter.appvars.h5ai_restart: "unless-stopped"
+      com.dockstarter.appvars.h5ai_tag: "latest"

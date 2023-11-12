@@ -7,3 +7,5 @@ services:
       com.dockstarter.appvars.medusa_enabled: "false"
       com.dockstarter.appvars.medusa_network_mode: ""
       com.dockstarter.appvars.medusa_port_8081: "8081"
+      com.dockstarter.appvars.medusa_restart: "unless-stopped"
+      com.dockstarter.appvars.medusa_tag: "latest"

@@ -8,3 +8,5 @@ services:
       com.dockstarter.appvars.limnoria_network_mode: ""
       com.dockstarter.appvars.limnoria_password: ""
       com.dockstarter.appvars.limnoria_port_8080: "8080"
+      com.dockstarter.appvars.limnoria_restart: "unless-stopped"
+      com.dockstarter.appvars.limnoria_tag: "latest"

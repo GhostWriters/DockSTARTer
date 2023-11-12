@@ -1,3 +1,0 @@
-services:
-  watchtower:
-    image: containrrr/watchtower:armhf-latest

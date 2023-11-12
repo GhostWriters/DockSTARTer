@@ -1,0 +1,33 @@
+services:
+  azuracast:
+    container_name: azuracast
+    environment:
+      - PGID=${PGID:-1000}
+      - PUID=${PUID:-1000}
+      - AZURACAST_DC_REVISION=14
+      - AZURACAST_SFTP_PORT=${AZURACAST_SFTP_PORT:-2022}
+      - AZURACAST_VERSION=${AZURACAST_RELEASE_CHANNEL:-latest}
+      - APPLICATION_ENV=${AZURACAST_APPLICATION_ENV}
+      - MYSQL_HOST=${AZURACAST_MYSQL_HOST}
+      - MYSQL_PORT=${AZURACAST_MYSQL_PORT}
+      - MYSQL_USER=${AZURACAST_MYSQL_USER}
+      - MYSQL_PASSWORD=${AZURACAST_MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${AZURACAST_MYSQL_DATABASE}
+      - ENABLE_REDIS=${AZURACAST_ENABLE_REDIS}
+      - REDIS_HOST=${AZURACAST_REDIS_HOST}
+      - REDIS_PORT=${AZURACAST_REDIS_PORT}
+      - REDIS_DB=${AZURACAST_REDIS_DB}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: ${AZURACAST_RESTART}
+    volumes:
+      - ${DOCKERCONFDIR}/shoutcast2/:/var/azuracast/servers/shoutcast2
+      - ${DOCKERCONFDIR}/geoip/:/var/azuracast/geoip
+      - ${DOCKERCONFDIR}/sftpgo/:/var/azuracast/sftpgo/persist
+      - ${DOCKERSTORAGEDIR}/uploads/:/var/azuracast/uploads
+      - ${DOCKERSTORAGEDIR}/backups/:/var/azuracast/backups
+      - ${DOCKERSTORAGEDIR}/stations/:/var/azuracast/stations
+      - ${DOCKERSTORAGEDIR}/db/:/var/lib/mysql

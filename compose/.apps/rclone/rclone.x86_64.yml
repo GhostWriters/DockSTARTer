@@ -1,3 +1,0 @@
-services:
-  rclone:
-    image: rclone/rclone

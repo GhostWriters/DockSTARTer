@@ -1,0 +1,3 @@
+services:
+  komga:
+    network_mode: ${KOMGA_NETWORK_MODE}

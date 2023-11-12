@@ -2,10 +2,13 @@
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/mariadb?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/linuxserver/mariadb)
 [![GitHub Stars](https://img.shields.io/github/stars/linuxserver/docker-mariadb?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/linuxserver/docker-mariadb)
+[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/mariadb)
 
 ## Description
 
 [MariaDB](https://mariadb.org/) is one of the most popular database servers. Made by the original developers of MySQL.
+
+## Install/Setup
 
 You can create and manage databases directly from inside the MariaDB container but we recommend you use [phpMyAdmin](https://dockstarter.com/apps/phpmyadmin) to manage your databases.
 

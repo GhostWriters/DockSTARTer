@@ -7,3 +7,5 @@ services:
       com.dockstarter.appvars.beets_enabled: "false"
       com.dockstarter.appvars.beets_network_mode: ""
       com.dockstarter.appvars.beets_port_8337: "8337"
+      com.dockstarter.appvars.beets_restart: "unless-stopped"
+      com.dockstarter.appvars.beets_tag: "latest"

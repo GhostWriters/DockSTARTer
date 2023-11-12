@@ -7,3 +7,5 @@ services:
       com.dockstarter.appvars.lazylibrarian_enabled: "false"
       com.dockstarter.appvars.lazylibrarian_network_mode: ""
       com.dockstarter.appvars.lazylibrarian_port_5299: "5299"
+      com.dockstarter.appvars.lazylibrarian_restart: "unless-stopped"
+      com.dockstarter.appvars.lazylibrarian_tag: "latest"

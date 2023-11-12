@@ -1,0 +1,3 @@
+services:
+  mylar3:
+    hostname: ${DOCKERHOSTNAME}

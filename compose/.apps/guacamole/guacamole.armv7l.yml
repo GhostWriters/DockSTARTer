@@ -1,3 +1,0 @@
-services:
-  guacamole:
-    image: oznu/guacamole:armhf

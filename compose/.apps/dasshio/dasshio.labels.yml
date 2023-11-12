@@ -9,3 +9,5 @@ services:
       com.dockstarter.appvars.dasshio_homeassistant_url: ""
       com.dockstarter.appvars.dasshio_network_mode: ""
       com.dockstarter.appvars.dasshio_port_6565: "6565"
+      com.dockstarter.appvars.dasshio_restart: "unless-stopped"
+      com.dockstarter.appvars.dasshio_tag: "latest"

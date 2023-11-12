@@ -10,3 +10,5 @@ services:
       com.dockstarter.appvars.httpserver_html_dir: ""
       com.dockstarter.appvars.httpserver_network_mode: ""
       com.dockstarter.appvars.httpserver_port_5000: "5000"
+      com.dockstarter.appvars.httpserver_restart: "unless-stopped"
+      com.dockstarter.appvars.httpserver_tag: "latest"

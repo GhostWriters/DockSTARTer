@@ -10,3 +10,5 @@ services:
       com.dockstarter.appvars.ubooquity_network_mode: ""
       com.dockstarter.appvars.ubooquity_port_2202: "2202"
       com.dockstarter.appvars.ubooquity_port_2203: "2203"
+      com.dockstarter.appvars.ubooquity_restart: "unless-stopped"
+      com.dockstarter.appvars.ubooquity_tag: "latest"

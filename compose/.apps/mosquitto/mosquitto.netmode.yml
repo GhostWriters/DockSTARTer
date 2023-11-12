@@ -1,0 +1,3 @@
+services:
+  mosquitto:
+    network_mode: ${MOSQUITTO_NETWORK_MODE}

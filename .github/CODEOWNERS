@@ -1,4 +1,7 @@
-*               @nemchik
-/docs/          @GhostWriters/documentation
-/README.md      @GhostWriters/documentation
-/mkdocs.yml     @GhostWriters/documentation
+*               @GhostWriters/ds-scripts
+/.github/       @GhostWriters/ds-scripts @GhostWriters/ds-apps @GhostWriters/ds-docs
+/.scripts/      @GhostWriters/ds-scripts
+/compose/       @GhostWriters/ds-scripts @GhostWriters/ds-apps
+/docs/          @GhostWriters/ds-scripts @GhostWriters/ds-apps @GhostWriters/ds-docs
+/mkdocs.yml     @GhostWriters/ds-scripts @GhostWriters/ds-apps @GhostWriters/ds-docs
+/README.md      @GhostWriters/ds-scripts @GhostWriters/ds-apps @GhostWriters/ds-docs

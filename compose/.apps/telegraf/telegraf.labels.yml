@@ -9,3 +9,5 @@ services:
       com.dockstarter.appvars.telegraf_port_8092: "8092"
       com.dockstarter.appvars.telegraf_port_8094: "8094"
       com.dockstarter.appvars.telegraf_port_8125: "8125"
+      com.dockstarter.appvars.telegraf_restart: "unless-stopped"
+      com.dockstarter.appvars.telegraf_tag: "latest"

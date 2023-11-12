@@ -1,0 +1,4 @@
+services:
+  filebrowser:
+    ports:
+      - ${FILEBROWSER_PORT_80}:${FILEBROWSER_PORT_80}

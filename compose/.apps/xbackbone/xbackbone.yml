@@ -2,22 +2,17 @@ services:
   xbackbone:
     container_name: xbackbone
     environment:
-      - PHP_POST_MAX_SIZE=${XBACKBONE_PHP_POST_MAX_SIZE}
-      - PHP_UPLOAD_MAX_FILESIZE=${XBACKBONE_PHP_UPLOAD_MAX_FILESIZE}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-      - URL=${XBACKBONE_URL}
     logging:
       driver: json-file
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    restart: unless-stopped
+    restart: ${XBACKBONE_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/xbackbone:/app/resources/database
-      - ${DOCKERCONFDIR}/xbackbone/logs:/app/logs
-      - ${DOCKERSHAREDDIR}:/shared
+      - ${DOCKERCONFDIR}/xbackbone:/config
       - ${DOCKERSTORAGEDIR}:/storage
-      - ${XBACKBONE_UPLOADDIR}:/app/storage
+      - ${XBACKBONE_UPLOADDIR}:/config/www/xbackbone/storage

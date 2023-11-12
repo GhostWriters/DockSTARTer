@@ -1,0 +1,4 @@
+services:
+  yacht:
+    ports:
+      - ${YACHT_PORT_8000}:8000

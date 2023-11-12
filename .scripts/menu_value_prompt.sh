@@ -1,22 +1,23 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_value_prompt() {
-    local SET_VAR=${1:-}
+    local SET_VAR=${1-}
 
     local CURRENT_VAL
     CURRENT_VAL=$(run_script 'env_get' "${SET_VAR}")
 
     local APPNAME=${SET_VAR%%_*}
     local FILENAME=${APPNAME,,}
+    local APPTEMPLATES="${SCRIPTPATH}/compose/.apps/${FILENAME}"
     local VAR_LABEL=${SET_VAR,,}
 
     local DEFAULT_VAL
-    if grep -q -Po "^${SET_VAR}=\K.*" "${SCRIPTPATH}/compose/.env.example"; then
-        DEFAULT_VAL=$(grep --color=never -Po "^${SET_VAR}=\K.*" "${SCRIPTPATH}/compose/.env.example" || true)
+    if grep -q -Po "^${SET_VAR}=\K.*" "${COMPOSE_ENV}.example"; then
+        DEFAULT_VAL=$(grep --color=never -Po "^${SET_VAR}=\K.*" "${COMPOSE_ENV}.example" || true)
     else
-        DEFAULT_VAL=$(run_script 'yml_get' "${APPNAME}" "services.${FILENAME}.labels[com.dockstarter.appvars.${VAR_LABEL}]" || true)
+        DEFAULT_VAL=$(grep --color=never -Po "\scom\.dockstarter\.appvars\.${VAR_LABEL}: \K.*" "${APPTEMPLATES}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || true)
     fi
 
     local HOME_VAL
@@ -75,6 +76,9 @@ menu_value_prompt() {
         *_PORT_*)
             VALUEDESCRIPTION='\n\n Must be an unused port between 0 and 65535.'
             ;;
+        *_RESTART)
+            VALUEDESCRIPTION='\n\n Restart is usually unless-stopped but can also be no, always, or on-failure.'
+            ;;
         *DIR | *DIR_*)
             VALUEDESCRIPTION='\n\n If the directory selected does not exist we will attempt to create it.'
             ;;
@@ -104,12 +108,12 @@ menu_value_prompt() {
             ;;
     esac
 
-    if [[ -n ${SYSTEM_VAL:-} ]]; then
+    if [[ -n ${SYSTEM_VAL-} ]]; then
         VALUEDESCRIPTION="\n\n System detected values are recommended.${VALUEDESCRIPTION}"
     fi
 
     local SELECTEDVALUE
-    if [[ ${CI:-} == true ]]; then
+    if [[ ${CI-} == true ]]; then
         SELECTEDVALUE="Keep Current "
     else
         SELECTEDVALUE=$(whiptail --fb --clear --title "DockSTARTer" --menu "What would you like set for ${SET_VAR}?${VALUEDESCRIPTION}" 0 0 0 "${VALUEOPTIONS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
@@ -172,13 +176,24 @@ menu_value_prompt() {
                     menu_value_prompt "${SET_VAR}"
                 fi
                 ;;
+            *_RESTART)
+                case "${INPUT}" in
+                    "no" | "always" | "on-failure" | "unless-stopped")
+                        run_script 'env_set' "${SET_VAR}" "${INPUT}"
+                        ;;
+                    *)
+                        whiptail --fb --clear --title "DockSTARTer" --msgbox "${INPUT} is not a valid restart value. Please try setting ${SET_VAR} again." 0 0
+                        menu_value_prompt "${SET_VAR}"
+                        ;;
+                esac
+                ;;
             *DIR | *DIR_*)
                 if [[ ${INPUT} == "/" ]]; then
                     whiptail --fb --clear --title "DockSTARTer" --msgbox "Cannot use / for ${SET_VAR}. Please select another folder." 0 0
                     menu_value_prompt "${SET_VAR}"
                 elif [[ ${INPUT} == ~* ]]; then
                     local CORRECTED_DIR="${DETECTED_HOMEDIR}${INPUT#*~}"
-                    if run_script 'question_prompt' "${PROMPT:-}" Y "Cannot use the ~ shortcut in ${SET_VAR}. Would you like to use ${CORRECTED_DIR} instead?"; then
+                    if run_script 'question_prompt' "${PROMPT-}" Y "Cannot use the ~ shortcut in ${SET_VAR}. Would you like to use ${CORRECTED_DIR} instead?"; then
                         run_script 'env_set' "${SET_VAR}" "${CORRECTED_DIR}"
                         whiptail --fb --clear --title "DockSTARTer" --msgbox "Returning to the previous menu to confirm selection." 0 0
                     else
@@ -187,12 +202,12 @@ menu_value_prompt() {
                     menu_value_prompt "${SET_VAR}"
                 elif [[ -d ${INPUT} ]]; then
                     run_script 'env_set' "${SET_VAR}" "${INPUT}"
-                    if run_script 'question_prompt' "${PROMPT:-}" Y "Would you like to set permissions on ${INPUT} ?"; then
+                    if run_script 'question_prompt' "${PROMPT-}" Y "Would you like to set permissions on ${INPUT} ?"; then
                         run_script 'set_permissions' "${INPUT}"
                     fi
                 else
-                    if run_script 'question_prompt' "${PROMPT:-}" Y "${INPUT} is not a valid path. Would you like to attempt to create it?"; then
-                        mkdir -p "${INPUT}" || fatal "${INPUT} folder could not be created."
+                    if run_script 'question_prompt' "${PROMPT-}" Y "${INPUT} is not a valid path. Would you like to attempt to create it?"; then
+                        mkdir -p "${INPUT}" || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p \"${INPUT}\""
                         run_script 'set_permissions' "${INPUT}"
                         run_script 'env_set' "${SET_VAR}" "${INPUT}"
                         whiptail --fb --clear --title "DockSTARTer" --msgbox "${INPUT} folder was created successfully." 0 0
@@ -204,7 +219,7 @@ menu_value_prompt() {
                 ;;
             P[GU]ID)
                 if [[ ${INPUT} == "0" ]]; then
-                    if run_script 'question_prompt' "${PROMPT:-}" Y "Running as root is not recommended. Would you like to select a different ID?"; then
+                    if run_script 'question_prompt' "${PROMPT-}" Y "Running as root is not recommended. Would you like to select a different ID?"; then
                         menu_value_prompt "${SET_VAR}"
                     else
                         run_script 'env_set' "${SET_VAR}" "${INPUT}"

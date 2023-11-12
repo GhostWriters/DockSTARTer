@@ -7,3 +7,5 @@ services:
       com.dockstarter.appvars.tautulli_enabled: "false"
       com.dockstarter.appvars.tautulli_network_mode: ""
       com.dockstarter.appvars.tautulli_port_8181: "8181"
+      com.dockstarter.appvars.tautulli_restart: "unless-stopped"
+      com.dockstarter.appvars.tautulli_tag: "latest"

@@ -12,3 +12,5 @@ services:
       com.dockstarter.appvars.huginn_enabled: "false"
       com.dockstarter.appvars.huginn_network_mode: ""
       com.dockstarter.appvars.huginn_port_3000: "3000"
+      com.dockstarter.appvars.huginn_restart: "unless-stopped"
+      com.dockstarter.appvars.huginn_tag: "latest"

@@ -1,0 +1,4 @@
+services:
+  homer:
+    ports:
+      - ${HOMER_PORT_8080}:8080

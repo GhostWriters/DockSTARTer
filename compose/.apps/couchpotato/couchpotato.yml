@@ -10,12 +10,8 @@ services:
       options:
         max-file: ${DOCKERLOGGING_MAXFILE}
         max-size: ${DOCKERLOGGING_MAXSIZE}
-    restart: unless-stopped
+    restart: ${COUCHPOTATO_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/couchpotato:/config
-      - ${DOCKERSHAREDDIR}:/shared
       - ${DOCKERSTORAGEDIR}:/storage
-      - ${DOWNLOADSDIR}:/data
-      - ${DOWNLOADSDIR}:/downloads
-      - ${MEDIADIR_MOVIES}:/movies

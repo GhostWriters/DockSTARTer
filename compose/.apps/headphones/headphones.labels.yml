@@ -7,3 +7,5 @@ services:
       com.dockstarter.appvars.headphones_enabled: "false"
       com.dockstarter.appvars.headphones_network_mode: ""
       com.dockstarter.appvars.headphones_port_8181: "8181"
+      com.dockstarter.appvars.headphones_restart: "unless-stopped"
+      com.dockstarter.appvars.headphones_tag: "latest"

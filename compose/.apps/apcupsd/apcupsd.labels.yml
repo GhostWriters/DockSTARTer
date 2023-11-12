@@ -14,3 +14,5 @@ services:
       com.dockstarter.appvars.apcupsd_infuxdb_user: ""
       com.dockstarter.appvars.apcupsd_interval: "10"
       com.dockstarter.appvars.apcupsd_network_mode: ""
+      com.dockstarter.appvars.apcupsd_restart: "unless-stopped"
+      com.dockstarter.appvars.apcupsd_tag: "latest"

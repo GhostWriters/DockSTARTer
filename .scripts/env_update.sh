@@ -1,28 +1,32 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -Eeuo pipefail
 IFS=$'\n\t'
 
 env_update() {
     run_script 'env_backup'
     run_script 'override_backup'
     info "Replacing current .env file with latest template."
-    local CURRENTENV
-    CURRENTENV=$(mktemp) || fatal "Failed to create temporary .env update file."
-    sort "${SCRIPTPATH}/compose/.env" > "${CURRENTENV}" || fatal "${SCRIPTPATH}/compose/.env could not be copied."
-    rm -f "${SCRIPTPATH}/compose/.env" || warn "${SCRIPTPATH}/compose/.env could not be removed."
-    cp "${SCRIPTPATH}/compose/.env.example" "${SCRIPTPATH}/compose/.env" || fatal "${SCRIPTPATH}/compose/.env.example could not be copied."
-    run_script 'set_permissions' "${SCRIPTPATH}/compose/.env"
-    info "Merging previous values into new .env file."
+    local MKTEMP_ENV_CURRENT
+    MKTEMP_ENV_CURRENT=$(mktemp) || fatal "Failed to create temporary current .env file.\nFailing command: ${F[C]}mktemp"
+    sort "${COMPOSE_ENV}" > "${MKTEMP_ENV_CURRENT}" || fatal "Failed to sort to new file.\nFailing command: ${F[C]}sort \"${COMPOSE_ENV}\" > \"${MKTEMP_ENV_CURRENT}\""
+    local MKTEMP_ENV_UPDATED
+    MKTEMP_ENV_UPDATED=$(mktemp) || fatal "Failed to create temporary update .env file.\nFailing command: ${F[C]}mktemp"
+    cp "${COMPOSE_ENV}.example" "${MKTEMP_ENV_UPDATED}" || fatal "Failed to copy file.\nFailing command: ${F[C]}cp \"${COMPOSE_ENV}.example\" \"${MKTEMP_ENV_UPDATED}\""
+    info "Merging current values into updated .env file."
     while IFS= read -r line; do
         local SET_VAR=${line%%=*}
-        local SET_VAL=${line#*=}
-        if grep -q "^${SET_VAR}=" "${SCRIPTPATH}/compose/.env"; then
-            run_script 'env_set' "${SET_VAR}" "${SET_VAL}"
-        else
-            echo "${line}" >> "${SCRIPTPATH}/compose/.env" || error "${line} could not be written to ${SCRIPTPATH}/compose/.env"
+        local SET_VAL
+        local VAR_VAL="${line}"
+        SET_VAL=$(run_script 'env_get' "${SET_VAR}" "${MKTEMP_ENV_CURRENT}")
+        if ! grep -q -P "^${SET_VAR}=" "${MKTEMP_ENV_UPDATED}"; then
+            echo "${VAR_VAL}" >> "${MKTEMP_ENV_UPDATED}" || error "${VAR_VAL} could not be written to ${MKTEMP_ENV_UPDATED}"
         fi
-    done < <(grep '=' < "${CURRENTENV}")
-    rm -f "${CURRENTENV}" || warn "Failed to remove temporary .env update file."
+        run_script 'env_set' "${SET_VAR}" "${SET_VAL}" "${MKTEMP_ENV_UPDATED}"
+    done < <(grep -v -P '^#' "${MKTEMP_ENV_CURRENT}" | grep '=')
+    rm -f "${MKTEMP_ENV_CURRENT}" || warn "Failed to remove temporary .env update file.\nFailing command: ${F[C]}rm -f \"${MKTEMP_ENV_CURRENT}\""
+    cp -f "${MKTEMP_ENV_UPDATED}" "${COMPOSE_ENV}" || fatal "Failed to copy file.\nFailing command: ${F[C]}cp -f \"${MKTEMP_ENV_UPDATED}\" \"${COMPOSE_ENV}\""
+    rm -f "${MKTEMP_ENV_UPDATED}" || warn "Failed to remove temporary .env update file.\nFailing command: ${F[C]}rm -f \"${MKTEMP_ENV_UPDATED}\""
+    run_script 'set_permissions' "${COMPOSE_ENV}"
     run_script 'env_sanitize'
     info "Environment file update complete."
 }

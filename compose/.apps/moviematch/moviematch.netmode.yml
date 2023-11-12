@@ -1,0 +1,3 @@
+services:
+  moviematch:
+    network_mode: ${MOVIEMATCH_NETWORK_MODE}

@@ -10,3 +10,5 @@ services:
       com.dockstarter.appvars.vsftpd_ftp_user: ""
       com.dockstarter.appvars.vsftpd_network_mode: ""
       com.dockstarter.appvars.vsftpd_port_21: "21"
+      com.dockstarter.appvars.vsftpd_restart: "unless-stopped"
+      com.dockstarter.appvars.vsftpd_tag: "latest"

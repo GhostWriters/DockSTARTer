@@ -7,3 +7,5 @@ services:
       com.dockstarter.appvars.homeassistant_enabled: "false"
       com.dockstarter.appvars.homeassistant_network_mode: ""
       com.dockstarter.appvars.homeassistant_port_8123: "8123"
+      com.dockstarter.appvars.homeassistant_restart: "unless-stopped"
+      com.dockstarter.appvars.homeassistant_tag: "latest"

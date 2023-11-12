@@ -1,0 +1,4 @@
+services:
+  apprise:
+    ports:
+      - ${APPRISE_PORT_8000}:8000

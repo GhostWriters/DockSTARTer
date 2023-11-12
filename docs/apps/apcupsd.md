@@ -2,10 +2,13 @@
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/atribe/apcupsd-influxdb-exporter?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/atribe/apcupsd-influxdb-exporter)
 [![GitHub Stars](https://img.shields.io/github/stars/atribe/apcupsd-influxdb-exporter?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/atribe/apcupsd-influxdb-exporter)
+[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/apcupsd)
 
 ## Description
 
-[Apcupsd]((http://www.apcupsd.org/)) is a dockerized Python script that will send data from apcupsd to influxdb. You can then visualize the influxdb data in [Grafana](https://grafana.com/)/[Prometheus](https://prometheus.io/).
+[Apcupsd](http://www.apcupsd.org/) is a dockerized Python script that will send data from apcupsd to influxdb. You can then visualize the influxdb data in [Grafana](https://grafana.com/)/[Prometheus](https://prometheus.io/).
+
+## Install/Setup
 
 First you need to install `apcupsd` on your host. The command will vary depending on what Linux OS you are using. After you install `apcupsd` on your host, there are some changes that need to take place in your `apcupsd.conf` file. Again, the location of this file varies by OS, however, for Ubuntu based systems you can find this file in `/etc/apcupsd/`.
 

@@ -8,4 +8,6 @@ services:
       com.dockstarter.appvars.filebot_network_mode: ""
       com.dockstarter.appvars.filebot_outputdir: "/mnt/filebot/output"
       com.dockstarter.appvars.filebot_port_5800: "5800"
+      com.dockstarter.appvars.filebot_restart: "unless-stopped"
+      com.dockstarter.appvars.filebot_tag: "latest"
       com.dockstarter.appvars.filebot_watchdir: "/mnt/filebot/watch"

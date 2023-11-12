@@ -8,3 +8,5 @@ services:
       com.dockstarter.appvars.quasselcore_network_mode: ""
       com.dockstarter.appvars.quasselcore_port_10113: "10113"
       com.dockstarter.appvars.quasselcore_port_4242: "4242"
+      com.dockstarter.appvars.quasselcore_restart: "unless-stopped"
+      com.dockstarter.appvars.quasselcore_tag: "latest"

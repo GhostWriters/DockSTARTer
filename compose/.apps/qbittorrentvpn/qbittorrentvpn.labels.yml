@@ -11,3 +11,5 @@ services:
       com.dockstarter.appvars.qbittorrentvpn_port_6881: "6881"
       com.dockstarter.appvars.qbittorrentvpn_port_8080: "8080"
       com.dockstarter.appvars.qbittorrentvpn_port_8118: "8118"
+      com.dockstarter.appvars.qbittorrentvpn_restart: "unless-stopped"
+      com.dockstarter.appvars.qbittorrentvpn_tag: "latest"

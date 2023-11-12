@@ -9,4 +9,6 @@ services:
       com.dockstarter.appvars.syncthing_port_21027: "21027"
       com.dockstarter.appvars.syncthing_port_22000: "22000"
       com.dockstarter.appvars.syncthing_port_8384: "8384"
+      com.dockstarter.appvars.syncthing_restart: "unless-stopped"
       com.dockstarter.appvars.syncthing_sourcedir: "/mnt/syncthing"
+      com.dockstarter.appvars.syncthing_tag: "latest"

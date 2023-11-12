@@ -1,0 +1,3 @@
+services:
+  airsonicadvanced:
+    network_mode: ${AIRSONICADVANCED_NETWORK_MODE}

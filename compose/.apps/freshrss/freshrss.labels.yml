@@ -7,3 +7,5 @@ services:
       com.dockstarter.appvars.freshrss_enabled: "false"
       com.dockstarter.appvars.freshrss_network_mode: ""
       com.dockstarter.appvars.freshrss_port_80: "8012"
+      com.dockstarter.appvars.freshrss_restart: "unless-stopped"
+      com.dockstarter.appvars.freshrss_tag: "latest"

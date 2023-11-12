@@ -1,3 +1,5 @@
+.cache
+cli-plugins/
 compose/.env
 compose/docker-compose.override.yml
 compose/docker-compose.yml
@@ -8,4 +10,4 @@ dockstarter.log
 share/
 shared/
 site/
-debug.log
+

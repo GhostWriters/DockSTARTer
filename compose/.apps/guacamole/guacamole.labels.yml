@@ -8,3 +8,5 @@ services:
       com.dockstarter.appvars.guacamole_extensions: ""
       com.dockstarter.appvars.guacamole_network_mode: ""
       com.dockstarter.appvars.guacamole_port_8080: "8080"
+      com.dockstarter.appvars.guacamole_restart: "unless-stopped"
+      com.dockstarter.appvars.guacamole_tag: "latest"

@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -Eeuo pipefail
 IFS=$'\n\t'
 
 pm_pacman_repos() {
-    info "This script does not manage pacman repositories for you. All packages needed should be in the default Arch repos."
+    info "pacman does not require additional repositories."
 }
 
 test_pm_pacman_repos() {
