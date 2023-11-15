@@ -15,4 +15,8 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${HOMEPAGE_DOCEKR_INTERGRATE}:/var/run/docker.sock
       - ${DOCKERCONFDIR}/homepage:/app/config
+<<<<<<< HEAD
       - ${DOCKERSTORAGEDIR}:/storage
+=======
+      - ${DOCKERSTORAGEDIR}:/storage
+>>>>>>> 27112d16 (Add homepage)
