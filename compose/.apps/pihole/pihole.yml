@@ -23,5 +23,4 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/pihole/dnsmasq.d:/etc/dnsmasq.d
       - ${DOCKERCONFDIR}/pihole/pihole:/etc/pihole
-      - ${DOCKERSHAREDDIR}:/shared
       - ${DOCKERSTORAGEDIR}:/storage
