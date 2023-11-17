@@ -10,4 +10,6 @@ dockstarter.log
 share/
 shared/
 site/
-
+buildx/
+.token_seed
+.token_seed.lock
