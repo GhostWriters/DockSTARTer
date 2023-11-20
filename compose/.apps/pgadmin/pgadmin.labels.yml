@@ -9,5 +9,6 @@ services:
       com.dockstarter.appvars.pgadmin_network_mode: ""
       com.dockstarter.appvars.pgadmin_default_email: ""
       com.dockstarter.appvars.pgadmin_default_password: ""
+      com.dockstarter.appvars.pgadmin_port_80: "5050"
       com.dockstarter.appvars.pgadmin_restart: unless-stopped
       com.dockstarter.appvars.pgadmin_tag: "latest"
