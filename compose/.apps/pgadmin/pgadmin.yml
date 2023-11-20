@@ -4,8 +4,7 @@ services:
     environment:
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
       - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
-      - PGADMIN_DISABLE_POSTFIX=True
-      - PGADMIN_LISTEN_PORT=5050
+      - PGADMIN_DISABLE_POSTFIX=${PGADMIN_DISABLE_POSTFIX}
       - TZ=${TZ}
     logging:
       driver: json-file
