@@ -15,3 +15,25 @@ PostgreSQL is a powerful, open source object-relational database system with ove
 There is a wealth of information to be found describing how to [install](https://www.postgresql.org/download/) and [use](https://www.postgresql.org/docs/) PostgreSQL through the [official documentation](https://www.postgresql.org/docs/). The [open source community](https://www.postgresql.org/community/) provides many helpful places to become familiar with PostgreSQL, discover how it works.
 
 We **heavily** recommend that if you spin up a container that requires a database you create a user for that container. You should **NEVER** use the root account for anything other than database management.
+
+Strongly consider also installing [pgAdmin](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/pgadmin) for adminsitration and [pgBackup](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/pgbackup) for periodic rotating backups.
+
+## Common Activities
+
+### Create user
+
+```sql
+CREATE USER newuser WITH PASSWORD 'password123';
+```
+
+### Make user a superuser
+
+```sql
+CREATE USER newadmin WITH PASSWORD 'password123';
+ALTER USER newadmin WITH SUPERUSER;
+```
+
+### Create a database and owner to the new user
+
+CREATE DATABASE newdatabase;
+ALTER DATABASE newdatabase OWNER TO newuser;
