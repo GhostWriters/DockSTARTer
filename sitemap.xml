@@ -521,6 +521,16 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://dockstarter.com/apps/pgadmin/</loc>
+         <lastmod>2023-11-22</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://dockstarter.com/apps/pgbackup/</loc>
+         <lastmod>2023-11-22</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://dockstarter.com/apps/photoshow/</loc>
          <lastmod>2023-11-22</lastmod>
          <changefreq>daily</changefreq>
