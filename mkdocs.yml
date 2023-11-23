@@ -157,6 +157,7 @@ nav:
       - apps/heimdall.md
       - apps/homeassistant.md
       - apps/homebridge.md
+      - apps/homepage.md
       - apps/homer.md
       - apps/htpcmanager.md
       - apps/httpserver.md
