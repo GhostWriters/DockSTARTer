@@ -13,6 +13,6 @@ services:
     restart: ${HOMEPAGE_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${HOMEPAGE_DOCEKR_INTERGRATE}:/var/run/docker.sock
+      - ${HOMEPAGE_DOCKER_SOCKET}:/var/run/docker.sock
       - ${DOCKERCONFDIR}/homepage:/app/config
       - ${DOCKERSTORAGEDIR}:/storage

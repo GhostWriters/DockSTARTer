@@ -9,4 +9,4 @@ services:
       com.dockstarter.appvars.homepage_port_3000: "3000"
       com.dockstarter.appvars.homepage_restart: "unless-stopped"
       com.dockstarter.appvars.homepage_tag: "latest"
-      com.dockstarter.appvars.homepage_docker_intergrate: "/var/run/docker.sock"
+      com.dockstarter.appvars.homepage_docker_socket: "/var/run/docker.sock"
