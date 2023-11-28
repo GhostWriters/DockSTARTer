@@ -1,0 +1,3 @@
+services:
+  tandoor:
+    hostname: ${DOCKERHOSTNAME}
