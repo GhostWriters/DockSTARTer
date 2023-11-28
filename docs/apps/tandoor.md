@@ -15,11 +15,8 @@ Share and collaborate with your friends and family using a mobile friendly web i
 This application has extensive customization options, most docker env variables are documented in the [.env.template](https://raw.githubusercontent.com/vabene1111/recipes/master/.env.template)
 If you run into any issues, enable debug mode to collect logs before opening a ticket.
 
-``` yaml
-  tandoor:
-    environment:
-    - DEBUG=1
-```
+The application requires a secret key for cryptographic signing.  It can be any string, but it is recommend to generate a random string.
+On linux you can run `tr -dc A-Za-z0-9 </dev/urandom | head -c 32; echo` to generate a random 32 character string.
 
 ### Running with PostgreSQL
 
@@ -38,12 +35,9 @@ Optionally, make tandoor dependent on the postgres container
 ### Running with SWAG
 
 It is also highly recommended to serve media files with a web server.  If you are already using SWAG you can use nginx to accomplish this.
-Edit the docker-compose.override.yml similar to below.
+Set GUNICORN_MEDIA to 0 and edit the docker-compose.override.yml similar to below.
 
 ``` yaml
-  tandoor:
-    environment:
-      - GUNICORN_MEDIA=0
   swag:
     volumes:
     - ${DOCKERCONFDIR}/recipes/mediafiles:/media
