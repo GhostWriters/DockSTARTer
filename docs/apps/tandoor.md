@@ -14,13 +14,14 @@ Share and collaborate with your friends and family using a mobile friendly web i
 
 This application has extensive customization options, most docker env variables are documented in the [.env.template](https://raw.githubusercontent.com/vabene1111/recipes/master/.env.template)
 If you run into any issues, enable debug mode to collect logs before opening a ticket.
-```
+``` yaml
   tandoor:
     environment:
     - DEBUG=1
 ```
 
 ### Running with PostgreSQL
+
 It is highly recommended to use this application with a PostgreSQL database.
 To setup with postgres, after installing a postgres server (or enabling the DockSTARTer app) create a database and edit .env to use postgres instead of sqlite.
 ```
@@ -28,17 +29,18 @@ postgresql://<postgres_user>:<postgres_password>@<postgres_host>/<tandoor_db>:54
 ```
 
 Optionally, make tandoor dependent on the postgres container
-```
+``` yaml
   tandoor:
     depends_on:
       - postgres_host
 ```
 
 ### Running with SWAG
+
 It is also highly recommended to serve media files with a web server.  If you are already using SWAG you can use nginx to accomplish this.
 Edit the docker-compose.override.yml similar to below.
 
-```
+``` yaml
   tandoor:
     environment:
       - GUNICORN_MEDIA=0
