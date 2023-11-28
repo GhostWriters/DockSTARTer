@@ -4,7 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "The recipe manager that allows you to manage your ever growing collection of digital recipes."
       com.dockstarter.appinfo.nicename: "Tandoor"
-      com.dockstarter.appvars.tandoor_debug: "false"
+      com.dockstarter.appvars.tandoor_debug: "0"
       com.dockstarter.appvars.tandoor_enabled: "false"
       com.dockstarter.appvars.tandoor_gunicorn_media: "1"
       com.dockstarter.appvars.tandoor_network_mode: ""
