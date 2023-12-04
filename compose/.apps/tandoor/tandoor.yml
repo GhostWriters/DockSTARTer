@@ -7,7 +7,6 @@ services:
       - DEBUG=${TANDOOR_DEBUG}
       - GUNICORN_MEDIA=${TANDOOR_GUNICORN_MEDIA}
       - SECRET_KEY=${TANDOOR_SECRET_KEY}
-      - TIMEZONE=${TZ}
       - TZ=${TZ}
 
     logging:
