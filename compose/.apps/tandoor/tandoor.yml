@@ -1,0 +1,23 @@
+services:
+  tandoor:
+    container_name: tandoor
+    environment:
+      - ALLOWED_HOSTS=${TANDOOR_ALLOWED_HOSTS}
+      - DATABASE_URL=${TANDOOR_DATABASE_URL}
+      - DEBUG=${TANDOOR_DEBUG}
+      - GUNICORN_MEDIA=${TANDOOR_GUNICORN_MEDIA}
+      - SECRET_KEY=${TANDOOR_SECRET_KEY}
+      - TZ=${TZ}
+
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: ${TANDOOR_RESTART}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERCONFDIR}/tandoor/staticfiles:/opt/recipes/staticfiles
+      - ${DOCKERCONFDIR}/tandoor/mediafiles:/opt/recipes/mediafiles
+      - ${DOCKERCONFDIR}/tandoor/data:/opt/recipes/data
+      - ${DOCKERSTORAGEDIR}:/storage

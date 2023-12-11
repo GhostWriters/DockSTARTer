@@ -1,0 +1,4 @@
+services:
+  tandoor:
+    ports:
+      - ${TANDOOR_PORT_8080}:8080

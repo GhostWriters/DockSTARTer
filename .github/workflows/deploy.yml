@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.1.1
-      - uses: actions/setup-python@v4.7.1
+      - uses: actions/setup-python@v5.0.0
         with:
           python-version: 3.x
       - uses: actions/cache@v3.3.2
@@ -26,8 +26,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4.1.1
         with:
-          fetch-depth: '0'
-      - uses: actions/setup-python@v4.7.1
+          fetch-depth: "0"
+      - uses: actions/setup-python@v5.0.0
         with:
           python-version: 3.x
       - uses: actions/cache@v3.3.2

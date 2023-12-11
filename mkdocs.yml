@@ -157,6 +157,7 @@ nav:
       - apps/heimdall.md
       - apps/homeassistant.md
       - apps/homebridge.md
+      - apps/homepage.md
       - apps/homer.md
       - apps/htpcmanager.md
       - apps/httpserver.md
@@ -196,6 +197,8 @@ nav:
       - apps/openvpnas.md
       - apps/organizr.md
       - apps/ouroboros.md
+      - apps/pgadmin.md
+      - apps/pgbackup.md
       - apps/photostructure.md
       - apps/phpmyadmin.md
       - apps/picard.md
@@ -232,6 +235,7 @@ nav:
       - apps/swag.md
       - apps/synclounge.md
       - apps/syncthing.md
+      - apps/tandoor.md
       - apps/tautulli.md
       - apps/tdarr.md
       - apps/tdarrnode.md
