@@ -1,27 +1,28 @@
 apps:
-  - compose/*
-  - compose/**/*
+  - changed-files:
+      - any-glob-to-any-file: ["compose/*", "compose/**/*"]
 
 ci:
-  - .github/workflows/*
+  - changed-files:
+      - any-glob-to-any-file: [".github/workflows/*"]
 
 core:
-  - ./*.sh
-  - ./**/*.sh
-  - .scripts/*
-  - .scripts/**/*
-
+  - changed-files:
+      - any-glob-to-any-file:
+          ["./*.sh", "./**/*.sh", ".scripts/*", ".scripts/**/*"]
 docs:
-  - ./*.md
-  - ./**/*.md
-  - ./mkdocs.yml
-  - docs/*
-  - docs/**/*
+  - changed-files:
+      - any-glob-to-any-file:
+          ["./*.md", "./**/*.md", "./mkdocs.yml", "docs/*", "docs/**/*"]
 
 repo:
-  - ./*
-  - .github/*
-  - .github/**/*
-  - "!./*.md"
-  - "!./*.sh"
-  - "!.github/workflows/*"
+  - changed-files:
+      - any-glob-to-any-file:
+          [
+            "./*",
+            ".github/*",
+            ".github/**/*",
+            '"!./*.md"',
+            '"!./*.sh"',
+            '"!.github/workflows/*"',
+          ]
