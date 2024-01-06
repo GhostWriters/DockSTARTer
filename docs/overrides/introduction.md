@@ -25,7 +25,7 @@ The example below will change Sonarr to use hotio's image for Sonarr and add a /
 ```yaml
 services:
   sonarr:
-    image: cr.hotio.dev/hotio/sonarr:latest
+    image: ghcr.io/hotio/sonarr:latest
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKERCONFDIR}/sonarr:/config
