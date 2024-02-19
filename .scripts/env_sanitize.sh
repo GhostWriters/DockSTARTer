@@ -31,6 +31,13 @@ env_sanitize() {
             local NEW_VAR="${SET_VAR}"
             case "${SET_VAR}" in
                 COMPOSE_HTTP_TIMEOUT | DOCKER_GID | DOCKER_HOSTNAME)
+                    # Global vars that should be untouched
+                    continue
+                    ;;
+                DOCKERLOGGING_MAXFILE | DOCKERLOGGING_MAXSIZE | \
+                    LAN_NETWORK | NS1 | NS2 | \
+                    VPN_CLIENT | VPN_ENABLE | VPN_OPTIONS | VPN_OVPNDIR | VPN_PASS | VPN_PROV | VPN_USER | VPN_WGDIR)
+                    # Legacy vars that should be untouched
                     continue
                     ;;
                 *DIR | *DIR_*)
