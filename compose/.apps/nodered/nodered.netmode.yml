@@ -1,3 +1,4 @@
+---
 services:
   nodered:
     network_mode: ${NODERED_NETWORK_MODE}

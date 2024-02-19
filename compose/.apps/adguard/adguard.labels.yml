@@ -1,3 +1,4 @@
+---
 services:
   adguard:
     labels:
@@ -5,6 +6,7 @@ services:
       com.dockstarter.appinfo.description: "Network-wide ads & trackers blocking DNS server"
       com.dockstarter.appinfo.nicename: "Adguard"
       com.dockstarter.appvars.adguard_enabled: "false"
+      com.dockstarter.appvars.adguard_environment_serverip: "0.0.0.0"
       com.dockstarter.appvars.adguard_network_mode: ""
       com.dockstarter.appvars.adguard_port_3000: "3000"
       com.dockstarter.appvars.adguard_port_443: "446"
@@ -14,5 +16,4 @@ services:
       com.dockstarter.appvars.adguard_port_80: "8008"
       com.dockstarter.appvars.adguard_port_853: "853"
       com.dockstarter.appvars.adguard_restart: "unless-stopped"
-      com.dockstarter.appvars.adguard_serverip: "0.0.0.0"
       com.dockstarter.appvars.adguard_tag: "latest"

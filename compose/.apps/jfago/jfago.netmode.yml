@@ -1,3 +1,4 @@
+---
 services:
   jfago:
     network_mode: ${JFAGO_NETWORK_MODE}

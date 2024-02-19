@@ -1,0 +1,12 @@
+---
+services:
+  petio:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "A request companion app"
+      com.dockstarter.appinfo.nicename: "Petio"
+      com.dockstarter.appvars.petio_enabled: "false"
+      com.dockstarter.appvars.petio_network_mode: ""
+      com.dockstarter.appvars.petio_port_7777: "7777"
+      com.dockstarter.appvars.petio_restart: "unless-stopped"
+      com.dockstarter.appvars.petio_tag: "latest"

@@ -1,3 +1,4 @@
+---
 services:
   mariadb:
     image: lscr.io/linuxserver/mariadb:${MARIADB_TAG}

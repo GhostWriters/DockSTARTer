@@ -1,0 +1,4 @@
+---
+services:
+  overseerr:
+    network_mode: ${OVERSEERR_NETWORK_MODE}

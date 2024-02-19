@@ -1,3 +1,4 @@
+---
 services:
   deemix:
     image: registry.gitlab.com/bockiii/deemix-docker:${DEEMIX_TAG}

@@ -1,3 +1,4 @@
+---
 services:
   sonarr:
     image: lscr.io/linuxserver/sonarr:${SONARR_TAG}

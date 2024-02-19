@@ -1,3 +1,4 @@
+---
 services:
   flame:
     network_mode: ${FLAME_NETWORK_MODE}

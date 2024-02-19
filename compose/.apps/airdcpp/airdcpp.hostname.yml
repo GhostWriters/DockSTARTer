@@ -1,3 +1,4 @@
+---
 services:
   airdcpp:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

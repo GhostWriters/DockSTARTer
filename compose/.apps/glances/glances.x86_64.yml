@@ -1,3 +1,4 @@
+---
 services:
   glances:
     image: nicolargo/glances:${GLANCES_TAG}

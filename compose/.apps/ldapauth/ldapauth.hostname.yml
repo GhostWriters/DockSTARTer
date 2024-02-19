@@ -1,3 +1,4 @@
+---
 services:
   ldapauth:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

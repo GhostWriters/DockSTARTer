@@ -1,3 +1,4 @@
+---
 services:
   phpmyadmin:
     image: phpmyadmin:${PHPMYADMIN_TAG}

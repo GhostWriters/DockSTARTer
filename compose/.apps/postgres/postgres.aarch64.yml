@@ -1,3 +1,4 @@
+---
 services:
   postgres:
     image: postgres:${POSTGRES_TAG}

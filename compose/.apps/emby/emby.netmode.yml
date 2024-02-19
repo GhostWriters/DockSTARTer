@@ -1,3 +1,4 @@
+---
 services:
   emby:
     network_mode: ${EMBY_NETWORK_MODE}

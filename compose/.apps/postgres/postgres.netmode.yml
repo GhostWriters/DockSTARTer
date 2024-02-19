@@ -1,3 +1,4 @@
+---
 services:
   postgres:
     network_mode: ${POSTGRES_NETWORK_MODE}

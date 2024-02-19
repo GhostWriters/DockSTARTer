@@ -1,5 +1,9 @@
 # NZBGetVPN
 
+## DEPRECATED
+
+DEPRECATION NOTICE: This image is deprecated as of 2023-06-02. Use SABnzbd with Gluetun or PrivoxyVPN.
+
 [![Docker Pulls](https://img.shields.io/docker/pulls/jshridha/docker-nzbgetvpn?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/jshridha/docker-nzbgetvpn)
 [![GitHub Stars](https://img.shields.io/github/stars/jshridha/docker-nzbgetvpn?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/jshridha/docker-nzbgetvpn)
 [![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/nzbgetvpn)

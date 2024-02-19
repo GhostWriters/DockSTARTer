@@ -1,3 +1,4 @@
+---
 services:
   varken:
     image: boerderij/varken:${VARKEN_TAG}

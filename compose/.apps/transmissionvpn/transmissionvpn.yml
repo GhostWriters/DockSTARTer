@@ -1,3 +1,4 @@
+---
 services:
   transmissionvpn:
     cap_add:
@@ -17,20 +18,15 @@ services:
       - OPENVPN_USERNAME=${VPN_USER}
       - PGID=${PGID}
       - PUID=${PUID}
-      - TRANSMISSION_DOWNLOAD_DIR=${TRANSMISSIONVPN_DOWNLOAD_DIR}
+      - TRANSMISSION_DOWNLOAD_DIR=${TRANSMISSIONVPN_ENVIRONMENT_DOWNLOAD_DIR}
       - TRANSMISSION_HOME=/config
-      - TRANSMISSION_INCOMPLETE_DIR=${TRANSMISSIONVPN_INCOMPLETE_DIR}
-      - TRANSMISSION_WATCH_DIR=${TRANSMISSIONVPN_WATCH_DIR}
+      - TRANSMISSION_INCOMPLETE_DIR=${TRANSMISSIONVPN_ENVIRONMENT_INCOMPLETE_DIR}
+      - TRANSMISSION_WATCH_DIR=${TRANSMISSIONVPN_ENVIRONMENT_WATCH_DIR}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${TRANSMISSIONVPN_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/transmissionvpn:/config
-      - ${DOCKERSTORAGEDIR}:/storage
-      - ${VPN_OVPNDIR}:/config/openvpn
-      - ${VPN_OVPNDIR}:/etc/openvpn/custom/
+      - ${DOCKER_VOLUME_CONFIG}/transmissionvpn:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${VPN_VOLUME_OVPNDIR}:/config/openvpn
+      - ${VPN_VOLUME_OVPNDIR}:/etc/openvpn/custom

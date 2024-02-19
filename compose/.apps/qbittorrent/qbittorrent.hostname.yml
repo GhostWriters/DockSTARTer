@@ -1,3 +1,4 @@
+---
 services:
   qbittorrent:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

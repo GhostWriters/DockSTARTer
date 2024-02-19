@@ -1,3 +1,4 @@
+---
 services:
   duckdns:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

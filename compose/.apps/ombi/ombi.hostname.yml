@@ -1,3 +1,4 @@
+---
 services:
   ombi:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

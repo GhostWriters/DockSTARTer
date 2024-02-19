@@ -1,3 +1,4 @@
+---
 services:
   amd:
     image: halianelf/amd:${AMD_TAG}

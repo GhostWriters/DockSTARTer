@@ -1,3 +1,4 @@
+---
 services:
   swag:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

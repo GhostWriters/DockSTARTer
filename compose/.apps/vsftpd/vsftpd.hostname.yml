@@ -1,3 +1,4 @@
+---
 services:
   vsftpd:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

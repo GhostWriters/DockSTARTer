@@ -1,18 +1,14 @@
+---
 services:
   mariadb:
     container_name: mariadb
     environment:
-      - MYSQL_ROOT_PASSWORD=${MARIADB_MYSQL_ROOT_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MARIADB_ENVIRONMENT_MYSQL_ROOT_PASSWORD}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${MARIADB_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/mariadb:/config
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/mariadb:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage

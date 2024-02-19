@@ -1,3 +1,4 @@
+---
 services:
   tandoor:
     image: docker.io/vabene1111/recipes:${TANDOOR_TAG}

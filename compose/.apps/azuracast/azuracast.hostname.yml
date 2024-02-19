@@ -1,3 +1,4 @@
+---
 services:
   azuracast:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

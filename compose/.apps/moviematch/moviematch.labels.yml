@@ -1,3 +1,4 @@
+---
 services:
   moviematch:
     labels:
@@ -5,10 +6,10 @@ services:
       com.dockstarter.appinfo.description: "Have you ever spent longer deciding on a movie than it'd take to juwatch a random movie? This is an app that helps you and your frienpick a movie to watch from a Plex server."
       com.dockstarter.appinfo.nicename: "Moviematch"
       com.dockstarter.appvars.moviematch_enabled: "false"
-      com.dockstarter.appvars.moviematch_log_level: "INFO"
+      com.dockstarter.appvars.moviematch_environment_log_level: "INFO"
+      com.dockstarter.appvars.moviematch_environment_plex_token: ""
+      com.dockstarter.appvars.moviematch_environment_plex_url: ""
       com.dockstarter.appvars.moviematch_network_mode: ""
-      com.dockstarter.appvars.moviematch_plex_token: ""
-      com.dockstarter.appvars.moviematch_plex_url: ""
       com.dockstarter.appvars.moviematch_port_8000: "8000"
       com.dockstarter.appvars.moviematch_restart: "unless-stopped"
       com.dockstarter.appvars.moviematch_tag: "latest"

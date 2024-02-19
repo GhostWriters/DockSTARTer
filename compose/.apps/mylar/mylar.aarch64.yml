@@ -1,3 +1,4 @@
+---
 services:
   mylar:
     image: lscr.io/linuxserver/mylar:${MYLAR_TAG}

@@ -1,3 +1,4 @@
+---
 services:
   homeassistant:
     image: homeassistant/home-assistant:${HOMEASSISTANT_TAG}

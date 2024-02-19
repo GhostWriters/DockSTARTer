@@ -1,3 +1,4 @@
+---
 services:
   nzbhydra2:
     image: lscr.io/linuxserver/nzbhydra2:${NZBHYDRA2_TAG}

@@ -1,3 +1,4 @@
+---
 services:
   lidarr:
     container_name: lidarr
@@ -5,13 +6,8 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${LIDARR_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/lidarr:/config
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/lidarr:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage

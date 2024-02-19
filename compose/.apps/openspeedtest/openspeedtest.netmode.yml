@@ -1,3 +1,4 @@
+---
 services:
   openspeedtest:
     network_mode: ${OPENSPEEDTEST_NETWORK_MODE}

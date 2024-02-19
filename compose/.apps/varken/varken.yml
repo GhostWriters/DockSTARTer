@@ -1,3 +1,4 @@
+---
 services:
   varken:
     container_name: varken
@@ -5,13 +6,8 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${VARKEN_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/varken:/config
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/varken:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage

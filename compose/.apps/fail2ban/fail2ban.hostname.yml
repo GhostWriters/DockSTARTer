@@ -1,3 +1,4 @@
+---
 services:
   fail2ban:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

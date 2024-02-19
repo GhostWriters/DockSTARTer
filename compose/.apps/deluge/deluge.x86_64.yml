@@ -1,3 +1,4 @@
+---
 services:
   deluge:
     image: lscr.io/linuxserver/deluge:${DELUGE_TAG}

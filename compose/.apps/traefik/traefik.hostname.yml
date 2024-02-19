@@ -1,3 +1,4 @@
+---
 services:
   traefik:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

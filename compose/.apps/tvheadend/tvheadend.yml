@@ -1,19 +1,15 @@
+---
 services:
   tvheadend:
     container_name: tvheadend
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
-      - RUN_OPTS=${TVHEADEND_RUN_OPTS}
+      - RUN_OPTS=${TVHEADEND_ENVIRONMENT_RUN_OPTS}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${TVHEADEND_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/tvheadend:/config
-      - ${DOCKERSTORAGEDIR}:/storage
-      - ${TVHEADEND_RECORDINGSDIR}:/recordings
+      - ${DOCKER_VOLUME_CONFIG}/tvheadend:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${TVHEADEND_VOLUME_RECORDINGS}:/recordings

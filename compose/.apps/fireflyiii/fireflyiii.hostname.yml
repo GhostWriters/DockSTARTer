@@ -1,0 +1,4 @@
+---
+services:
+  fireflyiii:
+    hostname: ${DOCKER_HOSTNAME}

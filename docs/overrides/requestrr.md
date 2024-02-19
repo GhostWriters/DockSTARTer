@@ -18,16 +18,11 @@ services:
     environment:
       - TZ=${TZ}
     image: darkalfx/requestrr:latest
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     ports:
       - 4545:4545
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/requestrr:/root/config
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/requestrr:/root/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage
 ```

@@ -1,3 +1,4 @@
+---
 services:
   azuracast:
     network_mode: ${AZURACAST_NETWORK_MODE}

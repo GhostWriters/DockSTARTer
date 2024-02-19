@@ -1,3 +1,4 @@
+---
 services:
   filebrowser:
     network_mode: ${FILEBROWSER_NETWORK_MODE}

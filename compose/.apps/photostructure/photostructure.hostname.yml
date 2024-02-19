@@ -1,3 +1,4 @@
+---
 services:
   photostructure:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

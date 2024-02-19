@@ -1,3 +1,4 @@
+---
 services:
   piwigo:
     image: lscr.io/linuxserver/piwigo:${PIWIGO_TAG}

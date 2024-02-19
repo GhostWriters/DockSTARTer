@@ -1,3 +1,4 @@
+---
 services:
   portainer:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

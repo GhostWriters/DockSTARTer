@@ -1,3 +1,4 @@
+---
 services:
   filebot:
     labels:
@@ -6,8 +7,8 @@ services:
       com.dockstarter.appinfo.nicename: "FileBot"
       com.dockstarter.appvars.filebot_enabled: "false"
       com.dockstarter.appvars.filebot_network_mode: ""
-      com.dockstarter.appvars.filebot_outputdir: "/mnt/filebot/output"
       com.dockstarter.appvars.filebot_port_5800: "5800"
       com.dockstarter.appvars.filebot_restart: "unless-stopped"
       com.dockstarter.appvars.filebot_tag: "latest"
-      com.dockstarter.appvars.filebot_watchdir: "/mnt/filebot/watch"
+      com.dockstarter.appvars.filebot_volume_outputdir: "/mnt/filebot/output"
+      com.dockstarter.appvars.filebot_volume_watchdir: "/mnt/filebot/watch"

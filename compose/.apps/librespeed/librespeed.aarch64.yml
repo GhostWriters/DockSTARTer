@@ -1,3 +1,4 @@
+---
 services:
   librespeed:
     image: lscr.io/linuxserver/librespeed:${LIBRESPEED_TAG}

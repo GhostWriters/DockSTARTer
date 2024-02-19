@@ -1,3 +1,4 @@
+---
 services:
   grocy:
     image: lscr.io/linuxserver/grocy:${GROCY_TAG}

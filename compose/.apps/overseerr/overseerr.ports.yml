@@ -1,0 +1,5 @@
+---
+services:
+  overseerr:
+    ports:
+      - ${OVERSEERR_PORT_5055}:5055

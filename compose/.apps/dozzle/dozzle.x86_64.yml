@@ -1,3 +1,4 @@
+---
 services:
   dozzle:
     image: amir20/dozzle:${DOZZLE_TAG}

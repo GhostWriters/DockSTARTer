@@ -1,3 +1,4 @@
+---
 services:
   mylar:
     network_mode: ${MYLAR_NETWORK_MODE}

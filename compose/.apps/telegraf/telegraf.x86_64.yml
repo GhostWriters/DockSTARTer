@@ -1,3 +1,4 @@
+---
 services:
   telegraf:
     image: telegraf:${TELEGRAF_TAG}

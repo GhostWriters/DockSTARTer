@@ -1,3 +1,4 @@
+---
 services:
   recyclarr:
     network_mode: ${RECYCLARR_NETWORK_MODE}

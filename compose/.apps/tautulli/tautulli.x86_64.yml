@@ -1,3 +1,4 @@
+---
 services:
   tautulli:
     image: lscr.io/linuxserver/tautulli:${TAUTULLI_TAG}

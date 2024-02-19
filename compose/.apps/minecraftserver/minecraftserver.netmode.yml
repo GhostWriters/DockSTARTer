@@ -1,0 +1,4 @@
+---
+services:
+  minecraftserver:
+    network_mode: ${MINECRAFTSERVER_NETWORK_MODE}

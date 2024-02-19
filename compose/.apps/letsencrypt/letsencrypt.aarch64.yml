@@ -1,3 +1,4 @@
+---
 services:
   letsencrypt:
     image: lscr.io/linuxserver/letsencrypt:${LETSENCRYPT_TAG}

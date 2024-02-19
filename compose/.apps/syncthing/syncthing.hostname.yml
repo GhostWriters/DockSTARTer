@@ -1,3 +1,4 @@
+---
 services:
   syncthing:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

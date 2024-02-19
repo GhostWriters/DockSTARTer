@@ -1,3 +1,4 @@
+---
 services:
   portaineragent:
     image: portainer/agent:${PORTAINERAGENT_TAG}

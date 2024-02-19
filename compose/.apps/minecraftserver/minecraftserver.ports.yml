@@ -1,0 +1,5 @@
+---
+services:
+  minecraftserver:
+    ports:
+      - ${MINECRAFTSERVER_PORT_25565}:25565

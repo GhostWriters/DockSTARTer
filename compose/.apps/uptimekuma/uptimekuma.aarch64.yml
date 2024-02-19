@@ -1,3 +1,4 @@
+---
 services:
   uptimekuma:
     image: louislam/uptime-kuma:${UPTIMEKUMA_TAG}

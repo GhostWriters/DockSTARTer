@@ -1,3 +1,4 @@
+---
 services:
   booksonicair:
     network_mode: ${BOOKSONICAIR_NETWORK_MODE}

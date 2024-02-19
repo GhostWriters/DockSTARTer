@@ -1,3 +1,4 @@
+---
 services:
   gitea:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

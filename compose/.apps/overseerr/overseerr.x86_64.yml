@@ -1,0 +1,4 @@
+---
+services:
+  overseerr:
+    image: lscr.io/linuxserver/overseerr:${OVERSEERR_TAG}

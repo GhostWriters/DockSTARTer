@@ -1,3 +1,4 @@
+---
 services:
   mcmyadmin2:
     image: lscr.io/linuxserver/mcmyadmin2:${MCMYADMIN2_TAG}

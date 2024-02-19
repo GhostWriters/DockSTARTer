@@ -1,3 +1,4 @@
+---
 services:
   mcmyadmin2:
     ports:

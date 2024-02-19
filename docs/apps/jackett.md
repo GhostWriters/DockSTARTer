@@ -25,7 +25,7 @@ When attempting to use private trackers the address which requested the .torrent
 
 To solve this issue:
 
-- Enable the Privoxy option on the associated Torrent+VPN combination you choose.
+- Enable PrivoxyVPN.
 - Inside the Jackett webui, set proxy type to `HTTP`
-- Set Proxy URL to `servicename` example: `rtorrentvpn`
+- Set Proxy URL to `servicename` example: `privoxyvpn`
 - Set Proxy port to `8118`

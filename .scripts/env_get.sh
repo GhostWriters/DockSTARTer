@@ -9,5 +9,5 @@ env_get() {
 }
 
 test_env_get() {
-    run_script 'env_get' DOCKERCONFDIR
+    run_script 'env_get' DOCKER_VOLUME_CONFIG
 }

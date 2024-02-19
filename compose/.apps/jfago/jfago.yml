@@ -1,16 +1,12 @@
+---
 services:
   jfago:
     container_name: jfago
     environment:
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${JFAGO_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/jellyfin/app:/jf
-      - ${DOCKERCONFDIR}/jfago/:/data
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/jellyfin/app:/jf
+      - ${DOCKER_VOLUME_CONFIG}/jfago/:/data
+      - ${DOCKER_VOLUME_STORAGE}:/storage

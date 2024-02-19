@@ -1,3 +1,4 @@
+---
 services:
   synclounge:
     network_mode: ${SYNCLOUNGE_NETWORK_MODE}

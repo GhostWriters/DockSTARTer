@@ -1,3 +1,4 @@
+---
 services:
   codeserver:
     network_mode: ${CODESERVER_NETWORK_MODE}

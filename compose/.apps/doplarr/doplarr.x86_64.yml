@@ -1,0 +1,4 @@
+---
+services:
+  doplarr:
+    image: lscr.io/linuxserver/doplarr:${DOPLARR_TAG}

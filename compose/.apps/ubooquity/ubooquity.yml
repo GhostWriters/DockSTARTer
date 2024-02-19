@@ -1,19 +1,15 @@
+---
 services:
   ubooquity:
     container_name: ubooquity
     environment:
-      - MAXMEM=${UBOOQUITY_MAXMEM}
+      - MAXMEM=${UBOOQUITY_ENVIRONMENT_MAXMEM}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${UBOOQUITY_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/ubooquity:/config
-      - ${DOCKERSTORAGEDIR}:/storage
-      - ${UBOOQUITY_FILESDIR}:/files
+      - ${DOCKER_VOLUME_CONFIG}/ubooquity:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${UBOOQUITY_VOLUME_FILES}:/files

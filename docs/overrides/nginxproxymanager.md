@@ -33,19 +33,14 @@ services:
   proxymanager:
     image: jc21/nginx-proxy-manager:latest
     container_name: proxymanager
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     ports:
       - "80:80"
       - "81:81"
       - "443:443"
     restart: unless-stopped
     volumes:
-      - ${DOCKERCONFDIR}/proxymanager/config.json:/app/config/config.json
-      - ${DOCKERCONFDIR}/proxymanager/data:/data
-      - ${DOCKERCONFDIR}/proxymanager/letsencrypt:/etc/letsencrypt
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/proxymanager/config.json:/app/config/config.json
+      - ${DOCKER_VOLUME_CONFIG}/proxymanager/data:/data
+      - ${DOCKER_VOLUME_CONFIG}/proxymanager/letsencrypt:/etc/letsencrypt
+      - ${DOCKER_VOLUME_STORAGE}:/storage
 ```

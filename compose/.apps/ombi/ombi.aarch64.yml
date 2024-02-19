@@ -1,3 +1,4 @@
+---
 services:
   ombi:
     image: lscr.io/linuxserver/ombi:${OMBI_TAG}

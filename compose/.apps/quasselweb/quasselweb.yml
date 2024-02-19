@@ -1,21 +1,17 @@
+---
 services:
   quasselweb:
     container_name: quasselweb
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
-      - QUASSEL_CORE=${QUASSELWEB_QUASSEL_CORE}
-      - QUASSEL_HTTPS=${QUASSELWEB_QUASSEL_HTTPS}
-      - QUASSEL_PORT=${QUASSELWEB_QUASSEL_PORT}
+      - QUASSEL_CORE=${QUASSELWEB_ENVIRONMENT_QUASSEL_CORE}
+      - QUASSEL_HTTPS=${QUASSELWEB_ENVIRONMENT_QUASSEL_HTTPS}
+      - QUASSEL_PORT=${QUASSELWEB_ENVIRONMENT_QUASSEL_PORT}
       - TZ=${TZ}
-      - URL_BASE=${QUASSELWEB_URL_BASE}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
+      - URL_BASE=${QUASSELWEB_ENVIRONMENT_URL_BASE}
     restart: ${QUASSELWEB_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/quasselweb:/config
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/quasselweb:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage

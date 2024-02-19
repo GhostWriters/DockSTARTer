@@ -1,3 +1,4 @@
+---
 services:
   bazarr:
     image: lscr.io/linuxserver/bazarr:${BAZARR_TAG}

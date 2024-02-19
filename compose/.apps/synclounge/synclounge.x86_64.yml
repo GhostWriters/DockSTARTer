@@ -1,3 +1,4 @@
+---
 services:
   synclounge:
     image: lscr.io/linuxserver/synclounge:${SYNCLOUNGE_TAG}

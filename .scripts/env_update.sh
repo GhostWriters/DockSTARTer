@@ -14,9 +14,9 @@ env_update() {
     cp "${COMPOSE_ENV}.example" "${MKTEMP_ENV_UPDATED}" || fatal "Failed to copy file.\nFailing command: ${F[C]}cp \"${COMPOSE_ENV}.example\" \"${MKTEMP_ENV_UPDATED}\""
     info "Merging current values into updated .env file."
     while IFS= read -r line; do
-        local SET_VAR=${line%%=*}
+        local VAR_VAL=${line}
+        local SET_VAR=${VAR_VAL%%=*}
         local SET_VAL
-        local VAR_VAL="${line}"
         SET_VAL=$(run_script 'env_get' "${SET_VAR}" "${MKTEMP_ENV_CURRENT}")
         if ! grep -q -P "^${SET_VAR}=" "${MKTEMP_ENV_UPDATED}"; then
             echo "${VAR_VAL}" >> "${MKTEMP_ENV_UPDATED}" || error "${VAR_VAL} could not be written to ${MKTEMP_ENV_UPDATED}"

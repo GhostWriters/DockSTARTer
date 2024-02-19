@@ -1,3 +1,4 @@
+---
 services:
   pihole:
     labels:
@@ -5,12 +6,14 @@ services:
       com.dockstarter.appinfo.description: "A black hole for internet advertisements"
       com.dockstarter.appinfo.nicename: "PiHole"
       com.dockstarter.appvars.pihole_enabled: "false"
+      com.dockstarter.appvars.pihole_environment_dns1: "1.1.1.1"
+      com.dockstarter.appvars.pihole_environment_dns2: "8.8.8.8"
+      com.dockstarter.appvars.pihole_environment_serverip: "0.0.0.0"
+      com.dockstarter.appvars.pihole_environment_webpassword: ""
       com.dockstarter.appvars.pihole_network_mode: ""
       com.dockstarter.appvars.pihole_port_443: "446"
       com.dockstarter.appvars.pihole_port_53: "53"
       com.dockstarter.appvars.pihole_port_67: "67"
       com.dockstarter.appvars.pihole_port_80: "8008"
       com.dockstarter.appvars.pihole_restart: "unless-stopped"
-      com.dockstarter.appvars.pihole_serverip: "0.0.0.0"
       com.dockstarter.appvars.pihole_tag: "latest"
-      com.dockstarter.appvars.pihole_webpassword: ""

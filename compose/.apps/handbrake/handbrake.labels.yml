@@ -1,3 +1,4 @@
+---
 services:
   handbrake:
     labels:
@@ -6,8 +7,8 @@ services:
       com.dockstarter.appinfo.nicename: "HandBrake"
       com.dockstarter.appvars.handbrake_enabled: "false"
       com.dockstarter.appvars.handbrake_network_mode: ""
-      com.dockstarter.appvars.handbrake_outputdir: "/mnt/handbrake/output"
       com.dockstarter.appvars.handbrake_port_5800: "5800"
       com.dockstarter.appvars.handbrake_restart: "unless-stopped"
       com.dockstarter.appvars.handbrake_tag: "latest"
-      com.dockstarter.appvars.handbrake_watchdir: "/mnt/handbrake/watch"
+      com.dockstarter.appvars.handbrake_volume_outputdir: "/mnt/handbrake/output"
+      com.dockstarter.appvars.handbrake_volume_watchdir: "/mnt/handbrake/watch"

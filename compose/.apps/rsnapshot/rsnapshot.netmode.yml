@@ -1,3 +1,4 @@
+---
 services:
   rsnapshot:
     network_mode: ${RSNAPSHOT_NETWORK_MODE}

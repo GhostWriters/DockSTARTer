@@ -1,3 +1,4 @@
+---
 services:
   duplicacy:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

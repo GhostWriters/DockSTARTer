@@ -1,3 +1,4 @@
+---
 services:
   codeserver:
     image: lscr.io/linuxserver/code-server:${CODESERVER_TAG}

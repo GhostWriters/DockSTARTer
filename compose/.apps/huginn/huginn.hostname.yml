@@ -1,3 +1,4 @@
+---
 services:
   huginn:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

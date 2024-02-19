@@ -26,8 +26,8 @@ services:
       - TZ=${TZ}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/sonarr:/config
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/sonarr:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage
 ```
 
 In the example above,
@@ -40,11 +40,11 @@ In the example above,
 
 During the Getting Started section, you set **volumes** for your configuration, download and media etc in the`GLOBAL` section.
 
-The path to Sonarr's config in the above example, broken up, is `${DOCKERCONFDIR}/sonarr` then the deliminator `:` followed by `/config`
+The path to Sonarr's config in the above example, broken up, is `${DOCKER_VOLUME_CONFIG}/sonarr` then the deliminator `:` followed by `/config`
 
-`${DOCKERCONFDIR}/sonarr` is the path on your computer that Sonarr will see when it looks in `/config`. In this way, all your Containers will have their own private folder in your global config mount.
+`${DOCKER_VOLUME_CONFIG}/sonarr` is the path on your computer that Sonarr will see when it looks in `/config`. In this way, all your Containers will have their own private folder in your global config mount.
 
-The `${DOCKERSTORAGEDIR}` location is public to all apps that need it. That means Sonarr will be writing and reading from the same `${DOCKERSTORAGEDIR}:/storage` mounts as Radarr, SickBeard etc AND your download clients.
+The `${DOCKER_VOLUME_STORAGE}` location is public to all apps that need it. That means Sonarr will be writing and reading from the same `${DOCKER_VOLUME_STORAGE}:/storage` mounts as Radarr, SickBeard etc AND your download clients.
 
 **Again**, do not edit the default YML files, instead, see the section on [Overrides / Introduction](https://dockstarter.com/overrides/introduction). (Assuming you are reading this page from start to finish for the first time) there is a reason you haven't seen their location yet ;)
 

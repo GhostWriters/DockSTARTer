@@ -1,28 +1,24 @@
+---
 services:
   swag:
     cap_add:
       - NET_ADMIN
     container_name: swag
     environment:
-      - DNSPLUGIN=${SWAG_DNSPLUGIN}
-      - DUCKDNSTOKEN=${SWAG_DUCKDNSTOKEN}
-      - EMAIL=${SWAG_EMAIL}
-      - EXTRA_DOMAINS=${SWAG_EXTRA_DOMAINS}
-      - ONLY_SUBDOMAINS=${SWAG_ONLY_SUBDOMAINS}
+      - DNSPLUGIN=${SWAG_ENVIRONMENT_DNSPLUGIN}
+      - DUCKDNSTOKEN=${SWAG_ENVIRONMENT_DUCKDNSTOKEN}
+      - EMAIL=${SWAG_ENVIRONMENT_EMAIL}
+      - EXTRA_DOMAINS=${SWAG_ENVIRONMENT_EXTRA_DOMAINS}
+      - ONLY_SUBDOMAINS=${SWAG_ENVIRONMENT_ONLY_SUBDOMAINS}
       - PGID=${PGID}
       - PUID=${PUID}
-      - SUBDOMAINS=${SWAG_SUBDOMAINS}
+      - SUBDOMAINS=${SWAG_ENVIRONMENT_SUBDOMAINS}
       - TZ=${TZ}
-      - URL=${SWAG_URL}
-      - VALIDATION=${SWAG_VALIDATION}
-      - MAXMINDDB_LICENSE_KEY=${SWAG_MAXMINDDB_LICENSE_KEY}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
+      - URL=${SWAG_ENVIRONMENT_URL}
+      - VALIDATION=${SWAG_ENVIRONMENT_VALIDATION}
+      - MAXMINDDB_LICENSE_KEY=${SWAG_ENVIRONMENT_MAXMINDDB_LICENSE_KEY}
     restart: ${SWAG_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/swag:/config
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/swag:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage

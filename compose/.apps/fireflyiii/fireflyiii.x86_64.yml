@@ -1,0 +1,4 @@
+---
+services:
+  fireflyiii:
+    image: fireflyiii/core:${FIREFLYIII_TAG}

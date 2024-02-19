@@ -1,8 +1,9 @@
+---
 services:
   rutorrent:
     labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "rTorrent client and ruTorrent WebUI"
+      com.dockstarter.appinfo.deprecated: "true"
+      com.dockstarter.appinfo.description: "(DEPRECATED) Use Deluge/qBittorrent/Transmission"
       com.dockstarter.appinfo.nicename: "ruTorrent"
       com.dockstarter.appvars.rutorrent_enabled: "false"
       com.dockstarter.appvars.rutorrent_network_mode: ""

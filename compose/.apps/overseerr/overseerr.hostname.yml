@@ -1,0 +1,4 @@
+---
+services:
+  overseerr:
+    hostname: ${DOCKER_HOSTNAME}

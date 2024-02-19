@@ -1,24 +1,20 @@
+---
 services:
   ouroboros:
     container_name: ouroboros
     environment:
-      - CLEANUP=${OUROBOROS_CLEANUP}
-      - CRON=${OUROBOROS_CRON}
-      - IGNORE=${OUROBOROS_IGNORE}
-      - LOG_LEVEL=${OUROBOROS_LOG_LEVEL}
-      - MONITOR=${OUROBOROS_MONITOR}
-      - NOTIFIERS=${OUROBOROS_NOTIFIERS}
-      - REPO_PASS=${OUROBOROS_REPO_PASS}
-      - REPO_USER=${OUROBOROS_REPO_USER}
-      - SELF_UPDATE=${OUROBOROS_SELF_UPDATE}
+      - CLEANUP=${OUROBOROS_ENVIRONMENT_CLEANUP}
+      - CRON=${OUROBOROS_ENVIRONMENT_CRON}
+      - IGNORE=${OUROBOROS_ENVIRONMENT_IGNORE}
+      - LOG_LEVEL=${OUROBOROS_ENVIRONMENT_LOG_LEVEL}
+      - MONITOR=${OUROBOROS_ENVIRONMENT_MONITOR}
+      - NOTIFIERS=${OUROBOROS_ENVIRONMENT_NOTIFIERS}
+      - REPO_PASS=${OUROBOROS_ENVIRONMENT_REPO_PASS}
+      - REPO_USER=${OUROBOROS_ENVIRONMENT_REPO_USER}
+      - SELF_UPDATE=${OUROBOROS_ENVIRONMENT_SELF_UPDATE}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${OUROBOROS_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${OUROBOROS_VOLUME_DOCKER_SOCKET}:/var/run/docker.sock

@@ -1,3 +1,4 @@
+---
 services:
   homer:
     network_mode: ${HOMER_NETWORK_MODE}

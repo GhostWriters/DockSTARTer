@@ -1,3 +1,4 @@
+---
 services:
   tdarr:
     image: haveagitgat/tdarr:${TDARR_TAG}

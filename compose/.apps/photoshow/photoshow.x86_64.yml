@@ -1,3 +1,4 @@
+---
 services:
   photoshow:
     image: lscr.io/linuxserver/photoshow:${PHOTOSHOW_TAG}

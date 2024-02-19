@@ -1,19 +1,15 @@
+---
 services:
   plex:
     container_name: plex
     environment:
       - PGID=${PGID}
-      - PLEX_CLAIM=${PLEX_CLAIM}
+      - PLEX_CLAIM=${PLEX_ENVIRONMENT_CLAIM}
       - PUID=${PUID}
       - TZ=${TZ}
-      - VERSION=${PLEX_VERSION}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
+      - VERSION=${PLEX_ENVIRONMENT_VERSION}
     restart: ${PLEX_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/plex:/config
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/plex:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage

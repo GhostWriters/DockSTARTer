@@ -1,3 +1,4 @@
+---
 services:
   speedtest:
     image: henrywhitaker3/speedtest-tracker:${SPEEDTEST_TAG}

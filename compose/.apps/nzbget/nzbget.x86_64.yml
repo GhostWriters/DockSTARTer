@@ -1,3 +1,4 @@
+---
 services:
   nzbget:
     image: lscr.io/linuxserver/nzbget:${NZBGET_TAG}

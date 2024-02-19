@@ -1,3 +1,4 @@
+---
 services:
   thelounge:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

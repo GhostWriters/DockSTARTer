@@ -1,3 +1,4 @@
+---
 services:
   phpmyadmin:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

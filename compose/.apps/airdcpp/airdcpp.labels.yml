@@ -1,3 +1,4 @@
+---
 services:
   airdcpp:
     labels:
@@ -11,5 +12,5 @@ services:
       com.dockstarter.appvars.airdcpp_port_5600: "5600"
       com.dockstarter.appvars.airdcpp_port_5601: "5601"
       com.dockstarter.appvars.airdcpp_restart: "unless-stopped"
-      com.dockstarter.appvars.airdcpp_sharedir: "/mnt/airdcpp"
       com.dockstarter.appvars.airdcpp_tag: "latest"
+      com.dockstarter.appvars.airdcpp_volume_sharedir: "/mnt/airdcpp"

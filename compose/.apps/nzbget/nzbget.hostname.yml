@@ -1,3 +1,4 @@
+---
 services:
   nzbget:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

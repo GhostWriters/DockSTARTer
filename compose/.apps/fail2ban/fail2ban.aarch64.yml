@@ -1,3 +1,4 @@
+---
 services:
   fail2ban:
     image: lscr.io/linuxserver/fail2ban:${FAIL2BAN_TAG}

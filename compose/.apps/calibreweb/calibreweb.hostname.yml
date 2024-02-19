@@ -1,3 +1,4 @@
+---
 services:
   calibreweb:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

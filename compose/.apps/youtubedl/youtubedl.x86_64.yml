@@ -1,3 +1,4 @@
+---
 services:
   youtubedl:
     image: nbr23/youtube-dl-server:${YOUTUBEDL_TAG}

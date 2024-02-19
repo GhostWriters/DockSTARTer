@@ -1,0 +1,5 @@
+---
+services:
+  kitana:
+    ports:
+      - ${KITANA_PORT_31337}:31337

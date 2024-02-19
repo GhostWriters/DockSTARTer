@@ -1,3 +1,4 @@
+---
 services:
   htpcmanager:
     image: lscr.io/linuxserver/htpcmanager:${HTPCMANAGER_TAG}

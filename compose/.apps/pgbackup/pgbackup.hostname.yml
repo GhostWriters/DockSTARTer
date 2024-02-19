@@ -1,3 +1,4 @@
+---
 services:
   pgbackup:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

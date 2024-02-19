@@ -1,3 +1,4 @@
+---
 services:
   headphones:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

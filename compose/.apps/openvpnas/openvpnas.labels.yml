@@ -1,3 +1,4 @@
+---
 services:
   openvpnas:
     labels:
@@ -5,7 +6,7 @@ services:
       com.dockstarter.appinfo.description: "Secure network tunneling VPN"
       com.dockstarter.appinfo.nicename: "OpenVPNAS"
       com.dockstarter.appvars.openvpnas_enabled: "false"
-      com.dockstarter.appvars.openvpnas_interface: "eth0"
+      com.dockstarter.appvars.openvpnas_environment_interface: "eth0"
       com.dockstarter.appvars.openvpnas_network_mode: ""
       com.dockstarter.appvars.openvpnas_port_1194: "1194"
       com.dockstarter.appvars.openvpnas_port_943: "943"

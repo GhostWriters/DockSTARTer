@@ -1,3 +1,4 @@
+---
 services:
   netdata:
     image: netdata/netdata:${NETDATA_TAG}

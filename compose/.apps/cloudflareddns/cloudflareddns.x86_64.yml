@@ -1,3 +1,4 @@
+---
 services:
   cloudflareddns:
     image: ghcr.io/hotio/cloudflareddns:${CLOUDFLAREDDNS_TAG}

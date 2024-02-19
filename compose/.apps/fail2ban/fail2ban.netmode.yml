@@ -1,3 +1,4 @@
+---
 services:
   fail2ban:
     network_mode: ${FAIL2BAN_NETWORK_MODE}

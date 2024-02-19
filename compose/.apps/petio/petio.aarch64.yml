@@ -1,0 +1,4 @@
+---
+services:
+  petio:
+    image: ghcr.io/petio-team/petio:${PETIO_TAG}

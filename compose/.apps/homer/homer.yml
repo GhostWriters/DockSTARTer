@@ -1,19 +1,15 @@
+---
 services:
   homer:
     container_name: homer
     environment:
-      - INIT_ASSETS=${HOMER_INIT_ASSETS}
+      - INIT_ASSETS=${HOMER_ENVIRONMENT_INIT_ASSETS}
       - PGID=${PGID}
       - PUID=${PUID}
-      - SUBFOLDER=${HOMER_SUBFOLDER}
+      - SUBFOLDER=${HOMER_ENVIRONMENT_SUBFOLDER}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${HOMER_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERSTORAGEDIR}:/storage
-      - ${DOCKERCONFDIR}/homer:/www/assets
+      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/homer:/www/assets

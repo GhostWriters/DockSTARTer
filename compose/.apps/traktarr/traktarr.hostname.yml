@@ -1,3 +1,4 @@
+---
 services:
   traktarr:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

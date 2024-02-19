@@ -1,3 +1,4 @@
+---
 services:
   dozzle:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

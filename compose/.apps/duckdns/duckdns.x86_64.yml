@@ -1,3 +1,4 @@
+---
 services:
   duckdns:
     image: lscr.io/linuxserver/duckdns:${DUCKDNS_TAG}

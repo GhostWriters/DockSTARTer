@@ -1,3 +1,4 @@
+---
 services:
   sonarr:
     labels:

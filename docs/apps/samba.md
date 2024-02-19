@@ -1,5 +1,9 @@
 # Samba
 
+## DEPRECATED
+
+DEPRECATION NOTICE: This image is deprecated as of 2024-02-18.
+
 [![Docker Pulls](https://img.shields.io/docker/pulls/dperson/samba?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/dperson/samba)
 [![GitHub Stars](https://img.shields.io/github/stars/dperson/samba?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/dperson/samba)
 [![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/samba)
@@ -10,7 +14,7 @@
 mounts, which then are accessible and mountable on a Windows computer.
 
 By default, Samba will share all media directories and
-[Docker config directory](https://dockstarter.com/basics/env-var-info/#dockerconfdir)
+[Docker config directory](https://dockstarter.com/basics/env-var-info/#DOCKER_VOLUME_CONFIG)
 over SMB on the host. All of these directories will be placed inside whatever
 share name is specified for `SAMBA_SHARENAME` on your `.env` file. These shares
 are protected with username `ds` and password `ds` by default, but **can and

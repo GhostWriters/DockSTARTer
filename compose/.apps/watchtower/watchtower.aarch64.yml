@@ -1,3 +1,4 @@
+---
 services:
   watchtower:
     image: ghcr.io/containrrr/watchtower:${WATCHTOWER_TAG}

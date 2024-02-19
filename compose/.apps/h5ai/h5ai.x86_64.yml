@@ -1,3 +1,4 @@
+---
 services:
   h5ai:
     image: bixidock/h5ai:${H5AI_TAG}

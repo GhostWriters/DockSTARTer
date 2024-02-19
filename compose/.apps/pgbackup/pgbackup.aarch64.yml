@@ -1,3 +1,4 @@
+---
 services:
   pgbackup:
     image: prodrigestivill/postgres-backup-local:${PGBACKUP_TAG}

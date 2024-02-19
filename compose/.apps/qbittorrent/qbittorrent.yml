@@ -1,3 +1,4 @@
+---
 services:
   qbittorrent:
     container_name: qbittorrent
@@ -6,13 +7,8 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
       - WEBUI_PORT=${QBITTORRENT_PORT_8080}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${QBITTORRENT_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/qbittorrent:/config
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/qbittorrent:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage

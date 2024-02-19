@@ -1,3 +1,4 @@
+---
 services:
   duckdns:
     network_mode: ${DUCKDNS_NETWORK_MODE}

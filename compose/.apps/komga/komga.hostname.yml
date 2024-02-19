@@ -1,3 +1,4 @@
+---
 services:
   komga:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

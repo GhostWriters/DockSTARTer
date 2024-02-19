@@ -1,3 +1,4 @@
+---
 services:
   duplicacy:
     network_mode: ${DUPLICACY_NETWORK_MODE}

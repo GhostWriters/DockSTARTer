@@ -1,0 +1,13 @@
+---
+services:
+  overseerr:
+    container_name: overseerr
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    restart: ${OVERSEERR_RESTART}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_VOLUME_CONFIG}/overseerr:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage

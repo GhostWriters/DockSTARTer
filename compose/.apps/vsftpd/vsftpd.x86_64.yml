@@ -1,3 +1,4 @@
+---
 services:
   vsftpd:
     image: fauria/vsftpd:${VSFTPD_TAG}

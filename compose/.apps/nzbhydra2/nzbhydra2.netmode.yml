@@ -1,3 +1,4 @@
+---
 services:
   nzbhydra2:
     network_mode: ${NZBHYDRA2_NETWORK_MODE}

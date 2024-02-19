@@ -1,3 +1,4 @@
+---
 services:
   lidarr:
     image: lscr.io/linuxserver/lidarr:${LIDARR_TAG}

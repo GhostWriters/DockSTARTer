@@ -1,3 +1,4 @@
+---
 services:
   gitea:
     image: gitea/gitea:${GITEA_TAG}

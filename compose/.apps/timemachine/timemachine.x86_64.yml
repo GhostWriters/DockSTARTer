@@ -1,3 +1,4 @@
+---
 services:
   timemachine:
     image: mbentley/timemachine:${TIMEMACHINE_TAG}

@@ -1,3 +1,4 @@
+---
 services:
   portainer:
     image: portainer/portainer-ce:${PORTAINER_TAG}

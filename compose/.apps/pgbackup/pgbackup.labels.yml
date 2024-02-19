@@ -1,3 +1,4 @@
+---
 services:
   pgbackup:
     labels:
@@ -5,14 +6,15 @@ services:
       com.dockstarter.appinfo.description: Backup PostgresSQL to the local filesystem with periodic rotating backups.
       com.dockstarter.appinfo.nicename: pgBackup
       com.dockstarter.appvars.pgbackup_enabled: "false"
-      com.dockstarter.appvars.pgbackup_keep_days: "8"
-      com.dockstarter.appvars.pgbackup_keep_months: "12"
-      com.dockstarter.appvars.pgbackup_keep_weeks: "4"
+      com.dockstarter.appvars.pgbackup_environment_keep_days: "8"
+      com.dockstarter.appvars.pgbackup_environment_keep_months: "12"
+      com.dockstarter.appvars.pgbackup_environment_keep_weeks: "4"
+      com.dockstarter.appvars.pgbackup_environment_postgres_db: ""
+      com.dockstarter.appvars.pgbackup_environment_postgres_extra_opts: "Z6 --schema=public --blobs"
+      com.dockstarter.appvars.pgbackup_environment_postgres_host: "postgres"
+      com.dockstarter.appvars.pgbackup_environment_postgres_password: ""
+      com.dockstarter.appvars.pgbackup_environment_postgres_user: ""
+      com.dockstarter.appvars.pgbackup_environment_schedule: "@daily"
       com.dockstarter.appvars.pgbackup_network_mode: ""
-      com.dockstarter.appvars.pgbackup_postgres_db: ""
-      com.dockstarter.appvars.pgbackup_postgres_host: "postgres"
-      com.dockstarter.appvars.pgbackup_postgres_password: ""
-      com.dockstarter.appvars.pgbackup_postgres_user: ""
       com.dockstarter.appvars.pgbackup_restart: unless-stopped
-      com.dockstarter.appvars.pgbackup_schedule: "@daily"
       com.dockstarter.appvars.pgbackup_tag: "16"

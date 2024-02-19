@@ -1,0 +1,4 @@
+---
+services:
+  kitana:
+    network_mode: ${KITANA_NETWORK_MODE}

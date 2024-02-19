@@ -1,3 +1,4 @@
+---
 services:
   requestrr:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

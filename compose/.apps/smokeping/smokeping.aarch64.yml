@@ -1,3 +1,4 @@
+---
 services:
   smokeping:
     image: lscr.io/linuxserver/smokeping:${SMOKEPING_TAG}

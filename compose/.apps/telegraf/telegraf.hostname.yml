@@ -1,3 +1,4 @@
+---
 services:
   telegraf:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

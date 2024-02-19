@@ -19,18 +19,13 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}
     image: tronyx/docker-plpp:latest
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     ports:
       - 8383:80
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/plpp:/config
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/plpp:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage
 ```

@@ -1,3 +1,4 @@
+---
 services:
   airdcpp:
     container_name: airdcpp
@@ -10,14 +11,9 @@ services:
       - TLS_PORT=${AIRDCPP_PORT_21249}
       - TZ=${TZ}
       - UDP_PORT=${AIRDCPP_PORT_21248}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${AIRDCPP_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${AIRDCPP_SHAREDIR}:/Share
-      - ${DOCKERCONFDIR}/airdcpp:/.airdcpp
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${AIRDCPP_VOLUME_SHAREDIR}:/Share
+      - ${DOCKER_VOLUME_CONFIG}/airdcpp:/.airdcpp
+      - ${DOCKER_VOLUME_STORAGE}:/storage

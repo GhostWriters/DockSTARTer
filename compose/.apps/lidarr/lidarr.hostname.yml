@@ -1,3 +1,4 @@
+---
 services:
   lidarr:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

@@ -1,3 +1,4 @@
+---
 services:
   gluetun:
     network_mode: ${GLUETUN_NETWORK_MODE}

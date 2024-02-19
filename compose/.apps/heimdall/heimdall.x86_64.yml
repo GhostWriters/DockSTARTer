@@ -1,3 +1,4 @@
+---
 services:
   heimdall:
     image: lscr.io/linuxserver/heimdall:${HEIMDALL_TAG}

@@ -1,3 +1,4 @@
+---
 services:
   mylar3:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

@@ -1,3 +1,4 @@
+---
 services:
   tvheadend:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

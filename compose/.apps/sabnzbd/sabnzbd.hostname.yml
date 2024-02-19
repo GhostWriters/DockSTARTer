@@ -1,3 +1,4 @@
+---
 services:
   sabnzbd:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

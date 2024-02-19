@@ -1,3 +1,4 @@
+---
 services:
   bazarr:
     container_name: bazarr
@@ -5,13 +6,8 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${BAZARR_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/bazarr:/config
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/bazarr:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage

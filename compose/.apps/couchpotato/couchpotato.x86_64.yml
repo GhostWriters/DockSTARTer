@@ -1,3 +1,4 @@
+---
 services:
   couchpotato:
     image: lscr.io/linuxserver/couchpotato:${COUCHPOTATO_TAG}

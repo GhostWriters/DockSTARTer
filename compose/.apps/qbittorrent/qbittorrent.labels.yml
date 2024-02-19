@@ -1,3 +1,4 @@
+---
 services:
   qbittorrent:
     labels:

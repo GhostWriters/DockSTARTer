@@ -1,0 +1,4 @@
+---
+services:
+  minecraftbedrockserver:
+    network_mode: ${MINECRAFTBEDROCKSERVER_NETWORK_MODE}

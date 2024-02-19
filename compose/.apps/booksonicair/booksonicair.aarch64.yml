@@ -1,3 +1,4 @@
+---
 services:
   booksonicair:
     image: lscr.io/linuxserver/booksonic-air:${BOOKSONICAIR_TAG}

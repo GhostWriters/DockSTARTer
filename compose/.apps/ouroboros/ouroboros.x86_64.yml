@@ -1,3 +1,4 @@
+---
 services:
   ouroboros:
     image: pyouroboros/ouroboros:${OUROBOROS_TAG}

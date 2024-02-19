@@ -1,3 +1,4 @@
+---
 services:
   adminer:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

@@ -1,3 +1,4 @@
+---
 services:
   influxdb:
     image: influxdb:${INFLUXDB_TAG}

@@ -1,3 +1,4 @@
+---
 services:
   moviematch:
     image: lukechannings/moviematch:${MOVIEMATCH_TAG}

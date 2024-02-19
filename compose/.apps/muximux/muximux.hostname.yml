@@ -1,3 +1,4 @@
+---
 services:
   muximux:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

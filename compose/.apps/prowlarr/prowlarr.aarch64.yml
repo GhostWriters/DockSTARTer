@@ -1,3 +1,4 @@
+---
 services:
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:${PROWLARR_TAG}

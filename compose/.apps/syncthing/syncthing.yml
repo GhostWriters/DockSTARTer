@@ -1,3 +1,4 @@
+---
 services:
   syncthing:
     container_name: syncthing
@@ -5,14 +6,9 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${SYNCTHING_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/syncthing:/config
-      - ${DOCKERSTORAGEDIR}:/storage
-      - ${SYNCTHING_SOURCEDIR}:/source
+      - ${DOCKER_VOLUME_CONFIG}/syncthing:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${SYNCTHING_VOLUME_SOURCE}:/source

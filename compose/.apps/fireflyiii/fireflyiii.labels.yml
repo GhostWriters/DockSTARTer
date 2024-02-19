@@ -1,0 +1,20 @@
+---
+services:
+  fireflyiii:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "A personal finance manager"
+      com.dockstarter.appinfo.nicename: "FireflyIII"
+      com.dockstarter.appvars.fireflyiii_enabled: "false"
+      com.dockstarter.appvars.fireflyiii_environment_app_key: "SomeRandomStringOf32CharsExactly"
+      com.dockstarter.appvars.fireflyiii_environment_db_connection: "mysql"
+      com.dockstarter.appvars.fireflyiii_environment_db_database: "fireflyiii_db"
+      com.dockstarter.appvars.fireflyiii_environment_db_host: "mariadb"
+      com.dockstarter.appvars.fireflyiii_environment_db_password: "fireflyiii_password"
+      com.dockstarter.appvars.fireflyiii_environment_db_port: "3306"
+      com.dockstarter.appvars.fireflyiii_environment_db_username: "fireflyiii_user"
+      com.dockstarter.appvars.fireflyiii_environment_trusted_proxies: "**"
+      com.dockstarter.appvars.fireflyiii_network_mode: ""
+      com.dockstarter.appvars.fireflyiii_port_8080: "8080"
+      com.dockstarter.appvars.fireflyiii_restart: "unless-stopped"
+      com.dockstarter.appvars.fireflyiii_tag: "latest"

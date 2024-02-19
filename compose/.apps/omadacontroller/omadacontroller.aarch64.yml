@@ -1,3 +1,4 @@
+---
 services:
   omadacontroller:
     image: mbentley/omada-controller:${OMADACONTROLLER_TAG}

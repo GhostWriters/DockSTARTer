@@ -1,3 +1,4 @@
+---
 services:
   makemkv:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

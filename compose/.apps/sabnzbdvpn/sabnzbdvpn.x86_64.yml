@@ -1,3 +1,4 @@
+---
 services:
   sabnzbdvpn:
     image: ghcr.io/binhex/arch-sabnzbdvpn:${SABNZBDVPN_TAG}

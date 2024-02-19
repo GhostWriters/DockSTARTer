@@ -1,3 +1,4 @@
+---
 services:
   codeserver:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

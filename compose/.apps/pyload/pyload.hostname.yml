@@ -1,3 +1,4 @@
+---
 services:
   pyload:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

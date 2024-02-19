@@ -1,3 +1,4 @@
+---
 services:
   homer:
     image: b4bz/homer:${HOMER_TAG}

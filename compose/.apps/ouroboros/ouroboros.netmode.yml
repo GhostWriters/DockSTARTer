@@ -1,3 +1,4 @@
+---
 services:
   ouroboros:
     network_mode: ${OUROBOROS_NETWORK_MODE}

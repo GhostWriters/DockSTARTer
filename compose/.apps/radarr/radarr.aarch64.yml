@@ -1,3 +1,4 @@
+---
 services:
   radarr:
     image: lscr.io/linuxserver/radarr:${RADARR_TAG}

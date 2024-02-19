@@ -1,3 +1,4 @@
+---
 services:
   adminer:
     image: adminer:${ADMINER_TAG}

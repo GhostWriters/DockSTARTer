@@ -1,3 +1,4 @@
+---
 services:
   couchpotato:
     container_name: couchpotato
@@ -5,13 +6,8 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${COUCHPOTATO_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/couchpotato:/config
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/couchpotato:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage

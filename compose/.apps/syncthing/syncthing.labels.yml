@@ -1,3 +1,4 @@
+---
 services:
   syncthing:
     labels:
@@ -10,5 +11,5 @@ services:
       com.dockstarter.appvars.syncthing_port_22000: "22000"
       com.dockstarter.appvars.syncthing_port_8384: "8384"
       com.dockstarter.appvars.syncthing_restart: "unless-stopped"
-      com.dockstarter.appvars.syncthing_sourcedir: "/mnt/syncthing"
       com.dockstarter.appvars.syncthing_tag: "latest"
+      com.dockstarter.appvars.syncthing_volume_source: "/mnt/syncthing"

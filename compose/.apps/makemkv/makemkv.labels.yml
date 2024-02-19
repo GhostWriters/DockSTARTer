@@ -1,3 +1,4 @@
+---
 services:
   makemkv:
     labels:
@@ -6,7 +7,7 @@ services:
       com.dockstarter.appinfo.nicename: "MakeMKV"
       com.dockstarter.appvars.makemkv_enabled: "false"
       com.dockstarter.appvars.makemkv_network_mode: ""
-      com.dockstarter.appvars.makemkv_outputdir: "/mnt/makemkv/output"
       com.dockstarter.appvars.makemkv_port_5800: "5800"
       com.dockstarter.appvars.makemkv_restart: "unless-stopped"
       com.dockstarter.appvars.makemkv_tag: "latest"
+      com.dockstarter.appvars.makemkv_volume_outputdir: "/mnt/makemkv/output"

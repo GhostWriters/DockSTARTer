@@ -1,3 +1,4 @@
+---
 services:
   ldapauth:
     network_mode: ${LDAPAUTH_NETWORK_MODE}

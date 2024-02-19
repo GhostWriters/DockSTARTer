@@ -1,3 +1,4 @@
+---
 services:
   mosquitto:
     image: eclipse-mosquitto:${MOSQUITTO_TAG}

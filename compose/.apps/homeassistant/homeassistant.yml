@@ -1,15 +1,11 @@
+---
 services:
   homeassistant:
     container_name: homeassistant
     environment:
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${HOMEASSISTANT_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/homeassistant:/config
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/homeassistant:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage

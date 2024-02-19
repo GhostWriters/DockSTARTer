@@ -1,12 +1,15 @@
+---
 services:
   smokeping:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Latency logging, graphing, and alerting system"
       com.dockstarter.appinfo.nicename: "SmokePing"
-      com.dockstarter.appvars.smokeping_datadir: "/mnt/smokeping"
       com.dockstarter.appvars.smokeping_enabled: "false"
+      com.dockstarter.appvars.smokeping_environment_dns1: "1.1.1.1"
+      com.dockstarter.appvars.smokeping_environment_dns2: "8.8.8.8"
       com.dockstarter.appvars.smokeping_network_mode: ""
       com.dockstarter.appvars.smokeping_port_80: "8011"
       com.dockstarter.appvars.smokeping_restart: "unless-stopped"
       com.dockstarter.appvars.smokeping_tag: "latest"
+      com.dockstarter.appvars.smokeping_volume_data: "/mnt/smokeping"

@@ -1,3 +1,4 @@
+---
 services:
   resiliosync:
     labels:
@@ -9,5 +10,5 @@ services:
       com.dockstarter.appvars.resiliosync_port_55555: "55555"
       com.dockstarter.appvars.resiliosync_port_8888: "8888"
       com.dockstarter.appvars.resiliosync_restart: "unless-stopped"
-      com.dockstarter.appvars.resiliosync_syncdir: "/mnt/resiliosync"
       com.dockstarter.appvars.resiliosync_tag: "latest"
+      com.dockstarter.appvars.resiliosync_volume_sync: "/mnt/resiliosync"

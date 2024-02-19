@@ -1,3 +1,4 @@
+---
 services:
   adguard:
     image: adguard/adguardhome:${ADGUARD_TAG}

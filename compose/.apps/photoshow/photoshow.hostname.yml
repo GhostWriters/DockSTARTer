@@ -1,3 +1,4 @@
+---
 services:
   photoshow:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

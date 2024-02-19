@@ -1,3 +1,4 @@
+---
 services:
   plexanisync:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

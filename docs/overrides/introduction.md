@@ -28,8 +28,8 @@ services:
     image: ghcr.io/hotio/sonarr:latest
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/sonarr:/config
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/sonarr:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage
 ```
 
 ### Add a New App
@@ -46,18 +46,13 @@ services:
       - PGID=1000
       - PUID=1000
     image: rudloff/alltube:latest
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     ports:
       - "1234:80"
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/alltube:/var/www/html/config
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/alltube:/var/www/html/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage
 ```
 
 **Make sure to run `ds -c` or `ds -c up <appname>` after you make changes to your override file.**

@@ -1,3 +1,4 @@
+---
 services:
   plexanisync:
     image: rickdb/plexanisync:${PLEXANISYNC_TAG}

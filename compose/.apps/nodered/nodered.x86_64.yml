@@ -1,3 +1,4 @@
+---
 services:
   nodered:
     image: nodered/node-red:${NODERED_TAG}

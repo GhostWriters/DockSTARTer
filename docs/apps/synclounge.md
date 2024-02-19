@@ -61,7 +61,7 @@ If you want to override the Servers List you'll need to create an [override](htt
   services:
     synclounge:
       volumes:
-        - ${DOCKERCONFDIR}/synclounge/servers.json:/defaults/servers.json
+        - ${DOCKER_VOLUME_CONFIG}/synclounge/servers.json:/defaults/servers.json
   ```
 
 - Recreate your container:

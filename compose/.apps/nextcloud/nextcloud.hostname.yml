@@ -1,3 +1,4 @@
+---
 services:
   nextcloud:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

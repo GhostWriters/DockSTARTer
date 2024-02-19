@@ -1,3 +1,4 @@
+---
 services:
   rutorrent:
     network_mode: ${RUTORRENT_NETWORK_MODE}

@@ -1,3 +1,4 @@
+---
 services:
   freshrss:
     image: lscr.io/linuxserver/freshrss:${FRESHRSS_TAG}

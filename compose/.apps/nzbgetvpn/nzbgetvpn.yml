@@ -1,3 +1,4 @@
+---
 services:
   nzbgetvpn:
     cap_add:
@@ -5,7 +6,7 @@ services:
       - SYS_MODULE
     container_name: nzbgetvpn
     environment:
-      - ENABLE_PRIVOXY=${NZBGETVPN_ENABLE_PRIVOXY}
+      - ENABLE_PRIVOXY=${NZBGETVPN_ENVIRONMENT_ENABLE_PRIVOXY}
       - LAN_NETWORK=${LAN_NETWORK}
       - NAME_SERVERS=${NS1},${NS2}
       - PGID=${PGID}
@@ -17,18 +18,13 @@ services:
       - VPN_PASS=${VPN_PASS}
       - VPN_PROV=${VPN_PROV}
       - VPN_USER=${VPN_USER}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     privileged: true
     restart: ${NZBGETVPN_RESTART}
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/nzbgetvpn:/config
-      - ${DOCKERSTORAGEDIR}:/storage
-      - ${VPN_OVPNDIR}:/config/openvpn
-      - ${VPN_WGDIR}:/config/wireguard
+      - ${DOCKER_VOLUME_CONFIG}/nzbgetvpn:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${VPN_VOLUME_OVPNDIR}:/config/openvpn
+      - ${VPN_VOLUME_WGDIR}:/config/wireguard

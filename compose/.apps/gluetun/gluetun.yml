@@ -1,19 +1,22 @@
+---
 services:
   gluetun:
     cap_add:
       - NET_ADMIN
     container_name: gluetun
+    devices:
+      - /dev/net/tun
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
+      - OPENVPN_PASSWORD=${GLUETUN_ENVIRONMENT_OPENVPN_PASSWORD}
+      - OPENVPN_USER=${GLUETUN_ENVIRONMENT_OPENVPN_USER}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
+      - UPDATER_PERIOD=${GLUETUN_ENVIRONMENT_UPDATER_PERIOD}
+      - VPN_SERVICE_PROVIDER=${GLUETUN_ENVIRONMENT_VPN_SERVICE_PROVIDER}
+      - VPN_TYPE=${GLUETUN_ENVIRONMENT_VPN_TYPE}
+      - WIREGUARD_ADDRESSES=${GLUETUN_ENVIRONMENT_WIREGUARD_ADDRESSES}
+      - WIREGUARD_PRIVATE_KEY=${GLUETUN_ENVIRONMENT_WIREGUARD_PRIVATE_KEY}
     restart: ${GLUETUN_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/gluetun:/config
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/gluetun:/gluetun
+      - ${DOCKER_VOLUME_STORAGE}:/storage

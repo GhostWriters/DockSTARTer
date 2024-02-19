@@ -1,3 +1,4 @@
+---
 services:
   smokeping:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

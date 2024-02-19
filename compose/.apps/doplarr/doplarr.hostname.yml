@@ -1,0 +1,4 @@
+---
+services:
+  doplarr:
+    hostname: ${DOCKER_HOSTNAME}

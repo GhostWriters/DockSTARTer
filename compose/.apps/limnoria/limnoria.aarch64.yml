@@ -1,3 +1,4 @@
+---
 services:
   limnoria:
     image: lscr.io/linuxserver/limnoria:${LIMNORIA_TAG}

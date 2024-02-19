@@ -1,3 +1,4 @@
+---
 services:
   audiobookshelf:
     image: ghcr.io/advplyr/audiobookshelf:${AUDIOBOOKSHELF_TAG}

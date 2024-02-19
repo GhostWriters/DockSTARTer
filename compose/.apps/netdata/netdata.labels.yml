@@ -1,3 +1,4 @@
+---
 services:
   netdata:
     labels:
@@ -9,3 +10,4 @@ services:
       com.dockstarter.appvars.netdata_port_19999: "19999"
       com.dockstarter.appvars.netdata_restart: "unless-stopped"
       com.dockstarter.appvars.netdata_tag: "latest"
+      com.dockstarter.appvars.netdata_volume_docker_socket: "/var/run/docker.sock"

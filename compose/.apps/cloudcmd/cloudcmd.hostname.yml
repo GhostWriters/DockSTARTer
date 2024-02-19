@@ -1,3 +1,4 @@
+---
 services:
   cloudcmd:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

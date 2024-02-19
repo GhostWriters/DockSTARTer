@@ -1,3 +1,4 @@
+---
 services:
   nzbgetvpn:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

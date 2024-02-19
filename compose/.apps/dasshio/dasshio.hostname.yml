@@ -1,3 +1,4 @@
+---
 services:
   dasshio:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

@@ -1,15 +1,16 @@
+---
 services:
   filebrowser:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Filebrowser provides a file managing interface within a specified directory"
       com.dockstarter.appinfo.nicename: "Filebrowser"
-      com.dockstarter.appvars.filebrowser_baseurl: ""
-      com.dockstarter.appvars.filebrowser_database: "/config/database.db"
       com.dockstarter.appvars.filebrowser_enabled: "false"
-      com.dockstarter.appvars.filebrowser_log: "/config/filebrowser.log"
+      com.dockstarter.appvars.filebrowser_environment_baseurl: ""
+      com.dockstarter.appvars.filebrowser_environment_database: "/config/database.db"
+      com.dockstarter.appvars.filebrowser_environment_log: "/config/filebrowser.log"
       com.dockstarter.appvars.filebrowser_network_mode: ""
       com.dockstarter.appvars.filebrowser_port_80: "8080"
       com.dockstarter.appvars.filebrowser_restart: "unless-stopped"
-      com.dockstarter.appvars.filebrowser_share_dir: "~/.config/appdata/filebrowser/share"
       com.dockstarter.appvars.filebrowser_tag: "latest"
+      com.dockstarter.appvars.filebrowser_volume_share_dir: "~/.config/appdata/filebrowser/share"

@@ -1,3 +1,4 @@
+---
 services:
   makemkv:
     container_name: makemkv
@@ -5,14 +6,9 @@ services:
       - GROUP_ID=${PGID}
       - USER_ID=${PUID}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${MAKEMKV_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/makemkv:/config
-      - ${DOCKERSTORAGEDIR}:/storage
-      - ${MAKEMKV_OUTPUTDIR}:/output
+      - ${DOCKER_VOLUME_CONFIG}/makemkv:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${MAKEMKV_VOLUME_OUTPUTDIR}:/output

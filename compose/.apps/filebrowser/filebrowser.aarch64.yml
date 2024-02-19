@@ -1,3 +1,4 @@
+---
 services:
   filebrowser:
     image: filebrowser/filebrowser:${FILEBROWSER_TAG}

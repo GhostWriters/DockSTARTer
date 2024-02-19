@@ -1,16 +1,12 @@
+---
 services:
   netdata:
     cap_add:
       - SYS_PTRACE
     container_name: netdata
     environment:
-      - PGID=${DOCKERGID}
+      - PGID=${DOCKER_GID}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${NETDATA_RESTART}
     security_opt:
       - apparmor:unconfined
@@ -22,5 +18,5 @@ services:
       - /etc/passwd:/host/etc/passwd:ro
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${NETDATA_VOLUME_DOCKER_SOCKET}:/var/run/docker.sock:ro

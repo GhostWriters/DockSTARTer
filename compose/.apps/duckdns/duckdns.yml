@@ -1,20 +1,16 @@
+---
 services:
   duckdns:
     container_name: duckdns
     environment:
-      - LOG_FILE=${DUCKDNS_LOG_FILE}
-      - SUBDOMAINS=${DUCKDNS_SUBDOMAINS}
-      - TOKEN=${DUCKDNS_TOKEN}
+      - LOG_FILE=${DUCKDNS_ENVIRONMENT_LOG_FILE}
+      - SUBDOMAINS=${DUCKDNS_ENVIRONMENT_SUBDOMAINS}
+      - TOKEN=${DUCKDNS_ENVIRONMENT_TOKEN}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${DUCKDNS_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/duckdns:/config
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/duckdns:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage

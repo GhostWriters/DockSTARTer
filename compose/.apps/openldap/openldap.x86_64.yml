@@ -1,3 +1,4 @@
+---
 services:
   openldap:
     image: osixia/openldap:${OPENLDAP_TAG}

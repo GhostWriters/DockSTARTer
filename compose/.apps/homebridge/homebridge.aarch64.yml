@@ -1,3 +1,4 @@
+---
 services:
   homebridge:
     image: homebridge/homebridge:${HOMEBRIDGE_TAG}

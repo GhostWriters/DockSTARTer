@@ -1,3 +1,4 @@
+---
 services:
   unifi:
     image: lscr.io/linuxserver/unifi-controller:${UNIFI_TAG}

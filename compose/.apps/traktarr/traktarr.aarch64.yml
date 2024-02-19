@@ -1,3 +1,4 @@
+---
 services:
   traktarr:
     image: eafxx/traktarr:${TRAKTARR_TAG}

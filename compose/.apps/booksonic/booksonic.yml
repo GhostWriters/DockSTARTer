@@ -1,18 +1,14 @@
+---
 services:
   booksonic:
     container_name: booksonic
     environment:
-      - CONTEXT_PATH=${BOOKSONIC_CONTEXT_PATH}
+      - CONTEXT_PATH=${BOOKSONIC_ENVIRONMENT_CONTEXT_PATH}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${BOOKSONIC_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/booksonic:/config
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/booksonic:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage

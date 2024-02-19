@@ -1,3 +1,4 @@
+---
 services:
   photostructure:
     image: photostructure/server:${PHOTOSTRUCTURE_TAG}

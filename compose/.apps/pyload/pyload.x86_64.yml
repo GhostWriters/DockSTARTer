@@ -1,3 +1,4 @@
+---
 services:
   pyload:
     image: lscr.io/linuxserver/pyload-ng:${PYLOAD_TAG}

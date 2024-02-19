@@ -1,3 +1,4 @@
+---
 services:
   goaccess:
     image: gregyankovoy/goaccess:${GOACCESS_TAG}

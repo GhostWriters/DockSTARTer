@@ -1,3 +1,4 @@
+---
 services:
   apcupsd:
     image: atribe/apcupsd-influxdb-exporter:${APCUPSD_TAG}

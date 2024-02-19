@@ -1,17 +1,13 @@
+---
 services:
   portainer:
     command: "-H unix:///var/run/docker.sock"
     container_name: portainer
     environment:
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${PORTAINER_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ${DOCKERCONFDIR}/portainer:/data
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/portainer:/data
+      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${PORTAINER_VOLUME_DOCKER_SOCKET}:/var/run/docker.sock

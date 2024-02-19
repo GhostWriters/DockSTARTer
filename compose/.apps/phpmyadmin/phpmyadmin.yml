@@ -1,18 +1,14 @@
+---
 services:
   phpmyadmin:
     container_name: phpmyadmin
     environment:
-      - PMA_HOST=${PHPMYADMIN_PMA_HOST}
-      - PMA_PASSWORD=${PHPMYADMIN_PMA_PASSWORD}
-      - PMA_USER=${PHPMYADMIN_PMA_USER}
+      - PMA_HOST=${PHPMYADMIN_ENVIRONMENT_PMA_HOST}
+      - PMA_PASSWORD=${PHPMYADMIN_ENVIRONMENT_PMA_PASSWORD}
+      - PMA_USER=${PHPMYADMIN_ENVIRONMENT_PMA_USER}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${PHPMYADMIN_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/phpmyadmin:/sessions
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/phpmyadmin:/sessions
+      - ${DOCKER_VOLUME_STORAGE}:/storage

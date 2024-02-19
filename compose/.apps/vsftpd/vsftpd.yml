@@ -1,17 +1,13 @@
+---
 services:
   vsftpd:
     container_name: vsftpd
     environment:
-      - FTP_USER=${VSFTPD_FTP_USER}
-      - FTP_PASS=${VSFTPD_FTP_PASS}
+      - FTP_USER=${VSFTPD_ENVIRONMENT_FTP_USER}
+      - FTP_PASS=${VSFTPD_ENVIRONMENT_FTP_PASS}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${VSFTPD_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERSTORAGEDIR}:/storage
-      - ${VSFTPD_DATADIR}:/home/vsftpd
+      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${VSFTPD_VOLUME_DATA}:/home/vsftpd

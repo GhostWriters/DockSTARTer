@@ -1,3 +1,4 @@
+---
 services:
   homer:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

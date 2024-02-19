@@ -1,3 +1,4 @@
+---
 services:
   emby:
     image: lscr.io/linuxserver/emby:${EMBY_TAG}

@@ -1,3 +1,4 @@
+---
 services:
   plex:
     image: lscr.io/linuxserver/plex:${PLEX_TAG}

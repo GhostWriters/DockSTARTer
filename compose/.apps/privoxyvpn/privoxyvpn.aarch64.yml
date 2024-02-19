@@ -1,3 +1,4 @@
+---
 services:
   privoxyvpn:
     image: ghcr.io/binhex/arch-privoxyvpn:${PRIVOXYVPN_TAG}

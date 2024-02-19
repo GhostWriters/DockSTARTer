@@ -1,3 +1,4 @@
+---
 services:
   pgadmin:
     network_mode: ${PGADMIN_NETWORK_MODE}

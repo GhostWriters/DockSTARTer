@@ -1,3 +1,4 @@
+---
 services:
   ddclient:
     image: lscr.io/linuxserver/ddclient:${DDCLIENT_TAG}

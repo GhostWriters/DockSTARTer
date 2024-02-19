@@ -1,12 +1,13 @@
+---
 services:
   airsonicadvanced:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Web-based media streamer providing ubiquitous access to your music"
       com.dockstarter.appinfo.nicename: "AirsonicAdvanced"
-      com.dockstarter.appvars.airsonicadvanced_context_path: "/airsonic"
       com.dockstarter.appvars.airsonicadvanced_enabled: "false"
-      com.dockstarter.appvars.airsonicadvanced_java_opts: ""
+      com.dockstarter.appvars.airsonicadvanced_environment_context_path: "/airsonic"
+      com.dockstarter.appvars.airsonicadvanced_environment_java_opts: ""
       com.dockstarter.appvars.airsonicadvanced_network_mode: ""
       com.dockstarter.appvars.airsonicadvanced_port_4040: "4040"
       com.dockstarter.appvars.airsonicadvanced_restart: "unless-stopped"

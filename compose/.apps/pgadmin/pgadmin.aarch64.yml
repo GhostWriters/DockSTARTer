@@ -1,3 +1,4 @@
+---
 services:
   pgadmin:
     image: dpage/pgadmin4:${PGADMIN_TAG}

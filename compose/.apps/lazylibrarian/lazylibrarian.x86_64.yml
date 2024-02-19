@@ -1,3 +1,4 @@
+---
 services:
   lazylibrarian:
     image: lscr.io/linuxserver/lazylibrarian:${LAZYLIBRARIAN_TAG}

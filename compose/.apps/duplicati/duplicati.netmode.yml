@@ -1,3 +1,4 @@
+---
 services:
   duplicati:
     network_mode: ${DUPLICATI_NETWORK_MODE}

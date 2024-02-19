@@ -1,3 +1,4 @@
+---
 services:
   ubooquity:
     image: lscr.io/linuxserver/ubooquity:${UBOOQUITY_TAG}

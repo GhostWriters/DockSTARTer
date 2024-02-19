@@ -1,3 +1,4 @@
+---
 services:
   pgadmin:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

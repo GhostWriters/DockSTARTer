@@ -1,3 +1,4 @@
+---
 services:
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:${JELLYFIN_TAG}

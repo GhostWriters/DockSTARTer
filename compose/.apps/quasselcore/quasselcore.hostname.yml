@@ -1,3 +1,4 @@
+---
 services:
   quasselcore:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

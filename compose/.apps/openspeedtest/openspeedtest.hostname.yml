@@ -1,3 +1,4 @@
+---
 services:
   openspeedtest:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

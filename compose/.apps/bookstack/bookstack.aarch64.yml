@@ -1,3 +1,4 @@
+---
 services:
   bookstack:
     image: lscr.io/linuxserver/bookstack:${BOOKSTACK_TAG}

@@ -1,3 +1,4 @@
+---
 services:
   airsonicadvanced:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

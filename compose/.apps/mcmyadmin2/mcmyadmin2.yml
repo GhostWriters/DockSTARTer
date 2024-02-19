@@ -1,3 +1,4 @@
+---
 services:
   mcmyadmin2:
     container_name: mcmyadmin2
@@ -5,13 +6,8 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${MCMYADMIN2_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/mcmyadmin2:/minecraft
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/mcmyadmin2:/minecraft
+      - ${DOCKER_VOLUME_STORAGE}:/storage

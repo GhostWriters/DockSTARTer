@@ -1,3 +1,4 @@
+---
 services:
   organizr:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}

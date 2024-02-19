@@ -1,3 +1,4 @@
+---
 services:
   sickchill:
     image: lscr.io/linuxserver/sickchill:${SICKCHILL_TAG}

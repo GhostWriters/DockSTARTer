@@ -1,3 +1,4 @@
+---
 services:
   delugevpn:
     image: ghcr.io/binhex/arch-delugevpn:${DELUGEVPN_TAG}

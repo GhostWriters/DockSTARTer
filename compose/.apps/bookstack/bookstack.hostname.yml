@@ -1,3 +1,4 @@
+---
 services:
   bookstack:
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}
