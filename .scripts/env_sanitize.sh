@@ -10,16 +10,16 @@ env_sanitize() {
         run_script 'env_set' WATCHTOWER_NETWORK_MODE ""
     fi
 
-    # Rename apps
-    run_script 'rename_app' LETSENCRYPT SWAG
-    run_script 'rename_app' MINECRAFT_BEDROCK_SERVER MINECRAFTBEDROCKSERVER
-    run_script 'rename_app' MINECRAFT_SERVER MINECRAFTSERVER
-
     # Rename vars
     run_script 'rename_var' DOCKERCONFDIR DOCKER_VOLUME_CONFIG
     run_script 'rename_var' DOCKERGID DOCKER_GID
     run_script 'rename_var' DOCKERHOSTNAME DOCKER_HOSTNAME
     run_script 'rename_var' DOCKERSTORAGEDIR DOCKER_VOLUME_STORAGE
+
+    # Rename apps
+    run_script 'rename_app' LETSENCRYPT SWAG
+    run_script 'rename_app' MINECRAFT_BEDROCK_SERVER MINECRAFTBEDROCKSERVER
+    run_script 'rename_app' MINECRAFT_SERVER MINECRAFTSERVER
 
     # Migrate from old app vars
     if grep -q -P '\b([^_]+)_(?!(ENABLED|ENVIRONMENT_|NETWORK_MODE|PORT_|RESTART|TAG|VOLUME_))' "${COMPOSE_ENV}"; then
