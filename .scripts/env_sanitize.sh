@@ -30,7 +30,7 @@ env_sanitize() {
             local REST_VAR=${SET_VAR#*_}
             local NEW_VAR="${SET_VAR}"
             case "${SET_VAR}" in
-                COMPOSE_HTTP_TIMEOUT | DOCKER_GID | DOCKER_HOSTNAME)
+                COMPOSE_HTTP_TIMEOUT | DOCKER_GID | DOCKER_HOSTNAME | PGID | PUID | TZ)
                     # Global vars that should be untouched
                     continue
                     ;;
