@@ -1,0 +1,24 @@
+services:
+  pgbackup:
+    container_name: pgbackup
+    environment:
+      - POSTGRES_HOST=${PGBACKUP_POSTGRES_HOST}
+      - POSTGRES_DB=${PGBACKUP_POSTGRES_DB}
+      - POSTGRES_USER=${PGBACKUP_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${PGBACKUP_POSTGRES_PASSWORD}
+      - POSTGRES_EXTRA_OPTS=-Z6 --schema=public --blobs
+      - SCHEDULE=${PGBACKUP_SCHEDULE}
+      - BACKUP_KEEP_DAYS=${PGBACKUP_KEEP_DAYS}
+      - BACKUP_KEEP_WEEKS=${PGBACKUP_KEEP_WEEKS}
+      - BACKUP_KEEP_MONTHS=${PGBACKUP_KEEP_MONTHS}
+      - TZ=${TZ}
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+    restart: ${PGBACKUP_RESTART}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKERSTORAGEDIR}/backups/postgres:/backups
+      - ${DOCKERSTORAGEDIR}:/storage

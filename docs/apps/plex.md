@@ -23,7 +23,7 @@ you need assistance setting up this application please visit our
 One possible resolution to this issue is to remove the codecs folder:
 
 ```bash
-rm -rf "~/.config/appdata/plex/Library/Application Support/Plex Media Server/Codecs"
+find "~/.config/appdata/plex/Library/Application Support/Plex Media Server/Codecs"* -type d -exec rm -rv {} +
 ```
 
 Or place a custom init script in your config (ex:
@@ -31,11 +31,14 @@ Or place a custom init script in your config (ex:
 
 ```bash
 #!/usr/bin/with-contenv bash
-set -Eeuo pipefail
+set -euo pipefail
 IFS=$'\n\t'
 
-rm -rf "/config/Library/Application Support/Plex Media Server/Codecs"
-echo "Codecs removed."
+echo "Remove codecs: start"
+
+find "/config/Library/Application Support/Plex Media Server/Codecs/"* -type d -exec rm -rv {} +
+
+echo "Remove codecs: end"
 ```
 
 This will run every time the container restarts.

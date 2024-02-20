@@ -15,7 +15,6 @@ theme:
     - content.code.copy
     - navigation.footer
     - navigation.instant
-    - navigation.prune
     - navigation.top
     - navigation.tracking
     - search.highlight
@@ -158,6 +157,7 @@ nav:
       - apps/heimdall.md
       - apps/homeassistant.md
       - apps/homebridge.md
+      - apps/homepage.md
       - apps/homer.md
       - apps/htpcmanager.md
       - apps/httpserver.md
@@ -197,6 +197,8 @@ nav:
       - apps/openvpnas.md
       - apps/organizr.md
       - apps/ouroboros.md
+      - apps/pgadmin.md
+      - apps/pgbackup.md
       - apps/photostructure.md
       - apps/phpmyadmin.md
       - apps/picard.md
@@ -206,6 +208,8 @@ nav:
       - apps/plexanisync.md
       - apps/portainer.md
       - apps/portaineragent.md
+      - apps/postgres.md
+      - apps/privoxyvpn.md
       - apps/prometheus.md
       - apps/prowlarr.md
       - apps/pyload.md
@@ -231,6 +235,7 @@ nav:
       - apps/swag.md
       - apps/synclounge.md
       - apps/syncthing.md
+      - apps/tandoor.md
       - apps/tautulli.md
       - apps/tdarr.md
       - apps/tdarrnode.md
