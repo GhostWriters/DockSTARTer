@@ -5,7 +5,7 @@ IFS=$'\n\t'
 symlink_ds() {
     run_script 'set_permissions' "${SCRIPTNAME}"
 
-    if findmnt -n /usr | egrep "^ro,|,ro,|,ro$"; then
+    if findmnt -n /usr | grep "ro"; then
         echo "Read only /usr filesystem detected. Symlinks will be created in $HOME/bin instead."
          # $HOME/bin/ds
         if [[ -L "$HOME/bin/ds" ]] && [[ ${SCRIPTNAME} != "$(readlink -f $HOME/bin/ds)" ]]; then
@@ -14,7 +14,7 @@ symlink_ds() {
         fi
         if [[ ! -L "$HOME/bin/ds" ]]; then
             info "Creating $HOME/bin/ds symbolic link for DockSTARTer."
-            sudo ln -s -T "${SCRIPTNAME}" /usr/bin/ds || fatal "Failed to create symlink.\nFailing command: ${F[C]}sudo ln -s -T \"${SCRIPTNAME}\" $HOME/bin/ds"
+            sudo ln -s -T "${SCRIPTNAME}" $HOME/bin/ds || fatal "Failed to create symlink.\nFailing command: ${F[C]}sudo ln -s -T \"${SCRIPTNAME}\" $HOME/bin/ds"
         fi
     else
         # /usr/bin/ds
