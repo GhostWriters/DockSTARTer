@@ -14,7 +14,7 @@ package_manager_run() {
         run_script "pm_yum_${ACTION}"
     else
         # We might not need a supported package manager at all if the dependencies are there already. Let's validate that.
-        echo "Supported package manager not detected. Checking for dependencies ..."
+
         # Define an array of commands
         commands=("curl" "docker" "docker-compose" "git" "grep" "sed" "whiptail")
 
@@ -26,7 +26,6 @@ package_manager_run() {
             fi
         done
 
-        echo "All commands are available."
     fi
 }
 
