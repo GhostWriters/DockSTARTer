@@ -27,7 +27,7 @@ symlink_ds() {
             info "Creating /usr/bin/ds symbolic link for DockSTARTer."
             sudo ln -s -T "${SCRIPTNAME}" /usr/bin/ds || fatal "Failed to create symlink.\nFailing command: ${F[C]}sudo ln -s -T \"${SCRIPTNAME}\" /usr/bin/ds"
         fi
-    
+
         # /usr/local/bin/ds
         if [[ -L "/usr/local/bin/ds" ]] && [[ ${SCRIPTNAME} != "$(readlink -f /usr/local/bin/ds)" ]]; then
             info "Attempting to remove /usr/local/bin/ds symlink."

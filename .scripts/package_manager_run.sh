@@ -17,7 +17,7 @@ package_manager_run() {
         echo "Supported package manager not detected. Checking for dependencies ..."
         # Define an array of commands
         commands=("curl" "docker" "docker-compose" "git" "grep" "sed" "whiptail")
-        
+
         # Iterate over each command in the array
         for cmd in "${commands[@]}"; do
             # Check if the command is available in the system
@@ -25,7 +25,7 @@ package_manager_run() {
                 fatal "Error: '$cmd' is not available. Exiting..."
             fi
         done
-        
+
         echo "All commands are available."
     fi
 }
