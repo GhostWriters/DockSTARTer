@@ -6,8 +6,9 @@ symlink_ds() {
     run_script 'set_permissions' "${SCRIPTNAME}"
 
     if findmnt -n /usr | grep "ro"; then
-        echo "Read only /usr filesystem detected. Symlinks will be created in $HOME/bin instead."
-         # $HOME/bin/ds
+        echo "Read only /usr filesystem detected. Symlinks will be created in $HOME/bin instead. You will need to add this to your path."
+        mkdir -p $HOME/bin # Make sure the path exists.
+        # $HOME/bin/ds
         if [[ -L "$HOME/bin/ds" ]] && [[ ${SCRIPTNAME} != "$(readlink -f $HOME/bin/ds)" ]]; then
             info "Attempting to remove $HOME/bin/ds symlink."
             sudo rm -f "$HOME/bin/ds" || fatal "Failed to remove file.\nFailing command: ${F[C]}sudo rm -f \"$HOME/bin/ds\""
