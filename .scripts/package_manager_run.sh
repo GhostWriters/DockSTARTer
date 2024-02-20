@@ -13,7 +13,20 @@ package_manager_run() {
     elif [[ -n "$(command -v yum)" ]]; then
         run_script "pm_yum_${ACTION}"
     else
-        fatal "Supported package manager not detected!"
+        # We might not need a supported package manager at all if the dependencies are there already. Let's validate that.
+        echo "Supported package manager not detected. Checking for dependencies ..."
+        # Define an array of commands
+        commands=("curl" "docker" "docker-compose" "git" "grep" "sed" "whiptail")
+        
+        # Iterate over each command in the array
+        for cmd in "${commands[@]}"; do
+            # Check if the command is available in the system
+            if ! command -v "$cmd" &> /dev/null; then
+                fatal "Error: '$cmd' is not available. Exiting..."
+            fi
+        done
+        
+        echo "All commands are available."
     fi
 }
 
