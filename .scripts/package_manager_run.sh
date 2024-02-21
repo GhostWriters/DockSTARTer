@@ -32,7 +32,7 @@ package_manager_run() {
         fi
 
         # If docker warns that compose is not a docker command when we call it, we alert the user they need to take action.
-        if [[ "$(docker compose 2>&1)" == *"docker: 'compose' is not a docker command."* ]]; then
+        if ! docker compose version > /dev/null 2>&1; then
             fatal "The 'docker compose' command is not functional. Follow the directions at https://docs.docker.com/compose/install/linux/ to install compose."
         fi
     fi
