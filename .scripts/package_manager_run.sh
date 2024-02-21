@@ -12,11 +12,11 @@ package_manager_run() {
         run_script "pm_pacman_${ACTION}"
     elif [[ -n "$(command -v yum)" ]]; then
         run_script "pm_yum_${ACTION}"
-    else
+    elif [[ "${ACTION}" == "install" ]]; then
         # We might not need a supported package manager at all if the dependencies are there already. Let's validate that.
 
         # Define an array of commands
-        commands=("curl" "docker" "docker-compose" "git" "grep" "sed" "whiptail")
+        commands=("curl" "docker" "git" "grep" "sed" "whiptail")
 
         # Iterate over each command in the array
         for cmd in "${commands[@]}"; do
