@@ -18,11 +18,11 @@ symlink_ds() {
     for DS_SYMLINK_TARGET in "${DS_SYMLINK_TARGETS[@]}"; do
         if [[ -L ${DS_SYMLINK_TARGET} ]] && [[ ${SCRIPTNAME} != "$(readlink -f "${target}")" ]]; then
             info "Attempting to remove ${DS_SYMLINK_TARGET} symlink."
-            sudo rm -f "${target}" || fatal "Failed to remove file.\nFailing command: ${F[C]}sudo rm -f \"${target}\""
+            sudo rm -f "${DS_SYMLINK_TARGET}" || fatal "Failed to remove file.\nFailing command: ${F[C]}sudo rm -f \"${DS_SYMLINK_TARGET}\""
         fi
-        if [[ ! -L ${target} ]]; then
-            info "Creating ${target} symbolic link for DockSTARTer."
-            sudo ln -s -T "${SCRIPTNAME}" "${target}" || fatal "Failed to create symlink.\nFailing command: ${F[C]}sudo ln -s -T \"${SCRIPTNAME}\" \"${target}\""
+        if [[ ! -L ${DS_SYMLINK_TARGET} ]]; then
+            info "Creating ${DS_SYMLINK_TARGET} symbolic link for DockSTARTer."
+            sudo ln -s -T "${SCRIPTNAME}" "${DS_SYMLINK_TARGET}" || fatal "Failed to create symlink.\nFailing command: ${F[C]}sudo ln -s -T \"${SCRIPTNAME}\" \"${DS_SYMLINK_TARGET}\""
         fi
     done
 }
