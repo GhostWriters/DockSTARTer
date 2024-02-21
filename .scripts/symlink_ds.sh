@@ -5,7 +5,7 @@ IFS=$'\n\t'
 symlink_ds() {
     run_script 'set_permissions' "${SCRIPTNAME}"
 
-    if findmnt -n /usr | grep "ro" > /dev/null; 
+    if findmnt -n /usr | grep "ro" > /dev/null; then
         if [[ "$PATH" != *"$HOME/bin"* ]]; then
             warn "Read only /usr filesystem detected. Symlinks will be created in $HOME/bin. You will need to add this to your path."
         fi
