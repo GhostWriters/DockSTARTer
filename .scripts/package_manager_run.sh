@@ -16,7 +16,7 @@ package_manager_run() {
         # We might not need a supported package manager at all if the dependencies are there already. Let's validate that.
 
         # Define an array of commands
-        commands=("curl" "docker" "git" "grep" "sed" "whiptail")
+        commands=("curl" "git" "grep" "sed" "whiptail")
 
         # Iterate over each command in the array
         for cmd in "${commands[@]}"; do
@@ -25,7 +25,13 @@ package_manager_run() {
                 fatal "Error: '$cmd' is not available. Exiting..."
             fi
         done
+    elif [[ ${ACTION} == "install_docker" ]]; then
+        # Check for the presence of the docker command
+        if ! command -v "docker" &> /dev/null; then
+            fatal "Error: 'docker' is not available. Exiting..."
+        fi
 
+        # If docker warns that compose is not a docker command when we call it, we alert the user they need to take action.
         if [[ "$(docker compose 2>&1)" == *"docker: 'compose' is not a docker command."* ]]; then
             fatal "The 'docker compose' command is not functional. Follow the directions at https://docs.docker.com/compose/install/linux/ to install compose."
         fi
