@@ -10,7 +10,7 @@ symlink_ds() {
             warn "Read only /usr filesystem detected. Symlinks will be created in $HOME/bin. You will need to add this to your path."
         fi
         mkdir -p "$HOME/bin" # Make sure the path exists.
-        DS_SYMLINK_TARGETS=("HOME/bin")
+        DS_SYMLINK_TARGETS=("$HOME/bin")
     else
         DS_SYMLINK_TARGETS=("/usr/bin/ds" "/usr/local/bin/ds")
     fi
