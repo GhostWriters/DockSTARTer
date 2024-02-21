@@ -26,6 +26,11 @@ package_manager_run() {
             fi
         done
 
+        if [[ "$(docker compose 2>&1)" == *"docker: 'compose' is not a docker command."* ]]; then
+            fatal "The 'docker compose' command is not functional. Follow the directions at https://docs.docker.com/compose/install/linux/ to install compose."
+        fi
+
+
     fi
 }
 
