@@ -18,16 +18,17 @@ package_manager_run() {
         if [[ ${ACTION} == "install" ]]; then
             local COMMAND_DEPS=("curl" "git" "grep" "sed" "whiptail")
             for COMMAND_DEP in "${COMMAND_DEPS[@]}"; do
-                if ! command -v "${COMMAND_DEP}" &> /dev/null; then
-                    fatal "Error: '${COMMAND_DEP}' is not available. Please install '${COMMAND_DEP}' and try again."
+                if [[ -z "$(command -v "${COMMAND_DEP}")" ]]; then
+                    fatal "${F[C]}${COMMAND_DEP}${NC} is not available. Please install ${F[C]}${COMMAND_DEP}${NC} and try again."
                 fi
             done
         elif [[ ${ACTION} == "install_docker" ]]; then
-            if ! command -v "docker" &> /dev/null; then
-                fatal "Error: 'docker' is not available. Please install 'docker' and try again."
+            if [[ -z "$(command -v docker)" ]]; then
+                fatal "${F[C]}docker${NC} is not available. Please install ${F[C]}docker${NC} and try again."
             fi
             if ! docker compose version > /dev/null 2>&1; then
-                fatal "Error: 'docker compose' is not available. Please install 'docker compose' and try again."
+                warn "Please see https://docs.docker.com/compose/install/linux/ to install ${F[C]}docker compose${NC}"
+                fatal "${F[C]}docker compose${NC} is not available. Please install ${F[C]}docker compose${NC} and try again."
             fi
         fi
     fi
