@@ -7,12 +7,8 @@ symlink_ds() {
 
     local SYMLINK_TARGETS=("/usr/bin/ds" "/usr/local/bin/ds")
 
-    if findmnt -n /usr | grep "ro" > /dev/null; then
-        if [[ $PATH != *"${HOME}/bin"* ]]; then
-            warn "Read only /usr filesystem detected. Symlinks will be created in ${HOME}/bin. You will need to add this to your path."
-        fi
-        mkdir -p "${HOME}/bin" # Make sure the path exists.
-        SYMLINK_TARGETS=("${HOME}/bin")
+    if findmnt -n /usr | grep -P "\bro\b" > /dev/null; then
+        SYMLINK_TARGETS=("${HOME}/bin/ds" "${HOME}/.local/bin/ds")
     fi
 
     for SYMLINK_TARGET in "${SYMLINK_TARGETS[@]}"; do
@@ -22,7 +18,11 @@ symlink_ds() {
         fi
         if [[ ! -L ${SYMLINK_TARGET} ]]; then
             info "Creating ${SYMLINK_TARGET} symbolic link for DockSTARTer."
+            mkdir -p "$(dirname "${SYMLINK_TARGET}")" || fatal "Failed to create directory.\nFailing command: ${F[C]}mkdir -p \"$(dirname "${SYMLINK_TARGET}")\""
             sudo ln -s -T "${SCRIPTNAME}" "${SYMLINK_TARGET}" || fatal "Failed to create symlink.\nFailing command: ${F[C]}sudo ln -s -T \"${SCRIPTNAME}\" \"${SYMLINK_TARGET}\""
+        fi
+        if [[ ${PATH} != *"$(dirname "${SYMLINK_TARGET}")"* ]]; then
+            warn "${F[C]}$(dirname "${SYMLINK_TARGET}")${NC} not found in PATH. Please add it to your PATH in order to use the ${F[C]}ds${NC} command alias."
         fi
     done
 }
