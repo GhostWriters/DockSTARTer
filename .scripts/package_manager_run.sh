@@ -12,28 +12,21 @@ package_manager_run() {
         run_script "pm_pacman_${ACTION}"
     elif [[ -n "$(command -v yum)" ]]; then
         run_script "pm_yum_${ACTION}"
-    elif [[ ${ACTION} == "install" ]]; then
-        # We might not need a supported package manager at all if the dependencies are there already. Let's validate that.
-
-        # Define an array of commands
-        commands=("curl" "git" "grep" "sed" "whiptail")
-
-        # Iterate over each command in the array
-        for cmd in "${commands[@]}"; do
-            # Check if the command is available in the system
-            if ! command -v "$cmd" &> /dev/null; then
-                fatal "Error: '$cmd' is not available. Exiting..."
+    else
+        if [[ ${ACTION} == "install" ]]; then
+            local COMMAND_DEPS=("curl" "git" "grep" "sed" "whiptail")
+            for COMMAND_DEP in "${COMMAND_DEPS[@]}"; do
+                if ! command -v "${COMMAND_DEP}" &> /dev/null; then
+                    fatal "Error: '${COMMAND_DEP}' is not available. Please install '${COMMAND_DEP}' and try again."
+                fi
+            done
+        elif [[ ${ACTION} == "install_docker" ]]; then
+            if ! command -v "docker" &> /dev/null; then
+                fatal "Error: 'docker' is not available. Please install 'docker' and try again."
             fi
-        done
-    elif [[ ${ACTION} == "install_docker" ]]; then
-        # Check for the presence of the docker command
-        if ! command -v "docker" &> /dev/null; then
-            fatal "Error: 'docker' is not available. Exiting..."
-        fi
-
-        # If docker warns that compose is not a docker command when we call it, we alert the user they need to take action.
-        if ! docker compose version > /dev/null 2>&1; then
-            fatal "The 'docker compose' command is not functional. Follow the directions at https://docs.docker.com/compose/install/linux/ to install compose."
+            if ! docker compose version > /dev/null 2>&1; then
+                fatal "Error: 'docker compose' is not available. Please install 'docker compose' and try again."
+            fi
         fi
     fi
 }
