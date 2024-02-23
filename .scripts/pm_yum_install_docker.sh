@@ -19,6 +19,7 @@ pm_yum_install_docker() {
 }
 
 test_pm_yum_install_docker() {
+    # run_script 'pm_yum_repos'
     # run_script 'pm_yum_install_docker'
     warn "CI does not test pm_yum_install_docker."
 }
