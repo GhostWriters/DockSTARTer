@@ -30,6 +30,14 @@ You may choose to rely on DockSTARTer for various changes to your Docker system 
 
 ### One Time Setup (required)
 
+- APK Systems (Alpine)
+
+  ```bash
+  sudo apk add curl git
+  bash -c "$(curl -fsSL https://get.dockstarter.com)"
+  sudo reboot
+  ```
+
 - APT Systems ([Debian](https://docs.docker.com/install/linux/docker-ce/debian/#os-requirements), [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/#os-requirements), etc)
 
   ```bash
