@@ -22,7 +22,7 @@ services:
       - TM_GROUPNAME=${TIMEMACHINE_ENVIRONMENT_TM_GROUPNAME}
       - TM_USERNAME=${TIMEMACHINE_ENVIRONMENT_TM_USERNAME}
       - TZ=${TZ}
-      - VOLUME_SIZE_LIMIT=${TIMEMACHINE_ENVIRONMENT_VOLUME_SIZE_LIMIT}
+      - VOLUME_SIZE_LIMIT=${TIMEMACHINE_ENVIRONMENT_VOL_SIZE_LIMIT}
       - WORKGROUP=${TIMEMACHINE_ENVIRONMENT_WORKGROUP}
     restart: ${TIMEMACHINE_RESTART}
     volumes:
@@ -31,4 +31,4 @@ services:
       - ${DOCKER_VOLUME_CONFIG}/timemachine/var-cache-samba:/var/cache/samba
       - ${DOCKER_VOLUME_CONFIG}/timemachine/run-samba:/run/samba
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${TIMEMACHINE_VOLUME_DATA}:/opt/timemachine
+      - ${TIMEMACHINE_VOLUME_DATADIR}:/opt/timemachine

@@ -10,4 +10,4 @@ services:
       com.dockstarter.appvars.unmanic_port_8888: "8888"
       com.dockstarter.appvars.unmanic_restart: "unless-stopped"
       com.dockstarter.appvars.unmanic_tag: "latest"
-      com.dockstarter.appvars.unmanic_volume_encode: "/tmp/unmanic_encode"
+      com.dockstarter.appvars.unmanic_volume_encodedir: "/tmp/unmanic_encode"

@@ -12,4 +12,4 @@ services:
       com.dockstarter.appvars.ubooquity_port_2203: "2203"
       com.dockstarter.appvars.ubooquity_restart: "unless-stopped"
       com.dockstarter.appvars.ubooquity_tag: "latest"
-      com.dockstarter.appvars.ubooquity_volume_files: "/mnt/ubooquity"
+      com.dockstarter.appvars.ubooquity_volume_filesdir: "/mnt/ubooquity"

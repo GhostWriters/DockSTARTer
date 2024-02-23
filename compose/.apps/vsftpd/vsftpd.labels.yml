@@ -12,4 +12,4 @@ services:
       com.dockstarter.appvars.vsftpd_port_21: "21"
       com.dockstarter.appvars.vsftpd_restart: "unless-stopped"
       com.dockstarter.appvars.vsftpd_tag: "latest"
-      com.dockstarter.appvars.vsftpd_volume_data: "/mnt/vsftpd"
+      com.dockstarter.appvars.vsftpd_volume_datadir: "/mnt/vsftpd"

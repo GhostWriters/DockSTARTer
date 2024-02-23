@@ -12,4 +12,4 @@ services:
       com.dockstarter.appvars.smokeping_port_80: "8011"
       com.dockstarter.appvars.smokeping_restart: "unless-stopped"
       com.dockstarter.appvars.smokeping_tag: "latest"
-      com.dockstarter.appvars.smokeping_volume_data: "/mnt/smokeping"
+      com.dockstarter.appvars.smokeping_volume_datadir: "/mnt/smokeping"

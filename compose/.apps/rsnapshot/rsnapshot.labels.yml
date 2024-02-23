@@ -9,6 +9,6 @@ services:
       com.dockstarter.appvars.rsnapshot_network_mode: ""
       com.dockstarter.appvars.rsnapshot_restart: "unless-stopped"
       com.dockstarter.appvars.rsnapshot_tag: "latest"
-      com.dockstarter.appvars.rsnapshot_volume_data: "~/.config/appdata"
+      com.dockstarter.appvars.rsnapshot_volume_datadir: "~/.config/appdata"
       com.dockstarter.appvars.rsnapshot_volume_root_ssh: "/root/.ssh"
-      com.dockstarter.appvars.rsnapshot_volume_snapshots: "/mnt/rsnapshot/snapshots"
+      com.dockstarter.appvars.rsnapshot_volume_snapshotsdir: "/mnt/rsnapshot/snapshots"

@@ -14,4 +14,4 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/smokeping:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${SMOKEPING_VOLUME_DATA}:/data
+      - ${SMOKEPING_VOLUME_DATADIR}:/data

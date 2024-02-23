@@ -11,4 +11,4 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/syncthing:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${SYNCTHING_VOLUME_SOURCE}:/source
+      - ${SYNCTHING_VOLUME_SOURCEDIR}:/source

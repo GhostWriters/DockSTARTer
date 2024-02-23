@@ -12,4 +12,4 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/ubooquity:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${UBOOQUITY_VOLUME_FILES}:/files
+      - ${UBOOQUITY_VOLUME_FILESDIR}:/files

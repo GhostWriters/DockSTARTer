@@ -6,7 +6,6 @@ services:
     container_name: swag
     environment:
       - DNSPLUGIN=${SWAG_ENVIRONMENT_DNSPLUGIN}
-      - DUCKDNSTOKEN=${SWAG_ENVIRONMENT_DUCKDNSTOKEN}
       - EMAIL=${SWAG_ENVIRONMENT_EMAIL}
       - EXTRA_DOMAINS=${SWAG_ENVIRONMENT_EXTRA_DOMAINS}
       - ONLY_SUBDOMAINS=${SWAG_ENVIRONMENT_ONLY_SUBDOMAINS}
@@ -16,7 +15,6 @@ services:
       - TZ=${TZ}
       - URL=${SWAG_ENVIRONMENT_URL}
       - VALIDATION=${SWAG_ENVIRONMENT_VALIDATION}
-      - MAXMINDDB_LICENSE_KEY=${SWAG_ENVIRONMENT_MAXMINDDB_LICENSE_KEY}
     restart: ${SWAG_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro

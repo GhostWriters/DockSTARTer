@@ -11,4 +11,4 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/xbackbone:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${XBACKBONE_VOLUME_UPLOAD}:/config/www/xbackbone/storage
+      - ${XBACKBONE_VOLUME_UPLOADDIR}:/config/www/xbackbone/storage

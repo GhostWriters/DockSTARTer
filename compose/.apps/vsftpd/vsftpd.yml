@@ -10,4 +10,4 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${VSFTPD_VOLUME_DATA}:/home/vsftpd
+      - ${VSFTPD_VOLUME_DATADIR}:/home/vsftpd

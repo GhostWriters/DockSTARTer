@@ -11,6 +11,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/rsnapshot:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${RSNAPSHOT_VOLUME_DATA}:/data
+      - ${RSNAPSHOT_VOLUME_DATADIR}:/data
       - ${RSNAPSHOT_VOLUME_ROOT_SSH}:/root/.ssh:ro
-      - ${RSNAPSHOT_VOLUME_SNAPSHOTS}:/.snapshots
+      - ${RSNAPSHOT_VOLUME_SNAPSHOTSDIR}:/.snapshots

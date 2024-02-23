@@ -12,4 +12,4 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/tvheadend:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${TVHEADEND_VOLUME_RECORDINGS}:/recordings
+      - ${TVHEADEND_VOLUME_RECORDINGSDIR}:/recordings
