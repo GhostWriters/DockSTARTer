@@ -12,6 +12,7 @@ pm_pacman_install_docker() {
 }
 
 test_pm_pacman_install_docker() {
+    # run_script 'pm_pacman_repos'
     # run_script 'pm_pacman_install_docker'
     warn "CI does not test pm_pacman_install_docker."
 }
