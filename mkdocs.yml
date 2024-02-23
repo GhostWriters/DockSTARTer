@@ -92,6 +92,7 @@ plugins:
         overrides/kitana.md: https://dockstarter.com/apps/kitana/
         overrides/overseerr.md: https://dockstarter.com/apps/overseerr/
         overrides/petio.md: https://dockstarter.com/apps/petio/
+        overrides/requestrr.md: https://dockstarter.com/apps/requestrr/
   - search
 
 nav:
