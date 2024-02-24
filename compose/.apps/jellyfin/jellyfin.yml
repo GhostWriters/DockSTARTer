@@ -1,4 +1,3 @@
----
 services:
   jellyfin:
     container_name: jellyfin

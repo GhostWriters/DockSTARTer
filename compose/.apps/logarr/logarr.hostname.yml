@@ -1,4 +1,3 @@
----
 services:
   logarr:
     hostname: ${DOCKER_HOSTNAME}

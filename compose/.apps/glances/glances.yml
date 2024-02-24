@@ -1,4 +1,3 @@
----
 services:
   glances:
     container_name: glances

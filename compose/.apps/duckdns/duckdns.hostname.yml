@@ -1,4 +1,3 @@
----
 services:
   duckdns:
     hostname: ${DOCKER_HOSTNAME}

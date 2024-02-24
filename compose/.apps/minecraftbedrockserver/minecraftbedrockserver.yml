@@ -1,4 +1,3 @@
----
 services:
   minecraftbedrockserver:
     container_name: minecraftbedrockserver

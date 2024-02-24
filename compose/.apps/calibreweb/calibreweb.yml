@@ -1,4 +1,3 @@
----
 services:
   calibreweb:
     container_name: calibreweb

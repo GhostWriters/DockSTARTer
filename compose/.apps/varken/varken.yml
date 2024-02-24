@@ -1,4 +1,3 @@
----
 services:
   varken:
     container_name: varken

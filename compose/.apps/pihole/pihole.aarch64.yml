@@ -1,4 +1,3 @@
----
 services:
   pihole:
     image: pihole/pihole:${PIHOLE_TAG}

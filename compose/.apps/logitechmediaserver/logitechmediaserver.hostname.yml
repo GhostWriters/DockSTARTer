@@ -1,4 +1,3 @@
----
 services:
   logitechmediaserver:
     hostname: ${DOCKER_HOSTNAME}

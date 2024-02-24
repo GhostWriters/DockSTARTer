@@ -1,4 +1,3 @@
----
 services:
   znc:
     image: lscr.io/linuxserver/znc:${ZNC_TAG}

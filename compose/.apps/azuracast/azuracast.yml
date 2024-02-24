@@ -1,4 +1,3 @@
----
 services:
   azuracast:
     container_name: azuracast

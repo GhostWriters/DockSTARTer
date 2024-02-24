@@ -1,4 +1,3 @@
----
 services:
   medusa:
     image: lscr.io/linuxserver/medusa:${MEDUSA_TAG}

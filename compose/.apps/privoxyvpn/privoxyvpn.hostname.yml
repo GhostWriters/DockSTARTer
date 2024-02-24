@@ -1,4 +1,3 @@
----
 services:
   privoxyvpn:
     hostname: ${DOCKER_HOSTNAME}

@@ -1,4 +1,3 @@
----
 services:
   synclounge:
     hostname: ${DOCKER_HOSTNAME}

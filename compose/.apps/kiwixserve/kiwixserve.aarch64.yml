@@ -1,4 +1,3 @@
----
 services:
   kiwixserve:
     image: ghcr.io/kiwix/kiwix-serve:${KIWIXSERVE_TAG}

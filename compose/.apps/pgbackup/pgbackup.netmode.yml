@@ -1,4 +1,3 @@
----
 services:
   pgbackup:
     network_mode: ${PGBACKUP_NETWORK_MODE}

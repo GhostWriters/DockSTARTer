@@ -1,4 +1,3 @@
----
 services:
   heimdall:
     hostname: ${DOCKER_HOSTNAME}

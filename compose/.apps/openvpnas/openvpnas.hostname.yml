@@ -1,4 +1,3 @@
----
 services:
   openvpnas:
     hostname: ${DOCKER_HOSTNAME}

@@ -1,4 +1,3 @@
----
 services:
   wireguard:
     hostname: ${DOCKER_HOSTNAME}

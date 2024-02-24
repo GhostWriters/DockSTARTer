@@ -1,4 +1,3 @@
----
 services:
   transmission:
     hostname: ${DOCKER_HOSTNAME}

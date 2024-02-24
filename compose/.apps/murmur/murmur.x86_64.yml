@@ -1,4 +1,3 @@
----
 services:
   murmur:
     image: goofball222/murmur:${MURMUR_TAG}

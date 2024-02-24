@@ -1,4 +1,3 @@
----
 services:
   wireguard:
     image: lscr.io/linuxserver/wireguard:${WIREGUARD_TAG}

@@ -1,4 +1,3 @@
----
 services:
   quasselcore:
     container_name: quasselcore

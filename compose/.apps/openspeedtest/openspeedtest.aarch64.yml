@@ -1,4 +1,3 @@
----
 services:
   openspeedtest:
     image: openspeedtest/latest:${OPENSPEEDTEST_TAG}

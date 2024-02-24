@@ -1,4 +1,3 @@
----
 services:
   plexrequests:
     hostname: ${DOCKER_HOSTNAME}

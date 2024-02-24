@@ -1,4 +1,3 @@
----
 services:
   sickchill:
     container_name: sickchill

@@ -1,4 +1,3 @@
----
 services:
   deemix:
     container_name: deemix

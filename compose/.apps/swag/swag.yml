@@ -1,4 +1,3 @@
----
 services:
   swag:
     cap_add:

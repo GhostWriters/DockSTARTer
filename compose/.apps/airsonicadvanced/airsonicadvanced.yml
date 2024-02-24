@@ -1,4 +1,3 @@
----
 services:
   airsonicadvanced:
     container_name: airsonicadvanced

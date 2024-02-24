@@ -1,4 +1,3 @@
----
 services:
   couchpotato:
     container_name: couchpotato

@@ -1,4 +1,3 @@
----
 services:
   speedtest:
     container_name: speedtest

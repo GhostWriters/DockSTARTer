@@ -1,4 +1,3 @@
----
 services:
   nodered:
     hostname: ${DOCKER_HOSTNAME}

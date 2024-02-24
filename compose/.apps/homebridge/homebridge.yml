@@ -1,4 +1,3 @@
----
 services:
   homebridge:
     container_name: homebridge

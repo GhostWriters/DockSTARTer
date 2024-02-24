@@ -1,4 +1,3 @@
----
 services:
   deluge:
     hostname: ${DOCKER_HOSTNAME}

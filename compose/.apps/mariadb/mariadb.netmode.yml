@@ -1,4 +1,3 @@
----
 services:
   mariadb:
     network_mode: ${MARIADB_NETWORK_MODE}

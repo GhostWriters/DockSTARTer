@@ -1,4 +1,3 @@
----
 services:
   mylar3:
     container_name: mylar3

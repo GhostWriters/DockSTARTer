@@ -1,4 +1,3 @@
----
 services:
   lazylibrarian:
     network_mode: ${LAZYLIBRARIAN_NETWORK_MODE}

@@ -1,4 +1,3 @@
----
 services:
   filebot:
     image: jlesage/filebot:${FILEBOT_TAG}

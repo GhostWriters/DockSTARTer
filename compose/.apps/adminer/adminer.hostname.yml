@@ -1,4 +1,3 @@
----
 services:
   adminer:
     hostname: ${DOCKER_HOSTNAME}

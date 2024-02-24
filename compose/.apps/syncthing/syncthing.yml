@@ -1,4 +1,3 @@
----
 services:
   syncthing:
     container_name: syncthing

@@ -1,4 +1,3 @@
----
 services:
   muximux:
     image: lscr.io/linuxserver/muximux:${MUXIMUX_TAG}

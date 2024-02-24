@@ -1,4 +1,3 @@
----
 services:
   tdarr:
     hostname: ${DOCKER_HOSTNAME}

@@ -1,4 +1,3 @@
----
 services:
   minecraftserver:
     image: itzg/minecraft-server:${MINECRAFTSERVER_TAG}

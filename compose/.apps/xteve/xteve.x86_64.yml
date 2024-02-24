@@ -1,4 +1,3 @@
----
 services:
   xteve:
     image: dnsforge/xteve:${XTEVE_TAG}

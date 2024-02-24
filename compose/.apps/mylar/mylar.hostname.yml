@@ -1,4 +1,3 @@
----
 services:
   mylar:
     hostname: ${DOCKER_HOSTNAME}

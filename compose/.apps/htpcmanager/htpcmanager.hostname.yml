@@ -1,4 +1,3 @@
----
 services:
   htpcmanager:
     hostname: ${DOCKER_HOSTNAME}

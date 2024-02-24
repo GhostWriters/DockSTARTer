@@ -1,4 +1,3 @@
----
 services:
   requestrr:
     container_name: requestrr

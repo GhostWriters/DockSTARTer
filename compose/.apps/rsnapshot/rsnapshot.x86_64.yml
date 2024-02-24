@@ -1,4 +1,3 @@
----
 services:
   rsnapshot:
     image: lscr.io/linuxserver/rsnapshot:${RSNAPSHOT_TAG}

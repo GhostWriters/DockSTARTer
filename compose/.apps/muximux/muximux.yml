@@ -1,4 +1,3 @@
----
 services:
   muximux:
     container_name: muximux

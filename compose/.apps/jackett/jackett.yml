@@ -1,4 +1,3 @@
----
 services:
   jackett:
     container_name: jackett

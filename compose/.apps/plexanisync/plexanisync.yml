@@ -1,4 +1,3 @@
----
 services:
   plexanisync:
     container_name: plexanisync

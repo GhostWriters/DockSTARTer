@@ -1,4 +1,3 @@
----
 services:
   headphones:
     container_name: headphones

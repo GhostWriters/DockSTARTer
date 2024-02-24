@@ -1,4 +1,3 @@
----
 services:
   duckdns:
     labels:

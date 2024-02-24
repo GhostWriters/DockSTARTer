@@ -1,4 +1,3 @@
----
 services:
   kanboard:
     image: webhippie/kanboard:${KANBOARD_TAG}

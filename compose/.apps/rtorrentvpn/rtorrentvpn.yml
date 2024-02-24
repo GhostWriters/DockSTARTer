@@ -1,4 +1,3 @@
----
 services:
   rtorrentvpn:
     cap_add:

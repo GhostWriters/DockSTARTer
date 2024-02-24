@@ -1,4 +1,3 @@
----
 services:
   fireflyiii:
     container_name: fireflyiii

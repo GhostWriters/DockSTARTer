@@ -1,4 +1,3 @@
----
 services:
   flame:
     hostname: ${DOCKER_HOSTNAME}

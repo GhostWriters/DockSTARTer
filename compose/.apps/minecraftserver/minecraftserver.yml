@@ -1,4 +1,3 @@
----
 services:
   minecraftserver:
     container_name: minecraftserver

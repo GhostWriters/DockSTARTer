@@ -1,4 +1,3 @@
----
 services:
   sickchill:
     hostname: ${DOCKER_HOSTNAME}

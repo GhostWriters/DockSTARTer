@@ -1,4 +1,3 @@
----
 services:
   bazarr:
     container_name: bazarr

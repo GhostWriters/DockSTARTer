@@ -1,4 +1,3 @@
----
 services:
   tvheadend:
     container_name: tvheadend

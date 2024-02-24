@@ -1,4 +1,3 @@
----
 services:
   rtorrentvpn:
     hostname: ${DOCKER_HOSTNAME}

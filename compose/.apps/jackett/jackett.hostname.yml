@@ -1,4 +1,3 @@
----
 services:
   jackett:
     hostname: ${DOCKER_HOSTNAME}

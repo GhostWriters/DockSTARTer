@@ -1,4 +1,3 @@
----
 services:
   httpserver:
     container_name: httpserver

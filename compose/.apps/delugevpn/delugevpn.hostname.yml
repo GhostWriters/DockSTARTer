@@ -1,4 +1,3 @@
----
 services:
   delugevpn:
     hostname: ${DOCKER_HOSTNAME}

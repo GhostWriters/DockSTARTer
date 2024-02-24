@@ -1,4 +1,3 @@
----
 services:
   bitwarden:
     image: vaultwarden/server:${BITWARDEN_TAG}

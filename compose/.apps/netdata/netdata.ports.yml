@@ -1,4 +1,3 @@
----
 services:
   netdata:
     ports:

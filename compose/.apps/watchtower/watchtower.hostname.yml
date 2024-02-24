@@ -1,4 +1,3 @@
----
 services:
   watchtower:
     hostname: ${DOCKER_HOSTNAME}

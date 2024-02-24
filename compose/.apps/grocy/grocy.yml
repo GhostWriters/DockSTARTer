@@ -1,4 +1,3 @@
----
 services:
   grocy:
     container_name: grocy

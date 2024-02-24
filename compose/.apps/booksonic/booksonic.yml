@@ -1,4 +1,3 @@
----
 services:
   booksonic:
     container_name: booksonic

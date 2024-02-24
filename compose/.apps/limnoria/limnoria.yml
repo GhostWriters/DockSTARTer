@@ -1,4 +1,3 @@
----
 services:
   limnoria:
     container_name: limnoria

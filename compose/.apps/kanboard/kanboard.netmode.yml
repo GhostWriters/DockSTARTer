@@ -1,4 +1,3 @@
----
 services:
   kanboard:
     network_mode: ${KANBOARD_NETWORK_MODE}

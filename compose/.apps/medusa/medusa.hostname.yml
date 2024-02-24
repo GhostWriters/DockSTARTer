@@ -1,4 +1,3 @@
----
 services:
   medusa:
     hostname: ${DOCKER_HOSTNAME}

@@ -1,4 +1,3 @@
----
 services:
   syncthing:
     image: lscr.io/linuxserver/syncthing:${SYNCTHING_TAG}

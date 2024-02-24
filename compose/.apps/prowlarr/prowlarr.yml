@@ -1,4 +1,3 @@
----
 services:
   prowlarr:
     container_name: prowlarr

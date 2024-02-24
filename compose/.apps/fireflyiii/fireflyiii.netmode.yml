@@ -1,4 +1,3 @@
----
 services:
   fireflyiii:
     network_mode: ${FIREFLYIII_NETWORK_MODE}

@@ -1,4 +1,3 @@
----
 services:
   petio:
     hostname: ${DOCKER_HOSTNAME}

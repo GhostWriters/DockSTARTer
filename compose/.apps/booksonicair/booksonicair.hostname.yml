@@ -1,4 +1,3 @@
----
 services:
   booksonicair:
     hostname: ${DOCKER_HOSTNAME}

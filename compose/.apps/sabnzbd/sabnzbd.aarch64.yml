@@ -1,4 +1,3 @@
----
 services:
   sabnzbd:
     image: lscr.io/linuxserver/sabnzbd:${SABNZBD_TAG}

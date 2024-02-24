@@ -1,4 +1,3 @@
----
 services:
   adguard:
     container_name: adguard

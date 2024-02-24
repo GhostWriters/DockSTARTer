@@ -1,4 +1,3 @@
----
 services:
   jellyfin:
     hostname: ${DOCKER_HOSTNAME}

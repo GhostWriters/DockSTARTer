@@ -1,4 +1,3 @@
----
 services:
   petio:
     network_mode: ${PETIO_NETWORK_MODE}

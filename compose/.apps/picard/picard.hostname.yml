@@ -1,4 +1,3 @@
----
 services:
   picard:
     hostname: ${DOCKER_HOSTNAME}

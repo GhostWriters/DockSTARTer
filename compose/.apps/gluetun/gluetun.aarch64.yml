@@ -1,4 +1,3 @@
----
 services:
   gluetun:
     image: ghcr.io/qdm12/gluetun:${GLUETUN_TAG}

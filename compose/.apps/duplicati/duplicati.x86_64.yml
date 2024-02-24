@@ -1,4 +1,3 @@
----
 services:
   duplicati:
     image: lscr.io/linuxserver/duplicati:${DUPLICATI_TAG}

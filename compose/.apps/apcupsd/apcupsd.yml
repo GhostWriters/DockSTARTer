@@ -1,4 +1,3 @@
----
 services:
   apcupsd:
     container_name: apcupsd

@@ -1,4 +1,3 @@
----
 services:
   handbrake:
     hostname: ${DOCKER_HOSTNAME}

@@ -1,4 +1,3 @@
----
 services:
   filebot:
     container_name: filebot

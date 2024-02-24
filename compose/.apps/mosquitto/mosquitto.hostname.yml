@@ -1,4 +1,3 @@
----
 services:
   mosquitto:
     hostname: ${DOCKER_HOSTNAME}

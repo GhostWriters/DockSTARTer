@@ -1,4 +1,3 @@
----
 services:
   cloudcmd:
     container_name: cloudcmd

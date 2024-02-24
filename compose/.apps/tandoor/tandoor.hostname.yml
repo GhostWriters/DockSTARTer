@@ -1,4 +1,3 @@
----
 services:
   tandoor:
     hostname: ${DOCKER_HOSTNAME}

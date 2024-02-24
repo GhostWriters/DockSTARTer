@@ -1,4 +1,3 @@
----
 services:
   phpmyadmin:
     container_name: phpmyadmin

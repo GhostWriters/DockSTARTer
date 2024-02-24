@@ -1,4 +1,3 @@
----
 services:
   openldap:
     hostname: ${DOCKER_HOSTNAME}

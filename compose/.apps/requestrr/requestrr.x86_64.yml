@@ -1,4 +1,3 @@
----
 services:
   requestrr:
     image: lscr.io/linuxserver/requestrr:${REQUESTRR_TAG}

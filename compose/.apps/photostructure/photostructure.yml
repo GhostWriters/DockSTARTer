@@ -1,4 +1,3 @@
----
 services:
   photostructure:
     container_name: photostructure

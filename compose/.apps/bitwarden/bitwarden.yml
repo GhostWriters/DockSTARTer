@@ -1,4 +1,3 @@
----
 services:
   bitwarden:
     container_name: bitwarden

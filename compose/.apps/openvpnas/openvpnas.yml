@@ -1,4 +1,3 @@
----
 services:
   openvpnas:
     cap_add:

@@ -1,4 +1,3 @@
----
 services:
   syncthing:
     network_mode: ${SYNCTHING_NETWORK_MODE}

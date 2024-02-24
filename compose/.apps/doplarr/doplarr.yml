@@ -1,4 +1,3 @@
----
 services:
   doplarr:
     container_name: doplarr

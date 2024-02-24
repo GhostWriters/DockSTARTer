@@ -1,4 +1,3 @@
----
 services:
   sonarr:
     hostname: ${DOCKER_HOSTNAME}

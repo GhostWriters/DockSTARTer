@@ -1,4 +1,3 @@
----
 services:
   duplicati:
     container_name: duplicati

@@ -1,4 +1,3 @@
----
 services:
   bookstack:
     labels:

@@ -1,4 +1,3 @@
----
 services:
   apcupsd:
     hostname: ${DOCKER_HOSTNAME}

@@ -1,4 +1,3 @@
----
 services:
   unifi:
     network_mode: ${UNIFI_NETWORK_MODE}

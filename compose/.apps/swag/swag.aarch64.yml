@@ -1,4 +1,3 @@
----
 services:
   swag:
     image: lscr.io/linuxserver/swag:${SWAG_TAG}

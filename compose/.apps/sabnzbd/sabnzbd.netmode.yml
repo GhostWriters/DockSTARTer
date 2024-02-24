@@ -1,4 +1,3 @@
----
 services:
   sabnzbd:
     network_mode: ${SABNZBD_NETWORK_MODE}

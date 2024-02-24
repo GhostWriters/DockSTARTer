@@ -1,4 +1,3 @@
----
 services:
   lazylibrarian:
     hostname: ${DOCKER_HOSTNAME}

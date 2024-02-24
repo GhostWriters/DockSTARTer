@@ -1,4 +1,3 @@
----
 services:
   logitechmediaserver:
     container_name: logitechmediaserver

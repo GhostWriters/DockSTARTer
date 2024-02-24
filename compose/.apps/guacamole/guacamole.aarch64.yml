@@ -1,4 +1,3 @@
----
 services:
   guacamole:
     image: flcontainers/guacamole:${GUACAMOLE_TAG}

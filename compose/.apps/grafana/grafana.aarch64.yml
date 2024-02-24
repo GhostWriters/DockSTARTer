@@ -1,4 +1,3 @@
----
 services:
   grafana:
     image: grafana/grafana:${GRAFANA_TAG}

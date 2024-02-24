@@ -1,4 +1,3 @@
----
 services:
   readarr:
     image: lscr.io/linuxserver/readarr:${READARR_TAG}

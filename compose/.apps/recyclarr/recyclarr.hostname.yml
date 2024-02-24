@@ -1,4 +1,3 @@
----
 services:
   recyclarr:
     hostname: ${DOCKER_HOSTNAME}

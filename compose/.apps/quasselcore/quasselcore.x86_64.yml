@@ -1,4 +1,3 @@
----
 services:
   quasselcore:
     image: lscr.io/linuxserver/quassel-core:${QUASSELCORE_TAG}

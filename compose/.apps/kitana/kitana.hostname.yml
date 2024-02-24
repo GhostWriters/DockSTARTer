@@ -1,4 +1,3 @@
----
 services:
   kitana:
     hostname: ${DOCKER_HOSTNAME}

@@ -1,4 +1,3 @@
----
 services:
   privoxyvpn:
     cap_add:

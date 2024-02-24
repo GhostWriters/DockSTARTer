@@ -1,4 +1,3 @@
----
 services:
   adguard:
     hostname: ${DOCKER_HOSTNAME}

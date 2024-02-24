@@ -1,4 +1,3 @@
----
 services:
   traktarr:
     container_name: traktarr

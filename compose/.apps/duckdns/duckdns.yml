@@ -1,4 +1,3 @@
----
 services:
   duckdns:
     container_name: duckdns

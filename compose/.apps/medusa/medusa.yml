@@ -1,4 +1,3 @@
----
 services:
   medusa:
     container_name: medusa

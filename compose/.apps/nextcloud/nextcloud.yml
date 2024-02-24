@@ -1,4 +1,3 @@
----
 services:
   nextcloud:
     container_name: nextcloud

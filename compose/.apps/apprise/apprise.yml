@@ -1,4 +1,3 @@
----
 services:
   apprise:
     container_name: apprise

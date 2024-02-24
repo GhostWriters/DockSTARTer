@@ -1,4 +1,3 @@
----
 services:
   homepage:
     network_mode: ${HOMEPAGE_NETWORK_MODE}

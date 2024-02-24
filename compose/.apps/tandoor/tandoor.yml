@@ -1,4 +1,3 @@
----
 services:
   tandoor:
     container_name: tandoor

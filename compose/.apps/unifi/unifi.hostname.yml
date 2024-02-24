@@ -1,4 +1,3 @@
----
 services:
   unifi:
     hostname: ${DOCKER_HOSTNAME}

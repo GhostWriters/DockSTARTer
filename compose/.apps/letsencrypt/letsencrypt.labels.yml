@@ -1,4 +1,3 @@
----
 services:
   letsencrypt:
     labels:

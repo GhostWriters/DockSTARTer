@@ -1,4 +1,3 @@
----
 services:
   varken:
     hostname: ${DOCKER_HOSTNAME}

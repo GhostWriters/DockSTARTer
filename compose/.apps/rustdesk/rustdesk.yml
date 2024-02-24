@@ -1,4 +1,3 @@
----
 services:
   rustdesk:
     container_name: rustdesk

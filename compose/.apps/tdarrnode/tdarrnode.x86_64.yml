@@ -1,4 +1,3 @@
----
 services:
   tdarrnode:
     image: haveagitgat/tdarr_node:${TDARRNODE_TAG}

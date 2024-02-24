@@ -1,4 +1,3 @@
----
 services:
   mcmyadmin2:
     container_name: mcmyadmin2

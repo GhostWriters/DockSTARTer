@@ -1,4 +1,3 @@
----
 services:
   apprise:
     hostname: ${DOCKER_HOSTNAME}

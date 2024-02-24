@@ -1,4 +1,3 @@
----
 services:
   htpcmanager:
     container_name: htpcmanager

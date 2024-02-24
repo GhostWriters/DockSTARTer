@@ -1,4 +1,3 @@
----
 services:
   privoxyvpn:
     network_mode: ${PRIVOXYVPN_NETWORK_MODE}

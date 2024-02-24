@@ -1,4 +1,3 @@
----
 services:
   amd:
     hostname: ${DOCKER_HOSTNAME}

@@ -1,4 +1,3 @@
----
 services:
   uptimekuma:
     hostname: ${DOCKER_HOSTNAME}

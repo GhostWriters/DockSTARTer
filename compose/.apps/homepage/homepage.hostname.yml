@@ -1,4 +1,3 @@
----
 services:
   homepage:
     hostname: ${DOCKER_HOSTNAME}

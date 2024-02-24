@@ -1,4 +1,3 @@
----
 services:
   librespeed:
     container_name: librespeed

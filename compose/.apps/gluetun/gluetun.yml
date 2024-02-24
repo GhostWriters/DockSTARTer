@@ -1,4 +1,3 @@
----
 services:
   gluetun:
     cap_add:

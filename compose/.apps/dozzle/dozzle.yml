@@ -1,4 +1,3 @@
----
 services:
   dozzle:
     container_name: dozzle

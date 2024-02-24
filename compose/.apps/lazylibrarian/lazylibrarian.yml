@@ -1,4 +1,3 @@
----
 services:
   lazylibrarian:
     container_name: lazylibrarian

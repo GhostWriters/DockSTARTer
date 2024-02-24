@@ -1,4 +1,3 @@
----
 services:
   pgadmin:
     ports:

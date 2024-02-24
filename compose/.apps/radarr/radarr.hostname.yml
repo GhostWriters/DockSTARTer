@@ -1,4 +1,3 @@
----
 services:
   radarr:
     hostname: ${DOCKER_HOSTNAME}

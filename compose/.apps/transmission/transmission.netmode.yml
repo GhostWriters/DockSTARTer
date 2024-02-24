@@ -1,4 +1,3 @@
----
 services:
   transmission:
     network_mode: ${TRANSMISSION_NETWORK_MODE}

@@ -1,4 +1,3 @@
----
 services:
   audiobookshelf:
     container_name: audiobookshelf

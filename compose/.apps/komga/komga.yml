@@ -1,4 +1,3 @@
----
 services:
   komga:
     container_name: komga

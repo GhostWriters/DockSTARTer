@@ -1,4 +1,3 @@
----
 services:
   mosquitto:
     container_name: mosquitto

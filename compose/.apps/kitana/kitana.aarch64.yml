@@ -1,4 +1,3 @@
----
 services:
   kitana:
     image: pannal/kitana:${KITANA_TAG}

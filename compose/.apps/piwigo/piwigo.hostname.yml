@@ -1,4 +1,3 @@
----
 services:
   piwigo:
     hostname: ${DOCKER_HOSTNAME}

@@ -1,4 +1,3 @@
----
 services:
   beets:
     hostname: ${DOCKER_HOSTNAME}

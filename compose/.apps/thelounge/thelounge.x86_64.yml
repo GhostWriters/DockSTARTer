@@ -1,4 +1,3 @@
----
 services:
   thelounge:
     image: lscr.io/linuxserver/thelounge:${THELOUNGE_TAG}

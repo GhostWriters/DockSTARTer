@@ -1,4 +1,3 @@
----
 services:
   autobrr:
     hostname: ${DOCKER_HOSTNAME}

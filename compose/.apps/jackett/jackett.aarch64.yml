@@ -1,4 +1,3 @@
----
 services:
   jackett:
     image: lscr.io/linuxserver/jackett:${JACKETT_TAG}

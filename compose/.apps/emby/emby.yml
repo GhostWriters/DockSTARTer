@@ -1,4 +1,3 @@
----
 services:
   emby:
     container_name: emby

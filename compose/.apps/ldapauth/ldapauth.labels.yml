@@ -1,4 +1,3 @@
----
 services:
   ldapauth:
     labels:

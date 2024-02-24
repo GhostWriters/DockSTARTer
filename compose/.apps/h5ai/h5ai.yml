@@ -1,4 +1,3 @@
----
 services:
   h5ai:
     container_name: h5ai

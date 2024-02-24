@@ -1,4 +1,3 @@
----
 services:
   piwigo:
     container_name: piwigo

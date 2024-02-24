@@ -1,4 +1,3 @@
----
 services:
   bookstack:
     container_name: bookstack

@@ -1,4 +1,3 @@
----
 services:
   beets:
     container_name: beets

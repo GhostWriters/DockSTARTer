@@ -1,4 +1,3 @@
----
 services:
   omadacontroller:
     container_name: omadacontroller

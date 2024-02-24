@@ -1,4 +1,3 @@
----
 services:
   goaccess:
     container_name: goaccess

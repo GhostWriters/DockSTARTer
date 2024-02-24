@@ -1,4 +1,3 @@
----
 services:
   homebridge:
     hostname: ${DOCKER_HOSTNAME}

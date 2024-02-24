@@ -1,4 +1,3 @@
----
 services:
   tandoor:
     network_mode: ${TANDOOR_NETWORK_MODE}

@@ -1,4 +1,3 @@
----
 services:
   handbrake:
     image: jlesage/handbrake:${HANDBRAKE_TAG}

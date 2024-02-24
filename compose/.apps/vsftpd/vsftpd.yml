@@ -1,4 +1,3 @@
----
 services:
   vsftpd:
     container_name: vsftpd

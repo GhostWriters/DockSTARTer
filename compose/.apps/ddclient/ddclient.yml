@@ -1,4 +1,3 @@
----
 services:
   ddclient:
     container_name: ddclient

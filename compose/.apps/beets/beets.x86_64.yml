@@ -1,4 +1,3 @@
----
 services:
   beets:
     image: lscr.io/linuxserver/beets:${BEETS_TAG}

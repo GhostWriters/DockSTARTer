@@ -1,4 +1,3 @@
----
 services:
   pihole:
     cap_add:

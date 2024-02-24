@@ -1,4 +1,3 @@
----
 services:
   nextcloud:
     image: lscr.io/linuxserver/nextcloud:${NEXTCLOUD_TAG}

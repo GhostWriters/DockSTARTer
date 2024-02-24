@@ -1,4 +1,3 @@
----
 services:
   transmissionvpn:
     network_mode: ${TRANSMISSIONVPN_NETWORK_MODE}
