@@ -82,3 +82,4 @@ services:
       com.dockstarter.appvars.gluetun_port_8888: "8888"
       com.dockstarter.appvars.gluetun_restart: "unless-stopped"
       com.dockstarter.appvars.gluetun_tag: "latest"
+      
