@@ -28,7 +28,7 @@ services:
       com.dockstarter.appvars.gluetun_environment_health_success_wait_duration: "5s"
       com.dockstarter.appvars.gluetun_environment_health_target_address: "cloudflare.com:443"
       com.dockstarter.appvars.gluetun_environment_health_vpn_duration_addition: "5s"
-      com.dockstarter.appvars.gluetun_environment_health_vpn_duration_initial: "6s
+      com.dockstarter.appvars.gluetun_environment_health_vpn_duration_initial: "6s"
       com.dockstarter.appvars.gluetun_environment_http_control_server_address: ":8000"
       com.dockstarter.appvars.gluetun_environment_http_control_server_log: "on"
       com.dockstarter.appvars.gluetun_environment_httpproxy: "off"
