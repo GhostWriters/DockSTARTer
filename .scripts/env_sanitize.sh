@@ -22,34 +22,7 @@ env_sanitize() {
     run_script 'appvars_rename' MINECRAFT_SERVER MINECRAFTSERVER
 
     # Migrate from old app vars
-    while IFS= read -r line; do
-        local VAR_VAL=${line}
-        local SET_VAR=${VAR_VAL%%=*}
-        local APPNAME=${SET_VAR%%_*}
-        local REST_VAR=${SET_VAR#*_}
-        local NEW_VAR="${SET_VAR}"
-        case "${SET_VAR}" in
-            COMPOSE_HTTP_TIMEOUT | DOCKER_GID | DOCKER_HOSTNAME | PGID | PUID | TZ)
-                # Global vars that should be untouched
-                continue
-                ;;
-            DOCKERLOGGING_MAXFILE | DOCKERLOGGING_MAXSIZE | \
-                LAN_NETWORK | NS1 | NS2 | \
-                VPN_CLIENT | VPN_ENABLE | VPN_OPTIONS | VPN_OVPNDIR | VPN_PASS | VPN_PROV | VPN_USER | VPN_WGDIR)
-                # Legacy vars that should be untouched
-                continue
-                ;;
-            *DIR | *DIR_*)
-                NEW_VAR="${APPNAME}_VOLUME_${REST_VAR}"
-                ;;
-            *)
-                NEW_VAR="${APPNAME}_ENVIRONMENT_${REST_VAR}"
-                ;;
-        esac
-        if [[ ${SET_VAR} != "${NEW_VAR}" ]]; then
-            run_script 'env_rename' "${SET_VAR}" "${NEW_VAR}"
-        fi
-    done < <(grep --color=never -P '\b[A-Z0-9]+_(?!(ENABLED|ENVIRONMENT_|NETWORK_MODE|PORT_|RESTART|TAG|VOLUME_))' "${COMPOSE_ENV}")
+    run_script 'appvars_migrate_all'
 
     # Replace ~ with /home/username
     if grep -q -P '^\w+_VOLUME_\w+=~/' "${COMPOSE_ENV}"; then
