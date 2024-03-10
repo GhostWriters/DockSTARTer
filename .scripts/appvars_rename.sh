@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-rename_app() {
+appvars_rename() {
     local FROMAPP=${1-}
     local TOAPP=${2-}
     local FROMAPP_ENABLED
@@ -15,7 +15,7 @@ rename_app() {
         notice "Moving config folder."
         local DOCKER_VOLUME_CONFIG
         DOCKER_VOLUME_CONFIG=$(run_script 'env_get' DOCKER_VOLUME_CONFIG)
-        mv "${DOCKER_VOLUME_CONFIG}/${FROMAPP,,}" "${DOCKER_VOLUME_CONFIG}/${TOAPP,,}" || fatal "Failed to move folder.\nFailing command: ${F[C]}mv \"${DOCKER_VOLUME_CONFIG}/${FROMAPP,,}\" \"${DOCKER_VOLUME_CONFIG}/${TOAPP,,}\""
+        mv "${DOCKER_VOLUME_CONFIG}/${FROMAPP,,}" "${DOCKER_VOLUME_CONFIG}/${TOAPP,,}" || warn "Failed to move folder.\nFailing command: ${F[C]}mv \"${DOCKER_VOLUME_CONFIG}/${FROMAPP,,}\" \"${DOCKER_VOLUME_CONFIG}/${TOAPP,,}\""
         notice "Migrating vars."
         sed -i "s/^${FROMAPP^^}_/${TOAPP^^}_/" "${COMPOSE_ENV}" || fatal "Failed to migrate vars from ${FROMAPP^^}_ to ${TOAPP^^}_\nFailing command: ${F[C]}sed -i \"s/^${FROMAPP^^}_/${TOAPP^^}_/\" \"${COMPOSE_ENV}\""
         run_script 'appvars_create' "${TOAPP^^}"
@@ -23,7 +23,7 @@ rename_app() {
     fi
 }
 
-test_rename_app() {
-    # run_script 'rename_app'
-    warn "CI does not test rename_app."
+test_appvars_rename() {
+    # run_script 'appvars_rename'
+    warn "CI does not test appvars_rename."
 }

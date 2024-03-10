@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-rename_var() {
+env_rename() {
     local FROMVAR=${1-}
     local TOVAR=${2-}
     if grep -q -P "^${FROMVAR^^}=" "${COMPOSE_ENV}"; then
@@ -11,7 +11,7 @@ rename_var() {
     fi
 }
 
-test_rename_var() {
-    # run_script 'rename_var'
-    warn "CI does not test rename_var."
+test_env_rename() {
+    # run_script 'env_rename'
+    warn "CI does not test env_rename."
 }
