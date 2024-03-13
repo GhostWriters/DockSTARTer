@@ -15,7 +15,7 @@ Refer to the following pages for detailed instructions:
 - [Homepage Docker Installation](https://gethomepage.dev/latest/installation/docker/)
 - [Homepage Configs](https://gethomepage.dev/latest/configs/)
 
-Docker integration is enabled in the setting label by default, you can disable by remove the `HOMEPAGE_DOCEKR_INTERGRATE` enviroment variable.
+Docker integration is enabled in the setting label by default, you can disable by remove the `HOMEPAGE_DOCEKR_INTERGRATE` environment variable.
 
 ### Using Environment Secrets
 

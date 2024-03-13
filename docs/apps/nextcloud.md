@@ -32,7 +32,7 @@ extra line to the NextCloud config.php file so it can find it.
 Without configuring this you will be able to access the web page, but apps may
 timeout or return an invalid password.
 
-Run the below command and add the line to the the config.php file before the
+Run the below command and add the line to the config.php file before the
 `);`
 
 ```bash
