@@ -3,7 +3,7 @@ services:
     container_name: plex
     environment:
       - PGID=${PGID}
-      - PLEX_CLAIM=${PLEX_ENVIRONMENT_CLAIM}
+      - PLEX_CLAIM=${PLEX_ENVIRONMENT_PLEX_CLAIM}
       - PUID=${PUID}
       - TZ=${TZ}
       - VERSION=${PLEX_ENVIRONMENT_VERSION}
