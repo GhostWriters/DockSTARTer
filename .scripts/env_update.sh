@@ -20,9 +20,9 @@ env_update() {
         local SET_VAR=${VAR_VAL%%=*}
         local SET_VAL
         if [ -z "${LAST_APPNAME-}" ] || [ "${APPNAME}" != "${LAST_APPNAME}" ]; then
-            echo "#"            >> "${MKTEMP_ENV_UPDATED}" || error "# could not be written to ${MKTEMP_ENV_UPDATED}"
+            echo "#" >> "${MKTEMP_ENV_UPDATED}" || error "# could not be written to ${MKTEMP_ENV_UPDATED}"
             echo "# ${APPNAME}" >> "${MKTEMP_ENV_UPDATED}" || error "# ${APPNAME} could not be written to ${MKTEMP_ENV_UPDATED}"
-            echo "#"            >> "${MKTEMP_ENV_UPDATED}" || error "# could not be written to ${MKTEMP_ENV_UPDATED}"
+            echo "#" >> "${MKTEMP_ENV_UPDATED}" || error "# could not be written to ${MKTEMP_ENV_UPDATED}"
         fi
         SET_VAL=$(run_script 'env_get' "${SET_VAR}" "${MKTEMP_ENV_CURRENT}")
         if ! grep -q -P "^${SET_VAR}=" "${MKTEMP_ENV_UPDATED}"; then
