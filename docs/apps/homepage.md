@@ -23,6 +23,6 @@ Docker integration is enabled in the setting label by default, you can disable b
 
 Note:
 
-- Environment variables must start with HOMEPAGE_VAR_ or HOMEPAGE_FILE_
+- Environment variables must start with HOMEPAGE*VAR* or HOMEPAGE*FILE*
 - The value of env var HOMEPAGE_VAR_XXX will replace {{HOMEPAGE_VAR_XXX}} in any config
 - The value of env var HOMEPAGE_FILE_XXX must be a file path, the contents of which will be used to replace {{HOMEPAGE_FILE_XXX}} in any config

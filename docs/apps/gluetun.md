@@ -12,31 +12,13 @@ Wireguard, DNS over TLS, with a few proxy servers built-in.
 
 ## Install/Setup
 
-Check the [wiki](https://github.com/qdm12/gluetun/wiki) for the relevant
-environment variables for your VPN provider that should be placed in
-your `docker-compose.override.yml`.
+Check the [wiki](https://github.com/qdm12/gluetun-wiki) for the relevant
+environment variables for your VPN provider.
 
 ## Example
 
-.env
+`.env` value to have Transmission use Gluetun
 
 ```env
-...
 TRANSMISSION_NETWORK_MODE="container:gluetun"
-...
-```
-
-docker-compose.override.yml
-
-```yml
-services:
-  gluetun:
-    environment:
-      - VPN_SERVICE_PROVIDER=mullvad
-      - VPN_TYPE=wireguard
-      - WIREGUARD_PRIVATE_KEY=YOUR-PRIVATE-KEY-HERE
-      - WIREGUARD_ADDRESSES=YOUR-ADDRESSES-HERE
-      - SERVER_CITIES=YOUR-CITIES-HERE
-    ports:
-      - 9091:9091
 ```
