@@ -15,17 +15,17 @@ env_update() {
     info "Merging current values into updated .env file."
     while IFS= read -r line; do
         local LAST_APPNAME
-        local APPNAME=${line%%_*}
         local VAR_VAL=${line}
         local SET_VAR=${VAR_VAL%%=*}
+        local APPNAME=${SET_VAR%%_*}
         local SET_VAL
-        if [ -z "${LAST_APPNAME-}" ] || [ "${APPNAME}" != "${LAST_APPNAME}" ]; then
-            echo "#" >> "${MKTEMP_ENV_UPDATED}" || error "# could not be written to ${MKTEMP_ENV_UPDATED}"
-            echo "# ${APPNAME}" >> "${MKTEMP_ENV_UPDATED}" || error "# ${APPNAME} could not be written to ${MKTEMP_ENV_UPDATED}"
-            echo "#" >> "${MKTEMP_ENV_UPDATED}" || error "# could not be written to ${MKTEMP_ENV_UPDATED}"
-        fi
         SET_VAL=$(run_script 'env_get' "${SET_VAR}" "${MKTEMP_ENV_CURRENT}")
         if ! grep -q -P "^${SET_VAR}=" "${MKTEMP_ENV_UPDATED}"; then
+            if [ -z "${LAST_APPNAME-}" ] || [ "${APPNAME}" != "${LAST_APPNAME}" ]; then
+                echo "#"            >> "${MKTEMP_ENV_UPDATED}" || error "# could not be written to ${MKTEMP_ENV_UPDATED}"
+                echo "# ${APPNAME}" >> "${MKTEMP_ENV_UPDATED}" || error "# ${APPNAME} could not be written to ${MKTEMP_ENV_UPDATED}"
+                echo "#"            >> "${MKTEMP_ENV_UPDATED}" || error "# could not be written to ${MKTEMP_ENV_UPDATED}"
+            fi
             echo "${VAR_VAL}" >> "${MKTEMP_ENV_UPDATED}" || error "${VAR_VAL} could not be written to ${MKTEMP_ENV_UPDATED}"
         fi
         run_script 'env_set' "${SET_VAR}" "${SET_VAL}" "${MKTEMP_ENV_UPDATED}"
