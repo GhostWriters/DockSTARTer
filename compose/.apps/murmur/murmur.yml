@@ -2,7 +2,8 @@ services:
   murmur:
     container_name: murmur
     environment:
-      - MURMUR_SUPW=${MURMUR_SUPW}
+      - MUMBLE_SUPERUSER_PASSWORD=${MURMUR_SUPW}
+      - MUMBLE_VERBOSE=${MURMUR_VERBOSE}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
@@ -14,8 +15,5 @@ services:
     restart: ${MURMUR_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/murmur/cert:/opt/murmur/cert
-      - ${DOCKERCONFDIR}/murmur/config:/opt/murmur/config
-      - ${DOCKERCONFDIR}/murmur/data:/opt/murmur/data
-      - ${DOCKERCONFDIR}/murmur/log:/opt/murmur/log
+      - ${DOCKERCONFDIR}/murmur:/data
       - ${DOCKERSTORAGEDIR}:/storage

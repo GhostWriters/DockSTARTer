@@ -10,3 +10,4 @@ services:
       com.dockstarter.appvars.murmur_restart: "unless-stopped"
       com.dockstarter.appvars.murmur_supw: ""
       com.dockstarter.appvars.murmur_tag: "latest"
+      com.dockstarter.appvars.murmur_verbose: "false"
