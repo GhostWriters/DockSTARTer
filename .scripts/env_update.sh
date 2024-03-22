@@ -22,7 +22,7 @@ env_update() {
     local INSTALLED_APPS=()
     local ENABLED_APPS=()
     local APPTEMPLATESFOLDER="${SCRIPTPATH}/compose/.apps"
-    mapfile -t BUILTIN_APPS < <(ls -1d "${APPTEMPLATESFOLDER}"/* | xargs -l basename)
+    mapfile -t BUILTIN_APPS < <(find "${APPTEMPLATESFOLDER}" -maxdepth 1 -mindepth 1 -type d -print0 | xargs -0 -n1 basename)
     mapfile -t ENABLED_LINES < <(grep --color=never -P '^[A-Z0-9]\w+_ENABLED=' "${MKTEMP_ENV_CURRENT}")
     for line in "${ENABLED_LINES[@]}"; do
         local VAR=${line%%=*}
