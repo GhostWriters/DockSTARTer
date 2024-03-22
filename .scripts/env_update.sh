@@ -32,7 +32,7 @@ env_update() {
             fi
         fi
     done
-    
+
     while [[ ! -z "${ARRAY_ENV_CURRENT[@]}" ]]; do
         local ENV_USER_DEFINED_LINES=()
         local ENV_BUILTIN_LINES=()
