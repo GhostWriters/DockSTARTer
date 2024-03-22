@@ -70,7 +70,7 @@ env_update() {
                     ENV_USER_DEFINED_LINES+=("${line}")
                 fi
             fi
-            unset 'ARRAY_ENV_CURRENT["$index"]'
+            unset 'ARRAY_ENV_CURRENT[index]'
         done
         if [[ -n ${ENV_BUILTIN_LINES[*]} ]]; then
             # Add all built in variables for app
