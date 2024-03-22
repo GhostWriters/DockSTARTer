@@ -35,7 +35,7 @@ env_update() {
         fi
     done
 
-    while [[ -n "${ARRAY_ENV_CURRENT[*]}" ]]; do
+    while [[ -n ${ARRAY_ENV_CURRENT[*]} ]]; do
         local ENV_USER_DEFINED_LINES=()
         local ENV_BUILTIN_LINES=()
         local APPNAME
@@ -55,10 +55,10 @@ env_update() {
                 run_script 'env_set' "${SET_VAR}" "${SET_VAL}" "${MKTEMP_ENV_UPDATED}"
             else
                 # Variable does not already exist
-                if [[ -z "${APP_LABEL_LIST[*]}" ]]; then
+                if [[ -z ${APP_LABEL_LIST[*]} ]]; then
                     if inArray "${APPNAME}" "${INSTALLED_APPS[@]}"; then
                         local APPTEMPLATE="${APPTEMPLATESFOLDER}/${APPNAME,,}/${APPNAME,,}.labels.yml"
-                        mapfile -t APP_LABEL_LIST < <(grep --color=never -Po "\scom\.dockstarter\.appvars\.\K[\w]+" "${APPTEMPLATE}" ||true)
+                        mapfile -t APP_LABEL_LIST < <(grep --color=never -Po "\scom\.dockstarter\.appvars\.\K[\w]+" "${APPTEMPLATE}" || true)
                         APP_LABEL_LIST=("${APP_LABEL_LIST[@]^^}")
                     fi
                 fi
@@ -72,7 +72,7 @@ env_update() {
             fi
             unset 'ARRAY_ENV_CURRENT["$index"]'
         done
-        if [[ -n "${ENV_BUILTIN_LINES[*]}" ]]; then
+        if [[ -n ${ENV_BUILTIN_LINES[*]} ]]; then
             # Add all built in variables for app
             echo "#" >> "${MKTEMP_ENV_UPDATED}" || error "# could not be written to ${MKTEMP_ENV_UPDATED}"
             echo "# ${LAST_APPNAME}" >> "${MKTEMP_ENV_UPDATED}" || error "# ${LAST_APPNAME} could not be written to ${MKTEMP_ENV_UPDATED}"
@@ -86,7 +86,7 @@ env_update() {
                 run_script 'env_set' "${SET_VAR}" "${SET_VAL}" "${MKTEMP_ENV_UPDATED}"
             done
         fi
-        if [[ -n "${ENV_USER_DEFINED_LINES[*]}" ]]; then
+        if [[ -n ${ENV_USER_DEFINED_LINES[*]} ]]; then
             # Add all user defined variables for app
             echo "#" >> "${MKTEMP_ENV_UPDATED}" || error "# could not be written to ${MKTEMP_ENV_UPDATED}"
             echo "# ${LAST_APPNAME} (User Defined)" >> "${MKTEMP_ENV_UPDATED}" || error "# ${LAST_APPNAME} (User Defined) could not be written to ${MKTEMP_ENV_UPDATED}"
