@@ -29,13 +29,13 @@ env_update() {
         local APPNAME=${VAR%%_*}
         if inArray "${APPNAME}" "${BUILTIN_APPS[@]^^}"; then
             INSTALLED_APPS+=("${APPNAME}")
-            if $(run_script 'env_get' "${VAR}" "${MKTEMP_ENV_CURRENT}") = 'true'; then
+            if [ $(run_script 'env_get' "${VAR}" "${MKTEMP_ENV_CURRENT}") = 'true' ]; then
                 ENABLED_APPS+=("${APPNAME}")
             fi
         fi
     done
 
-    while [[ ! -z "${ARRAY_ENV_CURRENT[*]}" ]]; do
+    while [[ -n "${ARRAY_ENV_CURRENT[*]}" ]]; do
         local ENV_USER_DEFINED_LINES=()
         local ENV_BUILTIN_LINES=()
         local APPNAME
@@ -63,34 +63,38 @@ env_update() {
                 fi
                 if inArray "${SET_VAR}" "${APP_LABEL_LIST[@]}"; then
                     # Variable is built in
-                    ENV_BUILTIN_LINES+=(${line})
+                    ENV_BUILTIN_LINES+=("${line}")
                 else
                     # Variable is user defined
-                    ENV_USER_DEFINED_LINES+=(${line})
+                    ENV_USER_DEFINED_LINES+=("${line}")
                 fi
             fi
-            unset ARRAY_ENV_CURRENT[$index]
+            unset 'ARRAY_ENV_CURRENT["$index"]'
         done
-        if [[ ! -z "${ENV_BUILTIN_LINES[*]}" ]]; then
+        if [[ -n "${ENV_BUILTIN_LINES[*]}" ]]; then
             # Add all built in variables for app
             echo "#" >> "${MKTEMP_ENV_UPDATED}" || error "# could not be written to ${MKTEMP_ENV_UPDATED}"
             echo "# ${LAST_APPNAME}" >> "${MKTEMP_ENV_UPDATED}" || error "# ${LAST_APPNAME} could not be written to ${MKTEMP_ENV_UPDATED}"
             echo "#" >> "${MKTEMP_ENV_UPDATED}" || error "# could not be written to ${MKTEMP_ENV_UPDATED}"
             for line in "${ENV_BUILTIN_LINES[@]}"; do
-                local SET_VAR=${line%%=*}
-                local SET_VAL=$(run_script 'env_get' "${SET_VAR}" "${MKTEMP_ENV_CURRENT}")
+                local SET_VAR
+                local SET_VAL
+                SET_VAR=${line%%=*}
+                SET_VAL=$(run_script 'env_get' "${SET_VAR}" "${MKTEMP_ENV_CURRENT}")
                 echo "${line}" >> "${MKTEMP_ENV_UPDATED}" || error "${line} could not be written to ${MKTEMP_ENV_UPDATED}"
                 run_script 'env_set' "${SET_VAR}" "${SET_VAL}" "${MKTEMP_ENV_UPDATED}"
             done
         fi
-        if [[ ! -z "${ENV_USER_DEFINED_LINES[*]}" ]]; then
+        if [[ -n "${ENV_USER_DEFINED_LINES[*]}" ]]; then
             # Add all user defined variables for app
             echo "#" >> "${MKTEMP_ENV_UPDATED}" || error "# could not be written to ${MKTEMP_ENV_UPDATED}"
             echo "# ${LAST_APPNAME} (User Defined)" >> "${MKTEMP_ENV_UPDATED}" || error "# ${LAST_APPNAME} (User Defined) could not be written to ${MKTEMP_ENV_UPDATED}"
             echo "#" >> "${MKTEMP_ENV_UPDATED}" || error "# could not be written to ${MKTEMP_ENV_UPDATED}"
             for line in "${ENV_USER_DEFINED_LINES[@]}"; do
-                local SET_VAR=${line%%=*}
-                local SET_VAL=$(run_script 'env_get' "${SET_VAR}" "${MKTEMP_ENV_CURRENT}")
+                local SET_VAR
+                local SET_VAL
+                SET_VAR=${line%%=*}
+                SET_VAL=$(run_script 'env_get' "${SET_VAR}" "${MKTEMP_ENV_CURRENT}")
                 echo "${line}" >> "${MKTEMP_ENV_UPDATED}" || error "${line} could not be written to ${MKTEMP_ENV_UPDATED}"
                 run_script 'env_set' "${SET_VAR}" "${SET_VAL}" "${MKTEMP_ENV_UPDATED}"
             done
