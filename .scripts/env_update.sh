@@ -29,7 +29,7 @@ env_update() {
         local APPNAME=${VAR%%_*}
         if inArray "${APPNAME}" "${BUILTIN_APPS[@]^^}"; then
             INSTALLED_APPS+=("${APPNAME}")
-            if [ $(run_script 'env_get' "${VAR}" "${MKTEMP_ENV_CURRENT}") = 'true' ]; then
+            if [ "$(run_script 'env_get' "${VAR}" "${MKTEMP_ENV_CURRENT}")" = 'true' ]; then
                 ENABLED_APPS+=("${APPNAME}")
             fi
         fi
@@ -50,7 +50,8 @@ env_update() {
             fi
             if grep -q -P "^${SET_VAR}=" "${MKTEMP_ENV_UPDATED}"; then
                 # Variable already exists
-                local SET_VAL=$(run_script 'env_get' "${SET_VAR}" "${MKTEMP_ENV_CURRENT}")
+                local SET_VAL
+                SET_VAL=$(run_script 'env_get' "${SET_VAR}" "${MKTEMP_ENV_CURRENT}")
                 run_script 'env_set' "${SET_VAR}" "${SET_VAL}" "${MKTEMP_ENV_UPDATED}"
             else
                 # Variable does not already exist
