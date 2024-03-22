@@ -22,7 +22,7 @@ env_update() {
     local INSTALLED_APPS=()
     local ENABLED_APPS=()
     local APPTEMPLATESFOLDER="${SCRIPTPATH}/compose/.apps"
-    mapfile -t BUILTIN_APPS < <(ls -1d ${APPTEMPLATESFOLDER}/* | xargs -l basename)
+    mapfile -t BUILTIN_APPS < <(ls -1d "${APPTEMPLATESFOLDER}"/* | xargs -l basename)
     mapfile -t ENABLED_LINES < <(grep --color=never -P '^[A-Z0-9]\w+_ENABLED=' "${MKTEMP_ENV_CURRENT}")
     for line in "${ENABLED_LINES[@]}"; do
         local VAR=${line%%=*}
@@ -35,7 +35,7 @@ env_update() {
         fi
     done
 
-    while [[ ! -z "${ARRAY_ENV_CURRENT[@]}" ]]; do
+    while [[ ! -z "${ARRAY_ENV_CURRENT[*]}" ]]; do
         local ENV_USER_DEFINED_LINES=()
         local ENV_BUILTIN_LINES=()
         local APPNAME
@@ -54,10 +54,10 @@ env_update() {
                 run_script 'env_set' "${SET_VAR}" "${SET_VAL}" "${MKTEMP_ENV_UPDATED}"
             else
                 # Variable does not already exist
-                if [[ -z "${APP_LABEL_LIST[@]}" ]]; then
+                if [[ -z "${APP_LABEL_LIST[*]}" ]]; then
                     if inArray "${APPNAME}" "${INSTALLED_APPS[@]}"; then
                         local APPTEMPLATE="${APPTEMPLATESFOLDER}/${APPNAME,,}/${APPNAME,,}.labels.yml"
-                        mapfile -t APP_LABEL_LIST < <(grep --color=never -Po "\scom\.dockstarter\.appvars\.\K[\w]+" "${APPTEMPLATE}" || "")
+                        mapfile -t APP_LABEL_LIST < <(grep --color=never -Po "\scom\.dockstarter\.appvars\.\K[\w]+" "${APPTEMPLATE}" ||true)
                         APP_LABEL_LIST=("${APP_LABEL_LIST[@]^^}")
                     fi
                 fi
@@ -71,7 +71,7 @@ env_update() {
             fi
             unset ARRAY_ENV_CURRENT[$index]
         done
-        if [[ ! -z "${ENV_BUILTIN_LINES[@]}" ]]; then
+        if [[ ! -z "${ENV_BUILTIN_LINES[*]}" ]]; then
             # Add all built in variables for app
             echo "#" >> "${MKTEMP_ENV_UPDATED}" || error "# could not be written to ${MKTEMP_ENV_UPDATED}"
             echo "# ${LAST_APPNAME}" >> "${MKTEMP_ENV_UPDATED}" || error "# ${LAST_APPNAME} could not be written to ${MKTEMP_ENV_UPDATED}"
@@ -83,7 +83,7 @@ env_update() {
                 run_script 'env_set' "${SET_VAR}" "${SET_VAL}" "${MKTEMP_ENV_UPDATED}"
             done
         fi
-        if [[ ! -z "${ENV_USER_DEFINED_LINES[@]}" ]]; then
+        if [[ ! -z "${ENV_USER_DEFINED_LINES[*]}" ]]; then
             # Add all user defined variables for app
             echo "#" >> "${MKTEMP_ENV_UPDATED}" || error "# could not be written to ${MKTEMP_ENV_UPDATED}"
             echo "# ${LAST_APPNAME} (User Defined)" >> "${MKTEMP_ENV_UPDATED}" || error "# ${LAST_APPNAME} (User Defined) could not be written to ${MKTEMP_ENV_UPDATED}"
