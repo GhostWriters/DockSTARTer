@@ -12,7 +12,10 @@ appvars_create() {
     mapfile -t APP_LABEL_LIST < <(grep --color=never -Po "\scom\.dockstarter\.appvars\.\K[\w]+" "${APPLABELFILE}" || true)
     APP_LABEL_LIST=("${APP_LABEL_LIST[@]^^}")
     local APP_LABEL_SEARCH
-    APP_LABEL_SEARCH=$(IFS='|'; printf '^(%s)$' "${APP_LABEL_LIST[*]}")
+    APP_LABEL_SEARCH=$(
+        IFS='|'
+        printf '^(%s)$' "${APP_LABEL_LIST[*]}"
+    )
 
     local -A LABEL_DEFAULT_VALUE
     local -A APP_MIGRATE_LIST
