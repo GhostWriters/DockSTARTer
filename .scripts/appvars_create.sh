@@ -11,9 +11,11 @@ appvars_create() {
     local APPLABELFILE="${APPTEMPLATES}/${FILENAME}.labels.yml"
     mapfile -t APP_LABEL_LIST < <(grep --color=never -Po "\scom\.dockstarter\.appvars\.\K[\w]+" "${APPLABELFILE}" || true)
     APP_LABEL_LIST=("${APP_LABEL_LIST[@]^^}")
+    local APP_LABEL_SEARCH
+    APP_LABEL_SEARCH=$(IFS='|'; printf '^(%s)$' "${APP_LABEL_LIST[*]}")
+
     local -A LABEL_DEFAULT_VALUE
     local -A APP_MIGRATE_LIST
-    local -r DONT_MIGRATE_APPVARS="^_(ENABLED|NETWORK_MODE|PORT_[0-9]+|RESTART|TAG)$"
     for SET_VAR in "${APP_LABEL_LIST[@]}"; do
         local APPNAME=${SET_VAR%%_*}
         local REST_VAR=${SET_VAR#"${APPNAME}_"}
@@ -22,7 +24,7 @@ appvars_create() {
             ENVIRONMENT | VOLUME)
                 REST_VAR=${REST_VAR#"${VAR_TYPE}"}
                 local MIGRATE_VAR="${APPNAME}${REST_VAR}"
-                if [[ ! ${REST_VAR} =~ ${DONT_MIGRATE_APPVARS} ]]; then
+                if [[ ! ${MIGRATE_VAR} =~ ${APP_LABEL_SEARCH} ]]; then
                     APP_MIGRATE_LIST["${SET_VAR}"]=${MIGRATE_VAR}
                 fi
                 ;;
