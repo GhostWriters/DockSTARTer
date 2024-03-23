@@ -13,16 +13,16 @@ appvars_create() {
     APP_LABEL_LIST=("${APP_LABEL_LIST[@]^^}")
     local -A LABEL_DEFAULT_VALUE
     local -A APP_MIGRATE_LIST
-    local -r DONT_MIGRATE_APPVARS="^_(ENABLED|NETWORK_MODE|PORT_[0-9]+|RESTART|TAG)\$"
+    local -r DONT_MIGRATE_APPVARS="^_(ENABLED|NETWORK_MODE|PORT_[0-9]+|RESTART|TAG)$"
     for SET_VAR in "${APP_LABEL_LIST[@]}"; do
         local APPNAME=${SET_VAR%%_*}
         local REST_VAR=${SET_VAR#"${APPNAME}_"}
         local VAR_TYPE=${REST_VAR%%_*}
         case "${VAR_TYPE}" in
-            ENVIRONMENT|VOLUME)
+            ENVIRONMENT | VOLUME)
                 REST_VAR=${REST_VAR#"${VAR_TYPE}"}
                 local MIGRATE_VAR="${APPNAME}${REST_VAR}"
-                if [[ ! "${REST_VAR}" =~ ${DONT_MIGRATE_APPVARS} ]]; then
+                if [[ ! ${REST_VAR} =~ ${DONT_MIGRATE_APPVARS} ]]; then
                     APP_MIGRATE_LIST["${SET_VAR}"]=${MIGRATE_VAR}
                 fi
                 ;;
@@ -37,7 +37,7 @@ appvars_create() {
                 # Variable already exists
                 continue
             fi
-            
+
             local MIGRATE_VAR=${APP_MIGRATE_LIST["${SET_VAR}"]-}
             if [[ -n ${MIGRATE_VAR} ]]; then
                 if grep -q -P "^${MIGRATE_VAR}=" "${COMPOSE_ENV}"; then
