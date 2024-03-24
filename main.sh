@@ -438,8 +438,8 @@ main() {
         exit
     fi
     if [[ -n ${ENV-} ]]; then
-        run_script 'env_update'
         run_script 'appvars_create_all'
+        run_script 'env_update'
         exit
     fi
     if [[ -n ${ENVMETHOD-} ]]; then
