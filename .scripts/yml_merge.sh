@@ -3,8 +3,8 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 yml_merge() {
-    run_script 'env_update'
     run_script 'appvars_create_all'
+    run_script 'env_update'
     info "Compiling enabled templates to merge docker-compose.yml file."
     local COMPOSE_FILE
     COMPOSE_FILE="${SCRIPTPATH}/compose/.reqs/r1.yml"
