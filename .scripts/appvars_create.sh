@@ -23,7 +23,7 @@ appvars_create() {
             error "Unable to find labels for ${APPNAME}"
             return
         fi
-        debug "appvars_creates.sh: ${APP_LABEL_LINES[@]@A}"
+        debug "appvars_creates.sh: ${APP_LABEL_LINES[*]@A}"
 
         for line in "${APP_LABEL_LINES[@]}"; do
             local SET_VAR
@@ -36,8 +36,8 @@ appvars_create() {
             [[ -n ${SET_VAR} ]] && APP_VAR_VALUE["${SET_VAR^^}"]=${SET_VAL}
         done
     }
-    debug "appvars_create.sh: ${APP_VAR_VALUE[@]@A}"
-    
+    debug "appvars_create.sh: ${APP_VAR_VALUE[*]@A}"
+
     # Build variable search string, APP_VAR_SEARCH="^(VAR1|VAR2|VAR3)$"
     APP_VAR_SEARCH=$(
         IFS='|'
@@ -60,7 +60,7 @@ appvars_create() {
                 ;;
         esac
     done
-    debug "appvars_create.sh: ${APP_VAR_MIGRATE[@]@A}"
+    debug "appvars_create.sh: ${APP_VAR_MIGRATE[*]@A}"
 
     # Actual processing starts here
     info "Creating environment variables for ${APPNAME}."
