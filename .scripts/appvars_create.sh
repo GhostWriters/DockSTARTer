@@ -12,7 +12,7 @@ appvars_create() {
 
     local -A APP_VAR_VALUE
     local APP_VAR_SEARCH
-    local -A APP_MIGRATE_VAR
+    local -A APP_VAR_MIGRATE
 
     # Build variable values lookup array, APP_VAR_VALUES["variable"]="default value"
     {
@@ -23,21 +23,27 @@ appvars_create() {
             error "Unable to find labels for ${APPNAME}"
             return
         fi
+        debug "appvars_creates.sh: ${APP_LABEL_LINES[@]@A}"
 
         for line in "${APP_LABEL_LINES[@]}"; do
             local SET_VAR
             local SET_VAL
+            debug "appvars_create.sh: ${line@A}"
             SET_VAR=$(echo "$line" | grep --color=never -Po "\scom\.dockstarter\.appvars\.\K[\w]+")
+            debug "appvars_create.sh: ${SET_VAR@A}"
             SET_VAL=$(echo "$line" | grep --color=never -Po "\scom\.dockstarter\.appvars\.${SET_VAR}: \K.*" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || true)
+            debug "appvars_create.sh: ${SET_VAL@A}"
             [[ -n ${SET_VAR} ]] && APP_VAR_VALUE["${SET_VAR^^}"]=${SET_VAL}
         done
     }
-
+    debug "appvars_create.sh: ${APP_VAR_VALUE[@]@A}"
+    
     # Build variable search string, APP_VAR_SEARCH="^(VAR1|VAR2|VAR3)$"
     APP_VAR_SEARCH=$(
         IFS='|'
         printf '^(%s)$' "${!APP_VAR_VALUE[*]}"
     )
+    debug "appvars_create.sh: ${APP_VAR_SEARCH@A}"
 
     # Build migrate variable lookup array, APP_MIGRATE_VAR["variable"]="migrate variable"
     for SET_VAR in "${!APP_VAR_VALUE[@]}"; do
@@ -49,11 +55,12 @@ appvars_create() {
                 REST_VAR=${REST_VAR#"${VAR_TYPE}"}
                 local MIGRATE_VAR="${APPNAME}${REST_VAR}"
                 if [[ ! ${MIGRATE_VAR} =~ ${APP_VAR_SEARCH} ]]; then
-                    APP_MIGRATE_VAR["${SET_VAR}"]=${MIGRATE_VAR}
+                    APP_VAR_MIGRATE["${SET_VAR}"]=${MIGRATE_VAR}
                 fi
                 ;;
         esac
     done
+    debug "appvars_create.sh: ${APP_VAR_MIGRATE[@]@A}"
 
     # Actual processing starts here
     info "Creating environment variables for ${APPNAME}."
@@ -63,15 +70,12 @@ appvars_create() {
             continue
         fi
 
-        local MIGRATE_VAR=${APP_MIGRATE_VAR["${SET_VAR}"]-}
-        if [[ -n ${MIGRATE_VAR} ]]; then
-            if grep -q -P "^${MIGRATE_VAR}=" "${COMPOSE_ENV}"; then
-                # Migrate old variable
-                run_script 'env_rename' "${MIGRATE_VAR}" "${SET_VAR}"
-                continue
-            fi
+        local MIGRATE_VAR=${APP_VAR_MIGRATE["${SET_VAR}"]-}
+        if [[ -n ${MIGRATE_VAR} ]] && grep -q -P "^${MIGRATE_VAR}=" "${COMPOSE_ENV}"; then
+            # Migrate old variable
+            run_script 'env_rename' "${MIGRATE_VAR}" "${SET_VAR}"
+            continue
         fi
-
         # Add new variable
         local DEFAULT_VAL=${APP_VAR_VALUE["${SET_VAR}"]}
         notice "Adding ${SET_VAR}='${DEFAULT_VAL}' in ${COMPOSE_ENV} file."
@@ -82,7 +86,7 @@ appvars_create() {
 }
 
 test_appvars_create() {
-    run_script 'env_update'
     run_script 'appvars_create' WATCHTOWER
+    run_script 'env_update'
     cat "${COMPOSE_ENV}"
 }
