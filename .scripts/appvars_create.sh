@@ -9,7 +9,7 @@ appvars_create() {
     local FILENAME=${APPNAME,,}
     local APPTEMPLATES="${APPSFOLDER}/${FILENAME}"
     local APPLABELFILE="${APPTEMPLATES}/${FILENAME}.labels.yml"
-    
+
     local -A APP_VAR_VALUE
     local APP_VAR_SEARCH
     local -A APP_MIGRATE_VAR
