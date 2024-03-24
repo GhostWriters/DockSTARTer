@@ -13,7 +13,10 @@ appvars_create() {
     local -A APP_VAR_VALUE
     local APP_VAR_SEARCH
     local -A APP_MIGRATE_VAR
+
+    # Build variable values lookup array, APP_VAR_VALUES["variable"]="default value"
     {
+        # Read all lines with labels into temporary APP_LABEL_LINES array
         local -a APP_LABEL_LINES
         mapfile -t APP_LABEL_LINES < <(grep --color=never -P "\scom\.dockstarter\.appvars\.\K[\w]+" "${APPLABELFILE}" || true)
         if [[ -z ${APP_LABEL_LINES[*]} ]]; then
@@ -30,11 +33,13 @@ appvars_create() {
         done
     }
 
+    # Build variable search string, APP_VAR_SEARCH="^(VAR1|VAR2|VAR3)$"
     APP_VAR_SEARCH=$(
         IFS='|'
         printf '^(%s)$' "${!APP_VAR_VALUE[*]}"
     )
 
+    # Build migrate variable lookup array, APP_MIGRATE_VAR["variable"]="migrate variable"
     for SET_VAR in "${!APP_VAR_VALUE[@]}"; do
         local APPNAME=${SET_VAR%%_*}
         local REST_VAR=${SET_VAR#"${APPNAME}_"}
@@ -50,6 +55,7 @@ appvars_create() {
         esac
     done
 
+    # Actual processing starts here
     info "Creating environment variables for ${APPNAME}."
     for SET_VAR in "${!APP_VAR_VALUE[@]}"; do
         if grep -q -P "^${SET_VAR}=" "${COMPOSE_ENV}"; then
@@ -65,6 +71,7 @@ appvars_create() {
                 continue
             fi
         fi
+
         # Add new variable
         local DEFAULT_VAL=${APP_VAR_VALUE["${SET_VAR}"]}
         notice "Adding ${SET_VAR}='${DEFAULT_VAL}' in ${COMPOSE_ENV} file."
