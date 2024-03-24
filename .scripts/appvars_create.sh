@@ -21,7 +21,7 @@ appvars_create() {
             return
         fi
 
-        for line in ${APP_LABEL_LINES[@]}; do
+        for line in "${APP_LABEL_LINES[@]}"; do
             local SET_VAR
             local SET_VAL
             SET_VAR=$(echo "$line" | grep --color=never -Po "\scom\.dockstarter\.appvars\.\K[\w]+")
