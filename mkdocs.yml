@@ -189,6 +189,7 @@ nav:
       - apps/netdata.md
       - apps/nextcloud.md
       - apps/nodered.md
+      - apps/nzbget.md
       - apps/nzbhydra2.md
       - apps/omadacontroller.md
       - apps/ombi.md
