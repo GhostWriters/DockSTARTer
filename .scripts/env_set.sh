@@ -11,6 +11,7 @@ env_set() {
     local VAR_VAL
     if VAR_VAL=$(grep --color=never -P "^${SET_VAR}=" "${VAR_FILE}"); then
         # Variable exists, change its value
+        debug "env_set.sh: Rep: SET_VAR=${SET_VAR}, NEW_VAL=${NEW_VAL}"
         # https://stackoverflow.com/questions/29613304/is-it-possible-to-escape-regex-metacharacters-reliably-with-sed/29613573#29613573
         local SED_FIND
         SED_FIND=$(sed 's/[^^]/[&]/g; s/\^/\\^/g' <<< "${VAR_VAL}")
@@ -19,6 +20,7 @@ env_set() {
         sed -i "s/^${SED_FIND}$/${SED_REPLACE}/" "${VAR_FILE}" || fatal "Failed to set ${SED_REPLACE}\nFailing command: ${F[C]}sed -i \"s/^${SED_FIND}$/${SED_REPLACE}/\" \"${VAR_FILE}\""
     else
         # Variable doesn't exist, add it
+        debug "env_set.sh: Add: SET_VAR=${SET_VAR}, NEW_VAL=${NEW_VAL}"
         echo "${SET_VAR}=${NEW_VAL}" >> "${VAR_FILE}" || fatal "Failed to set ${SET_VAR}=${NEW_VAL}\nFailing command: ${F[C]} \"${SET_VAR}=${NEW_VAL}\" >> \"${VAR_FILE}\""
     fi
 }
