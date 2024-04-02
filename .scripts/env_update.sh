@@ -82,7 +82,6 @@ env_update() {
                 local SET_VAL
                 SET_VAR=${line%%=*}
                 SET_VAL=$(run_script 'env_get' "${SET_VAR}" "${MKTEMP_ENV_CURRENT}")
-                echo "${line}" >> "${MKTEMP_ENV_UPDATED}" || error "${line} could not be written to ${MKTEMP_ENV_UPDATED}"
                 run_script 'env_set' "${SET_VAR}" "${SET_VAL}" "${MKTEMP_ENV_UPDATED}"
             done
         fi
@@ -96,7 +95,6 @@ env_update() {
                 local SET_VAL
                 SET_VAR=${line%%=*}
                 SET_VAL=$(run_script 'env_get' "${SET_VAR}" "${MKTEMP_ENV_CURRENT}")
-                echo "${line}" >> "${MKTEMP_ENV_UPDATED}" || error "${line} could not be written to ${MKTEMP_ENV_UPDATED}"
                 run_script 'env_set' "${SET_VAR}" "${SET_VAL}" "${MKTEMP_ENV_UPDATED}"
             done
         fi

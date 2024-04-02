@@ -79,7 +79,6 @@ appvars_create() {
         # Add new variable
         local DEFAULT_VAL=${APP_VAR_VALUE["${SET_VAR}"]}
         notice "Adding ${SET_VAR}='${DEFAULT_VAL}' in ${COMPOSE_ENV} file."
-        echo "${SET_VAR}=" >> "${COMPOSE_ENV}"
         run_script 'env_set' "${SET_VAR}" "${DEFAULT_VAL}"
     done
     run_script 'env_set' "${APPNAME}_ENABLED" true
