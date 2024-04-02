@@ -9,7 +9,7 @@ env_set() {
     NEW_VAL=$(printf "%s\n" "${2-}" | sed -e "s/'/'\"'\"'/g" -e "1s/^/'/" -e "\$s/\$/'/")
     local VAR_FILE=${3:-$COMPOSE_ENV}
     local VAR_VAL
-    if VAR_VAL=$(grep --color=never -P "^${SET_VAR}=" "${VAR_FILE}"); then
+    if VAR_VAL=$(grep --color=never -m 1 -P "^${SET_VAR}=" "${VAR_FILE}"); then
         # Variable exists, change its value
         debug "env_set.sh: Rep: SET_VAR=${SET_VAR}, NEW_VAL=${NEW_VAL}"
         # https://stackoverflow.com/questions/29613304/is-it-possible-to-escape-regex-metacharacters-reliably-with-sed/29613573#29613573
