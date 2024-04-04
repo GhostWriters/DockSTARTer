@@ -23,7 +23,7 @@ env_set() {
     else
         # Variable doesn't exist, add it
         debug "env_set.sh: Add: SET_VAR=${SET_VAR}, NEW_VAL=${NEW_VAL}"
-        echo "${SET_VAR}=${NEW_VAL}" >> "${VAR_FILE}" || fatal "Failed to set ${SET_VAR}=${NEW_VAL}\nFailing command: ${F[C]} \"${SET_VAR}=${NEW_VAL}\" >> \"${VAR_FILE}\""
+        echo "${SET_VAR}=${NEW_VAL}" >> "${VAR_FILE}" || fatal "Failed to set ${SET_VAR}=${NEW_VAL}\nFailing command: ${F[C]} \"echo ${SET_VAR}=${NEW_VAL}\" >> \"${VAR_FILE}\""
     fi
 }
 
