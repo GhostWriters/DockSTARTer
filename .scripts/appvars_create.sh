@@ -22,22 +22,17 @@ appvars_create() {
             error "Unable to find labels for ${APPNAME}"
             return
         fi
-        debug "appvars_creates.sh: ${APP_LABEL_LINES[*]@A}"
 
         for line in "${APP_LABEL_LINES[@]}"; do
             local SET_VAR
             local SET_VAL
-            debug "appvars_create.sh: ${line@A}"
             SET_VAR=$(echo "$line" | grep --color=never -Po "\scom\.dockstarter\.appvars\.\K[\w]+")
-            debug "appvars_create.sh: ${SET_VAR@A}"
             SET_VAL=$(echo "$line" | grep --color=never -Po "\scom\.dockstarter\.appvars\.${SET_VAR}: \K.*" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || true)
-            debug "appvars_create.sh: ${SET_VAL@A}"
             if [[ -n ${SET_VAR} ]]; then
                 APP_VAR_VALUE["${SET_VAR^^}"]=${SET_VAL}
             fi
         done
     }
-    debug "appvars_create.sh: ${APP_VAR_VALUE[*]@A}"
 
     # Build migrate variable lookup array, APP_MIGRATE_VAR["variable"]="migrate from variable"
     for SET_VAR in "${!APP_VAR_VALUE[@]}"; do
@@ -48,8 +43,7 @@ appvars_create() {
             ENVIRONMENT | VOLUME)
                 REST_VAR=${REST_VAR#"${VAR_TYPE}"}
                 local MIGRATE_VAR="${APPNAME}${REST_VAR}"
-                # shellcheck disable=SC2076
-                if [[ ! " ${MIGRATE_VAR} " =~ " ${!APP_VAR_VALUE[*]} " ]]; then
+                if [[ " ${!APP_VAR_VALUE[@]} " != *" ${MIGRATE_VAR} "* ]]; then
                     # Potential "migrate from" variable isn't an existing app variable, add it to the migrate list
                     APP_VAR_MIGRATE["${SET_VAR}"]=${MIGRATE_VAR}
                 fi

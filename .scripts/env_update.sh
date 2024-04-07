@@ -22,13 +22,14 @@ env_update() {
     local INSTALLED_APPS=()
     #local ENABLED_APPS=()
     local APPTEMPLATESFOLDER="${SCRIPTPATH}/compose/.apps"
+
     mapfile -t BUILTIN_APPS < <(find "${APPTEMPLATESFOLDER}" -maxdepth 1 -mindepth 1 -type d -exec basename {} \;)
     mapfile -t ENABLED_LINES < <(grep --color=never -P '^[A-Z0-9]\w+_ENABLED=' "${MKTEMP_ENV_CURRENT}")
+
     for line in "${ENABLED_LINES[@]}"; do
         local VAR=${line%%=*}
         local APPNAME=${VAR%%_*}
-        # shellcheck disable=SC2076
-        if [[ " ${BUILTIN_APPS[*]^^} " =~ " ${APPNAME} " ]]; then
+        if [[ " ${BUILTIN_APPS[@]^^} " == *" ${APPNAME} "* ]]; then
             INSTALLED_APPS+=("${APPNAME}")
             #if [ "$(run_script 'env_get' "${VAR}" "${MKTEMP_ENV_CURRENT}")" = 'true' ]; then
             #    ENABLED_APPS+=("${APPNAME}")
@@ -57,16 +58,14 @@ env_update() {
             else
                 # Variable does not already exist
                 if [[ -z ${APP_LABEL_LIST[*]} ]]; then
-                    # shellcheck disable=SC2076
-                    if [[ " ${INSTALLED_APPS[*]} " =~ " ${APPNAME} " ]]; then
+                    if [[ " ${INSTALLED_APPS[@]} " == *" ${APPNAME} "* ]]; then
                         # Create array of labels for current app being processed
                         local APPTEMPLATE="${APPTEMPLATESFOLDER}/${APPNAME,,}/${APPNAME,,}.labels.yml"
                         mapfile -t APP_LABEL_LIST < <(grep --color=never -Po "\scom\.dockstarter\.appvars\.\K[\w]+" "${APPTEMPLATE}" || true)
                         APP_LABEL_LIST=("${APP_LABEL_LIST[@]^^}")
                     fi
                 fi
-                # shellcheck disable=SC2076
-                if [[ " ${APP_LABEL_LIST[*]} " =~ " ${SET_VAR} " ]]; then
+                if [[ " ${APP_LABEL_LIST[@]} " == *" ${SET_VAR} "* ]]; then
                     # Variable is built in
                     ENV_BUILTIN_LINES+=("${line}")
                 else
@@ -76,6 +75,7 @@ env_update() {
             fi
             unset 'ARRAY_ENV_CURRENT[index]'
         done
+
         if [[ -n ${ENV_BUILTIN_LINES[*]} ]]; then
             # Add all built in variables for app
             echo "#" >> "${MKTEMP_ENV_UPDATED}" || error "# could not be written to ${MKTEMP_ENV_UPDATED}"
