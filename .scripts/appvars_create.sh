@@ -33,19 +33,14 @@ appvars_create() {
             debug "appvars_create.sh: ${SET_VAR@A}"
             SET_VAL=$(echo "$line" | grep --color=never -Po "\scom\.dockstarter\.appvars\.${SET_VAR}: \K.*" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || true)
             debug "appvars_create.sh: ${SET_VAL@A}"
-            [[ -n ${SET_VAR} ]] && APP_VAR_VALUE["${SET_VAR^^}"]=${SET_VAL}
+            if [[ -n ${SET_VAR} ]]; then
+                APP_VAR_VALUE["${SET_VAR^^}"]=${SET_VAL}
+            fi
         done
     }
     debug "appvars_create.sh: ${APP_VAR_VALUE[*]@A}"
 
-    # Build variable search string, APP_VAR_SEARCH="^(VAR1|VAR2|VAR3)$"
-    APP_VAR_SEARCH=$(
-        IFS='|'
-        printf '^(%s)$' "${!APP_VAR_VALUE[*]}"
-    )
-    debug "appvars_create.sh: ${APP_VAR_SEARCH@A}"
-
-    # Build migrate variable lookup array, APP_MIGRATE_VAR["variable"]="migrate variable"
+    # Build migrate variable lookup array, APP_MIGRATE_VAR["variable"]="migrate from variable"
     for SET_VAR in "${!APP_VAR_VALUE[@]}"; do
         local APPNAME=${SET_VAR%%_*}
         local REST_VAR=${SET_VAR#"${APPNAME}_"}
@@ -54,7 +49,8 @@ appvars_create() {
             ENVIRONMENT | VOLUME)
                 REST_VAR=${REST_VAR#"${VAR_TYPE}"}
                 local MIGRATE_VAR="${APPNAME}${REST_VAR}"
-                if [[ ! ${MIGRATE_VAR} =~ ${APP_VAR_SEARCH} ]]; then
+                if [[ ! " ${MIGRATE_VAR} " =~ " ${!APP_VAR_VALUE[*]} " ]]; then
+                    # Potential "migrate from" variable isn't an existing app variable, add it to the migrate list
                     APP_VAR_MIGRATE["${SET_VAR}"]=${MIGRATE_VAR}
                 fi
                 ;;
@@ -74,12 +70,12 @@ appvars_create() {
         if [[ -n ${MIGRATE_VAR} ]] && grep -q -P "^${MIGRATE_VAR}=" "${COMPOSE_ENV}"; then
             # Migrate old variable
             run_script 'env_rename' "${MIGRATE_VAR}" "${SET_VAR}"
-            continue
+        else
+            # Add new variable
+            local DEFAULT_VAL=${APP_VAR_VALUE["${SET_VAR}"]}
+            notice "Adding ${SET_VAR}='${DEFAULT_VAL}' in ${COMPOSE_ENV} file."
+            run_script 'env_set' "${SET_VAR}" "${DEFAULT_VAL}"
         fi
-        # Add new variable
-        local DEFAULT_VAL=${APP_VAR_VALUE["${SET_VAR}"]}
-        notice "Adding ${SET_VAR}='${DEFAULT_VAL}' in ${COMPOSE_ENV} file."
-        run_script 'env_set' "${SET_VAR}" "${DEFAULT_VAL}"
     done
     run_script 'env_set' "${APPNAME}_ENABLED" true
 }

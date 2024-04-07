@@ -20,18 +20,18 @@ env_update() {
     local BUILTIN_APPS=()
     local ENABLED_LINES=()
     local INSTALLED_APPS=()
-    local ENABLED_APPS=()
+    #local ENABLED_APPS=()
     local APPTEMPLATESFOLDER="${SCRIPTPATH}/compose/.apps"
     mapfile -t BUILTIN_APPS < <(find "${APPTEMPLATESFOLDER}" -maxdepth 1 -mindepth 1 -type d -exec basename {} \;)
     mapfile -t ENABLED_LINES < <(grep --color=never -P '^[A-Z0-9]\w+_ENABLED=' "${MKTEMP_ENV_CURRENT}")
     for line in "${ENABLED_LINES[@]}"; do
         local VAR=${line%%=*}
         local APPNAME=${VAR%%_*}
-        if inArray "${APPNAME}" "${BUILTIN_APPS[@]^^}"; then
+        if [[ " ${APPNAME} " =~ " ${BUILTIN_APPS[*]^^} " ]]; then
             INSTALLED_APPS+=("${APPNAME}")
-            if [ "$(run_script 'env_get' "${VAR}" "${MKTEMP_ENV_CURRENT}")" = 'true' ]; then
-                ENABLED_APPS+=("${APPNAME}")
-            fi
+            #if [ "$(run_script 'env_get' "${VAR}" "${MKTEMP_ENV_CURRENT}")" = 'true' ]; then
+            #    ENABLED_APPS+=("${APPNAME}")
+            #fi
         fi
     done
 
@@ -56,13 +56,14 @@ env_update() {
             else
                 # Variable does not already exist
                 if [[ -z ${APP_LABEL_LIST[*]} ]]; then
-                    if inArray "${APPNAME}" "${INSTALLED_APPS[@]}"; then
+                    if [[ " ${APPNAME} "  =~ " ${INSTALLED_APPS[*]} " ]]; then
+                        # Create array of labels for current app being processed
                         local APPTEMPLATE="${APPTEMPLATESFOLDER}/${APPNAME,,}/${APPNAME,,}.labels.yml"
                         mapfile -t APP_LABEL_LIST < <(grep --color=never -Po "\scom\.dockstarter\.appvars\.\K[\w]+" "${APPTEMPLATE}" || true)
                         APP_LABEL_LIST=("${APP_LABEL_LIST[@]^^}")
                     fi
                 fi
-                if inArray "${SET_VAR}" "${APP_LABEL_LIST[@]}"; then
+                if [[ " ${SET_VAR} " =~ " ${APP_LABEL_LIST[*]} " ]]; then
                     # Variable is built in
                     ENV_BUILTIN_LINES+=("${line}")
                 else
@@ -102,20 +103,13 @@ env_update() {
         LAST_APPNAME=${APPNAME}
         ARRAY_ENV_CURRENT=("${ARRAY_ENV_CURRENT[@]}")
     done
+    
     rm -f "${MKTEMP_ENV_CURRENT}" || warn "Failed to remove temporary .env update file.\nFailing command: ${F[C]}rm -f \"${MKTEMP_ENV_CURRENT}\""
     cp -f "${MKTEMP_ENV_UPDATED}" "${COMPOSE_ENV}" || fatal "Failed to copy file.\nFailing command: ${F[C]}cp -f \"${MKTEMP_ENV_UPDATED}\" \"${COMPOSE_ENV}\""
     rm -f "${MKTEMP_ENV_UPDATED}" || warn "Failed to remove temporary .env update file.\nFailing command: ${F[C]}rm -f \"${MKTEMP_ENV_UPDATED}\""
     run_script 'set_permissions' "${COMPOSE_ENV}"
     run_script 'env_sanitize'
     info "Environment file update complete."
-}
-
-inArray() {
-    # Check if $1 is in array $2
-    local e match="$1"
-    shift
-    for e; do [[ $e == "$match" ]] && return 0; done
-    return 1
 }
 
 test_env_update() {
