@@ -43,6 +43,7 @@ appvars_create() {
             ENVIRONMENT | VOLUME)
                 REST_VAR=${REST_VAR#"${VAR_TYPE}"}
                 local MIGRATE_VAR="${APPNAME}${REST_VAR}"
+                # shellcheck disable=SC2199
                 if [[ " ${!APP_VAR_VALUE[@]} " != *" ${MIGRATE_VAR} "* ]]; then
                     # Potential "migrate from" variable isn't an existing app variable, add it to the migrate list
                     APP_VAR_MIGRATE["${SET_VAR}"]=${MIGRATE_VAR}

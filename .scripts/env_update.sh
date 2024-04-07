@@ -29,6 +29,7 @@ env_update() {
     for line in "${ENABLED_LINES[@]}"; do
         local VAR=${line%%=*}
         local APPNAME=${VAR%%_*}
+        # shellcheck disable=SC2199
         if [[ " ${BUILTIN_APPS[@]^^} " == *" ${APPNAME} "* ]]; then
             INSTALLED_APPS+=("${APPNAME}")
             #if [ "$(run_script 'env_get' "${VAR}" "${MKTEMP_ENV_CURRENT}")" = 'true' ]; then
@@ -58,6 +59,7 @@ env_update() {
             else
                 # Variable does not already exist
                 if [[ -z ${APP_LABEL_LIST[*]} ]]; then
+                    # shellcheck disable=SC2199
                     if [[ " ${INSTALLED_APPS[@]} " == *" ${APPNAME} "* ]]; then
                         # Create array of labels for current app being processed
                         local APPTEMPLATE="${APPTEMPLATESFOLDER}/${APPNAME,,}/${APPNAME,,}.labels.yml"
@@ -65,6 +67,7 @@ env_update() {
                         APP_LABEL_LIST=("${APP_LABEL_LIST[@]^^}")
                     fi
                 fi
+                # shellcheck disable=SC2199
                 if [[ " ${APP_LABEL_LIST[@]} " == *" ${SET_VAR} "* ]]; then
                     # Variable is built in
                     ENV_BUILTIN_LINES+=("${line}")
