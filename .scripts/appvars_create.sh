@@ -11,7 +11,6 @@ appvars_create() {
     local APPLABELFILE="${APPTEMPLATES}/${FILENAME}.labels.yml"
 
     local -A APP_VAR_VALUE
-    local APP_VAR_SEARCH
     local -A APP_VAR_MIGRATE
 
     # Build variable values lookup array, APP_VAR_VALUES["variable"]="default value"
