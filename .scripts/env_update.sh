@@ -92,11 +92,11 @@ env_update() {
             unset 'ARRAY_ENV_CURRENT[index]'
         done
 
-        # Add the lines in the built in list and user defined list for last app being processed if they exist
+        # Add the lines to the env file from the built in list and user defined list for last app being processed
         AddEnvSection "${MKTEMP_ENV_CURRENT}" "${MKTEMP_ENV_UPDATED}" "${LAST_APPNAME-}" "${ENV_BUILTIN_LINES[@]}"
         AddEnvSection "${MKTEMP_ENV_CURRENT}" "${MKTEMP_ENV_UPDATED}" "${LAST_APPNAME-} (User Defined)" "${ENV_USER_DEFINED_LINES[@]}"
 
-        # Set last app worked on, remove all processed lines from array
+        # Set last app worked on, permanently remove all processed lines from array
         LAST_APPNAME=${APPNAME}
         ARRAY_ENV_CURRENT=("${ARRAY_ENV_CURRENT[@]}")
     done
