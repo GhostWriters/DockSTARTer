@@ -44,7 +44,7 @@ env_update() {
         local APPNAME
         local LAST_APPNAME
         local -a APP_LABEL_LIST
-        
+
         for index in "${!ARRAY_ENV_CURRENT[@]}"; do
             local line="${ARRAY_ENV_CURRENT[$index]}"
             local SET_VAR=${line%%=*}
@@ -103,9 +103,9 @@ AddEnvSection() { # OLD_ENVFILE, NEW_ENVFILE, HEADING, [lines]
     if [[ -n $* ]]; then
         if [[ -n ${HEADING} ]]; then
             printf -v HEADING '#\n# %s\n#\n' "${HEADING}"
-            printf "${HEADING}" >> "${NEW_ENVFILE}" || error "${HEADING} could not be written to ${NEW_ENVFILE}"
+            printf '%s' "${HEADING}" >> "${NEW_ENVFILE}" || error "${HEADING} could not be written to ${NEW_ENVFILE}"
         fi
-        for line in $@; do
+        for line in "$@"; do
             local SET_VAR
             local SET_VAL
             SET_VAR=${line%%=*}
