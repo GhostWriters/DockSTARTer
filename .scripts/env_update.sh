@@ -70,6 +70,7 @@ env_update() {
             else
                 # Variable does not already exist, add it to a list to process
                 if [[ -z ${APP_LABEL_LIST[*]} ]]; then
+                    # Label list is empty, create it
                     # shellcheck disable=SC2199
                     if [[ " ${INSTALLED_APPS[@]} " == *" ${APPNAME} "* ]]; then
                         # Create array of labels for current app being processed
@@ -80,10 +81,10 @@ env_update() {
                 fi
                 # shellcheck disable=SC2199
                 if [[ " ${APP_LABEL_LIST[@]} " == *" ${SET_VAR} "* ]]; then
-                    # Add line to the built in list
+                    # Variable is in label file, add line to the built in list
                     ENV_BUILTIN_LINES+=("${line}")
                 else
-                    # Add line to the user defined list
+                    # Variable is not in label file, add line to the user defined list
                     ENV_USER_DEFINED_LINES+=("${line}")
                 fi
             fi
