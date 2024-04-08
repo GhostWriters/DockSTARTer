@@ -83,6 +83,7 @@ env_update() {
                     ENV_USER_DEFINED_LINES+=("${line}")
                 fi
             fi
+            # Remove processed line from array
             unset 'ARRAY_ENV_CURRENT[index]'
         done
 
@@ -90,8 +91,9 @@ env_update() {
         AddEnvSection "${MKTEMP_ENV_CURRENT}" "${MKTEMP_ENV_UPDATED}" "${LAST_APPNAME-}" "${ENV_BUILTIN_LINES[@]}"
         AddEnvSection "${MKTEMP_ENV_CURRENT}" "${MKTEMP_ENV_UPDATED}" "${LAST_APPNAME-} (User Defined)" "${ENV_USER_DEFINED_LINES[@]}"
 
-        APP_LABEL_LIST=()
+        # Set last app worked on, clear app label list, remove all processed lines from array
         LAST_APPNAME=${APPNAME}
+        APP_LABEL_LIST=()
         ARRAY_ENV_CURRENT=("${ARRAY_ENV_CURRENT[@]}")
     done
 
