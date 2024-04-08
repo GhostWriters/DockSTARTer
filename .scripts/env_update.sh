@@ -17,27 +17,33 @@ env_update() {
     cp "${COMPOSE_ENV}.example" "${MKTEMP_ENV_UPDATED}" || fatal "Failed to copy file.\nFailing command: ${F[C]}cp \"${COMPOSE_ENV}.example\" \"${MKTEMP_ENV_UPDATED}\""
 
     info "Merging current values into updated .env file."
+
     local BUILTIN_APPS=()
-    local ENABLED_LINES=()
     local INSTALLED_APPS=()
     #local ENABLED_APPS=()
     local APPTEMPLATESFOLDER="${SCRIPTPATH}/compose/.apps"
 
+    # Create array of built in apps
     mapfile -t BUILTIN_APPS < <(find "${APPTEMPLATESFOLDER}" -maxdepth 1 -mindepth 1 -type d -exec basename {} \;)
-    mapfile -t ENABLED_LINES < <(grep --color=never -P '^[A-Z0-9]\w+_ENABLED=' "${MKTEMP_ENV_CURRENT}")
 
-    for line in "${ENABLED_LINES[@]}"; do
-        local VAR=${line%%=*}
-        local APPNAME=${VAR%%_*}
-        # shellcheck disable=SC2199
-        if [[ " ${BUILTIN_APPS[@]^^} " == *" ${APPNAME} "* ]]; then
-            INSTALLED_APPS+=("${APPNAME}")
-            #if [ "$(run_script 'env_get' "${VAR}" "${MKTEMP_ENV_CURRENT}")" = 'true' ]; then
-            #    ENABLED_APPS+=("${APPNAME}")
-            #fi
-        fi
-    done
+    # Create array of installed apps
+    {
+        local ENABLED_LINES=()
+        mapfile -t ENABLED_LINES < <(grep --color=never -P '^[A-Z0-9]\w+_ENABLED=' "${MKTEMP_ENV_CURRENT}")
+        for line in "${ENABLED_LINES[@]}"; do
+            local VAR=${line%%=*}
+            local APPNAME=${VAR%%_*}
+            # shellcheck disable=SC2199
+            if [[ " ${BUILTIN_APPS[@]^^} " == *" ${APPNAME} "* ]]; then
+                INSTALLED_APPS+=("${APPNAME}")
+                #if [ "$(run_script 'env_get' "${VAR}" "${MKTEMP_ENV_CURRENT}")" = 'true' ]; then
+                #    ENABLED_APPS+=("${APPNAME}")
+                #fi
+            fi
+        done
+    }
 
+    # Process .env lines
     while [[ -n ${ARRAY_ENV_CURRENT[*]} ]]; do
         local ENV_USER_DEFINED_LINES=()
         local ENV_BUILTIN_LINES=()
@@ -53,12 +59,12 @@ env_update() {
                 break
             fi
             if grep -q -P "^${SET_VAR}=" "${MKTEMP_ENV_UPDATED}"; then
-                # Variable already exists
+                # Variable already exists, update its value
                 local SET_VAL
                 SET_VAL=$(run_script 'env_get' "${SET_VAR}" "${MKTEMP_ENV_CURRENT}")
                 run_script 'env_set' "${SET_VAR}" "${SET_VAL}" "${MKTEMP_ENV_UPDATED}"
             else
-                # Variable does not already exist
+                # Variable does not already exist, add it to a list to process
                 if [[ -z ${APP_LABEL_LIST[*]} ]]; then
                     # shellcheck disable=SC2199
                     if [[ " ${INSTALLED_APPS[@]} " == *" ${APPNAME} "* ]]; then
@@ -70,16 +76,17 @@ env_update() {
                 fi
                 # shellcheck disable=SC2199
                 if [[ " ${APP_LABEL_LIST[@]} " == *" ${SET_VAR} "* ]]; then
-                    # Variable is built in
+                    # Add line to the built in list
                     ENV_BUILTIN_LINES+=("${line}")
                 else
-                    # Variable is user defined
+                    # Add line to the user defined list
                     ENV_USER_DEFINED_LINES+=("${line}")
                 fi
             fi
             unset 'ARRAY_ENV_CURRENT[index]'
         done
 
+        # Add the lines in the built in list and user defined list for last app being processed if they exist
         AddEnvSection "${MKTEMP_ENV_CURRENT}" "${MKTEMP_ENV_UPDATED}" "${LAST_APPNAME-}" "${ENV_BUILTIN_LINES[@]}"
         AddEnvSection "${MKTEMP_ENV_CURRENT}" "${MKTEMP_ENV_UPDATED}" "${LAST_APPNAME-} (User Defined)" "${ENV_USER_DEFINED_LINES[@]}"
 
