@@ -45,17 +45,21 @@ env_update() {
 
     # Process .env lines
     while [[ -n ${ARRAY_ENV_CURRENT[*]} ]]; do
+        # Loop while there are lines in array
         local ENV_USER_DEFINED_LINES=()
         local ENV_BUILTIN_LINES=()
+        local APP_LABEL_LIST=()
+        
         local APPNAME
         local LAST_APPNAME
-        local -a APP_LABEL_LIST
 
         for index in "${!ARRAY_ENV_CURRENT[@]}"; do
+            # Process lines for one app
             local line="${ARRAY_ENV_CURRENT[$index]}"
             local SET_VAR=${line%%=*}
             APPNAME=${SET_VAR%%_*}
             if [ "${APPNAME}" != "${LAST_APPNAME-}" ]; then
+                # Variable for another app, exit for loop
                 break
             fi
             if grep -q -P "^${SET_VAR}=" "${MKTEMP_ENV_UPDATED}"; then
@@ -91,9 +95,8 @@ env_update() {
         AddEnvSection "${MKTEMP_ENV_CURRENT}" "${MKTEMP_ENV_UPDATED}" "${LAST_APPNAME-}" "${ENV_BUILTIN_LINES[@]}"
         AddEnvSection "${MKTEMP_ENV_CURRENT}" "${MKTEMP_ENV_UPDATED}" "${LAST_APPNAME-} (User Defined)" "${ENV_USER_DEFINED_LINES[@]}"
 
-        # Set last app worked on, clear app label list, remove all processed lines from array
+        # Set last app worked on, remove all processed lines from array
         LAST_APPNAME=${APPNAME}
-        APP_LABEL_LIST=()
         ARRAY_ENV_CURRENT=("${ARRAY_ENV_CURRENT[@]}")
     done
 
