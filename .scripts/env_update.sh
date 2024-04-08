@@ -44,6 +44,7 @@ env_update() {
         local APPNAME
         local LAST_APPNAME
         local -a APP_LABEL_LIST
+        
         for index in "${!ARRAY_ENV_CURRENT[@]}"; do
             local line="${ARRAY_ENV_CURRENT[$index]}"
             local SET_VAR=${line%%=*}
@@ -79,32 +80,9 @@ env_update() {
             unset 'ARRAY_ENV_CURRENT[index]'
         done
 
-        if [[ -n ${ENV_BUILTIN_LINES[*]} ]]; then
-            # Add all built in variables for app
-            echo "#" >> "${MKTEMP_ENV_UPDATED}" || error "# could not be written to ${MKTEMP_ENV_UPDATED}"
-            echo "# ${LAST_APPNAME}" >> "${MKTEMP_ENV_UPDATED}" || error "# ${LAST_APPNAME} could not be written to ${MKTEMP_ENV_UPDATED}"
-            echo "#" >> "${MKTEMP_ENV_UPDATED}" || error "# could not be written to ${MKTEMP_ENV_UPDATED}"
-            for line in "${ENV_BUILTIN_LINES[@]}"; do
-                local SET_VAR
-                local SET_VAL
-                SET_VAR=${line%%=*}
-                SET_VAL=$(run_script 'env_get' "${SET_VAR}" "${MKTEMP_ENV_CURRENT}")
-                run_script 'env_set' "${SET_VAR}" "${SET_VAL}" "${MKTEMP_ENV_UPDATED}"
-            done
-        fi
-        if [[ -n ${ENV_USER_DEFINED_LINES[*]} ]]; then
-            # Add all user defined variables for app
-            echo "#" >> "${MKTEMP_ENV_UPDATED}" || error "# could not be written to ${MKTEMP_ENV_UPDATED}"
-            echo "# ${LAST_APPNAME} (User Defined)" >> "${MKTEMP_ENV_UPDATED}" || error "# ${LAST_APPNAME} (User Defined) could not be written to ${MKTEMP_ENV_UPDATED}"
-            echo "#" >> "${MKTEMP_ENV_UPDATED}" || error "# could not be written to ${MKTEMP_ENV_UPDATED}"
-            for line in "${ENV_USER_DEFINED_LINES[@]}"; do
-                local SET_VAR
-                local SET_VAL
-                SET_VAR=${line%%=*}
-                SET_VAL=$(run_script 'env_get' "${SET_VAR}" "${MKTEMP_ENV_CURRENT}")
-                run_script 'env_set' "${SET_VAR}" "${SET_VAL}" "${MKTEMP_ENV_UPDATED}"
-            done
-        fi
+        AddEnvSection "${MKTEMP_ENV_CURRENT}" "${MKTEMP_ENV_UPDATED}" "${LAST_APPNAME-}" "${ENV_BUILTIN_LINES[@]}"
+        AddEnvSection "${MKTEMP_ENV_CURRENT}" "${MKTEMP_ENV_UPDATED}" "${LAST_APPNAME-} (User Defined)" "${ENV_USER_DEFINED_LINES[@]}"
+
         APP_LABEL_LIST=()
         LAST_APPNAME=${APPNAME}
         ARRAY_ENV_CURRENT=("${ARRAY_ENV_CURRENT[@]}")
@@ -116,6 +94,25 @@ env_update() {
     run_script 'set_permissions' "${COMPOSE_ENV}"
     run_script 'env_sanitize'
     info "Environment file update complete."
+}
+
+AddEnvSection() { # OLD_ENVFILE, NEW_ENVFILE, HEADING, [lines]
+    local OLD_ENVFILE=${1-}; shift
+    local NEW_ENVFILE=${1-}; shift
+    local HEADING=${1-}; shift
+    if [[ -n $* ]]; then
+        if [[ -n ${HEADING} ]]; then
+            printf -v HEADING '#\n# %s\n#\n' "${HEADING}"
+            printf "${HEADING}" >> "${NEW_ENVFILE}" || error "${HEADING} could not be written to ${NEW_ENVFILE}"
+        fi
+        for line in $@; do
+            local SET_VAR
+            local SET_VAL
+            SET_VAR=${line%%=*}
+            SET_VAL=$(run_script 'env_get' "${SET_VAR}" "${OLD_ENVFILE}")
+            run_script 'env_set' "${SET_VAR}" "${SET_VAL}" "${NEW_ENVFILE}"
+        done
+    fi
 }
 
 test_env_update() {
