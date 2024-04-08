@@ -97,9 +97,12 @@ env_update() {
 }
 
 AddEnvSection() { # OLD_ENVFILE, NEW_ENVFILE, HEADING, [lines]
-    local OLD_ENVFILE=${1-}; shift
-    local NEW_ENVFILE=${1-}; shift
-    local HEADING=${1-}; shift
+    local OLD_ENVFILE=${1-}
+    shift
+    local NEW_ENVFILE=${1-}
+    shift
+    local HEADING=${1-}
+    shift
     if [[ -n $* ]]; then
         if [[ -n ${HEADING} ]]; then
             printf -v HEADING '#\n# %s\n#\n' "${HEADING}"
