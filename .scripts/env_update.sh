@@ -46,15 +46,16 @@ env_update() {
     # Process .env lines
     while [[ -n ${ARRAY_ENV_CURRENT[*]} ]]; do
         # Loop while there are lines in array
-        local ENV_USER_DEFINED_LINES=()
-        local ENV_BUILTIN_LINES=()
-        local APP_LABEL_LIST=()
-
         local APPNAME
         local LAST_APPNAME
 
+        # Clear lists before processing an app's variables
+        local APP_LABEL_LIST=()
+        local ENV_BUILTIN_LINES=()
+        local ENV_USER_DEFINED_LINES=()
+
+        # Process lines for one app
         for index in "${!ARRAY_ENV_CURRENT[@]}"; do
-            # Process lines for one app
             local line="${ARRAY_ENV_CURRENT[$index]}"
             local SET_VAR=${line%%=*}
             APPNAME=${SET_VAR%%_*}
