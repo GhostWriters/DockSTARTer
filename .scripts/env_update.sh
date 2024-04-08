@@ -49,7 +49,7 @@ env_update() {
         local ENV_USER_DEFINED_LINES=()
         local ENV_BUILTIN_LINES=()
         local APP_LABEL_LIST=()
-        
+
         local APPNAME
         local LAST_APPNAME
 
