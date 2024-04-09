@@ -35,7 +35,7 @@ env_update() {
         mapfile -t VAR_LINES < <(printf '%s\n' "${UPDATED_ENV_LINES[@]}" | grep -n -o -P '^[A-Z0-9_]*(?=[=])')
         for line in "${VAR_LINES[@]}"; do
             local index=${line%:*}
-            index=$((index-1))
+            index=$((index - 1))
             local VAR=${line#*:}
             UPDATED_ENV_VAR_INDEX_MAP[$VAR]=$index
         done
@@ -67,7 +67,7 @@ env_update() {
     # Create sorted array of vars in current .env file
     local -a CURRENT_ENV_VARS
     mapfile -t CURRENT_ENV_VARS < <(printf '%s\n' "${!CURRENT_ENV_VAR_LINE[@]}" | sort)
-    
+
     # Process .env lines
     while [[ -n ${CURRENT_ENV_VARS[*]} ]]; do
         # Loop while there are lines in array
@@ -123,7 +123,7 @@ env_update() {
             UPDATED_ENV_LINES+=("${HEADING}")
             for VAR in "${ENV_BUILTIN_VARS[@]}"; do
                 UPDATED_ENV_LINES+=("${CURRENT_ENV_VAR_LINE[$VAR]}")
-                UPDATED_ENV_VAR_INDEX_MAP[$VAR]=$((${#UPDATED_ENV_LINES[@]}-1))
+                UPDATED_ENV_VAR_INDEX_MAP[$VAR]=$((${#UPDATED_ENV_LINES[@]} - 1))
             done
         fi
         if [[ -n ${ENV_USER_DEFINED_VARS[*]} ]]; then
@@ -133,7 +133,7 @@ env_update() {
             UPDATED_ENV_LINES+=("${HEADING}")
             for VAR in "${ENV_USER_DEFINED_VARS[@]}"; do
                 UPDATED_ENV_LINES+=("${CURRENT_ENV_VAR_LINE[$VAR]}")
-                UPDATED_ENV_VAR_INDEX_MAP[$VAR]=$((${#UPDATED_ENV_LINES[@]}-1))
+                UPDATED_ENV_VAR_INDEX_MAP[$VAR]=$((${#UPDATED_ENV_LINES[@]} - 1))
             done
         fi
 
