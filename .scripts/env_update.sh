@@ -7,20 +7,44 @@ env_update() {
     run_script 'override_backup'
 
     info "Replacing current .env file with latest template."
-    local MKTEMP_ENV_CURRENT
-    MKTEMP_ENV_CURRENT=$(mktemp) || fatal "Failed to create temporary current .env file.\nFailing command: ${F[C]}mktemp"
-    sort "${COMPOSE_ENV}" > "${MKTEMP_ENV_CURRENT}" || fatal "Failed to sort to new file.\nFailing command: ${F[C]}sort \"${COMPOSE_ENV}\" > \"${MKTEMP_ENV_CURRENT}\""
-    local ARRAY_ENV_CURRENT=()
-    mapfile -t ARRAY_ENV_CURRENT < <(grep -v '^#' "${MKTEMP_ENV_CURRENT}" | grep '=')
-    local MKTEMP_ENV_UPDATED
-    MKTEMP_ENV_UPDATED=$(mktemp) || fatal "Failed to create temporary update .env file.\nFailing command: ${F[C]}mktemp"
-    cp "${COMPOSE_ENV}.example" "${MKTEMP_ENV_UPDATED}" || fatal "Failed to copy file.\nFailing command: ${F[C]}cp \"${COMPOSE_ENV}.example\" \"${MKTEMP_ENV_UPDATED}\""
+
+    # Current .env file, variables only
+    local -a CURRENT_ENV_LINES
+    mapfile -t CURRENT_ENV_LINES < <(grep -v '^#' "${COMPOSE_ENV}" | grep '=')
+
+    # New .env file we are creating
+    local -a UPDATED_ENV_LINES
+    mapfile -t UPDATED_ENV_LINES < "${COMPOSE_ENV}.example"
+
+    # CURRENT_ENV_VAR_LINE["VAR"]="line"
+    local -A CURRENT_ENV_VAR_LINE
+    {
+        local -a UPDATED_ENV_LINES_STRIPPED
+        mapfile -t UPDATED_ENV_LINES_STRIPPED < <(printf '%s\n' "${UPDATED_ENV_LINES[@]}" | grep -v '^#' | grep '=')
+        for line in "${UPDATED_ENV_LINES_STRIPPED[@]}" "${CURRENT_ENV_LINES[@]}"; do
+            local VAR=${line%%=*}
+            CURRENT_ENV_VAR_LINE[$VAR]=$line
+        done
+    }
+
+    # UPDATED_ENV_VAR_INDEX_MAP["VAR"]=index position of line in UPDATED_ENV_LINE
+    local -A UPDATED_ENV_VAR_INDEX_MAP
+    {
+        local -a VAR_LINES
+        # Make an array with the contents "line number:VARIABLE" in each element
+        mapfile -t VAR_LINES < <(printf '%s\n' "${UPDATED_ENV_LINES[@]}" | grep -n -o -P '^[A-Z0-9_]*(?=[=])')
+        for line in "${VAR_LINES[@]}"; do
+            local index=${line%:*}
+            index=$((index-1))
+            local VAR=${line#*:}
+            UPDATED_ENV_VAR_INDEX_MAP[$VAR]=$index
+        done
+    }
 
     info "Merging current values into updated .env file."
 
     local BUILTIN_APPS=()
     local INSTALLED_APPS=()
-    #local ENABLED_APPS=()
     local APPTEMPLATESFOLDER="${SCRIPTPATH}/compose/.apps"
 
     # Create array of built in apps
@@ -29,45 +53,43 @@ env_update() {
     # Create array of installed apps
     {
         local ENABLED_LINES=()
-        mapfile -t ENABLED_LINES < <(grep --color=never -P '^[A-Z0-9]\w+_ENABLED=' "${MKTEMP_ENV_CURRENT}")
+        mapfile -t ENABLED_LINES < <(printf '%s\n' "${CURRENT_ENV_LINES[@]}" | grep --color=never -P '^[A-Z0-9]\w+_ENABLED=')
         for line in "${ENABLED_LINES[@]}"; do
             local VAR=${line%%=*}
             local APPNAME=${VAR%%_*}
             # shellcheck disable=SC2199
             if [[ " ${BUILTIN_APPS[@]^^} " == *" ${APPNAME} "* ]]; then
                 INSTALLED_APPS+=("${APPNAME}")
-                #if [ "$(run_script 'env_get' "${VAR}" "${MKTEMP_ENV_CURRENT}")" = 'true' ]; then
-                #    ENABLED_APPS+=("${APPNAME}")
-                #fi
             fi
         done
     }
 
+    # Create sorted array of vars in current .env file
+    local -a CURRENT_ENV_VARS
+    mapfile -t CURRENT_ENV_VARS < <(printf '%s\n' "${!CURRENT_ENV_VAR_LINE[@]}" | sort)
+    
     # Process .env lines
-    while [[ -n ${ARRAY_ENV_CURRENT[*]} ]]; do
+    while [[ -n ${CURRENT_ENV_VARS[*]} ]]; do
         # Loop while there are lines in array
         local APPNAME
         local LAST_APPNAME
 
         # Clear lists before processing an app's variables
         local APP_LABEL_LIST=()
-        local ENV_BUILTIN_LINES=()
-        local ENV_USER_DEFINED_LINES=()
+        local ENV_BUILTIN_VARS=()
+        local ENV_USER_DEFINED_VARS=()
 
         # Process lines for one app
-        for index in "${!ARRAY_ENV_CURRENT[@]}"; do
-            local line="${ARRAY_ENV_CURRENT[$index]}"
-            local SET_VAR=${line%%=*}
-            APPNAME=${SET_VAR%%_*}
+        for index in "${!CURRENT_ENV_VARS[@]}"; do
+            VAR=${CURRENT_ENV_VARS[$index]}
+            APPNAME=${VAR%%_*}
             if [ "${APPNAME}" != "${LAST_APPNAME-}" ]; then
                 # Variable for another app, exit for loop
                 break
             fi
-            if grep -q -P "^${SET_VAR}=" "${MKTEMP_ENV_UPDATED}"; then
+            if [[ -n ${UPDATED_ENV_VAR_INDEX_MAP["$VAR"]-} ]]; then
                 # Variable already exists, update its value
-                local SET_VAL
-                SET_VAL=$(run_script 'env_get' "${SET_VAR}" "${MKTEMP_ENV_CURRENT}")
-                run_script 'env_set' "${SET_VAR}" "${SET_VAL}" "${MKTEMP_ENV_UPDATED}"
+                UPDATED_ENV_LINES[${UPDATED_ENV_VAR_INDEX_MAP["$VAR"]}]=${CURRENT_ENV_VAR_LINE["$VAR"]}
             else
                 # Variable does not already exist, add it to a list to process
                 if [[ -z ${APP_LABEL_LIST[*]} ]]; then
@@ -81,55 +103,54 @@ env_update() {
                     fi
                 fi
                 # shellcheck disable=SC2199
-                if [[ " ${APP_LABEL_LIST[@]} " == *" ${SET_VAR} "* ]]; then
-                    # Variable is in label file, add line to the built in list
-                    ENV_BUILTIN_LINES+=("${line}")
+                if [[ " ${APP_LABEL_LIST[@]} " == *" ${VAR} "* ]]; then
+                    # Variable is in label file, add it to the built in list
+                    ENV_BUILTIN_VARS+=("$VAR")
                 else
-                    # Variable is not in label file, add line to the user defined list
-                    ENV_USER_DEFINED_LINES+=("${line}")
+                    # Variable is not in label file, add it to the user defined list
+                    ENV_USER_DEFINED_VARS+=("$VAR")
                 fi
             fi
-            # Remove processed line from array
-            unset 'ARRAY_ENV_CURRENT[index]'
+            # Remove processed var from array
+            unset 'CURRENT_ENV_VARS[index]'
         done
 
         # Add the lines to the env file from the built in list and user defined list for last app being processed
-        AddEnvSection "${MKTEMP_ENV_CURRENT}" "${MKTEMP_ENV_UPDATED}" "${LAST_APPNAME-}" "${ENV_BUILTIN_LINES[@]}"
-        AddEnvSection "${MKTEMP_ENV_CURRENT}" "${MKTEMP_ENV_UPDATED}" "${LAST_APPNAME-} (User Defined)" "${ENV_USER_DEFINED_LINES[@]}"
+        if [[ -n ${ENV_BUILTIN_VARS[*]} ]]; then
+            # Add all built in variables for app
+            local HEADING="${LAST_APPNAME}"
+            printf -v HEADING '#\n# %s\n#' "${HEADING}"
+            UPDATED_ENV_LINES+=("${HEADING}")
+            for VAR in "${ENV_BUILTIN_VARS[@]}"; do
+                UPDATED_ENV_LINES+=("${CURRENT_ENV_VAR_LINE[$VAR]}")
+                UPDATED_ENV_VAR_INDEX_MAP[$VAR]=$((${#UPDATED_ENV_LINES[@]}-1))
+            done
+        fi
+        if [[ -n ${ENV_USER_DEFINED_VARS[*]} ]]; then
+            # Add all user defined variables for app
+            local HEADING="${LAST_APPNAME} (User Defined)"
+            printf -v HEADING '#\n# %s\n#' "${HEADING}"
+            UPDATED_ENV_LINES+=("${HEADING}")
+            for VAR in "${ENV_USER_DEFINED_VARS[@]}"; do
+                UPDATED_ENV_LINES+=("${CURRENT_ENV_VAR_LINE[$VAR]}")
+                UPDATED_ENV_VAR_INDEX_MAP[$VAR]=$((${#UPDATED_ENV_LINES[@]}-1))
+            done
+        fi
 
-        # Set last app worked on, permanently remove all processed lines from array
+        # Set last app worked on, permanently remove all processed vars from array
         LAST_APPNAME=${APPNAME}
-        ARRAY_ENV_CURRENT=("${ARRAY_ENV_CURRENT[@]}")
+        CURRENT_ENV_VARS=("${CURRENT_ENV_VARS[@]}")
     done
 
-    rm -f "${MKTEMP_ENV_CURRENT}" || warn "Failed to remove temporary .env update file.\nFailing command: ${F[C]}rm -f \"${MKTEMP_ENV_CURRENT}\""
+    local MKTEMP_ENV_UPDATED
+    MKTEMP_ENV_UPDATED=$(mktemp) || fatal "Failed to create temporary update .env file.\nFailing command: ${F[C]}mktemp"
+    printf '%s\n' "${UPDATED_ENV_LINES[@]}" > "${MKTEMP_ENV_UPDATED}" || fatal "Failed to write temporary .env update file."
+
     cp -f "${MKTEMP_ENV_UPDATED}" "${COMPOSE_ENV}" || fatal "Failed to copy file.\nFailing command: ${F[C]}cp -f \"${MKTEMP_ENV_UPDATED}\" \"${COMPOSE_ENV}\""
     rm -f "${MKTEMP_ENV_UPDATED}" || warn "Failed to remove temporary .env update file.\nFailing command: ${F[C]}rm -f \"${MKTEMP_ENV_UPDATED}\""
     run_script 'set_permissions' "${COMPOSE_ENV}"
     run_script 'env_sanitize'
     info "Environment file update complete."
-}
-
-AddEnvSection() { # OLD_ENVFILE, NEW_ENVFILE, HEADING, [lines]
-    local OLD_ENVFILE=${1-}
-    shift
-    local NEW_ENVFILE=${1-}
-    shift
-    local HEADING=${1-}
-    shift
-    if [[ -n $* ]]; then
-        if [[ -n ${HEADING} ]]; then
-            printf -v HEADING '#\n# %s\n#\n' "${HEADING}"
-            printf '%s' "${HEADING}" >> "${NEW_ENVFILE}" || error "${HEADING} could not be written to ${NEW_ENVFILE}"
-        fi
-        for line in "$@"; do
-            local SET_VAR
-            local SET_VAL
-            SET_VAR=${line%%=*}
-            SET_VAL=$(run_script 'env_get' "${SET_VAR}" "${OLD_ENVFILE}")
-            run_script 'env_set' "${SET_VAR}" "${SET_VAL}" "${NEW_ENVFILE}"
-        done
-    fi
 }
 
 test_env_update() {
