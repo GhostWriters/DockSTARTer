@@ -137,9 +137,8 @@ env_update() {
             done
         fi
 
-        # Set last app worked on, permanently remove all processed vars from array
+        # Set last app worked on
         LAST_APPNAME=${APPNAME}
-        CURRENT_ENV_VARS=("${CURRENT_ENV_VARS[@]}")
     done
 
     local MKTEMP_ENV_UPDATED
