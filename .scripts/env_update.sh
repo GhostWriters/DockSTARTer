@@ -27,8 +27,8 @@ env_update() {
         done
     }
 
-    # UPDATED_ENV_VAR_INDEX_MAP["VAR"]=index position of line in UPDATED_ENV_LINE
-    local -A UPDATED_ENV_VAR_INDEX_MAP
+    # UPDATED_ENV_VAR_INDEX["VAR"]=index position of line in UPDATED_ENV_LINE
+    local -A UPDATED_ENV_VAR_INDEX
     {
         local -a VAR_LINES
         # Make an array with the contents "line number:VARIABLE" in each element
@@ -37,7 +37,7 @@ env_update() {
             local index=${line%:*}
             index=$((index - 1))
             local VAR=${line#*:}
-            UPDATED_ENV_VAR_INDEX_MAP[$VAR]=$index
+            UPDATED_ENV_VAR_INDEX[$VAR]=$index
         done
     }
 
@@ -87,9 +87,9 @@ env_update() {
                 # Variable for another app, exit for loop
                 break
             fi
-            if [[ -n ${UPDATED_ENV_VAR_INDEX_MAP["$VAR"]-} ]]; then
+            if [[ -n ${UPDATED_ENV_VAR_INDEX["$VAR"]-} ]]; then
                 # Variable already exists, update its value
-                UPDATED_ENV_LINES[${UPDATED_ENV_VAR_INDEX_MAP["$VAR"]}]=${CURRENT_ENV_VAR_LINE["$VAR"]}
+                UPDATED_ENV_LINES[${UPDATED_ENV_VAR_INDEX["$VAR"]}]=${CURRENT_ENV_VAR_LINE["$VAR"]}
             else
                 # Variable does not already exist, add it to a list to process
                 if [[ -z ${APP_LABEL_LIST[*]} ]]; then
@@ -129,7 +129,7 @@ env_update() {
                 UPDATED_ENV_LINES+=("${!HEADING}")
                 for VAR in "${!VARS}"; do
                     UPDATED_ENV_LINES+=("${CURRENT_ENV_VAR_LINE[$VAR]}")
-                    UPDATED_ENV_VAR_INDEX_MAP[$VAR]=$((${#UPDATED_ENV_LINES[@]} - 1))
+                    UPDATED_ENV_VAR_INDEX[$VAR]=$((${#UPDATED_ENV_LINES[@]} - 1))
                 done
             fi
         done
