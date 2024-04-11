@@ -122,7 +122,7 @@ env_update() {
         local USER_DEFINED_HEADING="${LAST_APPNAME-} (User Defined)"
         for section in BUILTIN USER_DEFINED; do
             local VARS="ENV_${section}_VARS[@]"
-            if [[ -n ${!VARS} ]]; then
+            if [[ -n ${!VARS-} ]]; then
                 # Add all built in variables for app
                 local HEADING="${section}_HEADING"
                 printf -v ${HEADING} '#\n# %s\n#' "${!HEADING}"
