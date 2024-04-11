@@ -68,9 +68,9 @@ env_update() {
     local -a CURRENT_ENV_VARS
     mapfile -t CURRENT_ENV_VARS < <(printf '%s\n' "${!CURRENT_ENV_VAR_LINE[@]}" | sort)
 
-    # Process .env lines
+    # Process each variable, adding them to the updated .env array
     while [[ -n ${CURRENT_ENV_VARS[*]} ]]; do
-        # Loop while there are lines in array
+        # Loop while there are variables in array
         local APPNAME
         local LAST_APPNAME
 
@@ -93,7 +93,7 @@ env_update() {
             else
                 # Variable does not already exist, add it to a list to process
                 if [[ -z ${APP_LABELS[*]} ]]; then
-                    # Label list is empty, create it
+                    # App label array is empty, create it
                     # shellcheck disable=SC2199
                     if [[ " ${INSTALLED_APPS[@]} " == *" ${APPNAME} "* ]]; then
                         # Create array of labels for current app being processed
@@ -115,7 +115,7 @@ env_update() {
             unset 'CURRENT_ENV_VARS[index]'
         done
 
-        # Add the lines to the env file from the built in list and user defined list for last app being processed
+        # Add the lines to the env file from the built in list and user defined list for the last app being processed
         # shellcheck disable=SC2034  # Variable is used indirectly
         local BUILTIN_HEADING="${LAST_APPNAME-}"
         # shellcheck disable=SC2034  # Variable is used indirectly
