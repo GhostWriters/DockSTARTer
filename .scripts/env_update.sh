@@ -75,7 +75,7 @@ env_update() {
         local LAST_APPNAME
 
         # Clear lists before processing an app's variables
-        local APP_LABEL_LIST=()
+        local APP_LABELS=()
         local ENV_BUILTIN_VARS=()
         local ENV_USER_DEFINED_VARS=()
 
@@ -92,18 +92,18 @@ env_update() {
                 UPDATED_ENV_LINES[${UPDATED_ENV_VAR_INDEX["$VAR"]}]=${CURRENT_ENV_VAR_LINE["$VAR"]}
             else
                 # Variable does not already exist, add it to a list to process
-                if [[ -z ${APP_LABEL_LIST[*]} ]]; then
+                if [[ -z ${APP_LABELS[*]} ]]; then
                     # Label list is empty, create it
                     # shellcheck disable=SC2199
                     if [[ " ${INSTALLED_APPS[@]} " == *" ${APPNAME} "* ]]; then
                         # Create array of labels for current app being processed
                         local APPTEMPLATE="${APPTEMPLATESFOLDER}/${APPNAME,,}/${APPNAME,,}.labels.yml"
-                        mapfile -t APP_LABEL_LIST < <(grep --color=never -Po "\scom\.dockstarter\.appvars\.\K[\w]+" "${APPTEMPLATE}" || true)
-                        APP_LABEL_LIST=("${APP_LABEL_LIST[@]^^}")
+                        mapfile -t APP_LABELS < <(grep --color=never -Po "\scom\.dockstarter\.appvars\.\K[\w]+" "${APPTEMPLATE}" || true)
+                        APP_LABELS=("${APP_LABELS[@]^^}")
                     fi
                 fi
                 # shellcheck disable=SC2199
-                if [[ " ${APP_LABEL_LIST[@]} " == *" ${VAR} "* ]]; then
+                if [[ " ${APP_LABELS[@]} " == *" ${VAR} "* ]]; then
                     # Variable is in label file, add it to the built in list
                     ENV_BUILTIN_VARS+=("$VAR")
                 else
