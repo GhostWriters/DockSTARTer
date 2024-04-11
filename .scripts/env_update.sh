@@ -123,7 +123,7 @@ env_update() {
         for section in BUILTIN USER_DEFINED; do
             local VARS="ENV_${section}_VARS[@]"
             if [[ -n ${!VARS-} ]]; then
-                # Add all built in variables for app
+                # Add all app variables for section to updated .env
                 local HEADING="${section}_HEADING"
                 printf -v ${HEADING} '#\n# %s\n#' "${!HEADING}"
                 UPDATED_ENV_LINES+=("${!HEADING}")
