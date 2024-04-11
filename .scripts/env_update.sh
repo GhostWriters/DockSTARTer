@@ -129,7 +129,7 @@ env_update() {
                 UPDATED_ENV_LINES+=("${!HEADING}")
                 for VAR in "${!VARS}"; do
                     UPDATED_ENV_LINES+=("${CURRENT_ENV_VAR_LINE[$VAR]}")
-                    UPDATED_ENV_VAR_INDEX[$VAR]=$((${#UPDATED_ENV_LINES[@]} - 1))
+                    #UPDATED_ENV_VAR_INDEX[$VAR]=$((${#UPDATED_ENV_LINES[@]} - 1))
                 done
             fi
         done
