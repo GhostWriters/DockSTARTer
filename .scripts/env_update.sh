@@ -116,26 +116,23 @@ env_update() {
         done
 
         # Add the lines to the env file from the built in list and user defined list for last app being processed
-        if [[ -n ${ENV_BUILTIN_VARS[*]} ]]; then
-            # Add all built in variables for app
-            local HEADING="${LAST_APPNAME}"
-            printf -v HEADING '#\n# %s\n#' "${HEADING}"
-            UPDATED_ENV_LINES+=("${HEADING}")
-            for VAR in "${ENV_BUILTIN_VARS[@]}"; do
-                UPDATED_ENV_LINES+=("${CURRENT_ENV_VAR_LINE[$VAR]}")
-                UPDATED_ENV_VAR_INDEX_MAP[$VAR]=$((${#UPDATED_ENV_LINES[@]} - 1))
-            done
-        fi
-        if [[ -n ${ENV_USER_DEFINED_VARS[*]} ]]; then
-            # Add all user defined variables for app
-            local HEADING="${LAST_APPNAME} (User Defined)"
-            printf -v HEADING '#\n# %s\n#' "${HEADING}"
-            UPDATED_ENV_LINES+=("${HEADING}")
-            for VAR in "${ENV_USER_DEFINED_VARS[@]}"; do
-                UPDATED_ENV_LINES+=("${CURRENT_ENV_VAR_LINE[$VAR]}")
-                UPDATED_ENV_VAR_INDEX_MAP[$VAR]=$((${#UPDATED_ENV_LINES[@]} - 1))
-            done
-        fi
+        # shellcheck disable=SC2034  # Variable is used indirectly
+        local BUILTIN_HEADING="${LAST_APPNAME-}"
+        # shellcheck disable=SC2034  # Variable is used indirectly
+        local USER_DEFINED_HEADING="${LAST_APPNAME-} (User Defined)"
+        for section in BUILTIN USER_DEFINED; do
+            local VARS="ENV_${section}_VARS[@]"
+            if [[ -n ${!VARS} ]]; then
+                # Add all built in variables for app
+                local HEADING="${section}_HEADING"
+                printf -v ${HEADING} '#\n# %s\n#' "${!HEADING}"
+                UPDATED_ENV_LINES+=("${!HEADING}")
+                for VAR in "${!VARS}"; do
+                    UPDATED_ENV_LINES+=("${CURRENT_ENV_VAR_LINE[$VAR]}")
+                    UPDATED_ENV_VAR_INDEX_MAP[$VAR]=$((${#UPDATED_ENV_LINES[@]} - 1))
+                done
+            fi
+        done
 
         # Set last app worked on
         LAST_APPNAME=${APPNAME}
