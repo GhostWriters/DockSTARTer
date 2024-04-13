@@ -10,17 +10,17 @@ env_update() {
 
     # Current .env file, variables only
     local -a CURRENT_ENV_LINES
-    mapfile -t CURRENT_ENV_LINES < <(grep -v '^#' "${COMPOSE_ENV}" | grep '=')
+    readarray -t CURRENT_ENV_LINES < <(grep -v '^#' "${COMPOSE_ENV}" | grep '=')
 
     # New .env file we are creating
     local -a UPDATED_ENV_LINES
-    mapfile -t UPDATED_ENV_LINES < "${COMPOSE_ENV}.example"
+    readarray -t UPDATED_ENV_LINES < "${COMPOSE_ENV}.example"
 
     # CURRENT_ENV_VAR_LINE["VAR"]="line"
     local -A CURRENT_ENV_VAR_LINE
     {
         local -a UPDATED_ENV_LINES_STRIPPED
-        mapfile -t UPDATED_ENV_LINES_STRIPPED < <(printf '%s\n' "${UPDATED_ENV_LINES[@]}" | grep -v '^#' | grep '=')
+        readarray -t UPDATED_ENV_LINES_STRIPPED < <(printf '%s\n' "${UPDATED_ENV_LINES[@]}" | grep -v '^#' | grep '=')
         for line in "${UPDATED_ENV_LINES_STRIPPED[@]}" "${CURRENT_ENV_LINES[@]}"; do
             local VAR=${line%%=*}
             CURRENT_ENV_VAR_LINE[$VAR]=$line
@@ -32,7 +32,7 @@ env_update() {
     {
         local -a VAR_LINES
         # Make an array with the contents "line number:VARIABLE" in each element
-        mapfile -t VAR_LINES < <(printf '%s\n' "${UPDATED_ENV_LINES[@]}" | grep -n -o -P '^[A-Z0-9_]*(?=[=])')
+        readarray -t VAR_LINES < <(printf '%s\n' "${UPDATED_ENV_LINES[@]}" | grep -n -o -P '^[A-Z0-9_]*(?=[=])')
         for line in "${VAR_LINES[@]}"; do
             local index=${line%:*}
             index=$((index - 1))
@@ -48,12 +48,12 @@ env_update() {
     local APPTEMPLATESFOLDER="${SCRIPTPATH}/compose/.apps"
 
     # Create array of built in apps
-    mapfile -t BUILTIN_APPS < <(find "${APPTEMPLATESFOLDER}" -maxdepth 1 -mindepth 1 -type d -exec basename {} \;)
+    readarray -t BUILTIN_APPS < <(find "${APPTEMPLATESFOLDER}" -maxdepth 1 -mindepth 1 -type d -exec basename {} \;)
 
     # Create array of installed apps
     {
         local ENABLED_LINES=()
-        mapfile -t ENABLED_LINES < <(printf '%s\n' "${CURRENT_ENV_LINES[@]}" | grep --color=never -P '^[A-Z0-9]\w+_ENABLED=')
+        readarray -t ENABLED_LINES < <(printf '%s\n' "${CURRENT_ENV_LINES[@]}" | grep --color=never -P '^[A-Z0-9]\w+_ENABLED=')
         for line in "${ENABLED_LINES[@]}"; do
             local VAR=${line%%=*}
             local APPNAME=${VAR%%_*}
@@ -66,7 +66,7 @@ env_update() {
 
     # Create sorted array of vars in current .env file
     local -a CURRENT_ENV_VARS
-    mapfile -t CURRENT_ENV_VARS < <(printf '%s\n' "${!CURRENT_ENV_VAR_LINE[@]}" | sort)
+    readarray -t CURRENT_ENV_VARS < <(printf '%s\n' "${!CURRENT_ENV_VAR_LINE[@]}" | sort)
 
     # Process each variable, adding them to the updated .env array
     while [[ -n ${CURRENT_ENV_VARS[*]} ]]; do
@@ -98,7 +98,7 @@ env_update() {
                     if [[ " ${INSTALLED_APPS[@]} " == *" ${APPNAME} "* ]]; then
                         # Create array of labels for current app being processed
                         local APPTEMPLATE="${APPTEMPLATESFOLDER}/${APPNAME,,}/${APPNAME,,}.labels.yml"
-                        mapfile -t APP_LABELS < <(grep --color=never -Po "\scom\.dockstarter\.appvars\.\K[\w]+" "${APPTEMPLATE}" || true)
+                        readarray -t APP_LABELS < <(grep --color=never -Po "\scom\.dockstarter\.appvars\.\K[\w]+" "${APPTEMPLATE}" || true)
                         APP_LABELS=("${APP_LABELS[@]^^}")
                     fi
                 fi

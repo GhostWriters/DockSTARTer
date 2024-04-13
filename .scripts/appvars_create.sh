@@ -17,7 +17,7 @@ appvars_create() {
     {
         # Read all lines with labels into temporary APP_LABEL_LINES array
         local -a APP_LABEL_LINES
-        mapfile -t APP_LABEL_LINES < <(grep --color=never -P "\scom\.dockstarter\.appvars\.\K[\w]+" "${APPLABELFILE}" || true)
+        readarray -t APP_LABEL_LINES < <(grep --color=never -P "\scom\.dockstarter\.appvars\.\K[\w]+" "${APPLABELFILE}" || true)
         if [[ -z ${APP_LABEL_LINES[*]} ]]; then
             error "Unable to find labels for ${APPNAME}"
             return
