@@ -56,13 +56,13 @@ appvars_create() {
     # Actual processing starts here
     info "Creating environment variables for ${APPNAME}."
     for SET_VAR in "${!APP_VAR_VALUE[@]}"; do
-        if grep -q -P "^${SET_VAR}=" "${COMPOSE_ENV}"; then
+        if grep -q -P "^\s*${SET_VAR}\s*=" "${COMPOSE_ENV}"; then
             # Variable already exists
             continue
         fi
 
         local MIGRATE_VAR=${APP_VAR_MIGRATE["${SET_VAR}"]-}
-        if [[ -n ${MIGRATE_VAR} ]] && grep -q -P "^${MIGRATE_VAR}=" "${COMPOSE_ENV}"; then
+        if [[ -n ${MIGRATE_VAR} ]] && grep -q -P "^\s*${MIGRATE_VAR}\s*=" "${COMPOSE_ENV}"; then
             # Migrate old variable
             run_script 'env_rename' "${MIGRATE_VAR}" "${SET_VAR}"
         else
