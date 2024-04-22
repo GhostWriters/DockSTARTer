@@ -9,7 +9,7 @@ env_set() {
     NEW_VAL=$(printf "%s\n" "${2-}" | sed -e "s/'/'\"'\"'/g" -e "1s/^/'/" -e "\$s/\$/'/")
     local VAR_FILE=${3:-$COMPOSE_ENV}
     local VAR_VAL
-    sed -i "/^\s*${SET_VAR}\s*=/d" "${VAR_FILE}" || fatal "Failed to delete ${SED_VAR}\nFailing command: ${F[C]}sed -i \"/^\\s*${SET_VAR}\\s*=/d\" \"${VAR_FILE}\""
+    sed -i "/^\s*${SET_VAR}\s*=/d" "${VAR_FILE}" || fatal "Failed to delete ${SET_VAR}\nFailing command: ${F[C]}sed -i \"/^\\s*${SET_VAR}\\s*=/d\" \"${VAR_FILE}\""
     echo "${SET_VAR}=${NEW_VAL}" >> "${VAR_FILE}" || fatal "Failed to set ${SET_VAR}=${NEW_VAL}\nFailing command: ${F[C]} \"echo ${SET_VAR}=${NEW_VAL}\" >> \"${VAR_FILE}\""
 }
 
