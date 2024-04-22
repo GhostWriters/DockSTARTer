@@ -10,7 +10,7 @@ env_update() {
 
     # Current .env file, variables only (remove whitespace before and after variable)
     local -a CURRENT_ENV_LINES
-    readarray -t CURRENT_ENV_LINES < <(grep "=" "${COMPOSE_ENV}" | sed -e "/^\s*#/d" -e "s/^\s*\([A-Z0-9_]*\)\s*=/\1=/g")
+    readarray -t CURRENT_ENV_LINES < <(sed -n "s/^\s*\([A-Z0-9_]*\)\s*=/\1=/p" "${COMPOSE_ENV}")
 
     # New .env file we are creating
     local -a UPDATED_ENV_LINES
