@@ -51,7 +51,7 @@ appvars_create() {
                 ;;
         esac
     done
-    debug "appvars_create.sh: ${APP_VAR_MIGRATE[*]@A}"
+    #debug "appvars_create.sh: ${APP_VAR_MIGRATE[*]@A}"
 
     # Actual processing starts here
     info "Creating environment variables for ${APPNAME}."
