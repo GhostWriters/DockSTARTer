@@ -8,9 +8,9 @@ env_update() {
 
     info "Replacing current .env file with latest template."
 
-    # Current .env file, variables only
+    # Current .env file, variables only (remove whitespace before and after variable)
     local -a CURRENT_ENV_LINES
-    readarray -t CURRENT_ENV_LINES < <(grep -v '^#' "${COMPOSE_ENV}" | grep '=')
+    readarray -t CURRENT_ENV_LINES < <(grep "=" "${COMPOSE_ENV}" | sed -e "/^\s*#/d" -e "s/^\s*\([A-Z0-9_]*\)\s*=/\1=/g")
 
     # New .env file we are creating
     local -a UPDATED_ENV_LINES
