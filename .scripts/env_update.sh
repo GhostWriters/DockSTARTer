@@ -64,10 +64,9 @@ env_update() {
         done
     }
 
-    # Create sorted array of vars in current .env file
+    # Create sorted array of vars in current .env file.  Do the sort in lower case so "_" is sorted to the top.
     local -a CURRENT_ENV_VARS
-    readarray -t CURRENT_ENV_VARS < <(printf '%s\n' "${!CURRENT_ENV_VAR_LINE[@]}" | sort)
-
+    readarray -t CURRENT_ENV_VARS < <(printf '%s\n' "${!CURRENT_ENV_VAR_LINE[@]}" | tr [:upper:] [:lower:] | sort | tr [:lower:] [:upper:])
     # Process each variable, adding them to the updated .env array
     while [[ -n ${CURRENT_ENV_VARS[*]} ]]; do
         # Loop while there are variables in array
