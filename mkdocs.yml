@@ -139,6 +139,7 @@ nav:
       - apps/ddclient.md
       - apps/deemix.md
       - apps/deluge.md
+      - apps/delugevpn.md
       - apps/doplarr.md
       - apps/dozzle.md
       - apps/duckdns.md
@@ -198,6 +199,8 @@ nav:
       - apps/netdata.md
       - apps/nextcloud.md
       - apps/nodered.md
+      - apps/nzbget.md
+      - apps/nzbgetvpn.md
       - apps/nzbhydra2.md
       - apps/omadacontroller.md
       - apps/ombi.md
@@ -224,6 +227,7 @@ nav:
       - apps/prowlarr.md
       - apps/pyload.md
       - apps/qbittorrent.md
+      - apps/qbittorrentvpn.md
       - apps/quasselcore.md
       - apps/quasselweb.md
       - apps/radarr.md
@@ -235,6 +239,7 @@ nav:
       - apps/rustdesk.md
       - apps/rutorrent.md
       - apps/sabnzbd.md
+      - apps/sabnzbdvpn.md
       - apps/sickchill.md
       - apps/smokeping.md
       - apps/sonarr.md
@@ -252,6 +257,7 @@ nav:
       - apps/traefik.md
       - apps/traktarr.md
       - apps/transmission.md
+      - apps/transmissionvpn.md
       - apps/tvheadend.md
       - apps/ubooquity.md
       - apps/unificontroller.md
