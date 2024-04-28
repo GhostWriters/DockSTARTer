@@ -1,11 +1,21 @@
 services:
   nzbgetvpn:
     labels:
-      com.dockstarter.appinfo.deprecated: "true"
-      com.dockstarter.appinfo.description: "(DEPRECATED) Use SABnzbd with PrivoxyVPN"
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "NZBGet with PrivoxyVPN"
       com.dockstarter.appinfo.nicename: "NZBGetVPN"
       com.dockstarter.appvars.nzbgetvpn_enabled: "false"
       com.dockstarter.appvars.nzbgetvpn_environment_enable_privoxy: "no"
+      com.dockstarter.appvars.nzbgetvpn_environment_lan_network: "192.168.x.x/24"
+      com.dockstarter.appvars.nzbgetvpn_environment_name_servers: "1.1.1.1,8.8.8.8"
+      com.dockstarter.appvars.nzbgetvpn_environment_vpn_client: "openvpn"
+      com.dockstarter.appvars.nzbgetvpn_environment_vpn_enable: "no"
+      com.dockstarter.appvars.nzbgetvpn_environment_vpn_input_ports: ""
+      com.dockstarter.appvars.nzbgetvpn_environment_vpn_options: ""
+      com.dockstarter.appvars.nzbgetvpn_environment_vpn_output_ports: ""
+      com.dockstarter.appvars.nzbgetvpn_environment_vpn_pass: "your-vpn-pass"
+      com.dockstarter.appvars.nzbgetvpn_environment_vpn_prov: "custom"
+      com.dockstarter.appvars.nzbgetvpn_environment_vpn_user: "your-vpn-user"
       com.dockstarter.appvars.nzbgetvpn_network_mode: ""
       com.dockstarter.appvars.nzbgetvpn_port_6789: "6789"
       com.dockstarter.appvars.nzbgetvpn_port_8118: "8118"
