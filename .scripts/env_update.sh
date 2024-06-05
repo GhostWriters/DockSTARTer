@@ -75,8 +75,8 @@ env_update() {
 
         # Clear lists before processing an app's variables
         local APP_LABELS=()
-        local ENV_BUILTIN_VARS=()
-        local ENV_USER_DEFINED_VARS=()
+        local ENV_VARS_BUILTIN=()
+        local ENV_VARS_USER_DEFINED=()
 
         # Process lines for one app
         for index in "${!CURRENT_ENV_VARS[@]}"; do
@@ -104,10 +104,10 @@ env_update() {
                 # shellcheck disable=SC2199
                 if [[ " ${APP_LABELS[@]} " == *" ${VAR} "* ]]; then
                     # Variable is in label file, add it to the built in list
-                    ENV_BUILTIN_VARS+=("$VAR")
+                    ENV_VARS_BUILTIN+=("$VAR")
                 else
                     # Variable is not in label file, add it to the user defined list
-                    ENV_USER_DEFINED_VARS+=("$VAR")
+                    ENV_VARS_USER_DEFINED+=("$VAR")
                 fi
             fi
             # Remove processed var from array
@@ -116,16 +116,17 @@ env_update() {
 
         # Add the lines to the env file from the built in list and user defined list for the last app being processed
         # shellcheck disable=SC2034  # Variable is used indirectly
-        local BUILTIN_HEADING="${LAST_APPNAME-}"
+        local HEADING_FORMAT_BUILTIN="\n##\n## %s\n##"
         # shellcheck disable=SC2034  # Variable is used indirectly
-        local USER_DEFINED_HEADING="${LAST_APPNAME-} (User Defined)"
+        local HEADING_FORMAT_USER_DEFINED="\n##\n## %s (User Defined)\n##"
         for section in BUILTIN USER_DEFINED; do
-            local VARS="ENV_${section}_VARS[@]"
+            local VARS="ENV_VARS_${section}[@]"
             if [[ -n ${!VARS-} ]]; then
                 # Add all app variables for section to updated .env
-                local HEADING="${section}_HEADING"
-                printf -v ${HEADING} '#\n# %s\n#' "${!HEADING}"
-                UPDATED_ENV_LINES+=("${!HEADING}")
+                local HEADING_FORMAT="HEADING_FORMAT_${section}"
+                local HEADING
+                printf -v HEADING "${!HEADING_FORMAT}" "${LAST_APPNAME-}"
+                UPDATED_ENV_LINES+=("${HEADING}")
                 for VAR in "${!VARS}"; do
                     UPDATED_ENV_LINES+=("${CURRENT_ENV_VAR_LINE[$VAR]}")
                     #UPDATED_ENV_VAR_INDEX[$VAR]=$((${#UPDATED_ENV_LINES[@]} - 1))
