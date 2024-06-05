@@ -125,6 +125,7 @@ env_update() {
                 # Add all app variables for section to updated .env
                 local HEADING_FORMAT="HEADING_FORMAT_${section}"
                 local HEADING
+                # shellcheck disable=SC2059 # ${!HEADING_FORMAT} contains a printf format string
                 printf -v HEADING "${!HEADING_FORMAT}" "${LAST_APPNAME-}"
                 UPDATED_ENV_LINES+=("${HEADING}")
                 for VAR in "${!VARS}"; do
