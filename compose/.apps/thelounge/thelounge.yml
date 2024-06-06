@@ -1,6 +1,6 @@
 services:
   thelounge:
-    container_name: thelounge
+    container_name: ${THELOUNGE_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

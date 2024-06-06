@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "SABnzbd with PrivoxyVPN"
       com.dockstarter.appinfo.nicename: "SABnzbdVPN"
+      com.dockstarter.appvars.sabnzbdvpn_container_name: "sabnzbdvpn"
       com.dockstarter.appvars.sabnzbdvpn_enabled: "false"
       com.dockstarter.appvars.sabnzbdvpn_environment_enable_privoxy: "no"
       com.dockstarter.appvars.sabnzbdvpn_environment_lan_network: "192.168.x.x/24"

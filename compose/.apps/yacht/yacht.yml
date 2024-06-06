@@ -1,6 +1,6 @@
 services:
   yacht:
-    container_name: yacht
+    container_name: ${YACHT_CONTAINER_NAME}
     environment:
       - ADMIN_EMAIL=${YACHT_ENVIRONMENT_ADMIN_EMAIL}
       - DISABLE_AUTH=${YACHT_ENVIRONMENT_DISABLE_AUTH}

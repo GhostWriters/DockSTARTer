@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "true"
       com.dockstarter.appinfo.description: "(DEPRECATED) Use BooksonicAir"
       com.dockstarter.appinfo.nicename: "Booksonic"
+      com.dockstarter.appvars.booksonic_container_name: "booksonic"
       com.dockstarter.appvars.booksonic_enabled: "false"
       com.dockstarter.appvars.booksonic_environment_context_path: "/booksonic"
       com.dockstarter.appvars.booksonic_network_mode: ""

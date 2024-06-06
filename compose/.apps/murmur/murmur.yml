@@ -1,6 +1,6 @@
 services:
   murmur:
-    container_name: murmur
+    container_name: ${MURMUR_CONTAINER_NAME}
     environment:
       - MURMUR_SUPW=${MURMUR_ENVIRONMENT_SUPW}
       - PGID=${PGID}

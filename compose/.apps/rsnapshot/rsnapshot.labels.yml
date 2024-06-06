@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Make periodic snapshots of local machines, and remote machines over ssh"
       com.dockstarter.appinfo.nicename: "Rsnapshot"
+      com.dockstarter.appvars.rsnapshot_container_name: "rsnapshot"
       com.dockstarter.appvars.rsnapshot_enabled: "false"
       com.dockstarter.appvars.rsnapshot_network_mode: ""
       com.dockstarter.appvars.rsnapshot_restart: "unless-stopped"

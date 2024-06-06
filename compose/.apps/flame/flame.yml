@@ -1,6 +1,6 @@
 services:
   flame:
-    container_name: flame
+    container_name: ${FLAME_CONTAINER_NAME}
     environment:
       - PASSWORD=${FLAME_ENVIRONMENT_PASSWORD}
     restart: ${FLAME_RESTART}

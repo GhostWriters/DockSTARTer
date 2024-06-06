@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Application to synchronize settings from the TRaSH guides to your Sonarr/Radarr instances"
       com.dockstarter.appinfo.nicename: "Recyclarr"
+      com.dockstarter.appvars.recyclarr_container_name: "recyclarr"
       com.dockstarter.appvars.recyclarr_enabled: "false"
       com.dockstarter.appvars.recyclarr_environment_create_config: "true"
       com.dockstarter.appvars.recyclarr_network_mode: ""

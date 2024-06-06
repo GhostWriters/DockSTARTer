@@ -1,6 +1,6 @@
 services:
   mariadb:
-    container_name: mariadb
+    container_name: ${MARIADB_CONTAINER_NAME}
     environment:
       - MYSQL_ROOT_PASSWORD=${MARIADB_ENVIRONMENT_MYSQL_ROOT_PASSWORD}
       - PGID=${PGID}

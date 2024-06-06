@@ -1,6 +1,6 @@
 services:
   tdarrnode:
-    container_name: tdarrnode
+    container_name: ${TDARRNODE_CONTAINER_NAME}
     environment:
       - nodeID=${TDARRNODE_ENVIRONMENT_NODEID}
       - nodeIP=${TDARRNODE_ENVIRONMENT_NODEIP}

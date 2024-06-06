@@ -1,6 +1,6 @@
 services:
   speedtest:
-    container_name: speedtest
+    container_name: ${SPEEDTEST_CONTAINER_NAME}
     environment:
       - OOKLA_EULA_GDPR=${SPEEDTEST_ENVIRONMENT_OOKLA_EULA_GDPR}
       - PGID=${PGID}

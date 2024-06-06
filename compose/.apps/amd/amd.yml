@@ -1,6 +1,6 @@
 services:
   amd:
-    container_name: amd
+    container_name: ${AMD_CONTAINER_NAME}
     environment:
       - ARL_TOKEN=${AMD_ENVIRONMENT_ARL_TOKEN}
       - AUTOSTART=${AMD_ENVIRONMENT_AUTOSTART}

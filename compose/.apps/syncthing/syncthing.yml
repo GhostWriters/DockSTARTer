@@ -1,6 +1,6 @@
 services:
   syncthing:
-    container_name: syncthing
+    container_name: ${SYNCTHING_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

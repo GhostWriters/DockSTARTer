@@ -1,6 +1,6 @@
 services:
   duplicati:
-    container_name: duplicati
+    container_name: ${DUPLICATI_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

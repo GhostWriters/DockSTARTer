@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Free service which will point a DNS to an IP of your choice"
       com.dockstarter.appinfo.nicename: "CloudFlareDDNS"
+      com.dockstarter.appvars.cloudflareddns_container_name: "cloudflareddns"
       com.dockstarter.appvars.cloudflareddns_enabled: "false"
       com.dockstarter.appvars.cloudflareddns_environment_apikey: ""
       com.dockstarter.appvars.cloudflareddns_environment_apitoken: ""

@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "autobrr is the modern download automation tool for torrents and usenet."
       com.dockstarter.appinfo.nicename: "autobrr"
+      com.dockstarter.appvars.autobrr_container_name: "autobrr"
       com.dockstarter.appvars.autobrr_enabled: "false"
       com.dockstarter.appvars.autobrr_network_mode: ""
       com.dockstarter.appvars.autobrr_port_7474: "7474"

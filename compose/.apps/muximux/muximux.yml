@@ -1,6 +1,6 @@
 services:
   muximux:
-    container_name: muximux
+    container_name: ${MUXIMUX_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

@@ -1,6 +1,6 @@
 services:
   huginn:
-    container_name: huginn
+    container_name: ${HUGINN_CONTAINER_NAME}
     environment:
       - HUGINN_DATABASE_HOST=${HUGINN_ENVIRONMENT_DATABASE_HOST}
       - HUGINN_DATABASE_NAME=${HUGINN_ENVIRONMENT_DATABASE_NAME}

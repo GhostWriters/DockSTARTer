@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Sync anime watched status from Plex to AniList"
       com.dockstarter.appinfo.nicename: "Plexanisync"
+      com.dockstarter.appvars.plexanisync_container_name: "plexanisync"
       com.dockstarter.appvars.plexanisync_enabled: "false"
       com.dockstarter.appvars.plexanisync_environment_ani_token: ""
       com.dockstarter.appvars.plexanisync_environment_ani_username: ""

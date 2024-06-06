@@ -1,6 +1,6 @@
 services:
   traefik:
-    container_name: traefik
+    container_name: ${TRAEFIK_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

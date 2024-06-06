@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "The recipe manager that allows you to manage your ever growing collection of digital recipes."
       com.dockstarter.appinfo.nicename: "Tandoor"
+      com.dockstarter.appvars.tandoor_container_name: "tandoor"
       com.dockstarter.appvars.tandoor_enabled: "false"
       com.dockstarter.appvars.tandoor_environment_allowed_hosts: "*"
       com.dockstarter.appvars.tandoor_environment_database_url: "sqlite://localhost/data/db.sqlite3"

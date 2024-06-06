@@ -2,7 +2,7 @@ services:
   netdata:
     cap_add:
       - SYS_PTRACE
-    container_name: netdata
+    container_name: ${NETDATA_CONTAINER_NAME}
     environment:
       - PGID=${DOCKER_GID}
       - TZ=${TZ}

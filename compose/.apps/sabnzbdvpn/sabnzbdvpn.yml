@@ -3,7 +3,7 @@ services:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    container_name: sabnzbdvpn
+    container_name: ${SABNZBDVPN_CONTAINER_NAME}
     environment:
       - ENABLE_PRIVOXY=${SABNZBDVPN_ENVIRONMENT_ENABLE_PRIVOXY}
       - LAN_NETWORK=${SABNZBDVPN_ENVIRONMENT_LAN_NETWORK}

@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "OpenLDAP with TLS, multi master replication and easy bootstrap."
       com.dockstarter.appinfo.nicename: "OpenLDAP"
+      com.dockstarter.appvars.openldap_container_name: "openldap"
       com.dockstarter.appvars.openldap_enabled: "false"
       com.dockstarter.appvars.openldap_environment_admin_password: "admin"
       com.dockstarter.appvars.openldap_environment_backend: "mdb"

@@ -1,6 +1,6 @@
 services:
   monitorr:
-    container_name: monitorr
+    container_name: ${MONITORR_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

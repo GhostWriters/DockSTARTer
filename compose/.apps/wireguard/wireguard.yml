@@ -3,7 +3,7 @@ services:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    container_name: wireguard
+    container_name: ${WIREGUARD_CONTAINER_NAME}
     environment:
       - ALLOWEDIPS=${WIREGUARD_ENVIRONMENT_ALLOWED_IPS}
       - INTERNAL_SUBNET=${WIREGUARD_ENVIRONMENT_INTERNAL_SUBNET}

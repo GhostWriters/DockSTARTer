@@ -1,6 +1,6 @@
 services:
   synclounge:
-    container_name: synclounge
+    container_name: ${SYNCLOUNGE_CONTAINER_NAME}
     environment:
       - AUTH_LIST=${SYNCLOUNGE_ENVIRONMENT_AUTH_LIST}
       - AUTOJOIN_ENABLED=${SYNCLOUNGE_ENVIRONMENT_AUTOJOIN_ENABLE}

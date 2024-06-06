@@ -1,6 +1,6 @@
 services:
   ouroboros:
-    container_name: ouroboros
+    container_name: ${OUROBOROS_CONTAINER_NAME}
     environment:
       - CLEANUP=${OUROBOROS_ENVIRONMENT_CLEANUP}
       - CRON=${OUROBOROS_ENVIRONMENT_CRON}

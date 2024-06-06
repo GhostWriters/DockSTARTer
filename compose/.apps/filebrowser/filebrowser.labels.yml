@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Filebrowser provides a file managing interface within a specified directory"
       com.dockstarter.appinfo.nicename: "Filebrowser"
+      com.dockstarter.appvars.filebrowser_container_name: "filebrowser"
       com.dockstarter.appvars.filebrowser_enabled: "false"
       com.dockstarter.appvars.filebrowser_environment_baseurl: ""
       com.dockstarter.appvars.filebrowser_environment_database: "/config/database.db"

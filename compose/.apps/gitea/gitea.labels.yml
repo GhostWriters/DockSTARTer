@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "A painless self-hosted Git service"
       com.dockstarter.appinfo.nicename: "Gitea"
+      com.dockstarter.appvars.gitea_container_name: "gitea"
       com.dockstarter.appvars.gitea_enabled: "false"
       com.dockstarter.appvars.gitea_network_mode: ""
       com.dockstarter.appvars.gitea_port_3000: "3000"

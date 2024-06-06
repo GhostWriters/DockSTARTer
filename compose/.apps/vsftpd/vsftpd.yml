@@ -1,6 +1,6 @@
 services:
   vsftpd:
-    container_name: vsftpd
+    container_name: ${VSFTPD_CONTAINER_NAME}
     environment:
       - FTP_USER=${VSFTPD_ENVIRONMENT_FTP_USER}
       - FTP_PASS=${VSFTPD_ENVIRONMENT_FTP_PASS}

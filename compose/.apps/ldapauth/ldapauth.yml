@@ -1,6 +1,6 @@
 services:
   ldapauth:
-    container_name: ldapauth
+    container_name: ${LDAPAUTH_CONTAINER_NAME}
     environment:
       - CERTFILE=${LDAPAUTH_ENVIRONMENT_CERTFILE}
       - FERNETKEY=${LDAPAUTH_ENVIRONMENT_FERNETKEY}

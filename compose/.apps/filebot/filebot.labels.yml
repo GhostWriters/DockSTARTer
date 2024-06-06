@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Tool for organizing your media"
       com.dockstarter.appinfo.nicename: "FileBot"
+      com.dockstarter.appvars.filebot_container_name: "filebot"
       com.dockstarter.appvars.filebot_enabled: "false"
       com.dockstarter.appvars.filebot_network_mode: ""
       com.dockstarter.appvars.filebot_port_5800: "5800"

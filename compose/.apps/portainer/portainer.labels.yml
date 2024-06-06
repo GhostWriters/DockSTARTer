@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Simple management UI for Docker"
       com.dockstarter.appinfo.nicename: "Portainer"
+      com.dockstarter.appvars.portainer_container_name: "portainer"
       com.dockstarter.appvars.portainer_enabled: "false"
       com.dockstarter.appvars.portainer_network_mode: ""
       com.dockstarter.appvars.portainer_port_9000: "9000"

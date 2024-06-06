@@ -1,6 +1,6 @@
 services:
   autobrr:
-    container_name: autobrr
+    container_name: ${AUTOBRR_CONTAINER_NAME}
     environment:
       - TZ=${TZ}
     restart: ${AUTOBRR_RESTART}

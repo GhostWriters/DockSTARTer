@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "User/programmer-friendly IRC bot"
       com.dockstarter.appinfo.nicename: "Limnoria"
+      com.dockstarter.appvars.limnoria_container_name: "limnoria"
       com.dockstarter.appvars.limnoria_enabled: "false"
       com.dockstarter.appvars.limnoria_network_mode: ""
       com.dockstarter.appvars.limnoria_port_8080: "8080"

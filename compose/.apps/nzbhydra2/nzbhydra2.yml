@@ -1,6 +1,6 @@
 services:
   nzbhydra2:
-    container_name: nzbhydra2
+    container_name: ${NZBHYDRA2_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

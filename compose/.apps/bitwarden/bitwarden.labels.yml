@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Free and open source password management solution"
       com.dockstarter.appinfo.nicename: "Bitwarden"
+      com.dockstarter.appvars.bitwarden_container_name: "bitwarden"
       com.dockstarter.appvars.bitwarden_enabled: "false"
       com.dockstarter.appvars.bitwarden_environment_admin_token: ""
       com.dockstarter.appvars.bitwarden_environment_database_url: "data/db.sqlite3"

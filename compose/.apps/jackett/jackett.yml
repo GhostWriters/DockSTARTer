@@ -1,6 +1,6 @@
 services:
   jackett:
-    container_name: jackett
+    container_name: ${JACKETT_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

@@ -1,6 +1,6 @@
 services:
   readarr:
-    container_name: readarr
+    container_name: ${READARR_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

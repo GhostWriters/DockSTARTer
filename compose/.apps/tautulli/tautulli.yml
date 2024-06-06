@@ -1,6 +1,6 @@
 services:
   tautulli:
-    container_name: tautulli
+    container_name: ${TAUTULLI_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

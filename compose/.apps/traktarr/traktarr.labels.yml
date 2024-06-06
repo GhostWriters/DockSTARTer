@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Traktarr uses Trakt.tv to find shows and movies to add in to Sonarr and Radarr, respectively."
       com.dockstarter.appinfo.nicename: "Traktarr"
+      com.dockstarter.appvars.traktarr_container_name: "traktarr"
       com.dockstarter.appvars.traktarr_enabled: "false"
       com.dockstarter.appvars.traktarr_network_mode: ""
       com.dockstarter.appvars.traktarr_restart: "unless-stopped"

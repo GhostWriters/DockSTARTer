@@ -1,6 +1,6 @@
 services:
   petio:
-    container_name: petio
+    container_name: ${PETIO_CONTAINER_NAME}
     environment:
       - TZ=${TZ}
     restart: ${PETIO_RESTART}

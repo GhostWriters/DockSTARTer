@@ -1,6 +1,6 @@
 services:
   watchtower:
-    container_name: watchtower
+    container_name: ${WATCHTOWER_CONTAINER_NAME}
     environment:
       - REPO_PASS=${WATCHTOWER_ENVIRONMENT_REPO_PASS}
       - REPO_USER=${WATCHTOWER_ENVIRONMENT_REPO_USER}

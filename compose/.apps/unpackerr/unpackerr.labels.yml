@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Checks for completed downloads and extracts them so Radarr, Lidarr, Sonarr, and Readarr may import them"
       com.dockstarter.appinfo.nicename: "Unpackerr"
+      com.dockstarter.appvars.unpackerr_container_name: "unpackerr"
       com.dockstarter.appvars.unpackerr_enabled: "false"
       com.dockstarter.appvars.unpackerr_environment_delete_after: "0"
       com.dockstarter.appvars.unpackerr_environment_delete_original: "false"

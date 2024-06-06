@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "NZBGet with PrivoxyVPN"
       com.dockstarter.appinfo.nicename: "NZBGetVPN"
+      com.dockstarter.appvars.nzbgetvpn_container_name: "nzbgetvpn"
       com.dockstarter.appvars.nzbgetvpn_enabled: "false"
       com.dockstarter.appvars.nzbgetvpn_environment_enable_privoxy: "no"
       com.dockstarter.appvars.nzbgetvpn_environment_lan_network: "192.168.x.x/24"

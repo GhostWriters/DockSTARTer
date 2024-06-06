@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "One of the most popular database servers"
       com.dockstarter.appinfo.nicename: "MariaDB"
+      com.dockstarter.appvars.mariadb_container_name: "mariadb"
       com.dockstarter.appvars.mariadb_enabled: "false"
       com.dockstarter.appvars.mariadb_environment_mysql_root_password: ""
       com.dockstarter.appvars.mariadb_network_mode: ""

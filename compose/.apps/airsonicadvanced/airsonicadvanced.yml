@@ -1,6 +1,6 @@
 services:
   airsonicadvanced:
-    container_name: airsonicadvanced
+    container_name: ${AIRSONICADVANCED_CONTAINER_NAME}
     environment:
       - CONTEXT_PATH=${AIRSONICADVANCED_ENVIRONMENT_CONTEXT_PATH}
       - JAVA_OPTS=${AIRSONICADVANCED_ENVIRONMENT_JAVA_OPTS}

@@ -1,6 +1,6 @@
 services:
   ombi:
-    container_name: ombi
+    container_name: ${OMBI_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

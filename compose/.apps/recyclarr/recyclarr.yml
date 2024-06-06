@@ -1,6 +1,6 @@
 services:
   recyclarr:
-    container_name: recyclarr
+    container_name: ${RECYCLARR_CONTAINER_NAME}
     environment:
       - RECYCLARR_CREATE_CONFIG=${RECYCLARR_ENVIRONMENT_CREATE_CONFIG}
       - TZ=${TZ}

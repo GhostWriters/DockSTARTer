@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Transmission with OpenVPN"
       com.dockstarter.appinfo.nicename: "TransmissionVPN"
+      com.dockstarter.appvars.transmissionvpn_container_name: "transmissionvpn"
       com.dockstarter.appvars.transmissionvpn_enabled: "false"
       com.dockstarter.appvars.transmissionvpn_environment_download_dir: "/storage/downloads/completed"
       com.dockstarter.appvars.transmissionvpn_environment_home: "/config"

@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Network-wide ads & trackers blocking DNS server"
       com.dockstarter.appinfo.nicename: "Adguard"
+      com.dockstarter.appvars.adguard_container_name: "adguard"
       com.dockstarter.appvars.adguard_enabled: "false"
       com.dockstarter.appvars.adguard_environment_serverip: "0.0.0.0"
       com.dockstarter.appvars.adguard_network_mode: ""

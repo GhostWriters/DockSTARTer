@@ -1,6 +1,6 @@
 services:
   plexrequests:
-    container_name: plexrequests
+    container_name: ${PLEXREQUESTS_CONTAINER_NAME}
     environment:
       - URL_BASE=/plexrequests
       - PGID=${PGID}

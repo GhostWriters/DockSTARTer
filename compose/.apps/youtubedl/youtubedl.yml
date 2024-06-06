@@ -1,6 +1,6 @@
 services:
   youtubedl:
-    container_name: youtubedl
+    container_name: ${YOUTUBEDL_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

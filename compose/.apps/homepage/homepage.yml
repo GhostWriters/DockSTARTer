@@ -1,6 +1,6 @@
 services:
   homepage:
-    container_name: homepage
+    container_name: ${HOMEPAGE_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

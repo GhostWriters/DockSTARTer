@@ -1,6 +1,6 @@
 services:
   tdarr:
-    container_name: tdarr
+    container_name: ${TDARR_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

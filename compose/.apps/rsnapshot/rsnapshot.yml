@@ -1,6 +1,6 @@
 services:
   rsnapshot:
-    container_name: rsnapshot
+    container_name: ${RSNAPSHOT_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

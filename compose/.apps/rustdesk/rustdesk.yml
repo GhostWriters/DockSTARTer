@@ -1,6 +1,6 @@
 services:
   rustdesk:
-    container_name: rustdesk
+    container_name: ${RUSTDESK_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

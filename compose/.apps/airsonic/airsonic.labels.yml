@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "true"
       com.dockstarter.appinfo.description: "(DEPRECATED) Use AirsonicAdvanced"
       com.dockstarter.appinfo.nicename: "Airsonic"
+      com.dockstarter.appvars.airsonic_container_name: "airsonic"
       com.dockstarter.appvars.airsonic_enabled: "false"
       com.dockstarter.appvars.airsonic_environment_context_path: "/airsonic"
       com.dockstarter.appvars.airsonic_environment_java_opts: ""

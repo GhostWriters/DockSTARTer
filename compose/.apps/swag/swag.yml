@@ -2,7 +2,7 @@ services:
   swag:
     cap_add:
       - NET_ADMIN
-    container_name: swag
+    container_name: ${SWAG_CONTAINER_NAME}
     environment:
       - DNSPLUGIN=${SWAG_ENVIRONMENT_DNSPLUGIN}
       - EMAIL=${SWAG_ENVIRONMENT_EMAIL}

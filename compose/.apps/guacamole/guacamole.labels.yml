@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Web application to remote desktop"
       com.dockstarter.appinfo.nicename: "Guacamole"
+      com.dockstarter.appvars.guacamole_container_name: "guacamole"
       com.dockstarter.appvars.guacamole_enabled: "false"
       com.dockstarter.appvars.guacamole_environment_extensions: ""
       com.dockstarter.appvars.guacamole_network_mode: ""

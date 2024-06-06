@@ -1,6 +1,6 @@
 services:
   quasselcore:
-    container_name: quasselcore
+    container_name: ${QUASSELCORE_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

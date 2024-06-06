@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Lidarr companion script to automatically download music for Lidarr"
       com.dockstarter.appinfo.nicename: "AMD"
+      com.dockstarter.appvars.amd_container_name: "amd"
       com.dockstarter.appvars.amd_enabled: "false"
       com.dockstarter.appvars.amd_environment_arl_token: ""
       com.dockstarter.appvars.amd_environment_autostart: "true"

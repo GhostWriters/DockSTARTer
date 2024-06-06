@@ -1,6 +1,6 @@
 services:
   photoshow:
-    container_name: photoshow
+    container_name: ${PHOTOSHOW_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

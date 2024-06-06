@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: pgAdmin 4 is a web based administration tool for the PostgreSQL database.
       com.dockstarter.appinfo.nicename: pgAdmin
+      com.dockstarter.appvars.pgadmin_container_name: "pgadmin"
       com.dockstarter.appvars.pgadmin_enabled: "false"
       com.dockstarter.appvars.pgadmin_environment_default_email: ""
       com.dockstarter.appvars.pgadmin_environment_default_password: ""

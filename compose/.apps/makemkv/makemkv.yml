@@ -1,6 +1,6 @@
 services:
   makemkv:
-    container_name: makemkv
+    container_name: ${MAKEMKV_CONTAINER_NAME}
     environment:
       - GROUP_ID=${PGID}
       - USER_ID=${PUID}

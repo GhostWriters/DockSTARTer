@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Simple Web and REST interface for downloading YouTube videos onto a server."
       com.dockstarter.appinfo.nicename: "YoutubeDL"
+      com.dockstarter.appvars.youtubedl_container_name: "youtubedl"
       com.dockstarter.appvars.youtubedl_enabled: "false"
       com.dockstarter.appvars.youtubedl_environment_config_path: "/youtube-dl/config.yml"
       com.dockstarter.appvars.youtubedl_environment_debug: "false"

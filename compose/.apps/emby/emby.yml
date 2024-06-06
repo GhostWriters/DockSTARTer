@@ -1,6 +1,6 @@
 services:
   emby:
-    container_name: emby
+    container_name: ${EMBY_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

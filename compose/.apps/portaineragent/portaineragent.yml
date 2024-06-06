@@ -1,6 +1,6 @@
 services:
   portaineragent:
-    container_name: portaineragent
+    container_name: ${PORTAINERAGENT_CONTAINER_NAME}
     environment:
       - CAP_HOST_MANAGEMENT=${PORTAINERAGENT_ENVIRONMENT_CAP_HOST_MANAGEMENT}
       - TZ=${TZ}

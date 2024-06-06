@@ -1,6 +1,6 @@
 services:
   radarr:
-    container_name: radarr
+    container_name: ${RADARR_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Ldap-auth software is for authenticating users who request protected resources from servers proxied by nginx."
       com.dockstarter.appinfo.nicename: "ldapauth"
+      com.dockstarter.appvars.ldapauth_container_name: "ldapauth"
       com.dockstarter.appvars.ldapauth_enabled: "false"
       com.dockstarter.appvars.ldapauth_environment_certfile: ""
       com.dockstarter.appvars.ldapauth_environment_fernetkey: ""

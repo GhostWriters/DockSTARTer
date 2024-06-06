@@ -1,6 +1,6 @@
 services:
   mcmyadmin2:
-    container_name: mcmyadmin2
+    container_name: ${MCMYADMIN2_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

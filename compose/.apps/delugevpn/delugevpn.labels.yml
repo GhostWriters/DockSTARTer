@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Deluge with PrivoxyVPN"
       com.dockstarter.appinfo.nicename: "DelugeVPN"
+      com.dockstarter.appvars.delugevpn_container_name: "delugevpn"
       com.dockstarter.appvars.delugevpn_enabled: "false"
       com.dockstarter.appvars.delugevpn_environment_enable_privoxy: "no"
       com.dockstarter.appvars.delugevpn_environment_lan_network: "192.168.x.x/24"

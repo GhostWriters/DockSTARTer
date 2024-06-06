@@ -1,6 +1,6 @@
 services:
   kiwixserve:
-    container_name: kiwixserve
+    container_name: ${KIWIXSERVE_CONTAINER_NAME}
     environment:
       - DOWNLOAD=${KIWIXSERVE_ENVIRONMENT_DOWNLOADS}
       - PGID=${PGID}

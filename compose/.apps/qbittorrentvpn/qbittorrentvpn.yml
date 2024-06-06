@@ -3,7 +3,7 @@ services:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    container_name: qbittorrentvpn
+    container_name: ${QBITTORRENTVPN_CONTAINER_NAME}
     environment:
       - ENABLE_PRIVOXY=${QBITTORRENTVPN_ENVIRONMENT_ENABLE_PRIVOXY}
       - LAN_NETWORK=${QBITTORRENTVPN_ENVIRONMENT_LAN_NETWORK}

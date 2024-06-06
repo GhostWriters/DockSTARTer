@@ -1,6 +1,6 @@
 services:
   sickchill:
-    container_name: sickchill
+    container_name: ${SICKCHILL_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

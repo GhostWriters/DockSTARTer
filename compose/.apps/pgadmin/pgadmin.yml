@@ -1,6 +1,6 @@
 services:
   pgadmin:
-    container_name: pgadmin
+    container_name: ${PGADMIN_CONTAINER_NAME}
     environment:
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_ENVIRONMENT_DEFAULT_EMAIL}
       - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_ENVIRONMENT_DEFAULT_PASSWORD}

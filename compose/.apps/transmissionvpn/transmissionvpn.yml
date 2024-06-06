@@ -2,7 +2,7 @@ services:
   transmissionvpn:
     cap_add:
       - NET_ADMIN
-    container_name: transmissionvpn
+    container_name: ${TRANSMISSIONVPN_CONTAINER_NAME}
     environment:
       - LOCAL_NETWORK=${TRANSMISSIONVPN_ENVIRONMENT_LOCAL_NETWORK}
       - OPENVPN_PASSWORD=${TRANSMISSIONVPN_ENVIRONMENT_OPENVPN_PASSWORD}

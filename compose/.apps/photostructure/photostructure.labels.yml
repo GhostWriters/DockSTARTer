@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "PhotoStructure is your new home for all your photos & videos."
       com.dockstarter.appinfo.nicename: "PhotoStructure"
+      com.dockstarter.appvars.photostructure_container_name: "photostructure"
       com.dockstarter.appvars.photostructure_enabled: "false"
       com.dockstarter.appvars.photostructure_environment_expose_network_without_auth: "true"
       com.dockstarter.appvars.photostructure_environment_force_local_db_replica: "0"

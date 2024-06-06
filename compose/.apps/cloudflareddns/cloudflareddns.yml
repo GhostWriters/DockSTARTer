@@ -1,6 +1,6 @@
 services:
   cloudflareddns:
-    container_name: cloudflareddns
+    container_name: ${CLOUDFLAREDDNS_CONTAINER_NAME}
     environment:
       - ARGS=${CLOUDFLAREDDNS_ENVIRONMENT_ARGS}
       - CF_APIKEY=${CLOUDFLAREDDNS_ENVIRONMENT_APIKEY}

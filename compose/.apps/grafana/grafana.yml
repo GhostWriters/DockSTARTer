@@ -1,6 +1,6 @@
 services:
   grafana:
-    container_name: grafana
+    container_name: ${GRAFANA_CONTAINER_NAME}
     environment:
       - GF_INSTALL_PLUGINS=${GRAFANA_ENVIRONMENT_GF_INSTALL_PLUGINS}
       - TZ=${TZ}

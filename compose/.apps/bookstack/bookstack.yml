@@ -1,6 +1,6 @@
 services:
   bookstack:
-    container_name: bookstack
+    container_name: ${BOOKSTACK_CONTAINER_NAME}
     environment:
       - APP_URL=${BOOKSTACK_ENVIRONMENT_APP_URL}
       - DB_DATABASE=${BOOKSTACK_ENVIRONMENT_DB_DATABASE}

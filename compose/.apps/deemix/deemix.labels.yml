@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Download music from Deezer via Deemix"
       com.dockstarter.appinfo.nicename: "Deemix"
+      com.dockstarter.appvars.deemix_container_name: "deemix"
       com.dockstarter.appvars.deemix_enabled: "false"
       com.dockstarter.appvars.deemix_network_mode: ""
       com.dockstarter.appvars.deemix_port_6595: "6595"

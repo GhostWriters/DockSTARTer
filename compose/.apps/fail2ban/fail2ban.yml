@@ -3,7 +3,7 @@ services:
     cap_add:
       - NET_ADMIN
       - NET_RAW
-    container_name: fail2ban
+    container_name: ${FAIL2BAN_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

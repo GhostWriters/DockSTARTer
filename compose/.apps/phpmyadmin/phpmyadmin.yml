@@ -1,6 +1,6 @@
 services:
   phpmyadmin:
-    container_name: phpmyadmin
+    container_name: ${PHPMYADMIN_CONTAINER_NAME}
     environment:
       - PMA_HOST=${PHPMYADMIN_ENVIRONMENT_PMA_HOST}
       - PMA_PASSWORD=${PHPMYADMIN_ENVIRONMENT_PMA_PASSWORD}

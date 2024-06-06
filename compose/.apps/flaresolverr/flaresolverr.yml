@@ -1,6 +1,6 @@
 services:
   flaresolverr:
-    container_name: flaresolverr
+    container_name: ${FLARESOLVERR_CONTAINER_NAME}
     environment:
       - CAPTCHA_SOLVER=${FLARESOLVERR_ENVIRONMENT_CAPTCHA_SOLVER}
       - LOG_HTML=${FLARESOLVERR_ENVIRONMENT_LOG_HTML}

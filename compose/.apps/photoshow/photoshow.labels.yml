@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "true"
       com.dockstarter.appinfo.description: "(DEPRECATED) No replacement"
       com.dockstarter.appinfo.nicename: "PhotoShow"
+      com.dockstarter.appvars.photoshow_container_name: "photoshow"
       com.dockstarter.appvars.photoshow_enabled: "false"
       com.dockstarter.appvars.photoshow_network_mode: ""
       com.dockstarter.appvars.photoshow_port_80: "80"

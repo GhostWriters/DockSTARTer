@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Docker image to run Samba to provide a compatible Time Machine for macOS"
       com.dockstarter.appinfo.nicename: "TimeMachine"
+      com.dockstarter.appvars.timemachine_container_name: "timemachine"
       com.dockstarter.appvars.timemachine_enabled: "false"
       com.dockstarter.appvars.timemachine_environment_custom_smb_conf: "false"
       com.dockstarter.appvars.timemachine_environment_custom_user: "false"

@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "true"
       com.dockstarter.appinfo.description: "(DEPRECATED) Use SWAG"
       com.dockstarter.appinfo.nicename: "LetsEncrypt"
+      com.dockstarter.appvars.letsencrypt_container_name: "letsencrypt"
       com.dockstarter.appvars.letsencrypt_enabled: "false"
       com.dockstarter.appvars.letsencrypt_environment_dnsplugin: ""
       com.dockstarter.appvars.letsencrypt_environment_duckdnstoken: ""

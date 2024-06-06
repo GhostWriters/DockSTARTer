@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Web-based streamer for your audiobooks."
       com.dockstarter.appinfo.nicename: "Booksonicair"
+      com.dockstarter.appvars.booksonicair_container_name: "booksonicair"
       com.dockstarter.appvars.booksonicair_enabled: "false"
       com.dockstarter.appvars.booksonicair_environment_context_path: "/booksonicair"
       com.dockstarter.appvars.booksonicair_network_mode: ""

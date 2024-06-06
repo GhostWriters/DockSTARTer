@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Open-source peer-to-peer file synchronization"
       com.dockstarter.appinfo.nicename: "Syncthing"
+      com.dockstarter.appvars.syncthing_container_name: "syncthing"
       com.dockstarter.appvars.syncthing_enabled: "false"
       com.dockstarter.appvars.syncthing_network_mode: ""
       com.dockstarter.appvars.syncthing_port_21027: "21027"

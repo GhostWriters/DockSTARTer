@@ -3,7 +3,7 @@ services:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    container_name: delugevpn
+    container_name: ${DELUGEVPN_CONTAINER_NAME}
     environment:
       - ENABLE_PRIVOXY=${DELUGEVPN_ENVIRONMENT_ENABLE_PRIVOXY}
       - LAN_NETWORK=${DELUGEVPN_ENVIRONMENT_LAN_NETWORK}

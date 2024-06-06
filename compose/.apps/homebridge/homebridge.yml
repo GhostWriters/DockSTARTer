@@ -1,6 +1,6 @@
 services:
   homebridge:
-    container_name: homebridge
+    container_name: ${HOMEBRIDGE_CONTAINER_NAME}
     environment:
       - ENABLE_AVAHI=${HOMEBRIDGE_ENVIRONMENT_ENABLE_AVAHI}
       - TZ=${TZ}

@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "qBittorrent PrivoxyVPN"
       com.dockstarter.appinfo.nicename: "qBittorrentVPN"
+      com.dockstarter.appvars.qbittorrentvpn_container_name: "qbittorrentvpn"
       com.dockstarter.appvars.qbittorrentvpn_enabled: "false"
       com.dockstarter.appvars.qbittorrentvpn_environment_enable_privoxy: "no"
       com.dockstarter.appvars.qbittorrentvpn_environment_lan_network: "192.168.x.x/24"

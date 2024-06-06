@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Monitoring and tracking tool for Plex Media Server"
       com.dockstarter.appinfo.nicename: "Tautulli"
+      com.dockstarter.appvars.tautulli_container_name: "tautulli"
       com.dockstarter.appvars.tautulli_enabled: "false"
       com.dockstarter.appvars.tautulli_network_mode: ""
       com.dockstarter.appvars.tautulli_port_8181: "8181"
