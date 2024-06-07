@@ -8,9 +8,9 @@ env_update() {
 
     info "Replacing current .env file with latest template."
 
-    # Current .env file, variables only (remove whitespace before and after variable, variable names in upper case)
+    # Current .env file, variables only (remove whitespace before and after variable)
     local -a CURRENT_ENV_LINES
-    readarray -t CURRENT_ENV_LINES < <(sed -n "s/^\s*\([A-Z0-9_]*\)\s*=/\U\1=/pi" "${COMPOSE_ENV}")
+    readarray -t CURRENT_ENV_LINES < <(sed -n "s/^\s*\([A-Za-z0-9_]*\)\s*=/\1=/p" "${COMPOSE_ENV}")
 
     # New .env file we are creating
     local -a UPDATED_ENV_LINES
@@ -32,7 +32,7 @@ env_update() {
     {
         local -a VAR_LINES
         # Make an array with the contents "line number:VARIABLE" in each element
-        readarray -t VAR_LINES < <(printf '%s\n' "${UPDATED_ENV_LINES[@]}" | grep -n -o -P '^[A-Z0-9_]*(?=[=])')
+        readarray -t VAR_LINES < <(printf '%s\n' "${UPDATED_ENV_LINES[@]}" | grep -n -o -P '^[A-Za-z0-9_]*(?=[=])')
         for line in "${VAR_LINES[@]}"; do
             local index=${line%:*}
             index=$((index - 1))
@@ -53,7 +53,7 @@ env_update() {
     # Create array of installed apps
     {
         local ENABLED_LINES=()
-        readarray -t ENABLED_LINES < <(printf '%s\n' "${CURRENT_ENV_LINES[@]}" | grep --color=never -P '^[A-Z0-9]\w+_ENABLED=')
+        readarray -t ENABLED_LINES < <(printf '%s\n' "${CURRENT_ENV_LINES[@]}" | grep --color=never -P '^[A-Za-z0-9]\w+_ENABLED=')
         for line in "${ENABLED_LINES[@]}"; do
             local VAR=${line%%=*}
             local APPNAME=${VAR%%_*}
@@ -64,9 +64,9 @@ env_update() {
         done
     }
 
-    # Create sorted array of vars in current .env file.  Do the sort in lower case so "_" is sorted to the top.
+    # Create sorted array of vars in current .env file.  Sort `_` to the top.
     local -a CURRENT_ENV_VARS
-    readarray -t CURRENT_ENV_VARS < <(printf '%s\n' "${!CURRENT_ENV_VAR_LINE[@]}" | tr "[:upper:]" "[:lower:]" | sort | tr "[:lower:]" "[:upper:]")
+    readarray -t CURRENT_ENV_VARS < <(printf '%s\n' "${!CURRENT_ENV_VAR_LINE[@]}" | tr "_" "." | env LC_ALL=C sort | tr "." "_")
     # Process each variable, adding them to the updated .env array
     while [[ -n ${CURRENT_ENV_VARS[*]} ]]; do
         # Loop while there are variables in array

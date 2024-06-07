@@ -62,7 +62,7 @@ appvars_create() {
         fi
 
         local MIGRATE_VAR=${APP_VAR_MIGRATE["${SET_VAR}"]-}
-        if [[ -n ${MIGRATE_VAR} ]] && grep -q -i -P "^\s*${MIGRATE_VAR}\s*=" "${COMPOSE_ENV}"; then
+        if [[ -n ${MIGRATE_VAR} ]] && grep -q -P "^\s*${MIGRATE_VAR}\s*=" "${COMPOSE_ENV}"; then
             # Migrate old variable
             run_script 'env_rename' "${MIGRATE_VAR}" "${SET_VAR}"
         else
