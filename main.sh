@@ -446,7 +446,7 @@ main() {
         case "${ENVMETHOD-}" in
             --env-get)
                 if [[ ${ENVVAR-} != "" ]]; then
-                    run_script 'env_get' "${ENVVAR}"
+                    run_script 'env_get' "${ENVVAR^^}"
                 else
                     echo "Invalid usage. Must be"
                     echo "  --env-get with variable name ('--env-get=VAR')"
@@ -454,7 +454,7 @@ main() {
                 ;;
             --env-set)
                 if [[ ${ENVVAR-} != "" ]] && [[ ${ENVVAL-} != "" ]]; then
-                    run_script 'env_set' "${ENVVAR}" "${ENVVAL}"
+                    run_script 'env_set' "${ENVVAR^^}" "${ENVVAL}"
                 else
                     echo "Invalid usage. Must be"
                     echo "  --env-set with variable name and value ('--env-set=VAR,VAL')"
