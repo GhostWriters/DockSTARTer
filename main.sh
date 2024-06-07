@@ -24,11 +24,11 @@ For regular usage you can run without providing any options.
 --env-get=<var>
     get the value of a <var>iable in .env (variable name is forced to UPPER CASE)
 --env-get-lower=<var>
-    get the value of a <var>iable in .env (variable name can be Mixed Case)
+    get the value of a <var>iable in .env
 --env-set=<var>,<val>
     Set the <val>ue of a <var>iable in .env (variable name is forced to UPPER CASE)
 --env-set-lower=<var>,<val>
-    Set the <val>ue of a <var>iable in .env (variable name can be Mixed Case)
+    Set the <val>ue of a <var>iable in .env
 -f --force
     force certain install/upgrade actions to run even if they would not be needed
 -h --help
