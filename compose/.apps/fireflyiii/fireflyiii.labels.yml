@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "A personal finance manager"
       com.dockstarter.appinfo.nicename: "FireflyIII"
+      com.dockstarter.appvars.fireflyiii_container_name: "fireflyiii"
       com.dockstarter.appvars.fireflyiii_enabled: "false"
       com.dockstarter.appvars.fireflyiii_environment_app_key: "SomeRandomStringOf32CharsExactly"
       com.dockstarter.appvars.fireflyiii_environment_db_connection: "mysql"

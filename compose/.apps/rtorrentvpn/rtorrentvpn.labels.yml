@@ -2,8 +2,9 @@ services:
   rtorrentvpn:
     labels:
       com.dockstarter.appinfo.deprecated: "true"
-      com.dockstarter.appinfo.description: "(DEPRECATED) Use qBittorrent with PrivoxyVPN"
+      com.dockstarter.appinfo.description: "(DEPRECATED) rTorrent with PrivoxyVPN"
       com.dockstarter.appinfo.nicename: "rTorrentVPN"
+      com.dockstarter.appvars.rtorrentvpn_container_name: "rtorrentvpn"
       com.dockstarter.appvars.rtorrentvpn_enabled: "false"
       com.dockstarter.appvars.rtorrentvpn_environment_enable_autodl_irssi: "no"
       com.dockstarter.appvars.rtorrentvpn_environment_enable_privoxy: "no"

@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Audio/Video Library Analytics & Transcode/Remux Automation"
       com.dockstarter.appinfo.nicename: "Tdarr"
+      com.dockstarter.appvars.tdarr_container_name: "tdarr"
       com.dockstarter.appvars.tdarr_enabled: "false"
       com.dockstarter.appvars.tdarr_environment_serverip: "tdarr"
       com.dockstarter.appvars.tdarr_network_mode: ""

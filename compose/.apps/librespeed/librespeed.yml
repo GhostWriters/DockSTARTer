@@ -1,6 +1,6 @@
 services:
   librespeed:
-    container_name: librespeed
+    container_name: ${LIBRESPEED_CONTAINER_NAME}
     environment:
       - DB_HOSTNAME=${LIBRESPEED_ENVIRONMENT_DB_HOSTNAME}
       - DB_NAME=${LIBRESPEED_ENVIRONMENT_DB_NAME}

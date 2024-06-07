@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Organizes all of your video, music and photo collections"
       com.dockstarter.appinfo.nicename: "Plex"
+      com.dockstarter.appvars.plex_container_name: "plex"
       com.dockstarter.appvars.plex_enabled: "false"
       com.dockstarter.appvars.plex_environment_plex_claim: "https://plex.tv/claim"
       com.dockstarter.appvars.plex_environment_version: "docker"

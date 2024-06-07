@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "An *arr request bot for Discord"
       com.dockstarter.appinfo.nicename: "Doplarr"
+      com.dockstarter.appvars.doplarr_container_name: "doplarr"
       com.dockstarter.appvars.doplarr_enabled: "false"
       com.dockstarter.appvars.doplarr_environment_discord__max_results: "25"
       com.dockstarter.appvars.doplarr_environment_discord__requested_msg_style: ":plain"

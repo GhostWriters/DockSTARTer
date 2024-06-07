@@ -1,6 +1,6 @@
 services:
   hydra2:
-    container_name: hydra2
+    container_name: ${HYDRA2_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

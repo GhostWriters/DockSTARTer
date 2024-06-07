@@ -1,6 +1,6 @@
 services:
   influxdb:
-    container_name: influxdb
+    container_name: ${INFLUXDB_CONTAINER_NAME}
     environment:
       - TZ=${TZ}
     restart: ${INFLUXDB_RESTART}

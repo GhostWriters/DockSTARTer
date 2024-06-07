@@ -1,6 +1,6 @@
 services:
   apprise:
-    container_name: apprise
+    container_name: ${APPRISE_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

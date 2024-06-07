@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "true"
       com.dockstarter.appinfo.description: "(DEPRECATED) Use Watchtower"
       com.dockstarter.appinfo.nicename: "Ouroboros"
+      com.dockstarter.appvars.ouroboros_container_name: "ouroboros"
       com.dockstarter.appvars.ouroboros_enabled: "false"
       com.dockstarter.appvars.ouroboros_environment_cleanup: "true"
       com.dockstarter.appvars.ouroboros_environment_cron: "0 4 * * *"

@@ -1,6 +1,6 @@
 services:
   qbittorrent:
-    container_name: qbittorrent
+    container_name: ${QBITTORRENT_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

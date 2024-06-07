@@ -1,6 +1,6 @@
 services:
   moviematch:
-    container_name: moviematch
+    container_name: ${MOVIEMATCH_CONTAINER_NAME}
     environment:
       - LOG_LEVEL=${MOVIEMATCH_ENVIRONMENT_LOG_LEVEL}
       - PGID=${PGID}

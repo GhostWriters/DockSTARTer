@@ -2,7 +2,7 @@ services:
   openvpnas:
     cap_add:
       - NET_ADMIN
-    container_name: openvpnas
+    container_name: ${OPENVPNAS_CONTAINER_NAME}
     environment:
       - INTERFACE=${OPENVPNAS_ENVIRONMENT_INTERFACE}
       - PGID=${PGID}

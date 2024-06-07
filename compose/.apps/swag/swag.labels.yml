@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Secure Web-server And Gateway"
       com.dockstarter.appinfo.nicename: "SWAG"
+      com.dockstarter.appvars.swag_container_name: "swag"
       com.dockstarter.appvars.swag_enabled: "false"
       com.dockstarter.appvars.swag_environment_dnsplugin: ""
       com.dockstarter.appvars.swag_environment_email: ""

@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "true"
       com.dockstarter.appinfo.description: "(DEPRECATED) Use Doplarr"
       com.dockstarter.appinfo.nicename: "Requestrr"
+      com.dockstarter.appvars.requestrr_container_name: "requestrr"
       com.dockstarter.appvars.requestrr_enabled: "false"
       com.dockstarter.appvars.requestrr_network_mode: ""
       com.dockstarter.appvars.requestrr_port_4545: "4545"

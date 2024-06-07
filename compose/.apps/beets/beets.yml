@@ -1,6 +1,6 @@
 services:
   beets:
-    container_name: beets
+    container_name: ${BEETS_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

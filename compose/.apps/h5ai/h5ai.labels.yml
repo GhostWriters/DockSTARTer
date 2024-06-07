@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Modern file indexer"
       com.dockstarter.appinfo.nicename: "h5ai"
+      com.dockstarter.appvars.h5ai_container_name: "h5ai"
       com.dockstarter.appvars.h5ai_enabled: "false"
       com.dockstarter.appvars.h5ai_network_mode: ""
       com.dockstarter.appvars.h5ai_port_8080: "8080"

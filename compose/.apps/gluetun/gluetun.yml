@@ -2,7 +2,7 @@ services:
   gluetun:
     cap_add:
       - NET_ADMIN
-    container_name: gluetun
+    container_name: ${GLUETUN_CONTAINER_NAME}
     devices:
       - /dev/net/tun
     environment:

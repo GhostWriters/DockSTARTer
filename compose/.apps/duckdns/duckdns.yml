@@ -1,6 +1,6 @@
 services:
   duckdns:
-    container_name: duckdns
+    container_name: ${DUCKDNS_CONTAINER_NAME}
     environment:
       - LOG_FILE=${DUCKDNS_ENVIRONMENT_LOG_FILE}
       - SUBDOMAINS=${DUCKDNS_ENVIRONMENT_SUBDOMAINS}

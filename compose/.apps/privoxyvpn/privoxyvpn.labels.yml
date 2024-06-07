@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Privoxy, microsocks, OpenVPN, WireGuard"
       com.dockstarter.appinfo.nicename: "PrivoxyVPN"
+      com.dockstarter.appvars.privoxyvpn_container_name: "privoxyvpn"
       com.dockstarter.appvars.privoxyvpn_enabled: "false"
       com.dockstarter.appvars.privoxyvpn_environment_enable_privoxy: "no"
       com.dockstarter.appvars.privoxyvpn_environment_enable_socks: "no"

@@ -1,6 +1,6 @@
 services:
   couchpotato:
-    container_name: couchpotato
+    container_name: ${COUCHPOTATO_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

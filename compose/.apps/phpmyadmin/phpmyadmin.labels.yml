@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "A web interface for MySQL and MariaDB"
       com.dockstarter.appinfo.nicename: "phpMyAdmin"
+      com.dockstarter.appvars.phpmyadmin_container_name: "phpmyadmin"
       com.dockstarter.appvars.phpmyadmin_enabled: "false"
       com.dockstarter.appvars.phpmyadmin_environment_pma_host: "mariadb"
       com.dockstarter.appvars.phpmyadmin_environment_pma_password: ""

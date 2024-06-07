@@ -1,6 +1,6 @@
 services:
   dozzle:
-    container_name: dozzle
+    container_name: ${DOZZLE_CONTAINER_NAME}
     environment:
       - DOZZLE_BASE=${DOZZLE_ENVIRONMENT_BASE}
       - DOZZLE_FILTER=${DOZZLE_ENVIRONMENT_FILTER}

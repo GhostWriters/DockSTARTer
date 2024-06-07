@@ -1,6 +1,6 @@
 services:
   deemix:
-    container_name: deemix
+    container_name: ${DEEMIX_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

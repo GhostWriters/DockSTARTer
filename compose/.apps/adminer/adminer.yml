@@ -1,6 +1,6 @@
 services:
   adminer:
-    container_name: adminer
+    container_name: ${ADMINER_CONTAINER_NAME}
     environment:
       - ADMINER_DESIGN=${ADMINER_ENVIRONMENT_DESIGN}
       - ADMINER_PLUGINS=${ADMINER_ENVIRONMENT_PLUGINS}

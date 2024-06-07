@@ -3,20 +3,22 @@ services:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    container_name: sabnzbdvpn
+    container_name: ${SABNZBDVPN_CONTAINER_NAME}
     environment:
       - ENABLE_PRIVOXY=${SABNZBDVPN_ENVIRONMENT_ENABLE_PRIVOXY}
-      - LAN_NETWORK=${LAN_NETWORK}
-      - NAME_SERVERS=${NS1},${NS2}
+      - LAN_NETWORK=${SABNZBDVPN_ENVIRONMENT_LAN_NETWORK}
+      - NAME_SERVERS=${SABNZBDVPN_ENVIRONMENT_NAME_SERVERS}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-      - VPN_CLIENT=${VPN_CLIENT}
-      - VPN_ENABLED=${VPN_ENABLE}
-      - VPN_OPTIONS=${VPN_OPTIONS}
-      - VPN_PASS=${VPN_PASS}
-      - VPN_PROV=${VPN_PROV}
-      - VPN_USER=${VPN_USER}
+      - VPN_CLIENT=${SABNZBDVPN_ENVIRONMENT_VPN_CLIENT}
+      - VPN_ENABLED=${SABNZBDVPN_ENVIRONMENT_VPN_ENABLE}
+      - VPN_INPUT_PORTS=${SABNZBDVPN_ENVIRONMENT_VPN_INPUT_PORTS}
+      - VPN_OPTIONS=${SABNZBDVPN_ENVIRONMENT_VPN_OPTIONS}
+      - VPN_OUTPUT_PORTS=${SABNZBDVPN_ENVIRONMENT_VPN_OUTPUT_PORTS}
+      - VPN_PASS=${SABNZBDVPN_ENVIRONMENT_VPN_PASS}
+      - VPN_PROV=${SABNZBDVPN_ENVIRONMENT_VPN_PROV}
+      - VPN_USER=${SABNZBDVPN_ENVIRONMENT_VPN_USER}
     privileged: true
     restart: ${SABNZBDVPN_RESTART}
     sysctls:
@@ -25,5 +27,3 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/sabnzbdvpn:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${VPN_VOLUME_OVPNDIR}:/config/openvpn
-      - ${VPN_VOLUME_WGDIR}:/config/wireguard

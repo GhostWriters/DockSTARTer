@@ -1,6 +1,6 @@
 services:
   pyload:
-    container_name: pyload
+    container_name: ${PYLOAD_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

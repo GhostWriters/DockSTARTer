@@ -1,6 +1,6 @@
 services:
   plex:
-    container_name: plex
+    container_name: ${PLEX_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PLEX_CLAIM=${PLEX_ENVIRONMENT_PLEX_CLAIM}

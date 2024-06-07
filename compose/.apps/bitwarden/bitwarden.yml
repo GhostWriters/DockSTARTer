@@ -1,6 +1,6 @@
 services:
   bitwarden:
-    container_name: bitwarden
+    container_name: ${BITWARDEN_CONTAINER_NAME}
     environment:
       - ADMIN_TOKEN=${BITWARDEN_ENVIRONMENT_ADMIN_TOKEN}
       - DATABASE_URL=${BITWARDEN_ENVIRONMENT_DATABASE_URL}

@@ -1,6 +1,6 @@
 services:
   homer:
-    container_name: homer
+    container_name: ${HOMER_CONTAINER_NAME}
     environment:
       - INIT_ASSETS=${HOMER_ENVIRONMENT_INIT_ASSETS}
       - PGID=${PGID}

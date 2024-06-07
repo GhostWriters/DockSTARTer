@@ -1,6 +1,6 @@
 services:
   headphones:
-    container_name: headphones
+    container_name: ${HEADPHONES_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

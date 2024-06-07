@@ -1,6 +1,6 @@
 services:
   openldap:
-    container_name: openldap
+    container_name: ${OPENLDAP_CONTAINER_NAME}
     environment:
       - LDAP_ADMIN_PASSWORD=${OPENLDAP_ENVIRONMENT_ADMIN_PASSWORD}
       - LDAP_BACKEND=${OPENLDAP_ENVIRONMENT_BACKEND}

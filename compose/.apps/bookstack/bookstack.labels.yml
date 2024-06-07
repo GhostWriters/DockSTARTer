@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Platform for storing and organising information and documentation"
       com.dockstarter.appinfo.nicename: "BookStack"
+      com.dockstarter.appvars.bookstack_container_name: "bookstack"
       com.dockstarter.appvars.bookstack_enabled: "false"
       com.dockstarter.appvars.bookstack_environment_app_url: ""
       com.dockstarter.appvars.bookstack_environment_db_database: ""

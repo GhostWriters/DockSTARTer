@@ -1,6 +1,6 @@
 services:
   traktarr:
-    container_name: traktarr
+    container_name: ${TRAKTARR_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

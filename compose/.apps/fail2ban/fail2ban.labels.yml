@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Daemon to ban hosts that cause multiple authentication errors"
       com.dockstarter.appinfo.nicename: "Fail2ban"
+      com.dockstarter.appvars.fail2ban_container_name: "fail2ban"
       com.dockstarter.appvars.fail2ban_enabled: "false"
       com.dockstarter.appvars.fail2ban_network_mode: "host"
       com.dockstarter.appvars.fail2ban_restart: "unless-stopped"

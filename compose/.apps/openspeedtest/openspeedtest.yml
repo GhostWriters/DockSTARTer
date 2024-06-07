@@ -1,6 +1,6 @@
 services:
   openspeedtest:
-    container_name: openspeedtest
+    container_name: ${OPENSPEEDTEST_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

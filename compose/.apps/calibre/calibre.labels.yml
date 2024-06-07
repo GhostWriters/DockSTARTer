@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Easy to use e-book manager"
       com.dockstarter.appinfo.nicename: "Calibre"
+      com.dockstarter.appvars.calibre_container_name: "calibre"
       com.dockstarter.appvars.calibre_enabled: "false"
       com.dockstarter.appvars.calibre_environment_cli_args: ""
       com.dockstarter.appvars.calibre_environment_guac_pass: ""

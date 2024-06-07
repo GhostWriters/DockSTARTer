@@ -1,6 +1,6 @@
 services:
   calibre:
-    container_name: calibre
+    container_name: ${CALIBRE_CONTAINER_NAME}
     environment:
       - CALIBRE_USE_DARK_PALETTE=${CALIBRE_ENVIRONMENT_USE_DARK_PALETTE}
       - CLI_ARGS=${CALIBRE_ENVIRONMENT_CLI_ARGS}

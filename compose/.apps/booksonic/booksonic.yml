@@ -1,6 +1,6 @@
 services:
   booksonic:
-    container_name: booksonic
+    container_name: ${BOOKSONIC_CONTAINER_NAME}
     environment:
       - CONTEXT_PATH=${BOOKSONIC_ENVIRONMENT_CONTEXT_PATH}
       - PGID=${PGID}

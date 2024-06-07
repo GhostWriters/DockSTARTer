@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Lightweight Speedtest implementation"
       com.dockstarter.appinfo.nicename: "LibreSpeed"
+      com.dockstarter.appvars.librespeed_container_name: "librespeed"
       com.dockstarter.appvars.librespeed_enabled: "false"
       com.dockstarter.appvars.librespeed_environment_db_hostname: ""
       com.dockstarter.appvars.librespeed_environment_db_name: ""

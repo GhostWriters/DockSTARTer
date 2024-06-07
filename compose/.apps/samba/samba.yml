@@ -1,6 +1,6 @@
 services:
   samba:
-    container_name: samba
+    container_name: ${SAMBA_CONTAINER_NAME}
     environment:
       - GROUPID=${PGID}
       - NMBD=${SAMBA_ENVIRONMENT_NMBD}

@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "VS Code running on a remote server, accessible through the browser"
       com.dockstarter.appinfo.nicename: "codeserver"
+      com.dockstarter.appvars.codeserver_container_name: "codeserver"
       com.dockstarter.appvars.codeserver_enabled: "false"
       com.dockstarter.appvars.codeserver_environment_password: ""
       com.dockstarter.appvars.codeserver_environment_sudo_password: ""

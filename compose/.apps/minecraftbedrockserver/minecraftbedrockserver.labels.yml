@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Minecraft Bedrock Server"
       com.dockstarter.appinfo.nicename: "MinecraftBedrockServer"
+      com.dockstarter.appvars.minecraftbedrockserver_container_name: "minecraftbedrockserver"
       com.dockstarter.appvars.minecraftbedrockserver_enabled: "false"
       com.dockstarter.appvars.minecraftbedrockserver_environment_eula: "TRUE"
       com.dockstarter.appvars.minecraftbedrockserver_environment_version: "LATEST"

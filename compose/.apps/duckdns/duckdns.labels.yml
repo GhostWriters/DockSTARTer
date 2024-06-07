@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Free service which will point a DNS to an IP of your choice"
       com.dockstarter.appinfo.nicename: "DuckDNS"
+      com.dockstarter.appvars.duckdns_container_name: "duckdns"
       com.dockstarter.appvars.duckdns_enabled: "false"
       com.dockstarter.appvars.duckdns_environment_log_file: "true"
       com.dockstarter.appvars.duckdns_environment_subdomains: ""

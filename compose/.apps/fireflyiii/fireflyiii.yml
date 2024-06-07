@@ -1,6 +1,6 @@
 services:
   fireflyiii:
-    container_name: fireflyiii
+    container_name: ${FIREFLYIII_CONTAINER_NAME}
     environment:
       - APP_KEY=${FIREFLYIII_ENVIRONMENT_APP_KEY}
       - DB_CONNECTION=${FIREFLYIII_ENVIRONMENT_DB_CONNECTION}

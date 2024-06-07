@@ -1,6 +1,6 @@
 services:
   heimdall:
-    container_name: heimdall
+    container_name: ${HEIMDALL_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

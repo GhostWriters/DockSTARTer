@@ -1,6 +1,6 @@
 services:
   postgres:
-    container_name: postgres
+    container_name: ${POSTGRES_CONTAINER_NAME}
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_ENVIRONMENT_PASSWORD}
       - POSTGRES_USER=${POSTGRES_ENVIRONMENT_USER}

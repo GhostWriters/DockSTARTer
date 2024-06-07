@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Minecraft Java Edition Server"
       com.dockstarter.appinfo.nicename: "MinecraftServer"
+      com.dockstarter.appvars.minecraftserver_container_name: "minecraftserver"
       com.dockstarter.appvars.minecraftserver_enabled: "false"
       com.dockstarter.appvars.minecraftserver_environment_eula: "TRUE"
       com.dockstarter.appvars.minecraftserver_environment_type: "VANILLA"

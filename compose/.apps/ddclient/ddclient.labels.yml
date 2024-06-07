@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Update dynamic DNS entries"
       com.dockstarter.appinfo.nicename: "DDClient"
+      com.dockstarter.appvars.ddclient_container_name: "ddclient"
       com.dockstarter.appvars.ddclient_enabled: "false"
       com.dockstarter.appvars.ddclient_network_mode: ""
       com.dockstarter.appvars.ddclient_restart: "unless-stopped"

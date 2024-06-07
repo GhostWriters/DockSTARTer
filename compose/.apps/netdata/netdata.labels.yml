@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Distributed real-time performance and health monitoring"
       com.dockstarter.appinfo.nicename: "Netdata"
+      com.dockstarter.appvars.netdata_container_name: "netdata"
       com.dockstarter.appvars.netdata_enabled: "false"
       com.dockstarter.appvars.netdata_network_mode: ""
       com.dockstarter.appvars.netdata_port_19999: "19999"

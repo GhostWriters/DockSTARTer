@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Have you ever spent longer deciding on a movie than it'd take to juwatch a random movie? This is an app that helps you and your frienpick a movie to watch from a Plex server."
       com.dockstarter.appinfo.nicename: "Moviematch"
+      com.dockstarter.appvars.moviematch_container_name: "moviematch"
       com.dockstarter.appvars.moviematch_enabled: "false"
       com.dockstarter.appvars.moviematch_environment_log_level: "INFO"
       com.dockstarter.appvars.moviematch_environment_plex_token: ""

@@ -1,6 +1,6 @@
 services:
   lidarr:
-    container_name: lidarr
+    container_name: ${LIDARR_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

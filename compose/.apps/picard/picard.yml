@@ -1,6 +1,6 @@
 services:
   picard:
-    container_name: picard
+    container_name: ${PICARD_CONTAINER_NAME}
     environment:
       - GROUP_ID=${PGID}
       - TZ=${TZ}

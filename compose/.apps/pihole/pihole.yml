@@ -2,7 +2,7 @@ services:
   pihole:
     cap_add:
       - NET_ADMIN
-    container_name: pihole
+    container_name: ${PIHOLE_CONTAINER_NAME}
     dns:
       - 127.0.0.1
       - ${PIHOLE_ENVIRONMENT_DNS1}

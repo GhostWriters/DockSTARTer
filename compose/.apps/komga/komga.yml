@@ -1,6 +1,6 @@
 services:
   komga:
-    container_name: komga
+    container_name: ${KOMGA_CONTAINER_NAME}
     environment:
       - SERVER_SERVLET_CONTEXT_PATH=${KOMGA_ENVIRONMENT_BASEURL}
       - KOMGA_LIBRARIES_SCAN_CRON=${KOMGA_ENVIRONMENT_SCAN_CRON}

@@ -1,6 +1,6 @@
 services:
   airdcpp:
-    container_name: airdcpp
+    container_name: ${AIRDCPP_CONTAINER_NAME}
     environment:
       - HTTP_PORT=${AIRDCPP_PORT_5600}
       - HTTPS_PORT=${AIRDCPP_PORT_5601}

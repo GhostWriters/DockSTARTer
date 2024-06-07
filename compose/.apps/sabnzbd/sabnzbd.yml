@@ -1,6 +1,6 @@
 services:
   sabnzbd:
-    container_name: sabnzbd
+    container_name: ${SABNZBD_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

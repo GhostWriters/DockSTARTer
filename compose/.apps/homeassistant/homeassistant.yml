@@ -1,6 +1,6 @@
 services:
   homeassistant:
-    container_name: homeassistant
+    container_name: ${HOMEASSISTANT_CONTAINER_NAME}
     environment:
       - TZ=${TZ}
     restart: ${HOMEASSISTANT_RESTART}

@@ -1,6 +1,6 @@
 services:
   xbackbone:
-    container_name: xbackbone
+    container_name: ${XBACKBONE_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

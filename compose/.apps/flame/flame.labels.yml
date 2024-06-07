@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "A self-hosted startpage for your server. Easily manage your apps and bookmarks with built-in editors."
       com.dockstarter.appinfo.nicename: "Flame"
+      com.dockstarter.appvars.flame_container_name: "flame"
       com.dockstarter.appvars.flame_enabled: "false"
       com.dockstarter.appvars.flame_environment_password: ""
       com.dockstarter.appvars.flame_network_mode: ""

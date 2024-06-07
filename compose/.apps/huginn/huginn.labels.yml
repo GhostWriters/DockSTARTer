@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Huginn is a system for building agents that perform automated tasks for you online."
       com.dockstarter.appinfo.nicename: "Huginn"
+      com.dockstarter.appvars.huginn_container_name: "huginn"
       com.dockstarter.appvars.huginn_enabled: "false"
       com.dockstarter.appvars.huginn_environment_database_host: "mariadb"
       com.dockstarter.appvars.huginn_environment_database_name: "huginn"

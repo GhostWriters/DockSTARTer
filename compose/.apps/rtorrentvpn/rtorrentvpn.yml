@@ -3,7 +3,7 @@ services:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    container_name: rtorrentvpn
+    container_name: ${RTORRENTVPN_CONTAINER_NAME}
     environment:
       - ENABLE_AUTODL_IRSSI=${RTORRENTVPN_ENVIRONMENT_ENABLE_AUTODL_IRSSI}
       - ENABLE_PRIVOXY=${RTORRENTVPN_ENVIRONMENT_ENABLE_PRIVOXY}

@@ -1,6 +1,6 @@
 services:
   plexanisync:
-    container_name: plexanisync
+    container_name: ${PLEXANISYNC_CONTAINER_NAME}
     environment:
       - ANI_TOKEN=${PLEXANISYNC_ENVIRONMENT_ANI_TOKEN}
       - ANI_USERNAME=${PLEXANISYNC_ENVIRONMENT_ANI_USERNAME}

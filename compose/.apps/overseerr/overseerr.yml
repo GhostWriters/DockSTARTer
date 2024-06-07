@@ -1,6 +1,6 @@
 services:
   overseerr:
-    container_name: overseerr
+    container_name: ${OVERSEERR_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

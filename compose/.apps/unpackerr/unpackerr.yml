@@ -1,6 +1,6 @@
 services:
   unpackerr:
-    container_name: unpackerr
+    container_name: ${UNPACKERR_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

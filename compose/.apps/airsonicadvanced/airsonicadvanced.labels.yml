@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Web-based media streamer providing ubiquitous access to your music"
       com.dockstarter.appinfo.nicename: "AirsonicAdvanced"
+      com.dockstarter.appvars.airsonicadvanced_container_name: "airsonicadvanced"
       com.dockstarter.appvars.airsonicadvanced_enabled: "false"
       com.dockstarter.appvars.airsonicadvanced_environment_context_path: "/airsonic"
       com.dockstarter.appvars.airsonicadvanced_environment_java_opts: ""

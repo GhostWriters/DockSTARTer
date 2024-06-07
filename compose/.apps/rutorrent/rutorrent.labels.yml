@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "true"
       com.dockstarter.appinfo.description: "(DEPRECATED) Use Deluge/qBittorrent/Transmission"
       com.dockstarter.appinfo.nicename: "ruTorrent"
+      com.dockstarter.appvars.rutorrent_container_name: "rutorrent"
       com.dockstarter.appvars.rutorrent_enabled: "false"
       com.dockstarter.appvars.rutorrent_network_mode: ""
       com.dockstarter.appvars.rutorrent_port_5000: "5000"

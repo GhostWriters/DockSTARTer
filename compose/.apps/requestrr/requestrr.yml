@@ -1,6 +1,6 @@
 services:
   requestrr:
-    container_name: requestrr
+    container_name: ${REQUESTRR_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

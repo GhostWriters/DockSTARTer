@@ -1,6 +1,6 @@
 services:
   jellyfin:
-    container_name: jellyfin
+    container_name: ${JELLYFIN_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

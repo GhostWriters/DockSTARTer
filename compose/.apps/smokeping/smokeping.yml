@@ -1,6 +1,6 @@
 services:
   smokeping:
-    container_name: smokeping
+    container_name: ${SMOKEPING_CONTAINER_NAME}
     dns:
       - ${SMOKEPING_ENVIRONMENT_DNS1}
       - ${SMOKEPING_ENVIRONMENT_DNS2}

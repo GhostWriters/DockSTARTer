@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Organize, play, and stream audio and video"
       com.dockstarter.appinfo.nicename: "Emby"
+      com.dockstarter.appvars.emby_container_name: "emby"
       com.dockstarter.appvars.emby_enabled: "false"
       com.dockstarter.appvars.emby_network_mode: ""
       com.dockstarter.appvars.emby_port_8096: "8096"

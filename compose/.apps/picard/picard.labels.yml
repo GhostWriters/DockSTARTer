@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Tool for organizing your music"
       com.dockstarter.appinfo.nicename: "Picard"
+      com.dockstarter.appvars.picard_container_name: "picard"
       com.dockstarter.appvars.picard_enabled: "false"
       com.dockstarter.appvars.picard_network_mode: ""
       com.dockstarter.appvars.picard_port_5800: "5800"

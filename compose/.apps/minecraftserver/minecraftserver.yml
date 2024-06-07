@@ -1,6 +1,6 @@
 services:
   minecraftserver:
-    container_name: minecraftserver
+    container_name: ${MINECRAFTSERVER_CONTAINER_NAME}
     environment:
       - EULA=${MINECRAFTSERVER_ENVIRONMENT_EULA}
       - GID=${PGID}

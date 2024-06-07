@@ -1,6 +1,6 @@
 services:
   photostructure:
-    container_name: photostructure
+    container_name: ${PHOTOSTRUCTURE_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PS_EXPOSE_NETWORK_WITHOUT_AUTH=${PHOTOSTRUCTURE_ENVIRONMENT_EXPOSE_NETWORK_WITHOUT_AUTH}

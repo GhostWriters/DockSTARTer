@@ -1,6 +1,6 @@
 services:
   airsonic:
-    container_name: airsonic
+    container_name: ${AIRSONIC_CONTAINER_NAME}
     environment:
       - CONTEXT_PATH=${AIRSONIC_ENVIRONMENT_CONTEXT_PATH}
       - JAVA_OPTS=${AIRSONIC_ENVIRONMENT_JAVA_OPTS}

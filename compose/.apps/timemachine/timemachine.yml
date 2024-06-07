@@ -1,6 +1,6 @@
 services:
   timemachine:
-    container_name: timemachine
+    container_name: ${TIMEMACHINE_CONTAINER_NAME}
     environment:
       - CUSTOM_SMB_CONF=${TIMEMACHINE_ENVIRONMENT_CUSTOM_SMB_CONF}
       - CUSTOM_USER=${TIMEMACHINE_ENVIRONMENT_CUSTOM_USER}

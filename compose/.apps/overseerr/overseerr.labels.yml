@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "A request management and media discovery tool"
       com.dockstarter.appinfo.nicename: "Overseerr"
+      com.dockstarter.appvars.overseerr_container_name: "overseerr"
       com.dockstarter.appvars.overseerr_enabled: "false"
       com.dockstarter.appvars.overseerr_network_mode: ""
       com.dockstarter.appvars.overseerr_port_5055: "5055"

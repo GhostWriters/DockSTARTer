@@ -1,6 +1,6 @@
 services:
   tandoor:
-    container_name: tandoor
+    container_name: ${TANDOOR_CONTAINER_NAME}
     environment:
       - ALLOWED_HOSTS=${TANDOOR_ENVIRONMENT_ALLOWED_HOSTS}
       - DATABASE_URL=${TANDOOR_ENVIRONMENT_DATABASE_URL}

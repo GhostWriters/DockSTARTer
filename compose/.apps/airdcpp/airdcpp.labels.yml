@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "true"
       com.dockstarter.appinfo.description: "(DEPRECATED) No replacement"
       com.dockstarter.appinfo.nicename: "AirdcPP"
+      com.dockstarter.appvars.airdcpp_container_name: "airdcpp"
       com.dockstarter.appvars.airdcpp_enabled: "false"
       com.dockstarter.appvars.airdcpp_network_mode: ""
       com.dockstarter.appvars.airdcpp_port_21248: "21248"

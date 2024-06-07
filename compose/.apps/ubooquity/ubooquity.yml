@@ -1,6 +1,6 @@
 services:
   ubooquity:
-    container_name: ubooquity
+    container_name: ${UBOOQUITY_CONTAINER_NAME}
     environment:
       - MAXMEM=${UBOOQUITY_ENVIRONMENT_MAXMEM}
       - PGID=${PGID}

@@ -1,6 +1,6 @@
 services:
   apcupsd:
-    container_name: apcupsd
+    container_name: ${APCUPSD_CONTAINER_NAME}
     environment:
       - APCUPSD_HOST=${APCUPSD_ENVIRONMENT_HOST}
       - INFLUXDB_HOST=${APCUPSD_ENVIRONMENT_INFLUXDB_HOST}

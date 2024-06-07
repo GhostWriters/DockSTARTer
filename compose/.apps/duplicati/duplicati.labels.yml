@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Backup software to store backups online with strong encryption"
       com.dockstarter.appinfo.nicename: "Duplicati"
+      com.dockstarter.appvars.duplicati_container_name: "duplicati"
       com.dockstarter.appvars.duplicati_enabled: "false"
       com.dockstarter.appvars.duplicati_network_mode: ""
       com.dockstarter.appvars.duplicati_port_8200: "8200"

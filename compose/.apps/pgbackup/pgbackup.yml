@@ -1,6 +1,6 @@
 services:
   pgbackup:
-    container_name: pgbackup
+    container_name: ${PGBACKUP_CONTAINER_NAME}
     environment:
       - BACKUP_KEEP_DAYS=${PGBACKUP_ENVIRONMENT_KEEP_DAYS}
       - BACKUP_KEEP_MONTHS=${PGBACKUP_ENVIRONMENT_KEEP_MONTHS}

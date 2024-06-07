@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Web client for Quassel. A Quassel-Core instance is required"
       com.dockstarter.appinfo.nicename: "QuasselWeb"
+      com.dockstarter.appvars.quasselweb_container_name: "quasselweb"
       com.dockstarter.appvars.quasselweb_enabled: "false"
       com.dockstarter.appvars.quasselweb_environment_quassel_core: "quasselcore"
       com.dockstarter.appvars.quasselweb_environment_quassel_https: ""

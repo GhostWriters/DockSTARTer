@@ -1,6 +1,6 @@
 services:
   unmanic:
-    container_name: unmanic
+    container_name: ${UNMANIC_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

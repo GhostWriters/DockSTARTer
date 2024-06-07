@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Web radio management suite with Liquidsoap and Icecast."
       com.dockstarter.appinfo.nicename: "AzuraCast"
+      com.dockstarter.appvars.azuracast_container_name: "azuracast"
       com.dockstarter.appvars.azuracast_enabled: "false"
       com.dockstarter.appvars.azuracast_environment_application_env: "production"
       com.dockstarter.appvars.azuracast_environment_enable_redis: "true"

@@ -1,6 +1,6 @@
 services:
   filebot:
-    container_name: filebot
+    container_name: ${FILEBOT_CONTAINER_NAME}
     environment:
       - GROUP_ID=${PGID}
       - TZ=${TZ}

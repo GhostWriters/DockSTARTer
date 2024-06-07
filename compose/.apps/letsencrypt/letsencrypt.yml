@@ -2,7 +2,7 @@ services:
   letsencrypt:
     cap_add:
       - NET_ADMIN
-    container_name: letsencrypt
+    container_name: ${LETSENCRYPT_CONTAINER_NAME}
     environment:
       - DNSPLUGIN=${LETSENCRYPT_ENVIRONMENT_DNSPLUGIN}
       - DUCKDNSTOKEN=${LETSENCRYPT_ENVIRONMENT_DUCKDNSTOKEN}

@@ -1,6 +1,6 @@
 services:
   filebrowser:
-    container_name: filebrowser
+    container_name: ${FILEBROWSER_CONTAINER_NAME}
     environment:
       - FB_BASEURL=${FILEBROWSER_ENVIRONMENT_BASEURL}
       - FB_DATABASE=${FILEBROWSER_ENVIRONMENT_DATABASE}

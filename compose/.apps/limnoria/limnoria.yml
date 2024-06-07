@@ -1,6 +1,6 @@
 services:
   limnoria:
-    container_name: limnoria
+    container_name: ${LIMNORIA_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Watch Plex in sync with your friends/family, wherever you are."
       com.dockstarter.appinfo.nicename: "SyncLounge"
+      com.dockstarter.appvars.synclounge_container_name: "synclounge"
       com.dockstarter.appvars.synclounge_enabled: "false"
       com.dockstarter.appvars.synclounge_environment_auth_list: ""
       com.dockstarter.appvars.synclounge_environment_autojoin_enable: "false"

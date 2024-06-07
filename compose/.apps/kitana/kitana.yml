@@ -1,7 +1,7 @@
 services:
   kitana:
     command: -B 0.0.0.0:31337 -P
-    container_name: kitana
+    container_name: ${KITANA_CONTAINER_NAME}
     environment:
       - TZ=${TZ}
     restart: ${KITANA_RESTART}

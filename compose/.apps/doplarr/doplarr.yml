@@ -1,6 +1,6 @@
 services:
   doplarr:
-    container_name: doplarr
+    container_name: ${DOPLARR_CONTAINER_NAME}
     environment:
       - DISCORD__MAX_RESULTS=${DOPLARR_ENVIRONMENT_DISCORD__MAX_RESULTS}
       - DISCORD__REQUESTED_MSG_STYLE=${DOPLARR_ENVIRONMENT_DISCORD__REQUESTED_MSG_STYLE}

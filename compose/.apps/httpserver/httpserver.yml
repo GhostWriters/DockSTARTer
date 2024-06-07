@@ -1,6 +1,6 @@
 services:
   httpserver:
-    container_name: httpserver
+    container_name: ${HTTPSERVER_CONTAINER_NAME}
     environment:
       - FILE_SERVER_COLOR_SET=${HTTPSERVER_ENVIRONMENT_FILE_SERVER_COLOR_SET}
       - FILE_SERVER_TITLE=${HTTPSERVER_ENVIRONMENT_FILE_SERVER_TITLE}

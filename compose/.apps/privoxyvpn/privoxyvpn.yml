@@ -3,7 +3,7 @@ services:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    container_name: privoxyvpn
+    container_name: ${PRIVOXYVPN_CONTAINER_NAME}
     devices:
       - /dev/net/tun
     environment:

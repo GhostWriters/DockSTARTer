@@ -1,6 +1,6 @@
 services:
   minecraftbedrockserver:
-    container_name: minecraftbedrockserver
+    container_name: ${MINECRAFTBEDROCKSERVER_CONTAINER_NAME}
     environment:
       - EULA=${MINECRAFTBEDROCKSERVER_ENVIRONMENT_EULA}
       - GID=${PGID}

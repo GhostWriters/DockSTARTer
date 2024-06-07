@@ -1,6 +1,6 @@
 services:
   codeserver:
-    container_name: codeserver
+    container_name: ${CODESERVER_CONTAINER_NAME}
     environment:
       - PASSWORD=${CODESERVER_ENVIRONMENT_PASSWORD}
       - PGID=${PGID}
