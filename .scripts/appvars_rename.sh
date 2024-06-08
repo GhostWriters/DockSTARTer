@@ -17,7 +17,7 @@ appvars_rename() {
         DOCKER_VOLUME_CONFIG=$(run_script 'env_get' DOCKER_VOLUME_CONFIG)
         mv "${DOCKER_VOLUME_CONFIG}/${FROMAPP,,}" "${DOCKER_VOLUME_CONFIG}/${TOAPP,,}" || warn "Failed to move folder.\nFailing command: ${F[C]}mv \"${DOCKER_VOLUME_CONFIG}/${FROMAPP,,}\" \"${DOCKER_VOLUME_CONFIG}/${TOAPP,,}\""
         notice "Migrating vars."
-        sed -i "s/^${FROMAPP^^}_/${TOAPP^^}_/" "${COMPOSE_ENV}" || fatal "Failed to migrate vars from ${FROMAPP^^}_ to ${TOAPP^^}_\nFailing command: ${F[C]}sed -i \"s/^${FROMAPP^^}_/${TOAPP^^}_/\" \"${COMPOSE_ENV}\""
+        sed -i "s/^\s*${FROMAPP^^}_/${TOAPP^^}_/" "${COMPOSE_ENV}" || fatal "Failed to migrate vars from ${FROMAPP^^}_ to ${TOAPP^^}_\nFailing command: ${F[C]}sed -i \"s/^\\s*${FROMAPP^^}_/${TOAPP^^}_/\" \"${COMPOSE_ENV}\""
         run_script 'appvars_create' "${TOAPP^^}"
         notice "Completed migrating from ${FROMAPP^^} to ${TOAPP^^}. Run ${F[C]}ds -c${NC} to create the new container."
     fi
