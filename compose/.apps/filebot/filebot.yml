@@ -1,19 +1,14 @@
 services:
   filebot:
-    container_name: filebot
+    container_name: ${FILEBOT_CONTAINER_NAME}
     environment:
       - GROUP_ID=${PGID}
       - TZ=${TZ}
       - USER_ID=${PUID}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${FILEBOT_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/filebot:/config
-      - ${DOCKERSTORAGEDIR}:/storage
-      - ${FILEBOT_OUTPUTDIR}:/output
-      - ${FILEBOT_WATCHDIR}:/watch
+      - ${DOCKER_VOLUME_CONFIG}/filebot:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${FILEBOT_VOLUME_OUTPUTDIR}:/output
+      - ${FILEBOT_VOLUME_WATCHDIR}:/watch

@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Application dashboard and launcher"
       com.dockstarter.appinfo.nicename: "Heimdall"
+      com.dockstarter.appvars.heimdall_container_name: "heimdall"
       com.dockstarter.appvars.heimdall_enabled: "false"
       com.dockstarter.appvars.heimdall_network_mode: ""
       com.dockstarter.appvars.heimdall_port_443: "447"

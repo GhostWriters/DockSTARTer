@@ -12,7 +12,7 @@
 
 Be sure to read the [app specific documentation](https://github.com/bastienwirtz/homer) on github as the environment variables below are an extension of those explained in the documentation.
 
-Note that your configuration files and homer assets are located in `${DOCKERCONFDIR}/homer`
+Note that your configuration files and homer assets are located in `${DOCKER_VOLUME_CONFIG}/homer`
 
 ### Environment Variables
 

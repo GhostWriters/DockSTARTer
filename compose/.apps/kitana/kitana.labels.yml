@@ -1,0 +1,12 @@
+services:
+  kitana:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "A Plex plugin web frontend"
+      com.dockstarter.appinfo.nicename: "Kitana"
+      com.dockstarter.appvars.kitana_container_name: "kitana"
+      com.dockstarter.appvars.kitana_enabled: "false"
+      com.dockstarter.appvars.kitana_network_mode: ""
+      com.dockstarter.appvars.kitana_port_31337: "31337"
+      com.dockstarter.appvars.kitana_restart: "unless-stopped"
+      com.dockstarter.appvars.kitana_tag: "latest"

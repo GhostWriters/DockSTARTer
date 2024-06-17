@@ -15,18 +15,13 @@
 services:
   dashmachine:
     container_name: dashmachine
-    hostname: ${DOCKERHOSTNAME}
+    hostname: ${DOCKER_HOSTNAME}
     image: rmountjoy/dashmachine:latest
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     ports:
       - 5002:5000
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/dashmachine:/DashMachine/dashmachine/user_data
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/dashmachine:/DashMachine/dashmachine/user_data
+      - ${DOCKER_VOLUME_STORAGE}:/storage
 ```

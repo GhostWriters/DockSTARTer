@@ -1,0 +1,19 @@
+services:
+  fireflyiii:
+    container_name: ${FIREFLYIII_CONTAINER_NAME}
+    environment:
+      - APP_KEY=${FIREFLYIII_ENVIRONMENT_APP_KEY}
+      - DB_CONNECTION=${FIREFLYIII_ENVIRONMENT_DB_CONNECTION}
+      - DB_DATABASE=${FIREFLYIII_ENVIRONMENT_DB_DATABASE}
+      - DB_HOST=${FIREFLYIII_ENVIRONMENT_DB_HOST}
+      - DB_PASSWORD=${FIREFLYIII_ENVIRONMENT_DB_PASSWORD}
+      - DB_PORT=${FIREFLYIII_ENVIRONMENT_DB_PORT}
+      - DB_USERNAME=${FIREFLYIII_ENVIRONMENT_DB_USERNAME}
+      - TRUSTED_PROXIES=${FIREFLYIII_ENVIRONMENT_TRUSTED_PROXIES}
+      - TZ=${TZ}
+    restart: ${FIREFLYIII_RESTART}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_VOLUME_CONFIG}/fireflyiii/export:/var/www/html/storage/export
+      - ${DOCKER_VOLUME_CONFIG}/fireflyiii/upload:/var/www/html/storage/upload
+      - ${DOCKER_VOLUME_STORAGE}:/storage

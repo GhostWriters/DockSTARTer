@@ -1,15 +1,10 @@
 services:
   flame:
-    container_name: flame
+    container_name: ${FLAME_CONTAINER_NAME}
     environment:
-      - PASSWORD=${FLAME_PASSWORD}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
+      - PASSWORD=${FLAME_ENVIRONMENT_PASSWORD}
     restart: ${FLAME_RESTART}
     volumes:
-      - ${DOCKERSTORAGEDIR}:/storage
       - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock
+      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${FLAME_VOLUME_DOCKER_SOCKET}:/var/run/docker.sock

@@ -1,15 +1,10 @@
 services:
   h5ai:
-    container_name: h5ai
+    container_name: ${H5AI_CONTAINER_NAME}
     environment:
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${H5AI_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERSTORAGEDIR}:/storage
-      - ${H5AI_INDEXDIR}:/var/www
+      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${H5AI_VOLUME_INDEXDIR}:/var/www

@@ -1,22 +1,17 @@
 services:
   tdarrnode:
-    container_name: tdarrnode
+    container_name: ${TDARRNODE_CONTAINER_NAME}
     environment:
-      - nodeID=${TDARRNODE_NODEID}
-      - nodeIP=${TDARRNODE_NODEIP}
+      - nodeID=${TDARRNODE_ENVIRONMENT_NODEID}
+      - nodeIP=${TDARRNODE_ENVIRONMENT_NODEIP}
       - nodePort=${TDARRNODE_PORT_8267}
       - PGID=${PGID}
       - PUID=${PUID}
-      - serverIP=${TDARRNODE_SERVERIP}
-      - serverPort=${TDARRNODE_SERVERPORT}
+      - serverIP=${TDARRNODE_ENVIRONMENT_SERVERIP}
+      - serverPort=${TDARRNODE_ENVIRONMENT_SERVERPORT}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${TDARRNODE_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERSTORAGEDIR}:/storage
-      - ${TDARRNODE_TRANSCODE_CACHE}:/temp
+      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${TDARRNODE_VOLUME_TRANSCODE_CACHE}:/temp

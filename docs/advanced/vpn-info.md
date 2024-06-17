@@ -4,11 +4,8 @@
 
 VPN use is only available where we have found a easily configured container that runs as its own self contained unit.
 
-- DelugeVPN
-- qBittorrentVPN
-- rTorrentVPN
-- SABnzbdVPN
-- TransmissionVPN
+- Gluetun
+- PrivoxyVPN
 
 ## VPN tun driver
 
@@ -19,30 +16,6 @@ echo "iptable_mangle" | sudo tee /etc/modules-load.d/iptable_mangle.conf
 echo "tun" | sudo tee /etc/modules-load.d/tun.conf
 sudo reboot
 ```
-
-## Access VPN containers remotely
-
-If you're attempting to access the Web UI for one of your VPN containers (e.g. TransmissionVPN, DelugeVPN, etc.) from outside of your home network using [SWAG](https://dockstarter.com/apps/swag/), you will need to modify the [SWAG](https://dockstarter.com/apps/swag/) configuration file to support the name difference. The sample configs are controlled by [LSIO](https://www.linuxserver.io/), not by DockSTARTer. So this change is required to get the VPN containers running remotely.
-
-The sample proxy configuration files found in `~/.config/appdata/swag/nginx/proxy-confs/` will need to be modified and as usual, have the .sample removed from the filename.
-
-You will also need to edit the appropriate proxy `.conf`. The below example uses the TransmissionVPN container as an example:
-
-Enter either `sudo nano transmission.subfolder.conf` or `sudo nano transmission.subdomain.conf` depending on your configuration desires and change the below line:
-
-Original
-
-```nginx
-set $upstream_app transmission;
-```
-
-Modified
-
-```nginx
-set $upstream_app transmissionvpn;
-```
-
-Save the file out and then restart your containers with a `ds -c` command.
 
 ## How to check if the VPN is working
 
@@ -82,12 +55,3 @@ fi
 ```
 
 If you make changes to your `.env` file you will need to run `ds -c`. If you stop the OpenVPN service, thereby stopping Docker, DockSTARTER might fail. Start your OpenVPN service and run `ds -c` again if it didn't work.
-
-## PIA with Transmission
-
-For PIA VPN Configuration:
-These pages come in handy -
-
-- [https://github.com/haugene/docker-transmission-openvpn/blob/master/README.md#network-configuration-options](https://github.com/haugene/docker-transmission-openvpn/blob/master/README.md#network-configuration-options)
-
-If you run into slow VPN issues, it may be the container is using a default .ovpn config. So you'd use something like this with [Overrides / Introduction](https://dockstarter.com/overrides/introduction): `OPENVPN_CONFIG=UK Southampton` depending on your region/location.

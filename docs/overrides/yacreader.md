@@ -17,8 +17,8 @@ services:
     restart: unless-stopped
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/yacreaderlibraryserver:/config
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/yacreaderlibraryserver:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage
     ports:
       - "8080:8080"
 ```

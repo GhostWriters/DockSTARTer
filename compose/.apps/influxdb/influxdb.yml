@@ -1,15 +1,10 @@
 services:
   influxdb:
-    container_name: influxdb
+    container_name: ${INFLUXDB_CONTAINER_NAME}
     environment:
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${INFLUXDB_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/influxdb:/var/lib/influxdb
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/influxdb:/var/lib/influxdb
+      - ${DOCKER_VOLUME_STORAGE}:/storage

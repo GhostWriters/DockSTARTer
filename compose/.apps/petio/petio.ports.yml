@@ -1,0 +1,4 @@
+services:
+  petio:
+    ports:
+      - ${PETIO_PORT_7777}:7777

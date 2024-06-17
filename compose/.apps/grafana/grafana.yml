@@ -1,17 +1,12 @@
 services:
   grafana:
-    container_name: grafana
+    container_name: ${GRAFANA_CONTAINER_NAME}
     environment:
-      - GF_INSTALL_PLUGINS=${GRAFANA_GF_INSTALL_PLUGINS}
+      - GF_INSTALL_PLUGINS=${GRAFANA_ENVIRONMENT_GF_INSTALL_PLUGINS}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${GRAFANA_RESTART}
     user: ${PUID}:${PGID}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/grafana:/var/lib/grafana
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/grafana:/var/lib/grafana
+      - ${DOCKER_VOLUME_STORAGE}:/storage

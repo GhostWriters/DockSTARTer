@@ -1,17 +1,12 @@
 services:
   htpcmanager:
-    container_name: htpcmanager
+    container_name: ${HTPCMANAGER_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${HTPCMANAGER_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/htpcmanager:/config
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/htpcmanager:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage
