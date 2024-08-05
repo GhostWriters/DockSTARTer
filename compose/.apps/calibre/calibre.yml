@@ -1,23 +1,18 @@
 services:
   calibre:
-    container_name: calibre
+    container_name: ${CALIBRE_CONTAINER_NAME}
     environment:
-      - CALIBRE_USE_DARK_PALETTE=${CALIBRE_USE_DARK_PALETTE}
-      - CLI_ARGS=${CALIBRE_CLI_ARGS}
-      - GUAC_PASS=${CALIBRE_GUAC_PASS}
-      - GUAC_USER=${CALIBRE_GUAC_USER}
+      - CALIBRE_USE_DARK_PALETTE=${CALIBRE_ENVIRONMENT_USE_DARK_PALETTE}
+      - CLI_ARGS=${CALIBRE_ENVIRONMENT_CLI_ARGS}
+      - GUAC_PASS=${CALIBRE_ENVIRONMENT_GUAC_PASS}
+      - GUAC_USER=${CALIBRE_ENVIRONMENT_GUAC_USER}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${CALIBRE_RESTART}
     security_opt:
       - seccomp:unconfined
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/calibre:/config
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/calibre:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage

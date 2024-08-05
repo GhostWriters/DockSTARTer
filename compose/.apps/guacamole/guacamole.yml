@@ -1,16 +1,11 @@
 services:
   guacamole:
-    container_name: guacamole
+    container_name: ${GUACAMOLE_CONTAINER_NAME}
     environment:
-      - EXTENSIONS=${GUACAMOLE_EXTENSIONS}
+      - EXTENSIONS=${GUACAMOLE_ENVIRONMENT_EXTENSIONS}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${GUACAMOLE_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/guacamole:/config
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/guacamole:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage

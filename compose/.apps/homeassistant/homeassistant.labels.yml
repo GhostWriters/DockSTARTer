@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Track and control all devices at home and automate control"
       com.dockstarter.appinfo.nicename: "HomeAssistant"
+      com.dockstarter.appvars.homeassistant_container_name: "homeassistant"
       com.dockstarter.appvars.homeassistant_enabled: "false"
       com.dockstarter.appvars.homeassistant_network_mode: ""
       com.dockstarter.appvars.homeassistant_port_8123: "8123"

@@ -1,0 +1,3 @@
+services:
+  minecraftserver:
+    hostname: ${DOCKER_HOSTNAME}

@@ -1,18 +1,13 @@
 services:
   komga:
-    container_name: komga
+    container_name: ${KOMGA_CONTAINER_NAME}
     environment:
-      - SERVER_SERVLET_CONTEXT_PATH=${KOMGA_BASEURL}
-      - KOMGA_LIBRARIES_SCAN_CRON=${KOMGA_SCAN_CRON}
+      - SERVER_SERVLET_CONTEXT_PATH=${KOMGA_ENVIRONMENT_BASEURL}
+      - KOMGA_LIBRARIES_SCAN_CRON=${KOMGA_ENVIRONMENT_SCAN_CRON}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${KOMGA_RESTART}
     user: ${PUID}:${PGID}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/komga:/config
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/komga:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage

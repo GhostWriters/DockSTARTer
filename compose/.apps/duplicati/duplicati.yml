@@ -1,19 +1,14 @@
 services:
   duplicati:
-    container_name: duplicati
+    container_name: ${DUPLICATI_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${DUPLICATI_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/duplicati:/config
-      - ${DOCKERSTORAGEDIR}:/storage
-      - ${DUPLICATI_BACKUPSDIR}:/backups
-      - ${DUPLICATI_SOURCEDIR}:/source
+      - ${DOCKER_VOLUME_CONFIG}/duplicati:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DUPLICATI_VOLUME_BACKUPSDIR}:/backups
+      - ${DUPLICATI_VOLUME_SOURCEDIR}:/source

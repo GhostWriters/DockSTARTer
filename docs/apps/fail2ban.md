@@ -22,6 +22,6 @@ Example:
 services:
   fail2ban:
     volumes:
-      - "${DOCKERCONFDIR}/filebrowser/filebrowser.log:/remotelogs/filebrowser/filebrowser.log:ro"
-      - "${DOCKERCONFDIR}/swag/log/nginx:/remotelogs/nginx:ro"
+      - "${DOCKER_VOLUME_CONFIG}/filebrowser/filebrowser.log:/remotelogs/filebrowser/filebrowser.log:ro"
+      - "${DOCKER_VOLUME_CONFIG}/swag/log/nginx:/remotelogs/nginx:ro"
 ```

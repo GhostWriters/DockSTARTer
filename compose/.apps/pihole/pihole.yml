@@ -2,25 +2,20 @@ services:
   pihole:
     cap_add:
       - NET_ADMIN
-    container_name: pihole
+    container_name: ${PIHOLE_CONTAINER_NAME}
     dns:
       - 127.0.0.1
-      - ${NS1}
-      - ${NS2}
+      - ${PIHOLE_ENVIRONMENT_DNS1}
+      - ${PIHOLE_ENVIRONMENT_DNS2}
     environment:
-      - DNS1=${NS1}
-      - DNS2=${NS2}
-      - ServerIP=${PIHOLE_SERVERIP}
+      - DNS1=${PIHOLE_ENVIRONMENT_DNS1}
+      - DNS2=${PIHOLE_ENVIRONMENT_DNS2}
+      - ServerIP=${PIHOLE_ENVIRONMENT_SERVERIP}
       - TZ=${TZ}
-      - WEBPASSWORD=${PIHOLE_WEBPASSWORD}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
+      - WEBPASSWORD=${PIHOLE_ENVIRONMENT_WEBPASSWORD}
     restart: ${PIHOLE_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/pihole/dnsmasq.d:/etc/dnsmasq.d
-      - ${DOCKERCONFDIR}/pihole/pihole:/etc/pihole
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/pihole/dnsmasq.d:/etc/dnsmasq.d
+      - ${DOCKER_VOLUME_CONFIG}/pihole/pihole:/etc/pihole
+      - ${DOCKER_VOLUME_STORAGE}:/storage
