@@ -473,7 +473,7 @@ main() {
                     run_script 'env_get' "${ENVVAR}"
                 else
                     echo "Invalid usage. Must be"
-                    echo "  --env-get with variable name ('--env-get=Var')"
+                    echo "  --env-get-lower with variable name ('--env-get-lower=Var')"
                     echo "  Variable name can be Mixed Case"
                 fi
                 ;;
