@@ -16,7 +16,7 @@ appvars_create_all() {
 }
 
 test_appvars_create_all() {
-    run_script 'env_update'
     run_script 'appvars_create_all'
+    run_script 'env_update'
     cat "${COMPOSE_ENV}"
 }
