@@ -8,5 +8,6 @@ services:
     restart: ${PROMETHEUS_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/prometheus:/config
+      - ${DOCKER_VOLUME_CONFIG}/prometheus/etc:/etc/prometheus
+      - ${DOCKER_VOLUME_CONFIG}/prometheus/data:/prometheus
       - ${DOCKER_VOLUME_STORAGE}:/storage
