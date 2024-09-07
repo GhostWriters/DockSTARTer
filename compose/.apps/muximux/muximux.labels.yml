@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "true"
       com.dockstarter.appinfo.description: "(DEPRECATED) Use Heimdall or Organizr"
       com.dockstarter.appinfo.nicename: "Muximux"
+      com.dockstarter.appvars.muximux_container_name: "muximux"
       com.dockstarter.appvars.muximux_enabled: "false"
       com.dockstarter.appvars.muximux_network_mode: ""
       com.dockstarter.appvars.muximux_port_80: "8005"

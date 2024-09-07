@@ -1,19 +1,14 @@
 services:
   handbrake:
-    container_name: handbrake
+    container_name: ${HANDBRAKE_CONTAINER_NAME}
     environment:
       - GROUP_ID=${PGID}
       - USER_ID=${PUID}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${HANDBRAKE_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/handbrake:/config
-      - ${DOCKERSTORAGEDIR}:/storage
-      - ${HANDBRAKE_OUTPUTDIR}:/output
-      - ${HANDBRAKE_WATCHDIR}:/watch
+      - ${DOCKER_VOLUME_CONFIG}/handbrake:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${HANDBRAKE_VOLUME_OUTPUTDIR}:/output
+      - ${HANDBRAKE_VOLUME_WATCHDIR}:/watch

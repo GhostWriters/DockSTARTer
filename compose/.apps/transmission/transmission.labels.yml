@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Fast, easy, and free BitTorrent client"
       com.dockstarter.appinfo.nicename: "Transmission"
+      com.dockstarter.appvars.transmission_container_name: "transmission"
       com.dockstarter.appvars.transmission_enabled: "false"
       com.dockstarter.appvars.transmission_network_mode: ""
       com.dockstarter.appvars.transmission_port_51413: "51413"

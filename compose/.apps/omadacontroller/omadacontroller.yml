@@ -1,6 +1,6 @@
 services:
   omadacontroller:
-    container_name: omadacontroller
+    container_name: ${OMADACONTROLLER_CONTAINER_NAME}
     environment:
       - MANAGE_HTTP_PORT=${OMADACONTROLLER_PORT_8088}
       - MANAGE_HTTPS_PORT=${OMADACONTROLLER_PORT_8043}
@@ -12,19 +12,14 @@ services:
       - PORT_MANAGER_V2=${OMADACONTROLLER_PORT_29814}
       - PORT_UPGRADE_V1=${OMADACONTROLLER_PORT_29813}
       - PUID=${PUID}
-      - SHOW_MONGODB_LOGS=${OMADACONTROLLER_SHOW_MONGODB_LOGS}
-      - SHOW_SERVER_LOGS=${OMADACONTROLLER_SHOW_SERVER_LOGS}
-      - SMALL_FILES=${OMADACONTROLLER_SMALL_FILES}
+      - SHOW_MONGODB_LOGS=${OMADACONTROLLER_ENVIRONMENT_SHOW_MONGODB_LOGS}
+      - SHOW_SERVER_LOGS=${OMADACONTROLLER_ENVIRONMENT_SHOW_SERVER_LOGS}
+      - SMALL_FILES=${OMADACONTROLLER_ENVIRONMENT_SMALL_FILES}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${OMADACONTROLLER_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/omadacontroller:/opt/tplink/EAPController/data
-      - ${DOCKERCONFDIR}/omadacontroller/logs:/opt/tplink/EAPController/logs
-      - ${DOCKERCONFDIR}/omadacontroller/work:/opt/tplink/EAPController/work
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/omadacontroller:/opt/tplink/EAPController/data
+      - ${DOCKER_VOLUME_CONFIG}/omadacontroller/logs:/opt/tplink/EAPController/logs
+      - ${DOCKER_VOLUME_CONFIG}/omadacontroller/work:/opt/tplink/EAPController/work
+      - ${DOCKER_VOLUME_STORAGE}:/storage

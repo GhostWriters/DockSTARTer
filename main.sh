@@ -22,8 +22,12 @@ For regular usage you can run without providing any options.
 -e --env
     update your .env file with new variables
 --env-get=<var>
+    get the value of a <var>iable in .env (variable name is forced to UPPER CASE)
+--env-get-lower=<var>
     get the value of a <var>iable in .env
 --env-set=<var>,<val>
+    Set the <val>ue of a <var>iable in .env (variable name is forced to UPPER CASE)
+--env-set-lower=<var>,<val>
     Set the <val>ue of a <var>iable in .env
 -f --force
     force certain install/upgrade actions to run even if they would not be needed
@@ -111,6 +115,8 @@ cmdline() {
                     echo "Invalid usage. Must be on of the following:"
                     echo "  --env-set with variable name ('--env-set=VAR,VAL') and value"
                     echo "  --env-get with variable name ('--env-get=VAR')"
+                    echo "  --env-set-lower with variable name ('--env-set-lower=Var,VAL') and value"
+                    echo "  --env-get-lower with variable name ('--env-get-lower=Var')"
                     exit
                 else
                     readonly ENVVAR=${ENVARG%%,*}
@@ -438,26 +444,46 @@ main() {
         exit
     fi
     if [[ -n ${ENV-} ]]; then
-        run_script 'env_update'
         run_script 'appvars_create_all'
+        run_script 'env_update'
         exit
     fi
     if [[ -n ${ENVMETHOD-} ]]; then
         case "${ENVMETHOD-}" in
             --env-get)
                 if [[ ${ENVVAR-} != "" ]]; then
-                    run_script 'env_get' "${ENVVAR}"
+                    run_script 'env_get' "${ENVVAR^^}"
                 else
                     echo "Invalid usage. Must be"
                     echo "  --env-get with variable name ('--env-get=VAR')"
+                    echo "  Variable name will be forced to UPPER CASE"
                 fi
                 ;;
             --env-set)
                 if [[ ${ENVVAR-} != "" ]] && [[ ${ENVVAL-} != "" ]]; then
-                    run_script 'env_set' "${ENVVAR}" "${ENVVAL}"
+                    run_script 'env_set' "${ENVVAR^^}" "${ENVVAL}"
                 else
                     echo "Invalid usage. Must be"
                     echo "  --env-set with variable name and value ('--env-set=VAR,VAL')"
+                    echo "  Variable name will be forced to UPPER CASE"
+                fi
+                ;;
+            --env-get-lower)
+                if [[ ${ENVVAR-} != "" ]]; then
+                    run_script 'env_get' "${ENVVAR}"
+                else
+                    echo "Invalid usage. Must be"
+                    echo "  --env-get-lower with variable name ('--env-get-lower=Var')"
+                    echo "  Variable name can be Mixed Case"
+                fi
+                ;;
+            --env-set-lower)
+                if [[ ${ENVVAR-} != "" ]] && [[ ${ENVVAL-} != "" ]]; then
+                    run_script 'env_set' "${ENVVAR}" "${ENVVAL}"
+                else
+                    echo "Invalid usage. Must be"
+                    echo "  --env-set-lower with variable name and value ('--env-set-lower=Var,VAL')"
+                    echo "  Variable name can be Mixed Case"
                 fi
                 ;;
             *)

@@ -3,7 +3,6 @@ name: Build mkdocs and deploy to GitHub Pages
 on: [push, pull_request]
 
 jobs:
-
   build:
     name: Build docs
     runs-on: ubuntu-latest

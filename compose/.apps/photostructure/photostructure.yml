@@ -1,22 +1,17 @@
 services:
   photostructure:
-    container_name: photostructure
+    container_name: ${PHOTOSTRUCTURE_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
-      - PS_EXPOSE_NETWORK_WITHOUT_AUTH=${PHOTOSTRUCTURE_EXPOSE_NETWORK_WITHOUT_AUTH}
-      - PS_FORCE_LOCAL_DB_REPLICA=${PHOTOSTRUCTURE_FORCE_LOCAL_DB_REPLICA}
+      - PS_EXPOSE_NETWORK_WITHOUT_AUTH=${PHOTOSTRUCTURE_ENVIRONMENT_EXPOSE_NETWORK_WITHOUT_AUTH}
+      - PS_FORCE_LOCAL_DB_REPLICA=${PHOTOSTRUCTURE_ENVIRONMENT_FORCE_LOCAL_DB_REPLICA}
       - PUID=${PUID}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${PHOTOSTRUCTURE_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/photostructure:/ps/config
-      - ${DOCKERCONFDIR}/photostructure/logs:/ps/logs
-      - ${DOCKERSTORAGEDIR}:/storage
-      - ${PHOTOSTRUCTURE_CACHE_DIRECTORY}:/ps/tmp
-      - ${PHOTOSTRUCTURE_LIBRARY}:/ps/library
+      - ${DOCKER_VOLUME_CONFIG}/photostructure:/ps/config
+      - ${DOCKER_VOLUME_CONFIG}/photostructure/logs:/ps/logs
+      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${PHOTOSTRUCTURE_VOLUME_CACHE_DIRECTORY}:/ps/tmp
+      - ${PHOTOSTRUCTURE_VOLUME_LIBRARY}:/ps/library

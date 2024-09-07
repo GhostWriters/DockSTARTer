@@ -1,17 +1,12 @@
 services:
   dasshio:
-    container_name: dasshio
+    container_name: ${DASSHIO_CONTAINER_NAME}
     environment:
-      - HA_BASE_URL=${DASSHIO_HOMEASSISTANT_URL}
-      - HASSIO_TOKEN=${DASSHIO_HOMEASSISTANT_AUTH_TOKEN}
+      - HA_BASE_URL=${DASSHIO_ENVIRONMENT_HOMEASSISTANT_URL}
+      - HASSIO_TOKEN=${DASSHIO_ENVIRONMENT_HOMEASSISTANT_AUTH_TOKEN}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${DASSHIO_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/dasshio:/data
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/dasshio:/data
+      - ${DOCKER_VOLUME_STORAGE}:/storage

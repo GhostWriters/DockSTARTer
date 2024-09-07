@@ -1,21 +1,16 @@
 services:
   dozzle:
-    container_name: dozzle
+    container_name: ${DOZZLE_CONTAINER_NAME}
     environment:
-      - DOZZLE_BASE=${DOZZLE_BASE}
-      - DOZZLE_FILTER=${DOZZLE_FILTER}
-      - DOZZLE_LEVEL=${DOZZLE_LEVEL}
-      - DOZZLE_TAILSIZE=${DOZZLE_TAILSIZE}
+      - DOZZLE_BASE=${DOZZLE_ENVIRONMENT_BASE}
+      - DOZZLE_FILTER=${DOZZLE_ENVIRONMENT_FILTER}
+      - DOZZLE_LEVEL=${DOZZLE_ENVIRONMENT_LEVEL}
+      - DOZZLE_TAILSIZE=${DOZZLE_ENVIRONMENT_TAILSIZE}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${DOZZLE_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOZZLE_VOLUME_DOCKER_SOCKET}:/var/run/docker.sock

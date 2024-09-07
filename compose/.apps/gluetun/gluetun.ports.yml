@@ -1,0 +1,7 @@
+services:
+  gluetun:
+    ports:
+      - ${GLUETUN_PORT_8000}:8000
+      - ${GLUETUN_PORT_8388}:8388
+      - ${GLUETUN_PORT_8388}:8388/udp
+      - ${GLUETUN_PORT_8888}:8888

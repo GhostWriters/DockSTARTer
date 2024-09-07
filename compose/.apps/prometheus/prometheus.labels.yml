@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Prometheus is a systems and service monitoring system."
       com.dockstarter.appinfo.nicename: "Prometheus"
+      com.dockstarter.appvars.prometheus_container_name: "prometheus"
       com.dockstarter.appvars.prometheus_enabled: "false"
       com.dockstarter.appvars.prometheus_network_mode: ""
       com.dockstarter.appvars.prometheus_port_9090: "9090"

@@ -1,0 +1,3 @@
+services:
+  minecraftbedrockserver:
+    image: itzg/minecraft-bedrock-server:${MINECRAFTBEDROCKSERVER_TAG}

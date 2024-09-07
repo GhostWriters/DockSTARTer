@@ -1,0 +1,4 @@
+services:
+  fireflyiii:
+    ports:
+      - ${FIREFLYIII_PORT_8080}:8080

@@ -1,18 +1,13 @@
 services:
   openspeedtest:
-    container_name: openspeedtest
+    container_name: ${OPENSPEEDTEST_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
-      - BASE_PATH=${OPENSPEEDTEST_BASE_PATH}
+      - BASE_PATH=${OPENSPEEDTEST_ENVIRONMENT_BASE_PATH}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${OPENSPEEDTEST_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/openspeedtest:/config
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/openspeedtest:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage
