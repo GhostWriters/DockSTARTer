@@ -5,9 +5,8 @@ IFS=$'\n\t'
 appvars_create() {
     local APPNAME=${1-}
     APPNAME=${APPNAME^^}
-    local APPSFOLDER="${SCRIPTPATH}/compose/.apps"
     local FILENAME=${APPNAME,,}
-    local APPTEMPLATES="${APPSFOLDER}/${FILENAME}"
+    local APPTEMPLATES="${SCRIPTPATH}/compose/.apps/${FILENAME}"
     local APPLABELFILE="${APPTEMPLATES}/${FILENAME}.labels.yml"
 
     local -A APP_VAR_VALUE
@@ -51,7 +50,6 @@ appvars_create() {
                 ;;
         esac
     done
-    #debug "appvars_create.sh: ${APP_VAR_MIGRATE[*]@A}"
 
     # Actual processing starts here
     info "Creating environment variables for ${APPNAME}."
