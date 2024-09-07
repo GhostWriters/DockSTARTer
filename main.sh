@@ -482,7 +482,7 @@ main() {
                     run_script 'env_set' "${ENVVAR}" "${ENVVAL}"
                 else
                     echo "Invalid usage. Must be"
-                    echo "  --env-set with variable name and value ('--env-set=Var,VAL')"
+                    echo "  --env-set-lower with variable name and value ('--env-set-lower=Var,VAL')"
                     echo "  Variable name can be Mixed Case"
                 fi
                 ;;
