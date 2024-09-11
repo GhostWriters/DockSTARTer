@@ -7,7 +7,6 @@ menu_config() {
     CONFIGOPTS+=("Full Setup " "This goes through all menus below. Recommended for first run")
     CONFIGOPTS+=("Select Apps " "Select which apps to run. Previously enabled apps are remembered")
     CONFIGOPTS+=("Set App Variables " "Review and adjust variables for enabled apps")
-    CONFIGOPTS+=("Set VPN Variables " "Review and adjust VPN specific variables")
     CONFIGOPTS+=("Set Global Variables " "Review and adjust global variables")
 
     local CONFIGCHOICE
