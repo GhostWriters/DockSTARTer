@@ -63,22 +63,22 @@ menu_value_prompt() {
     VALUEOPTIONS+=("Enter New " "")
 
     case "${SET_VAR}" in
-        *_ENABLED)
+        "${APPNAME}_ENABLED")
             VALUEDESCRIPTION='\n\n Must be true or false.'
             ;;
-        *_NETWORK_MODE)
+        "${APPNAME}_NETWORK_MODE")
             VALUEDESCRIPTION='\n\n Network Mode is usually left blank but can also be bridge, host, none, service: <APPNAME>, or container: <APPNAME>.'
             ;;
-        *_PORT_*)
+        "${APPNAME}_PORT_"*)
             VALUEDESCRIPTION='\n\n Must be an unused port between 0 and 65535.'
             ;;
-        *_RESTART)
+        "${APPNAME}_RESTART")
             VALUEDESCRIPTION='\n\n Restart is usually unless-stopped but can also be no, always, or on-failure.'
             ;;
-        *_TAG)
+        "${APPNAME}_TAG")
             VALUEDESCRIPTION='\n\n Tag is usually latest but can also be other values based on the image.'
             ;;
-        *_VOLUME_*)
+        "${APPNAME}_VOLUME_"*)
             VALUEDESCRIPTION='\n\n If the directory selected does not exist we will attempt to create it.'
             ;;
         DOCKER_GID)
@@ -142,7 +142,7 @@ menu_value_prompt() {
         menu_value_prompt "${SET_VAR}"
     else
         case "${SET_VAR}" in
-            *_ENABLED)
+            "${APPNAME}_ENABLED")
                 if [[ ${INPUT} == true ]] || [[ ${INPUT} == false ]]; then
                     run_script 'env_set' "${SET_VAR}" "${INPUT}"
                 else
@@ -150,7 +150,7 @@ menu_value_prompt() {
                     menu_value_prompt "${SET_VAR}"
                 fi
                 ;;
-            *_NETWORK_MODE)
+            "${APPNAME}_NETWORK_MODE")
                 case "${INPUT}" in
                     "" | "bridge" | "host" | "none" | "service:"* | "container:"*)
                         run_script 'env_set' "${SET_VAR}" "${INPUT}"
@@ -161,7 +161,7 @@ menu_value_prompt() {
                         ;;
                 esac
                 ;;
-            *_PORT_*)
+            "${APPNAME}_PORT_"*)
                 if [[ ${INPUT} =~ ^[0-9]+$ ]] || [[ ${INPUT} -ge 0 ]] || [[ ${INPUT} -le 65535 ]]; then
                     run_script 'env_set' "${SET_VAR}" "${INPUT}"
                 else
@@ -169,7 +169,7 @@ menu_value_prompt() {
                     menu_value_prompt "${SET_VAR}"
                 fi
                 ;;
-            *_RESTART)
+            "${APPNAME}_RESTART")
                 case "${INPUT}" in
                     "no" | "always" | "on-failure" | "unless-stopped")
                         run_script 'env_set' "${SET_VAR}" "${INPUT}"
@@ -180,7 +180,7 @@ menu_value_prompt() {
                         ;;
                 esac
                 ;;
-            *_VOLUME_*)
+            "${APPNAME}_VOLUME_"*)
                 if [[ ${INPUT} == "/" ]]; then
                     whiptail --fb --clear --title "DockSTARTer" --msgbox "Cannot use / for ${SET_VAR}. Please select another folder." 0 0
                     menu_value_prompt "${SET_VAR}"
