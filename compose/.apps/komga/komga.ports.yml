@@ -1,4 +1,4 @@
 services:
   komga:
     ports:
-      - ${KOMGA_PORT_8080}:8080
+      - ${KOMGA_PORT_25600}:25600
