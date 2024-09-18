@@ -1,5 +1,5 @@
 services:
-  openspeedtest:
+  ${_appname_}:
     ports:
-      - ${OPENSPEEDTEST_PORT_3000}:3000
-      - ${OPENSPEEDTEST_PORT_3001}:3001
+      - ${${_APPNAME_}_PORT_3000}:3000
+      - ${${_APPNAME_}_PORT_3001}:3001

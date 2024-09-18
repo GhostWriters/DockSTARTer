@@ -1,4 +1,4 @@
 services:
-  goaccess:
+  ${_appname_}:
     ports:
-      - ${GOACCESS_PORT_7889}:7889
+      - ${${_APPNAME_}_PORT_7889}:7889

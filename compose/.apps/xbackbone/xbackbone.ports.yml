@@ -1,4 +1,4 @@
 services:
-  xbackbone:
+  ${_appname_}:
     ports:
-      - ${XBACKBONE_PORT_80}:80
+      - ${${_APPNAME_}_PORT_80}:80

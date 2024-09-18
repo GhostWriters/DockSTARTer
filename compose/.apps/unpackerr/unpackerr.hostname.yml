@@ -1,3 +1,3 @@
 services:
-  unpackerr:
+  ${_appname_}:
     hostname: ${DOCKER_HOSTNAME}

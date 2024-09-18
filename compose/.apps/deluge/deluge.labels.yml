@@ -1,16 +1,16 @@
 services:
-  deluge:
+  ${_appname_}:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Lightweight, Full-featured BitTorrent client"
       com.dockstarter.appinfo.nicename: "Deluge"
-      com.dockstarter.appvars.deluge_container_name: "deluge"
-      com.dockstarter.appvars.deluge_enabled: "false"
-      com.dockstarter.appvars.deluge_network_mode: ""
-      com.dockstarter.appvars.deluge_port_51413: "51413"
-      com.dockstarter.appvars.deluge_port_58846: "58846"
-      com.dockstarter.appvars.deluge_port_58946: "58946"
-      com.dockstarter.appvars.deluge_port_6881: "6881"
-      com.dockstarter.appvars.deluge_port_8112: "8112"
-      com.dockstarter.appvars.deluge_restart: "unless-stopped"
-      com.dockstarter.appvars.deluge_tag: "latest"
+      com.dockstarter.appvars.${_appname_}_container_name: "${_appname_}"
+      com.dockstarter.appvars.${_appname_}_enabled: "false"
+      com.dockstarter.appvars.${_appname_}_network_mode: ""
+      com.dockstarter.appvars.${_appname_}_port_51413: "51413"
+      com.dockstarter.appvars.${_appname_}_port_58846: "58846"
+      com.dockstarter.appvars.${_appname_}_port_58946: "58946"
+      com.dockstarter.appvars.${_appname_}_port_6881: "6881"
+      com.dockstarter.appvars.${_appname_}_port_8112: "8112"
+      com.dockstarter.appvars.${_appname_}_restart: "unless-stopped"
+      com.dockstarter.appvars.${_appname_}_tag: "latest"

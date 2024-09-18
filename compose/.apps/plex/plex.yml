@@ -1,14 +1,14 @@
 services:
-  plex:
-    container_name: ${PLEX_CONTAINER_NAME}
+  ${_appname_}:
+    container_name: ${${_APPNAME_}_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
-      - PLEX_CLAIM=${PLEX_ENVIRONMENT_PLEX_CLAIM}
+      - PLEX_CLAIM=${${_APPNAME_}_ENVIRONMENT_PLEX_CLAIM}
       - PUID=${PUID}
       - TZ=${TZ}
-      - VERSION=${PLEX_ENVIRONMENT_VERSION}
-    restart: ${PLEX_RESTART}
+      - VERSION=${${_APPNAME_}_ENVIRONMENT_VERSION}
+    restart: ${${_APPNAME_}_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/plex:/config
+      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage

@@ -1,3 +1,3 @@
 services:
-  gitea:
-    image: gitea/gitea:${GITEA_TAG}
+  ${_appname_}:
+    image: gitea/gitea:${${_APPNAME_}_TAG}

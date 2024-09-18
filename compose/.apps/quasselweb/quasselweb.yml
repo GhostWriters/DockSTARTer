@@ -1,16 +1,16 @@
 services:
-  quasselweb:
-    container_name: ${QUASSELWEB_CONTAINER_NAME}
+  ${_appname_}:
+    container_name: ${${_APPNAME_}_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
-      - QUASSEL_CORE=${QUASSELWEB_ENVIRONMENT_QUASSEL_CORE}
-      - QUASSEL_HTTPS=${QUASSELWEB_ENVIRONMENT_QUASSEL_HTTPS}
-      - QUASSEL_PORT=${QUASSELWEB_ENVIRONMENT_QUASSEL_PORT}
+      - QUASSEL_CORE=${${_APPNAME_}_ENVIRONMENT_QUASSEL_CORE}
+      - QUASSEL_HTTPS=${${_APPNAME_}_ENVIRONMENT_QUASSEL_HTTPS}
+      - QUASSEL_PORT=${${_APPNAME_}_ENVIRONMENT_QUASSEL_PORT}
       - TZ=${TZ}
-      - URL_BASE=${QUASSELWEB_ENVIRONMENT_URL_BASE}
-    restart: ${QUASSELWEB_RESTART}
+      - URL_BASE=${${_APPNAME_}_ENVIRONMENT_URL_BASE}
+    restart: ${${_APPNAME_}_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/quasselweb:/config
+      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage

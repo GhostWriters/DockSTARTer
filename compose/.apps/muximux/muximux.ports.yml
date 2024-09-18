@@ -1,4 +1,4 @@
 services:
-  muximux:
+  ${_appname_}:
     ports:
-      - ${MUXIMUX_PORT_80}:80
+      - ${${_APPNAME_}_PORT_80}:80

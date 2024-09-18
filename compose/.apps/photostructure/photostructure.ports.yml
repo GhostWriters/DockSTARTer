@@ -1,4 +1,4 @@
 services:
-  photostructure:
+  ${_appname_}:
     ports:
-      - ${PHOTOSTRUCTURE_PORT_1787}:1787
+      - ${${_APPNAME_}_PORT_1787}:1787

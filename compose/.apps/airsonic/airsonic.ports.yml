@@ -1,4 +1,4 @@
 services:
-  airsonic:
+  ${_appname_}:
     ports:
-      - ${AIRSONIC_PORT_4040}:4040
+      - ${${_APPNAME_}_PORT_4040}:4040

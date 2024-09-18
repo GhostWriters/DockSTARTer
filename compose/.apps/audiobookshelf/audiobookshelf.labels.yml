@@ -1,12 +1,12 @@
 services:
-  audiobookshelf:
+  ${_appname_}:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Self-hosted audiobook and podcast server"
       com.dockstarter.appinfo.nicename: "audiobookshelf"
-      com.dockstarter.appvars.audiobookshelf_container_name: "audiobookshelf"
-      com.dockstarter.appvars.audiobookshelf_enabled: "false"
-      com.dockstarter.appvars.audiobookshelf_network_mode: ""
-      com.dockstarter.appvars.audiobookshelf_port_80: "13378"
-      com.dockstarter.appvars.audiobookshelf_restart: "unless-stopped"
-      com.dockstarter.appvars.audiobookshelf_tag: "latest"
+      com.dockstarter.appvars.${_appname_}_container_name: "${_appname_}"
+      com.dockstarter.appvars.${_appname_}_enabled: "false"
+      com.dockstarter.appvars.${_appname_}_network_mode: ""
+      com.dockstarter.appvars.${_appname_}_port_80: "13378"
+      com.dockstarter.appvars.${_appname_}_restart: "unless-stopped"
+      com.dockstarter.appvars.${_appname_}_tag: "latest"

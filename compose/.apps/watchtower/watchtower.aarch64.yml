@@ -1,3 +1,3 @@
 services:
-  watchtower:
-    image: ghcr.io/containrrr/watchtower:${WATCHTOWER_TAG}
+  ${_appname_}:
+    image: ghcr.io/containrrr/watchtower:${${_APPNAME_}_TAG}

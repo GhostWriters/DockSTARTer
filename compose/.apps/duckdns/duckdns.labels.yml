@@ -1,14 +1,14 @@
 services:
-  duckdns:
+  ${_appname_}:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Free service which will point a DNS to an IP of your choice"
       com.dockstarter.appinfo.nicename: "DuckDNS"
-      com.dockstarter.appvars.duckdns_container_name: "duckdns"
-      com.dockstarter.appvars.duckdns_enabled: "false"
-      com.dockstarter.appvars.duckdns_environment_log_file: "true"
-      com.dockstarter.appvars.duckdns_environment_subdomains: ""
-      com.dockstarter.appvars.duckdns_environment_token: ""
-      com.dockstarter.appvars.duckdns_network_mode: ""
-      com.dockstarter.appvars.duckdns_restart: "unless-stopped"
-      com.dockstarter.appvars.duckdns_tag: "latest"
+      com.dockstarter.appvars.${_appname_}_container_name: "${_appname_}"
+      com.dockstarter.appvars.${_appname_}_enabled: "false"
+      com.dockstarter.appvars.${_appname_}_environment_log_file: "true"
+      com.dockstarter.appvars.${_appname_}_environment_subdomains: ""
+      com.dockstarter.appvars.${_appname_}_environment_token: ""
+      com.dockstarter.appvars.${_appname_}_network_mode: ""
+      com.dockstarter.appvars.${_appname_}_restart: "unless-stopped"
+      com.dockstarter.appvars.${_appname_}_tag: "latest"

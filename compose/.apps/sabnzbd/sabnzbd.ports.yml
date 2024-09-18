@@ -1,4 +1,4 @@
 services:
-  sabnzbd:
+  ${_appname_}:
     ports:
-      - ${SABNZBD_PORT_8080}:8080
+      - ${${_APPNAME_}_PORT_8080}:8080

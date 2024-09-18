@@ -1,12 +1,12 @@
 services:
-  prometheus:
+  ${_appname_}:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Prometheus is a systems and service monitoring system."
       com.dockstarter.appinfo.nicename: "Prometheus"
-      com.dockstarter.appvars.prometheus_container_name: "prometheus"
-      com.dockstarter.appvars.prometheus_enabled: "false"
-      com.dockstarter.appvars.prometheus_network_mode: ""
-      com.dockstarter.appvars.prometheus_port_9090: "9090"
-      com.dockstarter.appvars.prometheus_restart: "unless-stopped"
-      com.dockstarter.appvars.prometheus_tag: "latest"
+      com.dockstarter.appvars.${_appname_}_container_name: "${_appname_}"
+      com.dockstarter.appvars.${_appname_}_enabled: "false"
+      com.dockstarter.appvars.${_appname_}_network_mode: ""
+      com.dockstarter.appvars.${_appname_}_port_9090: "9090"
+      com.dockstarter.appvars.${_appname_}_restart: "unless-stopped"
+      com.dockstarter.appvars.${_appname_}_tag: "latest"

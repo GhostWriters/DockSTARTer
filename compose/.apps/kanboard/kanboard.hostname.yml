@@ -1,3 +1,3 @@
 services:
-  kanboard:
+  ${_appname_}:
     hostname: ${DOCKER_HOSTNAME}

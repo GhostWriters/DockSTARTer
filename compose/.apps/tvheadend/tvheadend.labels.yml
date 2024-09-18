@@ -1,15 +1,15 @@
 services:
-  tvheadend:
+  ${_appname_}:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "TV streaming server and recorder"
       com.dockstarter.appinfo.nicename: "Tvheadend"
-      com.dockstarter.appvars.tvheadend_container_name: "tvheadend"
-      com.dockstarter.appvars.tvheadend_enabled: "false"
-      com.dockstarter.appvars.tvheadend_environment_run_opts: ""
-      com.dockstarter.appvars.tvheadend_network_mode: ""
-      com.dockstarter.appvars.tvheadend_port_9981: "9981"
-      com.dockstarter.appvars.tvheadend_port_9982: "9982"
-      com.dockstarter.appvars.tvheadend_restart: "unless-stopped"
-      com.dockstarter.appvars.tvheadend_tag: "latest"
-      com.dockstarter.appvars.tvheadend_volume_recordingsdir: "/mnt/recordings"
+      com.dockstarter.appvars.${_appname_}_container_name: "${_appname_}"
+      com.dockstarter.appvars.${_appname_}_enabled: "false"
+      com.dockstarter.appvars.${_appname_}_environment_run_opts: ""
+      com.dockstarter.appvars.${_appname_}_network_mode: ""
+      com.dockstarter.appvars.${_appname_}_port_9981: "9981"
+      com.dockstarter.appvars.${_appname_}_port_9982: "9982"
+      com.dockstarter.appvars.${_appname_}_restart: "unless-stopped"
+      com.dockstarter.appvars.${_appname_}_tag: "latest"
+      com.dockstarter.appvars.${_appname_}_volume_recordingsdir: "/mnt/recordings"

@@ -1,4 +1,4 @@
 services:
-  readarr:
+  ${_appname_}:
     ports:
-      - ${READARR_PORT_8787}:8787
+      - ${${_APPNAME_}_PORT_8787}:8787
