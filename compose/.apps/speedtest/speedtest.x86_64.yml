@@ -1,3 +1,3 @@
 services:
-  ${_appname_}:
-    image: henrywhitaker3/speedtest-tracker:${${_APPNAME_}_TAG}
+  <appname>:
+    image: henrywhitaker3/speedtest-tracker:${<APPNAME>_TAG}

@@ -1,6 +1,6 @@
 services:
-  ${_appname_}:
+  <appname>:
     ports:
-      - ${${_APPNAME_}_PORT_8080}:8080
-      - ${${_APPNAME_}_PORT_8090}:8090
-      - ${${_APPNAME_}_PORT_8118}:8118
+      - ${<APPNAME>_PORT_8080}:8080
+      - ${<APPNAME>_PORT_8090}:8090
+      - ${<APPNAME>_PORT_8118}:8118

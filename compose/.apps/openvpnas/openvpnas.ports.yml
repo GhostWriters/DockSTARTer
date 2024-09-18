@@ -1,6 +1,6 @@
 services:
-  ${_appname_}:
+  <appname>:
     ports:
-      - ${${_APPNAME_}_PORT_1194}:1194/udp
-      - ${${_APPNAME_}_PORT_943}:943
-      - ${${_APPNAME_}_PORT_9443}:9443
+      - ${<APPNAME>_PORT_1194}:1194/udp
+      - ${<APPNAME>_PORT_943}:943
+      - ${<APPNAME>_PORT_9443}:9443

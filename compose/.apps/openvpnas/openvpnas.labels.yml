@@ -1,15 +1,15 @@
 services:
-  ${_appname_}:
+  <appname>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Secure network tunneling VPN"
       com.dockstarter.appinfo.nicename: "OpenVPNAS"
-      com.dockstarter.appvars.${_appname_}_container_name: "${_appname_}"
-      com.dockstarter.appvars.${_appname_}_enabled: "false"
-      com.dockstarter.appvars.${_appname_}_environment_interface: "eth0"
-      com.dockstarter.appvars.${_appname_}_network_mode: ""
-      com.dockstarter.appvars.${_appname_}_port_1194: "1194"
-      com.dockstarter.appvars.${_appname_}_port_943: "943"
-      com.dockstarter.appvars.${_appname_}_port_9443: "9443"
-      com.dockstarter.appvars.${_appname_}_restart: "unless-stopped"
-      com.dockstarter.appvars.${_appname_}_tag: "latest"
+      com.dockstarter.appvars.<appname>_container_name: "<appname>"
+      com.dockstarter.appvars.<appname>_enabled: "false"
+      com.dockstarter.appvars.<appname>_environment_interface: "eth0"
+      com.dockstarter.appvars.<appname>_network_mode: ""
+      com.dockstarter.appvars.<appname>_port_1194: "1194"
+      com.dockstarter.appvars.<appname>_port_943: "943"
+      com.dockstarter.appvars.<appname>_port_9443: "9443"
+      com.dockstarter.appvars.<appname>_restart: "unless-stopped"
+      com.dockstarter.appvars.<appname>_tag: "latest"

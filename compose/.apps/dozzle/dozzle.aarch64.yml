@@ -1,3 +1,3 @@
 services:
-  ${_appname_}:
-    image: amir20/dozzle:${${_APPNAME_}_TAG}
+  <appname>:
+    image: amir20/dozzle:${<APPNAME>_TAG}

@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  <appname>:
     ports:
-      - ${${_APPNAME_}_PORT_19132}:19132/udp
+      - ${<APPNAME>_PORT_19132}:19132/udp

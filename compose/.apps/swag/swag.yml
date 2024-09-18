@@ -1,21 +1,21 @@
 services:
-  ${_appname_}:
+  <appname>:
     cap_add:
       - NET_ADMIN
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
-      - DNSPLUGIN=${${_APPNAME_}_ENVIRONMENT_DNSPLUGIN}
-      - EMAIL=${${_APPNAME_}_ENVIRONMENT_EMAIL}
-      - EXTRA_DOMAINS=${${_APPNAME_}_ENVIRONMENT_EXTRA_DOMAINS}
-      - ONLY_SUBDOMAINS=${${_APPNAME_}_ENVIRONMENT_ONLY_SUBDOMAINS}
+      - DNSPLUGIN=${<APPNAME>_ENVIRONMENT_DNSPLUGIN}
+      - EMAIL=${<APPNAME>_ENVIRONMENT_EMAIL}
+      - EXTRA_DOMAINS=${<APPNAME>_ENVIRONMENT_EXTRA_DOMAINS}
+      - ONLY_SUBDOMAINS=${<APPNAME>_ENVIRONMENT_ONLY_SUBDOMAINS}
       - PGID=${PGID}
       - PUID=${PUID}
-      - SUBDOMAINS=${${_APPNAME_}_ENVIRONMENT_SUBDOMAINS}
+      - SUBDOMAINS=${<APPNAME>_ENVIRONMENT_SUBDOMAINS}
       - TZ=${TZ}
-      - URL=${${_APPNAME_}_ENVIRONMENT_URL}
-      - VALIDATION=${${_APPNAME_}_ENVIRONMENT_VALIDATION}
-    restart: ${${_APPNAME_}_RESTART}
+      - URL=${<APPNAME>_ENVIRONMENT_URL}
+      - VALIDATION=${<APPNAME>_ENVIRONMENT_VALIDATION}
+    restart: ${<APPNAME>_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/config
+      - ${DOCKER_VOLUME_CONFIG}/<appname>:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage

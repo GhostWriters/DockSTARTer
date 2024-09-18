@@ -1,7 +1,7 @@
 services:
-  ${_appname_}:
+  <appname>:
     ports:
-      - ${${_APPNAME_}_PORT_6881}:6881
-      - ${${_APPNAME_}_PORT_6881}:6881/udp
-      - ${${_APPNAME_}_PORT_8080}:${${_APPNAME_}_PORT_8080}
-      - ${${_APPNAME_}_PORT_8118}:8118
+      - ${<APPNAME>_PORT_6881}:6881
+      - ${<APPNAME>_PORT_6881}:6881/udp
+      - ${<APPNAME>_PORT_8080}:${<APPNAME>_PORT_8080}
+      - ${<APPNAME>_PORT_8118}:8118

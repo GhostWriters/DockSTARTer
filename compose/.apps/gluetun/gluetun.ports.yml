@@ -1,7 +1,7 @@
 services:
-  ${_appname_}:
+  <appname>:
     ports:
-      - ${${_APPNAME_}_PORT_8000}:8000
-      - ${${_APPNAME_}_PORT_8388}:8388
-      - ${${_APPNAME_}_PORT_8388}:8388/udp
-      - ${${_APPNAME_}_PORT_8888}:8888
+      - ${<APPNAME>_PORT_8000}:8000
+      - ${<APPNAME>_PORT_8388}:8388
+      - ${<APPNAME>_PORT_8388}:8388/udp
+      - ${<APPNAME>_PORT_8888}:8888

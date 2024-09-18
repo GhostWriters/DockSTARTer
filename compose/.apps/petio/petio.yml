@@ -1,11 +1,11 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${<APPNAME>_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}/config:/app/api/config
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}/logs:/app/logs
+      - ${DOCKER_VOLUME_CONFIG}/<appname>/config:/app/api/config
+      - ${DOCKER_VOLUME_CONFIG}/<appname>/logs:/app/logs
       - ${DOCKER_VOLUME_STORAGE}:/storage

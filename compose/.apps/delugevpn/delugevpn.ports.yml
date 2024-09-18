@@ -1,8 +1,8 @@
 services:
-  ${_appname_}:
+  <appname>:
     ports:
-      - ${${_APPNAME_}_PORT_58846}:58846
-      - ${${_APPNAME_}_PORT_58946}:58946
-      - ${${_APPNAME_}_PORT_6881}:6881
-      - ${${_APPNAME_}_PORT_8112}:8112
-      - ${${_APPNAME_}_PORT_8118}:8118
+      - ${<APPNAME>_PORT_58846}:58846
+      - ${<APPNAME>_PORT_58946}:58946
+      - ${<APPNAME>_PORT_6881}:6881
+      - ${<APPNAME>_PORT_8112}:8112
+      - ${<APPNAME>_PORT_8118}:8118

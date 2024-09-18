@@ -1,14 +1,14 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-      - YDL_DEBUG=${${_APPNAME_}_ENVIRONMENT_DEBUG}
-      - YDL_CONFIG_PATH=${${_APPNAME_}_ENVIRONMENT_CONFIG_PATH}
-    restart: ${${_APPNAME_}_RESTART}
+      - YDL_DEBUG=${<APPNAME>_ENVIRONMENT_DEBUG}
+      - YDL_CONFIG_PATH=${<APPNAME>_ENVIRONMENT_CONFIG_PATH}
+    restart: ${<APPNAME>_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/youtube-dl
+      - ${DOCKER_VOLUME_CONFIG}/<appname>:/youtube-dl
       - ${DOCKER_VOLUME_STORAGE}:/storage

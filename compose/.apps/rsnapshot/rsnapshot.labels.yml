@@ -1,14 +1,14 @@
 services:
-  ${_appname_}:
+  <appname>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Make periodic snapshots of local machines, and remote machines over ssh"
       com.dockstarter.appinfo.nicename: "Rsnapshot"
-      com.dockstarter.appvars.${_appname_}_container_name: "${_appname_}"
-      com.dockstarter.appvars.${_appname_}_enabled: "false"
-      com.dockstarter.appvars.${_appname_}_network_mode: ""
-      com.dockstarter.appvars.${_appname_}_restart: "unless-stopped"
-      com.dockstarter.appvars.${_appname_}_tag: "latest"
-      com.dockstarter.appvars.${_appname_}_volume_datadir: "~/.config/appdata"
-      com.dockstarter.appvars.${_appname_}_volume_root_ssh: "/root/.ssh"
-      com.dockstarter.appvars.${_appname_}_volume_snapshotsdir: "/mnt/rsnapshot/snapshots"
+      com.dockstarter.appvars.<appname>_container_name: "<appname>"
+      com.dockstarter.appvars.<appname>_enabled: "false"
+      com.dockstarter.appvars.<appname>_network_mode: ""
+      com.dockstarter.appvars.<appname>_restart: "unless-stopped"
+      com.dockstarter.appvars.<appname>_tag: "latest"
+      com.dockstarter.appvars.<appname>_volume_datadir: "~/.config/appdata"
+      com.dockstarter.appvars.<appname>_volume_root_ssh: "/root/.ssh"
+      com.dockstarter.appvars.<appname>_volume_snapshotsdir: "/mnt/rsnapshot/snapshots"

@@ -1,8 +1,8 @@
 services:
-  ${_appname_}:
+  <appname>:
     ports:
-      - ${${_APPNAME_}_PORT_51413}:51413
-      - ${${_APPNAME_}_PORT_51413}:51413/udp
-      - ${${_APPNAME_}_PORT_6881}:6881
-      - ${${_APPNAME_}_PORT_6881}:6881/udp
-      - ${${_APPNAME_}_PORT_8080}:${${_APPNAME_}_PORT_8080}
+      - ${<APPNAME>_PORT_51413}:51413
+      - ${<APPNAME>_PORT_51413}:51413/udp
+      - ${<APPNAME>_PORT_6881}:6881
+      - ${<APPNAME>_PORT_6881}:6881/udp
+      - ${<APPNAME>_PORT_8080}:${<APPNAME>_PORT_8080}

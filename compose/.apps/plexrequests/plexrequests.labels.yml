@@ -1,5 +1,5 @@
 services:
-  ${_appname_}:
+  <appname>:
     labels:
       com.dockstarter.appinfo.deprecated: "true"
       com.dockstarter.appinfo.description: "(DEPRECATED) Use Ombi"

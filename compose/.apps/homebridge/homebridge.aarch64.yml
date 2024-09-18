@@ -1,3 +1,3 @@
 services:
-  ${_appname_}:
-    image: homebridge/homebridge:${${_APPNAME_}_TAG}
+  <appname>:
+    image: homebridge/homebridge:${<APPNAME>_TAG}

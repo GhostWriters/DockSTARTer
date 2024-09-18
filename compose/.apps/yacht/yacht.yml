@@ -1,16 +1,16 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
-      - ADMIN_EMAIL=${${_APPNAME_}_ENVIRONMENT_ADMIN_EMAIL}
-      - DISABLE_AUTH=${${_APPNAME_}_ENVIRONMENT_DISABLE_AUTH}
+      - ADMIN_EMAIL=${<APPNAME>_ENVIRONMENT_ADMIN_EMAIL}
+      - DISABLE_AUTH=${<APPNAME>_ENVIRONMENT_DISABLE_AUTH}
       - PGID=${PGID}
       - PUID=${PUID}
-      - SECRET_KEY=${${_APPNAME_}_ENVIRONMENT_SECRET_KEY}
+      - SECRET_KEY=${<APPNAME>_ENVIRONMENT_SECRET_KEY}
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${<APPNAME>_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/config
+      - ${DOCKER_VOLUME_CONFIG}/<appname>:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${${_APPNAME_}_VOLUME_DOCKER_SOCKET}:/var/run/docker.sock
+      - ${<APPNAME>_VOLUME_DOCKER_SOCKET}:/var/run/docker.sock

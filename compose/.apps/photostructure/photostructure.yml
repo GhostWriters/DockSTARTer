@@ -1,17 +1,17 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
-      - PS_EXPOSE_NETWORK_WITHOUT_AUTH=${${_APPNAME_}_ENVIRONMENT_EXPOSE_NETWORK_WITHOUT_AUTH}
-      - PS_FORCE_LOCAL_DB_REPLICA=${${_APPNAME_}_ENVIRONMENT_FORCE_LOCAL_DB_REPLICA}
+      - PS_EXPOSE_NETWORK_WITHOUT_AUTH=${<APPNAME>_ENVIRONMENT_EXPOSE_NETWORK_WITHOUT_AUTH}
+      - PS_FORCE_LOCAL_DB_REPLICA=${<APPNAME>_ENVIRONMENT_FORCE_LOCAL_DB_REPLICA}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${<APPNAME>_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/ps/config
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}/logs:/ps/logs
+      - ${DOCKER_VOLUME_CONFIG}/<appname>:/ps/config
+      - ${DOCKER_VOLUME_CONFIG}/<appname>/logs:/ps/logs
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${${_APPNAME_}_VOLUME_CACHE_DIRECTORY}:/ps/tmp
-      - ${${_APPNAME_}_VOLUME_LIBRARY}:/ps/library
+      - ${<APPNAME>_VOLUME_CACHE_DIRECTORY}:/ps/tmp
+      - ${<APPNAME>_VOLUME_LIBRARY}:/ps/library

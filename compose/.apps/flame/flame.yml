@@ -1,10 +1,10 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
-      - PASSWORD=${${_APPNAME_}_ENVIRONMENT_PASSWORD}
-    restart: ${${_APPNAME_}_RESTART}
+      - PASSWORD=${<APPNAME>_ENVIRONMENT_PASSWORD}
+    restart: ${<APPNAME>_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${${_APPNAME_}_VOLUME_DOCKER_SOCKET}:/var/run/docker.sock
+      - ${<APPNAME>_VOLUME_DOCKER_SOCKET}:/var/run/docker.sock

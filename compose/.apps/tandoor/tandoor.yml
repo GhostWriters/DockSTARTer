@@ -1,17 +1,17 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
-      - ALLOWED_HOSTS=${${_APPNAME_}_ENVIRONMENT_ALLOWED_HOSTS}
-      - DATABASE_URL=${${_APPNAME_}_ENVIRONMENT_DATABASE_URL}
-      - DEBUG=${${_APPNAME_}_ENVIRONMENT_DEBUG}
-      - GUNICORN_MEDIA=${${_APPNAME_}_ENVIRONMENT_GUNICORN_MEDIA}
-      - SECRET_KEY=${${_APPNAME_}_ENVIRONMENT_SECRET_KEY}
+      - ALLOWED_HOSTS=${<APPNAME>_ENVIRONMENT_ALLOWED_HOSTS}
+      - DATABASE_URL=${<APPNAME>_ENVIRONMENT_DATABASE_URL}
+      - DEBUG=${<APPNAME>_ENVIRONMENT_DEBUG}
+      - GUNICORN_MEDIA=${<APPNAME>_ENVIRONMENT_GUNICORN_MEDIA}
+      - SECRET_KEY=${<APPNAME>_ENVIRONMENT_SECRET_KEY}
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${<APPNAME>_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}/staticfiles:/opt/recipes/staticfiles
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}/mediafiles:/opt/recipes/mediafiles
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}/data:/opt/recipes/data
+      - ${DOCKER_VOLUME_CONFIG}/<appname>/staticfiles:/opt/recipes/staticfiles
+      - ${DOCKER_VOLUME_CONFIG}/<appname>/mediafiles:/opt/recipes/mediafiles
+      - ${DOCKER_VOLUME_CONFIG}/<appname>/data:/opt/recipes/data
       - ${DOCKER_VOLUME_STORAGE}:/storage

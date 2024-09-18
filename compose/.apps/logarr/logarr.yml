@@ -1,13 +1,13 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${<APPNAME>_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/config
+      - ${DOCKER_VOLUME_CONFIG}/<appname>:/config
       - ${DOCKER_VOLUME_CONFIG}:/var/log/logarrlogs:ro
       - ${DOCKER_VOLUME_STORAGE}:/storage

@@ -1,19 +1,19 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
-      - FB_BASEURL=${${_APPNAME_}_ENVIRONMENT_BASEURL}
-      - FB_DATABASE=${${_APPNAME_}_ENVIRONMENT_DATABASE}
-      - FB_LOG=${${_APPNAME_}_ENVIRONMENT_LOG}
+      - FB_BASEURL=${<APPNAME>_ENVIRONMENT_BASEURL}
+      - FB_DATABASE=${<APPNAME>_ENVIRONMENT_DATABASE}
+      - FB_LOG=${<APPNAME>_ENVIRONMENT_LOG}
       - TZ=${TZ}
     healthcheck:
       test:
         - CMD-SHELL
-        - curl -fs http://localhost:${${_APPNAME_}_PORT_80}/health || exit 1
-    restart: ${${_APPNAME_}_RESTART}
+        - curl -fs http://localhost:${<APPNAME>_PORT_80}/health || exit 1
+    restart: ${<APPNAME>_RESTART}
     user: ${PUID}:${PGID}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/config
+      - ${DOCKER_VOLUME_CONFIG}/<appname>:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${${_APPNAME_}_VOLUME_SHARE_DIR}:/srv
+      - ${<APPNAME>_VOLUME_SHARE_DIR}:/srv

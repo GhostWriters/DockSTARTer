@@ -1,14 +1,14 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
-      - INIT_ASSETS=${${_APPNAME_}_ENVIRONMENT_INIT_ASSETS}
+      - INIT_ASSETS=${<APPNAME>_ENVIRONMENT_INIT_ASSETS}
       - PGID=${PGID}
       - PUID=${PUID}
-      - SUBFOLDER=${${_APPNAME_}_ENVIRONMENT_SUBFOLDER}
+      - SUBFOLDER=${<APPNAME>_ENVIRONMENT_SUBFOLDER}
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${<APPNAME>_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/www/assets
+      - ${DOCKER_VOLUME_CONFIG}/<appname>:/www/assets

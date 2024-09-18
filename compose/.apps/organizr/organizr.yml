@@ -1,14 +1,14 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
-      - branch=${${_APPNAME_}_ENVIRONMENT_BRANCH}
-      - fpm=${${_APPNAME_}_ENVIRONMENT_FPM}
+      - branch=${<APPNAME>_ENVIRONMENT_BRANCH}
+      - fpm=${<APPNAME>_ENVIRONMENT_FPM}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${<APPNAME>_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/config
+      - ${DOCKER_VOLUME_CONFIG}/<appname>:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage

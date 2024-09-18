@@ -1,18 +1,18 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
-      - HTTP_PORT=${${_APPNAME_}_PORT_5600}
-      - HTTPS_PORT=${${_APPNAME_}_PORT_5601}
+      - HTTP_PORT=${<APPNAME>_PORT_5600}
+      - HTTPS_PORT=${<APPNAME>_PORT_5601}
       - PGID=${PGID}
       - PUID=${PUID}
-      - TCP_PORT=${${_APPNAME_}_PORT_21248}
-      - TLS_PORT=${${_APPNAME_}_PORT_21249}
+      - TCP_PORT=${<APPNAME>_PORT_21248}
+      - TLS_PORT=${<APPNAME>_PORT_21249}
       - TZ=${TZ}
-      - UDP_PORT=${${_APPNAME_}_PORT_21248}
-    restart: ${${_APPNAME_}_RESTART}
+      - UDP_PORT=${<APPNAME>_PORT_21248}
+    restart: ${<APPNAME>_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${${_APPNAME_}_VOLUME_SHAREDIR}:/Share
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/.airdcpp
+      - ${<APPNAME>_VOLUME_SHAREDIR}:/Share
+      - ${DOCKER_VOLUME_CONFIG}/<appname>:/.airdcpp
       - ${DOCKER_VOLUME_STORAGE}:/storage

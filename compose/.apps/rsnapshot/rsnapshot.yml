@@ -1,15 +1,15 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${<APPNAME>_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/config
+      - ${DOCKER_VOLUME_CONFIG}/<appname>:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${${_APPNAME_}_VOLUME_DATADIR}:/data
-      - ${${_APPNAME_}_VOLUME_ROOT_SSH}:/root/.ssh:ro
-      - ${${_APPNAME_}_VOLUME_SNAPSHOTSDIR}:/.snapshots
+      - ${<APPNAME>_VOLUME_DATADIR}:/data
+      - ${<APPNAME>_VOLUME_ROOT_SSH}:/root/.ssh:ro
+      - ${<APPNAME>_VOLUME_SNAPSHOTSDIR}:/.snapshots

@@ -1,14 +1,14 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
-      - FILE_SERVER_COLOR_SET=${${_APPNAME_}_ENVIRONMENT_FILE_SERVER_COLOR_SET}
-      - FILE_SERVER_TITLE=${${_APPNAME_}_ENVIRONMENT_FILE_SERVER_TITLE}
+      - FILE_SERVER_COLOR_SET=${<APPNAME>_ENVIRONMENT_FILE_SERVER_COLOR_SET}
+      - FILE_SERVER_TITLE=${<APPNAME>_ENVIRONMENT_FILE_SERVER_TITLE}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${<APPNAME>_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${${_APPNAME_}_VOLUME_HTML}:/html
+      - ${<APPNAME>_VOLUME_HTML}:/html

@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  <appname>:
     ports:
-      - ${${_APPNAME_}_PORT_1880}:1880
+      - ${<APPNAME>_PORT_1880}:1880

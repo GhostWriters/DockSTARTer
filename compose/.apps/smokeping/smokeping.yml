@@ -1,16 +1,16 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     dns:
-      - ${${_APPNAME_}_ENVIRONMENT_DNS1}
-      - ${${_APPNAME_}_ENVIRONMENT_DNS2}
+      - ${<APPNAME>_ENVIRONMENT_DNS1}
+      - ${<APPNAME>_ENVIRONMENT_DNS2}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${<APPNAME>_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/config
+      - ${DOCKER_VOLUME_CONFIG}/<appname>:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${${_APPNAME_}_VOLUME_DATADIR}:/data
+      - ${<APPNAME>_VOLUME_DATADIR}:/data

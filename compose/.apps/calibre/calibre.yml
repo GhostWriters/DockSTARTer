@@ -1,18 +1,18 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
-      - CALIBRE_USE_DARK_PALETTE=${${_APPNAME_}_ENVIRONMENT_USE_DARK_PALETTE}
-      - CLI_ARGS=${${_APPNAME_}_ENVIRONMENT_CLI_ARGS}
-      - GUAC_PASS=${${_APPNAME_}_ENVIRONMENT_GUAC_PASS}
-      - GUAC_USER=${${_APPNAME_}_ENVIRONMENT_GUAC_USER}
+      - CALIBRE_USE_DARK_PALETTE=${<APPNAME>_ENVIRONMENT_USE_DARK_PALETTE}
+      - CLI_ARGS=${<APPNAME>_ENVIRONMENT_CLI_ARGS}
+      - GUAC_PASS=${<APPNAME>_ENVIRONMENT_GUAC_PASS}
+      - GUAC_USER=${<APPNAME>_ENVIRONMENT_GUAC_USER}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${<APPNAME>_RESTART}
     security_opt:
       - seccomp:unconfined
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/config
+      - ${DOCKER_VOLUME_CONFIG}/<appname>:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage
