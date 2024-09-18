@@ -1,5 +1,5 @@
 services:
-  plexrequests:
+  ${_appname_}:
     labels:
       com.dockstarter.appinfo.deprecated: "true"
       com.dockstarter.appinfo.description: "(DEPRECATED) Use Ombi"

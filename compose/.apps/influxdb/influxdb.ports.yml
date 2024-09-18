@@ -1,4 +1,4 @@
 services:
-  influxdb:
+  ${_appname_}:
     ports:
-      - ${INFLUXDB_PORT_8086}:8086
+      - ${${_APPNAME_}_PORT_8086}:8086

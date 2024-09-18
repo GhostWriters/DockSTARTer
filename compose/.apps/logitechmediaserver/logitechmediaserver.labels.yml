@@ -1,14 +1,14 @@
 services:
-  logitechmediaserver:
+  ${_appname_}:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "LogitechMediaServer(SqueezeBox)"
       com.dockstarter.appinfo.nicename: "LogitechMediaServer"
-      com.dockstarter.appvars.logitechmediaserver_container_name: "logitechmediaserver"
-      com.dockstarter.appvars.logitechmediaserver_enabled: "false"
-      com.dockstarter.appvars.logitechmediaserver_network_mode: ""
-      com.dockstarter.appvars.logitechmediaserver_port_3483: "3483"
-      com.dockstarter.appvars.logitechmediaserver_port_9000: "9000"
-      com.dockstarter.appvars.logitechmediaserver_port_9090: "9090"
-      com.dockstarter.appvars.logitechmediaserver_restart: "unless-stopped"
-      com.dockstarter.appvars.logitechmediaserver_tag: "latest"
+      com.dockstarter.appvars.${_appname_}_container_name: "${_appname_}"
+      com.dockstarter.appvars.${_appname_}_enabled: "false"
+      com.dockstarter.appvars.${_appname_}_network_mode: ""
+      com.dockstarter.appvars.${_appname_}_port_3483: "3483"
+      com.dockstarter.appvars.${_appname_}_port_9000: "9000"
+      com.dockstarter.appvars.${_appname_}_port_9090: "9090"
+      com.dockstarter.appvars.${_appname_}_restart: "unless-stopped"
+      com.dockstarter.appvars.${_appname_}_tag: "latest"

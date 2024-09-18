@@ -1,15 +1,15 @@
 services:
-  moviematch:
-    container_name: ${MOVIEMATCH_CONTAINER_NAME}
+  ${_appname_}:
+    container_name: ${${_APPNAME_}_CONTAINER_NAME}
     environment:
-      - LOG_LEVEL=${MOVIEMATCH_ENVIRONMENT_LOG_LEVEL}
+      - LOG_LEVEL=${${_APPNAME_}_ENVIRONMENT_LOG_LEVEL}
       - PGID=${PGID}
-      - PLEX_TOKEN=${MOVIEMATCH_ENVIRONMENT_PLEX_TOKEN}
-      - PLEX_URL=${MOVIEMATCH_ENVIRONMENT_PLEX_URL}
+      - PLEX_TOKEN=${${_APPNAME_}_ENVIRONMENT_PLEX_TOKEN}
+      - PLEX_URL=${${_APPNAME_}_ENVIRONMENT_PLEX_URL}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${MOVIEMATCH_RESTART}
+    restart: ${${_APPNAME_}_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/moviematch:/config
+      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage

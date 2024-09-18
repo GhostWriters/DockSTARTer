@@ -1,4 +1,4 @@
 services:
-  sickchill:
+  ${_appname_}:
     ports:
-      - ${SICKCHILL_PORT_8081}:8081
+      - ${${_APPNAME_}_PORT_8081}:8081

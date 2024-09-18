@@ -1,4 +1,4 @@
 services:
-  dozzle:
+  ${_appname_}:
     ports:
-      - ${DOZZLE_PORT_8080}:8080
+      - ${${_APPNAME_}_PORT_8080}:8080

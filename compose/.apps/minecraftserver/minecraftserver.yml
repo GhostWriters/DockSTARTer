@@ -1,15 +1,15 @@
 services:
-  minecraftserver:
-    container_name: ${MINECRAFTSERVER_CONTAINER_NAME}
+  ${_appname_}:
+    container_name: ${${_APPNAME_}_CONTAINER_NAME}
     environment:
-      - EULA=${MINECRAFTSERVER_ENVIRONMENT_EULA}
+      - EULA=${${_APPNAME_}_ENVIRONMENT_EULA}
       - GID=${PGID}
-      - TYPE=${MINECRAFTSERVER_ENVIRONMENT_TYPE}
+      - TYPE=${${_APPNAME_}_ENVIRONMENT_TYPE}
       - TZ=${TZ}
       - UID=${PUID}
-      - VERSION=${MINECRAFTSERVER_ENVIRONMENT_VERSION}
-    restart: ${MINECRAFTSERVER_RESTART}
+      - VERSION=${${_APPNAME_}_ENVIRONMENT_VERSION}
+    restart: ${${_APPNAME_}_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/minecraftserver:/data
+      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/data
       - ${DOCKER_VOLUME_STORAGE}:/storage

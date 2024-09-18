@@ -1,4 +1,4 @@
 services:
-  requestrr:
+  ${_appname_}:
     ports:
-      - ${REQUESTRR_PORT_4545}:4545
+      - ${${_APPNAME_}_PORT_4545}:4545

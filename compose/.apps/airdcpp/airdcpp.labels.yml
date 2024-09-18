@@ -1,16 +1,16 @@
 services:
-  airdcpp:
+  ${_appname_}:
     labels:
       com.dockstarter.appinfo.deprecated: "true"
       com.dockstarter.appinfo.description: "(DEPRECATED) No replacement"
       com.dockstarter.appinfo.nicename: "AirdcPP"
-      com.dockstarter.appvars.airdcpp_container_name: "airdcpp"
-      com.dockstarter.appvars.airdcpp_enabled: "false"
-      com.dockstarter.appvars.airdcpp_network_mode: ""
-      com.dockstarter.appvars.airdcpp_port_21248: "21248"
-      com.dockstarter.appvars.airdcpp_port_21249: "21249"
-      com.dockstarter.appvars.airdcpp_port_5600: "5600"
-      com.dockstarter.appvars.airdcpp_port_5601: "5601"
-      com.dockstarter.appvars.airdcpp_restart: "unless-stopped"
-      com.dockstarter.appvars.airdcpp_tag: "latest"
-      com.dockstarter.appvars.airdcpp_volume_sharedir: "/mnt/airdcpp"
+      com.dockstarter.appvars.${_appname_}_container_name: "${_appname_}"
+      com.dockstarter.appvars.${_appname_}_enabled: "false"
+      com.dockstarter.appvars.${_appname_}_network_mode: ""
+      com.dockstarter.appvars.${_appname_}_port_21248: "21248"
+      com.dockstarter.appvars.${_appname_}_port_21249: "21249"
+      com.dockstarter.appvars.${_appname_}_port_5600: "5600"
+      com.dockstarter.appvars.${_appname_}_port_5601: "5601"
+      com.dockstarter.appvars.${_appname_}_restart: "unless-stopped"
+      com.dockstarter.appvars.${_appname_}_tag: "latest"
+      com.dockstarter.appvars.${_appname_}_volume_sharedir: "/mnt/airdcpp"

@@ -1,3 +1,3 @@
 services:
-  jellyfin:
-    image: lscr.io/linuxserver/jellyfin:${JELLYFIN_TAG}
+  ${_appname_}:
+    image: lscr.io/linuxserver/jellyfin:${${_APPNAME_}_TAG}

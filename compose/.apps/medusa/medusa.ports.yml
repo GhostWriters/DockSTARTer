@@ -1,4 +1,4 @@
 services:
-  medusa:
+  ${_appname_}:
     ports:
-      - ${MEDUSA_PORT_8081}:8081
+      - ${${_APPNAME_}_PORT_8081}:8081

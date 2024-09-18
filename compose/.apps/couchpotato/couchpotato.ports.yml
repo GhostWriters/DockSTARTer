@@ -1,4 +1,4 @@
 services:
-  couchpotato:
+  ${_appname_}:
     ports:
-      - ${COUCHPOTATO_PORT_5050}:5050
+      - ${${_APPNAME_}_PORT_5050}:5050

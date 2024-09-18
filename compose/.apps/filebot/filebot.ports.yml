@@ -1,4 +1,4 @@
 services:
-  filebot:
+  ${_appname_}:
     ports:
-      - ${FILEBOT_PORT_5800}:5800
+      - ${${_APPNAME_}_PORT_5800}:5800

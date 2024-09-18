@@ -1,12 +1,12 @@
 services:
-  headphones:
+  ${_appname_}:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Music PVR Client"
       com.dockstarter.appinfo.nicename: "Headphones"
-      com.dockstarter.appvars.headphones_container_name: "headphones"
-      com.dockstarter.appvars.headphones_enabled: "false"
-      com.dockstarter.appvars.headphones_network_mode: ""
-      com.dockstarter.appvars.headphones_port_8181: "8181"
-      com.dockstarter.appvars.headphones_restart: "unless-stopped"
-      com.dockstarter.appvars.headphones_tag: "latest"
+      com.dockstarter.appvars.${_appname_}_container_name: "${_appname_}"
+      com.dockstarter.appvars.${_appname_}_enabled: "false"
+      com.dockstarter.appvars.${_appname_}_network_mode: ""
+      com.dockstarter.appvars.${_appname_}_port_8181: "8181"
+      com.dockstarter.appvars.${_appname_}_restart: "unless-stopped"
+      com.dockstarter.appvars.${_appname_}_tag: "latest"

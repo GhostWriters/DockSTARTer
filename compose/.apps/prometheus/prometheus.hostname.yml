@@ -1,3 +1,3 @@
 services:
-  prometheus:
+  ${_appname_}:
     hostname: ${DOCKER_HOSTNAME}

@@ -1,4 +1,4 @@
 services:
-  deemix:
+  ${_appname_}:
     ports:
-      - ${DEEMIX_PORT_6595}:6595
+      - ${${_APPNAME_}_PORT_6595}:6595

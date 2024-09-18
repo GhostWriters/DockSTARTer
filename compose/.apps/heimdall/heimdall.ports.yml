@@ -1,5 +1,5 @@
 services:
-  heimdall:
+  ${_appname_}:
     ports:
-      - ${HEIMDALL_PORT_443}:443
-      - ${HEIMDALL_PORT_80}:80
+      - ${${_APPNAME_}_PORT_443}:443
+      - ${${_APPNAME_}_PORT_80}:80

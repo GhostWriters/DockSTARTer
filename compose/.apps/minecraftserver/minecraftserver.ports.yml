@@ -1,4 +1,4 @@
 services:
-  minecraftserver:
+  ${_appname_}:
     ports:
-      - ${MINECRAFTSERVER_PORT_25565}:25565
+      - ${${_APPNAME_}_PORT_25565}:25565

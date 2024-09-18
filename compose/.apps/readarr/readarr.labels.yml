@@ -1,12 +1,12 @@
 services:
-  readarr:
+  ${_appname_}:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "eBook and audiobook collection manager for Usenet and BitTorrent users."
       com.dockstarter.appinfo.nicename: "Readarr"
-      com.dockstarter.appvars.readarr_container_name: "readarr"
-      com.dockstarter.appvars.readarr_enabled: "false"
-      com.dockstarter.appvars.readarr_network_mode: ""
-      com.dockstarter.appvars.readarr_port_8787: "8787"
-      com.dockstarter.appvars.readarr_restart: "unless-stopped"
-      com.dockstarter.appvars.readarr_tag: "develop"
+      com.dockstarter.appvars.${_appname_}_container_name: "${_appname_}"
+      com.dockstarter.appvars.${_appname_}_enabled: "false"
+      com.dockstarter.appvars.${_appname_}_network_mode: ""
+      com.dockstarter.appvars.${_appname_}_port_8787: "8787"
+      com.dockstarter.appvars.${_appname_}_restart: "unless-stopped"
+      com.dockstarter.appvars.${_appname_}_tag: "develop"

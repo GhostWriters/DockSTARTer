@@ -1,3 +1,3 @@
 services:
-  smokeping:
+  ${_appname_}:
     hostname: ${DOCKER_HOSTNAME}

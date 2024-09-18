@@ -1,3 +1,3 @@
 services:
-  rutorrent:
-    image: lscr.io/linuxserver/rutorrent:${RUTORRENT_TAG}
+  ${_appname_}:
+    image: lscr.io/linuxserver/rutorrent:${${_APPNAME_}_TAG}

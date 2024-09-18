@@ -1,4 +1,4 @@
 services:
-  beets:
+  ${_appname_}:
     ports:
-      - ${BEETS_PORT_8337}:8337
+      - ${${_APPNAME_}_PORT_8337}:8337

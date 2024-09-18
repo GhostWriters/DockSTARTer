@@ -1,12 +1,12 @@
 services:
-  grocy:
+  ${_appname_}:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Groceries & household management"
       com.dockstarter.appinfo.nicename: "grocy"
-      com.dockstarter.appvars.grocy_container_name: "grocy"
-      com.dockstarter.appvars.grocy_enabled: "false"
-      com.dockstarter.appvars.grocy_network_mode: ""
-      com.dockstarter.appvars.grocy_port_80: "8001"
-      com.dockstarter.appvars.grocy_restart: "unless-stopped"
-      com.dockstarter.appvars.grocy_tag: "latest"
+      com.dockstarter.appvars.${_appname_}_container_name: "${_appname_}"
+      com.dockstarter.appvars.${_appname_}_enabled: "false"
+      com.dockstarter.appvars.${_appname_}_network_mode: ""
+      com.dockstarter.appvars.${_appname_}_port_80: "8001"
+      com.dockstarter.appvars.${_appname_}_restart: "unless-stopped"
+      com.dockstarter.appvars.${_appname_}_tag: "latest"

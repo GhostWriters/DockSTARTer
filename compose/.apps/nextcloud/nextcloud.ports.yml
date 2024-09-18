@@ -1,4 +1,4 @@
 services:
-  nextcloud:
+  ${_appname_}:
     ports:
-      - ${NEXTCLOUD_PORT_443}:443
+      - ${${_APPNAME_}_PORT_443}:443

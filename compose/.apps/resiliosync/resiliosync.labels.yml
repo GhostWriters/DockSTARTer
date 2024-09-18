@@ -1,14 +1,14 @@
 services:
-  resiliosync:
+  ${_appname_}:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "A fast, reliable, and simple P2P file sync and share solution"
       com.dockstarter.appinfo.nicename: "ResilioSync"
-      com.dockstarter.appvars.resiliosync_container_name: "resiliosync"
-      com.dockstarter.appvars.resiliosync_enabled: "false"
-      com.dockstarter.appvars.resiliosync_network_mode: ""
-      com.dockstarter.appvars.resiliosync_port_55555: "55555"
-      com.dockstarter.appvars.resiliosync_port_8888: "8888"
-      com.dockstarter.appvars.resiliosync_restart: "unless-stopped"
-      com.dockstarter.appvars.resiliosync_tag: "latest"
-      com.dockstarter.appvars.resiliosync_volume_syncdir: "/mnt/resiliosync"
+      com.dockstarter.appvars.${_appname_}_container_name: "${_appname_}"
+      com.dockstarter.appvars.${_appname_}_enabled: "false"
+      com.dockstarter.appvars.${_appname_}_network_mode: ""
+      com.dockstarter.appvars.${_appname_}_port_55555: "55555"
+      com.dockstarter.appvars.${_appname_}_port_8888: "8888"
+      com.dockstarter.appvars.${_appname_}_restart: "unless-stopped"
+      com.dockstarter.appvars.${_appname_}_tag: "latest"
+      com.dockstarter.appvars.${_appname_}_volume_syncdir: "/mnt/resiliosync"

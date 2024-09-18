@@ -1,3 +1,3 @@
 services:
-  booksonicair:
+  ${_appname_}:
     hostname: ${DOCKER_HOSTNAME}

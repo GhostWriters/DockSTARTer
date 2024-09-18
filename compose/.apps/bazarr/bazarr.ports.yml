@@ -1,4 +1,4 @@
 services:
-  bazarr:
+  ${_appname_}:
     ports:
-      - ${BAZARR_PORT_6767}:6767
+      - ${${_APPNAME_}_PORT_6767}:6767

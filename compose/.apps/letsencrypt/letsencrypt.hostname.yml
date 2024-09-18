@@ -1,3 +1,3 @@
 services:
-  letsencrypt:
+  ${_appname_}:
     hostname: ${DOCKER_HOSTNAME}

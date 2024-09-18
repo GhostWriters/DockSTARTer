@@ -1,4 +1,4 @@
 services:
-  nodered:
+  ${_appname_}:
     ports:
-      - ${NODERED_PORT_1880}:1880
+      - ${${_APPNAME_}_PORT_1880}:1880

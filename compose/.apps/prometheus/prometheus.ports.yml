@@ -1,4 +1,4 @@
 services:
-  prometheus:
+  ${_appname_}:
     ports:
-      - ${PROMETHEUS_PORT_9090}:9090
+      - ${${_APPNAME_}_PORT_9090}:9090

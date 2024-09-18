@@ -1,12 +1,12 @@
 services:
-  jackett:
+  ${_appname_}:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "API Support for your favorite private trackers"
       com.dockstarter.appinfo.nicename: "Jackett"
-      com.dockstarter.appvars.jackett_container_name: "jackett"
-      com.dockstarter.appvars.jackett_enabled: "false"
-      com.dockstarter.appvars.jackett_network_mode: ""
-      com.dockstarter.appvars.jackett_port_9117: "9117"
-      com.dockstarter.appvars.jackett_restart: "unless-stopped"
-      com.dockstarter.appvars.jackett_tag: "latest"
+      com.dockstarter.appvars.${_appname_}_container_name: "${_appname_}"
+      com.dockstarter.appvars.${_appname_}_enabled: "false"
+      com.dockstarter.appvars.${_appname_}_network_mode: ""
+      com.dockstarter.appvars.${_appname_}_port_9117: "9117"
+      com.dockstarter.appvars.${_appname_}_restart: "unless-stopped"
+      com.dockstarter.appvars.${_appname_}_tag: "latest"

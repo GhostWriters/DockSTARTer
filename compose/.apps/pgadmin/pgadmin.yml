@@ -1,13 +1,13 @@
 services:
-  pgadmin:
-    container_name: ${PGADMIN_CONTAINER_NAME}
+  ${_appname_}:
+    container_name: ${${_APPNAME_}_CONTAINER_NAME}
     environment:
-      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_ENVIRONMENT_DEFAULT_EMAIL}
-      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_ENVIRONMENT_DEFAULT_PASSWORD}
-      - PGADMIN_DISABLE_POSTFIX=${PGADMIN_ENVIRONMENT_DISABLE_POSTFIX}
+      - PGADMIN_DEFAULT_EMAIL=${${_APPNAME_}_ENVIRONMENT_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${${_APPNAME_}_ENVIRONMENT_DEFAULT_PASSWORD}
+      - PGADMIN_DISABLE_POSTFIX=${${_APPNAME_}_ENVIRONMENT_DISABLE_POSTFIX}
       - TZ=${TZ}
-    restart: ${PGADMIN_RESTART}
+    restart: ${${_APPNAME_}_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/pgadmin:/var/lib/pgadmin
+      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/var/lib/pgadmin
       - ${DOCKER_VOLUME_STORAGE}:/storage
