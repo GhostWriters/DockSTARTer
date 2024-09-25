@@ -5,10 +5,8 @@ IFS=$'\n\t'
 yml_merge() {
     run_script 'appvars_create_all'
     run_script 'env_update'
-    info "Compiling enabled templates to merge docker-compose.yml file."
     local COMPOSE_FILE=""
-    info "Required files included."
-    notice "Adding compose configurations for enabled apps. Please be patient, this can take a while."
+    notice "Adding enabled app templates to merge docker-compose.yml. Please be patient, this can take a while."
     while IFS= read -r line; do
         local APPNAME=${line%%_ENABLED=*}
         local FILENAME=${APPNAME,,}
@@ -60,7 +58,7 @@ yml_merge() {
         fatal "No enabled apps found."
     fi
     info "Running compose config to create docker-compose.yml file from enabled templates."
-    export COMPOSE_FILE="${COMPOSE_FILE}"
+    export COMPOSE_FILE="${COMPOSE_FILE#:}"
     eval "docker compose --project-directory ${SCRIPTPATH}/compose/ config > ${SCRIPTPATH}/compose/docker-compose.yml" || fatal "Failed to output compose config.\nFailing command: ${F[C]}docker compose --project-directory ${SCRIPTPATH}/compose/ config > \"${SCRIPTPATH}/compose/docker-compose.yml\""
     info "Merging docker-compose.yml complete."
 }
