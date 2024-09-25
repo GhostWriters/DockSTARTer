@@ -5,7 +5,6 @@
 These should not be modified! `ds -u` will reset these files.
 
 - `.apps` folder contains yml files that are used as templates for DockSTARTer to piece together your main `docker-compose.yml` file
-- `.reqs` folder contains dummy yml files merged to prevent errors
 - `.env.example` file contains the default variables and values for new installs
 
 ## Files generated for your system
