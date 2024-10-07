@@ -1,4 +1,4 @@
 services:
-  homeassistant:
+  <appname>:
     ports:
-      - ${HOMEASSISTANT_PORT_8123}:8123
+      - ${<APPNAME>_PORT_8123}:8123

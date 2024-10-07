@@ -1,12 +1,12 @@
 services:
-  requestrr:
+  <appname>:
     labels:
       com.dockstarter.appinfo.deprecated: "true"
       com.dockstarter.appinfo.description: "(DEPRECATED) Use Doplarr"
       com.dockstarter.appinfo.nicename: "Requestrr"
-      com.dockstarter.appvars.requestrr_container_name: "requestrr"
-      com.dockstarter.appvars.requestrr_enabled: "false"
-      com.dockstarter.appvars.requestrr_network_mode: ""
-      com.dockstarter.appvars.requestrr_port_4545: "4545"
-      com.dockstarter.appvars.requestrr_restart: "unless-stopped"
-      com.dockstarter.appvars.requestrr_tag: "latest"
+      com.dockstarter.appvars.<appname>_container_name: "<appname>"
+      com.dockstarter.appvars.<appname>_enabled: "false"
+      com.dockstarter.appvars.<appname>_network_mode: ""
+      com.dockstarter.appvars.<appname>_port_4545: "4545"
+      com.dockstarter.appvars.<appname>_restart: "unless-stopped"
+      com.dockstarter.appvars.<appname>_tag: "latest"

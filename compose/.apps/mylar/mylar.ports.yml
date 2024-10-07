@@ -1,4 +1,4 @@
 services:
-  mylar:
+  <appname>:
     ports:
-      - ${MYLAR_PORT_8090}:8090
+      - ${<APPNAME>_PORT_8090}:8090

@@ -1,16 +1,16 @@
 services:
-  smokeping:
-    container_name: ${SMOKEPING_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     dns:
-      - ${SMOKEPING_ENVIRONMENT_DNS1}
-      - ${SMOKEPING_ENVIRONMENT_DNS2}
+      - ${<APPNAME>_ENVIRONMENT_DNS1}
+      - ${<APPNAME>_ENVIRONMENT_DNS2}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${SMOKEPING_RESTART}
+    restart: ${<APPNAME>_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/smokeping:/config
+      - ${DOCKER_VOLUME_CONFIG}/<appname>:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${SMOKEPING_VOLUME_DATADIR}:/data
+      - ${<APPNAME>_VOLUME_DATADIR}:/data

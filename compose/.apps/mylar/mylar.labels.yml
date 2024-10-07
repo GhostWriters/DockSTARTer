@@ -1,12 +1,12 @@
 services:
-  mylar:
+  <appname>:
     labels:
       com.dockstarter.appinfo.deprecated: "true"
       com.dockstarter.appinfo.description: "(DEPRECATED) Use Mylar3"
       com.dockstarter.appinfo.nicename: "Mylar"
-      com.dockstarter.appvars.mylar_container_name: "mylar"
-      com.dockstarter.appvars.mylar_enabled: "false"
-      com.dockstarter.appvars.mylar_network_mode: ""
-      com.dockstarter.appvars.mylar_port_8090: "8090"
-      com.dockstarter.appvars.mylar_restart: "unless-stopped"
-      com.dockstarter.appvars.mylar_tag: "latest"
+      com.dockstarter.appvars.<appname>_container_name: "<appname>"
+      com.dockstarter.appvars.<appname>_enabled: "false"
+      com.dockstarter.appvars.<appname>_network_mode: ""
+      com.dockstarter.appvars.<appname>_port_8090: "8090"
+      com.dockstarter.appvars.<appname>_restart: "unless-stopped"
+      com.dockstarter.appvars.<appname>_tag: "latest"

@@ -1,4 +1,4 @@
 services:
-  duplicacy:
+  <appname>:
     ports:
-      - ${DUPLICACY_PORT_3875}:3875
+      - ${<APPNAME>_PORT_3875}:3875

@@ -1,4 +1,4 @@
 services:
-  autobrr:
+  <appname>:
     ports:
-      - ${AUTOBRR_PORT_7474}:7474
+      - ${<APPNAME>_PORT_7474}:7474

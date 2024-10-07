@@ -1,5 +1,5 @@
 services:
-  bitwarden:
+  <appname>:
     ports:
-      - ${BITWARDEN_PORT_3012}:3012
-      - ${BITWARDEN_PORT_80}:80
+      - ${<APPNAME>_PORT_3012}:3012
+      - ${<APPNAME>_PORT_80}:80

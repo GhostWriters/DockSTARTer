@@ -1,3 +1,3 @@
 services:
-  phpmyadmin:
+  <appname>:
     hostname: ${DOCKER_HOSTNAME}

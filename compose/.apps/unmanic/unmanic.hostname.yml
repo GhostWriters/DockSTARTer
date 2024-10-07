@@ -1,3 +1,3 @@
 services:
-  unmanic:
+  <appname>:
     hostname: ${DOCKER_HOSTNAME}

@@ -1,4 +1,4 @@
 services:
-  smokeping:
+  <appname>:
     ports:
-      - ${SMOKEPING_PORT_80}:80
+      - ${<APPNAME>_PORT_80}:80

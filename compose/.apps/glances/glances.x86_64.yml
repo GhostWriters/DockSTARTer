@@ -1,3 +1,3 @@
 services:
-  glances:
-    image: nicolargo/glances:${GLANCES_TAG}
+  <appname>:
+    image: nicolargo/glances:${<APPNAME>_TAG}

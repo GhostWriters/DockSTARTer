@@ -1,4 +1,4 @@
 services:
-  transmissionvpn:
+  <appname>:
     ports:
-      - ${TRANSMISSIONVPN_PORT_9091}:9091
+      - ${<APPNAME>_PORT_9091}:9091

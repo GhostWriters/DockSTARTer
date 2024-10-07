@@ -1,13 +1,13 @@
 services:
-  nextcloud:
+  <appname>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Gives you access to all your files wherever you are"
       com.dockstarter.appinfo.nicename: "Nextcloud"
-      com.dockstarter.appvars.nextcloud_container_name: "nextcloud"
-      com.dockstarter.appvars.nextcloud_enabled: "false"
-      com.dockstarter.appvars.nextcloud_network_mode: ""
-      com.dockstarter.appvars.nextcloud_port_443: "444"
-      com.dockstarter.appvars.nextcloud_restart: "unless-stopped"
-      com.dockstarter.appvars.nextcloud_tag: "latest"
-      com.dockstarter.appvars.nextcloud_volume_datadir: "/mnt/nextcloud"
+      com.dockstarter.appvars.<appname>_container_name: "<appname>"
+      com.dockstarter.appvars.<appname>_enabled: "false"
+      com.dockstarter.appvars.<appname>_network_mode: ""
+      com.dockstarter.appvars.<appname>_port_443: "444"
+      com.dockstarter.appvars.<appname>_restart: "unless-stopped"
+      com.dockstarter.appvars.<appname>_tag: "latest"
+      com.dockstarter.appvars.<appname>_volume_datadir: "/mnt/nextcloud"

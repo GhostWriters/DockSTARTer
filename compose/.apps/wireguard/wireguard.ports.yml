@@ -1,4 +1,4 @@
 services:
-  wireguard:
+  <appname>:
     ports:
-      - ${WIREGUARD_PORT_51820}:${WIREGUARD_PORT_51820}/udp
+      - ${<APPNAME>_PORT_51820}:${<APPNAME>_PORT_51820}/udp

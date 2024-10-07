@@ -1,4 +1,4 @@
 services:
-  xteve:
+  <appname>:
     ports:
-      - ${XTEVE_PORT_34400}:34400
+      - ${<APPNAME>_PORT_34400}:34400

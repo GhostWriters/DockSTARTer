@@ -1,5 +1,5 @@
 services:
-  quasselcore:
+  <appname>:
     ports:
-      - ${QUASSELCORE_PORT_10113}:10113
-      - ${QUASSELCORE_PORT_4242}:4242
+      - ${<APPNAME>_PORT_10113}:10113
+      - ${<APPNAME>_PORT_4242}:4242

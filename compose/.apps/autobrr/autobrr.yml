@@ -1,11 +1,11 @@
 services:
-  autobrr:
-    container_name: ${AUTOBRR_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
       - TZ=${TZ}
-    restart: ${AUTOBRR_RESTART}
+    restart: ${<APPNAME>_RESTART}
     user: ${PGID}:${PUID}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/autobrr:/config
+      - ${DOCKER_VOLUME_CONFIG}/<appname>:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage

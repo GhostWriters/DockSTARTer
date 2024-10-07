@@ -1,3 +1,3 @@
 services:
-  komga:
+  <appname>:
     hostname: ${DOCKER_HOSTNAME}

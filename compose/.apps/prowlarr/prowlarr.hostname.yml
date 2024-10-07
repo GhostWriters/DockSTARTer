@@ -1,3 +1,3 @@
 services:
-  prowlarr:
+  <appname>:
     hostname: ${DOCKER_HOSTNAME}
