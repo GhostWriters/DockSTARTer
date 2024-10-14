@@ -1,12 +1,12 @@
 services:
-  adminer:
-    container_name: ${ADMINER_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
-      - ADMINER_DESIGN=${ADMINER_ENVIRONMENT_DESIGN}
-      - ADMINER_PLUGINS=${ADMINER_ENVIRONMENT_PLUGINS}
+      - ADMINER_DESIGN=${<APPNAME>_ENVIRONMENT_DESIGN}
+      - ADMINER_PLUGINS=${<APPNAME>_ENVIRONMENT_PLUGINS}
       - TZ=${TZ}
-    restart: ${ADMINER_RESTART}
+    restart: ${<APPNAME>_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/adminer:/sessions
+      - ${DOCKER_VOLUME_CONFIG}/<appname>:/sessions
       - ${DOCKER_VOLUME_STORAGE}:/storage

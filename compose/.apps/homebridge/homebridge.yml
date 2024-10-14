@@ -1,11 +1,11 @@
 services:
-  homebridge:
-    container_name: ${HOMEBRIDGE_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
-      - ENABLE_AVAHI=${HOMEBRIDGE_ENVIRONMENT_ENABLE_AVAHI}
+      - ENABLE_AVAHI=${<APPNAME>_ENVIRONMENT_ENABLE_AVAHI}
       - TZ=${TZ}
-    restart: ${HOMEBRIDGE_RESTART}
+    restart: ${<APPNAME>_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/homebridge:/homebridge
+      - ${DOCKER_VOLUME_CONFIG}/<appname>:/homebridge
       - ${DOCKER_VOLUME_STORAGE}:/storage

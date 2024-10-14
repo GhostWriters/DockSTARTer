@@ -1,10 +1,10 @@
 services:
-  nodered:
-    container_name: ${NODERED_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
       - TZ=${TZ}
-    restart: ${NODERED_RESTART}
+    restart: ${<APPNAME>_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/nodered:/data
+      - ${DOCKER_VOLUME_CONFIG}/<appname>:/data
       - ${DOCKER_VOLUME_STORAGE}:/storage

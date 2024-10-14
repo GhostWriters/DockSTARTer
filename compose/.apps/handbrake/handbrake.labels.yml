@@ -1,14 +1,14 @@
 services:
-  handbrake:
+  <appname>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Tool for converting video"
       com.dockstarter.appinfo.nicename: "HandBrake"
-      com.dockstarter.appvars.handbrake_container_name: "handbrake"
-      com.dockstarter.appvars.handbrake_enabled: "false"
-      com.dockstarter.appvars.handbrake_network_mode: ""
-      com.dockstarter.appvars.handbrake_port_5800: "5800"
-      com.dockstarter.appvars.handbrake_restart: "unless-stopped"
-      com.dockstarter.appvars.handbrake_tag: "latest"
-      com.dockstarter.appvars.handbrake_volume_outputdir: "/mnt/handbrake/output"
-      com.dockstarter.appvars.handbrake_volume_watchdir: "/mnt/handbrake/watch"
+      com.dockstarter.appvars.<appname>_container_name: "<appname>"
+      com.dockstarter.appvars.<appname>_enabled: "false"
+      com.dockstarter.appvars.<appname>_network_mode: ""
+      com.dockstarter.appvars.<appname>_port_5800: "5800"
+      com.dockstarter.appvars.<appname>_restart: "unless-stopped"
+      com.dockstarter.appvars.<appname>_tag: "latest"
+      com.dockstarter.appvars.<appname>_volume_outputdir: "/mnt/handbrake/output"
+      com.dockstarter.appvars.<appname>_volume_watchdir: "/mnt/handbrake/watch"

@@ -1,12 +1,12 @@
 services:
-  beets:
+  <appname>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Music library manager and MusicBrainz tagger"
       com.dockstarter.appinfo.nicename: "Beets"
-      com.dockstarter.appvars.beets_container_name: "beets"
-      com.dockstarter.appvars.beets_enabled: "false"
-      com.dockstarter.appvars.beets_network_mode: ""
-      com.dockstarter.appvars.beets_port_8337: "8337"
-      com.dockstarter.appvars.beets_restart: "unless-stopped"
-      com.dockstarter.appvars.beets_tag: "latest"
+      com.dockstarter.appvars.<appname>_container_name: "<appname>"
+      com.dockstarter.appvars.<appname>_enabled: "false"
+      com.dockstarter.appvars.<appname>_network_mode: ""
+      com.dockstarter.appvars.<appname>_port_8337: "8337"
+      com.dockstarter.appvars.<appname>_restart: "unless-stopped"
+      com.dockstarter.appvars.<appname>_tag: "latest"

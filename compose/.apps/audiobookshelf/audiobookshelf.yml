@@ -1,16 +1,16 @@
 services:
-  audiobookshelf:
-    container_name: ${AUDIOBOOKSHELF_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
       - CONFIG_PATH=/config
       - HOME=/config/.home
       - LOG_LEVEL=info
       - METADATA_PATH=/metadata
       - TZ=${TZ}
-    restart: ${AUDIOBOOKSHELF_RESTART}
+    restart: ${<APPNAME>_RESTART}
     user: ${PUID}:${PGID}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/audiobookshelf:/config
-      - ${DOCKER_VOLUME_CONFIG}/audiobookshelf/.metadata:/metadata
+      - ${DOCKER_VOLUME_CONFIG}/<appname>:/config
+      - ${DOCKER_VOLUME_CONFIG}/<appname>/.metadata:/metadata
       - ${DOCKER_VOLUME_STORAGE}:/storage

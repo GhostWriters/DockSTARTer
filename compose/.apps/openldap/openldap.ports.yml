@@ -1,5 +1,5 @@
 services:
-  openldap:
+  <appname>:
     ports:
-      - ${OPENLDAP_PORT_389}:389
-      - ${OPENLDAP_PORT_636}:636
+      - ${<APPNAME>_PORT_389}:389
+      - ${<APPNAME>_PORT_636}:636

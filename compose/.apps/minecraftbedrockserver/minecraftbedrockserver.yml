@@ -1,14 +1,14 @@
 services:
-  minecraftbedrockserver:
-    container_name: ${MINECRAFTBEDROCKSERVER_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
-      - EULA=${MINECRAFTBEDROCKSERVER_ENVIRONMENT_EULA}
+      - EULA=${<APPNAME>_ENVIRONMENT_EULA}
       - GID=${PGID}
       - TZ=${TZ}
       - UID=${PUID}
-      - VERSION=${MINECRAFTBEDROCKSERVER_ENVIRONMENT_VERSION}
-    restart: ${MINECRAFTBEDROCKSERVER_RESTART}
+      - VERSION=${<APPNAME>_ENVIRONMENT_VERSION}
+    restart: ${<APPNAME>_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/minecraftbedrockserver:/data
+      - ${DOCKER_VOLUME_CONFIG}/<appname>:/data
       - ${DOCKER_VOLUME_STORAGE}:/storage

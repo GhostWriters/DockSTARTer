@@ -1,4 +1,4 @@
 services:
-  dasshio:
+  <appname>:
     ports:
-      - ${DASSHIO_PORT_6565}:6565
+      - ${<APPNAME>_PORT_6565}:6565

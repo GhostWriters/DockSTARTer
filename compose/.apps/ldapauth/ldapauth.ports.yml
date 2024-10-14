@@ -1,5 +1,5 @@
 services:
-  ldapauth:
+  <appname>:
     ports:
-      - ${LDAPAUTH_PORT_8888}:8888
-      - ${LDAPAUTH_PORT_9000}:9000
+      - ${<APPNAME>_PORT_8888}:8888
+      - ${<APPNAME>_PORT_9000}:9000

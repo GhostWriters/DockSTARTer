@@ -1,3 +1,3 @@
 services:
-  mariadb:
-    image: lscr.io/linuxserver/mariadb:${MARIADB_TAG}
+  <appname>:
+    image: lscr.io/linuxserver/mariadb:${<APPNAME>_TAG}

@@ -1,12 +1,12 @@
 services:
-  recyclarr:
-    container_name: ${RECYCLARR_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
-      - RECYCLARR_CREATE_CONFIG=${RECYCLARR_ENVIRONMENT_CREATE_CONFIG}
+      - RECYCLARR_CREATE_CONFIG=${<APPNAME>_ENVIRONMENT_CREATE_CONFIG}
       - TZ=${TZ}
-    restart: ${RECYCLARR_RESTART}
+    restart: ${<APPNAME>_RESTART}
     user: ${PUID}:${PGID}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/recyclarr:/config
+      - ${DOCKER_VOLUME_CONFIG}/<appname>:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage

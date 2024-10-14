@@ -1,4 +1,4 @@
 services:
-  netdata:
+  <appname>:
     ports:
-      - ${NETDATA_PORT_19999}:19999
+      - ${<APPNAME>_PORT_19999}:19999

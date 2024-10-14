@@ -1,4 +1,4 @@
 services:
-  ombi:
+  <appname>:
     ports:
-      - ${OMBI_PORT_3579}:3579
+      - ${<APPNAME>_PORT_3579}:3579

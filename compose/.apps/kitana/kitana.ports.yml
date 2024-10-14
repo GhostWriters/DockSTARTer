@@ -1,4 +1,4 @@
 services:
-  kitana:
+  <appname>:
     ports:
-      - ${KITANA_PORT_31337}:31337
+      - ${<APPNAME>_PORT_31337}:31337

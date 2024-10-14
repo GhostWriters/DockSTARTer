@@ -1,3 +1,3 @@
 services:
-  airsonic:
-    image: lscr.io/linuxserver/airsonic:${AIRSONIC_TAG}
+  <appname>:
+    image: lscr.io/linuxserver/airsonic:${<APPNAME>_TAG}

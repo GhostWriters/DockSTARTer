@@ -1,4 +1,4 @@
 services:
-  moviematch:
+  <appname>:
     ports:
-      - ${MOVIEMATCH_PORT_8000}:8000
+      - ${<APPNAME>_PORT_8000}:8000

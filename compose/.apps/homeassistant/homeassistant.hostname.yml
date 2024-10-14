@@ -1,3 +1,3 @@
 services:
-  homeassistant:
+  <appname>:
     hostname: ${DOCKER_HOSTNAME}

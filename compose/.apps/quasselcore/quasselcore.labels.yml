@@ -1,13 +1,13 @@
 services:
-  quasselcore:
+  <appname>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Modern, cross-platform, distributed IRC client"
       com.dockstarter.appinfo.nicename: "QuasselCore"
-      com.dockstarter.appvars.quasselcore_container_name: "quasselcore"
-      com.dockstarter.appvars.quasselcore_enabled: "false"
-      com.dockstarter.appvars.quasselcore_network_mode: ""
-      com.dockstarter.appvars.quasselcore_port_10113: "10113"
-      com.dockstarter.appvars.quasselcore_port_4242: "4242"
-      com.dockstarter.appvars.quasselcore_restart: "unless-stopped"
-      com.dockstarter.appvars.quasselcore_tag: "latest"
+      com.dockstarter.appvars.<appname>_container_name: "<appname>"
+      com.dockstarter.appvars.<appname>_enabled: "false"
+      com.dockstarter.appvars.<appname>_network_mode: ""
+      com.dockstarter.appvars.<appname>_port_10113: "10113"
+      com.dockstarter.appvars.<appname>_port_4242: "4242"
+      com.dockstarter.appvars.<appname>_restart: "unless-stopped"
+      com.dockstarter.appvars.<appname>_tag: "latest"

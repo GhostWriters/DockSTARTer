@@ -1,17 +1,17 @@
 services:
-  duplicacy:
-    container_name: ${DUPLICACY_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${DUPLICACY_RESTART}
+    restart: ${<APPNAME>_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/duplicacy/cache:/cache
-      - ${DOCKER_VOLUME_CONFIG}/duplicacy/config:/config
-      - ${DOCKER_VOLUME_CONFIG}/duplicacy/logs:/logs
+      - ${DOCKER_VOLUME_CONFIG}/<appname>/cache:/cache
+      - ${DOCKER_VOLUME_CONFIG}/<appname>/config:/config
+      - ${DOCKER_VOLUME_CONFIG}/<appname>/logs:/logs
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${DUPLICACY_VOLUME_APPDATA_DIR}:/backuproot/appdata:ro
-      - ${DUPLICACY_VOLUME_BACKUP_DIR}:/backup
-      - ${DUPLICACY_VOLUME_DOCKER_DIR}:/backuproot/docker:ro
+      - ${<APPNAME>_VOLUME_APPDATA_DIR}:/backuproot/appdata:ro
+      - ${<APPNAME>_VOLUME_BACKUP_DIR}:/backup
+      - ${<APPNAME>_VOLUME_DOCKER_DIR}:/backuproot/docker:ro

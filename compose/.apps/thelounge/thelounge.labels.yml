@@ -1,12 +1,12 @@
 services:
-  thelounge:
+  <appname>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Web IRC client that you host on your own server"
       com.dockstarter.appinfo.nicename: "TheLounge"
-      com.dockstarter.appvars.thelounge_container_name: "thelounge"
-      com.dockstarter.appvars.thelounge_enabled: "false"
-      com.dockstarter.appvars.thelounge_network_mode: ""
-      com.dockstarter.appvars.thelounge_port_9000: "9000"
-      com.dockstarter.appvars.thelounge_restart: "unless-stopped"
-      com.dockstarter.appvars.thelounge_tag: "latest"
+      com.dockstarter.appvars.<appname>_container_name: "<appname>"
+      com.dockstarter.appvars.<appname>_enabled: "false"
+      com.dockstarter.appvars.<appname>_network_mode: ""
+      com.dockstarter.appvars.<appname>_port_9000: "9000"
+      com.dockstarter.appvars.<appname>_restart: "unless-stopped"
+      com.dockstarter.appvars.<appname>_tag: "latest"

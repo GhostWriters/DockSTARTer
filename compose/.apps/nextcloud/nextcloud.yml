@@ -1,13 +1,13 @@
 services:
-  nextcloud:
-    container_name: ${NEXTCLOUD_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${NEXTCLOUD_RESTART}
+    restart: ${<APPNAME>_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/nextcloud:/config
+      - ${DOCKER_VOLUME_CONFIG}/<appname>:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${NEXTCLOUD_VOLUME_DATADIR}:/data
+      - ${<APPNAME>_VOLUME_DATADIR}:/data

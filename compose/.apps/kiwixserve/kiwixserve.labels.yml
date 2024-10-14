@@ -1,13 +1,13 @@
 services:
-  kiwixserve:
+  <appname>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Kiwix HTTP daemon"
       com.dockstarter.appinfo.nicename: "Kiwixserve"
-      com.dockstarter.appvars.kiwixserve_container_name: "kiwixserve"
-      com.dockstarter.appvars.kiwixserve_enabled: "false"
-      com.dockstarter.appvars.kiwixserve_environment_downloads: "https://download.kiwix.org/zim/wikipedia_en_all_maxi.zim"
-      com.dockstarter.appvars.kiwixserve_network_mode: ""
-      com.dockstarter.appvars.kiwixserve_port_80: "80"
-      com.dockstarter.appvars.kiwixserve_restart: "unless-stopped"
-      com.dockstarter.appvars.kiwixserve_tag: "latest"
+      com.dockstarter.appvars.<appname>_container_name: "<appname>"
+      com.dockstarter.appvars.<appname>_enabled: "false"
+      com.dockstarter.appvars.<appname>_environment_downloads: "https://download.kiwix.org/zim/wikipedia_en_all_maxi.zim"
+      com.dockstarter.appvars.<appname>_network_mode: ""
+      com.dockstarter.appvars.<appname>_port_80: "80"
+      com.dockstarter.appvars.<appname>_restart: "unless-stopped"
+      com.dockstarter.appvars.<appname>_tag: "latest"

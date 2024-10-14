@@ -1,5 +1,5 @@
 services:
-  ubooquity:
+  <appname>:
     ports:
-      - ${UBOOQUITY_PORT_2202}:2202
-      - ${UBOOQUITY_PORT_2203}:2203
+      - ${<APPNAME>_PORT_2202}:2202
+      - ${<APPNAME>_PORT_2203}:2203

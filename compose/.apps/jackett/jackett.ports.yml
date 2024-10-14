@@ -1,4 +1,4 @@
 services:
-  jackett:
+  <appname>:
     ports:
-      - ${JACKETT_PORT_9117}:9117
+      - ${<APPNAME>_PORT_9117}:9117

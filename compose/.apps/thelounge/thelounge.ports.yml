@@ -1,4 +1,4 @@
 services:
-  thelounge:
+  <appname>:
     ports:
-      - ${THELOUNGE_PORT_9000}:9000
+      - ${<APPNAME>_PORT_9000}:9000

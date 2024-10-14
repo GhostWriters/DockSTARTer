@@ -1,14 +1,14 @@
 services:
-  organizr:
-    container_name: ${ORGANIZR_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
-      - branch=${ORGANIZR_ENVIRONMENT_BRANCH}
-      - fpm=${ORGANIZR_ENVIRONMENT_FPM}
+      - branch=${<APPNAME>_ENVIRONMENT_BRANCH}
+      - fpm=${<APPNAME>_ENVIRONMENT_FPM}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${ORGANIZR_RESTART}
+    restart: ${<APPNAME>_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/organizr:/config
+      - ${DOCKER_VOLUME_CONFIG}/<appname>:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage

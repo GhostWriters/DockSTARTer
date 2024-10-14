@@ -1,3 +1,3 @@
 services:
-  adguard:
-    image: adguard/adguardhome:${ADGUARD_TAG}
+  <appname>:
+    image: adguard/adguardhome:${<APPNAME>_TAG}

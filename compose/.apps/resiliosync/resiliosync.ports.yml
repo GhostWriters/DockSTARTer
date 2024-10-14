@@ -1,5 +1,5 @@
 services:
-  resiliosync:
+  <appname>:
     ports:
-      - ${RESILIOSYNC_PORT_8888}:8888
-      - ${RESILIOSYNC_PORT_55555}:55555
+      - ${<APPNAME>_PORT_8888}:8888
+      - ${<APPNAME>_PORT_55555}:55555
