@@ -1,14 +1,14 @@
 services:
-  photoshow:
+  <appname>:
     labels:
       com.dockstarter.appinfo.deprecated: "true"
       com.dockstarter.appinfo.description: "(DEPRECATED) No replacement"
       com.dockstarter.appinfo.nicename: "PhotoShow"
-      com.dockstarter.appvars.photoshow_container_name: "photoshow"
-      com.dockstarter.appvars.photoshow_enabled: "false"
-      com.dockstarter.appvars.photoshow_network_mode: ""
-      com.dockstarter.appvars.photoshow_port_80: "80"
-      com.dockstarter.appvars.photoshow_restart: "unless-stopped"
-      com.dockstarter.appvars.photoshow_tag: "latest"
-      com.dockstarter.appvars.photoshow_volume_images_dir: "/mnt/photoshow/pictures"
-      com.dockstarter.appvars.photoshow_volume_thumbs_dir: "/mnt/photoshow/thumbs"
+      com.dockstarter.appvars.<appname>_container_name: "<appname>"
+      com.dockstarter.appvars.<appname>_enabled: "false"
+      com.dockstarter.appvars.<appname>_network_mode: ""
+      com.dockstarter.appvars.<appname>_port_80: "80"
+      com.dockstarter.appvars.<appname>_restart: "unless-stopped"
+      com.dockstarter.appvars.<appname>_tag: "latest"
+      com.dockstarter.appvars.<appname>_volume_images_dir: "/mnt/photoshow/pictures"
+      com.dockstarter.appvars.<appname>_volume_thumbs_dir: "/mnt/photoshow/thumbs"

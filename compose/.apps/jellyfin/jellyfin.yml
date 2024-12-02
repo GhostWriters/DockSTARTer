@@ -1,13 +1,13 @@
 services:
-  jellyfin:
-    container_name: ${JELLYFIN_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${JELLYFIN_RESTART}
+    restart: ${<APPNAME>_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/jellyfin:/config
+      - ${DOCKER_VOLUME_CONFIG}/<appname>:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${JELLYFIN_VOLUME_TRANSCODEDIR}:/transcode
+      - ${<APPNAME>_VOLUME_TRANSCODEDIR}:/transcode

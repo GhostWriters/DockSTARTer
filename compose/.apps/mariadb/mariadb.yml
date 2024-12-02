@@ -1,13 +1,13 @@
 services:
-  mariadb:
-    container_name: ${MARIADB_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
-      - MYSQL_ROOT_PASSWORD=${MARIADB_ENVIRONMENT_MYSQL_ROOT_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${<APPNAME>_ENVIRONMENT_MYSQL_ROOT_PASSWORD}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${MARIADB_RESTART}
+    restart: ${<APPNAME>_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/mariadb:/config
+      - ${DOCKER_VOLUME_CONFIG}/<appname>:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage

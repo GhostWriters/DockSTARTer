@@ -1,17 +1,17 @@
 services:
-  tdarrnode:
-    container_name: ${TDARRNODE_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
-      - nodeID=${TDARRNODE_ENVIRONMENT_NODEID}
-      - nodeIP=${TDARRNODE_ENVIRONMENT_NODEIP}
-      - nodePort=${TDARRNODE_PORT_8267}
+      - nodeID=${<APPNAME>_ENVIRONMENT_NODEID}
+      - nodeIP=${<APPNAME>_ENVIRONMENT_NODEIP}
+      - nodePort=${<APPNAME>_PORT_8267}
       - PGID=${PGID}
       - PUID=${PUID}
-      - serverIP=${TDARRNODE_ENVIRONMENT_SERVERIP}
-      - serverPort=${TDARRNODE_ENVIRONMENT_SERVERPORT}
+      - serverIP=${<APPNAME>_ENVIRONMENT_SERVERIP}
+      - serverPort=${<APPNAME>_ENVIRONMENT_SERVERPORT}
       - TZ=${TZ}
-    restart: ${TDARRNODE_RESTART}
+    restart: ${<APPNAME>_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${TDARRNODE_VOLUME_TRANSCODE_CACHE}:/temp
+      - ${<APPNAME>_VOLUME_TRANSCODE_CACHE}:/temp

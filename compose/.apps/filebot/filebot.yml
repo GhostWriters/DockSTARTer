@@ -1,14 +1,14 @@
 services:
-  filebot:
-    container_name: ${FILEBOT_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
       - GROUP_ID=${PGID}
       - TZ=${TZ}
       - USER_ID=${PUID}
-    restart: ${FILEBOT_RESTART}
+    restart: ${<APPNAME>_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/filebot:/config
+      - ${DOCKER_VOLUME_CONFIG}/<appname>:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${FILEBOT_VOLUME_OUTPUTDIR}:/output
-      - ${FILEBOT_VOLUME_WATCHDIR}:/watch
+      - ${<APPNAME>_VOLUME_OUTPUTDIR}:/output
+      - ${<APPNAME>_VOLUME_WATCHDIR}:/watch

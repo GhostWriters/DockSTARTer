@@ -1,15 +1,15 @@
 services:
-  xteve:
-    container_name: ${XTEVE_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-      - XTEVE_BRANCH=${XTEVE_ENVIRONMENT_BRANCH}
-      - XTEVE_DEBUG=${XTEVE_ENVIRONMENT_DEBUG}
-    restart: ${XTEVE_RESTART}
+      - XTEVE_BRANCH=${<APPNAME>_ENVIRONMENT_BRANCH}
+      - XTEVE_DEBUG=${<APPNAME>_ENVIRONMENT_DEBUG}
+    restart: ${<APPNAME>_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/xteve:/home/xteve/conf
-      - ${DOCKER_VOLUME_CONFIG}/xteve/tmp:/tmp/xteve
+      - ${DOCKER_VOLUME_CONFIG}/<appname>:/home/xteve/conf
+      - ${DOCKER_VOLUME_CONFIG}/<appname>/tmp:/tmp/xteve
       - ${DOCKER_VOLUME_STORAGE}:/storage

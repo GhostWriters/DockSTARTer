@@ -1,4 +1,4 @@
 services:
-  gitea:
+  <appname>:
     ports:
-      - ${GITEA_PORT_3000}:3000
+      - ${<APPNAME>_PORT_3000}:3000

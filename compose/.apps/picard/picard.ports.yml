@@ -1,4 +1,4 @@
 services:
-  picard:
+  <appname>:
     ports:
-      - ${PICARD_PORT_5800}:5800
+      - ${<APPNAME>_PORT_5800}:5800

@@ -1,16 +1,16 @@
 services:
-  tdarr:
-    container_name: ${TDARR_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
-      - serverIP=${TDARR_ENVIRONMENT_SERVERIP}
-      - serverPort=${TDARR_PORT_8266}
+      - serverIP=${<APPNAME>_ENVIRONMENT_SERVERIP}
+      - serverPort=${<APPNAME>_PORT_8266}
       - TZ=${TZ}
-      - webUIPort=${TDARR_PORT_8265}
-    restart: ${TDARR_RESTART}
+      - webUIPort=${<APPNAME>_PORT_8265}
+    restart: ${<APPNAME>_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/tdarr:/app/server
+      - ${DOCKER_VOLUME_CONFIG}/<appname>:/app/server
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${TDARR_VOLUME_TRANSCODE_CACHE}:/temp
+      - ${<APPNAME>_VOLUME_TRANSCODE_CACHE}:/temp

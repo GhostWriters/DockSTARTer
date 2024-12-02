@@ -1,3 +1,3 @@
 services:
-  homebridge:
+  <appname>:
     hostname: ${DOCKER_HOSTNAME}

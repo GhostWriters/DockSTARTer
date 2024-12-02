@@ -1,3 +1,3 @@
 services:
-  calibre:
-    image: lscr.io/linuxserver/calibre:${CALIBRE_TAG}
+  <appname>:
+    image: lscr.io/linuxserver/calibre:${<APPNAME>_TAG}

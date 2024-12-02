@@ -1,12 +1,12 @@
 services:
-  lidarr:
+  <appname>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Music download manager for Usenet and BitTorrent users"
       com.dockstarter.appinfo.nicename: "Lidarr"
-      com.dockstarter.appvars.lidarr_container_name: "lidarr"
-      com.dockstarter.appvars.lidarr_enabled: "false"
-      com.dockstarter.appvars.lidarr_network_mode: ""
-      com.dockstarter.appvars.lidarr_port_8686: "8686"
-      com.dockstarter.appvars.lidarr_restart: "unless-stopped"
-      com.dockstarter.appvars.lidarr_tag: "latest"
+      com.dockstarter.appvars.<appname>_container_name: "<appname>"
+      com.dockstarter.appvars.<appname>_enabled: "false"
+      com.dockstarter.appvars.<appname>_network_mode: ""
+      com.dockstarter.appvars.<appname>_port_8686: "8686"
+      com.dockstarter.appvars.<appname>_restart: "unless-stopped"
+      com.dockstarter.appvars.<appname>_tag: "latest"

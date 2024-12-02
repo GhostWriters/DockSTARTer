@@ -1,16 +1,16 @@
 services:
-  dozzle:
-    container_name: ${DOZZLE_CONTAINER_NAME}
+  <appname>:
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
-      - DOZZLE_BASE=${DOZZLE_ENVIRONMENT_BASE}
-      - DOZZLE_FILTER=${DOZZLE_ENVIRONMENT_FILTER}
-      - DOZZLE_LEVEL=${DOZZLE_ENVIRONMENT_LEVEL}
-      - DOZZLE_TAILSIZE=${DOZZLE_ENVIRONMENT_TAILSIZE}
+      - DOZZLE_BASE=${<APPNAME>_ENVIRONMENT_BASE}
+      - DOZZLE_FILTER=${<APPNAME>_ENVIRONMENT_FILTER}
+      - DOZZLE_LEVEL=${<APPNAME>_ENVIRONMENT_LEVEL}
+      - DOZZLE_TAILSIZE=${<APPNAME>_ENVIRONMENT_TAILSIZE}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${DOZZLE_RESTART}
+    restart: ${<APPNAME>_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${DOZZLE_VOLUME_DOCKER_SOCKET}:/var/run/docker.sock
+      - ${<APPNAME>_VOLUME_DOCKER_SOCKET}:/var/run/docker.sock

@@ -1,7 +1,7 @@
 services:
-  timemachine:
+  <appname>:
     ports:
-      - ${TIMEMACHINE_PORT_137}:137/udp
-      - ${TIMEMACHINE_PORT_138}:138/udp
-      - ${TIMEMACHINE_PORT_139}:139
-      - ${TIMEMACHINE_PORT_445}:445
+      - ${<APPNAME>_PORT_137}:137/udp
+      - ${<APPNAME>_PORT_138}:138/udp
+      - ${<APPNAME>_PORT_139}:139
+      - ${<APPNAME>_PORT_445}:445

@@ -1,24 +1,24 @@
 services:
-  wireguard:
+  <appname>:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    container_name: ${WIREGUARD_CONTAINER_NAME}
+    container_name: ${<APPNAME>_CONTAINER_NAME}
     environment:
-      - ALLOWEDIPS=${WIREGUARD_ENVIRONMENT_ALLOWED_IPS}
-      - INTERNAL_SUBNET=${WIREGUARD_ENVIRONMENT_INTERNAL_SUBNET}
-      - PEERDNS=${WIREGUARD_ENVIRONMENT_PEER_DNS}
-      - PEERS=${WIREGUARD_ENVIRONMENT_PEERS}
+      - ALLOWEDIPS=${<APPNAME>_ENVIRONMENT_ALLOWED_IPS}
+      - INTERNAL_SUBNET=${<APPNAME>_ENVIRONMENT_INTERNAL_SUBNET}
+      - PEERDNS=${<APPNAME>_ENVIRONMENT_PEER_DNS}
+      - PEERS=${<APPNAME>_ENVIRONMENT_PEERS}
       - PGID=${PGID}
       - PUID=${PUID}
-      - SERVERPORT=${WIREGUARD_PORT_51820}
-      - SERVERURL=${WIREGUARD_ENVIRONMENT_SERVER_URL}
+      - SERVERPORT=${<APPNAME>_PORT_51820}
+      - SERVERURL=${<APPNAME>_ENVIRONMENT_SERVER_URL}
       - TZ=${TZ}
-    restart: ${WIREGUARD_RESTART}
+    restart: ${<APPNAME>_RESTART}
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /lib/modules:/lib/modules
-      - ${DOCKER_VOLUME_CONFIG}/wireguard:/config
+      - ${DOCKER_VOLUME_CONFIG}/<appname>:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage

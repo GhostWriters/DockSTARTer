@@ -1,4 +1,4 @@
 services:
-  pyload:
+  <appname>:
     ports:
-      - ${PYLOAD_PORT_8000}:8000
+      - ${<APPNAME>_PORT_8000}:8000

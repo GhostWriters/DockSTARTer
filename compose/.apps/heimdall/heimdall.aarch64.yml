@@ -1,3 +1,3 @@
 services:
-  heimdall:
-    image: lscr.io/linuxserver/heimdall:${HEIMDALL_TAG}
+  <appname>:
+    image: lscr.io/linuxserver/heimdall:${<APPNAME>_TAG}

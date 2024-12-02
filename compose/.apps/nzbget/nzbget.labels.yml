@@ -1,12 +1,12 @@
 services:
-  nzbget:
+  <appname>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Efficient usenet downloader"
       com.dockstarter.appinfo.nicename: "NZBGet"
-      com.dockstarter.appvars.nzbget_container_name: "nzbget"
-      com.dockstarter.appvars.nzbget_enabled: "false"
-      com.dockstarter.appvars.nzbget_network_mode: ""
-      com.dockstarter.appvars.nzbget_port_6789: "6789"
-      com.dockstarter.appvars.nzbget_restart: "unless-stopped"
-      com.dockstarter.appvars.nzbget_tag: "latest"
+      com.dockstarter.appvars.<appname>_container_name: "<appname>"
+      com.dockstarter.appvars.<appname>_enabled: "false"
+      com.dockstarter.appvars.<appname>_network_mode: ""
+      com.dockstarter.appvars.<appname>_port_6789: "6789"
+      com.dockstarter.appvars.<appname>_restart: "unless-stopped"
+      com.dockstarter.appvars.<appname>_tag: "latest"

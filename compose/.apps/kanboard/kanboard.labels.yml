@@ -1,12 +1,12 @@
 services:
-  kanboard:
+  <appname>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Kanboard is a free and open source Kanban project management software."
       com.dockstarter.appinfo.nicename: "Kanboard"
-      com.dockstarter.appvars.kanboard_container_name: "kanboard"
-      com.dockstarter.appvars.kanboard_enabled: "false"
-      com.dockstarter.appvars.kanboard_network_mode: ""
-      com.dockstarter.appvars.kanboard_port_8080: "8080"
-      com.dockstarter.appvars.kanboard_restart: "unless-stopped"
-      com.dockstarter.appvars.kanboard_tag: "latest"
+      com.dockstarter.appvars.<appname>_container_name: "<appname>"
+      com.dockstarter.appvars.<appname>_enabled: "false"
+      com.dockstarter.appvars.<appname>_network_mode: ""
+      com.dockstarter.appvars.<appname>_port_8080: "8080"
+      com.dockstarter.appvars.<appname>_restart: "unless-stopped"
+      com.dockstarter.appvars.<appname>_tag: "latest"
