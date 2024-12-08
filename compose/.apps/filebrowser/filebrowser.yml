@@ -9,7 +9,7 @@ services:
     healthcheck:
       test:
         - CMD-SHELL
-        - curl -fs http://localhost:${FILEBROWSER_PORT_80}/health || exit 1
+        - curl -fs http://localhost:80/health || exit 1
     restart: ${FILEBROWSER_RESTART}
     user: ${PUID}:${PGID}
     volumes:
