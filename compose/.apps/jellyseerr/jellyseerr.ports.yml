@@ -1,0 +1,4 @@
+services:
+  jellyseerr:
+    ports:
+      - ${JELLYSEERR_PORT_5055}:5055
