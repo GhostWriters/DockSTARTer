@@ -1,0 +1,12 @@
+services:
+  jellyseerr:
+    container_name: ${JELLYSEERR_CONTAINER_NAME}
+    environment:
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TZ}
+    restart: ${JELLYSEERR_RESTART}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_VOLUME_CONFIG}/jellyseerr:/app/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage

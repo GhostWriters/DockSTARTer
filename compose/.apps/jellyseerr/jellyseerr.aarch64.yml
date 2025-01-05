@@ -1,0 +1,3 @@
+services:
+  jellyseerr:
+    image: fallenbagel/jellyseerr:${JELLYSEERR_TAG}
