@@ -5,17 +5,10 @@ services:
       - SYS_MODULE
     container_name: ${RTORRENTVPN_CONTAINER_NAME}
     environment:
-      - NAME_SERVERS=${NS1},${NS2}
       - PGID=${PGID}
       - PHP_TZ=${TZ}
       - PUID=${PUID}
       - TZ=${TZ}
-      - VPN_CLIENT=${VPN_CLIENT}
-      - VPN_ENABLED=${VPN_ENABLE}
-      - VPN_OPTIONS=${VPN_OPTIONS}
-      - VPN_PASS=${VPN_PASS}
-      - VPN_PROV=${VPN_PROV}
-      - VPN_USER=${VPN_USER}
     privileged: true
     restart: ${RTORRENTVPN_RESTART}
     sysctls:

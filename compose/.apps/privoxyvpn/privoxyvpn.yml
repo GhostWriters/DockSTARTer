@@ -10,7 +10,6 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-      - VPN_ENABLED=${PRIVOXYVPN_ENVIRONMENT_VPN_ENABLE}
     privileged: true
     restart: ${PRIVOXYVPN_RESTART}
     sysctls:

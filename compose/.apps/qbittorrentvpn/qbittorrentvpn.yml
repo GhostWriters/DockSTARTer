@@ -8,7 +8,6 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-      - VPN_ENABLED=${QBITTORRENTVPN_ENVIRONMENT_VPN_ENABLE}
       - WEBUI_PORT=${QBITTORRENTVPN_PORT_8080}
     privileged: true
     restart: ${QBITTORRENTVPN_RESTART}

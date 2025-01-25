@@ -8,7 +8,6 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-      - VPN_ENABLED=${NZBGETVPN_ENVIRONMENT_VPN_ENABLE}
     privileged: true
     restart: ${NZBGETVPN_RESTART}
     sysctls:
