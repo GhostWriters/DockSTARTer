@@ -4,7 +4,6 @@ services:
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
-      - RUN_OPTS=${TVHEADEND_ENVIRONMENT_RUN_OPTS}
       - TZ=${TZ}
     restart: ${TVHEADEND_RESTART}
     volumes:
