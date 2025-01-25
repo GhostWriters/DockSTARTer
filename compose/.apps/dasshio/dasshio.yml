@@ -2,8 +2,6 @@ services:
   dasshio:
     container_name: ${DASSHIO_CONTAINER_NAME}
     environment:
-      - HA_BASE_URL=${DASSHIO_ENVIRONMENT_HOMEASSISTANT_URL}
-      - HASSIO_TOKEN=${DASSHIO_ENVIRONMENT_HOMEASSISTANT_AUTH_TOKEN}
       - TZ=${TZ}
     restart: ${DASSHIO_RESTART}
     volumes:
