@@ -2,7 +2,6 @@ services:
   glances:
     container_name: ${GLANCES_CONTAINER_NAME}
     environment:
-      - GLANCES_OPT=${GLANCES_ENVIRONMENT_OPT}
       - TZ=${TZ}
     pid: host
     restart: ${GLANCES_RESTART}
