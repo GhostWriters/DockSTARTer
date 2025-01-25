@@ -2,13 +2,9 @@ services:
   tdarrnode:
     container_name: ${TDARRNODE_CONTAINER_NAME}
     environment:
-      - nodeID=${TDARRNODE_ENVIRONMENT_NODEID}
-      - nodeIP=${TDARRNODE_ENVIRONMENT_NODEIP}
       - nodePort=${TDARRNODE_PORT_8267}
       - PGID=${PGID}
       - PUID=${PUID}
-      - serverIP=${TDARRNODE_ENVIRONMENT_SERVERIP}
-      - serverPort=${TDARRNODE_ENVIRONMENT_SERVERPORT}
       - TZ=${TZ}
     restart: ${TDARRNODE_RESTART}
     volumes:
