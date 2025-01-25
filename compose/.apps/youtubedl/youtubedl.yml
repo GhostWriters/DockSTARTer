@@ -5,8 +5,6 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-      - YDL_DEBUG=${YOUTUBEDL_ENVIRONMENT_DEBUG}
-      - YDL_CONFIG_PATH=${YOUTUBEDL_ENVIRONMENT_CONFIG_PATH}
     restart: ${YOUTUBEDL_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
