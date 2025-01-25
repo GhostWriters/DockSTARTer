@@ -5,8 +5,6 @@ services:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-      - XTEVE_BRANCH=${XTEVE_ENVIRONMENT_BRANCH}
-      - XTEVE_DEBUG=${XTEVE_ENVIRONMENT_DEBUG}
     restart: ${XTEVE_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
