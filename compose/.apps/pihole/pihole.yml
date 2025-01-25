@@ -5,12 +5,12 @@ services:
     container_name: ${PIHOLE_CONTAINER_NAME}
     dns:
       - 127.0.0.1
-      - ${PIHOLE_ENVIRONMENT_DNS1}
-      - ${PIHOLE_ENVIRONMENT_DNS2}
+      - ${PIHOLE_IP_DNS1}
+      - ${PIHOLE_IP_DNS2}
     environment:
-      - DNS1=${PIHOLE_ENVIRONMENT_DNS1}
-      - DNS2=${PIHOLE_ENVIRONMENT_DNS2}
-      - ServerIP=${PIHOLE_ENVIRONMENT_SERVERIP}
+      - DNS1=${PIHOLE_IP_DNS1}
+      - DNS2=${PIHOLE_IP_DNS2}
+      - ServerIP=${PIHOLE_IP_SERVERIP}
       - TZ=${TZ}
     restart: ${PIHOLE_RESTART}
     volumes:
