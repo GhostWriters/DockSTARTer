@@ -2,10 +2,7 @@ services:
   moviematch:
     container_name: ${MOVIEMATCH_CONTAINER_NAME}
     environment:
-      - LOG_LEVEL=${MOVIEMATCH_ENVIRONMENT_LOG_LEVEL}
       - PGID=${PGID}
-      - PLEX_TOKEN=${MOVIEMATCH_ENVIRONMENT_PLEX_TOKEN}
-      - PLEX_URL=${MOVIEMATCH_ENVIRONMENT_PLEX_URL}
       - PUID=${PUID}
       - TZ=${TZ}
     restart: ${MOVIEMATCH_RESTART}

@@ -3,12 +3,10 @@ services:
     container_name: ${SAMBA_CONTAINER_NAME}
     environment:
       - GROUPID=${PGID}
-      - NMBD=${SAMBA_ENVIRONMENT_NMBD}
       - SHARE=${SAMBA_ENVIRONMENT_SHARENAME};/${SAMBA_ENVIRONMENT_SHARENAME};yes;no;no;all;${SAMBA_ENVIRONMENT_USERNAME}
       - TZ=${TZ}
       - USER=${SAMBA_ENVIRONMENT_USERNAME};${SAMBA_ENVIRONMENT_PASSWORD}
       - USERID=${PUID}
-      - WORKGROUP=${SAMBA_ENVIRONMENT_WORKGROUP}
     restart: ${SAMBA_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro

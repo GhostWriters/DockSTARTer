@@ -2,10 +2,8 @@ services:
   codeserver:
     container_name: ${CODESERVER_CONTAINER_NAME}
     environment:
-      - PASSWORD=${CODESERVER_ENVIRONMENT_PASSWORD}
       - PGID=${PGID}
       - PUID=${PUID}
-      - SUDO_PASSWORD=${CODESERVER_ENVIRONMENT_SUDO_PASSWORD}
       - TZ=${TZ}
     restart: ${CODESERVER_RESTART}
     volumes:

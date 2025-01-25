@@ -12,7 +12,6 @@ services:
       - DNS2=${PIHOLE_ENVIRONMENT_DNS2}
       - ServerIP=${PIHOLE_ENVIRONMENT_SERVERIP}
       - TZ=${TZ}
-      - WEBPASSWORD=${PIHOLE_ENVIRONMENT_WEBPASSWORD}
     restart: ${PIHOLE_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro

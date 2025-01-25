@@ -4,16 +4,9 @@ services:
       - NET_ADMIN
     container_name: ${SWAG_CONTAINER_NAME}
     environment:
-      - DNSPLUGIN=${SWAG_ENVIRONMENT_DNSPLUGIN}
-      - EMAIL=${SWAG_ENVIRONMENT_EMAIL}
-      - EXTRA_DOMAINS=${SWAG_ENVIRONMENT_EXTRA_DOMAINS}
-      - ONLY_SUBDOMAINS=${SWAG_ENVIRONMENT_ONLY_SUBDOMAINS}
       - PGID=${PGID}
       - PUID=${PUID}
-      - SUBDOMAINS=${SWAG_ENVIRONMENT_SUBDOMAINS}
       - TZ=${TZ}
-      - URL=${SWAG_ENVIRONMENT_URL}
-      - VALIDATION=${SWAG_ENVIRONMENT_VALIDATION}
     restart: ${SWAG_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro

@@ -2,8 +2,6 @@ services:
   vsftpd:
     container_name: ${VSFTPD_CONTAINER_NAME}
     environment:
-      - FTP_USER=${VSFTPD_ENVIRONMENT_FTP_USER}
-      - FTP_PASS=${VSFTPD_ENVIRONMENT_FTP_PASS}
       - TZ=${TZ}
     restart: ${VSFTPD_RESTART}
     volumes:

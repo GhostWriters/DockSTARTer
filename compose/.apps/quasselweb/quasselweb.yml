@@ -4,11 +4,7 @@ services:
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
-      - QUASSEL_CORE=${QUASSELWEB_ENVIRONMENT_QUASSEL_CORE}
-      - QUASSEL_HTTPS=${QUASSELWEB_ENVIRONMENT_QUASSEL_HTTPS}
-      - QUASSEL_PORT=${QUASSELWEB_ENVIRONMENT_QUASSEL_PORT}
       - TZ=${TZ}
-      - URL_BASE=${QUASSELWEB_ENVIRONMENT_URL_BASE}
     restart: ${QUASSELWEB_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro

@@ -4,7 +4,6 @@ services:
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
-      - BASE_PATH=${OPENSPEEDTEST_ENVIRONMENT_BASE_PATH}
       - TZ=${TZ}
     restart: ${OPENSPEEDTEST_RESTART}
     volumes:

@@ -4,7 +4,6 @@ services:
       - NET_ADMIN
     container_name: ${OPENVPNAS_CONTAINER_NAME}
     environment:
-      - INTERFACE=${OPENVPNAS_ENVIRONMENT_INTERFACE}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}

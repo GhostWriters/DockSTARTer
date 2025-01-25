@@ -3,10 +3,8 @@ services:
     container_name: ${PLEX_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
-      - PLEX_CLAIM=${PLEX_ENVIRONMENT_PLEX_CLAIM}
       - PUID=${PUID}
       - TZ=${TZ}
-      - VERSION=${PLEX_ENVIRONMENT_VERSION}
     restart: ${PLEX_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro

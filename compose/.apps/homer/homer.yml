@@ -2,10 +2,8 @@ services:
   homer:
     container_name: ${HOMER_CONTAINER_NAME}
     environment:
-      - INIT_ASSETS=${HOMER_ENVIRONMENT_INIT_ASSETS}
       - PGID=${PGID}
       - PUID=${PUID}
-      - SUBFOLDER=${HOMER_ENVIRONMENT_SUBFOLDER}
       - TZ=${TZ}
     restart: ${HOMER_RESTART}
     volumes:

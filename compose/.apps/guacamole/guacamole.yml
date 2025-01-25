@@ -2,7 +2,6 @@ services:
   guacamole:
     container_name: ${GUACAMOLE_CONTAINER_NAME}
     environment:
-      - EXTENSIONS=${GUACAMOLE_ENVIRONMENT_EXTENSIONS}
       - TZ=${TZ}
     restart: ${GUACAMOLE_RESTART}
     volumes:

@@ -2,10 +2,8 @@ services:
   speedtest:
     container_name: ${SPEEDTEST_CONTAINER_NAME}
     environment:
-      - OOKLA_EULA_GDPR=${SPEEDTEST_ENVIRONMENT_OOKLA_EULA_GDPR}
       - PGID=${PGID}
       - PUID=${PUID}
-      - BASE_PATH=${SPEEDTEST_ENVIRONMENT_BASE_PATH}
       - TZ=${TZ}
     restart: ${SPEEDTEST_RESTART}
     volumes:

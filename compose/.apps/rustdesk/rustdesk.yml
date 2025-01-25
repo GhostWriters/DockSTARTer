@@ -4,7 +4,6 @@ services:
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
-      - RELAY=${RUSTDESK_ENVIRONMENT_RELAY_SERVER}
       - TZ=${TZ}
     restart: ${RUSTDESK_RESTART}
     volumes:
