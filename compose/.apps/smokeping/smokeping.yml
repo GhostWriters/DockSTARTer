@@ -2,8 +2,8 @@ services:
   smokeping:
     container_name: ${SMOKEPING_CONTAINER_NAME}
     dns:
-      - ${SMOKEPING_ENVIRONMENT_DNS1}
-      - ${SMOKEPING_ENVIRONMENT_DNS2}
+      - ${SMOKEPING_IP_DNS1}
+      - ${SMOKEPING_IP_DNS2}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
