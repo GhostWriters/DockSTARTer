@@ -1,6 +1,7 @@
 services:
   rutorrent:
     container_name: ${RUTORRENT_CONTAINER_NAME}
+    env_file: env_files/rutorrent.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

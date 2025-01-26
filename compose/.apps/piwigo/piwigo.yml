@@ -1,6 +1,7 @@
 services:
   piwigo:
     container_name: ${PIWIGO_CONTAINER_NAME}
+    env_file: env_files/piwigo.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

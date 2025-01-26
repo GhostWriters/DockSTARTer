@@ -1,6 +1,7 @@
 services:
   dozzle:
     container_name: ${DOZZLE_CONTAINER_NAME}
+    env_file: env_files/dozzle.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

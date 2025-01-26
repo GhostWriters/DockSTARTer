@@ -1,6 +1,7 @@
 services:
   smokeping:
     container_name: ${SMOKEPING_CONTAINER_NAME}
+    env_file: env_files/smokeping.env
     dns:
       - ${SMOKEPING_IP_DNS1}
       - ${SMOKEPING_IP_DNS2}

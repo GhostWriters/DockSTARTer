@@ -1,6 +1,7 @@
 services:
   huginn:
     container_name: ${HUGINN_CONTAINER_NAME}
+    env_file: env_files/huginn.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

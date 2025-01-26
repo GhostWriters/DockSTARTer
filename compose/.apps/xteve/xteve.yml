@@ -1,6 +1,7 @@
 services:
   xteve:
     container_name: ${XTEVE_CONTAINER_NAME}
+    env_file: env_files/xteve.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

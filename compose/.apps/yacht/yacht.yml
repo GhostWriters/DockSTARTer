@@ -1,6 +1,7 @@
 services:
   yacht:
     container_name: ${YACHT_CONTAINER_NAME}
+    env_file: env_files/yacht.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

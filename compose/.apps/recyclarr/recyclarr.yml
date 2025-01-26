@@ -1,6 +1,7 @@
 services:
   recyclarr:
     container_name: ${RECYCLARR_CONTAINER_NAME}
+    env_file: env_files/recyclarr.env
     environment:
       - TZ=${TZ}
     restart: ${RECYCLARR_RESTART}

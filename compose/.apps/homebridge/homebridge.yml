@@ -1,6 +1,7 @@
 services:
   homebridge:
     container_name: ${HOMEBRIDGE_CONTAINER_NAME}
+    env_file: env_files/homebridge.env
     environment:
       - TZ=${TZ}
     restart: ${HOMEBRIDGE_RESTART}

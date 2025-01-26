@@ -1,6 +1,7 @@
 services:
   postgres:
     container_name: ${POSTGRES_CONTAINER_NAME}
+    env_file: env_files/postgres.env
     environment:
       - TZ=${TZ}
     restart: ${POSTGRES_RESTART}

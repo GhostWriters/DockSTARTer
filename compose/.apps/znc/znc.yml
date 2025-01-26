@@ -1,6 +1,7 @@
 services:
   znc:
     container_name: ${ZNC_CONTAINER_NAME}
+    env_file: env_files/znc.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

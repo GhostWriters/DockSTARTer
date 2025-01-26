@@ -1,6 +1,7 @@
 services:
   kanboard:
     container_name: ${KANBOARD_CONTAINER_NAME}
+    env_file: env_files/kanboard.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

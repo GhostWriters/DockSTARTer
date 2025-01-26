@@ -1,6 +1,7 @@
 services:
   httpserver:
     container_name: ${HTTPSERVER_CONTAINER_NAME}
+    env_file: env_files/httpserver.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

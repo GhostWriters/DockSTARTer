@@ -1,6 +1,7 @@
 services:
   phpmyadmin:
     container_name: ${PHPMYADMIN_CONTAINER_NAME}
+    env_file: env_files/phpmyadmin.env
     environment:
       - TZ=${TZ}
     restart: ${PHPMYADMIN_RESTART}

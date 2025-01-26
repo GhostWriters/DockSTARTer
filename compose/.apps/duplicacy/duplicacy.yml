@@ -1,6 +1,7 @@
 services:
   duplicacy:
     container_name: ${DUPLICACY_CONTAINER_NAME}
+    env_file: env_files/duplicacy.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

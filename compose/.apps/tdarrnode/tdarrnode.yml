@@ -1,6 +1,7 @@
 services:
   tdarrnode:
     container_name: ${TDARRNODE_CONTAINER_NAME}
+    env_file: env_files/tdarrnode.env
     environment:
       - nodePort=${TDARRNODE_PORT_8267}
       - PGID=${PGID}

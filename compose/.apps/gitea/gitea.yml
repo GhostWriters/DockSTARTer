@@ -1,6 +1,7 @@
 services:
   gitea:
     container_name: ${GITEA_CONTAINER_NAME}
+    env_file: env_files/gitea.env
     environment:
       - USER_UID=${PUID}
       - USER_GID=${PGID}

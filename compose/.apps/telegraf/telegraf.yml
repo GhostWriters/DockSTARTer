@@ -1,6 +1,7 @@
 services:
   telegraf:
     container_name: ${TELEGRAF_CONTAINER_NAME}
+    env_file: env_files/telegraf.env
     environment:
       - HOST_ETC=/host/etc
       - HOST_MOUNT_PREFIX=/host

@@ -1,6 +1,7 @@
 services:
   handbrake:
     container_name: ${HANDBRAKE_CONTAINER_NAME}
+    env_file: env_files/handbrake.env
     environment:
       - GROUP_ID=${PGID}
       - USER_ID=${PUID}

@@ -1,6 +1,7 @@
 services:
   transmission:
     container_name: ${TRANSMISSION_CONTAINER_NAME}
+    env_file: env_files/transmission.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

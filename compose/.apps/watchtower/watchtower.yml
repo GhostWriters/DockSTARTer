@@ -1,6 +1,7 @@
 services:
   watchtower:
     container_name: ${WATCHTOWER_CONTAINER_NAME}
+    env_file: env_files/watchtower.env
     environment:
       - TZ=${TZ}
     restart: ${WATCHTOWER_RESTART}

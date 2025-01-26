@@ -1,6 +1,7 @@
 services:
   varken:
     container_name: ${VARKEN_CONTAINER_NAME}
+    env_file: env_files/varken.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

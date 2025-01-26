@@ -1,6 +1,7 @@
 services:
   calibreweb:
     container_name: ${CALIBREWEB_CONTAINER_NAME}
+    env_file: env_files/calibreweb.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

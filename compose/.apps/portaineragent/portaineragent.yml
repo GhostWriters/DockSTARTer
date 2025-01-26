@@ -1,6 +1,7 @@
 services:
   portaineragent:
     container_name: ${PORTAINERAGENT_CONTAINER_NAME}
+    env_file: env_files/portaineragent.env
     environment:
       - TZ=${TZ}
     restart: ${PORTAINERAGENT_RESTART}

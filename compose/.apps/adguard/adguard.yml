@@ -1,6 +1,7 @@
 services:
   adguard:
     container_name: ${ADGUARD_CONTAINER_NAME}
+    env_file: env_files/adguard.env
     environment:
       - TZ=${TZ}
     restart: ${ADGUARD_RESTART}

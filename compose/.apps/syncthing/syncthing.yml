@@ -1,6 +1,7 @@
 services:
   syncthing:
     container_name: ${SYNCTHING_CONTAINER_NAME}
+    env_file: env_files/syncthing.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

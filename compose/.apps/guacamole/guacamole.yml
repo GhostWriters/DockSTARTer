@@ -1,6 +1,7 @@
 services:
   guacamole:
     container_name: ${GUACAMOLE_CONTAINER_NAME}
+    env_file: env_files/guacamole.env
     environment:
       - TZ=${TZ}
     restart: ${GUACAMOLE_RESTART}

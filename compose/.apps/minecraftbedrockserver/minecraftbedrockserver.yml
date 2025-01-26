@@ -1,6 +1,7 @@
 services:
   minecraftbedrockserver:
     container_name: ${MINECRAFTBEDROCKSERVER_CONTAINER_NAME}
+    env_file: env_files/minecraftbedrockserver.env
     environment:
       - GID=${PGID}
       - TZ=${TZ}

@@ -1,6 +1,7 @@
 services:
   jfago:
     container_name: ${JFAGO_CONTAINER_NAME}
+    env_file: env_files/jfago.env
     environment:
       - TZ=${TZ}
     restart: ${JFAGO_RESTART}

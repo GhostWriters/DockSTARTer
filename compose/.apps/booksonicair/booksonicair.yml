@@ -1,6 +1,7 @@
 services:
   booksonicair:
     container_name: ${BOOKSONICAIR_CONTAINER_NAME}
+    env_file: env_files/booksonicair.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

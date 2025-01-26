@@ -1,6 +1,7 @@
 services:
   librespeed:
     container_name: ${LIBRESPEED_CONTAINER_NAME}
+    env_file: env_files/librespeed.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

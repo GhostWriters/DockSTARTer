@@ -1,6 +1,7 @@
 services:
   pgadmin:
     container_name: ${PGADMIN_CONTAINER_NAME}
+    env_file: env_files/pgadmin.env
     environment:
       - TZ=${TZ}
     restart: ${PGADMIN_RESTART}

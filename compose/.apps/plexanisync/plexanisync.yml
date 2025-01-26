@@ -1,6 +1,7 @@
 services:
   plexanisync:
     container_name: ${PLEXANISYNC_CONTAINER_NAME}
+    env_file: env_files/plexanisync.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

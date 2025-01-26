@@ -1,6 +1,7 @@
 services:
   muximux:
     container_name: ${MUXIMUX_CONTAINER_NAME}
+    env_file: env_files/muximux.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

@@ -1,6 +1,7 @@
 services:
   doplarr:
     container_name: ${DOPLARR_CONTAINER_NAME}
+    env_file: env_files/doplarr.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

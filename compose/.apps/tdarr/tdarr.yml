@@ -1,6 +1,7 @@
 services:
   tdarr:
     container_name: ${TDARR_CONTAINER_NAME}
+    env_file: env_files/tdarr.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

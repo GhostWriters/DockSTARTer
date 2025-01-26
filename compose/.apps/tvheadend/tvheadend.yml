@@ -1,6 +1,7 @@
 services:
   tvheadend:
     container_name: ${TVHEADEND_CONTAINER_NAME}
+    env_file: env_files/tvheadend.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

@@ -1,6 +1,7 @@
 services:
   htpcmanager:
     container_name: ${HTPCMANAGER_CONTAINER_NAME}
+    env_file: env_files/htpcmanager.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

@@ -1,6 +1,7 @@
 services:
   openldap:
     container_name: ${OPENLDAP_CONTAINER_NAME}
+    env_file: env_files/openldap.env
     environment:
       - LDAP_OPENLDAP_GID=${PGID}
       - LDAP_OPENLDAP_UID=${PUID}

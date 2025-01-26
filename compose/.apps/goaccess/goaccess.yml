@@ -1,6 +1,7 @@
 services:
   goaccess:
     container_name: ${GOACCESS_CONTAINER_NAME}
+    env_file: env_files/goaccess.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

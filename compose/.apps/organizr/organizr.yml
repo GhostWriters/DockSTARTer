@@ -1,6 +1,7 @@
 services:
   organizr:
     container_name: ${ORGANIZR_CONTAINER_NAME}
+    env_file: env_files/organizr.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

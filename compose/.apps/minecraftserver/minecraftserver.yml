@@ -1,6 +1,7 @@
 services:
   minecraftserver:
     container_name: ${MINECRAFTSERVER_CONTAINER_NAME}
+    env_file: env_files/minecraftserver.env
     environment:
       - GID=${PGID}
       - TZ=${TZ}

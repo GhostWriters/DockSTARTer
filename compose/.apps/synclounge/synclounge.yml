@@ -1,6 +1,7 @@
 services:
   synclounge:
     container_name: ${SYNCLOUNGE_CONTAINER_NAME}
+    env_file: env_files/synclounge.env
     environment:
       - TZ=${TZ}
     restart: ${SYNCLOUNGE_RESTART}

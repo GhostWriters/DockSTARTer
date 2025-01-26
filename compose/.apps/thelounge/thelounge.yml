@@ -1,6 +1,7 @@
 services:
   thelounge:
     container_name: ${THELOUNGE_CONTAINER_NAME}
+    env_file: env_files/thelounge.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

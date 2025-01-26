@@ -1,6 +1,7 @@
 services:
   omadacontroller:
     container_name: ${OMADACONTROLLER_CONTAINER_NAME}
+    env_file: env_files/omadacontroller.env
     environment:
       - MANAGE_HTTP_PORT=${OMADACONTROLLER_PORT_8088}
       - MANAGE_HTTPS_PORT=${OMADACONTROLLER_PORT_8043}

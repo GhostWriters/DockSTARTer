@@ -1,6 +1,7 @@
 services:
   filebrowser:
     container_name: ${FILEBROWSER_CONTAINER_NAME}
+    env_file: env_files/filebrowser.env
     environment:
       - TZ=${TZ}
     healthcheck:

@@ -1,6 +1,7 @@
 services:
   ouroboros:
     container_name: ${OUROBOROS_CONTAINER_NAME}
+    env_file: env_files/ouroboros.env
     environment:
       - TZ=${TZ}
     restart: ${OUROBOROS_RESTART}

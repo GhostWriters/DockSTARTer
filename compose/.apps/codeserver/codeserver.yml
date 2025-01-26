@@ -1,6 +1,7 @@
 services:
   codeserver:
     container_name: ${CODESERVER_CONTAINER_NAME}
+    env_file: env_files/codeserver.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

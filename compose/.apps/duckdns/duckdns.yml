@@ -1,6 +1,7 @@
 services:
   duckdns:
     container_name: ${DUCKDNS_CONTAINER_NAME}
+    env_file: env_files/duckdns.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

@@ -1,6 +1,7 @@
 services:
   kiwixserve:
     container_name: ${KIWIXSERVE_CONTAINER_NAME}
+    env_file: env_files/kiwixserve.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

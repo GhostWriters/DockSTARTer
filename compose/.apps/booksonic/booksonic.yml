@@ -1,6 +1,7 @@
 services:
   booksonic:
     container_name: ${BOOKSONIC_CONTAINER_NAME}
+    env_file: env_files/booksonic.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

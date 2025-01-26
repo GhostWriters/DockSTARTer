@@ -1,6 +1,7 @@
 services:
   homer:
     container_name: ${HOMER_CONTAINER_NAME}
+    env_file: env_files/homer.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

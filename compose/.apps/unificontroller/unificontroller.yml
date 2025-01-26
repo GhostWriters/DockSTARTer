@@ -1,6 +1,7 @@
 services:
   unificontroller:
     container_name: ${UNIFICONTROLLER_CONTAINER_NAME}
+    env_file: env_files/unificontroller.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

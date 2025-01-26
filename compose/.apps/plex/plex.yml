@@ -1,6 +1,7 @@
 services:
   plex:
     container_name: ${PLEX_CONTAINER_NAME}
+    env_file: env_files/plex.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

@@ -1,6 +1,7 @@
 services:
   murmur:
     container_name: ${MURMUR_CONTAINER_NAME}
+    env_file: env_files/murmur.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

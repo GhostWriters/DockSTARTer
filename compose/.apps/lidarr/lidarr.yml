@@ -1,6 +1,7 @@
 services:
   lidarr:
     container_name: ${LIDARR_CONTAINER_NAME}
+    env_file: env_files/lidarr.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

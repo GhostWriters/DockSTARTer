@@ -1,6 +1,7 @@
 services:
   h5ai:
     container_name: ${H5AI_CONTAINER_NAME}
+    env_file: env_files/h5ai.env
     environment:
       - TZ=${TZ}
     restart: ${H5AI_RESTART}

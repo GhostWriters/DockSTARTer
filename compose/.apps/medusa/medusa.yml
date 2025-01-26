@@ -1,6 +1,7 @@
 services:
   medusa:
     container_name: ${MEDUSA_CONTAINER_NAME}
+    env_file: env_files/medusa.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

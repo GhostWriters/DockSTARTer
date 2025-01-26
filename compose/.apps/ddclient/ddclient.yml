@@ -1,6 +1,7 @@
 services:
   ddclient:
     container_name: ${DDCLIENT_CONTAINER_NAME}
+    env_file: env_files/ddclient.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

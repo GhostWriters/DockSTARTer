@@ -1,6 +1,7 @@
 services:
   readarr:
     container_name: ${READARR_CONTAINER_NAME}
+    env_file: env_files/readarr.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

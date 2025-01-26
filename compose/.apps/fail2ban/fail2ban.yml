@@ -4,6 +4,7 @@ services:
       - NET_ADMIN
       - NET_RAW
     container_name: ${FAIL2BAN_CONTAINER_NAME}
+    env_file: env_files/fail2ban.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

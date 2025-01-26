@@ -1,6 +1,7 @@
 services:
   logarr:
     container_name: ${LOGARR_CONTAINER_NAME}
+    env_file: env_files/logarr.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

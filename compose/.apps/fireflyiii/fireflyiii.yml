@@ -1,6 +1,7 @@
 services:
   fireflyiii:
     container_name: ${FIREFLYIII_CONTAINER_NAME}
+    env_file: env_files/fireflyiii.env
     environment:
       - TZ=${TZ}
     restart: ${FIREFLYIII_RESTART}

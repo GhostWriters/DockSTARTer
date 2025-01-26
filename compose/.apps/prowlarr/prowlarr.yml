@@ -1,6 +1,7 @@
 services:
   prowlarr:
     container_name: ${PROWLARR_CONTAINER_NAME}
+    env_file: env_files/prowlarr.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

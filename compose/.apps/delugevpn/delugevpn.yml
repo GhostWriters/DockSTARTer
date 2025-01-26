@@ -4,6 +4,7 @@ services:
       - NET_ADMIN
       - SYS_MODULE
     container_name: ${DELUGEVPN_CONTAINER_NAME}
+    env_file: env_files/delugevpn.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

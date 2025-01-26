@@ -1,6 +1,7 @@
 services:
   bazarr:
     container_name: ${BAZARR_CONTAINER_NAME}
+    env_file: env_files/bazarr.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

@@ -1,6 +1,7 @@
 services:
   mariadb:
     container_name: ${MARIADB_CONTAINER_NAME}
+    env_file: env_files/mariadb.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

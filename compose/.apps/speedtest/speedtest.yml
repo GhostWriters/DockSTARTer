@@ -1,6 +1,7 @@
 services:
   speedtest:
     container_name: ${SPEEDTEST_CONTAINER_NAME}
+    env_file: env_files/speedtest.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

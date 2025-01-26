@@ -1,6 +1,7 @@
 services:
   timemachine:
     container_name: ${TIMEMACHINE_CONTAINER_NAME}
+    env_file: env_files/timemachine.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

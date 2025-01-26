@@ -1,6 +1,7 @@
 services:
   sonarr:
     container_name: ${SONARR_CONTAINER_NAME}
+    env_file: env_files/sonarr.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

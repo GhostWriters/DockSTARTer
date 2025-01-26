@@ -1,6 +1,7 @@
 services:
   adminer:
     container_name: ${ADMINER_CONTAINER_NAME}
+    env_file: env_files/adminer.env
     environment:
       - TZ=${TZ}
     restart: ${ADMINER_RESTART}

@@ -1,6 +1,7 @@
 services:
   lazylibrarian:
     container_name: ${LAZYLIBRARIAN_CONTAINER_NAME}
+    env_file: env_files/lazylibrarian.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

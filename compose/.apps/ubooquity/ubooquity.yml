@@ -1,6 +1,7 @@
 services:
   ubooquity:
     container_name: ${UBOOQUITY_CONTAINER_NAME}
+    env_file: env_files/ubooquity.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

@@ -1,6 +1,7 @@
 services:
   grafana:
     container_name: ${GRAFANA_CONTAINER_NAME}
+    env_file: env_files/grafana.env
     environment:
       - TZ=${TZ}
     restart: ${GRAFANA_RESTART}

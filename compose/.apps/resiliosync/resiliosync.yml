@@ -1,6 +1,7 @@
 services:
   resiliosync:
     container_name: ${RESILIOSYNC_CONTAINER_NAME}
+    env_file: env_files/resiliosync.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

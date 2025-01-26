@@ -1,6 +1,7 @@
 services:
   apcupsd:
     container_name: ${APCUPSD_CONTAINER_NAME}
+    env_file: env_files/apcupsd.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

@@ -1,6 +1,7 @@
 services:
   nzbget:
     container_name: ${NZBGET_CONTAINER_NAME}
+    env_file: env_files/nzbget.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

@@ -1,6 +1,7 @@
 services:
   amd:
     container_name: ${AMD_CONTAINER_NAME}
+    env_file: env_files/amd.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

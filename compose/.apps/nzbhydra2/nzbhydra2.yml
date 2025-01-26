@@ -1,6 +1,7 @@
 services:
   nzbhydra2:
     container_name: ${NZBHYDRA2_CONTAINER_NAME}
+    env_file: env_files/nzbhydra2.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

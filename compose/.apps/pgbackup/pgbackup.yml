@@ -1,6 +1,7 @@
 services:
   pgbackup:
     container_name: ${PGBACKUP_CONTAINER_NAME}
+    env_file: env_files/pgbackup.env
     environment:
       - TZ=${TZ}
     restart: ${PGBACKUP_RESTART}

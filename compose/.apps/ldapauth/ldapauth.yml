@@ -1,6 +1,7 @@
 services:
   ldapauth:
     container_name: ${LDAPAUTH_CONTAINER_NAME}
+    env_file: env_files/ldapauth.env
     environment:
       - TZ=${TZ}
     restart: ${LDAPAUTH_RESTART}

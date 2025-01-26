@@ -1,6 +1,7 @@
 services:
   bitwarden:
     container_name: ${BITWARDEN_CONTAINER_NAME}
+    env_file: env_files/bitwarden.env
     environment:
       - TZ=${TZ}
     restart: ${BITWARDEN_RESTART}

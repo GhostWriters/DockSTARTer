@@ -1,6 +1,7 @@
 services:
   komga:
     container_name: ${KOMGA_CONTAINER_NAME}
+    env_file: env_files/komga.env
     environment:
       - TZ=${TZ}
     restart: ${KOMGA_RESTART}

@@ -1,6 +1,7 @@
 services:
   cloudcmd:
     container_name: ${CLOUDCMD_CONTAINER_NAME}
+    env_file: env_files/cloudcmd.env
     environment:
       - TZ=${TZ}
     restart: ${CLOUDCMD_RESTART}

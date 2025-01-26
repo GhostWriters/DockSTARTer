@@ -1,6 +1,7 @@
 services:
   airsonic:
     container_name: ${AIRSONIC_CONTAINER_NAME}
+    env_file: env_files/airsonic.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

@@ -1,6 +1,7 @@
 services:
   vsftpd:
     container_name: ${VSFTPD_CONTAINER_NAME}
+    env_file: env_files/vsftpd.env
     environment:
       - TZ=${TZ}
     restart: ${VSFTPD_RESTART}

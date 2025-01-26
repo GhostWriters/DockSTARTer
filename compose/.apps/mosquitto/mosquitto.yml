@@ -1,6 +1,7 @@
 services:
   mosquitto:
     container_name: ${MOSQUITTO_CONTAINER_NAME}
+    env_file: env_files/mosquitto.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

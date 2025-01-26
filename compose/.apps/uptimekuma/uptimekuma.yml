@@ -1,6 +1,7 @@
 services:
   uptimekuma:
     container_name: ${UPTIMEKUMA_CONTAINER_NAME}
+    env_file: env_files/uptimekuma.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

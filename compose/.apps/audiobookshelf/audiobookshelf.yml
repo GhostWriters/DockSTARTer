@@ -1,6 +1,7 @@
 services:
   audiobookshelf:
     container_name: ${AUDIOBOOKSHELF_CONTAINER_NAME}
+    env_file: env_files/audiobookshelf.env
     environment:
       - CONFIG_PATH=/config
       - HOME=/config/.home

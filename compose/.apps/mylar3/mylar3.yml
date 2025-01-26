@@ -1,6 +1,7 @@
 services:
   mylar3:
     container_name: ${MYLAR3_CONTAINER_NAME}
+    env_file: env_files/mylar3.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

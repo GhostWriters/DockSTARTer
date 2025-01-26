@@ -1,6 +1,7 @@
 services:
   logitechmediaserver:
     container_name: ${LOGITECHMEDIASERVER_CONTAINER_NAME}
+    env_file: env_files/logitechmediaserver.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

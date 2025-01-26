@@ -1,6 +1,7 @@
 services:
   tandoor:
     container_name: ${TANDOOR_CONTAINER_NAME}
+    env_file: env_files/tandoor.env
     environment:
       - TZ=${TZ}
     restart: ${TANDOOR_RESTART}

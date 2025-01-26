@@ -1,6 +1,7 @@
 services:
   nodered:
     container_name: ${NODERED_CONTAINER_NAME}
+    env_file: env_files/nodered.env
     environment:
       - TZ=${TZ}
     restart: ${NODERED_RESTART}

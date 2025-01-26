@@ -1,6 +1,7 @@
 services:
   mcmyadmin2:
     container_name: ${MCMYADMIN2_CONTAINER_NAME}
+    env_file: env_files/mcmyadmin2.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}

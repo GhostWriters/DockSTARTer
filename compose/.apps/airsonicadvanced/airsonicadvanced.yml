@@ -1,6 +1,7 @@
 services:
   airsonicadvanced:
     container_name: ${AIRSONICADVANCED_CONTAINER_NAME}
+    env_file: env_files/airsonicadvanced.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
