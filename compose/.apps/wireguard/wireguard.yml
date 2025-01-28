@@ -3,14 +3,14 @@ services:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    container_name: ${WIREGUARD_CONTAINER_NAME}
+    container_name: ${WIREGUARD__CONTAINER_NAME}
     env_file: env_files/wireguard.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
-      - SERVERPORT=${WIREGUARD_PORT_51820}
+      - SERVERPORT=${WIREGUARD__PORT_51820}
       - TZ=${TZ}
-    restart: ${WIREGUARD_RESTART}
+    restart: ${WIREGUARD__RESTART}
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
     volumes:

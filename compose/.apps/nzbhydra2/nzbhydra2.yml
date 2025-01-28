@@ -1,12 +1,12 @@
 services:
   nzbhydra2:
-    container_name: ${NZBHYDRA2_CONTAINER_NAME}
+    container_name: ${NZBHYDRA2__CONTAINER_NAME}
     env_file: env_files/nzbhydra2.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${NZBHYDRA2_RESTART}
+    restart: ${NZBHYDRA2__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/nzbhydra2:/config

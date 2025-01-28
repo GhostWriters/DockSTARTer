@@ -1,10 +1,10 @@
 services:
   komga:
-    container_name: ${KOMGA_CONTAINER_NAME}
+    container_name: ${KOMGA__CONTAINER_NAME}
     env_file: env_files/komga.env
     environment:
       - TZ=${TZ}
-    restart: ${KOMGA_RESTART}
+    restart: ${KOMGA__RESTART}
     user: ${PUID}:${PGID}
     volumes:
       - /etc/localtime:/etc/localtime:ro

@@ -1,4 +1,4 @@
 services:
   wireguard:
     ports:
-      - ${WIREGUARD_PORT_51820}:${WIREGUARD_PORT_51820}/udp
+      - ${WIREGUARD__PORT_51820}:${WIREGUARD__PORT_51820}/udp

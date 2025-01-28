@@ -1,12 +1,12 @@
 services:
   xteve:
-    container_name: ${XTEVE_CONTAINER_NAME}
+    container_name: ${XTEVE__CONTAINER_NAME}
     env_file: env_files/xteve.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${XTEVE_RESTART}
+    restart: ${XTEVE__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/xteve:/home/xteve/conf

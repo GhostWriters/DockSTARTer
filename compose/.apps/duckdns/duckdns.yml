@@ -1,12 +1,12 @@
 services:
   duckdns:
-    container_name: ${DUCKDNS_CONTAINER_NAME}
+    container_name: ${DUCKDNS__CONTAINER_NAME}
     env_file: env_files/duckdns.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${DUCKDNS_RESTART}
+    restart: ${DUCKDNS__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/duckdns:/config

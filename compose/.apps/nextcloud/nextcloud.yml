@@ -1,14 +1,14 @@
 services:
   nextcloud:
-    container_name: ${NEXTCLOUD_CONTAINER_NAME}
+    container_name: ${NEXTCLOUD__CONTAINER_NAME}
     env_file: env_files/nextcloud.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${NEXTCLOUD_RESTART}
+    restart: ${NEXTCLOUD__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/nextcloud:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${NEXTCLOUD_VOLUME_DATADIR}:/data
+      - ${NEXTCLOUD__VOLUME_DATADIR}:/data

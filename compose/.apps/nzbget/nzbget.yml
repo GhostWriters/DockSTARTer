@@ -1,12 +1,12 @@
 services:
   nzbget:
-    container_name: ${NZBGET_CONTAINER_NAME}
+    container_name: ${NZBGET__CONTAINER_NAME}
     env_file: env_files/nzbget.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${NZBGET_RESTART}
+    restart: ${NZBGET__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/nzbget:/config

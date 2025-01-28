@@ -1,12 +1,12 @@
 services:
   headphones:
-    container_name: ${HEADPHONES_CONTAINER_NAME}
+    container_name: ${HEADPHONES__CONTAINER_NAME}
     env_file: env_files/headphones.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${HEADPHONES_RESTART}
+    restart: ${HEADPHONES__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/headphones:/config

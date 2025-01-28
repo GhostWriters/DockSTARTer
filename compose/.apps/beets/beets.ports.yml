@@ -1,4 +1,4 @@
 services:
   beets:
     ports:
-      - ${BEETS_PORT_8337}:8337
+      - ${BEETS__PORT_8337}:8337

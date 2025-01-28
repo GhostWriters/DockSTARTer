@@ -1,12 +1,12 @@
 services:
   sickchill:
-    container_name: ${SICKCHILL_CONTAINER_NAME}
+    container_name: ${SICKCHILL__CONTAINER_NAME}
     env_file: env_files/sickchill.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${SICKCHILL_RESTART}
+    restart: ${SICKCHILL__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/sickchill:/config

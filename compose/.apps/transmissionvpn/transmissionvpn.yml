@@ -2,13 +2,13 @@ services:
   transmissionvpn:
     cap_add:
       - NET_ADMIN
-    container_name: ${TRANSMISSIONVPN_CONTAINER_NAME}
+    container_name: ${TRANSMISSIONVPN__CONTAINER_NAME}
     env_file: env_files/transmissionvpn.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${TRANSMISSIONVPN_RESTART}
+    restart: ${TRANSMISSIONVPN__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/transmissionvpn:/config

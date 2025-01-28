@@ -1,10 +1,10 @@
 services:
   autobrr:
-    container_name: ${AUTOBRR_CONTAINER_NAME}
+    container_name: ${AUTOBRR__CONTAINER_NAME}
     env_file: env_files/autobrr.env
     environment:
       - TZ=${TZ}
-    restart: ${AUTOBRR_RESTART}
+    restart: ${AUTOBRR__RESTART}
     user: ${PGID}:${PUID}
     volumes:
       - /etc/localtime:/etc/localtime:ro

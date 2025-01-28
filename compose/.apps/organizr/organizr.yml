@@ -1,12 +1,12 @@
 services:
   organizr:
-    container_name: ${ORGANIZR_CONTAINER_NAME}
+    container_name: ${ORGANIZR__CONTAINER_NAME}
     env_file: env_files/organizr.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${ORGANIZR_RESTART}
+    restart: ${ORGANIZR__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/organizr:/config

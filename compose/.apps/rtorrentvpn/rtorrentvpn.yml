@@ -3,7 +3,7 @@ services:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    container_name: ${RTORRENTVPN_CONTAINER_NAME}
+    container_name: ${RTORRENTVPN__CONTAINER_NAME}
     env_file: env_files/rtorrentvpn.env
     environment:
       - PGID=${PGID}
@@ -11,7 +11,7 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     privileged: true
-    restart: ${RTORRENTVPN_RESTART}
+    restart: ${RTORRENTVPN__RESTART}
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
     volumes:

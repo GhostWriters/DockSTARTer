@@ -1,12 +1,12 @@
 services:
   calibre:
-    container_name: ${CALIBRE_CONTAINER_NAME}
+    container_name: ${CALIBRE__CONTAINER_NAME}
     env_file: env_files/calibre.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${CALIBRE_RESTART}
+    restart: ${CALIBRE__RESTART}
     security_opt:
       - seccomp:unconfined
     volumes:

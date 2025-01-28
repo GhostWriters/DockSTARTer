@@ -1,10 +1,10 @@
 services:
   adguard:
-    container_name: ${ADGUARD_CONTAINER_NAME}
+    container_name: ${ADGUARD__CONTAINER_NAME}
     env_file: env_files/adguard.env
     environment:
       - TZ=${TZ}
-    restart: ${ADGUARD_RESTART}
+    restart: ${ADGUARD__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/adguard/work:/opt/adguardhome/work

@@ -3,15 +3,15 @@ services:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    container_name: ${QBITTORRENTVPN_CONTAINER_NAME}
+    container_name: ${QBITTORRENTVPN__CONTAINER_NAME}
     env_file: env_files/qbittorrentvpn.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-      - WEBUI_PORT=${QBITTORRENTVPN_PORT_8080}
+      - WEBUI_PORT=${QBITTORRENTVPN__PORT_8080}
     privileged: true
-    restart: ${QBITTORRENTVPN_RESTART}
+    restart: ${QBITTORRENTVPN__RESTART}
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
     volumes:

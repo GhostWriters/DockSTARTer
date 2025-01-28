@@ -1,10 +1,10 @@
 services:
   adminer:
-    container_name: ${ADMINER_CONTAINER_NAME}
+    container_name: ${ADMINER__CONTAINER_NAME}
     env_file: env_files/adminer.env
     environment:
       - TZ=${TZ}
-    restart: ${ADMINER_RESTART}
+    restart: ${ADMINER__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/adminer:/sessions

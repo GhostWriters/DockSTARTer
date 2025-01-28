@@ -3,13 +3,13 @@ services:
     cap_add:
       - NET_ADMIN
       - NET_RAW
-    container_name: ${FAIL2BAN_CONTAINER_NAME}
+    container_name: ${FAIL2BAN__CONTAINER_NAME}
     env_file: env_files/fail2ban.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${FAIL2BAN_RESTART}
+    restart: ${FAIL2BAN__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/log:/var/log:ro

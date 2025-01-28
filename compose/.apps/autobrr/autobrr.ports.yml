@@ -1,4 +1,4 @@
 services:
   autobrr:
     ports:
-      - ${AUTOBRR_PORT_7474}:7474
+      - ${AUTOBRR__PORT_7474}:7474

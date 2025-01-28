@@ -3,14 +3,14 @@ services:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    container_name: ${DELUGEVPN_CONTAINER_NAME}
+    container_name: ${DELUGEVPN__CONTAINER_NAME}
     env_file: env_files/delugevpn.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
     privileged: true
-    restart: ${DELUGEVPN_RESTART}
+    restart: ${DELUGEVPN__RESTART}
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
     volumes:

@@ -1,11 +1,11 @@
 services:
   ouroboros:
-    container_name: ${OUROBOROS_CONTAINER_NAME}
+    container_name: ${OUROBOROS__CONTAINER_NAME}
     env_file: env_files/ouroboros.env
     environment:
       - TZ=${TZ}
-    restart: ${OUROBOROS_RESTART}
+    restart: ${OUROBOROS__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${OUROBOROS_VOLUME_DOCKER_SOCKET}:/var/run/docker.sock
+      - ${OUROBOROS__VOLUME_DOCKER_SOCKET}:/var/run/docker.sock

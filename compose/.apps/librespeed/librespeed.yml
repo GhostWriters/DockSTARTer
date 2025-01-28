@@ -1,12 +1,12 @@
 services:
   librespeed:
-    container_name: ${LIBRESPEED_CONTAINER_NAME}
+    container_name: ${LIBRESPEED__CONTAINER_NAME}
     env_file: env_files/librespeed.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${LIBRESPEED_RESTART}
+    restart: ${LIBRESPEED__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/librespeed:/config

@@ -1,10 +1,10 @@
 services:
   guacamole:
-    container_name: ${GUACAMOLE_CONTAINER_NAME}
+    container_name: ${GUACAMOLE__CONTAINER_NAME}
     env_file: env_files/guacamole.env
     environment:
       - TZ=${TZ}
-    restart: ${GUACAMOLE_RESTART}
+    restart: ${GUACAMOLE__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/guacamole:/config

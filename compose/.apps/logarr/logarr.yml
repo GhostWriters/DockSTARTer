@@ -1,12 +1,12 @@
 services:
   logarr:
-    container_name: ${LOGARR_CONTAINER_NAME}
+    container_name: ${LOGARR__CONTAINER_NAME}
     env_file: env_files/logarr.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${LOGARR_RESTART}
+    restart: ${LOGARR__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/logarr:/config

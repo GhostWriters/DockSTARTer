@@ -3,7 +3,7 @@ services:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    container_name: ${PRIVOXYVPN_CONTAINER_NAME}
+    container_name: ${PRIVOXYVPN__CONTAINER_NAME}
     env_file: env_files/privoxyvpn.env
     devices:
       - /dev/net/tun
@@ -12,7 +12,7 @@ services:
       - PUID=${PUID}
       - TZ=${TZ}
     privileged: true
-    restart: ${PRIVOXYVPN_RESTART}
+    restart: ${PRIVOXYVPN__RESTART}
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
     volumes:

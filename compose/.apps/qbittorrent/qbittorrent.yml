@@ -1,13 +1,13 @@
 services:
   qbittorrent:
-    container_name: ${QBITTORRENT_CONTAINER_NAME}
+    container_name: ${QBITTORRENT__CONTAINER_NAME}
     env_file: env_files/qbittorrent.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-      - WEBUI_PORT=${QBITTORRENT_PORT_8080}
-    restart: ${QBITTORRENT_RESTART}
+      - WEBUI_PORT=${QBITTORRENT__PORT_8080}
+    restart: ${QBITTORRENT__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/qbittorrent:/config

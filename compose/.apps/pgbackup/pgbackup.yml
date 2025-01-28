@@ -1,10 +1,10 @@
 services:
   pgbackup:
-    container_name: ${PGBACKUP_CONTAINER_NAME}
+    container_name: ${PGBACKUP__CONTAINER_NAME}
     env_file: env_files/pgbackup.env
     environment:
       - TZ=${TZ}
-    restart: ${PGBACKUP_RESTART}
+    restart: ${PGBACKUP__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_STORAGE}/backups/postgres:/backups

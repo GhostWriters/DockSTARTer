@@ -1,6 +1,6 @@
 services:
   filebrowser:
-    container_name: ${FILEBROWSER_CONTAINER_NAME}
+    container_name: ${FILEBROWSER__CONTAINER_NAME}
     env_file: env_files/filebrowser.env
     environment:
       - TZ=${TZ}
@@ -8,10 +8,10 @@ services:
       test:
         - CMD-SHELL
         - curl -fs http://localhost:80/health || exit 1
-    restart: ${FILEBROWSER_RESTART}
+    restart: ${FILEBROWSER__RESTART}
     user: ${PUID}:${PGID}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/filebrowser:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${FILEBROWSER_VOLUME_SHARE_DIR}:/srv
+      - ${FILEBROWSER__VOLUME_SHARE_DIR}:/srv

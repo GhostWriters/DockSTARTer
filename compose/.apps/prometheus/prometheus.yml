@@ -1,12 +1,12 @@
 services:
   prometheus:
-    container_name: ${PROMETHEUS_CONTAINER_NAME}
+    container_name: ${PROMETHEUS__CONTAINER_NAME}
     env_file: env_files/prometheus.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${PROMETHEUS_RESTART}
+    restart: ${PROMETHEUS__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/prometheus/etc:/etc/prometheus

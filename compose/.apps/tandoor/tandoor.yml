@@ -1,10 +1,10 @@
 services:
   tandoor:
-    container_name: ${TANDOOR_CONTAINER_NAME}
+    container_name: ${TANDOOR__CONTAINER_NAME}
     env_file: env_files/tandoor.env
     environment:
       - TZ=${TZ}
-    restart: ${TANDOOR_RESTART}
+    restart: ${TANDOOR__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/tandoor/staticfiles:/opt/recipes/staticfiles

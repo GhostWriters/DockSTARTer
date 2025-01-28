@@ -1,4 +1,4 @@
 services:
   jackett:
     ports:
-      - ${JACKETT_PORT_9117}:9117
+      - ${JACKETT__PORT_9117}:9117

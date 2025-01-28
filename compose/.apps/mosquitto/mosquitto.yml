@@ -1,12 +1,12 @@
 services:
   mosquitto:
-    container_name: ${MOSQUITTO_CONTAINER_NAME}
+    container_name: ${MOSQUITTO__CONTAINER_NAME}
     env_file: env_files/mosquitto.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${MOSQUITTO_RESTART}
+    restart: ${MOSQUITTO__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/mosquitto:/mosquitto/config

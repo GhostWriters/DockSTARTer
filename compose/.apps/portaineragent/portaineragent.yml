@@ -1,13 +1,13 @@
 services:
   portaineragent:
-    container_name: ${PORTAINERAGENT_CONTAINER_NAME}
+    container_name: ${PORTAINERAGENT__CONTAINER_NAME}
     env_file: env_files/portaineragent.env
     environment:
       - TZ=${TZ}
-    restart: ${PORTAINERAGENT_RESTART}
+    restart: ${PORTAINERAGENT__RESTART}
     volumes:
       - /:/host
       - /etc/localtime:/etc/localtime:ro
       - /var/lib/docker/volumes:/var/lib/docker/volumes
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${PORTAINERAGENT_VOLUME_DOCKER_SOCKET}:/var/run/docker.sock
+      - ${PORTAINERAGENT__VOLUME_DOCKER_SOCKET}:/var/run/docker.sock

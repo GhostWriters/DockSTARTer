@@ -1,12 +1,12 @@
 services:
   pyload:
-    container_name: ${PYLOAD_CONTAINER_NAME}
+    container_name: ${PYLOAD__CONTAINER_NAME}
     env_file: env_files/pyload.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${PYLOAD_RESTART}
+    restart: ${PYLOAD__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/pyload:/config

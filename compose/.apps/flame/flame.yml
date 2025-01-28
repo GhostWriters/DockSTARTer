@@ -1,9 +1,9 @@
 services:
   flame:
-    container_name: ${FLAME_CONTAINER_NAME}
+    container_name: ${FLAME__CONTAINER_NAME}
     env_file: env_files/flame.env
-    restart: ${FLAME_RESTART}
+    restart: ${FLAME__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${FLAME_VOLUME_DOCKER_SOCKET}:/var/run/docker.sock
+      - ${FLAME__VOLUME_DOCKER_SOCKET}:/var/run/docker.sock

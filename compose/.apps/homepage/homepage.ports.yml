@@ -1,4 +1,4 @@
 services:
   homepage:
     ports:
-      - ${HOMEPAGE_PORT_3000}:3000
+      - ${HOMEPAGE__PORT_3000}:3000

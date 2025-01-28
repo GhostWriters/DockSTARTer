@@ -1,4 +1,4 @@
 services:
   codeserver:
     ports:
-      - ${CODESERVER_PORT_8443}:8443
+      - ${CODESERVER__PORT_8443}:8443

@@ -3,14 +3,14 @@ services:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    container_name: ${NZBGETVPN_CONTAINER_NAME}
+    container_name: ${NZBGETVPN__CONTAINER_NAME}
     env_file: env_files/nzbgetvpn.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
     privileged: true
-    restart: ${NZBGETVPN_RESTART}
+    restart: ${NZBGETVPN__RESTART}
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
     volumes:

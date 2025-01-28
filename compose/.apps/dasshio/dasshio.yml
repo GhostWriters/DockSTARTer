@@ -1,10 +1,10 @@
 services:
   dasshio:
-    container_name: ${DASSHIO_CONTAINER_NAME}
+    container_name: ${DASSHIO__CONTAINER_NAME}
     env_file: env_files/dasshio.env
     environment:
       - TZ=${TZ}
-    restart: ${DASSHIO_RESTART}
+    restart: ${DASSHIO__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/dasshio:/data

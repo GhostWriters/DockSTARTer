@@ -1,12 +1,12 @@
 services:
   quasselweb:
-    container_name: ${QUASSELWEB_CONTAINER_NAME}
+    container_name: ${QUASSELWEB__CONTAINER_NAME}
     env_file: env_files/quasselweb.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${QUASSELWEB_RESTART}
+    restart: ${QUASSELWEB__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/quasselweb:/config

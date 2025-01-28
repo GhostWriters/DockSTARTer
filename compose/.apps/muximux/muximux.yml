@@ -1,12 +1,12 @@
 services:
   muximux:
-    container_name: ${MUXIMUX_CONTAINER_NAME}
+    container_name: ${MUXIMUX__CONTAINER_NAME}
     env_file: env_files/muximux.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${MUXIMUX_RESTART}
+    restart: ${MUXIMUX__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/muximux:/config

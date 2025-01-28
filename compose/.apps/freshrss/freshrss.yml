@@ -1,12 +1,12 @@
 services:
   freshrss:
-    container_name: ${FRESHRSS_CONTAINER_NAME}
+    container_name: ${FRESHRSS__CONTAINER_NAME}
     env_file: env_files/freshrss.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${FRESHRSS_RESTART}
+    restart: ${FRESHRSS__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/freshrss:/config

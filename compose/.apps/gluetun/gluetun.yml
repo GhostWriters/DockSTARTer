@@ -2,13 +2,13 @@ services:
   gluetun:
     cap_add:
       - NET_ADMIN
-    container_name: ${GLUETUN_CONTAINER_NAME}
+    container_name: ${GLUETUN__CONTAINER_NAME}
     env_file: env_files/gluetun.env
     devices:
       - /dev/net/tun
     environment:
       - TZ=${TZ}
-    restart: ${GLUETUN_RESTART}
+    restart: ${GLUETUN__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/gluetun:/gluetun

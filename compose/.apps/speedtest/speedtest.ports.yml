@@ -1,4 +1,4 @@
 services:
   speedtest:
     ports:
-      - ${SPEEDTEST_PORT_80}:80
+      - ${SPEEDTEST__PORT_80}:80

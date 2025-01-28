@@ -1,10 +1,10 @@
 services:
   bitwarden:
-    container_name: ${BITWARDEN_CONTAINER_NAME}
+    container_name: ${BITWARDEN__CONTAINER_NAME}
     env_file: env_files/bitwarden.env
     environment:
       - TZ=${TZ}
-    restart: ${BITWARDEN_RESTART}
+    restart: ${BITWARDEN__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/bitwarden:/data

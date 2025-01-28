@@ -1,12 +1,12 @@
 services:
   rustdesk:
-    container_name: ${RUSTDESK_CONTAINER_NAME}
+    container_name: ${RUSTDESK__CONTAINER_NAME}
     env_file: env_files/rustdesk.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${RUSTDESK_RESTART}
+    restart: ${RUSTDESK__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/rustdesk:/data

@@ -1,12 +1,12 @@
 services:
   homer:
-    container_name: ${HOMER_CONTAINER_NAME}
+    container_name: ${HOMER__CONTAINER_NAME}
     env_file: env_files/homer.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${HOMER_RESTART}
+    restart: ${HOMER__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_STORAGE}:/storage

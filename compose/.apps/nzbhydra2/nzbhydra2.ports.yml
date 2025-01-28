@@ -1,4 +1,4 @@
 services:
   nzbhydra2:
     ports:
-      - ${NZBHYDRA2_PORT_5076}:5076
+      - ${NZBHYDRA2__PORT_5076}:5076

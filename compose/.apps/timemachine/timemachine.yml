@@ -1,16 +1,16 @@
 services:
   timemachine:
-    container_name: ${TIMEMACHINE_CONTAINER_NAME}
+    container_name: ${TIMEMACHINE__CONTAINER_NAME}
     env_file: env_files/timemachine.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${TIMEMACHINE_RESTART}
+    restart: ${TIMEMACHINE__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/timemachine/var-lib-samba:/var/lib/samba
       - ${DOCKER_VOLUME_CONFIG}/timemachine/var-cache-samba:/var/cache/samba
       - ${DOCKER_VOLUME_CONFIG}/timemachine/run-samba:/run/samba
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${TIMEMACHINE_VOLUME_DATADIR}:/opt/timemachine
+      - ${TIMEMACHINE__VOLUME_DATADIR}:/opt/timemachine
