@@ -11,5 +11,5 @@
 ##
 ## ORGANIZR - organizr.env
 ##
-organizr.env:branch .env:(ORGANIZR_branch|ORGANIZR_ENVIRONMENT_branch)
-organizr.env:fpm .env:(ORGANIZR_fpm|ORGANIZR_ENVIRONMENT_fpm)
+organizr.env:branch .env:(ORGANIZR_BRANCH|ORGANIZR_ENVIRONMENT_BRANCH)
+organizr.env:fpm .env:(ORGANIZR_FPM|ORGANIZR_ENVIRONMENT_FPM)
