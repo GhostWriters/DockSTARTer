@@ -1,0 +1,13 @@
+##
+## ZNC - .env
+##
+.env:ZNC__CONTAINER_NAME .env:ZNC_CONTAINER_NAME
+.env:ZNC__ENABLED .env:ZNC_ENABLED
+.env:ZNC__NETWORK_MODE .env:ZNC_NETWORK_MODE
+.env:ZNC__PORT_6501 .env:ZNC_PORT_6501
+.env:ZNC__RESTART .env:ZNC_RESTART
+.env:ZNC__TAG .env:ZNC_TAG
+
+##
+## ZNC - znc.env
+##
