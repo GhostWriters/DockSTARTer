@@ -12,7 +12,7 @@
 ##
 ## TDARRNODE - tdarrnode.env
 ##
-tdarrnode.env:nodeID .env:(TDARRNODE_nodeID|TDARRNODE_ENVIRONMENT_nodeID)
-tdarrnode.env:nodeIP .env:(TDARRNODE_nodeIP|TDARRNODE_ENVIRONMENT_nodeIP)
-tdarrnode.env:serverIP .env:(TDARRNODE_serverIP|TDARRNODE_ENVIRONMENT_serverIP)
-tdarrnode.env:serverPORT .env:(TDARRNODE_serverPORT|TDARRNODE_ENVIRONMENT_serverPORT)
+tdarrnode.env:nodeID .env:(TDARRNODE_NODEID|TDARRNODE_ENVIRONMENT_NODEID)
+tdarrnode.env:nodeIP .env:(TDARRNODE_NODEIP|TDARRNODE_ENVIRONMENT_NODEIP)
+tdarrnode.env:serverIP .env:(TDARRNODE_SERVERIP|TDARRNODE_ENVIRONMENT_SERVERIP)
+tdarrnode.env:serverPort .env:(TDARRNODE_SERVERPORT|TDARRNODE_ENVIRONMENT_SERVERPORT)
