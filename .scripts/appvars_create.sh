@@ -6,7 +6,7 @@ appvars_create() {
     local APPNAME=${1-}
     APPNAME=${APPNAME^^}
     local FILENAME=${APPNAME,,}
-    local APP_FOLDER="${APPS_FOLDER}/${FILENAME}"
+    local APP_FOLDER="${TEMPLATES_FOLDER}/${FILENAME}"
     local APP_LABEL_FILE="${APP_FOLDER}/${FILENAME}.labels.yml"
 
     local -A APP_VAR_VALUE

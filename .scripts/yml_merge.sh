@@ -10,7 +10,7 @@ yml_merge() {
     while IFS= read -r line; do
         local APPNAME=${line%%_ENABLED=*}
         local FILENAME=${APPNAME,,}
-        local APP_FOLDER="${APPS_FOLDER}/${FILENAME}"
+        local APP_FOLDER="${TEMPLATES_FOLDER}/${FILENAME}"
         if [[ -d ${APP_FOLDER}/ ]]; then
             if [[ -f ${APP_FOLDER}/${FILENAME}.yml ]]; then
                 local APPDEPRECATED

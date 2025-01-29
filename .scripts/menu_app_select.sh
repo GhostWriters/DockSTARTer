@@ -8,7 +8,7 @@ menu_app_select() {
     while IFS= read -r line; do
         local APPNAME=${line^^}
         local FILENAME=${APPNAME,,}
-        local APP_FOLDER="${APPS_FOLDER}/${FILENAME}"
+        local APP_FOLDER="${TEMPLATES_FOLDER}/${FILENAME}"
         if [[ -d ${APP_FOLDER}/ ]]; then
             if [[ -f ${APP_FOLDER}/${FILENAME}.yml ]]; then
                 if [[ -f ${APP_FOLDER}/${FILENAME}.${ARCH}.yml ]]; then
@@ -31,7 +31,7 @@ menu_app_select() {
                 fi
             fi
         fi
-    done < <(ls -A "${APPS_FOLDER}")
+    done < <(ls -A "${TEMPLATES_FOLDER}")
 
     local SELECTEDAPPS
     if [[ ${CI-} == true ]]; then
