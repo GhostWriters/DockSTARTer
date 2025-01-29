@@ -67,6 +67,7 @@ get_scriptname() {
     done
     echo "${SOURCE}"
 }
+
 SCRIPTPATH=$(cd -P "$(dirname "$(get_scriptname)")" > /dev/null 2>&1 && pwd)
 readonly SCRIPTPATH
 SCRIPTNAME="${SCRIPTPATH}/$(basename "$(get_scriptname)")"
@@ -283,8 +284,16 @@ readonly ARCH
 export ARCH
 
 # Environment Information
-readonly COMPOSE_ENV="${SCRIPTPATH}/compose/.env"
+readonly COMPOSE_FOLDER="${SCRIPTPATH}/compose"
+export COMPOSE_FOLDER
+readonly COMPOSE_ENV="${COMPOSE_FOLDER}/.env"
 export COMPOSE_ENV
+readonly APP_ENV_FOLDER="${COMPOSE_FOLDER}/env_files"
+export APP_ENV_FOLDER
+readonly APPS_FOLDER="${COMPOSE_FOLDER}/.apps"
+export APPS_FOLDER
+readonly INSTANCES_FOLDER="${COMPOSE_FOLDER}/.instances"
+export INSTANCES_FOLDER
 
 # User/Group Information
 readonly DETECTED_PUID=${SUDO_UID:-$UID}

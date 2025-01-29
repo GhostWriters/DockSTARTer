@@ -10,48 +10,48 @@ yml_merge() {
     while IFS= read -r line; do
         local APPNAME=${line%%_ENABLED=*}
         local FILENAME=${APPNAME,,}
-        local APPTEMPLATES="${SCRIPTPATH}/compose/.apps/${FILENAME}"
-        if [[ -d ${APPTEMPLATES}/ ]]; then
-            if [[ -f ${APPTEMPLATES}/${FILENAME}.yml ]]; then
+        local APP_FOLDER="${APPS_FOLDER}/${FILENAME}"
+        if [[ -d ${APP_FOLDER}/ ]]; then
+            if [[ -f ${APP_FOLDER}/${FILENAME}.yml ]]; then
                 local APPDEPRECATED
-                APPDEPRECATED=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" "${APPTEMPLATES}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo false)
+                APPDEPRECATED=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" "${APP_FOLDER}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo false)
                 if [[ ${APPDEPRECATED} == true ]]; then
                     warn "${APPNAME} IS DEPRECATED!"
                     warn "Please edit ${COMPOSE_ENV} and set ${APPNAME}_ENABLED to false."
                     continue
                 fi
-                if [[ ! -f ${APPTEMPLATES}/${FILENAME}.${ARCH}.yml ]]; then
-                    error "${APPTEMPLATES}/${FILENAME}.${ARCH}.yml does not exist."
+                if [[ ! -f ${APP_FOLDER}/${FILENAME}.${ARCH}.yml ]]; then
+                    error "${APP_FOLDER}/${FILENAME}.${ARCH}.yml does not exist."
                     continue
                 fi
-                COMPOSE_FILE="${COMPOSE_FILE}:${APPTEMPLATES}/${FILENAME}.${ARCH}.yml"
+                COMPOSE_FILE="${COMPOSE_FILE}:${APP_FOLDER}/${FILENAME}.${ARCH}.yml"
                 local APPNETMODE
                 APPNETMODE=$(run_script 'env_get' "${APPNAME}_NETWORK_MODE")
                 if [[ -z ${APPNETMODE} ]] || [[ ${APPNETMODE} == "bridge" ]]; then
-                    if [[ -f ${APPTEMPLATES}/${FILENAME}.hostname.yml ]]; then
-                        COMPOSE_FILE="${COMPOSE_FILE}:${APPTEMPLATES}/${FILENAME}.hostname.yml"
+                    if [[ -f ${APP_FOLDER}/${FILENAME}.hostname.yml ]]; then
+                        COMPOSE_FILE="${COMPOSE_FILE}:${APP_FOLDER}/${FILENAME}.hostname.yml"
                     else
-                        info "${APPTEMPLATES}/${FILENAME}.hostname.yml does not exist."
+                        info "${APP_FOLDER}/${FILENAME}.hostname.yml does not exist."
                     fi
-                    if [[ -f ${APPTEMPLATES}/${FILENAME}.ports.yml ]]; then
-                        COMPOSE_FILE="${COMPOSE_FILE}:${APPTEMPLATES}/${FILENAME}.ports.yml"
+                    if [[ -f ${APP_FOLDER}/${FILENAME}.ports.yml ]]; then
+                        COMPOSE_FILE="${COMPOSE_FILE}:${APP_FOLDER}/${FILENAME}.ports.yml"
                     else
-                        info "${APPTEMPLATES}/${FILENAME}.ports.yml does not exist."
+                        info "${APP_FOLDER}/${FILENAME}.ports.yml does not exist."
                     fi
                 elif [[ -n ${APPNETMODE} ]]; then
-                    if [[ -f ${APPTEMPLATES}/${FILENAME}.netmode.yml ]]; then
-                        COMPOSE_FILE="${COMPOSE_FILE}:${APPTEMPLATES}/${FILENAME}.netmode.yml"
+                    if [[ -f ${APP_FOLDER}/${FILENAME}.netmode.yml ]]; then
+                        COMPOSE_FILE="${COMPOSE_FILE}:${APP_FOLDER}/${FILENAME}.netmode.yml"
                     else
-                        info "${APPTEMPLATES}/${FILENAME}.netmode.yml does not exist."
+                        info "${APP_FOLDER}/${FILENAME}.netmode.yml does not exist."
                     fi
                 fi
-                COMPOSE_FILE="${COMPOSE_FILE}:${APPTEMPLATES}/${FILENAME}.yml"
+                COMPOSE_FILE="${COMPOSE_FILE}:${APP_FOLDER}/${FILENAME}.yml"
                 info "All configurations for ${APPNAME} are included."
             else
-                warn "${APPTEMPLATES}/${FILENAME}.yml does not exist."
+                warn "${APP_FOLDER}/${FILENAME}.yml does not exist."
             fi
         else
-            error "${APPTEMPLATES}/ does not exist."
+            error "${APP_FOLDER}/ does not exist."
         fi
     done < <(grep --color=never -P '_ENABLED='"'"'?true'"'"'?$' "${COMPOSE_ENV}")
     if [[ -z ${COMPOSE_FILE} ]]; then
@@ -59,7 +59,7 @@ yml_merge() {
     fi
     info "Running compose config to create docker-compose.yml file from enabled templates."
     export COMPOSE_FILE="${COMPOSE_FILE#:}"
-    eval "docker compose --project-directory ${SCRIPTPATH}/compose/ config > ${SCRIPTPATH}/compose/docker-compose.yml" || fatal "Failed to output compose config.\nFailing command: ${F[C]}docker compose --project-directory ${SCRIPTPATH}/compose/ config > \"${SCRIPTPATH}/compose/docker-compose.yml\""
+    eval "docker compose --project-directory ${COMPOSE_FOLDER}/ config > ${COMPOSE_FOLDER}/docker-compose.yml" || fatal "Failed to output compose config.\nFailing command: ${F[C]}docker compose --project-directory ${COMPOSE_FOLDER}/ config > \"${COMPOSE_FOLDER}/docker-compose.yml\""
     info "Merging docker-compose.yml complete."
 }
 
@@ -67,6 +67,6 @@ test_yml_merge() {
     run_script 'appvars_create' WATCHTOWER
     cat "${COMPOSE_ENV}"
     run_script 'yml_merge'
-    eval "docker compose --project-directory ${SCRIPTPATH}/compose/ config" || fatal "Failed to display compose config.\nFailing command: ${F[C]}docker compose --project-directory ${SCRIPTPATH}/compose/ config"
+    eval "docker compose --project-directory ${COMPOSE_FOLDER}/ config" || fatal "Failed to display compose config.\nFailing command: ${F[C]}docker compose --project-directory ${COMPOSE_FOLDER}/ config"
     run_script 'appvars_purge' WATCHTOWER
 }

@@ -40,13 +40,13 @@ docker_compose() {
         return 1
     fi
     run_script 'require_docker'
-    eval "docker compose --project-directory ${SCRIPTPATH}/compose/ ${COMPOSECOMMAND}" || fatal "Failed to run compose.\nFailing command: ${F[C]}docker compose --project-directory ${SCRIPTPATH}/compose/ ${COMPOSECOMMAND}"
+    eval "docker compose --project-directory ${COMPOSE_FOLDER}/ ${COMPOSECOMMAND}" || fatal "Failed to run compose.\nFailing command: ${F[C]}docker compose --project-directory ${COMPOSE_FOLDER}/ ${COMPOSECOMMAND}"
 }
 
 test_docker_compose() {
     run_script 'appvars_create' WATCHTOWER
     cat "${COMPOSE_ENV}"
     run_script 'yml_merge'
-    eval "docker compose --project-directory ${SCRIPTPATH}/compose/ config" || fatal "Failed to display compose config.\nFailing command: ${F[C]}docker compose --project-directory ${SCRIPTPATH}/compose/ config"
+    eval "docker compose --project-directory ${COMPOSE_FOLDER}/ config" || fatal "Failed to display compose config.\nFailing command: ${F[C]}docker compose --project-directory ${COMPOSE_FOLDER}/ config"
     run_script 'docker_compose'
 }
