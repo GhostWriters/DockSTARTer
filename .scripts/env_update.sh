@@ -47,7 +47,7 @@ env_update() {
     local INSTALLED_APPS=()
 
     # Create array of built in apps
-    readarray -t BUILTIN_APPS < <(find "${APPS_FOLDER}" -maxdepth 1 -mindepth 1 -type d -exec basename {} \;)
+    readarray -t BUILTIN_APPS < <(find "${TEMPLATES_FOLDER}" -maxdepth 1 -mindepth 1 -type d -exec basename {} \;)
 
     # Create array of installed apps
     {
@@ -95,7 +95,7 @@ env_update() {
                     # shellcheck disable=SC2199
                     if [[ " ${INSTALLED_APPS[@]} " == *" ${APPNAME} "* ]]; then
                         # Create array of labels for current app being processed
-                        local APP_LABEL_FILE="${APPS_FOLDER}/${APPNAME,,}/${APPNAME,,}.labels.yml"
+                        local APP_LABEL_FILE="${TEMPLATES_FOLDER}/${APPNAME,,}/${APPNAME,,}.labels.yml"
                         readarray -t APP_LABELS < <(grep --color=never -Po "\scom\.dockstarter\.appvars\.\K[\w]+" "${APP_LABEL_FILE}" || true)
                         APP_LABELS=("${APP_LABELS[@]^^}")
                     fi

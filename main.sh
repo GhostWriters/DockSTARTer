@@ -290,8 +290,8 @@ readonly COMPOSE_ENV="${COMPOSE_FOLDER}/.env"
 export COMPOSE_ENV
 readonly APP_ENV_FOLDER="${COMPOSE_FOLDER}/env_files"
 export APP_ENV_FOLDER
-readonly APPS_FOLDER="${COMPOSE_FOLDER}/.apps"
-export APPS_FOLDER
+readonly TEMPLATES_FOLDER="${COMPOSE_FOLDER}/.apps"
+export TEMPLATES_FOLDER
 readonly INSTANCES_FOLDER="${COMPOSE_FOLDER}/.instances"
 export INSTANCES_FOLDER
 
