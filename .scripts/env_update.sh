@@ -45,10 +45,9 @@ env_update() {
 
     local BUILTIN_APPS=()
     local INSTALLED_APPS=()
-    local APPTEMPLATESFOLDER="${SCRIPTPATH}/compose/.apps"
 
     # Create array of built in apps
-    readarray -t BUILTIN_APPS < <(find "${APPTEMPLATESFOLDER}" -maxdepth 1 -mindepth 1 -type d -exec basename {} \;)
+    readarray -t BUILTIN_APPS < <(find "${APPS_FOLDER}" -maxdepth 1 -mindepth 1 -type d -exec basename {} \;)
 
     # Create array of installed apps
     {
@@ -96,8 +95,8 @@ env_update() {
                     # shellcheck disable=SC2199
                     if [[ " ${INSTALLED_APPS[@]} " == *" ${APPNAME} "* ]]; then
                         # Create array of labels for current app being processed
-                        local APPTEMPLATE="${APPTEMPLATESFOLDER}/${APPNAME,,}/${APPNAME,,}.labels.yml"
-                        readarray -t APP_LABELS < <(grep --color=never -Po "\scom\.dockstarter\.appvars\.\K[\w]+" "${APPTEMPLATE}" || true)
+                        local APP_LABEL_FILE="${APPS_FOLDER}/${APPNAME,,}/${APPNAME,,}.labels.yml"
+                        readarray -t APP_LABELS < <(grep --color=never -Po "\scom\.dockstarter\.appvars\.\K[\w]+" "${APP_LABEL_FILE}" || true)
                         APP_LABELS=("${APP_LABELS[@]^^}")
                     fi
                 fi

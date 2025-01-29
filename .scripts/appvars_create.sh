@@ -6,8 +6,8 @@ appvars_create() {
     local APPNAME=${1-}
     APPNAME=${APPNAME^^}
     local FILENAME=${APPNAME,,}
-    local APPTEMPLATES="${SCRIPTPATH}/compose/.apps/${FILENAME}"
-    local APPLABELFILE="${APPTEMPLATES}/${FILENAME}.labels.yml"
+    local APP_FOLDER="${APPS_FOLDER}/${FILENAME}"
+    local APP_LABEL_FILE="${APP_FOLDER}/${FILENAME}.labels.yml"
 
     local -A APP_VAR_VALUE
     local -A APP_VAR_MIGRATE
@@ -16,7 +16,7 @@ appvars_create() {
     {
         # Read all lines with labels into temporary APP_LABEL_LINES array
         local -a APP_LABEL_LINES
-        readarray -t APP_LABEL_LINES < <(grep --color=never -P "\scom\.dockstarter\.appvars\.\K[\w]+" "${APPLABELFILE}" || true)
+        readarray -t APP_LABEL_LINES < <(grep --color=never -P "\scom\.dockstarter\.appvars\.\K[\w]+" "${APP_LABEL_FILE}" || true)
         if [[ -z ${APP_LABEL_LINES[*]} ]]; then
             error "Unable to find labels for ${APPNAME}"
             return
