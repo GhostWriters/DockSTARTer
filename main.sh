@@ -31,6 +31,14 @@ For regular usage you can run without providing any options.
     Set the <val>ue of a <var>iable in .env
 -f --force
     force certain install/upgrade actions to run even if they would not be needed
+-l --list
+    List all apps
+--list-installed
+    List installed apps
+--list-enabled
+    List enabled apps
+--list-disabled
+    List disabled apps
 -h --help
     show this usage information
 -i --install
@@ -127,6 +135,10 @@ cmdline() {
             --force) LOCAL_ARGS="${LOCAL_ARGS-}-f " ;;
             --help) LOCAL_ARGS="${LOCAL_ARGS-}-h " ;;
             --install) LOCAL_ARGS="${LOCAL_ARGS-}-i " ;;
+            --list) LOCAL_ARGS="${LOCAL_ARGS-}-l " ;;
+            --list-*)
+                readonly LISTMETHOD=${ARG%%=*}
+                ;;
             --prune) LOCAL_ARGS="${LOCAL_ARGS-}-p " ;;
             --remove) LOCAL_ARGS="${LOCAL_ARGS-}-r " ;;
             --test) LOCAL_ARGS="${LOCAL_ARGS-}-t " ;;
@@ -143,7 +155,7 @@ cmdline() {
     #Reset the positional parameters to the short options
     eval set -- "${LOCAL_ARGS-}"
 
-    while getopts ":a:c:efghipr:t:u:vx" OPTION; do
+    while getopts ":a:c:efghilpr:t:u:vx" OPTION; do
         case ${OPTION} in
             a)
                 readonly ADD=${OPTARG}
@@ -178,6 +190,9 @@ cmdline() {
                 ;;
             i)
                 readonly INSTALL=true
+                ;;
+            l)
+                readonly LIST=true
                 ;;
             p)
                 readonly PRUNE=true
@@ -503,6 +518,27 @@ main() {
     fi
     if [[ -n ${INSTALL-} ]]; then
         run_script 'run_install'
+        exit
+    fi
+    if [[ -n ${LIST-} ]]; then
+        run_script 'builtin_apps'
+        exit
+    fi
+    if [[ -n ${LISTMETHOD-} ]]; then
+        case "${LISTMETHOD-}" in
+            --list-installed)
+                run_script 'installed_apps'
+                ;;
+            --list-enabled)
+                run_script 'enabled_apps'
+                ;;
+            --list-disabled)
+                run_script 'disabled_apps'
+                ;;
+            *)
+                echo "Invalid option: '${LISTMETHOD-}'"
+                ;;
+        esac
         exit
     fi
     if [[ -n ${PRUNE-} ]]; then
