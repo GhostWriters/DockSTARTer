@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 enabled_apps() {
     #grep --color=never -o -P '^\s*\K([A-Z][A-Z0-9]*(__[A-Z0-9]+)?)(?=_ENABLED='"'"'?true'"'"'?$)' "${COMPOSE_ENV}"
-    grep --color=never -o -P '^\s*\K[A-Z][A-Z0-9]*(?=__ENABLED\s*='"'"'?true'"'"'?$)' "${COMPOSE_ENV}" | tr '[:upper:]' '[:lower:]' | sort || true
+    grep --color=never -o -P '^\s*\K[A-Z][A-Z0-9]*(?=__ENABLED\s*='"'"'?true'"'"'?$)' "${COMPOSE_ENV}" | sort || true
 }
 
 test_enabled_apps() {
