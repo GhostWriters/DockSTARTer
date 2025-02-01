@@ -1,0 +1,12 @@
+services:
+  jellyseerr:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Overseerr fork with Jellyfin and Emby support."
+      com.dockstarter.appinfo.nicename: "Jellyseerr"
+      com.dockstarter.appvars.jellyseerr_container_name: "jellyseerr"
+      com.dockstarter.appvars.jellyseerr_enabled: "false"
+      com.dockstarter.appvars.jellyseerr_network_mode: ""
+      com.dockstarter.appvars.jellyseerr_port_5055: "5055"
+      com.dockstarter.appvars.jellyseerr_restart: "unless-stopped"
+      com.dockstarter.appvars.jellyseerr_tag: "latest"

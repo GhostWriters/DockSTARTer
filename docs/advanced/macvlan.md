@@ -58,7 +58,7 @@ We could connect our containers to `mymacvlan` and call it a day, but it's very 
 
   ```yaml
   services:
-    ouroboros:
+    watchtower:
       networks:
         composemacvlan:
           ipv4_address: X.X.X.201

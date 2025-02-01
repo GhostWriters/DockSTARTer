@@ -1,18 +1,13 @@
 services:
   plexrequests:
-    container_name: plexrequests
+    container_name: ${PLEXREQUESTS_CONTAINER_NAME}
     environment:
       - URL_BASE=/plexrequests
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${PLEXREQUESTS_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/plexrequests:/config
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/plexrequests:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage

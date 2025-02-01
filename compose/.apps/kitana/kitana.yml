@@ -1,0 +1,11 @@
+services:
+  kitana:
+    command: -B 0.0.0.0:31337 -P
+    container_name: ${KITANA_CONTAINER_NAME}
+    environment:
+      - TZ=${TZ}
+    restart: ${KITANA_RESTART}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_VOLUME_CONFIG}/kitana:/app/data
+      - ${DOCKER_VOLUME_STORAGE}:/storage

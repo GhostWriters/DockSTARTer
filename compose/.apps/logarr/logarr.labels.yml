@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Self-hosted, single-page, log consolidation tool"
       com.dockstarter.appinfo.nicename: "Logarr"
+      com.dockstarter.appvars.logarr_container_name: "logarr"
       com.dockstarter.appvars.logarr_enabled: "false"
       com.dockstarter.appvars.logarr_network_mode: ""
       com.dockstarter.appvars.logarr_port_80: "8003"

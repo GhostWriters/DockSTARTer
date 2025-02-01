@@ -1,15 +1,10 @@
 services:
   nodered:
-    container_name: nodered
+    container_name: ${NODERED_CONTAINER_NAME}
     environment:
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${NODERED_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/nodered:/data
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/nodered:/data
+      - ${DOCKER_VOLUME_STORAGE}:/storage

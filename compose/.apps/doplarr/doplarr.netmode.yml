@@ -1,0 +1,3 @@
+services:
+  doplarr:
+    network_mode: ${DOPLARR_NETWORK_MODE}

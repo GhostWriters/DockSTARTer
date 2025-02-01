@@ -1,18 +1,13 @@
 services:
   gitea:
-    container_name: gitea
+    container_name: ${GITEA_CONTAINER_NAME}
     environment:
       - USER_UID=${PUID}
       - USER_GID=${PGID}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${GITEA_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
-      - ${DOCKERCONFDIR}/gitea:/data
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/gitea:/data
+      - ${DOCKER_VOLUME_STORAGE}:/storage

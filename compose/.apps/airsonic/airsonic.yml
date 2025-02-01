@@ -1,19 +1,14 @@
 services:
   airsonic:
-    container_name: airsonic
+    container_name: ${AIRSONIC_CONTAINER_NAME}
     environment:
-      - CONTEXT_PATH=${AIRSONIC_CONTEXT_PATH}
-      - JAVA_OPTS=${AIRSONIC_JAVA_OPTS}
+      - CONTEXT_PATH=${AIRSONIC_ENVIRONMENT_CONTEXT_PATH}
+      - JAVA_OPTS=${AIRSONIC_ENVIRONMENT_JAVA_OPTS}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${AIRSONIC_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/airsonic:/config
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/airsonic:/config
+      - ${DOCKER_VOLUME_STORAGE}:/storage

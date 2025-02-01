@@ -4,6 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "A modern HTTP reverse proxy and load balancer that makes deploying microservices easy"
       com.dockstarter.appinfo.nicename: "Traefik"
+      com.dockstarter.appvars.traefik_container_name: "traefik"
       com.dockstarter.appvars.traefik_enabled: "false"
       com.dockstarter.appvars.traefik_network_mode: ""
       com.dockstarter.appvars.traefik_port_443: "443"
@@ -11,3 +12,4 @@ services:
       com.dockstarter.appvars.traefik_port_8080: "8080"
       com.dockstarter.appvars.traefik_restart: "unless-stopped"
       com.dockstarter.appvars.traefik_tag: "latest"
+      com.dockstarter.appvars.traefik_volume_docker_socket: "/var/run/docker.sock"

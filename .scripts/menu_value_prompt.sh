@@ -27,25 +27,21 @@ menu_value_prompt() {
     VALUEOPTIONS+=("Keep Current " "${CURRENT_VAL}")
 
     case "${SET_VAR}" in
-        DOCKERCONFDIR)
-            HOME_VAL="${DETECTED_HOMEDIR}/.config/appdata"
-            VALUEOPTIONS+=("Use Home " "${HOME_VAL}")
-            ;;
-        DOCKERGID)
+        DOCKER_GID)
             SYSTEM_VAL=$(cut -d: -f3 < <(getent group docker))
             VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
             ;;
-        DOCKERHOSTNAME)
+        DOCKER_HOSTNAME)
             SYSTEM_VAL=${HOSTNAME}
             VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
             ;;
-        DOCKERSTORAGEDIR)
-            HOME_VAL="${DETECTED_HOMEDIR}/storage"
+        DOCKER_VOLUME_CONFIG)
+            HOME_VAL="${DETECTED_HOMEDIR}/.config/appdata"
             VALUEOPTIONS+=("Use Home " "${HOME_VAL}")
             ;;
-        LAN_NETWORK)
-            SYSTEM_VAL=$(run_script 'detect_lan_network')
-            VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
+        DOCKER_VOLUME_STORAGE)
+            HOME_VAL="${DETECTED_HOMEDIR}/storage"
+            VALUEOPTIONS+=("Use Home " "${HOME_VAL}")
             ;;
         PGID)
             SYSTEM_VAL=${DETECTED_PGID}
@@ -67,23 +63,29 @@ menu_value_prompt() {
     VALUEOPTIONS+=("Enter New " "")
 
     case "${SET_VAR}" in
-        *_ENABLED)
+        "${APPNAME}_ENABLED")
             VALUEDESCRIPTION='\n\n Must be true or false.'
             ;;
-        *_NETWORK_MODE)
+        "${APPNAME}_NETWORK_MODE")
             VALUEDESCRIPTION='\n\n Network Mode is usually left blank but can also be bridge, host, none, service: <APPNAME>, or container: <APPNAME>.'
             ;;
-        *_PORT_*)
+        "${APPNAME}_PORT_"*)
             VALUEDESCRIPTION='\n\n Must be an unused port between 0 and 65535.'
             ;;
-        *_RESTART)
+        "${APPNAME}_RESTART")
             VALUEDESCRIPTION='\n\n Restart is usually unless-stopped but can also be no, always, or on-failure.'
             ;;
-        *DIR | *DIR_*)
+        "${APPNAME}_TAG")
+            VALUEDESCRIPTION='\n\n Tag is usually latest but can also be other values based on the image.'
+            ;;
+        "${APPNAME}_VOLUME_"*)
             VALUEDESCRIPTION='\n\n If the directory selected does not exist we will attempt to create it.'
             ;;
-        LAN_NETWORK)
-            VALUEDESCRIPTION='\n\n This is used to define your home LAN network, do NOT confuse this with the IP address of your router or your server, the value for this key defines your network NOT a single host. Please Google CIDR Notation to learn more.'
+        DOCKER_GID)
+            VALUEDESCRIPTION='\n\n This should be the Docker group ID. If you are unsure, select Use System.'
+            ;;
+        DOCKER_HOSTNAME)
+            VALUEDESCRIPTION='\n\n This should be your system hostname. If you are unsure, select Use System.'
             ;;
         PGID)
             VALUEDESCRIPTION='\n\n This should be your user group ID. If you are unsure, select Use System.'
@@ -93,15 +95,6 @@ menu_value_prompt() {
             ;;
         TZ)
             VALUEDESCRIPTION='\n\n If this is not the correct timezone please exit and set your system timezone.'
-            ;;
-        VPN_ENABLE)
-            VALUEDESCRIPTION='\n\n Must be yes or no.'
-            ;;
-        VPN_OPTIONS)
-            VALUEDESCRIPTION='\n\n Additional openvpn cli options.'
-            ;;
-        VPN_PROV)
-            VALUEDESCRIPTION='\n\n VPN Provider, usually pia, airvpn or custom.'
             ;;
         *)
             VALUEDESCRIPTION=""
@@ -149,7 +142,7 @@ menu_value_prompt() {
         menu_value_prompt "${SET_VAR}"
     else
         case "${SET_VAR}" in
-            *_ENABLED)
+            "${APPNAME}_ENABLED")
                 if [[ ${INPUT} == true ]] || [[ ${INPUT} == false ]]; then
                     run_script 'env_set' "${SET_VAR}" "${INPUT}"
                 else
@@ -157,7 +150,7 @@ menu_value_prompt() {
                     menu_value_prompt "${SET_VAR}"
                 fi
                 ;;
-            *_NETWORK_MODE)
+            "${APPNAME}_NETWORK_MODE")
                 case "${INPUT}" in
                     "" | "bridge" | "host" | "none" | "service:"* | "container:"*)
                         run_script 'env_set' "${SET_VAR}" "${INPUT}"
@@ -168,7 +161,7 @@ menu_value_prompt() {
                         ;;
                 esac
                 ;;
-            *_PORT_*)
+            "${APPNAME}_PORT_"*)
                 if [[ ${INPUT} =~ ^[0-9]+$ ]] || [[ ${INPUT} -ge 0 ]] || [[ ${INPUT} -le 65535 ]]; then
                     run_script 'env_set' "${SET_VAR}" "${INPUT}"
                 else
@@ -176,7 +169,7 @@ menu_value_prompt() {
                     menu_value_prompt "${SET_VAR}"
                 fi
                 ;;
-            *_RESTART)
+            "${APPNAME}_RESTART")
                 case "${INPUT}" in
                     "no" | "always" | "on-failure" | "unless-stopped")
                         run_script 'env_set' "${SET_VAR}" "${INPUT}"
@@ -187,7 +180,7 @@ menu_value_prompt() {
                         ;;
                 esac
                 ;;
-            *DIR | *DIR_*)
+            "${APPNAME}_VOLUME_"*)
                 if [[ ${INPUT} == "/" ]]; then
                     whiptail --fb --clear --title "DockSTARTer" --msgbox "Cannot use / for ${SET_VAR}. Please select another folder." 0 0
                     menu_value_prompt "${SET_VAR}"

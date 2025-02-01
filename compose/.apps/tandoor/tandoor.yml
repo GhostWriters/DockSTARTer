@@ -1,23 +1,17 @@
 services:
   tandoor:
-    container_name: tandoor
+    container_name: ${TANDOOR_CONTAINER_NAME}
     environment:
-      - ALLOWED_HOSTS=${TANDOOR_ALLOWED_HOSTS}
-      - DATABASE_URL=${TANDOOR_DATABASE_URL}
-      - DEBUG=${TANDOOR_DEBUG}
-      - GUNICORN_MEDIA=${TANDOOR_GUNICORN_MEDIA}
-      - SECRET_KEY=${TANDOOR_SECRET_KEY}
+      - ALLOWED_HOSTS=${TANDOOR_ENVIRONMENT_ALLOWED_HOSTS}
+      - DATABASE_URL=${TANDOOR_ENVIRONMENT_DATABASE_URL}
+      - DEBUG=${TANDOOR_ENVIRONMENT_DEBUG}
+      - GUNICORN_MEDIA=${TANDOOR_ENVIRONMENT_GUNICORN_MEDIA}
+      - SECRET_KEY=${TANDOOR_ENVIRONMENT_SECRET_KEY}
       - TZ=${TZ}
-
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${TANDOOR_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/tandoor/staticfiles:/opt/recipes/staticfiles
-      - ${DOCKERCONFDIR}/tandoor/mediafiles:/opt/recipes/mediafiles
-      - ${DOCKERCONFDIR}/tandoor/data:/opt/recipes/data
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/tandoor/staticfiles:/opt/recipes/staticfiles
+      - ${DOCKER_VOLUME_CONFIG}/tandoor/mediafiles:/opt/recipes/mediafiles
+      - ${DOCKER_VOLUME_CONFIG}/tandoor/data:/opt/recipes/data
+      - ${DOCKER_VOLUME_STORAGE}:/storage

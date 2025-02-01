@@ -1,19 +1,14 @@
 services:
   youtubedl:
-    container_name: youtubedl
+    container_name: ${YOUTUBEDL_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-      - YDL_DEBUG=${YOUTUBEDL_DEBUG}
-      - YDL_CONFIG_PATH=${YOUTUBEDL_CONFIG_PATH}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
+      - YDL_DEBUG=${YOUTUBEDL_ENVIRONMENT_DEBUG}
+      - YDL_CONFIG_PATH=${YOUTUBEDL_ENVIRONMENT_CONFIG_PATH}
     restart: ${YOUTUBEDL_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKERCONFDIR}/youtubedl:/youtube-dl
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/youtubedl:/youtube-dl
+      - ${DOCKER_VOLUME_STORAGE}:/storage

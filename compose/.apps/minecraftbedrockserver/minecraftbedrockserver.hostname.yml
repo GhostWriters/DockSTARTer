@@ -1,0 +1,3 @@
+services:
+  minecraftbedrockserver:
+    hostname: ${DOCKER_HOSTNAME}

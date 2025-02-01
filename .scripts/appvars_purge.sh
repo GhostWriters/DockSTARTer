@@ -25,7 +25,7 @@ appvars_purge() {
 }
 
 test_appvars_purge() {
-    run_script 'env_update'
     run_script 'appvars_purge' WATCHTOWER
+    run_script 'env_update'
     cat "${COMPOSE_ENV}"
 }

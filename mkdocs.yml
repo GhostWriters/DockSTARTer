@@ -79,6 +79,8 @@ plugins:
         advanced/overrides.md: https://dockstarter.com/overrides/introduction/
         apps/hydra2.md: https://dockstarter.com/apps/nzbhydra2/
         apps/letsencrypt.md: https://dockstarter.com/apps/swag/
+        apps/minecraft_bedrock_server.md: https://dockstarter.com/apps/minecraftbedrockserver/
+        apps/minecraft_server.md: https://dockstarter.com/apps/minecraftserver/
         apps/mylar.md: https://dockstarter.com/apps/mylar3/
         apps/plexrequests.md: https://dockstarter.com/apps/ombi/
         apps/sickrage.md: https://dockstarter.com/apps/sickchill/
@@ -86,6 +88,11 @@ plugins:
         apps/unifi.md: https://dockstarter.com/apps/unificontroller/
         apps/vaultwarden.md: https://dockstarter.com/apps/bitwarden/
         discord.md: https://discord.gg/xR3cyUb
+        overrides/fireflyiii.md: https://dockstarter.com/apps/fireflyiii/
+        overrides/kitana.md: https://dockstarter.com/apps/kitana/
+        overrides/overseerr.md: https://dockstarter.com/apps/overseerr/
+        overrides/petio.md: https://dockstarter.com/apps/petio/
+        overrides/requestrr.md: https://dockstarter.com/apps/requestrr/
   - search
 
 nav:
@@ -133,6 +140,7 @@ nav:
       - apps/deemix.md
       - apps/deluge.md
       - apps/delugevpn.md
+      - apps/doplarr.md
       - apps/dozzle.md
       - apps/duckdns.md
       - apps/duplicacy.md
@@ -141,6 +149,7 @@ nav:
       - apps/fail2ban.md
       - apps/filebot.md
       - apps/filebrowser.md
+      - apps/fireflyiii.md
       - apps/flame.md
       - apps/flaresolverr.md
       - apps/freshrss.md
@@ -165,8 +174,10 @@ nav:
       - apps/influxdb.md
       - apps/jackett.md
       - apps/jellyfin.md
+      - apps/jellyseerr.md
       - apps/jfago.md
       - apps/kanboard.md
+      - apps/kitana.md
       - apps/kiwixserve.md
       - apps/komga.md
       - apps/lazylibrarian.md
@@ -179,8 +190,8 @@ nav:
       - apps/makemkv.md
       - apps/mariadb.md
       - apps/medusa.md
-      - apps/minecraft_bedrock_server.md
-      - apps/minecraft_server.md
+      - apps/minecraftbedrockserver.md
+      - apps/minecraftserver.md
       - apps/monitorr.md
       - apps/mosquitto.md
       - apps/moviematch.md
@@ -189,6 +200,8 @@ nav:
       - apps/netdata.md
       - apps/nextcloud.md
       - apps/nodered.md
+      - apps/nzbget.md
+      - apps/nzbgetvpn.md
       - apps/nzbhydra2.md
       - apps/omadacontroller.md
       - apps/ombi.md
@@ -196,7 +209,8 @@ nav:
       - apps/openspeedtest.md
       - apps/openvpnas.md
       - apps/organizr.md
-      - apps/ouroboros.md
+      - apps/overseerr.md
+      - apps/petio.md
       - apps/pgadmin.md
       - apps/pgbackup.md
       - apps/photostructure.md
@@ -220,14 +234,13 @@ nav:
       - apps/radarr.md
       - apps/readarr.md
       - apps/recyclarr.md
+      - apps/requestrr.md
       - apps/resiliosync.md
       - apps/rsnapshot.md
-      - apps/rtorrentvpn.md
       - apps/rustdesk.md
       - apps/rutorrent.md
       - apps/sabnzbd.md
       - apps/sabnzbdvpn.md
-      - apps/samba.md
       - apps/sickchill.md
       - apps/smokeping.md
       - apps/sonarr.md
@@ -267,10 +280,6 @@ nav:
       - overrides/bw_plex.md
       - overrides/conreq.md
       - overrides/dashmachine.md
-      - overrides/fireflyiii.md
-      - overrides/kitana.md
       - overrides/nginxproxymanager.md
-      - overrides/overseerr.md
-      - overrides/petio.md
       - overrides/plpp.md
       - overrides/yacreader.md

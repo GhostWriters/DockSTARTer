@@ -1,3 +1,3 @@
 services:
   gluetun:
-    image: qmcgaw/gluetun:${GLUETUN_TAG}
+    image: ghcr.io/qdm12/gluetun:${GLUETUN_TAG}

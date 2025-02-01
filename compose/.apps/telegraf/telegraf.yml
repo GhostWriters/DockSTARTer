@@ -1,17 +1,12 @@
 services:
   telegraf:
-    container_name: telegraf
+    container_name: ${TELEGRAF_CONTAINER_NAME}
     environment:
       - HOST_ETC=/host/etc
       - HOST_MOUNT_PREFIX=/host
       - HOST_PROC=/host/proc
       - HOST_SYS=/host/sys
       - TZ=${TZ}
-    logging:
-      driver: json-file
-      options:
-        max-file: ${DOCKERLOGGING_MAXFILE}
-        max-size: ${DOCKERLOGGING_MAXSIZE}
     restart: ${TELEGRAF_RESTART}
     volumes:
       - /:/host:ro
@@ -19,7 +14,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
       - /var/run/utmp:/var/run/utmp:ro
-      - ${DOCKERCONFDIR}/telegraf:/var/lib/telegraf
-      - ${DOCKERSTORAGEDIR}:/storage
+      - ${DOCKER_VOLUME_CONFIG}/telegraf:/var/lib/telegraf
+      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${TELEGRAF_VOLUME_DOCKER_SOCKET}:/var/run/docker.sock:ro

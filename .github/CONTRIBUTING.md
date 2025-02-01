@@ -83,14 +83,14 @@ Look at the **App Specifics** list in the **nav** section and add a new line for
       - `com.dockstarter.appinfo.nicename: "<AppName>"` must match `<appname>` exactly but can have mixed case. Ex: Portainer vs PORTAINER
       - `com.dockstarter.appvars.<appname>_enabled: "false"` must be included and default to false. Users pick which apps are enabled
       - `com.dockstarter.appvars.<appname>_network_mode: ""` must be included and default to blank.
-      - `com.dockstarter.appvars.<appname>_<var_name>: "<var_value>"` one entry for each variable specific to the app environment. See existing apps for examples
+      - `com.dockstarter.appvars.<appname>_environment_<var_name>: "<var_value>"` one entry for each variable specific to the app environment. See existing apps for examples
     - `logging` and the items beneath it should be included exactly as shown in other apps
     - `restart` should be `unless-stopped` or should include a comment about why another option is used
     - `volumes` should contain the volumes used by the app
       - `- /etc/localtime:/etc/localtime:ro` is always included
-      - `- ${DOCKERCONFDIR}/<appname>:<container_config>` should be used to define the primary config directory for the app
-      - `- ${DOCKERSTORAGEDIR}:/storage` is always included
-  - `<appname>.hostname.yml` sets the hostname to use the `${DOCKERHOSTNAME}` variable
+      - `- ${DOCKER_VOLUME_CONFIG}/<appname>:<container_config>` should be used to define the primary config directory for the app
+      - `- ${DOCKER_VOLUME_STORAGE}:/storage` is always included
+  - `<appname>.hostname.yml` sets the hostname to use the `${DOCKER_HOSTNAME}` variable
   - `<appname>.netmode.yml` contains the `<APPNAME>_NETWORK_MODE` variable
   - `<appname>.ports.yml` contains the ports used by the app. This file can be excluded if the app does not require ports
   - At least one of the following files must be included:
