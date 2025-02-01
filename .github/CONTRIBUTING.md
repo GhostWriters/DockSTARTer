@@ -23,6 +23,22 @@ lrwxrwxrwx 1 root root 40 Jun 30 12:36 /usr/bin/ds -> /path/to/your/ds-repo/main
 
 Now you are free to develop and test as usual. All changes in your git repo can be tested in the ds GUI and with `ds` in the CLI.
 
+### Want to install and develop in an isolated environment? Try Vagrant!
+
+1. VirtualBox must be installed
+1. Vagrant must be installed
+1. Some space for the virtual machine must be available.
+1. On a command line, navigate to `/path/to/your/ds-repo/`
+1. Run `vagrant up`
+1. The project will be sync'd into the VM to develop, debug, and troubleshoot.
+1. Want to try from ground zero using your updated code? Run these:
+```bash
+vagrant halt --force
+vagrant destroy --force
+vagrant up
+vagrant ssh
+```
+
 ## Adding an App
 
 So you want to add a new app to DockSTARTer? It's pretty easy if you have a working docker compose.
