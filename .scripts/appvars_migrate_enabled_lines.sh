@@ -3,9 +3,9 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 appvars_migrate_enabled_lines() {
-    local -a VARS
     local OLD_SUFFIX="_ENABLED"
     local NEW_SUFFIX="__ENABLED"
+    local -a APPS
     readarray -t APPS < <(grep --color=never -o -P "^\s*\K[A-Z][A-Z0-9]*(?=${OLD_SUFFIX}\s*=)" "${COMPOSE_ENV}" | sort || true)
     if [[ -n ${APPS[@]} ]]; then
         for APPNAME in ${APPS[@]}; do
