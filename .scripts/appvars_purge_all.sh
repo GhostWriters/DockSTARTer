@@ -3,7 +3,8 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 appvars_purge_all() {
-    local DISABLED_APPS=$(run_script 'disabled_apps')
+    local DISABLED_APPS
+    DISABLED_APPS=$(run_script 'disabled_apps')
     if [[ -n ${DISABLED_APPS-} ]]; then
         if [[ ${CI-} == true ]] || run_script 'question_prompt' "${PROMPT:-CLI}" Y "Would you like to purge variables for all disabled apps?"; then
             info "Purging disabled app variables."
