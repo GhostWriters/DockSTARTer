@@ -304,7 +304,7 @@ varname_to_appname() {
     # SONARR__4K__CONTAINER_NAME returns SONARR__4K
     # DOCKER_VOLUME_STORAGE returns an empty string
 
-    local VARNAME={$1-}
+    local VARNAME=${1-}
     echo "${VARNAME}" | (grep -o -P '^[A-Z][A-Z0-9]*(__[A-Z0-9]+)?(?=__[A-Za-z0-9])' || true)
 }
 
