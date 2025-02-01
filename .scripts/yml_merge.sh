@@ -7,8 +7,8 @@ yml_merge() {
     run_script 'env_update'
     local COMPOSE_FILE=""
     notice "Adding enabled app templates to merge docker-compose.yml. Please be patient, this can take a while."
-    while IFS= read -r line; do
-        local APPNAME=${line%%_ENABLED=*}
+    local ENABLED_APPS=$( run_script 'enabled_apps' )
+    for APPNAME in ${ENABLED_APPS-}; do
         local FILENAME=${APPNAME,,}
         local APP_FOLDER="${TEMPLATES_FOLDER}/${FILENAME}"
         if [[ -d ${APP_FOLDER}/ ]]; then
@@ -53,7 +53,7 @@ yml_merge() {
         else
             error "${APP_FOLDER}/ does not exist."
         fi
-    done < <(grep --color=never -P '_ENABLED='"'"'?true'"'"'?$' "${COMPOSE_ENV}")
+    done
     if [[ -z ${COMPOSE_FILE} ]]; then
         fatal "No enabled apps found."
     fi
