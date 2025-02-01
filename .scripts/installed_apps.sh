@@ -3,8 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 installed_apps() {
-    #grep --color=never -o -P '^\s*\K([A-Z][A-Z0-9]*(__[A-Z0-9]+)?)(?==)' "${COMPOSE_ENV}"
-    grep --color=never -o -P '^\s*\K[A-Z][A-Z0-9]*(?=__ENABLED\s*=)' "${COMPOSE_ENV}" | sort || true
+    grep --color=never -o -P '^[A-Z][A-Z0-9]*(__[A-Z0-9]+)?(?=__ENABLED\s*=)' "${COMPOSE_ENV}" | sort || true
 }
 
 test_installed_apps() {
