@@ -297,7 +297,7 @@ fatal() {
 varname_to_appname() {
     # Returns the DS application name based on the variable name passed
     # The appname will be at the beginning of the variable, and will be in upper case
-    # The appname will either a single alphanumeric word beginning with a letter, or two words split by a double underscore
+    # The appname will either be a single alphanumeric word beginning with a letter, or two words split by a double underscore
     # The end of the appname will be followed by a double underscore and a word
     # Variable names that do not match these conditions will return an empty string
     # SONARR__CONTAINER_NAME returns SONARR
