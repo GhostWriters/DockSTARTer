@@ -17,7 +17,7 @@ yml_merge() {
                 APPDEPRECATED=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" "${APP_FOLDER}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo false)
                 if [[ ${APPDEPRECATED} == true ]]; then
                     warn "${APPNAME} IS DEPRECATED!"
-                    warn "Please edit ${COMPOSE_ENV} and set ${APPNAME}_ENABLED to false."
+                    warn "Please edit ${COMPOSE_ENV} and set ${APPNAME}__ENABLED to false."
                     continue
                 fi
                 if [[ ! -f ${APP_FOLDER}/${FILENAME}.${ARCH}.yml ]]; then
@@ -26,7 +26,7 @@ yml_merge() {
                 fi
                 COMPOSE_FILE="${COMPOSE_FILE}:${APP_FOLDER}/${FILENAME}.${ARCH}.yml"
                 local APPNETMODE
-                APPNETMODE=$(run_script 'env_get' "${APPNAME}_NETWORK_MODE")
+                APPNETMODE=$(run_script 'env_get' "${APPNAME}__NETWORK_MODE")
                 if [[ -z ${APPNETMODE} ]] || [[ ${APPNETMODE} == "bridge" ]]; then
                     if [[ -f ${APP_FOLDER}/${FILENAME}.hostname.yml ]]; then
                         COMPOSE_FILE="${COMPOSE_FILE}:${APP_FOLDER}/${FILENAME}.hostname.yml"
