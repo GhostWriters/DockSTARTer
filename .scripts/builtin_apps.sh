@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 builtin_apps() {
-    find "${TEMPLATES_FOLDER}" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | tr '[:lower:]' '[:upper:]'| sort || true
+    find "${TEMPLATES_FOLDER}" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | tr '[:lower:]' '[:upper:]' | sort || true
 }
 
 test_builtin_apps() {

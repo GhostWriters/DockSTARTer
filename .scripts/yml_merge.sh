@@ -7,7 +7,7 @@ yml_merge() {
     run_script 'env_update'
     local COMPOSE_FILE=""
     notice "Adding enabled app templates to merge docker-compose.yml. Please be patient, this can take a while."
-    local ENABLED_APPS=$( run_script 'enabled_apps' )
+    local ENABLED_APPS=$(run_script 'enabled_apps')
     for APPNAME in ${ENABLED_APPS-}; do
         local FILENAME=${APPNAME,,}
         local APP_FOLDER="${TEMPLATES_FOLDER}/${FILENAME}"
