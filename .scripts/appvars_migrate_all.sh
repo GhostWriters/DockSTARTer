@@ -11,7 +11,7 @@ appvars_migrate_all() {
     done
 }
 
-test_migrate_all() {
+test_appvars_migrate_all() {
     # run_script 'appvars_migrate_all'
     warn "CI does not test appvars_migrate_all."
 }
