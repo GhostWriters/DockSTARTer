@@ -33,6 +33,8 @@ For regular usage you can run without providing any options.
     force certain install/upgrade actions to run even if they would not be needed
 -l --list
     List all apps
+--list-builtin
+    List builtin apps
 --list-installed
     List installed apps
 --list-enabled
@@ -541,11 +543,14 @@ main() {
         exit
     fi
     if [[ -n ${LIST-} ]]; then
-        run_script 'builtin_apps'
+        run_script 'apps_list'
         exit
     fi
     if [[ -n ${LISTMETHOD-} ]]; then
         case "${LISTMETHOD-}" in
+            --list-builtin)
+                run_script 'builtin_apps'
+                ;;
             --list-installed)
                 run_script 'installed_apps'
                 ;;
