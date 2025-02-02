@@ -8,9 +8,9 @@ apps_list() {
     readarray -t APPS < <(run_script 'builtin_apps')
     for index in "${!APPS[@]}"; do
         local APPNAME=${APPS[index]}
-        APPS[$index]+=','
+        APPS[index]+=','
         if run_script 'app_is_installed' "${APPNAME}"; then
-            APPS[$index]+='*INSTALLED*,'
+            APPS[index]+='*INSTALLED*,'
             if run_script 'app_is_enabled' "${APPNAME}"; then
                 APPS[index]+='*ENABLED*'
             else
