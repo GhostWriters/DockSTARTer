@@ -14,8 +14,6 @@ yml_merge() {
         local APP_FOLDER="${TEMPLATES_FOLDER}/${FILENAME}"
         if [[ -d ${APP_FOLDER}/ ]]; then
             if [[ -f ${APP_FOLDER}/${FILENAME}.yml ]]; then
-                local APPDEPRECATED
-                APPDEPRECATED=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" "${APP_FOLDER}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo false)
                 if run_script 'app_is_depreciated' "${APPNAME}"; then
                     warn "${APPNAME} IS DEPRECATED!"
                     warn "Please edit ${COMPOSE_ENV} and set ${APPNAME}__ENABLED to false."
