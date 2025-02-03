@@ -35,6 +35,8 @@ For regular usage you can run without providing any options.
     List all apps
 --list-builtin
     List builtin apps
+--list-depreciated
+    List depreciated apps
 --list-installed
     List installed apps
 --list-enabled
@@ -552,6 +554,9 @@ main() {
         case "${LISTMETHOD-}" in
             --list-builtin)
                 run_script 'app_list_builtin'
+                ;;
+            --list-depreciated)
+                run_script 'app_list_depreciated'
                 ;;
             --list-installed)
                 run_script 'app_list_installed'
