@@ -2,10 +2,10 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-apps_list() {
+app_list() {
     local -a APPS
     local APPS
-    readarray -t APPS < <(run_script 'builtin_apps')
+    readarray -t APPS < <(run_script 'app_list_builtin')
     for index in "${!APPS[@]}"; do
         local APPNAME=${APPS[index]}
         APPS[index]+=','
@@ -27,7 +27,7 @@ apps_list() {
     printf '%s\n' "${APPS[@]}" | column -t -s ','
 }
 
-test_apps_list() {
-    run_script 'apps_list'
-    # warn "CI does not test apps_list."
+test_app_list() {
+    run_script 'app_list'
+    # warn "CI does not test app_list."
 }

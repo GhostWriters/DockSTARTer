@@ -543,22 +543,22 @@ main() {
         exit
     fi
     if [[ -n ${LIST-} ]]; then
-        run_script 'apps_list'
+        run_script 'app_list'
         exit
     fi
     if [[ -n ${LISTMETHOD-} ]]; then
         case "${LISTMETHOD-}" in
             --list-builtin)
-                run_script 'builtin_apps'
+                run_script 'app_list_builtin'
                 ;;
             --list-installed)
-                run_script 'installed_apps'
+                run_script 'app_list_installed'
                 ;;
             --list-enabled)
-                run_script 'enabled_apps'
+                run_script 'app_list_enabled'
                 ;;
             --list-disabled)
-                run_script 'disabled_apps'
+                run_script 'app_list_disabled'
                 ;;
             *)
                 echo "Invalid option: '${LISTMETHOD-}'"

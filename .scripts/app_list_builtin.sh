@@ -2,11 +2,11 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-builtin_apps() {
+app_list_builtin() {
     find "${TEMPLATES_FOLDER}" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | tr '[:lower:]' '[:upper:]' | sort || true
 }
 
-test_builtin_apps() {
-    run_script 'builtin_apps'
-    # warn "CI does not test builtin_apps."
+test_app_list_builtin() {
+    run_script 'app_list_builtin'
+    # warn "CI does not test app_list_builtin."
 }
