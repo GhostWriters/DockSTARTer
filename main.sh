@@ -29,6 +29,10 @@ For regular usage you can run without providing any options.
     Set the <val>ue of a <var>iable in .env (variable name is forced to UPPER CASE)
 --env-set-lower=<var>,<val>
     Set the <val>ue of a <var>iable in .env
+--env-list=<app>
+    List all variable names for the app specified
+--env-lines=<app>
+    List all variables and values for the app specified
 -f --force
     force certain install/upgrade actions to run even if they would not be needed
 -l --list
@@ -130,6 +134,8 @@ cmdline() {
                     echo "  --env-get with variable name ('--env-get=VAR')"
                     echo "  --env-set-lower with variable name ('--env-set-lower=Var,VAL') and value"
                     echo "  --env-get-lower with variable name ('--env-get-lower=Var')"
+                    echo "  --env-list=<app> ('List all variable names for the app specified')"
+                    echo "  --env-lines=<app> ('List all variables and values for the app specified')"
                     exit
                 else
                     readonly ENVVAR=${ENVARG%%,*}
@@ -534,6 +540,22 @@ main() {
                     echo "Invalid usage. Must be"
                     echo "  --env-set-lower with variable name and value ('--env-set-lower=Var,VAL')"
                     echo "  Variable name can be Mixed Case"
+                fi
+                ;;
+            --env-list)
+                if [[ ${ENVVAR-} != "" ]]; then
+                    run_script 'appvars_list' "${ENVVAR^^}"
+                else
+                    echo "Invalid usage. Must be"
+                    echo "  --env-list with application name ('--env-list=APP')"
+                fi
+                ;;
+            --env-lines)
+                if [[ ${ENVVAR-} != "" ]]; then
+                    run_script 'appvars_lines' "${ENVVAR^^}"
+                else
+                    echo "Invalid usage. Must be"
+                    echo "  --env-lines with application name ('--env-lines=APP')"
                 fi
                 ;;
             *)
