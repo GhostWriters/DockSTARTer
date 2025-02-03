@@ -14,7 +14,7 @@ env_update() {
 
     # New .env file we are creating
     local -a UPDATED_ENV_LINES
-    readarray -t UPDATED_ENV_LINES < "${COMPOSE_ENV}.example"
+    readarray -t UPDATED_ENV_LINES < "${COMPOSE_ENV_DEFAULT_FILE}"
 
     # CURRENT_ENV_VAR_LINE["VAR"]="line"
     local -A CURRENT_ENV_VAR_LINE
