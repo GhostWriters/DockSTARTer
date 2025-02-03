@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-enabled_apps() {
+app_list_enabled() {
     local APPNAME_REGEX='^[A-Z][A-Z0-9]*(__[A-Z0-9]+)?'
     local TRUE_REGEX="('?true'?)"
     local ENABLED_REGEX="__ENABLED\s*=${TRUE_REGEX}"
@@ -12,7 +12,7 @@ enabled_apps() {
     grep --color=never -o -P "${ENABLED_APPS_REGEX}" "${COMPOSE_ENV}" | sort || true
 }
 
-test_enabled_apps() {
-    # run_script 'enabled_apps'
-    warn "CI does not test enabled_apps."
+test_app_list_enabled() {
+    # run_script 'app_list_enabled'
+    warn "CI does not test app_list_enabled."
 }
