@@ -20,9 +20,9 @@ app_list() {
             APPS[index]+=','
         fi
         APPS[index]+=','
-        #if run_script 'app_is_depreciated' "${APPNAME}"; then
-        #    APPS[index]+='(DEPRECIATED)'
-        #fi
+        if run_script 'app_is_depreciated' "${APPNAME}"; then
+            APPS[index]+='(DEPRECIATED)'
+        fi
     done
     printf '%s\n' "${APPS[@]}" | column -t -s ','
 }
