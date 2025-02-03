@@ -6,7 +6,7 @@ app_is_depreciated() {
     local APPNAME=${1-}
     local FILENAME=${APPNAME,,}
     local LABELS_FILE="${TEMPLATES_FOLDER}/${FILENAME}/${FILENAME}.labels.yml"
-    local APP_DEPRECATED
+    local APP_DEPRECIATED
     if [[ -f ${LABELS_FILE} ]]; then
         APP_DEPRECIATED=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" "${LABELS_FILE}" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo false)
     fi
