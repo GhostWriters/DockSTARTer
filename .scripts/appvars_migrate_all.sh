@@ -4,9 +4,9 @@ IFS=$'\n\t'
 
 appvars_migrate_all() {
     run_script 'appvars_migrate_enabled_lines'
-    local INSTALLED_APPS
-    INSTALLED_APPS=$(run_script 'app_list_installed')
-    for APPNAME in ${INSTALLED_APPS-}; do
+    local ENABLED_APPS
+    ENABLED_APPS=$(run_script 'app_list_enabled')
+    for APPNAME in ${ENABLED_APPS-}; do
         run_script 'appvars_migrate' "${APPNAME}"
     done
 }
