@@ -10,7 +10,7 @@ env_update() {
 
     # Current .env file, variables only (remove whitespace before and after variable)
     local -a CURRENT_ENV_LINES
-    readarray -t CURRENT_ENV_LINES < <(sed -n "s/^\s*\([A-Za-z0-9_]*\)\s*=/\1=/p" "${COMPOSE_ENV}")
+    readarray -t CURRENT_ENV_LINES < <(run_script 'env_lines' "${COMPOSE_ENV}")
 
     # New .env file we are creating
     local -a UPDATED_ENV_LINES
@@ -43,25 +43,13 @@ env_update() {
 
     info "Merging current values into updated .env file."
 
-    local BUILTIN_APPS=()
-    local INSTALLED_APPS=()
-
     # Create array of built in apps
-    readarray -t BUILTIN_APPS < <(find "${TEMPLATES_FOLDER}" -maxdepth 1 -mindepth 1 -type d -exec basename {} \;)
+    local BUILTIN_APPS=()
+    readarray -t BUILTIN_APPS < <(run_script 'app_list_builtin')
 
     # Create array of installed apps
-    {
-        local ENABLED_LINES=()
-        readarray -t ENABLED_LINES < <(printf '%s\n' "${CURRENT_ENV_LINES[@]}" | grep --color=never -P '^[A-Za-z0-9]\w+_ENABLED=')
-        for line in "${ENABLED_LINES[@]}"; do
-            local VAR=${line%%=*}
-            local APPNAME=${VAR%%_*}
-            # shellcheck disable=SC2199
-            if [[ " ${BUILTIN_APPS[@]^^} " == *" ${APPNAME} "* ]]; then
-                INSTALLED_APPS+=("${APPNAME}")
-            fi
-        done
-    }
+    local INSTALLED_APPS=()
+    readarray -t INSTALLED_APPS < <(run_script 'app_list_installed')
 
     # Create sorted array of vars in current .env file.  Sort `_` to the top.
     local -a CURRENT_ENV_VARS
@@ -73,14 +61,14 @@ env_update() {
         local LAST_APPNAME
 
         # Clear lists before processing an app's variables
-        local APP_LABELS=()
+        local APP_VARS=()
         local ENV_VARS_BUILTIN=()
         local ENV_VARS_USER_DEFINED=()
 
         # Process lines for one app
         for index in "${!CURRENT_ENV_VARS[@]}"; do
             VAR=${CURRENT_ENV_VARS[$index]}
-            APPNAME=${VAR%%_*}
+            APPNAME=$(varname_to_appname "${VAR}")
             if [ "${APPNAME}" != "${LAST_APPNAME-}" ]; then
                 # Variable for another app, exit for loop
                 break
@@ -90,22 +78,21 @@ env_update() {
                 UPDATED_ENV_LINES[${UPDATED_ENV_VAR_INDEX["$VAR"]}]=${CURRENT_ENV_VAR_LINE["$VAR"]}
             else
                 # Variable does not already exist, add it to a list to process
-                if [[ -z ${APP_LABELS[*]} ]]; then
-                    # App label array is empty, create it
+                if [[ -z ${APP_VARS[*]} ]]; then
+                    # App variable array is empty, create it
                     # shellcheck disable=SC2199
-                    if [[ " ${INSTALLED_APPS[@]} " == *" ${APPNAME} "* ]]; then
-                        # Create array of labels for current app being processed
-                        local APP_LABEL_FILE="${TEMPLATES_FOLDER}/${APPNAME,,}/${APPNAME,,}.labels.yml"
-                        readarray -t APP_LABELS < <(grep --color=never -Po "\scom\.dockstarter\.appvars\.\K[\w]+" "${APP_LABEL_FILE}" || true)
-                        APP_LABELS=("${APP_LABELS[@]^^}")
+                    if [[ " ${BUILTIN_APPS[@]} " == *" ${APPNAME} "* ]]; then
+                        # Create array of builtin variables for current app being processed
+                        local APP_VAR_FILE="${TEMPLATES_FOLDER}/${APPNAME,,}/.env"
+                        readarray -t APP_VARS < <(run_script 'env_vars' "${APP_VAR_FILE}")
                     fi
                 fi
                 # shellcheck disable=SC2199
-                if [[ " ${APP_LABELS[@]} " == *" ${VAR} "* ]]; then
-                    # Variable is in label file, add it to the built in list
+                if [[ " ${APP_VARS[@]} " == *" ${VAR} "* ]]; then
+                    # Variable is in variable file, add it to the built in list
                     ENV_VARS_BUILTIN+=("$VAR")
                 else
-                    # Variable is not in label file, add it to the user defined list
+                    # Variable is not in variable file, add it to the user defined list
                     ENV_VARS_USER_DEFINED+=("$VAR")
                 fi
             fi
