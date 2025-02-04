@@ -101,25 +101,36 @@ env_update() {
         done
 
         # Add the lines to the env file from the built in list and user defined list for the last app being processed
-        # shellcheck disable=SC2034  # Variable is used indirectly
         local HEADING_FORMAT_BUILTIN="\n##\n## %s\n##"
-        # shellcheck disable=SC2034  # Variable is used indirectly
+        local HEADING_FORMAT_DISABLED="\n##\n## %s (Disabled)\n##"
         local HEADING_FORMAT_USER_DEFINED="\n##\n## %s (User Defined)\n##"
-        for section in BUILTIN USER_DEFINED; do
-            local VARS="ENV_VARS_${section}[@]"
-            if [[ -n ${!VARS-} ]]; then
-                # Add all app variables for section to updated .env
-                local HEADING_FORMAT="HEADING_FORMAT_${section}"
-                local HEADING
-                # shellcheck disable=SC2059 # ${!HEADING_FORMAT} contains a printf format string
-                printf -v HEADING "${!HEADING_FORMAT}" "${LAST_APPNAME-}"
-                UPDATED_ENV_LINES+=("${HEADING}")
-                for VAR in "${!VARS}"; do
-                    UPDATED_ENV_LINES+=("${CURRENT_ENV_VAR_LINE[$VAR]}")
-                    #UPDATED_ENV_VAR_INDEX[$VAR]=$((${#UPDATED_ENV_LINES[@]} - 1))
-                done
-            fi
-        done
+        local HEADING_FORMAT
+
+        HEADING_FORMAT="${HEADING_FORMAT_BUILTIN}"
+        #if xxx
+        #    HEADING_FORMAT="${HEADING_FORMAT_DISABLED}"
+        #fi
+        if [[ -n ${ENV_VARS_BUILTIN-} ]]; then
+            local HEADING
+            # shellcheck disable=SC2059 # ${!HEADING_FORMAT} contains a printf format string
+            printf -v HEADING "${HEADING_FORMAT}" "${LAST_APPNAME-}"
+            UPDATED_ENV_LINES+=("${HEADING}")
+            for VAR in "${ENV_VARS_BUILTIN[@]}"; do
+                UPDATED_ENV_LINES+=("${CURRENT_ENV_VAR_LINE[$VAR]}")
+                #UPDATED_ENV_VAR_INDEX[$VAR]=$((${#UPDATED_ENV_LINES[@]} - 1))
+            done
+        fi
+        HEADING_FORMAT="${HEADING_FORMAT_USER_DEFINED}"
+        if [[ -n ${ENV_VARS_USER_DEFINED-} ]]; then
+            local HEADING
+            # shellcheck disable=SC2059 # ${HEADING_FORMAT} contains a printf format string
+            printf -v HEADING "${HEADING_FORMAT}" "${LAST_APPNAME-}"
+            UPDATED_ENV_LINES+=("${HEADING}")
+            for VAR in "${ENV_VARS_USER_DEFINED[@]}"; do
+                UPDATED_ENV_LINES+=("${CURRENT_ENV_VAR_LINE[$VAR]}")
+                #UPDATED_ENV_VAR_INDEX[$VAR]=$((${#UPDATED_ENV_LINES[@]} - 1))
+            done
+        fi
 
         # Set last app worked on
         LAST_APPNAME=${APPNAME}
