@@ -107,9 +107,9 @@ env_update() {
         local HEADING_FORMAT
 
         HEADING_FORMAT="${HEADING_FORMAT_BUILTIN}"
-        #if xxx
-        #    HEADING_FORMAT="${HEADING_FORMAT_DISABLED}"
-        #fi
+        if run_script 'app_is_disabled' "${LAST_APPNAME-}"; then
+            HEADING_FORMAT="${HEADING_FORMAT_DISABLED}"
+        fi
         if [[ -n ${ENV_VARS_BUILTIN-} ]]; then
             local HEADING
             # shellcheck disable=SC2059 # ${!HEADING_FORMAT} contains a printf format string
