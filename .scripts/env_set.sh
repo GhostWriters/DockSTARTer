@@ -23,7 +23,7 @@ env_set() {
 
     if [[ ! -f ${VAR_FILE} ]]; then
         # VAR_FILE does not exist, create it
-        touch "${VAR_FILE}"
+        mkdir -p "${VAR_FILE%/*}" && touch "${VAR_FILE}"
     fi
     sed -i "/^\s*${SET_VAR}\s*=/d" "${VAR_FILE}" || true
     echo "${SET_VAR}=${NEW_VAL}" >> "${VAR_FILE}" || fatal "Failed to set ${SET_VAR}=${NEW_VAL}\nFailing command: ${F[C]} \"echo ${SET_VAR}=${NEW_VAL}\" >> \"${VAR_FILE}\""
