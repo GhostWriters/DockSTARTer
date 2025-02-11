@@ -21,6 +21,10 @@ env_set() {
     # https://unix.stackexchange.com/questions/422165/escape-double-quotes-in-variable/422170#422170
     NEW_VAL=$(printf "%s\n" "${NEW_VAL-}" | sed -e "s/'/'\"'\"'/g" -e "1s/^/'/" -e "\$s/\$/'/")
 
+    if [[ ! -f ${VAR_FILE} ]]; then
+        # VAR_FILE does not exist, create it
+        touch "${VAR_FILE}"
+    fi
     sed -i "/^\s*${SET_VAR}\s*=/d" "${VAR_FILE}" || true
     echo "${SET_VAR}=${NEW_VAL}" >> "${VAR_FILE}" || fatal "Failed to set ${SET_VAR}=${NEW_VAL}\nFailing command: ${F[C]} \"echo ${SET_VAR}=${NEW_VAL}\" >> \"${VAR_FILE}\""
 }
