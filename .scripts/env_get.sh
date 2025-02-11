@@ -3,8 +3,19 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 env_get() {
+    # env_get GET_VAR [VAR_FILE]
+    # env_get APPNAME:GET_VAR
+    #
+    # Returns the variable "GET_VAR"  If no "VAR_FILE" is given, uses the global .env file
+    # If "APPNAME:" is provided, gets variable from "env_files/appname.env"
     local GET_VAR=${1-}
     local VAR_FILE=${2:-$COMPOSE_ENV}
+    if [[ ${GET_VAR} =~ ^[A-Za-z0-9_]+: ]]; then
+        # GET_VAR is in the form of "APPNAME:VARIABLE", set new file to use
+        local APPNAME=${GET_VAR%%:*}
+        VAR_FILE="${APP_ENV_FOLDER}/${APPNAME,,}.env"
+        GET_VAR=${GET_VAR#"${APPNAME}:"}
+    fi
     grep --color=never -Po "^\s*${GET_VAR}\s*=\K.*" "${VAR_FILE}" | tail -1 | xargs || true
 }
 
