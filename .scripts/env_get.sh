@@ -16,7 +16,13 @@ env_get() {
         VAR_FILE="${APP_ENV_FOLDER}/${APPNAME,,}.env"
         GET_VAR=${GET_VAR#"${APPNAME}:"}
     fi
-    grep --color=never -Po "^\s*${GET_VAR}\s*=\K.*" "${VAR_FILE}" | tail -1 | xargs || true
+    if [[ -f ${VAR_FILE} ]]; then
+        grep --color=never -Po "^\s*${GET_VAR}\s*=\K.*" "${VAR_FILE}" | tail -1 | xargs || true
+    else
+        # VAR_FILE does not exist, give a warning
+        warn "${VAR_FILE} does not exist."
+    fi
+
 }
 
 test_env_get() {
