@@ -3,11 +3,12 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 appvars_create_all() {
-    local ENABLED_APPS
-    ENABLED_APPS=$(run_script 'app_list_enabled')
-    if [[ -n ${ENABLED_APPS-} ]]; then
-        notice "Creating environment variables for enabled apps. Please be patient, this can take a while."
-        for APPNAME in ${ENABLED_APPS}; do
+    local INSTALLED_APPS
+    run_script 'appvars_migrate_enabled_lines'
+    INSTALLED_APPS=$(run_script 'app_list_installed')
+    if [[ -n ${INSTALLED_APPS-} ]]; then
+        notice "Creating environment variables for installed apps. Please be patient, this can take a while."
+        for APPNAME in ${INSTALLED_APPS}; do
             run_script 'appvars_create' "${APPNAME}"
             info "Environment variables created for ${APPNAME}."
         done

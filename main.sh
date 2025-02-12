@@ -472,7 +472,6 @@ main() {
     run_script 'symlink_ds'
     # Execute CLI Argument Functions
     if [[ -n ${ADD-} ]]; then
-        run_script 'appvars_migrate_all'
         run_script 'appvars_create' "${ADD}"
         run_script 'env_update'
         exit
@@ -480,15 +479,12 @@ main() {
     if [[ -n ${COMPOSE-} ]]; then
         case ${COMPOSE} in
             down)
-                run_script 'appvars_migrate_all'
                 run_script 'docker_compose' "${COMPOSE}"
                 ;;
             generate | merge)
-                run_script 'appvars_migrate_all'
                 run_script 'yml_merge'
                 ;;
             pull* | restart* | up*)
-                run_script 'appvars_migrate_all'
                 run_script 'yml_merge'
                 run_script 'docker_compose' "${COMPOSE}"
                 ;;
@@ -499,7 +495,6 @@ main() {
         exit
     fi
     if [[ -n ${ENV-} ]]; then
-        run_script 'appvars_migrate_all'
         run_script 'appvars_create_all'
         run_script 'env_update'
         exit
