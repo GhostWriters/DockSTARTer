@@ -8,9 +8,12 @@ app_is_installed() {
     local APPNAME_REGEX="^\s*${APPNAME^^}"
     local INSTALLED_APPS_REGEX="${APPNAME_REGEX}(?=__ENABLED\s*=)"
 
-    #notice "INSTALLED_APPS_REGEX [ ${INSTALLED_APPS_REGEX} ]"
-    grep --color=never -q -P "${INSTALLED_APPS_REGEX}" "${VAR_FILE}"
-    #notice $?
+    if run_script 'app_is_builtin' "${APPNAME}"; then
+        grep --color=never -q -P "${INSTALLED_APPS_REGEX}" "${VAR_FILE}"
+        return $?
+    else
+        return 1
+    fi
 }
 
 test_app_is_installed() {
