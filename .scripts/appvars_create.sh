@@ -12,7 +12,7 @@ appvars_create() {
     local APP_DEFAULT_ENV_FILE="${APP_FOLDER}/${FILENAME}.env"
     local APP_ENV_FILE="${APP_ENV_FOLDER}/${FILENAME}.env"
 
-    if ! run_script 'env_get' "${APPNAME}__ENABLED"; then
+    if ! run_script 'env_get' "${APPNAME}__ENABLED" > /dev/null; then
         run_script 'env_set' "${APPNAME}__ENABLED" true
     fi
 
