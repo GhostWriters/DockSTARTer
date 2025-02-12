@@ -5,9 +5,9 @@ IFS=$'\n\t'
 env_sanitize() {
     # Don't set WATCHTOWER_NETWORK_MODE to none
     local WATCHTOWER_NETWORK_MODE
-    WATCHTOWER_NETWORK_MODE=$(run_script 'env_get' WATCHTOWER_NETWORK_MODE)
+    WATCHTOWER_NETWORK_MODE=$(run_script 'env_get' WATCHTOWER__NETWORK_MODE)
     if [[ ${WATCHTOWER_NETWORK_MODE} == "none" ]]; then
-        run_script 'env_set' WATCHTOWER_NETWORK_MODE ""
+        run_script 'env_set' WATCHTOWER__NETWORK_MODE ""
     fi
 
     # Rename vars
