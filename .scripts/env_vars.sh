@@ -4,7 +4,8 @@ IFS=$'\n\t'
 
 env_vars() {
     local VAR_FILE=${1:-$COMPOSE_ENV}
-    grep --color=never -o -P '^\s*\K\w+(?=\s*=)' "${VAR_FILE}" || true
+    local VAR_REGEX="\w+"
+    grep --color=never -o -P "^\s*\K${VAR_REGEX}(?=\s*=)" "${VAR_FILE}" || true
 }
 
 test_env_vars() {

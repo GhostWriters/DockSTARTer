@@ -4,7 +4,8 @@ IFS=$'\n\t'
 
 appvars_list() {
     local APPNAME=${1-}
-    local APP_VARS_REGEX="\s*${APPNAME}__(?![A-Za-z0-9]+__)\w+(?=\s*=)"
+    local VAR_REGEX="${APPNAME}__(?![A-Za-z0-9]+__)\w+"
+    local APP_VARS_REGEX="\s*\K${VAR_REGEX}(?=\s*=)"
     grep --color=never -o -P "${APP_VARS_REGEX}" "${COMPOSE_ENV}" || true
 }
 
