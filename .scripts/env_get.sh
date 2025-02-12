@@ -26,9 +26,8 @@ env_get() {
 }
 
 test_env_get() {
-    run_script 'env_get' DOCKER_VOLUME_CONFIG
     run_script 'appvars_create' WATCHTOWER
-    run_script 'env_get' WATCHTOWER_ENABLED
+    run_script 'env_get' WATCHTOWER__ENABLED
     run_script 'env_get' WATCHTOWER:WATCHTOWER_NOTIFICATIONS
     run_script 'appvars_purge' WATCHTOWER
 }

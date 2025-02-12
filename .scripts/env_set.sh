@@ -31,7 +31,9 @@ env_set() {
 
 test_env_set() {
     run_script 'appvars_create' WATCHTOWER
-    run_script 'env_set' WATCHTOWER_ENABLED false
-    run_script 'env_get' WATCHTOWER_ENABLED
+    run_script 'env_set' WATCHTOWER__ENABLED false
+    run_script 'env_set' WATCHTOWER:WATCHTOWER_NOTIFICATIONS newvalue
+    run_script 'env_get' WATCHTOWER__ENABLED
+    run_script 'env_get' WATCHTOWER:WATCHTOWER_NOTIFICATIONS
     run_script 'appvars_purge' WATCHTOWER
 }
