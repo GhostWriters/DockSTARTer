@@ -12,6 +12,8 @@ appvars_create() {
     local APP_DEFAULT_ENV_FILE="${APP_FOLDER}/${FILENAME}.env"
     local APP_ENV_FILE="${APP_ENV_FOLDER}/${FILENAME}.env"
 
+    info "Creating environment variables for ${APPNAME}."
+    
     if ! run_script 'env_var_exists' "${APPNAME}__ENABLED"; then
         run_script 'env_set' "${APPNAME}__ENABLED" true
     fi
