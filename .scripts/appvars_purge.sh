@@ -5,9 +5,9 @@ IFS=$'\n\t'
 appvars_purge() {
     local APPNAME=${1-}
     APPNAME=${APPNAME^^}
-    local APPVARS
-    APPVARS=$(grep --color=never -P "^${APPNAME}_" "${COMPOSE_ENV}" || true)
-    if [[ -z ${APPVARS} ]]; then
+    local APPVAR_LINES
+    APPVAR_LINES=$(run_script 'appvars_lines' "${APPNAME}")
+    if [[ -z ${APPVAR_LINES} ]]; then
         if [[ ${PROMPT-} == "GUI" ]]; then
             whiptail --fb --clear --title "DockSTARTer" --msgbox "${APPNAME} has no variables." 0 0
         else
@@ -16,9 +16,16 @@ appvars_purge() {
         return
     fi
 
-    if [[ ${CI-} == true ]] || run_script 'question_prompt' "${PROMPT:-CLI}" Y "Would you like to purge these settings for ${APPNAME}?\\n\\n${COMPOSE_ENV}:\\n${APPVARS}"; then
+    if [[ ${CI-} == true ]] || run_script 'question_prompt' "${PROMPT:-CLI}" Y "Would you like to purge these settings for ${APPNAME}?\\n\\n${COMPOSE_ENV}:\\n${APPVAR_LINES}"; then
         info "Purging ${APPNAME} .env variables."
-        sed -i "/^${APPNAME}_/d" "${COMPOSE_ENV}" || fatal "Failed to purge ${APPNAME} variables.\nFailing command: ${F[C]}sed -i \"/^${APPNAME}_/d\" \"${COMPOSE_ENV}\""
+        local -a APPVARS
+        readarray -t APPVARS < <(run_script 'appvars_list' "${APPNAME}")
+        local APPVARS_REGEX
+        # Make a string of variables seperated by "|"
+        APPVARS_REGEX=$(printf "%s|" "${APPVARS[@]}")
+        # Remove the final "| at end of the string
+        APPVARS_REGEX="${APPVARS_REGEX::-1}"
+        sed -i -E "/^\s*(${APPVARS_REGEX})\s*=/d" "${COMPOSE_ENV}" || fatal "Failed to purge ${APPNAME} variables.\nFailing command: ${F[C]}sed -i -E \"/^\\\*(${APPVARS_REGEX})\\\*/d\" \"${COMPOSE_ENV}\""
     else
         info "Keeping ${APPNAME} .env variables."
     fi
