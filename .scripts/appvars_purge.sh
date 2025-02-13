@@ -5,9 +5,13 @@ IFS=$'\n\t'
 appvars_purge() {
     local APPNAME=${1-}
     APPNAME=${APPNAME^^}
+    local FILENAME=${APPNAME,,}
     local APPVAR_LINES
+    local APPVAR_ENV_LINES
+    local APP_ENV_FILE="${APP_ENV_FOLDER}/${FILENAME}.env"
     APPVAR_LINES=$(run_script 'appvars_lines' "${APPNAME}")
-    if [[ -z ${APPVAR_LINES} ]]; then
+    APPVAR_ENV_LINES=$(run_script 'env_lines' "${APP_ENV_FILE}")
+    if [[ -z ${APPVAR_LINES} && -z ${APPVAR_ENV_LINES} ]]; then
         if [[ ${PROMPT-} == "GUI" ]]; then
             whiptail --fb --clear --title "DockSTARTer" --msgbox "${APPNAME} has no variables." 0 0
         else
@@ -16,7 +20,7 @@ appvars_purge() {
         return
     fi
 
-    if [[ ${CI-} == true ]] || run_script 'question_prompt' "${PROMPT:-CLI}" Y "Would you like to purge these settings for ${APPNAME}?\\n\\n${COMPOSE_ENV}:\\n${APPVAR_LINES}"; then
+    if [[ ${CI-} == true ]] || run_script 'question_prompt' "${PROMPT:-CLI}" Y "Would you like to purge these settings for ${APPNAME}?\\n\\n${COMPOSE_ENV}:\\n${APPVAR_LINES}\\n\\n${APP_ENV_FILE}:\\n${APPVAR_ENV_LINES}\\n"; then
         info "Purging ${APPNAME} .env variables."
         local -a APPVARS
         readarray -t APPVARS < <(run_script 'appvars_list' "${APPNAME}")
