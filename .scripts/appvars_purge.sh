@@ -20,7 +20,19 @@ appvars_purge() {
         return
     fi
 
-    if [[ ${CI-} == true ]] || run_script 'question_prompt' "${PROMPT:-CLI}" Y "Would you like to purge these settings for ${APPNAME}?\\n\\n${COMPOSE_ENV}:\\n${APPVAR_LINES}\\n\\n${APP_ENV_FILE}:\\n${APPVAR_ENV_LINES}\\n"; then
+    local QUESTION
+    QUESTION=$(
+        cat << EOF
+Would you like to purge these settings for ${APPNAME}?
+
+${COMPOSE_ENV}:
+${APPVAR_LINES}
+
+${APP_ENV_FILE}:
+${APPVAR_ENV_LINES}
+EOF
+    )
+    if [[ ${CI-} == true ]] || run_script 'question_prompt' "${PROMPT:-CLI}" Y "${QUESTION}\\n"; then
         info "Purging ${APPNAME} .env variables."
         local -a APPVARS
         readarray -t APPVARS < <(run_script 'appvars_list' "${APPNAME}")
