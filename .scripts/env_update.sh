@@ -84,7 +84,7 @@ env_update() {
                     if [[ " ${BUILTIN_APPS[@]} " == *" ${APPNAME} "* ]]; then
                         # Create array of builtin variables for current app being processed
                         local APP_VAR_FILE="${TEMPLATES_FOLDER}/${APPNAME,,}/.env"
-                        readarray -t APP_VARS < <(run_script 'env_vars' "${APP_VAR_FILE}")
+                        readarray -t APP_VARS < <(run_script 'env_var_list' "${APP_VAR_FILE}")
                     fi
                 fi
                 # shellcheck disable=SC2199
