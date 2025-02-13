@@ -5,7 +5,7 @@ IFS=$'\n\t'
 appvars_rename() {
     local FROMAPP=${1-}
     local TOAPP=${2-}
-    if run_script 'app_is_enabled' "${FROMAPP}" && run_script 'app_is_disabled' "${TOAPP}"; then
+    if run_script 'app_is_enabled' "${FROMAPP}" && ! run_script 'app_is_enabled' "${TOAPP}"; then
         notice "Migrating from ${FROMAPP^^} to ${TOAPP^^}."
         docker stop "${FROMAPP,,}" || warn "Failed to stop ${FROMAPP,,} container.\nFailing command: ${F[C]}docker stop ${FROMAPP,,}"
         notice "Moving config folder."
