@@ -39,14 +39,14 @@ EOF
         local APPVARS_REGEX
 
         readarray -t APPVARS < <(run_script 'appvars_list' "${APPNAME}") # Get list of app's variables in global .env file
-        APPVARS_REGEX=$(printf "%s|" "${APPVARS[@]}")                    # Make a string of variables seperated by "|"
-        APPVARS_REGEX="${APPVARS_REGEX::-1}"                             # Remove the final "| at end of the string
+        printf -v APPVARS_REGEX "%s|" "${APPVARS[@]}"                    # Make a string of variables seperated by "|"
+        APPVARS_REGEX="${APPVARS_REGEX%|}"                               # Remove the final "| at end of the string
         # Remove variables from file
         sed -i -E "/^\s*(${APPVARS_REGEX})\s*=/d" "${COMPOSE_ENV}" || fatal "Failed to purge ${APPNAME} variables.\nFailing command: ${F[C]}sed -i -E \"/^\\\*(${APPVARS_REGEX})\\\*/d\" \"${COMPOSE_ENV}\""
 
         readarray -t APPVARS < <(run_script 'env_var_list' "${APP_ENV_FILE}") # Get list of variables in appname.env file
-        APPVARS_REGEX=$(printf "%s|" "${APPVARS[@]}")                         # Make a string of variables seperated by "|"
-        APPVARS_REGEX="${APPVARS_REGEX::-1}"                                  # Remove the final "| at end of the string
+        printf -v APPVARS_REGEX "%s|" "${APPVARS[@]}"                         # Make a string of variables seperated by "|"
+        APPVARS_REGEX="${APPVARS_REGEX%|}"                                    # Remove the final "| at end of the string
         # Remove variables from file
         sed -i -E "/^\s*(${APPVARS_REGEX})\s*=/d" "${APP_ENV_FILE}" || fatal "Failed to purge ${APPNAME} variables.\nFailing command: ${F[C]}sed -i -E \"/^\\\*(${APPVARS_REGEX})\\\*/d\" \"${APP_ENV_FILE}\""
     else
