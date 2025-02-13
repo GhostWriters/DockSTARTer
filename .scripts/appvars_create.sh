@@ -22,11 +22,13 @@ appvars_create() {
 
     run_script 'env_merge_newonly' "${COMPOSE_ENV}" "${APP_DEFAULT_GLOBAL_ENV_FILE}"
     run_script 'env_merge_newonly' "${APP_ENV_FILE}" "${APP_DEFAULT_ENV_FILE}"
-
 }
 
 test_appvars_create() {
     run_script 'appvars_create' WATCHTOWER
     run_script 'env_update'
+    echo "${COMPOSE_ENV}:"
     cat "${COMPOSE_ENV}"
+    echo "${APP_ENV_FOLDER}/watchtower.env:"
+    cat "${APP_ENV_FOLDER}/watchtower.env"
 }
