@@ -1,0 +1,7 @@
+services:
+  minecraft_server:
+    labels:
+      com.dockstarter.appinfo.deprecated: "true"
+      com.dockstarter.appinfo.description: "(DEPRECATED) Use Minecraft Server"
+      com.dockstarter.appinfo.nicename: "Minecraft_Server"
+      com.dockstarter.appinfo.migrateto: "minecraftserver"
