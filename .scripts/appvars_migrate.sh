@@ -17,37 +17,38 @@ appvars_migrate() {
         readarray -t MIGRATE_LINES < <(sed -E 's/#.*$//g ; s/\s+/ /g ; /^\s*$/d' "${MIGRATE_FILE}")
         if [[ -n ${MIGRATE_LINES[*]-} ]]; then
             for line in "${MIGRATE_LINES[@]}"; do
-                local MIGRATE_TO
-                local MIGRATE_FROM
+                local MIGRATE_TO_VAR
+                local MIGRATE_FROM_REGEX
                 local MIGRATE_TO_FILE
                 local MIGRATE_FROM_FILE
 
-                MIGRATE_TO=${line%% *}
-                MIGRATE_FROM=${line##"${MIGRATE_TO}" }
-                MIGRATE_TO=${MIGRATE_TO/app:/${FILENAME}:}
-                MIGRATE_FROM=${MIGRATE_FROM/app:/${FILENAME}:}
+                MIGRATE_TO_VAR=${line%% *}
+                MIGRATE_FROM_REGEX=${line##"${MIGRATE_TO_VAR}" }
+                MIGRATE_TO_VAR=${MIGRATE_TO_VAR/app:/${FILENAME}:}
+                MIGRATE_FROM_REGEX=${MIGRATE_FROM_REGEX/app:/${FILENAME}:}
+
                 MIGRATE_TO_FILE=${COMPOSE_ENV}
                 MIGRATE_FROM_FILE=${COMPOSE_ENV}
 
                 # Change the .env file to use if specified in the variable, and remove the appname from the string
-                if [[ ${MIGRATE_TO} == *":"* ]]; then
-                    MIGRATE_TO_FILE="${APP_ENV_FOLDER}/${MIGRATE_TO%:*}.env"
-                    MIGRATE_TO="${MIGRATE_TO#*:}"
+                if [[ ${MIGRATE_TO_VAR} == *":"* ]]; then
+                    MIGRATE_TO_FILE="${APP_ENV_FOLDER}/${MIGRATE_TO_VAR%:*}.env"
+                    MIGRATE_TO_VAR="${MIGRATE_TO_VAR#*:}"
                 fi
-                if [[ ${MIGRATE_FROM} == *":"* ]]; then
-                    MIGRATE_FROM_FILE="${APP_ENV_FOLDER}/${MIGRATE_FROM%:*}.env"
-                    MIGRATE_FROM="${MIGRATE_FROM#*:}"
+                if [[ ${MIGRATE_FROM_REGEX} == *":"* ]]; then
+                    MIGRATE_FROM_FILE="${APP_ENV_FOLDER}/${MIGRATE_FROM_REGEX%:*}.env"
+                    MIGRATE_FROM_REGEX="${MIGRATE_FROM_REGEX#*:}"
                 fi
 
-                if ! run_script 'env_var_exists' "${MIGRATE_TO}" "${MIGRATE_TO_FILE}"; then
-                    notice "${MIGRATE_TO} does not exist, check for migrations"
+                if ! run_script 'env_var_exists' "${MIGRATE_TO_VAR}" "${MIGRATE_TO_FILE}"; then
+                    notice "${MIGRATE_TO_VAR} does not exist, check for migrations"
                     local VAR_LIST=()
                     if [[ ${MIGRATE_TO_FILE} == "${MIGRATE_FROM_FILE}" ]]; then
                         # Migrating from and to the same file, do a replace
                         notice "Migrating from and to the same file, do a replace"
-                        local VAR_LIST=()
-                        readarray -t VAR_LIST < <(grep --color=never -o -P "^\s*\K(${MIGRATE_FROM})(?=\s*=)" "${MIGRATE_FROM_FILE}")
-                        for MIGRATE_FROM_VAR in "${VAR_LIST[@]}"; do
+                        local MIGRATE_FROM_LIST=()
+                        readarray -t MIGRATE_FROM_LIST < <(grep --color=never -o -P "^\s*\K(${MIGRATE_FROM_REGEX})(?=\s*=)" "${MIGRATE_FROM_FILE}")
+                        for MIGRATE_FROM_VAR in "${MIGRATE_FROM_LIST[@]}"; do
                             if [[ -n ${MIGRATE_FROM_VAR} ]]; then
                                 run_script 'env_rename' "${MIGRATE_FROM_VAR}" "${MIGRATE_TO_VAR}" "${MIGRATE_FROM_FILE}"
                             fi
@@ -57,7 +58,7 @@ appvars_migrate() {
                         notice "Migrating from and to different files, do a copy and delete"
                     fi
                 else
-                    notice "${MIGRATE_TO} variable exists, don't try to migrate"
+                    notice "${MIGRATE_TO_VAR} variable exists, don't try to migrate"
                 fi
             done
         fi
