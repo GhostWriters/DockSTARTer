@@ -1,0 +1,2 @@
+${DOCKER_VOLUME_CONFIG}/audiobookshelf
+${DOCKER_VOLUME_CONFIG}/audiobookshelf/.metadata
