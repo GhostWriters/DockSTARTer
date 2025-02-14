@@ -49,6 +49,7 @@ yml_merge() {
             else
                 warn "${APP_FOLDER}/${FILENAME}.yml does not exist."
             fi
+            run_script 'appfolders_create' "${APPNAME}"
         else
             error "${APP_FOLDER}/ does not exist."
         fi
