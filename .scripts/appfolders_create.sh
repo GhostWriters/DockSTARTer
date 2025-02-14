@@ -13,21 +13,21 @@ appfolders_create() {
     if [[ -f ${APP_FOLDERS_FILE} ]]; then
         local -a FOLDERS_ARRAY=()
         readarray -t FOLDERS_ARRAY < <(grep -o -P '^\s*\K.*(?=\s*)$' "${APP_FOLDERS_FILE}" | grep -v '^$' || true)
-        if [[ -n ${FOLDERS_ARRAY[@]-} ]]; then
+        if [[ -n ${FOLDERS_ARRAY[*]-} ]]; then
             local DOCKER_VOLUME_CONFIG
             DOCKER_VOLUME_CONFIG=$(run_script 'env_get' DOCKER_VOLUME_CONFIG)
             for index in "${!FOLDERS_ARRAY[@]}"; do
                 local FOLDER
-                FOLDERS_ARRAY[$index]=$(echo "${FOLDERS_ARRAY[$index]}" | DOCKER_VOLUME_CONFIG="${DOCKER_VOLUME_CONFIG}" envsubst)
+                FOLDERS_ARRAY[index]=$(echo "${FOLDERS_ARRAY[$index]}" | DOCKER_VOLUME_CONFIG="${DOCKER_VOLUME_CONFIG}" envsubst)
                 if [[ -z ${FOLDERS_ARRAY[$index]} || -d ${FOLDERS_ARRAY[$index]} ]]; then
-                    unset 'FOLDERS_ARRAY[$index]'
+                    unset 'FOLDERS_ARRAY[index]'
                 fi
             done
             if [[ -n ${FOLDERS_ARRAY[*]-} ]]; then
                 notice "Creating config folders for ${APPNAME}."
-                for FOLDER in "${FOLDERS_ARRAY[*]-}"; do
+                for FOLDER in "${FOLDERS_ARRAY[@]-}"; do
                     notice "Creating folder ${FOLDER}."
-                    mkdir -p "${FOLDER}" | warn "Could not create folder ${FOLDER}."
+                    mkdir -p "${FOLDER}" || warn "Could not create folder ${FOLDER}."
                 done
             fi
         fi
