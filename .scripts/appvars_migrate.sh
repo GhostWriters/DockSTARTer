@@ -29,11 +29,14 @@ appvars_migrate() {
                 MIGRATE_TO_FILE=${COMPOSE_ENV}
                 MIGRATE_FROM_FILE=${COMPOSE_ENV}
 
+                # Change the .env file to use if specified in the variable, and remove the appname from the string
                 if [[ ${MIGRATE_TO} == *":"* ]]; then
                     MIGRATE_TO_FILE="${APP_ENV_FOLDER}/${MIGRATE_TO%:*}.env"
+                    MIGRATE_TO="${MIGRATE_TO#*:}"
                 fi
                 if [[ ${MIGRATE_FROM} == *":"* ]]; then
                     MIGRATE_FROM_FILE="${APP_ENV_FOLDER}/${MIGRATE_FROM%:*}.env"
+                    MIGRATE_FROM="${MIGRATE_FROM#*:}"
                 fi
 
                 notice "[${MIGRATE_TO}] [${MIGRATE_TO_FILE}] [${MIGRATE_FROM}] [${MIGRATE_FROM_FILE}]"
@@ -43,6 +46,9 @@ appvars_migrate() {
                     if [[ ${MIGRATE_TO_FILE} = ${MIGRATE_FROM_FILE} ]]; then
                         # Migrating from and to the same file, do a replace
                         notice "Migrating from and to the same file, do a replace"
+                        local VAR_LIST=()
+                        readarray -t VAR_LIST < <(grep --color=never -o -P "^\s*\K(?:${MIGRATE_FROM})(?=\s*=)" "${MIGRATE_FROM_FILE}")
+                        notice "VAR_LIST [${VAR_LIST[*]-}]"
                     else
                         # Migrating from and to different files, do a copy and delete
                         notice "Migrating from and to different files, do a copy and delete"
