@@ -11,7 +11,6 @@ appvars_migrate() {
     local MIGRATE_FILE="${APP_FOLDER}/${FILENAME}.migrate"
 
     if [[ -f ${MIGRATE_FILE} ]]; then
-        notice "Checking migrations for ${APPNAME}"
         local -a MIGRATE_LINES=()
         # Read "migrate" file into an array. Remove comments. Convert whitespace to single spaces. Remove empty lines.
         readarray -t MIGRATE_LINES < <(sed -E 's/#.*$//g ; s/\s+/ /g ; /^\s*$/d' "${MIGRATE_FILE}")
@@ -41,11 +40,9 @@ appvars_migrate() {
                 fi
 
                 if ! run_script 'env_var_exists' "${MIGRATE_TO_VAR}" "${MIGRATE_TO_FILE}"; then
-                    notice "${MIGRATE_TO_VAR} does not exist, check for migrations"
                     local VAR_LIST=()
                     if [[ ${MIGRATE_TO_FILE} == "${MIGRATE_FROM_FILE}" ]]; then
                         # Migrating from and to the same file, do a replace
-                        notice "Migrating from and to the same file, do a replace"
                         local MIGRATE_FROM_LIST=()
                         readarray -t MIGRATE_FROM_LIST < <(grep --color=never -o -P "^\s*\K(${MIGRATE_FROM_REGEX})(?=\s*=)" "${MIGRATE_FROM_FILE}")
                         for MIGRATE_FROM_VAR in "${MIGRATE_FROM_LIST[@]}"; do
@@ -57,8 +54,6 @@ appvars_migrate() {
                         # Migrating from and to different files, do a copy and delete
                         notice "Migrating from and to different files, do a copy and delete"
                     fi
-                else
-                    notice "${MIGRATE_TO_VAR} variable exists, don't try to migrate"
                 fi
             done
         fi
