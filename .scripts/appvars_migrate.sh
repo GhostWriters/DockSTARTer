@@ -46,7 +46,7 @@ appvars_migrate() {
                         # Migrating from and to the same file, do a replace
                         notice "Migrating from and to the same file, do a replace"
                         local VAR_LIST=()
-                        readarray -t VAR_LIST < <(grep --color=never -o -P "^\s*\K(?:${MIGRATE_FROM})(?=\s*=)" "${MIGRATE_FROM_FILE}")
+                        readarray -t VAR_LIST < <(grep --color=never -o -P "^\s*\K(${MIGRATE_FROM})(?=\s*=)" "${MIGRATE_FROM_FILE}")
                         notice "VAR_LIST [${VAR_LIST[*]-}]"
                     else
                         # Migrating from and to different files, do a copy and delete
