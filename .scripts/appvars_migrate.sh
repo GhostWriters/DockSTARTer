@@ -17,15 +17,18 @@ appvars_migrate() {
         readarray -t MIGRATE_LINES < <(sed -E 's/#.*$//g ; s/\s+/ /g ; /^\s*$/d' "${MIGRATE_FILE}")
         if [[ -n ${MIGRATE_LINES[*]-} ]]; then
             for line in "${MIGRATE_LINES[@]}"; do
-                local MIGRATE_TO_VAR
-                local MIGRATE_FROM_VAR
+                if [[ -n ${line} ]]; then
+                    local MIGRATE_TO_VAR
+                    local MIGRATE_FROM_VAR
 
-                MIGRATE_TO_VAR=${line%% *}
-                MIGRATE_FROM_VAR=${line##"${MIGRATE_TO_VAR}" }
-                MIGRATE_TO_VAR=${MIGRATE_TO_VAR/app:/${FILENAME}:}
-                MIGRATE_FROM_VAR=${MIGRATE_FROM_VAR/app:/${FILENAME}:}
+                    MIGRATE_TO_VAR=${line%% *}
+                    MIGRATE_FROM_VAR=${line##"${MIGRATE_TO_VAR}" }
+                    MIGRATE_TO_VAR=${MIGRATE_TO_VAR/app:/${FILENAME}:}
+                    MIGRATE_FROM_VAR=${MIGRATE_FROM_VAR/app:/${FILENAME}:}
 
-                run_script 'env_rename' "${MIGRATE_FROM_VAR}" "${MIGRATE_TO_VAR}"
+                    notice "run_script 'env_rename' \"${MIGRATE_FROM_VAR}\" \"${MIGRATE_TO_VAR}\""
+                    run_script 'env_rename' "${MIGRATE_FROM_VAR}" "${MIGRATE_TO_VAR}"
+                fi
             done
         fi
     fi
