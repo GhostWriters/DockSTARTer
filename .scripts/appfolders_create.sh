@@ -17,14 +17,20 @@ appfolders_create() {
             notice "Creating config folders for ${APPNAME}."
             local DOCKER_VOLUME_CONFIG
             DOCKER_VOLUME_CONFIG=$(run_script 'env_get' DOCKER_VOLUME_CONFIG)
-            for FOLDER in "${FOLDERS_ARRAY[@]-}"; do
-                local ACTUAL_FOLDER
-                ACTUAL_FOLDER=$(echo "$FOLDER" | DOCKER_VOLUME_CONFIG="${DOCKER_VOLUME_CONFIG}" envsubst)
-                if [[ ! -d ${ACTUAL_FOLDER} ]]; then
-                    notice "Creating folder ${ACTUAL_FOLDER}"
-                    mkdir -p "${ACTUAL_FOLDER}" | warn "Could not create folder ${ACTUAL_FOLDER}"
+            for index in "${!FOLDERS_ARRAY[@]}"; do
+                local FOLDER
+                FOLDERS_ARRAY[$index]=$(echo "${FOLDERS_ARRAY[$index]}" | DOCKER_VOLUME_CONFIG="${DOCKER_VOLUME_CONFIG}" envsubst)
+                if [[ -z ${FOLDERS_ARRAY[$index]} || -d ${FOLDERS_ARRAY[$index]} ]]; then
+                    unset 'FOLDERS_ARRAY[$index]'
                 fi
             done
+            if [[ -n ${FOLDERS_ARRAY[*]-} ]]; then
+                notice "Creating config folders for ${APPNAME}."
+                for FOLDER in "${FOLDERS_ARRAY[*]-}"; do
+                    notice "Creating folder ${FOLDER}."
+                    mkdir -p "${FOLDER}" | warn "Could not create folder ${FOLDER}."
+                done
+            fi
         fi
     fi
 }
