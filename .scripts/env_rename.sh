@@ -22,7 +22,7 @@ env_rename() {
 
     notice "[${FROM_VAR}] [${TO_VAR}] [${FROM_VAR_FILE}] [${TO_VAR_FILE}]"
 
-    if [[ ${FROM_VAR_FILE-} == "${TO_VAR_FILE-}" ]]; then
+    if [[ ${FROM_VAR_FILE} == "${TO_VAR_FILE}" ]]; then
         # Renaming variables in the same file, do a replace
         local VAR_FILE=${FROM_VAR_FILE}
         local -a FOUND_VAR_LIST=()
