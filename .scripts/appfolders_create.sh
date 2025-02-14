@@ -10,23 +10,20 @@ appfolders_create() {
     local APP_FOLDER="${TEMPLATES_FOLDER}/${FILENAME}"
     local APP_FOLDERS_FILE="${APP_FOLDER}/${FILENAME}.folders"
 
-    notice "APPNAME [${APPNAME}]"
-    notice "APP_FOLDER [${APP_FOLDER}]"
-    notice "APP_FOLDERS_FILE [${APP_FOLDERS_FILE}]"
     if [[ -f ${APP_FOLDERS_FILE} ]]; then
-        notice "Creating config folders for ${APPNAME}."
-        local -a APP_FOLDERS_ARRAY=()
-        readarray -t APP_FOLDERS_ARRAY < <(grep -o -P '^\s*\K.*(?=\s*)$' "${APP_FOLDERS_FILE}" | grep -v '^$' || true)
-        if [[ -n ${APP_FOLDERS_ARRAY[@]-} ]]; then
-            notice "APP_FOLDERS_ARRAY [${APP_FOLDERS_ARRAY[@]-}]"
+        local -a FOLDERS_ARRAY=()
+        readarray -t FOLDERS_ARRAY < <(grep -o -P '^\s*\K.*(?=\s*)$' "${APP_FOLDERS_FILE}" | grep -v '^$' || true)
+        if [[ -n ${FOLDERS_ARRAY[@]-} ]]; then
+            notice "Creating config folders for ${APPNAME}."
             local DOCKER_VOLUME_CONFIG
             DOCKER_VOLUME_CONFIG=$(run_script 'env_get' DOCKER_VOLUME_CONFIG)
-            notice "DOCKER_VOLUME_CONFIG [${DOCKER_VOLUME_CONFIG}]"
-            for FOLDER in "${APP_FOLDERS_ARRAY[@]-}"; do
+            for FOLDER in "${FOLDERS_ARRAY[@]-}"; do
                 local ACTUAL_FOLDER
-                notice "FOLDER [${FOLDER}]"
                 ACTUAL_FOLDER=$(echo "$FOLDER" | DOCKER_VOLUME_CONFIG="${DOCKER_VOLUME_CONFIG}" envsubst)
-                notice "ACTUAL_FOLDER [${ACTUAL_FOLDER}]"
+                if [[ ! -d ${ACTUAL_FOLDER} ]]; then
+                    notice "Creating folder ${ACTUAL_FOLDER}"
+                    mkdir -p "${ACTUAL_FOLDER}" | warn "Could not create folder ${ACTUAL_FOLDER}"
+                fi
             done
         fi
     fi
