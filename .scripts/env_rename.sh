@@ -27,7 +27,7 @@ env_rename() {
         local VAR_FILE=${FROM_VAR_FILE}
         local -a FOUND_VAR_LIST=()
         readarray -t FOUND_VAR_LIST < <(grep -q -P "^\s*${FROM_VAR}\s*=" "${VAR_FILE}" || true)
-        for FOUND_VAR in "${FOUND_VAR_LIST[@]}"; do
+        for FOUND_VAR in ${FOUND_VAR_LIST[@]}; do
             notice "Renaming ${FOUND_VAR} to ${TO_VAR} in ${VAR_FILE}"
             sed -i "s/^\s*${FOUND_VAR}\s*=/${TO_VAR}=/" "${VAR_FILE}" || fatal "Failed to rename var from ${FOUND_VAR} to ${TO_VAR} in ${VAR_FILE}\nFailing command: ${F[C]}sed -i \"s/^\\s*${FOUND_VAR}\\s*=/${TO_VAR}=/\" \"${VAR_FILE}\""
         done
