@@ -39,7 +39,6 @@ appvars_migrate() {
                     MIGRATE_FROM="${MIGRATE_FROM#*:}"
                 fi
 
-                notice "[${MIGRATE_TO}] [${MIGRATE_TO_FILE}] [${MIGRATE_FROM}] [${MIGRATE_FROM_FILE}]"
                 if ! run_script 'env_var_exists' "${MIGRATE_TO}"; then
                     notice "${MIGRATE_TO} does not exist, check for migrations"
                     local VAR_LIST=()
