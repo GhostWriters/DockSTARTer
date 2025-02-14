@@ -16,14 +16,14 @@ appvars_migrate() {
         # Read "migrate" file into an array. Remove comments. Convert whitespace to single spaces. Remove empty lines.
         readarray -t MIGRATE_LINES < <(sed -E 's/#.*$//g ; s/\s+/ /g ; /^\s*$/d' "${MIGRATE_FILE}")
         if [[ -n ${MIGRATE_LINES[*]-} ]]; then
-            for line in ${MIGRATE_LINES[@]}; do
+            for line in "${MIGRATE_LINES[@]}"; do
                 local MIGRATE_TO
                 local MIGRATE_FROM
                 local MIGRATE_TO_FILE
                 local MIGRATE_FROM_FILE
 
                 MIGRATE_TO=${line%% *}
-                MIGRATE_FROM=${line##${MIGRATE_TO} }
+                MIGRATE_FROM=${line##"${MIGRATE_TO}" }
                 MIGRATE_TO=${MIGRATE_TO/app:/${FILENAME}:}
                 MIGRATE_FROM=${MIGRATE_FROM/app:/${FILENAME}:}
                 MIGRATE_TO_FILE=${COMPOSE_ENV}
@@ -42,12 +42,12 @@ appvars_migrate() {
                 if ! run_script 'env_var_exists' "${MIGRATE_TO}" "${MIGRATE_TO_FILE}"; then
                     notice "${MIGRATE_TO} does not exist, check for migrations"
                     local VAR_LIST=()
-                    if [[ ${MIGRATE_TO_FILE} = ${MIGRATE_FROM_FILE} ]]; then
+                    if [[ ${MIGRATE_TO_FILE} == "${MIGRATE_FROM_FILE}" ]]; then
                         # Migrating from and to the same file, do a replace
                         notice "Migrating from and to the same file, do a replace"
                         local VAR_LIST=()
                         readarray -t VAR_LIST < <(grep --color=never -o -P "^\s*\K(${MIGRATE_FROM})(?=\s*=)" "${MIGRATE_FROM_FILE}")
-                        for MIGRATE_FROM_VAR in ${VAR_LIST[@]-}; do
+                        for MIGRATE_FROM_VAR in "${VAR_LIST[@]-}"; do
                             run_script 'env_rename' "${MIGRATE_FROM_VAR}" "${MIGRATE_TO_VAR}" "${MIGRATE_FROM_FILE}"
                         done
                     else
