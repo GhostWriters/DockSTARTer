@@ -46,7 +46,7 @@ env_rename() {
             local NEW_VAR_LINES
             NEW_VAR_LINES=$(sed -n "s/^\s*${FOUND_VAR}\s*=/${TO_VAR}=/gp" "${FROM_VAR_FILE}")
             printf '\n%s\n' "${NEW_VAR_LINES}"
-            notice "NEW_LINES=[${NEW_LINES}]"
+            notice "NEW_VAR_LINES=[${NEW_VAR_LINES}]"
             #sed -i "s/^\s*${FOUND_VAR}\s*=/${TO_VAR}=/" "${VAR_FILE}" || fatal "Failed to rename var from ${FOUND_VAR} to ${TO_VAR} in ${VAR_FILE}\nFailing command: ${F[C]}sed -i \"s/^\\s*${FOUND_VAR}\\s*=/${TO_VAR}=/\" \"${VAR_FILE}\""
         done
     fi
