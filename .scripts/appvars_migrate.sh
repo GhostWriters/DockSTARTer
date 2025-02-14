@@ -23,6 +23,11 @@ appvars_migrate() {
                 MIGRATE_FROM=${line##${MIGRATE_TO} }
                 MIGRATE_TO=${MIGRATE_TO/app:/${FILENAME}:}
                 notice "[${MIGRATE_TO}] [${MIGRATE_FROM}]"
+                if ! run_script 'env_var_exists' "${MIGRATE_TO}"; then
+                    notice "Check for migrations to ${MIGRATE_TO}"
+                else
+                    notice "${MIGRATE_TO} variable exists, don't try to migrate"
+                fi
             done
         fi
     fi
