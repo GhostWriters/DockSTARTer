@@ -14,7 +14,6 @@ appfolders_create() {
         local -a FOLDERS_ARRAY=()
         readarray -t FOLDERS_ARRAY < <(grep -o -P '^\s*\K.*(?=\s*)$' "${APP_FOLDERS_FILE}" | grep -v '^$' || true)
         if [[ -n ${FOLDERS_ARRAY[@]-} ]]; then
-            notice "Creating config folders for ${APPNAME}."
             local DOCKER_VOLUME_CONFIG
             DOCKER_VOLUME_CONFIG=$(run_script 'env_get' DOCKER_VOLUME_CONFIG)
             for index in "${!FOLDERS_ARRAY[@]}"; do
@@ -36,5 +35,8 @@ appfolders_create() {
 }
 
 test_appfolders_create() {
-    warn "CI does not test appfolers_create."
+    run_script 'appfolders_create' WATCHTOWER
+    run_script 'appfolders_create' AUDIOBOOKSHELF
+    run_script 'appfolders_create' APPTHATDOESNOTEXIST
+    #warn "CI does not test appfolers_create."
 }
