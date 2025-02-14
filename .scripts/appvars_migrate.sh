@@ -15,8 +15,8 @@ appvars_migrate() {
 
         # Read "migrate" file into an array. Remove comments. Convert whitespace to single spaces. Remove empty lines.
         readarray -t MIGRATE_LINES < <(sed -E 's/#.*$//g ; s/\s+/ /g ; /^\s*$/d' "${MIGRATE_FILE}" || true)
-        if [[ -n ${MIGRATE_LINES[*]} ]]; then
-            for line in "${MIGRATE_LINES[@]}"; do
+        #if [[ -n ${MIGRATE_LINES[*]} ]]; then
+            for line in ${MIGRATE_LINES[*]}; do
                 local MIGRATE_TO_VAR
                 local MIGRATE_FROM_VAR
 
@@ -28,7 +28,7 @@ appvars_migrate() {
                 #notice "run_script 'env_rename' '${MIGRATE_FROM_VAR}' '${MIGRATE_TO_VAR}'"
                 run_script 'env_rename' "${MIGRATE_FROM_VAR}" "${MIGRATE_TO_VAR}"
             done
-        fi
+        #fi
     fi
 }
 
