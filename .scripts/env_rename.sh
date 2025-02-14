@@ -9,19 +9,19 @@ env_rename() {
     local TO_VAR_FILE=${4:-$COMPOSE_ENV}
 
     # Change the .env file to use if specified in the variable, and remove the appname from the string
-    if [[ ${TO_VAR} == *":"* ]]; then
-        TO_VAR_FILE="${APP_ENV_FOLDER}/${TO_VAR%:*}.env"
-        TO_VAR="${TO_VAR#*:}"
-    fi
     if [[ ${FROM_VAR} == *":"* ]]; then
         FROM_VAR_FILE="${APP_ENV_FOLDER}/${FROM_VAR%:*}.env"
         FROM_VAR="${FROM_VAR#*:}"
+    fi
+    if [[ ${TO_VAR} == *":"* ]]; then
+        TO_VAR_FILE="${APP_ENV_FOLDER}/${TO_VAR%:*}.env"
+        TO_VAR="${TO_VAR#*:}"
     fi
 
     if [[ ${FROM_VAR_FILE-} == "${TO_VAR_FILE-}" ]]; then
         # Renaming variables in the same file, do a replace
         local VAR_FILE=${FROM_VAR_FILE}
-        local FOUND_VAR_LIST=()
+        local -a FOUND_VAR_LIST=()
         readarray -t FOUND_VAR_LIST < <(grep -q -P "^\s*${FROM_VAR}\s*=" "${VAR_FILE}")
         for FOUND_VAR in "${FOUND_VAR_LIST[@]}"; do
             if [[ -n ${FOUND_VAR} ]]; then
