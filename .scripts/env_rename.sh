@@ -18,6 +18,11 @@ env_rename() {
         TO_VAR="${TO_VAR#*:}"
     fi
 
+    if [[ -f ${TO_VAR_FILE} ]]; then
+        # Destination file does not exist, create it
+        touch "${TO_VAR_FILE}"
+    fi
+    
     if grep -q -P "^\s*\K${TO_VAR}(?=\s*=)" "${TO_VAR_FILE}"; then
         # Variable to rename to already exists, do nothing
         return
