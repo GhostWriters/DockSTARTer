@@ -16,12 +16,14 @@ appvars_migrate() {
         # Read "migrate" file into an array. Remove comments. Convert whitespace to single spaces. Remove empty lines.
         readarray -t MIGRATE_LINES < <(sed -E 's/#.*$//g ; s/\s+/ /g ; /^\s*$/d' "${MIGRATE_FILE}")
         if [[ -n ${MIGRATE_LINES[*]-} ]]; then
-            notice "${APPNAME} Migrate Lines:\n[${MIGRATE_LINES[@]}]\n"
-        else
-            notice "No migrate lines for ${APPNAME}"
+            for line in ${MIGRATE_LINES[@]}; do
+                local MIGRATE_TO
+                local MIGRATE_FROM
+                MIGRATE_TO=${line%% *}
+                MIGRATE_FROM=${line##${MIGRATE_TO} }
+                notice "[${MIGRATE_TO}] [${MIGRATE_FROM}]"
+            done
         fi
-    else
-        notice "No migrate file for ${APPNAME}"
     fi
 }
 
