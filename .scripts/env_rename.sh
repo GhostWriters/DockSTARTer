@@ -26,7 +26,7 @@ env_rename() {
         # Renaming variables in the same file, do a replace
         local VAR_FILE=${FROM_VAR_FILE}
         local -a FOUND_VAR_LIST=()
-        readarray -t FOUND_VAR_LIST < <(grep -P "^\s*(${FROM_VAR})\s*=" "${VAR_FILE}" || true)
+        readarray -t FOUND_VAR_LIST < <(grep -P "^\s*\K(${FROM_VAR})(?=\s*=)" "${VAR_FILE}" || true)
         notice "FOUND_VAR_LIST=[${FOUND_VAR_LIST[@]}"
         for FOUND_VAR in "${FOUND_VAR_LIST[@]}"; do
             notice "Renaming ${FOUND_VAR} to ${TO_VAR} in ${VAR_FILE}"
@@ -34,7 +34,7 @@ env_rename() {
         done
     else
         # Renaming variables in different files, do a copy and delete
-        if grep -q -P "^\s*${FROM_VAR}\s*=" "${FROM_VAR_FILE}"; then
+        if grep -q -P "^\s*\K(${FROM_VAR})(?=\s*=)" "${FROM_VAR_FILE}"; then
             echo > /dev/null
             #notice "Moving ${FROM_VAR} in ${FROM_VAR_FILE} to:\n ${TO_VAR} in ${TO_VAR_FILE}"
             #sed -i "s/^\s*${FROM_VAR}\s*=/${TO_VAR}=/" "${VAR_FILE}" || fatal "Failed to rename var from ${FROM_VAR} to ${TO_VAR} in ${VAR_FILE}\nFailing command: ${F[C]}sed -i \"s/^\\s*${FROM_VAR}\\s*=/${TO_VAR}=/\" \"${VAR_FILE}\""
