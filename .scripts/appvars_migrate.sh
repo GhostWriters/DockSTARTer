@@ -47,8 +47,10 @@ appvars_migrate() {
                         notice "Migrating from and to the same file, do a replace"
                         local VAR_LIST=()
                         readarray -t VAR_LIST < <(grep --color=never -o -P "^\s*\K(${MIGRATE_FROM})(?=\s*=)" "${MIGRATE_FROM_FILE}")
-                        for MIGRATE_FROM_VAR in "${VAR_LIST[@]-}"; do
-                            run_script 'env_rename' "${MIGRATE_FROM_VAR}" "${MIGRATE_TO_VAR}" "${MIGRATE_FROM_FILE}"
+                        for MIGRATE_FROM_VAR in "${VAR_LIST[@]}"; do
+                            if [[ -n ${MIGRATE_FROM_VAR} ]]; then
+                                run_script 'env_rename' "${MIGRATE_FROM_VAR}" "${MIGRATE_TO_VAR}" "${MIGRATE_FROM_FILE}"
+                            fi
                         done
                     else
                         # Migrating from and to different files, do a copy and delete
