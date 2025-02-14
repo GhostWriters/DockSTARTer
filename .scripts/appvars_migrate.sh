@@ -21,6 +21,7 @@ appvars_migrate() {
                 local MIGRATE_FROM
                 MIGRATE_TO=${line%% *}
                 MIGRATE_FROM=${line##${MIGRATE_TO} }
+                MIGRATE_TO=${MIGRATE_TO/app:/${FILENAME}:}
                 notice "[${MIGRATE_TO}] [${MIGRATE_FROM}]"
             done
         fi
