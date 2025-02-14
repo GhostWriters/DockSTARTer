@@ -26,7 +26,7 @@ env_rename() {
         # Renaming variables in the same file, do a replace
         local VAR_FILE=${FROM_VAR_FILE}
         local -a FOUND_VAR_LIST=()
-        readarray -t FOUND_VAR_LIST < <(grep -q -P "^\s*${FROM_VAR}\s*=" "${VAR_FILE}")
+        readarray -t FOUND_VAR_LIST < <(grep -q -P "^\s*${FROM_VAR}\s*=" "${VAR_FILE}" || true)
         for FOUND_VAR in "${FOUND_VAR_LIST[@]}"; do
             if [[ -n ${FOUND_VAR} ]]; then
                 notice "Renaming ${FOUND_VAR} to ${TO_VAR} in ${VAR_FILE}"
