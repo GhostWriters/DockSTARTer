@@ -19,12 +19,34 @@ appvars_migrate() {
             for line in ${MIGRATE_LINES[@]}; do
                 local MIGRATE_TO
                 local MIGRATE_FROM
+                local MIGRATE_TO_FILE
+                local MIGRATE_FROM_FILE
+
                 MIGRATE_TO=${line%% *}
                 MIGRATE_FROM=${line##${MIGRATE_TO} }
                 MIGRATE_TO=${MIGRATE_TO/app:/${FILENAME}:}
-                notice "[${MIGRATE_TO}] [${MIGRATE_FROM}]"
+                MIGRATE_FROM=${MIGRATE_FROM/app:/${FILENAME}:}
+                MIGRATE_TO_FILE=${COMPOSE_ENV}
+                MIGRATE_FROM_FILE=${COMPOSE_ENV}
+
+                if [[ ${MIGRATE_TO} == *":"* ]]; then
+                    MIGRATE_TO_FILE="${APP_ENV_FOLDER}/${MIGRATE_TO%:*}.env"
+                fi
+                if [[ ${MIGRATE_FROM} == *":"* ]]; then
+                    MIGRATE_FROM_FILE="${APP_ENV_FOLDER}/${MIGRATE_FROM%:*}.env"
+                fi
+
+                notice "[${MIGRATE_TO}] [${MIGRATE_TO_FILE}] [${MIGRATE_FROM}] [${MIGRATE_FROM_FILE}]"
                 if ! run_script 'env_var_exists' "${MIGRATE_TO}"; then
-                    notice "Check for migrations to ${MIGRATE_TO}"
+                    notice "${MIGRATE_TO} does not exist, check for migrations"
+                    local VAR_LIST=()
+                    if [[ ${MIGRATE_TO_FILE} = ${MIGRATE_FROM_FILE} ]]; then
+                        # Migrating from and to the same file, do a replace
+                        notice "Migrating from and to the same file, do a replace"
+                    else
+                        # Migrating from and to different files, do a copy and delete
+                        notice "Migrating from and to different files, do a copy and delete"
+                    fi
                 else
                     notice "${MIGRATE_TO} variable exists, don't try to migrate"
                 fi
