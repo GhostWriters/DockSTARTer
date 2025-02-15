@@ -16,7 +16,7 @@ env_app_env_update() {
     local HEADING_USER_DEFINED
     local HEADING_USER_DEFINED_TITLE="${APPNAME} (User Defined)"
     printf -v HEADING_USER_DEFINED "##\n## %s\n##\n" "${HEADING_USER_DEFINED_TITLE}"
-    local HEADING=""
+    local HEADING_INSTALLED=""
     if run_script 'app_is_installed' "${APPNAME}"; then
         local HEADING_TITLE="${APPNAME}"
         if run_script 'app_is_disabled' "${APPNAME}"; then
@@ -25,17 +25,17 @@ env_app_env_update() {
         if run_script 'app_is_depreciated' "${APPNAME}"; then
             HEADING_TITLE+=' (*DEPRECIATED*)'
         fi
-        printf -v HEADING "##\n## %s\n##" "${HEADING_TITLE}"
+        printf -v HEADING_INSTALLED "##\n## %s\n##" "${HEADING_TITLE}"
     fi
     local -a CURRENT_ENV_LINES=()
     readarray -t CURRENT_ENV_LINES < <(run_script 'env_lines' "${APP_ENV_FILE}")
     local -a UPDATED_ENV_LINES=()
     if [[ -n ${CURRENT_ENV_LINES[*]} ]]; then
         if run_script 'app_is_installed' "${APPNAME}"; then
+            UPDATED_ENV_LINES=("${HEADING_INSTALLED}")
             # New appname.env file we are creating
-            local ENV_ARRAY=()
-            readarray -t ENV_ARRAY < <(run_script 'env_lines' "${APP_DEFAULT_ENV_FILE}")
-            UPDATED_ENV_LINES=("${HEADING}" "${ENV_ARRAY[@]}" "${HEADING_USER_DEFINED}")
+            readarray -t -O ${#UPDATED_ENV_LINES[@]} UPDATED_ENV_LINES < <(run_script 'env_lines' "${APP_DEFAULT_ENV_FILE}")
+            UPDATED_ENV_LINES+=("${HEADING_USER_DEFINED}")
         else
             UPDATED_ENV_LINES=("${HEADING_USER_DEFINED}")
         fi
@@ -88,7 +88,7 @@ env_app_env_update() {
         fi
     else
         if run_script 'app_is_installed' "${APPNAME}"; then
-            UPDATED_ENV_LINES=("${HEADING}" "" "${HEADING_USER_DEFINED}")
+            UPDATED_ENV_LINES=("${HEADING_INSTALLED}" "" "${HEADING_USER_DEFINED}")
         else
             UPDATED_ENV_LINES=("${HEADING_USER_DEFINED}")
         fi
