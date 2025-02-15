@@ -10,7 +10,6 @@ env_app_env_update() {
     local APP_DEFAULT_ENV_FILE="${APP_FOLDER}/${FILENAME}.env"
     local APP_ENV_FILE="${APP_ENV_FOLDER}/${FILENAME}.env"
 
-
     info "Replacing current appname.env file with latest template."
 
     # Current appname.env file, variables only (remove whitespace before and after variable)
