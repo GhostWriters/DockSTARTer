@@ -28,7 +28,7 @@ env_app_env_update() {
         printf -v HEADING_INSTALLED "##\n## %s\n##" "${HEADING_TITLE}"
     fi
     local -a CURRENT_ENV_LINES=()
-    readarray -t CURRENT_ENV_LINES < <(grep -v -P '^\s*#' "${APP_ENV_FILE}")
+    readarray -t CURRENT_ENV_LINES < <(grep -v -P '^\s*#' "${APP_ENV_FILE}" || true)
     local -a UPDATED_ENV_LINES=()
     if [[ -n ${CURRENT_ENV_LINES[*]} ]]; then
         if run_script 'app_is_installed' "${APPNAME}"; then
