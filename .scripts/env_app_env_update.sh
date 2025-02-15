@@ -72,7 +72,7 @@ env_app_env_update() {
         readarray -t CURRENT_ENV_VARS < <(printf '%s\n' "${!CURRENT_ENV_VAR_LINE[@]}" | tr "_" "." | env LC_ALL=C sort | tr "." "_")
         # Process each variable, adding them to the updated .env array
         for index in "${!CURRENT_ENV_VARS[@]}"; do
-            VAR=${CURRENT_ENV_VARS[$index]}
+            local VAR=${CURRENT_ENV_VARS[$index]}
             if [[ -n ${UPDATED_ENV_VAR_INDEX["$VAR"]-} ]]; then
                 # Variable already exists, update its value and remove it from the array
                 UPDATED_ENV_LINES[${UPDATED_ENV_VAR_INDEX["$VAR"]}]=${CURRENT_ENV_VAR_LINE["$VAR"]}
@@ -82,7 +82,9 @@ env_app_env_update() {
 
         if [[ -n ${CURRENT_ENV_VARS[*]} ]]; then
             # There are still variables to process, add to the end of the file
-            UPDATED_ENV_LINES+=("${CURRENT_ENV_VARS[*]}")
+            for VAR in "${CURRENT_ENV_VARS[@]}"; do
+                UPDATED_ENV_LINES+=("${CURRENT_ENV_VAR_LINE[$VAR]}")
+            done
         fi
     else
         if run_script 'app_is_installed' "${APPNAME}"; then
