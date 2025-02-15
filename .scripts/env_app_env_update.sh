@@ -23,7 +23,7 @@ env_app_env_update() {
             HEADING_TITLE+=' (Disabled)'
         fi
         if run_script 'app_is_depreciated' "${APPNAME}"; then
-            HEADING_TITLE+=' *DEPRECIATED*'
+            HEADING_TITLE+=' [*DEPRECIATED*]'
         fi
         printf -v HEADING_INSTALLED "##\n## %s\n##" "${HEADING_TITLE}"
     fi
