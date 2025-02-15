@@ -17,7 +17,7 @@ env_app_env_update() {
     local HEADING_USER_DEFINED
     local HEADING_USER_DEFINED_TITLE="${APPNAME} (User Defined)"
     printf -v HEADING_USER_DEFINED "##\n## %s\n##" "${HEADING_USER_DEFINED_TITLE}"
-    local HEADING
+    local HEADING=""
     if run_script 'app_is_installed' "${APPNAME}"; then
         local HEADING_TITLE="${APPNAME}"
         if run_script 'app_is_disabled' "${APPNAME}"; then
@@ -32,11 +32,14 @@ env_app_env_update() {
     readarray -t CURRENT_ENV_LINES < <(run_script 'env_lines' "${APP_ENV_FILE}")
     local -a UPDATED_ENV_LINES=()
     if [[ -n ${CURRENT_ENV_LINES[*]} ]]; then
-        CURRENT_ENV_LINES=("${HEADING}")
-        # New appname.env file we are creating
-        local ENV_ARRAY=()
-        readarray -t ENV_ARRAY < <(grep -v -P '^\s*#' "${APP_DEFAULT_ENV_FILE}")
-        UPDATED_ENV_LINES=("${HEADING}" "${ENV_ARRAY[@]}" "${HEADING_USER_DEFINED}")
+        if run_script 'app_is_installed' "${APPNAME}"; then
+            # New appname.env file we are creating
+            local ENV_ARRAY=()
+            readarray -t ENV_ARRAY < <(grep -v -P '^\s*#' "${APP_DEFAULT_ENV_FILE}")
+            UPDATED_ENV_LINES=("${HEADING}" "${ENV_ARRAY[@]}" "${HEADING_USER_DEFINED}")
+        else
+            UPDATED_ENV_LINES=("${HEADING_USER_DEFINED}")
+        fi
 
         notice "UPDATED_ENV_LINES=\n[\n${UPDATED_ENV_LINES[*]}\n]"
 
@@ -83,7 +86,11 @@ env_app_env_update() {
             UPDATED_ENV_LINES+=("${CURRENT_ENV_VARS[@]}")
         fi
     else
-        UPDATED_ENV_LINES=("${HEADING}" "" "${HEADING_USER_DEFINED}")
+        if run_script 'app_is_installed' "${APPNAME}"; then
+            UPDATED_ENV_LINES=("${HEADING}" "" "${HEADING_USER_DEFINED}")
+        else
+            UPDATED_ENV_LINES=("${HEADING_USER_DEFINED}")
+        fi
     fi
     local MKTEMP_ENV_UPDATED
     MKTEMP_ENV_UPDATED=$(mktemp) || fatal "Failed to create temporary update .env file.\nFailing command: ${F[C]}mktemp"
