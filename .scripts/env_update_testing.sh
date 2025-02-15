@@ -6,6 +6,10 @@ env_update_testing() {
     run_script 'env_backup'
     run_script 'override_backup'
 
+    for APPNAME in $(run_script 'app_list_installed'); do
+        run_script 'env_app_env_update' "${APPNAME}"
+    done
+
     info "Replacing current .env file with latest template."
 
     # Current .env file, variables only (remove whitespace before and after variable)
