@@ -68,15 +68,17 @@ env_app_env_update() {
         info "Merging current values into updated .env file."
 
         # Create sorted array of vars in current .env file.  Sort `_` to the top.
-        local -a CURRENT_ENV_VARS=()
-        readarray -t CURRENT_ENV_VARS < <(printf '%s\n' "${!CURRENT_ENV_VAR_LINE[@]}" | tr "_" "." | env LC_ALL=C sort | tr "." "_")
-        # Process each variable, adding them to the updated .env array
-        for index in "${!CURRENT_ENV_VARS[@]}"; do
-            local VAR=${CURRENT_ENV_VARS[$index]}
+#        local -a CURRENT_ENV_VARS=()
+#        readarray -t CURRENT_ENV_VARS < <(printf '%s\n' "${!CURRENT_ENV_VAR_LINE[@]}" | tr "_" "." | env LC_ALL=C sort | tr "." "_")
+#        # Process each variable, adding them to the updated .env array
+#        for index in "${!CURRENT_ENV_VARS[@]}"; do
+        for line in "${CURRENT_ENV_LINES[@]}"; do
+#            local VAR=${CURRENT_ENV_VARS[$index]}
+            local VAR=${line%%=*}
             if [[ -n ${UPDATED_ENV_VAR_INDEX["$VAR"]-} ]]; then
                 # Variable already exists, update its value and remove it from the array
                 UPDATED_ENV_LINES[${UPDATED_ENV_VAR_INDEX["$VAR"]}]=${CURRENT_ENV_VAR_LINE["$VAR"]}
-                unset 'CURRENT_ENV_VARS[index]'
+                unset 'CURRENT_ENV_LINES[index]'
             fi
         done
 
