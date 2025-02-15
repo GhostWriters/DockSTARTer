@@ -83,7 +83,7 @@ env_app_env_update() {
 
         if [[ -n ${CURRENT_ENV_VARS[*]} ]]; then
             # There are still variables to process, add to the end of the file
-            UPDATED_ENV_LINES+=("${CURRENT_ENV_VARS[@]}")
+            UPDATED_ENV_LINES+=("${CURRENT_ENV_VARS[*]}")
         fi
     else
         if run_script 'app_is_installed' "${APPNAME}"; then
