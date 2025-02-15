@@ -35,7 +35,7 @@ env_app_env_update() {
         if run_script 'app_is_installed' "${APPNAME}"; then
             # New appname.env file we are creating
             local ENV_ARRAY=()
-            readarray -t ENV_ARRAY < <(grep -v -P '^\s*#' "${APP_DEFAULT_ENV_FILE}")
+            readarray -t ENV_ARRAY < <(run_script 'env_lines' "${APP_DEFAULT_ENV_FILE}")
             UPDATED_ENV_LINES=("${HEADING}" "${ENV_ARRAY[@]}" "${HEADING_USER_DEFINED}")
         else
             UPDATED_ENV_LINES=("${HEADING_USER_DEFINED}")
