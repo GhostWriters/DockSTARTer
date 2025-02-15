@@ -16,7 +16,7 @@ env_app_env_update() {
     # Current appname.env file, variables only (remove whitespace before and after variable)
     local HEADING_USER_DEFINED
     local HEADING_USER_DEFINED_TITLE="${APPNAME} (User Defined)"
-    printf -v HEADING_USER_DEFINED "##\n## %s\n##" "${HEADING_USER_DEFINED_TITLE}"
+    printf -v HEADING_USER_DEFINED "##\n## %s\n##\n" "${HEADING_USER_DEFINED_TITLE}"
     local HEADING=""
     if run_script 'app_is_installed' "${APPNAME}"; then
         local HEADING_TITLE="${APPNAME}"
