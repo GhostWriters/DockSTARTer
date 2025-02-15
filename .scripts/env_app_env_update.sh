@@ -28,13 +28,13 @@ env_app_env_update() {
         printf -v HEADING_INSTALLED "##\n## %s\n##" "${HEADING_TITLE}"
     fi
     local -a CURRENT_ENV_LINES=()
-    readarray -t CURRENT_ENV_LINES < <(grep -v -P '^\s*#' "${APP_ENV_FILE}" || true)
+    readarray -t CURRENT_ENV_LINES < <(run_script 'env_lines' "${APP_ENV_FILE}" || true)
     local -a UPDATED_ENV_LINES=()
     if [[ -n ${CURRENT_ENV_LINES[*]} ]]; then
         if run_script 'app_is_installed' "${APPNAME}"; then
             UPDATED_ENV_LINES=("${HEADING_INSTALLED}")
             # New appname.env file we are creating
-            readarray -t -O ${#UPDATED_ENV_LINES[@]} UPDATED_ENV_LINES < <(run_script 'env_lines' "${APP_DEFAULT_ENV_FILE}")
+            readarray -t -O ${#UPDATED_ENV_LINES[@]} UPDATED_ENV_LINES < <(grep -v -P '^\s*#' "${APP_DEFAULT_ENV_FILE}")
             UPDATED_ENV_LINES+=("${HEADING_USER_DEFINED}")
         else
             UPDATED_ENV_LINES=("${HEADING_USER_DEFINED}")
