@@ -9,7 +9,7 @@ appvars_lines() {
     APPNAME=${APPNAME^^}
     if [[ -n ${APPNAME} ]]; then
         # Search for all variables for app "APPNAME"
-        local VAR_REGEX="${APPNAME}__(?![A-Za-z0-9]+__)\w+"
+        local VAR_REGEX="(${APPNAME}__(?![A-Za-z0-9]+__)\w+)"
         local APP_VARS_REGEX="^\s*${VAR_REGEX}\s*="
         grep --color=never -P "${APP_VARS_REGEX}" || true
     else
