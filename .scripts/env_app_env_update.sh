@@ -100,7 +100,7 @@ env_app_env_update() {
     printf '%s\n' "${UPDATED_ENV_LINES[@]}" > "${MKTEMP_ENV_UPDATED}" || fatal "Failed to write temporary ${FILENAME}.env update file."
 
     cp -f "${MKTEMP_ENV_UPDATED}" "${APP_ENV_FILE}" || fatal "Failed to copy file.\nFailing command: ${F[C]}cp -f \"${MKTEMP_ENV_UPDATED}\" \"${APP_ENV_FILE}\""
-    rm -f "${MKTEMP_ENV_UPDATED}" || warn "Failed to remove temporary $${FILENAME}.env update file.\nFailing command: ${F[C]}rm -f \"${MKTEMP_ENV_UPDATED}\""
+    rm -f "${MKTEMP_ENV_UPDATED}" || warn "Failed to remove temporary ${FILENAME}.env update file.\nFailing command: ${F[C]}rm -f \"${MKTEMP_ENV_UPDATED}\""
     run_script 'set_permissions' "${APP_ENV_FILE}"
     run_script 'env_sanitize'
     info "Environment file update complete."
