@@ -10,7 +10,7 @@ env_format_lines() {
     local appname=${APPNAME,,}
 
     local TOP_SECTION='false'
-    echo "["
+    notice "["
     local -a CURRENT_ENV_LINES=()
     readarray -t CURRENT_ENV_LINES < <(run_script 'env_lines' "${ENV_FILE}" || true)
 
@@ -60,8 +60,8 @@ env_format_lines() {
         done
         CURRENT_ENV_LINES=("${CURRENT_ENV_LINES[@]}")
         if [[ -n ${CURRENT_ENV_LINES[@]} ]]; then
-            if [[ ${TOP_SECTION} = true ]]; then
-                # Add a blank if there was a previous heading
+            if [[ ${TOP_SECTION} == true ]]; then
+                # Add a blank if there was a previous section
                 FORMATTED_ENV_LINES+=("")
             fi
             # Add the "User Defined" heading
@@ -88,7 +88,7 @@ env_format_lines() {
         fi
     fi
     printf "%s\n" "${FORMATTED_ENV_LINES[@]}"
-    echo "]"
+    notice "]"
 }
 
 test_env_format_lines() {
