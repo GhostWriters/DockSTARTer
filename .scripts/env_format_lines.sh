@@ -57,7 +57,7 @@ env_format_lines() {
                 unset 'CURRENT_ENV_VARS[index]'
             fi
         done
-
+        CURRENT_ENV_LINES=("${CURRENT_ENV_LINES[@]}")
         if [[ -n ${CURRENT_ENV_LINES[@]} ]]; then
             if [[ ${TOP_HEADING} = true ]]; then
                 # Add a blank if there was a previous heading
