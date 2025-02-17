@@ -58,6 +58,7 @@ env_format_lines() {
         done
 
         if [[ -n ${CURRENT_ENV_LINES[@]} ]]; then
+            FORMATTED_ENV_LINES+=("")
             # Add the "User Defined" heading
             local HEADING_TITLE="${APPNAME}"
             HEADING_TITLE+=" (User Defined)"
