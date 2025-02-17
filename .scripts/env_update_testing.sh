@@ -6,6 +6,9 @@ env_update_testing() {
     local ENV_LINES_FILE
     ENV_LINES_FILE=$(mktemp)
 
+    local MKTEMP_ENV_UPDATED
+    MKTEMP_ENV_UPDATED=$(mktemp) || fatal "Failed to create temporary update .env file.\nFailing command: ${F[C]}mktemp"
+
     run_script 'appvars_lines' "" > "${ENV_LINES_FILE}"
     run_script 'env_format_lines' "${ENV_LINES_FILE}" "${COMPOSE_ENV_DEFAULT_FILE}" ""
     APPS=$(run_script 'app_list_referenced')
@@ -31,7 +34,7 @@ env_update_testing() {
         local APP_ENV_FILE="${APP_ENV_FOLDER}/${appname}.env"
         local APP_DEFAULT_ENV_FILE=""
         local MKTEMP_ENV_UPDATED
-        MKTEMP_ENV_UPDATED=$(mktemp) || fatal "Failed to create temporary update .env file.\nFailing command: ${F[C]}mktemp"
+        MKTEMP_ENV_UPDATED=$(mktemp) || fatal "Failed to create temporary update ${appname}.env file.\nFailing command: ${F[C]}mktemp"
         if run_script 'app_is_installed' "${APPNAME}"; then
             APP_DEFAULT_ENV_FILE="${TEMPLATES_FOLDER}/${appname}/${appname}.env"
         fi
