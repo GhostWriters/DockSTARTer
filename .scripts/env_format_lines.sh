@@ -42,11 +42,10 @@ env_format_lines() {
     notice $(printf '%s\n' "${FORMATTED_ENV_LINES[@]-}" | grep -n '' || true)
     readarray -t VAR_LINES < <(printf '%s\n' "${FORMATTED_ENV_LINES[@]}" | grep -n -o -P '^[A-Za-z0-9_]*(?=[=])' || true)
     for line in "${VAR_LINES[@]}"; do
-        local origline=$line
         local index=${line%:*}
         index=$((index - 1))
         local VAR=${line#*:}
-        notice "origline=$origline, line=$line, VAR=$VAR, index=$index"
+        notice "line=$line, VAR=$VAR, index=$index"
         FORMATTED_ENV_VAR_INDEX[$VAR]=$index
         notice "FORMATTED_ENV_VAR_INDEX[$VAR]=$index"
     done
@@ -60,10 +59,10 @@ env_format_lines() {
             notice "index=$index, line=$line, VAR=$VAR, VAR_INDEX=$VAR_INDEX"
             if [[ -n ${VAR_INDEX} ]]; then
                 # Variable already exists, update its value
-                notice "Old FORMATTED_ENV_LINES[${VAR_INDEX}]=${FORMATTED_ENV_LINES[$VAR_INDEX]}"
+                notice "Old FORMATTED_ENV_LINES[$VAR_INDEX]=${FORMATTED_ENV_LINES[$VAR_INDEX]}"
                 FORMATTED_ENV_LINES[$VAR_INDEX]=$line
-                notice "New FORMATTED_ENV_LINES[${VAR_INDEX}]=${FORMATTED_ENV_LINES[$VAR_INDEX]}"
-                unset 'CURRENT_ENV_VARS[index]'
+                notice "New FORMATTED_ENV_LINES[$VAR_INDEX]=${FORMATTED_ENV_LINES[$VAR_INDEX]}"
+                unset 'CURRENT_ENV_LINES[index]'
             fi
         done
         CURRENT_ENV_LINES=("${CURRENT_ENV_LINES[@]-}")
