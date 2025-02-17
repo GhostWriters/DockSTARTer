@@ -39,7 +39,7 @@ env_format_lines() {
     local -A FORMATTED_ENV_VAR_INDEX=()
     local -a VAR_LINES=()
     # Make an array with the contents "line number:VARIABLE" in each element
-    notice $(printf '%s\n' "${FORMATTED_ENV_LINES[@]}" | grep -n '' || true)
+    notice $(printf '%s\n' "${FORMATTED_ENV_LINES[@]-}" | grep -n '' || true)
     readarray -t VAR_LINES < <(printf '%s\n' "${FORMATTED_ENV_LINES[@]}" | grep -n -o -P '^[A-Za-z0-9_]*(?=[=])' || true)
     for line in "${VAR_LINES[@]}"; do
         local index=${line%:*}
@@ -49,7 +49,7 @@ env_format_lines() {
         notice "FORMATTED_ENV_VAR_INDEX[$VAR]=$index"
     done
 
-    if [[ -n ${CURRENT_ENV_LINES[@]} ]]; then
+    if [[ -n ${CURRENT_ENV_LINES[@]-} ]]; then
         # Update the default variables
         for index in "${!CURRENT_ENV_LINES[@]}"; do
             local line=${CURRENT_ENV_LINES[index]}
@@ -60,8 +60,8 @@ env_format_lines() {
                 unset 'CURRENT_ENV_VARS[index]'
             fi
         done
-        CURRENT_ENV_LINES=("${CURRENT_ENV_LINES[@]}")
-        if [[ -n ${CURRENT_ENV_LINES[@]} ]]; then
+        CURRENT_ENV_LINES=("${CURRENT_ENV_LINES[@]-}")
+        if [[ -n ${CURRENT_ENV_LINES[@]-} ]]; then
             if [[ ${TOP_SECTION} == true ]]; then
                 # Add a blank if there was a previous section
                 FORMATTED_ENV_LINES+=("")
@@ -89,7 +89,7 @@ env_format_lines() {
             FORMATTED_ENV_LINES+=("")
         fi
     fi
-    printf "%s\n" "${FORMATTED_ENV_LINES[@]}"
+    printf "%s\n" "${FORMATTED_ENV_LINES[@]-}"
     notice "]"
 }
 
