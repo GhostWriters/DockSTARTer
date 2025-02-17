@@ -34,6 +34,10 @@ env_format_lines() {
         readarray -t -O ${#FORMATTED_ENV_LINES[@]} FORMATTED_ENV_LINES < "${ENV_DEFAULT_FILE}"
         TOP_SECTION='true'
     fi
+    if [[ ${TOP_SECTION} == true ]]; then
+        # Add a blank if there was a previous section
+        FORMATTED_ENV_LINES+=("")
+    fi
 
     # FORMATTED_ENV_VAR_INDEX["VAR"]=index position of line in FORMATTED_ENV_LINE
     local -A FORMATTED_ENV_VAR_INDEX=()
