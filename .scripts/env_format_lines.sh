@@ -57,8 +57,9 @@ env_format_lines() {
             local VAR=${line%%=*}
             VAR_INDEX=${FORMATTED_ENV_VAR_INDEX["$VAR"]-}
             notice "index=$index, line=$line, VAR=$VAR, VAR_INDEX=$VAR_INDEX"
-            if [[ -n ${VAR_INDEX} ]]; then
+            if [[ -n ${FORMATTED_ENV_VAR_INDEX["$VAR"]-} ]]; then
                 # Variable already exists, update its value
+                VAR_INDEX=${FORMATTED_ENV_VAR_INDEX["$VAR"]-}
                 notice "Old FORMATTED_ENV_LINES[$VAR_INDEX]=${FORMATTED_ENV_LINES[$VAR_INDEX]}"
                 FORMATTED_ENV_LINES[$VAR_INDEX]=$line
                 notice "New FORMATTED_ENV_LINES[$VAR_INDEX]=${FORMATTED_ENV_LINES[$VAR_INDEX]}"
