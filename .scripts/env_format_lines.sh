@@ -42,10 +42,11 @@ env_format_lines() {
     notice $(printf '%s\n' "${FORMATTED_ENV_LINES[@]-}" | grep -n '' || true)
     readarray -t VAR_LINES < <(printf '%s\n' "${FORMATTED_ENV_LINES[@]}" | grep -n -o -P '^[A-Za-z0-9_]*(?=[=])' || true)
     for line in "${VAR_LINES[@]}"; do
+        local origline=$line
         local index=${line%:*}
         index=$((index - 1))
         local VAR=${line#*:}
-        notice "line=$line, VAR=$VAR, $index=$index"
+        notice "origline=$origline, line=$line, VAR=$VAR, index=$index"
         FORMATTED_ENV_VAR_INDEX[$VAR]=$index
         notice "FORMATTED_ENV_VAR_INDEX[$VAR]=$index"
     done
