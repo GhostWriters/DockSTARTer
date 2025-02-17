@@ -9,6 +9,7 @@ env_format_lines() {
     APPNAME=${APPNAME^^}
     local appname=${APPNAME,,}
 
+    local TOP_HEADING='false'
     echo "["
     local -a CURRENT_ENV_LINES=()
     readarray -t CURRENT_ENV_LINES < <(run_script 'env_lines' "${ENV_FILE}" || true)
@@ -26,11 +27,11 @@ env_format_lines() {
         local HEADING
         printf -v HEADING "##\n## %s\n##" "${HEADING_TITLE}"
         FORMATTED_ENV_LINES+=("${HEADING}")
+        TOP_HEADING='true'
     fi
     if [[ -n ${ENV_DEFAULT_FILE} && -f ${ENV_DEFAULT_FILE} ]]; then
         # Default file is specified and exists, add the contents verbatim
         readarray -t -O ${#FORMATTED_ENV_LINES[@]} FORMATTED_ENV_LINES < "${ENV_DEFAULT_FILE}"
-        FORMATTED_ENV_LINES+=("")
     fi
 
     # FORMATTED_ENV_VAR_INDEX["VAR"]=index position of line in FORMATTED_ENV_LINE
