@@ -26,7 +26,7 @@ env_format_lines() {
         fi
         local HEADING
         printf -v HEADING "##\n## %s\n##" "${HEADING_TITLE}"
-        FORMATTED_ENV_LINES+=("${HEADING}")
+        readarray -t -O ${#FORMATTED_ENV_LINES[@]} FORMATTED_ENV_LINES < <(printf '%s\n' "{$HEADING}")
         TOP_SECTION='true'
     fi
     if [[ -n ${ENV_DEFAULT_FILE} && -f ${ENV_DEFAULT_FILE} ]]; then
@@ -40,7 +40,7 @@ env_format_lines() {
     local -a VAR_LINES=()
     # Make an array with the contents "line number:VARIABLE" in each element
     notice $(printf '%s\n' "${FORMATTED_ENV_LINES[@]-}" | grep -n '' || true)
-    readarray -d'' VAR_LINES < <(printf '%s' "${FORMATTED_ENV_LINES[@]}" | grep -z -n -o -P '^[A-Za-z0-9_]*(?=[=])' || true)
+    readarray -t VAR_LINES < <(printf '%s\n' "${FORMATTED_ENV_LINES[@]}" | grep -n -o -P '^[A-Za-z0-9_]*(?=[=])' || true)
     for line in "${VAR_LINES[@]}"; do
         local index=${line%:*}
         index=$((index - 1))
@@ -77,7 +77,7 @@ env_format_lines() {
             HEADING_TITLE+=" (User Defined)"
             local HEADING
             printf -v HEADING "##\n## %s\n##" "${HEADING_TITLE}"
-            FORMATTED_ENV_LINES+=("${HEADING}")
+            readarray -t -O ${#FORMATTED_ENV_LINES[@]} FORMATTED_ENV_LINES < <(printf '%s\n' "{$HEADING}")
 
             # Add the user defined variables
             for index in "${!CURRENT_ENV_LINES[@]}"; do
