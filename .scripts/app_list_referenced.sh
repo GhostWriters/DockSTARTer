@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 app_list_referenced() {
     local APPNAME_REGEX='^[A-Z][A-Z0-9]*(__[A-Z0-9]+)?'
-    local REFERENCED_APPS_REGEX="${APPNAME_REGEX}(?=\s*=)"
+    local REFERENCED_APPS_REGEX="${APPNAME_REGEX}(?=__\w+\s*=)"
 
     grep --color=never -o -P "${REFERENCED_APPS_REGEX}" "${COMPOSE_ENV}" | sort -u  || true
 }
