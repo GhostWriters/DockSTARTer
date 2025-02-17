@@ -18,9 +18,9 @@ env_update_testing() {
             APP_DEFAULT_GLOBAL_ENV_FILE="${TEMPLATES_FOLDER}/${appname}/.env"
             APP_DEFAULT_ENV_FILE="${TEMPLATES_FOLDER}/${appname}/${appname}.env"
         fi
-        #run_script 'appvars_lines' "${APPNAME}" > "${ENV_LINES_FILE}"
-        #run_script 'env_format_lines' "${ENV_LINES_FILE}" "${APP_DEFAULT_GLOBAL_ENV_FILE}" "${APPNAME}"
-        run_script 'env_format_lines' "${APP_ENV_FILE}" "${APP_DEFAULT_ENV_FILE}" "${APPNAME}"
+        run_script 'appvars_lines' "${APPNAME}" > "${ENV_LINES_FILE}"
+        run_script 'env_format_lines' "${ENV_LINES_FILE}" "${APP_DEFAULT_GLOBAL_ENV_FILE}" "${APPNAME}"
+        #run_script 'env_format_lines' "${APP_ENV_FILE}" "${APP_DEFAULT_ENV_FILE}" "${APPNAME}"
     done
 
     #local MKTEMP_ENV_UPDATED
