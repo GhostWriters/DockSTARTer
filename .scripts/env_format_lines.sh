@@ -45,6 +45,7 @@ env_format_lines() {
         index=$((index - 1))
         local VAR=${line#*:}
         FORMATTED_ENV_VAR_INDEX[$VAR]=$index
+        notice "FORMATTED_ENV_VAR_INDEX[$VAR]=$index"
     done
 
     if [[ -n ${CURRENT_ENV_LINES[@]} ]]; then
