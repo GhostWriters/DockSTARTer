@@ -25,7 +25,7 @@ env_format_lines() {
             HEADING_TITLE+=' [*DEPRECIATED*]'
         fi
         local HEADING
-        printf -v HEADING "##\n## %s\n##" "${HEADING_TITLE}"
+        printf -v HEADING "##\n## %s\n##\n" "${HEADING_TITLE}"
         readarray -t -O ${#FORMATTED_ENV_LINES[@]} FORMATTED_ENV_LINES < <(printf '%s\n' "{$HEADING}")
         TOP_SECTION='true'
     fi
@@ -70,7 +70,7 @@ env_format_lines() {
             local HEADING_TITLE="${APPNAME}"
             HEADING_TITLE+=" (User Defined)"
             local HEADING
-            printf -v HEADING "##\n## %s\n##" "${HEADING_TITLE}"
+            printf -v HEADING "##\n## %s\n##\n" "${HEADING_TITLE}"
             readarray -t -O ${#FORMATTED_ENV_LINES[@]} FORMATTED_ENV_LINES < <(printf '%s\n' "{$HEADING}")
 
             # Add the user defined variables
