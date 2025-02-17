@@ -61,7 +61,7 @@ env_format_lines() {
         if [[ -n ${CURRENT_ENV_LINES[@]} ]]; then
             if [[ ${TOP_HEADING} = true ]]; then
                 # Add a blank if there was a previous heading
-                FORMATTED_ENV_LINES+=(""
+                FORMATTED_ENV_LINES+=("")
             fi
             # Add the "User Defined" heading
             local HEADING_TITLE="${APPNAME}"
