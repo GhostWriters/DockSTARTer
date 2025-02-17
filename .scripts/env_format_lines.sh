@@ -10,7 +10,7 @@ env_format_lines() {
     local appname=${APPNAME,,}
 
     local TOP_SECTION='false'
-    notice "["
+    #notice "["
     local -a CURRENT_ENV_LINES=()
     readarray -t CURRENT_ENV_LINES < <(run_script 'env_lines' "${ENV_FILE}" || true)
 
@@ -90,7 +90,7 @@ env_format_lines() {
         fi
     fi
     printf "%s\n" "${FORMATTED_ENV_LINES[@]-}"
-    notice "]"
+    #notice "]"
 }
 
 test_env_format_lines() {
