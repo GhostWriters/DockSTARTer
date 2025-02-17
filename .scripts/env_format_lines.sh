@@ -45,6 +45,7 @@ env_format_lines() {
         local index=${line%:*}
         index=$((index - 1))
         local VAR=${line#*:}
+        notice "line=$line, VAR=$VAR, $index=$index"
         FORMATTED_ENV_VAR_INDEX[$VAR]=$index
         notice "FORMATTED_ENV_VAR_INDEX[$VAR]=$index"
     done
