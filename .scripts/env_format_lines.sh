@@ -9,14 +9,14 @@ env_format_lines() {
     APPNAME=${APPNAME^^}
     local appname=${APPNAME,,}
 
-    local TOP_HEADING='false'
+    local TOP_SECTION='false'
     echo "["
     local -a CURRENT_ENV_LINES=()
     readarray -t CURRENT_ENV_LINES < <(run_script 'env_lines' "${ENV_FILE}" || true)
 
     local -a FORMATTED_ENV_LINES=()
     if [[ -n ${APPNAME} ]] && run_script 'app_is_builtin' "${APPNAME}"; then
-        # APPNAME is specified and builtin, output main heading
+        # APPNAME is specified and builtin, output main app heading
         local HEADING_TITLE="${APPNAME}"
         if run_script 'app_is_disabled' "${APPNAME}"; then
             HEADING_TITLE+=' (Disabled)'
@@ -27,11 +27,12 @@ env_format_lines() {
         local HEADING
         printf -v HEADING "##\n## %s\n##" "${HEADING_TITLE}"
         FORMATTED_ENV_LINES+=("${HEADING}")
-        TOP_HEADING='true'
+        TOP_SECTION='true'
     fi
     if [[ -n ${ENV_DEFAULT_FILE} && -f ${ENV_DEFAULT_FILE} ]]; then
         # Default file is specified and exists, add the contents verbatim
         readarray -t -O ${#FORMATTED_ENV_LINES[@]} FORMATTED_ENV_LINES < "${ENV_DEFAULT_FILE}"
+        TOP_SECTION='true'
     fi
 
     # FORMATTED_ENV_VAR_INDEX["VAR"]=index position of line in FORMATTED_ENV_LINE
@@ -59,7 +60,7 @@ env_format_lines() {
         done
         CURRENT_ENV_LINES=("${CURRENT_ENV_LINES[@]}")
         if [[ -n ${CURRENT_ENV_LINES[@]} ]]; then
-            if [[ ${TOP_HEADING} = true ]]; then
+            if [[ ${TOP_SECTION} = true ]]; then
                 # Add a blank if there was a previous heading
                 FORMATTED_ENV_LINES+=("")
             fi
