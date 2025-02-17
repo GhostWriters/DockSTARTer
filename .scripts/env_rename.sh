@@ -20,6 +20,7 @@ env_rename() {
 
     if [[ ! -f ${TO_VAR_FILE} ]]; then
         # Destination file does not exist, create it
+        notice "Creating ${TO_VAR_FILE}"
         touch "${TO_VAR_FILE}"
     fi
 
