@@ -14,14 +14,18 @@ env_format_lines() {
 
     local -a FORMATTED_ENV_LINES=()
     if [[ -n ${APPNAME} ]] && run_script 'app_is_builtin' "${APPNAME}"; then
+        notice "${APPNAME} is builtin"
         # APPNAME is specified and builtin, output main heading
         local HEADING_TITLE="${APPNAME}"
         if run_script 'app_is_disabled' "${APPNAME}"; then
+            notice "${APPNAME} is disabled"
             HEADING_TITLE+=' (Disabled)'
         fi
         if run_script 'app_is_depreciated' "${APPNAME}"; then
+            notice "${APPNAME} is depreciated"
             HEADING_TITLE+=' [*DEPRECIATED*]'
         fi
+        notice "HEADING_TITLE=${HEADING_TITLE}"
         local HEADING
         printf -v HEADING "##\n## %s\n##" "${HEADING_TITLE}"
     fi
