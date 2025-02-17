@@ -28,6 +28,7 @@ env_format_lines() {
     if [[ -n ${ENV_DEFAULT_FILE} && -f ${ENV_DEFAULT_FILE} ]]; then
         # Default file is specified and exists, add the contents verbatim
         readarray -t -O ${#FORMATTED_ENV_LINES[@]} FORMATTED_ENV_LINES < "${ENV_DEFAULT_FILE}"
+        FORMATTED_ENV_LINES+=('')
     fi
 
     # FORMATTED_ENV_VAR_INDEX["VAR"]=index position of line in FORMATTED_ENV_LINE
@@ -74,6 +75,7 @@ env_format_lines() {
                 FORMATTED_ENV_VAR_INDEX[$VAR]=$((${#FORMATTED_ENV_LINES[@]} - 1))
             fi
         done
+        FORMATTED_ENV_LINES+=('')
     fi
     printf '%s\n' "${FORMATTED_ENV_LINES[@]}"
 }
