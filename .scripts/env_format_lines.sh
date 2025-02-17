@@ -55,7 +55,7 @@ env_format_lines() {
 
     # Add the "User Defined" heading
     local HEADING_TITLE="${APPNAME}"
-    HEADING_TITLE+="(User Defined)"
+    HEADING_TITLE+=" (User Defined)"
     local HEADING
     printf -v HEADING "##\n## %s\n##" "${HEADING_TITLE}"
     FORMATTED_ENV_LINES+=("${HEADING}")
