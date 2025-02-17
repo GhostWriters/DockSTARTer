@@ -32,10 +32,10 @@ env_format_lines() {
     fi
 
     # FORMATTED_ENV_VAR_INDEX["VAR"]=index position of line in FORMATTED_ENV_LINE
-    local -A FORMATTED_ENV_VAR_INDEX
-    local -a VAR_LINES
+    local -A FORMATTED_ENV_VAR_INDEX=()
+    local -a VAR_LINES=()
     # Make an array with the contents "line number:VARIABLE" in each element
-    readarray -t VAR_LINES < <(printf '%s\n' "${FORMATTED_ENV_LINES[@]}" | grep -n -o -P '^[A-Za-z0-9_]*(?=[=])')
+    readarray -t VAR_LINES < <(printf '%s\n' "${FORMATTED_ENV_LINES[@]}" | grep -n -o -P '^[A-Za-z0-9_]*(?=[=])' || true)
     for line in "${VAR_LINES[@]}"; do
         local index=${line%:*}
         index=$((index - 1))
