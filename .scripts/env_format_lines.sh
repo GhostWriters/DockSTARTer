@@ -30,13 +30,6 @@ env_format_lines() {
         readarray -t -O ${#FORMATTED_ENV_LINES[@]} FORMATTED_ENV_LINES < "${ENV_DEFAULT_FILE}"
     fi
 
-    # VAR_TO_ENV_LINE["VAR"]="line"
-    local -A VAR_TO_ENV_LINE=()
-    for line in $(printf '%s\n' "${FORMATTED_ENV_LINES[@]}" | grep -v -P '^\s*#|^\s*$' | grep '=' || true); do
-        local VAR=${line%%=*}
-        VAR_TO_ENV_LINE[$VAR]="$line"
-    done
-
     # FORMATTED_ENV_VAR_INDEX["VAR"]=index position of line in FORMATTED_ENV_LINE
     local -A FORMATTED_ENV_VAR_INDEX
     local -a VAR_LINES
@@ -55,7 +48,7 @@ env_format_lines() {
         local VAR=${line%%=*}
         if [[ -n ${FORMATTED_ENV_VAR_INDEX["$VAR"]-} ]]; then
             # Variable already exists, update its value
-            FORMATTED_ENV_LINES[${FORMATTED_ENV_VAR_INDEX["$VAR"]}]=${VAR_TO_ENV_LINE["$VAR"]}
+            FORMATTED_ENV_LINES[${FORMATTED_ENV_VAR_INDEX["$VAR"]}]=$line
             unset 'CURRENT_ENV_VARS[index]'
         fi
     done
@@ -73,15 +66,15 @@ env_format_lines() {
         local VAR=${line%%=*}
         if [[ -n ${FORMATTED_ENV_VAR_INDEX["$VAR"]-} ]]; then
             # Variable already exists, update its value
-            FORMATTED_ENV_LINES[${FORMATTED_ENV_VAR_INDEX["$VAR"]}]=${VAR_TO_ENV_LINE["$VAR"]}
+            FORMATTED_ENV_LINES[${FORMATTED_ENV_VAR_INDEX["$VAR"]}]=$line
         else
             # Variable is new, add it
-            FORMATTED_ENV_LINES+=("${VAR_TO_ENV_LINE[$VAR]}")
+            FORMATTED_ENV_LINES+=("$line")
             FORMATTED_ENV_VAR_INDEX[$VAR]=$((${#FORMATTED_ENV_LINES[@]} - 1))
         fi
     done
 
-    printf '%s\n' "${FORMATTED_ENV_LINES}"
+    printf '%s\n' "${FORMATTED_ENV_LINES[@]}"
 }
 
 test_env_format_lines() {
