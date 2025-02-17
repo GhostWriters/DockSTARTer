@@ -28,6 +28,7 @@ env_format_lines() {
         notice "HEADING_TITLE=${HEADING_TITLE}"
         local HEADING
         printf -v HEADING "##\n## %s\n##" "${HEADING_TITLE}"
+        FORMATTED_ENV_LINES+=("${HEADING}")
     fi
     if [[ -n ${ENV_DEFAULT_FILE} && -f ${ENV_DEFAULT_FILE} ]]; then
         # Default file is specified and exists, add the contents verbatim
