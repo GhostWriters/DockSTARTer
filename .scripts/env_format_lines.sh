@@ -54,14 +54,14 @@ env_format_lines() {
         fi
     done
 
-    # Add the "User Defined" heading
-    local HEADING_TITLE="${APPNAME}"
-    HEADING_TITLE+=" (User Defined)"
-    local HEADING
-    printf -v HEADING "##\n## %s\n##" "${HEADING_TITLE}"
-    FORMATTED_ENV_LINES+=("${HEADING}")
+    if [[ -n ${CURRENT_ENV_LINES[@]-} ]]; then
+        # Add the "User Defined" heading
+        local HEADING_TITLE="${APPNAME}"
+        HEADING_TITLE+=" (User Defined)"
+        local HEADING
+        printf -v HEADING "##\n## %s\n##" "${HEADING_TITLE}"
+        FORMATTED_ENV_LINES+=("${HEADING}")
 
-    if [[ -n ${CURRENT_ENV_LINES[@]} ]]; then
         # Add the user defined variables
         for index in "${!CURRENT_ENV_LINES[@]}"; do
             local line=${CURRENT_ENV_LINES[index]}
