@@ -7,16 +7,18 @@ appvars_lines() {
     # If APPNAME is empty, return all lines in `.env` file that are not for an app
     local APPNAME=${1-}
     APPNAME=${APPNAME^^}
+    local VAR_FILE=${2:-$COMPOSE_ENV}
+
     if [[ -n ${APPNAME} ]]; then
         # Search for all variables for app "APPNAME"
         local VAR_REGEX="${APPNAME}__(?![A-Za-z0-9]+__)\w+"
         local APP_VARS_REGEX="\s*${VAR_REGEX}\s*="
-        grep --color=never -P "${APP_VARS_REGEX}" "${COMPOSE_ENV}" || true
+        grep --color=never -P "${APP_VARS_REGEX}" "${VAR_FILE}" || true
     else
         # Search for all variables not for an app
         local VAR_REGEX='^[A-Z][A-Z0-9]*(__[A-Z0-9]+)+\w+'
         local APP_VARS_REGEX="^\s*${VAR_REGEX}\s*="
-        grep -v -P '^\s*$|^\s*\#' "${COMPOSE_ENV}" | grep --color=never -v -P "${APP_VARS_REGEX}" || true
+        grep -v -P '^\s*$|^\s*\#' "${VAR_FILE}" | grep --color=never -v -P "${APP_VARS_REGEX}" || true
     fi
 }
 
