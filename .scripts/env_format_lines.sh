@@ -77,7 +77,7 @@ env_format_lines() {
                 FORMATTED_ENV_VAR_INDEX[$VAR]=$((${#FORMATTED_ENV_LINES[@]} - 1))
             fi
         done
-        FORMATTED_ENV_LINES+=($(echo))
+        FORMATTED_ENV_LINES+=("" "")
     fi
     printf "%s\n" "${FORMATTED_ENV_LINES[@]}"
     echo "]"
