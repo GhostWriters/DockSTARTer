@@ -45,39 +45,41 @@ env_format_lines() {
         FORMATTED_ENV_VAR_INDEX[$VAR]=$index
     done
 
-    # Update the default variables
-    for index in "${!CURRENT_ENV_LINES[@]}"; do
-        local line=${CURRENT_ENV_LINES[index]}
-        local VAR=${line%%=*}
-        if [[ -n ${FORMATTED_ENV_VAR_INDEX["$VAR"]-} ]]; then
-            # Variable already exists, update its value
-            FORMATTED_ENV_LINES[${FORMATTED_ENV_VAR_INDEX["$VAR"]}]=$line
-            unset 'CURRENT_ENV_VARS[index]'
-        fi
-    done
-
     if [[ -n ${CURRENT_ENV_LINES[@]} ]]; then
-        # Add the "User Defined" heading
-        local HEADING_TITLE="${APPNAME}"
-        HEADING_TITLE+=" (User Defined)"
-        local HEADING
-        printf -v HEADING "##\n## %s\n##" "${HEADING_TITLE}"
-        FORMATTED_ENV_LINES+=("${HEADING}")
-
-        # Add the user defined variables
+        # Update the default variables
         for index in "${!CURRENT_ENV_LINES[@]}"; do
             local line=${CURRENT_ENV_LINES[index]}
             local VAR=${line%%=*}
             if [[ -n ${FORMATTED_ENV_VAR_INDEX["$VAR"]-} ]]; then
                 # Variable already exists, update its value
                 FORMATTED_ENV_LINES[${FORMATTED_ENV_VAR_INDEX["$VAR"]}]=$line
-            else
-                # Variable is new, add it
-                FORMATTED_ENV_LINES+=("$line")
-                FORMATTED_ENV_VAR_INDEX[$VAR]=$((${#FORMATTED_ENV_LINES[@]} - 1))
+                unset 'CURRENT_ENV_VARS[index]'
             fi
         done
-        FORMATTED_ENV_LINES+=("")
+
+        if [[ -n ${CURRENT_ENV_LINES[@]} ]]; then
+            # Add the "User Defined" heading
+            local HEADING_TITLE="${APPNAME}"
+            HEADING_TITLE+=" (User Defined)"
+            local HEADING
+            printf -v HEADING "##\n## %s\n##" "${HEADING_TITLE}"
+            FORMATTED_ENV_LINES+=("${HEADING}")
+
+            # Add the user defined variables
+            for index in "${!CURRENT_ENV_LINES[@]}"; do
+                local line=${CURRENT_ENV_LINES[index]}
+                local VAR=${line%%=*}
+                if [[ -n ${FORMATTED_ENV_VAR_INDEX["$VAR"]-} ]]; then
+                    # Variable already exists, update its value
+                    FORMATTED_ENV_LINES[${FORMATTED_ENV_VAR_INDEX["$VAR"]}]=$line
+                else
+                    # Variable is new, add it
+                    FORMATTED_ENV_LINES+=("$line")
+                    FORMATTED_ENV_VAR_INDEX[$VAR]=$((${#FORMATTED_ENV_LINES[@]} - 1))
+                fi
+            done
+            FORMATTED_ENV_LINES+=("")
+        fi
     fi
     printf "%s\n" "${FORMATTED_ENV_LINES[@]}"
     echo "]"
