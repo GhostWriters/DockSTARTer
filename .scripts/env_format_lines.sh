@@ -54,6 +54,7 @@ env_format_lines() {
         for index in "${!CURRENT_ENV_LINES[@]}"; do
             local line=${CURRENT_ENV_LINES[index]}
             local VAR=${line%%=*}
+            notice "index=$index, line=$line, VAR=$VAR"
             if [[ -n ${FORMATTED_ENV_VAR_INDEX["$VAR"]-} ]]; then
                 # Variable already exists, update its value
                 FORMATTED_ENV_LINES[${FORMATTED_ENV_VAR_INDEX["$VAR"]}]=$line
