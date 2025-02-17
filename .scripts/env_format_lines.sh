@@ -41,6 +41,7 @@ env_format_lines() {
     # Make an array with the contents "line number:VARIABLE" in each element
     notice $(printf '%s\n' "${FORMATTED_ENV_LINES[@]-}" | grep -n '' || true)
     readarray -t VAR_LINES < <(printf '%s\n' "${FORMATTED_ENV_LINES[@]}" | grep -z -n -o -P '^[A-Za-z0-9_]*(?=[=])' || true)
+    printf '%s/n' "VAR_LINES[@]}"
     for line in "${VAR_LINES[@]}"; do
         local index=${line%:*}
         index=$((index - 1))
