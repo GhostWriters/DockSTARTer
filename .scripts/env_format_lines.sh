@@ -59,7 +59,7 @@ env_format_lines() {
         done
 
         if [[ -n ${CURRENT_ENV_LINES[@]} ]]; then
-            if [[ ${TOP_HEADING} == true ]]; then
+            if [[ ${TOP_HEADING} = true ]]; then
                 # Add a blank if there was a previous heading
                 FORMATTED_ENV_LINES+=(""
             fi
