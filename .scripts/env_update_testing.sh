@@ -8,9 +8,9 @@ env_update_testing() {
     local -a UPDATED_ENV_LINES=()
 
     run_script 'appvars_lines' "" > "${ENV_LINES_FILE}"
-    readarray -t UPDATED_ENV_LINES < <( \
+    #readarray -t UPDATED_ENV_LINES < <( \
         run_script 'env_format_lines' "${ENV_LINES_FILE}" "${COMPOSE_ENV_DEFAULT_FILE}" ""
-    )
+    #)
     APPS=$(run_script 'app_list_referenced')
     # Format the global .env file
     for APPNAME in ${APPS^^}; do
