@@ -9,18 +9,25 @@ env_update_testing() {
     run_script 'appvars_lines' "" > "${ENV_LINES_FILE}"
     run_script 'env_format_lines' "${ENV_LINES_FILE}" "${COMPOSE_ENV_DEFAULT_FILE}" ""
     APPS=$(run_script 'app_list_referenced')
+    # Format the global .env file
     for APPNAME in ${APPS^^}; do
         local appname=${APPNAME,,}
-        local APP_ENV_FILE="${APP_ENV_FOLDER}/${appname}.env"
         local APP_DEFAULT_GLOBAL_ENV_FILE=""
-        local APP_DEFAULT_ENV_FILE=""
         if run_script 'app_is_installed' "${APPNAME}"; then
             APP_DEFAULT_GLOBAL_ENV_FILE="${TEMPLATES_FOLDER}/${appname}/.env"
-            APP_DEFAULT_ENV_FILE="${TEMPLATES_FOLDER}/${appname}/${appname}.env"
         fi
         run_script 'appvars_lines' "${APPNAME}" > "${ENV_LINES_FILE}"
         run_script 'env_format_lines' "${ENV_LINES_FILE}" "${APP_DEFAULT_GLOBAL_ENV_FILE}" "${APPNAME}"
-        #run_script 'env_format_lines' "${APP_ENV_FILE}" "${APP_DEFAULT_ENV_FILE}" "${APPNAME}"
+    done
+    # Process all referenced appname.env files
+    for APPNAME in ${APPS^^}; do
+        local appname=${APPNAME,,}
+        local APP_ENV_FILE="${APP_ENV_FOLDER}/${appname}.env"
+        local APP_DEFAULT_ENV_FILE=""
+        if run_script 'app_is_installed' "${APPNAME}"; then
+            APP_DEFAULT_ENV_FILE="${TEMPLATES_FOLDER}/${appname}/${appname}.env"
+        fi
+        run_script 'env_format_lines' "${APP_ENV_FILE}" "${APP_DEFAULT_ENV_FILE}" "${APPNAME}"
     done
 
     #local MKTEMP_ENV_UPDATED
