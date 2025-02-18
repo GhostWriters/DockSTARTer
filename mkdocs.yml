@@ -199,6 +199,7 @@ nav:
       - apps/mylar3.md
       - apps/netdata.md
       - apps/nextcloud.md
+      - apps/nginx.md
       - apps/nodered.md
       - apps/nzbget.md
       - apps/nzbgetvpn.md
