@@ -8,9 +8,9 @@ env_update_testing() {
     local -a UPDATED_ENV_LINES=()
 
     run_script 'appvars_lines' "" > "${ENV_LINES_FILE}"
-    #readarray -t UPDATED_ENV_LINES < <( \
+    readarray -t UPDATED_ENV_LINES < <( \
         run_script 'env_format_lines' "${ENV_LINES_FILE}" "${COMPOSE_ENV_DEFAULT_FILE}" ""
-    #)
+    )
     APPS=$(run_script 'app_list_referenced')
     # Format the global .env file
     for APPNAME in ${APPS^^}; do
@@ -21,17 +21,17 @@ env_update_testing() {
             APP_DEFAULT_GLOBAL_ENV_FILE="${TEMPLATES_FOLDER}/${appname}/.env"
         fi
         run_script 'appvars_lines' "${APPNAME}" > "${ENV_LINES_FILE}"
-        #readarray -t -O ${#UPDATED_ENV_LINES[@]} UPDATED_ENV_LINES < <(
+        readarray -t -O ${#UPDATED_ENV_LINES[@]} UPDATED_ENV_LINES < <(
             run_script 'env_format_lines' "${ENV_LINES_FILE}" "${APP_DEFAULT_GLOBAL_ENV_FILE}" "${APPNAME}"
-        #)
+        )
     done
 
-    #local MKTEMP_ENV_UPDATED
-    #MKTEMP_ENV_UPDATED=$(mktemp) || fatal "Failed to create temporary update .env file.\nFailing command: ${F[C]}mktemp"
-    #printf '%s\n' "${UPDATED_ENV_LINES[@]}" > "${MKTEMP_ENV_UPDATED}" || fatal "Failed to write temporary .env update file."
-    #cp -f "${MKTEMP_ENV_UPDATED}" "${COMPOSE_ENV}" || fatal "Failed to copy file.\nFailing command: ${F[C]}cp -f \"${MKTEMP_ENV_UPDATED}\" \"${COMPOSE_ENV}\""
-    #rm -f "${MKTEMP_ENV_UPDATED}" || warn "Failed to remove temporary .env update file.\nFailing command: ${F[C]}rm -f \"${MKTEMP_ENV_UPDATED}\""
-    #run_script 'set_permissions' "${COMPOSE_ENV}"
+    local MKTEMP_ENV_UPDATED
+    MKTEMP_ENV_UPDATED=$(mktemp) || fatal "Failed to create temporary update .env file.\nFailing command: ${F[C]}mktemp"
+    printf '%s\n' "${UPDATED_ENV_LINES[@]}" > "${MKTEMP_ENV_UPDATED}" || fatal "Failed to write temporary .env update file."
+    cp -f "${MKTEMP_ENV_UPDATED}" "${COMPOSE_ENV}" || fatal "Failed to copy file.\nFailing command: ${F[C]}cp -f \"${MKTEMP_ENV_UPDATED}\" \"${COMPOSE_ENV}\""
+    rm -f "${MKTEMP_ENV_UPDATED}" || warn "Failed to remove temporary .env update file.\nFailing command: ${F[C]}rm -f \"${MKTEMP_ENV_UPDATED}\""
+    run_script 'set_permissions' "${COMPOSE_ENV}"
 
     # Process all referenced appname.env files
     for APPNAME in ${APPS^^}; do
@@ -43,15 +43,15 @@ env_update_testing() {
         fi
 
         local -a UPDATED_APP_ENV_LINES=()
-        readarray -t UPDATED_APP_ENV_LINES < <(
+        #readarray -t UPDATED_APP_ENV_LINES < <(
             run_script 'env_format_lines' "${APP_ENV_FILE}" "${APP_DEFAULT_ENV_FILE}" "${APPNAME}"
-        )
-        local MKTEMP_APP_ENV_UPDATED
-        MKTEMP_APP_ENV_UPDATED=$(mktemp) || fatal "Failed to create temporary update ${appname}.env file.\nFailing command: ${F[C]}mktemp"
-        printf '%s\n' "${UPDATED_APP_ENV_LINES[@]}" > "${MKTEMP_APP_ENV_UPDATED}" || fatal "Failed to write temporary ${appname}.env update file."
-        cp -f "${MKTEMP_APP_ENV_UPDATED}" "${APP_ENV_FILE}" || fatal "Failed to copy file.\nFailing command: ${F[C]}cp -f \"${MKTEMP_APP_ENV_UPDATED}\" \"${APP_ENV_FILE}\""
-        rm -f "${MKTEMP_APP_ENV_UPDATED}" || warn "Failed to remove temporary ${appname}.env update file.\nFailing command: ${F[C]}rm -f \"${MKTEMP_APP_ENV_UPDATED}\""
-        run_script 'set_permissions' "${APP_ENV_FILE}"
+        #)
+        #local MKTEMP_APP_ENV_UPDATED
+        #MKTEMP_APP_ENV_UPDATED=$(mktemp) || fatal "Failed to create temporary update ${appname}.env file.\nFailing command: ${F[C]}mktemp"
+        #printf '%s\n' "${UPDATED_APP_ENV_LINES[@]}" > "${MKTEMP_APP_ENV_UPDATED}" || fatal "Failed to write temporary ${appname}.env update file."
+        #cp -f "${MKTEMP_APP_ENV_UPDATED}" "${APP_ENV_FILE}" || fatal "Failed to copy file.\nFailing command: ${F[C]}cp -f \"${MKTEMP_APP_ENV_UPDATED}\" \"${APP_ENV_FILE}\""
+        #rm -f "${MKTEMP_APP_ENV_UPDATED}" || warn "Failed to remove temporary ${appname}.env update file.\nFailing command: ${F[C]}rm -f \"${MKTEMP_APP_ENV_UPDATED}\""
+        #run_script 'set_permissions' "${APP_ENV_FILE}"
     done
 
     run_script 'env_sanitize'
