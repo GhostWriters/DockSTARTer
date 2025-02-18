@@ -5,12 +5,13 @@ IFS=$'\n\t'
 env_update_testing() {
     local ENV_LINES_FILE
     ENV_LINES_FILE=$(mktemp)
-    local -a UPDATED_ENV_LINES=()
-
     run_script 'appvars_lines' "" > "${ENV_LINES_FILE}"
+
+    local -a UPDATED_ENV_LINES=()
     readarray -t UPDATED_ENV_LINES < <( \
         run_script 'env_format_lines' "${ENV_LINES_FILE}" "${COMPOSE_ENV_DEFAULT_FILE}" ""
     )
+
     APPS=$(run_script 'app_list_referenced')
     # Format the global .env file
     for APPNAME in ${APPS^^}; do
@@ -41,17 +42,19 @@ env_update_testing() {
         if run_script 'app_is_installed' "${APPNAME}"; then
             APP_DEFAULT_ENV_FILE="${TEMPLATES_FOLDER}/${appname}/${appname}.env"
         fi
-
-        local -a UPDATED_APP_ENV_LINES=()
-        #readarray -t UPDATED_APP_ENV_LINES < <(
-            run_script 'env_format_lines' "${APP_ENV_FILE}" "${APP_DEFAULT_ENV_FILE}" "${APPNAME}"
-        #)
-        #local MKTEMP_APP_ENV_UPDATED
-        #MKTEMP_APP_ENV_UPDATED=$(mktemp) || fatal "Failed to create temporary update ${appname}.env file.\nFailing command: ${F[C]}mktemp"
-        #printf '%s\n' "${UPDATED_APP_ENV_LINES[@]}" > "${MKTEMP_APP_ENV_UPDATED}" || fatal "Failed to write temporary ${appname}.env update file."
-        #cp -f "${MKTEMP_APP_ENV_UPDATED}" "${APP_ENV_FILE}" || fatal "Failed to copy file.\nFailing command: ${F[C]}cp -f \"${MKTEMP_APP_ENV_UPDATED}\" \"${APP_ENV_FILE}\""
-        #rm -f "${MKTEMP_APP_ENV_UPDATED}" || warn "Failed to remove temporary ${appname}.env update file.\nFailing command: ${F[C]}rm -f \"${MKTEMP_APP_ENV_UPDATED}\""
-        #run_script 'set_permissions' "${APP_ENV_FILE}"
+        if [[ -n ${APP_DEFAULT_ENV_FILE} || -f ${APP_ENV_FILE} ]]; then
+            # App is either installed, or the user has an existing appname.env file
+            local -a UPDATED_APP_ENV_LINES=()
+            readarray -t UPDATED_APP_ENV_LINES < <(
+                run_script 'env_format_lines' "${APP_ENV_FILE}" "${APP_DEFAULT_ENV_FILE}" "${APPNAME}"
+            )
+            local MKTEMP_APP_ENV_UPDATED
+            MKTEMP_APP_ENV_UPDATED=$(mktemp) || fatal "Failed to create temporary update ${appname}.env file.\nFailing command: ${F[C]}mktemp"
+            printf '%s\n' "${UPDATED_APP_ENV_LINES[@]}" > "${MKTEMP_APP_ENV_UPDATED}" || fatal "Failed to write temporary ${appname}.env update file."
+            cp -f "${MKTEMP_APP_ENV_UPDATED}" "${APP_ENV_FILE}" || fatal "Failed to copy file.\nFailing command: ${F[C]}cp -f \"${MKTEMP_APP_ENV_UPDATED}\" \"${APP_ENV_FILE}\""
+            rm -f "${MKTEMP_APP_ENV_UPDATED}" || warn "Failed to remove temporary ${appname}.env update file.\nFailing command: ${F[C]}rm -f \"${MKTEMP_APP_ENV_UPDATED}\""
+            run_script 'set_permissions' "${APP_ENV_FILE}"
+        fi
     done
 
     run_script 'env_sanitize'
@@ -60,5 +63,4 @@ env_update_testing() {
 
 test_env_update_testing() {
     run_script 'env_update_testing'
-    #warn "CI does not test env_update_testing."
 }
