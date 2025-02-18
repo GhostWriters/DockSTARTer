@@ -18,9 +18,7 @@ appvars_create() {
         run_script 'env_set' "${APPNAME}__ENABLED" true
     fi
 
-    if run_script 'app_is_enabled' "${APPNAME}"; then
-        run_script 'appvars_migrate' "${APPNAME}"
-    fi
+    run_script 'appvars_migrate' "${APPNAME}"
 
     run_script 'env_merge_newonly' "${COMPOSE_ENV}" "${APP_DEFAULT_GLOBAL_ENV_FILE}"
     run_script 'env_merge_newonly' "${APP_ENV_FILE}" "${APP_DEFAULT_ENV_FILE}"
