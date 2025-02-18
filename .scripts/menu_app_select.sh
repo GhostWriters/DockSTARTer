@@ -22,7 +22,7 @@ menu_app_select() {
                         continue
                     fi
                     local APPONOFF
-                    if [[ $(run_script 'env_get' "${APPNAME}_ENABLED") == true ]]; then
+                    if [[ $(run_script 'env_get' "${APPNAME}__ENABLED") == true ]]; then
                         APPONOFF="on"
                     else
                         APPONOFF="off"
@@ -44,15 +44,15 @@ menu_app_select() {
     else
         info "Disabling all apps."
         while IFS= read -r line; do
-            local APPNAME=${line%%_ENABLED=*}
-            run_script 'env_set' "${APPNAME}_ENABLED" false
-        done < <(grep --color=never -P '_ENABLED='"'"'?true'"'"'?$' "${COMPOSE_ENV}")
+            local APPNAME=${line%%__ENABLED=*}
+            run_script 'env_set' "${APPNAME}__ENABLED" false
+        done < <(grep --color=never -P '__ENABLED='"'"'?true'"'"'?$' "${COMPOSE_ENV}")
 
         info "Enabling selected apps."
         while IFS= read -r line; do
             local APPNAME=${line^^}
             run_script 'appvars_create' "${APPNAME}"
-            run_script 'env_set' "${APPNAME}_ENABLED" true
+            run_script 'env_set' "${APPNAME}__ENABLED" true
         done < <(echo "${SELECTEDAPPS}")
 
         run_script 'appvars_purge_all'
