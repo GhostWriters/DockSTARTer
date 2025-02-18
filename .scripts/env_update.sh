@@ -8,7 +8,7 @@ env_update() {
     run_script 'appvars_lines' "" > "${ENV_LINES_FILE}"
 
     local -a UPDATED_ENV_LINES=()
-    readarray -t UPDATED_ENV_LINES < <( \
+    readarray -t UPDATED_ENV_LINES < <(
         run_script 'env_format_lines' "${ENV_LINES_FILE}" "${COMPOSE_ENV_DEFAULT_FILE}" ""
     )
 

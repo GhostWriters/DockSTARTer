@@ -7,7 +7,7 @@ env_format_lines() {
     local ENV_DEFAULT_FILE=${2-}
     local APPNAME=${3-}
     APPNAME=${APPNAME^^}
-    local appname=${APPNAME,,}
+    #local appname=${APPNAME,,}
 
     local TOP_SECTION='false'
     #notice "["
@@ -51,7 +51,7 @@ env_format_lines() {
         FORMATTED_ENV_VAR_INDEX[$VAR]=$index
     done
 
-    if [[ -n ${CURRENT_ENV_LINES[@]-} ]]; then
+    if [[ -n ${CURRENT_ENV_LINES[*]} ]]; then
         # Update the default variables
         for index in "${!CURRENT_ENV_LINES[@]}"; do
             local line=${CURRENT_ENV_LINES[index]}
@@ -60,12 +60,12 @@ env_format_lines() {
             if [[ -n ${FORMATTED_ENV_VAR_INDEX["$VAR"]-} ]]; then
                 # Variable already exists, update its value
                 VAR_INDEX=${FORMATTED_ENV_VAR_INDEX["$VAR"]-}
-                FORMATTED_ENV_LINES[$VAR_INDEX]=$line
+                FORMATTED_ENV_LINES[VAR_INDEX]=$line
                 unset 'CURRENT_ENV_LINES[index]'
             fi
         done
         CURRENT_ENV_LINES=("${CURRENT_ENV_LINES[@]-}")
-        if [[ -n ${CURRENT_ENV_LINES[@]-} ]]; then
+        if [[ -n ${CURRENT_ENV_LINES[*]} ]]; then
             if [[ ${TOP_SECTION} == true ]]; then
                 # Add a blank if there was a previous section
                 FORMATTED_ENV_LINES+=("")
