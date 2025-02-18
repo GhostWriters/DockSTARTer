@@ -4,7 +4,9 @@ IFS=$'\n\t'
 
 env_lines() {
     local VAR_FILE=${1:-$COMPOSE_ENV}
-    sed -n "s/^\s*\([A-Za-z0-9_]*\)\s*=/\1=/p" "${VAR_FILE}" || true
+    if [[ -f ${VAR_FILE} ]]; then
+        sed -n "s/^\s*\([A-Za-z0-9_]*\)\s*=/\1=/p" "${VAR_FILE}" || true
+    fi
 }
 
 test_env_lines() {
