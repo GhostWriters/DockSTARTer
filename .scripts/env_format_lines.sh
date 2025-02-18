@@ -15,8 +15,8 @@ env_format_lines() {
     readarray -t CURRENT_ENV_LINES < <(run_script 'env_lines' "${ENV_FILE}" || true)
 
     local -a FORMATTED_ENV_LINES=()
-    if [[ -n ${APPNAME} ]] && run_script 'app_is_builtin' "${APPNAME}"; then
-        # APPNAME is specified and builtin, output main app heading
+    if [[ -n ${APPNAME} ]] && run_script 'app_is_installed' "${APPNAME}"; then
+        # APPNAME is specified and installed, output main app heading
         local HEADING_TITLE="${APPNAME}"
         if run_script 'app_is_disabled' "${APPNAME}"; then
             HEADING_TITLE+=' (Disabled)'
