@@ -10,9 +10,10 @@ env_format_lines() {
     #local appname=${APPNAME,,}
 
     local TOP_SECTION='false'
-    #notice "["
     local -a CURRENT_ENV_LINES=()
-    readarray -t CURRENT_ENV_LINES < <(run_script 'env_lines' "${ENV_FILE}" || true)
+    readarray -t CURRENT_ENV_LINES < <(
+        run_script 'env_lines' "${ENV_FILE}"
+    )
 
     local -a FORMATTED_ENV_LINES=()
     if [[ -n ${APPNAME} ]] && run_script 'app_is_installed' "${APPNAME}"; then
@@ -26,7 +27,9 @@ env_format_lines() {
         fi
         local HEADING
         printf -v HEADING "##\n## %s\n##" "${HEADING_TITLE}"
-        readarray -t -O ${#FORMATTED_ENV_LINES[@]} FORMATTED_ENV_LINES < <(printf '%s\n' "${HEADING}")
+        readarray -t -O ${#FORMATTED_ENV_LINES[@]} FORMATTED_ENV_LINES < <(
+            printf '%s\n' "${HEADING}"
+        )
         TOP_SECTION='true'
     fi
     if [[ -n ${ENV_DEFAULT_FILE} && -f ${ENV_DEFAULT_FILE} ]]; then
@@ -43,7 +46,9 @@ env_format_lines() {
     local -A FORMATTED_ENV_VAR_INDEX=()
     local -a VAR_LINES=()
     # Make an array with the contents "line number:VARIABLE" in each element
-    readarray -t VAR_LINES < <(printf '%s\n' "${FORMATTED_ENV_LINES[@]}" | grep -n -o -P '^[A-Za-z0-9_]*(?=[=])' || true)
+    readarray -t VAR_LINES < <(
+        printf '%s\n' "${FORMATTED_ENV_LINES[@]}" | grep -n -o -P '^[A-Za-z0-9_]*(?=[=])' || true
+    )
     for line in "${VAR_LINES[@]}"; do
         local index=${line%:*}
         index=$((index - 1))
@@ -66,16 +71,14 @@ env_format_lines() {
         done
         CURRENT_ENV_LINES=("${CURRENT_ENV_LINES[@]-}")
         if [[ -n ${CURRENT_ENV_LINES[*]} ]]; then
-            #if [[ ${TOP_SECTION} == true ]]; then
-            #    # Add a blank if there was a previous section
-            #    FORMATTED_ENV_LINES+=("")
-            #fi
             # Add the "User Defined" heading
             local HEADING_TITLE="${APPNAME}"
             HEADING_TITLE+=" (User Defined)"
             local HEADING
             printf -v HEADING "##\n## %s\n##" "${HEADING_TITLE}"
-            readarray -t -O ${#FORMATTED_ENV_LINES[@]} FORMATTED_ENV_LINES < <(printf '%s\n' "${HEADING}")
+            readarray -t -O ${#FORMATTED_ENV_LINES[@]} FORMATTED_ENV_LINES < <(
+                printf '%s\n' "${HEADING}"
+            )
 
             # Add the user defined variables
             for index in "${!CURRENT_ENV_LINES[@]}"; do
@@ -94,7 +97,6 @@ env_format_lines() {
         fi
     fi
     printf "%s\n" "${FORMATTED_ENV_LINES[@]-}"
-    #notice "]"
 }
 
 test_env_format_lines() {
