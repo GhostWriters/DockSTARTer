@@ -66,10 +66,10 @@ env_format_lines() {
         done
         CURRENT_ENV_LINES=("${CURRENT_ENV_LINES[@]-}")
         if [[ -n ${CURRENT_ENV_LINES[*]} ]]; then
-            if [[ ${TOP_SECTION} == true ]]; then
-                # Add a blank if there was a previous section
-                FORMATTED_ENV_LINES+=("")
-            fi
+            #if [[ ${TOP_SECTION} == true ]]; then
+            #    # Add a blank if there was a previous section
+            #    FORMATTED_ENV_LINES+=("")
+            #fi
             # Add the "User Defined" heading
             local HEADING_TITLE="${APPNAME}"
             HEADING_TITLE+=" (User Defined)"
