@@ -16,11 +16,6 @@ env_sanitize() {
     run_script 'env_rename' DOCKERHOSTNAME DOCKER_HOSTNAME
     run_script 'env_rename' DOCKERSTORAGEDIR DOCKER_VOLUME_STORAGE
 
-    # Rename apps
-    run_script 'appvars_rename' LETSENCRYPT SWAG
-    run_script 'appvars_rename' MINECRAFT_BEDROCK_SERVER MINECRAFTBEDROCKSERVER
-    run_script 'appvars_rename' MINECRAFT_SERVER MINECRAFTSERVER
-
     # Replace ~ with /home/username
     if grep -q -P '^\w+_VOLUME_\w+=~/' "${COMPOSE_ENV}"; then
         info "Replacing ~ with ${DETECTED_HOMEDIR} in ${COMPOSE_ENV} file."
