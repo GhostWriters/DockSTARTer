@@ -31,7 +31,10 @@ env_merge_newonly() {
             fi
         done
         if [[ -n ${MERGE_FROM_LINES[*]-} ]]; then
-            notice "Adding variables to ${MERGE_TO_FILE}:\n${MERGE_FROM_LINES[*]}"
+            notice "Adding variables to ${MERGE_TO_FILE}:"
+            for line in "${MERGE_FROM_LINES[@]}"; do
+                notice "   $line"
+            done
             echo >> "${MERGE_TO_FILE}"
             printf '%s\n' "${MERGE_FROM_LINES[@]}" >> "${MERGE_TO_FILE}"
         fi
