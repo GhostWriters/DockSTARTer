@@ -35,8 +35,8 @@ env_merge_newonly() {
             for line in "${MERGE_FROM_LINES[@]}"; do
                 notice "   $line"
             done
-            echo >> "${MERGE_TO_FILE}"
-            printf '%s\n' "${MERGE_FROM_LINES[@]}" >> "${MERGE_TO_FILE}"
+            echo >> "${MERGE_TO_FILE}" || fatal "Failed to write to ${MERGE_TO_FILE}.\nFailing command: echo >> \"${MERGE_TO_FILE}\""
+            printf '%s\n' "${MERGE_FROM_LINES[@]}" >> "${MERGE_TO_FILE}" || fatal "Failed to add variables to ${MERGE_TO_FILE}"
         fi
     fi
 
