@@ -1,0 +1,14 @@
+services:
+  lyrionmusicserver:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Lyrion Music Server for Squeezebox radios (formerly LogitechMediaServer)"
+      com.dockstarter.appinfo.nicename: "LyrionMusicServer"
+      com.dockstarter.appvars.lyrionmusicserver_container_name: "lyrionmusicserver"
+      com.dockstarter.appvars.lyrionmusicserver_enabled: "false"
+      com.dockstarter.appvars.lyrionmusicserver_network_mode: ""
+      com.dockstarter.appvars.lyrionmusicserver_port_3483: "3483"
+      com.dockstarter.appvars.lyrionmusicserver_port_9000: "9000"
+      com.dockstarter.appvars.lyrionmusicserver_port_9090: "9090"
+      com.dockstarter.appvars.lyrionmusicserver_restart: "always"
+      com.dockstarter.appvars.lyrionmusicserver_tag: "latest"
