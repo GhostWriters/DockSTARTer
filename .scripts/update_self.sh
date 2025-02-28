@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 update_self() {
-    local BRANCH=${1:-origin/master}
+    local BRANCH=${1:-origin/app-env-files}
     if run_script 'question_prompt' "${PROMPT-}" Y "Would you like to update DockSTARTer to ${BRANCH} now?"; then
         notice "Updating DockSTARTer to ${BRANCH}."
     else
