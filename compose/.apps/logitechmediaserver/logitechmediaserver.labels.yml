@@ -1,7 +1,7 @@
 services:
   logitechmediaserver:
     labels:
-      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.deprecated: "true"
       com.dockstarter.appinfo.description: "LogitechMediaServer(SqueezeBox)"
       com.dockstarter.appinfo.nicename: "LogitechMediaServer"
       com.dockstarter.appvars.logitechmediaserver_container_name: "logitechmediaserver"
