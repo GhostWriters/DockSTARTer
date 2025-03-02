@@ -19,11 +19,11 @@ env_format_lines() {
     if [[ -n ${APPNAME} ]] && run_script 'app_is_installed' "${APPNAME}"; then
         # APPNAME is specified and installed, output main app heading
         local HEADING_TITLE="${APPNAME}"
-        if run_script 'app_is_disabled' "${APPNAME}"; then
-            HEADING_TITLE+=' (Disabled)'
-        fi
         if run_script 'app_is_depreciated' "${APPNAME}"; then
             HEADING_TITLE+=' [*DEPRECIATED*]'
+        fi
+        if run_script 'app_is_disabled' "${APPNAME}"; then
+            HEADING_TITLE+=' (Disabled)'
         fi
         local HEADING
         printf -v HEADING "##\n## %s\n##" "${HEADING_TITLE}"
