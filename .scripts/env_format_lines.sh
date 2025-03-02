@@ -9,7 +9,6 @@ env_format_lines() {
     APPNAME=${APPNAME^^}
     #local appname=${APPNAME,,}
 
-    local TOP_SECTION='false'
     local -a CURRENT_ENV_LINES=()
     readarray -t CURRENT_ENV_LINES < <(
         run_script 'env_lines' "${ENV_FILE}"
@@ -30,15 +29,13 @@ env_format_lines() {
         readarray -t -O ${#FORMATTED_ENV_LINES[@]} FORMATTED_ENV_LINES < <(
             printf '%s\n' "${HEADING}"
         )
-        TOP_SECTION='true'
     fi
     if [[ -n ${ENV_DEFAULT_FILE} && -f ${ENV_DEFAULT_FILE} ]]; then
         # Default file is specified and exists, add the contents verbatim
         readarray -t -O ${#FORMATTED_ENV_LINES[@]} FORMATTED_ENV_LINES < "${ENV_DEFAULT_FILE}"
-        TOP_SECTION='true'
     fi
-    if [[ ${TOP_SECTION} == true ]]; then
-        # Add a blank if there was a previous section
+    if [[ -n ${FORMATTED_ENV_LINES[*]} ]]; then
+        # Add a blank if there are existing lines (not at top of file)
         FORMATTED_ENV_LINES+=("")
     fi
 
