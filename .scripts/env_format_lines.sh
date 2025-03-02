@@ -7,7 +7,9 @@ env_format_lines() {
     local ENV_DEFAULT_FILE=${2-}
     local APPNAME=${3-}
     APPNAME=${APPNAME^^}
-    #local appname=${APPNAME,,}
+    local appname=${APPNAME,,}
+    local AppName
+    AppName=$(run_script 'app_nicename' "${appname}")
 
     local -a CURRENT_ENV_LINES=()
     readarray -t CURRENT_ENV_LINES < <(
@@ -17,7 +19,7 @@ env_format_lines() {
     local -a FORMATTED_ENV_LINES=()
     if [[ -n ${APPNAME} ]] && run_script 'app_is_installed' "${APPNAME}"; then
         # APPNAME is specified and installed, output main app heading
-        local HEADING_TITLE="${APPNAME}"
+        local HEADING_TITLE="${AppName}"
         if run_script 'app_is_depreciated' "${APPNAME}"; then
             HEADING_TITLE+=' [*DEPRECIATED*]'
         fi
@@ -67,7 +69,7 @@ env_format_lines() {
         CURRENT_ENV_LINES=("${CURRENT_ENV_LINES[@]-}")
         if [[ -n ${CURRENT_ENV_LINES[*]} ]]; then
             # Add the "User Defined" heading
-            local HEADING_TITLE="${APPNAME}"
+            local HEADING_TITLE="${AppName}"
             HEADING_TITLE+=" (User Defined)"
             local HEADING
             printf -v HEADING "##\n## %s\n##" "${HEADING_TITLE}"
