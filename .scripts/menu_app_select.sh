@@ -3,57 +3,55 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_app_select() {
-    local APPLIST=()
+    local AppList=()
     notice "Preparing app menu. Please be patient, this can take a while."
     while IFS= read -r line; do
         local APPNAME=${line^^}
-        local FILENAME=${APPNAME,,}
-        local APP_FOLDER="${TEMPLATES_FOLDER}/${FILENAME}"
+        local appname=${APPNAME,,}
+        local APP_FOLDER="${TEMPLATES_FOLDER}/${appname}"
         if [[ -d ${APP_FOLDER}/ ]]; then
-            if [[ -f ${APP_FOLDER}/${FILENAME}.yml ]]; then
-                if [[ -f ${APP_FOLDER}/${FILENAME}.${ARCH}.yml ]]; then
-                    local APPNICENAME
-                    APPNICENAME=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.nicename: \K.*" "${APP_FOLDER}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo "${APPNAME}")
-                    local APPDESCRIPTION
-                    APPDESCRIPTION=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.description: \K.*" "${APP_FOLDER}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo "! Missing description !")
-                    local APPDEPRECATED
-                    APPDEPRECATED=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" "${APP_FOLDER}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo false)
-                    if [[ ${APPDEPRECATED} == true ]]; then
+            if [[ -f ${APP_FOLDER}/${appname}.yml ]]; then
+                if [[ -f ${APP_FOLDER}/${appname}.${ARCH}.yml ]]; then
+                    local AppName
+                    AppName=$(run_script 'app_nicename' "${APPNAME}")
+                    local AppDescription
+                    AppDescription=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.description: \K.*" "${APP_FOLDER}/${appname}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo "! Missing description !")
+                    if run_script 'app_is_depreciated' "${APPNAME}"; then
                         continue
                     fi
-                    local APPONOFF
-                    if [[ $(run_script 'env_get' "${APPNAME}__ENABLED") == true ]]; then
-                        APPONOFF="on"
+                    local AppOnOff
+                    if run_script 'app_is_enabled' "${APPNAME}"; then
+                        AppOnOff="on"
                     else
-                        APPONOFF="off"
+                        AppOnOff="off"
                     fi
-                    APPLIST+=("${APPNICENAME}" "${APPDESCRIPTION}" "${APPONOFF}")
+                    AppList+=("${AppName}" "${AppDescription}" "${AppOnOff}")
                 fi
             fi
         fi
     done < <(ls -A "${TEMPLATES_FOLDER}")
 
-    local SELECTEDAPPS
+    local SelectedApps
     if [[ ${CI-} == true ]]; then
-        SELECTEDAPPS="Cancel"
+        SelectedApps="Cancel"
     else
-        SELECTEDAPPS=$(whiptail --fb --clear --title "DockSTARTer" --separate-output --checklist 'Choose which apps you would like to install:\n Use [up], [down], and [space] to select apps, and [tab] to switch to the buttons at the bottom.' 0 0 0 "${APPLIST[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
+        SelectedApps=$(whiptail --fb --clear --title "DockSTARTer" --separate-output --checklist 'Choose which apps you would like to install:\n Use [up], [down], and [space] to select apps, and [tab] to switch to the buttons at the bottom.' 0 0 0 "${AppList[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
     fi
-    if [[ ${SELECTEDAPPS} == "Cancel" ]]; then
+    if [[ ${SelectedApps} == "Cancel" ]]; then
         return 1
     else
         info "Disabling all apps."
         while IFS= read -r line; do
-            local APPNAME=${line%%__ENABLED=*}
+            local APPNAME=${line^^}
             run_script 'env_set' "${APPNAME}__ENABLED" false
-        done < <(grep --color=never -P '__ENABLED='"'"'?true'"'"'?$' "${COMPOSE_ENV}")
+        done < <(run_script 'app_list_enabled')
 
         info "Enabling selected apps."
         while IFS= read -r line; do
             local APPNAME=${line^^}
             run_script 'appvars_create' "${APPNAME}"
             run_script 'env_set' "${APPNAME}__ENABLED" true
-        done < <(echo "${SELECTEDAPPS}")
+        done < <(echo "${SelectedApps}")
 
         run_script 'appvars_purge_all'
         run_script 'env_update'
