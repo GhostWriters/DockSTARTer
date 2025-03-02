@@ -61,11 +61,9 @@ env_format_lines() {
         for index in "${!CURRENT_ENV_LINES[@]}"; do
             local line=${CURRENT_ENV_LINES[index]}
             local VAR=${line%%=*}
-            VAR_INDEX=${FORMATTED_ENV_VAR_INDEX["$VAR"]-}
-            if [[ -n ${FORMATTED_ENV_VAR_INDEX["$VAR"]-} ]]; then
+            if [[ -n ${FORMATTED_ENV_VAR_INDEX[$VAR]-} ]]; then
                 # Variable already exists, update its value
-                VAR_INDEX=${FORMATTED_ENV_VAR_INDEX["$VAR"]-}
-                FORMATTED_ENV_LINES[VAR_INDEX]=$line
+                FORMATTED_ENV_LINES[${FORMATTED_ENV_VAR_INDEX[$VAR]}]=$line
                 unset 'CURRENT_ENV_LINES[index]'
             fi
         done
@@ -84,9 +82,9 @@ env_format_lines() {
             for index in "${!CURRENT_ENV_LINES[@]}"; do
                 local line=${CURRENT_ENV_LINES[index]}
                 local VAR=${line%%=*}
-                if [[ -n ${FORMATTED_ENV_VAR_INDEX["$VAR"]-} ]]; then
+                if [[ -n ${FORMATTED_ENV_VAR_INDEX[$VAR]-} ]]; then
                     # Variable already exists, update its value
-                    FORMATTED_ENV_LINES[${FORMATTED_ENV_VAR_INDEX["$VAR"]}]=$line
+                    FORMATTED_ENV_LINES[${FORMATTED_ENV_VAR_INDEX[$VAR]}]=$line
                 else
                     # Variable is new, add it
                     FORMATTED_ENV_LINES+=("$line")
