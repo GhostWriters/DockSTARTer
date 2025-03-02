@@ -1,11 +1,12 @@
 services:
   lyrionmusicserver:
-    container_name: ${LYRIONMUSICSERVER_CONTAINER_NAME}
+    container_name: ${LYRIONMUSICSERVER__CONTAINER_NAME}
+    env_file: env_files/lyrionmusicserver.env
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${LYRIONMUSICSERVER_RESTART}
+    restart: ${LYRIONMUSICSERVER__RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG}/lyrionmusicserver:/config:rw
