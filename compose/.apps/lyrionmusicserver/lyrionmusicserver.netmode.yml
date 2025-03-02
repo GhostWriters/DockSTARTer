@@ -1,0 +1,3 @@
+services:
+  lyrionmusicserver:
+    network_mode: ${LYRIONMUSICSERVER_NETWORK_MODE}
