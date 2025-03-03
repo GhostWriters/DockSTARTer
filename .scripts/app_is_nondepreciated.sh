@@ -17,7 +17,7 @@ app_is_nondepreciated() {
     fi
 }
 
-test_app_is_depreciated() {
+test_app_is_nondepreciated() {
     run_script 'app_is_nondepreciated' WATCHTOWER
     notice "'app_is_nondepreciated' WATCHTOWER returned $?"
     run_script 'app_is_nondepreciated' SAMBA
