@@ -229,7 +229,14 @@ cmdline() {
                 readonly REMOVE=${OPTARG}
                 ;;
             s)
-                readonly STATUS=${OPTARG}
+                local MULTIOPT
+                MULTIOPT=("$OPTARG")
+                until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
+                    MULTIOPT+=("$(eval "echo \${$OPTIND}")")
+                    OPTIND=$((OPTIND + 1))
+                done
+                STATUS=$(printf "%s " "${MULTIOPT[@]}" | xargs)
+                readonly STATUS
                 ;;
             t)
                 readonly TEST=${OPTARG}
