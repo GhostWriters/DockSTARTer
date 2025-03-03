@@ -12,13 +12,13 @@ menu_app_select() {
         if [[ -d ${APP_FOLDER}/ ]]; then
             if [[ -f ${APP_FOLDER}/${appname}.yml ]]; then
                 if [[ -f ${APP_FOLDER}/${appname}.${ARCH}.yml ]]; then
-                    local AppName
-                    AppName=$(run_script 'app_nicename' "${APPNAME}")
-                    local AppDescription
-                    AppDescription=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.description: \K.*" "${APP_FOLDER}/${appname}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo "! Missing description !")
                     if run_script 'app_is_depreciated' "${APPNAME}"; then
                         continue
                     fi
+                    local AppName
+                    AppName=$(run_script 'app_nicename' "${APPNAME}")
+                    local AppDescription
+                    AppDescription=$(run_script 'app_description' "${APPNAME}")
                     local AppOnOff
                     if run_script 'app_is_enabled' "${APPNAME}"; then
                         AppOnOff="on"
