@@ -7,6 +7,10 @@ app_status() {
     local AppList
     AppList=$(xargs -n 1 <<< "$*")
     for AppName in ${AppList}; do
+        if ! run_script 'app_is_builtin' "${AppName}"; then
+            echo "Application ${AppName^^} does not exist."
+            continue
+        fi
         if ! run_script 'app_is_installed' "${AppName}"; then
             echo "Application ${AppName^^} is not installed."
             continue
