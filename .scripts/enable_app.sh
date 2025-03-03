@@ -7,7 +7,7 @@ enable_app() {
     local AppList
     AppList=$(xargs -n 1 <<< "$*")
     for AppName in ${AppList}; do
-        notice "Enabling ${AppName^^}"
+        info "Enabling ${AppName^^}"
         run_script 'env_set' "${AppName^^}__ENABLED" true
     done
 }

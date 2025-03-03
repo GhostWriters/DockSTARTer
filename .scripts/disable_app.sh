@@ -7,7 +7,7 @@ disable_app() {
     local AppList
     AppList=$(xargs -n 1 <<< "$*")
     for AppName in ${AppList}; do
-        notice "Disabling ${AppName^^}"
+        info "Disabling ${AppName^^}"
         run_script 'env_set' "${AppName^^}__ENABLED" false
     done
 }
