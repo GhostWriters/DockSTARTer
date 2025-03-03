@@ -7,8 +7,12 @@ enable_app() {
     local AppList
     AppList=$(xargs -n 1 <<< "$*")
     for AppName in ${AppList}; do
-        info "Enabling ${AppName^^}"
-        run_script 'env_set' "${AppName^^}__ENABLED" true
+        if run_script 'app_is_builtin' "${AppName}"; then
+            info "Enabling application ${AppName^^}"
+            run_script 'env_set' "${AppName^^}__ENABLED" true
+        else
+            warn "Application ${AppName^^} does not exist."
+        fi
     done
 }
 

@@ -7,8 +7,12 @@ disable_app() {
     local AppList
     AppList=$(xargs -n 1 <<< "$*")
     for AppName in ${AppList}; do
-        info "Disabling ${AppName^^}"
-        run_script 'env_set' "${AppName^^}__ENABLED" false
+        if run_script 'app_is_builtin' "${AppName}"; then
+            info "Disabling application${AppName^^}"
+            run_script 'env_set' "${AppName^^}__ENABLED" false
+        else
+            warn "Application ${AppName^^} does not exist."
+        fi
     done
 }
 
