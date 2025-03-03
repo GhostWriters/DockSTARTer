@@ -17,3 +17,4 @@ services:
       com.dockstarter.appvars.pihole_port_80: "8008"
       com.dockstarter.appvars.pihole_restart: "unless-stopped"
       com.dockstarter.appvars.pihole_tag: "latest"
+      com.dockstarter.appvars.pihole_environment_ftlconf_misc_etc_dnsmasq_d: "true"
