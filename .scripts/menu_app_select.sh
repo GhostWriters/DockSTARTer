@@ -46,9 +46,9 @@ menu_app_select() {
 
         info "Enabling selected apps."
         while IFS= read -r line; do
-            local APPNAME=${line^^}
-            run_script 'appvars_create' "${APPNAME}"
-            run_script 'env_set' "${APPNAME}__ENABLED" true
+            local AppName=${line}
+            run_script 'env_set' "${AppName^^}__ENABLED" true
+            run_script 'appvars_create' "${AppName}"
         done < <(echo "${SelectedApps}")
 
         run_script 'appvars_purge_all'
