@@ -10,7 +10,7 @@ appvars_create_all() {
         notice "Creating environment variables for installed apps. Please be patient, this can take a while."
         run_script 'appvars_create' "${INSTALLED_APPS}"
     else
-        notice "${COMPOSE_ENV} does not contain any enabled apps."
+        notice "${COMPOSE_ENV} does not contain any installed apps."
     fi
 }
 
