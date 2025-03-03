@@ -4,6 +4,7 @@ IFS=$'\n\t'
 
 menu_app_select() {
     local AppList=()
+    local EnabledApps=()
     notice "Preparing app menu. Please be patient, this can take a while."
     while IFS= read -r line; do
         local APPNAME=${line^^}
@@ -12,9 +13,6 @@ menu_app_select() {
         if [[ -d ${APP_FOLDER}/ ]]; then
             if [[ -f ${APP_FOLDER}/${appname}.yml ]]; then
                 if [[ -f ${APP_FOLDER}/${appname}.${ARCH}.yml ]]; then
-                    if run_script 'app_is_depreciated' "${APPNAME}"; then
-                        continue
-                    fi
                     local AppName
                     AppName=$(run_script 'app_nicename' "${APPNAME}")
                     local AppDescription
@@ -22,6 +20,7 @@ menu_app_select() {
                     local AppOnOff
                     if run_script 'app_is_enabled' "${APPNAME}"; then
                         AppOnOff="on"
+                        EnabledApps+=("${AppName}")
                     else
                         AppOnOff="off"
                     fi
@@ -29,7 +28,7 @@ menu_app_select() {
                 fi
             fi
         fi
-    done < <(ls -A "${TEMPLATES_FOLDER}")
+    done < <(run_script 'app_list_nondepreciated')
 
     local SelectedApps
     if [[ ${CI-} == true ]]; then
@@ -41,10 +40,9 @@ menu_app_select() {
         return 1
     else
         info "Disabling all apps."
-        while IFS= read -r line; do
-            local APPNAME=${line^^}
-            run_script 'env_set' "${APPNAME}__ENABLED" false
-        done < <(run_script 'app_list_enabled')
+        for AppName in "${EnabledApps[@]}"; do
+            run_script 'env_set' "${AppName^^}__ENABLED" false
+        done
 
         info "Enabling selected apps."
         while IFS= read -r line; do
