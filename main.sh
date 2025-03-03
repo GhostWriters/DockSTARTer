@@ -161,11 +161,12 @@ cmdline() {
                 LOCAL_ARGS="${LOCAL_ARGS-}-s "
                 readonly STATUSMETHOD=${ARG}
                 ;;
-            --status-disabled) LOCAL_ARGS="${LOCAL_ARGS-}-s "
+            --status-disabled)
                 LOCAL_ARGS="${LOCAL_ARGS-}-s "
                 readonly STATUSMETHOD=${ARG}
                 ;;
-            --status-enabled) LOCAL_ARGS="${LOCAL_ARGS-}-s "
+            --status-enabled)
+                LOCAL_ARGS="${LOCAL_ARGS-}-s "
                 readonly STATUSMETHOD=${ARG}
                 ;;
             --test) LOCAL_ARGS="${LOCAL_ARGS-}-t " ;;
