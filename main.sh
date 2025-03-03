@@ -57,6 +57,12 @@ For regular usage you can run without providing any options.
     prompt to remove .env variables for all disabled apps
 -r --remove <appname>
     prompt to remove the .env variables for the app specified
+-s --status <appname>
+    Returns the enabled/disabled status for the app specified
+--status-disabled <appname>
+    Disable the app specified
+--status-enabled <appname>
+    Enable the app specified
 -t --test <test_name>
     run tests to check the program
 -u --update
@@ -151,6 +157,17 @@ cmdline() {
                 ;;
             --prune) LOCAL_ARGS="${LOCAL_ARGS-}-p " ;;
             --remove) LOCAL_ARGS="${LOCAL_ARGS-}-r " ;;
+            --status)
+                LOCAL_ARGS="${LOCAL_ARGS-}-s "
+                readonly STATUSMETHOD=${ARG}
+                ;;
+            --status-disabled) LOCAL_ARGS="${LOCAL_ARGS-}-s "
+                LOCAL_ARGS="${LOCAL_ARGS-}-s "
+                readonly STATUSMETHOD=${ARG}
+                ;;
+            --status-enabled) LOCAL_ARGS="${LOCAL_ARGS-}-s "
+                readonly STATUSMETHOD=${ARG}
+                ;;
             --test) LOCAL_ARGS="${LOCAL_ARGS-}-t " ;;
             --update) LOCAL_ARGS="${LOCAL_ARGS-}-u " ;;
             --verbose) LOCAL_ARGS="${LOCAL_ARGS-}-v " ;;
@@ -165,7 +182,7 @@ cmdline() {
     #Reset the positional parameters to the short options
     eval set -- "${LOCAL_ARGS-}"
 
-    while getopts ":a:c:efghilpr:t:u:vx" OPTION; do
+    while getopts ":a:c:efghilpr:s:t:u:vx" OPTION; do
         case ${OPTION} in
             a)
                 readonly ADD=${OPTARG}
@@ -209,6 +226,9 @@ cmdline() {
                 ;;
             r)
                 readonly REMOVE=${OPTARG}
+                ;;
+            s)
+                readonly STATUS=${OPTARG}
                 ;;
             t)
                 readonly TEST=${OPTARG}
@@ -604,6 +624,24 @@ main() {
         fi
         exit
     fi
+    if [[ -n ${STATUS-} ]]; then
+        case "${STATUSMETHOD-}" in
+            --status)
+                run_script 'app_status' "${STATUS}"
+                ;;
+            --status-enabled)
+                run_script 'enable_app' "${STATUS}"
+                ;;
+            --status-disabled)
+                run_script 'disable_app' "${STATUS}"
+                ;;
+            *)
+                echo "Invalid option: '${STATUSMETHOD-}'"
+                ;;
+        esac
+        exit
+    fi
+
     if [[ -n ${TEST-} ]]; then
         run_test "${TEST}"
         exit
