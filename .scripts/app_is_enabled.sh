@@ -4,6 +4,7 @@ IFS=$'\n\t'
 
 app_is_enabled() {
     local APPNAME=${1-}
+    APPNAME=${APPNAME^^}
     local APP_ENABLED
     APP_ENABLED=$(run_script 'env_get' "${APPNAME}__ENABLED")
     if [[ ${APP_ENABLED} == "true" ]]; then
