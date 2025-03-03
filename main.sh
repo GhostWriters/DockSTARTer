@@ -186,7 +186,14 @@ cmdline() {
     while getopts ":a:c:efghilpr:s:t:u:vx" OPTION; do
         case ${OPTION} in
             a)
-                readonly ADD=${OPTARG}
+                local MULTIOPT
+                MULTIOPT=("$OPTARG")
+                until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
+                    MULTIOPT+=("$(eval "echo \${$OPTIND}")")
+                    OPTIND=$((OPTIND + 1))
+                done
+                ADD=$(printf "%s " "${MULTIOPT[@]}" | xargs)
+                readonly ADD
                 ;;
             c)
                 case ${OPTARG} in
@@ -226,7 +233,14 @@ cmdline() {
                 readonly PRUNE=true
                 ;;
             r)
-                readonly REMOVE=${OPTARG}
+                local MULTIOPT
+                MULTIOPT=("$OPTARG")
+                until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
+                    MULTIOPT+=("$(eval "echo \${$OPTIND}")")
+                    OPTIND=$((OPTIND + 1))
+                done
+                REMOVE=$(printf "%s " "${MULTIOPT[@]}" | xargs)
+                readonly REMOVE
                 ;;
             s)
                 local MULTIOPT
