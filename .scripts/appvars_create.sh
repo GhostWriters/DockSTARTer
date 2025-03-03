@@ -24,6 +24,7 @@ appvars_create() {
 
         run_script 'env_merge_newonly' "${COMPOSE_ENV}" "${APP_DEFAULT_GLOBAL_ENV_FILE}"
         run_script 'env_merge_newonly' "${APP_ENV_FILE}" "${APP_DEFAULT_ENV_FILE}"
+        info "Environment variables created for ${APPNAME}."
     done
 }
 
