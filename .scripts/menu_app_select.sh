@@ -40,16 +40,11 @@ menu_app_select() {
         return 1
     else
         info "Disabling all apps."
-        for AppName in "${EnabledApps[@]}"; do
-            run_script 'env_set' "${AppName^^}__ENABLED" false
-        done
+        run_script 'disable_app' "${EnabledApps[@]}"
 
         info "Enabling selected apps."
-        while IFS= read -r line; do
-            local AppName=${line}
-            run_script 'env_set' "${AppName^^}__ENABLED" true
-            run_script 'appvars_create' "${AppName}"
-        done < <(echo "${SelectedApps}")
+        run_script 'enable_app' "${SelectedApps}"
+        run_script 'appvars_create' "${SelectedApps}"
 
         run_script 'appvars_purge_all'
         run_script 'env_update'
