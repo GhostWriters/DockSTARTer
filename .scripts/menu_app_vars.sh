@@ -6,7 +6,7 @@ menu_app_vars() {
     local APPNAME=${1-}
     run_script 'appvars_create' "${APPNAME}"
     local APPVARS
-    APPVARS=$(run_script 'appvars_list' "${APPNAME}")
+    APPVARS=$(run_script 'appvars_lines' "${APPNAME}")
     if [[ -z ${APPVARS} ]]; then
         if [[ ${CI-} == true ]]; then
             warn "${APPNAME} has no variables."
