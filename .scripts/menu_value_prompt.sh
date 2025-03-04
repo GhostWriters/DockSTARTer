@@ -9,7 +9,7 @@ menu_value_prompt() {
     CURRENT_VAL=$(run_script 'env_get' "${SET_VAR}")
 
     local APPNAME
-    APPNAME=varname_to_appname "${SET_VAR}"
+    APPNAME=$(varname_to_appname "${SET_VAR}")
     APPNAME=${APPNAME^^}
     local appname=${APPNAME,,}
     local APP_FOLDER="${SCRIPTPATH}/compose/.apps/${appname}"
