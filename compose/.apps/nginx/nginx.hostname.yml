@@ -1,3 +1,3 @@
 services:
   nginx:
-    hostname: ${DOCKER_HOSTNAME}
+    hostname: ${NGINX__HOSTNAME}

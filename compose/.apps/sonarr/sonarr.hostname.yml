@@ -1,3 +1,3 @@
 services:
   sonarr:
-    hostname: ${DOCKER_HOSTNAME}
+    hostname: ${SONARR__HOSTNAME}

@@ -1,3 +1,3 @@
 services:
   minecraftserver:
-    hostname: ${DOCKER_HOSTNAME}
+    hostname: ${MINECRAFTSERVER__HOSTNAME}

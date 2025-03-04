@@ -1,3 +1,3 @@
 services:
   nzbhydra2:
-    hostname: ${DOCKER_HOSTNAME}
+    hostname: ${NZBHYDRA2__HOSTNAME}
