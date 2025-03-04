@@ -8,112 +8,114 @@ menu_value_prompt() {
     local CURRENT_VAL
     CURRENT_VAL=$(run_script 'env_get' "${SET_VAR}")
 
-    local APPNAME=${SET_VAR%%_*}
-    local FILENAME=${APPNAME,,}
-    local APPTEMPLATES="${SCRIPTPATH}/compose/.apps/${FILENAME}"
-    local VAR_LABEL=${SET_VAR,,}
+    local APPNAME
+    APPNAME=varname_to_appname "${SET_VAR}"
+    APPNAME=${APPNAME^^}
+    local appname=${APPNAME,,}
+    local APP_FOLDER="${SCRIPTPATH}/compose/.apps/${appname}"
+    local APP_DEFAULT_GLOBAL_ENV_FILE="${APP_FOLDER}/.env"
 
     local DEFAULT_VAL
-    if grep -q -Po "^${SET_VAR}=\K.*" "${COMPOSE_ENV}.example"; then
-        DEFAULT_VAL=$(grep --color=never -Po "^${SET_VAR}=\K.*" "${COMPOSE_ENV}.example" || true)
+    if grep -q -Po "^${SET_VAR}=\K.*" "COMPOSE_ENV_DEFAULT_FILE"; then
+        DEFAULT_VAL=$(grep --color=never -Po "^${SET_VAR}=\K.*" "${COMPOSE_ENV_DEFAULT_FILE}" || true)
     else
-        DEFAULT_VAL=$(grep --color=never -Po "\scom\.dockstarter\.appvars\.${VAR_LABEL}: \K.*" "${APPTEMPLATES}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || true)
+        DEFAULT_VAL=$(grep --color=never -Po "^${SET_VAR}=\K.*" "${APP_DEFAULT_GLOBAL_ENV_FILE}" || true)
     fi
 
     local HOME_VAL
     local SYSTEM_VAL
-    local VALUEDESCRIPTION
-    local VALUEOPTIONS=()
-    VALUEOPTIONS+=("Keep Current " "${CURRENT_VAL}")
+    local ValueDescription
+    local ValueOptions=()
+    ValueOptions+=("Keep Current " "${CURRENT_VAL}")
 
     case "${SET_VAR}" in
         DOCKER_GID)
             SYSTEM_VAL=$(cut -d: -f3 < <(getent group docker))
-            VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
+            ValueOptions+=("Use System " "${SYSTEM_VAL}")
             ;;
         DOCKER_HOSTNAME)
             SYSTEM_VAL=${HOSTNAME}
-            VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
+            ValueOptions+=("Use System " "${SYSTEM_VAL}")
             ;;
         DOCKER_VOLUME_CONFIG)
             HOME_VAL="${DETECTED_HOMEDIR}/.config/appdata"
-            VALUEOPTIONS+=("Use Home " "${HOME_VAL}")
+            ValueOptions+=("Use Home " "${HOME_VAL}")
             ;;
         DOCKER_VOLUME_STORAGE)
             HOME_VAL="${DETECTED_HOMEDIR}/storage"
-            VALUEOPTIONS+=("Use Home " "${HOME_VAL}")
+            ValueOptions+=("Use Home " "${HOME_VAL}")
             ;;
         PGID)
             SYSTEM_VAL=${DETECTED_PGID}
-            VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
+            ValueOptions+=("Use System " "${SYSTEM_VAL}")
             ;;
         PUID)
             SYSTEM_VAL=${DETECTED_PUID}
-            VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
+            ValueOptions+=("Use System " "${SYSTEM_VAL}")
             ;;
         TZ)
             SYSTEM_VAL=$(cat /etc/timezone)
-            VALUEOPTIONS+=("Use System " "${SYSTEM_VAL}")
+            ValueOptions+=("Use System " "${SYSTEM_VAL}")
             ;;
         *)
-            VALUEOPTIONS+=("Use Default " "${DEFAULT_VAL}")
+            ValueOptions+=("Use Default " "${DEFAULT_VAL}")
             ;;
     esac
 
-    VALUEOPTIONS+=("Enter New " "")
+    ValueOptions+=("Enter New " "")
 
     case "${SET_VAR}" in
         "${APPNAME}__ENABLED")
-            VALUEDESCRIPTION='\n\n Must be true or false.'
+            ValueDescription='\n\n Must be true or false.'
             ;;
         "${APPNAME}__NETWORK_MODE")
-            VALUEDESCRIPTION='\n\n Network Mode is usually left blank but can also be bridge, host, none, service: <APPNAME>, or container: <APPNAME>.'
+            ValueDescription='\n\n Network Mode is usually left blank but can also be bridge, host, none, service: <APPNAME>, or container: <APPNAME>.'
             ;;
         "${APPNAME}__PORT_"*)
-            VALUEDESCRIPTION='\n\n Must be an unused port between 0 and 65535.'
+            ValueDescription='\n\n Must be an unused port between 0 and 65535.'
             ;;
         "${APPNAME}__RESTART")
-            VALUEDESCRIPTION='\n\n Restart is usually unless-stopped but can also be no, always, or on-failure.'
+            ValueDescription='\n\n Restart is usually unless-stopped but can also be no, always, or on-failure.'
             ;;
         "${APPNAME}__TAG")
-            VALUEDESCRIPTION='\n\n Tag is usually latest but can also be other values based on the image.'
+            ValueDescription='\n\n Tag is usually latest but can also be other values based on the image.'
             ;;
         "${APPNAME}__VOLUME_"*)
-            VALUEDESCRIPTION='\n\n If the directory selected does not exist we will attempt to create it.'
+            ValueDescription='\n\n If the directory selected does not exist we will attempt to create it.'
             ;;
         DOCKER_GID)
-            VALUEDESCRIPTION='\n\n This should be the Docker group ID. If you are unsure, select Use System.'
+            ValueDescription='\n\n This should be the Docker group ID. If you are unsure, select Use System.'
             ;;
         DOCKER_HOSTNAME)
-            VALUEDESCRIPTION='\n\n This should be your system hostname. If you are unsure, select Use System.'
+            ValueDescription='\n\n This should be your system hostname. If you are unsure, select Use System.'
             ;;
         PGID)
-            VALUEDESCRIPTION='\n\n This should be your user group ID. If you are unsure, select Use System.'
+            ValueDescription='\n\n This should be your user group ID. If you are unsure, select Use System.'
             ;;
         PUID)
-            VALUEDESCRIPTION='\n\n This should be your user account ID. If you are unsure, select Use System.'
+            ValueDescription='\n\n This should be your user account ID. If you are unsure, select Use System.'
             ;;
         TZ)
-            VALUEDESCRIPTION='\n\n If this is not the correct timezone please exit and set your system timezone.'
+            ValueDescription='\n\n If this is not the correct timezone please exit and set your system timezone.'
             ;;
         *)
-            VALUEDESCRIPTION=""
+            ValueDescription=""
             ;;
     esac
 
     if [[ -n ${SYSTEM_VAL-} ]]; then
-        VALUEDESCRIPTION="\n\n System detected values are recommended.${VALUEDESCRIPTION}"
+        ValueDescription="\n\n System detected values are recommended.${ValueDescription}"
     fi
 
-    local SELECTEDVALUE
+    local SelectedValue
     if [[ ${CI-} == true ]]; then
-        SELECTEDVALUE="Keep Current "
+        SelectedValue="Keep Current "
     else
-        SELECTEDVALUE=$(whiptail --fb --clear --title "DockSTARTer" --menu "What would you like set for ${SET_VAR}?${VALUEDESCRIPTION}" 0 0 0 "${VALUEOPTIONS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
+        SelectedValue=$(whiptail --fb --clear --title "DockSTARTer" --menu "What would you like set for ${SET_VAR}?${ValueDescription}" 0 0 0 "${ValueOptions[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
     fi
 
     local INPUT
-    case "${SELECTEDVALUE}" in
+    case "${SelectedValue}" in
         "Keep Current ")
             INPUT=${CURRENT_VAL}
             ;;
@@ -127,7 +129,7 @@ menu_value_prompt() {
             INPUT=${SYSTEM_VAL}
             ;;
         "Enter New ")
-            INPUT=$(whiptail --fb --clear --title "DockSTARTer" --inputbox "What would you like set for ${SET_VAR}?${VALUEDESCRIPTION}" 0 0 "${CURRENT_VAL}" 3>&1 1>&2 2>&3 || echo "CancelNewEntry")
+            INPUT=$(whiptail --fb --clear --title "DockSTARTer" --inputbox "What would you like set for ${SET_VAR}?${ValueDescription}" 0 0 "${CURRENT_VAL}" 3>&1 1>&2 2>&3 || echo "CancelNewEntry")
             ;;
         "Cancel")
             warn "Selection of ${SET_VAR} was canceled."
