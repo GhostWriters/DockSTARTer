@@ -16,7 +16,7 @@ menu_value_prompt() {
     local APP_DEFAULT_GLOBAL_ENV_FILE="${APP_FOLDER}/.env"
 
     local DEFAULT_VAL
-    if grep -q -Po "^${SET_VAR}=\K.*" "COMPOSE_ENV_DEFAULT_FILE"; then
+    if grep -q -Po "^${SET_VAR}=\K.*" "${COMPOSE_ENV_DEFAULT_FILE}"; then
         DEFAULT_VAL=$(grep --color=never -Po "^${SET_VAR}=\K.*" "${COMPOSE_ENV_DEFAULT_FILE}" || true)
     else
         DEFAULT_VAL=$(grep --color=never -Po "^${SET_VAR}=\K.*" "${APP_DEFAULT_GLOBAL_ENV_FILE}" || true)
