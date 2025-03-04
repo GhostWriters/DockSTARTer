@@ -9,19 +9,15 @@ app_list() {
     for index in "${!APPS[@]}"; do
         local APPNAME=${APPS[index]}
         APPS[index]+=','
-        if run_script 'app_is_installed' "${APPNAME}"; then
-            APPS[index]+='*INSTALLED*,'
-            if run_script 'app_is_enabled' "${APPNAME}"; then
-                APPS[index]+='*ENABLED*'
-            else
-                APPS[index]+='*DISABLED*'
-            fi
-        else
-            APPS[index]+=','
+        if run_script 'app_is_depreciated' "${APPNAME}"; then
+            APPS[index]+='[*DEPRECIATED*]'
         fi
         APPS[index]+=','
-        if run_script 'app_is_depreciated' "${APPNAME}"; then
-            APPS[index]+='(DEPRECIATED)'
+        if run_script 'app_is_installed' "${APPNAME}"; then
+            APPS[index]+='*INSTALLED*'
+            if run_script 'app_is_disabled' "${APPNAME}"; then
+                APPS[index]+=',(Disabled)'
+            fi
         fi
     done
     printf '%s\n' "${APPS[@]}" | column -t -s ','
