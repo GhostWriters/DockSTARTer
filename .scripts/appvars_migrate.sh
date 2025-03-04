@@ -20,8 +20,6 @@ appvars_migrate() {
             local MIGRATE_FROM_VAR
             MIGRATE_TO_VAR=${line%% *}
             MIGRATE_FROM_VAR=${line##"${MIGRATE_TO_VAR}" }
-            MIGRATE_TO_VAR=${MIGRATE_TO_VAR/app:/${FILENAME}:}
-            MIGRATE_FROM_VAR=${MIGRATE_FROM_VAR/app:/${FILENAME}:}
 
             run_script 'env_rename' "${MIGRATE_FROM_VAR}" "${MIGRATE_TO_VAR}"
         done

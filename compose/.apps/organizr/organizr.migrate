@@ -10,5 +10,5 @@ ORGANIZR__TAG             ORGANIZR_TAG
 ##
 ## ORGANIZR - organizr.env
 ##
-app:branch                ORGANIZR_BRANCH|ORGANIZR_ENVIRONMENT_BRANCH
-app:fpm                   ORGANIZR_FPM|ORGANIZR_ENVIRONMENT_FPM
+organizr:branch           ORGANIZR_BRANCH|ORGANIZR_ENVIRONMENT_BRANCH
+organizr:fpm              ORGANIZR_FPM|ORGANIZR_ENVIRONMENT_FPM
