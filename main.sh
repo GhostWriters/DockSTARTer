@@ -41,8 +41,8 @@ For regular usage you can run without providing any options.
     List builtin apps
 --list-depreciated
     List depreciated apps
---list-installed
-    List installed apps
+--list-added
+    List added apps
 --list-enabled
     List enabled apps
 --list-disabled
@@ -617,8 +617,8 @@ main() {
             --list-depreciated)
                 run_script 'app_list_depreciated'
                 ;;
-            --list-installed)
-                run_script 'app_list_installed'
+            --list-added)
+                run_script 'app_list_added'
                 ;;
             --list-enabled)
                 run_script 'app_list_enabled'

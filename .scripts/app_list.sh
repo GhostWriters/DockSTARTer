@@ -13,8 +13,8 @@ app_list() {
             APPS[index]+='[*DEPRECIATED*]'
         fi
         APPS[index]+=','
-        if run_script 'app_is_installed' "${APPNAME}"; then
-            APPS[index]+='*INSTALLED*'
+        if run_script 'app_is_added' "${APPNAME}"; then
+            APPS[index]+='*ADDED*'
             if run_script 'app_is_disabled' "${APPNAME}"; then
                 APPS[index]+=',(Disabled)'
             fi

@@ -17,8 +17,8 @@ env_format_lines() {
     )
 
     local -a FORMATTED_ENV_LINES=()
-    if [[ -n ${APPNAME} ]] && run_script 'app_is_installed' "${APPNAME}"; then
-        # APPNAME is specified and installed, output main app heading
+    if [[ -n ${APPNAME} ]] && run_script 'app_is_added' "${APPNAME}"; then
+        # APPNAME is specified and added, output main app heading
         local HEADING_TITLE="${AppName}"
         if run_script 'app_is_depreciated' "${APPNAME}"; then
             HEADING_TITLE+=' [*DEPRECIATED*]'

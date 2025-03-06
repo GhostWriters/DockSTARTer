@@ -11,8 +11,8 @@ app_status() {
             echo "Application ${AppName^^} does not exist."
             continue
         fi
-        if ! run_script 'app_is_installed' "${AppName}"; then
-            echo "Application ${AppName^^} is not installed."
+        if ! run_script 'app_is_added' "${AppName}"; then
+            echo "Application ${AppName^^} is not added."
             continue
         fi
         if run_script 'app_is_enabled' "${AppName}"; then

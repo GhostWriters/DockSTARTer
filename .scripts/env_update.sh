@@ -18,7 +18,7 @@ env_update() {
         local appname=${APPNAME,,}
         local APP_DEFAULT_GLOBAL_ENV_FILE=""
         local -a UPDATED_APP_ENV_LINES=()
-        if run_script 'app_is_installed' "${APPNAME}"; then
+        if run_script 'app_is_added' "${APPNAME}"; then
             APP_DEFAULT_GLOBAL_ENV_FILE="${TEMPLATES_FOLDER}/${appname}/.env"
         fi
         run_script 'appvars_lines' "${APPNAME}" > "${ENV_LINES_FILE}"
@@ -39,11 +39,11 @@ env_update() {
         local appname=${APPNAME,,}
         local APP_ENV_FILE="${APP_ENV_FOLDER}/${appname}.env"
         local APP_DEFAULT_ENV_FILE=""
-        if run_script 'app_is_installed' "${APPNAME}"; then
+        if run_script 'app_is_added' "${APPNAME}"; then
             APP_DEFAULT_ENV_FILE="${TEMPLATES_FOLDER}/${appname}/${appname}.env"
         fi
         if [[ -n ${APP_DEFAULT_ENV_FILE} || -f ${APP_ENV_FILE} ]]; then
-            # App is either installed, or the user has an existing appname.env file
+            # App is either added, or the user has an existing appname.env file
             local -a UPDATED_APP_ENV_LINES=()
             readarray -t UPDATED_APP_ENV_LINES < <(
                 run_script 'env_format_lines' "${APP_ENV_FILE}" "${APP_DEFAULT_ENV_FILE}" "${APPNAME}"
