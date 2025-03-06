@@ -29,7 +29,7 @@ env_move() {
         notice "Creating ${TO_VAR_FILE}"
         touch "${TO_VAR_FILE}"
     fi
-    if grep -q -P "^\s*\K${TO_VAR}(?=\s*=)" "${TO_VAR_FILE}"; then
+    if run_script 'env_var_exists' "${TO_VAR}" "${TO_VAR_FILE}"; then
         # Destination variable exists, do nothing
         return
     fi

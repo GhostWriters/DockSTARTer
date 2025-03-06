@@ -16,7 +16,7 @@ env_rename() {
         # Trying to rename to the same name, do nothing
         return
     fi
-    if grep -q -P "^\s*\K${TO_VAR}(?=\s*=)" "${VAR_FILE}"; then
+    if run_script 'env_var_exists' "${TO_VAR}" "${VAR_FILE}"; then
         # Variable to rename to already exists, do nothing
         return
     fi
