@@ -17,18 +17,11 @@ varname_to_appname() {
 }
 
 test_varname_to_appname() {
-    notice "[SONARR_CONTAINER_NAME]"
-    run_script 'varname_to_appname' SONARR_CONTAINER_NAME
-    notice "[SONARR__CONTAINER_NAME]"
-    run_script 'varname_to_appname' SONARR__CONTAINER_NAME
-    notice "[SONARR__4K__CONTAINER_NAME]"
-    run_script 'varname_to_appname' SONARR__CONTAINER_NAME
-    notice "[SONARR__4K__CONTAINER_NAME__TEST]"
-    run_script 'varname_to_appname' SONARR__4K__CONTAINER_NAME__TEST
-    notice "[SONARR__4K__CONTAINER__NAME]"
-    run_script 'varname_to_appname' SONARR__4K__CONTAINER__NAME
-    notice "[SONARR_4K__CONTAINER__NAME]"
-    run_script 'varname_to_appname' SONARR_4K__CONTAINER__NAME
-    notice "[DOCKER_VOLUME_STORAGE]"
-    run_script 'varname_to_appname' DOCKER_VOLUME_STORAGE
+    notice "[SONARR_CONTAINER_NAME]            = [$(run_script 'varname_to_appname' SONARR_CONTAINER_NAME)]"            # []
+    notice "[SONARR__CONTAINER_NAME]           = [$(run_script 'varname_to_appname' SONARR__CONTAINER_NAME)]"           # [SONARR]
+    notice "[SONARR__4K__CONTAINER_NAME]       = [$(run_script 'varname_to_appname' SONARR__4K__CONTAINER_NAME)]"       # [SONARR__4K]
+    notice "[SONARR__4K__CONTAINER_NAME__TEST] = [$(run_script 'varname_to_appname' SONARR__4K__CONTAINER_NAME__TEST)]" # [SONARR__4K]
+    notice "[SONARR__4K__CONTAINER__NAME]      = [$(run_script 'varname_to_appname' SONARR__4K__CONTAINER__NAME)]"      # [SONARR__4K]
+    notice "[SONARR_4K__CONTAINER__NAME]       = [$(run_script 'varname_to_appname' SONARR_4K__CONTAINER__NAME)]"       # []
+    notice "[DOCKER_VOLUME_STORAGE]            = [$(run_script 'varname_to_appname' DOCKER_VOLUME_STORAGE)]"            # []
 }
