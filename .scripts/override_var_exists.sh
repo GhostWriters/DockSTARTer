@@ -10,7 +10,7 @@ override_var_exists() {
         return 1
     fi
     # Search for $VarName or ${VarName followed by a word break
-    grep -P "\\$\{?\K${VarName}\b" "${COMPOSE_OVERRIDE}"
+    grep -q -P "\\$\{?${VarName}\b" "${COMPOSE_OVERRIDE}"
 }
 
 test_override_var_exists() {
