@@ -368,6 +368,8 @@ export ARCH
 # Environment Information
 readonly COMPOSE_FOLDER="${SCRIPTPATH}/compose"
 export COMPOSE_FOLDER
+readonly COMPOSE_OVERRIDE="${COMPOSE_FOLDER}/docker-compose.override.yml"
+export COMPOSE_OVERRIDE
 readonly COMPOSE_ENV="${COMPOSE_FOLDER}/.env"
 export COMPOSE_ENV
 readonly COMPOSE_ENV_DEFAULT_FILE="${COMPOSE_FOLDER}/.env.example"
