@@ -30,7 +30,7 @@ env_migrate() {
     fi
 
     if [[ ${FROM_VAR_FILE} == "${TO_VAR_FILE}" ]]; then
-        # Renaming variables in the same file, do a replace
+        # Renaming variables in the same file, do a rename
         local VAR_FILE=${FROM_VAR_FILE}
         local -a FOUND_VAR_LIST=()
         readarray -t FOUND_VAR_LIST < <(grep -o -P "^\s*\K${FROM_VAR}(?=\s*=)" "${VAR_FILE}" || true)
@@ -38,20 +38,11 @@ env_migrate() {
             run_script 'env_rename' "${FOUND_VAR}" "${TO_VAR}" "${VAR_FILE}"
         done
     else
-        # Renaming variables in different files, do a copy and delete
+        # Renaming variables in different files, do a move
         local -a FOUND_VAR_LIST=()
         readarray -t FOUND_VAR_LIST < <(grep -o -P "^\s*\K${FROM_VAR}(?=\s*=)" "${FROM_VAR_FILE}" || true)
         for FOUND_VAR in "${FOUND_VAR_LIST[@]}"; do
-            #run_script 'env_move' "${FOUND_VAR}" "${TO_VAR}" "${FROM_VAR_FILE}" "${VAR_FILE}"
-            notice "Moving variable:"
-            notice "   ${FOUND_VAR} [${FROM_VAR_FILE}] to"
-            notice "   ${TO_VAR} [${TO_VAR_FILE}]"
-            local NEW_VAR_LINE
-            NEW_VAR_LINE=$(sed -n "s/^\s*${FOUND_VAR}\s*=/${TO_VAR}=/gp" "${FROM_VAR_FILE}" | tail -1)
-            printf '\n%s\n' "${NEW_VAR_LINE}" >> "${TO_VAR_FILE}" ||
-                fatal "Failed to add '${NEW_VAR_LINE}' in ${TO_VAR_FILE}\nFailing command: ${F[C]}printf '\n%s\n' \"${NEW_VAR_LINE}\" >> \"${TO_VAR_FILE}\""
-            sed -i "/^\s*${FOUND_VAR}\s*=/d" "${FROM_VAR_FILE}" ||
-                fatal "Failed to remove var ${FOUND_VAR} in ${FROM_VAR_FILE}\nFailing command: ${F[C]}sed -i \"/^\\s*${FOUND_VAR}\\s*=/d\" \"${FROM_VAR_FILE}\""
+            run_script 'env_move' "${FOUND_VAR}" "${TO_VAR}" "${FROM_VAR_FILE}" "${VAR_FILE}"
         done
     fi
 }
