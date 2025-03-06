@@ -7,7 +7,7 @@ env_rename() {
     local TO_VAR=${2-}
     local VAR_FILE=${3:-$COMPOSE_ENV}
 
-    if [[ -f ${VAR_FILE} ]]; then
+    if [[ ! -f ${VAR_FILE} ]]; then
         # Variable file does not exist, warn and return
         warn "File ${VAR_FILE} does not exist."
         return
