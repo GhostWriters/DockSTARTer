@@ -30,7 +30,7 @@ env_migrate() {
         local -a FOUND_VAR_LIST=()
         readarray -t FOUND_VAR_LIST < <(grep -o -P "^\s*\K${FROM_VAR}(?=\s*=)" "${VAR_FILE}" || true)
         for FOUND_VAR in "${FOUND_VAR_LIST[@]}"; do
-            if run_script 'override_var_exists' "${FOUND_VAR}"; then
+            if [[ ${FROM_VAR_FILE} == "${COMPOSE_ENV}" ]] && run_script 'override_var_exists' "${FOUND_VAR}"; then
                 # Variable exists in user's override file, copy instead of rename
                 run_script 'env_copy' "${FOUND_VAR}" "${TO_VAR}" "${VAR_FILE}"
             else
@@ -42,7 +42,7 @@ env_migrate() {
         local -a FOUND_VAR_LIST=()
         readarray -t FOUND_VAR_LIST < <(grep -o -P "^\s*\K${FROM_VAR}(?=\s*=)" "${FROM_VAR_FILE}" || true)
         for FOUND_VAR in "${FOUND_VAR_LIST[@]}"; do
-            if run_script 'override_var_exists' "${FOUND_VAR}"; then
+            if [[ ${FROM_VAR_FILE} == "${COMPOSE_ENV}" ]] && run_script 'override_var_exists' "${FOUND_VAR}"; then
                 # Variable exists in user's override file, copy instead of move
                 run_script 'env_copy' "${FOUND_VAR}" "${TO_VAR}" "${FROM_VAR_FILE}" "${TO_VAR_FILE}"
             else
