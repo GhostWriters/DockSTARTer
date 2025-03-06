@@ -10,8 +10,12 @@ override_var_rename() {
         # No override file exists, do nothing
         return
     fi
-    # Replace $FromVar or ${FromVar followed by a word break to $ToVar or ${ToVar
-    sed -i -E "s/([$]\{?)${FromVar}\b/\1${ToVar}/g" "${COMPOSE_OVERRIDE}"
+    if run_script 'override_var_exists' "${FromVar}"; then
+        notice "Renaming variable in ${COMPOSE_OVERRIDE}:"
+        notice "   ${FROM_VAR} to ${TO_VAR}"
+        # Replace $FromVar or ${FromVar followed by a word break to $ToVar or ${ToVar
+        sed -i -E "s/([$]\{?)${FromVar}\b/\1${ToVar}/g" "${COMPOSE_OVERRIDE}"
+    fi
 }
 
 test_override_var_rename() {
