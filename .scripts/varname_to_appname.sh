@@ -22,7 +22,9 @@ test_varname_to_appname() {
     notice "[SONARR__CONTAINER_NAME]"
     run_script 'varname_to_appname' SONARR__CONTAINER_NAME
     notice "[SONARR__4K__CONTAINER_NAME]"
-    run_script 'varname_to_appname' SONARR__4K__CONTAINER_NAME
+    run_script 'varname_to_appname' SONARR__CONTAINER_NAME
+    notice "[SONARR__4K__CONTAINER_NAME__TEST]"
+    run_script 'varname_to_appname' SONARR__4K__CONTAINER_NAME__TEST
     notice "[SONARR__4K__CONTAINER__NAME]"
     run_script 'varname_to_appname' SONARR__4K__CONTAINER__NAME
     notice "[SONARR_4K__CONTAINER__NAME]"
