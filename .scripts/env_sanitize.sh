@@ -11,10 +11,10 @@ env_sanitize() {
     fi
 
     # Rename vars
-    run_script 'env_rename' DOCKERCONFDIR DOCKER_VOLUME_CONFIG
-    run_script 'env_rename' DOCKERGID DOCKER_GID
-    run_script 'env_rename' DOCKERHOSTNAME DOCKER_HOSTNAME
-    run_script 'env_rename' DOCKERSTORAGEDIR DOCKER_VOLUME_STORAGE
+    run_script 'env_migrate' DOCKERCONFDIR DOCKER_VOLUME_CONFIG
+    run_script 'env_migrate' DOCKERGID DOCKER_GID
+    run_script 'env_migrate' DOCKERHOSTNAME DOCKER_HOSTNAME
+    run_script 'env_migrate' DOCKERSTORAGEDIR DOCKER_VOLUME_STORAGE
 
     # Replace ~ with /home/username
     if grep -q -P '^\w+_VOLUME_\w+=~/' "${COMPOSE_ENV}"; then

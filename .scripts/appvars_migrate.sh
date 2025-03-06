@@ -21,7 +21,7 @@ appvars_migrate() {
             MIGRATE_TO_VAR=${line%% *}
             MIGRATE_FROM_VAR=${line##"${MIGRATE_TO_VAR}" }
 
-            run_script 'env_rename' "${MIGRATE_FROM_VAR}" "${MIGRATE_TO_VAR}"
+            run_script 'env_migrate' "${MIGRATE_FROM_VAR}" "${MIGRATE_TO_VAR}"
         done
     fi
 }

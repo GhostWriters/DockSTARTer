@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-env_rename() {
+env_migrate() {
     local FROM_VAR=${1-}
     local TO_VAR=${2-}
     local FROM_VAR_FILE=${3:-$COMPOSE_ENV}
@@ -57,7 +57,7 @@ env_rename() {
     fi
 }
 
-test_env_rename() {
-    # run_script 'env_rename'
-    warn "CI does not test env_rename."
+test_env_migrate() {
+    # run_script 'env_migrate'
+    warn "CI does not test env_migrate."
 }
