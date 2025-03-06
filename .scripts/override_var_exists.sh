@@ -14,5 +14,11 @@ override_var_exists() {
 }
 
 test_override_var_exists() {
-    warn "CI does not test override_var_exists."
+    #warn "CI does not test override_var_exists."
+    notice '[DOCKER_VOLUME_SOCKET]'
+    run_script 'override_var_exists' DOCKER_VOLUME_STORAGE
+    notice "Returned $?"
+    notice '[NONEXISTENTVAR]'
+    run_script 'override_var_exists' NONEXISTENTVAR
+    notice "Returned $?"
 }
