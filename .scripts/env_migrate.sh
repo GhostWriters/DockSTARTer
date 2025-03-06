@@ -6,7 +6,7 @@ env_migrate() {
     local FROM_VAR=${1-}
     local TO_VAR=${2-}
     local FROM_VAR_FILE=${3:-$COMPOSE_ENV}
-    local TO_VAR_FILE=${4:-$COMPOSE_ENV}
+    local TO_VAR_FILE=${4:-$FROM_VAR_FILE}
 
     # Change the .env file to use `appname.env' if 'appname:' preceeds the variable name, and remove 'appname:' from the string
     if [[ ${FROM_VAR} == *":"* ]]; then
