@@ -12,7 +12,7 @@ env_rename() {
         warn "File ${VAR_FILE} does not exist."
         return
     fi
-    if [[ ${FROM_VAR_FILE} == "${TO_VAR_FILE}" ]]; then
+    if [[ ${FROM_VAR} == "${TO_VAR}" ]]; then
         # Trying to rename to the same name, do nothing
         return
     fi
@@ -21,7 +21,7 @@ env_rename() {
         return
     fi
 
-    notice "Renaming ${FOUND_VAR} to ${TO_VAR} in ${VAR_FILE}"
+    notice "Renaming ${FROM_VAR} to ${TO_VAR} in ${VAR_FILE}"
     sed -i "s/^\s*${FROM_VAR}\s*=/${TO_VAR}=/g" "${VAR_FILE}" ||
         fatal "Failed to rename var from ${FROM_VAR} to ${TO_VAR} in ${VAR_FILE}\nFailing command: ${F[C]}sed -i \"s/^\\s*${FROM_VAR}\\s*=/${TO_VAR}=/g\" \"${VAR_FILE}\""
 }
