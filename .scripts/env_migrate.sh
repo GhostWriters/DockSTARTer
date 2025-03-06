@@ -9,6 +9,7 @@ env_migrate() {
     local TO_VAR_FILE=${4:-$COMPOSE_ENV}
 
     # Change the .env file to use if specified in the variable, and remove the appname from the string
+    # The file is specified as "appname:variable_name"
     if [[ ${FROM_VAR} == *":"* ]]; then
         FROM_VAR_FILE="${APP_ENV_FOLDER}/${FROM_VAR%:*}.env"
         FROM_VAR="${FROM_VAR#*:}"
@@ -42,7 +43,7 @@ env_migrate() {
         local -a FOUND_VAR_LIST=()
         readarray -t FOUND_VAR_LIST < <(grep -o -P "^\s*\K${FROM_VAR}(?=\s*=)" "${FROM_VAR_FILE}" || true)
         for FOUND_VAR in "${FOUND_VAR_LIST[@]}"; do
-            run_script 'env_move' "${FOUND_VAR}" "${TO_VAR}" "${FROM_VAR_FILE}" "${VAR_FILE}"
+            run_script 'env_move' "${FOUND_VAR}" "${TO_VAR}" "${FROM_VAR_FILE}" "${TO_VAR_FILE}"
         done
     fi
 }
