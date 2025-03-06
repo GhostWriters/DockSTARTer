@@ -9,7 +9,6 @@ app_is_builtin() {
 }
 
 test_app_is_builtin() {
-    # run_script 'app_is_installed'
     run_script 'app_is_builtin' WATCHTOWER
     notice "'app_is_builtin' WATCHTOWER returned $?"
     run_script 'app_is_builtin' APPTHATDOESNOTEXIST
