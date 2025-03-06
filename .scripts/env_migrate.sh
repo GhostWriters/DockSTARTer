@@ -35,6 +35,7 @@ env_migrate() {
         local -a FOUND_VAR_LIST=()
         readarray -t FOUND_VAR_LIST < <(grep -o -P "^\s*\K${FROM_VAR}(?=\s*=)" "${VAR_FILE}" || true)
         for FOUND_VAR in "${FOUND_VAR_LIST[@]}"; do
+            #run_script 'env_rename' "${FOUND_VAR}" "${TO_VAR}" "${VAR_FILE}"
             notice "Renaming ${FOUND_VAR} to ${TO_VAR} in ${VAR_FILE}"
             sed -i "s/^\s*${FOUND_VAR}\s*=/${TO_VAR}=/g" "${VAR_FILE}" ||
                 fatal "Failed to rename var from ${FOUND_VAR} to ${TO_VAR} in ${VAR_FILE}\nFailing command: ${F[C]}sed -i \"s/^\\s*${FOUND_VAR}\\s*=/${TO_VAR}=/\" \"${VAR_FILE}\""
@@ -44,13 +45,14 @@ env_migrate() {
         local -a FOUND_VAR_LIST=()
         readarray -t FOUND_VAR_LIST < <(grep -o -P "^\s*\K${FROM_VAR}(?=\s*=)" "${FROM_VAR_FILE}" || true)
         for FOUND_VAR in "${FOUND_VAR_LIST[@]}"; do
+            #run_script 'env_move' "${FOUND_VAR}" "${TO_VAR}" "${FROM_VAR_FILE}" "${VAR_FILE}"
             notice "Moving variable:"
             notice "   ${FOUND_VAR} [${FROM_VAR_FILE}] to"
             notice "   ${TO_VAR} [${TO_VAR_FILE}]"
-            local NEW_VAR_LINES
-            NEW_VAR_LINES=$(sed -n "s/^\s*${FOUND_VAR}\s*=/${TO_VAR}=/gp" "${FROM_VAR_FILE}")
-            printf '\n%s\n' "${NEW_VAR_LINES}" >> "${TO_VAR_FILE}" ||
-                fatal "Failed to add vars ${NEW_VAR_LINES} in ${TO_VAR_FILE}\nFailing command: ${F[C]}printf '\n%s\n' \"${NEW_VAR_LINES}\" >> \"${TO_VAR_FILE}\""
+            local NEW_VAR_LINE
+            NEW_VAR_LINE=$(sed -n "s/^\s*${FOUND_VAR}\s*=/${TO_VAR}=/gp" "${FROM_VAR_FILE}" | tail -1)
+            printf '\n%s\n' "${NEW_VAR_LINE}" >> "${TO_VAR_FILE}" ||
+                fatal "Failed to add '${NEW_VAR_LINE}' in ${TO_VAR_FILE}\nFailing command: ${F[C]}printf '\n%s\n' \"${NEW_VAR_LINE}\" >> \"${TO_VAR_FILE}\""
             sed -i "/^\s*${FOUND_VAR}\s*=/d" "${FROM_VAR_FILE}" ||
                 fatal "Failed to remove var ${FOUND_VAR} in ${FROM_VAR_FILE}\nFailing command: ${F[C]}sed -i \"/^\\s*${FOUND_VAR}\\s*=/d\" \"${FROM_VAR_FILE}\""
         done
