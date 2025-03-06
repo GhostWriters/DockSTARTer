@@ -3,50 +3,50 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 env_migrate() {
-    local FROM_VAR=${1-}
-    local TO_VAR=${2-}
-    local FROM_VAR_FILE=${3:-$COMPOSE_ENV}
-    local TO_VAR_FILE=${4:-$FROM_VAR_FILE}
+    local FromVar=${1-}
+    local ToVar=${2-}
+    local FromVarFile=${3:-$COMPOSE_ENV}
+    local ToVarFile=${4:-$FromVarFile}
 
     # Change the .env file to use `appname.env' if 'appname:' preceeds the variable name, and remove 'appname:' from the string
-    if [[ ${FROM_VAR} == *":"* ]]; then
-        FROM_VAR_FILE="${APP_ENV_FOLDER}/${FROM_VAR%:*}.env"
-        FROM_VAR="${FROM_VAR#*:}"
+    if [[ ${FromVar} == *":"* ]]; then
+        FromVarFile="${APP_ENV_FOLDER}/${FromVar%:*}.env"
+        FromVar="${FromVar#*:}"
     fi
-    if [[ ${TO_VAR} == *":"* ]]; then
-        TO_VAR_FILE="${APP_ENV_FOLDER}/${TO_VAR%:*}.env"
-        TO_VAR="${TO_VAR#*:}"
+    if [[ ${ToVar} == *":"* ]]; then
+        ToVarFile="${APP_ENV_FOLDER}/${ToVar%:*}.env"
+        ToVar="${ToVar#*:}"
     fi
 
-    if [[ ! -f ${TO_VAR_FILE} ]]; then
+    if [[ ! -f ${ToVarFile} ]]; then
         # Destination file does not exist, create it
-        notice "Creating ${TO_VAR_FILE}"
-        touch "${TO_VAR_FILE}"
+        notice "Creating ${ToVarFile}"
+        touch "${ToVarFile}"
     fi
 
-    if [[ ${FROM_VAR_FILE} == "${TO_VAR_FILE}" ]]; then
+    if [[ ${FromVarFile} == "${ToVarFile}" ]]; then
         # Renaming variables in the same file (possibly handle override migrations here)
-        local VAR_FILE=${FROM_VAR_FILE}
-        local -a FOUND_VAR_LIST=()
-        readarray -t FOUND_VAR_LIST < <(grep -o -P "^\s*\K${FROM_VAR}(?=\s*=)" "${VAR_FILE}" || true)
-        for FOUND_VAR in "${FOUND_VAR_LIST[@]}"; do
-            run_script 'env_rename' "${FOUND_VAR}" "${TO_VAR}" "${VAR_FILE}"
-            if [[ ${VAR_FILE} == "${COMPOSE_ENV}" ]] && ! run_script 'env_var_exists' "${FOUND_VAR}"; then
+        local VarFile=${FromVarFile}
+        local -a FoundVarList=()
+        readarray -t FoundVarList < <(grep -o -P "^\s*\K${FromVar}(?=\s*=)" "${VarFile}" || true)
+        for FoundVar in "${FoundVarList[@]}"; do
+            run_script 'env_rename' "${FoundVar}" "${ToVar}" "${VarFile}"
+            if [[ ${VarFile} == "${COMPOSE_ENV}" ]] && ! run_script 'env_var_exists' "${FoundVar}"; then
                 # Renaming from the .env file and the variable was successfully renamed.
                 # Rename the matching variable in the override file if needed
-                run_script 'override_var_rename' "${FOUND_VAR}" "${TO_VAR}"
+                run_script 'override_var_rename' "${FoundVar}" "${ToVar}"
             fi
         done
     else
         # Renaming variables in different files
-        local -a FOUND_VAR_LIST=()
-        readarray -t FOUND_VAR_LIST < <(grep -o -P "^\s*\K${FROM_VAR}(?=\s*=)" "${FROM_VAR_FILE}" || true)
-        for FOUND_VAR in "${FOUND_VAR_LIST[@]}"; do
-            if [[ ${FROM_VAR_FILE} == "${COMPOSE_ENV}" ]] && run_script 'override_var_exists' "${FOUND_VAR}"; then
+        local -a FoundVarList=()
+        readarray -t FoundVarList < <(grep -o -P "^\s*\K${FromVar}(?=\s*=)" "${FromVarFile}" || true)
+        for FoundVar in "${FoundVarList[@]}"; do
+            if [[ ${FromVarFile} == "${COMPOSE_ENV}" ]] && run_script 'override_var_exists' "${FoundVar}"; then
                 # Variable exists in user's override file, copy instead of move
-                run_script 'env_copy' "${FOUND_VAR}" "${TO_VAR}" "${FROM_VAR_FILE}" "${TO_VAR_FILE}"
+                run_script 'env_copy' "${FoundVar}" "${ToVar}" "${FromVarFile}" "${ToVarFile}"
             else
-                run_script 'env_rename' "${FOUND_VAR}" "${TO_VAR}" "${FROM_VAR_FILE}" "${TO_VAR_FILE}"
+                run_script 'env_rename' "${FoundVar}" "${ToVar}" "${FromVarFile}" "${ToVarFile}"
             fi
         done
     fi
