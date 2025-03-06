@@ -25,7 +25,7 @@ env_migrate() {
     fi
 
     if [[ ${FROM_VAR_FILE} == "${TO_VAR_FILE}" ]]; then
-        # Renaming variables in the same file, do a rename
+        # Renaming variables in the same file (possibly handle override migrations here)
         local VAR_FILE=${FROM_VAR_FILE}
         local -a FOUND_VAR_LIST=()
         readarray -t FOUND_VAR_LIST < <(grep -o -P "^\s*\K${FROM_VAR}(?=\s*=)" "${VAR_FILE}" || true)
@@ -38,7 +38,7 @@ env_migrate() {
             fi
         done
     else
-        # Renaming variables in different files, do a move
+        # Renaming variables in different files
         local -a FOUND_VAR_LIST=()
         readarray -t FOUND_VAR_LIST < <(grep -o -P "^\s*\K${FROM_VAR}(?=\s*=)" "${FROM_VAR_FILE}" || true)
         for FOUND_VAR in "${FOUND_VAR_LIST[@]}"; do
@@ -46,9 +46,8 @@ env_migrate() {
                 # Variable exists in user's override file, copy instead of move
                 run_script 'env_copy' "${FOUND_VAR}" "${TO_VAR}" "${FROM_VAR_FILE}" "${TO_VAR_FILE}"
             else
-                run_script 'env_move' "${FOUND_VAR}" "${TO_VAR}" "${FROM_VAR_FILE}" "${TO_VAR_FILE}"
+                run_script 'env_rename' "${FOUND_VAR}" "${TO_VAR}" "${FROM_VAR_FILE}" "${TO_VAR_FILE}"
             fi
-            run_script 'env_move' "${FOUND_VAR}" "${TO_VAR}" "${FROM_VAR_FILE}" "${TO_VAR_FILE}"
         done
     fi
 }

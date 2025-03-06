@@ -34,9 +34,14 @@ env_copy() {
         return
     fi
 
-    notice "Copying variable:"
-    notice "   ${FROM_VAR} [${FROM_VAR_FILE}] to"
-    notice "   ${TO_VAR} [${TO_VAR_FILE}]"
+    if [[ ${FROM_VAR_FILE} == "${TO_VAR_FILE}" ]]; then
+        notice "Copying variable in ${FROM_VAR_FILE}:"
+        notice "   ${FROM_VAR} to ${TO_VAR}"
+    else
+        notice "Copying variable:"
+        notice "   ${FROM_VAR} [${FROM_VAR_FILE}] to"
+        notice "   ${TO_VAR} [${TO_VAR_FILE}]"
+    fi
     printf '\n%s\n' "${NEW_VAR_LINE}" >> "${TO_VAR_FILE}" ||
         fatal "Failed to add '${NEW_VAR_LINE}' in ${TO_VAR_FILE}\nFailing command: ${F[C]}printf '\n%s\n' \"${NEW_VAR_LINE}\" >> \"${TO_VAR_FILE}\""
 }
