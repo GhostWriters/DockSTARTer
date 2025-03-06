@@ -3,13 +3,13 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 appvars_migrate_enabled_lines() {
-    local OLD_SUFFIX="_ENABLED"
-    local NEW_SUFFIX="__ENABLED"
-    local -a APPS
-    readarray -t APPS < <(grep --color=never -o -P "^\s*\K[A-Z][A-Z0-9]*(?=${OLD_SUFFIX}\s*=)" "${COMPOSE_ENV}" | sort -u || true)
-    if [[ -n ${APPS[*]} ]]; then
-        for APPNAME in "${APPS[@]}"; do
-            run_script 'env_rename' "${APPNAME}${OLD_SUFFIX}" "${APPNAME}${NEW_SUFFIX}"
+    local OldSuffix="_ENABLED"
+    local NewSuffix="__ENABLED"
+    local -a AppList
+    readarray -t AppList < <(grep --color=never -o -P "^\s*\K[A-Z][A-Z0-9]*(?=${OldSuffix}\s*=)" "${COMPOSE_ENV}" | sort -u || true)
+    if [[ -n ${AppList[*]} ]]; then
+        for APPNAME in "${AppList[@]}"; do
+            run_script 'env_rename' "${APPNAME}${OldSuffix}" "${APPNAME}${NewSuffix}"
         done
     fi
 }
