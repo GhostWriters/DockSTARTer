@@ -25,7 +25,7 @@ test_varname_to_appname() {
     run_script 'varname_to_appname' SONARR__4K__CONTAINER_NAME
     notice "[SONARR__4K__CONTAINER__NAME]"
     run_script 'varname_to_appname' SONARR__4K__CONTAINER__NAME
-    notice "[SONARR__4K__CONTAINER__NAME]"
+    notice "[SONARR_4K__CONTAINER__NAME]"
     run_script 'varname_to_appname' SONARR_4K__CONTAINER__NAME
     notice "[DOCKER_VOLUME_STORAGE]"
     run_script 'varname_to_appname' DOCKER_VOLUME_STORAGE
