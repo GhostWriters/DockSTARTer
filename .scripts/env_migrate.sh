@@ -8,8 +8,7 @@ env_migrate() {
     local FROM_VAR_FILE=${3:-$COMPOSE_ENV}
     local TO_VAR_FILE=${4:-$COMPOSE_ENV}
 
-    # Change the .env file to use if specified in the variable, and remove the appname from the string
-    # The file is specified as "appname:variable_name"
+    # Change the .env file to use `appname.env' if 'appname:' preceeds the variable name, and remove 'appname:' from the string
     if [[ ${FROM_VAR} == *":"* ]]; then
         FROM_VAR_FILE="${APP_ENV_FOLDER}/${FROM_VAR%:*}.env"
         FROM_VAR="${FROM_VAR#*:}"
@@ -23,11 +22,6 @@ env_migrate() {
         # Destination file does not exist, create it
         notice "Creating ${TO_VAR_FILE}"
         touch "${TO_VAR_FILE}"
-    fi
-
-    if grep -q -P "^\s*\K${TO_VAR}(?=\s*=)" "${TO_VAR_FILE}"; then
-        # Variable to rename to already exists, do nothing
-        return
     fi
 
     if [[ ${FROM_VAR_FILE} == "${TO_VAR_FILE}" ]]; then
