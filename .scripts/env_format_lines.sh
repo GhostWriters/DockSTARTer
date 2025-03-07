@@ -10,7 +10,6 @@ env_format_lines() {
     local appname=${APPNAME,,}
     local AppName
     AppName=$(run_script 'app_nicename' "${appname}")
-
     local -a CURRENT_ENV_LINES=()
     readarray -t CURRENT_ENV_LINES < <(
         run_script 'env_lines' "${ENV_FILE}"
@@ -19,17 +18,25 @@ env_format_lines() {
     local -a FORMATTED_ENV_LINES=()
     if [[ -n ${APPNAME} ]] && run_script 'app_is_added' "${APPNAME}"; then
         # APPNAME is specified and added, output main app heading
-        local HEADING_TITLE="${AppName}"
+        local HeadingTitle="${AppName}"
         if run_script 'app_is_depreciated' "${APPNAME}"; then
-            HEADING_TITLE+=' [*DEPRECIATED*]'
+            HeadingTitle+=' [*DEPRECIATED*]'
         fi
         if run_script 'app_is_disabled' "${APPNAME}"; then
-            HEADING_TITLE+=' (Disabled)'
+            HeadingTitle+=' (Disabled)'
         fi
-        local HEADING
-        printf -v HEADING "###\n### %s\n###" "${HEADING_TITLE}"
+        local AppDescription
+        AppDescription=$(run_script 'app_description' "${appname}" | fold -s -w 70)
+        local -a HeadingText=()
+        HeadingText+=("")
+        HeadingText+=("${HeadingTitle}")
+        HeadingText+=("")
+        readarray -t -O ${#HeadingText[@]} HeadingText < <(
+            printf '%s\n' "${AppDescription[@]}"
+        )
+        HeadingText+=("")
         readarray -t -O ${#FORMATTED_ENV_LINES[@]} FORMATTED_ENV_LINES < <(
-            printf '%s\n' "${HEADING}"
+            printf '### %s\n' "${HeadingText[@]}"
         )
     fi
     if [[ -n ${ENV_DEFAULT_FILE} && -f ${ENV_DEFAULT_FILE} ]]; then
@@ -69,12 +76,14 @@ env_format_lines() {
         CURRENT_ENV_LINES=("${CURRENT_ENV_LINES[@]-}")
         if [[ -n ${CURRENT_ENV_LINES[*]} ]]; then
             # Add the "User Defined" heading
-            local HEADING_TITLE="${AppName}"
-            HEADING_TITLE+=" (User Defined)"
-            local HEADING
-            printf -v HEADING "###\n### %s\n###" "${HEADING_TITLE}"
+            local HeadingTitle="${AppName}"
+            HeadingTitle+=" (User Defined)"
+            local -a HeadingText=()
+            HeadingText+=("")
+            HeadingText+=("${HeadingTitle}")
+            HeadingText+=("")
             readarray -t -O ${#FORMATTED_ENV_LINES[@]} FORMATTED_ENV_LINES < <(
-                printf '%s\n' "${HEADING}"
+                printf '### %s\n' "${HeadingText[@]}"
             )
 
             # Add the user defined variables
