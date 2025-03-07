@@ -27,7 +27,7 @@ env_format_lines() {
             HEADING_TITLE+=' (Disabled)'
         fi
         local HEADING
-        printf -v HEADING "##\n## %s\n##" "${HEADING_TITLE}"
+        printf -v HEADING "###\n### %s\n###" "${HEADING_TITLE}"
         readarray -t -O ${#FORMATTED_ENV_LINES[@]} FORMATTED_ENV_LINES < <(
             printf '%s\n' "${HEADING}"
         )
@@ -72,7 +72,7 @@ env_format_lines() {
             local HEADING_TITLE="${AppName}"
             HEADING_TITLE+=" (User Defined)"
             local HEADING
-            printf -v HEADING "##\n## %s\n##" "${HEADING_TITLE}"
+            printf -v HEADING "###\n### %s\n###" "${HEADING_TITLE}"
             readarray -t -O ${#FORMATTED_ENV_LINES[@]} FORMATTED_ENV_LINES < <(
                 printf '%s\n' "${HEADING}"
             )
