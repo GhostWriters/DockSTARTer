@@ -26,7 +26,7 @@ env_format_lines() {
             HeadingTitle+=' (Disabled)'
         fi
         local AppDescription
-        AppDescription=$(run_script 'app_description' "${appname}" | fold -s -w 70)
+        AppDescription=$(run_script 'app_description' "${appname}" | fold -s -w 75)
         local -a HeadingText=()
         HeadingText+=("")
         HeadingText+=("${HeadingTitle}")
