@@ -19,22 +19,19 @@ env_format_lines() {
     if [[ -n ${APPNAME} ]] && run_script 'app_is_added' "${APPNAME}"; then
         # APPNAME is specified and added, output main app heading
         local HeadingTitle="${AppName}"
-        if run_script 'app_is_depreciated' "${APPNAME}"; then
-            HeadingTitle+=' [*DEPRECIATED*]'
-        fi
-        if run_script 'app_is_disabled' "${APPNAME}"; then
-            HeadingTitle+=' (Disabled)'
-        fi
+        run_script 'app_is_depreciated' "${APPNAME}" && HeadingTitle+=' [*DEPRECIATED*]'
+        run_script 'app_is_disabled' "${APPNAME}" && HeadingTitle+=' (Disabled)'
+
         local AppDescription
         AppDescription=$(run_script 'app_description' "${appname}" | fold -s -w 75)
+
         local -a HeadingText=()
         HeadingText+=("")
         HeadingText+=("${HeadingTitle}")
         HeadingText+=("")
-        readarray -t -O ${#HeadingText[@]} HeadingText < <(
-            printf '%s\n' "${AppDescription[@]}"
-        )
+        readarray -t -O ${#HeadingText[@]} HeadingText < <(printf '%s\n' "${AppDescription[@]}")
         HeadingText+=("")
+
         readarray -t -O ${#FORMATTED_ENV_LINES[@]} FORMATTED_ENV_LINES < <(
             printf '### %s\n' "${HeadingText[@]}"
         )
@@ -78,10 +75,12 @@ env_format_lines() {
             # Add the "User Defined" heading
             local HeadingTitle="${AppName}"
             HeadingTitle+=" (User Defined)"
+
             local -a HeadingText=()
             HeadingText+=("")
             HeadingText+=("${HeadingTitle}")
             HeadingText+=("")
+
             readarray -t -O ${#FORMATTED_ENV_LINES[@]} FORMATTED_ENV_LINES < <(
                 printf '### %s\n' "${HeadingText[@]}"
             )
