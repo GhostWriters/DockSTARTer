@@ -19,7 +19,7 @@ symlink_ds() {
     fi
 
     for SYMLINK_TARGET in "${SYMLINK_TARGETS[@]}"; do
-        if [[ -L "${SYMLINK_TARGET}" ]] && [[ ${SCRIPTNAME} != "$(readlink -f "${SYMLINK_TARGET}")" ]]; then
+        if [[ -L ${SYMLINK_TARGET} ]] && [[ ${SCRIPTNAME} != "$(readlink -f "${SYMLINK_TARGET}")" ]]; then
             info "Attempting to remove ${SYMLINK_TARGET} symlink."
             sudo rm -f "${SYMLINK_TARGET}" || fatal "Failed to remove file.\nFailing command: ${F[C]}sudo rm -f \"${SYMLINK_TARGET}\""
         fi
