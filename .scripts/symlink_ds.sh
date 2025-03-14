@@ -14,7 +14,7 @@ symlink_ds() {
         FINDMNT_CHECK_TARGET="/"
     fi
 
-    if findmnt -n $FINDMNT_CHECK_TARGET -o OPTIONS | grep -P "\bro\b" > /dev/null; then
+    if findmnt -n "${FINDMNT_CHECK_TARGET}" -o OPTIONS | grep -P "\bro\b" > /dev/null; then
         SYMLINK_TARGETS=("${HOME}/bin/ds" "${HOME}/.local/bin/ds")
     fi
 
