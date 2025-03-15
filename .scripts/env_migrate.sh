@@ -3,12 +3,22 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 env_migrate() {
+    # env_migrate FromVar ToVar [FromVarFile] [ToVarFile]
+    #
+    # Migrates between variable names in .env files, and the override compose file if needed.
+    # "FromVar" can be a regular expression to rename from multiple filenames.
+    #
+    # If FromVarFile is not specified, uses the global .env file
+    # If ToVarFile is not specified, uses the FromVarFile
+    # "From" and "To" files can be overridden in the respective variable names by prepending an app's name,
+    # such as appname:variable, which will become env_files/appname.env
+
     local FromVar=${1-}
     local ToVar=${2-}
     local FromVarFile=${3:-$COMPOSE_ENV}
     local ToVarFile=${4:-$FromVarFile}
 
-    # Change the .env file to use `appname.env' if 'appname:' preceeds the variable name, and remove 'appname:' from the string
+    # Change the .env file to use `appname.env' if 'appname:' preceeds the variable name, and remove 'appname:' from the name
     if [[ ${FromVar} == *":"* ]]; then
         FromVarFile="${APP_ENV_FOLDER}/${FromVar%:*}.env"
         FromVar="${FromVar#*:}"
