@@ -4,7 +4,6 @@ IFS=$'\n\t'
 
 yml_merge() {
     run_script 'appvars_create_all'
-    run_script 'env_update'
     local COMPOSE_FILE=""
     notice "Adding enabled app templates to merge docker-compose.yml. Please be patient, this can take a while."
     local ENABLED_APPS

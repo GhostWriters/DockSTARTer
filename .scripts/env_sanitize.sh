@@ -10,12 +10,6 @@ env_sanitize() {
         run_script 'env_set' WATCHTOWER__NETWORK_MODE ""
     fi
 
-    # Rename vars
-    run_script 'env_migrate' DOCKERCONFDIR DOCKER_VOLUME_CONFIG
-    run_script 'env_migrate' DOCKERGID DOCKER_GID
-    run_script 'env_migrate' DOCKERHOSTNAME DOCKER_HOSTNAME
-    run_script 'env_migrate' DOCKERSTORAGEDIR DOCKER_VOLUME_STORAGE
-
     # Replace ~ with /home/username
     if grep -q -P '^\w+_VOLUME_\w+=~/' "${COMPOSE_ENV}"; then
         info "Replacing ~ with ${DETECTED_HOMEDIR} in ${COMPOSE_ENV} file."

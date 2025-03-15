@@ -501,6 +501,7 @@ main() {
     run_script 'symlink_ds'
     # Execute CLI Argument Functions
     if [[ -n ${ADD-} ]]; then
+        run_script 'env_migrate_global'
         run_script 'appvars_create' "${ADD}"
         run_script 'env_update'
         exit
@@ -524,6 +525,7 @@ main() {
         exit
     fi
     if [[ -n ${ENV-} ]]; then
+        run_script 'env_migrate_global'
         run_script 'appvars_create_all'
         run_script 'env_update'
         exit
@@ -625,9 +627,11 @@ main() {
     fi
     if [[ -n ${REMOVE-} ]]; then
         if [[ ${REMOVE} == true ]]; then
+            run_script 'env_migrate_global'
             run_script 'appvars_purge_all'
             run_script 'env_update'
         else
+            run_script 'env_migrate_global'
             run_script 'appvars_purge' "${REMOVE}"
             run_script 'env_update'
         fi
