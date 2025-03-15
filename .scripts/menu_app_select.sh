@@ -39,7 +39,7 @@ menu_app_select() {
     if [[ ${SelectedApps} == "Cancel" ]]; then
         return 1
     else
-        info "Disabling all apps."
+        info "Disabling previously selected apps."
         run_script 'disable_app' "${EnabledApps[@]}"
 
         info "Enabling selected apps."
