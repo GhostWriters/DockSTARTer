@@ -4,14 +4,7 @@ services:
       - NET_ADMIN
     container_name: ${PIHOLE__CONTAINER_NAME}
     env_file: env_files/pihole.env
-    dns:
-      - 127.0.0.1
-      - ${PIHOLE__IP_DNS1}
-      - ${PIHOLE__IP_DNS2}
     environment:
-      - DNS1=${PIHOLE__IP_DNS1}
-      - DNS2=${PIHOLE__IP_DNS2}
-      - ServerIP=${PIHOLE__IP_SERVERIP}
       - TZ=${TZ}
     restart: ${PIHOLE__RESTART}
     volumes:
