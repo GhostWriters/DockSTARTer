@@ -15,5 +15,4 @@ test_app_is_added() {
     notice "'app_is_added' WATCHTOWER returned $?"
     run_script 'app_is_added' APPTHATDOESNOTEXIST
     notice "'app_is_added' APPTHATDOESNOTEXIST returned $?"
-    warn "CI does not test app_is_added."
 }
