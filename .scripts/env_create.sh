@@ -3,6 +3,23 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 env_create() {
+    if [[ -f ${COMPOSE_OVERRIDE} ]]; then
+        run_script 'set_permissions' "${COMPOSE_OVERRIDE}"
+    fi
+
+    if [[ -e ${APP_ENV_FOLDER} ]]; then
+        if [[ -d ${APP_ENV_FOLDER} ]]; then
+            info "${APP_ENV_FOLDER} found."
+        else
+            fatal "${APP_ENV_FOLDER} is a file, should be a folder"
+        fi
+    else
+        warn "${APP_ENV_FOLDER} not found. Creating an empty folder."
+        mkdir -p "${APP_ENV_FOLDER}" ||
+            fatal "Failed to create folder.\nFailing command: ${F[C]}mkdir -p \"${APP_ENV_FOLDER}\""
+    fi
+    run_script 'set_permissions' "${APP_ENV_FOLDER}"
+
     if [[ -f ${COMPOSE_ENV} ]]; then
         info "${COMPOSE_ENV} found."
     else
