@@ -7,7 +7,8 @@ env_create() {
         info "${COMPOSE_ENV} found."
     else
         warn "${COMPOSE_ENV} not found. Copying example template."
-        cp "${COMPOSE_ENV}.example" "${COMPOSE_ENV}" || fatal "Failed to copy file.\nFailing command: ${F[C]}cp \"${COMPOSE_ENV}.example\" \"${COMPOSE_ENV}\""
+        cp "${COMPOSE_ENV_DEFAULT_FILE}" "${COMPOSE_ENV}" ||
+            fatal "Failed to copy file.\nFailing command: ${F[C]}cp \"${COMPOSE_ENV_DEFAULT_FILE}\" \"${COMPOSE_ENV}\""
         run_script 'set_permissions' "${COMPOSE_ENV}"
         run_script 'appvars_create' WATCHTOWER
     fi
