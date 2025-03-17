@@ -9,17 +9,17 @@ app_status() {
     for APPNAME in ${AppList}; do
         local AppName=$(run_script 'app_nicename' "${APPNAME}")
         if ! run_script 'app_is_builtin' "${AppName}"; then
-            echo "Application ${AppName} does not exist."
+            echo "${AppName} does not exist."
             continue
         fi
         if ! run_script 'app_is_added' "${AppName}"; then
-            echo "Application ${AppName} is not added."
+            echo "${AppName} is not added."
             continue
         fi
         if run_script 'app_is_enabled' "${AppName}"; then
-            echo "Application ${AppName} is enabled."
+            echo "${AppName} is enabled."
         else
-            echo "Application ${AppName} is disabled."
+            echo "${AppName} is disabled."
         fi
     done
 }
