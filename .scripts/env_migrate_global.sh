@@ -8,6 +8,7 @@ env_migrate_global() {
     run_script 'env_migrate' DOCKERGID DOCKER_GID
     run_script 'env_migrate' DOCKERHOSTNAME DOCKER_HOSTNAME
     run_script 'env_migrate' DOCKERSTORAGEDIR DOCKER_VOLUME_STORAGE
+    run_script 'env_migrate' DOCKERSHAREDDIR DOCKER_VOLUME_STORAGE
 }
 
 test_env_migrate_global() {
