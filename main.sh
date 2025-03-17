@@ -351,7 +351,9 @@ readonly ARCH
 export ARCH
 
 # Environment Information
-readonly COMPOSE_FOLDER="${SCRIPTPATH}/compose"
+readonly COMPOSE_FOLDER_NAME="compose"
+export COMPOSE_FOLDER_NAME
+readonly COMPOSE_FOLDER="${SCRIPTPATH}/${COMPOSE_FOLDER_NAME}"
 export COMPOSE_FOLDER
 readonly COMPOSE_OVERRIDE="${COMPOSE_FOLDER}/docker-compose.override.yml"
 export COMPOSE_OVERRIDE
