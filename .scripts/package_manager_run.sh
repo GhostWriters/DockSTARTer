@@ -16,7 +16,7 @@ package_manager_run() {
         run_script "pm_yum_${ACTION}"
     else
         if [[ ${ACTION} == "install" ]]; then
-            local COMMAND_DEPS=("curl" "git" "grep" "sed" "whiptail")
+            local COMMAND_DEPS=("curl" "git" "grep" "sed" "whiptail" "dialog")
             for COMMAND_DEP in "${COMMAND_DEPS[@]}"; do
                 if [[ -z "$(command -v "${COMMAND_DEP}")" ]]; then
                     fatal "${F[C]}${COMMAND_DEP}${NC} is not available. Please install ${F[C]}${COMMAND_DEP}${NC} and try again."
