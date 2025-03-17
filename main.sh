@@ -547,6 +547,7 @@ main() {
                 ;;
             --env-set)
                 if [[ ${ENVVAR-} != "" ]] && [[ ${ENVVAL-} != "" ]]; then
+                    run_script 'env_backup'
                     run_script 'env_set' "${ENVVAR^^}" "${ENVVAL}"
                 else
                     echo "Invalid usage. Must be"
@@ -565,6 +566,7 @@ main() {
                 ;;
             --env-set-lower)
                 if [[ ${ENVVAR-} != "" ]] && [[ ${ENVVAL-} != "" ]]; then
+                    run_script 'env_backup'
                     run_script 'env_set' "${ENVVAR}" "${ENVVAL}"
                 else
                     echo "Invalid usage. Must be"
@@ -647,9 +649,11 @@ main() {
                 run_script 'app_status' "${STATUS}"
                 ;;
             --status-enabled)
+                run_script 'env_backup'
                 run_script 'enable_app' "${STATUS}"
                 ;;
             --status-disabled)
+                run_script 'env_backup'
                 run_script 'disable_app' "${STATUS}"
                 ;;
             *)
