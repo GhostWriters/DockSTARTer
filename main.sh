@@ -363,6 +363,8 @@ readonly COMPOSE_ENV="${COMPOSE_FOLDER}/.env"
 export COMPOSE_ENV
 readonly COMPOSE_ENV_DEFAULT_FILE="${COMPOSE_FOLDER}/.env.example"
 export COMPOSE_ENV_DEFAULT_FILE
+readonly APP_ENV_FOLDER_NAME="env_files"
+export APP_ENV_FOLDER_NAME
 readonly APP_ENV_FOLDER="${COMPOSE_FOLDER}/env_files"
 export APP_ENV_FOLDER
 readonly TEMPLATES_FOLDER="${COMPOSE_FOLDER}/.apps"
