@@ -161,11 +161,7 @@ cmdline() {
                 LOCAL_ARGS="${LOCAL_ARGS-}-s "
                 readonly STATUSMETHOD=${ARG}
                 ;;
-            --status-disabled)
-                LOCAL_ARGS="${LOCAL_ARGS-}-s "
-                readonly STATUSMETHOD=${ARG}
-                ;;
-            --status-enabled)
+            --status-*)
                 LOCAL_ARGS="${LOCAL_ARGS-}-s "
                 readonly STATUSMETHOD=${ARG}
                 ;;
@@ -643,7 +639,7 @@ main() {
         fi
         exit
     fi
-    if [[ -n ${STATUS-} ]]; then
+    if [[ -n ${STATUSMETHOD-} ]]; then
         case "${STATUSMETHOD-}" in
             --status)
                 run_script 'app_status' "${STATUS}"
