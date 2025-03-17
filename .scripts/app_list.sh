@@ -5,7 +5,7 @@ IFS=$'\n\t'
 app_list() {
     local -a APPS
     local APPS
-    readarray -t APPS < <(run_script 'app_list_builtin')
+    readarray -t APPS < <(run_script 'app_nicename' "$(run_script 'app_list_builtin')")
     for index in "${!APPS[@]}"; do
         local APPNAME=${APPS[index]}
         APPS[index]+=','
