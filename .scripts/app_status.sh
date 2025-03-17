@@ -6,19 +6,20 @@ app_status() {
     # Enable the status of apps given.  Apps will be seperate arguments and/or seperated by spaces
     local AppList
     AppList=$(xargs -n 1 <<< "$*")
-    for AppName in ${AppList}; do
+    for APPNAME in ${AppList}; do
+        local AppName=$(run_script 'app_nicename' "${APPNAME}")
         if ! run_script 'app_is_builtin' "${AppName}"; then
-            echo "Application ${AppName^^} does not exist."
+            echo "Application ${AppName} does not exist."
             continue
         fi
         if ! run_script 'app_is_added' "${AppName}"; then
-            echo "Application ${AppName^^} is not added."
+            echo "Application ${AppName} is not added."
             continue
         fi
         if run_script 'app_is_enabled' "${AppName}"; then
-            echo "Application ${AppName^^} is enabled."
+            echo "Application ${AppName} is enabled."
         else
-            echo "Application ${AppName^^} is disabled."
+            echo "Application ${AppName} is disabled."
         fi
     done
 }
