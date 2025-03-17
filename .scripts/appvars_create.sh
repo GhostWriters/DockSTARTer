@@ -17,6 +17,12 @@ appvars_create() {
 
             info "Creating environment variables for ${APPNAME}."
 
+            if [[ ! -d ${APP_ENV_FOLDER} ]]; then
+                warn "${APP_ENV_FOLDER} not found. Creating an empty folder."
+                mkdir -p "${APP_ENV_FOLDER}" ||
+                    fatal "Failed to create folder.\nFailing command: ${F[C]}mkdir -p \"${APP_ENV_FOLDER}\""
+            fi
+
             if ! run_script 'env_var_exists' "${APPNAME}__ENABLED"; then
                 run_script 'env_set' "${APPNAME}__ENABLED" true
             fi
