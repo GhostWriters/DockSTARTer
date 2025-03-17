@@ -645,12 +645,14 @@ main() {
                 run_script 'app_status' "${STATUS}"
                 ;;
             --status-enabled)
-                run_script 'env_backup'
+                run_script 'env_migrate_global'
                 run_script 'enable_app' "${STATUS}"
+                run_script 'env_update'
                 ;;
             --status-disabled)
-                run_script 'env_backup'
+                run_script 'env_migrate_global'
                 run_script 'disable_app' "${STATUS}"
+                run_script 'env_update'
                 ;;
             *)
                 echo "Invalid option: '${STATUSMETHOD-}'"
