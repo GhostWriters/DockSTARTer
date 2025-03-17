@@ -603,19 +603,19 @@ main() {
     if [[ -n ${LISTMETHOD-} ]]; then
         case "${LISTMETHOD-}" in
             --list-builtin)
-                run_script 'app_list_builtin'
+                run_script 'app_nicename' "$(run_script 'app_list_builtin')"
                 ;;
             --list-depreciated)
-                run_script 'app_list_depreciated'
+                run_script 'app_nicename' "$(run_script 'app_list_depreciated')"
                 ;;
             --list-added)
-                run_script 'app_list_added'
+                run_script 'app_nicename' "$(run_script 'app_list_added')"
                 ;;
             --list-enabled)
-                run_script 'app_list_enabled'
+                run_script 'app_nicename' "$(run_script 'app_list_enabled')"
                 ;;
             --list-disabled)
-                run_script 'app_list_disabled'
+                run_script 'app_nicename' "$(run_script 'app_list_disabled')"
                 ;;
             *)
                 echo "Invalid option: '${LISTMETHOD-}'"
