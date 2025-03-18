@@ -14,6 +14,7 @@ menu_config() {
         CONFIGCHOICE="Cancel"
     else
         CONFIGCHOICE=$(dialog --fb --clear --title "DockSTARTer" --menu "What would you like to do?" 0 0 0 "${CONFIGOPTS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
+        clear
     fi
 
     case "${CONFIGCHOICE}" in

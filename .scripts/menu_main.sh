@@ -14,6 +14,7 @@ menu_main() {
         MAINCHOICE="Cancel"
     else
         MAINCHOICE=$(dialog --fb --clear --title "DockSTARTer" --cancel-button "Exit" --menu "What would you like to do?" 0 0 0 "${MAINOPTS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
+        clear
     fi
 
     case "${MAINCHOICE}" in

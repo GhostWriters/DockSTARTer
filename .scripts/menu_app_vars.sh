@@ -12,6 +12,7 @@ menu_app_vars() {
             warn "${APPNAME} has no variables."
         else
             dialog --fb --clear --title "DockSTARTer" --msgbox "${APPNAME} has no variables." 0 0
+            clear
         fi
         return
     fi
