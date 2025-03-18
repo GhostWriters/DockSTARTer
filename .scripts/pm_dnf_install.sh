@@ -8,7 +8,7 @@ pm_dnf_install() {
     if [[ -n ${VERBOSE-} ]] || run_script 'question_prompt' "${PROMPT:-CLI}" N "Would you like to display the command output?"; then
         REDIRECT=""
     fi
-    eval "sudo dnf -y install curl git grep newt sed ${REDIRECT}" || fatal "Failed to install dependencies from dnf.\nFailing command: ${F[C]}sudo dnf -y install curl git grep newt sed"
+    eval "sudo dnf -y install curl git grep newt sed dialog ${REDIRECT}" || fatal "Failed to install dependencies from dnf.\nFailing command: ${F[C]}sudo dnf -y install curl git grep newt sed dialog"
 }
 
 test_pm_dnf_install() {
