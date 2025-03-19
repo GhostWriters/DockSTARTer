@@ -6,15 +6,16 @@ pm_apt_upgrade() {
     local Title="Upgrade Packages"
     if [[ ${CI-} != true ]]; then
         notice "Upgrading packages. Please be patient, this can take a while."
+        local COMMAND='sudo apt-get -y dist-upgrade'
         local REDIRECT=""
         if [[ -z ${VERBOSE-} ]] || ! run_script 'question_prompt' "${PROMPT:-CLI}" N "Would you like to display the command output?" "${Title}"; then
             if [[ ${PROMPT:-CLI} == CLI ]]; then
                 REDIRECT="> /dev/null 2>&1"
             else
-                REDIRECT="| dialog --fb --clear --backtitle \"${BACKTITLE}\" --title \"${Title}\" --programbox \"${Title}\" -1 -1"
+                REDIRECT="| dialog --fb --clear --backtitle \"${BACKTITLE}\" --title \"${Title}\" --programbox \"${COMMAND}\" -1 -1"
             fi
         fi
-        eval "sudo apt-get -y dist-upgrade ${REDIRECT}" || fatal "Failed to upgrade packages from apt.\nFailing command: ${F[C]}sudo apt-get -y dist-upgrade"
+        eval "${COMMAND} ${REDIRECT}" || fatal "Failed to upgrade packages from apt.\nFailing command: ${F[C]}${COMMAND}"
     fi
 }
 
