@@ -29,7 +29,8 @@ question_prompt() {
                 0 0
             )
             ANSWER=$(
-                eval dialog ${YesNoDialog[*]} 3>&1 1>&2 2>&3
+                # shellcheck disable=SC2294 # eval negates the benefit of arrays. Drop eval to preserve whitespace/symbols (or eval as string).
+                eval dialog "${YesNoDialog[@]}" 3>&1 1>&2 2>&3
                 echo $?
             )
             set -e
