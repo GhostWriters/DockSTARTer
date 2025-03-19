@@ -3,6 +3,8 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_main() {
+    local BackTitle="DockSTARTer"
+    local Title="Main Menu"
     local MainOpts=()
     MainOpts+=("Configuration " "Setup and start applications")
     MainOpts+=("Install Dependencies " "Install required components")
@@ -16,7 +18,8 @@ menu_main() {
         local -a MainChoiceDialog=(
             --fb
             --clear
-            --title "DockSTARTer"
+            --backtitle "${BackTitle}"
+            --title "${Title}"
             --cancel-button "Exit"
             --menu "What would you like to do?" 0 0 0
             "${MainOpts[@]}"
