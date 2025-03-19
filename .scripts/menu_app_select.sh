@@ -3,6 +3,8 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_app_select() {
+    local BackTitle="DockSTARTer"
+    local Title="Select Apps"
     local AppList=()
     local EnabledApps=()
     notice "Preparing app menu. Please be patient, this can take a while."
@@ -37,7 +39,8 @@ menu_app_select() {
         local -a SelectedAppsDialog=(
             --fb
             --clear
-            --title "DockSTARTer"
+            --backtitle "${BackTitle}"
+            --title "${Title}"
             --separate-output
             --checklist
             'Choose which apps you would like to install:\n Use [up], [down], and [space] to select apps, and [tab] to switch to the buttons at the bottom.'
