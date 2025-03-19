@@ -29,7 +29,7 @@ question_prompt() {
                 0 0
             )
             ANSWER=$(
-                eval dialog "${YesNoDialog[@]}" 3>&1 1>&2 2>&3
+                eval dialog ${YesNoDialog[*]} 3>&1 1>&2 2>&3
                 echo $?
             )
             set -e
