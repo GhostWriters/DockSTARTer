@@ -34,7 +34,17 @@ menu_app_select() {
     if [[ ${CI-} == true ]]; then
         SelectedApps="Cancel"
     else
-        SelectedApps=$(dialog --fb --clear --title "DockSTARTer" --separate-output --checklist 'Choose which apps you would like to install:\n Use [up], [down], and [space] to select apps, and [tab] to switch to the buttons at the bottom.' 0 0 0 "${AppList[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
+        local -a SelectedAppsDialog=(
+            --fb
+            --clear
+            --title "DockSTARTer"
+            --separate-output
+            --checklist
+            'Choose which apps you would like to install:\n Use [up], [down], and [space] to select apps, and [tab] to switch to the buttons at the bottom.'
+            0 0 0
+            "${AppList[@]}"
+        )
+        SelectedApps=$(dialog "${SelectedAppsDialog[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
         clear
     fi
     if [[ ${SelectedApps} == "Cancel" ]]; then
