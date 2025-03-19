@@ -6,6 +6,7 @@ question_prompt() {
     local PROMPT=${1-}
     local DEFAULT=${2:-Y}
     local QUESTION=${3-}
+    local Title=${4-${BACKTITLE}}
     local YN
     while true; do
         if [[ ${CI-} == true ]]; then
@@ -23,7 +24,8 @@ question_prompt() {
             local -a YesNoDialog=(
                 --fb
                 --clear
-                --title "DockSTARTer"
+                --backtitle "${BACKTITLE}"
+                --title "${Title}"
                 "${WHIPTAIL_DEFAULT-}"
                 --yesno \""${QUESTION}"\"
                 0 0
