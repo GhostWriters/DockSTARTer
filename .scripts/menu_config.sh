@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_config() {
-    local Title="Main Menu"
+    local Title="Configuration Menu"
     local ConfigOpts=()
     ConfigOpts+=("Full Setup " "This goes through all menus below. Recommended for first run")
     ConfigOpts+=("Select Apps " "Select which apps to run. Previously enabled apps are remembered")
