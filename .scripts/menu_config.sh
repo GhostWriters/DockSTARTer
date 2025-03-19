@@ -3,7 +3,6 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_config() {
-    local BackTitle="DockSTARTer"
     local Title="Main Menu"
     local ConfigOpts=()
     ConfigOpts+=("Full Setup " "This goes through all menus below. Recommended for first run")
@@ -18,7 +17,7 @@ menu_config() {
         local -a ConfigChoiceDialog=(
             --fb
             --clear
-            --backtitle "${BackTitle}"
+            --backtitle "${BACKTITLE}"
             --title "${Title}"
             --cancel-button "Exit"
             --menu "What would you like to do?" 0 0 0

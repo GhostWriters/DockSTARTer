@@ -96,6 +96,8 @@ SCRIPTNAME="${SCRIPTPATH}/$(basename "$(get_scriptname)")"
 readonly SCRIPTNAME
 readonly DIALOGRC="${SCRIPTPATH}/.dialogrc"
 export DIALOGRC
+readonly BACKTITLE="DockSTARTer"
+export BACKTITLE
 
 # Cleanup Function
 cleanup() {

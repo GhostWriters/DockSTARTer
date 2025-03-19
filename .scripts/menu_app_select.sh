@@ -3,7 +3,6 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_app_select() {
-    local BackTitle="DockSTARTer"
     local Title="Select Apps"
     local AppList=()
     local EnabledApps=()
@@ -39,7 +38,7 @@ menu_app_select() {
         local -a SelectedAppsDialog=(
             --fb
             --clear
-            --backtitle "${BackTitle}"
+            --backtitle "${BACKTITLE}"
             --title "${Title}"
             --separate-output
             --checklist
