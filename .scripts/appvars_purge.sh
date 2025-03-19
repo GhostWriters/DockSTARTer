@@ -3,6 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 appvars_purge() {
+    local Title="Purge Variables"
     local AppList
     AppList=$(xargs -n 1 <<< "$*")
     for AppName in ${AppList}; do
@@ -16,7 +17,7 @@ appvars_purge() {
         APPVAR_ENV_LINES=$(run_script 'env_lines' "${APP_ENV_FILE}")
         if [[ -z ${APPVAR_LINES} && -z ${APPVAR_ENV_LINES} ]]; then
             if [[ ${PROMPT-} == "GUI" ]]; then
-                dialog --fb --clear --title "DockSTARTer" --msgbox "${APPNAME} has no variables." 0 0
+                dialog --fb --clear --backtitle "${BACKTITLE}"--title "${Title}" --msgbox "${APPNAME} has no variables." 0 0
             else
                 warn "${APPNAME} has no variables."
             fi
@@ -35,7 +36,7 @@ ${APP_ENV_FILE}:
 ${APPVAR_ENV_LINES}
 EOF
         )
-        if [[ ${CI-} == true ]] || run_script 'question_prompt' "${PROMPT:-CLI}" Y "${QUESTION}\\n"; then
+        if [[ ${CI-} == true ]] || run_script 'question_prompt' "${PROMPT:-CLI}" Y "${QUESTION}\\n" "${Title}"; then
             info "Purging ${APPNAME} .env variables."
 
             local -a APPVARS

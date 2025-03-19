@@ -3,6 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_app_vars() {
+    local Title="Application Vars"
     local APPNAME=${1-}
     run_script 'appvars_create' "${APPNAME}"
     local APPVARS
@@ -11,13 +12,21 @@ menu_app_vars() {
         if [[ ${CI-} == true ]]; then
             warn "${APPNAME} has no variables."
         else
-            dialog --fb --clear --title "DockSTARTer" --msgbox "${APPNAME} has no variables." 0 0
+            local AppVarsDialog=(
+                --fb
+                --clear
+                --backtitle "${BACKTITLE}"
+                --title "Title"
+                --msgbox "${APPNAME} has no variables."
+                0 0
+            )
+            dialog "${AppVarsDialog[@]}"
             clear
         fi
         return
     fi
 
-    if run_script 'question_prompt' "${PROMPT-}" Y "Would you like to keep these settings for ${APPNAME}?\\n\\n${APPVARS}"; then
+    if run_script 'question_prompt' "${PROMPT-}" Y "Would you like to keep these settings for ${APPNAME}?\\n\\n${APPVARS}" "${Title}"; then
         info "Keeping ${APPNAME} .env variables."
     else
         info "Configuring ${APPNAME} .env variables."

@@ -3,9 +3,10 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 pm_pacman_install() {
+    local Title="Install Dependencies"
     notice "Installing dependencies. Please be patient, this can take a while."
     local REDIRECT="> /dev/null 2>&1"
-    if [[ -n ${VERBOSE-} ]] || run_script 'question_prompt' "${PROMPT:-CLI}" N "Would you like to display the command output?"; then
+    if [[ -n ${VERBOSE-} ]] || run_script 'question_prompt' "${PROMPT:-CLI}" N "Would you like to display the command output?" "${Title}"; then
         REDIRECT=""
     fi
     eval "sudo pacman -Sy --noconfirm curl git grep libnewt sed dialog ${REDIRECT}" || fatal "Failed to install dependencies using pacman.\nFailing command: ${F[C]}sudo pacman -Sy --noconfirm curl git grep libnewt sed dialog"

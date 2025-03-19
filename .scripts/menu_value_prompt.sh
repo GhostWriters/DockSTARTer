@@ -3,6 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_value_prompt() {
+    local Title="Variable Value"
     local SET_VAR=${1-}
 
     local CURRENT_VAL
@@ -114,7 +115,8 @@ menu_value_prompt() {
         local -a SelectedValueDialog=(
             --fb
             --clear
-            --title "DockSTARTer"
+            --backtitle "${BACKTITLE}"
+            --title "${Title}"
             --menu "What would you like set for ${SET_VAR}?${ValueDescription}"
             0 0 0
             "${ValueOptions[@]}"
@@ -140,7 +142,8 @@ menu_value_prompt() {
             local -a InputDialog=(
                 --fb
                 --clear
-                --title "DockSTARTer"
+                --backtitle "${BACKTITLE}"
+                --title "${Title}"
                 --inputbox "What would you like set for ${SET_VAR}?${ValueDescription}"
                 0 0
                 "${CURRENT_VAL}"
@@ -164,7 +167,7 @@ menu_value_prompt() {
                 if [[ ${Input} == true ]] || [[ ${Input} == false ]]; then
                     run_script 'env_set' "${SET_VAR}" "${Input}"
                 else
-                    dialog --fb --clear --title "DockSTARTer" --msgbox "${Input} is not true or false. Please try setting ${SET_VAR} again." 0 0
+                    dialog --fb --clear --backtitle "${BACKTITLE}"--title "${Title}" --msgbox "${Input} is not true or false. Please try setting ${SET_VAR} again." 0 0
                     menu_value_prompt "${SET_VAR}"
                 fi
                 ;;
@@ -174,7 +177,7 @@ menu_value_prompt() {
                         run_script 'env_set' "${SET_VAR}" "${Input}"
                         ;;
                     *)
-                        dialog --fb --clear --title "DockSTARTer" --msgbox "${Input} is not a valid network mode. Please try setting ${SET_VAR} again." 0 0
+                        dialog --fb --clear --backtitle "${BACKTITLE}"--title "${Title}" --msgbox "${Input} is not a valid network mode. Please try setting ${SET_VAR} again." 0 0
                         menu_value_prompt "${SET_VAR}"
                         ;;
                 esac
@@ -183,7 +186,7 @@ menu_value_prompt() {
                 if [[ ${Input} =~ ^[0-9]+$ ]] || [[ ${Input} -ge 0 ]] || [[ ${Input} -le 65535 ]]; then
                     run_script 'env_set' "${SET_VAR}" "${Input}"
                 else
-                    dialog --fb --clear --title "DockSTARTer" --msgbox "${Input} is not a valid port. Please try setting ${SET_VAR} again." 0 0
+                    dialog --fb --clear --backtitle "${BACKTITLE}"--title "${Title}" --msgbox "${Input} is not a valid port. Please try setting ${SET_VAR} again." 0 0
                     menu_value_prompt "${SET_VAR}"
                 fi
                 ;;
@@ -193,44 +196,44 @@ menu_value_prompt() {
                         run_script 'env_set' "${SET_VAR}" "${Input}"
                         ;;
                     *)
-                        dialog --fb --clear --title "DockSTARTer" --msgbox "${Input} is not a valid restart value. Please try setting ${SET_VAR} again." 0 0
+                        dialog --fb --clear --backtitle "${BACKTITLE}"--title "${Title}" --msgbox "${Input} is not a valid restart value. Please try setting ${SET_VAR} again." 0 0
                         menu_value_prompt "${SET_VAR}"
                         ;;
                 esac
                 ;;
             "${APPNAME}__VOLUME_"*)
                 if [[ ${Input} == "/" ]]; then
-                    dialog --fb --clear --title "DockSTARTer" --msgbox "Cannot use / for ${SET_VAR}. Please select another folder." 0 0
+                    dialog --fb --clear --backtitle "${BACKTITLE}" --title "${Title}" --msgbox "Cannot use / for ${SET_VAR}. Please select another folder." 0 0
                     menu_value_prompt "${SET_VAR}"
                 elif [[ ${Input} == ~* ]]; then
                     local CORRECTED_DIR="${DETECTED_HOMEDIR}${Input#*~}"
-                    if run_script 'question_prompt' "${PROMPT-}" Y "Cannot use the ~ shortcut in ${SET_VAR}. Would you like to use ${CORRECTED_DIR} instead?"; then
+                    if run_script 'question_prompt' "${PROMPT-}" Y "Cannot use the ~ shortcut in ${SET_VAR}. Would you like to use ${CORRECTED_DIR} instead?" "${Title}"; then
                         run_script 'env_set' "${SET_VAR}" "${CORRECTED_DIR}"
-                        dialog --fb --clear --title "DockSTARTer" --msgbox "Returning to the previous menu to confirm selection." 0 0
+                        dialog --fb --clear --backtitle "${BACKTITLE}" --title "${Title}" --msgbox "Returning to the previous menu to confirm selection." 0 0
                     else
-                        dialog --fb --clear --title "DockSTARTer" --msgbox "Cannot use the ~ shortcut in ${SET_VAR}. Please select another folder." 0 0
+                        dialog --fb --clear --backtitle "${BACKTITLE}" --title "${Title}" --msgbox "Cannot use the ~ shortcut in ${SET_VAR}. Please select another folder." 0 0
                     fi
                     menu_value_prompt "${SET_VAR}"
                 elif [[ -d ${Input} ]]; then
                     run_script 'env_set' "${SET_VAR}" "${Input}"
-                    if run_script 'question_prompt' "${PROMPT-}" Y "Would you like to set permissions on ${Input} ?"; then
+                    if run_script 'question_prompt' "${PROMPT-}" Y "Would you like to set permissions on ${Input} ?" "${Title}"; then
                         run_script 'set_permissions' "${Input}"
                     fi
                 else
-                    if run_script 'question_prompt' "${PROMPT-}" Y "${Input} is not a valid path. Would you like to attempt to create it?"; then
+                    if run_script 'question_prompt' "${PROMPT-}" Y "${Input} is not a valid path. Would you like to attempt to create it?" "${Title}"; then
                         mkdir -p "${Input}" || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p \"${Input}\""
                         run_script 'set_permissions' "${Input}"
                         run_script 'env_set' "${SET_VAR}" "${Input}"
-                        dialog --fb --clear --title "DockSTARTer" --msgbox "${Input} folder was created successfully." 0 0
+                        dialog --fb --clear --backtitle "${BACKTITLE}" --title "${Title}" --msgbox "${Input} folder was created successfully." 0 0
                     else
-                        dialog --fb --clear --title "DockSTARTer" --msgbox "${Input} is not a valid path. Please try setting ${SET_VAR} again." 0 0
+                        dialog --fb --clear --backtitle "${BACKTITLE}" --title "${Title}" --msgbox "${Input} is not a valid path. Please try setting ${SET_VAR} again." 0 0
                         menu_value_prompt "${SET_VAR}"
                     fi
                 fi
                 ;;
             P[GU]ID)
                 if [[ ${Input} == "0" ]]; then
-                    if run_script 'question_prompt' "${PROMPT-}" Y "Running as root is not recommended. Would you like to select a different ID?"; then
+                    if run_script 'question_prompt' "${PROMPT-}" Y "Running as root is not recommended. Would you like to select a different ID?" "${Title}"; then
                         menu_value_prompt "${SET_VAR}"
                     else
                         run_script 'env_set' "${SET_VAR}" "${Input}"
@@ -238,7 +241,7 @@ menu_value_prompt() {
                 elif [[ ${Input} =~ ^[0-9]+$ ]]; then
                     run_script 'env_set' "${SET_VAR}" "${Input}"
                 else
-                    dialog --fb --clear --title "DockSTARTer" --msgbox "${Input} is not a valid ${SET_VAR}. Please try setting ${SET_VAR} again." 0 0
+                    dialog --fb --clear --backtitle "${BACKTITLE}" --title "${Title}" --msgbox "${Input} is not a valid ${SET_VAR}. Please try setting ${SET_VAR} again." 0 0
                     menu_value_prompt "${SET_VAR}"
                 fi
                 ;;
