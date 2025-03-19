@@ -6,7 +6,7 @@ pm_apt_upgrade() {
     local Title="Upgrade Packages"
     if [[ ${CI-} != true ]]; then
         notice "Upgrading packages. Please be patient, this can take a while."
-        local COMMAND='sudo apt-getX -y dist-upgrade'
+        local COMMAND='sudo apt-get -y dist-upgrade'
         local REDIRECT=""
         if [[ -z ${VERBOSE-} ]] || ! run_script 'question_prompt' "${PROMPT:-CLI}" N "Would you like to display the command output?" "${Title}"; then
             if [[ ${PROMPT:-CLI} == CLI ]]; then
