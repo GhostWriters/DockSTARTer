@@ -20,8 +20,16 @@ question_prompt() {
             fi
             local ANSWER
             set +e
+            local -a YesNoDialog=(
+                --fb
+                --clear
+                --title "DockSTARTer"
+                "${WHIPTAIL_DEFAULT-}"
+                --yesno \""${QUESTION}"\"
+                0 0
+            )
             ANSWER=$(
-                eval dialog --fb --clear --title "DockSTARTer" "${WHIPTAIL_DEFAULT-}" --yesno \""${QUESTION}"\" 0 0 3>&1 1>&2 2>&3
+                eval dialog "${YesNoDialog[@]}" 3>&1 1>&2 2>&3
                 echo $?
             )
             set -e
