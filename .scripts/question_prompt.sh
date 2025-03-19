@@ -19,6 +19,7 @@ question_prompt() {
             if [[ ${DEFAULT} == "N" ]]; then
                 DIALOG_DEFAULT=" --defaultno "
             fi
+            # shellcheck disable=SC2206 # (warning): Quote to prevent word splitting/globbing, or split robustly with mapfile or read -a.
             local -a YesNoDialog=(
                 --fb
                 --clear
