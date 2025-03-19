@@ -3,21 +3,29 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_config() {
-    local CONFIGOPTS=()
-    CONFIGOPTS+=("Full Setup " "This goes through all menus below. Recommended for first run")
-    CONFIGOPTS+=("Select Apps " "Select which apps to run. Previously enabled apps are remembered")
-    CONFIGOPTS+=("Set App Variables " "Review and adjust variables for enabled apps")
-    CONFIGOPTS+=("Set Global Variables " "Review and adjust global variables")
+    local ConfigOpts=()
+    ConfigOpts+=("Full Setup " "This goes through all menus below. Recommended for first run")
+    ConfigOpts+=("Select Apps " "Select which apps to run. Previously enabled apps are remembered")
+    ConfigOpts+=("Set App Variables " "Review and adjust variables for enabled apps")
+    ConfigOpts+=("Set Global Variables " "Review and adjust global variables")
 
-    local CONFIGCHOICE
+    local ConfigChoice
     if [[ ${CI-} == true ]]; then
-        CONFIGCHOICE="Cancel"
+        ConfigChoice="Cancel"
     else
-        CONFIGCHOICE=$(dialog --fb --clear --title "DockSTARTer" --menu "What would you like to do?" 0 0 0 "${CONFIGOPTS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
+        local -a ConfigChoiceDialog=(
+            --fb
+            --clear
+            --title "DockSTARTer"
+            --cancel-button "Exit"
+            --menu "What would you like to do?" 0 0 0
+            "${ConfigOpts[@]}"
+        )
+        ConfigChoice=$(dialog "${ConfigChoiceDialog[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
         clear
     fi
 
-    case "${CONFIGCHOICE}" in
+    case "${ConfigChoice}" in
         "Full Setup ")
             run_script 'env_migrate_global'
             run_script 'env_update'
