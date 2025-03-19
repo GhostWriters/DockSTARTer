@@ -3,21 +3,29 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_main() {
-    local MAINOPTS=()
-    MAINOPTS+=("Configuration " "Setup and start applications")
-    MAINOPTS+=("Install Dependencies " "Install required components")
-    MAINOPTS+=("Update DockSTARTer " "Get the latest version of DockSTARTer")
-    MAINOPTS+=("Prune Docker System " "Remove all unused containers, networks, volumes, images and build cache")
+    local MainOpts=()
+    MainOpts+=("Configuration " "Setup and start applications")
+    MainOpts+=("Install Dependencies " "Install required components")
+    MainOpts+=("Update DockSTARTer " "Get the latest version of DockSTARTer")
+    MainOpts+=("Prune Docker System " "Remove all unused containers, networks, volumes, images and build cache")
 
-    local MAINCHOICE
+    local MainChoice
     if [[ ${CI-} == true ]]; then
-        MAINCHOICE="Cancel"
+        MainChoice="Cancel"
     else
-        MAINCHOICE=$(dialog --fb --clear --title "DockSTARTer" --cancel-button "Exit" --menu "What would you like to do?" 0 0 0 "${MAINOPTS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
+        local -a MainChoiceDialog=(
+            --fb
+            --clear
+            --title "DockSTARTer"
+            --cancel-button "Exit"
+            --menu "What would you like to do?" 0 0 0
+            "${MainOpts[@]}"
+        )
+        MainChoice=$(dialog "${MainChoiceDialog[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
         clear
     fi
 
-    case "${MAINCHOICE}" in
+    case "${MainChoice}" in
         "Configuration ")
             run_script 'menu_config' || run_script 'menu_main'
             ;;
