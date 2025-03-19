@@ -15,32 +15,22 @@ question_prompt() {
             notice "${QUESTION}"
             read -rp "[Yn]" YN < /dev/tty
         elif [[ ${PROMPT-} == "GUI" ]]; then
-            local WHIPTAIL_DEFAULT
+            local DIALOG_DEFAULT
             if [[ ${DEFAULT} == "N" ]]; then
-                WHIPTAIL_DEFAULT=" --defaultno "
+                DIALOG_DEFAULT=" --defaultno "
             fi
-            local ANSWER
-            set +e
             local -a YesNoDialog=(
                 --fb
                 --clear
                 --backtitle "${BACKTITLE}"
                 --title "${Title}"
-                "${WHIPTAIL_DEFAULT-}"
-                --yesno \""${QUESTION}"\"
+                ${DIALOG_DEFAULT-}
+                --yesno "${QUESTION}"
                 0 0
             )
-            ANSWER=$(
-                # shellcheck disable=SC2294 # eval negates the benefit of arrays. Drop eval to preserve whitespace/symbols (or eval as string).
-                eval dialog "${YesNoDialog[@]}" 3>&1 1>&2 2>&3
-                echo $?
-            )
+            set +e
+            YN=$(dialog "${YesNoDialog[@]}" 3>&1 1>&2 2>&3 && echo "Y" || echo "N")
             set -e
-            if [[ ${ANSWER} == 0 ]]; then
-                YN=Y
-            else
-                YN=N
-            fi
         elif [[ ${PROMPT-} == "FORCE" ]]; then
             YN=${DEFAULT}
         else
