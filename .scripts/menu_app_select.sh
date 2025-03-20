@@ -38,7 +38,6 @@ menu_app_select() {
         local -a SelectedAppsDialog=(
             --fb
             --clear
-            --backtitle "${BACKTITLE}"
             --title "${Title}"
             --separate-output
             --checklist

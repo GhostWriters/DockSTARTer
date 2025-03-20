@@ -23,7 +23,6 @@ question_prompt() {
             local -a YesNoDialog=(
                 --fb
                 --clear
-                --backtitle "${BACKTITLE}"
                 --title "${Title}"
                 ${DIALOG_DEFAULT-}
                 --yesno "${QUESTION}"

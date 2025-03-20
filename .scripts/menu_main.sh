@@ -17,7 +17,6 @@ menu_main() {
         local -a MainChoiceDialog=(
             --fb
             --clear
-            --backtitle "${BACKTITLE}"
             --title "${Title}"
             --cancel-button "Exit"
             --menu "What would you like to do?" 0 0 0

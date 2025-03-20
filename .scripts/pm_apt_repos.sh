@@ -11,7 +11,7 @@ pm_apt_repos() {
         if [[ ${PROMPT:-CLI} == CLI ]]; then
             REDIRECT=""
         else
-            REDIRECT="| dialog --fb --clear --backtitle \"${BACKTITLE}\" --title \"${Title}\" --programbox \"\${COMMAND}\" -1 -1"
+            REDIRECT="| dialog --fb --clear --title \"${Title}\" --programbox \"\${COMMAND}\" -1 -1"
         fi
     fi
     local MINIMUM_APT_TRANSPORT_HTTPS="1"

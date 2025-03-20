@@ -15,8 +15,7 @@ menu_app_vars() {
             local AppVarsDialog=(
                 --fb
                 --clear
-                --backtitle "${BACKTITLE}"
-                --title "Title"
+                --title "${Title}"
                 --msgbox "${APPNAME} has no variables."
                 0 0
             )

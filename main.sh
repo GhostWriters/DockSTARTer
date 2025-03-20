@@ -98,6 +98,8 @@ readonly DIALOGRC="${SCRIPTPATH}/.dialogrc"
 export DIALOGRC
 readonly BACKTITLE="DockSTARTer"
 export BACKTITLE
+readonly DIALOGOPTS="--backtitle ${BACKTITLE}"
+export DIALOGOPTS
 
 # Cleanup Function
 cleanup() {

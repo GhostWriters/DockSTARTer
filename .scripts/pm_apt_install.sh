@@ -11,7 +11,7 @@ pm_apt_install() {
         if [[ ${PROMPT:-CLI} == CLI ]]; then
             REDIRECT=""
         else
-            REDIRECT="| dialog --fb --clear --backtitle \"${BACKTITLE}\" --title \"${Title}\" --programbox \"\${COMMAND}\" -1 -1"
+            REDIRECT="| dialog --fb --clear --title \"${Title}\" --programbox \"\${COMMAND}\" -1 -1"
         fi
     fi
     COMMAND="sudo apt-get -y install curl git grep sed whiptail dialog"
