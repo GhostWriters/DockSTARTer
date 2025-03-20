@@ -16,6 +16,9 @@ pm_apt_install() {
     fi
     COMMAND="sudo apt-get -y install curl git grep sed whiptail dialog"
     eval "${COMMAND} ${REDIRECT}" || fatal "Failed to install dependencies from apt.\nFailing command: ${F[C]}${COMMAND}"
+    if [[ ${PROMPT:-CLI} != CLI ]]; then
+        clear
+    fi
 }
 
 test_pm_apt_install() {
