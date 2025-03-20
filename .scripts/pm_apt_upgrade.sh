@@ -7,10 +7,10 @@ pm_apt_upgrade() {
     if [[ ${CI-} != true ]]; then
         notice "Upgrading packages. Please be patient, this can take a while."
         local COMMAND='sudo apt-get -y dist-upgrade'
-        local REDIRECT=""
-        if [[ -z ${VERBOSE-} ]] || ! run_script 'question_prompt' "${PROMPT:-CLI}" N "Would you like to display the command output?" "${Title}"; then
+        local REDIRECT="> /dev/null 2>&1"
+        if [[ -n ${VERBOSE-} ]] || run_script 'question_prompt' "${PROMPT:-CLI}" N "Would you like to display the command output?" "${Title}"; then
             if [[ ${PROMPT:-CLI} == CLI ]]; then
-                REDIRECT="> /dev/null 2>&1"
+                REDIRECT=""
             else
                 REDIRECT="| dialog --fb --clear --backtitle \"${BACKTITLE}\" --title \"${Title}\" --programbox \"${COMMAND}\" -1 -1"
             fi
