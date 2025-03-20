@@ -1,3 +1,3 @@
 services:
   transmissionvpn:
-    image: haugene/transmission-openvpn:${TRANSMISSIONVPN__TAG:?}
+    image: haugene/transmission-openvpn:${TRANSMISSIONVPN__TAG?}

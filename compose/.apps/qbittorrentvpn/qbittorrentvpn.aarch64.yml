@@ -1,3 +1,3 @@
 services:
   qbittorrentvpn:
-    image: ghcr.io/binhex/arch-qbittorrentvpn:${QBITTORRENTVPN__TAG:?}
+    image: ghcr.io/binhex/arch-qbittorrentvpn:${QBITTORRENTVPN__TAG?}

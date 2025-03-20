@@ -1,4 +1,4 @@
 services:
   mylar3:
     ports:
-      - ${MYLAR3__PORT_8090:?}:8090
+      - ${MYLAR3__PORT_8090?}:8090

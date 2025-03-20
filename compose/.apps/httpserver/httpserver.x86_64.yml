@@ -1,3 +1,3 @@
 services:
   httpserver:
-    image: ghcr.io/patrickdappollonio/docker-http-server:${HTTPSERVER__TAG:?}
+    image: ghcr.io/patrickdappollonio/docker-http-server:${HTTPSERVER__TAG?}

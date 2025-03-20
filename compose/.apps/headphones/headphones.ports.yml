@@ -1,4 +1,4 @@
 services:
   headphones:
     ports:
-      - ${HEADPHONES__PORT_8181:?}:8181
+      - ${HEADPHONES__PORT_8181?}:8181

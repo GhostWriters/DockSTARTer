@@ -1,3 +1,3 @@
 services:
   rustdesk:
-    image: rustdesk/rustdesk-server-s6:${RUSTDESK__TAG:?}
+    image: rustdesk/rustdesk-server-s6:${RUSTDESK__TAG?}

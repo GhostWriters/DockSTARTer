@@ -1,3 +1,3 @@
 services:
   homebridge:
-    hostname: ${HOMEBRIDGE__HOSTNAME:?}
+    hostname: ${HOMEBRIDGE__HOSTNAME?}

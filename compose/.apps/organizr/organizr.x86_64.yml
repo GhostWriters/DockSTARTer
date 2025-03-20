@@ -1,3 +1,3 @@
 services:
   organizr:
-    image: ghcr.io/organizr/organizr:${ORGANIZR__TAG:?}
+    image: ghcr.io/organizr/organizr:${ORGANIZR__TAG?}

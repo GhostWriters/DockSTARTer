@@ -1,3 +1,3 @@
 services:
   makemkv:
-    network_mode: ${MAKEMKV__NETWORK_MODE:?}
+    network_mode: ${MAKEMKV__NETWORK_MODE?}

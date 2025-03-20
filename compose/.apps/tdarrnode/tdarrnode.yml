@@ -1,14 +1,14 @@
 services:
   tdarrnode:
-    container_name: ${TDARRNODE__CONTAINER_NAME:?}
+    container_name: ${TDARRNODE__CONTAINER_NAME?}
     env_file: env_files/tdarrnode.env
     environment:
-      - nodePort=${TDARRNODE__PORT_8267:?}
-      - PGID=${PGID:?}
-      - PUID=${PUID:?}
-      - TZ=${TZ:?}
-    restart: ${TDARRNODE__RESTART:?}
+      - nodePort=${TDARRNODE__PORT_8267?}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${TDARRNODE__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_STORAGE:?}:/storage
-      - ${TDARRNODE__VOLUME_TRANSCODE_CACHE:?}:/temp
+      - ${DOCKER_VOLUME_STORAGE?}:/storage
+      - ${TDARRNODE__VOLUME_TRANSCODE_CACHE?}:/temp

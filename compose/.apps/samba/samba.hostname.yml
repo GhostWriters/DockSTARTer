@@ -1,3 +1,3 @@
 services:
   samba:
-    hostname: ${SAMBA__HOSTNAME:?}
+    hostname: ${SAMBA__HOSTNAME?}

@@ -1,3 +1,3 @@
 services:
   pgadmin:
-    hostname: ${PGADMIN__HOSTNAME:?}
+    hostname: ${PGADMIN__HOSTNAME?}

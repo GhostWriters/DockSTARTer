@@ -1,4 +1,4 @@
 services:
   airsonicadvanced:
     ports:
-      - ${AIRSONICADVANCED__PORT_4040:?}:4040
+      - ${AIRSONICADVANCED__PORT_4040?}:4040

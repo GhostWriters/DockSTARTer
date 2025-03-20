@@ -1,4 +1,4 @@
 services:
   librespeed:
     ports:
-      - ${LIBRESPEED__PORT_80:?}:80
+      - ${LIBRESPEED__PORT_80?}:80

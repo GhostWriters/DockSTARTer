@@ -1,4 +1,4 @@
 services:
   grocy:
     ports:
-      - ${GROCY__PORT_80:?}:80
+      - ${GROCY__PORT_80?}:80

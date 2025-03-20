@@ -1,4 +1,4 @@
 services:
   postgres:
     ports:
-      - ${POSTGRES__PORT_5432:?}:5432
+      - ${POSTGRES__PORT_5432?}:5432

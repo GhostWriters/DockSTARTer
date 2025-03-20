@@ -1,3 +1,3 @@
 services:
   homepage:
-    image: ghcr.io/gethomepage/homepage:${HOMEPAGE__TAG:?}
+    image: ghcr.io/gethomepage/homepage:${HOMEPAGE__TAG?}

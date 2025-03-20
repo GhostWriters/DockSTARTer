@@ -1,12 +1,12 @@
 services:
   petio:
-    container_name: ${PETIO__CONTAINER_NAME:?}
+    container_name: ${PETIO__CONTAINER_NAME?}
     env_file: env_files/petio.env
     environment:
-      - TZ=${TZ:?}
-    restart: ${PETIO__RESTART:?}
+      - TZ=${TZ?}
+    restart: ${PETIO__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG:?}/petio/config:/app/api/config
-      - ${DOCKER_VOLUME_CONFIG:?}/petio/logs:/app/logs
-      - ${DOCKER_VOLUME_STORAGE:?}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/petio/config:/app/api/config
+      - ${DOCKER_VOLUME_CONFIG?}/petio/logs:/app/logs
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

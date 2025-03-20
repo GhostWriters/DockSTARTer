@@ -1,3 +1,3 @@
 services:
   sabnzbdvpn:
-    hostname: ${SABNZBDVPN__HOSTNAME:?}
+    hostname: ${SABNZBDVPN__HOSTNAME?}

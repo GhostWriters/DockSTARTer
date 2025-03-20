@@ -1,3 +1,3 @@
 services:
   smokeping:
-    hostname: ${SMOKEPING__HOSTNAME:?}
+    hostname: ${SMOKEPING__HOSTNAME?}

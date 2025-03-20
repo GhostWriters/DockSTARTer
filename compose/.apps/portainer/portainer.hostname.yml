@@ -1,3 +1,3 @@
 services:
   portainer:
-    hostname: ${PORTAINER__HOSTNAME:?}
+    hostname: ${PORTAINER__HOSTNAME?}

@@ -1,13 +1,13 @@
 services:
   amd:
-    container_name: ${AMD__CONTAINER_NAME:?}
+    container_name: ${AMD__CONTAINER_NAME?}
     env_file: env_files/amd.env
     environment:
-      - PGID=${PGID:?}
-      - PUID=${PUID:?}
-      - TZ=${TZ:?}
-    restart: ${AMD__RESTART:?}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${AMD__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG:?}/amd:/config
-      - ${DOCKER_VOLUME_STORAGE:?}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/amd:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

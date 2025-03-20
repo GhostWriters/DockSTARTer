@@ -1,10 +1,10 @@
 services:
   synclounge:
-    container_name: ${SYNCLOUNGE__CONTAINER_NAME:?}
+    container_name: ${SYNCLOUNGE__CONTAINER_NAME?}
     env_file: env_files/synclounge.env
     environment:
-      - TZ=${TZ:?}
-    restart: ${SYNCLOUNGE__RESTART:?}
+      - TZ=${TZ?}
+    restart: ${SYNCLOUNGE__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_STORAGE:?}:/storage
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

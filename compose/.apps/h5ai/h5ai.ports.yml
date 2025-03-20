@@ -1,4 +1,4 @@
 services:
   h5ai:
     ports:
-      - ${H5AI__PORT_8080:?}:8080
+      - ${H5AI__PORT_8080?}:8080

@@ -1,3 +1,3 @@
 services:
   calibre:
-    hostname: ${CALIBRE__HOSTNAME:?}
+    hostname: ${CALIBRE__HOSTNAME?}

@@ -1,5 +1,5 @@
 services:
   synclounge:
     ports:
-      - ${SYNCLOUNGE__PORT_8088:?}:8088
-      - ${SYNCLOUNGE__PORT_8089:?}:8089
+      - ${SYNCLOUNGE__PORT_8088?}:8088
+      - ${SYNCLOUNGE__PORT_8089?}:8089

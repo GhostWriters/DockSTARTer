@@ -1,4 +1,4 @@
 services:
   znc:
     ports:
-      - ${ZNC__PORT_6501:?}:6501
+      - ${ZNC__PORT_6501?}:6501

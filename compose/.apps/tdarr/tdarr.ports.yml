@@ -1,5 +1,5 @@
 services:
   tdarr:
     ports:
-      - ${TDARR__PORT_8265:?}:8265
-      - ${TDARR__PORT_8266:?}:8266
+      - ${TDARR__PORT_8265?}:8265
+      - ${TDARR__PORT_8266?}:8266

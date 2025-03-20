@@ -1,3 +1,3 @@
 services:
   monitorr:
-    hostname: ${MONITORR__HOSTNAME:?}
+    hostname: ${MONITORR__HOSTNAME?}

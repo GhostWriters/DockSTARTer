@@ -1,4 +1,4 @@
 services:
   audiobookshelf:
     ports:
-      - ${AUDIOBOOKSHELF__PORT_80:?}:80
+      - ${AUDIOBOOKSHELF__PORT_80?}:80

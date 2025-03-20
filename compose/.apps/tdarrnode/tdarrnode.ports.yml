@@ -1,4 +1,4 @@
 services:
   tdarrnode:
     ports:
-      - ${TDARRNODE__PORT_8267:?}:8267
+      - ${TDARRNODE__PORT_8267?}:8267

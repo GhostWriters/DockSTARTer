@@ -1,13 +1,13 @@
 services:
   cloudflareddns:
-    container_name: ${CLOUDFLAREDDNS__CONTAINER_NAME:?}
+    container_name: ${CLOUDFLAREDDNS__CONTAINER_NAME?}
     env_file: env_files/cloudflareddns.env
     environment:
-      - PGID=${PGID:?}
-      - PUID=${PUID:?}
-      - TZ=${TZ:?}
-    restart: ${CLOUDFLAREDDNS__RESTART:?}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${CLOUDFLAREDDNS__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG:?}/cloudflareddns:/config
-      - ${DOCKER_VOLUME_STORAGE:?}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/cloudflareddns:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

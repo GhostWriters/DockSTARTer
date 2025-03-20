@@ -1,10 +1,10 @@
 services:
   deluge:
     ports:
-      - ${DELUGE__PORT_51413:?}:51413
-      - ${DELUGE__PORT_51413:?}:51413/udp
-      - ${DELUGE__PORT_58846:?}:58846
-      - ${DELUGE__PORT_58946:?}:58946
-      - ${DELUGE__PORT_6881:?}:6881
-      - ${DELUGE__PORT_6881:?}:6881/udp
-      - ${DELUGE__PORT_8112:?}:8112
+      - ${DELUGE__PORT_51413?}:51413
+      - ${DELUGE__PORT_51413?}:51413/udp
+      - ${DELUGE__PORT_58846?}:58846
+      - ${DELUGE__PORT_58946?}:58946
+      - ${DELUGE__PORT_6881?}:6881
+      - ${DELUGE__PORT_6881?}:6881/udp
+      - ${DELUGE__PORT_8112?}:8112

@@ -1,3 +1,3 @@
 services:
   bazarr:
-    hostname: ${BAZARR__HOSTNAME:?}
+    hostname: ${BAZARR__HOSTNAME?}

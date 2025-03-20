@@ -1,3 +1,3 @@
 services:
   logitechmediaserver:
-    hostname: ${LOGITECHMEDIASERVER__HOSTNAME:?}
+    hostname: ${LOGITECHMEDIASERVER__HOSTNAME?}

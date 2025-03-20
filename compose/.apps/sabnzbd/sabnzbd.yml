@@ -1,13 +1,13 @@
 services:
   sabnzbd:
-    container_name: ${SABNZBD__CONTAINER_NAME:?}
+    container_name: ${SABNZBD__CONTAINER_NAME?}
     env_file: env_files/sabnzbd.env
     environment:
-      - PGID=${PGID:?}
-      - PUID=${PUID:?}
-      - TZ=${TZ:?}
-    restart: ${SABNZBD__RESTART:?}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${SABNZBD__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG:?}/sabnzbd:/config
-      - ${DOCKER_VOLUME_STORAGE:?}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/sabnzbd:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

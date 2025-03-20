@@ -1,6 +1,6 @@
 services:
   syncthing:
     ports:
-      - ${SYNCTHING__PORT_21027:?}:21027/udp
-      - ${SYNCTHING__PORT_22000:?}:22000
-      - ${SYNCTHING__PORT_8384:?}:8384
+      - ${SYNCTHING__PORT_21027?}:21027/udp
+      - ${SYNCTHING__PORT_22000?}:22000
+      - ${SYNCTHING__PORT_8384?}:8384

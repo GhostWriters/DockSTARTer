@@ -1,4 +1,4 @@
 services:
   freshrss:
     ports:
-      - ${FRESHRSS__PORT_80:?}:80
+      - ${FRESHRSS__PORT_80?}:80

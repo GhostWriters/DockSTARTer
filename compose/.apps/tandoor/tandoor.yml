@@ -1,13 +1,13 @@
 services:
   tandoor:
-    container_name: ${TANDOOR__CONTAINER_NAME:?}
+    container_name: ${TANDOOR__CONTAINER_NAME?}
     env_file: env_files/tandoor.env
     environment:
-      - TZ=${TZ:?}
-    restart: ${TANDOOR__RESTART:?}
+      - TZ=${TZ?}
+    restart: ${TANDOOR__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG:?}/tandoor/staticfiles:/opt/recipes/staticfiles
-      - ${DOCKER_VOLUME_CONFIG:?}/tandoor/mediafiles:/opt/recipes/mediafiles
-      - ${DOCKER_VOLUME_CONFIG:?}/tandoor/data:/opt/recipes/data
-      - ${DOCKER_VOLUME_STORAGE:?}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/tandoor/staticfiles:/opt/recipes/staticfiles
+      - ${DOCKER_VOLUME_CONFIG?}/tandoor/mediafiles:/opt/recipes/mediafiles
+      - ${DOCKER_VOLUME_CONFIG?}/tandoor/data:/opt/recipes/data
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

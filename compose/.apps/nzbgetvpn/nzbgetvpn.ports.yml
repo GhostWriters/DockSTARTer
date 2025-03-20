@@ -1,5 +1,5 @@
 services:
   nzbgetvpn:
     ports:
-      - ${NZBGETVPN__PORT_6789:?}:6789
-      - ${NZBGETVPN__PORT_8118:?}:8118
+      - ${NZBGETVPN__PORT_6789?}:6789
+      - ${NZBGETVPN__PORT_8118?}:8118

@@ -1,4 +1,4 @@
 services:
   kiwixserve:
     ports:
-      - ${KIWIXSERVE__PORT_80:?}:80
+      - ${KIWIXSERVE__PORT_80?}:80

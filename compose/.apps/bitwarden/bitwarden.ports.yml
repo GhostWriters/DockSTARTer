@@ -1,5 +1,5 @@
 services:
   bitwarden:
     ports:
-      - ${BITWARDEN__PORT_3012:?}:3012
-      - ${BITWARDEN__PORT_80:?}:80
+      - ${BITWARDEN__PORT_3012?}:3012
+      - ${BITWARDEN__PORT_80?}:80

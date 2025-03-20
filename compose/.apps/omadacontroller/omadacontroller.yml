@@ -1,23 +1,23 @@
 services:
   omadacontroller:
-    container_name: ${OMADACONTROLLER__CONTAINER_NAME:?}
+    container_name: ${OMADACONTROLLER__CONTAINER_NAME?}
     env_file: env_files/omadacontroller.env
     environment:
-      - MANAGE_HTTP_PORT=${OMADACONTROLLER__PORT_8088:?}
-      - MANAGE_HTTPS_PORT=${OMADACONTROLLER__PORT_8043:?}
-      - PGID=${PGID:?}
-      - PORT_ADOPT_V1=${OMADACONTROLLER__PORT_29812:?}
-      - PORT_APP_DISCOVERY=${OMADACONTROLLER__PORT_27001:?}
-      - PORT_DISCOVERY=${OMADACONTROLLER__PORT_29810:?}
-      - PORT_MANAGER_V1=${OMADACONTROLLER__PORT_29811:?}
-      - PORT_MANAGER_V2=${OMADACONTROLLER__PORT_29814:?}
-      - PORT_UPGRADE_V1=${OMADACONTROLLER__PORT_29813:?}
-      - PUID=${PUID:?}
-      - TZ=${TZ:?}
-    restart: ${OMADACONTROLLER__RESTART:?}
+      - MANAGE_HTTP_PORT=${OMADACONTROLLER__PORT_8088?}
+      - MANAGE_HTTPS_PORT=${OMADACONTROLLER__PORT_8043?}
+      - PGID=${PGID?}
+      - PORT_ADOPT_V1=${OMADACONTROLLER__PORT_29812?}
+      - PORT_APP_DISCOVERY=${OMADACONTROLLER__PORT_27001?}
+      - PORT_DISCOVERY=${OMADACONTROLLER__PORT_29810?}
+      - PORT_MANAGER_V1=${OMADACONTROLLER__PORT_29811?}
+      - PORT_MANAGER_V2=${OMADACONTROLLER__PORT_29814?}
+      - PORT_UPGRADE_V1=${OMADACONTROLLER__PORT_29813?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${OMADACONTROLLER__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG:?}/omadacontroller:/opt/tplink/EAPController/data
-      - ${DOCKER_VOLUME_CONFIG:?}/omadacontroller/logs:/opt/tplink/EAPController/logs
-      - ${DOCKER_VOLUME_CONFIG:?}/omadacontroller/work:/opt/tplink/EAPController/work
-      - ${DOCKER_VOLUME_STORAGE:?}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/omadacontroller:/opt/tplink/EAPController/data
+      - ${DOCKER_VOLUME_CONFIG?}/omadacontroller/logs:/opt/tplink/EAPController/logs
+      - ${DOCKER_VOLUME_CONFIG?}/omadacontroller/work:/opt/tplink/EAPController/work
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

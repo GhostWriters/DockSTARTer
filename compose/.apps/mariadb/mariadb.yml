@@ -1,13 +1,13 @@
 services:
   mariadb:
-    container_name: ${MARIADB__CONTAINER_NAME:?}
+    container_name: ${MARIADB__CONTAINER_NAME?}
     env_file: env_files/mariadb.env
     environment:
-      - PGID=${PGID:?}
-      - PUID=${PUID:?}
-      - TZ=${TZ:?}
-    restart: ${MARIADB__RESTART:?}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${MARIADB__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG:?}/mariadb:/config
-      - ${DOCKER_VOLUME_STORAGE:?}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/mariadb:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

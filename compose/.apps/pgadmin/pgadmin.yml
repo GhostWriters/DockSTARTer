@@ -1,11 +1,11 @@
 services:
   pgadmin:
-    container_name: ${PGADMIN__CONTAINER_NAME:?}
+    container_name: ${PGADMIN__CONTAINER_NAME?}
     env_file: env_files/pgadmin.env
     environment:
-      - TZ=${TZ:?}
-    restart: ${PGADMIN__RESTART:?}
+      - TZ=${TZ?}
+    restart: ${PGADMIN__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG:?}/pgadmin:/var/lib/pgadmin
-      - ${DOCKER_VOLUME_STORAGE:?}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/pgadmin:/var/lib/pgadmin
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

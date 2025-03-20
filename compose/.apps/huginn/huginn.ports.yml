@@ -1,4 +1,4 @@
 services:
   huginn:
     ports:
-      - ${HUGINN__PORT_3000:?}:3000
+      - ${HUGINN__PORT_3000?}:3000

@@ -1,4 +1,4 @@
 services:
   kitana:
     ports:
-      - ${KITANA__PORT_31337:?}:31337
+      - ${KITANA__PORT_31337?}:31337

@@ -1,3 +1,3 @@
 services:
   calibreweb:
-    image: lscr.io/linuxserver/calibre-web:${CALIBREWEB__TAG:?}
+    image: lscr.io/linuxserver/calibre-web:${CALIBREWEB__TAG?}

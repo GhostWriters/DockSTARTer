@@ -1,3 +1,3 @@
 services:
   adguard:
-    hostname: ${ADGUARD__HOSTNAME:?}
+    hostname: ${ADGUARD__HOSTNAME?}

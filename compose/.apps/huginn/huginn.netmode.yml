@@ -1,3 +1,3 @@
 services:
   huginn:
-    network_mode: ${HUGINN__NETWORK_MODE:?}
+    network_mode: ${HUGINN__NETWORK_MODE?}
