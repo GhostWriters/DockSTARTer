@@ -113,7 +113,6 @@ menu_value_prompt() {
         SelectedValue="Keep Current "
     else
         local -a SelectedValueDialog=(
-            --fb
             --clear
             --title "${Title}"
             --menu "What would you like set for ${SET_VAR}?${ValueDescription}"
@@ -139,7 +138,6 @@ menu_value_prompt() {
             ;;
         "Enter New ")
             local -a InputDialog=(
-                --fb
                 --clear
                 --title "${Title}"
                 --inputbox "What would you like set for ${SET_VAR}?${ValueDescription}"
@@ -165,7 +163,7 @@ menu_value_prompt() {
                 if [[ ${Input} == true ]] || [[ ${Input} == false ]]; then
                     run_script 'env_set' "${SET_VAR}" "${Input}"
                 else
-                    dialog --fb --clear --title "${Title}" --msgbox "${Input} is not true or false. Please try setting ${SET_VAR} again." 0 0
+                    dialog --clear --title "${Title}" --msgbox "${Input} is not true or false. Please try setting ${SET_VAR} again." 0 0
                     menu_value_prompt "${SET_VAR}"
                 fi
                 ;;
@@ -175,7 +173,7 @@ menu_value_prompt() {
                         run_script 'env_set' "${SET_VAR}" "${Input}"
                         ;;
                     *)
-                        dialog --fb --clear --title "${Title}" --msgbox "${Input} is not a valid network mode. Please try setting ${SET_VAR} again." 0 0
+                        dialog --clear --title "${Title}" --msgbox "${Input} is not a valid network mode. Please try setting ${SET_VAR} again." 0 0
                         menu_value_prompt "${SET_VAR}"
                         ;;
                 esac
@@ -184,7 +182,7 @@ menu_value_prompt() {
                 if [[ ${Input} =~ ^[0-9]+$ ]] || [[ ${Input} -ge 0 ]] || [[ ${Input} -le 65535 ]]; then
                     run_script 'env_set' "${SET_VAR}" "${Input}"
                 else
-                    dialog --fb --clear --title "${Title}" --msgbox "${Input} is not a valid port. Please try setting ${SET_VAR} again." 0 0
+                    dialog --clear --title "${Title}" --msgbox "${Input} is not a valid port. Please try setting ${SET_VAR} again." 0 0
                     menu_value_prompt "${SET_VAR}"
                 fi
                 ;;
@@ -194,22 +192,22 @@ menu_value_prompt() {
                         run_script 'env_set' "${SET_VAR}" "${Input}"
                         ;;
                     *)
-                        dialog --fb --clear --title "${Title}" --msgbox "${Input} is not a valid restart value. Please try setting ${SET_VAR} again." 0 0
+                        dialog --clear --title "${Title}" --msgbox "${Input} is not a valid restart value. Please try setting ${SET_VAR} again." 0 0
                         menu_value_prompt "${SET_VAR}"
                         ;;
                 esac
                 ;;
             "${APPNAME}__VOLUME_"*)
                 if [[ ${Input} == "/" ]]; then
-                    dialog --fb --clear --title "${Title}" --msgbox "Cannot use / for ${SET_VAR}. Please select another folder." 0 0
+                    dialog --clear --title "${Title}" --msgbox "Cannot use / for ${SET_VAR}. Please select another folder." 0 0
                     menu_value_prompt "${SET_VAR}"
                 elif [[ ${Input} == ~* ]]; then
                     local CORRECTED_DIR="${DETECTED_HOMEDIR}${Input#*~}"
                     if run_script 'question_prompt' "${PROMPT-}" Y "Cannot use the ~ shortcut in ${SET_VAR}. Would you like to use ${CORRECTED_DIR} instead?" "${Title}"; then
                         run_script 'env_set' "${SET_VAR}" "${CORRECTED_DIR}"
-                        dialog --fb --clear --title "${Title}" --msgbox "Returning to the previous menu to confirm selection." 0 0
+                        dialog --clear --title "${Title}" --msgbox "Returning to the previous menu to confirm selection." 0 0
                     else
-                        dialog --fb --clear --title "${Title}" --msgbox "Cannot use the ~ shortcut in ${SET_VAR}. Please select another folder." 0 0
+                        dialog --clear --title "${Title}" --msgbox "Cannot use the ~ shortcut in ${SET_VAR}. Please select another folder." 0 0
                     fi
                     menu_value_prompt "${SET_VAR}"
                 elif [[ -d ${Input} ]]; then
@@ -222,9 +220,9 @@ menu_value_prompt() {
                         mkdir -p "${Input}" || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p \"${Input}\""
                         run_script 'set_permissions' "${Input}"
                         run_script 'env_set' "${SET_VAR}" "${Input}"
-                        dialog --fb --clear --title "${Title}" --msgbox "${Input} folder was created successfully." 0 0
+                        dialog --clear --title "${Title}" --msgbox "${Input} folder was created successfully." 0 0
                     else
-                        dialog --fb --clear --title "${Title}" --msgbox "${Input} is not a valid path. Please try setting ${SET_VAR} again." 0 0
+                        dialog --clear --title "${Title}" --msgbox "${Input} is not a valid path. Please try setting ${SET_VAR} again." 0 0
                         menu_value_prompt "${SET_VAR}"
                     fi
                 fi
@@ -239,7 +237,7 @@ menu_value_prompt() {
                 elif [[ ${Input} =~ ^[0-9]+$ ]]; then
                     run_script 'env_set' "${SET_VAR}" "${Input}"
                 else
-                    dialog --fb --clear --title "${Title}" --msgbox "${Input} is not a valid ${SET_VAR}. Please try setting ${SET_VAR} again." 0 0
+                    dialog --clear --title "${Title}" --msgbox "${Input} is not a valid ${SET_VAR}. Please try setting ${SET_VAR} again." 0 0
                     menu_value_prompt "${SET_VAR}"
                 fi
                 ;;

@@ -36,7 +36,6 @@ menu_app_select() {
         SelectedApps="Cancel"
     else
         local -a SelectedAppsDialog=(
-            --fb
             --clear
             --title "${Title}"
             --separate-output

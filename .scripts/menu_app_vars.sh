@@ -13,7 +13,6 @@ menu_app_vars() {
             warn "${APPNAME} has no variables."
         else
             local AppVarsDialog=(
-                --fb
                 --clear
                 --title "${Title}"
                 --msgbox "${APPNAME} has no variables."

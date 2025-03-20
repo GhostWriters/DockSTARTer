@@ -15,7 +15,6 @@ menu_config() {
         ConfigChoice="Cancel"
     else
         local -a ConfigChoiceDialog=(
-            --fb
             --clear
             --title "${Title}"
             --cancel-button "Exit"

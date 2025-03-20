@@ -15,7 +15,6 @@ menu_main() {
         MainChoice="Cancel"
     else
         local -a MainChoiceDialog=(
-            --fb
             --clear
             --title "${Title}"
             --cancel-button "Exit"
