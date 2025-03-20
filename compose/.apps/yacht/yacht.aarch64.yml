@@ -1,3 +1,3 @@
 services:
   yacht:
-    image: selfhostedpro/yacht:${YACHT__TAG}
+    image: selfhostedpro/yacht:${YACHT__TAG:?}

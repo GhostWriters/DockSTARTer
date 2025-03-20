@@ -1,4 +1,4 @@
 services:
   organizr:
     ports:
-      - ${ORGANIZR__PORT_80}:80
+      - ${ORGANIZR__PORT_80:?}:80

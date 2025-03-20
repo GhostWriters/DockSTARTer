@@ -1,13 +1,13 @@
 services:
   glances:
-    container_name: ${GLANCES__CONTAINER_NAME}
+    container_name: ${GLANCES__CONTAINER_NAME:?}
     env_file: env_files/glances.env
     environment:
-      - TZ=${TZ}
+      - TZ=${TZ:?}
     pid: host
-    restart: ${GLANCES__RESTART}
+    restart: ${GLANCES__RESTART:?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/glances:/glances/conf
-      - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${GLANCES__VOLUME_DOCKER_SOCKET}:/var/run/docker.sock:ro
+      - ${DOCKER_VOLUME_CONFIG:?}/glances:/glances/conf
+      - ${DOCKER_VOLUME_STORAGE:?}:/storage
+      - ${GLANCES__VOLUME_DOCKER_SOCKET:?}:/var/run/docker.sock:ro

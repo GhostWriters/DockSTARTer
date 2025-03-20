@@ -1,3 +1,3 @@
 services:
   jellyfin:
-    hostname: ${JELLYFIN__HOSTNAME}
+    hostname: ${JELLYFIN__HOSTNAME:?}

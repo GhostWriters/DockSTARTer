@@ -1,10 +1,10 @@
 services:
   ldapauth:
-    container_name: ${LDAPAUTH__CONTAINER_NAME}
+    container_name: ${LDAPAUTH__CONTAINER_NAME:?}
     env_file: env_files/ldapauth.env
     environment:
-      - TZ=${TZ}
-    restart: ${LDAPAUTH__RESTART}
+      - TZ=${TZ:?}
+    restart: ${LDAPAUTH__RESTART:?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_STORAGE:?}:/storage

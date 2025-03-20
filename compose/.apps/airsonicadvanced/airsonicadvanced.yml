@@ -1,13 +1,13 @@
 services:
   airsonicadvanced:
-    container_name: ${AIRSONICADVANCED__CONTAINER_NAME}
+    container_name: ${AIRSONICADVANCED__CONTAINER_NAME:?}
     env_file: env_files/airsonicadvanced.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${AIRSONICADVANCED__RESTART}
+      - PGID=${PGID:?}
+      - PUID=${PUID:?}
+      - TZ=${TZ:?}
+    restart: ${AIRSONICADVANCED__RESTART:?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/airsonicadvanced:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG:?}/airsonicadvanced:/config
+      - ${DOCKER_VOLUME_STORAGE:?}:/storage

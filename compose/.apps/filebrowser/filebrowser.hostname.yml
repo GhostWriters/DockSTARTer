@@ -1,3 +1,3 @@
 services:
   filebrowser:
-    hostname: ${FILEBROWSER__HOSTNAME}
+    hostname: ${FILEBROWSER__HOSTNAME:?}

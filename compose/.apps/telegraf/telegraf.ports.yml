@@ -1,6 +1,6 @@
 services:
   telegraf:
     ports:
-      - ${TELEGRAF__PORT_8092}:8092/udp
-      - ${TELEGRAF__PORT_8094}:8094
-      - ${TELEGRAF__PORT_8125}:8125
+      - ${TELEGRAF__PORT_8092:?}:8092/udp
+      - ${TELEGRAF__PORT_8094:?}:8094
+      - ${TELEGRAF__PORT_8125:?}:8125

@@ -1,9 +1,9 @@
 services:
   rustdesk:
     ports:
-      - ${RUSTDESK__PORT_21115}:21115
-      - ${RUSTDESK__PORT_21116}:21116
-      - ${RUSTDESK__PORT_21116}:21116/udp
-      - ${RUSTDESK__PORT_21117}:21117
-      - ${RUSTDESK__PORT_21118}:21118
-      - ${RUSTDESK__PORT_21119}:21119
+      - ${RUSTDESK__PORT_21115:?}:21115
+      - ${RUSTDESK__PORT_21116:?}:21116
+      - ${RUSTDESK__PORT_21116:?}:21116/udp
+      - ${RUSTDESK__PORT_21117:?}:21117
+      - ${RUSTDESK__PORT_21118:?}:21118
+      - ${RUSTDESK__PORT_21119:?}:21119

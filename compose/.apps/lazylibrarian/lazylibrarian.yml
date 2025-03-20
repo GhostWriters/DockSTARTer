@@ -1,13 +1,13 @@
 services:
   lazylibrarian:
-    container_name: ${LAZYLIBRARIAN__CONTAINER_NAME}
+    container_name: ${LAZYLIBRARIAN__CONTAINER_NAME:?}
     env_file: env_files/lazylibrarian.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${LAZYLIBRARIAN__RESTART}
+      - PGID=${PGID:?}
+      - PUID=${PUID:?}
+      - TZ=${TZ:?}
+    restart: ${LAZYLIBRARIAN__RESTART:?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/lazylibrarian:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG:?}/lazylibrarian:/config
+      - ${DOCKER_VOLUME_STORAGE:?}:/storage

@@ -1,3 +1,3 @@
 services:
   duckdns:
-    hostname: ${DUCKDNS__HOSTNAME}
+    hostname: ${DUCKDNS__HOSTNAME:?}

@@ -1,11 +1,11 @@
 services:
   influxdb:
-    container_name: ${INFLUXDB__CONTAINER_NAME}
+    container_name: ${INFLUXDB__CONTAINER_NAME:?}
     env_file: env_files/influxdb.env
     environment:
-      - TZ=${TZ}
-    restart: ${INFLUXDB__RESTART}
+      - TZ=${TZ:?}
+    restart: ${INFLUXDB__RESTART:?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/influxdb:/var/lib/influxdb
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG:?}/influxdb:/var/lib/influxdb
+      - ${DOCKER_VOLUME_STORAGE:?}:/storage

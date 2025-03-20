@@ -1,13 +1,13 @@
 services:
   plex:
-    container_name: ${PLEX__CONTAINER_NAME}
+    container_name: ${PLEX__CONTAINER_NAME:?}
     env_file: env_files/plex.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${PLEX__RESTART}
+      - PGID=${PGID:?}
+      - PUID=${PUID:?}
+      - TZ=${TZ:?}
+    restart: ${PLEX__RESTART:?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/plex:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG:?}/plex:/config
+      - ${DOCKER_VOLUME_STORAGE:?}:/storage

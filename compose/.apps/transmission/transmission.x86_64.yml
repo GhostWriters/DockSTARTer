@@ -1,3 +1,3 @@
 services:
   transmission:
-    image: lscr.io/linuxserver/transmission:${TRANSMISSION__TAG}
+    image: lscr.io/linuxserver/transmission:${TRANSMISSION__TAG:?}

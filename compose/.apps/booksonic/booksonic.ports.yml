@@ -1,4 +1,4 @@
 services:
   booksonic:
     ports:
-      - ${BOOKSONIC__PORT_4040}:4040
+      - ${BOOKSONIC__PORT_4040:?}:4040

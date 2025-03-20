@@ -1,4 +1,4 @@
 services:
   komga:
     ports:
-      - ${KOMGA__PORT_25600}:25600
+      - ${KOMGA__PORT_25600:?}:25600

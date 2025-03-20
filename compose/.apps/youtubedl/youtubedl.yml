@@ -1,13 +1,13 @@
 services:
   youtubedl:
-    container_name: ${YOUTUBEDL__CONTAINER_NAME}
+    container_name: ${YOUTUBEDL__CONTAINER_NAME:?}
     env_file: env_files/youtubedl.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${YOUTUBEDL__RESTART}
+      - PGID=${PGID:?}
+      - PUID=${PUID:?}
+      - TZ=${TZ:?}
+    restart: ${YOUTUBEDL__RESTART:?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/youtubedl:/youtube-dl
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG:?}/youtubedl:/youtube-dl
+      - ${DOCKER_VOLUME_STORAGE:?}:/storage

@@ -1,12 +1,12 @@
 services:
   cloudcmd:
-    container_name: ${CLOUDCMD__CONTAINER_NAME}
+    container_name: ${CLOUDCMD__CONTAINER_NAME:?}
     env_file: env_files/cloudcmd.env
     environment:
-      - TZ=${TZ}
-    restart: ${CLOUDCMD__RESTART}
+      - TZ=${TZ:?}
+    restart: ${CLOUDCMD__RESTART:?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/cloudcmd:/root
-      - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${CLOUDCMD__VOLUME_FSDIR}:/mnt/fs
+      - ${DOCKER_VOLUME_CONFIG:?}/cloudcmd:/root
+      - ${DOCKER_VOLUME_STORAGE:?}:/storage
+      - ${CLOUDCMD__VOLUME_FSDIR:?}:/mnt/fs

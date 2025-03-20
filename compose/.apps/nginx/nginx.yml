@@ -1,13 +1,13 @@
 services:
   nginx:
-    container_name: ${NGINX__CONTAINER_NAME}
+    container_name: ${NGINX__CONTAINER_NAME:?}
     env_file: env_files/nginx.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${NGINX__RESTART}
+      - PGID=${PGID:?}
+      - PUID=${PUID:?}
+      - TZ=${TZ:?}
+    restart: ${NGINX__RESTART:?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/nginx:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG:?}/nginx:/config
+      - ${DOCKER_VOLUME_STORAGE:?}:/storage

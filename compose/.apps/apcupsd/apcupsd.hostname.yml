@@ -1,3 +1,3 @@
 services:
   apcupsd:
-    hostname: ${APCUPSD__HOSTNAME}
+    hostname: ${APCUPSD__HOSTNAME:?}

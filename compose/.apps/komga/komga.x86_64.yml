@@ -1,3 +1,3 @@
 services:
   komga:
-    image: gotson/komga:${KOMGA__TAG}
+    image: gotson/komga:${KOMGA__TAG:?}

@@ -1,12 +1,12 @@
 services:
   komga:
-    container_name: ${KOMGA__CONTAINER_NAME}
+    container_name: ${KOMGA__CONTAINER_NAME:?}
     env_file: env_files/komga.env
     environment:
-      - TZ=${TZ}
-    restart: ${KOMGA__RESTART}
-    user: ${PUID}:${PGID}
+      - TZ=${TZ:?}
+    restart: ${KOMGA__RESTART:?}
+    user: ${PUID:?}:${PGID:?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/komga:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG:?}/komga:/config
+      - ${DOCKER_VOLUME_STORAGE:?}:/storage

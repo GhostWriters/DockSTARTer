@@ -1,3 +1,3 @@
 services:
   traktarr:
-    network_mode: ${TRAKTARR__NETWORK_MODE}
+    network_mode: ${TRAKTARR__NETWORK_MODE:?}

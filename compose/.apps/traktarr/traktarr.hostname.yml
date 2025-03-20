@@ -1,3 +1,3 @@
 services:
   traktarr:
-    hostname: ${TRAKTARR__HOSTNAME}
+    hostname: ${TRAKTARR__HOSTNAME:?}

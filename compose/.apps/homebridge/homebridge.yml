@@ -1,11 +1,11 @@
 services:
   homebridge:
-    container_name: ${HOMEBRIDGE__CONTAINER_NAME}
+    container_name: ${HOMEBRIDGE__CONTAINER_NAME:?}
     env_file: env_files/homebridge.env
     environment:
-      - TZ=${TZ}
-    restart: ${HOMEBRIDGE__RESTART}
+      - TZ=${TZ:?}
+    restart: ${HOMEBRIDGE__RESTART:?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/homebridge:/homebridge
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG:?}/homebridge:/homebridge
+      - ${DOCKER_VOLUME_STORAGE:?}:/storage

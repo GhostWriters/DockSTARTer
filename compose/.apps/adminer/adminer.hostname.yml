@@ -1,3 +1,3 @@
 services:
   adminer:
-    hostname: ${ADMINER__HOSTNAME}
+    hostname: ${ADMINER__HOSTNAME:?}

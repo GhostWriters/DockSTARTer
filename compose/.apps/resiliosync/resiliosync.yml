@@ -1,14 +1,14 @@
 services:
   resiliosync:
-    container_name: ${RESILIOSYNC__CONTAINER_NAME}
+    container_name: ${RESILIOSYNC__CONTAINER_NAME:?}
     env_file: env_files/resiliosync.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${RESILIOSYNC__RESTART}
+      - PGID=${PGID:?}
+      - PUID=${PUID:?}
+      - TZ=${TZ:?}
+    restart: ${RESILIOSYNC__RESTART:?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/resiliosync:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${RESILIOSYNC__VOLUME_SYNCDIR}:/sync
+      - ${DOCKER_VOLUME_CONFIG:?}/resiliosync:/config
+      - ${DOCKER_VOLUME_STORAGE:?}:/storage
+      - ${RESILIOSYNC__VOLUME_SYNCDIR:?}:/sync

@@ -1,3 +1,3 @@
 services:
   murmur:
-    hostname: ${MURMUR__HOSTNAME}
+    hostname: ${MURMUR__HOSTNAME:?}

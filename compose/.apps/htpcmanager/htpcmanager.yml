@@ -1,13 +1,13 @@
 services:
   htpcmanager:
-    container_name: ${HTPCMANAGER__CONTAINER_NAME}
+    container_name: ${HTPCMANAGER__CONTAINER_NAME:?}
     env_file: env_files/htpcmanager.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${HTPCMANAGER__RESTART}
+      - PGID=${PGID:?}
+      - PUID=${PUID:?}
+      - TZ=${TZ:?}
+    restart: ${HTPCMANAGER__RESTART:?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/htpcmanager:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG:?}/htpcmanager:/config
+      - ${DOCKER_VOLUME_STORAGE:?}:/storage

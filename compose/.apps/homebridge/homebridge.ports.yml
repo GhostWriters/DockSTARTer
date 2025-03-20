@@ -1,4 +1,4 @@
 services:
   homebridge:
     ports:
-      - ${HOMEBRIDGE__PORT_8581}:8581
+      - ${HOMEBRIDGE__PORT_8581:?}:8581

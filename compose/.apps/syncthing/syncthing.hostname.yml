@@ -1,3 +1,3 @@
 services:
   syncthing:
-    hostname: ${SYNCTHING__HOSTNAME}
+    hostname: ${SYNCTHING__HOSTNAME:?}

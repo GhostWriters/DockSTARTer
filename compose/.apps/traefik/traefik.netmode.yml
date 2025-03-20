@@ -1,3 +1,3 @@
 services:
   traefik:
-    network_mode: ${TRAEFIK__NETWORK_MODE}
+    network_mode: ${TRAEFIK__NETWORK_MODE:?}

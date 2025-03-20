@@ -1,5 +1,5 @@
 services:
   letsencrypt:
     ports:
-      - ${LETSENCRYPT__PORT_443}:443
-      - ${LETSENCRYPT__PORT_80}:80
+      - ${LETSENCRYPT__PORT_443:?}:443
+      - ${LETSENCRYPT__PORT_80:?}:80

@@ -1,13 +1,13 @@
 services:
   medusa:
-    container_name: ${MEDUSA__CONTAINER_NAME}
+    container_name: ${MEDUSA__CONTAINER_NAME:?}
     env_file: env_files/medusa.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${MEDUSA__RESTART}
+      - PGID=${PGID:?}
+      - PUID=${PUID:?}
+      - TZ=${TZ:?}
+    restart: ${MEDUSA__RESTART:?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/medusa:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG:?}/medusa:/config
+      - ${DOCKER_VOLUME_STORAGE:?}:/storage

@@ -1,3 +1,3 @@
 services:
   phpmyadmin:
-    hostname: ${PHPMYADMIN__HOSTNAME}
+    hostname: ${PHPMYADMIN__HOSTNAME:?}

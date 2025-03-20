@@ -1,3 +1,3 @@
 services:
   duplicacy:
-    image: ghcr.io/hotio/duplicacy:${DUPLICACY__TAG}
+    image: ghcr.io/hotio/duplicacy:${DUPLICACY__TAG:?}

@@ -1,4 +1,4 @@
 services:
   unmanic:
     ports:
-      - ${UNMANIC__PORT_8888}:8888
+      - ${UNMANIC__PORT_8888:?}:8888

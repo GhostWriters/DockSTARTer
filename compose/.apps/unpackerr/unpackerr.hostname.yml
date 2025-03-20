@@ -1,3 +1,3 @@
 services:
   unpackerr:
-    hostname: ${UNPACKERR__HOSTNAME}
+    hostname: ${UNPACKERR__HOSTNAME:?}

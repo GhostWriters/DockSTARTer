@@ -1,4 +1,4 @@
 services:
   sonarr:
     ports:
-      - ${SONARR__PORT_8989}:8989
+      - ${SONARR__PORT_8989:?}:8989

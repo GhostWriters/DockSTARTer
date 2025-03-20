@@ -1,4 +1,4 @@
 services:
   pgadmin:
     ports:
-      - ${PGADMIN__PORT_80}:80
+      - ${PGADMIN__PORT_80:?}:80

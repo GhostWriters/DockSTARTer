@@ -1,3 +1,3 @@
 services:
   couchpotato:
-    hostname: ${COUCHPOTATO__HOSTNAME}
+    hostname: ${COUCHPOTATO__HOSTNAME:?}

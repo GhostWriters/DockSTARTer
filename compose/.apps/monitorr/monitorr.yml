@@ -1,13 +1,13 @@
 services:
   monitorr:
-    container_name: ${MONITORR__CONTAINER_NAME}
+    container_name: ${MONITORR__CONTAINER_NAME:?}
     env_file: env_files/monitorr.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${MONITORR__RESTART}
+      - PGID=${PGID:?}
+      - PUID=${PUID:?}
+      - TZ=${TZ:?}
+    restart: ${MONITORR__RESTART:?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/monitorr:/app
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG:?}/monitorr:/app
+      - ${DOCKER_VOLUME_STORAGE:?}:/storage

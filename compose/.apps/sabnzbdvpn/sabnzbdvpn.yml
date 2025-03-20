@@ -3,17 +3,17 @@ services:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    container_name: ${SABNZBDVPN__CONTAINER_NAME}
+    container_name: ${SABNZBDVPN__CONTAINER_NAME:?}
     env_file: env_files/sabnzbdvpn.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
+      - PGID=${PGID:?}
+      - PUID=${PUID:?}
+      - TZ=${TZ:?}
     privileged: true
-    restart: ${SABNZBDVPN__RESTART}
+    restart: ${SABNZBDVPN__RESTART:?}
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/sabnzbdvpn:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG:?}/sabnzbdvpn:/config
+      - ${DOCKER_VOLUME_STORAGE:?}:/storage

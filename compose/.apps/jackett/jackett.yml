@@ -1,13 +1,13 @@
 services:
   jackett:
-    container_name: ${JACKETT__CONTAINER_NAME}
+    container_name: ${JACKETT__CONTAINER_NAME:?}
     env_file: env_files/jackett.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${JACKETT__RESTART}
+      - PGID=${PGID:?}
+      - PUID=${PUID:?}
+      - TZ=${TZ:?}
+    restart: ${JACKETT__RESTART:?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/jackett:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG:?}/jackett:/config
+      - ${DOCKER_VOLUME_STORAGE:?}:/storage

@@ -1,7 +1,7 @@
 services:
   samba:
     ports:
-      - ${SAMBA__PORT_137}:137/udp
-      - ${SAMBA__PORT_138}:138/udp
-      - ${SAMBA__PORT_139}:139
-      - ${SAMBA__PORT_445}:445
+      - ${SAMBA__PORT_137:?}:137/udp
+      - ${SAMBA__PORT_138:?}:138/udp
+      - ${SAMBA__PORT_139:?}:139
+      - ${SAMBA__PORT_445:?}:445
