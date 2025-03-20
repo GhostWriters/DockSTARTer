@@ -94,12 +94,17 @@ SCRIPTPATH=$(cd -P "$(dirname "$(get_scriptname)")" > /dev/null 2>&1 && pwd)
 readonly SCRIPTPATH
 SCRIPTNAME="${SCRIPTPATH}/$(basename "$(get_scriptname)")"
 readonly SCRIPTNAME
-readonly DIALOGRC="${SCRIPTPATH}/.dialogrc"
-export DIALOGRC
-readonly BACKTITLE="DockSTARTer"
-export BACKTITLE
-readonly DIALOGOPTS="--backtitle ${BACKTITLE}"
-export DIALOGOPTS
+
+declare -rx DIALOGRC="${SCRIPTPATH}/.dialogrc"
+declare -rx BACKTITLE="DockSTARTer"
+declare -rx DIALOGOPTS="--backtitle ${BACKTITLE}"
+declare -rx DIALOG_CANCEL=1
+declare -rx DIALOG_ERROR=-1
+declare -rx DIALOG_ESC=255
+declare -rx DIALOG_EXTRA=3
+declare -rx DIALOG_HELP=2
+declare -rx DIALOG_ITEM_HELP=2
+declare -rx DIALOG_OK=0
 
 # Cleanup Function
 cleanup() {
