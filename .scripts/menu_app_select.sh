@@ -60,6 +60,7 @@ menu_app_select() {
 
             run_script 'appvars_purge_all'
             run_script 'env_update'
+            return 0
             ;;
         "${DIALOG_CANCEL}" | "${DIALOG_ESC}")
             return 1
