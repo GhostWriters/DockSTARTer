@@ -17,13 +17,14 @@ menu_main() {
     else
         local -a MainChoiceDialog=(
             --clear
+            --stdout
             --title "${Title}"
             --cancel-button "Exit"
             --menu "What would you like to do?" 0 0 0
             "${MainOpts[@]}"
         )
         set +e
-        MainChoice=$(dialog "${MainChoiceDialog[@]}" 3>&1 1>&2 2>&3)
+        MainChoice=$(dialog "${MainChoiceDialog[@]}")
         DIALOG_BUTTON_PRESSED="$?"
         set -e
     fi
