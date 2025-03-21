@@ -18,7 +18,6 @@ menu_main() {
         local -a MainChoiceDialog=(
             --clear
             --stdout
-            --help-button
             --title "${Title}"
             --cancel-button "Exit"
             --menu "What would you like to do?" 0 0 0
@@ -26,7 +25,6 @@ menu_main() {
         )
         DIALOG_BUTTON_PRESSED=0 && MainChoice=$(dialog "${MainChoiceDialog[@]}") || DIALOG_BUTTON_PRESSED=$?
     fi
-    dialog --sleep 5 --infobox "Pressed ${DIALOG_BUTTONS[$DIALOG_BUTTON_PRESSED]}" 0 0
     case ${DIALOG_BUTTON_PRESSED} in
         "${DIALOG_OK}")
             case "${MainChoice}" in
