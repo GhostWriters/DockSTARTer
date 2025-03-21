@@ -3,23 +3,16 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_app_vars() {
-    local Title="Application Vars"
     local APPNAME=${1-}
+    local Title="Application Variables - ${APPNAME}"
     run_script 'appvars_create' "${APPNAME}"
-    local APPVARS
-    APPVARS=$(run_script 'appvars_lines' "${APPNAME}")
-    if [[ -z ${APPVARS} ]]; then
+    local AppVarLines
+    AppVarLines=$(run_script 'appvars_lines' "${APPNAME}")
+    if [[ -z ${AppVarLines} ]]; then
         if [[ ${CI-} == true ]]; then
             warn "${APPNAME} has no variables."
         else
-            local AppVarsDialog=(
-                --clear
-                --title "${Title}"
-                --msgbox "${APPNAME} has no variables."
-                0 0
-            )
-            dialog "${AppVarsDialog[@]}"
-            clear
+            dialog --clear --title "${Title}" --msgbox "${APPNAME} has no variables."
         fi
         return
     fi
