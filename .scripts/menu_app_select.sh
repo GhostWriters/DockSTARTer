@@ -44,22 +44,33 @@ menu_app_select() {
             0 0 0
             "${AppList[@]}"
         )
-        SelectedApps=$(dialog "${SelectedAppsDialog[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
-        clear
+        SelectedApps=$(dialog "${SelectedAppsDialog[@]}" 3>&1 1>&2 2>&3)
+        DIALOG_BUTTON=$?
     fi
-    if [[ ${SelectedApps} == "Cancel" ]]; then
-        return 1
-    else
-        info "Disabling previously selected apps."
-        run_script 'disable_app' "${EnabledApps[@]}"
+    case ${DIALOG_BUTTON} in
+        "${DIALOG_OK}")
+            clear
+            info "Disabling previously selected apps."
+            run_script 'disable_app' "${EnabledApps[@]}"
 
-        info "Enabling selected apps."
-        run_script 'enable_app' "${SelectedApps}"
-        run_script 'appvars_create' "${SelectedApps}"
+            info "Enabling selected apps."
+            run_script 'enable_app' "${SelectedApps}"
+            run_script 'appvars_create' "${SelectedApps}"
 
-        run_script 'appvars_purge_all'
-        run_script 'env_update'
-    fi
+            run_script 'appvars_purge_all'
+            run_script 'env_update'
+            ;;
+        "${DIALOG_CANCEL}")
+            return 1
+            ;;
+        *)
+            if [[ -n ${DIALOG_BUTTONS[DIALOG_BUTTON]-} ]]; then
+                fatal "Unexpected dialog button '${DIALOG_BUTTONS[DIALOG_BUTTON]}' pressed."
+            else
+                fatal "Unexpected dialog button value'${DIALOG_BUTTON}' pressed."
+            fi
+            ;;
+    esac
 }
 
 test_menu_app_select() {
