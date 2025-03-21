@@ -13,7 +13,7 @@ menu_main() {
     local DIALOG_BUTTON_PRESSED
     local MainChoice
     if [[ ${CI-} == true ]]; then
-        DIALOG_BUTTON_PRESSED=${DIALOG_CANCEL}
+        DIALOG_BUTTON_PRESSED="${DIALOG_CANCEL}"
     else
         local -a MainChoiceDialog=(
             --clear
