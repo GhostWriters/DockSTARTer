@@ -27,43 +27,43 @@ menu_value_prompt() {
     local SYSTEM_VAL
     local ValueDescription
     local ValueOptions=()
-    ValueOptions+=("Keep Current " "${CURRENT_VAL}")
+    ValueOptions+=("Keep Current" "${CURRENT_VAL}")
 
     case "${SET_VAR}" in
         DOCKER_GID)
             SYSTEM_VAL=$(cut -d: -f3 < <(getent group docker))
-            ValueOptions+=("Use System " "${SYSTEM_VAL}")
+            ValueOptions+=("Use System" "${SYSTEM_VAL}")
             ;;
         DOCKER_HOSTNAME)
             SYSTEM_VAL=${HOSTNAME}
-            ValueOptions+=("Use System " "${SYSTEM_VAL}")
+            ValueOptions+=("Use System" "${SYSTEM_VAL}")
             ;;
         DOCKER_VOLUME_CONFIG)
             HOME_VAL="${DETECTED_HOMEDIR}/.config/appdata"
-            ValueOptions+=("Use Home " "${HOME_VAL}")
+            ValueOptions+=("Use Home" "${HOME_VAL}")
             ;;
         DOCKER_VOLUME_STORAGE)
             HOME_VAL="${DETECTED_HOMEDIR}/storage"
-            ValueOptions+=("Use Home " "${HOME_VAL}")
+            ValueOptions+=("Use Home" "${HOME_VAL}")
             ;;
         PGID)
             SYSTEM_VAL=${DETECTED_PGID}
-            ValueOptions+=("Use System " "${SYSTEM_VAL}")
+            ValueOptions+=("Use System" "${SYSTEM_VAL}")
             ;;
         PUID)
             SYSTEM_VAL=${DETECTED_PUID}
-            ValueOptions+=("Use System " "${SYSTEM_VAL}")
+            ValueOptions+=("Use System" "${SYSTEM_VAL}")
             ;;
         TZ)
             SYSTEM_VAL=$(cat /etc/timezone)
-            ValueOptions+=("Use System " "${SYSTEM_VAL}")
+            ValueOptions+=("Use System" "${SYSTEM_VAL}")
             ;;
         *)
-            ValueOptions+=("Use Default " "${DEFAULT_VAL}")
+            ValueOptions+=("Use Default" "${DEFAULT_VAL}")
             ;;
     esac
 
-    ValueOptions+=("Enter New " "")
+    ValueOptions+=("Enter New" "")
 
     case "${SET_VAR}" in
         "${APPNAME}__ENABLED")
@@ -108,54 +108,83 @@ menu_value_prompt() {
         ValueDescription="\n\n System detected values are recommended.${ValueDescription}"
     fi
 
+    local SELECT_DIALOG_BUTTON_PRESSED
     local SelectedValue
     if [[ ${CI-} == true ]]; then
-        SelectedValue="Keep Current "
+        SELECT_DIALOG_BUTTON_PRESSED=${DIALOG_OK}
+        SelectedValue="Keep Current"
     else
         local -a SelectedValueDialog=(
             --clear
+            --stdout
             --title "${Title}"
             --menu "What would you like set for ${SET_VAR}?${ValueDescription}"
             0 0 0
             "${ValueOptions[@]}"
         )
-        SelectedValue=$(dialog "${SelectedValueDialog[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
+        SELECT_DIALOG_BUTTON_PRESSED=0 && SelectedValue=$(dialog "${SelectedValueDialog[@]}") || SELECT_DIALOG_BUTTON_PRESSED=$?
     fi
-
     local Input
-    case "${SelectedValue}" in
-        "Keep Current ")
-            Input=${CURRENT_VAL}
+    case ${SELECT_DIALOG_BUTTON_PRESSED} in
+        "${DIALOG_OK}")
+            case "${SelectedValue}" in
+                "Keep Current")
+                    Input=${CURRENT_VAL}
+                    ;;
+                "Use Home")
+                    Input=${HOME_VAL}
+                    ;;
+                "Use Default")
+                    Input=${DEFAULT_VAL}
+                    ;;
+                "Use System")
+                    Input=${SYSTEM_VAL}
+                    ;;
+                "Enter New")
+                    local INPUT_DIALOG_BUTTON_PRESSED
+                    local -a InputDialog=(
+                        --clear
+                        --stdout
+                        --title "${Title}"
+                        --inputbox "What would you like set for ${SET_VAR}?${ValueDescription}"
+                        0 0
+                        "${CURRENT_VAL}"
+                    )
+                    INPUT_DIALOG_BUTTON_PRESSED=0 && Input=$(dialog "${InputDialog[@]}") || INPUT_DIALOG_BUTTON_PRESSED=$?
+                    case ${INPUT_DIALOG_BUTTON_PRESSED} in
+                        "${DIALOG_OK}") ;;
+                        "${DIALOG_CANCEL}" | "${DIALOG_ESC}")
+                            unset Input
+                            ;;
+                        *)
+                            if [[ -n ${DIALOG_BUTTONS[$INPUT_DIALOG_BUTTON_PRESSED]-} ]]; then
+                                clear
+                                fatal "Unexpected dialog button '${DIALOG_BUTTONS[$INPUT_DIALOG_BUTTON_PRESSED]}' pressed."
+                            else
+                                clear
+                                fatal "Unexpected dialog button value'${INPUT_DIALOG_BUTTON_PRESSED}' pressed."
+                            fi
+                            ;;
+                    esac
+                    ;;
+            esac
             ;;
-        "Use Home ")
-            Input=${HOME_VAL}
-            ;;
-        "Use Default ")
-            Input=${DEFAULT_VAL}
-            ;;
-        "Use System ")
-            Input=${SYSTEM_VAL}
-            ;;
-        "Enter New ")
-            local -a InputDialog=(
-                --clear
-                --title "${Title}"
-                --inputbox "What would you like set for ${SET_VAR}?${ValueDescription}"
-                0 0
-                "${CURRENT_VAL}"
-            )
-            Input=$(dialog "${InputDialog[@]}" 3>&1 1>&2 2>&3 || echo "CancelNewEntry")
-            ;;
-        "Cancel")
+        "${DIALOG_CANCEL}" | "${DIALOG_ESC}")
             warn "Selection of ${SET_VAR} was canceled."
             return 1
             ;;
         *)
-            fatal "Invalid Option."
+            if [[ -n ${DIALOG_BUTTONS[$SELECT_DIALOG_BUTTON_PRESSED]-} ]]; then
+                clear
+                fatal "Unexpected dialog button '${DIALOG_BUTTONS[$SELECT_DIALOG_BUTTON_PRESSED]}' pressed."
+            else
+                clear
+                fatal "Unexpected dialog button value'${SELECT_DIALOG_BUTTON_PRESSED}' pressed."
+            fi
             ;;
     esac
 
-    if [[ ${Input} == "CancelNewEntry" ]]; then
+    if [[ -z ${Input-} ]]; then
         menu_value_prompt "${SET_VAR}"
     else
         case "${SET_VAR}" in
