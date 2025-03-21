@@ -34,7 +34,7 @@ menu_app_select() {
     local DIALOG_BUTTON_PRESSED
     local SelectedApps
     if [[ ${CI-} == true ]]; then
-        SelectedApps="Cancel"
+        DIALOG_BUTTON_PRESSED=${DIALOG_CANCEL}
     else
         local -a SelectedAppsDialog=(
             --clear
