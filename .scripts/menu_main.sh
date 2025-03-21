@@ -24,10 +24,8 @@ menu_main() {
             --menu "What would you like to do?" 0 0 0
             "${MainOpts[@]}"
         )
-        set +e
-        MainChoice=$(dialog "${MainChoiceDialog[@]}")
-        DIALOG_BUTTON_PRESSED="$?"
-        set -e
+        DFIALOG_BUTTON_PRESSED=0
+        MainChoice=$(dialog "${MainChoiceDialog[@]}") || DIALOG_BUTTON_PRESSED=$?
     fi
     dialog --sleep 5 --infobox "Pressed ${DIALOG_BUTTONS[$DIALOG_BUTTON_PRESSED]-}" 0 0
     case ${DIALOG_BUTTON_PRESSED} in
