@@ -22,14 +22,31 @@ question_prompt() {
             # shellcheck disable=SC2206 # (warning): Quote to prevent word splitting/globbing, or split robustly with mapfile or read -a.
             local -a YesNoDialog=(
                 --clear
+                --stdout
                 --title "${Title}"
                 ${DIALOG_DEFAULT-}
                 --yesno "${QUESTION}"
                 0 0
             )
-            set +e
-            YN=$(dialog "${YesNoDialog[@]}" 3>&1 1>&2 2>&3 && echo "Y" || echo "N")
-            set -e
+            local DIALOG_BUTTON_PRESSED
+            DIALOG_BUTTON_PRESSED=0 && dialog "${YesNoDialog[@]}" || DIALOG_BUTTON_PRESSED=$?
+            case ${DIALOG_BUTTON_PRESSED} in
+                "${DIALOG_OK}")
+                    YN="Y"
+                    ;;
+                "${DIALOG_CANCEL}" | "${DIALOG_ESC}")
+                    YN="N"
+                    ;;
+                *)
+                    if [[ -n ${DIALOG_BUTTONS[$DIALOG_BUTTON_PRESSED]-} ]]; then
+                        clear
+                        fatal "Unexpected dialog button '${DIALOG_BUTTONS[$DIALOG_BUTTON_PRESSED]}' pressed."
+                    else
+                        clear
+                        fatal "Unexpected dialog button value'${DIALOG_BUTTON_PRESSED}' pressed."
+                    fi
+                    ;;
+            esac
         elif [[ ${PROMPT-} == "FORCE" ]]; then
             YN=${DEFAULT}
         else
