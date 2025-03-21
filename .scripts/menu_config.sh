@@ -45,9 +45,10 @@ menu_config() {
         "Select Apps ")
             run_script 'env_migrate_global'
             run_script 'env_update'
-            run_script 'menu_app_select'
-            run_script 'yml_merge'
-            run_script 'docker_compose'
+            if run_script 'menu_app_select'; then
+                run_script 'yml_merge'
+                run_script 'docker_compose'
+            fi
             ;;
         "Set App Variables ")
             run_script 'env_migrate_global'
