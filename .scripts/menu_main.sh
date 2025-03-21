@@ -23,7 +23,7 @@ menu_main() {
             "${MainOpts[@]}"
         )
         MainChoice=$(dialog "${MainChoiceDialog[@]}" 3>&1 1>&2 2>&3)
-        DIALOG_BUTTON_PRESSED=$?
+        DIALOG_BUTTON_PRESSED="$?"
     fi
     dialog --sleep 5 --infobox "Pressed ${DIALOG_BUTTONS[$DIALOG_BUTTON_PRESSED]}" 0 0
     case ${DIALOG_BUTTON_PRESSED} in
@@ -58,9 +58,9 @@ menu_main() {
             return
             ;;
         *)
-            if [[ -n ${DIALOG_BUTTONS[DIALOG_BUTTON_PRESSED]-} ]]; then
+            if [[ -n ${DIALOG_BUTTONS[$DIALOG_BUTTON_PRESSED]-} ]]; then
                 clear
-                fatal "Unexpected dialog button '${DIALOG_BUTTONS[DIALOG_BUTTON_PRESSED]}' pressed."
+                fatal "Unexpected dialog button '${DIALOG_BUTTONS[$DIALOG_BUTTON_PRESSED]}' pressed."
             else
                 clear
                 fatal "Unexpected dialog button value'${DIALOG_BUTTON_PRESSED}' pressed."
