@@ -22,13 +22,14 @@ menu_main() {
             --menu "What would you like to do?" 0 0 0
             "${MainOpts[@]}"
         )
+        set +e
         MainChoice=$(dialog "${MainChoiceDialog[@]}" 3>&1 1>&2 2>&3)
         DIALOG_BUTTON_PRESSED="$?"
+        set -e
     fi
     dialog --sleep 5 --infobox "Pressed ${DIALOG_BUTTONS[$DIALOG_BUTTON_PRESSED]}" 0 0
     case ${DIALOG_BUTTON_PRESSED} in
         "${DIALOG_OK}")
-            echo
             case "${MainChoice}" in
                 "Configuration")
                     clear
