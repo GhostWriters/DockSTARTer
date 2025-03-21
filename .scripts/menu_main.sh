@@ -50,7 +50,7 @@ menu_main() {
                     ;;
             esac
             ;;
-        "${DIALOG_CANCEL}")
+        "${DIALOG_CANCEL}" | "${DIALOG_ESC}")
             clear
             info "Exiting DockSTARTer."
             return
