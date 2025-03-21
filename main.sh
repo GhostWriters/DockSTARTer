@@ -97,7 +97,7 @@ readonly SCRIPTNAME
 
 declare -rx DIALOGRC="${SCRIPTPATH}/.dialogrc"
 declare -rx BACKTITLE="DockSTARTer"
-declare -rx DIALOGOPTS="--backtitle ${BACKTITLE}"
+declare -rx DIALOGOPTS="--backtitle ${BACKTITLE} --cr-wrap"
 declare -rx DIALOG_CANCEL=1
 declare -rx DIALOG_ERROR=254
 declare -rx DIALOG_ESC=255
