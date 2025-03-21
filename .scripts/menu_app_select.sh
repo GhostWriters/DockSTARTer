@@ -38,6 +38,7 @@ menu_app_select() {
     else
         local -a SelectedAppsDialog=(
             --clear
+            --stdout
             --title "${Title}"
             --separate-output
             --checklist
@@ -45,8 +46,7 @@ menu_app_select() {
             0 0 0
             "${AppList[@]}"
         )
-        SelectedApps=$(dialog "${SelectedAppsDialog[@]}" 3>&1 1>&2 2>&3)
-        DIALOG_BUTTON_PRESSED=$?
+        DIALOG_BUTTON_PRESSED=0 && SelectedApps=$(dialog "${SelectedAppsDialog[@]}") || DIALOG_BUTTON_PRESSED=$?
     fi
     case ${DIALOG_BUTTON_PRESSED} in
         "${DIALOG_OK}")
@@ -61,13 +61,15 @@ menu_app_select() {
             run_script 'appvars_purge_all'
             run_script 'env_update'
             ;;
-        "${DIALOG_CANCEL}")
+        "${DIALOG_CANCEL}" | "${DIALOG_ESC}")
             return 1
             ;;
         *)
-            if [[ -n ${DIALOG_BUTTONS[DIALOG_BUTTON_PRESSED]-} ]]; then
-                fatal "Unexpected dialog button '${DIALOG_BUTTONS[DIALOG_BUTTON_PRESSED]}' pressed."
+            if [[ -n ${DIALOG_BUTTONS[$DIALOG_BUTTON_PRESSED]-} ]]; then
+                clear
+                fatal "Unexpected dialog button '${DIALOG_BUTTONS[$DIALOG_BUTTON_PRESSED]}' pressed."
             else
+                clear
                 fatal "Unexpected dialog button value'${DIALOG_BUTTON_PRESSED}' pressed."
             fi
             ;;
