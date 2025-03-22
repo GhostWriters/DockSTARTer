@@ -22,7 +22,7 @@ menu_config_apps() {
         --clear
         --stdout
         --title "Set App Variables"
-        --cancel-button "Exit"
+        --cancel-button "Back"
         --menu "Select the application to configure" 0 0 0
         "${AppOptions[@]}"
     )

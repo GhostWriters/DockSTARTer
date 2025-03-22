@@ -18,7 +18,7 @@ menu_config() {
         --clear
         --stdout
         --title "${Title}"
-        --cancel-button "Exit"
+        --cancel-button "Back"
         --menu "What would you like to do?" 0 0 0
         "${ConfigOpts[@]}"
     )

@@ -62,7 +62,7 @@ menu_app_vars() {
             --clear
             --stdout
             --title "${Title}"
-            --cancel-button "Exit"
+            --cancel-button "Back"
             --no-tags
             --menu "${AppName}" 0 0 0
             "${AppVarOptions[@]}"
