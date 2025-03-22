@@ -17,14 +17,14 @@ menu_app_vars() {
         return
     fi
 
-    if run_script 'question_prompt' "${PROMPT-}" Y "Would you like to keep these settings for ${APPNAME}?\\n\\n${APPVARS}" "${Title}"; then
+    if run_script 'question_prompt' "${PROMPT-}" Y "Would you like to keep these settings for ${APPNAME}?\\n\\n${AppVarLines}" "${Title}"; then
         info "Keeping ${APPNAME} .env variables."
     else
         info "Configuring ${APPNAME} .env variables."
         while IFS= read -r line; do
             local SET_VAR=${line%%=*}
             run_script 'menu_value_prompt' "${SET_VAR}" || return 1
-        done < <(echo "${APPVARS}")
+        done < <(echo "${AppVarLines}")
     fi
 }
 
