@@ -53,7 +53,7 @@ menu_app_vars() {
             AppVarOptions+=("" "# ${APP_ENV_FOLDER_NAME}/${appname}.env")
             for VarName in ${AppVarEnvList}; do
                 local CurrentValue
-                CurrentValue=$(run_script 'env_get_literal' "${VarName}")
+                CurrentValue=$(run_script 'env_get_literal' "${appname}:${VarName}")
                 AppVarOptions+=("${appname}:${VarName}" "${VarName}=${CurrentValue}")
             done
         fi
