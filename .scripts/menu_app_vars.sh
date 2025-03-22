@@ -4,28 +4,87 @@ IFS=$'\n\t'
 
 menu_app_vars() {
     local APPNAME=${1-}
-    local Title="Application Variables - ${APPNAME}"
-    run_script 'appvars_create' "${APPNAME}"
-    local AppVarLines
-    AppVarLines=$(run_script 'appvars_lines' "${APPNAME}")
-    if [[ -z ${AppVarLines} ]]; then
+    APPNAME=${APPNAME^^}
+    local appname=${APPNAME,,}
+    local AppName
+    AppName=$(run_script 'app_nicename' "${APPNAME}")
+    local Title="Application Variables - ${AppName}"
+
+    if ! run_script 'app_is_builtin'; then
+        local Message="Application '${AppName}' does not exist."
         if [[ ${CI-} == true ]]; then
-            warn "${APPNAME} has no variables."
+            warn "${Message}"
         else
-            dialog --clear --title "${Title}" --msgbox "${APPNAME} has no variables."
+            dialog --clear --title "${Title}" --msgbox "${Message}" 0 0
         fi
         return
     fi
 
-    if run_script 'question_prompt' "${PROMPT-}" Y "Would you like to keep these settings for ${APPNAME}?\\n\\n${AppVarLines}" "${Title}"; then
-        info "Keeping ${APPNAME} .env variables."
-    else
-        info "Configuring ${APPNAME} .env variables."
-        while IFS= read -r line; do
-            local SET_VAR=${line%%=*}
-            run_script 'menu_value_prompt' "${SET_VAR}" || return 1
-        done < <(echo "${AppVarLines}")
+    run_script 'appvars_create' "${APPNAME}"
+
+    local AppVarGlobalList
+    local AppVarEnvList
+    AppVarGlobalList=$(run_script 'env_list_app_global_defaults' "${AppName}")
+    AppVarEnvList=$(run_script 'env_list_app_env_defaults' "${AppName}")
+    if [[ -z ${AppVarGlobalList} && -z ${AppVarEnvList} ]]; then
+        local Message="Application '${AppName} has no variables."
+        if [[ ${CI-} == true ]]; then
+            warn "${Message}"
+        else
+            dialog --clear --title "${Title}" --msgbox "${Message}" 0 0
+        fi
+        return
     fi
+
+    while true; do
+        local -a AppVarOptions=()
+        if [[ -n ${AppVarGlobalList} ]]; then
+            AppVarOptions+=("" "# .env")
+            for VarName in ${AppVarGlobalList}; do
+                local CurrentValue
+                CurrentValue=$(run_script 'env_get_literal' "${VarName}")
+                AppVarOptions+=("${VarName}" "${VarName}=${CurrentValue}")
+            done
+        fi
+        if [[ -n ${AppVarEnvList} ]]; then
+            if [[ -n ${AppVarOptions[*]-} ]]; then
+                AppVarOptions+=("" "")
+            fi
+            AppVarOptions+=("" "# ${APP_ENV_FOLDER_NAME}/${appname}.env")
+            for VarName in ${AppVarEnvList}; do
+                local CurrentValue
+                CurrentValue=$(run_script 'env_get_literal' "${VarName}")
+                AppVarOptions+=("${appname}:${VarName}" "${VarName}=${CurrentValue}")
+            done
+        fi
+        local -a AppVarDialog=(
+            --clear
+            --stdout
+            --title "${Title}"
+            --cancel-button "Exit"
+            --menu "${AppName}" 0 0 0
+            "${AppVarOptions[@]}"
+        )
+        local AppVarDialogButtonPressed=0
+        AppVarChoice=$(dialog "${AppVarDialog[@]}") || AppVarDialogButtonPressed=$?
+        case ${AppVarDialogButtonPressed} in
+            "${DIALOG_OK}")
+                run_script 'menu_value_prompt' "${AppVarChoice}"
+                ;;
+            "${DIALOG_CANCEL}" | "${DIALOG_ESC}")
+                return
+                ;;
+            *)
+                if [[ -n ${DIALOG_BUTTONS[$AppVarDialogButtonPressed]-} ]]; then
+                    clear
+                    fatal "Unexpected dialog button '${DIALOG_BUTTONS[$AppVarDialogButtonPressed]}' pressed."
+                else
+                    clear
+                    fatal "Unexpected dialog button value'${AppVarDialogButtonPressed}' pressed."
+                fi
+                ;;
+        esac
+    done
 }
 
 test_menu_app_vars() {
