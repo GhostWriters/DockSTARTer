@@ -3,7 +3,6 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 docker_compose() {
-    local Title="Docker Compose"
     local COMPOSEINPUT=${1-}
     local COMMAND=${COMPOSEINPUT%% *}
     local APPNAME
