@@ -11,15 +11,16 @@ update_self() {
     fi
 
     if [[ ${PROMPT:-CLI} == CLI ]]; then
-        commands_update_self
+        commands_update_self $@
         exec bash "${SCRIPTNAME}" -e
     else
-        commands_update_self |& ansifilter | dialog --clear --title "${Title}" --programbox "Performing updates to DockSTARTer" -1 -1
+        commands_update_self $@ |& ansifilter | dialog --clear --title "${Title}" --programbox "Performing updates to DockSTARTer" -1 -1
         exec bash "${SCRIPTNAME}"
     fi
 }
 
 commands_update_self() {
+    local BRANCH=${1:-origin/app-env-files}
     notice "Updating DockSTARTer to ${BRANCH}."
     cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
     info "Setting file ownership on current repository files"
