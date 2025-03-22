@@ -75,6 +75,7 @@ menu_app_vars() {
                     LastAppVarChoice="${AppVarChoice}"
                     if [[ " ${AppVarGlobalList} ${AppVarEnvList}" =~ \b"${AppVarChoice}"\b ]]; then
                         run_script 'menu_value_prompt' "${AppVarChoice}"
+                        break
                     fi
                     ;;
                 "${DIALOG_CANCEL}" | "${DIALOG_ESC}")
