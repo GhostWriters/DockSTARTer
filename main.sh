@@ -345,7 +345,7 @@ log() {
     local MESSAGE=${2-}
     echo -e "${MESSAGE-}" | (
         if [[ -n ${TOTERM} ]]; then
-            tee -p -a "${MKTEMP_LOG}" >&2
+            tee -a "${MKTEMP_LOG}" >&2
         else
             cat >> "${MKTEMP_LOG}" 2>&1
         fi
