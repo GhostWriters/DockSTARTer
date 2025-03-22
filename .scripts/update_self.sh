@@ -11,6 +11,17 @@ update_self() {
         notice "DockSTARTer will not be updated to ${BRANCH}."
         return 1
     fi
+
+    if [[ ${PROMPT:-CLI} == CLI ]]; then
+        commands_update_self
+        exec bash "${SCRIPTNAME}" -e
+    else
+        commands_update_self |& ansifilter | dialog --clear --title "${Title}" --programbox "Performing updates to DockSTARTer" -1 -1
+        exec bash "${SCRIPTNAME}"
+    fi
+}
+
+commands_update_self() {
     cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
     info "Setting file ownership on current repository files"
     sudo chown -R "$(id -u)":"$(id -g)" "${SCRIPTPATH}/.git" > /dev/null 2>&1 || true
@@ -30,12 +41,6 @@ update_self() {
     git ls-tree -rt --name-only "${BRANCH}" | xargs sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" > /dev/null 2>&1 || true
     sudo chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}/.git" > /dev/null 2>&1 || true
     sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}" > /dev/null 2>&1 || true
-
-    if [[ ${PROMPT:-CLI} == CLI ]]; then
-        exec bash "${SCRIPTNAME}" -e
-    else
-        exec bash "${SCRIPTNAME}"
-    fi
 }
 
 test_update_self() {
