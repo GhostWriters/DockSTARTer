@@ -17,8 +17,7 @@ menu_config_apps() {
         AppDescription=$(run_script 'app_description' "${AppName}")
         AppOptions+=("${AppName}" "${AppDescription}")
     done
-    local -a AppChoiceDialog
-    AppChoiceDialog=(
+    local -a AppChoiceDialog=(
         --clear
         --stdout
         --title "Set App Variables"

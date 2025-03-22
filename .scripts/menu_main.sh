@@ -35,19 +35,19 @@ menu_main() {
                 case "${MainChoice}" in
                     "Configuration")
                         clear
-                        run_script 'menu_config'
+                        run_script 'menu_config' || true
                         ;;
                     "Install Dependencies")
                         clear
-                        run_script 'run_install'
+                        run_script 'run_install' || true
                         ;;
                     "Update DockSTARTer")
                         clear
-                        run_script 'update_self'
+                        run_script 'update_self' || true
                         ;;
                     "Prune Docker System")
                         clear
-                        run_script 'docker_prune'
+                        run_script 'docker_prune' || true
                         ;;
                     *)
                         clear

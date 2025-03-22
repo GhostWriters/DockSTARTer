@@ -34,37 +34,37 @@ menu_config() {
                 case "${ConfigChoice}" in
                     "Full Setup")
                         clear
-                        run_script 'env_migrate_global'
-                        run_script 'env_update'
-                        run_script 'config_global'
+                        run_script 'env_migrate_global' || true
+                        run_script 'env_update' || true
+                        run_script 'config_global' || true
                         run_script 'menu_app_select' || true
-                        run_script 'menu_config_apps'
-                        run_script 'yml_merge'
+                        run_script 'menu_config_apps' || true
+                        run_script 'yml_merge' || true
                         run_script 'docker_compose' || true
                         ;;
                     "Set Global Variables")
                         clear
-                        run_script 'env_migrate_global'
-                        run_script 'env_update'
-                        run_script 'config_global'
-                        run_script 'yml_merge'
+                        run_script 'env_migrate_global' || true
+                        run_script 'env_update' || true
+                        run_script 'config_global' || true
+                        run_script 'yml_merge' || true
                         run_script 'docker_compose' || true
                         ;;
                     "Select Apps")
                         clear
-                        run_script 'env_migrate_global'
-                        run_script 'env_update'
+                        run_script 'env_migrate_global' || true
+                        run_script 'env_update' || true
                         run_script 'menu_app_select' || true
-                        run_script 'yml_merge'
+                        run_script 'yml_merge' || true
                         run_script 'docker_compose' || true
                         ;;
                     "Set App Variables")
                         clear
-                        run_script 'env_migrate_global'
-                        run_script 'env_update'
-                        run_script 'menu_config_apps'
-                        run_script 'yml_merge'
-                        run_script 'docker_compose'
+                        run_script 'env_migrate_global' || true
+                        run_script 'env_update' || true
+                        run_script 'menu_config_apps' || true
+                        run_script 'yml_merge' || true
+                        run_script 'docker_compose' || true
                         ;;
                     *)
                         error "Invalid Option"
