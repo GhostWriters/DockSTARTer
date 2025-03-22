@@ -54,6 +54,7 @@ menu_config() {
                         clear
                         run_script 'env_migrate_global'
                         run_script 'env_update'
+                        run_script 'menu_app_select'
                         run_script 'yml_merge'
                         run_script 'docker_compose'
                         ;;
