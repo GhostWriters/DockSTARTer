@@ -72,6 +72,7 @@ menu_config() {
                 esac
                 ;;
             "${DIALOG_CANCEL}" | "${DIALOG_ESC}")
+                clear
                 return
                 ;;
             *)
