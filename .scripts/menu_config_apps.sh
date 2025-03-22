@@ -3,16 +3,14 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_config_apps() {
-    info "Configuring .env variables for enabled apps."
     run_script 'appvars_create_all'
     local AddedApps
     AddedApps=$(run_script 'app_list_added')
-    AddedApps=$(run_script 'app_nicename' "${AddedApps}")
-    dialog --clear --msgbox "AddedApps=[${AddedApps}]" 0 0
     if [[ -z ${AddedApps} ]]; then
-        dialog --msgbox "There are no apps added."
+        dialog --clear --title "Set App Variables" --msgbox "There are no apps added to configure."
         return
     fi
+    AddedApps=$(run_script 'app_nicename' "${AddedApps}")
     local -a AppOptions
     for AppName in ${AddedApps}; do
         local AppDescription
