@@ -5,9 +5,7 @@ IFS=$'\n\t'
 update_self() {
     local Title="Update DockSTARTer"
     local BRANCH=${1:-origin/app-env-files}
-    if run_script 'question_prompt' "${PROMPT-}" Y "Would you like to update DockSTARTer to ${BRANCH} now?" "${Title}"; then
-        notice "Updating DockSTARTer to ${BRANCH}."
-    else
+    if ! run_script 'question_prompt' "${PROMPT-}" Y "Would you like to update DockSTARTer to ${BRANCH} now?" "${Title}"; then
         notice "DockSTARTer will not be updated to ${BRANCH}."
         return 1
     fi
@@ -22,6 +20,7 @@ update_self() {
 }
 
 commands_update_self() {
+    notice "Updating DockSTARTer to ${BRANCH}."
     cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
     info "Setting file ownership on current repository files"
     sudo chown -R "$(id -u)":"$(id -g)" "${SCRIPTPATH}/.git" > /dev/null 2>&1 || true
