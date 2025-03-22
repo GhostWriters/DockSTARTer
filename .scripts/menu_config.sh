@@ -40,7 +40,7 @@ menu_config() {
                         run_script 'menu_app_select' || true
                         run_script 'menu_config_apps'
                         run_script 'yml_merge'
-                        run_script 'docker_compose'
+                        run_script 'docker_compose' || true
                         ;;
                     "Set Global Variables")
                         clear
@@ -48,7 +48,7 @@ menu_config() {
                         run_script 'env_update'
                         run_script 'config_global'
                         run_script 'yml_merge'
-                        run_script 'docker_compose'
+                        run_script 'docker_compose' || true
                         ;;
                     "Select Apps")
                         clear
@@ -56,7 +56,7 @@ menu_config() {
                         run_script 'env_update'
                         run_script 'menu_app_select' || true
                         run_script 'yml_merge'
-                        run_script 'docker_compose'
+                        run_script 'docker_compose' || true
                         ;;
                     "Set App Variables")
                         clear
