@@ -5,9 +5,10 @@ IFS=$'\n\t'
 menu_config_apps() {
     info "Configuring .env variables for enabled apps."
     run_script 'appvars_create_all'
-
     local AddedApps
-    AddedApps=$(run_script 'app_nice_name' "$(run_script 'app_list_added')")
+    AddedApps=$(run_script 'app_list_added')
+    AddedApps=$(run_script 'app_nicename' "${AddedApps}")
+    dialog --clear --msgbox "AddedApps=[${AddedApps}]" 0 0
     if [[ -z ${AddedApps} ]]; then
         dialog --msgbox "There are no apps added."
         return
@@ -15,7 +16,7 @@ menu_config_apps() {
     local -a AppOptions
     for AppName in ${AddedApps}; do
         local AppDescription
-        AppDescription="$(run_script 'app_description' "${AppName}")"
+        AppDescription=$(run_script 'app_description' "${AppName}")
         AppOptions+=("${AppName}" "${AppDescription}")
     done
     local -a AppChoiceDialog
