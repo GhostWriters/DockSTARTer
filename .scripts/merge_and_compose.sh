@@ -7,7 +7,9 @@ merge_and_compose() {
     if [[ ${PROMPT:-CLI} == CLI ]]; then
         commands_merge_and_compose "$@"
     else
-        commands_merge_and_compose "$@" |& ansifilter | dialog --clear --title "${BACKTITLE}" --programbox "${Title}" -1 -1
+        if run_script 'question_prompt' "${PROMPT-}" N "Would you like to run compose now?" "${Title}"; then
+            commands_merge_and_compose "$@" |& ansifilter | dialog --clear --title "${BACKTITLE}" --programbox "${Title}" -1 -1
+        fi
     fi
 }
 
