@@ -34,7 +34,7 @@ docker_compose() {
             COMMANDINFO="Creating containers for all enabled services."
             ;;
     esac
-    if run_script 'question_prompt' "${PROMPT-}" Y "Would you like to run compose now?" "${Title}"; then
+    if run_script 'question_prompt' "${PROMPT:-CLI}" Y "Would you like to run compose now?" "${Title}"; then
         info "${COMMANDINFO}"
     else
         info "Compose will not be run."
