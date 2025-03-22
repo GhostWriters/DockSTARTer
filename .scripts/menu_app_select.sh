@@ -6,7 +6,6 @@ menu_app_select() {
     local Title="Select Apps"
     local AppList=()
     local EnabledApps=()
-    notice "Preparing app menu. Please be patient, this can take a while."
     while IFS= read -r line; do
         local APPNAME=${line^^}
         local appname=${APPNAME,,}
@@ -46,20 +45,22 @@ menu_app_select() {
             0 0 0
             "${AppList[@]}"
         )
-        DIALOG_BUTTON_PRESSED=0 && SelectedApps=$(dialog "${SelectedAppsDialog[@]}") || DIALOG_BUTTON_PRESSED=$?
+        DIALOG_BUTTON_PRESSED=0
+        SelectedApps=$(dialog "${SelectedAppsDialog[@]}") || DIALOG_BUTTON_PRESSED=$?
     fi
     case ${DIALOG_BUTTON_PRESSED} in
         "${DIALOG_OK}")
-            clear
-            info "Disabling previously selected apps."
-            run_script 'disable_app' "${EnabledApps[@]}"
+            {
+                info "Disabling previously selected apps."
+                run_script 'disable_app' "${EnabledApps[@]}"
 
-            info "Enabling selected apps."
-            run_script 'enable_app' "${SelectedApps}"
-            run_script 'appvars_create' "${SelectedApps}"
+                info "Enabling selected apps."
+                run_script 'enable_app' "${SelectedApps}"
+                run_script 'appvars_create' "${SelectedApps}"
 
-            run_script 'appvars_purge_all'
-            run_script 'env_update'
+                run_script 'appvars_purge_all'
+                run_script 'env_update'
+            } |& ansifilter | dialog --clear --timeout 1 --title "${BACKTITLE}" --programbox "${Title}" -1 -1
             return 0
             ;;
         "${DIALOG_CANCEL}" | "${DIALOG_ESC}")
@@ -71,7 +72,7 @@ menu_app_select() {
                 fatal "Unexpected dialog button '${DIALOG_BUTTONS[$DIALOG_BUTTON_PRESSED]}' pressed."
             else
                 clear
-                fatal "Unexpected dialog button value'${DIALOG_BUTTON_PRESSED}' pressed."
+                fatal "Unexpected dialog button value '${DIALOG_BUTTON_PRESSED}' pressed."
             fi
             ;;
     esac
