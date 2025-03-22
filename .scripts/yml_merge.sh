@@ -3,12 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 yml_merge() {
-    Title="${BACKTITLE}"
-    if [[ ${PROMPT:-CLI} == CLI ]]; then
-        commands_yml_merge
-    else
-        commands_yml_merge |& ansifilter | dialog --clear --title "${Title}" --programbox "Merging docker-compose.yml" -1 -1
-    fi
+    commands_yml_merge
 }
 
 commands_yml_merge() {
