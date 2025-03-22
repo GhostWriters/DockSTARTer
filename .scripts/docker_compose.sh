@@ -41,7 +41,12 @@ docker_compose() {
         return 1
     fi
     run_script 'require_docker'
-    eval "docker compose --project-directory ${COMPOSE_FOLDER}/ ${COMPOSECOMMAND}" || fatal "Failed to run compose.\nFailing command: ${F[C]}docker compose --project-directory ${COMPOSE_FOLDER}/ ${COMPOSECOMMAND}"
+    local REDIRECT=""
+    if [[ ${PROMPT:-CLI} == GUI ]]; then
+        REDIRECT="2>&1 | dialog --clear --title \"${Title}\" --programbox \"\${RUNCOMMAND}\" -1 -1"
+    fi
+    local RUNCOMMAND="docker compose --project-directory ${COMPOSE_FOLDER}/ ${COMPOSECOMMAND}"
+    eval "${RUNCOMMAND} ${REDIRECT}" || fatal "Failed to run compose.\nFailing command: ${F[C]}${RUNCOMMAND}"
 }
 
 test_docker_compose() {
