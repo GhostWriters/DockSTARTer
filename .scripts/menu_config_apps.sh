@@ -7,7 +7,7 @@ menu_config_apps() {
     local AddedApps
     AddedApps=$(run_script 'app_list_added')
     if [[ -z ${AddedApps} ]]; then
-        dialog --clear --title "Set App Variables" --msgbox "There are no apps added to configure."
+        dialog --clear --title "Set App Variables" --msgbox "There are no apps added to configure." 0 0
         return
     fi
     AddedApps=$(run_script 'app_nicename' "${AddedApps}")
