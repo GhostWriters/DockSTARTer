@@ -66,25 +66,29 @@ menu_app_vars() {
             --menu "${AppName}" 0 0 0
             "${AppVarOptions[@]}"
         )
-        local AppVarDialogButtonPressed=0
-        AppVarChoice=$(dialog "${AppVarDialog[@]}") || AppVarDialogButtonPressed=$?
-        case ${AppVarDialogButtonPressed} in
-            "${DIALOG_OK}")
-                run_script 'menu_value_prompt' "${AppVarChoice}"
-                ;;
-            "${DIALOG_CANCEL}" | "${DIALOG_ESC}")
-                return
-                ;;
-            *)
-                if [[ -n ${DIALOG_BUTTONS[$AppVarDialogButtonPressed]-} ]]; then
-                    clear
-                    fatal "Unexpected dialog button '${DIALOG_BUTTONS[$AppVarDialogButtonPressed]}' pressed."
-                else
-                    clear
-                    fatal "Unexpected dialog button value'${AppVarDialogButtonPressed}' pressed."
-                fi
-                ;;
-        esac
+        while true; do
+            local AppVarDialogButtonPressed=0
+            AppVarChoice=$(dialog "${AppVarDialog[@]}") || AppVarDialogButtonPressed=$?
+            case ${AppVarDialogButtonPressed} in
+                "${DIALOG_OK}")
+                    if [[ " ${AppVarGlobalList} ${AppVarEnvList}" =~ \b"${AppVarChoice}"\b ]]; then
+                        run_script 'menu_value_prompt' "${AppVarChoice}"
+                    fi
+                    ;;
+                "${DIALOG_CANCEL}" | "${DIALOG_ESC}")
+                    return
+                    ;;
+                *)
+                    if [[ -n ${DIALOG_BUTTONS[$AppVarDialogButtonPressed]-} ]]; then
+                        clear
+                        fatal "Unexpected dialog button '${DIALOG_BUTTONS[$AppVarDialogButtonPressed]}' pressed."
+                    else
+                        clear
+                        fatal "Unexpected dialog button value'${AppVarDialogButtonPressed}' pressed."
+                    fi
+                    ;;
+            esac
+        done
     done
 }
 
