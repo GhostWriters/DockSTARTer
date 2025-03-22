@@ -40,7 +40,7 @@ menu_app_vars() {
     while true; do
         local -a AppVarOptions=()
         if [[ -n ${AppVarGlobalList} ]]; then
-            AppVarOptions+=("" "# .env")
+            AppVarOptions+=("# .env" "# .env")
             for VarName in ${AppVarGlobalList}; do
                 local CurrentValue
                 CurrentValue=$(run_script 'env_get_literal' "${VarName}")
@@ -49,9 +49,9 @@ menu_app_vars() {
         fi
         if [[ -n ${AppVarEnvList} ]]; then
             if [[ -n ${AppVarOptions[*]-} ]]; then
-                AppVarOptions+=("" "")
+                AppVarOptions+=(" " "")
             fi
-            AppVarOptions+=("" "# ${APP_ENV_FOLDER_NAME}/${appname}.env")
+            AppVarOptions+=("# ${APP_ENV_FOLDER_NAME}/${appname}.env" "# ${APP_ENV_FOLDER_NAME}/${appname}.env")
             for VarName in ${AppVarEnvList}; do
                 local CurrentValue
                 CurrentValue=$(run_script 'env_get_literal' "${appname}:${VarName}")
