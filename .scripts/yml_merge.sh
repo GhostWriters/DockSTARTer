@@ -3,6 +3,15 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 yml_merge() {
+    Title="${BACKTITLE}"
+    if [[ ${PROMPT:-CLI} == CLI ]]; then
+        commands_yml_merge
+    else
+        commands_yml_merge |& ansifilter | dialog --clear --title "${Title}" --programbox "Merging docker-compose.yml" -1 -1
+    fi
+}
+
+commands_yml_merge() {
     run_script 'appvars_create_all'
     local COMPOSE_FILE=""
     notice "Adding enabled app templates to merge docker-compose.yml. Please be patient, this can take a while."
@@ -61,7 +70,6 @@ yml_merge() {
     eval "docker compose --project-directory ${COMPOSE_FOLDER}/ config > ${COMPOSE_FOLDER}/docker-compose.yml" || fatal "Failed to output compose config.\nFailing command: ${F[C]}docker compose --project-directory ${COMPOSE_FOLDER}/ config > \"${COMPOSE_FOLDER}/docker-compose.yml\""
     info "Merging docker-compose.yml complete."
 }
-
 test_yml_merge() {
     run_script 'appvars_create' WATCHTOWER
     cat "${COMPOSE_ENV}"
