@@ -3,11 +3,13 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_config_apps() {
-    run_script 'appvars_create_all'
+    Title="Set App Variables"
+
+    run_script 'appvars_create_all' |& ansifilter | dialog --clear --timeout 1 --title "${BACKTITLE}" --programbox "${Title}" -1 -1
     local AddedApps
     AddedApps=$(run_script 'app_list_added')
     if [[ -z ${AddedApps} ]]; then
-        dialog --clear --title "Set App Variables" --msgbox "There are no apps added to configure." 0 0
+        dialog --clear --title "{Title}" --msgbox "There are no apps added to configure." 0 0
         return
     fi
     AddedApps=$(run_script 'app_nicename' "${AddedApps}")
@@ -20,7 +22,7 @@ menu_config_apps() {
     local -a AppChoiceDialog=(
         --clear
         --stdout
-        --title "Set App Variables"
+        --title "${Title}"
         --cancel-button "Back"
         --menu "Select the application to configure" 0 0 0
         "${AppOptions[@]}"
