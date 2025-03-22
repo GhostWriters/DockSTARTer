@@ -34,30 +34,26 @@ menu_config() {
                 case "${ConfigChoice}" in
                     "Full Setup")
                         clear
-                        run_script 'env_migrate_global' || true
                         run_script 'env_update' || true
-                        run_script 'config_global' || true
+                        run_script 'menu_config_global' || true
                         run_script 'menu_app_select' || true
                         run_script 'menu_config_apps' || true
                         run_script 'merge_and_compose' || true
                         ;;
                     "Set Global Variables")
                         clear
-                        run_script 'env_migrate_global' || true
                         run_script 'env_update' || true
-                        run_script 'config_global' || true
+                        run_script 'menu_config_global' || true
                         run_script 'merge_and_compose' || true
                         ;;
                     "Select Apps")
                         clear
-                        run_script 'env_migrate_global' || true
                         run_script 'env_update' || true
                         run_script 'menu_app_select' || true
                         run_script 'merge_and_compose' || true
                         ;;
                     "Set App Variables")
                         clear
-                        run_script 'env_migrate_global' || true
                         run_script 'env_update' || true
                         run_script 'menu_config_apps' || true
                         run_script 'merge_and_compose' || true

@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-config_global() {
+menu_config_global() {
     local Title="Global Variables"
     local APPNAME="Global"
     local VARNAMES=(DOCKER_VOLUME_CONFIG DOCKER_VOLUME_STORAGE DOCKER_HOSTNAME PGID PUID TZ)
@@ -20,7 +20,7 @@ config_global() {
     fi
 }
 
-test_config_global() {
-    # run_script 'config_global'
-    warn "CI does not test config_global."
+test_menu_config_global() {
+    # run_script 'menu_config_global'
+    warn "CI does not test menu_config_global."
 }
