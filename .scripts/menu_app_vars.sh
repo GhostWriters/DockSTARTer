@@ -36,6 +36,7 @@ menu_app_vars() {
         return
     fi
 
+    local LastAppVarChoice=""
     while true; do
         local -a AppVarOptions=()
         if [[ -n ${AppVarGlobalList} ]]; then
@@ -68,9 +69,10 @@ menu_app_vars() {
         )
         while true; do
             local AppVarDialogButtonPressed=0
-            AppVarChoice=$(dialog "${AppVarDialog[@]}") || AppVarDialogButtonPressed=$?
+            AppVarChoice=$(dialog --default-item "${LastAppVarChoice}" "${AppVarDialog[@]}") || AppVarDialogButtonPressed=$?
             case ${AppVarDialogButtonPressed} in
                 "${DIALOG_OK}")
+                    LastAppVarChoice="${AppVarChoice}"
                     if [[ " ${AppVarGlobalList} ${AppVarEnvList}" =~ \b"${AppVarChoice}"\b ]]; then
                         run_script 'menu_value_prompt' "${AppVarChoice}"
                     fi
