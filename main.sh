@@ -653,13 +653,7 @@ main() {
         exit
     fi
     if [[ -n ${PRUNE-} ]]; then
-        if [[ ${PROMPT:-CLI} == GUI && -t 1 ]]; then
-            local Title="Docker Prune"
-            run_script 'docker_prune' |& dialog --title "${BACKTITLE}" --programbox "${Title}" -1 -1
-            echo -e "$BS"
-        else
-            run_script 'docker_prune'
-        fi
+        run_script 'docker_prune'
         exit
     fi
     if [[ -n ${REMOVE-} ]]; then
