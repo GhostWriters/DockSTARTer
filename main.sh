@@ -238,6 +238,7 @@ cmdline() {
                 ;;
             f)
                 readonly FORCE=true
+                export FORCE
                 ;;
             g)
                 PROMPT="GUI"
