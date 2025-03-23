@@ -1,0 +1,12 @@
+services:
+  whisparr:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Adult movie collection manager for Usenet and BitTorrent users"
+      com.dockstarter.appinfo.nicename: "Whisparr"
+      com.dockstarter.appvars.whisparr_container_name: "whisparr"
+      com.dockstarter.appvars.whisparr_enabled: "false"
+      com.dockstarter.appvars.whisparr_network_mode: ""
+      com.dockstarter.appvars.whisparr_port_6969: "6969"
+      com.dockstarter.appvars.whisparr_restart: "unless-stopped"
+      com.dockstarter.appvars.whisparr_tag: "latest"

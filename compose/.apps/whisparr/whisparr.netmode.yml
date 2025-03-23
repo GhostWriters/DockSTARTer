@@ -1,0 +1,3 @@
+services:
+  whisparr:
+    network_mode: ${WHISPARR_NETWORK_MODE}

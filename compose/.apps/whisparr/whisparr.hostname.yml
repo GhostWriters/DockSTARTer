@@ -1,0 +1,3 @@
+services:
+  whisparr:
+    hostname: ${DOCKER_HOSTNAME}
