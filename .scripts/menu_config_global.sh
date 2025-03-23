@@ -4,20 +4,56 @@ IFS=$'\n\t'
 
 menu_config_global() {
     local Title="Global Variables"
-    local APPNAME="Global"
-    local VARNAMES=(DOCKER_VOLUME_CONFIG DOCKER_VOLUME_STORAGE DOCKER_HOSTNAME PGID PUID TZ)
-    local APPVARS
-    APPVARS=$(for v in "${VARNAMES[@]}"; do echo "${v}=$(run_script 'env_get' "${v}")"; done)
 
-    if run_script 'question_prompt' "${PROMPT-}" N "Would you like to keep these settings for ${APPNAME}?\\n\\n${APPVARS}" "${Title}"; then
-        info "Keeping ${APPNAME} .env variables."
-    else
-        info "Configuring ${APPNAME} .env variables."
-        while IFS= read -r line; do
-            local SET_VAR=${line%%=*}
-            run_script 'menu_value_prompt' "${SET_VAR}" || return 1
-        done < <(echo "${APPVARS}")
-    fi
+    local -a VarList
+    readarray -t VarList < <(run_script 'env_var_list' "${COMPOSE_ENV_DEFAULT_FILE}")
+
+    local LastVarChoice=""
+    while true; do
+        local -a VarOptions=()
+        if [[ -n ${VarList[*]} ]]; then
+            for VarName in "${VarList[@]}"; do
+                local CurrentValue
+                CurrentValue=$(run_script 'env_get_literal' "${VarName}")
+                VarOptions+=("${VarName}" "${VarName}=${CurrentValue}")
+            done
+        fi
+        local -a VarDialog=(
+            --clear
+            --stdout
+            --title "${Title}"
+            --cancel-button "Back"
+            --no-tags
+            --menu "${COMPOSE_ENV}" 0 0 0
+            "${VarOptions[@]}"
+        )
+        while true; do
+            local VarDialogButtonPressed=0
+            VarChoice=$(dialog --default-item "${LastVarChoice}" "${VarDialog[@]}") || VarDialogButtonPressed=$?
+            case ${VarDialogButtonPressed} in
+                "${DIALOG_OK}")
+                    LastVarChoice="${VarChoice}"
+                    # shellcheck disable=SC2199
+                    if [[ " ${VarList[@]} " == *" ${VarChoice} "* ]]; then
+                        run_script 'menu_value_prompt' "${VarChoice}"
+                        break
+                    fi
+                    ;;
+                "${DIALOG_CANCEL}" | "${DIALOG_ESC}")
+                    return
+                    ;;
+                *)
+                    if [[ -n ${DIALOG_BUTTONS[$VarDialogButtonPressed]-} ]]; then
+                        clear
+                        fatal "Unexpected dialog button '${DIALOG_BUTTONS[$VarDialogButtonPressed]}' pressed."
+                    else
+                        clear
+                        fatal "Unexpected dialog button value'${VarDialogButtonPressed}' pressed."
+                    fi
+                    ;;
+            esac
+        done
+    done
 }
 
 test_menu_config_global() {
