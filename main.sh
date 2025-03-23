@@ -355,68 +355,29 @@ echo "DockSTARTer Log" > "${MKTEMP_LOG}"
 log() {
     local TOTERM=${1-}
     local MESSAGE=${2-}
-    local COLOR_MESSAGE=${3-$MESSAGE}
+    local STRIPPED_MESSAGE
+    STRIPPED_MESSAGE=$(echo -e "${MESSAGE-}" | ansifilter 2> /dev/null || echo -e "${MESSAGE-}")
     if [[ -n ${TOTERM} ]]; then
         if [[ -t 2 ]]; then
             # Stderr is not being redirected, output with color
-            echo -e "${COLOR_MESSAGE-}" >&2
+            echo -e "${MESSAGE-}" >&2
         else
             # Stderr is being redirected, output without colorr
-            echo -e "${MESSAGE-}" >&2
+            echo -e "${STRIPPED_MESSAGE-}" >&2
         fi
     fi
     # Output the message to the log file without color
-    echo -e "${MESSAGE-}" >> "${MKTEMP_LOG}"
+    echo -e "${STRIPPED_MESSAGE-}" >> "${MKTEMP_LOG}"
 }
-trace() {
-    local TIMESTAMP
-    TIMESTAMP=$(date +"%F %T")
-    local MESSAGE="${TIMESTAMP} [TRACE ]   $*"
-    local COLOR_MESSAGE="${NC}${TIMESTAMP} ${F[B]}[TRACE ]${NC}   $*${NC}"
-    log "${TRACE-}" "${MESSAGE}" "${COLOR_MESSAGE}"
-}
-debug() {
-    local TIMESTAMP
-    TIMESTAMP=$(date +"%F %T")
-    local MESSAGE="${TIMESTAMP} [DEBUG ]   $*"
-    local COLOR_MESSAGE="${NC}${TIMESTAMP} ${F[B]}[DEBUG ]${NC}   $*${NC}"
-    log "${DEBUG-}" "${MESSAGE}" "${COLOR_MESSAGE}"
-}
-info() {
-    local TIMESTAMP
-    TIMESTAMP=$(date +"%F %T")
-    local MESSAGE="${TIMESTAMP} [INFO  ]   $*"
-    local COLOR_MESSAGE="${NC}${TIMESTAMP} ${F[B]}[INFO  ]${NC}   $*${NC}"
-    log "${VERBOSE-}" "${MESSAGE}" "${COLOR_MESSAGE}"
-}
-notice() {
-    local TIMESTAMP
-    TIMESTAMP=$(date +"%F %T")
-    local MESSAGE="${TIMESTAMP} [NOTICE]   $*"
-    local COLOR_MESSAGE="${NC}${TIMESTAMP} ${F[G]}[NOTICE]${NC}   $*${NC}"
-    log true "${MESSAGE}" "${COLOR_MESSAGE}"
-}
-warn() {
-    local TIMESTAMP
-    TIMESTAMP=$(date +"%F %T")
-    local MESSAGE="${TIMESTAMP} [WARN  ]   $*"
-    local COLOR_MESSAGE="${NC}${TIMESTAMP} ${F[Y]}[WARN  ]${NC}   $*${NC}"
-    log true "${MESSAGE}" "${COLOR_MESSAGE}"
-}
-error() {
-    local TIMESTAMP
-    TIMESTAMP=$(date +"%F %T")
-    local MESSAGE="${TIMESTAMP} [ERROR ]   $*"
-    local COLOR_MESSAGE="${NC}${TIMESTAMP} ${F[R]}[ERROR ]${NC}   $*${NC}"
-    log true "${MESSAGE}" "${COLOR_MESSAGE}"
-}
+trace() { log "${TRACE-}" "${NC}$(date +"%F %T") ${F[B]}[TRACE ]${NC}   $*${NC}"; }
+debug() { log "${DEBUG-}" "${NC}$(date +"%F %T") ${F[B]}[DEBUG ]${NC}   $*${NC}"; }
+info() { log "${VERBOSE-}" "${NC}$(date +"%F %T") ${F[B]}[INFO  ]${NC}   $*${NC}"; }
+notice() { log true "${NC}$(date +"%F %T") ${F[G]}[NOTICE]${NC}   $*${NC}"; }
+warn() { log true "${NC}$(date +"%F %T") ${F[Y]}[WARN  ]${NC}   $*${NC}"; }
+error() { log true "${NC}$(date +"%F %T") ${F[R]}[ERROR ]${NC}   $*${NC}"; }
 fatal() {
-    local TIMESTAMP
-    TIMESTAMP=$(date +"%F %T")
-    local MESSAGE="${TIMESTAMP} [FATAL ]   $*"
-    local COLOR_MESSAGE="${NC}${TIMESTAMP} ${B[R]}${F[W]}[FATAL ]${NC}   $*${NC}"
-    log true "${MESSAGE}" "${COLOR_MESSAGE}"
-    exit
+    log true "${NC}$(date +"%F %T") ${B[R]}${F[W]}[FATAL ]${NC}   $*${NC}"
+    exit 1
 }
 
 # System Information
