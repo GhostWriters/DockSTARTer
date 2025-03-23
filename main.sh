@@ -344,6 +344,9 @@ declare -Agr F=( # Foreground
 )
 NC=$(tput sgr0 2> /dev/null || echo -e "\e[0m")
 readonly NC
+BS=$(tput cup 1000 0 2> /dev/null || true) # Bottom of screen
+readonly BS
+export BS
 
 # Log Functions
 MKTEMP_LOG=$(mktemp) || echo -e "Failed to create temporary log file.\nFailing command: ${F[C]}mktemp"
