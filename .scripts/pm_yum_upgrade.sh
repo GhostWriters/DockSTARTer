@@ -7,7 +7,7 @@ pm_yum_upgrade() {
     if [[ ${CI-} != true ]]; then
         notice "Upgrading packages. Please be patient, this can take a while."
         local REDIRECT="> /dev/null 2>&1"
-        if [[ -n ${VERBOSE-} ]] || run_script 'question_prompt' "${PROMPT:-CLI}" N "Would you like to display the command output?" "${Title}"; then
+        if [[ -n ${VERBOSE-} ]] || run_script 'question_prompt' "${PROMPT:-$PROMPT_DEFAULT}" N "Would you like to display the command output?" "${Title}"; then
             REDIRECT=""
         fi
         eval "sudo yum -y upgrade ${REDIRECT}" || fatal "Failed to upgrade packages from yum.\nFailing command: ${F[C]}sudo yum -y upgrade"

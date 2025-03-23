@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 docker_prune() {
     local Title="Docker Prune"
-    if run_script 'question_prompt' "${PROMPT-}" Y "Would you like to remove all unused containers, networks, volumes, images and build cache?" "${Title}"; then
+    if run_script 'question_prompt' "${PROMPT-$PROMPT_DEFAULT}" Y "Would you like to remove all unused containers, networks, volumes, images and build cache?" "${Title}"; then
         info "Removing unused docker resources."
     else
         info "Nothing will be removed."
@@ -12,7 +12,7 @@ docker_prune() {
     fi
 
     local REDIRECT=""
-    if [[ ${PROMPT:-CLI} == GUI ]]; then
+    if [[ ${PROMPT:-$PROMPT_DEFAULT} == GUI ]]; then
         REDIRECT="2>&1 | dialog --title \"${Title}\" --programbox \"\${RUNCOMMAND}\" -1 -1"
     fi
     local RUNCOMMAND="docker system prune --all --force --volumes"

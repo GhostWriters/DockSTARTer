@@ -241,7 +241,7 @@ cmdline() {
                 export FORCE
                 ;;
             g)
-                PROMPT="GUI"
+                PROMPT_DEFAULT="GUI"
                 ;;
             h)
                 usage

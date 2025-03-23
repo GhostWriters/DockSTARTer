@@ -16,7 +16,7 @@ appvars_purge() {
         APPVAR_LINES=$(run_script 'appvars_lines' "${APPNAME}")
         APPVAR_ENV_LINES=$(run_script 'env_lines' "${APP_ENV_FILE}")
         if [[ -z ${APPVAR_LINES} && -z ${APPVAR_ENV_LINES} ]]; then
-            if [[ ${PROMPT-} == "GUI" ]]; then
+            if [[ ${PROMPT-$PROMPT_DEFAULT} == "GUI" ]]; then
                 dialog --title "${Title}" --msgbox "${APPNAME} has no variables." 0 0
             else
                 warn "${APPNAME} has no variables."
@@ -36,7 +36,7 @@ ${APP_ENV_FILE}:
 ${APPVAR_ENV_LINES}
 EOF
         )
-        if [[ ${CI-} == true ]] || run_script 'question_prompt' "${PROMPT:-CLI}" Y "${QUESTION}\\n" "${Title}"; then
+        if [[ ${CI-} == true ]] || run_script 'question_prompt' "${PROMPT:-$PROMPT_DEFAULT}" Y "${QUESTION}\\n" "${Title}"; then
             info "Purging ${APPNAME} .env variables."
 
             local -a APPVARS

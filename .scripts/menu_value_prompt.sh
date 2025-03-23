@@ -228,7 +228,7 @@ menu_value_prompt() {
                     menu_value_prompt "${VarName}"
                 elif [[ ${Input} == ~* ]]; then
                     local CORRECTED_DIR="${DETECTED_HOMEDIR}${Input#*~}"
-                    if run_script 'question_prompt' "${PROMPT-}" Y "Cannot use the ~ shortcut in ${VarName}. Would you like to use ${CORRECTED_DIR} instead?" "${Title}"; then
+                    if run_script 'question_prompt' "${PROMPT-$PROMPT_DEFAULT}" Y "Cannot use the ~ shortcut in ${VarName}. Would you like to use ${CORRECTED_DIR} instead?" "${Title}"; then
                         run_script 'env_set' "${VarName}" "${CORRECTED_DIR}"
                         dialog --clear --title "${Title}" --msgbox "Returning to the previous menu to confirm selection." 0 0
                     else
@@ -237,11 +237,11 @@ menu_value_prompt() {
                     menu_value_prompt "${VarName}"
                 elif [[ -d ${Input} ]]; then
                     run_script 'env_set' "${VarName}" "${Input}"
-                    if run_script 'question_prompt' "${PROMPT-}" Y "Would you like to set permissions on ${Input} ?" "${Title}"; then
+                    if run_script 'question_prompt' "${PROMPT-$PROMPT_DEFAULT}" Y "Would you like to set permissions on ${Input} ?" "${Title}"; then
                         run_script 'set_permissions' "${Input}"
                     fi
                 else
-                    if run_script 'question_prompt' "${PROMPT-}" Y "${Input} is not a valid path. Would you like to attempt to create it?" "${Title}"; then
+                    if run_script 'question_prompt' "${PROMPT-$PROMPT_DEFAULT}" Y "${Input} is not a valid path. Would you like to attempt to create it?" "${Title}"; then
                         mkdir -p "${Input}" || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p \"${Input}\""
                         run_script 'set_permissions' "${Input}"
                         run_script 'env_set' "${VarName}" "${Input}"
@@ -254,7 +254,7 @@ menu_value_prompt() {
                 ;;
             P[GU]ID)
                 if [[ ${Input} == "0" ]]; then
-                    if run_script 'question_prompt' "${PROMPT-}" Y "Running as root is not recommended. Would you like to select a different ID?" "${Title}"; then
+                    if run_script 'question_prompt' "${PROMPT-$PROMPT_DEFAULT}" Y "Running as root is not recommended. Would you like to select a different ID?" "${Title}"; then
                         menu_value_prompt "${VarName}"
                     else
                         run_script 'env_set' "${VarName}" "${Input}"

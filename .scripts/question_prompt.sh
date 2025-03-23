@@ -11,10 +11,10 @@ question_prompt() {
     while true; do
         if [[ ${CI-} == true ]]; then
             YN=${DEFAULT}
-        elif [[ ${PROMPT-} == "CLI" ]]; then
+        elif [[ ${PROMPT-$PROMPT_DEFAULT} == "CLI" ]]; then
             notice "${QUESTION}"
             read -rp "[Yn]" YN < /dev/tty
-        elif [[ ${PROMPT-} == "GUI" ]]; then
+        elif [[ ${PROMPT-$PROMPT_DEFAULT} == "GUI" ]]; then
             local DIALOG_DEFAULT
             if [[ ${DEFAULT} == "N" ]]; then
                 DIALOG_DEFAULT="--defaultno"
