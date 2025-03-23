@@ -36,6 +36,11 @@ menu_app_vars() {
         return
     fi
 
+    local -a AppVarList=("${AppVarGlobalList[@]}")
+    for VarName in "${AppVarEnvList[@]}"; do
+        AppVarList+=("${appname}:${VarName}")
+    done
+
     local LastAppVarChoice=""
     while true; do
         local -a AppVarOptions=()
@@ -74,7 +79,7 @@ menu_app_vars() {
                 "${DIALOG_OK}")
                     LastAppVarChoice="${AppVarChoice}"
                     # shellcheck disable=SC2199
-                    if [[ " ${AppVarGlobalList[@]} ${AppVarEnvList[@]} " == *" ${AppVarChoice} "* ]]; then
+                    if [[ " ${AppVarList[@]} " == *" ${AppVarChoice} "* ]]; then
                         run_script 'menu_value_prompt' "${AppVarChoice}"
                         break
                     fi
