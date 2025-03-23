@@ -7,8 +7,8 @@ pm_apt_repos() {
     notice "Updating repositories. Please be patient, this can take a while."
     local COMMAND=""
     local REDIRECT="> /dev/null 2>&1"
-    if [[ -n ${VERBOSE-} ]] || run_script 'question_prompt' "${PROMPT:-$PROMPT_DEFAULT}" N "Would you like to display the command output?" "${Title}"; then
-        if [[ ${PROMPT:-$PROMPT_DEFAULT} == CLI ]]; then
+    if [[ -n ${VERBOSE-} ]] || run_script 'question_prompt' N "Would you like to display the command output?" "${Title}"; then
+        if [[ ${PROMPT:-CLI} == CLI ]]; then
             REDIRECT=""
         else
             REDIRECT="2>&1 | dialog --title \"${Title}\" --programbox \"\${COMMAND}\" -1 -1"

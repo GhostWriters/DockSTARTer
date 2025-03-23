@@ -6,7 +6,7 @@ pm_dnf_install() {
     local Title="Install Dependencies"
     notice "Installing dependencies. Please be patient, this can take a while."
     local REDIRECT="> /dev/null 2>&1"
-    if [[ -n ${VERBOSE-} ]] || run_script 'question_prompt' "${PROMPT:-$PROMPT_DEFAULT}" N "Would you like to display the command output?" "${Title}"; then
+    if [[ -n ${VERBOSE-} ]] || run_script 'question_prompt' N "Would you like to display the command output?" "${Title}"; then
         REDIRECT=""
     fi
     eval "sudo dnf -y install ansifilter curl dialog git grep newt sed ${REDIRECT}" || fatal "Failed to install dependencies from dnf.\nFailing command: ${F[C]}sudo dnf -y install curl git grep newt sed dialog"

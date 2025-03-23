@@ -3,18 +3,17 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 question_prompt() {
-    local PROMPT=${1-}
-    local DEFAULT=${2:-Y}
-    local QUESTION=${3-}
-    local Title=${4-$BACKTITLE}
+    local DEFAULT=${1:-Y}
+    local QUESTION=${2-}
+    local Title=${3-$BACKTITLE}
     local YN
     while true; do
         if [[ ${CI-} == true ]]; then
             YN=${DEFAULT}
-        elif [[ ${PROMPT-$PROMPT_DEFAULT} == "CLI" ]]; then
+        elif [[ ${PROMPT:-CLI} == "CLI" ]]; then
             notice "${QUESTION}"
             read -rp "[Yn]" YN < /dev/tty
-        elif [[ ${PROMPT-$PROMPT_DEFAULT} == "GUI" ]]; then
+        elif [[ ${PROMPT:-CLI} == "GUI" ]]; then
             local DIALOG_DEFAULT
             if [[ ${DEFAULT} == "N" ]]; then
                 DIALOG_DEFAULT="--defaultno"
