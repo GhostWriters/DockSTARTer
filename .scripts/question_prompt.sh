@@ -47,7 +47,7 @@ question_prompt() {
                     fi
                     ;;
             esac
-        elif [[ ${PROMPT-} == "FORCE" ]]; then
+        elif [[ ${FORCE-} == true ]]; then
             YN=${DEFAULT}
         else
             YN=${DEFAULT}

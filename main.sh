@@ -491,9 +491,6 @@ main() {
     fi
     # Repo Check
     local PROMPT
-    if [[ ${FORCE-} == true ]]; then
-        PROMPT="FORCE"
-    fi
     local DS_COMMAND
     DS_COMMAND=$(command -v ds || true)
     if [[ -L ${DS_COMMAND} ]]; then
