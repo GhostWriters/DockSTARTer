@@ -33,7 +33,7 @@ menu_config_global() {
             case ${VarDialogButtonPressed} in
                 "${DIALOG_OK}")
                     LastVarChoice="${VarChoice}"
-                    # shellcheck disable=SC2199
+                    # shellcheck disable=SC2199 # Arrays implicitly concatenate in [[ ]]. Use a loop (or explicit * instead of @).
                     if [[ " ${VarList[@]} " == *" ${VarChoice} "* ]]; then
                         run_script 'menu_value_prompt' "${VarChoice}"
                         break

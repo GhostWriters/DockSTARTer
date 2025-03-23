@@ -78,7 +78,7 @@ menu_app_vars() {
             case ${AppVarDialogButtonPressed} in
                 "${DIALOG_OK}")
                     LastAppVarChoice="${AppVarChoice}"
-                    # shellcheck disable=SC2199
+                    # shellcheck disable=SC2199 # Arrays implicitly concatenate in [[ ]]. Use a loop (or explicit * instead of @).
                     if [[ " ${AppVarList[@]} " == *" ${AppVarChoice} "* ]]; then
                         run_script 'menu_value_prompt' "${AppVarChoice}"
                         break
