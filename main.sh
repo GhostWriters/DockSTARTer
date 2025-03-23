@@ -35,6 +35,8 @@ For regular usage you can run without providing any options.
     List all variables and values for the app specified
 -f --force
     force certain install/upgrade actions to run even if they would not be needed
+-g --gui
+    Display use the GUI
 -l --list
     List all apps
 --list-builtin
@@ -170,6 +172,7 @@ cmdline() {
                 fi
                 ;;
             --force) LOCAL_ARGS="${LOCAL_ARGS-}-f " ;;
+            --gui) LOCAL_ARGS="${LOCAL_ARGS-}-g " ;;
             --help) LOCAL_ARGS="${LOCAL_ARGS-}-h " ;;
             --install) LOCAL_ARGS="${LOCAL_ARGS-}-i " ;;
             --list) LOCAL_ARGS="${LOCAL_ARGS-}-l " ;;
@@ -235,6 +238,9 @@ cmdline() {
                 ;;
             f)
                 readonly FORCE=true
+                ;;
+            g)
+                PROMPT="GUI"
                 ;;
             h)
                 usage
