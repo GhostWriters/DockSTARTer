@@ -12,9 +12,12 @@ update_self() {
 
     if [[ ${PROMPT:-CLI} == GUI && -t 1 ]]; then
         commands_update_self "$@" |& ansifilter | dialog --title "${Title}" --programbox "Performing updates to DockSTARTer" -1 -1
-        exec bash "${SCRIPTNAME}"
     else
         commands_update_self "$@"
+    fi
+    if [[ ${MENU-} == true ]]; then
+        exec bash "${SCRIPTNAME}"
+    else
         exec bash "${SCRIPTNAME}" -e
     fi
 }

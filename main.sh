@@ -4,6 +4,7 @@ IFS=$'\n\t'
 
 export LC_ALL=C
 export PROMPT="CLI"
+export MENU=false
 
 usage() {
     cat << EOF
@@ -699,6 +700,7 @@ main() {
         exit
     fi
     # Run Menus
+    MENU=true
     PROMPT="GUI"
     run_script 'menu_main'
 }
