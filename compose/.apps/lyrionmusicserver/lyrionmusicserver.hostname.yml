@@ -1,0 +1,3 @@
+services:
+  lyrionmusicserver:
+    hostname: ${DOCKER_HOSTNAME}
