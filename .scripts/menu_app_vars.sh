@@ -22,11 +22,11 @@ menu_app_vars() {
 
     run_script 'appvars_create' "${APPNAME}" |& ansifilter | dialog --clear --timeout 1 --title "${BACKTITLE}" --programbox "${Title}" -1 -1
 
-    local AppVarGlobalList
-    local AppVarEnvList
-    AppVarGlobalList=$(run_script 'env_list_app_global_defaults' "${AppName}")
-    AppVarEnvList=$(run_script 'env_list_app_env_defaults' "${AppName}")
-    if [[ -z ${AppVarGlobalList} && -z ${AppVarEnvList} ]]; then
+    local -a AppVarGlobalList
+    local -a AppVarEnvList
+    readarray -t AppVarGlobalList < <(run_script 'env_list_app_global_defaults' "${AppName}")
+    readarray -t AppVarEnvList < <(run_script 'env_list_app_env_defaults' "${AppName}")
+    if [[ -z ${AppVarGlobalList[*]} && -z ${AppVarEnvList[*]} ]]; then
         local Message="Application '${AppName} has no variables."
         if [[ ${CI-} == true ]]; then
             warn "${Message}"
@@ -39,20 +39,20 @@ menu_app_vars() {
     local LastAppVarChoice=""
     while true; do
         local -a AppVarOptions=()
-        if [[ -n ${AppVarGlobalList} ]]; then
+        if [[ -n ${AppVarGlobalList[*]} ]]; then
             AppVarOptions+=("*** ${COMPOSE_ENV} ***" "*** ${COMPOSE_ENV} ***")
-            for VarName in ${AppVarGlobalList}; do
+            for VarName in "${AppVarGlobalList[@]}"; do
                 local CurrentValue
                 CurrentValue=$(run_script 'env_get_literal' "${VarName}")
                 AppVarOptions+=("${VarName}" "${VarName}=${CurrentValue}")
             done
         fi
         if [[ -n ${AppVarEnvList} ]]; then
-            if [[ -n ${AppVarOptions[*]-} ]]; then
+            if [[ -n ${AppVarOptions[*]} ]]; then
                 AppVarOptions+=(" " "")
             fi
             AppVarOptions+=("*** ${APP_ENV_FOLDER_NAME}/${appname}.env ***" "*** ${APP_ENV_FOLDER_NAME}/${appname}.env ***")
-            for VarName in ${AppVarEnvList}; do
+            for VarName in "${AppVarEnvList[@]}"; do
                 local CurrentValue
                 CurrentValue=$(run_script 'env_get_literal' "${appname}:${VarName}")
                 AppVarOptions+=("${appname}:${VarName}" "${VarName}=${CurrentValue}")
@@ -73,7 +73,8 @@ menu_app_vars() {
             case ${AppVarDialogButtonPressed} in
                 "${DIALOG_OK}")
                     LastAppVarChoice="${AppVarChoice}"
-                    if [[ " ${AppVarGlobalList} ${AppVarEnvList}" =~ \b"${AppVarChoice}"\b ]]; then
+                    # shellcheck disable=SC2199
+                    if [[ " ${AppVarGlobalList[@]} ${AppVarEnvList[@]} " == *" ${AppVarChoice} "* ]]; then
                         run_script 'menu_value_prompt' "${AppVarChoice}"
                         break
                     fi
