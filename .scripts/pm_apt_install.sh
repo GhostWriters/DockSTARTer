@@ -14,7 +14,7 @@ pm_apt_install() {
             REDIRECT="2>&1 | dialog --title \"${Title}\" --programbox \"\${COMMAND}\" -1 -1"
         fi
     fi
-    COMMAND="sudo apt-get -y install curl git grep sed whiptail dialog"
+    COMMAND="sudo apt-get -y install ansifilter curl dialog git grep sed"
     eval "${COMMAND} ${REDIRECT}" || fatal "Failed to install dependencies from apt.\nFailing command: ${F[C]}${COMMAND}"
     if [[ ${PROMPT:-CLI} != CLI ]]; then
         clear

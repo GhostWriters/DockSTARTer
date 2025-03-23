@@ -9,7 +9,7 @@ pm_yum_install() {
     if [[ -n ${VERBOSE-} ]] || run_script 'question_prompt' "${PROMPT:-CLI}" N "Would you like to display the command output?" "${Title}"; then
         REDIRECT=""
     fi
-    eval "sudo yum -y install curl git grep newt sed dialog ${REDIRECT}" || fatal "Failed to install dependencies from yum.\nFailing command: ${F[C]}sudo yum -y install curl git grep newt sed dialog"
+    eval "sudo yum -y install ansifilter curl dialog git grep newt sed ${REDIRECT}" || fatal "Failed to install dependencies from yum.\nFailing command: ${F[C]}sudo yum -y install curl git grep newt sed dialog"
 }
 
 test_pm_yum_install() {
