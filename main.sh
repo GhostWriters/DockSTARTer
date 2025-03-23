@@ -395,6 +395,7 @@ readonly TEMPLATES_FOLDER="${COMPOSE_FOLDER}/.apps"
 export TEMPLATES_FOLDER
 readonly INSTANCES_FOLDER="${COMPOSE_FOLDER}/.instances"
 export INSTANCES_FOLDER
+export PROMPT_DEFAULT="CLI"
 
 # User/Group Information
 readonly DETECTED_PUID=${SUDO_UID:-$UID}
@@ -505,7 +506,7 @@ main() {
         DS_SYMLINK=$(readlink -f "${DS_COMMAND}")
         if [[ ${SCRIPTNAME} != "${DS_SYMLINK}" ]]; then
             if check_repo; then
-                if run_script 'question_prompt' "${PROMPT:-CLI}" N "DockSTARTer installation found at ${DS_SYMLINK} location. Would you like to run ${SCRIPTNAME} instead?"; then
+                if run_script 'question_prompt' "${PROMPT:-$PROMPT_DEFAULT}" N "DockSTARTer installation found at ${DS_SYMLINK} location. Would you like to run ${SCRIPTNAME} instead?"; then
                     run_script 'symlink_ds'
                     DS_COMMAND=$(command -v ds || true)
                     DS_SYMLINK=$(readlink -f "${DS_COMMAND}")
@@ -699,7 +700,7 @@ main() {
         exit
     fi
     # Run Menus
-    PROMPT="GUI"
+    PROMPT_DEFAULT="GUI"
     run_script 'menu_main'
 }
 main
