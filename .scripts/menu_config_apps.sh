@@ -5,11 +5,11 @@ IFS=$'\n\t'
 menu_config_apps() {
     Title="Set App Variables"
 
-    run_script 'appvars_create_all' |& ansifilter | dialog --clear --timeout 1 --title "${BACKTITLE}" --programbox "${Title}" -1 -1
+    run_script 'appvars_create_all' |& ansifilter | dialog --timeout 1 --title "${BACKTITLE}" --programbox "${Title}" -1 -1
     local AddedApps
     AddedApps=$(run_script 'app_list_added')
     if [[ -z ${AddedApps} ]]; then
-        dialog --clear --title "{Title}" --msgbox "There are no apps added to configure." 0 0
+        dialog --title "{Title}" --msgbox "There are no apps added to configure." 0 0
         return
     fi
     AddedApps=$(run_script 'app_nicename' "${AddedApps}")

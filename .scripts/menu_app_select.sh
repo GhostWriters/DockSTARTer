@@ -61,7 +61,7 @@ menu_app_select() {
 
                 run_script 'appvars_purge_all'
                 run_script 'env_update'
-            } |& ansifilter | dialog --clear --timeout 1 --title "${BACKTITLE}" --programbox "${Title}" -1 -1
+            } |& ansifilter | dialog --timeout 1 --title "${BACKTITLE}" --programbox "${Title}" -1 -1
             return 0
             ;;
         "${DIALOG_CANCEL}" | "${DIALOG_ESC}")

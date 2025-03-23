@@ -14,7 +14,7 @@ update_self() {
         commands_update_self "$@"
         exec bash "${SCRIPTNAME}" -e
     else
-        commands_update_self "$@" |& ansifilter | dialog --clear --title "${Title}" --programbox "Performing updates to DockSTARTer" -1 -1
+        commands_update_self "$@" |& ansifilter | dialog --title "${Title}" --programbox "Performing updates to DockSTARTer" -1 -1
         exec bash "${SCRIPTNAME}"
     fi
 }

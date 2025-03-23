@@ -15,7 +15,7 @@ menu_app_vars() {
         if [[ ${CI-} == true ]]; then
             warn "${Message}"
         else
-            dialog --clear --title "${Title}" --msgbox "${Message}" 0 0
+            dialog --title "${Title}" --msgbox "${Message}" 0 0
         fi
         return
     fi
@@ -31,7 +31,7 @@ menu_app_vars() {
         if [[ ${CI-} == true ]]; then
             warn "${Message}"
         else
-            dialog --clear --title "${Title}" --msgbox "${Message}" 0 0
+            dialog --title "${Title}" --msgbox "${Message}" 0 0
         fi
         return
     fi

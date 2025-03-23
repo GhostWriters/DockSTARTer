@@ -8,7 +8,7 @@ merge_and_compose() {
         commands_merge_and_compose "$@"
     else
         if run_script 'question_prompt' "${PROMPT-}" N "Would you like to run compose now?" "${Title}"; then
-            commands_merge_and_compose "$@" |& ansifilter | dialog --clear --title "${BACKTITLE}" --programbox "${Title}" -1 -1
+            commands_merge_and_compose "$@" |& ansifilter | dialog --title "${BACKTITLE}" --programbox "${Title}" -1 -1
         fi
     fi
 }

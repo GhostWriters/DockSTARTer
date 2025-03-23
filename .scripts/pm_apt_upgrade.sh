@@ -12,7 +12,7 @@ pm_apt_upgrade() {
             if [[ ${PROMPT:-CLI} == CLI ]]; then
                 REDIRECT=""
             else
-                REDIRECT="2>&1 | dialog --clear --title \"${Title}\" --programbox \"\${COMMAND}\" -1 -1"
+                REDIRECT="2>&1 | dialog --title \"${Title}\" --programbox \"\${COMMAND}\" -1 -1"
             fi
         fi
         COMMAND='sudo apt-get -y dist-upgrade'
