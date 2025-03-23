@@ -355,13 +355,15 @@ echo "DockSTARTer Log" > "${MKTEMP_LOG}"
 log() {
     local TOTERM=${1-}
     local MESSAGE=${2-}
-    echo -e "${MESSAGE-}" | (
-        if [[ -n ${TOTERM} ]]; then
-            tee -a "${MKTEMP_LOG}" >&2
-        else
-            cat >> "${MKTEMP_LOG}" 2>&1
-        fi
-    )
+    # Output the message to the log file without color
+    echo -e "${MESSAGE-}" | ansifilter >> "${MKTEMP_LOG}"
+    if [[ ${PROMPT:-GUI} ]]; then
+        # We are using the GUI, output the message to stderr without color
+        echo -e "${MESSAGE-}" >&2
+    else
+        # Output the message to stderr with color
+        echo -e "${MESSAGE-}" | ansifilter >&2
+    fi
 }
 trace() { log "${TRACE-}" "${NC}$(date +"%F %T") ${F[B]}[TRACE ]${NC}   $*${NC}"; }
 debug() { log "${DEBUG-}" "${NC}$(date +"%F %T") ${F[B]}[DEBUG ]${NC}   $*${NC}"; }
