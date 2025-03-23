@@ -11,7 +11,7 @@ update_self() {
     fi
 
     if [[ ${PROMPT:-CLI} == GUI && -t 1 ]]; then
-        commands_update_self "$@" |& ansifilter | dialog --title "${Title}" --programbox "Performing updates to DockSTARTer" -1 -1
+        commands_update_self "$@" |& dialog --title "${Title}" --programbox "Performing updates to DockSTARTer" -1 -1
     else
         commands_update_self "$@"
     fi

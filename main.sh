@@ -356,13 +356,13 @@ log() {
     local TOTERM=${1-}
     local MESSAGE=${2-}
     local STRIPPED_MESSAGE
-    STRIPPED_MESSAGE=$(echo -e "${MESSAGE-}" | ansifilter)
+    STRIPPED_MESSAGE=$(echo -e "${MESSAGE-}" | ansifilter || echo -e "${MESSAGE-}")
     if [[ -n ${TOTERM} ]]; then
-        if [[ ${PROMPT:-GUI} ]]; then
-            # We are using the GUI, output the message to stderr without color
+        if [[ -t 2 ]]; then
+            # Stderr is not being redirected, output with color
             echo -e "${MESSAGE-}" >&2
         else
-            # Output the message to stderr with color
+            # Stderr is being redirected, output without colorr
             echo -e "${STRIPPED_MESSAGE-}" >&2
         fi
     fi

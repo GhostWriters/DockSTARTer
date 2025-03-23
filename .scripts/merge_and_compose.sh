@@ -5,7 +5,7 @@ IFS=$'\n\t'
 merge_and_compose() {
     Title="Merge and run Docker Compose"
     if [[ ${PROMPT:-CLI} == GUI && -t 1 ]]; then
-        commands_merge_and_compose "$@" |& ansifilter | dialog --title "${BACKTITLE}" --programbox "${Title}" -1 -1
+        commands_merge_and_compose "$@" |& dialog --title "${BACKTITLE}" --programbox "${Title}" -1 -1
     else
         commands_merge_and_compose "$@"
     fi
