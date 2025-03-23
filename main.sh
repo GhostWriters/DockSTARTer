@@ -356,7 +356,7 @@ log() {
     local TOTERM=${1-}
     local MESSAGE=${2-}
     local STRIPPED_MESSAGE
-    STRIPPED_MESSAGE=$(echo -e "${MESSAGE-}" | ansifilter || echo -e "${MESSAGE-}")
+    STRIPPED_MESSAGE=$(echo -e "${MESSAGE-}" | ansifilter 2> /dev/null || echo -e "${MESSAGE-}")
     if [[ -n ${TOTERM} ]]; then
         if [[ -t 2 ]]; then
             # Stderr is not being redirected, output with color
