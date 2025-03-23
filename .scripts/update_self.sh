@@ -22,11 +22,6 @@ update_self() {
 commands_update_self() {
     local BRANCH=${1:-origin/app-env-files}
     notice "Updating DockSTARTer to ${BRANCH}."
-    if [[ -t 1 ]]; then
-        notice "Output is not being redirected"
-    else
-        notice "Output is being redirected"
-    fi
     cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
     info "Setting file ownership on current repository files"
     sudo chown -R "$(id -u)":"$(id -g)" "${SCRIPTPATH}/.git" > /dev/null 2>&1 || true
