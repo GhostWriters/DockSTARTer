@@ -3,6 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 export LC_ALL=C
+export PROMPT="CLI"
 
 usage() {
     cat << EOF
@@ -395,7 +396,6 @@ readonly TEMPLATES_FOLDER="${COMPOSE_FOLDER}/.apps"
 export TEMPLATES_FOLDER
 readonly INSTANCES_FOLDER="${COMPOSE_FOLDER}/.instances"
 export INSTANCES_FOLDER
-export PROMPT="CLI"
 
 # User/Group Information
 readonly DETECTED_PUID=${SUDO_UID:-$UID}
