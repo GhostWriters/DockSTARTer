@@ -9,10 +9,10 @@ pm_apt_upgrade() {
         local COMMAND=""
         local REDIRECT="> /dev/null 2>&1"
         if [[ -n ${VERBOSE-} ]] || run_script 'question_prompt' N "Would you like to display the command output?" "${Title}"; then
-            if [[ ${PROMPT:-CLI} == CLI ]]; then
-                REDIRECT=""
-            else
+            if [[ ${PROMPT:-CLI} == GUI && -t 1 ]]; then
                 REDIRECT="2>&1 | dialog --title \"${Title}\" --programbox \"\${COMMAND}\" -1 -1"
+            else
+                REDIRECT=""
             fi
         fi
         COMMAND='sudo apt-get -y dist-upgrade'

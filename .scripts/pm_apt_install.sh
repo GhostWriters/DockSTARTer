@@ -8,15 +8,15 @@ pm_apt_install() {
     local COMMAND=""
     local REDIRECT="> /dev/null 2>&1"
     if [[ -n ${VERBOSE-} ]] || run_script 'question_prompt' N "Would you like to display the command output?" "${Title}"; then
-        if [[ ${PROMPT:-CLI} == CLI ]]; then
-            REDIRECT=""
-        else
+        if [[ ${PROMPT:-CLI} == GUI && -t 1 ]]; then
             REDIRECT="2>&1 | dialog --title \"${Title}\" --programbox \"\${COMMAND}\" -1 -1"
+        else
+            REDIRECT=""
         fi
     fi
     COMMAND="sudo apt-get -y install ansifilter curl dialog git grep sed"
     eval "${COMMAND} ${REDIRECT}" || fatal "Failed to install dependencies from apt.\nFailing command: ${F[C]}${COMMAND}"
-    if [[ ${PROMPT:-CLI} != CLI ]]; then
+    if [[ ${PROMPT:-CLI} == GUI && -t 1 ]]; then
         clear
     fi
 }

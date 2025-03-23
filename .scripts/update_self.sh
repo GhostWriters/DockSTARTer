@@ -10,18 +10,23 @@ update_self() {
         return 1
     fi
 
-    if [[ ${PROMPT:-CLI} == CLI ]]; then
-        commands_update_self "$@"
-        exec bash "${SCRIPTNAME}" -e
-    else
+    if [[ ${PROMPT:-CLI} == GUI && -t 1 ]]; then
         commands_update_self "$@" |& ansifilter | dialog --title "${Title}" --programbox "Performing updates to DockSTARTer" -1 -1
         exec bash "${SCRIPTNAME}"
+    else
+        commands_update_self "$@"
+        exec bash "${SCRIPTNAME}" -e
     fi
 }
 
 commands_update_self() {
     local BRANCH=${1:-origin/app-env-files}
     notice "Updating DockSTARTer to ${BRANCH}."
+    if [[ -t 1 ]]; then
+        notice "Output is not being redirected"
+    else
+        notice "Output is being redirected"
+    fi
     cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
     info "Setting file ownership on current repository files"
     sudo chown -R "$(id -u)":"$(id -g)" "${SCRIPTPATH}/.git" > /dev/null 2>&1 || true

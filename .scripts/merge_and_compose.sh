@@ -4,12 +4,10 @@ IFS=$'\n\t'
 
 merge_and_compose() {
     Title="Merge and run Docker Compose"
-    if [[ ${PROMPT:-CLI} == CLI ]]; then
-        commands_merge_and_compose "$@"
+    if [[ ${PROMPT:-CLI} == GUI && -t 1 ]]; then
+        commands_merge_and_compose "$@" |& ansifilter | dialog --title "${BACKTITLE}" --programbox "${Title}" -1 -1
     else
-        if run_script 'question_prompt' N "Would you like to run compose now?" "${Title}"; then
-            commands_merge_and_compose "$@" |& ansifilter | dialog --title "${BACKTITLE}" --programbox "${Title}" -1 -1
-        fi
+        commands_merge_and_compose "$@"
     fi
 }
 

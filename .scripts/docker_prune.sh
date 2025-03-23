@@ -12,7 +12,7 @@ docker_prune() {
     fi
 
     local REDIRECT=""
-    if [[ ${PROMPT:-CLI} == GUI ]]; then
+    if [[ ${PROMPT:-CLI} == GUI && -t 1 ]]; then
         REDIRECT="2>&1 | dialog --title \"${Title}\" --programbox \"\${RUNCOMMAND}\" -1 -1"
     fi
     local RUNCOMMAND="docker system prune --all --force --volumes"
