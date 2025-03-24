@@ -41,7 +41,7 @@ env_backup() {
     info "Removing old compose backups."
     find "${COMPOSE_BACKUPS_FOLDER}" -type f -name ".env.*" -mtime +3 -delete > /dev/null 2>&1 ||
         warn "Old .env backups not removed."
-    find "${COMPOSE_BACKUPS_FOLDER}" -type d -name "${COMPOSE_FOLDER_NAME}.*" -mtime +3 -delete > /dev/null 2>&1 ||
+    find "${COMPOSE_BACKUPS_FOLDER}" -type d -name "${COMPOSE_FOLDER_NAME}.*" -mtime +3 -prune -exec rm -rf {} + > /dev/null 2>&1 ||
         warn "Old compose backups not removed."
 
     # Backup location has moved
