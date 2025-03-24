@@ -1,0 +1,3 @@
+services:
+  whisparr:
+    image: hotio/whisparr:${WHISPARR_TAG}

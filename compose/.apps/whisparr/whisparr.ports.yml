@@ -1,0 +1,4 @@
+services:
+  whisparr:
+    ports:
+      - ${WHISPARR_PORT_6969}:6969
