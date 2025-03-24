@@ -352,11 +352,31 @@ export BS
 MKTEMP_LOG=$(mktemp) || echo -e "Failed to create temporary log file.\nFailing command: ${F[C]}mktemp"
 readonly MKTEMP_LOG
 echo "DockSTARTer Log" > "${MKTEMP_LOG}"
+export strip_log_colors_SEDSTRING=""
+strip_log_colors() {
+    if [[ -z ${strip_log_colors_SEDSTRING-} ]]; then
+        # Create the search string to strip ANSI colors
+        # String is saved after creation, so this is only done on the first call
+        local -a ANSICOLORS=("${F[@]}" "${B[@]}" "${NC}")
+        for index in "${!ANSICOLORS[@]}"; do
+            # Escape characters used by sed
+            ANSICOLORS[index]=$(printf '%s' "${ANSICOLORS[index]}" | sed -E 's/[]{}()[/{}\.''''$]/\\&/g')
+            #echo ${ANSICOLORS[index]} | xxd >&2
+        done
+        strip_log_colors_SEDSTRING="s/$(
+            IFS='|'
+            printf '%s' "${ANSICOLORS[*]}"
+        )//g"
+    fi
+    printf '%s' "$*" | sed -E "${strip_log_colors_SEDSTRING}"
+}
 log() {
     local TOTERM=${1-}
     local MESSAGE=${2-}
     local STRIPPED_MESSAGE
-    STRIPPED_MESSAGE=$(echo -e "${MESSAGE-}" | ansifilter 2> /dev/null || echo -e "${MESSAGE-}")
+    STRIPPED_MESSAGE=$(strip_log_colors "${MESSAGE-}")
+    #echo -e "MESSAGE         =${MESSAGE}" >&2
+    #echo -e "STRIPPED_MESSAGE=${STRIPPED_MESSAGE}" >&2
     if [[ -n ${TOTERM} ]]; then
         if [[ -t 2 ]]; then
             # Stderr is not being redirected, output with color
