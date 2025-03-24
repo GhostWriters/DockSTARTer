@@ -9,7 +9,7 @@ pm_pacman_install() {
     if [[ -n ${VERBOSE-} ]] || run_script 'question_prompt' N "Would you like to display the command output?" "${Title}"; then
         REDIRECT=""
     fi
-    eval "sudo pacman -Sy --noconfirm ansifilter curl dialog git grep sed ${REDIRECT}" || fatal "Failed to install dependencies using pacman.\nFailing command: ${F[C]}sudo pacman -Sy --noconfirm curl git grep libnewt sed dialog"
+    eval "sudo pacman -Sy --noconfirm curl dialog git grep sed ${REDIRECT}" || fatal "Failed to install dependencies using pacman.\nFailing command: ${F[C]}sudo pacman -Sy --noconfirm curl dialog git grep sed"
 }
 
 test_pm_pacman_install() {

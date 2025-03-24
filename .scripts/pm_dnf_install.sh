@@ -9,7 +9,7 @@ pm_dnf_install() {
     if [[ -n ${VERBOSE-} ]] || run_script 'question_prompt' N "Would you like to display the command output?" "${Title}"; then
         REDIRECT=""
     fi
-    eval "sudo dnf -y install ansifilter curl dialog git grep newt sed ${REDIRECT}" || fatal "Failed to install dependencies from dnf.\nFailing command: ${F[C]}sudo dnf -y install curl git grep newt sed dialog"
+    eval "sudo dnf -y install curl dialog git grep sed ${REDIRECT}" || fatal "Failed to install dependencies from dnf.\nFailing command: ${F[C]}sudo dnf -y install curl dialog git grep sed"
 }
 
 test_pm_dnf_install() {
