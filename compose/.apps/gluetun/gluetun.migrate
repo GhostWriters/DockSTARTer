@@ -1,6 +1,6 @@
-##
-## GLUETUN - .env
-##
+###
+### GLUETUN - .env
+###
 GLUETUN__CONTAINER_NAME                                    GLUETUN_CONTAINER_NAME
 GLUETUN__ENABLED                                           GLUETUN_ENABLED
 GLUETUN__NETWORK_MODE                                      GLUETUN_NETWORK_MODE
@@ -9,9 +9,9 @@ GLUETUN__PORT_8388                                         GLUETUN_PORT_8388
 GLUETUN__PORT_8888                                         GLUETUN_PORT_8888
 GLUETUN__RESTART                                           GLUETUN_RESTART
 GLUETUN__TAG                                               GLUETUN_TAG
-##
-## GLUETUN - gluetun.env
-##
+###
+### GLUETUN - gluetun.env
+###
 gluetun:BLOCK_ADS                                          GLUETUN_BLOCK_ADS|GLUETUN_ENVIRONMENT_BLOCK_ADS
 gluetun:BLOCK_MALICIOUS                                    GLUETUN_BLOCK_MALICIOUS|GLUETUN_ENVIRONMENT_BLOCK_MALICIOUS
 gluetun:BLOCK_SURVEILLANCE                                 GLUETUN_BLOCK_SURVEILLANCE|GLUETUN_ENVIRONMENT_BLOCK_SURVEILLANCE

@@ -1,6 +1,6 @@
-##
-## EMBY - .env
-##
+###
+### EMBY - .env
+###
 EMBY__CONTAINER_NAME       EMBY_CONTAINER_NAME
 EMBY__ENABLED              EMBY_ENABLED
 EMBY__NETWORK_MODE         EMBY_NETWORK_MODE
@@ -9,6 +9,6 @@ EMBY__PORT_8920            EMBY_PORT_8920
 EMBY__RESTART              EMBY_RESTART
 EMBY__TAG                  EMBY_TAG
 EMBY__VOLUME_TRANSCODEDIR  EMBY_VOLUME_TRANSCODEDIR
-##
-## EMBY - emby.env
-##
+###
+### EMBY - emby.env
+###

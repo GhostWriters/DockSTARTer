@@ -1,6 +1,6 @@
-##
-## PIHOLE - .env
-##
+###
+### PIHOLE - .env
+###
 PIHOLE__CONTAINER_NAME                  PIHOLE_CONTAINER_NAME
 PIHOLE__ENABLED                         PIHOLE_ENABLED
 PIHOLE__NETWORK_MODE                    PIHOLE_NETWORK_MODE
@@ -10,9 +10,9 @@ PIHOLE__PORT_67                         PIHOLE_PORT_67
 PIHOLE__PORT_80                         PIHOLE_PORT_80
 PIHOLE__RESTART                         PIHOLE_RESTART
 PIHOLE__TAG                             PIHOLE_TAG
-##
-## PIHOLE - pihole.env
-##
+###
+### PIHOLE - pihole.env
+###
 pihole:DNS1                             PIHOLE_DNS1|PIHOLE_ENVIRONMENT_DNS1
 pihole:DNS2                             PIHOLE_DNS2|PIHOLE_ENVIRONMENT_DNS1
 pihole:ServerIP                         PIHOLE_SERVERIP|PIHOLE_ENVIRONMENT_SERVERIP

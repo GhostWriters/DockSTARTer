@@ -1,12 +1,12 @@
-##
-## JFAGO - .env
-##
+###
+### JFAGO - .env
+###
 JFAGO__CONTAINER_NAME  JFAGO_CONTAINER_NAME
 JFAGO__ENABLED         JFAGO_ENABLED
 JFAGO__NETWORK_MODE    JFAGO_NETWORK_MODE
 JFAGO__PORT_8056       JFAGO_PORT_8056
 JFAGO__RESTART         JFAGO_RESTART
 JFAGO__TAG             JFAGO_TAG
-##
-## JFAGO - jfago.env
-##
+###
+### JFAGO - jfago.env
+###
