@@ -60,7 +60,7 @@ menu_app_vars() {
                 LineOptions+=("${PaddedLineNumber}" "${VarName}=${CurrentValue}")
             done
         fi
-        if [[ -n ${AppVarEnvList} ]]; then
+        if [[ -n ${AppVarEnvList[*]-} ]]; then
             if [[ -n ${LineOptions[*]} ]]; then
                 ((++LineNumber))
                 PaddedLineNumber="$(printf '%03d' ${LineNumber})"
