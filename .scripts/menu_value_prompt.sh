@@ -168,7 +168,7 @@ menu_value_prompt() {
             esac
             ;;
         "${DIALOG_CANCEL}" | "${DIALOG_ESC}")
-            warn "Selection of ${VarName} was canceled."
+            #warn "Selection of ${VarName} was canceled."
             return 1
             ;;
         *)
