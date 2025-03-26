@@ -41,46 +41,60 @@ menu_app_vars() {
         AppVarList+=("${appname}:${VarName}")
     done
 
-    local LastAppVarChoice=""
+    local LineButtonPressed=""
     while true; do
-        local -a AppVarOptions=()
+        local -a LineOptions=()
+        local -A VarNameOnLine=()
+        local LineNumber=0
+        local PaddedLineNumber
         if [[ -n ${AppVarGlobalList[*]} ]]; then
-            AppVarOptions+=("*** ${COMPOSE_ENV} ***" "*** ${COMPOSE_ENV} ***")
+            ((++LineNumber))
+            PaddedLineNumber="$(printf '%03d' ${LineNumber})"
+            LineOptions+=("${PaddedLineNumber}" "*** ${COMPOSE_ENV} ***")
             for VarName in "${AppVarGlobalList[@]}"; do
+                ((++LineNumber))
+                PaddedLineNumber="$(printf '%03d' ${LineNumber})"
+                VarNameOnLine[${PaddedLineNumber}]="${VarName}"
                 local CurrentValue
                 CurrentValue=$(run_script 'env_get_literal' "${VarName}")
-                AppVarOptions+=("${VarName}" "${VarName}=${CurrentValue}")
+                LineOptions+=("${PaddedLineNumber}" "${VarName}=${CurrentValue}")
             done
         fi
         if [[ -n ${AppVarEnvList} ]]; then
-            if [[ -n ${AppVarOptions[*]} ]]; then
-                AppVarOptions+=(" " "")
+            if [[ -n ${LineOptions[*]} ]]; then
+                ((++LineNumber))
+                PaddedLineNumber="$(printf '%03d' ${LineNumber})"
+                LineOptions+=("${PaddedLineNumber}" "")
             fi
-            AppVarOptions+=("*** ${APP_ENV_FOLDER_NAME}/${appname}.env ***" "*** ${APP_ENV_FOLDER_NAME}/${appname}.env ***")
+            ((++LineNumber))
+            PaddedLineNumber="$(printf '%03d' ${LineNumber})"
+            LineOptions+=("${PaddedLineNumber}" "*** ${APP_ENV_FOLDER_NAME}/${appname}.env ***")
             for VarName in "${AppVarEnvList[@]}"; do
+                ((++LineNumber))
+                PaddedLineNumber="$(printf '%03d' ${LineNumber})"
+                VarNameOnLine[${PaddedLineNumber}]="${appname}:${VarName}"
                 local CurrentValue
                 CurrentValue=$(run_script 'env_get_literal' "${appname}:${VarName}")
-                AppVarOptions+=("${appname}:${VarName}" "${VarName}=${CurrentValue}")
+                LineOptions+=("${PaddedLineNumber}" "${VarName}=${CurrentValue}")
             done
         fi
-        local -a AppVarDialog=(
+        local -a LineDialog=(
             --clear
             --stdout
             --title "${Title}"
             --cancel-button "Back"
-            --no-tags
             --menu "${AppName}" 0 0 0
-            "${AppVarOptions[@]}"
+            "${LineOptions[@]}"
         )
         while true; do
-            local AppVarDialogButtonPressed=0
-            AppVarChoice=$(dialog --default-item "${LastAppVarChoice}" "${AppVarDialog[@]}") || AppVarDialogButtonPressed=$?
-            case ${AppVarDialogButtonPressed} in
+            local LineDialogButtonPressed=0
+            LineChoice=$(dialog --default-item "${LineButtonPressed}" "${LineDialog[@]}") || LineDialogButtonPressed=$?
+            case ${LineDialogButtonPressed} in
                 "${DIALOG_OK}")
-                    LastAppVarChoice="${AppVarChoice}"
+                    LineButtonPressed="${LineChoice}"
                     # shellcheck disable=SC2199 # Arrays implicitly concatenate in [[ ]]. Use a loop (or explicit * instead of @).
-                    if [[ " ${AppVarList[@]} " == *" ${AppVarChoice} "* ]]; then
-                        run_script 'menu_value_prompt' "${AppVarChoice}"
+                    if [[ -n ${VarNameOnLine[${LineChoice}]-} ]]; then
+                        run_script 'menu_value_prompt' "${VarNameOnLine[${LineChoice}]}"
                         break
                     fi
                     ;;
@@ -88,12 +102,12 @@ menu_app_vars() {
                     return
                     ;;
                 *)
-                    if [[ -n ${DIALOG_BUTTONS[$AppVarDialogButtonPressed]-} ]]; then
+                    if [[ -n ${DIALOG_BUTTONS[$LineDialogButtonPressed]-} ]]; then
                         clear
-                        fatal "Unexpected dialog button '${DIALOG_BUTTONS[$AppVarDialogButtonPressed]}' pressed."
+                        fatal "Unexpected dialog button '${DIALOG_BUTTONS[$LineDialogButtonPressed]}' pressed."
                     else
                         clear
-                        fatal "Unexpected dialog button value'${AppVarDialogButtonPressed}' pressed."
+                        fatal "Unexpected dialog button value'${LineDialogButtonPressed}' pressed."
                     fi
                     ;;
             esac
