@@ -20,7 +20,6 @@ menu_config_apps() {
         AppOptions+=("${AppName}" "${AppDescription}")
     done
     local -a AppChoiceDialog=(
-        --clear
         --stdout
         --title "${Title}"
         --cancel-button "Back"

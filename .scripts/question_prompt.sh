@@ -20,7 +20,6 @@ question_prompt() {
             fi
             # shellcheck disable=SC2206 # (warning): Quote to prevent word splitting/globbing, or split robustly with mapfile or read -a.
             local -a YesNoDialog=(
-                --clear
                 --stdout
                 --title "${Title}"
                 ${DIALOG_DEFAULT-}

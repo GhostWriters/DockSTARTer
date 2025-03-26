@@ -15,7 +15,6 @@ menu_main() {
         "Prune Docker System" "Remove all unused containers, networks, volumes, images and build cache"
     )
     local -a MainChoiceDialog=(
-        --clear
         --stdout
         --title "${Title}"
         --cancel-button "Exit"
@@ -34,23 +33,18 @@ menu_main() {
             "${DIALOG_OK}")
                 case "${MainChoice}" in
                     "Configuration")
-                        clear
                         run_script 'menu_config' || true
                         ;;
                     "Install Dependencies")
-                        clear
                         run_script 'run_install' || true
                         ;;
                     "Update DockSTARTer")
-                        clear
                         run_script 'update_self' || true
                         ;;
                     "Prune Docker System")
-                        clear
                         run_script 'docker_prune' || true
                         ;;
                     *)
-                        clear
                         error "Invalid Option"
                         ;;
                 esac

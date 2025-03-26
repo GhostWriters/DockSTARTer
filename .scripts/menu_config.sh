@@ -15,7 +15,6 @@ menu_config() {
         "Set Global Variables" "Review and adjust global variables"
     )
     local -a ConfigChoiceDialog=(
-        --clear
         --stdout
         --title "${Title}"
         --cancel-button "Back"
@@ -33,7 +32,6 @@ menu_config() {
             "${DIALOG_OK}")
                 case "${ConfigChoice}" in
                     "Full Setup")
-                        clear
                         run_script 'env_update' || true
                         run_script 'menu_config_global' || true
                         run_script 'menu_app_select' || true
@@ -41,20 +39,17 @@ menu_config() {
                         run_script 'merge_and_compose' || true
                         ;;
                     "Set Global Variables")
-                        clear
                         run_script 'env_update' || true
                         run_script 'menu_config_global' || true
                         run_script 'merge_and_compose' || true
                         ;;
                     "Select Apps")
-                        clear
                         run_script 'env_update' || true
                         run_script 'menu_app_select' || true
                         run_script 'merge_and_compose' || true
                         ;;
                     "Set App Variables")
                         clear
-                        run_script 'env_update' || true
                         run_script 'menu_config_apps' || true
                         run_script 'merge_and_compose' || true
                         ;;
@@ -64,7 +59,6 @@ menu_config() {
                 esac
                 ;;
             "${DIALOG_CANCEL}" | "${DIALOG_ESC}")
-                clear
                 return
                 ;;
             *)

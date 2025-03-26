@@ -19,7 +19,6 @@ menu_config_global() {
             done
         fi
         local -a VarDialog=(
-            --clear
             --stdout
             --title "${Title}"
             --cancel-button "Back"

@@ -37,7 +37,6 @@ menu_app_select() {
         DIALOG_BUTTON_PRESSED=${DIALOG_CANCEL}
     else
         local -a SelectedAppsDialog=(
-            --clear
             --stdout
             --title "${Title}"
             --separate-output

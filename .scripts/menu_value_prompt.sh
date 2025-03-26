@@ -114,7 +114,6 @@ menu_value_prompt() {
         SelectedValue="Keep Current"
     else
         local -a SelectedValueDialog=(
-            --clear
             --stdout
             --title "${Title}"
             --menu "What would you like set for ${VarName}?${ValueDescription}"
@@ -143,7 +142,6 @@ menu_value_prompt() {
                 "Enter New")
                     local INPUT_DIALOG_BUTTON_PRESSED
                     local -a InputDialog=(
-                        --clear
                         --stdout
                         --title "${Title}"
                         --inputbox "What would you like set for ${VarName}?${ValueDescription}"
@@ -188,7 +186,7 @@ menu_value_prompt() {
                 if [[ ${Input} == true ]] || [[ ${Input} == false ]]; then
                     run_script 'env_set' "${VarName}" "${Input}"
                 else
-                    dialog --clear --title "${Title}" --msgbox "${Input} is not true or false. Please try setting ${VarName} again." 0 0
+                    dialog --title "${Title}" --msgbox "${Input} is not true or false. Please try setting ${VarName} again." 0 0
                     menu_value_prompt "${VarName}"
                 fi
                 ;;
@@ -198,7 +196,7 @@ menu_value_prompt() {
                         run_script 'env_set' "${VarName}" "${Input}"
                         ;;
                     *)
-                        dialog --clear --title "${Title}" --msgbox "${Input} is not a valid network mode. Please try setting ${VarName} again." 0 0
+                        dialog --title "${Title}" --msgbox "${Input} is not a valid network mode. Please try setting ${VarName} again." 0 0
                         menu_value_prompt "${VarName}"
                         ;;
                 esac
@@ -207,7 +205,7 @@ menu_value_prompt() {
                 if [[ ${Input} =~ ^[0-9]+$ ]] || [[ ${Input} -ge 0 ]] || [[ ${Input} -le 65535 ]]; then
                     run_script 'env_set' "${VarName}" "${Input}"
                 else
-                    dialog --clear --title "${Title}" --msgbox "${Input} is not a valid port. Please try setting ${VarName} again." 0 0
+                    dialog --title "${Title}" --msgbox "${Input} is not a valid port. Please try setting ${VarName} again." 0 0
                     menu_value_prompt "${VarName}"
                 fi
                 ;;
@@ -217,22 +215,22 @@ menu_value_prompt() {
                         run_script 'env_set' "${VarName}" "${Input}"
                         ;;
                     *)
-                        dialog --clear --title "${Title}" --msgbox "${Input} is not a valid restart value. Please try setting ${VarName} again." 0 0
+                        dialog --title "${Title}" --msgbox "${Input} is not a valid restart value. Please try setting ${VarName} again." 0 0
                         menu_value_prompt "${VarName}"
                         ;;
                 esac
                 ;;
             "${APPNAME}__VOLUME_"*)
                 if [[ ${Input} == "/" ]]; then
-                    dialog --clear --title "${Title}" --msgbox "Cannot use / for ${VarName}. Please select another folder." 0 0
+                    dialog --title "${Title}" --msgbox "Cannot use / for ${VarName}. Please select another folder." 0 0
                     menu_value_prompt "${VarName}"
                 elif [[ ${Input} == ~* ]]; then
                     local CORRECTED_DIR="${DETECTED_HOMEDIR}${Input#*~}"
                     if run_script 'question_prompt' Y "Cannot use the ~ shortcut in ${VarName}. Would you like to use ${CORRECTED_DIR} instead?" "${Title}"; then
                         run_script 'env_set' "${VarName}" "${CORRECTED_DIR}"
-                        dialog --clear --title "${Title}" --msgbox "Returning to the previous menu to confirm selection." 0 0
+                        dialog --title "${Title}" --msgbox "Returning to the previous menu to confirm selection." 0 0
                     else
-                        dialog --clear --title "${Title}" --msgbox "Cannot use the ~ shortcut in ${VarName}. Please select another folder." 0 0
+                        dialog --title "${Title}" --msgbox "Cannot use the ~ shortcut in ${VarName}. Please select another folder." 0 0
                     fi
                     menu_value_prompt "${VarName}"
                 elif [[ -d ${Input} ]]; then
@@ -245,9 +243,9 @@ menu_value_prompt() {
                         mkdir -p "${Input}" || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p \"${Input}\""
                         run_script 'set_permissions' "${Input}"
                         run_script 'env_set' "${VarName}" "${Input}"
-                        dialog --clear --title "${Title}" --msgbox "${Input} folder was created successfully." 0 0
+                        dialog --title "${Title}" --msgbox "${Input} folder was created successfully." 0 0
                     else
-                        dialog --clear --title "${Title}" --msgbox "${Input} is not a valid path. Please try setting ${VarName} again." 0 0
+                        dialog --title "${Title}" --msgbox "${Input} is not a valid path. Please try setting ${VarName} again." 0 0
                         menu_value_prompt "${VarName}"
                     fi
                 fi
@@ -262,7 +260,7 @@ menu_value_prompt() {
                 elif [[ ${Input} =~ ^[0-9]+$ ]]; then
                     run_script 'env_set' "${VarName}" "${Input}"
                 else
-                    dialog --clear --title "${Title}" --msgbox "${Input} is not a valid ${VarName}. Please try setting ${VarName} again." 0 0
+                    dialog --title "${Title}" --msgbox "${Input} is not a valid ${VarName}. Please try setting ${VarName} again." 0 0
                     menu_value_prompt "${VarName}"
                 fi
                 ;;
