@@ -81,9 +81,11 @@ menu_app_vars() {
                 LineColor[LineNumber]='\Z0\Zr'
             done
         fi
+        local TotalLines=${LineNumber}
+        local PadSize=${#TotalLines}
         for LineNumber in "${!CurrentValueOnLine[@]}"; do
             local PaddedLineNumber=""
-            PaddedLineNumber="$(printf '%03d' "${LineNumber}")"
+            PaddedLineNumber="$(printf "%0${PadSize}d" "${LineNumber}")"
             LineOptions+=("${PaddedLineNumber}" "${LineColor[LineNumber]-}${CurrentValueOnLine[LineNumber]}")
         done
         local -a LineDialog=(
