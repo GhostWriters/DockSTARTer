@@ -46,23 +46,27 @@ menu_app_vars() {
         local -a LineOptions=()
         local -a VarNameOnLine=()
         local -a CurrentValueOnLine=()
+        local -a LineColor=()
         #local -a DefaultValueOnLine=()
         local LineNumber=0
         if [[ -n ${AppVarGlobalList[*]} ]]; then
             ((++LineNumber))
             CurrentValueOnLine[LineNumber]="*** ${COMPOSE_ENV} ***"
             #DefaultValueOnLine[LineNumber]="*** ${COMPOSE_ENV} ***"
+            LineColor[LineNumber]=''
             for VarName in "${AppVarGlobalList[@]}"; do
                 ((++LineNumber))
                 VarNameOnLine[LineNumber]="${VarName}"
                 CurrentValueOnLine[LineNumber]="${VarName}=$(run_script 'env_get_literal' "${VarName}")"
                 #DefaultValueOnLine[LineNumber]="${VarName}=$(run_script 'env_get_literal' "${VarName}")"
+                LineColor[LineNumber]='\Z0\Zr'
             done
         fi
         if [[ -n ${AppVarEnvList[*]-} ]]; then
             if [[ -n ${LineOptions[*]} ]]; then
                 ((++LineNumber))
                 CurrentValueOnLine[LineNumber]=""
+                LineColor[LineNumber]=''
             fi
             ((++LineNumber))
             CurrentValueOnLine[LineNumber]="*** ${APP_ENV_FOLDER_NAME}/${appname}.env ***"
@@ -71,13 +75,13 @@ menu_app_vars() {
                 VarNameOnLine[LineNumber]="${appname}:${VarName}"
                 CurrentValueOnLine[LineNumber]="${VarName}=$(run_script 'env_get_literal' "${appname}:${VarName}")"
                 #DefaultValueOnLine[LineNumber]="${VarName}=$(run_script 'env_get_literal' "${appname}:${VarName}"")"
+                LineColor[LineNumber]='\Z0\Zr'
             done
         fi
         for LineNumber in "${!CurrentValueOnLine[@]}"; do
             local PaddedLineNumber=""
-            local LineColor='\Z0\Zr'
             PaddedLineNumber="$(printf '%03d' "${LineNumber}")"
-            LineOptions+=("${PaddedLineNumber}" "${LineColor}${CurrentValueOnLine[LineNumber]}")
+            LineOptions+=("${PaddedLineNumber}" "${LineColor[LineNumber]-}${CurrentValueOnLine[LineNumber]}")
         done
         local -a LineDialog=(
             --stdout
