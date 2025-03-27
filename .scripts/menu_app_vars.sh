@@ -49,11 +49,15 @@ menu_app_vars() {
         local -a LineColor=()
         #local -a DefaultValueOnLine=()
         local LineNumber=0
+        local FirstVarLine
         if [[ -n ${AppVarGlobalList[*]} ]]; then
             ((++LineNumber))
             CurrentValueOnLine[LineNumber]="*** ${COMPOSE_ENV} ***"
             #DefaultValueOnLine[LineNumber]="*** ${COMPOSE_ENV} ***"
             LineColor[LineNumber]='\Z0'
+            if [[ -z ${FirstVarLine-} ]]; then
+                FirstVarLine=$((LineNumber + 1))
+            fi
             for VarName in "${AppVarGlobalList[@]}"; do
                 ((++LineNumber))
                 VarNameOnLine[LineNumber]="${VarName}"
@@ -73,6 +77,9 @@ menu_app_vars() {
             CurrentValueOnLine[LineNumber]="*** ${APP_ENV_FOLDER_NAME}/${appname}.env ***"
             #DefaultValueOnLine[LineNumber]="*** ${APP_ENV_FOLDER_NAME}/${appname}.env ***"
             LineColor[LineNumber]='\Z0'
+            if [[ -z ${FirstVarLine-} ]]; then
+                FirstVarLine=$((LineNumber + 1))
+            fi
             for VarName in "${AppVarEnvList[@]}"; do
                 ((++LineNumber))
                 VarNameOnLine[LineNumber]="${appname}:${VarName}"
@@ -88,6 +95,10 @@ menu_app_vars() {
             PaddedLineNumber="$(printf "%0${PadSize}d" "${LineNumber}")"
             LineOptions+=("${PaddedLineNumber}" "${LineColor[LineNumber]-}${CurrentValueOnLine[LineNumber]}")
         done
+        if [[ -z ${LastLineChoice-} ]]; then
+            # Set the default line to the first line with a variable on it
+            LastLineChoice="$(printf "%0${PadSize}d" "${FirstVarLine}")"
+        fi
         local -a LineDialog=(
             --stdout
             --colors
