@@ -44,42 +44,44 @@ menu_app_vars() {
     local LineButtonPressed=""
     while true; do
         local -a LineOptions=()
-        local -A VarNameOnLine=()
+        local -a VarNameOnLine=()
+        local -a CurrentValueOnLine=()
+        #local -a DefaultValueOnLine=()
         local LineNumber=0
-        local PaddedLineNumber
         if [[ -n ${AppVarGlobalList[*]} ]]; then
             ((++LineNumber))
-            PaddedLineNumber="$(printf '%03d' ${LineNumber})"
-            LineOptions+=("${PaddedLineNumber}" "*** ${COMPOSE_ENV} ***")
+            CurrentValueOnLine[LineNumber]="*** ${COMPOSE_ENV} ***"
+            #DefaultValueOnLine[LineNumber]="*** ${COMPOSE_ENV} ***"
             for VarName in "${AppVarGlobalList[@]}"; do
                 ((++LineNumber))
-                PaddedLineNumber="$(printf '%03d' ${LineNumber})"
-                VarNameOnLine[${PaddedLineNumber}]="${VarName}"
-                local CurrentValue
-                CurrentValue=$(run_script 'env_get_literal' "${VarName}")
-                LineOptions+=("${PaddedLineNumber}" "${VarName}=${CurrentValue}")
+                VarNameOnLine[LineNumber]="${VarName}"
+                CurrentValueOnLine[LineNumber]="${VarName}=$(run_script 'env_get_literal' "${VarName}")"
+                #DefaultValueOnLine[LineNumber]="${VarName}=$(run_script 'env_get_literal' "${VarName}")"
             done
         fi
         if [[ -n ${AppVarEnvList[*]-} ]]; then
             if [[ -n ${LineOptions[*]} ]]; then
                 ((++LineNumber))
-                PaddedLineNumber="$(printf '%03d' ${LineNumber})"
-                LineOptions+=("${PaddedLineNumber}" "")
+                CurrentValueOnLine[LineNumber]=""
             fi
             ((++LineNumber))
-            PaddedLineNumber="$(printf '%03d' ${LineNumber})"
-            LineOptions+=("${PaddedLineNumber}" "*** ${APP_ENV_FOLDER_NAME}/${appname}.env ***")
+            CurrentValueOnLine[LineNumber]="*** ${APP_ENV_FOLDER_NAME}/${appname}.env ***"
             for VarName in "${AppVarEnvList[@]}"; do
                 ((++LineNumber))
-                PaddedLineNumber="$(printf '%03d' ${LineNumber})"
-                VarNameOnLine[${PaddedLineNumber}]="${appname}:${VarName}"
-                local CurrentValue
-                CurrentValue=$(run_script 'env_get_literal' "${appname}:${VarName}")
-                LineOptions+=("${PaddedLineNumber}" "${VarName}=${CurrentValue}")
+                VarNameOnLine[LineNumber]="${appname}:${VarName}"
+                CurrentValueOnLine[LineNumber]="${VarName}=$(run_script 'env_get_literal' "${appname}:${VarName}")"
+                #DefaultValueOnLine[LineNumber]="${VarName}=$(run_script 'env_get_literal' "${appname}:${VarName}"")"
             done
         fi
+        for LineNumber in "${!CurrentValueOnLine[@]}"; do
+            local PaddedLineNumber=""
+            local LineColor='\Z0\Zr'
+            PaddedLineNumber="$(printf '%03d' "${LineNumber}")"
+            LineOptions+=("${PaddedLineNumber}" "${LineColor}${CurrentValueOnLine[LineNumber]}")
+        done
         local -a LineDialog=(
             --stdout
+            --colors
             --title "${Title}"
             --cancel-button "Back"
             --menu "${AppName}" 0 0 0
