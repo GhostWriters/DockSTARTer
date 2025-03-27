@@ -66,10 +66,13 @@ menu_app_vars() {
             if [[ ${LineNumber} != 0 ]]; then
                 ((++LineNumber))
                 CurrentValueOnLine[LineNumber]=""
+                #DefaultValueOnLine[LineNumber]=""
                 LineColor[LineNumber]='\Z0'
             fi
             ((++LineNumber))
             CurrentValueOnLine[LineNumber]="*** ${APP_ENV_FOLDER_NAME}/${appname}.env ***"
+            #DefaultValueOnLine[LineNumber]="*** ${APP_ENV_FOLDER_NAME}/${appname}.env ***"
+            LineColor[LineNumber]='\Z0'
             for VarName in "${AppVarEnvList[@]}"; do
                 ((++LineNumber))
                 VarNameOnLine[LineNumber]="${appname}:${VarName}"
