@@ -97,9 +97,8 @@ menu_app_vars() {
             case ${LineDialogButtonPressed} in
                 "${DIALOG_OK}")
                     LineButtonPressed="${LineChoice}"
-                    # shellcheck disable=SC2199 # Arrays implicitly concatenate in [[ ]]. Use a loop (or explicit * instead of @).
-                    if [[ -n ${VarNameOnLine[${LineChoice}]-} ]]; then
-                        run_script 'menu_value_prompt' "${VarNameOnLine[${LineChoice}]}"
+                    if [[ -n ${VarNameOnLine[LineChoice]-} ]]; then
+                        run_script 'menu_value_prompt' "${VarNameOnLine[LineChoice]}"
                         break
                     fi
                     ;;
