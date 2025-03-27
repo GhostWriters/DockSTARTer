@@ -97,8 +97,10 @@ menu_app_vars() {
             case ${LineDialogButtonPressed} in
                 "${DIALOG_OK}")
                     LineButtonPressed="${LineChoice}"
-                    if [[ -n ${VarNameOnLine[LineChoice]-} ]]; then
-                        run_script 'menu_value_prompt' "${VarNameOnLine[LineChoice]}"
+                    local LineNumber
+                    LineNumber=$((10#${LineChoice}))
+                    if [[ -n ${VarNameOnLine[LineNumber]-} ]]; then
+                        run_script 'menu_value_prompt' "${VarNameOnLine[LineNumber]}"
                         break
                     fi
                     ;;
