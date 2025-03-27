@@ -63,7 +63,7 @@ menu_app_vars() {
             done
         fi
         if [[ -n ${AppVarEnvList[*]-} ]]; then
-            if [[ -n ${LineOptions[*]} ]]; then
+            if [[ ${LineNumber} != 0 ]]; then
                 ((++LineNumber))
                 CurrentValueOnLine[LineNumber]=""
                 LineColor[LineNumber]='\Z0'
