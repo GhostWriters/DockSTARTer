@@ -41,7 +41,7 @@ menu_app_vars() {
         AppVarList+=("${appname}:${VarName}")
     done
 
-    local LineButtonPressed=""
+    local LastLineChoice=""
     while true; do
         local -a LineOptions=()
         local -a VarNameOnLine=()
@@ -98,10 +98,10 @@ menu_app_vars() {
         )
         while true; do
             local LineDialogButtonPressed=0
-            LineChoice=$(dialog --default-item "${LineButtonPressed}" "${LineDialog[@]}") || LineDialogButtonPressed=$?
+            LineChoice=$(dialog --default-item "${LastLineChoice}" "${LineDialog[@]}") || LineDialogButtonPressed=$?
             case ${LineDialogButtonPressed} in
                 "${DIALOG_OK}")
-                    LineButtonPressed="${LineChoice}"
+                    LastLineChoice="${LineChoice}"
                     local LineNumber
                     LineNumber=$((10#${LineChoice}))
                     if [[ -n ${VarNameOnLine[LineNumber]-} ]]; then
