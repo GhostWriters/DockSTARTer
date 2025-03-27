@@ -53,7 +53,7 @@ menu_app_vars() {
             ((++LineNumber))
             CurrentValueOnLine[LineNumber]="*** ${COMPOSE_ENV} ***"
             #DefaultValueOnLine[LineNumber]="*** ${COMPOSE_ENV} ***"
-            LineColor[LineNumber]=''
+            LineColor[LineNumber]='\Z1'
             for VarName in "${AppVarGlobalList[@]}"; do
                 ((++LineNumber))
                 VarNameOnLine[LineNumber]="${VarName}"
@@ -66,7 +66,7 @@ menu_app_vars() {
             if [[ -n ${LineOptions[*]} ]]; then
                 ((++LineNumber))
                 CurrentValueOnLine[LineNumber]=""
-                LineColor[LineNumber]=''
+                LineColor[LineNumber]='\Z1'
             fi
             ((++LineNumber))
             CurrentValueOnLine[LineNumber]="*** ${APP_ENV_FOLDER_NAME}/${appname}.env ***"
