@@ -81,7 +81,7 @@ menu_app_vars() {
                 LineColor[LineNumber]='\Z0\Zr'
             done
         fi
-        local TotalLines=${LineNumber}
+        local TotalLines=$((10#${LineNumber}))
         local PadSize=${#TotalLines}
         for LineNumber in "${!CurrentValueOnLine[@]}"; do
             local PaddedLineNumber=""
