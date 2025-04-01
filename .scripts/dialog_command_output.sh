@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 dialog_command_output() {
-    local CommandLine=${1:-}
+    local CommandLine=${1:-echo}
     local Title=${2:-}
     local SubTitle=${3:-}
     local TimeOut=${4:-0}
