@@ -6,11 +6,7 @@ dialog_output() {
     local Title=${1:-}
     local SubTitle=${2:-}
     local TimeOut=${3:-0}
-    if [[ -t 1 ]]; then
-        cat |& dialog --begin 2 2 --timeout "${TimeOut}" --title "${Title}" --programbox "${SubTitle}" $((LINES - 4)) $((COLUMNS - 5))
-    else
-        cat
-    fi
+    cat |& dialog --begin 2 2 --timeout "${TimeOut}" --title "${Title}" --programbox "${SubTitle}" $((LINES - 4)) $((COLUMNS - 5))
 }
 
 test_dialog_output() {
