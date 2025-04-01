@@ -20,7 +20,7 @@ menu_app_vars() {
         return
     fi
 
-    run_script 'appvars_create' "${APPNAME}" |& dialog --timeout 1 --title "${BACKTITLE}" --programbox "${Title}" -1 -1
+    run_script 'appvars_create' "${APPNAME}" |& dialog --begin 2 2 --timeout 1 --title "${Title}" --programbox "Creating variables ${AppName}" $((LINES - 4)) $((COLUMNS - 5))
 
     local -a AppVarGlobalList
     local -a AppVarEnvList
