@@ -5,7 +5,7 @@ IFS=$'\n\t'
 menu_config_apps() {
     Title="Set App Variables"
 
-    run_script 'appvars_create_all' |& dialog --timeout 1 --title "${BACKTITLE}" --programbox "${Title}" -1 -1
+    run_script 'appvars_create_all' |& dialog --begin 2 2 --timeout 1 --title "${Title}" --programbox "Setting up all applications" $((LINES - 4)) $((COLUMNS - 5))
     local AddedApps
     AddedApps=$(run_script 'app_list_added')
     if [[ -z ${AddedApps} ]]; then
