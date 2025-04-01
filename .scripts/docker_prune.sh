@@ -13,7 +13,7 @@ docker_prune() {
 
     local REDIRECT=""
     if [[ ${PROMPT:-CLI} == GUI && -t 1 ]]; then
-        REDIRECT="2>&1 | dialog --title \"${Title}\" --programbox \"\${RUNCOMMAND}\" -1 -1"
+        REDIRECT="|& dialog --begin 2 2 --title \"${Title}\" --programbox \"\${RUNCOMMAND}\" $((LINES - 4)) $((COLUMNS - 5))"
     fi
     local RUNCOMMAND="docker system prune --all --force --volumes"
     eval "${RUNCOMMAND} ${REDIRECT}" || error "Failed to remove unused docker resources.\nFailing command: ${F[C]}${RUNCOMMAND}"
