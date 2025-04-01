@@ -7,7 +7,8 @@ dialog_command_output() {
     local Title=${2:-}
     local SubTitle=${3:-}
     local TimeOut=${4:-0}
-    dialog --begin 2 2 --timeout "${TimeOut}" --title "${Title}" --prgbox "${SubTitle}" "${CommandLine}" $((LINES - 4)) $((COLUMNS - 5))
+    eval "${CommandLine}" |& dialog --begin 2 2 --timeout "${TimeOut}" --title "${Title}" --programbox "${SubTitle}" $((LINES - 4)) $((COLUMNS - 5))
+    return "${PIPESTATUS[0]}"
 }
 
 test_dialog_command_output() {
