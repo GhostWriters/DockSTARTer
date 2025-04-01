@@ -9,7 +9,7 @@ pm_apt_repos() {
     local REDIRECT="> /dev/null 2>&1"
     if [[ -n ${VERBOSE-} ]] || run_script 'question_prompt' N "Would you like to display the command output?" "${Title}"; then
         if [[ ${PROMPT:-CLI} == GUI && -t 1 ]]; then
-            REDIRECT="2>&1 | dialog --title \"${Title}\" --programbox \"\${COMMAND}\" -1 -1"
+            REDIRECT="|& dialog --begin 2 2 --title \"${Title}\" --programbox \"\${COMMAND}\" $((LINES - 4)) $((COLUMNS - 5))"
         else
             REDIRECT=""
         fi
