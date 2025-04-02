@@ -13,7 +13,7 @@ dialog_command_output() {
         "$@" |& run_script 'dialog_output' "${Title}" "${SubTitle}" "${TimeOut}"
         return "${PIPESTATUS[0]}"
     else
-        eval "${CommandLine}"
+        "$@"
     fi
 }
 
