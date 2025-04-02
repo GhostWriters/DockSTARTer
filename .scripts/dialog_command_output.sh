@@ -3,12 +3,12 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 dialog_command_output() {
-    local CommandLine=${1:-echo}
+    local CommandLine=${1:-true}
     local Title=${2:-}
     local SubTitle=${3:-}
     local TimeOut=${4:-0}
     if [[ -t 1 ]]; then
-        eval "${CommandLine}" |& dialog --begin 2 2 --timeout "${TimeOut}" --title "${Title}" --programbox "${SubTitle}" $((LINES - 4)) $((COLUMNS - 5))
+        eval "${CommandLine}" |& dialog "${Title}" "${SubTitle}" "${TimeOut}"
         return "${PIPESTATUS[0]}"
     else
         eval "${CommandLine}"
