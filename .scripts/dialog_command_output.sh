@@ -3,10 +3,11 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 dialog_command_output() {
-    local CommandLine=${1:-true}
-    local Title=${2:-}
-    local SubTitle=${3:-}
-    local TimeOut=${4:-0}
+    local Title=${1:-}
+    local SubTitle=${2:-}
+    local TimeOut=${3:-0}
+    shift 3
+    local CommandLine=${*:-true}
     dialog --title "dialog_command_output" --msgbox "CommandLine=${CommandLine}\nTitle=${Title}\nSubTitle=${SubTitle}\nTimeOut=${TimeOut}\n" 0 0
     if [[ -t 1 ]]; then
         "${CommandLine}" |& run_script 'dialog_output' "${Title}" "${SubTitle}" "${TimeOut}"
