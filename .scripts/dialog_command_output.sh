@@ -7,7 +7,7 @@ dialog_command_output() {
     local SubTitle=${2:-}
     local TimeOut=${3:-0}
     shift 3
-    local CommandLine=${*:-true}
+    local CommandLine=${@:-true}
     dialog --title "dialog_command_output" --msgbox "CommandLine=${CommandLine}\nTitle=${Title}\nSubTitle=${SubTitle}\nTimeOut=${TimeOut}\n" 0 0
     if [[ -t 1 ]]; then
         ${CommandLine} |& run_script 'dialog_output' "${Title}" "${SubTitle}" "${TimeOut}"
