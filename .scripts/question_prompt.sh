@@ -12,14 +12,16 @@ question_prompt() {
         if [[ ${CI-} == true ]]; then
             YN=${DEFAULT}
         elif [[ ${PROMPT:-CLI} == "CLI" ]]; then
+            local YNPROMPT
             if [[ ${DEFAULT} == Y ]]; then
-                QUESTION+=" [Yn]"
+                YNPROMPT='[Yn]'
             elif [[ ${DEFAULT} == N ]]; then
-                QUESTION+=" [yN]"
+                YNPROMPT='[yN]'
             else
-                QUESTION+=" [YN]"
+                YNPROMPT='[YN]'
             fi
             notice "${QUESTION}"
+            notice "${YNPROMPT}"
             while true; do
                 read -rsn1 YN < /dev/tty
                 case ${YN^^} in
