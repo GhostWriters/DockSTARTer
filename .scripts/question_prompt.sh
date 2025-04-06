@@ -11,60 +11,62 @@ question_prompt() {
     local QUESTION=${2-}
     local Title=${3-$BACKTITLE}
     local YN
-    while true; do
-        if [[ ${CI-} == true ]]; then
-            if [[ -n ${DEFAULT-} ]]; then
-                YN=${DEFAULT}
-            else
-                YN='Y'
-            fi
-        elif [[ ${PROMPT:-CLI} == "CLI" ]]; then
-            local YNPROMPT
-            if [[ ${DEFAULT} == Y ]]; then
-                YNPROMPT='[Yn]'
-            elif [[ ${DEFAULT} == N ]]; then
-                YNPROMPT='[yN]'
-            else
-                YNPROMPT='[YN]'
-            fi
-            notice "${QUESTION}"
-            notice "${YNPROMPT}"
-            while true; do
-                read -rsn1 YN < /dev/tty
-                case ${YN^^} in
-                    [YN])
-                        YN=${YN^^}
-                        break
-                        ;;
-                    ' ' | '')
+    if [[ ${CI-} == true ]]; then
+        YN=${DEFAULT:-Y}
+    elif [[ ${FORCE-} == true ]]; then
+        YN="Y"
+    elif [[ ${PROMPT:-CLI} == "CLI" ]]; then
+        local YNPROMPT
+        if [[ ${DEFAULT} == Y ]]; then
+            YNPROMPT='[Yn]'
+        elif [[ ${DEFAULT} == N ]]; then
+            YNPROMPT='[yN]'
+        else
+            YNPROMPT='[YN]'
+        fi
+        notice "${QUESTION}"
+        notice "${YNPROMPT}"
+        while true; do
+            read -rsn1 YN < /dev/tty
+            case ${YN^^} in
+                [YN])
+                    YN=${YN^^}
+                    break
+                    ;;
+                ' ' | '') # Enter or Space entered, return the default value if supplied
+                    if [[ -n ${DEFAULT-} ]]; then
                         YN="${DEFAULT}"
                         break
-                        ;;
-                    *) ;;
-                esac
-            done
-            notice "Answered: ${YN}"
-        elif [[ ${PROMPT:-CLI} == "GUI" ]]; then
-            local DIALOG_DEFAULT
-            if [[ ${DEFAULT} == "N" ]]; then
-                DIALOG_DEFAULT="--defaultno"
-            fi
-            # shellcheck disable=SC2206 # (warning): Quote to prevent word splitting/globbing, or split robustly with mapfile or read -a.
-            local -a YesNoDialog=(
-                --stdout
-                --title "${Title}"
-                ${DIALOG_DEFAULT-}
-                --yesno "${QUESTION}"
-                0 0
-            )
+                    fi
+                    ;;
+                *) ;;
+            esac
+        done
+        notice "Answered: ${YN}"
+    elif [[ ${PROMPT:-CLI} == "GUI" ]]; then
+        local DIALOG_DEFAULT
+        if [[ ${DEFAULT} == "N" ]]; then
+            DIALOG_DEFAULT="--defaultno"
+        fi
+        # shellcheck disable=SC2206 # (warning): Quote to prevent word splitting/globbing, or split robustly with mapfile or read -a.
+        local -a YesNoDialog=(
+            --stdout
+            --title "${Title}"
+            ${DIALOG_DEFAULT-}
+            --yesno "${QUESTION}"
+            0 0
+        )
+        while true; do
             local DIALOG_BUTTON_PRESSED
             DIALOG_BUTTON_PRESSED=0 && dialog "${YesNoDialog[@]}" || DIALOG_BUTTON_PRESSED=$?
             case ${DIALOG_BUTTON_PRESSED} in
                 "${DIALOG_OK}")
                     YN="Y"
+                    break
                     ;;
                 "${DIALOG_CANCEL}" | "${DIALOG_ESC}")
                     YN="N"
+                    break
                     ;;
                 *)
                     if [[ -n ${DIALOG_BUTTONS[$DIALOG_BUTTON_PRESSED]-} ]]; then
@@ -76,20 +78,18 @@ question_prompt() {
                     fi
                     ;;
             esac
-        elif [[ ${FORCE-} == true ]]; then
-            YN=${DEFAULT}
-        else
-            YN=${DEFAULT}
-        fi
-        case ${YN} in
-            Y)
-                return
-                ;;
-            N)
-                return 1
-                ;;
-        esac
-    done
+        done
+    else
+        YN=${DEFAULT:-Y}
+    fi
+    case ${YN} in
+        Y)
+            return
+            ;;
+        N)
+            return 1
+            ;;
+    esac
 }
 
 test_question_prompt() {
