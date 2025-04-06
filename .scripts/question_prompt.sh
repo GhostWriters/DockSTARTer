@@ -3,14 +3,21 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 question_prompt() {
-    local DEFAULT=${1:-Y}
-    DEFAULT=${DEFAULT^^}
+    local DEFAULT=${1-Y}
+    DEFAULT=${DEFAULT^^:0:1}
+    if [[ ${DEFAULT} != Y && ${DEFAULT} != N ]]; then
+        DEFAULT=""
+    fi
     local QUESTION=${2-}
     local Title=${3-$BACKTITLE}
     local YN
     while true; do
         if [[ ${CI-} == true ]]; then
-            YN=${DEFAULT}
+            if [[ -n ${DEFAULT-} ]]; then
+                YN=${DEFAULT}
+            else
+                YN='Y'
+            fi
         elif [[ ${PROMPT:-CLI} == "CLI" ]]; then
             local YNPROMPT
             if [[ ${DEFAULT} == Y ]]; then
@@ -26,6 +33,7 @@ question_prompt() {
                 read -rsn1 YN < /dev/tty
                 case ${YN^^} in
                     [YN])
+                        YN=${YN^^}
                         break
                         ;;
                     ' ' | '')
@@ -35,7 +43,6 @@ question_prompt() {
                     *) ;;
                 esac
             done
-            YN=${YN^^}
             notice "Answered: ${YN}"
         elif [[ ${PROMPT:-CLI} == "GUI" ]]; then
             local DIALOG_DEFAULT
