@@ -28,9 +28,9 @@ question_prompt() {
         notice "${YNPrompt}"
         while true; do
             read -rsn1 YN < /dev/tty
-            case ${YN^^} in
+            YN=${YN^^}
+            case ${YN} in
                 [YN])
-                    YN=${YN^^}
                     break
                     ;;
                 ' ' | '') # Enter or Space entered, return the default value if supplied
