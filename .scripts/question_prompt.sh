@@ -4,6 +4,7 @@ IFS=$'\n\t'
 
 question_prompt() {
     local DEFAULT=${1:-Y}
+    DEFAULT=${DEFAULT^^}
     local QUESTION=${2-}
     local Title=${3-$BACKTITLE}
     local YN
@@ -11,8 +12,29 @@ question_prompt() {
         if [[ ${CI-} == true ]]; then
             YN=${DEFAULT}
         elif [[ ${PROMPT:-CLI} == "CLI" ]]; then
+            if [[ ${DEFAULT} == Y ]]; then
+                QUESTION+=" [Yn]"
+            elif [[ ${DEFAULT} == N ]]; then
+                QUESTION+=" [yN]"
+            else
+                QUESTION+=" [YN]"
+            fi
             notice "${QUESTION}"
-            read -rp "[Yn]" YN < /dev/tty
+            while true; do
+                read -rsn1 YN < /dev/tty
+                case ${YN^^} in
+                    [YN])
+                        break
+                        ;;
+                    ' ' | '')
+                        YN="${DEFAULT}"
+                        break
+                        ;;
+                    *) ;;
+                esac
+            done
+            YN=${YN^^}
+            notice "Answered: ${YN}"
         elif [[ ${PROMPT:-CLI} == "GUI" ]]; then
             local DIALOG_DEFAULT
             if [[ ${DEFAULT} == "N" ]]; then
@@ -50,11 +72,11 @@ question_prompt() {
         else
             YN=${DEFAULT}
         fi
-        case ${YN} in
-            [Yy]*)
+        case ${YN^^} in
+            Y)
                 return
                 ;;
-            [Nn]*)
+            N)
                 return 1
                 ;;
             *)
