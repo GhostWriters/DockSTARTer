@@ -3,29 +3,29 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 question_prompt() {
-    local DEFAULT=${1-Y}
-    DEFAULT=${DEFAULT^^:0:1}
-    if [[ ${DEFAULT} != Y && ${DEFAULT} != N ]]; then
-        DEFAULT=""
+    local Default=${1-Y}
+    Default=${Default^^:0:1}
+    if [[ ${Default} != Y && ${Default} != N ]]; then
+        Default=""
     fi
-    local QUESTION=${2-}
+    local Question=${2-}
     local Title=${3-$BACKTITLE}
     local YN
     if [[ ${CI-} == true ]]; then
-        YN=${DEFAULT:-Y}
+        YN=${Default:-Y}
     elif [[ ${FORCE-} == true ]]; then
         YN="Y"
     elif [[ ${PROMPT:-CLI} == "CLI" ]]; then
-        local YNPROMPT
-        if [[ ${DEFAULT} == Y ]]; then
-            YNPROMPT='[Yn]'
-        elif [[ ${DEFAULT} == N ]]; then
-            YNPROMPT='[yN]'
+        local YNPrompt
+        if [[ ${Default} == Y ]]; then
+            YNPrompt='[Yn]'
+        elif [[ ${Default} == N ]]; then
+            YNPrompt='[yN]'
         else
-            YNPROMPT='[YN]'
+            YNPrompt='[YN]'
         fi
-        notice "${QUESTION}"
-        notice "${YNPROMPT}"
+        notice "${Question}"
+        notice "${YNPrompt}"
         while true; do
             read -rsn1 YN < /dev/tty
             case ${YN^^} in
@@ -34,8 +34,8 @@ question_prompt() {
                     break
                     ;;
                 ' ' | '') # Enter or Space entered, return the default value if supplied
-                    if [[ -n ${DEFAULT-} ]]; then
-                        YN="${DEFAULT}"
+                    if [[ -n ${Default-} ]]; then
+                        YN="${Default}"
                         break
                     fi
                     ;;
@@ -45,7 +45,7 @@ question_prompt() {
         notice "Answered: ${YN}"
     elif [[ ${PROMPT:-CLI} == "GUI" ]]; then
         local DIALOG_DEFAULT
-        if [[ ${DEFAULT} == "N" ]]; then
+        if [[ ${Default} == "N" ]]; then
             DIALOG_DEFAULT="--defaultno"
         fi
         # shellcheck disable=SC2206 # (warning): Quote to prevent word splitting/globbing, or split robustly with mapfile or read -a.
@@ -53,13 +53,13 @@ question_prompt() {
             --stdout
             --title "${Title}"
             ${DIALOG_DEFAULT-}
-            --yesno "${QUESTION}"
+            --yesno "${Question}"
             0 0
         )
         while true; do
-            local DIALOG_BUTTON_PRESSED
-            DIALOG_BUTTON_PRESSED=0 && dialog "${YesNoDialog[@]}" || DIALOG_BUTTON_PRESSED=$?
-            case ${DIALOG_BUTTON_PRESSED} in
+            local YesNoDialogButtonPressed
+            YesNoDialogButtonPressed=0 && dialog "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?
+            case ${YesNoDialogButtonPressed} in
                 "${DIALOG_OK}")
                     YN="Y"
                     break
@@ -69,27 +69,20 @@ question_prompt() {
                     break
                     ;;
                 *)
-                    if [[ -n ${DIALOG_BUTTONS[$DIALOG_BUTTON_PRESSED]-} ]]; then
+                    if [[ -n ${DIALOG_BUTTONS[$YesNoDialogButtonPressed]-} ]]; then
                         clear
-                        fatal "Unexpected dialog button '${DIALOG_BUTTONS[$DIALOG_BUTTON_PRESSED]}' pressed."
+                        fatal "Unexpected dialog button '${DIALOG_BUTTONS[$YesNoDialogButtonPressed]}' pressed."
                     else
                         clear
-                        fatal "Unexpected dialog button value'${DIALOG_BUTTON_PRESSED}' pressed."
+                        fatal "Unexpected dialog button value'${YesNoDialogButtonPressed}' pressed."
                     fi
                     ;;
             esac
         done
     else
-        YN=${DEFAULT:-Y}
+        YN=${Default:-Y}
     fi
-    case ${YN} in
-        Y)
-            return
-            ;;
-        N)
-            return 1
-            ;;
-    esac
+    [ "${YN}" == "Y" ]
 }
 
 test_question_prompt() {
