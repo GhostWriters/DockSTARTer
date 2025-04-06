@@ -57,8 +57,8 @@ question_prompt() {
             0 0
         )
         while true; do
-            local YesNoDialogButtonPressed
-            YesNoDialogButtonPressed=0 && dialog "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?
+            local YesNoDialogButtonPressed=0
+            dialog "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?
             case ${YesNoDialogButtonPressed} in
                 "${DIALOG_OK}")
                     YN="Y"
