@@ -81,15 +81,12 @@ question_prompt() {
         else
             YN=${DEFAULT}
         fi
-        case ${YN^^} in
+        case ${YN} in
             Y)
                 return
                 ;;
             N)
                 return 1
-                ;;
-            *)
-                error "Please answer yes or no."
                 ;;
         esac
     done
