@@ -8,7 +8,7 @@ dialog_command_output() {
     local TimeOut=${3:-0}
     shift 3
     #local CommandLine=${*:-true}
-    dialog --title "dialog_command_output" --msgbox "CommandLine=$*\nTitle=${Title}\nSubTitle=${SubTitle}\nTimeOut=${TimeOut}\n" 0 0
+    dialog --title "dialog_command_output" --msgbox "Title=${Title}\nSubTitle=${SubTitle}\nTimeOut=${TimeOut}\nCommandLine=$*\n" 0 0
     if [[ -t 1 ]]; then
         {
             eval "$@"
