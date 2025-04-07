@@ -14,7 +14,7 @@ dialog_command_output() {
         eval $* |& dialog --begin 2 2 --timeout "${TimeOut}" --title "${Title}" --programbox "${SubTitle}" $((LINES - 4)) $((COLUMNS - 5))
         return "${PIPESTATUS[0]}"
     else
-        eval "$*"
+        eval $*
     fi
 }
 
