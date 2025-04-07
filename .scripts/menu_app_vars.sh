@@ -20,7 +20,8 @@ menu_app_vars() {
         return
     fi
 
-    run_script 'appvars_create' "${APPNAME}" |& run_script 'dialog_output' "${Title}" "Creating variables for ${AppName}" 1
+    run_script 'dialog_command_output' "${Title}" "Creating variables for ${AppName}" 1 \
+        "run_script 'appvars_create' ${APPNAME}"
 
     local -a AppVarGlobalList
     local -a AppVarEnvList
