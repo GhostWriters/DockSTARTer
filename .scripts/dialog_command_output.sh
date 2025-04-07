@@ -11,11 +11,11 @@ dialog_command_output() {
     dialog --title "dialog_command_output" --msgbox "Title=${Title}\nSubTitle=${SubTitle}\nTimeOut=${TimeOut}\nCommandLine=$*\n" 0 0
     if [[ -t 1 ]]; then
         {
-            eval "$@"
+            eval "$*"
         } |& run_script 'dialog_output' "${Title}" "${SubTitle}" "${TimeOut}"
         return "${PIPESTATUS[0]}"
     else
-        eval "$@"
+        eval "$*"
     fi
 }
 
