@@ -10,9 +10,8 @@ dialog_command_output() {
     #local CommandLine=${*:-true}
     dialog --title "dialog_command_output" --msgbox "Title=${Title}\nSubTitle=${SubTitle}\nTimeOut=${TimeOut}\nCommandLine=$*\n" 0 0
     if [[ -t 1 ]]; then
-        {
-            eval "$*"
-        } |& run_script 'dialog_output' "${Title}" "${SubTitle}" "${TimeOut}"
+        #eval "$*" |& run_script 'dialog_output' "${Title}" "${SubTitle}" "${TimeOut}"
+        eval "$*" |& dialog --begin 2 2 --timeout "${TimeOut}" --title "${Title}" --programbox "${SubTitle}" $((LINES - 4)) $((COLUMNS - 5))
         return "${PIPESTATUS[0]}"
     else
         eval "$*"
