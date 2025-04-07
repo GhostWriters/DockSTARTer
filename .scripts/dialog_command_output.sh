@@ -8,7 +8,7 @@ dialog_command_output() {
     local TimeOut=${3:-0}
     shift 3
     #local CommandLine=${*:-true}
-    dialog --title "dialog_command_output" --msgbox "Title=${Title}\nSubTitle=${SubTitle}\nTimeOut=${TimeOut}\nCommandLine=$*\n" 0 0
+    #dialog --title "dialog_command_output" --msgbox "Title=${Title}\nSubTitle=${SubTitle}\nTimeOut=${TimeOut}\nCommandLine=$*\n" 0 0
     if [[ -t 1 ]]; then
         #eval "$*" |& run_script 'dialog_output' "${Title}" "${SubTitle}" "${TimeOut}"
         #shellcheck disable=SC2048,SC2086 # Use "$@", Double quote
