@@ -11,7 +11,7 @@ update_self() {
     fi
 
     if [[ ${PROMPT:-CLI} == GUI && -t 1 ]]; then
-        commands_update_self "$@" |& run_script 'dialog_output' "${Title}" "Performing updates to DockSTARTer"
+        run_script 'dialog_command_output' "${Title}" "Performing updates to DockSTARTer" "" "commands_update_self \"$@\""
     else
         commands_update_self "$@"
     fi
