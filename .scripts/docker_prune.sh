@@ -12,11 +12,10 @@ docker_prune() {
     fi
 
     local RUNCOMMAND="docker system prune --all --force --volumes"
-    local REDIRECT=""
     if [[ ${PROMPT:-CLI} == GUI && -t 1 ]]; then
-        REDIRECT="|& run_script 'dialog_output' \"\${Title}\" \"\${RUNCOMMAND}\""
-        run_script 'dialog_command_output' "${Title}" "${RUNCOMMAND}" "" "${RUNCOMMAND}" ||
-            error "Failed to remove unused docker resources.\nFailing command: ${F[C]}${RUNCOMMAND}"
+        {
+            eval "${RUNCOMMAND}" || error "Failed to remove unused docker resources.\nFailing command: ${F[C]}${RUNCOMMAND}"
+        } |& run_script 'dialog_output' "${Title}" "${RUNCOMMAND}"
     else
         eval "${RUNCOMMAND}" || error "Failed to remove unused docker resources.\nFailing command: ${F[C]}${RUNCOMMAND}"
     fi
