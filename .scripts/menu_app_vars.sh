@@ -130,7 +130,7 @@ menu_app_vars() {
                         fatal "Unexpected dialog button '${DIALOG_BUTTONS[LineDialogButtonPressed]}' pressed."
                     else
                         clear
-                        fatal "Unexpected dialog button value'${LineDialogButtonPressed}' pressed."
+                        fatal "Unexpected dialog button value '${LineDialogButtonPressed}' pressed."
                     fi
                     ;;
             esac

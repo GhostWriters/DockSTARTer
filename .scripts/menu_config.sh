@@ -67,7 +67,7 @@ menu_config() {
                     fatal "Unexpected dialog button '${DIALOG_BUTTONS[ConfigDialogButtonPressed]}' pressed."
                 else
                     clear
-                    fatal "Unexpected dialog button value'${ConfigDialogButtonPressed}' pressed."
+                    fatal "Unexpected dialog button value '${ConfigDialogButtonPressed}' pressed."
                 fi
                 ;;
         esac

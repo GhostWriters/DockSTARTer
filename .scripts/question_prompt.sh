@@ -74,7 +74,7 @@ question_prompt() {
                         fatal "Unexpected dialog button '${DIALOG_BUTTONS[YesNoDialogButtonPressed]}' pressed."
                     else
                         clear
-                        fatal "Unexpected dialog button value'${YesNoDialogButtonPressed}' pressed."
+                        fatal "Unexpected dialog button value '${YesNoDialogButtonPressed}' pressed."
                     fi
                     ;;
             esac

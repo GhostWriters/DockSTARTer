@@ -59,7 +59,7 @@ menu_main() {
                     fatal "Unexpected dialog button '${DIALOG_BUTTONS[MainDialogButtonPressed]}' pressed."
                 else
                     clear
-                    fatal "Unexpected dialog button value'${MainDialogButtonPressed}' pressed."
+                    fatal "Unexpected dialog button value '${MainDialogButtonPressed}' pressed."
                 fi
                 ;;
         esac

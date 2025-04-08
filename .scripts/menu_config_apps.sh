@@ -47,7 +47,7 @@ menu_config_apps() {
                     fatal "Unexpected dialog button '${DIALOG_BUTTONS[AppChoiceButtonPressed]}' pressed."
                 else
                     clear
-                    fatal "Unexpected dialog button value'${AppChoiceButtonPressed}' pressed."
+                    fatal "Unexpected dialog button value '${AppChoiceButtonPressed}' pressed."
                 fi
                 ;;
         esac

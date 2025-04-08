@@ -47,7 +47,7 @@ menu_config_global() {
                         fatal "Unexpected dialog button '${DIALOG_BUTTONS[VarDialogButtonPressed]}' pressed."
                     else
                         clear
-                        fatal "Unexpected dialog button value'${VarDialogButtonPressed}' pressed."
+                        fatal "Unexpected dialog button value '${VarDialogButtonPressed}' pressed."
                     fi
                     ;;
             esac
