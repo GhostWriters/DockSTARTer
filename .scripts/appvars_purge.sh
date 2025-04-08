@@ -36,7 +36,7 @@ ${APP_ENV_FILE}:
 ${APPVAR_ENV_LINES}
 EOF
         )
-        if [[ ${CI-} == true ]] || run_script 'question_prompt' Y "${QUESTION}\\n" "${Title}"; then
+        if run_script 'question_prompt' Y "${QUESTION}\\n" "${Title}"; then
             info "Purging ${APPNAME} .env variables."
 
             local -a APPVARS
