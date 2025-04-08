@@ -8,7 +8,7 @@ pm_apt_upgrade() {
         notice "Upgrading packages. Please be patient, this can take a while."
         local COMMAND='sudo apt-get -y dist-upgrade'
         local REDIRECT="> /dev/null 2>&1"
-        if [[ -n ${VERBOSE-} ]] || run_script 'question_prompt' N "Would you like to display the command output?" "${Title}"; then
+        if run_script 'question_prompt' N "Would you like to display the command output?" "${Title}" "${VERBOSE:+Y}"; then
             if [[ ${PROMPT:-CLI} == GUI && -t 1 ]]; then
                 run_script 'dialog_command_output' "${Title}" "${COMMAND}" "" "${COMMAND}" || fatal "Failed to upgrade packages from apt.\nFailing command: ${F[C]}${COMMAND}"
                 return

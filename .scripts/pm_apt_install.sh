@@ -7,7 +7,7 @@ pm_apt_install() {
     notice "Installing dependencies. Please be patient, this can take a while."
     local COMMAND=""
     local REDIRECT="> /dev/null 2>&1"
-    if [[ -n ${VERBOSE-} ]] || run_script 'question_prompt' N "Would you like to display the command output?" "${Title}"; then
+    if run_script 'question_prompt' N "Would you like to display the command output?" "${Title}" "${VERBOSE:+Y}"; then
         if [[ ${PROMPT:-CLI} == GUI && -t 1 ]]; then
             REDIRECT="|& dialog --begin 2 2 --title \"\${Title}\" --programbox \"\${COMMAND}\" $((LINES - 4)) $((COLUMNS - 5))"
         else

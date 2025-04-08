@@ -6,7 +6,7 @@ pm_pacman_install() {
     local Title="Install Dependencies"
     notice "Installing dependencies. Please be patient, this can take a while."
     local REDIRECT="> /dev/null 2>&1"
-    if [[ -n ${VERBOSE-} ]] || run_script 'question_prompt' N "Would you like to display the command output?" "${Title}"; then
+    if run_script 'question_prompt' N "Would you like to display the command output?" "${Title}" "${VERBOSE:+Y}"; then
         REDIRECT=""
     fi
     eval "sudo pacman -Sy --noconfirm curl dialog git grep sed ${REDIRECT}" || fatal "Failed to install dependencies using pacman.\nFailing command: ${F[C]}sudo pacman -Sy --noconfirm curl dialog git grep sed"

@@ -5,7 +5,7 @@ IFS=$'\n\t'
 update_self() {
     local Title="Update DockSTARTer"
     local BRANCH=${1:-origin/app-env-files}
-    if ! run_script 'question_prompt' Y "Would you like to update DockSTARTer to ${BRANCH} now?" "${Title}"; then
+    if ! run_script 'question_prompt' Y "Would you like to update DockSTARTer to ${BRANCH} now?" "${Title}" "${FORCE:+Y}"; then
         notice "DockSTARTer will not be updated to ${BRANCH}."
         return 1
     fi

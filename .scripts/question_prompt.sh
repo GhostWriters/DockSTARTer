@@ -10,11 +10,17 @@ question_prompt() {
     fi
     local Question=${2-}
     local Title=${3-$BACKTITLE}
+    local Override=${4-}
+    Override=${Override^^:0:1}
+    if [[ ${Override} != Y && ${Override} != N ]]; then
+        Override=""
+    fi
+
     local YN
     if [[ ${CI-} == true ]]; then
         YN=${Default:-Y}
-    elif [[ ${FORCE-} == true ]]; then
-        YN="Y"
+    elif [[ -n ${Override-} ]]; then
+        YN="${Override}"
     elif [[ ${PROMPT:-CLI} == "CLI" ]]; then
         local YNPrompt
         if [[ ${Default} == Y ]]; then
