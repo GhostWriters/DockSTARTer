@@ -102,21 +102,21 @@ readonly SCRIPTNAME
 declare -rx DIALOGRC="${SCRIPTPATH}/.dialogrc"
 declare -rx BACKTITLE="DockSTARTer"
 declare -rx DIALOGOPTS="--backtitle ${BACKTITLE} --cr-wrap"
+declare -rix DIALOG_OK=0
 declare -rix DIALOG_CANCEL=1
+declare -rix DIALOG_HELP=2
+declare -rix DIALOG_EXTRA=3
+declare -rix DIALOG_ITEM_HELP=4
 declare -rix DIALOG_ERROR=254
 declare -rix DIALOG_ESC=255
-declare -rix DIALOG_EXTRA=3
-declare -rix DIALOG_HELP=2
-declare -rix DIALOG_ITEM_HELP=20
-declare -rix DIALOG_OK=0
 readonly -a DIALOG_BUTTONS=(
+    [DIALOG_OK]="OK"
     [DIALOG_CANCEL]="CANCEL"
+    [DIALOG_HELP]="HELP"
+    [DIALOG_EXTRA]="EXTRA"
+    [DIALOG_ITEM_HELP]="ITEM_HELP"
     [DIALOG_ERROR]="ERROR"
     [DIALOG_ESC]="ESC"
-    [DIALOG_EXTRA]="EXTRA"
-    [DIALOG_HELP]="HELP"
-    [DIALOG_ITEM_HELP]="ITEM_HELP"
-    [DIALOG_OK]="OK"
 )
 export DIALOG_BUTTONS
 
