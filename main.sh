@@ -484,6 +484,13 @@ run_script() {
     fi
 }
 
+# Pipe to Dialog Box Function
+dialog_pipe() {
+    local Title=${1:-}
+    local SubTitle=${2:-}
+    local TimeOut=${3:-0}
+    dialog --begin 2 2 --timeout "${TimeOut}" --title "${Title}" --programbox "${SubTitle}" $((LINES - 4)) $((COLUMNS - 5))
+}
 # Script Dialog Runner Function
 run_script_dialog() {
     local Title=${1:-}
@@ -496,12 +503,29 @@ run_script_dialog() {
         source "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh"
         if [[ ${PROMPT:-CLI} == GUI && -t 1 && -t 2 ]]; then
             # Using the GUI and StdOut or StdError aren't being redirected, pipe output to a dialog box
-            ${SCRIPTSNAME} "$@" |& dialog --begin 2 2 --timeout "${TimeOut}" --title "${Title}" --programbox "${SubTitle}" $((LINES - 4)) $((COLUMNS - 5))
+            ${SCRIPTSNAME} "$@" |& dialog_pipe "${Title}" "${SubTitle}" "${TimeOut}"
         else
             ${SCRIPTSNAME} "$@"
         fi
     else
         fatal "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh not found."
+    fi
+}
+
+# Command Dialog Runner Function
+run_command_dialog() {
+    local Title=${1:-}
+    local SubTitle=${2:-}
+    local TimeOut=${3:-0}
+    local CommandName=${4-}
+    shift 4
+    if [[ -n ${CommandName-} ]]; then
+        if [[ ${PROMPT:-CLI} == GUI && -t 1 && -t 2 ]]; then
+            # Using the GUI and StdOut or StdError aren't being redirected, pipe output to a dialog box
+            "${CommandName}" "$@" |& dialog_pipe "${Title}" "${SubTitle}" "${TimeOut}"
+        else
+            "${CommandName}" "$@"
+        fi
     fi
 }
 
