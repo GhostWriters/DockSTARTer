@@ -484,6 +484,27 @@ run_script() {
     fi
 }
 
+# Script Dialog Runner Function
+run_script_dialog() {
+    local Title=${1:-}
+    local SubTitle=${2:-}
+    local TimeOut=${3:-0}
+    local SCRIPTSNAME=${4-}
+    shift 4
+    if [[ -f ${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh ]]; then
+        # shellcheck source=/dev/null
+        source "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh"
+        if [[ ${PROMPT:-CLI} == GUI && -t 1 && -t 2 ]]; then
+            # Using the GUI and StdOut or StdError aren't being redirected, pipe output to a dialog box
+            ${SCRIPTSNAME} "$@" |& dialog --begin 2 2 --timeout "${TimeOut}" --title "${Title}" --programbox "${SubTitle}" $((LINES - 4)) $((COLUMNS - 5))
+        else
+            ${SCRIPTSNAME} "$@"
+        fi
+    else
+        fatal "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh not found."
+    fi
+}
+
 # Test Runner Function
 run_test() {
     local SCRIPTSNAME=${1-}
