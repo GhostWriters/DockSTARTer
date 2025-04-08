@@ -15,17 +15,22 @@ get_docker() {
             REDIRECT=""
         fi
     fi
+    COMMAND="command_get_docker"
+    eval "${COMMAND} ${REDIRECT}"
+}
+
+command_get_docker() {
     # https://github.com/docker/docker-install
     local MKTEMP_GET_DOCKER
     MKTEMP_GET_DOCKER=$(mktemp) || fatal "Failed to create temporary docker install script.\nFailing command: ${F[C]}mktemp"
     info "Downloading docker install script."
     COMMAND="curl -fsSL https://get.docker.com -o \"${MKTEMP_GET_DOCKER}\""
-    eval "${COMMAND} ${REDIRECT}" || fatal "Failed to get docker install script.\nFailing command: ${F[C]}${COMMAND}"
+    eval "${COMMAND}" || fatal "Failed to get docker install script.\nFailing command: ${F[C]}${COMMAND}"
     info "Running docker install script."
     COMMAND="sh ${MKTEMP_GET_DOCKER}"
-    eval "${COMMAND} ${REDIRECT}" || fatal "Failed to install docker.\nFailing command: ${F[C]}${COMMAND}"
+    eval "${COMMAND}" || fatal "Failed to install docker.\nFailing command: ${F[C]}${COMMAND}"
     COMMAND="rm -f \"${MKTEMP_GET_DOCKER}\""
-    eval "${COMMAND} ${REDIRECT}" || warn "Failed to remove temporary docker install script.\nFailing command: ${F[C]}${COMMAND}"
+    eval "${COMMAND}" || warn "Failed to remove temporary docker install script.\nFailing command: ${F[C]}${COMMAND}"
 }
 
 test_get_docker() {
