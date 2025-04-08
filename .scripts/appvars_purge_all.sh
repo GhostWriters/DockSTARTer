@@ -7,7 +7,7 @@ appvars_purge_all() {
     local DISABLED_APPS
     DISABLED_APPS=$(run_script 'app_list_disabled')
     if [[ -n ${DISABLED_APPS-} ]]; then
-        if run_script 'question_prompt' Y "Would you like to purge variables for all disabled apps?" "${Title}"; then
+        if [[ ${CI-} == true ]] || run_script 'question_prompt' Y "Would you like to purge variables for all disabled apps?" "${Title}"; then
             info "Purging disabled app variables."
             for APPNAME in ${DISABLED_APPS-}; do
                 run_script 'appvars_purge' "${APPNAME}"
