@@ -9,7 +9,7 @@ pm_apt_install() {
     local REDIRECT="> /dev/null 2>&1"
     if run_script 'question_prompt' N "Would you like to display the command output?" "${Title}" "${VERBOSE:+Y}"; then
         if [[ ${PROMPT:-CLI} == GUI && -t 1 ]]; then
-            REDIRECT="|& dialog --begin 2 2 --title \"\${Title}\" --programbox \"\${COMMAND}\" $((LINES - 4)) $((COLUMNS - 5))"
+            REDIRECT="|& dialog_pipe \"\${Title}\" \"\${COMMAND}\""
         else
             REDIRECT=""
         fi

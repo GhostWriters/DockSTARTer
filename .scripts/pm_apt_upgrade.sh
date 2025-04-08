@@ -10,7 +10,7 @@ pm_apt_upgrade() {
         local REDIRECT="> /dev/null 2>&1"
         if run_script 'question_prompt' N "Would you like to display the command output?" "${Title}" "${VERBOSE:+Y}"; then
             if [[ ${PROMPT:-CLI} == GUI && -t 1 ]]; then
-                run_script 'dialog_command_output' "${Title}" "${COMMAND}" "" "${COMMAND}" || fatal "Failed to upgrade packages from apt.\nFailing command: ${F[C]}${COMMAND}"
+                run_command_dialog "${Title}" "${COMMAND}" "" eval "${COMMAND}" || fatal "Failed to upgrade packages from apt.\nFailing command: ${F[C]}${COMMAND}"
                 return
             else
                 REDIRECT=""
