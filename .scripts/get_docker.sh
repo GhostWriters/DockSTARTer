@@ -5,18 +5,27 @@ IFS=$'\n\t'
 get_docker() {
     Title="Install Docker"
     notice "Installing docker. Please be patient, this can take a while."
+    local COMMAND=""
     local REDIRECT="> /dev/null 2>&1"
     if run_script 'question_prompt' N "Would you like to display the command output?" "${Title}" "${VERBOSE:+Y}"; then
-        REDIRECT=""
+        if [[ ${PROMPT:-CLI} == GUI && -t 1 ]]; then
+            #shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
+            REDIRECT='|& dialog_pipe "${Title}" "${COMMAND}"'
+        else
+            REDIRECT=""
+        fi
     fi
     # https://github.com/docker/docker-install
     local MKTEMP_GET_DOCKER
     MKTEMP_GET_DOCKER=$(mktemp) || fatal "Failed to create temporary docker install script.\nFailing command: ${F[C]}mktemp"
     info "Downloading docker install script."
-    eval "curl -fsSL https://get.docker.com -o \"${MKTEMP_GET_DOCKER}\" ${REDIRECT}" || fatal "Failed to get docker install script.\nFailing command: ${F[C]}curl -fsSL https://get.docker.com -o \"${MKTEMP_GET_DOCKER}\""
+    COMMAND="curl -fsSL https://get.docker.com -o \"${MKTEMP_GET_DOCKER}\""
+    eval "${COMMAND} ${REDIRECT}" || fatal "Failed to get docker install script.\nFailing command: ${F[C]}${COMMAND}"
     info "Running docker install script."
-    eval "sh ${MKTEMP_GET_DOCKER} ${REDIRECT}" || fatal "Failed to install docker.\nFailing command: ${F[C]}sh ${MKTEMP_GET_DOCKER}"
-    rm -f "${MKTEMP_GET_DOCKER}" || warn "Failed to remove temporary docker install script.\nFailing command: ${F[C]}rm -f \"${MKTEMP_GET_DOCKER}\""
+    COMMAND="sh ${MKTEMP_GET_DOCKER}"
+    eval "${COMMAND} ${REDIRECT}" || fatal "Failed to install docker.\nFailing command: ${F[C]}${COMMAND}"
+    COMMAND="rm -f \"${MKTEMP_GET_DOCKER}\""
+    eval "${COMMAND} ${REDIRECT}" || warn "Failed to remove temporary docker install script.\nFailing command: ${F[C]}${COMMAND}"
 }
 
 test_get_docker() {
