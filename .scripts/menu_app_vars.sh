@@ -109,10 +109,10 @@ menu_app_vars() {
             "${LineOptions[@]}"
         )
         while true; do
-            local LineDialogButtonPressed=0
+            local -i LineDialogButtonPressed=0
             LineChoice=$(dialog --default-item "${LastLineChoice}" "${LineDialog[@]}") || LineDialogButtonPressed=$?
             case ${LineDialogButtonPressed} in
-                "${DIALOG_OK}")
+                ${DIALOG_OK})
                     LastLineChoice="${LineChoice}"
                     local LineNumber
                     LineNumber=$((10#${LineChoice}))
@@ -121,13 +121,13 @@ menu_app_vars() {
                         break
                     fi
                     ;;
-                "${DIALOG_CANCEL}" | "${DIALOG_ESC}")
+                ${DIALOG_CANCEL} | ${DIALOG_ESC})
                     return
                     ;;
                 *)
-                    if [[ -n ${DIALOG_BUTTONS[$LineDialogButtonPressed]-} ]]; then
+                    if [[ -n ${DIALOG_BUTTONS[LineDialogButtonPressed]-} ]]; then
                         clear
-                        fatal "Unexpected dialog button '${DIALOG_BUTTONS[$LineDialogButtonPressed]}' pressed."
+                        fatal "Unexpected dialog button '${DIALOG_BUTTONS[LineDialogButtonPressed]}' pressed."
                     else
                         clear
                         fatal "Unexpected dialog button value'${LineDialogButtonPressed}' pressed."

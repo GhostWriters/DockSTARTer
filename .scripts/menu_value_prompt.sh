@@ -107,7 +107,7 @@ menu_value_prompt() {
         ValueDescription="\n\n System detected values are recommended.${ValueDescription}"
     fi
 
-    local SelectDialogButtonPressed
+    local -i SelectDialogButtonPressed
     local SelectedValue
     if [[ ${CI-} == true ]]; then
         SelectDialogButtonPressed=${DIALOG_OK}
@@ -126,7 +126,7 @@ menu_value_prompt() {
 
     local Input
     case ${SelectDialogButtonPressed} in
-        "${DIALOG_OK}")
+        ${DIALOG_OK})
             case "${SelectedValue}" in
                 "Keep Current")
                     Input=${CURRENT_VAL}
@@ -141,7 +141,6 @@ menu_value_prompt() {
                     Input=${SYSTEM_VAL}
                     ;;
                 "Enter New")
-                    local InputDialogButtonPressed
                     local -a InputDialog=(
                         --stdout
                         --title "${Title}"
@@ -149,16 +148,16 @@ menu_value_prompt() {
                         0 0
                         "${CURRENT_VAL}"
                     )
-                    InputDialogButtonPressed=0
+                    local -i InputDialogButtonPressed
                     Input=$(dialog "${InputDialog[@]}") || InputDialogButtonPressed=$?
                     case ${InputDialogButtonPressed} in
-                        "${DIALOG_OK}") ;;
-                        "${DIALOG_CANCEL}" | "${DIALOG_ESC}")
+                        ${DIALOG_OK}) ;;
+                        ${DIALOG_CANCEL} | ${DIALOG_ESC})
                             unset Input
                             ;;
                         *)
-                            if [[ -n ${DIALOG_BUTTONS[$InputDialogButtonPressed]-} ]]; then
-                                clear && fatal "Unexpected dialog button '${DIALOG_BUTTONS[$InputDialogButtonPressed]}' pressed."
+                            if [[ -n ${DIALOG_BUTTONS[InputDialogButtonPressed]-} ]]; then
+                                clear && fatal "Unexpected dialog button '${DIALOG_BUTTONS[InputDialogButtonPressed]}' pressed."
                             else
                                 clear && fatal "Unexpected dialog button value '${InputDialogButtonPressed}' pressed."
                             fi
@@ -167,13 +166,13 @@ menu_value_prompt() {
                     ;;
             esac
             ;;
-        "${DIALOG_CANCEL}" | "${DIALOG_ESC}")
+        ${DIALOG_CANCEL} | ${DIALOG_ESC})
             #warn "Selection of ${VarName} was canceled."
             return 1
             ;;
         *)
-            if [[ -n ${DIALOG_BUTTONS[$SelectDialogButtonPressed]-} ]]; then
-                clear && fatal "Unexpected dialog button '${DIALOG_BUTTONS[$SelectDialogButtonPressed]}' pressed."
+            if [[ -n ${DIALOG_BUTTONS[SelectDialogButtonPressed]-} ]]; then
+                clear && fatal "Unexpected dialog button '${DIALOG_BUTTONS[SelectDialogButtonPressed]}' pressed."
             else
                 clear && fatal "Unexpected dialog button value' ${SelectDialogButtonPressed}' pressed."
             fi

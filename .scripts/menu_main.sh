@@ -25,12 +25,11 @@ menu_main() {
     local LastMainChoice=""
     while true; do
         local MainChoice
-        local MainDialogButtonPressed=0
-        MainDialogButtonPressed=0
+        local -i MainDialogButtonPressed=0
         MainChoice=$(dialog --default-item "${LastMainChoice}" "${MainChoiceDialog[@]}") || MainDialogButtonPressed=$?
         LastMainChoice=${MainChoice}
         case ${MainDialogButtonPressed} in
-            "${DIALOG_OK}")
+            ${DIALOG_OK})
                 case "${MainChoice}" in
                     "Configuration")
                         run_script 'menu_config' || true
@@ -49,7 +48,7 @@ menu_main() {
                         ;;
                 esac
                 ;;
-            "${DIALOG_CANCEL}" | "${DIALOG_ESC}")
+            ${DIALOG_CANCEL} | ${DIALOG_ESC})
                 clear
                 info "Exiting DockSTARTer."
                 return

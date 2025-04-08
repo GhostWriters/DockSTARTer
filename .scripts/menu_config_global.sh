@@ -27,10 +27,10 @@ menu_config_global() {
             "${VarOptions[@]}"
         )
         while true; do
-            local VarDialogButtonPressed=0
+            local -i VarDialogButtonPressed=0
             VarChoice=$(dialog --default-item "${LastVarChoice}" "${VarDialog[@]}") || VarDialogButtonPressed=$?
             case ${VarDialogButtonPressed} in
-                "${DIALOG_OK}")
+                ${DIALOG_OK})
                     LastVarChoice="${VarChoice}"
                     # shellcheck disable=SC2199 # Arrays implicitly concatenate in [[ ]]. Use a loop (or explicit * instead of @).
                     if [[ " ${VarList[@]} " == *" ${VarChoice} "* ]]; then
@@ -38,13 +38,13 @@ menu_config_global() {
                         break
                     fi
                     ;;
-                "${DIALOG_CANCEL}" | "${DIALOG_ESC}")
+                ${DIALOG_CANCEL} | ${DIALOG_ESC})
                     return
                     ;;
                 *)
-                    if [[ -n ${DIALOG_BUTTONS[$VarDialogButtonPressed]-} ]]; then
+                    if [[ -n ${DIALOG_BUTTONS[VarDialogButtonPressed]-} ]]; then
                         clear
-                        fatal "Unexpected dialog button '${DIALOG_BUTTONS[$VarDialogButtonPressed]}' pressed."
+                        fatal "Unexpected dialog button '${DIALOG_BUTTONS[VarDialogButtonPressed]}' pressed."
                     else
                         clear
                         fatal "Unexpected dialog button value'${VarDialogButtonPressed}' pressed."

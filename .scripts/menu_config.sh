@@ -25,11 +25,11 @@ menu_config() {
     local LastConfigChoice=""
     while true; do
         local ConfigChoice
-        local ConfigDialogButtonPressed=0
+        local -i ConfigDialogButtonPressed=0
         ConfigChoice=$(dialog --default-item "${LastConfigChoice}" "${ConfigChoiceDialog[@]}") || ConfigDialogButtonPressed=$?
         LastConfigChoice=${ConfigChoice}
         case ${ConfigDialogButtonPressed} in
-            "${DIALOG_OK}")
+            ${DIALOG_OK})
                 case "${ConfigChoice}" in
                     "Full Setup")
                         run_script 'env_update' || true
@@ -58,13 +58,13 @@ menu_config() {
                         ;;
                 esac
                 ;;
-            "${DIALOG_CANCEL}" | "${DIALOG_ESC}")
+            ${DIALOG_CANCEL} | ${DIALOG_ESC})
                 return
                 ;;
             *)
-                if [[ -n ${DIALOG_BUTTONS[$ConfigDialogButtonPressed]-} ]]; then
+                if [[ -n ${DIALOG_BUTTONS[ConfigDialogButtonPressed]-} ]]; then
                     clear
-                    fatal "Unexpected dialog button '${DIALOG_BUTTONS[$ConfigDialogButtonPressed]}' pressed."
+                    fatal "Unexpected dialog button '${DIALOG_BUTTONS[ConfigDialogButtonPressed]}' pressed."
                 else
                     clear
                     fatal "Unexpected dialog button value'${ConfigDialogButtonPressed}' pressed."

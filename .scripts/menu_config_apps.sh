@@ -31,20 +31,20 @@ menu_config_apps() {
     local LastAppChoice=""
     while true; do
         local AppChoice
-        local AppChoiceButtonPressed=0
+        local -i AppChoiceButtonPressed=0
         AppChoice=$(dialog --default-item "${LastAppChoice}" "${AppChoiceDialog[@]}") || AppChoiceButtonPressed=$?
         LastAppChoice=${AppChoice}
         case ${AppChoiceButtonPressed} in
-            "${DIALOG_OK}")
+            ${DIALOG_OK})
                 run_script 'menu_app_vars' "${AppChoice}"
                 ;;
-            "${DIALOG_CANCEL}" | "${DIALOG_ESC}")
+            ${DIALOG_CANCEL} | ${DIALOG_ESC})
                 return
                 ;;
             *)
-                if [[ -n ${DIALOG_BUTTONS[$AppChoiceButtonPressed]-} ]]; then
+                if [[ -n ${DIALOG_BUTTONS[AppChoiceButtonPressed]-} ]]; then
                     clear
-                    fatal "Unexpected dialog button '${DIALOG_BUTTONS[$AppChoiceButtonPressed]}' pressed."
+                    fatal "Unexpected dialog button '${DIALOG_BUTTONS[AppChoiceButtonPressed]}' pressed."
                 else
                     clear
                     fatal "Unexpected dialog button value'${AppChoiceButtonPressed}' pressed."

@@ -57,21 +57,21 @@ question_prompt() {
             0 0
         )
         while true; do
-            local YesNoDialogButtonPressed=0
+            local -i YesNoDialogButtonPressed=0
             dialog "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?
             case ${YesNoDialogButtonPressed} in
-                "${DIALOG_OK}")
+                ${DIALOG_OK})
                     YN="Y"
                     break
                     ;;
-                "${DIALOG_CANCEL}" | "${DIALOG_ESC}")
+                ${DIALOG_CANCEL} | ${DIALOG_ESC})
                     YN="N"
                     break
                     ;;
                 *)
-                    if [[ -n ${DIALOG_BUTTONS[$YesNoDialogButtonPressed]-} ]]; then
+                    if [[ -n ${DIALOG_BUTTONS[YesNoDialogButtonPressed]-} ]]; then
                         clear
-                        fatal "Unexpected dialog button '${DIALOG_BUTTONS[$YesNoDialogButtonPressed]}' pressed."
+                        fatal "Unexpected dialog button '${DIALOG_BUTTONS[YesNoDialogButtonPressed]}' pressed."
                     else
                         clear
                         fatal "Unexpected dialog button value'${YesNoDialogButtonPressed}' pressed."
