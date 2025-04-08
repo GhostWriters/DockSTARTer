@@ -21,35 +21,7 @@ question_prompt() {
         YN=${Default:-Y}
     elif [[ -n ${Override-} ]]; then
         YN="${Override}"
-    elif [[ ${PROMPT:-CLI} == "CLI" ]]; then
-        local YNPrompt
-        if [[ ${Default} == Y ]]; then
-            YNPrompt='[Yn]'
-        elif [[ ${Default} == N ]]; then
-            YNPrompt='[yN]'
-        else
-            YNPrompt='[YN]'
-        fi
-        notice "${Question}"
-        notice "${YNPrompt}"
-        while true; do
-            read -rsn1 YN < /dev/tty
-            YN=${YN^^}
-            case ${YN} in
-                [YN])
-                    break
-                    ;;
-                ' ' | '') # Enter or Space entered, return the default value if supplied
-                    if [[ -n ${Default-} ]]; then
-                        YN="${Default}"
-                        break
-                    fi
-                    ;;
-                *) ;;
-            esac
-        done
-        notice "Answered: ${YN}"
-    elif [[ ${PROMPT:-CLI} == "GUI" ]]; then
+    elif [[ ${PROMPT:-CLI} == "GUI" && -t 1 && -t 2 ]]; then
         local DIALOG_DEFAULT
         if [[ ${Default} == "N" ]]; then
             DIALOG_DEFAULT="--defaultno"
@@ -85,6 +57,34 @@ question_prompt() {
                     ;;
             esac
         done
+    elif [[ ${PROMPT:-CLI} == "CLI" ]]; then
+        local YNPrompt
+        if [[ ${Default} == Y ]]; then
+            YNPrompt='[Yn]'
+        elif [[ ${Default} == N ]]; then
+            YNPrompt='[yN]'
+        else
+            YNPrompt='[YN]'
+        fi
+        notice "${Question}"
+        notice "${YNPrompt}"
+        while true; do
+            read -rsn1 YN < /dev/tty
+            YN=${YN^^}
+            case ${YN} in
+                [YN])
+                    break
+                    ;;
+                ' ' | '') # Enter or Space entered, return the default value if supplied
+                    if [[ -n ${Default-} ]]; then
+                        YN="${Default}"
+                        break
+                    fi
+                    ;;
+                *) ;;
+            esac
+        done
+        notice "Answered: ${YN}"
     else
         YN=${Default:-Y}
     fi
