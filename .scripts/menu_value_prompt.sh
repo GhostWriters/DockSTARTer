@@ -125,8 +125,8 @@ menu_value_prompt() {
     fi
 
     local Input
-    case ${SelectDialogButtonPressed} in
-        ${DIALOG_OK})
+    case ${DIALOG_BUTTONS[SelectDialogButtonPressed]-} in
+        OK)
             case "${SelectedValue}" in
                 "Keep Current")
                     Input=${CURRENT_VAL}
@@ -150,9 +150,9 @@ menu_value_prompt() {
                     )
                     local -i InputDialogButtonPressed
                     Input=$(dialog "${InputDialog[@]}") || InputDialogButtonPressed=$?
-                    case ${InputDialogButtonPressed} in
-                        ${DIALOG_OK}) ;;
-                        ${DIALOG_CANCEL} | ${DIALOG_ESC})
+                    case ${DIALOG_BUTTONS[InputDialogButtonPressed]-} in
+                        OK) ;;
+                        CANCEL | ESC)
                             unset Input
                             ;;
                         *)
@@ -166,7 +166,7 @@ menu_value_prompt() {
                     ;;
             esac
             ;;
-        ${DIALOG_CANCEL} | ${DIALOG_ESC})
+        CANCEL | ESC)
             #warn "Selection of ${VarName} was canceled."
             return 1
             ;;

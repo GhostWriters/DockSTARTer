@@ -28,8 +28,8 @@ menu_config() {
         local -i ConfigDialogButtonPressed=0
         ConfigChoice=$(dialog --default-item "${LastConfigChoice}" "${ConfigChoiceDialog[@]}") || ConfigDialogButtonPressed=$?
         LastConfigChoice=${ConfigChoice}
-        case ${ConfigDialogButtonPressed} in
-            ${DIALOG_OK})
+        case ${DIALOG_BUTTONS[ConfigDialogButtonPressed]-} in
+            OK)
                 case "${ConfigChoice}" in
                     "Full Setup")
                         run_script 'env_update' || true
@@ -58,7 +58,7 @@ menu_config() {
                         ;;
                 esac
                 ;;
-            ${DIALOG_CANCEL} | ${DIALOG_ESC})
+            CANCEL | ESC)
                 return
                 ;;
             *)

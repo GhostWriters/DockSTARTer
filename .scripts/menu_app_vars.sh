@@ -111,8 +111,8 @@ menu_app_vars() {
         while true; do
             local -i LineDialogButtonPressed=0
             LineChoice=$(dialog --default-item "${LastLineChoice}" "${LineDialog[@]}") || LineDialogButtonPressed=$?
-            case ${LineDialogButtonPressed} in
-                ${DIALOG_OK})
+            case ${DIALOG_BUTTONS[LineDialogButtonPressed]-} in
+                OK)
                     LastLineChoice="${LineChoice}"
                     local LineNumber
                     LineNumber=$((10#${LineChoice}))
@@ -121,7 +121,7 @@ menu_app_vars() {
                         break
                     fi
                     ;;
-                ${DIALOG_CANCEL} | ${DIALOG_ESC})
+                CANCEL | ESC)
                     return
                     ;;
                 *)

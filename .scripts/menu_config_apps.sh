@@ -34,11 +34,11 @@ menu_config_apps() {
         local -i AppChoiceButtonPressed=0
         AppChoice=$(dialog --default-item "${LastAppChoice}" "${AppChoiceDialog[@]}") || AppChoiceButtonPressed=$?
         LastAppChoice=${AppChoice}
-        case ${AppChoiceButtonPressed} in
-            ${DIALOG_OK})
+        case ${DIALOG_BUTTONS[AppChoiceButtonPressed]-} in
+            OK)
                 run_script 'menu_app_vars' "${AppChoice}"
                 ;;
-            ${DIALOG_CANCEL} | ${DIALOG_ESC})
+            CANCEL | ESC)
                 return
                 ;;
             *)

@@ -59,12 +59,12 @@ question_prompt() {
         while true; do
             local -i YesNoDialogButtonPressed=0
             dialog "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?
-            case ${YesNoDialogButtonPressed} in
-                ${DIALOG_OK})
+            case ${DIALOG_BUTTONS[YesNoDialogButtonPressed]-} in
+                OK)
                     YN="Y"
                     break
                     ;;
-                ${DIALOG_CANCEL} | ${DIALOG_ESC})
+                CANCEL | ESC)
                     YN="N"
                     break
                     ;;

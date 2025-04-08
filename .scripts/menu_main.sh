@@ -28,8 +28,8 @@ menu_main() {
         local -i MainDialogButtonPressed=0
         MainChoice=$(dialog --default-item "${LastMainChoice}" "${MainChoiceDialog[@]}") || MainDialogButtonPressed=$?
         LastMainChoice=${MainChoice}
-        case ${MainDialogButtonPressed} in
-            ${DIALOG_OK})
+        case ${DIALOG_BUTTONS[MainDialogButtonPressed]-} in
+            OK)
                 case "${MainChoice}" in
                     "Configuration")
                         run_script 'menu_config' || true
@@ -48,15 +48,15 @@ menu_main() {
                         ;;
                 esac
                 ;;
-            ${DIALOG_CANCEL} | ${DIALOG_ESC})
+            CANCEL | ESC)
                 clear
                 info "Exiting DockSTARTer."
                 return
                 ;;
             *)
-                if [[ -n ${DIALOG_BUTTONS[$MainDialogButtonPressed]-} ]]; then
+                if [[ -n ${DIALOG_BUTTONS[MainDialogButtonPressed]-} ]]; then
                     clear
-                    fatal "Unexpected dialog button '${DIALOG_BUTTONS[$MainDialogButtonPressed]}' pressed."
+                    fatal "Unexpected dialog button '${DIALOG_BUTTONS[MainDialogButtonPressed]}' pressed."
                 else
                     clear
                     fatal "Unexpected dialog button value'${MainDialogButtonPressed}' pressed."

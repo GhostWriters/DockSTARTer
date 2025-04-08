@@ -48,8 +48,8 @@ menu_app_select() {
         DIALOG_BUTTON_PRESSED=0
         SelectedApps=$(dialog "${SelectedAppsDialog[@]}") || DIALOG_BUTTON_PRESSED=$?
     fi
-    case ${DIALOG_BUTTON_PRESSED} in
-        ${DIALOG_OK})
+    case ${DIALOG_BUTTONS[DIALOG_BUTTON_PRESSED]-} in
+        OK)
             {
                 info "Disabling previously selected apps."
                 run_script 'disable_app' "${EnabledApps[@]}"
@@ -63,7 +63,7 @@ menu_app_select() {
             } |& dialog --begin 2 2 --timeout 1 --title "${Title}" --programbox "Enabling Selected Applications" $((LINES - 4)) $((COLUMNS - 5))
             return 0
             ;;
-        ${DIALOG_CANCEL} | ${DIALOG_ESC})
+        CANCEL | ESC)
             return 1
             ;;
         *)

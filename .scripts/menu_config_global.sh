@@ -29,8 +29,8 @@ menu_config_global() {
         while true; do
             local -i VarDialogButtonPressed=0
             VarChoice=$(dialog --default-item "${LastVarChoice}" "${VarDialog[@]}") || VarDialogButtonPressed=$?
-            case ${VarDialogButtonPressed} in
-                ${DIALOG_OK})
+            case ${DIALOG_BUTTONS[VarDialogButtonPressed]-} in
+                OK)
                     LastVarChoice="${VarChoice}"
                     # shellcheck disable=SC2199 # Arrays implicitly concatenate in [[ ]]. Use a loop (or explicit * instead of @).
                     if [[ " ${VarList[@]} " == *" ${VarChoice} "* ]]; then
@@ -38,7 +38,7 @@ menu_config_global() {
                         break
                     fi
                     ;;
-                ${DIALOG_CANCEL} | ${DIALOG_ESC})
+                CANCEL | ESC)
                     return
                     ;;
                 *)
