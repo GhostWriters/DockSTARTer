@@ -5,31 +5,34 @@ IFS=$'\n\t'
 get_docker() {
     Title="Install Docker"
     notice "Installing docker. Please be patient, this can take a while."
-    local COMMAND=""
-    local REDIRECT="> /dev/null 2>&1"
     if run_script 'question_prompt' Y "Would you like to display the command output?" "${Title}" "${VERBOSE:+Y}"; then
         if use_dialog_box; then
             #shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
-            REDIRECT='|& dialog_pipe "${Title}" "${COMMAND}"'
+            command_get_docker |& dialog_pipe "${Title}" "Installing docker. Please be patient, this can take a while."
         else
-            REDIRECT=""
+            command_get_docker
         fi
+    else
+        command_get_docker > /dev/null 2>&1
     fi
-    COMMAND="command_get_docker"
-    eval "${COMMAND} ${REDIRECT}"
 }
 
 command_get_docker() {
     # https://github.com/docker/docker-install
     local MKTEMP_GET_DOCKER
+    local COMMAND
+    #shellcheck disable=SC2034 # (warning): MKTEMP_GET_DOCKER appears unused. Verify use (or export if used externally).
     MKTEMP_GET_DOCKER=$(mktemp) || fatal "Failed to create temporary docker install script.\nFailing command: ${F[C]}mktemp"
     info "Downloading docker install script."
-    COMMAND="curl -fsSL https://get.docker.com -o \"${MKTEMP_GET_DOCKER}\""
+    #shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
+    COMMAND='curl -fsSL https://get.docker.com -o "${MKTEMP_GET_DOCKER}"'
     eval "${COMMAND}" || fatal "Failed to get docker install script.\nFailing command: ${F[C]}${COMMAND}"
     info "Running docker install script."
-    COMMAND="sh ${MKTEMP_GET_DOCKER}"
+    #shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
+    COMMAND='sh ${MKTEMP_GET_DOCKER}'
     eval "${COMMAND}" || fatal "Failed to install docker.\nFailing command: ${F[C]}${COMMAND}"
-    COMMAND="rm -f \"${MKTEMP_GET_DOCKER}\""
+    #shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
+    COMMAND='rm -f "${MKTEMP_GET_DOCKER}"'
     eval "${COMMAND}" || warn "Failed to remove temporary docker install script.\nFailing command: ${F[C]}${COMMAND}"
 }
 
