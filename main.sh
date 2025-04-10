@@ -494,7 +494,7 @@ dialog_pipe() {
     local Title=${1:-}
     local SubTitle=${2:-}
     local TimeOut=${3:-0}
-    dialog --begin 2 2 --timeout "${TimeOut}" --title "${Title}" --programbox "${SubTitle}" $((LINES - 4)) $((COLUMNS - 5))
+    dialog --begin 2 2 --colors --timeout "${TimeOut}" --title "${Title}" --programbox "\Zr${SubTitle}" $((LINES - 4)) $((COLUMNS - 5))
 }
 # Script Dialog Runner Function
 run_script_dialog() {
