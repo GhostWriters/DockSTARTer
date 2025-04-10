@@ -35,13 +35,13 @@ menu_main() {
                         run_script 'menu_config' || true
                         ;;
                     "Install Dependencies")
-                        run_script 'run_install' || true
+                        run_script_dialog "Install Dependencies" "" "" 'run_install' || true
                         ;;
                     "Update DockSTARTer")
-                        run_script 'update_self' || true
+                        run_script_dialog "Update DockSTARTer" "" "" 'update_self' || true
                         ;;
                     "Prune Docker System")
-                        run_script 'docker_prune' || true
+                        run_script_dialog "Prune Docker System" "" "" 'docker_prune' || true
                         ;;
                     *)
                         error "Invalid Option"
