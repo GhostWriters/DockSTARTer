@@ -15,7 +15,7 @@ docker_prune() {
     if [[ ${PROMPT:-CLI} == GUI && -t 1 ]]; then
         {
             eval "${RUNCOMMAND}" || error "Failed to remove unused docker resources.\nFailing command: ${F[C]}${RUNCOMMAND}"
-        } |& dialog --begin 2 2 --title "${Title}" --programbox "${RUNCOMMAND}" $((LINES - 4)) $((COLUMNS - 5))
+        } |& dialog_pipe "${Title}" "${RUNCOMMAND}"
 
     else
         eval "${RUNCOMMAND}" || error "Failed to remove unused docker resources.\nFailing command: ${F[C]}${RUNCOMMAND}"
