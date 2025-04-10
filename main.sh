@@ -611,21 +611,24 @@ main() {
     # Execute CLI Argument Functions
     if [[ -n ${ADD-} ]]; then
         run_script 'env_migrate_global'
-        run_script 'appvars_create' "${ADD}"
+        run_script_dialog "Add Application" "$(run_script 'app_nicename' "${ADD}")" "" \
+            'appvars_create' "${ADD}"
         run_script 'env_update'
         exit
     fi
     if [[ -n ${COMPOSE-} ]]; then
         case ${COMPOSE} in
             down)
-                run_script 'docker_compose' "${COMPOSE}"
+                run_script_dialog "Docker Compose" "${COMPOSE}" "" \
+                    'docker_compose' "${COMPOSE}"
                 ;;
             generate | merge)
-                run_script 'yml_merge'
+                run_script_dialog "Docker Compose Merge" "" "" \
+                    'yml_merge'
                 ;;
             pull* | restart* | up*)
-                run_script 'yml_merge'
-                run_script 'docker_compose' "${COMPOSE}"
+                run_script_dialog "Docker Compose" "${COMPOSE}" "" \
+                    'merge_and_compose' "${COMPOSE}"
                 ;;
             *)
                 fatal "Invalid compose option."
@@ -634,14 +637,16 @@ main() {
         exit
     fi
     if [[ -n ${ENV-} ]]; then
-        run_script 'appvars_create_all'
+        run_script_dialog "Creating environment variables for added apps." "Please be patient, this can take a while." "" \
+            'appvars_create_all'
         exit
     fi
     if [[ -n ${ENVMETHOD-} ]]; then
         case "${ENVMETHOD-}" in
             --env-get)
                 if [[ ${ENVVAR-} != "" ]]; then
-                    run_script 'env_get' "${ENVVAR^^}"
+                    run_script_dialog "Get value of variable ${ENVVAR^^}" "" "" \
+                        'env_get' "${ENVVAR^^}"
                 else
                     echo "Invalid usage. Must be"
                     echo "  --env-get with variable name ('--env-get=VAR')"
@@ -660,7 +665,8 @@ main() {
                 ;;
             --env-get-lower)
                 if [[ ${ENVVAR-} != "" ]]; then
-                    run_script 'env_get' "${ENVVAR}"
+                    run_script_dialog "Get value of variable ${ENVVAR}" "" "" \
+                        'env_get' "${ENVVAR}"
                 else
                     echo "Invalid usage. Must be"
                     echo "  --env-get-lower with variable name ('--env-get-lower=Var')"
@@ -679,7 +685,8 @@ main() {
                 ;;
             --env-list)
                 if [[ ${ENVVAR-} != "" ]]; then
-                    run_script 'appvars_list' "${ENVVAR^^}"
+                    run_script_dialog "List all variables for $(run_script 'app_nicename' "${ENVVAR}")" "" "" \
+                        'appvars_list' "${ENVVAR^^}"
                 else
                     echo "Invalid usage. Must be"
                     echo "  --env-list with application name ('--env-list=APP')"
@@ -687,7 +694,8 @@ main() {
                 ;;
             --env-lines)
                 if [[ ${ENVVAR-} != "" ]]; then
-                    run_script 'appvars_lines' "${ENVVAR^^}"
+                    run_script_dialog "List all variables lines for $(run_script 'app_nicename' "${ENVVAR}")" "" "" \
+                        'appvars_lines' "${ENVVAR^^}"
                 else
                     echo "Invalid usage. Must be"
                     echo "  --env-lines with application name ('--env-lines=APP')"
@@ -704,25 +712,31 @@ main() {
         exit
     fi
     if [[ -n ${LIST-} ]]; then
-        run_script 'app_list'
+        run_script_dialog "List All Applications" "" "" \
+            'app_list'
         exit
     fi
     if [[ -n ${LISTMETHOD-} ]]; then
         case "${LISTMETHOD-}" in
             --list-builtin)
-                run_script 'app_nicename' "$(run_script 'app_list_builtin')"
+                run_script_dialog "List Builtin Applications" "" "" \
+                    'app_nicename' "$(run_script 'app_list_builtin')"
                 ;;
             --list-depreciated)
-                run_script 'app_nicename' "$(run_script 'app_list_depreciated')"
+                run_script_dialog "List Depreciated Applications" "" "" \
+                    'app_nicename' "$(run_script 'app_list_depreciated')"
                 ;;
             --list-added)
-                run_script 'app_nicename' "$(run_script 'app_list_added')"
+                run_script_dialog "List Added Applications" "" "" \
+                    'app_nicename' "$(run_script 'app_list_added')"
                 ;;
             --list-enabled)
-                run_script 'app_nicename' "$(run_script 'app_list_enabled')"
+                run_script_dialog "List Enabled Applications" "" "" \
+                    'app_nicename' "$(run_script 'app_list_enabled')"
                 ;;
             --list-disabled)
-                run_script 'app_nicename' "$(run_script 'app_list_disabled')"
+                run_script_dialog "List Disabled Applications" "" "" \
+                    'app_nicename' "$(run_script 'app_list_disabled')"
                 ;;
             *)
                 echo "Invalid option: '${LISTMETHOD-}'"
@@ -749,7 +763,8 @@ main() {
     if [[ -n ${STATUSMETHOD-} ]]; then
         case "${STATUSMETHOD-}" in
             --status)
-                run_script 'app_status' "${STATUS}"
+                run_script_dialog "Status of $(run_script 'app_nicename' "${STATUS}")" "" "" \
+                    'app_status' "${STATUS}"
                 ;;
             --status-enabled)
                 run_script 'env_migrate_global'
