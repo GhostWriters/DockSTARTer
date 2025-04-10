@@ -484,6 +484,11 @@ run_script() {
     fi
 }
 
+# Check to see if we should use a dialog box
+use_dialog_box() {
+    [[ ${PROMPT:-CLI} == GUI && -t 1 && -t 2 ]]
+}
+
 # Pipe to Dialog Box Function
 dialog_pipe() {
     local Title=${1:-}
