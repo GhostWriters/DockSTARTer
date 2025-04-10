@@ -10,8 +10,8 @@ update_self() {
         return 1
     fi
 
-    if [[ ${PROMPT:-CLI} == GUI && -t 1 ]]; then
-        commands_update_self "$@" |& dialog --begin 2 2 --title "${Title}" --programbox "Performing updates to DockSTARTer" $((LINES - 4)) $((COLUMNS - 5))
+    if use_dialog_box; then
+        commands_update_self "$@" |& dialog_pipe "${Title}" "Performing updates to DockSTARTer"
     else
         commands_update_self "$@"
     fi

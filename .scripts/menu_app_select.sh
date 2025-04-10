@@ -60,7 +60,7 @@ menu_app_select() {
 
                 run_script 'appvars_purge_all'
                 run_script 'env_update'
-            } |& dialog --begin 2 2 --timeout 1 --title "${Title}" --programbox "Enabling Selected Applications" $((LINES - 4)) $((COLUMNS - 5))
+            } |& dialog_pipe "${Title}" "Enabling Selected Applications" 1
             return 0
             ;;
         CANCEL | ESC)

@@ -16,7 +16,7 @@ appvars_purge() {
         APPVAR_LINES=$(run_script 'appvars_lines' "${APPNAME}")
         APPVAR_ENV_LINES=$(run_script 'env_lines' "${APP_ENV_FILE}")
         if [[ -z ${APPVAR_LINES} && -z ${APPVAR_ENV_LINES} ]]; then
-            if [[ ${PROMPT:-CLI} == "GUI" && -t 1 ]]; then
+            if use_dialog_box; then
                 dialog --title "${Title}" --msgbox "${APPNAME} has no variables." 0 0
             else
                 warn "${APPNAME} has no variables."

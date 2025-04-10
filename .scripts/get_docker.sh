@@ -8,7 +8,7 @@ get_docker() {
     local COMMAND=""
     local REDIRECT="> /dev/null 2>&1"
     if run_script 'question_prompt' Y "Would you like to display the command output?" "${Title}" "${VERBOSE:+Y}"; then
-        if [[ ${PROMPT:-CLI} == GUI && -t 1 ]]; then
+        if use_dialog_box; then
             #shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
             REDIRECT='|& dialog_pipe "${Title}" "${COMMAND}"'
         else

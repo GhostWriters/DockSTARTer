@@ -12,7 +12,7 @@ docker_prune() {
     fi
 
     local RUNCOMMAND="docker system prune --all --force --volumes"
-    if [[ ${PROMPT:-CLI} == GUI && -t 1 ]]; then
+    if use_dialog_box; then
         {
             eval "${RUNCOMMAND}" || error "Failed to remove unused docker resources.\nFailing command: ${F[C]}${RUNCOMMAND}"
         } |& dialog_pipe "${Title}" "${RUNCOMMAND}"

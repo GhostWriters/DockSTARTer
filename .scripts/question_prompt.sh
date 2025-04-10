@@ -21,7 +21,7 @@ question_prompt() {
         YN=${Default:-Y}
     elif [[ -n ${Override-} ]]; then
         YN="${Override}"
-    elif [[ ${PROMPT:-CLI} == "GUI" && -t 1 && -t 2 ]]; then
+    elif use_dialog_box; then
         local DIALOG_DEFAULT
         if [[ ${Default} == "N" ]]; then
             DIALOG_DEFAULT="--defaultno"
