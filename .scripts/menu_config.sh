@@ -33,7 +33,7 @@ menu_config() {
                 case "${ConfigChoice}" in
                     "Full Setup")
                         run_script_dialog "Updating variable files" "" 1 \
-                             'env_update' || true
+                            'env_update' || true
                         run_script 'menu_config_global' || true
                         run_script 'menu_app_select' || true
                         run_script 'menu_config_apps' || true
@@ -42,23 +42,23 @@ menu_config() {
                         ;;
                     "Set Global Variables")
                         run_script_dialog "Updating variable files" "" 1 \
-                              'env_update' || true
+                            'env_update' || true
                         run_script 'menu_config_global' || true
                         run_script_dialog "Merging and running Docker Compose" "" 1 \
-                             'merge_and_compose' || true
+                            'merge_and_compose' || true
                         ;;
                     "Select Apps")
                         run_script_dialog "Updating variable files" "" 1 \
-                              'env_update' || true
+                            'env_update' || true
                         run_script 'menu_app_select' || true
                         run_script_dialog "Merging and running Docker Compose" "" 1 \
-                             'merge_and_compose' || true
+                            'merge_and_compose' || true
                         ;;
                     "Set App Variables")
                         clear
                         run_script 'menu_config_apps' || true
                         run_script_dialog "Merging and running Docker Compose" "" 1 \
-                             'merge_and_compose' || true
+                            'merge_and_compose' || true
                         ;;
                     *)
                         error "Invalid Option"
