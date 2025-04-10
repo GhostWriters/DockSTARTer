@@ -506,7 +506,7 @@ run_script_dialog() {
     if [[ -f ${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh ]]; then
         # shellcheck source=/dev/null
         source "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh"
-        if [[ ${PROMPT:-CLI} == GUI && -t 1 && -t 2 ]]; then
+        if use_dialog_box; then
             # Using the GUI and StdOut or StdError aren't being redirected, pipe output to a dialog box
             ${SCRIPTSNAME} "$@" |& dialog_pipe "${Title}" "${SubTitle}" "${TimeOut}"
             local -i status=${PIPESTATUS[0]}
@@ -528,7 +528,7 @@ run_command_dialog() {
     local CommandName=${4-}
     shift 4
     if [[ -n ${CommandName-} ]]; then
-        if [[ ${PROMPT:-CLI} == GUI && -t 1 && -t 2 ]]; then
+        if use_dialog_box; then
             # Using the GUI and StdOut or StdError aren't being redirected, pipe output to a dialog box
             "${CommandName}" "$@" |& dialog_pipe "${Title}" "${SubTitle}" "${TimeOut}"
             return "${PIPESTATUS[0]}"
