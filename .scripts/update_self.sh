@@ -15,11 +15,7 @@ update_self() {
     else
         commands_update_self "$@"
     fi
-    if [[ ${MENU-} == true ]]; then
-        exec bash "${SCRIPTNAME}"
-    else
-        exec bash "${SCRIPTNAME}" -e
-    fi
+    exec bash "${SCRIPTNAME}" -e
 }
 
 commands_update_self() {
