@@ -505,7 +505,7 @@ run_script_dialog() {
             # Using the GUI and StdOut or StdError aren't being redirected, pipe output to a dialog box
             ${SCRIPTSNAME} "$@" |& dialog_pipe "${Title}" "${SubTitle}" "${TimeOut}"
             local -i status=${PIPESTATUS[0]}
-            echo -n "${NG}"
+            echo -n "${BS}"
             return ${status}
         else
             ${SCRIPTSNAME} "$@"
