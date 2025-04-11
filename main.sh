@@ -484,6 +484,15 @@ run_script() {
     fi
 }
 
+# Take whitespace and newline delimited words and output a single line highlited list for dialog
+highlighted_list() {
+    local List
+    List=$(xargs <<< "$*")
+    if [[ -n ${List-} ]]; then
+        echo "\Zr${List// /'\ZR \Zr'}\ZR"
+    fi
+}
+
 # Check to see if we should use a dialog box
 use_dialog_box() {
     [[ ${PROMPT:-CLI} == GUI && -t 1 && -t 2 ]]
@@ -611,7 +620,7 @@ main() {
     # Execute CLI Argument Functions
     if [[ -n ${ADD-} ]]; then
         run_script 'env_migrate_global'
-        run_script_dialog "Add Application" "$(run_script 'app_nicename' "${ADD}")" "" \
+        run_script_dialog "Add Application" "$(highlighted_list "$(run_script 'app_nicename' "${ADD}")")" "" \
             'appvars_create' "${ADD}"
         run_script 'env_update'
         exit
@@ -645,7 +654,7 @@ main() {
         case "${ENVMETHOD-}" in
             --env-get)
                 if [[ ${ENVVAR-} != "" ]]; then
-                    run_script_dialog "Get value of variable ${ENVVAR^^}" "" "" \
+                    run_script_dialog "Get Value of Variable" "$(highlighted_list "${ENVVAR^^}")" "" \
                         'env_get' "${ENVVAR^^}"
                 else
                     echo "Invalid usage. Must be"
@@ -665,7 +674,7 @@ main() {
                 ;;
             --env-get-lower)
                 if [[ ${ENVVAR-} != "" ]]; then
-                    run_script_dialog "Get value of variable ${ENVVAR}" "" "" \
+                    run_script_dialog "Get Value of Variable" "$(highlighted_list "${ENVVAR}")" "" \
                         'env_get' "${ENVVAR}"
                 else
                     echo "Invalid usage. Must be"
@@ -685,7 +694,7 @@ main() {
                 ;;
             --env-list)
                 if [[ ${ENVVAR-} != "" ]]; then
-                    run_script_dialog "List all variables for $(run_script 'app_nicename' "${ENVVAR}")" "" "" \
+                    run_script_dialog "Variables for Application" "$(highlighted_list "$(run_script 'app_nicename' "${ENVVAR}")")" "" \
                         'appvars_list' "${ENVVAR^^}"
                 else
                     echo "Invalid usage. Must be"
@@ -694,7 +703,7 @@ main() {
                 ;;
             --env-lines)
                 if [[ ${ENVVAR-} != "" ]]; then
-                    run_script_dialog "List all variables lines for $(run_script 'app_nicename' "${ENVVAR}")" "" "" \
+                    run_script_dialog "Variable Lines for Application" "$(highlighted_list "$(run_script 'app_nicename' "${ENVVAR}")")" "" \
                         'appvars_lines' "${ENVVAR^^}"
                 else
                     echo "Invalid usage. Must be"
@@ -764,7 +773,7 @@ main() {
     if [[ -n ${STATUSMETHOD-} ]]; then
         case "${STATUSMETHOD-}" in
             --status)
-                run_script_dialog "Application Status" "$(run_script 'app_nicename' "${STATUS}")" "" \
+                run_script_dialog "Application Status" "$(highlighted_list "$(run_script 'app_nicename' "${STATUS}")")" "" \
                     'app_status' "${STATUS}"
                 ;;
             --status-enabled)
