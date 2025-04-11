@@ -764,7 +764,7 @@ main() {
     if [[ -n ${STATUSMETHOD-} ]]; then
         case "${STATUSMETHOD-}" in
             --status)
-                run_script_dialog "Status of $(run_script 'app_nicename' "${STATUS}")" "" "" \
+                run_script_dialog "Application Status" "$(run_script 'app_nicename' "${STATUS}")" "" \
                     'app_status' "${STATUS}"
                 ;;
             --status-enabled)
