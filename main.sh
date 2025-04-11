@@ -38,7 +38,7 @@ For regular usage you can run without providing any options.
 -f --force
     force certain install/upgrade actions to run even if they would not be needed
 -g --gui
-    Display use the GUI
+    Use dialog boxes
 -l --list
     List all apps
 --list-builtin
