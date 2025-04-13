@@ -31,7 +31,7 @@ menu_app_select() {
         fi
     done < <(run_script 'app_list_nondepreciated')
 
-    local -i SelectedAppsDialogButtonPressed
+    local -i SelectedApps=0
     local SelectedApps
     if [[ ${CI-} == true ]]; then
         SelectedAppsDialogButtonPressed=${DIALOG_CANCEL}

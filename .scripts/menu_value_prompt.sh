@@ -107,7 +107,7 @@ menu_value_prompt() {
         ValueDescription="\n\n System detected values are recommended.${ValueDescription}"
     fi
 
-    local -i SelectDialogButtonPressed
+    local -i SelectDialogButtonPressed=0
     local SelectedValue
     if [[ ${CI-} == true ]]; then
         SelectDialogButtonPressed=${DIALOG_OK}
@@ -148,7 +148,7 @@ menu_value_prompt() {
                         0 0
                         "${CURRENT_VAL}"
                     )
-                    local -i InputDialogButtonPressed
+                    local -i InputDialogButtonPressed=0
                     Input=$(dialog "${InputDialog[@]}") || InputDialogButtonPressed=$?
                     case ${DIALOG_BUTTONS[InputDialogButtonPressed]-} in
                         OK) ;;
