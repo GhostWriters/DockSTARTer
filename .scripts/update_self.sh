@@ -11,7 +11,7 @@ update_self() {
     fi
 
     if use_dialog_box; then
-        commands_update_self "$@" |& dialog_pipe "${Title}" "Performing updates to DockSTARTer"
+        commands_update_self "$@" |& dialog_pipe "${Title}" "Updating DockSTARTer to ${BRANCH}"
     else
         commands_update_self "$@"
     fi

@@ -7,7 +7,6 @@ get_docker() {
     notice "Installing docker. Please be patient, this can take a while."
     if run_script 'question_prompt' Y "Would you like to display the command output?" "${Title}" "${VERBOSE:+Y}"; then
         if use_dialog_box; then
-            #shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
             command_get_docker |& dialog_pipe "${Title}" "Installing docker. Please be patient, this can take a while."
         else
             command_get_docker

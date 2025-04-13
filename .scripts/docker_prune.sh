@@ -12,14 +12,8 @@ docker_prune() {
     fi
 
     local RUNCOMMAND="docker system prune --all --force --volumes"
-    if use_dialog_box; then
-        {
-            eval "${RUNCOMMAND}" || error "Failed to remove unused docker resources.\nFailing command: ${F[C]}${RUNCOMMAND}"
-        } |& dialog_pipe "${Title}" "${RUNCOMMAND}"
-
-    else
+    run_command_dialog "${Title}" "${RUNCOMMAND}" "" \
         eval "${RUNCOMMAND}" || error "Failed to remove unused docker resources.\nFailing command: ${F[C]}${RUNCOMMAND}"
-    fi
 }
 
 test_docker_prune() {

@@ -7,16 +7,12 @@ pm_apt_upgrade() {
     if [[ ${CI-} != true ]]; then
         notice "Upgrading packages. Please be patient, this can take a while."
         local COMMAND='sudo apt-get -y dist-upgrade'
-        local REDIRECT="> /dev/null 2>&1"
+        local REDIRECT='> /dev/null 2>&1 '
         if run_script 'question_prompt' Y "Would you like to display the command output?" "${Title}" "${VERBOSE:+Y}"; then
-            if use_dialog_box; then
-                run_command_dialog "${Title}" "${COMMAND}" "" eval "${COMMAND}" || fatal "Failed to upgrade packages from apt.\nFailing command: ${F[C]}${COMMAND}"
-                return
-            else
-                REDIRECT=""
-            fi
+            #shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
+            REDIRECT='run_command_dialog "${Title}" "${COMMAND}" "" '
         fi
-        eval "${COMMAND} ${REDIRECT}" || fatal "Failed to upgrade packages from apt.\nFailing command: ${F[C]}${COMMAND}"
+        eval "${REDIRECT}${COMMAND}" || fatal "Failed to upgrade packages from apt.\nFailing command: ${F[C]}${COMMAND}"
     fi
 }
 

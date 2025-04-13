@@ -6,14 +6,10 @@ pm_apt_repos() {
     local Title="Update Repositories"
     notice "Updating repositories. Please be patient, this can take a while."
     local COMMAND=""
-    local REDIRECT="> /dev/null 2>&1"
+    local REDIRECT='> /dev/null 2>&1 '
     if run_script 'question_prompt' Y "Would you like to display the command output?" "${Title}" "${VERBOSE:+Y}"; then
-        if use_dialog_box; then
-            #shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
-            REDIRECT='|& dialog_pipe "${Title}" "${COMMAND}"'
-        else
-            REDIRECT=""
-        fi
+        #shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
+        REDIRECT='run_command_dialog "${Title}" "${COMMAND}" "" '
     fi
     local MINIMUM_APT_TRANSPORT_HTTPS="1"
     local INSTALLED_APT_TRANSPORT_HTTPS
@@ -21,10 +17,10 @@ pm_apt_repos() {
     if vergt "${MINIMUM_APT_TRANSPORT_HTTPS}" "${INSTALLED_APT_TRANSPORT_HTTPS:-0}"; then
         info "Updating repositories (before installing apt-transport-https)."
         COMMAND="sudo apt-get -y update"
-        eval "${COMMAND} ${REDIRECT}" || fatal "Failed to get updates from apt.\nFailing command: ${F[C]}${COMMAND}"
+        eval "${REDIRECT}${COMMAND}" || fatal "Failed to get updates from apt.\nFailing command: ${F[C]}${COMMAND}"
         info "Installing APT transport for downloading via the HTTP Secure protocol (HTTPS)."
         COMMAND="sudo apt-get -y install apt-transport-https"
-        eval "${COMMAND} ${REDIRECT}" || fatal "Failed to install apt-transport-https from apt.\nFailing command: ${F[C]}${COMMAND}"
+        eval "${REDIRECT}${COMMAND}" || fatal "Failed to install apt-transport-https from apt.\nFailing command: ${F[C]}${COMMAND}"
     fi
     local MINIMUM_LIBSECCOMP2="2.4.4"
     # Note compatibility from https://wiki.alpinelinux.org/wiki/Release_Notes_for_Alpine_3.14.0
@@ -37,11 +33,11 @@ pm_apt_repos() {
     fi
     info "Updating repositories."
     COMMAND="sudo apt-get -y update"
-    eval "${COMMAND} ${REDIRECT}" || fatal "Failed to get updates from apt.\nFailing command: ${F[C]}${COMMAND}"
+    eval "${REDIRECT}${COMMAND}" || fatal "Failed to get updates from apt.\nFailing command: ${F[C]}${COMMAND}"
     if vergt "${MINIMUM_LIBSECCOMP2}" "${INSTALLED_LIBSECCOMP2:-0}"; then
         info "Installing libseccomp2 from buster-backports repo."
         COMMAND="sudo apt-get -y install -t buster-backports libseccomp2"
-        eval "${COMMAND} ${REDIRECT}" || fatal "Failed to install libseccomp2 from buster-backports repo.\nFailing command: ${F[C]}${COMMAND}"
+        eval "${REDIRECT}${COMMAND}" || fatal "Failed to install libseccomp2 from buster-backports repo.\nFailing command: ${F[C]}${COMMAND}"
     fi
 }
 
