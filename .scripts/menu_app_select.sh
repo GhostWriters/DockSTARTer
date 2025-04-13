@@ -31,10 +31,10 @@ menu_app_select() {
         fi
     done < <(run_script 'app_list_nondepreciated')
 
-    local -i DIALOG_BUTTON_PRESSED
+    local -i SelectedAppsDialogButtonPressed
     local SelectedApps
     if [[ ${CI-} == true ]]; then
-        DIALOG_BUTTON_PRESSED=${DIALOG_CANCEL}
+        SelectedAppsDialogButtonPressed=${DIALOG_CANCEL}
     else
         local -a SelectedAppsDialog=(
             --stdout
@@ -45,10 +45,10 @@ menu_app_select() {
             0 0 0
             "${AppList[@]}"
         )
-        DIALOG_BUTTON_PRESSED=0
-        SelectedApps=$(dialog "${SelectedAppsDialog[@]}") || DIALOG_BUTTON_PRESSED=$?
+        SelectedAppsDialogButtonPressed=0
+        SelectedApps=$(dialog "${SelectedAppsDialog[@]}") || SelectedAppsDialogButtonPressed=$?
     fi
-    case ${DIALOG_BUTTONS[DIALOG_BUTTON_PRESSED]-} in
+    case ${DIALOG_BUTTONS[SelectedAppsDialogButtonPressed]-} in
         OK)
             {
                 info "Disabling previously selected apps."
@@ -67,12 +67,12 @@ menu_app_select() {
             return 1
             ;;
         *)
-            if [[ -n ${DIALOG_BUTTONS[DIALOG_BUTTON_PRESSED]-} ]]; then
+            if [[ -n ${DIALOG_BUTTONS[SelectedAppsDialogButtonPressed]-} ]]; then
                 clear
-                fatal "Unexpected dialog button '${DIALOG_BUTTONS[DIALOG_BUTTON_PRESSED]}' pressed."
+                fatal "Unexpected dialog button '${DIALOG_BUTTONS[SelectedAppsDialogButtonPressed]}' pressed."
             else
                 clear
-                fatal "Unexpected dialog button value '${DIALOG_BUTTON_PRESSED}' pressed."
+                fatal "Unexpected dialog button value '${SelectedAppsDialogButtonPressed}' pressed."
             fi
             ;;
     esac
