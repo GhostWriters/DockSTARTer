@@ -41,16 +41,20 @@ For regular usage you can run without providing any options.
     Use dialog boxes
 -l --list
     List all apps
+--list-added
+    List added apps
 --list-builtin
     List builtin apps
 --list-depreciated
     List depreciated apps
---list-added
-    List added apps
 --list-enabled
     List enabled apps
 --list-disabled
     List disabled apps
+--list-nondepreciated
+    List depreciated apps
+--list-referenced
+    List referenced apps (whether they are "built in" or not)
 -h --help
     show this usage information
 -i --install
@@ -736,6 +740,10 @@ main() {
                 run_script_dialog "List Depreciated Applications" "" "" \
                     'app_nicename' "$(run_script 'app_list_depreciated')"
                 ;;
+            --list-nondepreciated)
+                run_script_dialog "List Non-Depreciated Applications" "" "" \
+                    'app_nicename' "$(run_script 'app_list_nondepreciated')"
+                ;;
             --list-added)
                 run_script_dialog "List Added Applications" "" "" \
                     'app_nicename' "$(run_script 'app_list_added')"
@@ -748,6 +756,11 @@ main() {
                 run_script_dialog "List Disabled Applications" "" "" \
                     'app_nicename' "$(run_script 'app_list_disabled')"
                 ;;
+            --list-referenced)
+                run_script_dialog "List Referenced Applications" "" "" \
+                    'app_nicename' "$(run_script 'app_list_referenced')"
+                ;;
+
             *)
                 echo "Invalid option: '${LISTMETHOD-}'"
                 ;;
