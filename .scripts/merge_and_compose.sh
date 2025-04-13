@@ -5,7 +5,7 @@ IFS=$'\n\t'
 merge_and_compose() {
     Title="Merge and run Docker Compose"
     if use_dialog_box; then
-        commands_merge_and_compose "$@" |& dialog_pipe "${Title}"
+        commands_merge_and_compose "$@" |& dialog_pipe "${Title}" "$@"
     else
         commands_merge_and_compose "$@"
     fi
