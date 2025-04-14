@@ -17,7 +17,7 @@ env_get_line() {
         GET_VAR=${GET_VAR#"${APPNAME}:"}
     fi
     if [[ -f ${VAR_FILE} ]]; then
-        grep --color=never -Po "^\s*${GET_VAR}\s*=.*" "${VAR_FILE}" | tail -1 | xargs || true
+        grep --color=never -Po "^\s*${GET_VAR}\s*=.*" "${VAR_FILE}" | tail -1 || true
     else
         # VAR_FILE does not exist, give a warning
         warn "${VAR_FILE} does not exist."
