@@ -30,9 +30,15 @@ For regular usage you can run without providing any options.
 --env-get <var> [<var> ...]
 --env-get=<var>
     get the value of a <var>iable in .env (variable name is forced to UPPER CASE)
+--env-get-line <var> [<var> ...]
+--env-get-line=<var>
+    get the line of a <var>iable in .env (variable name is forced to UPPER CASE)
 --env-get-lower <var> [<var> ...]
 --env-get-lower=<var>
     get the value of a <var>iable in .env
+--env-get-lower-line <var> [<var> ...]
+--env-get-lower-line=<var>
+    get the line of a <var>iable in .env
 --env-set <var>=<val>
 --env-set=<var>,<val>
     Set the <val>ue of a <var>iable in .env (variable name is forced to UPPER CASE)
@@ -167,7 +173,7 @@ cmdline() {
                 readonly ENVMETHOD=${ARG}
                 LOCAL_ARGS="${LOCAL_ARGS-}-e "
                 ;;
-            --env-get=* | --env-get-lower=*)
+            --env-get=* | --env-get-lower=* | --env-get-line=* | --env-get-lower-line=*)
                 readonly ENVMETHOD=${ARG%%=*}
                 readonly ENVARG=${ARG#*=}
                 if [[ ${ENVMETHOD-} != "${ENVARG-}" ]]; then
@@ -184,7 +190,7 @@ cmdline() {
                 fi
                 LOCAL_ARGS="${LOCAL_ARGS-}-e "
                 ;;
-            --env-get | --env-get-lower)
+            --env-get | --env-get-lower | --env-get-line | --env-get-lower-line)
                 readonly ENVMETHOD=${ARG}
                 LOCAL_ARGS="${LOCAL_ARGS-}-e "
                 ;;
@@ -271,7 +277,7 @@ cmdline() {
                         ENVAPP=$(printf "%s " "${MULTIOPT[@]}" | xargs)
                         readonly ENVAPP
                         ;;
-                    --env-get | --env-get-lower)
+                    --env-get | --env-get-lower | --env-get-line | --env-get-lower-line)
                         if [[ -z ${ENVVAR-} ]]; then
                             local MULTIOPT
                             MULTIOPT=("$OPTARG")
@@ -741,6 +747,40 @@ main() {
                 else
                     echo "Invalid usage. Must be"
                     echo "  --env-get-lower with variable name ('--env-get-lower=Var' or '--env-get-lower Var [Var ...]')"
+                    echo "  Variable name can be Mixed Case"
+                fi
+                ;;
+            --env-get-line)
+                if [[ ${ENVVAR-} != "" ]]; then
+                    if use_dialog_box; then
+                        for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
+                            run_script 'env_get_line' "${VarName}"
+                        done |& dialog_pipe "Get Line of Variable" "$(highlighted_list "${ENVVAR^^}")" ""
+                    else
+                        for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
+                            run_script 'env_get_line' "${VarName}"
+                        done
+                    fi
+                else
+                    echo "Invalid usage. Must be"
+                    echo "  --env-get-line with variable name ('--env-get-line VAR' or '--env-get-line VAR [VAR ...]')"
+                    echo "  Variable name will be forced to UPPER CASE"
+                fi
+                ;;
+            --env-get-lower-line)
+                if [[ ${ENVVAR-} != "" ]]; then
+                    if use_dialog_box; then
+                        for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
+                            run_script 'env_get_line' "${VarName}"
+                        done |& dialog_pipe "Get Line of Variable" "$(highlighted_list "${ENVVAR}")" ""
+                    else
+                        for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
+                            run_script 'env_get_line' "${VarName}"
+                        done
+                    fi
+                else
+                    echo "Invalid usage. Must be"
+                    echo "  --env-get-lower-line with variable name ('--env-get-lower-line=Var' or '--env-get-lower-line Var [Var ...]')"
                     echo "  Variable name can be Mixed Case"
                 fi
                 ;;
