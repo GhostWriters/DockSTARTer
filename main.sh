@@ -563,6 +563,7 @@ dialog_pipe() {
     local SubTitle=${2:-}
     local TimeOut=${3:-0}
     dialog --begin 2 2 --colors --timeout "${TimeOut}" --title "${Title}" --programbox "\Zr${SubTitle}" $((LINES - 4)) $((COLUMNS - 5))
+    echo -n "${BS}"
 }
 # Script Dialog Runner Function
 run_script_dialog() {
@@ -577,9 +578,7 @@ run_script_dialog() {
         if use_dialog_box; then
             # Using the GUI and StdOut or StdError aren't being redirected, pipe output to a dialog box
             ${SCRIPTSNAME} "$@" |& dialog_pipe "${Title}" "${SubTitle}" "${TimeOut}"
-            local -i status=${PIPESTATUS[0]}
-            echo -n "${BS}"
-            return ${status}
+            return "${PIPESTATUS[0]}"
         else
             ${SCRIPTSNAME} "$@"
         fi
