@@ -35,15 +35,27 @@ question_prompt() {
             0 0
         )
         while true; do
+            local YNPrompt
+            if [[ ${Default} == Y ]]; then
+                YNPrompt='[Yn]'
+            elif [[ ${Default} == N ]]; then
+                YNPrompt='[yN]'
+            else
+                YNPrompt='[YN]'
+            fi
+            notice "${Question}" &> /dev/null
+            notice "${YNPrompt}" &> /dev/null
             local -i YesNoDialogButtonPressed=0
             dialog "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?
             case ${DIALOG_BUTTONS[YesNoDialogButtonPressed]-} in
                 OK)
                     YN="Y"
+                    notice "Answered: ${YN}" &> /dev/null
                     break
                     ;;
                 CANCEL | ESC)
                     YN="N"
+                    notice "Answered: ${YN}" &> /dev/null
                     break
                     ;;
                 *)
