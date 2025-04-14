@@ -15,7 +15,7 @@ NOTE: ds shortcut is only available after the first run of
 This is the main DockSTARTer script.
 For regular usage you can run without providing any options.
 
--a --add <appname>
+-a --add <appname> [<appname> ...]
     add the default .env variables for the app specified
 -c --compose
     run docker compose up with confirmation prompt
@@ -23,17 +23,21 @@ For regular usage you can run without providing any options.
     run docker compose commands without confirmation prompts
 -e --env
     update your .env file with new variables
+--env-get <var> [<var> ...]
 --env-get=<var>
     get the value of a <var>iable in .env (variable name is forced to UPPER CASE)
+--env-get-lower <var> [<var> ...]
 --env-get-lower=<var>
     get the value of a <var>iable in .env
+--env-set <var>=<val>
 --env-set=<var>,<val>
     Set the <val>ue of a <var>iable in .env (variable name is forced to UPPER CASE)
+--env-set-lower <var>=<val>
 --env-set-lower=<var>,<val>
     Set the <val>ue of a <var>iable in .env
---env-list=<app>
+--env-appvar-list <app> [<app> ...]
     List all variable names for the app specified
---env-lines=<app>
+--env-appvar-lines <app> [<app> ...]
     List all variables and values for the app specified
 -f --force
     force certain install/upgrade actions to run even if they would not be needed
@@ -159,23 +163,38 @@ cmdline() {
             --add) LOCAL_ARGS="${LOCAL_ARGS-}-a " ;;
             --compose) LOCAL_ARGS="${LOCAL_ARGS-}-c " ;;
             --debug) LOCAL_ARGS="${LOCAL_ARGS-}-x " ;;
-            --env) LOCAL_ARGS="${LOCAL_ARGS-}-e " ;;
-            --env-*)
+            --env)
+                readonly ENVMETHOD=${ARG}
+                LOCAL_ARGS="${LOCAL_ARGS-}-e "
+                ;;
+            --env-get=* | --env-get-lower=*)
                 readonly ENVMETHOD=${ARG%%=*}
                 readonly ENVARG=${ARG#*=}
-                if [[ ${ENVMETHOD-} == "${ENVARG-}" ]]; then
-                    echo "Invalid usage. Must be on of the following:"
-                    echo "  --env-set with variable name ('--env-set=VAR,VAL') and value"
-                    echo "  --env-get with variable name ('--env-get=VAR')"
-                    echo "  --env-set-lower with variable name ('--env-set-lower=Var,VAL') and value"
-                    echo "  --env-get-lower with variable name ('--env-get-lower=Var')"
-                    echo "  --env-list=<app> ('List all variable names for the app specified')"
-                    echo "  --env-lines=<app> ('List all variables and values for the app specified')"
-                    exit
-                else
+                if [[ ${ENVMETHOD-} != "${ENVARG-}" ]]; then
+                    readonly ENVVAR=${ENVARG}
+                fi
+                LOCAL_ARGS="${LOCAL_ARGS-}-e "
+                ;;
+            --env-set=* | --env-set-lower=*)
+                readonly ENVMETHOD=${ARG%%=*}
+                readonly ENVARG=${ARG#*=}
+                if [[ ${ENVMETHOD-} != "${ENVARG-}" ]]; then
                     readonly ENVVAR=${ENVARG%%,*}
                     readonly ENVVAL=${ENVARG#*,}
                 fi
+                LOCAL_ARGS="${LOCAL_ARGS-}-e "
+                ;;
+            --env-get | --env-get-lower)
+                readonly ENVMETHOD=${ARG}
+                LOCAL_ARGS="${LOCAL_ARGS-}-e "
+                ;;
+            --env-set | --env-set-lower)
+                readonly ENVMETHOD=${ARG}
+                LOCAL_ARGS="${LOCAL_ARGS-}-e "
+                ;;
+            --env-appvar-list | --env-appvar-lines)
+                readonly ENVMETHOD=${ARG}
+                LOCAL_ARGS="${LOCAL_ARGS-}-e "
                 ;;
             --force) LOCAL_ARGS="${LOCAL_ARGS-}-f " ;;
             --gui) LOCAL_ARGS="${LOCAL_ARGS-}-g " ;;
@@ -209,7 +228,7 @@ cmdline() {
     #Reset the positional parameters to the short options
     eval set -- "${LOCAL_ARGS-}"
 
-    while getopts ":a:c:efghilpr:s:t:u:vx" OPTION; do
+    while getopts ":a:c:e:fghilpr:s:t:u:vx" OPTION; do
         case ${OPTION} in
             a)
                 local MULTIOPT
@@ -240,7 +259,38 @@ cmdline() {
                 esac
                 ;;
             e)
-                readonly ENV=true
+                case ${ENVMETHOD} in
+                    --env) ;;
+                    --env-appvar-lines | --env-appvar-list)
+                        local MULTIOPT
+                        MULTIOPT=("$OPTARG")
+                        until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
+                            MULTIOPT+=("$(eval "echo \${$OPTIND}")")
+                            OPTIND=$((OPTIND + 1))
+                        done
+                        ENVAPP=$(printf "%s " "${MULTIOPT[@]}" | xargs)
+                        readonly ENVAPP
+                        ;;
+                    --env-get | --env-get-lower)
+                        if [[ -z ${ENVVAR-} ]]; then
+                            local MULTIOPT
+                            MULTIOPT=("$OPTARG")
+                            until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
+                                MULTIOPT+=("$(eval "echo \${$OPTIND}")")
+                                OPTIND=$((OPTIND + 1))
+                            done
+                            ENVVAR=$(printf "%s " "${MULTIOPT[@]}" | xargs)
+                            readonly ENVVAR
+                        fi
+                        ;;
+                    --env-set | --env-set-lower)
+                        if [[ -z ${ENVVAR-} ]]; then
+                            readonly ENVARG=${OPTARG}
+                            readonly ENVVAR=${ENVARG%%=*}
+                            readonly ENVVAL=${ENVARG#*=}
+                        fi
+                        ;;
+                esac
                 ;;
             f)
                 readonly FORCE=true
@@ -299,6 +349,11 @@ cmdline() {
                 case ${OPTARG} in
                     c)
                         readonly COMPOSE=up
+                        ;;
+                    e)
+                        if [[ -z ${ENVMETHOD-} ]]; then
+                            readonly ENVMETHOD="--env"
+                        fi
                         ;;
                     r)
                         readonly REMOVE=true
@@ -649,21 +704,47 @@ main() {
         esac
         exit
     fi
-    if [[ -n ${ENV-} ]]; then
-        run_script_dialog "Creating environment variables for added apps." "Please be patient, this can take a while." "" \
-            'appvars_create_all'
-        exit
-    fi
     if [[ -n ${ENVMETHOD-} ]]; then
         case "${ENVMETHOD-}" in
+            --env)
+                run_script_dialog "Creating environment variables for added apps." "Please be patient, this can take a while." "" \
+                    'appvars_create_all'
+                exit
+                ;;
             --env-get)
                 if [[ ${ENVVAR-} != "" ]]; then
-                    run_script_dialog "Get Value of Variable" "$(highlighted_list "${ENVVAR^^}")" "" \
-                        'env_get' "${ENVVAR^^}"
+                    notice "ENVVAR=[${ENVVAR^^}]"
+                    if use_dialog_box; then
+                        for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
+                            run_script 'env_get' "${VarName}"
+                        done |& dialog_pipe "Get Value of Variable" "$(highlighted_list "${ENVVAR^^}")" ""
+                    else
+                        for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
+                            run_script 'env_get' "${VarName}"
+                        done
+                    fi
                 else
                     echo "Invalid usage. Must be"
-                    echo "  --env-get with variable name ('--env-get=VAR')"
+                    echo "  --env-get with variable name ('--env-get VAR' or '--env-get VAR')"
                     echo "  Variable name will be forced to UPPER CASE"
+                fi
+                ;;
+            --env-get-lower)
+                if [[ ${ENVVAR-} != "" ]]; then
+                    notice "ENVVAR=[${ENVVAR}]"
+                    if use_dialog_box; then
+                        for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
+                            run_script 'env_get' "${VarName}"
+                        done |& dialog_pipe "Get Value of Variable" "$(highlighted_list "${ENVVAR}")" ""
+                    else
+                        for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
+                            run_script 'env_get' "${VarName}"
+                        done
+                    fi
+                else
+                    echo "Invalid usage. Must be"
+                    echo "  --env-get-lower with variable name ('--env-get-lower=Var' or '--env-get-lower Var')"
+                    echo "  Variable name can be Mixed Case"
                 fi
                 ;;
             --env-set)
@@ -672,18 +753,8 @@ main() {
                     run_script 'env_set' "${ENVVAR^^}" "${ENVVAL}"
                 else
                     echo "Invalid usage. Must be"
-                    echo "  --env-set with variable name and value ('--env-set=VAR,VAL')"
+                    echo "  --env-set with variable name and value ('--env-set=VAR,VAL' or '--env-set VAR=VAL')"
                     echo "  Variable name will be forced to UPPER CASE"
-                fi
-                ;;
-            --env-get-lower)
-                if [[ ${ENVVAR-} != "" ]]; then
-                    run_script_dialog "Get Value of Variable" "$(highlighted_list "${ENVVAR}")" "" \
-                        'env_get' "${ENVVAR}"
-                else
-                    echo "Invalid usage. Must be"
-                    echo "  --env-get-lower with variable name ('--env-get-lower=Var')"
-                    echo "  Variable name can be Mixed Case"
                 fi
                 ;;
             --env-set-lower)
@@ -692,26 +763,40 @@ main() {
                     run_script 'env_set' "${ENVVAR}" "${ENVVAL}"
                 else
                     echo "Invalid usage. Must be"
-                    echo "  --env-set-lower with variable name and value ('--env-set-lower=Var,VAL')"
+                    echo "  --env-set-lower with variable name and value ('--env-set-lower=Var,VAL' or '--env-set-lower Var=VAL')"
                     echo "  Variable name can be Mixed Case"
                 fi
                 ;;
-            --env-list)
-                if [[ ${ENVVAR-} != "" ]]; then
-                    run_script_dialog "Variables for Application" "$(highlighted_list "$(run_script 'app_nicename' "${ENVVAR}")")" "" \
-                        'appvars_list' "${ENVVAR^^}"
+            --env-appvar-list)
+                if [[ ${ENVAPP-} != "" ]]; then
+                    if use_dialog_box; then
+                        for AppName in $(xargs -n1 <<< "${ENVAPP^^}"); do
+                            run_script 'appvars_list' "${AppName}"
+                        done |& dialog_pipe "Variables for Application" "$(highlighted_list "$(run_script 'app_nicename' "${ENVAPP}")")" ""
+                    else
+                        for AppName in $(xargs -n1 <<< "${ENVAPP^^}"); do
+                            run_script 'appvars_list' "${AppName}"
+                        done
+                    fi
                 else
                     echo "Invalid usage. Must be"
-                    echo "  --env-list with application name ('--env-list=APP')"
+                    echo "  --env-appvar-list with application name ('--env-appvar-list APP')"
                 fi
                 ;;
-            --env-lines)
-                if [[ ${ENVVAR-} != "" ]]; then
-                    run_script_dialog "Variable Lines for Application" "$(highlighted_list "$(run_script 'app_nicename' "${ENVVAR}")")" "" \
-                        'appvars_lines' "${ENVVAR^^}"
+            --env-appvar-lines)
+                if [[ ${ENVAPP-} != "" ]]; then
+                    if use_dialog_box; then
+                        for AppName in $(xargs -n1 <<< "${ENVAPP^^}"); do
+                            run_script 'appvars_lines' "${AppName}"
+                        done |& dialog_pipe "Variable Lines for Application" "$(highlighted_list "$(run_script 'app_nicename' "${ENVAPP}")")" ""
+                    else
+                        for AppName in $(xargs -n1 <<< "${ENVAPP^^}"); do
+                            run_script 'appvars_lines' "${AppName}"
+                        done
+                    fi
                 else
                     echo "Invalid usage. Must be"
-                    echo "  --env-lines with application name ('--env-lines=APP')"
+                    echo "  --env-appvar-lines with application name ('--env-appvar-lines APP')"
                 fi
                 ;;
             *)
