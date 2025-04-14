@@ -33,6 +33,10 @@ test_appvars_lines() {
     run_script 'appvars_lines' WATCHTOWER
     notice "[RADARR__4K]"
     run_script 'appvars_lines' RADARR__4K
+    notice "[WATCHTOWER:]"
+    run_script 'appvars_lines' WATCHTOWER:
+    notice "[RADARR__4K:]"
+    run_script 'appvars_lines' RADARR__4K:
     notice "[]"
     run_script 'appvars_lines' ''
     #warn "CI does not test appvars_lines."
