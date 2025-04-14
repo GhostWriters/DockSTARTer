@@ -23,6 +23,10 @@ For regular usage you can run without providing any options.
     run docker compose commands without confirmation prompts
 -e --env
     update your .env file with new variables
+--env-appvars <app> [<app> ...]
+    List all variable names for the app specified
+--env-appvars-lines <app> [<app> ...]
+    List all variables and values for the app specified
 --env-get <var> [<var> ...]
 --env-get=<var>
     get the value of a <var>iable in .env (variable name is forced to UPPER CASE)
@@ -35,10 +39,6 @@ For regular usage you can run without providing any options.
 --env-set-lower <var>=<val>
 --env-set-lower=<var>,<val>
     Set the <val>ue of a <var>iable in .env
---env-appvar-list <app> [<app> ...]
-    List all variable names for the app specified
---env-appvar-lines <app> [<app> ...]
-    List all variables and values for the app specified
 -f --force
     force certain install/upgrade actions to run even if they would not be needed
 -g --gui
@@ -192,7 +192,7 @@ cmdline() {
                 readonly ENVMETHOD=${ARG}
                 LOCAL_ARGS="${LOCAL_ARGS-}-e "
                 ;;
-            --env-appvar-list | --env-appvar-lines)
+            --env-appvars | --env-appvars-lines)
                 readonly ENVMETHOD=${ARG}
                 LOCAL_ARGS="${LOCAL_ARGS-}-e "
                 ;;
@@ -261,7 +261,7 @@ cmdline() {
             e)
                 case ${ENVMETHOD} in
                     --env) ;;
-                    --env-appvar-lines | --env-appvar-list)
+                    --env-appvars | --env-appvars-lines)
                         local MULTIOPT
                         MULTIOPT=("$OPTARG")
                         until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
@@ -765,7 +765,7 @@ main() {
                     echo "  Variable name can be Mixed Case"
                 fi
                 ;;
-            --env-appvar-list)
+            --env-appvars)
                 if [[ ${ENVAPP-} != "" ]]; then
                     if use_dialog_box; then
                         for AppName in $(xargs -n1 <<< "${ENVAPP^^}"); do
@@ -778,10 +778,10 @@ main() {
                     fi
                 else
                     echo "Invalid usage. Must be"
-                    echo "  --env-appvar-list with application name ('--env-appvar-list App [App ...]')"
+                    echo "  --env-appvars with application name ('--env-appvars App [App ...]')"
                 fi
                 ;;
-            --env-appvar-lines)
+            --env-appvars-lines)
                 if [[ ${ENVAPP-} != "" ]]; then
                     if use_dialog_box; then
                         for AppName in $(xargs -n1 <<< "${ENVAPP^^}"); do
@@ -794,7 +794,7 @@ main() {
                     fi
                 else
                     echo "Invalid usage. Must be"
-                    echo "  --env-appvar-lines with application name ('--env-appvar-lines App [App ...]')"
+                    echo "  --env-appvars-lines with application name ('--env-appvars-lines App [App ...]')"
                 fi
                 ;;
             *)
