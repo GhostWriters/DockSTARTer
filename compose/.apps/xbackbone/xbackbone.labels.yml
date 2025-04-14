@@ -3,4 +3,4 @@ services:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "XBackBone is a simple, self-hosted, lightweight PHP file manager that support the instant sharing tool ShareX"
-      com.dockstarter.appinfo.nicename: "xbackbone"
+      com.dockstarter.appinfo.nicename: "XBackBone"

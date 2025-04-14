@@ -3,4 +3,4 @@ services:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "A full-featured database management tool"
-      com.dockstarter.appinfo.nicename: "adminer"
+      com.dockstarter.appinfo.nicename: "Adminer"
