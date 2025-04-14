@@ -713,7 +713,6 @@ main() {
                 ;;
             --env-get)
                 if [[ ${ENVVAR-} != "" ]]; then
-                    notice "ENVVAR=[${ENVVAR^^}]"
                     if use_dialog_box; then
                         for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
                             run_script 'env_get' "${VarName}"
@@ -725,13 +724,12 @@ main() {
                     fi
                 else
                     echo "Invalid usage. Must be"
-                    echo "  --env-get with variable name ('--env-get VAR' or '--env-get VAR')"
+                    echo "  --env-get with variable name ('--env-get VAR' or '--env-get VAR [VAR ...]')"
                     echo "  Variable name will be forced to UPPER CASE"
                 fi
                 ;;
             --env-get-lower)
                 if [[ ${ENVVAR-} != "" ]]; then
-                    notice "ENVVAR=[${ENVVAR}]"
                     if use_dialog_box; then
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
                             run_script 'env_get' "${VarName}"
@@ -743,7 +741,7 @@ main() {
                     fi
                 else
                     echo "Invalid usage. Must be"
-                    echo "  --env-get-lower with variable name ('--env-get-lower=Var' or '--env-get-lower Var')"
+                    echo "  --env-get-lower with variable name ('--env-get-lower=Var' or '--env-get-lower Var [Var ...]')"
                     echo "  Variable name can be Mixed Case"
                 fi
                 ;;
@@ -753,7 +751,7 @@ main() {
                     run_script 'env_set' "${ENVVAR^^}" "${ENVVAL}"
                 else
                     echo "Invalid usage. Must be"
-                    echo "  --env-set with variable name and value ('--env-set=VAR,VAL' or '--env-set VAR=VAL')"
+                    echo "  --env-set with variable name and value ('--env-set=VAR,VAL' or '--env-set VAR=Val')"
                     echo "  Variable name will be forced to UPPER CASE"
                 fi
                 ;;
@@ -763,7 +761,7 @@ main() {
                     run_script 'env_set' "${ENVVAR}" "${ENVVAL}"
                 else
                     echo "Invalid usage. Must be"
-                    echo "  --env-set-lower with variable name and value ('--env-set-lower=Var,VAL' or '--env-set-lower Var=VAL')"
+                    echo "  --env-set-lower with variable name and value ('--env-set-lower=Var,VAL' or '--env-set-lower Var=Val')"
                     echo "  Variable name can be Mixed Case"
                 fi
                 ;;
@@ -780,7 +778,7 @@ main() {
                     fi
                 else
                     echo "Invalid usage. Must be"
-                    echo "  --env-appvar-list with application name ('--env-appvar-list APP')"
+                    echo "  --env-appvar-list with application name ('--env-appvar-list App [App ...]')"
                 fi
                 ;;
             --env-appvar-lines)
@@ -796,7 +794,7 @@ main() {
                     fi
                 else
                     echo "Invalid usage. Must be"
-                    echo "  --env-appvar-lines with application name ('--env-appvar-lines APP')"
+                    echo "  --env-appvar-lines with application name ('--env-appvar-lines App [App ...]')"
                 fi
                 ;;
             *)
