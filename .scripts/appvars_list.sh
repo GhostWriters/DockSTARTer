@@ -17,9 +17,13 @@ appvars_list() {
 }
 
 test_appvars_list() {
+    notice "[WATCHTOWER]"
     run_script 'appvars_list' WATCHTOWER
+    notice "[RADARR__4K]"
     run_script 'appvars_list' RADARR__4K
+    notice "[WATCHTOWER:]"
     run_script 'appvars_list' WATCHTOWER:
+    notice "[RADARR__4K:]"
     run_script 'appvars_list' RADARR__4K:
     #warn "CI does not test app_vars_list."
 }
