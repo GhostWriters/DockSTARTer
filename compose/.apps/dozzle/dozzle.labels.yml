@@ -9,7 +9,6 @@ services:
       com.dockstarter.appvars.dozzle_environment_base: "/"
       com.dockstarter.appvars.dozzle_environment_filter: ""
       com.dockstarter.appvars.dozzle_environment_level: "info"
-      com.dockstarter.appvars.dozzle_environment_tailsize: "300"
       com.dockstarter.appvars.dozzle_network_mode: ""
       com.dockstarter.appvars.dozzle_port_8080: "8080"
       com.dockstarter.appvars.dozzle_restart: "unless-stopped"
