@@ -47,7 +47,8 @@ jobs:
           find "${GITHUB_WORKSPACE}" -name '*.sh' -exec \
             docker run --rm \
               -v "${GITHUB_WORKSPACE}":"${GITHUB_WORKSPACE}" \
-              mvdan/shfmt \
+              -w "${GITHUB_WORKSPACE}" \
+              mvdan/shfmt:v3 \
               -s -d \
               {} +
 
