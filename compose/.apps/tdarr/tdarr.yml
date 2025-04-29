@@ -5,7 +5,7 @@ services:
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}
-      - serverIP=${TDARR__IP_SERVERIP?}
+      - serverIP=${TDARR__ENVIRONMENT_SERVERIP?}
       - serverPort=${TDARR__PORT_8266?}
       - TZ=${TZ?}
       - webUIPort=${TDARR__PORT_8265?}

@@ -3,8 +3,8 @@ services:
     container_name: ${SMOKEPING__CONTAINER_NAME?}
     env_file: env_files/smokeping.env
     dns:
-      - ${SMOKEPING__IP_DNS1?}
-      - ${SMOKEPING__IP_DNS2?}
+      - ${SMOKEPING__ENVIRONMENT_DNS1?}
+      - ${SMOKEPING__ENVIRONMENT_DNS2?}
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}
