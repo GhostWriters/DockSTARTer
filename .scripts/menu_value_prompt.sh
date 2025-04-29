@@ -47,7 +47,7 @@ menu_value_prompt() {
             ;;
         LAN_NETWORK)
             SYSTEM_VAL=$(run_script 'detect_lan_network')
-            VALUEOPTIONS+=("Use System" "${SYSTEM_VAL}")
+            ValueOptions+=("Use System" "${SYSTEM_VAL}")
             ;;
         PGID)
             SYSTEM_VAL=${DETECTED_PGID}
