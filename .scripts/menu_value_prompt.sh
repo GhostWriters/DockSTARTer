@@ -45,6 +45,10 @@ menu_value_prompt() {
             HOME_VAL="${DETECTED_HOMEDIR}/storage"
             ValueOptions+=("Use Home" "${HOME_VAL}")
             ;;
+        LAN_NETWORK)
+            SYSTEM_VAL=$(run_script 'detect_lan_network')
+            VALUEOPTIONS+=("Use System" "${SYSTEM_VAL}")
+            ;;
         PGID)
             SYSTEM_VAL=${DETECTED_PGID}
             ValueOptions+=("Use System" "${SYSTEM_VAL}")
@@ -70,6 +74,9 @@ menu_value_prompt() {
             ;;
         DOCKER_HOSTNAME)
             ValueDescription='\n\n This should be your system hostname. If you are unsure, select Use System.'
+            ;;
+        LAN_NETWORK)
+            ValueDescription='\n\n This is used to define your home LAN network, do NOT confuse this with the IP address of your router or your server, the value for this key defines your network NOT a single host. Please Google CIDR Notation to learn more.'
             ;;
         PGID)
             ValueDescription='\n\n This should be your user group ID. If you are unsure, select Use System.'
