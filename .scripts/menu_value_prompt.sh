@@ -12,7 +12,7 @@ menu_value_prompt() {
     local APPNAME
     APPNAME=$(run_script 'varname_to_appname' "${VarName}")
     APPNAME=${APPNAME^^}
-    local appname=${appname,,}
+    local appname=${APPNAME,,}
     local APP_FOLDER="${SCRIPTPATH}/compose/.apps/${appname}"
     local APP_DEFAULT_GLOBAL_ENV_FILE="${APP_FOLDER}/.env"
 
