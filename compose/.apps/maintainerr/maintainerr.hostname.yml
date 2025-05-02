@@ -1,0 +1,3 @@
+services:
+  maintainerr:
+    hostname: ${DOCKER_HOSTNAME}
