@@ -1,4 +1,4 @@
 services:
   maintainerr:
     ports:
-      - ${maintainerr_PORT_6246}:6246
+      - ${MAINTAINERR_PORT_6246}:6246
