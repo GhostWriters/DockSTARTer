@@ -1,0 +1,12 @@
+services:
+  maintainerr:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Maintenance tool that automatically removes watched media based on user-defined rules to help manage server storage space."
+      com.dockstarter.appinfo.nicename: "Maintainerr"
+      com.dockstarter.appvars.maintainerr_container_name: "maintainerr"
+      com.dockstarter.appvars.maintainerr_enabled: "false"
+      com.dockstarter.appvars.maintainerr_network_mode: ""
+      com.dockstarter.appvars.maintainerr_port_6246: "6246"
+      com.dockstarter.appvars.maintainerr_restart: "unless-stopped"
+      com.dockstarter.appvars.maintainerr_tag: "latest"
