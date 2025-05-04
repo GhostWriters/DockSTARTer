@@ -1,0 +1,3 @@
+services:
+  maintainerr:
+    network_mode: ${MAINTAINERR_NETWORK_MODE}
