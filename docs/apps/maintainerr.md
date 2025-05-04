@@ -10,7 +10,24 @@
 
 ## Install/Setup
 
-This application does not have any specific setup instructions documented. If
-you need assistance setting up this application, please visit the official
+When installing the Maintainerr container, it will create its data directory in `appdata` as the root user. If you see errors like:
+
+> Could not create or access (files in) the data directory. Please make sure the necessary permissions are set
+
+You will need to change the ownership of the directory to your user account. To do this, run:
+
+```bash
+sudo chown -R $USER:$USER ~/.config/appdata/Maintainerr
+```
+
+Restart your container by running:
+
+```bash
+docker restart Maintainerr
+```
+
+Setting the correct ownership will let you edit the files as needed and will help ensure the application runs properly, without permission issues.
+
+If you need further assistance setting up this application, please visit the official
 [GitHub repository](https://github.com/jorenn92/Maintainerr) or our
 [support page](https://dockstarter.com/basics/support/).
