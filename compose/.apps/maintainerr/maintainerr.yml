@@ -1,9 +1,9 @@
 services:
   maintainerr:
-    container_name: ${MAINTAINERR_CONTAINER_NAME}
+    container_name: ${MAINTAINERR__CONTAINER_NAME}
     environment:
       - TZ=${TZ}
-    restart: ${MAINTAINERR_RESTART}
+    restart: ${MAINTAINERR__RESTART}
     user: ${PUID}:${PGID}
     volumes:
       - /etc/localtime:/etc/localtime:ro
