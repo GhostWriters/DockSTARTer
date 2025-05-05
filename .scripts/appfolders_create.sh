@@ -6,9 +6,11 @@ appfolders_create() {
     local APPNAME=${1-}
     APPNAME=${APPNAME^^}
 
-    local FILENAME=${APPNAME,,}
-    local APP_FOLDER="${TEMPLATES_FOLDER}/${FILENAME}"
-    local APP_FOLDERS_FILE="${APP_FOLDER}/${FILENAME}.folders"
+    local appname=${APPNAME,,}
+    local AppName
+    AppName=$(run_script 'app_nicename' "${APPNAME}")
+    local APP_FOLDER="${TEMPLATES_FOLDER}/${appname}"
+    local APP_FOLDERS_FILE="${APP_FOLDER}/${appname}.folders"
 
     if [[ -f ${APP_FOLDERS_FILE} ]]; then
         local -a FOLDERS_ARRAY=()
@@ -24,10 +26,10 @@ appfolders_create() {
                 fi
             done
             if [[ -n ${FOLDERS_ARRAY[*]-} ]]; then
-                notice "Creating config folders for ${APPNAME}."
+                notice "Creating config folders for ${AppName}."
                 for FOLDER in "${FOLDERS_ARRAY[@]-}"; do
-                    notice "Creating folder ${FOLDER}."
-                    mkdir -p "${FOLDER}" || warn "Could not create folder ${FOLDER}."
+                    notice "Creating folder ${FOLDER}"
+                    mkdir -p "${FOLDER}" || warn "Could not create folder ${FOLDER}"
                 done
             fi
         fi
