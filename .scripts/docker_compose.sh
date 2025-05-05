@@ -6,8 +6,10 @@ docker_compose() {
     local COMPOSEINPUT=${1-}
     local COMMAND=${COMPOSEINPUT%% *}
     local APPNAME
+    local AppName
     if [[ ${COMPOSEINPUT} == *" "* ]]; then
         APPNAME=${COMPOSEINPUT#* }
+        AppName=$(run_script 'app_nicename' "${APPNAME}")
     fi
     local COMPOSECOMMAND
     local COMMANDINFO
@@ -18,15 +20,15 @@ docker_compose() {
             ;;
         pull)
             COMPOSECOMMAND="pull --include-deps ${APPNAME-}"
-            COMMANDINFO="Pulling the latest images for ${APPNAME:-all enabled services}."
+            COMMANDINFO="Pulling the latest images for ${AppName:-all enabled services}."
             ;;
         restart)
             COMPOSECOMMAND="restart ${APPNAME-}"
-            COMMANDINFO="Restarting ${APPNAME:-all stopped and running services}."
+            COMMANDINFO="Restarting ${AppName:-all stopped and running services}."
             ;;
         up)
             COMPOSECOMMAND="up -d --remove-orphans ${APPNAME-}"
-            COMMANDINFO="Creating ${APPNAME:-containers for all enabled services}."
+            COMMANDINFO="Creating ${AppName:-containers for all enabled services}."
             ;;
         *)
             COMPOSECOMMAND="up -d --remove-orphans"
