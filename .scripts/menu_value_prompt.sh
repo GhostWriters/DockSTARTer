@@ -7,7 +7,7 @@ menu_value_prompt() {
     local Title="Variable Value - ${VarName}"
 
     local CURRENT_VAL
-    CURRENT_VAL=$(run_script 'env_get' "${VarName}")
+    CURRENT_VAL=$(run_script 'env_get_literal' "${VarName}")
 
     local APPNAME
     APPNAME=$(run_script 'varname_to_appname' "${VarName}")
@@ -17,9 +17,9 @@ menu_value_prompt() {
     local APP_DEFAULT_GLOBAL_ENV_FILE="${APP_FOLDER}/.env"
 
     local DEFAULT_VAL
-    DEFAULT_VAL=$(run_script 'env_get' "${VarName}" "${COMPOSE_ENV_DEFAULT_FILE}")
+    DEFAULT_VAL=$(run_script 'env_get_literal' "${VarName}" "${COMPOSE_ENV_DEFAULT_FILE}")
     if [[ -z ${DEFAULT_VAL} ]]; then
-        DEFAULT_VAL=$(run_script 'env_get' "${VarName}" "${APP_DEFAULT_GLOBAL_ENV_FILE}")
+        DEFAULT_VAL=$(run_script 'env_get_literal' "${VarName}" "${APP_DEFAULT_GLOBAL_ENV_FILE}")
     fi
 
     local HOME_VAL
@@ -30,35 +30,35 @@ menu_value_prompt() {
 
     case "${VarName}" in
         DOCKER_GID)
-            SYSTEM_VAL=$(cut -d: -f3 < <(getent group docker))
+            SYSTEM_VAL="'$(cut -d: -f3 < <(getent group docker))'"
             ValueOptions+=("Use System" "${SYSTEM_VAL}")
             ;;
         DOCKER_HOSTNAME)
-            SYSTEM_VAL=${HOSTNAME}
+            SYSTEM_VAL="'${HOSTNAME}'"
             ValueOptions+=("Use System" "${SYSTEM_VAL}")
             ;;
         DOCKER_VOLUME_CONFIG)
-            HOME_VAL="${DETECTED_HOMEDIR}/.config/appdata"
+            HOME_VAL="'${DETECTED_HOMEDIR}/.config/appdata'"
             ValueOptions+=("Use Home" "${HOME_VAL}")
             ;;
         DOCKER_VOLUME_STORAGE)
-            HOME_VAL="${DETECTED_HOMEDIR}/storage"
+            HOME_VAL="'${DETECTED_HOMEDIR}/storage'"
             ValueOptions+=("Use Home" "${HOME_VAL}")
             ;;
         LAN_NETWORK)
-            SYSTEM_VAL=$(run_script 'detect_lan_network')
+            SYSTEM_VAL="'$(run_script 'detect_lan_network')'"
             ValueOptions+=("Use System" "${SYSTEM_VAL}")
             ;;
         PGID)
-            SYSTEM_VAL=${DETECTED_PGID}
+            SYSTEM_VAL="'${DETECTED_PGID}'"
             ValueOptions+=("Use System" "${SYSTEM_VAL}")
             ;;
         PUID)
-            SYSTEM_VAL=${DETECTED_PUID}
+            SYSTEM_VAL="'${DETECTED_PUID}'"
             ValueOptions+=("Use System" "${SYSTEM_VAL}")
             ;;
         TZ)
-            SYSTEM_VAL=$(cat /etc/timezone)
+            SYSTEM_VAL="'$(cat /etc/timezone)'"
             ValueOptions+=("Use System" "${SYSTEM_VAL}")
             ;;
         *)
@@ -192,7 +192,7 @@ menu_value_prompt() {
         case "${VarName}" in
             "${APPNAME}__ENABLED")
                 if [[ ${Input} == true ]] || [[ ${Input} == false ]]; then
-                    run_script 'env_set' "${VarName}" "${Input}"
+                    run_script 'env_set_literal' "${VarName}" "${Input}"
                 else
                     dialog --title "${Title}" --msgbox "${Input} is not true or false. Please try setting ${VarName} again." 0 0
                     menu_value_prompt "${VarName}"
@@ -201,7 +201,7 @@ menu_value_prompt() {
             "${APPNAME}__NETWORK_MODE")
                 case "${Input}" in
                     "" | "bridge" | "host" | "none" | "service:"* | "container:"*)
-                        run_script 'env_set' "${VarName}" "${Input}"
+                        run_script 'env_set_literal' "${VarName}" "${Input}"
                         ;;
                     *)
                         dialog --title "${Title}" --msgbox "${Input} is not a valid network mode. Please try setting ${VarName} again." 0 0
@@ -211,7 +211,7 @@ menu_value_prompt() {
                 ;;
             "${APPNAME}__PORT_"*)
                 if [[ ${Input} =~ ^[0-9]+$ ]] || [[ ${Input} -ge 0 ]] || [[ ${Input} -le 65535 ]]; then
-                    run_script 'env_set' "${VarName}" "${Input}"
+                    run_script 'env_set_literal' "${VarName}" "${Input}"
                 else
                     dialog --title "${Title}" --msgbox "${Input} is not a valid port. Please try setting ${VarName} again." 0 0
                     menu_value_prompt "${VarName}"
@@ -220,7 +220,7 @@ menu_value_prompt() {
             "${APPNAME}__RESTART")
                 case "${Input}" in
                     "no" | "always" | "on-failure" | "unless-stopped")
-                        run_script 'env_set' "${VarName}" "${Input}"
+                        run_script 'env_set_literal' "${VarName}" "${Input}"
                         ;;
                     *)
                         dialog --title "${Title}" --msgbox "${Input} is not a valid restart value. Please try setting ${VarName} again." 0 0
@@ -235,14 +235,14 @@ menu_value_prompt() {
                 elif [[ ${Input} == ~* ]]; then
                     local CORRECTED_DIR="${DETECTED_HOMEDIR}${Input#*~}"
                     if run_script 'question_prompt' Y "Cannot use the ~ shortcut in ${VarName}. Would you like to use ${CORRECTED_DIR} instead?" "${Title}"; then
-                        run_script 'env_set' "${VarName}" "${CORRECTED_DIR}"
+                        run_script 'env_set_literal' "${VarName}" "${CORRECTED_DIR}"
                         dialog --title "${Title}" --msgbox "Returning to the previous menu to confirm selection." 0 0
                     else
                         dialog --title "${Title}" --msgbox "Cannot use the ~ shortcut in ${VarName}. Please select another folder." 0 0
                     fi
                     menu_value_prompt "${VarName}"
                 elif [[ -d ${Input} ]]; then
-                    run_script 'env_set' "${VarName}" "${Input}"
+                    run_script 'env_set_literal' "${VarName}" "${Input}"
                     if run_script 'question_prompt' Y "Would you like to set permissions on ${Input} ?" "${Title}"; then
                         run_script 'set_permissions' "${Input}"
                     fi
@@ -250,7 +250,7 @@ menu_value_prompt() {
                     if run_script 'question_prompt' Y "${Input} is not a valid path. Would you like to attempt to create it?" "${Title}"; then
                         mkdir -p "${Input}" || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p \"${Input}\""
                         run_script 'set_permissions' "${Input}"
-                        run_script 'env_set' "${VarName}" "${Input}"
+                        run_script 'env_set_literal' "${VarName}" "${Input}"
                         dialog --title "${Title}" --msgbox "${Input} folder was created successfully." 0 0
                     else
                         dialog --title "${Title}" --msgbox "${Input} is not a valid path. Please try setting ${VarName} again." 0 0
@@ -263,17 +263,17 @@ menu_value_prompt() {
                     if run_script 'question_prompt' Y "Running as root is not recommended. Would you like to select a different ID?" "${Title}"; then
                         menu_value_prompt "${VarName}"
                     else
-                        run_script 'env_set' "${VarName}" "${Input}"
+                        run_script 'env_set_literal' "${VarName}" "${Input}"
                     fi
                 elif [[ ${Input} =~ ^[0-9]+$ ]]; then
-                    run_script 'env_set' "${VarName}" "${Input}"
+                    run_script 'env_set_literal' "${VarName}" "${Input}"
                 else
                     dialog --title "${Title}" --msgbox "${Input} is not a valid ${VarName}. Please try setting ${VarName} again." 0 0
                     menu_value_prompt "${VarName}"
                 fi
                 ;;
             *)
-                run_script 'env_set' "${VarName}" "${Input}"
+                run_script 'env_set_literal' "${VarName}" "${Input}"
                 ;;
         esac
     fi
