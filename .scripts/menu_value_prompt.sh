@@ -179,9 +179,105 @@ menu_value_prompt() {
                 dialog --title "${Title}" --msgbox "Manual editing of values is not implemented yet." 0 0
                 ;;
             CANCEL | ESC) # DONE button
-                local -i result=0
-                Value["${CurrentValue}"]="$(validate_value "${VarName}" "${Value["${CurrentValue}"]}" "Save ${VarName}")" || result=$?
-                if [[ ${result} ]]; then # Value is valid, save it and exit
+                local -i ValueValid
+                if [[ ${Value["${CurrentValue}"]} == *"$"* ]]; then
+                    # Value contains a '$', assume it uses variable interpolation and allow it
+                    ValueValid=0
+                else
+                    case "${VarName}" in
+                        "${APPNAME}__ENABLED")
+                            if [[ ${Value["${CurrentValue}"]} == true ]] || [[ ${Value["${CurrentValue}"]} == false ]]; then
+                                ValueValid=0
+                            else
+                                ValueValid=1
+                                dialog --title "${Title}" --msgbox "${Value["${CurrentValue}"]} is not true or false. Please try setting ${CleanVarName} again." 0 0
+                            fi
+                            ;;
+                        "${APPNAME}__NETWORK_MODE")
+                            case "${Value["${CurrentValue}"]}" in
+                                "" | "bridge" | "host" | "none" | "service:"* | "container:"*)
+                                    ValueValid=0
+                                    ;;
+                                *)
+                                    ValueValid=1
+                                    dialog --title "${Title}" --msgbox "${Value["${CurrentValue}"]} is not a valid network mode. Please try setting ${CleanVarName} again." 0 0
+                                    ;;
+                            esac
+                            ;;
+                        "${APPNAME}__PORT_"*)
+                            printf '%s' "${Value["${CurrentValue}"]}"
+                            if [[ ${Value["${CurrentValue}"]} =~ ^[0-9]+$ ]] || [[ ${Value["${CurrentValue}"]} -ge 0 ]] || [[ ${Value["${CurrentValue}"]} -le 65535 ]]; then
+                                ValueValid=0
+                            else
+                                ValueValid=1
+                                dialog --title "${Title}" --msgbox "${Value["${CurrentValue}"]} is not a valid port. Please try setting ${CleanVarName} again." 0 0
+                            fi
+                            ;;
+                        "${APPNAME}__RESTART")
+                            case "${Value["${CurrentValue}"]}" in
+                                "no" | "always" | "on-failure" | "unless-stopped")
+                                    ValueValid=0
+                                    ;;
+                                *)
+                                    ValueValid=1
+                                    dialog --title "${Title}" --msgbox "${Value["${CurrentValue}"]} is not a valid restart value. Please try setting ${CleanVarName} again." 0 0
+                                    ;;
+                            esac
+                            ;;
+                        "${APPNAME}__VOLUME_"*)
+                            if [[ ${Value["${CurrentValue}"]} == "/" ]]; then
+                                dialog --title "${Title}" --msgbox "Cannot use / for ${VarName}. Please select another folder." 0 0
+                                ValueValid=1
+                            elif [[ ${Value["${CurrentValue}"]} == ~* ]]; then
+                                local CORRECTED_DIR="${DETECTED_HOMEDIR}${Value["${CurrentValue}"]#*~}"
+                                if run_script 'question_prompt' Y "Cannot use the ~ shortcut in ${VarName}. Would you like to use ${CORRECTED_DIR} instead?" "${Title}"; then
+                                    Value["${CurrentValue}"]="${CORRECTED_DIR}"
+                                    ValueValid=1
+                                    dialog --title "${Title}" --msgbox "Returning to the previous menu to confirm selection." 0 0
+                                else
+                                    ValueValid=1
+                                    dialog --title "${Title}" --msgbox "Cannot use the ~ shortcut in ${CleanVarName}. Please select another folder." 0 0
+                                fi
+                            elif [[ -d ${Value["${CurrentValue}"]} ]]; then
+                                if run_script 'question_prompt' Y "Would you like to set permissions on ${Value["${CurrentValue}"]} ?" "${Title}"; then
+                                    run_script_dialog "Settings Permissions" "${Value["${CurrentValue}"]}" "" \
+                                        'set_permissions' "${Value["${CurrentValue}"]}"
+                                fi
+                                ValueValid=0
+                            else
+                                if run_script 'question_prompt' Y "${Value["${CurrentValue}"]} is not a valid path. Would you like to attempt to create it?" "${Title}"; then
+                                    {
+                                        mkdir -p "${Value["${CurrentValue}"]}" || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p \"${Value["${CurrentValue}"]}\""
+                                        run_script 'set_permissions' "${Value["${CurrentValue}"]}"
+                                    } | dialog_pipe "Creating folder and settings permissions" "${Value["${CurrentValue}"]}"
+                                    dialog --title "${Title}" --msgbox "${Value["${CurrentValue}"]} folder was created successfully." 0 0
+                                    ValueValid=0
+                                else
+                                    dialog --title "${Title}" --msgbox "${Value["${CurrentValue}"]} is not a valid path. Please try setting ${CleanVarName} again." 0 0
+                                    ValueValid=1
+                                fi
+                            fi
+                            ;;
+                        P[GU]ID)
+                            if [[ ${Value["${CurrentValue}"]} == "0" ]]; then
+                                if run_script 'question_prompt' Y "Running as root is not recommended. Would you like to select a different ID?" "${Title}" "Y"; then
+                                    ValueValid=1
+                                else
+                                    ValueValid=0
+                                fi
+                            elif [[ ${Value["${CurrentValue}"]} =~ ^[0-9]+$ ]]; then
+                                ValueValid=0
+                            else
+                                dialog --stderr --title "${Title}" --msgbox "${Value["${CurrentValue}"]} is not a valid ${VarName}. Please try setting ${VarName} again." 0 0
+                                ValueValid=1
+                            fi
+                            ;;
+                        *)
+                            ValueValid=0
+                            ;;
+                    esac
+                fi
+                if [[ ${ValueValid} ]]; then # Value is valid, save it and exit
                     if run_script 'question_prompt' N "${DescriptionHeading}      Value: \Zr${Value["${CurrentValue}"]}\ZR\n" "Save Variable" "" "Save" "Back"; then
                         run_script 'env_set_literal' "${VarName}" "${Value["${CurrentValue}"]}"
                         return 0
@@ -197,120 +293,6 @@ menu_value_prompt() {
                 ;;
         esac
     done
-
-}
-
-validate_value() {
-    local VarName=${1-}
-    local Input=${2-}
-    local Title=${3-}
-    if [[ ${Input} == *"$"* ]]; then
-        # Value contains a '$', assume it uses variable interpolation and allow it
-        printf '%s' "${Input}"
-        return 0
-    fi
-    case "${VarName}" in
-        "${APPNAME}__ENABLED")
-            printf '%s' "${Input}"
-            if [[ ${Input} == true ]] || [[ ${Input} == false ]]; then
-                return 0
-            else
-                dialog --title "${Title}" --msgbox "${Input} is not true or false. Please try setting ${VarName} again." 0 0
-                return 1
-            fi
-            ;;
-        "${APPNAME}__NETWORK_MODE")
-            printf '%s' "${Input}"
-            case "${Input}" in
-                "" | "bridge" | "host" | "none" | "service:"* | "container:"*)
-                    return 0
-                    ;;
-                *)
-                    dialog --title "${Title}" --msgbox "${Input} is not a valid network mode. Please try setting ${VarName} again." 0 0
-                    return 1
-                    ;;
-            esac
-            ;;
-        "${APPNAME}__PORT_"*)
-            printf '%s' "${Input}"
-            if [[ ${Input} =~ ^[0-9]+$ ]] || [[ ${Input} -ge 0 ]] || [[ ${Input} -le 65535 ]]; then
-                return 0
-            else
-                dialog --title "${Title}" --msgbox "${Input} is not a valid port. Please try setting ${VarName} again." 0 0
-                return 1
-            fi
-            ;;
-        "${APPNAME}__RESTART")
-            printf '%s' "${Input}"
-            case "${Input}" in
-                "no" | "always" | "on-failure" | "unless-stopped")
-                    return 0
-                    ;;
-                *)
-                    dialog --title "${Title}" --msgbox "${Input} is not a valid restart value. Please try setting ${VarName} again." 0 0
-                    return 1
-                    ;;
-            esac
-            ;;
-        "${APPNAME}__VOLUME_"*)
-            if [[ ${Input} == "/" ]]; then
-                dialog --title "${Title}" --msgbox "Cannot use / for ${VarName}. Please select another folder." 0 0
-                printf '%s' "${Input}"
-                return 1
-            elif [[ ${Input} == ~* ]]; then
-                local CORRECTED_DIR="${DETECTED_HOMEDIR}${Input#*~}"
-                if run_script 'question_prompt' Y "Cannot use the ~ shortcut in ${VarName}. Would you like to use ${CORRECTED_DIR} instead?" "${Title}"; then
-                    dialog --title "${Title}" --msgbox "Returning to the previous menu to confirm selection." 0 0
-                    printf '%s' "${CORRECTED_DIR}"
-                    return 1
-                else
-                    dialog --title "${Title}" --msgbox "Cannot use the ~ shortcut in ${VarName}. Please select another folder." 0 0
-                    printf '%s' "${Input}"
-                    return 1
-                fi
-            elif [[ -d ${Input} ]]; then
-                if run_script 'question_prompt' Y "Would you like to set permissions on ${Input} ?" "${Title}"; then
-                    run_script_dialog "Settings Permissions" "${Input}" "" \
-                        'set_permissions' "${Input}"
-                fi
-                printf '%s' "${Input}"
-                return 0
-            else
-                if run_script 'question_prompt' Y "${Input} is not a valid path. Would you like to attempt to create it?" "${Title}"; then
-                    {
-                        mkdir -p "${Input}" || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p \"${Input}\""
-                        run_script 'set_permissions' "${Input}"
-                    } | dialog_pipe "Creating folder and settings permissions" "${Input}"
-                    dialog --title "${Title}" --msgbox "${Input} folder was created successfully." 0 0
-                    printf '%s' "${Input}"
-                    return 0
-                else
-                    dialog --title "${Title}" --msgbox "${Input} is not a valid path. Please try setting ${VarName} again." 0 0
-                    printf '%s' "${Input}"
-                    return 1
-                fi
-            fi
-            ;;
-        P[GU]ID)
-            printf '%s' "${Input}"
-            if [[ ${Input} == "0" ]]; then
-                if run_script 'question_prompt' Y "Running as root is not recommended. Would you like to select a different ID?" "${Title}" "Y"; then
-                    return 1
-                else
-                    return 0
-                fi
-            elif [[ ${Input} =~ ^[0-9]+$ ]]; then
-                return 0
-            else
-                dialog --stderr --title "${Title}" --msgbox "${Input} is not a valid ${VarName}. Please try setting ${VarName} again." 0 0
-                return 1
-            fi
-            ;;
-        *)
-            printf '%s' "${Input}"
-            return 0
-            ;;
-    esac
 }
 
 test_menu_value_prompt() {
