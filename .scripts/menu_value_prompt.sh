@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 menu_value_prompt() {
     local VarName=${1-}
-    local Title="Variable Value - ${VarName}"
+    local Title="Edit Variable"
     if [[ ${CI-} == true ]]; then
         return
     fi
@@ -15,6 +15,7 @@ menu_value_prompt() {
     local appname=${APPNAME,,}
     local AppName
     local AppName=$(run_script 'app_nicename' "${APPNAME}")
+    local CleanVarName=${VarName#*:}
     local VarFile=""
     local APP_FOLDER="${SCRIPTPATH}/compose/.apps/${appname}"
     local APP_DEFAULT_GLOBAL_ENV_FILE="${APP_FOLDER}/.env"
@@ -98,7 +99,7 @@ menu_value_prompt() {
         ValueDescription="\n\n System detected values are recommended.${ValueDescription}"
     fi
     local DescriptionHeading
-    DescriptionHeading="Application: \Zr${AppName}\ZR\n       File: \Zr${VarFile}\ZR\n   Variable: \Zr${VarName}\ZR\n\nWhat would you like set for ${VarName}?"
+    DescriptionHeading="Application: \Zr${AppName}\ZR\n       File: \Zr${VarFile}\ZR\n   Variable: \Zr${CleanVarName}\ZR\n\nWhat would you like set for ${CleanVarName}?"
     ValueDescription="${DescriptionHeading}${ValueDescription}"
     while true; do
         local -a ValueOptions=()
