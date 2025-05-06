@@ -125,6 +125,7 @@ menu_value_prompt() {
             --stdout
             --begin 2 2
             --colors
+            --no-visit-items
             --ok-label "Select"
             --extra-label "Edit"
             --cancel-label "Done"
