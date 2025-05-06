@@ -184,9 +184,18 @@ menu_value_prompt() {
                     # Value contains a '$', assume it uses variable interpolation and allow it
                     ValueValid="true"
                 else
+                    local StrippedValue="${Value["${CurrentValue}"]}"
+                    dialog --colors --title "${Title}" --msgbox "Original Value=\Zr${Value["${CurrentValue}"]}\ZR\nStripped Value=\Zr${StrippedValue}\ZR" 0 0
+                    # Strip comments from the value
+                    #StrippedValue="$(sed -E "s/('([^']|'')*'|\"([^\"]|\"\")*\")|(#.*)//g" <<< "${StrippedValue}")"
+                    #dialog --colors --title "${Title}" --msgbox "Original Value=\Zr${Value["${CurrentValue}"]}\ZR\nStripped Value=\Zr${StrippedValue}\ZR" 0 0
+                    # Unqauote the value
+                    StrippedValue="$(sed -E "s|^(['\"])(.*)\1$|\2|g" <<< "${StrippedValue}")"
+                    dialog --colors --title "${Title}" --msgbox "Original Value=\Zr${Value["${CurrentValue}"]}\ZR\nStripped Value=\Zr${StrippedValue}\ZR" 0 0
+
                     case "${VarName}" in
                         "${APPNAME}__ENABLED")
-                            if [[ ${Value["${CurrentValue}"]} == true ]] || [[ ${Value["${CurrentValue}"]} == false ]]; then
+                            if [[ ${StrippedValue} == true ]] || [[ ${StrippedValue} == false ]]; then
                                 ValueValid="true"
                             else
                                 ValueValid="false"
@@ -194,7 +203,7 @@ menu_value_prompt() {
                             fi
                             ;;
                         "${APPNAME}__NETWORK_MODE")
-                            case "${Value["${CurrentValue}"]}" in
+                            case "${StrippedValue}" in
                                 "" | "bridge" | "host" | "none" | "service:"* | "container:"*)
                                     ValueValid="true"
                                     ;;
@@ -206,7 +215,7 @@ menu_value_prompt() {
                             ;;
                         "${APPNAME}__PORT_"*)
                             printf '%s' "${Value["${CurrentValue}"]}"
-                            if [[ ${Value["${CurrentValue}"]} =~ ^[0-9]+$ ]] || [[ ${Value["${CurrentValue}"]} -ge 0 ]] || [[ ${Value["${CurrentValue}"]} -le 65535 ]]; then
+                            if [[ ${StrippedValue} =~ ^[0-9]+$ ]] || [[ ${StrippedValue} -ge 0 ]] || [[ ${StrippedValue} -le 65535 ]]; then
                                 ValueValid="true"
                             else
                                 ValueValid="false"
@@ -214,7 +223,7 @@ menu_value_prompt() {
                             fi
                             ;;
                         "${APPNAME}__RESTART")
-                            case "${Value["${CurrentValue}"]}" in
+                            case "${StrippedValue}" in
                                 "no" | "always" | "on-failure" | "unless-stopped")
                                     ValueValid="true"
                                     ;;
@@ -225,12 +234,12 @@ menu_value_prompt() {
                             esac
                             ;;
                         "${APPNAME}__VOLUME_"*)
-                            if [[ ${Value["${CurrentValue}"]} == "/" ]]; then
-                                dialog --title "${Title}" --msgbox "Cannot use / for ${VarName}. Please select another folder." 0 0
+                            if [[ ${StrippedValue} == "/" ]]; then
+                                dialog --title "${Title}" --msgbox "Cannot use / for ${CleanVarName}. Please select another folder." 0 0
                                 ValueValid="false"
-                            elif [[ ${Value["${CurrentValue}"]} == ~* ]]; then
+                            elif [[ ${StrippedValue} == ~* ]]; then
                                 local CORRECTED_DIR="${DETECTED_HOMEDIR}${Value["${CurrentValue}"]#*~}"
-                                if run_script 'question_prompt' Y "Cannot use the ~ shortcut in ${VarName}. Would you like to use ${CORRECTED_DIR} instead?" "${Title}"; then
+                                if run_script 'question_prompt' Y "Cannot use the ~ shortcut in ${CleanVarName}. Would you like to use ${CORRECTED_DIR} instead?" "${Title}"; then
                                     Value["${CurrentValue}"]="${CORRECTED_DIR}"
                                     ValueValid="false"
                                     dialog --title "${Title}" --msgbox "Returning to the previous menu to confirm selection." 0 0
@@ -238,17 +247,17 @@ menu_value_prompt() {
                                     ValueValid="false"
                                     dialog --title "${Title}" --msgbox "Cannot use the ~ shortcut in ${CleanVarName}. Please select another folder." 0 0
                                 fi
-                            elif [[ -d ${Value["${CurrentValue}"]} ]]; then
+                            elif [[ -d ${StrippedValue} ]]; then
                                 if run_script 'question_prompt' Y "Would you like to set permissions on ${Value["${CurrentValue}"]} ?" "${Title}"; then
-                                    run_script_dialog "Settings Permissions" "${Value["${CurrentValue}"]}" "" \
-                                        'set_permissions' "${Value["${CurrentValue}"]}"
+                                    run_script_dialog "Settings Permissions" "${StrippedValue}" "" \
+                                        'set_permissions' "${StrippedValue}"
                                 fi
                                 ValueValid="true"
                             else
                                 if run_script 'question_prompt' Y "${Value["${CurrentValue}"]} is not a valid path. Would you like to attempt to create it?" "${Title}"; then
                                     {
-                                        mkdir -p "${Value["${CurrentValue}"]}" || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p \"${Value["${CurrentValue}"]}\""
-                                        run_script 'set_permissions' "${Value["${CurrentValue}"]}"
+                                        mkdir -p "${StrippedValue}" || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p \"${StrippedValue}\""
+                                        run_script 'set_permissions' "${StrippedValue}"
                                     } | dialog_pipe "Creating folder and settings permissions" "${Value["${CurrentValue}"]}"
                                     dialog --title "${Title}" --msgbox "${Value["${CurrentValue}"]} folder was created successfully." 0 0
                                     ValueValid="true"
@@ -259,13 +268,13 @@ menu_value_prompt() {
                             fi
                             ;;
                         P[GU]ID)
-                            if [[ ${Value["${CurrentValue}"]} == "0" ]]; then
+                            if [[ ${StrippedValue} == "0" ]]; then
                                 if run_script 'question_prompt' Y "Running as root is not recommended. Would you like to select a different ID?" "${Title}" "Y"; then
                                     ValueValid="false"
                                 else
                                     ValueValid="true"
                                 fi
-                            elif [[ ${Value["${CurrentValue}"]} =~ ^[0-9]+$ ]]; then
+                            elif [[ ${StrippedValue} =~ ^[0-9]+$ ]]; then
                                 ValueValid="true"
                             else
                                 dialog --stderr --title "${Title}" --msgbox "${Value["${CurrentValue}"]} is not a valid ${VarName}. Please try setting ${VarName} again." 0 0
