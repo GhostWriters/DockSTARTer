@@ -5,278 +5,270 @@ IFS=$'\n\t'
 menu_value_prompt() {
     local VarName=${1-}
     local Title="Variable Value - ${VarName}"
-
-    local CURRENT_VAL
-    CURRENT_VAL=$(run_script 'env_get_literal' "${VarName}")
+    if [[ ${CI-} == true ]]; then
+        return
+    fi
 
     local APPNAME
     APPNAME=$(run_script 'varname_to_appname' "${VarName}")
     APPNAME=${APPNAME^^}
     local appname=${APPNAME,,}
+    local AppName
+    local AppName=$(run_script 'app_nicename' "${APPNAME}")
+    local VarFile=""
     local APP_FOLDER="${SCRIPTPATH}/compose/.apps/${appname}"
     local APP_DEFAULT_GLOBAL_ENV_FILE="${APP_FOLDER}/.env"
 
-    local DEFAULT_VAL
-    DEFAULT_VAL=$(run_script 'env_get_literal' "${VarName}" "${COMPOSE_ENV_DEFAULT_FILE}")
-    if [[ -z ${DEFAULT_VAL} ]]; then
-        DEFAULT_VAL=$(run_script 'env_get_literal' "${VarName}" "${APP_DEFAULT_GLOBAL_ENV_FILE}")
-    fi
-
-    local HOME_VAL
-    local SYSTEM_VAL
     local ValueDescription
-    local ValueOptions=()
-    ValueOptions+=("Keep Current" "${CURRENT_VAL}")
+    ValueDescription=$(value_description "${VarName}")
 
-    case "${VarName}" in
-        DOCKER_GID)
-            SYSTEM_VAL="'$(cut -d: -f3 < <(getent group docker))'"
-            ValueOptions+=("Use System" "${SYSTEM_VAL}")
-            ;;
-        DOCKER_HOSTNAME)
-            SYSTEM_VAL="'${HOSTNAME}'"
-            ValueOptions+=("Use System" "${SYSTEM_VAL}")
-            ;;
-        DOCKER_VOLUME_CONFIG)
-            HOME_VAL="'${DETECTED_HOMEDIR}/.config/appdata'"
-            ValueOptions+=("Use Home" "${HOME_VAL}")
-            ;;
-        DOCKER_VOLUME_STORAGE)
-            HOME_VAL="'${DETECTED_HOMEDIR}/storage'"
-            ValueOptions+=("Use Home" "${HOME_VAL}")
-            ;;
-        LAN_NETWORK)
-            SYSTEM_VAL="'$(run_script 'detect_lan_network')'"
-            ValueOptions+=("Use System" "${SYSTEM_VAL}")
-            ;;
-        PGID)
-            SYSTEM_VAL="'${DETECTED_PGID}'"
-            ValueOptions+=("Use System" "${SYSTEM_VAL}")
-            ;;
-        PUID)
-            SYSTEM_VAL="'${DETECTED_PUID}'"
-            ValueOptions+=("Use System" "${SYSTEM_VAL}")
-            ;;
-        TZ)
-            SYSTEM_VAL="'$(cat /etc/timezone)'"
-            ValueOptions+=("Use System" "${SYSTEM_VAL}")
-            ;;
-        *)
-            ValueOptions+=("Use Default" "${DEFAULT_VAL}")
-            ;;
-    esac
-
-    ValueOptions+=("Enter New" "")
-
+    local -A Value
+    local -a ValidOptions=("Current Value" "Default Value" "Home Value" "System Value" "Previous Value")
+    local ValidOptionsRegex
+    {
+        IFS='|'
+        ValidOptionsRegex="${ValidOptions[*]}"
+    }
+    Value["Previous Value"]=$(run_script 'env_get_literal' "${VarName}")
+    Value["Current Value"]="${Value["Previous Value"]}"
     case "${VarName}" in
         DOCKER_GID)
             ValueDescription='\n\n This should be the Docker group ID. If you are unsure, select Use System.'
+            Value["System Value"]="'$(cut -d: -f3 < <(getent group docker))'"
             ;;
         DOCKER_HOSTNAME)
             ValueDescription='\n\n This should be your system hostname. If you are unsure, select Use System.'
+            Value["System Value"]="'${HOSTNAME}'"
+            ;;
+        DOCKER_VOLUME_CONFIG)
+            Value["Home Value"]="'${DETECTED_HOMEDIR}/.config/appdata'"
+            ;;
+        DOCKER_VOLUME_STORAGE)
+            Value["Home Value"]="'${DETECTED_HOMEDIR}/storage'"
             ;;
         LAN_NETWORK)
             ValueDescription='\n\n This is used to define your home LAN network, do NOT confuse this with the IP address of your router or your server, the value for this key defines your network NOT a single host. Please Google CIDR Notation to learn more.'
+            Value["System Value"]="'$(run_script 'detect_lan_network')'"
             ;;
         PGID)
             ValueDescription='\n\n This should be your user group ID. If you are unsure, select Use System.'
+            Value["System Value"]="'${DETECTED_PGID}'"
             ;;
         PUID)
             ValueDescription='\n\n This should be your user account ID. If you are unsure, select Use System.'
+            Value["System Value"]="'${DETECTED_PUID}'"
             ;;
         TZ)
             ValueDescription='\n\n If this is not the correct timezone please exit and set your system timezone.'
+            Value["System Value"]="'$(cat /etc/timezone)'"
             ;;
         "${APPNAME}__ENABLED")
             ValueDescription='\n\n Must be true or false.'
+            Value["Default Value"]="$(run_script 'env_get_literal' "${VarName}" "${COMPOSE_ENV_DEFAULT_FILE}")"
             ;;
         "${APPNAME}__NETWORK_MODE")
-            ValueDescription='\n\n Network Mode is usually left blank but can also be bridge, host, none, service: <APPNAME>, or container: <APPNAME>.'
+            ValueDescription='\n\n Network Mode is usually left blank but can also be bridge, host, none, service:<appname>, or container:<appname>.'
+            Value["Default Value"]="$(run_script 'env_get_literal' "${VarName}" "${COMPOSE_ENV_DEFAULT_FILE}")"
             ;;
         "${APPNAME}__PORT_"*)
             ValueDescription='\n\n Must be an unused port between 0 and 65535.'
+            Value["Default Value"]="$(run_script 'env_get_literal' "${VarName}" "${COMPOSE_ENV_DEFAULT_FILE}")"
             ;;
         "${APPNAME}__RESTART")
             ValueDescription='\n\n Restart is usually unless-stopped but can also be no, always, or on-failure.'
+            Value["Default Value"]="$(run_script 'env_get_literal' "${VarName}" "${COMPOSE_ENV_DEFAULT_FILE}")"
             ;;
         "${APPNAME}__TAG")
             ValueDescription='\n\n Tag is usually latest but can also be other values based on the image.'
+            Value["Default Value"]="$(run_script 'env_get_literal' "${VarName}" "${COMPOSE_ENV_DEFAULT_FILE}")"
             ;;
         "${APPNAME}__VOLUME_"*)
             ValueDescription='\n\n If the directory selected does not exist we will attempt to create it.'
+            Value["Default Value"]="$(run_script 'env_get_literal' "${VarName}" "${COMPOSE_ENV_DEFAULT_FILE}")"
             ;;
         *)
             ValueDescription=""
-            ;;
-    esac
-
-    if [[ -n ${SYSTEM_VAL-} ]]; then
-        ValueDescription="\n\n System detected values are recommended.${ValueDescription}"
-    fi
-
-    local -i SelectDialogButtonPressed=0
-    local SelectedValue
-    if [[ ${CI-} == true ]]; then
-        SelectDialogButtonPressed=${DIALOG_OK}
-        SelectedValue="Keep Current"
-    else
-        local -a SelectedValueDialog=(
-            --stdout
-            --title "${Title}"
-            --menu "What would you like set for ${VarName}?${ValueDescription}"
-            0 0 0
-            "${ValueOptions[@]}"
-        )
-        SelectDialogButtonPressed=0
-        SelectedValue=$(dialog "${SelectedValueDialog[@]}") || SelectDialogButtonPressed=$?
-    fi
-
-    local Input
-    case ${DIALOG_BUTTONS[SelectDialogButtonPressed]-} in
-        OK)
-            case "${SelectedValue}" in
-                "Keep Current")
-                    Input=${CURRENT_VAL}
-                    ;;
-                "Use Home")
-                    Input=${HOME_VAL}
-                    ;;
-                "Use Default")
-                    Input=${DEFAULT_VAL}
-                    ;;
-                "Use System")
-                    Input=${SYSTEM_VAL}
-                    ;;
-                "Enter New")
-                    local -a InputDialog=(
-                        --stdout
-                        --title "${Title}"
-                        --inputbox "What would you like set for ${VarName}?${ValueDescription}"
-                        0 0
-                        "${CURRENT_VAL}"
-                    )
-                    local -i InputDialogButtonPressed=0
-                    Input=$(dialog "${InputDialog[@]}") || InputDialogButtonPressed=$?
-                    case ${DIALOG_BUTTONS[InputDialogButtonPressed]-} in
-                        OK) ;;
-                        CANCEL | ESC)
-                            unset Input
-                            ;;
-                        *)
-                            if [[ -n ${DIALOG_BUTTONS[InputDialogButtonPressed]-} ]]; then
-                                clear && fatal "Unexpected dialog button '${DIALOG_BUTTONS[InputDialogButtonPressed]}' pressed."
-                            else
-                                clear && fatal "Unexpected dialog button value '${InputDialogButtonPressed}' pressed."
-                            fi
-                            ;;
-                    esac
-                    ;;
-            esac
-            ;;
-        CANCEL | ESC)
-            #warn "Selection of ${VarName} was canceled."
-            return 1
-            ;;
-        *)
-            if [[ -n ${DIALOG_BUTTONS[SelectDialogButtonPressed]-} ]]; then
-                clear && fatal "Unexpected dialog button '${DIALOG_BUTTONS[SelectDialogButtonPressed]}' pressed."
-            else
-                clear && fatal "Unexpected dialog button value' ${SelectDialogButtonPressed}' pressed."
+            Value["Default Value"]="$(run_script 'env_get_literal' "${VarName}" "${COMPOSE_ENV_DEFAULT_FILE}")"
+            if [[ -z ${Value["Default Value"]-} ]]; then
+                Value["Default Value"]=$(run_script 'env_get_literal' "${VarName}" "${APP_DEFAULT_GLOBAL_ENV_FILE}")
             fi
             ;;
     esac
+    if [[ -n ${Value["System Value"]-} ]]; then
+        ValueDescription="\n\n System detected values are recommended.${ValueDescription}"
+    fi
+    local DescriptionHeading
+    DescriptionHeading="Application: \Zr${AppName}\ZR\n       File: \Zr${VarFile}\ZR\n   Variable: \Zr${VarName}\ZR\n\nWhat would you like set for ${VarName}?"
+    ValueDescription="${DescriptionHeading}${ValueDescription}"
+    while true; do
+        local -a ValueOptions=()
+        for Option in "${ValidOptions[@]}"; do
+            if [[ -n ${Value[$Option]-} ]]; then
+                ValueOptions+=("${Option}" "${Value[$Option]}")
+            fi
+        done
 
-    if [[ -z ${Input-} ]]; then
-        menu_value_prompt "${VarName}"
-    else
-        case "${VarName}" in
-            "${APPNAME}__ENABLED")
-                if [[ ${Input} == true ]] || [[ ${Input} == false ]]; then
-                    run_script 'env_set_literal' "${VarName}" "${Input}"
+        local -i SelectValueDialogButtonPressed=0
+        local SelectedValue
+        local -a SelectValueDialog=(
+            --stdout
+            --colors
+            --extra-label "Edit"
+            --cancel-label "Done"
+            --title "${Title}"
+            --inputmenu "${ValueDescription}"
+            -$((LINES - 4)) $((COLUMNS - 5)) 10
+            "${ValueOptions[@]}"
+        )
+        SelectValueDialogButtonPressed=0
+        SelectedValue=$(dialog "${SelectValueDialog[@]}") || SelectValueDialogButtonPressed=$?
+
+        case ${DIALOG_BUTTONS[SelectValueDialogButtonPressed]-} in
+            OK)
+                if [[ ${SelectedValue} =~ ${ValidOptionsRegex} ]]; then
+                    if [[ -n ${Value[$SelectedValue]-} ]]; then
+                        Value["Current Value"]="${Value["$SelectedValue"]}"
+                    else
+                        error "Unset value '${SelectedValue}'"
+                    fi
                 else
-                    dialog --title "${Title}" --msgbox "${Input} is not true or false. Please try setting ${VarName} again." 0 0
-                    menu_value_prompt "${VarName}"
+                    error "Invalid option '${SelectedValue}'"
                 fi
                 ;;
-            "${APPNAME}__NETWORK_MODE")
-                case "${Input}" in
-                    "" | "bridge" | "host" | "none" | "service:"* | "container:"*)
-                        run_script 'env_set_literal' "${VarName}" "${Input}"
-                        ;;
-                    *)
-                        dialog --title "${Title}" --msgbox "${Input} is not a valid network mode. Please try setting ${VarName} again." 0 0
-                        menu_value_prompt "${VarName}"
-                        ;;
-                esac
+            EXTRA)
+                dialog --title "${Title}" --msgbox "Manual editing of values is not implemented yet." 0 0
                 ;;
-            "${APPNAME}__PORT_"*)
-                if [[ ${Input} =~ ^[0-9]+$ ]] || [[ ${Input} -ge 0 ]] || [[ ${Input} -le 65535 ]]; then
-                    run_script 'env_set_literal' "${VarName}" "${Input}"
-                else
-                    dialog --title "${Title}" --msgbox "${Input} is not a valid port. Please try setting ${VarName} again." 0 0
-                    menu_value_prompt "${VarName}"
-                fi
-                ;;
-            "${APPNAME}__RESTART")
-                case "${Input}" in
-                    "no" | "always" | "on-failure" | "unless-stopped")
-                        run_script 'env_set_literal' "${VarName}" "${Input}"
-                        ;;
-                    *)
-                        dialog --title "${Title}" --msgbox "${Input} is not a valid restart value. Please try setting ${VarName} again." 0 0
-                        menu_value_prompt "${VarName}"
-                        ;;
-                esac
-                ;;
-            "${APPNAME}__VOLUME_"*)
-                if [[ ${Input} == "/" ]]; then
-                    dialog --title "${Title}" --msgbox "Cannot use / for ${VarName}. Please select another folder." 0 0
-                    menu_value_prompt "${VarName}"
-                elif [[ ${Input} == ~* ]]; then
-                    local CORRECTED_DIR="${DETECTED_HOMEDIR}${Input#*~}"
-                    if run_script 'question_prompt' Y "Cannot use the ~ shortcut in ${VarName}. Would you like to use ${CORRECTED_DIR} instead?" "${Title}"; then
-                        run_script 'env_set_literal' "${VarName}" "${CORRECTED_DIR}"
-                        dialog --title "${Title}" --msgbox "Returning to the previous menu to confirm selection." 0 0
-                    else
-                        dialog --title "${Title}" --msgbox "Cannot use the ~ shortcut in ${VarName}. Please select another folder." 0 0
-                    fi
-                    menu_value_prompt "${VarName}"
-                elif [[ -d ${Input} ]]; then
-                    run_script 'env_set_literal' "${VarName}" "${Input}"
-                    if run_script 'question_prompt' Y "Would you like to set permissions on ${Input} ?" "${Title}"; then
-                        run_script 'set_permissions' "${Input}"
-                    fi
-                else
-                    if run_script 'question_prompt' Y "${Input} is not a valid path. Would you like to attempt to create it?" "${Title}"; then
-                        mkdir -p "${Input}" || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p \"${Input}\""
-                        run_script 'set_permissions' "${Input}"
-                        run_script 'env_set_literal' "${VarName}" "${Input}"
-                        dialog --title "${Title}" --msgbox "${Input} folder was created successfully." 0 0
-                    else
-                        dialog --title "${Title}" --msgbox "${Input} is not a valid path. Please try setting ${VarName} again." 0 0
-                        menu_value_prompt "${VarName}"
-                    fi
-                fi
-                ;;
-            P[GU]ID)
-                if [[ ${Input} == "0" ]]; then
-                    if run_script 'question_prompt' Y "Running as root is not recommended. Would you like to select a different ID?" "${Title}"; then
-                        menu_value_prompt "${VarName}"
-                    else
-                        run_script 'env_set_literal' "${VarName}" "${Input}"
-                    fi
-                elif [[ ${Input} =~ ^[0-9]+$ ]]; then
-                    run_script 'env_set_literal' "${VarName}" "${Input}"
-                else
-                    dialog --title "${Title}" --msgbox "${Input} is not a valid ${VarName}. Please try setting ${VarName} again." 0 0
-                    menu_value_prompt "${VarName}"
+            CANCEL | ESC) # DONE button
+                local -i result=0
+                Value["Current Value"]="$(validate_value "${VarName}" "${Value["Current Value"]}" "Save ${VarName}")" || result=$?
+                if [[ ${result} ]]; then # Value is valid, save it and exit
+                    run_script 'env_set_literal' "${VarName}" "${Value["Current Value"]}"
+                    return 0
                 fi
                 ;;
             *)
-                run_script 'env_set_literal' "${VarName}" "${Input}"
+                if [[ -n ${DIALOG_BUTTONS[SelectValueDialogButtonPressed]-} ]]; then
+                    clear && fatal "Unexpected dialog button '${DIALOG_BUTTONS[SelectValueDialogButtonPressed]}' pressed."
+                else
+                    clear && fatal "Unexpected dialog button value' ${SelectValueDialogButtonPressed}' pressed."
+                fi
                 ;;
         esac
+    done
+
+}
+
+validate_value() {
+    local VarName=${1-}
+    local Input=${2-}
+    local Title=${3-}
+    if [[ ${Input} == *"$"* ]]; then
+        # Value contains a '$', assume it uses variable interpolation and allow it
+        printf '%s' "${Input}"
+        return 0
     fi
+    case "${VarName}" in
+        "${APPNAME}__ENABLED")
+            printf '%s' "${Input}"
+            if [[ ${Input} == true ]] || [[ ${Input} == false ]]; then
+                return 0
+            else
+                dialog --title "${Title}" --msgbox "${Input} is not true or false. Please try setting ${VarName} again." 0 0
+                return 1
+            fi
+            ;;
+        "${APPNAME}__NETWORK_MODE")
+            printf '%s' "${Input}"
+            case "${Input}" in
+                "" | "bridge" | "host" | "none" | "service:"* | "container:"*)
+                    return 0
+                    ;;
+                *)
+                    dialog --title "${Title}" --msgbox "${Input} is not a valid network mode. Please try setting ${VarName} again." 0 0
+                    return 1
+                    ;;
+            esac
+            ;;
+        "${APPNAME}__PORT_"*)
+            printf '%s' "${Input}"
+            if [[ ${Input} =~ ^[0-9]+$ ]] || [[ ${Input} -ge 0 ]] || [[ ${Input} -le 65535 ]]; then
+                return 0
+            else
+                dialog --title "${Title}" --msgbox "${Input} is not a valid port. Please try setting ${VarName} again." 0 0
+                return 1
+            fi
+            ;;
+        "${APPNAME}__RESTART")
+            printf '%s' "${Input}"
+            case "${Input}" in
+                "no" | "always" | "on-failure" | "unless-stopped")
+                    return 0
+                    ;;
+                *)
+                    dialog --title "${Title}" --msgbox "${Input} is not a valid restart value. Please try setting ${VarName} again." 0 0
+                    return 1
+                    ;;
+            esac
+            ;;
+        "${APPNAME}__VOLUME_"*)
+            if [[ ${Input} == "/" ]]; then
+                dialog --title "${Title}" --msgbox "Cannot use / for ${VarName}. Please select another folder." 0 0
+                printf '%s' "${Input}"
+                return 1
+            elif [[ ${Input} == ~* ]]; then
+                local CORRECTED_DIR="${DETECTED_HOMEDIR}${Input#*~}"
+                if run_script 'question_prompt' Y "Cannot use the ~ shortcut in ${VarName}. Would you like to use ${CORRECTED_DIR} instead?" "${Title}"; then
+                    dialog --title "${Title}" --msgbox "Returning to the previous menu to confirm selection." 0 0
+                    printf '%s' "${CORRECTED_DIR}"
+                    return 1
+                else
+                    dialog --title "${Title}" --msgbox "Cannot use the ~ shortcut in ${VarName}. Please select another folder." 0 0
+                    printf '%s' "${Input}"
+                    return 1
+                fi
+            elif [[ -d ${Input} ]]; then
+                if run_script 'question_prompt' Y "Would you like to set permissions on ${Input} ?" "${Title}"; then
+                    run_script_dialog "Settings Permissions" "${Input}" "" \
+                        'set_permissions' "${Input}"
+                fi
+                printf '%s' "${Input}"
+                return 0
+            else
+                if run_script 'question_prompt' Y "${Input} is not a valid path. Would you like to attempt to create it?" "${Title}"; then
+                    {
+                        mkdir -p "${Input}" || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p \"${Input}\""
+                        run_script 'set_permissions' "${Input}"
+                    } | dialog_pipe "Creating folder and settings permissions" "${Input}"
+                    dialog --title "${Title}" --msgbox "${Input} folder was created successfully." 0 0
+                    printf '%s' "${Input}"
+                    return 0
+                else
+                    dialog --title "${Title}" --msgbox "${Input} is not a valid path. Please try setting ${VarName} again." 0 0
+                    printf '%s' "${Input}"
+                    return 1
+                fi
+            fi
+            ;;
+        P[GU]ID)
+            printf '%s' "${Input}"
+            if [[ ${Input} == "0" ]]; then
+                if run_script 'question_prompt' Y "Running as root is not recommended. Would you like to select a different ID?" "${Title}" "Y"; then
+                    return 1
+                else
+                    return 0
+                fi
+            elif [[ ${Input} =~ ^[0-9]+$ ]]; then
+                return 0
+            else
+                dialog --stderr --title "${Title}" --msgbox "${Input} is not a valid ${VarName}. Please try setting ${VarName} again." 0 0
+                return 1
+            fi
+            ;;
+        *)
+            printf '%s' "${Input}"
+            return 0
+            ;;
+    esac
 }
 
 test_menu_value_prompt() {
