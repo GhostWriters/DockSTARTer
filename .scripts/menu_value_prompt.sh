@@ -14,12 +14,20 @@ menu_value_prompt() {
     APPNAME=${APPNAME^^}
     local appname=${APPNAME,,}
     local AppName
-    local AppName=$(run_script 'app_nicename' "${APPNAME}")
-    local CleanVarName=${VarName#*:}
-    local VarFile=""
-    local APP_FOLDER="${SCRIPTPATH}/compose/.apps/${appname}"
-    local APP_DEFAULT_GLOBAL_ENV_FILE="${APP_FOLDER}/.env"
-
+    AppName=$(run_script 'app_nicename' "${APPNAME}")
+    local CleanVarName="${VarName}"
+    local VarFile="${COMPOSE_ENV}"
+    local DefaultVarFile=${COMPOSE_ENV_DEFAULT_FILE}
+    if [[ -n ${APPNAME-} ]]; then
+        local APP_FOLDER="${SCRIPTPATH}/compose/.apps/${appname}"
+        if [[ ${VarName} == *":"* ]]; then
+            CleanVarName=${VarName#*:}
+            VarFile="${APP_ENV_FOLDER}/${appname}.env"
+            DefaultVarFile="${APP_FOLDER}/${appname}.env"
+        else
+            DefaultVarFile="${APP_FOLDER}/.env"
+        fi
+    fi
     local ValueDescription
     ValueDescription=$(value_description "${VarName}")
 
@@ -65,34 +73,31 @@ menu_value_prompt() {
             ;;
         "${APPNAME}__ENABLED")
             ValueDescription='\n\n Must be true or false.'
-            Value["Default Value"]="$(run_script 'env_get_literal' "${VarName}" "${COMPOSE_ENV_DEFAULT_FILE}")"
+            Value["Default Value"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
             ;;
         "${APPNAME}__NETWORK_MODE")
             ValueDescription='\n\n Network Mode is usually left blank but can also be bridge, host, none, service:<appname>, or container:<appname>.'
-            Value["Default Value"]="$(run_script 'env_get_literal' "${VarName}" "${COMPOSE_ENV_DEFAULT_FILE}")"
+            Value["Default Value"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
             ;;
         "${APPNAME}__PORT_"*)
             ValueDescription='\n\n Must be an unused port between 0 and 65535.'
-            Value["Default Value"]="$(run_script 'env_get_literal' "${VarName}" "${COMPOSE_ENV_DEFAULT_FILE}")"
+            Value["Default Value"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
             ;;
         "${APPNAME}__RESTART")
             ValueDescription='\n\n Restart is usually unless-stopped but can also be no, always, or on-failure.'
-            Value["Default Value"]="$(run_script 'env_get_literal' "${VarName}" "${COMPOSE_ENV_DEFAULT_FILE}")"
+            Value["Default Value"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
             ;;
         "${APPNAME}__TAG")
             ValueDescription='\n\n Tag is usually latest but can also be other values based on the image.'
-            Value["Default Value"]="$(run_script 'env_get_literal' "${VarName}" "${COMPOSE_ENV_DEFAULT_FILE}")"
+            Value["Default Value"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
             ;;
         "${APPNAME}__VOLUME_"*)
             ValueDescription='\n\n If the directory selected does not exist we will attempt to create it.'
-            Value["Default Value"]="$(run_script 'env_get_literal' "${VarName}" "${COMPOSE_ENV_DEFAULT_FILE}")"
+            Value["Default Value"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
             ;;
         *)
             ValueDescription=""
-            Value["Default Value"]="$(run_script 'env_get_literal' "${VarName}" "${COMPOSE_ENV_DEFAULT_FILE}")"
-            if [[ -z ${Value["Default Value"]-} ]]; then
-                Value["Default Value"]=$(run_script 'env_get_literal' "${VarName}" "${APP_DEFAULT_GLOBAL_ENV_FILE}")
-            fi
+            Value["Default Value"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
             ;;
     esac
     if [[ -n ${Value["System Value"]-} ]]; then
