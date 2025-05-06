@@ -12,6 +12,9 @@ question_prompt() {
     local Title=${3-$BACKTITLE}
     local Override=${4-}
     Override=${Override^^:0:1}
+    local YesButton=${5-Yes}
+    local NoButton=${6-No}
+
     if [[ ${Override} != Y && ${Override} != N ]]; then
         Override=""
     fi
@@ -30,6 +33,8 @@ question_prompt() {
         local -a YesNoDialog=(
             --stdout
             --colors
+            --yes-label "${YesButton}"
+            --no-label "${NoButton}"
             --title "${Title}"
             ${DIALOG_DEFAULT-}
             --yesno "${Question}"
