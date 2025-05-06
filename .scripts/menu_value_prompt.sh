@@ -110,8 +110,7 @@ menu_value_prompt() {
         ValueDescription="\n\n System detected values are recommended.${ValueDescription}"
     fi
     local DescriptionHeading
-    DescriptionHeading="\nApplication: \Zr${AppName}\ZR\n       File: \Zr${VarFile}\ZR\n   Variable: \Zr${CleanVarName}\ZR\n\nWhat would you like set for ${CleanVarName}?"
-    ValueDescription="${DescriptionHeading}${ValueDescription}"
+    DescriptionHeading="\nApplication: \Zr${AppName}\ZR\n       File: \Zr${VarFile}\ZR\n   Variable: \Zr${CleanVarName}\ZR"
     while true; do
         local -a ValueOptions=()
         for Option in "${ValidOptions[@]}"; do
@@ -130,7 +129,7 @@ menu_value_prompt() {
             --extra-label "Edit"
             --cancel-label "Done"
             --title "${Title}"
-            --inputmenu "${ValueDescription}"
+            --inputmenu "${DescriptionHeading}\n\nWhat would you like set for ${CleanVarName}?${ValueDescription}"
             $((LINES - 7)) $((COLUMNS - 5)) 0
             "${ValueOptions[@]}"
         )
@@ -156,7 +155,7 @@ menu_value_prompt() {
                 local -i result=0
                 Value["${CurrentValue}"]="$(validate_value "${VarName}" "${Value["${CurrentValue}"]}" "Save ${VarName}")" || result=$?
                 if [[ ${result} ]]; then # Value is valid, save it and exit
-                    if run_script 'question_prompt' N "${DescriptionHeading}\nUse this value?\n\n\Zr${Value["${CurrentValue}"]}\ZR\n" "${Title}"; then
+                    if run_script 'question_prompt' N "${DescriptionHeading}      Value: Zr${Value["${CurrentValue}"]}\ZR\n" "Save Variable"; then
                         run_script 'env_set_literal' "${VarName}" "${Value["${CurrentValue}"]}"
                         return 0
                     fi
