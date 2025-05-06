@@ -179,27 +179,27 @@ menu_value_prompt() {
                 dialog --title "${Title}" --msgbox "Manual editing of values is not implemented yet." 0 0
                 ;;
             CANCEL | ESC) # DONE button
-                local -i ValueValid
+                local ValueValid
                 if [[ ${Value["${CurrentValue}"]} == *"$"* ]]; then
                     # Value contains a '$', assume it uses variable interpolation and allow it
-                    ValueValid=0
+                    ValueValid="true"
                 else
                     case "${VarName}" in
                         "${APPNAME}__ENABLED")
                             if [[ ${Value["${CurrentValue}"]} == true ]] || [[ ${Value["${CurrentValue}"]} == false ]]; then
-                                ValueValid=0
+                                ValueValid="true"
                             else
-                                ValueValid=1
+                                ValueValid="false"
                                 dialog --title "${Title}" --msgbox "${Value["${CurrentValue}"]} is not true or false. Please try setting ${CleanVarName} again." 0 0
                             fi
                             ;;
                         "${APPNAME}__NETWORK_MODE")
                             case "${Value["${CurrentValue}"]}" in
                                 "" | "bridge" | "host" | "none" | "service:"* | "container:"*)
-                                    ValueValid=0
+                                    ValueValid="true"
                                     ;;
                                 *)
-                                    ValueValid=1
+                                    ValueValid="false"
                                     dialog --title "${Title}" --msgbox "${Value["${CurrentValue}"]} is not a valid network mode. Please try setting ${CleanVarName} again." 0 0
                                     ;;
                             esac
@@ -207,19 +207,19 @@ menu_value_prompt() {
                         "${APPNAME}__PORT_"*)
                             printf '%s' "${Value["${CurrentValue}"]}"
                             if [[ ${Value["${CurrentValue}"]} =~ ^[0-9]+$ ]] || [[ ${Value["${CurrentValue}"]} -ge 0 ]] || [[ ${Value["${CurrentValue}"]} -le 65535 ]]; then
-                                ValueValid=0
+                                ValueValid="true"
                             else
-                                ValueValid=1
+                                ValueValid="false"
                                 dialog --title "${Title}" --msgbox "${Value["${CurrentValue}"]} is not a valid port. Please try setting ${CleanVarName} again." 0 0
                             fi
                             ;;
                         "${APPNAME}__RESTART")
                             case "${Value["${CurrentValue}"]}" in
                                 "no" | "always" | "on-failure" | "unless-stopped")
-                                    ValueValid=0
+                                    ValueValid="true"
                                     ;;
                                 *)
-                                    ValueValid=1
+                                    ValueValid="false"
                                     dialog --title "${Title}" --msgbox "${Value["${CurrentValue}"]} is not a valid restart value. Please try setting ${CleanVarName} again." 0 0
                                     ;;
                             esac
@@ -227,15 +227,15 @@ menu_value_prompt() {
                         "${APPNAME}__VOLUME_"*)
                             if [[ ${Value["${CurrentValue}"]} == "/" ]]; then
                                 dialog --title "${Title}" --msgbox "Cannot use / for ${VarName}. Please select another folder." 0 0
-                                ValueValid=1
+                                ValueValid="false"
                             elif [[ ${Value["${CurrentValue}"]} == ~* ]]; then
                                 local CORRECTED_DIR="${DETECTED_HOMEDIR}${Value["${CurrentValue}"]#*~}"
                                 if run_script 'question_prompt' Y "Cannot use the ~ shortcut in ${VarName}. Would you like to use ${CORRECTED_DIR} instead?" "${Title}"; then
                                     Value["${CurrentValue}"]="${CORRECTED_DIR}"
-                                    ValueValid=1
+                                    ValueValid="false"
                                     dialog --title "${Title}" --msgbox "Returning to the previous menu to confirm selection." 0 0
                                 else
-                                    ValueValid=1
+                                    ValueValid="false"
                                     dialog --title "${Title}" --msgbox "Cannot use the ~ shortcut in ${CleanVarName}. Please select another folder." 0 0
                                 fi
                             elif [[ -d ${Value["${CurrentValue}"]} ]]; then
@@ -243,7 +243,7 @@ menu_value_prompt() {
                                     run_script_dialog "Settings Permissions" "${Value["${CurrentValue}"]}" "" \
                                         'set_permissions' "${Value["${CurrentValue}"]}"
                                 fi
-                                ValueValid=0
+                                ValueValid="true"
                             else
                                 if run_script 'question_prompt' Y "${Value["${CurrentValue}"]} is not a valid path. Would you like to attempt to create it?" "${Title}"; then
                                     {
@@ -251,33 +251,33 @@ menu_value_prompt() {
                                         run_script 'set_permissions' "${Value["${CurrentValue}"]}"
                                     } | dialog_pipe "Creating folder and settings permissions" "${Value["${CurrentValue}"]}"
                                     dialog --title "${Title}" --msgbox "${Value["${CurrentValue}"]} folder was created successfully." 0 0
-                                    ValueValid=0
+                                    ValueValid="true"
                                 else
                                     dialog --title "${Title}" --msgbox "${Value["${CurrentValue}"]} is not a valid path. Please try setting ${CleanVarName} again." 0 0
-                                    ValueValid=1
+                                    ValueValid="false"
                                 fi
                             fi
                             ;;
                         P[GU]ID)
                             if [[ ${Value["${CurrentValue}"]} == "0" ]]; then
                                 if run_script 'question_prompt' Y "Running as root is not recommended. Would you like to select a different ID?" "${Title}" "Y"; then
-                                    ValueValid=1
+                                    ValueValid="false"
                                 else
-                                    ValueValid=0
+                                    ValueValid="true"
                                 fi
                             elif [[ ${Value["${CurrentValue}"]} =~ ^[0-9]+$ ]]; then
-                                ValueValid=0
+                                ValueValid="true"
                             else
                                 dialog --stderr --title "${Title}" --msgbox "${Value["${CurrentValue}"]} is not a valid ${VarName}. Please try setting ${VarName} again." 0 0
-                                ValueValid=1
+                                ValueValid="false"
                             fi
                             ;;
                         *)
-                            ValueValid=0
+                            ValueValid="true"
                             ;;
                     esac
                 fi
-                if [[ ${ValueValid} ]]; then # Value is valid, save it and exit
+                if ${ValueValid}; then # Value is valid, save it and exit
                     if run_script 'question_prompt' N "${DescriptionHeading}      Value: \Zr${Value["${CurrentValue}"]}\ZR\n" "Save Variable" "" "Save" "Back"; then
                         run_script 'env_set_literal' "${VarName}" "${Value["${CurrentValue}"]}"
                         return 0
