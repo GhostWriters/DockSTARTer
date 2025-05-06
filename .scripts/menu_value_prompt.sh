@@ -34,11 +34,27 @@ menu_value_prompt() {
     local -A Value
     local CurrentValue="Current Value"
     local DefaultValue="Default Value"
-    local HomeValue="Home Value"
+    local HomeValue="Home Folder"
     local SystemValue="System Value"
     local PreviousValue="Previous Value"
 
-    local -a ValidOptions=("${CurrentValue}" "${DefaultValue}" "${HomeValue}" "${SystemValue}" "${PreviousValue}")
+    local -a ValidOptions=(
+        "${CurrentValue}"
+        "${DefaultValue}"
+        "Bridge Network"
+        "Host Network"
+        "No Network"
+        "Use Gluetun"
+        "Use Privoxy"
+        "Unless Stopped"
+        "No Restart"
+        "Always"
+        "On Failure"
+        "${HomeValue}"
+        "Mount Folder"
+        "${SystemValue}"
+        "${PreviousValue}"
+    )
     local ValidOptionsRegex
     {
         IFS='|'
@@ -60,6 +76,7 @@ menu_value_prompt() {
             ;;
         DOCKER_VOLUME_STORAGE)
             Value["${HomeValue}"]="'${DETECTED_HOMEDIR}/storage'"
+            Value["Mount Folder"]="/mnt/storage"
             ;;
         LAN_NETWORK)
             ValueDescription='\n\n This is used to define your home LAN network, do NOT confuse this with the IP address of your router or your server, the value for this key defines your network NOT a single host. Please Google CIDR Notation to learn more.'
@@ -84,6 +101,11 @@ menu_value_prompt() {
         "${APPNAME}__NETWORK_MODE")
             ValueDescription='\n\n Network Mode is usually left blank but can also be bridge, host, none, service:<appname>, or container:<appname>.'
             Value["${DefaultValue}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
+            Value["Bridge Network"]="'bridge'"
+            Value["Host Network"]="'host'"
+            Value["No Network"]="'none'"
+            Value["Use Gluetun"]="'service:gluetun'"
+            Value["Use Privoxy"]="'service:privoxy'"
             ;;
         "${APPNAME}__PORT_"*)
             ValueDescription='\n\n Must be an unused port between 0 and 65535.'
@@ -92,6 +114,10 @@ menu_value_prompt() {
         "${APPNAME}__RESTART")
             ValueDescription='\n\n Restart is usually unless-stopped but can also be no, always, or on-failure.'
             Value["${DefaultValue}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
+            Value["Unless Stopped"]="'unless-stopped'"
+            Value["No Restart"]="'no'"
+            Value["Always"]="'always'"
+            Value["On Failure"]="'on-failure'"
             ;;
         "${APPNAME}__TAG")
             ValueDescription='\n\n Tag is usually latest but can also be other values based on the image.'
