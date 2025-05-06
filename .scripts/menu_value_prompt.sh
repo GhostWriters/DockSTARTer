@@ -123,7 +123,7 @@ menu_value_prompt() {
             --cancel-label "Done"
             --title "${Title}"
             --inputmenu "${ValueDescription}"
-            -$((LINES - 4)) $((COLUMNS - 5)) 10
+            -$((LINES - 4)) $((COLUMNS - 5)) 0
             "${ValueOptions[@]}"
         )
         SelectValueDialogButtonPressed=0
