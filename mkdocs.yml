@@ -261,6 +261,7 @@ nav:
       - apps/traktarr.md
       - apps/transmission.md
       - apps/transmissionvpn.md
+      - apps/tsdproxy.md
       - apps/tvheadend.md
       - apps/ubooquity.md
       - apps/unificontroller.md
