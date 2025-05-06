@@ -126,6 +126,7 @@ menu_value_prompt() {
             --stdout
             --begin 2 2
             --colors
+            --ok-label "Select"
             --extra-label "Edit"
             --cancel-label "Done"
             --title "${Title}"
@@ -137,7 +138,7 @@ menu_value_prompt() {
         SelectedValue=$(dialog "${SelectValueDialog[@]}") || SelectValueDialogButtonPressed=$?
 
         case ${DIALOG_BUTTONS[SelectValueDialogButtonPressed]-} in
-            OK)
+            OK) # SELECT button
                 if [[ ${SelectedValue} =~ ${ValidOptionsRegex} ]]; then
                     if [[ -n ${Value[$SelectedValue]-} ]]; then
                         Value["${CurrentValue}"]="${Value["$SelectedValue"]}"
@@ -148,7 +149,7 @@ menu_value_prompt() {
                     error "Invalid option '${SelectedValue}'"
                 fi
                 ;;
-            EXTRA)
+            EXTRA) # EDIT button
                 dialog --title "${Title}" --msgbox "Manual editing of values is not implemented yet." 0 0
                 ;;
             CANCEL | ESC) # DONE button
