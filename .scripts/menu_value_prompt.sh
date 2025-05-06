@@ -155,7 +155,7 @@ menu_value_prompt() {
                 local -i result=0
                 Value["${CurrentValue}"]="$(validate_value "${VarName}" "${Value["${CurrentValue}"]}" "Save ${VarName}")" || result=$?
                 if [[ ${result} ]]; then # Value is valid, save it and exit
-                    if run_script 'question_prompt' N "${DescriptionHeading}      Value: Zr${Value["${CurrentValue}"]}\ZR\n" "Save Variable"; then
+                    if run_script 'question_prompt' N "${DescriptionHeading}      Value: \Zr${Value["${CurrentValue}"]}\ZR\n" "Save Variable"; then
                         run_script 'env_set_literal' "${VarName}" "${Value["${CurrentValue}"]}"
                         return 0
                     fi
