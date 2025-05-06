@@ -13,7 +13,11 @@ varname_to_appname() {
     # DOCKER_VOLUME_STORAGE returns an empty string
 
     local VarName=${1-}
-    echo "${VarName}" | (grep -o -P '^[A-Z][A-Z0-9]*(__[A-Z0-9]+)?(?=__[A-Za-z0-9])' || true)
+    if [[ ${VarName} == *":"* ]]; then
+        echo "${VarName%:*}"
+    else
+        echo "${VarName}" | (grep -o -P '^[A-Z][A-Z0-9]*(__[A-Z0-9]+)?(?=__[A-Za-z0-9])' || true)
+    fi
 }
 
 test_varname_to_appname() {
