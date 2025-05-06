@@ -98,7 +98,7 @@ menu_value_prompt() {
         ValueDescription="\n\n System detected values are recommended.${ValueDescription}"
     fi
     local DescriptionHeading
-    DescriptionHeading="Application: \Zr${AppName}\ZR\n       File: \Zr${VarFile}\ZR\n   Variable: \Zr${VarName}\ZR\n\n"
+    DescriptionHeading="Application: \Zr${AppName}\ZR\n       File: \Zr${VarFile}\ZR\n   Variable: \Zr${VarName}\ZR\n\nWhat would you like set for ${VarName}?"
     ValueDescription="${DescriptionHeading}${ValueDescription}"
     while true; do
         local -a ValueOptions=()
@@ -116,8 +116,8 @@ menu_value_prompt() {
             --extra-label "Edit"
             --cancel-label "Done"
             --title "${Title}"
-            --inputmenu "${ValueDescription}What would you like set for ${VarName}?"
-            0 $((COLUMNS - 5)) 10
+            --inputmenu "${ValueDescription}"
+            -$((LINES - 4)) $((COLUMNS - 5)) 10
             "${ValueOptions[@]}"
         )
         SelectValueDialogButtonPressed=0
