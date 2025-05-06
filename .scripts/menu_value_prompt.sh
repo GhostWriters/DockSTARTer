@@ -110,7 +110,7 @@ menu_value_prompt() {
         ValueDescription="\n\n System detected values are recommended.${ValueDescription}"
     fi
     local DescriptionHeading
-    DescriptionHeading="Application: \Zr${AppName}\ZR\n       File: \Zr${VarFile}\ZR\n   Variable: \Zr${CleanVarName}\ZR\n\nWhat would you like set for ${CleanVarName}?"
+    DescriptionHeading="\nApplication: \Zr${AppName}\ZR\n       File: \Zr${VarFile}\ZR\n   Variable: \Zr${CleanVarName}\ZR\n\nWhat would you like set for ${CleanVarName}?"
     ValueDescription="${DescriptionHeading}${ValueDescription}"
     while true; do
         local -a ValueOptions=()
