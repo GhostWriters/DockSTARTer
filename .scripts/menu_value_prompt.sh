@@ -124,6 +124,7 @@ menu_value_prompt() {
         local SelectedValue
         local -a SelectValueDialog=(
             --stdout
+            --begin 2 2
             --colors
             --extra-label "Edit"
             --cancel-label "Done"
