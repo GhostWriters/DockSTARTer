@@ -32,75 +32,81 @@ menu_value_prompt() {
     ValueDescription=$(value_description "${VarName}")
 
     local -A Value
-    local -a ValidOptions=("Current Value" "Default Value" "Home Value" "System Value" "Previous Value")
+    local CurrentValue="Current Value"
+    local DefaultValue="Default Value"
+    local HomeValue="Home Value"
+    local SystemValue="System Value"
+    local PreviousValue="Previous Value"
+
+    local -a ValidOptions=("${CurrentValue}" "${DefaultValue}" "${HomeValue}" "${SystemValue}" "${PreviousValue}")
     local ValidOptionsRegex
     {
         IFS='|'
         ValidOptionsRegex="${ValidOptions[*]}"
     }
-    Value["Previous Value"]=$(run_script 'env_get_literal' "${VarName}")
-    Value["Current Value"]="${Value["Previous Value"]}"
+    Value["${PreviousValue}"]=$(run_script 'env_get_literal' "${VarName}")
+    Value["${CurrentValue}"]="${Value["${PreviousValue}"]}"
     case "${VarName}" in
         DOCKER_GID)
-            ValueDescription='\n\n This should be the Docker group ID. If you are unsure, select Use System.'
-            Value["System Value"]="'$(cut -d: -f3 < <(getent group docker))'"
+            ValueDescription="\n\n This should be the Docker group ID. If you are unsure, select ${SystemValue}."
+            Value["${SystemValue}"]="'$(cut -d: -f3 < <(getent group docker))'"
             ;;
         DOCKER_HOSTNAME)
-            ValueDescription='\n\n This should be your system hostname. If you are unsure, select Use System.'
-            Value["System Value"]="'${HOSTNAME}'"
+            ValueDescription="\n\n This should be your system hostname. If you are unsure, select ${SystemValue}."
+            Value["${SystemValue}"]="'${HOSTNAME}'"
             ;;
         DOCKER_VOLUME_CONFIG)
-            Value["Home Value"]="'${DETECTED_HOMEDIR}/.config/appdata'"
+            Value["${HomeValue}"]="'${DETECTED_HOMEDIR}/.config/appdata'"
             ;;
         DOCKER_VOLUME_STORAGE)
-            Value["Home Value"]="'${DETECTED_HOMEDIR}/storage'"
+            Value["${HomeValue}"]="'${DETECTED_HOMEDIR}/storage'"
             ;;
         LAN_NETWORK)
             ValueDescription='\n\n This is used to define your home LAN network, do NOT confuse this with the IP address of your router or your server, the value for this key defines your network NOT a single host. Please Google CIDR Notation to learn more.'
-            Value["System Value"]="'$(run_script 'detect_lan_network')'"
+            Value["${SystemValue}"]="'$(run_script 'detect_lan_network')'"
             ;;
         PGID)
-            ValueDescription='\n\n This should be your user group ID. If you are unsure, select Use System.'
-            Value["System Value"]="'${DETECTED_PGID}'"
+            ValueDescription="\n\n This should be your user group ID. If you are unsure, select ${SystemValue}."
+            Value["${SystemValue}"]="'${DETECTED_PGID}'"
             ;;
         PUID)
-            ValueDescription='\n\n This should be your user account ID. If you are unsure, select Use System.'
-            Value["System Value"]="'${DETECTED_PUID}'"
+            ValueDescription="\n\n This should be your user account ID. If you are unsure, select ${SystemValue}."
+            Value["${SystemValue}"]="'${DETECTED_PUID}'"
             ;;
         TZ)
             ValueDescription='\n\n If this is not the correct timezone please exit and set your system timezone.'
-            Value["System Value"]="'$(cat /etc/timezone)'"
+            Value["${SystemValue}"]="'$(cat /etc/timezone)'"
             ;;
         "${APPNAME}__ENABLED")
             ValueDescription='\n\n Must be true or false.'
-            Value["Default Value"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
+            Value["${DefaultValue}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
             ;;
         "${APPNAME}__NETWORK_MODE")
             ValueDescription='\n\n Network Mode is usually left blank but can also be bridge, host, none, service:<appname>, or container:<appname>.'
-            Value["Default Value"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
+            Value["${DefaultValue}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
             ;;
         "${APPNAME}__PORT_"*)
             ValueDescription='\n\n Must be an unused port between 0 and 65535.'
-            Value["Default Value"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
+            Value["${DefaultValue}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
             ;;
         "${APPNAME}__RESTART")
             ValueDescription='\n\n Restart is usually unless-stopped but can also be no, always, or on-failure.'
-            Value["Default Value"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
+            Value["${DefaultValue}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
             ;;
         "${APPNAME}__TAG")
             ValueDescription='\n\n Tag is usually latest but can also be other values based on the image.'
-            Value["Default Value"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
+            Value["${DefaultValue}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
             ;;
         "${APPNAME}__VOLUME_"*)
             ValueDescription='\n\n If the directory selected does not exist we will attempt to create it.'
-            Value["Default Value"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
+            Value["${DefaultValue}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
             ;;
         *)
             ValueDescription=""
-            Value["Default Value"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
+            Value["${DefaultValue}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
             ;;
     esac
-    if [[ -n ${Value["System Value"]-} ]]; then
+    if [[ -n ${Value["${SystemValue}"]-} ]]; then
         ValueDescription="\n\n System detected values are recommended.${ValueDescription}"
     fi
     local DescriptionHeading
@@ -133,7 +139,7 @@ menu_value_prompt() {
             OK)
                 if [[ ${SelectedValue} =~ ${ValidOptionsRegex} ]]; then
                     if [[ -n ${Value[$SelectedValue]-} ]]; then
-                        Value["Current Value"]="${Value["$SelectedValue"]}"
+                        Value["${CurrentValue}"]="${Value["$SelectedValue"]}"
                     else
                         error "Unset value '${SelectedValue}'"
                     fi
@@ -146,9 +152,9 @@ menu_value_prompt() {
                 ;;
             CANCEL | ESC) # DONE button
                 local -i result=0
-                Value["Current Value"]="$(validate_value "${VarName}" "${Value["Current Value"]}" "Save ${VarName}")" || result=$?
+                Value["${CurrentValue}"]="$(validate_value "${VarName}" "${Value["${CurrentValue}"]}" "Save ${VarName}")" || result=$?
                 if [[ ${result} ]]; then # Value is valid, save it and exit
-                    run_script 'env_set_literal' "${VarName}" "${Value["Current Value"]}"
+                    run_script 'env_set_literal' "${VarName}" "${Value["${CurrentValue}"]}"
                     return 0
                 fi
                 ;;
