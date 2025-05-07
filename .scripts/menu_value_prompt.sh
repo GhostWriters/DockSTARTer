@@ -143,7 +143,6 @@ Application: \Zr${AppName}\Zn
        File: \Zr${VarFile}\Zn
    Variable: \Zr${CleanVarName}\Zn
       Value: \Zr${Value["${CurrentValue}"]-}\Zn
-
 "
         # editorconfig-checker-enable
         local -a ValueOptions=()
