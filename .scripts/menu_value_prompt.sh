@@ -136,15 +136,16 @@ menu_value_prompt() {
         ValueDescription="\n\n System detected values are recommended.${ValueDescription}"
     fi
      while true; do
-        local DescriptionHeading
-        DescriptionHeading="
+        # editorconfig-checker-disable
+        local DescriptionHeading="
 
 Application: \Zr${AppName}\Zn
        File: \Zr${VarFile}\Zn
    Variable: \Zr${CleanVarName}\Zn
-      Value: \Z1\Zr${Value["${CurrentValue}"]-S}\Zn
+      Value: \Zr${Value["${CurrentValue}"]-S}\Zn
 
 "
+        # editorconfig-checker-enable
         local -a ValueOptions=()
         for Option in "${ValidOptions[@]}"; do
             if [[ -n ${Value[$Option]-} ]]; then
