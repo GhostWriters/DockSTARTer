@@ -163,7 +163,7 @@ Application: \Zr${AppName}\Zn
             --cancel-label "Done"
             --title "${Title}"
             --inputmenu "${DescriptionHeading}\nWhat would you like set for ${CleanVarName}?${ValueDescription}"
-            $((LINES - 5)) $((COLUMNS - 5)) $((LINES - 5)) 
+            $((LINES - 5)) $((COLUMNS - 5)) 0 
             "${ValueOptions[@]}"
         )
         SelectValueDialogButtonPressed=0
