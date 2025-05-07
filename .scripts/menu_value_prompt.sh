@@ -76,7 +76,7 @@ menu_value_prompt() {
             ;;
         DOCKER_VOLUME_STORAGE)
             Value["${HomeValue}"]="'${DETECTED_HOMEDIR}/storage'"
-            Value["Mount Folder"]="/mnt/storage"
+            Value["Mount Folder"]="'/mnt/storage'"
             ;;
         LAN_NETWORK)
             ValueDescription='\n\n This is used to define your home LAN network, do NOT confuse this with the IP address of your router or your server, the value for this key defines your network NOT a single host. Please Google CIDR Notation to learn more.'
