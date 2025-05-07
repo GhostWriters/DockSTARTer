@@ -42,9 +42,9 @@ menu_app_vars() {
         AppVarList+=("${appname}:${VarName}")
     done
 
-    local ColorAdded='\Z0'
-    local ColorComment='\Z0\Zb\Zr'
     local ColorVariable='\Z0\Zr'
+    #local ColorComment='\Z0\Zb\Zr'
+    local ColorAdded='\Z0'
     local LastLineChoice=""
     while true; do
         local -a LineOptions=()
