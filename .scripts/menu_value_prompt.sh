@@ -135,7 +135,7 @@ menu_value_prompt() {
     if [[ -n ${Value["${SystemValue}"]-} ]]; then
         ValueDescription="\n\n System detected values are recommended.${ValueDescription}"
     fi
-    while true; do
+     while true; do
         local DescriptionHeading
         DescriptionHeading="
 
