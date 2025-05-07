@@ -137,15 +137,14 @@ menu_value_prompt() {
     fi
     while true; do
         local DescriptionHeading
-        DescriptionHeading=$(
-            cat << EOF
+        DescriptionHeading="
 
 Application: \Zr${AppName}\ZR
        File: \Zr${VarFile}\ZR
    Variable: \Zr${CleanVarName}\ZR
-      Value: \Zr${Value["${CurrentValue}"]-S}\ZR\n
-EOF
-        )
+      Value: \Zr${Value["${CurrentValue}"]-S}\ZR
+
+"
         local -a ValueOptions=()
         for Option in "${ValidOptions[@]}"; do
             if [[ -n ${Value[$Option]-} ]]; then
