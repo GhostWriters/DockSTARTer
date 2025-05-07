@@ -136,7 +136,7 @@ menu_value_prompt() {
         ValueDescription="\n\n System detected values are recommended.${ValueDescription}"
     fi
     local DescriptionHeading
-    DescriptionHeading="\nApplication: \Zr${AppName}\ZR\n       File: \Zr${VarFile}\ZR\n   Variable: \Zr${CleanVarName}\ZR\n"
+    DescriptionHeading="\nApplication: \Zr${AppName}\ZR\n       File: \Zr${VarFile}\ZR\n   Variable: \Zr${CleanVarName}\ZR\n      Value: \Zr${Value["${CurrentValue}"]}\ZR\n"
     while true; do
         local -a ValueOptions=()
         for Option in "${ValidOptions[@]}"; do
@@ -285,7 +285,7 @@ menu_value_prompt() {
                     esac
                 fi
                 if ${ValueValid}; then # Value is valid, save it and exit
-                    if run_script 'question_prompt' N "${DescriptionHeading}      Value: \Zr${Value["${CurrentValue}"]}\ZR\n" "Save Variable" "" "Save" "Back"; then
+                    if run_script 'question_prompt' N "${DescriptionHeading}" "Save Variable" "" "Save" "Back"; then
                         run_script 'env_set_literal' "${VarName}" "${Value["${CurrentValue}"]}"
                         return 0
                     fi
