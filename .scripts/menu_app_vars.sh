@@ -42,6 +42,9 @@ menu_app_vars() {
         AppVarList+=("${appname}:${VarName}")
     done
 
+    local ColorAdded='\Z0'
+    local ColorComment='\Z0\Zb\Zr'
+    local ColorVariable='\Z0\Zr'
     local LastLineChoice=""
     while true; do
         local -a LineOptions=()
@@ -55,7 +58,7 @@ menu_app_vars() {
             ((++LineNumber))
             CurrentValueOnLine[LineNumber]="*** ${COMPOSE_ENV} ***"
             #DefaultValueOnLine[LineNumber]="*** ${COMPOSE_ENV} ***"
-            LineColor[LineNumber]='\Z0\Zr\Zb'
+            LineColor[LineNumber]="${ColorAdded}"
             if [[ -z ${FirstVarLine-} ]]; then
                 FirstVarLine=$((LineNumber + 1))
             fi
@@ -64,7 +67,7 @@ menu_app_vars() {
                 VarNameOnLine[LineNumber]="${VarName}"
                 CurrentValueOnLine[LineNumber]="${VarName}=$(run_script 'env_get_literal' "${VarName}")"
                 #DefaultValueOnLine[LineNumber]="${VarName}=$(run_script 'env_get_literal' "${VarName}")"
-                LineColor[LineNumber]='\Z0\Zr'
+                LineColor[LineNumber]="${ColorVariable}"
             done
         fi
         if [[ -n ${AppVarEnvList[*]-} ]]; then
@@ -72,12 +75,12 @@ menu_app_vars() {
                 ((++LineNumber))
                 CurrentValueOnLine[LineNumber]=""
                 #DefaultValueOnLine[LineNumber]=""
-                LineColor[LineNumber]='\Z0'
+                LineColor[LineNumber]="${ColorVariable}"
             fi
             ((++LineNumber))
             CurrentValueOnLine[LineNumber]="*** ${APP_ENV_FOLDER_NAME}/${appname}.env ***"
             #DefaultValueOnLine[LineNumber]="*** ${APP_ENV_FOLDER_NAME}/${appname}.env ***"
-            LineColor[LineNumber]='\Z0'
+            LineColor[LineNumber]="${ColorAdded}"
             if [[ -z ${FirstVarLine-} ]]; then
                 FirstVarLine=$((LineNumber + 1))
             fi
@@ -86,7 +89,7 @@ menu_app_vars() {
                 VarNameOnLine[LineNumber]="${appname}:${VarName}"
                 CurrentValueOnLine[LineNumber]="${VarName}=$(run_script 'env_get_literal' "${appname}:${VarName}")"
                 #DefaultValueOnLine[LineNumber]="${VarName}=$(run_script 'env_get_literal' "${appname}:${VarName}"")"
-                LineColor[LineNumber]='\Z0\Zr'
+                LineColor[LineNumber]="${ColorVariable}"
             done
         fi
         local TotalLines=$((10#${LineNumber}))
