@@ -55,7 +55,7 @@ menu_app_vars() {
             ((++LineNumber))
             CurrentValueOnLine[LineNumber]="*** ${COMPOSE_ENV} ***"
             #DefaultValueOnLine[LineNumber]="*** ${COMPOSE_ENV} ***"
-            LineColor[LineNumber]='\Z0'
+            LineColor[LineNumber]='\Z0\Zr\Zb'
             if [[ -z ${FirstVarLine-} ]]; then
                 FirstVarLine=$((LineNumber + 1))
             fi
