@@ -284,11 +284,10 @@ menu_value_prompt() {
                             ;;
                     esac
                 fi
-                if ${ValueValid}; then # Value is valid, save it and exit
-                    if run_script 'question_prompt' N "${DescriptionHeading}" "Save Variable" "" "Save" "Back"; then
-                        run_script 'env_set_literal' "${VarName}" "${Value["${CurrentValue}"]}"
-                        return 0
-                    fi
+                if ${ValueValid} && run_script 'question_prompt' N "${DescriptionHeading}" "Save Variable" "" "Save" "Back"; then
+                    # Value is valid, save it and exit
+                    run_script 'env_set_literal' "${VarName}" "${Value["${CurrentValue}"]}"
+                    return 0
                 fi
                 ;;
             *)
