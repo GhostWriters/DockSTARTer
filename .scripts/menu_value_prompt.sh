@@ -185,13 +185,11 @@ menu_value_prompt() {
                     ValueValid="true"
                 else
                     local StrippedValue="${Value["${CurrentValue}"]}"
-                    dialog --colors --title "${Title}" --msgbox "Original Value=\Zr${Value["${CurrentValue}"]}\ZR\nStripped Value=\Zr${StrippedValue}\ZR" 0 0
                     # Strip comments from the value
                     #StrippedValue="$(sed -E "s/('([^']|'')*'|\"([^\"]|\"\")*\")|(#.*)//g" <<< "${StrippedValue}")"
                     #dialog --colors --title "${Title}" --msgbox "Original Value=\Zr${Value["${CurrentValue}"]}\ZR\nStripped Value=\Zr${StrippedValue}\ZR" 0 0
                     # Unqauote the value
                     StrippedValue="$(sed -E "s|^(['\"])(.*)\1$|\2|g" <<< "${StrippedValue}")"
-                    dialog --colors --title "${Title}" --msgbox "Original Value=\Zr${Value["${CurrentValue}"]}\ZR\nStripped Value=\Zr${StrippedValue}\ZR" 0 0
 
                     case "${VarName}" in
                         "${APPNAME}__ENABLED")
