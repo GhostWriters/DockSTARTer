@@ -142,7 +142,7 @@ menu_value_prompt() {
 Application: \Zr${AppName}\Zn
        File: \Zr${VarFile}\Zn
    Variable: \Zr${CleanVarName}\Zn
-      Value: \Zr\Zb${Value["${CurrentValue}"]-S}\Zn
+      Value: \Z1\Zr${Value["${CurrentValue}"]-S}\Zn
 
 "
         local -a ValueOptions=()
