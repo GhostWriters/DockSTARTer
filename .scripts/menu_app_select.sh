@@ -38,11 +38,13 @@ menu_app_select() {
     else
         local -a SelectedAppsDialog=(
             --stdout
+            --begin 2 2
+            --colors
             --title "${Title}"
             --separate-output
             --checklist
-            'Choose which apps you would like to install:\n Use [up], [down], and [space] to select apps, and [tab] to switch to the buttons at the bottom.'
-            0 0 0
+            'Choose which apps you would like to install:\n Use \Zr[up]\Zn, \Zr[down]\Zn, and \Zr[space]\Zn to select apps, and \Zr[tab]\Zn to switch to the buttons at the bottom.'
+            $((LINES - 4)) $((COLUMNS - 5)) $((LINES - 5 - 4))
             "${AppList[@]}"
         )
         SelectedAppsDialogButtonPressed=0
