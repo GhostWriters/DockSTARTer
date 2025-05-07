@@ -8,7 +8,7 @@ menu_app_vars() {
     local appname=${APPNAME,,}
     local AppName
     AppName=$(run_script 'app_nicename' "${APPNAME}")
-    local Title="Application Variables - ${AppName}"
+    local Title="Set App Variables"
 
     if ! run_script 'app_is_builtin'; then
         local Message="Application '${AppName}' does not exist."
@@ -105,7 +105,7 @@ menu_app_vars() {
             --colors
             --title "${Title}"
             --cancel-button "Back"
-            --menu "${AppName}" 0 0 0
+            --menu "\nApplication: \Zr${AppName}\ZR\n" 0 0 0
             "${LineOptions[@]}"
         )
         while true; do
