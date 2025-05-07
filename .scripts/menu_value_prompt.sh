@@ -163,7 +163,7 @@ Application: \Zr${AppName}\Zn
             --cancel-label "Done"
             --title "${Title}"
             --inputmenu "${DescriptionHeading}\nWhat would you like set for ${CleanVarName}?${ValueDescription}"
-            $((LINES - 5)) $((COLUMNS - 5)) 0 
+            $((LINES - 5)) $((COLUMNS - 5)) 0
             "${ValueOptions[@]}"
         )
         SelectValueDialogButtonPressed=0
@@ -182,7 +182,7 @@ Application: \Zr${AppName}\Zn
                 fi
                 ;;
             EXTRA) # EDIT button
-                Value["${CurrentValue}"]=$(grep  -o -P "RENAMED (${ValidOptionsRegex}) \K.*" <<< "${SelectedValue}")
+                Value["${CurrentValue}"]=$(grep -o -P "RENAMED (${ValidOptionsRegex}) \K.*" <<< "${SelectedValue}")
                 ;;
             CANCEL | ESC) # DONE button
                 local ValueValid
@@ -203,7 +203,7 @@ Application: \Zr${AppName}\Zn
                                 ValueValid="true"
                             else
                                 ValueValid="false"
-                                dialog --title "${Title}" --msgbox "${Value["${CurrentValue}"]} is not true or false. Please try setting ${CleanVarName} again." 0 0
+                                dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${Value["${CurrentValue}"]} is not true or false. Please try setting ${CleanVarName} again." 0 0
                             fi
                             ;;
                         "${APPNAME}__NETWORK_MODE")
@@ -213,7 +213,7 @@ Application: \Zr${AppName}\Zn
                                     ;;
                                 *)
                                     ValueValid="false"
-                                    dialog --title "${Title}" --msgbox "${Value["${CurrentValue}"]} is not a valid network mode. Please try setting ${CleanVarName} again." 0 0
+                                    dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${Value["${CurrentValue}"]} is not a valid network mode. Please try setting ${CleanVarName} again." 0 0
                                     ;;
                             esac
                             ;;
@@ -223,7 +223,7 @@ Application: \Zr${AppName}\Zn
                                 ValueValid="true"
                             else
                                 ValueValid="false"
-                                dialog --title "${Title}" --msgbox "${Value["${CurrentValue}"]} is not a valid port. Please try setting ${CleanVarName} again." 0 0
+                                dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${Value["${CurrentValue}"]} is not a valid port. Please try setting ${CleanVarName} again." 0 0
                             fi
                             ;;
                         "${APPNAME}__RESTART")
@@ -233,40 +233,40 @@ Application: \Zr${AppName}\Zn
                                     ;;
                                 *)
                                     ValueValid="false"
-                                    dialog --title "${Title}" --msgbox "${Value["${CurrentValue}"]} is not a valid restart value. Please try setting ${CleanVarName} again." 0 0
+                                    dialog --colors --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${Value["${CurrentValue}"]} is not a valid restart value. Please try setting ${CleanVarName} again." 0 0
                                     ;;
                             esac
                             ;;
                         "${APPNAME}__VOLUME_"*)
                             if [[ ${StrippedValue} == "/" ]]; then
-                                dialog --title "${Title}" --msgbox "Cannot use / for ${CleanVarName}. Please select another folder." 0 0
+                                dialog --title "${Title}" --msgbox "${DescriptionHeading}\nCannot use / for ${CleanVarName}. Please select another folder." 0 0
                                 ValueValid="false"
                             elif [[ ${StrippedValue} == ~* ]]; then
                                 local CORRECTED_DIR="${DETECTED_HOMEDIR}${Value["${CurrentValue}"]#*~}"
-                                if run_script 'question_prompt' Y "Cannot use the ~ shortcut in ${CleanVarName}. Would you like to use ${CORRECTED_DIR} instead?" "${Title}"; then
+                                if run_script 'question_prompt' Y "${DescriptionHeading}\nCannot use the ~ shortcut in ${CleanVarName}. Would you like to use ${CORRECTED_DIR} instead?" "${Title}"; then
                                     Value["${CurrentValue}"]="${CORRECTED_DIR}"
                                     ValueValid="false"
-                                    dialog --title "${Title}" --msgbox "Returning to the previous menu to confirm selection." 0 0
+                                    dialog --colors --title "${Title}" --msgbox "Returning to the previous menu to confirm selection." 0 0
                                 else
                                     ValueValid="false"
-                                    dialog --title "${Title}" --msgbox "Cannot use the ~ shortcut in ${CleanVarName}. Please select another folder." 0 0
+                                    dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\nCannot use the ~ shortcut in ${CleanVarName}. Please select another folder." 0 0
                                 fi
                             elif [[ -d ${StrippedValue} ]]; then
-                                if run_script 'question_prompt' Y "Would you like to set permissions on ${Value["${CurrentValue}"]} ?" "${Title}"; then
+                                if run_script 'question_prompt' Y "${DescriptionHeading}\nWould you like to set permissions on ${Value["${CurrentValue}"]} ?" "${Title}"; then
                                     run_script_dialog "Settings Permissions" "${StrippedValue}" "" \
                                         'set_permissions' "${StrippedValue}"
                                 fi
                                 ValueValid="true"
                             else
-                                if run_script 'question_prompt' Y "${Value["${CurrentValue}"]} is not a valid path. Would you like to attempt to create it?" "${Title}"; then
+                                if run_script 'question_prompt' Y "${DescriptionHeading}\n${Value["${CurrentValue}"]} is not a valid path. Would you like to attempt to create it?" "${Title}"; then
                                     {
                                         mkdir -p "${StrippedValue}" || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p \"${StrippedValue}\""
                                         run_script 'set_permissions' "${StrippedValue}"
                                     } | dialog_pipe "Creating folder and settings permissions" "${Value["${CurrentValue}"]}"
-                                    dialog --title "${Title}" --msgbox "${Value["${CurrentValue}"]} folder was created successfully." 0 0
+                                    dialog --colors --title "${Title}" --msgbox "${Value["${CurrentValue}"]} folder was created successfully." 0 0
                                     ValueValid="true"
                                 else
-                                    dialog --title "${Title}" --msgbox "${Value["${CurrentValue}"]} is not a valid path. Please try setting ${CleanVarName} again." 0 0
+                                    dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${Value["${CurrentValue}"]} is not a valid path. Please try setting ${CleanVarName} again." 0 0
                                     ValueValid="false"
                                 fi
                             fi
@@ -281,7 +281,7 @@ Application: \Zr${AppName}\Zn
                             elif [[ ${StrippedValue} =~ ^[0-9]+$ ]]; then
                                 ValueValid="true"
                             else
-                                dialog --stderr --title "${Title}" --msgbox "${Value["${CurrentValue}"]} is not a valid ${VarName}. Please try setting ${VarName} again." 0 0
+                                dialog  --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${Value["${CurrentValue}"]} is not a valid ${CleanVarName}. Please try setting ${CleanVarName} again." 0 0
                                 ValueValid="false"
                             fi
                             ;;
