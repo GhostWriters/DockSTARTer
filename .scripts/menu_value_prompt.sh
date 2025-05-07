@@ -139,10 +139,10 @@ menu_value_prompt() {
         local DescriptionHeading
         DescriptionHeading="
 
-Application: \Zr${AppName}\ZR
-       File: \Zr${VarFile}\ZR
-   Variable: \Zr${CleanVarName}\ZR
-      Value: \Zr\Zb${Value["${CurrentValue}"]-S}\ZR
+Application: \Zr${AppName}\Zn
+       File: \Zr${VarFile}\Zn
+   Variable: \Zr${CleanVarName}\Zn
+      Value: \Zr\Zb${Value["${CurrentValue}"]-S}\Zn
 
 "
         local -a ValueOptions=()
