@@ -138,7 +138,6 @@ menu_value_prompt() {
     while true; do
         # editorconfig-checker-disable
         local DescriptionHeading="
-
 Application: \Zr${AppName}\Zn
        File: \Zr${VarFile}\Zn
    Variable: \Zr${CleanVarName}\Zn
