@@ -135,9 +135,9 @@ menu_value_prompt() {
     if [[ -n ${Value["${SystemValue}"]-} ]]; then
         ValueDescription="\n\n System detected values are recommended.${ValueDescription}"
     fi
-    local DescriptionHeading
-    DescriptionHeading="\nApplication: \Zr${AppName}\ZR\n       File: \Zr${VarFile}\ZR\n   Variable: \Zr${CleanVarName}\ZR\n      Value: \Zr${Value["${CurrentValue}"]}\ZR\n"
     while true; do
+        local DescriptionHeading
+        DescriptionHeading="\nApplication: \Zr${AppName}\ZR\n       File: \Zr${VarFile}\ZR\n   Variable: \Zr${CleanVarName}\ZR\n      Value: \Zr${Value["${CurrentValue}"]-S}\ZR\n"
         local -a ValueOptions=()
         for Option in "${ValidOptions[@]}"; do
             if [[ -n ${Value[$Option]-} ]]; then
