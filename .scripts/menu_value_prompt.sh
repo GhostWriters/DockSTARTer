@@ -142,7 +142,7 @@ menu_value_prompt() {
 Application: \Zr${AppName}\Zn
        File: \Zr${VarFile}\Zn
    Variable: \Zr${CleanVarName}\Zn
-      Value: \Zr${Value["${CurrentValue}"]-S}\Zn
+      Value: \Zr${Value["${CurrentValue}"]-}\Zn
 
 "
         # editorconfig-checker-enable
