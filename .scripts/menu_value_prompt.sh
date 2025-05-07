@@ -182,7 +182,7 @@ Application: \Zr${AppName}\Zn
                 fi
                 ;;
             EXTRA) # EDIT button
-                dialog --title "${Title}" --msgbox "Manual editing of values is not implemented yet." 0 0
+                Value["${CurrentValue}"]=$(grep  -o -P "RENAMED (${ValidOptionsRegex}) \K.*" <<< "${SelectedValue}")
                 ;;
             CANCEL | ESC) # DONE button
                 local ValueValid
