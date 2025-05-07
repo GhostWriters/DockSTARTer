@@ -88,7 +88,7 @@ menubox_color = (BLACK,BLUE,OFF)
 menubox_border_color = dialog_color
 
 # Item color
-item_color = (YELLOW,BLUE,OFF)
+item_color = (BLACK,WHITE,OFF)
 
 # Selected item color
 item_selected_color = (BLACK,RED,OFF)
