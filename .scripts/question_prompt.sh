@@ -33,6 +33,7 @@ question_prompt() {
         local -a YesNoDialog=(
             --stdout
             --colors
+            --no-collapse
             --yes-label "${YesButton}"
             --no-label "${NoButton}"
             --title "${Title}"
