@@ -43,8 +43,8 @@ menu_app_vars() {
     done
 
     local ColorVariable='\Z0\Zb\Zr'
-    local ColorComment=''
-    local ColorAdded='\Z4\Zb\Zr'
+    #local ColorComment='\Z0\ZB\Zr'
+    local ColorAdded=''
     local LastLineChoice=""
     while true; do
         local -a LineOptions=()
