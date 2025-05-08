@@ -121,6 +121,9 @@ readonly SCRIPTNAME
 
 declare -rx DIALOGRC="${SCRIPTPATH}/.dialogrc"
 declare -rx BACKTITLE="DockSTARTer"
+
+DIALOG=$(command -v dialog) || true
+export DIALOG
 declare -rx DIALOGOPTS="--backtitle ${BACKTITLE} --cr-wrap --no-collapse"
 declare -rix DIALOG_OK=0
 declare -rix DIALOG_CANCEL=1
@@ -160,6 +163,84 @@ cleanup() {
     exit ${EXIT_CODE}
 }
 trap 'cleanup' ERR EXIT SIGABRT SIGALRM SIGHUP SIGINT SIGQUIT SIGTERM
+
+
+# Terminal Colors
+declare -Agr B=( # Background
+    [B]=$(tput setab 4 2> /dev/null || echo -e "\e[44m") # Blue
+    [C]=$(tput setab 6 2> /dev/null || echo -e "\e[46m") # Cyan
+    [G]=$(tput setab 2 2> /dev/null || echo -e "\e[42m") # Green
+    [K]=$(tput setab 0 2> /dev/null || echo -e "\e[40m") # Black
+    [M]=$(tput setab 5 2> /dev/null || echo -e "\e[45m") # Magenta
+    [R]=$(tput setab 1 2> /dev/null || echo -e "\e[41m") # Red
+    [W]=$(tput setab 7 2> /dev/null || echo -e "\e[47m") # White
+    [Y]=$(tput setab 3 2> /dev/null || echo -e "\e[43m") # Yellow
+)
+declare -Agr F=( # Foreground
+    [B]=$(tput setaf 4 2> /dev/null || echo -e "\e[34m") # Blue
+    [C]=$(tput setaf 6 2> /dev/null || echo -e "\e[36m") # Cyan
+    [G]=$(tput setaf 2 2> /dev/null || echo -e "\e[32m") # Green
+    [K]=$(tput setaf 0 2> /dev/null || echo -e "\e[30m") # Black
+    [M]=$(tput setaf 5 2> /dev/null || echo -e "\e[35m") # Magenta
+    [R]=$(tput setaf 1 2> /dev/null || echo -e "\e[31m") # Red
+    [W]=$(tput setaf 7 2> /dev/null || echo -e "\e[37m") # White
+    [Y]=$(tput setaf 3 2> /dev/null || echo -e "\e[33m") # Yellow
+)
+NC=$(tput sgr0 2> /dev/null || echo -e "\e[0m")
+readonly NC
+BS=$(tput cup 1000 0 2> /dev/null || true) # Bottom of screen
+readonly BS
+export BS
+
+# Log Functions
+MKTEMP_LOG=$(mktemp) || echo -e "Failed to create temporary log file.\nFailing command: ${F[C]}mktemp"
+readonly MKTEMP_LOG
+echo "DockSTARTer Log" > "${MKTEMP_LOG}"
+create_strip_log_colors_SEDSTRING() {
+    # Create the search string to strip ANSI colors
+    # String is saved after creation, so this is only done on the first call
+    local -a ANSICOLORS=("${F[@]}" "${B[@]}" "${NC}")
+    for index in "${!ANSICOLORS[@]}"; do
+        # Escape characters used by sed
+        ANSICOLORS[index]=$(printf '%s' "${ANSICOLORS[index]}" | sed -E 's/[]{}()[/{}\.''''$]/\\&/g')
+    done
+    printf '%s' "s/$(
+        IFS='|'
+        printf '%s' "${ANSICOLORS[*]}"
+    )//g"
+}
+strip_log_colors_SEDSTRING="$(create_strip_log_colors_SEDSTRING)"
+readonly strip_log_colors_SEDSTRING
+strip_log_colors() {
+    printf '%s' "$*" | sed -E "${strip_log_colors_SEDSTRING}"
+}
+log() {
+    local TOTERM=${1-}
+    local MESSAGE=${2-}
+    local STRIPPED_MESSAGE
+    STRIPPED_MESSAGE=$(strip_log_colors "${MESSAGE-}")
+    if [[ -n ${TOTERM} ]]; then
+        if [[ -t 2 ]]; then
+            # Stderr is not being redirected, output with color
+            echo -e "${MESSAGE-}" >&2
+        else
+            # Stderr is being redirected, output without colorr
+            echo -e "${STRIPPED_MESSAGE-}" >&2
+        fi
+    fi
+    # Output the message to the log file without color
+    echo -e "${STRIPPED_MESSAGE-}" >> "${MKTEMP_LOG}"
+}
+trace() { log "${TRACE-}" "${NC}$(date +"%F %T") ${F[B]}[TRACE ]${NC}   $*${NC}"; }
+debug() { log "${DEBUG-}" "${NC}$(date +"%F %T") ${F[B]}[DEBUG ]${NC}   $*${NC}"; }
+info() { log "${VERBOSE-}" "${NC}$(date +"%F %T") ${F[B]}[INFO  ]${NC}   $*${NC}"; }
+notice() { log true "${NC}$(date +"%F %T") ${F[G]}[NOTICE]${NC}   $*${NC}"; }
+warn() { log true "${NC}$(date +"%F %T") ${F[Y]}[WARN  ]${NC}   $*${NC}"; }
+error() { log true "${NC}$(date +"%F %T") ${F[R]}[ERROR ]${NC}   $*${NC}"; }
+fatal() {
+    log true "${NC}$(date +"%F %T") ${B[R]}${F[W]}[FATAL ]${NC}   $*${NC}"
+    exit 1
+}
 
 # Command Line Arguments
 readonly ARGS=("$@")
@@ -309,7 +390,13 @@ cmdline() {
                 export FORCE
                 ;;
             g)
-                PROMPT="GUI"
+                if [[ -n ${DIALOG-} ]]; then
+                    PROMPT="GUI"
+                else
+                    warn "The '--gui' option requires the dialog command to be installed."
+                    warn "'dialog' command not found. Run 'ds -fiv' to install all dependencies."
+                    warn "Coninuing without '--gui' option."
+                fi
                 ;;
             h)
                 usage
@@ -391,83 +478,6 @@ cmdline "${ARGS[@]-}"
 if [[ -n ${DEBUG-} ]] && [[ -n ${VERBOSE-} ]]; then
     readonly TRACE=1
 fi
-
-# Terminal Colors
-declare -Agr B=( # Background
-    [B]=$(tput setab 4 2> /dev/null || echo -e "\e[44m") # Blue
-    [C]=$(tput setab 6 2> /dev/null || echo -e "\e[46m") # Cyan
-    [G]=$(tput setab 2 2> /dev/null || echo -e "\e[42m") # Green
-    [K]=$(tput setab 0 2> /dev/null || echo -e "\e[40m") # Black
-    [M]=$(tput setab 5 2> /dev/null || echo -e "\e[45m") # Magenta
-    [R]=$(tput setab 1 2> /dev/null || echo -e "\e[41m") # Red
-    [W]=$(tput setab 7 2> /dev/null || echo -e "\e[47m") # White
-    [Y]=$(tput setab 3 2> /dev/null || echo -e "\e[43m") # Yellow
-)
-declare -Agr F=( # Foreground
-    [B]=$(tput setaf 4 2> /dev/null || echo -e "\e[34m") # Blue
-    [C]=$(tput setaf 6 2> /dev/null || echo -e "\e[36m") # Cyan
-    [G]=$(tput setaf 2 2> /dev/null || echo -e "\e[32m") # Green
-    [K]=$(tput setaf 0 2> /dev/null || echo -e "\e[30m") # Black
-    [M]=$(tput setaf 5 2> /dev/null || echo -e "\e[35m") # Magenta
-    [R]=$(tput setaf 1 2> /dev/null || echo -e "\e[31m") # Red
-    [W]=$(tput setaf 7 2> /dev/null || echo -e "\e[37m") # White
-    [Y]=$(tput setaf 3 2> /dev/null || echo -e "\e[33m") # Yellow
-)
-NC=$(tput sgr0 2> /dev/null || echo -e "\e[0m")
-readonly NC
-BS=$(tput cup 1000 0 2> /dev/null || true) # Bottom of screen
-readonly BS
-export BS
-
-# Log Functions
-MKTEMP_LOG=$(mktemp) || echo -e "Failed to create temporary log file.\nFailing command: ${F[C]}mktemp"
-readonly MKTEMP_LOG
-echo "DockSTARTer Log" > "${MKTEMP_LOG}"
-create_strip_log_colors_SEDSTRING() {
-    # Create the search string to strip ANSI colors
-    # String is saved after creation, so this is only done on the first call
-    local -a ANSICOLORS=("${F[@]}" "${B[@]}" "${NC}")
-    for index in "${!ANSICOLORS[@]}"; do
-        # Escape characters used by sed
-        ANSICOLORS[index]=$(printf '%s' "${ANSICOLORS[index]}" | sed -E 's/[]{}()[/{}\.''''$]/\\&/g')
-    done
-    printf '%s' "s/$(
-        IFS='|'
-        printf '%s' "${ANSICOLORS[*]}"
-    )//g"
-}
-strip_log_colors_SEDSTRING="$(create_strip_log_colors_SEDSTRING)"
-readonly strip_log_colors_SEDSTRING
-strip_log_colors() {
-    printf '%s' "$*" | sed -E "${strip_log_colors_SEDSTRING}"
-}
-log() {
-    local TOTERM=${1-}
-    local MESSAGE=${2-}
-    local STRIPPED_MESSAGE
-    STRIPPED_MESSAGE=$(strip_log_colors "${MESSAGE-}")
-    if [[ -n ${TOTERM} ]]; then
-        if [[ -t 2 ]]; then
-            # Stderr is not being redirected, output with color
-            echo -e "${MESSAGE-}" >&2
-        else
-            # Stderr is being redirected, output without colorr
-            echo -e "${STRIPPED_MESSAGE-}" >&2
-        fi
-    fi
-    # Output the message to the log file without color
-    echo -e "${STRIPPED_MESSAGE-}" >> "${MKTEMP_LOG}"
-}
-trace() { log "${TRACE-}" "${NC}$(date +"%F %T") ${F[B]}[TRACE ]${NC}   $*${NC}"; }
-debug() { log "${DEBUG-}" "${NC}$(date +"%F %T") ${F[B]}[DEBUG ]${NC}   $*${NC}"; }
-info() { log "${VERBOSE-}" "${NC}$(date +"%F %T") ${F[B]}[INFO  ]${NC}   $*${NC}"; }
-notice() { log true "${NC}$(date +"%F %T") ${F[G]}[NOTICE]${NC}   $*${NC}"; }
-warn() { log true "${NC}$(date +"%F %T") ${F[Y]}[WARN  ]${NC}   $*${NC}"; }
-error() { log true "${NC}$(date +"%F %T") ${F[R]}[ERROR ]${NC}   $*${NC}"; }
-fatal() {
-    log true "${NC}$(date +"%F %T") ${B[R]}${F[W]}[FATAL ]${NC}   $*${NC}"
-    exit 1
-}
 
 # System Information
 ARCH=$(uname -m)
@@ -981,8 +991,15 @@ main() {
         exit
     fi
     # Run Menus
-    MENU=true
-    PROMPT="GUI"
-    run_script 'menu_main'
+    if [[ -n ${DIALOG-} ]]; then
+        MENU=true
+        PROMPT="GUI"
+        run_script 'menu_main'
+    else
+        error "The GUI requires the dialog command to be installed."
+        error "'dialog' command not found. Run 'ds -fiv' to install all dependencies."
+        fatal "Unable to start GUI without dialog command."
+    fi
+
 }
 main
