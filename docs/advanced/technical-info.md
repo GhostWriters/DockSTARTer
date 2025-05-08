@@ -44,7 +44,7 @@ All variables contained in the file listed here will be loaded for the applicati
 
 ### environment
 
-This section contains a list of variables added for the application.  They are generally set to values of variables contained in the global `.env` fie.
+This section contains a list of variables added for the application.  They are generally set to values of variables contained in the global `.env` file.
 
 ## Volumes
 
