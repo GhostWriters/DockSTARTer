@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 app_nicename() {
-    # Return the "NiceName" of the appname(s) passed. If there is no "NiceName", return the lower case "appname"
+    # Return the "NiceName" of the appname(s) passed. If there is no "NiceName", return the "Title__Case" of "appname"
     local AppList
     AppList=$(xargs -n 1 <<< "$*")
     for APPNAME in ${AppList}; do
@@ -12,7 +12,7 @@ app_nicename() {
         if [[ -f ${LABELS_FILE} ]]; then
             grep --color=never -Po "\scom\.dockstarter\.appinfo\.nicename: \K.*" "${LABELS_FILE}" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo "${appname}"
         else
-            echo "${appname}"
+            sed -E "s/[[:alnum:]]+/\u&/g" <<< "${appname}"
         fi
     done
 
