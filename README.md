@@ -13,13 +13,13 @@ The main goal of DockSTARTer is to make it quick and easy to get up and running 
 
 You may choose to rely on DockSTARTer for various changes to your Docker system or use DockSTARTer as a stepping stone and learn to do more advanced configurations.
 
-![Main Menu](https://github.com/GhostWriters/DockSTARTer/raw/master/docs/assets/menu_main.png)
+![Main Menu](docs/assets/menu_main.png)
 
-![App Select](https://github.com/GhostWriters/DockSTARTer/raw/master/docs/assets/menu_app_select.png)
+![App Select](docs/assets/menu_app_select.png)
 
-![Value Prompt](https://github.com/GhostWriters/DockSTARTer/raw/master/docs/assets/menu_value_prompt.png)
+![Value Prompt](docs/assets/menu_value_prompt.png)
 
-![Command Line Interface](https://github.com/GhostWriters/DockSTARTer/raw/master/docs/assets/command_help.png)
+![Command Line Interface](docs/assets/command_help.png)
 
 ## Getting Started
 
