@@ -281,7 +281,7 @@ Application: \Zr${AppName}\Zn
                             elif [[ ${StrippedValue} =~ ^[0-9]+$ ]]; then
                                 ValueValid="true"
                             else
-                                dialog  --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${Value["${CurrentValue}"]} is not a valid ${CleanVarName}. Please try setting ${CleanVarName} again." 0 0
+                                dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${Value["${CurrentValue}"]} is not a valid ${CleanVarName}. Please try setting ${CleanVarName} again." 0 0
                                 ValueValid="false"
                             fi
                             ;;
