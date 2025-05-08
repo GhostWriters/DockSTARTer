@@ -16,9 +16,9 @@ mounts, which then are accessible and mountable on a Windows computer.
 By default, Samba will share all media directories and
 [Docker config directory](https://dockstarter.com/basics/env-var-info/#DOCKER_VOLUME_CONFIG)
 over SMB on the host. All of these directories will be placed inside whatever
-share name is specified for `SAMBA_SHARENAME` on your `.env` file. These shares
+share name is specified for `SAMBA__ENVIRONMENT_SHARENAME` in your `.env` file. These shares
 are protected with username `ds` and password `ds` by default, but **can and
-should be** changed on your `.env` file.
+should be** changed in your `.env` file.
 
 ## Install/Setup
 
