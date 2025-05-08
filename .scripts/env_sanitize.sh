@@ -3,12 +3,12 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 env_sanitize() {
-    local LAN_NETWORK
-    LAN_NETWORK=$(run_script 'env_get' LAN_NETWORK)
-    if echo "${LAN_NETWORK}" | grep -q 'x'; then
+    local GLOBAL_LAN_NETWORK
+    GLOBAL_LAN_NETWORK=$(run_script 'env_get' GLOBAL_LAN_NETWORK)
+    if echo "${GLOBAL_LAN_NETWORK}" | grep -q 'x'; then
         local DETECTED_LAN_NETWORK
         DETECTED_LAN_NETWORK=$(run_script 'detect_lan_network')
-        run_script 'env_set' LAN_NETWORK "${DETECTED_LAN_NETWORK}"
+        run_script 'env_set' GLOBAL_LAN_NETWORK "${DETECTED_LAN_NETWORK}"
     fi
 
     # Don't set WATCHTOWER_NETWORK_MODE to none

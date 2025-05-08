@@ -12,6 +12,9 @@ env_migrate_global() {
     run_script 'env_migrate' DOCKERHOSTNAME DOCKER_HOSTNAME
     run_script 'env_migrate' DOCKERSTORAGEDIR DOCKER_VOLUME_STORAGE
     run_script 'env_migrate' DOCKERSHAREDDIR DOCKER_VOLUME_STORAGE
+    run_script 'env_migrate' LAN_NETWORK GLOBAL_LAN_NETWORK
+    run_script 'env_migrate' NS1 GLOBAL_NS1
+    run_script 'env_migrate' NS2 GLOBAL_NS2
 }
 
 test_env_migrate_global() {
