@@ -22,7 +22,7 @@ Default ID given to the `docker` group when it is created by [Docker](https://ge
 - Default value: `DockSTARTer` (because we don't want it to be accidentally blank)
 
 Description:
-All containers will default to having this hostname.
+All containers have their own `<APPNAME>__HOSTNAME` they use, but the user can use this variable for their own containers if they choose.
 
 ## DOCKER_VOLUME_CONFIG
 
