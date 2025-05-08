@@ -25,7 +25,6 @@ ds -c
 ```
 
 This script verifies the dependencies above and installs or updates them as needed, then creates a file `~/.docker/compose/docker-compose.yml` based on the variables you configured in your `~/.docker/compose/.env` file. The generator script will run your selected containers after creating the file.
-
 We encourage you to have a look at the generated `docker-compose.yml` file, however if you wish to make changes please consider using overrides. Please review the [Technical Info](https://dockstarter.com/advanced/technical-info) and [Overrides / Introduction](https://dockstarter.com/overrides/introduction) pages.
 
 If you make any changes to your `.env` file (such as changing a port or enabling a new app) you need to rerun the generator which will rebuild only the affected containers.
@@ -36,19 +35,19 @@ If you make any changes to your `.env` file (such as changing a port or enabling
 ds -u
 ```
 
-This should get you the latest changes to DockSTARTer. This will also backup and update your `.env` file.
+This should get you the latest changes to DockSTARTer. This will also backup and update your `.env`, `env_files/<appname>.env` files.
 
-You may separately backup and update your `.env` file with the following command.
+You may separately backup and update your `.env` and `env_files/<appname>.env` files with the following command.
 
 ```bash
 ds -e
 ```
 
-Then you may want to edit your `.env` file and run the generator again to bring up new apps or changes to existing apps.
+Then you may want to edit your `.env` and `env_files/<appname>.env` files and run the generator again to bring up new apps or changes to existing apps.
 
 ## Setup Your Environment
 
-If you do not yet have a `~/.docker/compose/.env` file:
+If you do not yet have a `~/.docker/compose/.env` and/or `~/.docker/compose/env_file/<appname>.env`file:
 
 ```bash
 ds -e
@@ -71,11 +70,13 @@ ds -a <APPNAME>
 ds -a sonarr
 ```
 
-Then your `.env` file fill have a variable named `<APPNAME>_ENABLED` that you can set to `true` and then run the Compose Generator to start the app.
+Then your `.env` file fill have a variable named `<APPNAME>__ENABLED` that you can set to `true` and then run the Compose Generator to start the app.
 
-You may also need to fill in or adjust any other variables prefixed with the `<APPNAME>_` that you're enabling.
+You may also need to fill in or adjust any other variables prefixed with the `<APPNAME>__` that you're enabling.
 
 This is the best place to change the app's external default ports.
+
+There will also be an application specific variable file created at `~/.docker/compose/env_files/<appname>.env`.  This may or not be populated with variables.  The variables included, if any, will entierly depend on the application installed.  If you need to edit the values of the variables, or include any new variables for the app, it is entirely safe to do so.
 
 #### Removing Apps
 

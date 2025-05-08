@@ -16,12 +16,14 @@ Note that your configuration files and homer assets are located in `${DOCKER_VOL
 
 ### Environment Variables
 
-#### HOMER_INIT_ASSETS
+#### env_files/homer.env
+
+##### INIT_ASSETS
 
 `1` (default) Install example configuration file & assets (favicons, ...) to help you get started.
 
 `0` Don't install assets. Use existing files. This is the suggested value after you first launch homer and assets are installed.
 
-#### HOMER_SUBFOLDER
+##### SUBFOLDER
 
 (default: `''`) If you would like to host Homer in a subfolder, (ex: `http://my-domain/homer`), set this to the subfolder path (ex /homer).

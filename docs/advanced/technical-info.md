@@ -17,17 +17,17 @@ YML files are akin to XML files and below is an example:
 ```yaml
 services:
   sonarr:
-    image: containers_author/sonarr:latest
-    container_name: sonarr
-    restart: ${SONARR_RESTART}
+    container_name: ${SONARR__CONTAINER_NAME?}
+    env_file: env_files/sonarr.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${SONARR__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/sonarr:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/sonarr:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage
 ```
 
 In the example above,
@@ -35,6 +35,16 @@ In the example above,
 **image** is the Container that you're using but also the quasi URL Docker will attempt to pull it from.
 
 **container_name** is the human readable name Docker will use to describe it.
+
+## Variables
+
+### env_file
+
+All variables contained in the file listed here will be loaded for the application.  Each application could have any number of variables listed, or none.  You can edit the values of the included variables in the file. You can also add any variables you need to add yourself to this file, and they will also be loaded.
+
+### environment
+
+This section contains a list of variables added for the application.  They are generally set to values of variables contained in the global `.env` fie.
 
 ## Volumes
 
@@ -52,7 +62,7 @@ The `${DOCKER_VOLUME_STORAGE}` location is public to all apps that need it. That
 
 The ports for access to (and from) your apps are manipulated in your `.env` settings. I use the Sonarr example a lot but if you're not familiar, it's default port is `8989`.
 
-`SONARR_PORT_8989=6969`
+`SONARR__PORT_8989=6969`
 
 If you were to edit the `.env` for sonarr to the above, and run the generator again, you would then access Sonarr at `http://app.address:6969/calendar` instead of the default port, 8989.
 
