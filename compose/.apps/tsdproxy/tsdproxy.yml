@@ -1,0 +1,11 @@
+services:
+  tsdproxy:
+    container_name: ${TSDPROXY_CONTAINER_NAME}
+    environment:
+      - TZ=${TZ}
+    restart: ${TSDPROXY_RESTART}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_VOLUME_CONFIG}/tsdproxy:/data
+      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${TSDPROXY_VOLUME_DOCKER_SOCKET}:/var/run/docker.sock

@@ -1,0 +1,3 @@
+services:
+  tsdproxy:
+    image: almeidapaulopt/tsdproxy:${TSDPROXY_TAG}
