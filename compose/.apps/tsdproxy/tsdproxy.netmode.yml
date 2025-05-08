@@ -1,0 +1,3 @@
+services:
+  tsdproxy:
+    network_mode: ${TSDPROXY_NETWORK_MODE}
