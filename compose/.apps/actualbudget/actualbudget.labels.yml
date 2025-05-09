@@ -2,7 +2,7 @@ services:
   actualbudget:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: ""
+      com.dockstarter.appinfo.description: "Super fast, privacy-focused app for managing your finances."
       com.dockstarter.appinfo.nicename: "ActualBudget"
       com.dockstarter.appvars.actualbudget_container_name: "my_actual_budget"
       com.dockstarter.appvars.actualbudget_enabled: "false"
