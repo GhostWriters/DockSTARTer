@@ -287,7 +287,3 @@ nav:
       - overrides/nginxproxymanager.md
       - overrides/plpp.md
       - overrides/yacreader.md
-
-validation:
-  links:
-    absolute_links: relative_to_docs
