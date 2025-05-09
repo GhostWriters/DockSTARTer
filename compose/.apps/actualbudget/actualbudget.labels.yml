@@ -4,7 +4,7 @@ services:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Super fast, privacy-focused app for managing your finances."
       com.dockstarter.appinfo.nicename: "ActualBudget"
-      com.dockstarter.appvars.actualbudget_container_name: "my_actual_budget"
+      com.dockstarter.appvars.actualbudget_container_name: "actualbudget"
       com.dockstarter.appvars.actualbudget_enabled: "false"
       com.dockstarter.appvars.actualbudget_network_mode: ""
       com.dockstarter.appvars.actualbudget_port_5006: "5006"
