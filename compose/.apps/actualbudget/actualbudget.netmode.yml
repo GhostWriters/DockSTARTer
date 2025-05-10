@@ -1,0 +1,3 @@
+services:
+  actualbudget:
+    network_mode: ${ACTUALBUDGET_NETWORK_MODE}

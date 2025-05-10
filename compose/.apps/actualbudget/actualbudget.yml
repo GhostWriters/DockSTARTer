@@ -1,0 +1,10 @@
+services:
+  actualbudget:
+    container_name: ${ACTUALBUDGET_CONTAINER_NAME}
+    environment:
+      - TZ=${TZ}
+    restart: ${ACTUALBUDGET_RESTART}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_VOLUME_CONFIG}/actualbudget:/data
+      - ${DOCKER_VOLUME_STORAGE}:/storage
