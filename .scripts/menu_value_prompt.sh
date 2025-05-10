@@ -205,8 +205,12 @@ menu_value_prompt() {
 
     while true; do
         # editorconfig-checker-disable
-        local DescriptionHeading="
-Application: ${ColorHeading}${AppName}\Zn
+        local DescriptionHeading=""
+        if [[ -n ${AppName-} ]]; then
+            DescriptionHeading="${DescriptionHeading}
+Application: ${ColorHeading}${AppName}\Zn"
+        fi
+        local DescriptionHeading="${DescriptionHeading}
        File: ${ColorHeading}${VarFile}\Zn
    Variable: ${ColorHeading}${CleanVarName}\Zn
       Value: ${ColorHeading}${OptionValue["${CurrentValueOption}"]-}\Zn
