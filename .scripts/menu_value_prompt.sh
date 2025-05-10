@@ -133,6 +133,14 @@ menu_value_prompt() {
                 ["Use Gluetun"]="'service:gluetun'"
                 ["Use Privoxy"]="'service:privoxy'"
             )
+            PossibleOptions+=(
+                "${DefaultValue}"
+                "Bridge Network"
+                "Host Network"
+                "No Network"
+                "Use Gluetun"
+                "Use Privoxy"
+            )
             ;;
         "${APPNAME}__PORT_"*)
             ValueDescription='\n\n Must be an unused port between 0 and 65535.'
@@ -151,6 +159,13 @@ menu_value_prompt() {
                 ["Restart On Failure"]="'on-failure'"
                 ["Always Restart"]="'always'"
                 ["Never Restart"]="'no'"
+            )
+            PossibleOptions+=(
+                "${DefaultValue}"
+                "Restart Unless Stopped"
+                "Restart On Failure"
+                "Always Restart"
+                "Never Restart"
             )
             ;;
         "${APPNAME}__TAG")
