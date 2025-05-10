@@ -269,7 +269,7 @@ Application: \Zr${AppName}\Zn
                     local StrippedValue="${OptionValue["${CurrentValue}"]}"
                     # Strip comments from the value
                     #StrippedValue="$(sed -E "s/('([^']|'')*'|\"([^\"]|\"\")*\")|(#.*)//g" <<< "${StrippedValue}")"
-                    #dialog --colors --title "${Title}" --msgbox "Original Value=\Zr${OptionValue["${CurrentValue}"]}\ZR\nStripped Value=\Zr${StrippedValue}\ZR" 0 0
+                    #dialog --colors --title "${Title}" --msgbox "Original Value=\Zr${OptionValue["${CurrentValue}"]}\Zn\nStripped Value=\Zr${StrippedValue}\Zn" 0 0
                     # Unqauote the value
                     StrippedValue="$(sed -E "s|^(['\"])(.*)\1$|\2|g" <<< "${StrippedValue}")"
 
@@ -289,7 +289,7 @@ Application: \Zr${AppName}\Zn
                                     ;;
                                 *)
                                     ValueValid="false"
-                                    dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${OptionValue["${CurrentValue}"]} is not a valid network mode. Please try setting ${CleanVarName} again." 0 0
+                                    dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n\Zr${OptionValue["${CurrentValue}"]}\Zn is not a valid network mode. Please try setting \Zr${CleanVarName}\Zn again." 0 0
                                     ;;
                             esac
                             ;;
@@ -299,7 +299,7 @@ Application: \Zr${AppName}\Zn
                                 ValueValid="true"
                             else
                                 ValueValid="false"
-                                dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${OptionValue["${CurrentValue}"]} is not a valid port. Please try setting ${CleanVarName} again." 0 0
+                                dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n\Zr${OptionValue["${CurrentValue}"]}\Zn is not a valid port. Please try setting \Zr${CleanVarName}\Zn again." 0 0
                             fi
                             ;;
                         "${APPNAME}__RESTART")
@@ -309,7 +309,7 @@ Application: \Zr${AppName}\Zn
                                     ;;
                                 *)
                                     ValueValid="false"
-                                    dialog --colors --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${OptionValue["${CurrentValue}"]} is not a valid restart value. Please try setting ${CleanVarName} again." 0 0
+                                    dialog --colors --colors --title "${Title}" --msgbox "${DescriptionHeading}\n\Zr${OptionValue["${CurrentValue}"]}\Zn is not a valid restart value. Please try setting \Zr${CleanVarName}\Zn again." 0 0
                                     ;;
                             esac
                             ;;
@@ -334,15 +334,15 @@ Application: \Zr${AppName}\Zn
                                 fi
                                 ValueValid="true"
                             else
-                                if run_script 'question_prompt' Y "${DescriptionHeading}\n${OptionValue["${CurrentValue}"]} is not a valid path. Would you like to attempt to create it?" "${Title}"; then
+                                if run_script 'question_prompt' Y "${DescriptionHeading}\n\Zr${OptionValue["${CurrentValue}"]}\Zn is not a valid path. Would you like to attempt to create it?" "${Title}"; then
                                     {
                                         mkdir -p "${StrippedValue}" || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p \"${StrippedValue}\""
                                         run_script 'set_permissions' "${StrippedValue}"
                                     } | dialog_pipe "Creating folder and settings permissions" "${OptionValue["${CurrentValue}"]}"
-                                    dialog --colors --title "${Title}" --msgbox "${OptionValue["${CurrentValue}"]} folder was created successfully." 0 0
+                                    dialog --colors --title "${Title}" --msgbox "\Zr${OptionValue["${CurrentValue}"]}\Zn folder was created successfully." 0 0
                                     ValueValid="true"
                                 else
-                                    dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${OptionValue["${CurrentValue}"]} is not a valid path. Please try setting ${CleanVarName} again." 0 0
+                                    dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n\Zr${OptionValue["${CurrentValue}"]}\Zn is not a valid path. Please try setting \Zr${CleanVarName}\Zn again." 0 0
                                     ValueValid="false"
                                 fi
                             fi
@@ -357,7 +357,7 @@ Application: \Zr${AppName}\Zn
                             elif [[ ${StrippedValue} =~ ^[0-9]+$ ]]; then
                                 ValueValid="true"
                             else
-                                dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${OptionValue["${CurrentValue}"]} is not a valid ${CleanVarName}. Please try setting ${CleanVarName} again." 0 0
+                                dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n\Zr${OptionValue["${CurrentValue}"]}\Zn is not a valid ${CleanVarName}. Please try setting \Zr${CleanVarName}\Zn again." 0 0
                                 ValueValid="false"
                             fi
                             ;;
