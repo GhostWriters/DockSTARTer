@@ -44,7 +44,7 @@ menu_app_vars() {
 
     local ColorVariable='\Z0\Zb\Zr'
     #local ColorComment='\Z0\ZB\Zr'
-    local ColorAdded=''
+    local ColorHeading=''
     local LastLineChoice=""
     while true; do
         local -a LineOptions=()
@@ -58,7 +58,7 @@ menu_app_vars() {
             ((++LineNumber))
             CurrentValueOnLine[LineNumber]="*** ${COMPOSE_ENV} ***"
             #DefaultValueOnLine[LineNumber]="*** ${COMPOSE_ENV} ***"
-            LineColor[LineNumber]="${ColorAdded}"
+            LineColor[LineNumber]="${ColorHeading}"
             if [[ -z ${FirstVarLine-} ]]; then
                 FirstVarLine=$((LineNumber + 1))
             fi
@@ -80,7 +80,7 @@ menu_app_vars() {
             ((++LineNumber))
             CurrentValueOnLine[LineNumber]="*** ${APP_ENV_FOLDER_NAME}/${appname}.env ***"
             #DefaultValueOnLine[LineNumber]="*** ${APP_ENV_FOLDER_NAME}/${appname}.env ***"
-            LineColor[LineNumber]="${ColorAdded}"
+            LineColor[LineNumber]="${ColorHeading}"
             if [[ -z ${FirstVarLine-} ]]; then
                 FirstVarLine=$((LineNumber + 1))
             fi
