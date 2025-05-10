@@ -201,9 +201,9 @@ Application: \Zr${AppName}\Zn
         local -a ValidOptions=()
         local -a ValueOptions=()
         for Option in "${PossibleOptions[@]}"; do
-            if [[ -n ${Value[$Option]-} ]]; then
+            if [[ -n ${Value["$Option"]-} ]]; then
                 ValidOptions+=("${Option}")
-                ValueOptions+=("${Option}" "${Value[$Option]}")
+                ValueOptions+=("${Option}" "${Value["$Option"]}")
             fi
         done
         local ValidOptionsRegex
@@ -233,7 +233,7 @@ Application: \Zr${AppName}\Zn
         case ${DIALOG_BUTTONS[SelectValueDialogButtonPressed]-} in
             OK) # SELECT button
                 if [[ ${SelectedValue} =~ ${ValidOptionsRegex} ]]; then
-                    if [[ -n ${Value[$SelectedValue]-} ]]; then
+                    if [[ -n ${Value["${SelectedValue}"]-} ]]; then
                         Value["${CurrentValue}"]="${Value["$SelectedValue"]}"
                     else
                         error "Unset value '${SelectedValue}'"
