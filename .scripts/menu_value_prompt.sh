@@ -10,7 +10,7 @@ menu_value_prompt() {
     fi
 
     local ColorHeading='\Zr'
-    local ColorHighlight='\Zr'
+    local ColorHighlight='\Z3\Zb'
     local APPNAME
     APPNAME=$(run_script 'varname_to_appname' "${VarName}")
     APPNAME=${APPNAME^^}
