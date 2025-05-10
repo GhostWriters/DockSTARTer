@@ -31,104 +31,103 @@ menu_value_prompt() {
         fi
     fi
 
-    local CurrentValue="Current Value"
-    local DefaultValue="Default Value"
-    local HomeValue="Home Folder"
-    local SystemValue="System Value"
-    local PreviousValue="Previous Value"
+    local CurrentValueOption="Current Value"
+    local DefaultValueOption="Default Value"
+    local SystemValueOption="System Value"
+    local OriginalValueOption="Original Value"
 
     local ValueDescription=""
     local -A OptionValue=()
-    OptionValue["${PreviousValue}"]=$(run_script 'env_get_literal' "${VarName}")
-    OptionValue["${CurrentValue}"]="${OptionValue["${PreviousValue}"]}"
+    OptionValue["${OriginalValueOption}"]=$(run_script 'env_get_literal' "${VarName}")
+    OptionValue["${CurrentValueOption}"]="${OptionValue["${OriginalValueOption}"]}"
 
-    local -a PossibleOptions=("${CurrentValue}")
+    local -a PossibleOptions=("${CurrentValueOption}")
     case "${VarName}" in
         DOCKER_GID)
-            ValueDescription="\n\n This should be the Docker group ID. If you are unsure, select ${SystemValue}."
+            ValueDescription="\n\n This should be the Docker group ID. If you are unsure, select ${SystemValueOption}."
             OptionValue+=(
-                ["${SystemValue}"]="'$(cut -d: -f3 < <(getent group docker))'"
+                ["${SystemValueOption}"]="'$(cut -d: -f3 < <(getent group docker))'"
             )
             PossibleOptions+=(
-                "${SystemValue}"
+                "${SystemValueOption}"
             )
             ;;
         DOCKER_HOSTNAME)
-            ValueDescription="\n\n This should be your system hostname. If you are unsure, select ${SystemValue}."
+            ValueDescription="\n\n This should be your system hostname. If you are unsure, select ${SystemValueOption}."
             OptionValue+=(
-                ["${SystemValue}"]="'${HOSTNAME}'"
+                ["${SystemValueOption}"]="'${HOSTNAME}'"
             )
             PossibleOptions+=(
-                "${SystemValue}"
+                "${SystemValueOption}"
             )
             ;;
         DOCKER_VOLUME_CONFIG)
             OptionValue+=(
-                ["${HomeValue}"]="'${DETECTED_HOMEDIR}/.config/appdata'"
+                ["Home Folder"]="'${DETECTED_HOMEDIR}/.config/appdata'"
             )
             PossibleOptions+=(
-                "${HomeValue}"
+                "Home Folder"
             )
             ;;
         DOCKER_VOLUME_STORAGE)
             OptionValue+=(
-                ["${HomeValue}"]="'${DETECTED_HOMEDIR}/storage'"
+                ["Home Folder"]="'${DETECTED_HOMEDIR}/storage'"
                 ["Mount Folder"]="'/mnt/storage'"
             )
             PossibleOptions+=(
-                "${HomeValue}"
+                "Home Folder"
                 "Mount Folder"
             )
             ;;
         GLOBAL_LAN_NETWORK)
             ValueDescription='\n\n This is used to define your home LAN network, do NOT confuse this with the IP address of your router or your server, the value for this key defines your network NOT a single host. Please Google CIDR Notation to learn more.'
             OptionValue+=(
-                ["${SystemValue}"]="'$(run_script 'detect_lan_network')'"
+                ["${SystemValueOption}"]="'$(run_script 'detect_lan_network')'"
             )
             PossibleOptions+=(
-                "${SystemValue}"
+                "${SystemValueOption}"
             )
             ;;
         PGID)
-            ValueDescription="\n\n This should be your user group ID. If you are unsure, select ${SystemValue}."
+            ValueDescription="\n\n This should be your user group ID. If you are unsure, select ${SystemValueOption}."
             OptionValue+=(
-                ["${SystemValue}"]="'${DETECTED_PGID}'"
+                ["${SystemValueOption}"]="'${DETECTED_PGID}'"
             )
             PossibleOptions+=(
-                "${SystemValue}"
+                "${SystemValueOption}"
             )
             ;;
         PUID)
-            ValueDescription="\n\n This should be your user account ID. If you are unsure, select ${SystemValue}."
+            ValueDescription="\n\n This should be your user account ID. If you are unsure, select ${SystemValueOption}."
             OptionValue+=(
-                ["${SystemValue}"]="'${DETECTED_PUID}'"
+                ["${SystemValueOption}"]="'${DETECTED_PUID}'"
             )
             PossibleOptions+=(
-                "${SystemValue}"
+                "${SystemValueOption}"
             )
             ;;
         TZ)
             ValueDescription='\n\n If this is not the correct timezone please exit and set your system timezone.'
             OptionValue+=(
-                ["${SystemValue}"]="'$(cat /etc/timezone)'"
+                ["${SystemValueOption}"]="'$(cat /etc/timezone)'"
             )
             PossibleOptions+=(
-                "${SystemValue}"
+                "${SystemValueOption}"
             )
             ;;
         "${APPNAME}__ENABLED")
             ValueDescription='\n\n Must be true or false.'
             OptionValue+=(
-                ["${DefaultValue}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
+                ["${DefaultValueOption}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
             )
             PossibleOptions+=(
-                "${DefaultValue}"
+                "${DefaultValueOption}"
             )
             ;;
         "${APPNAME}__NETWORK_MODE")
             ValueDescription='\n\n Network Mode is usually left blank but can also be bridge, host, none, service:<appname>, or container:<appname>.'
             OptionValue+=(
-                ["${DefaultValue}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
+                ["${DefaultValueOption}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
                 ["Bridge Network"]="'bridge'"
                 ["Host Network"]="'host'"
                 ["No Network"]="'none'"
@@ -136,7 +135,7 @@ menu_value_prompt() {
                 ["Use Privoxy"]="'service:privoxy'"
             )
             PossibleOptions+=(
-                "${DefaultValue}"
+                "${DefaultValueOption}"
                 "Bridge Network"
                 "Host Network"
                 "No Network"
@@ -147,23 +146,23 @@ menu_value_prompt() {
         "${APPNAME}__PORT_"*)
             ValueDescription='\n\n Must be an unused port between 0 and 65535.'
             OptionValue+=(
-                ["${DefaultValue}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
+                ["${DefaultValueOption}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
             )
             PossibleOptions+=(
-                "${DefaultValue}"
+                "${DefaultValueOption}"
             )
             ;;
         "${APPNAME}__RESTART")
             ValueDescription='\n\n Restart is usually unless-stopped but can also be no, always, or on-failure.'
             OptionValue+=(
-                ["${DefaultValue}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
+                ["${DefaultValueOption}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
                 ["Restart Unless Stopped"]="'unless-stopped'"
                 ["Restart On Failure"]="'on-failure'"
                 ["Always Restart"]="'always'"
                 ["Never Restart"]="'no'"
             )
             PossibleOptions+=(
-                "${DefaultValue}"
+                "${DefaultValueOption}"
                 "Restart Unless Stopped"
                 "Restart On Failure"
                 "Always Restart"
@@ -173,34 +172,34 @@ menu_value_prompt() {
         "${APPNAME}__TAG")
             ValueDescription='\n\n Tag is usually latest but can also be other values based on the image.'
             OptionValue+=(
-                ["${DefaultValue}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
+                ["${DefaultValueOption}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
             )
             PossibleOptions+=(
-                "${DefaultValue}"
+                "${DefaultValueOption}"
             )
             ;;
         "${APPNAME}__VOLUME_"*)
             ValueDescription='\n\n If the directory selected does not exist we will attempt to create it.'
             OptionValue+=(
-                ["${DefaultValue}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
+                ["${DefaultValueOption}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
             )
             PossibleOptions+=(
-                "${DefaultValue}"
+                "${DefaultValueOption}"
             )
             ;;
         *)
             ValueDescription=""
             OptionValue+=(
-                ["${DefaultValue}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
+                ["${DefaultValueOption}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
             )
             PossibleOptions+=(
-                "${DefaultValue}"
+                "${DefaultValueOption}"
             )
             ;;
     esac
-    PossibleOptions+=("${PreviousValue}")
+    PossibleOptions+=("${OriginalValueOption}")
 
-    if [[ -n ${OptionValue["${SystemValue}"]-} ]]; then
+    if [[ -n ${OptionValue["${SystemValueOption}"]-} ]]; then
         ValueDescription="\n\n System detected values are recommended.${ValueDescription}"
     fi
 
@@ -210,7 +209,7 @@ menu_value_prompt() {
 Application: ${ColorHeading}${AppName}\Zn
        File: ${ColorHeading}${VarFile}\Zn
    Variable: ${ColorHeading}${CleanVarName}\Zn
-      Value: ${ColorHeading}${OptionValue["${CurrentValue}"]-}\Zn
+      Value: ${ColorHeading}${OptionValue["${CurrentValueOption}"]-}\Zn
 "
         # editorconfig-checker-enable
         local SelectValueMenuText="${DescriptionHeading}\nWhat would you like set for ${CleanVarName}?${ValueDescription}"
@@ -251,7 +250,7 @@ Application: ${ColorHeading}${AppName}\Zn
             OK) # SELECT button
                 if [[ ${SelectedValue} =~ ${ValidOptionsRegex} ]]; then
                     if [[ -n ${OptionValue["${SelectedValue}"]-} ]]; then
-                        OptionValue["${CurrentValue}"]="${OptionValue["${SelectedValue}"]}"
+                        OptionValue["${CurrentValueOption}"]="${OptionValue["${SelectedValue}"]}"
                     else
                         error "Unset value '${SelectedValue}'"
                     fi
@@ -260,18 +259,18 @@ Application: ${ColorHeading}${AppName}\Zn
                 fi
                 ;;
             EXTRA) # EDIT button
-                OptionValue["${CurrentValue}"]=$(grep -o -P "RENAMED (${ValidOptionsRegex}) \K.*" <<< "${SelectedValue}")
+                OptionValue["${CurrentValueOption}"]=$(grep -o -P "RENAMED (${ValidOptionsRegex}) \K.*" <<< "${SelectedValue}")
                 ;;
             CANCEL | ESC) # DONE button
                 local ValueValid
-                if [[ ${OptionValue["${CurrentValue}"]} == *"$"* ]]; then
+                if [[ ${OptionValue["${CurrentValueOption}"]} == *"$"* ]]; then
                     # Value contains a '$', assume it uses variable interpolation and allow it
                     ValueValid="true"
                 else
-                    local StrippedValue="${OptionValue["${CurrentValue}"]}"
+                    local StrippedValue="${OptionValue["${CurrentValueOption}"]}"
                     # Strip comments from the value
                     #StrippedValue="$(sed -E "s/('([^']|'')*'|\"([^\"]|\"\")*\")|(#.*)//g" <<< "${StrippedValue}")"
-                    #dialog --colors --title "${Title}" --msgbox "Original Value=${ColorHighlight}${OptionValue["${CurrentValue}"]}\Zn\nStripped Value=${ColorHighlight}${StrippedValue}\Zn" 0 0
+                    #dialog --colors --title "${Title}" --msgbox "Original Value=${ColorHighlight}${OptionValue["${CurrentValueOption}"]}\Zn\nStripped Value=${ColorHighlight}${StrippedValue}\Zn" 0 0
                     # Unqauote the value
                     StrippedValue="$(sed -E "s|^(['\"])(.*)\1$|\2|g" <<< "${StrippedValue}")"
 
@@ -281,7 +280,7 @@ Application: ${ColorHeading}${AppName}\Zn
                                 ValueValid="true"
                             else
                                 ValueValid="false"
-                                dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${OptionValue["${CurrentValue}"]} is not true or false. Please try setting ${CleanVarName} again." 0 0
+                                dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${OptionValue["${CurrentValueOption}"]} is not true or false. Please try setting ${CleanVarName} again." 0 0
                             fi
                             ;;
                         "${APPNAME}__NETWORK_MODE")
@@ -291,17 +290,17 @@ Application: ${ColorHeading}${AppName}\Zn
                                     ;;
                                 *)
                                     ValueValid="false"
-                                    dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${ColorHighlight}${OptionValue["${CurrentValue}"]}\Zn is not a valid network mode. Please try setting ${ColorHighlight}${CleanVarName}\Zn again." 0 0
+                                    dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${ColorHighlight}${OptionValue["${CurrentValueOption}"]}\Zn is not a valid network mode. Please try setting ${ColorHighlight}${CleanVarName}\Zn again." 0 0
                                     ;;
                             esac
                             ;;
                         "${APPNAME}__PORT_"*)
-                            printf '%s' "${OptionValue["${CurrentValue}"]}"
+                            printf '%s' "${OptionValue["${CurrentValueOption}"]}"
                             if [[ ${StrippedValue} =~ ^[0-9]+$ ]] || [[ ${StrippedValue} -ge 0 ]] || [[ ${StrippedValue} -le 65535 ]]; then
                                 ValueValid="true"
                             else
                                 ValueValid="false"
-                                dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${ColorHighlight}${OptionValue["${CurrentValue}"]}\Zn is not a valid port. Please try setting ${ColorHighlight}${CleanVarName}\Zn again." 0 0
+                                dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${ColorHighlight}${OptionValue["${CurrentValueOption}"]}\Zn is not a valid port. Please try setting ${ColorHighlight}${CleanVarName}\Zn again." 0 0
                             fi
                             ;;
                         "${APPNAME}__RESTART")
@@ -311,7 +310,7 @@ Application: ${ColorHeading}${AppName}\Zn
                                     ;;
                                 *)
                                     ValueValid="false"
-                                    dialog --colors --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${ColorHighlight}${OptionValue["${CurrentValue}"]}\Zn is not a valid restart value. Please try setting ${ColorHighlight}${CleanVarName}\Zn again." 0 0
+                                    dialog --colors --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${ColorHighlight}${OptionValue["${CurrentValueOption}"]}\Zn is not a valid restart value. Please try setting ${ColorHighlight}${CleanVarName}\Zn again." 0 0
                                     ;;
                             esac
                             ;;
@@ -320,9 +319,9 @@ Application: ${ColorHeading}${AppName}\Zn
                                 dialog --title "${Title}" --msgbox "${DescriptionHeading}\nCannot use / for ${CleanVarName}. Please select another folder." 0 0
                                 ValueValid="false"
                             elif [[ ${StrippedValue} == ~* ]]; then
-                                local CORRECTED_DIR="${DETECTED_HOMEDIR}${OptionValue["${CurrentValue}"]#*~}"
+                                local CORRECTED_DIR="${DETECTED_HOMEDIR}${OptionValue["${CurrentValueOption}"]#*~}"
                                 if run_script 'question_prompt' Y "${DescriptionHeading}\nCannot use the ~ shortcut in ${CleanVarName}. Would you like to use ${CORRECTED_DIR} instead?" "${Title}"; then
-                                    OptionValue["${CurrentValue}"]="${CORRECTED_DIR}"
+                                    OptionValue["${CurrentValueOption}"]="${CORRECTED_DIR}"
                                     ValueValid="false"
                                     dialog --colors --title "${Title}" --msgbox "Returning to the previous menu to confirm selection." 0 0
                                 else
@@ -330,21 +329,21 @@ Application: ${ColorHeading}${AppName}\Zn
                                     dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\nCannot use the ~ shortcut in ${CleanVarName}. Please select another folder." 0 0
                                 fi
                             elif [[ -d ${StrippedValue} ]]; then
-                                if run_script 'question_prompt' Y "${DescriptionHeading}\nWould you like to set permissions on ${OptionValue["${CurrentValue}"]} ?" "${Title}"; then
+                                if run_script 'question_prompt' Y "${DescriptionHeading}\nWould you like to set permissions on ${OptionValue["${CurrentValueOption}"]} ?" "${Title}"; then
                                     run_script_dialog "Settings Permissions" "${StrippedValue}" "" \
                                         'set_permissions' "${StrippedValue}"
                                 fi
                                 ValueValid="true"
                             else
-                                if run_script 'question_prompt' Y "${DescriptionHeading}\n${ColorHighlight}${OptionValue["${CurrentValue}"]}\Zn is not a valid path. Would you like to attempt to create it?" "${Title}"; then
+                                if run_script 'question_prompt' Y "${DescriptionHeading}\n${ColorHighlight}${OptionValue["${CurrentValueOption}"]}\Zn is not a valid path. Would you like to attempt to create it?" "${Title}"; then
                                     {
                                         mkdir -p "${StrippedValue}" || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p \"${StrippedValue}\""
                                         run_script 'set_permissions' "${StrippedValue}"
-                                    } | dialog_pipe "Creating folder and settings permissions" "${OptionValue["${CurrentValue}"]}"
-                                    dialog --colors --title "${Title}" --msgbox "${ColorHighlight}${OptionValue["${CurrentValue}"]}\Zn folder was created successfully." 0 0
+                                    } | dialog_pipe "Creating folder and settings permissions" "${OptionValue["${CurrentValueOption}"]}"
+                                    dialog --colors --title "${Title}" --msgbox "${ColorHighlight}${OptionValue["${CurrentValueOption}"]}\Zn folder was created successfully." 0 0
                                     ValueValid="true"
                                 else
-                                    dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${ColorHighlight}${OptionValue["${CurrentValue}"]}\Zn is not a valid path. Please try setting ${ColorHighlight}${CleanVarName}\Zn again." 0 0
+                                    dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${ColorHighlight}${OptionValue["${CurrentValueOption}"]}\Zn is not a valid path. Please try setting ${ColorHighlight}${CleanVarName}\Zn again." 0 0
                                     ValueValid="false"
                                 fi
                             fi
@@ -359,7 +358,7 @@ Application: ${ColorHeading}${AppName}\Zn
                             elif [[ ${StrippedValue} =~ ^[0-9]+$ ]]; then
                                 ValueValid="true"
                             else
-                                dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${ColorHighlight}${OptionValue["${CurrentValue}"]}\Zn is not a valid ${CleanVarName}. Please try setting ${ColorHighlight}${CleanVarName}\Zn again." 0 0
+                                dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${ColorHighlight}${OptionValue["${CurrentValueOption}"]}\Zn is not a valid ${CleanVarName}. Please try setting ${ColorHighlight}${CleanVarName}\Zn again." 0 0
                                 ValueValid="false"
                             fi
                             ;;
@@ -370,7 +369,7 @@ Application: ${ColorHeading}${AppName}\Zn
                 fi
                 if ${ValueValid} && run_script 'question_prompt' N "${DescriptionHeading}" "Save Variable" "" "Save" "Back"; then
                     # Value is valid, save it and exit
-                    run_script 'env_set_literal' "${VarName}" "${OptionValue["${CurrentValue}"]}"
+                    run_script 'env_set_literal' "${VarName}" "${OptionValue["${CurrentValueOption}"]}"
                     return 0
                 fi
                 ;;
