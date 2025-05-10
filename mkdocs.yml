@@ -272,6 +272,7 @@ nav:
       - apps/varken.md
       - apps/vsftpd.md
       - apps/watchtower.md
+      - apps/whisparr.md
       - apps/wireguard.md
       - apps/xbackbone.md
       - apps/xteve.md
