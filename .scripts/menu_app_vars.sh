@@ -110,7 +110,7 @@ menu_app_vars() {
             --colors
             --title "${Title}"
             --cancel-button "Back"
-            --menu "\nApplication: ${ColorHeading}${AppName}\ZnR\n" 0 0 0
+            --menu "\nApplication: ${ColorHeading}${AppName}\Zn\n" 0 0 0
             "${LineOptions[@]}"
         )
         while true; do
