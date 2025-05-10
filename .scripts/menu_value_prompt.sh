@@ -28,113 +28,165 @@ menu_value_prompt() {
             DefaultVarFile="${APP_FOLDER}/.env"
         fi
     fi
-    local ValueDescription
-    ValueDescription=$(value_description "${VarName}")
 
-    local -A Value
     local CurrentValue="Current Value"
     local DefaultValue="Default Value"
     local HomeValue="Home Folder"
     local SystemValue="System Value"
     local PreviousValue="Previous Value"
 
-    local -a ValidOptions=(
-        "${CurrentValue}"
-        "${DefaultValue}"
-        "Bridge Network"
-        "Host Network"
-        "No Network"
-        "Use Gluetun"
-        "Use Privoxy"
-        "Unless Stopped"
-        "No Restart"
-        "Always"
-        "On Failure"
-        "${HomeValue}"
-        "Mount Folder"
-        "${SystemValue}"
-        "${PreviousValue}"
-    )
-    local ValidOptionsRegex
-    {
-        IFS='|'
-        ValidOptionsRegex="${ValidOptions[*]}"
-    }
+    local ValueDescription=""
+    local -A Value=()
     Value["${PreviousValue}"]=$(run_script 'env_get_literal' "${VarName}")
     Value["${CurrentValue}"]="${Value["${PreviousValue}"]}"
+
+    local -a PossibleOptions=("${CurrentValue}")
     case "${VarName}" in
         DOCKER_GID)
             ValueDescription="\n\n This should be the Docker group ID. If you are unsure, select ${SystemValue}."
-            Value["${SystemValue}"]="'$(cut -d: -f3 < <(getent group docker))'"
+            Value+=(
+                ["${SystemValue}"]="'$(cut -d: -f3 < <(getent group docker))'"
+            )
+            PossibleOptions+=(
+                "${SystemValue}"
+            )
             ;;
         DOCKER_HOSTNAME)
             ValueDescription="\n\n This should be your system hostname. If you are unsure, select ${SystemValue}."
-            Value["${SystemValue}"]="'${HOSTNAME}'"
+            Value+=(
+                ["${SystemValue}"]="'${HOSTNAME}'"
+            )
+            PossibleOptions+=(
+                "${SystemValue}"
+            )
             ;;
         DOCKER_VOLUME_CONFIG)
-            Value["${HomeValue}"]="'${DETECTED_HOMEDIR}/.config/appdata'"
+            Value+=(
+                ["${HomeValue}"]="'${DETECTED_HOMEDIR}/.config/appdata'"
+            )
+            PossibleOptions+=(
+                "${HomeValue}"
+            )
             ;;
         DOCKER_VOLUME_STORAGE)
-            Value["${HomeValue}"]="'${DETECTED_HOMEDIR}/storage'"
-            Value["Mount Folder"]="'/mnt/storage'"
+            Value+=(
+                ["${HomeValue}"]="'${DETECTED_HOMEDIR}/storage'"
+                ["Mount Folder"]="'/mnt/storage'"
+            )
+            PossibleOptions+=(
+                "${HomeValue}"
+                "Mount Folder"
+            )
             ;;
         GLOBAL_LAN_NETWORK)
             ValueDescription='\n\n This is used to define your home LAN network, do NOT confuse this with the IP address of your router or your server, the value for this key defines your network NOT a single host. Please Google CIDR Notation to learn more.'
-            Value["${SystemValue}"]="'$(run_script 'detect_lan_network')'"
+            Value+=(
+                ["${SystemValue}"]="'$(run_script 'detect_lan_network')'"
+            )
+            PossibleOptions+=(
+                "${SystemValue}"
+            )
             ;;
         PGID)
             ValueDescription="\n\n This should be your user group ID. If you are unsure, select ${SystemValue}."
-            Value["${SystemValue}"]="'${DETECTED_PGID}'"
+            Value+=(
+                ["${SystemValue}"]="'${DETECTED_PGID}'"
+            )
+            PossibleOptions+=(
+                "${SystemValue}"
+            )
             ;;
         PUID)
             ValueDescription="\n\n This should be your user account ID. If you are unsure, select ${SystemValue}."
-            Value["${SystemValue}"]="'${DETECTED_PUID}'"
+            Value+=(
+                ["${SystemValue}"]="'${DETECTED_PUID}'"
+            )
+            PossibleOptions+=(
+                "${SystemValue}"
+            )
             ;;
         TZ)
             ValueDescription='\n\n If this is not the correct timezone please exit and set your system timezone.'
-            Value["${SystemValue}"]="'$(cat /etc/timezone)'"
+            Value+=(
+                ["${SystemValue}"]="'$(cat /etc/timezone)'"
+            )
+            PossibleOptions+=(
+                "${SystemValue}"
+            )
             ;;
         "${APPNAME}__ENABLED")
             ValueDescription='\n\n Must be true or false.'
-            Value["${DefaultValue}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
+            Value+=(
+                ["${DefaultValue}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
+            )
+            PossibleOptions+=(
+                "${DefaultValue}"
+            )
             ;;
         "${APPNAME}__NETWORK_MODE")
             ValueDescription='\n\n Network Mode is usually left blank but can also be bridge, host, none, service:<appname>, or container:<appname>.'
-            Value["${DefaultValue}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
-            Value["Bridge Network"]="'bridge'"
-            Value["Host Network"]="'host'"
-            Value["No Network"]="'none'"
-            Value["Use Gluetun"]="'service:gluetun'"
-            Value["Use Privoxy"]="'service:privoxy'"
+            Value+=(
+                ["${DefaultValue}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
+                ["Bridge Network"]="'bridge'"
+                ["Host Network"]="'host'"
+                ["No Network"]="'none'"
+                ["Use Gluetun"]="'service:gluetun'"
+                ["Use Privoxy"]="'service:privoxy'"
+            )
             ;;
         "${APPNAME}__PORT_"*)
             ValueDescription='\n\n Must be an unused port between 0 and 65535.'
-            Value["${DefaultValue}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
+            Value+=(
+                ["${DefaultValue}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
+            )
+            PossibleOptions+=(
+                "${DefaultValue}"
+            )
             ;;
         "${APPNAME}__RESTART")
             ValueDescription='\n\n Restart is usually unless-stopped but can also be no, always, or on-failure.'
-            Value["${DefaultValue}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
-            Value["Unless Stopped"]="'unless-stopped'"
-            Value["No Restart"]="'no'"
-            Value["Always"]="'always'"
-            Value["On Failure"]="'on-failure'"
+            Value+=(
+                ["${DefaultValue}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
+                ["Restart Unless Stopped"]="'unless-stopped'"
+                ["Restart On Failure"]="'on-failure'"
+                ["Always Restart"]="'always'"
+                ["Never Restart"]="'no'"
+            )
             ;;
         "${APPNAME}__TAG")
             ValueDescription='\n\n Tag is usually latest but can also be other values based on the image.'
-            Value["${DefaultValue}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
+            Value+=(
+                ["${DefaultValue}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
+            )
+            PossibleOptions+=(
+                "${DefaultValue}"
+            )
             ;;
         "${APPNAME}__VOLUME_"*)
             ValueDescription='\n\n If the directory selected does not exist we will attempt to create it.'
-            Value["${DefaultValue}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
+            Value+=(
+                ["${DefaultValue}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
+            )
+            PossibleOptions+=(
+                "${DefaultValue}"
+            )
             ;;
         *)
             ValueDescription=""
-            Value["${DefaultValue}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
+            Value+=(
+                ["${DefaultValue}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
+            )
+            PossibleOptions+=(
+                "${DefaultValue}"
+            )
             ;;
     esac
+    PossibleOptions+=("${PreviousValue}")
+
     if [[ -n ${Value["${SystemValue}"]-} ]]; then
         ValueDescription="\n\n System detected values are recommended.${ValueDescription}"
     fi
+
     while true; do
         # editorconfig-checker-disable
         local DescriptionHeading="
@@ -144,12 +196,21 @@ Application: \Zr${AppName}\Zn
       Value: \Zr${Value["${CurrentValue}"]-}\Zn
 "
         # editorconfig-checker-enable
+        local SelectValueMenuText="${DescriptionHeading}\nWhat would you like set for ${CleanVarName}?${ValueDescription}"
+
+        local -a ValidOptions=()
         local -a ValueOptions=()
-        for Option in "${ValidOptions[@]}"; do
+        for Option in "${PossibleOptions[@]}"; do
             if [[ -n ${Value[$Option]-} ]]; then
+                ValidOptions+=("${Option}")
                 ValueOptions+=("${Option}" "${Value[$Option]}")
             fi
         done
+        local ValidOptionsRegex
+        {
+            IFS='|'
+            ValidOptionsRegex="${ValidOptions[*]}"
+        }
 
         local -i SelectValueDialogButtonPressed=0
         local SelectedValue
@@ -162,7 +223,7 @@ Application: \Zr${AppName}\Zn
             --extra-label "Edit"
             --cancel-label "Done"
             --title "${Title}"
-            --inputmenu "${DescriptionHeading}\nWhat would you like set for ${CleanVarName}?${ValueDescription}"
+            --inputmenu "${SelectValueMenuText}"
             $((LINES - 5)) $((COLUMNS - 5)) 0
             "${ValueOptions[@]}"
         )
