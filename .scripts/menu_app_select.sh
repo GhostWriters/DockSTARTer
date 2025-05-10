@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_app_select() {
-    local Title="Select Apps"
+    local Title="Select Applications"
     dialog --title "${Title}" --infobox "Preparing app menu. Please be patient, this can take a while." 0 0
     local AppList=()
     local EnabledApps=()
