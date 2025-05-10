@@ -116,6 +116,7 @@ nav:
       - advanced/uninstall.md
       - advanced/vpn-info.md
   - App Specifics:
+      - apps/actualbudget.md
       - apps/adguard.md
       - apps/adminer.md
       - apps/airsonicadvanced.md
