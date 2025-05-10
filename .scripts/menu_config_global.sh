@@ -5,6 +5,8 @@ IFS=$'\n\t'
 menu_config_global() {
     local Title="Global Variables"
 
+    local ColorHeading='\Zr'
+
     local -a VarList
     readarray -t VarList < <(run_script 'env_var_list' "${COMPOSE_ENV_DEFAULT_FILE}")
 
@@ -24,7 +26,7 @@ menu_config_global() {
             --title "${Title}"
             --cancel-button "Back"
             --no-tags
-            --menu "\nFile: \Zr${COMPOSE_ENV}\Zn" 0 0 0
+            --menu "\nFile: ${ColorHeading}${COMPOSE_ENV}\Zn" 0 0 0
             "${VarOptions[@]}"
         )
         while true; do
