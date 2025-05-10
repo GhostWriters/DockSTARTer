@@ -14,7 +14,7 @@ PIHOLE__TAG                             PIHOLE_TAG
 ### PIHOLE - pihole.env
 ###
 pihole:DNS1                             PIHOLE_DNS1|PIHOLE_ENVIRONMENT_DNS1
-pihole:DNS2                             PIHOLE_DNS2|PIHOLE_ENVIRONMENT_DNS1
+pihole:DNS2                             PIHOLE_DNS2|PIHOLE_ENVIRONMENT_DNS2
 pihole:ServerIP                         PIHOLE_SERVERIP|PIHOLE_ENVIRONMENT_SERVERIP
 pihole:WEBPASSWORD                      PIHOLE_WEBPASSWORD|PIHOLE_ENVIRONMENT_WEBPASSWORD
 pihole:FTLCONF_dns_upstreams            PIHOLE_FTLCONF_DNS_UPSTREAMS|PIHOLE_ENVIRONMENT_FTLCONF_DNS_UPSTREAMS
