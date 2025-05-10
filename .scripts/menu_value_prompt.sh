@@ -44,7 +44,7 @@ menu_value_prompt() {
     local -a PossibleOptions=("${CurrentValueOption}")
     case "${VarName}" in
         DOCKER_GID)
-            ValueDescription="\n\n This should be the Docker group ID. If you are unsure, select ${SystemValueOption}."
+            ValueDescription="\n\n This should be the Docker group ID. If you are unsure, select ${ColorHighlight}${SystemValueOption}\Zn."
             OptionValue+=(
                 ["${SystemValueOption}"]="'$(cut -d: -f3 < <(getent group docker))'"
             )
@@ -53,7 +53,7 @@ menu_value_prompt() {
             )
             ;;
         DOCKER_HOSTNAME)
-            ValueDescription="\n\n This should be your system hostname. If you are unsure, select ${SystemValueOption}."
+            ValueDescription="\n\n This should be your system hostname. If you are unsure, select ${ColorHighlight}${SystemValueOption}\Zn."
             OptionValue+=(
                 ["${SystemValueOption}"]="'${HOSTNAME}'"
             )
@@ -80,7 +80,7 @@ menu_value_prompt() {
             )
             ;;
         GLOBAL_LAN_NETWORK)
-            ValueDescription='\n\n This is used to define your home LAN network, do NOT confuse this with the IP address of your router or your server, the value for this key defines your network NOT a single host. Please Google CIDR Notation to learn more.'
+            ValueDescription="\n\n This is used to define your home LAN network, do NOT confuse this with the IP address of your router or your server, the value for this key defines your network NOT a single host. Please Google CIDR Notation to learn more."
             OptionValue+=(
                 ["${SystemValueOption}"]="'$(run_script 'detect_lan_network')'"
             )
@@ -89,7 +89,7 @@ menu_value_prompt() {
             )
             ;;
         PGID)
-            ValueDescription="\n\n This should be your user group ID. If you are unsure, select ${SystemValueOption}."
+            ValueDescription="\n\n This should be your user group ID. If you are unsure, select ${ColorHighlight}${SystemValueOption}\Zn."
             OptionValue+=(
                 ["${SystemValueOption}"]="'${DETECTED_PGID}'"
             )
@@ -98,7 +98,7 @@ menu_value_prompt() {
             )
             ;;
         PUID)
-            ValueDescription="\n\n This should be your user account ID. If you are unsure, select ${SystemValueOption}."
+            ValueDescription="\n\n This should be your user account ID. If you are unsure, select ${ColorHighlight}${SystemValueOption}\Zn."
             OptionValue+=(
                 ["${SystemValueOption}"]="'${DETECTED_PUID}'"
             )
@@ -107,7 +107,7 @@ menu_value_prompt() {
             )
             ;;
         TZ)
-            ValueDescription='\n\n If this is not the correct timezone please exit and set your system timezone.'
+            ValueDescription="\n\n If this is not the correct timezone please exit and set your system timezone."
             OptionValue+=(
                 ["${SystemValueOption}"]="'$(cat /etc/timezone)'"
             )
@@ -116,7 +116,7 @@ menu_value_prompt() {
             )
             ;;
         "${APPNAME}__ENABLED")
-            ValueDescription='\n\n Must be true or false.'
+            ValueDescription="\n\n Must be true or false."
             OptionValue+=(
                 ["${DefaultValueOption}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
             )
@@ -125,7 +125,7 @@ menu_value_prompt() {
             )
             ;;
         "${APPNAME}__NETWORK_MODE")
-            ValueDescription='\n\n Network Mode is usually left blank but can also be bridge, host, none, service:<appname>, or container:<appname>.'
+            ValueDescription="\n\n Network Mode is usually left blank but can also be ${ColorHighlight}bridge\Zn, ${ColorHighlight}host\Zn, ${ColorHighlight}none\Zn, ${ColorHighlight}service:<appname>\Zn, or ${ColorHighlight}container:<appname>\Zn."
             OptionValue+=(
                 ["${DefaultValueOption}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
                 ["Bridge Network"]="'bridge'"
@@ -144,7 +144,7 @@ menu_value_prompt() {
             )
             ;;
         "${APPNAME}__PORT_"*)
-            ValueDescription='\n\n Must be an unused port between 0 and 65535.'
+            ValueDescription="\n\n Must be an unused port between ${ColorHighlight}0\Zn and ${ColorHighlight}65535\Zn."
             OptionValue+=(
                 ["${DefaultValueOption}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
             )
@@ -153,7 +153,7 @@ menu_value_prompt() {
             )
             ;;
         "${APPNAME}__RESTART")
-            ValueDescription='\n\n Restart is usually unless-stopped but can also be no, always, or on-failure.'
+            ValueDescription="\n\n Restart is usually ${ColorHighlight}unless-stopped\Zn but can also be ${ColorHighlight}no\Zn, ${ColorHighlight}always\Zn, or ${ColorHighlight}on-failure\Zn."
             OptionValue+=(
                 ["${DefaultValueOption}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
                 ["Restart Unless Stopped"]="'unless-stopped'"
@@ -170,7 +170,7 @@ menu_value_prompt() {
             )
             ;;
         "${APPNAME}__TAG")
-            ValueDescription='\n\n Tag is usually latest but can also be other values based on the image.'
+            ValueDescription="\n\n Tag is usually latest but can also be other values based on the image."
             OptionValue+=(
                 ["${DefaultValueOption}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
             )
@@ -179,7 +179,7 @@ menu_value_prompt() {
             )
             ;;
         "${APPNAME}__VOLUME_"*)
-            ValueDescription='\n\n If the directory selected does not exist we will attempt to create it.'
+            ValueDescription="\n\n If the directory selected does not exist we will attempt to create it."
             OptionValue+=(
                 ["${DefaultValueOption}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
             )
@@ -212,7 +212,7 @@ Application: ${ColorHeading}${AppName}\Zn
       Value: ${ColorHeading}${OptionValue["${CurrentValueOption}"]-}\Zn
 "
         # editorconfig-checker-enable
-        local SelectValueMenuText="${DescriptionHeading}\nWhat would you like set for ${CleanVarName}?${ValueDescription}"
+        local SelectValueMenuText="${DescriptionHeading}\nWhat would you like set for ${ColorHighlight}${CleanVarName}\Zn?${ValueDescription}"
 
         local -a ValidOptions=()
         local -a ValueOptions=()
