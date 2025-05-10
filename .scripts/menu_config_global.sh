@@ -20,10 +20,11 @@ menu_config_global() {
         fi
         local -a VarDialog=(
             --stdout
+            --colors
             --title "${Title}"
             --cancel-button "Back"
             --no-tags
-            --menu "${COMPOSE_ENV}" 0 0 0
+            --menu "\nFile: \Zr${COMPOSE_ENV}\Zn" 0 0 0
             "${VarOptions[@]}"
         )
         while true; do
