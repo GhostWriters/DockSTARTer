@@ -20,6 +20,11 @@ menu_app_vars() {
         return
     fi
 
+    local ColorHeading='\Zr'
+    local ColorVarLine='\Z0\Zb\Zr'
+    #local ColorCommentLine='\Z0\ZB\Zr'
+    local ColorHeadingLine='\Zn'
+
     run_script_dialog "${Title}" "Creating variables for ${AppName}" 1 \
         'appvars_create' "${APPNAME}"
 
@@ -42,9 +47,6 @@ menu_app_vars() {
         AppVarList+=("${appname}:${VarName}")
     done
 
-    local ColorVariable='\Z0\Zb\Zr'
-    #local ColorComment='\Z0\ZB\Zr'
-    local ColorHeading=''
     local LastLineChoice=""
     while true; do
         local -a LineOptions=()
@@ -58,7 +60,7 @@ menu_app_vars() {
             ((++LineNumber))
             CurrentValueOnLine[LineNumber]="*** ${COMPOSE_ENV} ***"
             #DefaultValueOnLine[LineNumber]="*** ${COMPOSE_ENV} ***"
-            LineColor[LineNumber]="${ColorHeading}"
+            LineColor[LineNumber]="${ColorHeadingLine}"
             if [[ -z ${FirstVarLine-} ]]; then
                 FirstVarLine=$((LineNumber + 1))
             fi
@@ -67,7 +69,7 @@ menu_app_vars() {
                 VarNameOnLine[LineNumber]="${VarName}"
                 CurrentValueOnLine[LineNumber]="${VarName}=$(run_script 'env_get_literal' "${VarName}")"
                 #DefaultValueOnLine[LineNumber]="${VarName}=$(run_script 'env_get_literal' "${VarName}")"
-                LineColor[LineNumber]="${ColorVariable}"
+                LineColor[LineNumber]="${ColorVarLine}"
             done
         fi
         if [[ -n ${AppVarEnvList[*]-} ]]; then
@@ -75,12 +77,12 @@ menu_app_vars() {
                 ((++LineNumber))
                 CurrentValueOnLine[LineNumber]=""
                 #DefaultValueOnLine[LineNumber]=""
-                LineColor[LineNumber]="${ColorVariable}"
+                LineColor[LineNumber]="${ColorVarLine}"
             fi
             ((++LineNumber))
             CurrentValueOnLine[LineNumber]="*** ${APP_ENV_FOLDER_NAME}/${appname}.env ***"
             #DefaultValueOnLine[LineNumber]="*** ${APP_ENV_FOLDER_NAME}/${appname}.env ***"
-            LineColor[LineNumber]="${ColorHeading}"
+            LineColor[LineNumber]="${ColorHeadingLine}"
             if [[ -z ${FirstVarLine-} ]]; then
                 FirstVarLine=$((LineNumber + 1))
             fi
@@ -89,7 +91,7 @@ menu_app_vars() {
                 VarNameOnLine[LineNumber]="${appname}:${VarName}"
                 CurrentValueOnLine[LineNumber]="${VarName}=$(run_script 'env_get_literal' "${appname}:${VarName}")"
                 #DefaultValueOnLine[LineNumber]="${VarName}=$(run_script 'env_get_literal' "${appname}:${VarName}"")"
-                LineColor[LineNumber]="${ColorVariable}"
+                LineColor[LineNumber]="${ColorVarLine}"
             done
         fi
         local TotalLines=$((10#${LineNumber}))
@@ -108,7 +110,7 @@ menu_app_vars() {
             --colors
             --title "${Title}"
             --cancel-button "Back"
-            --menu "\nApplication: \Zr${AppName}\ZR\n" 0 0 0
+            --menu "\nApplication: ${ColorHeading}${AppName}\ZnR\n" 0 0 0
             "${LineOptions[@]}"
         )
         while true; do
