@@ -213,6 +213,7 @@ Application: ${ColorHeading}${AppName}\Zn"
         local DescriptionHeading="${DescriptionHeading}
        File: ${ColorHeading}${VarFile}\Zn
    Variable: ${ColorHeading}${CleanVarName}\Zn
+
       Value: ${ColorHeading}${OptionValue["${CurrentValueOption}"]-}\Zn
 "
         # editorconfig-checker-enable
