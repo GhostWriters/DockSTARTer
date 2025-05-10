@@ -10,6 +10,7 @@ menu_value_prompt() {
     fi
 
     local ColorHeading='\Zr'
+    local ColorHeadingValue='\Zb\Zr'
     local ColorHighlight='\Z3\Zb'
     local APPNAME
     APPNAME=$(run_script 'varname_to_appname' "${VarName}")
@@ -214,7 +215,7 @@ Application: ${ColorHeading}${AppName}\Zn"
        File: ${ColorHeading}${VarFile}\Zn
    Variable: ${ColorHeading}${CleanVarName}\Zn
 
-      Value: ${ColorHeading}${OptionValue["${CurrentValueOption}"]-}\Zn
+      Value: ${ColorHeadingValue}${OptionValue["${CurrentValueOption}"]-}\Zn
 "
         # editorconfig-checker-enable
         local SelectValueMenuText="${DescriptionHeading}\nWhat would you like set for ${ColorHighlight}${CleanVarName}\Zn?${ValueDescription}"
