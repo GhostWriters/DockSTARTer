@@ -8,11 +8,16 @@ menu_config() {
     fi
 
     local Title="Configuration Menu"
+
+    local OptionFullSetup="Full Setup"
+    local OptionSelectApps="Select Apps"
+    local OptionEditAppVars="Edit App Variables"
+    local OptionEditGlobalVars="Edit Global Variables"
     local ConfigOpts=(
-        "Full Setup" "This goes through all menus below. Recommended for first run"
-        "Select Apps" "Select which apps to run. Previously enabled apps are remembered"
-        "Set App Variables" "Review and adjust variables for enabled apps"
-        "Set Global Variables" "Review and adjust global variables"
+        "${OptionFullSetup}" "This goes through all menus below. Recommended for first run"
+        "${OptionSelectApps}" "Select which apps to run. Previously enabled apps are remembered"
+        "${OptionEditAppVars}" "Review and adjust variables for enabled apps"
+        "${OptionEditGlobalVars}" "Review and adjust global variables"
     )
     local -a ConfigChoiceDialog=(
         --stdout
@@ -31,7 +36,7 @@ menu_config() {
         case ${DIALOG_BUTTONS[ConfigDialogButtonPressed]-} in
             OK)
                 case "${ConfigChoice}" in
-                    "Full Setup")
+                    "${OptionFullSetup}")
                         run_script_dialog "Updating variable files" "" 1 \
                             'env_update' || true
                         run_script 'menu_config_global' || true
@@ -40,23 +45,23 @@ menu_config() {
                         run_script_dialog "Merging and running Docker Compose" "" 1 \
                             'merge_and_compose' || true
                         ;;
-                    "Set Global Variables")
-                        run_script_dialog "Updating variable files" "" 1 \
-                            'env_update' || true
-                        run_script 'menu_config_global' || true
-                        run_script_dialog "Merging and running Docker Compose" "" 1 \
-                            'merge_and_compose' || true
-                        ;;
-                    "Select Apps")
+                    "${OptionSelectApps}")
                         run_script_dialog "Updating variable files" "" 1 \
                             'env_update' || true
                         run_script 'menu_app_select' || true
                         run_script_dialog "Merging and running Docker Compose" "" 1 \
                             'merge_and_compose' || true
                         ;;
-                    "Set App Variables")
+                    "${OptionEditAppVars}")
                         clear
                         run_script 'menu_config_apps' || true
+                        run_script_dialog "Merging and running Docker Compose" "" 1 \
+                            'merge_and_compose' || true
+                        ;;
+                    "${OptionEditGlobalVars}")
+                        run_script_dialog "Updating variable files" "" 1 \
+                            'env_update' || true
+                        run_script 'menu_config_global' || true
                         run_script_dialog "Merging and running Docker Compose" "" 1 \
                             'merge_and_compose' || true
                         ;;

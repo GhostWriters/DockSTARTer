@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_config_global() {
-    local Title="Global Variables"
+    local Title="Edit Global Variables"
 
     local ColorHeading='\Zr'
 

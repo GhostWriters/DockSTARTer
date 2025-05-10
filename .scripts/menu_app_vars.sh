@@ -8,7 +8,7 @@ menu_app_vars() {
     local appname=${APPNAME,,}
     local AppName
     AppName=$(run_script 'app_nicename' "${APPNAME}")
-    local Title="Set App Variables"
+    local Title="Edit Application Variables"
 
     if ! run_script 'app_is_builtin'; then
         local Message="Application '${AppName}' does not exist."

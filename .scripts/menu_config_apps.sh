@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_config_apps() {
-    Title="Set App Variables"
+    Title="Edit Application Variables"
 
     run_script_dialog "${Title}" "Setting up all applications" 1 \
         'appvars_create_all'
