@@ -593,18 +593,13 @@ run_script_dialog() {
     local TimeOut=${3:-0}
     local SCRIPTSNAME=${4-}
     shift 4
-    if [[ -f ${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh ]]; then
-        # shellcheck source=/dev/null
-        source "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh"
-        if use_dialog_box; then
-            # Using the GUI and StdOut or StdError aren't being redirected, pipe output to a dialog box
-            ${SCRIPTSNAME} "$@" |& dialog_pipe "${Title}" "${SubTitle}" "${TimeOut}"
-            return "${PIPESTATUS[0]}"
-        else
-            ${SCRIPTSNAME} "$@"
-        fi
+    if use_dialog_box; then
+        # Using the GUI, pipe output to a dialog box
+        run_script "${SCRIPTSNAME}" "$@" |& dialog_pipe "${Title}" "${SubTitle}" "${TimeOut}"
+        return "${PIPESTATUS[0]}"
     else
-        fatal "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh not found."
+        run_script "${SCRIPTSNAME}" "$@"
+        return
     fi
 }
 
@@ -617,11 +612,12 @@ run_command_dialog() {
     shift 4
     if [[ -n ${CommandName-} ]]; then
         if use_dialog_box; then
-            # Using the GUI and StdOut or StdError aren't being redirected, pipe output to a dialog box
+        # Using the GUI, pipe output to a dialog box
             "${CommandName}" "$@" |& dialog_pipe "${Title}" "${SubTitle}" "${TimeOut}"
             return "${PIPESTATUS[0]}"
         else
             "${CommandName}" "$@"
+            return
         fi
     fi
 }
