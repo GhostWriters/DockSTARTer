@@ -15,7 +15,7 @@ update_self() {
     else
         commands_update_self "$@"
     fi
-    exec bash "${SCRIPTNAME}" -e
+    #exec bash "${SCRIPTNAME}" -e
 }
 
 commands_update_self() {
