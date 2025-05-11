@@ -612,7 +612,7 @@ run_command_dialog() {
     shift 4
     if [[ -n ${CommandName-} ]]; then
         if use_dialog_box; then
-        # Using the GUI, pipe output to a dialog box
+            # Using the GUI, pipe output to a dialog box
             "${CommandName}" "$@" |& dialog_pipe "${Title}" "${SubTitle}" "${TimeOut}"
             return "${PIPESTATUS[0]}"
         else
