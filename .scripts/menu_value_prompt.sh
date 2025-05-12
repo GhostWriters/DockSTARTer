@@ -209,13 +209,14 @@ menu_value_prompt() {
         local DescriptionHeading=""
         if [[ -n ${AppName-} ]]; then
             DescriptionHeading="${DescriptionHeading}
-Application: ${ColorHeading}${AppName}\Zn"
+   Application: ${ColorHeading}${AppName}\Zn"
         fi
         local DescriptionHeading="${DescriptionHeading}
-       File: ${ColorHeading}${VarFile}\Zn
-   Variable: ${ColorHeading}${CleanVarName}\Zn
+          File: ${ColorHeading}${VarFile}\Zn
+      Variable: ${ColorHeading}${CleanVarName}\Zn
 
-      Value: ${ColorHeadingValue}${OptionValue["${CurrentValueOption}"]-}\Zn
+Original Value: ${ColorHeading}${OptionValue["${OriginalValueOption}"]-}\Zn
+ Current Value: ${ColorHeadingValue}${OptionValue["${CurrentValueOption}"]-}\Zn
 "
         # editorconfig-checker-enable
         local SelectValueMenuText="${DescriptionHeading}\nWhat would you like set for ${ColorHighlight}${CleanVarName}\Zn?${ValueDescription}"
