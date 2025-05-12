@@ -51,7 +51,7 @@ menu_app_vars() {
     CurrentGlobalEnvFile=$(mktemp)
 
     local DefaultAppEnvFile="${TEMPLATES_FOLDER}/${appname}/${appname}.env"
-    local CurrentGlobalEnvFile
+    local CurrentAppEnvFile
     CurrentAppEnvFile=$(mktemp)
 
     local LastLineChoice=""
