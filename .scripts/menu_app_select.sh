@@ -40,6 +40,8 @@ menu_app_select() {
             --stdout
             --begin 2 2
             --colors
+            --ok-label "Done"
+            --cancel-label "Cancel"
             --title "${Title}"
             --separate-output
             --checklist

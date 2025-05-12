@@ -23,8 +23,9 @@ menu_config_global() {
         local -a VarDialog=(
             --stdout
             --colors
+            --ok-label "Select"
+            --cancel-label "Done"
             --title "${Title}"
-            --cancel-button "Back"
             --no-tags
             --menu "\nFile: ${ColorHeading}${COMPOSE_ENV}\Zn" 0 0 0
             "${VarOptions[@]}"

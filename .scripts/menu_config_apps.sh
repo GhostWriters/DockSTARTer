@@ -23,7 +23,8 @@ menu_config_apps() {
     local -a AppChoiceDialog=(
         --stdout
         --title "${Title}"
-        --cancel-button "Back"
+        --ok-label "Select"
+        --cancel-label "Back"
         --menu "Select the application to configure" 0 0 0
         "${AppOptions[@]}"
     )
