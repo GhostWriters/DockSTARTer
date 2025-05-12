@@ -11,7 +11,6 @@ menu_config_global() {
     local ColorOtherLine="${ColorCommentLine}"
     local ColorVarLine='\Z0\ZB\Zr'
 
-
     local -a GlobalVarList=()
     # Get the list of global variables for the app
     readarray -t GlobalVarList < <(run_script 'env_var_list' "${COMPOSE_ENV_DEFAULT_FILE}")
