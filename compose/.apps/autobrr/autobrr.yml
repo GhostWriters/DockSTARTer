@@ -4,7 +4,7 @@ services:
     env_file: env_files/autobrr.env
     environment:
       - TZ=${TZ}
-    restart: ${AUTOBRR_RESTART?}
+    restart: ${AUTOBRR__RESTART?}
     user: ${PUID?}:${PGID?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
