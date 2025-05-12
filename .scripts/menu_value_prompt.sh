@@ -365,7 +365,7 @@ Original Value: ${ColorHeading}${OptionValue["${OriginalValueOption}"]-}\Zn
                             elif [[ ${StrippedValue} =~ ^[0-9]+$ ]]; then
                                 ValueValid="true"
                             else
-                                dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${ColorHighlight}${OptionValue["${CurrentValueOption}"]}\Zn is not a valid ${CleanVarName}. Please try setting ${ColorHighlight}${CleanVarName}\Zn again." 0 0
+                                dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${ColorHighlight}${OptionValue["${CurrentValueOption}"]}\Zn is not a valid ${CleanVarName}. Please try setting C again." 0 0
                                 ValueValid="false"
                             fi
                             ;;
@@ -374,10 +374,19 @@ Original Value: ${ColorHeading}${OptionValue["${OriginalValueOption}"]-}\Zn
                             ;;
                     esac
                 fi
-                if ${ValueValid} && run_script 'question_prompt' N "${DescriptionHeading}" "Save Variable" "" "Save" "Back"; then
-                    # Value is valid, save it and exit
-                    run_script 'env_set_literal' "${VarName}" "${OptionValue["${CurrentValueOption}"]}"
-                    return 0
+                if ${ValueValid}; then
+                    if [[ ${OptionValue["${CurrentValueOption}"]-} == "${OptionValue["${OriginalValueOption}"]-}" ]]; then
+                        if run_script 'question_prompt' N "${DescriptionHeading}\n\nThe value of ${ColorHighlight}${CleanVarName}\Zn has not been changed, exit anyways?\n" "Save Variable" "" "Done" "Back"; then
+                            # Value has not changed, confirm exiting
+                            return 0
+                        fi
+                    else
+                        if run_script 'question_prompt' N "${DescriptionHeading}\n\nWould you like to save ${ColorHighlight}${CleanVarName}\Zn?\n" "Save Variable" "" "Save" "Back"; then
+                            # Value is valid, save it and exit
+                            run_script 'env_set_literal' "${VarName}" "${OptionValue["${CurrentValueOption}"]}"
+                            return 0
+                        fi
+                    fi
                 fi
                 ;;
             *)
