@@ -140,10 +140,9 @@ menu_app_vars() {
         local -a LineDialog=(
             --stdout
             --colors
-            --ok-button "Select"
-            --cancel-button "Done"
+            --ok-label "Select"
+            --cancel-label "Done"
             --title "${Title}"
-            --cancel-button "Back"
             --menu "\nApplication: ${ColorHeading}${AppName}\Zn\n" 0 0 0
             "${LineOptions[@]}"
         )
