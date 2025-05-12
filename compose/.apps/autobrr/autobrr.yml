@@ -3,9 +3,9 @@ services:
     container_name: ${AUTOBRR__CONTAINER_NAME?}
     env_file: env_files/autobrr.env
     environment:
-      - TZ=${TZ?}
-    restart: ${AUTOBRR__RESTART?}
-    user: ${PGID?}:${PUID?}
+      - TZ=${TZ}
+    restart: ${AUTOBRR_RESTART?}
+    user: ${PUID?}:${PGID?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG?}/autobrr:/config
