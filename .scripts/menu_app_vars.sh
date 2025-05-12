@@ -97,7 +97,7 @@ menu_app_vars() {
         if [[ -n ${AppVarEnvList[*]} ]]; then
             ((++LineNumber))
             LineColor[LineNumber]="${ColorHeadingLine}"
-            CurrentValueOnLine[LineNumber]="*** ${APP_ENV_FOLDER_NAME}/${appname}.env ***"
+            CurrentValueOnLine[LineNumber]="*** ${APP_ENV_FOLDER}/${appname}.env ***"
             for VarName in "${AppVarEnvList[@]}"; do
                 run_script 'env_get_line' "${appname}:${VarName}"
             done > "${CurrentAppEnvFile}"
