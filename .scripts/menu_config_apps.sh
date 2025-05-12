@@ -24,7 +24,7 @@ menu_config_apps() {
         --stdout
         --title "${Title}"
         --ok-label "Select"
-        --cancel-label "Back"
+        --cancel-label "Done"
         --menu "Select the application to configure" 0 0 0
         "${AppOptions[@]}"
     )
