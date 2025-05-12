@@ -1,0 +1,3 @@
+services:
+  actualbudget:
+    image: actualbudget/actual-server:${ACTUALBUDGET_TAG}
