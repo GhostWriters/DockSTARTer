@@ -30,8 +30,8 @@ commands_yml_merge() {
                 fi
                 COMPOSE_FILE="${COMPOSE_FILE}:${APP_FOLDER}/${appname}.${ARCH}.yml"
                 local APPNETMODE
-                APPNETMODE=$(run_script 'env_get' "${APPNAME}__NETWORK_MODE")
-                if [[ -z ${APPNETMODE} ]] || [[ ${APPNETMODE} == "bridge" ]]; then
+                APPNETMODE="$(run_script 'env_get' "${APPNAME}__NETWORK_MODE")"
+                if [[ -z ${APPNETMODE-} ]] || [[ ${APPNETMODE} == "bridge" ]]; then
                     if [[ -f ${APP_FOLDER}/${appname}.hostname.yml ]]; then
                         COMPOSE_FILE="${COMPOSE_FILE}:${APP_FOLDER}/${appname}.hostname.yml"
                     else

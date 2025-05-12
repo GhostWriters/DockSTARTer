@@ -5,7 +5,10 @@ IFS=$'\n\t'
 override_backup() {
     if [[ -f "${SCRIPTPATH}/compose/docker-compose.override.yml" ]]; then
         local DOCKER_VOLUME_CONFIG
-        DOCKER_VOLUME_CONFIG=$(run_script 'env_get' DOCKER_VOLUME_CONFIG)
+        DOCKER_VOLUME_CONFIG="$(run_script 'env_get' DOCKER_VOLUME_CONFIG)"
+        if [[ -z ${DOCKER_VOLUME_CONFIG-} ]]; then
+            fatal "DOCKER_VOLUME_CONFIG is not set in ${COMPOSE_ENMV}"
+        fi
         local BACKUPTIME
         BACKUPTIME=$(date +"%Y%m%d%H%M%S")
         info "Copying docker-compose.override.yml file to ${DOCKER_VOLUME_CONFIG}/.compose.backups/docker-compose.override.yml.${BACKUPTIME}"

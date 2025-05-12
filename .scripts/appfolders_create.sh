@@ -17,7 +17,7 @@ appfolders_create() {
         readarray -t FOLDERS_ARRAY < <(grep -o -P '^\s*\K.*(?=\s*)$' "${APP_FOLDERS_FILE}" | grep -v '^$' || true)
         if [[ -n ${FOLDERS_ARRAY[*]-} ]]; then
             local DOCKER_VOLUME_CONFIG
-            DOCKER_VOLUME_CONFIG=$(run_script 'env_get' DOCKER_VOLUME_CONFIG)
+            DOCKER_VOLUME_CONFIG="$(run_script 'env_get' DOCKER_VOLUME_CONFIG)"
             for index in "${!FOLDERS_ARRAY[@]}"; do
                 local FOLDER
                 FOLDERS_ARRAY[index]=$(echo "${FOLDERS_ARRAY[$index]}" | DOCKER_VOLUME_CONFIG="${DOCKER_VOLUME_CONFIG}" envsubst)

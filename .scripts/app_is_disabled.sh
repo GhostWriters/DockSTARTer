@@ -6,7 +6,7 @@ app_is_disabled() {
     local APPNAME=${1-}
     APPNAME=${APPNAME^^}
     local APP_ENABLED
-    APP_ENABLED=$(run_script 'env_get' "${APPNAME}__ENABLED")
+    APP_ENABLED="$(run_script 'env_get' "${APPNAME}__ENABLED")"
     if [[ ${APP_ENABLED} != "true" ]]; then
         return 0
     else

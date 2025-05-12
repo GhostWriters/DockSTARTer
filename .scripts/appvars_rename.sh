@@ -10,7 +10,7 @@ appvars_rename() {
         docker stop "${FROMAPP,,}" || warn "Failed to stop ${FROMAPP,,} container.\nFailing command: ${F[C]}docker stop ${FROMAPP,,}"
         notice "Moving config folder."
         local DOCKER_VOLUME_CONFIG
-        DOCKER_VOLUME_CONFIG=$(run_script 'env_get' DOCKER_VOLUME_CONFIG)
+        DOCKER_VOLUME_CONFIG="$(run_script 'env_get' DOCKER_VOLUME_CONFIG)"
         mv "${DOCKER_VOLUME_CONFIG}/${FROMAPP,,}" "${DOCKER_VOLUME_CONFIG}/${TOAPP,,}" || warn "Failed to move folder.\nFailing command: ${F[C]}mv \"${DOCKER_VOLUME_CONFIG}/${FROMAPP,,}\" \"${DOCKER_VOLUME_CONFIG}/${TOAPP,,}\""
         notice "Migrating vars."
         sed -i "s/^\s*${FROMAPP^^}__/${TOAPP^^}__/" "${COMPOSE_ENV}" || fatal "Failed to migrate vars from ${FROMAPP^^}__ to ${TOAPP^^}__\nFailing command: ${F[C]}sed -i \"s/^\\s*${FROMAPP^^}__/${TOAPP^^}__/\" \"${COMPOSE_ENV}\""

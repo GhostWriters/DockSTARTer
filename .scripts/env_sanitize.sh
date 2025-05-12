@@ -4,18 +4,18 @@ IFS=$'\n\t'
 
 env_sanitize() {
     local GLOBAL_LAN_NETWORK
-    GLOBAL_LAN_NETWORK=$(run_script 'env_get' GLOBAL_LAN_NETWORK)
+    GLOBAL_LAN_NETWORK="$(run_script 'env_get' GLOBAL_LAN_NETWORK)"
     if [[ -z ${GLOBAL_LAN_NETWORK-} ]] || echo "${GLOBAL_LAN_NETWORK-}" | grep -q 'x'; then
         # GLOBAL_LAN_NETWORK is either empty or contains an `x`, set it to th detected lan network
         local DETECTED_LAN_NETWORK
-        DETECTED_LAN_NETWORK=$(run_script 'detect_lan_network')
-        run_script 'env_set' GLOBAL_LAN_NETWORK "${DETECTED_LAN_NETWORK}"
+        DETECTED_LAN_NETWORK="$(run_script 'detect_lan_network')"
+        run_script 'env_set' GLOBAL_LAN_NETWORK "${DETECTED_LAN_NETWORK-}"
     fi
 
     # Don't set WATCHTOWER_NETWORK_MODE to none
     local WATCHTOWER_NETWORK_MODE
-    WATCHTOWER_NETWORK_MODE=$(run_script 'env_get' WATCHTOWER__NETWORK_MODE)
-    if [[ ${WATCHTOWER_NETWORK_MODE} == "none" ]]; then
+    WATCHTOWER_NETWORK_MODE="$(run_script 'env_get' WATCHTOWER__NETWORK_MODE)"
+    if [[ ${WATCHTOWER_NETWORK_MODE-} == "none" ]]; then
         run_script 'env_set' WATCHTOWER__NETWORK_MODE ""
     fi
 
