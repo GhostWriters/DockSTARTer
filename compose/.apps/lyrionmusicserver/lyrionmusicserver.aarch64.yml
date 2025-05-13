@@ -1,0 +1,3 @@
+services:
+  lyrionmusicserver:
+    image: lmscommunity/lyrionmusicserver:${LYRIONMUSICSERVER_TAG}

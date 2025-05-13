@@ -1,0 +1,7 @@
+services:
+  lyrionmusicserver:
+    ports:
+      - ${LYRIONMUSICSERVER_PORT_3483}:3483/tcp
+      - ${LYRIONMUSICSERVER_PORT_3483}:3483/udp
+      - ${LYRIONMUSICSERVER_PORT_9000}:9000/tcp
+      - ${LYRIONMUSICSERVER_PORT_9090}:9090/tcp

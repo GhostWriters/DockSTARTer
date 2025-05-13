@@ -116,6 +116,7 @@ nav:
       - advanced/uninstall.md
       - advanced/vpn-info.md
   - App Specifics:
+      - apps/actualbudget.md
       - apps/adguard.md
       - apps/adminer.md
       - apps/airsonicadvanced.md
@@ -174,6 +175,7 @@ nav:
       - apps/influxdb.md
       - apps/jackett.md
       - apps/jellyfin.md
+      - apps/jellyseerr.md
       - apps/jfago.md
       - apps/kanboard.md
       - apps/kitana.md
@@ -186,7 +188,9 @@ nav:
       - apps/limnoria.md
       - apps/logarr.md
       - apps/logitechmediaserver.md
+      - apps/lyrionmusicserver.md
       - apps/makemkv.md
+      - apps/maintainerr.md
       - apps/mariadb.md
       - apps/medusa.md
       - apps/minecraftbedrockserver.md
@@ -258,6 +262,7 @@ nav:
       - apps/traktarr.md
       - apps/transmission.md
       - apps/transmissionvpn.md
+      - apps/tsdproxy.md
       - apps/tvheadend.md
       - apps/ubooquity.md
       - apps/unificontroller.md

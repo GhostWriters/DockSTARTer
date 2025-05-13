@@ -6,7 +6,7 @@ jobs:
   editorconfig-checker:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@v4.2.2
       - name: editorconfig-checker
         run: |
           docker run --rm \
@@ -16,7 +16,7 @@ jobs:
   markdownlint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@v4.2.2
       - name: markdownlint
         run: |
           docker run --rm \
@@ -29,7 +29,7 @@ jobs:
   shellcheck:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@v4.2.2
       - name: shellcheck
         run: |
           find "${GITHUB_WORKSPACE}" -name '*.sh' -exec \
@@ -41,20 +41,21 @@ jobs:
   shfmt:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@v4.2.2
       - name: shfmt
         run: |
           find "${GITHUB_WORKSPACE}" -name '*.sh' -exec \
             docker run --rm \
               -v "${GITHUB_WORKSPACE}":"${GITHUB_WORKSPACE}" \
-              mvdan/shfmt \
+              -w "${GITHUB_WORKSPACE}" \
+              mvdan/shfmt:v3 \
               -s -d \
               {} +
 
   yamllint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@v4.2.2
       - name: yamllint
         run: |
           docker run --rm \

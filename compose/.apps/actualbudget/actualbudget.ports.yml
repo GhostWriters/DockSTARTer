@@ -1,0 +1,4 @@
+services:
+  actualbudget:
+    ports:
+      - ${ACTUALBUDGET_PORT_5006}:5006

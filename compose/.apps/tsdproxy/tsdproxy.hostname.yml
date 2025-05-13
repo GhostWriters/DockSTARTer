@@ -1,0 +1,3 @@
+services:
+  tsdproxy:
+    hostname: ${DOCKER_HOSTNAME}

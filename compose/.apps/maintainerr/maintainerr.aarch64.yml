@@ -1,0 +1,3 @@
+services:
+  maintainerr:
+    image: ghcr.io/jorenn92/maintainerr:${MAINTAINERR_TAG}
