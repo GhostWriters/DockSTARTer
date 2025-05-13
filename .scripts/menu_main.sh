@@ -8,11 +8,13 @@ menu_main() {
     fi
 
     local Title="Main Menu"
+    local OptionConfigure="Configuration"
+    local OptionInstallDependencies="Install Dependencies"
+    local OptionUpdateVersion="Update DockSTARTer"
     local MainOpts=(
-        "Configuration" "Setup and start applications"
-        "Install Dependencies" "Install required components"
-        "Update DockSTARTer" "Get the latest version of DockSTARTer"
-        "Prune Docker System" "Remove all unused containers, networks, volumes, images and build cache"
+        "${OptionConfigure}" "Setup and start applications"
+        "${OptionInstallDependencies}" "Install required components"
+        "${OptionUpdateVersion}" "Get the latest version of DockSTARTer"
     )
     local -a MainChoiceDialog=(
         --stdout
@@ -32,17 +34,16 @@ menu_main() {
         case ${DIALOG_BUTTONS[MainDialogButtonPressed]-} in
             OK)
                 case "${MainChoice}" in
-                    "Configuration")
+                    "${OptionConfigure}")
                         run_script 'menu_config' || true
                         ;;
-                    "Install Dependencies")
-                        run_script_dialog "Install Dependencies" "" "" 'run_install' || true
+                    "${OptionInstallDependencies}")
+                        run_script_dialog "Install Dependencies" "" "" \
+                            'run_install' || true
                         ;;
-                    "Update DockSTARTer")
-                        run_script_dialog "Update DockSTARTer" "" "" 'update_self' || true
-                        ;;
-                    "Prune Docker System")
-                        run_script_dialog "Prune Docker System" "" "" 'docker_prune' || true
+                    "${OptionUpdateVersion}")
+                        run_script_dialog "Update DockSTARTer" "" "" \
+                            'update_self' || true
                         ;;
                     *)
                         error "Invalid Option"
