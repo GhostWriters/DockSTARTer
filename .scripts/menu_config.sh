@@ -18,8 +18,8 @@ menu_config() {
     local OptionDockerPrune="Prune Docker System"
     local ConfigOpts=(
         "${OptionFullSetup}" "This goes through selecting apps and editing variables. Recommended for first run"
-        "${OptionSelectApps}" "Select which apps to run. Previously enabled apps are remembered"
-        "${OptionEditAppVars}" "Review and adjust variables for enabled apps"
+        "${OptionSelectApps}" "Select which apps to run. Previously installed apps are remembered"
+        "${OptionEditAppVars}" "Review and adjust variables for installed apps"
         "${OptionEditGlobalVars}" "Review and adjust global variables"
         "${OptionComposeUp}" "Run Docker Compose to start all applications"
         "${OptionComposeDown}" "Run Docker Compose to stop all applications"
