@@ -4,10 +4,17 @@ IFS=$'\n\t'
 
 menu_value_prompt() {
     local VarName=${1-}
-    local Title="Edit Variable"
+    local VarIsUserDefined=${2-}
+    if [[ ${VarIsUserDefined-} != 'Y' ]]; then
+        VarIsUserDefined=''
+    fi
+    #VarIsUserDefined='Y'
+
     if [[ ${CI-} == true ]]; then
         return
     fi
+
+    local Title="Edit Variable"
 
     local ColorHeading='\Zr'
     local ColorHeadingValue='\Zb\Zr'
@@ -32,6 +39,7 @@ menu_value_prompt() {
         fi
     fi
 
+    local DeleteOption="=== DELETE ==="
     local CurrentValueOption="Current Value"
     local DefaultValueOption="Default Value"
     local SystemValueOption="System Value"
@@ -203,37 +211,56 @@ menu_value_prompt() {
     if [[ -n ${OptionValue["${SystemValueOption}"]-} ]]; then
         ValueDescription="\n\n System detected values are recommended.${ValueDescription}"
     fi
-
+    local FilenameHeading="          File: ${ColorHeading}${VarFile}\Zn"
+    local VarNameHeading="      Variable: ${ColorHeading}${CleanVarName}\Zn"
+    if [[ ${VarIsUserDefined} == 'Y' ]]; then
+        VarNameHeading="${VarNameHeading} ${ColorHighlight}*User Defined*\Zn"
+    fi
+    local OriginalValueHeading="Original Value: "
+    if [[ -n ${OptionValue["${OriginalValueOption}"]-} ]]; then
+        OriginalValueHeading="${OriginalValueHeading}${ColorHeading}${OptionValue["${OriginalValueOption}"]-}\Zn"
+    else
+        OriginalValueHeading="${OriginalValueHeading}${ColorHighlight}* DELETED *\Zn"
+    fi
     while true; do
-        # editorconfig-checker-disable
-        local DescriptionHeading=""
-        if [[ -n ${AppName-} ]]; then
-            DescriptionHeading="${DescriptionHeading}
-   Application: ${ColorHeading}${AppName}\Zn"
+        local CurrentValueHeading=" Current Value: "
+        if [[ -n ${OptionValue["${CurrentValueOption}"]-} ]]; then
+            CurrentValueHeading="${CurrentValueHeading}${ColorHeadingValue}${OptionValue["${CurrentValueOption}"]-}\Zn"
+        else
+            CurrentValueHeading="${CurrentValueHeading}${ColorHighlight}* DELETED *\Zn"
         fi
-        local DescriptionHeading="${DescriptionHeading}
-          File: ${ColorHeading}${VarFile}\Zn
-      Variable: ${ColorHeading}${CleanVarName}\Zn
-
-Original Value: ${ColorHeading}${OptionValue["${OriginalValueOption}"]-}\Zn
- Current Value: ${ColorHeadingValue}${OptionValue["${CurrentValueOption}"]-}\Zn
-"
-        # editorconfig-checker-enable
-        local SelectValueMenuText="${DescriptionHeading}\nWhat would you like set for ${ColorHighlight}${CleanVarName}\Zn?${ValueDescription}"
-
         local -a ValidOptions=()
         local -a ValueOptions=()
         for Option in "${PossibleOptions[@]}"; do
-            if [[ -n ${OptionValue["$Option"]-} ]]; then
+            if [[ -n ${OptionValue["$Option"]-} ]] || [[ ${Option} == "${CurrentValueOption}" ]] || [[ ${Option} == "${OriginalValueOption}" ]]; then
                 ValidOptions+=("${Option}")
                 ValueOptions+=("${Option}" "${OptionValue["$Option"]}")
             fi
         done
+        if [[ ${VarIsUserDefined} == 'Y' ]]; then
+            ValidOptions+=("${DeleteOption}")
+            ValueOptions+=("${DeleteOption}" "")
+        fi
         local ValidOptionsRegex
         {
             IFS='|'
             ValidOptionsRegex="${ValidOptions[*]}"
         }
+        local DescriptionHeading=""
+        # editorconfig-checker-disable
+        if [[ -n ${AppName-} ]]; then
+            DescriptionHeading="${DescriptionHeading}
+   Application: ${ColorHeading}${AppName}\Zn"
+        fi
+        local DescriptionHeading="${DescriptionHeading}
+${FilenameHeading}
+${VarNameHeading}
+
+${OriginalValueHeading}
+${CurrentValueHeading}
+"
+        # editorconfig-checker-enable
+        local SelectValueMenuText="${DescriptionHeading}\nWhat would you like set for ${ColorHighlight}${CleanVarName}\Zn?${ValueDescription}"
 
         local -i SelectValueDialogButtonPressed=0
         local SelectedValue
@@ -255,7 +282,9 @@ Original Value: ${ColorHeading}${OptionValue["${OriginalValueOption}"]-}\Zn
 
         case ${DIALOG_BUTTONS[SelectValueDialogButtonPressed]-} in
             OK) # SELECT button
-                if [[ ${SelectedValue} =~ ${ValidOptionsRegex} ]]; then
+                if [[ ${SelectedValue} == "${DeleteOption}" ]]; then
+                    OptionValue["${CurrentValueOption}"]=""
+                elif [[ ${SelectedValue} =~ ${ValidOptionsRegex} ]]; then
                     if [[ -n ${OptionValue["${SelectedValue}"]-} ]]; then
                         OptionValue["${CurrentValueOption}"]="${OptionValue["${SelectedValue}"]}"
                     else
@@ -270,7 +299,14 @@ Original Value: ${ColorHeading}${OptionValue["${OriginalValueOption}"]-}\Zn
                 ;;
             CANCEL | ESC) # DONE button
                 local ValueValid
-                if [[ ${OptionValue["${CurrentValueOption}"]} == *"$"* ]]; then
+                if [[ -z ${OptionValue["${CurrentValueOption}"]-} ]]; then
+                    if [[ ${VarIsUserDefined} == 'Y' ]]; then
+                        ValueValid="true"
+                    else
+                        ValueValid="false"
+                        dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\nYou are not allowed to delete built-in variables.\nPlease try setting ${ColorHighlight}${CleanVarName}\Zn again." 0 0
+                    fi
+                elif [[ ${OptionValue["${CurrentValueOption}"]} == *"$"* ]]; then
                     # Value contains a '$', assume it uses variable interpolation and allow it
                     ValueValid="true"
                 else
@@ -375,7 +411,13 @@ Original Value: ${ColorHeading}${OptionValue["${OriginalValueOption}"]-}\Zn
                     esac
                 fi
                 if ${ValueValid}; then
-                    if [[ ${OptionValue["${CurrentValueOption}"]-} == "${OptionValue["${OriginalValueOption}"]-}" ]]; then
+                    if [[ -z ${OptionValue["${CurrentValueOption}"]-} ]]; then
+                        if run_script 'question_prompt' N "${DescriptionHeading}\n\nDo you really want to delete ${ColorHighlight}${CleanVarName}\Zn?\n" "Delete Variable" "" "Delete" "Back"; then
+                            # Value is empty, delete the variable
+                            run_script 'env_delete' "${VarName}"
+                            return 0
+                        fi
+                    elif [[ ${OptionValue["${CurrentValueOption}"]-} == "${OptionValue["${OriginalValueOption}"]-}" ]]; then
                         if run_script 'question_prompt' N "${DescriptionHeading}\n\nThe value of ${ColorHighlight}${CleanVarName}\Zn has not been changed, exit anyways?\n" "Save Variable" "" "Done" "Back"; then
                             # Value has not changed, confirm exiting
                             return 0
