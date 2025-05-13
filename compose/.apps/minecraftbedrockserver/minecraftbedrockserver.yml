@@ -1,14 +1,14 @@
 services:
-  <appname>:
-    container_name: ${<APPNAME>_CONTAINER_NAME}
+  ${_appname_}:
+    container_name: ${${_APPNAME_}_CONTAINER_NAME}
     environment:
-      - EULA=${<APPNAME>_ENVIRONMENT_EULA}
+      - EULA=${${_APPNAME_}_ENVIRONMENT_EULA}
       - GID=${PGID}
       - TZ=${TZ}
       - UID=${PUID}
-      - VERSION=${<APPNAME>_ENVIRONMENT_VERSION}
-    restart: ${<APPNAME>_RESTART}
+      - VERSION=${${_APPNAME_}_ENVIRONMENT_VERSION}
+    restart: ${${_APPNAME_}_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/<appname>:/data
+      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/data
       - ${DOCKER_VOLUME_STORAGE}:/storage

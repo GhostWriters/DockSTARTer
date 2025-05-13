@@ -1,3 +1,3 @@
 services:
-  <appname>:
-    image: b4bz/homer:${<APPNAME>_TAG}
+  ${_appname_}:
+    image: b4bz/homer:${${_APPNAME_}_TAG}

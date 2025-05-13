@@ -1,17 +1,17 @@
 services:
-  <appname>:
-    container_name: ${<APPNAME>_CONTAINER_NAME}
+  ${_appname_}:
+    container_name: ${${_APPNAME_}_CONTAINER_NAME}
     environment:
-      - nodeID=${<APPNAME>_ENVIRONMENT_NODEID}
-      - nodeIP=${<APPNAME>_ENVIRONMENT_NODEIP}
-      - nodePort=${<APPNAME>_PORT_8267}
+      - nodeID=${${_APPNAME_}_ENVIRONMENT_NODEID}
+      - nodeIP=${${_APPNAME_}_ENVIRONMENT_NODEIP}
+      - nodePort=${${_APPNAME_}_PORT_8267}
       - PGID=${PGID}
       - PUID=${PUID}
-      - serverIP=${<APPNAME>_ENVIRONMENT_SERVERIP}
-      - serverPort=${<APPNAME>_ENVIRONMENT_SERVERPORT}
+      - serverIP=${${_APPNAME_}_ENVIRONMENT_SERVERIP}
+      - serverPort=${${_APPNAME_}_ENVIRONMENT_SERVERPORT}
       - TZ=${TZ}
-    restart: ${<APPNAME>_RESTART}
+    restart: ${${_APPNAME_}_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${<APPNAME>_VOLUME_TRANSCODE_CACHE}:/temp
+      - ${${_APPNAME_}_VOLUME_TRANSCODE_CACHE}:/temp

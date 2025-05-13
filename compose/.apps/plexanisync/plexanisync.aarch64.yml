@@ -1,3 +1,3 @@
 services:
-  <appname>:
-    image: rickdb/plexanisync:${<APPNAME>_TAG}
+  ${_appname_}:
+    image: rickdb/plexanisync:${${_APPNAME_}_TAG}

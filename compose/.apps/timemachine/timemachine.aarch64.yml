@@ -1,3 +1,3 @@
 services:
-  <appname>:
-    image: mbentley/timemachine:${<APPNAME>_TAG}
+  ${_appname_}:
+    image: mbentley/timemachine:${${_APPNAME_}_TAG}

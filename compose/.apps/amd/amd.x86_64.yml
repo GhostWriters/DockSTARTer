@@ -1,3 +1,3 @@
 services:
-  <appname>:
-    image: halianelf/amd:${<APPNAME>_TAG}
+  ${_appname_}:
+    image: halianelf/amd:${${_APPNAME_}_TAG}

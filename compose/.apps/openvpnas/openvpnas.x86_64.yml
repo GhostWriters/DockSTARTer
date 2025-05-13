@@ -1,3 +1,3 @@
 services:
-  <appname>:
-    image: lscr.io/linuxserver/openvpn-as:${<APPNAME>_TAG}
+  ${_appname_}:
+    image: lscr.io/linuxserver/openvpn-as:${${_APPNAME_}_TAG}

@@ -1,3 +1,3 @@
 services:
-  <appname>:
-    image: lscr.io/linuxserver/sabnzbd:${<APPNAME>_TAG}
+  ${_appname_}:
+    image: lscr.io/linuxserver/sabnzbd:${${_APPNAME_}_TAG}

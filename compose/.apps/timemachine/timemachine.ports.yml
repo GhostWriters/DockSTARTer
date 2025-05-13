@@ -1,7 +1,7 @@
 services:
-  <appname>:
+  ${_appname_}:
     ports:
-      - ${<APPNAME>_PORT_137}:137/udp
-      - ${<APPNAME>_PORT_138}:138/udp
-      - ${<APPNAME>_PORT_139}:139
-      - ${<APPNAME>_PORT_445}:445
+      - ${${_APPNAME_}_PORT_137}:137/udp
+      - ${${_APPNAME_}_PORT_138}:138/udp
+      - ${${_APPNAME_}_PORT_139}:139
+      - ${${_APPNAME_}_PORT_445}:445

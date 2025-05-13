@@ -1,5 +1,5 @@
 services:
-  <appname>:
+  ${_appname_}:
     ports:
-      - ${<APPNAME>_PORT_9981}:9981
-      - ${<APPNAME>_PORT_9982}:9982
+      - ${${_APPNAME_}_PORT_9981}:9981
+      - ${${_APPNAME_}_PORT_9982}:9982

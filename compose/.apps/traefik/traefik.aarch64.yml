@@ -1,3 +1,3 @@
 services:
-  <appname>:
-    image: traefik:${<APPNAME>_TAG}
+  ${_appname_}:
+    image: traefik:${${_APPNAME_}_TAG}

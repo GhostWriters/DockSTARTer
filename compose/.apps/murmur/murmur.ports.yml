@@ -1,5 +1,5 @@
 services:
-  <appname>:
+  ${_appname_}:
     ports:
-      - ${<APPNAME>_PORT_64738}:64738
-      - ${<APPNAME>_PORT_64738}:64738/udp
+      - ${${_APPNAME_}_PORT_64738}:64738
+      - ${${_APPNAME_}_PORT_64738}:64738/udp

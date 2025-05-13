@@ -1,3 +1,3 @@
 services:
-  <appname>:
-    image: flcontainers/guacamole:${<APPNAME>_TAG}
+  ${_appname_}:
+    image: flcontainers/guacamole:${${_APPNAME_}_TAG}

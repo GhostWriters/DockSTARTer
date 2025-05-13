@@ -1,3 +1,3 @@
 services:
-  <appname>:
-    image: ghcr.io/binhex/arch-rtorrentvpn:${<APPNAME>_TAG}
+  ${_appname_}:
+    image: ghcr.io/binhex/arch-rtorrentvpn:${${_APPNAME_}_TAG}

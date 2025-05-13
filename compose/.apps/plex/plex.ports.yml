@@ -1,13 +1,13 @@
 services:
-  <appname>:
+  ${_appname_}:
     ports:
-      - ${<APPNAME>_PORT_1900}:1900/udp
-      - ${<APPNAME>_PORT_3005}:3005
-      - ${<APPNAME>_PORT_32400}:32400
-      - ${<APPNAME>_PORT_32410}:32410/udp
-      - ${<APPNAME>_PORT_32412}:32412/udp
-      - ${<APPNAME>_PORT_32413}:32413/udp
-      - ${<APPNAME>_PORT_32414}:32414/udp
-      - ${<APPNAME>_PORT_32469}:32469
-      - ${<APPNAME>_PORT_33400}:33400
-      - ${<APPNAME>_PORT_8324}:8324
+      - ${${_APPNAME_}_PORT_1900}:1900/udp
+      - ${${_APPNAME_}_PORT_3005}:3005
+      - ${${_APPNAME_}_PORT_32400}:32400
+      - ${${_APPNAME_}_PORT_32410}:32410/udp
+      - ${${_APPNAME_}_PORT_32412}:32412/udp
+      - ${${_APPNAME_}_PORT_32413}:32413/udp
+      - ${${_APPNAME_}_PORT_32414}:32414/udp
+      - ${${_APPNAME_}_PORT_32469}:32469
+      - ${${_APPNAME_}_PORT_33400}:33400
+      - ${${_APPNAME_}_PORT_8324}:8324

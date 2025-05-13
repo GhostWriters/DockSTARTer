@@ -1,8 +1,8 @@
 services:
-  <appname>:
+  ${_appname_}:
     ports:
-      - ${<APPNAME>_PORT_443}:443
-      - ${<APPNAME>_PORT_80}:80
-      - ${<APPNAME>_ENVIRONMENT_SERVERIP}:${<APPNAME>_PORT_53}:53
-      - ${<APPNAME>_ENVIRONMENT_SERVERIP}:${<APPNAME>_PORT_53}:53/udp
-      - ${<APPNAME>_ENVIRONMENT_SERVERIP}:${<APPNAME>_PORT_67}:67/udp
+      - ${${_APPNAME_}_PORT_443}:443
+      - ${${_APPNAME_}_PORT_80}:80
+      - ${${_APPNAME_}_ENVIRONMENT_SERVERIP}:${${_APPNAME_}_PORT_53}:53
+      - ${${_APPNAME_}_ENVIRONMENT_SERVERIP}:${${_APPNAME_}_PORT_53}:53/udp
+      - ${${_APPNAME_}_ENVIRONMENT_SERVERIP}:${${_APPNAME_}_PORT_67}:67/udp

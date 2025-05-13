@@ -1,9 +1,9 @@
 services:
-  <appname>:
+  ${_appname_}:
     ports:
-      - ${<APPNAME>_PORT_21115}:21115
-      - ${<APPNAME>_PORT_21116}:21116
-      - ${<APPNAME>_PORT_21116}:21116/udp
-      - ${<APPNAME>_PORT_21117}:21117
-      - ${<APPNAME>_PORT_21118}:21118
-      - ${<APPNAME>_PORT_21119}:21119
+      - ${${_APPNAME_}_PORT_21115}:21115
+      - ${${_APPNAME_}_PORT_21116}:21116
+      - ${${_APPNAME_}_PORT_21116}:21116/udp
+      - ${${_APPNAME_}_PORT_21117}:21117
+      - ${${_APPNAME_}_PORT_21118}:21118
+      - ${${_APPNAME_}_PORT_21119}:21119

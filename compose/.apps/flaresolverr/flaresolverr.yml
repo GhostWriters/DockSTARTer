@@ -1,13 +1,13 @@
 services:
-  <appname>:
-    container_name: ${<APPNAME>_CONTAINER_NAME}
+  ${_appname_}:
+    container_name: ${${_APPNAME_}_CONTAINER_NAME}
     environment:
-      - CAPTCHA_SOLVER=${<APPNAME>_ENVIRONMENT_CAPTCHA_SOLVER}
-      - LOG_HTML=${<APPNAME>_ENVIRONMENT_LOG_HTML}
-      - LOG_LEVEL=${<APPNAME>_ENVIRONMENT_LOG_LEVEL}
-      - PORT=${<APPNAME>_PORT_8191}
+      - CAPTCHA_SOLVER=${${_APPNAME_}_ENVIRONMENT_CAPTCHA_SOLVER}
+      - LOG_HTML=${${_APPNAME_}_ENVIRONMENT_LOG_HTML}
+      - LOG_LEVEL=${${_APPNAME_}_ENVIRONMENT_LOG_LEVEL}
+      - PORT=${${_APPNAME_}_PORT_8191}
       - TZ=${TZ}
-    restart: ${<APPNAME>_RESTART}
+    restart: ${${_APPNAME_}_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_STORAGE}:/storage

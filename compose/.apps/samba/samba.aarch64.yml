@@ -1,3 +1,3 @@
 services:
-  <appname>:
-    image: dperson/samba:${<APPNAME>_TAG}
+  ${_appname_}:
+    image: dperson/samba:${${_APPNAME_}_TAG}

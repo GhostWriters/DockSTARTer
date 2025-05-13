@@ -1,6 +1,6 @@
 services:
-  <appname>:
+  ${_appname_}:
     ports:
-      - ${<APPNAME>_PORT_443}:443
-      - ${<APPNAME>_PORT_8080}:8080
-      - ${<APPNAME>_PORT_80}:80
+      - ${${_APPNAME_}_PORT_443}:443
+      - ${${_APPNAME_}_PORT_8080}:8080
+      - ${${_APPNAME_}_PORT_80}:80

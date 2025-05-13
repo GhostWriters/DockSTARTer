@@ -1,3 +1,3 @@
 services:
-  <appname>:
-    image: docker.io/vabene1111/recipes:${<APPNAME>_TAG}
+  ${_appname_}:
+    image: docker.io/vabene1111/recipes:${${_APPNAME_}_TAG}

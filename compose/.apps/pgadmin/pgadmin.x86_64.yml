@@ -1,3 +1,3 @@
 services:
-  <appname>:
-    image: dpage/pgadmin4:${<APPNAME>_TAG}
+  ${_appname_}:
+    image: dpage/pgadmin4:${${_APPNAME_}_TAG}

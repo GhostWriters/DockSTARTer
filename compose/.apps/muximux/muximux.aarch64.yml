@@ -1,3 +1,3 @@
 services:
-  <appname>:
-    image: lscr.io/linuxserver/muximux:${<APPNAME>_TAG}
+  ${_appname_}:
+    image: lscr.io/linuxserver/muximux:${${_APPNAME_}_TAG}

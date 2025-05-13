@@ -1,4 +1,4 @@
 services:
-  <appname>:
+  ${_appname_}:
     ports:
-      - ${<APPNAME>_PORT_5000}:5000
+      - ${${_APPNAME_}_PORT_5000}:5000

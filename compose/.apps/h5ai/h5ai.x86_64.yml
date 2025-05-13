@@ -1,3 +1,3 @@
 services:
   h5ai:
-    image: bixidock/h5ai:${<APPNAME>_TAG}
+    image: bixidock/h5ai:${${_APPNAME_}_TAG}

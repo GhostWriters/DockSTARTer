@@ -1,13 +1,13 @@
 services:
-  <appname>:
-    container_name: ${<APPNAME>_CONTAINER_NAME}
+  ${_appname_}:
+    container_name: ${${_APPNAME_}_CONTAINER_NAME}
     environment:
-      - GLANCES_OPT=${<APPNAME>_ENVIRONMENT_OPT}
+      - GLANCES_OPT=${${_APPNAME_}_ENVIRONMENT_OPT}
       - TZ=${TZ}
     pid: host
-    restart: ${<APPNAME>_RESTART}
+    restart: ${${_APPNAME_}_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/<appname>:/glances/conf
+      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/glances/conf
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${<APPNAME>_VOLUME_DOCKER_SOCKET}:/var/run/docker.sock:ro
+      - ${${_APPNAME_}_VOLUME_DOCKER_SOCKET}:/var/run/docker.sock:ro

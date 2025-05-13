@@ -1,12 +1,12 @@
 services:
-  <appname>:
-    container_name: ${<APPNAME>_CONTAINER_NAME}
+  ${_appname_}:
+    container_name: ${${_APPNAME_}_CONTAINER_NAME}
     environment:
-      - CERTFILE=${<APPNAME>_ENVIRONMENT_CERTFILE}
-      - FERNETKEY=${<APPNAME>_ENVIRONMENT_FERNETKEY}
-      - KEYFILE=${<APPNAME>_ENVIRONMENT_KEYFILE}
+      - CERTFILE=${${_APPNAME_}_ENVIRONMENT_CERTFILE}
+      - FERNETKEY=${${_APPNAME_}_ENVIRONMENT_FERNETKEY}
+      - KEYFILE=${${_APPNAME_}_ENVIRONMENT_KEYFILE}
       - TZ=${TZ}
-    restart: ${<APPNAME>_RESTART}
+    restart: ${${_APPNAME_}_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_STORAGE}:/storage

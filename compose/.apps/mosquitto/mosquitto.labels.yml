@@ -1,13 +1,13 @@
 services:
-  <appname>:
+  ${_appname_}:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Open source implementation of a server for version 5.0, 3.1.1, and 3.1 of the MQTT protocol"
       com.dockstarter.appinfo.nicename: "Mosquitto"
-      com.dockstarter.appvars.<appname>_container_name: "<appname>"
-      com.dockstarter.appvars.<appname>_enabled: "false"
-      com.dockstarter.appvars.<appname>_network_mode: ""
-      com.dockstarter.appvars.<appname>_port_1883: "1883"
-      com.dockstarter.appvars.<appname>_port_9001: "9001"
-      com.dockstarter.appvars.<appname>_restart: "unless-stopped"
-      com.dockstarter.appvars.<appname>_tag: "latest"
+      com.dockstarter.appvars.${_appname_}_container_name: "${_appname_}"
+      com.dockstarter.appvars.${_appname_}_enabled: "false"
+      com.dockstarter.appvars.${_appname_}_network_mode: ""
+      com.dockstarter.appvars.${_appname_}_port_1883: "1883"
+      com.dockstarter.appvars.${_appname_}_port_9001: "9001"
+      com.dockstarter.appvars.${_appname_}_restart: "unless-stopped"
+      com.dockstarter.appvars.${_appname_}_tag: "latest"

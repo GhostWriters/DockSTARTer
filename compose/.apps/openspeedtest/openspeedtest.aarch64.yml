@@ -1,3 +1,3 @@
 services:
-  <appname>:
-    image: openspeedtest/latest:${<APPNAME>_TAG}
+  ${_appname_}:
+    image: openspeedtest/latest:${${_APPNAME_}_TAG}

@@ -1,18 +1,18 @@
 services:
-  <appname>:
-    container_name: ${<APPNAME>_CONTAINER_NAME}
+  ${_appname_}:
+    container_name: ${${_APPNAME_}_CONTAINER_NAME}
     environment:
-      - DB_HOSTNAME=${<APPNAME>_ENVIRONMENT_DB_HOSTNAME}
-      - DB_NAME=${<APPNAME>_ENVIRONMENT_DB_NAME}
-      - DB_PASSWORD=${<APPNAME>_ENVIRONMENT_DB_PASSWORD}
-      - DB_TYPE=${<APPNAME>_ENVIRONMENT_DB_TYPE}
-      - DB_USERNAME=${<APPNAME>_ENVIRONMENT_DB_USERNAME}
-      - PASSWORD=${<APPNAME>_ENVIRONMENT_PASSWORD}
+      - DB_HOSTNAME=${${_APPNAME_}_ENVIRONMENT_DB_HOSTNAME}
+      - DB_NAME=${${_APPNAME_}_ENVIRONMENT_DB_NAME}
+      - DB_PASSWORD=${${_APPNAME_}_ENVIRONMENT_DB_PASSWORD}
+      - DB_TYPE=${${_APPNAME_}_ENVIRONMENT_DB_TYPE}
+      - DB_USERNAME=${${_APPNAME_}_ENVIRONMENT_DB_USERNAME}
+      - PASSWORD=${${_APPNAME_}_ENVIRONMENT_PASSWORD}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${<APPNAME>_RESTART}
+    restart: ${${_APPNAME_}_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/<appname>:/config
+      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage

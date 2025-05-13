@@ -1,16 +1,16 @@
 services:
-  <appname>:
-    container_name: ${<APPNAME>_CONTAINER_NAME}
+  ${_appname_}:
+    container_name: ${${_APPNAME_}_CONTAINER_NAME}
     environment:
       - CONFIG_PATH=/config
       - HOME=/config/.home
       - LOG_LEVEL=info
       - METADATA_PATH=/metadata
       - TZ=${TZ}
-    restart: ${<APPNAME>_RESTART}
+    restart: ${${_APPNAME_}_RESTART}
     user: ${PUID}:${PGID}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/<appname>:/config
-      - ${DOCKER_VOLUME_CONFIG}/<appname>/.metadata:/metadata
+      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/config
+      - ${DOCKER_VOLUME_CONFIG}/${_appname_}/.metadata:/metadata
       - ${DOCKER_VOLUME_STORAGE}:/storage

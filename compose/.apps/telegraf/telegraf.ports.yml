@@ -1,6 +1,6 @@
 services:
-  <appname>:
+  ${_appname_}:
     ports:
-      - ${<APPNAME>_PORT_8092}:8092/udp
-      - ${<APPNAME>_PORT_8094}:8094
-      - ${<APPNAME>_PORT_8125}:8125
+      - ${${_APPNAME_}_PORT_8092}:8092/udp
+      - ${${_APPNAME_}_PORT_8094}:8094
+      - ${${_APPNAME_}_PORT_8125}:8125

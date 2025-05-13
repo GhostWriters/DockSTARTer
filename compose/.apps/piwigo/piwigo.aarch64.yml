@@ -1,3 +1,3 @@
 services:
-  <appname>:
-    image: lscr.io/linuxserver/piwigo:${<APPNAME>_TAG}
+  ${_appname_}:
+    image: lscr.io/linuxserver/piwigo:${${_APPNAME_}_TAG}

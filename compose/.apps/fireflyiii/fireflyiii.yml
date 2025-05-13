@@ -1,19 +1,19 @@
 services:
-  <appname>:
-    container_name: ${<APPNAME>_CONTAINER_NAME}
+  ${_appname_}:
+    container_name: ${${_APPNAME_}_CONTAINER_NAME}
     environment:
-      - APP_KEY=${<APPNAME>_ENVIRONMENT_APP_KEY}
-      - DB_CONNECTION=${<APPNAME>_ENVIRONMENT_DB_CONNECTION}
-      - DB_DATABASE=${<APPNAME>_ENVIRONMENT_DB_DATABASE}
-      - DB_HOST=${<APPNAME>_ENVIRONMENT_DB_HOST}
-      - DB_PASSWORD=${<APPNAME>_ENVIRONMENT_DB_PASSWORD}
-      - DB_PORT=${<APPNAME>_ENVIRONMENT_DB_PORT}
-      - DB_USERNAME=${<APPNAME>_ENVIRONMENT_DB_USERNAME}
-      - TRUSTED_PROXIES=${<APPNAME>_ENVIRONMENT_TRUSTED_PROXIES}
+      - APP_KEY=${${_APPNAME_}_ENVIRONMENT_APP_KEY}
+      - DB_CONNECTION=${${_APPNAME_}_ENVIRONMENT_DB_CONNECTION}
+      - DB_DATABASE=${${_APPNAME_}_ENVIRONMENT_DB_DATABASE}
+      - DB_HOST=${${_APPNAME_}_ENVIRONMENT_DB_HOST}
+      - DB_PASSWORD=${${_APPNAME_}_ENVIRONMENT_DB_PASSWORD}
+      - DB_PORT=${${_APPNAME_}_ENVIRONMENT_DB_PORT}
+      - DB_USERNAME=${${_APPNAME_}_ENVIRONMENT_DB_USERNAME}
+      - TRUSTED_PROXIES=${${_APPNAME_}_ENVIRONMENT_TRUSTED_PROXIES}
       - TZ=${TZ}
-    restart: ${<APPNAME>_RESTART}
+    restart: ${${_APPNAME_}_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/<appname>/export:/var/www/html/storage/export
-      - ${DOCKER_VOLUME_CONFIG}/<appname>/upload:/var/www/html/storage/upload
+      - ${DOCKER_VOLUME_CONFIG}/${_appname_}/export:/var/www/html/storage/export
+      - ${DOCKER_VOLUME_CONFIG}/${_appname_}/upload:/var/www/html/storage/upload
       - ${DOCKER_VOLUME_STORAGE}:/storage

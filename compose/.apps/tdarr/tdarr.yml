@@ -1,16 +1,16 @@
 services:
-  <appname>:
-    container_name: ${<APPNAME>_CONTAINER_NAME}
+  ${_appname_}:
+    container_name: ${${_APPNAME_}_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
-      - serverIP=${<APPNAME>_ENVIRONMENT_SERVERIP}
-      - serverPort=${<APPNAME>_PORT_8266}
+      - serverIP=${${_APPNAME_}_ENVIRONMENT_SERVERIP}
+      - serverPort=${${_APPNAME_}_PORT_8266}
       - TZ=${TZ}
-      - webUIPort=${<APPNAME>_PORT_8265}
-    restart: ${<APPNAME>_RESTART}
+      - webUIPort=${${_APPNAME_}_PORT_8265}
+    restart: ${${_APPNAME_}_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/<appname>:/app/server
+      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/app/server
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${<APPNAME>_VOLUME_TRANSCODE_CACHE}:/temp
+      - ${${_APPNAME_}_VOLUME_TRANSCODE_CACHE}:/temp

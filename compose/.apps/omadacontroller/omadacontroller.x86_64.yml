@@ -1,3 +1,3 @@
 services:
-  <appname>:
-    image: mbentley/omada-controller:${<APPNAME>_TAG}
+  ${_appname_}:
+    image: mbentley/omada-controller:${${_APPNAME_}_TAG}

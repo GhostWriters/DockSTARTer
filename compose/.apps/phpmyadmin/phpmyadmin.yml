@@ -1,13 +1,13 @@
 services:
-  <appname>:
-    container_name: ${<APPNAME>_CONTAINER_NAME}
+  ${_appname_}:
+    container_name: ${${_APPNAME_}_CONTAINER_NAME}
     environment:
-      - PMA_HOST=${<APPNAME>_ENVIRONMENT_PMA_HOST}
-      - PMA_PASSWORD=${<APPNAME>_ENVIRONMENT_PMA_PASSWORD}
-      - PMA_USER=${<APPNAME>_ENVIRONMENT_PMA_USER}
+      - PMA_HOST=${${_APPNAME_}_ENVIRONMENT_PMA_HOST}
+      - PMA_PASSWORD=${${_APPNAME_}_ENVIRONMENT_PMA_PASSWORD}
+      - PMA_USER=${${_APPNAME_}_ENVIRONMENT_PMA_USER}
       - TZ=${TZ}
-    restart: ${<APPNAME>_RESTART}
+    restart: ${${_APPNAME_}_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/<appname>:/sessions
+      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/sessions
       - ${DOCKER_VOLUME_STORAGE}:/storage

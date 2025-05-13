@@ -1,3 +1,3 @@
 services:
-  <appname>:
-    image: telegraf:${<APPNAME>_TAG}
+  ${_appname_}:
+    image: telegraf:${${_APPNAME_}_TAG}

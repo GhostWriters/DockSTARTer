@@ -1,4 +1,4 @@
 services:
-  <appname>:
+  ${_appname_}:
     ports:
-      - ${<APPNAME>_PORT_6595}:6595
+      - ${${_APPNAME_}_PORT_6595}:6595

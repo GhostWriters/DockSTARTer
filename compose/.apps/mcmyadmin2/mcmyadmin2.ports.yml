@@ -1,5 +1,5 @@
 services:
   mcmyadmin2:
     ports:
-      - ${<APPNAME>_PORT_25565}:25565
-      - ${<APPNAME>_PORT_8080}:8080
+      - ${${_APPNAME_}_PORT_25565}:25565
+      - ${${_APPNAME_}_PORT_8080}:8080

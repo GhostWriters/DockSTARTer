@@ -1,7 +1,7 @@
 services:
-  <appname>:
+  ${_appname_}:
     ports:
-      - ${<APPNAME>_ENVIRONMENT_STATION_PORT_RANGE}:${<APPNAME>_ENVIRONMENT_STATION_PORT_RANGE}
-      - ${<APPNAME>_PORT_2022}:2022
-      - ${<APPNAME>_PORT_443}:443
-      - ${<APPNAME>_PORT_80}:80
+      - ${${_APPNAME_}_ENVIRONMENT_STATION_PORT_RANGE}:${${_APPNAME_}_ENVIRONMENT_STATION_PORT_RANGE}
+      - ${${_APPNAME_}_PORT_2022}:2022
+      - ${${_APPNAME_}_PORT_443}:443
+      - ${${_APPNAME_}_PORT_80}:80
