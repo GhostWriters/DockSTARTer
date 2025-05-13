@@ -4,11 +4,6 @@ IFS=$'\n\t'
 
 menu_value_prompt() {
     local VarName=${1-}
-    local VarIsUserDefined=${2-}
-    if [[ "${VarIsUserDefined-}" != "Y" ]]; then
-        VarIsUserDefined=""
-    fi
-
     local Title="Edit Variable"
     if [[ ${CI-} == true ]]; then
         return
@@ -41,7 +36,6 @@ menu_value_prompt() {
     local DefaultValueOption="Default Value"
     local SystemValueOption="System Value"
     local OriginalValueOption="Original Value"
-    local DeleteOption=" * DELETE * "
 
     local ValueDescription=""
     local -A OptionValue=()
@@ -205,9 +199,6 @@ menu_value_prompt() {
             ;;
     esac
     PossibleOptions+=("${OriginalValueOption}")
-    if [[ -n ${VarIsUserDefined-} ]]; then
-        PossibleOptions+=("${DeleteOption}")
-    sfi
 
     if [[ -n ${OptionValue["${SystemValueOption}"]-} ]]; then
         ValueDescription="\n\n System detected values are recommended.${ValueDescription}"
@@ -216,17 +207,13 @@ menu_value_prompt() {
     while true; do
         # editorconfig-checker-disable
         local DescriptionHeading=""
-        local VariableHeading="${ColorHeading}${CleanVarName}\Zn"
-        if [[ -n ${VarIsUserDefined-} ]]; then
-            VariableHeading="${VariableHeading}${ColorHighlight} (User Defined)\Zn"
-        fi
         if [[ -n ${AppName-} ]]; then
             DescriptionHeading="${DescriptionHeading}
    Application: ${ColorHeading}${AppName}\Zn"
         fi
         local DescriptionHeading="${DescriptionHeading}
           File: ${ColorHeading}${VarFile}\Zn
-      Variable: ${VariableHeading}
+      Variable: ${ColorHeading}${CleanVarName}\Zn
 
 Original Value: ${ColorHeading}${OptionValue["${OriginalValueOption}"]-}\Zn
  Current Value: ${ColorHeadingValue}${OptionValue["${CurrentValueOption}"]-}\Zn
