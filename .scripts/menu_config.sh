@@ -13,11 +13,17 @@ menu_config() {
     local OptionSelectApps="Select Apps"
     local OptionEditAppVars="Edit App Variables"
     local OptionEditGlobalVars="Edit Global Variables"
+    local OptionComposeUp="Start All Applications"
+    local OptionComposeDown="Stop All Applications"
+    local OptionDockerPrune="Prune Docker System"
     local ConfigOpts=(
-        "${OptionFullSetup}" "This goes through all menus below. Recommended for first run"
+        "${OptionFullSetup}" "This goes through selecting apps and editing variables. Recommended for first run"
         "${OptionSelectApps}" "Select which apps to run. Previously enabled apps are remembered"
         "${OptionEditAppVars}" "Review and adjust variables for enabled apps"
         "${OptionEditGlobalVars}" "Review and adjust global variables"
+        "${OptionComposeUp}" "Run Docker Compose to start all applications"
+        "${OptionComposeDown}" "Run Docker Compose to stop all applications"
+        "${OptionDockerPrune}" "Remove all unused containers, networks, volumes, images and build cache"
     )
     local -a ConfigChoiceDialog=(
         --stdout
@@ -43,28 +49,37 @@ menu_config() {
                         run_script 'menu_config_global' || true
                         run_script 'menu_app_select' || true
                         run_script 'menu_config_apps' || true
-                        run_script_dialog "Merging and running Docker Compose" "" 1 \
-                            'merge_and_compose' || true
                         ;;
                     "${OptionSelectApps}")
                         run_script_dialog "Updating variable files" "" 1 \
                             'env_update' || true
                         run_script 'menu_app_select' || true
-                        run_script_dialog "Merging and running Docker Compose" "" 1 \
-                            'merge_and_compose' || true
                         ;;
                     "${OptionEditAppVars}")
                         clear
                         run_script 'menu_config_apps' || true
-                        run_script_dialog "Merging and running Docker Compose" "" 1 \
-                            'merge_and_compose' || true
                         ;;
                     "${OptionEditGlobalVars}")
                         run_script_dialog "Updating variable files" "" 1 \
                             'env_update' || true
                         run_script 'menu_config_global' || true
-                        run_script_dialog "Merging and running Docker Compose" "" 1 \
-                            'merge_and_compose' || true
+                        ;;
+                    "${OptionComposeUp}")
+                        {
+                            run_script 'yml_merge' || true
+                            run_script 'docker_compose' "pull" || true
+                            run_script 'docker_compose' "up" || true
+                        } |& dialog_pipe "Docker Compose" "Starting all applications"
+                        ;;
+                    "${OptionComposeDown}")
+                        {
+                            run_script 'yml_merge' || true
+                            run_script 'docker_compose' "down" || true
+                        } |& dialog_pipe "Docker Compose" "Stopping all applications"
+                        ;;
+                    "${OptionDockerPrune}")
+                        run_script_dialog "Prune Docker System" "" "" \
+                            'docker_prune' || true
                         ;;
                     *)
                         error "Invalid Option"
