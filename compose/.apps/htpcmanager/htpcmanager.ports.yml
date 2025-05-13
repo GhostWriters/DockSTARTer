@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  htpcmanager:
     ports:
-      - ${${_APPNAME_}_PORT_8085}:8085
+      - ${HTPCMANAGER_PORT_8085}:8085

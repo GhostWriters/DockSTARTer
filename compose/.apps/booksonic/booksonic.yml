@@ -1,13 +1,13 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  booksonic:
+    container_name: ${BOOKSONIC_CONTAINER_NAME}
     environment:
-      - CONTEXT_PATH=${${_APPNAME_}_ENVIRONMENT_CONTEXT_PATH}
+      - CONTEXT_PATH=${BOOKSONIC_ENVIRONMENT_CONTEXT_PATH}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${BOOKSONIC_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/config
+      - ${DOCKER_VOLUME_CONFIG}/booksonic:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage

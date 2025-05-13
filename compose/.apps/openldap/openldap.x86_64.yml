@@ -1,3 +1,3 @@
 services:
-  ${_appname_}:
-    image: osixia/openldap:${${_APPNAME_}_TAG}
+  openldap:
+    image: osixia/openldap:${OPENLDAP_TAG}

@@ -1,5 +1,5 @@
 services:
-  ${_appname_}:
+  murmur:
     ports:
-      - ${${_APPNAME_}_PORT_64738}:64738
-      - ${${_APPNAME_}_PORT_64738}:64738/udp
+      - ${MURMUR_PORT_64738}:64738
+      - ${MURMUR_PORT_64738}:64738/udp

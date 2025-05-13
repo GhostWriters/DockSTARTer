@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  radarr:
     ports:
-      - ${${_APPNAME_}_PORT_7878}:7878
+      - ${RADARR_PORT_7878}:7878

@@ -1,14 +1,14 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  duplicati:
+    container_name: ${DUPLICATI_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${DUPLICATI_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/config
+      - ${DOCKER_VOLUME_CONFIG}/duplicati:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${${_APPNAME_}_VOLUME_BACKUPSDIR}:/backups
-      - ${${_APPNAME_}_VOLUME_SOURCEDIR}:/source
+      - ${DUPLICATI_VOLUME_BACKUPSDIR}:/backups
+      - ${DUPLICATI_VOLUME_SOURCEDIR}:/source

@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  handbrake:
     ports:
-      - ${${_APPNAME_}_PORT_5800}:5800
+      - ${HANDBRAKE_PORT_5800}:5800

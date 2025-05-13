@@ -1,14 +1,14 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  codeserver:
+    container_name: ${CODESERVER_CONTAINER_NAME}
     environment:
-      - PASSWORD=${${_APPNAME_}_ENVIRONMENT_PASSWORD}
+      - PASSWORD=${CODESERVER_ENVIRONMENT_PASSWORD}
       - PGID=${PGID}
       - PUID=${PUID}
-      - SUDO_PASSWORD=${${_APPNAME_}_ENVIRONMENT_SUDO_PASSWORD}
+      - SUDO_PASSWORD=${CODESERVER_ENVIRONMENT_SUDO_PASSWORD}
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${CODESERVER_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/config
+      - ${DOCKER_VOLUME_CONFIG}/codeserver:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage

@@ -1,16 +1,16 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  yacht:
+    container_name: ${YACHT_CONTAINER_NAME}
     environment:
-      - ADMIN_EMAIL=${${_APPNAME_}_ENVIRONMENT_ADMIN_EMAIL}
-      - DISABLE_AUTH=${${_APPNAME_}_ENVIRONMENT_DISABLE_AUTH}
+      - ADMIN_EMAIL=${YACHT_ENVIRONMENT_ADMIN_EMAIL}
+      - DISABLE_AUTH=${YACHT_ENVIRONMENT_DISABLE_AUTH}
       - PGID=${PGID}
       - PUID=${PUID}
-      - SECRET_KEY=${${_APPNAME_}_ENVIRONMENT_SECRET_KEY}
+      - SECRET_KEY=${YACHT_ENVIRONMENT_SECRET_KEY}
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${YACHT_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/config
+      - ${DOCKER_VOLUME_CONFIG}/yacht:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${${_APPNAME_}_VOLUME_DOCKER_SOCKET}:/var/run/docker.sock
+      - ${YACHT_VOLUME_DOCKER_SOCKET}:/var/run/docker.sock

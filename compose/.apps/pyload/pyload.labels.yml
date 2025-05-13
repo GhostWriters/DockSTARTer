@@ -1,12 +1,12 @@
 services:
-  ${_appname_}:
+  pyload:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Python Download Manager"
       com.dockstarter.appinfo.nicename: "pyLoad"
-      com.dockstarter.appvars.${_appname_}_container_name: "${_appname_}"
-      com.dockstarter.appvars.${_appname_}_enabled: "false"
-      com.dockstarter.appvars.${_appname_}_network_mode: ""
-      com.dockstarter.appvars.${_appname_}_port_8000: "8000"
-      com.dockstarter.appvars.${_appname_}_restart: "unless-stopped"
-      com.dockstarter.appvars.${_appname_}_tag: "latest"
+      com.dockstarter.appvars.pyload_container_name: "pyload"
+      com.dockstarter.appvars.pyload_enabled: "false"
+      com.dockstarter.appvars.pyload_network_mode: ""
+      com.dockstarter.appvars.pyload_port_8000: "8000"
+      com.dockstarter.appvars.pyload_restart: "unless-stopped"
+      com.dockstarter.appvars.pyload_tag: "latest"

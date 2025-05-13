@@ -1,3 +1,3 @@
 services:
-  ${_appname_}:
-    image: influxdb:${${_APPNAME_}_TAG}
+  influxdb:
+    image: influxdb:${INFLUXDB_TAG}

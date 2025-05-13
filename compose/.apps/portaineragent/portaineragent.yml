@@ -1,13 +1,13 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  portaineragent:
+    container_name: ${PORTAINERAGENT_CONTAINER_NAME}
     environment:
-      - CAP_HOST_MANAGEMENT=${${_APPNAME_}_ENVIRONMENT_CAP_HOST_MANAGEMENT}
+      - CAP_HOST_MANAGEMENT=${PORTAINERAGENT_ENVIRONMENT_CAP_HOST_MANAGEMENT}
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${PORTAINERAGENT_RESTART}
     volumes:
       - /:/host
       - /etc/localtime:/etc/localtime:ro
       - /var/lib/docker/volumes:/var/lib/docker/volumes
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${${_APPNAME_}_VOLUME_DOCKER_SOCKET}:/var/run/docker.sock
+      - ${PORTAINERAGENT_VOLUME_DOCKER_SOCKET}:/var/run/docker.sock

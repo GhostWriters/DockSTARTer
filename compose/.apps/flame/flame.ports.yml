@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  flame:
     ports:
-      - ${${_APPNAME_}_PORT_5005}:5005
+      - ${FLAME_PORT_5005}:5005

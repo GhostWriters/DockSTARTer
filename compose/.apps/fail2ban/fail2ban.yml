@@ -3,14 +3,14 @@ services:
     cap_add:
       - NET_ADMIN
       - NET_RAW
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+    container_name: ${FAIL2BAN_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${FAIL2BAN_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/log:/var/log:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/config
+      - ${DOCKER_VOLUME_CONFIG}/fail2ban:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage

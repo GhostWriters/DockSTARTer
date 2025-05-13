@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  jfago:
     ports:
-      - ${${_APPNAME_}_PORT_8056}:8056
+      - ${JFAGO_PORT_8056}:8056

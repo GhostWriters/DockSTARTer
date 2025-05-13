@@ -1,3 +1,3 @@
 services:
-  ${_appname_}:
+  resiliosync:
     hostname: ${DOCKER_HOSTNAME}

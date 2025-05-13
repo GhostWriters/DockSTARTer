@@ -1,12 +1,12 @@
 services:
-  ${_appname_}:
+  deemix:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Download music from Deezer via Deemix"
       com.dockstarter.appinfo.nicename: "Deemix"
-      com.dockstarter.appvars.${_appname_}_container_name: "${_appname_}"
-      com.dockstarter.appvars.${_appname_}_enabled: "false"
-      com.dockstarter.appvars.${_appname_}_network_mode: ""
-      com.dockstarter.appvars.${_appname_}_port_6595: "6595"
-      com.dockstarter.appvars.${_appname_}_restart: "unless-stopped"
-      com.dockstarter.appvars.${_appname_}_tag: "latest"
+      com.dockstarter.appvars.deemix_container_name: "deemix"
+      com.dockstarter.appvars.deemix_enabled: "false"
+      com.dockstarter.appvars.deemix_network_mode: ""
+      com.dockstarter.appvars.deemix_port_6595: "6595"
+      com.dockstarter.appvars.deemix_restart: "unless-stopped"
+      com.dockstarter.appvars.deemix_tag: "latest"

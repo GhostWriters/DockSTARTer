@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  prowlarr:
     ports:
-      - ${${_APPNAME_}_PORT_9696}:9696
+      - ${PROWLARR_PORT_9696}:9696

@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  unmanic:
     ports:
-      - ${${_APPNAME_}_PORT_8888}:8888
+      - ${UNMANIC_PORT_8888}:8888

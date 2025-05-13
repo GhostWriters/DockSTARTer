@@ -1,12 +1,12 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  kanboard:
+    container_name: ${KANBOARD_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${KANBOARD_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/var/www/app
+      - ${DOCKER_VOLUME_CONFIG}/kanboard:/var/www/app
       - ${DOCKER_VOLUME_STORAGE}:/storage

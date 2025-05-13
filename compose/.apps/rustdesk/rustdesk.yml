@@ -1,13 +1,13 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  rustdesk:
+    container_name: ${RUSTDESK_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
-      - RELAY=${${_APPNAME_}_ENVIRONMENT_RELAY_SERVER}
+      - RELAY=${RUSTDESK_ENVIRONMENT_RELAY_SERVER}
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${RUSTDESK_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/data
+      - ${DOCKER_VOLUME_CONFIG}/rustdesk:/data
       - ${DOCKER_VOLUME_STORAGE}:/storage

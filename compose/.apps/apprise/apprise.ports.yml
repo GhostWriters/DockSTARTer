@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  apprise:
     ports:
-      - ${${_APPNAME_}_PORT_8000}:8000
+      - ${APPRISE_PORT_8000}:8000

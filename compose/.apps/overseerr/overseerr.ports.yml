@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  overseerr:
     ports:
-      - ${${_APPNAME_}_PORT_5055}:5055
+      - ${OVERSEERR_PORT_5055}:5055

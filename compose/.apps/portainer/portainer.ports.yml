@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  portainer:
     ports:
-      - ${${_APPNAME_}_PORT_9000}:9000
+      - ${PORTAINER_PORT_9000}:9000

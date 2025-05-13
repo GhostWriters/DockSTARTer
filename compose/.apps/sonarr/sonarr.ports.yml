@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  sonarr:
     ports:
-      - ${${_APPNAME_}_PORT_8989}:8989
+      - ${SONARR_PORT_8989}:8989

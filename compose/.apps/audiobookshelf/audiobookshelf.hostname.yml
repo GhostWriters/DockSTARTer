@@ -1,3 +1,3 @@
 services:
-  ${_appname_}:
+  audiobookshelf:
     hostname: ${DOCKER_HOSTNAME}

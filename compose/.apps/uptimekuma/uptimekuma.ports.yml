@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  uptimekuma:
     ports:
-      - ${${_APPNAME_}_PORT_3001}:3001
+      - ${UPTIMEKUMA_PORT_3001}:3001

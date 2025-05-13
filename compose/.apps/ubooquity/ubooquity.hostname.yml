@@ -1,3 +1,3 @@
 services:
-  ${_appname_}:
+  ubooquity:
     hostname: ${DOCKER_HOSTNAME}

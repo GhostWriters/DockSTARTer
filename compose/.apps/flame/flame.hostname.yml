@@ -1,3 +1,3 @@
 services:
-  ${_appname_}:
+  flame:
     hostname: ${DOCKER_HOSTNAME}

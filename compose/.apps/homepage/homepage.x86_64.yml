@@ -1,3 +1,3 @@
 services:
-  ${_appname_}:
-    image: ghcr.io/gethomepage/homepage:${${_APPNAME_}_TAG}
+  homepage:
+    image: ghcr.io/gethomepage/homepage:${HOMEPAGE_TAG}

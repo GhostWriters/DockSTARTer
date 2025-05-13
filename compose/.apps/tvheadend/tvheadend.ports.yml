@@ -1,5 +1,5 @@
 services:
-  ${_appname_}:
+  tvheadend:
     ports:
-      - ${${_APPNAME_}_PORT_9981}:9981
-      - ${${_APPNAME_}_PORT_9982}:9982
+      - ${TVHEADEND_PORT_9981}:9981
+      - ${TVHEADEND_PORT_9982}:9982

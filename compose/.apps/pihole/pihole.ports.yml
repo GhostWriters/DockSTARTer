@@ -1,8 +1,8 @@
 services:
-  ${_appname_}:
+  pihole:
     ports:
-      - ${${_APPNAME_}_PORT_443}:443
-      - ${${_APPNAME_}_PORT_80}:80
-      - ${${_APPNAME_}_ENVIRONMENT_SERVERIP}:${${_APPNAME_}_PORT_53}:53
-      - ${${_APPNAME_}_ENVIRONMENT_SERVERIP}:${${_APPNAME_}_PORT_53}:53/udp
-      - ${${_APPNAME_}_ENVIRONMENT_SERVERIP}:${${_APPNAME_}_PORT_67}:67/udp
+      - ${PIHOLE_PORT_443}:443
+      - ${PIHOLE_PORT_80}:80
+      - ${PIHOLE_ENVIRONMENT_SERVERIP}:${PIHOLE_PORT_53}:53
+      - ${PIHOLE_ENVIRONMENT_SERVERIP}:${PIHOLE_PORT_53}:53/udp
+      - ${PIHOLE_ENVIRONMENT_SERVERIP}:${PIHOLE_PORT_67}:67/udp

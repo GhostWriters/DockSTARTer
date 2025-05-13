@@ -1,5 +1,5 @@
 services:
-  ${_appname_}:
+  emby:
     ports:
-      - ${${_APPNAME_}_PORT_8096}:8096
-      - ${${_APPNAME_}_PORT_8920}:8920
+      - ${EMBY_PORT_8096}:8096
+      - ${EMBY_PORT_8920}:8920

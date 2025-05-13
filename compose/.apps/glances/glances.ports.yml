@@ -1,5 +1,5 @@
 services:
-  ${_appname_}:
+  glances:
     ports:
-      - ${${_APPNAME_}_PORT_61208}:61208
-      - ${${_APPNAME_}_PORT_61209}:61209
+      - ${GLANCES_PORT_61208}:61208
+      - ${GLANCES_PORT_61209}:61209

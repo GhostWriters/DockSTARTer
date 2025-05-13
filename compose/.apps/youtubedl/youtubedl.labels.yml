@@ -1,14 +1,14 @@
 services:
-  ${_appname_}:
+  youtubedl:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Simple Web and REST interface for downloading YouTube videos onto a server."
       com.dockstarter.appinfo.nicename: "YoutubeDL"
-      com.dockstarter.appvars.${_appname_}_container_name: "${_appname_}"
-      com.dockstarter.appvars.${_appname_}_enabled: "false"
-      com.dockstarter.appvars.${_appname_}_environment_config_path: "/youtube-dl/config.yml"
-      com.dockstarter.appvars.${_appname_}_environment_debug: "false"
-      com.dockstarter.appvars.${_appname_}_network_mode: ""
-      com.dockstarter.appvars.${_appname_}_port_8080: "8080"
-      com.dockstarter.appvars.${_appname_}_restart: "unless-stopped"
-      com.dockstarter.appvars.${_appname_}_tag: "latest"
+      com.dockstarter.appvars.youtubedl_container_name: "youtubedl"
+      com.dockstarter.appvars.youtubedl_enabled: "false"
+      com.dockstarter.appvars.youtubedl_environment_config_path: "/youtube-dl/config.yml"
+      com.dockstarter.appvars.youtubedl_environment_debug: "false"
+      com.dockstarter.appvars.youtubedl_network_mode: ""
+      com.dockstarter.appvars.youtubedl_port_8080: "8080"
+      com.dockstarter.appvars.youtubedl_restart: "unless-stopped"
+      com.dockstarter.appvars.youtubedl_tag: "latest"

@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  znc:
     ports:
-      - ${${_APPNAME_}_PORT_6501}:6501
+      - ${ZNC_PORT_6501}:6501

@@ -1,16 +1,16 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  murmur:
+    container_name: ${MURMUR_CONTAINER_NAME}
     environment:
-      - MURMUR_SUPW=${${_APPNAME_}_ENVIRONMENT_SUPW}
+      - MURMUR_SUPW=${MURMUR_ENVIRONMENT_SUPW}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${MURMUR_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}/cert:/opt/murmur/cert
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}/config:/opt/murmur/config
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}/data:/opt/murmur/data
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}/log:/opt/murmur/log
+      - ${DOCKER_VOLUME_CONFIG}/murmur/cert:/opt/murmur/cert
+      - ${DOCKER_VOLUME_CONFIG}/murmur/config:/opt/murmur/config
+      - ${DOCKER_VOLUME_CONFIG}/murmur/data:/opt/murmur/data
+      - ${DOCKER_VOLUME_CONFIG}/murmur/log:/opt/murmur/log
       - ${DOCKER_VOLUME_STORAGE}:/storage

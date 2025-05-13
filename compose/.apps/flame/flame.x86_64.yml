@@ -1,3 +1,3 @@
 services:
-  ${_appname_}:
-    image: pawelmalak/flame:${${_APPNAME_}_TAG}
+  flame:
+    image: pawelmalak/flame:${FLAME_TAG}

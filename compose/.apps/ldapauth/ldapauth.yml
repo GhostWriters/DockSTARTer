@@ -1,12 +1,12 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  ldapauth:
+    container_name: ${LDAPAUTH_CONTAINER_NAME}
     environment:
-      - CERTFILE=${${_APPNAME_}_ENVIRONMENT_CERTFILE}
-      - FERNETKEY=${${_APPNAME_}_ENVIRONMENT_FERNETKEY}
-      - KEYFILE=${${_APPNAME_}_ENVIRONMENT_KEYFILE}
+      - CERTFILE=${LDAPAUTH_ENVIRONMENT_CERTFILE}
+      - FERNETKEY=${LDAPAUTH_ENVIRONMENT_FERNETKEY}
+      - KEYFILE=${LDAPAUTH_ENVIRONMENT_KEYFILE}
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${LDAPAUTH_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_STORAGE}:/storage

@@ -1,17 +1,17 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  bookstack:
+    container_name: ${BOOKSTACK_CONTAINER_NAME}
     environment:
-      - APP_URL=${${_APPNAME_}_ENVIRONMENT_APP_URL}
-      - DB_DATABASE=${${_APPNAME_}_ENVIRONMENT_DB_DATABASE}
-      - DB_HOST=${${_APPNAME_}_ENVIRONMENT_DB_HOST}
-      - DB_PASS=${${_APPNAME_}_ENVIRONMENT_DB_PASS}
-      - DB_USER=${${_APPNAME_}_ENVIRONMENT_DB_USER}
+      - APP_URL=${BOOKSTACK_ENVIRONMENT_APP_URL}
+      - DB_DATABASE=${BOOKSTACK_ENVIRONMENT_DB_DATABASE}
+      - DB_HOST=${BOOKSTACK_ENVIRONMENT_DB_HOST}
+      - DB_PASS=${BOOKSTACK_ENVIRONMENT_DB_PASS}
+      - DB_USER=${BOOKSTACK_ENVIRONMENT_DB_USER}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${BOOKSTACK_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/config
+      - ${DOCKER_VOLUME_CONFIG}/bookstack:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage

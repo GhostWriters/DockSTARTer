@@ -1,24 +1,24 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  azuracast:
+    container_name: ${AZURACAST_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
-      - APPLICATION_ENV=${${_APPNAME_}_ENVIRONMENT_APPLICATION_ENV}
-      - MYSQL_HOST=${${_APPNAME_}_ENVIRONMENT_MYSQL_HOST}
-      - MYSQL_PORT=${${_APPNAME_}_ENVIRONMENT_MYSQL_PORT}
-      - MYSQL_USER=${${_APPNAME_}_ENVIRONMENT_MYSQL_USER}
-      - MYSQL_PASSWORD=${${_APPNAME_}_ENVIRONMENT_MYSQL_PASSWORD}
-      - MYSQL_DATABASE=${${_APPNAME_}_ENVIRONMENT_MYSQL_DATABASE}
-      - ENABLE_REDIS=${${_APPNAME_}_ENVIRONMENT_ENABLE_REDIS}
-      - REDIS_HOST=${${_APPNAME_}_ENVIRONMENT_REDIS_HOST}
-      - REDIS_PORT=${${_APPNAME_}_ENVIRONMENT_REDIS_PORT}
-      - REDIS_DB=${${_APPNAME_}_ENVIRONMENT_REDIS_DB}
-    restart: ${${_APPNAME_}_RESTART}
+      - APPLICATION_ENV=${AZURACAST_ENVIRONMENT_APPLICATION_ENV}
+      - MYSQL_HOST=${AZURACAST_ENVIRONMENT_MYSQL_HOST}
+      - MYSQL_PORT=${AZURACAST_ENVIRONMENT_MYSQL_PORT}
+      - MYSQL_USER=${AZURACAST_ENVIRONMENT_MYSQL_USER}
+      - MYSQL_PASSWORD=${AZURACAST_ENVIRONMENT_MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${AZURACAST_ENVIRONMENT_MYSQL_DATABASE}
+      - ENABLE_REDIS=${AZURACAST_ENVIRONMENT_ENABLE_REDIS}
+      - REDIS_HOST=${AZURACAST_ENVIRONMENT_REDIS_HOST}
+      - REDIS_PORT=${AZURACAST_ENVIRONMENT_REDIS_PORT}
+      - REDIS_DB=${AZURACAST_ENVIRONMENT_REDIS_DB}
+    restart: ${AZURACAST_RESTART}
     volumes:
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}/shoutcast2/:/var/azuracast/servers/shoutcast2
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}/geoip/:/var/azuracast/geoip
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}/sftpgo/:/var/azuracast/sftpgo/persist
+      - ${DOCKER_VOLUME_CONFIG}/shoutcast2/:/var/azuracast/servers/shoutcast2
+      - ${DOCKER_VOLUME_CONFIG}/geoip/:/var/azuracast/geoip
+      - ${DOCKER_VOLUME_CONFIG}/sftpgo/:/var/azuracast/sftpgo/persist
       - ${DOCKER_VOLUME_STORAGE}/uploads/:/var/azuracast/uploads
       - ${DOCKER_VOLUME_STORAGE}/backups/:/var/azuracast/backups
       - ${DOCKER_VOLUME_STORAGE}/stations/:/var/azuracast/stations

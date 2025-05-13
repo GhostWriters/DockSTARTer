@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  yacht:
     ports:
-      - ${${_APPNAME_}_PORT_8000}:8000
+      - ${YACHT_PORT_8000}:8000

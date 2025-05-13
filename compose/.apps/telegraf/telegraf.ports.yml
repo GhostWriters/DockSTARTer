@@ -1,6 +1,6 @@
 services:
-  ${_appname_}:
+  telegraf:
     ports:
-      - ${${_APPNAME_}_PORT_8092}:8092/udp
-      - ${${_APPNAME_}_PORT_8094}:8094
-      - ${${_APPNAME_}_PORT_8125}:8125
+      - ${TELEGRAF_PORT_8092}:8092/udp
+      - ${TELEGRAF_PORT_8094}:8094
+      - ${TELEGRAF_PORT_8125}:8125

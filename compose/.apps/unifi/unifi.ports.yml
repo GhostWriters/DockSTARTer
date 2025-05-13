@@ -1,11 +1,11 @@
 services:
-  ${_appname_}:
+  unifi:
     ports:
-      - ${${_APPNAME_}_PORT_10001}:10001/udp
-      - ${${_APPNAME_}_PORT_3478}:3478/udp
-      - ${${_APPNAME_}_PORT_6789}:6789
-      - ${${_APPNAME_}_PORT_8080}:8080
-      - ${${_APPNAME_}_PORT_8081}:8081
-      - ${${_APPNAME_}_PORT_8443}:8443
-      - ${${_APPNAME_}_PORT_8843}:8843
-      - ${${_APPNAME_}_PORT_8880}:8880
+      - ${UNIFI_PORT_10001}:10001/udp
+      - ${UNIFI_PORT_3478}:3478/udp
+      - ${UNIFI_PORT_6789}:6789
+      - ${UNIFI_PORT_8080}:8080
+      - ${UNIFI_PORT_8081}:8081
+      - ${UNIFI_PORT_8443}:8443
+      - ${UNIFI_PORT_8843}:8843
+      - ${UNIFI_PORT_8880}:8880

@@ -1,5 +1,5 @@
 services:
-  ${_appname_}:
+  quasselweb:
     ports:
-      - ${${_APPNAME_}_PORT_64080}:64080
-      - ${${_APPNAME_}_PORT_64443}:64443
+      - ${QUASSELWEB_PORT_64080}:64080
+      - ${QUASSELWEB_PORT_64443}:64443

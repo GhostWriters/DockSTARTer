@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  vsftpd:
     ports:
-      - ${${_APPNAME_}_PORT_21}:21
+      - ${VSFTPD_PORT_21}:21

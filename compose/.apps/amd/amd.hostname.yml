@@ -1,3 +1,3 @@
 services:
-  ${_appname_}:
+  amd:
     hostname: ${DOCKER_HOSTNAME}

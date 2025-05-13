@@ -1,6 +1,6 @@
 services:
-  ${_appname_}:
+  openvpnas:
     ports:
-      - ${${_APPNAME_}_PORT_1194}:1194/udp
-      - ${${_APPNAME_}_PORT_943}:943
-      - ${${_APPNAME_}_PORT_9443}:9443
+      - ${OPENVPNAS_PORT_1194}:1194/udp
+      - ${OPENVPNAS_PORT_943}:943
+      - ${OPENVPNAS_PORT_9443}:9443

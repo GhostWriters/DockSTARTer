@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  kanboard:
     ports:
-      - ${${_APPNAME_}_PORT_8080}:8080
+      - ${KANBOARD_PORT_8080}:8080

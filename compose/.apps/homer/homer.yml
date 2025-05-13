@@ -1,14 +1,14 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  homer:
+    container_name: ${HOMER_CONTAINER_NAME}
     environment:
-      - INIT_ASSETS=${${_APPNAME_}_ENVIRONMENT_INIT_ASSETS}
+      - INIT_ASSETS=${HOMER_ENVIRONMENT_INIT_ASSETS}
       - PGID=${PGID}
       - PUID=${PUID}
-      - SUBFOLDER=${${_APPNAME_}_ENVIRONMENT_SUBFOLDER}
+      - SUBFOLDER=${HOMER_ENVIRONMENT_SUBFOLDER}
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${HOMER_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/www/assets
+      - ${DOCKER_VOLUME_CONFIG}/homer:/www/assets

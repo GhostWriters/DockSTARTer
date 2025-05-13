@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  filebrowser:
     ports:
-      - ${${_APPNAME_}_PORT_80}:80
+      - ${FILEBROWSER_PORT_80}:80

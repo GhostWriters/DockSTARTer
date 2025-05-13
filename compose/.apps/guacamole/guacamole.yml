@@ -1,11 +1,11 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  guacamole:
+    container_name: ${GUACAMOLE_CONTAINER_NAME}
     environment:
-      - EXTENSIONS=${${_APPNAME_}_ENVIRONMENT_EXTENSIONS}
+      - EXTENSIONS=${GUACAMOLE_ENVIRONMENT_EXTENSIONS}
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${GUACAMOLE_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/config
+      - ${DOCKER_VOLUME_CONFIG}/guacamole:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage

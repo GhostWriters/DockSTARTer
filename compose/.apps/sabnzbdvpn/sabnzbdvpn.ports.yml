@@ -1,6 +1,6 @@
 services:
-  ${_appname_}:
+  sabnzbdvpn:
     ports:
-      - ${${_APPNAME_}_PORT_8080}:8080
-      - ${${_APPNAME_}_PORT_8090}:8090
-      - ${${_APPNAME_}_PORT_8118}:8118
+      - ${SABNZBDVPN_PORT_8080}:8080
+      - ${SABNZBDVPN_PORT_8090}:8090
+      - ${SABNZBDVPN_PORT_8118}:8118

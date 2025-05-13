@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  homer:
     ports:
-      - ${${_APPNAME_}_PORT_8080}:8080
+      - ${HOMER_PORT_8080}:8080

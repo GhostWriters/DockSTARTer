@@ -1,3 +1,3 @@
 services:
-  ${_appname_}:
-    image: postgres:${${_APPNAME_}_TAG}
+  postgres:
+    image: postgres:${POSTGRES_TAG}

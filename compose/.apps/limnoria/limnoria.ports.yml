@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  limnoria:
     ports:
-      - ${${_APPNAME_}_PORT_8080}:8080
+      - ${LIMNORIA_PORT_8080}:8080

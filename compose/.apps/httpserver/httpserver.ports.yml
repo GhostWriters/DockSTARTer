@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  httpserver:
     ports:
-      - ${${_APPNAME_}_PORT_5000}:5000
+      - ${HTTPSERVER_PORT_5000}:5000

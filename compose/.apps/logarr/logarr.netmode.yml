@@ -1,3 +1,3 @@
 services:
-  ${_appname_}:
-    network_mode: ${${_APPNAME_}_NETWORK_MODE}
+  logarr:
+    network_mode: ${LOGARR_NETWORK_MODE}

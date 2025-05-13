@@ -1,11 +1,11 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  adguard:
+    container_name: ${ADGUARD_CONTAINER_NAME}
     environment:
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${ADGUARD_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}/work:/opt/adguardhome/work
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}/conf:/opt/adguardhome/conf
+      - ${DOCKER_VOLUME_CONFIG}/adguard/work:/opt/adguardhome/work
+      - ${DOCKER_VOLUME_CONFIG}/adguard/conf:/opt/adguardhome/conf
       - ${DOCKER_VOLUME_STORAGE}:/storage

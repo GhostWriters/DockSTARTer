@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  speedtest:
     ports:
-      - ${${_APPNAME_}_PORT_80}:80
+      - ${SPEEDTEST_PORT_80}:80

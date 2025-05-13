@@ -1,3 +1,3 @@
 services:
-  ${_appname_}:
-    image: gregyankovoy/goaccess:${${_APPNAME_}_TAG}
+  goaccess:
+    image: gregyankovoy/goaccess:${GOACCESS_TAG}

@@ -1,21 +1,21 @@
 services:
-  ${_appname_}:
+  pihole:
     cap_add:
       - NET_ADMIN
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+    container_name: ${PIHOLE_CONTAINER_NAME}
     dns:
       - 127.0.0.1
-      - ${${_APPNAME_}_ENVIRONMENT_DNS1}
-      - ${${_APPNAME_}_ENVIRONMENT_DNS2}
+      - ${PIHOLE_ENVIRONMENT_DNS1}
+      - ${PIHOLE_ENVIRONMENT_DNS2}
     environment:
-      - DNS1=${${_APPNAME_}_ENVIRONMENT_DNS1}
-      - DNS2=${${_APPNAME_}_ENVIRONMENT_DNS2}
-      - ServerIP=${${_APPNAME_}_ENVIRONMENT_SERVERIP}
+      - DNS1=${PIHOLE_ENVIRONMENT_DNS1}
+      - DNS2=${PIHOLE_ENVIRONMENT_DNS2}
+      - ServerIP=${PIHOLE_ENVIRONMENT_SERVERIP}
       - TZ=${TZ}
-      - WEBPASSWORD=${${_APPNAME_}_ENVIRONMENT_WEBPASSWORD}
-    restart: ${${_APPNAME_}_RESTART}
+      - WEBPASSWORD=${PIHOLE_ENVIRONMENT_WEBPASSWORD}
+    restart: ${PIHOLE_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}/dnsmasq.d:/etc/dnsmasq.d
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}/pihole:/etc/pihole
+      - ${DOCKER_VOLUME_CONFIG}/pihole/dnsmasq.d:/etc/dnsmasq.d
+      - ${DOCKER_VOLUME_CONFIG}/pihole/pihole:/etc/pihole
       - ${DOCKER_VOLUME_STORAGE}:/storage

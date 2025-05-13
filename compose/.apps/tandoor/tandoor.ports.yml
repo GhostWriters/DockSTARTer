@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  tandoor:
     ports:
-      - ${${_APPNAME_}_PORT_8080}:8080
+      - ${TANDOOR_PORT_8080}:8080

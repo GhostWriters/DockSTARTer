@@ -1,18 +1,18 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  librespeed:
+    container_name: ${LIBRESPEED_CONTAINER_NAME}
     environment:
-      - DB_HOSTNAME=${${_APPNAME_}_ENVIRONMENT_DB_HOSTNAME}
-      - DB_NAME=${${_APPNAME_}_ENVIRONMENT_DB_NAME}
-      - DB_PASSWORD=${${_APPNAME_}_ENVIRONMENT_DB_PASSWORD}
-      - DB_TYPE=${${_APPNAME_}_ENVIRONMENT_DB_TYPE}
-      - DB_USERNAME=${${_APPNAME_}_ENVIRONMENT_DB_USERNAME}
-      - PASSWORD=${${_APPNAME_}_ENVIRONMENT_PASSWORD}
+      - DB_HOSTNAME=${LIBRESPEED_ENVIRONMENT_DB_HOSTNAME}
+      - DB_NAME=${LIBRESPEED_ENVIRONMENT_DB_NAME}
+      - DB_PASSWORD=${LIBRESPEED_ENVIRONMENT_DB_PASSWORD}
+      - DB_TYPE=${LIBRESPEED_ENVIRONMENT_DB_TYPE}
+      - DB_USERNAME=${LIBRESPEED_ENVIRONMENT_DB_USERNAME}
+      - PASSWORD=${LIBRESPEED_ENVIRONMENT_PASSWORD}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${LIBRESPEED_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/config
+      - ${DOCKER_VOLUME_CONFIG}/librespeed:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage

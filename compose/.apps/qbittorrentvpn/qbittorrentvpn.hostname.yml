@@ -1,3 +1,3 @@
 services:
-  ${_appname_}:
+  qbittorrentvpn:
     hostname: ${DOCKER_HOSTNAME}

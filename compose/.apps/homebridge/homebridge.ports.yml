@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  homebridge:
     ports:
-      - ${${_APPNAME_}_PORT_8581}:8581
+      - ${HOMEBRIDGE_PORT_8581}:8581

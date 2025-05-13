@@ -1,12 +1,12 @@
 services:
-  ${_appname_}:
+  htpcmanager:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Front end for many htpc related applications"
       com.dockstarter.appinfo.nicename: "HTPCManager"
-      com.dockstarter.appvars.${_appname_}_container_name: "${_appname_}"
-      com.dockstarter.appvars.${_appname_}_enabled: "false"
-      com.dockstarter.appvars.${_appname_}_network_mode: ""
-      com.dockstarter.appvars.${_appname_}_port_8085: "8085"
-      com.dockstarter.appvars.${_appname_}_restart: "unless-stopped"
-      com.dockstarter.appvars.${_appname_}_tag: "latest"
+      com.dockstarter.appvars.htpcmanager_container_name: "htpcmanager"
+      com.dockstarter.appvars.htpcmanager_enabled: "false"
+      com.dockstarter.appvars.htpcmanager_network_mode: ""
+      com.dockstarter.appvars.htpcmanager_port_8085: "8085"
+      com.dockstarter.appvars.htpcmanager_restart: "unless-stopped"
+      com.dockstarter.appvars.htpcmanager_tag: "latest"

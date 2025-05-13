@@ -1,3 +1,3 @@
 services:
-  ${_appname_}:
+  photostructure:
     hostname: ${DOCKER_HOSTNAME}

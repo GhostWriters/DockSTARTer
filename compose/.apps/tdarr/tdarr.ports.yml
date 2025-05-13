@@ -1,5 +1,5 @@
 services:
-  ${_appname_}:
+  tdarr:
     ports:
-      - ${${_APPNAME_}_PORT_8265}:8265
-      - ${${_APPNAME_}_PORT_8266}:8266
+      - ${TDARR_PORT_8265}:8265
+      - ${TDARR_PORT_8266}:8266

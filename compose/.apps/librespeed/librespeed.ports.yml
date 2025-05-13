@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  librespeed:
     ports:
-      - ${${_APPNAME_}_PORT_80}:80
+      - ${LIBRESPEED_PORT_80}:80

@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  komga:
     ports:
-      - ${${_APPNAME_}_PORT_25600}:25600
+      - ${KOMGA_PORT_25600}:25600

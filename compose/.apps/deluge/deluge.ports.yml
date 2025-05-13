@@ -1,10 +1,10 @@
 services:
-  ${_appname_}:
+  deluge:
     ports:
-      - ${${_APPNAME_}_PORT_51413}:51413
-      - ${${_APPNAME_}_PORT_51413}:51413/udp
-      - ${${_APPNAME_}_PORT_58846}:58846
-      - ${${_APPNAME_}_PORT_58946}:58946
-      - ${${_APPNAME_}_PORT_6881}:6881
-      - ${${_APPNAME_}_PORT_6881}:6881/udp
-      - ${${_APPNAME_}_PORT_8112}:8112
+      - ${DELUGE_PORT_51413}:51413
+      - ${DELUGE_PORT_51413}:51413/udp
+      - ${DELUGE_PORT_58846}:58846
+      - ${DELUGE_PORT_58946}:58946
+      - ${DELUGE_PORT_6881}:6881
+      - ${DELUGE_PORT_6881}:6881/udp
+      - ${DELUGE_PORT_8112}:8112

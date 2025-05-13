@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  nzbget:
     ports:
-      - ${${_APPNAME_}_PORT_6789}:6789
+      - ${NZBGET_PORT_6789}:6789

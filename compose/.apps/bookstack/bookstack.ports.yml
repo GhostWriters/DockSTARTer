@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  bookstack:
     ports:
-      - ${${_APPNAME_}_PORT_80}:80
+      - ${BOOKSTACK_PORT_80}:80

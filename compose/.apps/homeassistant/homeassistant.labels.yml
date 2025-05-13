@@ -1,12 +1,12 @@
 services:
-  ${_appname_}:
+  homeassistant:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Track and control all devices at home and automate control"
       com.dockstarter.appinfo.nicename: "HomeAssistant"
-      com.dockstarter.appvars.${_appname_}_container_name: "${_appname_}"
-      com.dockstarter.appvars.${_appname_}_enabled: "false"
-      com.dockstarter.appvars.${_appname_}_network_mode: ""
-      com.dockstarter.appvars.${_appname_}_port_8123: "8123"
-      com.dockstarter.appvars.${_appname_}_restart: "unless-stopped"
-      com.dockstarter.appvars.${_appname_}_tag: "latest"
+      com.dockstarter.appvars.homeassistant_container_name: "homeassistant"
+      com.dockstarter.appvars.homeassistant_enabled: "false"
+      com.dockstarter.appvars.homeassistant_network_mode: ""
+      com.dockstarter.appvars.homeassistant_port_8123: "8123"
+      com.dockstarter.appvars.homeassistant_restart: "unless-stopped"
+      com.dockstarter.appvars.homeassistant_tag: "latest"

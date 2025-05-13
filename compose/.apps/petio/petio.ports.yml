@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  petio:
     ports:
-      - ${${_APPNAME_}_PORT_7777}:7777
+      - ${PETIO_PORT_7777}:7777

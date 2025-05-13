@@ -1,12 +1,12 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  uptimekuma:
+    container_name: ${UPTIMEKUMA_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${UPTIMEKUMA_RESTART}
     volumes:
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/app/data
+      - ${DOCKER_VOLUME_CONFIG}/uptimekuma:/app/data
       - ${DOCKER_VOLUME_STORAGE}:/storage
       - /etc/localtime:/etc/localtime:ro

@@ -1,10 +1,10 @@
 services:
-  ${_appname_}:
+  rtorrentvpn:
     ports:
-      - ${${_APPNAME_}_PORT_51413}:51413
-      - ${${_APPNAME_}_PORT_51413}:51413/udp
-      - ${${_APPNAME_}_PORT_6881}:6881
-      - ${${_APPNAME_}_PORT_6881}:6881/udp
-      - ${${_APPNAME_}_PORT_8118}:8118
-      - ${${_APPNAME_}_PORT_9080}:9080
-      - ${${_APPNAME_}_PORT_9443}:9443
+      - ${RTORRENTVPN_PORT_51413}:51413
+      - ${RTORRENTVPN_PORT_51413}:51413/udp
+      - ${RTORRENTVPN_PORT_6881}:6881
+      - ${RTORRENTVPN_PORT_6881}:6881/udp
+      - ${RTORRENTVPN_PORT_8118}:8118
+      - ${RTORRENTVPN_PORT_9080}:9080
+      - ${RTORRENTVPN_PORT_9443}:9443

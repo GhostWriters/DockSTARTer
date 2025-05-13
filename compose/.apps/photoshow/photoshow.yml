@@ -1,14 +1,14 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  photoshow:
+    container_name: ${PHOTOSHOW_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${PHOTOSHOW_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/config
+      - ${DOCKER_VOLUME_CONFIG}/photoshow:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${${_APPNAME_}_VOLUME_IMAGES_DIR}:/Pictures:ro
-      - ${${_APPNAME_}_VOLUME_THUMBS_DIR}:/Thumbs
+      - ${PHOTOSHOW_VOLUME_IMAGES_DIR}:/Pictures:ro
+      - ${PHOTOSHOW_VOLUME_THUMBS_DIR}:/Thumbs

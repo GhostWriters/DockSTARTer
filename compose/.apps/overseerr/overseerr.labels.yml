@@ -1,12 +1,12 @@
 services:
-  ${_appname_}:
+  overseerr:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "A request management and media discovery tool"
       com.dockstarter.appinfo.nicename: "Overseerr"
-      com.dockstarter.appvars.${_appname_}_container_name: "${_appname_}"
-      com.dockstarter.appvars.${_appname_}_enabled: "false"
-      com.dockstarter.appvars.${_appname_}_network_mode: ""
-      com.dockstarter.appvars.${_appname_}_port_5055: "5055"
-      com.dockstarter.appvars.${_appname_}_restart: "unless-stopped"
-      com.dockstarter.appvars.${_appname_}_tag: "latest"
+      com.dockstarter.appvars.overseerr_container_name: "overseerr"
+      com.dockstarter.appvars.overseerr_enabled: "false"
+      com.dockstarter.appvars.overseerr_network_mode: ""
+      com.dockstarter.appvars.overseerr_port_5055: "5055"
+      com.dockstarter.appvars.overseerr_restart: "unless-stopped"
+      com.dockstarter.appvars.overseerr_tag: "latest"

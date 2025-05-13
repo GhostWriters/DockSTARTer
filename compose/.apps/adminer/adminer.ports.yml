@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  adminer:
     ports:
-      - ${${_APPNAME_}_PORT_8080}:8080
+      - ${ADMINER_PORT_8080}:8080

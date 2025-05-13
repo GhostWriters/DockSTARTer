@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  flaresolverr:
     ports:
-      - ${${_APPNAME_}_PORT_8191}:${${_APPNAME_}_PORT_8191}
+      - ${FLARESOLVERR_PORT_8191}:${FLARESOLVERR_PORT_8191}

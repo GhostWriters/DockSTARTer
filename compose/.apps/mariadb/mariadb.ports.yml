@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  mariadb:
     ports:
-      - ${${_APPNAME_}_PORT_3306}:3306
+      - ${MARIADB_PORT_3306}:3306

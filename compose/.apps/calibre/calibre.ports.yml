@@ -1,5 +1,5 @@
 services:
-  ${_appname_}:
+  calibre:
     ports:
-      - ${${_APPNAME_}_PORT_8080}:8080
-      - ${${_APPNAME_}_PORT_8081}:8081
+      - ${CALIBRE_PORT_8080}:8080
+      - ${CALIBRE_PORT_8081}:8081

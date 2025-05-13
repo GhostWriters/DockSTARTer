@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  freshrss:
     ports:
-      - ${${_APPNAME_}_PORT_80}:80
+      - ${FRESHRSS_PORT_80}:80

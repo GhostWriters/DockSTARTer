@@ -1,3 +1,3 @@
 services:
-  ${_appname_}:
+  duplicacy:
     hostname: ${DOCKER_HOSTNAME}

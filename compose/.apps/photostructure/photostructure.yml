@@ -1,17 +1,17 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  photostructure:
+    container_name: ${PHOTOSTRUCTURE_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
-      - PS_EXPOSE_NETWORK_WITHOUT_AUTH=${${_APPNAME_}_ENVIRONMENT_EXPOSE_NETWORK_WITHOUT_AUTH}
-      - PS_FORCE_LOCAL_DB_REPLICA=${${_APPNAME_}_ENVIRONMENT_FORCE_LOCAL_DB_REPLICA}
+      - PS_EXPOSE_NETWORK_WITHOUT_AUTH=${PHOTOSTRUCTURE_ENVIRONMENT_EXPOSE_NETWORK_WITHOUT_AUTH}
+      - PS_FORCE_LOCAL_DB_REPLICA=${PHOTOSTRUCTURE_ENVIRONMENT_FORCE_LOCAL_DB_REPLICA}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${PHOTOSTRUCTURE_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/ps/config
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}/logs:/ps/logs
+      - ${DOCKER_VOLUME_CONFIG}/photostructure:/ps/config
+      - ${DOCKER_VOLUME_CONFIG}/photostructure/logs:/ps/logs
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${${_APPNAME_}_VOLUME_CACHE_DIRECTORY}:/ps/tmp
-      - ${${_APPNAME_}_VOLUME_LIBRARY}:/ps/library
+      - ${PHOTOSTRUCTURE_VOLUME_CACHE_DIRECTORY}:/ps/tmp
+      - ${PHOTOSTRUCTURE_VOLUME_LIBRARY}:/ps/library

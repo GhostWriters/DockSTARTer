@@ -1,14 +1,14 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  speedtest:
+    container_name: ${SPEEDTEST_CONTAINER_NAME}
     environment:
-      - OOKLA_EULA_GDPR=${${_APPNAME_}_ENVIRONMENT_OOKLA_EULA_GDPR}
+      - OOKLA_EULA_GDPR=${SPEEDTEST_ENVIRONMENT_OOKLA_EULA_GDPR}
       - PGID=${PGID}
       - PUID=${PUID}
-      - BASE_PATH=${${_APPNAME_}_ENVIRONMENT_BASE_PATH}
+      - BASE_PATH=${SPEEDTEST_ENVIRONMENT_BASE_PATH}
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${SPEEDTEST_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/config
+      - ${DOCKER_VOLUME_CONFIG}/speedtest:/config
       - ${DOCKER_VOLUME_STORAGE}:/storage

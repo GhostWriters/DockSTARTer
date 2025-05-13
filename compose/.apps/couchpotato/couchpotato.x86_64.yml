@@ -1,3 +1,3 @@
 services:
-  ${_appname_}:
-    image: lscr.io/linuxserver/couchpotato:${${_APPNAME_}_TAG}
+  couchpotato:
+    image: lscr.io/linuxserver/couchpotato:${COUCHPOTATO_TAG}

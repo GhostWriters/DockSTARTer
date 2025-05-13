@@ -1,3 +1,3 @@
 services:
-  ${_appname_}:
-    image: lscr.io/linuxserver/plex:${${_APPNAME_}_TAG}
+  plex:
+    image: lscr.io/linuxserver/plex:${PLEX_TAG}

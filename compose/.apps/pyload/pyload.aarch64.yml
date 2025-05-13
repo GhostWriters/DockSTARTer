@@ -1,3 +1,3 @@
 services:
-  ${_appname_}:
-    image: lscr.io/linuxserver/pyload-ng:${${_APPNAME_}_TAG}
+  pyload:
+    image: lscr.io/linuxserver/pyload-ng:${PYLOAD_TAG}

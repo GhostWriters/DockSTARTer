@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  tautulli:
     ports:
-      - ${${_APPNAME_}_PORT_8181}:8181
+      - ${TAUTULLI_PORT_8181}:8181

@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  fireflyiii:
     ports:
-      - ${${_APPNAME_}_PORT_8080}:8080
+      - ${FIREFLYIII_PORT_8080}:8080

@@ -1,4 +1,4 @@
 services:
   mylar3:
     ports:
-      - ${${_APPNAME_}_PORT_8090}:8090
+      - ${MYLAR3_PORT_8090}:8090

@@ -1,11 +1,11 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  cloudcmd:
+    container_name: ${CLOUDCMD_CONTAINER_NAME}
     environment:
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${CLOUDCMD_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/root
+      - ${DOCKER_VOLUME_CONFIG}/cloudcmd:/root
       - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${${_APPNAME_}_VOLUME_FSDIR}:/mnt/fs
+      - ${CLOUDCMD_VOLUME_FSDIR}:/mnt/fs

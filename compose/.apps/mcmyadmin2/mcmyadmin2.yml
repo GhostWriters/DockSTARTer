@@ -1,12 +1,12 @@
 services:
   mcmyadmin2:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+    container_name: ${MCMYADMIN2_CONTAINER_NAME}
     environment:
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${MCMYADMIN2_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/minecraft
+      - ${DOCKER_VOLUME_CONFIG}/mcmyadmin2:/minecraft
       - ${DOCKER_VOLUME_STORAGE}:/storage

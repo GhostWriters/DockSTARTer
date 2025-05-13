@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  duplicati:
     ports:
-      - ${${_APPNAME_}_PORT_8200}:8200
+      - ${DUPLICATI_PORT_8200}:8200

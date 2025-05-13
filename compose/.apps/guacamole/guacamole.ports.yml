@@ -1,4 +1,4 @@
 services:
-  ${_appname_}:
+  guacamole:
     ports:
-      - ${${_APPNAME_}_PORT_8080}:8080
+      - ${GUACAMOLE_PORT_8080}:8080

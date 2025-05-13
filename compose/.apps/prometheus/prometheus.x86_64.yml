@@ -1,3 +1,3 @@
 services:
-  ${_appname_}:
-    image: prom/prometheus:${${_APPNAME_}_TAG}
+  prometheus:
+    image: prom/prometheus:${PROMETHEUS_TAG}

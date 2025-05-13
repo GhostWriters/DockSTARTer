@@ -1,13 +1,13 @@
 services:
-  ${_appname_}:
-    container_name: ${${_APPNAME_}_CONTAINER_NAME}
+  kiwixserve:
+    container_name: ${KIWIXSERVE_CONTAINER_NAME}
     environment:
-      - DOWNLOAD=${${_APPNAME_}_ENVIRONMENT_DOWNLOADS}
+      - DOWNLOAD=${KIWIXSERVE_ENVIRONMENT_DOWNLOADS}
       - PGID=${PGID}
       - PUID=${PUID}
       - TZ=${TZ}
-    restart: ${${_APPNAME_}_RESTART}
+    restart: ${KIWIXSERVE_RESTART}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/${_appname_}:/data
+      - ${DOCKER_VOLUME_CONFIG}/kiwixserve:/data
       - ${DOCKER_VOLUME_STORAGE}:/storage
