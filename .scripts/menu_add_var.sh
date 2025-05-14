@@ -27,7 +27,7 @@ menu_add_var() {
             VarType="APPENV"
             APPNAME="${APPNAME%:}"
             appname=${APPNAME,,}
-            VarFile="${TEMPLATE_FOLDER}/${appname}/${appname}.env"
+            VarFile="${APP_ENV_FOLDER}/${appname}.env"
         else
             # appname specified, creating an APPNAME__* variable in .env
             VarType="APP"
