@@ -92,7 +92,7 @@ menu_config_global() {
                     local LineNumber
                     LineNumber=$((10#${LineChoice}))
                     if [[ ${LineNumber} == "${AddVariableLineNumber}" ]]; then
-                        dialog --colors --title "${Title}" --msgbox "Add a variable" 0 0
+                        run_script 'menu_add_global_var'
                     elif [[ -n ${VarNameOnLine[LineNumber]-} ]]; then
                         local VarIsUserDefined='Y'
                         if [[ ${VarNameOnLine[LineNumber]-} =~ ${DefaultGlobalVarListRegex} ]]; then
