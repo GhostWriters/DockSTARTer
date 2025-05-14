@@ -372,7 +372,7 @@ ${CurrentValueHeading}
                                 fi
                             elif [[ -d ${StrippedValue} ]]; then
                                 if run_script 'question_prompt' Y "${DescriptionHeading}\nWould you like to set permissions on ${OptionValue["${CurrentValueOption}"]} ?" "${Title}"; then
-                                    run_script_dialog "Settings Permissions" "${StrippedValue}" "" \
+                                    run_script_dialog "Settings Permissions" "${ColorHeading}${StrippedValue}\Zn" "" \
                                         'set_permissions' "${StrippedValue}"
                                 fi
                                 ValueValid="true"
@@ -413,7 +413,8 @@ ${CurrentValueHeading}
                     if [[ -z ${OptionValue["${CurrentValueOption}"]-} ]]; then
                         if run_script 'question_prompt' N "${DescriptionHeading}\n\nDo you really want to delete ${ColorHighlight}${CleanVarName}\Zn?\n" "Delete Variable" "" "Delete" "Back"; then
                             # Value is empty, delete the variable
-                            run_script 'env_delete' "${VarName}"
+                            run_script_dialog "Delete Variable" "${ColorHeading}${CleanVarName}\Zn" 1 \
+                                'env_delete' "${VarName}"
                             return 0
                         fi
                     elif [[ ${OptionValue["${CurrentValueOption}"]-} == "${OptionValue["${OriginalValueOption}"]-}" ]]; then
