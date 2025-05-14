@@ -22,7 +22,7 @@ menu_add_var() {
         DescriptionHeading="File: ${ColorHeading}${VarFile}\Zn\n"
     else
         Title="Add Application Variable"
-        if [[ ${AppName} == *":" ]]; then
+        if [[ ${APPNAME} == *":" ]]; then
             # appname: specified, creating a variable in appname.env
             VarType="APPENV"
             APPNAME="${APPNAME%:}"
