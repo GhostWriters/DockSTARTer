@@ -171,6 +171,9 @@ menu_app_vars() {
                         break
                     fi
                     ;;
+                CANCEL | ESC)
+                    return
+                    ;;
                 *)
                     if [[ -n ${DIALOG_BUTTONS[LineDialogButtonPressed]-} ]]; then
                         clear
