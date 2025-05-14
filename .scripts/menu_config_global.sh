@@ -12,13 +12,13 @@ menu_config_global() {
     local ColorVarLine='\Z0\ZB\Zr'
     local ColorAddVariableLine='\Z0\ZB\Zr'
     local AddVariableText='<ADD VARIABLE>'
-    local -a DefaultGlobalVarList=()
+    local -a DefaultVarList=()
     # Get the list of global variables
-    readarray -t DefaultGlobalVarList < <(run_script 'env_var_list' "${COMPOSE_ENV_DEFAULT_FILE}")
-    local DefaultGlobalVarListRegex
+    readarray -t DefaultVarList < <(run_script 'env_var_list' "${COMPOSE_ENV_DEFAULT_FILE}")
+    local DefaultVarListRegex
     {
         IFS='|'
-        DefaultGlobalVarListRegex="${DefaultGlobalVarList[*]}"
+        DefaultVarListRegex="${DefaultVarList[*]}"
     }
 
     local CurrentGlobalEnvFile
@@ -62,6 +62,7 @@ menu_config_global() {
         local AddVariableLineNumber=${LineNumber}
         CurrentValueOnLine[LineNumber]="${AddVariableText}"
         LineColor[LineNumber]="${ColorAddVariableLine}"
+
         local TotalLines=$((10#${LineNumber}))
         local PadSize=${#TotalLines}
         for LineNumber in "${!CurrentValueOnLine[@]}"; do
@@ -94,7 +95,7 @@ menu_config_global() {
                         run_script 'menu_add_var'
                     elif [[ -n ${VarNameOnLine[LineNumber]-} ]]; then
                         local VarIsUserDefined='Y'
-                        if [[ ${VarNameOnLine[LineNumber]-} =~ ${DefaultGlobalVarListRegex} ]]; then
+                        if [[ ${VarNameOnLine[LineNumber]-} =~ ${DefaultVarListRegex} ]]; then
                             VarIsUserDefined=''
                         fi
                         run_script 'menu_value_prompt' "${VarNameOnLine[LineNumber]}" "${VarIsUserDefined}"
