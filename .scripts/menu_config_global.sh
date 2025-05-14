@@ -13,7 +13,7 @@ menu_config_global() {
     local ColorAddVariableLine='\Z0\ZB\Zr'
     local AddVariableText='<ADD VARIABLE>'
     local -a DefaultGlobalVarList=()
-    # Get the list of global variables for the app
+    # Get the list of global variables
     readarray -t DefaultGlobalVarList < <(run_script 'env_var_list' "${COMPOSE_ENV_DEFAULT_FILE}")
     local DefaultGlobalVarListRegex
     {
