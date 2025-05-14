@@ -92,7 +92,7 @@ menu_config_global() {
                     local LineNumber
                     LineNumber=$((10#${LineChoice}))
                     if [[ ${LineNumber} == "${AddVariableLineNumber}" ]]; then
-                        run_script 'menu_add_global_var'
+                        run_script 'menu_add_var'
                     elif [[ -n ${VarNameOnLine[LineNumber]-} ]]; then
                         local VarIsUserDefined='Y'
                         if [[ ${VarNameOnLine[LineNumber]-} =~ ${DefaultGlobalVarListRegex} ]]; then
