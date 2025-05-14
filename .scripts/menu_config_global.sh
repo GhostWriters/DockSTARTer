@@ -6,7 +6,7 @@ menu_config_global() {
     local Title="Edit Global Variables"
 
     local ColorHeading='\Zr'
-    #local ColorHeadingLine='\Zn'
+    local ColorHeadingLine='\Zn'
     local ColorCommentLine='\Z0\Zb\Zr'
     local ColorOtherLine="${ColorCommentLine}"
     local ColorVarLine='\Z0\ZB\Zr'
