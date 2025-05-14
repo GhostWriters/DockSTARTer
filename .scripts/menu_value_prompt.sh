@@ -8,7 +8,6 @@ menu_value_prompt() {
     if [[ ${VarIsUserDefined-} != 'Y' ]]; then
         VarIsUserDefined=''
     fi
-    #VarIsUserDefined='Y'
 
     if [[ ${CI-} == true ]]; then
         return
