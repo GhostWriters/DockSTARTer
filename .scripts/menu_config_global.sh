@@ -12,7 +12,6 @@ menu_config_global() {
     local ColorVarLine='\Z0\ZB\Zr'
     local ColorAddVariableLine='\Z0\ZB\Zr'
     local AddVariableText='<ADD VARIABLE>'
-    local AddVariableLineNumber
     local -a DefaultGlobalVarList=()
     # Get the list of global variables for the app
     readarray -t DefaultGlobalVarList < <(run_script 'env_var_list' "${COMPOSE_ENV_DEFAULT_FILE}")
@@ -60,7 +59,7 @@ menu_config_global() {
             fi
         done
         ((LineNumber++))
-        AddVariableLineNumber=${LineNumber}
+        local AddVariableLineNumber=${LineNumber}
         CurrentValueOnLine[LineNumber]="${AddVariableText}"
         LineColor[LineNumber]="${ColorAddVariableLine}"
         local TotalLines=$((10#${LineNumber}))
