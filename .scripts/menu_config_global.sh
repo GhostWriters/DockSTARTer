@@ -5,7 +5,8 @@ IFS=$'\n\t'
 menu_config_global() {
     local Title="Edit Global Variables"
 
-    source "${SCRIPTPATH}/.scripts/menu_color_definitions.sh"
+    # shellcheck source=menu_color_definitions.sh
+    source "menu_color_definitions.sh"
 
     local AddVariableText='<ADD VARIABLE>'
     local -a DefaultVarList=()

@@ -20,12 +20,9 @@ menu_app_vars() {
         return
     fi
 
-    local ColorHeading='\Zr'
-    local ColorHeadingLine='\Zn'
-    local ColorCommentLine='\Z0\Zb\Zr'
-    local ColorOtherLine="${ColorCommentLine}"
-    local ColorVarLine='\Z0\ZB\Zr'
-    local ColorAddVariableLine='\Z0\ZB\Zr'
+    # shellcheck source=menu_color_definitions.sh
+    source "${SCRIPTPATH}/.scripts/menu_color_definitions.sh"
+
     local AddVariableText='<ADD VARIABLE>'
 
     run_script_dialog "${Title}" "Creating variables for ${AppName}" 1 \
