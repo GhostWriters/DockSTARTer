@@ -91,11 +91,7 @@ menu_config_global() {
                     if [[ ${LineNumber} == "${AddVariableLineNumber}" ]]; then
                         run_script 'menu_add_var'
                     elif [[ -n ${VarNameOnLine[LineNumber]-} ]]; then
-                        local VarIsUserDefined='Y'
-                        if [[ ${VarNameOnLine[LineNumber]-} =~ ${DefaultVarListRegex} ]]; then
-                            VarIsUserDefined=''
-                        fi
-                        run_script 'menu_value_prompt' "${VarNameOnLine[LineNumber]}" "${VarIsUserDefined}"
+                        run_script 'menu_value_prompt' "${VarNameOnLine[LineNumber]}"
                         break
                     fi
                     ;;
