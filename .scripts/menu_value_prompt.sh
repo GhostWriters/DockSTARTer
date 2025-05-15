@@ -15,10 +15,9 @@ menu_value_prompt() {
 
     local Title="Edit Variable"
 
+    source "${SCRIPTPATH}/.scripts/menu_color_definitions.sh"
+
     local DialogTimeout=2
-    local ColorHeading='\Zr'
-    local ColorHeadingValue='\Zb\Zr'
-    local ColorHighlight='\Z3\Zb'
     local APPNAME
     APPNAME=$(run_script 'varname_to_appname' "${VarName}")
     APPNAME=${APPNAME^^}

@@ -5,12 +5,8 @@ IFS=$'\n\t'
 menu_config_global() {
     local Title="Edit Global Variables"
 
-    local ColorHeading='\Zr'
-    local ColorHeadingLine='\Zn'
-    local ColorCommentLine='\Z0\Zb\Zr'
-    local ColorOtherLine="${ColorCommentLine}"
-    local ColorVarLine='\Z0\ZB\Zr'
-    local ColorAddVariableLine='\Z0\ZB\Zr'
+    source "${SCRIPTPATH}/.scripts/menu_color_definitions.sh"
+
     local AddVariableText='<ADD VARIABLE>'
     local -a DefaultVarList=()
     # Get the list of global variables

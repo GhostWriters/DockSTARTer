@@ -10,9 +10,8 @@ menu_add_var() {
     local VarType
     local DescriptionHeading
     local VarFile="${COMPOSE_ENV}"
-    local ColorHeading='\Zr'
-    local ColorHeadingValue='\Zb\Zr'
-    local ColorHighlight='\Z3\Zb'
+
+    source "${SCRIPTPATH}/.scripts/menu_color_definitions.sh"
 
     if [[ -z ${APPNAME-} ]]; then
         # No appname specified, creating a global variable in .env
