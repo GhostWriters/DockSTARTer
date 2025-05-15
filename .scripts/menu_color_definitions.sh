@@ -28,4 +28,3 @@ local \
     ColorVarLine='\Z0\ZB\Zr'
     ColorAddVariableLine="${ColorVarLine}"
 }
-
