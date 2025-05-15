@@ -414,7 +414,7 @@ ${CurrentValueHeading}
                     if [[ -z ${OptionValue["${CurrentValueOption}"]-} ]]; then
                         if run_script 'question_prompt' N "${DescriptionHeading}\n\nDo you really want to delete ${ColorHighlight}${CleanVarName}\Zn?\n" "Delete Variable" "" "Delete" "Back"; then
                             # Value is empty, delete the variable
-                            run_script_dialog "Delete Variable" "${DescriptionHeading}" "${DialogTimeout}" \
+                            run_script_dialog "Deleting Variable" "${DescriptionHeading}" "${DialogTimeout}" \
                                 'env_delete' "${VarName}"
                             return 0
                         fi
@@ -426,7 +426,7 @@ ${CurrentValueHeading}
                     else
                         if run_script 'question_prompt' N "${DescriptionHeading}\n\nWould you like to save ${ColorHighlight}${CleanVarName}\Zn?\n" "Save Variable" "" "Save" "Back"; then
                             # Value is valid, save it and exit
-                            run_script_dialog "Save Variable" "${DescriptionHeading}" "${DialogTimeout}" \
+                            run_script_dialog "Saving Variable" "${DescriptionHeading}" "${DialogTimeout}" \
                                 'env_set_literal' "${VarName}" "${OptionValue["${CurrentValueOption}"]}"
                             return 0
                         fi
