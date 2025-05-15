@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 # Dialog color codes to be used in the GUI menu
 
 # shellcheck disable=SC2168 # local is only valid in functions
