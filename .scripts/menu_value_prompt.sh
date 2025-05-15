@@ -5,9 +5,6 @@ IFS=$'\n\t'
 menu_value_prompt() {
     local VarName=${1-}
     local VarIsUserDefined=${2-}
-    if [[ ${VarIsUserDefined-} != 'Y' ]]; then
-        VarIsUserDefined=''
-    fi
 
     if [[ ${CI-} == true ]]; then
         return
