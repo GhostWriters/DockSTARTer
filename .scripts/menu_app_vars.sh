@@ -28,20 +28,6 @@ menu_app_vars() {
     run_script_dialog "${Title}" "Creating variables for ${AppName}" 1 \
         'appvars_create' "${APPNAME}"
 
-    local -a DefaultVarList=()
-    local -a DefaultAppEnvVarList=()
-    # Get the list of global variables for the app
-    readarray -t DefaultVarList < <(run_script 'env_list_app_global_defaults' "${AppName}")
-    # Add the list of app-specific variables for the app
-    readarray -t DefaultAppEnvVarList < <(run_script 'env_list_app_env_defaults' "${AppName}")
-    for VarName in "${DefaultAppEnvVarList[@]}"; do
-        DefaultVarList+=("${appname}:${VarName}")
-    done
-    local DefaultVarListRegex
-    {
-        IFS='|'
-        DefaultVarListRegex="${DefaultVarList[*]}"
-    }
     local DefaultGlobalEnvFile="${TEMPLATES_FOLDER}/${appname}/.env"
     local CurrentGlobalEnvFile
     CurrentGlobalEnvFile=$(mktemp)
