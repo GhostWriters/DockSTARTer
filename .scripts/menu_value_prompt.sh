@@ -225,6 +225,10 @@ menu_value_prompt() {
     if [[ -n ${OptionValue["${SystemValueOption}"]-} ]]; then
         ValueDescription="\n\n System detected values are recommended.${ValueDescription}"
     fi
+    local AppNameHeading="   Application: ${ColorHeading}${AppName}\Zn"
+    if [[ ${AppIsUserDefined} == 'Y' ]]; then
+        AppNameHeading="${AppNameHeading} ${ColorHighlight}*User Defined*\Zn"
+    fi
     local FilenameHeading="          File: ${ColorHeading}${VarFile}\Zn"
     local VarNameHeading="      Variable: ${ColorHeading}${CleanVarName}\Zn"
     if [[ ${VarIsUserDefined} == 'Y' ]]; then
@@ -263,8 +267,7 @@ menu_value_prompt() {
         local DescriptionHeading=""
         # editorconfig-checker-disable
         if [[ -n ${AppName-} ]]; then
-            DescriptionHeading="${DescriptionHeading}
-   Application: ${ColorHeading}${AppName}\Zn"
+            DescriptionHeading="${DescriptionHeading}\n${AppNameHeading}\Zn"
         fi
         local DescriptionHeading="${DescriptionHeading}
 ${FilenameHeading}
