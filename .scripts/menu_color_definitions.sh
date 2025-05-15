@@ -25,6 +25,6 @@ local \
     ColorCommentLine='\Z0\Zb\Zr'
     ColorOtherLine="${ColorCommentLine}"
     ColorVarLine='\Z0\ZB\Zr'
-    ColorAddVariableLine=="${ColorVarLine}"
+    ColorAddVariableLine="${ColorVarLine}"
 }
 
