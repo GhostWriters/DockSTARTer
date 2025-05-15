@@ -15,6 +15,7 @@ menu_value_prompt() {
 
     local Title="Edit Variable"
 
+    local DialogTimeout=2
     local ColorHeading='\Zr'
     local ColorHeadingValue='\Zb\Zr'
     local ColorHighlight='\Z3\Zb'
@@ -372,7 +373,7 @@ ${CurrentValueHeading}
                                 fi
                             elif [[ -d ${StrippedValue} ]]; then
                                 if run_script 'question_prompt' Y "${DescriptionHeading}\nWould you like to set permissions on ${OptionValue["${CurrentValueOption}"]} ?" "${Title}"; then
-                                    run_script_dialog "Settings Permissions" "${ColorHeading}${StrippedValue}\Zn" "" \
+                                    run_script_dialog "Setting Permissions" "${ColorHeading}${StrippedValue}\Zn" "${DialogTimeout}" \
                                         'set_permissions' "${StrippedValue}"
                                 fi
                                 ValueValid="true"
@@ -381,7 +382,7 @@ ${CurrentValueHeading}
                                     {
                                         mkdir -p "${StrippedValue}" || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p \"${StrippedValue}\""
                                         run_script 'set_permissions' "${StrippedValue}"
-                                    } | dialog_pipe "Creating folder and settings permissions" "${OptionValue["${CurrentValueOption}"]}"
+                                    } | dialog_pipe "Creating folder and settings permissions" "${OptionValue["${CurrentValueOption}"]}" "${DialogTimeout}"
                                     dialog --colors --title "${Title}" --msgbox "${ColorHighlight}${OptionValue["${CurrentValueOption}"]}\Zn folder was created successfully." 0 0
                                     ValueValid="true"
                                 else
@@ -413,7 +414,7 @@ ${CurrentValueHeading}
                     if [[ -z ${OptionValue["${CurrentValueOption}"]-} ]]; then
                         if run_script 'question_prompt' N "${DescriptionHeading}\n\nDo you really want to delete ${ColorHighlight}${CleanVarName}\Zn?\n" "Delete Variable" "" "Delete" "Back"; then
                             # Value is empty, delete the variable
-                            run_script_dialog "Delete Variable" "${ColorHeading}${CleanVarName}\Zn" 1 \
+                            run_script_dialog "Delete Variable" "${ColorHeading}${VarName}\Zn" "${DialogTimeout}" \
                                 'env_delete' "${VarName}"
                             return 0
                         fi
@@ -425,7 +426,8 @@ ${CurrentValueHeading}
                     else
                         if run_script 'question_prompt' N "${DescriptionHeading}\n\nWould you like to save ${ColorHighlight}${CleanVarName}\Zn?\n" "Save Variable" "" "Save" "Back"; then
                             # Value is valid, save it and exit
-                            run_script 'env_set_literal' "${VarName}" "${OptionValue["${CurrentValueOption}"]}"
+                            run_script_dialog "Save Variable Variable" "${ColorHeading}${VarName}\Zn" "${DialogTimeout}" \
+                                'env_set_literal' "${VarName}" "${OptionValue["${CurrentValueOption}"]}"
                             return 0
                         fi
                     fi
