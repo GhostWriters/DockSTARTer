@@ -426,7 +426,7 @@ ${CurrentValueHeading}
                     else
                         if run_script 'question_prompt' N "${DescriptionHeading}\n\nWould you like to save ${ColorHighlight}${CleanVarName}\Zn?\n" "Save Variable" "" "Save" "Back"; then
                             # Value is valid, save it and exit
-                            run_script_dialog "Save Variable Variable" "${DescriptionHeading}" "${DialogTimeout}" \
+                            run_script_dialog "Save Variable" "${DescriptionHeading}" "${DialogTimeout}" \
                                 'env_set_literal' "${VarName}" "${OptionValue["${CurrentValueOption}"]}"
                             return 0
                         fi
