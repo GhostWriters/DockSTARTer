@@ -9,14 +9,6 @@ menu_config_global() {
     source "${SCRIPTPATH}/.scripts/menu_color_definitions.sh"
 
     local AddVariableText='<ADD VARIABLE>'
-    local -a DefaultVarList=()
-    # Get the list of global variables
-    readarray -t DefaultVarList < <(run_script 'env_var_list' "${COMPOSE_ENV_DEFAULT_FILE}")
-    local DefaultVarListRegex
-    {
-        IFS='|'
-        DefaultVarListRegex="${DefaultVarList[*]}"
-    }
 
     local CurrentGlobalEnvFile
     CurrentGlobalEnvFile=$(mktemp)
