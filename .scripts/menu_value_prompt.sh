@@ -15,7 +15,7 @@ menu_value_prompt() {
 
     local Title="Edit Variable"
 
-    # shellcheck source=menu_color_definitions.sh
+    # shellcheck source-path=/
     source "${SCRIPTPATH}/.scripts/menu_color_definitions.sh"
 
     local DialogTimeout=2
