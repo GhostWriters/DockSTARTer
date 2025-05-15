@@ -28,3 +28,7 @@ local \
     ColorVarLine='\Z0\ZB\Zr'
     ColorAddVariableLine="${ColorVarLine}"
 }
+
+test_menu_color_definitions() {
+    warn "CI does not test menu_color_definitions."
+}
