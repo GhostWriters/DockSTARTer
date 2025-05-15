@@ -25,6 +25,7 @@ menu_value_prompt() {
     local appname=${APPNAME,,}
     local AppName
     AppName=$(run_script 'app_nicename' "${APPNAME}")
+
     local CleanVarName="${VarName}"
     local VarFile="${COMPOSE_ENV}"
     local DefaultVarFile=${COMPOSE_ENV_DEFAULT_FILE}
@@ -37,6 +38,19 @@ menu_value_prompt() {
         else
             DefaultVarFile="${APP_FOLDER}/.env"
         fi
+    fi
+    local AppIsUserDefined
+    local VarIsUserDefined
+    if run_script 'app_is_builtin' "${appname}"; then
+        AppIsUserDefined=''
+        if run_script 'env_var_exists' "${CleanVarName}" "${DefaultVarFile}"; then
+            VarIsUserDefined=''
+        else
+            VarIsUserDefined='Y'
+        fi
+    else
+        AppIsUserDefined='Y'
+        VarIsUserDefined='Y'
     fi
 
     local DeleteOption="=== DELETE ==="
