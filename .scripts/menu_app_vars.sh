@@ -9,7 +9,6 @@ menu_app_vars() {
     local AppName
     AppName=$(run_script 'app_nicename' "${APPNAME}")
 
-    # shellcheck source=/menu_settings.include
     source "${SCRIPTPATH}/menu_settings.include"
 
     local Title="Edit Application Variables"

@@ -7,7 +7,6 @@ menu_main() {
         return
     fi
 
-    # shellcheck source=/menu_settings.include
     source "${SCRIPTPATH}/menu_settings.include"
 
     local Title="Main Menu"

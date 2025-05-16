@@ -36,7 +36,6 @@ jobs:
             docker run --rm \
               -v "${GITHUB_WORKSPACE}":"${GITHUB_WORKSPACE}" \
               koalaman/shellcheck \
-              -a \
               {} +
 
   shfmt:
