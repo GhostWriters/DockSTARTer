@@ -168,8 +168,10 @@ menu_app_vars() {
                     LineNumber=$((10#${LineChoice}))
                     if [[ ${LineNumber} == "${AddGlobalVariableLineNumber}" ]]; then
                         run_script 'menu_add_var' "${appname}"
+                        break
                     elif [[ ${LineNumber} == "${AddAppEnvVariableLineNumber}" ]]; then
                         run_script 'menu_add_var' "${appname}:"
+                        break
                     elif [[ -n ${VarNameOnLine[LineNumber]-} ]]; then
                         run_script 'menu_value_prompt' "${VarNameOnLine[LineNumber]}"
                         break
