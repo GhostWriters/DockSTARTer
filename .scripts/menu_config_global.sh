@@ -107,6 +107,7 @@ menu_config_global() {
                     LineNumber=$((10#${LineChoice}))
                     if [[ ${LineNumber} == "${AddVariableLineNumber}" ]]; then
                         run_script 'menu_add_var'
+                        break
                     elif [[ -n ${VarNameOnLine[LineNumber]-} ]]; then
                         run_script 'menu_value_prompt' "${VarNameOnLine[LineNumber]}"
                         break
