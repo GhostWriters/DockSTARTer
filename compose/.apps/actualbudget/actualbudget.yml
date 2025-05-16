@@ -1,6 +1,7 @@
 services:
   actualbudget:
     container_name: ${ACTUALBUDGET__CONTAINER_NAME?}
+    env_file: env_files/actualbudget.env
     environment:
       - TZ=${TZ?}
     restart: ${ACTUALBUDGET__RESTART?}
