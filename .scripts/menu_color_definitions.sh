@@ -28,5 +28,7 @@ local \
     ColorLineVar='\Z0\ZB\Zr'
     ColorLineAddVariable="${ColorLineVar}"
 }
-# shellcheck disable=SC2168,SC2034
-local DialogTimeout=2
+
+test_menu_color_definitions() {
+    warn "CI does not test menu_color_definitions."
+}

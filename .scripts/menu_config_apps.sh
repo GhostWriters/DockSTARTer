@@ -3,7 +3,33 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_config_apps() {
-    source "${SCRIPTPATH}/menu_settings.include"
+    # Dialog color codes to be used in the GUI menu
+    # shellcheck disable=SC2168 # local is only valid in functions
+    local \
+        ColorHeading \
+        ColorHeadingValue \
+        ColorHighlight
+    # shellcheck disable=SC2034 # variable appears unused. Verify it or export it.
+    {
+        ColorHeading='\Zr'
+        ColorHeadingValue='\Zb\Zr'
+        ColorHighlight='\Z3\Zb'
+    }
+    # shellcheck disable=SC2168 # local is only valid in functions
+    local \
+        ColorLineHeading \
+        ColorLineComment \
+        ColorLineOther \
+        ColorLineVar \
+        ColorLineAddVariable
+    # shellcheck disable=SC2034 # variable appears unused. Verify it or export it.
+    {
+        ColorLineHeading='\Zn'
+        ColorLineComment='\Z0\Zb\Zr'
+        ColorLineOther="${ColorLineComment}"
+        ColorLineVar='\Z0\ZB\Zr'
+        ColorLineAddVariable="${ColorLineVar}"
+    }
 
     Title="Edit Application Variables"
 

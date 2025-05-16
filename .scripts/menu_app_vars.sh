@@ -3,14 +3,39 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_app_vars() {
+    # Dialog color codes to be used in the GUI menu
+    # shellcheck disable=SC2168 # local is only valid in functions
+    local \
+        ColorHeading \
+        ColorHeadingValue \
+        ColorHighlight
+    # shellcheck disable=SC2034 # variable appears unused. Verify it or export it.
+    {
+        ColorHeading='\Zr'
+        ColorHeadingValue='\Zb\Zr'
+        ColorHighlight='\Z3\Zb'
+    }
+    # shellcheck disable=SC2168 # local is only valid in functions
+    local \
+        ColorLineHeading \
+        ColorLineComment \
+        ColorLineOther \
+        ColorLineVar \
+        ColorLineAddVariable
+    # shellcheck disable=SC2034 # variable appears unused. Verify it or export it.
+    {
+        ColorLineHeading='\Zn'
+        ColorLineComment='\Z0\Zb\Zr'
+        ColorLineOther="${ColorLineComment}"
+        ColorLineVar='\Z0\ZB\Zr'
+        ColorLineAddVariable="${ColorLineVar}"
+    }
+
     local APPNAME=${1-}
     APPNAME=${APPNAME^^}
     local appname=${APPNAME,,}
     local AppName
     AppName=$(run_script 'app_nicename' "${APPNAME}")
-
-    source "${SCRIPTPATH}/menu_settings.include"
-
     local Title="Edit Application Variables"
 
     if ! run_script 'app_is_builtin'; then

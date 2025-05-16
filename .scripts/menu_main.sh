@@ -7,8 +7,6 @@ menu_main() {
         return
     fi
 
-    source "${SCRIPTPATH}/menu_settings.include"
-
     local Title="Main Menu"
     local OptionConfigure="Configuration"
     local OptionInstallDependencies="Install Dependencies"
