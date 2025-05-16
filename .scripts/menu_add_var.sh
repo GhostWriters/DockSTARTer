@@ -157,10 +157,12 @@ menu_add_var() {
                 local Question="${DescriptionHeading}\n\nCreate variable ${ColorHighlight}${VarName}\Zn?\n"
                 if run_script 'question_prompt' N "${Question}" "Create Variable"; then
                     if [[ ${VarType} == "APPENV" ]]; then
-                        run_script 'env_set' "${appname}:${VarName}" ""
+                        run_script_dialog "Creating Variable" "${DescriptionHeading}" "${DialogTimeout}" \
+                            'env_set' "${appname}:${VarName}" ""
                         run_script 'menu_value_prompt' "${appname}:${VarName}"
                     else
-                        run_script 'env_set' "${VarName}" ""
+                        run_script_dialog "Creating Variable" "${DescriptionHeading}" "${DialogTimeout}" \
+                            'env_set' "${VarName}" ""
                         run_script 'menu_value_prompt' "${VarName}"
                     fi
                     return
