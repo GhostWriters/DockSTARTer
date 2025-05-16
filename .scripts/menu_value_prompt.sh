@@ -3,44 +3,17 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_value_prompt() {
-    # Dialog color codes to be used in the GUI menu
-    # shellcheck disable=SC2168 # local is only valid in functions
-    local \
-        ColorHeading \
-        ColorHeadingValue \
-        ColorHighlight
-    # shellcheck disable=SC2034 # variable appears unused. Verify it or export it.
-    {
-        ColorHeading='\Zr'
-        ColorHeadingValue='\Zb\Zr'
-        ColorHighlight='\Z3\Zb'
-    }
-    # shellcheck disable=SC2168 # local is only valid in functions
-    local \
-        ColorLineHeading \
-        ColorLineComment \
-        ColorLineOther \
-        ColorLineVar \
-        ColorLineAddVariable
-    # shellcheck disable=SC2034 # variable appears unused. Verify it or export it.
-    {
-        ColorLineHeading='\Zn'
-        ColorLineComment='\Z0\Zb\Zr'
-        ColorLineOther="${ColorLineComment}"
-        ColorLineVar='\Z0\ZB\Zr'
-        ColorLineAddVariable="${ColorLineVar}"
-    }
-
     local VarName=${1-}
     local VarIsUserDefined=${2-}
 
     if [[ ${CI-} == true ]]; then
         return
     fi
+    # shellcheck source=/menu_settings.include
+    source "${SCRIPTPATH}/menu_settings.include"
 
     local Title="Edit Variable"
 
-    local DialogTimeout=2
     local APPNAME
     APPNAME=$(run_script 'varname_to_appname' "${VarName}")
     APPNAME=${APPNAME^^}

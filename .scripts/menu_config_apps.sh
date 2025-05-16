@@ -3,6 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_config_apps() {
+    # shellcheck source=/menu_settings.include
     source "${SCRIPTPATH}/menu_settings.include"
 
     Title="Edit Application Variables"

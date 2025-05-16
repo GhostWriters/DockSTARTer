@@ -13,6 +13,7 @@ menu_add_var() {
     local VarNameMaxLength=100
     local VarNamePrefix=""
 
+    # shellcheck source=/menu_settings.include
     source "${SCRIPTPATH}/menu_settings.include"
 
     DescriptionHeading=""
