@@ -101,6 +101,7 @@ menu_add_var() {
         case ${DIALOG_BUTTONS[InputValueDialogButtonPressed]-} in
             OK)
                 # Remove leading and trailing spaces
+                local Default
                 Value="$(sed -e 's/^[[:space:]]*//; s/[[:space:]]*$//' <<< "${Value}")"
                 case "${VarType}" in
                     GLOBAL)
@@ -137,6 +138,26 @@ menu_add_var() {
                             dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
                             continue
                         fi
+                        # Set a default value based on the variable name
+                        if [[ ${Value} == RESTART ]]; then
+                            Default="'unless-stopped'"
+                        elif [[ ${Value} == CONTAINER_NAME ]]; then
+                            Default="'${appname}'"
+                        elif [[ ${Value} == HOSTNAME ]]; then
+                            Default="'${AppName}'"
+                        elif [[ ${Value} == TAG ]]; then
+                            Default="'latest'"
+                        elif [[ ${Value} == NETWORK_MODE ]]; then
+                            Default="''"
+                        elif [[ ${Value} =~ PORT_[0-9]+ ]]; then
+                            Default="'${Value#PORT_*}'"
+                        elif [[ ${Value} =~ VOLUME_DOCKER_SOCKET ]]; then
+                            # shellcheck disable=SC2016  # Expressions don't expand in single quotes, use double quotes for that.
+                            Default='"${DOCKER_VOLUME_DOCKER_SOCKET?}"'
+                        else
+                            Default="''"
+                        fi
+
                         ;;
                     APPENV)
                         VarName="${Value}"
@@ -159,11 +180,11 @@ menu_add_var() {
                 if run_script 'question_prompt' N "${Question}" "Create Variable"; then
                     if [[ ${VarType} == "APPENV" ]]; then
                         run_script_dialog "Creating Variable" "${DescriptionHeading}\n\n   Variable: ${ColorHeadingValue}${VarName}\Zn\n\n" "${DialogTimeout}" \
-                            'env_set' "${appname}:${VarName}" ""
+                            'env_set_literal' "${appname}:${VarName}" "${Default}"
                         run_script 'menu_value_prompt' "${appname}:${VarName}"
                     else
                         run_script_dialog "Creating Variable" "${DescriptionHeading}\n\n   Variable: ${ColorHeadingValue}${VarName}\Zn\n\n" "${DialogTimeout}" \
-                            'env_set' "${VarName}" ""
+                            'env_set_literal' "${VarName}" "${Default}"
                         run_script 'menu_value_prompt' "${VarName}"
                     fi
                     return
