@@ -20,7 +20,7 @@ menu_app_vars() {
         return
     fi
 
-    # shellcheck source-path=./
+    # shellcheck source=./menu_color_definitions.sh
     source "${SCRIPTPATH}/.scripts/menu_color_definitions.sh"
 
     local AddVariableText='<ADD VARIABLE>'

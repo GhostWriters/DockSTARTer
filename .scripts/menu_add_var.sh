@@ -11,7 +11,7 @@ menu_add_var() {
     local DescriptionHeading
     local VarFile="${COMPOSE_ENV}"
 
-    # shellcheck source-path=./
+    # shellcheck source=./menu_color_definitions.sh
     source "${SCRIPTPATH}/.scripts/menu_color_definitions.sh"
 
     if [[ -z ${APPNAME-} ]]; then
