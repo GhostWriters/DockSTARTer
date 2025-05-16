@@ -104,7 +104,7 @@ menu_add_var() {
                 case "${VarType}" in
                     GLOBAL)
                         VarName="${Value}"
-                        if [[ ! ${VarName} =~ [A-Za-z_][A-Za-z0-9_]* ]]; then
+                        if [[ ! ${VarName} =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]]; then
                             local ErrorMessage="${DescriptionHeading}\n\n  The variable name ${ColorHighlight}${VarName}\Zn is not a name.\n\nPlease input another variable name."
                             dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
                             continue
@@ -120,7 +120,7 @@ menu_add_var() {
                     APP)
                         Value="${Value^^}"
                         VarName="${VarNamePrefix}${Value}"
-                        if [[ ! ${VarName} =~ [A-Za-z_][A-Za-z0-9_]* ]]; then
+                        if [[ ! ${VarName} =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]]; then
                             local ErrorMessage="${DescriptionHeading}\n\n  The variable name ${ColorHighlight}${VarName}\Zn is not a name.\n\nPlease input another variable name."
                             dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
                             continue
@@ -139,7 +139,7 @@ menu_add_var() {
                         ;;
                     APPENV)
                         VarName="${Value}"
-                        if [[ ! ${VarName} =~ [A-Za-z_][A-Za-z0-9_]* ]]; then
+                        if [[ ! ${VarName} =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]]; then
                             local ErrorMessage="${DescriptionHeading}\n\n  The variable name ${ColorHighlight}${VarName}\Zn is not a name.\n\nPlease input another variable name."
                             dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
                             continue
