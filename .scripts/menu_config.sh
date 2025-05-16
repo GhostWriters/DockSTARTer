@@ -7,6 +7,8 @@ menu_config() {
         return
     fi
 
+    source "${SCRIPTPATH}/menu_settings.include"
+
     local Title="Configuration Menu"
 
     local OptionFullSetup="Full Setup"
