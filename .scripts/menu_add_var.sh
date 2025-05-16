@@ -30,6 +30,7 @@ menu_add_var() {
         ColorLineVar='\Z0\ZB\Zr'
         ColorLineAddVariable="${ColorLineVar}"
     }
+    local DialogTimeout=2
 
     local APPNAME=${1-}
     local appname
