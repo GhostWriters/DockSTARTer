@@ -104,21 +104,6 @@ menu_add_var() {
                 local Default
                 Value="$(sed -e 's/^[[:space:]]*//; s/[[:space:]]*$//' <<< "${Value}")"
                 case "${VarType}" in
-                    GLOBAL)
-                        VarName="${Value}"
-                        if [[ ! ${VarName} =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]]; then
-                            local ErrorMessage="${DescriptionHeading}\n   Variable: ${ColorHeadingValue}${VarName}\Zn\n\n  The variable name ${ColorHighlight}${VarName}\Zn is not a name.\n\nPlease input another variable name."
-                            dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
-                            continue
-                        fi
-                        local VarNameApp
-                        VarNameApp="$(run_script 'app_nicename' "$(run_script 'varname_to_appname' "${VarName}")")"
-                        if [[ ${VarNameApp} != "" ]]; then
-                            local ErrorMessage="${DescriptionHeading}\n\n   Variable: ${ColorHeadingValue}${VarName}\Zn\n\nThe variable name ${ColorHighlight}${VarName}\Zn is not a valid global variable. It would be a variable for an app named ${ColorHighlight}${VarNameApp}\Zn.\n\n Please input another variable name."
-                            dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
-                            continue
-                        fi
-                        ;;
                     APP)
                         Value="${Value^^}"
                         VarName="${VarNamePrefix}${Value}"
@@ -139,25 +124,34 @@ menu_add_var() {
                             continue
                         fi
                         # Set a default value based on the variable name
-                        if [[ ${Value} == RESTART ]]; then
-                            Default="'unless-stopped'"
-                        elif [[ ${Value} == CONTAINER_NAME ]]; then
-                            Default="'${appname}'"
-                        elif [[ ${Value} == HOSTNAME ]]; then
-                            Default="'${AppName}'"
-                        elif [[ ${Value} == TAG ]]; then
-                            Default="'latest'"
-                        elif [[ ${Value} == NETWORK_MODE ]]; then
-                            Default="''"
-                        elif [[ ${Value} =~ PORT_[0-9]+ ]]; then
-                            Default="'${Value#PORT_*}'"
-                        elif [[ ${Value} =~ VOLUME_DOCKER_SOCKET ]]; then
-                            # shellcheck disable=SC2016  # Expressions don't expand in single quotes, use double quotes for that.
-                            Default='"${DOCKER_VOLUME_DOCKER_SOCKET?}"'
-                        else
-                            Default="''"
-                        fi
-
+                        case "${Value}" in
+                            CONTAINER_NAME)
+                                Default="'${appname}'"
+                                ;;
+                            HOSTNAME)
+                                Default="'${AppName}'"
+                                ;;
+                            NETWORK_MODE)
+                                Default="''"
+                                ;;
+                            RESTART)
+                                Default="'unless-stopped'"
+                                ;;
+                            TAG)
+                                Default="'latest'"
+                                ;;
+                            VOLUME_DOCKER_SOCKET)
+                                # shellcheck disable=SC2016  # Expressions don't expand in single quotes, use double quotes for that.
+                                Default='"${DOCKER_VOLUME_DOCKER_SOCKET?}"'
+                                ;;
+                            *)
+                                if [[ ${Value} =~ PORT_[0-9]+ ]]; then
+                                    Default="'${Value#PORT_*}'"
+                                else
+                                    Default="''"
+                                fi
+                                ;;
+                        esac
                         ;;
                     APPENV)
                         VarName="${Value}"
@@ -166,6 +160,23 @@ menu_add_var() {
                             dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
                             continue
                         fi
+                        Default="''"
+                        ;;
+                    GLOBAL)
+                        VarName="${Value}"
+                        if [[ ! ${VarName} =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]]; then
+                            local ErrorMessage="${DescriptionHeading}\n   Variable: ${ColorHeadingValue}${VarName}\Zn\n\n  The variable name ${ColorHighlight}${VarName}\Zn is not a name.\n\nPlease input another variable name."
+                            dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
+                            continue
+                        fi
+                        local VarNameApp
+                        VarNameApp="$(run_script 'app_nicename' "$(run_script 'varname_to_appname' "${VarName}")")"
+                        if [[ ${VarNameApp} != "" ]]; then
+                            local ErrorMessage="${DescriptionHeading}\n\n   Variable: ${ColorHeadingValue}${VarName}\Zn\n\nThe variable name ${ColorHighlight}${VarName}\Zn is not a valid global variable. It would be a variable for an app named ${ColorHighlight}${VarNameApp}\Zn.\n\n Please input another variable name."
+                            dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
+                            continue
+                        fi
+                        Default="''"
                         ;;
                     *)
                         fatal "Unexpected VarType of '${VarType}' in 'menu_add_var'. Please let the devs know."
