@@ -17,18 +17,18 @@ menu_app_vars() {
     }
     # shellcheck disable=SC2168 # local is only valid in functions
     local \
-        ColorHeadingLine \
-        ColorCommentLine \
-        ColorOtherLine \
-        ColorVarLine \
-        ColorAddVariableLine
+        ColorLineHeading \
+        ColorLineComment \
+        ColorLineOther \
+        ColorLineVar \
+        ColorLineAddVariable
     # shellcheck disable=SC2034 # variable appears unused. Verify it or export it.
     {
-        ColorHeadingLine='\Zn'
-        ColorCommentLine='\Z0\Zb\Zr'
-        ColorOtherLine="${ColorCommentLine}"
-        ColorVarLine='\Z0\ZB\Zr'
-        ColorAddVariableLine="${ColorVarLine}"
+        ColorLineHeading='\Zn'
+        ColorLineComment='\Z0\Zb\Zr'
+        ColorLineOther="${ColorLineComment}"
+        ColorLineVar='\Z0\ZB\Zr'
+        ColorLineAddVariable="${ColorLineVar}"
     }
 
     local APPNAME=${1-}
@@ -70,7 +70,7 @@ menu_app_vars() {
         local -i LineNumber=0
         local FirstVarLine
         ((++LineNumber))
-        LineColor[LineNumber]="${ColorHeadingLine}"
+        LineColor[LineNumber]="${ColorLineHeading}"
         CurrentValueOnLine[LineNumber]="*** ${COMPOSE_ENV} ***"
         run_script 'appvars_lines' "${appname}" > "${CurrentGlobalEnvFile}"
         local -a CurrentGlobalEnvLines
@@ -84,30 +84,30 @@ menu_app_vars() {
             VarName="$(grep -o -P '^\w+(?=)' <<< "${line}")"
             if [[ -n ${VarName-} ]]; then
                 # Line contains a variable
-                LineColor[LineNumber]="${ColorVarLine}"
+                LineColor[LineNumber]="${ColorLineVar}"
                 VarNameOnLine[LineNumber]="${VarName}"
                 if [[ -z ${FirstVarLine-} ]]; then
                     FirstVarLine=${LineNumber}
                 fi
             elif (grep -q -P '^\s*#' <<< "${line}"); then
                 # Line is a comment
-                LineColor[LineNumber]="${ColorCommentLine}"
+                LineColor[LineNumber]="${ColorLineComment}"
             else
                 # Line is an unknowwn line
-                LineColor[LineNumber]="${ColorOtherLine}"
+                LineColor[LineNumber]="${ColorLineOther}"
             fi
         done
         ((LineNumber++))
         local AddGlobalVariableLineNumber=${LineNumber}
         CurrentValueOnLine[LineNumber]="${AddVariableText}"
-        LineColor[LineNumber]="${ColorAddVariableLine}"
+        LineColor[LineNumber]="${ColorLineAddVariable}"
         ((++LineNumber))
         CurrentValueOnLine[LineNumber]=""
-        LineColor[LineNumber]="${ColorOtherLine}"
+        LineColor[LineNumber]="${ColorLineOther}"
 
         ((++LineNumber))
         CurrentValueOnLine[LineNumber]="*** ${APP_ENV_FOLDER}/${appname}.env ***"
-        LineColor[LineNumber]="${ColorHeadingLine}"
+        LineColor[LineNumber]="${ColorLineHeading}"
         run_script 'appvars_lines' "${appname}:" > "${CurrentAppEnvFile}"
         local -a CurrentAppEnvLines
         readarray -t CurrentAppEnvLines < <(
@@ -120,23 +120,23 @@ menu_app_vars() {
             VarName="$(grep -o -P '^\w+(?=)' <<< "${line}")"
             if [[ -n ${VarName-} ]]; then
                 # Line contains a variable
-                LineColor[LineNumber]="${ColorVarLine}"
+                LineColor[LineNumber]="${ColorLineVar}"
                 VarNameOnLine[LineNumber]="${appname}:${VarName}"
                 if [[ -z ${FirstVarLine-} ]]; then
                     FirstVarLine=${LineNumber}
                 fi
             elif (grep -q -P '^\s*#' <<< "${line}"); then
                 # Line is a comment
-                LineColor[LineNumber]="${ColorCommentLine}"
+                LineColor[LineNumber]="${ColorLineComment}"
             else
                 # Line is an unknowwn line
-                LineColor[LineNumber]="${ColorOtherLine}"
+                LineColor[LineNumber]="${ColorLineOther}"
             fi
         done
         ((LineNumber++))
         local AddAppEnvVariableLineNumber=${LineNumber}
         CurrentValueOnLine[LineNumber]="${AddVariableText}"
-        LineColor[LineNumber]="${ColorAddVariableLine}"
+        LineColor[LineNumber]="${ColorLineAddVariable}"
 
         local TotalLines=$((10#${LineNumber}))
         local PadSize=${#TotalLines}

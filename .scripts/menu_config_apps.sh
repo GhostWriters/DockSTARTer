@@ -17,18 +17,18 @@ menu_config_apps() {
     }
     # shellcheck disable=SC2168 # local is only valid in functions
     local \
-        ColorHeadingLine \
-        ColorCommentLine \
-        ColorOtherLine \
-        ColorVarLine \
-        ColorAddVariableLine
+        ColorLineHeading \
+        ColorLineComment \
+        ColorLineOther \
+        ColorLineVar \
+        ColorLineAddVariable
     # shellcheck disable=SC2034 # variable appears unused. Verify it or export it.
     {
-        ColorHeadingLine='\Zn'
-        ColorCommentLine='\Z0\Zb\Zr'
-        ColorOtherLine="${ColorCommentLine}"
-        ColorVarLine='\Z0\ZB\Zr'
-        ColorAddVariableLine="${ColorVarLine}"
+        ColorLineHeading='\Zn'
+        ColorLineComment='\Z0\Zb\Zr'
+        ColorLineOther="${ColorLineComment}"
+        ColorLineVar='\Z0\ZB\Zr'
+        ColorLineAddVariable="${ColorLineVar}"
     }
 
     Title="Edit Application Variables"

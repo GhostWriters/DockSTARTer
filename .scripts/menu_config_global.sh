@@ -17,18 +17,18 @@ menu_config_global() {
     }
     # shellcheck disable=SC2168 # local is only valid in functions
     local \
-        ColorHeadingLine \
-        ColorCommentLine \
-        ColorOtherLine \
-        ColorVarLine \
-        ColorAddVariableLine
+        ColorLineHeading \
+        ColorLineComment \
+        ColorLineOther \
+        ColorLineVar \
+        ColorLineAddVariable
     # shellcheck disable=SC2034 # variable appears unused. Verify it or export it.
     {
-        ColorHeadingLine='\Zn'
-        ColorCommentLine='\Z0\Zb\Zr'
-        ColorOtherLine="${ColorCommentLine}"
-        ColorVarLine='\Z0\ZB\Zr'
-        ColorAddVariableLine="${ColorVarLine}"
+        ColorLineHeading='\Zn'
+        ColorLineComment='\Z0\Zb\Zr'
+        ColorLineOther="${ColorLineComment}"
+        ColorLineVar='\Z0\ZB\Zr'
+        ColorLineAddVariable="${ColorLineVar}"
     }
 
     local Title="Edit Global Variables"
@@ -59,23 +59,23 @@ menu_config_global() {
             VarName="$(grep -o -P '^\w+(?=)' <<< "${line}")"
             if [[ -n ${VarName-} ]]; then
                 # Line contains a variable
-                LineColor[LineNumber]="${ColorVarLine}"
+                LineColor[LineNumber]="${ColorLineVar}"
                 VarNameOnLine[LineNumber]="${VarName}"
                 if [[ -z ${FirstVarLine-} ]]; then
                     FirstVarLine=${LineNumber}
                 fi
             elif (grep -q -P '^\s*#' <<< "${line}"); then
                 # Line is a comment
-                LineColor[LineNumber]="${ColorCommentLine}"
+                LineColor[LineNumber]="${ColorLineComment}"
             else
                 # Line is an unknowwn line
-                LineColor[LineNumber]="${ColorOtherLine}"
+                LineColor[LineNumber]="${ColorLineOther}"
             fi
         done
         ((LineNumber++))
         local AddVariableLineNumber=${LineNumber}
         CurrentValueOnLine[LineNumber]="${AddVariableText}"
-        LineColor[LineNumber]="${ColorAddVariableLine}"
+        LineColor[LineNumber]="${ColorLineAddVariable}"
 
         local TotalLines=$((10#${LineNumber}))
         local PadSize=${#TotalLines}
