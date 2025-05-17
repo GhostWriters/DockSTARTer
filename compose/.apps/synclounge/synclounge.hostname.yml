@@ -1,3 +1,3 @@
 services:
   synclounge:
-    hostname: ${DOCKER_HOSTNAME}
+    hostname: ${SYNCLOUNGE__HOSTNAME?}

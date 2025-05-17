@@ -1,12 +1,13 @@
 services:
   prowlarr:
-    container_name: ${PROWLARR_CONTAINER_NAME}
+    container_name: ${PROWLARR__CONTAINER_NAME?}
+    env_file: env_files/prowlarr.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${PROWLARR_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${PROWLARR__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/prowlarr:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/prowlarr:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

@@ -6,8 +6,10 @@ docker_compose() {
     local COMPOSEINPUT=${1-}
     local COMMAND=${COMPOSEINPUT%% *}
     local APPNAME
+    local AppName
     if [[ ${COMPOSEINPUT} == *" "* ]]; then
         APPNAME=${COMPOSEINPUT#* }
+        AppName=$(run_script 'app_nicename' "${APPNAME}")
     fi
     local COMPOSECOMMAND
     local COMMANDINFO
@@ -18,35 +20,30 @@ docker_compose() {
             ;;
         pull)
             COMPOSECOMMAND="pull --include-deps ${APPNAME-}"
-            COMMANDINFO="Pulling the latest images for ${APPNAME:-all enabled services}."
+            COMMANDINFO="Pulling the latest images for ${AppName:-all enabled services}."
             ;;
         restart)
             COMPOSECOMMAND="restart ${APPNAME-}"
-            COMMANDINFO="Restarting ${APPNAME:-all stopped and running services}."
+            COMMANDINFO="Restarting ${AppName:-all stopped and running services}."
             ;;
         up)
             COMPOSECOMMAND="up -d --remove-orphans ${APPNAME-}"
-            COMMANDINFO="Creating ${APPNAME:-containers for all enabled services}."
+            COMMANDINFO="Creating ${AppName:-containers for all enabled services}."
             ;;
         *)
             COMPOSECOMMAND="up -d --remove-orphans"
             COMMANDINFO="Creating containers for all enabled services."
             ;;
     esac
-    if run_script 'question_prompt' "${PROMPT-}" Y "Would you like to run compose now?"; then
-        info "${COMMANDINFO}"
-    else
-        info "Compose will not be run."
-        return 1
-    fi
+    info "${COMMANDINFO}"
     run_script 'require_docker'
-    eval "docker compose --project-directory ${SCRIPTPATH}/compose/ ${COMPOSECOMMAND}" || fatal "Failed to run compose.\nFailing command: ${F[C]}docker compose --project-directory ${SCRIPTPATH}/compose/ ${COMPOSECOMMAND}"
+    eval "docker compose --project-directory ${COMPOSE_FOLDER}/ ${COMPOSECOMMAND}" || fatal "Failed to run compose.\nFailing command: ${F[C]}docker compose --project-directory ${COMPOSE_FOLDER}/ ${COMPOSECOMMAND}"
 }
 
 test_docker_compose() {
     run_script 'appvars_create' WATCHTOWER
     cat "${COMPOSE_ENV}"
     run_script 'yml_merge'
-    eval "docker compose --project-directory ${SCRIPTPATH}/compose/ config" || fatal "Failed to display compose config.\nFailing command: ${F[C]}docker compose --project-directory ${SCRIPTPATH}/compose/ config"
+    eval "docker compose --project-directory ${COMPOSE_FOLDER}/ config" || fatal "Failed to display compose config.\nFailing command: ${F[C]}docker compose --project-directory ${COMPOSE_FOLDER}/ config"
     run_script 'docker_compose'
 }

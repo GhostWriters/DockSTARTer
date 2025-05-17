@@ -1,13 +1,14 @@
 services:
   xbackbone:
-    container_name: ${XBACKBONE_CONTAINER_NAME}
+    container_name: ${XBACKBONE__CONTAINER_NAME?}
+    env_file: env_files/xbackbone.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${XBACKBONE_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${XBACKBONE__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/xbackbone:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${XBACKBONE_VOLUME_UPLOADDIR}:/config/www/xbackbone/storage
+      - ${DOCKER_VOLUME_CONFIG?}/xbackbone:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage
+      - ${XBACKBONE__VOLUME_UPLOADDIR?}:/config/www/xbackbone/storage

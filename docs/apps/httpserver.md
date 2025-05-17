@@ -10,7 +10,9 @@
 
 ## Install/Setup
 
-The variable `HTTPSERVER_FILE_SERVER_COLOR_SET` can be modified to use any of the colors listed on [here](https://getmdl.io/customize/index.html).
+### env_files/httpserver.env
+
+The variable `FILE_SERVER_COLOR_SET` can be modified to use any of the colors listed on [here](https://getmdl.io/customize/index.html).
 
 Whenever you select a color combination, you will get a link at the bottom of the page. The link will include the color towards the end of the link:
 

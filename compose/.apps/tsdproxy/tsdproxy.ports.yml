@@ -1,4 +1,4 @@
 services:
   tsdproxy:
     ports:
-      - ${TSDPROXY_PORT_8080}:8080
+      - ${TSDPROXY__PORT_8080?}:8080

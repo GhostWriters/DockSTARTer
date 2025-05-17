@@ -1,5 +1,5 @@
 services:
   quasselweb:
     ports:
-      - ${QUASSELWEB_PORT_64080}:64080
-      - ${QUASSELWEB_PORT_64443}:64443
+      - ${QUASSELWEB__PORT_64080?}:64080
+      - ${QUASSELWEB__PORT_64443?}:64443

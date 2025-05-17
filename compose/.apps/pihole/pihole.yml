@@ -2,19 +2,13 @@ services:
   pihole:
     cap_add:
       - NET_ADMIN
-    container_name: ${PIHOLE_CONTAINER_NAME}
+    container_name: ${PIHOLE__CONTAINER_NAME?}
+    env_file: env_files/pihole.env
     environment:
-      - DNS1=${PIHOLE_ENVIRONMENT_DNS1}
-      - DNS2=${PIHOLE_ENVIRONMENT_DNS2}
-      - FTLCONF_dns_upstreams=127.0.0.1;${PIHOLE_ENVIRONMENT_DNS1};${PIHOLE_ENVIRONMENT_DNS2}
-      - ServerIP=${PIHOLE_ENVIRONMENT_SERVERIP}
-      - TZ=${TZ}
-      - WEBPASSWORD=${PIHOLE_ENVIRONMENT_WEBPASSWORD}
-      - FTLCONF_webserver_api_password=${PIHOLE_ENVIRONMENT_WEBPASSWORD}
-      - FTLCONF_misc_etc_dnsmasq_d=${PIHOLE_ENVIRONMENT_FTLCONF_MISC_ETC_DNSMASQ_D}
-    restart: ${PIHOLE_RESTART}
+      - TZ=${TZ?}
+    restart: ${PIHOLE__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/pihole/dnsmasq.d:/etc/dnsmasq.d
-      - ${DOCKER_VOLUME_CONFIG}/pihole/pihole:/etc/pihole
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/pihole/dnsmasq.d:/etc/dnsmasq.d
+      - ${DOCKER_VOLUME_CONFIG?}/pihole/pihole:/etc/pihole
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

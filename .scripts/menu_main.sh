@@ -3,40 +3,69 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_main() {
-    local MAINOPTS=()
-    MAINOPTS+=("Configuration " "Setup and start applications")
-    MAINOPTS+=("Install Dependencies " "Install required components")
-    MAINOPTS+=("Update DockSTARTer " "Get the latest version of DockSTARTer")
-    MAINOPTS+=("Prune Docker System " "Remove all unused containers, networks, volumes, images and build cache")
-
-    local MAINCHOICE
     if [[ ${CI-} == true ]]; then
-        MAINCHOICE="Cancel"
-    else
-        MAINCHOICE=$(whiptail --fb --clear --title "DockSTARTer" --cancel-button "Exit" --menu "What would you like to do?" 0 0 0 "${MAINOPTS[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
+        return
     fi
 
-    case "${MAINCHOICE}" in
-        "Configuration ")
-            run_script 'menu_config' || run_script 'menu_main'
-            ;;
-        "Install Dependencies ")
-            run_script 'run_install' || run_script 'menu_main'
-            ;;
-        "Update DockSTARTer ")
-            run_script 'update_self' || run_script 'menu_main'
-            ;;
-        "Prune Docker System ")
-            run_script 'docker_prune' || run_script 'menu_main'
-            ;;
-        "Cancel")
-            info "Exiting DockSTARTer."
-            return
-            ;;
-        *)
-            error "Invalid Option"
-            ;;
-    esac
+    local Title="Main Menu"
+    local OptionConfigure="Configuration"
+    local OptionInstallDependencies="Install Dependencies"
+    local OptionUpdateVersion="Update DockSTARTer"
+    local MainOpts=(
+        "${OptionConfigure}" "Setup and start applications"
+        "${OptionInstallDependencies}" "Install required components"
+        "${OptionUpdateVersion}" "Get the latest version of DockSTARTer"
+    )
+    local -a MainChoiceDialog=(
+        --stdout
+        --title "${Title}"
+        --ok-label "Select"
+        --cancel-label "Exit"
+        --menu "What would you like to do?" 0 0 0
+        "${MainOpts[@]}"
+    )
+
+    local LastMainChoice=""
+    while true; do
+        local MainChoice
+        local -i MainDialogButtonPressed=0
+        MainChoice=$(dialog --default-item "${LastMainChoice}" "${MainChoiceDialog[@]}") || MainDialogButtonPressed=$?
+        LastMainChoice=${MainChoice}
+        case ${DIALOG_BUTTONS[MainDialogButtonPressed]-} in
+            OK)
+                case "${MainChoice}" in
+                    "${OptionConfigure}")
+                        run_script 'menu_config' || true
+                        ;;
+                    "${OptionInstallDependencies}")
+                        run_script_dialog "Install Dependencies" "" "" \
+                            'run_install' || true
+                        ;;
+                    "${OptionUpdateVersion}")
+                        run_script_dialog "Update DockSTARTer" "" "" \
+                            'update_self' || true
+                        ;;
+                    *)
+                        error "Invalid Option"
+                        ;;
+                esac
+                ;;
+            CANCEL | ESC)
+                clear
+                info "Exiting DockSTARTer."
+                return
+                ;;
+            *)
+                if [[ -n ${DIALOG_BUTTONS[MainDialogButtonPressed]-} ]]; then
+                    clear
+                    fatal "Unexpected dialog button '${DIALOG_BUTTONS[MainDialogButtonPressed]}' pressed."
+                else
+                    clear
+                    fatal "Unexpected dialog button value '${MainDialogButtonPressed}' pressed."
+                fi
+                ;;
+        esac
+    done
 }
 
 test_menu_main() {

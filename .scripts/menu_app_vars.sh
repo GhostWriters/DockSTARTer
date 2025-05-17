@@ -3,28 +3,200 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_app_vars() {
+    # Dialog color codes to be used in the GUI menu
+    # shellcheck disable=SC2168 # local is only valid in functions
+    local \
+        ColorHeading \
+        ColorHeadingValue \
+        ColorHighlight
+    # shellcheck disable=SC2034 # variable appears unused. Verify it or export it.
+    {
+        ColorHeading='\Zr'
+        ColorHeadingValue='\Zb\Zr'
+        ColorHighlight='\Z3\Zb'
+    }
+    # shellcheck disable=SC2168 # local is only valid in functions
+    local \
+        ColorLineHeading \
+        ColorLineComment \
+        ColorLineOther \
+        ColorLineVar \
+        ColorLineAddVariable
+    # shellcheck disable=SC2034 # variable appears unused. Verify it or export it.
+    {
+        ColorLineHeading='\Zn'
+        ColorLineComment='\Z0\Zb\Zr'
+        ColorLineOther="${ColorLineComment}"
+        ColorLineVar='\Z0\ZB\Zr'
+        ColorLineAddVariable="${ColorLineVar}"
+    }
+
     local APPNAME=${1-}
-    run_script 'appvars_create' "${APPNAME}"
-    local APPVARS
-    APPVARS=$(grep -v -P "^${APPNAME}_ENABLED=" "${COMPOSE_ENV}" | grep --color=never -P "^${APPNAME}_")
-    if [[ -z ${APPVARS} ]]; then
+    APPNAME=${APPNAME^^}
+    local appname=${APPNAME,,}
+    local AppName
+    AppName=$(run_script 'app_nicename' "${APPNAME}")
+    local Title="Edit Application Variables"
+
+    if ! run_script 'app_is_builtin'; then
+        local Message="Application '${AppName}' does not exist."
         if [[ ${CI-} == true ]]; then
-            warn "${APPNAME} has no variables."
+            warn "${Message}"
         else
-            whiptail --fb --clear --title "DockSTARTer" --msgbox "${APPNAME} has no variables." 0 0
+            dialog --title "${Title}" --msgbox "${Message}" 0 0
         fi
         return
     fi
 
-    if run_script 'question_prompt' "${PROMPT-}" Y "Would you like to keep these settings for ${APPNAME}?\\n\\n${APPVARS}"; then
-        info "Keeping ${APPNAME} .env variables."
-    else
-        info "Configuring ${APPNAME} .env variables."
-        while IFS= read -r line; do
-            local SET_VAR=${line%%=*}
-            run_script 'menu_value_prompt' "${SET_VAR}" || return 1
-        done < <(echo "${APPVARS}")
-    fi
+    local AddVariableText='<ADD VARIABLE>'
+
+    run_script_dialog "${Title}" "Creating variables for ${AppName}" 1 \
+        'appvars_create' "${APPNAME}"
+
+    local DefaultGlobalEnvFile="${TEMPLATES_FOLDER}/${appname}/.env"
+    local CurrentGlobalEnvFile
+    CurrentGlobalEnvFile=$(mktemp)
+
+    local DefaultAppEnvFile="${TEMPLATES_FOLDER}/${appname}/${appname}.env"
+    local CurrentAppEnvFile
+    CurrentAppEnvFile=$(mktemp)
+
+    local LastLineChoice=""
+    while true; do
+        local -a LineOptions=()
+        local -a VarNameOnLine=()
+        local -a CurrentValueOnLine=()
+        local -a LineColor=()
+        local -i LineNumber=0
+        local FirstVarLine
+        ((++LineNumber))
+        LineColor[LineNumber]="${ColorLineHeading}"
+        CurrentValueOnLine[LineNumber]="*** ${COMPOSE_ENV} ***"
+        run_script 'appvars_lines' "${appname}" > "${CurrentGlobalEnvFile}"
+        local -a CurrentGlobalEnvLines
+        readarray -t CurrentGlobalEnvLines < <(
+            run_script 'env_format_lines' "${CurrentGlobalEnvFile}" "${DefaultGlobalEnvFile}" "${appname}"
+        )
+        for line in "${CurrentGlobalEnvLines[@]}"; do
+            ((++LineNumber))
+            CurrentValueOnLine[LineNumber]="${line}"
+            local VarName
+            VarName="$(grep -o -P '^\w+(?=)' <<< "${line}")"
+            if [[ -n ${VarName-} ]]; then
+                # Line contains a variable
+                LineColor[LineNumber]="${ColorLineVar}"
+                VarNameOnLine[LineNumber]="${VarName}"
+                if [[ -z ${FirstVarLine-} ]]; then
+                    FirstVarLine=${LineNumber}
+                fi
+            elif (grep -q -P '^\s*#' <<< "${line}"); then
+                # Line is a comment
+                LineColor[LineNumber]="${ColorLineComment}"
+            else
+                # Line is an unknowwn line
+                LineColor[LineNumber]="${ColorLineOther}"
+            fi
+        done
+        ((LineNumber++))
+        local AddGlobalVariableLineNumber=${LineNumber}
+        CurrentValueOnLine[LineNumber]="${AddVariableText}"
+        LineColor[LineNumber]="${ColorLineAddVariable}"
+        ((++LineNumber))
+        CurrentValueOnLine[LineNumber]=""
+        LineColor[LineNumber]="${ColorLineOther}"
+
+        ((++LineNumber))
+        CurrentValueOnLine[LineNumber]="*** ${APP_ENV_FOLDER}/${appname}.env ***"
+        LineColor[LineNumber]="${ColorLineHeading}"
+        run_script 'appvars_lines' "${appname}:" > "${CurrentAppEnvFile}"
+        local -a CurrentAppEnvLines
+        readarray -t CurrentAppEnvLines < <(
+            run_script 'env_format_lines' "${CurrentAppEnvFile}" "${DefaultAppEnvFile}" "${appname}"
+        )
+        for line in "${CurrentAppEnvLines[@]}"; do
+            ((++LineNumber))
+            CurrentValueOnLine[LineNumber]="${line}"
+            local VarName
+            VarName="$(grep -o -P '^\w+(?=)' <<< "${line}")"
+            if [[ -n ${VarName-} ]]; then
+                # Line contains a variable
+                LineColor[LineNumber]="${ColorLineVar}"
+                VarNameOnLine[LineNumber]="${appname}:${VarName}"
+                if [[ -z ${FirstVarLine-} ]]; then
+                    FirstVarLine=${LineNumber}
+                fi
+            elif (grep -q -P '^\s*#' <<< "${line}"); then
+                # Line is a comment
+                LineColor[LineNumber]="${ColorLineComment}"
+            else
+                # Line is an unknowwn line
+                LineColor[LineNumber]="${ColorLineOther}"
+            fi
+        done
+        ((LineNumber++))
+        local AddAppEnvVariableLineNumber=${LineNumber}
+        CurrentValueOnLine[LineNumber]="${AddVariableText}"
+        LineColor[LineNumber]="${ColorLineAddVariable}"
+
+        local TotalLines=$((10#${LineNumber}))
+        local PadSize=${#TotalLines}
+        for LineNumber in "${!CurrentValueOnLine[@]}"; do
+            local PaddedLineNumber=""
+            PaddedLineNumber="$(printf "%0${PadSize}d" "${LineNumber}")"
+            LineOptions+=("${PaddedLineNumber}" "${LineColor[LineNumber]-}${CurrentValueOnLine[LineNumber]}")
+        done
+        if [[ -z ${LastLineChoice-} ]]; then
+            # Set the default line to the first line with a variable on it
+            LastLineChoice="$(printf "%0${PadSize}d" "${FirstVarLine}")"
+        fi
+        local -a LineDialog=(
+            --stdout
+            --colors
+            --ok-label "Select"
+            --cancel-label "Done"
+            --title "${Title}"
+            --menu "\nApplication: ${ColorHeading}${AppName}\Zn\n" 0 0 0
+            "${LineOptions[@]}"
+        )
+        while true; do
+            local -i LineDialogButtonPressed=0
+            LineChoice=$(dialog --default-item "${LastLineChoice}" "${LineDialog[@]}") || LineDialogButtonPressed=$?
+            case ${DIALOG_BUTTONS[LineDialogButtonPressed]-} in
+                OK)
+                    LastLineChoice="${LineChoice}"
+                    local LineNumber
+                    LineNumber=$((10#${LineChoice}))
+                    if [[ ${LineNumber} == "${AddGlobalVariableLineNumber}" ]]; then
+                        run_script 'menu_add_var' "${appname}"
+                        break
+                    elif [[ ${LineNumber} == "${AddAppEnvVariableLineNumber}" ]]; then
+                        run_script 'menu_add_var' "${appname}:"
+                        break
+                    elif [[ -n ${VarNameOnLine[LineNumber]-} ]]; then
+                        run_script 'menu_value_prompt' "${VarNameOnLine[LineNumber]}"
+                        break
+                    fi
+                    ;;
+                CANCEL | ESC)
+                    return
+                    ;;
+                *)
+                    if [[ -n ${DIALOG_BUTTONS[LineDialogButtonPressed]-} ]]; then
+                        clear
+                        fatal "Unexpected dialog button '${DIALOG_BUTTONS[LineDialogButtonPressed]}' pressed."
+                    else
+                        clear
+                        fatal "Unexpected dialog button value '${LineDialogButtonPressed}' pressed."
+                    fi
+                    ;;
+            esac
+        done
+    done
+    rm -f "${CurrentGlobalEnvFile}" ||
+        warn "Failed to remove temporary .env file.\nFailing command: ${F[C]}rm -f \"${CurrentGlobalEnvFile}\""
+    rm -f "${CurrentAppEnvFile}" ||
+        warn "Failed to remove temporary ${appname}.env file.\nFailing command: ${F[C]}rm -f \"${CurrentAppEnvFile}\""
+
 }
 
 test_menu_app_vars() {

@@ -1,0 +1,4 @@
+${DOCKER_VOLUME_CONFIG}/murmur/cert
+${DOCKER_VOLUME_CONFIG}/murmur/config
+${DOCKER_VOLUME_CONFIG}/murmur/data
+${DOCKER_VOLUME_CONFIG}/murmur/log

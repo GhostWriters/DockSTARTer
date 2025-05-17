@@ -37,5 +37,5 @@ Reference:
 To make sure your Home Assistant instance can see your local network devices you might want to set your network mode to `host` on your `.docker/compose/.env` file.
 
 ```env
-HOMEASSISTANT_NETWORK_MODE=host
+HOMEASSISTANT__NETWORK_MODE=host
 ```

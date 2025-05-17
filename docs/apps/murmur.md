@@ -25,7 +25,7 @@ Docker logs for the Murmur container. It will be in a line that looks like
 login.
 
 It is possible to set a specific SuperUser password by using the `MURMUR_SUPW`
-environment variable on the docker container, but due to a quirk with the way
+environment variable in `env_files/murmer.env`, but due to a quirk with the way
 Murmur is implemented, if you set this SuperUser password variable, the
 container will simply update the SuperUser password and exit. As such, this
 variable needs to be unset to start Murmur normally.

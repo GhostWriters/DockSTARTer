@@ -2,14 +2,14 @@ services:
   openvpnas:
     cap_add:
       - NET_ADMIN
-    container_name: ${OPENVPNAS_CONTAINER_NAME}
+    container_name: ${OPENVPNAS__CONTAINER_NAME?}
+    env_file: env_files/openvpnas.env
     environment:
-      - INTERFACE=${OPENVPNAS_ENVIRONMENT_INTERFACE}
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${OPENVPNAS_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${OPENVPNAS__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/openvpnas:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/openvpnas:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage
