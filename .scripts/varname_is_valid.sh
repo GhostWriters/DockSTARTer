@@ -5,7 +5,7 @@ IFS=$'\n\t'
 varname_is_valid() {
     local VarName=${1-}
     local VarType=${2-}
-    case "${VarType-}" in
+    case "${VarType}" in
         "")
             # <no argument>
             # Accepts any variable type
@@ -42,7 +42,7 @@ varname_is_valid() {
             if [[ ${VarName} == *":"* ]]; then
                 local AppName="${VarName%:*}"
                 if run_script 'appname_is_valid' "${AppName}"; then
-                    run_script 'varname_is_valid' "${VarName#${AppName}:*}" "_BARE_"
+                    run_script 'varname_is_valid' "${VarName#"${AppName}:"*}" "_BARE_"
                     return
                 fi
             fi
@@ -65,7 +65,7 @@ varname_is_valid() {
         *)
             # <appname>
             # Accepts a variable for the specified app.  It must be upper case and in the form "APPNAME__VARNAME"
-            if run_script 'varname_is_valid' "${VarName-}" "_BARE_"; then
+            if run_script 'varname_is_valid' "${VarName}" "_BARE_"; then
                 [[ $(run_script 'varname_to_appname' "${VarName}") == "${VarType^^}" ]]
                 return
             fi
