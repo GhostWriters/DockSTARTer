@@ -62,9 +62,9 @@ test_varname_is_valid() {
         notice "[${VarType}]"
         for VarName in "radarr:varname" TZ RADARR_4K RADARR__TAG Radarr__TAG RADARR__4K__TAG RADARR__4K__tag; do
             if run_script 'varname_is_valid' "${VarName}" "${VarType}"; then
-                notice "             [${VarName}] is valid"
+                notice "             [*VALID*] [${VarName}]"
             else
-                notice "             [${VarName}] is not valid"
+                notice "                       [${VarName}]"
             fi
         done
     done
