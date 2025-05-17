@@ -1,12 +1,13 @@
 services:
   picard:
-    container_name: ${PICARD_CONTAINER_NAME}
+    container_name: ${PICARD__CONTAINER_NAME?}
+    env_file: env_files/picard.env
     environment:
-      - GROUP_ID=${PGID}
-      - TZ=${TZ}
-      - USER_ID=${PUID}
-    restart: ${PICARD_RESTART}
+      - GROUP_ID=${PGID?}
+      - TZ=${TZ?}
+      - USER_ID=${PUID?}
+    restart: ${PICARD__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/picard:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/picard:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

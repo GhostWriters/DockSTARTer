@@ -1,0 +1,5 @@
+services:
+  nginx:
+    ports:
+      - ${NGINX__PORT_443?}:443
+      - ${NGINX__PORT_80?}:80

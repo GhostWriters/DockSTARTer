@@ -1,0 +1,3 @@
+services:
+  nginx:
+    network_mode: ${NGINX__NETWORK_MODE?}

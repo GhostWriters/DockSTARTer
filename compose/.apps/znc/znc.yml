@@ -1,12 +1,13 @@
 services:
   znc:
-    container_name: ${ZNC_CONTAINER_NAME}
+    container_name: ${ZNC__CONTAINER_NAME?}
+    env_file: env_files/znc.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${ZNC_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${ZNC__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/znc:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/znc:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

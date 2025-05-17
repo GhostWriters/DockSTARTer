@@ -3,13 +3,24 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 update_self() {
-    local BRANCH=${1:-origin/master}
-    if run_script 'question_prompt' "${PROMPT-}" Y "Would you like to update DockSTARTer to ${BRANCH} now?"; then
-        notice "Updating DockSTARTer to ${BRANCH}."
-    else
+    local Title="Update DockSTARTer"
+    local BRANCH=${1:-origin/app-env-files}
+    if ! run_script 'question_prompt' Y "Would you like to update DockSTARTer to ${BRANCH} now?" "${Title}" "${FORCE:+Y}"; then
         notice "DockSTARTer will not be updated to ${BRANCH}."
         return 1
     fi
+
+    if use_dialog_box; then
+        commands_update_self "$@" |& dialog_pipe "${Title}" "Updating DockSTARTer to ${BRANCH}"
+    else
+        commands_update_self "$@"
+    fi
+    #exec bash "${SCRIPTNAME}" -e
+}
+
+commands_update_self() {
+    local BRANCH=${1:-origin/app-env-files}
+    notice "Updating DockSTARTer to ${BRANCH}."
     cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
     info "Setting file ownership on current repository files"
     sudo chown -R "$(id -u)":"$(id -g)" "${SCRIPTPATH}/.git" > /dev/null 2>&1 || true
@@ -29,7 +40,6 @@ update_self() {
     git ls-tree -rt --name-only "${BRANCH}" | xargs sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" > /dev/null 2>&1 || true
     sudo chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}/.git" > /dev/null 2>&1 || true
     sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}" > /dev/null 2>&1 || true
-    exec bash "${SCRIPTNAME}" -e
 }
 
 test_update_self() {

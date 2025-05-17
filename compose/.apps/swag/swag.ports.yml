@@ -1,5 +1,5 @@
 services:
   swag:
     ports:
-      - ${SWAG_PORT_443}:443
-      - ${SWAG_PORT_80}:80
+      - ${SWAG__PORT_443?}:443
+      - ${SWAG__PORT_80?}:80

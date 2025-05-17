@@ -3,78 +3,48 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 appvars_create() {
-    local APPNAME=${1-}
-    APPNAME=${APPNAME^^}
-    local FILENAME=${APPNAME,,}
-    local APPTEMPLATES="${SCRIPTPATH}/compose/.apps/${FILENAME}"
-    local APPLABELFILE="${APPTEMPLATES}/${FILENAME}.labels.yml"
+    local AppList
+    AppList=$(xargs -n 1 <<< "$*")
+    for APPNAME in ${AppList^^}; do
+        local appname=${APPNAME,,}
+        local AppName
+        AppName=$(run_script 'app_nicename' "${APPNAME}")
 
-    local -A APP_VAR_VALUE
-    local -A APP_VAR_MIGRATE
+        if run_script 'app_is_builtin' "${AppName}"; then
+            local APP_FOLDER="${TEMPLATES_FOLDER}/${appname}"
+            local APP_DEFAULT_GLOBAL_ENV_FILE="${APP_FOLDER}/.env"
+            local APP_DEFAULT_ENV_FILE="${APP_FOLDER}/${appname}.env"
+            local APP_ENV_FILE="${APP_ENV_FOLDER}/${appname}.env"
 
-    # Build variable values lookup array, APP_VAR_VALUES["variable"]="default value"
-    {
-        # Read all lines with labels into temporary APP_LABEL_LINES array
-        local -a APP_LABEL_LINES
-        readarray -t APP_LABEL_LINES < <(grep --color=never -P "\scom\.dockstarter\.appvars\.\K[\w]+" "${APPLABELFILE}" || true)
-        if [[ -z ${APP_LABEL_LINES[*]} ]]; then
-            error "Unable to find labels for ${APPNAME}"
-            return
-        fi
+            info "Creating environment variables for ${AppName}."
 
-        for line in "${APP_LABEL_LINES[@]}"; do
-            local SET_VAR
-            local SET_VAL
-            SET_VAR=$(echo "$line" | grep --color=never -Po "\scom\.dockstarter\.appvars\.\K[\w]+")
-            SET_VAL=$(echo "$line" | grep --color=never -Po "\scom\.dockstarter\.appvars\.${SET_VAR}: \K.*" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || true)
-            if [[ -n ${SET_VAR} ]]; then
-                APP_VAR_VALUE["${SET_VAR^^}"]=${SET_VAL}
+            if [[ ! -d ${APP_ENV_FOLDER} ]]; then
+                warn "Folder ${APP_ENV_FOLDER} not found. Creating it."
+                mkdir -p "${APP_ENV_FOLDER}" ||
+                    fatal "Failed to create folder.\nFailing command: ${F[C]}mkdir -p \"${APP_ENV_FOLDER}\""
             fi
-        done
-    }
 
-    # Build migrate variable lookup array, APP_MIGRATE_VAR["variable"]="migrate from variable"
-    for SET_VAR in "${!APP_VAR_VALUE[@]}"; do
-        local APPNAME=${SET_VAR%%_*}
-        local REST_VAR=${SET_VAR#"${APPNAME}_"}
-        local VAR_TYPE=${REST_VAR%%_*}
-        case "${VAR_TYPE}" in
-            ENVIRONMENT | VOLUME)
-                REST_VAR=${REST_VAR#"${VAR_TYPE}"}
-                local MIGRATE_VAR="${APPNAME}${REST_VAR}"
-                # shellcheck disable=SC2199
-                if [[ " ${!APP_VAR_VALUE[@]} " != *" ${MIGRATE_VAR} "* ]]; then
-                    # Potential "migrate from" variable isn't an existing app variable, add it to the migrate list
-                    APP_VAR_MIGRATE["${SET_VAR}"]=${MIGRATE_VAR}
-                fi
-                ;;
-        esac
-    done
+            if ! run_script 'env_var_exists' "${APPNAME}__ENABLED"; then
+                run_script 'env_set' "${APPNAME}__ENABLED" true
+            fi
 
-    # Actual processing starts here
-    info "Creating environment variables for ${APPNAME}."
-    for SET_VAR in "${!APP_VAR_VALUE[@]}"; do
-        if grep -q -P "^\s*${SET_VAR}\s*=" "${COMPOSE_ENV}"; then
-            # Variable already exists
-            continue
-        fi
+            run_script 'appvars_migrate' "${APPNAME}"
 
-        local MIGRATE_VAR=${APP_VAR_MIGRATE["${SET_VAR}"]-}
-        if [[ -n ${MIGRATE_VAR} ]] && grep -q -P "^\s*${MIGRATE_VAR}\s*=" "${COMPOSE_ENV}"; then
-            # Migrate old variable
-            run_script 'env_rename' "${MIGRATE_VAR}" "${SET_VAR}"
+            run_script 'env_merge_newonly' "${COMPOSE_ENV}" "${APP_DEFAULT_GLOBAL_ENV_FILE}"
+            run_script 'env_merge_newonly' "${APP_ENV_FILE}" "${APP_DEFAULT_ENV_FILE}"
+            info "Environment variables created for ${AppName}."
         else
-            # Add new variable
-            local DEFAULT_VAL=${APP_VAR_VALUE["${SET_VAR}"]}
-            notice "Adding ${SET_VAR}='${DEFAULT_VAL}' in ${COMPOSE_ENV} file."
-            run_script 'env_set' "${SET_VAR}" "${DEFAULT_VAL}"
+            warn "Application ${APPNAME} does not exist."
         fi
+
     done
-    run_script 'env_set' "${APPNAME}_ENABLED" true
 }
 
 test_appvars_create() {
     run_script 'appvars_create' WATCHTOWER
     run_script 'env_update'
+    echo "${COMPOSE_ENV}:"
     cat "${COMPOSE_ENV}"
+    echo "${APP_ENV_FOLDER}/watchtower.env:"
+    cat "${APP_ENV_FOLDER}/watchtower.env"
 }

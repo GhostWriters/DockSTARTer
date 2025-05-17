@@ -1,3 +1,3 @@
 services:
   logitechmediaserver:
-    image: lmscommunity/logitechmediaserver:${LOGITECHMEDIASERVER_TAG}
+    image: lmscommunity/logitechmediaserver:${LOGITECHMEDIASERVER__TAG?}

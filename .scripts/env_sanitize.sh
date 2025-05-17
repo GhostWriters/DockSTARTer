@@ -3,23 +3,21 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 env_sanitize() {
-    # Don't set WATCHTOWER_NETWORK_MODE to none
-    local WATCHTOWER_NETWORK_MODE
-    WATCHTOWER_NETWORK_MODE=$(run_script 'env_get' WATCHTOWER_NETWORK_MODE)
-    if [[ ${WATCHTOWER_NETWORK_MODE} == "none" ]]; then
-        run_script 'env_set' WATCHTOWER_NETWORK_MODE ""
+    local GLOBAL_LAN_NETWORK
+    GLOBAL_LAN_NETWORK="$(run_script 'env_get' GLOBAL_LAN_NETWORK)"
+    if [[ -z ${GLOBAL_LAN_NETWORK-} ]] || echo "${GLOBAL_LAN_NETWORK-}" | grep -q 'x'; then
+        # GLOBAL_LAN_NETWORK is either empty or contains an `x`, set it to th detected lan network
+        local DETECTED_LAN_NETWORK
+        DETECTED_LAN_NETWORK="$(run_script 'detect_lan_network')"
+        run_script 'env_set' GLOBAL_LAN_NETWORK "${DETECTED_LAN_NETWORK-}"
     fi
 
-    # Rename vars
-    run_script 'env_rename' DOCKERCONFDIR DOCKER_VOLUME_CONFIG
-    run_script 'env_rename' DOCKERGID DOCKER_GID
-    run_script 'env_rename' DOCKERHOSTNAME DOCKER_HOSTNAME
-    run_script 'env_rename' DOCKERSTORAGEDIR DOCKER_VOLUME_STORAGE
-
-    # Rename apps
-    run_script 'appvars_rename' LETSENCRYPT SWAG
-    run_script 'appvars_rename' MINECRAFT_BEDROCK_SERVER MINECRAFTBEDROCKSERVER
-    run_script 'appvars_rename' MINECRAFT_SERVER MINECRAFTSERVER
+    # Don't set WATCHTOWER_NETWORK_MODE to none
+    local WATCHTOWER_NETWORK_MODE
+    WATCHTOWER_NETWORK_MODE="$(run_script 'env_get' WATCHTOWER__NETWORK_MODE)"
+    if [[ ${WATCHTOWER_NETWORK_MODE-} == "none" ]]; then
+        run_script 'env_set' WATCHTOWER__NETWORK_MODE ""
+    fi
 
     # Replace ~ with /home/username
     if grep -q -P '^\w+_VOLUME_\w+=~/' "${COMPOSE_ENV}"; then

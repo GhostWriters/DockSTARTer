@@ -1,0 +1,3 @@
+services:
+  nginx:
+    hostname: ${NGINX__HOSTNAME?}

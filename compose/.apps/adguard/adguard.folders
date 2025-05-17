@@ -1,0 +1,2 @@
+${DOCKER_VOLUME_CONFIG}/adguard/work
+${DOCKER_VOLUME_CONFIG}/adguard/conf

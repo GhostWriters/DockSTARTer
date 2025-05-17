@@ -1,12 +1,13 @@
 services:
   hydra2:
-    container_name: ${HYDRA2_CONTAINER_NAME}
+    container_name: ${HYDRA2__CONTAINER_NAME?}
+    env_file: env_files/hydra2.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${HYDRA2_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${HYDRA2__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/hydra2:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/hydra2:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

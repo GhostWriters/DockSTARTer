@@ -1,4 +1,4 @@
 services:
   overseerr:
     ports:
-      - ${OVERSEERR_PORT_5055}:5055
+      - ${OVERSEERR__PORT_5055?}:5055
