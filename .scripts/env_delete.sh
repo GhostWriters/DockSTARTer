@@ -6,6 +6,12 @@ env_delete() {
     local DELETE_VAR=${1-}
     local VAR_FILE=${2:-$COMPOSE_ENV}
 
+    if [[ ${DELETE_VAR} =~ ^[A-Za-z0-9_]+: ]]; then
+        # SET_VAR is in the form of "APPNAME:VARIABLE", set new file to use
+        local APPNAME=${DELETE_VAR%%:*}
+        VAR_FILE="${APP_ENV_FOLDER}/${APPNAME,,}.env"
+        DELETE_VAR=${DELETE_VAR#"${APPNAME}:"}
+    fi
     if [[ ! -f ${VAR_FILE} ]]; then
         # Variable file does not exist, warn and return
         warn "File ${VAR_FILE} does not exist."
