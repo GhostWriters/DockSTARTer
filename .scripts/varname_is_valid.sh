@@ -13,6 +13,8 @@ varname_is_valid() {
         "_BARE_")
             # _BARE_
             # Accepts a bare variable, no appname specified.
+            [[ ${VarName-} =~ ^[a-zA-Z_][a-zA-Z0-9_]*$ ]]
+            return
             ;;
         "_GLOBAL_")
             # _GLOBAL_
