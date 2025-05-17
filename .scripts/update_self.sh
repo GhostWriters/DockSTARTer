@@ -4,22 +4,22 @@ IFS=$'\n\t'
 
 update_self() {
     local Title="Update DockSTARTer"
-    local BRANCH=${1:-origin/app-env-files}
+    local BRANCH=${1:-origin/multi-instance}
     if ! run_script 'question_prompt' Y "Would you like to update DockSTARTer to ${BRANCH} now?" "${Title}" "${FORCE:+Y}"; then
         notice "DockSTARTer will not be updated to ${BRANCH}."
         return 1
     fi
 
     if use_dialog_box; then
-        commands_update_self "$@" |& dialog_pipe "${Title}" "Updating DockSTARTer to ${BRANCH}"
+        commands_update_self "${BRANCH}" |& dialog_pipe "${Title}" "Updating DockSTARTer to ${BRANCH}"
     else
-        commands_update_self "$@"
+        commands_update_self "${BRANCH}"
     fi
     #exec bash "${SCRIPTNAME}" -e
 }
 
 commands_update_self() {
-    local BRANCH=${1:-origin/app-env-files}
+    local BRANCH=${1}
     notice "Updating DockSTARTer to ${BRANCH}."
     cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
     info "Setting file ownership on current repository files"
