@@ -40,7 +40,11 @@ varname_is_valid() {
             # _APPNAME_:
             # Accepts a variable in any "appname.env" file (specifies "appname:varname")
             local AppName="${VarType%:}"
-            run_script 'appname_is_valid' "${AppName}" && run_script 'varname_is_valid' "${VarName#${VarType}*}" "_BARE_"
+            if run_script 'appname_is_valid' "${AppName}"; then
+                run_script 'varname_is_valid' "${VarName#${VarType}*}" "_BARE_"
+                return
+            fi
+            false
             return
             ;;
         *":")
