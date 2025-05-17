@@ -5,7 +5,7 @@ IFS=$'\n\t'
 varname_is_valid() {
     local VarName=${1-}
     local VarType=${2-}
-    case "${VarType}" in
+    case "${VarType^^}" in
         "")
             # <no argument>
             # Accepts any variable type
