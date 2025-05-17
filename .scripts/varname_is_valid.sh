@@ -19,10 +19,22 @@ varname_is_valid() {
         "_GLOBAL_")
             # _GLOBAL_
             # Accepts a global variable.  It connot be a variable for an app
+            if run_script 'varname_is_valid' "${VarName-}" "_BARE_"; then
+                [[ $(run_script 'varname_to_appname' "${VarName}") == "" ]]
+                return
+            fi
+            false
+            return
             ;;
         "_APPNAME_")
             # _APPNAME_
             # Accepts a variable for any app.  It must be upper case, and it must be in the form "APPNAME__VARNAME"
+            if run_script 'varname_is_valid' "${VarName-}" "_BARE_"; then
+                [[ $(run_script 'varname_to_appname' "${VarName}") != "" ]]
+                return
+            fi
+            false
+            return
             ;;
         "_APPNAME_:")
             # _APPNAME_:
@@ -35,6 +47,12 @@ varname_is_valid() {
         *)
             # <appname>
             # Accepts a variable for the specified app.  It must be upper case and in the form "APPNAME__VARNAME"
+            if run_script 'varname_is_valid' "${VarName-}" "_BARE_"; then
+                [[ $(run_script 'varname_to_appname' "${VarName}") == "${VarType^^}" ]]
+                return
+            fi
+            false
+            return
             ;;
     esac
 }
