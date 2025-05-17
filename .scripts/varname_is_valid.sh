@@ -34,14 +34,15 @@ varname_is_valid() {
             # <appname>
             # Accepts a variable for the specified app.  It must be upper case and in the form "APPNAME__VARNAME"
             ;;
+    esac
 }
 
 test_varname_is_valid() {
     for VarName in SONARR Sonarr SONARR_4K SONARR__4K "SONARR 4K" "SONARR:"; do
-        if run_script varname_is_valid' "${VarName}"; then
-            notice "[${AppName}] is valid"
+        if run_script 'varname_is_valid' "${VarName}"; then
+            notice "[${VarName}] is valid"
         else
-            notice "[${AppName}] is not valid"
+            notice "[${VarName}] is not valid"
         fi
     done
 }
