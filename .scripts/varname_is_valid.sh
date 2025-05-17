@@ -43,7 +43,7 @@ test_varname_is_valid() {
     for VarType in "" _BARE_ _GLOBAL_ _APPNAME_ "_APPNAME_:" "radarr:" "radarr"; do
         notice "[${VarType}]"
         for VarName in "radarr:varname" TZ RADARR_4K RADARR__4K__TAG RADARR__4K__tag; do
-            if run_script 'varname_is_valid' "${VarName}"; then
+            if run_script 'varname_is_valid' "${VarName}" "${VarType}"; then
                 notice "             [${VarName}] is valid"
             else
                 notice "             [${VarName}] is not valid"
