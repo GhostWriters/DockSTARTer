@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 appname_is_valid() {
     local AppName=${1-}
-    [[ "${AppName-}" =~ ^[a-zA-Z][a-zA-Z0-9]*(__[a-zA-Z0-9]+)?$ ]]
+    [[ ${AppName-} =~ ^[a-zA-Z][a-zA-Z0-9]*(__[a-zA-Z0-9]+)?$ ]]
 }
 
 test_appname_is_valid() {
