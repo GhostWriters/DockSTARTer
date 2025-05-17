@@ -103,12 +103,12 @@ menu_add_var() {
                 # Remove leading and trailing spaces
                 local Default
                 Value="$(sed -e 's/^[[:space:]]*//; s/[[:space:]]*$//' <<< "${Value}")"
-                case "${VarType}" in
+                case "${VarType^^}" in
                     APP)
                         Value="${Value^^}"
                         VarName="${VarNamePrefix}${Value}"
-                        if [[ ! ${VarName} =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]]; then
-                            local ErrorMessage="${DescriptionHeading}\n\n   Variable: ${ColorHeadingValue}${VarName}\Zn\n\nThe variable name ${ColorHighlight}${VarName}\Zn is not a name.\n\n Please input another variable name."
+                        if run_script 'varname_is_valid' "${VarName}" "_BARE_"; then
+                            local ErrorMessage="${DescriptionHeading}\n\n   Variable: ${ColorHeadingValue}${VarName}\Zn\n\nThe variable name ${ColorHighlight}${VarName}\Zn is not a valid name.\n\n Please input another variable name."
                             dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
                             continue
                         fi
@@ -155,8 +155,8 @@ menu_add_var() {
                         ;;
                     APPENV)
                         VarName="${Value}"
-                        if [[ ! ${VarName} =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]]; then
-                            local ErrorMessage="${DescriptionHeading}\n\n   Variable: ${ColorHeadingValue}${VarName}\Zn\n\nThe variable name ${ColorHighlight}${VarName}\Zn is not a name.\n\n Please input another variable name."
+                        if run_script 'varname_is_valid' "${VarName}" "_BARE_"; then
+                            local ErrorMessage="${DescriptionHeading}\n\n   Variable: ${ColorHeadingValue}${VarName}\Zn\n\nThe variable name ${ColorHighlight}${VarName}\Zn is not a valid name.\n\n Please input another variable name."
                             dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
                             continue
                         fi
@@ -164,7 +164,7 @@ menu_add_var() {
                         ;;
                     GLOBAL)
                         VarName="${Value}"
-                        if [[ ! ${VarName} =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]]; then
+                        if run_script 'varname_is_valid' "${VarName}" "_BARE_"; then
                             local ErrorMessage="${DescriptionHeading}\n   Variable: ${ColorHeadingValue}${VarName}\Zn\n\n  The variable name ${ColorHighlight}${VarName}\Zn is not a name.\n\nPlease input another variable name."
                             dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
                             continue
