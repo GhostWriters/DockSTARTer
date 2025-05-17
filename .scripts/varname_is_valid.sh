@@ -39,10 +39,12 @@ varname_is_valid() {
         "_APPNAME_:")
             # _APPNAME_:
             # Accepts a variable in any "appname.env" file (specifies "appname:varname")
-            local AppName="${VarName%:*}"
-            if run_script 'appname_is_valid' "${AppName}"; then
-                run_script 'varname_is_valid' "${VarName#${AppName}:*}" "_BARE_"
-                return
+            if [[ ${VarName} == *":"* ]]; then
+                local AppName="${VarName%:*}"
+                if run_script 'appname_is_valid' "${AppName}"; then
+                    run_script 'varname_is_valid' "${VarName#${AppName}:*}" "_BARE_"
+                    return
+                fi
             fi
             false
             return
@@ -50,10 +52,12 @@ varname_is_valid() {
         *":")
             # <appname>:
             # Accepts a variable in "appname.env" file (specifies "appname:varname")
-            local AppName="${VarName%:*}"
-            if [[ "${AppName^^}:" == "${VarType^^}" ]]; then
-                run_script 'varname_is_valid' "${VarName#${AppName}*}" "_BARE_"
-                return
+            if [[ ${VarName} == *":"* ]]; then
+                local AppName="${VarName%:*}"
+                if [[ "${AppName^^}:" == "${VarType^^}" ]]; then
+                    run_script 'varname_is_valid' "${VarName#${AppName}:*}" "_BARE_"
+                    return
+                fi
             fi
             false
             return
