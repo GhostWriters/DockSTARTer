@@ -10,6 +10,12 @@ env_get() {
     # If "APPNAME:" is provided, gets variable from "env_files/appname.env"
     local GET_VAR=${1-}
     local VAR_FILE=${2:-$COMPOSE_ENV}
+
+    if ! run_script 'varname_is_valid' "${GET_VAR}"; then
+        error "${GET_VAR} is an invalid variable name."
+        return
+    fi
+
     if [[ ${GET_VAR} =~ ^[A-Za-z0-9_]+: ]]; then
         # GET_VAR is in the form of "APPNAME:VARIABLE", set new file to use
         local APPNAME=${GET_VAR%%:*}
