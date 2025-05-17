@@ -55,7 +55,7 @@ varname_is_valid() {
             if [[ ${VarName} == *":"* ]]; then
                 local AppName="${VarName%:*}"
                 if [[ "${AppName^^}:" == "${VarType^^}" ]]; then
-                    run_script 'varname_is_valid' "${VarName#${AppName}:*}" "_BARE_"
+                    run_script 'varname_is_valid' "${VarName#"${AppName}:"*}" "_BARE_"
                     return
                 fi
             fi
