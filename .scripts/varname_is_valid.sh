@@ -13,13 +13,13 @@ varname_is_valid() {
         "_BARE_")
             # _BARE_
             # Accepts a bare variable, no appname specified.
-            [[ ${VarName-} =~ ^[a-zA-Z_][a-zA-Z0-9_]*$ ]]
+            [[ ${VarName} =~ ^[a-zA-Z_][a-zA-Z0-9_]*$ ]]
             return
             ;;
         "_GLOBAL_")
             # _GLOBAL_
             # Accepts a global variable.  It connot be a variable for an app
-            if run_script 'varname_is_valid' "${VarName-}" "_BARE_"; then
+            if run_script 'varname_is_valid' "${VarName}" "_BARE_"; then
                 [[ $(run_script 'varname_to_appname' "${VarName}") == "" ]]
                 return
             fi
@@ -29,7 +29,7 @@ varname_is_valid() {
         "_APPNAME_")
             # _APPNAME_
             # Accepts a variable for any app.  It must be upper case, and it must be in the form "APPNAME__VARNAME"
-            if run_script 'varname_is_valid' "${VarName-}" "_BARE_"; then
+            if run_script 'varname_is_valid' "${VarName}" "_BARE_"; then
                 [[ $(run_script 'varname_to_appname' "${VarName}") != "" ]]
                 return
             fi
@@ -39,7 +39,7 @@ varname_is_valid() {
         "_APPNAME_:")
             # _APPNAME_:
             # Accepts a variable in any "appname.env" file (specifies "appname:varname")
-            local AppName="${VarType%:}"
+            local AppName="${VarName%:*}"
             if run_script 'appname_is_valid' "${AppName}"; then
                 run_script 'varname_is_valid' "${VarName#${VarType}*}" "_BARE_"
                 return
@@ -50,7 +50,7 @@ varname_is_valid() {
         *":")
             # <appname>:
             # Accepts a variable in "appname.env" file (specifies "appname:varname")
-            local AppName="${VarName%:}"
+            local AppName="${VarName%:*}"
             if [[ ${AppName^^} == "${VarType^^}" ]]; then
                 run_script 'varname_is_valid' "${VarName#${VarType}*}" "_BARE_"
                 return
