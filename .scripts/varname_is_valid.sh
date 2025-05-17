@@ -9,6 +9,8 @@ varname_is_valid() {
         "")
             # <no argument>
             # Accepts any variable type
+            run_script 'varname_is_valid' "${VarName}" "_BARE_" || run_script 'varname_is_valid' "${VarName}" "_APPNAME_:"
+            return
             ;;
         "_BARE_")
             # _BARE_
