@@ -16,17 +16,19 @@ instance_file() {
     local baseapp instance InstanceFolder InstanceFile
     baseapp="$(run_script 'appname_to_baseappname' "${appname}")"
     instance="$(run_script 'appname_to_instancename' "${appname}")"
-    
-    InstanceFolder="$(run_script 'instance_folder' "${appname}")"
-    if [[ -z ${InstanceFolder} ]]; then
-        return
-    fi
+    TemplateFolder="${TEMPLATES_FOLDER}/${appname}"
+    InstanceFolder="${INSTANCES_FOLDER}/${appname}"
     InstanceFile="${InstanceFolder}/${appname}${FileSuffix}"
+    echo "${InstanceFile}"
     if [[ ! -f ${InstanceFile} ]]; then
         local TemplateFile="${TEMPLATES_FOLDER}/${baseapp}/${baseapp}${FileSuffix}"
         if [[ ! -f ${TemplateFile} ]]; then
             warn "${TemplateFile} does not exist."
             return
+        fi
+        if [[ ! -d ${InstanceFolder} ]]; then
+            mkdir -p "${InstanceFolder}" ||
+                fatal "Failed to create folder ${InstanceFolder}. ${F[C]}Failing command: mkdir -p \"${InstanceFolder}\""
         fi
         local __INSTANCE __Instance __instance
         if [[ -n ${instance} ]]; then
@@ -37,7 +39,6 @@ instance_file() {
         sed -e "s/<__INSTANCE>/${__INSTANCE-}/g ; s/<__instance>/${__instance-}/g ; s/<__Instance>/${__Instance-}/g" \
             "${TemplateFile}" > "${InstanceFile}"
     fi
-    echo "${InstanceFile}"
 }
 
 test_instance_file() {
