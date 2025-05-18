@@ -7,7 +7,7 @@ app_is_builtin() {
 
     local InstanceFolder
     InstanceFolder="$(run_script 'instance_folder' "${APPNAME}")"
-    [ -d ${InstanceFolder} ]
+    [ -d "${InstanceFolder}" ]
 }
 
 test_app_is_builtin() {
