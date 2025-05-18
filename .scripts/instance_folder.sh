@@ -14,7 +14,6 @@ instance_folder() {
 
     local baseapp instance TemplateFolder InstanceFolder
     baseapp="$(run_script 'appname_to_baseappname' "${appname}")"
-    instance="$(run_script 'appname_to_instancename' "${appname}")"
     TemplateFolder="${TEMPLATES_FOLDER}/${baseapp}"
     InstanceFolder="${INSTANCES_FOLDER}/${appname}"
 
@@ -36,7 +35,7 @@ test_instance_folder() {
     for AppName in watchtower watchtower__number2; do
         notice "[${AppName}]"
         local InstanceFolder
-        InstanceFile="$(run_script 'instance_folder' "${AppName}")"
+        InstanceFolder="$(run_script 'instance_folder' "${AppName}")"
         notice "[${InstanceFolder}]"
         ls "${InstanceFolder}"
     done
