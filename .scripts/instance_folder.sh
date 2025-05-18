@@ -37,7 +37,7 @@ test_instance_folder() {
         notice "[${AppName}]"
         local InstanceFolder
         InstanceFile="$(run_script 'instance_folder' "${AppName}")"
-        notice "[${InstanceFolder]"
+        notice "[${InstanceFolder}]"
         ls "${InstanceFolder}"
     done
 }
