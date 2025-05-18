@@ -18,7 +18,7 @@ instance_folder() {
     InstanceFolder="${INSTANCES_FOLDER}/${appname}"
 
     if [[ ! -d ${InstanceFolder} ]]; then
-        if [[ ! -f ${TemplateFolder} ]]; then
+        if [[ ! -d ${TemplateFolder} ]]; then
             warn "${TemplateFolder} does not exist."
             return
         fi
