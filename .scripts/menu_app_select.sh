@@ -4,32 +4,30 @@ IFS=$'\n\t'
 
 menu_app_select() {
     local Title="Select Applications"
+    local DialogTimeout=2
     dialog --title "${Title}" --infobox "Preparing app menu. Please be patient, this can take a while." 0 0
     local AppList=()
     local EnabledApps=()
     while IFS= read -r line; do
         local APPNAME=${line^^}
-        APP_FOLDER="$(run_script 'app_instance_folder' "${APPNAME}")"
-        if [[ -d ${APP_FOLDER}/ ]]; then
+        local main_yml
+        main_yml="$(run_script 'app_instance_file' "${APPNAME}" ".yml")"
+        if [[ -f ${main_yml} ]]; then
             local main_yml
-            main_yml="$(run_script 'app_instance_file' "${APPNAME}" ".yml")"
-            if [[ -f ${main_yml} ]]; then
-                local main_yml
-                arch_yml="$(run_script 'app_instance_file' "${APPNAME}" ".${ARCH}.yml")"
-                if [[ -f ${arch_yml} ]]; then
-                    local AppName
-                    AppName=$(run_script 'app_nicename' "${APPNAME}")
-                    local AppDescription
-                    AppDescription=$(run_script 'app_description' "${APPNAME}")
-                    local AppOnOff
-                    if run_script 'app_is_enabled' "${APPNAME}"; then
-                        AppOnOff="on"
-                        EnabledApps+=("${AppName}")
-                    else
-                        AppOnOff="off"
-                    fi
-                    AppList+=("${AppName}" "${AppDescription}" "${AppOnOff}")
+            arch_yml="$(run_script 'app_instance_file' "${APPNAME}" ".${ARCH}.yml")"
+            if [[ -f ${arch_yml} ]]; then
+                local AppName
+                AppName=$(run_script 'app_nicename' "${APPNAME}")
+                local AppDescription
+                AppDescription=$(run_script 'app_description' "${APPNAME}")
+                local AppOnOff
+                if run_script 'app_is_enabled' "${APPNAME}"; then
+                    AppOnOff="on"
+                    EnabledApps+=("${AppName}")
+                else
+                    AppOnOff="off"
                 fi
+                AppList+=("${AppName}" "${AppDescription}" "${AppOnOff}")
             fi
         fi
     done < <(run_script 'app_list_nondepreciated')
@@ -67,7 +65,7 @@ menu_app_select() {
 
                 run_script 'appvars_purge_all'
                 run_script 'env_update'
-            } |& dialog_pipe "${Title}" "Enabling Selected Applications" 1
+            } |& dialog_pipe "${Title}" "Enabling Selected Applications" "${DialogTimeout}"
             return 0
             ;;
         CANCEL | ESC)
