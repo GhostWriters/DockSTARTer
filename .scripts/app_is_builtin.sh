@@ -6,8 +6,8 @@ app_is_builtin() {
     local APPNAME=${1-}
 
     local BaseApp
-    BaseApp="$(run_script 'appname_to_basename' "${APPNAME}")"
-    [[ -d "$(TEMPLATES_FOLDER}/${BaseApp}" ]]
+    BaseApp="$(run_script 'appname_to_baseappname' "${APPNAME}")"
+    [[ -d "${TEMPLATES_FOLDER}/${BaseApp}" ]]
 }
 
 test_app_is_builtin() {
