@@ -15,10 +15,10 @@ appvars_create() {
             continue
         fi
         if run_script 'app_is_builtin' "${AppName}"; then
-            local APP_DEFAULT_GLOBAL_ENV_FILE APP_DEFAULT_ENV_FILE APP_ENV_FILE
-            APP_DEFAULT_GLOBAL_ENV_FILE="$(run_script 'instance_file' "${appname}" ".global.env")"
-            APP_DEFAULT_ENV_FILE="$(run_script 'instance_file' "${appname}" ".app.env")"
-            APP_ENV_FILE="${APP_ENV_FOLDER}/${appname}.env"
+            local AppDefaultGlobalEnvFile AppDefaultAppEnvFile AppEnvFile
+            AppDefaultGlobalEnvFile="$(run_script 'instance_file' "${appname}" ".global.env")"
+            AppDefaultAppEnvFile="$(run_script 'instance_file' "${appname}" ".app.env")"
+            AppEnvFile="${APP_ENV_FOLDER}/${appname}.env"
 
             info "Creating environment variables for ${AppName}."
 
@@ -34,8 +34,8 @@ appvars_create() {
 
             run_script 'appvars_migrate' "${APPNAME}"
 
-            run_script 'env_merge_newonly' "${COMPOSE_ENV}" "${APP_DEFAULT_GLOBAL_ENV_FILE}"
-            run_script 'env_merge_newonly' "${APP_ENV_FILE}" "${APP_DEFAULT_ENV_FILE}"
+            run_script 'env_merge_newonly' "${COMPOSE_ENV}" "${AppDefaultGlobalEnvFile}"
+            run_script 'env_merge_newonly' "${AppEnvFile}" "${AppDefaultAppEnvFile}"
             info "Environment variables created for ${AppName}."
         else
             warn "Application ${AppName} does not exist."
