@@ -3,4 +3,4 @@ services:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Secure Web-server And Gateway"
-      com.dockstarter.appinfo.nicename: "SWAG<__INSTANCE><__Instance>"
+      com.dockstarter.appinfo.nicename: "SWAG<__Instance>"

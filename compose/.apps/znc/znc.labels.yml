@@ -3,4 +3,4 @@ services:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "IRC network bouncer or BNC"
-      com.dockstarter.appinfo.nicename: "ZNC<__INSTANCE><__Instance>"
+      com.dockstarter.appinfo.nicename: "ZNC<__Instance>"
