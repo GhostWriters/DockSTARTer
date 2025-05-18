@@ -12,7 +12,7 @@ instance_folder() {
     local AppName=${1:-}
     local appname=${AppName,,}
 
-    local baseapp instance TemplateFolder InstanceFolder
+    local baseapp TemplateFolder InstanceFolder
     baseapp="$(run_script 'appname_to_baseappname' "${appname}")"
     TemplateFolder="${TEMPLATES_FOLDER}/${baseapp}"
     InstanceFolder="${INSTANCES_FOLDER}/${appname}"
