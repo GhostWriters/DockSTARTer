@@ -16,8 +16,8 @@ appvars_create() {
         fi
         if run_script 'app_is_builtin' "${AppName}"; then
             local AppDefaultGlobalEnvFile AppDefaultAppEnvFile AppEnvFile
-            AppDefaultGlobalEnvFile="$(run_script 'instance_file' "${appname}" ".global.env")"
-            AppDefaultAppEnvFile="$(run_script 'instance_file' "${appname}" ".app.env")"
+            AppDefaultGlobalEnvFile="$(run_script 'app_instance_file' "${appname}" ".global.env")"
+            AppDefaultAppEnvFile="$(run_script 'app_instance_file' "${appname}" ".app.env")"
             AppEnvFile="${APP_ENV_FOLDER}/${appname}.env"
 
             info "Creating environment variables for ${AppName}."

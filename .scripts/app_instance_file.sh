@@ -2,11 +2,11 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-instance_file() {
-    # instance_file AppName FileSuffix
+app_instance_file() {
+    # app_instance_file AppName FileSuffix
     # Returns the filename of a file in the instance folder for the app specified
     #
-    # instance_file "radarr" ".labels.yml" will return a string similar to "/home/user/.docker/compose/.instances/radarr/radarr.labels.yml"
+    # app_instance_file "radarr" ".labels.yml" will return a string similar to "/home/user/.docker/compose/.instances/radarr/radarr.labels.yml"
     # If the file does not exist, it is created from the matching file in the "templates" folder.
 
     local AppName=${1:-}
@@ -40,12 +40,12 @@ instance_file() {
     fi
 }
 
-test_instance_file() {
+test_app_instance_file() {
     for AppName in watchtower watchtower__number2; do
         for Suffix in ".labels.yml" ".global.env"; do
             notice "[${AppName}] [${Suffix}]"
             local InstanceFile
-            InstanceFile="$(run_script 'instance_file' "${AppName}" "${Suffix}")"
+            InstanceFile="$(run_script 'app_instance_file' "${AppName}" "${Suffix}")"
             notice "[${InstanceFile}]"
             cat "${InstanceFile}"
         done

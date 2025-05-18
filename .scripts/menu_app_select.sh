@@ -9,13 +9,13 @@ menu_app_select() {
     local EnabledApps=()
     while IFS= read -r line; do
         local APPNAME=${line^^}
-        APP_FOLDER="$(run_script 'instance_folder' "${APPNAME}")"
+        APP_FOLDER="$(run_script 'app_instance_folder' "${APPNAME}")"
         if [[ -d ${APP_FOLDER}/ ]]; then
             local main_yml
-            main_yml="$(run_script 'instance_file' "${APPNAME}" ".yml")"
+            main_yml="$(run_script 'app_instance_file' "${APPNAME}" ".yml")"
             if [[ -f ${main_yml} ]]; then
                 local main_yml
-                arch_yml="$(run_script 'instance_file' "${APPNAME}" ".${ARCH}.yml")"
+                arch_yml="$(run_script 'app_instance_file' "${APPNAME}" ".${ARCH}.yml")"
                 if [[ -f ${arch_yml} ]]; then
                     local AppName
                     AppName=$(run_script 'app_nicename' "${APPNAME}")

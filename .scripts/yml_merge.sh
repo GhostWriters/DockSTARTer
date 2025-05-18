@@ -17,17 +17,17 @@ commands_yml_merge() {
         local AppName
         AppName=$(run_script 'app_nicename' "${APPNAME}")
         local APP_FOLDER
-        APP_FOLDER="$(run_script 'instance_folder' "${appname}")"
+        APP_FOLDER="$(run_script 'app_instance_folder' "${appname}")"
         if [[ -d ${APP_FOLDER}/ ]]; then
             local main_yml
-            main_yml="$(run_script 'instance_file' "${appname}" ".yml")"
+            main_yml="$(run_script 'app_instance_file' "${appname}" ".yml")"
             if [[ -f ${main_yml} ]]; then
                 if run_script 'app_is_depreciated' "${APPNAME}"; then
                     warn "${AppName} IS DEPRECATED!"
                     warn "Please edit ${COMPOSE_ENV} and set ${APPNAME}__ENABLED to false."
                 fi
                 local arch_yml
-                arch_yml="$(run_script 'instance_file' "${appname}" ".${ARCH}.yml")"
+                arch_yml="$(run_script 'app_instance_file' "${appname}" ".${ARCH}.yml")"
                 if [[ ! -f ${arch_yml} ]]; then
                     error "${arch_yml} does not exist."
                     continue
@@ -37,14 +37,14 @@ commands_yml_merge() {
                 APPNETMODE="$(run_script 'env_get' "${APPNAME}__NETWORK_MODE")"
                 if [[ -z ${APPNETMODE-} ]] || [[ ${APPNETMODE} == "bridge" ]]; then
                     local hostname_yml
-                    hostname_yml="$(run_script 'instance_file' "${appname}" ".hostname.yml")"
+                    hostname_yml="$(run_script 'app_instance_file' "${appname}" ".hostname.yml")"
                     if [[ -f ${hostname_yml} ]]; then
                         COMPOSE_FILE="${COMPOSE_FILE}:${hostname_yml}"
                     else
                         info "${hostname_yml} does not exist."
                     fi
                     local ports_yml
-                    ports_yml="$(run_script 'instance_file' "${appname}" ".ports.yml")"
+                    ports_yml="$(run_script 'app_instance_file' "${appname}" ".ports.yml")"
                     if [[ -f ${ports_yml} ]]; then
                         COMPOSE_FILE="${COMPOSE_FILE}:${ports_yml}"
                     else
@@ -52,7 +52,7 @@ commands_yml_merge() {
                     fi
                 elif [[ -n ${APPNETMODE} ]]; then
                     local netmode_yml
-                    netmode_yml="$(run_script 'instance_file' "${appname}" ".netmode.yml")"
+                    netmode_yml="$(run_script 'app_instance_file' "${appname}" ".netmode.yml")"
                     if [[ -f ${netmode_yml} ]]; then
                         COMPOSE_FILE="${COMPOSE_FILE}:${netmode_yml}"
                     else
