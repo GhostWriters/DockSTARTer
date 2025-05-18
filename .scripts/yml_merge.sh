@@ -25,7 +25,6 @@ commands_yml_merge() {
                 if run_script 'app_is_depreciated' "${APPNAME}"; then
                     warn "${AppName} IS DEPRECATED!"
                     warn "Please edit ${COMPOSE_ENV} and set ${APPNAME}__ENABLED to false."
-                    continue
                 fi
                 local arch_yml
                 arch_yml="$(run_script 'instance_file' "${appname}" ".${ARCH}.yml")"
