@@ -52,13 +52,12 @@ menu_value_prompt() {
     local VarFile="${COMPOSE_ENV}"
     local DefaultVarFile=${COMPOSE_ENV_DEFAULT_FILE}
     if [[ -n ${APPNAME-} ]]; then
-        local APP_FOLDER="${SCRIPTPATH}/compose/.apps/${appname}"
         if [[ ${VarName} == *":"* ]]; then
             CleanVarName=${VarName#*:}
             VarFile="${APP_ENV_FOLDER}/${appname}.env"
-            DefaultVarFile="${APP_FOLDER}/${appname}.env"
+            DefaultVarFile="$(run_script 'app_instance_file' "${appname}" ".app.env")"
         else
-            DefaultVarFile="${APP_FOLDER}/.env"
+            DefaultVarFile="$(run_script 'app_instance_file' "${appname}" ".global.env")"
         fi
     fi
     local AppIsUserDefined
