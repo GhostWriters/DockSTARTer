@@ -17,6 +17,7 @@ instance_folder() {
     TemplateFolder="${TEMPLATES_FOLDER}/${baseapp}"
     InstanceFolder="${INSTANCES_FOLDER}/${appname}"
 
+    echo "${InstanceFolder}"
     if [[ ! -d ${InstanceFolder} ]]; then
         if [[ ! -d ${TemplateFolder} ]]; then
             warn "${TemplateFolder} does not exist."
@@ -28,7 +29,6 @@ instance_folder() {
         fi
     fi
 
-    echo "${InstanceFolder}"
 }
 
 test_instance_folder() {
