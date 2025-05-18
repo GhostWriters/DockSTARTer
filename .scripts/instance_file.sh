@@ -16,7 +16,6 @@ instance_file() {
     local baseapp instance InstanceFolder InstanceFile
     baseapp="$(run_script 'appname_to_baseappname' "${appname}")"
     instance="$(run_script 'appname_to_instancename' "${appname}")"
-    TemplateFolder="${TEMPLATES_FOLDER}/${appname}"
     InstanceFolder="${INSTANCES_FOLDER}/${appname}"
     InstanceFile="${InstanceFolder}/${appname}${FileSuffix}"
     echo "${InstanceFile}"
