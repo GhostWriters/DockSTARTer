@@ -40,7 +40,6 @@ appvars_create() {
         else
             warn "Application ${AppName} does not exist."
         fi
-
     done
 }
 
