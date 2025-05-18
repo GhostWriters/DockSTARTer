@@ -20,6 +20,8 @@ update_self() {
 
 commands_update_self() {
     local BRANCH=${1}
+    notice "Clearing instances folder"
+    rm -R "${INSTANCES_FOLDER}/"* &> /dev/null || true
     notice "Updating DockSTARTer to ${BRANCH}."
     cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
     info "Setting file ownership on current repository files"
