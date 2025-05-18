@@ -5,9 +5,9 @@ IFS=$'\n\t'
 app_is_builtin() {
     local APPNAME=${1-}
 
-    local InstanceFolder
-    InstanceFolder="$(run_script 'instance_folder' "${APPNAME}")"
-    [ -d "${InstanceFolder}" ]
+    local BaseApp
+    BaseApp="$(run_script 'appname_to_basename' "${APPNAME}")"
+    [[ -d "$(TEMPLATES_FOLDER}/${BaseApp}" ]]
 }
 
 test_app_is_builtin() {
