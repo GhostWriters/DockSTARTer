@@ -17,7 +17,7 @@ instance_file() {
     baseapp="$(run_script 'appname_to_baseappname' "${appname}")"
     instance="$(run_script 'appname_to_instancename' "${appname}")"
     
-    InstanceFolder="$(run_script 'instance_folder' "appname")"
+    InstanceFolder="$(run_script 'instance_folder' "${appname}")"
     if [[ -z ${InstanceFolder} ]]; then
         return
     fi
@@ -42,7 +42,7 @@ instance_file() {
 
 test_instance_file() {
     for AppName in watchtower watchtower__number2; do
-    for Suffix in ".labels.yml" "global.env"; do
+    for Suffix in ".labels.yml" ".global.env"; do
             notice "[${AppName}] [${Suffix}]"
             local InstanceFile
             InstanceFile="$(run_script 'instance_file' "${AppName}" "${Suffix}")"
