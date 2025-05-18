@@ -33,7 +33,7 @@ app_instance_file() {
     local TemplateFile
     TemplateFile="$(run_script 'app_template_file' "${baseapp}" "${FileSuffix}")"
     if [[ ! -f ${TemplateFile} ]]; then
-        warn "${TemplateFile} does not exist."
+        # Template file doesn't exist, nothing to do.
         return
     fi
 
