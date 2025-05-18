@@ -13,7 +13,7 @@ instance_file() {
     local FileSuffix=${2:-}
     local appname=${AppName,,}
 
-    local baseapp instance
+    local baseapp instance TemplateFile InstanceFolder InstanceFile
     baseapp="$(run_script 'appname_to_baseappname' "${appname}")"
     instance="$(run_script 'appname_to_instancename' "${appname}")"
     TemplateFile="${TEMPLATES_FOLDER}/${baseapp}/${baseapp}${FileSuffix}"
