@@ -18,7 +18,7 @@ instance_file() {
     instance="$(run_script 'appname_to_instancename' "${appname}")"
     
     InstanceFolder="$(run_script 'instance_folder' "appname")"
-    if [[ -z ${InstanceFolder} ]]
+    if [[ -z ${InstanceFolder} ]]; then
         return
     fi
     InstanceFile="${InstanceFolder}/${appname}${FileSuffix}"
