@@ -8,7 +8,7 @@ appname_is_valid() {
         local InvalidInstanceNames="CONTAINER|ENABLED|ENVIRONMENT|HOSTNAME|PORT|NETWORK|RESTART|TAG"
         local InstanceName
         InstanceName="$(run_script 'appname_to_instancename' "${AppName}")"
-        [[ ! ${InstanceName} =~ ${InvalidInstanceNames} ]]
+        [[ ! ${InstanceName^^} =~ ${InvalidInstanceNames} ]]
         return
     fi
     false
