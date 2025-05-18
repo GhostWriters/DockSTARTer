@@ -13,21 +13,20 @@ instance_file() {
     local FileSuffix=${2:-}
     local appname=${AppName,,}
 
-    local baseapp instance TemplateFile InstanceFolder InstanceFile
+    local baseapp instance InstanceFolder InstanceFile
     baseapp="$(run_script 'appname_to_baseappname' "${appname}")"
     instance="$(run_script 'appname_to_instancename' "${appname}")"
-    TemplateFile="${TEMPLATES_FOLDER}/${baseapp}/${baseapp}${FileSuffix}"
-    InstanceFolder="${INSTANCES_FOLDER}/${appname}"
+    
+    InstanceFolder="$(run_script 'instance_folder' "appname")"
+    if [[ -z ${InstanceFolder} ]]
+        return
+    fi
     InstanceFile="${InstanceFolder}/${appname}${FileSuffix}"
-
     if [[ ! -f ${InstanceFile} ]]; then
+        local TemplateFile="${TEMPLATES_FOLDER}/${baseapp}/${baseapp}${FileSuffix}"
         if [[ ! -f ${TemplateFile} ]]; then
             warn "${TemplateFile} does not exist."
             return
-        fi
-        if [[ ! -d ${InstanceFolder} ]]; then
-            mkdir -p "${InstanceFolder}" ||
-                fatal "Failed to create folder ${InstanceFolder}. ${F[C]}Failing command: mkdir -p \"${InstanceFolder}\""
         fi
         local __INSTANCE __Instance __instance
         if [[ -n ${instance} ]]; then
@@ -38,7 +37,6 @@ instance_file() {
         sed -e "s/<__INSTANCE>/${__INSTANCE-}/g ; s/<__instance>/${__instance-}/g ; s/<__Instance>/${__Instance-}/g" \
             "${TemplateFile}" > "${InstanceFile}"
     fi
-
     echo "${InstanceFile}"
 }
 
