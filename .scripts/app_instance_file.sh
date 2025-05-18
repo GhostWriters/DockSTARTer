@@ -13,31 +13,40 @@ app_instance_file() {
     local FileSuffix=${2:-}
     local appname=${AppName,,}
 
-    local baseapp instance InstanceFolder InstanceFile
-    baseapp="$(run_script 'appname_to_baseappname' "${appname}")"
-    instance="$(run_script 'appname_to_instancename' "${appname}")"
+    local InstanceFolder
     InstanceFolder="${INSTANCES_FOLDER}/${appname}"
+    if [[ ! -d ${InstanceFolder} ]]; then
+        mkdir -p "${InstanceFolder}" ||
+            fatal "Failed to create folder ${InstanceFolder}. ${F[C]}Failing command: mkdir -p \"${InstanceFolder}\""
+    fi
+
+    local InstanceFile
     InstanceFile="${InstanceFolder}/${appname}${FileSuffix}"
     echo "${InstanceFile}"
-    if [[ ! -f ${InstanceFile} ]]; then
-        local TemplateFile="${TEMPLATES_FOLDER}/${baseapp}/${baseapp}${FileSuffix}"
-        if [[ ! -f ${TemplateFile} ]]; then
-            warn "${TemplateFile} does not exist."
-            return
-        fi
-        if [[ ! -d ${InstanceFolder} ]]; then
-            mkdir -p "${InstanceFolder}" ||
-                fatal "Failed to create folder ${InstanceFolder}. ${F[C]}Failing command: mkdir -p \"${InstanceFolder}\""
-        fi
-        local __INSTANCE __Instance __instance
-        if [[ -n ${instance} ]]; then
-            __INSTANCE="__${instance^^}"
-            __Instance="__${instance^}"
-            __instance="__${instance,,}"
-        fi
-        sed -e "s/<__INSTANCE>/${__INSTANCE-}/g ; s/<__instance>/${__instance-}/g ; s/<__Instance>/${__Instance-}/g" \
-            "${TemplateFile}" > "${InstanceFile}"
+    if [[ -f ${InstanceFile} ]]; then
+        # File already exists, nothing to do
+        return
     fi
+
+    local baseapp
+    baseapp="$(run_script 'appname_to_baseappname' "${appname}")"
+    local TemplateFile
+    TemplateFile="$(run_script 'app_template_file' "${baseapp}" "${FileSuffix}")"
+    if [[ ! -f ${TemplateFile} ]]; then
+        warn "${TemplateFile} does not exist."
+        return
+    fi
+
+    local instance
+    instance="$(run_script 'appname_to_instancename' "${appname}")"
+    local __INSTANCE __Instance __instance
+    if [[ -n ${instance} ]]; then
+        __INSTANCE="__${instance^^}"
+        __Instance="__${instance^}"
+        __instance="__${instance,,}"
+    fi
+    sed -e "s/<__INSTANCE>/${__INSTANCE-}/g ; s/<__instance>/${__instance-}/g ; s/<__Instance>/${__Instance-}/g" \
+        "${TemplateFile}" > "${InstanceFile}"
 }
 
 test_app_instance_file() {
