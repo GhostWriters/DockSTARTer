@@ -53,11 +53,13 @@ menu_app_vars() {
     run_script_dialog "${Title}" "Creating variables for ${AppName}" 1 \
         'appvars_create' "${APPNAME}"
 
-    local DefaultGlobalEnvFile="${TEMPLATES_FOLDER}/${appname}/.env"
+    local DefaultGlobalEnvFile
+    DefaultGlobalEnvFile="$(run_script 'instance_file' "${appname}" ".global.env")"
     local CurrentGlobalEnvFile
     CurrentGlobalEnvFile=$(mktemp)
 
-    local DefaultAppEnvFile="${TEMPLATES_FOLDER}/${appname}/${appname}.env"
+    local DefaultAppEnvFile
+    DefaultAppEnvFile="$(run_script 'instance_file' "${appname}" ".app.env")"
     local CurrentAppEnvFile
     CurrentAppEnvFile=$(mktemp)
 

@@ -18,7 +18,7 @@ env_update() {
         local APP_DEFAULT_GLOBAL_ENV_FILE=""
         local -a UPDATED_APP_ENV_LINES=()
         if run_script 'app_is_added' "${appname}"; then
-            APP_DEFAULT_GLOBAL_ENV_FILE="${TEMPLATES_FOLDER}/${appname}/.env"
+            APP_DEFAULT_GLOBAL_ENV_FILE="$(run_script 'instance_file' "${appname}" ".global.env")"
         fi
         run_script 'appvars_lines' "${appname}" > "${ENV_LINES_FILE}"
         readarray -t -O ${#UPDATED_ENV_LINES[@]} UPDATED_ENV_LINES < <(
@@ -40,7 +40,7 @@ env_update() {
         local APP_ENV_FILE="${APP_ENV_FOLDER}/${appname}.env"
         local APP_DEFAULT_ENV_FILE=""
         if run_script 'app_is_added' "${appname}"; then
-            APP_DEFAULT_ENV_FILE="${TEMPLATES_FOLDER}/${appname}/${appname}.env"
+            APP_DEFAULT_ENV_FILE="$(run_script 'instance_file' "${appname}" ".app.env")"
         fi
         if [[ -n ${APP_DEFAULT_ENV_FILE} || -f ${APP_ENV_FILE} ]]; then
             # App is either added, or the user has an existing appname.env file

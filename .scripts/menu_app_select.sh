@@ -10,10 +10,15 @@ menu_app_select() {
     while IFS= read -r line; do
         local APPNAME=${line^^}
         local appname=${APPNAME,,}
-        local APP_FOLDER="${TEMPLATES_FOLDER}/${appname}"
+        local APP_FOLDER
+        APP_FOLDER="$(run_script 'instance_folder' "${APPNAME}")"
         if [[ -d ${APP_FOLDER}/ ]]; then
-            if [[ -f ${APP_FOLDER}/${appname}.yml ]]; then
-                if [[ -f ${APP_FOLDER}/${appname}.${ARCH}.yml ]]; then
+            local main_yml
+            main_yml="$(run_script 'instance_file' "${APPNAME}" ".yml")"
+            if [[ -f ${main_yml} ]]; then
+                local main_yml
+                arch_yml="$(run_script 'instance_file' "${APPNAME}" ".${ARCH}.yml")"
+                if [[ -f ${arch_yml} ]]; then
                     local AppName
                     AppName=$(run_script 'app_nicename' "${APPNAME}")
                     local AppDescription

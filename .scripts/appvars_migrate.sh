@@ -7,8 +7,8 @@ appvars_migrate() {
     APPNAME=${APPNAME^^}
     local appname=${APPNAME,,}
 
-    local APP_FOLDER="${TEMPLATES_FOLDER}/${appname}"
-    local MIGRATE_FILE="${APP_FOLDER}/${appname}.migrate"
+    local MIGRATE_FILE
+    MIGRATE_FILE="$(run_script 'instance_file' "${appname}" ".migrate")"
 
     if [[ -f ${MIGRATE_FILE} ]]; then
         local -a MigrateLines=()

@@ -11,10 +11,10 @@ appvars_create() {
         AppName=$(run_script 'app_nicename' "${APPNAME}")
 
         if run_script 'app_is_builtin' "${AppName}"; then
-            local APP_FOLDER="${TEMPLATES_FOLDER}/${appname}"
-            local APP_DEFAULT_GLOBAL_ENV_FILE="${APP_FOLDER}/.env"
-            local APP_DEFAULT_ENV_FILE="${APP_FOLDER}/${appname}.env"
-            local APP_ENV_FILE="${APP_ENV_FOLDER}/${appname}.env"
+            local APP_DEFAULT_GLOBAL_ENV_FILE APP_DEFAULT_ENV_FILE APP_ENV_FILE
+            APP_DEFAULT_GLOBAL_ENV_FILE="$(run_script 'instance_file' "${appname}" ".global.env")"
+            APP_DEFAULT_ENV_FILE="$(run_script 'instance_file' "${appname}" ".app.env")"
+            APP_ENV_FILE="${APP_ENV_FOLDER}/${appname}.env"
 
             info "Creating environment variables for ${AppName}."
 

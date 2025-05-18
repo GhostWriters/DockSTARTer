@@ -8,7 +8,8 @@ app_nicename() {
     AppList=$(xargs -n 1 <<< "$*")
     for APPNAME in ${AppList}; do
         local appname=${APPNAME,,}
-        local LABELS_FILE="${TEMPLATES_FOLDER}/${appname}/${appname}.labels.yml"
+        local LABELS_FILE
+        LABELS_FILE="$(run_script 'instance_file' "${APPNAME}" ".labels.yml")"
         if [[ -f ${LABELS_FILE} ]]; then
             grep --color=never -Po "\scom\.dockstarter\.appinfo\.nicename: \K.*" "${LABELS_FILE}" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo "${appname}"
         else
