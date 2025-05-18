@@ -10,7 +10,11 @@ appvars_create() {
         local AppName
         AppName=$(run_script 'app_nicename' "${APPNAME}")
 
-        if run_script 'appname_is_valid' "${appname}" && run_script 'app_is_builtin' "${AppName}"; then
+        if ! run_script 'appname_is_valid' "${appname}"; then
+            error "${AppName} is not a valid application name."
+            continue
+        fi
+        if run_script 'app_is_builtin' "${AppName}"; then
             local APP_DEFAULT_GLOBAL_ENV_FILE APP_DEFAULT_ENV_FILE APP_ENV_FILE
             APP_DEFAULT_GLOBAL_ENV_FILE="$(run_script 'instance_file' "${appname}" ".global.env")"
             APP_DEFAULT_ENV_FILE="$(run_script 'instance_file' "${appname}" ".app.env")"
