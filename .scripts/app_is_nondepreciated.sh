@@ -4,7 +4,6 @@ IFS=$'\n\t'
 
 app_is_nondepreciated() {
     local APPNAME=${1-}
-    local FILENAME=${APPNAME,,}
     local LABELS_FILE
     LABELS_FILE="$(run_script 'instance_file' "${APPNAME}" ".labels.yml")"
     local APP_DEPRECIATED
