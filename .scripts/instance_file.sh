@@ -44,10 +44,12 @@ instance_file() {
 
 test_instance_file() {
     for AppName in watchtower watchtower__number2; do
-        notice "[${AppName}]"
-        local InstanceFile
-        InstanceFile="$(run_script 'instance_file' "${AppName}" ".labels.yml")"
-        notice "[${InstanceFile}]"
-        cat "${InstanceFile}"
+    for Suffix in ".labels.yml" "global.env"; do
+            notice "[${AppName}] [${Suffix}]"
+            local InstanceFile
+            InstanceFile="$(run_script 'instance_file' "${AppName}" "${Suffix}")"
+            notice "[${InstanceFile}]"
+            cat "${InstanceFile}"
+        done
     done
 }
