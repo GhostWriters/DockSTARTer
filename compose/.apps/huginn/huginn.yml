@@ -1,12 +1,12 @@
 services:
-  huginn:
-    container_name: ${HUGINN__CONTAINER_NAME?}
-    env_file: env_files/huginn.env
+  huginn<__instance>:
+    container_name: ${HUGINN<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/huginn<__instance>.env
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}
       - TZ=${TZ?}
-    restart: ${HUGINN__RESTART?}
+    restart: ${HUGINN<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_STORAGE?}:/storage

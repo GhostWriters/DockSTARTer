@@ -1,6 +1,6 @@
 services:
-  grocy:
+  grocy<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Groceries & household management"
-      com.dockstarter.appinfo.nicename: "grocy"
+      com.dockstarter.appinfo.nicename: "grocy<__Instance>"

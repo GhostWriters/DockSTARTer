@@ -1,6 +1,6 @@
 services:
-  fail2ban:
+  fail2ban<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Daemon to ban hosts that cause multiple authentication errors"
-      com.dockstarter.appinfo.nicename: "Fail2ban"
+      com.dockstarter.appinfo.nicename: "Fail2ban<__Instance>"

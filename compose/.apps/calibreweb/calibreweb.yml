@@ -1,13 +1,13 @@
 services:
-  calibreweb:
-    container_name: ${CALIBREWEB__CONTAINER_NAME?}
-    env_file: env_files/calibreweb.env
+  calibreweb<__instance>:
+    container_name: ${CALIBREWEB<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/calibreweb<__instance>.env
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}
       - TZ=${TZ?}
-    restart: ${CALIBREWEB__RESTART?}
+    restart: ${CALIBREWEB<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG?}/calibreweb:/config
+      - ${DOCKER_VOLUME_CONFIG?}/calibreweb<__instance>:/config
       - ${DOCKER_VOLUME_STORAGE?}:/storage

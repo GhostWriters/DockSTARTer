@@ -1,3 +1,3 @@
 services:
-  xbackbone:
-    hostname: ${XBACKBONE__HOSTNAME?}
+  xbackbone<__instance>:
+    hostname: ${XBACKBONE<__INSTANCE>__HOSTNAME?}

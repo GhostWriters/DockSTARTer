@@ -1,12 +1,12 @@
 services:
-  plexanisync:
-    container_name: ${PLEXANISYNC__CONTAINER_NAME?}
-    env_file: env_files/plexanisync.env
+  plexanisync<__instance>:
+    container_name: ${PLEXANISYNC<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/plexanisync<__instance>.env
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}
       - TZ=${TZ?}
-    restart: ${PLEXANISYNC__RESTART?}
+    restart: ${PLEXANISYNC<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_STORAGE?}:/storage

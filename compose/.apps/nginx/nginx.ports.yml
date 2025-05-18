@@ -1,5 +1,5 @@
 services:
-  nginx:
+  nginx<__instance>:
     ports:
-      - ${NGINX__PORT_443?}:443
-      - ${NGINX__PORT_80?}:80
+      - ${NGINX<__INSTANCE>__PORT_443?}:443
+      - ${NGINX<__INSTANCE>__PORT_80?}:80

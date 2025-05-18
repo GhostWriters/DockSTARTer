@@ -1,1 +1,1 @@
-${DOCKER_VOLUME_CONFIG}/sonarr
+${DOCKER_VOLUME_CONFIG}/sonarr<__instance>

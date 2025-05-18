@@ -1,1 +1,1 @@
-${DOCKER_VOLUME_CONFIG}/nodered
+${DOCKER_VOLUME_CONFIG}/nodered<__instance>

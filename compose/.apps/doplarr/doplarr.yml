@@ -1,13 +1,13 @@
 services:
-  doplarr:
-    container_name: ${DOPLARR__CONTAINER_NAME?}
-    env_file: env_files/doplarr.env
+  doplarr<__instance>:
+    container_name: ${DOPLARR<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/doplarr<__instance>.env
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}
       - TZ=${TZ?}
-    restart: ${DOPLARR__RESTART?}
+    restart: ${DOPLARR<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG?}/doplarr:/config
+      - ${DOCKER_VOLUME_CONFIG?}/doplarr<__instance>:/config
       - ${DOCKER_VOLUME_STORAGE?}:/storage

@@ -1,11 +1,11 @@
 services:
-  watchtower:
-    container_name: ${WATCHTOWER__CONTAINER_NAME?}
-    env_file: env_files/watchtower.env
+  watchtower<__instance>:
+    container_name: ${WATCHTOWER<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/watchtower<__instance>.env
     environment:
       - TZ=${TZ?}
-    restart: ${WATCHTOWER__RESTART?}
+    restart: ${WATCHTOWER<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_STORAGE?}:/storage
-      - ${WATCHTOWER__VOLUME_DOCKER_SOCKET?}:/var/run/docker.sock
+      - ${WATCHTOWER<__INSTANCE>__VOLUME_DOCKER_SOCKET?}:/var/run/docker.sock

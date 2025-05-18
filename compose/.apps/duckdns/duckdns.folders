@@ -1,1 +1,1 @@
-${DOCKER_VOLUME_CONFIG}/duckdns
+${DOCKER_VOLUME_CONFIG}/duckdns<__instance>

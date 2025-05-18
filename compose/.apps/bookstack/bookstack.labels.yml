@@ -1,6 +1,6 @@
 services:
-  bookstack:
+  bookstack<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Platform for storing and organising information and documentation"
-      com.dockstarter.appinfo.nicename: "BookStack"
+      com.dockstarter.appinfo.nicename: "BookStack<__Instance>"

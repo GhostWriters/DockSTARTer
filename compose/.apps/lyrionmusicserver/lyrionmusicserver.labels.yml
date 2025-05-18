@@ -1,6 +1,6 @@
 services:
-  lyrionmusicserver:
+  lyrionmusicserver<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Lyrion Music Server for Squeezebox radios (formerly LogitechMediaServer)"
-      com.dockstarter.appinfo.nicename: "LyrionMusicServer"
+      com.dockstarter.appinfo.nicename: "LyrionMusicServer<__Instance>"

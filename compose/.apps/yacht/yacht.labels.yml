@@ -1,6 +1,6 @@
 services:
-  yacht:
+  yacht<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Yacht is a container management UI with a focus on templates and 1-click deployments."
-      com.dockstarter.appinfo.nicename: "Yacht"
+      com.dockstarter.appinfo.nicename: "Yacht<__Instance>"

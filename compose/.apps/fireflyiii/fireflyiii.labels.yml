@@ -1,6 +1,6 @@
 services:
-  fireflyiii:
+  fireflyiii<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "A personal finance manager"
-      com.dockstarter.appinfo.nicename: "FireflyIII"
+      com.dockstarter.appinfo.nicename: "FireflyIII<__Instance>"

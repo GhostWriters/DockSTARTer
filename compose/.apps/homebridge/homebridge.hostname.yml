@@ -1,3 +1,3 @@
 services:
-  homebridge:
-    hostname: ${HOMEBRIDGE__HOSTNAME?}
+  homebridge<__instance>:
+    hostname: ${HOMEBRIDGE<__INSTANCE>__HOSTNAME?}

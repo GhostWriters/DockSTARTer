@@ -1,6 +1,6 @@
 services:
-  httpserver:
+  httpserver<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "http-server is a simple binary to provide a static http server from a given folder."
-      com.dockstarter.appinfo.nicename: "httpserver"
+      com.dockstarter.appinfo.nicename: "httpserver<__Instance>"

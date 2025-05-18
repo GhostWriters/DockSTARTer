@@ -1,5 +1,5 @@
 services:
-  ldapauth:
+  ldapauth<__instance>:
     ports:
-      - ${LDAPAUTH__PORT_8888?}:8888
-      - ${LDAPAUTH__PORT_9000?}:9000
+      - ${LDAPAUTH<__INSTANCE>__PORT_8888?}:8888
+      - ${LDAPAUTH<__INSTANCE>__PORT_9000?}:9000

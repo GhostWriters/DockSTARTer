@@ -1,6 +1,6 @@
 services:
-  traefik:
+  traefik<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "A modern HTTP reverse proxy and load balancer that makes deploying microservices easy"
-      com.dockstarter.appinfo.nicename: "Traefik"
+      com.dockstarter.appinfo.nicename: "Traefik<__Instance>"

@@ -1,6 +1,6 @@
 services:
-  homeassistant:
+  homeassistant<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Track and control all devices at home and automate control"
-      com.dockstarter.appinfo.nicename: "HomeAssistant"
+      com.dockstarter.appinfo.nicename: "HomeAssistant<__Instance>"

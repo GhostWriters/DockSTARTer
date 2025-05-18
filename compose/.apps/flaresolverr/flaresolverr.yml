@@ -1,11 +1,11 @@
 services:
-  flaresolverr:
-    container_name: ${FLARESOLVERR__CONTAINER_NAME?}
-    env_file: env_files/flaresolverr.env
+  flaresolverr<__instance>:
+    container_name: ${FLARESOLVERR<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/flaresolverr<__instance>.env
     environment:
-      - PORT=${FLARESOLVERR__PORT_8191?}
+      - PORT=${FLARESOLVERR<__INSTANCE>__PORT_8191?}
       - TZ=${TZ?}
-    restart: ${FLARESOLVERR__RESTART?}
+    restart: ${FLARESOLVERR<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_STORAGE?}:/storage

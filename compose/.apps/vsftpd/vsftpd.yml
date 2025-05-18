@@ -1,11 +1,11 @@
 services:
-  vsftpd:
-    container_name: ${VSFTPD__CONTAINER_NAME?}
-    env_file: env_files/vsftpd.env
+  vsftpd<__instance>:
+    container_name: ${VSFTPD<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/vsftpd<__instance>.env
     environment:
       - TZ=${TZ?}
-    restart: ${VSFTPD__RESTART?}
+    restart: ${VSFTPD<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_STORAGE?}:/storage
-      - ${VSFTPD__VOLUME_DATADIR?}:/home/vsftpd
+      - ${VSFTPD<__INSTANCE>__VOLUME_DATADIR?}:/home/vsftpd

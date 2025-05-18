@@ -1,10 +1,10 @@
 services:
-  privoxyvpn:
+  privoxyvpn<__instance>:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    container_name: ${PRIVOXYVPN__CONTAINER_NAME?}
-    env_file: env_files/privoxyvpn.env
+    container_name: ${PRIVOXYVPN<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/privoxyvpn<__instance>.env
     devices:
       - /dev/net/tun
     environment:
@@ -12,10 +12,10 @@ services:
       - PUID=${PUID?}
       - TZ=${TZ?}
     privileged: true
-    restart: ${PRIVOXYVPN__RESTART?}
+    restart: ${PRIVOXYVPN<__INSTANCE>__RESTART?}
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG?}/privoxyvpn:/config
+      - ${DOCKER_VOLUME_CONFIG?}/privoxyvpn<__instance>:/config
       - ${DOCKER_VOLUME_STORAGE?}:/storage

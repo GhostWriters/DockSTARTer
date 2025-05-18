@@ -1,4 +1,4 @@
 services:
-  picard:
+  picard<__instance>:
     ports:
-      - ${PICARD__PORT_5800?}:5800
+      - ${PICARD<__INSTANCE>__PORT_5800?}:5800

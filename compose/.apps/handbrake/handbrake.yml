@@ -1,15 +1,15 @@
 services:
-  handbrake:
-    container_name: ${HANDBRAKE__CONTAINER_NAME?}
-    env_file: env_files/handbrake.env
+  handbrake<__instance>:
+    container_name: ${HANDBRAKE<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/handbrake<__instance>.env
     environment:
       - GROUP_ID=${PGID?}
       - USER_ID=${PUID?}
       - TZ=${TZ?}
-    restart: ${HANDBRAKE__RESTART?}
+    restart: ${HANDBRAKE<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG?}/handbrake:/config
+      - ${DOCKER_VOLUME_CONFIG?}/handbrake<__instance>:/config
       - ${DOCKER_VOLUME_STORAGE?}:/storage
-      - ${HANDBRAKE__VOLUME_OUTPUTDIR?}:/output
-      - ${HANDBRAKE__VOLUME_WATCHDIR?}:/watch
+      - ${HANDBRAKE<__INSTANCE>__VOLUME_OUTPUTDIR?}:/output
+      - ${HANDBRAKE<__INSTANCE>__VOLUME_WATCHDIR?}:/watch

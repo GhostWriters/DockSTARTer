@@ -1,6 +1,6 @@
 services:
-  tandoor:
+  tandoor<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "The recipe manager that allows you to manage your ever growing collection of digital recipes."
-      com.dockstarter.appinfo.nicename: "Tandoor"
+      com.dockstarter.appinfo.nicename: "Tandoor<__Instance>"

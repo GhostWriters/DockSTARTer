@@ -1,6 +1,6 @@
 services:
-  nzbgetvpn:
+  nzbgetvpn<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "NZBGet with PrivoxyVPN"
-      com.dockstarter.appinfo.nicename: "NZBGetVPN"
+      com.dockstarter.appinfo.nicename: "NZBGetVPN<__Instance>"

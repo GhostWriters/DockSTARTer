@@ -1,6 +1,6 @@
 services:
-  petio:
+  petio<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "A request companion app"
-      com.dockstarter.appinfo.nicename: "Petio"
+      com.dockstarter.appinfo.nicename: "Petio<__Instance>"

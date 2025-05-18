@@ -1,1 +1,1 @@
-${DOCKER_VOLUME_CONFIG}/unificontroller
+${DOCKER_VOLUME_CONFIG}/unificontroller<__instance>

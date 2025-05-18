@@ -1,6 +1,6 @@
 services:
-  goaccess:
+  goaccess<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Real-time web log analyzer"
-      com.dockstarter.appinfo.nicename: "GoAccess"
+      com.dockstarter.appinfo.nicename: "GoAccess<__Instance>"

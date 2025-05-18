@@ -1,3 +1,3 @@
 services:
-  guacamole:
-    hostname: ${GUACAMOLE__HOSTNAME?}
+  guacamole<__instance>:
+    hostname: ${GUACAMOLE<__INSTANCE>__HOSTNAME?}

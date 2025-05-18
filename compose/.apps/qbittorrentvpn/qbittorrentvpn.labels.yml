@@ -1,6 +1,6 @@
 services:
-  qbittorrentvpn:
+  qbittorrentvpn<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "qBittorrent PrivoxyVPN"
-      com.dockstarter.appinfo.nicename: "qBittorrentVPN"
+      com.dockstarter.appinfo.nicename: "qBittorrentVPN<__Instance>"

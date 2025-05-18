@@ -1,6 +1,6 @@
 services:
-  glances:
+  glances<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Cross-platform system monitoring tool"
-      com.dockstarter.appinfo.nicename: "Glances"
+      com.dockstarter.appinfo.nicename: "Glances<__Instance>"

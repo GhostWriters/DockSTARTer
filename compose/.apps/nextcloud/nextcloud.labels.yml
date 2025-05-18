@@ -1,6 +1,6 @@
 services:
-  nextcloud:
+  nextcloud<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Gives you access to all your files wherever you are"
-      com.dockstarter.appinfo.nicename: "Nextcloud"
+      com.dockstarter.appinfo.nicename: "Nextcloud<__Instance>"

@@ -1,13 +1,13 @@
 services:
-  dozzle:
-    container_name: ${DOZZLE__CONTAINER_NAME?}
-    env_file: env_files/dozzle.env
+  dozzle<__instance>:
+    container_name: ${DOZZLE<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/dozzle<__instance>.env
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}
       - TZ=${TZ?}
-    restart: ${DOZZLE__RESTART?}
+    restart: ${DOZZLE<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_STORAGE?}:/storage
-      - ${DOZZLE__VOLUME_DOCKER_SOCKET?}:/var/run/docker.sock
+      - ${DOZZLE<__INSTANCE>__VOLUME_DOCKER_SOCKET?}:/var/run/docker.sock

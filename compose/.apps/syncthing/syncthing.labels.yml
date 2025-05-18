@@ -1,6 +1,6 @@
 services:
-  syncthing:
+  syncthing<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Open-source peer-to-peer file synchronization"
-      com.dockstarter.appinfo.nicename: "Syncthing"
+      com.dockstarter.appinfo.nicename: "Syncthing<__Instance>"

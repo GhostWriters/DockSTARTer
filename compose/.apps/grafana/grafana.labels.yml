@@ -1,6 +1,6 @@
 services:
-  grafana:
+  grafana<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Metrics dashboard and graph editor"
-      com.dockstarter.appinfo.nicename: "Grafana"
+      com.dockstarter.appinfo.nicename: "Grafana<__Instance>"

@@ -1,16 +1,16 @@
 services:
-  photostructure:
-    container_name: ${PHOTOSTRUCTURE__CONTAINER_NAME?}
-    env_file: env_files/photostructure.env
+  photostructure<__instance>:
+    container_name: ${PHOTOSTRUCTURE<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/photostructure<__instance>.env
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}
       - TZ=${TZ?}
-    restart: ${PHOTOSTRUCTURE__RESTART?}
+    restart: ${PHOTOSTRUCTURE<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG?}/photostructure:/ps/config
-      - ${DOCKER_VOLUME_CONFIG?}/photostructure/logs:/ps/logs
+      - ${DOCKER_VOLUME_CONFIG?}/photostructure<__instance>:/ps/config
+      - ${DOCKER_VOLUME_CONFIG?}/photostructure<__instance>/logs:/ps/logs
       - ${DOCKER_VOLUME_STORAGE?}:/storage
-      - ${PHOTOSTRUCTURE__VOLUME_CACHE_DIRECTORY?}:/ps/tmp
-      - ${PHOTOSTRUCTURE__VOLUME_LIBRARY?}:/ps/library
+      - ${PHOTOSTRUCTURE<__INSTANCE>__VOLUME_CACHE_DIRECTORY?}:/ps/tmp
+      - ${PHOTOSTRUCTURE<__INSTANCE>__VOLUME_LIBRARY?}:/ps/library

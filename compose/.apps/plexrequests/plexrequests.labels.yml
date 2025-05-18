@@ -1,6 +1,6 @@
 services:
-  plexrequests:
+  plexrequests<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "true"
       com.dockstarter.appinfo.description: "(DEPRECATED) Use Ombi"
-      com.dockstarter.appinfo.nicename: "PlexRequests"
+      com.dockstarter.appinfo.nicename: "PlexRequests<__Instance>"

@@ -1,6 +1,6 @@
 services:
-  watchtower:
+  watchtower<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Automatically update running Docker containers"
-      com.dockstarter.appinfo.nicename: "Watchtower"
+      com.dockstarter.appinfo.nicename: "Watchtower<__Instance>"

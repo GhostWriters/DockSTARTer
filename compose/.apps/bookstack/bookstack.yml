@@ -1,13 +1,13 @@
 services:
-  bookstack:
-    container_name: ${BOOKSTACK__CONTAINER_NAME?}
-    env_file: env_files/bookstack.env
+  bookstack<__instance>:
+    container_name: ${BOOKSTACK<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/bookstack<__instance>.env
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}
       - TZ=${TZ?}
-    restart: ${BOOKSTACK__RESTART?}
+    restart: ${BOOKSTACK<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG?}/bookstack:/config
+      - ${DOCKER_VOLUME_CONFIG?}/bookstack<__instance>:/config
       - ${DOCKER_VOLUME_STORAGE?}:/storage

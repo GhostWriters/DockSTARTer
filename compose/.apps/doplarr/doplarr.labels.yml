@@ -1,6 +1,6 @@
 services:
-  doplarr:
+  doplarr<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "An *arr request bot for Discord"
-      com.dockstarter.appinfo.nicename: "Doplarr"
+      com.dockstarter.appinfo.nicename: "Doplarr<__Instance>"

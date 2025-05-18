@@ -1,3 +1,3 @@
 services:
-  lazylibrarian:
-    hostname: ${LAZYLIBRARIAN__HOSTNAME?}
+  lazylibrarian<__instance>:
+    hostname: ${LAZYLIBRARIAN<__INSTANCE>__HOSTNAME?}

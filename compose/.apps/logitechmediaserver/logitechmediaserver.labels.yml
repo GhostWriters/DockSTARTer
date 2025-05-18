@@ -1,7 +1,7 @@
 services:
-  logitechmediaserver:
+  logitechmediaserver<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "true"
       com.dockstarter.appinfo.description: "(DEPRECATED) Use LyrionMusicServer"
-      com.dockstarter.appinfo.nicename: "LogitechMediaServer"
+      com.dockstarter.appinfo.nicename: "LogitechMediaServer<__Instance>"
       com.dockstarter.appinfo.migrateto: "lyrionmusicserver"

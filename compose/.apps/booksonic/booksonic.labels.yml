@@ -1,6 +1,6 @@
 services:
-  booksonic:
+  booksonic<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "true"
       com.dockstarter.appinfo.description: "(DEPRECATED) Use BooksonicAir"
-      com.dockstarter.appinfo.nicename: "Booksonic"
+      com.dockstarter.appinfo.nicename: "Booksonic<__Instance>"

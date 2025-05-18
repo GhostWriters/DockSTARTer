@@ -1,6 +1,6 @@
 services:
-  deluge:
+  deluge<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Lightweight, Full-featured BitTorrent client"
-      com.dockstarter.appinfo.nicename: "Deluge"
+      com.dockstarter.appinfo.nicename: "Deluge<__Instance>"

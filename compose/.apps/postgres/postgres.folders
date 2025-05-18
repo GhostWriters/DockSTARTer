@@ -1,1 +1,1 @@
-${DOCKER_VOLUME_CONFIG}/postgres
+${DOCKER_VOLUME_CONFIG}/postgres<__instance>

@@ -1,6 +1,6 @@
 services:
-  varken:
+  varken<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Utility to aggregate data from the Plex ecosystem"
-      com.dockstarter.appinfo.nicename: "Varken"
+      com.dockstarter.appinfo.nicename: "Varken<__Instance>"

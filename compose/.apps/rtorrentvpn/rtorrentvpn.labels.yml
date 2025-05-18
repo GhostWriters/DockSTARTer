@@ -1,6 +1,6 @@
 services:
-  rtorrentvpn:
+  rtorrentvpn<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "true"
       com.dockstarter.appinfo.description: "(DEPRECATED) rTorrent with PrivoxyVPN"
-      com.dockstarter.appinfo.nicename: "rTorrentVPN"
+      com.dockstarter.appinfo.nicename: "rTorrentVPN<__Instance>"

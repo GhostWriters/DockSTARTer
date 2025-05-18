@@ -1,6 +1,6 @@
 services:
-  htpcmanager:
+  htpcmanager<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Front end for many htpc related applications"
-      com.dockstarter.appinfo.nicename: "HTPCManager"
+      com.dockstarter.appinfo.nicename: "HTPCManager<__Instance>"

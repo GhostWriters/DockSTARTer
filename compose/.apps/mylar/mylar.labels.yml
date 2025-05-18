@@ -1,6 +1,6 @@
 services:
-  mylar:
+  mylar<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "true"
       com.dockstarter.appinfo.description: "(DEPRECATED) Use Mylar3"
-      com.dockstarter.appinfo.nicename: "Mylar"
+      com.dockstarter.appinfo.nicename: "Mylar<__Instance>"

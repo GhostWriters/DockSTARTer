@@ -1,6 +1,6 @@
 services:
-  azuracast:
+  azuracast<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Web radio management suite with Liquidsoap and Icecast."
-      com.dockstarter.appinfo.nicename: "AzuraCast"
+      com.dockstarter.appinfo.nicename: "AzuraCast<__Instance>"

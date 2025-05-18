@@ -1,6 +1,6 @@
 services:
-  adguard:
+  adguard<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Network-wide ads & trackers blocking DNS server"
-      com.dockstarter.appinfo.nicename: "Adguard"
+      com.dockstarter.appinfo.nicename: "Adguard<__Instance>"

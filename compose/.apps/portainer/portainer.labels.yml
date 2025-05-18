@@ -1,6 +1,6 @@
 services:
-  portainer:
+  portainer<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Simple management UI for Docker"
-      com.dockstarter.appinfo.nicename: "Portainer"
+      com.dockstarter.appinfo.nicename: "Portainer<__Instance>"

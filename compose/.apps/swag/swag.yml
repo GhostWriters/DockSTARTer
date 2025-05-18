@@ -1,15 +1,15 @@
 services:
-  swag:
+  swag<__instance>:
     cap_add:
       - NET_ADMIN
-    container_name: ${SWAG__CONTAINER_NAME?}
-    env_file: env_files/swag.env
+    container_name: ${SWAG<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/swag<__instance>.env
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}
       - TZ=${TZ?}
-    restart: ${SWAG__RESTART?}
+    restart: ${SWAG<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG?}/swag:/config
+      - ${DOCKER_VOLUME_CONFIG?}/swag<__instance>:/config
       - ${DOCKER_VOLUME_STORAGE?}:/storage

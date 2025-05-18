@@ -1,6 +1,6 @@
 services:
-  adminer:
+  adminer<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "A full-featured database management tool"
-      com.dockstarter.appinfo.nicename: "Adminer"
+      com.dockstarter.appinfo.nicename: "Adminer<__Instance>"

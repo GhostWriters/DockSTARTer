@@ -1,6 +1,6 @@
 services:
-  duplicacy:
+  duplicacy<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Duplicacy is built on top of a new idea called Lock-Free Deduplication"
-      com.dockstarter.appinfo.nicename: "Duplicacy"
+      com.dockstarter.appinfo.nicename: "Duplicacy<__Instance>"

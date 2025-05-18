@@ -1,6 +1,6 @@
 services:
-  traktarr:
+  traktarr<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Traktarr uses Trakt.tv to find shows and movies to add in to Sonarr and Radarr, respectively."
-      com.dockstarter.appinfo.nicename: "Traktarr"
+      com.dockstarter.appinfo.nicename: "Traktarr<__Instance>"

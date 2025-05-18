@@ -1,1 +1,1 @@
-${DOCKER_VOLUME_CONFIG}/ddclient
+${DOCKER_VOLUME_CONFIG}/ddclient<__instance>

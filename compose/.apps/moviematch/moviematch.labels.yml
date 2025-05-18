@@ -1,6 +1,6 @@
 services:
-  moviematch:
+  moviematch<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Have you ever spent longer deciding on a movie than it'd take to juwatch a random movie? This is an app that helps you and your frienpick a movie to watch from a Plex server."
-      com.dockstarter.appinfo.nicename: "Moviematch"
+      com.dockstarter.appinfo.nicename: "Moviematch<__Instance>"

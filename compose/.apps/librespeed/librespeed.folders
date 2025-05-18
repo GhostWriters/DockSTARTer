@@ -1,1 +1,1 @@
-${DOCKER_VOLUME_CONFIG}/librespeed
+${DOCKER_VOLUME_CONFIG}/librespeed<__instance>
