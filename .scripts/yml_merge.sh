@@ -22,7 +22,6 @@ commands_yml_merge() {
                 if run_script 'app_is_depreciated' "${APPNAME}"; then
                     warn "${AppName} IS DEPRECATED!"
                     warn "Please edit ${COMPOSE_ENV} and set ${APPNAME}__ENABLED to false."
-                    continue
                 fi
                 if [[ ! -f ${APP_FOLDER}/${appname}.${ARCH}.yml ]]; then
                     error "${APP_FOLDER}/${appname}.${ARCH}.yml does not exist."
