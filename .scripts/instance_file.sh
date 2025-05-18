@@ -42,7 +42,7 @@ instance_file() {
 
 test_instance_file() {
     for AppName in watchtower watchtower__number2; do
-    for Suffix in ".labels.yml" ".global.env"; do
+        for Suffix in ".labels.yml" ".global.env"; do
             notice "[${AppName}] [${Suffix}]"
             local InstanceFile
             InstanceFile="$(run_script 'instance_file' "${AppName}" "${Suffix}")"
