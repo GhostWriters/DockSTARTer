@@ -9,7 +9,6 @@ menu_app_select() {
     local EnabledApps=()
     while IFS= read -r line; do
         local APPNAME=${line^^}
-        local appname=${APPNAME
         APP_FOLDER="$(run_script 'instance_folder' "${APPNAME}")"
         if [[ -d ${APP_FOLDER}/ ]]; then
             local main_yml
