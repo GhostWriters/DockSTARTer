@@ -20,7 +20,7 @@ appvars_purge() {
             if use_dialog_box; then
                 dialog --title "${Title}" --msgbox "${APPNAME} has no variables." 0 0
             else
-                warn "${APPNAME} has no variables."
+                warn "Application ${AppName} has no variables."
             fi
             return
         fi
