@@ -31,13 +31,18 @@ menu_value_prompt() {
             DefaultVarFile="$(run_script 'app_instance_file' "${appname}" ".global.env")"
         fi
     fi
-    local AppIsUserDefined
-    local VarIsUserDefined
+    local AppIsDisabled=''
+    local AppIsDepreciated=''
+    local AppIsUserDefined=''
+    local VarIsUserDefined=''
+    if run_script 'app_is_disabled' "${appname}"; then
+        AppIsDisabled='Y'
+    fi
     if run_script 'app_is_builtin' "${appname}"; then
-        AppIsUserDefined=''
-        if run_script 'env_var_exists' "${CleanVarName}" "${DefaultVarFile}"; then
-            VarIsUserDefined=''
-        else
+        if run_script 'app_is_depreciated' "${appname}"; then
+            AppIsDepreciated='Y'
+        fi
+        if ! run_script 'env_var_exists' "${CleanVarName}" "${DefaultVarFile}"; then
             VarIsUserDefined='Y'
         fi
     else
@@ -220,6 +225,11 @@ menu_value_prompt() {
     local AppNameHeading="   Application: ${DC[Heading]}${AppName}${DC[NC]}"
     if [[ ${AppIsUserDefined} == 'Y' ]]; then
         AppNameHeading="${AppNameHeading} ${DC[HeadingUserDefined]}(User Defined)${DC[NC]}"
+    elif [[ ${AppIsDepreciated} == 'Y' ]]; then
+        AppNameHeading="${AppNameHeading} ${DC[HeadingUserDefined]}*DEPRECIATED*${DC[NC]}"
+    fi
+    if [[ ${AppIsDisabled} == 'Y' ]]; then
+        AppNameHeading="${AppNameHeading} ${DC[HeadingUserDefined]}(Disabled)${DC[NC]}"
     fi
     local FilenameHeading="          File: ${DC[Heading]}${VarFile}${DC[NC]}"
     local VarNameHeading="      Variable: ${DC[Heading]}${CleanVarName}${DC[NC]}"
