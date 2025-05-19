@@ -20,7 +20,7 @@ env_set_literal() {
     if [[ ${SET_VAR} =~ ^[A-Za-z0-9_]+: ]]; then
         # SET_VAR is in the form of "APPNAME:VARIABLE", set new file to use
         local APPNAME=${SET_VAR%%:*}
-        VAR_FILE="${APP_ENV_FOLDER}/${APPNAME,,}.env"
+        VAR_FILE="$(run_script 'app_env_file' "${APPNAME}")"
         SET_VAR=${SET_VAR#"${APPNAME}:"}
     fi
     if [[ ! -f ${VAR_FILE} ]]; then

@@ -15,6 +15,6 @@ app_env_file() {
 
 test_app_env_file() {
     for AppName in watchtower radarr radarr__4k; do
-            notice "[${AppName}] [$(run_script 'app_env_file' "${AppName}")]"
+        notice "[${AppName}] [$(run_script 'app_env_file' "${AppName}")]"
     done
 }

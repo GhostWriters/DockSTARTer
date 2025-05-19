@@ -18,15 +18,9 @@ appvars_create() {
             local AppDefaultGlobalEnvFile AppDefaultAppEnvFile AppEnvFile
             AppDefaultGlobalEnvFile="$(run_script 'app_instance_file' "${appname}" ".global.env")"
             AppDefaultAppEnvFile="$(run_script 'app_instance_file' "${appname}" ".app.env")"
-            AppEnvFile="${APP_ENV_FOLDER}/${appname}.env"
+            AppEnvFile="$(run_script 'app_env_file' "${appname}")"
 
             info "Creating environment variables for ${AppName}."
-
-            if [[ ! -d ${APP_ENV_FOLDER} ]]; then
-                warn "Folder ${APP_ENV_FOLDER} not found. Creating it."
-                mkdir -p "${APP_ENV_FOLDER}" ||
-                    fatal "Failed to create folder.\nFailing command: ${F[C]}mkdir -p \"${APP_ENV_FOLDER}\""
-            fi
 
             if ! run_script 'env_var_exists' "${APPNAME}__ENABLED"; then
                 run_script 'env_set' "${APPNAME}__ENABLED" true
@@ -48,6 +42,8 @@ test_appvars_create() {
     run_script 'env_update'
     echo "${COMPOSE_ENV}:"
     cat "${COMPOSE_ENV}"
-    echo "${APP_ENV_FOLDER}/watchtower.env:"
-    cat "${APP_ENV_FOLDER}/watchtower.env"
+    local EnvFile
+    EnvFile="$(run_script 'app_env_file' "watchtower")"
+    echo "${EnvFile}:"
+    cat "${EnvFile}"
 }

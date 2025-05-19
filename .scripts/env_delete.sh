@@ -9,7 +9,7 @@ env_delete() {
     if [[ ${DELETE_VAR} =~ ^[A-Za-z0-9_]+: ]]; then
         # SET_VAR is in the form of "APPNAME:VARIABLE", set new file to use
         local APPNAME=${DELETE_VAR%%:*}
-        VAR_FILE="${APP_ENV_FOLDER}/${APPNAME,,}.env"
+        VAR_FILE="$(run_script 'app_env_file' "${APPNAME}")"
         DELETE_VAR=${DELETE_VAR#"${APPNAME}:"}
     fi
     if [[ ! -f ${VAR_FILE} ]]; then

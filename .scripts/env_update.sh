@@ -37,7 +37,8 @@ env_update() {
 
     # Process all referenced appname.env files
     for appname in ${AppList,,}; do
-        local APP_ENV_FILE="${APP_ENV_FOLDER}/${appname}.env"
+        local APP_ENV_FILE
+        APP_ENV_FILE="$(run_script 'app_env_file' "${appname}")"
         local APP_DEFAULT_ENV_FILE=""
         if run_script 'app_is_added' "${appname}"; then
             APP_DEFAULT_ENV_FILE="$(run_script 'app_instance_file' "${appname}" ".app.env")"

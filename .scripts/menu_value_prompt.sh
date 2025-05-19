@@ -54,7 +54,7 @@ menu_value_prompt() {
     if [[ -n ${APPNAME-} ]]; then
         if [[ ${VarName} == *":"* ]]; then
             CleanVarName=${VarName#*:}
-            VarFile="${APP_ENV_FOLDER}/${appname}.env"
+            VarFile="$(run_script 'app_env_file' "${appname}")"
             DefaultVarFile="$(run_script 'app_instance_file' "${appname}" ".app.env")"
         else
             DefaultVarFile="$(run_script 'app_instance_file' "${appname}" ".global.env")"

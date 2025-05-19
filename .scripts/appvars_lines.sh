@@ -18,7 +18,7 @@ appvars_lines() {
     elif [[ ${APPNAME} =~ ^[A-Za-z0-9_]+: ]]; then
         # APPNAME is in the form of "APPNAME:", list all variable lines in "appname.env"
         APPNAME=${APPNAME%%:*}
-        VAR_FILE="${APP_ENV_FOLDER}/${APPNAME,,}.env"
+        VAR_FILE="$(run_script 'app_env_file' "${APPNAME}")"
         run_script 'env_lines' "${VAR_FILE}"
     else
         # Search for all variables for app "APPNAME"

@@ -7,7 +7,8 @@ appvars_list() {
     if [[ ${APPNAME} =~ ^[A-Za-z0-9_]+: ]]; then
         # APPNAME is in the form of "APPNAME:", list all variable in "env_files/appname.env"
         APPNAME=${APPNAME%%:*}
-        local VAR_FILE="${APP_ENV_FOLDER}/${APPNAME,,}.env"
+        local VAR_FILE
+        VAR_FILE="$(run_script 'app_env_file' "${APPNAME}")"
         run_script 'env_var_list' "${VAR_FILE}"
     else
         local VAR_REGEX="${APPNAME}__(?![A-Za-z0-9]+__)\w+"

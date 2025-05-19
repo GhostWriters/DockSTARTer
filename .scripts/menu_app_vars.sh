@@ -108,7 +108,7 @@ menu_app_vars() {
         LineColor[LineNumber]="${ColorLineOther}"
 
         ((++LineNumber))
-        CurrentValueOnLine[LineNumber]="*** ${APP_ENV_FOLDER}/${appname}.env ***"
+        CurrentValueOnLine[LineNumber]="*** $(run_script 'app_env_file' "${appname}") ***"
         LineColor[LineNumber]="${ColorLineHeading}"
         run_script 'appvars_lines' "${appname}:" > "${CurrentAppEnvFile}"
         local -a CurrentAppEnvLines

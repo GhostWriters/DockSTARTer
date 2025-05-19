@@ -19,7 +19,7 @@ env_get_line() {
     if [[ ${GET_VAR} =~ ^[A-Za-z0-9_]+: ]]; then
         # GET_VAR is in the form of "APPNAME:VARIABLE", set new file to use
         local APPNAME=${GET_VAR%%:*}
-        VAR_FILE="${APP_ENV_FOLDER}/${APPNAME,,}.env"
+        VAR_FILE="$(run_script 'app_env_file' "${APPNAME}")"
         GET_VAR=${GET_VAR#"${APPNAME}:"}
     fi
     if [[ -f ${VAR_FILE} ]]; then
