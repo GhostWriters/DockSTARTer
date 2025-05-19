@@ -208,15 +208,15 @@ declare -Ag DC=( # Dialog colors
     [NU]='\ZU'  # No Underline
     [NC]='\Zn'  # No Color
 )
-DC+=(
-    [ColorHeading]="${DC[NC]}${DC[RV]}"
-    [ColorHeadingValue]="${DC[NC]}${DC[BD]}${DC[RV]}"
-    [ColorHighlight]="${DC[NC]}${DC[Y]}${DC[BD]}"
-    [ColorLineHeading]="${DC[NC]}"
-    [ColorLineComment]="${DC[NC]}${DC[K]}${DC[BD]}${DC[RV]}"
-    [ColorLineOther]="${DC[NC]}${DC[K]}${DC[BD]}${DC[RV]}"
-    [ColorLineVar]="${DC[NC]}${DC[K]}${DC[NBD]}${DC[RV]}"
-    [ColorLineAddVariable]="${DC[NC]}${DC[K]}${DC[NBD]}${DC[RV]}"
+DC+=( # Pre-defined color combinations used in the GUI
+    [Heading]="${DC[NC]}${DC[RV]}"
+    [HeadingValue]="${DC[NC]}${DC[BD]}${DC[RV]}"
+    [Highlight]="${DC[NC]}${DC[Y]}${DC[BD]}"
+    [LineHeading]="${DC[NC]}"
+    [LineComment]="${DC[NC]}${DC[K]}${DC[BD]}${DC[RV]}"
+    [LineOther]="${DC[NC]}${DC[K]}${DC[BD]}${DC[RV]}"
+    [LineVar]="${DC[NC]}${DC[K]}${DC[NBD]}${DC[RV]}"
+    [LineAddVariable]="${DC[NC]}${DC[K]}${DC[NBD]}${DC[RV]}"
 )
 readonly DC
 declare -rix DIALOGTIMEOUT=3

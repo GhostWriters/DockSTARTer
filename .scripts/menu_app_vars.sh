@@ -44,7 +44,7 @@ menu_app_vars() {
         local -i LineNumber=0
         local FirstVarLine
         ((++LineNumber))
-        LineColor[LineNumber]="${DC[ColorLineHeading]}"
+        LineColor[LineNumber]="${DC[LineHeading]}"
         CurrentValueOnLine[LineNumber]="*** ${COMPOSE_ENV} ***"
         run_script 'appvars_lines' "${appname}" > "${CurrentGlobalEnvFile}"
         local -a CurrentGlobalEnvLines
@@ -58,30 +58,30 @@ menu_app_vars() {
             VarName="$(grep -o -P '^\w+(?=)' <<< "${line}")"
             if [[ -n ${VarName-} ]]; then
                 # Line contains a variable
-                LineColor[LineNumber]="${DC[ColorLineVar]}"
+                LineColor[LineNumber]="${DC[LineVar]}"
                 VarNameOnLine[LineNumber]="${VarName}"
                 if [[ -z ${FirstVarLine-} ]]; then
                     FirstVarLine=${LineNumber}
                 fi
             elif (grep -q -P '^\s*#' <<< "${line}"); then
                 # Line is a comment
-                LineColor[LineNumber]="${DC[ColorLineComment]}"
+                LineColor[LineNumber]="${DC[LineComment]}"
             else
                 # Line is an unknowwn line
-                LineColor[LineNumber]="${DC[ColorLineAddVariable]}"
+                LineColor[LineNumber]="${DC[LineAddVariable]}"
             fi
         done
         ((LineNumber++))
         local AddGlobalVariableLineNumber=${LineNumber}
         CurrentValueOnLine[LineNumber]="${AddVariableText}"
-        LineColor[LineNumber]="${DC[ColorLineAddVariable]}"
+        LineColor[LineNumber]="${DC[LineAddVariable]}"
         ((++LineNumber))
         CurrentValueOnLine[LineNumber]=""
-        LineColor[LineNumber]="${DC[ColorLineOther]}"
+        LineColor[LineNumber]="${DC[LineOther]}"
 
         ((++LineNumber))
         CurrentValueOnLine[LineNumber]="*** $(run_script 'app_env_file' "${appname}") ***"
-        LineColor[LineNumber]="${DC[ColorLineHeading]}"
+        LineColor[LineNumber]="${DC[LineHeading]}"
         run_script 'appvars_lines' "${appname}:" > "${CurrentAppEnvFile}"
         local -a CurrentAppEnvLines
         readarray -t CurrentAppEnvLines < <(
@@ -94,23 +94,23 @@ menu_app_vars() {
             VarName="$(grep -o -P '^\w+(?=)' <<< "${line}")"
             if [[ -n ${VarName-} ]]; then
                 # Line contains a variable
-                LineColor[LineNumber]="${DC[ColorLineVar]}"
+                LineColor[LineNumber]="${DC[LineVar]}"
                 VarNameOnLine[LineNumber]="${appname}:${VarName}"
                 if [[ -z ${FirstVarLine-} ]]; then
                     FirstVarLine=${LineNumber}
                 fi
             elif (grep -q -P '^\s*#' <<< "${line}"); then
                 # Line is a comment
-                LineColor[LineNumber]="${DC[ColorLineComment]}"
+                LineColor[LineNumber]="${DC[LineComment]}"
             else
                 # Line is an unknowwn line
-                LineColor[LineNumber]="${DC[ColorLineOther]}"
+                LineColor[LineNumber]="${DC[LineOther]}"
             fi
         done
         ((LineNumber++))
         local AddAppEnvVariableLineNumber=${LineNumber}
         CurrentValueOnLine[LineNumber]="${AddVariableText}"
-        LineColor[LineNumber]="${DC[ColorLineAddVariable]}"
+        LineColor[LineNumber]="${DC[LineAddVariable]}"
 
         local TotalLines=$((10#${LineNumber}))
         local PadSize=${#TotalLines}
@@ -129,7 +129,7 @@ menu_app_vars() {
             --ok-label "Select"
             --cancel-label "Done"
             --title "${Title}"
-            --menu "\nApplication: ${DC[ColorHeading]}${AppName}${DC[NC]}\n" 0 0 0
+            --menu "\nApplication: ${DC[Heading]}${AppName}${DC[NC]}\n" 0 0 0
             "${LineOptions[@]}"
         )
         while true; do

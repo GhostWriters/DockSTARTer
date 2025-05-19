@@ -31,23 +31,23 @@ menu_config_global() {
             VarName="$(grep -o -P '^\w+(?=)' <<< "${line}")"
             if [[ -n ${VarName-} ]]; then
                 # Line contains a variable
-                LineColor[LineNumber]="${DC[ColorLineVar]}"
+                LineColor[LineNumber]="${DC[LineVar]}"
                 VarNameOnLine[LineNumber]="${VarName}"
                 if [[ -z ${FirstVarLine-} ]]; then
                     FirstVarLine=${LineNumber}
                 fi
             elif (grep -q -P '^\s*#' <<< "${line}"); then
                 # Line is a comment
-                LineColor[LineNumber]="${DC[ColorLineComment]}"
+                LineColor[LineNumber]="${DC[LineComment]}"
             else
                 # Line is an unknowwn line
-                LineColor[LineNumber]="${DC[ColorLineOther]}"
+                LineColor[LineNumber]="${DC[LineOther]}"
             fi
         done
         ((LineNumber++))
         local AddVariableLineNumber=${LineNumber}
         CurrentValueOnLine[LineNumber]="${AddVariableText}"
-        LineColor[LineNumber]="${DC[ColorLineAddVariable]}"
+        LineColor[LineNumber]="${DC[LineAddVariable]}"
 
         local TotalLines=$((10#${LineNumber}))
         local PadSize=${#TotalLines}
@@ -66,7 +66,7 @@ menu_config_global() {
             --ok-label "Select"
             --cancel-label "Done"
             --title "${Title}"
-            --menu "\nFile: ${DC[ColorHeading]}${COMPOSE_ENV}${DC[NC]}\n" 0 0 0
+            --menu "\nFile: ${DC[Heading]}${COMPOSE_ENV}${DC[NC]}\n" 0 0 0
             "${LineOptions[@]}"
         )
         while true; do

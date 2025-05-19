@@ -59,7 +59,7 @@ menu_value_prompt() {
     local -a PossibleOptions=("${CurrentValueOption}")
     case "${VarName}" in
         DOCKER_GID)
-            ValueDescription="\n\n This should be the Docker group ID. If you are unsure, select ${DC[ColorHighlight]}${SystemValueOption}${DC[NC]}."
+            ValueDescription="\n\n This should be the Docker group ID. If you are unsure, select ${DC[Highlight]}${SystemValueOption}${DC[NC]}."
             OptionValue+=(
                 ["${SystemValueOption}"]="'$(cut -d: -f3 < <(getent group docker))'"
             )
@@ -68,7 +68,7 @@ menu_value_prompt() {
             )
             ;;
         DOCKER_HOSTNAME)
-            ValueDescription="\n\n This should be your system hostname. If you are unsure, select ${DC[ColorHighlight]}${SystemValueOption}${DC[NC]}."
+            ValueDescription="\n\n This should be your system hostname. If you are unsure, select ${DC[Highlight]}${SystemValueOption}${DC[NC]}."
             OptionValue+=(
                 ["${SystemValueOption}"]="'${HOSTNAME}'"
             )
@@ -104,7 +104,7 @@ menu_value_prompt() {
             )
             ;;
         PGID)
-            ValueDescription="\n\n This should be your user group ID. If you are unsure, select ${DC[ColorHighlight]}${SystemValueOption}${DC[NC]}."
+            ValueDescription="\n\n This should be your user group ID. If you are unsure, select ${DC[Highlight]}${SystemValueOption}${DC[NC]}."
             OptionValue+=(
                 ["${SystemValueOption}"]="'${DETECTED_PGID}'"
             )
@@ -113,7 +113,7 @@ menu_value_prompt() {
             )
             ;;
         PUID)
-            ValueDescription="\n\n This should be your user account ID. If you are unsure, select ${DC[ColorHighlight]}${SystemValueOption}${DC[NC]}."
+            ValueDescription="\n\n This should be your user account ID. If you are unsure, select ${DC[Highlight]}${SystemValueOption}${DC[NC]}."
             OptionValue+=(
                 ["${SystemValueOption}"]="'${DETECTED_PUID}'"
             )
@@ -140,7 +140,7 @@ menu_value_prompt() {
             )
             ;;
         "${APPNAME}__NETWORK_MODE")
-            ValueDescription="\n\n Network Mode is usually left blank but can also be ${DC[ColorHighlight]}bridge${DC[NC]}, ${DC[ColorHighlight]}host${DC[NC]}, ${DC[ColorHighlight]}none${DC[NC]}, ${DC[ColorHighlight]}service:<appname>${DC[NC]}, or ${DC[ColorHighlight]}container:<appname>${DC[NC]}."
+            ValueDescription="\n\n Network Mode is usually left blank but can also be ${DC[Highlight]}bridge${DC[NC]}, ${DC[Highlight]}host${DC[NC]}, ${DC[Highlight]}none${DC[NC]}, ${DC[Highlight]}service:<appname>${DC[NC]}, or ${DC[Highlight]}container:<appname>${DC[NC]}."
             OptionValue+=(
                 ["${DefaultValueOption}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
                 ["Bridge Network"]="'bridge'"
@@ -159,7 +159,7 @@ menu_value_prompt() {
             )
             ;;
         "${APPNAME}__PORT_"*)
-            ValueDescription="\n\n Must be an unused port between ${DC[ColorHighlight]}0${DC[NC]} and ${DC[ColorHighlight]}65535${DC[NC]}."
+            ValueDescription="\n\n Must be an unused port between ${DC[Highlight]}0${DC[NC]} and ${DC[Highlight]}65535${DC[NC]}."
             OptionValue+=(
                 ["${DefaultValueOption}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
             )
@@ -168,7 +168,7 @@ menu_value_prompt() {
             )
             ;;
         "${APPNAME}__RESTART")
-            ValueDescription="\n\n Restart is usually ${DC[ColorHighlight]}unless-stopped${DC[NC]} but can also be ${DC[ColorHighlight]}no${DC[NC]}, ${DC[ColorHighlight]}always${DC[NC]}, or ${DC[ColorHighlight]}on-failure${DC[NC]}."
+            ValueDescription="\n\n Restart is usually ${DC[Highlight]}unless-stopped${DC[NC]} but can also be ${DC[Highlight]}no${DC[NC]}, ${DC[Highlight]}always${DC[NC]}, or ${DC[Highlight]}on-failure${DC[NC]}."
             OptionValue+=(
                 ["${DefaultValueOption}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
                 ["Restart Unless Stopped"]="'unless-stopped'"
@@ -217,27 +217,27 @@ menu_value_prompt() {
     if [[ -n ${OptionValue["${SystemValueOption}"]-} ]]; then
         ValueDescription="\n\n System detected values are recommended.${ValueDescription}"
     fi
-    local AppNameHeading="   Application: ${DC[ColorHeading]}${AppName}${DC[NC]}"
+    local AppNameHeading="   Application: ${DC[Heading]}${AppName}${DC[NC]}"
     if [[ ${AppIsUserDefined} == 'Y' ]]; then
-        AppNameHeading="${AppNameHeading} ${DC[ColorHighlight]}*User Defined*${DC[NC]}"
+        AppNameHeading="${AppNameHeading} ${DC[Highlight]}*User Defined*${DC[NC]}"
     fi
-    local FilenameHeading="          File: ${DC[ColorHeading]}${VarFile}${DC[NC]}"
-    local VarNameHeading="      Variable: ${DC[ColorHeading]}${CleanVarName}${DC[NC]}"
+    local FilenameHeading="          File: ${DC[Heading]}${VarFile}${DC[NC]}"
+    local VarNameHeading="      Variable: ${DC[Heading]}${CleanVarName}${DC[NC]}"
     if [[ ${VarIsUserDefined} == 'Y' ]]; then
-        VarNameHeading="${VarNameHeading} ${DC[ColorHighlight]}*User Defined*${DC[NC]}"
+        VarNameHeading="${VarNameHeading} ${DC[Highlight]}*User Defined*${DC[NC]}"
     fi
     local OriginalValueHeading="Original Value: "
     if [[ -n ${OptionValue["${OriginalValueOption}"]-} ]]; then
-        OriginalValueHeading="${OriginalValueHeading}${DC[ColorHeading]}${OptionValue["${OriginalValueOption}"]-}${DC[NC]}"
+        OriginalValueHeading="${OriginalValueHeading}${DC[Heading]}${OptionValue["${OriginalValueOption}"]-}${DC[NC]}"
     else
-        OriginalValueHeading="${OriginalValueHeading}${DC[ColorHighlight]}* DELETED *${DC[NC]}"
+        OriginalValueHeading="${OriginalValueHeading}${DC[Highlight]}* DELETED *${DC[NC]}"
     fi
     while true; do
         local CurrentValueHeading=" Current Value: "
         if [[ -n ${OptionValue["${CurrentValueOption}"]-} ]]; then
-            CurrentValueHeading="${CurrentValueHeading}${DC[ColorHeadingValue]}${OptionValue["${CurrentValueOption}"]-}${DC[NC]}"
+            CurrentValueHeading="${CurrentValueHeading}${DC[HeadingValue]}${OptionValue["${CurrentValueOption}"]-}${DC[NC]}"
         else
-            CurrentValueHeading="${CurrentValueHeading}${DC[ColorHighlight]}* DELETED *${DC[NC]}"
+            CurrentValueHeading="${CurrentValueHeading}${DC[Highlight]}* DELETED *${DC[NC]}"
         fi
         local -a ValidOptions=()
         local -a ValueOptions=()
@@ -269,7 +269,7 @@ ${OriginalValueHeading}
 ${CurrentValueHeading}
 "
         # editorconfig-checker-enable
-        local SelectValueMenuText="${DescriptionHeading}\nWhat would you like set for ${DC[ColorHighlight]}${CleanVarName}${DC[NC]}?${ValueDescription}"
+        local SelectValueMenuText="${DescriptionHeading}\nWhat would you like set for ${DC[Highlight]}${CleanVarName}${DC[NC]}?${ValueDescription}"
 
         local -i SelectValueDialogButtonPressed=0
         local SelectedValue
@@ -313,7 +313,7 @@ ${CurrentValueHeading}
                         ValueValid="true"
                     else
                         ValueValid="false"
-                        dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\nYou are not allowed to delete built-in variables.\nPlease try setting ${DC[ColorHighlight]}${CleanVarName}${DC[NC]} again." 0 0
+                        dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\nYou are not allowed to delete built-in variables.\nPlease try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again." 0 0
                     fi
                 elif [[ ${OptionValue["${CurrentValueOption}"]} == *"$"* ]]; then
                     # Value contains a '$', assume it uses variable interpolation and allow it
@@ -322,7 +322,7 @@ ${CurrentValueHeading}
                     local StrippedValue="${OptionValue["${CurrentValueOption}"]}"
                     # Strip comments from the value
                     #StrippedValue="$(sed -E "s/('([^']|'')*'|\"([^\"]|\"\")*\")|(#.*)//g" <<< "${StrippedValue}")"
-                    #dialog --colors --title "${Title}" --msgbox "Original Value=${DC[ColorHighlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]}\nStripped Value=${DC[ColorHighlight]}${StrippedValue}${DC[NC]}" 0 0
+                    #dialog --colors --title "${Title}" --msgbox "Original Value=${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]}\nStripped Value=${DC[Highlight]}${StrippedValue}${DC[NC]}" 0 0
                     # Unqauote the value
                     StrippedValue="$(sed -E "s|^(['\"])(.*)\1$|\2|g" <<< "${StrippedValue}")"
 
@@ -342,7 +342,7 @@ ${CurrentValueHeading}
                                     ;;
                                 *)
                                     ValueValid="false"
-                                    dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[ColorHighlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid network mode. Please try setting ${DC[ColorHighlight]}${CleanVarName}${DC[NC]} again." 0 0
+                                    dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid network mode. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again." 0 0
                                     ;;
                             esac
                             ;;
@@ -352,7 +352,7 @@ ${CurrentValueHeading}
                                 ValueValid="true"
                             else
                                 ValueValid="false"
-                                dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[ColorHighlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid port. Please try setting ${DC[ColorHighlight]}${CleanVarName}${DC[NC]} again." 0 0
+                                dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid port. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again." 0 0
                             fi
                             ;;
                         "${APPNAME}__RESTART")
@@ -362,7 +362,7 @@ ${CurrentValueHeading}
                                     ;;
                                 *)
                                     ValueValid="false"
-                                    dialog --colors --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[ColorHighlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid restart value. Please try setting ${DC[ColorHighlight]}${CleanVarName}${DC[NC]} again." 0 0
+                                    dialog --colors --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid restart value. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again." 0 0
                                     ;;
                             esac
                             ;;
@@ -382,20 +382,20 @@ ${CurrentValueHeading}
                                 fi
                             elif [[ -d ${StrippedValue} ]]; then
                                 if run_script 'question_prompt' Y "${DescriptionHeading}\nWould you like to set permissions on ${OptionValue["${CurrentValueOption}"]} ?" "${Title}"; then
-                                    run_script_dialog "Setting Permissions" "${DC[ColorHeading]}${StrippedValue}${DC[NC]}" "${DIALOGTIMEOUT}" \
+                                    run_script_dialog "Setting Permissions" "${DC[Heading]}${StrippedValue}${DC[NC]}" "${DIALOGTIMEOUT}" \
                                         'set_permissions' "${StrippedValue}"
                                 fi
                                 ValueValid="true"
                             else
-                                if run_script 'question_prompt' Y "${DescriptionHeading}\n${DC[ColorHighlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid path. Would you like to attempt to create it?" "${Title}"; then
+                                if run_script 'question_prompt' Y "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid path. Would you like to attempt to create it?" "${Title}"; then
                                     {
                                         mkdir -p "${StrippedValue}" || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p \"${StrippedValue}\""
                                         run_script 'set_permissions' "${StrippedValue}"
                                     } | dialog_pipe "Creating folder and settings permissions" "${OptionValue["${CurrentValueOption}"]}" "${DIALOGTIMEOUT}"
-                                    dialog --colors --title "${Title}" --msgbox "${DC[ColorHighlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} folder was created successfully." 0 0
+                                    dialog --colors --title "${Title}" --msgbox "${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} folder was created successfully." 0 0
                                     ValueValid="true"
                                 else
-                                    dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[ColorHighlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid path. Please try setting ${DC[ColorHighlight]}${CleanVarName}${DC[NC]} again." 0 0
+                                    dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid path. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again." 0 0
                                     ValueValid="false"
                                 fi
                             fi
@@ -410,7 +410,7 @@ ${CurrentValueHeading}
                             elif [[ ${StrippedValue} =~ ^[0-9]+$ ]]; then
                                 ValueValid="true"
                             else
-                                dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[ColorHighlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid ${CleanVarName}. Please try setting ${CleanVarName} again." 0 0
+                                dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid ${CleanVarName}. Please try setting ${CleanVarName} again." 0 0
                                 ValueValid="false"
                             fi
                             ;;
@@ -421,19 +421,19 @@ ${CurrentValueHeading}
                 fi
                 if ${ValueValid}; then
                     if [[ -z ${OptionValue["${CurrentValueOption}"]-} ]]; then
-                        if run_script 'question_prompt' N "${DescriptionHeading}\n\nDo you really want to delete ${DC[ColorHighlight]}${CleanVarName}${DC[NC]}?\n" "Delete Variable" "" "Delete" "Back"; then
+                        if run_script 'question_prompt' N "${DescriptionHeading}\n\nDo you really want to delete ${DC[Highlight]}${CleanVarName}${DC[NC]}?\n" "Delete Variable" "" "Delete" "Back"; then
                             # Value is empty, delete the variable
                             run_script_dialog "Deleting Variable" "${DescriptionHeading}" "${DIALOGTIMEOUT}" \
                                 'env_delete' "${VarName}"
                             return 0
                         fi
                     elif [[ ${OptionValue["${CurrentValueOption}"]-} == "${OptionValue["${OriginalValueOption}"]-}" ]]; then
-                        if run_script 'question_prompt' N "${DescriptionHeading}\n\nThe value of ${DC[ColorHighlight]}${CleanVarName}${DC[NC]} has not been changed, exit anyways?\n" "Save Variable" "" "Done" "Back"; then
+                        if run_script 'question_prompt' N "${DescriptionHeading}\n\nThe value of ${DC[Highlight]}${CleanVarName}${DC[NC]} has not been changed, exit anyways?\n" "Save Variable" "" "Done" "Back"; then
                             # Value has not changed, confirm exiting
                             return 0
                         fi
                     else
-                        if run_script 'question_prompt' N "${DescriptionHeading}\n\nWould you like to save ${DC[ColorHighlight]}${CleanVarName}${DC[NC]}?\n" "Save Variable" "" "Save" "Back"; then
+                        if run_script 'question_prompt' N "${DescriptionHeading}\n\nWould you like to save ${DC[Highlight]}${CleanVarName}${DC[NC]}?\n" "Save Variable" "" "Save" "Back"; then
                             # Value is valid, save it and exit
                             run_script_dialog "Saving Variable" "${DescriptionHeading}" "${DIALOGTIMEOUT}" \
                                 'env_set_literal' "${VarName}" "${OptionValue["${CurrentValueOption}"]}"
