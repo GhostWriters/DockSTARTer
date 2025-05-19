@@ -191,6 +191,36 @@ BS=$(tput cup 1000 0 2> /dev/null || true) # Bottom of screen
 readonly BS
 export BS
 
+declare -Ag DC=( # Dialog colors
+    [B]='\Z4'   # Blue
+    [C]='\Z6'   # Cyan
+    [G]='\Z2'   # Green
+    [K]='\Z0'   # Black
+    [M]='\Z5'   # Magenta
+    [R]='\Z1'   # Red
+    [W]='\Z7'   # White
+    [Y]='\Z3'   # Yellow
+    [RV]='\Zr'  # Reverse
+    [NRV]='\ZR' # No Reverse
+    [BD]='\Zb'  # Bold
+    [NBD]='\ZB' # No Bold
+    [U]='\Zu'   # Underline
+    [NU]='\ZU'  # No Underline
+    [NC]='\Zn'  # No Color
+)
+DC+=(
+    [ColorHeading]="${DC[RV]}"
+    [ColorHeadingValue]="${DC[BD]}${DC[RV]}"
+    [ColorHighlight]="${DC[Y]}${DC[BD]}"
+    [ColorLineHeading]="${DC[NC]}"
+    [ColorLineComment]="${DC[K]}${DC[BD]}${DC[RV]}"
+    [ColorLineOther]="${DC[K]}${DC[BD]}${DC[RV]}"
+    [ColorLineVar]="${DC[K]}${DC[NBD]}${DC[RV]}"
+    [ColorLineAddVariable]="${DC[K]}${DC[NBD]}${DC[RV]}"
+)
+readonly DC
+declare -rx DialogTimeout=3
+
 # Log Functions
 MKTEMP_LOG=$(mktemp) || echo -e "Failed to create temporary log file.\nFailing command: ${F[C]}mktemp"
 readonly MKTEMP_LOG
