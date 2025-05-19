@@ -44,7 +44,7 @@ menu_add_var() {
         fi
         local AppNameHeading="Application: ${DC[Heading]}${AppName}${DC[NC]}"
         if [[ ${AppIsUserDefined} == 'Y' ]]; then
-            AppNameHeading="${AppNameHeading} ${DC[Highlight]}*User Defined*${DC[NC]}"
+            AppNameHeading="${AppNameHeading} ${DC[HeadgingUserDefined]}*User Defined*${DC[NC]}"
         fi
         DescriptionHeading="${DescriptionHeading}\n${AppNameHeading}"
     fi
