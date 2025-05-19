@@ -161,11 +161,11 @@ menu_add_var() {
                 local Question="${DescriptionHeading}\n\n   Variable: ${DC[ColorHeadingValue]}${VarName}${DC[NC]}\n\nCreate variable ${DC[ColorHighlight]}${VarName}${DC[NC]}?\n"
                 if run_script 'question_prompt' N "${Question}" "Create Variable"; then
                     if [[ ${VarType} == "APPENV" ]]; then
-                        run_script_dialog "Creating Variable" "${DescriptionHeading}\n\n   Variable: ${DC[ColorHeadingValue]}${VarName}${DC[NC]}\n\n" "${DialogTimeout}" \
+                        run_script_dialog "Creating Variable" "${DescriptionHeading}\n\n   Variable: ${DC[ColorHeadingValue]}${VarName}${DC[NC]}\n\n" "${DIALOGTIMEOUT}" \
                             'env_set_literal' "${appname}:${VarName}" "${Default}"
                         run_script 'menu_value_prompt' "${appname}:${VarName}"
                     else
-                        run_script_dialog "Creating Variable" "${DescriptionHeading}\n\n   Variable: ${DC[ColorHeadingValue]}${VarName}${DC[NC]}\n\n" "${DialogTimeout}" \
+                        run_script_dialog "Creating Variable" "${DescriptionHeading}\n\n   Variable: ${DC[ColorHeadingValue]}${VarName}${DC[NC]}\n\n" "${DIALOGTIMEOUT}" \
                             'env_set_literal' "${VarName}" "${Default}"
                         run_script 'menu_value_prompt' "${VarName}"
                     fi

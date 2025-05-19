@@ -64,7 +64,7 @@ menu_app_select() {
 
                 run_script 'appvars_purge_all'
                 run_script 'env_update'
-            } |& dialog_pipe "${Title}" "Enabling Selected Applications" "${DialogTimeout}"
+            } |& dialog_pipe "${Title}" "Enabling Selected Applications" "${DIALOGTIMEOUT}"
             return 0
             ;;
         CANCEL | ESC)
