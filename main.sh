@@ -209,14 +209,14 @@ declare -Ag DC=( # Dialog colors
     [NC]='\Zn'  # No Color
 )
 DC+=(
-    [ColorHeading]="${DC[RV]}"
-    [ColorHeadingValue]="${DC[BD]}${DC[RV]}"
-    [ColorHighlight]="${DC[Y]}${DC[BD]}"
+    [ColorHeading]="${DC[NC]}${DC[RV]}"
+    [ColorHeadingValue]="${DC[NC]}${DC[BD]}${DC[RV]}"
+    [ColorHighlight]="${DC[NC]}${DC[Y]}${DC[BD]}"
     [ColorLineHeading]="${DC[NC]}"
-    [ColorLineComment]="${DC[K]}${DC[BD]}${DC[RV]}"
-    [ColorLineOther]="${DC[K]}${DC[BD]}${DC[RV]}"
-    [ColorLineVar]="${DC[K]}${DC[NBD]}${DC[RV]}"
-    [ColorLineAddVariable]="${DC[K]}${DC[NBD]}${DC[RV]}"
+    [ColorLineComment]="${DC[NC]}${DC[K]}${DC[BD]}${DC[RV]}"
+    [ColorLineOther]="${DC[NC]}${DC[K]}${DC[BD]}${DC[RV]}"
+    [ColorLineVar]="${DC[NC]}${DC[K]}${DC[NBD]}${DC[RV]}"
+    [ColorLineAddVariable]="${DC[NC]}${DC[K]}${DC[NBD]}${DC[RV]}"
 )
 readonly DC
 declare -rx DialogTimeout=3
