@@ -107,7 +107,7 @@ menu_add_var() {
                     APP)
                         Value="${Value^^}"
                         VarName="${VarNamePrefix}${Value}"
-                        if run_script 'varname_is_valid' "${VarName}" "_BARE_"; then
+                        if ! run_script 'varname_is_valid' "${VarName}" "_BARE_"; then
                             local ErrorMessage="${DescriptionHeading}\n\n   Variable: ${ColorHeadingValue}${VarName}\Zn\n\nThe variable name ${ColorHighlight}${VarName}\Zn is not a valid name.\n\n Please input another variable name."
                             dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
                             continue
@@ -155,7 +155,7 @@ menu_add_var() {
                         ;;
                     APPENV)
                         VarName="${Value}"
-                        if run_script 'varname_is_valid' "${VarName}" "_BARE_"; then
+                        if ! run_script 'varname_is_valid' "${VarName}" "_BARE_"; then
                             local ErrorMessage="${DescriptionHeading}\n\n   Variable: ${ColorHeadingValue}${VarName}\Zn\n\nThe variable name ${ColorHighlight}${VarName}\Zn is not a valid name.\n\n Please input another variable name."
                             dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
                             continue
@@ -164,7 +164,7 @@ menu_add_var() {
                         ;;
                     GLOBAL)
                         VarName="${Value}"
-                        if run_script 'varname_is_valid' "${VarName}" "_BARE_"; then
+                        if ! run_script 'varname_is_valid' "${VarName}" "_BARE_"; then
                             local ErrorMessage="${DescriptionHeading}\n   Variable: ${ColorHeadingValue}${VarName}\Zn\n\n  The variable name ${ColorHighlight}${VarName}\Zn is not a name.\n\nPlease input another variable name."
                             dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
                             continue
