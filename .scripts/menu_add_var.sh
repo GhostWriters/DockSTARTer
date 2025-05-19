@@ -78,7 +78,7 @@ menu_add_var() {
                     APP)
                         Value="${Value^^}"
                         VarName="${VarNamePrefix}${Value}"
-                        if run_script 'varname_is_valid' "${VarName}" "_BARE_"; then
+                        if ! run_script 'varname_is_valid' "${VarName}" "_BARE_"; then
                             local ErrorMessage="${DescriptionHeading}\n\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\nThe variable name ${DC[Highlight]}${VarName}${DC[NC]} is not a valid name.\n\n Please input another variable name."
                             dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
                             continue
@@ -126,7 +126,7 @@ menu_add_var() {
                         ;;
                     APPENV)
                         VarName="${Value}"
-                        if run_script 'varname_is_valid' "${VarName}" "_BARE_"; then
+                        if ! run_script 'varname_is_valid' "${VarName}" "_BARE_"; then
                             local ErrorMessage="${DescriptionHeading}\n\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\nThe variable name ${DC[Highlight]}${VarName}${DC[NC]} is not a valid name.\n\n Please input another variable name."
                             dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
                             continue
@@ -135,7 +135,7 @@ menu_add_var() {
                         ;;
                     GLOBAL)
                         VarName="${Value}"
-                        if run_script 'varname_is_valid' "${VarName}" "_BARE_"; then
+                        if ! run_script 'varname_is_valid' "${VarName}" "_BARE_"; then
                             local ErrorMessage="${DescriptionHeading}\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\n  The variable name ${DC[Highlight]}${VarName}${DC[NC]} is not a name.\n\nPlease input another variable name."
                             dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
                             continue
