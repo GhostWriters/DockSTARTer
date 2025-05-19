@@ -219,12 +219,12 @@ menu_value_prompt() {
     fi
     local AppNameHeading="   Application: ${DC[Heading]}${AppName}${DC[NC]}"
     if [[ ${AppIsUserDefined} == 'Y' ]]; then
-        AppNameHeading="${AppNameHeading} ${DC[HeadingUserDefined]}*User Defined*${DC[NC]}"
+        AppNameHeading="${AppNameHeading} ${DC[HeadingUserDefined]}(User Defined)${DC[NC]}"
     fi
     local FilenameHeading="          File: ${DC[Heading]}${VarFile}${DC[NC]}"
     local VarNameHeading="      Variable: ${DC[Heading]}${CleanVarName}${DC[NC]}"
     if [[ ${VarIsUserDefined} == 'Y' ]]; then
-        VarNameHeading="${VarNameHeading} ${DC[HeadingUserDefined]}*User Defined*${DC[NC]}"
+        VarNameHeading="${VarNameHeading} ${DC[HeadingUserDefined]}(User Defined)${DC[NC]}"
     fi
     local OriginalValueHeading="Original Value: "
     if [[ -n ${OptionValue["${OriginalValueOption}"]-} ]]; then
