@@ -45,7 +45,7 @@ menu_app_select() {
             --title "${Title}"
             --separate-output
             --checklist
-            'Choose which apps you would like to install:\n Use \Zr[up]${DC[NC]}, \Zr[down]${DC[NC]}, and \Zr[space]${DC[NC]} to select apps, and \Zr[tab]${DC[NC]} to switch to the buttons at the bottom.'
+            "Choose which apps you would like to install:\n Use ${DC[RV]}[up]${DC[NC]}, ${DC[RV]}[down]${DC[NC]}, and ${DC[RV]}[space]${DC[NC]} to select apps, and ${DC[RV]}[tab]${DC[NC]} to switch to the buttons at the bottom."
             $((LINES - 4)) $((COLUMNS - 5)) $((LINES - 5 - 4))
             "${AppList[@]}"
         )
