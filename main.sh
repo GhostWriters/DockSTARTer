@@ -599,7 +599,7 @@ highlighted_list() {
     local List
     List=$(xargs <<< "$*")
     if [[ -n ${List-} ]]; then
-        echo "\Zr${List// /'\ZR \Zr'}\ZR"
+        echo "${DC[RV]}${List// /${DC[NC]} ${DC[RV]}}${DC[NC]}"
     fi
 }
 
@@ -613,7 +613,7 @@ dialog_pipe() {
     local Title=${1:-}
     local SubTitle=${2:-}
     local TimeOut=${3:-0}
-    dialog --begin 2 2 --colors --timeout "${TimeOut}" --title "${Title}" --programbox "\Zr${SubTitle}" $((LINES - 4)) $((COLUMNS - 5)) || true
+    dialog --begin 2 2 --colors --timeout "${TimeOut}" --title "${Title}" --programbox "${DC[RV]}${SubTitle}${DC[NC]}" $((LINES - 4)) $((COLUMNS - 5)) || true
     echo -n "${BS}"
 }
 # Script Dialog Runner Function
