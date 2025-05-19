@@ -201,16 +201,16 @@ menu_value_prompt() {
             OptionValue+=(
                 ["${DefaultValueOption}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
                 ["Restart Unless Stopped"]="'unless-stopped'"
-                ["Restart On Failure"]="'on-failure'"
-                ["Always Restart"]="'always'"
                 ["Never Restart"]="'no'"
+                ["Always Restart"]="'always'"
+                ["Restart On Failure"]="'on-failure'"
             )
             PossibleOptions+=(
                 "${DefaultValueOption}"
                 "Restart Unless Stopped"
-                "Restart On Failure"
-                "Always Restart"
                 "Never Restart"
+                "Always Restart"
+                "Restart On Failure"
             )
             ;;
         "${APPNAME}__TAG")
