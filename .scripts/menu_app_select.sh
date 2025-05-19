@@ -4,7 +4,6 @@ IFS=$'\n\t'
 
 menu_app_select() {
     local Title="Select Applications"
-    local DialogTimeout=2
     dialog --title "${Title}" --infobox "Preparing app menu. Please be patient, this can take a while." 0 0
     local AppList=()
     local EnabledApps=()
@@ -46,7 +45,7 @@ menu_app_select() {
             --title "${Title}"
             --separate-output
             --checklist
-            'Choose which apps you would like to install:\n Use \Zr[up]\Zn, \Zr[down]\Zn, and \Zr[space]\Zn to select apps, and \Zr[tab]\Zn to switch to the buttons at the bottom.'
+            'Choose which apps you would like to install:\n Use \Zr[up]${DC[NC]}, \Zr[down]${DC[NC]}, and \Zr[space]${DC[NC]} to select apps, and \Zr[tab]${DC[NC]} to switch to the buttons at the bottom.'
             $((LINES - 4)) $((COLUMNS - 5)) $((LINES - 5 - 4))
             "${AppList[@]}"
         )

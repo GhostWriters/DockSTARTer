@@ -3,34 +3,6 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_config_global() {
-    # Dialog color codes to be used in the GUI menu
-    # shellcheck disable=SC2168 # local is only valid in functions
-    local \
-        ColorHeading \
-        ColorHeadingValue \
-        ColorHighlight
-    # shellcheck disable=SC2034 # variable appears unused. Verify it or export it.
-    {
-        ColorHeading='\Zr'
-        ColorHeadingValue='\Zb\Zr'
-        ColorHighlight='\Z3\Zb'
-    }
-    # shellcheck disable=SC2168 # local is only valid in functions
-    local \
-        ColorLineHeading \
-        ColorLineComment \
-        ColorLineOther \
-        ColorLineVar \
-        ColorLineAddVariable
-    # shellcheck disable=SC2034 # variable appears unused. Verify it or export it.
-    {
-        ColorLineHeading='\Zn'
-        ColorLineComment='\Z0\Zb\Zr'
-        ColorLineOther="${ColorLineComment}"
-        ColorLineVar='\Z0\ZB\Zr'
-        ColorLineAddVariable="${ColorLineVar}"
-    }
-
     local Title="Edit Global Variables"
 
     local AddVariableText='<ADD VARIABLE>'
@@ -59,23 +31,23 @@ menu_config_global() {
             VarName="$(grep -o -P '^\w+(?=)' <<< "${line}")"
             if [[ -n ${VarName-} ]]; then
                 # Line contains a variable
-                LineColor[LineNumber]="${ColorLineVar}"
+                LineColor[LineNumber]="${DC[ColorLineVar]}"
                 VarNameOnLine[LineNumber]="${VarName}"
                 if [[ -z ${FirstVarLine-} ]]; then
                     FirstVarLine=${LineNumber}
                 fi
             elif (grep -q -P '^\s*#' <<< "${line}"); then
                 # Line is a comment
-                LineColor[LineNumber]="${ColorLineComment}"
+                LineColor[LineNumber]="${DC[ColorLineComment]}"
             else
                 # Line is an unknowwn line
-                LineColor[LineNumber]="${ColorLineOther}"
+                LineColor[LineNumber]="${DC[ColorLineOther]}"
             fi
         done
         ((LineNumber++))
         local AddVariableLineNumber=${LineNumber}
         CurrentValueOnLine[LineNumber]="${AddVariableText}"
-        LineColor[LineNumber]="${ColorLineAddVariable}"
+        LineColor[LineNumber]="${DC[ColorLineAddVariable]}"
 
         local TotalLines=$((10#${LineNumber}))
         local PadSize=${#TotalLines}
@@ -94,7 +66,7 @@ menu_config_global() {
             --ok-label "Select"
             --cancel-label "Done"
             --title "${Title}"
-            --menu "\nFile: ${ColorHeading}${COMPOSE_ENV}\Zn\n" 0 0 0
+            --menu "\nFile: ${DC[ColorHeading]}${COMPOSE_ENV}${DC[NC]}\n" 0 0 0
             "${LineOptions[@]}"
         )
         while true; do
