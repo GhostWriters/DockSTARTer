@@ -219,7 +219,8 @@ DC+=(
     [ColorLineAddVariable]="${DC[NC]}${DC[K]}${DC[NBD]}${DC[RV]}"
 )
 readonly DC
-declare -rx DialogTimeout=3
+readonly DialogTimeout=3
+export DialogTimeout
 
 # Log Functions
 MKTEMP_LOG=$(mktemp) || echo -e "Failed to create temporary log file.\nFailing command: ${F[C]}mktemp"
