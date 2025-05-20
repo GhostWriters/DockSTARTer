@@ -35,7 +35,10 @@ menu_value_prompt() {
     local AppIsDepreciated=''
     local AppIsUserDefined=''
     local VarIsUserDefined=''
-    if run_script 'app_is_builtin' "${appname}"; then
+    if run_script 'app_is_user_defined' "${appname}"; then
+        AppIsUserDefined='Y'
+        VarIsUserDefined='Y'
+    else
         if run_script 'app_is_disabled' "${appname}"; then
             AppIsDisabled='Y'
         fi
@@ -45,9 +48,6 @@ menu_value_prompt() {
         if ! run_script 'env_var_exists' "${CleanVarName}" "${DefaultVarFile}"; then
             VarIsUserDefined='Y'
         fi
-    else
-        AppIsUserDefined='Y'
-        VarIsUserDefined='Y'
     fi
 
     local DeleteOption="=== DELETE ==="
