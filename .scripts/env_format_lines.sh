@@ -8,6 +8,7 @@ env_format_lines() {
     local APPNAME=${3-}
     APPNAME=${APPNAME^^}
 
+    local GlobalHeading='Global Variables'
     local DepreciatedTag='[*DEPRECIATED*]'
     local DisabledTag='(Disabled)'
     local UserDefinedTag='(User Defined)'
@@ -17,10 +18,11 @@ env_format_lines() {
         run_script 'env_lines' "${CurrentEnvFile}"
     )
 
-    local AppName AppDescription
+    local AppName=''
+    local AppDescription=''
     local AppIsUserDefined=''
     local -a FormattedEnvLines=()
-    if [[ -n ${APPNAME} ]]; then
+    if [[ -n ${APPNAME-} ]]; then
         # APPNAME is specified and added, output main app heading
         if run_script 'app_is_user_defined' "${APPNAME}"; then
             AppIsUserDefined='Y'
@@ -51,10 +53,10 @@ env_format_lines() {
     if [[ -n ${DefaultEnvFile} && -f ${DefaultEnvFile} ]]; then
         # Default file is specified and exists, add the contents verbatim
         readarray -t -O ${#FormattedEnvLines[@]} FormattedEnvLines < "${DefaultEnvFile}"
-    fi
-    if [[ -n ${FormattedEnvLines[*]} ]]; then
-        # Add a blank if there are existing lines (not at top of file)
-        FormattedEnvLines+=("")
+        if [[ -n ${FormattedEnvLines[*]} ]]; then
+            # Add a blank if there are existing lines (not at top of file)
+            FormattedEnvLines+=("")
+        fi
     fi
 
     # FormattedEnvVarIndex["VarName"]=index position of line in FormattedEnvLines
@@ -84,10 +86,14 @@ env_format_lines() {
         done
         CurrentEnvLines=("${CurrentEnvLines[@]-}")
         if [[ -n ${CurrentEnvLines[*]} ]]; then
-            if [[ -n ${APPNAME-} && ${AppIsUserDefined} != Y ]]; then
+            if [[ -z ${APPNAME-} || ${AppIsUserDefined} != Y ]]; then
                 # Add the "User Defined" heading
-                local HeadingTitle="${AppName}"
-                HeadingTitle+=" ${UserDefinedTag}"
+                local HeadingTitle
+                if [[ -n ${AppName-} ]]; then
+                    HeadingTitle="${AppName} ${UserDefinedTag}"
+                else
+                    HeadingTitle="${GlobalHeading} ${UserDefinedTag}"
+                fi
                 local -a HeadingText=(
                     ""
                     "${HeadingTitle}"
