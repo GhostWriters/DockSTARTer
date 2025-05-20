@@ -10,16 +10,6 @@ menu_app_vars() {
     AppName=$(run_script 'app_nicename' "${APPNAME}")
     local Title="Edit Application Variables"
 
-    if ! run_script 'app_is_builtin'; then
-        local Message="Application '${AppName}' does not exist."
-        if [[ ${CI-} == true ]]; then
-            warn "${Message}"
-        else
-            dialog --title "${Title}" --msgbox "${Message}" 0 0
-        fi
-        return
-    fi
-
     local AddVariableText='<ADD VARIABLE>'
 
     local DefaultGlobalEnvFile
