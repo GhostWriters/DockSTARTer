@@ -22,8 +22,8 @@ menu_app_vars() {
 
     local AddVariableText='<ADD VARIABLE>'
 
-    run_script_dialog "${Title}" "Creating variables for ${AppName}" 1 \
-        'appvars_create' "${APPNAME}"
+    #run_script_dialog "${Title}" "Creating variables for ${AppName}" 1 \
+    #    'appvars_create' "${APPNAME}"
 
     local DefaultGlobalEnvFile
     DefaultGlobalEnvFile="$(run_script 'app_instance_file' "${appname}" ".global.env")"
@@ -54,7 +54,7 @@ menu_app_vars() {
     if [[ ${AppIsUserDefined} == 'Y' ]]; then
         AppNameHeading="${AppNameHeading} ${DC[HeadingTag]}(User Defined)${DC[NC]}"
     elif [[ ${AppIsDepreciated} == 'Y' ]]; then
-        AppNameHeading="${AppNameHeading} ${DC[HeadingTag]}*DEPRECIATED*${DC[NC]}"
+        AppNameHeading="${AppNameHeading} ${DC[HeadingTag]}[*DEPRECIATED*]${DC[NC]}"
     fi
     if [[ ${AppIsDisabled} == 'Y' ]]; then
         AppNameHeading="${AppNameHeading} ${DC[HeadingTag]}(Disabled)${DC[NC]}"

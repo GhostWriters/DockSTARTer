@@ -226,7 +226,7 @@ menu_value_prompt() {
     if [[ ${AppIsUserDefined} == 'Y' ]]; then
         AppNameHeading="${AppNameHeading} ${DC[HeadingTag]}(User Defined)${DC[NC]}"
     elif [[ ${AppIsDepreciated} == 'Y' ]]; then
-        AppNameHeading="${AppNameHeading} ${DC[HeadingTag]}*DEPRECIATED*${DC[NC]}"
+        AppNameHeading="${AppNameHeading} ${DC[HeadingTag]}[*DEPRECIATED*]${DC[NC]}"
     fi
     if [[ ${AppIsDisabled} == 'Y' ]]; then
         AppNameHeading="${AppNameHeading} ${DC[HeadingTag]}(Disabled)${DC[NC]}"
