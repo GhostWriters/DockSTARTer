@@ -3,19 +3,19 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 env_format_lines() {
-    local ENV_FILE=${1-}
-    local ENV_DEFAULT_FILE=${2-}
+    local CurrentEnvFile=${1-}
+    local DefaultEnvFile=${2-}
     local APPNAME=${3-}
     APPNAME=${APPNAME^^}
     local appname=${APPNAME,,}
     local AppName
     AppName=$(run_script 'app_nicename' "${appname}")
-    local -a CURRENT_ENV_LINES=()
-    readarray -t CURRENT_ENV_LINES < <(
-        run_script 'env_lines' "${ENV_FILE}"
+    local -a CurrentEnvLines=()
+    readarray -t CurrentEnvLines < <(
+        run_script 'env_lines' "${CurrentEnvFile}"
     )
 
-    local -a FORMATTED_ENV_LINES=()
+    local -a FormattedEnvLines=()
     if [[ -n ${APPNAME} ]] && run_script 'app_is_added' "${APPNAME}"; then
         # APPNAME is specified and added, output main app heading
         local HeadingTitle="${AppName}"
@@ -32,46 +32,46 @@ env_format_lines() {
         readarray -t -O ${#HeadingText[@]} HeadingText < <(printf '%s\n' "${AppDescription[@]}")
         HeadingText+=("")
 
-        readarray -t -O ${#FORMATTED_ENV_LINES[@]} FORMATTED_ENV_LINES < <(
+        readarray -t -O ${#FormattedEnvLines[@]} FormattedEnvLines < <(
             printf '### %s\n' "${HeadingText[@]}"
         )
     fi
-    if [[ -n ${ENV_DEFAULT_FILE} && -f ${ENV_DEFAULT_FILE} ]]; then
+    if [[ -n ${DefaultEnvFile} && -f ${DefaultEnvFile} ]]; then
         # Default file is specified and exists, add the contents verbatim
-        readarray -t -O ${#FORMATTED_ENV_LINES[@]} FORMATTED_ENV_LINES < "${ENV_DEFAULT_FILE}"
+        readarray -t -O ${#FormattedEnvLines[@]} FormattedEnvLines < "${DefaultEnvFile}"
     fi
-    if [[ -n ${FORMATTED_ENV_LINES[*]} ]]; then
+    if [[ -n ${FormattedEnvLines[*]} ]]; then
         # Add a blank if there are existing lines (not at top of file)
-        FORMATTED_ENV_LINES+=("")
+        FormattedEnvLines+=("")
     fi
 
-    # FORMATTED_ENV_VAR_INDEX["VAR"]=index position of line in FORMATTED_ENV_LINE
-    local -A FORMATTED_ENV_VAR_INDEX=()
-    local -a VAR_LINES=()
+    # FormattedEnvVarIndex["VarName"]=index position of line in FormattedEnvLines
+    local -A FormattedEnvVarIndex=()
+    local -a VarLines=()
     # Make an array with the contents "line number:VARIABLE" in each element
-    readarray -t VAR_LINES < <(
-        printf '%s\n' "${FORMATTED_ENV_LINES[@]}" | grep -n -o -P '^[A-Za-z0-9_]*(?=[=])' || true
+    readarray -t VarLines < <(
+        printf '%s\n' "${FormattedEnvLines[@]}" | grep -n -o -P '^[A-Za-z0-9_]*(?=[=])' || true
     )
-    for line in "${VAR_LINES[@]}"; do
+    for line in "${VarLines[@]}"; do
         local index=${line%:*}
         index=$((index - 1))
-        local VAR=${line#*:}
-        FORMATTED_ENV_VAR_INDEX[$VAR]=$index
+        local VarName=${line#*:}
+        FormattedEnvVarIndex[$VarName]=$index
     done
 
-    if [[ -n ${CURRENT_ENV_LINES[*]} ]]; then
+    if [[ -n ${CurrentEnvLines[*]} ]]; then
         # Update the default variables
-        for index in "${!CURRENT_ENV_LINES[@]}"; do
-            local line=${CURRENT_ENV_LINES[index]}
-            local VAR=${line%%=*}
-            if [[ -n ${FORMATTED_ENV_VAR_INDEX[$VAR]-} ]]; then
+        for index in "${!CurrentEnvLines[@]}"; do
+            local line=${CurrentEnvLines[index]}
+            local VarName=${line%%=*}
+            if [[ -n ${FormattedEnvVarIndex[$VarName]-} ]]; then
                 # Variable already exists, update its value
-                FORMATTED_ENV_LINES[${FORMATTED_ENV_VAR_INDEX[$VAR]}]=$line
-                unset 'CURRENT_ENV_LINES[index]'
+                FormattedEnvLines[${FormattedEnvVarIndex[$VarName]}]=$line
+                unset 'CurrentEnvLines[index]'
             fi
         done
-        CURRENT_ENV_LINES=("${CURRENT_ENV_LINES[@]-}")
-        if [[ -n ${CURRENT_ENV_LINES[*]} ]]; then
+        CurrentEnvLines=("${CurrentEnvLines[@]-}")
+        if [[ -n ${CurrentEnvLines[*]} ]]; then
             # Add the "User Defined" heading
             local HeadingTitle="${AppName}"
             HeadingTitle+=" (User Defined)"
@@ -81,27 +81,27 @@ env_format_lines() {
             HeadingText+=("${HeadingTitle}")
             HeadingText+=("")
 
-            readarray -t -O ${#FORMATTED_ENV_LINES[@]} FORMATTED_ENV_LINES < <(
+            readarray -t -O ${#FormattedEnvLines[@]} FormattedEnvLines < <(
                 printf '### %s\n' "${HeadingText[@]}"
             )
 
             # Add the user defined variables
-            for index in "${!CURRENT_ENV_LINES[@]}"; do
-                local line=${CURRENT_ENV_LINES[index]}
-                local VAR=${line%%=*}
-                if [[ -n ${FORMATTED_ENV_VAR_INDEX[$VAR]-} ]]; then
+            for index in "${!CurrentEnvLines[@]}"; do
+                local line=${CurrentEnvLines[index]}
+                local VarName=${line%%=*}
+                if [[ -n ${FormattedEnvVarIndex[$VarName]-} ]]; then
                     # Variable already exists, update its value
-                    FORMATTED_ENV_LINES[${FORMATTED_ENV_VAR_INDEX[$VAR]}]=$line
+                    FormattedEnvLines[${FormattedEnvVarIndex[$VarName]}]=$line
                 else
                     # Variable is new, add it
-                    FORMATTED_ENV_LINES+=("$line")
-                    FORMATTED_ENV_VAR_INDEX[$VAR]=$((${#FORMATTED_ENV_LINES[@]} - 1))
+                    FormattedEnvLines+=("$line")
+                    FormattedEnvVarIndex[$VarName]=$((${#FormattedEnvLines[@]} - 1))
                 fi
             done
-            FORMATTED_ENV_LINES+=("")
+            FormattedEnvLines+=("")
         fi
     fi
-    printf "%s\n" "${FORMATTED_ENV_LINES[@]-}"
+    printf "%s\n" "${FormattedEnvLines[@]-}"
 }
 
 test_env_format_lines() {
