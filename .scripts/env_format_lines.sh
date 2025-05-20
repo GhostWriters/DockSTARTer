@@ -17,14 +17,18 @@ env_format_lines() {
         run_script 'env_lines' "${CurrentEnvFile}"
     )
 
+    local AppName AppDescription
+    local AppIsUserDefined=''
     local -a FormattedEnvLines=()
     if [[ -n ${APPNAME} ]]; then
         # APPNAME is specified and added, output main app heading
-        local AppName AppDescription
+        if run_script 'app_is_user_defined' "${APPNAME}"; then
+            AppIsUserDefined='Y'
+        fi
         AppName=$(run_script 'app_nicename' "${APPNAME}")
         AppDescription=$(run_script 'app_description' "${APPNAME}" | fold -s -w 75)
         local HeadingTitle="${AppName}"
-        if run_script 'app_is_user_defined' "${APPNAME}"; then
+        if [[ ${AppIsUserDefined} == Y ]]; then
             HeadingTitle+=" ${UserDefinedTag}"
         else
             run_script 'app_is_depreciated' "${APPNAME}" && HeadingTitle+=" ${DepreciatedTag}"
@@ -80,19 +84,19 @@ env_format_lines() {
         done
         CurrentEnvLines=("${CurrentEnvLines[@]-}")
         if [[ -n ${CurrentEnvLines[*]} ]]; then
-            # Add the "User Defined" heading
-            local HeadingTitle="${AppName}"
-            HeadingTitle+=" ${UserDefinedTag}"
-
-            local -a HeadingText=()
-            HeadingText+=("")
-            HeadingText+=("${HeadingTitle}")
-            HeadingText+=("")
-
-            readarray -t -O ${#FormattedEnvLines[@]} FormattedEnvLines < <(
-                printf '### %s\n' "${HeadingText[@]}"
-            )
-
+            if [[ -n ${APPNAME-} && ${AppIsUserDefined} != Y ]]; then
+                # Add the "User Defined" heading
+                local HeadingTitle="${AppName}"
+                HeadingTitle+=" ${UserDefinedTag}"
+                local -a HeadingText=(
+                    ""
+                    "${HeadingTitle}"
+                    ""
+                )
+                readarray -t -O ${#FormattedEnvLines[@]} FormattedEnvLines < <(
+                    printf '### %s\n' "${HeadingText[@]}"
+                )
+            fi
             # Add the user defined variables
             for index in "${!CurrentEnvLines[@]}"; do
                 local line=${CurrentEnvLines[index]}
