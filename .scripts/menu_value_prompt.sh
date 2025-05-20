@@ -225,7 +225,7 @@ menu_value_prompt() {
     local AppNameHeading="   Application: ${DC[Heading]}${AppName}${DC[NC]}"
     if [[ ${AppIsUserDefined} == 'Y' ]]; then
         AppNameHeading="${AppNameHeading} ${DC[HeadingUserDefined]}(User Defined)${DC[NC]}"
-    elfi [[ ${AppIsDepreciated} == 'Y' ]]; then
+    elif [[ ${AppIsDepreciated} == 'Y' ]]; then
         AppNameHeading="${AppNameHeading} ${DC[HeadingUserDefined]}*DEPRECIATED*${DC[NC]}"
     fi
     if [[ ${AppIsDisabled} == 'Y' ]]; then
