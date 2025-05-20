@@ -7,9 +7,6 @@ env_format_lines() {
     local DefaultEnvFile=${2-}
     local APPNAME=${3-}
     APPNAME=${APPNAME^^}
-    local appname=${APPNAME,,}
-    local AppName
-    AppName=$(run_script 'app_nicename' "${appname}")
 
     local DepreciatedTag='[*DEPRECIATED*]'
     local DisabledTag='(Disabled)'
@@ -21,20 +18,26 @@ env_format_lines() {
     )
 
     local -a FormattedEnvLines=()
-    if [[ -n ${APPNAME} ]] && run_script 'app_is_added' "${APPNAME}"; then
+    if [[ -n ${APPNAME} ]]; then
         # APPNAME is specified and added, output main app heading
+        local AppName AppDescription
+        AppName=$(run_script 'app_nicename' "${APPNAME}")
+        AppDescription=$(run_script 'app_description' "${APPNAME}" | fold -s -w 75)
         local HeadingTitle="${AppName}"
-        run_script 'app_is_depreciated' "${APPNAME}" && HeadingTitle+=" ${DepreciatedTag}"
-        run_script 'app_is_disabled' "${APPNAME}" && HeadingTitle+=" ${DisabledTag}"
+        if run_script 'app_is_user_defined' "${APPNAME}"; then
+            HeadingTitle+=" ${UserDefinedTag}"
+        else
+            run_script 'app_is_depreciated' "${APPNAME}" && HeadingTitle+=" ${DepreciatedTag}"
+            run_script 'app_is_disabled' "${APPNAME}" && HeadingTitle+=" ${DisabledTag}"
+        fi
 
-        local AppDescription
-        AppDescription=$(run_script 'app_description' "${appname}" | fold -s -w 75)
-
-        local -a HeadingText=()
-        HeadingText+=("")
-        HeadingText+=("${HeadingTitle}")
-        HeadingText+=("")
-        readarray -t -O ${#HeadingText[@]} HeadingText < <(printf '%s\n' "${AppDescription[@]}")
+        local -a HeadingText
+        HeadingText=(
+            ""
+            "${HeadingTitle}"
+            ""
+        )
+        readarray -t -O ${#HeadingText[@]} HeadingText < <(printf '%s\n' "${AppDescription}")
         HeadingText+=("")
 
         readarray -t -O ${#FormattedEnvLines[@]} FormattedEnvLines < <(

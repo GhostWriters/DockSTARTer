@@ -17,7 +17,7 @@ env_update() {
     for appname in ${AppList,,}; do
         local APP_DEFAULT_GLOBAL_ENV_FILE=""
         local -a UPDATED_APP_ENV_LINES=()
-        if run_script 'app_is_added' "${appname}"; then
+        if ! run_script 'app_is_user_defined' "${appname}"; then
             APP_DEFAULT_GLOBAL_ENV_FILE="$(run_script 'app_instance_file' "${appname}" ".global.env")"
         fi
         run_script 'appvars_lines' "${appname}" > "${ENV_LINES_FILE}"
@@ -40,7 +40,7 @@ env_update() {
         local APP_ENV_FILE
         APP_ENV_FILE="$(run_script 'app_env_file' "${appname}")"
         local APP_DEFAULT_ENV_FILE=""
-        if run_script 'app_is_added' "${appname}"; then
+        if ! run_script 'app_is_user_defined' "${appname}"; then
             APP_DEFAULT_ENV_FILE="$(run_script 'app_instance_file' "${appname}" ".app.env")"
         fi
         if [[ -n ${APP_DEFAULT_ENV_FILE} || -f ${APP_ENV_FILE} ]]; then
