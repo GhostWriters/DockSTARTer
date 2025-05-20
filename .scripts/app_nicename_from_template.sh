@@ -20,8 +20,9 @@ app_nicename_from_template() {
 }
 
 test_app_nicename_from_template() {
-    notice "[WATCHTOWER]"
-    run_script 'app_nicename_from_template' WATCHTOWER
-    notice "[RADARR__4K]"
-    run_script 'app_nicename_from_template' RADARR__4K
+    for AppName in WATCHTOWER SAMBA RADARR NZBGET NONEXISTENTAPP; do
+        local Result="no"
+        Result="$(run_script 'app_nicename_from_template' "${AppName}")"
+        notice "[${AppName}] [${Result}]"
+    done
 }

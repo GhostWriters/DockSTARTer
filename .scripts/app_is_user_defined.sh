@@ -18,7 +18,7 @@ app_is_user_defined() {
 }
 
 test_app_is_user_defined() {
-    for AppName in WATCHTOWER SAMBA RADARR NONEXISTENTAPP; do
+    for AppName in WATCHTOWER SAMBA RADARR NZBGET NONEXISTENTAPP; do
         local Result="no"
         if run_script 'app_is_user_defined' "${AppName}"; then
             Result="YES"

@@ -22,8 +22,9 @@ app_description() {
 }
 
 test_app_description() {
-    notice "[WATCHTOWER]"
-    run_script 'app_description' WATCHTOWER
-    notice "[RADARR__4K]"
-    run_script 'app_description' RADARR__4K
+    for AppName in WATCHTOWER SAMBA RADARR NZBGET NONEXISTENTAPP; do
+        local Result="no"
+        Result="$(run_script 'app_description' "${AppName}")"
+        notice "[${AppName}] [${Result}]"
+    done
 }
