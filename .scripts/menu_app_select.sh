@@ -16,9 +16,9 @@ menu_app_select() {
             arch_yml="$(run_script 'app_instance_file' "${APPNAME}" ".${ARCH}.yml")"
             if [[ -f ${arch_yml} ]]; then
                 local AppName
-                AppName=$(run_script 'app_nicename' "${APPNAME}")
+                AppName=$(run_script 'app_nicename_from_template' "${APPNAME}")
                 local AppDescription
-                AppDescription=$(run_script 'app_description' "${APPNAME}")
+                AppDescription=$(run_script 'app_description_from_template' "${APPNAME}")
                 local AppOnOff
                 if run_script 'app_is_enabled' "${APPNAME}"; then
                     AppOnOff="on"
