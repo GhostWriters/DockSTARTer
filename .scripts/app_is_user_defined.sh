@@ -10,8 +10,8 @@ app_is_user_defined() {
        return
     fi
     if ! run_script 'env_var_exists' "${APPNAME^^}__ENABLED"; then
-        true
-        return
+       true
+       return
     fi
     false
     return
