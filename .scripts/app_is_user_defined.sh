@@ -22,8 +22,11 @@ app_is_user_defined() {
 }
 
 test_app_is_user_defined() {
-    run_script 'app_is_user_defined' WATCHTOWER
-    notice "'app_is_user_defined' WATCHTOWER returned $?"
-    run_script 'app_is_user_defined' APPTHATDOESNOTEXIST
-    notice "'app_is_user_defined' APPTHATDOESNOTEXIST returned $?"
+    for AppName in WATCHTOWER SAMBA RADARR NONEXISTENTAPP; do
+        local Result="no"
+        if run_script 'app_is_user_defined' "${AppName}"; then
+            Result="YES"
+        fi
+        notice "[${AppName}] [${Result}]"
+    done
 }
