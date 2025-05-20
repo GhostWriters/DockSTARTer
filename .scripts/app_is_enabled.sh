@@ -5,13 +5,13 @@ IFS=$'\n\t'
 app_is_enabled() {
     local APPNAME=${1-}
     APPNAME=${APPNAME^^}
+    if ! run_script 'app_is_builtin' "${APPNAME}"; then
+        false
+        return
+    fi
     local APP_ENABLED
     APP_ENABLED="$(run_script 'env_get' "${APPNAME}__ENABLED")"
-    if [[ ${APP_ENABLED-} == "true" ]]; then
-        return 0
-    else
-        return 1
-    fi
+    [[ ${APP_ENABLED} == "true" ]]
 }
 
 test_app_is_enabled() {
