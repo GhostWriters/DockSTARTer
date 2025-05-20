@@ -6,12 +6,12 @@ app_is_user_defined() {
     local APPNAME=${1-}
 
     if ! run_script 'app_is_builtin' "${APPNAME}"; then
-       true
-       return
+        true
+        return
     fi
     if ! run_script 'env_var_exists' "${APPNAME^^}__ENABLED"; then
-       true
-       return
+        true
+        return
     fi
     false
     return
