@@ -6,11 +6,7 @@ app_description() {
     # Return the description of the appname passed.
     local appname=${1-}
     appname=${appname,,}
-    if run_script 'app_is_use_defined' "${appname}"; then
-        local AppName
-        AppName="$(run_script 'app_nicename' "${appname}")"
-        echo "${AppName} is a user defined application"
-    else
+    if run_script 'app_is_builtin' "${appname}"; then
         local LABELS_FILE
         LABELS_FILE="$(run_script 'app_instance_file' "${appname}" ".labels.yml")"
         if [[ -f ${LABELS_FILE} ]]; then
@@ -19,6 +15,10 @@ app_description() {
             echo "! Missing application !"
         fi
     else
+        local AppName
+        AppName="$(run_script 'app_nicename' "${appname}")"
+        echo "${AppName} is a user defined application"
+    fi
 }
 
 test_app_description() {
