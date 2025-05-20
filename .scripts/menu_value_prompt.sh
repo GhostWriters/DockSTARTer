@@ -4,47 +4,52 @@ IFS=$'\n\t'
 
 menu_value_prompt() {
     local VarName=${1-}
-    local VarIsUserDefined=${2-}
 
     if [[ ${CI-} == true ]]; then
         return
     fi
 
-    local Title="Edit Variable"
-
-    local APPNAME
+    local APPNAME appname AppName
     APPNAME=$(run_script 'varname_to_appname' "${VarName}")
     APPNAME=${APPNAME^^}
-    local appname=${APPNAME,,}
-    local AppName
+    appname=${APPNAME,,}
     AppName=$(run_script 'app_nicename' "${APPNAME}")
 
+    local Title
+    local VarFile DefaultVarFile
     local CleanVarName="${VarName}"
-    local VarFile="${COMPOSE_ENV}"
-    local DefaultVarFile=${COMPOSE_ENV_DEFAULT_FILE}
+    local AppIsDisabled=''
+    local AppIsDepreciated=''
+    local AppIsUserDefined=''
+    local VarIsUserDefined=''
     if [[ -n ${APPNAME-} ]]; then
+        Title="Edit Application Variable"
         if [[ ${VarName} == *":"* ]]; then
             CleanVarName=${VarName#*:}
             VarFile="$(run_script 'app_env_file' "${appname}")"
             DefaultVarFile="$(run_script 'app_instance_file' "${appname}" ".app.env")"
         else
+            VarFile="${COMPOSE_ENV}"
             DefaultVarFile="$(run_script 'app_instance_file' "${appname}" ".global.env")"
         fi
-    fi
-    local AppIsDisabled=''
-    local AppIsDepreciated=''
-    local AppIsUserDefined=''
-    local VarIsUserDefined=''
-    if run_script 'app_is_user_defined' "${appname}"; then
-        AppIsUserDefined='Y'
-        VarIsUserDefined='Y'
+        if run_script 'app_is_user_defined' "${appname}"; then
+            AppIsUserDefined='Y'
+            VarIsUserDefined='Y'
+        else
+            if run_script 'app_is_disabled' "${appname}"; then
+                AppIsDisabled='Y'
+            fi
+            if run_script 'app_is_depreciated' "${appname}"; then
+                AppIsDepreciated='Y'
+            fi
+            if ! run_script 'env_var_exists' "${CleanVarName}" "${DefaultVarFile}"; then
+                VarIsUserDefined='Y'
+            fi
+        fi
     else
-        if run_script 'app_is_disabled' "${appname}"; then
-            AppIsDisabled='Y'
-        fi
-        if run_script 'app_is_depreciated' "${appname}"; then
-            AppIsDepreciated='Y'
-        fi
+        Title="Edit Global Variable"
+        VarFile="${COMPOSE_ENV}"
+        DefaultVarFile="${COMPOSE_ENV_DEFAULT_FILE}"
         if ! run_script 'env_var_exists' "${CleanVarName}" "${DefaultVarFile}"; then
             VarIsUserDefined='Y'
         fi
