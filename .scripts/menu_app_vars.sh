@@ -22,9 +22,6 @@ menu_app_vars() {
 
     local AddVariableText='<ADD VARIABLE>'
 
-    #run_script_dialog "${Title}" "Creating variables for ${AppName}" 1 \
-    #    'appvars_create' "${APPNAME}"
-
     local DefaultGlobalEnvFile
     DefaultGlobalEnvFile="$(run_script 'app_instance_file' "${appname}" ".global.env")"
     local CurrentGlobalEnvFile
