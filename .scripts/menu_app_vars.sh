@@ -35,6 +35,31 @@ menu_app_vars() {
     local CurrentAppEnvFile
     CurrentAppEnvFile=$(mktemp)
 
+    local AppIsDisabled=''
+    local AppIsDepreciated=''
+    local AppIsUserDefined=''
+    #local VarIsUserDefined='Y'
+    if run_script 'app_is_builtin' "${appname}"; then
+        if run_script 'app_is_disabled' "${appname}"; then
+            AppIsDisabled='Y'
+        fi
+        if run_script 'app_is_depreciated' "${appname}"; then
+            AppIsDepreciated='Y'
+        fi
+    else
+        AppIsUserDefined='Y'
+    fi
+
+    local AppNameHeading="Application: ${DC[Heading]}${AppName}${DC[NC]}"
+    if [[ ${AppIsUserDefined} == 'Y' ]]; then
+        AppNameHeading="${AppNameHeading} ${DC[HeadingTag]}(User Defined)${DC[NC]}"
+    elif [[ ${AppIsDepreciated} == 'Y' ]]; then
+        AppNameHeading="${AppNameHeading} ${DC[HeadingTag]}*DEPRECIATED*${DC[NC]}"
+    fi
+    if [[ ${AppIsDisabled} == 'Y' ]]; then
+        AppNameHeading="${AppNameHeading} ${DC[HeadingTag]}(Disabled)${DC[NC]}"
+    fi
+
     local LastLineChoice=""
     while true; do
         local -a LineOptions=()
@@ -129,7 +154,7 @@ menu_app_vars() {
             --ok-label "Select"
             --cancel-label "Done"
             --title "${Title}"
-            --menu "\nApplication: ${DC[Heading]}${AppName}${DC[NC]}\n" 0 0 0
+            --menu "\n${AppNameHeading}" 0 0 0
             "${LineOptions[@]}"
         )
         while true; do
