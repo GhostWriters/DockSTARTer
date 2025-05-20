@@ -12,29 +12,27 @@ menu_app_vars() {
 
     local AddVariableText='<ADD VARIABLE>'
 
-    local DefaultGlobalEnvFile
-    DefaultGlobalEnvFile="$(run_script 'app_instance_file' "${appname}" ".global.env")"
-    local CurrentGlobalEnvFile
+    local CurrentGlobalEnvFile CurrentAppEnvFile
     CurrentGlobalEnvFile=$(mktemp)
-
-    local DefaultAppEnvFile
-    DefaultAppEnvFile="$(run_script 'app_instance_file' "${appname}" ".app.env")"
-    local CurrentAppEnvFile
     CurrentAppEnvFile=$(mktemp)
 
+    local DefaultGlobalEnvFile=''
+    local DefaultAppEnvFile=''
+    local AppIsUserDefined=''
     local AppIsDisabled=''
     local AppIsDepreciated=''
-    local AppIsUserDefined=''
-    #local VarIsUserDefined='Y'
-    if run_script 'app_is_builtin' "${appname}"; then
+
+    if run_script 'app_is_user_defined' "${appname}"; then
+        AppIsUserDefined='Y'
+    else
+        DefaultGlobalEnvFile="$(run_script 'app_instance_file' "${appname}" ".global.env")"
+        DefaultAppEnvFile="$(run_script 'app_instance_file' "${appname}" ".app.env")"
         if run_script 'app_is_disabled' "${appname}"; then
             AppIsDisabled='Y'
         fi
         if run_script 'app_is_depreciated' "${appname}"; then
             AppIsDepreciated='Y'
         fi
-    else
-        AppIsUserDefined='Y'
     fi
 
     local AppNameHeading="Application: ${DC[Heading]}${AppName}${DC[NC]}"
@@ -178,11 +176,14 @@ menu_app_vars() {
             esac
         done
     done
-    rm -f "${CurrentGlobalEnvFile}" ||
-        warn "Failed to remove temporary .env file.\nFailing command: ${F[C]}rm -f \"${CurrentGlobalEnvFile}\""
-    rm -f "${CurrentAppEnvFile}" ||
-        warn "Failed to remove temporary ${appname}.env file.\nFailing command: ${F[C]}rm -f \"${CurrentAppEnvFile}\""
-
+    if [[ -n ${CurrentGlobalEnvFile} ]]; then
+        rm -f "${CurrentGlobalEnvFile}" ||
+            warn "Failed to remove temporary .env file.\nFailing command: ${F[C]}rm -f \"${CurrentGlobalEnvFile}\""
+    fi
+    if [[ -n ${CurrentAppEnvFile} ]]; then
+        rm -f "${CurrentAppEnvFile}" ||
+            warn "Failed to remove temporary ${appname}.env file.\nFailing command: ${F[C]}rm -f \"${CurrentAppEnvFile}\""
+    fi
 }
 
 test_menu_app_vars() {
