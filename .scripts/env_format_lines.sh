@@ -8,10 +8,12 @@ env_format_lines() {
     local APPNAME=${3-}
     APPNAME=${APPNAME^^}
 
-    local GlobalHeading='Global Variables'
-    local DepreciatedTag='[*DEPRECIATED*]'
-    local DisabledTag='(Disabled)'
-    local UserDefinedTag='(User Defined)'
+    local GlobalVarsHeading="Global Variables"
+    local DepreciatedTag=" [*DEPRECIATED*]"
+    local DisabledTag=" (Disabled)"
+    local UserDefinedAppTag=" (User Defined)"
+    local UserDefinedVarsTag=" (User Defined Variables)"
+    local UserDefinedGlobalVarsTag=" (User Defined)"
 
     local -a CurrentEnvLines=()
     readarray -t CurrentEnvLines < <(
@@ -31,23 +33,21 @@ env_format_lines() {
         AppDescription=$(run_script 'app_description' "${APPNAME}" | fold -s -w 75)
         local HeadingTitle="${AppName}"
         if [[ ${AppIsUserDefined} == Y ]]; then
-            HeadingTitle+=" ${UserDefinedTag}"
+            HeadingTitle+=" ${UserDefinedAppTag}"
         else
-            run_script 'app_is_depreciated' "${APPNAME}" && HeadingTitle+=" ${DepreciatedTag}"
-            run_script 'app_is_disabled' "${APPNAME}" && HeadingTitle+=" ${DisabledTag}"
+            run_script 'app_is_depreciated' "${APPNAME}" && HeadingTitle+="${DepreciatedTag}"
+            run_script 'app_is_disabled' "${APPNAME}" && HeadingTitle+="${DisabledTag}"
         fi
 
-        local -a HeadingText
-        HeadingText=(
-            ""
-            "${HeadingTitle}"
-            ""
-        )
-        readarray -t -O ${#HeadingText[@]} HeadingText < <(printf '%s\n' "${AppDescription}")
+        local -a HeadingText=()
+        HeadingText+=("")
+        readarray -t -O ${#HeadingText[@]} HeadingText < <(printf '%b\n' "${HeadingTitle}")
+        HeadingText+=("")
+        readarray -t -O ${#HeadingText[@]} HeadingText < <(printf '%b\n' "${AppDescription}")
         HeadingText+=("")
 
         readarray -t -O ${#FormattedEnvLines[@]} FormattedEnvLines < <(
-            printf '### %s\n' "${HeadingText[@]}"
+            printf '### %b\n' "${HeadingText[@]}"
         )
     fi
     if [[ -n ${DefaultEnvFile} && -f ${DefaultEnvFile} ]]; then
@@ -90,17 +90,16 @@ env_format_lines() {
                 # Add the "User Defined" heading
                 local HeadingTitle
                 if [[ -n ${AppName-} ]]; then
-                    HeadingTitle="${AppName} ${UserDefinedTag}"
+                    HeadingTitle="${AppName}${UserDefinedVarsTag}"
                 else
-                    HeadingTitle="${GlobalHeading} ${UserDefinedTag}"
+                    HeadingTitle="${GlobalVarsHeading}${UserDefinedGlobalVarsTag}"
                 fi
-                local -a HeadingText=(
-                    ""
-                    "${HeadingTitle}"
-                    ""
-                )
+                local HeadingText=()
+                HeadingText+=("")
+                readarray -t -O ${#HeadingText[@]} HeadingText < <(printf '%b\n' "${HeadingTitle}")
+                HeadingText+=("")
                 readarray -t -O ${#FormattedEnvLines[@]} FormattedEnvLines < <(
-                    printf '### %s\n' "${HeadingText[@]}"
+                    printf '### %b\n' "${HeadingText[@]}"
                 )
             fi
             # Add the user defined variables
