@@ -10,6 +10,11 @@ env_format_lines() {
     local appname=${APPNAME,,}
     local AppName
     AppName=$(run_script 'app_nicename' "${appname}")
+
+    local DepreciatedTag='[*DEPRECIATED*]'
+    local DisabledTag='(Disabled)'
+    local UserDefinedTag='(User Defined)'
+
     local -a CurrentEnvLines=()
     readarray -t CurrentEnvLines < <(
         run_script 'env_lines' "${CurrentEnvFile}"
@@ -19,8 +24,8 @@ env_format_lines() {
     if [[ -n ${APPNAME} ]] && run_script 'app_is_added' "${APPNAME}"; then
         # APPNAME is specified and added, output main app heading
         local HeadingTitle="${AppName}"
-        run_script 'app_is_depreciated' "${APPNAME}" && HeadingTitle+=' [*DEPRECIATED*]'
-        run_script 'app_is_disabled' "${APPNAME}" && HeadingTitle+=' (Disabled)'
+        run_script 'app_is_depreciated' "${APPNAME}" && HeadingTitle+=" ${DepreciatedTag}"
+        run_script 'app_is_disabled' "${APPNAME}" && HeadingTitle+=" ${DisabledTag}"
 
         local AppDescription
         AppDescription=$(run_script 'app_description' "${appname}" | fold -s -w 75)
@@ -74,7 +79,7 @@ env_format_lines() {
         if [[ -n ${CurrentEnvLines[*]} ]]; then
             # Add the "User Defined" heading
             local HeadingTitle="${AppName}"
-            HeadingTitle+=" (User Defined)"
+            HeadingTitle+=" ${UserDefinedTag}"
 
             local -a HeadingText=()
             HeadingText+=("")
