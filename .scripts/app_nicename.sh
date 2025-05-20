@@ -7,14 +7,21 @@ app_nicename() {
     local AppList
     AppList=$(xargs -n 1 <<< "$*")
     for APPNAME in ${AppList}; do
-        local appname=${APPNAME,,}
+        local AppName
+        AppName="$(sed -E "s/[[:alnum:]]+/\u&/g" <<< "${APPNAME,,}")"
+        if run_script 'app_is_user_defined' "${APPNAME}"; then
+            echo "${AppName}"
+            continue
+        fi
         local LABELS_FILE
         LABELS_FILE="$(run_script 'app_instance_file' "${APPNAME}" ".labels.yml")"
-        if [[ -f ${LABELS_FILE} ]]; then
-            grep --color=never -Po "\scom\.dockstarter\.appinfo\.nicename: \K.*" "${LABELS_FILE}" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo "${appname}"
-        else
-            sed -E "s/[[:alnum:]]+/\u&/g" <<< "${appname}"
+        if [[ ! -f ${LABELS_FILE} ]]; then
+            echo "${AppName}"
+            continue
         fi
+        # Return the 'nicename' from the label file
+        grep --color=never -Po "\scom\.dockstarter\.appinfo\.nicename: \K.*" "${LABELS_FILE}" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs ||
+            echo "${AppName}"
     done
 
 }
