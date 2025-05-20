@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-app_nicename() {
+app_nicename_from_template() {
     # Return the "NiceName" of the appname(s) passed. If there is no "NiceName", return the "Title__Case" of "appname"
     local AppList
     AppList=$(xargs -n 1 <<< "$*")
@@ -19,9 +19,9 @@ app_nicename() {
 
 }
 
-test_app_nicename() {
+test_app_nicename_from_template() {
     notice "[WATCHTOWER]"
-    run_script 'app_nicename' WATCHTOWER
+    run_script 'app_nicename_from_template' WATCHTOWER
     notice "[RADARR__4K]"
-    run_script 'app_nicename' RADARR__4K
+    run_script 'app_nicename_from_template' RADARR__4K
 }
