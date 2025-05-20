@@ -36,19 +36,18 @@ menu_add_var() {
             VarNamePrefix="${APPNAME}__"
         fi
         AppName="$(run_script 'app_nicename' "${APPNAME}")"
+        local AppIsUserDefined=''
         local AppIsDisabled=''
         local AppIsDepreciated=''
-        local AppIsUserDefined=''
-        #local VarIsUserDefined='Y'
-        if run_script 'app_is_builtin' "${appname}"; then
+        if run_script 'app_is_user_defined' "${appname}"; then
+            AppIsUserDefined='Y'
+        else
             if run_script 'app_is_disabled' "${appname}"; then
                 AppIsDisabled='Y'
             fi
             if run_script 'app_is_depreciated' "${appname}"; then
                 AppIsDepreciated='Y'
             fi
-        else
-            AppIsUserDefined='Y'
         fi
         local AppNameHeading="Application: ${DC[Heading]}${AppName}${DC[NC]}"
         if [[ ${AppIsUserDefined} == 'Y' ]]; then
