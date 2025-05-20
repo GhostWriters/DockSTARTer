@@ -210,7 +210,7 @@ declare -Ag DC=( # Dialog colors
 )
 DC+=( # Pre-defined color combinations used in the GUI
     [Heading]="${DC[NC]}${DC[RV]}"
-    [HeadingUserDefined]="${DC[NC]}${DC[RV]}${DC[W]}"
+    [HeadingTag]="${DC[NC]}${DC[RV]}${DC[W]}"
     [HeadingValue]="${DC[NC]}${DC[BD]}${DC[RV]}"
     [Highlight]="${DC[NC]}${DC[Y]}${DC[BD]}"
     [LineHeading]="${DC[NC]}"
