@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-app_description() {
+app_description_from_template() {
     # Return the description of the appname passed.
     local appname=${1-}
     appname=${appname,,}
@@ -21,9 +21,9 @@ app_description() {
     fi
 }
 
-test_app_description() {
+test_app_description_from_template() {
     notice "[WATCHTOWER]"
-    run_script 'app_description' WATCHTOWER
+    run_script 'app_description_from_template' WATCHTOWER
     notice "[RADARR__4K]"
-    run_script 'app_description' RADARR__4K
+    run_script 'app_description_from_template' RADARR__4K
 }
