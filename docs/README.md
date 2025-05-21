@@ -17,7 +17,7 @@ You may choose to rely on DockSTARTer for various changes to your Docker system 
 
 ![App Select](assets/menu_app_select.png "App Select")
 
-![Varible Select](assets/menu_app_vars.png "Varible Select")
+![Varible Select](assets/menu_config_vars.png "Varible Select")
 
 ![Value Prompt](assets/menu_value_prompt.png "Value Prompt")
 
