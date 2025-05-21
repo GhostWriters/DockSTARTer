@@ -9,9 +9,9 @@ env_format_lines() {
     APPNAME=${APPNAME^^}
 
     local GlobalVarsHeading="Global Variables"
-    local DepreciatedTag=" [*DEPRECIATED*]"
-    local DisabledTag=" (Disabled)"
-    local UserDefinedAppTag=" (User Defined)"
+    local AppDepreciatedTag=" [*DEPRECIATED*]"
+    local AppDisabledTag=" (Disabled)"
+    local AppUserDefinedTag=" (User Defined)"
     local UserDefinedVarsTag=" (User Defined Variables)"
     local UserDefinedGlobalVarsTag=" (User Defined)"
 
@@ -33,10 +33,10 @@ env_format_lines() {
         AppDescription=$(run_script 'app_description' "${APPNAME}" | fold -s -w 75)
         local HeadingTitle="${AppName}"
         if [[ ${AppIsUserDefined} == Y ]]; then
-            HeadingTitle+=" ${UserDefinedAppTag}"
+            HeadingTitle+=" ${AppUserDefinedTag}"
         else
-            run_script 'app_is_depreciated' "${APPNAME}" && HeadingTitle+="${DepreciatedTag}"
-            run_script 'app_is_disabled' "${APPNAME}" && HeadingTitle+="${DisabledTag}"
+            run_script 'app_is_depreciated' "${APPNAME}" && HeadingTitle+="${AppDepreciatedTag}"
+            run_script 'app_is_disabled' "${APPNAME}" && HeadingTitle+="${AppDisabledTag}"
         fi
 
         local -a HeadingText=()
