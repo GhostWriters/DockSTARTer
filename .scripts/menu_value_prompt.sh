@@ -15,6 +15,12 @@ menu_value_prompt() {
     appname=${APPNAME,,}
     AppName=$(run_script 'app_nicename' "${APPNAME}")
 
+    local AppDepreciatedTag="[*DEPRECIATED*]"
+    local AppDisabledTag="(Disabled)"
+    local AppUserDefinedTag="(User Defined)"
+    local VarUserDefinedTag="(User Defined)"
+    local VarDeletedTag="* DELETED *"
+
     local Title
     local VarFile DefaultVarFile
     local CleanVarName="${VarName}"
@@ -229,30 +235,30 @@ menu_value_prompt() {
     fi
     local AppNameHeading="   Application: ${DC[Heading]}${AppName}${DC[NC]}"
     if [[ ${AppIsUserDefined} == 'Y' ]]; then
-        AppNameHeading="${AppNameHeading} ${DC[HeadingTag]}(User Defined)${DC[NC]}"
+        AppNameHeading="${AppNameHeading} ${DC[HeadingTag]}${AppUserDefinedTag}${DC[NC]}"
     elif [[ ${AppIsDepreciated} == 'Y' ]]; then
-        AppNameHeading="${AppNameHeading} ${DC[HeadingTag]}[*DEPRECIATED*]${DC[NC]}"
+        AppNameHeading="${AppNameHeading} ${DC[HeadingTag]}${AppDepreciatedTag}${DC[NC]}"
     fi
     if [[ ${AppIsDisabled} == 'Y' ]]; then
-        AppNameHeading="${AppNameHeading} ${DC[HeadingTag]}(Disabled)${DC[NC]}"
+        AppNameHeading="${AppNameHeading} ${DC[HeadingTag]}${AppDisabledTag}${DC[NC]}"
     fi
     local FilenameHeading="          File: ${DC[Heading]}${VarFile}${DC[NC]}"
     local VarNameHeading="      Variable: ${DC[Heading]}${CleanVarName}${DC[NC]}"
     if [[ ${VarIsUserDefined} == 'Y' ]]; then
-        VarNameHeading="${VarNameHeading} ${DC[HeadingTag]}(User Defined)${DC[NC]}"
+        VarNameHeading="${VarNameHeading} ${DC[HeadingTag]}${VarUserDefinedTag}${DC[NC]}"
     fi
     local OriginalValueHeading="Original Value: "
     if [[ -n ${OptionValue["${OriginalValueOption}"]-} ]]; then
         OriginalValueHeading="${OriginalValueHeading}${DC[Heading]}${OptionValue["${OriginalValueOption}"]-}${DC[NC]}"
     else
-        OriginalValueHeading="${OriginalValueHeading}${DC[Highlight]}* DELETED *${DC[NC]}"
+        OriginalValueHeading="${OriginalValueHeading}${DC[Highlight]}${VarDeletedTag}${DC[NC]}"
     fi
     while true; do
         local CurrentValueHeading=" Current Value: "
         if [[ -n ${OptionValue["${CurrentValueOption}"]-} ]]; then
             CurrentValueHeading="${CurrentValueHeading}${DC[HeadingValue]}${OptionValue["${CurrentValueOption}"]-}${DC[NC]}"
         else
-            CurrentValueHeading="${CurrentValueHeading}${DC[Highlight]}* DELETED *${DC[NC]}"
+            CurrentValueHeading="${CurrentValueHeading}${DC[Highlight]}${VarDeletedTag}${DC[NC]}"
         fi
         local -a ValidOptions=()
         local -a ValueOptions=()
