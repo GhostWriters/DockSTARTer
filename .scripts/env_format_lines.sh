@@ -33,7 +33,7 @@ env_format_lines() {
         AppDescription=$(run_script 'app_description' "${APPNAME}" | fold -s -w 75)
         local HeadingTitle="${AppName}"
         if [[ ${AppIsUserDefined} == Y ]]; then
-            HeadingTitle+=" ${AppUserDefinedTag}"
+            HeadingTitle+="${AppUserDefinedTag}"
         else
             run_script 'app_is_depreciated' "${APPNAME}" && HeadingTitle+="${AppDepreciatedTag}"
             run_script 'app_is_disabled' "${APPNAME}" && HeadingTitle+="${AppDisabledTag}"
