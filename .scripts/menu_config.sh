@@ -46,7 +46,7 @@ menu_config() {
                     "${OptionFullSetup}")
                         run_script_dialog "Updating variable files" "" 1 \
                             'env_update' || true
-                        run_script 'menu_config_global' || true
+                        run_script 'menu_config_vars' || true
                         run_script 'menu_app_select' || true
                         run_script 'menu_config_apps' || true
                         ;;
@@ -62,7 +62,7 @@ menu_config() {
                     "${OptionEditGlobalVars}")
                         run_script_dialog "Updating variable files" "" 1 \
                             'env_update' || true
-                        run_script 'menu_config_global' || true
+                        run_script 'menu_config_vars' || true
                         ;;
                     "${OptionComposeUp}")
                         {

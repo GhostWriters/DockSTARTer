@@ -37,7 +37,7 @@ menu_config_apps() {
         LastAppChoice=${AppChoice}
         case ${DIALOG_BUTTONS[AppChoiceButtonPressed]-} in
             OK)
-                run_script 'menu_app_vars' "${AppChoice}"
+                run_script 'menu_config_vars' "${AppChoice}"
                 ;;
             CANCEL | ESC)
                 return
