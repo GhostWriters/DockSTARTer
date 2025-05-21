@@ -1,5 +1,5 @@
 services:
-  synclounge:
+  synclounge<__instance>:
     ports:
-      - ${SYNCLOUNGE__PORT_8088?}:8088
-      - ${SYNCLOUNGE__PORT_8089?}:8089
+      - ${SYNCLOUNGE<__INSTANCE>__PORT_8088?}:8088
+      - ${SYNCLOUNGE<__INSTANCE>__PORT_8089?}:8089

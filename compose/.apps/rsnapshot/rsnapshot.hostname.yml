@@ -1,3 +1,3 @@
 services:
-  rsnapshot:
-    hostname: ${RSNAPSHOT__HOSTNAME?}
+  rsnapshot<__instance>:
+    hostname: ${RSNAPSHOT<__INSTANCE>__HOSTNAME?}

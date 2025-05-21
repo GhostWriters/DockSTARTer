@@ -1,1 +1,1 @@
-${DOCKER_VOLUME_CONFIG}/transmission
+${DOCKER_VOLUME_CONFIG}/transmission<__instance>

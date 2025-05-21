@@ -1,6 +1,6 @@
 services:
-  komga:
+  komga<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "A media server for your comics, mangas, BDs and magazines"
-      com.dockstarter.appinfo.nicename: "Komga"
+      com.dockstarter.appinfo.nicename: "Komga<__Instance>"

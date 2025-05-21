@@ -1,6 +1,6 @@
 services:
-  lidarr:
+  lidarr<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Music download manager for Usenet and BitTorrent users"
-      com.dockstarter.appinfo.nicename: "Lidarr"
+      com.dockstarter.appinfo.nicename: "Lidarr<__Instance>"

@@ -1,6 +1,6 @@
 services:
-  resiliosync:
+  resiliosync<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "A fast, reliable, and simple P2P file sync and share solution"
-      com.dockstarter.appinfo.nicename: "ResilioSync"
+      com.dockstarter.appinfo.nicename: "ResilioSync<__Instance>"

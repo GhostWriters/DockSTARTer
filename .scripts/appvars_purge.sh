@@ -7,20 +7,20 @@ appvars_purge() {
     local AppList
     AppList=$(xargs -n 1 <<< "$*")
     for APPNAME in ${AppList^^}; do
-        local appname=${APPNAME,,}
         local AppName
         AppName=$(run_script 'app_nicename' "${APPNAME}")
 
         local APPVAR_LINES
         local APPVAR_ENV_LINES
-        local APP_ENV_FILE="${APP_ENV_FOLDER}/${appname}.env"
+        local APP_ENV_FILE
+        APP_ENV_FILE="$(run_script 'app_env_file' "${APPNAME}")"
         APPVAR_LINES=$(run_script 'appvars_lines' "${APPNAME}")
         APPVAR_ENV_LINES=$(run_script 'env_lines' "${APP_ENV_FILE}")
         if [[ -z ${APPVAR_LINES} && -z ${APPVAR_ENV_LINES} ]]; then
             if use_dialog_box; then
                 dialog --title "${Title}" --msgbox "${APPNAME} has no variables." 0 0
             else
-                warn "${APPNAME} has no variables."
+                warn "Application ${AppName} has no variables."
             fi
             return
         fi
@@ -69,6 +69,8 @@ test_appvars_purge() {
     run_script 'env_update'
     echo "${COMPOSE_ENV}:"
     cat "${COMPOSE_ENV}"
-    echo "${APP_ENV_FOLDER}/watchtower.env:"
-    cat "${APP_ENV_FOLDER}/watchtower.env"
+    local EnvFile
+    EnvFile="$(run_script 'app_env_file' "watchtower")"
+    echo "${EnvFile}:"
+    cat "${EnvFile}"
 }

@@ -1,6 +1,6 @@
 services:
-  deemix:
+  deemix<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Download music from Deezer via Deemix"
-      com.dockstarter.appinfo.nicename: "Deemix"
+      com.dockstarter.appinfo.nicename: "Deemix<__Instance>"

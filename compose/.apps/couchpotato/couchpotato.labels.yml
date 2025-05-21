@@ -1,6 +1,6 @@
 services:
-  couchpotato:
+  couchpotato<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "true"
       com.dockstarter.appinfo.description: "(DEPRECATED) Use Radarr"
-      com.dockstarter.appinfo.nicename: "CouchPotato"
+      com.dockstarter.appinfo.nicename: "CouchPotato<__Instance>"

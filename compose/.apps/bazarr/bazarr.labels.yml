@@ -1,6 +1,6 @@
 services:
-  bazarr:
+  bazarr<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Companion to Sonarr to manage and download subtitles"
-      com.dockstarter.appinfo.nicename: "Bazarr"
+      com.dockstarter.appinfo.nicename: "Bazarr<__Instance>"

@@ -1,6 +1,6 @@
 services:
-  ubooquity:
+  ubooquity<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Home server for your comics and ebooks"
-      com.dockstarter.appinfo.nicename: "Ubooquity"
+      com.dockstarter.appinfo.nicename: "Ubooquity<__Instance>"

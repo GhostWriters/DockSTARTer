@@ -1,6 +1,6 @@
 services:
-  uptimekuma:
+  uptimekuma<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "A self-hosted monitoring tool like Uptime Robot"
-      com.dockstarter.appinfo.nicename: "UptimeKuma"
+      com.dockstarter.appinfo.nicename: "UptimeKuma<__Instance>"

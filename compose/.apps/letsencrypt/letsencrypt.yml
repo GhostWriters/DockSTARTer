@@ -1,15 +1,15 @@
 services:
-  letsencrypt:
+  letsencrypt<__instance>:
     cap_add:
       - NET_ADMIN
-    container_name: ${LETSENCRYPT__CONTAINER_NAME?}
-    env_file: env_files/letsencrypt.env
+    container_name: ${LETSENCRYPT<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/letsencrypt<__instance>.env
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}
       - TZ=${TZ?}
-    restart: ${LETSENCRYPT__RESTART?}
+    restart: ${LETSENCRYPT<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG?}/letsencrypt:/config
+      - ${DOCKER_VOLUME_CONFIG?}/letsencrypt<__instance>:/config
       - ${DOCKER_VOLUME_STORAGE?}:/storage

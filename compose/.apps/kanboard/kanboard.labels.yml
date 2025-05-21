@@ -1,6 +1,6 @@
 services:
-  kanboard:
+  kanboard<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Kanboard is a free and open source Kanban project management software."
-      com.dockstarter.appinfo.nicename: "Kanboard"
+      com.dockstarter.appinfo.nicename: "Kanboard<__Instance>"

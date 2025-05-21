@@ -1,14 +1,14 @@
 services:
-  openldap:
-    container_name: ${OPENLDAP__CONTAINER_NAME?}
-    env_file: env_files/openldap.env
+  openldap<__instance>:
+    container_name: ${OPENLDAP<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/openldap<__instance>.env
     environment:
-      - LDAP_OPENLDAP_GID=${PGID?}
-      - LDAP_OPENLDAP_UID=${PUID?}
+      - LDAP_OPENLDAP<__INSTANCE>_GID=${PGID?}
+      - LDAP_OPENLDAP<__INSTANCE>_UID=${PUID?}
       - TZ=${TZ?}
-    restart: ${OPENLDAP__RESTART?}
+    restart: ${OPENLDAP<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG?}/openldap/database:/var/lib/ldap
-      - ${DOCKER_VOLUME_CONFIG?}/openldap/config:/etc/ldap/
+      - ${DOCKER_VOLUME_CONFIG?}/openldap<__instance>/database:/var/lib/ldap
+      - ${DOCKER_VOLUME_CONFIG?}/openldap<__instance>/config:/etc/ldap/
       - ${DOCKER_VOLUME_STORAGE?}:/storage

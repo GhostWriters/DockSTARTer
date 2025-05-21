@@ -1,6 +1,6 @@
 services:
-  influxdb:
+  influxdb<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Time series database for recording metrics, events, and analytics"
-      com.dockstarter.appinfo.nicename: "InfluxDB"
+      com.dockstarter.appinfo.nicename: "InfluxDB<__Instance>"

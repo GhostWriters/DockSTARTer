@@ -1,13 +1,13 @@
 services:
-  moviematch:
-    container_name: ${MOVIEMATCH__CONTAINER_NAME?}
-    env_file: env_files/moviematch.env
+  moviematch<__instance>:
+    container_name: ${MOVIEMATCH<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/moviematch<__instance>.env
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}
       - TZ=${TZ?}
-    restart: ${MOVIEMATCH__RESTART?}
+    restart: ${MOVIEMATCH<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG?}/moviematch:/config
+      - ${DOCKER_VOLUME_CONFIG?}/moviematch<__instance>:/config
       - ${DOCKER_VOLUME_STORAGE?}:/storage

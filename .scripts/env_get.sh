@@ -19,14 +19,14 @@ env_get() {
     if [[ ${GET_VAR} =~ ^[A-Za-z0-9_]+: ]]; then
         # GET_VAR is in the form of "APPNAME:VARIABLE", set new file to use
         local APPNAME=${GET_VAR%%:*}
-        VAR_FILE="${APP_ENV_FOLDER}/${APPNAME,,}.env"
+        VAR_FILE="$(run_script 'app_env_file' "${APPNAME}")"
         GET_VAR=${GET_VAR#"${APPNAME}:"}
     fi
     if [[ -f ${VAR_FILE} ]]; then
         grep --color=never -Po "^\s*${GET_VAR}\s*=\K.*" "${VAR_FILE}" | tail -1 | xargs || true
     else
         # VAR_FILE does not exist, give a warning
-        warn "${VAR_FILE} does not exist."
+        warn "File ${VAR_FILE} does not exist."
     fi
 
 }

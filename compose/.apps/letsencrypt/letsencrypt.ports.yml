@@ -1,5 +1,5 @@
 services:
-  letsencrypt:
+  letsencrypt<__instance>:
     ports:
-      - ${LETSENCRYPT__PORT_443?}:443
-      - ${LETSENCRYPT__PORT_80?}:80
+      - ${LETSENCRYPT<__INSTANCE>__PORT_443?}:443
+      - ${LETSENCRYPT<__INSTANCE>__PORT_80?}:80

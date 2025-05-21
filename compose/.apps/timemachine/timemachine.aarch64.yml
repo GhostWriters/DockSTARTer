@@ -1,3 +1,3 @@
 services:
-  timemachine:
-    image: mbentley/timemachine:${TIMEMACHINE__TAG?}
+  timemachine<__instance>:
+    image: mbentley/timemachine:${TIMEMACHINE<__INSTANCE>__TAG?}

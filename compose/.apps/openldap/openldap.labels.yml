@@ -1,6 +1,6 @@
 services:
-  openldap:
+  openldap<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "OpenLDAP with TLS, multi master replication and easy bootstrap."
-      com.dockstarter.appinfo.nicename: "OpenLDAP"
+      com.dockstarter.appinfo.nicename: "OpenLDAP<__Instance>"

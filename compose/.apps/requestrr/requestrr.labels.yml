@@ -1,6 +1,6 @@
 services:
-  requestrr:
+  requestrr<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "true"
       com.dockstarter.appinfo.description: "(DEPRECATED) Use Doplarr"
-      com.dockstarter.appinfo.nicename: "Requestrr"
+      com.dockstarter.appinfo.nicename: "Requestrr<__Instance>"

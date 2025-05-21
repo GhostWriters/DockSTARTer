@@ -1,3 +1,3 @@
 services:
-  ddclient:
-    hostname: ${DDCLIENT__HOSTNAME?}
+  ddclient<__instance>:
+    hostname: ${DDCLIENT<__INSTANCE>__HOSTNAME?}

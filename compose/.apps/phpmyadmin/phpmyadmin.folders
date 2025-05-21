@@ -1,1 +1,1 @@
-${DOCKER_VOLUME_CONFIG}/phpmyadmin
+${DOCKER_VOLUME_CONFIG}/phpmyadmin<__instance>

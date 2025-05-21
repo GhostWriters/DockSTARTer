@@ -1,6 +1,6 @@
 services:
-  speedtest:
+  speedtest<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "This program runs a speedtest check every hour and graphs the results."
-      com.dockstarter.appinfo.nicename: "speedtest"
+      com.dockstarter.appinfo.nicename: "speedtest<__Instance>"

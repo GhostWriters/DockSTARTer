@@ -3,35 +3,6 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_add_var() {
-    # Dialog color codes to be used in the GUI menu
-    # shellcheck disable=SC2168 # local is only valid in functions
-    local \
-        ColorHeading \
-        ColorHeadingValue \
-        ColorHighlight
-    # shellcheck disable=SC2034 # variable appears unused. Verify it or export it.
-    {
-        ColorHeading='\Zr'
-        ColorHeadingValue='\Zb\Zr'
-        ColorHighlight='\Z3\Zb'
-    }
-    # shellcheck disable=SC2168 # local is only valid in functions
-    local \
-        ColorLineHeading \
-        ColorLineComment \
-        ColorLineOther \
-        ColorLineVar \
-        ColorLineAddVariable
-    # shellcheck disable=SC2034 # variable appears unused. Verify it or export it.
-    {
-        ColorLineHeading='\Zn'
-        ColorLineComment='\Z0\Zb\Zr'
-        ColorLineOther="${ColorLineComment}"
-        ColorLineVar='\Z0\ZB\Zr'
-        ColorLineAddVariable="${ColorLineVar}"
-    }
-    local DialogTimeout=2
-
     local APPNAME=${1-}
     local appname
     local AppName
@@ -56,7 +27,7 @@ menu_add_var() {
             VarType="APPENV"
             APPNAME="${APPNAME%:}"
             appname=${APPNAME,,}
-            VarFile="${APP_ENV_FOLDER}/${appname}.env"
+            VarFile="$(run_script 'app_env_file' "${appname}")"
         else
             # appname specified, creating an APPNAME__* variable in .env
             VarType="APP"
@@ -65,19 +36,31 @@ menu_add_var() {
             VarNamePrefix="${APPNAME}__"
         fi
         AppName="$(run_script 'app_nicename' "${APPNAME}")"
-        local AppIsUserDefined
-        if run_script 'app_is_builtin' "${appname}"; then
-            AppIsUserDefined=''
-        else
+        local AppIsUserDefined=''
+        local AppIsDisabled=''
+        local AppIsDepreciated=''
+        if run_script 'app_is_user_defined' "${appname}"; then
             AppIsUserDefined='Y'
+        else
+            if run_script 'app_is_disabled' "${appname}"; then
+                AppIsDisabled='Y'
+            fi
+            if run_script 'app_is_depreciated' "${appname}"; then
+                AppIsDepreciated='Y'
+            fi
         fi
-        local AppNameHeading="Application: ${ColorHeading}${AppName}\Zn"
+        local AppNameHeading="Application: ${DC[Heading]}${AppName}${DC[NC]}"
         if [[ ${AppIsUserDefined} == 'Y' ]]; then
-            AppNameHeading="${AppNameHeading} ${ColorHighlight}*User Defined*\Zn"
+            AppNameHeading="${AppNameHeading} ${DC[HeadingTag]}(User Defined)${DC[NC]}"
+        elif [[ ${AppIsDepreciated} == 'Y' ]]; then
+            AppNameHeading="${AppNameHeading} ${DC[HeadingTag]}[*DEPRECIATED*]${DC[NC]}"
+        fi
+        if [[ ${AppIsDisabled} == 'Y' ]]; then
+            AppNameHeading="${AppNameHeading} ${DC[HeadingTag]}(Disabled)${DC[NC]}"
         fi
         DescriptionHeading="${DescriptionHeading}\n${AppNameHeading}"
     fi
-    local FilenameHeading="       File: ${ColorHeading}${VarFile}\Zn"
+    local FilenameHeading="       File: ${DC[Heading]}${VarFile}${DC[NC]}"
     DescriptionHeading="${DescriptionHeading}\n${FilenameHeading}"
     local InputValueText="${DescriptionHeading}\n\nEnter the name of the variable to create\n"
     Value=""
@@ -108,18 +91,18 @@ menu_add_var() {
                         Value="${Value^^}"
                         VarName="${VarNamePrefix}${Value}"
                         if ! run_script 'varname_is_valid' "${VarName}" "_BARE_"; then
-                            local ErrorMessage="${DescriptionHeading}\n\n   Variable: ${ColorHeadingValue}${VarName}\Zn\n\nThe variable name ${ColorHighlight}${VarName}\Zn is not a valid name.\n\n Please input another variable name."
+                            local ErrorMessage="${DescriptionHeading}\n\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\nThe variable name ${DC[Highlight]}${VarName}${DC[NC]} is not a valid name.\n\n Please input another variable name."
                             dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
                             continue
                         fi
                         local VarNameApp
                         VarNameApp="$(run_script 'app_nicename' "$(run_script 'varname_to_appname' "${VarName}")")"
                         if [[ ${VarNameApp} == "" ]]; then
-                            local ErrorMessage="${DescriptionHeading}\n\n   Variable: ${ColorHeadingValue}${VarName}\Zn\n\nThe variable name ${ColorHighlight}${VarName}\Zn is not a valid variable for app ${ColorHighlight}${AppName}\Zn. It would be a global variable\Zn.\n\n Please input another variable name."
+                            local ErrorMessage="${DescriptionHeading}\n\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\nThe variable name ${DC[Highlight]}${VarName}${DC[NC]} is not a valid variable for app ${DC[Highlight]}${AppName}${DC[NC]}. It would be a global variable${DC[NC]}.\n\n Please input another variable name."
                             dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
                             continue
                         elif [[ ${VarNameApp} != "${AppName}" ]]; then
-                            local ErrorMessage="${DescriptionHeading}\n\n   Variable: ${ColorHeadingValue}${VarName}\Zn\n\nThe variable name ${ColorHighlight}${VarName}\Zn is not a valid variable for app ${ColorHighlight}${AppName}\Zn. It would be a variable for an app named ${ColorHighlight}${VarNameApp}\Zn.\n\n Please input another variable name."
+                            local ErrorMessage="${DescriptionHeading}\n\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\nThe variable name ${DC[Highlight]}${VarName}${DC[NC]} is not a valid variable for app ${DC[Highlight]}${AppName}${DC[NC]}. It would be a variable for an app named ${DC[Highlight]}${VarNameApp}${DC[NC]}.\n\n Please input another variable name."
                             dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
                             continue
                         fi
@@ -156,7 +139,7 @@ menu_add_var() {
                     APPENV)
                         VarName="${Value}"
                         if ! run_script 'varname_is_valid' "${VarName}" "_BARE_"; then
-                            local ErrorMessage="${DescriptionHeading}\n\n   Variable: ${ColorHeadingValue}${VarName}\Zn\n\nThe variable name ${ColorHighlight}${VarName}\Zn is not a valid name.\n\n Please input another variable name."
+                            local ErrorMessage="${DescriptionHeading}\n\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\nThe variable name ${DC[Highlight]}${VarName}${DC[NC]} is not a valid name.\n\n Please input another variable name."
                             dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
                             continue
                         fi
@@ -165,14 +148,14 @@ menu_add_var() {
                     GLOBAL)
                         VarName="${Value}"
                         if ! run_script 'varname_is_valid' "${VarName}" "_BARE_"; then
-                            local ErrorMessage="${DescriptionHeading}\n   Variable: ${ColorHeadingValue}${VarName}\Zn\n\n  The variable name ${ColorHighlight}${VarName}\Zn is not a name.\n\nPlease input another variable name."
+                            local ErrorMessage="${DescriptionHeading}\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\n  The variable name ${DC[Highlight]}${VarName}${DC[NC]} is not a name.\n\nPlease input another variable name."
                             dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
                             continue
                         fi
                         local VarNameApp
                         VarNameApp="$(run_script 'app_nicename' "$(run_script 'varname_to_appname' "${VarName}")")"
                         if [[ ${VarNameApp} != "" ]]; then
-                            local ErrorMessage="${DescriptionHeading}\n\n   Variable: ${ColorHeadingValue}${VarName}\Zn\n\nThe variable name ${ColorHighlight}${VarName}\Zn is not a valid global variable. It would be a variable for an app named ${ColorHighlight}${VarNameApp}\Zn.\n\n Please input another variable name."
+                            local ErrorMessage="${DescriptionHeading}\n\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\nThe variable name ${DC[Highlight]}${VarName}${DC[NC]} is not a valid global variable. It would be a variable for an app named ${DC[Highlight]}${VarNameApp}${DC[NC]}.\n\n Please input another variable name."
                             dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
                             continue
                         fi
@@ -183,18 +166,18 @@ menu_add_var() {
                         ;;
                 esac
                 if run_script 'env_var_exists' "${VarName}" "${VarFile}"; then
-                    local ErrorMessage="${DescriptionHeading}\n\n   Variable: ${ColorHeadingValue}${VarName}\Zn\n\nThe variable ${ColorHighlight}${VarName}\Zn already exists.\n\n Please input another variable name."
+                    local ErrorMessage="${DescriptionHeading}\n\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\nThe variable ${DC[Highlight]}${VarName}${DC[NC]} already exists.\n\n Please input another variable name."
                     dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
                     continue
                 fi
-                local Question="${DescriptionHeading}\n\n   Variable: ${ColorHeadingValue}${VarName}\Zn\n\nCreate variable ${ColorHighlight}${VarName}\Zn?\n"
+                local Question="${DescriptionHeading}\n\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\nCreate variable ${DC[Highlight]}${VarName}${DC[NC]}?\n"
                 if run_script 'question_prompt' N "${Question}" "Create Variable"; then
                     if [[ ${VarType} == "APPENV" ]]; then
-                        run_script_dialog "Creating Variable" "${DescriptionHeading}\n\n   Variable: ${ColorHeadingValue}${VarName}\Zn\n\n" "${DialogTimeout}" \
+                        run_script_dialog "Creating Variable" "${DescriptionHeading}\n\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\n" "${DIALOGTIMEOUT}" \
                             'env_set_literal' "${appname}:${VarName}" "${Default}"
                         run_script 'menu_value_prompt' "${appname}:${VarName}"
                     else
-                        run_script_dialog "Creating Variable" "${DescriptionHeading}\n\n   Variable: ${ColorHeadingValue}${VarName}\Zn\n\n" "${DialogTimeout}" \
+                        run_script_dialog "Creating Variable" "${DescriptionHeading}\n\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\n" "${DIALOGTIMEOUT}" \
                             'env_set_literal' "${VarName}" "${Default}"
                         run_script 'menu_value_prompt' "${VarName}"
                     fi

@@ -1,12 +1,12 @@
 services:
-  fireflyiii:
-    container_name: ${FIREFLYIII__CONTAINER_NAME?}
-    env_file: env_files/fireflyiii.env
+  fireflyiii<__instance>:
+    container_name: ${FIREFLYIII<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/fireflyiii<__instance>.env
     environment:
       - TZ=${TZ?}
-    restart: ${FIREFLYIII__RESTART?}
+    restart: ${FIREFLYIII<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG?}/fireflyiii/export:/var/www/html/storage/export
-      - ${DOCKER_VOLUME_CONFIG?}/fireflyiii/upload:/var/www/html/storage/upload
+      - ${DOCKER_VOLUME_CONFIG?}/fireflyiii<__instance>/export:/var/www/html/storage/export
+      - ${DOCKER_VOLUME_CONFIG?}/fireflyiii<__instance>/upload:/var/www/html/storage/upload
       - ${DOCKER_VOLUME_STORAGE?}:/storage

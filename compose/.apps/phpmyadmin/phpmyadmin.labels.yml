@@ -1,6 +1,6 @@
 services:
-  phpmyadmin:
+  phpmyadmin<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "A web interface for MySQL and MariaDB"
-      com.dockstarter.appinfo.nicename: "phpMyAdmin"
+      com.dockstarter.appinfo.nicename: "phpMyAdmin<__Instance>"

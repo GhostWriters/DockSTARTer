@@ -1,6 +1,6 @@
 services:
-  privoxyvpn:
+  privoxyvpn<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Privoxy, microsocks, OpenVPN, WireGuard"
-      com.dockstarter.appinfo.nicename: "PrivoxyVPN"
+      com.dockstarter.appinfo.nicename: "PrivoxyVPN<__Instance>"

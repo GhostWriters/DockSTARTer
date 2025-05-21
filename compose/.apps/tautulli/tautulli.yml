@@ -1,13 +1,13 @@
 services:
-  tautulli:
-    container_name: ${TAUTULLI__CONTAINER_NAME?}
-    env_file: env_files/tautulli.env
+  tautulli<__instance>:
+    container_name: ${TAUTULLI<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/tautulli<__instance>.env
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}
       - TZ=${TZ?}
-    restart: ${TAUTULLI__RESTART?}
+    restart: ${TAUTULLI<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG?}/tautulli:/config
+      - ${DOCKER_VOLUME_CONFIG?}/tautulli<__instance>:/config
       - ${DOCKER_VOLUME_STORAGE?}:/storage

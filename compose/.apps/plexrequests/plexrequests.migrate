@@ -1,6 +1,6 @@
 ###
-### PLEXREQUESTS - .env
+### PLEXREQUESTS<__INSTANCE> - .env
 ###
 ###
-### PLEXREQUESTS - plexrequests.env
+### PLEXREQUESTS<__INSTANCE> - plexrequests<__instance>.env:
 ###

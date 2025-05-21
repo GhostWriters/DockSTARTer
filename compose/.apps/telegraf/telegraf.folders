@@ -1,1 +1,1 @@
-${DOCKER_VOLUME_CONFIG}/telegraf
+${DOCKER_VOLUME_CONFIG}/telegraf<__instance>

@@ -1,1 +1,1 @@
-${DOCKER_VOLUME_CONFIG}/guacamole
+${DOCKER_VOLUME_CONFIG}/guacamole<__instance>

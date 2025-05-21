@@ -1,6 +1,6 @@
 services:
-  jellyseerr:
+  jellyseerr<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Overseerr fork with Jellyfin and Emby support."
-      com.dockstarter.appinfo.nicename: "Jellyseerr"
+      com.dockstarter.appinfo.nicename: "Jellyseerr<__Instance>"

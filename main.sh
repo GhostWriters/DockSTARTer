@@ -191,6 +191,37 @@ BS=$(tput cup 1000 0 2> /dev/null || true) # Bottom of screen
 readonly BS
 export BS
 
+declare -Ag DC=( # Dialog colors
+    [B]='\Z4'   # Blue
+    [C]='\Z6'   # Cyan
+    [G]='\Z2'   # Green
+    [K]='\Z0'   # Black
+    [M]='\Z5'   # Magenta
+    [R]='\Z1'   # Red
+    [W]='\Z7'   # White
+    [Y]='\Z3'   # Yellow
+    [RV]='\Zr'  # Reverse
+    [NRV]='\ZR' # No Reverse
+    [BD]='\Zb'  # Bold
+    [NBD]='\ZB' # No Bold
+    [U]='\Zu'   # Underline
+    [NU]='\ZU'  # No Underline
+    [NC]='\Zn'  # No Color
+)
+DC+=( # Pre-defined color combinations used in the GUI
+    [Heading]="${DC[NC]}${DC[RV]}"
+    [HeadingTag]="${DC[NC]}${DC[RV]}${DC[W]}"
+    [HeadingValue]="${DC[NC]}${DC[BD]}${DC[RV]}"
+    [Highlight]="${DC[NC]}${DC[Y]}${DC[BD]}"
+    [LineHeading]="${DC[NC]}"
+    [LineComment]="${DC[NC]}${DC[K]}${DC[BD]}${DC[RV]}"
+    [LineOther]="${DC[NC]}${DC[K]}${DC[BD]}${DC[RV]}"
+    [LineVar]="${DC[NC]}${DC[K]}${DC[NBD]}${DC[RV]}"
+    [LineAddVariable]="${DC[NC]}${DC[K]}${DC[NBD]}${DC[RV]}"
+)
+readonly DC
+declare -rix DIALOGTIMEOUT=3
+
 # Log Functions
 MKTEMP_LOG=$(mktemp) || echo -e "Failed to create temporary log file.\nFailing command: ${F[C]}mktemp"
 readonly MKTEMP_LOG
@@ -569,7 +600,7 @@ highlighted_list() {
     local List
     List=$(xargs <<< "$*")
     if [[ -n ${List-} ]]; then
-        echo "\Zr${List// /'\ZR \Zr'}\ZR"
+        echo "${DC[RV]}${List// /${DC[NC]} ${DC[RV]}}${DC[NC]}"
     fi
 }
 
@@ -583,7 +614,7 @@ dialog_pipe() {
     local Title=${1:-}
     local SubTitle=${2:-}
     local TimeOut=${3:-0}
-    dialog --begin 2 2 --colors --timeout "${TimeOut}" --title "${Title}" --programbox "\Zr${SubTitle}" $((LINES - 4)) $((COLUMNS - 5)) || true
+    dialog --begin 2 2 --colors --timeout "${TimeOut}" --title "${Title}" --programbox "${DC[RV]}${SubTitle}${DC[NC]}" $((LINES - 4)) $((COLUMNS - 5)) || true
     echo -n "${BS}"
 }
 # Script Dialog Runner Function

@@ -1,1 +1,1 @@
-${DOCKER_VOLUME_CONFIG}/picard
+${DOCKER_VOLUME_CONFIG}/picard<__instance>

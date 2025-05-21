@@ -1,3 +1,3 @@
 services:
-  kanboard:
-    hostname: ${KANBOARD__HOSTNAME?}
+  kanboard<__instance>:
+    hostname: ${KANBOARD<__INSTANCE>__HOSTNAME?}

@@ -1,6 +1,6 @@
 services:
-  plex:
+  plex<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Organizes all of your video, music and photo collections"
-      com.dockstarter.appinfo.nicename: "Plex"
+      com.dockstarter.appinfo.nicename: "Plex<__Instance>"

@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 update_self() {
     local Title="Update DockSTARTer"
-    local BRANCH=${1:-origin/app-env-files}
+    local BRANCH=${1:-origin/multi-instance}
     if ! run_script 'question_prompt' Y "Would you like to update DockSTARTer to ${BRANCH} now?" "${Title}" "${FORCE:+Y}"; then
         notice "DockSTARTer will not be updated to ${BRANCH}."
         return 1
@@ -20,6 +20,8 @@ update_self() {
 
 commands_update_self() {
     local BRANCH=${1}
+    notice "Clearing instances folder"
+    rm -R "${INSTANCES_FOLDER:?}/"* &> /dev/null || true
     notice "Updating DockSTARTer to ${BRANCH}."
     cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
     info "Setting file ownership on current repository files"

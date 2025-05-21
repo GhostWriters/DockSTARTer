@@ -1,13 +1,13 @@
 services:
-  speedtest:
-    container_name: ${SPEEDTEST__CONTAINER_NAME?}
-    env_file: env_files/speedtest.env
+  speedtest<__instance>:
+    container_name: ${SPEEDTEST<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/speedtest<__instance>.env
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}
       - TZ=${TZ?}
-    restart: ${SPEEDTEST__RESTART?}
+    restart: ${SPEEDTEST<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG?}/speedtest:/config
+      - ${DOCKER_VOLUME_CONFIG?}/speedtest<__instance>:/config
       - ${DOCKER_VOLUME_STORAGE?}:/storage

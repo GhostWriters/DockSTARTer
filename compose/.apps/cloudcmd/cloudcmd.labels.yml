@@ -1,6 +1,6 @@
 services:
-  cloudcmd:
+  cloudcmd<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "A web file manager with console and editor"
-      com.dockstarter.appinfo.nicename: "CloudCMD"
+      com.dockstarter.appinfo.nicename: "CloudCMD<__Instance>"

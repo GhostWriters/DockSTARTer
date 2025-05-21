@@ -1,6 +1,6 @@
 services:
-  lazylibrarian:
+  lazylibrarian<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Book PVR Client"
-      com.dockstarter.appinfo.nicename: "LazyLibrarian"
+      com.dockstarter.appinfo.nicename: "LazyLibrarian<__Instance>"

@@ -1,11 +1,11 @@
 services:
-  azuracast:
-    container_name: ${AZURACAST__CONTAINER_NAME?}
-    env_file: env_files/azuracast.env
+  azuracast<__instance>:
+    container_name: ${AZURACAST<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/azuracast<__instance>.env
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}
-    restart: ${AZURACAST__RESTART?}
+    restart: ${AZURACAST<__INSTANCE>__RESTART?}
     volumes:
       - ${DOCKER_VOLUME_CONFIG?}/shoutcast2/:/var/azuracast/servers/shoutcast2
       - ${DOCKER_VOLUME_CONFIG?}/geoip/:/var/azuracast/geoip

@@ -1,6 +1,6 @@
 services:
-  synclounge:
+  synclounge<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Watch Plex in sync with your friends/family, wherever you are."
-      com.dockstarter.appinfo.nicename: "SyncLounge"
+      com.dockstarter.appinfo.nicename: "SyncLounge<__Instance>"

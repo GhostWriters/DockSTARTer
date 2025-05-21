@@ -1,6 +1,6 @@
 services:
-  dasshio:
+  dasshio<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Use Amazon Dash buttons to communicate with Home Assistant."
-      com.dockstarter.appinfo.nicename: "Dasshio"
+      com.dockstarter.appinfo.nicename: "Dasshio<__Instance>"

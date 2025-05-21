@@ -1,6 +1,6 @@
 services:
-  kiwixserve:
+  kiwixserve<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Kiwix HTTP daemon"
-      com.dockstarter.appinfo.nicename: "Kiwixserve"
+      com.dockstarter.appinfo.nicename: "Kiwixserve<__Instance>"

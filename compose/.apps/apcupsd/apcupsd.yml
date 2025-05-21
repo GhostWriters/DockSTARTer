@@ -1,13 +1,13 @@
 services:
-  apcupsd:
-    container_name: ${APCUPSD__CONTAINER_NAME?}
-    env_file: env_files/apcupsd.env
+  apcupsd<__instance>:
+    container_name: ${APCUPSD<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/apcupsd<__instance>.env
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}
       - TZ=${TZ?}
-    restart: ${APCUPSD__RESTART?}
+    restart: ${APCUPSD<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG?}/apcupsd:/config
+      - ${DOCKER_VOLUME_CONFIG?}/apcupsd<__instance>:/config
       - ${DOCKER_VOLUME_STORAGE?}:/storage

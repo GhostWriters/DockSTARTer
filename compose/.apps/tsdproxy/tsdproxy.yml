@@ -1,11 +1,11 @@
 services:
-  tsdproxy:
-    container_name: ${TSDPROXY_CONTAINER_NAME?}
+  tsdproxy<__instance>:
+    container_name: ${TSDPROXY<__INSTANCE>_CONTAINER_NAME?}
     environment:
       - TZ=${TZ?}
-    restart: ${TSDPROXY_RESTART?}
+    restart: ${TSDPROXY<__INSTANCE>_RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG?}/tsdproxy:/data
+      - ${DOCKER_VOLUME_CONFIG?}/tsdproxy<__instance>:/data
       - ${DOCKER_VOLUME_STORAGE?}:/storage
-      - ${TSDPROXY__VOLUME_DOCKER_SOCKET?}:/var/run/docker.sock
+      - ${TSDPROXY<__INSTANCE>__VOLUME_DOCKER_SOCKET?}:/var/run/docker.sock

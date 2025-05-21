@@ -1,1 +1,1 @@
-${DOCKER_VOLUME_CONFIG}/gitea
+${DOCKER_VOLUME_CONFIG}/gitea<__instance>

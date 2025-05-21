@@ -1,14 +1,14 @@
 services:
-  traefik:
-    container_name: ${TRAEFIK__CONTAINER_NAME?}
-    env_file: env_files/traefik.env
+  traefik<__instance>:
+    container_name: ${TRAEFIK<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/traefik<__instance>.env
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}
       - TZ=${TZ?}
-    restart: ${TRAEFIK__RESTART?}
+    restart: ${TRAEFIK<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG?}/traefik:/etc/traefik
+      - ${DOCKER_VOLUME_CONFIG?}/traefik<__instance>:/etc/traefik
       - ${DOCKER_VOLUME_STORAGE?}:/storage
-      - ${TRAEFIK__VOLUME_DOCKER_SOCKET?}:/var/run/docker.sock:ro
+      - ${TRAEFIK<__INSTANCE>__VOLUME_DOCKER_SOCKET?}:/var/run/docker.sock:ro

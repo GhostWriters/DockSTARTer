@@ -1,6 +1,6 @@
 services:
-  homepage:
+  homepage<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "A highly customizable application dashboard with integrations for over 100 services"
-      com.dockstarter.appinfo.nicename: "homepage"
+      com.dockstarter.appinfo.nicename: "homepage<__Instance>"

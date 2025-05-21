@@ -1,13 +1,13 @@
 services:
-  quasselcore:
-    container_name: ${QUASSELCORE__CONTAINER_NAME?}
-    env_file: env_files/quasselcore.env
+  quasselcore<__instance>:
+    container_name: ${QUASSELCORE<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/quasselcore<__instance>.env
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}
       - TZ=${TZ?}
-    restart: ${QUASSELCORE__RESTART?}
+    restart: ${QUASSELCORE<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG?}/quasselcore:/config
+      - ${DOCKER_VOLUME_CONFIG?}/quasselcore<__instance>:/config
       - ${DOCKER_VOLUME_STORAGE?}:/storage

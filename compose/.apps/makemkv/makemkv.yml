@@ -1,14 +1,14 @@
 services:
-  makemkv:
-    container_name: ${MAKEMKV__CONTAINER_NAME?}
-    env_file: env_files/makemkv.env
+  makemkv<__instance>:
+    container_name: ${MAKEMKV<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/makemkv<__instance>.env
     environment:
       - GROUP_ID=${PGID?}
       - USER_ID=${PUID?}
       - TZ=${TZ?}
-    restart: ${MAKEMKV__RESTART?}
+    restart: ${MAKEMKV<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG?}/makemkv:/config
+      - ${DOCKER_VOLUME_CONFIG?}/makemkv<__instance>:/config
       - ${DOCKER_VOLUME_STORAGE?}:/storage
-      - ${MAKEMKV__VOLUME_OUTPUTDIR?}:/output
+      - ${MAKEMKV<__INSTANCE>__VOLUME_OUTPUTDIR?}:/output

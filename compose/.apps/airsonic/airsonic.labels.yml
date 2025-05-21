@@ -1,6 +1,6 @@
 services:
-  airsonic:
+  airsonic<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "true"
       com.dockstarter.appinfo.description: "(DEPRECATED) Use AirsonicAdvanced"
-      com.dockstarter.appinfo.nicename: "Airsonic"
+      com.dockstarter.appinfo.nicename: "Airsonic<__Instance>"

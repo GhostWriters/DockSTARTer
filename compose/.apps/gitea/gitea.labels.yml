@@ -1,6 +1,6 @@
 services:
-  gitea:
+  gitea<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "A painless self-hosted Git service"
-      com.dockstarter.appinfo.nicename: "Gitea"
+      com.dockstarter.appinfo.nicename: "Gitea<__Instance>"

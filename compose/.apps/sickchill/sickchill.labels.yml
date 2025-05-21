@@ -1,6 +1,6 @@
 services:
-  sickchill:
+  sickchill<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Automatic Video Library Manager for TV Shows"
-      com.dockstarter.appinfo.nicename: "SickChill"
+      com.dockstarter.appinfo.nicename: "SickChill<__Instance>"

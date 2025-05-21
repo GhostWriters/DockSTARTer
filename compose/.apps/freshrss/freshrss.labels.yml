@@ -1,6 +1,6 @@
 services:
-  freshrss:
+  freshrss<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Free, self-hostable aggregator for rss feeds"
-      com.dockstarter.appinfo.nicename: "FreshRSS"
+      com.dockstarter.appinfo.nicename: "FreshRSS<__Instance>"

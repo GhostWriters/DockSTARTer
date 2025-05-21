@@ -1,6 +1,6 @@
 services:
-  apcupsd:
+  apcupsd<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Dockerized Python script that will send data from apcupsd to influxdb."
-      com.dockstarter.appinfo.nicename: "apcupsd"
+      com.dockstarter.appinfo.nicename: "apcupsd<__Instance>"

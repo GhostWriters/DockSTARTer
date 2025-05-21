@@ -9,24 +9,24 @@ menu_app_select() {
     local EnabledApps=()
     while IFS= read -r line; do
         local APPNAME=${line^^}
-        local appname=${APPNAME,,}
-        local APP_FOLDER="${TEMPLATES_FOLDER}/${appname}"
-        if [[ -d ${APP_FOLDER}/ ]]; then
-            if [[ -f ${APP_FOLDER}/${appname}.yml ]]; then
-                if [[ -f ${APP_FOLDER}/${appname}.${ARCH}.yml ]]; then
-                    local AppName
-                    AppName=$(run_script 'app_nicename' "${APPNAME}")
-                    local AppDescription
-                    AppDescription=$(run_script 'app_description' "${APPNAME}")
-                    local AppOnOff
-                    if run_script 'app_is_enabled' "${APPNAME}"; then
-                        AppOnOff="on"
-                        EnabledApps+=("${AppName}")
-                    else
-                        AppOnOff="off"
-                    fi
-                    AppList+=("${AppName}" "${AppDescription}" "${AppOnOff}")
+        local main_yml
+        main_yml="$(run_script 'app_instance_file' "${APPNAME}" ".yml")"
+        if [[ -f ${main_yml} ]]; then
+            local main_yml
+            arch_yml="$(run_script 'app_instance_file' "${APPNAME}" ".${ARCH}.yml")"
+            if [[ -f ${arch_yml} ]]; then
+                local AppName
+                AppName=$(run_script 'app_nicename_from_template' "${APPNAME}")
+                local AppDescription
+                AppDescription=$(run_script 'app_description_from_template' "${APPNAME}")
+                local AppOnOff
+                if run_script 'app_is_enabled' "${APPNAME}"; then
+                    AppOnOff="on"
+                    EnabledApps+=("${AppName}")
+                else
+                    AppOnOff="off"
                 fi
+                AppList+=("${AppName}" "${AppDescription}" "${AppOnOff}")
             fi
         fi
     done < <(run_script 'app_list_nondepreciated')
@@ -45,7 +45,7 @@ menu_app_select() {
             --title "${Title}"
             --separate-output
             --checklist
-            'Choose which apps you would like to install:\n Use \Zr[up]\Zn, \Zr[down]\Zn, and \Zr[space]\Zn to select apps, and \Zr[tab]\Zn to switch to the buttons at the bottom.'
+            "Choose which apps you would like to install:\n Use ${DC[RV]}[up]${DC[NC]}, ${DC[RV]}[down]${DC[NC]}, and ${DC[RV]}[space]${DC[NC]} to select apps, and ${DC[RV]}[tab]${DC[NC]} to switch to the buttons at the bottom."
             $((LINES - 4)) $((COLUMNS - 5)) $((LINES - 5 - 4))
             "${AppList[@]}"
         )
@@ -64,7 +64,7 @@ menu_app_select() {
 
                 run_script 'appvars_purge_all'
                 run_script 'env_update'
-            } |& dialog_pipe "${Title}" "Enabling Selected Applications" 1
+            } |& dialog_pipe "${Title}" "Enabling Selected Applications" "${DIALOGTIMEOUT}"
             return 0
             ;;
         CANCEL | ESC)

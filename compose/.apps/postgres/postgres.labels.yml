@@ -1,5 +1,5 @@
 services:
-  postgres:
+  postgres<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: The PostgreSQL object-relational database system provides reliability and data integrity.

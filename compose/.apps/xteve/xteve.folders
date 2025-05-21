@@ -1,2 +1,2 @@
-${DOCKER_VOLUME_CONFIG}/xteve
-${DOCKER_VOLUME_CONFIG}/xteve/tmp
+${DOCKER_VOLUME_CONFIG}/xteve<__instance>
+${DOCKER_VOLUME_CONFIG}/xteve<__instance>/tmp

@@ -1,6 +1,6 @@
 services:
-  plexanisync:
+  plexanisync<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Sync anime watched status from Plex to AniList"
-      com.dockstarter.appinfo.nicename: "Plexanisync"
+      com.dockstarter.appinfo.nicename: "Plexanisync<__Instance>"

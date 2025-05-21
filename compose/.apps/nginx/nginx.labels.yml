@@ -1,6 +1,6 @@
 services:
-  nginx:
+  nginx<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Simple webserver with php support"
-      com.dockstarter.appinfo.nicename: "Nginx"
+      com.dockstarter.appinfo.nicename: "Nginx<__Instance>"
