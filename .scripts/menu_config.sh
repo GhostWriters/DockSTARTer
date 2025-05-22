@@ -8,9 +8,10 @@ menu_config() {
     fi
 
     local Title="Configuration Menu"
-
-    run_script_dialog "Updating variable files" "" "${DIALOGTIMEOUT}" \
-        'appvars_create_all'
+    {
+        run_script 'env_create'
+        run_script 'appvars_create_all'
+    } |& dialog_pipe "Updating Variable Files" "" "${DIALOGTIMEOUT}"
     local OptionFullSetup="Full Setup"
     local OptionSelectApps="Select Apps"
     local OptionEditAppVars="Edit App Variables"
