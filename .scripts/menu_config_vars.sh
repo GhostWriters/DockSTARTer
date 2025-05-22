@@ -153,6 +153,8 @@ menu_config_vars() {
         if [[ -z ${LastLineChoice-} ]]; then
             # Set the default line to the first line with a variable on it
             LastLineChoice="$(printf "%0${PadSize}d" "${FirstVarLine}")"
+        elif [[ ${LastLineChoice} -gt ${TotalLines} ]]; then
+            LastLineChoice=${TotalLines}
         fi
         local -a LineDialog=(
             --stdout
