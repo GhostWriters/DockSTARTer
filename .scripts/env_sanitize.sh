@@ -15,6 +15,15 @@ env_sanitize() {
         # DOCKER_GID is either empty or contains an `x`, set it to the detected Docker GID
         run_script 'env_set_literal' DOCKER_GID "$(run_script 'var_default_value' DOCKER_GID)"
     fi
+    DOCKER_VOLUME_CONFIG="$(run_script 'env_get' DOCKER_VOLUME_CONFIG)"
+    if [[ -z ${DOCKER_VOLUME_CONFIG-} ]]; then
+        # DOCKER_VOLUME_CONFIG is either empty, set it to the default
+        run_script 'env_set_literal' DOCKER_VOLUME_CONFIG "$(run_script 'var_default_value' DOCKER_VOLUME_CONFIG)"
+    fi
+    if [[ -z ${DOCKER_VOLUME_STORAGE-} ]]; then
+        # DOCKER_VOLUME_STORAGE is either empty, set it to the default
+        run_script 'env_set_literal' DOCKER_VOLUME_STORAGE "$(run_script 'var_default_value' DOCKER_VOLUME_STORAGE)"
+    fi
 
     # Don't set WATCHTOWER_NETWORK_MODE to none
     local WATCHTOWER_NETWORK_MODE
