@@ -103,7 +103,12 @@ var_default_value() {
                     Default="'$(cat /etc/timezone)'"
                     ;;
                 *)
-                    Default="''"
+                    if [[ -f ${COMPOSE_ENV_DEFAULT_FILE} ]] && run_script 'env_var_exists' "${CleanVarName}" "${COMPOSE_ENV_DEFAULT_FILE}"; then
+                        # Variable is listed in the default file, output it and return
+                        Default="$(run_script 'env_get_literal' "${CleanVarName}" "${COMPOSE_ENV_DEFAULT_FILE}")"
+                    else
+                        Default="''"
+                    fi
                     ;;
             esac
             ;;
