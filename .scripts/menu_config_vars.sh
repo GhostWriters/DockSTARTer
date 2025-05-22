@@ -8,51 +8,59 @@ menu_config_vars() {
     local appname=${APPNAME,,}
     local AppName
     AppName=$(run_script 'app_nicename' "${APPNAME}")
+
     local Title
     local DialogHeading
     local AddVariableText='<ADD VARIABLE>'
 
-    local CurrentGlobalEnvFile CurrentAppEnvFile
-    local DefaultGlobalEnvFile=''
-    local DefaultAppEnvFile=''
-
-    if [[ -n ${APPNAME-} ]]; then
-        Title="Edit Application Variables"
-        CurrentGlobalEnvFile=$(mktemp)
-        CurrentAppEnvFile=$(mktemp)
-        local AppIsUserDefined=''
-        local AppIsDisabled=''
-        local AppIsDepreciated=''
-        if run_script 'app_is_user_defined' "${APPNAME}"; then
-            AppIsUserDefined='Y'
-        else
-            DefaultGlobalEnvFile="$(run_script 'app_instance_file' "${APPNAME}" ".global.env")"
-            DefaultAppEnvFile="$(run_script 'app_instance_file' "${APPNAME}" ".app.env")"
-            if run_script 'app_is_disabled' "${APPNAME}"; then
-                AppIsDisabled='Y'
-            fi
-            if run_script 'app_is_depreciated' "${APPNAME}"; then
-                AppIsDepreciated='Y'
-            fi
-        fi
-        DialogHeading="Application: ${DC[Heading]}${AppName}${DC[NC]}"
-        if [[ ${AppIsUserDefined} == 'Y' ]]; then
-            DialogHeading="${DialogHeading} ${DC[HeadingTag]}(User Defined)${DC[NC]}"
-        elif [[ ${AppIsDepreciated} == 'Y' ]]; then
-            DialogHeading="${DialogHeading} ${DC[HeadingTag]}[*DEPRECIATED*]${DC[NC]}"
-        fi
-        if [[ ${AppIsDisabled} == 'Y' ]]; then
-            DialogHeading="${DialogHeading} ${DC[HeadingTag]}(Disabled)${DC[NC]}"
-        fi
-    else
-        Title="Edit Global Variables"
-        DialogHeading="File: ${DC[Heading]}${COMPOSE_ENV}${DC[NC]}"
-        CurrentGlobalEnvFile=$(mktemp)
-        DefaultGlobalEnvFile="${COMPOSE_ENV_DEFAULT_FILE}"
-    fi
+    local CurrentGlobalEnvFile CurrentAppEnvFile DefaultGlobalEnvFile DefaultAppEnvFile
 
     local LastLineChoice=""
     while true; do
+        if [[ -n ${CurrentGlobalEnvFile-} ]]; then
+            rm -f "${CurrentGlobalEnvFile}" ||
+                warn "Failed to remove temporary .env file.\nFailing command: ${F[C]}rm -f \"${CurrentGlobalEnvFile}\""
+        fi
+        if [[ -n ${CurrentAppEnvFile-} ]]; then
+            rm -f "${CurrentAppEnvFile}" ||
+                warn "Failed to remove temporary ${appname}.env file.\nFailing command: ${F[C]}rm -f \"${CurrentAppEnvFile}\""
+        fi
+        local DefaultGlobalEnvFile=''
+        local DefaultAppEnvFile=''
+        if [[ -n ${APPNAME-} ]]; then
+            Title="Edit Application Variables"
+            CurrentGlobalEnvFile=$(mktemp)
+            CurrentAppEnvFile=$(mktemp)
+            local AppIsUserDefined=''
+            local AppIsDisabled=''
+            local AppIsDepreciated=''
+            if run_script 'app_is_user_defined' "${APPNAME}"; then
+                AppIsUserDefined='Y'
+            else
+                DefaultGlobalEnvFile="$(run_script 'app_instance_file' "${APPNAME}" ".global.env")"
+                DefaultAppEnvFile="$(run_script 'app_instance_file' "${APPNAME}" ".app.env")"
+                if run_script 'app_is_disabled' "${APPNAME}"; then
+                    AppIsDisabled='Y'
+                fi
+                if run_script 'app_is_depreciated' "${APPNAME}"; then
+                    AppIsDepreciated='Y'
+                fi
+            fi
+            DialogHeading="Application: ${DC[Heading]}${AppName}${DC[NC]}"
+            if [[ ${AppIsUserDefined} == 'Y' ]]; then
+                DialogHeading="${DialogHeading} ${DC[HeadingTag]}(User Defined)${DC[NC]}"
+            elif [[ ${AppIsDepreciated} == 'Y' ]]; then
+                DialogHeading="${DialogHeading} ${DC[HeadingTag]}[*DEPRECIATED*]${DC[NC]}"
+            fi
+            if [[ ${AppIsDisabled} == 'Y' ]]; then
+                DialogHeading="${DialogHeading} ${DC[HeadingTag]}(Disabled)${DC[NC]}"
+            fi
+        else
+            Title="Edit Global Variables"
+            DialogHeading="File: ${DC[Heading]}${COMPOSE_ENV}${DC[NC]}"
+            CurrentGlobalEnvFile=$(mktemp)
+            DefaultGlobalEnvFile="${COMPOSE_ENV_DEFAULT_FILE}"
+        fi
         local -a LineOptions=()
         local -a VarNameOnLine=()
         local -a CurrentValueOnLine=()
