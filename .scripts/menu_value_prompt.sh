@@ -4,16 +4,13 @@ IFS=$'\n\t'
 
 menu_value_prompt() {
     local VarName=${1-}
+    local CleanVarName="${VarName}"
 
     if [[ ${CI-} == true ]]; then
         return
     fi
 
     local APPNAME appname AppName
-    APPNAME=$(run_script 'varname_to_appname' "${VarName}")
-    APPNAME=${APPNAME^^}
-    appname=${APPNAME,,}
-    AppName=$(run_script 'app_nicename' "${APPNAME}")
 
     local AppDepreciatedTag="[*DEPRECIATED*]"
     local AppDisabledTag="(Disabled)"
@@ -28,13 +25,23 @@ menu_value_prompt() {
     local AppIsDepreciated=''
     local AppIsUserDefined=''
     local VarIsUserDefined=''
-    if [[ -n ${APPNAME-} ]]; then
+
+    local VarType
+
+    local APPNAME appname AppName
+    APPNAME="$(run_script 'varname_to_appname' "${VarName}")"
+    APPNAME="${APPNAME^^}"
+    appname="${APPNAME,,}"
+    AppName="$(run_script 'app_nicename' "${APPNAME}")"
+    if [[ -n ${APPNAME} ]]; then
         Title="Edit Application Variable"
         if [[ ${VarName} == *":"* ]]; then
+            VarType="APPENV"
             CleanVarName=${VarName#*:}
-            VarFile="$(run_script 'app_env_file' "${appname}")"
+            VarName="${APPNAME}:${CleanVarName}"
             DefaultVarFile="$(run_script 'app_instance_file' "${appname}" ".app.env")"
         else
+            VarType="APP"
             VarFile="${COMPOSE_ENV}"
             DefaultVarFile="$(run_script 'app_instance_file' "${appname}" ".global.env")"
         fi
@@ -54,6 +61,7 @@ menu_value_prompt() {
         fi
     else
         Title="Edit Global Variable"
+        VarType="GLOBAL"
         VarFile="${COMPOSE_ENV}"
         DefaultVarFile="${COMPOSE_ENV_DEFAULT_FILE}"
         if ! run_script 'env_var_exists' "${CleanVarName}" "${DefaultVarFile}"; then
@@ -73,163 +81,192 @@ menu_value_prompt() {
     OptionValue["${CurrentValueOption}"]="${OptionValue["${OriginalValueOption}"]}"
 
     local -a PossibleOptions=("${CurrentValueOption}")
-    case "${VarName}" in
-        DOCKER_GID)
-            ValueDescription="\n\n This should be the Docker group ID. If you are unsure, select ${DC[Highlight]}${SystemValueOption}${DC[NC]}."
-            OptionValue+=(
-                ["${SystemValueOption}"]="'$(cut -d: -f3 < <(getent group docker))'"
-            )
-            PossibleOptions+=(
-                "${SystemValueOption}"
-            )
+    case "${VarType}" in
+        GLOBAL)
+            case "${VarName}" in
+                DOCKER_GID)
+                    ValueDescription="\n\n This should be the Docker group ID. If you are unsure, select ${DC[Highlight]}${SystemValueOption}${DC[NC]}."
+                    PossibleOptions+=(
+                        "${SystemValueOption}"
+                    )
+                    OptionValue+=(
+                        ["${SystemValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+                    )
+                    ;;
+                DOCKER_HOSTNAME)
+                    ValueDescription="\n\n This should be your system hostname. If you are unsure, select ${DC[Highlight]}${SystemValueOption}${DC[NC]}."
+                    PossibleOptions+=(
+                        "${SystemValueOption}"
+                    )
+                    OptionValue+=(
+                        ["${SystemValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+                    )
+                    ;;
+                DOCKER_VOLUME_CONFIG)
+                    PossibleOptions+=(
+                        "Home Folder"
+                    )
+                    OptionValue+=(
+                        ["Home Folder"]="'${DETECTED_HOMEDIR}/.config/appdata'"
+                    )
+                    ;;
+                DOCKER_VOLUME_STORAGE)
+                    PossibleOptions+=(
+                        "Home Folder"
+                        "Mount Folder"
+                    )
+                    OptionValue+=(
+                        ["Home Folder"]="'${DETECTED_HOMEDIR}/storage'"
+                        ["Mount Folder"]="'/mnt/storage'"
+                    )
+                    ;;
+                GLOBAL_LAN_NETWORK)
+                    ValueDescription="\n\n This is used to define your home LAN network, do NOT confuse this with the IP address of your router or your server, the value for this key defines your network NOT a single host. Please Google CIDR Notation to learn more."
+                    PossibleOptions+=(
+                        "${SystemValueOption}"
+                    )
+                    OptionValue+=(
+                        ["${SystemValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+                    )
+                    ;;
+                PGID)
+                    ValueDescription="\n\n This should be your user group ID. If you are unsure, select ${DC[Highlight]}${SystemValueOption}${DC[NC]}."
+                    PossibleOptions+=(
+                        "${SystemValueOption}"
+                    )
+                    OptionValue+=(
+                        ["${SystemValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+                    )
+                    ;;
+                PUID)
+                    ValueDescription="\n\n This should be your user account ID. If you are unsure, select ${DC[Highlight]}${SystemValueOption}${DC[NC]}."
+                    PossibleOptions+=(
+                        "${SystemValueOption}"
+                    )
+                    OptionValue+=(
+                        ["${SystemValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+                    )
+                    ;;
+                TZ)
+                    ValueDescription="\n\n If this is not the correct timezone please exit and set your system timezone."
+                    PossibleOptions+=(
+                        "${SystemValueOption}"
+                    )
+                    OptionValue+=(
+                        ["${SystemValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+                    )
+                    ;;
+                *)
+                    ValueDescription=""
+                    PossibleOptions+=(
+                        "${DefaultValueOption}"
+                    )
+                    OptionValue+=(
+                        ["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+                    )
+                    ;;
+            esac
             ;;
-        DOCKER_HOSTNAME)
-            ValueDescription="\n\n This should be your system hostname. If you are unsure, select ${DC[Highlight]}${SystemValueOption}${DC[NC]}."
-            OptionValue+=(
-                ["${SystemValueOption}"]="'${HOSTNAME}'"
-            )
-            PossibleOptions+=(
-                "${SystemValueOption}"
-            )
+        APP)
+            case "${VarName}" in
+                "${APPNAME}__ENABLED")
+                    ValueDescription="\n\n This is used to set the application as enabled or disabled. If this variable is removed, the application will not be controlled by DockSTARTer. Must be ${DC[Highlight]}true${DC[NC]} or ${DC[Highlight]}false${DC[NC]}."
+                    PossibleOptions+=(
+                        "Enabled"
+                        "Disabled"
+                        "${DefaultValueOption}"
+                    )
+                    OptionValue+=(
+                        ["Enabled"]="'true'"
+                        ["Disabled"]="'false'"
+                        ["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+                    )
+                    ;;
+                "${APPNAME}__NETWORK_MODE")
+                    ValueDescription="\n\n Network Mode is usually left blank but can also be ${DC[Highlight]}bridge${DC[NC]}, ${DC[Highlight]}host${DC[NC]}, ${DC[Highlight]}none${DC[NC]}, ${DC[Highlight]}service:<appname>${DC[NC]}, or ${DC[Highlight]}container:<appname>${DC[NC]}."
+                    PossibleOptions+=(
+                        "${DefaultValueOption}"
+                        "Bridge Network"
+                        "Host Network"
+                        "No Network"
+                        "Use Gluetun"
+                        "Use Privoxy"
+                    )
+                    OptionValue+=(
+                        ["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+                        ["Bridge Network"]="'bridge'"
+                        ["Host Network"]="'host'"
+                        ["No Network"]="'none'"
+                        ["Use Gluetun"]="'service:gluetun'"
+                        ["Use Privoxy"]="'service:privoxy'"
+                    )
+                    ;;
+                "${APPNAME}__PORT_"*)
+                    ValueDescription="\n\n Must be an unused port between ${DC[Highlight]}0${DC[NC]} and ${DC[Highlight]}65535${DC[NC]}."
+                    PossibleOptions+=(
+                        "${DefaultValueOption}"
+                    )
+                    OptionValue+=(
+                        ["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+                    )
+                    ;;
+                "${APPNAME}__RESTART")
+                    ValueDescription="\n\n Restart is usually ${DC[Highlight]}unless-stopped${DC[NC]} but can also be ${DC[Highlight]}no${DC[NC]}, ${DC[Highlight]}always${DC[NC]}, or ${DC[Highlight]}on-failure${DC[NC]}."
+                    PossibleOptions+=(
+                        "${DefaultValueOption}"
+                        "Restart Unless Stopped"
+                        "Never Restart"
+                        "Always Restart"
+                        "Restart On Failure"
+                    )
+                    OptionValue+=(
+                        ["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+                        ["Restart Unless Stopped"]="'unless-stopped'"
+                        ["Never Restart"]="'no'"
+                        ["Always Restart"]="'always'"
+                        ["Restart On Failure"]="'on-failure'"
+                    )
+                    ;;
+                "${APPNAME}__TAG")
+                    ValueDescription="\n\n Tag is usually latest but can also be other values based on the image."
+                    PossibleOptions+=(
+                        "${DefaultValueOption}"
+                    )
+                    OptionValue+=(
+                        ["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+                    )
+                    ;;
+                "${APPNAME}__VOLUME_"*)
+                    ValueDescription="\n\n If the directory selected does not exist we will attempt to create it."
+                    PossibleOptions+=(
+                        "${DefaultValueOption}"
+                    )
+                    OptionValue+=(
+                        ["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+                    )
+                    ;;
+                *)
+                    ValueDescription=""
+                    PossibleOptions+=(
+                        "${DefaultValueOption}"
+                    )
+                    OptionValue+=(
+                        ["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+                    )
+                    ;;
+            esac
             ;;
-        DOCKER_VOLUME_CONFIG)
-            OptionValue+=(
-                ["Home Folder"]="'${DETECTED_HOMEDIR}/.config/appdata'"
-            )
-            PossibleOptions+=(
-                "Home Folder"
-            )
-            ;;
-        DOCKER_VOLUME_STORAGE)
-            OptionValue+=(
-                ["Home Folder"]="'${DETECTED_HOMEDIR}/storage'"
-                ["Mount Folder"]="'/mnt/storage'"
-            )
-            PossibleOptions+=(
-                "Home Folder"
-                "Mount Folder"
-            )
-            ;;
-        GLOBAL_LAN_NETWORK)
-            ValueDescription="\n\n This is used to define your home LAN network, do NOT confuse this with the IP address of your router or your server, the value for this key defines your network NOT a single host. Please Google CIDR Notation to learn more."
-            OptionValue+=(
-                ["${SystemValueOption}"]="'$(run_script 'detect_lan_network')'"
-            )
-            PossibleOptions+=(
-                "${SystemValueOption}"
-            )
-            ;;
-        PGID)
-            ValueDescription="\n\n This should be your user group ID. If you are unsure, select ${DC[Highlight]}${SystemValueOption}${DC[NC]}."
-            OptionValue+=(
-                ["${SystemValueOption}"]="'${DETECTED_PGID}'"
-            )
-            PossibleOptions+=(
-                "${SystemValueOption}"
-            )
-            ;;
-        PUID)
-            ValueDescription="\n\n This should be your user account ID. If you are unsure, select ${DC[Highlight]}${SystemValueOption}${DC[NC]}."
-            OptionValue+=(
-                ["${SystemValueOption}"]="'${DETECTED_PUID}'"
-            )
-            PossibleOptions+=(
-                "${SystemValueOption}"
-            )
-            ;;
-        TZ)
-            ValueDescription="\n\n If this is not the correct timezone please exit and set your system timezone."
-            OptionValue+=(
-                ["${SystemValueOption}"]="'$(cat /etc/timezone)'"
-            )
-            PossibleOptions+=(
-                "${SystemValueOption}"
-            )
-            ;;
-        "${APPNAME}__ENABLED")
-            ValueDescription="\n\n This is used to set the application as enabled or disabled. If this variable is removed, the application will not be controlled by DockSTARTer. Must be ${DC[Highlight]}true${DC[NC]} or ${DC[Highlight]}false${DC[NC]}."
-            OptionValue+=(
-                ["Enabled"]="'true'"
-                ["Disabled"]="'false'"
-                ["${DefaultValueOption}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
-            )
-            PossibleOptions+=(
-                "Enabled"
-                "Disabled"
-                "${DefaultValueOption}"
-            )
-            ;;
-        "${APPNAME}__NETWORK_MODE")
-            ValueDescription="\n\n Network Mode is usually left blank but can also be ${DC[Highlight]}bridge${DC[NC]}, ${DC[Highlight]}host${DC[NC]}, ${DC[Highlight]}none${DC[NC]}, ${DC[Highlight]}service:<appname>${DC[NC]}, or ${DC[Highlight]}container:<appname>${DC[NC]}."
-            OptionValue+=(
-                ["${DefaultValueOption}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
-                ["Bridge Network"]="'bridge'"
-                ["Host Network"]="'host'"
-                ["No Network"]="'none'"
-                ["Use Gluetun"]="'service:gluetun'"
-                ["Use Privoxy"]="'service:privoxy'"
-            )
-            PossibleOptions+=(
-                "${DefaultValueOption}"
-                "Bridge Network"
-                "Host Network"
-                "No Network"
-                "Use Gluetun"
-                "Use Privoxy"
-            )
-            ;;
-        "${APPNAME}__PORT_"*)
-            ValueDescription="\n\n Must be an unused port between ${DC[Highlight]}0${DC[NC]} and ${DC[Highlight]}65535${DC[NC]}."
-            OptionValue+=(
-                ["${DefaultValueOption}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
-            )
-            PossibleOptions+=(
-                "${DefaultValueOption}"
-            )
-            ;;
-        "${APPNAME}__RESTART")
-            ValueDescription="\n\n Restart is usually ${DC[Highlight]}unless-stopped${DC[NC]} but can also be ${DC[Highlight]}no${DC[NC]}, ${DC[Highlight]}always${DC[NC]}, or ${DC[Highlight]}on-failure${DC[NC]}."
-            OptionValue+=(
-                ["${DefaultValueOption}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
-                ["Restart Unless Stopped"]="'unless-stopped'"
-                ["Never Restart"]="'no'"
-                ["Always Restart"]="'always'"
-                ["Restart On Failure"]="'on-failure'"
-            )
-            PossibleOptions+=(
-                "${DefaultValueOption}"
-                "Restart Unless Stopped"
-                "Never Restart"
-                "Always Restart"
-                "Restart On Failure"
-            )
-            ;;
-        "${APPNAME}__TAG")
-            ValueDescription="\n\n Tag is usually latest but can also be other values based on the image."
-            OptionValue+=(
-                ["${DefaultValueOption}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
-            )
-            PossibleOptions+=(
-                "${DefaultValueOption}"
-            )
-            ;;
-        "${APPNAME}__VOLUME_"*)
-            ValueDescription="\n\n If the directory selected does not exist we will attempt to create it."
-            OptionValue+=(
-                ["${DefaultValueOption}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
-            )
-            PossibleOptions+=(
-                "${DefaultValueOption}"
-            )
-            ;;
-        *)
-            ValueDescription=""
-            OptionValue+=(
-                ["${DefaultValueOption}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
-            )
-            PossibleOptions+=(
-                "${DefaultValueOption}"
-            )
+        APPENV)
+            case "${VarName}" in
+                *)
+                    PossibleOptions+=(
+                        "${DefaultValueOption}"
+                    )
+                    OptionValue+=(
+                        ["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+                    )
+                    ;;
+            esac
             ;;
     esac
     PossibleOptions+=("${OriginalValueOption}")
