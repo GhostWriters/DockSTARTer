@@ -9,6 +9,8 @@ menu_config() {
 
     local Title="Configuration Menu"
 
+    run_script_dialog "Updating variable files" "" "${DIALOGTIMEOUT}" \
+        'appvars_create_all'
     local OptionFullSetup="Full Setup"
     local OptionSelectApps="Select Apps"
     local OptionEditAppVars="Edit App Variables"
@@ -44,15 +46,11 @@ menu_config() {
             OK)
                 case "${ConfigChoice}" in
                     "${OptionFullSetup}")
-                        run_script_dialog "Updating variable files" "" 1 \
-                            'env_update' || true
                         run_script 'menu_config_vars' || true
                         run_script 'menu_app_select' || true
                         run_script 'menu_config_apps' || true
                         ;;
                     "${OptionSelectApps}")
-                        run_script_dialog "Updating variable files" "" 1 \
-                            'env_update' || true
                         run_script 'menu_app_select' || true
                         ;;
                     "${OptionEditAppVars}")
@@ -60,8 +58,6 @@ menu_config() {
                         run_script 'menu_config_apps' || true
                         ;;
                     "${OptionEditGlobalVars}")
-                        run_script_dialog "Updating variable files" "" 1 \
-                            'env_update' || true
                         run_script 'menu_config_vars' || true
                         ;;
                     "${OptionComposeUp}")
@@ -69,7 +65,7 @@ menu_config() {
                             run_script 'yml_merge' || true
                             run_script 'docker_compose' "pull" || true
                             run_script 'docker_compose' "up" || true
-                        } |& dialog_pipe "Docker Compose" "Starting all applications"
+                        } |& dialog_pipe "Docker Compose" "Updating and Starting all applications"
                         ;;
                     "${OptionComposeDown}")
                         {

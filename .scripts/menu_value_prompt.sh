@@ -444,8 +444,10 @@ ${CurrentValueHeading}
                     if [[ -z ${OptionValue["${CurrentValueOption}"]-} ]]; then
                         if run_script 'question_prompt' N "${DescriptionHeading}\n\nDo you really want to delete ${DC[Highlight]}${CleanVarName}${DC[NC]}?\n" "Delete Variable" "" "Delete" "Back"; then
                             # Value is empty, delete the variable
-                            run_script_dialog "Deleting Variable" "${DescriptionHeading}" "${DIALOGTIMEOUT}" \
-                                'env_delete' "${VarName}"
+                            {
+                                run_script 'env_delete' "${VarName}"
+                                run_script 'appvars_create_all'
+                            } |& dialog_pipe "Deleting Variable" "${DescriptionHeading}" "${DIALOGTIMEOUT}"
                             return 0
                         fi
                     elif [[ ${OptionValue["${CurrentValueOption}"]-} == "${OptionValue["${OriginalValueOption}"]-}" ]]; then
@@ -456,8 +458,10 @@ ${CurrentValueHeading}
                     else
                         if run_script 'question_prompt' N "${DescriptionHeading}\n\nWould you like to save ${DC[Highlight]}${CleanVarName}${DC[NC]}?\n" "Save Variable" "" "Save" "Back"; then
                             # Value is valid, save it and exit
-                            run_script_dialog "Saving Variable" "${DescriptionHeading}" "${DIALOGTIMEOUT}" \
-                                'env_set_literal' "${VarName}" "${OptionValue["${CurrentValueOption}"]}"
+                            {
+                                run_script 'env_set_literal' "${VarName}" "${OptionValue["${CurrentValueOption}"]}"
+                                run_script 'appvars_create_all'
+                            } |& dialog_pipe "Saving Variable" "${DescriptionHeading}" "${DIALOGTIMEOUT}"
                             return 0
                         fi
                     fi
