@@ -444,13 +444,34 @@ ${CurrentValueHeading}
                             # Value is empty, delete the variable
                             {
                                 run_script 'env_delete' "${VarName}"
-                                run_script 'appvars_create_all'
+                                if [[ -n ${APPNAME-} ]]; then
+                                    if ! run_script 'app_is_user_defined' "${APPNAME}"; then
+                                        run_script 'env_migrate' "${APPNAME}"
+                                        run_script 'appvars_create' "${APPNAME}"
+                                    fi
+                                else
+                                    run_script 'env_migrate_global'
+                                    run_script 'appvars_migrate_enabled_lines'
+                                    run_script 'env_update'
+                                fi
                             } |& dialog_pipe "Deleting Variable" "${DescriptionHeading}" "${DIALOGTIMEOUT}"
                             return 0
                         fi
                     elif [[ ${OptionValue["${CurrentValueOption}"]-} == "${OptionValue["${OriginalValueOption}"]-}" ]]; then
                         if run_script 'question_prompt' N "${DescriptionHeading}\n\nThe value of ${DC[Highlight]}${CleanVarName}${DC[NC]} has not been changed, exit anyways?\n" "Save Variable" "" "Done" "Back"; then
                             # Value has not changed, confirm exiting
+                            {
+                                if [[ -n ${APPNAME-} ]]; then
+                                    if ! run_script 'app_is_user_defined' "${APPNAME}"; then
+                                        run_script 'env_migrate' "${APPNAME}"
+                                        run_script 'appvars_create' "${APPNAME}"
+                                    fi
+                                else
+                                    run_script 'env_migrate_global'
+                                    run_script 'appvars_migrate_enabled_lines'
+                                    run_script 'env_update'
+                                fi
+                            } |& dialog_pipe "Canceling Variable Edit" "${DescriptionHeading}" "${DIALOGTIMEOUT}"
                             return 0
                         fi
                     else
@@ -458,7 +479,16 @@ ${CurrentValueHeading}
                             # Value is valid, save it and exit
                             {
                                 run_script 'env_set_literal' "${VarName}" "${OptionValue["${CurrentValueOption}"]}"
-                                run_script 'appvars_create_all'
+                                if [[ -n ${APPNAME-} ]]; then
+                                    if ! run_script 'app_is_user_defined' "${APPNAME}"; then
+                                        run_script 'env_migrate' "${APPNAME}"
+                                        run_script 'appvars_create' "${APPNAME}"
+                                    fi
+                                else
+                                    run_script 'env_migrate_global'
+                                    run_script 'appvars_migrate_enabled_lines'
+                                    run_script 'env_update'
+                                fi
                             } |& dialog_pipe "Saving Variable" "${DescriptionHeading}" "${DIALOGTIMEOUT}"
                             return 0
                         fi
