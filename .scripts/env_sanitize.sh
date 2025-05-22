@@ -6,10 +6,14 @@ env_sanitize() {
     local GLOBAL_LAN_NETWORK
     GLOBAL_LAN_NETWORK="$(run_script 'env_get' GLOBAL_LAN_NETWORK)"
     if [[ -z ${GLOBAL_LAN_NETWORK-} ]] || echo "${GLOBAL_LAN_NETWORK-}" | grep -q 'x'; then
-        # GLOBAL_LAN_NETWORK is either empty or contains an `x`, set it to th detected lan network
-        local DETECTED_LAN_NETWORK
-        DETECTED_LAN_NETWORK="$(run_script 'detect_lan_network')"
-        run_script 'env_set' GLOBAL_LAN_NETWORK "${DETECTED_LAN_NETWORK-}"
+        # GLOBAL_LAN_NETWORK is either empty or contains an `x`, set it to the detected lan network
+        run_script 'env_set_literal' GLOBAL_LAN_NETWORK "$(run_script 'var_default_value' GLOBAL_LAN_NETWORK)"
+    fi
+    local DOCKER_GID
+    DOCKER_GID="$(run_script 'env_get' DOCKER_GID)"
+    if [[ -z ${DOCKER_GID-} ]] || echo "${DOCKER_GID-}" | grep -q 'x'; then
+        # DOCKER_GID is either empty or contains an `x`, set it to the detected Docker GID
+        run_script 'env_set_literal' DOCKER_GID "$(run_script 'var_default_value' DOCKER_GID)"
     fi
 
     # Don't set WATCHTOWER_NETWORK_MODE to none
