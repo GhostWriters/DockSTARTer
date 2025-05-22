@@ -54,7 +54,6 @@ menu_config() {
                         run_script 'menu_app_select' || true
                         ;;
                     "${OptionEditAppVars}")
-                        clear
                         run_script 'menu_config_apps' || true
                         ;;
                     "${OptionEditGlobalVars}")
