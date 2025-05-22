@@ -124,7 +124,7 @@ menu_add_var() {
                                         Default='"${DOCKER_VOLUME_DOCKER_SOCKET?}"'
                                         ;;
                                     *)
-                                        if [[ ${Value} =~ PORT_[0-9]+ ]]; then
+                                        if [[ ${Value} =~ PORT_[0-9]+$ ]]; then
                                             Default="'${Value#PORT_*}'"
                                         else
                                             Default="''"
