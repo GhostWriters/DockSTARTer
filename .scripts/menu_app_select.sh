@@ -67,9 +67,9 @@ menu_app_select() {
                 notice "Enabling selected apps."
                 run_script 'enable_app' "${SelectedApps}"
                 run_script 'appvars_create' "${SelectedApps}"
-                notice  "Purging old variables"
+                notice "Purging old variables"
                 run_script 'appvars_purge_all'
-                notice "updating .env files"
+                notice "Updating .env files"
                 run_script 'env_update'
             } |& dialog_pipe "Enabling Selected Applications" "${Heading}" "${DIALOGTIMEOUT}"
             return 0
