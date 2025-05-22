@@ -54,17 +54,24 @@ menu_app_select() {
     fi
     case ${DIALOG_BUTTONS[SelectedAppsDialogButtonPressed]-} in
         OK)
+            local Heading HeadingAppLabel HeadingAppList
+            HeadingAppLabel="\nApplications:\n"
+            local -a AppList
+            readarray -t AppList < <(highlighted_list "${SelectedApps}" | fmt -w "${COLUMNS}")
+            HeadingAppList="$(printf '              %s\n' "${AppList[@]-}")"
+            Heading="${DC[NC]}${HeadingAppLabel}${HeadingAppList}"
             {
-                info "Disabling previously selected apps."
+                notice "Disabling previously selected apps."
                 run_script 'disable_app' "${EnabledApps[@]}"
 
-                info "Enabling selected apps."
+                notice "Enabling selected apps."
                 run_script 'enable_app' "${SelectedApps}"
                 run_script 'appvars_create' "${SelectedApps}"
-
+                notice  "Purging old variables"
                 run_script 'appvars_purge_all'
+                notice "updating .env files"
                 run_script 'env_update'
-            } |& dialog_pipe "${Title}" "Enabling Selected Applications" "${DIALOGTIMEOUT}"
+            } |& dialog_pipe "Enabling Selected Applications" "${Heading}" "${DIALOGTIMEOUT}"
             return 0
             ;;
         CANCEL | ESC)
