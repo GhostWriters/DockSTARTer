@@ -16,7 +16,7 @@ This is the main DockSTARTer script.
 For regular usage you can run without providing any options.
 
 Any command that takes a variable name, the variable name can also be in the form of app:var
-to refer to the variable in env_files/app_env.  Some commands that take app names can use the
+to refer to the variable in env_files/app.env.  Some commands that take app names can use the
 form app: to refer to the same file.
 
 -a --add <appname> [<appname> ...]
