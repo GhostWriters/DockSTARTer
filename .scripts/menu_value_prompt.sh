@@ -330,12 +330,8 @@ ${CurrentValueHeading}
             CANCEL | ESC) # DONE button
                 local ValueValid
                 if [[ -z ${OptionValue["${CurrentValueOption}"]-} ]]; then
-                    if [[ ${VarIsUserDefined} == 'Y' ]]; then
-                        ValueValid="true"
-                    else
-                        ValueValid="false"
-                        dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\nYou are not allowed to delete built-in variables.\nPlease try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again." 0 0
-                    fi
+                    # Value is empty, variable will be deleted
+                    ValueValid="true"
                 elif [[ ${OptionValue["${CurrentValueOption}"]} == *"$"* ]]; then
                     # Value contains a '$', assume it uses variable interpolation and allow it
                     ValueValid="true"
