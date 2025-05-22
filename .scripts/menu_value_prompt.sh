@@ -147,11 +147,15 @@ menu_value_prompt() {
             )
             ;;
         "${APPNAME}__ENABLED")
-            ValueDescription="\n\n Must be true or false."
+            ValueDescription="\n\n This is used to set the application as enabled or disabled. If this variable is removed, the application will not be controlled by DockSTARTer. Must be ${DC[Highlight]}true${DC[NC]} or ${DC[Highlight]}false${DC[NC]}."
             OptionValue+=(
+                ["Enabled"]="'true'"
+                ["Disabled"]="'false'"
                 ["${DefaultValueOption}"]="$(run_script 'env_get_literal' "${CleanVarName}" "${DefaultVarFile}")"
             )
             PossibleOptions+=(
+                "Enabled"
+                "Disabled"
                 "${DefaultValueOption}"
             )
             ;;
@@ -268,10 +272,8 @@ menu_value_prompt() {
                 ValueOptions+=("${Option}" "${OptionValue["$Option"]}")
             fi
         done
-        if [[ ${VarIsUserDefined} == 'Y' ]]; then
-            ValidOptions+=("${DeleteOption}")
-            ValueOptions+=("${DeleteOption}" "")
-        fi
+        ValidOptions+=("${DeleteOption}")
+        ValueOptions+=("${DeleteOption}" "")
         local ValidOptionsRegex
         {
             IFS='|'
