@@ -65,6 +65,8 @@ menu_add_var() {
     local InputValueText="${DescriptionHeading}\n\nEnter the name of the variable to create\n"
     Value=""
     while true; do
+        local ErrorMessage=''
+        local DetectedAppName=''
         local ValueOptions
         ValueOptions=(
             "${VarNamePrefix}" 1 1
@@ -91,74 +93,60 @@ menu_add_var() {
                         Value="${Value^^}"
                         VarName="${VarNamePrefix}${Value}"
                         if ! run_script 'varname_is_valid' "${VarName}" "_BARE_"; then
-                            local ErrorMessage="${DescriptionHeading}\n\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\nThe variable name ${DC[Highlight]}${VarName}${DC[NC]} is not a valid name.\n\n Please input another variable name."
-                            dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
-                            continue
+                            ErrorMessage="${DescriptionHeading}\n\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\nThe variable name ${DC[Highlight]}${VarName}${DC[NC]} is not a valid name.\n\n Please input another variable name."
+                        else
+                            DetectedAppName="$(run_script 'app_nicename' "$(run_script 'varname_to_appname' "${VarName}")")"
+                            if [[ ${DetectedAppName} == "" ]]; then
+                                ErrorMessage="The variable name ${DC[Highlight]}${VarName}${DC[NC]} is not a valid variable for app ${DC[Highlight]}${AppName}${DC[NC]}. It would be a global variable${DC[NC]}.\n\n Please input another variable name."
+                            else
+                                # Set a default value based on the variable name
+                                case "${Value}" in
+                                    CONTAINER_NAME)
+                                        Default="'${appname}'"
+                                        ;;
+                                    ENABLED)
+                                        Default="'false'"
+                                        ;;
+                                    HOSTNAME)
+                                        Default="'${AppName}'"
+                                        ;;
+                                    NETWORK_MODE)
+                                        Default="''"
+                                        ;;
+                                    RESTART)
+                                        Default="'unless-stopped'"
+                                        ;;
+                                    TAG)
+                                        Default="'latest'"
+                                        ;;
+                                    VOLUME_DOCKER_SOCKET)
+                                        # shellcheck disable=SC2016  # Expressions don't expand in single quotes, use double quotes for that.
+                                        Default='"${DOCKER_VOLUME_DOCKER_SOCKET?}"'
+                                        ;;
+                                    *)
+                                        if [[ ${Value} =~ PORT_[0-9]+ ]]; then
+                                            Default="'${Value#PORT_*}'"
+                                        else
+                                            Default="''"
+                                        fi
+                                        ;;
+                                esac
+                            fi
                         fi
-                        local VarNameApp
-                        VarNameApp="$(run_script 'app_nicename' "$(run_script 'varname_to_appname' "${VarName}")")"
-                        if [[ ${VarNameApp} == "" ]]; then
-                            local ErrorMessage="${DescriptionHeading}\n\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\nThe variable name ${DC[Highlight]}${VarName}${DC[NC]} is not a valid variable for app ${DC[Highlight]}${AppName}${DC[NC]}. It would be a global variable${DC[NC]}.\n\n Please input another variable name."
-                            dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
-                            continue
-                        elif [[ ${VarNameApp} != "${AppName}" ]]; then
-                            local ErrorMessage="${DescriptionHeading}\n\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\nThe variable name ${DC[Highlight]}${VarName}${DC[NC]} is not a valid variable for app ${DC[Highlight]}${AppName}${DC[NC]}. It would be a variable for an app named ${DC[Highlight]}${VarNameApp}${DC[NC]}.\n\n Please input another variable name."
-                            dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
-                            continue
-                        fi
-                        # Set a default value based on the variable name
-                        case "${Value}" in
-                            CONTAINER_NAME)
-                                Default="'${appname}'"
-                                ;;
-                            HOSTNAME)
-                                Default="'${AppName}'"
-                                ;;
-                            NETWORK_MODE)
-                                Default="''"
-                                ;;
-                            RESTART)
-                                Default="'unless-stopped'"
-                                ;;
-                            TAG)
-                                Default="'latest'"
-                                ;;
-                            VOLUME_DOCKER_SOCKET)
-                                # shellcheck disable=SC2016  # Expressions don't expand in single quotes, use double quotes for that.
-                                Default='"${DOCKER_VOLUME_DOCKER_SOCKET?}"'
-                                ;;
-                            *)
-                                if [[ ${Value} =~ PORT_[0-9]+ ]]; then
-                                    Default="'${Value#PORT_*}'"
-                                else
-                                    Default="''"
-                                fi
-                                ;;
-                        esac
                         ;;
                     APPENV)
                         VarName="${Value}"
                         if ! run_script 'varname_is_valid' "${VarName}" "_BARE_"; then
-                            local ErrorMessage="${DescriptionHeading}\n\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\nThe variable name ${DC[Highlight]}${VarName}${DC[NC]} is not a valid name.\n\n Please input another variable name."
-                            dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
-                            continue
+                            ErrorMessage="The variable name ${DC[Highlight]}${VarName}${DC[NC]} is not a valid name.\n\n Please input another variable name."
                         fi
                         Default="''"
                         ;;
                     GLOBAL)
                         VarName="${Value}"
                         if ! run_script 'varname_is_valid' "${VarName}" "_BARE_"; then
-                            local ErrorMessage="${DescriptionHeading}\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\n  The variable name ${DC[Highlight]}${VarName}${DC[NC]} is not a name.\n\nPlease input another variable name."
-                            dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
-                            continue
+                            ErrorMessage="The variable name ${DC[Highlight]}${VarName}${DC[NC]} is not a valid name.\n\nPlease input another variable name."
                         fi
-                        local VarNameApp
-                        VarNameApp="$(run_script 'app_nicename' "$(run_script 'varname_to_appname' "${VarName}")")"
-                        if [[ ${VarNameApp} != "" ]]; then
-                            local ErrorMessage="${DescriptionHeading}\n\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\nThe variable name ${DC[Highlight]}${VarName}${DC[NC]} is not a valid global variable. It would be a variable for an app named ${DC[Highlight]}${VarNameApp}${DC[NC]}.\n\n Please input another variable name."
-                            dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
-                            continue
-                        fi
+                        DetectedAppName="$(run_script 'app_nicename' "$(run_script 'varname_to_appname' "${VarName}")")"
                         Default="''"
                         ;;
                     *)
@@ -166,12 +154,25 @@ menu_add_var() {
                         ;;
                 esac
                 if run_script 'env_var_exists' "${VarName}" "${VarFile}"; then
-                    local ErrorMessage="${DescriptionHeading}\n\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\nThe variable ${DC[Highlight]}${VarName}${DC[NC]} already exists.\n\n Please input another variable name."
-                    dialog --colors --title "${Title}" --msgbox "${ErrorMessage}" 0 0
+                    ErrorMessage="The variable ${DC[Highlight]}${VarName}${DC[NC]} already exists.\n\n Please input another variable name."
+                fi
+                if [[ -n ${ErrorMessage} ]]; then
+                    dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\n${ErrorMessage}" 0 0
                     continue
                 fi
-                local Question="${DescriptionHeading}\n\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\nCreate variable ${DC[Highlight]}${VarName}${DC[NC]}?\n"
-                if run_script 'question_prompt' N "${Question}" "Create Variable"; then
+                local Question
+                Question="Create variable ${DC[Highlight]}${VarName}${DC[NC]}?\n"
+                if [[ ${VarType} == "GLOBAL" && ${DetectedAppName} != "" ]]; then
+                    Question="The variable name ${DC[Highlight]}${VarName}${DC[NC]} is not a valid global variable. It would be a variable for an app named ${DC[Highlight]}${DetectedAppName}${DC[NC]}.\n\n Do you still want to create variable ${DC[Highlight]}${VarName}${DC[NC]}?\n"
+                elif [[ ${VarType} == "APP" && ${DetectedAppName} != "${AppName}" ]]; then
+                    Question="The variable name ${DC[Highlight]}${VarName}${DC[NC]} is not a valid variable for app ${DC[Highlight]}${AppName}${DC[NC]}. It would be a variable for an app named ${DC[Highlight]}${DetectedAppName}${DC[NC]}.\n\n  Do you still want to create variable ${DC[Highlight]}${VarName}${DC[NC]}?\n"
+                fi
+                if run_script 'question_prompt' N "${DescriptionHeading}\n\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\n${Question}" "Create Variable" "" "Create" "Back"; then
+                    #if [[ ${VarType} == APPENV ]]; then
+                    #    Default="$(run_script 'var_default_value' "${AppName}:${VarName}")"
+                    #else
+                    #    Default="$(run_script 'var_default_value' "${VarName}")"
+                    #fi
                     if [[ ${VarType} == "APPENV" ]]; then
                         run_script_dialog "Creating Variable" "${DescriptionHeading}\n\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\n" "${DIALOGTIMEOUT}" \
                             'env_set_literal' "${appname}:${VarName}" "${Default}"
