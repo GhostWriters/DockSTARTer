@@ -24,6 +24,8 @@ env_sanitize() {
         # DOCKER_VOLUME_STORAGE is either empty, set it to the default
         run_script 'env_set_literal' DOCKER_VOLUME_STORAGE "$(run_script 'var_default_value' DOCKER_VOLUME_STORAGE)"
     fi
+    # Copy any other variable that might have been deleted
+    run_script 'env_merge_newonly' "${COMPOSE_ENV}" "${COMPOSE_ENV_DEFAULT_FILE}"
 
     # Don't set WATCHTOWER_NETWORK_MODE to none
     local WATCHTOWER_NETWORK_MODE
