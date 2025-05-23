@@ -341,20 +341,23 @@ ${CurrentValueHeading}
 "
         # editorconfig-checker-enable
         local SelectValueMenuText="${DescriptionHeading}\nWhat would you like set for ${DC[Highlight]}${CleanVarName}${DC[NC]}?${ValueDescription}"
-
-        local -i SelectValueDialogButtonPressed=0
-        local SelectedValue
-        local -a SelectValueDialog=(
+        local SelectValueDialogParams=(
             --stdout
             --begin 2 2
             --colors
-            --no-visit-items
+            --title "${Title}"
+        )
+        local -i MenuTextLines
+        MenuTextLines="$(dialog ${SelectValueDialogParams[@]} --print-text-size "${SelectValueMenuText}" $((LINES - 4)) $((COLUMNS - 5)) | cut -d ' ' -f 1)"
+        local -i SelectValueDialogButtonPressed=0
+        local SelectedValue
+        local -a SelectValueDialog=(
+            "${SelectValueDialogParams[@]}"
             --ok-label "Select"
             --extra-label "Edit"
             --cancel-label "Done"
-            --title "${Title}"
             --inputmenu "${SelectValueMenuText}"
-            $((LINES - 4)) $((COLUMNS - 5)) 0
+            $((LINES - 4)) $((COLUMNS - 5)) $((LINES - 4 - MenuTextLines))
             "${ValueOptions[@]}"
         )
         SelectValueDialogButtonPressed=0
