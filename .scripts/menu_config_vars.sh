@@ -158,11 +158,12 @@ menu_config_vars() {
         fi
         local -a LineDialog=(
             --stdout
+            --begin 2 2
             --colors
             --ok-label "Select"
             --cancel-label "Done"
             --title "${Title}"
-            --menu "\n${DialogHeading}" 0 0 0
+            --menu "\n${DialogHeading}" $((LINES - 4)) $((COLUMNS - 5)) $((LINES - 11))
             "${LineOptions[@]}"
         )
         while true; do
