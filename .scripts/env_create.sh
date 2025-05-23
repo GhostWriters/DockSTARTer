@@ -3,7 +3,6 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 env_create() {
-    notice "Enter env_create"
     if [[ -f ${COMPOSE_OVERRIDE} ]]; then
         run_script 'set_permissions' "${COMPOSE_OVERRIDE}"
     fi
@@ -30,10 +29,7 @@ env_create() {
         run_script 'set_permissions' "${COMPOSE_ENV}"
         run_script 'appvars_create' WATCHTOWER
     fi
-    notice "env_create -> env_sanitize"
     run_script 'env_sanitize'
-    notice "env_create <- env_sanitize"
-    notice "Exit env_create"
 }
 
 test_env_create() {

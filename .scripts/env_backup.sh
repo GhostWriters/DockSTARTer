@@ -3,7 +3,6 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 env_backup() {
-    notice "Enter env_backup"
     local DOCKER_VOLUME_CONFIG
     DOCKER_VOLUME_CONFIG="$(run_script 'env_get' DOCKER_VOLUME_CONFIG)"
     if [[ -z ${DOCKER_VOLUME_CONFIG-} ]]; then
@@ -55,7 +54,6 @@ env_backup() {
         rm -rf "${DOCKER_VOLUME_CONFIG}/.env.backups" ||
             fatal "Failed to remove directory.\nFailing command: ${F[C]}rm -rf \"${DOCKER_VOLUME_CONFIG}/.env.backups\""
     fi
-    notice "Exit env_backup"
 }
 
 test_env_backup() {

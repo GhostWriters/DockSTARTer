@@ -3,11 +3,8 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 env_sanitize() {
-    notice "Enter env_sanitize"
     # Migrate from old global variable names
-    notice "env_sanitize -> env_migrate_global"
     run_script 'env_migrate_global'
-    notice "env_sanitize <- env_migrate_global"
     # Set defaults for some "special cases" of the global variables
     for VarName in GLOBAL_LAN_NETWORK DOCKER_GID PGID PUID; do
         local Value
@@ -40,16 +37,12 @@ env_sanitize() {
     # Add any "APPNAME__VOLUME_*" variables to the list
     local -a AppList
     readarray -t AppList < <(run_script 'app_list_referenced')
-    notice "AppList=${AppList[@]}"
     for AppName in "${AppList[@]-}"; do
-        notice "${AppName}"
         readarray -t -O ${#VarList[@]} VarList < <(grep -o -P "^\s*\K${AppName^^}__VOLUME_[a-zA-Z0-9]+[a-zA-Z0-9_](?=\s*=)" "${COMPOSE_ENV}" || true)
     done
-    notice "VarList=${VarList[@]}"
     for VarName in "${VarList[@]-}"; do
         # Get the value including quotes
         Value="$(run_script 'env_get_literal' "${VarName}")"
-        notice "${VarName}=${Value}"
         if [[ ${Value} == *~* ]]; then
             # Value contains a "~", repace it with the user's home directory
             local CorrectedValue
@@ -58,7 +51,6 @@ env_sanitize() {
             run_script 'env_set_literal' "${VarName}" "${CorrectedValue}"
         fi
     done
-    notice "Exit env_sanitize"
 }
 
 test_env_sanitize() {
