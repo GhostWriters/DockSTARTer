@@ -10,7 +10,7 @@ menu_add_var() {
     local VarType
     local VarName
     local DescriptionHeading
-    local VarNameMaxLength=100
+    local VarNameMaxLength=256
     local VarNamePrefix=""
 
     DescriptionHeading=""
@@ -49,16 +49,28 @@ menu_add_var() {
                 AppIsDepreciated='Y'
             fi
         fi
-        local AppNameHeading="Application: ${DC[Heading]}${AppName}${DC[NC]}"
+        local AppNameLabel="Application: "
+        local AppNameHeading="${DC[NC]}${AppNameLabel}${DC[Heading]}${AppName}${DC[NC]}"
         if [[ ${AppIsUserDefined} == 'Y' ]]; then
-            AppNameHeading="${AppNameHeading} ${DC[HeadingTag]}(User Defined)${DC[NC]}"
+            AppNameHeading+=" ${DC[HeadingTag]}(User Defined)${DC[NC]}"
         elif [[ ${AppIsDepreciated} == 'Y' ]]; then
-            AppNameHeading="${AppNameHeading} ${DC[HeadingTag]}[*DEPRECIATED*]${DC[NC]}"
+            AppNameHeading+=" ${DC[HeadingTag]}[*DEPRECIATED*]${DC[NC]}"
         fi
         if [[ ${AppIsDisabled} == 'Y' ]]; then
-            AppNameHeading="${AppNameHeading} ${DC[HeadingTag]}(Disabled)${DC[NC]}"
+            AppNameHeading+=" ${DC[HeadingTag]}(Disabled)${DC[NC]}"
         fi
-        DescriptionHeading="${DescriptionHeading}\n${AppNameHeading}"
+        DescriptionHeading+="${AppNameHeading}${DC[NC]}\n"
+        local AppDescription
+        AppDescription="$(run_script 'app_description' "${AppName}")"
+        local -i LabelWidth=${#AppNameLabel}
+        local -i TextWidth=$((COLUMNS - LabelWidth - 9))
+        local Indent
+        Indent="$(printf "%${LabelWidth}s" "")"
+        local -a AppDesciption
+        readarray -t AppDesciption < <(fmt -w ${TextWidth} <<< "${AppDescription}")
+        DescriptionHeading+="$(printf "${Indent}${DC[HeadingAppDescription]}%s${DC[NC]}\n" "${AppDesciption[@]-}")"
+        DescriptionHeading+="\n"
+
     fi
     local FilenameHeading="       File: ${DC[Heading]}${VarFile}${DC[NC]}"
     DescriptionHeading="${DescriptionHeading}\n${FilenameHeading}"
