@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 appvars_create_all() {
-    run_script 'env_sanitize'
+    run_script 'env_create'
     run_script 'appvars_migrate_enabled_lines'
     local AddedApps
     AddedApps=$(run_script 'app_list_added')
