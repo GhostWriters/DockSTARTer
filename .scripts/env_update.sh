@@ -3,6 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 env_update() {
+    notice "Enter env_update"
     local ENV_LINES_FILE
     ENV_LINES_FILE=$(mktemp)
     run_script 'appvars_lines' "" > "${ENV_LINES_FILE}"
@@ -63,6 +64,7 @@ env_update() {
 
     #run_script 'env_sanitize'
     info "Environment file update complete."
+    notice "Exit env_update"
 }
 
 test_env_update() {
