@@ -9,9 +9,7 @@ menu_config() {
 
     local Title="Configuration Menu"
     {
-        run_script 'env_create'
-        run_script 'env_backup'
-        run_script 'appvars_create_all'
+        run_script 'appvars_create_all' || true
     } |& dialog_pipe "Updating Variable Files" "" "${DIALOGTIMEOUT}"
     local OptionFullSetup="Full Setup"
     local OptionEditGlobalVars="Edit Global Variables"
