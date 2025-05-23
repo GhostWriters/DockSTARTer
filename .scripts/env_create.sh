@@ -27,6 +27,7 @@ env_create() {
         cp "${COMPOSE_ENV_DEFAULT_FILE}" "${COMPOSE_ENV}" ||
             fatal "Failed to copy file.\nFailing command: ${F[C]}cp \"${COMPOSE_ENV_DEFAULT_FILE}\" \"${COMPOSE_ENV}\""
         run_script 'set_permissions' "${COMPOSE_ENV}"
+        run_script 'env_sanitize'
         run_script 'appvars_create' WATCHTOWER
     fi
     run_script 'env_sanitize'
