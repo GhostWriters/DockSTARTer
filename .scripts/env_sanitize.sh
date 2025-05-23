@@ -14,7 +14,7 @@ env_sanitize() {
         Value="$(run_script 'env_get_literal' "${VarName}")"
         if [[ -z ${Value-} ]] || echo "${Value-}" | grep -q 'x'; then
             # If the variable is empty or contains an "x", get the default value
-            run_script 'env_set_literal' "${VarName}" "$(run_script 'var_default_value' "${VarName}"))"
+            run_script 'env_set_literal' "${VarName}" "$(run_script 'var_default_value' "${VarName}")"
         fi
     done
     # Copy any other variables that might have been deleted
