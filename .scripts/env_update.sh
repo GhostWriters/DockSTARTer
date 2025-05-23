@@ -61,7 +61,7 @@ env_update() {
         fi
     done
 
-    run_script 'env_sanitize'
+    #run_script 'env_sanitize'
     info "Environment file update complete."
 }
 
