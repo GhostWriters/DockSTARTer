@@ -223,6 +223,7 @@ DC+=( # Pre-defined color combinations used in the GUI
     [LineOther]="${DC[NC]}${DC[K]}${DC[BD]}${DC[RV]}"
     [LineVar]="${DC[NC]}${DC[K]}${DC[NBD]}${DC[RV]}"
     [LineAddVariable]="${DC[NC]}${DC[K]}${DC[NBD]}${DC[RV]}"
+    [CommandLine]="${DC[NC]}"
 )
 DC+=( # Dialog box offsets
     [OffsetTop]=2

@@ -61,20 +61,24 @@ menu_config() {
                         run_script 'menu_config_apps' || true
                         ;;
                     "${OptionComposeUp}")
+                        local SubTitle="${DC[NC]}${DC[RV]}Updating and starting all applications${DC[NC]}\n${DC[CommandLine]} ds --compose pull\n ds --compose up${DC[NC]}"
                         {
                             run_script 'yml_merge' || true
                             run_script 'docker_compose' "pull" || true
                             run_script 'docker_compose' "up" || true
-                        } |& dialog_pipe "Docker Compose" "Updating and Starting all applications"
+                        } |& dialog_pipe "Docker Compose" \
+                            "${SubTitle}"
                         ;;
                     "${OptionComposeDown}")
+                        local SubTitle="${DC[NC]}${DC[RV]}Stopping all applications${DC[NC]}\n${DC[CommandLine]} ds --compose down${DC[NC]}"
                         {
                             run_script 'yml_merge' || true
                             run_script 'docker_compose' "down" || true
-                        } |& dialog_pipe "Docker Compose" "Stopping all applications"
+                        } |& dialog_pipe "Docker Compose" "${SubTitle}"
                         ;;
                     "${OptionDockerPrune}")
-                        run_script_dialog "Prune Docker System" "" "" \
+                        local SubTitle="Pruning docker system\n${DC[CommandLine]} ds --force --prune${DC[NC]}"
+                        run_script_dialog "Docker Compose" "${SubTitle}" "" \
                             'docker_prune' || true
                         ;;
                     *)
