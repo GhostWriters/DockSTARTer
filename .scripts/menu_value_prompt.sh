@@ -489,7 +489,6 @@ ${CurrentValueHeading}
 
                                     fi
                                 else
-                                    run_script 'env_migrate_global'
                                     run_script 'appvars_migrate_enabled_lines'
                                     run_script 'env_sanitize'
                                     run_script 'env_update'
@@ -507,7 +506,7 @@ ${CurrentValueHeading}
                                         run_script 'appvars_create' "${APPNAME}"
                                     fi
                                 else
-                                    run_script 'env_migrate_global'
+                                    run_script 'env_sanitize'
                                     run_script 'appvars_migrate_enabled_lines'
                                     run_script 'env_update'
                                 fi
@@ -525,7 +524,7 @@ ${CurrentValueHeading}
                                         run_script 'appvars_create' "${APPNAME}"
                                     fi
                                 else
-                                    run_script 'env_migrate_global'
+                                    run_script 'env_sanitize'
                                     run_script 'appvars_migrate_enabled_lines'
                                     run_script 'env_update'
                                 fi
