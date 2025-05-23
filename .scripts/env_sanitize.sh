@@ -34,17 +34,14 @@ env_sanitize() {
     local -a AppList
     readarray -t AppList < <(run_script 'app_list_referenced')
     for AppName in ${AppList[@]}; do
-        redarray -t -O ${#VarList[@]} VarList < <(grep -o -P "^\s*\K${AppName}__VOLUME_[a-zA-Z0-9]+[a-zA-Z0-9_](?=\s*=)")
-    fi
+        readarray -t -O ${#VarList[@]} VarList < <(grep -o -P "^\s*\K${AppName}__VOLUME_[a-zA-Z0-9]+[a-zA-Z0-9_](?=\s*=)")
+    done
     for VarName in ${VarList[@}}; do
-        local Value StrippedValue
         # Get the value including quotes
         Value="$(run_script 'env_get_literal' "${VarName}")"
-        # Strip off the surounding quotes
-        StrippedValue="$(sed -E "s|^(['\"])(.*)\1$|\2|g" <<< "${Value}")"
-        if [[ ${StrippedValue} == ~* ]]; then
+        if [[ ${Value} == ~* ]]; then
             # Value contains a "~", repace it with the user's home directory
-            local CorrectedDir
+            local CorrectedValue
             CorrectedValue="$(sed "s|~|${DETECTED_HOMEDIR}|g" <<< "${Value}")"
             info "Replacing ~ with ${DETECTED_HOMEDIR} in ${VarName}."
             run_script 'env_set_literal' "${VarName}" "${CorrectedValue}"
