@@ -729,7 +729,7 @@ main() {
     run_script 'symlink_ds'
     # Execute CLI Argument Functions
     if [[ -n ${ADD-} ]]; then
-        run_script 'env_migrate_global'
+        run_script 'env_create'
         run_script_dialog "Add Application" "$(highlighted_list "$(run_script 'app_nicename' "${ADD}")")" "" \
             'appvars_create' "${ADD}"
         run_script 'env_update'
@@ -975,11 +975,11 @@ main() {
     fi
     if [[ -n ${REMOVE-} ]]; then
         if [[ ${REMOVE} == true ]]; then
-            run_script 'env_migrate_global'
+            run_script 'env_create'
             run_script 'appvars_purge_all'
             run_script 'env_update'
         else
-            run_script 'env_migrate_global'
+            run_script 'env_create'
             run_script 'appvars_purge' "${REMOVE}"
             run_script 'env_update'
         fi
@@ -992,12 +992,12 @@ main() {
                     'app_status' "${STATUS}"
                 ;;
             --status-enabled)
-                run_script 'env_migrate_global'
+                run_script 'env_create'
                 run_script 'enable_app' "${STATUS}"
                 run_script 'env_update'
                 ;;
             --status-disabled)
-                run_script 'env_migrate_global'
+                run_script 'env_create'
                 run_script 'disable_app' "${STATUS}"
                 run_script 'env_update'
                 ;;
