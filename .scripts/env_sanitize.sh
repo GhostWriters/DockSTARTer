@@ -31,7 +31,7 @@ env_sanitize() {
     # Start with the two global volume variables
     local -a VarList=(
         "DOCKER_VOLUME_CONFIG"
-        "DOCKER_VOLUME_COMPOSE"
+        "DOCKER_VOLUME_STORAGE"
     )
     # Add any "APPNAME__VOLUME_*" variables to the list
     local -a AppList
@@ -49,7 +49,7 @@ env_sanitize() {
         if [[ ${Value} == ~* ]]; then
             # Value contains a "~", repace it with the user's home directory
             local CorrectedValue
-            CorrectedValue="${Value//\~/"${DETECTED_HOMEDIR}"}"
+            CorrectedValue="${Value//~/"${DETECTED_HOMEDIR}"}"
             info "Replacing ~ with ${DETECTED_HOMEDIR} in ${VarName}."
             run_script 'env_set_literal' "${VarName}" "${CorrectedValue}"
         fi
