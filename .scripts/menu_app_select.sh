@@ -52,8 +52,8 @@ menu_app_select() {
             --separate-output
             --checklist
             "${SelectAppsDialogText}"
-            "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"] - MenuTextLines))"
-            "$((LINES - DC["TextHeightAdjust"]))"
+            "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))"
+            "$((LINES - DC["TextHeightAdjust"] - MenuTextLines))"
             "${AppList[@]}"
         )
         SelectedAppsDialogButtonPressed=0
