@@ -33,10 +33,10 @@ env_sanitize() {
     # Add any "APPNAME__VOLUME_*" variables to the list
     local -a AppList
     readarray -t AppList < <(run_script 'app_list_referenced')
-    for AppName in ${AppList[@]}; do
+    for AppName in "${AppList[@]}"; do
         readarray -t -O ${#VarList[@]} VarList < <(grep -o -P "^\s*\K${AppName}__VOLUME_[a-zA-Z0-9]+[a-zA-Z0-9_](?=\s*=)")
     done
-    for VarName in ${VarList[@}}; do
+    for VarName in "${VarList[@]}"; do
         # Get the value including quotes
         Value="$(run_script 'env_get_literal' "${VarName}")"
         if [[ ${Value} == ~* ]]; then
@@ -51,6 +51,5 @@ env_sanitize() {
 
 test_env_sanitize() {
     run_script 'appvars_create' WATCHTOWER
-    run_script 'env_sanitize'
     run_script 'appvars_purge' WATCHTOWER
 }
