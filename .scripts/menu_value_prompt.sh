@@ -317,7 +317,7 @@ menu_value_prompt() {
             IFS='|'
             ValidOptionsRegex="${ValidOptions[*]}"
         }
-        local DescriptionHeading=""
+        local DescriptionHeading="${DC[NC]}"
         # editorconfig-checker-disable
         if [[ -n ${AppName-} ]]; then
             DescriptionHeading+="${AppNameHeading}${DC[NC]}\n"
