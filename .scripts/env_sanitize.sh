@@ -3,28 +3,18 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 env_sanitize() {
-    local GLOBAL_LAN_NETWORK
-    GLOBAL_LAN_NETWORK="$(run_script 'env_get' GLOBAL_LAN_NETWORK)"
-    if [[ -z ${GLOBAL_LAN_NETWORK-} ]] || echo "${GLOBAL_LAN_NETWORK-}" | grep -q 'x'; then
-        # GLOBAL_LAN_NETWORK is either empty or contains an `x`, set it to the detected lan network
-        run_script 'env_set_literal' GLOBAL_LAN_NETWORK "$(run_script 'var_default_value' GLOBAL_LAN_NETWORK)"
-    fi
-    local DOCKER_GID
-    DOCKER_GID="$(run_script 'env_get' DOCKER_GID)"
-    if [[ -z ${DOCKER_GID-} ]] || echo "${DOCKER_GID-}" | grep -q 'x'; then
-        # DOCKER_GID is either empty or contains an `x`, set it to the detected Docker GID
-        run_script 'env_set_literal' DOCKER_GID "$(run_script 'var_default_value' DOCKER_GID)"
-    fi
-    DOCKER_VOLUME_CONFIG="$(run_script 'env_get' DOCKER_VOLUME_CONFIG)"
-    if [[ -z ${DOCKER_VOLUME_CONFIG-} ]]; then
-        # DOCKER_VOLUME_CONFIG is either empty, set it to the default
-        run_script 'env_set_literal' DOCKER_VOLUME_CONFIG "$(run_script 'var_default_value' DOCKER_VOLUME_CONFIG)"
-    fi
-    if [[ -z ${DOCKER_VOLUME_STORAGE-} ]]; then
-        # DOCKER_VOLUME_STORAGE is either empty, set it to the default
-        run_script 'env_set_literal' DOCKER_VOLUME_STORAGE "$(run_script 'var_default_value' DOCKER_VOLUME_STORAGE)"
-    fi
-    # Copy any other variable that might have been deleted
+    # Migrate from old global variable names
+    run_script 'env_migrate_global'
+    # Set defaults for some "special cases" of the global variables
+    for VarName in GLOBAL_LAN_NETWORK DOCKER_GID PGID PUID; do
+        local Value
+        Value="$(run_script 'env_get_literal' "${VarName}")"
+        if [[ -z ${Value-} ]] || echo "${Value-}" | grep -q 'x'; then
+            # If the variable is empty or contains an "x", get the default value
+            run_script 'env_set_literal' "${VarName}" "$(run_script 'var_default_value' "${VarName}"))"
+        fi
+    done
+    # Copy any other variables that might have been deleted
     run_script 'env_merge_newonly' "${COMPOSE_ENV}" "${COMPOSE_ENV_DEFAULT_FILE}"
 
     # Don't set WATCHTOWER_NETWORK_MODE to none
@@ -35,11 +25,31 @@ env_sanitize() {
     fi
 
     # Replace ~ with /home/username
-    if grep -q -P '^\w+_VOLUME_\w+=~/' "${COMPOSE_ENV}"; then
-        info "Replacing ~ with ${DETECTED_HOMEDIR} in ${COMPOSE_ENV} file."
-        sed -i -E "s/^(\w+_VOLUME_\w+)=~\//\1=$(sed 's/[&/\]/\\&/g' <<< "${DETECTED_HOMEDIR}")\//g" "${COMPOSE_ENV}" | warn "Please verify that ~ is not used in ${COMPOSE_ENV} file."
+    # Start with the two global volume variables
+    local -a VarList=(
+        "DOCKER_VOLUME_CONFIG"
+        "DOCKER_VOLUME_COMPOSE"
+    )
+    # Add any "APPNAME__VOLUME_*" variables to the list
+    local -a AppList
+    readarray -t AppList < <(run_script 'app_list_referenced')
+    for AppName in ${AppList[@]}; do
+        redarray -t -O ${#VarList[@]} VarList < <(grep -o -P "^\s*\K${AppName}__VOLUME_[a-zA-Z0-9]+[a-zA-Z0-9_](?=\s*=)")
     fi
-
+    for VarName in ${VarList[@}}; do
+        local Value StrippedValue
+        # Get the value including quotes
+        Value="$(run_script 'env_get_literal' "${VarName}")"
+        # Strip off the surounding quotes
+        StrippedValue="$(sed -E "s|^(['\"])(.*)\1$|\2|g" <<< "${Value}")"
+        if [[ ${StrippedValue} == ~* ]]; then
+            # Value contains a "~", repace it with the user's home directory
+            local CorrectedDir
+            CorrectedValue="$(sed "s|~|${DETECTED_HOMEDIR}|g" <<< "${Value}")"
+            info "Replacing ~ with ${DETECTED_HOMEDIR} in ${VarName}."
+            run_script 'env_set_literal' "${VarName}" "${CorrectedValue}"
+        fi
+    done
 }
 
 test_env_sanitize() {
