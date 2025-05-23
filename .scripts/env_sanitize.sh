@@ -5,7 +5,20 @@ IFS=$'\n\t'
 env_sanitize() {
     # Migrate from old global variable names
     run_script 'env_migrate_global'
+    # Copy any variables that might have been deleted
+    run_script 'env_merge_newonly' "${COMPOSE_ENV}" "${COMPOSE_ENV_DEFAULT_FILE}"
     # Set defaults for some "special cases" of the global variables
+    for VarName in DOCKER_HOSTNAME TZ; do
+        local Value
+        Value="$(run_script 'env_get_literal' "${VarName}")"
+        if [[ -z ${Value-} ]]; then
+            # If the variable is empty get the default value
+            local Default
+            Default="$(run_script 'var_default_value' "${VarName}")"
+            notice "Setting ${VarName}=${Default}"
+            run_script 'env_set_literal' "${VarName}" "${Default}"
+        fi
+    done
     for VarName in GLOBAL_LAN_NETWORK DOCKER_GID PGID PUID; do
         local Value
         Value="$(run_script 'env_get_literal' "${VarName}")"
@@ -17,8 +30,6 @@ env_sanitize() {
             run_script 'env_set_literal' "${VarName}" "${Default}"
         fi
     done
-    # Copy any other variables that might have been deleted
-    run_script 'env_merge_newonly' "${COMPOSE_ENV}" "${COMPOSE_ENV_DEFAULT_FILE}"
 
     # Don't set WATCHTOWER_NETWORK_MODE to none
     local WATCHTOWER_NETWORK_MODE
