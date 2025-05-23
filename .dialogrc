@@ -79,7 +79,7 @@ searchbox_title_color = title_color
 searchbox_border_color = border_color
 
 # File position indicator color
-position_indicator_color = title_color
+position_indicator_color = (WHITE,BLACK,OFF)
 
 # Menu box color
 menubox_color = (BLACK,BLUE,OFF)
