@@ -10,7 +10,7 @@ env_sanitize() {
     # Set defaults for some "special cases" of the global variables
     for VarName in DOCKER_HOSTNAME TZ; do
         local Value
-        Value="$(run_script 'env_get_literal' "${VarName}")"
+        Value="$(run_script 'env_get' "${VarName}")"
         if [[ -z ${Value-} ]]; then
             # If the variable is empty get the default value
             local Default
@@ -21,7 +21,7 @@ env_sanitize() {
     done
     for VarName in GLOBAL_LAN_NETWORK DOCKER_GID PGID PUID; do
         local Value
-        Value="$(run_script 'env_get_literal' "${VarName}")"
+        Value="$(run_script 'env_get' "${VarName}")"
         if [[ -z ${Value-} ]] || echo "${Value-}" | grep -q 'x'; then
             # If the variable is empty or contains an "x", get the default value
             local Default
