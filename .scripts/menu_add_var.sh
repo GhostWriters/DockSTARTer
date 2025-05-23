@@ -75,10 +75,12 @@ menu_add_var() {
         )
         local -a InputValueDialog=(
             --stdout
+            --begin 2 2
             --colors
             --title "${Title}"
+            --max-input 256
             --form "${InputValueText}"
-            0 0 0
+            $((LINES - 4)) $((COLUMNS - 5)) 0
             "${ValueOptions[@]}"
         )
         local InputValueDialogButtonPressed=0
@@ -124,7 +126,7 @@ menu_add_var() {
                     ErrorMessage="The variable ${DC[Highlight]}${VarName}${DC[NC]} already exists.\n\n Please input another variable name."
                 fi
                 if [[ -n ${ErrorMessage} ]]; then
-                    dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\n${ErrorMessage}" 0 0
+                    dialog --begin 2 2 --colors --title "${Title}" --msgbox "${DescriptionHeading}\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\n${ErrorMessage}" $((LINES - 4)) $((COLUMNS - 5))
                     continue
                 fi
                 local Question
