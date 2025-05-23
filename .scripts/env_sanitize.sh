@@ -14,7 +14,10 @@ env_sanitize() {
         Value="$(run_script 'env_get_literal' "${VarName}")"
         if [[ -z ${Value-} ]] || echo "${Value-}" | grep -q 'x'; then
             # If the variable is empty or contains an "x", get the default value
-            run_script 'env_set_literal' "${VarName}" "$(run_script 'var_default_value' "${VarName}")"
+            local default
+            Default="$(run_script 'var_default_value' "${VarName}")"
+            notice "Settings ${VarName}=${Default}"
+            run_script 'env_set_literal' "${VarName}" "${Default}"
         fi
     done
     # Copy any other variables that might have been deleted
@@ -24,6 +27,7 @@ env_sanitize() {
     local WATCHTOWER_NETWORK_MODE
     WATCHTOWER_NETWORK_MODE="$(run_script 'env_get' WATCHTOWER__NETWORK_MODE)"
     if [[ ${WATCHTOWER_NETWORK_MODE-} == "none" ]]; then
+        notice "Changing WATCHTOWER__NETWORK_MODE from 'none' do ''"
         run_script 'env_set' WATCHTOWER__NETWORK_MODE ""
     fi
 
@@ -50,7 +54,7 @@ env_sanitize() {
             # Value contains a "~", repace it with the user's home directory
             local CorrectedValue
             CorrectedValue="${Value//\~/"${DETECTED_HOMEDIR}"}"
-            info "Replacing ~ with ${DETECTED_HOMEDIR} in ${VarName}."
+            notice "Replacing ~ with ${DETECTED_HOMEDIR} in ${VarName}."
             run_script 'env_set_literal' "${VarName}" "${CorrectedValue}"
         fi
     done
