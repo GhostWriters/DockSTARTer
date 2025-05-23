@@ -11,7 +11,7 @@ env_sanitize() {
         Value="$(run_script 'env_get_literal' "${VarName}")"
         if [[ -z ${Value-} ]] || echo "${Value-}" | grep -q 'x'; then
             # If the variable is empty or contains an "x", get the default value
-            local default
+            local Default
             Default="$(run_script 'var_default_value' "${VarName}")"
             notice "Setting ${VarName}=${Default}"
             run_script 'env_set_literal' "${VarName}" "${Default}"
