@@ -399,7 +399,7 @@ ${CurrentValueHeading}
                                 ValueValid="true"
                             else
                                 ValueValid="false"
-                                dialog --begin 2 2 --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${OptionValue["${CurrentValueOption}"]} is not true or false. Please try setting ${CleanVarName} again." $((LINES - 4)) $((COLUMNS - 5))
+                                dialog --begin 2 2 --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not ${DC[Highlight]}true${DC[NC]} or ${DC[Highlight]}false${DC[NC]}. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again." $((LINES - 4)) $((COLUMNS - 5))
                             fi
                             ;;
                         "${APPNAME}__NETWORK_MODE")
@@ -435,17 +435,17 @@ ${CurrentValueHeading}
                             ;;
                         "${APPNAME}__VOLUME_"*)
                             if [[ ${StrippedValue} == "/" ]]; then
-                                dialog --title "${Title}" --msgbox "${DescriptionHeading}\nCannot use / for ${CleanVarName}. Please select another folder." 0 0
+                                dialog --title "${Title}" --msgbox "${DescriptionHeading}\nCannot use ${DC[Highlight]}/${DC[NC]} for ${DC[Highlight]}${CleanVarName}${DC[NC]}. Please select another folder." 0 0
                                 ValueValid="false"
                             elif [[ ${StrippedValue} == *~* ]]; then
                                 local CORRECTED_DIR="${OptionValue["${CurrentValueOption}"]//\~/"${DETECTED_HOMEDIR}"}"
-                                if run_script 'question_prompt' Y "${DescriptionHeading}\nCannot use the ~ shortcut in ${CleanVarName}. Would you like to use ${CORRECTED_DIR} instead?" "${Title}"; then
+                                if run_script 'question_prompt' Y "${DescriptionHeading}\nCannot use the ${DC[Highlight]}~${DC[NC]} shortcut in ${DC[Highlight]}${CleanVarName}${DC[NC]}. Would you like to use ${DC[Highlight]}${CORRECTED_DIR}${DC[NC]} instead?" "${Title}"; then
                                     OptionValue["${CurrentValueOption}"]="${CORRECTED_DIR}"
                                     ValueValid="false"
                                     dialog --begin 2 2 --colors --title "${Title}" --msgbox "Returning to the previous menu to confirm selection." $((LINES - 4)) $((COLUMNS - 5))
                                 else
                                     ValueValid="false"
-                                    dialog --begin 2 2 --colors --title "${Title}" --msgbox "${DescriptionHeading}\nCannot use the ~ shortcut in ${CleanVarName}. Please select another folder." $((LINES - 4)) $((COLUMNS - 5))
+                                    dialog --begin 2 2 --colors --title "${Title}" --msgbox "${DescriptionHeading}\nCannot use the ${DC[Highlight]}~${DC[NC]} shortcut in ${DC[Highlight]}${CleanVarName}${DC[DC]}. Please select another folder." $((LINES - 4)) $((COLUMNS - 5))
                                 fi
                             elif [[ -d ${StrippedValue} ]]; then
                                 if run_script 'question_prompt' Y "${DescriptionHeading}\nWould you like to set permissions on ${OptionValue["${CurrentValueOption}"]} ?" "${Title}"; then
