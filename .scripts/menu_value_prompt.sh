@@ -274,7 +274,8 @@ menu_value_prompt() {
     if [[ -n ${OptionValue["${SystemValueOption}"]-} ]]; then
         ValueDescription="\n\n System detected values are recommended.${ValueDescription}"
     fi
-    local AppNameHeading="   Application: ${DC[Heading]}${AppName}${DC[NC]}"
+    local AppNameLabel="   Application: "
+    local AppNameHeading="${AppNameLabel}${DC[Heading]}${AppName}${DC[NC]}"
     if [[ ${AppIsUserDefined} == 'Y' ]]; then
         AppNameHeading="${AppNameHeading} ${DC[HeadingTag]}${AppUserDefinedTag}${DC[NC]}"
     elif [[ ${AppIsDepreciated} == 'Y' ]]; then
@@ -319,9 +320,16 @@ menu_value_prompt() {
         local DescriptionHeading=""
         # editorconfig-checker-disable
         if [[ -n ${AppName-} ]]; then
-            DescriptionHeading="${DescriptionHeading}\n${AppNameHeading}${DC[NC]}"
+            DescriptionHeading+="${AppNameHeading}${DC[NC]}\n"
+            local AppDescription
+            AppDescription="$(run_script 'app_description' "${AppName}")"
+            local -i LabelWidth=${#AppNameLabel}
+            local -a AppDesciption
+            readarray -t AppDesciption < <(fmt -w $((COLUMNS - LabelWidth - 5)) <<< "$(run_script 'app_description' "${AppName}")")
+            DescriptionHeading+="$(printf "${DC[NC]}                ${DC[Highlight]}%s${DC[NC]}\n" "${AppDesciption[@]-}")"
+            DescriptionHeading+="\n\n"
         fi
-        local DescriptionHeading="${DescriptionHeading}
+        local DescriptionHeading+="
 ${FilenameHeading}
 ${VarNameHeading}
 
