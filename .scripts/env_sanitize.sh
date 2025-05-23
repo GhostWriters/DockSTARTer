@@ -13,7 +13,7 @@ env_sanitize() {
             # If the variable is empty or contains an "x", get the default value
             local default
             Default="$(run_script 'var_default_value' "${VarName}")"
-            notice "Settings ${VarName}=${Default}"
+            notice "Setting ${VarName}=${Default}"
             run_script 'env_set_literal' "${VarName}" "${Default}"
         fi
     done
@@ -47,7 +47,7 @@ env_sanitize() {
             # Value contains a "~", repace it with the user's home directory
             local CorrectedValue
             CorrectedValue="${Value//\~/"${DETECTED_HOMEDIR}"}"
-            notice "Replacing ~ with ${DETECTED_HOMEDIR} in ${VarName}."
+            notice "Setting ${VarName}=${CorrectedValue}"
             run_script 'env_set_literal' "${VarName}" "${CorrectedValue}"
         fi
     done
