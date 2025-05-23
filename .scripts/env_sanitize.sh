@@ -36,10 +36,12 @@ env_sanitize() {
     # Add any "APPNAME__VOLUME_*" variables to the list
     local -a AppList
     readarray -t AppList < <(run_script 'app_list_referenced')
+    notice "AppList=${AppList[@]}"
     for AppName in "${AppList[@]}"; do
         notice "${AppName}"
         readarray -t -O ${#VarList[@]} VarList < <(grep -o -P "^\s*\K${AppName^^}__VOLUME_[a-zA-Z0-9]+[a-zA-Z0-9_](?=\s*=)")
     done
+    notice "VarList=${VarList[@]}"
     for VarName in "${VarList[@]}"; do
         # Get the value including quotes
         Value="$(run_script 'env_get_literal' "${VarName}")"
