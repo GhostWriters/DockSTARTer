@@ -427,7 +427,7 @@ ${CurrentValueHeading}
                                 dialog --title "${Title}" --msgbox "${DescriptionHeading}\nCannot use / for ${CleanVarName}. Please select another folder." 0 0
                                 ValueValid="false"
                             elif [[ ${StrippedValue} == *~* ]]; then
-                                
+
                                 local CORRECTED_DIR="${OptionValue["${CurrentValueOption}"]//\~/"${DETECTED_HOMEDIR}"}"
                                 if run_script 'question_prompt' Y "${DescriptionHeading}\nCannot use the ~ shortcut in ${CleanVarName}. Would you like to use ${CORRECTED_DIR} instead?" "${Title}"; then
                                     OptionValue["${CurrentValueOption}"]="${CORRECTED_DIR}"
