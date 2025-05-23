@@ -24,7 +24,9 @@ menu_config_apps() {
         --title "${Title}"
         --ok-label "Select"
         --cancel-label "Done"
-        --menu "Select the application to configure" $((LINES - 4)) $((COLUMNS - 5)) 0
+        --menu "Select the application to configure"
+        "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))"
+        "$((LINES - DC["TextHeightAdjust"] - 1))"
         "${AppOptions[@]}"
     )
 

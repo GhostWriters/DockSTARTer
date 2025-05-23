@@ -357,7 +357,8 @@ ${CurrentValueHeading}
             --extra-label "Edit"
             --cancel-label "Done"
             --inputmenu "${SelectValueMenuText}"
-            "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))" $((LINES - DC["TextHeightAdjust"] - MenuTextLines))
+            "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))"
+            "$((LINES - DC["TextHeightAdjust"] - MenuTextLines))"
             "${ValueOptions[@]}"
         )
         SelectValueDialogButtonPressed=0
