@@ -325,7 +325,7 @@ menu_value_prompt() {
             AppDescription="$(run_script 'app_description' "${AppName}")"
             local -i LabelWidth=${#AppNameLabel}
             local -a AppDesciption
-            readarray -t AppDesciption < <(fmt -w $((COLUMNS - LabelWidth - 5)) <<< "$(run_script 'app_description' "${AppName}")")
+            readarray -t AppDesciption < <(fmt -w $((COLUMNS - LabelWidth - 5)) <<< "${AppDescription}")
             DescriptionHeading+="$(printf "${DC[NC]}                ${DC[HeadingAppDescription]}%s${DC[NC]}\n" "${AppDesciption[@]-}")"
             DescriptionHeading+="\n\n"
         fi
