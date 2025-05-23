@@ -216,6 +216,7 @@ DC+=( # Pre-defined color combinations used in the GUI
     [Heading]="${DC[NC]}${DC[RV]}"
     [HeadingTag]="${DC[NC]}${DC[RV]}${DC[W]}"
     [HeadingValue]="${DC[NC]}${DC[BD]}${DC[RV]}"
+    [HeadingAppDescription]="${DC[NC]}${DC[Y]}${DC[NBD]}"
     [Highlight]="${DC[NC]}${DC[Y]}${DC[BD]}"
     [LineHeading]="${DC[NC]}"
     [LineComment]="${DC[NC]}${DC[K]}${DC[BD]}${DC[RV]}"
