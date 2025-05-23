@@ -3,6 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 appvars_create_all() {
+    notice "Enter appvars_create_all"
     notice "appvars_create_all -> env_create"
     run_script 'env_create'
     notice "env_create -> appvars_create_all"
@@ -16,6 +17,7 @@ appvars_create_all() {
         notice "${COMPOSE_ENV} does not contain any added apps."
     fi
     run_script 'env_update'
+    notice "Exit appvars_create_all"
 }
 
 test_appvars_create_all() {
