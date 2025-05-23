@@ -42,7 +42,7 @@ env_sanitize() {
         if [[ ${Value} == ~* ]]; then
             # Value contains a "~", repace it with the user's home directory
             local CorrectedValue
-            CorrectedValue="$(sed "s|~|${DETECTED_HOMEDIR}|g" <<< "${Value}")"
+            CorrectedValue="${Value//\~/"${DETECTED_HOMEDIR}"}"
             info "Replacing ~ with ${DETECTED_HOMEDIR} in ${VarName}."
             run_script 'env_set_literal' "${VarName}" "${CorrectedValue}"
         fi
