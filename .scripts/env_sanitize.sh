@@ -3,8 +3,11 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 env_sanitize() {
+    notice "Enter env_sanitize"
     # Migrate from old global variable names
+    notice "env_sanitize -> env_migrate_global"
     run_script 'env_migrate_global'
+    notice "env_sanitize <- env_migrate_global"
     # Set defaults for some "special cases" of the global variables
     for VarName in GLOBAL_LAN_NETWORK DOCKER_GID PGID PUID; do
         local Value
@@ -47,6 +50,7 @@ env_sanitize() {
             run_script 'env_set_literal' "${VarName}" "${CorrectedValue}"
         fi
     done
+    notice "Exit env_sanitize"
 }
 
 test_env_sanitize() {
