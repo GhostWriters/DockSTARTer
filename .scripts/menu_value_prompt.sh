@@ -389,7 +389,7 @@ ${CurrentValueHeading}
                     local StrippedValue="${OptionValue["${CurrentValueOption}"]}"
                     # Strip comments from the value
                     #StrippedValue="$(sed -E "s/('([^']|'')*'|\"([^\"]|\"\")*\")|(#.*)//g" <<< "${StrippedValue}")"
-                    #dialog --colors --title "${Title}" --msgbox "Original Value=${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]}\nStripped Value=${DC[Highlight]}${StrippedValue}${DC[NC]}" 0 0
+                    #dialog --begin 2 2 --colors --title "${Title}" --msgbox "Original Value=${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]}\nStripped Value=${DC[Highlight]}${StrippedValue}${DC[NC]}" $((LINES - 4)) $((COLUMNS - 5))
                     # Unqauote the value
                     StrippedValue="$(sed -E "s|^(['\"])(.*)\1$|\2|g" <<< "${StrippedValue}")"
 
@@ -399,7 +399,7 @@ ${CurrentValueHeading}
                                 ValueValid="true"
                             else
                                 ValueValid="false"
-                                dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${OptionValue["${CurrentValueOption}"]} is not true or false. Please try setting ${CleanVarName} again." 0 0
+                                dialog --begin 2 2 --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${OptionValue["${CurrentValueOption}"]} is not true or false. Please try setting ${CleanVarName} again." $((LINES - 4)) $((COLUMNS - 5))
                             fi
                             ;;
                         "${APPNAME}__NETWORK_MODE")
@@ -409,7 +409,7 @@ ${CurrentValueHeading}
                                     ;;
                                 *)
                                     ValueValid="false"
-                                    dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid network mode. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again." 0 0
+                                    dialog --begin 2 2--colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid network mode. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again." $((LINES - 4)) $((COLUMNS - 5))
                                     ;;
                             esac
                             ;;
@@ -419,7 +419,7 @@ ${CurrentValueHeading}
                                 ValueValid="true"
                             else
                                 ValueValid="false"
-                                dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid port. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again." 0 0
+                                dialog --begin 2 2 --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid port. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again." $((LINES - 4)) $((COLUMNS - 5))
                             fi
                             ;;
                         "${APPNAME}__RESTART")
@@ -429,7 +429,7 @@ ${CurrentValueHeading}
                                     ;;
                                 *)
                                     ValueValid="false"
-                                    dialog --colors --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid restart value. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again." 0 0
+                                    dialog --begin 2 2 --colors --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid restart value. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again." $((LINES - 4)) $((COLUMNS - 5))
                                     ;;
                             esac
                             ;;
@@ -442,10 +442,10 @@ ${CurrentValueHeading}
                                 if run_script 'question_prompt' Y "${DescriptionHeading}\nCannot use the ~ shortcut in ${CleanVarName}. Would you like to use ${CORRECTED_DIR} instead?" "${Title}"; then
                                     OptionValue["${CurrentValueOption}"]="${CORRECTED_DIR}"
                                     ValueValid="false"
-                                    dialog --colors --title "${Title}" --msgbox "Returning to the previous menu to confirm selection." 0 0
+                                    dialog --begin 2 2 --colors --title "${Title}" --msgbox "Returning to the previous menu to confirm selection." $((LINES - 4)) $((COLUMNS - 5))
                                 else
                                     ValueValid="false"
-                                    dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\nCannot use the ~ shortcut in ${CleanVarName}. Please select another folder." 0 0
+                                    dialog --begin 2 2 --colors --title "${Title}" --msgbox "${DescriptionHeading}\nCannot use the ~ shortcut in ${CleanVarName}. Please select another folder." $((LINES - 4)) $((COLUMNS - 5))
                                 fi
                             elif [[ -d ${StrippedValue} ]]; then
                                 if run_script 'question_prompt' Y "${DescriptionHeading}\nWould you like to set permissions on ${OptionValue["${CurrentValueOption}"]} ?" "${Title}"; then
@@ -459,10 +459,10 @@ ${CurrentValueHeading}
                                         mkdir -p "${StrippedValue}" || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p \"${StrippedValue}\""
                                         run_script 'set_permissions' "${StrippedValue}"
                                     } | dialog_pipe "Creating folder and settings permissions" "${OptionValue["${CurrentValueOption}"]}" "${DIALOGTIMEOUT}"
-                                    dialog --colors --title "${Title}" --msgbox "${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} folder was created successfully." 0 0
+                                    dialog --begin 2 2 --colors --title "${Title}" --msgbox "${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} folder was created successfully." $((LINES - 4)) $((COLUMNS - 5))
                                     ValueValid="true"
                                 else
-                                    dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid path. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again." 0 0
+                                    dialog --begin 2 2 --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid path. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again." $((LINES - 4)) $((COLUMNS - 5))
                                     ValueValid="false"
                                 fi
                             fi
@@ -477,7 +477,7 @@ ${CurrentValueHeading}
                             elif [[ ${StrippedValue} =~ ^[0-9]+$ ]]; then
                                 ValueValid="true"
                             else
-                                dialog --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid ${CleanVarName}. Please try setting ${CleanVarName} again." 0 0
+                                dialog --begin 2 2 --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid ${CleanVarName}. Please try setting ${CleanVarName} again." $((LINES - 4)) $((COLUMNS - 5))
                                 ValueValid="false"
                             fi
                             ;;
