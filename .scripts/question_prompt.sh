@@ -32,7 +32,7 @@ question_prompt() {
         # shellcheck disable=SC2206 # (warning): Quote to prevent word splitting/globbing, or split robustly with mapfile or read -a.
         local -a YesNoDialog=(
             --stdout
-            --begin 2 2
+            --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}"
             --colors
             --no-collapse
             --yes-label "${YesButton}"
@@ -40,7 +40,7 @@ question_prompt() {
             --title "${Title}"
             ${DIALOG_DEFAULT-}
             --yesno "${Question}"
-            $((LINES - 4)) $((COLUMNS - 5))
+            "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))"
         )
         while true; do
             local YNPrompt

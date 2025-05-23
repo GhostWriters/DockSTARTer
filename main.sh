@@ -224,6 +224,22 @@ DC+=( # Pre-defined color combinations used in the GUI
     [LineVar]="${DC[NC]}${DC[K]}${DC[NBD]}${DC[RV]}"
     [LineAddVariable]="${DC[NC]}${DC[K]}${DC[NBD]}${DC[RV]}"
 )
+DC+=( # Dialog box offsets
+    [OffsetTop]=2
+    [OffsetBottom]=2
+    [OffsetLeft]=2
+    [OffsetRight]=3
+    [InsideLeft]=2
+    [InsideRight]=2
+    [InsideTop]=2
+    [InsideBottom]=2
+)
+DC+=(
+    [WindowWidthAdjust]=$((DC[OffsetLeft] + DC[OffsetRight]))
+    [WindowHeightAdjust]=$((DC[OffsetTop] + DC[OffsetBottom]))
+    [TextWidthAdjust]=$((DC[InsideLeft] + DC[InsideRight]))
+    [TextHeightAdjust]=$((DC[InsideTop] + DC[InsideBottom]))
+)
 readonly DC
 declare -rix DIALOGTIMEOUT=3
 
@@ -619,7 +635,13 @@ dialog_pipe() {
     local Title=${1:-}
     local SubTitle=${2:-}
     local TimeOut=${3:-0}
-    dialog --begin 2 2 --colors --timeout "${TimeOut}" --title "${Title}" --programbox "${DC[RV]}${SubTitle}${DC[NC]}" $((LINES - 4)) $((COLUMNS - 5)) || true
+    dialog \
+        --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}" \
+        --colors \
+        --title "${Title}" \
+        --timeout "${TimeOut}" \
+        --programbox "${DC[RV]}${SubTitle}${DC[NC]}" \
+        "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))" || true
     echo -n "${BS}"
 }
 # Script Dialog Runner Function

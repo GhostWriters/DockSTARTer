@@ -87,12 +87,12 @@ menu_add_var() {
         )
         local -a InputValueDialog=(
             --stdout
-            --begin 2 2
+            --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}"
             --colors
             --title "${Title}"
             --max-input 256
             --form "${InputValueText}"
-            $((LINES - 4)) $((COLUMNS - 5)) 0
+            "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))" 0
             "${ValueOptions[@]}"
         )
         local InputValueDialogButtonPressed=0
@@ -138,7 +138,7 @@ menu_add_var() {
                     ErrorMessage="The variable ${DC[Highlight]}${VarName}${DC[NC]} already exists.\n\n Please input another variable name."
                 fi
                 if [[ -n ${ErrorMessage} ]]; then
-                    dialog --begin 2 2 --colors --title "${Title}" --msgbox "${DescriptionHeading}\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\n${ErrorMessage}" $((LINES - 4)) $((COLUMNS - 5))
+                    dialog --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}" --colors --title "${Title}" --msgbox "${DescriptionHeading}\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\n${ErrorMessage}" "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))"
                     continue
                 fi
                 local Question

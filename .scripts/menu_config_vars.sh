@@ -158,12 +158,12 @@ menu_config_vars() {
         fi
         local -a LineDialog=(
             --stdout
-            --begin 2 2
+            --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}"
             --colors
             --ok-label "Select"
             --cancel-label "Done"
             --title "${Title}"
-            --menu "\n${DialogHeading}" $((LINES - 4)) $((COLUMNS - 5)) $((LINES - 11))
+            --menu "\n${DialogHeading}" "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))" $((LINES - 11))
             "${LineOptions[@]}"
         )
         while true; do

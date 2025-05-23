@@ -324,7 +324,7 @@ menu_value_prompt() {
             local AppDescription
             AppDescription="$(run_script 'app_description' "${AppName}")"
             local -i LabelWidth=${#AppNameLabel}
-            local -i TextWidth=$((COLUMNS - LabelWidth - 9))
+            local -i TextWidth=$((COLUMNS - DC["TextWidthAdjust"] - LabelWidth))
             local Indent
             Indent="$(printf "%${LabelWidth}s" "")"
             local -a AppDesciption
@@ -343,12 +343,12 @@ ${CurrentValueHeading}
         local SelectValueMenuText="${DescriptionHeading}\nWhat would you like set for ${DC[Highlight]}${CleanVarName}${DC[NC]}?${ValueDescription}"
         local SelectValueDialogParams=(
             --stdout
-            --begin 2 2
+            --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}"
             --colors
             --title "${Title}"
         )
         local -i MenuTextLines
-        MenuTextLines="$(dialog ${SelectValueDialogParams[@]} --print-text-size "${SelectValueMenuText}" $((LINES - 4)) $((COLUMNS - 5)) | cut -d ' ' -f 1)"
+        MenuTextLines="$(dialog "${SelectValueDialogParams[@]}" --print-text-size "${SelectValueMenuText}" "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))" | cut -d ' ' -f 1)"
         local -i SelectValueDialogButtonPressed=0
         local SelectedValue
         local -a SelectValueDialog=(
@@ -357,7 +357,7 @@ ${CurrentValueHeading}
             --extra-label "Edit"
             --cancel-label "Done"
             --inputmenu "${SelectValueMenuText}"
-            $((LINES - 4)) $((COLUMNS - 5)) $((LINES - 4 - MenuTextLines))
+            "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))" $((LINES - DC["TextHeightAdjust"] - MenuTextLines))
             "${ValueOptions[@]}"
         )
         SelectValueDialogButtonPressed=0
@@ -392,7 +392,7 @@ ${CurrentValueHeading}
                     local StrippedValue="${OptionValue["${CurrentValueOption}"]}"
                     # Strip comments from the value
                     #StrippedValue="$(sed -E "s/('([^']|'')*'|\"([^\"]|\"\")*\")|(#.*)//g" <<< "${StrippedValue}")"
-                    #dialog --begin 2 2 --colors --title "${Title}" --msgbox "Original Value=${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]}\nStripped Value=${DC[Highlight]}${StrippedValue}${DC[NC]}" $((LINES - 4)) $((COLUMNS - 5))
+                    #dialog --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}" --colors --title "${Title}" --msgbox "Original Value=${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]}\nStripped Value=${DC[Highlight]}${StrippedValue}${DC[NC]}" "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))"
                     # Unqauote the value
                     StrippedValue="$(sed -E "s|^(['\"])(.*)\1$|\2|g" <<< "${StrippedValue}")"
 
@@ -402,7 +402,7 @@ ${CurrentValueHeading}
                                 ValueValid="true"
                             else
                                 ValueValid="false"
-                                dialog --begin 2 2 --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not ${DC[Highlight]}true${DC[NC]} or ${DC[Highlight]}false${DC[NC]}. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again." $((LINES - 4)) $((COLUMNS - 5))
+                                dialog --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}" --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not ${DC[Highlight]}true${DC[NC]} or ${DC[Highlight]}false${DC[NC]}. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again." "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))"
                             fi
                             ;;
                         "${APPNAME}__NETWORK_MODE")
@@ -412,7 +412,7 @@ ${CurrentValueHeading}
                                     ;;
                                 *)
                                     ValueValid="false"
-                                    dialog --begin 2 2--colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid network mode. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again." $((LINES - 4)) $((COLUMNS - 5))
+                                    dialog --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}"--colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid network mode. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again." "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))"
                                     ;;
                             esac
                             ;;
@@ -422,7 +422,7 @@ ${CurrentValueHeading}
                                 ValueValid="true"
                             else
                                 ValueValid="false"
-                                dialog --begin 2 2 --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid port. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again." $((LINES - 4)) $((COLUMNS - 5))
+                                dialog --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}" --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid port. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again." "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))"
                             fi
                             ;;
                         "${APPNAME}__RESTART")
@@ -432,7 +432,7 @@ ${CurrentValueHeading}
                                     ;;
                                 *)
                                     ValueValid="false"
-                                    dialog --begin 2 2 --colors --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid restart value. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again." $((LINES - 4)) $((COLUMNS - 5))
+                                    dialog --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}" --colors --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid restart value. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again." "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))"
                                     ;;
                             esac
                             ;;
@@ -445,10 +445,10 @@ ${CurrentValueHeading}
                                 if run_script 'question_prompt' Y "${DescriptionHeading}\nCannot use the ${DC[Highlight]}~${DC[NC]} shortcut in ${DC[Highlight]}${CleanVarName}${DC[NC]}. Would you like to use ${DC[Highlight]}${CORRECTED_DIR}${DC[NC]} instead?" "${Title}"; then
                                     OptionValue["${CurrentValueOption}"]="${CORRECTED_DIR}"
                                     ValueValid="false"
-                                    dialog --begin 2 2 --colors --title "${Title}" --msgbox "Returning to the previous menu to confirm selection." $((LINES - 4)) $((COLUMNS - 5))
+                                    dialog --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}" --colors --title "${Title}" --msgbox "Returning to the previous menu to confirm selection." "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))"
                                 else
                                     ValueValid="false"
-                                    dialog --begin 2 2 --colors --title "${Title}" --msgbox "${DescriptionHeading}\nCannot use the ${DC[Highlight]}~${DC[NC]} shortcut in ${DC[Highlight]}${CleanVarName}${DC[DC]}. Please select another folder." $((LINES - 4)) $((COLUMNS - 5))
+                                    dialog --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}" --colors --title "${Title}" --msgbox "${DescriptionHeading}\nCannot use the ${DC[Highlight]}~${DC[NC]} shortcut in ${DC[Highlight]}${CleanVarName}${DC[DC]}. Please select another folder." "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))"
                                 fi
                             elif [[ -d ${StrippedValue} ]]; then
                                 if run_script 'question_prompt' Y "${DescriptionHeading}\nWould you like to set permissions on ${OptionValue["${CurrentValueOption}"]} ?" "${Title}"; then
@@ -462,10 +462,10 @@ ${CurrentValueHeading}
                                         mkdir -p "${StrippedValue}" || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p \"${StrippedValue}\""
                                         run_script 'set_permissions' "${StrippedValue}"
                                     } | dialog_pipe "Creating folder and settings permissions" "${OptionValue["${CurrentValueOption}"]}" "${DIALOGTIMEOUT}"
-                                    dialog --begin 2 2 --colors --title "${Title}" --msgbox "${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} folder was created successfully." $((LINES - 4)) $((COLUMNS - 5))
+                                    dialog --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}" --colors --title "${Title}" --msgbox "${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} folder was created successfully." "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))"
                                     ValueValid="true"
                                 else
-                                    dialog --begin 2 2 --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid path. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again." $((LINES - 4)) $((COLUMNS - 5))
+                                    dialog --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}" --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid path. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again." "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))"
                                     ValueValid="false"
                                 fi
                             fi
@@ -480,7 +480,7 @@ ${CurrentValueHeading}
                             elif [[ ${StrippedValue} =~ ^[0-9]+$ ]]; then
                                 ValueValid="true"
                             else
-                                dialog --begin 2 2 --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid ${CleanVarName}. Please try setting ${CleanVarName} again." $((LINES - 4)) $((COLUMNS - 5))
+                                dialog --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}" --colors --title "${Title}" --msgbox "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid ${CleanVarName}. Please try setting ${CleanVarName} again." "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))"
                                 ValueValid="false"
                             fi
                             ;;

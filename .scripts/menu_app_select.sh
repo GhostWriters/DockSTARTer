@@ -36,17 +36,24 @@ menu_app_select() {
     if [[ ${CI-} == true ]]; then
         SelectedAppsDialogButtonPressed=${DIALOG_CANCEL}
     else
-        local -a SelectedAppsDialog=(
+        local SelectAppsDialogText="Choose which apps you would like to install:\n Use ${DC[RV]}[up]${DC[NC]}, ${DC[RV]}[down]${DC[NC]}, and ${DC[RV]}[space]${DC[NC]} to select apps, and ${DC[RV]}[tab]${DC[NC]} to switch to the buttons at the bottom."
+        local SelectedAppsDialogParams=(
             --stdout
-            --begin 2 2
+            --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}"
             --colors
+            --title "${Title}"
+        )
+        local -i MenuTextLines
+        MenuTextLines="$(dialog "${SelectedAppsDialogParams[@]}" --print-text-size "${SelectAppsDialogText}" "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))" | cut -d ' ' -f 1)"
+        local -a SelectedAppsDialog=(
+            "${SelectedAppsDialogParams[@]}"
             --ok-label "Done"
             --cancel-label "Cancel"
-            --title "${Title}"
             --separate-output
             --checklist
-            "Choose which apps you would like to install:\n Use ${DC[RV]}[up]${DC[NC]}, ${DC[RV]}[down]${DC[NC]}, and ${DC[RV]}[space]${DC[NC]} to select apps, and ${DC[RV]}[tab]${DC[NC]} to switch to the buttons at the bottom."
-            $((LINES - 4)) $((COLUMNS - 5)) $((LINES - 5 - 4))
+            "${SelectAppsDialogText}"
+            "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"] - MenuTextLines))"
+            "$((LINES - DC["TextHeightAdjust"]))"
             "${AppList[@]}"
         )
         SelectedAppsDialogButtonPressed=0
