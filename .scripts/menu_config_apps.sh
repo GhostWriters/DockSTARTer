@@ -20,11 +20,10 @@ menu_config_apps() {
     done
     local -a AppChoiceDialog=(
         --stdout
-        --begin 2 2
         --title "${Title}"
         --ok-label "Select"
         --cancel-label "Done"
-        --menu "Select the application to configure" $((LINES - 4)) $((COLUMNS - 5)) 0
+        --menu "Select the application to configure" 0 0 0
         "${AppOptions[@]}"
     )
 
