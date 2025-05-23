@@ -40,10 +40,10 @@ shadow_color = (BLACK,BLACK,ON)
 dialog_color = (BLACK,BLUE,OFF)
 
 # Dialog box title color
-title_color = (BLUE,BLACK,ON)
+title_color = (CYAN,BLACK,OFF)
 
 # Dialog box border color
-border_color = (BLACK,BLUE,ON)
+border_color = (CYAN,BLUE,OFF)
 
 # Active button color
 button_active_color = (WHITE,RED,ON)
@@ -136,10 +136,10 @@ gauge_color = (BLUE,WHITE,ON)
 border2_color = dialog_color
 
 # Input box border2 color
-inputbox_border2_color = dialog_color
+inputbox_border2_color = border_color
 
 # Search box border2 color
-searchbox_border2_color = dialog_color
+searchbox_border2_color = border_color
 
 # Menu box border2 color
-menubox_border2_color = dialog_color
+menubox_border2_color = border_color
