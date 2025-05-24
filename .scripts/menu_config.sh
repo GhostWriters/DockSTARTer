@@ -29,7 +29,7 @@ menu_config() {
     )
     local -a ConfigChoiceDialog=(
         --stdout
-        --title "${DC["Title"]}{Title}"
+        --title "${DC["Title"]}${Title}"
         --ok-label "Select"
         --cancel-label "Back"
         --menu "What would you like to do?" 0 0 0

@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 menu_app_select() {
     local Title="Select Applications"
-    dialog --title "${DC["Title"]}{Title}" --infobox "Preparing app menu. Please be patient, this can take a while." 0 0
+    dialog --title "${DC["Title"]}${Title}" --infobox "Preparing app menu. Please be patient, this can take a while." 0 0
     local AppList=()
     local EnabledApps=()
     while IFS= read -r line; do
@@ -41,7 +41,7 @@ menu_app_select() {
             --stdout
             --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}"
             --colors
-            --title "${DC["Title"]}{Title}"
+            --title "${DC["Title"]}${Title}"
         )
         local -i MenuTextLines
         MenuTextLines="$(dialog "${SelectedAppsDialogParams[@]}" --print-text-size "${SelectAppsDialogText}" "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))" | cut -d ' ' -f 1)"

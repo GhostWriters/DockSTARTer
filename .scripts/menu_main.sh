@@ -18,7 +18,7 @@ menu_main() {
     )
     local -a MainChoiceDialog=(
         --stdout
-        --title "${DC["Title"]}{Title}"
+        --title "${DC["Title"]}${Title}"
         --ok-label "Select"
         --cancel-label "Exit"
         --menu "What would you like to do?" 0 0 0
