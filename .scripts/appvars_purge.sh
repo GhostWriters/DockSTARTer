@@ -37,7 +37,7 @@ ${APP_ENV_FILE}:
 ${APPVAR_ENV_LINES}
 EOF
         )
-        if [[ ${CI-} == true ]] || run_script 'question_prompt' Y "${DC["TitleWarning"]}${QUESTION}\\n" "${DC["TitleWarning"]}${Title}" "${FORCE:+Y}"; then
+        if [[ ${CI-} == true ]] || run_script 'question_prompt' Y "${QUESTION}\n" "${DC["TitleWarning"]}${Title}" "${FORCE:+Y}"; then
             info "Purging ${AppName} .env variables."
 
             local -a APPVARS
