@@ -508,7 +508,7 @@ ${CurrentValueHeading}
                                     run_script 'env_sanitize'
                                     run_script 'env_update'
                                 fi
-                            } |& dialog_pipe "Deleting Variable" "${DescriptionHeading}" "${DIALOGTIMEOUT}"
+                            } |& dialog_pipe "${DC["TitleSuccess"]}Deleting Variable" "${DescriptionHeading}" "${DIALOGTIMEOUT}"
                             return 0
                         fi
                     elif [[ ${OptionValue["${CurrentValueOption}"]-} == "${OptionValue["${OriginalValueOption}"]-}" ]]; then
@@ -526,7 +526,7 @@ ${CurrentValueHeading}
                                     run_script 'env_update'
                                     run_script 'env_sanitize'
                                 fi
-                            } |& dialog_pipe "Canceling Variable Edit" "${DescriptionHeading}" "${DIALOGTIMEOUT}"
+                            } |& dialog_pipe "${DC["TitleSuccess"]}Canceling Variable Edit" "${DescriptionHeading}" "${DIALOGTIMEOUT}"
                             return 0
                         fi
                     else
@@ -545,7 +545,7 @@ ${CurrentValueHeading}
                                     run_script 'env_update'
                                     run_script 'env_sanitize'
                                 fi
-                            } |& dialog_pipe "Saving Variable" "${DescriptionHeading}" "${DIALOGTIMEOUT}"
+                            } |& dialog_pipe "${DC["TitleSuccess"]}Saving Variable" "${DescriptionHeading}" "${DIALOGTIMEOUT}"
                             return 0
                         fi
                     fi
