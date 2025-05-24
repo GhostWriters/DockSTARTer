@@ -40,7 +40,6 @@ menu_app_select() {
         local SelectedAppsDialogParams=(
             --stdout
             --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}"
-            --colors
             --title "${DC["Title"]}${Title}"
         )
         local -i MenuTextLines

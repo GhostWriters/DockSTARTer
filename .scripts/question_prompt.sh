@@ -33,7 +33,6 @@ question_prompt() {
         local -a YesNoDialog=(
             --stdout
             --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}"
-            --colors
             --no-collapse
             --yes-label "${YesButton}"
             --no-label "${NoButton}"
