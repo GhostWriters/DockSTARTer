@@ -1,4 +1,4 @@
 services:
-  vsftpd:
+  vsftpd<__instance>:
     ports:
-      - ${VSFTPD_PORT_21}:21
+      - ${VSFTPD<__INSTANCE>__PORT_21?}:21

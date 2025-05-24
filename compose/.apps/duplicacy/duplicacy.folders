@@ -1,0 +1,3 @@
+${DOCKER_VOLUME_CONFIG}/duplicacy<__instance>/cache
+${DOCKER_VOLUME_CONFIG}/duplicacy<__instance>/config
+${DOCKER_VOLUME_CONFIG}/duplicacy<__instance>/logs

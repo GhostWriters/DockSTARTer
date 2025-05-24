@@ -1,3 +1,3 @@
 services:
-  quasselweb:
-    hostname: ${DOCKER_HOSTNAME}
+  quasselweb<__instance>:
+    hostname: ${QUASSELWEB<__INSTANCE>__HOSTNAME?}

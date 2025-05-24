@@ -1,3 +1,3 @@
 services:
-  resiliosync:
-    image: lscr.io/linuxserver/resilio-sync:${RESILIOSYNC_TAG}
+  resiliosync<__instance>:
+    image: lscr.io/linuxserver/resilio-sync:${RESILIOSYNC<__INSTANCE>__TAG?}

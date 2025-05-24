@@ -1,3 +1,3 @@
 services:
-  nzbget:
-    hostname: ${DOCKER_HOSTNAME}
+  nzbget<__instance>:
+    hostname: ${NZBGET<__INSTANCE>__HOSTNAME?}

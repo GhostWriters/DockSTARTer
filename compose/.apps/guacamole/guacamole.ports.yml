@@ -1,4 +1,4 @@
 services:
-  guacamole:
+  guacamole<__instance>:
     ports:
-      - ${GUACAMOLE_PORT_8080}:8080
+      - ${GUACAMOLE<__INSTANCE>__PORT_8080?}:8080

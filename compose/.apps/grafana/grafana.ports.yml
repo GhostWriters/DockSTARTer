@@ -1,4 +1,4 @@
 services:
-  grafana:
+  grafana<__instance>:
     ports:
-      - ${GRAFANA_PORT_3000}:3000
+      - ${GRAFANA<__INSTANCE>__PORT_3000?}:3000

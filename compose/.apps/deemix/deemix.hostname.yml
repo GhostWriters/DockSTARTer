@@ -1,3 +1,3 @@
 services:
-  deemix:
-    hostname: ${DOCKER_HOSTNAME}
+  deemix<__instance>:
+    hostname: ${DEEMIX<__INSTANCE>__HOSTNAME?}

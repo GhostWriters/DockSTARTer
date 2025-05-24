@@ -1,10 +1,11 @@
 services:
-  homeassistant:
-    container_name: ${HOMEASSISTANT_CONTAINER_NAME}
+  homeassistant<__instance>:
+    container_name: ${HOMEASSISTANT<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/homeassistant<__instance>.env
     environment:
-      - TZ=${TZ}
-    restart: ${HOMEASSISTANT_RESTART}
+      - TZ=${TZ?}
+    restart: ${HOMEASSISTANT<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/homeassistant:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/homeassistant<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

@@ -1,4 +1,4 @@
 services:
-  komga:
+  komga<__instance>:
     ports:
-      - ${KOMGA_PORT_25600}:25600
+      - ${KOMGA<__INSTANCE>__PORT_25600?}:25600

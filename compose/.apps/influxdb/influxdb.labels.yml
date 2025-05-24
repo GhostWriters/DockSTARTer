@@ -1,12 +1,6 @@
 services:
-  influxdb:
+  influxdb<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Time series database for recording metrics, events, and analytics"
-      com.dockstarter.appinfo.nicename: "InfluxDB"
-      com.dockstarter.appvars.influxdb_container_name: "influxdb"
-      com.dockstarter.appvars.influxdb_enabled: "false"
-      com.dockstarter.appvars.influxdb_network_mode: ""
-      com.dockstarter.appvars.influxdb_port_8086: "8086"
-      com.dockstarter.appvars.influxdb_restart: "unless-stopped"
-      com.dockstarter.appvars.influxdb_tag: "1.8"
+      com.dockstarter.appinfo.nicename: "InfluxDB<__Instance>"

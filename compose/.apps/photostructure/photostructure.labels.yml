@@ -1,16 +1,6 @@
 services:
-  photostructure:
+  photostructure<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "PhotoStructure is your new home for all your photos & videos."
-      com.dockstarter.appinfo.nicename: "PhotoStructure"
-      com.dockstarter.appvars.photostructure_container_name: "photostructure"
-      com.dockstarter.appvars.photostructure_enabled: "false"
-      com.dockstarter.appvars.photostructure_environment_expose_network_without_auth: "true"
-      com.dockstarter.appvars.photostructure_environment_force_local_db_replica: "0"
-      com.dockstarter.appvars.photostructure_network_mode: ""
-      com.dockstarter.appvars.photostructure_port_1787: "1787"
-      com.dockstarter.appvars.photostructure_restart: "unless-stopped"
-      com.dockstarter.appvars.photostructure_tag: "latest"
-      com.dockstarter.appvars.photostructure_volume_cache_directory: "/tmp/photostructure_cache"
-      com.dockstarter.appvars.photostructure_volume_library: "/mnt/photostructure"
+      com.dockstarter.appinfo.nicename: "PhotoStructure<__Instance>"

@@ -1,3 +1,3 @@
 services:
-  minecraftserver:
-    image: itzg/minecraft-server:${MINECRAFTSERVER_TAG}
+  minecraftserver<__instance>:
+    image: itzg/minecraft-server:${MINECRAFTSERVER<__INSTANCE>__TAG?}

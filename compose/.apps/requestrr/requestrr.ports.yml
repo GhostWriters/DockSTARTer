@@ -1,4 +1,4 @@
 services:
-  requestrr:
+  requestrr<__instance>:
     ports:
-      - ${REQUESTRR_PORT_4545}:4545
+      - ${REQUESTRR<__INSTANCE>__PORT_4545?}:4545

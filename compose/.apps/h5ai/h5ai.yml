@@ -1,10 +1,11 @@
 services:
-  h5ai:
-    container_name: ${H5AI_CONTAINER_NAME}
+  h5ai<__instance>:
+    container_name: ${H5AI<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/h5ai<__instance>.env
     environment:
-      - TZ=${TZ}
-    restart: ${H5AI_RESTART}
+      - TZ=${TZ?}
+    restart: ${H5AI<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${H5AI_VOLUME_INDEXDIR}:/var/www
+      - ${DOCKER_VOLUME_STORAGE?}:/storage
+      - ${H5AI<__INSTANCE>__VOLUME_INDEXDIR?}:/var/www

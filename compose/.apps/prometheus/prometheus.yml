@@ -1,13 +1,14 @@
 services:
-  prometheus:
-    container_name: ${PROMETHEUS_CONTAINER_NAME}
+  prometheus<__instance>:
+    container_name: ${PROMETHEUS<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/prometheus<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${PROMETHEUS_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${PROMETHEUS<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/prometheus/etc:/etc/prometheus
-      - ${DOCKER_VOLUME_CONFIG}/prometheus/data:/prometheus
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/prometheus<__instance>/etc:/etc/prometheus
+      - ${DOCKER_VOLUME_CONFIG?}/prometheus<__instance>/data:/prometheus
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

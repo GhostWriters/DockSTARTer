@@ -1,14 +1,14 @@
 services:
-  ubooquity:
-    container_name: ${UBOOQUITY_CONTAINER_NAME}
+  ubooquity<__instance>:
+    container_name: ${UBOOQUITY<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/ubooquity<__instance>.env
     environment:
-      - MAXMEM=${UBOOQUITY_ENVIRONMENT_MAXMEM}
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${UBOOQUITY_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${UBOOQUITY<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/ubooquity:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${UBOOQUITY_VOLUME_FILESDIR}:/files
+      - ${DOCKER_VOLUME_CONFIG?}/ubooquity<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage
+      - ${UBOOQUITY<__INSTANCE>__VOLUME_FILESDIR?}:/files

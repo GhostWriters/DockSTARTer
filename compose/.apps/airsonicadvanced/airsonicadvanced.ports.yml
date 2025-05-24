@@ -1,4 +1,4 @@
 services:
-  airsonicadvanced:
+  airsonicadvanced<__instance>:
     ports:
-      - ${AIRSONICADVANCED_PORT_4040}:4040
+      - ${AIRSONICADVANCED<__INSTANCE>__PORT_4040?}:4040

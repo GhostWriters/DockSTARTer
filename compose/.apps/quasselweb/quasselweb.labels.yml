@@ -1,17 +1,6 @@
 services:
-  quasselweb:
+  quasselweb<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Web client for Quassel. A Quassel-Core instance is required"
-      com.dockstarter.appinfo.nicename: "QuasselWeb"
-      com.dockstarter.appvars.quasselweb_container_name: "quasselweb"
-      com.dockstarter.appvars.quasselweb_enabled: "false"
-      com.dockstarter.appvars.quasselweb_environment_quassel_core: "quasselcore"
-      com.dockstarter.appvars.quasselweb_environment_quassel_https: ""
-      com.dockstarter.appvars.quasselweb_environment_quassel_port: "4242"
-      com.dockstarter.appvars.quasselweb_environment_url_base: "/quassel"
-      com.dockstarter.appvars.quasselweb_network_mode: ""
-      com.dockstarter.appvars.quasselweb_port_64080: "64080"
-      com.dockstarter.appvars.quasselweb_port_64443: "64443"
-      com.dockstarter.appvars.quasselweb_restart: "unless-stopped"
-      com.dockstarter.appvars.quasselweb_tag: "latest"
+      com.dockstarter.appinfo.nicename: "QuasselWeb<__Instance>"

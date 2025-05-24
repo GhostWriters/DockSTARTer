@@ -1,4 +1,4 @@
 services:
-  nodered:
+  nodered<__instance>:
     ports:
-      - ${NODERED_PORT_1880}:1880
+      - ${NODERED<__INSTANCE>__PORT_1880?}:1880

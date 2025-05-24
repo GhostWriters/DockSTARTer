@@ -1,14 +1,15 @@
 services:
-  photoshow:
-    container_name: ${PHOTOSHOW_CONTAINER_NAME}
+  photoshow<__instance>:
+    container_name: ${PHOTOSHOW<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/photoshow<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${PHOTOSHOW_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${PHOTOSHOW<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/photoshow:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${PHOTOSHOW_VOLUME_IMAGES_DIR}:/Pictures:ro
-      - ${PHOTOSHOW_VOLUME_THUMBS_DIR}:/Thumbs
+      - ${DOCKER_VOLUME_CONFIG?}/photoshow<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage
+      - ${PHOTOSHOW<__INSTANCE>__VOLUME_IMAGES_DIR?}:/Pictures:ro
+      - ${PHOTOSHOW<__INSTANCE>__VOLUME_THUMBS_DIR?}:/Thumbs

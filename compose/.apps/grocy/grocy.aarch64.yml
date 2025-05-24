@@ -1,3 +1,3 @@
 services:
-  grocy:
-    image: lscr.io/linuxserver/grocy:${GROCY_TAG}
+  grocy<__instance>:
+    image: lscr.io/linuxserver/grocy:${GROCY<__INSTANCE>__TAG?}

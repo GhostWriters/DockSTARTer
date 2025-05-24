@@ -1,3 +1,3 @@
 services:
-  monitorr:
-    image: monitorr/monitorr:${MONITORR_TAG}
+  monitorr<__instance>:
+    image: monitorr/monitorr:${MONITORR<__INSTANCE>__TAG?}

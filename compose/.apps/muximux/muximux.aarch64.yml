@@ -1,3 +1,3 @@
 services:
-  muximux:
-    image: lscr.io/linuxserver/muximux:${MUXIMUX_TAG}
+  muximux<__instance>:
+    image: lscr.io/linuxserver/muximux:${MUXIMUX<__INSTANCE>__TAG?}

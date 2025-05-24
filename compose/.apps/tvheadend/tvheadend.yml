@@ -1,14 +1,14 @@
 services:
-  tvheadend:
-    container_name: ${TVHEADEND_CONTAINER_NAME}
+  tvheadend<__instance>:
+    container_name: ${TVHEADEND<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/tvheadend<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - RUN_OPTS=${TVHEADEND_ENVIRONMENT_RUN_OPTS}
-      - TZ=${TZ}
-    restart: ${TVHEADEND_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${TVHEADEND<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/tvheadend:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${TVHEADEND_VOLUME_RECORDINGSDIR}:/recordings
+      - ${DOCKER_VOLUME_CONFIG?}/tvheadend<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage
+      - ${TVHEADEND<__INSTANCE>__VOLUME_RECORDINGSDIR?}:/recordings

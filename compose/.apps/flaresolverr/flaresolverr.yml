@@ -1,13 +1,11 @@
 services:
-  flaresolverr:
-    container_name: ${FLARESOLVERR_CONTAINER_NAME}
+  flaresolverr<__instance>:
+    container_name: ${FLARESOLVERR<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/flaresolverr<__instance>.env
     environment:
-      - CAPTCHA_SOLVER=${FLARESOLVERR_ENVIRONMENT_CAPTCHA_SOLVER}
-      - LOG_HTML=${FLARESOLVERR_ENVIRONMENT_LOG_HTML}
-      - LOG_LEVEL=${FLARESOLVERR_ENVIRONMENT_LOG_LEVEL}
-      - PORT=${FLARESOLVERR_PORT_8191}
-      - TZ=${TZ}
-    restart: ${FLARESOLVERR_RESTART}
+      - PORT=${FLARESOLVERR<__INSTANCE>__PORT_8191?}
+      - TZ=${TZ?}
+    restart: ${FLARESOLVERR<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

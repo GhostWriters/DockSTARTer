@@ -1,4 +1,4 @@
 services:
-  fireflyiii:
+  fireflyiii<__instance>:
     ports:
-      - ${FIREFLYIII_PORT_8080}:8080
+      - ${FIREFLYIII<__INSTANCE>__PORT_8080?}:8080

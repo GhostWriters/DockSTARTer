@@ -1,0 +1,3 @@
+services:
+  nginx<__instance>:
+    hostname: ${NGINX<__INSTANCE>__HOSTNAME?}

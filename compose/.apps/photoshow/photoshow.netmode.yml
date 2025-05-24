@@ -1,3 +1,3 @@
 services:
-  photoshow:
-    network_mode: ${PHOTOSHOW_NETWORK_MODE}
+  photoshow<__instance>:
+    network_mode: ${PHOTOSHOW<__INSTANCE>__NETWORK_MODE?}

@@ -28,7 +28,7 @@ you need assistance setting up this application please visit our
 
 You can set a base path for this application if you want to host it behind a
 reverse proxy. By default it binds to `/`, but you can change the variable
-called `SPEEDTEST_BASE_PATH` in your `.env` file to whatever you want and run
+called `BASE_PATH` in your `env_files/speedtestr.env` file to whatever you want and run
 `ds -c up speedtest` afterwards.
 
 As usual, we **strongly discourage** having this application be public facing

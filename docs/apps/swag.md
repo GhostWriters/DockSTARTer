@@ -31,9 +31,9 @@ take more configuration, as DNS entries and certificate subject alternate names
 are required.
 
 The first thing to setup is your domain and email settings in
-`.docker/compose/.env` under `SWAG`. Set the `SWAG_EMAIL` and `SWAG_URL`. If
-using subdomains ensure to add each subdomain to `SWAG_SUBDOMAINS` as each
-subdomain prefix (e.g. `SWAG_SUBDOMAINS=portainer,deluge,pihole`.
+`.docker/compose/env_files/swag.env`. Set the `EMAIL` and `URL`. If
+using subdomains ensure to add each subdomain to `SUBDOMAINS` as each
+subdomain prefix (e.g. `SUBDOMAINS=portainer,deluge,pihole`.
 
 There are a number of sample proxy configuration files found in
 `~/.config/appdata/swag/nginx/proxy-confs/` and in most cases will just need the

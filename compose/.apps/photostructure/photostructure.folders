@@ -1,0 +1,2 @@
+${DOCKER_VOLUME_CONFIG}/photostructure<__instance>
+${DOCKER_VOLUME_CONFIG}/photostructure<__instance>/logs

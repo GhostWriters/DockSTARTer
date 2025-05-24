@@ -1,13 +1,6 @@
 services:
-  makemkv:
+  makemkv<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Convert video that you own into free and patents-unencumbered format"
-      com.dockstarter.appinfo.nicename: "MakeMKV"
-      com.dockstarter.appvars.makemkv_container_name: "makemkv"
-      com.dockstarter.appvars.makemkv_enabled: "false"
-      com.dockstarter.appvars.makemkv_network_mode: ""
-      com.dockstarter.appvars.makemkv_port_5800: "5800"
-      com.dockstarter.appvars.makemkv_restart: "unless-stopped"
-      com.dockstarter.appvars.makemkv_tag: "latest"
-      com.dockstarter.appvars.makemkv_volume_outputdir: "/mnt/makemkv/output"
+      com.dockstarter.appinfo.nicename: "MakeMKV<__Instance>"

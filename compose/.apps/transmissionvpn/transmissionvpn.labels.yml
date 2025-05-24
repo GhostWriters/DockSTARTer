@@ -1,20 +1,6 @@
 services:
-  transmissionvpn:
+  transmissionvpn<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Transmission with OpenVPN"
-      com.dockstarter.appinfo.nicename: "TransmissionVPN"
-      com.dockstarter.appvars.transmissionvpn_container_name: "transmissionvpn"
-      com.dockstarter.appvars.transmissionvpn_enabled: "false"
-      com.dockstarter.appvars.transmissionvpn_environment_download_dir: "/storage/downloads/completed"
-      com.dockstarter.appvars.transmissionvpn_environment_home: "/config"
-      com.dockstarter.appvars.transmissionvpn_environment_incomplete_dir: "/storage/downloads/incomplete"
-      com.dockstarter.appvars.transmissionvpn_environment_local_network: "192.168.x.x/24"
-      com.dockstarter.appvars.transmissionvpn_environment_openvpn_password: "your-vpn-pass"
-      com.dockstarter.appvars.transmissionvpn_environment_openvpn_provider: "custom"
-      com.dockstarter.appvars.transmissionvpn_environment_openvpn_username: "your-vpn-user"
-      com.dockstarter.appvars.transmissionvpn_environment_watch_dir: "/storage/downloads/watch"
-      com.dockstarter.appvars.transmissionvpn_network_mode: ""
-      com.dockstarter.appvars.transmissionvpn_port_9091: "9091"
-      com.dockstarter.appvars.transmissionvpn_restart: "unless-stopped"
-      com.dockstarter.appvars.transmissionvpn_tag: "latest"
+      com.dockstarter.appinfo.nicename: "TransmissionVPN<__Instance>"

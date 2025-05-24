@@ -1,3 +1,3 @@
 services:
-  transmissionvpn:
-    image: haugene/transmission-openvpn:${TRANSMISSIONVPN_TAG}
+  transmissionvpn<__instance>:
+    image: haugene/transmission-openvpn:${TRANSMISSIONVPN<__INSTANCE>__TAG?}

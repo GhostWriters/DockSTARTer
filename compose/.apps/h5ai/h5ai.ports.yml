@@ -1,4 +1,4 @@
 services:
-  h5ai:
+  h5ai<__instance>:
     ports:
-      - ${H5AI_PORT_8080}:8080
+      - ${H5AI<__INSTANCE>__PORT_8080?}:8080

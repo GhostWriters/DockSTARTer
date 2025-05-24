@@ -1,4 +1,4 @@
 services:
-  organizr:
+  organizr<__instance>:
     ports:
-      - ${ORGANIZR_PORT_80}:80
+      - ${ORGANIZR<__INSTANCE>__PORT_80?}:80

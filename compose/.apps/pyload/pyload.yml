@@ -1,12 +1,13 @@
 services:
-  pyload:
-    container_name: ${PYLOAD_CONTAINER_NAME}
+  pyload<__instance>:
+    container_name: ${PYLOAD<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/pyload<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${PYLOAD_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${PYLOAD<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/pyload:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/pyload<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

@@ -1,8 +1,8 @@
 services:
-  delugevpn:
+  delugevpn<__instance>:
     ports:
-      - ${DELUGEVPN_PORT_58846}:58846
-      - ${DELUGEVPN_PORT_58946}:58946
-      - ${DELUGEVPN_PORT_6881}:6881
-      - ${DELUGEVPN_PORT_8112}:8112
-      - ${DELUGEVPN_PORT_8118}:8118
+      - ${DELUGEVPN<__INSTANCE>__PORT_58846?}:58846
+      - ${DELUGEVPN<__INSTANCE>__PORT_58946?}:58946
+      - ${DELUGEVPN<__INSTANCE>__PORT_6881?}:6881
+      - ${DELUGEVPN<__INSTANCE>__PORT_8112?}:8112
+      - ${DELUGEVPN<__INSTANCE>__PORT_8118?}:8118

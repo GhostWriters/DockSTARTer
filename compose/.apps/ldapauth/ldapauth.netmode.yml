@@ -1,3 +1,3 @@
 services:
-  ldapauth:
-    network_mode: ${LDAPAUTH_NETWORK_MODE}
+  ldapauth<__instance>:
+    network_mode: ${LDAPAUTH<__INSTANCE>__NETWORK_MODE?}

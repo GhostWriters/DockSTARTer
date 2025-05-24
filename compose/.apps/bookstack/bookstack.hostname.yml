@@ -1,3 +1,3 @@
 services:
-  bookstack:
-    hostname: ${DOCKER_HOSTNAME}
+  bookstack<__instance>:
+    hostname: ${BOOKSTACK<__INSTANCE>__HOSTNAME?}

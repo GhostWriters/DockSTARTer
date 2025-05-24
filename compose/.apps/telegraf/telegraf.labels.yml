@@ -1,15 +1,6 @@
 services:
-  telegraf:
+  telegraf<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Agent for collecting metrics and writing them to InfluxDB"
-      com.dockstarter.appinfo.nicename: "Telegraf"
-      com.dockstarter.appvars.telegraf_container_name: "telegraf"
-      com.dockstarter.appvars.telegraf_enabled: "false"
-      com.dockstarter.appvars.telegraf_network_mode: ""
-      com.dockstarter.appvars.telegraf_port_8092: "8092"
-      com.dockstarter.appvars.telegraf_port_8094: "8094"
-      com.dockstarter.appvars.telegraf_port_8125: "8125"
-      com.dockstarter.appvars.telegraf_restart: "unless-stopped"
-      com.dockstarter.appvars.telegraf_tag: "latest"
-      com.dockstarter.appvars.telegraf_volume_docker_socket: "/var/run/docker.sock"
+      com.dockstarter.appinfo.nicename: "Telegraf<__Instance>"

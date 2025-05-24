@@ -1,13 +1,6 @@
 services:
-  cloudcmd:
+  cloudcmd<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "A web file manager with console and editor"
-      com.dockstarter.appinfo.nicename: "CloudCMD"
-      com.dockstarter.appvars.cloudcmd_container_name: "cloudcmd"
-      com.dockstarter.appvars.cloudcmd_enabled: "false"
-      com.dockstarter.appvars.cloudcmd_network_mode: ""
-      com.dockstarter.appvars.cloudcmd_port_8000: "8000"
-      com.dockstarter.appvars.cloudcmd_restart: "unless-stopped"
-      com.dockstarter.appvars.cloudcmd_tag: "latest"
-      com.dockstarter.appvars.cloudcmd_volume_fsdir: "/mnt/cloudcmd"
+      com.dockstarter.appinfo.nicename: "CloudCMD<__Instance>"

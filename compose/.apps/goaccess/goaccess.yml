@@ -1,15 +1,16 @@
 services:
-  goaccess:
-    container_name: ${GOACCESS_CONTAINER_NAME}
+  goaccess<__instance>:
+    container_name: ${GOACCESS<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/goaccess<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${GOACCESS_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${GOACCESS<__INSTANCE>__RESTART?}
     security_opt:
       - apparmor:unconfined
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/goaccess:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${GOACCESS_VOLUME_LOGSDIR}:/opt/log:ro
+      - ${DOCKER_VOLUME_CONFIG?}/goaccess<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage
+      - ${GOACCESS<__INSTANCE>__VOLUME_LOGSDIR?}:/opt/log:ro

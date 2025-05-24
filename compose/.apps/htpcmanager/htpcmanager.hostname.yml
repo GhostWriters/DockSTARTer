@@ -1,3 +1,3 @@
 services:
-  htpcmanager:
-    hostname: ${DOCKER_HOSTNAME}
+  htpcmanager<__instance>:
+    hostname: ${HTPCMANAGER<__INSTANCE>__HOSTNAME?}

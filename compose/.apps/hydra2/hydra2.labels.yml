@@ -1,6 +1,6 @@
 services:
-  hydra2:
+  hydra2<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "true"
       com.dockstarter.appinfo.description: "(DEPRECATED) Use NZBHydra2"
-      com.dockstarter.appinfo.nicename: "Hydra2"
+      com.dockstarter.appinfo.nicename: "Hydra2<__Instance>"

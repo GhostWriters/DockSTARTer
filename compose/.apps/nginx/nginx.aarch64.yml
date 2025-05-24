@@ -1,0 +1,3 @@
+services:
+  nginx<__instance>:
+    image: lscr.io/linuxserver/nginx:${nginx__TAG?}

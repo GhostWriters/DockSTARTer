@@ -1,4 +1,4 @@
 services:
-  yacht:
+  yacht<__instance>:
     ports:
-      - ${YACHT_PORT_8000}:8000
+      - ${YACHT<__INSTANCE>__PORT_8000?}:8000

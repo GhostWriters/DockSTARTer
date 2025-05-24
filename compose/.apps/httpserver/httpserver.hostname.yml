@@ -1,3 +1,3 @@
 services:
-  httpserver:
-    hostname: ${DOCKER_HOSTNAME}
+  httpserver<__instance>:
+    hostname: ${HTTPSERVER<__INSTANCE>__HOSTNAME?}

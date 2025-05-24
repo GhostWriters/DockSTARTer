@@ -1,3 +1,3 @@
 services:
-  gluetun:
-    hostname: ${DOCKER_HOSTNAME}
+  gluetun<__instance>:
+    hostname: ${GLUETUN<__INSTANCE>__HOSTNAME?}

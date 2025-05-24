@@ -3,61 +3,96 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_app_select() {
-    local APPLIST=()
-    notice "Preparing app menu. Please be patient, this can take a while."
+    local Title="Select Applications"
+    dialog --title "${DC["Title"]}${Title}" --infobox "Preparing app menu. Please be patient, this can take a while." 0 0
+    local AppList=()
+    local EnabledApps=()
     while IFS= read -r line; do
         local APPNAME=${line^^}
-        local FILENAME=${APPNAME,,}
-        local APPTEMPLATES="${SCRIPTPATH}/compose/.apps/${FILENAME}"
-        if [[ -d ${APPTEMPLATES}/ ]]; then
-            if [[ -f ${APPTEMPLATES}/${FILENAME}.yml ]]; then
-                if [[ -f ${APPTEMPLATES}/${FILENAME}.${ARCH}.yml ]]; then
-                    local APPNICENAME
-                    APPNICENAME=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.nicename: \K.*" "${APPTEMPLATES}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo "${APPNAME}")
-                    local APPDESCRIPTION
-                    APPDESCRIPTION=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.description: \K.*" "${APPTEMPLATES}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo "! Missing description !")
-                    local APPDEPRECATED
-                    APPDEPRECATED=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" "${APPTEMPLATES}/${FILENAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo false)
-                    if [[ ${APPDEPRECATED} == true ]]; then
-                        continue
-                    fi
-                    local APPONOFF
-                    if [[ $(run_script 'env_get' "${APPNAME}_ENABLED") == true ]]; then
-                        APPONOFF="on"
-                    else
-                        APPONOFF="off"
-                    fi
-                    APPLIST+=("${APPNICENAME}" "${APPDESCRIPTION}" "${APPONOFF}")
+        local main_yml
+        main_yml="$(run_script 'app_instance_file' "${APPNAME}" ".yml")"
+        if [[ -f ${main_yml} ]]; then
+            local main_yml
+            arch_yml="$(run_script 'app_instance_file' "${APPNAME}" ".${ARCH}.yml")"
+            if [[ -f ${arch_yml} ]]; then
+                local AppName
+                AppName=$(run_script 'app_nicename_from_template' "${APPNAME}")
+                local AppDescription
+                AppDescription=$(run_script 'app_description_from_template' "${APPNAME}")
+                local AppOnOff
+                if run_script 'app_is_enabled' "${APPNAME}"; then
+                    AppOnOff="on"
+                    EnabledApps+=("${AppName}")
+                else
+                    AppOnOff="off"
                 fi
+                AppList+=("${AppName}" "${AppDescription}" "${AppOnOff}")
             fi
         fi
-    done < <(ls -A "${SCRIPTPATH}/compose/.apps/")
+    done < <(run_script 'app_list_nondepreciated')
 
-    local SELECTEDAPPS
+    local -i SelectedAppsDialogButtonPressed
+    local SelectedApps
     if [[ ${CI-} == true ]]; then
-        SELECTEDAPPS="Cancel"
+        SelectedAppsDialogButtonPressed=${DIALOG_CANCEL}
     else
-        SELECTEDAPPS=$(whiptail --fb --clear --title "DockSTARTer" --separate-output --checklist 'Choose which apps you would like to install:\n Use [up], [down], and [space] to select apps, and [tab] to switch to the buttons at the bottom.' 0 0 0 "${APPLIST[@]}" 3>&1 1>&2 2>&3 || echo "Cancel")
+        local SelectAppsDialogText="Choose which apps you would like to install:\n Use ${DC[RV]}[up]${DC[NC]}, ${DC[RV]}[down]${DC[NC]}, and ${DC[RV]}[space]${DC[NC]} to select apps, and ${DC[RV]}[tab]${DC[NC]} to switch to the buttons at the bottom."
+        local SelectedAppsDialogParams=(
+            --stdout
+            --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}"
+            --title "${DC["Title"]}${Title}"
+        )
+        local -i MenuTextLines
+        MenuTextLines="$(dialog "${SelectedAppsDialogParams[@]}" --print-text-size "${SelectAppsDialogText}" "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))" | cut -d ' ' -f 1)"
+        local -a SelectedAppsDialog=(
+            "${SelectedAppsDialogParams[@]}"
+            --ok-label "Done"
+            --cancel-label "Cancel"
+            --separate-output
+            --checklist
+            "${SelectAppsDialogText}"
+            "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))"
+            "$((LINES - DC["TextHeightAdjust"] - MenuTextLines))"
+            "${AppList[@]}"
+        )
+        SelectedAppsDialogButtonPressed=0
+        SelectedApps=$(dialog "${SelectedAppsDialog[@]}") || SelectedAppsDialogButtonPressed=$?
     fi
-    if [[ ${SELECTEDAPPS} == "Cancel" ]]; then
-        return 1
-    else
-        info "Disabling all apps."
-        while IFS= read -r line; do
-            local APPNAME=${line%%_ENABLED=*}
-            run_script 'env_set' "${APPNAME}_ENABLED" false
-        done < <(grep --color=never -P '_ENABLED='"'"'?true'"'"'?$' "${COMPOSE_ENV}")
-
-        info "Enabling selected apps."
-        while IFS= read -r line; do
-            local APPNAME=${line^^}
-            run_script 'appvars_create' "${APPNAME}"
-            run_script 'env_set' "${APPNAME}_ENABLED" true
-        done < <(echo "${SELECTEDAPPS}")
-
-        run_script 'appvars_purge_all'
-        run_script 'env_update'
-    fi
+    case ${DIALOG_BUTTONS[SelectedAppsDialogButtonPressed]-} in
+        OK)
+            local Heading HeadingAppLabel HeadingAppList
+            HeadingAppLabel="\nApplications:\n"
+            local -a AppList
+            readarray -t AppList < <(highlighted_list "${SelectedApps}" | fmt -w "${COLUMNS}")
+            HeadingAppList="$(printf '              %s\n' "${AppList[@]-}")"
+            Heading="${DC[NC]}${HeadingAppLabel}${HeadingAppList}"
+            {
+                notice "Disabling previously selected apps."
+                run_script 'disable_app' "${EnabledApps[@]}"
+                notice "Enabling selected apps."
+                run_script 'enable_app' "${SelectedApps}"
+                notice "Creating variables for selected apps."
+                run_script 'appvars_create' "${SelectedApps}"
+                notice "Purging old variables"
+                run_script 'appvars_purge_all'
+                notice "Updating variable files"
+                run_script 'env_update'
+            } |& dialog_pipe "${DC["TitleSuccess"]}Enabling Selected Applications" "${Heading}" "${DIALOGTIMEOUT}"
+            return 0
+            ;;
+        CANCEL | ESC)
+            return 1
+            ;;
+        *)
+            if [[ -n ${DIALOG_BUTTONS[SelectedAppsDialogButtonPressed]-} ]]; then
+                clear
+                fatal "Unexpected dialog button '${DIALOG_BUTTONS[SelectedAppsDialogButtonPressed]}' pressed."
+            else
+                clear
+                fatal "Unexpected dialog button value '${SelectedAppsDialogButtonPressed}' pressed."
+            fi
+            ;;
+    esac
 }
 
 test_menu_app_select() {

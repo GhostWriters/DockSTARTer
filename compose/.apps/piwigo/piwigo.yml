@@ -1,12 +1,13 @@
 services:
-  piwigo:
-    container_name: ${PIWIGO_CONTAINER_NAME}
+  piwigo<__instance>:
+    container_name: ${PIWIGO<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/piwigo<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${PIWIGO_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${PIWIGO<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/piwigo:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/piwigo<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

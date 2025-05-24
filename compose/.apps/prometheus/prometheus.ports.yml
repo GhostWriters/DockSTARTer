@@ -1,4 +1,4 @@
 services:
-  prometheus:
+  prometheus<__instance>:
     ports:
-      - ${PROMETHEUS_PORT_9090}:9090
+      - ${PROMETHEUS<__INSTANCE>__PORT_9090?}:9090

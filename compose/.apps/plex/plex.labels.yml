@@ -1,23 +1,6 @@
 services:
-  plex:
+  plex<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Organizes all of your video, music and photo collections"
-      com.dockstarter.appinfo.nicename: "Plex"
-      com.dockstarter.appvars.plex_container_name: "plex"
-      com.dockstarter.appvars.plex_enabled: "false"
-      com.dockstarter.appvars.plex_environment_plex_claim: "https://plex.tv/claim"
-      com.dockstarter.appvars.plex_environment_version: "docker"
-      com.dockstarter.appvars.plex_network_mode: ""
-      com.dockstarter.appvars.plex_port_1900: "1900"
-      com.dockstarter.appvars.plex_port_3005: "3005"
-      com.dockstarter.appvars.plex_port_32400: "32400"
-      com.dockstarter.appvars.plex_port_32410: "32410"
-      com.dockstarter.appvars.plex_port_32412: "32412"
-      com.dockstarter.appvars.plex_port_32413: "32413"
-      com.dockstarter.appvars.plex_port_32414: "32414"
-      com.dockstarter.appvars.plex_port_32469: "32469"
-      com.dockstarter.appvars.plex_port_33400: "33400"
-      com.dockstarter.appvars.plex_port_8324: "8324"
-      com.dockstarter.appvars.plex_restart: "unless-stopped"
-      com.dockstarter.appvars.plex_tag: "latest"
+      com.dockstarter.appinfo.nicename: "Plex<__Instance>"

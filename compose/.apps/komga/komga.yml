@@ -1,13 +1,12 @@
 services:
-  komga:
-    container_name: ${KOMGA_CONTAINER_NAME}
+  komga<__instance>:
+    container_name: ${KOMGA<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/komga<__instance>.env
     environment:
-      - SERVER_SERVLET_CONTEXT_PATH=${KOMGA_ENVIRONMENT_BASEURL}
-      - KOMGA_LIBRARIES_SCAN_CRON=${KOMGA_ENVIRONMENT_SCAN_CRON}
-      - TZ=${TZ}
-    restart: ${KOMGA_RESTART}
-    user: ${PUID}:${PGID}
+      - TZ=${TZ?}
+    restart: ${KOMGA<__INSTANCE>__RESTART?}
+    user: ${PUID?}:${PGID?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/komga:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/komga<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

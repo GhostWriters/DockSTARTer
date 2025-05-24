@@ -1,4 +1,4 @@
 services:
-  htpcmanager:
+  htpcmanager<__instance>:
     ports:
-      - ${HTPCMANAGER_PORT_8085}:8085
+      - ${HTPCMANAGER<__INSTANCE>__PORT_8085?}:8085
