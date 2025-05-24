@@ -83,8 +83,9 @@ menu_value_prompt() {
     OptionValue["${CurrentValueOption}"]="${OptionValue["${OriginalValueOption}"]}"
     OptionHelpLine["${CurrentValueOption}"]="This is the value that will be saved when you select Done."
     OptionHelpLine["${DeleteOption}"]="This will set the variable to be deleted when you select Done."
-
+    OptionHelpLine["${DefaultValueOption}"]="This is the recommended default value."
     OptionHelpLine["${SystemValueOption}"]="This is the recommended system detected value."
+
     local -a PossibleOptions=("${CurrentValueOption}")
     case "${VarType}" in
         GLOBAL)
@@ -223,6 +224,12 @@ menu_value_prompt() {
                         "Never Restart"
                         "Always Restart"
                         "Restart On Failure"
+                    )
+                    OptionHelpLine+=(
+                        ["Restart Unless Stopped"]="This will cause the application to restart unless the user manually stopped it."
+                        ["Never Restart"]="This will cause the application to never restart."
+                        ["Always Restart"]="This will cause the application to always restart"
+                        ["Restart On Failure"]="This will cause the application to restart if it stops due to a failure."
                     )
                     OptionValue+=(
                         ["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
