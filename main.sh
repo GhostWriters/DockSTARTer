@@ -213,6 +213,9 @@ declare -Ag DC=( # Dialog colors
     [NC]='\Zn'  # No Color
 )
 DC+=( # Pre-defined color combinations used in the GUI
+    [Title]="${DC[NC]}${DC[C]}"
+    [ErrorTitle]="${DC[NC]}${DC[RV]}${DC[R]}"
+    [WarningTitle]="${DC[NC]}${DC[RV]}${DC[Y]}"
     [Heading]="${DC[NC]}${DC[RV]}"
     [HeadingTag]="${DC[NC]}${DC[RV]}${DC[W]}"
     [HeadingValue]="${DC[NC]}${DC[BD]}${DC[RV]}"
