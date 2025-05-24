@@ -76,10 +76,15 @@ menu_value_prompt() {
     local OriginalValueOption="Original Value"
 
     local ValueDescription=""
+    local -A OptionHelpLine=()
     local -A OptionValue=()
     OptionValue["${OriginalValueOption}"]=$(run_script 'env_get_literal' "${VarName}")
+    OptionHelpLine["${OriginalValueOption}"]="This is the original value before before entering the editor."
     OptionValue["${CurrentValueOption}"]="${OptionValue["${OriginalValueOption}"]}"
+    OptionHelpLine["${CurrentValueOption}"]="This is the value that will be saved when you select Done."
+    OptionHelpLine["${DeleteOption}"]="This will set the variable to be deleted when you select Done."
 
+    OptionHelpLine["${SystemValueOption}"]="This is the recommended system detected value."
     local -a PossibleOptions=("${CurrentValueOption}")
     case "${VarType}" in
         GLOBAL)
@@ -307,11 +312,11 @@ menu_value_prompt() {
         for Option in "${PossibleOptions[@]}"; do
             if [[ -n ${OptionValue["$Option"]-} ]] || [[ ${Option} == "${CurrentValueOption}" ]] || [[ ${Option} == "${OriginalValueOption}" ]]; then
                 ValidOptions+=("${Option}")
-                ValueOptions+=("${Option}" "${OptionValue["$Option"]}")
+                ValueOptions+=("${Option}" "${OptionValue["$Option"]}" "${OptionHelpLine["$Option"]-}")
             fi
         done
         ValidOptions+=("${DeleteOption}")
-        ValueOptions+=("${DeleteOption}" "")
+        ValueOptions+=("${DeleteOption}" "" "${OptionHelpLine["${DeleteOption}"]-}")
         local ValidOptionsRegex
         {
             IFS='|'
@@ -345,6 +350,7 @@ ${CurrentValueHeading}
             --stdout
             --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}"
             --title "${DC["Title"]}${Title}"
+            --item-help
         )
         local -i MenuTextLines
         MenuTextLines="$(dialog "${SelectValueDialogParams[@]}" --print-text-size "${SelectValueMenuText}" "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))" | cut -d ' ' -f 1)"
