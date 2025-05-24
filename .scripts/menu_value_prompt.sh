@@ -418,7 +418,6 @@ ${CurrentValueHeading}
                             esac
                             ;;
                         "${APPNAME}__PORT_"*)
-                            printf '%s' "${OptionValue["${CurrentValueOption}"]}"
                             if [[ ${StrippedValue} =~ ^[0-9]+$ ]] && [[ ${StrippedValue} -ge 0 ]] && [[ ${StrippedValue} -le 65535 ]]; then
                                 ValueValid="true"
                             else
