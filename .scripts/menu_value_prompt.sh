@@ -441,7 +441,7 @@ ${CurrentValueHeading}
                                 ValueValid="false"
                             elif [[ ${StrippedValue} == *~* ]]; then
                                 local CORRECTED_DIR="${OptionValue["${CurrentValueOption}"]//\~/"${DETECTED_HOMEDIR}"}"
-                                if run_script 'question_prompt' Y "${DescriptionHeading}\nCannot use the ${DC[Highlight]}~${DC[NC]} shortcut in ${DC[Highlight]}${CleanVarName}${DC[NC]}. Would you like to use ${DC[Highlight]}${CORRECTED_DIR}${DC[NC]} instead?" "${Title}"; then
+                                if run_script 'question_prompt' Y "${DescriptionHeading}\nCannot use the ${DC[Highlight]}~${DC[NC]} shortcut in ${DC[Highlight]}${CleanVarName}${DC[NC]}. Would you like to use ${DC[Highlight]}${CORRECTED_DIR}${DC[NC]} instead?" "${DC["TitleWarning"]}${Title}"; then
                                     OptionValue["${CurrentValueOption}"]="${CORRECTED_DIR}"
                                     ValueValid="false"
                                     dialog --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}" --title "${DC["TitleSuccess"]}${Title}" --msgbox "Returning to the previous menu to confirm selection." "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))"
@@ -450,13 +450,13 @@ ${CurrentValueHeading}
                                     dialog --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}" --title "${DC["TitleError"]}${Title}" --msgbox "${DescriptionHeading}\nCannot use the ${DC[Highlight]}~${DC[NC]} shortcut in ${DC[Highlight]}${CleanVarName}${DC[DC]}. Please select another folder." "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))"
                                 fi
                             elif [[ -d ${StrippedValue} ]]; then
-                                if run_script 'question_prompt' Y "${DescriptionHeading}\nWould you like to set permissions on ${OptionValue["${CurrentValueOption}"]} ?" "${Title}"; then
+                                if run_script 'question_prompt' Y "${DescriptionHeading}\nWould you like to set permissions on ${OptionValue["${CurrentValueOption}"]} ?" "${DC["TitleWarning"]}${Title}"; then
                                     run_script_dialog "Setting Permissions" "${DC[Heading]}${StrippedValue}${DC[NC]}" "${DIALOGTIMEOUT}" \
                                         'set_permissions' "${StrippedValue}"
                                 fi
                                 ValueValid="true"
                             else
-                                if run_script 'question_prompt' Y "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid path. Would you like to attempt to create it?" "${Title}"; then
+                                if run_script 'question_prompt' Y "${DescriptionHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid path. Would you like to attempt to create it?" "${DC["TitleWarning"]}${Title}"; then
                                     {
                                         mkdir -p "${StrippedValue}" || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p \"${StrippedValue}\""
                                         run_script 'set_permissions' "${StrippedValue}"
@@ -471,7 +471,7 @@ ${CurrentValueHeading}
                             ;;
                         P[GU]ID)
                             if [[ ${StrippedValue} == "0" ]]; then
-                                if run_script 'question_prompt' Y "Running as root is not recommended. Would you like to select a different ID?" "${Title}" "Y"; then
+                                if run_script 'question_prompt' Y "Running as root is not recommended. Would you like to select a different ID?" "${DC["TitleWarning"]}${Title}" "Y"; then
                                     ValueValid="false"
                                 else
                                     ValueValid="true"
@@ -490,7 +490,7 @@ ${CurrentValueHeading}
                 fi
                 if ${ValueValid}; then
                     if [[ -z ${OptionValue["${CurrentValueOption}"]-} ]]; then
-                        if run_script 'question_prompt' N "${DescriptionHeading}\n\nDo you really want to delete ${DC[Highlight]}${CleanVarName}${DC[NC]}?\n" "Delete Variable" "" "Delete" "Back"; then
+                        if run_script 'question_prompt' N "${DescriptionHeading}\n\nDo you really want to delete ${DC[Highlight]}${CleanVarName}${DC[NC]}?\n" "${DC["TitleWarning"]}Delete Variable" "" "Delete" "Back"; then
                             # Value is empty, delete the variable
                             {
                                 run_script 'env_delete' "${VarName}"
@@ -510,7 +510,7 @@ ${CurrentValueHeading}
                             return 0
                         fi
                     elif [[ ${OptionValue["${CurrentValueOption}"]-} == "${OptionValue["${OriginalValueOption}"]-}" ]]; then
-                        if run_script 'question_prompt' N "${DescriptionHeading}\n\nThe value of ${DC[Highlight]}${CleanVarName}${DC[NC]} has not been changed, exit anyways?\n" "Save Variable" "" "Done" "Back"; then
+                        if run_script 'question_prompt' N "${DescriptionHeading}\n\nThe value of ${DC[Highlight]}${CleanVarName}${DC[NC]} has not been changed, exit anyways?\n" "${DC["TitleWarning"]}Save Variable" "" "Done" "Back"; then
                             # Value has not changed, confirm exiting
                             {
                                 if [[ -n ${APPNAME-} ]]; then
@@ -528,7 +528,7 @@ ${CurrentValueHeading}
                             return 0
                         fi
                     else
-                        if run_script 'question_prompt' N "${DescriptionHeading}\n\nWould you like to save ${DC[Highlight]}${CleanVarName}${DC[NC]}?\n" "Save Variable" "" "Save" "Back"; then
+                        if run_script 'question_prompt' N "${DescriptionHeading}\n\nWould you like to save ${DC[Highlight]}${CleanVarName}${DC[NC]}?\n" "${DC["TitleWarning"]}Save Variable" "" "Save" "Back"; then
                             # Value is valid, save it and exit
                             {
                                 run_script 'env_set_literal' "${VarName}" "${OptionValue["${CurrentValueOption}"]}"

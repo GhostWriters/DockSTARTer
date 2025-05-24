@@ -38,11 +38,11 @@ menu_main() {
                         run_script 'menu_config' || true
                         ;;
                     "${OptionInstallDependencies}")
-                        run_script_dialog "Install Dependencies" "" "" \
+                        run_script_dialog "${DC["TitleSuccess"]}Install Dependencies" "" "" \
                             'run_install' || true
                         ;;
                     "${OptionUpdateVersion}")
-                        run_script_dialog "Update DockSTARTer" "" "" \
+                        run_script_dialog "${DC["TitleSuccess"]}Update DockSTARTer" "" "" \
                             'update_self' || true
                         ;;
                     *)

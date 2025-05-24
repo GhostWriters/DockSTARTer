@@ -77,7 +77,7 @@ menu_app_select() {
                 run_script 'appvars_purge_all'
                 notice "Updating variable files"
                 run_script 'env_update'
-            } |& dialog_pipe "Enabling Selected Applications" "${Heading}" "${DIALOGTIMEOUT}"
+            } |& dialog_pipe "${DC["TitleSuccess"]}Enabling Selected Applications" "${Heading}" "${DIALOGTIMEOUT}"
             return 0
             ;;
         CANCEL | ESC)

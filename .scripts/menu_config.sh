@@ -65,7 +65,7 @@ menu_config() {
                             run_script 'yml_merge' || true
                             run_script 'docker_compose' "pull" || true
                             run_script 'docker_compose' "up" || true
-                        } |& dialog_pipe "Docker Compose" \
+                        } |& dialog_pipe "${DC["TitleSuccess"]}Docker Compose" \
                             "${SubTitle}"
                         ;;
                     "${OptionComposeDown}")
@@ -73,11 +73,11 @@ menu_config() {
                         {
                             run_script 'yml_merge' || true
                             run_script 'docker_compose' "down" || true
-                        } |& dialog_pipe "Docker Compose" "${SubTitle}"
+                        } |& dialog_pipe "${DC["TitleSuccess"]}Docker Compose" "${SubTitle}"
                         ;;
                     "${OptionDockerPrune}")
                         local SubTitle="Pruning docker system\n${DC[CommandLine]} ds --force --prune${DC[NC]}"
-                        run_script_dialog "Docker Compose" "${SubTitle}" "" \
+                        run_script_dialog "${DC["TitleSuccess"]}Docker Compose" "${SubTitle}" "" \
                             'docker_prune' || true
                         ;;
                     *)
