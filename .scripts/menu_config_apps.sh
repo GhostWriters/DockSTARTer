@@ -23,13 +23,12 @@ menu_config_apps() {
     while true; do
         local -a AppChoiceDialog=(
             --stdout
-            --begin 2 2
             --title "${DC["Title"]}${Title}"
             --ok-label "Select"
             --cancel-label "Done"
             --menu "Select the application to configure"
-            "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))"
-            "$((LINES - DC["TextHeightAdjust"] - 1))"
+            0 0
+            0
             "${AppOptions[@]}"
         )
         local AppChoice
