@@ -138,7 +138,7 @@ menu_add_var() {
                     ErrorMessage="The variable ${DC[Highlight]}${VarName}${DC[NC]} already exists.\n\n Please input another variable name."
                 fi
                 if [[ -n ${ErrorMessage} ]]; then
-                    dialog --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}" --colors --title "${DC["Title"]}${Title}" --msgbox "${DescriptionHeading}\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\n${ErrorMessage}" "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))"
+                    dialog --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}" --colors --title "${DC["TitleError"]}${Title}" --msgbox "${DescriptionHeading}\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\n${ErrorMessage}" "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))"
                     continue
                 fi
                 local Question
@@ -148,7 +148,7 @@ menu_add_var() {
                 elif [[ ${VarType} == "APP" && ${DetectedAppName} != "${AppName}" ]]; then
                     Question="The variable name ${DC[Highlight]}${VarName}${DC[NC]} is not a valid variable for app ${DC[Highlight]}${AppName}${DC[NC]}. It would be a variable for an app named ${DC[Highlight]}${DetectedAppName}${DC[NC]}.\n\n  Do you still want to create variable ${DC[Highlight]}${VarName}${DC[NC]}?\n"
                 fi
-                if run_script 'question_prompt' N "${DescriptionHeading}\n\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\n${Question}" "Create Variable" "" "Create" "Back"; then
+                if run_script 'question_prompt' N "${DescriptionHeading}\n\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\n${Question}" "${DC["TitleWarning"]}Create Variable" "" "Create" "Back"; then
                     if [[ ${VarType} == "APPENV" ]]; then
                         Default="$(run_script 'var_default_value' "${AppName}:${VarName}")"
                         run_script_dialog "Creating Variable" "${DescriptionHeading}\n\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\n" "${DIALOGTIMEOUT}" \

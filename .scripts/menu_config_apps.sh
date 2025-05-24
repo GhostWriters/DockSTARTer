@@ -8,7 +8,7 @@ menu_config_apps() {
     local AddedApps
     AddedApps=$(run_script 'app_list_referenced')
     if [[ -z ${AddedApps} ]]; then
-        dialog --title "${DC["Title"]}${Title}" --msgbox "There are no apps added to configure." 0 0
+        dialog --title "${DC["TitleWarning"]}${Title}" --msgbox "There are no apps added to configure." 0 0
         return
     fi
     AddedApps=$(run_script 'app_nicename' "${AddedApps}")
