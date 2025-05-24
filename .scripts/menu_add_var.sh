@@ -151,12 +151,12 @@ menu_add_var() {
                 if run_script 'question_prompt' N "${DescriptionHeading}\n\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\n${Question}" "${DC["TitleWarning"]}Create Variable" "" "Create" "Back"; then
                     if [[ ${VarType} == "APPENV" ]]; then
                         Default="$(run_script 'var_default_value' "${AppName}:${VarName}")"
-                        run_script_dialog "Creating Variable" "${DescriptionHeading}\n\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\n" "${DIALOGTIMEOUT}" \
+                        run_script_dialog "${DC["TitleSuccess"]}Creating Variable" "${DescriptionHeading}\n\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\n" "${DIALOGTIMEOUT}" \
                             'env_set_literal' "${appname}:${VarName}" "${Default}"
                         run_script 'menu_value_prompt' "${appname}:${VarName}"
                     else
                         Default="$(run_script 'var_default_value' "${VarName}")"
-                        run_script_dialog "Creating Variable" "${DescriptionHeading}\n\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\n" "${DIALOGTIMEOUT}" \
+                        run_script_dialog "${DC["TitleSuccess"]}Creating Variable" "${DescriptionHeading}\n\n   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}\n\n" "${DIALOGTIMEOUT}" \
                             'env_set_literal' "${VarName}" "${Default}"
                         run_script 'menu_value_prompt' "${VarName}"
                     fi
