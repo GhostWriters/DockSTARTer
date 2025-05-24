@@ -128,7 +128,7 @@ declare -rx BACKTITLE="DockSTARTer"
 
 DIALOG=$(command -v dialog) || true
 export DIALOG
-declare -rx DIALOGOPTS="--backtitle ${BACKTITLE} --cr-wrap --no-collapse"
+declare -rx DIALOGOPTS="--colors --backtitle ${BACKTITLE} --cr-wrap --no-collapse"
 declare -rix DIALOG_OK=0
 declare -rix DIALOG_CANCEL=1
 declare -rix DIALOG_HELP=2
