@@ -29,18 +29,6 @@ question_prompt() {
         if [[ ${Default} == "N" ]]; then
             DIALOG_DEFAULT="--defaultno"
         fi
-        # shellcheck disable=SC2206 # (warning): Quote to prevent word splitting/globbing, or split robustly with mapfile or read -a.
-        local -a YesNoDialog=(
-            --stdout
-            --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}"
-            --no-collapse
-            --yes-label "${YesButton}"
-            --no-label "${NoButton}"
-            --title "${DC["Title"]}${Title}${DC[NC]}"
-            ${DIALOG_DEFAULT-}
-            --yesno "${DC[NC]}${Question}${DC[NC]}"
-            "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))"
-        )
         while true; do
             local YNPrompt
             if [[ ${Default} == Y ]]; then
@@ -52,6 +40,18 @@ question_prompt() {
             fi
             notice "${Question}" &> /dev/null
             notice "${YNPrompt}" &> /dev/null
+            # shellcheck disable=SC2206 # (warning): Quote to prevent word splitting/globbing, or split robustly with mapfile or read -a.
+            local -a YesNoDialog=(
+                --stdout
+                --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}"
+                --no-collapse
+                --yes-label "${YesButton}"
+                --no-label "${NoButton}"
+                --title "${DC["Title"]}${Title}${DC[NC]}"
+                ${DIALOG_DEFAULT-}
+                --yesno "${DC[NC]}${Question}${DC[NC]}"
+                "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))"
+            )
             local -i YesNoDialogButtonPressed=0
             dialog "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?
             case ${DIALOG_BUTTONS[YesNoDialogButtonPressed]-} in

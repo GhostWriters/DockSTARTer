@@ -27,17 +27,17 @@ menu_config() {
         "${OptionComposeDown}" "Run Docker Compose to stop all applications"
         "${OptionDockerPrune}" "Remove all unused containers, networks, volumes, images and build cache"
     )
-    local -a ConfigChoiceDialog=(
-        --stdout
-        --title "${DC["Title"]}${Title}"
-        --ok-label "Select"
-        --cancel-label "Back"
-        --menu "What would you like to do?" 0 0 0
-        "${ConfigOpts[@]}"
-    )
 
     local LastConfigChoice=""
     while true; do
+        local -a ConfigChoiceDialog=(
+            --stdout
+            --title "${DC["Title"]}${Title}"
+            --ok-label "Select"
+            --cancel-label "Back"
+            --menu "What would you like to do?" 0 0 0
+            "${ConfigOpts[@]}"
+        )
         local ConfigChoice
         local -i ConfigDialogButtonPressed=0
         ConfigChoice=$(dialog --default-item "${LastConfigChoice}" "${ConfigChoiceDialog[@]}") || ConfigDialogButtonPressed=$?

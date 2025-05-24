@@ -16,17 +16,17 @@ menu_main() {
         "${OptionInstallDependencies}" "Install required components"
         "${OptionUpdateVersion}" "Get the latest version of DockSTARTer"
     )
-    local -a MainChoiceDialog=(
-        --stdout
-        --title "${DC["Title"]}${Title}"
-        --ok-label "Select"
-        --cancel-label "Exit"
-        --menu "What would you like to do?" 0 0 0
-        "${MainOpts[@]}"
-    )
 
     local LastMainChoice=""
     while true; do
+        local -a MainChoiceDialog=(
+            --stdout
+            --title "${DC["Title"]}${Title}"
+            --ok-label "Select"
+            --cancel-label "Exit"
+            --menu "What would you like to do?" 0 0 0
+            "${MainOpts[@]}"
+        )
         local MainChoice
         local -i MainDialogButtonPressed=0
         MainChoice=$(dialog --default-item "${LastMainChoice}" "${MainChoiceDialog[@]}") || MainDialogButtonPressed=$?

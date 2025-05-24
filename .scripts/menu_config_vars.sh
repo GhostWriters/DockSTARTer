@@ -156,16 +156,16 @@ menu_config_vars() {
         elif [[ ${LastLineChoice} -gt ${TotalLines} ]]; then
             LastLineChoice=${TotalLines}
         fi
-        local -a LineDialog=(
-            --stdout
-            --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}"
-            --ok-label "Select"
-            --cancel-label "Done"
-            --title "${DC["Title"]}${Title}"
-            --menu "\n${DialogHeading}" "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))" $((LINES - 11))
-            "${LineOptions[@]}"
-        )
         while true; do
+            local -a LineDialog=(
+                --stdout
+                --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}"
+                --ok-label "Select"
+                --cancel-label "Done"
+                --title "${DC["Title"]}${Title}"
+                --menu "\n${DialogHeading}" "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))" $((LINES - 11))
+                "${LineOptions[@]}"
+            )
             local -i LineDialogButtonPressed=0
             LineChoice=$(dialog --default-item "${LastLineChoice}" "${LineDialog[@]}") || LineDialogButtonPressed=$?
             case ${DIALOG_BUTTONS[LineDialogButtonPressed]-} in

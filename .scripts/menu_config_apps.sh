@@ -18,20 +18,20 @@ menu_config_apps() {
         AppDescription=$(run_script 'app_description' "${AppName}")
         AppOptions+=("${AppName}" "${AppDescription}")
     done
-    local -a AppChoiceDialog=(
-        --stdout
-        --begin 2 2
-        --title "${DC["Title"]}${Title}"
-        --ok-label "Select"
-        --cancel-label "Done"
-        --menu "Select the application to configure"
-        "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))"
-        "$((LINES - DC["TextHeightAdjust"] - 1))"
-        "${AppOptions[@]}"
-    )
 
     local LastAppChoice=""
     while true; do
+        local -a AppChoiceDialog=(
+            --stdout
+            --begin 2 2
+            --title "${DC["Title"]}${Title}"
+            --ok-label "Select"
+            --cancel-label "Done"
+            --menu "Select the application to configure"
+            "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))"
+            "$((LINES - DC["TextHeightAdjust"] - 1))"
+            "${AppOptions[@]}"
+        )
         local AppChoice
         local -i AppChoiceButtonPressed=0
         AppChoice=$(dialog --default-item "${LastAppChoice}" "${AppChoiceDialog[@]}") || AppChoiceButtonPressed=$?
