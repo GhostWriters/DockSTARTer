@@ -29,7 +29,7 @@ menu_config_apps() {
         ScreenRows="${LINES}"
         ScreenCols="${COLUMNS}"
         WindowRowsMax=$((ScreenRows - DC["WindowHeightAdjust"]))
-        WindowColsMax="$((ScreenCols - DC["
+        WindowColsMax="$((ScreenCols - DC[WindowWidthAdjust]"
         "]))"
         local -a AppChoiceParams=(
             --stdout
