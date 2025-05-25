@@ -87,9 +87,9 @@ that take app names can use the form app: to refer to the same file.
     prompt to remove the .env variables for the app specified
 -s --status <appname>
     Returns the enabled/disabled status for the app specified
---status-disabled <appname>
+--status-disable <appname>
     Disable the app specified
---status-enabled <appname>
+--status-enable <appname>
     Enable the app specified
 -t --test <test_name>
     run tests to check the program
@@ -1010,12 +1010,12 @@ main() {
                 run_script_dialog "Application Status" "$(highlighted_list "$(run_script 'app_nicename' "${STATUS}")")" "" \
                     'app_status' "${STATUS}"
                 ;;
-            --status-enabled)
+            --status-enable)
                 run_script 'env_create'
                 run_script 'enable_app' "${STATUS}"
                 run_script 'env_update'
                 ;;
-            --status-disabled)
+            --status-disable)
                 run_script 'env_create'
                 run_script 'disable_app' "${STATUS}"
                 run_script 'env_update'
