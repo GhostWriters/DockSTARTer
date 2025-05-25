@@ -43,7 +43,6 @@ menu_config_apps() {
             WindowListRows=-0
         fi
         WindowCols="${WindowColsMax}"
-        dialog --msgbox "ListRows=${ListRows}\n\nListRowsMax=${ListRowsMax}\nWindowRowsMax=${WindowRowsMax}\nMenuTextRows=${MenuTextRows}\nDC["TextHeightAdjust"]=${DC["TextHeightAdjust"]}\n${WindowRows} ${WindowCols} ${WindowListRows}" 0 0
         local -a AppChoiceDialog=(
             "${AppChoiceParams[@]}"
             --title "${DC["Title"]}${Title}"
