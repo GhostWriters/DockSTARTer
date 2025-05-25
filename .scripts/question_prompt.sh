@@ -49,7 +49,7 @@ question_prompt() {
                 --title "${DC["Title"]}${Title}${DC[NC]}"
                 ${DIALOG_DEFAULT-}
                 --yesno "${DC[NC]}${Question}${DC[NC]}"
-                "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))"
+                "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
             )
             local -i YesNoDialogButtonPressed=0
             dialog "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?

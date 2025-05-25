@@ -42,7 +42,7 @@ menu_app_select() {
             --title "${DC["Title"]}${Title}"
         )
         local -i MenuTextLines
-        MenuTextLines="$(dialog "${SelectedAppsDialogParams[@]}" --print-text-size "${SelectAppsDialogText}" "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))" | cut -d ' ' -f 1)"
+        MenuTextLines="$(dialog "${SelectedAppsDialogParams[@]}" --print-text-size "${SelectAppsDialogText}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" | cut -d ' ' -f 1)"
         local -a SelectedAppsDialog=(
             "${SelectedAppsDialogParams[@]}"
             --ok-label "Done"
@@ -50,8 +50,8 @@ menu_app_select() {
             --separate-output
             --checklist
             "${SelectAppsDialogText}"
-            "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))"
-            "$((LINES - DC["TextHeightAdjust"] - MenuTextLines))"
+            "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+            "$((LINES - DC["TextRowsAdjust"] - MenuTextLines))"
             "${AppList[@]}"
         )
         SelectedAppsDialogButtonPressed=0

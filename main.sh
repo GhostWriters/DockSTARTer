@@ -166,10 +166,10 @@ DC+=( # Pre-defined color combinations used in the GUI
     [CommandLine]="${DC[NC]}"
 )
 DC+=(
-    [WindowWidthAdjust]=6
-    [WindowHeightAdjust]=5
-    [TextWidthAdjust]=4
-    [TextHeightAdjust]=7
+    [WindowColsAdjust]=6
+    [WindowRowsAdjust]=5
+    [TextColsAdjust]=4
+    [TextRowsAdjust]=7
 )
 readonly DC
 
@@ -637,7 +637,7 @@ dialog_pipe() {
         --title "${Title}" \
         --timeout "${TimeOut}" \
         --programbox "${DC[RV]}${SubTitle}${DC[NC]}" \
-        "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))" || true
+        "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" || true
     echo -n "${BS}"
 }
 # Script Dialog Runner Function
