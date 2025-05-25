@@ -47,6 +47,10 @@ EOF
             printf -v APPVARS_REGEX "%s|" "${APPVARS[@]}"                    # Make a string of variables seperated by "|"
             APPVARS_REGEX="${APPVARS_REGEX%|}"                               # Remove the final "| at end of the string
             # Remove variables from file
+            notice "Removing variables from ${COMPOSE_ENV}:"
+            for line in "${APPVARS[@]}"; do
+                notice "   $line"
+            done
             sed -i -E "/^\s*(${APPVARS_REGEX})\s*=/d" "${COMPOSE_ENV}" ||
                 fatal "Failed to purge ${AppName} variables.\nFailing command: ${F[C]}sed -i -E \"/^\\\*(${APPVARS_REGEX})\\\*/d\" \"${COMPOSE_ENV}\""
 
@@ -55,6 +59,10 @@ EOF
                 printf -v APPVARS_REGEX "%s|" "${APPVARS[@]}"                         # Make a string of variables seperated by "|"
                 APPVARS_REGEX="${APPVARS_REGEX%|}"                                    # Remove the final "| at end of the string
                 # Remove variables from file
+                notice "Removing variables from ${APP_ENV_FILE}:"
+                for line in "${APPVARS[@]}"; do
+                    notice "   $line"
+                done
                 sed -i -E "/^\s*(${APPVARS_REGEX})\s*=/d" "${APP_ENV_FILE}" ||
                     fatal "Failed to purge ${AppName} variables.\nFailing command: ${F[C]}sed -i -E \"/^\\\*(${APPVARS_REGEX})\\\*/d\" \"${APP_ENV_FILE}\""
             fi
