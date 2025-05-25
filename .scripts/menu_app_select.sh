@@ -59,24 +59,24 @@ menu_app_select() {
     fi
     case ${DIALOG_BUTTONS[SelectedAppsDialogButtonPressed]-} in
         OK)
+            local Heading=''
             if [[ -n ${EnabledApps[*]-} ]]; then
-                local HeadingDisableCommand=' ds --status-disable '
-                local HeadingPurgeCommand=' ds --force --remove '
+                local HeadingDisable=' ds --status-disable '
                 local Indent='                     '
                 FormattedAppList="$(printf "${Indent}%s\n" "$(highlighted_list "${EnabledApps[@]}")" | fmt -w "${COLUMNS}")"
-                HeadingDisable="\n${DC[NC]}${HeadingDisableCommand}${FormattedAppList:"${#Indent}"}\n"
-                HeadingPurge="\n${DC[NC]}${HeadingPurgeCommand}${FormattedAppList:"${#Indent}"}\n"
+                Heading+="\n${DC[NC]}${HeadingDisable}${FormattedAppList:"${#Indent}"}\n"
             fi
             if [[ -n ${SelectedApps-} ]]; then
                 local FormattedAppList
-                local HeadingEnableCommand=' ds --status-enable  '
-                local HeadingAddCommand=' ds --add            '
+                local HeadingEnable=' ds --status-enable  '
+                local HeadingAdd=' ds --add            '
                 local Indent='                     '
                 FormattedAppList="$(printf "${Indent}%s\n" "$(highlighted_list "${SelectedApps}")" | fmt -w "${COLUMNS}")"
-                HeadingEnable="\n${DC[NC]}${HeadingEnableCommand}${FormattedAppList:"${#Indent}"}\n"
-                HeadingAdd="\n${DC[NC]}${HeadingAddCommand}${FormattedAppList:"${#Indent}"}\n"
+                Heading+="\n${DC[NC]}${HeadingEnable}${FormattedAppList:"${#Indent}"}\n"
+                Heading+="\n${DC[NC]}${HeadingAdd}${FormattedAppList:"${#Indent}"}\n"
             fi
-            local Heading="${HeadingDisable-}${HeadingEnable-}${HeadingAdd-}${HeadingPurge-}"
+            local HeadingPurge=" ds --force --remove"
+            Heading+="${DC[NC]}${HeadingPurge}"
             {
                 if [[ -n ${EnabledApps[*]-} ]]; then
                     notice "Disabling previously selected apps."
