@@ -112,10 +112,10 @@ check_color = menubox_color
 check_selected_color = item_selected_color
 
 # Up arrow color
-uarrow_color = screen_color
+uarrow_color = (WHITE,BLUE,OFF)
 
 # Down arrow color
-darrow_color = screen_color
+darrow_color = uarrow_color
 
 # Item help-text color
 itemhelp_color = (BLACK,CYAN,OFF)
