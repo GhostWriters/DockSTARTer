@@ -18,17 +18,41 @@ menu_config_apps() {
         AppDescription=$(run_script 'app_description' "${AppName}")
         AppOptions+=("${AppName}" "${AppDescription}")
     done
-
+    local ListRows=$((${#AppOptions[@]} / 2))
     local LastAppChoice=""
     while true; do
-        local -a AppChoiceDialog=(
+        local MenuText="Select the application to configure"
+        local -i ScreenRows ScreenCols ScreenHelplineRows
+        local -i WindowRowsMax WindowColsMax
+        local -i WindowRows WindowCols WindowListRows WindowListRowsMax
+        local -i WindowButtonRows MenuTextRows
+        ScreenRows="${LINES}"
+        ScreenCols="${COLUMNS}"
+        ScreenHelplineRows=1
+        WindowButtonRows=4
+        WindowRowsMax=$((ScreenRows - ScreenHelplineRows - DC["WindowHeightAdjust"]))
+        WindowColsMax="$((ScreenCols - DC["WindowWidthAdjust"]))"
+        local -a AppChoiceParams=(
             --stdout
+        )
+        MenuTextRows="$(dialog "${AppChoiceParams[@]}" --print-text-size "${MenuText}" "${WindowRowsMax}" "${WindowColsMax}" | cut -d ' ' -f 1)"
+        ListRowsMax="$((WindowRowsMax - WindowButtonRows - MenuTextRows))"
+        if [[ ${ListRows} -lt ${ListRowsMax} ]]; then
+            WindowRows=0
+            WindowListRows=0
+        else
+            WindowRows="${WindowRowsMax}"
+            WindowListRows=-1
+        fi
+        WindowCols="${WindowColsMax}"
+        local -a AppChoiceDialog=(
+            "${AppChoiceParams[@]}"
             --title "${DC["Title"]}${Title}"
             --ok-label "Select"
             --cancel-label "Done"
-            --menu "Select the application to configure"
-            0 0
-            0
+            --menu "${MenuText}"
+            "${WindowRows}" "${WindowCols}"
+            "${WindowListRows}"
             "${AppOptions[@]}"
         )
         local AppChoice
