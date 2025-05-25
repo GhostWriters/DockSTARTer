@@ -39,8 +39,8 @@ menu_config_apps() {
             WindowRows="${WindowRowsMax}"
             WindowListRows=-1
         else
-            WindowRows="${WindowRowsMax}"
-            WindowListRows=-1
+            WindowRows=0
+            WindowListRows=0
         fi
         WindowCols="${WindowColsMax}"
         local -a AppChoiceDialog=(
