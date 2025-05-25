@@ -22,10 +22,10 @@ menu_config_apps() {
     local LastAppChoice=""
     while true; do
         local MenuText="Select the application to configure"
-        local -i ScreenRows ScreenCols ScreenHelplineRows
+        local -i ScreenRows ScreenCols
         local -i WindowRowsMax WindowColsMax
-        local -i WindowRows WindowCols WindowListRows WindowListRowsMax
-        local -i WindowButtonRows MenuTextRows
+        local -i WindowRows WindowCols WindowListRows
+        local -i MenuTextRows
         ScreenRows="${LINES}"
         ScreenCols="${COLUMNS}"
         WindowRowsMax=$((ScreenRows - DC["WindowRowsAdjust"]))
