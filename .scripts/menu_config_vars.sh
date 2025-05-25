@@ -157,19 +157,13 @@ menu_config_vars() {
             LastLineChoice=${TotalLines}
         fi
         while true; do
-            local -i WindowHeight WindowWidth MaxWindowListHeight WindowListHeight MenuTextLines
-            MenuTextLines=2
-            WindowHeight=$((LINES - DC["WindowHeightAdjust"]))
-            WindowWidth=$((COLUMNS - DC["WindowWidthAdjust"]))
-            MaxWindowListHeight="$((LINES - DC["TextHeightAdjust"] - MenuTextLines))"
-            WindowListHeight=${MaxWindowListHeight}
             local -a LineDialog=(
                 --stdout
                 --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}"
                 --ok-label "Select"
                 --cancel-label "Done"
                 --title "${DC["Title"]}${Title}"
-                --menu "\n${DialogHeading}" "${WindowHeight}" "${WindowWidth}" "${WindowListHeight}"
+                --menu "\n${DialogHeading}" "$((LINES - DC["WindowHeightAdjust"]))" "$((COLUMNS - DC["WindowWidthAdjust"]))" $((LINES - 11))
                 "${LineOptions[@]}"
             )
             local -i LineDialogButtonPressed=0
