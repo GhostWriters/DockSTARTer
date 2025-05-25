@@ -169,7 +169,7 @@ DC+=(
     [WindowWidthAdjust]=6
     [WindowHeightAdjust]=5
     [TextWidthAdjust]=4
-    [TextHeightAdjust]=6
+    [TextHeightAdjust]=8
 )
 readonly DC
 
