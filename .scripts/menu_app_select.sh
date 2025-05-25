@@ -6,7 +6,7 @@ menu_app_select() {
     local Title="Select Applications"
     dialog --title "${DC["Title"]}${Title}" --infobox "Preparing app menu. Please be patient, this can take a while." 0 0
     local AppList=()
-    local EnabledApps=()
+    local AddedApps=()
     while IFS= read -r line; do
         local APPNAME=${line^^}
         local main_yml
@@ -20,9 +20,9 @@ menu_app_select() {
                 local AppDescription
                 AppDescription=$(run_script 'app_description_from_template' "${APPNAME}")
                 local AppOnOff
-                if run_script 'app_is_enabled' "${APPNAME}"; then
+                if run_script 'app_is_added' "${APPNAME}"; then
                     AppOnOff="on"
-                    EnabledApps+=("${AppName}")
+                    AddedApps+=("${AppName}")
                 else
                     AppOnOff="off"
                 fi
@@ -59,40 +59,40 @@ menu_app_select() {
     fi
     case ${DIALOG_BUTTONS[SelectedAppsDialogButtonPressed]-} in
         OK)
+            local AppsToAdd AppsToRemove
+            AppsToRemove=$(printf '%s\n' ${AddedApps[@]} ${SelectedApps[@]} ${SelectedApps[@]} | tr ' ' '\n' | sort -f | uniq -u)
+            AppsToAdd=$(printf '%s\n' ${AddedApps[@]} ${AddedApps[@]} ${SelectedApps[@]} | tr ' ' '\n' | sort -f | uniq -u)
             local Heading=''
-            if [[ -n ${EnabledApps[*]-} ]]; then
-                local HeadingDisable=' ds --status-disable '
-                local Indent='                     '
-                FormattedAppList="$(printf "${Indent}%s\n" "$(highlighted_list "${EnabledApps[@]}")" | fmt -w "${COLUMNS}")"
-                Heading+="\n${DC[NC]}${HeadingDisable}${FormattedAppList:"${#Indent}"}\n"
-            fi
-            if [[ -n ${SelectedApps-} ]]; then
-                local FormattedAppList
-                local HeadingEnable=' ds --status-enable  '
-                local HeadingAdd=' ds --add            '
-                local Indent='                     '
-                FormattedAppList="$(printf "${Indent}%s\n" "$(highlighted_list "${SelectedApps}")" | fmt -w "${COLUMNS}")"
-                Heading+="\n${DC[NC]}${HeadingEnable}${FormattedAppList:"${#Indent}"}\n"
-                Heading+="\n${DC[NC]}${HeadingAdd}${FormattedAppList:"${#Indent}"}\n"
-            fi
-            local HeadingPurge=" ds --force --remove"
-            Heading+="${DC[NC]}${HeadingPurge}"
-            {
-                if [[ -n ${EnabledApps[*]-} ]]; then
-                    notice "Disabling previously selected apps."
-                    run_script 'disable_app' "${EnabledApps[@]}"
+            local HeadingRemove
+            local HeadingAdd
+            if [[ -n ${AppsToRemove-} || -n ${AppsToAdd-} ]]; then
+                if [[ -n ${AppsToRemove-} ]]; then
+                    local HeadingRemoveCommand=' ds --remove '
+                    local Indent='              '
+                    FormattedAppList="$(printf "${Indent}%s\n" "$(highlighted_list "${AppsToRemove}")" | fmt -w "${COLUMNS}")"
+                    HeadingRemove="\n${DC[NC]}${HeadingRemoveCommand}${FormattedAppList:"${#Indent}"}\n"
                 fi
-                if [[ -n ${SelectedApps-} ]]; then
-                    notice "Enabling selected apps."
-                    run_script 'enable_app' "${SelectedApps}"
-                    notice "Creating variables for selected apps."
-                    run_script 'appvars_create' "${SelectedApps}"
+                if [[ -n ${AppsToAdd-} ]]; then
+                    local FormattedAppList
+                    local HeadingAddCommand=' ds --add    '
+                    local Indent='             '
+                    FormattedAppList="$(printf "${Indent}%s\n" "$(highlighted_list "${AppsToAdd}")" | fmt -w "${COLUMNS}")"
+                    HeadingAdd="\n${DC[NC]}${HeadingAddCommand}${FormattedAppList:"${#Indent}"}\n"
                 fi
-                notice "Purging old variables"
-                run_script 'appvars_purge_all'
-                notice "Updating variable files"
-                run_script 'env_update'
-            } |& dialog_pipe "${DC["TitleSuccess"]}Enabling Selected Applications" "${Heading}" #"${DIALOGTIMEOUT}"
+                Heading="${HeadingRemove-}${HeadingAdd-}"
+                {
+                    if [[ -n ${AppsToRemove-} ]]; then
+                        notice "Removing variables for deselected apps."
+                        run_script 'appvars_purge' "${AppsToRemove}"
+                    fi
+                    if [[ -n ${AppsToAdd-} ]]; then
+                        notice "Creating variables for selected apps."
+                        run_script 'appvars_create' "${AppsToAdd}"
+                    fi
+                    notice "Updating variable files"
+                    run_script 'env_update'
+                } |& dialog_pipe "${DC["TitleSuccess"]}Enabling Selected Applications" "${Heading}" #"${DIALOGTIMEOUT}"
+            fi
             return 0
             ;;
         CANCEL | ESC)
