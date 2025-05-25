@@ -157,30 +157,19 @@ menu_config_vars() {
             LastLineChoice=${TotalLines}
         fi
         while true; do
-            local MenuText="\n${DialogHeading}"
-            local -i ScreenRows ScreenCols ScreenHelplineRows
-            local -i WindowRowsMax WindowColsMax
-            local -i WindowRows WindowCols WindowListRows WindowListRowsMax
-            local -i MenuTextRows
-            ScreenRows="${LINES}"
-            ScreenCols="${COLUMNS}"
-            ScreenHelplineRows=0
-            WindowRowsMax=$((ScreenRows - ScreenHelplineRows - DC["WindowHeightAdjust"]))
-            WindowColsMax="$((ScreenCols - DC["WindowWidthAdjust"]))"
-            local -a LineDialogParams=(
-                --stdout
-            )
-            MenuTextRows="$(dialog "${LineDialogParams[@]}" --print-text-size "${MenuText}" "${WindowRowsMax}" "${WindowColsMax}" | cut -d ' ' -f 1)"
-            WindowListRowsMax="$((WindowRowsMax - MenuTextRows))"
-            WindowListRows=$((TotalLines < WindowListRowsMax ? TotalLines : WindowListRowsMax))
-            WindowRows=0
-            WindowCols=0
+            local -i WindowHeight WindowWidth MaxWindowListHeight WindowListHeight MenuTextLines
+            MenuTextLines=2
+            WindowHeight=$((LINES - DC["WindowHeightAdjust"]))
+            WindowWidth=$((COLUMNS - DC["WindowWidthAdjust"]))
+            MaxWindowListHeight="$((LINES - DC["TextHeightAdjust"] - MenuTextLines))"
+            WindowListHeight=${MaxWindowListHeight}
             local -a LineDialog=(
-                "${LineDialogParams[@]}"
+                --stdout
+                --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}"
                 --ok-label "Select"
                 --cancel-label "Done"
                 --title "${DC["Title"]}${Title}"
-                --menu "${MenuText}" "${WindowRows}" "${WindowCols}" "${WindowListRows}"
+                --menu "\n${DialogHeading}" "${WindowHeight}" "${WindowWidth}" "${WindowListHeight}"
                 "${LineOptions[@]}"
             )
             local -i LineDialogButtonPressed=0
