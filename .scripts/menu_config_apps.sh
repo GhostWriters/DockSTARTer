@@ -35,15 +35,15 @@ menu_config_apps() {
         )
         MenuTextRows="$(dialog "${AppChoiceParams[@]}" --print-text-size "${MenuText}" "${WindowRowsMax}" "${WindowColsMax}" | cut -d ' ' -f 1)"
         ListRowsMax=$((WindowRowsMax - MenuTextRows - DC["TextHeightAdjust"]))
-        dialog --msgbox "WindowRowsMax=${WindowRowsMax}\nMenuTextRows=${MenuTextRows}\nDC["TextHeightAdjust"]=${DC["TextHeightAdjust"]}ListRowsMax=${ListRowsMax}" 0 0
-        if [[ ${ListRows} -lt ${ListRowsMax} ]]; then
-            WindowRows=0
-            WindowListRows=-0
-        else
+        if [[ ${ListRows} -gt ${ListRowsMax} ]]; then
             WindowRows="${WindowRowsMax}"
             WindowListRows=-1
+        else
+            WindowRows=0
+            WindowListRows=-0
         fi
         WindowCols="${WindowColsMax}"
+        dialog --msgbox "ListRows=${ListRows}\n\nListRowsMax=${ListRowsMax}\nWindowRowsMax=${WindowRowsMax}\nMenuTextRows=${MenuTextRows}\nDC["TextHeightAdjust"]=${DC["TextHeightAdjust"]}\n${WindowRows} ${WindowCols} ${WindowListRows}" 0 0
         local -a AppChoiceDialog=(
             "${AppChoiceParams[@]}"
             --title "${DC["Title"]}${Title}"
