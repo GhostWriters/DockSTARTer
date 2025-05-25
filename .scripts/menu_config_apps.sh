@@ -28,15 +28,14 @@ menu_config_apps() {
         local -i WindowButtonRows MenuTextRows
         ScreenRows="${LINES}"
         ScreenCols="${COLUMNS}"
-        ScreenHelplineRows=1
-        WindowButtonRows=4
-        WindowRowsMax=$((ScreenRows - ScreenHelplineRows - DC["WindowHeightAdjust"]))
-        WindowColsMax="$((ScreenCols - DC["WindowWidthAdjust"]))"
+        WindowRowsMax=$((ScreenRows - DC["WindowHeightAdjust"]))
+        WindowColsMax="$((ScreenCols - DC["
+        "]))"
         local -a AppChoiceParams=(
             --stdout
         )
         MenuTextRows="$(dialog "${AppChoiceParams[@]}" --print-text-size "${MenuText}" "${WindowRowsMax}" "${WindowColsMax}" | cut -d ' ' -f 1)"
-        ListRowsMax="$((WindowRowsMax - WindowButtonRows - MenuTextRows))"
+        ListRowsMax="$((WindowRowsMax - DC["TextHightAdjust"] - MenuTextRows))"
         if [[ ${ListRows} -lt ${ListRowsMax} ]]; then
             WindowRows=0
             WindowListRows=0
