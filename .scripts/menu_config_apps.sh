@@ -36,11 +36,13 @@ menu_config_apps() {
         MenuTextRows="$(dialog "${AppChoiceParams[@]}" --print-text-size "${MenuText}" "${WindowRowsMax}" "${WindowColsMax}" | cut -d ' ' -f 1)"
         ListRowsMax=$((WindowRowsMax - MenuTextRows - DC["TextRowsAdjust"]))
         if [[ ${ListRows} -gt ${ListRowsMax} ]]; then
+            # More items than will fit on the screen, limit window size to the "Maximum" defined
             WindowRows="${WindowRowsMax}"
             WindowListRows=-1
         else
+            # Fewer items than will fit on the screen, reduce the window size to fit
             WindowRows=0
-            WindowListRows=-0
+            WindowListRows=0
         fi
         WindowCols="${WindowColsMax}"
         local -a AppChoiceDialog=(
