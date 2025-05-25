@@ -165,21 +165,11 @@ DC+=( # Pre-defined color combinations used in the GUI
     [LineAddVariable]="${DC[NC]}${DC[K]}${DC[NBD]}${DC[RV]}"
     [CommandLine]="${DC[NC]}"
 )
-DC+=( # Dialog box offsets
-    [OffsetTop]=2
-    [OffsetBottom]=2
-    [OffsetLeft]=2
-    [OffsetRight]=3
-    [InsideLeft]=2
-    [InsideRight]=2
-    [InsideTop]=2
-    [InsideBottom]=2
-)
 DC+=(
-    [WindowWidthAdjust]=$((DC[OffsetLeft] + DC[OffsetRight]))
-    [WindowHeightAdjust]=$((DC[OffsetTop] + DC[OffsetBottom]))
-    [TextWidthAdjust]=$((DC[InsideLeft] + DC[InsideRight]))
-    [TextHeightAdjust]=$((DC[InsideTop] + DC[InsideBottom]))
+    [WindowWidthAdjust]=6
+    [WindowHeightAdjust]=5
+    [TextWidthAdjust]=4
+    [TextHeightAdjust]=4
 )
 readonly DC
 
@@ -644,8 +634,6 @@ dialog_pipe() {
     local SubTitle=${2:-}
     local TimeOut=${3:-0}
     dialog \
-        --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}" \
-        --colors \
         --title "${Title}" \
         --timeout "${TimeOut}" \
         --programbox "${DC[RV]}${SubTitle}${DC[NC]}" \

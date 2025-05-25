@@ -43,7 +43,6 @@ question_prompt() {
             # shellcheck disable=SC2206 # (warning): Quote to prevent word splitting/globbing, or split robustly with mapfile or read -a.
             local -a YesNoDialog=(
                 --stdout
-                --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}"
                 --no-collapse
                 --yes-label "${YesButton}"
                 --no-label "${NoButton}"

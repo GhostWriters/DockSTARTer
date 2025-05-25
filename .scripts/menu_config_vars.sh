@@ -159,7 +159,6 @@ menu_config_vars() {
         while true; do
             local -a LineDialog=(
                 --stdout
-                --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}"
                 --ok-label "Select"
                 --cancel-label "Done"
                 --title "${DC["Title"]}${Title}"

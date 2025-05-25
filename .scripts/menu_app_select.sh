@@ -39,7 +39,6 @@ menu_app_select() {
         local SelectAppsDialogText="Choose which apps you would like to install:\n Use ${DC[RV]}[up]${DC[NC]}, ${DC[RV]}[down]${DC[NC]}, and ${DC[RV]}[space]${DC[NC]} to select apps, and ${DC[RV]}[tab]${DC[NC]} to switch to the buttons at the bottom."
         local SelectedAppsDialogParams=(
             --stdout
-            --begin "${DC[OffsetTop]}" "${DC[OffsetLeft]}"
             --title "${DC["Title"]}${Title}"
         )
         local -i MenuTextLines
