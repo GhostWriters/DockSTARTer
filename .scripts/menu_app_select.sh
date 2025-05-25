@@ -60,8 +60,8 @@ menu_app_select() {
     case ${DIALOG_BUTTONS[SelectedAppsDialogButtonPressed]-} in
         OK)
             local AppsToAdd AppsToRemove
-            AppsToRemove=$(printf '%s\n' ${AddedApps[@]} ${SelectedApps[@]} ${SelectedApps[@]} | tr ' ' '\n' | sort -f | uniq -u)
-            AppsToAdd=$(printf '%s\n' ${AddedApps[@]} ${AddedApps[@]} ${SelectedApps[@]} | tr ' ' '\n' | sort -f | uniq -u)
+            AppsToRemove=$(printf '%s\n' "${AddedApps[@]}" "${SelectedApps[@]}" "${SelectedApps[@]}" | tr ' ' '\n' | sort -f | uniq -u)
+            AppsToAdd=$(printf '%s\n' "${AddedApps[@]}" "${AddedApps[@]}" "${SelectedApps[@]}" | tr ' ' '\n' | sort -f | uniq -u)
             local Heading=''
             local HeadingRemove
             local HeadingAdd
