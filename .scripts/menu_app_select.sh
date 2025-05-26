@@ -65,13 +65,7 @@ menu_app_select() {
             local Heading=''
             local HeadingRemove
             local HeadingAdd
-            if [[ -n ${AppsToRemove-} || -n ${AppsToAdd-} ]]; then
-                if [[ -n ${AppsToRemove-} ]]; then
-                    local HeadingRemoveCommand=' ds --remove '
-                    local Indent='              '
-                    FormattedAppList="$(printf "${Indent}%s\n" "$(highlighted_list "${AppsToRemove}")" | fmt -w "${COLUMNS}")"
-                    HeadingRemove="\n${DC[NC]}${HeadingRemoveCommand}${FormattedAppList:"${#Indent}"}\n"
-                fi
+            if [[ -n ${AppsToAdd-} || -n ${AppsToRemove-} ]]; then
                 if [[ -n ${AppsToAdd-} ]]; then
                     local FormattedAppList
                     local HeadingAddCommand=' ds --add    '
@@ -79,17 +73,24 @@ menu_app_select() {
                     FormattedAppList="$(printf "${Indent}%s\n" "$(highlighted_list "${AppsToAdd}")" | fmt -w "${COLUMNS}")"
                     HeadingAdd="\n${DC[NC]}${HeadingAddCommand}${FormattedAppList:"${#Indent}"}\n"
                 fi
-                Heading="${HeadingRemove-}${HeadingAdd-}"
+                if [[ -n ${AppsToRemove-} ]]; then
+                    local HeadingRemoveCommand=' ds --remove '
+                    local Indent='              '
+                    FormattedAppList="$(printf "${Indent}%s\n" "$(highlighted_list "${AppsToRemove}")" | fmt -w "${COLUMNS}")"
+                    HeadingRemove="\n${DC[NC]}${HeadingRemoveCommand}${FormattedAppList:"${#Indent}"}\n"
+                fi
+                Heading="${HeadingAdd-}${HeadingRemove-}"
                 {
-                    if [[ -n ${AppsToRemove-} ]]; then
-                        notice "Removing variables for deselected apps."
-                        run_script 'appvars_purge' "${AppsToRemove}"
-                    fi
                     if [[ -n ${AppsToAdd-} ]]; then
                         notice "Creating variables for selected apps."
                         run_script 'appvars_create' "${AppsToAdd}"
                     fi
+                    if [[ -n ${AppsToRemove-} ]]; then
+                        notice "Removing variables for deselected apps."
+                        run_script 'appvars_purge' "${AppsToRemove}"
+                    fi
                     notice "Updating variable files"
+                    run_script 'env_sanitize'
                     run_script 'env_update'
                 } |& dialog_pipe "${DC["TitleSuccess"]}Enabling Selected Applications" "${Heading}" #"${DIALOGTIMEOUT}"
             fi
