@@ -166,7 +166,7 @@ DC+=( # Pre-defined color combinations used in the GUI
     [CommandLine]="${DC[NC]}"
 )
 DC+=(
-    [WindowColsAdjust]=6
+    [WindowColsAdjust]=4
     [WindowRowsAdjust]=5
     [TextColsAdjust]=4
     [TextRowsAdjust]=7
