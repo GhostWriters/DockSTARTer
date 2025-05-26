@@ -92,7 +92,7 @@ menu_app_select() {
                     notice "Updating variable files"
                     run_script 'env_sanitize'
                     run_script 'env_update'
-                } |& dialog_pipe "${DC["TitleSuccess"]}Enabling Selected Applications" "${Heading}" #"${DIALOGTIMEOUT}"
+                } |& dialog_pipe "${DC["TitleSuccess"]}Enabling Selected Applications" "${Heading}" "${DIALOGTIMEOUT}"
             fi
             return 0
             ;;
