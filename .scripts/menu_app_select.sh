@@ -75,7 +75,7 @@ menu_app_select() {
                 fi
                 if [[ -n ${AppsToRemove-} ]]; then
                     local HeadingRemoveCommand=' ds --remove '
-                    local Indent='              '
+                    local Indent='             '
                     FormattedAppList="$(printf "${Indent}%s\n" "$(highlighted_list "${AppsToRemove}")" | fmt -w "${COLUMNS}")"
                     HeadingRemove="\n${DC[NC]}${HeadingRemoveCommand}${FormattedAppList:"${#Indent}"}\n"
                 fi
