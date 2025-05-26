@@ -20,8 +20,10 @@ menu_config_apps() {
         local MenuTextSize MenuTextRows MenuTextCols
         local ScreenSize
         ScreenSize="$(dialog --stdout --print-maxsize)"
-        ScreenRows="$(echo "${ScreenSize}" | cut -d ' ' -f 2 | cut -d ',' -f 1)"
-        ScreenCols="$(echo "${ScreenSize}" | cut -d ' ' -f 3)"
+        ScreenRows="${LINES}"
+        ScreenCols="${COLUMNS}"
+        #ScreenRows="$(echo "${ScreenSize}" | cut -d ' ' -f 2 | cut -d ',' -f 1)"
+        #ScreenCols="$(echo "${ScreenSize}" | cut -d ' ' -f 3)"
         WindowRowsMax=$((ScreenRows - DC["WindowRowsAdjust"]))
         WindowColsMax=$((ScreenCols - DC["WindowColsAdjust"]))
 
