@@ -44,8 +44,8 @@ menu_config_apps() {
         done
         local ListRows=$((${#AppOptions[@]} / 2))
 
-        ListRowsMax=$((WindowRowsMax - MenuTextRows - DC["TextRowsAdjust"]))
-        if [[ ${ListRows} -gt ${ListRowsMax} ]]; then
+        WindowRows=$((WindowRowsMax + MenuTextRows + DC["TextRowsAdjust"]))
+        if [[ ${WindowRows} -gt ${WindowRowsMax} ]]; then
             # More items than will fit on the screen, limit window size to the "Maximum" defined
             WindowRows="${WindowRowsMax}"
             WindowListRows=-1
