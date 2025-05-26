@@ -37,7 +37,7 @@ menu_config_apps() {
             AppDescription=$(run_script 'app_description' "${AppName}")
             AppOptions+=("${AppName}" "${AppDescription}")
             local CurrentListCols
-            CurrentListCols=$((2 + "${#AppName}" + 2 + "${#AppDescription}" + 2))
+            CurrentListCols=$((1 + "${#AppName}" + 2 + "${#AppDescription}" + 1))
             if [[ ${CurrentListCols} -gt ${ListCols} ]]; then
                 ListCols=${CurrentListCols}
             fi
