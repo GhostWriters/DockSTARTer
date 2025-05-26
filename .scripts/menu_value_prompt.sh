@@ -336,7 +336,7 @@ menu_value_prompt() {
             local AppDescription
             AppDescription="$(run_script 'app_description' "${AppName}")"
             local -i LabelWidth=${#AppNameLabel}
-            local -i TextWidth=$((COLUMNS - DC["TextColsAdjust"] - LabelWidth))
+            local -i TextWidth=$((COLUMNS - DC["WindowColsAdjust"] - DC["TextColsAdjust"] - LabelWidth))
             local Indent
             Indent="$(printf "%${LabelWidth}s" "")"
             local -a AppDesciption
