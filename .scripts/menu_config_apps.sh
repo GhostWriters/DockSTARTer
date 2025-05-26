@@ -35,8 +35,8 @@ menu_config_apps() {
         MenuTextSize="$(dialog "${AppChoiceParams[@]}" --print-text-size "${MenuText}" "${WindowRowsMax}" "${WindowColsMax}")"
         MenuTextRows="$(echo "${MenuTextSize}" | cut -d ' ' -f 1)"
         MenuTextCols="$(echo "${MenuTextSize}" | cut -d ' ' -f 2)"
-        local -a AppOptions
         local ListCols=${MenuTextCols}
+        local -a AppOptions=()
         for AppName in ${AddedApps}; do
             local AppDescription
             AppDescription=$(run_script 'app_description' "${AppName}")
