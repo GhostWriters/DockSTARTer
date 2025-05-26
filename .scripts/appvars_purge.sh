@@ -22,7 +22,7 @@ appvars_purge() {
             else
                 warn "Application ${AppName} has no variables."
             fi
-            return
+            continue
         fi
 
         local QUESTION
