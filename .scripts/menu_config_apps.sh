@@ -13,10 +13,16 @@ menu_config_apps() {
     fi
     AddedApps=$(run_script 'app_nicename' "${AddedApps}")
     local -a AppOptions
+    local ListCols=0
     for AppName in ${AddedApps}; do
         local AppDescription
         AppDescription=$(run_script 'app_description' "${AppName}")
         AppOptions+=("${AppName}" "${AppDescription}")
+        local CurrentListCols
+        CurrentListCols=$((2 + "${#AppName}" + 2 + "${#AppDescription}" + 2))
+        if [[ ${CurrentListCols} -gt ${ListCols} ]]; then
+            ListCols=${CurrentListCols}
+        fi
     done
     local ListRows=$((${#AppOptions[@]} / 2))
     local LastAppChoice=""
@@ -25,7 +31,6 @@ menu_config_apps() {
         local -i ScreenRows ScreenCols
         local -i WindowRowsMax WindowColsMax
         local -i WindowRows WindowCols WindowListRows
-        local -i MenuTextRows
         ScreenRows="${LINES}"
         ScreenCols="${COLUMNS}"
         WindowRowsMax=$((ScreenRows - DC["WindowRowsAdjust"]))
@@ -33,7 +38,11 @@ menu_config_apps() {
         local -a AppChoiceParams=(
             --stdout
         )
-        MenuTextRows="$(dialog "${AppChoiceParams[@]}" --print-text-size "${MenuText}" "${WindowRowsMax}" "${WindowColsMax}" | cut -d ' ' -f 1)"
+        
+        local -i MenuTextSize MenuTextRows MenuTextCols
+        MenuTextSize="$(dialog "${AppChoiceParams[@]}" --print-text-size "${MenuText}" "${WindowRowsMax}" "${WindowColsMax}" | cut -d ' ' -f 1)"
+        MenuTextRows=$(cut -d ' ' -f 1 <<< "${MenuTextSize}")
+        MenuTextCols=$(cut -d ' ' -f 1 <<< "${MenuTextSize}")
         ListRowsMax=$((WindowRowsMax - MenuTextRows - DC["TextRowsAdjust"]))
         if [[ ${ListRows} -gt ${ListRowsMax} ]]; then
             # More items than will fit on the screen, limit window size to the "Maximum" defined
@@ -44,7 +53,8 @@ menu_config_apps() {
             WindowRows=0
             WindowListRows=0
         fi
-        WindowCols="${WindowColsMax}"
+        WindowCols=$((ListCols + DC["TextColsAdjust"]))
+        WindowCols=$((WindowCols < WindowColsMax ? WindowCols : WindowColsMax))
         local -a AppChoiceDialog=(
             "${AppChoiceParams[@]}"
             --title "${DC["Title"]}${Title}"
