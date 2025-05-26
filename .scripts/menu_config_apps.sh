@@ -14,12 +14,14 @@ menu_config_apps() {
             return
         fi
         AddedApps=$(run_script 'app_nicename' "${AddedApps}")
-        local -i ScreenRows ScreenCols
-        local -i WindowRowsMax WindowColsMax
-        local -i WindowRows WindowCols WindowListRows
-        local -i MenuTextSize MenuTextRows MenuTextCols
-        ScreenRows="${LINES}"
-        ScreenCols="${COLUMNS}"
+        local ScreenRows ScreenCols
+        local WindowRowsMax WindowColsMax
+        local WindowRows WindowCols WindowListRows
+        local MenuTextSize MenuTextRows MenuTextCols
+        local ScreenSize
+        ScreenSize="$(dialog --stdout --print-maxsize)"
+        ScreenRows="$(echo "${ScreenSize}" | cut -d ' ' -f 2 | cut -d ',' -f 1)"
+        ScreenCols="$(echo "${ScreenSize}" | cut -d ' ' -f 3)"
         WindowRowsMax=$((ScreenRows - DC["WindowRowsAdjust"]))
         WindowColsMax=$((ScreenCols - DC["WindowColsAdjust"]))
 
@@ -27,9 +29,10 @@ menu_config_apps() {
         local -a AppChoiceParams=(
             --stdout
         )
-        MenuTextSize="$(dialog "${AppChoiceParams[@]}" --print-text-size "${MenuText}" "${WindowRowsMax}" "${WindowColsMax}" | cut -d ' ' -f 1)"
-        MenuTextRows=$(cut -d ' ' -f 1 <<< "${MenuTextSize}")
-        MenuTextCols=$(cut -d ' ' -f 1 <<< "${MenuTextSize}")
+        local MenuTextSize
+        MenuTextSize="$(dialog "${AppChoiceParams[@]}" --print-text-size "${MenuText}" "${WindowRowsMax}" "${WindowColsMax}")"
+        MenuTextRows="$(echo "${MenuTextSize}" | cut -d ' ' -f 1)"
+        MenuTextCols="$(echo "${MenuTextSize}" | cut -d ' ' -f 2)"
         local -a AppOptions
         local ListCols=${MenuTextCols}
         for AppName in ${AddedApps}; do
@@ -37,14 +40,14 @@ menu_config_apps() {
             AppDescription=$(run_script 'app_description' "${AppName}")
             AppOptions+=("${AppName}" "${AppDescription}")
             local CurrentListCols
-            CurrentListCols=$((1 + "${#AppName}" + 2 + "${#AppDescription}" + 1))
+            CurrentListCols=$((2 + "${#AppName}" + 2 + "${#AppDescription}" + 2))
             if [[ ${CurrentListCols} -gt ${ListCols} ]]; then
                 ListCols=${CurrentListCols}
             fi
         done
         local ListRows=$((${#AppOptions[@]} / 2))
 
-        WindowRows=$((WindowRowsMax + MenuTextRows + DC["TextRowsAdjust"]))
+        WindowRows=$((MenuTextRows + ListRows + DC["TextRowsAdjust"]))
         if [[ ${WindowRows} -gt ${WindowRowsMax} ]]; then
             # More items than will fit on the screen, limit window size to the "Maximum" defined
             WindowRows="${WindowRowsMax}"
