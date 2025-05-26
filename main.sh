@@ -168,7 +168,7 @@ DC+=( # Pre-defined color combinations used in the GUI
 DC+=(
     [WindowColsAdjust]=6
     [WindowRowsAdjust]=5
-    [TextColsAdjust]=4
+    [TextColsAdjust]=2
     [TextRowsAdjust]=7
 )
 readonly DC
