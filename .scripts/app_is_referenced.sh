@@ -4,11 +4,8 @@ IFS=$'\n\t'
 
 app_is_referenced() {
     local APPNAME=${1-}
-    APPNAME=${APPNAME^^}
-    local APPNAME_REGEX="${APPNAME^^}"
-    local REFERENCED_APPS_REGEX="^\s*${APPNAME_REGEX}__[A-Za-z0-9]*"
 
-    grep -q -P "${REFERENCED_APPS_REGEX}" "${COMPOSE_ENV}" &> /dev/null
+    [[ -n $(run_script 'appvars_list' "${APPNAME}") || -n $(run_script 'appvars_list' "${APPNAME}:") ]]
 }
 
 test_app_is_referenced() {
