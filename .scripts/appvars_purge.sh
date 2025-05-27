@@ -10,17 +10,51 @@ appvars_purge() {
         local AppName
         AppName=$(run_script 'app_nicename' "${APPNAME}")
 
-        local APPVAR_LINES
-        local APPVAR_ENV_LINES
-        local APP_ENV_FILE
-        APP_ENV_FILE="$(run_script 'app_env_file' "${APPNAME}")"
-        APPVAR_LINES=$(run_script 'appvars_lines' "${APPNAME}")
-        APPVAR_ENV_LINES=$(run_script 'env_lines' "${APP_ENV_FILE}")
-        if [[ -z ${APPVAR_LINES} && -z ${APPVAR_ENV_LINES} ]]; then
+        local AppEnvFile
+        AppEnvFile="$(run_script 'app_env_file' "${APPNAME}")"
+
+        local -a CurrentGlobalVars DefaultGlobalVars GlobalVarsToRemove GlobalLinesToRemoveArray
+        local -a CurrentAppEnvVars DefaultAppEnvVars AppEnvVarsToRemove AppEnvLinesToRemoveArray
+        local GlobalLinesToRemove AppEnvLinesToRemove
+        local GlobalVarsRegex AppEnvVarsRegex
+
+        readarray -t CurrentGlobalVars <<< "$(run_script 'appvars_list' "${APPNAME}")"
+        if [[ -n ${CurrentGlobalVars-} ]]; then
+            readarray -t DefaultGlobalVars <<< "$(run_script 'env_list_app_global_defaults' "${APPNAME}")"
+            # Get the list of current variables also in the default list
+            readarray -t GlobalVarsToRemove <<< "$(
+                printf '%s\n' "${CurrentGlobalVars[@]-}" "${DefaultGlobalVars[@]-}" |
+                    tr ' ' '\n' | sort | uniq -d || true
+            )"
+            {
+                IFS='|'
+                GlobalVarsRegex="${GlobalVarsToRemove[*]}"
+            }
+            readarray -t GlobalLinesToRemoveArray <<< "$(grep -P "^\s*${GlobalVarsRegex}\s*=" "${COMPOSE_ENV}" || true)"
+            GlobalLinesToRemove="$(printf '   %s\n' "${GlobalLinesToRemoveArray[@]-}")"
+        fi
+
+        readarray -t CurrentAppEnvVars <<< "$(run_script 'appvars_list' "${APPNAME}:")"
+        if [[ -n ${CurrentAppEnvVars-} ]]; then
+            readarray -t DefaultAppEnvVars <<< "$(run_script 'env_list_app_env_defaults' "${APPNAME}")"
+            # Get the list of current variables also in the default list
+            readarray -t AppEnvVarsToRemove <<< "$(
+                printf '%s\n' "${CurrentAppEnvVars[@]-}" "${DefaultAppEnvVars[@]-}" |
+                    tr ' ' '\n' | sort | uniq -d || true
+            )"
+            {
+                IFS='|'
+                AppEnvVarsRegex="${AppEnvVarsToRemove[*]}"
+            }
+            readarray -t AppEnvLinesToRemoveArray <<< "$(grep -P "^\s*${AppEnvVarsRegex}\s*=" "${AppEnvFile}" || true)"
+            AppEnvLinesToRemove="$(printf '   %s\n' "${AppEnvLinesToRemoveArray[@]-}")"
+        fi
+
+        if [[ -z ${GlobalVarsToRemove[*]-} && -z ${AppEnvVarsToRemove[*]-} ]]; then
             if use_dialog_box; then
-                dialog --title "${DC["TitleError"]}${Title}" --msgbox "${APPNAME} has no variables." 0 0
+                dialog --title "${DC["TitleError"]}${Title}" --msgbox "${APPNAME} has no variables to remove." 0 0
             else
-                warn "Application ${AppName} has no variables."
+                warn "Application ${AppName} has no variables to remove."
             fi
             continue
         fi
@@ -31,40 +65,32 @@ appvars_purge() {
 Would you like to purge these settings for ${AppName}?
 
 ${COMPOSE_ENV}:
-${APPVAR_LINES}
+${GlobalLinesToRemove-}
 
-${APP_ENV_FILE}:
-${APPVAR_ENV_LINES}
+${AppEnvFile}:
+${AppEnvLinesToRemove-}
 EOF
         )
         if [[ ${CI-} == true ]] || run_script 'question_prompt' Y "${QUESTION}\n" "${DC["TitleWarning"]}${Title}" "${FORCE:+Y}"; then
             info "Purging ${AppName} .env variables."
 
-            local -a APPVARS
-            local APPVARS_REGEX
-
-            readarray -t APPVARS < <(run_script 'appvars_list' "${APPNAME}") # Get list of app's variables in global .env file
-            printf -v APPVARS_REGEX "%s|" "${APPVARS[@]}"                    # Make a string of variables seperated by "|"
-            APPVARS_REGEX="${APPVARS_REGEX%|}"                               # Remove the final "| at end of the string
-            # Remove variables from file
-            notice "Removing variables from ${COMPOSE_ENV}:"
-            for line in "${APPVARS[@]}"; do
-                notice "   $line"
-            done
-            sed -i -E "/^\s*(${APPVARS_REGEX})\s*=/d" "${COMPOSE_ENV}" ||
-                fatal "Failed to purge ${AppName} variables.\nFailing command: ${F[C]}sed -i -E \"/^\\\*(${APPVARS_REGEX})\\\*/d\" \"${COMPOSE_ENV}\""
-
-            if [[ -f ${APP_ENV_FILE} ]]; then
-                readarray -t APPVARS < <(run_script 'env_var_list' "${APP_ENV_FILE}") # Get list of variables in appname.env file
-                printf -v APPVARS_REGEX "%s|" "${APPVARS[@]}"                         # Make a string of variables seperated by "|"
-                APPVARS_REGEX="${APPVARS_REGEX%|}"                                    # Remove the final "| at end of the string
-                # Remove variables from file
-                notice "Removing variables from ${APP_ENV_FILE}:"
-                for line in "${APPVARS[@]}"; do
+            if [[ -n ${GlobalVarsToRemove[*]-} ]]; then
+                # Remove variables from global .env file
+                notice "Removing variables from ${COMPOSE_ENV}:"
+                for line in "${GlobalLinesToRemoveArray[@]}"; do
                     notice "   $line"
                 done
-                sed -i -E "/^\s*(${APPVARS_REGEX})\s*=/d" "${APP_ENV_FILE}" ||
-                    fatal "Failed to purge ${AppName} variables.\nFailing command: ${F[C]}sed -i -E \"/^\\\*(${APPVARS_REGEX})\\\*/d\" \"${APP_ENV_FILE}\""
+                sed -i -E "/^\s*(${GlobalVarsRegex})\s*=/d" "${COMPOSE_ENV}" ||
+                    fatal "Failed to purge ${AppName} variables.\nFailing command: ${F[C]}sed -i -E \"/^\\\*(${GlobalVarsRegex})\\\*/d\" \"${COMPOSE_ENV}\""
+            fi
+            if [[ -n ${AppEnvVarsToRemove[*]-} ]]; then
+                # Remove variables from file
+                notice "Removing variables from ${AppEnvFile}:"
+                for line in "${AppEnvLinesToRemoveArray[@]}"; do
+                    notice "   $line"
+                done
+                sed -i -E "/^\s*(${AppEnvVarsRegex})\s*=/d" "${AppEnvFile}" ||
+                    fatal "Failed to purge ${AppName} variables.\nFailing command: ${F[C]}sed -i -E \"/^\\\*(${AppEnvVarsRegex})\\\*/d\" \"${AppEnvFile}\""
             fi
         else
             info "Keeping ${AppName} .env variables."
