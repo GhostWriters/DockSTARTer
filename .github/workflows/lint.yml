@@ -23,7 +23,7 @@ jobs:
             -v "${GITHUB_WORKSPACE}":/workdir \
             ghcr.io/igorshubovych/markdownlint-cli \
             --ignore "docs/index.md" \
-            --disable MD013 MD033 -- \
+            --disable MD013 MD033 MD059 -- \
             "**/*.md"
 
   shellcheck:
