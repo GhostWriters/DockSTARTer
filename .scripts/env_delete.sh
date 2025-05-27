@@ -22,7 +22,8 @@ env_delete() {
         return
     fi
 
-    notice "Deleting ${DELETE_VAR} in ${VAR_FILE}"
+    notice "Removing variables from ${VAR_FILE}:"
+    notice "   ${DELETE_VAR}"
     sed -i "/^\s*${DELETE_VAR}\s*=/d" "${VAR_FILE}" ||
         fatal "Failed to remove var ${DELETE_VAR} in ${VAR_FILE}\nFailing command: ${F[C]}sed -i \"/^\\s*${DELETE_VAR}\\s*=/d\" \"${VAR_FILE}\""
 }
