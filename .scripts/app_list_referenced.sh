@@ -4,13 +4,13 @@ IFS=$'\n\t'
 
 app_list_referenced() {
     local APPNAME_REGEX='^[A-Z][A-Z0-9]*(__[A-Z0-9]+)?'
-    local APPFILE_REGEX='^[a-z][a-z0-9]*(__[a-z0-9]+)?'
+    local APPFILE_REGEX='^[a-z][a-z0-9]*(__[a-z0-9]+)?$'
 
     local -a ReferencedApps=()
 
     # Add the list of apps with appname.env an file with variables in it
-    readarray -t AppEnvAppList <<< "$(basename --suffix=.env "${APP_ENV_FOLDER}/*.env" 2> /dev/null || true)"
-    for AppName in "${AppEnvAppList[@]}"; do
+    AppEnvList="$(basename --suffix=.env "${APP_ENV_FOLDER}"/*.env 2> /dev/null || true)"
+    for AppName in ${AppEnvList}; do
         if [[ ${AppName} =~ ${APPFILE_REGEX} && -n $(run_script 'appvars_list' "${AppName}:") ]]; then
             ReferencedApps+=("${AppName^^}")
         fi
