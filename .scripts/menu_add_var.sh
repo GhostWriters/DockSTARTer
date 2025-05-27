@@ -75,44 +75,6 @@ menu_add_var() {
     local FilenameHeading="       File: ${DC[Heading]}${VarFile}${DC[NC]}"
     DescriptionHeading="${DescriptionHeading}\n${FilenameHeading}"
     local InputValueText="${DescriptionHeading}\n\nEnter the name of the variable to create\n"
-    case "${VarType}" in
-        APP)
-            local -a PossibleOptions=(
-                "${APPNAME}__CONTAINER_NAME"
-                "${APPNAME}__ENABLED"
-                "${APPNAME}__HOSTNAME"
-                "${APPNAME}__NETWORK_MODE"
-                "${APPNAME}__RESTART"
-                "${APPNAME}__TAG"
-            )
-
-            local APPNAME__= \
-                "               ${APPNAME}__"
-            local APPNAME__ENVIRONMENT_= \
-                "   ${APPNAME}__ENVIRONMENT_"
-            local APPNAME__PORT_= \
-                "          ${APPNAME}__PORT_"
-            local ${APPNAME}__VOLUME_= \
-                "        ${APPNAME}__VOLUME_"
-
-            local -a ValidOptions=(
-                "${APPNAME__}"
-                "${APPNAME__ENVIRONMENT_}"
-                "${APPNAME__PORT_}"
-                "${APPNAME__VOLUME_}"
-            )
-            for Option in ${PossibleOptions[@]} do
-                if ! run_script 'env_var_exists' "${Option}"; then
-                    PossibleOptions+=("${Options}")
-                    OptionValue+=("${Option}" "")
-                fi
-            done
-            ;;
-        APPENV)
-            ;;
-        GLOBAL)
-            ;;
-    esac
     Value=""
     while true; do
         local ErrorMessage=''
