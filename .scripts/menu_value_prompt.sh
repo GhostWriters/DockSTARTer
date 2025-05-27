@@ -39,6 +39,7 @@ menu_value_prompt() {
             VarType="APPENV"
             CleanVarName=${VarName#*:}
             VarName="${APPNAME}:${CleanVarName}"
+            VarFile="$(run_script 'app_env_file' "${APPNAME}")"
             DefaultVarFile="$(run_script 'app_instance_file' "${appname}" ".app.env")"
         else
             VarType="APP"
