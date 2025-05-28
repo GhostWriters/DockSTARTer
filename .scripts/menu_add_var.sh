@@ -57,7 +57,7 @@ menu_add_var() {
         if [[ ${AppIsDisabled} == 'Y' ]]; then
             AppNameHeading+=" ${DC[HeadingTag]}(Disabled)${DC[NC]}"
         fi
-        AppNameHeadging+="\n\n"
+        AppNameHeading+="\n\n"
         DescriptionHeading+="${AppNameHeading}${DC[NC]}\n"
         local AppDescription
         AppDescription="$(run_script 'app_description' "${AppName}")"
