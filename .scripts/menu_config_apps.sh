@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_config_apps() {
-    Title="Edit Application Variables"
+    local Title="Edit Application Variables"
 
     local LastAppChoice=""
     while true; do
