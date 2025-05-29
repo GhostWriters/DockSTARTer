@@ -107,6 +107,7 @@ menu_add_var() {
                 IFS='|'
                 StockOptionsRegex="${StockOptions[*]}"
             }
+            local OptionClear="=== CLEAR ==="
             local -A OptionValue=()
             while true; do
                 local VarNameHeading="      Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}"
@@ -135,6 +136,8 @@ menu_add_var() {
                         ValueOptions+=("${Option}" "${OptionValue["${Option}"]}")
                     fi
                 done
+                ValidOptions+=("${OptionClear}")
+                ValueOptions+=("${OptionClear}" "")
 
                 local SelectValueMenuText="${Heading}\n\nWhat variable would you like create for application ${DC[Highlight]}${AppName}${DC[NC]}?"
                 local SelectValueDialogParams=(
@@ -159,7 +162,9 @@ menu_add_var() {
                 SelectedOption=$(dialog "${SelectValueDialog[@]}") || SelectValueDialogButtonPressed=$?
                 case ${DIALOG_BUTTONS[SelectValueDialogButtonPressed]-} in
                     OK) # SELECT button
-                        if [[ ${SelectedOption} =~ ${StockOptionsRegex} ]]; then
+                        if [[ ${SelectedOption} == "${OptionClear}" ]]; then
+                            VarName=""
+                        elif [[ ${SelectedOption} =~ ${StockOptionsRegex} ]]; then
                             VarName="${SelectedOption// /}"
                         fi
                         ;;
@@ -175,7 +180,13 @@ menu_add_var() {
                     CANCEL | ESC) # DONE button
                         local ErrorMessage=''
                         local DetectedAppName
-                        if ! run_script 'varname_is_valid' "${VarName}" "_BARE_"; then
+                        if [[ -z ${VarName-} ]]; then
+                            if run_script 'question_prompt' N "${Heading}\n\nDo you really want to cancel adding a variable?\n" "${DC["TitleWarning"]}Cancel Adding Variable" "" "Done" "Back"; then
+                                # Value is empty, exit
+                                return
+                            fi
+                            continue
+                        elif ! run_script 'varname_is_valid' "${VarName}" "_BARE_"; then
                             ErrorMessage="The variable name ${DC[Highlight]}${VarName}${DC[NC]} is not a valid name.\n\n Please input another variable name."
                         elif run_script 'env_var_exists' "${VarName}"; then
                             ErrorMessage="The variable ${DC[Highlight]}${VarName}${DC[NC]} already exists.\n\n Please input another variable name."
