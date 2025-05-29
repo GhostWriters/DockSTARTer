@@ -142,6 +142,7 @@ menu_add_var() {
                 local SelectValueMenuText="${Heading}\n\nWhat variable would you like create for application ${DC[Highlight]}${AppName}${DC[NC]}?"
                 local SelectValueDialogParams=(
                     --stdout
+                    --no-hot-list
                     --title "${DC["Title"]}${Title}"
                     #--item-help
                 )
