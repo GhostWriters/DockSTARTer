@@ -327,9 +327,8 @@ menu_value_prompt() {
             fi
         done
         local DeleteOption=" DELETE "
-        local DeleteLength=${#DeleteOption}
         local -i BarLength
-        BarLength=$(((OptionsLength - DeleteLength) / 2))
+        BarLength=$(((OptionsLength - ${#DeleteOption}) / 2))
         local Bar
         Bar=$(printf "%${BarLength}s" '' | tr ' ' '=')
         DeleteOption=" ${Bar}${DeleteOption}${Bar}"
