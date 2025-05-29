@@ -70,7 +70,6 @@ menu_value_prompt() {
         fi
     fi
 
-    local DeleteOption="=== DELETE ==="
     local CurrentValueOption="Current Value"
     local DefaultValueOption="Default Value"
     local SystemValueOption="System Value"
@@ -83,9 +82,9 @@ menu_value_prompt() {
     OptionHelpLine["${OriginalValueOption}"]="This is the original value before before entering the editor."
     OptionValue["${CurrentValueOption}"]="${OptionValue["${OriginalValueOption}"]}"
     OptionHelpLine["${CurrentValueOption}"]="This is the value that will be saved when you select Done."
-    OptionHelpLine["${DeleteOption}"]="This will set the variable to be deleted when you select Done."
     OptionHelpLine["${DefaultValueOption}"]="This is the recommended default value."
     OptionHelpLine["${SystemValueOption}"]="This is the recommended system detected value."
+    local DeleteHelpLine="This will set the variable to be deleted when you select Done."
 
     local -a PossibleOptions=("${CurrentValueOption}")
     case "${VarType}" in
@@ -317,19 +316,32 @@ menu_value_prompt() {
         fi
         local -a ValidOptions=()
         local -a ValueOptions=()
+        local OptionsLength=0
         for Option in "${PossibleOptions[@]}"; do
             if [[ -n ${OptionValue["$Option"]-} ]] || [[ ${Option} == "${CurrentValueOption}" ]] || [[ ${Option} == "${OriginalValueOption}" ]]; then
+                if [[ ${#Option} -gt OptionsLength ]]; then
+                    OptionsLength=${#Option}
+                fi
                 ValidOptions+=("${Option}")
                 ValueOptions+=("${Option}" "${OptionValue["$Option"]}" "${OptionHelpLine["$Option"]-}")
             fi
         done
+        local DeleteOption=" DELETE "
+        local DeleteLength=${#DeleteOption}
+        local -i BarLength
+        BarLength=$(((OptionsLength - DeleteLength) / 2))
+        local Bar
+        Bar=$(printf "%${BarLength}s" '' | tr ' ' '=')
+        DeleteOption=" ${Bar}${DeleteOption}${Bar}"
         ValidOptions+=("${DeleteOption}")
-        ValueOptions+=("${DeleteOption}" "" "${OptionHelpLine["${DeleteOption}"]-}")
+        ValueOptions+=("${DeleteOption}" "" "${DeleteHelpLine-}")
+
         local ValidOptionsRegex
         {
             IFS='|'
             ValidOptionsRegex="${ValidOptions[*]}"
         }
+
         local DescriptionHeading="${DC[NC]}"
         # editorconfig-checker-disable
         if [[ -n ${AppName-} ]]; then
