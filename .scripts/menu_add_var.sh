@@ -107,14 +107,17 @@ menu_add_var() {
                 IFS='|'
                 StockOptionsRegex="${StockOptions[*]}"
             }
-            local OptionClear="=== CLEAR ==="
             local -A OptionValue=()
             while true; do
                 local VarNameHeading="      Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}"
                 Heading="${AppNameHeading-}${DescriptionHeading-}${FilenameHeading}${VarNameHeading}\n"
                 local -a ValueOptions=()
+                local -i OptionsLength=0
                 for Option in "${TemplateOptions[@]}"; do
                     ValidOptions+=("${Option}")
+                    if [[ ${#Option} -gt ${OptionsLength} ]]; then
+                        OptionsLength=${#Option}
+                    fi
                     local StrippedOption="${Option// /}"
                     if [[ ${VarName} =~ ^${StrippedOption} ]]; then
                         OptionValue["${Option}"]="${VarName#"${StrippedOption}"*}"
@@ -127,6 +130,9 @@ menu_add_var() {
                     local StrippedOption="${Option// /}"
                     if ! run_script 'env_var_exists' "${StrippedOption}"; then
                         ValidOptions+=("${Option}")
+                        if [[ ${#Option} -gt ${OptionsLength} ]]; then
+                            OptionsLength=${#Option}
+                        fi
                         local StrippedOption="${Option// /}"
                         if [[ ${VarName} == "${StrippedOption}" ]]; then
                             OptionValue["${Option}"]="${StrippedOption}"
@@ -136,6 +142,13 @@ menu_add_var() {
                         ValueOptions+=("${Option}" "${OptionValue["${Option}"]}")
                     fi
                 done
+                OptionClear=" CLEAR "
+                local ClearLength=${#OptionClear}
+                local -i BarLength
+                BarLength=$(((OptionsLength - ClearLength - 1) / 2))
+                local Bar
+                Bar=$(printf "%${BarLength}s" '' | tr ' ' '=')
+                OptionClear=" ${Bar}${OptionClear}${Bar}"
                 ValidOptions+=("${OptionClear}")
                 ValueOptions+=("${OptionClear}" "")
 
