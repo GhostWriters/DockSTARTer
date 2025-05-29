@@ -143,10 +143,8 @@ menu_add_var() {
                     fi
                 done
                 OptionClear=" CLEAR "
-                local -i BarLength
-                BarLength=$(((OptionsLength - ${#OptionClear} - 1) / 2))
                 local Bar
-                Bar=$(printf "%${BarLength}s" '' | tr ' ' '=')
+                Bar=$(printf "%$(((OptionsLength - ${#OptionClear} - 1) / 2))s" '' | tr ' ' '=')
                 OptionClear=" ${Bar}${OptionClear}${Bar}"
                 ValidOptions+=("${OptionClear}")
                 ValueOptions+=("${OptionClear}" "")
