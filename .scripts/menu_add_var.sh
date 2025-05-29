@@ -12,7 +12,7 @@ menu_add_var() {
     local Heading
     local VarNameMaxLength=256
     local AppDescription DescriptionHeading
-
+    local VarNameNone="* NONE *"
     Heading=""
     if [[ -z ${APPNAME-} ]]; then
         # No appname specified, creating a global variable in .env
@@ -109,7 +109,12 @@ menu_add_var() {
             }
             local -A OptionValue=()
             while true; do
-                local VarNameHeading="      Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}"
+                local VarNameHeading
+                if [[ -n ${VarName-} ]]; then
+                    VarNameHeading="      Variable: ${DC["HeadingValue"]}${VarName}${DC[NC]}"
+                else
+                    VarNameHeading="      Variable: ${DC["Highlight"]}${VarNameNone}${DC[NC]}"
+                fi
                 Heading="${AppNameHeading-}${DescriptionHeading-}${FilenameHeading}${VarNameHeading}\n"
                 local -a ValueOptions=()
                 local -i OptionsLength=0
@@ -235,7 +240,11 @@ menu_add_var() {
             fi
             while true; do
                 local InputValueText
-                VarNameHeading="      Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}"
+                if [[ -n ${VarName-} ]]; then
+                    VarNameHeading="      Variable: ${DC["HeadingValue"]}${VarName}${DC[NC]}"
+                else
+                    VarNameHeading="      Variable: ${DC["Highlight"]}${VarNameNone}${DC[NC]}"
+                fi
                 Heading="${AppNameHeading-}${DescriptionHeading-}${FilenameHeading}${VarNameHeading}\n"
                 if [[ ${VarType} == APPENV ]]; then
                     InputValueText="${Heading}\n\nWhat variable would you like create for application ${DC[Highlight]}${AppName}${DC[NC]}?\n"
