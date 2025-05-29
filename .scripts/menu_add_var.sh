@@ -216,9 +216,9 @@ menu_add_var() {
                 VarNameHeading="      Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}"
                 Heading="${AppNameHeading-}${DescriptionHeading-}${FilenameHeading}${VarNameHeading}\n"
                 if [[ ${VarType} == APPENV ]]; then
-                    InputValueText="${Heading}\n\nEnter the name of the variable to create for app ${DC[Highlight]}${AppName}${DC[NC]}\n"
+                    InputValueText="${Heading}\n\nWhat variable would you like create for application ${DC[Highlight]}${AppName}${DC[NC]}?\n"
                 else # GLOBAL
-                    InputValueText="${Heading}\n\nEnter the name of the global variable to create\n"
+                    InputValueText="${Heading}\n\nWhat global variable would you like create?\n"
                 fi
                 local ErrorMessage=''
                 local DetectedAppName=''
