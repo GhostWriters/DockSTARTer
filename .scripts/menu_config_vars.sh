@@ -57,7 +57,7 @@ menu_config_vars() {
             fi
         else
             Title="Edit Global Variables"
-            DialogHeading="File: ${DC[Heading]}${COMPOSE_ENV}${DC[NC]}"
+            DialogHeading="          File: ${DC[Heading]}${COMPOSE_ENV}${DC[NC]}"
             CurrentGlobalEnvFile=$(mktemp)
             DefaultGlobalEnvFile="${COMPOSE_ENV_DEFAULT_FILE}"
         fi

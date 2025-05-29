@@ -48,7 +48,7 @@ menu_add_var() {
                 AppIsDepreciated='Y'
             fi
         fi
-        local AppNameLabel="Application: "
+        local AppNameLabel="   Application: "
         local AppNameHeading="${DC[NC]}${AppNameLabel}${DC[Heading]}${AppName}${DC[NC]}"
         if [[ ${AppIsUserDefined} == 'Y' ]]; then
             AppNameHeading+=" ${DC[HeadingTag]}(User Defined)${DC[NC]}"
@@ -68,7 +68,7 @@ menu_add_var() {
         readarray -t AppDesciption < <(fmt -w ${TextWidth} <<< "${AppDescription}")
         DescriptionHeading="$(printf "${Indent}${DC[HeadingAppDescription]}%s${DC[NC]}\n" "${AppDesciption[@]-}")\n"
     fi
-    local FilenameHeading="\n       File: ${DC[Heading]}${VarFile}${DC[NC]}\n"
+    local FilenameHeading="\n          File: ${DC[Heading]}${VarFile}${DC[NC]}\n"
     local VarNameHeading=""
 
     case "${VarType}" in
@@ -109,7 +109,7 @@ menu_add_var() {
             }
             local -A OptionValue=()
             while true; do
-                local VarNameHeading="   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}"
+                local VarNameHeading="      Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}"
                 Heading="${AppNameHeading-}${DescriptionHeading-}${FilenameHeading}${VarNameHeading}\n"
                 local -a ValueOptions=()
                 for Option in "${TemplateOptions[@]}"; do
@@ -213,7 +213,7 @@ menu_add_var() {
             fi
             while true; do
                 local InputValueText
-                VarNameHeading="   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}"
+                VarNameHeading="      Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}"
                 Heading="${AppNameHeading-}${DescriptionHeading-}${FilenameHeading}${VarNameHeading}\n"
                 if [[ ${VarType} == APPENV ]]; then
                     InputValueText="${Heading}\n\nEnter the name of the variable to create for app ${DC[Highlight]}${AppName}${DC[NC]}\n"
@@ -252,7 +252,7 @@ menu_add_var() {
                                 ErrorMessage="The variable name ${DC[Highlight]}${VarName}${DC[NC]} is not a valid global variable name. It would be a variable for an app named ${DC[Highlight]}${DetectedAppName}${DC[NC]}\n\n Please input another variable name."
                             fi
                         fi
-                        VarNameHeading="   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}"
+                        VarNameHeading="      Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}"
                         Heading="${AppNameHeading-}${DescriptionHeading-}${FilenameHeading}${VarNameHeading}\n"
                         if [[ -n ${ErrorMessage} ]]; then
                             dialog --title "${DC["TitleError"]}${Title}" --msgbox "${Heading}\n\n${ErrorMessage}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
