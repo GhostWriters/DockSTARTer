@@ -9,10 +9,11 @@ menu_add_var() {
     local VarFile
     local VarType
     local VarName=""
-    local DescriptionHeading
+    local Heading
     local VarNameMaxLength=256
+    local AppDescription DescriptionHeading
 
-    DescriptionHeading=""
+    Heading=""
     if [[ -z ${APPNAME-} ]]; then
         # No appname specified, creating a global variable in .env
         VarType="GLOBAL"
@@ -57,9 +58,7 @@ menu_add_var() {
         if [[ ${AppIsDisabled} == 'Y' ]]; then
             AppNameHeading+=" ${DC[HeadingTag]}(Disabled)${DC[NC]}"
         fi
-        AppNameHeading+="\n\n"
-        DescriptionHeading+="${AppNameHeading}${DC[NC]}\n"
-        local AppDescription
+        AppNameHeading+="\n"
         AppDescription="$(run_script 'app_description' "${AppName}")"
         local -i LabelWidth=${#AppNameLabel}
         local -i TextWidth=$((COLUMNS - LabelWidth - 9))
@@ -67,10 +66,9 @@ menu_add_var() {
         Indent="$(printf "%${LabelWidth}s" "")"
         local -a AppDesciption
         readarray -t AppDesciption < <(fmt -w ${TextWidth} <<< "${AppDescription}")
-        DescriptionHeading+="$(printf "${Indent}${DC[HeadingAppDescription]}%s${DC[NC]}\n" "${AppDesciption[@]-}")"
-        DescriptionHeading+="\n"
+        DescriptionHeading="$(printf "${Indent}${DC[HeadingAppDescription]}%s${DC[NC]}\n" "${AppDesciption[@]-}")\n"
     fi
-    local FilenameHeading="       File: ${DC[Heading]}${VarFile}${DC[NC]}"
+    local FilenameHeading="\n       File: ${DC[Heading]}${VarFile}${DC[NC]}\n"
     local VarNameHeading=""
 
     case "${VarType}" in
@@ -112,7 +110,7 @@ menu_add_var() {
             local -A OptionValue=()
             while true; do
                 local VarNameHeading="   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}"
-                DescriptionHeading="${AppNameHeading-}${FilenameHeading}\n\n${VarNameHeading}\n"
+                Heading="${AppNameHeading-}${DescriptionHeading-}${FilenameHeading}${VarNameHeading}\n"
                 local -a ValueOptions=()
                 for Option in "${TemplateOptions[@]}"; do
                     ValidOptions+=("${Option}")
@@ -138,7 +136,7 @@ menu_add_var() {
                     fi
                 done
 
-                local SelectValueMenuText="${DescriptionHeading}\n\nWhat variable would you like create for application ${DC[Highlight]}${AppName}${DC[NC]}?"
+                local SelectValueMenuText="${Heading}\n\nWhat variable would you like create for application ${DC[Highlight]}${AppName}${DC[NC]}?"
                 local SelectValueDialogParams=(
                     --stdout
                     --title "${DC["Title"]}${Title}"
@@ -192,14 +190,14 @@ menu_add_var() {
                         if [[ -n ${ErrorMessage-} ]]; then
                             dialog \
                                 --title "${DC["TitleError"]}${Title}" \
-                                --msgbox "${DescriptionHeading}\n\n${ErrorMessage}" \
+                                --msgbox "${Heading}\n\n${ErrorMessage}" \
                                 "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
                             continue
                         fi
                         Question="Create variable ${DC[Highlight]}${VarName}${DC[NC]} for application ${DC[Highlight]}${AppName}${DC[NC]}?\n"
-                        if run_script 'question_prompt' N "${DescriptionHeading}\n\n${Question}" "${DC["TitleWarning"]}Create Variable" "" "Create" "Back"; then
+                        if run_script 'question_prompt' N "${Heading}\n\n${Question}" "${DC["TitleWarning"]}Create Variable" "" "Create" "Back"; then
                             Default="$(run_script 'var_default_value' "${VarName}")"
-                            run_script_dialog "${DC["TitleSuccess"]}Creating Variable" "${DescriptionHeading}\n\n" "${DIALOGTIMEOUT}" \
+                            run_script_dialog "${DC["TitleSuccess"]}Creating Variable" "${Heading}\n\n" "${DIALOGTIMEOUT}" \
                                 'env_set_literal' "${VarName}" "${Default}"
                             run_script 'menu_value_prompt' "${VarName}"
                             return
@@ -215,12 +213,12 @@ menu_add_var() {
             fi
             while true; do
                 local InputValueText
-                local VarNameHeading="   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}"
-                DescriptionHeading="${AppNameHeading-}${FilenameHeading}\n\n${VarNameHeading}\n"
+                VarNameHeading="   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}"
+                Heading="${AppNameHeading-}${DescriptionHeading-}${FilenameHeading}${VarNameHeading}\n"
                 if [[ ${VarType} == APPENV ]]; then
-                    InputValueText="${DescriptionHeading}\n\nEnter the name of the variable to create for app ${DC[Highlight]}${AppName}${DC[NC]}\n"
+                    InputValueText="${Heading}\n\nEnter the name of the variable to create for app ${DC[Highlight]}${AppName}${DC[NC]}\n"
                 else # GLOBAL
-                    InputValueText="${DescriptionHeading}\n\nEnter the name of the global variable to create\n"
+                    InputValueText="${Heading}\n\nEnter the name of the global variable to create\n"
                 fi
                 local ErrorMessage=''
                 local DetectedAppName=''
@@ -255,27 +253,27 @@ menu_add_var() {
                             fi
                         fi
                         VarNameHeading="   Variable: ${DC[HeadingValue]}${VarName}${DC[NC]}"
-                        DescriptionHeading="${AppNameHeading-}${FilenameHeading}\n\n${VarNameHeading}\n"
+                        Heading="${AppNameHeading-}${DescriptionHeading-}${FilenameHeading}${VarNameHeading}\n"
                         if [[ -n ${ErrorMessage} ]]; then
-                            dialog --title "${DC["TitleError"]}${Title}" --msgbox "${DescriptionHeading}\n\n${ErrorMessage}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+                            dialog --title "${DC["TitleError"]}${Title}" --msgbox "${Heading}\n\n${ErrorMessage}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
                             continue
                         fi
                         local Question
                         Question="Create variable ${DC[Highlight]}${VarName}${DC[NC]}?\n"
                         if [[ ${VarType} == "APPENV" ]]; then
                             Question="Create variable ${DC[Highlight]}${VarName}${DC[NC]} for application ${DC[Highlight]}${AppName}${DC[NC]}?\n"
-                            if run_script 'question_prompt' N "${DescriptionHeading}\n\n${Question}" "${DC["TitleWarning"]}Create Variable" "" "Create" "Back"; then
+                            if run_script 'question_prompt' N "${Heading}\n\n${Question}" "${DC["TitleWarning"]}Create Variable" "" "Create" "Back"; then
                                 Default="$(run_script 'var_default_value' "${AppName}:${VarName}")"
-                                run_script_dialog "${DC["TitleSuccess"]}Creating Variable" "${DescriptionHeading}\n\n" "${DIALOGTIMEOUT}" \
+                                run_script_dialog "${DC["TitleSuccess"]}Creating Variable" "${Heading}\n\n" "${DIALOGTIMEOUT}" \
                                     'env_set_literal' "${appname}:${VarName}" "${Default}"
                                 run_script 'menu_value_prompt' "${appname}:${VarName}"
                                 return
                             fi
                         else # GLOBAL
                             Question="Create global variable ${DC[Highlight]}${VarName}${DC[NC]}?\n"
-                            if run_script 'question_prompt' N "${DescriptionHeading}\n\n${Question}" "${DC["TitleWarning"]}Create Variable" "" "Create" "Back"; then
+                            if run_script 'question_prompt' N "${Heading}\n\n${Question}" "${DC["TitleWarning"]}Create Variable" "" "Create" "Back"; then
                                 Default="$(run_script 'var_default_value' "${VarName}")"
-                                run_script_dialog "${DC["TitleSuccess"]}Creating Variable" "${DescriptionHeading}\n\n" "${DIALOGTIMEOUT}" \
+                                run_script_dialog "${DC["TitleSuccess"]}Creating Variable" "${Heading}\n\n" "${DIALOGTIMEOUT}" \
                                     'env_set_literal' "${VarName}" "${Default}"
                                 run_script 'menu_value_prompt' "${VarName}"
                                 return
