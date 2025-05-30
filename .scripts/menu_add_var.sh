@@ -263,8 +263,6 @@ menu_add_var() {
                             local EditedValue="${SelectedOption#"RENAMED ${Option} "*}"
                             if [[ -n ${EditedValue} ]]; then
                                 VarName="${Option// /}${EditedValue}"
-                            else
-                                VarName=""
                             fi
                         fi
                         # Convert to upper case and remove whitespace
