@@ -119,7 +119,7 @@ menu_add_var() {
                 ["${APPNAME__TAG}"]="This can be used in the ${DC["Highlight"]}image:${DC[NC]} section of your override. Add it at the end as ${DC["Highlight"]}:\${${APPNAME__TAG// /}}${DC[NC]}."
             )
             ClearHelpLine="This will clear any variable name already entered."
-            AddAllHelpLine="This will add all stock options listed below."
+            AddAllHelpLine="This will add all stock variables listed below."
             local -A OptionValue=()
             while true; do
                 local VarNameHeading
