@@ -118,7 +118,7 @@ uarrow_color = (WHITE,BLUE,OFF)
 darrow_color = uarrow_color
 
 # Item help-text color
-itemhelp_color = (BLACK,CYAN,OFF)
+itemhelp_color = dialog_color
 
 # Active form text color
 form_active_text_color = tag_key_selected_color
