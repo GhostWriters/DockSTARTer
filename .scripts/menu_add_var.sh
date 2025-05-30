@@ -96,7 +96,6 @@ menu_add_var() {
             }
             local -a StockOptions=(
                 "${APPNAME__CONTAINER_NAME}"
-                "${APPNAME__ENABLED}"
                 "${APPNAME__HOSTNAME}"
                 "${APPNAME__NETWORK_MODE}"
                 "${APPNAME__RESTART}"
@@ -116,8 +115,11 @@ menu_add_var() {
                     VarNameHeading="      Variable: ${DC["Highlight"]}${VarNameNone}${DC[NC]}"
                 fi
                 Heading="${AppNameHeading-}${DescriptionHeading-}${FilenameHeading}${VarNameHeading}\n"
-                local -a ValueOptions=()
+                local -a TemplateValueOptions ClearValueOptions EnabledValueOptions AddAllValueOptions StockValueOptions
+                unset TemplateValueOptions ClearValueOptions EnabledValueOptions AddAllValueOptions StockValueOptions
                 local -i OptionsLength=0
+                local ValidOptions=()
+                local ValidStockOptions=()
                 for Option in "${TemplateOptions[@]}"; do
                     ValidOptions+=("${Option}")
                     if [[ ${#Option} -gt ${OptionsLength} ]]; then
@@ -129,31 +131,68 @@ menu_add_var() {
                     else
                         OptionValue["${Option}"]=""
                     fi
-                    ValueOptions+=("${Option}" "${OptionValue["${Option}"]}")
+                    TemplateValueOptions+=("${Option}" "${OptionValue["${Option}"]}")
                 done
-                for Option in "${StockOptions[@]}"; do
+                if run_script 'app_is_builtin' "${APPNAME}"; then
+                    local Option="${APPNAME__ENABLED}"
                     local StrippedOption="${Option// /}"
                     if ! run_script 'env_var_exists' "${StrippedOption}"; then
                         ValidOptions+=("${Option}")
                         if [[ ${#Option} -gt ${OptionsLength} ]]; then
                             OptionsLength=${#Option}
                         fi
-                        local StrippedOption="${Option// /}"
                         if [[ ${VarName} == "${StrippedOption}" ]]; then
                             OptionValue["${Option}"]="${StrippedOption}"
                         else
                             OptionValue["${Option}"]=""
                         fi
-                        ValueOptions+=("${Option}" "${OptionValue["${Option}"]}")
+                        EnabledValueOptions+=("${Option}" "${OptionValue["${Option}"]}")
+                    fi
+                fi
+                for Option in "${StockOptions[@]}"; do
+                    local StrippedOption="${Option// /}"
+                    if ! run_script 'env_var_exists' "${StrippedOption}"; then
+                        ValidOptions+=("${Option}")
+                        ValidStockOptions+=("${Option}")
+                        if [[ ${#Option} -gt ${OptionsLength} ]]; then
+                            OptionsLength=${#Option}
+                        fi
+                        if [[ ${VarName} == "${StrippedOption}" ]]; then
+                            OptionValue["${Option}"]="${StrippedOption}"
+                        else
+                            OptionValue["${Option}"]=""
+                        fi
+                        StockValueOptions+=("${Option}" "${OptionValue["${Option}"]}")
                     fi
                 done
-                OptionClear=" CLEAR "
                 local Bar
+                OptionClear=" CLEAR "
                 Bar=$(printf "%$(((OptionsLength - ${#OptionClear} - 1) / 2))s" '' | tr ' ' '=')
                 OptionClear=" ${Bar}${OptionClear}${Bar}"
                 ValidOptions+=("${OptionClear}")
-                ValueOptions+=("${OptionClear}" "")
-
+                ClearValueOptions+=("${OptionClear}" "")
+                local OptionAddAll=" ADD ALL "
+                Bar=$(printf "%$(((OptionsLength - ${#OptionAddAll} - 1) / 2))s" '' | tr ' ' 'v')
+                OptionAddAll=" ${Bar}${OptionAddAll}${Bar}"
+                if [[ -n ${StockValueOptions[*]-} ]]; then
+                    ValidOptions+=("${OptionAddAll}")
+                    AddAllValueOptions+=("${OptionAddAll}" "")
+                fi
+                local -a ValueOptions=()
+                ValueOptions=(
+                    "${TemplateValueOptions[@]-}"
+                    "${ClearValueOptions[@]-}"
+                )
+                if [[ -n ${EnabledValueOptions[*]-} ]]; then
+                    ValueOptions+=("${EnabledValueOptions[@]-}"
+                    )
+                fi
+                if [[ -n ${StockValueOptions[*]-} ]]; then
+                    ValueOptions+=(
+                        "${AddAllValueOptions[@]-}"
+                        "${StockValueOptions[@]-}"
+                    )
+                fi
                 local SelectValueMenuText="${Heading}\n\nWhat variable would you like create for application ${DC[Highlight]}${AppName}${DC[NC]}?"
                 local SelectValueDialogParams=(
                     --stdout
@@ -180,7 +219,25 @@ menu_add_var() {
                     OK) # SELECT button
                         if [[ ${SelectedOption} == "${OptionClear}" ]]; then
                             VarName=""
-                        elif [[ ${SelectedOption} =~ ${StockOptionsRegex} ]]; then
+                        elif [[ ${SelectedOption} == "${OptionAddAll}" ]]; then
+                            local Question="${DC[NC]}Would you like to create the following stock variables to use in your override file?\n"
+                            for Option in "${ValidStockOptions[@]}"; do
+                                Question+="\n   ${DC["Highlight"]}${Option// /}${DC[NC]}"
+                            done
+                            Heading="${AppNameHeading-}${DescriptionHeading-}${FilenameHeading}\n"
+                            if run_script 'question_prompt' N "${Heading}\n\n${Question}" "${DC["TitleWarning"]}Create Stock Variables" "" "Create" "Back"; then
+                                {
+                                    notice "Adding variables to ${COMPOSE_ENV}:"
+                                    for Option in "${ValidStockOptions[@]}"; do
+                                        local DefaultValue
+                                        DefaultValue="$(run_script 'var_default_value' "${Option// /}")"
+                                        notice "   ${Option// /}=${DefaultValue}"
+                                        run_script 'env_set_literal' "${Option// /}" "${DefaultValue}"
+                                    done
+                                } |& dialog_pipe "${DC["TitleSuccess"]}Creating Stock Variables" "${Heading}" "${DIALOGTIMEOUT}"
+                            fi
+                            continue
+                        elif [[ ${SelectedOption} =~ ${APPNAME__ENABLED}|${StockOptionsRegex} ]]; then
                             VarName="${SelectedOption// /}"
                         fi
                         ;;
