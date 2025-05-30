@@ -108,15 +108,15 @@ menu_add_var() {
             }
             local -A OptionHelpLine=(
                 ["${APPNAME__}"]="Complete this with any variable you want."
-                ["${APPNAME__ENVIRONMENT_}"]="Complete this with a var to use in the environment: section of your override. Suggest adding to env_files/${APPNAME,,}.env instead."
-                ["${APPNAME__PORT_}"]="Complete this with a var to use in the ports: section of your override."
-                ["${APPNAME__VOLUME_}"]="Complete this with a var to use in the volumes: section of your override."
-                ["${APPNAME__CONTAINER_NAME}"]="This can be used in the container_name: section in your override."
+                ["${APPNAME__ENVIRONMENT_}"]="Complete this with a var to use in the ${DC["Highlight"]}environment:${DC[NC]} section of your override. Suggest adding to ${DC["Highlight"]}${DC["Highlight"]}env_files/${APPNAME,,}.env${DC[NC]} instead."
+                ["${APPNAME__PORT_}"]="Complete this with a var to use in the ${DC["Highlight"]}ports:${DC[NC]} section of your override."
+                ["${APPNAME__VOLUME_}"]="Complete this with a var to use in the ${DC["Highlight"]}volumes:${DC[NC]} section of your override."
+                ["${APPNAME__CONTAINER_NAME}"]="This can be used in the ${DC["Highlight"]}container_name:${DC[NC]} section in your override."
                 ["${APPNAME__ENABLED}"]="Creating this variable will cause the app to be controlled by DockSTARTer with no override needed."
-                ["${APPNAME__HOSTNAME}"]="This can be used in the hostname: section of your override."
-                ["${APPNAME__NETWORK_MODE}"]="This can be used in the network_mode: section of your override."
-                ["${APPNAME__RESTART}"]="This can be used in the restart: section of your override."
-                ["${APPNAME__TAG}"]="This can be used in the image: section of your override. Add it at the end as :\${${APPNAME__TAG// /}}"
+                ["${APPNAME__HOSTNAME}"]="This can be used in the ${DC["Highlight"]}hostname:${DC[NC]} section of your override."
+                ["${APPNAME__NETWORK_MODE}"]="This can be used in the ${DC["Highlight"]}network_mode:${DC[NC]} section of your override."
+                ["${APPNAME__RESTART}"]="This can be used in the ${DC["Highlight"]}restart:${DC[NC]} section of your override."
+                ["${APPNAME__TAG}"]="This can be used in the ${DC["Highlight"]}image:${DC[NC]} section of your override. Add it at the end as ${DC["Highlight"]}:\${${APPNAME__TAG// /}}${DC[NC]}."
             )
             ClearHelpLine="This will clear any variable name already entered."
             AddAllHelpLine="This will add all stock options listed below."
