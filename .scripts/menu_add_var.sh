@@ -188,7 +188,12 @@ menu_add_var() {
                         local Option
                         Option="$(grep -o -P "^RENAMED \K(${TemplateOptionsRegex})(?= )" <<< "${SelectedOption}")"
                         if [[ ${Option} =~ ^${TemplateOptionsRegex}$ ]]; then
-                            VarName="${Option// /}${SelectedOption#"RENAMED ${Option} "*}"
+                            local EditedValue="${SelectedOption#"RENAMED ${Option} "*}"
+                            if [[ -n ${EditedValue} ]]; then
+                                VarName="${Option// /}${EditedValue}"
+                            else
+                                VarName=""
+                            fi
                         fi
                         # Convert to upper case and remove whitespace
                         VarName="$(tr -d '[:blank:]' <<< "${VarName^^}")"
