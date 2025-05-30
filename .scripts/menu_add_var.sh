@@ -180,12 +180,12 @@ menu_add_var() {
                     fi
                 done
                 local Bar
-                OptionClear=" CLEAR "
+                OptionClear=" CLEAR INPUT "
                 Bar=$(printf "%$(((OptionsLength - ${#OptionClear} - 1) / 2))s" '' | tr ' ' '=')
                 OptionClear=" ${Bar}${OptionClear}${Bar}"
                 ValidOptions+=("${OptionClear}")
                 ClearValueOptions+=("${OptionClear}" "" "${ClearHelpLine-}")
-                local OptionAddAll=" ADD ALL "
+                local OptionAddAll=" ADD ALL BELOW "
                 Bar=$(printf "%$(((OptionsLength - ${#OptionAddAll} - 1) / 2))s" '' | tr ' ' 'v')
                 OptionAddAll=" ${Bar}${OptionAddAll}${Bar}"
                 if [[ -n ${StockValueOptions[*]-} ]]; then
