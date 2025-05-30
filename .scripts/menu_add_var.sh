@@ -106,6 +106,20 @@ menu_add_var() {
                 IFS='|'
                 StockOptionsRegex="${StockOptions[*]}"
             }
+            local -A OptionHelpLine=(
+                ["${APPNAME__}"]="Complete this with any variable you want."
+                ["${APPNAME__ENVIRONMENT_}"]="Complete this with a var to use in the environment: section of your override. Suggest adding to env_files/${APPNAME,,}.env instead."
+                ["${APPNAME__PORT_}"]="Complete this with a var to use in the ports: section of your override."
+                ["${APPNAME__VOLUME_}"]="Complete this with a var to use in the volumes: section of your override."
+                ["${APPNAME__CONTAINER_NAME}"]="This can be used in the container_name: section in your override."
+                ["${APPNAME__ENABLED}"]="Creating this variable will cause the app to be controlled by DockSTARTer with no override needed."
+                ["${APPNAME__HOSTNAME}"]="This can be used in the hostname: section of your override."
+                ["${APPNAME__NETWORK_MODE}"]="This can be used in the network_mode: section of your override."
+                ["${APPNAME__RESTART}"]="This can be used in the restart: section of your override."
+                ["${APPNAME__TAG}"]="This can be used in the image: section of your override. Add it at the end as :\${${APPNAME__TAG// /}}"
+            )
+            ClearHelpLine="This will clear any variable name already entered."
+            AddAllHelpLine="This will add all stock options listed below."
             local -A OptionValue=()
             while true; do
                 local VarNameHeading
@@ -131,7 +145,7 @@ menu_add_var() {
                     else
                         OptionValue["${Option}"]=""
                     fi
-                    TemplateValueOptions+=("${Option}" "${OptionValue["${Option}"]}")
+                    TemplateValueOptions+=("${Option}" "${OptionValue["${Option}"]}" "${OptionHelpLine["${Option}"]-}")
                 done
                 if run_script 'app_is_builtin' "${APPNAME}"; then
                     local Option="${APPNAME__ENABLED}"
@@ -146,7 +160,7 @@ menu_add_var() {
                         else
                             OptionValue["${Option}"]=""
                         fi
-                        EnabledValueOptions+=("${Option}" "${OptionValue["${Option}"]}")
+                        EnabledValueOptions+=("${Option}" "${OptionValue["${Option}"]}" "${OptionHelpLine["${Option}"]-}")
                     fi
                 fi
                 for Option in "${StockOptions[@]}"; do
@@ -162,7 +176,7 @@ menu_add_var() {
                         else
                             OptionValue["${Option}"]=""
                         fi
-                        StockValueOptions+=("${Option}" "${OptionValue["${Option}"]}")
+                        StockValueOptions+=("${Option}" "${OptionValue["${Option}"]}" "${OptionHelpLine["${Option}"]-}")
                     fi
                 done
                 local Bar
@@ -170,13 +184,13 @@ menu_add_var() {
                 Bar=$(printf "%$(((OptionsLength - ${#OptionClear} - 1) / 2))s" '' | tr ' ' '=')
                 OptionClear=" ${Bar}${OptionClear}${Bar}"
                 ValidOptions+=("${OptionClear}")
-                ClearValueOptions+=("${OptionClear}" "")
+                ClearValueOptions+=("${OptionClear}" "" "${ClearHelpLine-}")
                 local OptionAddAll=" ADD ALL "
                 Bar=$(printf "%$(((OptionsLength - ${#OptionAddAll} - 1) / 2))s" '' | tr ' ' 'v')
                 OptionAddAll=" ${Bar}${OptionAddAll}${Bar}"
                 if [[ -n ${StockValueOptions[*]-} ]]; then
                     ValidOptions+=("${OptionAddAll}")
-                    AddAllValueOptions+=("${OptionAddAll}" "")
+                    AddAllValueOptions+=("${OptionAddAll}" "" "${AddAllHelpLine-}")
                 fi
                 local -a ValueOptions=()
                 ValueOptions=(
@@ -196,6 +210,7 @@ menu_add_var() {
                 local SelectValueMenuText="${Heading}\n\nWhat variable would you like create for application ${DC[Highlight]}${AppName}${DC[NC]}?"
                 local SelectValueDialogParams=(
                     --stdout
+                    --item-help
                     --no-hot-list
                     --title "${DC["Title"]}${Title}"
                     #--item-help
