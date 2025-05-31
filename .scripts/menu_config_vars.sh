@@ -12,11 +12,14 @@ menu_config_vars() {
     local Title
     local DialogHeading
     local AddVariableText='<ADD VARIABLE>'
+    local AppNameLabel="   Application: "
 
     local CurrentGlobalEnvFile CurrentAppEnvFile DefaultGlobalEnvFile DefaultAppEnvFile
 
     local LastLineChoice=""
     while true; do
+        local AppNameHeading DescriptionHeading FilenameHeading VarNameHeading
+        FilenameHeading=""
         if [[ -n ${CurrentGlobalEnvFile-} ]]; then
             rm -f "${CurrentGlobalEnvFile}" ||
                 warn "Failed to remove temporary .env file.\nFailing command: ${F[C]}rm -f \"${CurrentGlobalEnvFile}\""
@@ -46,18 +49,27 @@ menu_config_vars() {
                     AppIsDepreciated='Y'
                 fi
             fi
-            DialogHeading="Application: ${DC[Heading]}${AppName}${DC[NC]}"
+            AppNameHeading="${AppNameLabel}${DC[Heading]}${AppName}${DC[NC]}"
             if [[ ${AppIsUserDefined} == 'Y' ]]; then
-                DialogHeading="${DialogHeading} ${DC[HeadingTag]}(User Defined)${DC[NC]}"
+                AppNameHeading+=" ${DC[HeadingTag]}(User Defined)${DC[NC]}"
             elif [[ ${AppIsDepreciated} == 'Y' ]]; then
-                DialogHeading="${DialogHeading} ${DC[HeadingTag]}[*DEPRECIATED*]${DC[NC]}"
+                AppNameHeading+=" ${DC[HeadingTag]}[*DEPRECIATED*]${DC[NC]}"
             fi
             if [[ ${AppIsDisabled} == 'Y' ]]; then
-                DialogHeading="${DialogHeading} ${DC[HeadingTag]}(Disabled)${DC[NC]}"
+                AppNameHeading+=" ${DC[HeadingTag]}(Disabled)${DC[NC]}"
             fi
+            AppNameHeading+="\n"
+            AppDescription="$(run_script 'app_description' "${AppName}")"
+            local -i LabelWidth=${#AppNameLabel}
+            local -i TextWidth=$((COLUMNS - LabelWidth - 9))
+            local Indent
+            Indent="$(printf "%${LabelWidth}s" "")"
+            local -a AppDesciption
+            readarray -t AppDesciption < <(fmt -w ${TextWidth} <<< "${AppDescription}")
+            DescriptionHeading="$(printf "${Indent}${DC[HeadingAppDescription]}%s${DC[NC]}\n" "${AppDesciption[@]-}")\n\n"
         else
             Title="Edit Global Variables"
-            DialogHeading="          File: ${DC[Heading]}${COMPOSE_ENV}${DC[NC]}"
+            FilenameHeading="\n          File: ${DC[Heading]}${COMPOSE_ENV}${DC[NC]}\n"
             CurrentGlobalEnvFile=$(mktemp)
             DefaultGlobalEnvFile="${COMPOSE_ENV_DEFAULT_FILE}"
         fi
@@ -157,6 +169,7 @@ menu_config_vars() {
             LastLineChoice=${TotalLines}
         fi
         while true; do
+            local DialogHeading="${AppNameHeading-}${DescriptionHeading-}${FilenameHeading-}${VarNameHeading-}"
             local -a LineDialog=(
                 --stdout
                 --extra-button
@@ -164,7 +177,7 @@ menu_config_vars() {
                 --extra-label "Remove"
                 --cancel-label "Done"
                 --title "${DC["Title"]}${Title}"
-                --menu "\n${DialogHeading}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" -1
+                --menu "${DialogHeading}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" -1
                 "${LineOptions[@]}"
             )
             local -i LineDialogButtonPressed=0
@@ -186,6 +199,39 @@ menu_config_vars() {
                     fi
                     ;;
                 EXTRA) # Remove
+                    LastLineChoice="${LineChoice}"
+                    local LineNumber
+                    LineNumber=$((10#${LineChoice}))
+                    local VarName=${VarNameOnLine[LineNumber]-}
+                    if [[ -n ${VarName} ]]; then
+                        local CleanVarName="${VarName}"
+                        local VarFile="${COMPOSE_ENV}"
+                        if [[ ${CleanVarName} == *":"* ]]; then
+                            CleanVarName="${CleanVarName#*:}"
+                            VarFile="$(run_script 'app_env_file' "${appname}")"
+                        fi
+                        local FilenameHeading="          File: ${DC[Heading]}${VarFile}${DC[NC]}"
+                        local DialogHeading="${AppNameHeading-}${DescriptionHeading-}${FilenameHeading-}${VarNameHeading-}"
+                        local Question="Do you really want to delete ${DC[Highlight]}${CleanVarName}${DC[NC]}?"
+                        if run_script 'question_prompt' N "${DialogHeading}\n\n${Question}\n" "${DC["TitleWarning"]}Delete Variable" "" "Delete" "Back"; then
+                            {
+                                run_script 'env_delete' "${VarName}"
+                                if [[ -n ${APPNAME-} ]]; then
+                                    if ! run_script 'app_is_user_defined' "${APPNAME}"; then
+                                        run_script 'env_migrate' "${APPNAME}"
+                                        run_script 'appvars_create' "${APPNAME}"
+                                        run_script 'env_update'
+                                        run_script 'env_sanitize'
+                                    fi
+                                else
+                                    run_script 'appvars_migrate_enabled_lines'
+                                    run_script 'env_sanitize'
+                                    run_script 'env_update'
+                                fi
+                            } |& dialog_pipe "${DC["TitleSuccess"]}Deleting Variable" "${DialogHeading}" "${DIALOGTIMEOUT}"
+                            break
+                        fi
+                    fi
                     ;;
                 CANCEL | ESC) # Done
                     return
