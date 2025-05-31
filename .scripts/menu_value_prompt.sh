@@ -520,8 +520,8 @@ ${CurrentValueHeading}
                                     if ! run_script 'app_is_user_defined' "${APPNAME}"; then
                                         run_script 'env_migrate' "${APPNAME}"
                                         run_script 'appvars_create' "${APPNAME}"
+                                        run_script 'env_update'
                                         run_script 'env_sanitize'
-
                                     fi
                                 else
                                     run_script 'appvars_migrate_enabled_lines'
@@ -539,6 +539,7 @@ ${CurrentValueHeading}
                                     if ! run_script 'app_is_user_defined' "${APPNAME}"; then
                                         run_script 'env_migrate' "${APPNAME}"
                                         run_script 'appvars_create' "${APPNAME}"
+                                        run_script 'env_update'
                                         run_script 'env_sanitize'
                                     fi
                                 else
@@ -558,6 +559,7 @@ ${CurrentValueHeading}
                                     if ! run_script 'app_is_user_defined' "${APPNAME}"; then
                                         run_script 'env_migrate' "${APPNAME}"
                                         run_script 'appvars_create' "${APPNAME}"
+                                        run_script 'env_update'
                                         run_script 'env_sanitize'
                                     fi
                                 else
