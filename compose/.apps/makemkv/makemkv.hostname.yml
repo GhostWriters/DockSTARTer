@@ -1,3 +1,3 @@
 services:
-  makemkv:
-    hostname: ${DOCKER_HOSTNAME}
+  makemkv<__instance>:
+    hostname: ${MAKEMKV<__INSTANCE>__HOSTNAME?}

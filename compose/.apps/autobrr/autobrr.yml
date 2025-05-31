@@ -1,11 +1,12 @@
 services:
-  autobrr:
-    container_name: ${AUTOBRR_CONTAINER_NAME}
+  autobrr<__instance>:
+    container_name: ${AUTOBRR<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/autobrr<__instance>.env
     environment:
       - TZ=${TZ}
-    restart: ${AUTOBRR_RESTART}
-    user: ${PUID}:${PGID}
+    restart: ${AUTOBRR<__INSTANCE>__RESTART?}
+    user: ${PUID?}:${PGID?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/autobrr:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/autobrr<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

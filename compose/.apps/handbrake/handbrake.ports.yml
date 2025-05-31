@@ -1,4 +1,4 @@
 services:
-  handbrake:
+  handbrake<__instance>:
     ports:
-      - ${HANDBRAKE_PORT_5800}:5800
+      - ${HANDBRAKE<__INSTANCE>__PORT_5800?}:5800

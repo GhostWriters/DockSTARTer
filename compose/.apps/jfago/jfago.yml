@@ -1,11 +1,12 @@
 services:
-  jfago:
-    container_name: ${JFAGO_CONTAINER_NAME}
+  jfago<__instance>:
+    container_name: ${JFAGO<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/jfago<__instance>.env
     environment:
-      - TZ=${TZ}
-    restart: ${JFAGO_RESTART}
+      - TZ=${TZ?}
+    restart: ${JFAGO<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/jellyfin/app:/jf
-      - ${DOCKER_VOLUME_CONFIG}/jfago/:/data
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/jellyfin/app:/jf
+      - ${DOCKER_VOLUME_CONFIG?}/jfago<__instance>/:/data
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

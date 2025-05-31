@@ -1,21 +1,15 @@
 services:
-  swag:
+  swag<__instance>:
     cap_add:
       - NET_ADMIN
-    container_name: ${SWAG_CONTAINER_NAME}
+    container_name: ${SWAG<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/swag<__instance>.env
     environment:
-      - DNSPLUGIN=${SWAG_ENVIRONMENT_DNSPLUGIN}
-      - EMAIL=${SWAG_ENVIRONMENT_EMAIL}
-      - EXTRA_DOMAINS=${SWAG_ENVIRONMENT_EXTRA_DOMAINS}
-      - ONLY_SUBDOMAINS=${SWAG_ENVIRONMENT_ONLY_SUBDOMAINS}
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - SUBDOMAINS=${SWAG_ENVIRONMENT_SUBDOMAINS}
-      - TZ=${TZ}
-      - URL=${SWAG_ENVIRONMENT_URL}
-      - VALIDATION=${SWAG_ENVIRONMENT_VALIDATION}
-    restart: ${SWAG_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${SWAG<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/swag:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/swag<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

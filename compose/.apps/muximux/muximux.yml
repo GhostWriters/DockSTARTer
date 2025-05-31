@@ -1,12 +1,13 @@
 services:
-  muximux:
-    container_name: ${MUXIMUX_CONTAINER_NAME}
+  muximux<__instance>:
+    container_name: ${MUXIMUX<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/muximux<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${MUXIMUX_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${MUXIMUX<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/muximux:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/muximux<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

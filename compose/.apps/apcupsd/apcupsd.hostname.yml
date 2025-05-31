@@ -1,3 +1,3 @@
 services:
-  apcupsd:
-    hostname: ${DOCKER_HOSTNAME}
+  apcupsd<__instance>:
+    hostname: ${APCUPSD<__INSTANCE>__HOSTNAME?}

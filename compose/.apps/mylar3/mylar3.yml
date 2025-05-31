@@ -1,12 +1,13 @@
 services:
-  mylar3:
-    container_name: ${MYLAR3_CONTAINER_NAME}
+  mylar3<__instance>:
+    container_name: ${MYLAR3<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/mylar3<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${MYLAR3_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${MYLAR3<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/mylar3:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/mylar3<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

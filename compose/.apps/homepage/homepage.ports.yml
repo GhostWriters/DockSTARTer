@@ -1,4 +1,4 @@
 services:
-  homepage:
+  homepage<__instance>:
     ports:
-      - ${HOMEPAGE_PORT_3000}:3000
+      - ${HOMEPAGE<__INSTANCE>__PORT_3000?}:3000

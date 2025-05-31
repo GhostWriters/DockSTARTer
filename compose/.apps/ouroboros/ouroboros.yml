@@ -1,19 +1,11 @@
 services:
-  ouroboros:
-    container_name: ${OUROBOROS_CONTAINER_NAME}
+  ouroboros<__instance>:
+    container_name: ${OUROBOROS<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/ouroboros<__instance>.env
     environment:
-      - CLEANUP=${OUROBOROS_ENVIRONMENT_CLEANUP}
-      - CRON=${OUROBOROS_ENVIRONMENT_CRON}
-      - IGNORE=${OUROBOROS_ENVIRONMENT_IGNORE}
-      - LOG_LEVEL=${OUROBOROS_ENVIRONMENT_LOG_LEVEL}
-      - MONITOR=${OUROBOROS_ENVIRONMENT_MONITOR}
-      - NOTIFIERS=${OUROBOROS_ENVIRONMENT_NOTIFIERS}
-      - REPO_PASS=${OUROBOROS_ENVIRONMENT_REPO_PASS}
-      - REPO_USER=${OUROBOROS_ENVIRONMENT_REPO_USER}
-      - SELF_UPDATE=${OUROBOROS_ENVIRONMENT_SELF_UPDATE}
-      - TZ=${TZ}
-    restart: ${OUROBOROS_RESTART}
+      - TZ=${TZ?}
+    restart: ${OUROBOROS<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${OUROBOROS_VOLUME_DOCKER_SOCKET}:/var/run/docker.sock
+      - ${DOCKER_VOLUME_STORAGE?}:/storage
+      - ${OUROBOROS<__INSTANCE>__VOLUME_DOCKER_SOCKET?}:/var/run/docker.sock

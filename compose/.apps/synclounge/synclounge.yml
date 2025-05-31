@@ -1,15 +1,10 @@
 services:
-  synclounge:
-    container_name: ${SYNCLOUNGE_CONTAINER_NAME}
+  synclounge<__instance>:
+    container_name: ${SYNCLOUNGE<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/synclounge<__instance>.env
     environment:
-      - AUTH_LIST=${SYNCLOUNGE_ENVIRONMENT_AUTH_LIST}
-      - AUTOJOIN_ENABLED=${SYNCLOUNGE_ENVIRONMENT_AUTOJOIN_ENABLE}
-      - AUTOJOIN_PASSWORD=${SYNCLOUNGE_ENVIRONMENT_AUTOJOIN_PASSWORD}
-      - AUTOJOIN_ROOM=${SYNCLOUNGE_ENVIRONMENT_AUTOJOIN_ROOM}
-      - EXTERNAL_SERVER_PORT=${SYNCLOUNGE_ENVIRONMENT_EXTERNAL_SERVER_PORT}
-      - EXTERNAL_URL=${SYNCLOUNGE_ENVIRONMENT_EXTERNAL_URL}
-      - TZ=${TZ}
-    restart: ${SYNCLOUNGE_RESTART}
+      - TZ=${TZ?}
+    restart: ${SYNCLOUNGE<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

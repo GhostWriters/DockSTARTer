@@ -1,14 +1,13 @@
 services:
-  youtubedl:
-    container_name: ${YOUTUBEDL_CONTAINER_NAME}
+  youtubedl<__instance>:
+    container_name: ${YOUTUBEDL<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/youtubedl<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-      - YDL_DEBUG=${YOUTUBEDL_ENVIRONMENT_DEBUG}
-      - YDL_CONFIG_PATH=${YOUTUBEDL_ENVIRONMENT_CONFIG_PATH}
-    restart: ${YOUTUBEDL_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${YOUTUBEDL<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/youtubedl:/youtube-dl
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/youtubedl<__instance>:/youtube-dl
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

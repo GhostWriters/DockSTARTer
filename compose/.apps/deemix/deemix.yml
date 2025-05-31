@@ -1,12 +1,13 @@
 services:
-  deemix:
-    container_name: ${DEEMIX_CONTAINER_NAME}
+  deemix<__instance>:
+    container_name: ${DEEMIX<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/deemix<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${DEEMIX_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${DEEMIX<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/deemix:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/deemix<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

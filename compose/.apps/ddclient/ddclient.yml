@@ -1,12 +1,13 @@
 services:
-  ddclient:
-    container_name: ${DDCLIENT_CONTAINER_NAME}
+  ddclient<__instance>:
+    container_name: ${DDCLIENT<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/ddclient<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${DDCLIENT_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${DDCLIENT<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/ddclient:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/ddclient<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

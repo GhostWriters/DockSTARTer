@@ -1,3 +1,3 @@
 services:
-  timemachine:
-    hostname: ${DOCKER_HOSTNAME}
+  timemachine<__instance>:
+    hostname: ${TIMEMACHINE<__INSTANCE>__HOSTNAME?}

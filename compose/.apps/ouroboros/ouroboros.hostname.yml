@@ -1,3 +1,3 @@
 services:
-  ouroboros:
-    hostname: ${DOCKER_HOSTNAME}
+  ouroboros<__instance>:
+    hostname: ${OUROBOROS<__INSTANCE>__HOSTNAME?}

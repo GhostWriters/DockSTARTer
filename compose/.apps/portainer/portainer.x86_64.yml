@@ -1,3 +1,3 @@
 services:
-  portainer:
-    image: portainer/portainer-ce:${PORTAINER_TAG}
+  portainer<__instance>:
+    image: portainer/portainer-ce:${PORTAINER<__INSTANCE>__TAG?}

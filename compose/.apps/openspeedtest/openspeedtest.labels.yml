@@ -1,14 +1,6 @@
 services:
-  openspeedtest:
+  openspeedtest<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "This is a self-hosted speedtest service"
-      com.dockstarter.appinfo.nicename: "OpenSpeedTest"
-      com.dockstarter.appvars.openspeedtest_container_name: "openspeedtest"
-      com.dockstarter.appvars.openspeedtest_enabled: "false"
-      com.dockstarter.appvars.openspeedtest_environment_base_path: "/"
-      com.dockstarter.appvars.openspeedtest_network_mode: ""
-      com.dockstarter.appvars.openspeedtest_port_3000: "3000"
-      com.dockstarter.appvars.openspeedtest_port_3001: "3001"
-      com.dockstarter.appvars.openspeedtest_restart: "unless-stopped"
-      com.dockstarter.appvars.openspeedtest_tag: "latest"
+      com.dockstarter.appinfo.nicename: "OpenSpeedTest<__Instance>"

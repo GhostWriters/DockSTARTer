@@ -1,12 +1,13 @@
 services:
-  lidarr:
-    container_name: ${LIDARR_CONTAINER_NAME}
+  lidarr<__instance>:
+    container_name: ${LIDARR<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/lidarr<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${LIDARR_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${LIDARR<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/lidarr:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/lidarr<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

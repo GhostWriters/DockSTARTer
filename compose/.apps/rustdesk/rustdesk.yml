@@ -1,13 +1,13 @@
 services:
-  rustdesk:
-    container_name: ${RUSTDESK_CONTAINER_NAME}
+  rustdesk<__instance>:
+    container_name: ${RUSTDESK<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/rustdesk<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - RELAY=${RUSTDESK_ENVIRONMENT_RELAY_SERVER}
-      - TZ=${TZ}
-    restart: ${RUSTDESK_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${RUSTDESK<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/rustdesk:/data
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/rustdesk<__instance>:/data
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

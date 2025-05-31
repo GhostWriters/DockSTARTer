@@ -1,21 +1,6 @@
 services:
-  ouroboros:
+  ouroboros<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "true"
       com.dockstarter.appinfo.description: "(DEPRECATED) Use Watchtower"
-      com.dockstarter.appinfo.nicename: "Ouroboros"
-      com.dockstarter.appvars.ouroboros_container_name: "ouroboros"
-      com.dockstarter.appvars.ouroboros_enabled: "false"
-      com.dockstarter.appvars.ouroboros_environment_cleanup: "true"
-      com.dockstarter.appvars.ouroboros_environment_cron: "0 4 * * *"
-      com.dockstarter.appvars.ouroboros_environment_ignore: ""
-      com.dockstarter.appvars.ouroboros_environment_log_level: "info"
-      com.dockstarter.appvars.ouroboros_environment_monitor: ""
-      com.dockstarter.appvars.ouroboros_environment_notifiers: ""
-      com.dockstarter.appvars.ouroboros_environment_repo_pass: ""
-      com.dockstarter.appvars.ouroboros_environment_repo_user: ""
-      com.dockstarter.appvars.ouroboros_environment_self_update: "true"
-      com.dockstarter.appvars.ouroboros_network_mode: ""
-      com.dockstarter.appvars.ouroboros_restart: "unless-stopped"
-      com.dockstarter.appvars.ouroboros_tag: "latest"
-      com.dockstarter.appvars.ouroboros_volume_docker_socket: "/var/run/docker.sock"
+      com.dockstarter.appinfo.nicename: "Ouroboros<__Instance>"

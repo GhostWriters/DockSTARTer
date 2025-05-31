@@ -1,13 +1,6 @@
 services:
-  homepage:
+  homepage<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "A highly customizable application dashboard with integrations for over 100 services"
-      com.dockstarter.appinfo.nicename: "homepage"
-      com.dockstarter.appvars.homepage_container_name: "homepage"
-      com.dockstarter.appvars.homepage_enabled: "false"
-      com.dockstarter.appvars.homepage_network_mode: "host"
-      com.dockstarter.appvars.homepage_port_3000: "3000"
-      com.dockstarter.appvars.homepage_restart: "unless-stopped"
-      com.dockstarter.appvars.homepage_tag: "latest"
-      com.dockstarter.appvars.homepage_volume_docker_socket: "/var/run/docker.sock"
+      com.dockstarter.appinfo.nicename: "homepage<__Instance>"

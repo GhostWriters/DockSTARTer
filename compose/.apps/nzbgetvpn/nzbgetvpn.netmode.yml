@@ -1,3 +1,3 @@
 services:
-  nzbgetvpn:
-    network_mode: ${NZBGETVPN_NETWORK_MODE}
+  nzbgetvpn<__instance>:
+    network_mode: ${NZBGETVPN<__INSTANCE>__NETWORK_MODE?}

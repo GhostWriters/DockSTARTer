@@ -1,4 +1,4 @@
 services:
-  dozzle:
+  dozzle<__instance>:
     ports:
-      - ${DOZZLE_PORT_8080}:8080
+      - ${DOZZLE<__INSTANCE>__PORT_8080?}:8080

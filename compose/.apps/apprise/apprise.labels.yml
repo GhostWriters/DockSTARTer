@@ -1,12 +1,6 @@
 services:
-  apprise:
+  apprise<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Apprise API - Push Notifications that work with just about every platform"
-      com.dockstarter.appinfo.nicename: "Apprise"
-      com.dockstarter.appvars.apprise_container_name: "apprise"
-      com.dockstarter.appvars.apprise_enabled: "false"
-      com.dockstarter.appvars.apprise_network_mode: ""
-      com.dockstarter.appvars.apprise_port_8000: "8000"
-      com.dockstarter.appvars.apprise_restart: "unless-stopped"
-      com.dockstarter.appvars.apprise_tag: "latest"
+      com.dockstarter.appinfo.nicename: "Apprise<__Instance>"

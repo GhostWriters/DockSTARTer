@@ -1,12 +1,13 @@
 services:
-  bazarr:
-    container_name: ${BAZARR_CONTAINER_NAME}
+  bazarr<__instance>:
+    container_name: ${BAZARR<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/bazarr<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${BAZARR_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${BAZARR<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/bazarr:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/bazarr<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

@@ -1,3 +1,3 @@
 services:
-  doplarr:
-    hostname: ${DOCKER_HOSTNAME}
+  doplarr<__instance>:
+    hostname: ${DOPLARR<__INSTANCE>__HOSTNAME?}

@@ -1,17 +1,18 @@
 services:
-  duplicacy:
-    container_name: ${DUPLICACY_CONTAINER_NAME}
+  duplicacy<__instance>:
+    container_name: ${DUPLICACY<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/duplicacy<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${DUPLICACY_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${DUPLICACY<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/duplicacy/cache:/cache
-      - ${DOCKER_VOLUME_CONFIG}/duplicacy/config:/config
-      - ${DOCKER_VOLUME_CONFIG}/duplicacy/logs:/logs
-      - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${DUPLICACY_VOLUME_APPDATA_DIR}:/backuproot/appdata:ro
-      - ${DUPLICACY_VOLUME_BACKUP_DIR}:/backup
-      - ${DUPLICACY_VOLUME_DOCKER_DIR}:/backuproot/docker:ro
+      - ${DOCKER_VOLUME_CONFIG?}/duplicacy<__instance>/cache:/cache
+      - ${DOCKER_VOLUME_CONFIG?}/duplicacy<__instance>/config:/config
+      - ${DOCKER_VOLUME_CONFIG?}/duplicacy<__instance>/logs:/logs
+      - ${DOCKER_VOLUME_STORAGE?}:/storage
+      - ${DUPLICACY<__INSTANCE>__VOLUME_APPDATA_DIR?}:/backuproot/appdata:ro
+      - ${DUPLICACY<__INSTANCE>__VOLUME_BACKUP_DIR?}:/backup
+      - ${DUPLICACY<__INSTANCE>__VOLUME_DOCKER_DIR?}:/backuproot/docker:ro

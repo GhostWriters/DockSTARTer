@@ -1,4 +1,4 @@
 services:
-  homebridge:
+  homebridge<__instance>:
     ports:
-      - ${HOMEBRIDGE_PORT_8581}:8581
+      - ${HOMEBRIDGE<__INSTANCE>__PORT_8581?}:8581

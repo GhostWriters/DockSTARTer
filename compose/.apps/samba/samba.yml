@@ -1,17 +1,16 @@
 services:
-  samba:
-    container_name: ${SAMBA_CONTAINER_NAME}
+  samba<__instance>:
+    container_name: ${SAMBA<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/samba<__instance>.env
     environment:
-      - GROUPID=${PGID}
-      - NMBD=${SAMBA_ENVIRONMENT_NMBD}
-      - SHARE=${SAMBA_ENVIRONMENT_SHARENAME};/${SAMBA_ENVIRONMENT_SHARENAME};yes;no;no;all;${SAMBA_ENVIRONMENT_USERNAME}
-      - TZ=${TZ}
-      - USER=${SAMBA_ENVIRONMENT_USERNAME};${SAMBA_ENVIRONMENT_PASSWORD}
-      - USERID=${PUID}
-      - WORKGROUP=${SAMBA_ENVIRONMENT_WORKGROUP}
-    restart: ${SAMBA_RESTART}
+      - GROUPID=${PGID?}
+      - SHARE=${SAMBA<__INSTANCE>__ENVIRONMENT_SHARENAME?};/${SAMBA<__INSTANCE>__ENVIRONMENT_SHARENAME?};yes;no;no;all;${SAMBA<__INSTANCE>__ENVIRONMENT_USERNAME?}
+      - TZ=${TZ?}
+      - USER=${SAMBA<__INSTANCE>__ENVIRONMENT_USERNAME?};${SAMBA<__INSTANCE>__ENVIRONMENT_PASSWORD?}
+      - USERID=${PUID?}
+    restart: ${SAMBA<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}:/${SAMBA_ENVIRONMENT_SHARENAME}/config
-      - ${DOCKER_VOLUME_STORAGE}:/${SAMBA_ENVIRONMENT_SHARENAME}/storage
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}:/${SAMBA<__INSTANCE>__ENVIRONMENT_SHARENAME?}/config
+      - ${DOCKER_VOLUME_STORAGE?}:/${SAMBA<__INSTANCE>__ENVIRONMENT_SHARENAME?}/storage
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

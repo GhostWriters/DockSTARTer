@@ -1,4 +1,4 @@
 services:
-  hydra2:
+  hydra2<__instance>:
     ports:
-      - ${HYDRA2_PORT_5076}:5076
+      - ${HYDRA2<__INSTANCE>__PORT_5076?}:5076

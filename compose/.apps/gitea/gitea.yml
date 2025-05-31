@@ -1,13 +1,14 @@
 services:
-  gitea:
-    container_name: ${GITEA_CONTAINER_NAME}
+  gitea<__instance>:
+    container_name: ${GITEA<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/gitea<__instance>.env
     environment:
-      - USER_UID=${PUID}
-      - USER_GID=${PGID}
-      - TZ=${TZ}
-    restart: ${GITEA_RESTART}
+      - USER_UID=${PUID?}
+      - USER_GID=${PGID?}
+      - TZ=${TZ?}
+    restart: ${GITEA<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
-      - ${DOCKER_VOLUME_CONFIG}/gitea:/data
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/gitea<__instance>:/data
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

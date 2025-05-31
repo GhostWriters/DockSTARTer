@@ -1,12 +1,13 @@
 services:
-  radarr:
-    container_name: ${RADARR_CONTAINER_NAME}
+  radarr<__instance>:
+    container_name: ${RADARR<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/radarr<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${RADARR_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${RADARR<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/radarr:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/radarr<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

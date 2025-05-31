@@ -1,3 +1,3 @@
 services:
-  smokeping:
-    hostname: ${DOCKER_HOSTNAME}
+  smokeping<__instance>:
+    hostname: ${SMOKEPING<__INSTANCE>__HOSTNAME?}

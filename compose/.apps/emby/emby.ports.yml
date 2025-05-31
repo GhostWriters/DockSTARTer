@@ -1,5 +1,5 @@
 services:
-  emby:
+  emby<__instance>:
     ports:
-      - ${EMBY_PORT_8096}:8096
-      - ${EMBY_PORT_8920}:8920
+      - ${EMBY<__INSTANCE>__PORT_8096?}:8096
+      - ${EMBY<__INSTANCE>__PORT_8920?}:8920

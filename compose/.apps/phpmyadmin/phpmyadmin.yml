@@ -1,13 +1,11 @@
 services:
-  phpmyadmin:
-    container_name: ${PHPMYADMIN_CONTAINER_NAME}
+  phpmyadmin<__instance>:
+    container_name: ${PHPMYADMIN<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/phpmyadmin<__instance>.env
     environment:
-      - PMA_HOST=${PHPMYADMIN_ENVIRONMENT_PMA_HOST}
-      - PMA_PASSWORD=${PHPMYADMIN_ENVIRONMENT_PMA_PASSWORD}
-      - PMA_USER=${PHPMYADMIN_ENVIRONMENT_PMA_USER}
-      - TZ=${TZ}
-    restart: ${PHPMYADMIN_RESTART}
+      - TZ=${TZ?}
+    restart: ${PHPMYADMIN<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/phpmyadmin:/sessions
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/phpmyadmin<__instance>:/sessions
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

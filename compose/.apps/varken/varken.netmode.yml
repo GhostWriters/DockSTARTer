@@ -1,3 +1,3 @@
 services:
-  varken:
-    network_mode: ${VARKEN_NETWORK_MODE}
+  varken<__instance>:
+    network_mode: ${VARKEN<__INSTANCE>__NETWORK_MODE?}

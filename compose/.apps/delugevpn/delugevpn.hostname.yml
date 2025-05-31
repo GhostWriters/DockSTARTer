@@ -1,3 +1,3 @@
 services:
-  delugevpn:
-    hostname: ${DOCKER_HOSTNAME}
+  delugevpn<__instance>:
+    hostname: ${DELUGEVPN<__INSTANCE>__HOSTNAME?}

@@ -1,17 +1,6 @@
 services:
-  tdarrnode:
+  tdarrnode<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Tdarr Node is a self hosted module used for encoding in conjunction with Tdarr"
-      com.dockstarter.appinfo.nicename: "TdarrNode"
-      com.dockstarter.appvars.tdarrnode_container_name: "tdarrnode"
-      com.dockstarter.appvars.tdarrnode_enabled: "false"
-      com.dockstarter.appvars.tdarrnode_environment_nodeid: "TdarrNode"
-      com.dockstarter.appvars.tdarrnode_environment_nodeip: "tdarrnode"
-      com.dockstarter.appvars.tdarrnode_environment_serverip: "tdarr"
-      com.dockstarter.appvars.tdarrnode_environment_serverport: "8266"
-      com.dockstarter.appvars.tdarrnode_network_mode: ""
-      com.dockstarter.appvars.tdarrnode_port_8267: "8267"
-      com.dockstarter.appvars.tdarrnode_restart: "unless-stopped"
-      com.dockstarter.appvars.tdarrnode_tag: "latest"
-      com.dockstarter.appvars.tdarrnode_volume_transcode_cache: "~/.config/appdata/tdarrnode/cache"
+      com.dockstarter.appinfo.nicename: "TdarrNode<__Instance>"

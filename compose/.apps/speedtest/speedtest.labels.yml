@@ -1,14 +1,6 @@
 services:
-  speedtest:
+  speedtest<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "This program runs a speedtest check every hour and graphs the results."
-      com.dockstarter.appinfo.nicename: "speedtest"
-      com.dockstarter.appvars.speedtest_container_name: "speedtest"
-      com.dockstarter.appvars.speedtest_enabled: "false"
-      com.dockstarter.appvars.speedtest_environment_base_path: "/"
-      com.dockstarter.appvars.speedtest_environment_ookla_eula_gdpr: "true"
-      com.dockstarter.appvars.speedtest_network_mode: ""
-      com.dockstarter.appvars.speedtest_port_80: "80"
-      com.dockstarter.appvars.speedtest_restart: "unless-stopped"
-      com.dockstarter.appvars.speedtest_tag: "latest"
+      com.dockstarter.appinfo.nicename: "speedtest<__Instance>"

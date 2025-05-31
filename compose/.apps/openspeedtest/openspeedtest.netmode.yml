@@ -1,3 +1,3 @@
 services:
-  openspeedtest:
-    network_mode: ${OPENSPEEDTEST_NETWORK_MODE}
+  openspeedtest<__instance>:
+    network_mode: ${OPENSPEEDTEST<__INSTANCE>__NETWORK_MODE?}

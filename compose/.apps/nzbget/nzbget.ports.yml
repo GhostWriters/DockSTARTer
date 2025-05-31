@@ -1,4 +1,4 @@
 services:
-  nzbget:
+  nzbget<__instance>:
     ports:
-      - ${NZBGET_PORT_6789}:6789
+      - ${NZBGET<__INSTANCE>__PORT_6789?}:6789

@@ -1,14 +1,13 @@
 services:
-  httpserver:
-    container_name: ${HTTPSERVER_CONTAINER_NAME}
+  httpserver<__instance>:
+    container_name: ${HTTPSERVER<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/httpserver<__instance>.env
     environment:
-      - FILE_SERVER_COLOR_SET=${HTTPSERVER_ENVIRONMENT_FILE_SERVER_COLOR_SET}
-      - FILE_SERVER_TITLE=${HTTPSERVER_ENVIRONMENT_FILE_SERVER_TITLE}
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${HTTPSERVER_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${HTTPSERVER<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${HTTPSERVER_VOLUME_HTML}:/html
+      - ${DOCKER_VOLUME_STORAGE?}:/storage
+      - ${HTTPSERVER<__INSTANCE>__VOLUME_HTML?}:/html

@@ -1,3 +1,3 @@
 services:
-  portainer:
-    network_mode: ${PORTAINER_NETWORK_MODE}
+  portainer<__instance>:
+    network_mode: ${PORTAINER<__INSTANCE>__NETWORK_MODE?}

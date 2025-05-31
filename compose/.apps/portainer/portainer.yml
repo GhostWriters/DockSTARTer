@@ -1,12 +1,13 @@
 services:
-  portainer:
+  portainer<__instance>:
     command: "-H unix:///var/run/docker.sock"
-    container_name: ${PORTAINER_CONTAINER_NAME}
+    container_name: ${PORTAINER<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/portainer<__instance>.env
     environment:
-      - TZ=${TZ}
-    restart: ${PORTAINER_RESTART}
+      - TZ=${TZ?}
+    restart: ${PORTAINER<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/portainer:/data
-      - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${PORTAINER_VOLUME_DOCKER_SOCKET}:/var/run/docker.sock
+      - ${DOCKER_VOLUME_CONFIG?}/portainer<__instance>:/data
+      - ${DOCKER_VOLUME_STORAGE?}:/storage
+      - ${PORTAINER<__INSTANCE>__VOLUME_DOCKER_SOCKET?}:/var/run/docker.sock

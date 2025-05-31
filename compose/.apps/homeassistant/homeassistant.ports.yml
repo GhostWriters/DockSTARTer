@@ -1,4 +1,4 @@
 services:
-  homeassistant:
+  homeassistant<__instance>:
     ports:
-      - ${HOMEASSISTANT_PORT_8123}:8123
+      - ${HOMEASSISTANT<__INSTANCE>__PORT_8123?}:8123

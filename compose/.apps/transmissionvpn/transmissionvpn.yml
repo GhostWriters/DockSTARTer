@@ -1,22 +1,15 @@
 services:
-  transmissionvpn:
+  transmissionvpn<__instance>:
     cap_add:
       - NET_ADMIN
-    container_name: ${TRANSMISSIONVPN_CONTAINER_NAME}
+    container_name: ${TRANSMISSIONVPN<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/transmissionvpn<__instance>.env
     environment:
-      - LOCAL_NETWORK=${TRANSMISSIONVPN_ENVIRONMENT_LOCAL_NETWORK}
-      - OPENVPN_PASSWORD=${TRANSMISSIONVPN_ENVIRONMENT_OPENVPN_PASSWORD}
-      - OPENVPN_PROVIDER=${TRANSMISSIONVPN_ENVIRONMENT_OPENVPN_PROVIDER}
-      - OPENVPN_USERNAME=${TRANSMISSIONVPN_ENVIRONMENT_OPENVPN_USERNAME}
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TRANSMISSION_DOWNLOAD_DIR=${TRANSMISSIONVPN_ENVIRONMENT_DOWNLOAD_DIR}
-      - TRANSMISSION_HOME=${TRANSMISSIONVPN_ENVIRONMENT_HOME}
-      - TRANSMISSION_INCOMPLETE_DIR=${TRANSMISSIONVPN_ENVIRONMENT_INCOMPLETE_DIR}
-      - TRANSMISSION_WATCH_DIR=${TRANSMISSIONVPN_ENVIRONMENT_WATCH_DIR}
-      - TZ=${TZ}
-    restart: ${TRANSMISSIONVPN_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${TRANSMISSIONVPN<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/transmissionvpn:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/transmissionvpn<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

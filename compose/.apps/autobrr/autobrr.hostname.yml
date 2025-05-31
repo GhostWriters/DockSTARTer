@@ -1,3 +1,3 @@
 services:
-  autobrr:
-    hostname: ${DOCKER_HOSTNAME}
+  autobrr<__instance>:
+    hostname: ${AUTOBRR<__INSTANCE>__HOSTNAME?}

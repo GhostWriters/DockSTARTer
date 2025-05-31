@@ -1,15 +1,6 @@
 services:
-  ubooquity:
+  ubooquity<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Home server for your comics and ebooks"
-      com.dockstarter.appinfo.nicename: "Ubooquity"
-      com.dockstarter.appvars.ubooquity_container_name: "ubooquity"
-      com.dockstarter.appvars.ubooquity_enabled: "false"
-      com.dockstarter.appvars.ubooquity_environment_maxmem: "512"
-      com.dockstarter.appvars.ubooquity_network_mode: ""
-      com.dockstarter.appvars.ubooquity_port_2202: "2202"
-      com.dockstarter.appvars.ubooquity_port_2203: "2203"
-      com.dockstarter.appvars.ubooquity_restart: "unless-stopped"
-      com.dockstarter.appvars.ubooquity_tag: "latest"
-      com.dockstarter.appvars.ubooquity_volume_filesdir: "/mnt/ubooquity"
+      com.dockstarter.appinfo.nicename: "Ubooquity<__Instance>"

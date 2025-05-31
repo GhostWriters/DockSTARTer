@@ -1,3 +1,3 @@
 services:
   readdarr:
-    network_mode: ${READARR_NETWORK_MODE}
+    network_mode: ${READARR<__INSTANCE>__NETWORK_MODE?}
