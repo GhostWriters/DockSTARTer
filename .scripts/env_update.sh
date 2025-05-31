@@ -68,7 +68,7 @@ env_update() {
     local -a CURRENT_ENV_VARS
     readarray -t CURRENT_ENV_VARS < <(printf '%s\n' "${!CURRENT_ENV_VAR_LINE[@]}" | tr "_" "." | env LC_ALL=C sort | tr "." "_")
     # Process each variable, adding them to the updated .env array
-    while [[ -n ${CURRENT_ENV_VARS[*]} ]]; do
+    while [[ -n ${CURRENT_ENV_VARS[*]-} ]]; do
         # Loop while there are variables in array
         local APPNAME
         local LAST_APPNAME
@@ -91,7 +91,7 @@ env_update() {
                 UPDATED_ENV_LINES[${UPDATED_ENV_VAR_INDEX["$VAR"]}]=${CURRENT_ENV_VAR_LINE["$VAR"]}
             else
                 # Variable does not already exist, add it to a list to process
-                if [[ -z ${APP_LABELS[*]} ]]; then
+                if [[ -z ${APP_LABELS[*]-} ]]; then
                     # App label array is empty, create it
                     # shellcheck disable=SC2199
                     if [[ " ${INSTALLED_APPS[@]} " == *" ${APPNAME} "* ]]; then
