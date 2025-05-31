@@ -159,7 +159,9 @@ menu_config_vars() {
         while true; do
             local -a LineDialog=(
                 --stdout
+                --extra-button
                 --ok-label "Select"
+                --extra-label "Remove"
                 --cancel-label "Done"
                 --title "${DC["Title"]}${Title}"
                 --menu "\n${DialogHeading}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" -1
@@ -168,7 +170,7 @@ menu_config_vars() {
             local -i LineDialogButtonPressed=0
             LineChoice=$(dialog --default-item "${LastLineChoice}" "${LineDialog[@]}") || LineDialogButtonPressed=$?
             case ${DIALOG_BUTTONS[LineDialogButtonPressed]-} in
-                OK)
+                OK) # Select
                     LastLineChoice="${LineChoice}"
                     local LineNumber
                     LineNumber=$((10#${LineChoice}))
@@ -183,7 +185,9 @@ menu_config_vars() {
                         break
                     fi
                     ;;
-                CANCEL | ESC)
+                EXTRA) # Remove
+                    ;;
+                CANCEL | ESC) # Done
                     return
                     ;;
                 *)
