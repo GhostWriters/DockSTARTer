@@ -64,9 +64,7 @@ menu_config_apps() {
         local -a AppChoiceDialog=(
             "${AppChoiceParams[@]}"
             --title "${DC["Title"]}${Title}"
-            --extra-button
             --ok-label "Select"
-            --extra-label "Remove"
             --cancel-label "Done"
             --menu "${MenuText}"
             "${WindowRows}" "${WindowCols}"
@@ -78,12 +76,10 @@ menu_config_apps() {
         AppChoice=$(dialog --default-item "${LastAppChoice}" "${AppChoiceDialog[@]}") || AppChoiceButtonPressed=$?
         LastAppChoice=${AppChoice}
         case ${DIALOG_BUTTONS[AppChoiceButtonPressed]-} in
-            OK) # Select
+            OK)
                 run_script 'menu_config_vars' "${AppChoice}"
                 ;;
-            EXTTA) # Remove
-                ;;
-            CANCEL | ESC) # Done
+            CANCEL | ESC)
                 return
                 ;;
             *)
