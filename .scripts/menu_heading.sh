@@ -40,13 +40,15 @@ menu_heading() {
     if [[ -n ${AppName-} ]]; then
         AppName=$(run_script 'app_nicename' "${AppName}")
         local DefaultVarFile
-        if [[ ${VarName} == *":"* ]]; then
-            CleanVarName="${VarName#*:}"
-            VarFile="$(run_script 'app_env_file' "${AppName}")"
-            DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" ".app.env")"
-        else
-            VarFile="${COMPOSE_ENV}"
-            DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" ".global.env")"
+        if [[ -n ${VarName} ]]; then
+            if [[ ${VarName} == *":"* ]]; then
+                CleanVarName="${VarName#*:}"
+                VarFile="$(run_script 'app_env_file' "${AppName}")"
+                DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" ".app.env")"
+            else
+                VarFile="${COMPOSE_ENV}"
+                DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" ".global.env")"
+            fi
         fi
         if run_script 'app_is_user_defined' "${AppName}"; then
             AppIsUserDefined='Y'
@@ -95,7 +97,7 @@ menu_heading() {
                     local -a AppDesciptionArray
                     readarray -t AppDesciptionArray < <(fmt -w ${TextWidth} <<< "${AppDescription}")
                     Heading[Application]+="$(printf "${Indent}${DC[HeadingAppDescription]}%s${DC[NC]}\n" "${AppDesciptionArray[@]-}")"
-                    Heading[Application]+="\n\n"
+                    Heading[Application]+="\n"
                     Highlight="${DC[Heading]}"
                 fi
                 ;;
@@ -111,7 +113,7 @@ menu_heading() {
                     if [[ ${VarIsUserDefined-} == "Y" ]]; then
                         Heading[Variable]+=" ${DC[HeadingTag]}${Tag[VarUserDefined]}${DC[NC]}"
                     fi
-                    Heading[Variable]+="\n\n"
+                    Heading[Variable]+="\n"
                     Highlight="${DC[Heading]}"
                 fi
                 ;;
