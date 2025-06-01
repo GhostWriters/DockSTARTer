@@ -7,9 +7,10 @@ app_nicename_from_template() {
     local AppList
     AppList=$(xargs -n 1 <<< "$*")
     for APPNAME in ${AppList}; do
-        local appname=${APPNAME,,}
+        local AppName"${APPNAME%:*}"
+        local appname=${AppName,,}
         local LABELS_FILE
-        LABELS_FILE="$(run_script 'app_instance_file' "${APPNAME}" ".labels.yml")"
+        LABELS_FILE="$(run_script 'app_instance_file' "${appname}" ".labels.yml")"
         if [[ -f ${LABELS_FILE} ]]; then
             grep --color=never -Po "\scom\.dockstarter\.appinfo\.nicename: \K.*" "${LABELS_FILE}" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo "${appname}"
         else
