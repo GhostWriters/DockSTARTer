@@ -54,10 +54,11 @@ menu_heading() {
             DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" ".app.env")"
         fi
     fi
+
     if [[ -n ${AppName-} ]]; then
         AppName="$(run_script 'app_nicename' "${AppName}")"
         if [[ -n ${VarIsValid-} ]]; then
-            if [[ -n ${VarFile-} ]]; then
+            if [[ -z ${VarFile-} ]]; then
                 VarFile="${COMPOSE_ENV}"
                 DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" ".global.env")"
             fi
@@ -74,14 +75,14 @@ menu_heading() {
             if run_script 'app_is_depreciated' "${AppName}"; then
                 AppIsDepreciated='Y'
             fi
-            if [[ -n ${VarIsValid-} && -n ${DefaultVarFile-} ]] && ! run_script 'env_var_exists' "${CleanVarName}" "${DefaultVarFile}"; then
+            if [[ -n ${VarIsValid-} && -n ${DefaultVarFile-} ]] && ! run_script 'env_var_exists' "${VarName}" "${DefaultVarFile}"; then
                 VarIsUserDefined='Y'
             fi
         fi
     else # Global File or Variable
         VarFile="${COMPOSE_ENV}"
         DefaultVarFile="${COMPOSE_ENV_DEFAULT_FILE}"
-        if [[ -n ${VarIsValid-} ]] && ! run_script 'env_var_exists' "${CleanVarName}" "${DefaultVarFile}"; then
+        if [[ -n ${VarIsValid-} ]] && ! run_script 'env_var_exists' "${VarName}" "${DefaultVarFile}"; then
             VarIsUserDefined='Y'
         fi
     fi
@@ -122,8 +123,8 @@ menu_heading() {
                 fi
                 ;;
             Variable)
-                if [[ -n ${CleanVarName-} ]]; then
-                    Heading[Variable]="${DC[NC]}${Label[Variable]}${Highlight}${CleanVarName}${DC[NC]}"
+                if [[ -n ${VarName-} ]]; then
+                    Heading[Variable]="${DC[NC]}${Label[Variable]}${Highlight}${VarName}${DC[NC]}"
                     if [[ ${VarIsUserDefined-} == "Y" ]]; then
                         Heading[Variable]+=" ${DC[HeadingTag]}${Tag[VarUserDefined]}${DC[NC]}"
                     fi
