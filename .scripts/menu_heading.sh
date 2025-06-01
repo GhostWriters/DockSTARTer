@@ -40,7 +40,7 @@ menu_heading() {
     if [[ -n ${AppName-} ]]; then
         AppName=$(run_script 'app_nicename' "${AppName}")
         local DefaultVarFile
-        if [[ -n ${VarName} ]]; then
+        if [[ -n ${VarName-} ]]; then
             if [[ ${VarName} == *":"* ]]; then
                 CleanVarName="${VarName#*:}"
                 VarFile="$(run_script 'app_env_file' "${AppName}")"
@@ -60,13 +60,13 @@ menu_heading() {
             if run_script 'app_is_depreciated' "${AppName}"; then
                 AppIsDepreciated='Y'
             fi
-            if ! run_script 'env_var_exists' "${CleanVarName}" "${DefaultVarFile}"; then
+            if [[ -n ${VarName-} ]] && ! run_script 'env_var_exists' "${CleanVarName}" "${DefaultVarFile}"; then
                 VarIsUserDefined='Y'
             fi
         fi
-    elif [[ -n ${VarName} ]]; then
+    elif [[ -n ${VarName-} ]]; then
         VarFile="${COMPOSE_ENV}"
-        local DefaultVarFile="${COMPOSE_ENV_DEFAULT_FILE}"
+        DefaultVarFile="${COMPOSE_ENV_DEFAULT_FILE}"
         if ! run_script 'env_var_exists' "${CleanVarName}" "${DefaultVarFile}"; then
             VarIsUserDefined='Y'
         fi
