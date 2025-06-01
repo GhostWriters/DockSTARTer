@@ -312,6 +312,7 @@ menu_add_var() {
                     OK)
                         local Default
                         VarName="$(tr -d '[:blank:]' <<< "${VarName}")"
+                        VarNameHeading="${VarName:-${VarNameNone}}"
                         if ! run_script 'varname_is_valid' "${VarName}" "_BARE_"; then
                             ErrorMessage="The variable name ${DC[Highlight]}${VarName}${DC[NC]} is not a valid name.\n\n Please input another variable name."
                         elif run_script 'env_var_exists' "${VarName}" "${VarFile}"; then
