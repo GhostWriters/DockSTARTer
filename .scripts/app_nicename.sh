@@ -7,14 +7,14 @@ app_nicename() {
     local AppList
     AppList=$(xargs -n 1 <<< "$*")
     for APPNAME in ${AppList}; do
-        local AppName
-        AppName="$(sed -E "s/[[:alnum:]]+/\u&/g" <<< "${APPNAME,,}")"
-        if run_script 'app_is_user_defined' "${APPNAME}"; then
+        local AppName="${APPNAME%:*}"
+        AppName="$(sed -E "s/[[:alnum:]]+/\u&/g" <<< "${AppName,,}")"
+        if run_script 'app_is_user_defined' "${AppName}"; then
             echo "${AppName}"
             continue
         fi
         local LABELS_FILE
-        LABELS_FILE="$(run_script 'app_instance_file' "${APPNAME}" ".labels.yml")"
+        LABELS_FILE="$(run_script 'app_instance_file' "${AppName}" ".labels.yml")"
         if [[ ! -f ${LABELS_FILE} ]]; then
             echo "${AppName}"
             continue
