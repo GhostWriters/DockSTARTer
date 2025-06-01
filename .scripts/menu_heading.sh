@@ -62,7 +62,9 @@ menu_heading() {
         fi
         if run_script 'app_is_user_defined' "${AppName}"; then
             AppIsUserDefined='Y'
-            VarIsUserDefined='Y'
+            if [[ -n ${VarIsValid-} ]]; then
+                VarIsUserDefined='Y'
+            fi
         else
             if run_script 'app_is_disabled' "${AppName}"; then
                 AppIsDisabled='Y'
