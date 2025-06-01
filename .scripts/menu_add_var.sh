@@ -284,7 +284,7 @@ menu_add_var() {
             while true; do
                 VarNameHeading="${VarName:-${VarNameNone}}"
                 local InputValueText
-                Heading="$(run_script 'menu_heading' "${AppNameHeading}" "${VarNameHeading}")"
+                Heading="$(run_script 'menu_heading' "${AppNameHeading}" "")"
                 if [[ ${VarType} == APPENV ]]; then
                     InputValueText="${Heading}\n\nWhat variable would you like create for application ${DC[Highlight]}${AppName}${DC[NC]}?\n"
                 else # GLOBAL
@@ -328,6 +328,7 @@ menu_add_var() {
                             dialog --title "${DC["TitleError"]}${Title}" --msgbox "${Heading}\n\n${ErrorMessage}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
                             continue
                         fi
+                        Heading="$(run_script 'menu_heading' "${AppName}" "${VarNameHeading}")"
                         local Question
                         Question="Create variable ${DC[Highlight]}${VarName}${DC[NC]}?\n"
                         if [[ ${VarType} == "APPENV" ]]; then
