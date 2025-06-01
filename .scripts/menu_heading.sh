@@ -36,10 +36,15 @@ menu_heading() {
 
     local AppIsDepreciated AppIsDisabled AppIsUserDefined VarIsValid VarIsUserDefined
     local VarFile
-    local CleanVarName="${VarName}"
     local DefaultVarFile
     if [[ -n ${VarName-} ]] && run_script 'varname_is_valid' "${VarName}"; then
         VarIsValid='Y'
+        if [[ ${VarName} == *":"* ]]; then
+            AppName="${VarName%:*}"
+            VarName="${VarName#*:}"
+            VarFile="$(run_script 'app_env_file' "${AppName}")"
+            DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" ".app.env")"
+        fi
     fi
     if [[ -n ${AppName-} ]]; then
         AppName=$(run_script 'app_nicename' "${AppName}")
@@ -48,12 +53,11 @@ menu_heading() {
             VarFile="$(run_script 'app_env_file' "${AppName}")"
             DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" ".app.env")"
         fi
+    fi
+    if [[ -n ${AppName-} ]]; then
+        AppName="$(run_script 'app_nicename' "${AppName}")"
         if [[ -n ${VarIsValid-} ]]; then
-            if [[ ${VarName-} == *":"* ]]; then
-                CleanVarName="${VarName#*:}"
-                VarFile="$(run_script 'app_env_file' "${AppName}")"
-                DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" ".app.env")"
-            elif [[ -n ${VarFile-} ]]; then
+            if [[ -n ${VarFile-} ]]; then
                 VarFile="${COMPOSE_ENV}"
                 DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" ".global.env")"
             fi
@@ -74,14 +78,12 @@ menu_heading() {
                 VarIsUserDefined='Y'
             fi
         fi
-    elif [[ -n ${VarName-} ]]; then
+    else # Global File or Variable
         VarFile="${COMPOSE_ENV}"
         DefaultVarFile="${COMPOSE_ENV_DEFAULT_FILE}"
         if [[ -n ${VarIsValid-} ]] && ! run_script 'env_var_exists' "${CleanVarName}" "${DefaultVarFile}"; then
             VarIsUserDefined='Y'
         fi
-    else
-        VarFile="${COMPOSE_ENV}"
     fi
 
     local Highlight="${DC[HeadingValue]}"
