@@ -47,8 +47,6 @@ menu_heading() {
             AppName="${AppName#:}"
             VarFile="$(run_script 'app_env_file' "${AppName}")"
             DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" ".app.env")"
-        else
-            VarFile="${COMPOSE_ENV}"
         fi
         if [[ -n ${VarIsValid-} ]]; then
             if [[ ${VarName-} == *":"* ]]; then
