@@ -13,8 +13,8 @@ app_list_disabled() {
     #notice "DISABLED_APPS_REGEX [ ${DISABLED_APPS_REGEX} ]"
     readarray -t DISABLED_APPS < <(grep --color=never -o -P "${DISABLED_APPS_REGEX}" "${COMPOSE_ENV}" | sort || true)
     readarray -t BUILTIN_APPS < <(run_script 'app_list_builtin')
-    local -a COMBINED=("${DISABLED_APPS[@]}" "${BUILTIN_APPS[@]}")
-    printf "%s\n" "${COMBINED[@]}" | sort | uniq -d
+    local -a COMBINED=("${DISABLED_APPS[@]-}" "${BUILTIN_APPS[@]-}")
+    printf "%s\n" "${COMBINED[@]-}" | sort | uniq -d
 }
 
 test_app_list_disabled() {

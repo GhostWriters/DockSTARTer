@@ -11,8 +11,8 @@ app_list_added() {
     #notice "ADDED_APPS_REGEX [ ${ADDED_APPS_REGEX} ]"
     readarray -t ADDED_APPS < <(grep --color=never -o -P "${ADDED_APPS_REGEX}" "${COMPOSE_ENV}" || true)
     readarray -t BUILTIN_APPS < <(run_script 'app_list_builtin')
-    local -a COMBINED=("${ADDED_APPS[@]}" "${BUILTIN_APPS[@]}")
-    printf "%s\n" "${COMBINED[@]}" | sort | uniq -d
+    local -a COMBINED=("${ADDED_APPS[@]-}" "${BUILTIN_APPS[@]-}")
+    printf "%s\n" "${COMBINED[@]-}" | sort | uniq -d
 }
 
 test_app_list_added() {

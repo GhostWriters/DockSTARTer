@@ -28,7 +28,7 @@ appvars_purge() {
             )"
             {
                 IFS='|'
-                GlobalVarsRegex="${GlobalVarsToRemove[*]}"
+                GlobalVarsRegex="${GlobalVarsToRemove[*]-}"
             }
             readarray -t GlobalLinesToRemoveArray <<< "$(grep -P "^\s*${GlobalVarsRegex}\s*=" "${COMPOSE_ENV}" || true)"
             GlobalLinesToRemove="$(printf '   %s\n' "${GlobalLinesToRemoveArray[@]-}")"
@@ -44,7 +44,7 @@ appvars_purge() {
             )"
             {
                 IFS='|'
-                AppEnvVarsRegex="${AppEnvVarsToRemove[*]}"
+                AppEnvVarsRegex="${AppEnvVarsToRemove[*]-}"
             }
             readarray -t AppEnvLinesToRemoveArray <<< "$(grep -P "^\s*${AppEnvVarsRegex}\s*=" "${AppEnvFile}" || true)"
             AppEnvLinesToRemove="$(printf '   %s\n' "${AppEnvLinesToRemoveArray[@]-}")"
