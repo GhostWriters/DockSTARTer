@@ -8,8 +8,7 @@ app_nicename() {
     AppList=$(xargs -n 1 <<< "$*")
     for APPNAME in ${AppList}; do
         local AppName
-        appname="${AppName,,}"
-        appname="${AppName%:*}"
+        AppName="$(sed -E "s/[[:alnum:]]+/\u&/g" <<< "${APPNAME,,}")"
         if run_script 'app_is_user_defined' "${APPNAME}"; then
             echo "${AppName}"
             continue
