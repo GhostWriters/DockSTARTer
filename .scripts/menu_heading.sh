@@ -34,18 +34,27 @@ menu_heading() {
     Indent="$(printf "%${LabelWidth}s" "")"
     local -A Heading=()
 
-    local AppIsDepreciated AppIsDisabled AppIsUserDefined VarIsUserDefined
+    local AppIsDepreciated AppIsDisabled AppIsUserDefined VarIsValid VarIsUserDefined
     local VarFile
     local CleanVarName="${VarName}"
+    local DefaultVarFile
+    if [[ -n ${VarName-} ]] && run_script 'varname_is_valid' "${VarName}"; then
+        VarIsValid='Y'
+    fi
     if [[ -n ${AppName-} ]]; then
         AppName=$(run_script 'app_nicename' "${AppName}")
-        local DefaultVarFile
-        if [[ -n ${VarName-} ]]; then
-            if [[ ${VarName} == *":"* ]]; then
+        if [[ ${AppName} == *":" ]]; then
+            VarFile="$(run_script 'app_env_file' "${AppName}")"
+            DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" ".app.env")"
+        else
+            VarFile="${COMPOSE_ENV}"
+        fi
+        if [[ -n ${VarIsValid-} ]]; then
+            if [[ ${VarName-} == *":"* ]]; then
                 CleanVarName="${VarName#*:}"
                 VarFile="$(run_script 'app_env_file' "${AppName}")"
                 DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" ".app.env")"
-            else
+            elif [[ -n ${VarFile-} ]]; then
                 VarFile="${COMPOSE_ENV}"
                 DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" ".global.env")"
             fi
@@ -60,14 +69,14 @@ menu_heading() {
             if run_script 'app_is_depreciated' "${AppName}"; then
                 AppIsDepreciated='Y'
             fi
-            if [[ -n ${VarName-} ]] && ! run_script 'env_var_exists' "${CleanVarName}" "${DefaultVarFile}"; then
+            if [[ -n ${VarIsValid} && -n ${DefaultVarFile-} ]] && ! run_script 'env_var_exists' "${CleanVarName}" "${DefaultVarFile}"; then
                 VarIsUserDefined='Y'
             fi
         fi
     elif [[ -n ${VarName-} ]]; then
         VarFile="${COMPOSE_ENV}"
         DefaultVarFile="${COMPOSE_ENV_DEFAULT_FILE}"
-        if ! run_script 'env_var_exists' "${CleanVarName}" "${DefaultVarFile}"; then
+        if [[ -n ${VarIsValid} ]] && ! run_script 'env_var_exists' "${CleanVarName}" "${DefaultVarFile}"; then
             VarIsUserDefined='Y'
         fi
     else
