@@ -93,11 +93,13 @@ menu_heading() {
 
                     local AppDescription
                     AppDescription="$(run_script 'app_description' "${AppName}")"
-                    local -i TextWidth=$((COLUMNS - DC["WindowColsAdjust"] - DC["TextColsAdjust"] - LabelWidth))
+                    local -i ScreenCols
+                    ScreenCols=$(stty size | cut -d ' ' -f 2)
+                    local -i TextWidth=$((ScreenCols - DC["WindowColsAdjust"] - DC["TextColsAdjust"] - LabelWidth))
                     local -a AppDesciptionArray
                     readarray -t AppDesciptionArray < <(fmt -w ${TextWidth} <<< "${AppDescription}")
                     Heading[Application]+="$(printf "${Indent}${DC[HeadingAppDescription]}%s${DC[NC]}\n" "${AppDesciptionArray[@]-}")"
-                    Heading[Application]+="\n"
+                    Heading[Application]+="\n\n"
                     Highlight="${DC[Heading]}"
                 fi
                 ;;
@@ -109,7 +111,7 @@ menu_heading() {
                 ;;
             Variable)
                 if [[ -n ${CleanVarName-} ]]; then
-                    Heading[Variable]="\n${DC[NC]}${Label[Variable]}${Highlight}${CleanVarName}${DC[NC]}"
+                    Heading[Variable]="${DC[NC]}${Label[Variable]}${Highlight}${CleanVarName}${DC[NC]}"
                     if [[ ${VarIsUserDefined-} == "Y" ]]; then
                         Heading[Variable]+=" ${DC[HeadingTag]}${Tag[VarUserDefined]}${DC[NC]}"
                     fi
@@ -119,7 +121,7 @@ menu_heading() {
                 ;;
             OriginalValue)
                 if [[ -n ${OriginalValue-} ]]; then
-                    Heading[OriginalValue]="${Label[OriginalValue]}${Highlight}${OriginalValue}${DC[NC]}\n"
+                    Heading[OriginalValue]="\n${Label[OriginalValue]}${Highlight}${OriginalValue}${DC[NC]}\n"
                     Highlight="${DC[Heading]}"
                 fi
                 ;;
