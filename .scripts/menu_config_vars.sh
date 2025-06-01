@@ -168,6 +168,9 @@ menu_config_vars() {
                         local DialogHeading
                         DialogHeading="$(run_script 'menu_heading' "${APPNAME-}" "${VarName}")"
                         local CleanVarName="${VarName}"
+                        if [[ ${CleanVarName} == *":"* ]]; then
+                            CleanVarName="${CleanVarName#*:}"
+                        fi
                         local Question="Do you really want to delete ${DC[Highlight]}${CleanVarName}${DC[NC]}?"
                         if run_script 'question_prompt' N "${DialogHeading}\n\n${Question}\n" "${DC["TitleWarning"]}Delete Variable" "" "Delete" "Back"; then
                             {
