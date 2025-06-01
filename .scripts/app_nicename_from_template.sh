@@ -7,7 +7,7 @@ app_nicename_from_template() {
     local AppList
     AppList=$(xargs -n 1 <<< "$*")
     for APPNAME in ${AppList}; do
-        local AppName"${APPNAME%:*}"
+        local AppName="${APPNAME%:*}"
         local appname=${AppName,,}
         local LABELS_FILE
         LABELS_FILE="$(run_script 'app_instance_file' "${appname}" ".labels.yml")"
