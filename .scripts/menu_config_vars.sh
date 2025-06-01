@@ -163,7 +163,7 @@ menu_config_vars() {
                     LastLineChoice="${LineChoice}"
                     local LineNumber
                     LineNumber=$((10#${LineChoice}))
-                    local VarName=${VarNameOnLine[LineNumber]-}
+                    local VarName="${VarNameOnLine[LineNumber]-}"
                     if [[ -n ${VarName} ]]; then
                         local DialogHeading
                         DialogHeading="$(run_script 'menu_heading' "${APPNAME-}" "${VarName}")"
@@ -173,6 +173,7 @@ menu_config_vars() {
                         fi
                         local Question="Do you really want to delete ${DC[Highlight]}${CleanVarName}${DC[NC]}?"
                         if run_script 'question_prompt' N "${DialogHeading}\n\n${Question}\n" "${DC["TitleWarning"]}Delete Variable" "" "Delete" "Back"; then
+                            DialogHeading="$(run_script 'menu_heading' "${APPNAME-}" "${VarName}")"
                             {
                                 run_script 'env_delete' "${VarName}"
                                 if [[ -n ${APPNAME-} ]]; then
