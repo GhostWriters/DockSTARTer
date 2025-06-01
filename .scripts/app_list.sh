@@ -5,7 +5,7 @@ IFS=$'\n\t'
 app_list() {
     local -a AppList
     readarray -t AppList < <(run_script 'app_nicename' "$(run_script 'app_list_builtin')")
-    for index in "${!AppList[@]-}"; do
+    for index in "${!AppList[@]}"; do
         local AppName=${AppList[index]}
         AppList[index]+=','
         if run_script 'app_is_depreciated' "${AppName}"; then
@@ -19,7 +19,7 @@ app_list() {
             fi
         fi
     done
-    printf '%s\n' "${AppList[@]-}" | column -t -s ','
+    printf '%s\n' "${AppList[@]}" | column -t -s ','
 }
 
 test_app_list() {

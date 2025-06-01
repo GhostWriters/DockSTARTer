@@ -23,7 +23,7 @@ app_list_referenced() {
     )"
 
     # Output the sorted list, removing duplicates
-    sort -u <<< "$(printf '%s\n' "${ReferencedApps[@]-}")"
+    sort -u <<< "$(printf '%s\n' "${ReferencedApps[@]}")"
 }
 
 test_app_list_referenced() {

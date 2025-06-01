@@ -336,7 +336,7 @@ menu_value_prompt() {
         local ValidOptionsRegex
         {
             IFS='|'
-            ValidOptionsRegex="${ValidOptions[*]-}"
+            ValidOptionsRegex="${ValidOptions[*]}"
         }
 
         local DescriptionHeading="${DC[NC]}"

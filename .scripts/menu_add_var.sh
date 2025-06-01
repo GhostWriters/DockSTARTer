@@ -58,7 +58,7 @@ menu_add_var() {
             local TemplateOptionsRegex
             {
                 IFS='|'
-                TemplateOptionsRegex="${TemplateOptions[*]-}"
+                TemplateOptionsRegex="${TemplateOptions[*]}"
             }
             local -a StockOptions=(
                 "${APPNAME__CONTAINER_NAME}"
@@ -70,7 +70,7 @@ menu_add_var() {
             local StockOptionsRegex
             {
                 IFS='|'
-                StockOptionsRegex="${StockOptions[*]-}"
+                StockOptionsRegex="${StockOptions[*]}"
             }
             local -A OptionHelpLine=(
                 ["${APPNAME__}"]="Complete this with any variable you want."

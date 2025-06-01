@@ -11,7 +11,7 @@ app_list_enabled() {
 
     #notice "ENABLED_APPS_REGEX [ ${ENABLED_APPS_REGEX} ]"
     readarray -t ENABLED_APPS < <(grep --color=never -o -P "${ENABLED_APPS_REGEX}" "${COMPOSE_ENV}" | sort || true)
-    for AppName in "${ENABLED_APPS[@]-}"; do
+    for AppName in "${ENABLED_APPS[@]}"; do
         if [[ -d "$(run_script 'app_instance_folder' "${AppName}")" ]]; then
             echo "${AppName}"
         fi

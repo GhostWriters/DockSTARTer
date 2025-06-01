@@ -53,7 +53,7 @@ env_format_lines() {
     if [[ -n ${DefaultEnvFile} && -f ${DefaultEnvFile} ]]; then
         # Default file is specified and exists, add the contents verbatim
         readarray -t -O ${#FormattedEnvLines[@]} FormattedEnvLines < "${DefaultEnvFile}"
-        if [[ -n ${FormattedEnvLines[*]-} ]]; then
+        if [[ -n ${FormattedEnvLines[*]} ]]; then
             # Add a blank if there are existing lines (not at top of file)
             FormattedEnvLines+=("")
         fi
@@ -73,7 +73,7 @@ env_format_lines() {
         FormattedEnvVarIndex[$VarName]=$index
     done
 
-    if [[ -n ${CurrentEnvLines[*]-} ]]; then
+    if [[ -n ${CurrentEnvLines[*]} ]]; then
         # Update the default variables
         for index in "${!CurrentEnvLines[@]}"; do
             local line=${CurrentEnvLines[index]}
@@ -85,7 +85,7 @@ env_format_lines() {
             fi
         done
         CurrentEnvLines=("${CurrentEnvLines[@]-}")
-        if [[ -n ${CurrentEnvLines[*]-} ]]; then
+        if [[ -n ${CurrentEnvLines[*]} ]]; then
             if [[ -z ${APPNAME-} || ${AppIsUserDefined} != Y ]]; then
                 # Add the "User Defined" heading
                 local HeadingTitle
