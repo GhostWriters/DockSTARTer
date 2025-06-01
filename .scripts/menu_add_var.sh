@@ -88,7 +88,7 @@ menu_add_var() {
             AddAllHelpLine="This will add all stock variables listed below."
             local -A OptionValue=()
             while true; do
-                VarNameHeading="${VarName-${VarNameNone}}"
+                VarNameHeading="${VarName:-${VarNameNone}}"
                 Heading="$(run_script 'menu_heading' "${AppName}" "${VarNameHeading}")"
                 local -a TemplateValueOptions ClearValueOptions EnabledValueOptions AddAllValueOptions StockValueOptions
                 unset TemplateValueOptions ClearValueOptions EnabledValueOptions AddAllValueOptions StockValueOptions
@@ -282,7 +282,7 @@ menu_add_var() {
                 AppNameHeading="${AppName}:"
             fi
             while true; do
-                VarNameHeading="${VarName-${VarNameNone}}"
+                VarNameHeading="${VarName:-${VarNameNone}}"
                 local InputValueText
                 Heading="$(run_script 'menu_heading' "${AppNameHeading}" "${VarNameHeading}")"
                 if [[ ${VarType} == APPENV ]]; then
