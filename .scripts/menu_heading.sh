@@ -29,9 +29,9 @@ menu_heading() {
     done
     for LabelName in "${!Label[@]}"; do
         local LabelText="${Label["${LabelName}"]}"
-        Label["${LabelName}"]="$(printf "%${#LabelText}s" "${LabelText}")"
+        Label["${LabelName}"]="$(printf "%${LabelWidth}s" "${LabelText}")"
     done
-    Indent="$(printf "%${#LabelText}s" "")"
+    Indent="$(printf "%${LabelWidth}s" "")"
     local -A Heading=()
 
     local AppIsDepreciated AppIsDisabled AppIsUserDefined VarIsUserDefined
