@@ -37,7 +37,7 @@ menu_heading() {
     local AppIsDepreciated AppIsDisabled AppIsUserDefined VarIsUserDefined
     local VarFile
     local CleanVarName="${VarName}"
-    if [[ -n ${AppName} ]]; then
+    if [[ -n ${AppName-} ]]; then
         AppName=$(run_script 'app_nicename' "${AppName}")
         local DefaultVarFile
         if [[ ${VarName} == *":"* ]]; then
@@ -73,7 +73,7 @@ menu_heading() {
     fi
 
     local Highlight="${DC[HeadingValue]}"
-    for LabelName in CurrentValue OriginalValue Variable FileName Application; do
+    for LabelName in CurrentValue OriginalValue Variable Filename Application; do
         case "${LabelName}" in
             Application)
                 if [[ -n ${AppName-} ]]; then
