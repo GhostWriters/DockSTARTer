@@ -277,10 +277,14 @@ menu_add_var() {
             ;;
         APPENV | GLOBAL)
             local VarName=''
+            local AppNameHeading=""
+            if [[ -n ${AppName-} ]]; then
+                AppNameHeading="${AppName}:"
+            fi
             while true; do
                 VarNameHeading="${VarName-${VarNameNone}}"
                 local InputValueText
-                Heading="$(run_script 'menu_heading' "${AppName}" "${VarNameHeading}")"
+                Heading="$(run_script 'menu_heading' "${AppNameHeading}" "${VarNameHeading}")"
                 if [[ ${VarType} == APPENV ]]; then
                     InputValueText="${Heading}\n\nWhat variable would you like create for application ${DC[Highlight]}${AppName}${DC[NC]}?\n"
                 else # GLOBAL
@@ -319,7 +323,7 @@ menu_add_var() {
                             fi
                         fi
                         if [[ -n ${ErrorMessage} ]]; then
-                            Heading="$(run_script 'menu_heading' "${AppName}" "${VarNameHeading}")"
+                            Heading="$(run_script 'menu_heading' "${AppNameHeading}" "${VarNameHeading}")"
                             dialog --title "${DC["TitleError"]}${Title}" --msgbox "${Heading}\n\n${ErrorMessage}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
                             continue
                         fi
@@ -329,18 +333,18 @@ menu_add_var() {
                             Question="Create variable ${DC[Highlight]}${VarName}${DC[NC]} for application ${DC[Highlight]}${AppName}${DC[NC]}?\n"
                             if run_script 'question_prompt' N "${Heading}\n\n${Question}" "${DC["TitleWarning"]}Create Variable" "" "Create" "Back"; then
                                 Default="$(run_script 'var_default_value' "${AppName}:${VarName}")"
-                                Heading="$(run_script 'menu_heading' "${AppName}" "${VarNameHeading}")"
+                                Heading="$(run_script 'menu_heading' "${AppNameHeading}" "${VarNameHeading}")"
                                 run_script_dialog "${DC["TitleSuccess"]}Creating Variable" "${Heading}\n\n" "${DIALOGTIMEOUT}" \
                                     'env_set_literal' "${appname}:${VarName}" "${Default}"
                                 run_script 'menu_value_prompt' "${appname}:${VarName}"
                                 return
                             fi
                         else # GLOBAL
-                            Heading="$(run_script 'menu_heading' "${AppName}" "${VarNameHeading}")"
+                            Heading="$(run_script 'menu_heading' "${AppNameHeading}" "${VarNameHeading}")"
                             Question="Create global variable ${DC[Highlight]}${VarName}${DC[NC]}?\n"
                             if run_script 'question_prompt' N "${Heading}\n\n${Question}" "${DC["TitleWarning"]}Create Variable" "" "Create" "Back"; then
                                 Default="$(run_script 'var_default_value' "${VarName}")"
-                                Heading="$(run_script 'menu_heading' "${AppName}" "${VarNameHeading}")"
+                                Heading="$(run_script 'menu_heading' "${AppNameHeading}" "${VarNameHeading}")"
                                 run_script_dialog "${DC["TitleSuccess"]}Creating Variable" "${Heading}\n\n" "${DIALOGTIMEOUT}" \
                                     'env_set_literal' "${VarName}" "${Default}"
                                 run_script 'menu_value_prompt' "${VarName}"
