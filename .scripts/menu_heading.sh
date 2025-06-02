@@ -8,8 +8,6 @@ menu_heading() {
     local OriginalValue=${3-}
     local CurrentValue=${4-}
 
-    notice "AppName='${AppName-}'\nVarName='${VarName-}'\nOriginalValue='${OriginalValue-}'\nCurrentValue='${CurrentValue-}'\n"
-    read -n 1
     local -A Label=(
         [Application]="Application: "
         [Filename]="File: "
