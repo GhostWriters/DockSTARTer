@@ -12,7 +12,7 @@ menu_add_var() {
     local Heading
     local VarNameMaxLength=256
     local VarNameHeading
-    local VarNameNone="${DC[Highlight]}* NONE *"
+    local VarNameNone="${DC[Highlight]}[*NONE*]"
     Heading=""
     if [[ -z ${APPNAME-} ]]; then
         # No appname specified, creating a global variable in .env
@@ -142,12 +142,12 @@ menu_add_var() {
                 done
                 local Bar
                 OptionClear=" CLEAR INPUT "
-                Bar=$(printf "%$(((OptionsLength - ${#OptionClear} - 1) / 2))s" '' | tr ' ' '=')
+                Bar="$(printf "%$(((OptionsLength - ${#OptionClear} - 1) / 2))s" '' | tr ' ' '=')"
                 OptionClear=" ${Bar}${OptionClear}${Bar}"
                 ValidOptions+=("${OptionClear}")
                 ClearValueOptions+=("${OptionClear}" "" "${ClearHelpLine-}")
                 local OptionAddAll=" ADD ALL BELOW "
-                Bar=$(printf "%$(((OptionsLength - ${#OptionAddAll} - 1) / 2))s" '' | tr ' ' 'v')
+                Bar="$(printf "%$(((OptionsLength - ${#OptionAddAll} - 1) / 2))s" '' | tr ' ' 'v')"
                 OptionAddAll=" ${Bar}${OptionAddAll}${Bar}"
                 if [[ -n ${StockValueOptions[*]-} ]]; then
                     ValidOptions+=("${OptionAddAll}")
@@ -331,7 +331,7 @@ menu_add_var() {
                             dialog --title "${DC["TitleError"]}${Title}" --msgbox "${Heading}\n\n${ErrorMessage}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
                             continue
                         fi
-                        Heading="$(run_script 'menu_heading' "${AppName-}" "${VarNameHeading}")"
+                        Heading="$(run_script 'menu_heading' "${AppNameHeading}" "${VarNameHeading}")"
                         local Question
                         Question="Create variable ${DC[Highlight]}${VarName}${DC[NC]}?\n"
                         if [[ ${VarType} == "APPENV" ]]; then

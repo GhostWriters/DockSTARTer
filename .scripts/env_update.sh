@@ -12,7 +12,7 @@ env_update() {
         run_script 'env_format_lines' "${ENV_LINES_FILE}" "${COMPOSE_ENV_DEFAULT_FILE}" ""
     )
 
-    AppList=$(run_script 'app_list_referenced')
+    AppList="$(run_script 'app_list_referenced')"
     # Format the global .env file
     for appname in ${AppList,,}; do
         local APP_DEFAULT_GLOBAL_ENV_FILE=""

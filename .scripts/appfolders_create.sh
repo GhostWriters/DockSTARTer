@@ -8,7 +8,7 @@ appfolders_create() {
 
     local appname=${APPNAME,,}
     local AppName
-    AppName=$(run_script 'app_nicename' "${APPNAME}")
+    AppName="$(run_script 'app_nicename' "${APPNAME}")"
     local APP_FOLDERS_FILE
     APP_FOLDERS_FILE="$(run_script 'app_instance_file' "${appname}" ".folders")"
 
@@ -20,7 +20,7 @@ appfolders_create() {
             DOCKER_VOLUME_CONFIG="$(run_script 'env_get' DOCKER_VOLUME_CONFIG)"
             for index in "${!FOLDERS_ARRAY[@]}"; do
                 local FOLDER
-                FOLDERS_ARRAY[index]=$(echo "${FOLDERS_ARRAY[$index]}" | DOCKER_VOLUME_CONFIG="${DOCKER_VOLUME_CONFIG}" envsubst)
+                FOLDERS_ARRAY[index]="$(echo "${FOLDERS_ARRAY[$index]}" | DOCKER_VOLUME_CONFIG="${DOCKER_VOLUME_CONFIG-}" envsubst)"
                 if [[ -z ${FOLDERS_ARRAY[$index]} || -d ${FOLDERS_ARRAY[$index]} ]]; then
                     unset 'FOLDERS_ARRAY[index]'
                 fi

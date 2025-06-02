@@ -37,7 +37,17 @@ menu_heading() {
     local AppIsDepreciated AppIsDisabled AppIsUserDefined VarIsValid VarIsUserDefined
     local VarFile
     local DefaultVarFile
-    if [[ -n ${VarName-} ]] && run_script 'varname_is_valid' "${VarName}"; then
+
+    if [[ ${AppName-} == ":"* ]]; then # ":AppName", using .env
+        AppName="${AppName#:*}"
+        VarFile="${COMPOSE_ENV}"
+        DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" ".global.env")"
+    elif [[ ${AppName-} == *":" ]]; then # "AppName:", using appname.env
+        AppName="${AppName%:*}"
+        VarFile="$(run_script 'app_env_file' "${AppName}")"
+        DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" ".app.env")"
+    fi
+    if [[ -n ${VarName-} ]] && run_script 'varname_is_valid' "${VarName}"; then # "appname:varname", using appname.env
         VarIsValid='Y'
         if [[ ${VarName} == *":"* ]]; then
             AppName="${VarName%:*}"
@@ -45,24 +55,13 @@ menu_heading() {
             VarFile="$(run_script 'app_env_file' "${AppName}")"
             DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" ".app.env")"
         fi
-    fi
-    if [[ -n ${AppName-} ]]; then
-        AppName=$(run_script 'app_nicename' "${AppName}")
-        if [[ ${AppName} == *":" ]]; then
-            AppName="${AppName#:}"
-            VarFile="$(run_script 'app_env_file' "${AppName}")"
-            DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" ".app.env")"
+        if [[ -z ${VarFile-} ]]; then
+            VarFile="${COMPOSE_ENV}"
+            DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" ".global.env")"
         fi
     fi
 
     if [[ -n ${AppName-} ]]; then
-        AppName="$(run_script 'app_nicename' "${AppName}")"
-        if [[ -n ${VarIsValid-} ]]; then
-            if [[ -z ${VarFile-} ]]; then
-                VarFile="${COMPOSE_ENV}"
-                DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" ".global.env")"
-            fi
-        fi
         if run_script 'app_is_user_defined' "${AppName}"; then
             AppIsUserDefined='Y'
             if [[ -n ${VarIsValid-} ]]; then
@@ -79,6 +78,7 @@ menu_heading() {
                 VarIsUserDefined='Y'
             fi
         fi
+        AppName=$(run_script 'app_nicename' "${AppName}")
     else # Global File or Variable
         VarFile="${COMPOSE_ENV}"
         DefaultVarFile="${COMPOSE_ENV_DEFAULT_FILE}"
