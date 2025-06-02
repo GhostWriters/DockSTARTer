@@ -10,6 +10,22 @@
 
 ## Install/Setup
 
-This application does not have any specific setup instructions documented. If
-you need assistance setting up this application please visit our
-[support page](https://dockstarter.com/basics/support/).
+If you cannot access the web interface after installing, check if the app's directory has the right owner. You can do that by running the command `ls -al ~/.config/appdata` and comparing the owner of the `komga` directory with the other directories. 
+
+If the owner of `~/.config/appdata/komga` is `root` or anything else different than the standard dockstarter user, you will need to manually change user/group ownership.
+
+### 1. Change the owner/group of `~/.config/appdata/komga`.
+
+If the owner should be the same as the one you are logged in with, run the following command:
+
+`sudo chown -R $USER:$USER ~/.config/appdata/komga`
+
+Alternatively, replace `$USER:$USER` with the default user/group for dockstarter.
+
+### 2. Restart the komga container
+
+`docker restart komga`
+
+At this point you should be able to access the web interface.
+
+If you need assistance setting up this application please visit our [support page](https://dockstarter.com/basics/support/).
