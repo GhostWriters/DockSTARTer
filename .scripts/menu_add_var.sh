@@ -12,7 +12,7 @@ menu_add_var() {
     local Heading
     local VarNameMaxLength=256
     local VarNameHeading
-    local VarNameNone="${DC[Highlight]} * NONE * "
+    local VarNameNone="${DC[Highlight]}[*NONE*]"
     Heading=""
     if [[ -z ${APPNAME-} ]]; then
         # No appname specified, creating a global variable in .env
