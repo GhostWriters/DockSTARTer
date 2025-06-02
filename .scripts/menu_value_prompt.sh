@@ -12,7 +12,7 @@ menu_value_prompt() {
 
     local APPNAME APPNAME
 
-    local VarDeletedTag="${DC[Highlight]}* DELETED *"
+    local VarDeletedTag="${DC[Highlight]} * DELETED * "
 
     local Title
     local CleanVarName="${VarName}"
