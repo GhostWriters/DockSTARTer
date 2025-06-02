@@ -282,7 +282,7 @@ menu_value_prompt() {
         local DialogHeading
         local CurrentValueHeading="${OptionValue["${CurrentValueOption}"]:-${VarDeletedTag}}"
         DialogHeading="$(run_script 'menu_heading' "${APPNAME}" "${VarName}" "${OptionValue["${OriginalValueOption}"]-}" "${CurrentValueHeading}")"
-        local SelectValueMenuText="${DialogHeading}\nWhat would you like set for ${DC[Highlight]}${CleanVarName}${DC[NC]}?${ValueDescription}"
+        local SelectValueMenuText="${DialogHeading}\n\nWhat would you like set for ${DC[Highlight]}${CleanVarName}${DC[NC]}?${ValueDescription}"
         local SelectValueDialogParams=(
             --stdout
             --title "${DC["Title"]}${Title}"
