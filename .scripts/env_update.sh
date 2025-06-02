@@ -98,11 +98,11 @@ env_update() {
                         # Create array of labels for current app being processed
                         local APPTEMPLATE="${APPTEMPLATESFOLDER}/${APPNAME,,}/${APPNAME,,}.labels.yml"
                         readarray -t APP_LABELS < <(grep --color=never -Po "\scom\.dockstarter\.appvars\.\K[\w]+" "${APPTEMPLATE}" || true)
-                        APP_LABELS=("${APP_LABELS[@]^^}")
+                        APP_LABELS=("${APP_LABELS[@]-^^}")
                     fi
                 fi
                 # shellcheck disable=SC2199
-                if [[ " ${APP_LABELS[@]} " == *" ${VAR} "* ]]; then
+                if [[ " ${APP_LABELS[@]-} " == *" ${VAR} "* ]]; then
                     # Variable is in label file, add it to the built in list
                     ENV_VARS_BUILTIN+=("$VAR")
                 else
