@@ -5,7 +5,7 @@ IFS=$'\n\t'
 app_nicename_from_template() {
     # Return the "NiceName" of the appname(s) passed. If there is no "NiceName", return the "Title__Case" of "appname"
     local AppList
-    AppList=$(xargs -n 1 <<< "$*")
+    AppList="$(xargs -n 1 <<< "$*")"
     for APPNAME in ${AppList}; do
         local AppName="${APPNAME%:*}"
         local appname=${AppName,,}

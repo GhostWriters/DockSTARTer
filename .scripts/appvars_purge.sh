@@ -5,7 +5,7 @@ IFS=$'\n\t'
 appvars_purge() {
     local Title="Purge Variables"
     local AppList
-    AppList=$(xargs -n 1 <<< "$*")
+    AppList="$(xargs -n 1 <<< "$*")"
     for APPNAME in ${AppList^^}; do
         local AppName
         AppName=$(run_script 'app_nicename' "${APPNAME}")
@@ -60,7 +60,7 @@ appvars_purge() {
         fi
 
         local QUESTION
-        QUESTION=$(
+        QUESTION="$(
             cat << EOF
 Would you like to purge these settings for ${AppName}?
 
@@ -70,7 +70,7 @@ ${GlobalLinesToRemove-}
 ${AppEnvFile}:
 ${AppEnvLinesToRemove-}
 EOF
-        )
+        )"
         if [[ ${CI-} == true ]] || run_script 'question_prompt' Y "${QUESTION}\n" "${DC["TitleWarning"]}${Title}" "${FORCE:+Y}"; then
             info "Purging ${AppName} .env variables."
 

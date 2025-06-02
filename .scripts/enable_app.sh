@@ -5,7 +5,7 @@ IFS=$'\n\t'
 enable_app() {
     # Enable the list of apps given.  Apps will be seperate arguments and/or seperated by spaces
     local AppList
-    AppList=$(xargs -n 1 <<< "$*")
+    AppList="$(xargs -n 1 <<< "$*")"
     for AppName in ${AppList}; do
         if run_script 'app_is_builtin' "${AppName}"; then
             info "Enabling application ${AppName^^}"

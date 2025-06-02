@@ -21,7 +21,7 @@ env_backup() {
 
     local COMPOSE_BACKUPS_FOLDER="${DOCKER_VOLUME_CONFIG}/.compose.backups"
     local BACKUPTIME
-    BACKUPTIME=$(date +"%Y%m%d%H%M%S")
+    BACKUPTIME="$(date +"%Y%m%d%H%M%S")"
     local BACKUP_FOLDER="${COMPOSE_BACKUPS_FOLDER}/${COMPOSE_FOLDER_NAME}.${BACKUPTIME}"
 
     info "Copying .env file to ${BACKUP_FOLDER}/.env"

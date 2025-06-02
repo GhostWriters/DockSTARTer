@@ -5,10 +5,10 @@ IFS=$'\n\t'
 app_status() {
     # Enable the status of apps given.  Apps will be seperate arguments and/or seperated by spaces
     local AppList
-    AppList=$(xargs -n 1 <<< "$*")
+    AppList="$(xargs -n 1 <<< "$*")"
     for APPNAME in ${AppList}; do
         local AppName
-        AppName=$(run_script 'app_nicename' "${APPNAME}")
+        AppName="$(run_script 'app_nicename' "${APPNAME}")"
         if ! run_script 'app_is_builtin' "${AppName}"; then
             echo "${AppName} does not exist."
             continue

@@ -8,7 +8,7 @@ app_is_depreciated() {
     LABELS_FILE="$(run_script 'app_instance_file' "${APPNAME}" ".labels.yml")"
     local APP_DEPRECIATED
     if [[ -f ${LABELS_FILE} ]]; then
-        APP_DEPRECIATED=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" "${LABELS_FILE}" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo false)
+        APP_DEPRECIATED="$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" "${LABELS_FILE}" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo false)"
     fi
     if [[ ${APP_DEPRECIATED-} == "true" ]]; then
         return 0

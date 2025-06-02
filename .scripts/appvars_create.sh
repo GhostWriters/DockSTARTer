@@ -4,11 +4,11 @@ IFS=$'\n\t'
 
 appvars_create() {
     local AppList
-    AppList=$(xargs -n 1 <<< "$*")
+    AppList="$(xargs -n 1 <<< "$*")"
     for APPNAME in ${AppList^^}; do
         local appname=${APPNAME,,}
         local AppName
-        AppName=$(run_script 'app_nicename' "${APPNAME}")
+        AppName="$(run_script 'app_nicename' "${APPNAME}")"
 
         if ! run_script 'appname_is_valid' "${appname}"; then
             error "${AppName} is not a valid application name."

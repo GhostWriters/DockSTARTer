@@ -9,7 +9,7 @@ docker_compose() {
     local AppName
     if [[ ${COMPOSEINPUT} == *" "* ]]; then
         APPNAME=${COMPOSEINPUT#* }
-        AppName=$(run_script 'app_nicename' "${APPNAME}")
+        AppName="$(run_script 'app_nicename' "${APPNAME}")"
     fi
     local COMPOSECOMMAND
     local COMMANDINFO

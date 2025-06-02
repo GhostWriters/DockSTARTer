@@ -11,11 +11,11 @@ commands_yml_merge() {
     local COMPOSE_FILE=""
     notice "Adding enabled app templates to merge docker-compose.yml. Please be patient, this can take a while."
     local ENABLED_APPS
-    ENABLED_APPS=$(run_script 'app_list_enabled')
+    ENABLED_APPS="$(run_script 'app_list_enabled')"
     for APPNAME in ${ENABLED_APPS-}; do
         local appname=${APPNAME,,}
         local AppName
-        AppName=$(run_script 'app_nicename' "${APPNAME}")
+        AppName="$(run_script 'app_nicename' "${APPNAME}")"
         local APP_FOLDER
         APP_FOLDER="$(run_script 'app_instance_folder' "${appname}")"
         if [[ -d ${APP_FOLDER}/ ]]; then
