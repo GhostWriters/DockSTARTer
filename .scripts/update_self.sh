@@ -3,8 +3,10 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 update_self() {
+    local BRANCH
+    BRANCH=${1-$(git branch --show)}
+
     local Title="Update DockSTARTer"
-    local BRANCH=${1:-origin/gui-work}
     if ! run_script 'question_prompt' Y "Would you like to update DockSTARTer to ${BRANCH} now?" "${DC["TitleWarning"]}${Title}" "${FORCE:+Y}"; then
         notice "DockSTARTer will not be updated to ${BRANCH}."
         return 1
@@ -19,7 +21,7 @@ update_self() {
 }
 
 commands_update_self() {
-    local BRANCH=${1}
+    local BRANCH=${1-}
     notice "Clearing instances folder"
     rm -R "${INSTANCES_FOLDER:?}/"* &> /dev/null || true
     notice "Updating DockSTARTer to ${BRANCH}."
@@ -28,13 +30,13 @@ commands_update_self() {
     sudo chown -R "$(id -u)":"$(id -g)" "${SCRIPTPATH}/.git" > /dev/null 2>&1 || true
     sudo chown "$(id -u)":"$(id -g)" "${SCRIPTPATH}" > /dev/null 2>&1 || true
     git ls-tree -rt --name-only HEAD | xargs sudo chown "$(id -u)":"$(id -g)" > /dev/null 2>&1 || true
+
     info "Fetching recent changes from git."
-    git fetch --all --prune > /dev/null 2>&1 || fatal "Failed to fetch recent changes from git.\nFailing command: ${F[C]}git fetch --all --prune"
     if [[ ${CI-} != true ]]; then
-        info "Resetting to ${BRANCH}."
-        git reset --hard "${BRANCH}" > /dev/null 2>&1 || fatal "Failed to reset to ${BRANCH}.\nFailing command: ${F[C]}git reset --hard \"${BRANCH}\""
+        git switch --force "${BRANCH-}" || fatal "Failed to switch to github branch ${BRANCH}.\nFailing command: ${F[C]}git switch --force \"${BRANCH}\""
+        git reset --hard origin/${BRANCH-} || fatal "Failed to reset to current branch.\nFailing command: ${F[C]}git reset --hard git origin"
         info "Pulling recent changes from git."
-        git pull > /dev/null 2>&1 || fatal "Failed to pull recent changes from git.\nFailing command: ${F[C]}git pull"
+        git pull || fatal "Failed to pull recent changes from git.\nFailing command: ${F[C]}git pull"
     fi
     info "Cleaning up unnecessary files and optimizing the local repository."
     git gc > /dev/null 2>&1 || true
