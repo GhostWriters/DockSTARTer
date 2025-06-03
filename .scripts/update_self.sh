@@ -4,12 +4,24 @@ IFS=$'\n\t'
 
 update_self() {
     cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
-    local BRANCH
+    local BRANCH CurrentBranch
     BRANCH=${1-$(git branch --show)}
-
+    CurrentBranch="$(git branch --show)"
     local Title="Update DockSTARTer"
-    if ! run_script 'question_prompt' Y "Would you like to update DockSTARTer to ${BRANCH} now?" "${DC["TitleWarning"]}${Title}" "${FORCE:+Y}"; then
-        notice "DockSTARTer will not be updated to ${BRANCH}."
+    local Question Notice
+    if [[ -z ${BRANCH-} ]]; then
+        error "You need to specify a branch to update to."
+        return 1
+    fi
+    if [[ ${BRANCH-} == "${CurrentBranch-}" ]]; then
+        Question="Would you like to update DockSTARTer now?"
+        Notice="DockSTARTer will not be updated."
+    else
+        Question="Would you like to update DockSTARTer from branch ${CurrentBranch} to ${BRANCH} now?"
+        Notice="DockSTARTer will not be updated from ${CurrentBranch} to ${BRANCH}."
+    fi
+    if ! run_script 'question_prompt' Y "${Question}" "${DC["TitleWarning"]}${Title}" "${FORCE:+Y}"; then
+        notice "${Notice}"
         return 1
     fi
 
@@ -37,8 +49,10 @@ commands_update_self() {
     if [[ ${CI-} != true ]]; then
         if [[ -n ${BRANCH-} ]]; then
             git switch --force "${BRANCH}" || fatal "Failed to switch to github branch ${BRANCH}.\nFailing command: ${F[C]}git switch --force \"${BRANCH}\""
+            git reset --hard origin/"${BRANCH}" || fatal "Failed to reset to current branch.\nFailing command: ${F[C]}git reset --hard origin/\"${BRANCH}\""
+        else
+            git reset --hard HEAD || fatal "Failed to reset to current branch.\nFailing command: ${F[C]}git reset --hard HEAD"
         fi
-        git reset --hard HEAD || fatal "Failed to reset to current branch.\nFailing command: ${F[C]}git reset --hard HEAD"
         info "Pulling recent changes from git."
         git pull || fatal "Failed to pull recent changes from git.\nFailing command: ${F[C]}git pull"
     fi
