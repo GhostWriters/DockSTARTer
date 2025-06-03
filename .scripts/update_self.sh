@@ -4,24 +4,12 @@ IFS=$'\n\t'
 
 update_self() {
     cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
-    local BRANCH CurrentBranch
+    local BRANCH
     BRANCH=${1-$(git branch --show)}
-    CurrentBranch="$(git branch --show)"
+
     local Title="Update DockSTARTer"
-    local Question Notice
-    if [[ -z ${BRANCH-} ]]; then
-        error "You need to specify a branch to update to."
-        return 1
-    fi
-    if [[ ${BRANCH-} == "${CurrentBranch-}" ]]; then
-        Question="Would you like to update DockSTARTer now?"
-        Notice="DockSTARTer will not be updated."
-    else
-        Question="Would you like to update DockSTARTer from branch ${CurrentBranch} to ${BRANCH} now?"
-        Notice="DockSTARTer will not be updated from ${CurrentBranch} to ${BRANCH}."
-    fi
-    if ! run_script 'question_prompt' Y "${Question}" "${DC["TitleWarning"]}${Title}" "${FORCE:+Y}"; then
-        notice "${Notice}"
+    if ! run_script 'question_prompt' Y "Would you like to update DockSTARTer to ${BRANCH} now?" "${DC["TitleWarning"]}${Title}" "${FORCE:+Y}"; then
+        notice "DockSTARTer will not be updated to ${BRANCH}."
         return 1
     fi
 
