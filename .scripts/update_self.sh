@@ -49,8 +49,10 @@ commands_update_self() {
     if [[ ${CI-} != true ]]; then
         if [[ -n ${BRANCH-} ]]; then
             git switch --force "${BRANCH}" || fatal "Failed to switch to github branch ${BRANCH}.\nFailing command: ${F[C]}git switch --force \"${BRANCH}\""
+            git reset --hard origin/"${BRANCH}" || fatal "Failed to reset to current branch.\nFailing command: ${F[C]}git reset --hard origin/\"${BRANCH}\""
+        else
+            git reset --hard HEAD || fatal "Failed to reset to current branch.\nFailing command: ${F[C]}git reset --hard HEAD"
         fi
-        git reset --hard HEAD || fatal "Failed to reset to current branch.\nFailing command: ${F[C]}git reset --hard HEAD"
         info "Pulling recent changes from git."
         git pull || fatal "Failed to pull recent changes from git.\nFailing command: ${F[C]}git pull"
     fi
