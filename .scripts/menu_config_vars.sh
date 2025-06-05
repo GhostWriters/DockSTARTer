@@ -28,6 +28,8 @@ menu_config_vars() {
             Title="Edit Application Variables"
             CurrentGlobalEnvFile=$(mktemp)
             CurrentAppEnvFile=$(mktemp)
+            DefaultGlobalEnvFile="$(run_script 'app_instance_file' "${APPNAME}" ".global.env")"
+            DefaultAppEnvFile="$(run_script 'app_instance_file' "${APPNAME}" ".app.env")"
         else
             Title="Edit Global Variables"
             CurrentGlobalEnvFile=$(mktemp)
@@ -51,7 +53,7 @@ menu_config_vars() {
         readarray -t CurrentGlobalEnvLines < <(
             run_script 'env_format_lines' "${CurrentGlobalEnvFile}" "${DefaultGlobalEnvFile}" "${APPNAME}"
         )
-        for line in "${CurrentGlobalEnvLines[@]}"; do
+        for line in "${CurrentGlobalEnvLines[@]-}"; do
             ((++LineNumber))
             CurrentValueOnLine[LineNumber]="${line}"
             local VarName
