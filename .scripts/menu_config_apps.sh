@@ -38,17 +38,18 @@ menu_config_apps() {
         MenuTextRows="$(echo "${MenuTextSize}" | cut -d ' ' -f 1)"
         MenuTextCols="$(echo "${MenuTextSize}" | cut -d ' ' -f 2)"
         local ListCols=${MenuTextCols}
+        local -i TagCols=${#AddAplicationText}
+        local -i ItemCols=0
         local -a AppOptions=()
         for AppName in ${AddedApps}; do
             local AppDescription
             AppDescription=$(run_script 'app_description' "${AppName}")
             AppOptions+=("${AppName}" "${AppDescription}")
-            local CurrentListCols
-            CurrentListCols=$((3 + "${#AppName}" + 2 + "${#AppDescription}" + 3))
-            if [[ ${CurrentListCols} -gt ${ListCols} ]]; then
-                ListCols=${CurrentListCols}
-            fi
+            TagCols=$((${#AppName} > TagCols ? ${#AppName} : TagCols))
+            ItemCols=$((${#AppDescription} > ItemCols ? ${#AppDescription} : ItemCols))
         done
+        local ListCols=$((3 + TagCols + 2 + ItemCols + 3))
+        ListCols=$((MenuTextCols > ListCols ? MenuTextCols : ListCols))
         AppOptions+=("${AddAplicationText}" "")
         local ListRows=$((${#AppOptions[@]} / 2))
 
