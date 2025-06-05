@@ -5,6 +5,8 @@ IFS=$'\n\t'
 menu_config_apps() {
     local Title="Edit Application Variables"
 
+    local AddAplicationText='<ADD APPLICATION>'
+
     local LastAppChoice=""
     while true; do
         local AddedApps
@@ -47,6 +49,7 @@ menu_config_apps() {
                 ListCols=${CurrentListCols}
             fi
         done
+        AppOptions+=("${AddAplicationText}" "")
         local ListRows=$((${#AppOptions[@]} / 2))
 
         WindowRows=$((MenuTextRows + ListRows + DC["TextRowsAdjust"]))
@@ -77,7 +80,12 @@ menu_config_apps() {
         LastAppChoice=${AppChoice}
         case ${DIALOG_BUTTONS[AppChoiceButtonPressed]-} in
             OK)
-                run_script 'menu_config_vars' "${AppChoice}"
+                if [[ ${AppChoice} == "${AddAplicationText}" ]]; then
+                    # Add an Application
+                    continue
+                else
+                    run_script 'menu_config_vars' "${AppChoice}"
+                fi
                 ;;
             CANCEL | ESC)
                 return
