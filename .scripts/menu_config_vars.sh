@@ -28,8 +28,10 @@ menu_config_vars() {
             Title="Edit Application Variables"
             CurrentGlobalEnvFile=$(mktemp)
             CurrentAppEnvFile=$(mktemp)
-            DefaultGlobalEnvFile="$(run_script 'app_instance_file' "${APPNAME}" ".global.env")"
-            DefaultAppEnvFile="$(run_script 'app_instance_file' "${APPNAME}" ".app.env")"
+            if ! run_script 'app_is_user_defined' "${APPNAME}"; then
+                DefaultGlobalEnvFile="$(run_script 'app_instance_file' "${APPNAME}" ".global.env")"
+                DefaultAppEnvFile="$(run_script 'app_instance_file' "${APPNAME}" ".app.env")"
+            fi
         else
             Title="Edit Global Variables"
             CurrentGlobalEnvFile=$(mktemp)
