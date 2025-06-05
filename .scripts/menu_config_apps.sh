@@ -39,7 +39,11 @@ menu_config_apps() {
         for AppName in ${AddedApps}; do
             local AppDescription
             AppDescription=$(run_script 'app_description' "${AppName}")
-            AppOptions+=("${AppName}" "${AppDescription}")
+            if run_script 'app_is_user_defined' "${AppName}"; then
+                AppOptions+=("${AppName}" "${DC[K]}${DC[RV]}${AppDescription}")
+            else
+                AppOptions+=("${AppName}" "${AppDescription}")
+            fi
             TagCols=$((${#AppName} > TagCols ? ${#AppName} : TagCols))
             ItemCols=$((${#AppDescription} > ItemCols ? ${#AppDescription} : ItemCols))
         done
