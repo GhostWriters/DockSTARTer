@@ -82,8 +82,7 @@ menu_config_apps() {
         case ${DIALOG_BUTTONS[AppChoiceButtonPressed]-} in
             OK)
                 if [[ ${AppChoice} == "${AddAplicationText}" ]]; then
-                    # Add an Application
-                    continue
+                    run_script 'menu_add_app'
                 else
                     run_script 'menu_config_vars' "${AppChoice}"
                 fi
