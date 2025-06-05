@@ -5,15 +5,12 @@ IFS=$'\n\t'
 menu_config_apps() {
     local Title="Edit Application Variables"
 
+    local AddAplicationText='<ADD APPLICATION>'
+
     local LastAppChoice=""
     while true; do
         local AddedApps
-        AddedApps=$(run_script 'app_list_referenced')
-        if [[ -z ${AddedApps} ]]; then
-            dialog --title "${DC["TitleError"]}${Title}" --msgbox "There are no apps added to configure." 0 0
-            return
-        fi
-        AddedApps=$(run_script 'app_nicename' "${AddedApps}")
+        AddedApps="$(run_script 'app_nicename' "$(run_script 'app_list_referenced')")"
         local ScreenRows ScreenCols
         local WindowRowsMax WindowColsMax
         local WindowRows WindowCols WindowListRows
@@ -36,17 +33,23 @@ menu_config_apps() {
         MenuTextRows="$(echo "${MenuTextSize}" | cut -d ' ' -f 1)"
         MenuTextCols="$(echo "${MenuTextSize}" | cut -d ' ' -f 2)"
         local ListCols=${MenuTextCols}
+        local -i TagCols=${#AddAplicationText}
+        local -i ItemCols=0
         local -a AppOptions=()
         for AppName in ${AddedApps}; do
             local AppDescription
             AppDescription=$(run_script 'app_description' "${AppName}")
-            AppOptions+=("${AppName}" "${AppDescription}")
-            local CurrentListCols
-            CurrentListCols=$((3 + "${#AppName}" + 2 + "${#AppDescription}" + 3))
-            if [[ ${CurrentListCols} -gt ${ListCols} ]]; then
-                ListCols=${CurrentListCols}
+            if run_script 'app_is_user_defined' "${AppName}"; then
+                AppOptions+=("${AppName}" "${DC[K]}${DC[RV]}${AppDescription}")
+            else
+                AppOptions+=("${AppName}" "${AppDescription}")
             fi
+            TagCols=$((${#AppName} > TagCols ? ${#AppName} : TagCols))
+            ItemCols=$((${#AppDescription} > ItemCols ? ${#AppDescription} : ItemCols))
         done
+        local ListCols=$((3 + TagCols + 2 + ItemCols + 3))
+        ListCols=$((MenuTextCols > ListCols ? MenuTextCols : ListCols))
+        AppOptions+=("${AddAplicationText}" "")
         local ListRows=$((${#AppOptions[@]} / 2))
 
         WindowRows=$((MenuTextRows + ListRows + DC["TextRowsAdjust"]))
@@ -77,7 +80,11 @@ menu_config_apps() {
         LastAppChoice=${AppChoice}
         case ${DIALOG_BUTTONS[AppChoiceButtonPressed]-} in
             OK)
-                run_script 'menu_config_vars' "${AppChoice}"
+                if [[ ${AppChoice} == "${AddAplicationText}" ]]; then
+                    run_script 'menu_add_app'
+                else
+                    run_script 'menu_config_vars' "${AppChoice}"
+                fi
                 ;;
             CANCEL | ESC)
                 return
