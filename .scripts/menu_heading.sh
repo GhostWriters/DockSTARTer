@@ -140,7 +140,7 @@ menu_heading() {
                 ;;
             CurrentValue)
                 if [[ -n ${CurrentValue-} ]]; then
-                    Heading[CurrentValue]="${Label[OriginalValue]}${Highlight}${CurrentValue}${DC[NC]}\n"
+                    Heading[CurrentValue]="${Label[CurrentValue]}${Highlight}${CurrentValue}${DC[NC]}\n"
                     Highlight="${DC[Heading]}"
                 fi
                 ;;
