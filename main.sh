@@ -676,10 +676,25 @@ run_command_dialog() {
     fi
 }
 
+dialog_message() {
+    local Title=${1-}
+    local Message=${2-}
+    dialog --title "${Title}" --msgbox "${Message}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+}
 dialog_error() {
-    local Title=${1:-}
-    local ErrorMessage=${2:-}
-    dialog --title "${DC["TitleError"]}${Title}" --msgbox "${ErrorMessage}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+    local Title=${1-}
+    local Message=${2-}
+    dialog_message "${DC["TitleError"]}${Title}" "${Message}"
+}
+dialog_warning() {
+    local Title=${1-}
+    local Message=${2-}
+    dialog_message "${DC["TitleWarning"]}${Title}" "${Message}"
+}
+dialog_success() {
+    local Title=${1-}
+    local Message=${2-}
+    dialog_message "${DC["TitleSuccess"]}${Title}" "${Message}"
 }
 
 # Test Runner Function
