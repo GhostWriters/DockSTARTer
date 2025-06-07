@@ -409,16 +409,18 @@ menu_value_prompt() {
                             fi
                             ;;
                         P[GU]ID)
-                            if [[ ${StrippedValue} == "0" ]]; then
-                                if run_script 'question_prompt' Y "${DialogHeading}\n\nRunning as ${DC[Highlight]}root${DC[NC]} is not recommended. Would you like to select a different ID?" "${DC["TitleWarning"]}${Title}" ""; then
-                                    ValueValid="false"
+                            if [[ ${StrippedValue} =~ ^[0-9]+$ ]]; then
+                                if [[ ${StrippedValue} -eq 0 ]]; then
+                                    if run_script 'question_prompt' Y "${DialogHeading}\n\nRunning as ${DC[Highlight]}root${DC[NC]} is not recommended. Would you like to select a different ID?" "${DC["TitleWarning"]}${Title}" ""; then
+                                        ValueValid="false"
+                                    else
+                                        ValueValid="true"
+                                    fi
                                 else
                                     ValueValid="true"
                                 fi
-                            elif [[ ${StrippedValue} =~ ^[0-9]+$ ]]; then
-                                ValueValid="true"
                             else
-                                dialog_error "${Title}" "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid ${CleanVarName}. Please try setting ${CleanVarName} again."
+                                dialog_error "${Title}" "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid ${CleanVarName}. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
                                 ValueValid="false"
                             fi
                             ;;
