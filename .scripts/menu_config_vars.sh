@@ -142,7 +142,7 @@ menu_config_vars() {
                 --extra-label "Remove"
                 --cancel-label "Done"
                 --title "${DC["Title"]}${Title}"
-                --menu "${DialogHeading}" "$((ROWS - DC["WindowRowsAdjust"]))" "$((COLS - DC["WindowColsAdjust"]))" -1
+                --menu "${DialogHeading}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" -1
                 "${LineOptions[@]}"
             )
             local -i LineDialogButtonPressed=0

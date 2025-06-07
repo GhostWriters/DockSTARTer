@@ -176,9 +176,8 @@ menu_add_var() {
                     --no-hot-list
                     --title "${DC["Title"]}${Title}"
                 )
-                readm -r ROWS COLS < <(stty size 2> /dev/null)
                 local -i MenuTextLines
-                MenuTextLines="$(dialog "${SelectValueDialogParams[@]}" --print-text-size "${SelectValueMenuText}" "$((ROWS - DC["WindowRowsAdjust"]))" "$((COLS - DC["WindowColsAdjust"]))" | cut -d ' ' -f 1)"
+                MenuTextLines="$(dialog "${SelectValueDialogParams[@]}" --print-text-size "${SelectValueMenuText}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" | cut -d ' ' -f 1)"
                 local -i SelectValueDialogButtonPressed=0
                 local -a SelectValueDialog=(
                     "${SelectValueDialogParams[@]}"
@@ -186,8 +185,8 @@ menu_add_var() {
                     --extra-label "Edit"
                     --cancel-label "Done"
                     --inputmenu "${SelectValueMenuText}"
-                    "$((ROWS - DC["WindowRowsAdjust"]))" "$((COLS - DC["WindowColsAdjust"]))"
-                    "$((ROWS - DC["TextRowsAdjust"] - MenuTextLines))"
+                    "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+                    "$((LINES - DC["TextRowsAdjust"] - MenuTextLines))"
                     "${ValueOptions[@]}"
                 )
                 SelectValueDialogButtonPressed=0
@@ -300,7 +299,7 @@ menu_add_var() {
                     --title "${DC["Title"]}${Title}"
                     --max-input 256
                     --form "${InputValueText}"
-                    "$((ROWS - DC["WindowRowsAdjust"]))" "$((COLS - DC["WindowColsAdjust"]))" 0
+                    "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" 0
                     "${ValueOptions[@]}"
                 )
                 local InputValueDialogButtonPressed=0

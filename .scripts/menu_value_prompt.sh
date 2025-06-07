@@ -289,7 +289,7 @@ menu_value_prompt() {
             --item-help
         )
         local -i MenuTextLines
-        MenuTextLines="$(dialog "${SelectValueDialogParams[@]}" --print-text-size "${SelectValueMenuText}" "$((ROWS - DC["WindowRowsAdjust"]))" "$((COLS - DC["WindowColsAdjust"]))" | cut -d ' ' -f 1)"
+        MenuTextLines="$(dialog "${SelectValueDialogParams[@]}" --print-text-size "${SelectValueMenuText}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" | cut -d ' ' -f 1)"
         local -i SelectValueDialogButtonPressed=0
         local SelectedValue
         local -a SelectValueDialog=(
@@ -298,8 +298,8 @@ menu_value_prompt() {
             --extra-label "Edit"
             --cancel-label "Done"
             --inputmenu "${SelectValueMenuText}"
-            "$((ROWS - DC["WindowRowsAdjust"]))" "$((COLS - DC["WindowColsAdjust"]))"
-            "$((ROWS - DC["TextRowsAdjust"] - MenuTextLines))"
+            "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+            "$((LINES - DC["TextRowsAdjust"] - MenuTextLines))"
             "${ValueOptions[@]}"
         )
         SelectValueDialogButtonPressed=0
@@ -341,7 +341,6 @@ menu_value_prompt() {
                                 ValueValid="true"
                             else
                                 ValueValid="false"
-                                DialogHeading="$(run_script 'menu_heading' "${APPNAME}" "${VarName}" "${OptionValue["${OriginalValueOption}"]-}" "${CurrentValueHeading}")"
                                 dialog_error "${Title}" "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not ${DC[Highlight]}true${DC[NC]} or ${DC[Highlight]}false${DC[NC]}. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
                             fi
                             ;;
@@ -352,7 +351,6 @@ menu_value_prompt() {
                                     ;;
                                 *)
                                     ValueValid="false"
-                                    DialogHeading="$(run_script 'menu_heading' "${APPNAME}" "${VarName}" "${OptionValue["${OriginalValueOption}"]-}" "${CurrentValueHeading}")"
                                     dialog_error "${Title}" "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid network mode. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
                                     ;;
                             esac
@@ -362,7 +360,6 @@ menu_value_prompt() {
                                 ValueValid="true"
                             else
                                 ValueValid="false"
-                                DialogHeading="$(run_script 'menu_heading' "${APPNAME}" "${VarName}" "${OptionValue["${OriginalValueOption}"]-}" "${CurrentValueHeading}")"
                                 dialog_error "${Title}" "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid port. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
                             fi
                             ;;
@@ -373,47 +370,39 @@ menu_value_prompt() {
                                     ;;
                                 *)
                                     ValueValid="false"
-                                    DialogHeading="$(run_script 'menu_heading' "${APPNAME}" "${VarName}" "${OptionValue["${OriginalValueOption}"]-}" "${CurrentValueHeading}")"
                                     dialog_error "${Title}" "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid restart value. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
                                     ;;
                             esac
                             ;;
                         "${APPNAME}__VOLUME_"*)
                             if [[ ${StrippedValue} == "/" ]]; then
-                                DialogHeading="$(run_script 'menu_heading' "${APPNAME}" "${VarName}" "${OptionValue["${OriginalValueOption}"]-}" "${CurrentValueHeading}")"
                                 dialog_error "${Title}" "${DialogHeading}\nCannot use ${DC[Highlight]}/${DC[NC]} for ${DC[Highlight]}${CleanVarName}${DC[NC]}. Please select another folder."
                                 ValueValid="false"
                             elif [[ ${StrippedValue} == *~* ]]; then
                                 local CORRECTED_DIR="${OptionValue["${CurrentValueOption}"]//\~/"${DETECTED_HOMEDIR}"}"
-                                DialogHeading="$(run_script 'menu_heading' "${APPNAME}" "${VarName}" "${OptionValue["${OriginalValueOption}"]-}" "${CurrentValueHeading}")"
                                 if run_script 'question_prompt' Y "${DialogHeading}\nCannot use the ${DC[Highlight]}~${DC[NC]} shortcut in ${DC[Highlight]}${CleanVarName}${DC[NC]}. Would you like to use ${DC[Highlight]}${CORRECTED_DIR}${DC[NC]} instead?" "${DC["TitleWarning"]}${Title}"; then
                                     OptionValue["${CurrentValueOption}"]="${CORRECTED_DIR}"
                                     ValueValid="false"
                                     dialog_success "${Title}" "Returning to the previous menu to confirm selection."
                                 else
                                     ValueValid="false"
-                                    DialogHeading="$(run_script 'menu_heading' "${APPNAME}" "${VarName}" "${OptionValue["${OriginalValueOption}"]-}" "${CurrentValueHeading}")"
                                     dialog_error "${Title}" "${DialogHeading}\nCannot use the ${DC[Highlight]}~${DC[NC]} shortcut in ${DC[Highlight]}${CleanVarName}${DC[DC]}. Please select another folder."
                                 fi
                             elif [[ -d ${StrippedValue} ]]; then
-                                DialogHeading="$(run_script 'menu_heading' "${APPNAME}" "${VarName}" "${OptionValue["${OriginalValueOption}"]-}" "${CurrentValueHeading}")"
                                 if run_script 'question_prompt' Y "${DialogHeading}\nWould you like to set permissions on ${OptionValue["${CurrentValueOption}"]} ?" "${DC["TitleWarning"]}${Title}"; then
                                     run_script_dialog "Setting Permissions" "${DC[Heading]}${StrippedValue}${DC[NC]}" "${DIALOGTIMEOUT}" \
                                         'set_permissions' "${StrippedValue}"
                                 fi
                                 ValueValid="true"
                             else
-                                DialogHeading="$(run_script 'menu_heading' "${APPNAME}" "${VarName}" "${OptionValue["${OriginalValueOption}"]-}" "${CurrentValueHeading}")"
                                 if run_script 'question_prompt' Y "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid path. Would you like to attempt to create it?" "${DC["TitleWarning"]}${Title}"; then
-                                    DialogHeading="$(run_script 'menu_heading' "${APPNAME}" "${VarName}" "${OptionValue["${OriginalValueOption}"]-}" "${CurrentValueHeading}")"
                                     {
                                         mkdir -p "${StrippedValue}" || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p \"${StrippedValue}\""
                                         run_script 'set_permissions' "${StrippedValue}"
                                     } |& dialog_pipe "Creating folder and settings permissions" "${OptionValue["${CurrentValueOption}"]}" "${DIALOGTIMEOUT}"
-                                    dialog_error "${DC["TitleSuccess"]}${Title}" --msgbox "${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} folder was created successfully."
+                                    dialog_error "${DC["TitleSuccess"]}${Title}" --msgbox "${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} folder was created successfully." "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
                                     ValueValid="true"
                                 else
-                                    DialogHeading="$(run_script 'menu_heading' "${APPNAME}" "${VarName}" "${OptionValue["${OriginalValueOption}"]-}" "${CurrentValueHeading}")"
                                     dialog_error "${Title}" "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid path. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
                                     ValueValid="false"
                                 fi
@@ -421,8 +410,7 @@ menu_value_prompt() {
                             ;;
                         P[GU]ID)
                             if [[ ${StrippedValue} == "0" ]]; then
-                                DialogHeading="$(run_script 'menu_heading' "${APPNAME}" "${VarName}" "${OptionValue["${OriginalValueOption}"]-}" "${CurrentValueHeading}")"
-                                if run_script 'question_prompt' Y "${DialogHeading}\nRunning as ${DC[Highlight]}root${DC[NC]} is not recommended. Would you like to select a different ID?" "${DC["TitleWarning"]}${Title}" "Y"; then
+                                if run_script 'question_prompt' Y "Running as root is not recommended. Would you like to select a different ID?" "${DC["TitleWarning"]}${Title}" "Y"; then
                                     ValueValid="false"
                                 else
                                     ValueValid="true"
@@ -430,7 +418,6 @@ menu_value_prompt() {
                             elif [[ ${StrippedValue} =~ ^[0-9]+$ ]]; then
                                 ValueValid="true"
                             else
-                                DialogHeading="$(run_script 'menu_heading' "${APPNAME}" "${VarName}" "${OptionValue["${OriginalValueOption}"]-}" "${CurrentValueHeading}")"
                                 dialog_error "${Title}" "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid ${CleanVarName}. Please try setting ${CleanVarName} again."
                                 ValueValid="false"
                             fi
@@ -441,11 +428,9 @@ menu_value_prompt() {
                     esac
                 fi
                 if ${ValueValid}; then
-                    DialogHeading="$(run_script 'menu_heading' "${APPNAME}" "${VarName}" "${OptionValue["${OriginalValueOption}"]-}" "${CurrentValueHeading}")"
                     if [[ -z ${OptionValue["${CurrentValueOption}"]-} ]]; then
                         if run_script 'question_prompt' N "${DialogHeading}\n\nDo you really want to delete ${DC[Highlight]}${CleanVarName}${DC[NC]}?\n" "${DC["TitleWarning"]}Delete Variable" "" "Delete" "Back"; then
                             # Value is empty, delete the variable
-                            DialogHeading="$(run_script 'menu_heading' "${APPNAME}" "${VarName}" "${OptionValue["${OriginalValueOption}"]-}" "${CurrentValueHeading}")"
                             {
                                 run_script 'env_delete' "${VarName}"
                                 if [[ -n ${APPNAME-} ]]; then
@@ -466,7 +451,6 @@ menu_value_prompt() {
                     elif [[ ${OptionValue["${CurrentValueOption}"]-} == "${OptionValue["${OriginalValueOption}"]-}" ]]; then
                         if run_script 'question_prompt' N "${DialogHeading}\n\nThe value of ${DC[Highlight]}${CleanVarName}${DC[NC]} has not been changed, exit anyways?\n" "${DC["TitleWarning"]}Save Variable" "" "Done" "Back"; then
                             # Value has not changed, confirm exiting
-                            DialogHeading="$(run_script 'menu_heading' "${APPNAME}" "${VarName}" "${OptionValue["${OriginalValueOption}"]-}" "${CurrentValueHeading}")"
                             {
                                 if [[ -n ${APPNAME-} ]]; then
                                     if ! run_script 'app_is_user_defined' "${APPNAME}"; then
@@ -486,7 +470,6 @@ menu_value_prompt() {
                     else
                         if run_script 'question_prompt' N "${DialogHeading}\n\nWould you like to save ${DC[Highlight]}${CleanVarName}${DC[NC]}?\n" "${DC["TitleWarning"]}Save Variable" "" "Save" "Back"; then
                             # Value is valid, save it and exit
-                            DialogHeading="$(run_script 'menu_heading' "${APPNAME}" "${VarName}" "${OptionValue["${OriginalValueOption}"]-}" "${CurrentValueHeading}")"
                             {
                                 run_script 'env_set_literal' "${VarName}" "${OptionValue["${CurrentValueOption}"]}"
                                 if [[ -n ${APPNAME-} ]]; then

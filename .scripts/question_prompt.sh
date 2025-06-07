@@ -40,7 +40,6 @@ question_prompt() {
             fi
             notice "${Question}" &> /dev/null
             notice "${YNPrompt}" &> /dev/null
-            read -r ROWS COLS < <(stty size 2> /dev/null)
             # shellcheck disable=SC2206 # (warning): Quote to prevent word splitting/globbing, or split robustly with mapfile or read -a.
             local -a YesNoDialog=(
                 --stdout
@@ -50,7 +49,7 @@ question_prompt() {
                 --title "${DC["Title"]}${Title}${DC[NC]}"
                 ${DIALOG_DEFAULT-}
                 --yesno "${DC[NC]}${Question}${DC[NC]}"
-                "$((ROWS - DC["WindowRowsAdjust"]))" "$((COLS - DC["WindowColsAdjust"]))"
+                "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
             )
             local -i YesNoDialogButtonPressed=0
             dialog "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?

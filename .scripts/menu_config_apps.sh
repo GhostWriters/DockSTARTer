@@ -11,13 +11,18 @@ menu_config_apps() {
     while true; do
         local AddedApps
         AddedApps="$(run_script 'app_nicename' "$(run_script 'app_list_referenced')")"
+        local ScreenRows ScreenCols
         local WindowRowsMax WindowColsMax
         local WindowRows WindowCols WindowListRows
         local MenuTextSize MenuTextRows MenuTextCols
-
-        read -r ROWS COLS < <(stty size 2> /dev/null)
-        WindowRowsMax=$((ROWS - DC["WindowRowsAdjust"]))
-        WindowColsMax=$((COLS - DC["WindowColsAdjust"]))
+        #local ScreenSize
+        #ScreenSize="$(dialog --stdout --print-maxsize)"
+        #ScreenRows="$(echo "${ScreenSize}" | cut -d ' ' -f 2 | cut -d ',' -f 1)"
+        #ScreenCols="$(echo "${ScreenSize}" | cut -d ' ' -f 3)"
+        ScreenRows="${LINES}"
+        ScreenCols="${COLUMNS}"
+        WindowRowsMax=$((ScreenRows - DC["WindowRowsAdjust"]))
+        WindowColsMax=$((ScreenCols - DC["WindowColsAdjust"]))
 
         local MenuText="Select the application to configure"
         local -a AppChoiceParams=(
