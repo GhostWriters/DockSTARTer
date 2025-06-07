@@ -52,7 +52,7 @@ appvars_purge() {
 
         if [[ -z ${GlobalVarsToRemove[*]-} && -z ${AppEnvVarsToRemove[*]-} ]]; then
             if use_dialog_box; then
-                dialog --title "${DC["TitleError"]}${Title}" --msgbox "${APPNAME} has no variables to remove." 0 0
+                dialog_error "{Title}" "${APPNAME} has no variables to remove."
             else
                 warn "Application ${AppName} has no variables to remove."
             fi

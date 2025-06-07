@@ -676,6 +676,12 @@ run_command_dialog() {
     fi
 }
 
+dialog_error() {
+    local Title=${1:-}
+    local ErrorMessage=${2:-}
+    dialog --title "${DC["TitleError"]}${Title}" --msgbox "${ErrorMessage}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+}
+
 # Test Runner Function
 run_test() {
     local SCRIPTSNAME=${1-}
