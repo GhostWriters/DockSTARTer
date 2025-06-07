@@ -679,12 +679,12 @@ run_command_dialog() {
 dialog_message() {
     local Title=${1-}
     local Message=${2-}
-    dialog --title "${Title}" --msgbox "${ErrorMessage}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+    dialog --title "${Title}" --msgbox "${Message}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
 }
 dialog_error() {
     local Title=${1-}
     local Message=${2-}
-    dialog_message "${DC["TitleError"]}${Title}" "${ErrorMessage}"
+    dialog_message "${DC["TitleError"]}${Title}" "${Message}"
 }
 dialog_warning() {
     local Title=${1-}
