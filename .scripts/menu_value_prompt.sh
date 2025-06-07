@@ -360,7 +360,7 @@ menu_value_prompt() {
                                 ValueValid="true"
                             else
                                 ValueValid="false"
-                                dialog_error "${Title}" "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid port. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
+                                dialog_error "${Title}" "${DialogHeading}\n\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid port. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
                             fi
                             ;;
                         "${APPNAME}__RESTART")
