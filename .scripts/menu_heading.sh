@@ -34,7 +34,7 @@ menu_heading() {
     Indent="$(printf "%${LabelWidth}s" "")"
     local -A Heading=()
 
-    local AppIsDepreciated AppIsDisabled AppIsUserDefined VarIsValid VarIsUserDefined
+    local AppIsValid AppIsDepreciated AppIsDisabled AppIsUserDefined VarIsValid VarIsUserDefined
     local VarFile
     local DefaultVarFile
 
@@ -61,7 +61,8 @@ menu_heading() {
         fi
     fi
 
-    if [[ -n ${AppName-} ]]; then
+    if [[ -n ${AppName-} ]] && run_script 'appname_is_valid' "${AppName}"; then
+        AppIsValid="Y"
         if run_script 'app_is_user_defined' "${AppName}"; then
             AppIsUserDefined='Y'
             if [[ -n ${VarIsValid-} ]]; then
@@ -93,26 +94,28 @@ menu_heading() {
             Application)
                 if [[ -n ${AppName-} ]]; then
                     Heading[Application]="${DC[NC]}${Label[Application]}${Highlight}${AppName}${DC[NC]}"
-                    if [[ ${AppIsDepreciated-} == "Y" ]]; then
-                        Heading[Application]+=" ${DC[HeadingTag]}${Tag[AppDepreciated]}${DC[NC]}"
-                    fi
-                    if [[ ${AppIsDisabled-} == "Y" ]]; then
-                        Heading[Application]+=" ${DC[HeadingTag]}${Tag[AppDisabled]}${DC[NC]}"
-                    fi
-                    if [[ ${AppIsUserDefined-} == "Y" ]]; then
-                        Heading[Application]+=" ${DC[HeadingTag]}${Tag[AppUserDefined]}${DC[NC]}"
-                    fi
-                    Heading[Application]+="\n"
+                    if [[ ${AppIsValid-} == "Y" ]]; then
+                        if [[ ${AppIsDepreciated-} == "Y" ]]; then
+                            Heading[Application]+=" ${DC[HeadingTag]}${Tag[AppDepreciated]}${DC[NC]}"
+                        fi
+                        if [[ ${AppIsDisabled-} == "Y" ]]; then
+                            Heading[Application]+=" ${DC[HeadingTag]}${Tag[AppDisabled]}${DC[NC]}"
+                        fi
+                        if [[ ${AppIsUserDefined-} == "Y" ]]; then
+                            Heading[Application]+=" ${DC[HeadingTag]}${Tag[AppUserDefined]}${DC[NC]}"
+                        fi
+                        Heading[Application]+="\n"
 
-                    local AppDescription
-                    AppDescription="$(run_script 'app_description' "${AppName}")"
-                    local -i ScreenCols
-                    ScreenCols=$(stty size | cut -d ' ' -f 2)
-                    local -i TextWidth=$((ScreenCols - DC["WindowColsAdjust"] - DC["TextColsAdjust"] - LabelWidth))
-                    local -a AppDesciptionArray
-                    readarray -t AppDesciptionArray < <(fmt -w ${TextWidth} <<< "${AppDescription}")
-                    Heading[Application]+="$(printf "${Indent}${DC[HeadingAppDescription]}%s${DC[NC]}\n" "${AppDesciptionArray[@]-}")"
-                    Heading[Application]+="\n\n"
+                        local AppDescription
+                        AppDescription="$(run_script 'app_description' "${AppName}")"
+                        local -i ScreenCols
+                        ScreenCols=$(stty size | cut -d ' ' -f 2)
+                        local -i TextWidth=$((ScreenCols - DC["WindowColsAdjust"] - DC["TextColsAdjust"] - LabelWidth))
+                        local -a AppDesciptionArray
+                        readarray -t AppDesciptionArray < <(fmt -w ${TextWidth} <<< "${AppDescription}")
+                        Heading[Application]+="$(printf "${Indent}${DC[HeadingAppDescription]}%s${DC[NC]}\n" "${AppDesciptionArray[@]-}")"
+                        Heading[Application]+="\n\n"
+                    fi
                     Highlight="${DC[Heading]}"
                 fi
                 ;;
