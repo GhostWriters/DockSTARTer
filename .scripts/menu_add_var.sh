@@ -255,10 +255,7 @@ menu_add_var() {
                         fi
                         if [[ -n ${ErrorMessage-} ]]; then
                             Heading="$(run_script 'menu_heading' "${AppName}" "${VarNameHeading}")"
-                            dialog \
-                                --title "${DC["TitleError"]}${Title}" \
-                                --msgbox "${Heading}\n\n${ErrorMessage}" \
-                                "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+                            dialog_error "${Title}" "${Heading}\n\n${ErrorMessage}"
                             continue
                         fi
                         Question="Create variable ${DC[Highlight]}${VarName}${DC[NC]} for application ${DC[Highlight]}${AppName}${DC[NC]}?\n"
@@ -328,7 +325,7 @@ menu_add_var() {
                         fi
                         if [[ -n ${ErrorMessage} ]]; then
                             Heading="$(run_script 'menu_heading' "${AppNameHeading}" "${VarNameHeading}")"
-                            dialog --title "${DC["TitleError"]}${Title}" --msgbox "${Heading}\n\n${ErrorMessage}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+                            dialog_error "${Title}" "${Heading}\n\n${ErrorMessage}"
                             continue
                         fi
                         Heading="$(run_script 'menu_heading' "${AppNameHeading}" "${VarNameHeading}")"

@@ -332,9 +332,6 @@ menu_value_prompt() {
                     ValueValid="true"
                 else
                     local StrippedValue="${OptionValue["${CurrentValueOption}"]}"
-                    # Strip comments from the value
-                    #StrippedValue="$(sed -E "s/('([^']|'')*'|\"([^\"]|\"\")*\")|(#.*)//g" <<< "${StrippedValue}")"
-                    #dialog --title "${DC["Title"]}${Title}" --msgbox "Original Value=${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]}\nStripped Value=${DC[Highlight]}${StrippedValue}${DC[NC]}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
                     # Unqauote the value
                     StrippedValue="$(sed -E "s|^(['\"])(.*)\1$|\2|g" <<< "${StrippedValue}")"
 
@@ -344,7 +341,7 @@ menu_value_prompt() {
                                 ValueValid="true"
                             else
                                 ValueValid="false"
-                                dialog --title "${DC["TitleError"]}${Title}" --msgbox "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not ${DC[Highlight]}true${DC[NC]} or ${DC[Highlight]}false${DC[NC]}. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again." "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+                                dialog_error "${Title}" "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not ${DC[Highlight]}true${DC[NC]} or ${DC[Highlight]}false${DC[NC]}. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
                             fi
                             ;;
                         "${APPNAME}__NETWORK_MODE")
@@ -354,7 +351,7 @@ menu_value_prompt() {
                                     ;;
                                 *)
                                     ValueValid="false"
-                                    dialog --title "${DC["TitleError"]}${Title}" --msgbox "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid network mode. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again." "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+                                    dialog_error "${Title}" "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid network mode. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
                                     ;;
                             esac
                             ;;
@@ -363,7 +360,7 @@ menu_value_prompt() {
                                 ValueValid="true"
                             else
                                 ValueValid="false"
-                                dialog --title "${DC["TitleError"]}${Title}" --msgbox "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid port. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again." "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+                                dialog_error "${Title}" "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid port. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
                             fi
                             ;;
                         "${APPNAME}__RESTART")
@@ -373,23 +370,23 @@ menu_value_prompt() {
                                     ;;
                                 *)
                                     ValueValid="false"
-                                    dialog --title "${DC["TitleError"]}${Title}" --msgbox "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid restart value. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again." "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+                                    dialog_error "${Title}" "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid restart value. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
                                     ;;
                             esac
                             ;;
                         "${APPNAME}__VOLUME_"*)
                             if [[ ${StrippedValue} == "/" ]]; then
-                                dialog --title "${DC["TitleError"]}${Title}" --msgbox "${DialogHeading}\nCannot use ${DC[Highlight]}/${DC[NC]} for ${DC[Highlight]}${CleanVarName}${DC[NC]}. Please select another folder." 0 0
+                                dialog_error "${Title}" "${DialogHeading}\nCannot use ${DC[Highlight]}/${DC[NC]} for ${DC[Highlight]}${CleanVarName}${DC[NC]}. Please select another folder."
                                 ValueValid="false"
                             elif [[ ${StrippedValue} == *~* ]]; then
                                 local CORRECTED_DIR="${OptionValue["${CurrentValueOption}"]//\~/"${DETECTED_HOMEDIR}"}"
                                 if run_script 'question_prompt' Y "${DialogHeading}\nCannot use the ${DC[Highlight]}~${DC[NC]} shortcut in ${DC[Highlight]}${CleanVarName}${DC[NC]}. Would you like to use ${DC[Highlight]}${CORRECTED_DIR}${DC[NC]} instead?" "${DC["TitleWarning"]}${Title}"; then
                                     OptionValue["${CurrentValueOption}"]="${CORRECTED_DIR}"
                                     ValueValid="false"
-                                    dialog --title "${DC["TitleSuccess"]}${Title}" --msgbox "Returning to the previous menu to confirm selection." "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+                                    dialog_success "${Title}" "Returning to the previous menu to confirm selection."
                                 else
                                     ValueValid="false"
-                                    dialog --title "${DC["TitleError"]}${Title}" --msgbox "${DialogHeading}\nCannot use the ${DC[Highlight]}~${DC[NC]} shortcut in ${DC[Highlight]}${CleanVarName}${DC[DC]}. Please select another folder." "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+                                    dialog_error "${Title}" "${DialogHeading}\nCannot use the ${DC[Highlight]}~${DC[NC]} shortcut in ${DC[Highlight]}${CleanVarName}${DC[DC]}. Please select another folder."
                                 fi
                             elif [[ -d ${StrippedValue} ]]; then
                                 if run_script 'question_prompt' Y "${DialogHeading}\nWould you like to set permissions on ${OptionValue["${CurrentValueOption}"]} ?" "${DC["TitleWarning"]}${Title}"; then
@@ -403,10 +400,10 @@ menu_value_prompt() {
                                         mkdir -p "${StrippedValue}" || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p \"${StrippedValue}\""
                                         run_script 'set_permissions' "${StrippedValue}"
                                     } |& dialog_pipe "Creating folder and settings permissions" "${OptionValue["${CurrentValueOption}"]}" "${DIALOGTIMEOUT}"
-                                    dialog --title "${DC["TitleSuccess"]}${Title}" --msgbox "${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} folder was created successfully." "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+                                    dialog_error "${DC["TitleSuccess"]}${Title}" --msgbox "${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} folder was created successfully." "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
                                     ValueValid="true"
                                 else
-                                    dialog --title "${DC["TitleError"]}${Title}" --msgbox "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid path. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again." "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+                                    dialog_error "${Title}" "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid path. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
                                     ValueValid="false"
                                 fi
                             fi
@@ -421,7 +418,7 @@ menu_value_prompt() {
                             elif [[ ${StrippedValue} =~ ^[0-9]+$ ]]; then
                                 ValueValid="true"
                             else
-                                dialog --title "${DC["TitleError"]}${Title}" --msgbox "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid ${CleanVarName}. Please try setting ${CleanVarName} again." "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+                                dialog_error "${Title}" "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid ${CleanVarName}. Please try setting ${CleanVarName} again."
                                 ValueValid="false"
                             fi
                             ;;
