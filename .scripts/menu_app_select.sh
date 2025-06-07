@@ -41,8 +41,10 @@ menu_app_select() {
             --stdout
             --title "${DC["Title"]}${Title}"
         )
+
+        read -r ROWS COLS < <(stty size 2> /dev/null)
         local -i MenuTextLines
-        MenuTextLines="$(dialog "${SelectedAppsDialogParams[@]}" --print-text-size "${SelectAppsDialogText}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" | cut -d ' ' -f 1)"
+        MenuTextLines="$(dialog "${SelectedAppsDialogParams[@]}" --print-text-size "${SelectAppsDialogText}" "$((ROWS - DC["WindowRowsAdjust"]))" "$((COLS - DC["WindowColsAdjust"]))" | cut -d ' ' -f 1)"
         local -a SelectedAppsDialog=(
             "${SelectedAppsDialogParams[@]}"
             --ok-label "Done"
@@ -50,8 +52,8 @@ menu_app_select() {
             --separate-output
             --checklist
             "${SelectAppsDialogText}"
-            "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
-            "$((LINES - DC["TextRowsAdjust"] - MenuTextLines))"
+            "$((ROWS - DC["WindowRowsAdjust"]))" "$((COLS - DC["WindowColsAdjust"]))"
+            "$((ROWS - DC["TextRowsAdjust"] - MenuTextLines))"
             "${AppList[@]}"
         )
         SelectedAppsDialogButtonPressed=0
@@ -65,18 +67,19 @@ menu_app_select() {
             local Heading=''
             local HeadingRemove
             local HeadingAdd
+            read -r ROWS COLS < <(stty size 2> /dev/null)
             if [[ -n ${AppsToAdd-} || -n ${AppsToRemove-} ]]; then
                 if [[ -n ${AppsToAdd-} ]]; then
                     local FormattedAppList
                     local HeadingAddCommand=' ds --add    '
                     local Indent='             '
-                    FormattedAppList="$(printf "${Indent}%s\n" "$(highlighted_list "${AppsToAdd}")" | fmt -w "${COLUMNS}")"
+                    FormattedAppList="$(printf "${Indent}%s\n" "$(highlighted_list "${AppsToAdd}")" | fmt -w "${COLS}")"
                     HeadingAdd="\n${DC[NC]}${HeadingAddCommand}${FormattedAppList:"${#Indent}"}\n"
                 fi
                 if [[ -n ${AppsToRemove-} ]]; then
                     local HeadingRemoveCommand=' ds --remove '
                     local Indent='             '
-                    FormattedAppList="$(printf "${Indent}%s\n" "$(highlighted_list "${AppsToRemove}")" | fmt -w "${COLUMNS}")"
+                    FormattedAppList="$(printf "${Indent}%s\n" "$(highlighted_list "${AppsToRemove}")" | fmt -w "${COLS}")"
                     HeadingRemove="\n${DC[NC]}${HeadingRemoveCommand}${FormattedAppList:"${#Indent}"}\n"
                 fi
                 Heading="${HeadingAdd-}${HeadingRemove-}"

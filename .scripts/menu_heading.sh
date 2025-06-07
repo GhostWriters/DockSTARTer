@@ -8,6 +8,9 @@ menu_heading() {
     local OriginalValue=${3-}
     local CurrentValue=${4-}
 
+    # shellcheck disable=SC2034  # ROWS and COLS are global variables
+    read -r ROWS COLS < <(stty size 2> /dev/null)
+
     local -A Label=(
         [Application]="Application: "
         [Filename]="File: "
@@ -106,9 +109,7 @@ menu_heading() {
 
                     local AppDescription
                     AppDescription="$(run_script 'app_description' "${AppName}")"
-                    local -i ScreenCols
-                    ScreenCols=$(stty size | cut -d ' ' -f 2)
-                    local -i TextWidth=$((ScreenCols - DC["WindowColsAdjust"] - DC["TextColsAdjust"] - LabelWidth))
+                    local -i TextWidth=$((COLS - DC["WindowColsAdjust"] - DC["TextColsAdjust"] - LabelWidth))
                     local -a AppDesciptionArray
                     readarray -t AppDesciptionArray < <(fmt -w ${TextWidth} <<< "${AppDescription}")
                     Heading[Application]+="$(printf "${Indent}${DC[HeadingAppDescription]}%s${DC[NC]}\n" "${AppDesciptionArray[@]-}")"

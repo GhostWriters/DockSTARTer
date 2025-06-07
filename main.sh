@@ -123,6 +123,8 @@ readonly SCRIPTPATH
 SCRIPTNAME="${SCRIPTPATH}/$(basename "$(get_scriptname)")"
 readonly SCRIPTNAME
 
+declare -ix ROWS COLS
+
 declare -rx DIALOGRC="${SCRIPTPATH}/.dialogrc"
 declare -rx BACKTITLE="DockSTARTer"
 
@@ -633,11 +635,13 @@ dialog_pipe() {
     local Title=${1:-}
     local SubTitle=${2:-}
     local TimeOut=${3:-0}
+
+    read -r ROWS COLS < <(stty size 2> /dev/null)
     dialog \
         --title "${Title}" \
         --timeout "${TimeOut}" \
         --programbox "${DC[RV]}${SubTitle}${DC[NC]}" \
-        "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" || true
+        "$((ROWS - DC["WindowRowsAdjust"]))" "$((COLS - DC["WindowColsAdjust"]))" || true
     echo -n "${BS}"
 }
 # Script Dialog Runner Function
@@ -679,7 +683,9 @@ run_command_dialog() {
 dialog_message() {
     local Title=${1-}
     local Message=${2-}
-    dialog --title "${Title}" --msgbox "${Message}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+
+    read -r ROWS COLS < <(stty size 2> /dev/null)
+    dialog --title "${Title}" --msgbox "${Message}" "$((ROWS - DC["WindowRowsAdjust"]))" "$((COLS - DC["WindowColsAdjust"]))"
 }
 dialog_error() {
     local Title=${1-}
