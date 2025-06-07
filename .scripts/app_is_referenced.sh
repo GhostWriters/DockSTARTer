@@ -5,7 +5,7 @@ IFS=$'\n\t'
 app_is_referenced() {
     local APPNAME=${1-}
 
-    [[ -n $(run_script 'appvars_list' "${APPNAME}") || -n $(run_script 'appvars_list' "${APPNAME}:") ]]
+    [[ -n "$(run_script 'appvars_list' "${APPNAME}")" || -n "$(run_script 'appvars_list' "${APPNAME}:")" ]]
 }
 
 test_app_is_referenced() {
