@@ -114,8 +114,9 @@ menu_heading() {
                         local -a AppDesciptionArray
                         readarray -t AppDesciptionArray < <(fmt -w ${TextWidth} <<< "${AppDescription}")
                         Heading[Application]+="$(printf "${Indent}${DC[HeadingAppDescription]}%s${DC[NC]}\n" "${AppDesciptionArray[@]-}")"
-                        Heading[Application]+="\n\n"
+                        Heading[Application]+="\n"
                     fi
+                    Heading[Application]+="\n"
                     Highlight="${DC[Heading]}"
                 fi
                 ;;
