@@ -11,7 +11,10 @@ menu_add_app() {
     local AppName=""
     #local BaseAppName InstanceName
     while true; do
-        AppNameHeading="${AppName:-${AppNameNone}}"
+        local AppNameHeading="${AppName}"
+        if ! run_script 'appname_is_valid' "${AppName}"; then
+            AppNameHeading="${AppNameNone}"
+        fi
         local InputValueText
         Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
         InputValueText="${Heading}\n\nWhat application would you like add?\n"
@@ -34,9 +37,12 @@ menu_add_app() {
         case ${DIALOG_BUTTONS[InputValueDialogButtonPressed]-} in
             OK)
                 AppName="${AppName// /}"
-                AppNameHeading="${AppName:-${AppNameNone}}"
                 if [[ -z ${AppName} ]]; then
                     continue
+                fi
+                AppNameHeading="${AppName}"
+                if ! run_script 'appname_is_valid' "${AppName}"; then
+                    AppNameHeading="${AppNameNone}"
                 fi
                 local ErrorMessage=''
                 if run_script 'appname_is_valid' "${AppName}"; then
