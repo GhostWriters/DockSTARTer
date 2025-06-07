@@ -677,24 +677,32 @@ run_command_dialog() {
 }
 
 dialog_message() {
-    local Title=${1-}
-    local Message=${2-}
-    dialog --title "${Title}" --msgbox "${Message}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+    local Title=${1:-}
+    local Message=${2:-}
+    local TimeOut=${3:-0}
+    dialog \
+        --title "${Title}" \
+        --timeout "${TimeOut}" \
+        --msgbox "${Message}" \
+        "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
 }
 dialog_error() {
-    local Title=${1-}
-    local Message=${2-}
-    dialog_message "${DC["TitleError"]}${Title}" "${Message}"
+    local Title=${1:-}
+    local Message=${2:-}
+    local TimeOut=${3:-0}
+    dialog_message "${DC["TitleError"]}${Title}" "${Message}" "${TimeOut}"
 }
 dialog_warning() {
-    local Title=${1-}
-    local Message=${2-}
-    dialog_message "${DC["TitleWarning"]}${Title}" "${Message}"
+    local Title=${1:-}
+    local Message=${2:-}
+    local TimeOut=${3:-0}
+    dialog_message "${DC["TitleWarning"]}${Title}" "${Message}" "${TimeOut}"
 }
 dialog_success() {
-    local Title=${1-}
-    local Message=${2-}
-    dialog_message "${DC["TitleSuccess"]}${Title}" "${Message}"
+    local Title=${1:-}
+    local Message=${2:-}
+    local TimeOut=${3:-0}
+    dialog_message "${DC["TitleSuccess"]}${Title}" "${Message}" "${TimeOut}"
 }
 
 # Test Runner Function
