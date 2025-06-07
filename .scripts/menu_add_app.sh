@@ -9,5 +9,5 @@ menu_add_app() {
 }
 test_menu_add_app() {
     # run_script 'menu_add_var'
-    warn "CI does not test menu_add_var."
+    warn "CI does not test menu_add_app."
 }
