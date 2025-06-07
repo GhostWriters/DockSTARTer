@@ -410,7 +410,7 @@ menu_value_prompt() {
                             ;;
                         P[GU]ID)
                             if [[ ${StrippedValue} == "0" ]]; then
-                                if run_script 'question_prompt' Y "Running as root is not recommended. Would you like to select a different ID?" "${DC["TitleWarning"]}${Title}" "Y"; then
+                                if run_script 'question_prompt' Y "${DialogHeading}\n\nRunning as ${DC[Highlight]}root${DC[NC]} is not recommended. Would you like to select a different ID?" "${DC["TitleWarning"]}${Title}" ""; then
                                     ValueValid="false"
                                 else
                                     ValueValid="true"
