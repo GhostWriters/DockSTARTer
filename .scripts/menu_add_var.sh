@@ -175,7 +175,6 @@ menu_add_var() {
                     --item-help
                     --no-hot-list
                     --title "${DC["Title"]}${Title}"
-                    #--item-help
                 )
                 local -i MenuTextLines
                 MenuTextLines="$(dialog "${SelectValueDialogParams[@]}" --print-text-size "${SelectValueMenuText}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" | cut -d ' ' -f 1)"
