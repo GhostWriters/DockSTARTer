@@ -5,10 +5,13 @@ IFS=$'\n\t'
 menu_app_select() {
     local Title="Select Applications"
     dialog --title "${DC["Title"]}${Title}" --infobox "Preparing app menu. Please be patient, this can take a while." 0 0
-    local AppList=()
-    local AddedApps=()
-    while IFS= read -r line; do
-        local APPNAME=${line^^}
+    local -a AppList=()
+    local -a AddedApps=()
+    readarray -t AllApps < <((
+        run_script 'app_list_added'
+        run_script 'app_list_nondepreciated'
+    ) | tr '[:upper:]' '[:lower:]' | sort -u)
+    for APPNAME in "${AllApps[@]-}"; do
         local main_yml
         main_yml="$(run_script 'app_instance_file' "${APPNAME}" ".yml")"
         if [[ -f ${main_yml} ]]; then
@@ -29,7 +32,7 @@ menu_app_select() {
                 AppList+=("${AppName}" "${AppDescription}" "${AppOnOff}")
             fi
         fi
-    done < <(run_script 'app_list_nondepreciated')
+    done
 
     local -i SelectedAppsDialogButtonPressed
     local SelectedApps
