@@ -84,6 +84,7 @@ menu_app_select() {
                 fi
                 Heading="${HeadingAdd-}${HeadingRemove-}"
                 {
+                    run_script 'env_backup'
                     if [[ -n ${AppsToAdd-} ]]; then
                         notice "Creating variables for selected apps."
                         run_script 'appvars_create' "${AppsToAdd}"

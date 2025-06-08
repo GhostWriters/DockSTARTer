@@ -3,6 +3,8 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 env_sanitize() {
+    # Backup the user files
+    run_script 'env_backup'
     # Migrate from old global variable names
     run_script 'env_migrate_global'
     # Copy any variables that might have been deleted
