@@ -10,7 +10,7 @@ env_backup() {
     fi
     if [[ -z ${DOCKER_VOLUME_CONFIG-} ]]; then
         DOCKER_VOLUME_CONFIG="$(run_script 'var_default_value' DOCKER_VOLUME_CONFIG)"
-        run_script 'env_set_literal' "${DOCKER_VOLUME_CONFIG}"
+        run_script 'env_set_literal' DOCKER_VOLUME_CONFIG "${DOCKER_VOLUME_CONFIG}"
         DOCKER_VOLUME_CONFIG="$(run_script 'env_get' DOCKER_VOLUME_CONFIG)"
     fi
     if [[ -z ${DOCKER_VOLUME_CONFIG-} ]]; then
