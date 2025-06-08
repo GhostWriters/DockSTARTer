@@ -10,7 +10,7 @@ menu_config() {
     local Title="Configuration Menu"
     {
         run_script 'appvars_create_all' || true
-    } |& dialog_pipe "${DC["TitleSuccess"]}Updating Variable Files" "" ""
+    } |& dialog_pipe "${DC["TitleSuccess"]}Updating Variable Files" "" "${DIALOGTIMEOUT}"
     local OptionFullSetup="Full Setup"
     local OptionEditGlobalVars="Edit Global Variables"
     local OptionSelectApps="Select Applications"
