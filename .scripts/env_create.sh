@@ -24,6 +24,7 @@ env_create() {
     fi
     run_script 'set_permissions' "${APP_ENV_FOLDER}"
 
+    run_script 'env_backup'
     if [[ -f ${COMPOSE_ENV} ]]; then
         info "${COMPOSE_ENV} found."
         run_script 'env_sanitize'

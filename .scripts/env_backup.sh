@@ -14,7 +14,8 @@ env_backup() {
         DOCKER_VOLUME_CONFIG="$(run_script 'env_get' DOCKER_VOLUME_CONFIG)"
     fi
     if [[ -z ${DOCKER_VOLUME_CONFIG-} ]]; then
-        fatal "Variable DOCKER_VOLUME_CONFIG is not set in the .env file"
+        warn "Can't back up settings, variable DOCKER_VOLUME_CONFIG is not set in the .env file"
+        return
     fi
     info "Taking ownership of ${DOCKER_VOLUME_CONFIG} (non-recursive)."
     sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${DOCKER_VOLUME_CONFIG}" > /dev/null 2>&1 || true
