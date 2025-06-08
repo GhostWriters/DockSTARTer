@@ -41,9 +41,6 @@ menu_add_app() {
                     continue
                 fi
                 AppNameHeading="${AppName}"
-                if ! run_script 'appname_is_valid' "${AppName}"; then
-                    AppNameHeading="${AppNameNone}"
-                fi
                 local ErrorMessage=''
                 if run_script 'appname_is_valid' "${AppName}"; then
                     AppName="$(run_script 'app_nicename' "${AppName}")"
@@ -53,6 +50,7 @@ menu_add_app() {
                         ErrorMessage="The application ${DC[Highlight]}${AppName}${DC[NC]} is already installed.\n\n Please input another application name."
                     fi
                 else
+                    AppNameHeading="${AppNameNone}"
                     ErrorMessage="The application name ${DC[Highlight]}${AppName}${DC[NC]} is not a valid name.\n\n Please input another application name."
                 fi
                 if [[ -n ${ErrorMessage} ]]; then
