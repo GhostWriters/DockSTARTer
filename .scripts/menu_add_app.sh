@@ -44,7 +44,7 @@ menu_add_app() {
                     continue
                 fi
                 BaseAppName="${CleanAppName%% *}"
-                InstanceName="${CleanAppName#${BaseAppName}}"
+                InstanceName="${CleanAppName#"${BaseAppName}"}"
                 InstanceName="${InstanceName// /}"
                 CleanAppName="${BaseAppName}"
                 if [[ -n ${InstanceName} ]]; then
@@ -58,8 +58,6 @@ menu_add_app() {
                     dialog_message "${AppName} Valid"
                     AppName="$(run_script 'app_nicename' "${AppName}")"
                     dialog_message "${AppName} nicename"
-                    #BaseAppName="$(run_script 'appname_to_baseappname' "${AppName}")"
-                    #InstanceName="$(run_script 'appname_to_instancename' "${AppName}")"
                     if run_script 'app_is_referenced' "${AppName}"; then
                         dialog_message "${AppName} Referenced"
                         ErrorMessage="The application ${DC[Highlight]}${AppName}${DC[NC]} is already installed.\n\n Please input another application name."
