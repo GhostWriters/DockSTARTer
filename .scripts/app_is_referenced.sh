@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 app_is_referenced() {
-    local APPNAME=${1-}
+    local APPNAME=${1:-}
 
     if [[ -z "$(run_script 'appvars_list' "${APPNAME}")" ]]; then
         if [[ -z "$(run_script 'appvars_list' "${APPNAME}:")" ]]; then
