@@ -97,12 +97,12 @@ menu_add_app() {
                             Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
                             {
                                 run_script 'appvars_create' "${AppName}"
-                            } |& dialog_pipe "Adding Built In Application" "${Heading}\n\n" "${DIALOGTIMEOUT}"
+                            } |& dialog_pipe "{DC[TitleSuccess]}Adding Built In Application" "${Heading}\n\n" "${DIALOGTIMEOUT}"
                             return
                             ;;
                         EXTRA) # User Defined
                             Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
-                            dialog_success "Adding User Defined Application" "${Heading}" "${DIALOGTIMEOUT}"
+                            dialog_success "{DC[TitleSuccess]}Adding User Defined Application" "${Heading}" "${DIALOGTIMEOUT}"
                             run_script 'menu_add_var' "${AppName}"
                             return
                             ;;
