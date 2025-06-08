@@ -36,17 +36,32 @@ menu_add_app() {
         AppName=$(dialog "${InputValueDialog[@]}") || InputValueDialogButtonPressed=$?
         case ${DIALOG_BUTTONS[InputValueDialogButtonPressed]-} in
             OK)
-                AppName="${AppName// /}"
-                if [[ -z ${AppName} ]]; then
+                # Sanitize the input
+                local CleanAppName
+                CleanAppName="$(tr -c [:alnum:] ' ' <<< "${AppName}" | xargs)"
+                if [[ -z ${CleanAppName//_/} ]]; then
+                    AppName=''
                     continue
                 fi
+                BaseAppName="${CleanAppName%% *}"
+                InstanceName="${CleanAppName#${BaseAppName}}"
+                InstanceName="${InstanceName// /}"
+                CleanAppName="${BaseAppName}"
+                if [[ -n ${InstanceName} ]]; then
+                    CleanAppName+="__${InstanceName}"
+                fi
+                AppName="${CleanAppName}"
+
                 AppNameHeading="${AppName}"
                 local ErrorMessage=''
                 if run_script 'appname_is_valid' "${AppName}"; then
+                    dialog_message "${AppName} Valid"
                     AppName="$(run_script 'app_nicename' "${AppName}")"
+                    dialog_message "${AppName} nicename"
                     #BaseAppName="$(run_script 'appname_to_baseappname' "${AppName}")"
                     #InstanceName="$(run_script 'appname_to_instancename' "${AppName}")"
                     if run_script 'app_is_referenced' "${AppName}"; then
+                        dialog_message "${AppName} Referenced"
                         ErrorMessage="The application ${DC[Highlight]}${AppName}${DC[NC]} is already installed.\n\n Please input another application name."
                     fi
                 else
