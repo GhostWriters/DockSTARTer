@@ -38,7 +38,7 @@ menu_add_app() {
             OK)
                 # Sanitize the input
                 local CleanAppName
-                CleanAppName="$(tr -c [:alnum:] ' ' <<< "${AppName}" | xargs)"
+                CleanAppName="$(tr -c '[:alnum:]' ' ' <<< "${AppName}" | xargs)"
                 if [[ -z ${CleanAppName//_/} ]]; then
                     AppName=''
                     continue
