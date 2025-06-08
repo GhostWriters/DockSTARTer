@@ -20,12 +20,17 @@ env_backup() {
     if [[ -z ${DOCKER_VOLUME_CONFIG-} ]]; then
         fatal "Variable DOCKER_VOLUME_CONFIG is not set in the .env file"
     fi
+    if [[ ${DOCKER_VOLUME_CONFIG-} == *~* ]]; then
+        # Value contains a "~", repace it with the user's home directory
+        DOCKER_VOLUME_CONFIG="${DOCKER_VOLUME_CONFIG//\~/"${DETECTED_HOMEDIR}"}"
+    fi
+
     info "Taking ownership of ${DOCKER_VOLUME_CONFIG} (non-recursive)."
     sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${DOCKER_VOLUME_CONFIG}" > /dev/null 2>&1 || true
 
     local COMPOSE_BACKUPS_FOLDER="${DOCKER_VOLUME_CONFIG}/.compose.backups"
     local BACKUPTIME
-    BACKUPTIME="$(date +"%Y%m%d%H%M%S")"
+    BACKUPTIME="$(date +"%Y%m%d.%H.%M.%S")"
     local BACKUP_FOLDER="${COMPOSE_BACKUPS_FOLDER}/${COMPOSE_FOLDER_NAME}.${BACKUPTIME}"
 
     info "Copying .env file to ${BACKUP_FOLDER}/.env"
