@@ -98,6 +98,7 @@ menu_add_app() {
                             {
                                 run_script 'env_backup'
                                 run_script 'appvars_create' "${AppName}"
+                                run_script 'env_update'
                             } |& dialog_pipe "{DC[TitleSuccess]}Adding Built In Application" "${Heading}\n\n" "${DIALOGTIMEOUT}"
                             return
                             ;;
