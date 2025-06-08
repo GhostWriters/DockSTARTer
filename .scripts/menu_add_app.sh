@@ -96,6 +96,7 @@ menu_add_app() {
                         OK) # Built In
                             Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
                             {
+                                run_script 'env_backup'
                                 run_script 'appvars_create' "${AppName}"
                             } |& dialog_pipe "{DC[TitleSuccess]}Adding Built In Application" "${Heading}\n\n" "${DIALOGTIMEOUT}"
                             return

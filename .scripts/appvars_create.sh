@@ -22,6 +22,9 @@ appvars_create() {
 
             info "Creating environment variables for ${AppName}."
 
+            if ! run_script 'env_var_exists' "${APPNAME}_ENABLED"; then
+                run_script 'env_migrate' "${APPNAME}_ENABLED" "${APPNAME}__ENABLED"
+            fi
             if ! run_script 'env_var_exists' "${APPNAME}__ENABLED"; then
                 run_script 'env_set' "${APPNAME}__ENABLED" true
             fi
