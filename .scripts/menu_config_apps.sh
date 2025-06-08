@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_config_apps() {
-    local Title="Edit Application Variables"
+    local Title="Configure Applications"
 
     local AddAplicationText='<ADD APPLICATION>'
 
