@@ -3,9 +3,16 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 app_is_referenced() {
-    local APPNAME=${1-}
+    local APPNAME=${1:-}
 
-    [[ -n $(run_script 'appvars_list' "${APPNAME}") || -n $(run_script 'appvars_list' "${APPNAME}:") ]]
+    if [[ -z "$(run_script 'appvars_list' "${APPNAME}")" ]]; then
+        if [[ -z "$(run_script 'appvars_list' "${APPNAME}:")" ]]; then
+            false
+            return
+        fi
+    fi
+    true
+    return
 }
 
 test_app_is_referenced() {

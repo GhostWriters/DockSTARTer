@@ -89,7 +89,7 @@ menu_add_var() {
             local -A OptionValue=()
             while true; do
                 VarNameHeading="${VarName:-${VarNameNone}}"
-                Heading="$(run_script 'menu_heading' "${AppName}" "${VarNameHeading}")"
+                Heading="$(run_script 'menu_heading' ":${AppName}" "${VarNameHeading}")"
                 local -a TemplateValueOptions ClearValueOptions EnabledValueOptions AddAllValueOptions StockValueOptions
                 unset TemplateValueOptions ClearValueOptions EnabledValueOptions AddAllValueOptions StockValueOptions
                 local -i OptionsLength=0
@@ -168,7 +168,7 @@ menu_add_var() {
                         "${StockValueOptions[@]-}"
                     )
                 fi
-                Heading="$(run_script 'menu_heading' "${AppName}" "${VarNameHeading}")"
+                Heading="$(run_script 'menu_heading' ":${AppName}" "${VarNameHeading}")"
                 local SelectValueMenuText="${Heading}\n\nWhat variable would you like create for application ${DC[Highlight]}${AppName}${DC[NC]}?"
                 local SelectValueDialogParams=(
                     --stdout
@@ -200,9 +200,9 @@ menu_add_var() {
                             for Option in "${ValidStockOptions[@]}"; do
                                 Question+="\n   ${DC["Highlight"]}${Option// /}${DC[NC]}"
                             done
-                            Heading="$(run_script 'menu_heading' "${AppName}")"
+                            Heading="$(run_script 'menu_heading' ":${AppName}")"
                             if run_script 'question_prompt' N "${Heading}\n\n${Question}" "${DC["TitleWarning"]}Create Stock Variables" "" "Create" "Back"; then
-                                Heading="$(run_script 'menu_heading' "${AppName}" "${VarNameHeading}")"
+                                Heading="$(run_script 'menu_heading' ":${AppName}" "${VarNameHeading}")"
                                 {
                                     notice "Adding variables to ${COMPOSE_ENV}:"
                                     for Option in "${ValidStockOptions[@]}"; do
@@ -234,7 +234,7 @@ menu_add_var() {
                         local ErrorMessage=''
                         local DetectedAppName
                         if [[ -z ${VarName-} ]]; then
-                            Heading="$(run_script 'menu_heading' "${AppName}" "${VarNameHeading}")"
+                            Heading="$(run_script 'menu_heading' ":${AppName}" "${VarNameHeading}")"
                             if run_script 'question_prompt' N "${Heading}\n\nDo you really want to cancel adding a variable?\n" "${DC["TitleWarning"]}Cancel Adding Variable" "" "Done" "Back"; then
                                 # Value is empty, exit
                                 return
@@ -253,15 +253,15 @@ menu_add_var() {
                             fi
                         fi
                         if [[ -n ${ErrorMessage-} ]]; then
-                            Heading="$(run_script 'menu_heading' "${AppName}" "${VarNameHeading}")"
+                            Heading="$(run_script 'menu_heading' ":${AppName}" "${VarNameHeading}")"
                             dialog_error "${Title}" "${Heading}\n\n${ErrorMessage}"
                             continue
                         fi
                         Question="Create variable ${DC[Highlight]}${VarName}${DC[NC]} for application ${DC[Highlight]}${AppName}${DC[NC]}?\n"
-                        Heading="$(run_script 'menu_heading' "${AppName}" "${VarNameHeading}")"
+                        Heading="$(run_script 'menu_heading' "$:{AppName}" "${VarNameHeading}")"
                         if run_script 'question_prompt' N "${Heading}\n\n${Question}" "${DC["TitleWarning"]}Create Variable" "" "Create" "Back"; then
                             Default="$(run_script 'var_default_value' "${VarName}")"
-                            Heading="$(run_script 'menu_heading' "${AppName}" "${VarNameHeading}")"
+                            Heading="$(run_script 'menu_heading' ":${AppName}" "${VarNameHeading}")"
                             run_script_dialog "${DC["TitleSuccess"]}Creating Variable" "${Heading}\n\n" "${DIALOGTIMEOUT}" \
                                 'env_set_literal' "${VarName}" "${Default}"
                             run_script 'menu_value_prompt' "${VarName}"
