@@ -5,14 +5,14 @@ IFS=$'\n\t'
 app_list_added() {
     local APPNAME_REGEX='^[A-Z][A-Z0-9]*(__[A-Z0-9]+)?'
     local ADDED_APPS_REGEX="${APPNAME_REGEX}(?=__ENABLED\s*=)"
-    local -a ADDED_APPS
-    local -a BUILTIN_APPS
+    local -a AddedApps
 
-    #notice "ADDED_APPS_REGEX [ ${ADDED_APPS_REGEX} ]"
-    readarray -t ADDED_APPS < <(grep --color=never -o -P "${ADDED_APPS_REGEX}" "${COMPOSE_ENV}" || true)
-    readarray -t BUILTIN_APPS < <(run_script 'app_list_builtin')
-    local -a COMBINED=("${ADDED_APPS[@]}" "${BUILTIN_APPS[@]}")
-    printf "%s\n" "${COMBINED[@]}" | sort | uniq -d
+    readarray -t AddedApps < <(grep --color=never -o -P "${ADDED_APPS_REGEX}" "${COMPOSE_ENV}" || true)
+    for AppName in "${AddedApps[@]-}"; do
+        if run_script 'app_is_builtin' "${AppName}"; then
+            echo "${AppName}"
+        fi
+    done
 }
 
 test_app_list_added() {
