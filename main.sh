@@ -609,6 +609,7 @@ run_script() {
         # shellcheck source=/dev/null
         source "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh"
         ${SCRIPTSNAME} "$@"
+        return
     else
         fatal "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh not found."
     fi
