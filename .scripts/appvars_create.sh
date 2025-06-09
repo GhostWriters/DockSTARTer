@@ -3,9 +3,10 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 appvars_create() {
-    local AppList
-    AppList="$(xargs -n 1 <<< "$*")"
-    for APPNAME in ${AppList^^}; do
+    local -a AppList
+    
+    readarray -t AppList <<< "$(xargs -n 1 <<< "$*")"
+    for APPNAME in "${AppList[@]-^^}"; do
         local appname=${APPNAME,,}
         local AppName
         AppName="$(run_script 'app_nicename' "${APPNAME}")"
@@ -32,7 +33,7 @@ appvars_create() {
             run_script 'appvars_migrate' "${APPNAME}"
 
             run_script 'env_merge_newonly' "${COMPOSE_ENV}" "${AppDefaultGlobalEnvFile}"
-            run_script 'env_merge_newonly' "${AppEnvFile}" "${AppDefaultAppEnvFile}"
+            #run_script 'env_merge_newonly' "${AppEnvFile}" "${AppDefaultAppEnvFile}"
             info "Environment variables created for ${AppName}."
         else
             warn "Application ${AppName} does not exist."

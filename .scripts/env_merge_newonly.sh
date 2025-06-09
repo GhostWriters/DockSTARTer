@@ -22,14 +22,16 @@ env_merge_newonly() {
         local MERGE_FROM_LINES=()
         # Read all variable lines into an array, stripping whitespace before and after the variable name
         readarray -t MERGE_FROM_LINES < <(sed -n -E "s/^\s*(\w+)\s*=/\1=/p" "${MERGE_FROM_FILE}" || true)
-        for index in "${!MERGE_FROM_LINES[@]}"; do
-            local line=${MERGE_FROM_LINES[$index]}
-            local VARNAME="${line%%=*}"
-            if grep -q -P "^\s*${VARNAME}\s*=\K.*" "${MERGE_TO_FILE}"; then
-                # Variable is already in file, skip it
-                unset 'MERGE_FROM_LINES[index]'
-            fi
-        done
+        if [[ -n ${MERGE_FROM_LINES[*]-} ]]; then
+            for index in "${!MERGE_FROM_LINES[@]}"; do
+                local line=${MERGE_FROM_LINES[$index]}
+                local VARNAME="${line%%=*}"
+                if grep -q -P "^\s*${VARNAME}\s*=\K.*" "${MERGE_TO_FILE}"; then
+                    # Variable is already in file, skip it
+                    unset 'MERGE_FROM_LINES[index]'
+                fi
+            done
+        fi
         if [[ -n ${MERGE_FROM_LINES[*]-} ]]; then
             notice "Adding variables to ${MERGE_TO_FILE}:"
             for line in "${MERGE_FROM_LINES[@]}"; do
