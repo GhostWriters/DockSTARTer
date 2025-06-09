@@ -32,13 +32,13 @@ appvars_create() {
             run_script 'appvars_migrate' "${APPNAME}"
 
             run_script 'env_merge_newonly' "${COMPOSE_ENV}" "${AppDefaultGlobalEnvFile}"
-            #run_script 'env_merge_newonly' "${AppEnvFile}" "${AppDefaultAppEnvFile}"
+            run_script 'env_merge_newonly' "${AppEnvFile}" "${AppDefaultAppEnvFile}"
+            exit
             info "Environment variables created for ${AppName}."
         else
             warn "Application ${AppName} does not exist."
         fi
     done
-    exit
 }
 
 test_appvars_create() {

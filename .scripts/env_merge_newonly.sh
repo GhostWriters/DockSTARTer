@@ -20,26 +20,26 @@ env_merge_newonly() {
         warn "File ${MergeFromFile} does not exist."
     else
         local MergeFromLines=()
+        local NewLines=()
         # Read all variable lines into an array, stripping whitespace before and after the variable name
-        readarray -t MergeFromLines < <(sed -n -E "s/^\s*(\w+)\s*=/\1=/p" "${MergeFromFile}" || true)
-        if [[ -n ${MergeFromLines[*]-} ]]; then
+        readarray -t MergeFromLines < <(sed -n -E "s/^\s*(\w+)\s*=/\1=/p" "${MergeFromFile}"  2> /dev/null || true)
+        if [[ ${#MergeFromLines[@]} != 0 ]]; then
             for index in "${!MergeFromLines[@]}"; do
-                local line=${MergeFromLines[index]}
+                local line="${MergeFromLines[index]}"
                 local VarName="${line%%=*}"
-                if grep -q -P "^\s*${VarName}\s*=\K.*" "${MergeToFile}"; then
+                if grep -q -P "^\s*${VarName}\s*=\K.*" "${MergeToFile}" 2> /dev/null; then
                     # Variable is already in file, skip it
-                    unset 'MergeFromLines[index]'
+                    unset MergeFromLines[index]
                 fi
             done
         fi
-        if [[ -n ${MergeFromLines[*]-} ]]; then
+        if [[ ${#MergeFromLines[@]} != 0 ]]; then
             notice "Adding variables to ${MergeToFile}:"
-            MergeFromLines=("${MergeFromLines[@]}")
-            for line in "${MergeFromLines[@]}"; do
-                notice "   $line"
+            for index in "${!MergeFromLines[@]}"; do
+                notice "   ${MergeFromLines[index]}"
             done
             echo >> "${MergeToFile}" || fatal "Failed to write to ${MergeToFile}.\nFailing command: echo >> \"${MergeToFile}\""
-            printf '%s\n' "${MergeFromLines[@]}" >> "${MergeToFile}" || fatal "Failed to add variables to ${MergeToFile}"
+            printf '%s\n' "${MergeFromLines[@]}" >> "${MergeToFile}" 2> /dev/null || fatal "Failed to add variables to ${MergeToFile}"
         fi
     fi
 }
