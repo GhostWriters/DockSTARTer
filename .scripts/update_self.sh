@@ -3,7 +3,8 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 update_self() {
-    local BRANCH=${1:-origin/master}
+    cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
+    local BRANCH=${1-$(git branch --show)}
     if run_script 'question_prompt' "${PROMPT-}" Y "Would you like to update DockSTARTer to ${BRANCH} now?"; then
         notice "Updating DockSTARTer to ${BRANCH}."
     else
@@ -19,7 +20,9 @@ update_self() {
     git fetch --all --prune > /dev/null 2>&1 || fatal "Failed to fetch recent changes from git.\nFailing command: ${F[C]}git fetch --all --prune"
     if [[ ${CI-} != true ]]; then
         info "Resetting to ${BRANCH}."
-        git reset --hard "${BRANCH}" > /dev/null 2>&1 || fatal "Failed to reset to ${BRANCH}.\nFailing command: ${F[C]}git reset --hard \"${BRANCH}\""
+        git switch --force "${BRANCH}" > /dev/null 2>&1 || fatal "Failed to switch to github branch ${BRANCH}.\nFailing command: ${F[C]}git switch --force \"${BRANCH}\""
+        git reset --hard origin/"${BRANCH}" > /dev/null 2>&1 || fatal "Failed to reset to current branch.\nFailing command: ${F[C]}git reset --hard origin/\"${BRANCH}\""
+
         info "Pulling recent changes from git."
         git pull > /dev/null 2>&1 || fatal "Failed to pull recent changes from git.\nFailing command: ${F[C]}git pull"
     fi
