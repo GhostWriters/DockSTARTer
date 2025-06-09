@@ -4,6 +4,7 @@ IFS=$'\n\t'
 
 env_migrate_global() {
     # Rename global vars
+    return
     run_script 'env_migrate' DOCKERCONFDIR DOCKER_VOLUME_CONFIG
     run_script 'env_migrate' DOCKERGID DOCKER_GID
     run_script 'env_migrate' DOCKERHOSTNAME DOCKER_HOSTNAME
