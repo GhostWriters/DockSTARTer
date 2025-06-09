@@ -57,7 +57,8 @@ env_sanitize() {
     done
     for VarName in "${VarList[@]-}"; do
         # Get the value including quotes
-        local Value="$(run_script 'env_get_literal' "${VarName}")"
+        local Value
+        Value="$(run_script 'env_get_literal' "${VarName}")"
         if [[ ${Value} == *~* ]]; then
             # Value contains a "~", repace it with the user's home directory
             Value="${Value//\~/"${DETECTED_HOMEDIR}"}"
