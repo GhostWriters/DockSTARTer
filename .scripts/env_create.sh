@@ -36,7 +36,7 @@ env_create() {
         run_script 'env_sanitize'
         if [[ -n ${DefaultApps-} && -z $(run_script 'app_list_referenced') ]]; then
             info "Installing default applications."
-        #   run_script 'appvars_create' "${DefaultApps[@]}"
+            run_script 'appvars_create' "${DefaultApps[@]}"
             run_script 'env_sanitize'
         fi
     fi
