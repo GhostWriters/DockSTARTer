@@ -51,17 +51,18 @@ env_sanitize() {
     local -a AppList
     readarray -t AppList < <(run_script 'app_list_referenced')
     for AppName in "${AppList[@]-}"; do
-        readarray -t -O ${#VarList[@]} VarList < <(grep -o -P "^\s*\K${AppName^^}__VOLUME_[a-zA-Z0-9]+[a-zA-Z0-9_]*(?=\s*=)" "${COMPOSE_ENV}" || true)
+        readarray -t -O ${#VarList[@]} VarList < <(
+            grep -o -P "^\s*\K${AppName^^}__VOLUME_[a-zA-Z0-9]+[a-zA-Z0-9_]*(?=\s*=)" "${COMPOSE_ENV}" || true
+        )
     done
     for VarName in "${VarList[@]-}"; do
         # Get the value including quotes
-        Value="$(run_script 'env_get_literal' "${VarName}")"
+        local Value="$(run_script 'env_get_literal' "${VarName}")"
         if [[ ${Value} == *~* ]]; then
             # Value contains a "~", repace it with the user's home directory
-            local CorrectedValue
-            CorrectedValue="${Value//\~/"${DETECTED_HOMEDIR}"}"
-            notice "Setting ${VarName}=${CorrectedValue}"
-            run_script 'env_set_literal' "${VarName}" "${CorrectedValue}"
+            Value="${Value//\~/"${DETECTED_HOMEDIR}"}"
+            notice "Setting ${VarName}=${Value}"
+            run_script 'env_set_literal' "${VarName}" "${Value}"
         fi
     done
 }

@@ -15,12 +15,13 @@ appvars_migrate() {
         # Read "migrate" file into an array. Remove comments. Convert whitespace to single spaces. Remove empty lines.
         readarray -t MigrateLines < <(sed -E 's/#.*$//g ; s/\s+/ /g ; /^\s*$/d' "${MIGRATE_FILE}" || true)
         for line in "${MigrateLines[@]}"; do
-            local ToVar
-            local FromVar
-            ToVar=${line%% *}
-            FromVar=${line##"${ToVar}" }
-
-            run_script 'env_migrate' "${FromVar}" "${ToVar}"
+            local ToVar="${line%% *}"
+            local FromVar="${line##"${ToVar}" }"
+            ToVar="${ToVar// /}"
+            FromVar="${FromVar// /}"
+            if [[ -n ${FromVar} && -n ${ToVar} ]]; then
+                run_script 'env_migrate' "${FromVar}" "${ToVar}"
+            fi
         done
     fi
 }
