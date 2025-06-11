@@ -21,14 +21,14 @@ env_merge_newonly() {
     else
         local MergeFromLines=()
         # Read all variable lines into an array, stripping whitespace before and after the variable name
-        readarray -t MergeFromLines < <(sed -n -E "s/^\s*(\w+)\s*=/\1=/p" "${MergeFromFile}"  2> /dev/null || true)
+        readarray -t MergeFromLines < <(sed -n -E "s/^\s*(\w+)\s*=/\1=/p" "${MergeFromFile}" 2> /dev/null || true)
         if [[ ${#MergeFromLines[@]} != 0 ]]; then
             for index in "${!MergeFromLines[@]}"; do
                 local line="${MergeFromLines[index]}"
                 local VarName="${line%%=*}"
                 if grep -q -P "^\s*${VarName}\s*=\K.*" "${MergeToFile}" 2> /dev/null; then
                     # Variable is already in file, skip it
-                    unset MergeFromLines[index]
+                    unset 'MergeFromLines[$index]'
                 fi
             done
         fi
