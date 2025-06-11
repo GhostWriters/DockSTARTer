@@ -36,8 +36,8 @@ env_merge_newonly() {
             notice "Adding variables to ${MergeToFile}:"
             echo >> "${MergeToFile}" || fatal "Failed to write to ${MergeToFile}.\nFailing command: echo >> \"${MergeToFile}\""
             for index in "${!MergeFromLines[@]}"; do
-                local line="${MergeFromLines[index]}"
-                notice "   ${line}"
+                local line="${MergeFromLines[index]}" 2> /dev/null
+                notice "   ${line}" 2> /dev/null
                 env -i line="${line}" MergeToFile="${MergeToFile}" \
                     printf '%s\n' "${line}" >> "${MergeToFile}" 2> /dev/null || fatal "Failed to add variable to ${MergeToFile}"
             done
