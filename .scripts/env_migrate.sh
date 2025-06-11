@@ -18,9 +18,6 @@ env_migrate() {
     local FromVarFile=${3:-$COMPOSE_ENV}
     local ToVarFile=${4:-$FromVarFile}
 
-    if [[ -z ${FromVar-} || -z ${ToVar-} ]]; then
-        return
-    fi
     # Change the .env file to use `appname.env' if 'appname:' preceeds the variable name, and remove 'appname:' from the name
     if [[ ${FromVar} == *":"* ]]; then
         FromVarFile="$(run_script 'app_env_file' "${FromVar%:*}")"
@@ -42,7 +39,7 @@ env_migrate() {
         local VarFile=${FromVarFile}
         local -a FoundVarList=()
         readarray -t FoundVarList < <(grep -o -P "^\s*\K${FromVar}(?=\s*=)" "${VarFile}" || true)
-        for FoundVar in "${FoundVarList[@]-}"; do
+        for FoundVar in "${FoundVarList[@]}"; do
             run_script 'env_rename' "${FoundVar}" "${ToVar}" "${VarFile}"
             if [[ ${VarFile} == "${COMPOSE_ENV}" ]] && ! run_script 'env_var_exists' "${FoundVar}"; then
                 # Renaming from the .env file and the variable was successfully renamed.
