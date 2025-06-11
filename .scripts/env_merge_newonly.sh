@@ -38,7 +38,8 @@ env_merge_newonly() {
             for index in "${!MergeFromLines[@]}"; do
                 local line="${MergeFromLines[index]}"
                 notice "   ${line}"
-                printf '%s\n' "${line}" >> "${MergeToFile}" 2> /dev/null || fatal "Failed to add variable to ${MergeToFile}"
+                env -i line="${line}" MergeToFile="${MergeToFile}" \
+                    printf '%s\n' "${line}" >> "${MergeToFile}" 2> /dev/null || fatal "Failed to add variable to ${MergeToFile}"
             done
         fi
     fi
