@@ -20,7 +20,6 @@ env_merge_newonly() {
         warn "File ${MergeFromFile} does not exist."
     else
         local MergeFromLines=()
-        local NewLines=()
         # Read all variable lines into an array, stripping whitespace before and after the variable name
         readarray -t MergeFromLines < <(sed -n -E "s/^\s*(\w+)\s*=/\1=/p" "${MergeFromFile}"  2> /dev/null || true)
         if [[ ${#MergeFromLines[@]} != 0 ]]; then
