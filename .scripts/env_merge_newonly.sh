@@ -21,28 +21,27 @@ env_merge_newonly() {
     else
         local MergeFromLines=()
         # Read all variable lines into an array, stripping whitespace before and after the variable name
-        readarray -t MergeFromLines < <(sed -n -E "s/^\s*(\w+)\s*=/\1=/p" "${MergeFromFile}" 2> /dev/null || true)
-        if [[ ${#MergeFromLines[@]} != 0 ]]; then
+        readarray -t MergeFromLines < <(sed -n -E "s/^\s*(\w+)\s*=/\1=/p" "${MergeFromFile}" || true)
+        if [[ -n ${MergeFromLines[*]-} ]]; then
             for index in "${!MergeFromLines[@]}"; do
-                local line="${MergeFromLines[index]}" 2> /dev/null
-                local VarName="${line%%=*}" 2> /dev/null
-                if grep -q -P "^\s*${VarName}\s*=\K.*" "${MergeToFile}" 2> /dev/null; then
+                local line=${MergeFromLines[$index]}
+                local VarName="${line%%=*}"
+                if grep -q -P "^\s*${VarName}\s*=\K.*" "${MergeToFile}"; then
                     # Variable is already in file, skip it
-                    unset 'MergeFromLines[$index]' 2> /dev/null
+                    unset 'MergeFromLines[index]'
                 fi
             done
         fi
-        if [[ ${#MergeFromLines[@]} != 0 ]]; then
+        if [[ -n ${MergeFromLines[*]-} ]]; then
             notice "Adding variables to ${MergeToFile}:"
-            echo >> "${MergeToFile}" || fatal "Failed to write to ${MergeToFile}.\nFailing command: echo >> \"${MergeToFile}\""
-            for index in "${!MergeFromLines[@]}"; do
-                local line="${MergeFromLines[index]}" 2> /dev/null
-                notice "   ${line}"
-                env -i line="${line}" MergeToFile="${MergeToFile}" \
-                    printf '%s\n' "${line}" >> "${MergeToFile}" 2> /dev/null || fatal "Failed to add variable to ${MergeToFile}"
+            for line in "${MergeFromLines[@]}"; do
+                notice "   $line"
             done
+            echo >> "${MergeToFile}" || fatal "Failed to write to ${MergeToFile}.\nFailing command: echo >> \"${MergeToFile}\""
+            printf '%s\n' "${MergeFromLines[@]}" >> "${MergeToFile}" || fatal "Failed to add variables to ${MergeToFile}"
         fi
     fi
+
 }
 
 test_env_merge_newonly() {
