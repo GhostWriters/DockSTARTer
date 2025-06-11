@@ -33,7 +33,6 @@ appvars_create() {
 
             run_script 'env_merge_newonly' "${COMPOSE_ENV}" "${AppDefaultGlobalEnvFile}"
             run_script 'env_merge_newonly' "${AppEnvFile}" "${AppDefaultAppEnvFile}"
-            exit
             info "Environment variables created for ${AppName}."
         else
             warn "Application ${AppName} does not exist."
