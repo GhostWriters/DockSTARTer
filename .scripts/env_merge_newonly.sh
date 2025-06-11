@@ -35,11 +35,12 @@ env_merge_newonly() {
         fi
         if [[ ${#MergeFromLines[@]} != 0 ]]; then
             notice "Adding variables to ${MergeToFile}:"
-            for index in "${!MergeFromLines[@]}"; do
-                notice "   ${MergeFromLines[index]}"
-            done
             echo >> "${MergeToFile}" || fatal "Failed to write to ${MergeToFile}.\nFailing command: echo >> \"${MergeToFile}\""
-            printf '%s\n' "${MergeFromLines[@]}" >> "${MergeToFile}" 2> /dev/null || fatal "Failed to add variables to ${MergeToFile}"
+            for index in "${!MergeFromLines[@]}"; do
+                local line="${MergeFromLines[index]}"
+                notice "   ${line}"
+                printf '%s\n' "${line}" >> "${MergeToFile}" 2> /dev/null || fatal "Failed to add variable to ${MergeToFile}"
+            done
         fi
     fi
 }
