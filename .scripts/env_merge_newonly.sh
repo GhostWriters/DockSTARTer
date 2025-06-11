@@ -24,11 +24,11 @@ env_merge_newonly() {
         readarray -t MergeFromLines < <(sed -n -E "s/^\s*(\w+)\s*=/\1=/p" "${MergeFromFile}" 2> /dev/null || true)
         if [[ ${#MergeFromLines[@]} != 0 ]]; then
             for index in "${!MergeFromLines[@]}"; do
-                local line="${MergeFromLines[index]}"
-                local VarName="${line%%=*}"
+                local line="${MergeFromLines[index]}" 2> /dev/null
+                local VarName="${line%%=*}" 2> /dev/null
                 if grep -q -P "^\s*${VarName}\s*=\K.*" "${MergeToFile}" 2> /dev/null; then
                     # Variable is already in file, skip it
-                    unset 'MergeFromLines[$index]'
+                    unset 'MergeFromLines[$index]' 2> /dev/null
                 fi
             done
         fi
@@ -37,7 +37,7 @@ env_merge_newonly() {
             echo >> "${MergeToFile}" || fatal "Failed to write to ${MergeToFile}.\nFailing command: echo >> \"${MergeToFile}\""
             for index in "${!MergeFromLines[@]}"; do
                 local line="${MergeFromLines[index]}" 2> /dev/null
-                notice "   ${line}" 2> /dev/null
+                notice "   ${line}"
                 env -i line="${line}" MergeToFile="${MergeToFile}" \
                     printf '%s\n' "${line}" >> "${MergeToFile}" 2> /dev/null || fatal "Failed to add variable to ${MergeToFile}"
             done
