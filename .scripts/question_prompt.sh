@@ -66,10 +66,8 @@ question_prompt() {
                     ;;
                 *)
                     if [[ -n ${DIALOG_BUTTONS[YesNoDialogButtonPressed]-} ]]; then
-                        clear
                         fatal "Unexpected dialog button '${DIALOG_BUTTONS[YesNoDialogButtonPressed]}' pressed in question_prompt."
                     else
-                        clear
                         fatal "Unexpected dialog button value '${YesNoDialogButtonPressed}' pressed in question_prompt."
                     fi
                     ;;

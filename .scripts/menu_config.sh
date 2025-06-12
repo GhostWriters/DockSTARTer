@@ -9,6 +9,7 @@ menu_config() {
 
     local Title="Configuration Menu"
     {
+        run_script 'env_backup'
         run_script 'appvars_create_all' || true
     } |& dialog_pipe "${DC["TitleSuccess"]}Updating Variable Files" "" "${DIALOGTIMEOUT}"
     local OptionFullSetup="Full Setup"
@@ -90,10 +91,8 @@ menu_config() {
                 ;;
             *)
                 if [[ -n ${DIALOG_BUTTONS[ConfigDialogButtonPressed]-} ]]; then
-                    clear
                     fatal "Unexpected dialog button '${DIALOG_BUTTONS[ConfigDialogButtonPressed]}' pressed in menu_config."
                 else
-                    clear
                     fatal "Unexpected dialog button value '${ConfigDialogButtonPressed}' pressed in menu_config."
                 fi
                 ;;
