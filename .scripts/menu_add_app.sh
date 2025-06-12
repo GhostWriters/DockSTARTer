@@ -112,10 +112,8 @@ menu_add_app() {
                             ;;
                         *)
                             if [[ -n ${DIALOG_BUTTONS[YesNoDialogButtonPressed]-} ]]; then
-                                clear
                                 fatal "Unexpected dialog button '${DIALOG_BUTTONS[YesNoDialogButtonPressed]}' pressed in menu_add_app."
                             else
-                                clear
                                 fatal "Unexpected dialog button value '${YesNoDialogButtonPressed}' pressed in menu_add_app."
                             fi
                             ;;
@@ -127,10 +125,8 @@ menu_add_app() {
                 ;;
             *)
                 if [[ -n ${DIALOG_BUTTONS[InputValueDialogButtonPressed]-} ]]; then
-                    clear
                     fatal "Unexpected dialog button '${DIALOG_BUTTONS[InputValueDialogButtonPressed]}' pressed in menu_add_app."
                 else
-                    clear
                     fatal "Unexpected dialog button value '${InputValueDialogButtonPressed}' pressed in menu_add_app."
                 fi
                 ;;

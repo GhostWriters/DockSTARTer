@@ -204,10 +204,8 @@ menu_config_vars() {
                     ;;
                 *)
                     if [[ -n ${DIALOG_BUTTONS[LineDialogButtonPressed]-} ]]; then
-                        clear
                         fatal "Unexpected dialog button '${DIALOG_BUTTONS[LineDialogButtonPressed]}' pressed in menu_config_vars."
                     else
-                        clear
                         fatal "Unexpected dialog button value '${LineDialogButtonPressed}' pressed in menu_config_apps."
                     fi
                     ;;

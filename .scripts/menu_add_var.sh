@@ -358,10 +358,8 @@ menu_add_var() {
                         ;;
                     *)
                         if [[ -n ${DIALOG_BUTTONS[InputValueDialogButtonPressed]-} ]]; then
-                            clear
                             fatal "Unexpected dialog button '${DIALOG_BUTTONS[InputValueDialogButtonPressed]}' pressed in menu_add_var."
                         else
-                            clear
                             fatal "Unexpected dialog button value '${InputValueDialogButtonPressed}' pressed in menu_add_var."
                         fi
                         ;;

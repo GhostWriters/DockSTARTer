@@ -91,10 +91,8 @@ menu_config() {
                 ;;
             *)
                 if [[ -n ${DIALOG_BUTTONS[ConfigDialogButtonPressed]-} ]]; then
-                    clear
                     fatal "Unexpected dialog button '${DIALOG_BUTTONS[ConfigDialogButtonPressed]}' pressed in menu_config."
                 else
-                    clear
                     fatal "Unexpected dialog button value '${ConfigDialogButtonPressed}' pressed in menu_config."
                 fi
                 ;;
