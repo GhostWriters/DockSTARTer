@@ -57,10 +57,8 @@ menu_main() {
                 ;;
             *)
                 if [[ -n ${DIALOG_BUTTONS[MainDialogButtonPressed]-} ]]; then
-                    clear
                     fatal "Unexpected dialog button '${DIALOG_BUTTONS[MainDialogButtonPressed]}' pressed in menu_main."
                 else
-                    clear
                     fatal "Unexpected dialog button value '${MainDialogButtonPressed}' pressed in menu_main."
                 fi
                 ;;
