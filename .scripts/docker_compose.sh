@@ -11,44 +11,64 @@ docker_compose() {
         APPNAME=${ComposeInput#* }
         AppName="$(run_script 'app_nicename' "${APPNAME}")"
     fi
+
+    local Title="Docker Compose"
+
+    local Question YesNotice NoNotice
+    local CommandNotice CommandNotice2
     local ComposeCommand ComposeCommand2
-    local CommandNotice
     case ${Command} in
         down)
+            Question="Stop and remove ${AppName:-containers, networks, volumes, and images created by DockSTARTer}?"
+            YesNotice="Stopping and removing ${AppName:-containers, networks, volumes, and images created by DockSTARTer}."
+            NoNotice="Not stopping and removing ${AppName:-containers, networks, volumes, and images created by DockSTARTer}."
             ComposeCommand="down --remove-orphans ${APPNAME-}"
-            CommandNotice="Stopping and removing ${AppName:-containers, networks, volumes, and images created by DockSTARTer}."
             ;;
         pull)
+            Question="Pull the latest images for ${AppName:-all enabled services}?"
+            YesNotice="Pulling the latest images for ${AppName:-all enabled services}."
+            NoNotice="Not pulling the latest images for ${AppName:-all enabled services}."
             ComposeCommand="pull --include-deps ${APPNAME-}"
-            CommandNotice="Pulling the latest images for ${AppName:-all enabled services}."
             ;;
         restart)
+            Question="Restart ${AppName:-all stopped and running services}?"
+            YesNotice="Restarting ${AppName:-all stopped and running services}."
+            NoNotice="Not restarting ${AppName:-all stopped and running services}."
             ComposeCommand="restart ${APPNAME-}"
-            CommandNotice="Restarting ${AppName:-all stopped and running services}."
             ;;
         update)
-            ComposeCommand="pull --include-deps ${APPNAME-}"
+            Question="Update ${AppName:-containers for all enabled services}?"
+            YesNotice="Updating ${AppName:-containers for all enabled services}."
+            NoNotice="Not updating ${AppName:-containers for all enabled services}."
             CommandNotice="Pulling the latest images for ${AppName:-all enabled services}."
-            ComposeCommand2="up -d --remove-orphans ${APPNAME-}"
+            ComposeCommand="pull --include-deps ${APPNAME-}"
             CommandNotice2="Starting ${AppName:-containers for all enabled services}."
+            ComposeCommand2="up -d --remove-orphans ${APPNAME-}"
             ;;
         up)
-            ComposeCommand="up -d --remove-orphans ${APPNAME-}"
             CommandNotice="Starting ${AppName:-containers for all enabled services}."
+            ComposeCommand="up -d --remove-orphans ${APPNAME-}"
             ;;
         *)
-            ComposeCommand="up -d --remove-orphans"
-            CommandNotice="Creating containers for all enabled services."
+            Question="Update containers for all enabled services?"
+            YesNotice="Updating containers for all enabled services."
+            NoNotice="Not updating containers for all enabled services."
+            CommandNotice="Pulling the latest images for all enabled services."
+            ComposeCommand="pull --include-deps ${APPNAME-}"
+            CommandNotice2="Starting containers for all enabled services."
+            ComposeCommand2="up -d --remove-orphans"
             ;;
     esac
-    run_script 'require_docker'
-    notice "${CommandNotice}"
-    eval "docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand}" ||
-        fatal "Failed to run compose.\nFailing command: ${F[C]}docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand}"
-    if [[ -n ${ComposeCommand2-} ]]; then
-        notice "${CommandNotice2}"
-        eval "docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand2}" ||
-            fatal "Failed to run compose.\nFailing command: ${F[C]}docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand2}"
+    if run_script 'question_prompt' Y "${Question}" "${DC["TitleWarning"]}${Title}" "${FORCE:+Y}"; then
+        run_script 'require_docker'
+        [[ -n ${CommandNotice-} ]] && notice "${CommandNotice}"
+        eval "docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand}" ||
+            fatal "Failed to run compose.\nFailing command: ${F[C]}docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand}"
+        if [[ -n ${ComposeCommand2-} ]]; then
+            [[ -n ${CommandNotice2-} ]] && notice "${CommandNotice2}"
+            eval "docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand2}" ||
+                fatal "Failed to run compose.\nFailing command: ${F[C]}docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand2}"
+        fi
     fi
 }
 
