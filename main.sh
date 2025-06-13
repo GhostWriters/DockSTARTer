@@ -382,7 +382,7 @@ cmdline() {
                 ;;
             c)
                 case ${OPTARG} in
-                    generate | merge | down* | pull* | restart* | update* | up*)
+                    generate | merge | down | pull | restart | update | up | "down "* | "pull "* | "restart "* | "update "* | "up "*)
                         local MULTIOPT
                         MULTIOPT=("$OPTARG")
                         until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
@@ -788,7 +788,7 @@ main() {
                 run_script_dialog "Docker Compose Merge" "" "" \
                     'yml_merge'
                 ;;
-            down* | pull* | restart* | update* | up*)
+            down | pull | restart | update | up | "down "* | "pull "* | "restart "* | "update "* | "up "*)
                 run_script_dialog "Docker Compose" "${COMPOSE}" "" \
                     'merge_and_compose' "${COMPOSE}"
                 ;;
