@@ -74,13 +74,13 @@ menu_app_select() {
                     local HeadingAddCommand=' ds --add    '
                     local Indent='             '
                     FormattedAppList="$(printf "${Indent}%s\n" "$(highlighted_list "${AppsToAdd}")" | fmt -w "${COLUMNS}")"
-                    HeadingAdd="\n${DC[NC]}${HeadingAddCommand}${FormattedAppList:"${#Indent}"}\n"
+                    HeadingAdd="\n${DC[NC]}${HeadingAddCommand}${FormattedAppList:${#Indent}}\n"
                 fi
                 if [[ -n ${AppsToRemove-} ]]; then
                     local HeadingRemoveCommand=' ds --remove '
                     local Indent='             '
                     FormattedAppList="$(printf "${Indent}%s\n" "$(highlighted_list "${AppsToRemove}")" | fmt -w "${COLUMNS}")"
-                    HeadingRemove="\n${DC[NC]}${HeadingRemoveCommand}${FormattedAppList:"${#Indent}"}\n"
+                    HeadingRemove="\n${DC[NC]}${HeadingRemoveCommand}${FormattedAppList:${#Indent}}\n"
                 fi
                 Heading="${HeadingAdd-}${HeadingRemove-}"
                 {
