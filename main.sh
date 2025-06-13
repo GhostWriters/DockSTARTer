@@ -21,9 +21,7 @@ that take app names can use the form app: to refer to the same file.
 
 -a --add <appname> [<appname> ...]
     add the default .env variables for the app specified
--c --compose
-    run docker compose up with confirmation prompt
--c --compose <up/down/restart/pull>
+-c --compose <up/down/restart/pull/update>
     run docker compose commands without confirmation prompts
 -e --env
     update your .env file with new variables
@@ -384,7 +382,7 @@ cmdline() {
                 ;;
             c)
                 case ${OPTARG} in
-                    down | generate | merge | pull* | restart* | up*)
+                    generate | merge | down* | pull* | restart* | update* | up*)
                         local MULTIOPT
                         MULTIOPT=("$OPTARG")
                         until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
@@ -786,15 +784,11 @@ main() {
     fi
     if [[ -n ${COMPOSE-} ]]; then
         case ${COMPOSE} in
-            down)
-                run_script_dialog "Docker Compose" "${COMPOSE}" "" \
-                    'docker_compose' "${COMPOSE}"
-                ;;
             generate | merge)
                 run_script_dialog "Docker Compose Merge" "" "" \
                     'yml_merge'
                 ;;
-            pull* | restart* | up*)
+            down* | pull* | restart* | update* | up*)
                 run_script_dialog "Docker Compose" "${COMPOSE}" "" \
                     'merge_and_compose' "${COMPOSE}"
                 ;;
