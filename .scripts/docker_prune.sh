@@ -5,9 +5,9 @@ IFS=$'\n\t'
 docker_prune() {
     local Title="Docker Prune"
     if run_script 'question_prompt' Y "Would you like to remove all unused containers, networks, volumes, images and build cache?" "${DC["TitleWarning"]}${Title}" "${FORCE:+Y}"; then
-        info "Removing unused docker resources."
+        notice "Removing unused docker resources."
     else
-        info "Nothing will be removed."
+        notice "Nothing will be removed."
         return 1
     fi
 

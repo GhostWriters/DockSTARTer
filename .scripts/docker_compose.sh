@@ -28,8 +28,9 @@ docker_compose() {
             ;;
         update)
             COMPOSECOMMAND="pull --include-deps ${APPNAME-}"
+            COMMANDINFO="Pulling the latest images for ${AppName:-all enabled services}."
             COMPOSECOMMAND2="up -d --remove-orphans ${APPNAME-}"
-            COMMANDINFO="Updating ${AppName:-containers for all enabled services}."
+            COMMANDINFO2="Creating ${AppName:-containers for all enabled services}."
             ;;
         up)
             COMPOSECOMMAND="up -d --remove-orphans ${APPNAME-}"
@@ -40,11 +41,12 @@ docker_compose() {
             COMMANDINFO="Creating containers for all enabled services."
             ;;
     esac
-    info "${COMMANDINFO}"
     run_script 'require_docker'
+    notice "${COMMANDINFO}"
     eval "docker compose --project-directory ${COMPOSE_FOLDER}/ ${COMPOSECOMMAND}" ||
         fatal "Failed to run compose.\nFailing command: ${F[C]}docker compose --project-directory ${COMPOSE_FOLDER}/ ${COMPOSECOMMAND}"
     if [[ -n ${COMPOSECOMMAND2-} ]]; then
+        notice "${COMMANDINFO2}"
         eval "docker compose --project-directory ${COMPOSE_FOLDER}/ ${COMPOSECOMMAND2}" ||
             fatal "Failed to run compose.\nFailing command: ${F[C]}docker compose --project-directory ${COMPOSE_FOLDER}/ ${COMPOSECOMMAND2}"
     fi
