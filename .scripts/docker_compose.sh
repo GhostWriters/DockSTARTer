@@ -4,8 +4,6 @@ IFS=$'\n\t'
 
 docker_compose() {
     local ComposeInput=${1-}
-    ComposeInput="${ComposeInput//\n/ }"
-    ComposeInput="$(xargs <<< "${ComposeInput}")"
     local Command=${ComposeInput%% *}
     local APPNAME AppName
     if [[ ${ComposeInput} == *" "* ]]; then
