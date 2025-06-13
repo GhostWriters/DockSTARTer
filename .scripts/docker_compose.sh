@@ -9,61 +9,92 @@ docker_compose() {
     if [[ ${ComposeInput} == *" "* ]]; then
         APPNAME=${ComposeInput#* }
         AppName="$(run_script 'app_nicename' "${APPNAME}" | xargs)"
+        AppName="${AppName// /, }"
     fi
 
     local Title="Docker Compose"
 
     local Question YesNotice NoNotice
-    local RunMerge
-    local -a CommandNotice
     local -a ComposeCommand
     case ${Command} in
         down)
-            Question="Stop and remove ${AppName:-containers, networks, volumes, and images created by DockSTARTer}?"
-            NoNotice="Not stopping and removing ${AppName:-containers, networks, volumes, and images created by DockSTARTer}."
-            YesNotice="Stopping and removing ${AppName:-containers, networks, volumes, and images created by DockSTARTer}."
+            if [[ -n ${AppName-} ]]; then
+                Question="Stop and remove: ${AppName}?"
+                NoNotice="Not stopping and removing: ${AppName}."
+                YesNotice="Stopping and removing ${AppName}."
+            else
+                Question="Stop and remove containers, networks, volumes, and images created by DockSTARTer?"
+                NoNotice="Not stopping and removing containers, networks, volumes, and images created by DockSTARTer."
+                YesNotice="Stopping and removing containers, networks, volumes, and images created by DockSTARTer."
+            fi
             ComposeCommand[0]="down --remove-orphans ${APPNAME-}"
             ;;
         pull)
-            Question="Pull the latest images for ${AppName:-all enabled services}?"
-            NoNotice="Not pulling the latest images for ${AppName:-all enabled services}."
-            YesNotice="Pulling the latest images for ${AppName:-all enabled services}."
+            if [[ -n ${AppName-} ]]; then
+                Question="Pull the latest images for: ${AppName}?"
+                NoNotice="Not pulling the latest images for: ${AppName}."
+                YesNotice="Pulling the latest images for: ${AppName}."
+            else
+                Question="Pull the latest images for all enabled services?"
+                NoNotice="Not pulling the latest images for all enabled services."
+                YesNotice="Pulling the latest images for all enabled services."
+            fi
             ComposeCommand[0]="pull --include-deps ${APPNAME-}"
             ;;
         restart)
-            Question="Restart ${AppName:-all stopped and running services}?"
-            NoNotice="Not restarting ${AppName:-all stopped and running services}."
-            YesNotice="Restarting ${AppName:-all stopped and running services}."
+            if [[ -n ${AppName-} ]]; then
+                Question="Restart: ${AppName}?"
+                NoNotice="Not restarting: ${AppName}."
+                YesNotice="Restarting: ${AppName}."
+            else
+                Question="Restart all stopped and running containers?"
+                NoNotice="Not restarting all stopped and running containers."
+                YesNotice="Restarting all stopped and running containers."
+            fi
             ComposeCommand[0]="restart ${APPNAME-}"
             ;;
         stop)
-            Question="Stop ${AppName:-containers, networks, volumes, and images created by DockSTARTer}?"
-            NoNotice="Not stopping ${AppName:-containers, networks, volumes, and images created by DockSTARTer}."
-            YesNotice="Stopping  ${AppName:-containers, networks, volumes, and images created by DockSTARTer}."
+            if [[ -n ${AppName-} ]]; then
+                Question="Stop: ${AppName}?"
+                NoNotice="Not stopping: ${AppName}."
+                YesNotice="Stopping: ${AppName}."
+            else
+                Question="Stop all running services?"
+                NoNotice="Not stopping all running services."
+                YesNotice="Stopping all running services."
+            fi
             ComposeCommand[0]="stop ${APPNAME-}"
             ;;
         update)
-            Question="Update ${AppName:-containers for all enabled services}?"
-            NoNotice="Not updating ${AppName:-containers for all enabled services}."
-            YesNotice="Updating ${AppName:-containers for all enabled services}."
-            CommandNotice[0]="Pulling the latest images for ${AppName:-all enabled services}."
+            if [[ -n ${AppName-} ]]; then
+                Question="Update and start: ${AppName}?"
+                NoNotice="Not updating and starting: ${AppName}."
+                YesNotice="Updating and starting: ${AppName}."
+            else
+                Question="Update and start containers for all enabled services?"
+                NoNotice="Not updating and starting containers for all enabled services."
+                YesNotice="Updating and starting containers for all enabled services."
+            fi
             ComposeCommand[0]="pull --include-deps ${APPNAME-}"
-            CommandNotice[1]="Starting ${AppName:-containers for all enabled services}."
             ComposeCommand[1]="up -d --remove-orphans ${APPNAME-}"
             ;;
         up)
-            Question="Start ${AppName:-containers for all enabled services}?"
-            NoNotice="Not starting ${AppName:-containers for all enabled services}."
-            YesNotice="Starting ${AppName:-containers for all enabled services}."
+            if [[ -n ${AppName-} ]]; then
+                Question="Start: ${AppName}?"
+                NoNotice="Not starting: ${AppName}."
+                YesNotice="Starting: ${AppName}."
+            else
+                Question="Start ${AppName:-containers for all enabled services}?"
+                NoNotice="Not starting ${AppName:-containers for all enabled services}."
+                YesNotice="Starting ${AppName:-containers for all enabled services}."
+            fi
             ComposeCommand[0]="up -d --remove-orphans ${APPNAME-}"
             ;;
         *)
             Question="Update containers for all enabled services?"
             NoNotice="Not updating containers for all enabled services."
             YesNotice="Updating containers for all enabled services."
-            CommandNotice[0]="Pulling the latest images for all enabled services."
             ComposeCommand[0]="pull --include-deps"
-            CommandNotice[1]="Starting containers for all enabled services."
             ComposeCommand[1]="up -d --remove-orphans"
             ;;
     esac
@@ -74,24 +105,24 @@ docker_compose() {
                 run_script 'require_docker'
                 run_script 'yml_merge'
                 for index in "${!ComposeCommand[@]}"; do
-                    [[ -n ${CommandNotice[index]-} ]] && notice "${CommandNotice[index]}"
+                    notice "Running docker compose ${ComposeCommand[index]}"
                     eval "docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand[index]}" ||
                         fatal "Failed to run compose.\nFailing command: ${F[C]}docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand[index]}"
                 done
-            } |& dialog_pipe "${Title}" "${ComposeInput}"
+            } |& dialog_pipe "${DC[TitleSuccess]}${Title}" "${ComposeInput}"
         else
             [[ -n ${YesNotice-} ]] && notice "${YesNotice}"
             run_script 'require_docker'
             run_script 'yml_merge'
             for index in "${!ComposeCommand[@]}"; do
-                [[ -n ${CommandNotice[index]-} ]] && notice "${CommandNotice[index]}"
+                notice "Running docker compose ${ComposeCommand[index]}"
                 eval "docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand[index]}" ||
                     fatal "Failed to run compose.\nFailing command: ${F[C]}docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand[index]}"
             done
         fi
     else
         if use_dialog_box; then
-            [[ -n ${NoNotice-} ]] && notice "${NoNotice}" |& dialog_pipe "${Title}" "${ComposeInput}"
+            [[ -n ${NoNotice-} ]] && notice "${NoNotice}" |& dialog_pipe "${DC[TitleError]}${Title}" "${ComposeInput}"
         else
             [[ -n ${NoNotice-} ]] && notice "${NoNotice}"
         fi
