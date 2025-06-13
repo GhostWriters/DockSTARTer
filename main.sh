@@ -794,8 +794,7 @@ main() {
                     'yml_merge'
                 ;;
             down | pull | stop | restart | update | up | "down "* | "pull "* | "stop "* | "restart "* | "update "* | "up "*)
-                run_script_dialog "Docker Compose" "${COMPOSE}" "" \
-                    'merge_and_compose' "${COMPOSE}"
+                run_script 'docker_compose' "${COMPOSE}"
                 ;;
             *)
                 fatal "Invalid compose option."

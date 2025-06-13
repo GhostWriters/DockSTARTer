@@ -14,6 +14,7 @@ docker_compose() {
     local Title="Docker Compose"
 
     local Question YesNotice NoNotice
+    local RunMerge
     local -a CommandNotice
     local -a ComposeCommand
     case ${Command} in
@@ -67,15 +68,33 @@ docker_compose() {
             ;;
     esac
     if run_script 'question_prompt' Y "${Question}" "${DC["TitleWarning"]}${Title}" "${FORCE:+Y}"; then
-        [[ -n ${YesNotice-} ]] && notice "${YesNotice}"
-        run_script 'require_docker'
-        for index in "${!ComposeCommand[@]}"; do
-            [[ -n ${CommandNotice[index]-} ]] && notice "${CommandNotice[index]}"
-            eval "docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand[index]}" ||
-                fatal "Failed to run compose.\nFailing command: ${F[C]}docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand[index]}"
-        done
+        if use_dialog_box; then
+            {
+                [[ -n ${YesNotice-} ]] && notice "${YesNotice}"
+                run_script 'require_docker'
+                run_script 'yml_merge'
+                for index in "${!ComposeCommand[@]}"; do
+                    [[ -n ${CommandNotice[index]-} ]] && notice "${CommandNotice[index]}"
+                    eval "docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand[index]}" ||
+                        fatal "Failed to run compose.\nFailing command: ${F[C]}docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand[index]}"
+                done
+            } |& dialog_pipe "${Title}" "${ComposeInput}"
+        else
+            [[ -n ${YesNotice-} ]] && notice "${YesNotice}"
+            run_script 'require_docker'
+            run_script 'yml_merge'
+            for index in "${!ComposeCommand[@]}"; do
+                [[ -n ${CommandNotice[index]-} ]] && notice "${CommandNotice[index]}"
+                eval "docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand[index]}" ||
+                    fatal "Failed to run compose.\nFailing command: ${F[C]}docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand[index]}"
+            done
+        fi
     else
-        [[ -n ${NoNotice-} ]] && notice "${NoNotice}"
+        if use_dialog_box; then
+            [[ -n ${NoNotice-} ]] && notice "${NoNotice}" |& dialog_pipe "${Title}" "${ComposeInput}"
+        else
+            [[ -n ${NoNotice-} ]] && notice "${NoNotice}"
+        fi
     fi
 }
 
