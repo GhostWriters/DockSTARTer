@@ -3,52 +3,52 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 docker_compose() {
-    local COMPOSEINPUT=${1-}
-    local COMMAND=${COMPOSEINPUT%% *}
+    local ComposeInput=${1-}
+    local Command=${ComposeInput%% *}
     local APPNAME
     local AppName
-    if [[ ${COMPOSEINPUT} == *" "* ]]; then
-        APPNAME=${COMPOSEINPUT#* }
+    if [[ ${ComposeInput} == *" "* ]]; then
+        APPNAME=${ComposeInput#* }
         AppName="$(run_script 'app_nicename' "${APPNAME}")"
     fi
-    local COMPOSECOMMAND COMPOSECOMMAND2
-    local COMMANDINFO
-    case ${COMMAND} in
+    local ComposeCommand ComposeCommand2
+    local CommandNotice
+    case ${Command} in
         down)
-            COMPOSECOMMAND="down --remove-orphans ${APPNAME-}"
-            COMMANDINFO="Stopping and removing ${AppName:-containers, networks, volumes, and images created by DockSTARTer}."
+            ComposeCommand="down --remove-orphans ${APPNAME-}"
+            CommandNotice="Stopping and removing ${AppName:-containers, networks, volumes, and images created by DockSTARTer}."
             ;;
         pull)
-            COMPOSECOMMAND="pull --include-deps ${APPNAME-}"
-            COMMANDINFO="Pulling the latest images for ${AppName:-all enabled services}."
+            ComposeCommand="pull --include-deps ${APPNAME-}"
+            CommandNotice="Pulling the latest images for ${AppName:-all enabled services}."
             ;;
         restart)
-            COMPOSECOMMAND="restart ${APPNAME-}"
-            COMMANDINFO="Restarting ${AppName:-all stopped and running services}."
+            ComposeCommand="restart ${APPNAME-}"
+            CommandNotice="Restarting ${AppName:-all stopped and running services}."
             ;;
         update)
-            COMPOSECOMMAND="pull --include-deps ${APPNAME-}"
-            COMMANDINFO="Pulling the latest images for ${AppName:-all enabled services}."
-            COMPOSECOMMAND2="up -d --remove-orphans ${APPNAME-}"
-            COMMANDINFO2="Creating ${AppName:-containers for all enabled services}."
+            ComposeCommand="pull --include-deps ${APPNAME-}"
+            CommandNotice="Pulling the latest images for ${AppName:-all enabled services}."
+            ComposeCommand2="up -d --remove-orphans ${APPNAME-}"
+            CommandNotice2="Starting ${AppName:-containers for all enabled services}."
             ;;
         up)
-            COMPOSECOMMAND="up -d --remove-orphans ${APPNAME-}"
-            COMMANDINFO="Creating ${AppName:-containers for all enabled services}."
+            ComposeCommand="up -d --remove-orphans ${APPNAME-}"
+            CommandNotice="Starting ${AppName:-containers for all enabled services}."
             ;;
         *)
-            COMPOSECOMMAND="up -d --remove-orphans"
-            COMMANDINFO="Creating containers for all enabled services."
+            ComposeCommand="up -d --remove-orphans"
+            CommandNotice="Creating containers for all enabled services."
             ;;
     esac
     run_script 'require_docker'
-    notice "${COMMANDINFO}"
-    eval "docker compose --project-directory ${COMPOSE_FOLDER}/ ${COMPOSECOMMAND}" ||
-        fatal "Failed to run compose.\nFailing command: ${F[C]}docker compose --project-directory ${COMPOSE_FOLDER}/ ${COMPOSECOMMAND}"
-    if [[ -n ${COMPOSECOMMAND2-} ]]; then
-        notice "${COMMANDINFO2}"
-        eval "docker compose --project-directory ${COMPOSE_FOLDER}/ ${COMPOSECOMMAND2}" ||
-            fatal "Failed to run compose.\nFailing command: ${F[C]}docker compose --project-directory ${COMPOSE_FOLDER}/ ${COMPOSECOMMAND2}"
+    notice "${CommandNotice}"
+    eval "docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand}" ||
+        fatal "Failed to run compose.\nFailing command: ${F[C]}docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand}"
+    if [[ -n ${ComposeCommand2-} ]]; then
+        notice "${CommandNotice2}"
+        eval "docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand2}" ||
+            fatal "Failed to run compose.\nFailing command: ${F[C]}docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand2}"
     fi
 }
 
