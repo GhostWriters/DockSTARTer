@@ -174,7 +174,7 @@ DC+=(
 readonly DC
 
 declare -rix DIALOGTIMEOUT=3
-declare -rx DIALOGOPTS="--colors --backtitle ${DC["BackTitle"]}${BACKTITLE} --cr-wrap --no-collapse"
+declare -rx DIALOGOPTS="--scrollbar --colors --backtitle ${DC["BackTitle"]}${BACKTITLE} --cr-wrap --no-collapse"
 declare -rix DIALOG_OK=0
 declare -rix DIALOG_CANCEL=1
 declare -rix DIALOG_HELP=2
