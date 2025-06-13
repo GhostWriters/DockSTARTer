@@ -19,37 +19,37 @@ Any command that takes a variable name, the variable name can also be in the
 form of app:var to refer to the variable in env_files/app.env.  Some commands
 that take app names can use the form app: to refer to the same file.
 
--a --add <appname> [<appname> ...]
-    add the default .env variables for the app specified
+-a --add <app> [<app> ...]
+    Add the default .env variables for the app(s) specified
 -c --compose <pull/up/down/stop/restart/update> [<app> ...]
     Run docker compose commands. If no command is given, does an update.
     Update is the same as a 'pull' followed by an 'up'
 -c --compose <generate/merge>
     Generates the docker-compose.yml file
 -e --env
-    update your .env file with new variables
+    Update your .env file with new variables
 --env-appvars <app> [<app> ...]
-    List all variable names for the app specified
+    List all variable names for the app(s) specified
 --env-appvars-lines <app> [<app> ...]
-    List all variables and values for the app specified
+    List all variables and values for the app(s) specified
 --env-get <var> [<var> ...]
 --env-get=<var>
-    get the value of a <var>iable in .env (variable name is forced to UPPER CASE)
+    Get the value of a <var>iable in .env (variable name is forced to UPPER CASE)
 --env-get-line <var> [<var> ...]
 --env-get-line=<var>
-    get the line of a <var>iable in .env (variable name is forced to UPPER CASE)
+    Get the line of a <var>iable in .env (variable name is forced to UPPER CASE)
 --env-get-literal <var> [<var> ...]
 --env-get-literal=<var>
-    get the literal value (including quotes) of a <var>iable in .env (variable name is forced to UPPER CASE)
+    Get the literal value (including quotes) of a <var>iable in .env (variable name is forced to UPPER CASE)
 --env-get-lower <var> [<var> ...]
 --env-get-lower=<var>
-    get the value of a <var>iable in .env
+    Get the value of a <var>iable in .env
 --env-get-lower-line <var> [<var> ...]
 --env-get-lower-line=<var>
-    get the line of a <var>iable in .env
+    Get the line of a <var>iable in .env
 --env-get-lower-literal <var> [<var> ...]
---env-get-lower-literal a <var>iable in .env
-    get the literal value (including quotes) of a <var>iable in .env
+--env-get-lower-literal=<var>
+    Get the literal value (including quotes) of a <var>iable in .env
 --env-set <var>=<val>
 --env-set=<var>,<val>
     Set the <val>ue of a <var>iable in .env (variable name is forced to UPPER CASE)
@@ -57,7 +57,7 @@ that take app names can use the form app: to refer to the same file.
 --env-set-lower=<var>,<val>
     Set the <val>ue of a <var>iable in .env
 -f --force
-    force certain install/upgrade actions to run even if they would not be needed
+    Force certain install/upgrade actions to run even if they would not be needed
 -g --gui
     Use dialog boxes
 -l --list
@@ -76,16 +76,18 @@ that take app names can use the form app: to refer to the same file.
     List depreciated apps
 --list-referenced
     List referenced apps (whether they are "built in" or not)
+    An app is considered "referenced" if there is a variable matching the app's name in the
+    global .env file, or there are any variables in the file env_files/<appname>.env
 -h --help
-    show this usage information
+    Show this usage information
 -i --install
-    install/update all dependencies
+    Install/update all dependencies
 -p --prune
-    remove unused docker resources
+    Remove unused docker resources
 -r --remove
-    prompt to remove .env variables for all disabled apps
+    Prompt to remove .env variables for all disabled apps
 -r --remove <appname>
-    prompt to remove the .env variables for the app specified
+    Prompt to remove the .env variables for the app specified
 -s --status <appname>
     Returns the enabled/disabled status for the app specified
 --status-disable <appname>
@@ -93,15 +95,15 @@ that take app names can use the form app: to refer to the same file.
 --status-enable <appname>
     Enable the app specified
 -t --test <test_name>
-    run tests to check the program
+    Run tests to check the program
 -u --update
-    update DockSTARTer to the latest stable commits
+    Update DockSTARTer to the latest stable commits
 -u --update <branch>
-    update DockSTARTer to the latest commits from the specified branch
+    Update DockSTARTer to the latest commits from the specified branch
 -v --verbose
-    verbose
+    Verbose
 -x --debug
-    debug
+    Debug
 EOF
 }
 
@@ -792,8 +794,7 @@ main() {
                     'yml_merge'
                 ;;
             down | pull | stop | restart | update | up | "down "* | "pull "* | "stop "* | "restart "* | "update "* | "up "*)
-                run_script_dialog "Docker Compose" "${COMPOSE}" "" \
-                    'merge_and_compose' "${COMPOSE}"
+                run_script 'docker_compose' "${COMPOSE}"
                 ;;
             *)
                 fatal "Invalid compose option."

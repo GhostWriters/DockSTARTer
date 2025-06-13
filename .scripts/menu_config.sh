@@ -63,12 +63,12 @@ menu_config() {
                     "${OptionComposeUp}")
                         local SubTitle="${DC[NC]}${DC[RV]}Updating and starting all applications${DC[NC]}\n${DC[CommandLine]} ds --compose update${DC[NC]}"
                         run_script_dialog "${DC["TitleSuccess"]}Docker Compose" "${SubTitle}" "" \
-                            'merge_and_compose' "update" || true
+                            'docker_compose' "update" || true
                         ;;
                     "${OptionComposeDown}")
                         local SubTitle="${DC[NC]}${DC[RV]}Stopping all applications${DC[NC]}\n${DC[CommandLine]} ds --compose down${DC[NC]}"
                         run_script_dialog "${DC["TitleSuccess"]}Docker Compose" "${SubTitle}" "" \
-                            'merge_and_compose' "down" || true
+                            'docker_compose' "down" || true
                         ;;
                     "${OptionDockerPrune}")
                         local SubTitle="Pruning docker system\n${DC[CommandLine]} ds --force --prune${DC[NC]}"
