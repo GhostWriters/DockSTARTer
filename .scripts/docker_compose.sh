@@ -35,6 +35,12 @@ docker_compose() {
             YesNotice="Restarting ${AppName:-all stopped and running services}."
             ComposeCommand[0]="restart ${APPNAME-}"
             ;;
+        stop)
+            Question="Stop ${AppName:-containers, networks, volumes, and images created by DockSTARTer}?"
+            NoNotice="Not stopping ${AppName:-containers, networks, volumes, and images created by DockSTARTer}."
+            YesNotice="Stopping  ${AppName:-containers, networks, volumes, and images created by DockSTARTer}."
+            ComposeCommand[0]="stop ${APPNAME-}"
+            ;;
         update)
             Question="Update ${AppName:-containers for all enabled services}?"
             NoNotice="Not updating ${AppName:-containers for all enabled services}."

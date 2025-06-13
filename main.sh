@@ -21,8 +21,11 @@ that take app names can use the form app: to refer to the same file.
 
 -a --add <appname> [<appname> ...]
     add the default .env variables for the app specified
--c --compose <up/down/restart/pull/update>
-    run docker compose commands without confirmation prompts
+-c --compose <pull/up/down/stop/restart/update> [<app> ...]
+    Run docker compose commands. If no command is given, does an update.
+    Update is the same as a 'pull' followed by an 'up'
+-c --compose <generate/merge>
+    Generates the docker-compose.yml file
 -e --env
     update your .env file with new variables
 --env-appvars <app> [<app> ...]
@@ -382,7 +385,7 @@ cmdline() {
                 ;;
             c)
                 case ${OPTARG} in
-                    generate | merge | down | pull | restart | update | up | "down "* | "pull "* | "restart "* | "update "* | "up "*)
+                    generate | merge | down | pull | stop | restart | update | up | "down "* | "pull "* | "stop "* | "restart "* | "update "* | "up "*)
                         local MULTIOPT
                         MULTIOPT=("$OPTARG")
                         until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
@@ -788,7 +791,7 @@ main() {
                 run_script_dialog "Docker Compose Merge" "" "" \
                     'yml_merge'
                 ;;
-            down | pull | restart | update | up | "down "* | "pull "* | "restart "* | "update "* | "up "*)
+            down | pull | stop | restart | update | up | "down "* | "pull "* | "stop "* | "restart "* | "update "* | "up "*)
                 run_script_dialog "Docker Compose" "${COMPOSE}" "" \
                     'merge_and_compose' "${COMPOSE}"
                 ;;
