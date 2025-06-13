@@ -494,7 +494,7 @@ cmdline() {
             :)
                 case ${OPTARG} in
                     c)
-                        readonly COMPOSE=up
+                        readonly COMPOSE=update
                         ;;
                     e)
                         if [[ -z ${ENVMETHOD-} ]]; then
