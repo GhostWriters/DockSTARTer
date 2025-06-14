@@ -61,19 +61,13 @@ menu_config() {
                         run_script 'menu_config_apps' || true
                         ;;
                     "${OptionComposeUp}")
-                        local SubTitle="${DC[NC]}${DC[RV]}Updating and starting all applications${DC[NC]}\n${DC[CommandLine]} ds --compose update${DC[NC]}"
-                        run_script_dialog "${DC["TitleSuccess"]}Docker Compose" "${SubTitle}" "" \
-                            'docker_compose' "update" || true
+                        run_script 'docker_compose' "update"
                         ;;
                     "${OptionComposeDown}")
-                        local SubTitle="${DC[NC]}${DC[RV]}Stopping all applications${DC[NC]}\n${DC[CommandLine]} ds --compose down${DC[NC]}"
-                        run_script_dialog "${DC["TitleSuccess"]}Docker Compose" "${SubTitle}" "" \
-                            'docker_compose' "down" || true
+                        run_script 'docker_compose' "down"
                         ;;
                     "${OptionDockerPrune}")
-                        local SubTitle="Pruning docker system\n${DC[CommandLine]} ds --force --prune${DC[NC]}"
-                        run_script_dialog "${DC["TitleSuccess"]}Docker Compose" "${SubTitle}" "" \
-                            'docker_prune' || true
+                        run_script 'docker_prune'
                         ;;
                     *)
                         error "Invalid Option"
