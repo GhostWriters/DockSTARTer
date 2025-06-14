@@ -1,23 +1,6 @@
 services:
-  watchtower:
+  watchtower<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Automatically update running Docker containers"
-      com.dockstarter.appinfo.nicename: "Watchtower"
-      com.dockstarter.appvars.watchtower_container_name: "watchtower"
-      com.dockstarter.appvars.watchtower_enabled: "true"
-      com.dockstarter.appvars.watchtower_environment_cleanup: "true"
-      com.dockstarter.appvars.watchtower_environment_include_stopped: "false"
-      com.dockstarter.appvars.watchtower_environment_monitor_only: "false"
-      com.dockstarter.appvars.watchtower_environment_notification_template: "{{range .}}{{.Message}}{{println}}{{end}}"
-      com.dockstarter.appvars.watchtower_environment_notification_url: ""
-      com.dockstarter.appvars.watchtower_environment_notifications: "shoutrrr"
-      com.dockstarter.appvars.watchtower_environment_notifications_level: "info"
-      com.dockstarter.appvars.watchtower_environment_repo_pass: ""
-      com.dockstarter.appvars.watchtower_environment_repo_user: ""
-      com.dockstarter.appvars.watchtower_environment_schedule: "0 0 4 * * *"
-      com.dockstarter.appvars.watchtower_environment_timeout: "10s"
-      com.dockstarter.appvars.watchtower_network_mode: ""
-      com.dockstarter.appvars.watchtower_restart: "unless-stopped"
-      com.dockstarter.appvars.watchtower_tag: "latest"
-      com.dockstarter.appvars.watchtower_volume_docker_socket: "/var/run/docker.sock"
+      com.dockstarter.appinfo.nicename: "Watchtower<__Instance>"

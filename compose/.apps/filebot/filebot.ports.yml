@@ -1,4 +1,4 @@
 services:
-  filebot:
+  filebot<__instance>:
     ports:
-      - ${FILEBOT_PORT_5800}:5800
+      - ${FILEBOT<__INSTANCE>__PORT_5800?}:5800

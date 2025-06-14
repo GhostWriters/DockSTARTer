@@ -1,12 +1,12 @@
 services:
-  grafana:
-    container_name: ${GRAFANA_CONTAINER_NAME}
+  grafana<__instance>:
+    container_name: ${GRAFANA<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/grafana<__instance>.env
     environment:
-      - GF_INSTALL_PLUGINS=${GRAFANA_ENVIRONMENT_GF_INSTALL_PLUGINS}
-      - TZ=${TZ}
-    restart: ${GRAFANA_RESTART}
-    user: ${PUID}:${PGID}
+      - TZ=${TZ?}
+    restart: ${GRAFANA<__INSTANCE>__RESTART?}
+    user: ${PUID?}:${PGID?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/grafana:/var/lib/grafana
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/grafana<__instance>:/var/lib/grafana
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

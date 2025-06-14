@@ -22,7 +22,7 @@ The `admin` account is a system account (PAM) and after container update or recr
 
 - Set another user as an `admin`.
 - Delete the `admin` user in the GUI.
-- Modify the `as.conf` on your host located under `~/.compose/appdata/openvpnas/config/etc` and replace the line boot_pam_users.0=admin with #boot_pam_users.0=admin (this only has to be done once and will survive container recreation).
+- Modify the `as.conf` on your host located under `~/.config/appdata/openvpnas/config/etc` and replace the line boot_pam_users.0=admin with #boot_pam_users.0=admin (this only has to be done once and will survive container recreation).
 
 ### Server Network Settings
 

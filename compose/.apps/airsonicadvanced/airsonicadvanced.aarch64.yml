@@ -1,3 +1,3 @@
 services:
-  airsonicadvanced:
-    image: lscr.io/linuxserver/airsonic-advanced:${AIRSONICADVANCED_TAG}
+  airsonicadvanced<__instance>:
+    image: lscr.io/linuxserver/airsonic-advanced:${AIRSONICADVANCED<__INSTANCE>__TAG?}

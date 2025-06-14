@@ -1,4 +1,4 @@
 services:
-  duplicati:
+  duplicati<__instance>:
     ports:
-      - ${DUPLICATI_PORT_8200}:8200
+      - ${DUPLICATI<__INSTANCE>__PORT_8200?}:8200

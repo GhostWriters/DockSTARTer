@@ -1,38 +1,22 @@
 services:
-  rtorrentvpn:
+  rtorrentvpn<__instance>:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    container_name: ${RTORRENTVPN_CONTAINER_NAME}
+    container_name: ${RTORRENTVPN<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/rtorrentvpn<__instance>.env
     environment:
-      - ENABLE_AUTODL_IRSSI=${RTORRENTVPN_ENVIRONMENT_ENABLE_AUTODL_IRSSI}
-      - ENABLE_PRIVOXY=${RTORRENTVPN_ENVIRONMENT_ENABLE_PRIVOXY}
-      - ENABLE_RPC2_AUTH=${RTORRENTVPN_ENVIRONMENT_ENABLE_RPC2_AUTH}
-      - ENABLE_RPC2=${RTORRENTVPN_ENVIRONMENT_ENABLE_RPC2}
-      - ENABLE_WEBUI_AUTH=${RTORRENTVPN_ENVIRONMENT_ENABLE_WEBUI_AUTH}
-      - LAN_NETWORK=${LAN_NETWORK}
-      - NAME_SERVERS=${NS1},${NS2}
-      - PGID=${PGID}
-      - PHP_TZ=${TZ}
-      - PUID=${PUID}
-      - RPC2_PASS=${RTORRENTVPN_ENVIRONMENT_RPC2_PASS}
-      - RPC2_USER=${RTORRENTVPN_ENVIRONMENT_RPC2_USER}
-      - TZ=${TZ}
-      - VPN_CLIENT=${VPN_CLIENT}
-      - VPN_ENABLED=${VPN_ENABLE}
-      - VPN_OPTIONS=${VPN_OPTIONS}
-      - VPN_PASS=${VPN_PASS}
-      - VPN_PROV=${VPN_PROV}
-      - VPN_USER=${VPN_USER}
-      - WEBUI_PASS=${RTORRENTVPN_ENVIRONMENT_WEBUI_PASS}
-      - WEBUI_USER=${RTORRENTVPN_ENVIRONMENT_WEBUI_USER}
+      - PGID=${PGID?}
+      - PHP_TZ=${TZ?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
     privileged: true
-    restart: ${RTORRENTVPN_RESTART}
+    restart: ${RTORRENTVPN<__INSTANCE>__RESTART?}
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/rtorrentvpn:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${VPN_VOLUME_OVPNDIR}:/config/openvpn
-      - ${VPN_VOLUME_WGDIR}:/config/wireguard
+      - ${DOCKER_VOLUME_CONFIG?}/rtorrentvpn<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage
+      - ${VPN_VOLUME_OVPNDIR?}:/config/openvpn
+      - ${VPN_VOLUME_WGDIR?}:/config/wireguard

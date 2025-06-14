@@ -1,3 +1,3 @@
 services:
-  actualbudget:
-    image: actualbudget/actual-server:${ACTUALBUDGET_TAG}
+  actualbudget<__instance>:
+    image: actualbudget/actual-server:${ACTUALBUDGET<__INSTANCE>__TAG?}

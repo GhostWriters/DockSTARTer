@@ -1,4 +1,4 @@
 services:
-  petio:
+  petio<__instance>:
     ports:
-      - ${PETIO_PORT_7777}:7777
+      - ${PETIO<__INSTANCE>__PORT_7777?}:7777

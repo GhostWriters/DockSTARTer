@@ -1,5 +1,5 @@
 services:
-  nzbgetvpn:
+  nzbgetvpn<__instance>:
     ports:
-      - ${NZBGETVPN_PORT_6789}:6789
-      - ${NZBGETVPN_PORT_8118}:8118
+      - ${NZBGETVPN<__INSTANCE>__PORT_6789?}:6789
+      - ${NZBGETVPN<__INSTANCE>__PORT_8118?}:8118

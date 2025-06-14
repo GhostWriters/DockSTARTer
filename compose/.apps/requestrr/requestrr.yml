@@ -1,12 +1,13 @@
 services:
-  requestrr:
-    container_name: ${REQUESTRR_CONTAINER_NAME}
+  requestrr<__instance>:
+    container_name: ${REQUESTRR<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/requestrr<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${REQUESTRR_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${REQUESTRR<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/requestrr:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/requestrr<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

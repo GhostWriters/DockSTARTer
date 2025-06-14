@@ -1,13 +1,6 @@
 services:
-  booksonic:
+  booksonic<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "true"
       com.dockstarter.appinfo.description: "(DEPRECATED) Use BooksonicAir"
-      com.dockstarter.appinfo.nicename: "Booksonic"
-      com.dockstarter.appvars.booksonic_container_name: "booksonic"
-      com.dockstarter.appvars.booksonic_enabled: "false"
-      com.dockstarter.appvars.booksonic_environment_context_path: "/booksonic"
-      com.dockstarter.appvars.booksonic_network_mode: ""
-      com.dockstarter.appvars.booksonic_port_4040: "4040"
-      com.dockstarter.appvars.booksonic_restart: "unless-stopped"
-      com.dockstarter.appvars.booksonic_tag: "latest"
+      com.dockstarter.appinfo.nicename: "Booksonic<__Instance>"

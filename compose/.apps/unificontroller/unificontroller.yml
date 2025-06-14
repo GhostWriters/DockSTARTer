@@ -1,12 +1,13 @@
 services:
-  unificontroller:
-    container_name: ${UNIFICONTROLLER_CONTAINER_NAME}
+  unificontroller<__instance>:
+    container_name: ${UNIFICONTROLLER<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/unificontroller<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${UNIFICONTROLLER_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${UNIFICONTROLLER<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/unificontroller:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/unificontroller<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

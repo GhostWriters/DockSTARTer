@@ -1,12 +1,13 @@
 services:
-  logitechmediaserver:
-    container_name: ${LOGITECHMEDIASERVER_CONTAINER_NAME}
+  logitechmediaserver<__instance>:
+    container_name: ${LOGITECHMEDIASERVER<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/logitechmediaserver<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${LOGITECHMEDIASERVER_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${LOGITECHMEDIASERVER<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/logitechmediaserver:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/logitechmediaserver<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

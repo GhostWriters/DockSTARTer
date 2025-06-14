@@ -1,5 +1,5 @@
 services:
-  tvheadend:
+  tvheadend<__instance>:
     ports:
-      - ${TVHEADEND_PORT_9981}:9981
-      - ${TVHEADEND_PORT_9982}:9982
+      - ${TVHEADEND<__INSTANCE>__PORT_9981?}:9981
+      - ${TVHEADEND<__INSTANCE>__PORT_9982?}:9982

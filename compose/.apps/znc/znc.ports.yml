@@ -1,4 +1,4 @@
 services:
-  znc:
+  znc<__instance>:
     ports:
-      - ${ZNC_PORT_6501}:6501
+      - ${ZNC<__INSTANCE>__PORT_6501?}:6501

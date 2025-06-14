@@ -1,14 +1,6 @@
 services:
-  jellyfin:
+  jellyfin<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Free Software Media Browser"
-      com.dockstarter.appinfo.nicename: "Jellyfin"
-      com.dockstarter.appvars.jellyfin_container_name: "jellyfin"
-      com.dockstarter.appvars.jellyfin_enabled: "false"
-      com.dockstarter.appvars.jellyfin_network_mode: ""
-      com.dockstarter.appvars.jellyfin_port_8096: "8096"
-      com.dockstarter.appvars.jellyfin_port_8920: "8920"
-      com.dockstarter.appvars.jellyfin_restart: "unless-stopped"
-      com.dockstarter.appvars.jellyfin_tag: "latest"
-      com.dockstarter.appvars.jellyfin_volume_transcodedir: "/tmp/jellyfin_transcode"
+      com.dockstarter.appinfo.nicename: "Jellyfin<__Instance>"

@@ -1,18 +1,13 @@
 services:
-  librespeed:
-    container_name: ${LIBRESPEED_CONTAINER_NAME}
+  librespeed<__instance>:
+    container_name: ${LIBRESPEED<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/librespeed<__instance>.env
     environment:
-      - DB_HOSTNAME=${LIBRESPEED_ENVIRONMENT_DB_HOSTNAME}
-      - DB_NAME=${LIBRESPEED_ENVIRONMENT_DB_NAME}
-      - DB_PASSWORD=${LIBRESPEED_ENVIRONMENT_DB_PASSWORD}
-      - DB_TYPE=${LIBRESPEED_ENVIRONMENT_DB_TYPE}
-      - DB_USERNAME=${LIBRESPEED_ENVIRONMENT_DB_USERNAME}
-      - PASSWORD=${LIBRESPEED_ENVIRONMENT_PASSWORD}
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${LIBRESPEED_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${LIBRESPEED<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/librespeed:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/librespeed<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

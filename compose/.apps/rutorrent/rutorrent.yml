@@ -1,12 +1,13 @@
 services:
-  rutorrent:
-    container_name: ${RUTORRENT_CONTAINER_NAME}
+  rutorrent<__instance>:
+    container_name: ${RUTORRENT<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/rutorrent<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${RUTORRENT_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${RUTORRENT<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/rutorrent:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/rutorrent<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

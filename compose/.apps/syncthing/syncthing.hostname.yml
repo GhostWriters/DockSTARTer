@@ -1,3 +1,3 @@
 services:
-  syncthing:
-    hostname: ${DOCKER_HOSTNAME}
+  syncthing<__instance>:
+    hostname: ${SYNCTHING<__INSTANCE>__HOSTNAME?}

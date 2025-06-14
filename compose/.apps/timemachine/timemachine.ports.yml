@@ -1,7 +1,7 @@
 services:
-  timemachine:
+  timemachine<__instance>:
     ports:
-      - ${TIMEMACHINE_PORT_137}:137/udp
-      - ${TIMEMACHINE_PORT_138}:138/udp
-      - ${TIMEMACHINE_PORT_139}:139
-      - ${TIMEMACHINE_PORT_445}:445
+      - ${TIMEMACHINE<__INSTANCE>__PORT_137?}:137/udp
+      - ${TIMEMACHINE<__INSTANCE>__PORT_138?}:138/udp
+      - ${TIMEMACHINE<__INSTANCE>__PORT_139?}:139
+      - ${TIMEMACHINE<__INSTANCE>__PORT_445?}:445

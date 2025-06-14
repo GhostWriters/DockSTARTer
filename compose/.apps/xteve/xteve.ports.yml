@@ -1,4 +1,4 @@
 services:
-  xteve:
+  xteve<__instance>:
     ports:
-      - ${XTEVE_PORT_34400}:34400
+      - ${XTEVE<__INSTANCE>__PORT_34400?}:34400

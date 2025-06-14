@@ -1,4 +1,4 @@
 services:
-  goaccess:
+  goaccess<__instance>:
     ports:
-      - ${GOACCESS_PORT_7889}:7889
+      - ${GOACCESS<__INSTANCE>__PORT_7889?}:7889

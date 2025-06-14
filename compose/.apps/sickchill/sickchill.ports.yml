@@ -1,4 +1,4 @@
 services:
-  sickchill:
+  sickchill<__instance>:
     ports:
-      - ${SICKCHILL_PORT_8081}:8081
+      - ${SICKCHILL<__INSTANCE>__PORT_8081?}:8081

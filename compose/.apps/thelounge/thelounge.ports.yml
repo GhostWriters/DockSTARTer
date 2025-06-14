@@ -1,4 +1,4 @@
 services:
-  thelounge:
+  thelounge<__instance>:
     ports:
-      - ${THELOUNGE_PORT_9000}:9000
+      - ${THELOUNGE<__INSTANCE>__PORT_9000?}:9000

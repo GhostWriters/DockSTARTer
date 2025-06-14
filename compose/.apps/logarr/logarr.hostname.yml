@@ -1,3 +1,3 @@
 services:
-  logarr:
-    hostname: ${DOCKER_HOSTNAME}
+  logarr<__instance>:
+    hostname: ${LOGARR<__INSTANCE>__HOSTNAME?}

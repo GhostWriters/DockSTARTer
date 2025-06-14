@@ -1,12 +1,11 @@
 services:
-  dasshio:
-    container_name: ${DASSHIO_CONTAINER_NAME}
+  dasshio<__instance>:
+    container_name: ${DASSHIO<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/dasshio<__instance>.env
     environment:
-      - HA_BASE_URL=${DASSHIO_ENVIRONMENT_HOMEASSISTANT_URL}
-      - HASSIO_TOKEN=${DASSHIO_ENVIRONMENT_HOMEASSISTANT_AUTH_TOKEN}
-      - TZ=${TZ}
-    restart: ${DASSHIO_RESTART}
+      - TZ=${TZ?}
+    restart: ${DASSHIO<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/dasshio:/data
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/dasshio<__instance>:/data
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

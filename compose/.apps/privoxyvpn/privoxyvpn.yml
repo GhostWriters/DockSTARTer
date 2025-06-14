@@ -1,35 +1,21 @@
 services:
-  privoxyvpn:
+  privoxyvpn<__instance>:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    container_name: ${PRIVOXYVPN_CONTAINER_NAME}
+    container_name: ${PRIVOXYVPN<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/privoxyvpn<__instance>.env
     devices:
       - /dev/net/tun
     environment:
-      - ENABLE_PRIVOXY=${PRIVOXYVPN_ENVIRONMENT_ENABLE_PRIVOXY}
-      - ENABLE_SOCKS=${PRIVOXYVPN_ENVIRONMENT_ENABLE_SOCKS}
-      - ENABLE_STARTUP_SCRIPTS=${PRIVOXYVPN_ENVIRONMENT_ENABLE_STARTUP_SCRIPTS}
-      - LAN_NETWORK=${PRIVOXYVPN_ENVIRONMENT_LAN_NETWORK}
-      - NAME_SERVERS=${PRIVOXYVPN_ENVIRONMENT_NAME_SERVERS}
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - SOCKS_PASS=${PRIVOXYVPN_ENVIRONMENT_SOCKS_PASS}
-      - SOCKS_USER=${PRIVOXYVPN_ENVIRONMENT_SOCKS_USER}
-      - TZ=${TZ}
-      - VPN_CLIENT=${PRIVOXYVPN_ENVIRONMENT_VPN_CLIENT}
-      - VPN_ENABLED=${PRIVOXYVPN_ENVIRONMENT_VPN_ENABLE}
-      - VPN_INPUT_PORTS=${PRIVOXYVPN_ENVIRONMENT_VPN_INPUT_PORTS}
-      - VPN_OPTIONS=${PRIVOXYVPN_ENVIRONMENT_VPN_OPTIONS}
-      - VPN_OUTPUT_PORTS=${PRIVOXYVPN_ENVIRONMENT_VPN_OUTPUT_PORTS}
-      - VPN_PASS=${PRIVOXYVPN_ENVIRONMENT_VPN_PASS}
-      - VPN_PROV=${PRIVOXYVPN_ENVIRONMENT_VPN_PROV}
-      - VPN_USER=${PRIVOXYVPN_ENVIRONMENT_VPN_USER}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
     privileged: true
-    restart: ${PRIVOXYVPN_RESTART}
+    restart: ${PRIVOXYVPN<__INSTANCE>__RESTART?}
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/privoxyvpn:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/privoxyvpn<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

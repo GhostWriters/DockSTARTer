@@ -1,3 +1,3 @@
 services:
-  plexrequests:
-    image: lscr.io/linuxserver/plexrequests:${PLEXREQUESTS_TAG}
+  plexrequests<__instance>:
+    image: lscr.io/linuxserver/plexrequests:${PLEXREQUESTS<__INSTANCE>__TAG?}

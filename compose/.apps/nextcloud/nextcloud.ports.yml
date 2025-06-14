@@ -1,4 +1,4 @@
 services:
-  nextcloud:
+  nextcloud<__instance>:
     ports:
-      - ${NEXTCLOUD_PORT_443}:443
+      - ${NEXTCLOUD<__INSTANCE>__PORT_443?}:443

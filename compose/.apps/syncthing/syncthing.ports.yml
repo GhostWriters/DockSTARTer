@@ -1,6 +1,6 @@
 services:
-  syncthing:
+  syncthing<__instance>:
     ports:
-      - ${SYNCTHING_PORT_21027}:21027/udp
-      - ${SYNCTHING_PORT_22000}:22000
-      - ${SYNCTHING_PORT_8384}:8384
+      - ${SYNCTHING<__INSTANCE>__PORT_21027?}:21027/udp
+      - ${SYNCTHING<__INSTANCE>__PORT_22000?}:22000
+      - ${SYNCTHING<__INSTANCE>__PORT_8384?}:8384

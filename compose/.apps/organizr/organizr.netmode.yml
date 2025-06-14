@@ -1,3 +1,3 @@
 services:
-  organizr:
-    network_mode: ${ORGANIZR_NETWORK_MODE}
+  organizr<__instance>:
+    network_mode: ${ORGANIZR<__INSTANCE>__NETWORK_MODE?}

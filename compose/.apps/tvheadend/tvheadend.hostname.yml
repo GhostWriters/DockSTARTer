@@ -1,3 +1,3 @@
 services:
-  tvheadend:
-    hostname: ${DOCKER_HOSTNAME}
+  tvheadend<__instance>:
+    hostname: ${TVHEADEND<__INSTANCE>__HOSTNAME?}

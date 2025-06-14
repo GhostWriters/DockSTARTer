@@ -1,12 +1,13 @@
 services:
-  nzbget:
-    container_name: ${NZBGET_CONTAINER_NAME}
+  nzbget<__instance>:
+    container_name: ${NZBGET<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/nzbget<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${NZBGET_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${NZBGET<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/nzbget:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/nzbget<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

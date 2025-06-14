@@ -1,4 +1,4 @@
 services:
-  nzbhydra2:
+  nzbhydra2<__instance>:
     ports:
-      - ${NZBHYDRA2_PORT_5076}:5076
+      - ${NZBHYDRA2<__INSTANCE>__PORT_5076?}:5076

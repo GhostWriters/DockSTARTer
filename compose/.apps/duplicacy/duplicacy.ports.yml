@@ -1,4 +1,4 @@
 services:
-  duplicacy:
+  duplicacy<__instance>:
     ports:
-      - ${DUPLICACY_PORT_3875}:3875
+      - ${DUPLICACY<__INSTANCE>__PORT_3875?}:3875

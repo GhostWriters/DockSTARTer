@@ -1,21 +1,14 @@
 services:
-  openldap:
-    container_name: ${OPENLDAP_CONTAINER_NAME}
+  openldap<__instance>:
+    container_name: ${OPENLDAP<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/openldap<__instance>.env
     environment:
-      - LDAP_ADMIN_PASSWORD=${OPENLDAP_ENVIRONMENT_ADMIN_PASSWORD}
-      - LDAP_BACKEND=${OPENLDAP_ENVIRONMENT_BACKEND}
-      - LDAP_CONFIG_PASSWORD=${OPENLDAP_ENVIRONMENT_CONFIG_PASSWORD}
-      - LDAP_DOMAIN=${OPENLDAP_ENVIRONMENT_DOMAIN}
-      - LDAP_OPENLDAP_GID=${PGID}
-      - LDAP_OPENLDAP_UID=${PUID}
-      - LDAP_ORGANISATION=${OPENLDAP_ENVIRONMENT_ORGANISATION}
-      - LDAP_READONLY_USER_PASSWORD=${OPENLDAP_ENVIRONMENT_READONLY_USER_PASSWORD}
-      - LDAP_READONLY_USER_USERNAME=${OPENLDAP_ENVIRONMENT_READONLY_USER_USERNAME}
-      - LDAP_READONLY_USER=${OPENLDAP_ENVIRONMENT_READONLY_USER}
-      - TZ=${TZ}
-    restart: ${OPENLDAP_RESTART}
+      - LDAP_OPENLDAP<__INSTANCE>_GID=${PGID?}
+      - LDAP_OPENLDAP<__INSTANCE>_UID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${OPENLDAP<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/openldap/database:/var/lib/ldap
-      - ${DOCKER_VOLUME_CONFIG}/openldap/config:/etc/ldap/
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/openldap<__instance>/database:/var/lib/ldap
+      - ${DOCKER_VOLUME_CONFIG?}/openldap<__instance>/config:/etc/ldap/
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

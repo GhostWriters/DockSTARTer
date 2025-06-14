@@ -1,3 +1,3 @@
 services:
-  pihole:
-    image: pihole/pihole:${PIHOLE_TAG}
+  pihole<__instance>:
+    image: pihole/pihole:${PIHOLE<__INSTANCE>__TAG?}

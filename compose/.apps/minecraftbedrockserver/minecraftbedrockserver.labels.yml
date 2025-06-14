@@ -1,14 +1,6 @@
 services:
-  minecraftbedrockserver:
+  minecraftbedrockserver<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Minecraft Bedrock Server"
-      com.dockstarter.appinfo.nicename: "MinecraftBedrockServer"
-      com.dockstarter.appvars.minecraftbedrockserver_container_name: "minecraftbedrockserver"
-      com.dockstarter.appvars.minecraftbedrockserver_enabled: "false"
-      com.dockstarter.appvars.minecraftbedrockserver_environment_eula: "TRUE"
-      com.dockstarter.appvars.minecraftbedrockserver_environment_version: "LATEST"
-      com.dockstarter.appvars.minecraftbedrockserver_network_mode: ""
-      com.dockstarter.appvars.minecraftbedrockserver_port_19132: "19132"
-      com.dockstarter.appvars.minecraftbedrockserver_restart: "unless-stopped"
-      com.dockstarter.appvars.minecraftbedrockserver_tag: "latest"
+      com.dockstarter.appinfo.nicename: "MinecraftBedrockServer<__Instance>"

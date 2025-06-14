@@ -1,3 +1,3 @@
 services:
-  quasselweb:
-    image: lscr.io/linuxserver/quassel-web:${QUASSELWEB_TAG}
+  quasselweb<__instance>:
+    image: lscr.io/linuxserver/quassel-web:${QUASSELWEB<__INSTANCE>__TAG?}

@@ -1,5 +1,5 @@
 services:
-  privoxyvpn:
+  privoxyvpn<__instance>:
     ports:
-      - ${PRIVOXYVPN_PORT_8118}:8118
-      - ${PRIVOXYVPN_PORT_9118}:9118
+      - ${PRIVOXYVPN<__INSTANCE>__PORT_8118?}:8118
+      - ${PRIVOXYVPN<__INSTANCE>__PORT_9118?}:9118

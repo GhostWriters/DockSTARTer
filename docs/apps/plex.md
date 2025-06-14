@@ -62,7 +62,7 @@ rm -rf ~/.config/appdata/plex
 ```
 
 ```bash
-sudo nano ~/.docker/compose/.env
+sudo nano ~/.docker/compose/env_files/plex.env
 # with the nano file editor open locate the PLEX_CLAIM variable
 # go to https://www.plex.tv/claim/ in your browser and get the claim token set your PLEX_CLAIM variable
 # the token expires in 5 minutes, so we'll want to get the rest done quickly
@@ -79,8 +79,8 @@ Then try again to claim the server by visiting
 #### 2. Host Network Mode
 
 If the first method does not work, edit your `.env` and set
-`PLEX_NETWORK_MODE=host`. Run `ds -c` and then attempt to claim your server.
-After claiming your server set `PLEX_NETWORK_MODE=` (back to blank).
+`PLEX__NETWORK_MODE=host`. Run `ds -c` and then attempt to claim your server.
+After claiming your server set `PLEX__NETWORK_MODE=` (back to blank).
 
 #### 3. Claim helper script
 
@@ -122,10 +122,10 @@ docker restart plex
 
 ### How To Run Plex Different Pass Versions
 
-Edit `~/.docker/compose/.env` and set:
+Edit `~/.docker/compose/env_files/plex.env` and set:
 
 ```bash
-PLEX_VERSION=plexpass
+VERSION=plexpass
 ```
 
 Then run:

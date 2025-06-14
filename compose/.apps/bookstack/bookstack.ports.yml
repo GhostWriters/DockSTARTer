@@ -1,4 +1,4 @@
 services:
-  bookstack:
+  bookstack<__instance>:
     ports:
-      - ${BOOKSTACK_PORT_80}:80
+      - ${BOOKSTACK<__INSTANCE>__PORT_80?}:80

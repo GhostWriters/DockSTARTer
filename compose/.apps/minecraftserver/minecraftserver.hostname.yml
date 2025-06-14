@@ -1,3 +1,3 @@
 services:
-  minecraftserver:
-    hostname: ${DOCKER_HOSTNAME}
+  minecraftserver<__instance>:
+    hostname: ${MINECRAFTSERVER<__INSTANCE>__HOSTNAME?}

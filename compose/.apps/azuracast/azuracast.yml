@@ -1,25 +1,16 @@
 services:
-  azuracast:
-    container_name: ${AZURACAST_CONTAINER_NAME}
+  azuracast<__instance>:
+    container_name: ${AZURACAST<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/azuracast<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - APPLICATION_ENV=${AZURACAST_ENVIRONMENT_APPLICATION_ENV}
-      - MYSQL_HOST=${AZURACAST_ENVIRONMENT_MYSQL_HOST}
-      - MYSQL_PORT=${AZURACAST_ENVIRONMENT_MYSQL_PORT}
-      - MYSQL_USER=${AZURACAST_ENVIRONMENT_MYSQL_USER}
-      - MYSQL_PASSWORD=${AZURACAST_ENVIRONMENT_MYSQL_PASSWORD}
-      - MYSQL_DATABASE=${AZURACAST_ENVIRONMENT_MYSQL_DATABASE}
-      - ENABLE_REDIS=${AZURACAST_ENVIRONMENT_ENABLE_REDIS}
-      - REDIS_HOST=${AZURACAST_ENVIRONMENT_REDIS_HOST}
-      - REDIS_PORT=${AZURACAST_ENVIRONMENT_REDIS_PORT}
-      - REDIS_DB=${AZURACAST_ENVIRONMENT_REDIS_DB}
-    restart: ${AZURACAST_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+    restart: ${AZURACAST<__INSTANCE>__RESTART?}
     volumes:
-      - ${DOCKER_VOLUME_CONFIG}/shoutcast2/:/var/azuracast/servers/shoutcast2
-      - ${DOCKER_VOLUME_CONFIG}/geoip/:/var/azuracast/geoip
-      - ${DOCKER_VOLUME_CONFIG}/sftpgo/:/var/azuracast/sftpgo/persist
-      - ${DOCKER_VOLUME_STORAGE}/uploads/:/var/azuracast/uploads
-      - ${DOCKER_VOLUME_STORAGE}/backups/:/var/azuracast/backups
-      - ${DOCKER_VOLUME_STORAGE}/stations/:/var/azuracast/stations
-      - ${DOCKER_VOLUME_STORAGE}/db/:/var/lib/mysql
+      - ${DOCKER_VOLUME_CONFIG?}/shoutcast2/:/var/azuracast/servers/shoutcast2
+      - ${DOCKER_VOLUME_CONFIG?}/geoip/:/var/azuracast/geoip
+      - ${DOCKER_VOLUME_CONFIG?}/sftpgo/:/var/azuracast/sftpgo/persist
+      - ${DOCKER_VOLUME_STORAGE?}/uploads/:/var/azuracast/uploads
+      - ${DOCKER_VOLUME_STORAGE?}/backups/:/var/azuracast/backups
+      - ${DOCKER_VOLUME_STORAGE?}/stations/:/var/azuracast/stations
+      - ${DOCKER_VOLUME_STORAGE?}/db/:/var/lib/mysql

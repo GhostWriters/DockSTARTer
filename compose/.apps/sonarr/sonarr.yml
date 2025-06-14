@@ -1,12 +1,13 @@
 services:
-  sonarr:
-    container_name: ${SONARR_CONTAINER_NAME}
+  sonarr<__instance>:
+    container_name: ${SONARR<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/sonarr<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${SONARR_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${SONARR<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/sonarr:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/sonarr<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

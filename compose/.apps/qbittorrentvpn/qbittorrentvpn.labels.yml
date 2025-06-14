@@ -1,25 +1,6 @@
 services:
-  qbittorrentvpn:
+  qbittorrentvpn<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "qBittorrent PrivoxyVPN"
-      com.dockstarter.appinfo.nicename: "qBittorrentVPN"
-      com.dockstarter.appvars.qbittorrentvpn_container_name: "qbittorrentvpn"
-      com.dockstarter.appvars.qbittorrentvpn_enabled: "false"
-      com.dockstarter.appvars.qbittorrentvpn_environment_enable_privoxy: "no"
-      com.dockstarter.appvars.qbittorrentvpn_environment_lan_network: "192.168.x.x/24"
-      com.dockstarter.appvars.qbittorrentvpn_environment_name_servers: "1.1.1.1,8.8.8.8"
-      com.dockstarter.appvars.qbittorrentvpn_environment_vpn_client: "openvpn"
-      com.dockstarter.appvars.qbittorrentvpn_environment_vpn_enable: "no"
-      com.dockstarter.appvars.qbittorrentvpn_environment_vpn_input_ports: ""
-      com.dockstarter.appvars.qbittorrentvpn_environment_vpn_options: ""
-      com.dockstarter.appvars.qbittorrentvpn_environment_vpn_output_ports: ""
-      com.dockstarter.appvars.qbittorrentvpn_environment_vpn_pass: "your-vpn-pass"
-      com.dockstarter.appvars.qbittorrentvpn_environment_vpn_prov: "custom"
-      com.dockstarter.appvars.qbittorrentvpn_environment_vpn_user: "your-vpn-user"
-      com.dockstarter.appvars.qbittorrentvpn_network_mode: ""
-      com.dockstarter.appvars.qbittorrentvpn_port_6881: "6881"
-      com.dockstarter.appvars.qbittorrentvpn_port_8080: "8080"
-      com.dockstarter.appvars.qbittorrentvpn_port_8118: "8118"
-      com.dockstarter.appvars.qbittorrentvpn_restart: "unless-stopped"
-      com.dockstarter.appvars.qbittorrentvpn_tag: "latest"
+      com.dockstarter.appinfo.nicename: "qBittorrentVPN<__Instance>"

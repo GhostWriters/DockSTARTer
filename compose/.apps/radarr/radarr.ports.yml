@@ -1,4 +1,4 @@
 services:
-  radarr:
+  radarr<__instance>:
     ports:
-      - ${RADARR_PORT_7878}:7878
+      - ${RADARR<__INSTANCE>__PORT_7878?}:7878
