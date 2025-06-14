@@ -17,6 +17,11 @@ docker_compose() {
     local Question YesNotice NoNotice
     local -a ComposeCommand
     case ${Command} in
+        merge | generate)
+            Question="Merge enabled app templates to docker-compose.yml?"
+            NoNotice="Not merging enabled app templates to docker-compose.yml."
+            YesNotice="Merging enabled app templates to docker-compose.yml."
+            ;;
         down)
             if [[ -n ${AppName-} ]]; then
                 Question="Stop and remove: ${AppName}?"
