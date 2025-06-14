@@ -17,6 +17,11 @@ docker_compose() {
     local Question YesNotice NoNotice
     local -a ComposeCommand
     case ${Command} in
+        merge | generate)
+            Question="Merge enabled app templates to docker-compose.yml?"
+            NoNotice="Not merging enabled app templates to docker-compose.yml."
+            YesNotice="Merging enabled app templates to docker-compose.yml."
+            ;;
         down)
             if [[ -n ${AppName-} ]]; then
                 Question="Stop and remove: ${AppName}?"
@@ -109,7 +114,7 @@ docker_compose() {
                     eval "docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand[index]}" ||
                         fatal "Failed to run compose.\nFailing command: ${F[C]}docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand[index]}"
                 done
-            } |& dialog_pipe "${DC[TitleSuccess]}${Title}" "ds --compose ${ComposeInput}"
+            } |& dialog_pipe "${DC[TitleSuccess]}${Title}" "${DC[RV]}${YesNotice}${DC[NC]}\n${DC[CommandLine]} ds --compose ${ComposeInput}"
         else
             [[ -n ${YesNotice-} ]] && notice "${YesNotice}"
             run_script 'require_docker'
@@ -122,7 +127,7 @@ docker_compose() {
         fi
     else
         if use_dialog_box; then
-            [[ -n ${NoNotice-} ]] && notice "${NoNotice}" |& dialog_pipe "${DC[TitleError]}${Title}" "ds --compose ${ComposeInput}"
+            [[ -n ${NoNotice-} ]] && notice "${NoNotice}" |& dialog_pipe "${DC[TitleError]}${Title}"
         else
             [[ -n ${NoNotice-} ]] && notice "${NoNotice}"
         fi

@@ -166,7 +166,7 @@ DC+=( # Pre-defined color combinations used in the GUI
     [LineOther]="${DC[NC]}${DC[K]}${DC[BD]}${DC[RV]}"
     [LineVar]="${DC[NC]}${DC[K]}${DC[NBD]}${DC[RV]}"
     [LineAddVariable]="${DC[NC]}${DC[K]}${DC[NBD]}${DC[RV]}"
-    [CommandLine]="${DC[NC]}"
+    [CommandLine]="${DC[NC]}${DC[Y]}${DC[BD]}"
 )
 DC+=(
     [WindowColsAdjust]=6
@@ -387,7 +387,9 @@ cmdline() {
                 ;;
             c)
                 case ${OPTARG} in
-                    generate | merge | down | pull | stop | restart | update | up | "down "* | "pull "* | "stop "* | "restart "* | "update "* | "up "*)
+                    generate | merge) ;&
+                    down | pull | stop | restart | update | up) ;&
+                    "down "* | "pull "* | "stop "* | "restart "* | "update "* | "up "*)
                         local MULTIOPT
                         MULTIOPT=("$OPTARG")
                         until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
@@ -789,11 +791,9 @@ main() {
     fi
     if [[ -n ${COMPOSE-} ]]; then
         case ${COMPOSE} in
-            generate | merge)
-                run_script_dialog "Docker Compose Merge" "" "" \
-                    'yml_merge'
-                ;;
-            down | pull | stop | restart | update | up | "down "* | "pull "* | "stop "* | "restart "* | "update "* | "up "*)
+            generate | merge) ;&
+            down | pull | stop | restart | update | up) ;&
+            "down "* | "pull "* | "stop "* | "restart "* | "update "* | "up "*)
                 run_script 'docker_compose' "${COMPOSE}"
                 ;;
             *)
