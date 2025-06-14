@@ -114,7 +114,7 @@ docker_compose() {
                     eval "docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand[index]}" ||
                         fatal "Failed to run compose.\nFailing command: ${F[C]}docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand[index]}"
                 done
-            } |& dialog_pipe "${DC[TitleSuccess]}${Title}" "ds --compose ${ComposeInput}"
+            } |& dialog_pipe "${DC[TitleSuccess]}${Title}" "${DC[RV]}${YesNotice}${DC[NC]}\n  ds --compose ${ComposeInput}"
         else
             [[ -n ${YesNotice-} ]] && notice "${YesNotice}"
             run_script 'require_docker'
@@ -127,7 +127,7 @@ docker_compose() {
         fi
     else
         if use_dialog_box; then
-            [[ -n ${NoNotice-} ]] && notice "${NoNotice}" |& dialog_pipe "${DC[TitleError]}${Title}" "ds --compose ${ComposeInput}"
+            [[ -n ${NoNotice-} ]] && notice "${NoNotice}" |& dialog_pipe "${DC[TitleError]}${Title}"
         else
             [[ -n ${NoNotice-} ]] && notice "${NoNotice}"
         fi
