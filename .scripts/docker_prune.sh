@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 docker_prune() {
     local Title="Docker Prune"
-    Question="would you like to remove all unused containers, networks, volumes, images and build cache?"
+    Question="Would you like to remove all unused containers, networks, volumes, images and build cache?"
     YesNotice="Removing unused docker resources."
     NoNotice="Nothing will be removed."
 
