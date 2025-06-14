@@ -14,7 +14,7 @@ docker_prune() {
             {
                 notice "${YesNotice}"
                 eval "${RUNCOMMAND}" || error "Failed to remove unused docker resources.\nFailing command: ${F[C]}${RUNCOMMAND}"
-            } |& dialog_pipe "${DC[TitleSuccess]}${Title}" "${DC[RV]}${YesNotice}${DC[NC]}\n  ${RUNCOMMAND}"
+            } |& dialog_pipe "${DC[TitleSuccess]}${Title}" "${DC[RV]}${YesNotice}${DC[NC]}\n${RUNCOMMAND}"
         else
             notice "${YesNotice}"
             eval "${RUNCOMMAND}" || error "Failed to remove unused docker resources.\nFailing command: ${F[C]}${RUNCOMMAND}"
