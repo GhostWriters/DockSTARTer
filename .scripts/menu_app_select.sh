@@ -6,7 +6,10 @@ menu_app_select() {
     local Title="Select Applications"
     local -a AppList=()
     local -a AddedApps=()
+    local AppListFile AddedAppsFile
 
+    AppListFile=$(mktemp)
+    AddedAppsFile=$(mktemp)
     {
         local -a AllApps
         readarray -t AllApps < <((
@@ -29,17 +32,19 @@ menu_app_select() {
                     if run_script 'app_is_added' "${APPNAME}"; then
                         echo "   ${APPNAME}"
                         AppOnOff="on"
-                        AddedApps+=("${AppName}")
+                        printf '%s\n' "${AppName}" >> "${AddedAppsFile}"
                     else
                         AppOnOff="off"
                     fi
-                    AppList+=("${AppName}" "${AppDescription}" "${AppOnOff}")
+                    printf '%s\n' "${AppName}" "${AppDescription}" "${AppOnOff}" >> "${AppListFile}"
                 fi
             fi
         done
     } |& dialog_pipe "${Title}" "Preparing app menu. Please be patient, this can take a while." "${DIALOGTIMEOUT}"
-    set -m
-    shopt +s lastpipe
+    readarray -t AddedApps < "${AddedAppsFile}"
+    readarray -t AppList < "${AppListFile}"
+    rm "${AddedAppsFile}" "${AppListFile}" >& /dev/null
+
     local -i SelectedAppsDialogButtonPressed
     local SelectedApps
     if [[ ${CI-} == true ]]; then
