@@ -46,7 +46,7 @@ question_prompt() {
                 --no-collapse
                 --yes-label "${YesButton}"
                 --no-label "${NoButton}"
-                --title "${DC["Title"]}${Title}${DC[NC]}"
+                --title "${DC[TitleQuestion]}${Title}${DC[NC]}"
                 ${DIALOG_DEFAULT-}
                 --yesno "${DC[NC]}${Question}${DC[NC]}"
                 "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"

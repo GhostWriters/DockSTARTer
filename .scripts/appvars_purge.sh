@@ -71,7 +71,7 @@ ${AppEnvFile}:
 ${AppEnvLinesToRemove-}
 EOF
         )"
-        if [[ ${CI-} == true ]] || run_script 'question_prompt' Y "${QUESTION}\n" "${DC["TitleWarning"]}${Title}" "${FORCE:+Y}"; then
+        if [[ ${CI-} == true ]] || run_script 'question_prompt' Y "${QUESTION}\n" "${Title}" "${FORCE:+Y}"; then
             info "Purging ${AppName} .env variables."
 
             if [[ -n ${GlobalVarsToRemove[*]-} ]]; then

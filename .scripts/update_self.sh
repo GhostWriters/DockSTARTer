@@ -20,7 +20,7 @@ update_self() {
         Question="Would you like to update DockSTARTer from branch ${CurrentBranch} to ${BRANCH} now?"
         Notice="DockSTARTer will not be updated from ${CurrentBranch} to ${BRANCH}."
     fi
-    if ! run_script 'question_prompt' Y "${Question}" "${DC["TitleWarning"]}${Title}" "${FORCE:+Y}"; then
+    if ! run_script 'question_prompt' Y "${Question}" "${Title}" "${FORCE:+Y}"; then
         notice "${Notice}"
         return 1
     fi

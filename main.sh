@@ -156,6 +156,7 @@ DC+=( # Pre-defined color combinations used in the GUI
     [TitleSuccess]="${DC[NC]}${DC[RV]}${DC[G]}"
     [TitleError]="${DC[NC]}${DC[RV]}${DC[R]}"
     [TitleWarning]="${DC[NC]}${DC[RV]}${DC[Y]}"
+    [TitleQuestion]="${DC[NC]}${DC[RV]}${DC[Y]}"
     [Heading]="${DC[NC]}${DC[RV]}"
     [HeadingTag]="${DC[NC]}${DC[RV]}${DC[W]}"
     [HeadingValue]="${DC[NC]}${DC[BD]}${DC[RV]}"
