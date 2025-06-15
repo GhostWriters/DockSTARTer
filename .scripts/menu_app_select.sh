@@ -4,36 +4,36 @@ IFS=$'\n\t'
 
 menu_app_select() {
     local Title="Select Applications"
-    dialog --title "${DC["Title"]}${Title}" --infobox "Preparing app menu. Please be patient, this can take a while." 0 0
     local -a AppList=()
     local -a AddedApps=()
-    readarray -t AllApps < <((
-        run_script 'app_list_added'
-        run_script 'app_list_nondepreciated'
-    ) | tr '[:upper:]' '[:lower:]' | sort -u)
-    for APPNAME in "${AllApps[@]-}"; do
-        local main_yml
-        main_yml="$(run_script 'app_instance_file' "${APPNAME}" ".yml")"
-        if [[ -f ${main_yml} ]]; then
+    {
+        readarray -t AllApps < <((
+            run_script 'app_list_added'
+            run_script 'app_list_nondepreciated'
+        ) | tr '[:upper:]' '[:lower:]' | sort -u)
+        for APPNAME in "${AllApps[@]-}"; do
             local main_yml
-            arch_yml="$(run_script 'app_instance_file' "${APPNAME}" ".${ARCH}.yml")"
-            if [[ -f ${arch_yml} ]]; then
-                local AppName
-                AppName=$(run_script 'app_nicename_from_template' "${APPNAME}")
-                local AppDescription
-                AppDescription=$(run_script 'app_description_from_template' "${APPNAME}")
-                local AppOnOff
-                if run_script 'app_is_added' "${APPNAME}"; then
-                    AppOnOff="on"
-                    AddedApps+=("${AppName}")
-                else
-                    AppOnOff="off"
+            main_yml="$(run_script 'app_instance_file' "${APPNAME}" ".yml")"
+            if [[ -f ${main_yml} ]]; then
+                local main_yml
+                arch_yml="$(run_script 'app_instance_file' "${APPNAME}" ".${ARCH}.yml")"
+                if [[ -f ${arch_yml} ]]; then
+                    local AppName
+                    AppName=$(run_script 'app_nicename_from_template' "${APPNAME}")
+                    local AppDescription
+                    AppDescription=$(run_script 'app_description_from_template' "${APPNAME}")
+                    local AppOnOff
+                    if run_script 'app_is_added' "${APPNAME}"; then
+                        AppOnOff="on"
+                        AddedApps+=("${AppName}")
+                    else
+                        AppOnOff="off"
+                    fi
+                    AppList+=("${AppName}" "${AppDescription}" "${AppOnOff}")
                 fi
-                AppList+=("${AppName}" "${AppDescription}" "${AppOnOff}")
             fi
-        fi
-    done
-
+        done
+    } |& dialog_pipe "${Title}" "Preparing app menu. Please be patient, this can take a while." "${DIALOGTIMEOUT}"
     local -i SelectedAppsDialogButtonPressed
     local SelectedApps
     if [[ ${CI-} == true ]]; then
