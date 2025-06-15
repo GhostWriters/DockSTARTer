@@ -23,7 +23,7 @@ docker_prune() {
         fi
     else
         if use_dialog_box; then
-            notice "${NoNotice}" |& dialog_pipe "${DC[TitleError]}${Title}"
+            notice "${NoNotice}" |& dialog_pipe "${DC[TitleError]}${Title}" "${NoNotice}"
         else
             notice "${NoNotice}"
         fi
