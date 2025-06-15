@@ -103,7 +103,7 @@ docker_compose() {
             ComposeCommand[1]="up -d --remove-orphans"
             ;;
     esac
-    if run_script 'question_prompt' Y "${Question}" "${DC["TitleWarning"]}${Title}" "${FORCE:+Y}"; then
+    if run_script 'question_prompt' Y "${Question}" "${Title}" "${FORCE:+Y}"; then
         if use_dialog_box; then
             {
                 [[ -n ${YesNotice-} ]] && notice "${YesNotice}"
@@ -114,7 +114,7 @@ docker_compose() {
                     eval "docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand[index]}" ||
                         fatal "Failed to run compose.\nFailing command: ${F[C]}docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand[index]}"
                 done
-            } |& dialog_pipe "${DC[TitleSuccess]}${Title}" "${DC[RV]}${YesNotice}${DC[NC]}\n${DC[CommandLine]} ds --compose ${ComposeInput}"
+            } |& dialog_pipe "${DC[TitleSuccess]}${Title}" "${YesNotice}${DC[NC]}\n${DC[CommandLine]} ds --compose ${ComposeInput}"
         else
             [[ -n ${YesNotice-} ]] && notice "${YesNotice}"
             run_script 'require_docker'

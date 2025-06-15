@@ -380,7 +380,7 @@ menu_value_prompt() {
                                 ValueValid="false"
                             elif [[ ${StrippedValue} == *~* ]]; then
                                 local CORRECTED_DIR="${OptionValue["${CurrentValueOption}"]//\~/"${DETECTED_HOMEDIR}"}"
-                                if run_script 'question_prompt' Y "${DialogHeading}\nCannot use the ${DC[Highlight]}~${DC[NC]} shortcut in ${DC[Highlight]}${CleanVarName}${DC[NC]}. Would you like to use ${DC[Highlight]}${CORRECTED_DIR}${DC[NC]} instead?" "${DC["TitleWarning"]}${Title}"; then
+                                if run_script 'question_prompt' Y "${DialogHeading}\nCannot use the ${DC[Highlight]}~${DC[NC]} shortcut in ${DC[Highlight]}${CleanVarName}${DC[NC]}. Would you like to use ${DC[Highlight]}${CORRECTED_DIR}${DC[NC]} instead?" "${Title}"; then
                                     OptionValue["${CurrentValueOption}"]="${CORRECTED_DIR}"
                                     ValueValid="false"
                                     dialog_success "${Title}" "Returning to the previous menu to confirm selection."
@@ -389,13 +389,13 @@ menu_value_prompt() {
                                     dialog_error "${Title}" "${DialogHeading}\nCannot use the ${DC[Highlight]}~${DC[NC]} shortcut in ${DC[Highlight]}${CleanVarName}${DC[DC]}. Please select another folder."
                                 fi
                             elif [[ -d ${StrippedValue} ]]; then
-                                if run_script 'question_prompt' Y "${DialogHeading}\nWould you like to set permissions on ${OptionValue["${CurrentValueOption}"]} ?" "${DC["TitleWarning"]}${Title}"; then
+                                if run_script 'question_prompt' Y "${DialogHeading}\nWould you like to set permissions on ${OptionValue["${CurrentValueOption}"]} ?" "${Title}"; then
                                     run_script_dialog "Setting Permissions" "${DC[Heading]}${StrippedValue}${DC[NC]}" "${DIALOGTIMEOUT}" \
                                         'set_permissions' "${StrippedValue}"
                                 fi
                                 ValueValid="true"
                             else
-                                if run_script 'question_prompt' Y "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid path. Would you like to attempt to create it?" "${DC["TitleWarning"]}${Title}"; then
+                                if run_script 'question_prompt' Y "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid path. Would you like to attempt to create it?" "${Title}"; then
                                     {
                                         mkdir -p "${StrippedValue}" || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p \"${StrippedValue}\""
                                         run_script 'set_permissions' "${StrippedValue}"
@@ -411,7 +411,7 @@ menu_value_prompt() {
                         P[GU]ID)
                             if [[ ${StrippedValue} =~ ^[0-9]+$ ]]; then
                                 if [[ ${StrippedValue} -eq 0 ]]; then
-                                    if run_script 'question_prompt' Y "${DialogHeading}\n\nRunning as ${DC[Highlight]}root${DC[NC]} is not recommended. Would you like to select a different ID?" "${DC["TitleWarning"]}${Title}" ""; then
+                                    if run_script 'question_prompt' Y "${DialogHeading}\n\nRunning as ${DC[Highlight]}root${DC[NC]} is not recommended. Would you like to select a different ID?" "${Title}" ""; then
                                         ValueValid="false"
                                     else
                                         ValueValid="true"
@@ -431,7 +431,7 @@ menu_value_prompt() {
                 fi
                 if ${ValueValid}; then
                     if [[ -z ${OptionValue["${CurrentValueOption}"]-} ]]; then
-                        if run_script 'question_prompt' N "${DialogHeading}\n\nDo you really want to delete ${DC[Highlight]}${CleanVarName}${DC[NC]}?\n" "${DC["TitleWarning"]}Delete Variable" "" "Delete" "Back"; then
+                        if run_script 'question_prompt' N "${DialogHeading}\n\nDo you really want to delete ${DC[Highlight]}${CleanVarName}${DC[NC]}?\n" "Delete Variable" "" "Delete" "Back"; then
                             # Value is empty, delete the variable
                             {
                                 run_script 'env_delete' "${VarName}"
@@ -452,7 +452,7 @@ menu_value_prompt() {
                             return 0
                         fi
                     elif [[ ${OptionValue["${CurrentValueOption}"]-} == "${OptionValue["${OriginalValueOption}"]-}" ]]; then
-                        if run_script 'question_prompt' N "${DialogHeading}\n\nThe value of ${DC[Highlight]}${CleanVarName}${DC[NC]} has not been changed, exit anyways?\n" "${DC["TitleWarning"]}Save Variable" "" "Done" "Back"; then
+                        if run_script 'question_prompt' N "${DialogHeading}\n\nThe value of ${DC[Highlight]}${CleanVarName}${DC[NC]} has not been changed, exit anyways?\n" "Save Variable" "" "Done" "Back"; then
                             # Value has not changed, confirm exiting
                             {
                                 if [[ -n ${APPNAME-} ]]; then
@@ -472,7 +472,7 @@ menu_value_prompt() {
                             return 0
                         fi
                     else
-                        if run_script 'question_prompt' N "${DialogHeading}\n\nWould you like to save ${DC[Highlight]}${CleanVarName}${DC[NC]}?\n" "${DC["TitleWarning"]}Save Variable" "" "Save" "Back"; then
+                        if run_script 'question_prompt' N "${DialogHeading}\n\nWould you like to save ${DC[Highlight]}${CleanVarName}${DC[NC]}?\n" "Save Variable" "" "Save" "Back"; then
                             # Value is valid, save it and exit
                             {
                                 run_script 'env_set_literal' "${VarName}" "${OptionValue["${CurrentValueOption}"]}"

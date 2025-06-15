@@ -201,7 +201,7 @@ menu_add_var() {
                                 Question+="\n   ${DC["Highlight"]}${Option// /}${DC[NC]}"
                             done
                             Heading="$(run_script 'menu_heading' ":${AppName}")"
-                            if run_script 'question_prompt' N "${Heading}\n\n${Question}" "${DC["TitleWarning"]}Create Stock Variables" "" "Create" "Back"; then
+                            if run_script 'question_prompt' N "${Heading}\n\n${Question}" "Create Stock Variables" "" "Create" "Back"; then
                                 Heading="$(run_script 'menu_heading' ":${AppName}" "${VarNameHeading}")"
                                 {
                                     notice "Adding variables to ${COMPOSE_ENV}:"
@@ -235,7 +235,7 @@ menu_add_var() {
                         local DetectedAppName
                         if [[ -z ${VarName-} ]]; then
                             Heading="$(run_script 'menu_heading' ":${AppName}" "${VarNameHeading}")"
-                            if run_script 'question_prompt' N "${Heading}\n\nDo you really want to cancel adding a variable?\n" "${DC["TitleWarning"]}Cancel Adding Variable" "" "Done" "Back"; then
+                            if run_script 'question_prompt' N "${Heading}\n\nDo you really want to cancel adding a variable?\n" "Cancel Adding Variable" "" "Done" "Back"; then
                                 # Value is empty, exit
                                 return
                             fi
@@ -259,7 +259,7 @@ menu_add_var() {
                         fi
                         Question="Create variable ${DC[Highlight]}${VarName}${DC[NC]} for application ${DC[Highlight]}${AppName}${DC[NC]}?\n"
                         Heading="$(run_script 'menu_heading' "$:{AppName}" "${VarNameHeading}")"
-                        if run_script 'question_prompt' N "${Heading}\n\n${Question}" "${DC["TitleWarning"]}Create Variable" "" "Create" "Back"; then
+                        if run_script 'question_prompt' N "${Heading}\n\n${Question}" "Create Variable" "" "Create" "Back"; then
                             Default="$(run_script 'var_default_value' "${VarName}")"
                             Heading="$(run_script 'menu_heading' ":${AppName}" "${VarNameHeading}")"
                             run_script_dialog "${DC["TitleSuccess"]}Creating Variable" "${Heading}\n\n" "${DIALOGTIMEOUT}" \
@@ -332,7 +332,7 @@ menu_add_var() {
                         Question="Create variable ${DC[Highlight]}${VarName}${DC[NC]}?\n"
                         if [[ ${VarType} == "APPENV" ]]; then
                             Question="Create variable ${DC[Highlight]}${VarName}${DC[NC]} for application ${DC[Highlight]}${AppName}${DC[NC]}?\n"
-                            if run_script 'question_prompt' N "${Heading}\n\n${Question}" "${DC["TitleWarning"]}Create Variable" "" "Create" "Back"; then
+                            if run_script 'question_prompt' N "${Heading}\n\n${Question}" "Create Variable" "" "Create" "Back"; then
                                 Default="$(run_script 'var_default_value' "${AppName}:${VarName}")"
                                 Heading="$(run_script 'menu_heading' "${AppNameHeading}" "${VarNameHeading}")"
                                 run_script_dialog "${DC["TitleSuccess"]}Creating Variable" "${Heading}\n\n" "${DIALOGTIMEOUT}" \
@@ -343,7 +343,7 @@ menu_add_var() {
                         else # GLOBAL
                             Heading="$(run_script 'menu_heading' "${AppNameHeading}" "${VarNameHeading}")"
                             Question="Create global variable ${DC[Highlight]}${VarName}${DC[NC]}?\n"
-                            if run_script 'question_prompt' N "${Heading}\n\n${Question}" "${DC["TitleWarning"]}Create Variable" "" "Create" "Back"; then
+                            if run_script 'question_prompt' N "${Heading}\n\n${Question}" "Create Variable" "" "Create" "Back"; then
                                 Default="$(run_script 'var_default_value' "${VarName}")"
                                 Heading="$(run_script 'menu_heading' "${AppNameHeading}" "${VarNameHeading}")"
                                 run_script_dialog "${DC["TitleSuccess"]}Creating Variable" "${Heading}\n\n" "${DIALOGTIMEOUT}" \

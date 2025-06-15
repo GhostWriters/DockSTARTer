@@ -153,9 +153,11 @@ declare -Ag DC=( # Dialog colors
 DC+=( # Pre-defined color combinations used in the GUI
     [BackTitle]="${DC[NC]}${DC[BD]}${DC[RV]}${DC[B]}"
     [Title]="${DC[NC]}${DC[C]}"
+    [Subtitle]="${DC[NC]}${DC[RV]}${DC[BD]}"
     [TitleSuccess]="${DC[NC]}${DC[RV]}${DC[G]}"
     [TitleError]="${DC[NC]}${DC[RV]}${DC[R]}"
     [TitleWarning]="${DC[NC]}${DC[RV]}${DC[Y]}"
+    [TitleQuestion]="${DC[NC]}${DC[RV]}${DC[Y]}"
     [Heading]="${DC[NC]}${DC[RV]}"
     [HeadingTag]="${DC[NC]}${DC[RV]}${DC[W]}"
     [HeadingValue]="${DC[NC]}${DC[BD]}${DC[RV]}"
@@ -625,7 +627,7 @@ highlighted_list() {
     local List
     List=$(xargs <<< "$*")
     if [[ -n ${List-} ]]; then
-        echo "${DC[RV]}${List// /${DC[NC]} ${DC[RV]}}${DC[NC]}"
+        echo "${DC[Subtitle]}${List// /${DC[NC]} ${DC[Subtitle]}}${DC[NC]}"
     fi
 }
 
@@ -640,9 +642,9 @@ dialog_pipe() {
     local SubTitle=${2:-}
     local TimeOut=${3:-0}
     dialog \
-        --title "${Title}" \
+        --title "${DC[Title]}${Title}" \
         --timeout "${TimeOut}" \
-        --programbox "${DC[RV]}${SubTitle}${DC[NC]}" \
+        --programbox "${DC[Subtitle]}${SubTitle}" \
         "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" || true
     echo -n "${BS}"
 }
