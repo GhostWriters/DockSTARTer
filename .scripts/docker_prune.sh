@@ -13,10 +13,12 @@ docker_prune() {
         if use_dialog_box; then
             {
                 notice "${YesNotice}"
+                notice "Running ${RUNCOMMAND}"
                 eval "${RUNCOMMAND}" || error "Failed to remove unused docker resources.\nFailing command: ${F[C]}${RUNCOMMAND}"
             } |& dialog_pipe "${DC[TitleSuccess]}${Title}" "${YesNotice}${DC[NC]}\n${DC[CommandLine]} ${RUNCOMMAND}"
         else
             notice "${YesNotice}"
+            notice "Running ${RUNCOMMAND}"
             eval "${RUNCOMMAND}" || error "Failed to remove unused docker resources.\nFailing command: ${F[C]}${RUNCOMMAND}"
         fi
     else
