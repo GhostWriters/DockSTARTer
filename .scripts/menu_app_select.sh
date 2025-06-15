@@ -7,10 +7,7 @@ menu_app_select() {
     local -a AppList=()
     local -a AddedApps=()
 
-    set +m
-    shopt -s lastpipe
-    # shellcheck disable=2030 # Modification of var is local (to subshell caused by pipeline).
-    (
+    {
         local -a AllApps
         readarray -t AllApps < <((
             run_script 'app_list_added'
@@ -38,10 +35,9 @@ menu_app_select() {
                 fi
             fi
         done
-    ) |& dialog_pipe "${Title}" "Preparing app menu. Please be patient, this can take a while." "${DIALOGTIMEOUT}"
+    } 2> >(dialog_pipe "${Title}" "Preparing app menu. Please be patient, this can take a while." "${DIALOGTIMEOUT}")
     set -m
     shopt +s lastpipe
-
     local -i SelectedAppsDialogButtonPressed
     local SelectedApps
     if [[ ${CI-} == true ]]; then
@@ -71,9 +67,7 @@ menu_app_select() {
     case ${DIALOG_BUTTONS[SelectedAppsDialogButtonPressed]-} in
         OK)
             local AppsToAdd AppsToRemove
-            # shellcheck disable=2031 # var was modified in a subshell. That change might be lost.
             AppsToRemove=$(printf '%s\n' "${AddedApps[@]}" "${SelectedApps[@]}" "${SelectedApps[@]}" | tr ' ' '\n' | sort -f | uniq -u | xargs)
-            # shellcheck disable=2031 # var was modified in a subshell. That change might be lost.
             AppsToAdd=$(printf '%s\n' "${AddedApps[@]}" "${AddedApps[@]}" "${SelectedApps[@]}" | tr ' ' '\n' | sort -f | uniq -u | xargs)
             local Heading=''
             local HeadingRemove
