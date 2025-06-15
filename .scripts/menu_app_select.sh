@@ -13,6 +13,7 @@ menu_app_select() {
             run_script 'app_list_added'
             run_script 'app_list_nondepreciated'
         ) | tr '[:upper:]' '[:lower:]' | sort -u)
+        echo "Currently added applications:"
         for APPNAME in "${AllApps[@]-}"; do
             local main_yml
             main_yml="$(run_script 'app_instance_file' "${APPNAME}" ".yml")"
@@ -26,6 +27,7 @@ menu_app_select() {
                     AppDescription=$(run_script 'app_description_from_template' "${APPNAME}")
                     local AppOnOff
                     if run_script 'app_is_added' "${APPNAME}"; then
+                        echo "   ${APPNAME}"
                         AppOnOff="on"
                         AddedApps+=("${AppName}")
                     else
@@ -35,7 +37,7 @@ menu_app_select() {
                 fi
             fi
         done
-    } 2> >(dialog_pipe "${Title}" "Preparing app menu. Please be patient, this can take a while." "${DIALOGTIMEOUT}")
+    } |& dialog_pipe "${Title}" "Preparing app menu. Please be patient, this can take a while." "${DIALOGTIMEOUT}"
     set -m
     shopt +s lastpipe
     local -i SelectedAppsDialogButtonPressed
