@@ -36,7 +36,6 @@ update_self() {
     else
         commands_update_self "${BRANCH}"
     fi
-    exec bash "${SCRIPTNAME}" -e
 }
 
 commands_update_self() {
@@ -68,6 +67,7 @@ commands_update_self() {
     git ls-tree -rt --name-only "${BRANCH}" | xargs sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" > /dev/null 2>&1 || true
     sudo chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}/.git" > /dev/null 2>&1 || true
     sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}" > /dev/null 2>&1 || true
+    exec bash "${SCRIPTNAME}" -e
 }
 
 test_update_self() {
