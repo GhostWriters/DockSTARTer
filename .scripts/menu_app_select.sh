@@ -4,8 +4,8 @@ IFS=$'\n\t'
 
 menu_app_select() {
     local Title="Select Applications"
-    local -a AppList=()
-    local -a AddedApps=()
+
+    local -a AppList AddedApps
     local AppListFile AddedAppsFile
 
     AppListFile=$(mktemp)
@@ -40,7 +40,8 @@ menu_app_select() {
                 fi
             fi
         done
-    } |& dialog_pipe "${Title}" "Preparing app menu. Please be patient, this can take a while." "${DIALOGTIMEOUT}"
+    } |& dialog_pipe "${DC[TitleSuccess]}${Title}" "Preparing app menu. Please be patient, this can take a while." "${DIALOGTIMEOUT}"
+
     readarray -t AddedApps < "${AddedAppsFile}"
     readarray -t AppList < "${AppListFile}"
     rm "${AddedAppsFile}" "${AppListFile}" >& /dev/null
@@ -107,7 +108,7 @@ menu_app_select() {
                     notice "Updating variable files"
                     run_script 'env_sanitize'
                     run_script 'env_update'
-                } |& dialog_pipe "${DC["TitleSuccess"]}Enabling Selected Applications" "${Heading}" "${DIALOGTIMEOUT}"
+                } |& dialog_pipe "${DC[TitleSuccess]}Enabling Selected Applications" "${Heading}" "${DIALOGTIMEOUT}"
             fi
             return 0
             ;;
