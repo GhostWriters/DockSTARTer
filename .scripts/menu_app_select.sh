@@ -63,16 +63,16 @@ menu_app_select() {
     case ${DIALOG_BUTTONS[SelectedAppsDialogButtonPressed]-} in
         OK)
             local AppsToAdd AppsToRemove
-            AppsToRemove=$(printf '%s\n' "${AddedApps[@]}" "${SelectedApps[@]}" "${SelectedApps[@]}" | tr ' ' '\n' | sort -f | uniq -u)
-            AppsToAdd=$(printf '%s\n' "${AddedApps[@]}" "${AddedApps[@]}" "${SelectedApps[@]}" | tr ' ' '\n' | sort -f | uniq -u)
+            AppsToRemove=$(printf '%s\n' "${AddedApps[@]}" "${SelectedApps[@]}" "${SelectedApps[@]}" | tr ' ' '\n' | sort -f | uniq -u | xargs)
+            AppsToAdd=$(printf '%s\n' "${AddedApps[@]}" "${AddedApps[@]}" "${SelectedApps[@]}" | tr ' ' '\n' | sort -f | uniq -u | xargs)
             local Heading=''
             local HeadingRemove
             local HeadingAdd
             if [[ -n ${AppsToAdd-} || -n ${AppsToRemove-} ]]; then
                 if [[ -n ${AppsToAdd-} ]]; then
                     local FormattedAppList
-                    local HeadingAddCommand=' ds --add    '
-                    local Indent='             '
+                    local HeadingAddCommand=' ds --add '
+                    local Indent='          '
                     FormattedAppList="$(printf "${Indent}%s\n" "${AppsToAdd}" | fmt -w "${COLUMNS}")"
                     HeadingAdd="Adding applications:\n${DC[CommandLine]}${HeadingAddCommand}${FormattedAppList:${#Indent}}\n"
                 fi
