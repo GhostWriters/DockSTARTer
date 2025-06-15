@@ -38,8 +38,7 @@ menu_main() {
                         run_script 'menu_config' || true
                         ;;
                     "${OptionInstallDependencies}")
-                        run_script_dialog "${DC["TitleSuccess"]}Install Dependencies" "" "" \
-                            'run_install' || true
+                        run_script 'run_install' || true
                         ;;
                     "${OptionUpdateVersion}")
                         run_script 'update_self' || true

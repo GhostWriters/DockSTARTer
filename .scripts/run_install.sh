@@ -3,6 +3,30 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 run_install() {
+    local Title="Install Dependencies"
+    local Question="Install or update all DockSTARTer dependencies?"
+    local YesNotice="Installing or updating all DockSTARTer dependencies."
+    local NoNotice="Not installing or updating all DockSTARTer dependencies."
+    if run_script 'question_prompt' Y "${Question}" "${Title}" "${FORCE:+Y}"; then 
+        if use_dialog_box; then
+            {
+                notice "${YesNotice}"
+                run_install_commands
+            } |& dialog_pipe "${Title}" "${YesNotice}\n${DC[CommandLine]} ds --install"
+        else
+            notice "${YesNotice}"
+            run_install_commands
+        fi
+    else
+        if use_dialog_box; then
+            notice "${NoNotice}" |& dialog_pipe "${Title}"
+        else
+            notice "${NoNotice}"
+        fi
+    fi
+}
+
+run_install_commands() {
     run_script 'update_system'
     run_script 'require_docker'
     run_script 'setup_docker_group'
