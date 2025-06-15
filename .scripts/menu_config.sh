@@ -11,7 +11,7 @@ menu_config() {
     {
         run_script 'env_backup'
         run_script 'appvars_create_all' || true
-    } |& dialog_pipe "${DC["TitleSuccess"]}Updating Variable Files" "" "${DIALOGTIMEOUT}"
+    } |& dialog_pipe "${DC[TitleSuccess]}Creating environment variables for added apps." "Please be patient, this can take a while.\n${DC[CommandLine]} ds --env" "${DIALOGTIMEOUT}"
     local OptionFullSetup="Full Setup"
     local OptionEditGlobalVars="Edit Global Variables"
     local OptionSelectApps="Select Applications"

@@ -8,25 +8,31 @@ update_self() {
     BRANCH=${1-$(git branch --show)}
     CurrentBranch="$(git branch --show)"
     local Title="Update DockSTARTer"
-    local Question Notice
+    local Question YesNotice NoNotice
     if [[ -z ${BRANCH-} ]]; then
         error "You need to specify a branch to update to."
         return 1
     fi
     if [[ ${BRANCH-} == "${CurrentBranch-}" ]]; then
-        Question="Would you like to update DockSTARTer now?"
-        Notice="DockSTARTer will not be updated."
+        Question="Would you like to update DockSTARTer to branch ${BRANCH} now?"
+        NoNotice="DockSTARTer will not be updated."
+        YesNotice="Updating DockSTARTer to ${BRANCH}."
     else
         Question="Would you like to update DockSTARTer from branch ${CurrentBranch} to ${BRANCH} now?"
-        Notice="DockSTARTer will not be updated from ${CurrentBranch} to ${BRANCH}."
+        NoNotice="DockSTARTer will not be updated from branch ${CurrentBranch} to ${BRANCH}."
+        YesNotice="Updating DockSTARTer from branch ${CurrentBranch} to ${BRANCH}."
     fi
     if ! run_script 'question_prompt' Y "${Question}" "${Title}" "${FORCE:+Y}"; then
-        notice "${Notice}"
-        return 1
+        if use_dialog_box; then
+            notice "${NoNotice}" |& dialog_pipe "${DC[TitleError]}${Title}" "${NoNotice}"
+        else
+            notice "${NoNotice}"
+        fi
+        return
     fi
 
     if use_dialog_box; then
-        commands_update_self "${BRANCH}" |& dialog_pipe "${Title}" "Updating DockSTARTer to ${BRANCH}"
+        commands_update_self "${BRANCH}" |& dialog_pipe "${DC[TitleSuccess]}${Title}" "${YesNotice}\n${DC[CommandLine]} ds --update $*"
     else
         commands_update_self "${BRANCH}"
     fi

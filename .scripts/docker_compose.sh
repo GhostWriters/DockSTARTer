@@ -127,7 +127,7 @@ docker_compose() {
         fi
     else
         if use_dialog_box; then
-            [[ -n ${NoNotice-} ]] && notice "${NoNotice}" |& dialog_pipe "${DC[TitleError]}${Title}"
+            [[ -n ${NoNotice-} ]] && notice "${NoNotice}" |& dialog_pipe "${DC[TitleError]}${Title}" "${NoNotice}"
         else
             [[ -n ${NoNotice-} ]] && notice "${NoNotice}"
         fi
