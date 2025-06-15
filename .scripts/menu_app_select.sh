@@ -6,6 +6,9 @@ menu_app_select() {
     local Title="Select Applications"
     local -a AppList=()
     local -a AddedApps=()
+
+    set +m
+    shopt -s lastpipe
     {
         readarray -t AllApps < <((
             run_script 'app_list_added'
@@ -34,6 +37,9 @@ menu_app_select() {
             fi
         done
     } |& dialog_pipe "${Title}" "Preparing app menu. Please be patient, this can take a while." "${DIALOGTIMEOUT}"
+    set -m
+    shopt +s lastpipe
+
     local -i SelectedAppsDialogButtonPressed
     local SelectedApps
     if [[ ${CI-} == true ]]; then
