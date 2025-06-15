@@ -26,7 +26,7 @@ update_self() {
     fi
 
     if use_dialog_box; then
-        commands_update_self "${BRANCH}" |& dialog_pipe "${Title}" "Updating DockSTARTer to ${BRANCH}"
+        commands_update_self "${BRANCH}" |& dialog_pipe "${Title}" "Updating DockSTARTer to ${BRANCH}\n${DC[CommandLine]} ds --update $*"
     else
         commands_update_self "${BRANCH}"
     fi
