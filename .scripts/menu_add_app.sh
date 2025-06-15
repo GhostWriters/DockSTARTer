@@ -104,7 +104,7 @@ menu_add_app() {
                             ;;
                         EXTRA) # User Defined
                             Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
-                            dialog_success "{DC[TitleSuccess]}Adding User Defined Application" "${Heading}" "${DIALOGTIMEOUT}"
+                            dialog_success "${DC[TitleSuccess]}Adding User Defined Application" "${Heading}" "${DIALOGTIMEOUT}"
                             run_script 'menu_add_var' "${AppName}"
                             return
                             ;;
