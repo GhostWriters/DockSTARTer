@@ -972,7 +972,7 @@ main() {
         exit
     fi
     if [[ -n ${INSTALL-} ]]; then
-        run_script_dialog "Install DockSTARTer" "Install or update all DockSTARTer dependencies\n${DC[CommandLine]} ds -u" "" \
+        run_script_dialog "Install DockSTARTer" "Install or update all DockSTARTer dependencies" "" \
             'run_install'
         exit
     fi
