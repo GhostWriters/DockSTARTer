@@ -44,7 +44,7 @@ menu_app_select() {
 
     readarray -t AddedApps < "${AddedAppsFile}"
     readarray -t AppList < "${AppListFile}"
-    rm "${AddedAppsFile}" "${AppListFile}" >& /dev/null
+    rm "${AddedAppsFile}" "${AppListFile}" &> /dev/null
 
     local -i SelectedAppsDialogButtonPressed
     local SelectedApps
