@@ -32,7 +32,7 @@ update_self() {
     fi
 
     if use_dialog_box; then
-        commands_update_self "${BRANCH}" |& dialog_pipe "${DC[TitleSucces]}${Title}" "${YesNotice}\n${DC[CommandLine]} ds --update $*"
+        commands_update_self "${BRANCH}" |& dialog_pipe "${DC[TitleSuccess]}${Title}" "${YesNotice}\n${DC[CommandLine]} ds --update $*"
     else
         commands_update_self "${BRANCH}"
     fi
