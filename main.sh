@@ -807,7 +807,7 @@ main() {
     if [[ -n ${ENVMETHOD-} ]]; then
         case "${ENVMETHOD-}" in
             --env)
-                run_script_dialog "${DC[TitleSuccess]}Creating environment variables for added apps." "Please be patient, this can take a while.\n${DC[CommandLine]} ds --env" "" \
+                run_script_dialog "${DC[TitleSuccess]}Creating environment variables for added apps" "Please be patient, this can take a while.\n${DC[CommandLine]} ds --env" "" \
                     'appvars_create_all'
                 exit
                 ;;
