@@ -10,7 +10,7 @@ menu_value_prompt() {
         return
     fi
 
-    local APPNAME APPNAME
+    local APPNAME AppName
 
     local VarDeletedTag="${DC[Highlight]}[*DELETED*]"
 
@@ -31,6 +31,7 @@ menu_value_prompt() {
         else
             VarType="APP"
         fi
+        AppName="$(run_script 'app_nicename' "${APPNAME}")"
     else
         Title="Edit Global Variable"
         VarType="GLOBAL"
