@@ -99,7 +99,7 @@ menu_add_app() {
                                 run_script 'env_backup'
                                 run_script 'appvars_create' "${AppName}"
                                 run_script 'env_update'
-                            } |& dialog_pipe "{DC[TitleSuccess]}Adding Built In Application" "${Heading}\n\n${DC[Subtitle]}Adding application:\n${DC[CommandLine]} ds --add ${AppName}" "${DIALOGTIMEOUT}"
+                            } |& dialog_pipe "${DC[TitleSuccess]}Adding Built In Application" "${Heading}\n\n${DC[Subtitle]}Adding application:\n${DC[CommandLine]} ds --add ${AppName}" "${DIALOGTIMEOUT}"
                             return
                             ;;
                         EXTRA) # User Defined
