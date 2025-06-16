@@ -165,11 +165,11 @@ menu_value_prompt() {
                         "Use Privoxy"
                     )
                     OptionHelpLine+=(
-                        ["Bridge Network"]="This connects ${DC[Highlight]}${AppName}${DC[NC]} to the internal Docker bridge network. Same as leaving the value blank."
-                        ["Host Network"]="This connects ${DC[Highlight]}${AppName}${DC[NC]} to the host OS's network."
-                        ["No Network"]="This leaves ${DC[Highlight]}${AppName}${DC[NC]} without a network connection."
-                        ["Use Gluetun"]="This connects ${DC[Highlight]}${AppName}${DC[NC]} to the VPN running in the ${DC[Highlight]}Gluetun${DC[NC]} container if you have it running."
-                        ["Use Privoxy"]="This connects ${DC[Highlight]}${AppName}${DC[NC]} to the VPN running in the ${DC[Highlight]}Privoxy${DC[NC]} container if you have it running."
+                        ["Bridge Network"]="Connects ${DC[Highlight]}${AppName}${DC[NC]} to the internal Docker bridge network. Same as leaving the value empty."
+                        ["Host Network"]="Connects ${DC[Highlight]}${AppName}${DC[NC]} to the host OS's network."
+                        ["No Network"]="Leaves ${DC[Highlight]}${AppName}${DC[NC]} without a network connection."
+                        ["Use Gluetun"]="Connects ${DC[Highlight]}${AppName}${DC[NC]} to the VPN running in the ${DC[Highlight]}Gluetun${DC[NC]} container if running."
+                        ["Use Privoxy"]="Connects ${DC[Highlight]}${AppName}${DC[NC]} to the VPN running in the ${DC[Highlight]}Privoxy${DC[NC]} container if running."
                     )
                     OptionValue+=(
                         ["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
