@@ -40,7 +40,7 @@ This is the directory where all your containers' configuration is saved to.
 Description:
 This directory will be mounted under `/storage` inside every container across DS. There is no specific use for this directory, it can be used however you like.
 
-## LAN_NETWORK
+## GLOBAL_LAN_NETWORK
 
 - System Detected value: Detects your local IP range.
 - Default value: `192.168.x.x/24`
@@ -48,14 +48,14 @@ This directory will be mounted under `/storage` inside every container across DS
 Description:
 If this value is blank or contains `x` DockSTARTer will automatically replace it with the System Detected value. Only accepts values in these ranges 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16.
 
-## NS1
+## GLOBAL_NS1
 
 - Default value: `1.1.1.1`
 
 Description:
 This IP address will be used as a default name server for some installed applications.
 
-## NS2
+## GLOBAL_NS2
 
 - Default value: `8.8.8.8`
 
