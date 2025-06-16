@@ -1,3 +1,3 @@
 services:
-  prometheus:
-    image: prom/prometheus:${PROMETHEUS_TAG}
+  prometheus<__instance>:
+    image: prom/prometheus:${PROMETHEUS<__INSTANCE>__TAG?}

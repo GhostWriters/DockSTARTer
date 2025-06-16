@@ -1,3 +1,3 @@
 services:
-  dozzle:
-    hostname: ${DOCKER_HOSTNAME}
+  dozzle<__instance>:
+    hostname: ${DOZZLE<__INSTANCE>__HOSTNAME?}

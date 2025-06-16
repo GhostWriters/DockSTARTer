@@ -1,22 +1,13 @@
 services:
-  cloudflareddns:
-    container_name: ${CLOUDFLAREDDNS_CONTAINER_NAME}
+  cloudflareddns<__instance>:
+    container_name: ${CLOUDFLAREDDNS<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/cloudflareddns<__instance>.env
     environment:
-      - ARGS=${CLOUDFLAREDDNS_ENVIRONMENT_ARGS}
-      - CF_APIKEY=${CLOUDFLAREDDNS_ENVIRONMENT_APIKEY}
-      - CF_APITOKEN=${CLOUDFLAREDDNS_ENVIRONMENT_APITOKEN}
-      - CF_HOSTS=${CLOUDFLAREDDNS_ENVIRONMENT_HOSTS}
-      - CF_RECORDTYPES=${CLOUDFLAREDDNS_ENVIRONMENT_RECORDTYPES}
-      - CF_USER=${CLOUDFLAREDDNS_ENVIRONMENT_USER}
-      - CF_ZONES=${CLOUDFLAREDDNS_ENVIRONMENT_ZONES}
-      - DETECTION_MODE=${CLOUDFLAREDDNS_ENVIRONMENT_DETECTION_MODE}
-      - INTERVAL=${CLOUDFLAREDDNS_ENVIRONMENT_INTERVAL}
-      - LOG_LEVEL=${CLOUDFLAREDDNS_ENVIRONMENT_LOG_LEVEL}
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${CLOUDFLAREDDNS_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${CLOUDFLAREDDNS<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/cloudflareddns:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/cloudflareddns<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

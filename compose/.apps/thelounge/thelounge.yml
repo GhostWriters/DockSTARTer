@@ -1,12 +1,13 @@
 services:
-  thelounge:
-    container_name: ${THELOUNGE_CONTAINER_NAME}
+  thelounge<__instance>:
+    container_name: ${THELOUNGE<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/thelounge<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${THELOUNGE_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${THELOUNGE<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/thelounge:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/thelounge<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

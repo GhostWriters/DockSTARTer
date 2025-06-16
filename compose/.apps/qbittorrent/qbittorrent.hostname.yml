@@ -1,3 +1,3 @@
 services:
-  qbittorrent:
-    hostname: ${DOCKER_HOSTNAME}
+  qbittorrent<__instance>:
+    hostname: ${QBITTORRENT<__INSTANCE>__HOSTNAME?}

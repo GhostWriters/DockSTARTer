@@ -1,12 +1,13 @@
 services:
-  readarr:
-    container_name: ${READARR_CONTAINER_NAME}
+  readarr<__instance>:
+    container_name: ${READARR<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/readarr<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${READARR_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${READARR<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/readarr:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/readarr<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

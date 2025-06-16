@@ -1,4 +1,4 @@
 services:
-  flame:
+  flame<__instance>:
     ports:
-      - ${FLAME_PORT_5005}:5005
+      - ${FLAME<__INSTANCE>__PORT_5005?}:5005

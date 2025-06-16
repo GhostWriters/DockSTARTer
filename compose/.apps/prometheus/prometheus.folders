@@ -1,0 +1,2 @@
+${DOCKER_VOLUME_CONFIG}/prometheus<__instance>/etc
+${DOCKER_VOLUME_CONFIG}/prometheus<__instance>/data

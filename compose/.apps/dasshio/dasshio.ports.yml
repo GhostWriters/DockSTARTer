@@ -1,4 +1,4 @@
 services:
-  dasshio:
+  dasshio<__instance>:
     ports:
-      - ${DASSHIO_PORT_6565}:6565
+      - ${DASSHIO<__INSTANCE>__PORT_6565?}:6565

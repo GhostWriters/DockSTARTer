@@ -1,17 +1,6 @@
 services:
-  wireguard:
+  wireguard<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "WireGuard is an extremely simple yet fast and modern VPN that utilizes state-of-the-art cryptography."
-      com.dockstarter.appinfo.nicename: "Wireguard"
-      com.dockstarter.appvars.wireguard_container_name: "wireguard"
-      com.dockstarter.appvars.wireguard_enabled: "false"
-      com.dockstarter.appvars.wireguard_environment_allowed_ips: "0.0.0.0/0"
-      com.dockstarter.appvars.wireguard_environment_internal_subnet: "10.13.13.0"
-      com.dockstarter.appvars.wireguard_environment_peer_dns: "auto"
-      com.dockstarter.appvars.wireguard_environment_peers: "1"
-      com.dockstarter.appvars.wireguard_environment_server_url: "auto"
-      com.dockstarter.appvars.wireguard_network_mode: ""
-      com.dockstarter.appvars.wireguard_port_51820: "51820"
-      com.dockstarter.appvars.wireguard_restart: "unless-stopped"
-      com.dockstarter.appvars.wireguard_tag: "latest"
+      com.dockstarter.appinfo.nicename: "Wireguard<__Instance>"

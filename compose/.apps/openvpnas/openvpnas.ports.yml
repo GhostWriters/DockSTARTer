@@ -1,6 +1,6 @@
 services:
-  openvpnas:
+  openvpnas<__instance>:
     ports:
-      - ${OPENVPNAS_PORT_1194}:1194/udp
-      - ${OPENVPNAS_PORT_943}:943
-      - ${OPENVPNAS_PORT_9443}:9443
+      - ${OPENVPNAS<__INSTANCE>__PORT_1194?}:1194/udp
+      - ${OPENVPNAS<__INSTANCE>__PORT_943?}:943
+      - ${OPENVPNAS<__INSTANCE>__PORT_9443?}:9443

@@ -1,4 +1,4 @@
 services:
-  logarr:
+  logarr<__instance>:
     ports:
-      - ${LOGARR_PORT_80}:80
+      - ${LOGARR<__INSTANCE>__PORT_80?}:80

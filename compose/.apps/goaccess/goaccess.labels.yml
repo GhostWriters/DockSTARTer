@@ -1,13 +1,6 @@
 services:
-  goaccess:
+  goaccess<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Real-time web log analyzer"
-      com.dockstarter.appinfo.nicename: "GoAccess"
-      com.dockstarter.appvars.goaccess_container_name: "goaccess"
-      com.dockstarter.appvars.goaccess_enabled: "false"
-      com.dockstarter.appvars.goaccess_network_mode: ""
-      com.dockstarter.appvars.goaccess_port_7889: "7889"
-      com.dockstarter.appvars.goaccess_restart: "unless-stopped"
-      com.dockstarter.appvars.goaccess_tag: "latest"
-      com.dockstarter.appvars.goaccess_volume_logsdir: "~/.config/appdata/swag/log/nginx"
+      com.dockstarter.appinfo.nicename: "GoAccess<__Instance>"

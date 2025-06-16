@@ -1,14 +1,15 @@
 services:
-  mosquitto:
-    container_name: ${MOSQUITTO_CONTAINER_NAME}
+  mosquitto<__instance>:
+    container_name: ${MOSQUITTO<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/mosquitto<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${MOSQUITTO_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${MOSQUITTO<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/mosquitto:/mosquitto/config
-      - ${DOCKER_VOLUME_CONFIG}/mosquitto/data:/mosquitto/data
-      - ${DOCKER_VOLUME_CONFIG}/mosquitto/log:/mosquitto/log
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/mosquitto<__instance>:/mosquitto/config
+      - ${DOCKER_VOLUME_CONFIG?}/mosquitto<__instance>/data:/mosquitto/data
+      - ${DOCKER_VOLUME_CONFIG?}/mosquitto<__instance>/log:/mosquitto/log
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

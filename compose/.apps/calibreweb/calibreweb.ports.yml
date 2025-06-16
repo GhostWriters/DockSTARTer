@@ -1,4 +1,4 @@
 services:
-  calibreweb:
+  calibreweb<__instance>:
     ports:
-      - ${CALIBREWEB_PORT_8083}:8083
+      - ${CALIBREWEB<__INSTANCE>__PORT_8083?}:8083

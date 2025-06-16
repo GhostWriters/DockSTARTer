@@ -1,3 +1,3 @@
 services:
-  jfago:
-    hostname: ${DOCKER_HOSTNAME}
+  jfago<__instance>:
+    hostname: ${JFAGO<__INSTANCE>__HOSTNAME?}

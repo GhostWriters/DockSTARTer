@@ -1,12 +1,6 @@
 services:
-  nodered:
+  nodered<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Low-code programming for event-driven applications"
-      com.dockstarter.appinfo.nicename: "Nodered"
-      com.dockstarter.appvars.nodered_container_name: "nodered"
-      com.dockstarter.appvars.nodered_enabled: "false"
-      com.dockstarter.appvars.nodered_network_mode: ""
-      com.dockstarter.appvars.nodered_port_1880: "1880"
-      com.dockstarter.appvars.nodered_restart: "unless-stopped"
-      com.dockstarter.appvars.nodered_tag: "latest"
+      com.dockstarter.appinfo.nicename: "Nodered<__Instance>"

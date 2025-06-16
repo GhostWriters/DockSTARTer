@@ -1,13 +1,14 @@
 services:
-  homepage:
-    container_name: ${HOMEPAGE_CONTAINER_NAME}
+  homepage<__instance>:
+    container_name: ${HOMEPAGE<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/homepage<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${HOMEPAGE_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${HOMEPAGE<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/homepage:/app/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${HOMEPAGE_VOLUME_DOCKER_SOCKET}:/var/run/docker.sock
+      - ${DOCKER_VOLUME_CONFIG?}/homepage<__instance>:/app/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage
+      - ${HOMEPAGE<__INSTANCE>__VOLUME_DOCKER_SOCKET?}:/var/run/docker.sock

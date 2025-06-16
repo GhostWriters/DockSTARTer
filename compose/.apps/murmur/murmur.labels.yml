@@ -1,13 +1,6 @@
 services:
-  murmur:
+  murmur<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Murmur is the server for Mumble, a voice over IP application"
-      com.dockstarter.appinfo.nicename: "Murmur"
-      com.dockstarter.appvars.murmur_container_name: "murmur"
-      com.dockstarter.appvars.murmur_enabled: "false"
-      com.dockstarter.appvars.murmur_environment_supw: ""
-      com.dockstarter.appvars.murmur_network_mode: ""
-      com.dockstarter.appvars.murmur_port_64738: "64738"
-      com.dockstarter.appvars.murmur_restart: "unless-stopped"
-      com.dockstarter.appvars.murmur_tag: "latest"
+      com.dockstarter.appinfo.nicename: "Murmur<__Instance>"

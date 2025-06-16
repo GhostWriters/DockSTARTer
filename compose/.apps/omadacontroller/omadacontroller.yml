@@ -1,25 +1,23 @@
 services:
-  omadacontroller:
-    container_name: ${OMADACONTROLLER_CONTAINER_NAME}
+  omadacontroller<__instance>:
+    container_name: ${OMADACONTROLLER<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/omadacontroller<__instance>.env
     environment:
-      - MANAGE_HTTP_PORT=${OMADACONTROLLER_PORT_8088}
-      - MANAGE_HTTPS_PORT=${OMADACONTROLLER_PORT_8043}
-      - PGID=${PGID}
-      - PORT_ADOPT_V1=${OMADACONTROLLER_PORT_29812}
-      - PORT_APP_DISCOVERY=${OMADACONTROLLER_PORT_27001}
-      - PORT_DISCOVERY=${OMADACONTROLLER_PORT_29810}
-      - PORT_MANAGER_V1=${OMADACONTROLLER_PORT_29811}
-      - PORT_MANAGER_V2=${OMADACONTROLLER_PORT_29814}
-      - PORT_UPGRADE_V1=${OMADACONTROLLER_PORT_29813}
-      - PUID=${PUID}
-      - SHOW_MONGODB_LOGS=${OMADACONTROLLER_ENVIRONMENT_SHOW_MONGODB_LOGS}
-      - SHOW_SERVER_LOGS=${OMADACONTROLLER_ENVIRONMENT_SHOW_SERVER_LOGS}
-      - SMALL_FILES=${OMADACONTROLLER_ENVIRONMENT_SMALL_FILES}
-      - TZ=${TZ}
-    restart: ${OMADACONTROLLER_RESTART}
+      - MANAGE_HTTP_PORT=${OMADACONTROLLER<__INSTANCE>__PORT_8088?}
+      - MANAGE_HTTPS_PORT=${OMADACONTROLLER<__INSTANCE>__PORT_8043?}
+      - PGID=${PGID?}
+      - PORT_ADOPT_V1=${OMADACONTROLLER<__INSTANCE>__PORT_29812?}
+      - PORT_APP_DISCOVERY=${OMADACONTROLLER<__INSTANCE>__PORT_27001?}
+      - PORT_DISCOVERY=${OMADACONTROLLER<__INSTANCE>__PORT_29810?}
+      - PORT_MANAGER_V1=${OMADACONTROLLER<__INSTANCE>__PORT_29811?}
+      - PORT_MANAGER_V2=${OMADACONTROLLER<__INSTANCE>__PORT_29814?}
+      - PORT_UPGRADE_V1=${OMADACONTROLLER<__INSTANCE>__PORT_29813?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${OMADACONTROLLER<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/omadacontroller:/opt/tplink/EAPController/data
-      - ${DOCKER_VOLUME_CONFIG}/omadacontroller/logs:/opt/tplink/EAPController/logs
-      - ${DOCKER_VOLUME_CONFIG}/omadacontroller/work:/opt/tplink/EAPController/work
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/omadacontroller<__instance>:/opt/tplink/EAPController/data
+      - ${DOCKER_VOLUME_CONFIG?}/omadacontroller<__instance>/logs:/opt/tplink/EAPController/logs
+      - ${DOCKER_VOLUME_CONFIG?}/omadacontroller<__instance>/work:/opt/tplink/EAPController/work
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

@@ -1,3 +1,3 @@
 services:
-  maintainerr:
-    hostname: ${DOCKER_HOSTNAME}
+  maintainerr<__instance>:
+    hostname: ${MAINTAINERR<__INSTANCE>__HOSTNAME?}

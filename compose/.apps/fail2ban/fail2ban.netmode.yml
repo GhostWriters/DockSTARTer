@@ -1,3 +1,3 @@
 services:
-  fail2ban:
-    network_mode: ${FAIL2BAN_NETWORK_MODE}
+  fail2ban<__instance>:
+    network_mode: ${FAIL2BAN<__INSTANCE>__NETWORK_MODE?}

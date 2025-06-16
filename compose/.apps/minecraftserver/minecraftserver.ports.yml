@@ -1,4 +1,4 @@
 services:
-  minecraftserver:
+  minecraftserver<__instance>:
     ports:
-      - ${MINECRAFTSERVER_PORT_25565}:25565
+      - ${MINECRAFTSERVER<__INSTANCE>__PORT_25565?}:25565

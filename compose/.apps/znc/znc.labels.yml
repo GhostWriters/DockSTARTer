@@ -1,12 +1,6 @@
 services:
-  znc:
+  znc<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "IRC network bouncer or BNC"
-      com.dockstarter.appinfo.nicename: "ZNC"
-      com.dockstarter.appvars.znc_container_name: "znc"
-      com.dockstarter.appvars.znc_enabled: "false"
-      com.dockstarter.appvars.znc_network_mode: ""
-      com.dockstarter.appvars.znc_port_6501: "6501"
-      com.dockstarter.appvars.znc_restart: "unless-stopped"
-      com.dockstarter.appvars.znc_tag: "latest"
+      com.dockstarter.appinfo.nicename: "ZNC<__Instance>"

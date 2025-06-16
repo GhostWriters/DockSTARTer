@@ -1,4 +1,4 @@
 services:
-  readarr:
+  readarr<__instance>:
     ports:
-      - ${READARR_PORT_8787}:8787
+      - ${READARR<__INSTANCE>__PORT_8787?}:8787

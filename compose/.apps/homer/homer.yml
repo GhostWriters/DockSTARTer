@@ -1,14 +1,13 @@
 services:
-  homer:
-    container_name: ${HOMER_CONTAINER_NAME}
+  homer<__instance>:
+    container_name: ${HOMER<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/homer<__instance>.env
     environment:
-      - INIT_ASSETS=${HOMER_ENVIRONMENT_INIT_ASSETS}
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - SUBFOLDER=${HOMER_ENVIRONMENT_SUBFOLDER}
-      - TZ=${TZ}
-    restart: ${HOMER_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${HOMER<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${DOCKER_VOLUME_CONFIG}/homer:/www/assets
+      - ${DOCKER_VOLUME_STORAGE?}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/homer<__instance>:/www/assets

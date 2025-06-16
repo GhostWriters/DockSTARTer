@@ -1,3 +1,3 @@
 services:
-  monitorr:
-    hostname: ${DOCKER_HOSTNAME}
+  monitorr<__instance>:
+    hostname: ${MONITORR<__INSTANCE>__HOSTNAME?}

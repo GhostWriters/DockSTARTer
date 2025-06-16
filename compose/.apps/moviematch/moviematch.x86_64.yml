@@ -1,3 +1,3 @@
 services:
-  moviematch:
-    image: lukechannings/moviematch:${MOVIEMATCH_TAG}
+  moviematch<__instance>:
+    image: lukechannings/moviematch:${MOVIEMATCH<__INSTANCE>__TAG?}

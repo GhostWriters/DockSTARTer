@@ -1,3 +1,3 @@
 services:
-  speedtest:
-    image: henrywhitaker3/speedtest-tracker:${SPEEDTEST_TAG}-arm
+  speedtest<__instance>:
+    image: henrywhitaker3/speedtest-tracker:${SPEEDTEST<__INSTANCE>__TAG?}-arm

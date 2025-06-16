@@ -1,16 +1,12 @@
 services:
-  huginn:
-    container_name: ${HUGINN_CONTAINER_NAME}
+  huginn<__instance>:
+    container_name: ${HUGINN<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/huginn<__instance>.env
     environment:
-      - HUGINN_DATABASE_HOST=${HUGINN_ENVIRONMENT_DATABASE_HOST}
-      - HUGINN_DATABASE_NAME=${HUGINN_ENVIRONMENT_DATABASE_NAME}
-      - HUGINN_DATABASE_PASSWORD=${HUGINN_ENVIRONMENT_DATABASE_PASSWORD}
-      - HUGINN_DATABASE_PORT=${HUGINN_ENVIRONMENT_DATABASE_PORT}
-      - HUGINN_DATABASE_USERNAME=${HUGINN_ENVIRONMENT_DATABASE_USERNAME}
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${HUGINN_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${HUGINN<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

@@ -1,17 +1,6 @@
 services:
-  bookstack:
+  bookstack<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Platform for storing and organising information and documentation"
-      com.dockstarter.appinfo.nicename: "BookStack"
-      com.dockstarter.appvars.bookstack_container_name: "bookstack"
-      com.dockstarter.appvars.bookstack_enabled: "false"
-      com.dockstarter.appvars.bookstack_environment_app_url: ""
-      com.dockstarter.appvars.bookstack_environment_db_database: ""
-      com.dockstarter.appvars.bookstack_environment_db_host: ""
-      com.dockstarter.appvars.bookstack_environment_db_pass: ""
-      com.dockstarter.appvars.bookstack_environment_db_user: ""
-      com.dockstarter.appvars.bookstack_network_mode: ""
-      com.dockstarter.appvars.bookstack_port_80: "6875"
-      com.dockstarter.appvars.bookstack_restart: "unless-stopped"
-      com.dockstarter.appvars.bookstack_tag: "latest"
+      com.dockstarter.appinfo.nicename: "BookStack<__Instance>"

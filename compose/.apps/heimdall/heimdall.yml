@@ -1,12 +1,13 @@
 services:
-  heimdall:
-    container_name: ${HEIMDALL_CONTAINER_NAME}
+  heimdall<__instance>:
+    container_name: ${HEIMDALL<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/heimdall<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${HEIMDALL_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${HEIMDALL<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/heimdall:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/heimdall<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

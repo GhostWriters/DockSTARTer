@@ -1,14 +1,6 @@
 services:
-  komga:
+  komga<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "A media server for your comics, mangas, BDs and magazines"
-      com.dockstarter.appinfo.nicename: "Komga"
-      com.dockstarter.appvars.komga_container_name: "komga"
-      com.dockstarter.appvars.komga_enabled: "false"
-      com.dockstarter.appvars.komga_environment_baseurl: ""
-      com.dockstarter.appvars.komga_environment_scan_cron: "0 0 */8 * * ?"
-      com.dockstarter.appvars.komga_network_mode: ""
-      com.dockstarter.appvars.komga_port_25600: "25600"
-      com.dockstarter.appvars.komga_restart: "unless-stopped"
-      com.dockstarter.appvars.komga_tag: "latest"
+      com.dockstarter.appinfo.nicename: "Komga<__Instance>"

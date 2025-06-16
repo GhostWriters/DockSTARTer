@@ -1,3 +1,3 @@
 services:
-  ubooquity:
-    network_mode: ${UBOOQUITY_NETWORK_MODE}
+  ubooquity<__instance>:
+    network_mode: ${UBOOQUITY<__INSTANCE>__NETWORK_MODE?}

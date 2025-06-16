@@ -1,4 +1,4 @@
 services:
-  monitorr:
+  monitorr<__instance>:
     ports:
-      - ${MONITORR_PORT_80}:80
+      - ${MONITORR<__INSTANCE>__PORT_80?}:80

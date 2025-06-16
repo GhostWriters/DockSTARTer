@@ -1,4 +1,4 @@
 services:
-  couchpotato:
+  couchpotato<__instance>:
     ports:
-      - ${COUCHPOTATO_PORT_5050}:5050
+      - ${COUCHPOTATO<__INSTANCE>__PORT_5050?}:5050

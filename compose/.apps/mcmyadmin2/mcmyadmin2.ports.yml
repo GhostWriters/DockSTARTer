@@ -1,5 +1,5 @@
 services:
-  mcmyadmin2:
+  mcmyadmin2<__instance>:
     ports:
-      - ${MCMYADMIN2_PORT_25565}:25565
-      - ${MCMYADMIN2_PORT_8080}:8080
+      - ${MCMYADMIN2<__INSTANCE>__PORT_25565?}:25565
+      - ${MCMYADMIN2<__INSTANCE>__PORT_8080?}:8080

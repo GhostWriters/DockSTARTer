@@ -1,13 +1,13 @@
 services:
-  kiwixserve:
-    container_name: ${KIWIXSERVE_CONTAINER_NAME}
+  kiwixserve<__instance>:
+    container_name: ${KIWIXSERVE<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/kiwixserve<__instance>.env
     environment:
-      - DOWNLOAD=${KIWIXSERVE_ENVIRONMENT_DOWNLOADS}
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${KIWIXSERVE_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${KIWIXSERVE<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/kiwixserve:/data
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/kiwixserve<__instance>:/data
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

@@ -1,14 +1,6 @@
 services:
-  postgres:
+  postgres<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: The PostgreSQL object-relational database system provides reliability and data integrity.
       com.dockstarter.appinfo.nicename: Postgres
-      com.dockstarter.appvars.postgres_container_name: "postgres"
-      com.dockstarter.appvars.postgres_enabled: "false"
-      com.dockstarter.appvars.postgres_environment_password: ""
-      com.dockstarter.appvars.postgres_environment_user: "postgres"
-      com.dockstarter.appvars.postgres_network_mode: ""
-      com.dockstarter.appvars.postgres_port_5432: "5432"
-      com.dockstarter.appvars.postgres_restart: unless-stopped
-      com.dockstarter.appvars.postgres_tag: "16"

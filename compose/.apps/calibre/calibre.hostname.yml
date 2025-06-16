@@ -1,3 +1,3 @@
 services:
-  calibre:
-    hostname: ${DOCKER_HOSTNAME}
+  calibre<__instance>:
+    hostname: ${CALIBRE<__INSTANCE>__HOSTNAME?}

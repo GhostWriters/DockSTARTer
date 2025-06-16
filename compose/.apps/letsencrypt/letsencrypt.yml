@@ -1,22 +1,15 @@
 services:
-  letsencrypt:
+  letsencrypt<__instance>:
     cap_add:
       - NET_ADMIN
-    container_name: ${LETSENCRYPT_CONTAINER_NAME}
+    container_name: ${LETSENCRYPT<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/letsencrypt<__instance>.env
     environment:
-      - DNSPLUGIN=${LETSENCRYPT_ENVIRONMENT_DNSPLUGIN}
-      - DUCKDNSTOKEN=${LETSENCRYPT_ENVIRONMENT_DUCKDNSTOKEN}
-      - EMAIL=${LETSENCRYPT_ENVIRONMENT_EMAIL}
-      - EXTRA_DOMAINS=${LETSENCRYPT_ENVIRONMENT_EXTRA_DOMAINS}
-      - ONLY_SUBDOMAINS=${LETSENCRYPT_ENVIRONMENT_ONLY_SUBDOMAINS}
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - SUBDOMAINS=${LETSENCRYPT_ENVIRONMENT_SUBDOMAINS}
-      - TZ=${TZ}
-      - URL=${LETSENCRYPT_ENVIRONMENT_URL}
-      - VALIDATION=${LETSENCRYPT_ENVIRONMENT_VALIDATION}
-    restart: ${LETSENCRYPT_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${LETSENCRYPT<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/letsencrypt:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/letsencrypt<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

@@ -1,4 +1,4 @@
 services:
-  sabnzbd:
+  sabnzbd<__instance>:
     ports:
-      - ${SABNZBD_PORT_8080}:8080
+      - ${SABNZBD<__INSTANCE>__PORT_8080?}:8080

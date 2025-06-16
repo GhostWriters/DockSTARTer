@@ -1,3 +1,3 @@
 services:
-  fireflyiii:
-    hostname: ${DOCKER_HOSTNAME}
+  fireflyiii<__instance>:
+    hostname: ${FIREFLYIII<__INSTANCE>__HOSTNAME?}

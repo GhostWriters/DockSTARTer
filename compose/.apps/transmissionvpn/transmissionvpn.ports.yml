@@ -1,4 +1,4 @@
 services:
-  transmissionvpn:
+  transmissionvpn<__instance>:
     ports:
-      - ${TRANSMISSIONVPN_PORT_9091}:9091
+      - ${TRANSMISSIONVPN<__INSTANCE>__PORT_9091?}:9091

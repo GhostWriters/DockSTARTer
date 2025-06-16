@@ -1,3 +1,3 @@
 services:
-  pgbackup:
-    hostname: ${DOCKER_HOSTNAME}
+  pgbackup<__instance>:
+    hostname: ${PGBACKUP<__INSTANCE>__HOSTNAME?}

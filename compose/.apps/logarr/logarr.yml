@@ -1,13 +1,14 @@
 services:
-  logarr:
-    container_name: ${LOGARR_CONTAINER_NAME}
+  logarr<__instance>:
+    container_name: ${LOGARR<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/logarr<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${LOGARR_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${LOGARR<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/logarr:/config
-      - ${DOCKER_VOLUME_CONFIG}:/var/log/logarrlogs:ro
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/logarr<__instance>:/config
+      - ${DOCKER_VOLUME_CONFIG?}:/var/log/logarrlogs:ro
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

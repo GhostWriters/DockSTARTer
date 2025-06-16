@@ -1,3 +1,3 @@
 services:
-  lazylibrarian:
-    network_mode: ${LAZYLIBRARIAN_NETWORK_MODE}
+  lazylibrarian<__instance>:
+    network_mode: ${LAZYLIBRARIAN<__INSTANCE>__NETWORK_MODE?}

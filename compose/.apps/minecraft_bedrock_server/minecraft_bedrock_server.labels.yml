@@ -1,0 +1,7 @@
+services:
+  minecraft_bedrock_server<__instance>:
+    labels:
+      com.dockstarter.appinfo.deprecated: "true"
+      com.dockstarter.appinfo.description: "(DEPRECATED) Use Minecraft Bedrock Server"
+      com.dockstarter.appinfo.nicename: "Minecraft_Bedrock_Server<__Instance>"
+      com.dockstarter.appinfo.migrateto: "minecraftbedrockserver"

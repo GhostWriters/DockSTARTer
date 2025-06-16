@@ -1,3 +1,3 @@
 services:
-  thelounge:
-    network_mode: ${THELOUNGE_NETWORK_MODE}
+  thelounge<__instance>:
+    network_mode: ${THELOUNGE<__INSTANCE>__NETWORK_MODE?}

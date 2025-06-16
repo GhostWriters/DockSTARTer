@@ -1,5 +1,5 @@
 services:
-  murmur:
+  murmur<__instance>:
     ports:
-      - ${MURMUR_PORT_64738}:64738
-      - ${MURMUR_PORT_64738}:64738/udp
+      - ${MURMUR<__INSTANCE>__PORT_64738?}:64738
+      - ${MURMUR<__INSTANCE>__PORT_64738?}:64738/udp

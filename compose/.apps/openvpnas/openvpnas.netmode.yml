@@ -1,3 +1,3 @@
 services:
-  openvpnas:
-    network_mode: ${OPENVPNAS_NETWORK_MODE}
+  openvpnas<__instance>:
+    network_mode: ${OPENVPNAS<__INSTANCE>__NETWORK_MODE?}

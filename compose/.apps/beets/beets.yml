@@ -1,12 +1,13 @@
 services:
-  beets:
-    container_name: ${BEETS_CONTAINER_NAME}
+  beets<__instance>:
+    container_name: ${BEETS<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/beets<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${BEETS_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${BEETS<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/beets:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/beets<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

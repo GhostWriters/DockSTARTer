@@ -1,3 +1,3 @@
 services:
-  synclounge:
-    image: lscr.io/linuxserver/synclounge:${SYNCLOUNGE_TAG}
+  synclounge<__instance>:
+    image: lscr.io/linuxserver/synclounge:${SYNCLOUNGE<__INSTANCE>__TAG?}

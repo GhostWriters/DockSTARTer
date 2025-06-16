@@ -1,4 +1,4 @@
 services:
-  unmanic:
+  unmanic<__instance>:
     ports:
-      - ${UNMANIC_PORT_8888}:8888
+      - ${UNMANIC<__INSTANCE>__PORT_8888?}:8888

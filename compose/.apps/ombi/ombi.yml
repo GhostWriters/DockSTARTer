@@ -1,12 +1,13 @@
 services:
-  ombi:
-    container_name: ${OMBI_CONTAINER_NAME}
+  ombi<__instance>:
+    container_name: ${OMBI<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/ombi<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${OMBI_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${OMBI<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/ombi:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/ombi<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

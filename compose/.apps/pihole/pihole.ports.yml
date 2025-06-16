@@ -1,8 +1,8 @@
 services:
-  pihole:
+  pihole<__instance>:
     ports:
-      - ${PIHOLE_PORT_443}:443
-      - ${PIHOLE_PORT_80}:80
-      - ${PIHOLE_PORT_53}:53
-      - ${PIHOLE_PORT_53}:53/udp
-      - ${PIHOLE_PORT_67}:67/udp
+      - ${PIHOLE<__INSTANCE>__PORT_443?}:443
+      - ${PIHOLE<__INSTANCE>__PORT_80?}:80
+      - ${PIHOLE<__INSTANCE>__PORT_53?}:53
+      - ${PIHOLE<__INSTANCE>__PORT_53?}:53/udp
+      - ${PIHOLE<__INSTANCE>__PORT_67?}:67/udp

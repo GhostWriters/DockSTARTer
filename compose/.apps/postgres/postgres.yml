@@ -1,12 +1,11 @@
 services:
-  postgres:
-    container_name: ${POSTGRES_CONTAINER_NAME}
+  postgres<__instance>:
+    container_name: ${POSTGRES<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/postgres<__instance>.env
     environment:
-      - POSTGRES_PASSWORD=${POSTGRES_ENVIRONMENT_PASSWORD}
-      - POSTGRES_USER=${POSTGRES_ENVIRONMENT_USER}
-      - TZ=${TZ}
-    restart: ${POSTGRES_RESTART}
+      - TZ=${TZ?}
+    restart: ${POSTGRES<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/postgres:/var/lib/postgresql/data
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/postgres<__instance>:/var/lib/postgresql/data
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

@@ -1,15 +1,6 @@
 services:
-  minecraftserver:
+  minecraftserver<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "Minecraft Java Edition Server"
-      com.dockstarter.appinfo.nicename: "MinecraftServer"
-      com.dockstarter.appvars.minecraftserver_container_name: "minecraftserver"
-      com.dockstarter.appvars.minecraftserver_enabled: "false"
-      com.dockstarter.appvars.minecraftserver_environment_eula: "TRUE"
-      com.dockstarter.appvars.minecraftserver_environment_type: "VANILLA"
-      com.dockstarter.appvars.minecraftserver_environment_version: "LATEST"
-      com.dockstarter.appvars.minecraftserver_network_mode: ""
-      com.dockstarter.appvars.minecraftserver_port_25565: "25565"
-      com.dockstarter.appvars.minecraftserver_restart: "unless-stopped"
-      com.dockstarter.appvars.minecraftserver_tag: "latest"
+      com.dockstarter.appinfo.nicename: "MinecraftServer<__Instance>"

@@ -1,20 +1,13 @@
 services:
-  apcupsd:
-    container_name: ${APCUPSD_CONTAINER_NAME}
+  apcupsd<__instance>:
+    container_name: ${APCUPSD<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/apcupsd<__instance>.env
     environment:
-      - APCUPSD_HOST=${APCUPSD_ENVIRONMENT_HOST}
-      - INFLUXDB_HOST=${APCUPSD_ENVIRONMENT_INFLUXDB_HOST}
-      - INFLUXDB_DATABASE=${APCUPSD_ENVIRONMENT_INFLUXDB_DATABASE}
-      - INFLUXDB_PASSWORD=${APCUPSD_ENVIRONMENT_INFLUXDB_PASSWORD}
-      - INFLUXDB_PORT=${APCUPSD_ENVIRONMENT_INFLUXDB_PORT}
-      - INFLUXDB_USER=${APCUPSD_ENVIRONMENT_INFLUXDB_USER}
-      - INTERVAL=${APCUPSD_ENVIRONMENT_INTERVAL}
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-      - VERBOSE=${APCUPSD_ENVIRONMENT_DEBUG}
-    restart: ${APCUPSD_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${APCUPSD<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/apcupsd:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/apcupsd<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

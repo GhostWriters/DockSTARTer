@@ -1,4 +1,4 @@
 services:
-  autobrr:
+  autobrr<__instance>:
     ports:
-      - ${AUTOBRR_PORT_7474}:7474
+      - ${AUTOBRR<__INSTANCE>__PORT_7474?}:7474

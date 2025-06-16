@@ -1,4 +1,4 @@
 services:
-  tautulli:
+  tautulli<__instance>:
     ports:
-      - ${TAUTULLI_PORT_8181}:8181
+      - ${TAUTULLI<__INSTANCE>__PORT_8181?}:8181

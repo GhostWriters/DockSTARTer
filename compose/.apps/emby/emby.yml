@@ -1,13 +1,14 @@
 services:
-  emby:
-    container_name: ${EMBY_CONTAINER_NAME}
+  emby<__instance>:
+    container_name: ${EMBY<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/emby<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${EMBY_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${EMBY<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/emby:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${EMBY_VOLUME_TRANSCODEDIR}:/transcode
+      - ${DOCKER_VOLUME_CONFIG?}/emby<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage
+      - ${EMBY<__INSTANCE>__VOLUME_TRANSCODEDIR?}:/transcode

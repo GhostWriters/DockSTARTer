@@ -1,3 +1,3 @@
 services:
-  audiobookshelf:
-    image: ghcr.io/advplyr/audiobookshelf:${AUDIOBOOKSHELF_TAG}
+  audiobookshelf<__instance>:
+    image: ghcr.io/advplyr/audiobookshelf:${AUDIOBOOKSHELF<__INSTANCE>__TAG?}

@@ -1,13 +1,14 @@
 services:
-  syncthing:
-    container_name: ${SYNCTHING_CONTAINER_NAME}
+  syncthing<__instance>:
+    container_name: ${SYNCTHING<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/syncthing<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${SYNCTHING_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${SYNCTHING<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/syncthing:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${SYNCTHING_VOLUME_SOURCEDIR}:/source
+      - ${DOCKER_VOLUME_CONFIG?}/syncthing<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage
+      - ${SYNCTHING<__INSTANCE>__VOLUME_SOURCEDIR?}:/source

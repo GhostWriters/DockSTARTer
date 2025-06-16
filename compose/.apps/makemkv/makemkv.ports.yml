@@ -1,4 +1,4 @@
 services:
-  makemkv:
+  makemkv<__instance>:
     ports:
-      - ${MAKEMKV_PORT_5800}:5800
+      - ${MAKEMKV<__INSTANCE>__PORT_5800?}:5800

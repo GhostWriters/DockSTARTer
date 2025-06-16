@@ -4,27 +4,62 @@ IFS=$'\n\t'
 
 update_self() {
     cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
-    local BRANCH=${1-$(git branch --show)}
-    if run_script 'question_prompt' "${PROMPT-}" Y "Would you like to update DockSTARTer to ${BRANCH} now?"; then
-        notice "Updating DockSTARTer to ${BRANCH}."
-    else
-        notice "DockSTARTer will not be updated to ${BRANCH}."
+    local BRANCH CurrentBranch
+    BRANCH=${1-$(git branch --show)}
+    CurrentBranch="$(git branch --show)"
+    local Title="Update DockSTARTer"
+    local Question YesNotice NoNotice
+    if [[ -z ${BRANCH-} ]]; then
+        error "You need to specify a branch to update to."
         return 1
     fi
+    if [[ ${BRANCH-} == "${CurrentBranch-}" ]]; then
+        Question="Would you like to update DockSTARTer to branch ${BRANCH} now?"
+        NoNotice="DockSTARTer will not be updated."
+        YesNotice="Updating DockSTARTer to ${BRANCH}."
+    else
+        Question="Would you like to update DockSTARTer from branch ${CurrentBranch} to ${BRANCH} now?"
+        NoNotice="DockSTARTer will not be updated from branch ${CurrentBranch} to ${BRANCH}."
+        YesNotice="Updating DockSTARTer from branch ${CurrentBranch} to ${BRANCH}."
+    fi
+    if ! run_script 'question_prompt' Y "${Question}" "${Title}" "${FORCE:+Y}"; then
+        if use_dialog_box; then
+            notice "${NoNotice}" |& dialog_pipe "${DC[TitleError]}${Title}" "${NoNotice}"
+        else
+            notice "${NoNotice}"
+        fi
+        return
+    fi
+
+    if use_dialog_box; then
+        commands_update_self "${BRANCH}" |& dialog_pipe "${DC[TitleSuccess]}${Title}" "${YesNotice}\n${DC[CommandLine]} ds --update $*"
+    else
+        commands_update_self "${BRANCH}"
+    fi
+}
+
+commands_update_self() {
+    local BRANCH=${1-}
+    notice "Clearing instances folder"
+    rm -R "${INSTANCES_FOLDER:?}/"* &> /dev/null || true
+    notice "Updating DockSTARTer to ${BRANCH}."
     cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
     info "Setting file ownership on current repository files"
     sudo chown -R "$(id -u)":"$(id -g)" "${SCRIPTPATH}/.git" > /dev/null 2>&1 || true
     sudo chown "$(id -u)":"$(id -g)" "${SCRIPTPATH}" > /dev/null 2>&1 || true
     git ls-tree -rt --name-only HEAD | xargs sudo chown "$(id -u)":"$(id -g)" > /dev/null 2>&1 || true
-    info "Fetching recent changes from git."
-    git fetch --all --prune > /dev/null 2>&1 || fatal "Failed to fetch recent changes from git.\nFailing command: ${F[C]}git fetch --all --prune"
-    if [[ ${CI-} != true ]]; then
-        info "Resetting to ${BRANCH}."
-        git switch --force "${BRANCH}" > /dev/null 2>&1 || fatal "Failed to switch to github branch ${BRANCH}.\nFailing command: ${F[C]}git switch --force \"${BRANCH}\""
-        git reset --hard origin/"${BRANCH}" > /dev/null 2>&1 || fatal "Failed to reset to current branch.\nFailing command: ${F[C]}git reset --hard origin/\"${BRANCH}\""
 
+    info "Fetching recent changes from git."
+    git fetch --all --prune || fatal "Failed to fetch recent changes from git.\nFailing command: ${F[C]}git fetch --all --prune"
+    if [[ ${CI-} != true ]]; then
+        if [[ -n ${BRANCH-} ]]; then
+            git switch --force "${BRANCH}" || fatal "Failed to switch to github branch ${BRANCH}.\nFailing command: ${F[C]}git switch --force \"${BRANCH}\""
+            git reset --hard origin/"${BRANCH}" || fatal "Failed to reset to current branch.\nFailing command: ${F[C]}git reset --hard origin/\"${BRANCH}\""
+        else
+            git reset --hard HEAD || fatal "Failed to reset to current branch.\nFailing command: ${F[C]}git reset --hard HEAD"
+        fi
         info "Pulling recent changes from git."
-        git pull > /dev/null 2>&1 || fatal "Failed to pull recent changes from git.\nFailing command: ${F[C]}git pull"
+        git pull || fatal "Failed to pull recent changes from git.\nFailing command: ${F[C]}git pull"
     fi
     info "Cleaning up unnecessary files and optimizing the local repository."
     git gc > /dev/null 2>&1 || true
@@ -33,7 +68,6 @@ update_self() {
     sudo chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}/.git" > /dev/null 2>&1 || true
     sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}" > /dev/null 2>&1 || true
     exec bash "${SCRIPTNAME}" -e
-
 }
 
 test_update_self() {

@@ -1,4 +1,4 @@
 services:
-  medusa:
+  medusa<__instance>:
     ports:
-      - ${MEDUSA_PORT_8081}:8081
+      - ${MEDUSA<__INSTANCE>__PORT_8081?}:8081

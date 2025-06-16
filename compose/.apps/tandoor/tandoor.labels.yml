@@ -1,17 +1,6 @@
 services:
-  tandoor:
+  tandoor<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
       com.dockstarter.appinfo.description: "The recipe manager that allows you to manage your ever growing collection of digital recipes."
-      com.dockstarter.appinfo.nicename: "Tandoor"
-      com.dockstarter.appvars.tandoor_container_name: "tandoor"
-      com.dockstarter.appvars.tandoor_enabled: "false"
-      com.dockstarter.appvars.tandoor_environment_allowed_hosts: "*"
-      com.dockstarter.appvars.tandoor_environment_database_url: "sqlite://localhost/data/db.sqlite3"
-      com.dockstarter.appvars.tandoor_environment_debug: "0"
-      com.dockstarter.appvars.tandoor_environment_gunicorn_media: "1"
-      com.dockstarter.appvars.tandoor_environment_secret_key: "change_me"
-      com.dockstarter.appvars.tandoor_network_mode: ""
-      com.dockstarter.appvars.tandoor_port_8080: "8080"
-      com.dockstarter.appvars.tandoor_restart: "unless-stopped"
-      com.dockstarter.appvars.tandoor_tag: "latest"
+      com.dockstarter.appinfo.nicename: "Tandoor<__Instance>"
