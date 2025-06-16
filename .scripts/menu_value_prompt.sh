@@ -164,6 +164,13 @@ menu_value_prompt() {
                         "Use Gluetun"
                         "Use Privoxy"
                     )
+                    OptionHelpLine+=(
+                        ["Bridge Network"]="This connect the container to the internal Docker bridge network. Same as leaving the value blank."
+                        ["Host Network"]="This connect the container to the host OS's network."
+                        ["No Network"]="This will leave the container without a network connection."
+                        ["Use Gluetun"]="This will connect the container to the VPN running in the Gluetun container if you have it running."
+                        ["Use Privoxy"]="This will connect the container to the VPN running in the Privoxy container if you have it running."
+                    )
                     OptionValue+=(
                         ["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
                         ["Bridge Network"]="'bridge'"
