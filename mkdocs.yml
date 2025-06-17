@@ -96,7 +96,7 @@ plugins:
   - search
 
 nav:
-  - Home: index.md
+  - Home: README.md
   - introduction.md
   - Basics:
       - basics/available-apps.md
