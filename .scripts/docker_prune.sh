@@ -8,18 +8,18 @@ docker_prune() {
     YesNotice="Removing unused docker resources."
     NoNotice="Nothing will be removed."
 
-    local RUNCOMMAND="docker system prune --all --force --volumes"
+    local Command="docker system prune --all --force --volumes"
     if run_script 'question_prompt' Y "${Question}" "${Title}" "${FORCE:+Y}"; then
         if use_dialog_box; then
             {
                 notice "${YesNotice}"
-                notice "Running ${RUNCOMMAND}"
-                eval "${RUNCOMMAND}" || error "Failed to remove unused docker resources.\nFailing command: ${F[C]}${RUNCOMMAND}"
-            } |& dialog_pipe "${DC[TitleSuccess]}${Title}" "${YesNotice}${DC[NC]}\n${DC[CommandLine]} ${RUNCOMMAND}"
+                notice "Running: ${Command}"
+                eval "${Command}" || error "Failed to remove unused docker resources.\nFailing command: ${F[C]}${Command}"
+            } |& dialog_pipe "${DC[TitleSuccess]}${Title}" "${YesNotice}${DC[NC]}\n${DC[CommandLine]} ${Command}"
         else
             notice "${YesNotice}"
-            notice "Running ${RUNCOMMAND}"
-            eval "${RUNCOMMAND}" || error "Failed to remove unused docker resources.\nFailing command: ${F[C]}${RUNCOMMAND}"
+            notice "Running: ${Command}"
+            eval "${Command}" || error "Failed to remove unused docker resources.\nFailing command: ${F[C]}${Command}"
         fi
     else
         if use_dialog_box; then
