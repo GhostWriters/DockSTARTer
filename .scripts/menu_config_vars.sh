@@ -130,7 +130,7 @@ menu_config_vars() {
             # Set the default line to the first line with a variable on it
             LastLineChoice="$(printf "%0${PadSize}d" "${FirstVarLine}")"
         elif [[ $((10#${LastLineChoice})) -gt ${TotalLines} ]]; then
-            LastLineChoice=${TotalLines}
+            LastLineChoice="$(printf "%0${PadSize}d" "${TotalLines}")"
         fi
         while true; do
             local DialogHeading
@@ -142,11 +142,12 @@ menu_config_vars() {
                 --extra-label "Remove"
                 --cancel-label "Done"
                 --title "${DC["Title"]}${Title}"
+                --default-item "${LastLineChoice}"
                 --menu "${DialogHeading}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" -1
                 "${LineOptions[@]}"
             )
             local -i LineDialogButtonPressed=0
-            LineChoice=$(dialog --default-item "${LastLineChoice}" "${LineDialog[@]}") || LineDialogButtonPressed=$?
+            LineChoice=$(dialog "${LineDialog[@]}") || LineDialogButtonPressed=$?
             case ${DIALOG_BUTTONS[LineDialogButtonPressed]-} in
                 OK) # Select
                     LastLineChoice="${LineChoice}"
