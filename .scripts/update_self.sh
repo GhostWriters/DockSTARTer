@@ -7,6 +7,7 @@ update_self() {
     local BRANCH CurrentBranch
     BRANCH=${1-$(git branch --show)}
     CurrentBranch="$(git branch --show)"
+
     local Title="Update DockSTARTer"
     local Question YesNotice NoNotice
     if [[ -z ${BRANCH-} ]]; then
@@ -32,17 +33,20 @@ update_self() {
     fi
 
     if use_dialog_box; then
-        commands_update_self "${BRANCH}" |& dialog_pipe "${DC[TitleSuccess]}${Title}" "${YesNotice}\n${DC[CommandLine]} ds --update $*"
+        commands_update_self "${BRANCH}" "${YesNotice}" |&
+            dialog_pipe "${DC[TitleSuccess]}${Title}" "${YesNotice}\n${DC[CommandLine]} ds --update $*"
     else
-        commands_update_self "${BRANCH}"
+        commands_update_self "${BRANCH}" "${YesNotice}"
     fi
 }
 
 commands_update_self() {
     local BRANCH=${1-}
+    local Notice=${2-}
+
     notice "Clearing instances folder"
     rm -R "${INSTANCES_FOLDER:?}/"* &> /dev/null || true
-    notice "Updating DockSTARTer to ${BRANCH}."
+    notice "${Notice}"
     cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
     info "Setting file ownership on current repository files"
     sudo chown -R "$(id -u)":"$(id -g)" "${SCRIPTPATH}/.git" > /dev/null 2>&1 || true
