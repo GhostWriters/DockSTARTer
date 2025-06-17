@@ -1,3 +1,3 @@
 services:
-  headphones:
-    hostname: ${DOCKER_HOSTNAME}
+  headphones<__instance>:
+    hostname: ${HEADPHONES<__INSTANCE>__HOSTNAME?}

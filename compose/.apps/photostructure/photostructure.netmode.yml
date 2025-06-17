@@ -1,3 +1,3 @@
 services:
-  photostructure:
-    network_mode: ${PHOTOSTRUCTURE_NETWORK_MODE}
+  photostructure<__instance>:
+    network_mode: ${PHOTOSTRUCTURE<__INSTANCE>__NETWORK_MODE?}

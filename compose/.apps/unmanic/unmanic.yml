@@ -1,13 +1,14 @@
 services:
-  unmanic:
-    container_name: ${UNMANIC_CONTAINER_NAME}
+  unmanic<__instance>:
+    container_name: ${UNMANIC<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/unmanic<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${UNMANIC_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${UNMANIC<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/unmanic:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${UNMANIC_VOLUME_ENCODEDIR}:/tmp/unmanic
+      - ${DOCKER_VOLUME_CONFIG?}/unmanic<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage
+      - ${UNMANIC<__INSTANCE>__VOLUME_ENCODEDIR?}:/tmp/unmanic

@@ -1,12 +1,13 @@
 services:
-  traktarr:
-    container_name: ${TRAKTARR_CONTAINER_NAME}
+  traktarr<__instance>:
+    container_name: ${TRAKTARR<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/traktarr<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${TRAKTARR_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${TRAKTARR<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/traktarr:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/traktarr<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

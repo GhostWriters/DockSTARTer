@@ -1,3 +1,3 @@
 services:
-  nzbget:
-    image: lscr.io/linuxserver/nzbget:${NZBGET_TAG}
+  nzbget<__instance>:
+    image: lscr.io/linuxserver/nzbget:${NZBGET<__INSTANCE>__TAG?}

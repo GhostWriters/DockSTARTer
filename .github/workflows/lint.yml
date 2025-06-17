@@ -23,7 +23,7 @@ jobs:
             -v "${GITHUB_WORKSPACE}":/workdir \
             ghcr.io/igorshubovych/markdownlint-cli \
             --ignore "docs/index.md" \
-            --disable MD013 MD033 -- \
+            --disable MD013 MD033 MD059 -- \
             "**/*.md"
 
   shellcheck:
@@ -47,7 +47,8 @@ jobs:
           find "${GITHUB_WORKSPACE}" -name '*.sh' -exec \
             docker run --rm \
               -v "${GITHUB_WORKSPACE}":"${GITHUB_WORKSPACE}" \
-              mvdan/shfmt \
+              -w "${GITHUB_WORKSPACE}" \
+              mvdan/shfmt:v3 \
               -s -d \
               {} +
 

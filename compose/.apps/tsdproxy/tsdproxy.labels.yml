@@ -1,0 +1,6 @@
+services:
+  tsdproxy<__instance>:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Simplifies the process of securely exposing services and Docker containers to your Tailscale network."
+      com.dockstarter.appinfo.nicename: "TSDProxy<__Instance>"

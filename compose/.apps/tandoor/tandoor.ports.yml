@@ -1,4 +1,4 @@
 services:
-  tandoor:
+  tandoor<__instance>:
     ports:
-      - ${TANDOOR_PORT_8080}:8080
+      - ${TANDOOR<__INSTANCE>__PORT_8080?}:8080

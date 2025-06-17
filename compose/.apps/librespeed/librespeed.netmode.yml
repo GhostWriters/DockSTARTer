@@ -1,3 +1,3 @@
 services:
-  librespeed:
-    network_mode: ${LIBRESPEED_NETWORK_MODE}
+  librespeed<__instance>:
+    network_mode: ${LIBRESPEED<__INSTANCE>__NETWORK_MODE?}

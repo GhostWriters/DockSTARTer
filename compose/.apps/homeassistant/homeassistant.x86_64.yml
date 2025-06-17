@@ -1,3 +1,3 @@
 services:
-  homeassistant:
-    image: homeassistant/home-assistant:${HOMEASSISTANT_TAG}
+  homeassistant<__instance>:
+    image: homeassistant/home-assistant:${HOMEASSISTANT<__INSTANCE>__TAG?}

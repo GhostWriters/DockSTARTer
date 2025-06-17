@@ -1,18 +1,19 @@
 services:
-  airdcpp:
-    container_name: ${AIRDCPP_CONTAINER_NAME}
+  airdcpp<__instance>:
+    container_name: ${AIRDCPP<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/airdcpp<__instance>.env
     environment:
-      - HTTP_PORT=${AIRDCPP_PORT_5600}
-      - HTTPS_PORT=${AIRDCPP_PORT_5601}
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TCP_PORT=${AIRDCPP_PORT_21248}
-      - TLS_PORT=${AIRDCPP_PORT_21249}
-      - TZ=${TZ}
-      - UDP_PORT=${AIRDCPP_PORT_21248}
-    restart: ${AIRDCPP_RESTART}
+      - HTTP_PORT=${AIRDCPP<__INSTANCE>__PORT_5600?}
+      - HTTPS_PORT=${AIRDCPP<__INSTANCE>__PORT_5601?}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TCP_PORT=${AIRDCPP<__INSTANCE>__PORT_21248?}
+      - TLS_PORT=${AIRDCPP<__INSTANCE>__PORT_21249?}
+      - TZ=${TZ?}
+      - UDP_PORT=${AIRDCPP<__INSTANCE>__PORT_21248?}
+    restart: ${AIRDCPP<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${AIRDCPP_VOLUME_SHAREDIR}:/Share
-      - ${DOCKER_VOLUME_CONFIG}/airdcpp:/.airdcpp
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${AIRDCPP<__INSTANCE>__VOLUME_SHAREDIR?}:/Share
+      - ${DOCKER_VOLUME_CONFIG?}/airdcpp<__instance>:/.airdcpp
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

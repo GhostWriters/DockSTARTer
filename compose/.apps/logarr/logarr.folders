@@ -1,0 +1,2 @@
+${DOCKER_VOLUME_CONFIG}/logarr<__instance>
+${DOCKER_VOLUME_CONFIG}:/var/log/logarrlogs

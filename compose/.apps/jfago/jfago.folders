@@ -1,0 +1,2 @@
+${DOCKER_VOLUME_CONFIG}/jellyfin/app
+${DOCKER_VOLUME_CONFIG}/jfago<__instance>/

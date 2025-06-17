@@ -12,7 +12,7 @@
 
 Set your postgres host, username and password in the .env file along with a comma separated list of databases you want to backup.
 
-By default, backups run daily. Change PGBACKUP_SCHEDULE to any valid [cron schedule](http://godoc.org/github.com/robfig/cron#hdr-Predefined_schedules) to modify the default.
+By default, backups run daily. Change `SCHEDULE` in `env_files/pgbackup.env` to any valid [cron schedule](http://godoc.org/github.com/robfig/cron#hdr-Predefined_schedules) to modify the default.
 
 ### Recommended docker-compose overrides
 

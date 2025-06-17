@@ -1,4 +1,4 @@
 services:
-  smokeping:
+  smokeping<__instance>:
     ports:
-      - ${SMOKEPING_PORT_80}:80
+      - ${SMOKEPING<__INSTANCE>__PORT_80?}:80

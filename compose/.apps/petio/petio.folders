@@ -1,0 +1,2 @@
+${DOCKER_VOLUME_CONFIG}/petio<__instance>/config
+${DOCKER_VOLUME_CONFIG}/petio<__instance>/logs

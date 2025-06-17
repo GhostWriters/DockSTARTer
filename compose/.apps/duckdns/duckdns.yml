@@ -1,15 +1,13 @@
 services:
-  duckdns:
-    container_name: ${DUCKDNS_CONTAINER_NAME}
+  duckdns<__instance>:
+    container_name: ${DUCKDNS<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/duckdns<__instance>.env
     environment:
-      - LOG_FILE=${DUCKDNS_ENVIRONMENT_LOG_FILE}
-      - SUBDOMAINS=${DUCKDNS_ENVIRONMENT_SUBDOMAINS}
-      - TOKEN=${DUCKDNS_ENVIRONMENT_TOKEN}
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${DUCKDNS_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${DUCKDNS<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/duckdns:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/duckdns<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

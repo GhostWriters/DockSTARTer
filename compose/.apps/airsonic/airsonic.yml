@@ -1,14 +1,13 @@
 services:
-  airsonic:
-    container_name: ${AIRSONIC_CONTAINER_NAME}
+  airsonic<__instance>:
+    container_name: ${AIRSONIC<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/airsonic<__instance>.env
     environment:
-      - CONTEXT_PATH=${AIRSONIC_ENVIRONMENT_CONTEXT_PATH}
-      - JAVA_OPTS=${AIRSONIC_ENVIRONMENT_JAVA_OPTS}
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${AIRSONIC_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${AIRSONIC<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/airsonic:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/airsonic<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

@@ -1,4 +1,4 @@
 services:
-  uptimekuma:
+  uptimekuma<__instance>:
     ports:
-      - ${UPTIMEKUMA_PORT_3001}:3001
+      - ${UPTIMEKUMA<__INSTANCE>__PORT_3001?}:3001

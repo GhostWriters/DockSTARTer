@@ -1,0 +1,3 @@
+services:
+  tsdproxy<__instance>:
+    image: almeidapaulopt/tsdproxy:${TSDPROXY<__INSTANCE>__TAG?}

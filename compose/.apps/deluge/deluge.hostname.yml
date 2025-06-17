@@ -1,3 +1,3 @@
 services:
-  deluge:
-    hostname: ${DOCKER_HOSTNAME}
+  deluge<__instance>:
+    hostname: ${DELUGE<__INSTANCE>__HOSTNAME?}

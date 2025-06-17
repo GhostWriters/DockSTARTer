@@ -1,4 +1,4 @@
 services:
-  jackett:
+  jackett<__instance>:
     ports:
-      - ${JACKETT_PORT_9117}:9117
+      - ${JACKETT<__INSTANCE>__PORT_9117?}:9117

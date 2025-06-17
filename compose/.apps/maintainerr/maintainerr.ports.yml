@@ -1,0 +1,4 @@
+services:
+  maintainerr<__instance>:
+    ports:
+      - ${MAINTAINERR<__INSTANCE>__PORT_6246?}:6246

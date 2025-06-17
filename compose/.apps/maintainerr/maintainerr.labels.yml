@@ -1,0 +1,6 @@
+services:
+  maintainerr<__instance>:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Maintenance tool that automatically removes watched media based on user-defined rules to help manage server storage space."
+      com.dockstarter.appinfo.nicename: "Maintainerr<__Instance>"

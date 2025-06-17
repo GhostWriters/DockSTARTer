@@ -1,4 +1,4 @@
 services:
-  minecraftbedrockserver:
+  minecraftbedrockserver<__instance>:
     ports:
-      - ${MINECRAFTBEDROCKSERVER_PORT_19132}:19132/udp
+      - ${MINECRAFTBEDROCKSERVER<__INSTANCE>__PORT_19132?}:19132/udp

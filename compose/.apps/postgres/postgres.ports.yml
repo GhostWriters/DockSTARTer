@@ -1,4 +1,4 @@
 services:
-  postgres:
+  postgres<__instance>:
     ports:
-      - ${POSTGRES_PORT_5432}:5432
+      - ${POSTGRES<__INSTANCE>__PORT_5432?}:5432

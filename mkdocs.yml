@@ -96,7 +96,7 @@ plugins:
   - search
 
 nav:
-  - Home: index.md
+  - Home: README.md
   - introduction.md
   - Basics:
       - basics/available-apps.md
@@ -116,6 +116,7 @@ nav:
       - advanced/uninstall.md
       - advanced/vpn-info.md
   - App Specifics:
+      - apps/actualbudget.md
       - apps/adguard.md
       - apps/adminer.md
       - apps/airsonicadvanced.md
@@ -189,6 +190,7 @@ nav:
       - apps/logitechmediaserver.md
       - apps/lyrionmusicserver.md
       - apps/makemkv.md
+      - apps/maintainerr.md
       - apps/mariadb.md
       - apps/medusa.md
       - apps/minecraftbedrockserver.md
@@ -200,6 +202,7 @@ nav:
       - apps/mylar3.md
       - apps/netdata.md
       - apps/nextcloud.md
+      - apps/nginx.md
       - apps/nodered.md
       - apps/nzbget.md
       - apps/nzbgetvpn.md
@@ -260,6 +263,7 @@ nav:
       - apps/traktarr.md
       - apps/transmission.md
       - apps/transmissionvpn.md
+      - apps/tsdproxy.md
       - apps/tvheadend.md
       - apps/ubooquity.md
       - apps/unificontroller.md

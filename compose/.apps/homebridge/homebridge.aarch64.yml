@@ -1,3 +1,3 @@
 services:
-  homebridge:
-    image: homebridge/homebridge:${HOMEBRIDGE_TAG}
+  homebridge<__instance>:
+    image: homebridge/homebridge:${HOMEBRIDGE<__INSTANCE>__TAG?}

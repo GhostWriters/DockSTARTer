@@ -22,7 +22,7 @@ Default ID given to the `docker` group when it is created by [Docker](https://ge
 - Default value: `DockSTARTer` (because we don't want it to be accidentally blank)
 
 Description:
-All containers will default to having this hostname.
+All containers have their own `<APPNAME>__HOSTNAME` they use, but the user can use this variable for their own containers if they choose.
 
 ## DOCKER_VOLUME_CONFIG
 
@@ -39,6 +39,28 @@ This is the directory where all your containers' configuration is saved to.
 
 Description:
 This directory will be mounted under `/storage` inside every container across DS. There is no specific use for this directory, it can be used however you like.
+
+## GLOBAL_LAN_NETWORK
+
+- System Detected value: Detects your local IP range.
+- Default value: `192.168.x.x/24`
+
+Description:
+If this value is blank or contains `x` DockSTARTer will automatically replace it with the System Detected value. Only accepts values in these ranges 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16.
+
+## GLOBAL_NS1
+
+- Default value: `1.1.1.1`
+
+Description:
+This IP address will be used as a default name server for some installed applications.
+
+## GLOBAL_NS2
+
+- Default value: `8.8.8.8`
+
+Description:
+This IP address will be used as a default name server for some installed applications.
 
 ## PGID
 
@@ -150,26 +172,6 @@ DEPRECATION NOTICE: This variable is now deprecated in favor of `DOCKER_VOLUME_S
 
 Description:
 This directory will be mounted under `/tv` inside any container that is used to access your TV library. This directory is meant to store media permanently.
-
-### LAN_NETWORK
-
-- System Detected value: Detects your local IP range.
-- Default value: `192.168.x.x/24`
-
-Description:
-If this value is blank or contains `x` DockSTARTer will automatically replace it with the System Detected value. Only accepts values in these ranges 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16.
-
-### NS1
-
-- Default value: `1.1.1.1`
-
-Description:
-
-### NS2
-
-- Default value: `8.8.8.8`
-
-Description:
 
 ### VPN_CLIENT
 

@@ -1,12 +1,6 @@
 services:
-  couchpotato:
+  couchpotato<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "true"
       com.dockstarter.appinfo.description: "(DEPRECATED) Use Radarr"
-      com.dockstarter.appinfo.nicename: "CouchPotato"
-      com.dockstarter.appvars.couchpotato_container_name: "couchpotato"
-      com.dockstarter.appvars.couchpotato_enabled: "false"
-      com.dockstarter.appvars.couchpotato_network_mode: ""
-      com.dockstarter.appvars.couchpotato_port_5050: "5050"
-      com.dockstarter.appvars.couchpotato_restart: "unless-stopped"
-      com.dockstarter.appvars.couchpotato_tag: "latest"
+      com.dockstarter.appinfo.nicename: "CouchPotato<__Instance>"

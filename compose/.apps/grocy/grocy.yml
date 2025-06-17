@@ -1,12 +1,13 @@
 services:
-  grocy:
-    container_name: ${GROCY_CONTAINER_NAME}
+  grocy<__instance>:
+    container_name: ${GROCY<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/grocy<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${GROCY_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${GROCY<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/grocy:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/grocy<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

@@ -1,3 +1,3 @@
 services:
-  codeserver:
-    hostname: ${DOCKER_HOSTNAME}
+  codeserver<__instance>:
+    hostname: ${CODESERVER<__INSTANCE>__HOSTNAME?}

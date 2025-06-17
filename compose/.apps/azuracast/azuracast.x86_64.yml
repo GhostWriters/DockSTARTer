@@ -1,3 +1,3 @@
 services:
-  azuracast:
-    image: ghcr.io/azuracast/azuracast:${AZURACAST_TAG}
+  azuracast<__instance>:
+    image: ghcr.io/azuracast/azuracast:${AZURACAST<__INSTANCE>__TAG?}

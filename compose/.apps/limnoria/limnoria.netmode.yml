@@ -1,3 +1,3 @@
 services:
-  limnoria:
-    network_mode: ${LIMNORIA_NETWORK_MODE}
+  limnoria<__instance>:
+    network_mode: ${LIMNORIA<__INSTANCE>__NETWORK_MODE?}

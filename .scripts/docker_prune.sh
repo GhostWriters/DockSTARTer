@@ -3,13 +3,31 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 docker_prune() {
-    if run_script 'question_prompt' "${PROMPT-}" Y "Would you like to remove all unused containers, networks, volumes, images and build cache?"; then
-        info "Removing unused docker resources."
+    local Title="Docker Prune"
+    Question="Would you like to remove all unused containers, networks, volumes, images and build cache?"
+    YesNotice="Removing unused docker resources."
+    NoNotice="Nothing will be removed."
+
+    local Command="docker system prune --all --force --volumes"
+    if run_script 'question_prompt' Y "${Question}" "${Title}" "${FORCE:+Y}"; then
+        if use_dialog_box; then
+            {
+                notice "${YesNotice}"
+                notice "Running: ${Command}"
+                eval "${Command}" || error "Failed to remove unused docker resources.\nFailing command: ${F[C]}${Command}"
+            } |& dialog_pipe "${DC[TitleSuccess]}${Title}" "${YesNotice}${DC[NC]}\n${DC[CommandLine]} ${Command}"
+        else
+            notice "${YesNotice}"
+            notice "Running: ${Command}"
+            eval "${Command}" || error "Failed to remove unused docker resources.\nFailing command: ${F[C]}${Command}"
+        fi
     else
-        info "Nothing will be removed."
-        return 1
+        if use_dialog_box; then
+            notice "${NoNotice}" |& dialog_pipe "${DC[TitleError]}${Title}" "${NoNotice}"
+        else
+            notice "${NoNotice}"
+        fi
     fi
-    docker system prune --all --force --volumes || error "Failed to remove unused docker resources.\nFailing command: ${F[C]}docker system prune --all --force --volumes"
 }
 
 test_docker_prune() {

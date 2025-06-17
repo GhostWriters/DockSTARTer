@@ -1,5 +1,5 @@
 services:
-  openspeedtest:
+  openspeedtest<__instance>:
     ports:
-      - ${OPENSPEEDTEST_PORT_3000}:3000
-      - ${OPENSPEEDTEST_PORT_3001}:3001
+      - ${OPENSPEEDTEST<__INSTANCE>__PORT_3000?}:3000
+      - ${OPENSPEEDTEST<__INSTANCE>__PORT_3001?}:3001

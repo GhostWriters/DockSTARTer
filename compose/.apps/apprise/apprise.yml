@@ -1,12 +1,13 @@
 services:
-  apprise:
-    container_name: ${APPRISE_CONTAINER_NAME}
+  apprise<__instance>:
+    container_name: ${APPRISE<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/apprise<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${APPRISE_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${APPRISE<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/apprise:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/apprise<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

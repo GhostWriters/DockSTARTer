@@ -1,3 +1,3 @@
 services:
-  ubooquity:
-    hostname: ${DOCKER_HOSTNAME}
+  ubooquity<__instance>:
+    hostname: ${UBOOQUITY<__INSTANCE>__HOSTNAME?}

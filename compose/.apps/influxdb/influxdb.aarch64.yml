@@ -1,3 +1,3 @@
 services:
-  influxdb:
-    image: influxdb:${INFLUXDB_TAG}
+  influxdb<__instance>:
+    image: influxdb:${INFLUXDB<__INSTANCE>__TAG?}

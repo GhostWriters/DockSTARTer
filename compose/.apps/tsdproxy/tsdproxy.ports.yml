@@ -1,0 +1,4 @@
+services:
+  tsdproxy<__instance>:
+    ports:
+      - ${TSDPROXY<__INSTANCE>__PORT_8080?}:8080

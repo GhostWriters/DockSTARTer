@@ -1,3 +1,3 @@
 services:
-  tandoor:
-    hostname: ${DOCKER_HOSTNAME}
+  tandoor<__instance>:
+    hostname: ${TANDOOR<__INSTANCE>__HOSTNAME?}

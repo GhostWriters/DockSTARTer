@@ -1,0 +1,3 @@
+services:
+  maintainerr<__instance>:
+    image: ghcr.io/jorenn92/maintainerr:${MAINTAINERR<__INSTANCE>__TAG?}

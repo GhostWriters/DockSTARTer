@@ -1,3 +1,3 @@
 services:
-  xteve:
-    hostname: ${DOCKER_HOSTNAME}
+  xteve<__instance>:
+    hostname: ${XTEVE<__INSTANCE>__HOSTNAME?}

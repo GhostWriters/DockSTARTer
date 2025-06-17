@@ -1,4 +1,4 @@
 services:
-  mylar3:
+  mylar3<__instance>:
     ports:
-      - ${MYLAR3_PORT_8090}:8090
+      - ${MYLAR3<__INSTANCE>__PORT_8090?}:8090

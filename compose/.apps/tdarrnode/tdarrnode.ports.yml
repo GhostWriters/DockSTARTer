@@ -1,4 +1,4 @@
 services:
-  tdarrnode:
+  tdarrnode<__instance>:
     ports:
-      - ${TDARRNODE_PORT_8267}:8267
+      - ${TDARRNODE<__INSTANCE>__PORT_8267?}:8267

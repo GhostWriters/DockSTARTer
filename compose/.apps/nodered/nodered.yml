@@ -1,10 +1,11 @@
 services:
-  nodered:
-    container_name: ${NODERED_CONTAINER_NAME}
+  nodered<__instance>:
+    container_name: ${NODERED<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/nodered<__instance>.env
     environment:
-      - TZ=${TZ}
-    restart: ${NODERED_RESTART}
+      - TZ=${TZ?}
+    restart: ${NODERED<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/nodered:/data
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/nodered<__instance>:/data
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

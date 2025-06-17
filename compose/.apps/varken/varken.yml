@@ -1,12 +1,13 @@
 services:
-  varken:
-    container_name: ${VARKEN_CONTAINER_NAME}
+  varken<__instance>:
+    container_name: ${VARKEN<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/varken<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${VARKEN_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${VARKEN<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/varken:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/varken<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

@@ -1,3 +1,3 @@
 services:
-  transmission:
-    hostname: ${DOCKER_HOSTNAME}
+  transmission<__instance>:
+    hostname: ${TRANSMISSION<__INSTANCE>__HOSTNAME?}

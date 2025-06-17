@@ -1,12 +1,13 @@
 services:
-  transmission:
-    container_name: ${TRANSMISSION_CONTAINER_NAME}
+  transmission<__instance>:
+    container_name: ${TRANSMISSION<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/transmission<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${TRANSMISSION_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${TRANSMISSION<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/transmission:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/transmission<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

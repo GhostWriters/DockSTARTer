@@ -1,3 +1,3 @@
 services:
-  homepage:
-    hostname: ${DOCKER_HOSTNAME}
+  homepage<__instance>:
+    hostname: ${HOMEPAGE<__INSTANCE>__HOSTNAME?}

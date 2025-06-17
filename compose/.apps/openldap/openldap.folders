@@ -1,0 +1,2 @@
+${DOCKER_VOLUME_CONFIG}/openldap<__instance>/database
+${DOCKER_VOLUME_CONFIG}/openldap<__instance>/config

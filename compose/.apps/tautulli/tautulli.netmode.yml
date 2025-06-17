@@ -1,3 +1,3 @@
 services:
-  tautulli:
-    network_mode: ${TAUTULLI_NETWORK_MODE}
+  tautulli<__instance>:
+    network_mode: ${TAUTULLI<__INSTANCE>__NETWORK_MODE?}

@@ -1,13 +1,14 @@
 services:
-  telegraf:
-    container_name: ${TELEGRAF_CONTAINER_NAME}
+  telegraf<__instance>:
+    container_name: ${TELEGRAF<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/telegraf<__instance>.env
     environment:
       - HOST_ETC=/host/etc
       - HOST_MOUNT_PREFIX=/host
       - HOST_PROC=/host/proc
       - HOST_SYS=/host/sys
-      - TZ=${TZ}
-    restart: ${TELEGRAF_RESTART}
+      - TZ=${TZ?}
+    restart: ${TELEGRAF<__INSTANCE>__RESTART?}
     volumes:
       - /:/host:ro
       - /etc:/host/etc:ro
@@ -15,6 +16,6 @@ services:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /var/run/utmp:/var/run/utmp:ro
-      - ${DOCKER_VOLUME_CONFIG}/telegraf:/var/lib/telegraf
-      - ${DOCKER_VOLUME_STORAGE}:/storage
-      - ${TELEGRAF_VOLUME_DOCKER_SOCKET}:/var/run/docker.sock:ro
+      - ${DOCKER_VOLUME_CONFIG?}/telegraf<__instance>:/var/lib/telegraf
+      - ${DOCKER_VOLUME_STORAGE?}:/storage
+      - ${TELEGRAF<__INSTANCE>__VOLUME_DOCKER_SOCKET?}:/var/run/docker.sock:ro

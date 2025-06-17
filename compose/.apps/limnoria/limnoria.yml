@@ -1,12 +1,13 @@
 services:
-  limnoria:
-    container_name: ${LIMNORIA_CONTAINER_NAME}
+  limnoria<__instance>:
+    container_name: ${LIMNORIA<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/limnoria<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${LIMNORIA_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${LIMNORIA<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/limnoria:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/limnoria<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

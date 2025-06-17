@@ -1,13 +1,14 @@
 services:
-  plexrequests:
-    container_name: ${PLEXREQUESTS_CONTAINER_NAME}
+  plexrequests<__instance>:
+    container_name: ${PLEXREQUESTS<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/plexrequests<__instance>.env
     environment:
       - URL_BASE=/plexrequests
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - TZ=${TZ}
-    restart: ${PLEXREQUESTS_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${PLEXREQUESTS<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/plexrequests:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/plexrequests<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

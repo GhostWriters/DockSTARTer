@@ -1,0 +1,6 @@
+services:
+  actualbudget<__instance>:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Super fast, privacy-focused app for managing your finances."
+      com.dockstarter.appinfo.nicename: "ActualBudget<__Instance>"

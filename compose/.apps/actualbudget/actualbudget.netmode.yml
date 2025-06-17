@@ -1,0 +1,3 @@
+services:
+  actualbudget<__instance>:
+    network_mode: ${ACTUALBUDGET<__INSTANCE>__NETWORK_MODE?}

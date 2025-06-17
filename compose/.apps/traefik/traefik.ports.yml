@@ -1,6 +1,6 @@
 services:
-  traefik:
+  traefik<__instance>:
     ports:
-      - ${TRAEFIK_PORT_443}:443
-      - ${TRAEFIK_PORT_8080}:8080
-      - ${TRAEFIK_PORT_80}:80
+      - ${TRAEFIK<__INSTANCE>__PORT_443?}:443
+      - ${TRAEFIK<__INSTANCE>__PORT_8080?}:8080
+      - ${TRAEFIK<__INSTANCE>__PORT_80?}:80

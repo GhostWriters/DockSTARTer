@@ -1,3 +1,3 @@
 services:
-  sonarr:
-    hostname: ${DOCKER_HOSTNAME}
+  sonarr<__instance>:
+    hostname: ${SONARR<__INSTANCE>__HOSTNAME?}

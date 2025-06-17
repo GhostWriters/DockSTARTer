@@ -1,0 +1,2 @@
+${DOCKER_VOLUME_CONFIG}/pihole<__instance>/dnsmasq.d
+${DOCKER_VOLUME_CONFIG}/pihole<__instance>/pihole

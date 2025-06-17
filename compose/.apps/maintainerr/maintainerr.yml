@@ -1,0 +1,12 @@
+services:
+  maintainerr<__instance>:
+    container_name: ${MAINTAINERR<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/maintainerr<__instance>.env
+    environment:
+      - TZ=${TZ}
+    restart: ${MAINTAINERR<__INSTANCE>__RESTART?}
+    user: ${PUID?}:${PGID?}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_VOLUME_CONFIG}/maintainerr<__instance>:/opt/data
+      - ${DOCKER_VOLUME_STORAGE}:/storage

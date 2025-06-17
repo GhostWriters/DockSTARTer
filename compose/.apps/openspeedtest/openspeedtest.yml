@@ -1,13 +1,13 @@
 services:
-  openspeedtest:
-    container_name: ${OPENSPEEDTEST_CONTAINER_NAME}
+  openspeedtest<__instance>:
+    container_name: ${OPENSPEEDTEST<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/openspeedtest<__instance>.env
     environment:
-      - PGID=${PGID}
-      - PUID=${PUID}
-      - BASE_PATH=${OPENSPEEDTEST_ENVIRONMENT_BASE_PATH}
-      - TZ=${TZ}
-    restart: ${OPENSPEEDTEST_RESTART}
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${OPENSPEEDTEST<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG}/openspeedtest:/config
-      - ${DOCKER_VOLUME_STORAGE}:/storage
+      - ${DOCKER_VOLUME_CONFIG?}/openspeedtest<__instance>:/config
+      - ${DOCKER_VOLUME_STORAGE?}:/storage
