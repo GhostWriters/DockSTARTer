@@ -769,8 +769,8 @@ main() {
                 fi
             fi
             warn "Attempting to run DockSTARTer from ${DS_SYMLINK} location."
-            bash "${DS_SYMLINK}" -vu
-            bash "${DS_SYMLINK}" -vi
+            bash "${DS_SYMLINK}" -fuv
+            bash "${DS_SYMLINK}" -fiv
             exec bash "${DS_SYMLINK}" "${ARGS[@]-}"
         fi
     else
@@ -778,7 +778,7 @@ main() {
             warn "Attempting to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
             git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone DockSTARTer repo.\nFailing command: ${F[C]}git clone https://github.com/GhostWriters/DockSTARTer \"${DETECTED_HOMEDIR}/.docker\""
             notice "Performing first run install."
-            exec bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-vi"
+            exec bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-fiv"
         fi
     fi
     # Create Symlink
