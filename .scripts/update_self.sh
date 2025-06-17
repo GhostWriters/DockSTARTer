@@ -17,7 +17,7 @@ update_self() {
     if [[ ${BRANCH-} == "${CurrentBranch-}" ]]; then
         Question="Would you like to update DockSTARTer to branch ${BRANCH} now?"
         NoNotice="DockSTARTer will not be updated."
-        YesNotice="Updating DockSTARTer to ${BRANCH}."
+        YesNotice="Updating DockSTARTer to branch ${BRANCH}."
     else
         Question="Would you like to update DockSTARTer from branch ${CurrentBranch} to ${BRANCH} now?"
         NoNotice="DockSTARTer will not be updated from branch ${CurrentBranch} to ${BRANCH}."
