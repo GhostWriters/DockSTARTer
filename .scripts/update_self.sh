@@ -44,6 +44,10 @@ commands_update_self() {
     local BRANCH=${1-}
     local Notice=${2-}
 
+    local QUIET=''
+    if [[ -z ${VERBOSE-} ]]; then
+        QUIET='--quiet'
+    fi
     notice "Clearing instances folder"
     rm -R "${INSTANCES_FOLDER:?}/"* &> /dev/null || true
     notice "${Notice}"
@@ -54,19 +58,19 @@ commands_update_self() {
     git ls-tree -rt --name-only HEAD | xargs sudo chown "$(id -u)":"$(id -g)" > /dev/null 2>&1 || true
 
     info "Fetching recent changes from git."
-    git fetch --quiet --all --prune || fatal "Failed to fetch recent changes from git.\nFailing command: ${F[C]}git fetch --quiet --all --prune"
+    eval git fetch ${QUIET-} --all --prune || fatal "Failed to fetch recent changes from git.\nFailing command: ${F[C]}git fetch ${QUIET-} --all --prune"
     if [[ ${CI-} != true ]]; then
         if [[ -n ${BRANCH-} ]]; then
-            git switch --quiet --force "${BRANCH}" || fatal "Failed to switch to github branch ${BRANCH}.\nFailing command: ${F[C]}git switch --quiet --force \"${BRANCH}\""
-            git reset --quiet --hard origin/"${BRANCH}" || fatal "Failed to reset to current branch.\nFailing command: ${F[C]}git reset --quiet --hard origin/\"${BRANCH}\""
+            eval git switch ${QUIET-} --force "${BRANCH}" || fatal "Failed to switch to github branch ${BRANCH}.\nFailing command: ${F[C]}git switch ${QUIET-} --force \"${BRANCH}\""
+            eval git reset ${QUIET-} --hard origin/"${BRANCH}" || fatal "Failed to reset to branch origin/${BRANCH}.\nFailing command: ${F[C]}git reset ${QUIET-} --hard origin/\"${BRANCH}\""
         else
-            git reset --quiet --hard HEAD || fatal "Failed to reset to current branch.\nFailing command: ${F[C]}git reset --quiet --hard HEAD"
+            eval git reset ${QUIET-} --hard HEAD || fatal "Failed to reset to current branch.\nFailing command: ${F[C]}git reset ${QUIET-} --hard HEAD"
         fi
         info "Pulling recent changes from git."
-        git pull --quiet || fatal "Failed to pull recent changes from git.\nFailing command: ${F[C]}git pull --quiet"
+        eval git pull ${QUIET-} || fatal "Failed to pull recent changes from git.\nFailing command: ${F[C]}git pull ${QUIET-}"
     fi
     info "Cleaning up unnecessary files and optimizing the local repository."
-    git gc > /dev/null 2>&1 || true
+    eval git gc ${QUIET-} || true
     info "Setting file ownership on new repository files"
     git ls-tree -rt --name-only "${BRANCH}" | xargs sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" > /dev/null 2>&1 || true
     sudo chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}/.git" > /dev/null 2>&1 || true
