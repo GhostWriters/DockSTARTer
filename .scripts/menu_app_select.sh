@@ -17,10 +17,17 @@ menu_app_select() {
             run_script 'app_list_nondepreciated'
         ) | tr '[:upper:]' '[:lower:]' | sort -u)
         echo "Currently added applications:"
+        local LastAppLetter=''
         for APPNAME in "${AllApps[@]-}"; do
             local main_yml
             main_yml="$(run_script 'app_instance_file' "${APPNAME}" ".yml")"
             if [[ -f ${main_yml} ]]; then
+                local AppLetter=${APPNAME:0:1}
+                AppLetter=${AppLetter^^}
+                if [[ -n ${LastAppLetter-} && ${LastAppLetter} != "${AppLetter}" ]]; then
+                    printf '%s\n' "" "" "OFF" >> "${AppListFile}"
+                fi
+                LastAppLetter=${AppLetter}
                 local main_yml
                 arch_yml="$(run_script 'app_instance_file' "${APPNAME}" ".${ARCH}.yml")"
                 if [[ -f ${arch_yml} ]]; then
