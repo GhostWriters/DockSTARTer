@@ -50,16 +50,16 @@ commands_update_self() {
     git ls-tree -rt --name-only HEAD | xargs sudo chown "$(id -u)":"$(id -g)" > /dev/null 2>&1 || true
 
     info "Fetching recent changes from git."
-    git fetch --all --prune || fatal "Failed to fetch recent changes from git.\nFailing command: ${F[C]}git fetch --all --prune"
+    git fetch --quiet --all --prune || fatal "Failed to fetch recent changes from git.\nFailing command: ${F[C]}git fetch --quiet --all --prune"
     if [[ ${CI-} != true ]]; then
         if [[ -n ${BRANCH-} ]]; then
-            git switch --force "${BRANCH}" || fatal "Failed to switch to github branch ${BRANCH}.\nFailing command: ${F[C]}git switch --force \"${BRANCH}\""
-            git reset --hard origin/"${BRANCH}" || fatal "Failed to reset to current branch.\nFailing command: ${F[C]}git reset --hard origin/\"${BRANCH}\""
+            git switch --quiet --force "${BRANCH}" || fatal "Failed to switch to github branch ${BRANCH}.\nFailing command: ${F[C]}git switch --quiet --force \"${BRANCH}\""
+            git reset --quiet --hard origin/"${BRANCH}" || fatal "Failed to reset to current branch.\nFailing command: ${F[C]}git reset --quiet --hard origin/\"${BRANCH}\""
         else
-            git reset --hard HEAD || fatal "Failed to reset to current branch.\nFailing command: ${F[C]}git reset --hard HEAD"
+            git reset --quiet --hard HEAD || fatal "Failed to reset to current branch.\nFailing command: ${F[C]}git reset --quiet --hard HEAD"
         fi
         info "Pulling recent changes from git."
-        git pull || fatal "Failed to pull recent changes from git.\nFailing command: ${F[C]}git pull"
+        git pull --quiet || fatal "Failed to pull recent changes from git.\nFailing command: ${F[C]}git pull --quiet"
     fi
     info "Cleaning up unnecessary files and optimizing the local repository."
     git gc > /dev/null 2>&1 || true
