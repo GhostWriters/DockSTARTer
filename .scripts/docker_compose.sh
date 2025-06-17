@@ -110,9 +110,10 @@ docker_compose() {
                 run_script 'require_docker'
                 run_script 'yml_merge'
                 for index in "${!ComposeCommand[@]}"; do
-                    notice "Running docker compose ${ComposeCommand[index]}"
-                    eval "docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand[index]}" ||
-                        fatal "Failed to run compose.\nFailing command: ${F[C]}docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand[index]}"
+                    local Command="docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand[index]}"
+                    notice "Running: ${Command}"
+                    eval "${Command}" ||
+                        fatal "Failed to run compose.\nFailing command: ${F[C]}${Command}"
                 done
             } |& dialog_pipe "${DC[TitleSuccess]}${Title}" "${YesNotice}${DC[NC]}\n${DC[CommandLine]} ds --compose ${ComposeInput}"
         else
@@ -120,9 +121,10 @@ docker_compose() {
             run_script 'require_docker'
             run_script 'yml_merge'
             for index in "${!ComposeCommand[@]}"; do
-                notice "Running docker compose ${ComposeCommand[index]}"
-                eval "docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand[index]}" ||
-                    fatal "Failed to run compose.\nFailing command: ${F[C]}docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand[index]}"
+                local Command="docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand[index]}"
+                notice "Running: ${Command}"
+                eval "${Command}" ||
+                    fatal "Failed to run compose.\nFailing command: ${F[C]}${Command}"
             done
         fi
     else
