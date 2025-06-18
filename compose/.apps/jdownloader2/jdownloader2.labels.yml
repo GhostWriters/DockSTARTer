@@ -1,0 +1,6 @@
+services:
+  jdownloader2<__instance>:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "JDownloader 2 is a free, open-source download management tool with a huge community of developers that makes downloading as easy and fast as it should be."
+      com.dockstarter.appinfo.nicename: "JDownloader2<__Instance>"
