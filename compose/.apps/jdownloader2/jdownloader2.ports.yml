@@ -1,0 +1,6 @@
+services:
+  jdownloader2<__instance>:
+    ports:
+      - ${JDOWNLOADER2<__INSTANCE>__PORT_3129?}:3129
+      - ${JDOWNLOADER2<__INSTANCE>__PORT_5800?}:5800
+      - ${JDOWNLOADER2<__INSTANCE>__PORT_5900?}:5900
