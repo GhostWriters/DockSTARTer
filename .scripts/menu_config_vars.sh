@@ -62,7 +62,13 @@ menu_config_vars() {
             VarName="$(grep -o -P '^\w+(?=)' <<< "${line}")"
             if [[ -n ${VarName-} ]]; then
                 # Line contains a variable
-                LineColor[LineNumber]="${DC[LineVar]}"
+                local DefaultLine
+                DefaultLine="${VarName}=$(run_script 'var_default_value' "${VarName}")"
+                if [[ ${line} == "${DefaultLine}" ]]; then
+                    LineColor[LineNumber]="${DC[LineVar]}"
+                else
+                    LineColor[LineNumber]="${DC[LineModifiedVar]}"
+                fi
                 VarNameOnLine[LineNumber]="${VarName}"
                 if [[ -z ${FirstVarLine-} ]]; then
                     FirstVarLine=${LineNumber}
@@ -100,7 +106,13 @@ menu_config_vars() {
                 VarName="$(grep -o -P '^\w+(?=)' <<< "${line}")"
                 if [[ -n ${VarName-} ]]; then
                     # Line contains a variable
-                    LineColor[LineNumber]="${DC[LineVar]}"
+                    local DefaultLine
+                    DefaultLine="${VarName}=$(run_script 'var_default_value' "${APPNAME}:${VarName}")"
+                    if [[ ${line} == "${DefaultLine}" ]]; then
+                        LineColor[LineNumber]="${DC[LineVar]}"
+                    else
+                        LineColor[LineNumber]="${DC[LineModifiedVar]}"
+                    fi
                     VarNameOnLine[LineNumber]="${APPNAME}:${VarName}"
                     if [[ -z ${FirstVarLine-} ]]; then
                         FirstVarLine=${LineNumber}
