@@ -167,6 +167,7 @@ DC+=( # Pre-defined color combinations used in the GUI
     [LineComment]="${DC[NC]}${DC[K]}${DC[BD]}${DC[RV]}"
     [LineOther]="${DC[NC]}${DC[K]}${DC[BD]}${DC[RV]}"
     [LineVar]="${DC[NC]}${DC[K]}${DC[NBD]}${DC[RV]}"
+    [LineModifiedVar]="${DC[NC]}${DC[M]}${DC[NBD]}${DC[RV]}"
     [LineAddVariable]="${DC[NC]}${DC[K]}${DC[NBD]}${DC[RV]}"
     [CommandLine]="${DC[NC]}${DC[Y]}${DC[BD]}"
 )
