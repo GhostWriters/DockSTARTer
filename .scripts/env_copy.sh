@@ -8,7 +8,7 @@ env_copy() {
     local FROM_VAR_FILE=${3:-$COMPOSE_ENV}
     local TO_VAR_FILE=${4:-$FROM_VAR_FILE}
 
-    if [[ ! -f ${VAR_FILE} ]]; then
+    if [[ ! -f ${FROM_VAR_FILE} ]]; then
         # Source file does not exist, warn and return
         warn "File ${FROM_VAR_FILE} does not exist."
         return
