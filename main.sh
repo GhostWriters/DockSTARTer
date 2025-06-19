@@ -163,11 +163,11 @@ DC+=( # Pre-defined color combinations used in the GUI
     [HeadingValue]="${DC[NC]}${DC[BD]}${DC[RV]}"
     [HeadingAppDescription]="${DC[NC]}${DC[Y]}${DC[NBD]}"
     [Highlight]="${DC[NC]}${DC[Y]}${DC[BD]}"
-    [LineHeading]="${DC[NC]}"
+    [LineHeading]="${DC[NC]}${DC[W]}${DC[BD]}"
     [LineComment]="${DC[NC]}${DC[K]}${DC[BD]}${DC[RV]}"
     [LineOther]="${DC[NC]}${DC[K]}${DC[BD]}${DC[RV]}"
     [LineVar]="${DC[NC]}${DC[K]}${DC[NBD]}${DC[RV]}"
-    [LineModifiedVar]="${DC[NC]}${DC[M]}${DC[NBD]}${DC[RV]}"
+    [LineModifiedVar]="${DC[NC]}"
     [LineAddVariable]="${DC[NC]}${DC[K]}${DC[NBD]}${DC[RV]}"
     [CommandLine]="${DC[NC]}${DC[Y]}${DC[BD]}"
 )
