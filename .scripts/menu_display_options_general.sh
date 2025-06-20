@@ -15,7 +15,7 @@ menu_display_options_general() {
     local ShowScrollbarOption="Show Scrollbar"
     local ShowShadowOption="Show Shadow"
 
-    local -A OptionDescription OptionVariable OptionValue
+    local -A OptionDescription OptionVariable
 
     OptionDescription["${DrawLineOption}"]="Use line drawing characters for borders"
     OptionDescription["${ShowScrollbarOption}"]="Show a scrollbar in dialog boxes"
@@ -28,22 +28,17 @@ menu_display_options_general() {
 
     while true; do
         local EnabledOptions=()
+        local Opts=()
         for Option in "${DrawLineOption}" "${ShowScrollbarOption}" "${ShowShadowOption}"; do
             local Value
             Value="$(run_script 'env_get' "${OptionVariable["${Option}"]}" "${MENU_INI_FILE}")"
             if [[ ${Value} =~ ON|TRUE|YES ]]; then
-                Value="ON"
                 EnabledOptions+=("${Option}")
+                Opts+=("${DrawLineOption}" "${OptionDescription["${DrawLineOption}"]}" ON)
             else
-                Value="OFF"
+                Opts+=("${DrawLineOption}" "${OptionDescription["${DrawLineOption}"]}" OFF)
             fi
-            OptionValue["${Option}"]="${Value}"
         done
-        Opts=(
-            "${DrawLineOption}" "${OptionDescription["${DrawLineOption}"]}" "${OptionValue["${DrawLineOption}"]}"
-            "${ShowScrollbarOption}" "${OptionDescription["${ShowScrollbarOption}"]}" "${OptionValue["${ShowScrollbarOption}"]}"
-            "${ShowShadowOption}" "${OptionDescription["${ShowShadowOption}"]}" "${OptionValue["${ShowShadowOption}"]}"
-        )
         local -a ChoiceDialog=(
             --stdout
             --title "${DC["Title"]}${Title}"
