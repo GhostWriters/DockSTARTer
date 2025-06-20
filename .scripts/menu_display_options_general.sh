@@ -61,10 +61,10 @@ menu_display_options_general() {
                     printf '%s\n' "${EnabledOptions[@]}" "${EnabledOptions[@]}" "${ChoicesArray[@]}" | sort -f | uniq -u
                 )
                 if [[ -n ${OptionsToTurnOff[@]-} || ${OptionsToTurnOn[@]-} ]]; then
-                    for Option in "${OptionsToTurnOff[@]}"; do
+                    for Option in "${OptionsToTurnOff[@]-}"; do
                         run_script 'env_set' "${OptionVariable["${Option}"]}" OFF "${MENU_INI_FILE}"
                     done
-                    for Option in "${OptionsToTurnOn[@]}"; do
+                    for Option in "${OptionsToTurnOn[@]-}"; do
                         run_script 'env_set' "${OptionVariable["${Option}"]}" ON "${MENU_INI_FILE}"
                     done
                     run_script 'apply_theme'
