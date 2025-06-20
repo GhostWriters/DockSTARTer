@@ -22,42 +22,42 @@ apply_theme() {
     run_script 'env_set' Theme "${ThemeName}" "${MENU_INI_FILE}"
     cp "${ThemeFolder}"/.dialogrc "${SCRIPTPATH}"/.dialogrc
 
-    local B='\Z4'   # Blue
-    local C='\Z6'   # Cyan
-    local G='\Z2'   # Green
-    local K='\Z0'   # Black
-    local M='\Z5'   # Magenta
-    local R='\Z1'   # Red
-    local W='\Z7'   # White
-    local Y='\Z3'   # Yellow
-    local RV='\Zr'  # Reverse
-    local NRV='\ZR' # No Reverse
-    local BD='\Zb'  # Bold
-    local NBD='\ZB' # No Bold
-    local U='\Zu'   # Underline
-    local NU='\ZU'  # No Underline
-    local NC='\Zn'  # No Color
+    local _B_='\Z4'   # Blue
+    local _C_='\Z6'   # Cyan
+    local _G_='\Z2'   # Green
+    local _K_='\Z0'   # Black
+    local _M_='\Z5'   # Magenta
+    local _R_='\Z1'   # Red
+    local _W_='\Z7'   # White
+    local _Y_='\Z3'   # Yellow
+    local _RV_='\Zr'  # Reverse
+    local _NRV_='\ZR' # No Reverse
+    local _BD_='\Zb'  # Bold
+    local _NBD_='\ZB' # No Bold
+    local _U_='\Zu'   # Underline
+    local _NU_='\ZU'  # No Underline
+    local _NC_='\Zn'  # No Color
 
     # shellcheck disable=SC2016 # Expressions don't expand in single quotes, use double quotes for that.
     local ColorVars='$B,$C,$G,$K,$M,$R,$W,$Y,$RV,$NVR,$BD,$U,$NU,$NC'
 
     DC=()
     DC+=( # Dialog colors
-        ["B"]="${B}"
-        ["C"]="${C}"
-        ["G"]="${G}"
-        ["K"]="${K}"
-        ["M"]="${M}"
-        ["R"]="${R}"
-        ["W"]="${W}"
-        ["Y"]="${Y}"
-        ["RV"]="${RV}"
-        ["NRV"]="${NRV}"
-        ["BD"]="${BD}"
-        ["NBD"]="${NBD}"
-        ["U"]="${U}"
-        ["NU"]="${NU}"
-        ["NC"]="${NC}"
+        ["B"]="${_B_}"
+        ["C"]="${_C_}"
+        ["G"]="${_G_}"
+        ["K"]="${_K_}"
+        ["M"]="${_M_}"
+        ["R"]="${_R_}"
+        ["W"]="${_W_}"
+        ["Y"]="${_Y_}"
+        ["RV"]="${_RV_}"
+        ["NRV"]="${_NRV_}"
+        ["BD"]="${_BD_}"
+        ["NBD"]="${_NBD_}"
+        ["U"]="${_U_}"
+        ["NU"]="${_NU_}"
+        ["NC"]="${_NC_}"
     )
     DC+=( # Dialog positioning adjustment values
         ["WindowColsAdjust"]=6
