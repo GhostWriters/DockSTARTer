@@ -56,9 +56,9 @@ apply_theme() {
     )
     DC+=( # Dialog positioning adjustment values
         ["WindowColsAdjust"]=6
-        ["WindowRowsAdjust"]=6
-        ["TextColsAdjust"]=3
-        ["TextRowsAdjust"]=6
+        ["WindowRowsAdjust"]=5
+        ["TextColsAdjust"]=4
+        ["TextRowsAdjust"]=7
     )
 
     local -a VarList
