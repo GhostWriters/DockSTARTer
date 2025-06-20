@@ -29,7 +29,7 @@ menu_display_options_theme() {
 
     local LastChoice=""
     while true; do
-    local -a Opts=()
+        local -a Opts=()
         for ThemeName in "${ThemeList[@]-}"; do
             if [[ ${ThemeName} == "${CurrentTheme}" ]]; then
                 Opts+=("${ThemeName}" "${ThemeDescription["${ThemeName}"]}" ON)
