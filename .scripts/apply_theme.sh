@@ -39,7 +39,7 @@ apply_theme() {
     local _NC_='\Zn'  # No Color
 
     # shellcheck disable=SC2016 # Expressions don't expand in single quotes, use double quotes for that.
-    local ColorVars='$B,$C,$G,$K,$M,$R,$W,$Y,$RV,$NVR,$BD,$U,$NU,$NC'
+    local ColorVars='$_B_ $_C_ $_G_ $_K_ $_M_ $_R_ $_W_ $_Y_ $_RV_ $_NVR_ $_BD_ $_U_ $_NU_ $_NC_'
 
     DC=()
     DC+=( # Dialog colors
