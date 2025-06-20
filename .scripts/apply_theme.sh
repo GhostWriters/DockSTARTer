@@ -69,7 +69,8 @@ apply_theme() {
     for VarName in "${VarList[@]-}"; do
         local Value
         Value="$(run_script 'env_get' "${VarName}" "${ColorFile}")"
-        Value="$(_B_="${_B_}" _C_="${_C_}" _G_="${_G_}" _K_="${_K_}" _M_="${_M_}" _R_="${_R_}" _W_="${_W_}" _Y_="${_Y_}" \
+        Value="$(
+            _B_="${_B_}" _C_="${_C_}" _G_="${_G_}" _K_="${_K_}" _M_="${_M_}" _R_="${_R_}" _W_="${_W_}" _Y_="${_Y_}" \
                 _RV_="${_RV_}" _NRV_="${_NRV_}" _BD_="${_BD_}" _NBD_="${_NBD_}" _U_="${_U_}" _NU_="${_NU_}" _NC_="${_NC_}" \
                 envsubst <<< "${Value}"
         )"
