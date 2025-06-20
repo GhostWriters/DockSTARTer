@@ -126,61 +126,19 @@ readonly SCRIPTPATH
 SCRIPTNAME="${SCRIPTPATH}/$(basename "$(get_scriptname)")"
 readonly SCRIPTNAME
 
-declare -rx DIALOGRC="${SCRIPTPATH}/.dialogrc"
-declare -rx BACKTITLE="DockSTARTer"
-
 DIALOG=$(command -v dialog) || true
 export DIALOG
 
-declare -Ag DC=( # Dialog colors
-    [B]='\Z4'   # Blue
-    [C]='\Z6'   # Cyan
-    [G]='\Z2'   # Green
-    [K]='\Z0'   # Black
-    [M]='\Z5'   # Magenta
-    [R]='\Z1'   # Red
-    [W]='\Z7'   # White
-    [Y]='\Z3'   # Yellow
-    [RV]='\Zr'  # Reverse
-    [NRV]='\ZR' # No Reverse
-    [BD]='\Zb'  # Bold
-    [NBD]='\ZB' # No Bold
-    [U]='\Zu'   # Underline
-    [NU]='\ZU'  # No Underline
-    [NC]='\Zn'  # No Color
-)
+declare -rx MENU_INI_NAME='menu.ini'
+declare -rx MENU_INI_FILE="${SCRIPTPATH}/${MENU_INI_NAME}"
+declare -rx DIALOGRC_NAME='.dialogrc'
+declare -rx DIALOGRC="${SCRIPTPATH}/${DIALOGRC_NAME}"
 
-DC+=( # Pre-defined color combinations used in the GUI
-    [BackTitle]="${DC[NC]}${DC[BD]}${DC[RV]}${DC[B]}"
-    [Title]="${DC[NC]}${DC[C]}"
-    [Subtitle]="${DC[NC]}${DC[RV]}${DC[BD]}"
-    [TitleSuccess]="${DC[NC]}${DC[RV]}${DC[G]}"
-    [TitleError]="${DC[NC]}${DC[RV]}${DC[R]}"
-    [TitleWarning]="${DC[NC]}${DC[RV]}${DC[Y]}"
-    [TitleQuestion]="${DC[NC]}${DC[RV]}${DC[Y]}"
-    [Heading]="${DC[NC]}${DC[RV]}"
-    [HeadingTag]="${DC[NC]}${DC[RV]}${DC[W]}"
-    [HeadingValue]="${DC[NC]}${DC[BD]}${DC[RV]}"
-    [HeadingAppDescription]="${DC[NC]}${DC[Y]}${DC[NBD]}"
-    [Highlight]="${DC[NC]}${DC[Y]}${DC[BD]}"
-    [LineHeading]="${DC[NC]}${DC[B]}${DC[BD]}${DC[RV]}"
-    [LineComment]="${DC[NC]}${DC[K]}${DC[BD]}${DC[RV]}"
-    [LineOther]="${DC[NC]}${DC[K]}${DC[BD]}${DC[RV]}"
-    [LineVar]="${DC[NC]}${DC[K]}${DC[NBD]}${DC[RV]}"
-    [LineModifiedVar]="${DC[NC]}"
-    [LineAddVariable]="${DC[NC]}${DC[K]}${DC[NBD]}${DC[RV]}"
-    [CommandLine]="${DC[NC]}${DC[Y]}${DC[BD]}"
-)
-DC+=(
-    [WindowColsAdjust]=6
-    [WindowRowsAdjust]=5
-    [TextColsAdjust]=4
-    [TextRowsAdjust]=7
-)
-readonly DC
+declare -rx BACKTITLE="DockSTARTer"
 
+declare -Ax DC
+declare -x DIALOGOPTS
 declare -rix DIALOGTIMEOUT=3
-declare -rx DIALOGOPTS="--scrollbar --colors --backtitle ${DC["BackTitle"]}${BACKTITLE} --cr-wrap --no-collapse"
 declare -rix DIALOG_OK=0
 declare -rix DIALOG_CANCEL=1
 declare -rix DIALOG_HELP=2
@@ -449,6 +407,7 @@ cmdline() {
             g)
                 if [[ -n ${DIALOG-} ]]; then
                     PROMPT="GUI"
+                    run_script 'apply_theme'
                 else
                     warn "The '--gui' option requires the dialog command to be installed."
                     warn "'dialog' command not found. Run 'ds -fiv' to install all dependencies."
@@ -562,6 +521,8 @@ readonly TEMPLATES_FOLDER="${COMPOSE_FOLDER}/.apps"
 export TEMPLATES_FOLDER
 readonly INSTANCES_FOLDER="${COMPOSE_FOLDER}/.instances"
 export INSTANCES_FOLDER
+readonly THEME_FOLDER="${SCRIPTPATH}/.themes"
+export THEME_FOLDER
 
 # User/Group Information
 readonly DETECTED_PUID=${SUDO_UID:-$UID}
@@ -1073,6 +1034,7 @@ main() {
     if [[ -n ${DIALOG-} ]]; then
         MENU=true
         PROMPT="GUI"
+        run_script 'apply_theme'
         run_script 'menu_main'
     else
         error "The GUI requires the dialog command to be installed."
