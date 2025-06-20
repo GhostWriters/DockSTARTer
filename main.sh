@@ -587,7 +587,7 @@ highlighted_list() {
     local List
     List=$(xargs <<< "$*")
     if [[ -n ${List-} ]]; then
-        echo "${DC[Subtitle]}${List// /${DC[NC]} ${DC[Subtitle]}}${DC[NC]}"
+        echo "${DC["Subtitle"]}${List// /${DC[NC]} ${DC["Subtitle"]}}${DC[NC]}"
     fi
 }
 
@@ -602,9 +602,9 @@ dialog_pipe() {
     local SubTitle=${2:-}
     local TimeOut=${3:-0}
     dialog \
-        --title "${DC[Title]}${Title}" \
+        --title "${DC["Title"]}${Title}" \
         --timeout "${TimeOut}" \
-        --programbox "${DC[Subtitle]}${SubTitle}" \
+        --programbox "${DC["Subtitle"]}${SubTitle}" \
         "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" || true
     echo -n "${BS}"
 }
@@ -769,7 +769,7 @@ main() {
     if [[ -n ${ENVMETHOD-} ]]; then
         case "${ENVMETHOD-}" in
             --env)
-                run_script_dialog "${DC[TitleSuccess]}Creating environment variables for added apps" "Please be patient, this can take a while.\n${DC[CommandLine]} ds --env" "" \
+                run_script_dialog "${DC["TitleSuccess"]}Creating environment variables for added apps" "Please be patient, this can take a while.\n${DC[CommandLine]} ds --env" "" \
                     'appvars_create_all'
                 exit
                 ;;
