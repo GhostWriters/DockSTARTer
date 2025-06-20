@@ -11,10 +11,12 @@ menu_main() {
     local OptionConfigure="Configuration"
     local OptionInstallDependencies="Install Dependencies"
     local OptionUpdateVersion="Update DockSTARTer"
+    local OptionDisplayOptions="Display Options"
     local MainOpts=(
         "${OptionConfigure}" "Setup and start applications"
         "${OptionInstallDependencies}" "Install required components"
         "${OptionUpdateVersion}" "Get the latest version of DockSTARTer"
+        "${OptionDisplayOptions}" "Adjust display options for the GUI"
     )
 
     local LastMainChoice=""
@@ -42,6 +44,9 @@ menu_main() {
                         ;;
                     "${OptionUpdateVersion}")
                         run_script 'update_self' || true
+                        ;;
+                    "${OptionDisplayOptions}")
+                        run_script 'menu_display_options' || true
                         ;;
                     *)
                         error "Invalid Option"
