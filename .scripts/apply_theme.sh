@@ -15,7 +15,7 @@ apply_theme() {
     local COLORS_INI_NAME="colors.ini"
     local ThemeFile="${ThemeFolder}/${COLORS_INI_NAME}"
     local DialogFile="${ThemeFolder}/${DIALOGRC_NAME}"
-    if [[ ! -f ${ColorFile} || ! -f ${DialogFile} ]]; then
+    if [[ ! -f ${ThemeFile} || ! -f ${DialogFile} ]]; then
         error "Theme ${ThemeName} does not exist."
         return
     fi
