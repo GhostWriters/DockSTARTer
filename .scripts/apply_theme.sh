@@ -83,7 +83,7 @@ apply_theme() {
     Scrollbar="$(run_script 'env_get' "Scrollbar" "${MENU_INI_FILE}")"
     Shadow="$(run_script 'env_get' "Shadow" "${MENU_INI_FILE}")"
 
-    if [[ ${LineCharacters^^} =~ YES|TRUE ]]; then
+    if [[ ${LineCharacters^^} =~ ON|TRUE|TRUE ]]; then
         DIALOGOPTS+=" --lines"
     else
         DIALOGOPTS+=" --no-lines"
