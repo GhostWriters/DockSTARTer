@@ -8,13 +8,32 @@ menu_display_options_theme() {
     fi
 
     local Title="Choose Theme"
-    return
-    local OptionChooseTheme="Choose Theme"
-    local OptionGeneralOptions="General Options"
-    local Opts=(
-        "${OptionChooseTheme}" "Choose a theme for DockSTARTer"
-        "${OptionGeneralOptions}" "Set general display options"
-    )
+
+    run_script 'apply_theme'
+
+    local CurrentTheme
+    CurrentTheme="$(run_script 'env_get' Theme "${MENU_INI_FILE}")"
+
+    local -a ThemeList
+    local -A ThemeDescription
+    readarray -t ThemeList < <(find "${THEME_FOLDER}" -maxdepth 1 -type d ! -path "${THEME_FOLDER}" -printf "%f\n" | sort)
+    for index in "${!ThemeList[@]-}"; do
+        local ThemeName="${ThemeList[index]}"
+        local ThemeFile="${THEME_FOLDER}/${ThemeName}/colors.ini"
+        if [[ ! -f ${ThemeFile} ]]; then
+            unset 'ThemeList[index]'
+            continue
+        fi
+        ThemeDescription["${ThemeName}"]="$(run_script 'env_get' ThemeDescription "${ThemeFile}")"
+    done
+    local -a Opts=()
+    for ThemeName in "${ThemeList[@]-}"; do
+        if [[ ${ThemeName} == "${CurrentTheme}" ]]; then
+            Opts+=("${ThemeName}" "${ThemeDescription["${ThemeName}"]}" ON)
+        else
+            Opts+=("${ThemeName}" "${ThemeDescription["${ThemeName}"]}" OFF)
+        fi
+    done
 
     local LastChoice=""
     while true; do
@@ -22,8 +41,8 @@ menu_display_options_theme() {
             --stdout
             --title "${DC["Title"]}${Title}"
             --ok-label "Select"
-            --cancel-label "Exit"
-            --menu "What would you like to do?" 0 0 0
+            --cancel-label "Back"
+            --radiolist "Select the theme to apply." 0 0 0
             "${Opts[@]}"
         )
         local Choice
@@ -32,21 +51,10 @@ menu_display_options_theme() {
         LastChoice=${Choice}
         case ${DIALOG_BUTTONS[DialogButtonPressed]-} in
             OK)
-                case "${Choice}" in
-                    "${OptionChooseTheme}")
-                        run_script 'menu_display_options_theme' || true
-                        ;;
-                    "${OptionGeneralOptions}")
-                        run_script 'menu_display_options_general' || true
-                        ;;
-                    *)
-                        error "Invalid Option"
-                        ;;
-                esac
+                CurrentTheme="${Choice}"
+                run_script 'apply_theme' "${CurrentTheme}"
                 ;;
             CANCEL | ESC)
-                clear
-                info "Exiting DockSTARTer."
                 return
                 ;;
             *)
