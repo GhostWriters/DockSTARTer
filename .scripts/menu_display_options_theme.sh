@@ -17,7 +17,7 @@ menu_display_options_theme() {
     local -a ThemeList
     local -A ThemeDescription
     readarray -t ThemeList < <(find "${THEME_FOLDER}" -maxdepth 1 -type d ! -path "${THEME_FOLDER}" -printf "%f\n" | sort)
-    for index in "${!ThemeList[@]-}"; do
+    for index in "${!ThemeList[@]}"; do
         local ThemeName="${ThemeList[index]}"
         local ThemeFile="${THEME_FOLDER}/${ThemeName}/colors.ini"
         if [[ ! -f ${ThemeFile} ]]; then
