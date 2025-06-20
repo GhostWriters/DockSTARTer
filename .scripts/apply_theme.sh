@@ -93,8 +93,8 @@ apply_theme() {
     fi
     if [[ ${Shadow^^} =~ ON|TRUE|YES ]]; then
         DIALOGOPTS+=" --shadow"
-        DC["TextColsAdjust"]=$((DC["TextColsAdjust"] + 1))
-        DC["TextRowsAdjust"]=$((DC["TextRowsAdjust"] + 1))
+        DC["TextColsAdjust"]=$((${DC["TextColsAdjust"]} + 1))
+        DC["TextRowsAdjust"]=$((${DC["TextRowsAdjust"]} + 1))
     else
         DIALOGOPTS+=" --no-shadow"
     fi
