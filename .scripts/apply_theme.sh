@@ -13,14 +13,13 @@ apply_theme() {
 
     local ThemeFolder="${THEME_FOLDER}/${ThemeName}"
     local COLORS_INI_NAME="colors.ini"
-    local ColorFile="${ThemeFolder}/${COLORS_INI_NAME}"
-    if [[ ! -d ${ThemeFolder} && ! -f ${ColorFile} && ! -f ${ThemeFolder}/.dialogrc ]]; then
+    local ThemeFile="${ThemeFolder}/${COLORS_INI_NAME}"
+    local DialogFile="${ThemeFolder}/${DIALOGRC_NAME}"
+    if [[ ! -f ${ColorFile} || ! -f ${DialogFile} ]]; then
         error "Theme ${ThemeName} does not exist."
         return
     fi
 
-    run_script 'env_set' Theme "${ThemeName}" "${MENU_INI_FILE}"
-    cp "${ThemeFolder}"/.dialogrc "${SCRIPTPATH}"/.dialogrc
 
     local _B_='\Z4'   # Blue
     local _C_='\Z6'   # Cyan
@@ -64,10 +63,10 @@ apply_theme() {
     )
 
     local -a VarList
-    readarray -t VarList < <(run_script 'env_var_list' "${ColorFile}")
+    readarray -t VarList < <(run_script 'env_var_list' "${ThemeFile}")
     for VarName in "${VarList[@]-}"; do
         local Value
-        Value="$(run_script 'env_get' "${VarName}" "${ColorFile}")"
+        Value="$(run_script 'env_get' "${VarName}" "${ThemeFile}")"
         Value="$(
             _B_="${_B_}" _C_="${_C_}" _G_="${_G_}" _K_="${_K_}" _M_="${_M_}" _R_="${_R_}" _W_="${_W_}" _Y_="${_Y_}" \
                 _RV_="${_RV_}" _NRV_="${_NRV_}" _BD_="${_BD_}" _NBD_="${_NBD_}" _U_="${_U_}" _NU_="${_NU_}" _NC_="${_NC_}" \
@@ -98,6 +97,8 @@ apply_theme() {
     else
         DIALOGOPTS+=" --no-shadow"
     fi
+    cp "${DialogFile}" "${DIALOGRC}"
+    run_script 'env_set' Theme "${ThemeName}" "${MENU_INI_FILE}"
 }
 
 test_apply_theme() {
