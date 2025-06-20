@@ -60,16 +60,15 @@ menu_display_options_general() {
                 readarray -t OptionsToTurnOn < <(
                     printf '%s\n' "${EnabledOptions[@]}" "${EnabledOptions[@]}" "${ChoicesArray[@]}" | sort -f | uniq -u
                 )
-                {
+                if [[ -n ${OptionsToTurnOff[@]-} || ${OptionsToTurnOn[@]-} ]]; then
                     for Option in "${OptionsToTurnOff[@]}"; do
-                        notice "Turning on ${Option}"
                         run_script 'env_set' "${OptionVariable["${Option}"]}" OFF "${MENU_INI_FILE}"
                     done
                     for Option in "${OptionsToTurnOn[@]}"; do
-                        notice "Turning off ${Option}"
                         run_script 'env_set' "${OptionVariable["${Option}"]}" ON "${MENU_INI_FILE}"
                     done
-                } |& dialog_pipe "${DC["TitleSuccess"]}Setting Options"
+                    run_script 'apply_theme'
+                FI
                 ;;
             CANCEL | ESC)
                 return
