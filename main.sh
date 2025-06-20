@@ -156,6 +156,9 @@ readonly -a DIALOG_BUTTONS=(
 )
 export DIALOG_BUTTONS
 
+declare -Ax DC=()
+declare -x DIALOGOTS
+
 # Cleanup Function
 cleanup() {
     local -ri EXIT_CODE=$?
@@ -769,7 +772,7 @@ main() {
     if [[ -n ${ENVMETHOD-} ]]; then
         case "${ENVMETHOD-}" in
             --env)
-                run_script_dialog "${DC["TitleSuccess"]}Creating environment variables for added apps" "Please be patient, this can take a while.\n${DC[CommandLine]} ds --env" "" \
+                run_script_dialog "${DC["TitleSuccess"]}Creating environment variables for added apps" "Please be patient, this can take a while.\n${DC["CommandLine"]} ds --env" "" \
                     'appvars_create_all'
                 exit
                 ;;
