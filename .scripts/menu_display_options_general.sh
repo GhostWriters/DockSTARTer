@@ -33,9 +33,9 @@ menu_display_options_general() {
             Value="$(run_script 'env_get' "${OptionVariable["${Option}"]}" "${MENU_INI_FILE}")"
             if [[ ${Value} =~ ON|TRUE|YES ]]; then
                 EnabledOptions+=("${Option}")
-                Opts+=("${DrawLineOption}" "${OptionDescription["${DrawLineOption}"]}" ON)
+                Opts+=("${Option}" "${OptionDescription["${Option}"]}" ON)
             else
-                Opts+=("${DrawLineOption}" "${OptionDescription["${DrawLineOption}"]}" OFF)
+                Opts+=("${Option}" "${OptionDescription["${Option}"]}" OFF)
             fi
         done
         local -a ChoiceDialog=(
