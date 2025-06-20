@@ -25,7 +25,6 @@ menu_display_options_general() {
     OptionVariable["${ShowScrollbarOption}"]="Scrollbar"
     OptionVariable["${ShowShadowOption}"]="Shadow"
 
-
     while true; do
         local EnabledOptions=()
         local Opts=()
