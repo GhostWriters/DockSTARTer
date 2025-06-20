@@ -67,7 +67,7 @@ menu_display_options_general() {
                         done
                     fi
                     if [[ -n ${OptionsToTurnOn[@]-} ]]; then
-                        for Option in "${OptionsToTurnOn[@]-}"; do
+                        for Option in "${OptionsToTurnOn[@]}"; do
                             run_script 'env_set' "${OptionVariable["${Option}"]}" ON "${MENU_INI_FILE}"
                         done
                     fi
