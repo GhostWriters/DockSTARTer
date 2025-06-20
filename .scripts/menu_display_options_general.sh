@@ -65,11 +65,11 @@ menu_display_options_general() {
                     printf '%s\n' "${EnabledOptions[@]}" "${EnabledOptions[@]}" "${Choices}" | tr ' ' '\n' | sort -f | uniq -u
                 )
                 {
-                    for Option in "${OptionsToTurnOff[@]}"; do
+                    for Option in ${OptionsToTurnOff[@]}; do
                         notice "Turning on ${Option}"
                         notice "run_script 'set_env' \"${OptionVariable["${Option}"]}\" OFF \"${MENU_INI_FILE}\""
                     done
-                    for Option in "${OptionsToTurnOn[@]}"; do
+                    for Option in ${OptionsToTurnOn[@]}; do
                         notice "Turning off ${Option}"
                         notice "run_script 'set_env' \"${OptionVariable["${Option}"]}\" ON \"${MENU_INI_FILE}\""
                     done
