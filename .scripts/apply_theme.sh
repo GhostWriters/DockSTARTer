@@ -38,7 +38,7 @@ apply_theme() {
     local _NU_='\ZU'  # No Underline
     local _NC_='\Zn'  # No Color
 
-    declare -Ax DC=()
+    DC=()
     DC+=( # Dialog colors
         ["B"]="${_B_}"
         ["C"]="${_C_}"
@@ -76,24 +76,24 @@ apply_theme() {
         DC["${VarName}"]="${Value}"
     done
     DC["ThemeName"]="${ThemeName}"
-    declare -g DIALOGOPTS="--colors  --cr-wrap --no-collapse --backtitle ${DC[BackTitle]}${BACKTITLE}"
+    DIALOGOPTS="--colors  --cr-wrap --no-collapse --backtitle ${DC[BackTitle]}${BACKTITLE}"
 
     local LineCharacters Scrollbar Shadow
     LineCharacters="$(run_script 'env_get' "LineCharacters" "${MENU_INI_FILE}")"
     Scrollbar="$(run_script 'env_get' "Scrollbar" "${MENU_INI_FILE}")"
     Shadow="$(run_script 'env_get' "Shadow" "${MENU_INI_FILE}")"
 
-    if [[ ${LineCharacters^^} =~ ON|TRUE|TRUE ]]; then
+    if [[ ${LineCharacters^^} =~ ON|TRUE|YES ]]; then
         DIALOGOPTS+=" --lines"
     else
         DIALOGOPTS+=" --no-lines"
     fi
-    if [[ ${Scrollbar^^} =~ ON|TRUE|TRUE ]]; then
+    if [[ ${Scrollbar^^} =~ ON|TRUE|YES ]]; then
         DIALOGOPTS+=" --scrollbar"
     else
         DIALOGOPTS+=" --no-scrollbar"
     fi
-    if [[ ${Shadow^^} =~ ON|TRUE|TRUE ]]; then
+    if [[ ${Shadow^^} =~ ON|TRUE|YES ]]; then
         DIALOGOPTS+=" --shadow"
     else
         DIALOGOPTS+=" --no-shadow"
