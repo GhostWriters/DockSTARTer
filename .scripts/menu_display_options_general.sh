@@ -8,45 +8,74 @@ menu_display_options_general() {
     fi
 
     local Title="General Display Options"
-    return
-    local OptionChooseTheme="Choose Theme"
-    local OptionGeneralOptions="General Options"
-    local Opts=(
-        "${OptionChooseTheme}" "Choose a theme for DockSTARTer"
-        "${OptionGeneralOptions}" "Set general display options"
-    )
 
-    local LastChoice=""
+    run_script 'apply_theme'
+
+    local DrawLineOption="Draw Lines"
+    local ShowScrollbarOption="Show Scrollbar"
+    local ShowShadowOption="Show Shadow"
+
+    local -A OptionDescription OptionVariable OptionValue
+
+    OptionDescription["${DrawLineOption}"]="Use line drawing characters for borders"
+    OptionDescription["${ShowScrollbarOption}"]="Show a scrollbar in dialog boxes"
+    OptionDescription["${ShowShadowOption}"]="Show a shadow under the dialog boxes"
+
+    OptionVariable["${DrawLineOption}"]="LineCharacters"
+    OptionVariable["${ShowScrollbarOption}"]="Scrollbar"
+    OptionVariable["${ShowShadowOption}"]="Shadow"
+
+
     while true; do
+        local EnabledOptions=()
+        for Option in "${DrawLineOption}" "${ShowScrollbarOption}" "${ShowShadowOption}"; do
+            local Value
+            Value="$(run_script 'env_get' "${OptionVariable["${Option}"]}" "${MENU_INI_FILE}")"
+            if [[ ${Value} =~ ON|TRUE|TRUE ]]; then
+                Value="ON"
+                EnabledOptions+=("${Option}")
+            else
+                Value="OFF"
+            fi
+            OptionValue["${Option}"]="${Value}"
+        done
+        Opts=(
+            "${DrawLineOption}" "${OptionDescription["${DrawLineOption}"]}" "${OptionValue["${DrawLineOption}"]}"
+            "${ShowScrollbarOption}" "${OptionDescription["${ShowScrollbarOption}"]}" "${OptionValue["${ShowScrollbarOption}"]}"
+            "${ShowShadowOption}" "${OptionDescription["${ShowShadowOption}"]}" "${OptionValue["${ShowShadowOption}"]}"
+        )
         local -a ChoiceDialog=(
             --stdout
             --title "${DC["Title"]}${Title}"
             --ok-label "Select"
-            --cancel-label "Exit"
-            --menu "What would you like to do?" 0 0 0
+            --cancel-label "Back"
+            --checklist "Choose the options to enable." 0 0 0
             "${Opts[@]}"
         )
-        local Choice
+        local Choices
         local -i DialogButtonPressed=0
-        Choice=$(dialog --default-item "${LastChoice}" "${ChoiceDialog[@]}") || DialogButtonPressed=$?
-        LastChoice=${Choice}
+        Choices=$(dialog "${ChoiceDialog[@]}") || DialogButtonPressed=$?
         case ${DIALOG_BUTTONS[DialogButtonPressed]-} in
             OK)
-                case "${Choice}" in
-                    "${OptionChooseTheme}")
-                        run_script 'menu_display_options_theme' || true
-                        ;;
-                    "${OptionGeneralOptions}")
-                        run_script 'menu_display_options_general' || true
-                        ;;
-                    *)
-                        error "Invalid Option"
-                        ;;
-                esac
+                local -a OptinsToTurnOff OptionsToTurnOn
+                readarray -t OptionsToTurnOff < <(
+                    printf '%s\n' "${EnabledOptions[@]}" "${Choices}" "${Choices}" | tr ' ' '\n' | sort -f | uniq -u
+                )
+                readarray -t OptionsToTurnOn < <(
+                    printf '%s\n' "${EnabledOptions[@]}" "${EnabledOptions[@]}" "${Choices}" | tr ' ' '\n' | sort -f | uniq -u
+                )
+                {
+                    for Option in "${OptionsToTurnOff[@]-}"; do
+                        notice "Turning on ${Option}"
+                        notice "run_script 'set_env' \"${OptionVariable["${Option}"]}\" OFF \"${MENU_INI_FILE}\""
+                    done
+                    for Option in "${OptionsToTurnOn[@]-}"; do
+                        notice "Turning off ${Option}"
+                        notice "run_script 'set_env' \"${OptionVariable["${Option}"]}\" ON \"${MENU_INI_FILE}\""
+                    done
+                } |& dialog_pipe "${DC["TitleSuccess"]}Setting Options"
                 ;;
             CANCEL | ESC)
-                clear
-                info "Exiting DockSTARTer."
                 return
                 ;;
             *)
