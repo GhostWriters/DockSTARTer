@@ -27,7 +27,7 @@ menu_display_options_theme() {
         ThemeDescription["${ThemeName}"]="$(run_script 'env_get' ThemeDescription "${ThemeFile}")"
     done
 
-    local LastChoice=""
+    local LastChoice="${ThemeName}"
     while true; do
         local -a Opts=()
         for ThemeName in "${ThemeList[@]-}"; do
