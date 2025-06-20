@@ -9,7 +9,7 @@ menu_display_options_general() {
 
     local Title="General Display Options"
 
-    run_script 'apply_theme'
+    #run_script 'apply_theme'
 
     local DrawLineOption="Draw Lines"
     local ShowScrollbarOption="Show Scrollbar"
@@ -68,7 +68,7 @@ menu_display_options_general() {
                         run_script 'env_set' "${OptionVariable["${Option}"]}" ON "${MENU_INI_FILE}"
                     done
                     run_script 'apply_theme'
-                FI
+                fi
                 ;;
             CANCEL | ESC)
                 return
