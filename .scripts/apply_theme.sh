@@ -38,8 +38,6 @@ apply_theme() {
     local _NU_='\ZU'  # No Underline
     local _NC_='\Zn'  # No Color
 
-    # shellcheck disable=SC2016 # Expressions don't expand in single quotes, use double quotes for that.
-    local ColorVars='$_B_ $_C_ $_G_ $_K_ $_M_ $_R_ $_W_ $_Y_ $_RV_ $_NVR_ $_BD_ $_U_ $_NU_ $_NC_'
 
     DC=()
     DC+=( # Dialog colors
@@ -69,7 +67,11 @@ apply_theme() {
     local -a VarList
     readarray -t VarList < <(run_script 'env_var_list' "${ColorFile}")
     for VarName in "${VarList[@]-}"; do
-        DC["${VarName}"]="$(run_script 'env_get' "${VarName}" "${ColorFile}" | envsubst "${ColorVars}")"
+        # shellcheck disable=SC2016 # Expressions don't expand in single quotes, use double quotes for that.
+        DC["${VarName}"]="$(
+            run_script 'env_get' "${VarName}" "${ColorFile}" |
+                envsubst '$_B_ $_C_ $_G_ $_K_ $_M_ $_R_ $_W_ $_Y_ $_RV_ $_NVR_ $_BD_ $_U_ $_NU_ $_NC_'
+            )"
     done
     DC["ThemeName"]="${ThemeName}"
     DIALOGOPTS="--colors  --cr-wrap --no-collapse --backtitle ${DC[BackTitle]}${BACKTITLE}"
