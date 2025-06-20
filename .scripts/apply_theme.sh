@@ -67,11 +67,12 @@ apply_theme() {
     local -a VarList
     readarray -t VarList < <(run_script 'env_var_list' "${ColorFile}")
     for VarName in "${VarList[@]-}"; do
+        local Value="$(run_script 'env_get' "${VarName}" "${ColorFile}")"
+        notice "${VarName}=${Value}"
+        Value="$(envsubst <<< "${Value}")"
+        notice "${VarName}=${Value}"
         # shellcheck disable=SC2016 # Expressions don't expand in single quotes, use double quotes for that.
-        DC["${VarName}"]="$(
-            run_script 'env_get' "${VarName}" "${ColorFile}" |
-                envsubst
-            )"
+        DC["${VarName}"]="${Value}"
     done
     DC["ThemeName"]="${ThemeName}"
     DIALOGOPTS="--colors  --cr-wrap --no-collapse --backtitle ${DC[BackTitle]}${BACKTITLE}"
