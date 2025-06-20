@@ -55,10 +55,10 @@ apply_theme() {
         ["NC"]="${_NC_}"
     )
     DC+=( # Dialog positioning adjustment values
-        ["WindowColsAdjust"]=5
-        ["WindowRowsAdjust"]=4
-        ["TextColsAdjust"]=4
-        ["TextRowsAdjust"]=7
+        ["WindowColsAdjust"]=6
+        ["WindowRowsAdjust"]=5
+        ["TextColsAdjust"]=3
+        ["TextRowsAdjust"]=6
     )
 
     local -a VarList
@@ -93,8 +93,8 @@ apply_theme() {
     fi
     if [[ ${Shadow^^} =~ ON|TRUE|YES ]]; then
         DIALOGOPTS+=" --shadow"
-        DC["TextColsAdjust"]=$((${DC["TextColsAdjust"]} + 1))
-        DC["TextRowsAdjust"]=$((${DC["TextRowsAdjust"]} + 1))
+        DC["WindowColsAdjust"]=$((DC["WindowColsAdjust"] + 1))
+        DC["WindowRowsAdjust"]=$((DC["WindowRowsAdjust"] + 1))
     else
         DIALOGOPTS+=" --no-shadow"
     fi
