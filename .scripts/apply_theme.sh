@@ -68,7 +68,7 @@ apply_theme() {
     readarray -t VarList < <(run_script 'env_var_list' "${ColorFile}")
     for VarName in "${VarList[@]-}"; do
         local Value
-        Value=="$(run_script 'env_get' "${VarName}" "${ColorFile}")"
+        Value="$(run_script 'env_get' "${VarName}" "${ColorFile}")"
         notice "${VarName}=${Value}"
         Value="$(
             _B_="${_B_}" \
