@@ -131,7 +131,7 @@ export DIALOG
 
 declare -rx MENU_INI_NAME='menu.ini'
 declare -rx MENU_INI_FILE="${SCRIPTPATH}/${MENU_INI_NAME}"
-declare -rx THEME_FILE_NAME='colors.ini'
+declare -rx THEME_FILE_NAME='theme.ini'
 declare -rx DIALOGRC_NAME='.dialogrc'
 declare -rx DIALOGRC="${SCRIPTPATH}/${DIALOGRC_NAME}"
 

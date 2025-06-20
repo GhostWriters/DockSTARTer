@@ -19,7 +19,7 @@ menu_display_options_theme() {
     readarray -t ThemeList < <(find "${THEME_FOLDER}" -maxdepth 1 -type d ! -path "${THEME_FOLDER}" -printf "%f\n" | sort)
     for index in "${!ThemeList[@]}"; do
         local ThemeName="${ThemeList[index]}"
-        local ThemeFile="${THEME_FOLDER}/${ThemeName}/colors.ini"
+        local ThemeFile="${THEME_FOLDER}/${ThemeName}/${THEME_FILE_NAME}"
         if [[ ! -f ${ThemeFile} ]]; then
             unset 'ThemeList[index]'
             continue
