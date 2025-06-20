@@ -74,7 +74,7 @@ apply_theme() {
     DC["ThemeName"]="${ThemeName}"
     DIALOGOPTS="--colors  --cr-wrap --no-collapse --backtitle ${DC[BackTitle]}${BACKTITLE}"
 
-    local LineCharacters, Scrollbar, Shadow
+    local LineCharacters Scrollbar Shadow
     LineCharacters="$(run_script 'env_get' "LineCharacters" "${MENU_INI_FILE}")"
     Scrollbar="$(run_script 'env_get' "Scrollbar" "${MENU_INI_FILE}")"
     Shadow="$(run_script 'env_get' "Shadow" "${MENU_INI_FILE}")"
