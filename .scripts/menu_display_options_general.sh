@@ -60,13 +60,13 @@ menu_display_options_general() {
                 readarray -t OptionsToTurnOn < <(
                     printf '%s\n' "${EnabledOptions[@]}" "${EnabledOptions[@]}" "${ChoicesArray[@]}" | sort -f | uniq -u
                 )
-                if [[ -n ${OptionsToTurnOff[@]-} || ${OptionsToTurnOn[@]-} ]]; then
-                    if [[ -n ${OptionsToTurnOff[@]-} ]]; then
+                if [[ -n ${OptionsToTurnOff[*]-} || ${OptionsToTurnOn[*]-} ]]; then
+                    if [[ -n ${OptionsToTurnOff[*]-} ]]; then
                         for Option in "${OptionsToTurnOff[@]}"; do
                             run_script 'env_set' "${OptionVariable["${Option}"]}" OFF "${MENU_INI_FILE}"
                         done
                     fi
-                    if [[ -n ${OptionsToTurnOn[@]-} ]]; then
+                    if [[ -n ${OptionsToTurnOn[*]-} ]]; then
                         for Option in "${OptionsToTurnOn[@]}"; do
                             run_script 'env_set' "${OptionVariable["${Option}"]}" ON "${MENU_INI_FILE}"
                         done
