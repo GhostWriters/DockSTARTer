@@ -38,7 +38,6 @@ apply_theme() {
     local _NU_='\ZU'  # No Underline
     local _NC_='\Zn'  # No Color
 
-
     DC=()
     DC+=( # Dialog colors
         ["B"]="${_B_}"
