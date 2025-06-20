@@ -38,7 +38,7 @@ apply_theme() {
     local _NU_='\ZU'  # No Underline
     local _NC_='\Zn'  # No Color
 
-    DC=()
+    declare -Ax DC=()
     DC+=( # Dialog colors
         ["B"]="${_B_}"
         ["C"]="${_C_}"
@@ -76,7 +76,7 @@ apply_theme() {
         DC["${VarName}"]="${Value}"
     done
     DC["ThemeName"]="${ThemeName}"
-    DIALOGOPTS="--colors  --cr-wrap --no-collapse --backtitle ${DC[BackTitle]}${BACKTITLE}"
+    declare -g DIALOGOPTS="--colors  --cr-wrap --no-collapse --backtitle ${DC[BackTitle]}${BACKTITLE}"
 
     local LineCharacters Scrollbar Shadow
     LineCharacters="$(run_script 'env_get' "LineCharacters" "${MENU_INI_FILE}")"

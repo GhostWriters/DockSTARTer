@@ -137,8 +137,6 @@ declare -rx DIALOGRC="${SCRIPTPATH}/${DIALOGRC_NAME}"
 
 declare -rx BACKTITLE="DockSTARTer"
 
-declare -Ax DC
-declare -g DIALOGOPTS
 declare -rix DIALOGTIMEOUT=3
 declare -rix DIALOG_OK=0
 declare -rix DIALOG_CANCEL=1
