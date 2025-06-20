@@ -53,7 +53,7 @@ menu_display_options_general() {
         Choices=$(dialog "${ChoiceDialog[@]}") || DialogButtonPressed=$?
         case ${DIALOG_BUTTONS[DialogButtonPressed]-} in
             OK)
-                local -a ChoicesArray OptinsToTurnOff OptionsToTurnOn
+                local -a ChoicesArray OptionsToTurnOff OptionsToTurnOn
                 readarray -t ChoicesArray <<< "${Choices}"
                 readarray -t OptionsToTurnOff < <(
                     printf '%s\n' "${EnabledOptions[@]}" "${ChoicesArray[@]}" "${ChoicesArray[@]}" | sort -f | uniq -u
@@ -62,11 +62,11 @@ menu_display_options_general() {
                     printf '%s\n' "${EnabledOptions[@]}" "${EnabledOptions[@]}" "${ChoicesArray[@]}" | sort -f | uniq -u
                 )
                 {
-                    for Option in ${OptionsToTurnOff[@]}; do
+                    for Option in "${OptionsToTurnOff[@]}"; do
                         notice "Turning on ${Option}"
                         notice "run_script 'set_env' \"${OptionVariable["${Option}"]}\" OFF \"${MENU_INI_FILE}\""
                     done
-                    for Option in ${OptionsToTurnOn[@]}; do
+                    for Option in "${OptionsToTurnOn[@]}"; do
                         notice "Turning off ${Option}"
                         notice "run_script 'set_env' \"${OptionVariable["${Option}"]}\" ON \"${MENU_INI_FILE}\""
                     done
