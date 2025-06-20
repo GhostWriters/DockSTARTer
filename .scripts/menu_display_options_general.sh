@@ -49,6 +49,7 @@ menu_display_options_general() {
             --title "${DC["Title"]}${Title}"
             --ok-label "Select"
             --cancel-label "Back"
+            --separate-output
             --checklist "Choose the options to enable." 0 0 0
             "${Opts[@]}"
         )
@@ -57,12 +58,13 @@ menu_display_options_general() {
         Choices=$(dialog "${ChoiceDialog[@]}") || DialogButtonPressed=$?
         case ${DIALOG_BUTTONS[DialogButtonPressed]-} in
             OK)
-                local -a OptinsToTurnOff OptionsToTurnOn
+                local -a ChoicesArray OptinsToTurnOff OptionsToTurnOn
+                readarray -t ChoicesArray <<< "${Choices}"
                 readarray -t OptionsToTurnOff < <(
-                    printf '%s\n' "${EnabledOptions[@]}" "${Choices}" "${Choices}" | tr ' ' '\n' | sort -f | uniq -u
+                    printf '%s\n' "${EnabledOptions[@]}" "${ChoicesArray[@]}" "${ChoicesArray[@]}" | sort -f | uniq -u
                 )
                 readarray -t OptionsToTurnOn < <(
-                    printf '%s\n' "${EnabledOptions[@]}" "${EnabledOptions[@]}" "${Choices}" | tr ' ' '\n' | sort -f | uniq -u
+                    printf '%s\n' "${EnabledOptions[@]}" "${EnabledOptions[@]}" "${ChoicesArray[@]}" | sort -f | uniq -u
                 )
                 {
                     for Option in ${OptionsToTurnOff[@]}; do
