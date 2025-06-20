@@ -63,11 +63,11 @@ menu_display_options_general() {
                 {
                     for Option in "${OptionsToTurnOff[@]}"; do
                         notice "Turning on ${Option}"
-                        notice "run_script 'set_env' \"${OptionVariable["${Option}"]}\" OFF \"${MENU_INI_FILE}\""
+                        run_script 'set_env' "${OptionVariable["${Option}"]}" OFF "${MENU_INI_FILE}"
                     done
                     for Option in "${OptionsToTurnOn[@]}"; do
                         notice "Turning off ${Option}"
-                        notice "run_script 'set_env' \"${OptionVariable["${Option}"]}\" ON \"${MENU_INI_FILE}\""
+                        run_script 'set_env' "${OptionVariable["${Option}"]}" ON "${MENU_INI_FILE}"
                     done
                 } |& dialog_pipe "${DC["TitleSuccess"]}Setting Options"
                 ;;
