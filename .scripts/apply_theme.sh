@@ -96,6 +96,7 @@ apply_theme() {
     else
         DIALOGOPTS+=" --no-shadow"
     fi
+    export DIALOGOPTS DC
     cp "${DialogFile}" "${DIALOGRC}"
     run_script 'env_set' Theme "${ThemeName}" "${MENU_INI_FILE}"
 }
