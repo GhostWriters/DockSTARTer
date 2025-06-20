@@ -131,13 +131,14 @@ export DIALOG
 
 declare -rx MENU_INI_NAME='menu.ini'
 declare -rx MENU_INI_FILE="${SCRIPTPATH}/${MENU_INI_NAME}"
+delcare -rx THEME_FILE_NAME='colors.ini'
 declare -rx DIALOGRC_NAME='.dialogrc'
 declare -rx DIALOGRC="${SCRIPTPATH}/${DIALOGRC_NAME}"
 
 declare -rx BACKTITLE="DockSTARTer"
 
 declare -Ax DC
-declare -x DIALOGOPTS
+declare -g DIALOGOPTS
 declare -rix DIALOGTIMEOUT=3
 declare -rix DIALOG_OK=0
 declare -rix DIALOG_CANCEL=1
