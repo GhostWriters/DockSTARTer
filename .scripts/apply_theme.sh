@@ -88,12 +88,12 @@ apply_theme() {
     else
         DIALOGOPTS+=" --no-lines"
     fi
-    if [[ ${Scrollbar^^} =~ YES|TRUE ]]; then
+    if [[ ${Scrollbar^^} =~ ON|TRUE|TRUE ]]; then
         DIALOGOPTS+=" --scrollbar"
     else
         DIALOGOPTS+=" --no-scrollbar"
     fi
-    if [[ ${Shadow^^} =~ YES|TRUE ]]; then
+    if [[ ${Shadow^^} =~ ON|TRUE|TRUE ]]; then
         DIALOGOPTS+=" --shadow"
     else
         DIALOGOPTS+=" --no-shadow"
