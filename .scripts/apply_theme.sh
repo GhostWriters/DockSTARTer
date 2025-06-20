@@ -20,7 +20,6 @@ apply_theme() {
         return
     fi
 
-
     local _B_='\Z4'   # Blue
     local _C_='\Z6'   # Cyan
     local _G_='\Z2'   # Green
