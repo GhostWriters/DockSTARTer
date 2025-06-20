@@ -56,7 +56,7 @@ apply_theme() {
     )
     DC+=( # Dialog positioning adjustment values
         ["WindowColsAdjust"]=6
-        ["WindowRowsAdjust"]=5
+        ["WindowRowsAdjust"]=6
         ["TextColsAdjust"]=3
         ["TextRowsAdjust"]=6
     )
