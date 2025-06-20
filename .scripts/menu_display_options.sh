@@ -21,7 +21,7 @@ menu_display_options() {
             --stdout
             --title "${DC["Title"]}${Title}"
             --ok-label "Select"
-            --cancel-label "Exit"
+            --cancel-label "Back"
             --menu "What would you like to do?" 0 0 0
             "${Opts[@]}"
         )
