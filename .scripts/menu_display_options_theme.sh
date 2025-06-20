@@ -26,17 +26,17 @@ menu_display_options_theme() {
         fi
         ThemeDescription["${ThemeName}"]="$(run_script 'env_get' ThemeDescription "${ThemeFile}")"
     done
-    local -a Opts=()
-    for ThemeName in "${ThemeList[@]-}"; do
-        if [[ ${ThemeName} == "${CurrentTheme}" ]]; then
-            Opts+=("${ThemeName}" "${ThemeDescription["${ThemeName}"]}" ON)
-        else
-            Opts+=("${ThemeName}" "${ThemeDescription["${ThemeName}"]}" OFF)
-        fi
-    done
 
     local LastChoice=""
     while true; do
+    local -a Opts=()
+        for ThemeName in "${ThemeList[@]-}"; do
+            if [[ ${ThemeName} == "${CurrentTheme}" ]]; then
+                Opts+=("${ThemeName}" "${ThemeDescription["${ThemeName}"]}" ON)
+            else
+                Opts+=("${ThemeName}" "${ThemeDescription["${ThemeName}"]}" OFF)
+            fi
+        done
         local -a ChoiceDialog=(
             --stdout
             --title "${DC["Title"]}${Title}"
