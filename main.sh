@@ -407,7 +407,6 @@ cmdline() {
             g)
                 if [[ -n ${DIALOG-} ]]; then
                     PROMPT="GUI"
-                    run_script 'apply_theme'
                 else
                     warn "The '--gui' option requires the dialog command to be installed."
                     warn "'dialog' command not found. Run 'ds -fiv' to install all dependencies."
@@ -745,6 +744,8 @@ main() {
     fi
     # Create Symlink
     run_script 'symlink_ds'
+    # Apply the GUI theme
+    run_script 'apply_theme'
     # Execute CLI Argument Functions
     if [[ -n ${ADD-} ]]; then
         run_script 'env_create'
@@ -1034,7 +1035,6 @@ main() {
     if [[ -n ${DIALOG-} ]]; then
         MENU=true
         PROMPT="GUI"
-        run_script 'apply_theme'
         run_script 'menu_main'
     else
         error "The GUI requires the dialog command to be installed."
