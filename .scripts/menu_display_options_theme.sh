@@ -18,8 +18,7 @@ menu_display_options_theme() {
     local -A ThemeDescription
     readarray -t ThemeList < <(run_script 'theme_list')
     for ThemeName in "${ThemeList[@]-}"; do
-        local ThemeFile="${THEME_FOLDER}/${ThemeName}/${THEME_FILE_NAME}"
-        ThemeDescription["${ThemeName}"]="$(run_script 'env_get' ThemeDescription "${ThemeFile}")"
+        ThemeDescription["${ThemeName}"]="$(run_script 'theme_description' "${ThemeName}")"
     done
 
     local LastChoice="${CurrentTheme}"
