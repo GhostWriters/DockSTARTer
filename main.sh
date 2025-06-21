@@ -1046,6 +1046,7 @@ main() {
                 echo "Invalid option: '${THEMEMETHOD-}'"
                 ;;
         esac
+        exit
     fi
     if [[ -n ${UPDATE-} ]]; then
         if [[ ${UPDATE} == true ]]; then
