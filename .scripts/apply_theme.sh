@@ -4,16 +4,41 @@ IFS=$'\n\t'
 
 apply_theme() {
     local ThemeName=${1-}
+
+    local DefaultThemes=(
+        DockSTARTer
+        Default
+    )
+
+    local ThemeFolder="${THEME_FOLDER}/${ThemeName}"
+    local ThemeFile="${ThemeFolder}/${THEME_FILE_NAME}"
+    local DialogFile="${ThemeFolder}/${DIALOGRC_NAME}"
+
     if [[ -z ${ThemeName-} ]]; then
         if [[ ! -f ${MENU_INI_FILE} ]]; then
             cp "${THEME_FOLDER}/${MENU_INI_NAME}" "${MENU_INI_FILE}"
         fi
         ThemeName="$(run_script 'env_get' Theme "${MENU_INI_FILE}")"
+        ThemeFolder="${THEME_FOLDER}/${ThemeName}"
+        ThemeFile="${ThemeFolder}/${THEME_FILE_NAME}"
+        DialogFile="${ThemeFolder}/${DIALOGRC_NAME}"
+        if [[ ! -f ${ThemeFile} || ! -f ${DialogFile} ]]; then
+            for Name in "${DefaultThemes[@]}"; do
+                ThemeName="${Name}"
+                ThemeFolder="${THEME_FOLDER}/${ThemeName}"
+                ThemeFile="${ThemeFolder}/${THEME_FILE_NAME}"
+                DialogFile="${ThemeFolder}/${DIALOGRC_NAME}"
+                if [[ -f ${ThemeFile} && -f ${DialogFile} ]]; then
+                    break
+                fi
+            done
+        fi
+    else
+        ThemeFolder="${THEME_FOLDER}/${ThemeName}"
+        ThemeFile="${ThemeFolder}/${THEME_FILE_NAME}"
+        DialogFile="${ThemeFolder}/${DIALOGRC_NAME}"
     fi
 
-    local ThemeFolder="${THEME_FOLDER}/${ThemeName}"
-    local ThemeFile="${ThemeFolder}/${THEME_FILE_NAME}"
-    local DialogFile="${ThemeFolder}/${DIALOGRC_NAME}"
     if [[ ! -f ${ThemeFile} || ! -f ${DialogFile} ]]; then
         error "Theme ${ThemeName} does not exist."
         return
