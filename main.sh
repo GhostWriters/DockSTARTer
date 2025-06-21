@@ -1002,27 +1002,39 @@ main() {
         case "${THEMEMETHOD}" in
             theme)
                 run_script 'apply_theme' "${THEME}"
+                if use_dialog_box; then
+                    run_script 'menu_dialog_example' "Applied theme ${THEME}"
+                else
+                    notice "Applied theme ${THEME}"
+                fi
                 ;;
             theme-list)
-                run_script 'theme_list'
+                run_script_dialog "List Themes" "" "" \
+                    run_script 'theme_list'
                 ;;
             theme-shadow)
-                run_script 'env_set' Shadow Yes "${MENU_INI_FILE}"
+                notice "Turning on GUI shadows."
+                run_script 'env_set' Shadow yes "${MENU_INI_FILE}"
                 ;;
             theme-no-shadow)
-                run_script 'env_set' Shadow No "${MENU_INI_FILE}"
+                run_script 'env_set' Shadow no "${MENU_INI_FILE}"
+                notice "Turning off GUI shadows."
                 ;;
             theme-scrollbar)
-                run_script 'env_set' Scrollbar Yes "${MENU_INI_FILE}"
+                run_script 'env_set' Scrollbar yes "${MENU_INI_FILE}"
+                notice "Turning on GUI scrollbars."
                 ;;
             theme-no-scrollbar)
-                run_script 'env_set' Scrollbar No "${MENU_INI_FILE}"
+                run_script 'env_set' Scrollbar no "${MENU_INI_FILE}"
+                notice "Turning off GUI scrollbars."
                 ;;
             theme-lines)
-                run_script 'env_set' LineCharacters Yes "${MENU_INI_FILE}"
+                run_script 'env_set' LineCharacters yes "${MENU_INI_FILE}"
+                notice "Turning on GUI line drawing characters."
                 ;;
             theme-no-lines)
-                run_script 'env_set' LineCharacters No "${MENU_INI_FILE}"
+                notice "Turning off GUI line drawing characters."
+                run_script 'env_set' LineCharacters no "${MENU_INI_FILE}"
                 ;;
             *)
                 echo "Invalid option: '${THEMEMETHOD-}'"
