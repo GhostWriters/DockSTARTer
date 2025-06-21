@@ -419,9 +419,14 @@ cmdline() {
                 readonly TEST=${OPTARG}
                 ;;
             theme)
-                readonly THEMEMETHOD='theme'
-                readonly THEME="$(eval "echo \${$OPTIND}")"
-                OPTIND=$((OPTIND + 1))
+                if [[ -n ${!OPTIND-} ]]; then
+                    readonly THEMEMETHOD='theme'
+                    readonly THEME="${!OPTIND}"
+                    OPTIND=$((OPTIND + 1))
+                else
+                    error "${OPTION} requires an option."
+                    exit
+                fi
                 ;;
             theme-*)
                 readonly THEMEMETHOD=${OPTION}
