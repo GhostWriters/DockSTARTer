@@ -10,39 +10,30 @@ apply_theme() {
         Default
     )
 
-    local ThemeFolder="${THEME_FOLDER}/${ThemeName}"
-    local ThemeFile="${ThemeFolder}/${THEME_FILE_NAME}"
-    local DialogFile="${ThemeFolder}/${DIALOGRC_NAME}"
+    local ThemeFile DialogFile
 
     if [[ -z ${ThemeName-} ]]; then
         if [[ ! -f ${MENU_INI_FILE} ]]; then
             cp "${THEME_FOLDER}/${MENU_INI_NAME}" "${MENU_INI_FILE}"
         fi
         ThemeName="$(run_script 'env_get' Theme "${MENU_INI_FILE}")"
-        ThemeFolder="${THEME_FOLDER}/${ThemeName}"
-        ThemeFile="${ThemeFolder}/${THEME_FILE_NAME}"
-        DialogFile="${ThemeFolder}/${DIALOGRC_NAME}"
-        if [[ ! -f ${ThemeFile} || ! -f ${DialogFile} ]]; then
+        if ! run_script 'theme_exists' "${ThemeName}"; then
             for Name in "${DefaultThemes[@]}"; do
-                ThemeName="${Name}"
-                ThemeFolder="${THEME_FOLDER}/${ThemeName}"
-                ThemeFile="${ThemeFolder}/${THEME_FILE_NAME}"
-                DialogFile="${ThemeFolder}/${DIALOGRC_NAME}"
-                if [[ -f ${ThemeFile} && -f ${DialogFile} ]]; then
+                if run_script 'theme_exists' "${Name}"; then
+                    ThemeName="${Name}"
                     break
                 fi
             done
         fi
-    else
-        ThemeFolder="${THEME_FOLDER}/${ThemeName}"
-        ThemeFile="${ThemeFolder}/${THEME_FILE_NAME}"
-        DialogFile="${ThemeFolder}/${DIALOGRC_NAME}"
     fi
 
-    if [[ ! -f ${ThemeFile} || ! -f ${DialogFile} ]]; then
+    if ! run_script 'theme_exists' "${ThemeName}"; then
         error "Theme ${ThemeName} does not exist."
         return
     fi
+
+    ThemeFile="${THEME_FOLDER}/${ThemeName}${THEME_FILE_NAME}"
+    DialogFile="${THEME_FOLDER}/${ThemeName}/${DIALOGRC_NAME}"
 
     local _B_='\Z4'   # Blue
     local _C_='\Z6'   # Cyan
