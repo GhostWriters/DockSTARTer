@@ -96,6 +96,19 @@ that take app names can use the form app: to refer to the same file.
     Enable the app specified
 -t --test <test_name>
     Run tests to check the program
+--theme <themename>
+    Applies the specified theme to the GUI
+--theme-List
+   Lists the available themes
+--theme-shadow
+--theme-no-shadow
+    Turn the shadow on or off in the GUI
+--theme-scrollbar
+--theme-no-scrollbar
+    Turn the scrollbar on or off in the GUI
+--theme-lines
+--theme-no-lines
+    Turn the line drawing on or off in the GUI
 -u --update
     Update DockSTARTer to the latest stable commits
 -u --update <branch>
@@ -260,85 +273,15 @@ fatal() {
 # Command Line Arguments
 readonly ARGS=("$@")
 cmdline() {
-    # http://www.kfirlavi.com/blog/2012/11/14/defensive-bash-programming/
-    # http://kirk.webfinish.com/2009/10/bash-shell-script-to-use-getopts-with-gnu-style-long-positional-parameters/
-    local ARG=
-    local LOCAL_ARGS
-    for ARG; do
-        local DELIM=""
-        case "${ARG}" in
-            #translate --gnu-long-options to -g (short options)
-            --add) LOCAL_ARGS="${LOCAL_ARGS-}-a " ;;
-            --compose) LOCAL_ARGS="${LOCAL_ARGS-}-c " ;;
-            --debug) LOCAL_ARGS="${LOCAL_ARGS-}-x " ;;
-            --env)
-                readonly ENVMETHOD=${ARG}
-                LOCAL_ARGS="${LOCAL_ARGS-}-e "
-                ;;
-            --env-get=* | --env-get-lower=* | --env-get-line=* | --env-get-lower-line=* | --env-get-literal=* | --env-get-lower-literal=*)
-                readonly ENVMETHOD=${ARG%%=*}
-                readonly ENVARG=${ARG#*=}
-                if [[ ${ENVMETHOD-} != "${ENVARG-}" ]]; then
-                    readonly ENVVAR=${ENVARG}
-                fi
-                LOCAL_ARGS="${LOCAL_ARGS-}-e "
-                ;;
-            --env-set=* | --env-set-lower=*)
-                readonly ENVMETHOD=${ARG%%=*}
-                readonly ENVARG=${ARG#*=}
-                if [[ ${ENVMETHOD-} != "${ENVARG-}" ]]; then
-                    readonly ENVVAR=${ENVARG%%,*}
-                    readonly ENVVAL=${ENVARG#*,}
-                fi
-                LOCAL_ARGS="${LOCAL_ARGS-}-e "
-                ;;
-            --env-get | --env-get-lower | --env-get-line | --env-get-lower-line | --env-get-literal | --env-get-lower-literal)
-                readonly ENVMETHOD=${ARG}
-                LOCAL_ARGS="${LOCAL_ARGS-}-e "
-                ;;
-            --env-set | --env-set-lower)
-                readonly ENVMETHOD=${ARG}
-                LOCAL_ARGS="${LOCAL_ARGS-}-e "
-                ;;
-            --env-appvars | --env-appvars-lines)
-                readonly ENVMETHOD=${ARG}
-                LOCAL_ARGS="${LOCAL_ARGS-}-e "
-                ;;
-            --force) LOCAL_ARGS="${LOCAL_ARGS-}-f " ;;
-            --gui) LOCAL_ARGS="${LOCAL_ARGS-}-g " ;;
-            --help) LOCAL_ARGS="${LOCAL_ARGS-}-h " ;;
-            --install) LOCAL_ARGS="${LOCAL_ARGS-}-i " ;;
-            --list) LOCAL_ARGS="${LOCAL_ARGS-}-l " ;;
-            --list-*)
-                readonly LISTMETHOD=${ARG%%=*}
-                ;;
-            --prune) LOCAL_ARGS="${LOCAL_ARGS-}-p " ;;
-            --remove) LOCAL_ARGS="${LOCAL_ARGS-}-r " ;;
-            --status)
-                LOCAL_ARGS="${LOCAL_ARGS-}-s "
-                readonly STATUSMETHOD=${ARG}
-                ;;
-            --status-*)
-                LOCAL_ARGS="${LOCAL_ARGS-}-s "
-                readonly STATUSMETHOD=${ARG}
-                ;;
-            --test) LOCAL_ARGS="${LOCAL_ARGS-}-t " ;;
-            --update) LOCAL_ARGS="${LOCAL_ARGS-}-u " ;;
-            --verbose) LOCAL_ARGS="${LOCAL_ARGS-}-v " ;;
-            #pass through anything else
-            *)
-                [[ ${ARG:0:1} == "-" ]] || DELIM='"'
-                LOCAL_ARGS="${LOCAL_ARGS-}${DELIM}${ARG}${DELIM} "
-                ;;
-        esac
-    done
-
-    #Reset the positional parameters to the short options
-    eval set -- "${LOCAL_ARGS-}"
-
-    while getopts ":a:c:e:fghilpr:s:t:u:vx" OPTION; do
+    while getopts ":-:a:c:e:fghilpr:s:t:u:vx" OPTION; do
+        # support long options: https://stackoverflow.com/a/28466267/519360
+        if [ "$OPTION" = "-" ]; then     # long option: reformulate OPT and OPTARG
+            OPTION="${OPTARG%%=*}"       # extract long option name
+            OPTARG="${OPTARG#"$OPTION"}" # extract long option argument (may be empty)
+            OPTARG="${OPTARG#=}"         # if long option argument, remove assigning `=`
+        fi
         case ${OPTION} in
-            a)
+            a | add)
                 local MULTIOPT
                 MULTIOPT=("$OPTARG")
                 until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
@@ -348,7 +291,7 @@ cmdline() {
                 ADD=$(printf "%s " "${MULTIOPT[@]}" | xargs)
                 readonly ADD
                 ;;
-            c)
+            c | compose)
                 case ${OPTARG} in
                     generate | merge) ;&
                     down | pull | stop | restart | update | up) ;&
@@ -368,45 +311,61 @@ cmdline() {
                         ;;
                 esac
                 ;;
-            e)
-                case ${ENVMETHOD} in
-                    --env) ;;
-                    --env-appvars | --env-appvars-lines)
-                        local MULTIOPT
-                        MULTIOPT=("$OPTARG")
-                        until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
-                            MULTIOPT+=("$(eval "echo \${$OPTIND}")")
-                            OPTIND=$((OPTIND + 1))
-                        done
-                        ENVAPP=$(printf "%s " "${MULTIOPT[@]}" | xargs)
-                        readonly ENVAPP
-                        ;;
-                    --env-get | --env-get-lower | --env-get-line | --env-get-lower-line | --env-get-literal | --env-get-lower-literal)
-                        if [[ -z ${ENVVAR-} ]]; then
-                            local MULTIOPT
-                            MULTIOPT=("$OPTARG")
-                            until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
-                                MULTIOPT+=("$(eval "echo \${$OPTIND}")")
-                                OPTIND=$((OPTIND + 1))
-                            done
-                            ENVVAR=$(printf "%s " "${MULTIOPT[@]}" | xargs)
-                            readonly ENVVAR
-                        fi
-                        ;;
-                    --env-set | --env-set-lower)
-                        if [[ -z ${ENVVAR-} ]]; then
-                            readonly ENVARG=${OPTARG}
-                            readonly ENVVAR=${ENVARG%%=*}
-                            readonly ENVVAL=${ENVARG#*=}
-                        fi
-                        ;;
-                esac
+            e | env)
+                readonly ENVMETHOD='env'
                 ;;
-            f)
+            env-appvars | env-appvars-lines)
+                readonly ENVMETHOD=${OPTION}
+                local MULTIOPT
+                MULTIOPT=("$OPTARG")
+                until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
+                    MULTIOPT+=("$(eval "echo \${$OPTIND}")")
+                    OPTIND=$((OPTIND + 1))
+                done
+                ENVAPP=$(printf "%s " "${MULTIOPT[@]}" | xargs)
+                readonly ENVAPP
+                ;;
+            env-get=* | env-get-lower=* | env-get-line=* | env-get-lower-line=* | env-get-literal=* | env-get-lower-literal=*)
+                readonly ENVMETHOD=${OPTION%%=*}
+                readonly ENVARG=${OPTION#*=}
+                if [[ ${ENVMETHOD-} != "${ENVARG-}" ]]; then
+                    readonly ENVVAR=${ENVARG}
+                fi
+                ;;
+            env-set=* | env-set-lower=*)
+                readonly ENVMETHOD=${OPTION%%=*}
+                readonly ENVARG=${OPTION#*=}
+                if [[ ${ENVMETHOD-} != "${ENVARG-}" ]]; then
+                    readonly ENVVAR=${ENVARG%%,*}
+                    readonly ENVVAL=${ENVARG#*,}
+                fi
+                ;;
+            env-get | env-get-lower | env-get-line | env-get-lower-line | env-get-literal | env-get-lower-literal)
+                readonly ENVMETHOD=${OPTION}
+                if [[ -z ${ENVVAR-} ]]; then
+                    local MULTIOPT
+                    MULTIOPT=("$OPTARG")
+                    until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
+                        MULTIOPT+=("$(eval "echo \${$OPTIND}")")
+                        OPTIND=$((OPTIND + 1))
+                    done
+                    ENVVAR=$(printf "%s " "${MULTIOPT[@]}" | xargs)
+                    readonly ENVVAR
+                fi
+                ;;
+            env-set | env-set-lower)
+                readonly ENVMETHOD=${OPTION}
+                if [[ -z ${ENVVAR-} ]]; then
+                    readonly ENVARG=${OPTARG}
+                    readonly ENVVAR=${ENVARG%%=*}
+                    readonly ENVVAL=${ENVARG#*=}
+                fi
+                ;;
+            f | force)
                 readonly FORCE=true
                 export FORCE
                 ;;
-            g)
+            g | gui)
                 if [[ -n ${DIALOG-} ]]; then
                     PROMPT="GUI"
                 else
@@ -415,20 +374,23 @@ cmdline() {
                     warn "Coninuing without '--gui' option."
                 fi
                 ;;
-            h)
+            h | help)
                 usage
                 exit
                 ;;
-            i)
+            i | install)
                 readonly INSTALL=true
                 ;;
-            l)
+            l | list)
                 readonly LIST=true
                 ;;
-            p)
+            list-*)
+                readonly LISTMETHOD=${OPTION}
+                ;;
+            p | prune)
                 readonly PRUNE=true
                 ;;
-            r)
+            r | remove)
                 local MULTIOPT
                 MULTIOPT=("$OPTARG")
                 until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
@@ -438,7 +400,7 @@ cmdline() {
                 REMOVE=$(printf "%s " "${MULTIOPT[@]}" | xargs)
                 readonly REMOVE
                 ;;
-            s)
+            s | status)
                 local MULTIOPT
                 MULTIOPT=("$OPTARG")
                 until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
@@ -448,33 +410,43 @@ cmdline() {
                 STATUS=$(printf "%s " "${MULTIOPT[@]}" | xargs)
                 readonly STATUS
                 ;;
-            t)
+            status-*)
+                readonly STATUSMETHOD=${OPTION}
+                ;;
+            t | test)
                 readonly TEST=${OPTARG}
                 ;;
-            u)
+            theme)
+                readonly THEMEMETHOD=${OPTION}
+                readonly THEME=${OPTARG}
+                ;;
+            theme-*)
+                readonly THEMEMETHOD=${OPTION}
+                ;;
+            u | update)
                 readonly UPDATE=${OPTARG}
                 ;;
-            v)
+            v | verbose)
                 readonly VERBOSE=1
                 ;;
-            x)
+            x | debug)
                 readonly DEBUG=1
                 set -x
                 ;;
             :)
                 case ${OPTARG} in
-                    c)
+                    c | compose)
                         readonly COMPOSE=update
                         ;;
-                    e)
+                    e | env)
                         if [[ -z ${ENVMETHOD-} ]]; then
-                            readonly ENVMETHOD="--env"
+                            readonly ENVMETHOD="env"
                         fi
                         ;;
-                    r)
+                    r | remove)
                         readonly REMOVE=true
                         ;;
-                    u)
+                    u | update)
                         readonly UPDATE=true
                         ;;
                     *)
@@ -771,12 +743,12 @@ main() {
     fi
     if [[ -n ${ENVMETHOD-} ]]; then
         case "${ENVMETHOD-}" in
-            --env)
+            env)
                 run_script_dialog "${DC["TitleSuccess"]}Creating environment variables for added apps" "Please be patient, this can take a while.\n${DC["CommandLine"]} ds --env" "" \
                     'appvars_create_all'
                 exit
                 ;;
-            --env-get)
+            env-get)
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
                         for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
@@ -793,7 +765,7 @@ main() {
                     echo "  Variable name will be forced to UPPER CASE"
                 fi
                 ;;
-            --env-get-lower)
+            env-get-lower)
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
@@ -810,7 +782,7 @@ main() {
                     echo "  Variable name can be Mixed Case"
                 fi
                 ;;
-            --env-get-line)
+            env-get-line)
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
                         for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
@@ -827,7 +799,7 @@ main() {
                     echo "  Variable name will be forced to UPPER CASE"
                 fi
                 ;;
-            --env-get-lower-line)
+            env-get-lower-line)
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
@@ -844,7 +816,7 @@ main() {
                     echo "  Variable name can be Mixed Case"
                 fi
                 ;;
-            --env-get-literal)
+            env-get-literal)
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
                         for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
@@ -861,7 +833,7 @@ main() {
                     echo "  Variable name will be forced to UPPER CASE"
                 fi
                 ;;
-            --env-get-lower-literal)
+            env-get-lower-literal)
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
@@ -878,7 +850,7 @@ main() {
                     echo "  Variable name can be Mixed Case"
                 fi
                 ;;
-            --env-set)
+            env-set)
                 if [[ ${ENVVAR-} != "" ]] && [[ ${ENVVAL-} != "" ]]; then
                     run_script 'env_backup'
                     run_script 'env_set' "${ENVVAR^^}" "${ENVVAL}"
@@ -888,7 +860,7 @@ main() {
                     echo "  Variable name will be forced to UPPER CASE"
                 fi
                 ;;
-            --env-set-lower)
+            env-set-lower)
                 if [[ ${ENVVAR-} != "" ]] && [[ ${ENVVAL-} != "" ]]; then
                     run_script 'env_backup'
                     run_script 'env_set' "${ENVVAR}" "${ENVVAL}"
@@ -898,7 +870,7 @@ main() {
                     echo "  Variable name can be Mixed Case"
                 fi
                 ;;
-            --env-appvars)
+            env-appvars)
                 if [[ ${ENVAPP-} != "" ]]; then
                     if use_dialog_box; then
                         for AppName in $(xargs -n1 <<< "${ENVAPP^^}"); do
@@ -914,7 +886,7 @@ main() {
                     echo "  --env-appvars with application name ('--env-appvars App [App ...]')"
                 fi
                 ;;
-            --env-appvars-lines)
+            env-appvars-lines)
                 if [[ ${ENVAPP-} != "" ]]; then
                     if use_dialog_box; then
                         for AppName in $(xargs -n1 <<< "${ENVAPP^^}"); do
@@ -947,31 +919,31 @@ main() {
     fi
     if [[ -n ${LISTMETHOD-} ]]; then
         case "${LISTMETHOD-}" in
-            --list-builtin)
+            list-builtin)
                 run_script_dialog "List Builtin Applications" "" "" \
                     'app_nicename' "$(run_script 'app_list_builtin')"
                 ;;
-            --list-depreciated)
+            list-depreciated)
                 run_script_dialog "List Depreciated Applications" "" "" \
                     'app_nicename' "$(run_script 'app_list_depreciated')"
                 ;;
-            --list-nondepreciated)
+            list-nondepreciated)
                 run_script_dialog "List Non-Depreciated Applications" "" "" \
                     'app_nicename' "$(run_script 'app_list_nondepreciated')"
                 ;;
-            --list-added)
+            list-added)
                 run_script_dialog "List Added Applications" "" "" \
                     'app_nicename' "$(run_script 'app_list_added')"
                 ;;
-            --list-enabled)
+            list-enabled)
                 run_script_dialog "List Enabled Applications" "" "" \
                     'app_nicename' "$(run_script 'app_list_enabled')"
                 ;;
-            --list-disabled)
+            list-disabled)
                 run_script_dialog "List Disabled Applications" "" "" \
                     'app_nicename' "$(run_script 'app_list_disabled')"
                 ;;
-            --list-referenced)
+            list-referenced)
                 run_script_dialog "List Referenced Applications" "" "" \
                     'app_nicename' "$(run_script 'app_list_referenced')"
                 ;;
@@ -1000,16 +972,16 @@ main() {
     fi
     if [[ -n ${STATUSMETHOD-} ]]; then
         case "${STATUSMETHOD-}" in
-            --status)
+            status)
                 run_script_dialog "Application Status" "$(highlighted_list "$(run_script 'app_nicename' "${STATUS}")")" "" \
                     'app_status' "${STATUS}"
                 ;;
-            --status-enable)
+            status-enable)
                 run_script 'env_create'
                 run_script 'enable_app' "${STATUS}"
                 run_script 'env_update'
                 ;;
-            --status-disable)
+            status-disable)
                 run_script 'env_create'
                 run_script 'disable_app' "${STATUS}"
                 run_script 'env_update'
