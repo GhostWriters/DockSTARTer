@@ -32,7 +32,7 @@ apply_theme() {
         return
     fi
 
-    ThemeFile="${THEME_FOLDER}/${ThemeName}${THEME_FILE_NAME}"
+    ThemeFile="${THEME_FOLDER}/${ThemeName}/${THEME_FILE_NAME}"
     DialogFile="${THEME_FOLDER}/${ThemeName}/${DIALOGRC_NAME}"
 
     local _B_='\Z4'   # Blue
