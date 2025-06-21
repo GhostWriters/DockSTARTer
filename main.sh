@@ -99,7 +99,7 @@ that take app names can use the form app: to refer to the same file.
 --theme <themename>
     Applies the specified theme to the GUI
 --theme-List
-   Lists the available themes
+    Lists the available themes
 --theme-shadow
 --theme-no-shadow
     Turn the shadow on or off in the GUI
@@ -994,9 +994,40 @@ main() {
         esac
         exit
     fi
-
     if [[ -n ${TEST-} ]]; then
         run_test "${TEST}"
+        exit
+    fi
+    if [[ -n ${THEMEMETHOD-} ]]; then
+        case "${THEMEMETHOD}" in
+            theme)
+                run_script 'apply_theme' "${THEME}"
+                ;;
+            theme-list)
+                run_script 'theme_list'
+                ;;
+            theme-shadow)
+                run_script 'env_set' Shadow Yes "${MENU_INI_FILE}"
+                ;;
+            theme-no-shadow)
+                run_script 'env_set' Shadow No "${MENU_INI_FILE}"
+                ;;
+            theme-scrollbar)
+                run_script 'env_set' Scrollbar Yes "${MENU_INI_FILE}"
+                ;;
+            theme-no-scrollbar)
+                run_script 'env_set' Scrollbar No "${MENU_INI_FILE}"
+                ;;
+            theme-lines)
+                run_script 'env_set' LineCharacters Yes "${MENU_INI_FILE}"
+                ;;
+            theme-no-lines)
+                run_script 'env_set' LineCharacters No "${MENU_INI_FILE}"
+                ;;
+            *)
+                echo "Invalid option: '${THEMEMETHOD-}'"
+                ;;
+        esac
         exit
     fi
     if [[ -n ${UPDATE-} ]]; then
