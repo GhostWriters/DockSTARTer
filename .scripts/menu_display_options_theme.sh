@@ -47,7 +47,7 @@ menu_display_options_theme() {
             OK)
                 CurrentTheme="${Choice}"
                 run_script 'apply_theme' "${CurrentTheme}"
-                dialog_success "Applied theme ${CurrentTheme}" ""
+                run_script 'menu_dialog_example' "Applied theme ${CurrentTheme}"
                 ;;
             CANCEL | ESC)
                 return
