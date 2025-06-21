@@ -420,7 +420,8 @@ cmdline() {
                 ;;
             theme)
                 readonly THEMEMETHOD='theme'
-                readonly THEME=${OPTARG}
+                readonly THEME="$(eval "echo \${$OPTIND}")"
+                OPTIND=$((OPTIND + 1))
                 ;;
             theme-*)
                 readonly THEMEMETHOD=${OPTION}
