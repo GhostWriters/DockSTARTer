@@ -382,6 +382,7 @@ cmdline() {
                 readonly INSTALL=true
                 ;;
             l | list)
+                readonly LISTMETHOD='list'
                 readonly LIST=true
                 ;;
             list-*)
@@ -401,6 +402,7 @@ cmdline() {
                 readonly REMOVE
                 ;;
             s | status)
+                readonly STATUSMETHOD='status'
                 local MULTIOPT
                 MULTIOPT=("$OPTARG")
                 until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
@@ -417,7 +419,7 @@ cmdline() {
                 readonly TEST=${OPTARG}
                 ;;
             theme)
-                readonly THEMEMETHOD=${OPTION}
+                readonly THEMEMETHOD='theme'
                 readonly THEME=${OPTARG}
                 ;;
             theme-*)
