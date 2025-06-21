@@ -96,6 +96,19 @@ that take app names can use the form app: to refer to the same file.
     Enable the app specified
 -t --test <test_name>
     Run tests to check the program
+--theme <themename>
+    Applies the specified theme to the GUI
+--theme-List
+    Lists the available themes
+--theme-shadow
+--theme-no-shadow
+    Turn the shadow on or off in the GUI
+--theme-scrollbar
+--theme-no-scrollbar
+    Turn the scrollbar on or off in the GUI
+--theme-lines
+--theme-no-lines
+    Turn the line drawing on or off in the GUI
 -u --update
     Update DockSTARTer to the latest stable commits
 -u --update <branch>
@@ -126,61 +139,18 @@ readonly SCRIPTPATH
 SCRIPTNAME="${SCRIPTPATH}/$(basename "$(get_scriptname)")"
 readonly SCRIPTNAME
 
-declare -rx DIALOGRC="${SCRIPTPATH}/.dialogrc"
-declare -rx BACKTITLE="DockSTARTer"
-
 DIALOG=$(command -v dialog) || true
 export DIALOG
 
-declare -Ag DC=( # Dialog colors
-    [B]='\Z4'   # Blue
-    [C]='\Z6'   # Cyan
-    [G]='\Z2'   # Green
-    [K]='\Z0'   # Black
-    [M]='\Z5'   # Magenta
-    [R]='\Z1'   # Red
-    [W]='\Z7'   # White
-    [Y]='\Z3'   # Yellow
-    [RV]='\Zr'  # Reverse
-    [NRV]='\ZR' # No Reverse
-    [BD]='\Zb'  # Bold
-    [NBD]='\ZB' # No Bold
-    [U]='\Zu'   # Underline
-    [NU]='\ZU'  # No Underline
-    [NC]='\Zn'  # No Color
-)
+declare -rx MENU_INI_NAME='menu.ini'
+declare -rx MENU_INI_FILE="${SCRIPTPATH}/${MENU_INI_NAME}"
+declare -rx THEME_FILE_NAME='theme.ini'
+declare -rx DIALOGRC_NAME='.dialogrc'
+declare -rx DIALOGRC="${SCRIPTPATH}/${DIALOGRC_NAME}"
 
-DC+=( # Pre-defined color combinations used in the GUI
-    [BackTitle]="${DC[NC]}${DC[BD]}${DC[RV]}${DC[B]}"
-    [Title]="${DC[NC]}${DC[C]}"
-    [Subtitle]="${DC[NC]}${DC[RV]}${DC[BD]}"
-    [TitleSuccess]="${DC[NC]}${DC[RV]}${DC[G]}"
-    [TitleError]="${DC[NC]}${DC[RV]}${DC[R]}"
-    [TitleWarning]="${DC[NC]}${DC[RV]}${DC[Y]}"
-    [TitleQuestion]="${DC[NC]}${DC[RV]}${DC[Y]}"
-    [Heading]="${DC[NC]}${DC[RV]}"
-    [HeadingTag]="${DC[NC]}${DC[RV]}${DC[W]}"
-    [HeadingValue]="${DC[NC]}${DC[BD]}${DC[RV]}"
-    [HeadingAppDescription]="${DC[NC]}${DC[Y]}${DC[NBD]}"
-    [Highlight]="${DC[NC]}${DC[Y]}${DC[BD]}"
-    [LineHeading]="${DC[NC]}${DC[B]}${DC[BD]}${DC[RV]}"
-    [LineComment]="${DC[NC]}${DC[K]}${DC[BD]}${DC[RV]}"
-    [LineOther]="${DC[NC]}${DC[K]}${DC[BD]}${DC[RV]}"
-    [LineVar]="${DC[NC]}${DC[K]}${DC[NBD]}${DC[RV]}"
-    [LineModifiedVar]="${DC[NC]}"
-    [LineAddVariable]="${DC[NC]}${DC[K]}${DC[NBD]}${DC[RV]}"
-    [CommandLine]="${DC[NC]}${DC[Y]}${DC[BD]}"
-)
-DC+=(
-    [WindowColsAdjust]=6
-    [WindowRowsAdjust]=5
-    [TextColsAdjust]=4
-    [TextRowsAdjust]=7
-)
-readonly DC
+declare -rx BACKTITLE="DockSTARTer"
 
 declare -rix DIALOGTIMEOUT=3
-declare -rx DIALOGOPTS="--scrollbar --colors --backtitle ${DC["BackTitle"]}${BACKTITLE} --cr-wrap --no-collapse"
 declare -rix DIALOG_OK=0
 declare -rix DIALOG_CANCEL=1
 declare -rix DIALOG_HELP=2
@@ -198,6 +168,9 @@ readonly -a DIALOG_BUTTONS=(
     [DIALOG_ESC]="ESC"
 )
 export DIALOG_BUTTONS
+
+declare -Ax DC=()
+declare -x DIALOGOTS
 
 # Cleanup Function
 cleanup() {
@@ -300,85 +273,15 @@ fatal() {
 # Command Line Arguments
 readonly ARGS=("$@")
 cmdline() {
-    # http://www.kfirlavi.com/blog/2012/11/14/defensive-bash-programming/
-    # http://kirk.webfinish.com/2009/10/bash-shell-script-to-use-getopts-with-gnu-style-long-positional-parameters/
-    local ARG=
-    local LOCAL_ARGS
-    for ARG; do
-        local DELIM=""
-        case "${ARG}" in
-            #translate --gnu-long-options to -g (short options)
-            --add) LOCAL_ARGS="${LOCAL_ARGS-}-a " ;;
-            --compose) LOCAL_ARGS="${LOCAL_ARGS-}-c " ;;
-            --debug) LOCAL_ARGS="${LOCAL_ARGS-}-x " ;;
-            --env)
-                readonly ENVMETHOD=${ARG}
-                LOCAL_ARGS="${LOCAL_ARGS-}-e "
-                ;;
-            --env-get=* | --env-get-lower=* | --env-get-line=* | --env-get-lower-line=* | --env-get-literal=* | --env-get-lower-literal=*)
-                readonly ENVMETHOD=${ARG%%=*}
-                readonly ENVARG=${ARG#*=}
-                if [[ ${ENVMETHOD-} != "${ENVARG-}" ]]; then
-                    readonly ENVVAR=${ENVARG}
-                fi
-                LOCAL_ARGS="${LOCAL_ARGS-}-e "
-                ;;
-            --env-set=* | --env-set-lower=*)
-                readonly ENVMETHOD=${ARG%%=*}
-                readonly ENVARG=${ARG#*=}
-                if [[ ${ENVMETHOD-} != "${ENVARG-}" ]]; then
-                    readonly ENVVAR=${ENVARG%%,*}
-                    readonly ENVVAL=${ENVARG#*,}
-                fi
-                LOCAL_ARGS="${LOCAL_ARGS-}-e "
-                ;;
-            --env-get | --env-get-lower | --env-get-line | --env-get-lower-line | --env-get-literal | --env-get-lower-literal)
-                readonly ENVMETHOD=${ARG}
-                LOCAL_ARGS="${LOCAL_ARGS-}-e "
-                ;;
-            --env-set | --env-set-lower)
-                readonly ENVMETHOD=${ARG}
-                LOCAL_ARGS="${LOCAL_ARGS-}-e "
-                ;;
-            --env-appvars | --env-appvars-lines)
-                readonly ENVMETHOD=${ARG}
-                LOCAL_ARGS="${LOCAL_ARGS-}-e "
-                ;;
-            --force) LOCAL_ARGS="${LOCAL_ARGS-}-f " ;;
-            --gui) LOCAL_ARGS="${LOCAL_ARGS-}-g " ;;
-            --help) LOCAL_ARGS="${LOCAL_ARGS-}-h " ;;
-            --install) LOCAL_ARGS="${LOCAL_ARGS-}-i " ;;
-            --list) LOCAL_ARGS="${LOCAL_ARGS-}-l " ;;
-            --list-*)
-                readonly LISTMETHOD=${ARG%%=*}
-                ;;
-            --prune) LOCAL_ARGS="${LOCAL_ARGS-}-p " ;;
-            --remove) LOCAL_ARGS="${LOCAL_ARGS-}-r " ;;
-            --status)
-                LOCAL_ARGS="${LOCAL_ARGS-}-s "
-                readonly STATUSMETHOD=${ARG}
-                ;;
-            --status-*)
-                LOCAL_ARGS="${LOCAL_ARGS-}-s "
-                readonly STATUSMETHOD=${ARG}
-                ;;
-            --test) LOCAL_ARGS="${LOCAL_ARGS-}-t " ;;
-            --update) LOCAL_ARGS="${LOCAL_ARGS-}-u " ;;
-            --verbose) LOCAL_ARGS="${LOCAL_ARGS-}-v " ;;
-            #pass through anything else
-            *)
-                [[ ${ARG:0:1} == "-" ]] || DELIM='"'
-                LOCAL_ARGS="${LOCAL_ARGS-}${DELIM}${ARG}${DELIM} "
-                ;;
-        esac
-    done
-
-    #Reset the positional parameters to the short options
-    eval set -- "${LOCAL_ARGS-}"
-
-    while getopts ":a:c:e:fghilpr:s:t:u:vx" OPTION; do
+    while getopts ":-:a:c:e:fghilpr:s:t:u:vx" OPTION; do
+        # support long options: https://stackoverflow.com/a/28466267/519360
+        if [ "$OPTION" = "-" ]; then     # long option: reformulate OPT and OPTARG
+            OPTION="${OPTARG%%=*}"       # extract long option name
+            OPTARG="${OPTARG#"$OPTION"}" # extract long option argument (may be empty)
+            OPTARG="${OPTARG#=}"         # if long option argument, remove assigning `=`
+        fi
         case ${OPTION} in
-            a)
+            a | add)
                 local MULTIOPT
                 MULTIOPT=("$OPTARG")
                 until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
@@ -388,7 +291,7 @@ cmdline() {
                 ADD=$(printf "%s " "${MULTIOPT[@]}" | xargs)
                 readonly ADD
                 ;;
-            c)
+            c | compose)
                 case ${OPTARG} in
                     generate | merge) ;&
                     down | pull | stop | restart | update | up) ;&
@@ -408,45 +311,61 @@ cmdline() {
                         ;;
                 esac
                 ;;
-            e)
-                case ${ENVMETHOD} in
-                    --env) ;;
-                    --env-appvars | --env-appvars-lines)
-                        local MULTIOPT
-                        MULTIOPT=("$OPTARG")
-                        until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
-                            MULTIOPT+=("$(eval "echo \${$OPTIND}")")
-                            OPTIND=$((OPTIND + 1))
-                        done
-                        ENVAPP=$(printf "%s " "${MULTIOPT[@]}" | xargs)
-                        readonly ENVAPP
-                        ;;
-                    --env-get | --env-get-lower | --env-get-line | --env-get-lower-line | --env-get-literal | --env-get-lower-literal)
-                        if [[ -z ${ENVVAR-} ]]; then
-                            local MULTIOPT
-                            MULTIOPT=("$OPTARG")
-                            until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
-                                MULTIOPT+=("$(eval "echo \${$OPTIND}")")
-                                OPTIND=$((OPTIND + 1))
-                            done
-                            ENVVAR=$(printf "%s " "${MULTIOPT[@]}" | xargs)
-                            readonly ENVVAR
-                        fi
-                        ;;
-                    --env-set | --env-set-lower)
-                        if [[ -z ${ENVVAR-} ]]; then
-                            readonly ENVARG=${OPTARG}
-                            readonly ENVVAR=${ENVARG%%=*}
-                            readonly ENVVAL=${ENVARG#*=}
-                        fi
-                        ;;
-                esac
+            e | env)
+                readonly ENVMETHOD='env'
                 ;;
-            f)
+            env-appvars | env-appvars-lines)
+                readonly ENVMETHOD=${OPTION}
+                local MULTIOPT
+                MULTIOPT=("$OPTARG")
+                until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
+                    MULTIOPT+=("$(eval "echo \${$OPTIND}")")
+                    OPTIND=$((OPTIND + 1))
+                done
+                ENVAPP=$(printf "%s " "${MULTIOPT[@]}" | xargs)
+                readonly ENVAPP
+                ;;
+            env-get=* | env-get-lower=* | env-get-line=* | env-get-lower-line=* | env-get-literal=* | env-get-lower-literal=*)
+                readonly ENVMETHOD=${OPTION%%=*}
+                readonly ENVARG=${OPTION#*=}
+                if [[ ${ENVMETHOD-} != "${ENVARG-}" ]]; then
+                    readonly ENVVAR=${ENVARG}
+                fi
+                ;;
+            env-set=* | env-set-lower=*)
+                readonly ENVMETHOD=${OPTION%%=*}
+                readonly ENVARG=${OPTION#*=}
+                if [[ ${ENVMETHOD-} != "${ENVARG-}" ]]; then
+                    readonly ENVVAR=${ENVARG%%,*}
+                    readonly ENVVAL=${ENVARG#*,}
+                fi
+                ;;
+            env-get | env-get-lower | env-get-line | env-get-lower-line | env-get-literal | env-get-lower-literal)
+                readonly ENVMETHOD=${OPTION}
+                if [[ -z ${ENVVAR-} ]]; then
+                    local MULTIOPT
+                    MULTIOPT=("$OPTARG")
+                    until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
+                        MULTIOPT+=("$(eval "echo \${$OPTIND}")")
+                        OPTIND=$((OPTIND + 1))
+                    done
+                    ENVVAR=$(printf "%s " "${MULTIOPT[@]}" | xargs)
+                    readonly ENVVAR
+                fi
+                ;;
+            env-set | env-set-lower)
+                readonly ENVMETHOD=${OPTION}
+                if [[ -z ${ENVVAR-} ]]; then
+                    readonly ENVARG=${OPTARG}
+                    readonly ENVVAR=${ENVARG%%=*}
+                    readonly ENVVAL=${ENVARG#*=}
+                fi
+                ;;
+            f | force)
                 readonly FORCE=true
                 export FORCE
                 ;;
-            g)
+            g | gui)
                 if [[ -n ${DIALOG-} ]]; then
                     PROMPT="GUI"
                 else
@@ -455,20 +374,24 @@ cmdline() {
                     warn "Coninuing without '--gui' option."
                 fi
                 ;;
-            h)
+            h | help)
                 usage
                 exit
                 ;;
-            i)
+            i | install)
                 readonly INSTALL=true
                 ;;
-            l)
+            l | list)
+                readonly LISTMETHOD='list'
                 readonly LIST=true
                 ;;
-            p)
+            list-*)
+                readonly LISTMETHOD=${OPTION}
+                ;;
+            p | prune)
                 readonly PRUNE=true
                 ;;
-            r)
+            r | remove)
                 local MULTIOPT
                 MULTIOPT=("$OPTARG")
                 until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
@@ -478,7 +401,8 @@ cmdline() {
                 REMOVE=$(printf "%s " "${MULTIOPT[@]}" | xargs)
                 readonly REMOVE
                 ;;
-            s)
+            s | status)
+                readonly STATUSMETHOD='status'
                 local MULTIOPT
                 MULTIOPT=("$OPTARG")
                 until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
@@ -488,33 +412,49 @@ cmdline() {
                 STATUS=$(printf "%s " "${MULTIOPT[@]}" | xargs)
                 readonly STATUS
                 ;;
-            t)
+            status-*)
+                readonly STATUSMETHOD=${OPTION}
+                ;;
+            t | test)
                 readonly TEST=${OPTARG}
                 ;;
-            u)
+            theme)
+                if [[ -n ${!OPTIND-} ]]; then
+                    readonly THEMEMETHOD='theme'
+                    readonly THEME="${!OPTIND}"
+                    OPTIND=$((OPTIND + 1))
+                else
+                    error "${OPTION} requires an option."
+                    exit
+                fi
+                ;;
+            theme-*)
+                readonly THEMEMETHOD=${OPTION}
+                ;;
+            u | update)
                 readonly UPDATE=${OPTARG}
                 ;;
-            v)
+            v | verbose)
                 readonly VERBOSE=1
                 ;;
-            x)
+            x | debug)
                 readonly DEBUG=1
                 set -x
                 ;;
             :)
                 case ${OPTARG} in
-                    c)
+                    c | compose)
                         readonly COMPOSE=update
                         ;;
-                    e)
+                    e | env)
                         if [[ -z ${ENVMETHOD-} ]]; then
-                            readonly ENVMETHOD="--env"
+                            readonly ENVMETHOD="env"
                         fi
                         ;;
-                    r)
+                    r | remove)
                         readonly REMOVE=true
                         ;;
-                    u)
+                    u | update)
                         readonly UPDATE=true
                         ;;
                     *)
@@ -562,6 +502,8 @@ readonly TEMPLATES_FOLDER="${COMPOSE_FOLDER}/.apps"
 export TEMPLATES_FOLDER
 readonly INSTANCES_FOLDER="${COMPOSE_FOLDER}/.instances"
 export INSTANCES_FOLDER
+readonly THEME_FOLDER="${SCRIPTPATH}/.themes"
+export THEME_FOLDER
 
 # User/Group Information
 readonly DETECTED_PUID=${SUDO_UID:-$UID}
@@ -628,7 +570,7 @@ highlighted_list() {
     local List
     List=$(xargs <<< "$*")
     if [[ -n ${List-} ]]; then
-        echo "${DC[Subtitle]}${List// /${DC[NC]} ${DC[Subtitle]}}${DC[NC]}"
+        echo "${DC["Subtitle"]}${List// /${DC[NC]} ${DC["Subtitle"]}}${DC[NC]}"
     fi
 }
 
@@ -643,9 +585,9 @@ dialog_pipe() {
     local SubTitle=${2:-}
     local TimeOut=${3:-0}
     dialog \
-        --title "${DC[Title]}${Title}" \
+        --title "${DC["Title"]}${Title}" \
         --timeout "${TimeOut}" \
-        --programbox "${DC[Subtitle]}${SubTitle}" \
+        --programbox "${DC["Subtitle"]}${SubTitle}" \
         "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" || true
     echo -n "${BS}"
 }
@@ -694,6 +636,7 @@ dialog_message() {
         --timeout "${TimeOut}" \
         --msgbox "${Message}" \
         "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+    echo -n "${BS}"
 }
 dialog_error() {
     local Title=${1:-}
@@ -784,6 +727,8 @@ main() {
     fi
     # Create Symlink
     run_script 'symlink_ds'
+    # Apply the GUI theme
+    run_script 'apply_theme'
     # Execute CLI Argument Functions
     if [[ -n ${ADD-} ]]; then
         run_script 'env_create'
@@ -807,12 +752,12 @@ main() {
     fi
     if [[ -n ${ENVMETHOD-} ]]; then
         case "${ENVMETHOD-}" in
-            --env)
-                run_script_dialog "${DC[TitleSuccess]}Creating environment variables for added apps" "Please be patient, this can take a while.\n${DC[CommandLine]} ds --env" "" \
+            env)
+                run_script_dialog "${DC["TitleSuccess"]}Creating environment variables for added apps" "Please be patient, this can take a while.\n${DC["CommandLine"]} ds --env" "" \
                     'appvars_create_all'
                 exit
                 ;;
-            --env-get)
+            env-get)
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
                         for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
@@ -829,7 +774,7 @@ main() {
                     echo "  Variable name will be forced to UPPER CASE"
                 fi
                 ;;
-            --env-get-lower)
+            env-get-lower)
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
@@ -846,7 +791,7 @@ main() {
                     echo "  Variable name can be Mixed Case"
                 fi
                 ;;
-            --env-get-line)
+            env-get-line)
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
                         for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
@@ -863,7 +808,7 @@ main() {
                     echo "  Variable name will be forced to UPPER CASE"
                 fi
                 ;;
-            --env-get-lower-line)
+            env-get-lower-line)
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
@@ -880,7 +825,7 @@ main() {
                     echo "  Variable name can be Mixed Case"
                 fi
                 ;;
-            --env-get-literal)
+            env-get-literal)
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
                         for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
@@ -897,7 +842,7 @@ main() {
                     echo "  Variable name will be forced to UPPER CASE"
                 fi
                 ;;
-            --env-get-lower-literal)
+            env-get-lower-literal)
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
@@ -914,7 +859,7 @@ main() {
                     echo "  Variable name can be Mixed Case"
                 fi
                 ;;
-            --env-set)
+            env-set)
                 if [[ ${ENVVAR-} != "" ]] && [[ ${ENVVAL-} != "" ]]; then
                     run_script 'env_backup'
                     run_script 'env_set' "${ENVVAR^^}" "${ENVVAL}"
@@ -924,7 +869,7 @@ main() {
                     echo "  Variable name will be forced to UPPER CASE"
                 fi
                 ;;
-            --env-set-lower)
+            env-set-lower)
                 if [[ ${ENVVAR-} != "" ]] && [[ ${ENVVAL-} != "" ]]; then
                     run_script 'env_backup'
                     run_script 'env_set' "${ENVVAR}" "${ENVVAL}"
@@ -934,7 +879,7 @@ main() {
                     echo "  Variable name can be Mixed Case"
                 fi
                 ;;
-            --env-appvars)
+            env-appvars)
                 if [[ ${ENVAPP-} != "" ]]; then
                     if use_dialog_box; then
                         for AppName in $(xargs -n1 <<< "${ENVAPP^^}"); do
@@ -950,7 +895,7 @@ main() {
                     echo "  --env-appvars with application name ('--env-appvars App [App ...]')"
                 fi
                 ;;
-            --env-appvars-lines)
+            env-appvars-lines)
                 if [[ ${ENVAPP-} != "" ]]; then
                     if use_dialog_box; then
                         for AppName in $(xargs -n1 <<< "${ENVAPP^^}"); do
@@ -983,31 +928,31 @@ main() {
     fi
     if [[ -n ${LISTMETHOD-} ]]; then
         case "${LISTMETHOD-}" in
-            --list-builtin)
+            list-builtin)
                 run_script_dialog "List Builtin Applications" "" "" \
                     'app_nicename' "$(run_script 'app_list_builtin')"
                 ;;
-            --list-depreciated)
+            list-depreciated)
                 run_script_dialog "List Depreciated Applications" "" "" \
                     'app_nicename' "$(run_script 'app_list_depreciated')"
                 ;;
-            --list-nondepreciated)
+            list-nondepreciated)
                 run_script_dialog "List Non-Depreciated Applications" "" "" \
                     'app_nicename' "$(run_script 'app_list_nondepreciated')"
                 ;;
-            --list-added)
+            list-added)
                 run_script_dialog "List Added Applications" "" "" \
                     'app_nicename' "$(run_script 'app_list_added')"
                 ;;
-            --list-enabled)
+            list-enabled)
                 run_script_dialog "List Enabled Applications" "" "" \
                     'app_nicename' "$(run_script 'app_list_enabled')"
                 ;;
-            --list-disabled)
+            list-disabled)
                 run_script_dialog "List Disabled Applications" "" "" \
                     'app_nicename' "$(run_script 'app_list_disabled')"
                 ;;
-            --list-referenced)
+            list-referenced)
                 run_script_dialog "List Referenced Applications" "" "" \
                     'app_nicename' "$(run_script 'app_list_referenced')"
                 ;;
@@ -1036,16 +981,16 @@ main() {
     fi
     if [[ -n ${STATUSMETHOD-} ]]; then
         case "${STATUSMETHOD-}" in
-            --status)
+            status)
                 run_script_dialog "Application Status" "$(highlighted_list "$(run_script 'app_nicename' "${STATUS}")")" "" \
                     'app_status' "${STATUS}"
                 ;;
-            --status-enable)
+            status-enable)
                 run_script 'env_create'
                 run_script 'enable_app' "${STATUS}"
                 run_script 'env_update'
                 ;;
-            --status-disable)
+            status-disable)
                 run_script 'env_create'
                 run_script 'disable_app' "${STATUS}"
                 run_script 'env_update'
@@ -1056,9 +1001,51 @@ main() {
         esac
         exit
     fi
-
     if [[ -n ${TEST-} ]]; then
         run_test "${TEST}"
+        exit
+    fi
+    if [[ -n ${THEMEMETHOD-} ]]; then
+        case "${THEMEMETHOD}" in
+            theme)
+                notice "Applying theme ${THEME}"
+                run_script 'apply_theme' "${THEME}"
+                if use_dialog_box; then
+                    run_script 'menu_dialog_example' "Applied theme ${THEME}"
+                fi
+                ;;
+            theme-list)
+                run_script_dialog "List Themes" "" "" \
+                    'theme_list'
+                ;;
+            theme-shadow)
+                notice "Turning on GUI shadows."
+                run_script 'env_set' Shadow yes "${MENU_INI_FILE}"
+                ;;
+            theme-no-shadow)
+                run_script 'env_set' Shadow no "${MENU_INI_FILE}"
+                notice "Turning off GUI shadows."
+                ;;
+            theme-scrollbar)
+                run_script 'env_set' Scrollbar yes "${MENU_INI_FILE}"
+                notice "Turning on GUI scrollbars."
+                ;;
+            theme-no-scrollbar)
+                run_script 'env_set' Scrollbar no "${MENU_INI_FILE}"
+                notice "Turning off GUI scrollbars."
+                ;;
+            theme-lines)
+                run_script 'env_set' LineCharacters yes "${MENU_INI_FILE}"
+                notice "Turning on GUI line drawing characters."
+                ;;
+            theme-no-lines)
+                notice "Turning off GUI line drawing characters."
+                run_script 'env_set' LineCharacters no "${MENU_INI_FILE}"
+                ;;
+            *)
+                echo "Invalid option: '${THEMEMETHOD-}'"
+                ;;
+        esac
         exit
     fi
     if [[ -n ${UPDATE-} ]]; then
