@@ -631,6 +631,7 @@ dialog_message() {
         --timeout "${TimeOut}" \
         --msgbox "${Message}" \
         "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+    echo -n "${BS}"
 }
 dialog_error() {
     local Title=${1:-}
