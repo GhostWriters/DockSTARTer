@@ -1008,11 +1008,10 @@ main() {
     if [[ -n ${THEMEMETHOD-} ]]; then
         case "${THEMEMETHOD}" in
             theme)
+                notice "Applying theme ${THEME}"
                 run_script 'apply_theme' "${THEME}"
                 if use_dialog_box; then
                     run_script 'menu_dialog_example' "Applied theme ${THEME}"
-                else
-                    notice "Applied theme ${THEME}"
                 fi
                 ;;
             theme-list)
@@ -1047,7 +1046,7 @@ main() {
                 echo "Invalid option: '${THEMEMETHOD-}'"
                 ;;
         esac
-        exit
+        F
     fi
     if [[ -n ${UPDATE-} ]]; then
         if [[ ${UPDATE} == true ]]; then
