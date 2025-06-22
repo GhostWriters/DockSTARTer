@@ -16,7 +16,7 @@ menu_dialog_example() {
     ThemeAuthor="$(run_script 'theme_author' "${ThemeName}")"
 
     DialogText=''
-    DialogText+="${DC["Subtitle"]}Applied theme ${ThemeName}${DC[NC]}\n"
+    DialogText+="${DC["Subtitle"]}Applied theme ${ThemeName} and displaying sample${DC[NC]}\n"
     DialogText+="  ${DC["CommandLine"]}ds --theme ${ThemeName}${DC[NC]}\n"
     DialogText+="\n"
     DialogText+="        Theme: ${DC[Heading]}${ThemeName}${DC[NC]}\n"
@@ -26,7 +26,6 @@ menu_dialog_example() {
     DialogText+="\n"
     DialogText+="Final Heading: ${DC["HeadingValue"]}AppName${DC[NC]}"
     DialogText+=" ${DC["HeadingTag"]}[*HeadingTag*]${DC[NC]} ${DC["HeadingTag"]}(HeadingTag)${DC[NC]}\n"
-    DialogText+="\n"
     DialogText+="     Key Caps:\n"
     DialogText+="               ${DC["KeyCap"]}[up]${DC[NC]} ${DC["KeyCap"]}[down]${DC[NC]} ${DC["KeyCap"]}[left]${DC[NC]} ${DC["KeyCap"]}[right]${DC[NC]}\n"
     DialogText+="\n"
