@@ -12,7 +12,7 @@ theme_table() {
             ThemeAuthor="$(run_script 'theme_author' "${ThemeName}")"
             printf '%s\t%s\t%s\n' "${ThemeName}" "${ThemeDescription}" "${ThemeAuthor}"
         fi
-    done | column --table --separator="\t" --table-columns=Theme,Description,Author
+    done | column --table --separator $'\t' --table-columns=Theme,Description,Author
 }
 
 test_theme_table() {
