@@ -16,7 +16,7 @@ menu_dialog_example() {
     DialogText+="${DC["Subtitle"]}${Message}${DC[NC]}\n"
     DialogText+="  ${DC["CommandLine"]}Command Line Text${DC[NC]}\n"
     DialogText+="\n"
-    DialogText+="${DC["KeyCap"]}[up]${DC[NC]} [down]${DC[NC]} [left]${DC[NC]} [right]${DC[NC]}\n"
+    DialogText+="${DC["KeyCap"]}[up]${DC[NC]} ${DC["KeyCap"]}[down]${DC[NC]} ${DC["KeyCap"]}[left]${DC[NC]} ${DC["KeyCap"]}[right]${DC[NC]}\n"
     DialogText+="\n"
     DialogText+="Application: ${DC[Heading]}AppName${DC[NC]} ${DC[HeadingTag]}(User Defined)${DC[NC]}\n"
     DialogText+="             ${DC["HeadingAppDescription"]}Application Description${DC[NC]}\n"
