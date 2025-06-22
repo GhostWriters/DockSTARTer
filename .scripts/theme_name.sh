@@ -7,5 +7,6 @@ theme_name() {
 }
 
 test_theme_name() {
-    warn "CI does not test theme_name."
+    run_script 'apply_theme'
+    run_script 'theme_name'
 }
