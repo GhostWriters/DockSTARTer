@@ -26,7 +26,7 @@ menu_dialog_example() {
     DialogText+="Normal text\n"
     DialogText+="${DC["HeadingAppDescription"]}Hightlighted text${DC[NC]}\n"
 
-    dialog_messages "${Title}" "${DialogText}"
+    dialog_message "${Title}" "${DialogText}"
 }
 
 test_menu_dialog_example() {
