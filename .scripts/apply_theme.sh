@@ -116,6 +116,7 @@ apply_theme() {
     export DIALOGOPTS DC
     cp "${DialogFile}" "${DIALOGRC}"
     run_script 'env_set' Theme "${ThemeName}" "${MENU_INI_FILE}"
+    sort -o "${MENU_INI_FILE}" "${MENU_INI_FILE}"
 }
 
 test_apply_theme() {
