@@ -13,7 +13,7 @@ menu_dialog_example() {
     local ThemeName ThemeDescription ThemeAuthor
     ThemeName="$(run_script 'theme_name')"
     ThemeDescription="$(run_script 'theme_description' "${ThemeName}")"
-    ThemeName="$(run_script 'theme_author' "${ThemeName}")"
+    ThemeAuthor="$(run_script 'theme_author' "${ThemeName}")"
 
     DialogText=''
     DialogText+="${DC["Subtitle"]}Applied theme ${ThemeName}${DC[NC]}\n"
