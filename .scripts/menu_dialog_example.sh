@@ -27,8 +27,8 @@ menu_dialog_example() {
     DialogText+="Final Heading: ${DC["HeadingValue"]}AppName${DC[NC]}"
     DialogText+=" ${DC["HeadingTag"]}[*HeadingTag*]${DC[NC]} ${DC["HeadingTag"]}(HeadingTag)${DC[NC]}\n"
     DialogText+="\n"
-    DialogText+="    Key Caps:
-    DialogText+="              ${DC["KeyCap"]}[up]${DC[NC]} ${DC["KeyCap"]}[down]${DC[NC]} ${DC["KeyCap"]}[left]${DC[NC]} ${DC["KeyCap"]}[right]${DC[NC]}\n"
+    DialogText+="     Key Caps:\n"
+    DialogText+="               ${DC["KeyCap"]}[up]${DC[NC]} ${DC["KeyCap"]}[down]${DC[NC]} ${DC["KeyCap"]}[left]${DC[NC]} ${DC["KeyCap"]}[right]${DC[NC]}\n"
     DialogText+="\n"
     DialogText+="Normal text\n"
     DialogText+="${DC["Highlight"]}Highlighted text${DC[NC]}\n"
