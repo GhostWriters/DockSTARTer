@@ -27,15 +27,16 @@ menu_dialog_example() {
     DialogText+="${DC["Highlight"]}Highlighted text${DC[NC]}\n"
 
     local -a DialogOptions=(
+        "" ""
         "BuiltInApp" "Built In App Description"
         "UserDefinedApp" "${DC["ListAppUserDefined"]}User Defined App Description"
         "" ""
         "Variable File Heading" "${DC["LineHeading"]}*** ${COMPOSE_ENV} ***"
         "Variable File Comment" "${DC["LineComment"]}### A comment in the variable file"
         "Variable File Other" "${DC["LineOther"]}Any other line in the file"
-        "Variable File Variable" "${DC["LineVar"]}VarName='Original Value'"
+        "Variable File Variable" "${DC["LineVar"]}VarName='Default Value'"
         "Variable File Mofified" "${DC["LineModifiedVar"]}VarName='Modified Value'"
-        "Add Variable Line" "${DC["LineAddVariable"]}<ADD VARIABLE>"
+        "Variable File Add" "${DC["LineAddVariable"]}<ADD VARIABLE>"
     )
     local -a MenuDialog=(
         --stdout
