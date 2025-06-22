@@ -58,7 +58,7 @@ menu_app_select() {
     if [[ ${CI-} == true ]]; then
         SelectedAppsDialogButtonPressed=${DIALOG_CANCEL}
     else
-        local SelectAppsDialogText="Choose which apps you would like to install:\n Use ${DC[RV]}[up]${DC[NC]}, ${DC[RV]}[down]${DC[NC]}, and ${DC[RV]}[space]${DC[NC]} to select apps, and ${DC[RV]}[tab]${DC[NC]} to switch to the buttons at the bottom."
+        local SelectAppsDialogText="Choose which apps you would like to install:\n Use ${DC["KeyCap"]}[up]${DC[NC]}, ${DC["KeyCap"]}[down]${DC[NC]}, and ${DC["KeyCap"]}[space]${DC[NC]} to select apps, and ${DC["KeyCap"]}[tab]${DC[NC]} to switch to the buttons at the bottom."
         local SelectedAppsDialogParams=(
             --stdout
             --title "${DC["Title"]}${Title}"

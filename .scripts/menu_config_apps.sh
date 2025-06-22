@@ -40,7 +40,7 @@ menu_config_apps() {
             local AppDescription
             AppDescription=$(run_script 'app_description' "${AppName}")
             if run_script 'app_is_user_defined' "${AppName}"; then
-                AppOptions+=("${AppName}" "${DC[K]}${DC[RV]}${AppDescription}")
+                AppOptions+=("${AppName}" "${DC["ListAppUserDefined"]}${AppDescription}")
             else
                 AppOptions+=("${AppName}" "${AppDescription}")
             fi
