@@ -1005,14 +1005,17 @@ main() {
     if [[ -n ${THEMEMETHOD-} ]]; then
         case "${THEMEMETHOD}" in
             theme)
+                local CommandLine
                 if [[ -n ${THEME-} ]]; then
                     notice "Applying theme ${THEME}"
+                    CommandLine="ds --theme \"${THEME}\""
                 else
                     notice "Applying theme $(run_script 'theme_name')"
+                    CommandLine="ds --theme"
                 fi
                 run_script 'apply_theme' "${THEME-}"
                 if use_dialog_box; then
-                    run_script 'menu_dialog_example'
+                    run_script 'menu_dialog_example' "" "${CommandLine}"
                 fi
                 ;;
             theme-list)
@@ -1023,42 +1026,42 @@ main() {
                 notice "Turning on GUI shadows."
                 run_script 'env_set' Shadow yes "${MENU_INI_FILE}"
                 if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned on shadows"
+                    run_script 'menu_dialog_example' "Turned on shadows" "ds --theme-shadow"
                 fi
                 ;;
             theme-no-shadow)
                 run_script 'env_set' Shadow no "${MENU_INI_FILE}"
                 notice "Turning off GUI shadows."
                 if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned off shadows"
+                    run_script 'menu_dialog_example' "Turned off shadows" "ds --theme-no-shadow"
                 fi
                 ;;
             theme-scrollbar)
                 run_script 'env_set' Scrollbar yes "${MENU_INI_FILE}"
                 notice "Turning on GUI scrollbars."
                 if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned on scrollbars"
+                    run_script 'menu_dialog_example' "Turned on scrollbars" "ds --theme-scrollbar"
                 fi
                 ;;
             theme-no-scrollbar)
                 run_script 'env_set' Scrollbar no "${MENU_INI_FILE}"
                 notice "Turning off GUI scrollbars."
                 if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned off scrollbars"
+                    run_script 'menu_dialog_example' "Turned off scrollbars" "ds --theme-no-scrollbar"
                 fi
                 ;;
             theme-lines)
                 run_script 'env_set' LineCharacters yes "${MENU_INI_FILE}"
                 notice "Turning on GUI line drawing characters."
                 if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned on line drawing"
+                    run_script 'menu_dialog_example' "Turned on line drawing" "ds --theme-lines"
                 fi
                 ;;
             theme-no-lines)
                 notice "Turning off GUI line drawing characters."
                 run_script 'env_set' LineCharacters no "${MENU_INI_FILE}"
                 if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned off line drawing"
+                    run_script 'menu_dialog_example' "Turned off line drawing" "ds --theme-no-lines"
                 fi
                 ;;
             *)
