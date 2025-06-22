@@ -3,6 +3,17 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_dialog_example() {
+    local Message=${1-}
+
+    local ThemeName ThemeDescription ThemeAuthor
+    ThemeName="$(run_script 'theme_name')"
+    ThemeDescription="$(run_script 'theme_description' "${ThemeName}")"
+    ThemeAuthor="$(run_script 'theme_author' "${ThemeName}")"
+
+    if [[ -z ${Message} ]]; then
+        Message="Applied theme ${ThemeName}"
+    fi
+
     local Title=''
     for TitleStyle in Title TitleSuccess TitleWarning TitleError TitleQuestion; do
         if [[ -n ${Title-} ]]; then
@@ -10,13 +21,9 @@ menu_dialog_example() {
         fi
         Title+="${DC["${TitleStyle}"]}${TitleStyle}${DC[NC]}"
     done
-    local ThemeName ThemeDescription ThemeAuthor
-    ThemeName="$(run_script 'theme_name')"
-    ThemeDescription="$(run_script 'theme_description' "${ThemeName}")"
-    ThemeAuthor="$(run_script 'theme_author' "${ThemeName}")"
 
     DialogText=''
-    DialogText+="${DC["Subtitle"]}Applied theme ${ThemeName} and displaying sample${DC[NC]}\n"
+    DialogText+="${DC["Subtitle"]}${Messege}Applied theme ${ThemeName} and displaying sample${DC[NC]}\n"
     DialogText+="  ${DC["CommandLine"]}ds --theme ${ThemeName}${DC[NC]}\n"
     DialogText+="\n"
     DialogText+="        Theme: ${DC[Heading]}${ThemeName}${DC[NC]}\n"
