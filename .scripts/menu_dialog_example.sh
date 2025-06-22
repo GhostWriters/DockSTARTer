@@ -4,6 +4,7 @@ IFS=$'\n\t'
 
 menu_dialog_example() {
     local Message=${1-}
+    local CommandLine=${2-}
 
     local ThemeName ThemeDescription ThemeAuthor
     ThemeName="$(run_script 'theme_name')"
@@ -12,6 +13,9 @@ menu_dialog_example() {
 
     if [[ -z ${Message} ]]; then
         Message="Applied theme ${ThemeName}"
+    fi
+    if [[ -z ${CommandLine} ]]; then
+        CommandLine="ds --theme"
     fi
 
     local Title=''
@@ -24,7 +28,7 @@ menu_dialog_example() {
 
     DialogText=''
     DialogText+="${DC["Subtitle"]}${Message} and displaying sample${DC[NC]}\n"
-    DialogText+="  ${DC["CommandLine"]}ds --theme ${ThemeName}${DC[NC]}\n"
+    DialogText+="  ${DC["CommandLine"]}${CommandLine}${DC[NC]}\n"
     DialogText+="\n"
     DialogText+="        Theme: ${DC[Heading]}${ThemeName}${DC[NC]}\n"
     DialogText+="               ${DC["HeadingAppDescription"]}${ThemeDescription}${DC[NC]}\n"
