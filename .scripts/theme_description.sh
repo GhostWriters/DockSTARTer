@@ -14,5 +14,6 @@ theme_description() {
 }
 
 test_theme_description() {
-    warn "CI does not test theme_description."
+    run_script 'apply_theme'
+    run_script 'theme_description'
 }
