@@ -39,23 +39,25 @@ menu_dialog_example() {
     DialogText+="Normal text\n"
     DialogText+="${DC["Highlight"]}Highlighted text${DC[NC]}\n"
 
+    local Helpline="This is a sample help line with ${DC["Highlight"]}highlighted${DC[NC]} text."
     local -a DialogOptions=(
-        "" ""
-        "BuiltInApp" "Built In App Description"
-        "UserDefinedApp" "${DC["ListAppUserDefined"]}User Defined App Description"
-        "" ""
-        "Variable File Heading" "${DC["LineHeading"]}*** ${COMPOSE_ENV} ***"
-        "Variable File Comment" "${DC["LineComment"]}### A comment in the variable file"
-        "Variable File Other" "${DC["LineOther"]}Any other line in the file"
-        "Variable File Variable" "${DC["LineVar"]}VarName='Default Value'"
-        "Variable File Mofified" "${DC["LineModifiedVar"]}VarName='Modified Value'"
-        "Variable File Add" "${DC["LineAddVariable"]}<ADD VARIABLE>"
+        "" "" "${Helpline}"
+        "BuiltInApp" "Built In App Description" "${Helpline}"
+        "UserDefinedApp" "${DC["ListAppUserDefined"]}User Defined App Description" "${Helpline}"
+        "" "" "${Helpline}"
+        "Variable File Heading" "${DC["LineHeading"]}*** ${COMPOSE_ENV} ***" "${Helpline}"
+        "Variable File Comment" "${DC["LineComment"]}### A comment in the variable file" "${Helpline}"
+        "Variable File Other" "${DC["LineOther"]}Any other line in the file" "${Helpline}"
+        "Variable File Variable" "${DC["LineVar"]}VarName='Default Value'" "${Helpline}"
+        "Variable File Mofified" "${DC["LineModifiedVar"]}VarName='Modified Value'" "${Helpline}"
+        "Variable File Add" "${DC["LineAddVariable"]}<ADD VARIABLE>" "${Helpline}"
     )
     local -a MenuDialog=(
         --stdout
         --title "${Title}"
         --ok-label "Select"
         --cancel-label "Done"
+        --item-help
         --menu "${DialogText}"
         0 0
         0
