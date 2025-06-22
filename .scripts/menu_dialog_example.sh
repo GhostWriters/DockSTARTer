@@ -23,7 +23,7 @@ menu_dialog_example() {
     done
 
     DialogText=''
-    DialogText+="${DC["Subtitle"]}${Messege}Applied theme ${ThemeName} and displaying sample${DC[NC]}\n"
+    DialogText+="${DC["Subtitle"]}${Message} and displaying sample${DC[NC]}\n"
     DialogText+="  ${DC["CommandLine"]}ds --theme ${ThemeName}${DC[NC]}\n"
     DialogText+="\n"
     DialogText+="        Theme: ${DC[Heading]}${ThemeName}${DC[NC]}\n"
