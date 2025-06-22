@@ -3,8 +3,6 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 menu_dialog_example() {
-    local Message=${1-}
-
     local Title=''
     for TitleStyle in Title TitleSuccess TitleWarning TitleError TitleQuestion; do
         if [[ -n ${Title-} ]]; then
@@ -12,21 +10,25 @@ menu_dialog_example() {
         fi
         Title+="${DC["${TitleStyle}"]}${TitleStyle}${DC[NC]}"
     done
-    local ThemName ThemeDescription ThemeAuthor
+    local ThemeName ThemeDescription ThemeAuthor
     ThemeName="$(run_script 'theme_name')"
     ThemeDescription="$(run_script 'theme_description' "${ThemeName}")"
     ThemeName="$(run_script 'theme_author' "${ThemeName}")"
+
     DialogText=''
     DialogText+="${DC["Subtitle"]}Applied theme ${ThemeName}${DC[NC]}\n"
     DialogText+="  ${DC["CommandLine"]}ds --theme ${ThemeName}${DC[NC]}\n"
     DialogText+="\n"
-    DialogText+="       Theme: ${DC[Heading]}${ThemeName}${DC[NC]}\n"
-    DialogText+="             ${DC["HeadingAppDescription"]}${ThemeDescription}${DC[NC]}\n"
+    DialogText+="        Theme: ${DC[Heading]}${ThemeName}${DC[NC]}\n"
+    DialogText+="               ${DC["HeadingAppDescription"]}${ThemeDescription}${DC[NC]}\n"
     DialogText+="\n"
-    DialogText+="Theme Author: ${DC[Heading]}${ThemeAuthor}${DC[NC]}\n"
+    DialogText+=" Theme Author: ${DC[Heading]}${ThemeAuthor}${DC[NC]}\n"
     DialogText+="\n"
-    DialogText+="    Key Caps: ${DC["KeyCap"]}[up]${DC[NC]} ${DC["KeyCap"]}[down]${DC[NC]} ${DC["KeyCap"]}[left]${DC[NC]} ${DC["KeyCap"]}[right]${DC[NC]}\n"
-    DialogText+="   Variable: ${DC["HeadingValue"]}VarName${DC[NC]} ${DC["HeadingTag"]}(User Defined)${DC[NC]}\n"
+    DialogText+="Final Heading: ${DC["HeadingValue"]}AppName${DC[NC]}"
+    DialogText+=" ${DC["HeadingTag"]}[*HeadingTag*]${DC[NC]} ${DC["HeadingTag"]}(HeadingTag)${DC[NC]}\n"
+    DialogText+="\n"
+    DialogText+="    Key Caps:
+    DialogText+="              ${DC["KeyCap"]}[up]${DC[NC]} ${DC["KeyCap"]}[down]${DC[NC]} ${DC["KeyCap"]}[left]${DC[NC]} ${DC["KeyCap"]}[right]${DC[NC]}\n"
     DialogText+="\n"
     DialogText+="Normal text\n"
     DialogText+="${DC["Highlight"]}Highlighted text${DC[NC]}\n"
