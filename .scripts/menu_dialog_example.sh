@@ -12,15 +12,20 @@ menu_dialog_example() {
         fi
         Title+="${DC["${TitleStyle}"]}${TitleStyle}${DC[NC]}"
     done
+    local ThemName ThemeDescription ThemeAuthor
+    ThemeName="$(run_script 'theme_name')"
+    ThemeDescription="$(run_script 'theme_description' "${ThemeName}")"
+    ThemeName="$(run_script 'theme_author' "${ThemeName}")"
     DialogText=''
-    DialogText+="${DC["Subtitle"]}${Message}${DC[NC]}\n"
-    DialogText+="  ${DC["CommandLine"]}Command Line Text${DC[NC]}\n"
+    DialogText+="${DC["Subtitle"]}Applied theme ${ThemeName}${DC[NC]}\n"
+    DialogText+="  ${DC["CommandLine"]}ds --theme ${ThemeName}${DC[NC]}\n"
     DialogText+="\n"
-    DialogText+="${DC["KeyCap"]}[up]${DC[NC]} ${DC["KeyCap"]}[down]${DC[NC]} ${DC["KeyCap"]}[left]${DC[NC]} ${DC["KeyCap"]}[right]${DC[NC]}\n"
+    DialogText+="       Theme: ${DC[Heading]}${ThemeName}${DC[NC]}\n"
+    DialogText+="             ${DC["HeadingAppDescription"]}${ThemeDescription}${DC[NC]}\n"
     DialogText+="\n"
-    DialogText+="Application: ${DC[Heading]}AppName${DC[NC]} ${DC[HeadingTag]}(User Defined)${DC[NC]}\n"
-    DialogText+="             ${DC["HeadingAppDescription"]}Application Description${DC[NC]}\n"
+    DialogText+="Theme Author: ${DC[Heading]}${ThemeAuthor}${DC[NC]}\n"
     DialogText+="\n"
+    DialogText+="    Key Caps: ${DC["KeyCap"]}[up]${DC[NC]} ${DC["KeyCap"]}[down]${DC[NC]} ${DC["KeyCap"]}[left]${DC[NC]} ${DC["KeyCap"]}[right]${DC[NC]}\n"
     DialogText+="   Variable: ${DC["HeadingValue"]}VarName${DC[NC]} ${DC["HeadingTag"]}(User Defined)${DC[NC]}\n"
     DialogText+="\n"
     DialogText+="Normal text\n"
