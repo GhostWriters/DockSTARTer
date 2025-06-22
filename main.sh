@@ -100,6 +100,8 @@ that take app names can use the form app: to refer to the same file.
     Applies the specified theme to the GUI
 --theme-List
     Lists the available themes
+--theme-table
+    Lists the available themes in a table format
 --theme-shadow
 --theme-no-shadow
     Turn the shadow on or off in the GUI
@@ -1021,6 +1023,10 @@ main() {
             theme-list)
                 run_script_dialog "List Themes" "" "" \
                     'theme_list'
+                ;;
+            theme-table)
+                run_script_dialog "List Themes" "" "" \
+                    'theme_table'
                 ;;
             theme-shadow)
                 notice "Turning on GUI shadows."
