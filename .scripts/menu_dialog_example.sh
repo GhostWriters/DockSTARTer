@@ -24,7 +24,7 @@ menu_dialog_example() {
     DialogText+="   Variable: ${DC["HeadingValue"]}VarName${DC[NC]} ${DC["HeadingTag"]}(User Defined)${DC[NC]}\n"
     DialogText+="\n"
     DialogText+="Normal text\n"
-    DialogText+="${DC["HeadingAppDescription"]}Hightlighted text${DC[NC]}\n"
+    DialogText+="${DC["Highlight"]}Highlighted text${DC[NC]}\n"
 
     dialog_message "${Title}" "${DialogText}"
 }
