@@ -98,7 +98,7 @@ that take app names can use the form app: to refer to the same file.
     Run tests to check the program
 --theme <themename>
     Applies the specified theme to the GUI
---theme-List
+--theme-list
     Lists the available themes
 --theme-table
     Lists the available themes in a table format
