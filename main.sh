@@ -1011,7 +1011,7 @@ main() {
                 notice "Applying theme ${THEME}"
                 run_script 'apply_theme' "${THEME}"
                 if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Applied theme ${THEME}"
+                    run_script 'menu_dialog_example'
                 fi
                 ;;
             theme-list)
@@ -1021,26 +1021,44 @@ main() {
             theme-shadow)
                 notice "Turning on GUI shadows."
                 run_script 'env_set' Shadow yes "${MENU_INI_FILE}"
+                if use_dialog_box; then
+                    run_script 'menu_dialog_example' "Turned on shadows"
+                fi
                 ;;
             theme-no-shadow)
                 run_script 'env_set' Shadow no "${MENU_INI_FILE}"
                 notice "Turning off GUI shadows."
+                if use_dialog_box; then
+                    run_script 'menu_dialog_example' "Turned off shadows"
+                fi
                 ;;
             theme-scrollbar)
                 run_script 'env_set' Scrollbar yes "${MENU_INI_FILE}"
                 notice "Turning on GUI scrollbars."
+                if use_dialog_box; then
+                    run_script 'menu_dialog_example' "Turned on scrollbars"
+                fi
                 ;;
             theme-no-scrollbar)
                 run_script 'env_set' Scrollbar no "${MENU_INI_FILE}"
                 notice "Turning off GUI scrollbars."
+                if use_dialog_box; then
+                    run_script 'menu_dialog_example' "Turned off scrollbars"
+                fi
                 ;;
             theme-lines)
                 run_script 'env_set' LineCharacters yes "${MENU_INI_FILE}"
                 notice "Turning on GUI line drawing characters."
+                if use_dialog_box; then
+                    run_script 'menu_dialog_example' "Turned on line drawing"
+                fi
                 ;;
             theme-no-lines)
                 notice "Turning off GUI line drawing characters."
                 run_script 'env_set' LineCharacters no "${MENU_INI_FILE}"
+                if use_dialog_box; then
+                    run_script 'menu_dialog_example' "Turned off line drawing"
+                fi
                 ;;
             *)
                 echo "Invalid option: '${THEMEMETHOD-}'"
