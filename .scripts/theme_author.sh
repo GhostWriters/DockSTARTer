@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-theme_description() {
+theme_author() {
     local ThemeName=${1-}
 
     if [[ -z ${ThemeName} ]]; then
@@ -10,10 +10,10 @@ theme_description() {
     fi
     local ThemeFile="${THEME_FOLDER}/${ThemeName}/${THEME_FILE_NAME}"
 
-    run_script 'env_get' ThemeDescription "${ThemeFile}"
+    run_script 'env_get' ThemeAuthor "${ThemeFile}"
 }
 
-test_theme_description() {
+test_theme_author() {
     run_script 'apply_theme'
-    run_script 'theme_description'
+    run_script 'theme_author'
 }

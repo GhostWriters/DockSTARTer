@@ -12,23 +12,28 @@ menu_display_options_theme() {
     run_script 'apply_theme'
 
     local CurrentTheme
-    CurrentTheme="$(run_script 'env_get' Theme "${MENU_INI_FILE}")"
+    CurrentTheme="$(run_script 'theme_name')"
 
     local -a ThemeList
-    local -A ThemeDescription
+    local -A ThemeDescription ThemeAuthor
     readarray -t ThemeList < <(run_script 'theme_list')
     for ThemeName in "${ThemeList[@]-}"; do
         ThemeDescription["${ThemeName}"]="$(run_script 'theme_description' "${ThemeName}")"
+        ThemeAuthor["${ThemeName}"]="$(run_script 'theme_author' "${ThemeName}")"
     done
 
     local LastChoice="${CurrentTheme}"
     while true; do
         local -a Opts=()
         for ThemeName in "${ThemeList[@]-}"; do
+            local ItemText="${ThemeDescription["${ThemeName}"]}"
+            if [[ -n ${ThemeAuthor["${ThemeName}"]} ]]; then
+                ItemText+=" [by ${ThemeAuthor["${ThemeName}"]}]"
+            fi
             if [[ ${ThemeName} == "${CurrentTheme}" ]]; then
-                Opts+=("${ThemeName}" "${ThemeDescription["${ThemeName}"]}" ON)
+                Opts+=("${ThemeName}" "${ItemText}" ON)
             else
-                Opts+=("${ThemeName}" "${ThemeDescription["${ThemeName}"]}" OFF)
+                Opts+=("${ThemeName}" "${ItemText}" OFF)
             fi
         done
         local -a ChoiceDialog=(
@@ -47,7 +52,7 @@ menu_display_options_theme() {
             OK)
                 CurrentTheme="${Choice}"
                 run_script 'apply_theme' "${CurrentTheme}"
-                run_script 'menu_dialog_example' "Applied theme ${CurrentTheme}"
+                run_script 'menu_dialog_example' "Applied theme ${CurrentTheme}" "ds --theme \"${CurrentTheme}\""
                 ;;
             CANCEL | ESC)
                 return
