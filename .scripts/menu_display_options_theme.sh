@@ -28,7 +28,7 @@ menu_display_options_theme() {
         for ThemeName in "${ThemeList[@]-}"; do
             local ItemText="${ThemeDescription["${ThemeName}"]}"
             if [[ -n ${ThemeAuthor["${ThemeName}"]} ]]; then
-                ItemText+=" by ${ThemeAuthor["${ThemeName}"]}"
+                ItemText+=" [by ${ThemeAuthor["${ThemeName}"]}]"
             fi
             if [[ ${ThemeName} == "${CurrentTheme}" ]]; then
                 Opts+=("${ThemeName}" "${ItemText}" ON)
