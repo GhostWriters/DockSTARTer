@@ -419,13 +419,10 @@ cmdline() {
                 readonly TEST=${OPTARG}
                 ;;
             theme)
+                readonly THEMEMETHOD='theme'
                 if [[ -n ${!OPTIND-} ]]; then
-                    readonly THEMEMETHOD='theme'
                     readonly THEME="${!OPTIND}"
                     OPTIND=$((OPTIND + 1))
-                else
-                    error "${OPTION} requires an option."
-                    exit
                 fi
                 ;;
             theme-*)
@@ -1008,8 +1005,12 @@ main() {
     if [[ -n ${THEMEMETHOD-} ]]; then
         case "${THEMEMETHOD}" in
             theme)
-                notice "Applying theme ${THEME}"
-                run_script 'apply_theme' "${THEME}"
+                if [[ -n ${THEME-} ]]; then
+                    notice "Applying theme ${THEME}"
+                else
+                    notice "Applying theme $(run_script 'theme_name')"
+                fi
+                run_script 'apply_theme' "${THEME-}"
                 if use_dialog_box; then
                     run_script 'menu_dialog_example'
                 fi
