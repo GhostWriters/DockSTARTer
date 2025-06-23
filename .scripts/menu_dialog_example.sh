@@ -55,6 +55,16 @@ menu_dialog_example() {
         "Variable File Variable" "${DC["LineVar"]}VarName='Default Value'" "${Helpline}"
         "Variable File Mofified" "${DC["LineModifiedVar"]}VarName='Modified Value'" "${Helpline}"
         "Variable File Add" "${DC["LineAddVariable"]}<ADD VARIABLE>" "${Helpline}"
+        "" "" "${Helpline}"
+        "" "" "${Helpline}"
+        "" "" "${Helpline}"
+        "" "" "${Helpline}"
+        "" "" "${Helpline}"
+        "" "" "${Helpline}"
+        "" "" "${Helpline}"
+        "" "" "${Helpline}"
+        "" "" "${Helpline}"
+        "" "" "${Helpline}"
     )
     local -a MenuDialog=(
         --stdout
