@@ -44,6 +44,16 @@ menu_dialog_example() {
     DialogText+="${DC["Highlight"]}Highlighted text${DC[NC]}\n"
 
     local Helpline="This is a sample help line with ${DC["Highlight"]}highlighted${DC[NC]} text."
+
+    local -i MenuTextLines
+    MenuTextLines="$(
+        dialog \
+            --stdout \
+            --print-text-size \
+            "${DialogText}" \
+            "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" |
+            cut -d ' ' -f 1
+    )"
     local -a DialogOptions=(
         "" "" "${Helpline}"
         "BuiltInApp" "Built In App Description" "${Helpline}"
@@ -73,8 +83,8 @@ menu_dialog_example() {
         --cancel-label "Done"
         --item-help
         --menu "${DialogText}"
-        0 0
-        0
+        "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+        "$((LINES - DC["TextRowsAdjust"] - MenuTextLines))"
         "${DialogOptions[@]}"
     )
 
