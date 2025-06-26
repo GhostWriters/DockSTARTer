@@ -181,15 +181,6 @@ menu_value_prompt() {
                         ["Use Privoxy"]="'service:privoxy'"
                     )
                     ;;
-                "${APPNAME}__PORT_"*)
-                    ValueDescription="\n\n Must be an unused port between ${DC[Highlight]}0${DC[NC]} and ${DC[Highlight]}65535${DC[NC]}."
-                    PossibleOptions+=(
-                        "${DefaultValueOption}"
-                    )
-                    OptionValue+=(
-                        ["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
-                    )
-                    ;;
                 "${APPNAME}__RESTART")
                     ValueDescription="\n\n Restart is usually ${DC[Highlight]}unless-stopped${DC[NC]} but can also be ${DC[Highlight]}no${DC[NC]}, ${DC[Highlight]}always${DC[NC]}, or ${DC[Highlight]}on-failure${DC[NC]}."
                     PossibleOptions+=(
@@ -232,13 +223,23 @@ menu_value_prompt() {
                     )
                     ;;
                 *)
-                    ValueDescription=""
-                    PossibleOptions+=(
-                        "${DefaultValueOption}"
-                    )
-                    OptionValue+=(
-                        ["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
-                    )
+                    if [[ ${VarName} =~ ^${APPNAME}__PORT_[0-9]+$ ]]; then
+                        ValueDescription="\n\n Must be an unused port between ${DC[Highlight]}0${DC[NC]} and ${DC[Highlight]}65535${DC[NC]}."
+                        PossibleOptions+=(
+                            "${DefaultValueOption}"
+                        )
+                        OptionValue+=(
+                            ["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+                        )
+                    else
+                        ValueDescription=""
+                        PossibleOptions+=(
+                            "${DefaultValueOption}"
+                        )
+                        OptionValue+=(
+                            ["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+                        )
+                    fi
                     ;;
             esac
             ;;
@@ -363,14 +364,6 @@ menu_value_prompt() {
                                     ;;
                             esac
                             ;;
-                        "${APPNAME}__PORT_"*)
-                            if [[ ${StrippedValue} =~ ^[0-9]+$ ]] && [[ ${StrippedValue} -ge 0 ]] && [[ ${StrippedValue} -le 65535 ]]; then
-                                ValueValid="true"
-                            else
-                                ValueValid="false"
-                                dialog_error "${Title}" "${DialogHeading}\n\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid port. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
-                            fi
-                            ;;
                         "${APPNAME}__RESTART")
                             case "${StrippedValue}" in
                                 "no" | "always" | "on-failure" | "unless-stopped")
@@ -433,7 +426,16 @@ menu_value_prompt() {
                             fi
                             ;;
                         *)
-                            ValueValid="true"
+                            if [[ ${VarName} =~ ^${APPNAME}__PORT_[0-9]+$ ]]; then
+                                if [[ ${StrippedValue} =~ ^[0-9]+$ ]] && [[ ${StrippedValue} -ge 0 ]] && [[ ${StrippedValue} -le 65535 ]]; then
+                                    ValueValid="true"
+                                else
+                                    ValueValid="false"
+                                    dialog_error "${Title}" "${DialogHeading}\n\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid port. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
+                                fi
+                            else
+                                ValueValid="true"
+                            fi
                             ;;
                     esac
                 fi
