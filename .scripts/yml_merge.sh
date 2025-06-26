@@ -61,7 +61,7 @@ commands_yml_merge() {
                 fi
                 local APPDEVICES
                 APPDEVICES="$(run_script 'env_get' "${APPNAME}__DEVICES")"
-                if [[ ${APPDEVICES-^^} =~ ON|TRUE|YES ]]; then
+                if [[ -n ${APPDEVICES-} && ${APPDEVICES^^} =~ ON|TRUE|YES ]]; then
                     local devices_yml
                     devices_yml="$(run_script 'app_instance_file' "${appname}" ".devices.yml")"
                     if [[ -f ${devices_yml} ]]; then
