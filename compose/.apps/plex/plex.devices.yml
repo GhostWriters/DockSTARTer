@@ -1,0 +1,7 @@
+services:
+  plex<__instance>:
+    devices:
+      - ${PLEX<__INSTANCE>__DEVICES_DEV1}
+      - ${PLEX<__INSTANCE>__DEVICES_DEV2}
+      - ${PLEX<__INSTANCE>__DEVICES_DEV3}
+      - ${PLEX<__INSTANCE>__DEVICES_DEV4}
