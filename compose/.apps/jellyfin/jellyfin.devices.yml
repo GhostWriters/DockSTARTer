@@ -1,7 +1,7 @@
 services:
   jellyfin<__instance>:
     devices:
-      - ${JELLYFIN<__INSTANCE>__DEVICES_DEV1}
-      - ${JELLYFIN<__INSTANCE>__DEVICES_DEV2}
-      - ${JELLYFIN<__INSTANCE>__DEVICES_DEV3}
-      - ${JELLYFIN<__INSTANCE>__DEVICES_DEV4}
+      - ${JELLYFIN<__INSTANCE>__DEVICE_DEV1}
+      - ${JELLYFIN<__INSTANCE>__DEVICE_DEV2}
+      - ${JELLYFIN<__INSTANCE>__DEVICE_DEV3}
+      - ${JELLYFIN<__INSTANCE>__DEVICE_DEV4}
