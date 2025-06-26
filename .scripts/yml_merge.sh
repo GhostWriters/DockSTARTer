@@ -59,6 +59,17 @@ commands_yml_merge() {
                         info "${netmode_yml} does not exist."
                     fi
                 fi
+                local APPDEVICES
+                APPDEVICES="$(run_script 'env_get' "${APPNAME}__DEVICES")"
+                if [[ ${APPDEVICES-^^} =~ ON|TRUE|YES ]]; then
+                    local devices_yml
+                    devices_yml="$(run_script 'app_instance_file' "${appname}" ".devices.yml")"
+                    if [[ -f ${devices_yml} ]]; then
+                        COMPOSE_FILE="${COMPOSE_FILE}:${devices_yml}"
+                    else
+                        info "${devices_yml} does not exist."
+                    fi
+                fi
                 COMPOSE_FILE="${COMPOSE_FILE}:${main_yml}"
                 info "All configurations for ${AppName} are included."
             else
