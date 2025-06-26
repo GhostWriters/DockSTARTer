@@ -1,0 +1,7 @@
+services:
+  handbreak<__instance>:
+    devices:
+      - ${HANDBREAK<__INSTANCE>__DEVICES_DEV1}
+      - ${HANDBREAK<__INSTANCE>__DEVICES_DEV2}
+      - ${HANDBREAK<__INSTANCE>__DEVICES_DEV3}
+      - ${HANDBREAK<__INSTANCE>__DEVICES_DEV4}
