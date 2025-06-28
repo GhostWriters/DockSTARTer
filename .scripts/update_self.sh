@@ -49,7 +49,7 @@ commands_update_self() {
         QUIET='--quiet'
     fi
     notice "Clearing instances folder"
-    rm -R "${INSTANCES_FOLDER:?}/"* &> /dev/null || true
+    rm -fR "${INSTANCES_FOLDER:?}/"* &> /dev/null || fatal "Failed to clear instances folder.\nFailing command: ${F[C]}rm -fR \"${INSTANCES_FOLDER:?}/\"*"
     notice "${Notice}"
     cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
     info "Setting file ownership on current repository files"
