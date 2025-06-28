@@ -48,8 +48,11 @@ commands_update_self() {
     if [[ -z ${VERBOSE-} ]]; then
         QUIET='--quiet'
     fi
-    notice "Clearing instances folder"
-    rm -fR "${INSTANCES_FOLDER:?}/"* &> /dev/null || fatal "Failed to clear instances folder.\nFailing command: ${F[C]}rm -fR \"${INSTANCES_FOLDER:?}/\"*"
+    if [[ -d ${INSTANCES_FOLDER:?} ]]; then
+        notice "Clearing instances folder"
+        run_script 'set_permissions' "${INSTANCES_FOLDER:?}"
+        rm -fR "${INSTANCES_FOLDER:?}/"* &> /dev/null || fatal "Failed to clear instances folder.\nFailing command: ${F[C]}rm -fR \"${INSTANCES_FOLDER:?}/\"*"
+    fi
     notice "${Notice}"
     cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
     info "Setting file ownership on current repository files"
