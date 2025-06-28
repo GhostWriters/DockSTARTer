@@ -13,11 +13,18 @@ app_instance_file() {
     local FileSuffix=${2:-}
     local appname=${AppName,,}
 
+    if [[ ! -d ${INSTANCES_FOLDER} ]]; then
+        mkdir -p "${INSTANCES_FOLDER}" ||
+            fatal "Failed to create folder ${INSTANCES_FOLDER}. ${F[C]}Failing command: mkdir -p \"${INSTANCES_FOLDER}\""
+        run_script 'set_permissions' "${INSTANCES_FOLDER}"
+    fi
+
     local InstanceFolder
     InstanceFolder="${INSTANCES_FOLDER}/${appname}"
     if [[ ! -d ${InstanceFolder} ]]; then
         mkdir -p "${InstanceFolder}" ||
             fatal "Failed to create folder ${InstanceFolder}. ${F[C]}Failing command: mkdir -p \"${InstanceFolder}\""
+        run_script 'set_permissions' "${InstanceFolder}"
     fi
 
     local InstanceFile
@@ -47,6 +54,7 @@ app_instance_file() {
     fi
     sed -e "s/<__INSTANCE>/${__INSTANCE-}/g ; s/<__instance>/${__instance-}/g ; s/<__Instance>/${__Instance-}/g" \
         "${TemplateFile}" > "${InstanceFile}"
+    run_script 'set_permissions' "${InstanceFile}"
 }
 
 test_app_instance_file() {
