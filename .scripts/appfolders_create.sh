@@ -30,6 +30,9 @@ appfolders_create() {
                 for FOLDER in "${FOLDERS_ARRAY[@]-}"; do
                     notice "Creating folder ${FOLDER}"
                     mkdir -p "${FOLDER}" || warn "Could not create folder ${FOLDER}"
+                    if [[ -d ${FOLDER} ]]; then
+                        run_script 'set_permissions' "${FOLDER}"
+                    fi
                 done
             fi
         fi
