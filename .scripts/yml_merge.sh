@@ -59,6 +59,17 @@ commands_yml_merge() {
                         info "${netmode_yml} does not exist."
                     fi
                 fi
+                local APPSTORAGE
+                APPSTORAGE="$(run_script 'env_get' DOCKER_MULTIPLE_STORAGE)"
+                if [[ -n ${APPSTORAGE-} && ${APPSTORAGE^^} =~ ON|TRUE|YES ]]; then
+                    local storage_yml
+                    storage_yml="$(run_script 'app_instance_file' "${appname}" ".storage.yml")"
+                    if [[ -f ${storage_yml} ]]; then
+                        COMPOSE_FILE="${COMPOSE_FILE}:${storage_yml}"
+                    else
+                        info "${storage_yml} does not exist."
+                    fi
+                fi
                 local APPDEVICES
                 APPDEVICES="$(run_script 'env_get' "${APPNAME}__DEVICES")"
                 if [[ -n ${APPDEVICES-} && ${APPDEVICES^^} =~ ON|TRUE|YES ]]; then

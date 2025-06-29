@@ -1,0 +1,6 @@
+services:
+  jdownloader2<__instance>:
+    volumes:
+      - ${DOCKER_VOLUME_STORAGE2?}:/storage2
+      - ${DOCKER_VOLUME_STORAGE3?}:/storage3
+      - ${DOCKER_VOLUME_STORAGE4?}:/storage4
