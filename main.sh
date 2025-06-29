@@ -431,7 +431,12 @@ cmdline() {
                 readonly THEMEMETHOD=${OPTION}
                 ;;
             u | update)
-                readonly UPDATE=${OPTARG}
+                UPDATE=true
+                if [[ -n ${!OPTIND-} ]]; then
+                    UPDATE="${!OPTIND}"
+                    OPTIND=$((OPTIND + 1))
+                fi
+                readonly UPDATE
                 ;;
             v | verbose)
                 readonly VERBOSE=1
@@ -452,9 +457,6 @@ cmdline() {
                         ;;
                     r | remove)
                         readonly REMOVE=true
-                        ;;
-                    u | update)
-                        readonly UPDATE=true
                         ;;
                     *)
                         echo "${OPTARG} requires an option."
