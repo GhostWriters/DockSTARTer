@@ -458,6 +458,9 @@ cmdline() {
                     r | remove)
                         readonly REMOVE=true
                         ;;
+                    u | update)
+                        readonly UPDATE=true
+                        ;;
                     *)
                         echo "${OPTARG} requires an option."
                         exit 1
