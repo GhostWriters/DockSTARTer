@@ -275,43 +275,64 @@ fatal() {
 # Command Line Arguments
 readonly ARGS=("$@")
 cmdline() {
-    while getopts ":-:a:c:e:fghilpr:s:t:u:vx" OPTION; do
+    while getopts ":-:a:c:efghilpr:s:t:u:vx" OPTION; do
         # support long options: https://stackoverflow.com/a/28466267/519360
-        if [ "$OPTION" = "-" ]; then     # long option: reformulate OPT and OPTARG
-            OPTION="${OPTARG%%=*}"       # extract long option name
-            OPTARG="${OPTARG#"$OPTION"}" # extract long option argument (may be empty)
-            OPTARG="${OPTARG#=}"         # if long option argument, remove assigning `=`
+        if [ "$OPTION" = "-" ]; then # long option: reformulate OPTION and OPTARG
+            OPTION="${OPTARG}"       # extract long option name
+            OPTARG=''
         fi
+        notice "OPTION=[${OPTION}], OPTARG=[${OPTARG-}]"
         case ${OPTION} in
-            a | add)
-                local MULTIOPT
-                MULTIOPT=("$OPTARG")
-                until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
-                    MULTIOPT+=("$(eval "echo \${$OPTIND}")")
+            add)
+                if [[ -n ${!OPTIND-} ]]; then
+                    OPTARG="${!OPTIND}"
                     OPTIND=$((OPTIND + 1))
-                done
-                ADD=$(printf "%s " "${MULTIOPT[@]}" | xargs)
-                readonly ADD
+                fi
+                ;&
+            a)
+                if [[ -n ${OPTARG-} ]]; then
+                    local MULTIOPT
+                    MULTIOPT=("$OPTARG")
+                    until [[ -z ${!OPTIND-} || ${!OPTIND} =~ ^-.* ]]; do
+                        MULTIOPT+=("${!OPTIND}")
+                        OPTIND=$((OPTIND + 1))
+                    done
+                    ADD=$(printf "%s " "${MULTIOPT[@]}" | xargs)
+                    readonly ADD
+                else
+                    error "${OPTION} requires an option."
+                    exit 1
+                fi
                 ;;
-            c | compose)
-                case ${OPTARG} in
-                    generate | merge) ;&
-                    down | pull | stop | restart | update | up) ;&
-                    "down "* | "pull "* | "stop "* | "restart "* | "update "* | "up "*)
-                        local MULTIOPT
-                        MULTIOPT=("$OPTARG")
-                        until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
-                            MULTIOPT+=("$(eval "echo \${$OPTIND}")")
-                            OPTIND=$((OPTIND + 1))
-                        done
-                        COMPOSE=$(printf "%s " "${MULTIOPT[@]}" | xargs)
-                        readonly COMPOSE
-                        ;;
-                    *)
-                        echo "Invalid compose option."
-                        exit 1
-                        ;;
-                esac
+            compose)
+                if [[ -n ${!OPTIND-} ]]; then
+                    OPTARG="${!OPTIND}"
+                    OPTIND=$((OPTIND + 1))
+                fi
+                ;&
+            c)
+                if [[ -n ${OPTARG-} ]]; then
+                    case ${OPTARG} in
+                        generate | merge) ;&
+                        down | pull | stop | restart | update | up) ;&
+                        "down "* | "pull "* | "stop "* | "restart "* | "update "* | "up "*)
+                            local MULTIOPT
+                            MULTIOPT=("$OPTARG")
+                            until [[ -z ${!OPTIND-} || ${!OPTIND} =~ ^-.* ]]; do
+                                MULTIOPT+=("${!OPTIND}")
+                                OPTIND=$((OPTIND + 1))
+                            done
+                            COMPOSE=$(printf "%s " "${MULTIOPT[@]}" | xargs)
+                            readonly COMPOSE
+                            ;;
+                        *)
+                            error "Invalid compose option ${OPTARG}."
+                            exit 1
+                            ;;
+                    esac
+                else
+                    readonly COMPOSE=update
+                fi
                 ;;
             e | env)
                 readonly ENVMETHOD='env'
@@ -320,8 +341,8 @@ cmdline() {
                 readonly ENVMETHOD=${OPTION}
                 local MULTIOPT
                 MULTIOPT=("$OPTARG")
-                until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
-                    MULTIOPT+=("$(eval "echo \${$OPTIND}")")
+                until [[ -z ${!OPTIND-} || ${!OPTIND} =~ ^-.* ]]; do
+                    MULTIOPT+=("${!OPTIND}")
                     OPTIND=$((OPTIND + 1))
                 done
                 ENVAPP=$(printf "%s " "${MULTIOPT[@]}" | xargs)
@@ -347,8 +368,8 @@ cmdline() {
                 if [[ -z ${ENVVAR-} ]]; then
                     local MULTIOPT
                     MULTIOPT=("$OPTARG")
-                    until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
-                        MULTIOPT+=("$(eval "echo \${$OPTIND}")")
+                    until [[ -z ${!OPTIND-} || ${!OPTIND} =~ ^-.* ]]; do
+                        MULTIOPT+=("${!OPTIND}")
                         OPTIND=$((OPTIND + 1))
                     done
                     ENVVAR=$(printf "%s " "${MULTIOPT[@]}" | xargs)
@@ -356,6 +377,10 @@ cmdline() {
                 fi
                 ;;
             env-set | env-set-lower)
+                if [[ -n ${!OPTIND-} ]]; then
+                    OPTARG="${!OPTIND}"
+                    OPTIND=$((OPTIND + 1))
+                fi
                 readonly ENVMETHOD=${OPTION}
                 if [[ -z ${ENVVAR-} ]]; then
                     readonly ENVARG=${OPTARG}
@@ -393,32 +418,65 @@ cmdline() {
             p | prune)
                 readonly PRUNE=true
                 ;;
-            r | remove)
-                local MULTIOPT
-                MULTIOPT=("$OPTARG")
-                until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
-                    MULTIOPT+=("$(eval "echo \${$OPTIND}")")
+            remove)
+                if [[ -n ${!OPTIND-} ]]; then
+                    OPTARG="${!OPTIND}"
                     OPTIND=$((OPTIND + 1))
-                done
-                REMOVE=$(printf "%s " "${MULTIOPT[@]}" | xargs)
-                readonly REMOVE
+                fi
+                ;&
+            r)
+                if [[ -n ${OPTARG-} ]]; then
+                    local MULTIOPT
+                    MULTIOPT=("$OPTARG")
+                    until [[ -z ${!OPTIND-} || ${!OPTIND} =~ ^-.* ]]; do
+                        MULTIOPT+=("${!OPTIND}")
+                        OPTIND=$((OPTIND + 1))
+                    done
+                    REMOVE=$(printf "%s " "${MULTIOPT[@]}" | xargs)
+                    readonly REMOVE
+                else
+                    error "${OPTION} requires an option."
+                    exit 1
+                fi
                 ;;
-            s | status)
-                readonly STATUSMETHOD='status'
-                local MULTIOPT
-                MULTIOPT=("$OPTARG")
-                until [[ $(eval "echo \${$OPTIND}" 2> /dev/null) =~ ^-.* ]] || [[ -z $(eval "echo \${$OPTIND}" 2> /dev/null) ]]; do
-                    MULTIOPT+=("$(eval "echo \${$OPTIND}")")
+            status)
+                if [[ -n ${!OPTIND-} ]]; then
+                    OPTARG="${!OPTIND}"
                     OPTIND=$((OPTIND + 1))
-                done
-                STATUS=$(printf "%s " "${MULTIOPT[@]}" | xargs)
-                readonly STATUS
+                fi
+                ;&
+            s)
+                if [[ -n ${OPTARG-} ]]; then
+                    readonly STATUSMETHOD='status'
+                    local MULTIOPT
+                    MULTIOPT=("$OPTARG")
+                    until [[ -z ${!OPTIND-} || ${!OPTIND} =~ ^-.* ]]; do
+                        MULTIOPT+=("${!OPTIND}")
+                        OPTIND=$((OPTIND + 1))
+                    done
+                    STATUS=$(printf "%s " "${MULTIOPT[@]}" | xargs)
+                    readonly STATUS
+                else
+                    error "${OPTION} requires an option."
+                    exit 1
+                fi
                 ;;
             status-*)
                 readonly STATUSMETHOD=${OPTION}
                 ;;
-            t | test)
-                readonly TEST=${OPTARG}
+            test)
+                if [[ -n ${!OPTIND-} ]]; then
+                    OPTARG="${!OPTIND}"
+                    OPTIND=$((OPTIND + 1))
+                fi
+                ;&
+            t)
+                if [[ -n ${OPTARG-} ]]; then
+                    readonly TEST=${OPTARG}
+                else
+                    error "${OPTION} requires an option."
+                    exit 1
+                fi
                 ;;
             theme)
                 readonly THEMEMETHOD='theme'
@@ -452,24 +510,17 @@ cmdline() {
                 ;;
             :)
                 case ${OPTARG} in
-                    c | compose)
+                    c)
                         readonly COMPOSE=update
                         ;;
-                    e | env)
-                        if [[ -z ${ENVMETHOD-} ]]; then
-                            readonly ENVMETHOD="env"
-                        fi
-                        ;;
-                    r | remove)
+                    r)
                         readonly REMOVE=true
                         ;;
-                    u | update)
-                        if [[ -z ${UPDATE-} ]]; then
-                            readonly UPDATE=true
-                        fi
+                    u)
+                        readonly UPDATE=true
                         ;;
                     *)
-                        echo "${OPTARG} requires an option."
+                        error "${OPTARG} requires an option."
                         exit 1
                         ;;
                 esac
