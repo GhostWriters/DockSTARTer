@@ -281,7 +281,6 @@ cmdline() {
             OPTION="${OPTARG}"       # extract long option name
             OPTARG=''
         fi
-        notice "OPTION=[${OPTION}], OPTARG=[${OPTARG-}]"
         case ${OPTION} in
             add)
                 if [[ -n ${!OPTIND-} ]]; then
