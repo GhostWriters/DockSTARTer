@@ -438,6 +438,22 @@ cmdline() {
                     exit 1
                 fi
                 ;;
+            status-*)
+                if [[ -n ${!OPTIND-} ]]; then
+                    readonly STATUSMETHOD=${OPTION}
+                    local MULTIOPT
+                    MULTIOPT=("$OPTARG")
+                    until [[ -z ${!OPTIND-} || ${!OPTIND} =~ ^-.* ]]; do
+                        MULTIOPT+=("${!OPTIND}")
+                        OPTIND=$((OPTIND + 1))
+                    done
+                    STATUS=$(printf "%s " "${MULTIOPT[@]}" | xargs)
+                    readonly STATUS
+                else
+                    error "${OPTION} requires an option."
+                    exit 1
+                fi
+                ;;
             status)
                 if [[ -n ${!OPTIND-} ]]; then
                     OPTARG="${!OPTIND}"
@@ -459,9 +475,6 @@ cmdline() {
                     error "${OPTION} requires an option."
                     exit 1
                 fi
-                ;;
-            status-*)
-                readonly STATUSMETHOD=${OPTION}
                 ;;
             test)
                 if [[ -n ${!OPTIND-} ]]; then
