@@ -430,11 +430,16 @@ cmdline() {
             theme-*)
                 readonly THEMEMETHOD=${OPTION}
                 ;;
-            u | update)
-                UPDATE=true
+            update)
                 if [[ -n ${!OPTIND-} ]]; then
-                    UPDATE="${!OPTIND}"
+                    OPTARG="${!OPTIND}"
                     OPTIND=$((OPTIND + 1))
+                fi
+                ;&
+            u)
+                UPDATE=true
+                if [[ -n ${OPTARG-} ]]; then
+                    UPDATE="${OPTARG}"
                 fi
                 readonly UPDATE
                 ;;
@@ -459,7 +464,9 @@ cmdline() {
                         readonly REMOVE=true
                         ;;
                     u | update)
-                        readonly UPDATE=true
+                        if [[ -z ${UPDATE-} ]]; then
+                            readonly UPDATE=true
+                        fi
                         ;;
                     *)
                         echo "${OPTARG} requires an option."
