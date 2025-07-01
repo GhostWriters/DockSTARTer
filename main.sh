@@ -280,15 +280,13 @@ cmdline() {
         if [ "$OPTION" = "-" ]; then # long option: reformulate OPTION and OPTARG
             OPTION="${OPTARG}"       # extract long option name
             OPTARG=''
+            if [[ -n ${!OPTIND-} ]]; then
+                OPTARG="${!OPTIND}"
+                OPTIND=$((OPTIND + 1))
+            fi
         fi
         case ${OPTION} in
-            add)
-                if [[ -n ${!OPTIND-} ]]; then
-                    OPTARG="${!OPTIND}"
-                    OPTIND=$((OPTIND + 1))
-                fi
-                ;&
-            a)
+            a | add)
                 if [[ -n ${OPTARG-} ]]; then
                     local MULTIOPT
                     MULTIOPT=("$OPTARG")
@@ -303,13 +301,7 @@ cmdline() {
                     exit 1
                 fi
                 ;;
-            compose)
-                if [[ -n ${!OPTIND-} ]]; then
-                    OPTARG="${!OPTIND}"
-                    OPTIND=$((OPTIND + 1))
-                fi
-                ;&
-            c)
+            c | compose)
                 if [[ -n ${OPTARG-} ]]; then
                     case ${OPTARG} in
                         generate | merge) ;&
@@ -376,10 +368,6 @@ cmdline() {
                 fi
                 ;;
             env-set | env-set-lower)
-                if [[ -n ${!OPTIND-} ]]; then
-                    OPTARG="${!OPTIND}"
-                    OPTIND=$((OPTIND + 1))
-                fi
                 readonly ENVMETHOD=${OPTION}
                 if [[ -z ${ENVVAR-} ]]; then
                     readonly ENVARG=${OPTARG}
@@ -417,13 +405,7 @@ cmdline() {
             p | prune)
                 readonly PRUNE=true
                 ;;
-            remove)
-                if [[ -n ${!OPTIND-} ]]; then
-                    OPTARG="${!OPTIND}"
-                    OPTIND=$((OPTIND + 1))
-                fi
-                ;&
-            r)
+            r | remove)
                 if [[ -n ${OPTARG-} ]]; then
                     local MULTIOPT
                     MULTIOPT=("$OPTARG")
@@ -439,7 +421,7 @@ cmdline() {
                 fi
                 ;;
             status-*)
-                if [[ -n ${!OPTIND-} ]]; then
+                if [[ -n ${OPTARG-} ]]; then
                     readonly STATUSMETHOD=${OPTION}
                     local MULTIOPT
                     MULTIOPT=("$OPTARG")
@@ -454,13 +436,7 @@ cmdline() {
                     exit 1
                 fi
                 ;;
-            status)
-                if [[ -n ${!OPTIND-} ]]; then
-                    OPTARG="${!OPTIND}"
-                    OPTIND=$((OPTIND + 1))
-                fi
-                ;&
-            s)
+            s | status)
                 if [[ -n ${OPTARG-} ]]; then
                     readonly STATUSMETHOD='status'
                     local MULTIOPT
@@ -476,13 +452,7 @@ cmdline() {
                     exit 1
                 fi
                 ;;
-            test)
-                if [[ -n ${!OPTIND-} ]]; then
-                    OPTARG="${!OPTIND}"
-                    OPTIND=$((OPTIND + 1))
-                fi
-                ;&
-            t)
+            t | test)
                 if [[ -n ${OPTARG-} ]]; then
                     readonly TEST=${OPTARG}
                 else
@@ -492,7 +462,7 @@ cmdline() {
                 ;;
             theme)
                 readonly THEMEMETHOD='theme'
-                if [[ -n ${!OPTIND-} ]]; then
+                if [[ -n ${OPTARG-} ]]; then
                     readonly THEME="${!OPTIND}"
                     OPTIND=$((OPTIND + 1))
                 fi
@@ -500,13 +470,7 @@ cmdline() {
             theme-*)
                 readonly THEMEMETHOD=${OPTION}
                 ;;
-            update)
-                if [[ -n ${!OPTIND-} ]]; then
-                    OPTARG="${!OPTIND}"
-                    OPTIND=$((OPTIND + 1))
-                fi
-                ;&
-            u)
+            u | update)
                 UPDATE=true
                 if [[ -n ${OPTARG-} ]]; then
                     UPDATE="${OPTARG}"
