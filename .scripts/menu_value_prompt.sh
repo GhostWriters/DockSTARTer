@@ -346,12 +346,15 @@ menu_value_prompt() {
 
                     case "${VarName}" in
                         "${APPNAME}__ENABLED")
-                            if [[ ${StrippedValue} == true ]] || [[ ${StrippedValue} == false ]]; then
-                                ValueValid="true"
-                            else
-                                ValueValid="false"
-                                dialog_error "${Title}" "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not ${DC[Highlight]}true${DC[NC]} or ${DC[Highlight]}false${DC[NC]}. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
-                            fi
+                            case "${StrippedValue^^}" in
+                                ON | TRUE | YES | OFF | FALSE | NO)
+                                    ValueValid="true"
+                                    ;;
+                                *)
+                                    ValueValid="false"
+                                    dialog_error "${Title}" "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not ${DC[Highlight]}true${DC[NC]}/${DC[Highlight]}on${DC[NC]}/${DC[Highlight]}yes${DC[NC]} or ${DC[Highlight]}false${DC[NC]}/${DC[Highlight]}off${DC[NC]}/${DC[Highlight]}no${DC[NC]}. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
+                                ;;
+                            esac
                             ;;
                         "${APPNAME}__NETWORK_MODE")
                             case "${StrippedValue}" in
