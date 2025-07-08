@@ -346,12 +346,15 @@ menu_value_prompt() {
 
                     case "${VarName}" in
                         "${APPNAME}__ENABLED")
-                            if [[ ${StrippedValue} == true ]] || [[ ${StrippedValue} == false ]]; then
-                                ValueValid="true"
-                            else
-                                ValueValid="false"
-                                dialog_error "${Title}" "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not ${DC[Highlight]}true${DC[NC]} or ${DC[Highlight]}false${DC[NC]}. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
-                            fi
+                            case "${StrippedValue^^}" in
+                                ON | TRUE | YES | OFF | FALSE | NO)
+                                    ValueValid="true"
+                                    ;;
+                                *)
+                                    ValueValid="false"
+                                    dialog_error "${Title}" "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not ${DC[Highlight]}true${DC[NC]}/${DC[Highlight]}on${DC[NC]}/${DC[Highlight]}yes${DC[NC]} or ${DC[Highlight]}false${DC[NC]}/${DC[Highlight]}off${DC[NC]}/${DC[Highlight]}no${DC[NC]}. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
+                                ;;
+                            esac
                             ;;
                         "${APPNAME}__NETWORK_MODE")
                             case "${StrippedValue}" in
@@ -360,7 +363,7 @@ menu_value_prompt() {
                                     ;;
                                 *)
                                     ValueValid="false"
-                                    dialog_error "${Title}" "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid network mode. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
+                                    dialog_error "${Title}" "${DialogHeading}\n\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid network mode. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
                                     ;;
                             esac
                             ;;
@@ -371,32 +374,32 @@ menu_value_prompt() {
                                     ;;
                                 *)
                                     ValueValid="false"
-                                    dialog_error "${Title}" "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid restart value. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
+                                    dialog_error "${Title}" "${DialogHeading}\n\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid restart value. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
                                     ;;
                             esac
                             ;;
                         "${APPNAME}__VOLUME_"*)
                             if [[ ${StrippedValue} == "/" ]]; then
-                                dialog_error "${Title}" "${DialogHeading}\nCannot use ${DC[Highlight]}/${DC[NC]} for ${DC[Highlight]}${CleanVarName}${DC[NC]}. Please select another folder."
+                                dialog_error "${Title}" "${DialogHeading}\n\nCannot use ${DC[Highlight]}/${DC[NC]} for ${DC[Highlight]}${CleanVarName}${DC[NC]}. Please select another folder."
                                 ValueValid="false"
                             elif [[ ${StrippedValue} == *~* ]]; then
                                 local CORRECTED_DIR="${OptionValue["${CurrentValueOption}"]//\~/"${DETECTED_HOMEDIR}"}"
-                                if run_script 'question_prompt' Y "${DialogHeading}\nCannot use the ${DC[Highlight]}~${DC[NC]} shortcut in ${DC[Highlight]}${CleanVarName}${DC[NC]}. Would you like to use ${DC[Highlight]}${CORRECTED_DIR}${DC[NC]} instead?" "${Title}"; then
+                                if run_script 'question_prompt' Y "${DialogHeading}\n\nCannot use the ${DC[Highlight]}~${DC[NC]} shortcut in ${DC[Highlight]}${CleanVarName}${DC[NC]}. Would you like to use ${DC[Highlight]}${CORRECTED_DIR}${DC[NC]} instead?" "${Title}"; then
                                     OptionValue["${CurrentValueOption}"]="${CORRECTED_DIR}"
                                     ValueValid="false"
                                     dialog_success "${Title}" "Returning to the previous menu to confirm selection."
                                 else
                                     ValueValid="false"
-                                    dialog_error "${Title}" "${DialogHeading}\nCannot use the ${DC[Highlight]}~${DC[NC]} shortcut in ${DC[Highlight]}${CleanVarName}${DC[DC]}. Please select another folder."
+                                    dialog_error "${Title}" "${DialogHeading}\n\nCannot use the ${DC[Highlight]}~${DC[NC]} shortcut in ${DC[Highlight]}${CleanVarName}${DC[DC]}. Please select another folder."
                                 fi
                             elif [[ -d ${StrippedValue} ]]; then
-                                if run_script 'question_prompt' Y "${DialogHeading}\nWould you like to set permissions on ${OptionValue["${CurrentValueOption}"]} ?" "${Title}"; then
+                                if run_script 'question_prompt' Y "${DialogHeading}\n\nWould you like to set permissions on ${OptionValue["${CurrentValueOption}"]} ?" "${Title}"; then
                                     run_script_dialog "Setting Permissions" "${DC[Heading]}${StrippedValue}${DC[NC]}" "${DIALOGTIMEOUT}" \
                                         'set_permissions' "${StrippedValue}"
                                 fi
                                 ValueValid="true"
                             else
-                                if run_script 'question_prompt' Y "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid path. Would you like to attempt to create it?" "${Title}"; then
+                                if run_script 'question_prompt' Y "${DialogHeading}\n\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid path. Would you like to attempt to create it?" "${Title}"; then
                                     {
                                         mkdir -p "${StrippedValue}" || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p \"${StrippedValue}\""
                                         run_script 'set_permissions' "${StrippedValue}"
@@ -404,7 +407,7 @@ menu_value_prompt() {
                                     dialog_error "${DC["TitleSuccess"]}${Title}" --msgbox "${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} folder was created successfully." "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
                                     ValueValid="true"
                                 else
-                                    dialog_error "${Title}" "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid path. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
+                                    dialog_error "${Title}" "${DialogHeading}\n\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid path. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
                                     ValueValid="false"
                                 fi
                             fi
@@ -421,7 +424,7 @@ menu_value_prompt() {
                                     ValueValid="true"
                                 fi
                             else
-                                dialog_error "${Title}" "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid ${CleanVarName}. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
+                                dialog_error "${Title}" "${DialogHeading}\n\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid ${CleanVarName}. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
                                 ValueValid="false"
                             fi
                             ;;
