@@ -52,7 +52,7 @@ question_prompt() {
                 "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
             )
             local -i YesNoDialogButtonPressed=0
-            dialog "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?
+            _dialog_ "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?
             case ${DIALOG_BUTTONS[YesNoDialogButtonPressed]-} in
                 OK)
                     YN="Y"

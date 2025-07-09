@@ -31,7 +31,7 @@ menu_main() {
         )
         local MainChoice
         local -i MainDialogButtonPressed=0
-        MainChoice=$(dialog --default-item "${LastMainChoice}" "${MainChoiceDialog[@]}") || MainDialogButtonPressed=$?
+        MainChoice=$(_dialog_ --default-item "${LastMainChoice}" "${MainChoiceDialog[@]}") || MainDialogButtonPressed=$?
         LastMainChoice=${MainChoice}
         case ${DIALOG_BUTTONS[MainDialogButtonPressed]-} in
             OK)

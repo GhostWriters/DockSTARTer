@@ -177,7 +177,7 @@ menu_add_var() {
                     --title "${DC["Title"]}${Title}"
                 )
                 local -i MenuTextLines
-                MenuTextLines="$(dialog "${SelectValueDialogParams[@]}" --print-text-size "${SelectValueMenuText}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" | cut -d ' ' -f 1)"
+                MenuTextLines="$(_dialog_ "${SelectValueDialogParams[@]}" --print-text-size "${SelectValueMenuText}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" | cut -d ' ' -f 1)"
                 local -i SelectValueDialogButtonPressed=0
                 local -a SelectValueDialog=(
                     "${SelectValueDialogParams[@]}"
@@ -190,7 +190,7 @@ menu_add_var() {
                     "${ValueOptions[@]}"
                 )
                 SelectValueDialogButtonPressed=0
-                SelectedOption=$(dialog "${SelectValueDialog[@]}") || SelectValueDialogButtonPressed=$?
+                SelectedOption=$(_dialog_ "${SelectValueDialog[@]}") || SelectValueDialogButtonPressed=$?
                 case ${DIALOG_BUTTONS[SelectValueDialogButtonPressed]-} in
                     OK) # SELECT button
                         if [[ ${SelectedOption} == "${OptionClear}" ]]; then
@@ -303,7 +303,7 @@ menu_add_var() {
                     "${ValueOptions[@]}"
                 )
                 local InputValueDialogButtonPressed=0
-                VarName=$(dialog "${InputValueDialog[@]}") || InputValueDialogButtonPressed=$?
+                VarName=$(_dialog_ "${InputValueDialog[@]}") || InputValueDialogButtonPressed=$?
                 case ${DIALOG_BUTTONS[InputValueDialogButtonPressed]-} in
                     OK)
                         local Default

@@ -27,7 +27,7 @@ menu_display_options() {
         )
         local Choice
         local -i DialogButtonPressed=0
-        Choice=$(dialog --default-item "${LastChoice}" "${ChoiceDialog[@]}") || DialogButtonPressed=$?
+        Choice=$(_dialog_ --default-item "${LastChoice}" "${ChoiceDialog[@]}") || DialogButtonPressed=$?
         LastChoice=${Choice}
         case ${DIALOG_BUTTONS[DialogButtonPressed]-} in
             OK)
