@@ -11,3 +11,6 @@ MD033: false
 
 # MD034/no-bare-urls : Bare URL used : https://github.com/DavidAnson/markdownlint/blob/main/doc/md034.md
 MD034: false
+
+# MD059/link-text-should-be-descriptive : Link text should be descriptive : https://github.com/DavidAnson/markdownlint/blob/main/doc/md059.md
+MD059: false

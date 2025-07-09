@@ -14,7 +14,7 @@ Try not to [code like a cowboy](https://en.wikipedia.org/wiki/Cowboy_coding).
 1. Run `bash /path/to/your/ds-repo/main.sh`
 1. The `ds` symlink should be created but let's verify. We'll run `whereis` to see where `ds` is and then run `ls -l` on this path to ensure the symlink points to `/path/to/your/ds-repo/main.sh`. E.g:
 
-```
+```shell
 dev0@dev0:~/gitsource/DockSTARTer$ whereis ds
 ds: /usr/bin/ds /usr/local/bin/ds
 dev0@dev0:~/gitsource/DockSTARTer$ ls -l /usr/bin/ds
