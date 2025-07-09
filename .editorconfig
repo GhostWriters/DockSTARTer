@@ -1,21 +1,39 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+# top-most EditorConfig file
 root = true
 
 [*]
+indent_style = space
+indent_size = 2
+end_of_line = lf
 charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
-end_of_line = lf
 
-[**.md]
+[*.js]
 indent_style = space
 indent_size = 2
+end_of_line = lf
+
+[*.{json,jsonc}]
+indent_style = space
+indent_size = 2
+end_of_line = lf
+
+[*.md]
+indent_style = space
+indent_size = 4
+end_of_line = lf
 
 [**.sh]
 indent_style = space
 indent_size = 4
+end_of_line = lf
 switch_case_indent = true  # like -ci
 space_redirects    = true  # like -sr
 
-[**.yaml,**.yml]
+[*.{yaml,yml}]
 indent_style = space
 indent_size = 2
+end_of_line = lf

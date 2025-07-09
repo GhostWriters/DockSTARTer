@@ -1,0 +1,13 @@
+# https://github.com/DavidAnson/markdownlint/blob/main/schema/.markdownlint.yaml
+
+# Default state for all rules
+default: true
+
+# MD013/line-length : Line length : https://github.com/DavidAnson/markdownlint/blob/main/doc/md013.md
+MD013: false
+
+# MD033/no-inline-html : Inline HTML : https://github.com/DavidAnson/markdownlint/blob/main/doc/md033.md
+MD033: false
+
+# MD034/no-bare-urls : Bare URL used : https://github.com/DavidAnson/markdownlint/blob/main/doc/md034.md
+MD034: false
