@@ -624,30 +624,30 @@ highlighted_list() {
 }
 
 _dialog_() {
-    local LEFT_BACKTITLE RIGHT_BACKTITLE
-    local CLEAN_LEFT_BACKTITLE CLEAN_RIGHT_BACKTITLE
+    local LeftBackTitle RightBackTitle
+    local CleanLeftBackTitle CleanRightBackTitle
 
-    CLEAN_LEFT_BACKTITLE="${APPLICATION_NAME}"
-    LEFT_BACKTITLE="${DC[BackTitle]}${APPLICATION_NAME}${DC[NC]}"
+    CleanLeftBackTitle="${APPLICATION_NAME}"
+    LeftBackTitle="${DC[BackTitle]}${APPLICATION_NAME}${DC[NC]}"
 
-    CLEAN_RIGHT_BACKTITLE=''
-    RIGHT_BACKTITLE=''
+    CleanRightBackTitle=''
+    RightBackTitle=''
     if run_script 'ds_update_available'; then
-        CLEAN_RIGHT_BACKTITLE="(Update Available)"
-        RIGHT_BACKTITLE="(Update Available)"
+        CleanRightBackTitle="(Update Available)"
+        RightBackTitle="(Update Available)"
     fi
     if [[ ${APPLICATION_VERSION-} ]]; then
-        CLEAN_RIGHT_BACKTITLE+=" [${APPLICATION_VERSION}]"
-        RIGHT_BACKTITLE+=" ${DC[BackTitle]}[${APPLICATION_VERSION}]${DC[NC]}"
+        CleanRightBackTitle+=" [${APPLICATION_VERSION}]"
+        RightBackTitle+=" ${DC[BackTitle]}[${APPLICATION_VERSION}]${DC[NC]}"
     fi
 
     local -i IndentLength
-    IndentLength=$((COLUMNS - ${#CLEAN_LEFT_BACKTITLE} - ${#CLEAN_RIGHT_BACKTITLE} - 2))
-    local INDENT
-    INDENT="$(printf %${IndentLength}s '')"
-    BACKTITLE="${LEFT_BACKTITLE}${INDENT}${RIGHT_BACKTITLE}"
+    IndentLength=$((COLUMNS - ${#CleanLeftBackTitle} - ${#CleanRightBackTitle} - 2))
+    local Indent
+    Indent="$(printf %${IndentLength}s '')"
+    BackTitle="${LeftBackTitle}${Indent}${RightBackTitle}"
 
-    ${DIALOG} --backtitle "${BACKTITLE}" "$@"
+    ${DIALOG} --backtitle "${BackTitle}" "$@"
 }
 
 # Check to see if we should use a dialog box
