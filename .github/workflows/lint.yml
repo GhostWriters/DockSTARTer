@@ -45,7 +45,7 @@ jobs:
       - name: install alpine packages
         run: apk add --no-cache findutils
       - name: shfmt
-        run: find . -name '*.sh' -exec mvdan -s -d {} +
+        run: find . -name '*.sh' -exec shfmt -s -d {} +
 
   yamllint:
     runs-on: ubuntu-latest
