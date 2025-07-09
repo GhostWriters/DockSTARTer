@@ -64,7 +64,7 @@ menu_app_select() {
             --title "${DC["Title"]}${Title}"
         )
         local -i MenuTextLines
-        MenuTextLines="$(dialog "${SelectedAppsDialogParams[@]}" --print-text-size "${SelectAppsDialogText}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" | cut -d ' ' -f 1)"
+        MenuTextLines="$(_dialog_ "${SelectedAppsDialogParams[@]}" --print-text-size "${SelectAppsDialogText}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" | cut -d ' ' -f 1)"
         local -a SelectedAppsDialog=(
             "${SelectedAppsDialogParams[@]}"
             --ok-label "Done"
@@ -77,7 +77,7 @@ menu_app_select() {
             "${AppList[@]}"
         )
         SelectedAppsDialogButtonPressed=0
-        SelectedApps=$(dialog "${SelectedAppsDialog[@]}") || SelectedAppsDialogButtonPressed=$?
+        SelectedApps=$(_dialog_ "${SelectedAppsDialog[@]}") || SelectedAppsDialogButtonPressed=$?
     fi
     case ${DIALOG_BUTTONS[SelectedAppsDialogButtonPressed]-} in
         OK)

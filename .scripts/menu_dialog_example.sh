@@ -47,7 +47,7 @@ menu_dialog_example() {
 
     local -i MenuTextLines
     MenuTextLines="$(
-        dialog \
+        _dialog_ \
             --stdout \
             --print-text-size \
             "${DialogText}" \

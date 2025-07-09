@@ -6,9 +6,132 @@ export LC_ALL=C
 export PROMPT="CLI"
 export MENU=false
 
+# Script Information
+# https://stackoverflow.com/questions/59895/get-the-source-directory-of-a-bash-script-from-within-the-script-itself/246128#246128
+get_scriptname() {
+    # https://stackoverflow.com/questions/35006457/choosing-between-0-and-bash-source/35006505#35006505
+    local SOURCE=${BASH_SOURCE[0]:-$0}
+    while [[ -L ${SOURCE} ]]; do # resolve ${SOURCE} until the file is no longer a symlink
+        local DIR
+        DIR=$(cd -P "$(dirname "${SOURCE}")" > /dev/null 2>&1 && pwd)
+        SOURCE=$(readlink "${SOURCE}")
+        [[ ${SOURCE} != /* ]] && SOURCE="${DIR}/${SOURCE}" # if ${SOURCE} was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+    done
+    echo "${SOURCE}"
+}
+
+SCRIPTPATH=$(cd -P "$(dirname "$(get_scriptname)")" > /dev/null 2>&1 && pwd)
+readonly SCRIPTPATH
+SCRIPTNAME="${SCRIPTPATH}/$(basename "$(get_scriptname)")"
+readonly SCRIPTNAME
+
+# Terminal Colors
+declare -Agr B=( # Background
+    [B]=$(tput setab 4 2> /dev/null || echo -e "\e[44m") # Blue
+    [C]=$(tput setab 6 2> /dev/null || echo -e "\e[46m") # Cyan
+    [G]=$(tput setab 2 2> /dev/null || echo -e "\e[42m") # Green
+    [K]=$(tput setab 0 2> /dev/null || echo -e "\e[40m") # Black
+    [M]=$(tput setab 5 2> /dev/null || echo -e "\e[45m") # Magenta
+    [R]=$(tput setab 1 2> /dev/null || echo -e "\e[41m") # Red
+    [W]=$(tput setab 7 2> /dev/null || echo -e "\e[47m") # White
+    [Y]=$(tput setab 3 2> /dev/null || echo -e "\e[43m") # Yellow
+)
+declare -Agr F=( # Foreground
+    [B]=$(tput setaf 4 2> /dev/null || echo -e "\e[34m") # Blue
+    [C]=$(tput setaf 6 2> /dev/null || echo -e "\e[36m") # Cyan
+    [G]=$(tput setaf 2 2> /dev/null || echo -e "\e[32m") # Green
+    [K]=$(tput setaf 0 2> /dev/null || echo -e "\e[30m") # Black
+    [M]=$(tput setaf 5 2> /dev/null || echo -e "\e[35m") # Magenta
+    [R]=$(tput setaf 1 2> /dev/null || echo -e "\e[31m") # Red
+    [W]=$(tput setaf 7 2> /dev/null || echo -e "\e[37m") # White
+    [Y]=$(tput setaf 3 2> /dev/null || echo -e "\e[33m") # Yellow
+)
+NC=$(tput sgr0 2> /dev/null || echo -e "\e[0m")
+readonly NC
+BS=$(tput cup 1000 0 2> /dev/null || true) # Bottom of screen
+readonly BS
+export BS
+
+# Log Functions
+MKTEMP_LOG=$(mktemp) || echo -e "Failed to create temporary log file.\nFailing command: ${F[C]}mktemp"
+readonly MKTEMP_LOG
+echo "DockSTARTer Log" > "${MKTEMP_LOG}"
+create_strip_log_colors_SEDSTRING() {
+    # Create the search string to strip ANSI colors
+    # String is saved after creation, so this is only done on the first call
+    local -a ANSICOLORS=("${F[@]}" "${B[@]}" "${NC}")
+    for index in "${!ANSICOLORS[@]}"; do
+        # Escape characters used by sed
+        ANSICOLORS[index]=$(printf '%s' "${ANSICOLORS[index]}" | sed -E 's/[]{}()[/{}\.''''$]/\\&/g')
+    done
+    printf '%s' "s/$(
+        IFS='|'
+        printf '%s' "${ANSICOLORS[*]}"
+    )//g"
+}
+strip_log_colors_SEDSTRING="$(create_strip_log_colors_SEDSTRING)"
+readonly strip_log_colors_SEDSTRING
+strip_log_colors() {
+    printf '%s' "$*" | sed -E "${strip_log_colors_SEDSTRING}"
+}
+log() {
+    local TOTERM=${1-}
+    local MESSAGE=${2-}
+    local STRIPPED_MESSAGE
+    STRIPPED_MESSAGE=$(strip_log_colors "${MESSAGE-}")
+    if [[ -n ${TOTERM} ]]; then
+        if [[ -t 2 ]]; then
+            # Stderr is not being redirected, output with color
+            echo -e "${MESSAGE-}" >&2
+        else
+            # Stderr is being redirected, output without colorr
+            echo -e "${STRIPPED_MESSAGE-}" >&2
+        fi
+    fi
+    # Output the message to the log file without color
+    echo -e "${STRIPPED_MESSAGE-}" >> "${MKTEMP_LOG}"
+}
+trace() { log "${TRACE-}" "${NC}$(date +"%F %T") ${F[B]}[TRACE ]${NC}   $*${NC}"; }
+debug() { log "${DEBUG-}" "${NC}$(date +"%F %T") ${F[B]}[DEBUG ]${NC}   $*${NC}"; }
+info() { log "${VERBOSE-}" "${NC}$(date +"%F %T") ${F[B]}[INFO  ]${NC}   $*${NC}"; }
+notice() { log true "${NC}$(date +"%F %T") ${F[G]}[NOTICE]${NC}   $*${NC}"; }
+warn() { log true "${NC}$(date +"%F %T") ${F[Y]}[WARN  ]${NC}   $*${NC}"; }
+error() { log true "${NC}$(date +"%F %T") ${F[R]}[ERROR ]${NC}   $*${NC}"; }
+fatal() {
+    log true "${NC}$(date +"%F %T") ${B[R]}${F[W]}[FATAL ]${NC}   $*${NC}"
+    exit 1
+}
+
+# Script Runner Function
+run_script() {
+    local SCRIPTSNAME=${1-}
+    shift
+    if [[ -f ${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh ]]; then
+        # shellcheck source=/dev/null
+        source "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh"
+        ${SCRIPTSNAME} "$@"
+        return
+    else
+        fatal "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh not found."
+    fi
+}
+
+declare -rx APPLICATION_NAME='DockSTARTer'
+declare -x APPLICATION_VERSION=''
+APPLICATION_VERSION="$(run_script 'ds_version')"
+readonly APPLICATION_VERSION
+
 usage() {
+    local APPLICATION_HEADING="${APPLICATION_NAME}"
+    if [[ ${APPLICATION_VERSION-} ]]; then
+        APPLICATION_HEADING+=" [${APPLICATION_VERSION}]"
+    fi
+    if run_script 'ds_update_available'; then
+        APPLICATION_HEADING+=" (Update Available)"
+    fi
     cat << EOF
 Usage: ds [OPTION]
+${APPLICATION_HEADING}
 NOTE: ds shortcut is only available after the first run of
     bash main.sh
 
@@ -122,25 +245,6 @@ that take app names can use the form app: to refer to the same file.
 EOF
 }
 
-# Script Information
-# https://stackoverflow.com/questions/59895/get-the-source-directory-of-a-bash-script-from-within-the-script-itself/246128#246128
-get_scriptname() {
-    # https://stackoverflow.com/questions/35006457/choosing-between-0-and-bash-source/35006505#35006505
-    local SOURCE=${BASH_SOURCE[0]:-$0}
-    while [[ -L ${SOURCE} ]]; do # resolve ${SOURCE} until the file is no longer a symlink
-        local DIR
-        DIR=$(cd -P "$(dirname "${SOURCE}")" > /dev/null 2>&1 && pwd)
-        SOURCE=$(readlink "${SOURCE}")
-        [[ ${SOURCE} != /* ]] && SOURCE="${DIR}/${SOURCE}" # if ${SOURCE} was a relative symlink, we need to resolve it relative to the path where the symlink file was located
-    done
-    echo "${SOURCE}"
-}
-
-SCRIPTPATH=$(cd -P "$(dirname "$(get_scriptname)")" > /dev/null 2>&1 && pwd)
-readonly SCRIPTPATH
-SCRIPTNAME="${SCRIPTPATH}/$(basename "$(get_scriptname)")"
-readonly SCRIPTNAME
-
 DIALOG=$(command -v dialog) || true
 export DIALOG
 
@@ -149,8 +253,6 @@ declare -rx MENU_INI_FILE="${SCRIPTPATH}/${MENU_INI_NAME}"
 declare -rx THEME_FILE_NAME='theme.ini'
 declare -rx DIALOGRC_NAME='.dialogrc'
 declare -rx DIALOGRC="${SCRIPTPATH}/${DIALOGRC_NAME}"
-
-declare -rx BACKTITLE="DockSTARTer"
 
 declare -rix DIALOGTIMEOUT=3
 declare -rix DIALOG_OK=0
@@ -194,83 +296,6 @@ cleanup() {
     exit ${EXIT_CODE}
 }
 trap 'cleanup' ERR EXIT SIGABRT SIGALRM SIGHUP SIGINT SIGQUIT SIGTERM
-
-# Terminal Colors
-declare -Agr B=( # Background
-    [B]=$(tput setab 4 2> /dev/null || echo -e "\e[44m") # Blue
-    [C]=$(tput setab 6 2> /dev/null || echo -e "\e[46m") # Cyan
-    [G]=$(tput setab 2 2> /dev/null || echo -e "\e[42m") # Green
-    [K]=$(tput setab 0 2> /dev/null || echo -e "\e[40m") # Black
-    [M]=$(tput setab 5 2> /dev/null || echo -e "\e[45m") # Magenta
-    [R]=$(tput setab 1 2> /dev/null || echo -e "\e[41m") # Red
-    [W]=$(tput setab 7 2> /dev/null || echo -e "\e[47m") # White
-    [Y]=$(tput setab 3 2> /dev/null || echo -e "\e[43m") # Yellow
-)
-declare -Agr F=( # Foreground
-    [B]=$(tput setaf 4 2> /dev/null || echo -e "\e[34m") # Blue
-    [C]=$(tput setaf 6 2> /dev/null || echo -e "\e[36m") # Cyan
-    [G]=$(tput setaf 2 2> /dev/null || echo -e "\e[32m") # Green
-    [K]=$(tput setaf 0 2> /dev/null || echo -e "\e[30m") # Black
-    [M]=$(tput setaf 5 2> /dev/null || echo -e "\e[35m") # Magenta
-    [R]=$(tput setaf 1 2> /dev/null || echo -e "\e[31m") # Red
-    [W]=$(tput setaf 7 2> /dev/null || echo -e "\e[37m") # White
-    [Y]=$(tput setaf 3 2> /dev/null || echo -e "\e[33m") # Yellow
-)
-NC=$(tput sgr0 2> /dev/null || echo -e "\e[0m")
-readonly NC
-BS=$(tput cup 1000 0 2> /dev/null || true) # Bottom of screen
-readonly BS
-export BS
-
-# Log Functions
-MKTEMP_LOG=$(mktemp) || echo -e "Failed to create temporary log file.\nFailing command: ${F[C]}mktemp"
-readonly MKTEMP_LOG
-echo "DockSTARTer Log" > "${MKTEMP_LOG}"
-create_strip_log_colors_SEDSTRING() {
-    # Create the search string to strip ANSI colors
-    # String is saved after creation, so this is only done on the first call
-    local -a ANSICOLORS=("${F[@]}" "${B[@]}" "${NC}")
-    for index in "${!ANSICOLORS[@]}"; do
-        # Escape characters used by sed
-        ANSICOLORS[index]=$(printf '%s' "${ANSICOLORS[index]}" | sed -E 's/[]{}()[/{}\.''''$]/\\&/g')
-    done
-    printf '%s' "s/$(
-        IFS='|'
-        printf '%s' "${ANSICOLORS[*]}"
-    )//g"
-}
-strip_log_colors_SEDSTRING="$(create_strip_log_colors_SEDSTRING)"
-readonly strip_log_colors_SEDSTRING
-strip_log_colors() {
-    printf '%s' "$*" | sed -E "${strip_log_colors_SEDSTRING}"
-}
-log() {
-    local TOTERM=${1-}
-    local MESSAGE=${2-}
-    local STRIPPED_MESSAGE
-    STRIPPED_MESSAGE=$(strip_log_colors "${MESSAGE-}")
-    if [[ -n ${TOTERM} ]]; then
-        if [[ -t 2 ]]; then
-            # Stderr is not being redirected, output with color
-            echo -e "${MESSAGE-}" >&2
-        else
-            # Stderr is being redirected, output without colorr
-            echo -e "${STRIPPED_MESSAGE-}" >&2
-        fi
-    fi
-    # Output the message to the log file without color
-    echo -e "${STRIPPED_MESSAGE-}" >> "${MKTEMP_LOG}"
-}
-trace() { log "${TRACE-}" "${NC}$(date +"%F %T") ${F[B]}[TRACE ]${NC}   $*${NC}"; }
-debug() { log "${DEBUG-}" "${NC}$(date +"%F %T") ${F[B]}[DEBUG ]${NC}   $*${NC}"; }
-info() { log "${VERBOSE-}" "${NC}$(date +"%F %T") ${F[B]}[INFO  ]${NC}   $*${NC}"; }
-notice() { log true "${NC}$(date +"%F %T") ${F[G]}[NOTICE]${NC}   $*${NC}"; }
-warn() { log true "${NC}$(date +"%F %T") ${F[Y]}[WARN  ]${NC}   $*${NC}"; }
-error() { log true "${NC}$(date +"%F %T") ${F[R]}[ERROR ]${NC}   $*${NC}"; }
-fatal() {
-    log true "${NC}$(date +"%F %T") ${B[R]}${F[W]}[FATAL ]${NC}   $*${NC}"
-    exit 1
-}
 
 # Command Line Arguments
 readonly ARGS=("$@")
@@ -589,20 +614,6 @@ check_sudo() {
     fi
 }
 
-# Script Runner Function
-run_script() {
-    local SCRIPTSNAME=${1-}
-    shift
-    if [[ -f ${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh ]]; then
-        # shellcheck source=/dev/null
-        source "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh"
-        ${SCRIPTSNAME} "$@"
-        return
-    else
-        fatal "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh not found."
-    fi
-}
-
 # Take whitespace and newline delimited words and output a single line highlited list for dialog
 highlighted_list() {
     local List
@@ -610,6 +621,33 @@ highlighted_list() {
     if [[ -n ${List-} ]]; then
         echo "${DC["Subtitle"]}${List// /${DC[NC]} ${DC["Subtitle"]}}${DC[NC]}"
     fi
+}
+
+_dialog_() {
+    local LeftBackTitle RightBackTitle
+    local CleanLeftBackTitle CleanRightBackTitle
+
+    CleanLeftBackTitle="${APPLICATION_NAME}"
+    LeftBackTitle="${DC[BackTitle]}${APPLICATION_NAME}${DC[NC]}"
+
+    CleanRightBackTitle=''
+    RightBackTitle=''
+    if run_script 'ds_update_available'; then
+        CleanRightBackTitle="(Update Available)"
+        RightBackTitle="(Update Available)"
+    fi
+    if [[ ${APPLICATION_VERSION-} ]]; then
+        CleanRightBackTitle+=" [${APPLICATION_VERSION}]"
+        RightBackTitle+=" ${DC[BackTitle]}[${APPLICATION_VERSION}]${DC[NC]}"
+    fi
+
+    local -i IndentLength
+    IndentLength=$((COLUMNS - ${#CleanLeftBackTitle} - ${#CleanRightBackTitle} - 2))
+    local Indent
+    Indent="$(printf %${IndentLength}s '')"
+    BackTitle="${LeftBackTitle}${Indent}${RightBackTitle}"
+
+    ${DIALOG} --backtitle "${BackTitle}" "$@"
 }
 
 # Check to see if we should use a dialog box
@@ -622,7 +660,7 @@ dialog_pipe() {
     local Title=${1:-}
     local SubTitle=${2:-}
     local TimeOut=${3:-0}
-    dialog \
+    _dialog_ \
         --title "${DC["Title"]}${Title}" \
         --timeout "${TimeOut}" \
         --programbox "${DC["Subtitle"]}${SubTitle}" \
@@ -669,7 +707,7 @@ dialog_message() {
     local Title=${1:-}
     local Message=${2:-}
     local TimeOut=${3:-0}
-    dialog \
+    _dialog_ \
         --title "${Title}" \
         --timeout "${TimeOut}" \
         --msgbox "${Message}" \

@@ -49,7 +49,7 @@ menu_display_options_general() {
         )
         local Choices
         local -i DialogButtonPressed=0
-        Choices=$(dialog "${ChoiceDialog[@]}") || DialogButtonPressed=$?
+        Choices=$(_dialog_ "${ChoiceDialog[@]}") || DialogButtonPressed=$?
         case ${DIALOG_BUTTONS[DialogButtonPressed]-} in
             OK)
                 local -a ChoicesArray OptionsToTurnOff OptionsToTurnOn

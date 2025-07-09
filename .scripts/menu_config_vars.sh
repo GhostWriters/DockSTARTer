@@ -159,7 +159,7 @@ menu_config_vars() {
                 "${LineOptions[@]}"
             )
             local -i LineDialogButtonPressed=0
-            LineChoice=$(dialog "${LineDialog[@]}") || LineDialogButtonPressed=$?
+            LineChoice=$(_dialog_ "${LineDialog[@]}") || LineDialogButtonPressed=$?
             case ${DIALOG_BUTTONS[LineDialogButtonPressed]-} in
                 OK) # Select
                     LastLineChoice="${LineChoice}"

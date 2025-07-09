@@ -298,7 +298,7 @@ menu_value_prompt() {
             --item-help
         )
         local -i MenuTextLines
-        MenuTextLines="$(dialog "${SelectValueDialogParams[@]}" --print-text-size "${SelectValueMenuText}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" | cut -d ' ' -f 1)"
+        MenuTextLines="$(_dialog_ "${SelectValueDialogParams[@]}" --print-text-size "${SelectValueMenuText}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" | cut -d ' ' -f 1)"
         local -i SelectValueDialogButtonPressed=0
         local SelectedValue
         local -a SelectValueDialog=(
@@ -312,7 +312,7 @@ menu_value_prompt() {
             "${ValueOptions[@]}"
         )
         SelectValueDialogButtonPressed=0
-        SelectedValue=$(dialog "${SelectValueDialog[@]}") || SelectValueDialogButtonPressed=$?
+        SelectedValue=$(_dialog_ "${SelectValueDialog[@]}") || SelectValueDialogButtonPressed=$?
 
         case ${DIALOG_BUTTONS[SelectValueDialogButtonPressed]-} in
             OK) # SELECT button

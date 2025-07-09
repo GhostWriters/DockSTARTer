@@ -16,7 +16,7 @@ menu_config_apps() {
         local WindowRows WindowCols WindowListRows
         local MenuTextSize MenuTextRows MenuTextCols
         #local ScreenSize
-        #ScreenSize="$(dialog --stdout --print-maxsize)"
+        #ScreenSize="$(_dialog_ --stdout --print-maxsize)"
         #ScreenRows="$(echo "${ScreenSize}" | cut -d ' ' -f 2 | cut -d ',' -f 1)"
         #ScreenCols="$(echo "${ScreenSize}" | cut -d ' ' -f 3)"
         ScreenRows="${LINES}"
@@ -29,7 +29,7 @@ menu_config_apps() {
             --stdout
         )
         local MenuTextSize
-        MenuTextSize="$(dialog "${AppChoiceParams[@]}" --print-text-size "${MenuText}" "${WindowRowsMax}" "${WindowColsMax}")"
+        MenuTextSize="$(_dialog_ "${AppChoiceParams[@]}" --print-text-size "${MenuText}" "${WindowRowsMax}" "${WindowColsMax}")"
         MenuTextRows="$(echo "${MenuTextSize}" | cut -d ' ' -f 1)"
         MenuTextCols="$(echo "${MenuTextSize}" | cut -d ' ' -f 2)"
         local ListCols=${MenuTextCols}
@@ -76,7 +76,7 @@ menu_config_apps() {
         )
         local AppChoice
         local -i AppChoiceButtonPressed=0
-        AppChoice=$(dialog --default-item "${LastAppChoice}" "${AppChoiceDialog[@]}") || AppChoiceButtonPressed=$?
+        AppChoice=$(_dialog_ --default-item "${LastAppChoice}" "${AppChoiceDialog[@]}") || AppChoiceButtonPressed=$?
         LastAppChoice=${AppChoice}
         case ${DIALOG_BUTTONS[AppChoiceButtonPressed]-} in
             OK)
