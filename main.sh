@@ -2,6 +2,8 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+declare -rx APPLICATION_NAME='DockSTARTer'
+
 export LC_ALL=C
 export PROMPT="CLI"
 export MENU=false
@@ -116,8 +118,7 @@ run_script() {
     fi
 }
 
-declare -rx APPLICATION_NAME='DockSTARTer'
-declare -x APPLICATION_VERSION=''
+declare -x APPLICATION_VERSION
 APPLICATION_VERSION="$(run_script 'ds_version')"
 readonly APPLICATION_VERSION
 
@@ -805,6 +806,9 @@ main() {
     run_script 'symlink_ds'
     # Apply the GUI theme
     run_script 'apply_theme'
+    if run_script 'ds_update_available'; then
+        notice "An update to ${APPLICATION_NAME} is available. Run 'ds -u' to update."
+    fi
     # Execute CLI Argument Functions
     if [[ -n ${ADD-} ]]; then
         run_script 'env_create'
