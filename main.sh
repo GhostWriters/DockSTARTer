@@ -642,7 +642,7 @@ _dialog_() {
     fi
 
     local -i IndentLength
-    IndentLength=$((COLUMNS - ${#CLEAN_LEFT_BACKTITLE} - ${#CLEAN_RIGHT_BACKTITLE}))
+    IndentLength=$((COLUMNS - ${#CLEAN_LEFT_BACKTITLE} - ${#CLEAN_RIGHT_BACKTITLE} - 2))
     local INDENT
     INDENT="$(printf %${IndentLength}s '')"
     BACKTITLE="${LEFT_BACKTITLE}${INDENT}${RIGHT_BACKTITLE}"
