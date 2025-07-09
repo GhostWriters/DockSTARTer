@@ -10,7 +10,10 @@ ds_version() {
     # Get the branch
     Branch="$(git symbolic-ref --short -q HEAD)"
     # Get the current tag. If no tag, use the commit instead.
-    Version="$(git describe --tags --exact-match 2> /dev/null)" || Version="commit $(git rev-parse --short HEAD)"
+    Version="$(git tag 2> /dev/null || true)"
+    if [[ -z ${Version} ]]; then
+        Version="commit $(git rev-parse --short HEAD)"
+    fi
 
     echo "${Branch} ${Version}"
     popd &> /dev/null
