@@ -125,7 +125,7 @@ declare -x APPLICATION_UPDATE=''
 usage() {
     local APPLICATION_HEADING="${APPLICATION_NAME}"
     if [[ ${APPLICATION_VERSION-} ]]; then
-        APPLICATION_HEADING+=" ${APPLICATION_VERSION}"
+        APPLICATION_HEADING+=" [${APPLICATION_VERSION}]"
     fi
     if run_script 'ds_update_available'; then
         APPLICATION_HEADING+=" (Update Available)"
