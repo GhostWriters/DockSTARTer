@@ -26,7 +26,7 @@ indent_style = space
 indent_size = 2
 end_of_line = lf
 
-[**.sh]
+[*.sh]
 indent_style = space
 indent_size = 4
 end_of_line = lf
