@@ -624,13 +624,29 @@ highlighted_list() {
 }
 
 _dialog_() {
-    local BACKTITLE="${DC[BackTitle]}${APPLICATION_NAME}${DC[NC]}"
-    if [[ ${APPLICATION_VERSION-} ]]; then
-        BACKTITLE+=" ${DC[BackTitle]}[${APPLICATION_VERSION}]${DC[NC]}"
-    fi
+    local LEFT_BACKTITLE RIGHT_BACKTITLE
+    local CLEAN_LEFT_BACKTITLE CLEAN_RIGHT_BACKTITLE
+
+    CLEAN_LEFT_BACKTITLE="${APPLICATION_NAME}"
+    LEFT_BACKTITLE="${DC[BackTitle]}${APPLICATION_NAME}${DC[NC]}"
+
+    CLEAN_RIGHT_BACKTITLE=''
+    RIGHT_BACKTITLE=''
     if run_script 'ds_update_available'; then
-        BACKTITLE+=" (Update Available)"
+        CLEAN_RIGHT_BACKTITLE="(Update Available)"
+        RIGHT_BACKTITLE="(Update Available)"
     fi
+    if [[ ${APPLICATION_VERSION-} ]]; then
+        CLEAN_RIGHT_BACKTITLE+=" [${APPLICATION_VERSION}]"
+        RIGHT_BACKTITLE+=" ${DC[BackTitle]}[${APPLICATION_VERSION}]${DC[NC]}"
+    fi
+
+    local -i IndentLength
+    IndentLength=$((COLUMNS - ${#CLEAN_LEFT_BACKTITLE} - ${#CLEAN_RIGHT_BACKTITLE}))
+    local INDENT
+    INDENT="$(printf %${IndentLength}s '')"
+    BACKTITLE="${LEFT_BACKTITLE}${INDENT}${RIGHT_BACKTITLE}"
+
     ${DIALOG} --backtitle "${BACKTITLE}" "$@"
 }
 
