@@ -9,7 +9,7 @@ question_prompt() {
         Default=""
     fi
     local Question=${2-}
-    local Title=${3-$BACKTITLE}
+    local Title=${3-$APPLICATION_NAME}
     local Override=${4-}
     Override=${Override^^:0:1}
     local YesButton=${5-Yes}
