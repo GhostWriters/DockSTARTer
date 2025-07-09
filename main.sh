@@ -120,7 +120,6 @@ declare -rx APPLICATION_NAME='DockSTARTer'
 declare -x APPLICATION_VERSION=''
 APPLICATION_VERSION="$(run_script 'ds_version')"
 readonly APPLICATION_VERSION
-declare -x APPLICATION_UPDATE=''
 
 usage() {
     local APPLICATION_HEADING="${APPLICATION_NAME}"
@@ -627,7 +626,7 @@ highlighted_list() {
 _dialog_() {
     local BACKTITLE="${DC[BackTitle]}${APPLICATION_NAME}${DC[NC]}"
     if [[ ${APPLICATION_VERSION-} ]]; then
-        BACKTITLE+="${DC[BackTitle]} [${APPLICATION_VERSION}]${DC[NC]}"
+        BACKTITLE+=" ${DC[BackTitle]}[${APPLICATION_VERSION}]${DC[NC]}"
     fi
     if run_script 'ds_update_available'; then
         BACKTITLE+=" (Update Available)"
