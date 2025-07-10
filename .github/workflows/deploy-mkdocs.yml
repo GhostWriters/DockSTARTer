@@ -1,3 +1,6 @@
+permissions:
+  contents: read
+  pages: write
 name: Build and Deploy mkdocs
 
 on:
