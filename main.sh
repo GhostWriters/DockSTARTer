@@ -629,17 +629,21 @@ _dialog_() {
     local CleanLeftBackTitle CleanRightBackTitle
 
     CleanLeftBackTitle="${APPLICATION_NAME}"
-    LeftBackTitle="${DC[BackTitle]}${APPLICATION_NAME}${DC[NC]}"
+    LeftBackTitle="${DC[ApplicationName]}${APPLICATION_NAME}${DC[NC]}"
 
     CleanRightBackTitle=''
     RightBackTitle=''
     if run_script 'ds_update_available'; then
         CleanRightBackTitle="(Update Available)"
-        RightBackTitle="(Update Available)"
+        RightBackTitle="${DC[ApplicationUpdateBrackets]}(${DC[ApplicationUpdate]}Update Available${DC[ApplicationUpdateBrackets]})${DC[NC]}"
     fi
     if [[ ${APPLICATION_VERSION-} ]]; then
-        CleanRightBackTitle+=" [${APPLICATION_VERSION}]"
-        RightBackTitle+=" ${DC[BackTitle]}[${APPLICATION_VERSION}]${DC[NC]}"
+        if [[ -n ${CleanRightBackTitle-} ]]; then
+            CleanRightBackTitle+=" "
+            RightBackTitle+="${DC[ApplicationVersionSpace]} "
+        fi
+        CleanRightBackTitle+="[${APPLICATION_VERSION}]"
+        RightBackTitle+="${DC[ApplicationVersionBrackets]}[${DC[ApplicationVersion]}${APPLICATION_VERSION}${DC[ApplicationVersionBrackets]}]${DC[NC]}"
     fi
 
     local -i IndentLength
