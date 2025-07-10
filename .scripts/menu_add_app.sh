@@ -33,7 +33,7 @@ menu_add_app() {
             "${ValueOptions[@]}"
         )
         local InputValueDialogButtonPressed=0
-        AppName=$(dialog "${InputValueDialog[@]}") || InputValueDialogButtonPressed=$?
+        AppName=$(_dialog_ "${InputValueDialog[@]}") || InputValueDialogButtonPressed=$?
         case ${DIALOG_BUTTONS[InputValueDialogButtonPressed]-} in
             OK)
                 # Sanitize the input
@@ -91,7 +91,7 @@ menu_add_app() {
                         "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
                     )
                     local -i YesNoDialogButtonPressed=0
-                    dialog "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?
+                    _dialog_ "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?
                     case ${DIALOG_BUTTONS[YesNoDialogButtonPressed]-} in
                         OK) # Built In
                             Heading="$(run_script 'menu_heading' "${AppNameHeading}")"

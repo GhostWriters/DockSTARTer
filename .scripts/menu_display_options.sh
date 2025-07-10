@@ -11,7 +11,7 @@ menu_display_options() {
     local OptionChooseTheme="Choose Theme"
     local OptionGeneralOptions="General Options"
     local Opts=(
-        "${OptionChooseTheme}" "Choose a theme for DockSTARTer"
+        "${OptionChooseTheme}" "Choose a theme for ${APPLICATION_NAME}"
         "${OptionGeneralOptions}" "Set general display options"
     )
 
@@ -27,7 +27,7 @@ menu_display_options() {
         )
         local Choice
         local -i DialogButtonPressed=0
-        Choice=$(dialog --default-item "${LastChoice}" "${ChoiceDialog[@]}") || DialogButtonPressed=$?
+        Choice=$(_dialog_ --default-item "${LastChoice}" "${ChoiceDialog[@]}") || DialogButtonPressed=$?
         LastChoice=${Choice}
         case ${DIALOG_BUTTONS[DialogButtonPressed]-} in
             OK)
@@ -45,7 +45,7 @@ menu_display_options() {
                 ;;
             CANCEL | ESC)
                 clear
-                info "Exiting DockSTARTer."
+                info "Exiting ${APPLICATION_NAME}."
                 return
                 ;;
             *)

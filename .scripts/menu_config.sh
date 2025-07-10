@@ -41,7 +41,7 @@ menu_config() {
         )
         local ConfigChoice
         local -i ConfigDialogButtonPressed=0
-        ConfigChoice=$(dialog --default-item "${LastConfigChoice}" "${ConfigChoiceDialog[@]}") || ConfigDialogButtonPressed=$?
+        ConfigChoice=$(_dialog_ --default-item "${LastConfigChoice}" "${ConfigChoiceDialog[@]}") || ConfigDialogButtonPressed=$?
         LastConfigChoice=${ConfigChoice}
         case ${DIALOG_BUTTONS[ConfigDialogButtonPressed]-} in
             OK)
