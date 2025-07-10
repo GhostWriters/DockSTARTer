@@ -18,7 +18,7 @@ jobs:
   markdownlint:
     runs-on: ubuntu-latest
     container:
-      image: davidanson/markdownlint-cli2:v0.18.1
+      image: davidanson/markdownlint-cli2:v0.18.1@sha256:173cb697a255a8a985f2c6a83b4f7a8b3c98f4fb382c71c45f1c52e4d4fed63a
       options: --user 0:0
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -28,10 +28,10 @@ jobs:
   shellcheck:
     runs-on: ubuntu-latest
     container:
-      image: koalaman/shellcheck-alpine:v0.10.0
+      image: koalaman/shellcheck-alpine:v0.10.0@sha256:5921d946dac740cbeec2fb1c898747b6105e585130cc7f0602eec9a10f7ddb63
       options: --user 0:0
     steps:
-      - uses: actions/checkout@v4.2.2
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: install alpine packages
         run: apk add --no-cache findutils
       - name: shellcheck
@@ -40,10 +40,10 @@ jobs:
   shfmt:
     runs-on: ubuntu-latest
     container:
-      image: mvdan/shfmt:v3.12.0-alpine
+      image: mvdan/shfmt:v3.12.0-alpine@sha256:204a4d2d876123342ad394bd9a28fb91e165abc03868790d4b39cfa73233f150
       options: --user 0:0
     steps:
-      - uses: actions/checkout@v4.2.2
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: install alpine packages
         run: apk add --no-cache findutils
       - name: shfmt
