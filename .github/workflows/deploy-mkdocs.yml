@@ -1,4 +1,4 @@
-name: Build and deploy mkdocs
+name: Build and Deploy mkdocs
 
 on:
   push:
