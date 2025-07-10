@@ -10,4 +10,3 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG?}/jellyseerr<__instance>:/app/config
-      - ${DOCKER_VOLUME_STORAGE?}:/storage

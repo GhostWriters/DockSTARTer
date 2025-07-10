@@ -9,5 +9,4 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG?}/portainer<__instance>:/data
-      - ${DOCKER_VOLUME_STORAGE?}:/storage
       - ${PORTAINER<__INSTANCE>__VOLUME_DOCKER_SOCKET?}:/var/run/docker.sock

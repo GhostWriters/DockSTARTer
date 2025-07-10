@@ -8,4 +8,3 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG?}/influxdb<__instance>:/var/lib/influxdb
-      - ${DOCKER_VOLUME_STORAGE?}:/storage

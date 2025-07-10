@@ -7,5 +7,4 @@ services:
     restart: ${WATCHTOWER<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_STORAGE?}:/storage
       - ${WATCHTOWER<__INSTANCE>__VOLUME_DOCKER_SOCKET?}:/var/run/docker.sock

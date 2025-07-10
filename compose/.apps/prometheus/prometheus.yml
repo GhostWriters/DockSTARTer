@@ -11,4 +11,3 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG?}/prometheus<__instance>/etc:/etc/prometheus
       - ${DOCKER_VOLUME_CONFIG?}/prometheus<__instance>/data:/prometheus
-      - ${DOCKER_VOLUME_STORAGE?}:/storage

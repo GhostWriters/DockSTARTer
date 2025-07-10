@@ -12,5 +12,4 @@ services:
       - ${DOCKER_VOLUME_CONFIG?}/timemachine<__instance>/var-lib-samba:/var/lib/samba
       - ${DOCKER_VOLUME_CONFIG?}/timemachine<__instance>/var-cache-samba:/var/cache/samba
       - ${DOCKER_VOLUME_CONFIG?}/timemachine<__instance>/run-samba:/run/samba
-      - ${DOCKER_VOLUME_STORAGE?}:/storage
       - ${TIMEMACHINE<__INSTANCE>__VOLUME_DATADIR?}:/opt/timemachine

@@ -10,5 +10,4 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG?}/jellyfin<__instance>:/config
-      - ${DOCKER_VOLUME_STORAGE?}:/storage
       - ${JELLYFIN<__INSTANCE>__VOLUME_TRANSCODEDIR?}:/transcode

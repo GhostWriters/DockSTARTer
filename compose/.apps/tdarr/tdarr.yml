@@ -13,5 +13,4 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG?}/tdarr<__instance>:/app/server
-      - ${DOCKER_VOLUME_STORAGE?}:/storage
       - ${TDARR<__INSTANCE>__VOLUME_TRANSCODE_CACHE?}:/temp

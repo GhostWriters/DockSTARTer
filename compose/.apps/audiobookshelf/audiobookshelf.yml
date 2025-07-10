@@ -14,4 +14,3 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG?}/audiobookshelf<__instance>:/config
       - ${DOCKER_VOLUME_CONFIG?}/audiobookshelf<__instance>/.metadata:/metadata
-      - ${DOCKER_VOLUME_STORAGE?}:/storage
