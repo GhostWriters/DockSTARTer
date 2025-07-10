@@ -8,5 +8,4 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG?}/tsdproxy<__instance>:/data
-      - ${DOCKER_VOLUME_STORAGE?}:/storage
       - ${TSDPROXY<__INSTANCE>__VOLUME_DOCKER_SOCKET?}:/var/run/docker.sock

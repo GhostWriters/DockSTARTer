@@ -10,4 +10,3 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG?}/minecraftserver<__instance>:/data
-      - ${DOCKER_VOLUME_STORAGE?}:/storage

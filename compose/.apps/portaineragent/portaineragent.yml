@@ -9,5 +9,4 @@ services:
       - /:/host
       - /etc/localtime:/etc/localtime:ro
       - /var/lib/docker/volumes:/var/lib/docker/volumes
-      - ${DOCKER_VOLUME_STORAGE?}:/storage
       - ${PORTAINERAGENT<__INSTANCE>__VOLUME_DOCKER_SOCKET?}:/var/run/docker.sock

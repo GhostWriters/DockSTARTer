@@ -1,0 +1,4 @@
+services:
+  apcupsd<__instance>:
+    volumes:
+      - ${DOCKER_VOLUME_STORAGE4?}:/storage4

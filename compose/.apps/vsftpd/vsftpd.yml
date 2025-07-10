@@ -7,5 +7,4 @@ services:
     restart: ${VSFTPD<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_STORAGE?}:/storage
       - ${VSFTPD<__INSTANCE>__VOLUME_DATADIR?}:/home/vsftpd

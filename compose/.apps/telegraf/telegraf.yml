@@ -17,5 +17,4 @@ services:
       - /sys:/host/sys:ro
       - /var/run/utmp:/var/run/utmp:ro
       - ${DOCKER_VOLUME_CONFIG?}/telegraf<__instance>:/var/lib/telegraf
-      - ${DOCKER_VOLUME_STORAGE?}:/storage
       - ${TELEGRAF<__INSTANCE>__VOLUME_DOCKER_SOCKET?}:/var/run/docker.sock:ro

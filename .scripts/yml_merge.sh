@@ -33,9 +33,9 @@ commands_yml_merge() {
                     continue
                 fi
                 COMPOSE_FILE="${COMPOSE_FILE}:${arch_yml}"
-                local APPNETMODE
-                APPNETMODE="$(run_script 'env_get' "${APPNAME}__NETWORK_MODE")"
-                if [[ -z ${APPNETMODE-} ]] || [[ ${APPNETMODE} == "bridge" ]]; then
+                local AppNetMode
+                AppNetMode="$(run_script 'env_get' "${APPNAME}__NETWORK_MODE")"
+                if [[ -z ${AppNetMode-} ]] || [[ ${AppNetMode} == "bridge" ]]; then
                     local hostname_yml
                     hostname_yml="$(run_script 'app_instance_file' "${appname}" ".hostname.yml")"
                     if [[ -f ${hostname_yml} ]]; then
@@ -50,7 +50,7 @@ commands_yml_merge() {
                     else
                         info "${ports_yml} does not exist."
                     fi
-                elif [[ -n ${APPNETMODE} ]]; then
+                elif [[ -n ${AppNetMode} ]]; then
                     local netmode_yml
                     netmode_yml="$(run_script 'app_instance_file' "${appname}" ".netmode.yml")"
                     if [[ -f ${netmode_yml} ]]; then
@@ -59,20 +59,32 @@ commands_yml_merge() {
                         info "${netmode_yml} does not exist."
                     fi
                 fi
-                local APPSTORAGE
-                APPSTORAGE="$(run_script 'env_get' DOCKER_MULTIPLE_STORAGE)"
-                if [[ -n ${APPSTORAGE-} && ${APPSTORAGE^^} =~ ON|TRUE|YES ]]; then
-                    local storage_yml
-                    storage_yml="$(run_script 'app_instance_file' "${appname}" ".storage.yml")"
-                    if [[ -f ${storage_yml} ]]; then
-                        COMPOSE_FILE="${COMPOSE_FILE}:${storage_yml}"
-                    else
-                        info "${storage_yml} does not exist."
-                    fi
+                local MultipleStorage
+                MultipleStorage="$(run_script 'env_get' DOCKER_MULTIPLE_STORAGE)"
+                local -a StorageNumbers=('')
+                if [[ -n ${MultipleStorage-} && ${MultipleStorage^^} =~ ON|TRUE|YES ]]; then
+                    StorageNumbers+=(2 3 4)
                 fi
-                local APPDEVICES
-                APPDEVICES="$(run_script 'env_get' "${APPNAME}__DEVICES")"
-                if [[ -n ${APPDEVICES-} && ${APPDEVICES^^} =~ ON|TRUE|YES ]]; then
+                for Number in "${StorageNumbers[@]}"; do
+                    local StorageOn
+                    StorageOn="$(run_script 'env_get' "${APPNAME}__STORAGE${Number}")"
+                    if [[ -n ${StorageOn-} && ${StorageOn^^} =~ ON|TRUE|YES ]]; then
+                        local StorageVolume
+                        StorageVolume="$(run_script 'env_get' "DOCKER_VOLUME_STORAGE${Number}")"
+                        if [[ -n ${StorageVolume-} ]]; then
+                            local storage_yml
+                            storage_yml="$(run_script 'app_instance_file' "${appname}" ".storage${Number}.yml")"
+                            if [[ -f ${storage_yml} ]]; then
+                                COMPOSE_FILE="${COMPOSE_FILE}:${storage_yml}"
+                            else
+                                info "${storage_yml} does not exist."
+                            fi
+                        fi
+                    fi
+                done
+                local AppDevices
+                AppDevices="$(run_script 'env_get' "${APPNAME}__DEVICES")"
+                if [[ -n ${AppDevices-} && ${AppDevices^^} =~ ON|TRUE|YES ]]; then
                     local devices_yml
                     devices_yml="$(run_script 'app_instance_file' "${appname}" ".devices.yml")"
                     if [[ -f ${devices_yml} ]]; then

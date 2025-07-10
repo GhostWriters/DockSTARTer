@@ -10,7 +10,6 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG?}/rsnapshot<__instance>:/config
-      - ${DOCKER_VOLUME_STORAGE?}:/storage
       - ${RSNAPSHOT<__INSTANCE>__VOLUME_DATADIR?}:/data
       - ${RSNAPSHOT<__INSTANCE>__VOLUME_ROOT_SSH?}:/root/.ssh:ro
       - ${RSNAPSHOT<__INSTANCE>__VOLUME_SNAPSHOTSDIR?}:/.snapshots

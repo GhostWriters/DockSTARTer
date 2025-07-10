@@ -10,5 +10,4 @@ services:
     restart: ${TDARRNODE<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_STORAGE?}:/storage
       - ${TDARRNODE<__INSTANCE>__VOLUME_TRANSCODE_CACHE?}:/temp

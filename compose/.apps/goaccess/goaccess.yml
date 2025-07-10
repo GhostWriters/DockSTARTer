@@ -12,5 +12,4 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG?}/goaccess<__instance>:/config
-      - ${DOCKER_VOLUME_STORAGE?}:/storage
       - ${GOACCESS<__INSTANCE>__VOLUME_LOGSDIR?}:/opt/log:ro

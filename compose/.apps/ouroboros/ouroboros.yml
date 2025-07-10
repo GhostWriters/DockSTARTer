@@ -7,5 +7,4 @@ services:
     restart: ${OUROBOROS<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_STORAGE?}:/storage
       - ${OUROBOROS<__INSTANCE>__VOLUME_DOCKER_SOCKET?}:/var/run/docker.sock

@@ -10,4 +10,3 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG?}/moviematch<__instance>:/config
-      - ${DOCKER_VOLUME_STORAGE?}:/storage

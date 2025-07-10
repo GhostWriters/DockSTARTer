@@ -10,4 +10,3 @@ services:
       - ${DOCKER_VOLUME_CONFIG?}/tandoor<__instance>/staticfiles:/opt/recipes/staticfiles
       - ${DOCKER_VOLUME_CONFIG?}/tandoor<__instance>/mediafiles:/opt/recipes/mediafiles
       - ${DOCKER_VOLUME_CONFIG?}/tandoor<__instance>/data:/opt/recipes/data
-      - ${DOCKER_VOLUME_STORAGE?}:/storage

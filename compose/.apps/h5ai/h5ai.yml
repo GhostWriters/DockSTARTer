@@ -7,5 +7,4 @@ services:
     restart: ${H5AI<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_STORAGE?}:/storage
       - ${H5AI<__INSTANCE>__VOLUME_INDEXDIR?}:/var/www

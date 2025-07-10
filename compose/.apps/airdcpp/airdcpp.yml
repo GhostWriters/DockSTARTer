@@ -16,4 +16,3 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${AIRDCPP<__INSTANCE>__VOLUME_SHAREDIR?}:/Share
       - ${DOCKER_VOLUME_CONFIG?}/airdcpp<__instance>:/.airdcpp
-      - ${DOCKER_VOLUME_STORAGE?}:/storage

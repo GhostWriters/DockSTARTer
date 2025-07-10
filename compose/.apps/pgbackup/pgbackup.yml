@@ -8,4 +8,3 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_STORAGE?}/backups/postgres:/backups
-      - ${DOCKER_VOLUME_STORAGE?}:/storage

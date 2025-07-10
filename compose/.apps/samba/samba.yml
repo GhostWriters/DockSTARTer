@@ -13,4 +13,3 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG?}:/${SAMBA<__INSTANCE>__ENVIRONMENT_SHARENAME?}/config
       - ${DOCKER_VOLUME_STORAGE?}:/${SAMBA<__INSTANCE>__ENVIRONMENT_SHARENAME?}/storage
-      - ${DOCKER_VOLUME_STORAGE?}:/storage

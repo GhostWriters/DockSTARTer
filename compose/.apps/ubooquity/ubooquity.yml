@@ -10,5 +10,4 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG?}/ubooquity<__instance>:/config
-      - ${DOCKER_VOLUME_STORAGE?}:/storage
       - ${UBOOQUITY<__INSTANCE>__VOLUME_FILESDIR?}:/files
