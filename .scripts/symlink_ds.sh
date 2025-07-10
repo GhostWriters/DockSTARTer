@@ -17,7 +17,7 @@ symlink_ds() {
             sudo rm -f "${SYMLINK_TARGET}" || fatal "Failed to remove file.\nFailing command: ${F[C]}sudo rm -f \"${SYMLINK_TARGET}\""
         fi
         if [[ ! -L ${SYMLINK_TARGET} ]]; then
-            info "Creating ${SYMLINK_TARGET} symbolic link for DockSTARTer."
+            info "Creating ${SYMLINK_TARGET} symbolic link for ${APPLICATION_NAME}."
             mkdir -p "$(dirname "${SYMLINK_TARGET}")" || fatal "Failed to create directory.\nFailing command: ${F[C]}mkdir -p \"$(dirname "${SYMLINK_TARGET}")\""
             sudo ln -s -T "${SCRIPTNAME}" "${SYMLINK_TARGET}" || fatal "Failed to create symlink.\nFailing command: ${F[C]}sudo ln -s -T \"${SCRIPTNAME}\" \"${SYMLINK_TARGET}\""
         fi

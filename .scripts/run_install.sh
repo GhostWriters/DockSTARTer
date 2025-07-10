@@ -4,9 +4,9 @@ IFS=$'\n\t'
 
 run_install() {
     local Title="Install Dependencies"
-    local Question="Install or update all DockSTARTer dependencies?"
-    local YesNotice="Installing or updating all DockSTARTer dependencies."
-    local NoNotice="Not installing or updating all DockSTARTer dependencies."
+    local Question="Install or update all ${APPLICATION_NAME} dependencies?"
+    local YesNotice="Installing or updating all ${APPLICATION_NAME} dependencies."
+    local NoNotice="Not installing or updating all ${APPLICATION_NAME} dependencies."
     if run_script 'question_prompt' Y "${Question}" "${Title}" "${FORCE:+Y}"; then
         if use_dialog_box; then
             {

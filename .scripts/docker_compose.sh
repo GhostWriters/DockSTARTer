@@ -28,9 +28,9 @@ docker_compose() {
                 NoNotice="Not stopping and removing: ${AppName}."
                 YesNotice="Stopping and removing ${AppName}."
             else
-                Question="Stop and remove containers, networks, volumes, and images created by DockSTARTer?"
-                NoNotice="Not stopping and removing containers, networks, volumes, and images created by DockSTARTer."
-                YesNotice="Stopping and removing containers, networks, volumes, and images created by DockSTARTer."
+                Question="Stop and remove containers, networks, volumes, and images created by ${APPLICATION_NAME}?"
+                NoNotice="Not stopping and removing containers, networks, volumes, and images created by ${APPLICATION_NAME}."
+                YesNotice="Stopping and removing containers, networks, volumes, and images created by ${APPLICATION_NAME}."
             fi
             ComposeCommand[0]="down --remove-orphans ${APPNAME-}"
             ;;

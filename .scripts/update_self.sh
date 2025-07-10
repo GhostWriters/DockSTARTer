@@ -9,24 +9,24 @@ update_self() {
     CurrentBranch="$(git branch --show)"
     popd &> /dev/null
 
-    local Title="Update DockSTARTer"
+    local Title="Update ${APPLICATION_NAME}"
     local Question YesNotice NoNotice
     if [[ -z ${BRANCH-} ]]; then
         if [[ -z ${CurrentBranch-} ]]; then
             error "You need to specify a branch to update to."
             return 1
         fi
-        Question="Would you like to update DockSTARTer to branch ${CurrentBranch} now?"
-        NoNotice="DockSTARTer will not be updated."
-        YesNotice="Updating DockSTARTer to branch ${CurrentBranch}."
+        Question="Would you like to update ${APPLICATION_NAME} to branch ${CurrentBranch} now?"
+        NoNotice="${APPLICATION_NAME} will not be updated."
+        YesNotice="Updating ${APPLICATION_NAME} to branch ${CurrentBranch}."
     elif [[ ${BRANCH-} == "${CurrentBranch-}" ]]; then
-        Question="Would you like to update DockSTARTer to branch ${BRANCH} now?"
-        NoNotice="DockSTARTer will not be updated."
-        YesNotice="Updating DockSTARTer to branch ${BRANCH}."
+        Question="Would you like to update ${APPLICATION_NAME} to branch ${BRANCH} now?"
+        NoNotice="${APPLICATION_NAME} will not be updated."
+        YesNotice="Updating ${APPLICATION_NAME} to branch ${BRANCH}."
     else
-        Question="Would you like to update DockSTARTer from branch ${CurrentBranch} to ${BRANCH} now?"
-        NoNotice="DockSTARTer will not be updated from branch ${CurrentBranch} to ${BRANCH}."
-        YesNotice="Updating DockSTARTer from branch ${CurrentBranch} to ${BRANCH}."
+        Question="Would you like to update ${APPLICATION_NAME} from branch ${CurrentBranch} to ${BRANCH} now?"
+        NoNotice="${APPLICATION_NAME} will not be updated from branch ${CurrentBranch} to ${BRANCH}."
+        YesNotice="Updating ${APPLICATION_NAME} from branch ${CurrentBranch} to ${BRANCH}."
     fi
     if ! run_script 'question_prompt' Y "${Question}" "${Title}" "${FORCE:+Y}"; then
         if use_dialog_box; then
@@ -54,7 +54,7 @@ commands_update_self() {
     if [[ -z ${BRANCH-} ]]; then
         BRANCH="$(git branch --show)"
         if ! run_script 'ds_update_available'; then
-            notice "DockSTARTer is already up to date on branch ${BRANCH}."
+            notice "${APPLICATION_NAME} is already up to date on branch ${BRANCH}."
             return
         fi
     fi

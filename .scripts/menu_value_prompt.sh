@@ -143,7 +143,7 @@ menu_value_prompt() {
         APP)
             case "${VarName}" in
                 "${APPNAME}__ENABLED")
-                    ValueDescription="\n\n This is used to set the application as enabled or disabled. If this variable is removed, the application will not be controlled by DockSTARTer. Must be ${DC[Highlight]}true${DC[NC]} or ${DC[Highlight]}false${DC[NC]}."
+                    ValueDescription="\n\n This is used to set the application as enabled or disabled. If this variable is removed, the application will not be controlled by ${APPLICATION_NAME}. Must be ${DC[Highlight]}true${DC[NC]} or ${DC[Highlight]}false${DC[NC]}."
                     PossibleOptions+=(
                         "Enabled"
                         "Disabled"

@@ -11,7 +11,7 @@ menu_display_options() {
     local OptionChooseTheme="Choose Theme"
     local OptionGeneralOptions="General Options"
     local Opts=(
-        "${OptionChooseTheme}" "Choose a theme for DockSTARTer"
+        "${OptionChooseTheme}" "Choose a theme for ${APPLICATION_NAME}"
         "${OptionGeneralOptions}" "Set general display options"
     )
 
@@ -45,7 +45,7 @@ menu_display_options() {
                 ;;
             CANCEL | ESC)
                 clear
-                info "Exiting DockSTARTer."
+                info "Exiting ${APPLICATION_NAME}."
                 return
                 ;;
             *)

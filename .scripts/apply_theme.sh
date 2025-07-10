@@ -6,7 +6,7 @@ apply_theme() {
     local ThemeName=${1-}
 
     local DefaultThemes=(
-        DockSTARTer
+        "${APPLICATION_NAME}"
         Default
     )
 

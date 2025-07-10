@@ -136,7 +136,7 @@ ${APPLICATION_HEADING}
 NOTE: ds shortcut is only available after the first run of
     bash main.sh
 
-This is the main DockSTARTer script.
+This is the main ${APPLICATION_NAME} script.
 For regular usage you can run without providing any options.
 
 Any command that takes a variable name, the variable name can also be in the
@@ -236,9 +236,9 @@ that take app names can use the form app: to refer to the same file.
 --theme-no-lines
     Turn the line drawing on or off in the GUI
 -u --update
-    Update DockSTARTer to the latest stable commits
+    Update ${APPLICATION_NAME} to the latest stable commits
 -u --update <branch>
-    Update DockSTARTer to the latest commits from the specified branch
+    Update ${APPLICATION_NAME} to the latest commits from the specified branch
 -v --verbose
     Verbose
 -x --debug
@@ -291,7 +291,7 @@ cleanup() {
     fi
 
     if [[ ${EXIT_CODE} -ne 0 ]]; then
-        echo "DockSTARTer did not finish running successfully."
+        echo "${APPLICATION_NAME} did not finish running successfully."
     fi
 
     exit ${EXIT_CODE}
@@ -783,21 +783,21 @@ main() {
         DS_SYMLINK=$(readlink -f "${DS_COMMAND}")
         if [[ ${SCRIPTNAME} != "${DS_SYMLINK}" ]]; then
             if check_repo; then
-                if run_script 'question_prompt' "${PROMPT:-CLI}" N "DockSTARTer installation found at ${DS_SYMLINK} location. Would you like to run ${SCRIPTNAME} instead?"; then
+                if run_script 'question_prompt' "${PROMPT:-CLI}" N "${APPLICATION_NAME} installation found at ${DS_SYMLINK} location. Would you like to run ${SCRIPTNAME} instead?"; then
                     run_script 'symlink_ds'
                     DS_COMMAND=$(command -v ds || true)
                     DS_SYMLINK=$(readlink -f "${DS_COMMAND}")
                 fi
             fi
-            warn "Attempting to run DockSTARTer from ${DS_SYMLINK} location."
+            warn "Attempting to run ${APPLICATION_NAME} from ${DS_SYMLINK} location."
             bash "${DS_SYMLINK}" -fvu
             bash "${DS_SYMLINK}" -fvi
             exec bash "${DS_SYMLINK}" "${ARGS[@]-}"
         fi
     else
         if ! check_repo; then
-            warn "Attempting to clone DockSTARTer repo to ${DETECTED_HOMEDIR}/.docker location."
-            git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone DockSTARTer repo.\nFailing command: ${F[C]}git clone https://github.com/GhostWriters/DockSTARTer \"${DETECTED_HOMEDIR}/.docker\""
+            warn "Attempting to clone ${APPLICATION_NAME} repo to ${DETECTED_HOMEDIR}/.docker location."
+            git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone ${APPLICATION_NAME} repo.\nFailing command: ${F[C]}git clone https://github.com/GhostWriters/DockSTARTer \"${DETECTED_HOMEDIR}/.docker\""
             notice "Performing first run install."
             exec bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-fvi"
         fi
