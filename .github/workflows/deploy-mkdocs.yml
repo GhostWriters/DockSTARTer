@@ -1,4 +1,4 @@
-name: Build mkdocs and deploy to GitHub Pages
+name: Build and deploy mkdocs
 
 on: [push, pull_request]
 
