@@ -1,6 +1,8 @@
 name: Build and deploy mkdocs
 
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
 
 jobs:
   mkdocs:
