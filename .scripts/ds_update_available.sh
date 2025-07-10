@@ -16,6 +16,6 @@ test_ds_update_available() {
     if run_script 'ds_update_available'; then
         notice "Update available."
     else
-        notice "DockSTARTer is already up to date."
+        notice "${APPLICATION_NAME} is already up to date."
     fi
 }

@@ -20,5 +20,5 @@ ds_version() {
 }
 
 test_ds_version() {
-    notice "DockSTARTer version: $(run_script 'ds_version')"
+    notice "${APPLICATION_NAME} version: $(run_script 'ds_version')"
 }

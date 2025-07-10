@@ -78,7 +78,7 @@ menu_add_var() {
                 ["${APPNAME__PORT_}"]="Complete this with a var to use in the ${DC["Highlight"]}ports:${DC[NC]} section of your override."
                 ["${APPNAME__VOLUME_}"]="Complete this with a var to use in the ${DC["Highlight"]}volumes:${DC[NC]} section of your override."
                 ["${APPNAME__CONTAINER_NAME}"]="This can be used in the ${DC["Highlight"]}container_name:${DC[NC]} section in your override."
-                ["${APPNAME__ENABLED}"]="Creating this variable will cause the app to be controlled by DockSTARTer with no override needed."
+                ["${APPNAME__ENABLED}"]="Creating this variable will cause the app to be controlled by ${APPLICATION_NAME} with no override needed."
                 ["${APPNAME__HOSTNAME}"]="This can be used in the ${DC["Highlight"]}hostname:${DC[NC]} section of your override."
                 ["${APPNAME__NETWORK_MODE}"]="This can be used in the ${DC["Highlight"]}network_mode:${DC[NC]} section of your override."
                 ["${APPNAME__RESTART}"]="This can be used in the ${DC["Highlight"]}restart:${DC[NC]} section of your override."
