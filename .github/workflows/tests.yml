@@ -5,11 +5,11 @@ on:
   pull_request:
 
 jobs:
-  run:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.2.2
-      - name: run
+      - name: test
         env:
           CI: true
           COMMIT_SHA: ${{ github.sha }}
