@@ -1,13 +1,12 @@
 name: Run Tests
 
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
 
 jobs:
   run:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.2.2
       - name: run
