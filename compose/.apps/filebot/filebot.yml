@@ -10,6 +10,5 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG?}/filebot<__instance>:/config
-      - ${DOCKER_VOLUME_STORAGE?}:/storage
       - ${FILEBOT<__INSTANCE>__VOLUME_OUTPUTDIR?}:/output
       - ${FILEBOT<__INSTANCE>__VOLUME_WATCHDIR?}:/watch

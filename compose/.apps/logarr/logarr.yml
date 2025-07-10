@@ -11,4 +11,3 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG?}/logarr<__instance>:/config
       - ${DOCKER_VOLUME_CONFIG?}:/var/log/logarrlogs:ro
-      - ${DOCKER_VOLUME_STORAGE?}:/storage

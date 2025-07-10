@@ -10,5 +10,4 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG?}/resiliosync<__instance>:/config
-      - ${DOCKER_VOLUME_STORAGE?}:/storage
       - ${RESILIOSYNC<__INSTANCE>__VOLUME_SYNCDIR?}:/sync

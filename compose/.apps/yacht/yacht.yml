@@ -10,5 +10,4 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG?}/yacht<__instance>:/config
-      - ${DOCKER_VOLUME_STORAGE?}:/storage
       - ${YACHT<__INSTANCE>__VOLUME_DOCKER_SOCKET?}:/var/run/docker.sock

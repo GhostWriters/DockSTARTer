@@ -12,7 +12,6 @@ services:
       - ${DOCKER_VOLUME_CONFIG?}/duplicacy<__instance>/cache:/cache
       - ${DOCKER_VOLUME_CONFIG?}/duplicacy<__instance>/config:/config
       - ${DOCKER_VOLUME_CONFIG?}/duplicacy<__instance>/logs:/logs
-      - ${DOCKER_VOLUME_STORAGE?}:/storage
       - ${DUPLICACY<__INSTANCE>__VOLUME_APPDATA_DIR?}:/backuproot/appdata:ro
       - ${DUPLICACY<__INSTANCE>__VOLUME_BACKUP_DIR?}:/backup
       - ${DUPLICACY<__INSTANCE>__VOLUME_DOCKER_DIR?}:/backuproot/docker:ro

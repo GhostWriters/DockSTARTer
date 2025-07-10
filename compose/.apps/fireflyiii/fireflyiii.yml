@@ -9,4 +9,3 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG?}/fireflyiii<__instance>/export:/var/www/html/storage/export
       - ${DOCKER_VOLUME_CONFIG?}/fireflyiii<__instance>/upload:/var/www/html/storage/upload
-      - ${DOCKER_VOLUME_STORAGE?}:/storage

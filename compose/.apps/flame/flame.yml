@@ -5,5 +5,4 @@ services:
     restart: ${FLAME<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_STORAGE?}:/storage
       - ${FLAME<__INSTANCE>__VOLUME_DOCKER_SOCKET?}:/var/run/docker.sock

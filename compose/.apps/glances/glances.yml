@@ -9,5 +9,4 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG?}/glances<__instance>:/glances/conf
-      - ${DOCKER_VOLUME_STORAGE?}:/storage
       - ${GLANCES<__INSTANCE>__VOLUME_DOCKER_SOCKET?}:/var/run/docker.sock:ro
