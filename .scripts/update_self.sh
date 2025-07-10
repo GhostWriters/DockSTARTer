@@ -3,18 +3,23 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 update_self() {
-    cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
     local BRANCH CurrentBranch
-    BRANCH=${1-$(git branch --show)}
+    BRANCH=${1-}
+    pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${F[C]}push \"${SCRIPTPATH}\""
     CurrentBranch="$(git branch --show)"
+    popd &> /dev/null
 
     local Title="Update DockSTARTer"
     local Question YesNotice NoNotice
     if [[ -z ${BRANCH-} ]]; then
-        error "You need to specify a branch to update to."
-        return 1
-    fi
-    if [[ ${BRANCH-} == "${CurrentBranch-}" ]]; then
+        if [[ -z ${CurrentBranch-} ]]; then
+            error "You need to specify a branch to update to."
+            return 1
+        fi
+        Question="Would you like to update DockSTARTer to branch ${CurrentBranch} now?"
+        NoNotice="DockSTARTer will not be updated."
+        YesNotice="Updating DockSTARTer to branch ${CurrentBranch}."
+    elif [[ ${BRANCH-} == "${CurrentBranch-}" ]]; then
         Question="Would you like to update DockSTARTer to branch ${BRANCH} now?"
         NoNotice="DockSTARTer will not be updated."
         YesNotice="Updating DockSTARTer to branch ${BRANCH}."
@@ -43,7 +48,16 @@ update_self() {
 commands_update_self() {
     local BRANCH=${1-}
     local Notice=${2-}
+    local CurrentBranch
 
+    pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${F[C]}push \"${SCRIPTPATH}\""
+    if [[ -z ${BRANCH-} ]]; then
+        BRANCH="$(git branch --show)"
+        if ! run_script 'ds_update_available'; then
+            notice "DockSTARTer is already up to date on branch ${BRANCH}."
+            return
+        fi
+    fi
     local QUIET=''
     if [[ -z ${VERBOSE-} ]]; then
         QUIET='--quiet'
@@ -78,6 +92,7 @@ commands_update_self() {
     git ls-tree -rt --name-only "${BRANCH}" | xargs sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" > /dev/null 2>&1 || true
     sudo chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}/.git" > /dev/null 2>&1 || true
     sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}" > /dev/null 2>&1 || true
+    popd &> /dev/null
     exec bash "${SCRIPTNAME}" -e
 }
 
