@@ -1,11 +1,12 @@
-permissions:
-  contents: read
-  pages: write
 name: Build and Deploy mkdocs
 
 on:
   push:
   pull_request:
+
+permissions:
+  contents: read
+  pages: write
 
 jobs:
   mkdocs:
