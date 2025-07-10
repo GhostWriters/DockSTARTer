@@ -4,10 +4,6 @@ on:
   push:
   pull_request:
 
-permissions:
-  contents: read
-  pages: write
-
 jobs:
   mkdocs:
     name: Build and Deploy mkdocs
