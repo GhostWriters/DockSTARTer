@@ -144,7 +144,6 @@ ds_update_available() {
     return ${result}
 }
 
-
 declare -x APPLICATION_VERSION
 APPLICATION_VERSION="$(ds_version)"
 readonly APPLICATION_VERSION
@@ -159,10 +158,10 @@ usage() {
     fi
     cat << EOF
 Usage: ds [OPTION]
-${APPLICATION_HEADING}
 NOTE: ds shortcut is only available after the first run of
     bash main.sh
 
+${APPLICATION_HEADING}
 This is the main ${APPLICATION_NAME} script.
 For regular usage you can run without providing any options.
 
