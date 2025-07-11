@@ -118,8 +118,35 @@ run_script() {
     fi
 }
 
+ds_version() {
+    local Branch Version
+    pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${F[C]}pushd \"${SCRIPTPATH}\""
+    git fetch --quiet &> /dev/null || true
+
+    # Get the branch
+    Branch="$(git symbolic-ref --short -q HEAD 2> /dev/null || true)"
+    # Get the current tag. If no tag, use the commit instead.
+    Version="$(git describe --tags --exact-match 2> /dev/null || true)"
+    if [[ -z ${Version-} ]]; then
+        Version="commit $(git rev-parse --short HEAD 2> /dev/null || true)"
+    fi
+
+    echo "${Branch-} ${Version-}"
+    popd &> /dev/null
+}
+ds_update_available() {
+    pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${F[C]}pushd \"${SCRIPTPATH}\""
+    git fetch --quiet &> /dev/null
+    local -i result=0
+    # shellcheck disable=SC2319 # This $? refers to a condition, not a command. Assign to a variable to avoid it being overwritten.
+    [[ $(git rev-parse HEAD 2> /dev/null) != $(git rev-parse '@{u}' 2> /dev/null) ]] || result=$?
+    popd &> /dev/null
+    return ${result}
+}
+
+
 declare -x APPLICATION_VERSION
-APPLICATION_VERSION="$(run_script 'ds_version')"
+APPLICATION_VERSION="$(ds_version)"
 readonly APPLICATION_VERSION
 
 usage() {
@@ -127,7 +154,7 @@ usage() {
     if [[ ${APPLICATION_VERSION-} ]]; then
         APPLICATION_HEADING+=" [${APPLICATION_VERSION}]"
     fi
-    if run_script 'ds_update_available'; then
+    if ds_update_available; then
         APPLICATION_HEADING+=" (Update Available)"
     fi
     cat << EOF
@@ -633,7 +660,7 @@ _dialog_() {
 
     CleanRightBackTitle=''
     RightBackTitle=''
-    if run_script 'ds_update_available'; then
+    if ds_update_available; then
         CleanRightBackTitle="(Update Available)"
         RightBackTitle="${DC[ApplicationUpdateBrackets]}(${DC[ApplicationUpdate]}Update Available${DC[ApplicationUpdateBrackets]})${DC[NC]}"
     fi
@@ -810,7 +837,7 @@ main() {
     run_script 'symlink_ds'
     # Apply the GUI theme
     run_script 'apply_theme'
-    if run_script 'ds_update_available'; then
+    if ds_update_available; then
         notice "An update to ${APPLICATION_NAME} is available. Run 'ds -u' to update."
     fi
     # Execute CLI Argument Functions
