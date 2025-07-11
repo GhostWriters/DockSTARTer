@@ -144,7 +144,6 @@ ds_update_available() {
     return ${result}
 }
 
-
 declare -x APPLICATION_VERSION
 APPLICATION_VERSION="$(ds_version)"
 readonly APPLICATION_VERSION
@@ -837,6 +836,7 @@ main() {
     run_script 'symlink_ds'
     # Apply the GUI theme
     run_script 'apply_theme'
+    notice "[${APPLICATION_NAME} ${APPLICATION_VERSION}]"
     if ds_update_available; then
         notice "An update to ${APPLICATION_NAME} is available. Run 'ds -u' to update."
     fi
