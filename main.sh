@@ -840,9 +840,11 @@ main() {
     # Create Symlink
     run_script 'symlink_ds'
     # Apply the GUI theme
-    info "${APPLICATION_NAME} [${APPLICATION_VERSION}]"
     if ds_update_available; then
+        notice "${APPLICATION_NAME} [${APPLICATION_VERSION}]"
         notice "An update to ${APPLICATION_NAME} is available. Run 'ds -u' to update."
+    else
+        info "${APPLICATION_NAME} [${APPLICATION_VERSION}]"
     fi
     run_script 'apply_theme'
     # Execute CLI Argument Functions
