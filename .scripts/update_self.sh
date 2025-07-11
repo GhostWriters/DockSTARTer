@@ -53,7 +53,7 @@ commands_update_self() {
     pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${F[C]}push \"${SCRIPTPATH}\""
     if [[ -z ${BRANCH-} ]]; then
         BRANCH="$(git branch --show)"
-        if ! run_script 'ds_update_available'; then
+        if ! ds_update_available; then
             notice "${APPLICATION_NAME} is already up to date on branch ${BRANCH}."
             return
         fi
