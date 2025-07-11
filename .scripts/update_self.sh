@@ -16,11 +16,11 @@ update_self() {
             error "You need to specify a branch to update to."
             return 1
         fi
-        Question="Would you like to update ${APPLICATION_NAME} to branch ${CurrentBranch} now?"
+        Question="Would you like to update ${APPLICATION_NAME} to current branch ${CurrentBranch} now?"
         NoNotice="${APPLICATION_NAME} will not be updated."
         YesNotice="Updating ${APPLICATION_NAME} to branch ${CurrentBranch}."
     elif [[ ${BRANCH-} == "${CurrentBranch-}" ]]; then
-        Question="Would you like to update ${APPLICATION_NAME} to branch ${BRANCH} now?"
+        Question="Would you like to forcefully update ${APPLICATION_NAME} to current branch ${BRANCH} now?"
         NoNotice="${APPLICATION_NAME} will not be updated."
         YesNotice="Updating ${APPLICATION_NAME} to branch ${BRANCH}."
     else
@@ -55,6 +55,7 @@ commands_update_self() {
         BRANCH="$(git branch --show)"
         if ! ds_update_available; then
             notice "${APPLICATION_NAME} is already up to date on branch ${BRANCH}."
+            notice "Current version is $(ds_version)"
             return
         fi
     fi
@@ -92,6 +93,7 @@ commands_update_self() {
     git ls-tree -rt --name-only "${BRANCH}" | xargs sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" > /dev/null 2>&1 || true
     sudo chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}/.git" > /dev/null 2>&1 || true
     sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}" > /dev/null 2>&1 || true
+    notice "Updated to $(ds_version)"
     popd &> /dev/null
     exec bash "${SCRIPTNAME}" -e
 }
