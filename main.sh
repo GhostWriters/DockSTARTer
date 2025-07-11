@@ -267,6 +267,8 @@ that take app names can use the form app: to refer to the same file.
     Update ${APPLICATION_NAME} to the latest commits from the specified branch
 -v --verbose
     Verbose
+-V --version
+    Display version information
 -x --debug
     Debug
 EOF
@@ -327,7 +329,7 @@ trap 'cleanup' ERR EXIT SIGABRT SIGALRM SIGHUP SIGINT SIGQUIT SIGTERM
 # Command Line Arguments
 readonly ARGS=("$@")
 cmdline() {
-    while getopts ":-:a:c:efghilpr:s:t:u:vx" OPTION; do
+    while getopts ":-:a:c:efghilpr:s:t:u:vVx" OPTION; do
         # support long options: https://stackoverflow.com/a/28466267/519360
         if [ "$OPTION" = "-" ]; then # long option: reformulate OPTION and OPTARG
             OPTION="${OPTARG}"       # extract long option name
@@ -531,6 +533,9 @@ cmdline() {
                 ;;
             v | verbose)
                 readonly VERBOSE=1
+                ;;
+            V | version)
+                readonly VERSION=1
                 ;;
             x | debug)
                 readonly DEBUG=1
@@ -1194,6 +1199,10 @@ main() {
         else
             run_script 'update_self' "${UPDATE}"
         fi
+        exit
+    fi
+    if [[ -n ${VERSION-} ]]; then
+        echo "${APPLICATION_NAME} [${APPLICATION_VERSION}]"
         exit
     fi
     # Run Menus
