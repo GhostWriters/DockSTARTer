@@ -673,8 +673,10 @@ _dialog_() {
             CleanRightBackTitle+=" "
             RightBackTitle+="${DC[ApplicationVersionSpace]} "
         fi
-        CleanRightBackTitle+="[${APPLICATION_VERSION}]"
-        RightBackTitle+="${DC[ApplicationVersionBrackets]}[${DC[ApplicationVersion]}${APPLICATION_VERSION}${DC[ApplicationVersionBrackets]}]${DC[NC]}"
+        local CurrentVersion
+        CurrentVersion="$(ds_version)"
+        CleanRightBackTitle+="[${CurrentVersion}]"
+        RightBackTitle+="${DC[ApplicationVersionBrackets]}[${DC[ApplicationVersion]}${CurrentVersion}${DC[ApplicationVersionBrackets]}]${DC[NC]}"
     fi
 
     local -i IndentLength
