@@ -100,7 +100,11 @@ var_default_value() {
                     Default="'${DETECTED_PUID}'"
                     ;;
                 TZ)
-                    Default="'$(cat /etc/timezone)'"
+                    if [[ -f /etc/timezone ]]; then
+                        Default="'$(cat /etc/timezone)'"
+                    else
+                        Default="'Etc/UTC'"
+                    fi
                     ;;
                 *)
                     if [[ -f ${COMPOSE_ENV_DEFAULT_FILE} ]] && run_script 'env_var_exists' "${CleanVarName}" "${COMPOSE_ENV_DEFAULT_FILE}"; then
