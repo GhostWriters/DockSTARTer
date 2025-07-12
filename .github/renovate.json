@@ -4,6 +4,7 @@
     "config:best-practices",
     "customManagers:githubActionsVersions",
     ":automergeBranch",
+    ":automergeDigest",
     ":automergeLinters",
     ":automergeStableNonMajor",
     ":automergeTesters",
