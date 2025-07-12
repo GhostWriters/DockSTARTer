@@ -1,0 +1,13 @@
+services:
+  navidrome<__instance>:
+    container_name: ${NAVIDROME<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/navidrome<__instance>.env
+    environment:
+      - ND_DATAFOLDER='/data'
+      - ND_PORT=${NAVIDROME<__INSTANCE>__PORT_4533?}
+      - TZ=${TZ?}
+    restart: ${NAVIDROME<__INSTANCE>__RESTART?}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_VOLUME_CONFIG?}/navidrome<__instance>:/data
+      - ${NAVIDROME<__INSTANCE>__VOLUME_MUSIC?}:/music
