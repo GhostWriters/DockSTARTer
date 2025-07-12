@@ -3,11 +3,11 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 update_self() {
-    local BRANCH CurrentBranch
+    local BRANCH CurrentBranch CurrentVersion RemoteVersion
     BRANCH=${1-}
     pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${F[C]}push \"${SCRIPTPATH}\""
     CurrentBranch="$(git branch --show)"
-    popd &> /dev/null
+    CurrentVersion="$(ds_version)"
 
     local Title="Update ${APPLICATION_NAME}"
     local Question YesNotice NoNotice
@@ -16,17 +16,35 @@ update_self() {
             error "You need to specify a branch to update to."
             return 1
         fi
-        Question="Would you like to update ${APPLICATION_NAME} to current branch ${CurrentBranch} now?"
+        RemoteVersion="$(ds_version "${CurrentBranch}")"
+        Question="Would you like to update ${APPLICATION_NAME} from [${CurrentVersion}] to [${RemoteVersion}] now?"
         NoNotice="${APPLICATION_NAME} will not be updated."
-        YesNotice="Updating ${APPLICATION_NAME} to branch ${CurrentBranch}."
+        YesNotice="Updating ${APPLICATION_NAME} from [${CurrentVersion}] to [${RemoteVersion}]."
     elif [[ ${BRANCH-} == "${CurrentBranch-}" ]]; then
-        Question="Would you like to forcefully update ${APPLICATION_NAME} to current branch ${BRANCH} now?"
-        NoNotice="${APPLICATION_NAME} will not be updated."
-        YesNotice="Updating ${APPLICATION_NAME} to branch ${BRANCH}."
+        RemoteVersion="$(ds_version "${CurrentBranch}")"
+        if [[ ${CurrentVersion} == ${RemoteVersion} ]]; then
+            Question="Would you like to forcefully re-apply ${APPLICATION_NAME} update [${CurrentVersion}]?"
+            NoNotice="${APPLICATION_NAME} will not be updated."
+            YesNotice="Updating ${APPLICATION_NAME} to [${RemoteVersion}]."
+        fi
     else
-        Question="Would you like to update ${APPLICATION_NAME} from branch ${CurrentBranch} to ${BRANCH} now?"
-        NoNotice="${APPLICATION_NAME} will not be updated from branch ${CurrentBranch} to ${BRANCH}."
-        YesNotice="Updating ${APPLICATION_NAME} from branch ${CurrentBranch} to ${BRANCH}."
+        RemoteVersion="$(ds_version "${BRANCH}")"
+        Question="Would you like to update ${APPLICATION_NAME} from [${CurrentVersion}] to [${RemoteVersion}] now?"
+        NoNotice="${APPLICATION_NAME} will not be updated from [${CurrentVersion}] to [${RemoteVersion}]."
+        YesNotice="Updating ${APPLICATION_NAME} from [${CurrentVersion}] to [${RemoteVersion}]."
+    fi
+    popd &> /dev/null
+    if [[ -z ${BRANCH-} && ${CurrentVersion} == ${RemoteVersion} ]]; then
+        if use_dialog_box; then
+            {
+                notice "${APPLICATION_NAME} is already up to date on branch ${BRANCH}."
+                notice "Current version is [${CurrentVersion}]"
+            } |& dialog_pipe "${DC[TitleWarning]}${Title}" "${DC[CommandLine]} ds --update $*"
+        else
+            notice "${APPLICATION_NAME} is already up to date on branch ${CurrentBranch}."
+            notice "Current version is [${CurrentVersion}]"
+        fi
+        return
     fi
     if ! run_script 'question_prompt' Y "${Question}" "${Title}" "${FORCE:+Y}"; then
         if use_dialog_box; then
@@ -48,17 +66,8 @@ update_self() {
 commands_update_self() {
     local BRANCH=${1-}
     local Notice=${2-}
-    local CurrentBranch
 
     pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${F[C]}push \"${SCRIPTPATH}\""
-    if [[ -z ${BRANCH-} ]]; then
-        BRANCH="$(git branch --show)"
-        if ! ds_update_available; then
-            notice "${APPLICATION_NAME} is already up to date on branch ${BRANCH}."
-            notice "Current version is $(ds_version)"
-            return
-        fi
-    fi
     local QUIET=''
     if [[ -z ${VERBOSE-} ]]; then
         QUIET='--quiet'
@@ -93,7 +102,7 @@ commands_update_self() {
     git ls-tree -rt --name-only "${BRANCH}" | xargs sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" > /dev/null 2>&1 || true
     sudo chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}/.git" > /dev/null 2>&1 || true
     sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}" > /dev/null 2>&1 || true
-    notice "Updated to $(ds_version)"
+    notice "Updated to [$(ds_version)]"
     popd &> /dev/null
     exec bash "${SCRIPTNAME}" -e
 }
