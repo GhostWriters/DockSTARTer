@@ -1,0 +1,4 @@
+services:
+  navidrome<__instance>:
+    ports:
+      - ${NAVIDROME<__INSTANCE>__PORT_4533?}:${NAVIDROME<__INSTANCE>__PORT_4533?}
