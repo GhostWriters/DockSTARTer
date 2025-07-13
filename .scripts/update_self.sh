@@ -37,7 +37,7 @@ update_self() {
     if [[ -z ${BRANCH-} && ${CurrentVersion} == "${RemoteVersion}" ]]; then
         if use_dialog_box; then
             {
-                notice "${APPLICATION_NAME} is already up to date on branch ${BRANCH}."
+                notice "${APPLICATION_NAME} is already up to date on branch ${CurrentBranch}."
                 notice "Current version is ${CurrentVersion}"
             } |& dialog_pipe "${DC[TitleWarning]}${Title}" "${DC[CommandLine]} ds --update $*"
         else
