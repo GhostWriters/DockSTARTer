@@ -122,6 +122,7 @@ ds_branch() {
     pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${F[C]}pushd \"${SCRIPTPATH}\""
     git fetch --quiet &> /dev/null || true
     git branch --show
+    popd &> /dev/null
 }
 
 ds_version() {
