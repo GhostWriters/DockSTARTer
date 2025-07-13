@@ -118,17 +118,31 @@ run_script() {
     fi
 }
 
-ds_version() {
-    local Branch Version
+ds_branch() {
     pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${F[C]}pushd \"${SCRIPTPATH}\""
     git fetch --quiet &> /dev/null || true
+    git branch --show
+}
+
+ds_version() {
+    local CheckBranch=${1-}
+    pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${F[C]}pushd \"${SCRIPTPATH}\""
+    git fetch --all --quiet &> /dev/null || true
 
     # Get the branch
-    Branch="$(git symbolic-ref --short -q HEAD 2> /dev/null || true)"
+    local commitish Branch
+    if [[ -n ${CheckBranch-} ]]; then
+        commitish="origin/${CheckBranch}"
+        Branch="${CheckBranch}"
+    else
+        commitish='HEAD'
+        Branch="$(ds_branch)"
+    fi
     # Get the current tag. If no tag, use the commit instead.
-    Version="$(git describe --tags --exact-match 2> /dev/null || true)"
+    local Version
+    Version="$(git describe --tags --exact-match "${commitish}" 2> /dev/null || true)"
     if [[ -z ${Version-} ]]; then
-        Version="commit $(git rev-parse --short HEAD 2> /dev/null || true)"
+        Version="commit $(git rev-parse --short "${commitish}" 2> /dev/null || true)"
     fi
 
     echo "${Branch-} ${Version-}"
@@ -535,7 +549,11 @@ cmdline() {
                 readonly VERBOSE=1
                 ;;
             V | version)
-                readonly VERSION=1
+                VERSION=''
+                if [[ -n ${OPTARG-} && ${OPTARG:0:1} != '-' ]]; then
+                    VERSION="${OPTARG}"
+                fi
+                readonly VERSION
                 ;;
             x | debug)
                 readonly DEBUG=1
@@ -844,7 +862,7 @@ main() {
     # Apply the GUI theme
     if ds_update_available; then
         notice "${APPLICATION_NAME} [${APPLICATION_VERSION}]"
-        notice "An update to ${APPLICATION_NAME} is available. Run 'ds -u' to update."
+        notice "An update to ${APPLICATION_NAME} is available. Run 'ds -u' to update to version $(ds_version "$(ds_branch)")."
     else
         info "${APPLICATION_NAME} [${APPLICATION_VERSION}]"
     fi
@@ -1205,8 +1223,8 @@ main() {
         fi
         exit
     fi
-    if [[ -n ${VERSION-} ]]; then
-        echo "${APPLICATION_NAME} [${APPLICATION_VERSION}]"
+    if [[ -v VERSION ]]; then
+        echo "${APPLICATION_NAME} [$(ds_version "${VERSION}")]"
         exit
     fi
     # Run Menus
