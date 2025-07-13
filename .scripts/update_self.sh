@@ -17,32 +17,32 @@ update_self() {
             return 1
         fi
         RemoteVersion="$(ds_version "${CurrentBranch}")"
-        Question="Would you like to update ${APPLICATION_NAME} from [${CurrentVersion}] to [${RemoteVersion}] now?"
+        Question="Would you like to update ${APPLICATION_NAME} from ${CurrentVersion} to ${RemoteVersion} now?"
         NoNotice="${APPLICATION_NAME} will not be updated."
-        YesNotice="Updating ${APPLICATION_NAME} from [${CurrentVersion}] to [${RemoteVersion}]."
+        YesNotice="Updating ${APPLICATION_NAME} from ${CurrentVersion} to ${RemoteVersion}."
     elif [[ ${BRANCH-} == "${CurrentBranch-}" ]]; then
         RemoteVersion="$(ds_version "${CurrentBranch}")"
-        if [[ ${CurrentVersion} == ${RemoteVersion} ]]; then
-            Question="Would you like to forcefully re-apply ${APPLICATION_NAME} update [${CurrentVersion}]?"
+        if [[ ${CurrentVersion} == "${RemoteVersion}" ]]; then
+            Question="Would you like to forcefully re-apply ${APPLICATION_NAME} update ${CurrentVersion}?"
             NoNotice="${APPLICATION_NAME} will not be updated."
-            YesNotice="Updating ${APPLICATION_NAME} to [${RemoteVersion}]."
+            YesNotice="Updating ${APPLICATION_NAME} to ${RemoteVersion}."
         fi
     else
         RemoteVersion="$(ds_version "${BRANCH}")"
-        Question="Would you like to update ${APPLICATION_NAME} from [${CurrentVersion}] to [${RemoteVersion}] now?"
-        NoNotice="${APPLICATION_NAME} will not be updated from [${CurrentVersion}] to [${RemoteVersion}]."
-        YesNotice="Updating ${APPLICATION_NAME} from [${CurrentVersion}] to [${RemoteVersion}]."
+        Question="Would you like to update ${APPLICATION_NAME} from ${CurrentVersion} to ${RemoteVersion} now?"
+        NoNotice="${APPLICATION_NAME} will not be updated from ${CurrentVersion} to ${RemoteVersion}."
+        YesNotice="Updating ${APPLICATION_NAME} from ${CurrentVersion} to ${RemoteVersion}."
     fi
     popd &> /dev/null
-    if [[ -z ${BRANCH-} && ${CurrentVersion} == ${RemoteVersion} ]]; then
+    if [[ -z ${BRANCH-} && ${CurrentVersion} == "${RemoteVersion}" ]]; then
         if use_dialog_box; then
             {
                 notice "${APPLICATION_NAME} is already up to date on branch ${BRANCH}."
-                notice "Current version is [${CurrentVersion}]"
+                notice "Current version is ${CurrentVersion}"
             } |& dialog_pipe "${DC[TitleWarning]}${Title}" "${DC[CommandLine]} ds --update $*"
         else
             notice "${APPLICATION_NAME} is already up to date on branch ${CurrentBranch}."
-            notice "Current version is [${CurrentVersion}]"
+            notice "Current version is ${CurrentVersion}"
         fi
         return
     fi
