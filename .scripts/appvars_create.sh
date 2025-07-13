@@ -25,8 +25,8 @@ appvars_create() {
             if ! run_script 'env_var_exists' "${APPNAME}_ENABLED"; then
                 run_script 'env_migrate' "${APPNAME}_ENABLED" "${APPNAME}__ENABLED"
             fi
-            if ! run_script 'env_var_exists' "${APPNAME}__ENABLED"; then
-                run_script 'env_set' "${APPNAME}__ENABLED" true
+            if ! run_script 'app_is_added' "${APPNAME}"; then
+                run_script 'enable_app' "${APPNAME}"
             fi
 
             run_script 'appvars_migrate' "${APPNAME}"
