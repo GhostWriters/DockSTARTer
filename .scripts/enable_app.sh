@@ -8,8 +8,11 @@ enable_app() {
     AppList="$(xargs -n 1 <<< "$*")"
     for AppName in ${AppList}; do
         if run_script 'app_is_builtin' "${AppName}"; then
+            EnabledVar="${AppName^^}__ENABLED"
             info "Enabling application ${AppName^^}"
-            run_script 'env_set' "${AppName^^}__ENABLED" true
+            notice "Setting variable in ${COMPOSE_ENV}:"
+            notice "   ${EnabledVar}='true'"
+            run_script 'env_set' "${EnabledVar}" true
         else
             warn "Application ${AppName^^} does not exist."
         fi

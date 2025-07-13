@@ -8,8 +8,11 @@ disable_app() {
     AppList="$(xargs -n 1 <<< "$*")"
     for AppName in ${AppList}; do
         if run_script 'app_is_builtin' "${AppName}"; then
-            info "Disabling application${AppName^^}"
-            run_script 'env_set' "${AppName^^}__ENABLED" false
+            EnabledVar="${AppName^^}__ENABLED"
+            info "Disabling application ${AppName^^}"
+            notice "Setting variable in ${COMPOSE_ENV}:"
+            notice "   ${EnabledVar}='false'"
+            run_script 'env_set' "${EnabledVar}" false
         else
             warn "Application ${AppName^^} does not exist."
         fi
