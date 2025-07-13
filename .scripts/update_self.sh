@@ -102,7 +102,7 @@ commands_update_self() {
     git ls-tree -rt --name-only "${BRANCH}" | xargs sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" > /dev/null 2>&1 || true
     sudo chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}/.git" > /dev/null 2>&1 || true
     sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}" > /dev/null 2>&1 || true
-    notice "Updated to [$(ds_version)]"
+    notice "Updated ${APPLICATION_NAME} to $(ds_version)"
     popd &> /dev/null
     exec bash "${SCRIPTNAME}" -e
 }
