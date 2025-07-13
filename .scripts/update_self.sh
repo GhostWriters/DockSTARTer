@@ -19,19 +19,19 @@ update_self() {
         RemoteVersion="$(ds_version "${CurrentBranch}")"
         Question="Would you like to update ${APPLICATION_NAME} from ${CurrentVersion} to ${RemoteVersion} now?"
         NoNotice="${APPLICATION_NAME} will not be updated."
-        YesNotice="Updating ${APPLICATION_NAME} from ${CurrentVersion} to ${RemoteVersion}."
+        YesNotice="Updating ${APPLICATION_NAME} from ${CurrentVersion} to ${RemoteVersion}"
     elif [[ ${BRANCH-} == "${CurrentBranch-}" ]]; then
         RemoteVersion="$(ds_version "${CurrentBranch}")"
         if [[ ${CurrentVersion} == "${RemoteVersion}" ]]; then
             Question="Would you like to forcefully re-apply ${APPLICATION_NAME} update ${CurrentVersion}?"
             NoNotice="${APPLICATION_NAME} will not be updated."
-            YesNotice="Updating ${APPLICATION_NAME} to ${RemoteVersion}."
+            YesNotice="Updating ${APPLICATION_NAME} to ${RemoteVersion}"
         fi
     else
         RemoteVersion="$(ds_version "${BRANCH}")"
         Question="Would you like to update ${APPLICATION_NAME} from ${CurrentVersion} to ${RemoteVersion} now?"
-        NoNotice="${APPLICATION_NAME} will not be updated from ${CurrentVersion} to ${RemoteVersion}."
-        YesNotice="Updating ${APPLICATION_NAME} from ${CurrentVersion} to ${RemoteVersion}."
+        NoNotice="${APPLICATION_NAME} will not be updated from ${CurrentVersion} to ${RemoteVersion}"
+        YesNotice="Updating ${APPLICATION_NAME} from ${CurrentVersion} to ${RemoteVersion}"
     fi
     popd &> /dev/null
     if [[ -z ${BRANCH-} && ${CurrentVersion} == "${RemoteVersion}" ]]; then
