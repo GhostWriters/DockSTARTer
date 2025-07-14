@@ -64,7 +64,38 @@ menu_config() {
                         run_script 'docker_compose' "update"
                         ;;
                     "${OptionComposeDown}")
-                        run_script 'docker_compose' "down"
+                        local Question
+                        Question="Would you like to ${DC["Highlight"]}Stop${DC[NC]} all containers, or bring all containers ${DC["Highlight"]}Down${DC[NC]}?\n\n${DC["Highlight"]}Stop${DC[NC]} will stop them, ${DC["Highlight"]}Down${DC[NC]} will stop and remove them."
+                        local -a YesNoDialog=(
+                            --title "${DC["TitleQuestion"]}Docker Compose"
+                            --no-collapse
+                            --extra-button
+                            --yes-label "Stop"
+                            --extra-label "Down"
+                            --no-label "Cancel"
+                            --yesno "${Question}${DC[NC]}"
+                            "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+                        )
+                        local -i YesNoDialogButtonPressed=0
+                        _dialog_ "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?
+                        case ${DIALOG_BUTTONS[YesNoDialogButtonPressed]-} in
+                            OK) # Stop
+                                run_script_dialog "${DC["TitleSuccess"]}Docker Compose" "Stopping all running services.\n${DC["CommandLine"]} ds --compose stop" "" \
+                                    'docker_compose' "stop"
+                                ;;
+                            EXTRA) # Down
+                                run_script_dialog "${DC["TitleSuccess"]}Docker Compose" "Stopping and removing all containers, networks, volumes, and images.\n${DC["CommandLine"]} ds --compose down" "" \
+                                    'docker_compose' "down"
+                                ;;
+                            CANCEL | ESC) ;; # Cancel
+                            *)
+                                if [[ -n ${DIALOG_BUTTONS[YesNoDialogButtonPressed]-} ]]; then
+                                    fatal "Unexpected dialog button '${DIALOG_BUTTONS[YesNoDialogButtonPressed]}' pressed in menu_add_app."
+                                else
+                                    fatal "Unexpected dialog button value '${YesNoDialogButtonPressed}' pressed in menu_config."
+                                fi
+                                ;;
+                        esac
                         ;;
                     "${OptionDockerPrune}")
                         run_script 'docker_prune'
