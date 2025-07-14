@@ -1,0 +1,6 @@
+services:
+  crossseed<__instance>:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "cross-seed is an app designed to help you download torrents that you can cross seed based on your existing torrents. It is designed to match conservatively to minimize manual intervention."
+      com.dockstarter.appinfo.nicename: "crossseed<__Instance>"
