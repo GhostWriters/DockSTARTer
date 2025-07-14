@@ -1,6 +1,7 @@
 services:
   bitwarden<__instance>:
     labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Free and open source password management solution"
+      com.dockstarter.appinfo.deprecated: "true"
+      com.dockstarter.appinfo.description: "(DEPRECATED) Use Vaultwarden"
       com.dockstarter.appinfo.nicename: "Bitwarden<__Instance>"
+      com.dockstarter.appinfo.migrateto: "vaultwarden"
