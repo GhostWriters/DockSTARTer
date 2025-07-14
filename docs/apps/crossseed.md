@@ -1,12 +1,11 @@
 # crossseed
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/cross-seed/cross-seed?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/cross-seed/cross-seed)
 [![GitHub Stars](https://img.shields.io/github/stars/cross-seed/cross-seed?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/cross-seed/cross-seed)
 [![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/crossseed)
 
 ## Description
 
-[cross-seed](https://www.navidrome.org/) can inject the torrents it finds directly into your torrent client.
+[cross-seed](https://www.cross-seed.org/) can inject the torrents it finds directly into your torrent client.
 Currently, the supported clients are
 
 - rTorrent
