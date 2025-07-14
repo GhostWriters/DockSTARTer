@@ -1,0 +1,3 @@
+vaultwarden:
+  vaultwarden<__instance>:
+    image: vaultwarden/server:${VAULTWARDEN<__INSTANCE>__TAG?}

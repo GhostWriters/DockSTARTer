@@ -1,0 +1,6 @@
+services:
+  vaultwarden<__instance>:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Free and open source password management solution"
+      com.dockstarter.appinfo.nicename: "Vaultwarden<__Instance>"

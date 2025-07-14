@@ -1,0 +1,10 @@
+services:
+  vaultwarden<__instance>:
+    container_name: ${VAULTWARDEN<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/vaultwarden<__instance>.env
+    environment:
+      - TZ=${TZ?}
+    restart: ${VAULTWARDEN<__INSTANCE>__RESTART?}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_VOLUME_CONFIG?}/vaultwarden<__instance>:/data
