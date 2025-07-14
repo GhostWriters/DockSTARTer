@@ -863,7 +863,8 @@ main() {
     # Apply the GUI theme
     if ds_update_available; then
         notice "${APPLICATION_NAME} [${APPLICATION_VERSION}]"
-        notice "An update to ${APPLICATION_NAME} is available. Run 'ds -u' to update to version $(ds_version "$(ds_branch)")."
+        notice "An update to ${APPLICATION_NAME} is available."
+        notice "Run 'ds -u' to update to version $(ds_version "$(ds_branch)")."
     else
         info "${APPLICATION_NAME} [${APPLICATION_VERSION}]"
     fi
