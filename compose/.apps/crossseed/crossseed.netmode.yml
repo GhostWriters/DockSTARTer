@@ -1,0 +1,3 @@
+services:
+  crossseed<__instance>:
+    network_mode: ${CROSSSEED<__INSTANCE>__NETWORK_MODE?}

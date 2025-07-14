@@ -1,0 +1,3 @@
+services:
+  crossseed<__instance>:
+    hostname: ${CROSSSEED<__INSTANCE>__HOSTNAME?}
