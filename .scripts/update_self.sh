@@ -59,6 +59,7 @@ update_self() {
         return
     fi
 
+    BRANCH="${BRANCH:-"${CurrentBranch}"}"
     if use_dialog_box; then
         commands_update_self "${BRANCH}" "${YesNotice}" |&
             dialog_pipe "${DC[TitleSuccess]}${Title}" "${YesNotice}\n${DC[CommandLine]} ds --update $*"
