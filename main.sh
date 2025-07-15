@@ -1243,7 +1243,15 @@ main() {
         exit
     fi
     if [[ -v VERSION ]]; then
-        echo "${APPLICATION_NAME} [$(ds_version "${VERSION}")]"
+        local Version
+        VersionString="$(ds_version "${VERSION}")"
+        if [[ -n ${VersionString} ]]; then
+            echo "${APPLICATION_NAME} [${VersionString}]"
+        else
+            local Branch
+            Branch="${VERSION:-$(ds_branch)}"
+            error "DockSTARTer branch ${Branch} does not exist."
+        fi
         exit
     fi
     # Run Menus
