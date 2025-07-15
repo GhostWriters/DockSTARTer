@@ -40,8 +40,8 @@ update_self() {
     popd &> /dev/null
 
     if ! ds_branch_exists "${BRANCH}"; then
-        local ErrorMessage="${APPLICATION_NAME} branch ${BRANCH} does not exists."
         BRANCH="${BRANCH:-"${CurrentBranch}"}"
+        local ErrorMessage="${APPLICATION_NAME} branch ${BRANCH} does not exists."
         if use_dialog_box; then
             error "${ErrorMessage}" |&
                 dialog_pipe "${DC[TitleError]}${Title}" "${DC[CommandLine]} ds --update $*"
