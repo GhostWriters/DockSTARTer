@@ -125,10 +125,22 @@ ds_branch() {
     popd &> /dev/null
 }
 
+ds_branch_exists() {
+    pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${F[C]}pushd \"${SCRIPTPATH}\""
+    local CheckBranch
+    CheckBranch=${1:-$(ds_branch)}
+    git fetch --quiet &> /dev/null || true
+
+    local -i result=0
+    git ls-remote --exit-code --heads origin "${CheckBranch}" &> /dev/null || result=$?
+    popd &> /dev/null
+    return ${result}
+}
+
 ds_version() {
     local CheckBranch=${1-}
     pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${F[C]}pushd \"${SCRIPTPATH}\""
-    git fetch --all --quiet &> /dev/null || true
+    git fetch --quiet &> /dev/null || true
 
     # Get the branch
     local commitish Branch
@@ -139,14 +151,19 @@ ds_version() {
         commitish='HEAD'
         Branch="$(ds_branch)"
     fi
-    # Get the current tag. If no tag, use the commit instead.
-    local Version
-    Version="$(git describe --tags --exact-match "${commitish}" 2> /dev/null || true)"
-    if [[ -z ${Version-} ]]; then
-        Version="commit $(git rev-parse --short "${commitish}" 2> /dev/null || true)"
-    fi
 
-    echo "${Branch-} ${Version-}"
+    if ds_branch_exists "${Branch}"; then
+        # Get the current tag. If no tag, use the commit instead.
+        local Version
+        Version="$(git describe --tags --exact-match "${commitish}" 2> /dev/null || true)"
+        if [[ -z ${Version-} ]]; then
+            Version="commit $(git rev-parse --short "${commitish}" 2> /dev/null || true)"
+        fi
+        Version="${Branch} ${Version}"
+    else
+        Version=''
+    fi
+    echo "${Version}"
     popd &> /dev/null
 }
 ds_update_available() {
