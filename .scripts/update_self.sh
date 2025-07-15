@@ -38,6 +38,18 @@ update_self() {
         YesNotice="Updating ${APPLICATION_NAME} from ${CurrentVersion} to ${RemoteVersion}"
     fi
     popd &> /dev/null
+
+    if ! ds_branch_exists "${BRANCH}"; then
+        local ErrorMessage="${APPLICATION_NAME} branch ${BRANCH} does not exists."
+        BRANCH="${BRANCH:-"${CurrentBranch}"}"
+        if use_dialog_box; then
+            error "${ErrorMessage}" |&
+                dialog_pipe "${DC[TitleError]}${Title}" "${DC[CommandLine]} ds --update $*"
+        else
+            error "${ErrorMessage}"
+        fi
+        return 1
+    fi
     if [[ -z ${BRANCH-} && ${CurrentVersion} == "${RemoteVersion}" ]]; then
         if use_dialog_box; then
             {
@@ -48,21 +60,10 @@ update_self() {
             notice "${APPLICATION_NAME} is already up to date on branch ${CurrentBranch}."
             notice "Current version is ${CurrentVersion}"
         fi
-        return
+        return 0
     fi
 
     BRANCH="${BRANCH:-"${CurrentBranch}"}"
-    if ! ds_branch_exists "${BRANCH}"; then
-        local ErrorMessage="${APPLICATION_NAME} branch ${BRANCH} does not exists."
-        if use_dialog_box; then
-            error "${ErrorMessage}" |&
-                dialog_pipe "${DC[TitleError]}${Title}" "${ErrorMessage}\n${DC[CommandLine]} ds --update $*"
-        else
-            error "${ErrorMessage}"
-        fi
-        return 1
-    fi
-
     if ! run_script 'question_prompt' Y "${Question}" "${Title}" "${FORCE:+Y}"; then
         if use_dialog_box; then
             notice "${NoNotice}" |& dialog_pipe "${DC[TitleError]}${Title}" "${NoNotice}"
