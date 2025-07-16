@@ -126,11 +126,12 @@ ds_branch() {
 }
 
 ds_branch_exists() {
-    pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${F[C]}pushd \"${SCRIPTPATH}\""
+    local CurrentBranch
+    CurrentBranch="$(ds_branch)"
     local CheckBranch
-    CheckBranch=${1:-$(ds_branch)}
-    git fetch --quiet &> /dev/null || true
+    CheckBranch=${1:-"${CurrentBranch}"}
 
+    pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${F[C]}pushd \"${SCRIPTPATH}\""
     local -i result=0
     git ls-remote --exit-code --heads origin "${CheckBranch}" &> /dev/null || result=$?
     popd &> /dev/null
@@ -138,20 +139,20 @@ ds_branch_exists() {
 }
 
 ds_version() {
-    local CheckBranch=${1-}
-    pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${F[C]}pushd \"${SCRIPTPATH}\""
-    git fetch --quiet &> /dev/null || true
-
-    # Get the branch
+    local CurrentBranch
+    CurrentBranch="$(ds_branch)"
+    local CheckBranch
+    CheckBranch=${1-}
     local commitish Branch
     if [[ -n ${CheckBranch-} ]]; then
         commitish="origin/${CheckBranch}"
         Branch="${CheckBranch}"
     else
         commitish='HEAD'
-        Branch="$(ds_branch)"
+        Branch="${CurrentBranch}"
     fi
 
+    pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${F[C]}pushd \"${SCRIPTPATH}\""
     if ds_branch_exists "${Branch}"; then
         # Get the current tag. If no tag, use the commit instead.
         local Version
