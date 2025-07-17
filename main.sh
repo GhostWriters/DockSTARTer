@@ -388,7 +388,7 @@ switch_branch() {
         export FORCE
         PROMPT="CLI"
         run_script 'update_self' "${TargetBranch}" bash "${SCRIPTNAME}" "$@"
-        exit 0
+        exit
     fi
 }
 
