@@ -27,6 +27,51 @@ readonly SCRIPTPATH
 SCRIPTNAME="${SCRIPTPATH}/$(basename "$(get_scriptname)")"
 readonly SCRIPTNAME
 
+# System Information
+ARCH=$(uname -m)
+readonly ARCH
+export ARCH
+
+# Environment Information
+readonly COMPOSE_FOLDER_NAME="compose"
+export COMPOSE_FOLDER_NAME
+readonly COMPOSE_FOLDER="${SCRIPTPATH}/${COMPOSE_FOLDER_NAME}"
+export COMPOSE_FOLDER
+readonly COMPOSE_OVERRIDE_NAME="docker-compose.override.yml"
+export COMPOSE_OVERRIDE_NAME
+readonly COMPOSE_OVERRIDE="${COMPOSE_FOLDER}/${COMPOSE_OVERRIDE_NAME}"
+export COMPOSE_OVERRIDE
+readonly COMPOSE_ENV="${COMPOSE_FOLDER}/.env"
+export COMPOSE_ENV
+readonly COMPOSE_ENV_DEFAULT_FILE="${COMPOSE_FOLDER}/.env.example"
+export COMPOSE_ENV_DEFAULT_FILE
+readonly APP_ENV_FOLDER_NAME="env_files"
+export APP_ENV_FOLDER_NAME
+readonly APP_ENV_FOLDER="${COMPOSE_FOLDER}/env_files"
+export APP_ENV_FOLDER
+readonly TEMPLATES_FOLDER="${COMPOSE_FOLDER}/.apps"
+export TEMPLATES_FOLDER
+readonly INSTANCES_FOLDER="${COMPOSE_FOLDER}/.instances"
+export INSTANCES_FOLDER
+readonly THEME_FOLDER="${SCRIPTPATH}/.themes"
+export THEME_FOLDER
+
+# User/Group Information
+readonly DETECTED_PUID=${SUDO_UID:-$UID}
+export DETECTED_PUID
+DETECTED_UNAME=$(id -un "${DETECTED_PUID}" 2> /dev/null || true)
+readonly DETECTED_UNAME
+export DETECTED_UNAME
+DETECTED_PGID=$(id -g "${DETECTED_PUID}" 2> /dev/null || true)
+readonly DETECTED_PGID
+export DETECTED_PGID
+DETECTED_UGROUP=$(id -gn "${DETECTED_PUID}" 2> /dev/null || true)
+readonly DETECTED_UGROUP
+export DETECTED_UGROUP
+DETECTED_HOMEDIR=$(eval echo "~${DETECTED_UNAME}" 2> /dev/null || true)
+readonly DETECTED_HOMEDIR
+export DETECTED_HOMEDIR
+
 # Terminal Colors
 declare -Agr B=( # Background
     [B]=$(tput setab 4 2> /dev/null || echo -e "\e[44m") # Blue
@@ -53,6 +98,37 @@ readonly NC
 BS=$(tput cup 1000 0 2> /dev/null || true) # Bottom of screen
 readonly BS
 export BS
+
+DIALOG=$(command -v dialog) || true
+export DIALOG
+
+declare -rx MENU_INI_NAME='menu.ini'
+declare -rx MENU_INI_FILE="${SCRIPTPATH}/${MENU_INI_NAME}"
+declare -rx THEME_FILE_NAME='theme.ini'
+declare -rx DIALOGRC_NAME='.dialogrc'
+declare -rx DIALOGRC="${SCRIPTPATH}/${DIALOGRC_NAME}"
+
+declare -rix DIALOGTIMEOUT=3
+declare -rix DIALOG_OK=0
+declare -rix DIALOG_CANCEL=1
+declare -rix DIALOG_HELP=2
+declare -rix DIALOG_EXTRA=3
+declare -rix DIALOG_ITEM_HELP=4
+declare -rix DIALOG_ERROR=254
+declare -rix DIALOG_ESC=255
+readonly -a DIALOG_BUTTONS=(
+    [DIALOG_OK]="OK"
+    [DIALOG_CANCEL]="CANCEL"
+    [DIALOG_HELP]="HELP"
+    [DIALOG_EXTRA]="EXTRA"
+    [DIALOG_ITEM_HELP]="ITEM_HELP"
+    [DIALOG_ERROR]="ERROR"
+    [DIALOG_ESC]="ESC"
+)
+export DIALOG_BUTTONS
+
+declare -Ax DC=()
+declare -x DIALOGOTS
 
 # Log Functions
 MKTEMP_LOG=$(mktemp) || echo -e "Failed to create temporary log file.\nFailing command: ${F[C]}mktemp"
@@ -118,6 +194,131 @@ run_script() {
     fi
 }
 
+# Take whitespace and newline delimited words and output a single line highlited list for dialog
+highlighted_list() {
+    local List
+    List=$(xargs <<< "$*")
+    if [[ -n ${List-} ]]; then
+        echo "${DC["Subtitle"]}${List// /${DC[NC]} ${DC["Subtitle"]}}${DC[NC]}"
+    fi
+}
+
+_dialog_() {
+    local LeftBackTitle RightBackTitle
+    local CleanLeftBackTitle CleanRightBackTitle
+
+    CleanLeftBackTitle="${APPLICATION_NAME}"
+    LeftBackTitle="${DC[ApplicationName]}${APPLICATION_NAME}${DC[NC]}"
+
+    CleanRightBackTitle=''
+    RightBackTitle=''
+    if ds_update_available; then
+        CleanRightBackTitle="(Update Available)"
+        RightBackTitle="${DC[ApplicationUpdateBrackets]}(${DC[ApplicationUpdate]}Update Available${DC[ApplicationUpdateBrackets]})${DC[NC]}"
+    fi
+    if [[ ${APPLICATION_VERSION-} ]]; then
+        if [[ -n ${CleanRightBackTitle-} ]]; then
+            CleanRightBackTitle+=" "
+            RightBackTitle+="${DC[ApplicationVersionSpace]} "
+        fi
+        local CurrentVersion
+        CurrentVersion="$(ds_version)"
+        CleanRightBackTitle+="[${CurrentVersion}]"
+        RightBackTitle+="${DC[ApplicationVersionBrackets]}[${DC[ApplicationVersion]}${CurrentVersion}${DC[ApplicationVersionBrackets]}]${DC[NC]}"
+    fi
+
+    local -i IndentLength
+    IndentLength=$((COLUMNS - ${#CleanLeftBackTitle} - ${#CleanRightBackTitle} - 2))
+    local Indent
+    Indent="$(printf %${IndentLength}s '')"
+    BackTitle="${LeftBackTitle}${Indent}${RightBackTitle}"
+
+    ${DIALOG} --backtitle "${BackTitle}" "$@"
+}
+
+# Check to see if we should use a dialog box
+use_dialog_box() {
+    [[ ${PROMPT:-CLI} == GUI && -t 1 && -t 2 ]]
+}
+
+# Pipe to Dialog Box Function
+dialog_pipe() {
+    local Title=${1:-}
+    local SubTitle=${2:-}
+    local TimeOut=${3:-0}
+    _dialog_ \
+        --title "${DC["Title"]}${Title}" \
+        --timeout "${TimeOut}" \
+        --programbox "${DC["Subtitle"]}${SubTitle}" \
+        "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" || true
+    echo -n "${BS}"
+}
+# Script Dialog Runner Function
+run_script_dialog() {
+    local Title=${1:-}
+    local SubTitle=${2:-}
+    local TimeOut=${3:-0}
+    local SCRIPTSNAME=${4-}
+    shift 4
+    if use_dialog_box; then
+        # Using the GUI, pipe output to a dialog box
+        run_script "${SCRIPTSNAME}" "$@" |& dialog_pipe "${Title}" "${SubTitle}" "${TimeOut}"
+        return "${PIPESTATUS[0]}"
+    else
+        run_script "${SCRIPTSNAME}" "$@"
+        return
+    fi
+}
+
+# Command Dialog Runner Function
+run_command_dialog() {
+    local Title=${1:-}
+    local SubTitle=${2:-}
+    local TimeOut=${3:-0}
+    local CommandName=${4-}
+    shift 4
+    if [[ -n ${CommandName-} ]]; then
+        if use_dialog_box; then
+            # Using the GUI, pipe output to a dialog box
+            "${CommandName}" "$@" |& dialog_pipe "${Title}" "${SubTitle}" "${TimeOut}"
+            return "${PIPESTATUS[0]}"
+        else
+            "${CommandName}" "$@"
+            return
+        fi
+    fi
+}
+
+dialog_message() {
+    local Title=${1:-}
+    local Message=${2:-}
+    local TimeOut=${3:-0}
+    _dialog_ \
+        --title "${Title}" \
+        --timeout "${TimeOut}" \
+        --msgbox "${Message}" \
+        "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+    echo -n "${BS}"
+}
+dialog_error() {
+    local Title=${1:-}
+    local Message=${2:-}
+    local TimeOut=${3:-0}
+    dialog_message "${DC["TitleError"]}${Title}" "${Message}" "${TimeOut}"
+}
+dialog_warning() {
+    local Title=${1:-}
+    local Message=${2:-}
+    local TimeOut=${3:-0}
+    dialog_message "${DC["TitleWarning"]}${Title}" "${Message}" "${TimeOut}"
+}
+dialog_success() {
+    local Title=${1:-}
+    local Message=${2:-}
+    local TimeOut=${3:-0}
+    dialog_message "${DC["TitleSuccess"]}${Title}" "${Message}" "${TimeOut}"
+}
+
 ds_branch() {
     pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${F[C]}pushd \"${SCRIPTPATH}\""
     git fetch --quiet &> /dev/null || true
@@ -177,9 +378,53 @@ ds_update_available() {
     return ${result}
 }
 
+switch_branch() {
+    local SourceBranch='master'
+    local TargetBranch='main'
+    local CurrentBranch
+    CurrentBranch="$(ds_branch)"
+    if [[ ${CurrentBranch} == "${SourceBranch}" ]] && ds_branch_exists "${TargetBranch}"; then
+        FORCE=true
+        export FORCE
+        PROMPT="CLI"
+        run_script 'update_self' "${TargetBranch}" bash "${SCRIPTNAME}" "$@"
+        exit 0
+    fi
+}
+
 declare -x APPLICATION_VERSION
 APPLICATION_VERSION="$(ds_version)"
 readonly APPLICATION_VERSION
+
+# Check for supported CPU architecture
+check_arch() {
+    if [[ ${ARCH} != "aarch64" ]] && [[ ${ARCH} != "x86_64" ]]; then
+        fatal "Unsupported architecture."
+    fi
+}
+
+# Check if the repo exists relative to the SCRIPTPATH
+check_repo() {
+    if [[ -d ${SCRIPTPATH}/.git ]] && [[ -d ${SCRIPTPATH}/.scripts ]]; then
+        return
+    else
+        return 1
+    fi
+}
+
+# Check if running as root
+check_root() {
+    if [[ ${DETECTED_PUID} == "0" ]] || [[ ${DETECTED_HOMEDIR} == "/root" ]]; then
+        fatal "Running as root is not supported. Please run as a standard user with sudo."
+    fi
+}
+
+# Check if running with sudo
+check_sudo() {
+    if [[ ${EUID} -eq 0 ]]; then
+        fatal "Running with sudo is not supported. Commands requiring sudo will prompt automatically when required."
+    fi
+}
 
 usage() {
     local APPLICATION_HEADING="${APPLICATION_NAME}"
@@ -306,37 +551,6 @@ that take app names can use the form app: to refer to the same file.
     Debug
 EOF
 }
-
-DIALOG=$(command -v dialog) || true
-export DIALOG
-
-declare -rx MENU_INI_NAME='menu.ini'
-declare -rx MENU_INI_FILE="${SCRIPTPATH}/${MENU_INI_NAME}"
-declare -rx THEME_FILE_NAME='theme.ini'
-declare -rx DIALOGRC_NAME='.dialogrc'
-declare -rx DIALOGRC="${SCRIPTPATH}/${DIALOGRC_NAME}"
-
-declare -rix DIALOGTIMEOUT=3
-declare -rix DIALOG_OK=0
-declare -rix DIALOG_CANCEL=1
-declare -rix DIALOG_HELP=2
-declare -rix DIALOG_EXTRA=3
-declare -rix DIALOG_ITEM_HELP=4
-declare -rix DIALOG_ERROR=254
-declare -rix DIALOG_ESC=255
-readonly -a DIALOG_BUTTONS=(
-    [DIALOG_OK]="OK"
-    [DIALOG_CANCEL]="CANCEL"
-    [DIALOG_HELP]="HELP"
-    [DIALOG_EXTRA]="EXTRA"
-    [DIALOG_ITEM_HELP]="ITEM_HELP"
-    [DIALOG_ERROR]="ERROR"
-    [DIALOG_ESC]="ESC"
-)
-export DIALOG_BUTTONS
-
-declare -Ax DC=()
-declare -x DIALOGOTS
 
 # Cleanup Function
 cleanup() {
@@ -603,210 +817,12 @@ cmdline() {
     done
     return
 }
+
+switch_branch "${ARGS[@]-}"
 cmdline "${ARGS[@]-}"
 if [[ -n ${DEBUG-} ]] && [[ -n ${VERBOSE-} ]]; then
     readonly TRACE=1
 fi
-
-# System Information
-ARCH=$(uname -m)
-readonly ARCH
-export ARCH
-
-# Environment Information
-readonly COMPOSE_FOLDER_NAME="compose"
-export COMPOSE_FOLDER_NAME
-readonly COMPOSE_FOLDER="${SCRIPTPATH}/${COMPOSE_FOLDER_NAME}"
-export COMPOSE_FOLDER
-readonly COMPOSE_OVERRIDE_NAME="docker-compose.override.yml"
-export COMPOSE_OVERRIDE_NAME
-readonly COMPOSE_OVERRIDE="${COMPOSE_FOLDER}/${COMPOSE_OVERRIDE_NAME}"
-export COMPOSE_OVERRIDE
-readonly COMPOSE_ENV="${COMPOSE_FOLDER}/.env"
-export COMPOSE_ENV
-readonly COMPOSE_ENV_DEFAULT_FILE="${COMPOSE_FOLDER}/.env.example"
-export COMPOSE_ENV_DEFAULT_FILE
-readonly APP_ENV_FOLDER_NAME="env_files"
-export APP_ENV_FOLDER_NAME
-readonly APP_ENV_FOLDER="${COMPOSE_FOLDER}/env_files"
-export APP_ENV_FOLDER
-readonly TEMPLATES_FOLDER="${COMPOSE_FOLDER}/.apps"
-export TEMPLATES_FOLDER
-readonly INSTANCES_FOLDER="${COMPOSE_FOLDER}/.instances"
-export INSTANCES_FOLDER
-readonly THEME_FOLDER="${SCRIPTPATH}/.themes"
-export THEME_FOLDER
-
-# User/Group Information
-readonly DETECTED_PUID=${SUDO_UID:-$UID}
-export DETECTED_PUID
-DETECTED_UNAME=$(id -un "${DETECTED_PUID}" 2> /dev/null || true)
-readonly DETECTED_UNAME
-export DETECTED_UNAME
-DETECTED_PGID=$(id -g "${DETECTED_PUID}" 2> /dev/null || true)
-readonly DETECTED_PGID
-export DETECTED_PGID
-DETECTED_UGROUP=$(id -gn "${DETECTED_PUID}" 2> /dev/null || true)
-readonly DETECTED_UGROUP
-export DETECTED_UGROUP
-DETECTED_HOMEDIR=$(eval echo "~${DETECTED_UNAME}" 2> /dev/null || true)
-readonly DETECTED_HOMEDIR
-export DETECTED_HOMEDIR
-
-# Check for supported CPU architecture
-check_arch() {
-    if [[ ${ARCH} != "aarch64" ]] && [[ ${ARCH} != "x86_64" ]]; then
-        fatal "Unsupported architecture."
-    fi
-}
-
-# Check if the repo exists relative to the SCRIPTPATH
-check_repo() {
-    if [[ -d ${SCRIPTPATH}/.git ]] && [[ -d ${SCRIPTPATH}/.scripts ]]; then
-        return
-    else
-        return 1
-    fi
-}
-
-# Check if running as root
-check_root() {
-    if [[ ${DETECTED_PUID} == "0" ]] || [[ ${DETECTED_HOMEDIR} == "/root" ]]; then
-        fatal "Running as root is not supported. Please run as a standard user with sudo."
-    fi
-}
-
-# Check if running with sudo
-check_sudo() {
-    if [[ ${EUID} -eq 0 ]]; then
-        fatal "Running with sudo is not supported. Commands requiring sudo will prompt automatically when required."
-    fi
-}
-
-# Take whitespace and newline delimited words and output a single line highlited list for dialog
-highlighted_list() {
-    local List
-    List=$(xargs <<< "$*")
-    if [[ -n ${List-} ]]; then
-        echo "${DC["Subtitle"]}${List// /${DC[NC]} ${DC["Subtitle"]}}${DC[NC]}"
-    fi
-}
-
-_dialog_() {
-    local LeftBackTitle RightBackTitle
-    local CleanLeftBackTitle CleanRightBackTitle
-
-    CleanLeftBackTitle="${APPLICATION_NAME}"
-    LeftBackTitle="${DC[ApplicationName]}${APPLICATION_NAME}${DC[NC]}"
-
-    CleanRightBackTitle=''
-    RightBackTitle=''
-    if ds_update_available; then
-        CleanRightBackTitle="(Update Available)"
-        RightBackTitle="${DC[ApplicationUpdateBrackets]}(${DC[ApplicationUpdate]}Update Available${DC[ApplicationUpdateBrackets]})${DC[NC]}"
-    fi
-    if [[ ${APPLICATION_VERSION-} ]]; then
-        if [[ -n ${CleanRightBackTitle-} ]]; then
-            CleanRightBackTitle+=" "
-            RightBackTitle+="${DC[ApplicationVersionSpace]} "
-        fi
-        local CurrentVersion
-        CurrentVersion="$(ds_version)"
-        CleanRightBackTitle+="[${CurrentVersion}]"
-        RightBackTitle+="${DC[ApplicationVersionBrackets]}[${DC[ApplicationVersion]}${CurrentVersion}${DC[ApplicationVersionBrackets]}]${DC[NC]}"
-    fi
-
-    local -i IndentLength
-    IndentLength=$((COLUMNS - ${#CleanLeftBackTitle} - ${#CleanRightBackTitle} - 2))
-    local Indent
-    Indent="$(printf %${IndentLength}s '')"
-    BackTitle="${LeftBackTitle}${Indent}${RightBackTitle}"
-
-    ${DIALOG} --backtitle "${BackTitle}" "$@"
-}
-
-# Check to see if we should use a dialog box
-use_dialog_box() {
-    [[ ${PROMPT:-CLI} == GUI && -t 1 && -t 2 ]]
-}
-
-# Pipe to Dialog Box Function
-dialog_pipe() {
-    local Title=${1:-}
-    local SubTitle=${2:-}
-    local TimeOut=${3:-0}
-    _dialog_ \
-        --title "${DC["Title"]}${Title}" \
-        --timeout "${TimeOut}" \
-        --programbox "${DC["Subtitle"]}${SubTitle}" \
-        "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" || true
-    echo -n "${BS}"
-}
-# Script Dialog Runner Function
-run_script_dialog() {
-    local Title=${1:-}
-    local SubTitle=${2:-}
-    local TimeOut=${3:-0}
-    local SCRIPTSNAME=${4-}
-    shift 4
-    if use_dialog_box; then
-        # Using the GUI, pipe output to a dialog box
-        run_script "${SCRIPTSNAME}" "$@" |& dialog_pipe "${Title}" "${SubTitle}" "${TimeOut}"
-        return "${PIPESTATUS[0]}"
-    else
-        run_script "${SCRIPTSNAME}" "$@"
-        return
-    fi
-}
-
-# Command Dialog Runner Function
-run_command_dialog() {
-    local Title=${1:-}
-    local SubTitle=${2:-}
-    local TimeOut=${3:-0}
-    local CommandName=${4-}
-    shift 4
-    if [[ -n ${CommandName-} ]]; then
-        if use_dialog_box; then
-            # Using the GUI, pipe output to a dialog box
-            "${CommandName}" "$@" |& dialog_pipe "${Title}" "${SubTitle}" "${TimeOut}"
-            return "${PIPESTATUS[0]}"
-        else
-            "${CommandName}" "$@"
-            return
-        fi
-    fi
-}
-
-dialog_message() {
-    local Title=${1:-}
-    local Message=${2:-}
-    local TimeOut=${3:-0}
-    _dialog_ \
-        --title "${Title}" \
-        --timeout "${TimeOut}" \
-        --msgbox "${Message}" \
-        "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
-    echo -n "${BS}"
-}
-dialog_error() {
-    local Title=${1:-}
-    local Message=${2:-}
-    local TimeOut=${3:-0}
-    dialog_message "${DC["TitleError"]}${Title}" "${Message}" "${TimeOut}"
-}
-dialog_warning() {
-    local Title=${1:-}
-    local Message=${2:-}
-    local TimeOut=${3:-0}
-    dialog_message "${DC["TitleWarning"]}${Title}" "${Message}" "${TimeOut}"
-}
-dialog_success() {
-    local Title=${1:-}
-    local Message=${2:-}
-    local TimeOut=${3:-0}
-    dialog_message "${DC["TitleSuccess"]}${Title}" "${Message}" "${TimeOut}"
-}
 
 # Test Runner Function
 run_test() {

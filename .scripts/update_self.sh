@@ -5,6 +5,8 @@ IFS=$'\n\t'
 update_self() {
     local BRANCH CurrentBranch CurrentVersion RemoteVersion
     BRANCH=${1-}
+    shift || true
+
     pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${F[C]}push \"${SCRIPTPATH}\""
     CurrentBranch="$(git branch --show)"
     CurrentVersion="$(ds_version)"
@@ -74,16 +76,17 @@ update_self() {
     fi
 
     if use_dialog_box; then
-        commands_update_self "${BRANCH}" "${YesNotice}" |&
+        commands_update_self "${BRANCH}" "${YesNotice}" "$@" |&
             dialog_pipe "${DC[TitleSuccess]}${Title}" "${YesNotice}\n${DC[CommandLine]} ds --update $*"
     else
-        commands_update_self "${BRANCH}" "${YesNotice}"
+        commands_update_self "${BRANCH}" "${YesNotice}" "$@"
     fi
 }
 
 commands_update_self() {
     local BRANCH=${1-}
     local Notice=${2-}
+    shift 2
 
     pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${F[C]}push \"${SCRIPTPATH}\""
     local QUIET=''
@@ -105,12 +108,8 @@ commands_update_self() {
     info "Fetching recent changes from git."
     eval git fetch ${QUIET-} --all --prune || fatal "Failed to fetch recent changes from git.\nFailing command: ${F[C]}git fetch ${QUIET-} --all --prune"
     if [[ ${CI-} != true ]]; then
-        if [[ -n ${BRANCH-} ]]; then
-            eval git switch ${QUIET-} --force "${BRANCH}" || fatal "Failed to switch to github branch ${BRANCH}.\nFailing command: ${F[C]}git switch ${QUIET-} --force \"${BRANCH}\""
-            eval git reset ${QUIET-} --hard origin/"${BRANCH}" || fatal "Failed to reset to branch origin/${BRANCH}.\nFailing command: ${F[C]}git reset ${QUIET-} --hard origin/\"${BRANCH}\""
-        else
-            eval git reset ${QUIET-} --hard HEAD || fatal "Failed to reset to current branch.\nFailing command: ${F[C]}git reset ${QUIET-} --hard HEAD"
-        fi
+        eval git switch ${QUIET-} --force "${BRANCH}" || fatal "Failed to switch to github branch ${BRANCH}.\nFailing command: ${F[C]}git switch ${QUIET-} --force \"${BRANCH}\""
+        eval git reset ${QUIET-} --hard origin/"${BRANCH}" || fatal "Failed to reset to branch origin/${BRANCH}.\nFailing command: ${F[C]}git reset ${QUIET-} --hard origin/\"${BRANCH}\""
         info "Pulling recent changes from git."
         eval git pull ${QUIET-} || fatal "Failed to pull recent changes from git.\nFailing command: ${F[C]}git pull ${QUIET-}"
     fi
@@ -122,7 +121,11 @@ commands_update_self() {
     sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}" > /dev/null 2>&1 || true
     notice "Updated ${APPLICATION_NAME} to $(ds_version)"
     popd &> /dev/null
-    exec bash "${SCRIPTNAME}" -e
+    if [[ -z $* ]]; then
+        exec bash "${SCRIPTNAME}" -e
+    else
+        exec "$@"
+    fi
 }
 
 test_update_self() {
