@@ -6,9 +6,9 @@ update_self() {
     local BRANCH CurrentBranch CurrentVersion RemoteVersion
     BRANCH=${1-}
     shift || true
-    if [[ ${BRANCH-} == 'master' ]] && ds_branch_exists 'main'; then
-        warn "Updating to branch main instead of master."
-        BRANCH='main'
+    if [[ ${BRANCH-} == "${SOURCE_BRANCH}" ]] && ds_branch_exists "${TARGET_BRANCH}"; then
+        warn "Updating to branch ${TARGET_BRANCH} instead of ${SOURCE_BRANCH}."
+        BRANCH="${TARGET_BRANCH}"
     fi
 
     pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${F[C]}push \"${SCRIPTPATH}\""

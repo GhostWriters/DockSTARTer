@@ -3,6 +3,8 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 declare -rx APPLICATION_NAME='DockSTARTer'
+declare -rx SOURCE_BRANCH='master'
+declare -rx TARGET_BRANCH='main'
 
 export LC_ALL=C
 export PROMPT="CLI"
@@ -379,16 +381,14 @@ ds_update_available() {
 }
 
 switch_branch() {
-    local SourceBranch='master'
-    local TargetBranch='main'
     local CurrentBranch
     CurrentBranch="$(ds_branch)"
-    if [[ ${CurrentBranch} == "${SourceBranch}" ]] && ds_branch_exists "${TargetBranch}"; then
+    if [[ ${CurrentBranch} == "${SOURCE_BRANCH}" ]] && ds_branch_exists "${TARGET_BRANCH}"; then
         FORCE=true
         export FORCE
         PROMPT="CLI"
-        notice "Automatically switching from ${APPLICATION_NAME} branch master to main."
-        run_script 'update_self' "${TargetBranch}" bash "${SCRIPTNAME}" "$@"
+        notice "Automatically switching from ${APPLICATION_NAME} branch ${SOURCE_BRANCH} to ${TARGET_BRANCH}."
+        run_script 'update_self' "${TARGET_BRANCH}" bash "${SCRIPTNAME}" "$@"
         exit
     fi
 }
