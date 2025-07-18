@@ -7,6 +7,7 @@ update_self() {
     BRANCH=${1-}
     shift || true
     if [[ ${BRANCH-} == 'master' ]] && ds_branch_exists 'main'; then
+        warn "Updating to branch main instead of master."
         BRANCH='main'
     fi
 
