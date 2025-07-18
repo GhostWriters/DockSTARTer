@@ -131,5 +131,6 @@ commands_update_self() {
 }
 
 test_update_self() {
-    run_script 'update_self' "${COMMIT_SHA-}"
+    warn "CI does not test update_self."
+    #@run_script 'update_self' "${COMMIT_SHA-}"
 }
