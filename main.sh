@@ -387,6 +387,7 @@ switch_branch() {
         FORCE=true
         export FORCE
         PROMPT="CLI"
+        notice "Automatically switching from ${APPLICATION_NAME} branch master to main."
         run_script 'update_self' "${TargetBranch}" bash "${SCRIPTNAME}" "$@"
         exit
     fi
