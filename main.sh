@@ -182,6 +182,36 @@ fatal() {
     exit 1
 }
 
+# Check for supported CPU architecture
+check_arch() {
+    if [[ ${ARCH} != "aarch64" ]] && [[ ${ARCH} != "x86_64" ]]; then
+        fatal "Unsupported architecture."
+    fi
+}
+
+# Check if the repo exists relative to the SCRIPTPATH
+check_repo() {
+    if [[ -d ${SCRIPTPATH}/.git ]] && [[ -d ${SCRIPTPATH}/.scripts ]]; then
+        return
+    else
+        return 1
+    fi
+}
+
+# Check if running as root
+check_root() {
+    if [[ ${DETECTED_PUID} == "0" ]] || [[ ${DETECTED_HOMEDIR} == "/root" ]]; then
+        fatal "Running as root is not supported. Please run as a standard user with sudo."
+    fi
+}
+
+# Check if running with sudo
+check_sudo() {
+    if [[ ${EUID} -eq 0 ]]; then
+        fatal "Running with sudo is not supported. Commands requiring sudo will prompt automatically when required."
+    fi
+}
+
 # Script Runner Function
 run_script() {
     local SCRIPTSNAME=${1-}
@@ -397,41 +427,15 @@ switch_branch() {
 }
 
 declare -x APPLICATION_VERSION
-APPLICATION_VERSION="$(ds_version)"
-if [[ -z ${APPLICATION_VERSION} ]]; then
-    APPLICATION_VERSION="$(ds_branch) Unknown Version"
+if check_repo; then
+    APPLICATION_VERSION="$(ds_version)"
+    if [[ -z ${APPLICATION_VERSION} ]]; then
+        APPLICATION_VERSION="$(ds_branch) Unknown Version"
+    fi
+else
+    APPLICATION_VERSION="Unknown Version"
 fi
 readonly APPLICATION_VERSION
-
-# Check for supported CPU architecture
-check_arch() {
-    if [[ ${ARCH} != "aarch64" ]] && [[ ${ARCH} != "x86_64" ]]; then
-        fatal "Unsupported architecture."
-    fi
-}
-
-# Check if the repo exists relative to the SCRIPTPATH
-check_repo() {
-    if [[ -d ${SCRIPTPATH}/.git ]] && [[ -d ${SCRIPTPATH}/.scripts ]]; then
-        return
-    else
-        return 1
-    fi
-}
-
-# Check if running as root
-check_root() {
-    if [[ ${DETECTED_PUID} == "0" ]] || [[ ${DETECTED_HOMEDIR} == "/root" ]]; then
-        fatal "Running as root is not supported. Please run as a standard user with sudo."
-    fi
-}
-
-# Check if running with sudo
-check_sudo() {
-    if [[ ${EUID} -eq 0 ]]; then
-        fatal "Running with sudo is not supported. Commands requiring sudo will prompt automatically when required."
-    fi
-}
 
 usage() {
     local APPLICATION_HEADING="${APPLICATION_NAME}"
@@ -825,7 +829,9 @@ cmdline() {
     return
 }
 
-switch_branch "${ARGS[@]-}"
+if check_repo; then
+    switch_branch "${ARGS[@]-}"
+fi
 cmdline "${ARGS[@]-}"
 if [[ -n ${DEBUG-} ]] && [[ -n ${VERBOSE-} ]]; then
     readonly TRACE=1
