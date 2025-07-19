@@ -225,6 +225,9 @@ _dialog_() {
         fi
         local CurrentVersion
         CurrentVersion="$(ds_version)"
+        if [[ -z ${CurrentVersion} ]]; then
+            CurrentVersion="$(ds_branch) Unknown Version"
+        fi
         CleanRightBackTitle+="[${CurrentVersion}]"
         RightBackTitle+="${DC[ApplicationVersionBrackets]}[${DC[ApplicationVersion]}${CurrentVersion}${DC[ApplicationVersionBrackets]}]${DC[NC]}"
     fi
@@ -395,6 +398,9 @@ switch_branch() {
 
 declare -x APPLICATION_VERSION
 APPLICATION_VERSION="$(ds_version)"
+if [[ -z ${APPLICATION_VERSION} ]]; then
+    APPLICATION_VERSION="$(ds_branch) Unknown Version"
+fi
 readonly APPLICATION_VERSION
 
 # Check for supported CPU architecture
@@ -1261,7 +1267,7 @@ main() {
         exit
     fi
     if [[ -v VERSION ]]; then
-        local Version
+        local VersionString
         VersionString="$(ds_version "${VERSION}")"
         if [[ -n ${VersionString} ]]; then
             echo "${APPLICATION_NAME} [${VersionString}]"
