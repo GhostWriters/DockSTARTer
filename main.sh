@@ -375,8 +375,6 @@ ds_branch_exists() {
 }
 
 ds_version() {
-    local CurrentBranch
-    CurrentBranch="$(ds_branch)"
     local CheckBranch
     CheckBranch=${1-}
     local commitish Branch
@@ -385,7 +383,7 @@ ds_version() {
         Branch="${CheckBranch}"
     else
         commitish='HEAD'
-        Branch="${CurrentBranch}"
+        Branch="$(ds_branch)"
     fi
 
     pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${F[C]}pushd \"${SCRIPTPATH}\""
