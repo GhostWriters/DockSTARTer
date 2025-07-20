@@ -11,10 +11,10 @@ apply_theme() {
     )
 
     local ThemeFile DialogFile
-
+    local DefaultMenuIniFile="${THEME_FOLDER}/${MENU_INI_NAME}"
     if [[ -z ${ThemeName-} ]]; then
         if [[ ! -f ${MENU_INI_FILE} ]]; then
-            cp "${THEME_FOLDER}/${MENU_INI_NAME}" "${MENU_INI_FILE}"
+            cp "${DefaultMenuIniFile}" "${MENU_INI_FILE}"
         fi
         ThemeName="$(run_script 'env_get' Theme "${MENU_INI_FILE}")"
         if ! run_script 'theme_exists' "${ThemeName}"; then
@@ -91,12 +91,38 @@ apply_theme() {
     DC["ThemeName"]="${ThemeName}"
     DIALOGOPTS="--colors --cr-wrap --no-collapse"
 
-    local Borders Scrollbar Shadow
-    Borders="$(run_script 'env_get' "Borders" "${MENU_INI_FILE}")"
-    LineCharacters="$(run_script 'env_get' "LineCharacters" "${MENU_INI_FILE}")"
-    Scrollbar="$(run_script 'env_get' "Scrollbar" "${MENU_INI_FILE}")"
-    Shadow="$(run_script 'env_get' "Shadow" "${MENU_INI_FILE}")"
-
+    local LineCharacters Borders Scrollbar Shadow
+    if run_script 'env_var_exists' Scrollbar "${MENU_INI_FILE}"; then
+        Scrollbar="$(run_script 'env_get' Scrollbar "${MENU_INI_FILE}")"
+    else
+        Scrollbar="$(run_script 'env_get' Scrollbar "${DefaultMenuIniFile}")"
+        run_script 'env_set' Scrollbar "${Scrollbar}" "${MENU_INI_FILE}"
+    fi
+    if run_script 'env_var_exists' Shadow "${MENU_INI_FILE}"; then
+        Shadow="$(run_script 'env_get' Shadow "${MENU_INI_FILE}")"
+    else
+        Shadow="$(run_script 'env_get' Shadow "${DefaultMenuIniFile}")"
+        run_script 'env_set' Shadow "${Shadow}" "${MENU_INI_FILE}"
+    fi
+    # Migrate old LineCharacters variable to Borders if Borders doesn't exist
+    if run_script 'env_var_exists' Borders "${MENU_INI_FILE}"; then
+        Borders="$(run_script 'env_get' Borders "${MENU_INI_FILE}")"
+        if run_script 'env_var_exists' LineCharacters "${MENU_INI_FILE}"; then
+            LineCharacters="$(run_script 'env_get' LineCharacters "${MENU_INI_FILE}")"
+        else
+            LineCharacters="$(run_script 'env_get' LineCharacters "${DefaultMenuIniFile}")"
+            run_script 'env_set' LineCharacters "${LineCharacters}" "${MENU_INI_FILE}"
+        fi
+    else
+        if run_script 'env_var_exists' LineCharacters "${MENU_INI_FILE}"; then
+            Borders="$(run_script 'env_get' LineCharacters "${MENU_INI_FILE}")"
+        else
+            Borders="$(run_script 'env_get' Borders "${DefaultMenuIniFile}")"
+        fi
+        run_script 'env_set' Borders "${Borders}" "${MENU_INI_FILE}"
+        LineCharacters="$(run_script 'env_get' LineCharacters "${DefaultMenuIniFile}")"
+        run_script 'env_set' LineCharacters "${LineCharacters}" "${MENU_INI_FILE}"
+    fi
     if [[ ${Borders^^} =~ ON|TRUE|YES ]]; then
         DIALOGOPTS+=" --lines"
         if [[ ${LineCharacters^^} =~ ON|TRUE|YES ]]; then
