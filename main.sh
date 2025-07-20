@@ -541,15 +541,18 @@ that take app names can use the form app: to refer to the same file.
     Lists the available themes
 --theme-table
     Lists the available themes in a table format
+--theme-lines
+--theme-no-lines
+    Turn the line drawing characters on or off in the GUI
+--theme-borders
+--theme-no-borders
+    Turn the borders on and off inthe  GUI
 --theme-shadow
 --theme-no-shadow
     Turn the shadow on or off in the GUI
 --theme-scrollbar
 --theme-no-scrollbar
     Turn the scrollbar on or off in the GUI
---theme-lines
---theme-no-lines
-    Turn the line drawing on or off in the GUI
 -u --update
     Update ${APPLICATION_NAME} to the latest stable commits
 -u --update <branch>
@@ -1256,6 +1259,20 @@ main() {
                 run_script 'env_set' LineCharacters no "${MENU_INI_FILE}"
                 if use_dialog_box; then
                     run_script 'menu_dialog_example' "Turned off line drawing" "ds --theme-no-lines"
+                fi
+                ;;
+            theme-borders)
+                run_script 'env_set' Borders yes "${MENU_INI_FILE}"
+                notice "Turning on GUI borders."
+                if use_dialog_box; then
+                    run_script 'menu_dialog_example' "Turned on borders" "ds --theme-borders"
+                fi
+                ;;
+            theme-no-borders)
+                notice "Turning off GUI borders."
+                run_script 'env_set' Borders no "${MENU_INI_FILE}"
+                if use_dialog_box; then
+                    run_script 'menu_dialog_example' "Turned off borders" "ds --theme-no-borders"
                 fi
                 ;;
             *)
