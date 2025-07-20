@@ -1,0 +1,4 @@
+services:
+  huntarr<__instance>:
+    ports:
+      - ${HUNTARR<__INSTANCE>__PORT_9705?}:9705

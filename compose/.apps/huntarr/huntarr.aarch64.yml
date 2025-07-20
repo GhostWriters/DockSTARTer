@@ -1,0 +1,3 @@
+services:
+  huntarr<__instance>:
+    image: huntarr/huntarr:${HUNTARR<__INSTANCE>__TAG?}
