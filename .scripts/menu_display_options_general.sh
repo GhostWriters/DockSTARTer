@@ -12,23 +12,26 @@ menu_display_options_general() {
     #run_script 'apply_theme'
 
     local DrawLineOption="Draw Lines"
+    local ShowBordersOption="Show Borders"
     local ShowScrollbarOption="Show Scrollbar"
     local ShowShadowOption="Show Shadow"
 
     local -A OptionDescription OptionVariable
 
-    OptionDescription["${DrawLineOption}"]="Use line drawing characters for borders"
+    OptionDescription["${DrawLineOption}"]="Use line drawing characters"
+    OptionDescription["${ShowBordersOption}"]="Show borders in dialog boxes"
     OptionDescription["${ShowScrollbarOption}"]="Show a scrollbar in dialog boxes"
     OptionDescription["${ShowShadowOption}"]="Show a shadow under the dialog boxes"
 
     OptionVariable["${DrawLineOption}"]="LineCharacters"
+    OptionVariable["${ShowBordersOption}"]="Borders"
     OptionVariable["${ShowScrollbarOption}"]="Scrollbar"
     OptionVariable["${ShowShadowOption}"]="Shadow"
 
     while true; do
         local EnabledOptions=()
         local Opts=()
-        for Option in "${DrawLineOption}" "${ShowScrollbarOption}" "${ShowShadowOption}"; do
+        for Option in "${DrawLineOption}" "${ShowBordersOption}" "${ShowScrollbarOption}" "${ShowShadowOption}"; do
             local Value
             Value="$(run_script 'env_get' "${OptionVariable["${Option}"]}" "${MENU_INI_FILE}")"
             if [[ ${Value^^} =~ ON|TRUE|YES ]]; then

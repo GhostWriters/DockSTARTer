@@ -91,13 +91,19 @@ apply_theme() {
     DC["ThemeName"]="${ThemeName}"
     DIALOGOPTS="--colors --cr-wrap --no-collapse"
 
-    local LineCharacters Scrollbar Shadow
+    local Borders Scrollbar Shadow
+    Borders="$(run_script 'env_get' "Borders" "${MENU_INI_FILE}")"
     LineCharacters="$(run_script 'env_get' "LineCharacters" "${MENU_INI_FILE}")"
     Scrollbar="$(run_script 'env_get' "Scrollbar" "${MENU_INI_FILE}")"
     Shadow="$(run_script 'env_get' "Shadow" "${MENU_INI_FILE}")"
 
-    if [[ ${LineCharacters^^} =~ ON|TRUE|YES ]]; then
+    if [[ ${Borders^^} =~ ON|TRUE|YES ]]; then
         DIALOGOPTS+=" --lines"
+        if [[ ${LineCharacters^^} =~ ON|TRUE|YES ]]; then
+            DIALOGOPTS+=" --no-ascii-lines"
+        else
+            DIALOGOPTS+=" --ascii-lines"
+        fi
     else
         DIALOGOPTS+=" --no-lines"
     fi
