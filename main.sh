@@ -389,18 +389,18 @@ ds_version() {
     fi
 
     pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${F[C]}pushd \"${SCRIPTPATH}\""
-    if ds_branch_exists "${Branch}"; then
+    if [[ -z ${CheckBranch-} ]] || ds_branch_exists "${Branch}"; then
         # Get the current tag. If no tag, use the commit instead.
-        local Version
-        Version="$(git describe --tags --exact-match "${commitish}" 2> /dev/null || true)"
-        if [[ -z ${Version-} ]]; then
-            Version="commit $(git rev-parse --short "${commitish}" 2> /dev/null || true)"
+        local VersionString
+        VersionString="$(git describe --tags --exact-match "${commitish}" 2> /dev/null || true)"
+        if [[ -z ${VersionString-} ]]; then
+            VersionString="commit $(git rev-parse --short "${commitish}" 2> /dev/null || true)"
         fi
-        Version="${Branch} ${Version}"
+        VersionString="${Branch} ${VersionString}"
     else
-        Version=''
+        VersionString=''
     fi
-    echo "${Version}"
+    echo "${VersionString}"
     popd &> /dev/null
 }
 ds_update_available() {
