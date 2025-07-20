@@ -12,7 +12,7 @@ update_self() {
     fi
 
     pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${F[C]}push \"${SCRIPTPATH}\""
-    CurrentBranch="$(git branch --show)"
+    CurrentBranch="$(ds_branch)"
     CurrentVersion="$(ds_version)"
     local Title="Update ${APPLICATION_NAME}"
     local Question YesNotice NoNotice
