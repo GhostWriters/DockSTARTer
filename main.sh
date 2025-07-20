@@ -357,7 +357,7 @@ dialog_success() {
 ds_branch() {
     pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${F[C]}pushd \"${SCRIPTPATH}\""
     git fetch --quiet &> /dev/null || true
-    git branch --show
+    git symbolic-ref --short HEAD 2> /dev/null || true
     popd &> /dev/null
 }
 
