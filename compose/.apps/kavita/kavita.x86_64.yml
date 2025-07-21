@@ -1,0 +1,3 @@
+services:
+  kavita<__instance>:
+    image: lscr.io/linuxserver/kavita:${KAVITA<__INSTANCE>__TAG?}
