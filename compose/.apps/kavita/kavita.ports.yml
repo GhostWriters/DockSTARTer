@@ -1,0 +1,4 @@
+services:
+  kavita<__instance>:
+    ports:
+      - ${KAVITA<__INSTANCE>__PORT_5000?}:5000
