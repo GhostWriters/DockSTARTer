@@ -533,7 +533,7 @@ that take app names can use the form app: to refer to the same file.
     Enable the app specified
 -t --test <test_name>
     Run tests to check the program
---theme <themename>
+-T --theme <themename>
     Applies the specified theme to the GUI
 --theme-list
     Lists the available themes
@@ -588,7 +588,7 @@ trap 'cleanup' ERR EXIT SIGABRT SIGALRM SIGHUP SIGINT SIGQUIT SIGTERM
 # Command Line Arguments
 readonly ARGS=("$@")
 cmdline() {
-    while getopts ":-:a:c:efghilpr:s:t:u:vVx" OPTION; do
+    while getopts ":-:a:c:efghilpr:s:t:T:u:vV:x" OPTION; do
         # support long options: https://stackoverflow.com/a/28466267/519360
         if [ "$OPTION" = "-" ]; then # long option: reformulate OPTION and OPTARG
             OPTION="${OPTARG}"       # extract long option name
@@ -773,10 +773,10 @@ cmdline() {
                     exit 1
                 fi
                 ;;
-            theme)
+            T | theme)
                 readonly THEMEMETHOD='theme'
                 if [[ -n ${OPTARG-} ]]; then
-                    readonly THEME="${!OPTIND}"
+                    readonly THEME="${OPTARG}"
                     OPTIND=$((OPTIND + 1))
                 fi
                 ;;
@@ -812,8 +812,14 @@ cmdline() {
                     r)
                         readonly REMOVE=true
                         ;;
+                    T)
+                        readonly THEMEMETHOD='theme'
+                        ;;
                     u)
                         readonly UPDATE=true
+                        ;;
+                    V)
+                        readonly VERSION=''
                         ;;
                     *)
                         error "${OPTARG} requires an option."
