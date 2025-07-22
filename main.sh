@@ -1307,7 +1307,7 @@ main() {
         local VersionString
         VersionString="$(ds_version "${VERSION}")"
         if [[ -n ${VersionString} ]]; then
-            echo "${APPLICATION_NAME} [${F[C]}${VersionString}${NC}]"
+            echo "${APPLICATION_NAME} [${VersionString}]"
         else
             local Branch
             Branch="${VERSION:-$(ds_branch)}"
