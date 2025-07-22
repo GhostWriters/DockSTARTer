@@ -46,7 +46,7 @@ update_self() {
 
     if ! ds_branch_exists "${BRANCH}"; then
         BRANCH="${BRANCH:-"${CurrentBranch}"}"
-        local ErrorMessage="${APPLICATION_NAME} branch ${F[C]}${BRANCH}${NC} does not exists."
+        local ErrorMessage="${APPLICATION_NAME} branch '${F[C]}${BRANCH}${NC}' does not exists."
         if use_dialog_box; then
             error "${ErrorMessage}" |&
                 dialog_pipe "${DC[TitleError]}${Title}" "${DC[CommandLine]} ds --update $*"
