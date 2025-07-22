@@ -4,10 +4,6 @@ services:
     env_file: env_files/filebrowser<__instance>.env
     environment:
       - TZ=${TZ?}
-    healthcheck:
-      test:
-        - CMD-SHELL
-        - curl -fs http://localhost:80/health || exit 1
     restart: ${FILEBROWSER<__INSTANCE>__RESTART?}
     user: ${PUID?}:${PGID?}
     volumes:
