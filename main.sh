@@ -418,7 +418,7 @@ switch_branch() {
         FORCE=true
         export FORCE
         PROMPT="CLI"
-        notice "Automatically switching from ${APPLICATION_NAME} branch ${SOURCE_BRANCH} to ${TARGET_BRANCH}."
+        notice "Automatically switching from ${APPLICATION_NAME} branch '${F[C]}${SOURCE_BRANCH}${NC}' to '${F[C]}${TARGET_BRANCH}${NC}'."
         run_script 'update_self' "${TARGET_BRANCH}" bash "${SCRIPTNAME}" "$@"
         exit
     fi
