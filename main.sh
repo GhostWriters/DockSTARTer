@@ -438,10 +438,10 @@ readonly APPLICATION_VERSION
 usage() {
     local APPLICATION_HEADING="${APPLICATION_NAME}"
     if [[ ${APPLICATION_VERSION-} ]]; then
-        APPLICATION_HEADING+=" [${APPLICATION_VERSION}]"
+        APPLICATION_HEADING+=" [${F[C]}${APPLICATION_VERSION}${NC}]"
     fi
     if ds_update_available; then
-        APPLICATION_HEADING+=" (Update Available)"
+        APPLICATION_HEADING+=" (${F[C]}Update Available${NC})"
     fi
     cat << EOF
 Usage: ds [OPTION]
