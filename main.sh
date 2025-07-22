@@ -928,7 +928,7 @@ main() {
         if ! ds_branch_exists "${MainBranch}"; then
             error "${APPLICATION_NAME} does not appear to have a '${TARGET_BRANCH}' or '${SOURCE_BRANCH}' branch."
         else
-            warn "Do 'ds -u ${MainBranch}' to update to the latest stable release $(ds_version "${MainBranch}")."
+            warn "Run 'ds -u ${MainBranch}' to update to the latest stable release $(ds_version "${MainBranch}")."
         fi
     fi
     # Apply the GUI theme
