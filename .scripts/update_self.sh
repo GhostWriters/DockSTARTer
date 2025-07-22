@@ -7,7 +7,7 @@ update_self() {
     BRANCH=${1-}
     shift || true
     if [[ ${BRANCH-} == "${SOURCE_BRANCH}" ]] && ds_branch_exists "${TARGET_BRANCH}"; then
-        warn "Updating to branch ${TARGET_BRANCH} instead of ${SOURCE_BRANCH}."
+        warn "Updating to branch '${F[C]}${TARGET_BRANCH}${NC}' instead of '${F[C]}${SOURCE_BRANCH}${NC}'."
         BRANCH="${TARGET_BRANCH}"
     fi
 
@@ -22,31 +22,31 @@ update_self() {
             return 1
         fi
         RemoteVersion="$(ds_version "${CurrentBranch}")"
-        Question="Would you like to update ${APPLICATION_NAME} from ${CurrentVersion} to ${RemoteVersion} now?"
+        Question="Would you like to update ${APPLICATION_NAME} from ${F[C]}${CurrentVersion}${NC} to ${F[C]}${RemoteVersion}${NC} now?"
         NoNotice="${APPLICATION_NAME} will not be updated."
-        YesNotice="Updating ${APPLICATION_NAME} from ${CurrentVersion} to ${RemoteVersion}"
+        YesNotice="Updating ${APPLICATION_NAME} from ${F[C]}${CurrentVersion}${NC} to ${F[C]}${RemoteVersion}${NC}"
     elif [[ ${BRANCH-} == "${CurrentBranch-}" ]]; then
         RemoteVersion="$(ds_version "${BRANCH}")"
         if [[ ${CurrentVersion} == "${RemoteVersion}" ]]; then
-            Question="Would you like to forcefully re-apply ${APPLICATION_NAME} update ${CurrentVersion}?"
+            Question="Would you like to forcefully re-apply ${APPLICATION_NAME} update ${F[C]}${CurrentVersion}${NC}?"
             NoNotice="${APPLICATION_NAME} will not be updated."
-            YesNotice="Updating ${APPLICATION_NAME} to ${RemoteVersion}"
+            YesNotice="Updating ${APPLICATION_NAME} to ${F[C]}${RemoteVersion}${NC}"
         else
-            Question="Would you like to update ${APPLICATION_NAME} from ${CurrentVersion} to ${RemoteVersion} now?"
-            NoNotice="${APPLICATION_NAME} will not be updated from ${CurrentVersion} to ${RemoteVersion}"
-            YesNotice="Updating ${APPLICATION_NAME} from ${CurrentVersion} to ${RemoteVersion}"
+            Question="Would you like to update ${APPLICATION_NAME} from ${F[C]}${CurrentVersion}${NC} to ${F[C]}${RemoteVersion}${NC} now?"
+            NoNotice="${APPLICATION_NAME} will not be updated from ${F[C]}${CurrentVersion}${NC} to ${F[C]}${RemoteVersion}${NC}"
+            YesNotice="Updating ${APPLICATION_NAME} from ${F[C]}${CurrentVersion}${NC} to ${F[C]}${RemoteVersion}${NC}"
         fi
     else
         RemoteVersion="$(ds_version "${BRANCH}")"
-        Question="Would you like to update ${APPLICATION_NAME} from ${CurrentVersion} to ${RemoteVersion} now?"
-        NoNotice="${APPLICATION_NAME} will not be updated from ${CurrentVersion} to ${RemoteVersion}"
-        YesNotice="Updating ${APPLICATION_NAME} from ${CurrentVersion} to ${RemoteVersion}"
+        Question="Would you like to update ${APPLICATION_NAME} from ${F[C]}${CurrentVersion}${NC} to ${F[C]}${RemoteVersion}${NC} now?"
+        NoNotice="${APPLICATION_NAME} will not be updated from ${F[C]}${CurrentVersion}${NC} to ${F[C]}${RemoteVersion}${NC}"
+        YesNotice="Updating ${APPLICATION_NAME} from ${F[C]}${CurrentVersion}${NC} to ${F[C]}${RemoteVersion}${NC}"
     fi
     popd &> /dev/null
 
     if ! ds_branch_exists "${BRANCH}"; then
         BRANCH="${BRANCH:-"${CurrentBranch}"}"
-        local ErrorMessage="${APPLICATION_NAME} branch ${BRANCH} does not exists."
+        local ErrorMessage="${APPLICATION_NAME} branch ${F[C]}${BRANCH}${NC} does not exists."
         if use_dialog_box; then
             error "${ErrorMessage}" |&
                 dialog_pipe "${DC[TitleError]}${Title}" "${DC[CommandLine]} ds --update $*"
@@ -58,12 +58,12 @@ update_self() {
     if [[ -z ${BRANCH-} && ${CurrentVersion} == "${RemoteVersion}" ]]; then
         if use_dialog_box; then
             {
-                notice "${APPLICATION_NAME} is already up to date on branch ${CurrentBranch}."
-                notice "Current version is ${CurrentVersion}"
+                notice "${APPLICATION_NAME} is already up to date on branch ${F[C]}${CurrentBranch}${NC}."
+                notice "Current version is ${F[C]}${CurrentVersion}${NC}"
             } |& dialog_pipe "${DC[TitleWarning]}${Title}" "${DC[CommandLine]} ds --update $*"
         else
-            notice "${APPLICATION_NAME} is already up to date on branch ${CurrentBranch}."
-            notice "Current version is ${CurrentVersion}"
+            notice "${APPLICATION_NAME} is already up to date on branch ${F[C]}${CurrentBranch}${NC}."
+            notice "Current version is ${F[C]}${CurrentVersion}${NC}"
         fi
         return 0
     fi
@@ -122,7 +122,7 @@ commands_update_self() {
     git ls-tree -rt --name-only "${BRANCH}" | xargs sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" > /dev/null 2>&1 || true
     sudo chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}/.git" > /dev/null 2>&1 || true
     sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}" > /dev/null 2>&1 || true
-    notice "Updated ${APPLICATION_NAME} to $(ds_version)"
+    notice "Updated ${APPLICATION_NAME} to ${F[C]}$(ds_version)${NC}"
     popd &> /dev/null
     if [[ -z $* ]]; then
         exec bash "${SCRIPTNAME}" -e
