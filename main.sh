@@ -1218,14 +1218,16 @@ main() {
     if [[ -n ${THEMEMETHOD-} ]]; then
         case "${THEMEMETHOD}" in
             theme)
+                local NoticeText
                 local CommandLine
                 if [[ -n ${THEME-} ]]; then
-                    notice "Applying theme ${THEME}"
+                    NoticeText="Applying ${APPLICATION_NAME} theme ${F[C]}${THEME}${NC}"
                     CommandLine="ds --theme \"${THEME}\""
                 else
-                    notice "Applying theme $(run_script 'theme_name')"
+                    NoticeText="Applying ${APPLICATION_NAME} theme ${F[C]}$(run_script 'theme_name')${NC}"
                     CommandLine="ds --theme"
                 fi
+                notice "${NoticeText}"
                 run_script 'apply_theme' "${THEME-}"
                 if use_dialog_box; then
                     run_script 'menu_dialog_example' "" "${CommandLine}"
