@@ -912,23 +912,23 @@ main() {
     Branch="$(ds_branch)"
     if ds_branch_exists "${Branch}"; then
         if ds_update_available; then
-            notice "${APPLICATION_NAME} [${APPLICATION_VERSION}]"
+            notice "${APPLICATION_NAME} [${F[C]}${APPLICATION_VERSION}${NC}]"
             notice "An update to ${APPLICATION_NAME} is available."
-            notice "Run 'ds -u' to update to version $(ds_version "${Branch}")."
+            notice "Run '${F[C]}ds -u${NC}' to update to version ${F[C]}$(ds_version "${Branch}")${NC}."
         else
-            info "${APPLICATION_NAME} [${APPLICATION_VERSION}]"
+            info "${APPLICATION_NAME} [${F[C]}${APPLICATION_VERSION}${NC}]"
         fi
     else
         local MainBranch="${TARGET_BRANCH}"
         if ! ds_branch_exists "${MainBranch}"; then
             MainBranch="${SOURCE_BRANCH}"
         fi
-        warn "${APPLICATION_NAME} branch ${Branch} appears to no longer exist."
-        warn "${APPLICATION_NAME} is currently on version $(ds_version)."
+        warn "${APPLICATION_NAME} branch '${F[C]}${Branch}${NC}' appears to no longer exist."
+        warn "${APPLICATION_NAME} is currently on version ${F[C]}$(ds_version)${NC}."
         if ! ds_branch_exists "${MainBranch}"; then
-            error "${APPLICATION_NAME} does not appear to have a '${TARGET_BRANCH}' or '${SOURCE_BRANCH}' branch."
+            error "${APPLICATION_NAME} does not appear to have a '${F[C]}${TARGET_BRANCH}${NC}' or '${F[C]}${SOURCE_BRANCH}${NC}' branch."
         else
-            warn "Run 'ds -u ${MainBranch}' to update to the latest stable release $(ds_version "${MainBranch}")."
+            warn "Run '${F[C]}ds -u ${MainBranch}${NC}' to update to the latest stable release ${F[C]}$(ds_version "${MainBranch}")${NC}."
         fi
     fi
     # Apply the GUI theme
@@ -1307,11 +1307,11 @@ main() {
         local VersionString
         VersionString="$(ds_version "${VERSION}")"
         if [[ -n ${VersionString} ]]; then
-            echo "${APPLICATION_NAME} [${VersionString}]"
+            echo "${APPLICATION_NAME} [${F[C]}${VersionString}${NC}]"
         else
             local Branch
             Branch="${VERSION:-$(ds_branch)}"
-            error "DockSTARTer branch ${Branch} does not exist."
+            error "DockSTARTer branch '${F[C]}${Branch}${NC}' does not exist."
         fi
         exit
     fi

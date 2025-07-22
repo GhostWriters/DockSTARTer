@@ -24,7 +24,7 @@ commands_yml_merge() {
             if [[ -f ${main_yml} ]]; then
                 if run_script 'app_is_depreciated' "${APPNAME}"; then
                     warn "${AppName} IS DEPRECATED!"
-                    warn "Please run 'ds --status-disable ${AppName}' to disable it."
+                    warn "Please run '${F[C]}ds --status-disable ${AppName}${NC}' to disable it."
                 fi
                 local arch_yml
                 arch_yml="$(run_script 'app_instance_file' "${appname}" ".${ARCH}.yml")"
