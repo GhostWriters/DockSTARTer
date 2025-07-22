@@ -908,14 +908,30 @@ main() {
     fi
     # Create Symlink
     run_script 'symlink_ds'
-    # Apply the GUI theme
-    if ds_update_available; then
-        notice "${APPLICATION_NAME} [${APPLICATION_VERSION}]"
-        notice "An update to ${APPLICATION_NAME} is available."
-        notice "Run 'ds -u' to update to version $(ds_version "$(ds_branch)")."
+    local Branch
+    Branch="$(ds_branch)"
+    if ds_branch_exists "${Branch}"; then
+        if ds_update_available; then
+            notice "${APPLICATION_NAME} [${APPLICATION_VERSION}]"
+            notice "An update to ${APPLICATION_NAME} is available."
+            notice "Run 'ds -u' to update to version $(ds_version "${Branch}")."
+        else
+            info "${APPLICATION_NAME} [${APPLICATION_VERSION}]"
+        fi
     else
-        info "${APPLICATION_NAME} [${APPLICATION_VERSION}]"
+        local MainBranch="${TARGET_BRANCH}"
+        if ! ds_branch_exists "${MainBranch}"; then
+            MainBranch="${SOURCE_BRANCH}"
+        fi
+        warn "${APPLICATION_NAME} branch ${Branch} appears to no longer exist."
+        warn "${APPLICATION_NAME} is currently on version $(ds_version)."
+        if ! ds_branch_exists "${MainBranch}"; then
+            error "${APPLICATION_NAME} does not appear to have a '${TARGET_BRANCH}' or '${SOURCE_BRANCH}' branch."
+        else
+            warn "Do 'ds -u ${MainBranch}' to update to the latest stable release $(ds_version "${MainBranch}")."
+        fi
     fi
+    # Apply the GUI theme
     run_script 'apply_theme'
     # Execute CLI Argument Functions
     if [[ -n ${ADD-} ]]; then
