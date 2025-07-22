@@ -28,7 +28,7 @@ apply_theme() {
     fi
 
     if ! run_script 'theme_exists' "${ThemeName}"; then
-        error "Theme ${ThemeName} does not exist."
+        error "${APPLICATION_NAME} theme '${F[C]}${ThemeName}${NC}' does not exist."
         return
     fi
 
