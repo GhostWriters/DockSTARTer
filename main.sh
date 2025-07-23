@@ -100,10 +100,21 @@ readonly NC
 BS=$(tput cup 1000 0 2> /dev/null || true) # Bottom of screen
 readonly BS
 export BS
+
 declare -Agr C=( # Pre-defined colors
+    ["Trace"]="${F[B]}"
+    ["Debug"]="${F[B]}"
+    ["Info"]="${F[B]}"
+    ["Notice"]="${F[G]}"
+    ["Warn"]="${F[Y]}"
+    ["Error"]="${F[R]}"
+    ["Fatal"]="${B[R]}${F[W]}"
+
     ["App"]="${F[C]}"
     ["Branch"]="${F[C]}"
     ["Command"]="${F[C]}"
+    ["RunningCommand"]="${F[C]}"
+    ["UserCommand"]="${F[C]}"
     ["FailingCommand"]="${F[C]}"
     ["File"]="${F[C]}"
     ["Folder"]="${F[C]}"
@@ -181,14 +192,14 @@ log() {
     # Output the message to the log file without color
     echo -e "${STRIPPED_MESSAGE-}" >> "${MKTEMP_LOG}"
 }
-trace() { log "${TRACE-}" "${NC}$(date +"%F %T") ${F[B]}[TRACE ]${NC}   $*${NC}"; }
-debug() { log "${DEBUG-}" "${NC}$(date +"%F %T") ${F[B]}[DEBUG ]${NC}   $*${NC}"; }
-info() { log "${VERBOSE-}" "${NC}$(date +"%F %T") ${F[B]}[INFO  ]${NC}   $*${NC}"; }
-notice() { log true "${NC}$(date +"%F %T") ${F[G]}[NOTICE]${NC}   $*${NC}"; }
-warn() { log true "${NC}$(date +"%F %T") ${F[Y]}[WARN  ]${NC}   $*${NC}"; }
-error() { log true "${NC}$(date +"%F %T") ${F[R]}[ERROR ]${NC}   $*${NC}"; }
+trace() { log "${TRACE-}" "${NC}$(date +"%F %T") ${C["Trace"]}[TRACE ]${NC}   $*${NC}"; }
+debug() { log "${DEBUG-}" "${NC}$(date +"%F %T") ${C["Debug"]}[DEBUG ]${NC}   $*${NC}"; }
+info() { log "${VERBOSE-}" "${NC}$(date +"%F %T") ${C["Info"]}[INFO  ]${NC}   $*${NC}"; }
+notice() { log true "${NC}$(date +"%F %T") ${C["Notice"]}[NOTICE]${NC}   $*${NC}"; }
+warn() { log true "${NC}$(date +"%F %T") ${C["Warn"]}[WARN  ]${NC}   $*${NC}"; }
+error() { log true "${NC}$(date +"%F %T") ${C["Error"]}[ERROR ]${NC}   $*${NC}"; }
 fatal() {
-    log true "${NC}$(date +"%F %T") ${B[R]}${F[W]}[FATAL ]${NC}   $*${NC}"
+    log true "${NC}$(date +"%F %T") ${C["Fatal"]}[FATAL ]${NC}   $*${NC}"
     exit 1
 }
 
