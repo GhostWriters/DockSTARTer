@@ -111,7 +111,7 @@ docker_compose() {
                 run_script 'yml_merge'
                 for index in "${!ComposeCommand[@]}"; do
                     local Command="docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand[index]}"
-                    notice "Running: ${F[C]}${Command}${NC}"
+                    notice "Running: ${C["RunningCommand"]}${Command}${NC}"
                     eval "${Command}" ||
                         fatal "Failed to run compose.\nFailing command: ${C["FailingCommand"]}${Command}"
                 done
@@ -122,7 +122,7 @@ docker_compose() {
             run_script 'yml_merge'
             for index in "${!ComposeCommand[@]}"; do
                 local Command="docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand[index]}"
-                notice "Running: ${F[C]}${Command}${NC}"
+                notice "Running: ${C["RunningCommand"]}${Command}${NC}"
                 eval "${Command}" ||
                     fatal "Failed to run compose.\nFailing command: ${C["FailingCommand"]}${Command}"
             done

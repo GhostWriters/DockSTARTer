@@ -15,7 +15,7 @@ app_instance_file() {
 
     if [[ ! -d ${INSTANCES_FOLDER} ]]; then
         mkdir -p "${INSTANCES_FOLDER}" ||
-            fatal "Failed to create folder ${F[C]}${INSTANCES_FOLDER}${NC}. ${F[C]}Failing command: mkdir -p \"${INSTANCES_FOLDER}\""
+            fatal "Failed to create folder ${C["Folder"]}${INSTANCES_FOLDER}${NC}. Failing command: mkdir -p \"${INSTANCES_FOLDER}\""
         run_script 'set_permissions' "${INSTANCES_FOLDER}"
     fi
 
@@ -23,7 +23,7 @@ app_instance_file() {
     InstanceFolder="${INSTANCES_FOLDER}/${appname}"
     if [[ ! -d ${InstanceFolder} ]]; then
         mkdir -p "${InstanceFolder}" ||
-            fatal "Failed to create folder ${F[C]}${InstanceFolder}${NC}. ${F[C]}Failing command: mkdir -p \"${InstanceFolder}\""
+            fatal "Failed to create folder ${C["Folder"]}${InstanceFolder}${NC}. Failing command: ${C["FailingCommand"]}mkdir -p \"${InstanceFolder}\""
         run_script 'set_permissions' "${InstanceFolder}"
     fi
 

@@ -18,7 +18,7 @@ env_create() {
             fatal "${F[C]}${APP_ENV_FOLDER}${NC} is a file, should be a folder"
         fi
     else
-        warn "Folder ${F[C]}${APP_ENV_FOLDER}${NC} not found. Creating it."
+        warn "Folder ${C["Folder"]}${APP_ENV_FOLDER}${NC} not found. Creating it."
         mkdir -p "${APP_ENV_FOLDER}" ||
             fatal "Failed to create folder.\nFailing command: ${C["FailingCommand"]}mkdir -p \"${APP_ENV_FOLDER}\""
     fi

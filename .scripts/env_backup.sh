@@ -18,14 +18,14 @@ env_backup() {
         DOCKER_VOLUME_CONFIG="$(run_script 'env_get' DOCKER_VOLUME_CONFIG)"
     fi
     if [[ -z ${DOCKER_VOLUME_CONFIG-} ]]; then
-        fatal "Variable ${F[C]}DOCKER_VOLUME_CONFIG${NC} is not set in the .env file"
+        fatal "Variable ${C["Var"]}DOCKER_VOLUME_CONFIG${NC} is not set in the ${C["File"]}.env${NC} file"
     fi
     if [[ ${DOCKER_VOLUME_CONFIG-} == *~* ]]; then
         # Value contains a "~", repace it with the user's home directory
         DOCKER_VOLUME_CONFIG="${DOCKER_VOLUME_CONFIG//\~/"${DETECTED_HOMEDIR}"}"
     fi
 
-    info "Taking ownership of ${F[C]}${DOCKER_VOLUME_CONFIG}${NC} (non-recursive)."
+    info "Taking ownership of ${C["Folder"]}${DOCKER_VOLUME_CONFIG}${NC} (non-recursive)."
     sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${DOCKER_VOLUME_CONFIG}" > /dev/null 2>&1 || true
 
     local COMPOSE_BACKUPS_FOLDER="${DOCKER_VOLUME_CONFIG}/.compose.backups"
@@ -33,18 +33,18 @@ env_backup() {
     BACKUPTIME="$(date +"%Y%m%d.%H.%M.%S")"
     local BACKUP_FOLDER="${COMPOSE_BACKUPS_FOLDER}/${COMPOSE_FOLDER_NAME}.${BACKUPTIME}"
 
-    info "Copying ${F[C]}.env${NC} file to ${F[C]}${BACKUP_FOLDER}/.env${NC}"
+    info "Copying ${C["File"]}.env${NC} file to ${C["Folder"]}${BACKUP_FOLDER}/.env${NC}"
     mkdir -p "${BACKUP_FOLDER}" ||
         fatal "Failed to make directory.\nFailing command: ${C["FailingCommand"]}mkdir -p \"${BACKUP_FOLDER}\""
     cp "${COMPOSE_ENV}" "${BACKUP_FOLDER}/" ||
         fatal "Failed to copy backup.\nFailing command: ${C["FailingCommand"]}cp \"${COMPOSE_ENV}\" \"${BACKUP_FOLDER}/\""
 
-    info "Copying appplication env folder to ${F[C]}${BACKUP_FOLDER}/${APP_ENV_FOLDER_NAME}${NC}"
+    info "Copying appplication env folder to ${C["Folder"]}${BACKUP_FOLDER}/${APP_ENV_FOLDER_NAME}${NC}"
     cp -r "${APP_ENV_FOLDER}" "${BACKUP_FOLDER}/" ||
         fatal "Failed to copy backup.\nFailing command: ${C["FailingCommand"]}cp -r \"${APP_ENV_FOLDER}\" \"${BACKUP_FOLDER}/\""
 
     if [[ -f ${COMPOSE_OVERRIDE} ]]; then
-        info "Copying override file to ${F[C]}${BACKUP_FOLDER}/${COMPOSE_OVERRIDE_NAME}${NC}"
+        info "Copying override file to ${C["Folder"]}${BACKUP_FOLDER}/${COMPOSE_OVERRIDE_NAME}${NC}"
         cp "${COMPOSE_OVERRIDE}" "${BACKUP_FOLDER}/" ||
             fatal "Failed to copy backup.\nFailing command: ${C["FailingCommand"]}cp \"${COMPOSE_OVERRIDE}\" \"${BACKUP_FOLDER}/\""
     fi
