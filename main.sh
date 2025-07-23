@@ -123,6 +123,7 @@ declare -Agr C=( # Pre-defined colors
     ["Program"]="${F[C]}"
     ["RunningCommand"]="${F[G]}${BD}"
     ["Theme"]="${F[C]}"
+    ["Update"]="${F[G]}"
     ["User"]="${F[C]}"
     ["URL"]="${F[M]}"
     ["UserCommand"]="${F[Y]}"
@@ -447,7 +448,7 @@ switch_branch() {
         FORCE=true
         export FORCE
         PROMPT="CLI"
-        notice "Automatically switching from ${APPLICATION_NAME} branch '${F[C]}${SOURCE_BRANCH}${NC}' to '${F[C]}${TARGET_BRANCH}${NC}'."
+        notice "Automatically switching from ${APPLICATION_NAME} branch '${C["Branch"]}${SOURCE_BRANCH}${NC}' to '${C["Branch"]}${TARGET_BRANCH}${NC}'."
         run_script 'update_self' "${TARGET_BRANCH}" bash "${SCRIPTNAME}" "$@"
         exit
     fi
@@ -467,10 +468,10 @@ readonly APPLICATION_VERSION
 usage() {
     local APPLICATION_HEADING="${APPLICATION_NAME}"
     if [[ ${APPLICATION_VERSION-} ]]; then
-        APPLICATION_HEADING+=" [${F[C]}${APPLICATION_VERSION}${NC}]"
+        APPLICATION_HEADING+=" [${C["Version"]}${APPLICATION_VERSION}${NC}]"
     fi
     if ds_update_available; then
-        APPLICATION_HEADING+=" (${F[C]}Update Available${NC})"
+        APPLICATION_HEADING+=" (${C["Update"]}Update Available${NC})"
     fi
     cat << EOF
 Usage: ds [OPTION]
@@ -947,21 +948,21 @@ main() {
     Branch="$(ds_branch)"
     if ds_branch_exists "${Branch}"; then
         if ds_update_available; then
-            warn "${APPLICATION_NAME} [${F[C]}${APPLICATION_VERSION}${NC}]"
+            warn "${APPLICATION_NAME} [${C["Version"]}${APPLICATION_VERSION}${NC}]"
             warn "An update to ${APPLICATION_NAME} is available."
             warn "Run '${C["UserCommand"]}ds -u${NC}' to update to version ${C["Version"]}$(ds_version "${Branch}")${NC}."
         else
-            info "${APPLICATION_NAME} [${F[C]}${APPLICATION_VERSION}${NC}]"
+            info "${APPLICATION_NAME} [${C["Version"]}${APPLICATION_VERSION}${NC}]"
         fi
     else
         local MainBranch="${TARGET_BRANCH}"
         if ! ds_branch_exists "${MainBranch}"; then
             MainBranch="${SOURCE_BRANCH}"
         fi
-        warn "${APPLICATION_NAME} branch '${F[C]}${Branch}${NC}' appears to no longer exist."
+        warn "${APPLICATION_NAME} branch '${C["Branch"]}${Branch}${NC}' appears to no longer exist."
         warn "${APPLICATION_NAME} is currently on version ${C["Version"]}$(ds_version)${NC}."
         if ! ds_branch_exists "${MainBranch}"; then
-            error "${APPLICATION_NAME} does not appear to have a '${F[C]}${TARGET_BRANCH}${NC}' or '${F[C]}${SOURCE_BRANCH}${NC}' branch."
+            error "${APPLICATION_NAME} does not appear to have a '${C["Branch"]}${TARGET_BRANCH}${NC}' or '${C["Branch"]}${SOURCE_BRANCH}${NC}' branch."
         else
             warn "Run '${C["UserCommand"]}ds -u ${MainBranch}${NC}' to update to the latest stable release ${C["Version"]}$(ds_version "${MainBranch}")${NC}."
         fi
@@ -1348,7 +1349,7 @@ main() {
         else
             local Branch
             Branch="${VERSION:-$(ds_branch)}"
-            error "DockSTARTer branch '${F[C]}${Branch}${NC}' does not exist."
+            error "DockSTARTer branch '${C["Branch"]}${Branch}${NC}' does not exist."
         fi
         exit
     fi
