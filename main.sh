@@ -95,8 +95,13 @@ declare -Agr F=( # Foreground
     [W]=$(tput setaf 7 2> /dev/null || echo -e "\e[37m") # White
     [Y]=$(tput setaf 3 2> /dev/null || echo -e "\e[33m") # Yellow
 )
-NC=$(tput sgr0 2> /dev/null || echo -e "\e[0m")
+
+BD=$(tput bold 2> /dev/null || echo -e "\e[1m") # Bold
+readonly BD
+export BD
+NC=$(tput sgr0 2> /dev/null || echo -e "\e[0m") # No Color
 readonly NC
+export NC
 BS=$(tput cup 1000 0 2> /dev/null || true) # Bottom of screen
 readonly BS
 export BS
@@ -113,10 +118,10 @@ declare -Agr C=( # Pre-defined colors
     ["App"]="${F[C]}"
     ["Branch"]="${F[C]}"
     ["FailingCommand"]="${F[R]}"
-    ["File"]="${F[C]}"
-    ["Folder"]="${F[C]}"
+    ["File"]="${F[C]}${BD}"
+    ["Folder"]="${F[C]}${BD}"
     ["Program"]="${F[C]}"
-    ["RunningCommand"]="${F[G]}"
+    ["RunningCommand"]="${F[G]}${BD}"
     ["Theme"]="${F[C]}"
     ["User"]="${F[C]}"
     ["URL"]="${F[M]}"
