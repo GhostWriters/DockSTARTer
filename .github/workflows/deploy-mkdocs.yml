@@ -35,5 +35,5 @@ jobs:
       - name: Build documentation
         run: mkdocs build
       - name: Deploy to GitHub Pages
-        if: github.event_name == 'push' && contains(fromJson('["refs/heads/master", "refs/heads/main"]'), github.ref)
+        if: github.event_name == 'push' && contains(fromJson('["refs/heads/main"]'), github.ref)
         run: mkdocs gh-deploy --force
