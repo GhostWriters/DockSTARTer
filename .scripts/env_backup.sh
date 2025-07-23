@@ -35,18 +35,18 @@ env_backup() {
 
     info "Copying ${F[C]}.env${NC} file to ${F[C]}${BACKUP_FOLDER}/.env${NC}"
     mkdir -p "${BACKUP_FOLDER}" ||
-        fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p \"${BACKUP_FOLDER}\""
+        fatal "Failed to make directory.\nFailing command: ${C["FailingCommand"]}mkdir -p \"${BACKUP_FOLDER}\""
     cp "${COMPOSE_ENV}" "${BACKUP_FOLDER}/" ||
-        fatal "Failed to copy backup.\nFailing command: ${F[C]}cp \"${COMPOSE_ENV}\" \"${BACKUP_FOLDER}/\""
+        fatal "Failed to copy backup.\nFailing command: ${C["FailingCommand"]}cp \"${COMPOSE_ENV}\" \"${BACKUP_FOLDER}/\""
 
     info "Copying appplication env folder to ${F[C]}${BACKUP_FOLDER}/${APP_ENV_FOLDER_NAME}${NC}"
     cp -r "${APP_ENV_FOLDER}" "${BACKUP_FOLDER}/" ||
-        fatal "Failed to copy backup.\nFailing command: ${F[C]}cp -r \"${APP_ENV_FOLDER}\" \"${BACKUP_FOLDER}/\""
+        fatal "Failed to copy backup.\nFailing command: ${C["FailingCommand"]}cp -r \"${APP_ENV_FOLDER}\" \"${BACKUP_FOLDER}/\""
 
     if [[ -f ${COMPOSE_OVERRIDE} ]]; then
         info "Copying override file to ${F[C]}${BACKUP_FOLDER}/${COMPOSE_OVERRIDE_NAME}${NC}"
         cp "${COMPOSE_OVERRIDE}" "${BACKUP_FOLDER}/" ||
-            fatal "Failed to copy backup.\nFailing command: ${F[C]}cp \"${COMPOSE_OVERRIDE}\" \"${BACKUP_FOLDER}/\""
+            fatal "Failed to copy backup.\nFailing command: ${C["FailingCommand"]}cp \"${COMPOSE_OVERRIDE}\" \"${BACKUP_FOLDER}/\""
     fi
 
     run_script 'set_permissions' "${COMPOSE_BACKUPS_FOLDER}"
@@ -61,7 +61,7 @@ env_backup() {
     if [[ -d "${DOCKER_VOLUME_CONFIG}/.env.backups" ]]; then
         info "Removing old backup location."
         rm -rf "${DOCKER_VOLUME_CONFIG}/.env.backups" ||
-            fatal "Failed to remove directory.\nFailing command: ${F[C]}rm -rf \"${DOCKER_VOLUME_CONFIG}/.env.backups\""
+            fatal "Failed to remove directory.\nFailing command: ${C["FailingCommand"]}rm -rf \"${DOCKER_VOLUME_CONFIG}/.env.backups\""
     fi
 }
 

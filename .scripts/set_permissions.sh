@@ -32,7 +32,7 @@ set_permissions() {
         sudo chmod -R a=,a+rX,u+w,g+w "${CH_PATH}" > /dev/null 2>&1 || true
     fi
     info "Setting executable permission on ${F[C]}${SCRIPTNAME}${NC}"
-    sudo chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable.\nFailing command: ${F[C]}sudo chmod +x \"${SCRIPTNAME}\""
+    sudo chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "ds must be executable.\nFailing command: ${C["FailingCommand"]}sudo chmod +x \"${SCRIPTNAME}\""
 }
 
 test_set_permissions() {

@@ -7,13 +7,13 @@ appvars_rename() {
     local TOAPP=${2-}
     if run_script 'app_is_enabled' "${FROMAPP}" && ! run_script 'app_is_enabled' "${TOAPP}"; then
         notice "Migrating from ${F[C]}${FROMAPP^^}${NC} to ${F[C]}${TOAPP^^}${NC}."
-        docker stop "${FROMAPP,,}" || warn "Failed to stop ${F[C]}${FROMAPP,,}${NC} container.\nFailing command: ${F[C]}docker stop ${FROMAPP,,}"
+        docker stop "${FROMAPP,,}" || warn "Failed to stop ${F[C]}${FROMAPP,,}${NC} container.\nFailing command: ${C["FailingCommand"]}docker stop ${FROMAPP,,}"
         notice "Moving config folder."
         local DOCKER_VOLUME_CONFIG
         DOCKER_VOLUME_CONFIG="$(run_script 'env_get' DOCKER_VOLUME_CONFIG)"
-        mv "${DOCKER_VOLUME_CONFIG}/${FROMAPP,,}" "${DOCKER_VOLUME_CONFIG}/${TOAPP,,}" || warn "Failed to move folder.\nFailing command: ${F[C]}mv \"${DOCKER_VOLUME_CONFIG}/${FROMAPP,,}\" \"${DOCKER_VOLUME_CONFIG}/${TOAPP,,}\""
+        mv "${DOCKER_VOLUME_CONFIG}/${FROMAPP,,}" "${DOCKER_VOLUME_CONFIG}/${TOAPP,,}" || warn "Failed to move folder.\nFailing command: ${C["FailingCommand"]}mv \"${DOCKER_VOLUME_CONFIG}/${FROMAPP,,}\" \"${DOCKER_VOLUME_CONFIG}/${TOAPP,,}\""
         notice "Migrating vars."
-        sed -i "s/^\s*${FROMAPP^^}__/${TOAPP^^}__/" "${COMPOSE_ENV}" || fatal "Failed to migrate vars from ${F[C]}${FROMAPP^^}__${NC} to ${F[C]}${TOAPP^^}__${NC}\nFailing command: ${F[C]}sed -i \"s/^\\s*${FROMAPP^^}__/${TOAPP^^}__/\" \"${COMPOSE_ENV}\""
+        sed -i "s/^\s*${FROMAPP^^}__/${TOAPP^^}__/" "${COMPOSE_ENV}" || fatal "Failed to migrate vars from ${F[C]}${FROMAPP^^}__${NC} to ${F[C]}${TOAPP^^}__${NC}\nFailing command: ${C["FailingCommand"]}sed -i \"s/^\\s*${FROMAPP^^}__/${TOAPP^^}__/\" \"${COMPOSE_ENV}\""
         run_script 'appvars_create' "${TOAPP^^}"
         notice "Completed migrating from ${F[C]}${FROMAPP^^}${NC} to ${F[C]}${TOAPP^^}${NC}. Run '${F[C]}ds -c${NC}' to create the new container."
     fi

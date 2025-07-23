@@ -20,7 +20,7 @@ env_create() {
     else
         warn "Folder ${F[C]}${APP_ENV_FOLDER}${NC} not found. Creating it."
         mkdir -p "${APP_ENV_FOLDER}" ||
-            fatal "Failed to create folder.\nFailing command: ${F[C]}mkdir -p \"${APP_ENV_FOLDER}\""
+            fatal "Failed to create folder.\nFailing command: ${C["FailingCommand"]}mkdir -p \"${APP_ENV_FOLDER}\""
     fi
     run_script 'set_permissions' "${APP_ENV_FOLDER}"
 
@@ -31,7 +31,7 @@ env_create() {
     else
         warn "${F[C]}${COMPOSE_ENV}${NC} not found. Copying example template."
         cp "${COMPOSE_ENV_DEFAULT_FILE}" "${COMPOSE_ENV}" ||
-            fatal "Failed to copy file.\nFailing command: ${F[C]}cp \"${COMPOSE_ENV_DEFAULT_FILE}\" \"${COMPOSE_ENV}\""
+            fatal "Failed to copy file.\nFailing command: ${C["FailingCommand"]}cp \"${COMPOSE_ENV_DEFAULT_FILE}\" \"${COMPOSE_ENV}\""
         run_script 'set_permissions' "${COMPOSE_ENV}"
         run_script 'env_sanitize'
         if [[ -n ${DefaultApps-} && -z $(run_script 'app_list_referenced') ]]; then

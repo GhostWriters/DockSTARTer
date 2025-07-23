@@ -54,7 +54,7 @@ appvars_purge() {
             if use_dialog_box; then
                 dialog_error "{Title}" "${APPNAME} has no variables to remove."
             else
-                warn "Application ${F[C]}${AppName}${NC} has no variables to remove."
+                warn "Application ${C["App"]}${AppName}${NC} has no variables to remove."
             fi
             continue
         fi
@@ -72,7 +72,7 @@ ${AppEnvLinesToRemove-}
 EOF
         )"
         if [[ ${CI-} == true ]] || run_script 'question_prompt' Y "${QUESTION}\n" "${Title}" "${FORCE:+Y}"; then
-            info "Purging ${F[C]}${AppName}${NC} variables."
+            info "Purging ${C["App"]}${AppName}${NC} variables."
 
             if [[ -n ${GlobalVarsToRemove[*]-} ]]; then
                 # Remove variables from global .env file
@@ -81,7 +81,7 @@ EOF
                     notice "   ${F[C]}$line${NC}"
                 done
                 sed -i -E "/^\s*(${GlobalVarsRegex})\s*=/d" "${COMPOSE_ENV}" ||
-                    fatal "Failed to purge ${F[C]}${AppName}${NC} variables.\nFailing command: ${F[C]}sed -i -E \"/^\\\*(${GlobalVarsRegex})\\\*/d\" \"${COMPOSE_ENV}\""
+                    fatal "Failed to purge ${C["App"]}${AppName}${NC} variables.\nFailing command: ${C["FailingCommand"]}sed -i -E \"/^\\\*(${GlobalVarsRegex})\\\*/d\" \"${COMPOSE_ENV}\""
             fi
             if [[ -n ${AppEnvVarsToRemove[*]-} ]]; then
                 # Remove variables from file
@@ -90,10 +90,10 @@ EOF
                     notice "   ${F[C]}$line${NC}"
                 done
                 sed -i -E "/^\s*(${AppEnvVarsRegex})\s*=/d" "${AppEnvFile}" ||
-                    fatal "Failed to purge ${F[C]}${AppName}${NC} variables.\nFailing command: ${F[C]}sed -i -E \"/^\\\*(${AppEnvVarsRegex})\\\*/d\" \"${AppEnvFile}\""
+                    fatal "Failed to purge ${C["App"]}${AppName}${NC} variables.\nFailing command: ${C["FailingCommand"]}sed -i -E \"/^\\\*(${AppEnvVarsRegex})\\\*/d\" \"${AppEnvFile}\""
             fi
         else
-            info "Keeping ${F[C]}${AppName}${NC} variables."
+            info "Keeping ${C["App"]}${AppName}${NC} variables."
         fi
     done
 }

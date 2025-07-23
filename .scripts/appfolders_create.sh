@@ -26,7 +26,7 @@ appfolders_create() {
                 fi
             done
             if [[ -n ${FOLDERS_ARRAY[*]-} ]]; then
-                notice "Creating config folders for ${F[C]}${AppName}${NC}."
+                notice "Creating config folders for ${C["App"]}${AppName}${NC}."
                 for FOLDER in "${FOLDERS_ARRAY[@]-}"; do
                     notice "Creating folder ${F[C]}${FOLDER}${NC}"
                     mkdir -p "${FOLDER}" || warn "Could not create folder ${F[C]}${FOLDER}${NC}"

@@ -23,6 +23,6 @@ require_docker() {
 
 test_require_docker() {
     run_script 'require_docker'
-    docker --version || fatal "Failed to determine docker version.\nFailing command: ${F[C]}docker --version"
-    docker compose version || fatal "Failed to determine docker compose version.\nFailing command: ${F[C]}docker compose version"
+    docker --version || fatal "Failed to determine docker version.\nFailing command: ${C["FailingCommand"]}docker --version"
+    docker compose version || fatal "Failed to determine docker compose version.\nFailing command: ${C["FailingCommand"]}docker compose version"
 }

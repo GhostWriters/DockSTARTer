@@ -14,12 +14,12 @@ symlink_ds() {
     for SYMLINK_TARGET in "${SYMLINK_TARGETS[@]}"; do
         if [[ -L ${SYMLINK_TARGET} ]] && [[ ${SCRIPTNAME} != "$(readlink -f "${SYMLINK_TARGET}")" ]]; then
             info "Attempting to remove ${F[C]}${SYMLINK_TARGET}${NC} symlink."
-            sudo rm -f "${SYMLINK_TARGET}" || fatal "Failed to remove file.\nFailing command: ${F[C]}sudo rm -f \"${SYMLINK_TARGET}\""
+            sudo rm -f "${SYMLINK_TARGET}" || fatal "Failed to remove file.\nFailing command: ${C["FailingCommand"]}sudo rm -f \"${SYMLINK_TARGET}\""
         fi
         if [[ ! -L ${SYMLINK_TARGET} ]]; then
             info "Creating ${F[C]}${SYMLINK_TARGET}${NC} symbolic link for ${APPLICATION_NAME}."
-            mkdir -p "$(dirname "${SYMLINK_TARGET}")" || fatal "Failed to create directory.\nFailing command: ${F[C]}mkdir -p \"$(dirname "${SYMLINK_TARGET}")\""
-            sudo ln -s -T "${SCRIPTNAME}" "${SYMLINK_TARGET}" || fatal "Failed to create symlink.\nFailing command: ${F[C]}sudo ln -s -T \"${SCRIPTNAME}\" \"${SYMLINK_TARGET}\""
+            mkdir -p "$(dirname "${SYMLINK_TARGET}")" || fatal "Failed to create directory.\nFailing command: ${C["FailingCommand"]}mkdir -p \"$(dirname "${SYMLINK_TARGET}")\""
+            sudo ln -s -T "${SCRIPTNAME}" "${SYMLINK_TARGET}" || fatal "Failed to create symlink.\nFailing command: ${C["FailingCommand"]}sudo ln -s -T \"${SCRIPTNAME}\" \"${SYMLINK_TARGET}\""
         fi
         if [[ ${PATH} != *"$(dirname "${SYMLINK_TARGET}")"* ]]; then
             warn "${F[C]}$(dirname "${SYMLINK_TARGET}")${NC} not found in PATH. Please add it to your PATH in order to use the ${F[C]}ds${NC} command alias."

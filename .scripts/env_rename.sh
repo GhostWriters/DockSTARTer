@@ -43,9 +43,9 @@ env_rename() {
         notice "   ${F[C]}${TO_VAR}${NC} [${F[C]}${TO_VAR_FILE}${NC}]"
     fi
     printf '\n%s\n' "${NEW_VAR_LINE}" >> "${TO_VAR_FILE}" ||
-        fatal "Failed to add '${F[C]}${NEW_VAR_LINE}${NC}' in ${F[C]}${TO_VAR_FILE}${NC}\nFailing command: ${F[C]}printf '\n%s\n' \"${NEW_VAR_LINE}\" >> \"${TO_VAR_FILE}\""
+        fatal "Failed to add '${F[C]}${NEW_VAR_LINE}${NC}' in ${F[C]}${TO_VAR_FILE}${NC}\nFailing command: ${C["FailingCommand"]}printf '\n%s\n' \"${NEW_VAR_LINE}\" >> \"${TO_VAR_FILE}\""
     sed -i "/^\s*${FROM_VAR}\s*=/d" "${FROM_VAR_FILE}" ||
-        fatal "Failed to remove var ${F[C]}${FROM_VAR}${NC} in ${F[C]}${FROM_VAR_FILE}${NC}\nFailing command: ${F[C]}sed -i \"/^\\s*${FROM_VAR}\\s*=/d\" \"${FROM_VAR_FILE}\""
+        fatal "Failed to remove var ${F[C]}${FROM_VAR}${NC} in ${F[C]}${FROM_VAR_FILE}${NC}\nFailing command: ${C["FailingCommand"]}sed -i \"/^\\s*${FROM_VAR}\\s*=/d\" \"${FROM_VAR_FILE}\""
 }
 
 test_env_rename() {

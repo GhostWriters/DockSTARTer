@@ -12,7 +12,7 @@ pm_apt_install() {
         REDIRECT='run_command_dialog "${Title}" "${COMMAND}" "" '
     fi
     COMMAND='sudo apt-get -y install curl dialog git grep sed'
-    eval "${REDIRECT}${COMMAND}" || fatal "Failed to install dependencies from apt.\nFailing command: ${F[C]}${COMMAND}"
+    eval "${REDIRECT}${COMMAND}" || fatal "Failed to install dependencies from apt.\nFailing command: ${C["FailingCommand"]}${COMMAND}"
 }
 
 test_pm_apt_install() {
