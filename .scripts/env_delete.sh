@@ -25,7 +25,7 @@ env_delete() {
     notice "Removing variables from ${F[C]}${VAR_FILE}${NC}:"
     notice "   ${F[C]}${DELETE_VAR}${NC}"
     sed -i "/^\s*${DELETE_VAR}\s*=/d" "${VAR_FILE}" ||
-        fatal "Failed to remove var ${F[C]}${DELETE_VAR}${NC} in ${F[C]}${VAR_FILE}${NC}\nFailing command: ${F[C]}sed -i \"/^\\s*${DELETE_VAR}\\s*=/d\" \"${VAR_FILE}\""
+        fatal "Failed to remove var ${F[C]}${DELETE_VAR}${NC} in ${F[C]}${VAR_FILE}${NC}\nFailing command: ${C["FailingCommand"]}sed -i \"/^\\s*${DELETE_VAR}\\s*=/d\" \"${VAR_FILE}\""
 }
 
 test_env_delete() {

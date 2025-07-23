@@ -11,7 +11,7 @@ pm_pacman_install_docker() {
         #shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
         REDIRECT='run_command_dialog "${Title}" "${COMMAND}" "" '
     fi
-    eval "${REDIRECT}${COMMAND}" || fatal "Failed to install docker and docker-compose using pacman.\nFailing command: ${F[C]}${COMMAND}"
+    eval "${REDIRECT}${COMMAND}" || fatal "Failed to install docker and docker-compose using pacman.\nFailing command: ${C["FailingCommand"]}${COMMAND}"
 }
 
 test_pm_pacman_install_docker() {

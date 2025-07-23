@@ -11,7 +11,7 @@ pm_apk_install_docker() {
         #shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
         REDIRECT='run_command_dialog "${Title}" "${COMMAND}" "" '
     fi
-    eval "${REDIRECT}${COMMAND}" || fatal "Failed to install docker and docker-compose using apk.\nFailing command: ${F[C]}${COMMAND}"
+    eval "${REDIRECT}${COMMAND}" || fatal "Failed to install docker and docker-compose using apk.\nFailing command: ${C["FailingCommand"]}${COMMAND}"
 }
 
 test_pm_apk_install_docker() {

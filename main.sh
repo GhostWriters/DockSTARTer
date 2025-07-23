@@ -100,6 +100,16 @@ readonly NC
 BS=$(tput cup 1000 0 2> /dev/null || true) # Bottom of screen
 readonly BS
 export BS
+declare -Agr C=( # Pre-defined colors
+    ["App"]="${F[C]}"
+    ["Branch"]="${F[C]}"
+    ["Command"]="${F[C]}"
+    ["FailingCommand"]="${F[C]}"
+    ["File"]="${F[C]}"
+    ["Folder"]="${F[C]}"
+    ["Var"]="${F[C]}"
+    ["Version"]="${F[C]}"
+)
 
 DIALOG=$(command -v dialog) || true
 export DIALOG

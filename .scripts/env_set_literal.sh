@@ -28,7 +28,7 @@ env_set_literal() {
         mkdir -p "${VAR_FILE%/*}" && touch "${VAR_FILE}"
     fi
     sed -i "/^\s*${SET_VAR}\s*=/d" "${VAR_FILE}" || true
-    echo "${SET_VAR}=${NEW_VAL}" >> "${VAR_FILE}" || fatal "Failed to set ${F[C]}${SET_VAR}=${NEW_VAL}${NC}\nFailing command: ${F[C]} \"echo ${SET_VAR}=${NEW_VAL}\" >> \"${VAR_FILE}\""
+    echo "${SET_VAR}=${NEW_VAL}" >> "${VAR_FILE}" || fatal "Failed to set ${F[C]}${SET_VAR}=${NEW_VAL}${NC}\nFailing command: ${C["FailingCommand"]} \"echo ${SET_VAR}=${NEW_VAL}\" >> \"${VAR_FILE}\""
 }
 
 test_env_set_literal() {

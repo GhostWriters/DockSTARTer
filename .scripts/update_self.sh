@@ -11,7 +11,7 @@ update_self() {
         BRANCH="${TARGET_BRANCH}"
     fi
 
-    pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${F[C]}push \"${SCRIPTPATH}\""
+    pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${C["FailingCommand"]}push \"${SCRIPTPATH}\""
     CurrentBranch="$(ds_branch)"
     CurrentVersion="$(ds_version)"
     local Title="Update ${APPLICATION_NAME}"
@@ -91,7 +91,7 @@ commands_update_self() {
     local Notice=${2-}
     shift 2
 
-    pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${F[C]}push \"${SCRIPTPATH}\""
+    pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${C["FailingCommand"]}push \"${SCRIPTPATH}\""
     local QUIET=''
     if [[ -z ${VERBOSE-} ]]; then
         QUIET='--quiet'
@@ -99,22 +99,22 @@ commands_update_self() {
     if [[ -d ${INSTANCES_FOLDER:?} ]]; then
         notice "Clearing instances folder"
         run_script 'set_permissions' "${INSTANCES_FOLDER:?}"
-        rm -fR "${INSTANCES_FOLDER:?}/"* &> /dev/null || fatal "Failed to clear instances folder.\nFailing command: ${F[C]}rm -fR \"${INSTANCES_FOLDER:?}/\"*"
+        rm -fR "${INSTANCES_FOLDER:?}/"* &> /dev/null || fatal "Failed to clear instances folder.\nFailing command: ${C["FailingCommand"]}rm -fR \"${INSTANCES_FOLDER:?}/\"*"
     fi
     notice "${Notice}"
-    cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
+    cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${C["FailingCommand"]}cd \"${SCRIPTPATH}\""
     info "Setting file ownership on current repository files"
     sudo chown -R "$(id -u)":"$(id -g)" "${SCRIPTPATH}/.git" > /dev/null 2>&1 || true
     sudo chown "$(id -u)":"$(id -g)" "${SCRIPTPATH}" > /dev/null 2>&1 || true
     git ls-tree -rt --name-only HEAD | xargs sudo chown "$(id -u)":"$(id -g)" > /dev/null 2>&1 || true
 
     info "Fetching recent changes from git."
-    eval git fetch ${QUIET-} --all --prune || fatal "Failed to fetch recent changes from git.\nFailing command: ${F[C]}git fetch ${QUIET-} --all --prune"
+    eval git fetch ${QUIET-} --all --prune || fatal "Failed to fetch recent changes from git.\nFailing command: ${C["FailingCommand"]}git fetch ${QUIET-} --all --prune"
     if [[ ${CI-} != true ]]; then
-        eval git switch ${QUIET-} --force "${BRANCH}" || fatal "Failed to switch to github branch ${F[C]}${BRANCH}${NC}.\nFailing command: ${F[C]}git switch ${QUIET-} --force \"${BRANCH}\""
-        eval git reset ${QUIET-} --hard origin/"${BRANCH}" || fatal "Failed to reset to branch ${F[C]}origin/${BRANCH}${NC}.\nFailing command: ${F[C]}git reset ${QUIET-} --hard origin/\"${BRANCH}\""
+        eval git switch ${QUIET-} --force "${BRANCH}" || fatal "Failed to switch to github branch ${F[C]}${BRANCH}${NC}.\nFailing command: ${C["FailingCommand"]}git switch ${QUIET-} --force \"${BRANCH}\""
+        eval git reset ${QUIET-} --hard origin/"${BRANCH}" || fatal "Failed to reset to branch ${F[C]}origin/${BRANCH}${NC}.\nFailing command: ${C["FailingCommand"]}git reset ${QUIET-} --hard origin/\"${BRANCH}\""
         info "Pulling recent changes from git."
-        eval git pull ${QUIET-} || fatal "Failed to pull recent changes from git.\nFailing command: ${F[C]}git pull ${QUIET-}"
+        eval git pull ${QUIET-} || fatal "Failed to pull recent changes from git.\nFailing command: ${C["FailingCommand"]}git pull ${QUIET-}"
     fi
     info "Cleaning up unnecessary files and optimizing the local repository."
     eval git gc ${QUIET-} || true

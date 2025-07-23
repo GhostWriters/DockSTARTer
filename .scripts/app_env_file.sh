@@ -8,7 +8,7 @@ app_env_file() {
     if [[ ! -d ${APP_ENV_FOLDER} ]]; then
         warn "Folder ${F[C]}${APP_ENV_FOLDER}${NC} not found. Creating it."
         mkdir -p "${APP_ENV_FOLDER}" ||
-            fatal "Failed to create folder.\nFailing command: ${F[C]}mkdir -p \"${APP_ENV_FOLDER}\""
+            fatal "Failed to create folder.\nFailing command: ${C["FailingCommand"]}mkdir -p \"${APP_ENV_FOLDER}\""
     fi
     echo "${APP_ENV_FOLDER}/${AppName,,}.env"
 }
