@@ -2,7 +2,7 @@
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/lmscommunity/lyrionmusicserver)](https://hub.docker.com/r/lmscommunity/lyrionmusicserver)
 [![GitHub Repo stars](https://img.shields.io/github/stars/LMS-Community/slimserver)](https://github.com/lms-community/slimserver)
-[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/lyrionmusicserver)
+[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/compose/.apps/lyrionmusicserver)
 
 ## Description
 

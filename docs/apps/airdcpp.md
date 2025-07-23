@@ -6,7 +6,7 @@ DEPRECATION NOTICE: This image is deprecated as of 2022-06-09 due to failure to 
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/gangefors/airdcpp-webclient?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/gangefors/airdcpp-webclient)
 [![GitHub Stars](https://img.shields.io/github/stars/gangefors/docker-airdcpp-webclient?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/gangefors/docker-airdcpp-webclient)
-[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/airdcpp)
+[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/compose/.apps/airdcpp)
 
 ## Description
 

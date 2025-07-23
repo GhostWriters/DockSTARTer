@@ -2,7 +2,7 @@
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/kiwix/kiwix-serve?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/kiwix/kiwix-serve)
 [![GitHub Stars](https://img.shields.io/github/stars/kiwix/kiwix-tools?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/kiwix/kiwix-tools)
-[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/kiwixserve)
+[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/compose/.apps/kiwixserve)
 
 ## Description
 

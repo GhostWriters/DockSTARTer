@@ -2,7 +2,7 @@
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/jorenn92/maintainerr?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/jorenn92/maintainerr)
 [![GitHub Stars](https://img.shields.io/github/stars/jorenn92/Maintainerr?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/jorenn92/Maintainerr)
-[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/maintainerr)
+[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/compose/.apps/maintainerr)
 
 ## Description
 

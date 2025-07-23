@@ -6,7 +6,7 @@ DEPRECATION NOTICE: This image is deprecated as of 2024-02-18.
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/dperson/samba?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/dperson/samba)
 [![GitHub Stars](https://img.shields.io/github/stars/dperson/samba?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/dperson/samba)
-[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/samba)
+[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/compose/.apps/samba)
 
 ## Description
 

@@ -2,7 +2,7 @@
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/jlesage/filebot?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/jlesage/filebot)
 [![GitHub Stars](https://img.shields.io/github/stars/jlesage/docker-filebot?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/jlesage/docker-filebot)
-[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/filebot)
+[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/compose/.apps/filebot)
 
 ## Description
 

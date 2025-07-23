@@ -2,7 +2,7 @@
 
 [![Image Size](https://ghcr-badge.egpl.dev/gethomepage/homepage/size?color=%2344cc11&tag=latest&label=image+size&trim=)](https://github.com/gethomepage/homepage/pkgs/container/homepage)
 [![GitHub Stars](https://img.shields.io/github/stars/gethomepage/homepage?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/gethomepage/Homepage)
-[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/homepage)
+[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/compose/.apps/homepage)
 
 ## Description
 
