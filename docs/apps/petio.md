@@ -2,7 +2,7 @@
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/hotio/petio?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/petio-team/petio)
 [![GitHub Stars](https://img.shields.io/github/stars/hotio/petio?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/petio-team/petio)
-[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/petio)
+[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/compose/.apps/petio)
 
 ## Description
 

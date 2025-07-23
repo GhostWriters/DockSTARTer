@@ -6,7 +6,7 @@ DEPRECATION NOTICE: This image is deprecated as of 2025-07-14.
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/vaultwarden/server?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/vaultwarden/server)
 [![GitHub Stars](https://img.shields.io/github/stars/dani-garcia/vaultwarden?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/dani-garcia/vaultwarden)
-[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/bitwarden)
+[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/compose/.apps/bitwarden)
 
 ## Description
 

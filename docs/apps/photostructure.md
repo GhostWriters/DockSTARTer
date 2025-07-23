@@ -2,7 +2,7 @@
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/photostructure/server?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/photostructure/server)
 [![GitHub Stars](https://img.shields.io/github/stars/photostructure/photostructure-for-servers?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/photostructure/photostructure-for-servers)
-[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/photostructure)
+[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/compose/.apps/photostructure)
 
 ## Description
 

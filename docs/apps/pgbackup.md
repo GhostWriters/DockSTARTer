@@ -2,7 +2,7 @@
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/prodrigestivill/postgres-backup-local?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/prodrigestivill/postgres-backup-local)
 [![GitHub Stars](https://img.shields.io/github/stars/prodrigestivill/docker-postgres-backup-local?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/prodrigestivill/docker-postgres-backup-local)
-[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/pgbackup)
+[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/compose/.apps/pgbackup)
 
 ## Description
 
