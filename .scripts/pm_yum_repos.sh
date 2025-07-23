@@ -17,7 +17,7 @@ pm_yum_repos() {
         REDIRECT='run_command_dialog "${Title}" "${COMMAND}" "" '
     fi
     COMMAND="sudo bash ${MKTEMP_GET_IUS}"
-    eval "${REDIRECT}${COMMAND}" || warn "Failed to install IUS.\nFailing command: ${F[C]}${COMMAND}"
+    eval "${REDIRECT}${COMMAND}" || warn "Failed to install ${F[C]}IUS${NC}.\nFailing command: ${F[C]}${COMMAND}"
     rm -f "${MKTEMP_GET_IUS}" || warn "Failed to remove temporary IUS repo install script.\nFailing command: ${F[C]}rm -f \"${MKTEMP_GET_IUS}\""
 }
 

@@ -11,7 +11,7 @@ appvars_create() {
         AppName="$(run_script 'app_nicename' "${APPNAME}")"
 
         if ! run_script 'appname_is_valid' "${appname}"; then
-            error "${AppName} is not a valid application name."
+            error "${F[C]}${AppName}${NC} is not a valid application name."
             continue
         fi
         if run_script 'app_is_builtin' "${AppName}"; then
@@ -20,7 +20,7 @@ appvars_create() {
             AppDefaultAppEnvFile="$(run_script 'app_instance_file' "${appname}" ".app.env")"
             AppEnvFile="$(run_script 'app_env_file' "${appname}")"
 
-            info "Creating environment variables for ${AppName}."
+            info "Creating environment variables for ${F[C]}${AppName}${NC}."
 
             if ! run_script 'env_var_exists' "${APPNAME}_ENABLED"; then
                 run_script 'env_migrate' "${APPNAME}_ENABLED" "${APPNAME}__ENABLED"
@@ -33,9 +33,9 @@ appvars_create() {
 
             run_script 'env_merge_newonly' "${COMPOSE_ENV}" "${AppDefaultGlobalEnvFile}"
             run_script 'env_merge_newonly' "${AppEnvFile}" "${AppDefaultAppEnvFile}"
-            info "Environment variables created for ${AppName}."
+            info "Environment variables created for ${F[C]}${AppName}${NC}."
         else
-            warn "Application ${AppName} does not exist."
+            warn "Application ${F[C]}${AppName}${NC} does not exist."
         fi
     done
 }

@@ -27,12 +27,12 @@ env_update() {
     done
 
     local MKTEMP_ENV_UPDATED
-    MKTEMP_ENV_UPDATED=$(mktemp) || fatal "Failed to create temporary update .env file.\nFailing command: ${F[C]}mktemp"
-    printf '%s\n' "${UPDATED_ENV_LINES[@]}" > "${MKTEMP_ENV_UPDATED}" || fatal "Failed to write temporary .env update file."
+    MKTEMP_ENV_UPDATED=$(mktemp) || fatal "Failed to create temporary update ${F[C]}.env${NC} file.\nFailing command: ${F[C]}mktemp"
+    printf '%s\n' "${UPDATED_ENV_LINES[@]}" > "${MKTEMP_ENV_UPDATED}" || fatal "Failed to write temporary ${F[C]}.env${NC} update file."
     cp -f "${MKTEMP_ENV_UPDATED}" "${COMPOSE_ENV}" ||
         fatal "Failed to copy file.\nFailing command: ${F[C]}cp -f \"${MKTEMP_ENV_UPDATED}\" \"${COMPOSE_ENV}\""
     rm -f "${MKTEMP_ENV_UPDATED}" ||
-        warn "Failed to remove temporary .env update file.\nFailing command: ${F[C]}rm -f \"${MKTEMP_ENV_UPDATED}\""
+        warn "Failed to remove temporary ${F[C]}.env${NC} update file.\nFailing command: ${F[C]}rm -f \"${MKTEMP_ENV_UPDATED}\""
     run_script 'set_permissions' "${COMPOSE_ENV}"
 
     # Process all referenced appname.env files
@@ -50,13 +50,13 @@ env_update() {
                 run_script 'env_format_lines' "${APP_ENV_FILE}" "${APP_DEFAULT_ENV_FILE}" "${appname}"
             )
             local MKTEMP_APP_ENV_UPDATED
-            MKTEMP_APP_ENV_UPDATED=$(mktemp) || fatal "Failed to create temporary update ${appname}.env file.\nFailing command: ${F[C]}mktemp"
+            MKTEMP_APP_ENV_UPDATED=$(mktemp) || fatal "Failed to create temporary update ${F[C]}${appname}.env${NC} file.\nFailing command: ${F[C]}mktemp${NC}"
             printf '%s\n' "${UPDATED_APP_ENV_LINES[@]}" > "${MKTEMP_APP_ENV_UPDATED}" ||
-                fatal "Failed to write temporary ${appname}.env update file."
+                fatal "Failed to write temporary ${F[C]}${appname}.env${NC} update file."
             cp -f "${MKTEMP_APP_ENV_UPDATED}" "${APP_ENV_FILE}" ||
                 fatal "Failed to copy file.\nFailing command: ${F[C]}cp -f \"${MKTEMP_APP_ENV_UPDATED}\" \"${APP_ENV_FILE}\""
             rm -f "${MKTEMP_APP_ENV_UPDATED}" ||
-                warn "Failed to remove temporary ${appname}.env update file.\nFailing command: ${F[C]}rm -f \"${MKTEMP_APP_ENV_UPDATED}\""
+                warn "Failed to remove temporary ${F[C]}${appname}.env${NC} update file.\nFailing command: ${F[C]}rm -f \"${MKTEMP_APP_ENV_UPDATED}\""
             run_script 'set_permissions' "${APP_ENV_FILE}"
         fi
     done

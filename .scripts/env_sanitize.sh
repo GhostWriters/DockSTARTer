@@ -17,7 +17,7 @@ env_sanitize() {
             # If the variable is empty get the default value
             local Default
             Default="$(run_script 'var_default_value' "${VarName}")"
-            notice "Setting ${VarName}=${Default}"
+            notice "Setting ${F[C]}${VarName}=${Default}${NC}"
             run_script 'env_set_literal' "${VarName}" "${Default}"
         fi
     done
@@ -28,7 +28,7 @@ env_sanitize() {
             # If the variable is empty or contains an "x", get the default value
             local Default
             Default="$(run_script 'var_default_value' "${VarName}")"
-            notice "Setting ${VarName}=${Default}"
+            notice "Setting ${F[C]}${VarName}=${Default}${NC}"
             run_script 'env_set_literal' "${VarName}" "${Default}"
         fi
     done
@@ -37,7 +37,7 @@ env_sanitize() {
     local WATCHTOWER_NETWORK_MODE
     WATCHTOWER_NETWORK_MODE="$(run_script 'env_get' WATCHTOWER__NETWORK_MODE)"
     if [[ ${WATCHTOWER_NETWORK_MODE-} == "none" ]]; then
-        notice "Changing WATCHTOWER__NETWORK_MODE from 'none' do ''"
+        notice "Changing ${F[C]}WATCHTOWER__NETWORK_MODE${NC} from ${F[C]}'none'${NC} to ${F[C]}''${NC}"
         run_script 'env_set' WATCHTOWER__NETWORK_MODE ""
     fi
 
@@ -62,7 +62,7 @@ env_sanitize() {
         if [[ ${Value} == *~* ]]; then
             # Value contains a "~", repace it with the user's home directory
             Value="${Value//\~/"${DETECTED_HOMEDIR}"}"
-            notice "Setting ${VarName}=${Value}"
+            notice "Setting ${F[C]}${VarName}=${Value}${NC}"
             run_script 'env_set_literal' "${VarName}" "${Value}"
         fi
     done

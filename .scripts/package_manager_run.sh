@@ -27,7 +27,7 @@ package_manager_run() {
                 fatal "${F[C]}docker${NC} is not available. Please install ${F[C]}docker${NC} and try again."
             fi
             if ! docker compose version > /dev/null 2>&1; then
-                warn "Please see https://docs.docker.com/compose/install/linux/ to install ${F[C]}docker compose${NC}"
+                warn "Please see ${F[C]}https://docs.docker.com/compose/install/linux/${NC} to install ${F[C]}docker compose${NC}"
                 fatal "${F[C]}docker compose${NC} is not available. Please install ${F[C]}docker compose${NC} and try again."
             fi
         fi

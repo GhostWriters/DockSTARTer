@@ -22,7 +22,7 @@ env_var_exists() {
         return $?
     else
         # VAR_FILE does not exist, give a warning
-        warn "${VAR_FILE} does not exist."
+        warn "${F[C]}${VAR_FILE}${NC} does not exist."
         return 1
     fi
 

@@ -9,12 +9,12 @@ disable_app() {
     for AppName in ${AppList}; do
         if run_script 'app_is_builtin' "${AppName}"; then
             EnabledVar="${AppName^^}__ENABLED"
-            info "Disabling application ${AppName^^}"
-            notice "Setting variable in ${COMPOSE_ENV}:"
-            notice "   ${EnabledVar}='false'"
+            info "Disabling application ${F[C]}${AppName^^}${NC}"
+            notice "Setting variable in ${F[C]}${COMPOSE_ENV}${NC}:"
+            notice "   ${F[C]}${EnabledVar}='false'${NC}"
             run_script 'env_set' "${EnabledVar}" false
         else
-            warn "Application ${AppName^^} does not exist."
+            warn "Application ${F[C]}${AppName^^}${NC} does not exist."
         fi
     done
 }

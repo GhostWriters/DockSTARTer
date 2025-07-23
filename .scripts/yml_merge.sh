@@ -9,7 +9,7 @@ yml_merge() {
 commands_yml_merge() {
     run_script 'appvars_create_all'
     local COMPOSE_FILE=""
-    notice "Adding enabled app templates to merge docker-compose.yml. Please be patient, this can take a while."
+    notice "Adding enabled app templates to merge ${F[C]}docker-compose.yml${NC}. Please be patient, this can take a while."
     local ENABLED_APPS
     ENABLED_APPS="$(run_script 'app_list_enabled')"
     for APPNAME in ${ENABLED_APPS-}; do
@@ -23,13 +23,13 @@ commands_yml_merge() {
             main_yml="$(run_script 'app_instance_file' "${appname}" ".yml")"
             if [[ -f ${main_yml} ]]; then
                 if run_script 'app_is_depreciated' "${APPNAME}"; then
-                    warn "${AppName} IS DEPRECATED!"
+                    warn "${F[C]}${AppName}${NC} IS DEPRECATED!"
                     warn "Please run '${F[C]}ds --status-disable ${AppName}${NC}' to disable it."
                 fi
                 local arch_yml
                 arch_yml="$(run_script 'app_instance_file' "${appname}" ".${ARCH}.yml")"
                 if [[ ! -f ${arch_yml} ]]; then
-                    error "${arch_yml} does not exist."
+                    error "${F[C]}${arch_yml}${NC} does not exist."
                     continue
                 fi
                 COMPOSE_FILE="${COMPOSE_FILE}:${arch_yml}"
@@ -41,14 +41,14 @@ commands_yml_merge() {
                     if [[ -f ${hostname_yml} ]]; then
                         COMPOSE_FILE="${COMPOSE_FILE}:${hostname_yml}"
                     else
-                        info "${hostname_yml} does not exist."
+                        info "${F[C]}${hostname_yml}${NC} does not exist."
                     fi
                     local ports_yml
                     ports_yml="$(run_script 'app_instance_file' "${appname}" ".ports.yml")"
                     if [[ -f ${ports_yml} ]]; then
                         COMPOSE_FILE="${COMPOSE_FILE}:${ports_yml}"
                     else
-                        info "${ports_yml} does not exist."
+                        info "${F[C]}${ports_yml}${NC} does not exist."
                     fi
                 elif [[ -n ${AppNetMode} ]]; then
                     local netmode_yml
@@ -56,7 +56,7 @@ commands_yml_merge() {
                     if [[ -f ${netmode_yml} ]]; then
                         COMPOSE_FILE="${COMPOSE_FILE}:${netmode_yml}"
                     else
-                        info "${netmode_yml} does not exist."
+                        info "${F[C]}${netmode_yml}${NC} does not exist."
                     fi
                 fi
                 local MultipleStorage
@@ -78,7 +78,7 @@ commands_yml_merge() {
                             if [[ -f ${storage_yml} ]]; then
                                 COMPOSE_FILE="${COMPOSE_FILE}:${storage_yml}"
                             else
-                                info "${storage_yml} does not exist."
+                                info "${F[C]}${storage_yml}${NC} does not exist."
                             fi
                         fi
                     fi
@@ -91,26 +91,26 @@ commands_yml_merge() {
                     if [[ -f ${devices_yml} ]]; then
                         COMPOSE_FILE="${COMPOSE_FILE}:${devices_yml}"
                     else
-                        info "${devices_yml} does not exist."
+                        info "${F[C]}${devices_yml}${NC} does not exist."
                     fi
                 fi
                 COMPOSE_FILE="${COMPOSE_FILE}:${main_yml}"
-                info "All configurations for ${AppName} are included."
+                info "All configurations for ${F[C]}${AppName}${NC} are included."
             else
-                warn "${main_yml} does not exist."
+                warn "${F[C]}${main_yml}${NC} does not exist."
             fi
             run_script 'appfolders_create' "${APPNAME}"
         else
-            error "${APP_FOLDER}/ does not exist."
+            error "${F[C]}${APP_FOLDER}/${NC} does not exist."
         fi
     done
     if [[ -z ${COMPOSE_FILE} ]]; then
         fatal "No enabled apps found."
     fi
-    info "Running compose config to create docker-compose.yml file from enabled templates."
+    info "Running compose config to create ${F[C]}docker-compose.yml${NC} file from enabled templates."
     export COMPOSE_FILE="${COMPOSE_FILE#:}"
     eval "docker compose --project-directory ${COMPOSE_FOLDER}/ config > ${COMPOSE_FOLDER}/docker-compose.yml" || fatal "Failed to output compose config.\nFailing command: ${F[C]}docker compose --project-directory ${COMPOSE_FOLDER}/ config > \"${COMPOSE_FOLDER}/docker-compose.yml\""
-    info "Merging docker-compose.yml complete."
+    info "Merging ${F[C]}docker-compose.yml${NC} complete."
 }
 test_yml_merge() {
     run_script 'appvars_create' WATCHTOWER

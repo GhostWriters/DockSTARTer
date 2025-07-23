@@ -111,8 +111,8 @@ commands_update_self() {
     info "Fetching recent changes from git."
     eval git fetch ${QUIET-} --all --prune || fatal "Failed to fetch recent changes from git.\nFailing command: ${F[C]}git fetch ${QUIET-} --all --prune"
     if [[ ${CI-} != true ]]; then
-        eval git switch ${QUIET-} --force "${BRANCH}" || fatal "Failed to switch to github branch ${BRANCH}.\nFailing command: ${F[C]}git switch ${QUIET-} --force \"${BRANCH}\""
-        eval git reset ${QUIET-} --hard origin/"${BRANCH}" || fatal "Failed to reset to branch origin/${BRANCH}.\nFailing command: ${F[C]}git reset ${QUIET-} --hard origin/\"${BRANCH}\""
+        eval git switch ${QUIET-} --force "${BRANCH}" || fatal "Failed to switch to github branch ${F[C]}${BRANCH}${NC}.\nFailing command: ${F[C]}git switch ${QUIET-} --force \"${BRANCH}\""
+        eval git reset ${QUIET-} --hard origin/"${BRANCH}" || fatal "Failed to reset to branch ${F[C]}origin/${BRANCH}${NC}.\nFailing command: ${F[C]}git reset ${QUIET-} --hard origin/\"${BRANCH}\""
         info "Pulling recent changes from git."
         eval git pull ${QUIET-} || fatal "Failed to pull recent changes from git.\nFailing command: ${F[C]}git pull ${QUIET-}"
     fi
