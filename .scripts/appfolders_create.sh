@@ -29,7 +29,7 @@ appfolders_create() {
                 notice "Creating config folders for ${F[C]}${AppName}${NC}."
                 for FOLDER in "${FOLDERS_ARRAY[@]-}"; do
                     notice "Creating folder ${F[C]}${FOLDER}${NC}"
-                    mkdir -p "${FOLDER}" || warn "Could not create folder ${F[C]}${FOLDER}${NC}S"
+                    mkdir -p "${FOLDER}" || warn "Could not create folder ${F[C]}${FOLDER}${NC}"
                     if [[ -d ${FOLDER} ]]; then
                         run_script 'set_permissions' "${FOLDER}"
                     fi
