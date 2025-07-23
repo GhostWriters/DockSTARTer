@@ -947,9 +947,9 @@ main() {
     Branch="$(ds_branch)"
     if ds_branch_exists "${Branch}"; then
         if ds_update_available; then
-            notice "${APPLICATION_NAME} [${F[C]}${APPLICATION_VERSION}${NC}]"
-            notice "An update to ${APPLICATION_NAME} is available."
-            notice "Run '${C["UserCommand"]}ds -u${NC}' to update to version ${C["Version"]}$(ds_version "${Branch}")${NC}."
+            warn "${APPLICATION_NAME} [${F[C]}${APPLICATION_VERSION}${NC}]"
+            warn "An update to ${APPLICATION_NAME} is available."
+            warn "Run '${C["UserCommand"]}ds -u${NC}' to update to version ${C["Version"]}$(ds_version "${Branch}")${NC}."
         else
             info "${APPLICATION_NAME} [${F[C]}${APPLICATION_VERSION}${NC}]"
         fi
