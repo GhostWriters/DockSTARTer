@@ -13,7 +13,7 @@ env_set_literal() {
     local VAR_FILE=${3:-$COMPOSE_ENV}
 
     if ! run_script 'varname_is_valid' "${SET_VAR}"; then
-        error "${SET_VAR} is an invalid variable name."
+        error "${F[C]}${SET_VAR}${NC} is an invalid variable name."
         return
     fi
 
@@ -28,7 +28,7 @@ env_set_literal() {
         mkdir -p "${VAR_FILE%/*}" && touch "${VAR_FILE}"
     fi
     sed -i "/^\s*${SET_VAR}\s*=/d" "${VAR_FILE}" || true
-    echo "${SET_VAR}=${NEW_VAL}" >> "${VAR_FILE}" || fatal "Failed to set ${SET_VAR}=${NEW_VAL}\nFailing command: ${F[C]} \"echo ${SET_VAR}=${NEW_VAL}\" >> \"${VAR_FILE}\""
+    echo "${SET_VAR}=${NEW_VAL}" >> "${VAR_FILE}" || fatal "Failed to set ${F[C]}${SET_VAR}=${NEW_VAL}${NC}\nFailing command: ${F[C]} \"echo ${SET_VAR}=${NEW_VAL}\" >> \"${VAR_FILE}\""
 }
 
 test_env_set_literal() {

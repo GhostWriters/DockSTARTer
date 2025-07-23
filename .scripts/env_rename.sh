@@ -10,7 +10,7 @@ env_rename() {
 
     if [[ ! -f ${FROM_VAR_FILE} ]]; then
         # Source file does not exist, warn and return
-        warn "File ${FROM_VAR_FILE} does not exist."
+        warn "File ${F[C]}${FROM_VAR_FILE}${NC} does not exist."
         return
     fi
     if [[ ${FROM_VAR_FILE} == "${TO_VAR_FILE}" && ${FROM_VAR} == "${TO_VAR}" ]]; then
@@ -26,7 +26,7 @@ env_rename() {
     fi
     if [[ ! -f ${TO_VAR_FILE} ]]; then
         # Destination file does not exist, create it
-        notice "Creating ${TO_VAR_FILE}"
+        notice "Creating ${F[C]}${TO_VAR_FILE}${NC}"
         touch "${TO_VAR_FILE}"
     fi
     if run_script 'env_var_exists' "${TO_VAR}" "${TO_VAR_FILE}"; then
@@ -35,17 +35,17 @@ env_rename() {
     fi
 
     if [[ ${FROM_VAR_FILE} == "${TO_VAR_FILE}" ]]; then
-        notice "Renaming variable in ${FROM_VAR_FILE}:"
-        notice "   ${FROM_VAR} to ${TO_VAR}"
+        notice "Renaming variable in ${F[C]}${FROM_VAR_FILE}${NC}:"
+        notice "   ${F[C]}${FROM_VAR}${NC} to ${F[C]}${TO_VAR}${NC}"
     else
         notice "Moving variable:"
-        notice "   ${FROM_VAR} [${FROM_VAR_FILE}] to"
-        notice "   ${TO_VAR} [${TO_VAR_FILE}]"
+        notice "   ${F[C]}${FROM_VAR}${NC} [${F[C]}${FROM_VAR_FILE}${NC}] to"
+        notice "   ${F[C]}${TO_VAR}${NC} [${F[C]}${TO_VAR_FILE}${NC}]"
     fi
     printf '\n%s\n' "${NEW_VAR_LINE}" >> "${TO_VAR_FILE}" ||
-        fatal "Failed to add '${NEW_VAR_LINE}' in ${TO_VAR_FILE}\nFailing command: ${F[C]}printf '\n%s\n' \"${NEW_VAR_LINE}\" >> \"${TO_VAR_FILE}\""
+        fatal "Failed to add '${F[C]}${NEW_VAR_LINE}${NC}' in ${F[C]}${TO_VAR_FILE}${NC}\nFailing command: ${F[C]}printf '\n%s\n' \"${NEW_VAR_LINE}\" >> \"${TO_VAR_FILE}\""
     sed -i "/^\s*${FROM_VAR}\s*=/d" "${FROM_VAR_FILE}" ||
-        fatal "Failed to remove var ${FROM_VAR} in ${FROM_VAR_FILE}\nFailing command: ${F[C]}sed -i \"/^\\s*${FROM_VAR}\\s*=/d\" \"${FROM_VAR_FILE}\""
+        fatal "Failed to remove var ${F[C]}${FROM_VAR}${NC} in ${F[C]}${FROM_VAR_FILE}${NC}\nFailing command: ${F[C]}sed -i \"/^\\s*${FROM_VAR}\\s*=/d\" \"${FROM_VAR_FILE}\""
 }
 
 test_env_rename() {

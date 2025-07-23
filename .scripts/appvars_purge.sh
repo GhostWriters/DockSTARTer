@@ -54,7 +54,7 @@ appvars_purge() {
             if use_dialog_box; then
                 dialog_error "{Title}" "${APPNAME} has no variables to remove."
             else
-                warn "Application ${AppName} has no variables to remove."
+                warn "Application ${F[C]}${AppName}${NC} has no variables to remove."
             fi
             continue
         fi
@@ -72,28 +72,28 @@ ${AppEnvLinesToRemove-}
 EOF
         )"
         if [[ ${CI-} == true ]] || run_script 'question_prompt' Y "${QUESTION}\n" "${Title}" "${FORCE:+Y}"; then
-            info "Purging ${AppName} .env variables."
+            info "Purging ${F[C]}${AppName}${NC} variables."
 
             if [[ -n ${GlobalVarsToRemove[*]-} ]]; then
                 # Remove variables from global .env file
-                notice "Removing variables from ${COMPOSE_ENV}:"
+                notice "Removing variables from ${F[C]}${COMPOSE_ENV}${NC}:"
                 for line in "${GlobalLinesToRemoveArray[@]}"; do
-                    notice "   $line"
+                    notice "   ${F[C]}$line${NC}"
                 done
                 sed -i -E "/^\s*(${GlobalVarsRegex})\s*=/d" "${COMPOSE_ENV}" ||
-                    fatal "Failed to purge ${AppName} variables.\nFailing command: ${F[C]}sed -i -E \"/^\\\*(${GlobalVarsRegex})\\\*/d\" \"${COMPOSE_ENV}\""
+                    fatal "Failed to purge ${F[C]}${AppName}${NC} variables.\nFailing command: ${F[C]}sed -i -E \"/^\\\*(${GlobalVarsRegex})\\\*/d\" \"${COMPOSE_ENV}\""
             fi
             if [[ -n ${AppEnvVarsToRemove[*]-} ]]; then
                 # Remove variables from file
-                notice "Removing variables from ${AppEnvFile}:"
+                notice "Removing variables from ${F[C]}${AppEnvFile}${NC}:"
                 for line in "${AppEnvLinesToRemoveArray[@]}"; do
-                    notice "   $line"
+                    notice "   ${F[C]}$line${NC}"
                 done
                 sed -i -E "/^\s*(${AppEnvVarsRegex})\s*=/d" "${AppEnvFile}" ||
-                    fatal "Failed to purge ${AppName} variables.\nFailing command: ${F[C]}sed -i -E \"/^\\\*(${AppEnvVarsRegex})\\\*/d\" \"${AppEnvFile}\""
+                    fatal "Failed to purge ${F[C]}${AppName}${NC} variables.\nFailing command: ${F[C]}sed -i -E \"/^\\\*(${AppEnvVarsRegex})\\\*/d\" \"${AppEnvFile}\""
             fi
         else
-            info "Keeping ${AppName} .env variables."
+            info "Keeping ${F[C]}${AppName}${NC} variables."
         fi
     done
 }
