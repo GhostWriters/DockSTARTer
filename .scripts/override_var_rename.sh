@@ -11,8 +11,8 @@ override_var_rename() {
         return
     fi
     if run_script 'override_var_exists' "${FromVar}"; then
-        notice "Renaming variable in ${F[C]}${COMPOSE_OVERRIDE}${NC}:"
-        notice "   ${F[C]}${FromVar}${NC} to ${F[C]}${ToVar}${NC}"
+        notice "Renaming variable in ${C["File"]}${COMPOSE_OVERRIDE}${NC}:"
+        notice "   ${C["Var"]}${FromVar}${NC} to ${C["Var"]}${ToVar}${NC}"
         # Replace $FromVar or ${FromVar followed by a word break to $ToVar or ${ToVar
         sed -i -E "s/([$]\{?)${FromVar}\b/\1${ToVar}/g" "${COMPOSE_OVERRIDE}" ||
             fatal "Failed to rename variable in override file.\nFailing command: ${C["FailingCommand"]} sed -i -E \"s/([$]\\{?)${FromVar}\\\\b/\\\\1${ToVar}/g\" \"${COMPOSE_OVERRIDE}\""

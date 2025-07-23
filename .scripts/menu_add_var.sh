@@ -204,11 +204,11 @@ menu_add_var() {
                             if run_script 'question_prompt' N "${Heading}\n\n${Question}" "Create Stock Variables" "" "Create" "Back"; then
                                 Heading="$(run_script 'menu_heading' ":${AppName}" "${VarNameHeading}")"
                                 {
-                                    notice "Adding variables to ${F[C]}${COMPOSE_ENV}${NC}:"
+                                    notice "Adding variables to ${C["File"]}${COMPOSE_ENV}${NC}:"
                                     for Option in "${ValidStockOptions[@]}"; do
                                         local DefaultValue
                                         DefaultValue="$(run_script 'var_default_value' "${Option// /}")"
-                                        notice "   ${F[C]}${Option// /}=${DefaultValue}${NC}"
+                                        notice "   ${C["Var"]}${Option// /}=${DefaultValue}${NC}"
                                         run_script 'env_set_literal' "${Option// /}" "${DefaultValue}"
                                     done
                                 } |& dialog_pipe "${DC["TitleSuccess"]}Creating Stock Variables" "${Heading}" "${DIALOGTIMEOUT}"

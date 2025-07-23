@@ -112,12 +112,15 @@ declare -Agr C=( # Pre-defined colors
 
     ["App"]="${F[C]}"
     ["Branch"]="${F[C]}"
-    ["Command"]="${F[C]}"
-    ["RunningCommand"]="${F[C]}"
-    ["UserCommand"]="${F[C]}"
-    ["FailingCommand"]="${F[C]}"
+    ["FailingCommand"]="${F[R]}"
     ["File"]="${F[C]}"
     ["Folder"]="${F[C]}"
+    ["Program"]="${F[C]}"
+    ["RunningCommand"]="${F[G]}"
+    ["Theme"]="${F[C]}"
+    ["User"]="${F[C]}"
+    ["URL"]="${F[M]}"
+    ["UserCommand"]="${F[Y]}"
     ["Var"]="${F[C]}"
     ["Version"]="${F[C]}"
 )
@@ -154,7 +157,7 @@ declare -Ax DC=()
 declare -x DIALOGOTS
 
 # Log Functions
-MKTEMP_LOG=$(mktemp) || echo -e "Failed to create temporary log file.\nFailing command: ${F[C]}mktemp"
+MKTEMP_LOG=$(mktemp) || echo -e "Failed to create temporary log file.\nFailing command: ${C["FailingCommand"]}mktemp"
 readonly MKTEMP_LOG
 echo "DockSTARTer Log" > "${MKTEMP_LOG}"
 create_strip_log_colors_SEDSTRING() {
@@ -376,7 +379,7 @@ dialog_success() {
 }
 
 ds_branch() {
-    pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${F[C]}pushd \"${SCRIPTPATH}\""
+    pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${C["FailingCommand"]}pushd \"${SCRIPTPATH}\""
     git fetch --quiet &> /dev/null || true
     git symbolic-ref --short HEAD 2> /dev/null || true
     popd &> /dev/null
@@ -388,7 +391,7 @@ ds_branch_exists() {
     local CheckBranch
     CheckBranch=${1:-"${CurrentBranch}"}
 
-    pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${F[C]}pushd \"${SCRIPTPATH}\""
+    pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${C["FailingCommand"]}pushd \"${SCRIPTPATH}\""
     local -i result=0
     git ls-remote --exit-code --heads origin "${CheckBranch}" &> /dev/null || result=$?
     popd &> /dev/null
@@ -407,7 +410,7 @@ ds_version() {
         Branch="$(ds_branch)"
     fi
 
-    pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${F[C]}pushd \"${SCRIPTPATH}\""
+    pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${C["FailingCommand"]}pushd \"${SCRIPTPATH}\""
     if [[ -z ${CheckBranch-} ]] || ds_branch_exists "${Branch}"; then
         # Get the current tag. If no tag, use the commit instead.
         local VersionString
@@ -423,7 +426,7 @@ ds_version() {
     popd &> /dev/null
 }
 ds_update_available() {
-    pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${F[C]}pushd \"${SCRIPTPATH}\""
+    pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${C["FailingCommand"]}pushd \"${SCRIPTPATH}\""
     git fetch --quiet &> /dev/null
     local -i result=0
     # shellcheck disable=SC2319 # This $? refers to a condition, not a command. Assign to a variable to avoid it being overwritten.
@@ -928,7 +931,7 @@ main() {
     else
         if ! check_repo; then
             warn "Attempting to clone ${APPLICATION_NAME} repo to ${DETECTED_HOMEDIR}/.docker location."
-            git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone ${APPLICATION_NAME} repo.\nFailing command: ${F[C]}git clone https://github.com/GhostWriters/DockSTARTer \"${DETECTED_HOMEDIR}/.docker\""
+            git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone ${APPLICATION_NAME} repo.\nFailing command: ${C["FailingCommand"]}git clone https://github.com/GhostWriters/DockSTARTer \"${DETECTED_HOMEDIR}/.docker\""
             notice "Performing first run install."
             exec bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-fvi"
         fi
@@ -941,7 +944,7 @@ main() {
         if ds_update_available; then
             notice "${APPLICATION_NAME} [${F[C]}${APPLICATION_VERSION}${NC}]"
             notice "An update to ${APPLICATION_NAME} is available."
-            notice "Run '${F[C]}ds -u${NC}' to update to version ${F[C]}$(ds_version "${Branch}")${NC}."
+            notice "Run '${C["UserCommand"]}ds -u${NC}' to update to version ${C["Version"]}$(ds_version "${Branch}")${NC}."
         else
             info "${APPLICATION_NAME} [${F[C]}${APPLICATION_VERSION}${NC}]"
         fi
@@ -951,11 +954,11 @@ main() {
             MainBranch="${SOURCE_BRANCH}"
         fi
         warn "${APPLICATION_NAME} branch '${F[C]}${Branch}${NC}' appears to no longer exist."
-        warn "${APPLICATION_NAME} is currently on version ${F[C]}$(ds_version)${NC}."
+        warn "${APPLICATION_NAME} is currently on version ${C["Version"]}$(ds_version)${NC}."
         if ! ds_branch_exists "${MainBranch}"; then
             error "${APPLICATION_NAME} does not appear to have a '${F[C]}${TARGET_BRANCH}${NC}' or '${F[C]}${SOURCE_BRANCH}${NC}' branch."
         else
-            warn "Run '${F[C]}ds -u ${MainBranch}${NC}' to update to the latest stable release ${F[C]}$(ds_version "${MainBranch}")${NC}."
+            warn "Run '${C["UserCommand"]}ds -u ${MainBranch}${NC}' to update to the latest stable release ${C["Version"]}$(ds_version "${MainBranch}")${NC}."
         fi
     fi
     # Apply the GUI theme
@@ -1242,10 +1245,10 @@ main() {
                 local NoticeText
                 local CommandLine
                 if [[ -n ${THEME-} ]]; then
-                    NoticeText="Applying ${APPLICATION_NAME} theme ${F[C]}${THEME}${NC}"
+                    NoticeText="Applying ${APPLICATION_NAME} theme ${C["Theme"]}${THEME}${NC}"
                     CommandLine="ds --theme \"${THEME}\""
                 else
-                    NoticeText="Applying ${APPLICATION_NAME} theme ${F[C]}$(run_script 'theme_name')${NC}"
+                    NoticeText="Applying ${APPLICATION_NAME} theme ${C["Theme"]}$(run_script 'theme_name')${NC}"
                     CommandLine="ds --theme"
                 fi
                 notice "${NoticeText}"

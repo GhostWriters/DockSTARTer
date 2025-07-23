@@ -10,7 +10,7 @@ env_rename() {
 
     if [[ ! -f ${FROM_VAR_FILE} ]]; then
         # Source file does not exist, warn and return
-        warn "File ${F[C]}${FROM_VAR_FILE}${NC} does not exist."
+        warn "File ${C["File"]}${FROM_VAR_FILE}${NC} does not exist."
         return
     fi
     if [[ ${FROM_VAR_FILE} == "${TO_VAR_FILE}" && ${FROM_VAR} == "${TO_VAR}" ]]; then
@@ -26,7 +26,7 @@ env_rename() {
     fi
     if [[ ! -f ${TO_VAR_FILE} ]]; then
         # Destination file does not exist, create it
-        notice "Creating ${F[C]}${TO_VAR_FILE}${NC}"
+        notice "Creating ${C["File"]}${TO_VAR_FILE}${NC}"
         touch "${TO_VAR_FILE}"
     fi
     if run_script 'env_var_exists' "${TO_VAR}" "${TO_VAR_FILE}"; then
@@ -35,17 +35,17 @@ env_rename() {
     fi
 
     if [[ ${FROM_VAR_FILE} == "${TO_VAR_FILE}" ]]; then
-        notice "Renaming variable in ${F[C]}${FROM_VAR_FILE}${NC}:"
-        notice "   ${F[C]}${FROM_VAR}${NC} to ${F[C]}${TO_VAR}${NC}"
+        notice "Renaming variable in ${C["File"]}${FROM_VAR_FILE}${NC}:"
+        notice "   ${C["Var"]}${FROM_VAR}${NC} to ${C["Var"]}${TO_VAR}${NC}"
     else
         notice "Moving variable:"
-        notice "   ${F[C]}${FROM_VAR}${NC} [${F[C]}${FROM_VAR_FILE}${NC}] to"
-        notice "   ${F[C]}${TO_VAR}${NC} [${F[C]}${TO_VAR_FILE}${NC}]"
+        notice "   ${C["Var"]}${FROM_VAR}${NC} [${C["File"]}${FROM_VAR_FILE}${NC}] to"
+        notice "   ${C["Var"]}${TO_VAR}${NC} [${C["File"]}${TO_VAR_FILE}${NC}]"
     fi
     printf '\n%s\n' "${NEW_VAR_LINE}" >> "${TO_VAR_FILE}" ||
-        fatal "Failed to add '${F[C]}${NEW_VAR_LINE}${NC}' in ${F[C]}${TO_VAR_FILE}${NC}\nFailing command: ${C["FailingCommand"]}printf '\n%s\n' \"${NEW_VAR_LINE}\" >> \"${TO_VAR_FILE}\""
+        fatal "Failed to add '${C["Var"]}${NEW_VAR_LINE}${NC}' in ${C["File"]}${TO_VAR_FILE}${NC}\nFailing command: ${C["FailingCommand"]}printf '\n%s\n' \"${NEW_VAR_LINE}\" >> \"${TO_VAR_FILE}\""
     sed -i "/^\s*${FROM_VAR}\s*=/d" "${FROM_VAR_FILE}" ||
-        fatal "Failed to remove var ${F[C]}${FROM_VAR}${NC} in ${F[C]}${FROM_VAR_FILE}${NC}\nFailing command: ${C["FailingCommand"]}sed -i \"/^\\s*${FROM_VAR}\\s*=/d\" \"${FROM_VAR_FILE}\""
+        fatal "Failed to remove var ${C["Var"]}${FROM_VAR}${NC} in ${C["File"]}${FROM_VAR_FILE}${NC}\nFailing command: ${C["FailingCommand"]}sed -i \"/^\\s*${FROM_VAR}\\s*=/d\" \"${FROM_VAR_FILE}\""
 }
 
 test_env_rename() {
