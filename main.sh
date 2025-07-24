@@ -99,6 +99,9 @@ declare -Agr F=( # Foreground
 BD=$(tput bold 2> /dev/null || echo -e "\e[1m") # Bold
 readonly BD
 export BD
+UL=$(tput smul 2> /dev/null || echo -e "\e[4m") # Underline
+readonly UL
+export UL
 NC=$(tput sgr0 2> /dev/null || echo -e "\e[0m") # No Color
 readonly NC
 export NC
@@ -125,7 +128,7 @@ declare -Agr C=( # Pre-defined colors
     ["Theme"]="${F[C]}"
     ["Update"]="${F[G]}"
     ["User"]="${F[C]}"
-    ["URL"]="${F[M]}"
+    ["URL"]="${F[M]}${UL}"
     ["UserCommand"]="${F[Y]}${BD}"
     ["Var"]="${F[C]}"
     ["Version"]="${F[C]}"
