@@ -126,7 +126,7 @@ declare -Agr C=( # Pre-defined colors
     ["Update"]="${F[G]}"
     ["User"]="${F[C]}"
     ["URL"]="${F[M]}"
-    ["UserCommand"]="${F[Y]}"
+    ["UserCommand"]="${F[Y]}${BD}"
     ["Var"]="${F[C]}"
     ["Version"]="${F[C]}"
 )
