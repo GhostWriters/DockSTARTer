@@ -1,0 +1,4 @@
+services:
+  ombi<__instance>:
+    volumes:
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

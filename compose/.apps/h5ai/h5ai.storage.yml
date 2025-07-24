@@ -1,0 +1,4 @@
+services:
+  h5ai<__instance>:
+    volumes:
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

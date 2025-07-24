@@ -3,77 +3,135 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 update_self() {
-    cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
-    local BRANCH CurrentBranch
-    BRANCH=${1-$(git branch --show)}
-    CurrentBranch="$(git branch --show)"
+    local BRANCH CurrentBranch CurrentVersion RemoteVersion
+    BRANCH=${1-}
+    shift || true
+    if [[ ${BRANCH-} == "${SOURCE_BRANCH}" ]] && ds_branch_exists "${TARGET_BRANCH}"; then
+        warn "Updating to branch '${F[C]}${TARGET_BRANCH}${NC}' instead of '${F[C]}${SOURCE_BRANCH}${NC}'."
+        BRANCH="${TARGET_BRANCH}"
+    fi
 
-    local Title="Update DockSTARTer"
+    pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${C["FailingCommand"]}push \"${SCRIPTPATH}\""
+    CurrentBranch="$(ds_branch)"
+    CurrentVersion="$(ds_version)"
+    local Title="Update ${APPLICATION_NAME}"
     local Question YesNotice NoNotice
     if [[ -z ${BRANCH-} ]]; then
-        error "You need to specify a branch to update to."
+        if [[ -z ${CurrentBranch-} ]]; then
+            error "You need to specify a branch to update to."
+            return 1
+        fi
+        RemoteVersion="$(ds_version "${CurrentBranch}")"
+        Question="Would you like to update ${APPLICATION_NAME} from ${C["Version"]}${CurrentVersion}${NC} to ${C["Version"]}${RemoteVersion}${NC} now?"
+        NoNotice="${APPLICATION_NAME} will not be updated."
+        YesNotice="Updating ${APPLICATION_NAME} from ${C["Version"]}${CurrentVersion}${NC} to ${C["Version"]}${RemoteVersion}${NC}"
+    elif [[ ${BRANCH-} == "${CurrentBranch-}" ]]; then
+        RemoteVersion="$(ds_version "${BRANCH}")"
+        if [[ ${CurrentVersion} == "${RemoteVersion}" ]]; then
+            Question="Would you like to forcefully re-apply ${APPLICATION_NAME} update ${C["Version"]}${CurrentVersion}${NC}?"
+            NoNotice="${APPLICATION_NAME} will not be updated."
+            YesNotice="Updating ${APPLICATION_NAME} to ${C["Version"]}${RemoteVersion}${NC}"
+        else
+            Question="Would you like to update ${APPLICATION_NAME} from ${C["Version"]}${CurrentVersion}${NC} to ${C["Version"]}${RemoteVersion}${NC} now?"
+            NoNotice="${APPLICATION_NAME} will not be updated from ${C["Version"]}${CurrentVersion}${NC} to ${C["Version"]}${RemoteVersion}${NC}"
+            YesNotice="Updating ${APPLICATION_NAME} from ${C["Version"]}${CurrentVersion}${NC} to ${C["Version"]}${RemoteVersion}${NC}"
+        fi
+    else
+        RemoteVersion="$(ds_version "${BRANCH}")"
+        Question="Would you like to update ${APPLICATION_NAME} from ${C["Version"]}${CurrentVersion}${NC} to ${C["Version"]}${RemoteVersion}${NC} now?"
+        NoNotice="${APPLICATION_NAME} will not be updated from ${C["Version"]}${CurrentVersion}${NC} to ${C["Version"]}${RemoteVersion}${NC}"
+        YesNotice="Updating ${APPLICATION_NAME} from ${C["Version"]}${CurrentVersion}${NC} to ${C["Version"]}${RemoteVersion}${NC}"
+    fi
+    popd &> /dev/null
+
+    if ! ds_branch_exists "${BRANCH}"; then
+        BRANCH="${BRANCH:-"${CurrentBranch}"}"
+        local ErrorMessage="${APPLICATION_NAME} branch '${C["Branch"]}${BRANCH}${NC}' does not exists."
+        if use_dialog_box; then
+            error "${ErrorMessage}" |&
+                dialog_pipe "${DC[TitleError]}${Title}" "${DC[CommandLine]} ds --update $*"
+        else
+            error "${ErrorMessage}"
+        fi
         return 1
     fi
-    if [[ ${BRANCH-} == "${CurrentBranch-}" ]]; then
-        Question="Would you like to update DockSTARTer to branch ${BRANCH} now?"
-        NoNotice="DockSTARTer will not be updated."
-        YesNotice="Updating DockSTARTer to branch ${BRANCH}."
-    else
-        Question="Would you like to update DockSTARTer from branch ${CurrentBranch} to ${BRANCH} now?"
-        NoNotice="DockSTARTer will not be updated from branch ${CurrentBranch} to ${BRANCH}."
-        YesNotice="Updating DockSTARTer from branch ${CurrentBranch} to ${BRANCH}."
+    if [[ -z ${BRANCH-} && ${CurrentVersion} == "${RemoteVersion}" ]]; then
+        if use_dialog_box; then
+            {
+                notice "${APPLICATION_NAME} is already up to date on branch ${C["Branch"]}${CurrentBranch}${NC}."
+                notice "Current version is ${C["Version"]}${CurrentVersion}${NC}"
+            } |& dialog_pipe "${DC[TitleWarning]}${Title}" "${DC[CommandLine]} ds --update $*"
+        else
+            notice "${APPLICATION_NAME} is already up to date on branch ${C["Branch"]}${CurrentBranch}${NC}."
+            notice "Current version is ${C["Version"]}${CurrentVersion}${NC}"
+        fi
+        return 0
     fi
+
+    BRANCH="${BRANCH:-"${CurrentBranch}"}"
     if ! run_script 'question_prompt' Y "${Question}" "${Title}" "${FORCE:+Y}"; then
         if use_dialog_box; then
             notice "${NoNotice}" |& dialog_pipe "${DC[TitleError]}${Title}" "${NoNotice}"
         else
             notice "${NoNotice}"
         fi
-        return
+        return 1
     fi
 
     if use_dialog_box; then
-        commands_update_self "${BRANCH}" "${YesNotice}" |&
+        commands_update_self "${BRANCH}" "${YesNotice}" "$@" |&
             dialog_pipe "${DC[TitleSuccess]}${Title}" "${YesNotice}\n${DC[CommandLine]} ds --update $*"
     else
-        commands_update_self "${BRANCH}" "${YesNotice}"
+        commands_update_self "${BRANCH}" "${YesNotice}" "$@"
     fi
 }
 
 commands_update_self() {
     local BRANCH=${1-}
     local Notice=${2-}
+    shift 2
 
-    notice "Clearing instances folder"
-    rm -R "${INSTANCES_FOLDER:?}/"* &> /dev/null || true
+    pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${C["FailingCommand"]}push \"${SCRIPTPATH}\""
+    local QUIET=''
+    if [[ -z ${VERBOSE-} ]]; then
+        QUIET='--quiet'
+    fi
+    if [[ -d ${INSTANCES_FOLDER:?} ]]; then
+        notice "Clearing instances folder"
+        run_script 'set_permissions' "${INSTANCES_FOLDER:?}"
+        rm -fR "${INSTANCES_FOLDER:?}/"* &> /dev/null || fatal "Failed to clear instances folder.\nFailing command: ${C["FailingCommand"]}rm -fR \"${INSTANCES_FOLDER:?}/\"*"
+    fi
     notice "${Notice}"
-    cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${F[C]}cd \"${SCRIPTPATH}\""
+    cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${C["FailingCommand"]}cd \"${SCRIPTPATH}\""
     info "Setting file ownership on current repository files"
     sudo chown -R "$(id -u)":"$(id -g)" "${SCRIPTPATH}/.git" > /dev/null 2>&1 || true
     sudo chown "$(id -u)":"$(id -g)" "${SCRIPTPATH}" > /dev/null 2>&1 || true
     git ls-tree -rt --name-only HEAD | xargs sudo chown "$(id -u)":"$(id -g)" > /dev/null 2>&1 || true
 
     info "Fetching recent changes from git."
-    git fetch --quiet --all --prune || fatal "Failed to fetch recent changes from git.\nFailing command: ${F[C]}git fetch --quiet --all --prune"
+    eval git fetch ${QUIET-} --all --prune || fatal "Failed to fetch recent changes from git.\nFailing command: ${C["FailingCommand"]}git fetch ${QUIET-} --all --prune"
     if [[ ${CI-} != true ]]; then
-        if [[ -n ${BRANCH-} ]]; then
-            git switch --quiet --force "${BRANCH}" || fatal "Failed to switch to github branch ${BRANCH}.\nFailing command: ${F[C]}git switch --quiet --force \"${BRANCH}\""
-            git reset --quiet --hard origin/"${BRANCH}" || fatal "Failed to reset to current branch.\nFailing command: ${F[C]}git reset --quiet --hard origin/\"${BRANCH}\""
-        else
-            git reset --quiet --hard HEAD || fatal "Failed to reset to current branch.\nFailing command: ${F[C]}git reset --quiet --hard HEAD"
-        fi
+        eval git switch ${QUIET-} --force "${BRANCH}" || fatal "Failed to switch to github branch ${C["Branch"]}${BRANCH}${NC}.\nFailing command: ${C["FailingCommand"]}git switch ${QUIET-} --force \"${BRANCH}\""
+        eval git reset ${QUIET-} --hard origin/"${BRANCH}" || fatal "Failed to reset to branch ${C["Branch"]}origin/${BRANCH}${NC}.\nFailing command: ${C["FailingCommand"]}git reset ${QUIET-} --hard origin/\"${BRANCH}\""
         info "Pulling recent changes from git."
-        git pull --quiet || fatal "Failed to pull recent changes from git.\nFailing command: ${F[C]}git pull --quiet"
+        eval git pull ${QUIET-} || fatal "Failed to pull recent changes from git.\nFailing command: ${C["FailingCommand"]}git pull ${QUIET-}"
     fi
     info "Cleaning up unnecessary files and optimizing the local repository."
-    git gc > /dev/null 2>&1 || true
+    eval git gc ${QUIET-} || true
     info "Setting file ownership on new repository files"
     git ls-tree -rt --name-only "${BRANCH}" | xargs sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" > /dev/null 2>&1 || true
     sudo chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}/.git" > /dev/null 2>&1 || true
     sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}" > /dev/null 2>&1 || true
-    exec bash "${SCRIPTNAME}" -e
+    notice "Updated ${APPLICATION_NAME} to ${C["Version"]}$(ds_version)${NC}"
+    popd &> /dev/null
+    if [[ -z $* ]]; then
+        exec bash "${SCRIPTNAME}" -e
+    else
+        exec "$@"
+    fi
 }
 
 test_update_self() {
-    run_script 'update_self' "${COMMIT_SHA-}"
+    warn "CI does not test update_self."
+    #@run_script 'update_self' "${COMMIT_SHA-}"
 }

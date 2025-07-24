@@ -12,7 +12,7 @@ env_get_line() {
     local VAR_FILE=${2:-$COMPOSE_ENV}
 
     if ! run_script 'varname_is_valid' "${GET_VAR}"; then
-        error "${GET_VAR} is an invalid variable name."
+        error "${F[C]}${GET_VAR}${NC} is an invalid variable name."
         return
     fi
 
@@ -26,7 +26,7 @@ env_get_line() {
         grep --color=never -Po "^\s*${GET_VAR}\s*=.*" "${VAR_FILE}" | tail -1 || true
     else
         # VAR_FILE does not exist, give a warning
-        warn "${VAR_FILE} does not exist."
+        warn "${F[C]}${VAR_FILE}${NC} does not exist."
     fi
 
 }

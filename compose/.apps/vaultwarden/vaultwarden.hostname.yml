@@ -1,0 +1,3 @@
+services:
+  vaultwarden<__instance>:
+    hostname: ${VAULTWARDEN<__INSTANCE>__HOSTNAME?}

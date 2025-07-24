@@ -9,5 +9,4 @@ services:
     restart: ${UPTIMEKUMA<__INSTANCE>__RESTART?}
     volumes:
       - ${DOCKER_VOLUME_CONFIG?}/uptimekuma<__instance>:/app/data
-      - ${DOCKER_VOLUME_STORAGE?}:/storage
       - /etc/localtime:/etc/localtime:ro

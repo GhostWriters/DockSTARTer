@@ -1,0 +1,12 @@
+services:
+  crossseed<__instance>:
+    command: daemon
+    container_name: ${CROSSSEED<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/crossseed<__instance>.env
+    environment:
+      - TZ=${TZ?}
+    restart: ${CROSSSEED<__INSTANCE>__RESTART?}
+    user: ${PUID?}:${PGID?}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_VOLUME_CONFIG?}/crossseed<__instance>:/config

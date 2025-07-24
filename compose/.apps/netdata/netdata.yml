@@ -18,5 +18,4 @@ services:
       - /etc/passwd:/host/etc/passwd:ro
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
-      - ${DOCKER_VOLUME_STORAGE?}:/storage
       - ${NETDATA<__INSTANCE>__VOLUME_DOCKER_SOCKET?}:/var/run/docker.sock:ro

@@ -1,0 +1,4 @@
+services:
+  telegraf<__instance>:
+    volumes:
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

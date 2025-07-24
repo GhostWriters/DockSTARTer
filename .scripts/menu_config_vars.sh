@@ -16,11 +16,11 @@ menu_config_vars() {
     while true; do
         if [[ -n ${CurrentGlobalEnvFile-} ]]; then
             rm -f "${CurrentGlobalEnvFile}" ||
-                warn "Failed to remove temporary .env file.\nFailing command: ${F[C]}rm -f \"${CurrentGlobalEnvFile}\""
+                warn "Failed to remove temporary ${C["File"]}.env${NC} file.\nFailing command: ${C["FailingCommand"]}rm -f \"${CurrentGlobalEnvFile}\""
         fi
         if [[ -n ${CurrentAppEnvFile-} ]]; then
             rm -f "${CurrentAppEnvFile}" ||
-                warn "Failed to remove temporary ${appname}.env file.\nFailing command: ${F[C]}rm -f \"${CurrentAppEnvFile}\""
+                warn "Failed to remove temporary ${C["File"]}${appname}.env${NC} file.\nFailing command: ${C["FailingCommand"]}rm -f \"${CurrentAppEnvFile}\""
         fi
         local DefaultGlobalEnvFile=''
         local DefaultAppEnvFile=''
@@ -62,7 +62,13 @@ menu_config_vars() {
             VarName="$(grep -o -P '^\w+(?=)' <<< "${line}")"
             if [[ -n ${VarName-} ]]; then
                 # Line contains a variable
-                LineColor[LineNumber]="${DC[LineVar]}"
+                local DefaultLine
+                DefaultLine="${VarName}=$(run_script 'var_default_value' "${VarName}")"
+                if [[ ${line} == "${DefaultLine}" ]]; then
+                    LineColor[LineNumber]="${DC[LineVar]}"
+                else
+                    LineColor[LineNumber]="${DC[LineModifiedVar]}"
+                fi
                 VarNameOnLine[LineNumber]="${VarName}"
                 if [[ -z ${FirstVarLine-} ]]; then
                     FirstVarLine=${LineNumber}
@@ -100,7 +106,13 @@ menu_config_vars() {
                 VarName="$(grep -o -P '^\w+(?=)' <<< "${line}")"
                 if [[ -n ${VarName-} ]]; then
                     # Line contains a variable
-                    LineColor[LineNumber]="${DC[LineVar]}"
+                    local DefaultLine
+                    DefaultLine="${VarName}=$(run_script 'var_default_value' "${APPNAME}:${VarName}")"
+                    if [[ ${line} == "${DefaultLine}" ]]; then
+                        LineColor[LineNumber]="${DC[LineVar]}"
+                    else
+                        LineColor[LineNumber]="${DC[LineModifiedVar]}"
+                    fi
                     VarNameOnLine[LineNumber]="${APPNAME}:${VarName}"
                     if [[ -z ${FirstVarLine-} ]]; then
                         FirstVarLine=${LineNumber}
@@ -147,7 +159,7 @@ menu_config_vars() {
                 "${LineOptions[@]}"
             )
             local -i LineDialogButtonPressed=0
-            LineChoice=$(dialog "${LineDialog[@]}") || LineDialogButtonPressed=$?
+            LineChoice=$(_dialog_ "${LineDialog[@]}") || LineDialogButtonPressed=$?
             case ${DIALOG_BUTTONS[LineDialogButtonPressed]-} in
                 OK) # Select
                     LastLineChoice="${LineChoice}"
@@ -215,11 +227,11 @@ menu_config_vars() {
     done
     if [[ -n ${CurrentGlobalEnvFile-} ]]; then
         rm -f "${CurrentGlobalEnvFile}" ||
-            warn "Failed to remove temporary .env file.\nFailing command: ${F[C]}rm -f \"${CurrentGlobalEnvFile}\""
+            warn "Failed to remove temporary ${C["File"]}.env${NC} file.\nFailing command: ${C["FailingCommand"]}rm -f \"${CurrentGlobalEnvFile}\""
     fi
     if [[ -n ${CurrentAppEnvFile-} ]]; then
         rm -f "${CurrentAppEnvFile}" ||
-            warn "Failed to remove temporary ${appname}.env file.\nFailing command: ${F[C]}rm -f \"${CurrentAppEnvFile}\""
+            warn "Failed to remove temporary ${C["File"]}${appname}.env${NC} file.\nFailing command: ${C["FailingCommand"]}rm -f \"${CurrentAppEnvFile}\""
     fi
 }
 

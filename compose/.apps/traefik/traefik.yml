@@ -10,5 +10,4 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG?}/traefik<__instance>:/etc/traefik
-      - ${DOCKER_VOLUME_STORAGE?}:/storage
       - ${TRAEFIK<__INSTANCE>__VOLUME_DOCKER_SOCKET?}:/var/run/docker.sock:ro

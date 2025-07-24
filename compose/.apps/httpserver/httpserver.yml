@@ -9,5 +9,4 @@ services:
     restart: ${HTTPSERVER<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_STORAGE?}:/storage
       - ${HTTPSERVER<__INSTANCE>__VOLUME_HTML?}:/html

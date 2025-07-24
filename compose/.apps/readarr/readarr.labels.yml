@@ -1,6 +1,6 @@
 services:
   readarr<__instance>:
     labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "eBook and audiobook collection manager for Usenet and BitTorrent users."
+      com.dockstarter.appinfo.deprecated: "true"
+      com.dockstarter.appinfo.description: "(DEPRECATED) No replacement"
       com.dockstarter.appinfo.nicename: "Readarr<__Instance>"

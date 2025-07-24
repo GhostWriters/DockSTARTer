@@ -1,0 +1,4 @@
+services:
+  minecraft_bedrock_server<__instance>:
+    volumes:
+      - ${DOCKER_VOLUME_STORAGE3?}:/storage3

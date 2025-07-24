@@ -11,7 +11,7 @@ app_is_disabled() {
     fi
     local APP_ENABLED
     APP_ENABLED="$(run_script 'env_get' "${APPNAME}__ENABLED")"
-    [[ ${APP_ENABLED} != "true" ]]
+    [[ ! ${APP_ENABLED^^} =~ ON|TRUE|YES ]]
 }
 
 test_app_is_disabled() {

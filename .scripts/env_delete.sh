@@ -14,7 +14,7 @@ env_delete() {
     fi
     if [[ ! -f ${VAR_FILE} ]]; then
         # Variable file does not exist, warn and return
-        warn "File ${VAR_FILE} does not exist."
+        warn "File ${C["File"]}${VAR_FILE}${NC} does not exist."
         return
     fi
     if ! grep -q -P "^\s*\K${DELETE_VAR}(?=\s*=)" "${VAR_FILE}"; then
@@ -22,10 +22,10 @@ env_delete() {
         return
     fi
 
-    notice "Removing variables from ${VAR_FILE}:"
-    notice "   ${DELETE_VAR}"
+    notice "Removing variables from ${C["File"]}${VAR_FILE}${NC}:"
+    notice "   ${C["Var"]}${DELETE_VAR}${NC}"
     sed -i "/^\s*${DELETE_VAR}\s*=/d" "${VAR_FILE}" ||
-        fatal "Failed to remove var ${DELETE_VAR} in ${VAR_FILE}\nFailing command: ${F[C]}sed -i \"/^\\s*${DELETE_VAR}\\s*=/d\" \"${VAR_FILE}\""
+        fatal "Failed to remove var ${C["Var"]}${DELETE_VAR}${NC} in ${C["File"]}${VAR_FILE}${NC}\nFailing command: ${C["FailingCommand"]}sed -i \"/^\\s*${DELETE_VAR}\\s*=/d\" \"${VAR_FILE}\""
 }
 
 test_env_delete() {

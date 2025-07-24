@@ -1,0 +1,12 @@
+services:
+  kavita<__instance>:
+    container_name: ${KAVITA<__INSTANCE>__CONTAINER_NAME?}
+    env_file: env_files/kavita<__instance>.env
+    environment:
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${KAVITA<__INSTANCE>__RESTART?}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_VOLUME_CONFIG?}/kavita<__instance>:/config

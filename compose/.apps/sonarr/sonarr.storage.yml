@@ -1,0 +1,4 @@
+services:
+  sonarr<__instance>:
+    volumes:
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

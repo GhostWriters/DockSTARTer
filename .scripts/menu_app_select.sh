@@ -17,10 +17,17 @@ menu_app_select() {
             run_script 'app_list_nondepreciated'
         ) | tr '[:upper:]' '[:lower:]' | sort -u)
         echo "Currently added applications:"
+        local LastAppLetter=''
         for APPNAME in "${AllApps[@]-}"; do
             local main_yml
             main_yml="$(run_script 'app_instance_file' "${APPNAME}" ".yml")"
             if [[ -f ${main_yml} ]]; then
+                local AppLetter=${APPNAME:0:1}
+                AppLetter=${AppLetter^^}
+                if [[ -n ${LastAppLetter-} && ${LastAppLetter} != "${AppLetter}" ]]; then
+                    printf '%s\n' "" "" "OFF" >> "${AppListFile}"
+                fi
+                LastAppLetter=${AppLetter}
                 local main_yml
                 arch_yml="$(run_script 'app_instance_file' "${APPNAME}" ".${ARCH}.yml")"
                 if [[ -f ${arch_yml} ]]; then
@@ -51,13 +58,13 @@ menu_app_select() {
     if [[ ${CI-} == true ]]; then
         SelectedAppsDialogButtonPressed=${DIALOG_CANCEL}
     else
-        local SelectAppsDialogText="Choose which apps you would like to install:\n Use ${DC[RV]}[up]${DC[NC]}, ${DC[RV]}[down]${DC[NC]}, and ${DC[RV]}[space]${DC[NC]} to select apps, and ${DC[RV]}[tab]${DC[NC]} to switch to the buttons at the bottom."
+        local SelectAppsDialogText="Choose which apps you would like to install:\n Use ${DC["KeyCap"]}[up]${DC[NC]}, ${DC["KeyCap"]}[down]${DC[NC]}, and ${DC["KeyCap"]}[space]${DC[NC]} to select apps, and ${DC["KeyCap"]}[tab]${DC[NC]} to switch to the buttons at the bottom."
         local SelectedAppsDialogParams=(
             --stdout
             --title "${DC["Title"]}${Title}"
         )
         local -i MenuTextLines
-        MenuTextLines="$(dialog "${SelectedAppsDialogParams[@]}" --print-text-size "${SelectAppsDialogText}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" | cut -d ' ' -f 1)"
+        MenuTextLines="$(_dialog_ "${SelectedAppsDialogParams[@]}" --print-text-size "${SelectAppsDialogText}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" | cut -d ' ' -f 1)"
         local -a SelectedAppsDialog=(
             "${SelectedAppsDialogParams[@]}"
             --ok-label "Done"
@@ -70,7 +77,7 @@ menu_app_select() {
             "${AppList[@]}"
         )
         SelectedAppsDialogButtonPressed=0
-        SelectedApps=$(dialog "${SelectedAppsDialog[@]}") || SelectedAppsDialogButtonPressed=$?
+        SelectedApps=$(_dialog_ "${SelectedAppsDialog[@]}") || SelectedAppsDialogButtonPressed=$?
     fi
     case ${DIALOG_BUTTONS[SelectedAppsDialogButtonPressed]-} in
         OK)

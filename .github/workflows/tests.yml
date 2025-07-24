@@ -1,16 +1,16 @@
 name: Run Tests
 
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
 
 jobs:
-  run:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
+  test:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.2.2
-      - name: run
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: test
         env:
           CI: true
           COMMIT_SHA: ${{ github.sha }}

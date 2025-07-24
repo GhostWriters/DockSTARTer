@@ -1,0 +1,19 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:best-practices",
+    "customManagers:githubActionsVersions",
+    ":automergeBranch",
+    ":automergeDigest",
+    ":automergeLinters",
+    ":automergeStableNonMajor",
+    ":automergeTesters",
+    ":automergeTypes",
+    ":enableVulnerabilityAlerts",
+    ":renovatePrefix",
+    ":automergeAll"
+  ],
+  "baseBranchPatterns": [
+    "$default"
+  ]
+}

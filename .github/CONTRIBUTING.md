@@ -4,7 +4,7 @@ All code in this repository should be neat and tidy.
 
 More important than being beautiful is being functional. This repository is primarily shell scripts and YAML files.
 
-We use [GitHub Actions](https://github.com/GhostWriters/DockSTARTer/actions) to run [checks](https://github.com/GhostWriters/DockSTARTer/tree/master/.github/workflows) on the code in the repository. Code must pass checks run by GitHub Actions in order to merge to the `master` branch of the repository.
+We use [GitHub Actions](https://github.com/GhostWriters/DockSTARTer/actions) to run [checks](https://github.com/GhostWriters/DockSTARTer/tree/main/.github/workflows) on the code in the repository. Code must pass checks run by GitHub Actions in order to merge to the `main` branch of the repository.
 
 Try not to [code like a cowboy](https://en.wikipedia.org/wiki/Cowboy_coding).
 
@@ -14,7 +14,7 @@ Try not to [code like a cowboy](https://en.wikipedia.org/wiki/Cowboy_coding).
 1. Run `bash /path/to/your/ds-repo/main.sh`
 1. The `ds` symlink should be created but let's verify. We'll run `whereis` to see where `ds` is and then run `ls -l` on this path to ensure the symlink points to `/path/to/your/ds-repo/main.sh`. E.g:
 
-```
+```shell
 dev0@dev0:~/gitsource/DockSTARTer$ whereis ds
 ds: /usr/bin/ds /usr/local/bin/ds
 dev0@dev0:~/gitsource/DockSTARTer$ ls -l /usr/bin/ds
@@ -29,8 +29,8 @@ So you want to add a new app to DockSTARTer? It's pretty easy if you have a work
 
 1. (Suggested) Develop a functional docker container for your new app in docker-compose.override.yml. Running `ds -c` should succesfully launch your new docker container and you'll be able to test this container to determine what properties should be specified in your docker compose file.
 1. Add a new folder in `/path/to/your/ds-repo/compose/.apps` for your new app.
-1. Populate the newly created folder above with .yml files. Read through the [YAML files](#YAML-files) section to understand which files to create and how to decompose the container you defined in step 1 above into the various .yml files needed.
-1. Test your app .yml files as suggested in the [Testing](#Testing) section. _Note: if you created the docker container (as suggested by step 1) in docker-compose.override.yml you should comment out or delete those lines before testing_
+1. Populate the newly created folder above with .yml files. Read through the [YAML files](#yaml-files) section to understand which files to create and how to decompose the container you defined in step 1 above into the various .yml files needed.
+1. Test your app .yml files as suggested in the [Testing](#testing) section. _Note: if you created the docker container (as suggested by step 1) in docker-compose.override.yml you should comment out or delete those lines before testing_
 1. Write app specific documentation in `/path/to/your/ds-repo/docs/apps/<appname>.md`
 1. Create a navigation link in mkdocs for this new documentation written in the step above. Edit the file `/path/to/your/ds-repo/mkdocs.yml`
 

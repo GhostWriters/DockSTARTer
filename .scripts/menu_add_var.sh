@@ -78,7 +78,7 @@ menu_add_var() {
                 ["${APPNAME__PORT_}"]="Complete this with a var to use in the ${DC["Highlight"]}ports:${DC[NC]} section of your override."
                 ["${APPNAME__VOLUME_}"]="Complete this with a var to use in the ${DC["Highlight"]}volumes:${DC[NC]} section of your override."
                 ["${APPNAME__CONTAINER_NAME}"]="This can be used in the ${DC["Highlight"]}container_name:${DC[NC]} section in your override."
-                ["${APPNAME__ENABLED}"]="Creating this variable will cause the app to be controlled by DockSTARTer with no override needed."
+                ["${APPNAME__ENABLED}"]="Creating this variable will cause the app to be controlled by ${APPLICATION_NAME} with no override needed."
                 ["${APPNAME__HOSTNAME}"]="This can be used in the ${DC["Highlight"]}hostname:${DC[NC]} section of your override."
                 ["${APPNAME__NETWORK_MODE}"]="This can be used in the ${DC["Highlight"]}network_mode:${DC[NC]} section of your override."
                 ["${APPNAME__RESTART}"]="This can be used in the ${DC["Highlight"]}restart:${DC[NC]} section of your override."
@@ -177,7 +177,7 @@ menu_add_var() {
                     --title "${DC["Title"]}${Title}"
                 )
                 local -i MenuTextLines
-                MenuTextLines="$(dialog "${SelectValueDialogParams[@]}" --print-text-size "${SelectValueMenuText}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" | cut -d ' ' -f 1)"
+                MenuTextLines="$(_dialog_ "${SelectValueDialogParams[@]}" --print-text-size "${SelectValueMenuText}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" | cut -d ' ' -f 1)"
                 local -i SelectValueDialogButtonPressed=0
                 local -a SelectValueDialog=(
                     "${SelectValueDialogParams[@]}"
@@ -190,7 +190,7 @@ menu_add_var() {
                     "${ValueOptions[@]}"
                 )
                 SelectValueDialogButtonPressed=0
-                SelectedOption=$(dialog "${SelectValueDialog[@]}") || SelectValueDialogButtonPressed=$?
+                SelectedOption=$(_dialog_ "${SelectValueDialog[@]}") || SelectValueDialogButtonPressed=$?
                 case ${DIALOG_BUTTONS[SelectValueDialogButtonPressed]-} in
                     OK) # SELECT button
                         if [[ ${SelectedOption} == "${OptionClear}" ]]; then
@@ -204,11 +204,11 @@ menu_add_var() {
                             if run_script 'question_prompt' N "${Heading}\n\n${Question}" "Create Stock Variables" "" "Create" "Back"; then
                                 Heading="$(run_script 'menu_heading' ":${AppName}" "${VarNameHeading}")"
                                 {
-                                    notice "Adding variables to ${COMPOSE_ENV}:"
+                                    notice "Adding variables to ${C["File"]}${COMPOSE_ENV}${NC}:"
                                     for Option in "${ValidStockOptions[@]}"; do
                                         local DefaultValue
                                         DefaultValue="$(run_script 'var_default_value' "${Option// /}")"
-                                        notice "   ${Option// /}=${DefaultValue}"
+                                        notice "   ${C["Var"]}${Option// /}=${DefaultValue}${NC}"
                                         run_script 'env_set_literal' "${Option// /}" "${DefaultValue}"
                                     done
                                 } |& dialog_pipe "${DC["TitleSuccess"]}Creating Stock Variables" "${Heading}" "${DIALOGTIMEOUT}"
@@ -303,7 +303,7 @@ menu_add_var() {
                     "${ValueOptions[@]}"
                 )
                 local InputValueDialogButtonPressed=0
-                VarName=$(dialog "${InputValueDialog[@]}") || InputValueDialogButtonPressed=$?
+                VarName=$(_dialog_ "${InputValueDialog[@]}") || InputValueDialogButtonPressed=$?
                 case ${DIALOG_BUTTONS[InputValueDialogButtonPressed]-} in
                     OK)
                         local Default

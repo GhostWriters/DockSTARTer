@@ -1,0 +1,3 @@
+services:
+  huntarr<__instance>:
+    hostname: ${HUNTARR<__INSTANCE>__HOSTNAME?}

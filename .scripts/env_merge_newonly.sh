@@ -17,7 +17,7 @@ env_merge_newonly() {
 
     # If "MergeFromFile" doesn't exists, give a warning
     if [[ ! -f ${MergeFromFile} ]]; then
-        warn "File ${MergeFromFile} does not exist."
+        warn "File ${C["File"]}${MergeFromFile}${NC} does not exist."
     else
         local MergeFromLines=()
         # Read all variable lines into an array, stripping whitespace before and after the variable name
@@ -33,13 +33,13 @@ env_merge_newonly() {
             done
         fi
         if [[ ${#MergeFromLines[@]} != 0 ]]; then
-            notice "Adding variables to ${MergeToFile}:"
-            echo >> "${MergeToFile}" || fatal "Failed to write to ${MergeToFile}.\nFailing command: echo >> \"${MergeToFile}\""
+            notice "Adding variables to ${C["File"]}${MergeToFile}${NC}:"
+            echo >> "${MergeToFile}" || fatal "Failed to write to ${C["File"]}${MergeToFile}${NC}.\nFailing command: ${C["FailingCommand"]}echo >> \"${MergeToFile}\"${NC}"
             for index in "${!MergeFromLines[@]}"; do
                 local line="${MergeFromLines[index]}" 2> /dev/null
-                notice "   ${line}"
+                notice "   ${C["Var"]}${line}${NC}"
                 env -i line="${line}" MergeToFile="${MergeToFile}" \
-                    printf '%s\n' "${line}" >> "${MergeToFile}" 2> /dev/null || fatal "Failed to add variable to ${MergeToFile}"
+                    printf '%s\n' "${line}" >> "${MergeToFile}" 2> /dev/null || fatal "Failed to add variable to ${C["File"]}${MergeToFile}${NC}"
             done
         fi
     fi

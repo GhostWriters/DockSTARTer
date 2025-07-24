@@ -30,7 +30,7 @@ env_migrate() {
 
     if [[ ! -f ${ToVarFile} ]]; then
         # Destination file does not exist, create it
-        notice "Creating ${ToVarFile}"
+        notice "Creating ${C["File"]}${ToVarFile}${NC}"
         touch "${ToVarFile}"
     fi
 

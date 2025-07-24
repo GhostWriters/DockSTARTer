@@ -4,14 +4,9 @@ services:
     env_file: env_files/filebrowser<__instance>.env
     environment:
       - TZ=${TZ?}
-    healthcheck:
-      test:
-        - CMD-SHELL
-        - curl -fs http://localhost:80/health || exit 1
     restart: ${FILEBROWSER<__INSTANCE>__RESTART?}
     user: ${PUID?}:${PGID?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG?}/filebrowser<__instance>:/config
-      - ${DOCKER_VOLUME_STORAGE?}:/storage
       - ${FILEBROWSER<__INSTANCE>__VOLUME_SHARE_DIR?}:/srv

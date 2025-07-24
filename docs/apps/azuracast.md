@@ -1,7 +1,7 @@
 # AzuraCast
 
 [![GitHub Stars](https://img.shields.io/github/stars/azuracast/azuracast?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/azuracast/azuracast)
-[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/azuracast)
+[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/compose/.apps/azuracast)
 
 ## Description
 

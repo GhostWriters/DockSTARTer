@@ -8,4 +8,3 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG?}/pgadmin<__instance>:/var/lib/pgadmin
-      - ${DOCKER_VOLUME_STORAGE?}:/storage

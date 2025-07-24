@@ -2,7 +2,7 @@
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/booksonic-air?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/linuxserver/booksonic-air)
 [![GitHub Stars](https://img.shields.io/github/stars/linuxserver/docker-booksonic-air?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/linuxserver/docker-booksonic-air)
-[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/booksonic-air)
+[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/compose/.apps/booksonic-air)
 
 ## Description
 

@@ -1,0 +1,6 @@
+services:
+  kavita<__instance>:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Kavita is an open-source, self-hosted digital library management system primarily designed for managing and reading comics, manga, and ebooks."
+      com.dockstarter.appinfo.nicename: "Kavita<__Instance>"

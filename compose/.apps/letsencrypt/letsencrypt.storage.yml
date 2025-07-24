@@ -1,0 +1,4 @@
+services:
+  letsencrypt<__instance>:
+    volumes:
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

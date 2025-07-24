@@ -6,9 +6,9 @@ app_env_file() {
     local AppName=${1:-}
 
     if [[ ! -d ${APP_ENV_FOLDER} ]]; then
-        warn "Folder ${APP_ENV_FOLDER} not found. Creating it."
+        warn "Folder ${C["Folder"]}${APP_ENV_FOLDER}${NC} not found. Creating it."
         mkdir -p "${APP_ENV_FOLDER}" ||
-            fatal "Failed to create folder.\nFailing command: ${F[C]}mkdir -p \"${APP_ENV_FOLDER}\""
+            fatal "Failed to create folder.\nFailing command: ${C["FailingCommand"]}mkdir -p \"${APP_ENV_FOLDER}\""
     fi
     echo "${APP_ENV_FOLDER}/${AppName,,}.env"
 }

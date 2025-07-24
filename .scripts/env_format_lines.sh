@@ -117,6 +117,8 @@ env_format_lines() {
             done
             FormattedEnvLines+=("")
         fi
+    else
+        FormattedEnvLines+=("")
     fi
     printf "%s\n" "${FormattedEnvLines[@]-}"
 }

@@ -9,7 +9,7 @@ question_prompt() {
         Default=""
     fi
     local Question=${2-}
-    local Title=${3-$BACKTITLE}
+    local Title=${3-$APPLICATION_NAME}
     local Override=${4-}
     Override=${Override^^:0:1}
     local YesButton=${5-Yes}
@@ -52,7 +52,7 @@ question_prompt() {
                 "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
             )
             local -i YesNoDialogButtonPressed=0
-            dialog "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?
+            _dialog_ "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?
             case ${DIALOG_BUTTONS[YesNoDialogButtonPressed]-} in
                 OK)
                     YN="Y"

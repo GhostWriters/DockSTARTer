@@ -20,4 +20,3 @@ services:
       - ${DOCKER_VOLUME_CONFIG?}/omadacontroller<__instance>:/opt/tplink/EAPController/data
       - ${DOCKER_VOLUME_CONFIG?}/omadacontroller<__instance>/logs:/opt/tplink/EAPController/logs
       - ${DOCKER_VOLUME_CONFIG?}/omadacontroller<__instance>/work:/opt/tplink/EAPController/work
-      - ${DOCKER_VOLUME_STORAGE?}:/storage

@@ -1,0 +1,6 @@
+services:
+  navidrome<__instance>:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Navidrome is an open source web-based music collection server and streamer. It gives you freedom to listen to your music collection from any browser or mobile device. It's like your personal Spotify!"
+      com.dockstarter.appinfo.nicename: "Navidrome<__Instance>"

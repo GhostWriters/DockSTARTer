@@ -10,5 +10,4 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG?}/emby<__instance>:/config
-      - ${DOCKER_VOLUME_STORAGE?}:/storage
       - ${EMBY<__INSTANCE>__VOLUME_TRANSCODEDIR?}:/transcode

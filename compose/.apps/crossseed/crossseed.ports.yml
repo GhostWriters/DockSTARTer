@@ -1,0 +1,4 @@
+services:
+  crossseed<__instance>:
+    ports:
+      - ${CROSSSEED<__INSTANCE>__PORT_2468?}:2468

@@ -9,4 +9,3 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG?}/kitana<__instance>:/app/data
-      - ${DOCKER_VOLUME_STORAGE?}:/storage

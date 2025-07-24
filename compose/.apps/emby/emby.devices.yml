@@ -1,0 +1,7 @@
+services:
+  emby<__instance>:
+    devices:
+      - ${EMBY<__INSTANCE>__DEVICE_DEV1}
+      - ${EMBY<__INSTANCE>__DEVICE_DEV2}
+      - ${EMBY<__INSTANCE>__DEVICE_DEV3}
+      - ${EMBY<__INSTANCE>__DEVICE_DEV4}

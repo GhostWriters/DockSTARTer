@@ -143,7 +143,7 @@ menu_value_prompt() {
         APP)
             case "${VarName}" in
                 "${APPNAME}__ENABLED")
-                    ValueDescription="\n\n This is used to set the application as enabled or disabled. If this variable is removed, the application will not be controlled by DockSTARTer. Must be ${DC[Highlight]}true${DC[NC]} or ${DC[Highlight]}false${DC[NC]}."
+                    ValueDescription="\n\n This is used to set the application as enabled or disabled. If this variable is removed, the application will not be controlled by ${APPLICATION_NAME}. Must be ${DC[Highlight]}true${DC[NC]} or ${DC[Highlight]}false${DC[NC]}."
                     PossibleOptions+=(
                         "Enabled"
                         "Disabled"
@@ -163,14 +163,14 @@ menu_value_prompt() {
                         "Host Network"
                         "No Network"
                         "Use Gluetun"
-                        "Use Privoxy"
+                        "Use PrivoxyVPN"
                     )
                     OptionHelpLine+=(
                         ["Bridge Network"]="Connects ${DC[Highlight]}${AppName}${DC[NC]} to the internal Docker bridge network. Same as leaving the value empty."
                         ["Host Network"]="Connects ${DC[Highlight]}${AppName}${DC[NC]} to the host OS's network."
                         ["No Network"]="Leaves ${DC[Highlight]}${AppName}${DC[NC]} without a network connection."
                         ["Use Gluetun"]="Connects ${DC[Highlight]}${AppName}${DC[NC]} to the VPN running in the ${DC[Highlight]}Gluetun${DC[NC]} container if running."
-                        ["Use Privoxy"]="Connects ${DC[Highlight]}${AppName}${DC[NC]} to the VPN running in the ${DC[Highlight]}Privoxy${DC[NC]} container if running."
+                        ["Use PrivoxyVPN"]="Connects ${DC[Highlight]}${AppName}${DC[NC]} to the VPN running in the ${DC[Highlight]}PrivoxyVPN${DC[NC]} container if running."
                     )
                     OptionValue+=(
                         ["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
@@ -178,16 +178,7 @@ menu_value_prompt() {
                         ["Host Network"]="'host'"
                         ["No Network"]="'none'"
                         ["Use Gluetun"]="'service:gluetun'"
-                        ["Use Privoxy"]="'service:privoxy'"
-                    )
-                    ;;
-                "${APPNAME}__PORT_"*)
-                    ValueDescription="\n\n Must be an unused port between ${DC[Highlight]}0${DC[NC]} and ${DC[Highlight]}65535${DC[NC]}."
-                    PossibleOptions+=(
-                        "${DefaultValueOption}"
-                    )
-                    OptionValue+=(
-                        ["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+                        ["Use PrivoxyVPN"]="'service:privoxyvpn'"
                     )
                     ;;
                 "${APPNAME}__RESTART")
@@ -232,13 +223,23 @@ menu_value_prompt() {
                     )
                     ;;
                 *)
-                    ValueDescription=""
-                    PossibleOptions+=(
-                        "${DefaultValueOption}"
-                    )
-                    OptionValue+=(
-                        ["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
-                    )
+                    if [[ ${VarName} =~ ^${APPNAME}__PORT_[0-9]+$ ]]; then
+                        ValueDescription="\n\n Must be an unused port between ${DC[Highlight]}0${DC[NC]} and ${DC[Highlight]}65535${DC[NC]}."
+                        PossibleOptions+=(
+                            "${DefaultValueOption}"
+                        )
+                        OptionValue+=(
+                            ["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+                        )
+                    else
+                        ValueDescription=""
+                        PossibleOptions+=(
+                            "${DefaultValueOption}"
+                        )
+                        OptionValue+=(
+                            ["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+                        )
+                    fi
                     ;;
             esac
             ;;
@@ -297,7 +298,7 @@ menu_value_prompt() {
             --item-help
         )
         local -i MenuTextLines
-        MenuTextLines="$(dialog "${SelectValueDialogParams[@]}" --print-text-size "${SelectValueMenuText}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" | cut -d ' ' -f 1)"
+        MenuTextLines="$(_dialog_ "${SelectValueDialogParams[@]}" --print-text-size "${SelectValueMenuText}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" | cut -d ' ' -f 1)"
         local -i SelectValueDialogButtonPressed=0
         local SelectedValue
         local -a SelectValueDialog=(
@@ -311,7 +312,7 @@ menu_value_prompt() {
             "${ValueOptions[@]}"
         )
         SelectValueDialogButtonPressed=0
-        SelectedValue=$(dialog "${SelectValueDialog[@]}") || SelectValueDialogButtonPressed=$?
+        SelectedValue=$(_dialog_ "${SelectValueDialog[@]}") || SelectValueDialogButtonPressed=$?
 
         case ${DIALOG_BUTTONS[SelectValueDialogButtonPressed]-} in
             OK) # SELECT button
@@ -321,10 +322,10 @@ menu_value_prompt() {
                     if [[ -n ${OptionValue["${SelectedValue}"]-} ]]; then
                         OptionValue["${CurrentValueOption}"]="${OptionValue["${SelectedValue}"]}"
                     else
-                        error "Unset value '${SelectedValue}'"
+                        error "Unset value '${F[C]}${SelectedValue}${NC}'"
                     fi
                 else
-                    error "Invalid option '${SelectedValue}'"
+                    error "Invalid option '${F[C]}${SelectedValue}${NC}'"
                 fi
                 ;;
             EXTRA) # EDIT button
@@ -345,12 +346,15 @@ menu_value_prompt() {
 
                     case "${VarName}" in
                         "${APPNAME}__ENABLED")
-                            if [[ ${StrippedValue} == true ]] || [[ ${StrippedValue} == false ]]; then
-                                ValueValid="true"
-                            else
-                                ValueValid="false"
-                                dialog_error "${Title}" "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not ${DC[Highlight]}true${DC[NC]} or ${DC[Highlight]}false${DC[NC]}. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
-                            fi
+                            case "${StrippedValue^^}" in
+                                ON | TRUE | YES | OFF | FALSE | NO)
+                                    ValueValid="true"
+                                    ;;
+                                *)
+                                    ValueValid="false"
+                                    dialog_error "${Title}" "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not ${DC[Highlight]}true${DC[NC]}/${DC[Highlight]}on${DC[NC]}/${DC[Highlight]}yes${DC[NC]} or ${DC[Highlight]}false${DC[NC]}/${DC[Highlight]}off${DC[NC]}/${DC[Highlight]}no${DC[NC]}. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
+                                    ;;
+                            esac
                             ;;
                         "${APPNAME}__NETWORK_MODE")
                             case "${StrippedValue}" in
@@ -359,17 +363,9 @@ menu_value_prompt() {
                                     ;;
                                 *)
                                     ValueValid="false"
-                                    dialog_error "${Title}" "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid network mode. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
+                                    dialog_error "${Title}" "${DialogHeading}\n\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid network mode. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
                                     ;;
                             esac
-                            ;;
-                        "${APPNAME}__PORT_"*)
-                            if [[ ${StrippedValue} =~ ^[0-9]+$ ]] && [[ ${StrippedValue} -ge 0 ]] && [[ ${StrippedValue} -le 65535 ]]; then
-                                ValueValid="true"
-                            else
-                                ValueValid="false"
-                                dialog_error "${Title}" "${DialogHeading}\n\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid port. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
-                            fi
                             ;;
                         "${APPNAME}__RESTART")
                             case "${StrippedValue}" in
@@ -378,40 +374,40 @@ menu_value_prompt() {
                                     ;;
                                 *)
                                     ValueValid="false"
-                                    dialog_error "${Title}" "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid restart value. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
+                                    dialog_error "${Title}" "${DialogHeading}\n\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid restart value. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
                                     ;;
                             esac
                             ;;
                         "${APPNAME}__VOLUME_"*)
                             if [[ ${StrippedValue} == "/" ]]; then
-                                dialog_error "${Title}" "${DialogHeading}\nCannot use ${DC[Highlight]}/${DC[NC]} for ${DC[Highlight]}${CleanVarName}${DC[NC]}. Please select another folder."
+                                dialog_error "${Title}" "${DialogHeading}\n\nCannot use ${DC[Highlight]}/${DC[NC]} for ${DC[Highlight]}${CleanVarName}${DC[NC]}. Please select another folder."
                                 ValueValid="false"
                             elif [[ ${StrippedValue} == *~* ]]; then
                                 local CORRECTED_DIR="${OptionValue["${CurrentValueOption}"]//\~/"${DETECTED_HOMEDIR}"}"
-                                if run_script 'question_prompt' Y "${DialogHeading}\nCannot use the ${DC[Highlight]}~${DC[NC]} shortcut in ${DC[Highlight]}${CleanVarName}${DC[NC]}. Would you like to use ${DC[Highlight]}${CORRECTED_DIR}${DC[NC]} instead?" "${Title}"; then
+                                if run_script 'question_prompt' Y "${DialogHeading}\n\nCannot use the ${DC[Highlight]}~${DC[NC]} shortcut in ${DC[Highlight]}${CleanVarName}${DC[NC]}. Would you like to use ${DC[Highlight]}${CORRECTED_DIR}${DC[NC]} instead?" "${Title}"; then
                                     OptionValue["${CurrentValueOption}"]="${CORRECTED_DIR}"
                                     ValueValid="false"
                                     dialog_success "${Title}" "Returning to the previous menu to confirm selection."
                                 else
                                     ValueValid="false"
-                                    dialog_error "${Title}" "${DialogHeading}\nCannot use the ${DC[Highlight]}~${DC[NC]} shortcut in ${DC[Highlight]}${CleanVarName}${DC[DC]}. Please select another folder."
+                                    dialog_error "${Title}" "${DialogHeading}\n\nCannot use the ${DC[Highlight]}~${DC[NC]} shortcut in ${DC[Highlight]}${CleanVarName}${DC[DC]}. Please select another folder."
                                 fi
                             elif [[ -d ${StrippedValue} ]]; then
-                                if run_script 'question_prompt' Y "${DialogHeading}\nWould you like to set permissions on ${OptionValue["${CurrentValueOption}"]} ?" "${Title}"; then
+                                if run_script 'question_prompt' Y "${DialogHeading}\n\nWould you like to set permissions on ${OptionValue["${CurrentValueOption}"]} ?" "${Title}"; then
                                     run_script_dialog "Setting Permissions" "${DC[Heading]}${StrippedValue}${DC[NC]}" "${DIALOGTIMEOUT}" \
                                         'set_permissions' "${StrippedValue}"
                                 fi
                                 ValueValid="true"
                             else
-                                if run_script 'question_prompt' Y "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid path. Would you like to attempt to create it?" "${Title}"; then
+                                if run_script 'question_prompt' Y "${DialogHeading}\n\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid path. Would you like to attempt to create it?" "${Title}"; then
                                     {
-                                        mkdir -p "${StrippedValue}" || fatal "Failed to make directory.\nFailing command: ${F[C]}mkdir -p \"${StrippedValue}\""
+                                        mkdir -p "${StrippedValue}" || fatal "Failed to make directory.\nFailing command: ${C["FailingCommand"]}mkdir -p \"${StrippedValue}\""
                                         run_script 'set_permissions' "${StrippedValue}"
                                     } |& dialog_pipe "Creating folder and settings permissions" "${OptionValue["${CurrentValueOption}"]}" "${DIALOGTIMEOUT}"
                                     dialog_error "${DC["TitleSuccess"]}${Title}" --msgbox "${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} folder was created successfully." "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
                                     ValueValid="true"
                                 else
-                                    dialog_error "${Title}" "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid path. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
+                                    dialog_error "${Title}" "${DialogHeading}\n\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid path. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
                                     ValueValid="false"
                                 fi
                             fi
@@ -428,12 +424,21 @@ menu_value_prompt() {
                                     ValueValid="true"
                                 fi
                             else
-                                dialog_error "${Title}" "${DialogHeading}\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid ${CleanVarName}. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
+                                dialog_error "${Title}" "${DialogHeading}\n\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid ${CleanVarName}. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
                                 ValueValid="false"
                             fi
                             ;;
                         *)
-                            ValueValid="true"
+                            if [[ ${VarName} =~ ^${APPNAME}__PORT_[0-9]+$ ]]; then
+                                if [[ ${StrippedValue} =~ ^[0-9]+$ ]] && [[ ${StrippedValue} -ge 0 ]] && [[ ${StrippedValue} -le 65535 ]]; then
+                                    ValueValid="true"
+                                else
+                                    ValueValid="false"
+                                    dialog_error "${Title}" "${DialogHeading}\n\n${DC[Highlight]}${OptionValue["${CurrentValueOption}"]}${DC[NC]} is not a valid port. Please try setting ${DC[Highlight]}${CleanVarName}${DC[NC]} again."
+                                fi
+                            else
+                                ValueValid="true"
+                            fi
                             ;;
                     esac
                 fi

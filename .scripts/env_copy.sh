@@ -8,9 +8,9 @@ env_copy() {
     local FROM_VAR_FILE=${3:-$COMPOSE_ENV}
     local TO_VAR_FILE=${4:-$FROM_VAR_FILE}
 
-    if [[ ! -f ${VAR_FILE} ]]; then
+    if [[ ! -f ${FROM_VAR_FILE} ]]; then
         # Source file does not exist, warn and return
-        warn "File ${FROM_VAR_FILE} does not exist."
+        warn "File ${C["File"]}${FROM_VAR_FILE}${NC} does not exist."
         return
     fi
     if [[ ${FROM_VAR_FILE} == "${TO_VAR_FILE}" && ${FROM_VAR} == "${TO_VAR}" ]]; then
@@ -26,7 +26,7 @@ env_copy() {
     fi
     if [[ ! -f ${TO_VAR_FILE} ]]; then
         # Destination file does not exist, create it
-        notice "Creating ${TO_VAR_FILE}"
+        notice "Creating ${C["File"]}${TO_VAR_FILE}${NC}"
         touch "${TO_VAR_FILE}"
     fi
     if run_script 'env_var_exists' "${TO_VAR}" "${TO_VAR_FILE}"; then
@@ -35,15 +35,15 @@ env_copy() {
     fi
 
     if [[ ${FROM_VAR_FILE} == "${TO_VAR_FILE}" ]]; then
-        notice "Copying variable in ${FROM_VAR_FILE}:"
-        notice "   ${FROM_VAR} to ${TO_VAR}"
+        notice "Copying variable in ${C["File"]}${FROM_VAR_FILE}${NC}:"
+        notice "   ${C["Var"]}${FROM_VAR}${NC} to ${C["Var"]}${TO_VAR}${NC}"
     else
         notice "Copying variable:"
-        notice "   ${FROM_VAR} [${FROM_VAR_FILE}] to"
-        notice "   ${TO_VAR} [${TO_VAR_FILE}]"
+        notice "   ${C["Var"]}${FROM_VAR}${NC} [${C["File"]}${FROM_VAR_FILE}${NC}] to"
+        notice "   ${C["Var"]}${TO_VAR}${NC} [${C["File"]}${TO_VAR_FILE}${NC}]"
     fi
     printf '\n%s\n' "${NEW_VAR_LINE}" >> "${TO_VAR_FILE}" ||
-        fatal "Failed to add '${NEW_VAR_LINE}' in ${TO_VAR_FILE}\nFailing command: ${F[C]}printf '\n%s\n' \"${NEW_VAR_LINE}\" >> \"${TO_VAR_FILE}\""
+        fatal "Failed to add '${C["Var"]}${NEW_VAR_LINE}${NC}' in ${C["File"]}${TO_VAR_FILE}${NC}\nFailing command: ${C["FailingCommand"]}printf '\n%s\n' \"${NEW_VAR_LINE}\" >> \"${TO_VAR_FILE}\""
 }
 
 test_env_copy() {

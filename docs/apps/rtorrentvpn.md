@@ -6,7 +6,7 @@ DEPRECATION NOTICE: This image is deprecated as of 2024-02-18. Use Deluge, qBitt
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/binhex/arch-rtorrentvpn?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/binhex/arch-rtorrentvpn)
 [![GitHub Stars](https://img.shields.io/github/stars/binhex/arch-rtorrentvpn?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/binhex/arch-rtorrentvpn)
-[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/master/compose/.apps/rtorrentvpn)
+[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/compose/.apps/rtorrentvpn)
 
 ## Description
 

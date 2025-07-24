@@ -33,7 +33,7 @@ menu_add_app() {
             "${ValueOptions[@]}"
         )
         local InputValueDialogButtonPressed=0
-        AppName=$(dialog "${InputValueDialog[@]}") || InputValueDialogButtonPressed=$?
+        AppName=$(_dialog_ "${InputValueDialog[@]}") || InputValueDialogButtonPressed=$?
         case ${DIALOG_BUTTONS[InputValueDialogButtonPressed]-} in
             OK)
                 # Sanitize the input
@@ -91,7 +91,7 @@ menu_add_app() {
                         "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
                     )
                     local -i YesNoDialogButtonPressed=0
-                    dialog "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?
+                    _dialog_ "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?
                     case ${DIALOG_BUTTONS[YesNoDialogButtonPressed]-} in
                         OK) # Built In
                             Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
@@ -112,9 +112,9 @@ menu_add_app() {
                             ;;
                         *)
                             if [[ -n ${DIALOG_BUTTONS[YesNoDialogButtonPressed]-} ]]; then
-                                fatal "Unexpected dialog button '${DIALOG_BUTTONS[YesNoDialogButtonPressed]}' pressed in menu_add_app."
+                                fatal "Unexpected dialog button '${F[C]}${DIALOG_BUTTONS[YesNoDialogButtonPressed]}${NC}' pressed in menu_add_app."
                             else
-                                fatal "Unexpected dialog button value '${YesNoDialogButtonPressed}' pressed in menu_add_app."
+                                fatal "Unexpected dialog button value '${F[C]}${YesNoDialogButtonPressed}${NC}' pressed in menu_add_app."
                             fi
                             ;;
                     esac
@@ -125,9 +125,9 @@ menu_add_app() {
                 ;;
             *)
                 if [[ -n ${DIALOG_BUTTONS[InputValueDialogButtonPressed]-} ]]; then
-                    fatal "Unexpected dialog button '${DIALOG_BUTTONS[InputValueDialogButtonPressed]}' pressed in menu_add_app."
+                    fatal "Unexpected dialog button '${F[C]}${DIALOG_BUTTONS[InputValueDialogButtonPressed]}${NC}' pressed in menu_add_app."
                 else
-                    fatal "Unexpected dialog button value '${InputValueDialogButtonPressed}' pressed in menu_add_app."
+                    fatal "Unexpected dialog button value '${F[C]}${InputValueDialogButtonPressed}${NC}' pressed in menu_add_app."
                 fi
                 ;;
         esac

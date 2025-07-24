@@ -1,0 +1,4 @@
+services:
+  emby<__instance>:
+    volumes:
+      - ${DOCKER_VOLUME_STORAGE?}:/storage

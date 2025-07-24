@@ -11,6 +11,5 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_CONFIG?}/photostructure<__instance>:/ps/config
       - ${DOCKER_VOLUME_CONFIG?}/photostructure<__instance>/logs:/ps/logs
-      - ${DOCKER_VOLUME_STORAGE?}:/storage
       - ${PHOTOSTRUCTURE<__INSTANCE>__VOLUME_CACHE_DIRECTORY?}:/ps/tmp
       - ${PHOTOSTRUCTURE<__INSTANCE>__VOLUME_LIBRARY?}:/ps/library

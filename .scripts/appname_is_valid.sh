@@ -10,10 +10,30 @@ appname_is_valid() {
         AppName="${AppName#:*}"
     fi
     if [[ ${AppName} =~ ^[a-zA-Z][a-zA-Z0-9]*(__[a-zA-Z0-9]+)?$ ]]; then
-        local InvalidInstanceNames="CONTAINER|ENABLED|ENVIRONMENT|HOSTNAME|PORT|NETWORK|RESTART|TAG"
+        local -a InvalidInstanceNames=(
+            CONTAINER
+            DEVICE
+            DEVICES
+            ENABLED
+            ENVIRONMENT
+            HOSTNAME
+            PORT
+            NETWORK
+            RESTART
+            STORAGE
+            STORAGE2
+            STORAGE3
+            STORAGE4
+            TAG
+        )
+        local InvalidInstanceNamesRegex
+        {
+            IFS='|'
+            InvalidInstanceNamesRegex="${InvalidInstanceNames[*]}"
+        }
         local InstanceName
         InstanceName="$(run_script 'appname_to_instancename' "${AppName}")"
-        [[ ! ${InstanceName^^} =~ ${InvalidInstanceNames} ]]
+        [[ ! ${InstanceName^^} =~ ${InvalidInstanceNamesRegex} ]]
         return
     fi
     false

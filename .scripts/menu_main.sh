@@ -10,11 +10,13 @@ menu_main() {
     local Title="Main Menu"
     local OptionConfigure="Configuration"
     local OptionInstallDependencies="Install Dependencies"
-    local OptionUpdateVersion="Update DockSTARTer"
+    local OptionUpdateVersion="Update ${APPLICATION_NAME}"
+    local OptionDisplayOptions="Display Options"
     local MainOpts=(
         "${OptionConfigure}" "Setup and start applications"
         "${OptionInstallDependencies}" "Install required components"
-        "${OptionUpdateVersion}" "Get the latest version of DockSTARTer"
+        "${OptionUpdateVersion}" "Get the latest version of ${APPLICATION_NAME}"
+        "${OptionDisplayOptions}" "Adjust display options for the GUI"
     )
 
     local LastMainChoice=""
@@ -29,7 +31,7 @@ menu_main() {
         )
         local MainChoice
         local -i MainDialogButtonPressed=0
-        MainChoice=$(dialog --default-item "${LastMainChoice}" "${MainChoiceDialog[@]}") || MainDialogButtonPressed=$?
+        MainChoice=$(_dialog_ --default-item "${LastMainChoice}" "${MainChoiceDialog[@]}") || MainDialogButtonPressed=$?
         LastMainChoice=${MainChoice}
         case ${DIALOG_BUTTONS[MainDialogButtonPressed]-} in
             OK)
@@ -43,6 +45,9 @@ menu_main() {
                     "${OptionUpdateVersion}")
                         run_script 'update_self' || true
                         ;;
+                    "${OptionDisplayOptions}")
+                        run_script 'menu_display_options' || true
+                        ;;
                     *)
                         error "Invalid Option"
                         ;;
@@ -50,7 +55,7 @@ menu_main() {
                 ;;
             CANCEL | ESC)
                 clear
-                info "Exiting DockSTARTer."
+                info "Exiting ${APPLICATION_NAME}."
                 return
                 ;;
             *)

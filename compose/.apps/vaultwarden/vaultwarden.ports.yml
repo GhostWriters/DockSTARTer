@@ -1,0 +1,5 @@
+services:
+  vaultwarden<__instance>:
+    ports:
+      - ${VAULTWARDEN<__INSTANCE>__PORT_3012?}:3012
+      - ${VAULTWARDEN<__INSTANCE>__PORT_80?}:80
