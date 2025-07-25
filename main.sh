@@ -172,7 +172,7 @@ echo "DockSTARTer Log" > "${MKTEMP_LOG}"
 create_strip_log_colors_SEDSTRING() {
     # Create the search string to strip ANSI colors
     # String is saved after creation, so this is only done on the first call
-    local -a ANSICOLORS=("${F[@]}" "${B[@]}" "${NC}")
+    local -a ANSICOLORS=("${F[@]}" "${B[@]}" "${BD}" "${UL}" "${NC}" "${BS}")
     for index in "${!ANSICOLORS[@]}"; do
         # Escape characters used by sed
         ANSICOLORS[index]=$(printf '%s' "${ANSICOLORS[index]}" | sed -E 's/[]{}()[/{}\.''''$]/\\&/g')
