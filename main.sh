@@ -170,7 +170,7 @@ declare -x DIALOGOTS
 MKTEMP_LOG=$(mktemp) || echo -e "Failed to create temporary log file.\nFailing command: ${C["FailingCommand"]}mktemp"
 readonly MKTEMP_LOG
 echo "DockSTARTer Log" > "${MKTEMP_LOG}"
-create_strip_log_colors_SEDSTRING() {
+create_strip_ansi_colors_SEDSTRING() {
     # Create the search string to strip ANSI colors
     # String is saved after creation, so this is only done on the first call
     local -a ANSICOLORS=("${F[@]}" "${B[@]}" "${BD}" "${UL}" "${NC}" "${BS}")
@@ -183,16 +183,16 @@ create_strip_log_colors_SEDSTRING() {
         printf '%s' "${ANSICOLORS[*]}"
     )//g"
 }
-strip_log_colors_SEDSTRING="$(create_strip_log_colors_SEDSTRING)"
-readonly strip_log_colors_SEDSTRING
-strip_log_colors() {
-    printf '%s' "$*" | sed -E "${strip_log_colors_SEDSTRING}"
+strip_ansi_colors_SEDSTRING="$(create_strip_ansi_colors_SEDSTRING)"
+readonly strip_ansi_colors_SEDSTRING
+strip_ansi_colors() {
+    printf '%s' "$*" | sed -E "${strip_ansi_colors_SEDSTRING}"
 }
 log() {
     local TOTERM=${1-}
     local MESSAGE=${2-}
     local STRIPPED_MESSAGE
-    STRIPPED_MESSAGE=$(strip_log_colors "${MESSAGE-}")
+    STRIPPED_MESSAGE=$(strip_ansi_colors "${MESSAGE-}")
     if [[ -n ${TOTERM} ]]; then
         if [[ -t 2 ]]; then
             # Stderr is not being redirected, output with color
@@ -376,6 +376,8 @@ dialog_message() {
     local Title=${1:-}
     local Message=${2:-}
     local TimeOut=${3:-0}
+    Title="$(strip_ansi_colors "${Title}")"
+    Message="$(strip_ansi_colors "${Message}")"
     _dialog_ \
         --title "${Title}" \
         --timeout "${TimeOut}" \
