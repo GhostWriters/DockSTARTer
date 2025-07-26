@@ -186,7 +186,7 @@ create_strip_ansi_colors_SEDSTRING() {
 strip_ansi_colors_SEDSTRING="$(create_strip_ansi_colors_SEDSTRING)"
 readonly strip_ansi_colors_SEDSTRING
 strip_ansi_colors() {
-    printf '%s' "$*" | sed -E "${strip_ansi_colors_SEDSTRING}"
+    sed -E "${strip_ansi_colors_SEDSTRING}" <<< "$*"
 }
 log() {
     local TOTERM=${1-}
