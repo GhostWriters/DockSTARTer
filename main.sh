@@ -970,14 +970,14 @@ main() {
             warn "Run '${C["UserCommand"]}ds -u ${MainBranch}${NC}' to update to the latest stable release ${C["Version"]}$(ds_version "${MainBranch}")${NC}."
         fi
     fi
+    # Apply the GUI theme
+    run_script 'apply_theme'
     # Check if we're running a test
     if [[ -n ${TEST-} ]]; then
         run_test "${TEST}"
         exit
     fi
 
-    # Apply the GUI theme
-    run_script 'apply_theme'
     # Create the .env file if it doesn't exists
     run_script 'env_create'
 
