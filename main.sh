@@ -203,10 +203,10 @@ log() {
     if [[ -n ${TOTERM} ]]; then
         if [[ -t 2 ]]; then
             # Stderr is not being redirected, output with color
-            echo -e "${MESSAGE-}" >&2
+            printf '%b\n' "${MESSAGE-}" >&2
         else
             # Stderr is being redirected, output without colorr
-            echo -e "${STRIPPED_MESSAGE-}" >&2
+            printf '%b\n' "${STRIPPED_MESSAGE-}" >&2
         fi
     fi
     # Output the message to the log file without color
