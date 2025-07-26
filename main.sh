@@ -203,10 +203,10 @@ log() {
     if [[ -n ${TOTERM} ]]; then
         if [[ -t 2 ]]; then
             # Stderr is not being redirected, output with color
-            echo -e "${MESSAGE-}" >&2
+            printf '%b\n' "${MESSAGE-}" >&2
         else
             # Stderr is being redirected, output without colorr
-            echo -e "${STRIPPED_MESSAGE-}" >&2
+            printf '%b\n' "${STRIPPED_MESSAGE-}" >&2
         fi
     fi
     # Output the message to the log file without color
@@ -216,15 +216,14 @@ timestamped_log() {
     local TOTERM=${1-}
     local LogLevelTag=${2-}
     shift 2
+    LogMessage=$(printf '%b' "$@")
     # Create a notice for each argument passed to the function
-    for LogMessage in "$@"; do
-        local Timestamp
-        Timestamp=$(date +"%F %T")
-        # Create separate notices with the same timestamp for each line in a log message
-        while IFS= read -r line; do
-            log "${TOTERM-}" "${NC}${C["Timestamp"]}${Timestamp}${NC} ${LogLevelTag}   ${line}${NC}"
-        done <<< "${LogMessage}"
-    done
+    local Timestamp
+    Timestamp=$(date +"%F %T")
+    # Create separate notices with the same timestamp for each line in a log message
+    while IFS= read -r line; do
+        log "${TOTERM-}" "${NC}${C["Timestamp"]}${Timestamp}${NC} ${LogLevelTag}   ${line}${NC}"
+    done <<< "${LogMessage}"
 }
 trace() { timestamped_log "${TRACE-}" "${C["Trace"]}[TRACE ]${NC}" "$@"; }
 debug() { timestamped_log "${DEBUG-}" "${C["Debug"]}[DEBUG ]${NC}" "$@"; }
