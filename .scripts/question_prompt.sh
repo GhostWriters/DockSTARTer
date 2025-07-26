@@ -31,6 +31,8 @@ question_prompt() {
         fi
         local NoticeQuestion
         NoticeQuestion=$(strip_dialog_colors "${Question}")
+        local DialogQuestion
+        DialogQuestion=$(strip_ansi_colors "${Question}")
         while true; do
             local YNPrompt
             if [[ ${Default} == Y ]]; then
@@ -50,7 +52,7 @@ question_prompt() {
                 --no-label "${NoButton}"
                 --title "${DC[TitleQuestion]}${Title}${DC[NC]}"
                 ${DIALOG_DEFAULT-}
-                --yesno "${DC[NC]}${Question}${DC[NC]}"
+                --yesno "${DC[NC]}${DialogQuestion}${DC[NC]}"
                 "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
             )
             local -i YesNoDialogButtonPressed=0
