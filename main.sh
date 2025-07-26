@@ -970,11 +970,19 @@ main() {
             warn "Run '${C["UserCommand"]}ds -u ${MainBranch}${NC}' to update to the latest stable release ${C["Version"]}$(ds_version "${MainBranch}")${NC}."
         fi
     fi
+    # Check if we're running a test
+    if [[ -n ${TEST-} ]]; then
+        run_test "${TEST}"
+        exit
+    fi
+
     # Apply the GUI theme
     run_script 'apply_theme'
+    # Create the .env file if it doesn't exists
+    run_script 'env_create'
+
     # Execute CLI Argument Functions
     if [[ -n ${ADD-} ]]; then
-        run_script 'env_create'
         run_script_dialog "Add Application" "$(highlighted_list "$(run_script 'app_nicename' "${ADD}")")" "" \
             'appvars_create' "${ADD}"
         run_script 'env_update'
@@ -1212,11 +1220,9 @@ main() {
     fi
     if [[ -n ${REMOVE-} ]]; then
         if [[ ${REMOVE} == true ]]; then
-            run_script 'env_create'
             run_script 'appvars_purge_all'
             run_script 'env_update'
         else
-            run_script 'env_create'
             run_script 'appvars_purge' "${REMOVE}"
             run_script 'env_update'
         fi
@@ -1229,12 +1235,10 @@ main() {
                     'app_status' "${STATUS}"
                 ;;
             status-enable)
-                run_script 'env_create'
                 run_script 'enable_app' "${STATUS}"
                 run_script 'env_update'
                 ;;
             status-disable)
-                run_script 'env_create'
                 run_script 'disable_app' "${STATUS}"
                 run_script 'env_update'
                 ;;
@@ -1242,10 +1246,6 @@ main() {
                 echo "Invalid option: '${STATUSMETHOD-}'"
                 ;;
         esac
-        exit
-    fi
-    if [[ -n ${TEST-} ]]; then
-        run_test "${TEST}"
         exit
     fi
     if [[ -n ${THEMEMETHOD-} ]]; then
