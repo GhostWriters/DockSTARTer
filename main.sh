@@ -186,14 +186,13 @@ create_strip_ansi_colors_SEDSTRING() {
 strip_ansi_colors_SEDSTRING="$(create_strip_ansi_colors_SEDSTRING)"
 readonly strip_ansi_colors_SEDSTRING
 strip_ansi_colors() {
-    # Strip ANSI colors
-    local InputString=${1-}
-    sed -E "${strip_ansi_colors_SEDSTRING}" <<< "${InputString}"
+    # Strip ANSI colors from the arguments
+    sed -E "${strip_ansi_colors_SEDSTRING}" <<< "$*"
 }
 strip_dialog_colors() {
     # Strip Dialog colors from the arguments.  Dialog colors are in the form of '\Zc', where 'c' is any character
-    local InputString=${1-}
-    printf '%s' "${InputString//\Z?/}"
+    # shellcheck disable=SC2001 # See if you can use ${variable//search/replace} instead.
+    sed 's/\\Z.//g' <<< "$*"
 }
 log() {
     local TOTERM=${1-}
