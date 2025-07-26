@@ -216,15 +216,14 @@ timestamped_log() {
     local TOTERM=${1-}
     local LogLevelTag=${2-}
     shift 2
+    LogMessage=$(printf '%b' "$@")
     # Create a notice for each argument passed to the function
-    for LogMessage in "$@"; do
-        local Timestamp
-        Timestamp=$(date +"%F %T")
-        # Create separate notices with the same timestamp for each line in a log message
-        while IFS= read -r line; do
-            log "${TOTERM-}" "${NC}${C["Timestamp"]}${Timestamp}${NC} ${LogLevelTag}   ${line}${NC}"
-        done <<< "${LogMessage}"
-    done
+    local Timestamp
+    Timestamp=$(date +"%F %T")
+    # Create separate notices with the same timestamp for each line in a log message
+    while IFS= read -r line; do
+        log "${TOTERM-}" "${NC}${C["Timestamp"]}${Timestamp}${NC} ${LogLevelTag}   ${line}${NC}"
+    done <<< "${LogMessage}"
 }
 trace() { timestamped_log "${TRACE-}" "${C["Trace"]}[TRACE ]${NC}" "$@"; }
 debug() { timestamped_log "${DEBUG-}" "${C["Debug"]}[DEBUG ]${NC}" "$@"; }
