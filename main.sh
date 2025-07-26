@@ -110,6 +110,7 @@ readonly BS
 export BS
 
 declare -Agr C=( # Pre-defined colors
+    ["Timestamp"]="${NC}"
     ["Trace"]="${F[B]}"
     ["Debug"]="${F[B]}"
     ["Info"]="${F[B]}"
@@ -169,10 +170,10 @@ declare -x DIALOGOTS
 MKTEMP_LOG=$(mktemp) || echo -e "Failed to create temporary log file.\nFailing command: ${C["FailingCommand"]}mktemp"
 readonly MKTEMP_LOG
 echo "DockSTARTer Log" > "${MKTEMP_LOG}"
-create_strip_log_colors_SEDSTRING() {
+create_strip_ansi_colors_SEDSTRING() {
     # Create the search string to strip ANSI colors
     # String is saved after creation, so this is only done on the first call
-    local -a ANSICOLORS=("${F[@]}" "${B[@]}" "${NC}")
+    local -a ANSICOLORS=("${F[@]}" "${B[@]}" "${BD}" "${UL}" "${NC}" "${BS}")
     for index in "${!ANSICOLORS[@]}"; do
         # Escape characters used by sed
         ANSICOLORS[index]=$(printf '%s' "${ANSICOLORS[index]}" | sed -E 's/[]{}()[/{}\.''''$]/\\&/g')
@@ -182,36 +183,56 @@ create_strip_log_colors_SEDSTRING() {
         printf '%s' "${ANSICOLORS[*]}"
     )//g"
 }
-strip_log_colors_SEDSTRING="$(create_strip_log_colors_SEDSTRING)"
-readonly strip_log_colors_SEDSTRING
-strip_log_colors() {
-    printf '%s' "$*" | sed -E "${strip_log_colors_SEDSTRING}"
+strip_ansi_colors_SEDSTRING="$(create_strip_ansi_colors_SEDSTRING)"
+readonly strip_ansi_colors_SEDSTRING
+strip_ansi_colors() {
+    # Strip ANSI colors
+    local InputString=${1-}
+    sed -E "${strip_ansi_colors_SEDSTRING}" <<< "${InputString}"
+}
+strip_dialog_colors() {
+    # Strip Dialog colors from the arguments.  Dialog colors are in the form of '\Zc', where 'c' is any character
+    local InputString=${1-}
+    printf '%s' "${InputString//\\Z?/}"
 }
 log() {
     local TOTERM=${1-}
     local MESSAGE=${2-}
     local STRIPPED_MESSAGE
-    STRIPPED_MESSAGE=$(strip_log_colors "${MESSAGE-}")
+    STRIPPED_MESSAGE=$(strip_ansi_colors "${MESSAGE-}")
     if [[ -n ${TOTERM} ]]; then
         if [[ -t 2 ]]; then
             # Stderr is not being redirected, output with color
-            echo -e "${MESSAGE-}" >&2
+            printf '%b\n' "${MESSAGE-}" >&2
         else
             # Stderr is being redirected, output without colorr
-            echo -e "${STRIPPED_MESSAGE-}" >&2
+            printf '%b\n' "${STRIPPED_MESSAGE-}" >&2
         fi
     fi
     # Output the message to the log file without color
-    echo -e "${STRIPPED_MESSAGE-}" >> "${MKTEMP_LOG}"
+    printf '%b\n' "${STRIPPED_MESSAGE-}" >> "${MKTEMP_LOG}"
 }
-trace() { log "${TRACE-}" "${NC}$(date +"%F %T") ${C["Trace"]}[TRACE ]${NC}   $*${NC}"; }
-debug() { log "${DEBUG-}" "${NC}$(date +"%F %T") ${C["Debug"]}[DEBUG ]${NC}   $*${NC}"; }
-info() { log "${VERBOSE-}" "${NC}$(date +"%F %T") ${C["Info"]}[INFO  ]${NC}   $*${NC}"; }
-notice() { log true "${NC}$(date +"%F %T") ${C["Notice"]}[NOTICE]${NC}   $*${NC}"; }
-warn() { log true "${NC}$(date +"%F %T") ${C["Warn"]}[WARN  ]${NC}   $*${NC}"; }
-error() { log true "${NC}$(date +"%F %T") ${C["Error"]}[ERROR ]${NC}   $*${NC}"; }
+timestamped_log() {
+    local TOTERM=${1-}
+    local LogLevelTag=${2-}
+    shift 2
+    LogMessage=$(printf '%b' "$@")
+    # Create a notice for each argument passed to the function
+    local Timestamp
+    Timestamp=$(date +"%F %T")
+    # Create separate notices with the same timestamp for each line in a log message
+    while IFS= read -r line; do
+        log "${TOTERM-}" "${NC}${C["Timestamp"]}${Timestamp}${NC} ${LogLevelTag}   ${line}${NC}"
+    done <<< "${LogMessage}"
+}
+trace() { timestamped_log "${TRACE-}" "${C["Trace"]}[TRACE ]${NC}" "$@"; }
+debug() { timestamped_log "${DEBUG-}" "${C["Debug"]}[DEBUG ]${NC}" "$@"; }
+info() { timestamped_log "${VERBOSE-}" "${C["Info"]}[INFO  ]${NC}" "$@"; }
+notice() { timestamped_log true "${C["Notice"]}[NOTICE]${NC}" "$@"; }
+warn() { timestamped_log true "${C["Warn"]}[WARN  ]${NC}" "$@"; }
+error() { timestamped_log true "${C["Error"]}[ERROR ]${NC}" "$@"; }
 fatal() {
-    log true "${NC}$(date +"%F %T") ${C["Fatal"]}[FATAL ]${NC}   $*${NC}"
+    timestamped_log true "${C["Fatal"]}[FATAL ]${NC}" "$@"
     exit 1
 }
 
@@ -361,6 +382,8 @@ dialog_message() {
     local Title=${1:-}
     local Message=${2:-}
     local TimeOut=${3:-0}
+    Title="$(strip_ansi_colors "${Title}")"
+    Message="$(strip_ansi_colors "${Message}")"
     _dialog_ \
         --title "${Title}" \
         --timeout "${TimeOut}" \
@@ -601,6 +624,11 @@ EOF
 cleanup() {
     local -ri EXIT_CODE=$?
     trap - ERR EXIT SIGABRT SIGALRM SIGHUP SIGINT SIGQUIT SIGTERM
+
+    if [[ ${PROMPT:-CLI} == "GUI" ]]; then
+        echo -n "${BS}"
+    fi
+
     sudo sh -c "cat ${MKTEMP_LOG:-/dev/null} >> ${SCRIPTPATH}/dockstarter.log" || true
     sudo rm -f "${MKTEMP_LOG-}" || true
     sudo sh -c "echo \"$(tail -1000 "${SCRIPTPATH}/dockstarter.log")\" > ${SCRIPTPATH}/dockstarter.log" || true
@@ -972,10 +1000,20 @@ main() {
     fi
     # Apply the GUI theme
     run_script 'apply_theme'
+    # Check if we're running a test
+    if [[ -n ${TEST-} ]]; then
+        run_test "${TEST}"
+        exit
+    fi
+
+    # Create the .env file if it doesn't exists
+    run_script 'env_create'
+
     # Execute CLI Argument Functions
     if [[ -n ${ADD-} ]]; then
-        run_script 'env_create'
-        run_script_dialog "Add Application" "$(highlighted_list "$(run_script 'app_nicename' "${ADD}")")" "" \
+        local CommandLine
+        CommandLine="ds --add $(run_script 'app_nicename' "${ADD}")"
+        run_script_dialog "Add Application" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}${DC[NC]}" "" \
             'appvars_create' "${ADD}"
         run_script 'env_update'
         exit
@@ -1003,9 +1041,11 @@ main() {
             env-get)
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
-                        for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
+                        local CommandLine
+                        CommandLine="ds --env-get ${ENVVAR^^}"
+                        for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
                             run_script 'env_get' "${VarName}"
-                        done |& dialog_pipe "Get Value of Variable" "$(highlighted_list "${ENVVAR^^}")" ""
+                        done |& dialog_pipe "Get Value of Variable" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
                     else
                         for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
                             run_script 'env_get' "${VarName}"
@@ -1020,9 +1060,11 @@ main() {
             env-get-lower)
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
+                        local CommandLine
+                        CommandLine="ds --env-get-line ${ENVVAR}"
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
                             run_script 'env_get' "${VarName}"
-                        done |& dialog_pipe "Get Value of Variable" "$(highlighted_list "${ENVVAR}")" ""
+                        done |& dialog_pipe "Get Value of Variable" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
                     else
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
                             run_script 'env_get' "${VarName}"
@@ -1037,9 +1079,11 @@ main() {
             env-get-line)
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
+                        local CommandLine
+                        CommandLine="ds --env-get-line ${ENVVAR^^}"
                         for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
                             run_script 'env_get_line' "${VarName}"
-                        done |& dialog_pipe "Get Line of Variable" "$(highlighted_list "${ENVVAR^^}")" ""
+                        done |& dialog_pipe "Get Line of Variable" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
                     else
                         for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
                             run_script 'env_get_line' "${VarName}"
@@ -1054,9 +1098,11 @@ main() {
             env-get-lower-line)
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
+                        local CommandLine
+                        CommandLine="ds --env-get-lower-line ${ENVVAR}"
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
                             run_script 'env_get_line' "${VarName}"
-                        done |& dialog_pipe "Get Line of Variable" "$(highlighted_list "${ENVVAR}")" ""
+                        done |& dialog_pipe "Get Line of Variable" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
                     else
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
                             run_script 'env_get_line' "${VarName}"
@@ -1071,9 +1117,11 @@ main() {
             env-get-literal)
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
+                        local CommandLine
+                        CommandLine="ds --env-get-lower-literal ${ENVVAR^^}"
                         for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
                             run_script 'env_get_literal' "${VarName}"
-                        done |& dialog_pipe "Get Literal Value of Variable" "$(highlighted_list "${ENVVAR^^}")" ""
+                        done |& dialog_pipe "Get Literal Value of Variable" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
                     else
                         for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
                             run_script 'env_get_literal' "${VarName}"
@@ -1088,9 +1136,11 @@ main() {
             env-get-lower-literal)
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
+                        local CommandLine
+                        CommandLine="ds --env-get-lower-literal ${ENVVAR}"
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
                             run_script 'env_get_literal' "${VarName}"
-                        done |& dialog_pipe "Get Literal Value of Variable" "$(highlighted_list "${ENVVAR}")" ""
+                        done |& dialog_pipe "Get Literal Value of Variable" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
                     else
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
                             run_script 'env_get_literal' "${VarName}"
@@ -1125,9 +1175,11 @@ main() {
             env-appvars)
                 if [[ ${ENVAPP-} != "" ]]; then
                     if use_dialog_box; then
-                        for AppName in $(xargs -n1 <<< "${ENVAPP^^}"); do
+                        local CommandLine
+                        CommandLine="ds --env-appvars $(run_script 'app_nicename' "${ENVAPP}" | tr '\n' ' ')"
+                        for AppName in $(xargs -n1 <<< "${ENVAPP}"); do
                             run_script 'appvars_list' "${AppName}"
-                        done |& dialog_pipe "Variables for Application" "$(highlighted_list "$(run_script 'app_nicename' "${ENVAPP}")")" ""
+                        done |& dialog_pipe "Variables for Application" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
                     else
                         for AppName in $(xargs -n1 <<< "${ENVAPP^^}"); do
                             run_script 'appvars_list' "${AppName}"
@@ -1141,11 +1193,13 @@ main() {
             env-appvars-lines)
                 if [[ ${ENVAPP-} != "" ]]; then
                     if use_dialog_box; then
-                        for AppName in $(xargs -n1 <<< "${ENVAPP^^}"); do
+                        local CommandLine
+                        CommandLine="ds --env-appvars-lines $(run_script 'app_nicename' "${ENVAPP}" | tr '\n' ' ')"
+                        for AppName in $(xargs -n1 <<< "${ENVAPP}"); do
                             run_script 'appvars_lines' "${AppName}"
-                        done |& dialog_pipe "Variable Lines for Application" "$(highlighted_list "$(run_script 'app_nicename' "${ENVAPP}")")" ""
+                        done |& dialog_pipe "Variable Lines for Application" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
                     else
-                        for AppName in $(xargs -n1 <<< "${ENVAPP^^}"); do
+                        for AppName in $(xargs -n1 <<< "${ENVAPP}"); do
                             run_script 'appvars_lines' "${AppName}"
                         done
                     fi
@@ -1212,11 +1266,9 @@ main() {
     fi
     if [[ -n ${REMOVE-} ]]; then
         if [[ ${REMOVE} == true ]]; then
-            run_script 'env_create'
             run_script 'appvars_purge_all'
             run_script 'env_update'
         else
-            run_script 'env_create'
             run_script 'appvars_purge' "${REMOVE}"
             run_script 'env_update'
         fi
@@ -1225,16 +1277,16 @@ main() {
     if [[ -n ${STATUSMETHOD-} ]]; then
         case "${STATUSMETHOD-}" in
             status)
-                run_script_dialog "Application Status" "$(highlighted_list "$(run_script 'app_nicename' "${STATUS}")")" "" \
+                local CommandLine
+                CommandLine="ds --status $(run_script 'app_nicename' "${STATUS}" | tr '\n' ' ')"
+                run_script_dialog "Application Status" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" "" \
                     'app_status' "${STATUS}"
                 ;;
             status-enable)
-                run_script 'env_create'
                 run_script 'enable_app' "${STATUS}"
                 run_script 'env_update'
                 ;;
             status-disable)
-                run_script 'env_create'
                 run_script 'disable_app' "${STATUS}"
                 run_script 'env_update'
                 ;;
@@ -1242,10 +1294,6 @@ main() {
                 echo "Invalid option: '${STATUSMETHOD-}'"
                 ;;
         esac
-        exit
-    fi
-    if [[ -n ${TEST-} ]]; then
-        run_test "${TEST}"
         exit
     fi
     if [[ -n ${THEMEMETHOD-} ]]; then

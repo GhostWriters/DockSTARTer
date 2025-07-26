@@ -23,6 +23,7 @@ app_list() {
 }
 
 test_app_list() {
+    run_script 'env_create'
     run_script 'app_list'
     # warn "CI does not test app_list."
 }
