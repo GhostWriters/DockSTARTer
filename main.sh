@@ -210,7 +210,7 @@ log() {
         fi
     fi
     # Output the message to the log file without color
-    echo -e "${STRIPPED_MESSAGE-}" >> "${MKTEMP_LOG}"
+    printf '%b\n' "${STRIPPED_MESSAGE-}" >> "${MKTEMP_LOG}"
 }
 timestamped_log() {
     local TOTERM=${1-}
