@@ -110,6 +110,7 @@ readonly BS
 export BS
 
 declare -Agr C=( # Pre-defined colors
+    ["Timestamp"]="${NC}"
     ["Trace"]="${F[B]}"
     ["Debug"]="${F[B]}"
     ["Info"]="${F[B]}"
@@ -204,14 +205,28 @@ log() {
     # Output the message to the log file without color
     echo -e "${STRIPPED_MESSAGE-}" >> "${MKTEMP_LOG}"
 }
-trace() { log "${TRACE-}" "${NC}$(date +"%F %T") ${C["Trace"]}[TRACE ]${NC}   $*${NC}"; }
-debug() { log "${DEBUG-}" "${NC}$(date +"%F %T") ${C["Debug"]}[DEBUG ]${NC}   $*${NC}"; }
-info() { log "${VERBOSE-}" "${NC}$(date +"%F %T") ${C["Info"]}[INFO  ]${NC}   $*${NC}"; }
-notice() { log true "${NC}$(date +"%F %T") ${C["Notice"]}[NOTICE]${NC}   $*${NC}"; }
-warn() { log true "${NC}$(date +"%F %T") ${C["Warn"]}[WARN  ]${NC}   $*${NC}"; }
-error() { log true "${NC}$(date +"%F %T") ${C["Error"]}[ERROR ]${NC}   $*${NC}"; }
+timestamped_log() {
+    local TOTERM=${1-}
+    local LogLevelTag=${2-}
+    shift 2
+    # Create a notice for each argument passed to the function
+    for LogMessage in "$@"; do
+        local Timestamp
+        Timestamp=$(date +"%F %T")
+        # Create separate notices with the same timestamp for each line in a log message
+        while IFS= read -r line; do
+            log "${TOTERM-}" "${NC}${C["Timestamp"]}${Timestamp}${NC} ${LogLevelTag}   ${line}${NC}"
+        done <<< "${LogMessage}"
+    done
+}
+trace() { timestamped_log "${TRACE-}" "${C["Trace"]}[TRACE ]${NC}" "$@"; }
+debug() { timestamped_log "${DEBUG-}" "${C["Debug"]}[DEBUG ]${NC}" "$@"; }
+info() { timestamped_log "${VERBOSE-}" "${C["Info"]}[INFO  ]${NC}" "$@"; }
+notice() { timestamped_log true "${C["Notice"]}[NOTICE]${NC}" "$@"; }
+warn() { timestamped_log true "${C["Warn"]}[WARN  ]${NC}" "$@"; }
+error() { timestamped_log true "${C["Error"]}[ERROR ]${NC}" "$@"; }
 fatal() {
-    log true "${NC}$(date +"%F %T") ${C["Fatal"]}[FATAL ]${NC}   $*${NC}"
+    timestamped_log true "${C["Fatal"]}[FATAL ]${NC}" "$@"
     exit 1
 }
 
