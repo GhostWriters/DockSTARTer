@@ -1011,7 +1011,9 @@ main() {
 
     # Execute CLI Argument Functions
     if [[ -n ${ADD-} ]]; then
-        run_script_dialog "Add Application" "$(highlighted_list "$(run_script 'app_nicename' "${ADD}")")" "" \
+        local CommandLine
+        CommandLine="ds --add $(run_script 'app_nicename' "${ADD}")"
+        run_script_dialog "Add Application" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}${DC[NC]}" "" \
             'appvars_create' "${ADD}"
         run_script 'env_update'
         exit
@@ -1039,9 +1041,11 @@ main() {
             env-get)
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
-                        for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
+                        local CommandLine
+                        CommandLine="ds --env-get ${ENVVAR^^}"
+                        for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
                             run_script 'env_get' "${VarName}"
-                        done |& dialog_pipe "Get Value of Variable" "$(highlighted_list "${ENVVAR^^}")" ""
+                        done |& dialog_pipe "Get Value of Variable" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
                     else
                         for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
                             run_script 'env_get' "${VarName}"
@@ -1056,9 +1060,11 @@ main() {
             env-get-lower)
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
+                        local CommandLine
+                        CommandLine="ds --env-get-line ${ENVVAR}"
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
                             run_script 'env_get' "${VarName}"
-                        done |& dialog_pipe "Get Value of Variable" "$(highlighted_list "${ENVVAR}")" ""
+                        done |& dialog_pipe "Get Value of Variable" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
                     else
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
                             run_script 'env_get' "${VarName}"
@@ -1073,9 +1079,11 @@ main() {
             env-get-line)
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
+                        local CommandLine
+                        CommandLine="ds --env-get-line ${ENVVAR^^}"
                         for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
                             run_script 'env_get_line' "${VarName}"
-                        done |& dialog_pipe "Get Line of Variable" "$(highlighted_list "${ENVVAR^^}")" ""
+                        done |& dialog_pipe "Get Line of Variable" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
                     else
                         for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
                             run_script 'env_get_line' "${VarName}"
@@ -1090,9 +1098,11 @@ main() {
             env-get-lower-line)
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
+                        local CommandLine
+                        CommandLine="ds --env-get-lower-line ${ENVVAR}"
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
                             run_script 'env_get_line' "${VarName}"
-                        done |& dialog_pipe "Get Line of Variable" "$(highlighted_list "${ENVVAR}")" ""
+                        done |& dialog_pipe "Get Line of Variable" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
                     else
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
                             run_script 'env_get_line' "${VarName}"
@@ -1107,9 +1117,11 @@ main() {
             env-get-literal)
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
+                        local CommandLine
+                        CommandLine="ds --env-get-lower-literal ${ENVVAR^^}"
                         for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
                             run_script 'env_get_literal' "${VarName}"
-                        done |& dialog_pipe "Get Literal Value of Variable" "$(highlighted_list "${ENVVAR^^}")" ""
+                        done |& dialog_pipe "Get Literal Value of Variable" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
                     else
                         for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
                             run_script 'env_get_literal' "${VarName}"
@@ -1124,9 +1136,11 @@ main() {
             env-get-lower-literal)
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
+                        local CommandLine
+                        CommandLine="ds --env-get-lower-literal ${ENVVAR}"
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
                             run_script 'env_get_literal' "${VarName}"
-                        done |& dialog_pipe "Get Literal Value of Variable" "$(highlighted_list "${ENVVAR}")" ""
+                        done |& dialog_pipe "Get Literal Value of Variable" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
                     else
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
                             run_script 'env_get_literal' "${VarName}"
@@ -1161,9 +1175,11 @@ main() {
             env-appvars)
                 if [[ ${ENVAPP-} != "" ]]; then
                     if use_dialog_box; then
-                        for AppName in $(xargs -n1 <<< "${ENVAPP^^}"); do
+                        local CommandLine
+                        CommandLine="ds --env-appvars $(run_script 'app_nicename' "${ENVAPP}" | tr '\n' ' ')"
+                        for AppName in $(xargs -n1 <<< "${ENVAPP}"); do
                             run_script 'appvars_list' "${AppName}"
-                        done |& dialog_pipe "Variables for Application" "$(highlighted_list "$(run_script 'app_nicename' "${ENVAPP}")")" ""
+                        done |& dialog_pipe "Variables for Application" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
                     else
                         for AppName in $(xargs -n1 <<< "${ENVAPP^^}"); do
                             run_script 'appvars_list' "${AppName}"
@@ -1177,11 +1193,13 @@ main() {
             env-appvars-lines)
                 if [[ ${ENVAPP-} != "" ]]; then
                     if use_dialog_box; then
-                        for AppName in $(xargs -n1 <<< "${ENVAPP^^}"); do
+                        local CommandLine
+                        CommandLine="ds --env-appvars-lines $(run_script 'app_nicename' "${ENVAPP}" | tr '\n' ' ')"
+                        for AppName in $(xargs -n1 <<< "${ENVAPP}"); do
                             run_script 'appvars_lines' "${AppName}"
-                        done |& dialog_pipe "Variable Lines for Application" "$(highlighted_list "$(run_script 'app_nicename' "${ENVAPP}")")" ""
+                        done |& dialog_pipe "Variable Lines for Application" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
                     else
-                        for AppName in $(xargs -n1 <<< "${ENVAPP^^}"); do
+                        for AppName in $(xargs -n1 <<< "${ENVAPP}"); do
                             run_script 'appvars_lines' "${AppName}"
                         done
                     fi
@@ -1259,7 +1277,9 @@ main() {
     if [[ -n ${STATUSMETHOD-} ]]; then
         case "${STATUSMETHOD-}" in
             status)
-                run_script_dialog "Application Status" "$(highlighted_list "$(run_script 'app_nicename' "${STATUS}")")" "" \
+                local CommandLine
+                CommandLine="ds --status $(run_script 'app_nicename' "${STATUS}" | tr '\n' ' ')"
+                run_script_dialog "Application Status" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" "" \
                     'app_status' "${STATUS}"
                 ;;
             status-enable)
