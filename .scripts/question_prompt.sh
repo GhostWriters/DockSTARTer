@@ -29,6 +29,8 @@ question_prompt() {
         if [[ ${Default} == "N" ]]; then
             DIALOG_DEFAULT="--defaultno"
         fi
+        local NoticeQuestion
+        NoticeQuestion=$(strip_dialog_colors "${Question}")
         while true; do
             local YNPrompt
             if [[ ${Default} == Y ]]; then
@@ -38,7 +40,7 @@ question_prompt() {
             else
                 YNPrompt='[YN]'
             fi
-            notice "${Question}" &> /dev/null
+            notice "${NoticeQuestion}" &> /dev/null
             notice "${YNPrompt}" &> /dev/null
             # shellcheck disable=SC2206 # (warning): Quote to prevent word splitting/globbing, or split robustly with mapfile or read -a.
             local -a YesNoDialog=(
@@ -82,7 +84,8 @@ question_prompt() {
         else
             YNPrompt='[YN]'
         fi
-        notice "${Question}"
+        NoticeQuestion=$(strip_dialog_colors "${Question}")
+        notice "${NoticeQuestion}"
         notice "${YNPrompt}"
         while true; do
             read -rsn1 YN < /dev/tty
