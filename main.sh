@@ -1309,9 +1309,10 @@ main() {
                     CommandLine="ds --theme"
                 fi
                 notice "${NoticeText}"
-                run_script 'apply_theme' "${THEME-}"
                 if use_dialog_box; then
-                    run_script 'menu_dialog_example' "" "${CommandLine}"
+                    run_script 'apply_theme' "${THEME-}" && run_script 'menu_dialog_example' "" "${CommandLine}"
+                else
+                    run_script 'apply_theme' "${THEME-}"
                 fi
                 ;;
             theme-list)
