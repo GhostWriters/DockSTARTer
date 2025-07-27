@@ -22,7 +22,7 @@ commands_yml_merge() {
             local main_yml
             main_yml="$(run_script 'app_instance_file' "${appname}" ".yml")"
             if [[ -f ${main_yml} ]]; then
-                if run_script 'app_is_depreciated' "${APPNAME}"; then
+                if run_script 'app_is_deprecated' "${APPNAME}"; then
                     warn "${C["App"]}${AppName}${NC} IS DEPRECATED!"
                     warn "Please run '${C["UserCommand"]}ds --status-disable ${AppName}${NC}' to disable it."
                 fi

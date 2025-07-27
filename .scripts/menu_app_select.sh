@@ -14,7 +14,7 @@ menu_app_select() {
         local -a AllApps
         readarray -t AllApps < <((
             run_script 'app_list_added'
-            run_script 'app_list_nondepreciated'
+            run_script 'app_list_nondeprecated'
         ) | tr '[:upper:]' '[:lower:]' | sort -u)
         echo "Currently added applications:"
         local LastAppLetter=''

@@ -559,14 +559,14 @@ that take app names can use the form app: to refer to the same file.
     List added apps
 --list-builtin
     List builtin apps
---list-depreciated
-    List depreciated apps
+--list-deprecated
+    List deprecated apps
 --list-enabled
     List enabled apps
 --list-disabled
     List disabled apps
---list-nondepreciated
-    List depreciated apps
+--list-nondeprecated
+    List deprecated apps
 --list-referenced
     List referenced apps (whether they are "built in" or not)
     An app is considered "referenced" if there is a variable matching the app's name in the
@@ -1229,13 +1229,13 @@ main() {
                 run_script_dialog "List Builtin Applications" "" "" \
                     'app_nicename' "$(run_script 'app_list_builtin')"
                 ;;
-            list-depreciated)
-                run_script_dialog "List Depreciated Applications" "" "" \
-                    'app_nicename' "$(run_script 'app_list_depreciated')"
+            list-deprecated)
+                run_script_dialog "List Deprecated Applications" "" "" \
+                    'app_nicename' "$(run_script 'app_list_deprecated')"
                 ;;
-            list-nondepreciated)
-                run_script_dialog "List Non-Depreciated Applications" "" "" \
-                    'app_nicename' "$(run_script 'app_list_nondepreciated')"
+            list-nondeprecated)
+                run_script_dialog "List Non-Deprecated Applications" "" "" \
+                    'app_nicename' "$(run_script 'app_list_nondeprecated')"
                 ;;
             list-added)
                 run_script_dialog "List Added Applications" "" "" \
