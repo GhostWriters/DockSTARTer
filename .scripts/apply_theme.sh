@@ -29,7 +29,7 @@ apply_theme() {
 
     if ! run_script 'theme_exists' "${ThemeName}"; then
         error "${APPLICATION_NAME} theme '${C["Theme"]}${ThemeName}${NC}' does not exist."
-        return
+        return 1
     fi
 
     ThemeFile="${THEME_FOLDER}/${ThemeName}/${THEME_FILE_NAME}"
