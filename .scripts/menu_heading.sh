@@ -16,7 +16,7 @@ menu_heading() {
         [CurrentValue]="Current Value: "
     )
     local -A Tag=(
-        [AppDepreciated]="${DC[HeadingTag]}[*DEPRECIATED*]${DC[NC]}"
+        [AppDeprecated]="${DC[HeadingTag]}[*DEPRECATED*]${DC[NC]}"
         [AppDisabled]="${DC[HeadingTag]}(Disabled)${DC[NC]}"
         [AppUserDefined]="${DC[HeadingTag]}(User Defined)${DC[NC]}"
         [VarUserDefined]="${DC[HeadingTag]}(User Defined)${DC[NC]}"
@@ -34,7 +34,7 @@ menu_heading() {
     Indent="$(printf "%${LabelWidth}s" "")"
     local -A Heading=()
 
-    local AppIsValid AppIsDepreciated AppIsDisabled AppIsUserDefined VarIsValid VarIsUserDefined
+    local AppIsValid AppIsDeprecated AppIsDisabled AppIsUserDefined VarIsValid VarIsUserDefined
     local VarFile
     local DefaultVarFile
 
@@ -75,8 +75,8 @@ menu_heading() {
                 if run_script 'app_is_disabled' "${AppName}"; then
                     AppIsDisabled='Y'
                 fi
-                if run_script 'app_is_depreciated' "${AppName}"; then
-                    AppIsDepreciated='Y'
+                if run_script 'app_is_deprecated' "${AppName}"; then
+                    AppIsDeprecated='Y'
                 fi
                 if [[ -n ${VarIsValid-} && -n ${DefaultVarFile-} ]] && ! run_script 'env_var_exists' "${VarName}" "${DefaultVarFile}"; then
                     VarIsUserDefined='Y'
@@ -99,8 +99,8 @@ menu_heading() {
                 if [[ -n ${AppName-} ]]; then
                     Heading[Application]="${DC[NC]}${Label[Application]}${Highlight}${AppName}${DC[NC]}"
                     if [[ ${AppIsValid-} == "Y" ]]; then
-                        if [[ ${AppIsDepreciated-} == "Y" ]]; then
-                            Heading[Application]+=" ${DC[HeadingTag]}${Tag[AppDepreciated]}${DC[NC]}"
+                        if [[ ${AppIsDeprecated-} == "Y" ]]; then
+                            Heading[Application]+=" ${DC[HeadingTag]}${Tag[AppDeprecated]}${DC[NC]}"
                         fi
                         if [[ ${AppIsDisabled-} == "Y" ]]; then
                             Heading[Application]+=" ${DC[HeadingTag]}${Tag[AppDisabled]}${DC[NC]}"
@@ -167,5 +167,5 @@ test_menu_heading() {
     run_script 'menu_heading' '' DOCKER_VOLUME_STORAGE
     notice ":"
     run_script 'menu_heading'
-    warn "CI does not test app_is_nondepreciated."
+    warn "CI does not test app_is_nondeprecated."
 }

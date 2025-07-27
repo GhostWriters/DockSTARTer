@@ -8,8 +8,8 @@ app_list() {
     for index in "${!AppList[@]}"; do
         local AppName=${AppList[index]}
         AppList[index]+=','
-        if run_script 'app_is_depreciated' "${AppName}"; then
-            AppList[index]+='[*DEPRECIATED*]'
+        if run_script 'app_is_deprecated' "${AppName}"; then
+            AppList[index]+='[*DEPRECATED*]'
         fi
         AppList[index]+=','
         if run_script 'app_is_added' "${AppName}"; then
