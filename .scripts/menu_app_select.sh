@@ -18,26 +18,26 @@ menu_app_select() {
         ) | tr '[:upper:]' '[:lower:]' | sort -u)
         echo "Currently added applications:"
         local LastAppLetter=''
-        for APPNAME in "${AllApps[@]-}"; do
+        for appname in "${AllApps[@]-}"; do
             local main_yml
-            main_yml="$(run_script 'app_instance_file' "${APPNAME}" ".yml")"
+            main_yml="$(run_script 'app_instance_file' "${appname}" ".yml")"
             if [[ -f ${main_yml} ]]; then
-                local AppLetter=${APPNAME:0:1}
+                local AppLetter=${appname:0:1}
                 AppLetter=${AppLetter^^}
                 if [[ -n ${LastAppLetter-} && ${LastAppLetter} != "${AppLetter}" ]]; then
                     printf '%s\n' "" "" "OFF" >> "${AppListFile}"
                 fi
                 LastAppLetter=${AppLetter}
                 local main_yml
-                arch_yml="$(run_script 'app_instance_file' "${APPNAME}" ".${ARCH}.yml")"
+                arch_yml="$(run_script 'app_instance_file' "${appname}" ".${ARCH}.yml")"
                 if [[ -f ${arch_yml} ]]; then
                     local AppName
-                    AppName=$(run_script 'app_nicename_from_template' "${APPNAME}")
+                    AppName=$(run_script 'app_nicename_from_template' "${appname}")
                     local AppDescription
-                    AppDescription=$(run_script 'app_description_from_template' "${APPNAME}")
+                    AppDescription=$(run_script 'app_description_from_template' "${appname}")
                     local AppOnOff
-                    if run_script 'app_is_added' "${APPNAME}"; then
-                        echo "   ${APPNAME}"
+                    if run_script 'app_is_added' "${AppName}"; then
+                        echo "   ${AppName}"
                         AppOnOff="on"
                         printf '%s\n' "${AppName}" >> "${AddedAppsFile}"
                     else
