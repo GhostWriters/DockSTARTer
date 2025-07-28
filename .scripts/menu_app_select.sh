@@ -15,35 +15,27 @@ menu_app_select() {
         readarray -t AllApps < <((
             run_script 'app_list_added'
             run_script 'app_list_nondeprecated'
-        ) | tr '[:upper:]' '[:lower:]' | sort -u | run_script 'app_nicename_pipe')
+        ) | tr '[:upper:]' '[:lower:]' | sort -u | run_script 'app_filter_runnable_pipe' | run_script 'app_nicename_pipe')
         echo "Currently added applications:"
         local LastAppLetter=''
         for AppName in "${AllApps[@]-}"; do
-            local main_yml
-            main_yml="$(run_script 'app_instance_file' "${AppName,,}" ".yml")"
-            if [[ -f ${main_yml} ]]; then
-                local AppLetter=${AppName:0:1}
-                AppLetter=${AppLetter^^}
-                if [[ -n ${LastAppLetter-} && ${LastAppLetter} != "${AppLetter}" ]]; then
-                    printf '%s\n' "" "" "OFF" >> "${AppListFile}"
-                fi
-                LastAppLetter=${AppLetter}
-                local main_yml
-                arch_yml="$(run_script 'app_instance_file' "${AppName,,}" ".${ARCH}.yml")"
-                if [[ -f ${arch_yml} ]]; then
-                    local AppDescription
-                    AppDescription=$(run_script 'app_description_from_template' "${AppName}")
-                    local AppOnOff
-                    if run_script 'app_is_added' "${AppName}"; then
-                        echo "   ${AppName}"
-                        AppOnOff="on"
-                        printf '%s\n' "${AppName}" >> "${AddedAppsFile}"
-                    else
-                        AppOnOff="off"
-                    fi
-                    printf '%s\n' "${AppName}" "${AppDescription}" "${AppOnOff}" >> "${AppListFile}"
-                fi
+            local AppLetter=${AppName:0:1}
+            AppLetter=${AppLetter^^}
+            if [[ -n ${LastAppLetter-} && ${LastAppLetter} != "${AppLetter}" ]]; then
+                printf '%s\n' "" "" "off" >> "${AppListFile}"
             fi
+            LastAppLetter=${AppLetter}
+            local AppDescription
+            AppDescription=$(run_script 'app_description_from_template' "${AppName}")
+            local AppOnOff
+            if run_script 'app_is_added' "${AppName}"; then
+                echo "   ${AppName}"
+                AppOnOff="on"
+                printf '%s\n' "${AppName}" >> "${AddedAppsFile}"
+            else
+                AppOnOff="off"
+            fi
+            printf '%s\n' "${AppName}" "${AppDescription}" "${AppOnOff}" >> "${AppListFile}"
         done
     } |& dialog_pipe "${DC[TitleSuccess]}${Title}" "Preparing app menu. Please be patient, this can take a while." "${DIALOGTIMEOUT}"
 
