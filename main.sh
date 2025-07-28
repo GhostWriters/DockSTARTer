@@ -626,7 +626,7 @@ cleanup() {
     trap - ERR EXIT SIGABRT SIGALRM SIGHUP SIGINT SIGQUIT SIGTERM
 
     if [[ ${PROMPT:-CLI} == "GUI" ]]; then
-        echo -n "${BS}"
+        tput reset
     fi
 
     sudo sh -c "cat ${MKTEMP_LOG:-/dev/null} >> ${SCRIPTPATH}/dockstarter.log" || true
