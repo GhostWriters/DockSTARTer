@@ -1172,7 +1172,7 @@ main() {
                         done
                     fi
                 else
-                    echo "Invalid usage. Must be"
+                    echo "Invalid usage. Must be:"
                     echo "  '${C["UserCommand"]}--env-get${NC}' with variable name ('${C["UserCommand"]}--env-get VAR${NC}' or '${C["UserCommand"]}--env-get VAR [VAR ...]${NC}')"
                     echo "  Variable name will be forced to UPPER CASE"
                 fi
