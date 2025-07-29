@@ -4,6 +4,7 @@ IFS=$'\n\t'
 
 declare -rx APPLICATION_NAME='DockSTARTer'
 declare -rx APPLICATION_COMMAND='ds'
+declare -rx APPLICATION_REPO='https://github.com/GhostWriters/DockSTARTer'
 declare -rx SOURCE_BRANCH='master'
 declare -rx TARGET_BRANCH='main'
 
@@ -969,7 +970,7 @@ main() {
     else
         if ! check_repo; then
             warn "Attempting to clone ${APPLICATION_NAME} repo to ${C["Folder"]}'${DETECTED_HOMEDIR}/.docker${NC}' location."
-            git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone ${APPLICATION_NAME} repo.\nFailing command: ${C["FailingCommand"]}git clone https://github.com/GhostWriters/DockSTARTer \"${DETECTED_HOMEDIR}/.docker\""
+            git clone "${APPLICATION_REPO}" "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone ${APPLICATION_NAME} repo.\nFailing command: ${C["FailingCommand"]}git clone \"${APPLICATION_REPO}\" \"${DETECTED_HOMEDIR}/.docker\""
             notice "Performing first run install."
             exec bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-fvi"
         fi
