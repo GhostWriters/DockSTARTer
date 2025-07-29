@@ -380,6 +380,17 @@ run_command_dialog() {
     fi
 }
 
+dialog_info() {
+    local Title=${1:-}
+    local Message=${2:-}
+    Title="$(strip_ansi_colors "${Title}")"
+    Message="$(strip_ansi_colors "${Message}")"
+    _dialog_ \
+        --title "${Title}" \
+        --infobox "${Message}" \
+        "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+    echo -n "${BS}"
+}
 dialog_message() {
     local Title=${1:-}
     local Message=${2:-}
