@@ -1006,10 +1006,124 @@ main() {
         exit
     fi
 
-    # Create the .env file if it doesn't exists
-    run_script 'env_create'
-
     # Execute CLI Argument Functions
+    if [[ -n ${INSTALL-} ]]; then
+        run_script 'run_install'
+        exit
+    fi
+    if [[ -n ${UPDATE-} ]]; then
+        if [[ ${UPDATE} == true ]]; then
+            run_script 'update_self'
+        else
+            run_script 'update_self' "${UPDATE}"
+        fi
+        exit
+    fi
+    if [[ -v VERSION ]]; then
+        local VersionString
+        VersionString="$(ds_version "${VERSION}")"
+        if [[ -n ${VersionString} ]]; then
+            echo "${APPLICATION_NAME} [${VersionString}]"
+        else
+            local Branch
+            Branch="${VERSION:-$(ds_branch)}"
+            error "DockSTARTer branch '${C["Branch"]}${Branch}${NC}' does not exist."
+        fi
+        exit
+    fi
+    if [[ -n ${PRUNE-} ]]; then
+        run_script 'docker_prune'
+        exit
+    fi
+    if [[ -n ${THEMEMETHOD-} ]]; then
+        case "${THEMEMETHOD}" in
+            theme)
+                local NoticeText
+                local CommandLine
+                if [[ -n ${THEME-} ]]; then
+                    NoticeText="Applying ${APPLICATION_NAME} theme ${C["Theme"]}${THEME}${NC}"
+                    CommandLine="ds --theme \"${THEME}\""
+                else
+                    NoticeText="Applying ${APPLICATION_NAME} theme ${C["Theme"]}$(run_script 'theme_name')${NC}"
+                    CommandLine="ds --theme"
+                fi
+                notice "${NoticeText}"
+                if use_dialog_box; then
+                    run_script 'apply_theme' "${THEME-}" && run_script 'menu_dialog_example' "" "${CommandLine}"
+                else
+                    run_script 'apply_theme' "${THEME-}"
+                fi
+                ;;
+            theme-list)
+                run_script_dialog "List Themes" "" "" \
+                    'theme_list'
+                ;;
+            theme-table)
+                run_script_dialog "List Themes" "" "" \
+                    'theme_table'
+                ;;
+            theme-shadow)
+                notice "Turning on GUI shadows."
+                run_script 'env_set' Shadow yes "${MENU_INI_FILE}"
+                if use_dialog_box; then
+                    run_script 'menu_dialog_example' "Turned on shadows" "ds --theme-shadow"
+                fi
+                ;;
+            theme-no-shadow)
+                run_script 'env_set' Shadow no "${MENU_INI_FILE}"
+                notice "Turning off GUI shadows."
+                if use_dialog_box; then
+                    run_script 'menu_dialog_example' "Turned off shadows" "ds --theme-no-shadow"
+                fi
+                ;;
+            theme-scrollbar)
+                run_script 'env_set' Scrollbar yes "${MENU_INI_FILE}"
+                notice "Turning on GUI scrollbars."
+                if use_dialog_box; then
+                    run_script 'menu_dialog_example' "Turned on scrollbars" "ds --theme-scrollbar"
+                fi
+                ;;
+            theme-no-scrollbar)
+                run_script 'env_set' Scrollbar no "${MENU_INI_FILE}"
+                notice "Turning off GUI scrollbars."
+                if use_dialog_box; then
+                    run_script 'menu_dialog_example' "Turned off scrollbars" "ds --theme-no-scrollbar"
+                fi
+                ;;
+            theme-lines)
+                run_script 'env_set' LineCharacters yes "${MENU_INI_FILE}"
+                notice "Turning on GUI line drawing characters."
+                if use_dialog_box; then
+                    run_script 'menu_dialog_example' "Turned on line drawing" "ds --theme-lines"
+                fi
+                ;;
+            theme-no-lines)
+                notice "Turning off GUI line drawing characters."
+                run_script 'env_set' LineCharacters no "${MENU_INI_FILE}"
+                if use_dialog_box; then
+                    run_script 'menu_dialog_example' "Turned off line drawing" "ds --theme-no-lines"
+                fi
+                ;;
+            theme-borders)
+                run_script 'env_set' Borders yes "${MENU_INI_FILE}"
+                notice "Turning on GUI borders."
+                if use_dialog_box; then
+                    run_script 'menu_dialog_example' "Turned on borders" "ds --theme-borders"
+                fi
+                ;;
+            theme-no-borders)
+                notice "Turning off GUI borders."
+                run_script 'env_set' Borders no "${MENU_INI_FILE}"
+                if use_dialog_box; then
+                    run_script 'menu_dialog_example' "Turned off borders" "ds --theme-no-borders"
+                fi
+                ;;
+            *)
+                echo "Invalid option: '${THEMEMETHOD-}'"
+                ;;
+        esac
+        exit
+    fi
     if [[ -n ${ADD-} ]]; then
         local CommandLine
         CommandLine="ds --add $(run_script 'app_nicename' "${ADD}")"
@@ -1018,6 +1132,10 @@ main() {
         run_script 'env_update'
         exit
     fi
+
+    # Create the .env file if it doesn't exists before the following command-line options
+    run_script 'env_create'
+
     if [[ -n ${COMPOSE-} ]]; then
         case ${COMPOSE} in
             generate | merge) ;&
@@ -1214,10 +1332,6 @@ main() {
         esac
         exit
     fi
-    if [[ -n ${INSTALL-} ]]; then
-        run_script 'run_install'
-        exit
-    fi
     if [[ -n ${LIST-} ]]; then
         run_script_dialog "List All Applications" "" "" \
             'app_list'
@@ -1260,10 +1374,6 @@ main() {
         esac
         exit
     fi
-    if [[ -n ${PRUNE-} ]]; then
-        run_script 'docker_prune'
-        exit
-    fi
     if [[ -n ${REMOVE-} ]]; then
         if [[ ${REMOVE} == true ]]; then
             run_script 'appvars_purge_all'
@@ -1294,115 +1404,6 @@ main() {
                 echo "Invalid option: '${STATUSMETHOD-}'"
                 ;;
         esac
-        exit
-    fi
-    if [[ -n ${THEMEMETHOD-} ]]; then
-        case "${THEMEMETHOD}" in
-            theme)
-                local NoticeText
-                local CommandLine
-                if [[ -n ${THEME-} ]]; then
-                    NoticeText="Applying ${APPLICATION_NAME} theme ${C["Theme"]}${THEME}${NC}"
-                    CommandLine="ds --theme \"${THEME}\""
-                else
-                    NoticeText="Applying ${APPLICATION_NAME} theme ${C["Theme"]}$(run_script 'theme_name')${NC}"
-                    CommandLine="ds --theme"
-                fi
-                notice "${NoticeText}"
-                if use_dialog_box; then
-                    run_script 'apply_theme' "${THEME-}" && run_script 'menu_dialog_example' "" "${CommandLine}"
-                else
-                    run_script 'apply_theme' "${THEME-}"
-                fi
-                ;;
-            theme-list)
-                run_script_dialog "List Themes" "" "" \
-                    'theme_list'
-                ;;
-            theme-table)
-                run_script_dialog "List Themes" "" "" \
-                    'theme_table'
-                ;;
-            theme-shadow)
-                notice "Turning on GUI shadows."
-                run_script 'env_set' Shadow yes "${MENU_INI_FILE}"
-                if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned on shadows" "ds --theme-shadow"
-                fi
-                ;;
-            theme-no-shadow)
-                run_script 'env_set' Shadow no "${MENU_INI_FILE}"
-                notice "Turning off GUI shadows."
-                if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned off shadows" "ds --theme-no-shadow"
-                fi
-                ;;
-            theme-scrollbar)
-                run_script 'env_set' Scrollbar yes "${MENU_INI_FILE}"
-                notice "Turning on GUI scrollbars."
-                if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned on scrollbars" "ds --theme-scrollbar"
-                fi
-                ;;
-            theme-no-scrollbar)
-                run_script 'env_set' Scrollbar no "${MENU_INI_FILE}"
-                notice "Turning off GUI scrollbars."
-                if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned off scrollbars" "ds --theme-no-scrollbar"
-                fi
-                ;;
-            theme-lines)
-                run_script 'env_set' LineCharacters yes "${MENU_INI_FILE}"
-                notice "Turning on GUI line drawing characters."
-                if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned on line drawing" "ds --theme-lines"
-                fi
-                ;;
-            theme-no-lines)
-                notice "Turning off GUI line drawing characters."
-                run_script 'env_set' LineCharacters no "${MENU_INI_FILE}"
-                if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned off line drawing" "ds --theme-no-lines"
-                fi
-                ;;
-            theme-borders)
-                run_script 'env_set' Borders yes "${MENU_INI_FILE}"
-                notice "Turning on GUI borders."
-                if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned on borders" "ds --theme-borders"
-                fi
-                ;;
-            theme-no-borders)
-                notice "Turning off GUI borders."
-                run_script 'env_set' Borders no "${MENU_INI_FILE}"
-                if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned off borders" "ds --theme-no-borders"
-                fi
-                ;;
-            *)
-                echo "Invalid option: '${THEMEMETHOD-}'"
-                ;;
-        esac
-        exit
-    fi
-    if [[ -n ${UPDATE-} ]]; then
-        if [[ ${UPDATE} == true ]]; then
-            run_script 'update_self'
-        else
-            run_script 'update_self' "${UPDATE}"
-        fi
-        exit
-    fi
-    if [[ -v VERSION ]]; then
-        local VersionString
-        VersionString="$(ds_version "${VERSION}")"
-        if [[ -n ${VersionString} ]]; then
-            echo "${APPLICATION_NAME} [${VersionString}]"
-        else
-            local Branch
-            Branch="${VERSION:-$(ds_branch)}"
-            error "DockSTARTer branch '${C["Branch"]}${Branch}${NC}' does not exist."
-        fi
         exit
     fi
     # Run Menus
