@@ -52,7 +52,7 @@ menu_display_options_theme() {
             OK)
                 CurrentTheme="${Choice}"
                 if run_script 'apply_theme' "${CurrentTheme}"; then
-                    run_script 'menu_dialog_example' "Applied theme ${CurrentTheme}" "ds --theme \"${CurrentTheme}\""
+                    run_script 'menu_dialog_example' "Applied theme ${CurrentTheme}" "${APPLICATION_COMMAND} --theme \"${CurrentTheme}\""
                 else
                     dialog_error "${Title}" "Unable to apply theme ${CurrentTheme}"
                 fi

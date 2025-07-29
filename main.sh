@@ -3,6 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 declare -rx APPLICATION_NAME='DockSTARTer'
+declare -rx APPLICATION_COMMAND='ds'
 declare -rx SOURCE_BRANCH='master'
 declare -rx TARGET_BRANCH='main'
 
@@ -500,8 +501,8 @@ usage() {
         APPLICATION_HEADING+=" (${C["Update"]}Update Available${NC})"
     fi
     cat << EOF
-Usage: ds [OPTION]
-NOTE: ds shortcut is only available after the first run of
+Usage: ${APPLICATION_COMMAND} [OPTION]
+NOTE: ${APPLICATION_COMMAND} shortcut is only available after the first run of
     bash main.sh
 
 ${APPLICATION_HEADING}
@@ -758,7 +759,7 @@ cmdline() {
                     PROMPT="GUI"
                 else
                     warn "The '${C["UserCommand"]}--gui${NC}' option requires the '${C["Program"]}dialog$}NC}' command to be installed."
-                    warn "'${C["Program"]}dialog${NC}' command not found. Run '${C["UserCommand"]}ds -fiv${NC}' to install all dependencies."
+                    warn "'${C["Program"]}dialog${NC}' command not found. Run '${C["UserCommand"]}${APPLICATION_COMMAND} -fiv${NC}' to install all dependencies."
                     warn "Coninuing without '${C["UserCommand"]}--gui${NC}' option."
                 fi
                 ;;
@@ -948,7 +949,7 @@ main() {
     fi
     # Repo Check
     local DS_COMMAND
-    DS_COMMAND=$(command -v ds || true)
+    DS_COMMAND=$(command -v "${APPLICATION_COMMAND}" || true)
     if [[ -L ${DS_COMMAND} ]]; then
         local DS_SYMLINK
         DS_SYMLINK=$(readlink -f "${DS_COMMAND}")
@@ -956,7 +957,7 @@ main() {
             if check_repo; then
                 if run_script 'question_prompt' "${PROMPT:-CLI}" N "${APPLICATION_NAME} installation found at ${DS_SYMLINK} location. Would you like to run ${SCRIPTNAME} instead?"; then
                     run_script 'symlink_ds'
-                    DS_COMMAND=$(command -v ds || true)
+                    DS_COMMAND=$(command -v "${APPLICATION_COMMAND}" || true)
                     DS_SYMLINK=$(readlink -f "${DS_COMMAND}")
                 fi
             fi
@@ -981,7 +982,7 @@ main() {
         if ds_update_available; then
             warn "${APPLICATION_NAME} [${C["Version"]}${APPLICATION_VERSION}${NC}]"
             warn "An update to ${APPLICATION_NAME} is available."
-            warn "Run '${C["UserCommand"]}ds -u${NC}' to update to version ${C["Version"]}$(ds_version "${Branch}")${NC}."
+            warn "Run '${C["UserCommand"]}${APPLICATION_COMMAND} -u${NC}' to update to version ${C["Version"]}$(ds_version "${Branch}")${NC}."
         else
             info "${APPLICATION_NAME} [${C["Version"]}${APPLICATION_VERSION}${NC}]"
         fi
@@ -995,7 +996,7 @@ main() {
         if ! ds_branch_exists "${MainBranch}"; then
             error "${APPLICATION_NAME} does not appear to have a '${C["Branch"]}${TARGET_BRANCH}${NC}' or '${C["Branch"]}${SOURCE_BRANCH}${NC}' branch."
         else
-            warn "Run '${C["UserCommand"]}ds -u ${MainBranch}${NC}' to update to the latest stable release ${C["Version"]}$(ds_version "${MainBranch}")${NC}."
+            warn "Run '${C["UserCommand"]}${APPLICATION_COMMAND} -u ${MainBranch}${NC}' to update to the latest stable release ${C["Version"]}$(ds_version "${MainBranch}")${NC}."
         fi
     fi
     # Apply the GUI theme
@@ -1042,10 +1043,10 @@ main() {
                 local CommandLine
                 if [[ -n ${THEME-} ]]; then
                     NoticeText="Applying ${APPLICATION_NAME} theme '${C["Theme"]}${THEME}${NC}'"
-                    CommandLine="ds --theme \"${THEME}\""
+                    CommandLine="${APPLICATION_COMMAND} --theme \"${THEME}\""
                 else
                     NoticeText="Applying ${APPLICATION_NAME} theme '${C["Theme"]}$(run_script 'theme_name')${NC}'"
-                    CommandLine="ds --theme"
+                    CommandLine="${APPLICATION_COMMAND} --theme"
                 fi
                 notice "${NoticeText}"
                 if use_dialog_box; then
@@ -1066,56 +1067,56 @@ main() {
                 notice "Turning on GUI shadows."
                 run_script 'env_set' Shadow yes "${MENU_INI_FILE}"
                 if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned on shadows" "ds --theme-shadow"
+                    run_script 'menu_dialog_example' "Turned on shadows" "${APPLICATION_COMMAND} --theme-shadow"
                 fi
                 ;;
             theme-no-shadow)
                 run_script 'env_set' Shadow no "${MENU_INI_FILE}"
                 notice "Turning off GUI shadows."
                 if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned off shadows" "ds --theme-no-shadow"
+                    run_script 'menu_dialog_example' "Turned off shadows" "${APPLICATION_COMMAND} --theme-no-shadow"
                 fi
                 ;;
             theme-scrollbar)
                 run_script 'env_set' Scrollbar yes "${MENU_INI_FILE}"
                 notice "Turning on GUI scrollbars."
                 if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned on scrollbars" "ds --theme-scrollbar"
+                    run_script 'menu_dialog_example' "Turned on scrollbars" "${APPLICATION_COMMAND} --theme-scrollbar"
                 fi
                 ;;
             theme-no-scrollbar)
                 run_script 'env_set' Scrollbar no "${MENU_INI_FILE}"
                 notice "Turning off GUI scrollbars."
                 if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned off scrollbars" "ds --theme-no-scrollbar"
+                    run_script 'menu_dialog_example' "Turned off scrollbars" "${APPLICATION_COMMAND} --theme-no-scrollbar"
                 fi
                 ;;
             theme-lines)
                 run_script 'env_set' LineCharacters yes "${MENU_INI_FILE}"
                 notice "Turning on GUI line drawing characters."
                 if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned on line drawing" "ds --theme-lines"
+                    run_script 'menu_dialog_example' "Turned on line drawing" "${APPLICATION_COMMAND} --theme-lines"
                 fi
                 ;;
             theme-no-lines)
                 notice "Turning off GUI line drawing characters."
                 run_script 'env_set' LineCharacters no "${MENU_INI_FILE}"
                 if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned off line drawing" "ds --theme-no-lines"
+                    run_script 'menu_dialog_example' "Turned off line drawing" "${APPLICATION_COMMAND} --theme-no-lines"
                 fi
                 ;;
             theme-borders)
                 run_script 'env_set' Borders yes "${MENU_INI_FILE}"
                 notice "Turning on GUI borders."
                 if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned on borders" "ds --theme-borders"
+                    run_script 'menu_dialog_example' "Turned on borders" "${APPLICATION_COMMAND} --theme-borders"
                 fi
                 ;;
             theme-no-borders)
                 notice "Turning off GUI borders."
                 run_script 'env_set' Borders no "${MENU_INI_FILE}"
                 if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned off borders" "ds --theme-no-borders"
+                    run_script 'menu_dialog_example' "Turned off borders" "${APPLICATION_COMMAND} --theme-no-borders"
                 fi
                 ;;
             *)
@@ -1127,7 +1128,7 @@ main() {
     fi
     if [[ -n ${ADD-} ]]; then
         local CommandLine
-        CommandLine="ds --add $(run_script 'app_nicename' "${ADD}")"
+        CommandLine="${APPLICATION_COMMAND} --add $(run_script 'app_nicename' "${ADD}")"
         run_script_dialog "Add Application" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}${DC[NC]}" "" \
             'appvars_create' "${ADD}"
         run_script 'env_update'
@@ -1154,7 +1155,7 @@ main() {
     if [[ -n ${ENVMETHOD-} ]]; then
         case "${ENVMETHOD-}" in
             env)
-                run_script_dialog "${DC["TitleSuccess"]}Creating environment variables for added apps" "Please be patient, this can take a while.\n${DC["CommandLine"]} ds --env" "" \
+                run_script_dialog "${DC["TitleSuccess"]}Creating environment variables for added apps" "Please be patient, this can take a while.\n${DC["CommandLine"]} ${APPLICATION_COMMAND} --env" "" \
                     'appvars_create_all'
                 exit
                 ;;
@@ -1162,7 +1163,7 @@ main() {
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
                         local CommandLine
-                        CommandLine="ds --env-get ${ENVVAR^^}"
+                        CommandLine="${APPLICATION_COMMAND} --env-get ${ENVVAR^^}"
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
                             run_script 'env_get' "${VarName}"
                         done |& dialog_pipe "Get Value of Variable" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
@@ -1181,7 +1182,7 @@ main() {
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
                         local CommandLine
-                        CommandLine="ds --env-get-line ${ENVVAR}"
+                        CommandLine="${APPLICATION_COMMAND} --env-get-line ${ENVVAR}"
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
                             run_script 'env_get' "${VarName}"
                         done |& dialog_pipe "Get Value of Variable" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
@@ -1200,7 +1201,7 @@ main() {
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
                         local CommandLine
-                        CommandLine="ds --env-get-line ${ENVVAR^^}"
+                        CommandLine="${APPLICATION_COMMAND} --env-get-line ${ENVVAR^^}"
                         for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
                             run_script 'env_get_line' "${VarName}"
                         done |& dialog_pipe "Get Line of Variable" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
@@ -1219,7 +1220,7 @@ main() {
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
                         local CommandLine
-                        CommandLine="ds --env-get-lower-line ${ENVVAR}"
+                        CommandLine="${APPLICATION_COMMAND} --env-get-lower-line ${ENVVAR}"
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
                             run_script 'env_get_line' "${VarName}"
                         done |& dialog_pipe "Get Line of Variable" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
@@ -1238,7 +1239,7 @@ main() {
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
                         local CommandLine
-                        CommandLine="ds --env-get-lower-literal ${ENVVAR^^}"
+                        CommandLine="${APPLICATION_COMMAND} --env-get-lower-literal ${ENVVAR^^}"
                         for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
                             run_script 'env_get_literal' "${VarName}"
                         done |& dialog_pipe "Get Literal Value of Variable" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
@@ -1257,7 +1258,7 @@ main() {
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
                         local CommandLine
-                        CommandLine="ds --env-get-lower-literal ${ENVVAR}"
+                        CommandLine="${APPLICATION_COMMAND} --env-get-lower-literal ${ENVVAR}"
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
                             run_script 'env_get_literal' "${VarName}"
                         done |& dialog_pipe "Get Literal Value of Variable" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
@@ -1296,7 +1297,7 @@ main() {
                 if [[ ${ENVAPP-} != "" ]]; then
                     if use_dialog_box; then
                         local CommandLine
-                        CommandLine="ds --env-appvars $(run_script 'app_nicename' "${ENVAPP}" | tr '\n' ' ')"
+                        CommandLine="${APPLICATION_COMMAND} --env-appvars $(run_script 'app_nicename' "${ENVAPP}" | tr '\n' ' ')"
                         for AppName in $(xargs -n1 <<< "${ENVAPP}"); do
                             run_script 'appvars_list' "${AppName}"
                         done |& dialog_pipe "Variables for Application" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
@@ -1314,7 +1315,7 @@ main() {
                 if [[ ${ENVAPP-} != "" ]]; then
                     if use_dialog_box; then
                         local CommandLine
-                        CommandLine="ds --env-appvars-lines $(run_script 'app_nicename' "${ENVAPP}" | tr '\n' ' ')"
+                        CommandLine="${APPLICATION_COMMAND} --env-appvars-lines $(run_script 'app_nicename' "${ENVAPP}" | tr '\n' ' ')"
                         for AppName in $(xargs -n1 <<< "${ENVAPP}"); do
                             run_script 'appvars_lines' "${AppName}"
                         done |& dialog_pipe "Variable Lines for Application" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
@@ -1390,7 +1391,7 @@ main() {
         case "${STATUSMETHOD-}" in
             status)
                 local CommandLine
-                CommandLine="ds --status $(run_script 'app_nicename' "${STATUS}" | tr '\n' ' ')"
+                CommandLine="${APPLICATION_COMMAND} --status $(run_script 'app_nicename' "${STATUS}" | tr '\n' ' ')"
                 run_script_dialog "Application Status" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" "" \
                     'app_status' "${STATUS}"
                 ;;
@@ -1415,7 +1416,7 @@ main() {
         run_script 'menu_main'
     else
         error "The GUI requires the '${C["Program"]}dialog${NC}' command to be installed."
-        error "'${C["Program"]}dialog${NC}' command not found. Run '${C["UserCommand"]}ds -fiv${NC}' to install all dependencies."
+        error "'${C["Program"]}dialog${NC}' command not found. Run '${C["UserCommand"]}${APPLICATION_COMMAND} -fiv${NC}' to install all dependencies."
         fatal "Unable to start GUI without '${C["Program"]}dialog${NC}' command."
     fi
 

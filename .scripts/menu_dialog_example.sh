@@ -15,7 +15,7 @@ menu_dialog_example() {
         Message="Applied theme ${ThemeName}"
     fi
     if [[ -z ${CommandLine} ]]; then
-        CommandLine="ds --theme"
+        CommandLine="${APPLICATION_COMMAND} --theme"
     fi
 
     local Title=''

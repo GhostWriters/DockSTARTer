@@ -5,10 +5,10 @@ IFS=$'\n\t'
 symlink_ds() {
     run_script 'set_permissions' "${SCRIPTNAME}"
 
-    local SYMLINK_TARGETS=("/usr/bin/ds" "/usr/local/bin/ds")
+    local SYMLINK_TARGETS=("/usr/bin/${APPLICATION_COMMAND}" "/usr/local/bin/${APPLICATION_COMMAND}")
 
     if findmnt -n /usr | grep -P "\bro\b" > /dev/null; then
-        SYMLINK_TARGETS=("${HOME}/bin/ds" "${HOME}/.local/bin/ds")
+        SYMLINK_TARGETS=("${HOME}/bin/${APPLICATION_COMMAND}" "${HOME}/.local/bin/${APPLICATION_COMMAND}")
     fi
 
     for SYMLINK_TARGET in "${SYMLINK_TARGETS[@]}"; do
@@ -22,7 +22,7 @@ symlink_ds() {
             sudo ln -s -T "${SCRIPTNAME}" "${SYMLINK_TARGET}" || fatal "Failed to create symlink.\nFailing command: ${C["FailingCommand"]}sudo ln -s -T \"${SCRIPTNAME}\" \"${SYMLINK_TARGET}\""
         fi
         if [[ ${PATH} != *"$(dirname "${SYMLINK_TARGET}")"* ]]; then
-            warn "${C["File"]}$(dirname "${SYMLINK_TARGET}")${NC} not found in PATH. Please add it to your PATH in order to use the ${C["UserCommand"]}ds${NC} command alias."
+            warn "${C["File"]}$(dirname "${SYMLINK_TARGET}")${NC} not found in PATH. Please add it to your PATH in order to use the '${C["UserCommand"]}${APPLICATION_COMMAND}${NC}' command alias."
         fi
     done
 }
