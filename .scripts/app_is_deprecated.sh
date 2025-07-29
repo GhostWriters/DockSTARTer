@@ -3,12 +3,15 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 app_is_deprecated() {
-    local APPNAME=${1-}
-    local LABELS_FILE
-    LABELS_FILE="$(run_script 'app_instance_file' "${APPNAME}" ".labels.yml")"
+    local AppName=${1-}
+    local baseappname
+    baseappname=$(run_script 'appname_to_baseappname' "${AppName}")
+    baseappname="${baseappname,,}"
+    local labels_yml
+    labels_yml="${TEMPLATES_FOLDER}/${baseappname}/${baseappname}.labels.yml"
     local APP_DEPRECATED
-    if [[ -f ${LABELS_FILE} ]]; then
-        APP_DEPRECATED="$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" "${LABELS_FILE}" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo false)"
+    if [[ -f ${labels_yml} ]]; then
+        APP_DEPRECATED="$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" "${labels_yml}" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo false)"
     fi
     if [[ ${APP_DEPRECATED-} == "true" ]]; then
         return 0
