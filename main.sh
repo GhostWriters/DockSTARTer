@@ -671,7 +671,7 @@ cmdline() {
                     ADD=$(printf "%s " "${MULTIOPT[@]}" | xargs)
                     readonly ADD
                 else
-                    error "${OPTION} requires an option."
+                    error "'${C["UserCommand"]}${OPTION}${NC}' requires an option."
                     exit 1
                 fi
                 ;;
@@ -691,7 +691,7 @@ cmdline() {
                             readonly COMPOSE
                             ;;
                         *)
-                            error "Invalid compose option ${OPTARG}."
+                            error "Invalid compose option '${C["UserCommand"]}${OPTARG}${NC}'."
                             exit 1
                             ;;
                     esac
@@ -790,7 +790,7 @@ cmdline() {
                     REMOVE=$(printf "%s " "${MULTIOPT[@]}" | xargs)
                     readonly REMOVE
                 else
-                    error "${OPTION} requires an option."
+                    error "'${C["UserCommand"]}${OPTION}${NC}' requires an option."
                     exit 1
                 fi
                 ;;
@@ -806,7 +806,7 @@ cmdline() {
                     STATUS=$(printf "%s " "${MULTIOPT[@]}" | xargs)
                     readonly STATUS
                 else
-                    error "${OPTION} requires an option."
+                    error "'${C["UserCommand"]}${OPTION}${NC}' requires an option."
                     exit 1
                 fi
                 ;;
@@ -822,7 +822,7 @@ cmdline() {
                     STATUS=$(printf "%s " "${MULTIOPT[@]}" | xargs)
                     readonly STATUS
                 else
-                    error "${OPTION} requires an option."
+                    error "'${C["UserCommand"]}${OPTION}${NC}' requires an option."
                     exit 1
                 fi
                 ;;
@@ -830,7 +830,7 @@ cmdline() {
                 if [[ -n ${OPTARG-} ]]; then
                     readonly TEST=${OPTARG}
                 else
-                    error "${OPTION} requires an option."
+                    error "'${C["UserCommand"]}${OPTION}${NC}' requires an option."
                     exit 1
                 fi
                 ;;
@@ -883,7 +883,7 @@ cmdline() {
                         readonly VERSION=''
                         ;;
                     *)
-                        error "${OPTARG} requires an option."
+                        error "'${C["UserCommand"]}${OPTARG}${NC}' requires an option."
                         exit 1
                         ;;
                 esac
@@ -1119,7 +1119,8 @@ main() {
                 fi
                 ;;
             *)
-                echo "Invalid option: '${C["UserCommand"]}${THEMEMETHOD-}${NC}'"
+                error "Invalid option: '${C["UserCommand"]}${THEMEMETHOD-}${NC}'"
+                exit 1
                 ;;
         esac
         exit
@@ -1144,7 +1145,8 @@ main() {
                 run_script 'docker_compose' "${COMPOSE}"
                 ;;
             *)
-                fatal "Invalid compose option."
+                error "Invalid compose option '${C["UserCommand"]}${COMPOSE}${NC}'."
+                exit 1
                 ;;
         esac
         exit
