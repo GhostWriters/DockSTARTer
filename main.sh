@@ -256,14 +256,14 @@ check_repo() {
 # Check if running as root
 check_root() {
     if [[ ${DETECTED_PUID} == "0" ]] || [[ ${DETECTED_HOMEDIR} == "/root" ]]; then
-        fatal "Running as root is not supported. Please run as a standard user with sudo."
+        fatal "Running as '${C["User"]}root${NC}' is not supported. Please run as a standard user."
     fi
 }
 
 # Check if running with sudo
 check_sudo() {
     if [[ ${EUID} -eq 0 ]]; then
-        fatal "Running with sudo is not supported. Commands requiring sudo will prompt automatically when required."
+        fatal "Running with '${C["UserCommand"]}sudo${NC}' is not supported. Commands requiring '${C["UserCommand"]}sudo${NC}' will prompt automatically when required."
     fi
 }
 
