@@ -19,16 +19,16 @@ package_manager_run() {
             local COMMAND_DEPS=("curl" "dialog" "git" "grep" "sed")
             for COMMAND_DEP in "${COMMAND_DEPS[@]}"; do
                 if [[ -z "$(command -v "${COMMAND_DEP}")" ]]; then
-                    fatal "${C["Program"]}${COMMAND_DEP}${NC} is not available. Please install ${C["Program"]}${COMMAND_DEP}${NC} and try again."
+                    fatal "'${C["Program"]}${COMMAND_DEP}${NC}' is not available. Please install '${C["Program"]}${COMMAND_DEP}${NC}' and try again."
                 fi
             done
         elif [[ ${ACTION} == "install_docker" ]]; then
             if [[ -z "$(command -v docker)" ]]; then
-                fatal "${C["Program"]}docker${NC} is not available. Please install ${C["Program"]}docker${NC} and try again."
+                fatal "'${C["Program"]}docker${NC}' is not available. Please install '${C["Program"]}docker${NC}' and try again."
             fi
             if ! docker compose version > /dev/null 2>&1; then
-                warn "Please see ${C["URL"]}https://docs.docker.com/compose/install/linux/${NC} to install ${C["Program"]}docker compose${NC}"
-                fatal "${F[C]}docker compose${NC} is not available. Please install ${C["Program"]}docker compose${NC} and try again."
+                warn "Please see ${C["URL"]}https://docs.docker.com/compose/install/linux/${NC} to install '${C["Program"]}docker compose${NC}'"
+                fatal "'${C["Program"]}docker compose${NC}' is not available. Please install '${C["Program"]}docker compose${NC}' and try again."
             fi
         fi
     fi
