@@ -129,9 +129,9 @@ declare -Agr C=( # Pre-defined colors
     ["Theme"]="${F[C]}"
     ["Update"]="${F[G]}"
     ["User"]="${F[C]}"
-    ["URL"]="${F[M]}${UL}"
+    ["URL"]="${F[C]}${UL}"
     ["UserCommand"]="${F[Y]}${BD}"
-    ["Var"]="${F[C]}"
+    ["Var"]="${F[M]}"
     ["Version"]="${F[C]}"
 )
 
