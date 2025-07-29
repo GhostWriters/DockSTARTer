@@ -1189,7 +1189,7 @@ main() {
                         done
                     fi
                 else
-                    echo "Invalid usage. Must be"
+                    echo "Invalid usage. Must be:"
                     echo "  '${C["UserCommand"]}--env-get-lower${NC}' with variable name ('${C["UserCommand"]}--env-get-lower=Var${NC}' or '${C["UserCommand"]}--env-get-lower Var [Var ...]${NC}')"
                     echo "  Variable name can be Mixed Case"
                 fi
@@ -1208,7 +1208,7 @@ main() {
                         done
                     fi
                 else
-                    echo "Invalid usage. Must be"
+                    echo "Invalid usage. Must be:"
                     echo "  '${C["UserCommand"]}--env-get-line${NC}' with variable name ('${C["UserCommand"]}--env-get-line VAR${NC}' or '${C["UserCommand"]}--env-get-line VAR [VAR ...]${NC}')"
                     echo "  Variable name will be forced to UPPER CASE"
                 fi
@@ -1227,7 +1227,7 @@ main() {
                         done
                     fi
                 else
-                    echo "Invalid usage. Must be"
+                    echo "Invalid usage. Must be:"
                     echo "  '${C["UserCommand"]}--env-get-lower-line${NC}' with variable name ('${C["UserCommand"]}--env-get-lower-line=Var${NC}' or '${C["UserCommand"]}--env-get-lower-line Var [Var ...]${NC}')"
                     echo "  Variable name can be Mixed Case"
                 fi
@@ -1246,7 +1246,7 @@ main() {
                         done
                     fi
                 else
-                    echo "Invalid usage. Must be"
+                    echo "Invalid usage. Must be:"
                     echo "  '${C["UserCommand"]}--env-get-literal${NC}' with variable name ('${C["UserCommand"]}--env-get-literal VAR${NC}' or '${C["UserCommand"]}--env-get-literal VAR [VAR ...]${NC}')"
                     echo "  Variable name will be forced to UPPER CASE"
                 fi
@@ -1265,7 +1265,7 @@ main() {
                         done
                     fi
                 else
-                    echo "Invalid usage. Must be"
+                    echo "Invalid usage. Must be:"
                     echo "  '${C["UserCommand"]}--env-get-lower-literal${NC}' with variable name ('${C["UserCommand"]}--env-get-lower-literal=Var${NC}' or '${C["UserCommand"]}--env-get-lower-literal Var [Var ...]${NC}')"
                     echo "  Variable name can be Mixed Case"
                 fi
@@ -1275,7 +1275,7 @@ main() {
                     run_script 'env_backup'
                     run_script 'env_set' "${ENVVAR^^}" "${ENVVAL}"
                 else
-                    echo "Invalid usage. Must be"
+                    echo "Invalid usage. Must be:"
                     echo "  '${C["UserCommand"]}--env-set${NC}' with variable name and value ('${C["UserCommand"]}--env-set=VAR,VAL${NC}' or '${C["UserCommand"]}--env-set VAR=Val'${NC})"
                     echo "  Variable name will be forced to UPPER CASE"
                 fi
@@ -1285,7 +1285,7 @@ main() {
                     run_script 'env_backup'
                     run_script 'env_set' "${ENVVAR}" "${ENVVAL}"
                 else
-                    echo "Invalid usage. Must be"
+                    echo "Invalid usage. Must be:"
                     echo "  '${C["UserCommand"]}--env-set-lower${NC}' with variable name and value ('${C["UserCommand"]}--env-set-lower=Var,VAL${NC}' or '${C["UserCommand"]}--env-set-lower Var=Val${NC}')"
                     echo "  Variable name can be Mixed Case"
                 fi
@@ -1304,7 +1304,7 @@ main() {
                         done
                     fi
                 else
-                    echo "Invalid usage. Must be"
+                    echo "Invalid usage. Must be:"
                     echo "  '${C["UserCommand"]}--env-appvars${NC}' with application name ('${C["UserCommand"]}--env-appvars App [App ...]${NC}')"
                 fi
                 ;;
@@ -1322,7 +1322,7 @@ main() {
                         done
                     fi
                 else
-                    echo "Invalid usage. Must be"
+                    echo "Invalid usage. Must be:"
                     echo "  '${C["UserCommand"]}--env-appvars-lines${NC}' with application name ('${C["UserCommand"]}--env-appvars-lines App [App ...]'${NC})"
                 fi
                 ;;
