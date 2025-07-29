@@ -1,3 +1,3 @@
 services:
   speedtest<__instance>:
-    image: henrywhitaker3/speedtest-tracker:${SPEEDTEST<__INSTANCE>__TAG?}
+    image: lscr.io/linuxserver/speedtest-tracker:${SPEEDTEST<__INSTANCE>__TAG?}

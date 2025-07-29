@@ -1,20 +1,18 @@
 # Speedtest
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/henrywhitaker3/speedtest-tracker?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/henrywhitaker3/speedtest-tracker)
-[![GitHub Stars](https://img.shields.io/github/stars/henrywhitaker3/Speedtest-Tracker?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/henrywhitaker3/Speedtest-Tracker)
+[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/docker-speedtest-tracker?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/linuxserver/speedtest-tracker)
+[![GitHub Stars](https://img.shields.io/github/stars/linuxserver/docker-speedtest-tracker?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/linuxserver/docker-speedtest-tracker)
 [![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/compose/.apps/speedtest)
 
 ## Description
 
-[Speedtest Tracker](https://github.com/henrywhitaker3/Speedtest-Tracker) runs a
+[Speedtest Tracker](https://github.com/linuxserver/docker-speedtest-tracker) runs a
 speedtest check every hour and graphs the results. The back-end is written in
 `Laravel` and the front-end uses `React`. It uses the Ookla's Speedtest cli
 package to get the data and uses `Chart.js` to plot the results.
 
 This program can also be used a home page item in
 [Organizr](https://organizr.app).
-
-A demo is available [here](https://speedtest.henrywhitaker.com).
 
 _Disclaimer: You will need to accept Ookla's EULA and privacy agreements in order to use this container._
 
