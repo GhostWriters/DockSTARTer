@@ -1028,7 +1028,7 @@ main() {
         else
             local Branch
             Branch="${VERSION:-$(ds_branch)}"
-            error "DockSTARTer branch '${C["Branch"]}${Branch}${NC}' does not exist."
+            error "${APPLICATION_NAME} branch '${C["Branch"]}${Branch}${NC}' does not exist."
         fi
         exit
     fi
