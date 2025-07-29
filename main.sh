@@ -757,9 +757,9 @@ cmdline() {
                 if [[ -n ${DIALOG-} ]]; then
                     PROMPT="GUI"
                 else
-                    warn "The '--gui' option requires the dialog command to be installed."
-                    warn "'dialog' command not found. Run 'ds -fiv' to install all dependencies."
-                    warn "Coninuing without '--gui' option."
+                    warn "The '${C["UserCommand"]}--gui${NC}' option requires the '${C["Program"]}dialog$}NC}' command to be installed."
+                    warn "'${C["Program"]}dialog${NC}' command not found. Run '${C["UserCommand"]}ds -fiv${NC}' to install all dependencies."
+                    warn "Coninuing without '${C["UserCommand"]}--gui${NC}' option."
                 fi
                 ;;
             h | help)
@@ -1411,9 +1411,9 @@ main() {
         PROMPT="GUI"
         run_script 'menu_main'
     else
-        error "The GUI requires the dialog command to be installed."
-        error "'dialog' command not found. Run 'ds -fiv' to install all dependencies."
-        fatal "Unable to start GUI without dialog command."
+        error "The GUI requires the '${C["Program"]}dialog${NC}' command to be installed."
+        error "'${C["Program"]}dialog${NC}' command not found. Run '${C["UserCommand"]}ds -fiv${NC}' to install all dependencies."
+        fatal "Unable to start GUI without '${C["Program"]}dialog${NC}' command."
     fi
 
 }
