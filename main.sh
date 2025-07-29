@@ -967,7 +967,7 @@ main() {
         fi
     else
         if ! check_repo; then
-            warn "Attempting to clone ${APPLICATION_NAME} repo to ${DETECTED_HOMEDIR}/.docker location."
+            warn "Attempting to clone ${APPLICATION_NAME} repo to ${C["Folder"]}'${DETECTED_HOMEDIR}/.docker${NC}' location."
             git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone ${APPLICATION_NAME} repo.\nFailing command: ${C["FailingCommand"]}git clone https://github.com/GhostWriters/DockSTARTer \"${DETECTED_HOMEDIR}/.docker\""
             notice "Performing first run install."
             exec bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-fvi"
@@ -1041,10 +1041,10 @@ main() {
                 local NoticeText
                 local CommandLine
                 if [[ -n ${THEME-} ]]; then
-                    NoticeText="Applying ${APPLICATION_NAME} theme ${C["Theme"]}${THEME}${NC}"
+                    NoticeText="Applying ${APPLICATION_NAME} theme '${C["Theme"]}${THEME}${NC}'"
                     CommandLine="ds --theme \"${THEME}\""
                 else
-                    NoticeText="Applying ${APPLICATION_NAME} theme ${C["Theme"]}$(run_script 'theme_name')${NC}"
+                    NoticeText="Applying ${APPLICATION_NAME} theme '${C["Theme"]}$(run_script 'theme_name')${NC}'"
                     CommandLine="ds --theme"
                 fi
                 notice "${NoticeText}"
@@ -1119,7 +1119,7 @@ main() {
                 fi
                 ;;
             *)
-                echo "Invalid option: '${THEMEMETHOD-}'"
+                echo "Invalid option: '${C["UserCommand"]}${THEMEMETHOD-}${NC}'"
                 ;;
         esac
         exit
@@ -1171,7 +1171,7 @@ main() {
                     fi
                 else
                     echo "Invalid usage. Must be"
-                    echo "  --env-get with variable name ('--env-get VAR' or '--env-get VAR [VAR ...]')"
+                    echo "  '${C["UserCommand"]}--env-get${NC}' with variable name ('${C["UserCommand"]}--env-get VAR${NC}' or '${C["UserCommand"]}--env-get VAR [VAR ...]${NC}')"
                     echo "  Variable name will be forced to UPPER CASE"
                 fi
                 ;;
@@ -1190,7 +1190,7 @@ main() {
                     fi
                 else
                     echo "Invalid usage. Must be"
-                    echo "  --env-get-lower with variable name ('--env-get-lower=Var' or '--env-get-lower Var [Var ...]')"
+                    echo "  '${C["UserCommand"]}--env-get-lower${NC}' with variable name ('${C["UserCommand"]}--env-get-lower=Var${NC}' or '${C["UserCommand"]}--env-get-lower Var [Var ...]${NC}')"
                     echo "  Variable name can be Mixed Case"
                 fi
                 ;;
@@ -1209,7 +1209,7 @@ main() {
                     fi
                 else
                     echo "Invalid usage. Must be"
-                    echo "  --env-get-line with variable name ('--env-get-line VAR' or '--env-get-line VAR [VAR ...]')"
+                    echo "  '${C["UserCommand"]}--env-get-line${NC}' with variable name ('${C["UserCommand"]}--env-get-line VAR${NC}' or '${C["UserCommand"]}--env-get-line VAR [VAR ...]${NC}')"
                     echo "  Variable name will be forced to UPPER CASE"
                 fi
                 ;;
@@ -1228,7 +1228,7 @@ main() {
                     fi
                 else
                     echo "Invalid usage. Must be"
-                    echo "  --env-get-lower-line with variable name ('--env-get-lower-line=Var' or '--env-get-lower-line Var [Var ...]')"
+                    echo "  '${C["UserCommand"]}--env-get-lower-line${NC}' with variable name ('${C["UserCommand"]}--env-get-lower-line=Var${NC}' or '${C["UserCommand"]}--env-get-lower-line Var [Var ...]${NC}')"
                     echo "  Variable name can be Mixed Case"
                 fi
                 ;;
@@ -1247,7 +1247,7 @@ main() {
                     fi
                 else
                     echo "Invalid usage. Must be"
-                    echo "  --env-get-literal with variable name ('--env-get-literal VAR' or '--env-get-literal VAR [VAR ...]')"
+                    echo "  '${C["UserCommand"]}--env-get-literal${NC}' with variable name ('${C["UserCommand"]}--env-get-literal VAR${NC}' or '${C["UserCommand"]}--env-get-literal VAR [VAR ...]${NC}')"
                     echo "  Variable name will be forced to UPPER CASE"
                 fi
                 ;;
@@ -1266,7 +1266,7 @@ main() {
                     fi
                 else
                     echo "Invalid usage. Must be"
-                    echo "  --env-get-lower-literal with variable name ('--env-get-lower-literal=Var' or '--env-get-lower-literal Var [Var ...]')"
+                    echo "  '${C["UserCommand"]}--env-get-lower-literal${NC}' with variable name ('${C["UserCommand"]}--env-get-lower-literal=Var${NC}' or '${C["UserCommand"]}--env-get-lower-literal Var [Var ...]${NC}')"
                     echo "  Variable name can be Mixed Case"
                 fi
                 ;;
@@ -1276,7 +1276,7 @@ main() {
                     run_script 'env_set' "${ENVVAR^^}" "${ENVVAL}"
                 else
                     echo "Invalid usage. Must be"
-                    echo "  --env-set with variable name and value ('--env-set=VAR,VAL' or '--env-set VAR=Val')"
+                    echo "  '${C["UserCommand"]}--env-set${NC}' with variable name and value ('${C["UserCommand"]}--env-set=VAR,VAL${NC}' or '${C["UserCommand"]}--env-set VAR=Val'${NC})"
                     echo "  Variable name will be forced to UPPER CASE"
                 fi
                 ;;
@@ -1286,7 +1286,7 @@ main() {
                     run_script 'env_set' "${ENVVAR}" "${ENVVAL}"
                 else
                     echo "Invalid usage. Must be"
-                    echo "  --env-set-lower with variable name and value ('--env-set-lower=Var,VAL' or '--env-set-lower Var=Val')"
+                    echo "  '${C["UserCommand"]}--env-set-lower${NC}' with variable name and value ('${C["UserCommand"]}--env-set-lower=Var,VAL${NC}' or '${C["UserCommand"]}--env-set-lower Var=Val${NC}')"
                     echo "  Variable name can be Mixed Case"
                 fi
                 ;;
@@ -1305,7 +1305,7 @@ main() {
                     fi
                 else
                     echo "Invalid usage. Must be"
-                    echo "  --env-appvars with application name ('--env-appvars App [App ...]')"
+                    echo "  '${C["UserCommand"]}--env-appvars${NC}' with application name ('${C["UserCommand"]}--env-appvars App [App ...]${NC}')"
                 fi
                 ;;
             env-appvars-lines)
@@ -1323,11 +1323,11 @@ main() {
                     fi
                 else
                     echo "Invalid usage. Must be"
-                    echo "  --env-appvars-lines with application name ('--env-appvars-lines App [App ...]')"
+                    echo "  '${C["UserCommand"]}--env-appvars-lines${NC}' with application name ('${C["UserCommand"]}--env-appvars-lines App [App ...]'${NC})"
                 fi
                 ;;
             *)
-                echo "Invalid option: '${ENVMETHOD-}'"
+                echo "Invalid option: '${C["UserCommand"]}${ENVMETHOD-}${NC}'"
                 ;;
         esac
         exit
@@ -1369,7 +1369,7 @@ main() {
                 ;;
 
             *)
-                echo "Invalid option: '${LISTMETHOD-}'"
+                echo "Invalid option: '${C["UserCommand"]}${LISTMETHOD-}${NC}'"
                 ;;
         esac
         exit
@@ -1401,7 +1401,7 @@ main() {
                 run_script 'env_update'
                 ;;
             *)
-                echo "Invalid option: '${STATUSMETHOD-}'"
+                echo "Invalid option: '${C["UserCommand"]}${STATUSMETHOD-}${NC}'"
                 ;;
         esac
         exit
