@@ -80,13 +80,13 @@ menu_app_select() {
             if [[ -n ${AppsToAdd-} || -n ${AppsToRemove-} ]]; then
                 if [[ -n ${AppsToAdd-} ]]; then
                     local FormattedAppList
-                    local HeadingAddCommand=' ds --add '
+                    local HeadingAddCommand=" ${APPLICATION_COMMAND} --add "
                     local Indent='          '
                     FormattedAppList="$(printf "${Indent}%s\n" "${AppsToAdd}" | fmt -w "${COLUMNS}")"
                     HeadingAdd="Adding applications:\n${DC[CommandLine]}${HeadingAddCommand}${FormattedAppList:${#Indent}}\n"
                 fi
                 if [[ -n ${AppsToRemove-} ]]; then
-                    local HeadingRemoveCommand=' ds --remove '
+                    local HeadingRemoveCommand=" ${APPLICATION_COMMAND} --remove "
                     local Indent='             '
                     FormattedAppList="$(printf "${Indent}%s\n" "${AppsToRemove}" | fmt -w "${COLUMNS}")"
                     HeadingRemove="${DC[Subtitle]}Removing applications:\n${DC[CommandLine]}${HeadingRemoveCommand}${FormattedAppList:${#Indent}}\n"

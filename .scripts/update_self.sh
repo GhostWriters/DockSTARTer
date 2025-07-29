@@ -49,7 +49,7 @@ update_self() {
         local ErrorMessage="${APPLICATION_NAME} branch '${C["Branch"]}${BRANCH}${NC}' does not exists."
         if use_dialog_box; then
             error "${ErrorMessage}" |&
-                dialog_pipe "${DC[TitleError]}${Title}" "${DC[CommandLine]} ds --update $*"
+                dialog_pipe "${DC[TitleError]}${Title}" "${DC[CommandLine]} ${APPLICATION_COMMAND} --update $*"
         else
             error "${ErrorMessage}"
         fi
@@ -60,7 +60,7 @@ update_self() {
             {
                 notice "${APPLICATION_NAME} is already up to date on branch ${C["Branch"]}${CurrentBranch}${NC}."
                 notice "Current version is ${C["Version"]}${CurrentVersion}${NC}"
-            } |& dialog_pipe "${DC[TitleWarning]}${Title}" "${DC[CommandLine]} ds --update $*"
+            } |& dialog_pipe "${DC[TitleWarning]}${Title}" "${DC[CommandLine]} ${APPLICATION_COMMAND} --update $*"
         else
             notice "${APPLICATION_NAME} is already up to date on branch ${C["Branch"]}${CurrentBranch}${NC}."
             notice "Current version is ${C["Version"]}${CurrentVersion}${NC}"
@@ -80,7 +80,7 @@ update_self() {
 
     if use_dialog_box; then
         commands_update_self "${BRANCH}" "${YesNotice}" "$@" |&
-            dialog_pipe "${DC[TitleSuccess]}${Title}" "${YesNotice}\n${DC[CommandLine]} ds --update $*"
+            dialog_pipe "${DC[TitleSuccess]}${Title}" "${YesNotice}\n${DC[CommandLine]} ${APPLICATION_COMMAND} --update $*"
     else
         commands_update_self "${BRANCH}" "${YesNotice}" "$@"
     fi
