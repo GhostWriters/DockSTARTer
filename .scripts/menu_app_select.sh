@@ -5,43 +5,57 @@ IFS=$'\n\t'
 menu_app_select() {
     local Title="Select Applications"
 
-    local -a AppList AddedApps
-    local AppListFile AddedAppsFile
+    local -a AppList AddedApps BuiltinApps
+    local AddedAppsRegex=''
 
-    AppListFile=$(mktemp)
-    AddedAppsFile=$(mktemp)
-    {
-        local -a AllApps
-        readarray -t AllApps < <((
-            run_script 'app_list_added'
-            run_script 'app_list_nondeprecated'
-        ) | tr '[:upper:]' '[:lower:]' | sort -u | run_script 'app_filter_runnable_pipe' | run_script 'app_nicename_pipe')
-        echo "Currently added applications:"
-        local LastAppLetter=''
-        for AppName in "${AllApps[@]-}"; do
-            local AppLetter=${AppName:0:1}
-            AppLetter=${AppLetter^^}
-            if [[ -n ${LastAppLetter-} && ${LastAppLetter} != "${AppLetter}" ]]; then
-                printf '%s\n' "" "" "off" >> "${AppListFile}"
-            fi
-            LastAppLetter=${AppLetter}
-            local AppDescription
-            AppDescription=$(run_script 'app_description_from_template' "${AppName}")
-            local AppOnOff
-            if run_script 'app_is_added' "${AppName}"; then
-                echo "   ${AppName}"
-                AppOnOff="on"
-                printf '%s\n' "${AppName}" >> "${AddedAppsFile}"
-            else
-                AppOnOff="off"
-            fi
-            printf '%s\n' "${AppName}" "${AppDescription}" "${AppOnOff}" >> "${AppListFile}"
-        done
-    } |& dialog_pipe "${DC[TitleSuccess]}${Title}" "Preparing app menu. Please be patient, this can take a while." "${DIALOGTIMEOUT}"
+    readarray -t AddedApps < <(
+        run_script 'app_list_added' |
+            run_script 'app_filter_runnable_pipe' |
+            tr '[:upper:]' '[:lower:]' |
+            sort -u |
+            run_script 'app_nicename_pipe'
+    ) 2> /dev/null
 
-    readarray -t AddedApps < "${AddedAppsFile}"
-    readarray -t AppList < "${AppListFile}"
-    rm "${AddedAppsFile}" "${AppListFile}" &> /dev/null
+    local MessageText="${DC["Subtitle"]}Preparing app menu. Please be patient, this can take a while.${DC[NC]}"
+    dialog_info "${DC["TitleSuccess"]}${Title}" "${MessageText}"
+    if [[ -n ${AddedApps[*]} ]]; then
+        MessageText+="\n\nCurrently added applications:\n"
+        MessageText+=$(printf '   %s\n' "${AddedApps[@]}")
+        dialog_info "${DC["TitleSuccess"]}${Title}" "${MessageText}"
+        {
+            IFS='|'
+            AddedAppsRegex="${AddedApps[*]}"
+        }
+
+    fi
+
+    readarray -t BuiltinApps < <(
+        run_script 'app_list_nondeprecated' |
+            run_script 'app_filter_runnable_pipe'
+    ) 2> /dev/null
+
+    local -a AllApps
+    readarray -t AllApps < <(
+        printf '%s\n' "${AddedApps[@],,}" "${BuiltinApps[@],,}" |
+            sort -u |
+            run_script 'app_nicename_pipe'
+    ) 2> /dev/null
+    local LastAppLetter=''
+    for AppName in "${AllApps[@]-}"; do
+        local AppLetter=${AppName:0:1}
+        AppLetter=${AppLetter^^}
+        if [[ -n ${LastAppLetter-} && ${LastAppLetter} != "${AppLetter}" ]]; then
+            AppList+=("" "" "off")
+        fi
+        LastAppLetter=${AppLetter}
+        local AppDescription
+        AppDescription=$(run_script 'app_description_from_template' "${AppName}")
+        if [[ ${AppName} =~ ${AddedAppsRegex} ]]; then
+            AppList+=("${AppName}" "${AppDescription}" "on")
+        else
+            AppList+=("${AppName}" "${AppDescription}" "off")
+        fi
+    done 2> /dev/null
 
     local -i SelectedAppsDialogButtonPressed
     local SelectedApps
