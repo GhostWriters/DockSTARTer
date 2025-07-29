@@ -501,7 +501,7 @@ usage() {
         APPLICATION_HEADING+=" (${C["Update"]}Update Available${NC})"
     fi
     cat << EOF
-Usage: ${APPLICATION_COMMAND} [OPTION]
+Usage: ${APPLICATION_COMMAND} [<OPTION> ...]
 NOTE: ${APPLICATION_COMMAND} shortcut is only available after the first run of
     bash main.sh
 
