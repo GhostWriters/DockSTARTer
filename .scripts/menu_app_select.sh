@@ -8,6 +8,46 @@ menu_app_select() {
     local -a AppList AddedApps BuiltinApps
     local AddedAppsRegex=''
 
+    local -a ProgressItems=(
+        "FindAddedApps"
+        "FindBuiltinApps"
+        "ProcessAppList"
+    )
+    local -A ProgressTitle=(
+        ["FindAddedApps"]="Detecting installed applications"
+        ["FindBuiltinApps"]="${DC["Subtitle"]}Detecting built in applications"
+        ["ProcessAppList"]="Processing application list to create menu"
+    )
+
+    local -A StatusText=(
+        ["Waiting"]="Waiting"
+        ["InProgress"]="In Progress"
+        ["Completed"]="Completed"
+    )
+    local -A StatusHighlight=(
+        ["Waiting"]="${DC[NC]}"
+        ["InProgress"]="${DC[NC]}"
+        ["Completed"]="${DC[NC]}${DC["Subtitle"]}"
+    )
+
+    local -A ProgressStatus
+    for item in "${ProgressItems[@]}"; do
+        ProgressStatus["${item}"]="Waiting"
+    done
+    local -i ProgressPercent=0
+
+    local ProgressMessage="${DC["Subtitle"]}Preparing app menu. Please be patient, this can take a while.${DC[NC]}"
+
+    ProgressStatus["FindAddedApps"]="InProgress"
+    ProgressOptions=()
+    for item in "${ProgressItems[@]}"; do
+        local Status="${ProgressStatus["${item}"]}"
+        local Highlight="${StatusHighlight["${Status}"]}"
+        local ShowStatus="${StatusText["${Status}"]}"
+        ProgressOptions+=("${Highlight}${ProgressTitle["${item}"]}${DC[NC]}" "${ShowStatus}")
+    done
+    dialog_mixedgauge "${DC["TitleSuccess"]}${Title}" "${ProgressMessage}" "${ProgressPercent}" "${ProgressOptions[@]}"
+
     readarray -t AddedApps < <(
         run_script 'app_list_added' |
             run_script 'app_filter_runnable_pipe' |
@@ -16,23 +56,51 @@ menu_app_select() {
             run_script 'app_nicename_pipe'
     ) 2> /dev/null
 
-    local MessageText="${DC["Subtitle"]}Preparing app menu. Please be patient, this can take a while.${DC[NC]}"
-    dialog_info "${DC["TitleSuccess"]}${Title}" "${MessageText}"
     if [[ -n ${AddedApps[*]} ]]; then
-        MessageText+="\n\nCurrently added applications:\n"
-        MessageText+=$(printf '   %s\n' "${AddedApps[@]}")
-        dialog_info "${DC["TitleSuccess"]}${Title}" "${MessageText}"
+        local Indent='   '
+        # Escape \ with \\ to use in sed
+        local HighlightReplace="${DC["Highlight"]//\\/\\\\}"
+        local NCReplace="${DC["NC"]//\\/\\\\}"
+        local -i TextCols
+        TextCols=$((COLUMNS - DC["WindowColsAdjust"] - DC["TextColsAdjust"] - ${#Indent}))
+        local AddedAppsText
+        AddedAppsText="$(printf '%s\n' "${AddedApps[@]}" | column -c "${TextCols}")"
+        AddedAppsText="$(sed -E "s/^/${Indent}/g ; s/(\<[a-zA-Z0-9_]*\>)/${HighlightReplace}\1${NCReplace}/g" <<< "${AddedAppsText}")"
+        ProgressMessage+="\n\nCurrently installed applications:\n\n${AddedAppsText}\n"
         {
             IFS='|'
             AddedAppsRegex="${AddedApps[*]}"
         }
-
     fi
+    ProgressPercent+=10
+    ProgressStatus["FindAddedApps"]="Completed"
+    ProgressStatus["FindBuiltinApps"]="InProgress"
+
+    ProgressOptions=()
+    for item in "${ProgressItems[@]}"; do
+        local Status="${ProgressStatus["${item}"]}"
+        local Highlight="${StatusHighlight["${Status}"]}"
+        local ShowStatus="${StatusText["${Status}"]}"
+        ProgressOptions+=("${Highlight}${ProgressTitle["${item}"]}${DC[NC]}" "${ShowStatus}")
+    done
+    dialog_mixedgauge "${DC["TitleSuccess"]}${Title}" "${ProgressMessage}" "${ProgressPercent}" "${ProgressOptions[@]}"
 
     readarray -t BuiltinApps < <(
         run_script 'app_list_nondeprecated' |
             run_script 'app_filter_runnable_pipe'
     ) 2> /dev/null
+    ProgressPercent+=10
+    ProgressStatus["FindBuiltinApps"]="Completed"
+    ProgressStatus["ProcessAppList"]="InProgress"
+
+    ProgressOptions=()
+    for item in "${ProgressItems[@]}"; do
+        local Status="${ProgressStatus["${item}"]}"
+        local Highlight="${StatusHighlight["${Status}"]}"
+        local ShowStatus="${StatusText["${Status}"]}"
+        ProgressOptions+=("${Highlight}${ProgressTitle["${item}"]}${DC[NC]}" "${ShowStatus}")
+    done
+    dialog_mixedgauge "${DC["TitleSuccess"]}${Title}" "${ProgressMessage}" "${ProgressPercent}" "${ProgressOptions[@]}"
 
     local -a AllApps
     readarray -t AllApps < <(
@@ -40,14 +108,34 @@ menu_app_select() {
             sort -u |
             run_script 'app_nicename_pipe'
     ) 2> /dev/null
+    ProgressPercent+=10
+
+    local InitialPercent=${ProgressPercent}
+    ProgressStatus["ProcessAppList"]="InProgress"
+    local -i AppCount=${#AllApps[@]}
     local LastAppLetter=''
-    for AppName in "${AllApps[@]-}"; do
+    for AppNumber in "${!AllApps[@]}"; do
+        ProgressPercent=$((InitialPercent + ((100 - InitialPercent) * AppNumber / AppCount)))
+        local AppName
+        AppName="${AllApps["${AppNumber}"]}"
         local AppLetter=${AppName:0:1}
         AppLetter=${AppLetter^^}
         if [[ -n ${LastAppLetter-} && ${LastAppLetter} != "${AppLetter}" ]]; then
+            ProgressOptions=()
+            for item in "${ProgressItems[@]}"; do
+                local Status="${ProgressStatus["${item}"]}"
+                local Highlight="${StatusHighlight["${Status}"]}"
+                local ShowStatus="${StatusText["${Status}"]}"
+                if [[ ${item} == "ProcessAppList" ]]; then
+                    ShowStatus="${AppLetter}"
+                fi
+                ProgressOptions+=("${Highlight}${ProgressTitle["${item}"]}${DC[NC]}" "${ShowStatus}")
+            done
+            dialog_mixedgauge "${DC["TitleSuccess"]}${Title}" "${ProgressMessage}" "${ProgressPercent}" "${ProgressOptions[@]}"
             AppList+=("" "" "off")
         fi
         LastAppLetter=${AppLetter}
+        AppName=$(run_script 'app_nicename' "${AppName}")
         local AppDescription
         AppDescription=$(run_script 'app_description_from_template' "${AppName}")
         if [[ ${AppName} =~ ${AddedAppsRegex} ]]; then
@@ -134,6 +222,19 @@ menu_app_select() {
             fi
             ;;
     esac
+}
+
+dialog_mixedgauge() {
+    local Title=${1:-}
+    local Message=${2:-}
+    shift 2
+    Title="$(strip_ansi_colors "${Title}")"
+    Message="$(strip_ansi_colors "${Message}")"
+    _dialog_ \
+        --title "${Title}" \
+        --mixedgauge "${Message}" \
+        "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" \
+        "${@}"
 }
 
 test_menu_app_select() {
