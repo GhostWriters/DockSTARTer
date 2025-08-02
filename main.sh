@@ -596,6 +596,8 @@ that take app names can use the form app: to refer to the same file.
     Prompt to remove the .env variables for the app specified
 -s --status <appname>
     Returns the enabled/disabled status for the app specified
+-S --select
+    Bring up the application selection menu
 --status-disable <appname>
     Disable the app specified
 --status-enable <appname>
@@ -662,7 +664,7 @@ trap 'cleanup' ERR EXIT SIGABRT SIGALRM SIGHUP SIGINT SIGQUIT SIGTERM
 # Command Line Arguments
 readonly ARGS=("$@")
 cmdline() {
-    while getopts ":-:a:c:efghilpr:s:t:T:u:vV:x" OPTION; do
+    while getopts ":-:a:c:efghilpr:s:St:T:u:vV:x" OPTION; do
         # support long options: https://stackoverflow.com/a/28466267/519360
         if [ "$OPTION" = "-" ]; then # long option: reformulate OPTION and OPTARG
             OPTION="${OPTARG}"       # extract long option name
@@ -838,6 +840,9 @@ cmdline() {
                     error "'${C["UserCommand"]}${OPTION}${NC}' requires an option."
                     exit 1
                 fi
+                ;;
+            S | select)
+                readonly SELECT=1
                 ;;
             t | test)
                 if [[ -n ${OPTARG-} ]]; then
@@ -1046,6 +1051,11 @@ main() {
     fi
     if [[ -n ${PRUNE-} ]]; then
         run_script 'docker_prune'
+        exit
+    fi
+    if [[ -n ${SELECT-} ]]; then
+        PROMPT='GUI'
+        run_script 'menu_app_select'
         exit
     fi
     if [[ -n ${THEMEMETHOD-} ]]; then
