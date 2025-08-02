@@ -15,9 +15,9 @@ declare -A ProgressTitle=(
     ["FindBuiltinApps"]="Detecting built in applications"
     ["ProcessAppList"]="Processing application list to create menu"
 )
-declare -i ProgressTitleLength=0
+declare -i MaxTitleLength=0
 for item in "${ProgressTitle[@]}"; do
-    ProgressTitleLength=$((ProgressTitleLength < ${#item} ? ${#item} : ProgressTitleLength))
+    MaxTitleLength=$((${#item} > MaxTitleLength ? ${#item} : MaxTitleLength))
 done
 declare -A StatusText=(
     ["_Waiting_"]="  Waiting  "
@@ -133,6 +133,7 @@ menu_app_select() {
     ProgressPercent=100
     ProgressStatus["ProcessAppList"]="_Completed_"
     update_gauge
+    sleep 1
 
     close_gauge
 
@@ -227,7 +228,8 @@ update_gauge_text() {
         local ShowTitle="${ProgressTitle["${item}"]}"
         local ShowStatus="${StatusText["${Status}"]:-${Status}}"
         local -i IndentLength
-        IndentLength=$((ProgressTitleLength - ${#ShowTitle} + 1))
+        local -i TitleLength=${#ShowTitle}
+        IndentLength=$((MaxTitleLength - TitleLength + 1))
         local Indent
         Indent="$(printf "%${IndentLength}s" '')"
         ProgressHeading+=("${Highlight}${ShowTitle}${DC[NC]}${Indent}${Highlight}[${ShowStatus}]${DC[NC]}")
@@ -262,6 +264,8 @@ show_gauge() {
         --backtitle "${BACKTITLE}"
         --title "${DC["TitleSuccess"]}${Title}"
         --no-trim
+        --no-collapse
+        --cr-wrap
         --gauge "${DialogGaugeText}"
         "${GaugeDialogRows}" "$((ScreenCols - DC["WindowColsAdjust"]))"
         "${ProgressPercent}"
