@@ -148,7 +148,7 @@ menu_config_vars() {
             local DialogHeading
             DialogHeading="$(run_script 'menu_heading' "${APPNAME-}")"
             local -a LineDialog=(
-                --stdout
+                --output-fd 1
                 --extra-button
                 --ok-label "Select"
                 --extra-label "Remove"

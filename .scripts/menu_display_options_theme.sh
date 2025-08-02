@@ -37,7 +37,7 @@ menu_display_options_theme() {
             fi
         done
         local -a ChoiceDialog=(
-            --stdout
+            --output-fd 1
             --title "${DC["Title"]}${Title}"
             --ok-label "Select"
             --cancel-label "Back"
