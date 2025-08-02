@@ -246,7 +246,6 @@ show_gauge() {
     mkfifo "${GaugePipe}"
     exec {GaugePipe_fd}<> "${GaugePipe}"
     ProgressLog=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.ProgressLog.XXXXXXXXXX")
-    #mkfifo "${ProgressLog}"
     exec {ProgressLog_fd}<> "${ProgressLog}"
     local -i ScreenRows=${LINES}
     local -i ScreenCols=${COLUMNS}
@@ -257,7 +256,6 @@ show_gauge() {
     local -i LogDialogStartRow LogDialogRows
     LogDialogStartRow="$((GaugeDialogStartRow + GaugeDialogRows + (DC["WindowRowsAdjust"] - 3)))"
     LogDialogRows="$((ScreenRows - LogDialogStartRow - (DC["WindowRowsAdjust"] - 3) - 1))"
-    local -i LogDialogStartRow
     _dialog_backtitle_
     local -a GaugeDialog=(
         --begin "${GaugeDialogStartRow}" 2
