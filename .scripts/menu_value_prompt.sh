@@ -293,7 +293,7 @@ menu_value_prompt() {
         DialogHeading="$(run_script 'menu_heading' "${APPNAME}" "${VarName}" "${OptionValue["${OriginalValueOption}"]-}" "${CurrentValueHeading}")"
         local SelectValueMenuText="${DialogHeading}\n\nWhat would you like set for ${DC[Highlight]}${CleanVarName}${DC[NC]}?${ValueDescription}"
         local SelectValueDialogParams=(
-            --stdout
+            --output-fd 1
             --title "${DC["Title"]}${Title}"
             --item-help
         )
