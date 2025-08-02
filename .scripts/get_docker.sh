@@ -21,7 +21,8 @@ command_get_docker() {
     local MKTEMP_GET_DOCKER
     local COMMAND
     #shellcheck disable=SC2034 # (warning): MKTEMP_GET_DOCKER appears unused. Verify use (or export if used externally).
-    MKTEMP_GET_DOCKER=$(mktemp) || fatal "Failed to create temporary docker install script.\nFailing command: ${C["FailingCommand"]}mktemp"
+    MKTEMP_GET_DOCKER=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.MKTEMP_GET_DOCKER.XXXXXXXXXX") ||
+        fatal "Failed to create temporary docker install script.\nFailing command: ${C["FailingCommand"]}mktemp -t \"${APPLICATION_NAME}.${FUNCNAME[0]}.MKTEMP_GET_DOCKER.XXXXXXXXXX\""
     info "Downloading docker install script."
     #shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
     COMMAND='curl -fsSL https://get.docker.com -o "${MKTEMP_GET_DOCKER}"'

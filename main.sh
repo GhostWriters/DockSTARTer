@@ -169,7 +169,7 @@ declare -Ax DC=()
 declare -x DIALOGOTS
 
 # Log Functions
-MKTEMP_LOG=$(mktemp) || echo -e "Failed to create temporary log file.\nFailing command: ${C["FailingCommand"]}mktemp"
+MKTEMP_LOG=$(mktemp -t "${APPLICATION_NAME}.main.MKTEMP_LOG.XXXXXXXXXX") || echo -e "Failed to create temporary log file.\nFailing command: ${C["FailingCommand"]}mktemp -t \"${APPLICATION_NAME}.${FUNCNAME[0]}.MKTEMP_LOG.XXXXXXXXXX\""
 readonly MKTEMP_LOG
 echo "DockSTARTer Log" > "${MKTEMP_LOG}"
 create_strip_ansi_colors_SEDSTRING() {
