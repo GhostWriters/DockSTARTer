@@ -644,9 +644,9 @@ cleanup() {
     local -ri EXIT_CODE=$?
     trap - ERR EXIT SIGABRT SIGALRM SIGHUP SIGINT SIGQUIT SIGTERM
 
-    #if [[ ${PROMPT:-CLI} == "GUI" ]]; then
-    #    tput reset
-    #fi
+    if [[ ${PROMPT:-CLI} == "GUI" ]]; then
+        tput reset
+    fi
 
     sudo sh -c "cat ${MKTEMP_LOG:-/dev/null} >> ${SCRIPTPATH}/dockstarter.log" || true
     sudo rm -f "${MKTEMP_LOG-}" || true
