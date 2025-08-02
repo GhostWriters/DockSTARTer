@@ -40,8 +40,9 @@ declare ProgressHeading=''
 declare Title="Select Applications"
 declare Subtitle="Preparing app menu. Please be patient, this can take a while."
 declare DialogGaugeText=''
-declare DIALOG_PID
 declare GaugePipe
+declare -i GaugePipe_fd
+declare DIALOG_PID
 
 menu_app_select() {
     ProgressPercent=0
@@ -241,23 +242,23 @@ update_gauge() {
 
 show_gauge() {
     update_gauge_text
+    GaugePipe=$(mktemp -u -t "${APPLICATION_NAME}.${FUNCNAME[0]}.GaugePipe.XXXXXXXXXX")
+    mkfifo "${GaugePipe}"
+    exec {GaugePipe_fd}<> "${GaugePipe}"
     local -a GaugeDialog=(
-        --input-fd 5
+        --input-fd "${GaugePipe_fd}"
         --title "${DC["TitleSuccess"]}${Title}"
         --gauge "${DialogGaugeText}"
         "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
         "${ProgressPercent}"
     )
-    GaugePipe=$(mktemp -u)
-    mkfifo "${GaugePipe}"
-    exec 5<> "${GaugePipe}"
     _dialog_ "${GaugeDialog[@]}" < "${GaugePipe}" &
     # shellcheck disable=SC2034 # (warning): DIALOG_PID appears unused. Verify use (or export if used externally).
     DIALOG_PID=$!
 }
 close_gauge() {
     kill "${DIALOG_PID}"
-    exec 5>&-
+    exec {GaugePipe_fd}>&-
     rm "${GaugePipe}"
 }
 test_menu_app_select() {
