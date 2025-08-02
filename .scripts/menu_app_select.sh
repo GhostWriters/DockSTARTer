@@ -121,7 +121,7 @@ menu_app_select() {
         update_gauge
         local AppDescription
         AppDescription=$(run_script 'app_description_from_template' "${AppName}")
-        if [[ ${AppName} =~ (${AddedAppsRegex}) ]]; then
+        if [[ ${AppName} =~ ^(${AddedAppsRegex})$ ]]; then
             AppList+=("${AppName}" "${AppDescription}" "on")
         else
             AppList+=("${AppName}" "${AppDescription}" "off")
