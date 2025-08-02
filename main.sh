@@ -166,7 +166,8 @@ readonly -a DIALOG_BUTTONS=(
 export DIALOG_BUTTONS
 
 declare -Ax DC=()
-declare -x DIALOGOTS
+declare -x DIALOGOPTS
+declare -x BACKTITLE
 
 # Log Functions
 MKTEMP_LOG=$(mktemp -t "${APPLICATION_NAME}.log.XXXXXXXXXX") || echo -e "Failed to create temporary log file.\nFailing command: ${C["FailingCommand"]}mktemp -t \"${APPLICATION_NAME}.log.XXXXXXXXXX\""
@@ -291,7 +292,7 @@ highlighted_list() {
     fi
 }
 
-_dialog_() {
+_dialog_backtitle_() {
     local LeftBackTitle RightBackTitle
     local CleanLeftBackTitle CleanRightBackTitle
 
@@ -322,9 +323,12 @@ _dialog_() {
     IndentLength=$((COLUMNS - ${#CleanLeftBackTitle} - ${#CleanRightBackTitle} - 2))
     local Indent
     Indent="$(printf %${IndentLength}s '')"
-    BackTitle="${LeftBackTitle}${Indent}${RightBackTitle}"
+    BACKTITLE="${LeftBackTitle}${Indent}${RightBackTitle}"
+}
 
-    ${DIALOG} --backtitle "${BackTitle}" "$@"
+_dialog_() {
+    _dialog_backtitle_
+    ${DIALOG} --backtitle "${BACKTITLE}" "$@"
 }
 
 # Check to see if we should use a dialog box
@@ -640,9 +644,9 @@ cleanup() {
     local -ri EXIT_CODE=$?
     trap - ERR EXIT SIGABRT SIGALRM SIGHUP SIGINT SIGQUIT SIGTERM
 
-    if [[ ${PROMPT:-CLI} == "GUI" ]]; then
-        tput reset
-    fi
+    #if [[ ${PROMPT:-CLI} == "GUI" ]]; then
+    #    tput reset
+    #fi
 
     sudo sh -c "cat ${MKTEMP_LOG:-/dev/null} >> ${SCRIPTPATH}/dockstarter.log" || true
     sudo rm -f "${MKTEMP_LOG-}" || true
@@ -1055,7 +1059,7 @@ main() {
     fi
     if [[ -n ${SELECT-} ]]; then
         PROMPT='GUI'
-        run_script 'menu_app_select'
+        run_script 'menu_app_select' || true
         exit
     fi
     if [[ -n ${THEMEMETHOD-} ]]; then

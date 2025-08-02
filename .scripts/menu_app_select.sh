@@ -40,9 +40,9 @@ declare ProgressHeading=''
 declare Title="Select Applications"
 declare Subtitle="Preparing app menu. Please be patient, this can take a while."
 declare DialogGaugeText=''
-declare GaugePipe
-declare -i GaugePipe_fd
-declare DIALOG_PID
+declare GaugePipe ProgressLog
+declare -i GaugePipe_fd ProgressLog_fd
+declare Dialog_PID
 
 menu_app_select() {
     ProgressPercent=0
@@ -55,7 +55,7 @@ menu_app_select() {
             tr '[:upper:]' '[:lower:]' |
             sort -u |
             run_script 'app_nicename_pipe'
-    ) 2> /dev/null
+    ) 2>> "${ProgressLog}"
 
     if [[ -n ${AddedApps[*]} ]]; then
         {
@@ -64,6 +64,20 @@ menu_app_select() {
         }
     fi
 
+    if [[ -n ${AddedApps[*]-} ]]; then
+        printf "\nCurrently installed applications:\n\n" >> "${ProgressLog}"
+        local -i TextCols
+        TextCols=$((COLUMNS - DC["WindowColsAdjust"] - DC["TextColsAdjust"]))
+        local Indent='   '
+        local -a AddedAppsTable
+        readarray -t AddedAppsTable < <(printf "%s\n" "${AddedApps[@]}")
+        readarray -t AddedAppsTable < <(
+            printf "%s\n" "${AddedAppsTable[@]}" |
+                column -c "$((TextCols - ${#Indent}))" |
+                pr -to ${#Indent}
+        )
+        printf "%s\n" "${AddedAppsTable[@]}" >> "${ProgressLog}"
+    fi
     ProgressPercent+=5
     ProgressStatus["FindAddedApps"]="_Completed_"
     ProgressStatus["FindBuiltinApps"]="_InProgress_"
@@ -72,7 +86,7 @@ menu_app_select() {
     readarray -t BuiltinApps < <(
         run_script 'app_list_nondeprecated' |
             run_script 'app_filter_runnable_pipe'
-    ) 2> /dev/null
+    ) 2>> "${ProgressLog}"
 
     ProgressPercent+=5
     ProgressStatus["FindBuiltinApps"]="_Completed_"
@@ -84,7 +98,7 @@ menu_app_select() {
         printf '%s\n' "${AddedApps[@],,}" "${BuiltinApps[@],,}" |
             sort -u |
             run_script 'app_nicename_pipe'
-    ) 2> /dev/null
+    ) 2>> "${ProgressLog}"
 
     ProgressPercent+=5
     update_gauge
@@ -107,7 +121,7 @@ menu_app_select() {
         update_gauge
         local AppDescription
         AppDescription=$(run_script 'app_description_from_template' "${AppName}")
-        if [[ ${AppName} =~ ${AddedAppsRegex} ]]; then
+        if [[ ${AppName} =~ ^(${AddedAppsRegex})$ ]]; then
             AppList+=("${AppName}" "${AppDescription}" "on")
         else
             AppList+=("${AppName}" "${AppDescription}" "off")
@@ -129,8 +143,8 @@ menu_app_select() {
     else
         local SelectAppsDialogText="Choose which apps you would like to install:\n Use ${DC["KeyCap"]}[up]${DC[NC]}, ${DC["KeyCap"]}[down]${DC[NC]}, and ${DC["KeyCap"]}[space]${DC[NC]} to select apps, and ${DC["KeyCap"]}[tab]${DC[NC]} to switch to the buttons at the bottom."
         local SelectedAppsDialogParams=(
-            --stdout
             --title "${DC["Title"]}${Title}"
+            --output-fd 1
         )
         local -i MenuTextLines
         MenuTextLines="$(_dialog_ "${SelectedAppsDialogParams[@]}" --print-text-size "${SelectAppsDialogText}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" | cut -d ' ' -f 1)"
@@ -203,13 +217,11 @@ menu_app_select() {
 
 update_gauge_text() {
     DialogGaugeText=''
+    local -a ProgressHeading
     if [[ -n ${Subtitle-} ]]; then
-        DialogGaugeText+="${DC["Subtitle"]}${Subtitle}${DC["NC"]}\n\n"
+        ProgressHeading+=("${DC["Subtitle"]}${Subtitle}${DC["NC"]}" "")
     fi
-    local -i TextCols
-    TextCols=$((COLUMNS - DC["WindowColsAdjust"] - DC["TextColsAdjust"]))
-    local ProgressHeading=''
-    for item in "${ProgressItems[@]}"; do
+    for item in "${ProgressItems[@]-}"; do
         local Status="${ProgressStatus["${item}"]}"
         local Highlight="${StatusHighlight["${Status}"]:-${StatusHighlight["_InProgress_"]}}"
         local ShowTitle="${ProgressTitle["${item}"]}"
@@ -217,22 +229,10 @@ update_gauge_text() {
         local -i IndentLength
         IndentLength=$((ProgressTitleLength - ${#ShowTitle} + 1))
         local Indent
-        Indent="$(printf %${IndentLength}s '')"
-        ProgressHeading+="${Highlight}${ShowTitle}${DC[NC]}${Indent}${Highlight}[${ShowStatus}]${DC[NC]}\n"
+        Indent="$(printf "%${IndentLength}s" '')"
+        ProgressHeading+=("${Highlight}${ShowTitle}${DC[NC]}${Indent}${Highlight}[${ShowStatus}]${DC[NC]}")
     done
-    DialogGaugeText+="${ProgressHeading}\n"
-    if [[ -n ${AddedApps[*]-} ]]; then
-        DialogGaugeText+="\nCurrently installed applications:\n\n"
-        local Indent='   '
-        # Escape \ with \\ to use in sed
-        local HighlightReplace="${DC["Highlight"]//\\/\\\\}"
-        local NCReplace="${DC["NC"]//\\/\\\\}"
-        local AddedAppsText
-        AddedAppsText="$(printf '%s\n' "${AddedApps[@]}" | column -c "$((TextCols - ${#Indent}))")"
-        AddedAppsText="$(sed -E "s/^/${Indent}/g ; s/(\<[a-zA-Z0-9_]*\>)/${HighlightReplace}\1${NCReplace}/g" <<< "${AddedAppsText}")"
-        DialogGaugeText+="${AddedAppsText}\n"
-    fi
-    DialogGaugeText="$(printf '%b' "${DialogGaugeText}")"
+    DialogGaugeText="$(printf '%s\n' "${ProgressHeading[@]-}")"
 }
 update_gauge() {
     update_gauge_text
@@ -245,21 +245,55 @@ show_gauge() {
     GaugePipe=$(mktemp -u -t "${APPLICATION_NAME}.${FUNCNAME[0]}.GaugePipe.XXXXXXXXXX")
     mkfifo "${GaugePipe}"
     exec {GaugePipe_fd}<> "${GaugePipe}"
+    ProgressLog=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.ProgressLog.XXXXXXXXXX")
+    exec {ProgressLog_fd}<> "${ProgressLog}"
+    local -i ScreenRows=${LINES}
+    local -i ScreenCols=${COLUMNS}
+    local -i GaugeDialogStartRow GaugeDialogTextRows GaugeDialogRows
+    GaugeDialogStartRow=2
+    GaugeDialogTextRows=5
+    GaugeDialogRows="$((GaugeDialogTextRows + DC["TextRowsAdjust"]))"
+    local -i LogDialogStartRow LogDialogRows
+    LogDialogStartRow="$((GaugeDialogStartRow + GaugeDialogRows + (DC["WindowRowsAdjust"] - 3)))"
+    LogDialogRows="$((ScreenRows - LogDialogStartRow - (DC["WindowRowsAdjust"] - 3) - 1))"
+    _dialog_backtitle_
     local -a GaugeDialog=(
-        --input-fd "${GaugePipe_fd}"
+        --begin "${GaugeDialogStartRow}" 2
+        --backtitle "${BACKTITLE}"
         --title "${DC["TitleSuccess"]}${Title}"
+        --no-trim
         --gauge "${DialogGaugeText}"
-        "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+        "${GaugeDialogRows}" "$((ScreenCols - DC["WindowColsAdjust"]))"
         "${ProgressPercent}"
     )
-    _dialog_ "${GaugeDialog[@]}" < "${GaugePipe}" &
-    # shellcheck disable=SC2034 # (warning): DIALOG_PID appears unused. Verify use (or export if used externally).
-    DIALOG_PID=$!
+    local -a LogDialog=(
+        --begin "${LogDialogStartRow}" 2
+        --backtitle "${BACKTITLE}"
+        --title "${DC["Title"]}Log Output"
+        --keep-window
+        --no-trim
+        --tailboxbg "${ProgressLog}"
+        "${LogDialogRows}" "$((ScreenCols - DC["WindowColsAdjust"]))"
+    )
+    local DialogOptions=(
+        "${LogDialog[@]}"
+        --and-widget
+        "${GaugeDialog[@]}"
+    )
+    #local DialogOptions=(
+    #    "${GaugeDialog[@]}"
+    #)
+    _dialog_backtitle_
+    "${DIALOG}" "${DialogOptions[@]}" < "${GaugePipe}" &
+    Dialog_PID=$!
 }
 close_gauge() {
-    kill "${DIALOG_PID}"
+    kill -SIGTERM "${Dialog_PID}"
+    wait "${Dialog_PID}"
     exec {GaugePipe_fd}>&-
-    rm "${GaugePipe}"
+    rm "${GaugePipe}" || true
+    exec {ProgressLog_fd}>&-
+    rm "${ProgressLog}" || true
 }
 test_menu_app_select() {
     # run_script 'menu_app_select'
