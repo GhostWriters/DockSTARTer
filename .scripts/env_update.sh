@@ -25,6 +25,8 @@ env_update() {
             run_script 'env_format_lines' "${ENV_LINES_FILE}" "${APP_DEFAULT_GLOBAL_ENV_FILE}" "${appname}"
         )
     done
+    rm -f "${ENV_LINES_FILE}" ||
+        warn "Failed to remove temporary ${C["File"]}.env${NC} update file.\nFailing command: ${C["FailingCommand"]}rm -f \"${ENV_LINES_FILE}\""
 
     local MKTEMP_ENV_UPDATED
     MKTEMP_ENV_UPDATED=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.MKTEMP_ENV_UPDATED.XXXXXXXXXX") ||
