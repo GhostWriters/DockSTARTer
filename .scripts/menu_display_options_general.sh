@@ -42,7 +42,7 @@ menu_display_options_general() {
             fi
         done
         local -a ChoiceDialog=(
-            --stdout
+            --output-fd 1
             --title "${DC["Title"]}${Title}"
             --ok-label "Select"
             --cancel-label "Back"

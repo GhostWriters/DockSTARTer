@@ -6,7 +6,8 @@ pm_yum_repos() {
     local Title="Update Repositories"
     notice "Updating repositories. Please be patient, this can take a while."
     local MKTEMP_GET_IUS
-    MKTEMP_GET_IUS=$(mktemp) || fatal "Failed to create temporary IUS repo install script.\nFailing command: ${C["FailingCommand"]}mktemp"
+    MKTEMP_GET_IUS=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.MKTEMP_GET_IUS.XXXXXXXXXX") ||
+        fatal "Failed to create temporary IUS repo install script.\nFailing command: ${C["FailingCommand"]}mktemp -t \"${APPLICATION_NAME}.${FUNCNAME[0]}.MKTEMP_GET_IUS.XXXXXXXXXX\""
     info "Downloading IUS install script."
     curl -fsSL setup.ius.io -o "${MKTEMP_GET_IUS}" > /dev/null 2>&1 || fatal "Failed to get IUS install script.\nFailing command: ${C["FailingCommand"]}curl -fsSL setup.ius.io -o \"${MKTEMP_GET_IUS}\""
     info "Running IUS install script."

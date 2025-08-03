@@ -18,7 +18,7 @@ menu_display_options() {
     local LastChoice=""
     while true; do
         local -a ChoiceDialog=(
-            --stdout
+            --output-fd 1
             --title "${DC["Title"]}${Title}"
             --ok-label "Select"
             --cancel-label "Back"

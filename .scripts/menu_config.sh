@@ -32,7 +32,7 @@ menu_config() {
     local LastConfigChoice=""
     while true; do
         local -a ConfigChoiceDialog=(
-            --stdout
+            --output-fd 1
             --title "${DC["Title"]}${Title}"
             --ok-label "Select"
             --cancel-label "Back"

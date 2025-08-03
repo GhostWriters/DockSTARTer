@@ -89,7 +89,7 @@ apply_theme() {
         DC["${VarName}"]="${Value}"
     done
     DC["ThemeName"]="${ThemeName}"
-    DIALOGOPTS="--colors --cr-wrap --no-collapse"
+    DIALOGOPTS="--colors --output-fd 1 --no-trim --cr-wrap --no-collapse"
 
     local LineCharacters Borders Scrollbar Shadow
     if run_script 'env_var_exists' Scrollbar "${MENU_INI_FILE}"; then

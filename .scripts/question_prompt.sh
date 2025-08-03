@@ -46,7 +46,7 @@ question_prompt() {
             notice "${YNPrompt}" &> /dev/null
             # shellcheck disable=SC2206 # (warning): Quote to prevent word splitting/globbing, or split robustly with mapfile or read -a.
             local -a YesNoDialog=(
-                --stdout
+                --output-fd 1
                 --no-collapse
                 --yes-label "${YesButton}"
                 --no-label "${NoButton}"

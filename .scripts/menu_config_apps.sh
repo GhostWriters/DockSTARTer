@@ -16,7 +16,7 @@ menu_config_apps() {
         local WindowRows WindowCols WindowListRows
         local MenuTextSize MenuTextRows MenuTextCols
         #local ScreenSize
-        #ScreenSize="$(_dialog_ --stdout --print-maxsize)"
+        #ScreenSize="$(_dialog_ --output-fd 1 --print-maxsize)"
         #ScreenRows="$(echo "${ScreenSize}" | cut -d ' ' -f 2 | cut -d ',' -f 1)"
         #ScreenCols="$(echo "${ScreenSize}" | cut -d ' ' -f 3)"
         ScreenRows="${LINES}"
@@ -26,7 +26,7 @@ menu_config_apps() {
 
         local MenuText="Select the application to configure"
         local -a AppChoiceParams=(
-            --stdout
+            --output-fd 1
         )
         local MenuTextSize
         MenuTextSize="$(_dialog_ "${AppChoiceParams[@]}" --print-text-size "${MenuText}" "${WindowRowsMax}" "${WindowColsMax}")"

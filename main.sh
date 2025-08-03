@@ -166,10 +166,11 @@ readonly -a DIALOG_BUTTONS=(
 export DIALOG_BUTTONS
 
 declare -Ax DC=()
-declare -x DIALOGOTS
+declare -x DIALOGOPTS
+declare -x BACKTITLE
 
 # Log Functions
-MKTEMP_LOG=$(mktemp) || echo -e "Failed to create temporary log file.\nFailing command: ${C["FailingCommand"]}mktemp"
+MKTEMP_LOG=$(mktemp -t "${APPLICATION_NAME}.log.XXXXXXXXXX") || echo -e "Failed to create temporary log file.\nFailing command: ${C["FailingCommand"]}mktemp -t \"${APPLICATION_NAME}.log.XXXXXXXXXX\""
 readonly MKTEMP_LOG
 echo "DockSTARTer Log" > "${MKTEMP_LOG}"
 create_strip_ansi_colors_SEDSTRING() {
@@ -291,7 +292,7 @@ highlighted_list() {
     fi
 }
 
-_dialog_() {
+_dialog_backtitle_() {
     local LeftBackTitle RightBackTitle
     local CleanLeftBackTitle CleanRightBackTitle
 
@@ -322,9 +323,12 @@ _dialog_() {
     IndentLength=$((COLUMNS - ${#CleanLeftBackTitle} - ${#CleanRightBackTitle} - 2))
     local Indent
     Indent="$(printf %${IndentLength}s '')"
-    BackTitle="${LeftBackTitle}${Indent}${RightBackTitle}"
+    BACKTITLE="${LeftBackTitle}${Indent}${RightBackTitle}"
+}
 
-    ${DIALOG} --backtitle "${BackTitle}" "$@"
+_dialog_() {
+    _dialog_backtitle_
+    ${DIALOG} --backtitle "${BACKTITLE}" "$@"
 }
 
 # Check to see if we should use a dialog box
@@ -596,6 +600,8 @@ that take app names can use the form app: to refer to the same file.
     Prompt to remove the .env variables for the app specified
 -s --status <appname>
     Returns the enabled/disabled status for the app specified
+-S --select
+    Bring up the application selection menu
 --status-disable <appname>
     Disable the app specified
 --status-enable <appname>
@@ -662,7 +668,7 @@ trap 'cleanup' ERR EXIT SIGABRT SIGALRM SIGHUP SIGINT SIGQUIT SIGTERM
 # Command Line Arguments
 readonly ARGS=("$@")
 cmdline() {
-    while getopts ":-:a:c:efghilpr:s:t:T:u:vV:x" OPTION; do
+    while getopts ":-:a:c:efghilpr:s:St:T:u:vV:x" OPTION; do
         # support long options: https://stackoverflow.com/a/28466267/519360
         if [ "$OPTION" = "-" ]; then # long option: reformulate OPTION and OPTARG
             OPTION="${OPTARG}"       # extract long option name
@@ -838,6 +844,9 @@ cmdline() {
                     error "'${C["UserCommand"]}${OPTION}${NC}' requires an option."
                     exit 1
                 fi
+                ;;
+            S | select)
+                readonly SELECT=1
                 ;;
             t | test)
                 if [[ -n ${OPTARG-} ]]; then
@@ -1046,6 +1055,11 @@ main() {
     fi
     if [[ -n ${PRUNE-} ]]; then
         run_script 'docker_prune'
+        exit
+    fi
+    if [[ -n ${SELECT-} ]]; then
+        PROMPT='GUI'
+        run_script 'menu_app_select' || true
         exit
     fi
     if [[ -n ${THEMEMETHOD-} ]]; then
