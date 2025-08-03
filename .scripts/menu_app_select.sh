@@ -5,19 +5,19 @@ IFS=$'\n\t'
 declare -a AppList AddedApps BuiltinApps
 declare AddedAppsRegex=''
 
-declare -a ProgressItems=(
+declare -a PrepareItems=(
     "FindAddedApps"
     "FindBuiltinApps"
     "ProcessAppList"
 )
-declare -A ProgressTitle=(
+declare -A PrepareTitle=(
     ["FindAddedApps"]="Detecting installed applications"
     ["FindBuiltinApps"]="Detecting built in applications"
     ["ProcessAppList"]="Processing application list to create menu"
 )
-declare -i MaxTitleLength=0
-for item in "${ProgressTitle[@]}"; do
-    MaxTitleLength=$((${#item} > MaxTitleLength ? ${#item} : MaxTitleLength))
+declare -i PrepareMaxTitleLength=0
+for item in "${PrepareTitle[@]}"; do
+    PrepareMaxTitleLength=$((${#item} > PrepareMaxTitleLength ? ${#item} : PrepareMaxTitleLength))
 done
 declare -A StatusText=(
     ["_Waiting_"]="  Waiting  "
@@ -25,20 +25,19 @@ declare -A StatusText=(
     ["_Completed_"]=" Completed "
 )
 declare -A StatusHighlight=(
-    ["_Waiting_"]="${DC[NC]}"
-    ["_InProgress_"]="${DC[NC]}"
-    ["_Completed_"]="${DC[NC]}${DC["Subtitle"]}"
+    ["_Waiting_"]="${DC["ProgressWaiting"]}"
+    ["_InProgress_"]="${DC["ProgressInProgress"]}"
+    ["_Completed_"]="${DC["ProgressCompleted"]}"
 )
 
-declare -A ProgressStatus
-for item in "${ProgressItems[@]}"; do
-    ProgressStatus["${item}"]="Waiting"
+declare -A PrepareStatus
+for item in "${PrepareItems[@]}"; do
+    PrepareStatus["${item}"]="_Waiting_"
 done
 declare -i ProgressPercent=0
 declare ProgressHeading=''
 
 declare Title="Select Applications"
-declare Subtitle="Preparing app menu. Please be patient, this can take a while."
 declare DialogGaugeText=''
 declare GaugePipe ProgressLog
 declare -i GaugePipe_fd ProgressLog_fd
@@ -46,7 +45,8 @@ declare Dialog_PID
 
 menu_app_select() {
     ProgressPercent=0
-    ProgressStatus["FindAddedApps"]="_InProgress_"
+    PrepareStatus["FindAddedApps"]="_InProgress_"
+    update_gauge_text
     show_gauge
 
     readarray -t AddedApps < <(
@@ -79,8 +79,8 @@ menu_app_select() {
         printf "%s\n" "${AddedAppsTable[@]}" >> "${ProgressLog}"
     fi
     ProgressPercent+=5
-    ProgressStatus["FindAddedApps"]="_Completed_"
-    ProgressStatus["FindBuiltinApps"]="_InProgress_"
+    PrepareStatus["FindAddedApps"]="_Completed_"
+    PrepareStatus["FindBuiltinApps"]="_InProgress_"
     update_gauge
 
     readarray -t BuiltinApps < <(
@@ -89,8 +89,8 @@ menu_app_select() {
     ) 2>> "${ProgressLog}"
 
     ProgressPercent+=5
-    ProgressStatus["FindBuiltinApps"]="_Completed_"
-    ProgressStatus["ProcessAppList"]="_InProgress_"
+    PrepareStatus["FindBuiltinApps"]="_Completed_"
+    PrepareStatus["ProcessAppList"]="_InProgress_"
     update_gauge
 
     local -a AllApps
@@ -117,7 +117,7 @@ menu_app_select() {
         LastAppLetter=${AppLetter}
         AppName=$(run_script 'app_nicename' "${AppName}")
         ProgressPercent=$((InitialPercent + ((100 - InitialPercent) * AppNumber / AppCount)))
-        ProgressStatus["ProcessAppList"]="${AppName}"
+        PrepareStatus["ProcessAppList"]="${AppName}"
         update_gauge
         local AppDescription
         AppDescription=$(run_script 'app_description_from_template' "${AppName}")
@@ -127,11 +127,11 @@ menu_app_select() {
             AppList+=("${AppName}" "${AppDescription}" "off")
         fi
         ProgressPercent=$((InitialPercent + ((100 - InitialPercent) * AppNumber / AppCount)))
-        ProgressStatus["ProcessAppList"]="${AppName}"
+        PrepareStatus["ProcessAppList"]="${AppName}"
         update_gauge
     done
     ProgressPercent=100
-    ProgressStatus["ProcessAppList"]="_Completed_"
+    PrepareStatus["ProcessAppList"]="_Completed_"
     update_gauge
     sleep 1
 
@@ -219,17 +219,16 @@ menu_app_select() {
 update_gauge_text() {
     DialogGaugeText=''
     local -a ProgressHeading
-    if [[ -n ${Subtitle-} ]]; then
-        ProgressHeading+=("${DC["Subtitle"]}${Subtitle}${DC["NC"]}" "")
-    fi
-    for item in "${ProgressItems[@]-}"; do
-        local Status="${ProgressStatus["${item}"]}"
+    local Subtitle="Preparing app menu. Please be patient, this can take a while."
+    ProgressHeading+=("${DC["Subtitle"]}${Subtitle}${DC["NC"]}" "")
+    for item in "${PrepareItems[@]-}"; do
+        local Status="${PrepareStatus["${item}"]}"
         local Highlight="${StatusHighlight["${Status}"]:-${StatusHighlight["_InProgress_"]}}"
-        local ShowTitle="${ProgressTitle["${item}"]}"
+        local ShowTitle="${PrepareTitle["${item}"]}"
         local ShowStatus="${StatusText["${Status}"]:-${Status}}"
         local -i IndentLength
         local -i TitleLength=${#ShowTitle}
-        IndentLength=$((MaxTitleLength - TitleLength + 1))
+        IndentLength=$((PrepareMaxTitleLength - TitleLength + 1))
         local Indent
         Indent="$(printf "%${IndentLength}s" '')"
         ProgressHeading+=("${Highlight}${ShowTitle}${DC[NC]}${Indent}${Highlight}[${ShowStatus}]${DC[NC]}")
@@ -243,7 +242,6 @@ update_gauge() {
 }
 
 show_gauge() {
-    update_gauge_text
     GaugePipe=$(mktemp -u -t "${APPLICATION_NAME}.${FUNCNAME[0]}.GaugePipe.XXXXXXXXXX")
     mkfifo "${GaugePipe}"
     exec {GaugePipe_fd}<> "${GaugePipe}"
