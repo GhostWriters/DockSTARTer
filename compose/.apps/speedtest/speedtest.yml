@@ -6,6 +6,7 @@ services:
       - PGID=${PGID?}
       - PUID=${PUID?}
       - TZ=${TZ?}
+      - DISPLAY_TIMEZONE=${TZ?}
     restart: ${SPEEDTEST<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
