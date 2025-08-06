@@ -1057,11 +1057,6 @@ main() {
         run_script 'docker_prune'
         exit
     fi
-    if [[ -n ${SELECT-} ]]; then
-        PROMPT='GUI'
-        run_script 'menu_app_select' || true
-        exit
-    fi
     if [[ -n ${THEMEMETHOD-} ]]; then
         case "${THEMEMETHOD}" in
             theme)
@@ -1411,6 +1406,11 @@ main() {
             run_script 'appvars_purge' "${REMOVE}"
             run_script 'env_update'
         fi
+        exit
+    fi
+    if [[ -n ${SELECT-} ]]; then
+        PROMPT='GUI'
+        run_script 'menu_app_select' || true
         exit
     fi
     if [[ -n ${STATUSMETHOD-} ]]; then
