@@ -30,7 +30,7 @@ jobs:
   shellcheck:
     runs-on: ubuntu-latest
     container:
-      image: koalaman/shellcheck-alpine:v0.10.0@sha256:5921d946dac740cbeec2fb1c898747b6105e585130cc7f0602eec9a10f7ddb63
+      image: koalaman/shellcheck-alpine:v0.11.0@sha256:9955be09ea7f0dbf7ae942ac1f2094355bb30d96fffba0ec09f5432207544002
       options: --user 0:0
     steps:
       - name: Checkout

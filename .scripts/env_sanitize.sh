@@ -5,14 +5,22 @@ IFS=$'\n\t'
 env_sanitize() {
     # Backup the user files
     run_script 'env_backup'
+
     # Migrate from old global variable names
     run_script 'env_migrate_global'
-    # Copy any variables that might have been deleted
+
+    # Add any default global variables that might have been deleted
     run_script 'env_merge_newonly' "${COMPOSE_ENV}" "${COMPOSE_ENV_DEFAULT_FILE}"
     local -a VarsToUpdate
     local -A UpdatedVarValue
+    local VarList
+
     # Set defaults for some "special cases" of the global variables
-    for VarName in DOCKER_HOSTNAME TZ; do
+    VarList=(
+        DOCKER_HOSTNAME
+        TZ
+    )
+    for VarName in "${VarList[@]-}"; do
         local Value
         Value="$(run_script 'env_get' "${VarName}")"
         if [[ -z ${Value-} ]]; then
@@ -23,7 +31,14 @@ env_sanitize() {
             UpdatedVarValue["${VarName}"]="${Default}"
         fi
     done
-    for VarName in GLOBAL_LAN_NETWORK DOCKER_GID PGID PUID; do
+
+    VarList=(
+        GLOBAL_LAN_NETWORK
+        DOCKER_GID
+        PGID
+        PUID
+    )
+    for VarName in "${VarList[@]-}"; do
         local Value
         Value="$(run_script 'env_get' "${VarName}")"
         if [[ -z ${Value-} ]] || echo "${Value-}" | grep -q 'x'; then
@@ -35,16 +50,7 @@ env_sanitize() {
         fi
     done
 
-    # Don't set WATCHTOWER_NETWORK_MODE to none
-    local WATCHTOWER_NETWORK_MODE
-    WATCHTOWER_NETWORK_MODE="$(run_script 'env_get' WATCHTOWER__NETWORK_MODE)"
-    if [[ ${WATCHTOWER_NETWORK_MODE-} == "none" ]]; then
-        VarsToUpdate+=("WATCHTOWER_NETWORK_MODE")
-        UpdatedVarValue["WATCHTOWER_NETWORK_MODE"]="''"
-    fi
-
     # Replace ~ with /home/username
-    # Start with the global volume variables
     local -a VarList=(
         "DOCKER_VOLUME_CONFIG"
         "DOCKER_VOLUME_STORAGE"
@@ -52,14 +58,6 @@ env_sanitize() {
         "DOCKER_VOLUME_STORAGE3"
         "DOCKER_VOLUME_STORAGE4"
     )
-    # Add any "APPNAME__VOLUME_*" variables to the list
-    local -a AppList
-    readarray -t AppList < <(run_script 'app_list_referenced')
-    for AppName in "${AppList[@]-}"; do
-        readarray -t -O ${#VarList[@]} VarList < <(
-            grep -o -P "^\s*\K${AppName^^}__VOLUME_[a-zA-Z0-9]+[a-zA-Z0-9_]*(?=\s*=)" "${COMPOSE_ENV}" || true
-        )
-    done
     for VarName in "${VarList[@]-}"; do
         # Get the value including quotes
         local Value
@@ -71,6 +69,8 @@ env_sanitize() {
             UpdatedVarValue["${VarName}"]="${Value}"
         fi
     done
+
+    # Process the variable value changes
     if [[ -n ${VarsToUpdate[*]-} ]]; then
         notice "Setting variables in ${C["File"]}${COMPOSE_ENV}${NC}:"
         for VarName in "${VarsToUpdate[@]}"; do
