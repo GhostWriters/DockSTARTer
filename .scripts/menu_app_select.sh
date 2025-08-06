@@ -19,6 +19,11 @@ declare -i PrepareMaxTitleLength=0
 for item in "${PrepareTitle[@]}"; do
     PrepareMaxTitleLength=$((${#item} > PrepareMaxTitleLength ? ${#item} : PrepareMaxTitleLength))
 done
+declare -a Statuses=(
+    _Waiting_
+    _InProgress_
+    _Completed_
+)
 declare -A StatusText=(
     ["_Waiting_"]="  Waiting  "
     ["_InProgress_"]="In Progress"
@@ -34,107 +39,109 @@ declare -A PrepareStatus
 for item in "${PrepareItems[@]}"; do
     PrepareStatus["${item}"]="_Waiting_"
 done
-declare -i ProgressPercent=0
 declare ProgressHeading=''
 
 declare Title="Select Applications"
-declare DialogGaugeText=''
+declare Subtitle
+declare DialogGaugeText FullDialogGaugeText
+declare -i ProgressSteps ProgressStepNumber
+
 declare GaugePipe ProgressLog
 declare -i GaugePipe_fd ProgressLog_fd
 declare Dialog_PID
 
 menu_app_select() {
-    ProgressPercent=0
-    PrepareStatus["FindAddedApps"]="_InProgress_"
-    update_gauge_text
+    init_prepare_gauge_text
     show_gauge
+    {
+        PrepareStatus["FindAddedApps"]="_InProgress_"
+        ProgressSteps=1
+        ProgressStepNumber=0
+        update_prepare_gauge
 
-    readarray -t AddedApps < <(
-        run_script 'app_list_added' |
-            run_script 'app_filter_runnable_pipe' |
-            tr '[:upper:]' '[:lower:]' |
-            sort -u |
-            run_script 'app_nicename_pipe'
-    ) 2>> "${ProgressLog}"
+        readarray -t AddedApps < <(
+            run_script 'app_list_added' |
+                run_script 'app_filter_runnable_pipe' |
+                sort -f -u |
+                run_script 'app_nicename_pipe'
+        )
 
-    if [[ -n ${AddedApps[*]} ]]; then
-        {
+        if [[ -n ${AddedApps[*]-} ]]; then
+            local old_IFS="${IFS}"
             IFS='|'
             AddedAppsRegex="${AddedApps[*]}"
-        }
-    fi
+            IFS="${old_IFS}"
 
-    if [[ -n ${AddedApps[*]-} ]]; then
-        printf "\nCurrently installed applications:\n\n" >> "${ProgressLog}"
-        local -i TextCols
-        TextCols=$((COLUMNS - DC["WindowColsAdjust"] - DC["TextColsAdjust"]))
-        local Indent='   '
-        local -a AddedAppsTable
-        readarray -t AddedAppsTable < <(printf "%s\n" "${AddedApps[@]}")
-        readarray -t AddedAppsTable < <(
-            printf "%s\n" "${AddedAppsTable[@]}" |
-                column -c "$((TextCols - ${#Indent}))" |
-                pr -to ${#Indent}
+            printf "\nCurrently installed applications:\n\n"
+            local -i TextCols
+            TextCols=$((COLUMNS - DC["WindowColsAdjust"] - DC["TextColsAdjust"]))
+            local Indent='   '
+            local -a AddedAppsTable
+            readarray -t AddedAppsTable < <(printf "%s\n" "${AddedApps[@]}")
+            readarray -t AddedAppsTable < <(
+                printf "%s\n" "${AddedAppsTable[@]}" |
+                    column -m -c "$((TextCols - ${#Indent}))" |
+                    pr -e -t -o "${#Indent}"
+            )
+        fi
+
+        printf "%s\n" "${AddedAppsTable[@]}"
+        update_prepare_gauge 1
+
+        PrepareStatus["FindAddedApps"]="_Completed_"
+        update_prepare_gauge
+
+        PrepareStatus["FindBuiltinApps"]="_InProgress_"
+        ProgressSteps=4
+        ProgressStepNumber=0
+        update_prepare_gauge
+
+        readarray -t BuiltinApps < <(run_script 'app_list_nondeprecated')
+        update_prepare_gauge 1
+
+        readarray -t BuiltinApps < <(run_script 'app_filter_runnable' "${BuiltinApps[@]}")
+        update_prepare_gauge 1
+
+        readarray -t BuiltinApps < <(run_script 'app_nicename' "${BuiltinApps[@]}")
+        update_prepare_gauge 1
+
+        local -a AllApps
+        readarray -t AllApps < <(
+            printf '%s\n' "${AddedApps[@]}" "${BuiltinApps[@]}" |
+                sort -f -u
         )
-        printf "%s\n" "${AddedAppsTable[@]}" >> "${ProgressLog}"
-    fi
-    ProgressPercent+=5
-    PrepareStatus["FindAddedApps"]="_Completed_"
-    PrepareStatus["FindBuiltinApps"]="_InProgress_"
-    update_gauge
 
-    readarray -t BuiltinApps < <(
-        run_script 'app_list_nondeprecated' |
-            run_script 'app_filter_runnable_pipe'
-    ) 2>> "${ProgressLog}"
+        PrepareStatus["FindBuiltinApps"]="_Completed_"
+        update_prepare_gauge 1
 
-    ProgressPercent+=5
-    PrepareStatus["FindBuiltinApps"]="_Completed_"
-    PrepareStatus["ProcessAppList"]="_InProgress_"
-    update_gauge
+        local -i AppCount=${#AllApps[@]}
+        PrepareStatus["ProcessAppList"]="_InProgress_"
+        ProgressSteps=${AppCount}
+        ProgressStepNumber=0
+        update_prepare_gauge
 
-    local -a AllApps
-    readarray -t AllApps < <(
-        printf '%s\n' "${AddedApps[@],,}" "${BuiltinApps[@],,}" |
-            sort -u |
-            run_script 'app_nicename_pipe'
-    ) 2>> "${ProgressLog}"
-
-    ProgressPercent+=5
-    update_gauge
-
-    local InitialPercent=${ProgressPercent}
-    local -i AppCount=${#AllApps[@]}
-    local LastAppLetter=''
-    for AppNumber in "${!AllApps[@]}"; do
-        local AppName
-        AppName="${AllApps["${AppNumber}"]}"
-        local AppLetter=${AppName:0:1}
-        AppLetter=${AppLetter^^}
-        if [[ -n ${LastAppLetter-} && ${LastAppLetter} != "${AppLetter}" ]]; then
-            AppList+=("" "" "off")
-        fi
-        LastAppLetter=${AppLetter}
-        AppName=$(run_script 'app_nicename' "${AppName}")
-        ProgressPercent=$((InitialPercent + ((100 - InitialPercent) * AppNumber / AppCount)))
-        PrepareStatus["ProcessAppList"]="${AppName}"
-        update_gauge
-        local AppDescription
-        AppDescription=$(run_script 'app_description_from_template' "${AppName}")
-        if [[ ${AppName} =~ ^(${AddedAppsRegex})$ ]]; then
-            AppList+=("${AppName}" "${AppDescription}" "on")
-        else
-            AppList+=("${AppName}" "${AppDescription}" "off")
-        fi
-        ProgressPercent=$((InitialPercent + ((100 - InitialPercent) * AppNumber / AppCount)))
-        PrepareStatus["ProcessAppList"]="${AppName}"
-        update_gauge
-    done
-    ProgressPercent=100
-    PrepareStatus["ProcessAppList"]="_Completed_"
-    update_gauge
-    sleep 1
-
+        local LastAppLetter=''
+        for AppName in "${AllApps[@]}"; do
+            local AppLetter=${AppName:0:1}
+            AppLetter=${AppLetter^^}
+            if [[ -n ${LastAppLetter-} && ${LastAppLetter} != "${AppLetter}" ]]; then
+                AppList+=("" "" "off")
+            fi
+            LastAppLetter=${AppLetter}
+            PrepareStatus["ProcessAppList"]="${AppName}"
+            update_prepare_gauge 1
+            local AppDescription
+            AppDescription=$(run_script 'app_description_from_template' "${AppName}")
+            if [[ ${AppName} =~ ^(${AddedAppsRegex})$ ]]; then
+                AppList+=("${AppName}" "${AppDescription}" "on")
+            else
+                AppList+=("${AppName}" "${AppDescription}" "off")
+            fi
+        done
+        PrepareStatus["ProcessAppList"]="_Completed_"
+        update_prepare_gauge
+        sleep "${DIALOGTIMEOUT}"
+    } &> "${ProgressLog}"
     close_gauge
 
     local -i SelectedAppsDialogButtonPressed
@@ -165,42 +172,73 @@ menu_app_select() {
     fi
     case ${DIALOG_BUTTONS[SelectedAppsDialogButtonPressed]-} in
         OK)
-            local AppsToAdd AppsToRemove
-            AppsToRemove=$(printf '%s\n' "${AddedApps[@]}" "${SelectedApps[@]}" "${SelectedApps[@]}" | tr ' ' '\n' | sort -f | uniq -u | xargs)
-            AppsToAdd=$(printf '%s\n' "${AddedApps[@]}" "${AddedApps[@]}" "${SelectedApps[@]}" | tr ' ' '\n' | sort -f | uniq -u | xargs)
-            local Heading=''
-            local HeadingRemove
-            local HeadingAdd
-            if [[ -n ${AppsToAdd-} || -n ${AppsToRemove-} ]]; then
-                if [[ -n ${AppsToAdd-} ]]; then
-                    local FormattedAppList
-                    local HeadingAddCommand=" ${APPLICATION_COMMAND} --add "
-                    local Indent='          '
-                    FormattedAppList="$(printf "${Indent}%s\n" "${AppsToAdd}" | fmt -w "${COLUMNS}")"
-                    HeadingAdd="Adding applications:\n${DC[CommandLine]}${HeadingAddCommand}${FormattedAppList:${#Indent}}\n"
+            local -a AppsToAdd AppsToRemove
+            local RemoveCommand="${APPLICATION_COMMAND} --remove"
+            local AddCommand="${APPLICATION_COMMAND} --add"
+            readarray -t AppsToRemove < <(
+                printf '%s\n' "${AddedApps[@]}" "${SelectedApps[@]}" "${SelectedApps[@]}" |
+                    sort -f |
+                    uniq -u
+            )
+            readarray -t AppsToAdd < <(
+                printf '%s\n' "${AddedApps[@]}" "${AddedApps[@]}" "${SelectedApps[@]}" |
+                    sort -f |
+                    uniq -u
+            )
+            if [[ -n ${AppsToAdd[*]-} || -n ${AppsToRemove[*]-} ]]; then
+                local -a ProgressInfo=()
+                if [[ -n ${AppsToRemove[*]-} ]]; then
+                    ProgressInfo+=("Removing applications:" "${RemoveCommand}" "${AppsToRemove[*]}")
                 fi
-                if [[ -n ${AppsToRemove-} ]]; then
-                    local HeadingRemoveCommand=" ${APPLICATION_COMMAND} --remove "
-                    local Indent='             '
-                    FormattedAppList="$(printf "${Indent}%s\n" "${AppsToRemove}" | fmt -w "${COLUMNS}")"
-                    HeadingRemove="${DC[Subtitle]}Removing applications:\n${DC[CommandLine]}${HeadingRemoveCommand}${FormattedAppList:${#Indent}}\n"
+                if [[ -n ${AppsToAdd[*]-} ]]; then
+                    ProgressInfo+=("Adding applications:" "${AddCommand}" "${AppsToAdd[*]}")
                 fi
-                Heading="${HeadingAdd-}${HeadingRemove-}"
+                ProgressInfo+=("Updating variable files" "" "")
+                Subtitle=''
+                ProgressSteps=0
+                init_add_remove_gauge_text "${ProgressInfo[@]}"
+                show_gauge "Enabling Selected Applications"
                 {
                     run_script 'env_backup'
-                    if [[ -n ${AppsToAdd-} ]]; then
-                        notice "Creating variables for selected apps."
-                        run_script 'appvars_create' "${AppsToAdd}"
-                    fi
-                    if [[ -n ${AppsToRemove-} ]]; then
+                    if [[ -n ${AppsToRemove[*]-} ]]; then
+                        ProgressSteps=${#AppsToRemove[@]}
+                        ProgressStepNumber=0
+                        update_add_remove_gauge 0 "Removing applications:" "_InProgress_"
+                        update_add_remove_gauge 0 "${RemoveCommand}" "_InProgress_"
                         notice "Removing variables for deselected apps."
-                        run_script 'appvars_purge' "${AppsToRemove}"
+                        for VarName in "${AppsToRemove[@]}"; do
+                            update_add_remove_gauge 0 "${VarName}" "_InProgress_"
+                            run_script 'appvars_purge' "${VarName}"
+                            update_add_remove_gauge 1 "${VarName}" "_Completed_"
+                        done
+                        update_add_remove_gauge 0 "${RemoveCommand}" "_Completed_"
+                        update_add_remove_gauge 0 "Removing applications:" "_Completed_"
                     fi
+                    if [[ -n ${AppsToAdd[*]-} ]]; then
+                        ProgressSteps=${#AppsToAdd[@]}
+                        ProgressStepNumber=0
+                        update_add_remove_gauge 0 "Adding applications:" "_InProgress_"
+                        update_add_remove_gauge 0 "${AddCommand}" "_InProgress_"
+                        notice "Creating variables for selected apps."
+                        for VarName in "${AppsToAdd[@]}"; do
+                            update_add_remove_gauge 0 "${VarName}" "_InProgress_"
+                            run_script 'appvars_create' "${VarName}"
+                            run_script 'appvars_sanitize' "${VarName}"
+                            update_add_remove_gauge 1 "${VarName}" "_Completed_"
+                        done
+                        update_add_remove_gauge 0 "${AddCommand}" "_Completed_"
+                        update_add_remove_gauge 0 "Adding applications:" "_Completed_"
+                    fi
+                    ProgressSteps=1
+                    ProgressStepNumber=0
+                    update_add_remove_gauge 0 "Updating variable files" "_InProgress_"
                     notice "Updating variable files"
-                    run_script 'env_sanitize'
                     run_script 'env_update'
-                } |& dialog_pipe "${DC[TitleSuccess]}Enabling Selected Applications" "${Heading}" "${DIALOGTIMEOUT}"
+                    update_add_remove_gauge 1 "Updating variable files" "_Completed_"
+                } &> "${ProgressLog}"
             fi
+            sleep "${DIALOGTIMEOUT}"
+            close_gauge
             return 0
             ;;
         CANCEL | ESC)
@@ -216,11 +254,101 @@ menu_app_select() {
     esac
 }
 
-update_gauge_text() {
-    DialogGaugeText=''
-    local -a ProgressHeading
-    local Subtitle="Preparing app menu. Please be patient, this can take a while."
-    ProgressHeading+=("${DC["Subtitle"]}${Subtitle}${DC["NC"]}" "")
+update_gauge_percent_value() {
+    local -i AddStep=${1-0}
+    ProgressStepNumber+=${AddStep}
+    if [[ ProgressSteps -gt 0 ]]; then
+        ProgressPercent=$((100 * ProgressStepNumber / ProgressSteps))
+        if [[ ProgressPercent -gt 100 ]]; then
+            ProgressPercent=100
+        fi
+    else
+        ProgressPercent=0
+    fi
+}
+update_gauge_percent() {
+    update_gauge_percent_value "${1-0}"
+    echo "${ProgressPercent}" > "${GaugePipe}"
+}
+update_gauge() {
+    update_gauge_percent_value "${1-0}"
+    printf 'XXX\n%s\n%s\nXXX\n' "${ProgressPercent}" "${FullDialogGaugeText}" > "${GaugePipe}"
+}
+
+init_add_remove_gauge_text() {
+    local IndentCols=3
+    local SpaceCols=1
+    local Indent Space
+    Indent="$(printf "%${IndentCols}s" '')"
+    Space="$(printf "%${SpaceCols}s" '')"
+
+    DialogGaugeText=""
+    while [[ $# -gt 0 ]]; do
+        local HeadingText=${1-}
+        local Command=${2-}
+        local AppNames=${3-}
+
+        if [[ -n ${HeadingText-} ]]; then
+            DialogGaugeText+="${StatusHighlight["_Waiting_"]}${HeadingText}${DC[NC]}\n"
+        fi
+        if [[ -n ${Command-} ]]; then
+            local -i CommandCols=${#Command}
+            local -i TextCols
+            AppsColumnStart=$((IndentCols + CommandCols + SpaceCols))
+            TextCols=$((COLUMNS - DC["WindowColsAdjust"] - DC["TextColsAdjust"]))
+            local -a AppNamesArray
+            readarray -t AppNamesArray < <(xargs -n 1 <<< "${AppNames}")
+
+            local FormattedAppNames
+            FormattedAppNames="$(
+                printf "%s\n" "${AppNamesArray[@]}" |
+                    fmt -w "$((TextCols - AppsColumnStart))" |
+                    pr -e -t -o "${AppsColumnStart}"
+            )"
+
+            # Get the color codes to add to the app names
+            local BeginHighlight="${StatusHighlight["_Waiting_"]}"
+            local EndHighlight="${DC["NC"]}"
+            # Escape the backslahes to be used in sed
+            BeginHighlight="${BeginHighlight//\\/\\\\}"
+            EndHighlight="${EndHighlight//\\/\\\\}"
+
+            # Highlight each app name
+            FormattedAppNames="$(sed -E "s/\<([A-Za-z0-9]+)\>/${BeginHighlight}\1${EndHighlight}/g" <<< "${FormattedAppNames}")"
+
+            # Add the command name to the first line
+            DialogGaugeText+="${Indent}${StatusHighlight["_Waiting_"]}${Command}${DC["NC"]}${Space}${FormattedAppNames:AppsColumnStart}\n"
+        fi
+
+        shift 3
+        if [[ $# -gt 0 ]]; then
+            DialogGaugeText+="\n"
+        fi
+    done
+    DialogGaugeText="$(printf '%b' "${DialogGaugeText}")"
+    FullDialogGaugeText="${DialogGaugeText}"
+}
+update_add_remove_gauge_text() {
+    local SearchItem=${1-}
+    local NewStatus=${2-}
+    if [[ -n ${NewStatus-} && -n ${StatusHighlight["${NewStatus-}"]-} ]]; then
+        local NewString="${StatusHighlight["${NewStatus}"]}${SearchItem}${DC["NC"]}"
+        for OldStatus in "${Statuses[@]}"; do
+            local OldString="${StatusHighlight["${OldStatus}"]}${SearchItem}${DC["NC"]}"
+            DialogGaugeText="${DialogGaugeText//"${OldString}"/"${NewString}"}"
+        done
+        FullDialogGaugeText="${DialogGaugeText}"
+    fi
+}
+update_add_remove_gauge() {
+    local -i AddStep=${1-0}
+    shift || true
+    update_add_remove_gauge_text "${@}"
+    update_gauge "${AddStep}"
+}
+
+update_prepare_gauge_text() {
+    local -a ProgressHeading=()
     for item in "${PrepareItems[@]-}"; do
         local Status="${PrepareStatus["${item}"]}"
         local Highlight="${StatusHighlight["${Status}"]:-${StatusHighlight["_InProgress_"]}}"
@@ -233,65 +361,98 @@ update_gauge_text() {
         Indent="$(printf "%${IndentLength}s" '')"
         ProgressHeading+=("${Highlight}${ShowTitle}${DC[NC]}${Indent}${Highlight}[${ShowStatus}]${DC[NC]}")
     done
-    DialogGaugeText="$(printf '%s\n' "${ProgressHeading[@]-}")"
+    DialogGaugeText="$(printf '%b\n' "${ProgressHeading[@]-}")"
+    if [[ -z ${Subtitle-} ]]; then
+        FullDialogGaugeText="${DialogGaugeText}"
+    else
+        FullDialogGaugeText="$(printf '%b\n' "${Subtitle}")${DialogGaugeText}"
+    fi
 }
-update_gauge() {
-    update_gauge_text
-    local Output="XXX\n${ProgressPercent}\n${DialogGaugeText}\nXXX\n"
-    printf '%b' "${Output}" > "${GaugePipe}"
+init_prepare_gauge_text() {
+    update_prepare_gauge_text
+}
+update_prepare_gauge() {
+    local -i AddStep=${1-0}
+    local -i AddStep=${1-0}
+    update_prepare_gauge_text
+    update_gauge "${AddStep}"
 }
 
 show_gauge() {
+    local GaugeTitle="${1-${Title}}"
+
+    _dialog_backtitle_
+    local -a GlobalDialogOptions=(
+        --backtitle "${BACKTITLE}"
+        --no-collapse
+        --cr-wrap
+        --colors
+    )
+
+    local -i ScreenRows=${LINES}
+    local -i ScreenCols=${COLUMNS}
+    local -i DialogCols
+    #local -i DialogRows
+
+    local -i GaugeDialogStartRow
+    local -i LogDialogStartRow
+    local -i DialogStartCol
+
+    local -i GaugeDialogRows
+    local -i LogDialogRows
+
+    local -i GaugeDialogTextRows
+
+    GaugeDialogStartRow=2
+    DialogStartCol=2
+
+    #DialogRows=$((ScreenRows - DC["WindowRowsAdjust"]))
+    DialogCols=$((ScreenCols - DC["WindowColsAdjust"]))
+
+    GaugeDialogTextRows=$(wc -l <<< "${FullDialogGaugeText}")
+    GaugeDialogRows=$((GaugeDialogTextRows + DC["TextRowsAdjust"]))
+
+    LogDialogStartRow="$((GaugeDialogStartRow + GaugeDialogRows + (DC["WindowRowsAdjust"] - 3)))"
+    LogDialogRows="$((ScreenRows - LogDialogStartRow - (DC["WindowRowsAdjust"] - 3) - 1))"
+
+    # Create the pipes to communicate with the gauge and log dialog windows
     GaugePipe=$(mktemp -u -t "${APPLICATION_NAME}.${FUNCNAME[0]}.GaugePipe.XXXXXXXXXX")
     mkfifo "${GaugePipe}"
     exec {GaugePipe_fd}<> "${GaugePipe}"
     ProgressLog=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.ProgressLog.XXXXXXXXXX")
     exec {ProgressLog_fd}<> "${ProgressLog}"
-    local -i ScreenRows=${LINES}
-    local -i ScreenCols=${COLUMNS}
-    local -i GaugeDialogStartRow GaugeDialogTextRows GaugeDialogRows
-    GaugeDialogStartRow=2
-    GaugeDialogTextRows=5
-    GaugeDialogRows="$((GaugeDialogTextRows + DC["TextRowsAdjust"]))"
-    local -i LogDialogStartRow LogDialogRows
-    LogDialogStartRow="$((GaugeDialogStartRow + GaugeDialogRows + (DC["WindowRowsAdjust"] - 3)))"
-    LogDialogRows="$((ScreenRows - LogDialogStartRow - (DC["WindowRowsAdjust"] - 3) - 1))"
-    _dialog_backtitle_
+
     local -a GaugeDialog=(
-        --begin "${GaugeDialogStartRow}" 2
-        --backtitle "${BACKTITLE}"
-        --title "${DC["TitleSuccess"]}${Title}"
-        --no-trim
-        --no-collapse
-        --cr-wrap
+        "${GlobalDialogOptions[@]}"
+        --title "${DC["TitleSuccess"]}${GaugeTitle}"
+        --begin "${GaugeDialogStartRow}" "${DialogStartCol}"
         --gauge "${DialogGaugeText}"
-        "${GaugeDialogRows}" "$((ScreenCols - DC["WindowColsAdjust"]))"
-        "${ProgressPercent}"
+        "${GaugeDialogRows}" "${DialogCols}"
+        0
     )
     local -a LogDialog=(
-        --begin "${LogDialogStartRow}" 2
-        --backtitle "${BACKTITLE}"
+        "${GlobalDialogOptions[@]}"
         --title "${DC["Title"]}Log Output"
+        --begin "${LogDialogStartRow}" "${DialogStartCol}"
         --keep-window
-        --no-trim
         --tailboxbg "${ProgressLog}"
-        "${LogDialogRows}" "$((ScreenCols - DC["WindowColsAdjust"]))"
+        "${LogDialogRows}" "${DialogCols}"
     )
     local DialogOptions=(
         "${LogDialog[@]}"
         --and-widget
         "${GaugeDialog[@]}"
     )
-    #local DialogOptions=(
-    #    "${GaugeDialog[@]}"
-    #)
-    _dialog_backtitle_
+
+    # Start the gauge and progress dialog windows in the background, and get the process id
     "${DIALOG}" "${DialogOptions[@]}" < "${GaugePipe}" &
     Dialog_PID=$!
 }
 close_gauge() {
+    # Signal the dialog gauge and progress windows to terminate
     kill -SIGTERM "${Dialog_PID}"
     wait "${Dialog_PID}"
+    # Remove the communication pipes to dialog
     exec {GaugePipe_fd}>&-
     rm "${GaugePipe}" || true
     exec {ProgressLog_fd}>&-
