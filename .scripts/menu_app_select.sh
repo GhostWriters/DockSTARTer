@@ -19,11 +19,11 @@ declare -i PrepareMaxTitleLength=0
 for item in "${PrepareTitle[@]}"; do
     PrepareMaxTitleLength=$((${#item} > PrepareMaxTitleLength ? ${#item} : PrepareMaxTitleLength))
 done
-declare -a Statuses=(
-    _Waiting_
-    _InProgress_
-    _Completed_
-)
+#declare -a Statuses=(
+#    _Waiting_
+#    _InProgress_
+#    _Completed_
+#)
 declare -A StatusText=(
     ["_Waiting_"]="  Waiting  "
     ["_InProgress_"]="In Progress"
@@ -110,9 +110,10 @@ menu_app_select() {
             printf '%s\n' "${AddedApps[@]}" "${BuiltinApps[@]}" |
                 sort -f -u
         )
+        update_prepare_gauge 1
 
         PrepareStatus["FindBuiltinApps"]="_Completed_"
-        update_prepare_gauge 1
+        update_prepare_gauge
 
         local -i AppCount=${#AllApps[@]}
         PrepareStatus["ProcessAppList"]="_InProgress_"
@@ -203,38 +204,38 @@ menu_app_select() {
                     if [[ -n ${AppsToRemove[*]-} ]]; then
                         ProgressSteps=${#AppsToRemove[@]}
                         ProgressStepNumber=0
-                        update_add_remove_gauge 0 "Removing applications:" "_InProgress_"
-                        update_add_remove_gauge 0 "${RemoveCommand}" "_InProgress_"
+                        update_add_remove_gauge 0 "Removing applications:" "_Waiting_" "_InProgress_"
+                        update_add_remove_gauge 0 "${RemoveCommand}" "_Waiting_" "_InProgress_"
                         notice "Removing variables for deselected apps."
                         for VarName in "${AppsToRemove[@]}"; do
-                            update_add_remove_gauge 0 "${VarName}" "_InProgress_"
+                            update_add_remove_gauge 0 "${VarName}" "_Waiting_" "_InProgress_"
                             run_script 'appvars_purge' "${VarName}"
-                            update_add_remove_gauge 1 "${VarName}" "_Completed_"
+                            update_add_remove_gauge 1 "${VarName}" "_InProgress_" "_Completed_"
                         done
-                        update_add_remove_gauge 0 "${RemoveCommand}" "_Completed_"
-                        update_add_remove_gauge 0 "Removing applications:" "_Completed_"
+                        update_add_remove_gauge 0 "${RemoveCommand}" "_InProgress_" "_Completed_"
+                        update_add_remove_gauge 0 "Removing applications:" "_InProgress_" "_Completed_"
                     fi
                     if [[ -n ${AppsToAdd[*]-} ]]; then
                         ProgressSteps=${#AppsToAdd[@]}
                         ProgressStepNumber=0
-                        update_add_remove_gauge 0 "Adding applications:" "_InProgress_"
-                        update_add_remove_gauge 0 "${AddCommand}" "_InProgress_"
+                        update_add_remove_gauge 0 "Adding applications:" "_Waiting_" "_InProgress_"
+                        update_add_remove_gauge 0 "${AddCommand}" "_Waiting_" "_InProgress_"
                         notice "Creating variables for selected apps."
                         for VarName in "${AppsToAdd[@]}"; do
-                            update_add_remove_gauge 0 "${VarName}" "_InProgress_"
+                            update_add_remove_gauge 0 "${VarName}" "_Waiting_" "_InProgress_"
                             run_script 'appvars_create' "${VarName}"
                             run_script 'appvars_sanitize' "${VarName}"
-                            update_add_remove_gauge 1 "${VarName}" "_Completed_"
+                            update_add_remove_gauge 1 "${VarName}" "_InProgress_" "_Completed_"
                         done
-                        update_add_remove_gauge 0 "${AddCommand}" "_Completed_"
-                        update_add_remove_gauge 0 "Adding applications:" "_Completed_"
+                        update_add_remove_gauge 0 "${AddCommand}" "_InProgress_" "_Completed_"
+                        update_add_remove_gauge 0 "Adding applications:" "_InProgress_" "_Completed_"
                     fi
                     ProgressSteps=1
                     ProgressStepNumber=0
-                    update_add_remove_gauge 0 "Updating variable files" "_InProgress_"
+                    update_add_remove_gauge 0 "Updating variable files" "_Waiting_" "_InProgress_"
                     notice "Updating variable files"
                     run_script 'env_update'
-                    update_add_remove_gauge 1 "Updating variable files" "_Completed_"
+                    update_add_remove_gauge 1 "Updating variable files" "_InProgress_" "_Completed_"
                 } &> "${ProgressLog}"
             fi
             sleep "${DIALOGTIMEOUT}"
@@ -330,13 +331,12 @@ init_add_remove_gauge_text() {
 }
 update_add_remove_gauge_text() {
     local SearchItem=${1-}
-    local NewStatus=${2-}
-    if [[ -n ${NewStatus-} && -n ${StatusHighlight["${NewStatus-}"]-} ]]; then
+    local OldStatus=${2-}
+    local NewStatus=${3-}
+    if [[ -n ${OldStatus-} && -n ${NewStatus-} && -n ${StatusHighlight["${OldStatus-}"]-} && -n ${StatusHighlight["${NewStatus-}"]-} ]]; then
+        local OldString="${StatusHighlight["${OldStatus}"]}${SearchItem}${DC["NC"]}"
         local NewString="${StatusHighlight["${NewStatus}"]}${SearchItem}${DC["NC"]}"
-        for OldStatus in "${Statuses[@]}"; do
-            local OldString="${StatusHighlight["${OldStatus}"]}${SearchItem}${DC["NC"]}"
-            DialogGaugeText="${DialogGaugeText//"${OldString}"/"${NewString}"}"
-        done
+        DialogGaugeText="${DialogGaugeText//"${OldString}"/"${NewString}"}"
         FullDialogGaugeText="${DialogGaugeText}"
     fi
 }
