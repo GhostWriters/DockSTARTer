@@ -1,5 +1,9 @@
 .cache
+.dialogrc
+menu.ini
 cli-plugins/
+compose/.instances/
+compose/env_files/
 compose/.env
 compose/docker-compose.override.yml
 compose/docker-compose.yml
