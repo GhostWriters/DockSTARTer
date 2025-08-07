@@ -29,11 +29,11 @@ appvars_sanitize() {
         # Get the value including quotes
         local Value
         Value="$(run_script 'env_get_literal' "${VarName}")"
-        if [[ ${Value} == *~* ]]; then
-            # Value contains a "~", repace it with the user's home directory
-            Value="${Value//\~/"${DETECTED_HOMEDIR}"}"
+        local UpdatedValue
+        UpdatedValue="$(run_script 'sanitize_path' "${Value}")"
+        if [[ ${Value} != "${UpdatedValue}" ]]; then
             VarsToUpdate+=("${VarName}")
-            UpdatedVarValue["${VarName}"]="${Value}"
+            UpdatedVarValue["${VarName}"]="${UpdatedValue}"
         fi
     done
 
