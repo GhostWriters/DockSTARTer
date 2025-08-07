@@ -150,7 +150,7 @@ menu_app_select() {
     if [[ ${CI-} == true ]]; then
         SelectedAppsDialogButtonPressed=${DIALOG_CANCEL}
     else
-        local SelectAppsDialogText="Choose which apps you would like to install:\n Use ${DC["KeyCap"]}[up]${DC[NC]}, ${DC["KeyCap"]}[down]${DC[NC]}, and ${DC["KeyCap"]}[space]${DC[NC]} to select apps, and ${DC["KeyCap"]}[tab]${DC[NC]} to switch to the buttons at the bottom."
+        local SelectAppsDialogText="Choose which apps you would like to install:\n Use ${DC["KeyCap"]}[up]${DC["NC"]}, ${DC["KeyCap"]}[down]${DC["NC"]}, and ${DC["KeyCap"]}[space]${DC["NC"]} to select apps, and ${DC["KeyCap"]}[tab]${DC["NC"]} to switch to the buttons at the bottom."
         local SelectedAppsDialogParams=(
             --title "${DC["Title"]}${Title}"
             --output-fd 1
@@ -189,10 +189,10 @@ menu_app_select() {
             if [[ -n ${AppsToAdd[*]-} || -n ${AppsToRemove[*]-} ]]; then
                 local -a ProgressInfo=()
                 if [[ -n ${AppsToRemove[*]-} ]]; then
-                    ProgressInfo+=("Removing applications:" "${RemoveCommand}" "${AppsToRemove[*]}")
+                    ProgressInfo+=("Removing applications" "${RemoveCommand}" "${AppsToRemove[*]}")
                 fi
                 if [[ -n ${AppsToAdd[*]-} ]]; then
-                    ProgressInfo+=("Adding applications:" "${AddCommand}" "${AppsToAdd[*]}")
+                    ProgressInfo+=("Adding applications" "${AddCommand}" "${AppsToAdd[*]}")
                 fi
                 ProgressInfo+=("Updating variable files" "" "")
                 Subtitle=''
@@ -204,7 +204,7 @@ menu_app_select() {
                     if [[ -n ${AppsToRemove[*]-} ]]; then
                         ProgressSteps=${#AppsToRemove[@]}
                         ProgressStepNumber=0
-                        update_add_remove_gauge 0 "Removing applications:" "_Waiting_" "_InProgress_"
+                        update_add_remove_gauge 0 "Removing applications" "_Waiting_" "_InProgress_"
                         update_add_remove_gauge 0 "${RemoveCommand}" "_Waiting_" "_InProgress_"
                         notice "Removing variables for deselected apps."
                         for VarName in "${AppsToRemove[@]}"; do
@@ -213,12 +213,12 @@ menu_app_select() {
                             update_add_remove_gauge 1 "${VarName}" "_InProgress_" "_Completed_"
                         done
                         update_add_remove_gauge 0 "${RemoveCommand}" "_InProgress_" "_Completed_"
-                        update_add_remove_gauge 0 "Removing applications:" "_InProgress_" "_Completed_"
+                        update_add_remove_gauge 0 "Removing applications" "_InProgress_" "_Completed_"
                     fi
                     if [[ -n ${AppsToAdd[*]-} ]]; then
                         ProgressSteps=${#AppsToAdd[@]}
                         ProgressStepNumber=0
-                        update_add_remove_gauge 0 "Adding applications:" "_Waiting_" "_InProgress_"
+                        update_add_remove_gauge 0 "Adding applications" "_Waiting_" "_InProgress_"
                         update_add_remove_gauge 0 "${AddCommand}" "_Waiting_" "_InProgress_"
                         notice "Creating variables for selected apps."
                         for VarName in "${AppsToAdd[@]}"; do
@@ -228,7 +228,7 @@ menu_app_select() {
                             update_add_remove_gauge 1 "${VarName}" "_InProgress_" "_Completed_"
                         done
                         update_add_remove_gauge 0 "${AddCommand}" "_InProgress_" "_Completed_"
-                        update_add_remove_gauge 0 "Adding applications:" "_InProgress_" "_Completed_"
+                        update_add_remove_gauge 0 "Adding applications" "_InProgress_" "_Completed_"
                     fi
                     ProgressSteps=1
                     ProgressStepNumber=0
@@ -282,23 +282,35 @@ init_add_remove_gauge_text() {
     local Indent Space
     Indent="$(printf "%${IndentCols}s" '')"
     Space="$(printf "%${SpaceCols}s" '')"
-
-    DialogGaugeText=""
+    local WaitingHighlight=${StatusHighlight["_Waiting_"]}
+    local WaitingText=${StatusText["_Waiting_"]}
+    local -i HeadingCols=0
+    local -a HeadingText Command AppNames
     while [[ $# -gt 0 ]]; do
-        local HeadingText=${1-}
-        local Command=${2-}
-        local AppNames=${3-}
-
-        if [[ -n ${HeadingText-} ]]; then
-            DialogGaugeText+="${StatusHighlight["_Waiting_"]}${HeadingText}${DC[NC]}\n"
+        HeadingText+=("${1-}")
+        Command+=("${2-}")
+        AppNames+=("${3-}")
+        if [[ ${#HeadingText[-1]} -gt HeadingCols ]]; then
+            HeadingCols=${#HeadingText[-1]}
         fi
-        if [[ -n ${Command-} ]]; then
-            local -i CommandCols=${#Command}
+        shift 3 || true
+    done
+    DialogGaugeText=''
+    for index in "${!HeadingText[@]}"; do
+        if [[ -n ${HeadingText[index]} ]]; then
+            local -i HeadingPadCols
+            HeadingPadCols=$((HeadingCols - ${#HeadingText[index]}))
+            local HeadingPad
+            HeadingPad="$(printf "%${HeadingPadCols}s" '')"
+            DialogGaugeText+="${WaitingHighlight}${HeadingText[index]}${DC["NC"]}${HeadingPad} ${WaitingHighlight}[${WaitingText}]${DC["NC"]}\n"
+        fi
+        if [[ -n ${Command[index]} ]]; then
+            local -i CommandCols=${#Command[index]}
             local -i TextCols
             AppsColumnStart=$((IndentCols + CommandCols + SpaceCols))
             TextCols=$((COLUMNS - DC["WindowColsAdjust"] - DC["TextColsAdjust"]))
             local -a AppNamesArray
-            readarray -t AppNamesArray < <(xargs -n 1 <<< "${AppNames}")
+            readarray -t AppNamesArray < <(xargs -n 1 <<< "${AppNames[index]}")
 
             local FormattedAppNames
             FormattedAppNames="$(
@@ -308,7 +320,7 @@ init_add_remove_gauge_text() {
             )"
 
             # Get the color codes to add to the app names
-            local BeginHighlight="${StatusHighlight["_Waiting_"]}"
+            local BeginHighlight="${WaitingHighlight}"
             local EndHighlight="${DC["NC"]}"
             # Escape the backslahes to be used in sed
             BeginHighlight="${BeginHighlight//\\/\\\\}"
@@ -318,15 +330,11 @@ init_add_remove_gauge_text() {
             FormattedAppNames="$(sed -E "s/\<([A-Za-z0-9]+)\>/${BeginHighlight}\1${EndHighlight}/g" <<< "${FormattedAppNames}")"
 
             # Add the command name to the first line
-            DialogGaugeText+="${Indent}${StatusHighlight["_Waiting_"]}${Command}${DC["NC"]}${Space}${FormattedAppNames:AppsColumnStart}\n"
+            DialogGaugeText+="${Indent}${WaitingHighlight}${Command[index]}${DC["NC"]}${Space}${FormattedAppNames:AppsColumnStart}\n"
         fi
-
-        shift 3
-        if [[ $# -gt 0 ]]; then
-            DialogGaugeText+="\n"
-        fi
+        DialogGaugeText+="\n"
     done
-    DialogGaugeText="$(printf '%b' "${DialogGaugeText}")"
+    DialogGaugeText="$(printf '%b' "${DialogGaugeText}" | expand)"
     FullDialogGaugeText="${DialogGaugeText}"
 }
 update_add_remove_gauge_text() {
@@ -334,9 +342,16 @@ update_add_remove_gauge_text() {
     local OldStatus=${2-}
     local NewStatus=${3-}
     if [[ -n ${OldStatus-} && -n ${NewStatus-} && -n ${StatusHighlight["${OldStatus-}"]-} && -n ${StatusHighlight["${NewStatus-}"]-} ]]; then
-        local OldString="${StatusHighlight["${OldStatus}"]}${SearchItem}${DC["NC"]}"
-        local NewString="${StatusHighlight["${NewStatus}"]}${SearchItem}${DC["NC"]}"
-        DialogGaugeText="${DialogGaugeText//"${OldString}"/"${NewString}"}"
+        # Escape the \ to use in sed
+        local OldHighlight="${StatusHighlight["${OldStatus}"]//\\/\\\\}"
+        local NewHighlight="${StatusHighlight["${NewStatus}"]//\\/\\\\}"
+        local EndHighlight="${DC["NC"]//\\/\\\\}"
+        local OldString="${OldHighlight}${SearchItem}${EndHighlight}"
+        local NewString="${NewHighlight}${SearchItem}${EndHighlight}"
+        # Escape the [ and ] to use in a sed serach string
+        local OldStatusString="${OldHighlight}\\[${StatusText["${OldStatus}"]}\\]${EndHighlight}"
+        local NewStatusString="${NewHighlight}[${StatusText["${NewStatus}"]}]${EndHighlight}"
+        DialogGaugeText="$(sed "s/^\(${OldString}[[:space:]]\+\)${OldStatusString}/\1${NewStatusString}/ ; s/${OldString}/${NewString}/" <<< "${DialogGaugeText}")"
         FullDialogGaugeText="${DialogGaugeText}"
     fi
 }
@@ -353,13 +368,13 @@ update_prepare_gauge_text() {
         local Status="${PrepareStatus["${item}"]}"
         local Highlight="${StatusHighlight["${Status}"]:-${StatusHighlight["_InProgress_"]}}"
         local ShowTitle="${PrepareTitle["${item}"]}"
-        local ShowStatus="${StatusText["${Status}"]:-${Status}}"
+        local ShowStatus="[${StatusText["${Status}"]:-${Status}}]"
         local -i IndentLength
         local -i TitleLength=${#ShowTitle}
         IndentLength=$((PrepareMaxTitleLength - TitleLength + 1))
         local Indent
         Indent="$(printf "%${IndentLength}s" '')"
-        ProgressHeading+=("${Highlight}${ShowTitle}${DC[NC]}${Indent}${Highlight}[${ShowStatus}]${DC[NC]}")
+        ProgressHeading+=("${Highlight}${ShowTitle}${DC["NC"]}${Indent}${Highlight}${ShowStatus}${DC["NC"]}")
     done
     DialogGaugeText="$(printf '%b\n' "${ProgressHeading[@]-}")"
     if [[ -z ${Subtitle-} ]]; then
