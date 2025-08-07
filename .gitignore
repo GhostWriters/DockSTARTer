@@ -1,6 +1,5 @@
 .cache
 .dialogrc
-menu.ini
 cli-plugins/
 compose/.instances/
 compose/env_files/
@@ -11,6 +10,7 @@ config.json
 config/
 configs/
 dockstarter.log
+menu.ini
 share/
 shared/
 site/
