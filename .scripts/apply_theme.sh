@@ -51,7 +51,7 @@ apply_theme() {
     local _NU_='\ZU'  # No Underline
     local _NC_='\Zn'  # No Color
 
-    DC=()
+    declare -Agx DC=()
     DC+=( # Dialog colors
         ["B"]="${_B_}"
         ["C"]="${_C_}"
@@ -89,7 +89,7 @@ apply_theme() {
         DC["${VarName}"]="${Value}"
     done
     DC["ThemeName"]="${ThemeName}"
-    DIALOGOPTS="--colors --output-fd 1 --no-trim --cr-wrap --no-collapse"
+    local DialogOptions="--colors --output-fd 1 --cr-wrap --no-collapse"
 
     local LineCharacters Borders Scrollbar Shadow
     if run_script 'env_var_exists' Scrollbar "${MENU_INI_FILE}"; then
@@ -124,28 +124,33 @@ apply_theme() {
         run_script 'env_set' LineCharacters "${LineCharacters}" "${MENU_INI_FILE}"
     fi
     if [[ ${Borders^^} =~ ON|TRUE|YES ]]; then
-        DIALOGOPTS+=" --lines"
+        DialogOptions+=" --lines"
         if [[ ${LineCharacters^^} =~ ON|TRUE|YES ]]; then
-            DIALOGOPTS+=" --no-ascii-lines"
+            DialogOptions+=" --no-ascii-lines"
         else
-            DIALOGOPTS+=" --ascii-lines"
+            DialogOptions+=" --ascii-lines"
         fi
     else
-        DIALOGOPTS+=" --no-lines"
+        DialogOptions+=" --no-lines"
     fi
     if [[ ${Scrollbar^^} =~ ON|TRUE|YES ]]; then
-        DIALOGOPTS+=" --scrollbar"
+        DialogOptions+=" --scrollbar"
     else
-        DIALOGOPTS+=" --no-scrollbar"
+        DialogOptions+=" --no-scrollbar"
     fi
     if [[ ${Shadow^^} =~ ON|TRUE|YES ]]; then
-        DIALOGOPTS+=" --shadow"
+        DialogOptions+=" --shadow"
         DC["WindowColsAdjust"]=$((DC["WindowColsAdjust"] + 2))
         DC["WindowRowsAdjust"]=$((DC["WindowRowsAdjust"] + 1))
     else
-        DIALOGOPTS+=" --no-shadow"
+        DialogOptions+=" --no-shadow"
     fi
-    export DIALOGOPTS DC
+    if [[ -z ${DIALOG_OPTIONS_FILE-} ]]; then
+        declare -gx DIALOG_OPTIONS_FILE
+        DIALOG_OPTIONS_FILE=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.DIALOG_OPTIONS_FILE.XXXXXXXXXX")
+    fi
+    echo "${DialogOptions}" > "${DIALOG_OPTIONS_FILE}"
+
     cp "${DialogFile}" "${DIALOGRC}"
     run_script 'env_set' Theme "${ThemeName}" "${MENU_INI_FILE}"
     sort -o "${MENU_INI_FILE}" "${MENU_INI_FILE}"
