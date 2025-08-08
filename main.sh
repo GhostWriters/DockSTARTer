@@ -583,7 +583,7 @@ that take app names can use the form app: to refer to the same file.
 --list-disabled
     List disabled apps
 --list-nondeprecated
-    List deprecated apps
+    List non-deprecated apps
 --list-referenced
     List referenced apps (whether they are "built in" or not)
     An app is considered "referenced" if there is a variable matching the app's name in the
