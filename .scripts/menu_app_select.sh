@@ -379,7 +379,7 @@ init_gauge_text() {
             EndHighlight="${EndHighlight//\\/\\\\}"
 
             # Highlight each app name
-            FormattedAppNames="$(sed -E "s/\<([A-Za-z0-9]+)\>/${BeginHighlight}\1${EndHighlight}/g" <<< "${FormattedAppNames}")"
+            FormattedAppNames="$(sed -E "s/\<([A-Za-z0-9_]+)\>/${BeginHighlight}\1${EndHighlight}/g" <<< "${FormattedAppNames}")"
 
             # Add the command name to the first line
             DialogGaugeText+="${Indent}${WaitingHighlight}${Command[index]}${DC["NC"]}${Space}${FormattedAppNames:AppsColumnStart}\n"
@@ -417,9 +417,9 @@ update_gauge_text() {
         local OldString="${OldHighlight}${SearchItem}${EndHighlight}"
         local NewString="${NewHighlight}${SearchItem}${EndHighlight}"
         # Escape the [ and ] to use in a sed serach string
-        local OldStatusString="${OldHighlight}\\[.*\\]${EndHighlight}"
+        local OldStatusString="${OldHighlight}\\[[A-Za-z0-9_ ]\\+\\]${EndHighlight}"
         local NewStatusString="${NewHighlight}[${NewStatusTag}]${EndHighlight}"
-        DialogGaugeText="$(sed "s/^\(${OldString}[[:space:]]\+\)${OldStatusString}/\1${NewStatusString}/ ; s/${OldString}/${NewString}/" <<< "${DialogGaugeText}")"
+        DialogGaugeText="$(sed "s/\(^${OldString}[ ]\+\)${OldStatusString}/\1${NewStatusString}/ ; s/${OldString}/${NewString}/" <<< "${DialogGaugeText}")"
 
         FullDialogGaugeText="${DialogGaugeText}"
     fi
