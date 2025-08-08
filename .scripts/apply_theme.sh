@@ -124,10 +124,7 @@ apply_theme() {
         run_script 'env_set' LineCharacters "${LineCharacters}" "${MENU_INI_FILE}"
     fi
     if [[ ${Borders^^} =~ ON|TRUE|YES ]]; then
-        DialogOptions+=" --lines"
-        if [[ ${LineCharacters^^} =~ ON|TRUE|YES ]]; then
-            DialogOptions+=" --no-ascii-lines"
-        else
+        if [[ ! ${LineCharacters^^} =~ ON|TRUE|YES ]]; then
             DialogOptions+=" --ascii-lines"
         fi
     else
