@@ -40,19 +40,21 @@ menu_app_select() {
 
     init_gauge "${Title}" "${ProcessInfo[@]}"
     {
-        ProgressSteps=1
+        ProgressSteps=4
         ProgressStepNumber=0
         update_gauge 0 "${FindAddedApps}" "_Waiting_" "_InProgress_"
 
         local -a AppList AddedApps BuiltinApps
         local AddedAppsRegex=''
 
-        readarray -t AddedApps < <(
-            run_script 'app_list_added' |
-                run_script 'app_filter_runnable_pipe' |
-                sort -f -u |
-                run_script 'app_nicename_pipe'
-        )
+        readarray -t AddedApps < <(run_script 'app_list_added')
+        update_gauge 1
+
+        readarray -t AddedApps < <(run_script 'app_filter_runnable' "${AddedApps[@]-}" | sort -f -u)
+        update_gauge 1
+
+        readarray -t AddedApps < <(run_script 'app_nicename' "${AddedApps[@]-}")
+        update_gauge 1
 
         if [[ -n ${AddedApps[*]-} ]]; then
             local old_IFS="${IFS}"
