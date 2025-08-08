@@ -247,10 +247,8 @@ show_gauge() {
 
     _dialog_backtitle_
     local -a GlobalDialogOptions=(
+        --file "${DIALOG_OPTIONS_FILE}"
         --backtitle "${BACKTITLE}"
-        --no-collapse
-        --cr-wrap
-        --colors
     )
 
     local -i ScreenRows=${LINES}

@@ -165,9 +165,7 @@ readonly -a DIALOG_BUTTONS=(
 )
 export DIALOG_BUTTONS
 
-declare -Ax DC=()
-declare -x DIALOGOPTS
-declare -x BACKTITLE
+declare -x BACKTITLE=''
 
 # Log Functions
 MKTEMP_LOG=$(mktemp -t "${APPLICATION_NAME}.log.XXXXXXXXXX") || echo -e "Failed to create temporary log file.\nFailing command: ${C["FailingCommand"]}mktemp -t \"${APPLICATION_NAME}.log.XXXXXXXXXX\""
@@ -328,7 +326,7 @@ _dialog_backtitle_() {
 
 _dialog_() {
     _dialog_backtitle_
-    ${DIALOG} --backtitle "${BACKTITLE}" "$@"
+    ${DIALOG} --file "${DIALOG_OPTIONS_FILE}" --backtitle "${BACKTITLE}" "$@"
 }
 
 # Check to see if we should use a dialog box
@@ -654,6 +652,10 @@ cleanup() {
     sudo rm -f "${MKTEMP_LOG-}" || true
     sudo sh -c "echo \"$(tail -1000 "${SCRIPTPATH}/dockstarter.log")\" > ${SCRIPTPATH}/dockstarter.log" || true
     sudo -E chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || true
+
+    if [[ -n ${DIALOG_OPTIONS_FILE-} && -f ${DIALOG_OPTIONS_FILE} ]]; then
+        rm -f "${DIALOG_OPTIONS_FILE}" || true
+    fi
 
     if [[ ${CI-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS-} == false ]]; then
         echo "TRAVIS_SECURE_ENV_VARS is false for Pull Requests from remote branches. Please retry failed builds!"
