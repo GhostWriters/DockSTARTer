@@ -357,6 +357,7 @@ run_script_dialog() {
     shift 4
     if use_dialog_box; then
         # Using the GUI, pipe output to a dialog box
+        SubTitle="$(strip_ansi_colors "${SubTitle}")"
         run_script "${SCRIPTSNAME}" "$@" |& dialog_pipe "${Title}" "${SubTitle}" "${TimeOut}"
         return "${PIPESTATUS[0]}"
     else
@@ -375,6 +376,7 @@ run_command_dialog() {
     if [[ -n ${CommandName-} ]]; then
         if use_dialog_box; then
             # Using the GUI, pipe output to a dialog box
+            SubTitle="$(strip_ansi_colors "${SubTitle}")"
             "${CommandName}" "$@" |& dialog_pipe "${Title}" "${SubTitle}" "${TimeOut}"
             return "${PIPESTATUS[0]}"
         else
