@@ -27,22 +27,32 @@ app_instance_file() {
         run_script 'set_permissions' "${InstanceFolder}"
     fi
 
-    local InstanceFile
-    InstanceFile="${InstanceFolder}/${appname}${FileSuffix}"
-    echo "${InstanceFile}"
-    if [[ -f ${InstanceFile} ]]; then
-        # File already exists, nothing to do
-        return
-    fi
-
     local baseapp
     baseapp="$(run_script 'appname_to_baseappname' "${appname}")"
-    local TemplateFile
     TemplateFile="$(run_script 'app_template_file' "${baseapp}" "${FileSuffix}")"
     if [[ ! -f ${TemplateFile} ]]; then
         # Template file doesn't exist, nothing to do.
         return
     fi
+
+    local InstanceTemplateFolder="${INSTANCES_FOLDER}/${TEMPLATES_FOLDER_NAME}/${baseapp}"
+    local InstanceTemplateFile="${InstanceTemplateFolder}/${baseapp}${FileSuffix}"
+    local InstanceFile
+    InstanceFile="${InstanceFolder}/${appname}${FileSuffix}"
+    echo "${InstanceFile}"
+    if [[ -f ${InstanceFile} && -f ${InstanceTemplateFile} ]] && cmp -s "${TemplateFile}" "${InstanceTemplateFile}"; then
+        # The instance file exists, and the template file has not changed, nothing to do.
+        return
+    fi
+
+    if [[ ! -d ${InstanceTemplateFolder} ]]; then
+        mkdir -p "${InstanceTemplateFolder}" ||
+            fatal "Failed to create folder ${C["Folder"]}${InstanceTemplateFolder}${NC}. Failing command: ${C["FailingCommand"]}mkdir -p \"${InstanceTemplateFolder}\""
+        run_script 'set_permissions' "${InstanceTemplateFolder}"
+    fi
+    cp "${TemplateFile}" "${InstanceTemplateFile}" ||
+        fatal "Failed to copy file.\nFailing command: ${C["FailingCommand"]}cp \"${TemplateFile}\" \"${InstanceTemplateFile}\""
+    run_script 'set_permissions' "${InstanceTemplateFile}"
 
     local instance
     instance="$(run_script 'appname_to_instancename' "${appname}")"
