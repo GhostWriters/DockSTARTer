@@ -19,41 +19,58 @@ app_instance_file() {
         run_script 'set_permissions' "${INSTANCES_FOLDER}"
     fi
 
-    local InstanceFolder
-    InstanceFolder="${INSTANCES_FOLDER}/${appname}"
-    if [[ ! -d ${InstanceFolder} ]]; then
-        mkdir -p "${InstanceFolder}" ||
-            fatal "Failed to create folder ${C["Folder"]}${InstanceFolder}${NC}. Failing command: ${C["FailingCommand"]}mkdir -p \"${InstanceFolder}\""
-        run_script 'set_permissions' "${InstanceFolder}"
-    fi
-
     local baseapp
     baseapp="$(run_script 'appname_to_baseappname' "${appname}")"
-    TemplateFile="$(run_script 'app_template_file' "${baseapp}" "${FileSuffix}")"
-    if [[ ! -f ${TemplateFile} ]]; then
-        # Template file doesn't exist, nothing to do.
+
+    local TemplateFolder="${TEMPLATES_FOLDER}/${baseapp}"
+    local InstanceTemplateFolder="${INSTANCES_FOLDER}/${TEMPLATES_FOLDER_NAME}/${baseapp}"
+    local InstanceFolder="${INSTANCES_FOLDER}/${appname}"
+
+    local TemplateFile="${TemplateFolder}/${baseapp}${FileSuffix}"
+    local InstanceTemplateFile="${InstanceTemplateFolder}/${baseapp}${FileSuffix}"
+    local InstanceFile="${InstanceFolder}/${appname}${FileSuffix}"
+
+    if [[ ! -d ${TemplateFolder} ]]; then
+        # Template folder doesn't exist, remove any instance folders associated with it and return
+        for Folder in "${InstanceTemplateFolder}" "${InstanceFolder}"; do
+            if [[ -d ${Folder} ]]; then
+                run_script 'set_permissions' "${Folder}"
+                rm -rf "${Folder}" ||
+                    fatal "Failed to remove directory.\nFailing command: ${C["FailingCommand"]}rm -rf \"${Folder}\""
+            fi
+        done
         return
     fi
 
-    local InstanceTemplateFolder="${INSTANCES_FOLDER}/${TEMPLATES_FOLDER_NAME}/${baseapp}"
-    local InstanceTemplateFile="${InstanceTemplateFolder}/${baseapp}${FileSuffix}"
-    local InstanceFile
-    InstanceFile="${InstanceFolder}/${appname}${FileSuffix}"
+    if [[ ! -f ${TemplateFile} ]]; then
+        # Template file doesn't exist, remove any instance files associated with it and return
+        for File in "${InstanceTemplateFile}" "${InstanceFile}"; do
+            if [[ -f ${File} ]]; then
+                run_script 'set_permissions' "${File}"
+                rm -f "${File}" ||
+                    fatal "Failed to remove file.\nFailing command: ${C["FailingCommand"]}rm -f \"${File}\""
+            fi
+        done
+        return
+    fi
+
     echo "${InstanceFile}"
+
     if [[ -f ${InstanceFile} && -f ${InstanceTemplateFile} ]] && cmp -s "${TemplateFile}" "${InstanceTemplateFile}"; then
         # The instance file exists, and the template file has not changed, nothing to do.
         return
     fi
 
-    if [[ ! -d ${InstanceTemplateFolder} ]]; then
-        mkdir -p "${InstanceTemplateFolder}" ||
-            fatal "Failed to create folder ${C["Folder"]}${InstanceTemplateFolder}${NC}. Failing command: ${C["FailingCommand"]}mkdir -p \"${InstanceTemplateFolder}\""
-        run_script 'set_permissions' "${InstanceTemplateFolder}"
-    fi
-    cp "${TemplateFile}" "${InstanceTemplateFile}" ||
-        fatal "Failed to copy file.\nFailing command: ${C["FailingCommand"]}cp \"${TemplateFile}\" \"${InstanceTemplateFile}\""
-    run_script 'set_permissions' "${InstanceTemplateFile}"
+    # If we got here, the instance file needs to be created
 
+    if [[ ! -d ${InstanceFolder} ]]; then
+        # Create the folder to place the instance file in
+        mkdir -p "${InstanceFolder}" ||
+            fatal "Failed to create folder ${C["Folder"]}${InstanceFolder}${NC}. Failing command: ${C["FailingCommand"]}mkdir -p \"${InstanceFolder}\""
+        run_script 'set_permissions' "${InstanceFolder}"
+    fi
+
+    # Create the instance file based on the template file
     local instance
     instance="$(run_script 'appname_to_instancename' "${appname}")"
     local __INSTANCE __Instance __instance
@@ -65,6 +82,18 @@ app_instance_file() {
     sed -e "s/<__INSTANCE>/${__INSTANCE-}/g ; s/<__instance>/${__instance-}/g ; s/<__Instance>/${__Instance-}/g" \
         "${TemplateFile}" > "${InstanceFile}"
     run_script 'set_permissions' "${InstanceFile}"
+
+    if [[ ! -d ${InstanceTemplateFolder} ]]; then
+        # Create the folder to place the copy of the template file in
+        mkdir -p "${InstanceTemplateFolder}" ||
+            fatal "Failed to create folder ${C["Folder"]}${InstanceTemplateFolder}${NC}. Failing command: ${C["FailingCommand"]}mkdir -p \"${InstanceTemplateFolder}\""
+        run_script 'set_permissions' "${InstanceTemplateFolder}"
+    fi
+
+    # Copy the original template file
+    cp "${TemplateFile}" "${InstanceTemplateFile}" ||
+        fatal "Failed to copy file.\nFailing command: ${C["FailingCommand"]}cp \"${TemplateFile}\" \"${InstanceTemplateFile}\""
+    run_script 'set_permissions' "${InstanceTemplateFile}"
 }
 
 test_app_instance_file() {
