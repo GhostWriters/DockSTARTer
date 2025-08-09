@@ -35,12 +35,16 @@ app_instance_file() {
         return
     fi
 
+    local TemplateMD5File="${TemplateFile}.md5"
+    if [[ ! -f ${TemplateMD5File} ]]; then
+        md5sum "${TemplateFile}" > "${TemplateMD5File}"
+    fi
     local InstanceTemplateFolder="${INSTANCES_FOLDER}/.templates/${baseapp}"
-    local InstanceTemplateFile="${InstanceTemplateFolder}/${baseapp}${FileSuffix}"
+    local InstanceTemplateMD5File="${InstanceTemplateFolder}/${baseapp}${FileSuffix}.md5"
     local InstanceFile
     InstanceFile="${InstanceFolder}/${appname}${FileSuffix}"
     echo "${InstanceFile}"
-    if [[ -f ${InstanceFile} && -f ${InstanceTemplateFile} ]] && ! cmp -s "${TemplateFile}" "${InstanceTemplateFile}"; then
+    if [[ -f ${InstanceFile} && -f ${InstanceTemplateMD5File} ]] && cmp -s "${TemplateMD5File}" "${InstanceTemplateMD5File}"; then
         # The instance file exists, and the template file has not changed, nothing to do.
         return
     fi
@@ -49,8 +53,8 @@ app_instance_file() {
         mkdir -p "${InstanceTemplateFolder}"
         run_script 'set_permissions' "${InstanceTemplateFolder}"
     fi
-    cp "${TemplateFile}" "${InstanceTemplateFile}"
-    run_script 'set_permissions' "${InstanceTemplateFile}"
+    cp "${TemplateMD5File}" "${InstanceTemplateMD5File}"
+    run_script 'set_permissions' "${InstanceTemplateMD5File}"
 
     local instance
     instance="$(run_script 'appname_to_instancename' "${appname}")"
