@@ -37,28 +37,21 @@ readonly ARCH
 export ARCH
 
 # Environment Information
-readonly COMPOSE_FOLDER_NAME="compose"
-export COMPOSE_FOLDER_NAME
-readonly COMPOSE_FOLDER="${SCRIPTPATH}/${COMPOSE_FOLDER_NAME}"
-export COMPOSE_FOLDER
-readonly COMPOSE_OVERRIDE_NAME="docker-compose.override.yml"
-export COMPOSE_OVERRIDE_NAME
-readonly COMPOSE_OVERRIDE="${COMPOSE_FOLDER}/${COMPOSE_OVERRIDE_NAME}"
-export COMPOSE_OVERRIDE
-readonly COMPOSE_ENV="${COMPOSE_FOLDER}/.env"
-export COMPOSE_ENV
-readonly COMPOSE_ENV_DEFAULT_FILE="${COMPOSE_FOLDER}/.env.example"
-export COMPOSE_ENV_DEFAULT_FILE
-readonly APP_ENV_FOLDER_NAME="env_files"
-export APP_ENV_FOLDER_NAME
-readonly APP_ENV_FOLDER="${COMPOSE_FOLDER}/env_files"
-export APP_ENV_FOLDER
-readonly TEMPLATES_FOLDER="${COMPOSE_FOLDER}/.apps"
-export TEMPLATES_FOLDER
-readonly INSTANCES_FOLDER="${COMPOSE_FOLDER}/.instances"
-export INSTANCES_FOLDER
-readonly THEME_FOLDER="${SCRIPTPATH}/.themes"
-export THEME_FOLDER
+declare -rx COMPOSE_FOLDER_NAME="compose"
+declare -rx THEME_FOLDER_NAME=".themes"
+declare -rx COMPOSE_FOLDER="${SCRIPTPATH}/${COMPOSE_FOLDER_NAME}"
+declare -rx THEME_FOLDER="${SCRIPTPATH}/${THEME_FOLDER_NAME}"
+
+declare -rx INSTANCES_FOLDER_NAME=".instances"
+declare -rx TEMPLATES_FOLDER_NAME=".apps"
+declare -rx APP_ENV_FOLDER_NAME="env_files"
+declare -rx COMPOSE_OVERRIDE_NAME="docker-compose.override.yml"
+declare -rx COMPOSE_ENV="${COMPOSE_FOLDER}/.env"
+declare -rx COMPOSE_ENV_DEFAULT_FILE="${COMPOSE_FOLDER}/.env.example"
+declare -rx COMPOSE_OVERRIDE="${COMPOSE_FOLDER}/${COMPOSE_OVERRIDE_NAME}"
+declare -rx APP_ENV_FOLDER="${COMPOSE_FOLDER}/${APP_ENV_FOLDER_NAME}"
+declare -rx TEMPLATES_FOLDER="${COMPOSE_FOLDER}/${TEMPLATES_FOLDER_NAME}"
+declare -rx INSTANCES_FOLDER="${COMPOSE_FOLDER}/${INSTANCES_FOLDER_NAME}"
 
 # User/Group Information
 readonly DETECTED_PUID=${SUDO_UID:-$UID}
