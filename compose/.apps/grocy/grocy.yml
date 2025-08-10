@@ -1,7 +1,7 @@
 services:
   grocy<__instance>:
     container_name: ${GROCY<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/grocy<__instance>.env
+    env_file: .env.app.grocy
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

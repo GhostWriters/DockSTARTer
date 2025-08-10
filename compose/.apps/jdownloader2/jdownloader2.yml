@@ -1,7 +1,7 @@
 services:
   jdownloader2<__instance>:
     container_name: ${JDOWNLOADER2<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/jdownloader2<__instance>.env
+    env_file: .env.app.jdownloader2
     environment:
       - GROUP_ID=${PGID?}
       - USER_ID=${PUID?}

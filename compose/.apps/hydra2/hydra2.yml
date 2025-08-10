@@ -1,7 +1,7 @@
 services:
   hydra2<__instance>:
     container_name: ${HYDRA2<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/hydra2<__instance>.env
+    env_file: .env.app.hydra2
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

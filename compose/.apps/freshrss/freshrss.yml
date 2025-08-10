@@ -1,7 +1,7 @@
 services:
   freshrss<__instance>:
     container_name: ${FRESHRSS<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/freshrss<__instance>.env
+    env_file: .env.app.freshrss
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

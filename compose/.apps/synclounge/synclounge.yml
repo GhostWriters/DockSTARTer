@@ -1,7 +1,7 @@
 services:
   synclounge<__instance>:
     container_name: ${SYNCLOUNGE<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/synclounge<__instance>.env
+    env_file: .env.app.synclounge
     environment:
       - TZ=${TZ?}
     restart: ${SYNCLOUNGE<__INSTANCE>__RESTART?}

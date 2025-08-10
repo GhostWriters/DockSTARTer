@@ -1,7 +1,7 @@
 services:
   ombi<__instance>:
     container_name: ${OMBI<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/ombi<__instance>.env
+    env_file: .env.app.ombi
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

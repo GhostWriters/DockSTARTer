@@ -1,7 +1,7 @@
 services:
   nodered<__instance>:
     container_name: ${NODERED<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/nodered<__instance>.env
+    env_file: .env.app.nodered
     environment:
       - TZ=${TZ?}
     restart: ${NODERED<__INSTANCE>__RESTART?}

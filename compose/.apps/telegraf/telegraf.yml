@@ -1,7 +1,7 @@
 services:
   telegraf<__instance>:
     container_name: ${TELEGRAF<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/telegraf<__instance>.env
+    env_file: .env.app.telegraf
     environment:
       - HOST_ETC=/host/etc
       - HOST_MOUNT_PREFIX=/host

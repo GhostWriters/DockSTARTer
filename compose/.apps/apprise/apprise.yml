@@ -1,7 +1,7 @@
 services:
   apprise<__instance>:
     container_name: ${APPRISE<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/apprise<__instance>.env
+    env_file: .env.app.apprise
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

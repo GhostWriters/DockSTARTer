@@ -1,7 +1,7 @@
 services:
   xbackbone<__instance>:
     container_name: ${XBACKBONE<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/xbackbone<__instance>.env
+    env_file: .env.app.xbackbone
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

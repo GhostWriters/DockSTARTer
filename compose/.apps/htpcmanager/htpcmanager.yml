@@ -1,7 +1,7 @@
 services:
   htpcmanager<__instance>:
     container_name: ${HTPCMANAGER<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/htpcmanager<__instance>.env
+    env_file: .env.app.htpcmanager
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

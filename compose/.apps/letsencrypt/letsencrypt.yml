@@ -3,7 +3,7 @@ services:
     cap_add:
       - NET_ADMIN
     container_name: ${LETSENCRYPT<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/letsencrypt<__instance>.env
+    env_file: .env.app.letsencrypt
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

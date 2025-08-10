@@ -1,7 +1,7 @@
 services:
   huntarr<__instance>:
     container_name: ${HUNTARR<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/huntarr<__instance>.env
+    env_file: .env.app.huntarr
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

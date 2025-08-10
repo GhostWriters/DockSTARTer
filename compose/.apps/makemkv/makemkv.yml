@@ -1,7 +1,7 @@
 services:
   makemkv<__instance>:
     container_name: ${MAKEMKV<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/makemkv<__instance>.env
+    env_file: .env.app.makemkv
     environment:
       - GROUP_ID=${PGID?}
       - USER_ID=${PUID?}

@@ -1,7 +1,7 @@
 services:
   prometheus<__instance>:
     container_name: ${PROMETHEUS<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/prometheus<__instance>.env
+    env_file: .env.app.prometheus
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

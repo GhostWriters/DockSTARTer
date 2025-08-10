@@ -1,7 +1,7 @@
 services:
   requestrr<__instance>:
     container_name: ${REQUESTRR<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/requestrr<__instance>.env
+    env_file: .env.app.requestrr
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

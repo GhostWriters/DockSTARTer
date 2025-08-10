@@ -1,7 +1,7 @@
 services:
   rsnapshot<__instance>:
     container_name: ${RSNAPSHOT<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/rsnapshot<__instance>.env
+    env_file: .env.app.rsnapshot
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

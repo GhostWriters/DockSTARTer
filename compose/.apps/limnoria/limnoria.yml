@@ -1,7 +1,7 @@
 services:
   limnoria<__instance>:
     container_name: ${LIMNORIA<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/limnoria<__instance>.env
+    env_file: .env.app.limnoria
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

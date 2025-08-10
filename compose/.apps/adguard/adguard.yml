@@ -1,7 +1,7 @@
 services:
   adguard<__instance>:
     container_name: ${ADGUARD<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/adguard<__instance>.env
+    env_file: .env.app.adguard
     environment:
       - TZ=${TZ?}
     restart: ${ADGUARD<__INSTANCE>__RESTART?}

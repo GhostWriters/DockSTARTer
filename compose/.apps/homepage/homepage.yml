@@ -1,7 +1,7 @@
 services:
   homepage<__instance>:
     container_name: ${HOMEPAGE<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/homepage<__instance>.env
+    env_file: .env.app.homepage
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

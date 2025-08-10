@@ -1,7 +1,7 @@
 services:
   lidarr<__instance>:
     container_name: ${LIDARR<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/lidarr<__instance>.env
+    env_file: .env.app.lidarr
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

@@ -3,7 +3,7 @@ services:
     cap_add:
       - NET_ADMIN
     container_name: ${PIHOLE<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/pihole<__instance>.env
+    env_file: .env.app.pihole
     environment:
       - TZ=${TZ?}
     restart: ${PIHOLE<__INSTANCE>__RESTART?}

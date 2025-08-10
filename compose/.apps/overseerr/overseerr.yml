@@ -1,7 +1,7 @@
 services:
   overseerr<__instance>:
     container_name: ${OVERSEERR<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/overseerr<__instance>.env
+    env_file: .env.app.overseerr
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

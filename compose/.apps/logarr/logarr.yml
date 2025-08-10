@@ -1,7 +1,7 @@
 services:
   logarr<__instance>:
     container_name: ${LOGARR<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/logarr<__instance>.env
+    env_file: .env.app.logarr
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

@@ -1,7 +1,7 @@
 services:
   cloudcmd<__instance>:
     container_name: ${CLOUDCMD<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/cloudcmd<__instance>.env
+    env_file: .env.app.cloudcmd
     environment:
       - TZ=${TZ?}
     restart: ${CLOUDCMD<__INSTANCE>__RESTART?}

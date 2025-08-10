@@ -1,7 +1,7 @@
 services:
   moviematch<__instance>:
     container_name: ${MOVIEMATCH<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/moviematch<__instance>.env
+    env_file: .env.app.moviematch
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

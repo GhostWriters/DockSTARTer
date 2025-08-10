@@ -1,7 +1,7 @@
 services:
   ddclient<__instance>:
     container_name: ${DDCLIENT<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/ddclient<__instance>.env
+    env_file: .env.app.ddclient
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

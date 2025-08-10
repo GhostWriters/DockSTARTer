@@ -1,7 +1,7 @@
 services:
   audiobookshelf<__instance>:
     container_name: ${AUDIOBOOKSHELF<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/audiobookshelf<__instance>.env
+    env_file: .env.app.audiobookshelf
     environment:
       - CONFIG_PATH=/config
       - HOME=/config/.home

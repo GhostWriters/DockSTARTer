@@ -1,7 +1,7 @@
 services:
   azuracast<__instance>:
     container_name: ${AZURACAST<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/azuracast<__instance>.env
+    env_file: .env.app.azuracast
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

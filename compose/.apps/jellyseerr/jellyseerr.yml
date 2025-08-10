@@ -1,7 +1,7 @@
 services:
   jellyseerr<__instance>:
     container_name: ${JELLYSEERR<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/jellyseerr<__instance>.env
+    env_file: .env.app.jellyseerr
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

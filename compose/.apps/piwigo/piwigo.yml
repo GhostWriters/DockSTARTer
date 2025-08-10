@@ -1,7 +1,7 @@
 services:
   piwigo<__instance>:
     container_name: ${PIWIGO<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/piwigo<__instance>.env
+    env_file: .env.app.piwigo
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

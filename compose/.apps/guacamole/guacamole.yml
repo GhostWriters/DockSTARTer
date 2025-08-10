@@ -1,7 +1,7 @@
 services:
   guacamole<__instance>:
     container_name: ${GUACAMOLE<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/guacamole<__instance>.env
+    env_file: .env.app.guacamole
     environment:
       - TZ=${TZ?}
     restart: ${GUACAMOLE<__INSTANCE>__RESTART?}

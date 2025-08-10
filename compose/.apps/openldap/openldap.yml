@@ -1,7 +1,7 @@
 services:
   openldap<__instance>:
     container_name: ${OPENLDAP<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/openldap<__instance>.env
+    env_file: .env.app.openldap
     environment:
       - LDAP_OPENLDAP<__INSTANCE>_GID=${PGID?}
       - LDAP_OPENLDAP<__INSTANCE>_UID=${PUID?}

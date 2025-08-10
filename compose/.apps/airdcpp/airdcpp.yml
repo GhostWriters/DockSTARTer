@@ -1,7 +1,7 @@
 services:
   airdcpp<__instance>:
     container_name: ${AIRDCPP<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/airdcpp<__instance>.env
+    env_file: .env.app.airdcpp
     environment:
       - HTTP_PORT=${AIRDCPP<__INSTANCE>__PORT_5600?}
       - HTTPS_PORT=${AIRDCPP<__INSTANCE>__PORT_5601?}

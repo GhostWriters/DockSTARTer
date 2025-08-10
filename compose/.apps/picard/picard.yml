@@ -1,7 +1,7 @@
 services:
   picard<__instance>:
     container_name: ${PICARD<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/picard<__instance>.env
+    env_file: .env.app.picard
     environment:
       - GROUP_ID=${PGID?}
       - TZ=${TZ?}

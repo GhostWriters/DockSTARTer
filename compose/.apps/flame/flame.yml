@@ -1,7 +1,7 @@
 services:
   flame<__instance>:
     container_name: ${FLAME<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/flame<__instance>.env
+    env_file: .env.app.flame
     restart: ${FLAME<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro

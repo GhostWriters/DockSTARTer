@@ -1,7 +1,7 @@
 services:
   sabnzbd<__instance>:
     container_name: ${SABNZBD<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/sabnzbd<__instance>.env
+    env_file: .env.app.sabnzbd
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

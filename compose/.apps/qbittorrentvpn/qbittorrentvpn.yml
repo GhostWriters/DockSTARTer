@@ -4,7 +4,7 @@ services:
       - NET_ADMIN
       - SYS_MODULE
     container_name: ${QBITTORRENTVPN<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/qbittorrentvpn<__instance>.env
+    env_file: .env.app.qbittorrentvpn
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

@@ -3,7 +3,7 @@ services:
     cap_add:
       - SYS_PTRACE
     container_name: ${NETDATA<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/netdata<__instance>.env
+    env_file: .env.app.netdata
     environment:
       - PGID=${DOCKER_GID?}
       - TZ=${TZ?}

@@ -1,7 +1,7 @@
 services:
   calibre<__instance>:
     container_name: ${CALIBRE<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/calibre<__instance>.env
+    env_file: .env.app.calibre
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

@@ -1,7 +1,7 @@
 services:
   znc<__instance>:
     container_name: ${ZNC<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/znc<__instance>.env
+    env_file: .env.app.znc
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

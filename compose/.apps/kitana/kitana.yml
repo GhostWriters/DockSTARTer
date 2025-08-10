@@ -2,7 +2,7 @@ services:
   kitana<__instance>:
     command: -B 0.0.0.0:31337 -P
     container_name: ${KITANA<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/kitana<__instance>.env
+    env_file: .env.app.kitana
     environment:
       - TZ=${TZ?}
     restart: ${KITANA<__INSTANCE>__RESTART?}

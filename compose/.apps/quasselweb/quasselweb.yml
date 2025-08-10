@@ -1,7 +1,7 @@
 services:
   quasselweb<__instance>:
     container_name: ${QUASSELWEB<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/quasselweb<__instance>.env
+    env_file: .env.app.quasselweb
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

@@ -1,7 +1,7 @@
 services:
   librespeed<__instance>:
     container_name: ${LIBRESPEED<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/librespeed<__instance>.env
+    env_file: .env.app.librespeed
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

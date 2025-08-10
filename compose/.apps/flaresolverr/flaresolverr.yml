@@ -1,7 +1,7 @@
 services:
   flaresolverr<__instance>:
     container_name: ${FLARESOLVERR<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/flaresolverr<__instance>.env
+    env_file: .env.app.flaresolverr
     environment:
       - PORT=${FLARESOLVERR<__INSTANCE>__PORT_8191?}
       - TZ=${TZ?}
