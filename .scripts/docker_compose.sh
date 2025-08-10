@@ -115,7 +115,7 @@ docker_compose() {
                     eval "${Command}" ||
                         fatal "Failed to run compose.\nFailing command: ${C["FailingCommand"]}${Command}"
                 done
-            } |& dialog_pipe "${DC[TitleSuccess]}${Title}" "${YesNotice}${DC[NC]}\n${DC[CommandLine]} ds --compose ${ComposeInput}"
+            } |& dialog_pipe "${DC[TitleSuccess]}${Title}" "${YesNotice}${DC[NC]}\n${DC[CommandLine]} ${APPLICATION_COMMAND} --compose ${ComposeInput}"
         else
             [[ -n ${YesNotice-} ]] && notice "${YesNotice}"
             run_script 'require_docker'

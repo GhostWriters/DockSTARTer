@@ -1,43 +1,46 @@
 # Speedtest
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/henrywhitaker3/speedtest-tracker?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/henrywhitaker3/speedtest-tracker)
-[![GitHub Stars](https://img.shields.io/github/stars/henrywhitaker3/Speedtest-Tracker?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/henrywhitaker3/Speedtest-Tracker)
+[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/speedtest-tracker?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/linuxserver/speedtest-tracker)
+[![GitHub Stars](https://img.shields.io/github/stars/linuxserver/docker-speedtest-tracker?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/linuxserver/docker-speedtest-tracker)
 [![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/compose/.apps/speedtest)
 
 ## Description
 
-[Speedtest Tracker](https://github.com/henrywhitaker3/Speedtest-Tracker) runs a
-speedtest check every hour and graphs the results. The back-end is written in
-`Laravel` and the front-end uses `React`. It uses the Ookla's Speedtest cli
-package to get the data and uses `Chart.js` to plot the results.
+[Speedtest Tracker](https://github.com/linuxserver/docker-speedtest-tracker) is a self-hosted application that monitors the performance and uptime of your internet connection.
 
-This program can also be used a home page item in
-[Organizr](https://organizr.app).
+### Features
 
-A demo is available [here](https://speedtest.henrywhitaker.com).
-
-_Disclaimer: You will need to accept Ookla's EULA and privacy agreements in order to use this container._
+- **Automated Tests**: Schedule regular speed tests to monitor your internet connection's performance over time.
+- **Detailed Metrics**: Capture download and upload speeds, ping, packet loss and more.
+- **Historical Data**: View historical data and trends to identify patterns and issues with your internet connection.
+- **Notifications**: Receive notifications when your internet performance drops below a certain threshold.
 
 ## Install/Setup
 
-This application does not have any specific setup instructions documented. If
-you need assistance setting up this application please visit our
-[support page](https://dockstarter.com/basics/support/).
+### Generate an Application Key
 
-### Base Path
+Run the command below to generate a key, the key is required for encryption. Copy this key including the base64: prefix and paste it as your `APP_KEY` value in `env_files/speedtest.env`.
 
-You can set a base path for this application if you want to host it behind a
-reverse proxy. By default it binds to `/`, but you can change the variable
-called `BASE_PATH` in your `env_files/speedtestr.env` file to whatever you want and run
-`ds -c up speedtest` afterwards.
+```bash
+echo -n 'base64:'; openssl rand -base64 32;
+```
 
-As usual, we **strongly discourage** having this application be public facing
-without some sort of protection in front of it, such as
-[Organizr's Server Auth](https://docs.organizr.app/books/setup-features/page/serverauth).
+### DB Type
 
-### Notifications
+`SQLite` is fine for most installs but you can also use more traditional relational databases like `MariaDB`, `MySQL` and `Postgres`. Update your `DB_CONNECTION` value in `env_files/speedtest.env`.
 
-This application supports notifications to some of the most popular services
-such as Telegram and Discord. Both of these services can be configured either
-using the application's Web GUI or environment variables through an
-[override](https://dockstarter.com/overrides/introduction).
+### APP URL
+
+The IP:port or URL your application will be accessed on (ie. http://192.168.1.1:6875 or https://speedtest.mydomain.com). Update your `APP_URL` value in `env_files/speedtest.env`.
+
+### Speedtest Servers
+
+A comma-separated list of server IDs to test against. Run the following command to get a list of nearby servers then update your `SPEEDTEST_SERVERS` value in `env_files/speedtest.env`.
+
+```bash
+docker run -it --rm --entrypoint /bin/bash lscr.io/linuxserver/speedtest-tracker:latest list-servers
+```
+
+If you need further assistance setting up this application, please visit the official
+[GitHub repository](https://github.com/alexjustesen/speedtest-tracker), [Hub Docker](https://hub.docker.com/r/linuxserver/speedtest-tracker)  or our
+[support page](https://dockstarter.com/basics/support).

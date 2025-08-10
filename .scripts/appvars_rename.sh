@@ -15,7 +15,7 @@ appvars_rename() {
         notice "Migrating vars."
         sed -i "s/^\s*${FROMAPP^^}__/${TOAPP^^}__/" "${COMPOSE_ENV}" || fatal "Failed to migrate vars from ${C["App"]}${FROMAPP^^}__${NC} to ${C["App"]}${TOAPP^^}__${NC}\nFailing command: ${C["FailingCommand"]}sed -i \"s/^\\s*${FROMAPP^^}__/${TOAPP^^}__/\" \"${COMPOSE_ENV}\""
         run_script 'appvars_create' "${TOAPP^^}"
-        notice "Completed migrating from ${C["App"]}${FROMAPP^^}${NC} to ${C["App"]}${TOAPP^^}${NC}. Run '${C["UserCommand"]}ds -c${NC}' to create the new container."
+        notice "Completed migrating from ${C["App"]}${FROMAPP^^}${NC} to ${C["App"]}${TOAPP^^}${NC}. Run '${C["UserCommand"]}${APPLICATION_COMMAND} -c${NC}' to create the new container."
     fi
 }
 

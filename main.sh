@@ -3,6 +3,8 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 declare -rx APPLICATION_NAME='DockSTARTer'
+declare -rx APPLICATION_COMMAND='ds'
+declare -rx APPLICATION_REPO='https://github.com/GhostWriters/DockSTARTer'
 declare -rx SOURCE_BRANCH='master'
 declare -rx TARGET_BRANCH='main'
 
@@ -35,28 +37,21 @@ readonly ARCH
 export ARCH
 
 # Environment Information
-readonly COMPOSE_FOLDER_NAME="compose"
-export COMPOSE_FOLDER_NAME
-readonly COMPOSE_FOLDER="${SCRIPTPATH}/${COMPOSE_FOLDER_NAME}"
-export COMPOSE_FOLDER
-readonly COMPOSE_OVERRIDE_NAME="docker-compose.override.yml"
-export COMPOSE_OVERRIDE_NAME
-readonly COMPOSE_OVERRIDE="${COMPOSE_FOLDER}/${COMPOSE_OVERRIDE_NAME}"
-export COMPOSE_OVERRIDE
-readonly COMPOSE_ENV="${COMPOSE_FOLDER}/.env"
-export COMPOSE_ENV
-readonly COMPOSE_ENV_DEFAULT_FILE="${COMPOSE_FOLDER}/.env.example"
-export COMPOSE_ENV_DEFAULT_FILE
-readonly APP_ENV_FOLDER_NAME="env_files"
-export APP_ENV_FOLDER_NAME
-readonly APP_ENV_FOLDER="${COMPOSE_FOLDER}/env_files"
-export APP_ENV_FOLDER
-readonly TEMPLATES_FOLDER="${COMPOSE_FOLDER}/.apps"
-export TEMPLATES_FOLDER
-readonly INSTANCES_FOLDER="${COMPOSE_FOLDER}/.instances"
-export INSTANCES_FOLDER
-readonly THEME_FOLDER="${SCRIPTPATH}/.themes"
-export THEME_FOLDER
+declare -rx COMPOSE_FOLDER_NAME="compose"
+declare -rx THEME_FOLDER_NAME=".themes"
+declare -rx COMPOSE_FOLDER="${SCRIPTPATH}/${COMPOSE_FOLDER_NAME}"
+declare -rx THEME_FOLDER="${SCRIPTPATH}/${THEME_FOLDER_NAME}"
+
+declare -rx INSTANCES_FOLDER_NAME=".instances"
+declare -rx TEMPLATES_FOLDER_NAME=".apps"
+declare -rx APP_ENV_FOLDER_NAME="env_files"
+declare -rx COMPOSE_OVERRIDE_NAME="docker-compose.override.yml"
+declare -rx COMPOSE_ENV="${COMPOSE_FOLDER}/.env"
+declare -rx COMPOSE_ENV_DEFAULT_FILE="${COMPOSE_FOLDER}/.env.example"
+declare -rx COMPOSE_OVERRIDE="${COMPOSE_FOLDER}/${COMPOSE_OVERRIDE_NAME}"
+declare -rx APP_ENV_FOLDER="${COMPOSE_FOLDER}/${APP_ENV_FOLDER_NAME}"
+declare -rx TEMPLATES_FOLDER="${COMPOSE_FOLDER}/${TEMPLATES_FOLDER_NAME}"
+declare -rx INSTANCES_FOLDER="${COMPOSE_FOLDER}/${INSTANCES_FOLDER_NAME}"
 
 # User/Group Information
 readonly DETECTED_PUID=${SUDO_UID:-$UID}
@@ -129,9 +124,9 @@ declare -Agr C=( # Pre-defined colors
     ["Theme"]="${F[C]}"
     ["Update"]="${F[G]}"
     ["User"]="${F[C]}"
-    ["URL"]="${F[M]}${UL}"
+    ["URL"]="${F[C]}${UL}"
     ["UserCommand"]="${F[Y]}${BD}"
-    ["Var"]="${F[C]}"
+    ["Var"]="${F[M]}"
     ["Version"]="${F[C]}"
 )
 
@@ -163,11 +158,10 @@ readonly -a DIALOG_BUTTONS=(
 )
 export DIALOG_BUTTONS
 
-declare -Ax DC=()
-declare -x DIALOGOTS
+declare -x BACKTITLE=''
 
 # Log Functions
-MKTEMP_LOG=$(mktemp) || echo -e "Failed to create temporary log file.\nFailing command: ${C["FailingCommand"]}mktemp"
+MKTEMP_LOG=$(mktemp -t "${APPLICATION_NAME}.log.XXXXXXXXXX") || echo -e "Failed to create temporary log file.\nFailing command: ${C["FailingCommand"]}mktemp -t \"${APPLICATION_NAME}.log.XXXXXXXXXX\""
 readonly MKTEMP_LOG
 echo "DockSTARTer Log" > "${MKTEMP_LOG}"
 create_strip_ansi_colors_SEDSTRING() {
@@ -255,14 +249,14 @@ check_repo() {
 # Check if running as root
 check_root() {
     if [[ ${DETECTED_PUID} == "0" ]] || [[ ${DETECTED_HOMEDIR} == "/root" ]]; then
-        fatal "Running as root is not supported. Please run as a standard user with sudo."
+        fatal "Running as '${C["User"]}root${NC}' is not supported. Please run as a standard user."
     fi
 }
 
 # Check if running with sudo
 check_sudo() {
     if [[ ${EUID} -eq 0 ]]; then
-        fatal "Running with sudo is not supported. Commands requiring sudo will prompt automatically when required."
+        fatal "Running with '${C["UserCommand"]}sudo${NC}' is not supported. Commands requiring '${C["UserCommand"]}sudo${NC}' will prompt automatically when required."
     fi
 }
 
@@ -276,7 +270,7 @@ run_script() {
         ${SCRIPTSNAME} "$@"
         return
     else
-        fatal "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh not found."
+        fatal "'${C["File"]}${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh${NC}' not found."
     fi
 }
 
@@ -289,7 +283,7 @@ highlighted_list() {
     fi
 }
 
-_dialog_() {
+_dialog_backtitle_() {
     local LeftBackTitle RightBackTitle
     local CleanLeftBackTitle CleanRightBackTitle
 
@@ -320,9 +314,12 @@ _dialog_() {
     IndentLength=$((COLUMNS - ${#CleanLeftBackTitle} - ${#CleanRightBackTitle} - 2))
     local Indent
     Indent="$(printf %${IndentLength}s '')"
-    BackTitle="${LeftBackTitle}${Indent}${RightBackTitle}"
+    BACKTITLE="${LeftBackTitle}${Indent}${RightBackTitle}"
+}
 
-    ${DIALOG} --backtitle "${BackTitle}" "$@"
+_dialog_() {
+    _dialog_backtitle_
+    ${DIALOG} --file "${DIALOG_OPTIONS_FILE}" --backtitle "${BACKTITLE}" "$@"
 }
 
 # Check to see if we should use a dialog box
@@ -351,6 +348,7 @@ run_script_dialog() {
     shift 4
     if use_dialog_box; then
         # Using the GUI, pipe output to a dialog box
+        SubTitle="$(strip_ansi_colors "${SubTitle}")"
         run_script "${SCRIPTSNAME}" "$@" |& dialog_pipe "${Title}" "${SubTitle}" "${TimeOut}"
         return "${PIPESTATUS[0]}"
     else
@@ -369,6 +367,7 @@ run_command_dialog() {
     if [[ -n ${CommandName-} ]]; then
         if use_dialog_box; then
             # Using the GUI, pipe output to a dialog box
+            SubTitle="$(strip_ansi_colors "${SubTitle}")"
             "${CommandName}" "$@" |& dialog_pipe "${Title}" "${SubTitle}" "${TimeOut}"
             return "${PIPESTATUS[0]}"
         else
@@ -378,6 +377,17 @@ run_command_dialog() {
     fi
 }
 
+dialog_info() {
+    local Title=${1:-}
+    local Message=${2:-}
+    Title="$(strip_ansi_colors "${Title}")"
+    Message="$(strip_ansi_colors "${Message}")"
+    _dialog_ \
+        --title "${Title}" \
+        --infobox "${Message}" \
+        "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+    echo -n "${BS}"
+}
 dialog_message() {
     local Title=${1:-}
     local Message=${2:-}
@@ -500,8 +510,8 @@ usage() {
         APPLICATION_HEADING+=" (${C["Update"]}Update Available${NC})"
     fi
     cat << EOF
-Usage: ds [OPTION]
-NOTE: ds shortcut is only available after the first run of
+Usage: ${APPLICATION_COMMAND} [<OPTION> ...]
+NOTE: ${APPLICATION_COMMAND} shortcut is only available after the first run of
     bash main.sh
 
 ${APPLICATION_HEADING}
@@ -559,14 +569,14 @@ that take app names can use the form app: to refer to the same file.
     List added apps
 --list-builtin
     List builtin apps
---list-depreciated
-    List depreciated apps
+--list-deprecated
+    List deprecated apps
 --list-enabled
     List enabled apps
 --list-disabled
     List disabled apps
---list-nondepreciated
-    List depreciated apps
+--list-nondeprecated
+    List non-deprecated apps
 --list-referenced
     List referenced apps (whether they are "built in" or not)
     An app is considered "referenced" if there is a variable matching the app's name in the
@@ -583,6 +593,8 @@ that take app names can use the form app: to refer to the same file.
     Prompt to remove the .env variables for the app specified
 -s --status <appname>
     Returns the enabled/disabled status for the app specified
+-S --select
+    Bring up the application selection menu
 --status-disable <appname>
     Disable the app specified
 --status-enable <appname>
@@ -626,13 +638,17 @@ cleanup() {
     trap - ERR EXIT SIGABRT SIGALRM SIGHUP SIGINT SIGQUIT SIGTERM
 
     if [[ ${PROMPT:-CLI} == "GUI" ]]; then
-        echo -n "${BS}"
+        tput reset
     fi
 
     sudo sh -c "cat ${MKTEMP_LOG:-/dev/null} >> ${SCRIPTPATH}/dockstarter.log" || true
     sudo rm -f "${MKTEMP_LOG-}" || true
     sudo sh -c "echo \"$(tail -1000 "${SCRIPTPATH}/dockstarter.log")\" > ${SCRIPTPATH}/dockstarter.log" || true
     sudo -E chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || true
+
+    if [[ -n ${DIALOG_OPTIONS_FILE-} && -f ${DIALOG_OPTIONS_FILE} ]]; then
+        rm -f "${DIALOG_OPTIONS_FILE}" || true
+    fi
 
     if [[ ${CI-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS-} == false ]]; then
         echo "TRAVIS_SECURE_ENV_VARS is false for Pull Requests from remote branches. Please retry failed builds!"
@@ -649,7 +665,7 @@ trap 'cleanup' ERR EXIT SIGABRT SIGALRM SIGHUP SIGINT SIGQUIT SIGTERM
 # Command Line Arguments
 readonly ARGS=("$@")
 cmdline() {
-    while getopts ":-:a:c:efghilpr:s:t:T:u:vV:x" OPTION; do
+    while getopts ":-:a:c:efghilpr:s:St:T:u:vV:x" OPTION; do
         # support long options: https://stackoverflow.com/a/28466267/519360
         if [ "$OPTION" = "-" ]; then # long option: reformulate OPTION and OPTARG
             OPTION="${OPTARG}"       # extract long option name
@@ -671,7 +687,7 @@ cmdline() {
                     ADD=$(printf "%s " "${MULTIOPT[@]}" | xargs)
                     readonly ADD
                 else
-                    error "${OPTION} requires an option."
+                    error "'${C["UserCommand"]}${OPTION}${NC}' requires an option."
                     exit 1
                 fi
                 ;;
@@ -691,7 +707,7 @@ cmdline() {
                             readonly COMPOSE
                             ;;
                         *)
-                            error "Invalid compose option ${OPTARG}."
+                            error "Invalid compose option '${C["UserCommand"]}${OPTARG}${NC}'."
                             exit 1
                             ;;
                     esac
@@ -757,9 +773,9 @@ cmdline() {
                 if [[ -n ${DIALOG-} ]]; then
                     PROMPT="GUI"
                 else
-                    warn "The '--gui' option requires the dialog command to be installed."
-                    warn "'dialog' command not found. Run 'ds -fiv' to install all dependencies."
-                    warn "Coninuing without '--gui' option."
+                    warn "The '${C["UserCommand"]}--gui${NC}' option requires the '${C["Program"]}dialog$}NC}' command to be installed."
+                    warn "'${C["Program"]}dialog${NC}' command not found. Run '${C["UserCommand"]}${APPLICATION_COMMAND} -fiv${NC}' to install all dependencies."
+                    warn "Coninuing without '${C["UserCommand"]}--gui${NC}' option."
                 fi
                 ;;
             h | help)
@@ -790,7 +806,7 @@ cmdline() {
                     REMOVE=$(printf "%s " "${MULTIOPT[@]}" | xargs)
                     readonly REMOVE
                 else
-                    error "${OPTION} requires an option."
+                    error "'${C["UserCommand"]}${OPTION}${NC}' requires an option."
                     exit 1
                 fi
                 ;;
@@ -806,7 +822,7 @@ cmdline() {
                     STATUS=$(printf "%s " "${MULTIOPT[@]}" | xargs)
                     readonly STATUS
                 else
-                    error "${OPTION} requires an option."
+                    error "'${C["UserCommand"]}${OPTION}${NC}' requires an option."
                     exit 1
                 fi
                 ;;
@@ -822,15 +838,18 @@ cmdline() {
                     STATUS=$(printf "%s " "${MULTIOPT[@]}" | xargs)
                     readonly STATUS
                 else
-                    error "${OPTION} requires an option."
+                    error "'${C["UserCommand"]}${OPTION}${NC}' requires an option."
                     exit 1
                 fi
+                ;;
+            S | select)
+                readonly SELECT=1
                 ;;
             t | test)
                 if [[ -n ${OPTARG-} ]]; then
                     readonly TEST=${OPTARG}
                 else
-                    error "${OPTION} requires an option."
+                    error "'${C["UserCommand"]}${OPTION}${NC}' requires an option."
                     exit 1
                 fi
                 ;;
@@ -883,7 +902,7 @@ cmdline() {
                         readonly VERSION=''
                         ;;
                     *)
-                        error "${OPTARG} requires an option."
+                        error "'${C["UserCommand"]}${OPTARG}${NC}' requires an option."
                         exit 1
                         ;;
                 esac
@@ -912,13 +931,13 @@ run_test() {
     local TESTSNAME="test_${SCRIPTSNAME}"
     if [[ -f ${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh ]]; then
         if grep -q -P "${TESTSNAME}" "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh"; then
-            notice "Testing ${SCRIPTSNAME}."
+            notice "Testing '${C["RunningCommand"]}${SCRIPTSNAME}${NC}'."
             # shellcheck source=/dev/null
             source "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh"
-            "${TESTSNAME}" "$@" || fatal "Failed to run ${TESTSNAME}."
-            notice "Completed testing ${TESTSNAME}."
+            "${TESTSNAME}" "$@" || fatal "Failed to run '${C["FailingCommand"]}${TESTSNAME}${NC}'."
+            notice "Completed testing '${C["RunningCommand"]}${TESTSNAME}${NC}'."
         else
-            fatal "Test function in ${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh not found."
+            fatal "Test function in '${C["File"]}${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh${NC}' not found."
         fi
     else
         fatal "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh not found."
@@ -948,27 +967,27 @@ main() {
     fi
     # Repo Check
     local DS_COMMAND
-    DS_COMMAND=$(command -v ds || true)
+    DS_COMMAND=$(command -v "${APPLICATION_COMMAND}" || true)
     if [[ -L ${DS_COMMAND} ]]; then
         local DS_SYMLINK
         DS_SYMLINK=$(readlink -f "${DS_COMMAND}")
         if [[ ${SCRIPTNAME} != "${DS_SYMLINK}" ]]; then
             if check_repo; then
-                if run_script 'question_prompt' "${PROMPT:-CLI}" N "${APPLICATION_NAME} installation found at ${DS_SYMLINK} location. Would you like to run ${SCRIPTNAME} instead?"; then
+                if run_script 'question_prompt' "${PROMPT:-CLI}" N "${APPLICATION_NAME} installation found at '${C["File"]}${DS_SYMLINK}${NC}' location. Would you like to run '${C["UserCommand"]}${SCRIPTNAME}${NC}' instead?"; then
                     run_script 'symlink_ds'
-                    DS_COMMAND=$(command -v ds || true)
+                    DS_COMMAND=$(command -v "${APPLICATION_COMMAND}" || true)
                     DS_SYMLINK=$(readlink -f "${DS_COMMAND}")
                 fi
             fi
-            warn "Attempting to run ${APPLICATION_NAME} from ${DS_SYMLINK} location."
+            warn "Attempting to run ${APPLICATION_NAME} from '${C["RunningCommand"]}${DS_SYMLINK}${NC}' location."
             bash "${DS_SYMLINK}" -fvu
             bash "${DS_SYMLINK}" -fvi
             exec bash "${DS_SYMLINK}" "${ARGS[@]-}"
         fi
     else
         if ! check_repo; then
-            warn "Attempting to clone ${APPLICATION_NAME} repo to ${DETECTED_HOMEDIR}/.docker location."
-            git clone https://github.com/GhostWriters/DockSTARTer "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone ${APPLICATION_NAME} repo.\nFailing command: ${C["FailingCommand"]}git clone https://github.com/GhostWriters/DockSTARTer \"${DETECTED_HOMEDIR}/.docker\""
+            warn "Attempting to clone ${APPLICATION_NAME} repo to ${C["Folder"]}'${DETECTED_HOMEDIR}/.docker${NC}' location."
+            git clone "${APPLICATION_REPO}" "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone ${APPLICATION_NAME} repo.\nFailing command: ${C["FailingCommand"]}git clone \"${APPLICATION_REPO}\" \"${DETECTED_HOMEDIR}/.docker\""
             notice "Performing first run install."
             exec bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-fvi"
         fi
@@ -981,7 +1000,7 @@ main() {
         if ds_update_available; then
             warn "${APPLICATION_NAME} [${C["Version"]}${APPLICATION_VERSION}${NC}]"
             warn "An update to ${APPLICATION_NAME} is available."
-            warn "Run '${C["UserCommand"]}ds -u${NC}' to update to version ${C["Version"]}$(ds_version "${Branch}")${NC}."
+            warn "Run '${C["UserCommand"]}${APPLICATION_COMMAND} -u${NC}' to update to version ${C["Version"]}$(ds_version "${Branch}")${NC}."
         else
             info "${APPLICATION_NAME} [${C["Version"]}${APPLICATION_VERSION}${NC}]"
         fi
@@ -995,7 +1014,7 @@ main() {
         if ! ds_branch_exists "${MainBranch}"; then
             error "${APPLICATION_NAME} does not appear to have a '${C["Branch"]}${TARGET_BRANCH}${NC}' or '${C["Branch"]}${SOURCE_BRANCH}${NC}' branch."
         else
-            warn "Run '${C["UserCommand"]}ds -u ${MainBranch}${NC}' to update to the latest stable release ${C["Version"]}$(ds_version "${MainBranch}")${NC}."
+            warn "Run '${C["UserCommand"]}${APPLICATION_COMMAND} -u ${MainBranch}${NC}' to update to the latest stable release ${C["Version"]}$(ds_version "${MainBranch}")${NC}."
         fi
     fi
     # Apply the GUI theme
@@ -1006,18 +1025,137 @@ main() {
         exit
     fi
 
-    # Create the .env file if it doesn't exists
-    run_script 'env_create'
-
     # Execute CLI Argument Functions
+    if [[ -n ${INSTALL-} ]]; then
+        run_script 'run_install'
+        exit
+    fi
+    if [[ -n ${UPDATE-} ]]; then
+        if [[ ${UPDATE} == true ]]; then
+            run_script 'update_self'
+        else
+            run_script 'update_self' "${UPDATE}"
+        fi
+        exit
+    fi
+    if [[ -v VERSION ]]; then
+        local VersionString
+        VersionString="$(ds_version "${VERSION}")"
+        if [[ -n ${VersionString} ]]; then
+            echo "${APPLICATION_NAME} [${VersionString}]"
+        else
+            local Branch
+            Branch="${VERSION:-$(ds_branch)}"
+            error "${APPLICATION_NAME} branch '${C["Branch"]}${Branch}${NC}' does not exist."
+        fi
+        exit
+    fi
+    if [[ -n ${PRUNE-} ]]; then
+        run_script 'docker_prune'
+        exit
+    fi
+    if [[ -n ${THEMEMETHOD-} ]]; then
+        case "${THEMEMETHOD}" in
+            theme)
+                local NoticeText
+                local CommandLine
+                if [[ -n ${THEME-} ]]; then
+                    NoticeText="Applying ${APPLICATION_NAME} theme '${C["Theme"]}${THEME}${NC}'"
+                    CommandLine="${APPLICATION_COMMAND} --theme \"${THEME}\""
+                else
+                    NoticeText="Applying ${APPLICATION_NAME} theme '${C["Theme"]}$(run_script 'theme_name')${NC}'"
+                    CommandLine="${APPLICATION_COMMAND} --theme"
+                fi
+                notice "${NoticeText}"
+                if use_dialog_box; then
+                    run_script 'apply_theme' "${THEME-}" && run_script 'menu_dialog_example' "" "${CommandLine}"
+                else
+                    run_script 'apply_theme' "${THEME-}"
+                fi
+                ;;
+            theme-list)
+                run_script_dialog "List Themes" "" "" \
+                    'theme_list'
+                ;;
+            theme-table)
+                run_script_dialog "List Themes" "" "" \
+                    'theme_table'
+                ;;
+            theme-shadow)
+                notice "Turning on GUI shadows."
+                run_script 'env_set' Shadow yes "${MENU_INI_FILE}"
+                if use_dialog_box; then
+                    run_script 'menu_dialog_example' "Turned on shadows" "${APPLICATION_COMMAND} --theme-shadow"
+                fi
+                ;;
+            theme-no-shadow)
+                run_script 'env_set' Shadow no "${MENU_INI_FILE}"
+                notice "Turning off GUI shadows."
+                if use_dialog_box; then
+                    run_script 'menu_dialog_example' "Turned off shadows" "${APPLICATION_COMMAND} --theme-no-shadow"
+                fi
+                ;;
+            theme-scrollbar)
+                run_script 'env_set' Scrollbar yes "${MENU_INI_FILE}"
+                notice "Turning on GUI scrollbars."
+                if use_dialog_box; then
+                    run_script 'menu_dialog_example' "Turned on scrollbars" "${APPLICATION_COMMAND} --theme-scrollbar"
+                fi
+                ;;
+            theme-no-scrollbar)
+                run_script 'env_set' Scrollbar no "${MENU_INI_FILE}"
+                notice "Turning off GUI scrollbars."
+                if use_dialog_box; then
+                    run_script 'menu_dialog_example' "Turned off scrollbars" "${APPLICATION_COMMAND} --theme-no-scrollbar"
+                fi
+                ;;
+            theme-lines)
+                run_script 'env_set' LineCharacters yes "${MENU_INI_FILE}"
+                notice "Turning on GUI line drawing characters."
+                if use_dialog_box; then
+                    run_script 'menu_dialog_example' "Turned on line drawing" "${APPLICATION_COMMAND} --theme-lines"
+                fi
+                ;;
+            theme-no-lines)
+                notice "Turning off GUI line drawing characters."
+                run_script 'env_set' LineCharacters no "${MENU_INI_FILE}"
+                if use_dialog_box; then
+                    run_script 'menu_dialog_example' "Turned off line drawing" "${APPLICATION_COMMAND} --theme-no-lines"
+                fi
+                ;;
+            theme-borders)
+                run_script 'env_set' Borders yes "${MENU_INI_FILE}"
+                notice "Turning on GUI borders."
+                if use_dialog_box; then
+                    run_script 'menu_dialog_example' "Turned on borders" "${APPLICATION_COMMAND} --theme-borders"
+                fi
+                ;;
+            theme-no-borders)
+                notice "Turning off GUI borders."
+                run_script 'env_set' Borders no "${MENU_INI_FILE}"
+                if use_dialog_box; then
+                    run_script 'menu_dialog_example' "Turned off borders" "${APPLICATION_COMMAND} --theme-no-borders"
+                fi
+                ;;
+            *)
+                error "Invalid option: '${C["UserCommand"]}${THEMEMETHOD-}${NC}'"
+                exit 1
+                ;;
+        esac
+        exit
+    fi
     if [[ -n ${ADD-} ]]; then
         local CommandLine
-        CommandLine="ds --add $(run_script 'app_nicename' "${ADD}")"
+        CommandLine="${APPLICATION_COMMAND} --add $(run_script 'app_nicename' "${ADD}")"
         run_script_dialog "Add Application" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}${DC[NC]}" "" \
             'appvars_create' "${ADD}"
         run_script 'env_update'
         exit
     fi
+
+    # Create the .env file if it doesn't exists before the following command-line options
+    run_script 'env_create'
+
     if [[ -n ${COMPOSE-} ]]; then
         case ${COMPOSE} in
             generate | merge) ;&
@@ -1026,7 +1164,8 @@ main() {
                 run_script 'docker_compose' "${COMPOSE}"
                 ;;
             *)
-                fatal "Invalid compose option."
+                error "Invalid compose option '${C["UserCommand"]}${COMPOSE}${NC}'."
+                exit 1
                 ;;
         esac
         exit
@@ -1034,7 +1173,7 @@ main() {
     if [[ -n ${ENVMETHOD-} ]]; then
         case "${ENVMETHOD-}" in
             env)
-                run_script_dialog "${DC["TitleSuccess"]}Creating environment variables for added apps" "Please be patient, this can take a while.\n${DC["CommandLine"]} ds --env" "" \
+                run_script_dialog "${DC["TitleSuccess"]}Creating environment variables for added apps" "Please be patient, this can take a while.\n${DC["CommandLine"]} ${APPLICATION_COMMAND} --env" "" \
                     'appvars_create_all'
                 exit
                 ;;
@@ -1042,7 +1181,7 @@ main() {
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
                         local CommandLine
-                        CommandLine="ds --env-get ${ENVVAR^^}"
+                        CommandLine="${APPLICATION_COMMAND} --env-get ${ENVVAR^^}"
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
                             run_script 'env_get' "${VarName}"
                         done |& dialog_pipe "Get Value of Variable" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
@@ -1052,8 +1191,8 @@ main() {
                         done
                     fi
                 else
-                    echo "Invalid usage. Must be"
-                    echo "  --env-get with variable name ('--env-get VAR' or '--env-get VAR [VAR ...]')"
+                    echo "Invalid usage. Must be:"
+                    echo "  '${C["UserCommand"]}${APPLICATION_COMMAND} --env-get${NC}' with variable name ('${C["UserCommand"]}${APPLICATION_COMMAND} --env-get VAR${NC}' or '${C["UserCommand"]}${APPLICATION_COMMAND} --env-get VAR [VAR ...]${NC}')"
                     echo "  Variable name will be forced to UPPER CASE"
                 fi
                 ;;
@@ -1061,7 +1200,7 @@ main() {
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
                         local CommandLine
-                        CommandLine="ds --env-get-line ${ENVVAR}"
+                        CommandLine="${APPLICATION_COMMAND} --env-get-line ${ENVVAR}"
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
                             run_script 'env_get' "${VarName}"
                         done |& dialog_pipe "Get Value of Variable" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
@@ -1071,8 +1210,8 @@ main() {
                         done
                     fi
                 else
-                    echo "Invalid usage. Must be"
-                    echo "  --env-get-lower with variable name ('--env-get-lower=Var' or '--env-get-lower Var [Var ...]')"
+                    echo "Invalid usage. Must be:"
+                    echo "  '${C["UserCommand"]}${APPLICATION_COMMAND} --env-get-lower${NC}' with variable name ('${C["UserCommand"]}${APPLICATION_COMMAND} --env-get-lower=Var${NC}' or '${C["UserCommand"]}${APPLICATION_COMMAND} --env-get-lower Var [Var ...]${NC}')"
                     echo "  Variable name can be Mixed Case"
                 fi
                 ;;
@@ -1080,7 +1219,7 @@ main() {
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
                         local CommandLine
-                        CommandLine="ds --env-get-line ${ENVVAR^^}"
+                        CommandLine="${APPLICATION_COMMAND} --env-get-line ${ENVVAR^^}"
                         for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
                             run_script 'env_get_line' "${VarName}"
                         done |& dialog_pipe "Get Line of Variable" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
@@ -1090,8 +1229,8 @@ main() {
                         done
                     fi
                 else
-                    echo "Invalid usage. Must be"
-                    echo "  --env-get-line with variable name ('--env-get-line VAR' or '--env-get-line VAR [VAR ...]')"
+                    echo "Invalid usage. Must be:"
+                    echo "  '${C["UserCommand"]}${APPLICATION_COMMAND} --env-get-line${NC}' with variable name ('${C["UserCommand"]}${APPLICATION_COMMAND} --env-get-line VAR${NC}' or '${C["UserCommand"]}${APPLICATION_COMMAND} --env-get-line VAR [VAR ...]${NC}')"
                     echo "  Variable name will be forced to UPPER CASE"
                 fi
                 ;;
@@ -1099,7 +1238,7 @@ main() {
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
                         local CommandLine
-                        CommandLine="ds --env-get-lower-line ${ENVVAR}"
+                        CommandLine="${APPLICATION_COMMAND} --env-get-lower-line ${ENVVAR}"
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
                             run_script 'env_get_line' "${VarName}"
                         done |& dialog_pipe "Get Line of Variable" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
@@ -1109,8 +1248,8 @@ main() {
                         done
                     fi
                 else
-                    echo "Invalid usage. Must be"
-                    echo "  --env-get-lower-line with variable name ('--env-get-lower-line=Var' or '--env-get-lower-line Var [Var ...]')"
+                    echo "Invalid usage. Must be:"
+                    echo "  '${C["UserCommand"]}${APPLICATION_COMMAND} --env-get-lower-line${NC}' with variable name ('${C["UserCommand"]}${APPLICATION_COMMAND} --env-get-lower-line=Var${NC}' or '${C["UserCommand"]}${APPLICATION_COMMAND} --env-get-lower-line Var [Var ...]${NC}')"
                     echo "  Variable name can be Mixed Case"
                 fi
                 ;;
@@ -1118,7 +1257,7 @@ main() {
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
                         local CommandLine
-                        CommandLine="ds --env-get-lower-literal ${ENVVAR^^}"
+                        CommandLine="${APPLICATION_COMMAND} --env-get-lower-literal ${ENVVAR^^}"
                         for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
                             run_script 'env_get_literal' "${VarName}"
                         done |& dialog_pipe "Get Literal Value of Variable" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
@@ -1128,8 +1267,8 @@ main() {
                         done
                     fi
                 else
-                    echo "Invalid usage. Must be"
-                    echo "  --env-get-literal with variable name ('--env-get-literal VAR' or '--env-get-literal VAR [VAR ...]')"
+                    echo "Invalid usage. Must be:"
+                    echo "  '${C["UserCommand"]}${APPLICATION_COMMAND} --env-get-literal${NC}' with variable name ('${C["UserCommand"]}${APPLICATION_COMMAND} --env-get-literal VAR${NC}' or '${C["UserCommand"]}${APPLICATION_COMMAND} --env-get-literal VAR [VAR ...]${NC}')"
                     echo "  Variable name will be forced to UPPER CASE"
                 fi
                 ;;
@@ -1137,7 +1276,7 @@ main() {
                 if [[ ${ENVVAR-} != "" ]]; then
                     if use_dialog_box; then
                         local CommandLine
-                        CommandLine="ds --env-get-lower-literal ${ENVVAR}"
+                        CommandLine="${APPLICATION_COMMAND} --env-get-lower-literal ${ENVVAR}"
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
                             run_script 'env_get_literal' "${VarName}"
                         done |& dialog_pipe "Get Literal Value of Variable" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
@@ -1147,8 +1286,8 @@ main() {
                         done
                     fi
                 else
-                    echo "Invalid usage. Must be"
-                    echo "  --env-get-lower-literal with variable name ('--env-get-lower-literal=Var' or '--env-get-lower-literal Var [Var ...]')"
+                    echo "Invalid usage. Must be:"
+                    echo "  '${C["UserCommand"]}${APPLICATION_COMMAND} --env-get-lower-literal${NC}' with variable name ('${C["UserCommand"]}${APPLICATION_COMMAND} --env-get-lower-literal=Var${NC}' or '${C["UserCommand"]}${APPLICATION_COMMAND} --env-get-lower-literal Var [Var ...]${NC}')"
                     echo "  Variable name can be Mixed Case"
                 fi
                 ;;
@@ -1157,8 +1296,8 @@ main() {
                     run_script 'env_backup'
                     run_script 'env_set' "${ENVVAR^^}" "${ENVVAL}"
                 else
-                    echo "Invalid usage. Must be"
-                    echo "  --env-set with variable name and value ('--env-set=VAR,VAL' or '--env-set VAR=Val')"
+                    echo "Invalid usage. Must be:"
+                    echo "  '${C["UserCommand"]}${APPLICATION_COMMAND} --env-set${NC}' with variable name and value ('${C["UserCommand"]}${APPLICATION_COMMAND} --env-set=VAR,VAL${NC}' or '${C["UserCommand"]}${APPLICATION_COMMAND} --env-set VAR=Val'${NC})"
                     echo "  Variable name will be forced to UPPER CASE"
                 fi
                 ;;
@@ -1167,8 +1306,8 @@ main() {
                     run_script 'env_backup'
                     run_script 'env_set' "${ENVVAR}" "${ENVVAL}"
                 else
-                    echo "Invalid usage. Must be"
-                    echo "  --env-set-lower with variable name and value ('--env-set-lower=Var,VAL' or '--env-set-lower Var=Val')"
+                    echo "Invalid usage. Must be:"
+                    echo "  '${C["UserCommand"]}${APPLICATION_COMMAND} --env-set-lower${NC}' with variable name and value ('${C["UserCommand"]}${APPLICATION_COMMAND} --env-set-lower=Var,VAL${NC}' or '${C["UserCommand"]}${APPLICATION_COMMAND} --env-set-lower Var=Val${NC}')"
                     echo "  Variable name can be Mixed Case"
                 fi
                 ;;
@@ -1176,7 +1315,7 @@ main() {
                 if [[ ${ENVAPP-} != "" ]]; then
                     if use_dialog_box; then
                         local CommandLine
-                        CommandLine="ds --env-appvars $(run_script 'app_nicename' "${ENVAPP}" | tr '\n' ' ')"
+                        CommandLine="${APPLICATION_COMMAND} --env-appvars $(run_script 'app_nicename' "${ENVAPP}" | tr '\n' ' ')"
                         for AppName in $(xargs -n1 <<< "${ENVAPP}"); do
                             run_script 'appvars_list' "${AppName}"
                         done |& dialog_pipe "Variables for Application" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
@@ -1186,15 +1325,15 @@ main() {
                         done
                     fi
                 else
-                    echo "Invalid usage. Must be"
-                    echo "  --env-appvars with application name ('--env-appvars App [App ...]')"
+                    echo "Invalid usage. Must be:"
+                    echo "  '${C["UserCommand"]}${APPLICATION_COMMAND} --env-appvars${NC}' with application name ('${C["UserCommand"]}${APPLICATION_COMMAND} --env-appvars App [App ...]${NC}')"
                 fi
                 ;;
             env-appvars-lines)
                 if [[ ${ENVAPP-} != "" ]]; then
                     if use_dialog_box; then
                         local CommandLine
-                        CommandLine="ds --env-appvars-lines $(run_script 'app_nicename' "${ENVAPP}" | tr '\n' ' ')"
+                        CommandLine="${APPLICATION_COMMAND} --env-appvars-lines $(run_script 'app_nicename' "${ENVAPP}" | tr '\n' ' ')"
                         for AppName in $(xargs -n1 <<< "${ENVAPP}"); do
                             run_script 'appvars_lines' "${AppName}"
                         done |& dialog_pipe "Variable Lines for Application" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
@@ -1204,18 +1343,14 @@ main() {
                         done
                     fi
                 else
-                    echo "Invalid usage. Must be"
-                    echo "  --env-appvars-lines with application name ('--env-appvars-lines App [App ...]')"
+                    echo "Invalid usage. Must be:"
+                    echo "  '${C["UserCommand"]}${APPLICATION_COMMAND} --env-appvars-lines${NC}' with application name ('${C["UserCommand"]}${APPLICATION_COMMAND} --env-appvars-lines App [App ...]'${NC})"
                 fi
                 ;;
             *)
-                echo "Invalid option: '${ENVMETHOD-}'"
+                echo "Invalid option: '${C["UserCommand"]}${ENVMETHOD-}${NC}'"
                 ;;
         esac
-        exit
-    fi
-    if [[ -n ${INSTALL-} ]]; then
-        run_script 'run_install'
         exit
     fi
     if [[ -n ${LIST-} ]]; then
@@ -1229,13 +1364,13 @@ main() {
                 run_script_dialog "List Builtin Applications" "" "" \
                     'app_nicename' "$(run_script 'app_list_builtin')"
                 ;;
-            list-depreciated)
-                run_script_dialog "List Depreciated Applications" "" "" \
-                    'app_nicename' "$(run_script 'app_list_depreciated')"
+            list-deprecated)
+                run_script_dialog "List Deprecated Applications" "" "" \
+                    'app_nicename' "$(run_script 'app_list_deprecated')"
                 ;;
-            list-nondepreciated)
-                run_script_dialog "List Non-Depreciated Applications" "" "" \
-                    'app_nicename' "$(run_script 'app_list_nondepreciated')"
+            list-nondeprecated)
+                run_script_dialog "List Non-Deprecated Applications" "" "" \
+                    'app_nicename' "$(run_script 'app_list_nondeprecated')"
                 ;;
             list-added)
                 run_script_dialog "List Added Applications" "" "" \
@@ -1255,13 +1390,9 @@ main() {
                 ;;
 
             *)
-                echo "Invalid option: '${LISTMETHOD-}'"
+                echo "Invalid option: '${C["UserCommand"]}${LISTMETHOD-}${NC}'"
                 ;;
         esac
-        exit
-    fi
-    if [[ -n ${PRUNE-} ]]; then
-        run_script 'docker_prune'
         exit
     fi
     if [[ -n ${REMOVE-} ]]; then
@@ -1274,11 +1405,16 @@ main() {
         fi
         exit
     fi
+    if [[ -n ${SELECT-} ]]; then
+        PROMPT='GUI'
+        run_script 'menu_app_select' || true
+        exit
+    fi
     if [[ -n ${STATUSMETHOD-} ]]; then
         case "${STATUSMETHOD-}" in
             status)
                 local CommandLine
-                CommandLine="ds --status $(run_script 'app_nicename' "${STATUS}" | tr '\n' ' ')"
+                CommandLine="${APPLICATION_COMMAND} --status $(run_script 'app_nicename' "${STATUS}" | tr '\n' ' ')"
                 run_script_dialog "Application Status" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" "" \
                     'app_status' "${STATUS}"
                 ;;
@@ -1291,117 +1427,9 @@ main() {
                 run_script 'env_update'
                 ;;
             *)
-                echo "Invalid option: '${STATUSMETHOD-}'"
+                echo "Invalid option: '${C["UserCommand"]}${STATUSMETHOD-}${NC}'"
                 ;;
         esac
-        exit
-    fi
-    if [[ -n ${THEMEMETHOD-} ]]; then
-        case "${THEMEMETHOD}" in
-            theme)
-                local NoticeText
-                local CommandLine
-                if [[ -n ${THEME-} ]]; then
-                    NoticeText="Applying ${APPLICATION_NAME} theme ${C["Theme"]}${THEME}${NC}"
-                    CommandLine="ds --theme \"${THEME}\""
-                else
-                    NoticeText="Applying ${APPLICATION_NAME} theme ${C["Theme"]}$(run_script 'theme_name')${NC}"
-                    CommandLine="ds --theme"
-                fi
-                notice "${NoticeText}"
-                run_script 'apply_theme' "${THEME-}"
-                if use_dialog_box; then
-                    run_script 'menu_dialog_example' "" "${CommandLine}"
-                fi
-                ;;
-            theme-list)
-                run_script_dialog "List Themes" "" "" \
-                    'theme_list'
-                ;;
-            theme-table)
-                run_script_dialog "List Themes" "" "" \
-                    'theme_table'
-                ;;
-            theme-shadow)
-                notice "Turning on GUI shadows."
-                run_script 'env_set' Shadow yes "${MENU_INI_FILE}"
-                if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned on shadows" "ds --theme-shadow"
-                fi
-                ;;
-            theme-no-shadow)
-                run_script 'env_set' Shadow no "${MENU_INI_FILE}"
-                notice "Turning off GUI shadows."
-                if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned off shadows" "ds --theme-no-shadow"
-                fi
-                ;;
-            theme-scrollbar)
-                run_script 'env_set' Scrollbar yes "${MENU_INI_FILE}"
-                notice "Turning on GUI scrollbars."
-                if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned on scrollbars" "ds --theme-scrollbar"
-                fi
-                ;;
-            theme-no-scrollbar)
-                run_script 'env_set' Scrollbar no "${MENU_INI_FILE}"
-                notice "Turning off GUI scrollbars."
-                if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned off scrollbars" "ds --theme-no-scrollbar"
-                fi
-                ;;
-            theme-lines)
-                run_script 'env_set' LineCharacters yes "${MENU_INI_FILE}"
-                notice "Turning on GUI line drawing characters."
-                if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned on line drawing" "ds --theme-lines"
-                fi
-                ;;
-            theme-no-lines)
-                notice "Turning off GUI line drawing characters."
-                run_script 'env_set' LineCharacters no "${MENU_INI_FILE}"
-                if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned off line drawing" "ds --theme-no-lines"
-                fi
-                ;;
-            theme-borders)
-                run_script 'env_set' Borders yes "${MENU_INI_FILE}"
-                notice "Turning on GUI borders."
-                if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned on borders" "ds --theme-borders"
-                fi
-                ;;
-            theme-no-borders)
-                notice "Turning off GUI borders."
-                run_script 'env_set' Borders no "${MENU_INI_FILE}"
-                if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned off borders" "ds --theme-no-borders"
-                fi
-                ;;
-            *)
-                echo "Invalid option: '${THEMEMETHOD-}'"
-                ;;
-        esac
-        exit
-    fi
-    if [[ -n ${UPDATE-} ]]; then
-        if [[ ${UPDATE} == true ]]; then
-            run_script 'update_self'
-        else
-            run_script 'update_self' "${UPDATE}"
-        fi
-        exit
-    fi
-    if [[ -v VERSION ]]; then
-        local VersionString
-        VersionString="$(ds_version "${VERSION}")"
-        if [[ -n ${VersionString} ]]; then
-            echo "${APPLICATION_NAME} [${VersionString}]"
-        else
-            local Branch
-            Branch="${VERSION:-$(ds_branch)}"
-            error "DockSTARTer branch '${C["Branch"]}${Branch}${NC}' does not exist."
-        fi
         exit
     fi
     # Run Menus
@@ -1410,9 +1438,9 @@ main() {
         PROMPT="GUI"
         run_script 'menu_main'
     else
-        error "The GUI requires the dialog command to be installed."
-        error "'dialog' command not found. Run 'ds -fiv' to install all dependencies."
-        fatal "Unable to start GUI without dialog command."
+        error "The GUI requires the '${C["Program"]}dialog${NC}' command to be installed."
+        error "'${C["Program"]}dialog${NC}' command not found. Run '${C["UserCommand"]}${APPLICATION_COMMAND} -fiv${NC}' to install all dependencies."
+        fatal "Unable to start GUI without '${C["Program"]}dialog${NC}' command."
     fi
 
 }

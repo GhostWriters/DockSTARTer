@@ -22,7 +22,7 @@ menu_main() {
     local LastMainChoice=""
     while true; do
         local -a MainChoiceDialog=(
-            --stdout
+            --output-fd 1
             --title "${DC["Title"]}${Title}"
             --ok-label "Select"
             --cancel-label "Exit"

@@ -135,7 +135,7 @@ form_text_color = (WHITE,CYAN,ON)
 form_item_readonly_color = (CYAN,WHITE,ON)
 
 # Dialog box gauge color
-gauge_color = (BLUE,WHITE,ON)
+gauge_color = (WHITE,BLUE,ON)
 
 # Dialog box border2 color
 border2_color = dialog_color

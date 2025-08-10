@@ -49,7 +49,7 @@ update_self() {
         local ErrorMessage="${APPLICATION_NAME} branch '${C["Branch"]}${BRANCH}${NC}' does not exists."
         if use_dialog_box; then
             error "${ErrorMessage}" |&
-                dialog_pipe "${DC[TitleError]}${Title}" "${DC[CommandLine]} ds --update $*"
+                dialog_pipe "${DC[TitleError]}${Title}" "${DC[CommandLine]} ${APPLICATION_COMMAND} --update $*"
         else
             error "${ErrorMessage}"
         fi
@@ -60,7 +60,7 @@ update_self() {
             {
                 notice "${APPLICATION_NAME} is already up to date on branch ${C["Branch"]}${CurrentBranch}${NC}."
                 notice "Current version is ${C["Version"]}${CurrentVersion}${NC}"
-            } |& dialog_pipe "${DC[TitleWarning]}${Title}" "${DC[CommandLine]} ds --update $*"
+            } |& dialog_pipe "${DC[TitleWarning]}${Title}" "${DC[CommandLine]} ${APPLICATION_COMMAND} --update $*"
         else
             notice "${APPLICATION_NAME} is already up to date on branch ${C["Branch"]}${CurrentBranch}${NC}."
             notice "Current version is ${C["Version"]}${CurrentVersion}${NC}"
@@ -80,7 +80,7 @@ update_self() {
 
     if use_dialog_box; then
         commands_update_self "${BRANCH}" "${YesNotice}" "$@" |&
-            dialog_pipe "${DC[TitleSuccess]}${Title}" "${YesNotice}\n${DC[CommandLine]} ds --update $*"
+            dialog_pipe "${DC[TitleSuccess]}${Title}" "${YesNotice}\n${DC[CommandLine]} ${APPLICATION_COMMAND} --update $*"
     else
         commands_update_self "${BRANCH}" "${YesNotice}" "$@"
     fi
@@ -95,11 +95,6 @@ commands_update_self() {
     local QUIET=''
     if [[ -z ${VERBOSE-} ]]; then
         QUIET='--quiet'
-    fi
-    if [[ -d ${INSTANCES_FOLDER:?} ]]; then
-        notice "Clearing instances folder"
-        run_script 'set_permissions' "${INSTANCES_FOLDER:?}"
-        rm -fR "${INSTANCES_FOLDER:?}/"* &> /dev/null || fatal "Failed to clear instances folder.\nFailing command: ${C["FailingCommand"]}rm -fR \"${INSTANCES_FOLDER:?}/\"*"
     fi
     notice "${Notice}"
     cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${C["FailingCommand"]}cd \"${SCRIPTPATH}\""

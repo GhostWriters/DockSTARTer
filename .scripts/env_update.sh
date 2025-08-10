@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 env_update() {
     local ENV_LINES_FILE
-    ENV_LINES_FILE=$(mktemp)
+    ENV_LINES_FILE=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.ENV_LINES_FILE.XXXXXXXXXX")
     run_script 'appvars_lines' "" > "${ENV_LINES_FILE}"
 
     local -a UPDATED_ENV_LINES=()
@@ -25,9 +25,12 @@ env_update() {
             run_script 'env_format_lines' "${ENV_LINES_FILE}" "${APP_DEFAULT_GLOBAL_ENV_FILE}" "${appname}"
         )
     done
+    rm -f "${ENV_LINES_FILE}" ||
+        warn "Failed to remove temporary ${C["File"]}.env${NC} update file.\nFailing command: ${C["FailingCommand"]}rm -f \"${ENV_LINES_FILE}\""
 
     local MKTEMP_ENV_UPDATED
-    MKTEMP_ENV_UPDATED=$(mktemp) || fatal "Failed to create temporary update ${C["File"]}.env${NC} file.\nFailing command: ${C["FailingCommand"]}mktemp"
+    MKTEMP_ENV_UPDATED=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.MKTEMP_ENV_UPDATED.XXXXXXXXXX") ||
+        fatal "Failed to create temporary update ${C["File"]}.env${NC} file.\nFailing command: ${C["FailingCommand"]}mktemp -t \"${APPLICATION_NAME}.${FUNCNAME[0]}.MKTEMP_ENV_UPDATED.XXXXXXXXXX\""
     printf '%s\n' "${UPDATED_ENV_LINES[@]}" > "${MKTEMP_ENV_UPDATED}" || fatal "Failed to write temporary ${C["File"]}.env${NC} update file."
     cp -f "${MKTEMP_ENV_UPDATED}" "${COMPOSE_ENV}" ||
         fatal "Failed to copy file.\nFailing command: ${C["FailingCommand"]}cp -f \"${MKTEMP_ENV_UPDATED}\" \"${COMPOSE_ENV}\""
@@ -50,7 +53,8 @@ env_update() {
                 run_script 'env_format_lines' "${APP_ENV_FILE}" "${APP_DEFAULT_ENV_FILE}" "${appname}"
             )
             local MKTEMP_APP_ENV_UPDATED
-            MKTEMP_APP_ENV_UPDATED=$(mktemp) || fatal "Failed to create temporary update ${C["File"]}${appname}.env${NC} file.\nFailing command: ${C["FailingCommand"]}mktemp${NC}"
+            MKTEMP_APP_ENV_UPDATED=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.MKTEMP_APP_ENV_UPDATED.XXXXXXXXXX") ||
+                fatal "Failed to create temporary update ${C["File"]}${appname}.env${NC} file.\nFailing command: ${C["FailingCommand"]}mktemp -t \"${APPLICATION_NAME}.${FUNCNAME[0]}.MKTEMP_APP_ENV_UPDATED.XXXXXXXXXX\"${NC}"
             printf '%s\n' "${UPDATED_APP_ENV_LINES[@]}" > "${MKTEMP_APP_ENV_UPDATED}" ||
                 fatal "Failed to write temporary ${C["File"]}${appname}.env${NC} update file."
             cp -f "${MKTEMP_APP_ENV_UPDATED}" "${APP_ENV_FILE}" ||

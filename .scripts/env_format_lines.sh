@@ -9,7 +9,7 @@ env_format_lines() {
     APPNAME=${APPNAME^^}
 
     local GlobalVarsHeading="Global Variables"
-    local AppDepreciatedTag=" [*DEPRECIATED*]"
+    local AppDeprecatedTag=" [*DEPRECATED*]"
     local AppDisabledTag=" (Disabled)"
     local AppUserDefinedTag=" (User Defined)"
     local UserDefinedVarsTag=" (User Defined Variables)"
@@ -35,7 +35,7 @@ env_format_lines() {
         if [[ ${AppIsUserDefined} == Y ]]; then
             HeadingTitle+="${AppUserDefinedTag}"
         else
-            run_script 'app_is_depreciated' "${APPNAME}" && HeadingTitle+="${AppDepreciatedTag}"
+            run_script 'app_is_deprecated' "${APPNAME}" && HeadingTitle+="${AppDeprecatedTag}"
             run_script 'app_is_disabled' "${APPNAME}" && HeadingTitle+="${AppDisabledTag}"
         fi
 

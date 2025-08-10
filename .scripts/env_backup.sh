@@ -20,10 +20,7 @@ env_backup() {
     if [[ -z ${DOCKER_VOLUME_CONFIG-} ]]; then
         fatal "Variable ${C["Var"]}DOCKER_VOLUME_CONFIG${NC} is not set in the ${C["File"]}.env${NC} file"
     fi
-    if [[ ${DOCKER_VOLUME_CONFIG-} == *~* ]]; then
-        # Value contains a "~", repace it with the user's home directory
-        DOCKER_VOLUME_CONFIG="${DOCKER_VOLUME_CONFIG//\~/"${DETECTED_HOMEDIR}"}"
-    fi
+    DOCKER_VOLUME_CONFIG="$(run_script 'sanitize_path' "${DOCKER_VOLUME_CONFIG}")"
 
     info "Taking ownership of ${C["Folder"]}${DOCKER_VOLUME_CONFIG}${NC} (non-recursive)."
     sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${DOCKER_VOLUME_CONFIG}" > /dev/null 2>&1 || true

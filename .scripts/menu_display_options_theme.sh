@@ -37,7 +37,7 @@ menu_display_options_theme() {
             fi
         done
         local -a ChoiceDialog=(
-            --stdout
+            --output-fd 1
             --title "${DC["Title"]}${Title}"
             --ok-label "Select"
             --cancel-label "Back"
@@ -51,8 +51,11 @@ menu_display_options_theme() {
         case ${DIALOG_BUTTONS[DialogButtonPressed]-} in
             OK)
                 CurrentTheme="${Choice}"
-                run_script 'apply_theme' "${CurrentTheme}"
-                run_script 'menu_dialog_example' "Applied theme ${CurrentTheme}" "ds --theme \"${CurrentTheme}\""
+                if run_script 'apply_theme' "${CurrentTheme}"; then
+                    run_script 'menu_dialog_example' "Applied theme ${CurrentTheme}" "${APPLICATION_COMMAND} --theme \"${CurrentTheme}\""
+                else
+                    dialog_error "${Title}" "Unable to apply theme ${CurrentTheme}"
+                fi
                 ;;
             CANCEL | ESC)
                 return

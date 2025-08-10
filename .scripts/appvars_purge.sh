@@ -79,7 +79,7 @@ appvars_purge() {
             if [[ -n ${GlobalVarsToRemove[*]-} ]]; then
                 # Remove variables from global .env file
                 notice \
-                    "Removing variables from ${C["File"]}${COMPOSE_ENV}${NC}:" \
+                    "Removing variables from ${C["File"]}${COMPOSE_ENV}${NC}:\n" \
                     "$(printf "${Indent}${C[Var]}%s${NC}\n" "${GlobalLinesToRemove[@]}")"
                 sed -i -E "/^\s*(${GlobalVarsRegex})\s*=/d" "${COMPOSE_ENV}" ||
                     fatal "Failed to purge ${C["App"]}${AppName}${NC} variables.\nFailing command: ${C["FailingCommand"]}sed -i -E \"/^\\\*(${GlobalVarsRegex})\\\*/d\" \"${COMPOSE_ENV}\""
@@ -87,7 +87,7 @@ appvars_purge() {
             if [[ -n ${AppEnvVarsToRemove[*]-} ]]; then
                 # Remove variables from file
                 notice \
-                    "Removing variables from ${C["File"]}${AppEnvFile}${NC}:" \
+                    "Removing variables from ${C["File"]}${AppEnvFile}${NC}:\n" \
                     "$(printf "${Indent}${C[Var]}%s${NC}\n" "${AppEnvLinesToRemove[@]-}")"
                 sed -i -E "/^\s*(${AppEnvVarsRegex})\s*=/d" "${AppEnvFile}" ||
                     fatal "Failed to purge ${C["App"]}${AppName}${NC} variables.\nFailing command: ${C["FailingCommand"]}sed -i -E \"/^\\\*(${AppEnvVarsRegex})\\\*/d\" \"${AppEnvFile}\""

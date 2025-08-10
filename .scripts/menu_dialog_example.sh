@@ -15,7 +15,7 @@ menu_dialog_example() {
         Message="Applied theme ${ThemeName}"
     fi
     if [[ -z ${CommandLine} ]]; then
-        CommandLine="ds --theme"
+        CommandLine="${APPLICATION_COMMAND} --theme"
     fi
 
     local Title=''
@@ -48,7 +48,7 @@ menu_dialog_example() {
     local -i MenuTextLines
     MenuTextLines="$(
         _dialog_ \
-            --stdout \
+            --output-fd 1 \
             --print-text-size \
             "${DialogText}" \
             "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" |
@@ -77,7 +77,7 @@ menu_dialog_example() {
         "" "" "${Helpline}"
     )
     local -a MenuDialog=(
-        --stdout
+        --output-fd 1
         --title "${Title}"
         --ok-label "Select"
         --cancel-label "Done"

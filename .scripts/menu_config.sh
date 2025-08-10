@@ -11,7 +11,7 @@ menu_config() {
     {
         run_script 'env_backup'
         run_script 'appvars_create_all' || true
-    } |& dialog_pipe "${DC[TitleSuccess]}Creating environment variables for added apps" "Please be patient, this can take a while.\n${DC[CommandLine]} ds --env" "${DIALOGTIMEOUT}"
+    } |& dialog_pipe "${DC[TitleSuccess]}Creating environment variables for added apps" "Please be patient, this can take a while.\n${DC[CommandLine]} ${APPLICATION_COMMAND} --env" "${DIALOGTIMEOUT}"
     local OptionFullSetup="Full Setup"
     local OptionEditGlobalVars="Edit Global Variables"
     local OptionSelectApps="Select Applications"
@@ -32,7 +32,7 @@ menu_config() {
     local LastConfigChoice=""
     while true; do
         local -a ConfigChoiceDialog=(
-            --stdout
+            --output-fd 1
             --title "${DC["Title"]}${Title}"
             --ok-label "Select"
             --cancel-label "Back"
@@ -80,11 +80,11 @@ menu_config() {
                         _dialog_ "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?
                         case ${DIALOG_BUTTONS[YesNoDialogButtonPressed]-} in
                             OK) # Stop
-                                run_script_dialog "${DC["TitleSuccess"]}Docker Compose" "Stopping all running services.\n${DC["CommandLine"]} ds --compose stop" "" \
+                                run_script_dialog "${DC["TitleSuccess"]}Docker Compose" "Stopping all running services.\n${DC["CommandLine"]} ${APPLICATION_COMMAND} --compose stop" "" \
                                     'docker_compose' "stop"
                                 ;;
                             EXTRA) # Down
-                                run_script_dialog "${DC["TitleSuccess"]}Docker Compose" "Stopping and removing all containers, networks, volumes, and images.\n${DC["CommandLine"]} ds --compose down" "" \
+                                run_script_dialog "${DC["TitleSuccess"]}Docker Compose" "Stopping and removing all containers, networks, volumes, and images.\n${DC["CommandLine"]} ${APPLICATION_COMMAND} --compose down" "" \
                                     'docker_compose' "down"
                                 ;;
                             CANCEL | ESC) ;; # Cancel
