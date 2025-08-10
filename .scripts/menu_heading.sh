@@ -44,11 +44,11 @@ menu_heading() {
         if [[ ${AppName-} == ":"* ]]; then # ":AppName", using .env
             AppName="${AppName#:*}"
             VarFile="${COMPOSE_ENV}"
-            DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" ".global.env")"
+            DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" "*.global.env")"
         elif [[ ${AppName-} == *":" ]]; then # "AppName:", using appname.env
             AppName="${AppName%:*}"
             VarFile="$(run_script 'app_env_file' "${AppName}")"
-            DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" ".app.env")"
+            DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" "*.app.env")"
         fi
         if [[ -n ${VarName-} ]] && run_script 'varname_is_valid' "${VarName}"; then # "appname:varname", using appname.env
             VarIsValid='Y'
@@ -56,11 +56,11 @@ menu_heading() {
                 AppName="${VarName%:*}"
                 VarName="${VarName#*:}"
                 VarFile="$(run_script 'app_env_file' "${AppName}")"
-                DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" ".app.env")"
+                DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" "*.app.env")"
             fi
             if [[ -z ${VarFile-} ]]; then
                 VarFile="${COMPOSE_ENV}"
-                DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" ".global.env")"
+                DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" "*.global.env")"
             fi
         fi
 

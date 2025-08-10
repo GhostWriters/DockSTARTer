@@ -7,8 +7,10 @@ app_is_runnable() {
     local basename
     basename=$(run_script 'appname_to_baseappname' "${appname}")
     basename=${basename,,}
-    local main_yml="${TEMPLATES_FOLDER}/${basename}/${basename}.yml"
-    local arch_yml="${TEMPLATES_FOLDER}/${basename}/${basename}.${ARCH}.yml"
+    local main_yml
+    main_yml="$(run_script 'app_template_file' "${basename}" "*.yml")"
+    local arch_yml
+    arch_yml="$(run_script 'app_template_file' "${basename}" "*.${ARCH}.yml")"
     [[ -f ${main_yml} && -f ${arch_yml} ]]
 }
 

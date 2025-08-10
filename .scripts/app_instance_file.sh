@@ -3,15 +3,15 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 app_instance_file() {
-    # app_instance_file AppName FileSuffix
+    # app_instance_file AppName FilenameTemplate
     # Returns the filename of a file in the instance folder for the app specified
     #
-    # app_instance_file "radarr" ".labels.yml" will return a string similar to "/home/user/.docker/compose/.instances/radarr/radarr.labels.yml"
+    # app_instance_file "radarr" "*.labels.yml" will return a string similar to "/home/user/.docker/compose/.instances/radarr/radarr.labels.yml"
     # If the file does not exist, it is created from the matching file in the "templates" folder.
 
-    local AppName=${1:-}
-    local FileSuffix=${2:-}
-    local appname=${AppName,,}
+    local appname=${1:-}
+    local FilenameTemplate=${2:-}
+    local appname=${appname,,}
 
     if [[ ! -d ${INSTANCES_FOLDER} ]]; then
         mkdir -p "${INSTANCES_FOLDER}" ||
@@ -26,9 +26,9 @@ app_instance_file() {
     local InstanceTemplateFolder="${INSTANCES_FOLDER}/${TEMPLATES_FOLDER_NAME}/${baseapp}"
     local InstanceFolder="${INSTANCES_FOLDER}/${appname}"
 
-    local TemplateFile="${TemplateFolder}/${baseapp}${FileSuffix}"
-    local InstanceTemplateFile="${InstanceTemplateFolder}/${baseapp}${FileSuffix}"
-    local InstanceFile="${InstanceFolder}/${appname}${FileSuffix}"
+    local TemplateFile="${TemplateFolder}/${FilenameTemplate//"*"/"${baseapp}"}"
+    local InstanceTemplateFile="${InstanceTemplateFolder}/${FilenameTemplate//"*"/"${baseapp}"}"
+    local InstanceFile="${InstanceFolder}/${FilenameTemplate//"*"/"${appname}"}"
 
     if [[ ! -d ${TemplateFolder} ]]; then
         # Template folder doesn't exist, remove any instance folders associated with it and return
@@ -98,10 +98,10 @@ app_instance_file() {
 
 test_app_instance_file() {
     for AppName in watchtower watchtower__number2; do
-        for Suffix in ".labels.yml" ".global.env"; do
-            notice "[${AppName}] [${Suffix}]"
+        for Template in "*.labels.yml" "*.global.env"; do
+            notice "[${AppName}] [${Template}]"
             local InstanceFile
-            InstanceFile="$(run_script 'app_instance_file' "${AppName}" "${Suffix}")"
+            InstanceFile="$(run_script 'app_instance_file' "${AppName}" "${Template}")"
             notice "[${InstanceFile}]"
             cat "${InstanceFile}"
         done

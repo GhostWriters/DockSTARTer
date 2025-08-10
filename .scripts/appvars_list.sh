@@ -5,7 +5,7 @@ IFS=$'\n\t'
 appvars_list() {
     local APPNAME=${1-}
     if [[ ${APPNAME} == *":" ]]; then
-        # APPNAME is in the form of "APPNAME:", list all variable in "env_files/appname.env"
+        # APPNAME is in the form of "APPNAME:", list all variable in ".env.app.appname"
         APPNAME=${APPNAME%%:*}
         local VAR_FILE
         VAR_FILE="$(run_script 'app_env_file' "${APPNAME}")"

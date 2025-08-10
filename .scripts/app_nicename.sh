@@ -14,7 +14,7 @@ app_nicename() {
             continue
         fi
         local LABELS_FILE
-        LABELS_FILE="$(run_script 'app_instance_file' "${AppName}" ".labels.yml")"
+        LABELS_FILE="$(run_script 'app_instance_file' "${AppName}" "*.labels.yml")"
         if [[ ! -f ${LABELS_FILE} ]]; then
             echo "${AppName}"
             continue

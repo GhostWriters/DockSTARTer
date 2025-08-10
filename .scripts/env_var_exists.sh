@@ -7,7 +7,7 @@ env_var_exists() {
     # env_var_exists APPNAME:VAR_NAME
     #
     # Returns if the variable "VAR_NAME" exists. If no "VAR_FILE" is given, uses the global .env file
-    # If "APPNAME:" is provided, gets variable from "env_files/appname.env"
+    # If "APPNAME:" is provided, gets variable from ".env.app.appname"
 
     local VAR_NAME=${1-}
     local VAR_FILE=${2:-$COMPOSE_ENV}

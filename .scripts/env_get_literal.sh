@@ -9,7 +9,7 @@ env_get_literal() {
     # The string returned will be the literal value after `=`, including quotes and comments
     #
     # Returns the variable "GET_VAR"  If no "VAR_FILE" is given, uses the global .env file
-    # If "APPNAME:" is provided, gets variable from "env_files/appname.env"
+    # If "APPNAME:" is provided, gets variable from ".env.app.appname"
     local GET_VAR=${1-}
     local VAR_FILE=${2:-$COMPOSE_ENV}
 
