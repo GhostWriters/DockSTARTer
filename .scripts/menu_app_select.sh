@@ -70,7 +70,7 @@ menu_app_select() {
             readarray -t AddedAppsTable < <(printf "%s\n" "${AddedApps[@]}")
             readarray -t AddedAppsTable < <(
                 printf "%s\n" "${AddedAppsTable[@]}" |
-                    column -m -c "$((TextCols - ${#Indent}))" |
+                    column -c "$((TextCols - ${#Indent}))" |
                     pr -e -t -o "${#Indent}"
             )
         fi
