@@ -1,7 +1,7 @@
 services:
   radarr<__instance>:
     container_name: ${RADARR<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/radarr<__instance>.env
+    env_file: .env.app.radarr
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

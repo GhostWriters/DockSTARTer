@@ -1,7 +1,7 @@
 services:
   deluge<__instance>:
     container_name: ${DELUGE<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/deluge<__instance>.env
+    env_file: .env.app.deluge
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

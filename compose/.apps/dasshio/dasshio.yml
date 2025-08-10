@@ -1,7 +1,7 @@
 services:
   dasshio<__instance>:
     container_name: ${DASSHIO<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/dasshio<__instance>.env
+    env_file: .env.app.dasshio
     environment:
       - TZ=${TZ?}
     restart: ${DASSHIO<__INSTANCE>__RESTART?}

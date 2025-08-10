@@ -1,7 +1,7 @@
 services:
   traefik<__instance>:
     container_name: ${TRAEFIK<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/traefik<__instance>.env
+    env_file: .env.app.traefik
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

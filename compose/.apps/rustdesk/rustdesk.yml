@@ -1,7 +1,7 @@
 services:
   rustdesk<__instance>:
     container_name: ${RUSTDESK<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/rustdesk<__instance>.env
+    env_file: .env.app.rustdesk
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

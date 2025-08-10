@@ -1,7 +1,7 @@
 services:
   tsdproxy<__instance>:
     container_name: ${TSDPROXY<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/tsdproxy<__instance>.env
+    env_file: .env.app.tsdproxy
     environment:
       - TZ=${TZ?}
     restart: ${TSDPROXY<__INSTANCE>__RESTART?}

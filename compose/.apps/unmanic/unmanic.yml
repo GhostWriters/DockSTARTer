@@ -1,7 +1,7 @@
 services:
   unmanic<__instance>:
     container_name: ${UNMANIC<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/unmanic<__instance>.env
+    env_file: .env.app.unmanic
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

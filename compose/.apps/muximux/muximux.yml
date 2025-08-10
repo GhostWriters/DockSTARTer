@@ -1,7 +1,7 @@
 services:
   muximux<__instance>:
     container_name: ${MUXIMUX<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/muximux<__instance>.env
+    env_file: .env.app.muximux
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

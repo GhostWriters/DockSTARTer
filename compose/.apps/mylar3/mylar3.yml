@@ -1,7 +1,7 @@
 services:
   mylar3<__instance>:
     container_name: ${MYLAR3<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/mylar3<__instance>.env
+    env_file: .env.app.mylar3
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

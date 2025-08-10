@@ -1,7 +1,7 @@
 services:
   tdarr<__instance>:
     container_name: ${TDARR<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/tdarr<__instance>.env
+    env_file: .env.app.tdarr
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

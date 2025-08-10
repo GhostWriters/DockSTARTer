@@ -1,7 +1,7 @@
 services:
   heimdall<__instance>:
     container_name: ${HEIMDALL<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/heimdall<__instance>.env
+    env_file: .env.app.heimdall
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

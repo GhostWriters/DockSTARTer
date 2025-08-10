@@ -1,7 +1,7 @@
 services:
   monitorr<__instance>:
     container_name: ${MONITORR<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/monitorr<__instance>.env
+    env_file: .env.app.monitorr
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

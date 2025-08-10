@@ -9,8 +9,10 @@ app_list_referenced() {
     local -a ReferencedApps=()
 
     # Add the list of apps with appname.env an file with variables in it
-    AppEnvList="$(basename --suffix=.env "${APP_ENV_FOLDER}"/*.env 2> /dev/null || true)"
-    for AppName in ${AppEnvList}; do
+    local -a AppEnvFileList
+    readarray -t AppEnvFileList < <(find "${COMPOSE_FOLDER}"/.env.app.* 2> /dev/null || true)
+    for AppEnvFile in "${AppEnvFileList[@]}"; do
+        local AppName="${AppEnvFile##*.}"
         if [[ ${AppName} =~ ${APPFILE_REGEX} && -n $(run_script 'appvars_list' "${AppName}:") ]]; then
             ReferencedApps+=("${AppName^^}")
         fi

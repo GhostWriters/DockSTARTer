@@ -1,7 +1,7 @@
 services:
   sickchill<__instance>:
     container_name: ${SICKCHILL<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/sickchill<__instance>.env
+    env_file: .env.app.sickchill
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

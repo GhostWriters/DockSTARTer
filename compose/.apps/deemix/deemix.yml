@@ -1,7 +1,7 @@
 services:
   deemix<__instance>:
     container_name: ${DEEMIX<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/deemix<__instance>.env
+    env_file: .env.app.deemix
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

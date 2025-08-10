@@ -1,7 +1,7 @@
 services:
   glances<__instance>:
     container_name: ${GLANCES<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/glances<__instance>.env
+    env_file: .env.app.glances
     environment:
       - TZ=${TZ?}
     pid: host

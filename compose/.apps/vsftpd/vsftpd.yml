@@ -1,7 +1,7 @@
 services:
   vsftpd<__instance>:
     container_name: ${VSFTPD<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/vsftpd<__instance>.env
+    env_file: .env.app.vsftpd
     environment:
       - TZ=${TZ?}
     restart: ${VSFTPD<__INSTANCE>__RESTART?}

@@ -1,7 +1,7 @@
 services:
   cloudflareddns<__instance>:
     container_name: ${CLOUDFLAREDDNS<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/cloudflareddns<__instance>.env
+    env_file: .env.app.cloudflareddns
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

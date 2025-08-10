@@ -1,7 +1,7 @@
 services:
   homeassistant<__instance>:
     container_name: ${HOMEASSISTANT<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/homeassistant<__instance>.env
+    env_file: .env.app.homeassistant
     environment:
       - TZ=${TZ?}
     restart: ${HOMEASSISTANT<__INSTANCE>__RESTART?}

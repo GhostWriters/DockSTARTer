@@ -1,7 +1,7 @@
 services:
   vaultwarden<__instance>:
     container_name: ${VAULTWARDEN<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/vaultwarden<__instance>.env
+    env_file: .env.app.vaultwarden
     environment:
       - TZ=${TZ?}
     restart: ${VAULTWARDEN<__INSTANCE>__RESTART?}

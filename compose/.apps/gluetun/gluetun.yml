@@ -3,7 +3,7 @@ services:
     cap_add:
       - NET_ADMIN
     container_name: ${GLUETUN<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/gluetun<__instance>.env
+    env_file: .env.app.gluetun
     devices:
       - /dev/net/tun
     environment:

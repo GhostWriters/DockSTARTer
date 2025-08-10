@@ -1,7 +1,7 @@
 services:
   youtubedl<__instance>:
     container_name: ${YOUTUBEDL<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/youtubedl<__instance>.env
+    env_file: .env.app.youtubedl
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

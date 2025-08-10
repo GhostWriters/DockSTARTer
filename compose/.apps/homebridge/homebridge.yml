@@ -1,7 +1,7 @@
 services:
   homebridge<__instance>:
     container_name: ${HOMEBRIDGE<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/homebridge<__instance>.env
+    env_file: .env.app.homebridge
     environment:
       - TZ=${TZ?}
     restart: ${HOMEBRIDGE<__INSTANCE>__RESTART?}

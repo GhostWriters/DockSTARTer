@@ -2,7 +2,7 @@ services:
   crossseed<__instance>:
     command: daemon
     container_name: ${CROSSSEED<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/crossseed<__instance>.env
+    env_file: .env.app.crossseed
     environment:
       - TZ=${TZ?}
     restart: ${CROSSSEED<__INSTANCE>__RESTART?}

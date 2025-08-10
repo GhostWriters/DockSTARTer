@@ -1,7 +1,7 @@
 services:
   emby<__instance>:
     container_name: ${EMBY<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/emby<__instance>.env
+    env_file: .env.app.emby
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

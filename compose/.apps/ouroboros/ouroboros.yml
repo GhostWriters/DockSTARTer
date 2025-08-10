@@ -1,7 +1,7 @@
 services:
   ouroboros<__instance>:
     container_name: ${OUROBOROS<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/ouroboros<__instance>.env
+    env_file: .env.app.ouroboros
     environment:
       - TZ=${TZ?}
     restart: ${OUROBOROS<__INSTANCE>__RESTART?}

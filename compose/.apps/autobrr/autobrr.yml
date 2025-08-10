@@ -1,7 +1,7 @@
 services:
   autobrr<__instance>:
     container_name: ${AUTOBRR<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/autobrr<__instance>.env
+    env_file: .env.app.autobrr
     environment:
       - TZ=${TZ}
     restart: ${AUTOBRR<__INSTANCE>__RESTART?}

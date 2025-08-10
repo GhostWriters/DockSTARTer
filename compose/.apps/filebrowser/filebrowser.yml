@@ -1,7 +1,7 @@
 services:
   filebrowser<__instance>:
     container_name: ${FILEBROWSER<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/filebrowser<__instance>.env
+    env_file: .env.app.filebrowser
     environment:
       - TZ=${TZ?}
     restart: ${FILEBROWSER<__INSTANCE>__RESTART?}

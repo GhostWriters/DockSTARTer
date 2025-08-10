@@ -1,7 +1,7 @@
 services:
   bookstack<__instance>:
     container_name: ${BOOKSTACK<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/bookstack<__instance>.env
+    env_file: .env.app.bookstack
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

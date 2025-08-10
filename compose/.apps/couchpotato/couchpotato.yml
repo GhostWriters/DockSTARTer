@@ -1,7 +1,7 @@
 services:
   couchpotato<__instance>:
     container_name: ${COUCHPOTATO<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/couchpotato<__instance>.env
+    env_file: .env.app.couchpotato
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

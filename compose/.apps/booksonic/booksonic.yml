@@ -1,7 +1,7 @@
 services:
   booksonic<__instance>:
     container_name: ${BOOKSONIC<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/booksonic<__instance>.env
+    env_file: .env.app.booksonic
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

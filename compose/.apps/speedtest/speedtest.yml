@@ -1,7 +1,7 @@
 services:
   speedtest<__instance>:
     container_name: ${SPEEDTEST<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/speedtest<__instance>.env
+    env_file: .env.app.speedtest
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

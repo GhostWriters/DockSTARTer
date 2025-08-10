@@ -1,7 +1,7 @@
 services:
   codeserver<__instance>:
     container_name: ${CODESERVER<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/codeserver<__instance>.env
+    env_file: .env.app.codeserver
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

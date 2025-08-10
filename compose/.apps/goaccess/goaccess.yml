@@ -1,7 +1,7 @@
 services:
   goaccess<__instance>:
     container_name: ${GOACCESS<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/goaccess<__instance>.env
+    env_file: .env.app.goaccess
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

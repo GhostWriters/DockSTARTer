@@ -1,7 +1,7 @@
 services:
   samba<__instance>:
     container_name: ${SAMBA<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/samba<__instance>.env
+    env_file: .env.app.samba
     environment:
       - GROUPID=${PGID?}
       - SHARE=${SAMBA<__INSTANCE>__ENVIRONMENT_SHARENAME?};/${SAMBA<__INSTANCE>__ENVIRONMENT_SHARENAME?};yes;no;no;all;${SAMBA<__INSTANCE>__ENVIRONMENT_USERNAME?}

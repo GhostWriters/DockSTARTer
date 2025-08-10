@@ -1,7 +1,7 @@
 services:
   httpserver<__instance>:
     container_name: ${HTTPSERVER<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/httpserver<__instance>.env
+    env_file: .env.app.httpserver
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

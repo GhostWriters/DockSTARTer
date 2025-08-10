@@ -1,7 +1,7 @@
 services:
   pyload<__instance>:
     container_name: ${PYLOAD<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/pyload<__instance>.env
+    env_file: .env.app.pyload
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

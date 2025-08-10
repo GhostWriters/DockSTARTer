@@ -4,7 +4,7 @@ services:
       - NET_ADMIN
       - SYS_MODULE
     container_name: ${PRIVOXYVPN<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/privoxyvpn<__instance>.env
+    env_file: .env.app.privoxyvpn
     devices:
       - /dev/net/tun
     environment:

@@ -1,7 +1,7 @@
 services:
   jellyfin<__instance>:
     container_name: ${JELLYFIN<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/jellyfin<__instance>.env
+    env_file: .env.app.jellyfin
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

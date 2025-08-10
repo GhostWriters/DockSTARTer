@@ -1,7 +1,7 @@
 services:
   duplicacy<__instance>:
     container_name: ${DUPLICACY<__INSTANCE>__CONTAINER_NAME?}
-    env_file: env_files/duplicacy<__instance>.env
+    env_file: .env.app.duplicacy
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}
