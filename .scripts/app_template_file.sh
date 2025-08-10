@@ -17,7 +17,7 @@ app_template_file() {
 
 test_app_template_file() {
     for appname in watchtower radarr; do
-        for Template in "*.labels.yml" "*.global.env"; do
+        for Template in "*.labels.yml" ".env"; do
             notice "[${appname}] [${Template}]"
             local TemplateFile
             TemplateFile="$(run_script 'app_template_file' "${appname}" "${Template}")"
