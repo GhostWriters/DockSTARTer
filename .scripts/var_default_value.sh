@@ -28,7 +28,7 @@ var_default_value() {
     case "${VarType}" in
         APP)
             local DefaultAppVarFile
-            DefaultAppVarFile="$(run_script 'app_instance_file' "${APPNAME}" "*.global.env")"
+            DefaultAppVarFile="$(run_script 'app_instance_file' "${APPNAME}" ".env")"
             if [[ -f ${DefaultAppVarFile} ]] && run_script 'env_var_exists' "${CleanVarName}" "${DefaultAppVarFile}"; then
                 # Variable is listed in the default file, output it and return
                 run_script 'env_get_literal' "${CleanVarName}" "${DefaultAppVarFile}"
@@ -68,7 +68,7 @@ var_default_value() {
             ;;
         APPENV)
             local DefaultAppVarFile
-            DefaultAppVarFile="$(run_script 'app_instance_file' "${APPNAME}" "*.app.env")"
+            DefaultAppVarFile="$(run_script 'app_instance_file' "${APPNAME}" ".env.app.*")"
             if [[ -f ${DefaultAppVarFile} ]] && run_script 'env_var_exists' "${CleanVarName}" "${DefaultAppVarFile}"; then
                 # Variable is listed in the default file, output it and return
                 run_script 'env_get_literal' "${CleanVarName}" "${DefaultAppVarFile}"
