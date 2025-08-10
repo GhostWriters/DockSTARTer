@@ -25,7 +25,7 @@ Run the command below to generate a key, the key is required for encryption. Cop
 echo -n 'base64:'; openssl rand -base64 32;
 ```
 
-### DB Tytp
+### DB Type
 
 `SQLite` is fine for most installs but you can also use more traditional relational databases like `MariaDB`, `MySQL` and `Postgres`. Update your `DB_CONNECTION` value in `env_files/speedtest.env`.
 
