@@ -20,14 +20,14 @@ commands_yml_merge() {
         APP_FOLDER="$(run_script 'app_instance_folder' "${appname}")"
         if [[ -d ${APP_FOLDER}/ ]]; then
             local main_yml
-            main_yml="$(run_script 'app_instance_file' "${appname}" ".yml")"
+            main_yml="$(run_script 'app_instance_file' "${appname}" "*.yml")"
             if [[ -f ${main_yml} ]]; then
                 if run_script 'app_is_deprecated' "${APPNAME}"; then
                     warn "${C["App"]}${AppName}${NC} IS DEPRECATED!"
                     warn "Please run '${C["UserCommand"]}${APPLICATION_COMMAND} --status-disable ${AppName}${NC}' to disable it."
                 fi
                 local arch_yml
-                arch_yml="$(run_script 'app_instance_file' "${appname}" ".${ARCH}.yml")"
+                arch_yml="$(run_script 'app_instance_file' "${appname}" "*.${ARCH}.yml")"
                 if [[ ! -f ${arch_yml} ]]; then
                     error "${C["File"]}${arch_yml}${NC} does not exist."
                     continue
@@ -37,14 +37,14 @@ commands_yml_merge() {
                 AppNetMode="$(run_script 'env_get' "${APPNAME}__NETWORK_MODE")"
                 if [[ -z ${AppNetMode-} ]] || [[ ${AppNetMode} == "bridge" ]]; then
                     local hostname_yml
-                    hostname_yml="$(run_script 'app_instance_file' "${appname}" ".hostname.yml")"
+                    hostname_yml="$(run_script 'app_instance_file' "${appname}" "*.hostname.yml")"
                     if [[ -f ${hostname_yml} ]]; then
                         COMPOSE_FILE="${COMPOSE_FILE}:${hostname_yml}"
                     else
                         info "${C["File"]}${hostname_yml}${NC} does not exist."
                     fi
                     local ports_yml
-                    ports_yml="$(run_script 'app_instance_file' "${appname}" ".ports.yml")"
+                    ports_yml="$(run_script 'app_instance_file' "${appname}" "*.ports.yml")"
                     if [[ -f ${ports_yml} ]]; then
                         COMPOSE_FILE="${COMPOSE_FILE}:${ports_yml}"
                     else
@@ -52,7 +52,7 @@ commands_yml_merge() {
                     fi
                 elif [[ -n ${AppNetMode} ]]; then
                     local netmode_yml
-                    netmode_yml="$(run_script 'app_instance_file' "${appname}" ".netmode.yml")"
+                    netmode_yml="$(run_script 'app_instance_file' "${appname}" "*.netmode.yml")"
                     if [[ -f ${netmode_yml} ]]; then
                         COMPOSE_FILE="${COMPOSE_FILE}:${netmode_yml}"
                     else
@@ -74,7 +74,7 @@ commands_yml_merge() {
                         StorageVolume="$(run_script 'env_get' "DOCKER_VOLUME_STORAGE${Number}")"
                         if [[ -n ${StorageVolume-} ]]; then
                             local storage_yml
-                            storage_yml="$(run_script 'app_instance_file' "${appname}" ".storage${Number}.yml")"
+                            storage_yml="$(run_script 'app_instance_file' "${appname}" "*.storage${Number}.yml")"
                             if [[ -f ${storage_yml} ]]; then
                                 COMPOSE_FILE="${COMPOSE_FILE}:${storage_yml}"
                             else
@@ -87,7 +87,7 @@ commands_yml_merge() {
                 AppDevices="$(run_script 'env_get' "${APPNAME}__DEVICES")"
                 if [[ -n ${AppDevices-} && ${AppDevices^^} =~ ON|TRUE|YES ]]; then
                     local devices_yml
-                    devices_yml="$(run_script 'app_instance_file' "${appname}" ".devices.yml")"
+                    devices_yml="$(run_script 'app_instance_file' "${appname}" "*.devices.yml")"
                     if [[ -f ${devices_yml} ]]; then
                         COMPOSE_FILE="${COMPOSE_FILE}:${devices_yml}"
                     else

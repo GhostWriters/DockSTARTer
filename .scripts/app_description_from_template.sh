@@ -8,7 +8,7 @@ app_description_from_template() {
     appname=${appname,,}
     if run_script 'app_is_builtin' "${appname}"; then
         local LABELS_FILE
-        LABELS_FILE="$(run_script 'app_instance_file' "${appname}" ".labels.yml")"
+        LABELS_FILE="$(run_script 'app_instance_file' "${appname}" "*.labels.yml")"
         if [[ -f ${LABELS_FILE} ]]; then
             grep --color=never -Po "\scom\.dockstarter\.appinfo\.description: \K.*" "${LABELS_FILE}" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo "! Missing description !"
         else

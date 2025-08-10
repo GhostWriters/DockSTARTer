@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 appvars_lines() {
     # Return all lines in `.env` file for app APPNAME
-    # If APPNAME ends in a ':', returns all lines in `env_files/appname.env'
+    # If APPNAME ends in a ':', returns all lines in `.env.app.appname'
     # If APPNAME is empty, return all lines in `.env` file that are not for an app
     local APPNAME=${1-}
     APPNAME=${APPNAME^^}

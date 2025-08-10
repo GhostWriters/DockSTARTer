@@ -11,7 +11,7 @@ env_migrate() {
     # If FromVarFile is not specified, uses the global .env file
     # If ToVarFile is not specified, uses the FromVarFile
     # "From" and "To" files can be overridden in the respective variable names by prepending an app's name,
-    # such as appname:variable, which will become env_files/appname.env
+    # such as appname:variable, which will become .env.app.appname
 
     local FromVar=${1-}
     local ToVar=${2-}

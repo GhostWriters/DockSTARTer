@@ -8,7 +8,7 @@ appvars_migrate() {
     local appname=${APPNAME,,}
 
     local MIGRATE_FILE
-    MIGRATE_FILE="$(run_script 'app_instance_file' "${appname}" ".migrate")"
+    MIGRATE_FILE="$(run_script 'app_instance_file' "${appname}" "*.migrate")"
 
     if [[ -f ${MIGRATE_FILE} ]]; then
         local -a MigrateLines=()

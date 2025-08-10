@@ -8,7 +8,7 @@ app_is_nondeprecated() {
     baseappname=$(run_script 'appname_to_baseappname' "${AppName}")
     baseappname="${baseappname,,}"
     local labels_yml
-    labels_yml="${TEMPLATES_FOLDER}/${baseappname}/${baseappname}.labels.yml"
+    labels_yml="$(run_script 'app_template_file' "${baseappname}" "*.labels.yml")"
     local APP_DEPRECATED
     if [[ -f ${labels_yml} ]]; then
         APP_DEPRECATED="$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" "${labels_yml}" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo false)"

@@ -7,7 +7,7 @@ env_set_literal() {
     # env_set_literal APPNAME:SET_VAR NEW_VAL
     #
     # Sets the variable "SET_VAR"  If no "VAR_FILE" is given, uses the global .env file
-    # If "APPNAME:" is provided, gets variable from "env_files/appname.env"
+    # If "APPNAME:" is provided, gets variable from ".env.app.appname"
     local SET_VAR=${1-}
     local NEW_VAL=${2-}
     local VAR_FILE=${3:-$COMPOSE_ENV}
