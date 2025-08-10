@@ -35,8 +35,8 @@ app_instance_file() {
         for Folder in "${InstanceTemplateFolder}" "${InstanceFolder}"; do
             if [[ -d ${Folder} ]]; then
                 run_script 'set_permissions' "${Folder}"
-                rm -rf "${Folder}" ||
-                    fatal "Failed to remove directory.\nFailing command: ${C["FailingCommand"]}rm -rf \"${Folder}\""
+                rm -rf "${Folder}" &> /dev/null ||
+                    error "Failed to remove directory.\nFailing command: ${C["FailingCommand"]}rm -rf \"${Folder}\""
             fi
         done
         return
@@ -47,8 +47,8 @@ app_instance_file() {
         for File in "${InstanceTemplateFile}" "${InstanceFile}"; do
             if [[ -f ${File} ]]; then
                 run_script 'set_permissions' "${File}"
-                rm -f "${File}" ||
-                    fatal "Failed to remove file.\nFailing command: ${C["FailingCommand"]}rm -f \"${File}\""
+                rm -f "${File}" &> /dev/null ||
+                    error "Failed to remove file.\nFailing command: ${C["FailingCommand"]}rm -f \"${File}\""
             fi
         done
         return
