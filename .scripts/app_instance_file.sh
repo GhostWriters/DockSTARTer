@@ -98,7 +98,7 @@ app_instance_file() {
 
 test_app_instance_file() {
     for AppName in watchtower watchtower__number2; do
-        for Template in "*.labels.yml" "*.global.env"; do
+        for Template in "*.labels.yml" ".env"; do
             notice "[${AppName}] [${Template}]"
             local InstanceFile
             InstanceFile="$(run_script 'app_instance_file' "${AppName}" "${Template}")"
