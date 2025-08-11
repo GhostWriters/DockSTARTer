@@ -34,12 +34,16 @@ env_backup() {
     mkdir -p "${BACKUP_FOLDER}" ||
         fatal "Failed to make directory.\nFailing command: ${C["FailingCommand"]}mkdir -p \"${BACKUP_FOLDER}\""
     cp "${COMPOSE_ENV}" "${BACKUP_FOLDER}/" ||
-        fatal "Failed to copy backup.\nFailing command: ${C["FailingCommand"]}cp \"${COMPOSE_ENV}\" \"${BACKUP_FOLDER}/\""
-
-    info "Copying appplication env folder to ${C["Folder"]}${BACKUP_FOLDER}/${APP_ENV_FOLDER_NAME}${NC}"
-    cp -r "${APP_ENV_FOLDER}" "${BACKUP_FOLDER}/" ||
-        fatal "Failed to copy backup.\nFailing command: ${C["FailingCommand"]}cp -r \"${APP_ENV_FOLDER}\" \"${BACKUP_FOLDER}/\""
-
+        fatal "Failed to copy backup.\nFailing command: ${C["FailingCommand"]}cp \"${COMPOSE_ENV}\"/.env.app.* \"${BACKUP_FOLDER}/\""
+    if [[ -n $(find "${COMPOSE_FOLDER}" -type f -maxdepth 1 -name ".env.app.*" 2> /dev/null) ]]; then
+        cp "${COMPOSE_FOLDER}"/.env.app.* "${BACKUP_FOLDER}/" ||
+            fatal "Failed to copy backup.\nFailing command: ${C["FailingCommand"]}cp \"${COMPOSE_FOLDER}\" \"${BACKUP_FOLDER}/\""
+    fi
+    if [[ -d ${APP_ENV_FOLDER} ]]; then
+        info "Copying appplication env folder to ${C["Folder"]}${BACKUP_FOLDER}/${APP_ENV_FOLDER_NAME}${NC}"
+        cp -r "${APP_ENV_FOLDER}" "${BACKUP_FOLDER}/" ||
+            fatal "Failed to copy backup.\nFailing command: ${C["FailingCommand"]}cp -r \"${APP_ENV_FOLDER}\" \"${BACKUP_FOLDER}/\""
+    fi
     if [[ -f ${COMPOSE_OVERRIDE} ]]; then
         info "Copying override file to ${C["Folder"]}${BACKUP_FOLDER}/${COMPOSE_OVERRIDE_NAME}${NC}"
         cp "${COMPOSE_OVERRIDE}" "${BACKUP_FOLDER}/" ||
