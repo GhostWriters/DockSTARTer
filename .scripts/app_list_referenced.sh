@@ -19,7 +19,7 @@ app_list_referenced() {
     done
 
     # Add the list of referenced apps in the global .env file
-    local REFERENCED_APPS_REGEX="${APPNAME_REGEX}(?=__[A-Za-z0-9]\w*\s*=)"
+    local REFERENCED_APPS_REGEX="^${APPNAME_REGEX}(?=__[A-Za-z0-9]\w*\s*=)"
     readarray -O ${#ReferencedApps[@]} ReferencedApps <<< "$(
         grep --color=never -o -P "${REFERENCED_APPS_REGEX}" "${COMPOSE_ENV}" 2> /dev/null || true
     )"
