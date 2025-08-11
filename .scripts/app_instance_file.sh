@@ -23,11 +23,11 @@ app_instance_file() {
     baseapp="$(run_script 'appname_to_baseappname' "${appname}")"
 
     local TemplateFolder="${TEMPLATES_FOLDER}/${baseapp}"
-    local InstanceTemplateFolder="${INSTANCES_FOLDER}/${TEMPLATES_FOLDER_NAME}/${baseapp}"
+    local InstanceTemplateFolder="${INSTANCES_FOLDER}/${TEMPLATES_FOLDER_NAME}/${appname}"
     local InstanceFolder="${INSTANCES_FOLDER}/${appname}"
 
     local TemplateFile="${TemplateFolder}/${FilenameTemplate//"*"/"${baseapp}"}"
-    local InstanceTemplateFile="${InstanceTemplateFolder}/${FilenameTemplate//"*"/"${baseapp}"}"
+    local InstanceTemplateFile="${InstanceTemplateFolder}/${FilenameTemplate//"*"/"${appname}"}"
     local InstanceFile="${InstanceFolder}/${FilenameTemplate//"*"/"${appname}"}"
 
     if [[ ! -d ${TemplateFolder} ]]; then
