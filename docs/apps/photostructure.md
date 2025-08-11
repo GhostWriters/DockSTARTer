@@ -17,4 +17,4 @@ There are a few directories that get mounted on PhotoStructure that require a bi
 - It **must** be on a local disk, preferably an SSD.
 - This volume should have at least 16-32 GB free.
 
-If your PhotoStructure library is hosted somewhere over the network, then you must set the variable `PS_FORCE_LOCAL_DB_REPLICA` in `env_files/photostructure.env` to a `1`. It currently defaults to a `0`.
+If your PhotoStructure library is hosted somewhere over the network, then you must set the variable `PS_FORCE_LOCAL_DB_REPLICA` in `.env.app.photostructure` to a `1`. It currently defaults to a `0`.

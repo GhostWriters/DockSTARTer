@@ -16,7 +16,7 @@ Note that your configuration files and homer assets are located in `${DOCKER_VOL
 
 ### Environment Variables
 
-#### env_files/homer.env
+#### .env.app.homer
 
 ##### INIT_ASSETS
 

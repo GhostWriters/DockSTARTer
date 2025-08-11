@@ -35,7 +35,7 @@ tandoor:
 ### Running with SWAG
 
 It is also highly recommended to serve media files with a web server. If you are already using SWAG you can use nginx to accomplish this.
-Set `GUNICORN_MEDIA` in `env_files/tandoor.env` to '0' and edit the docker-compose.override.yml similar to below.
+Set `GUNICORN_MEDIA` in `.env.app.tandoor` to '0' and edit the docker-compose.override.yml similar to below.
 
 ```yaml
 swag:
