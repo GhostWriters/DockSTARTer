@@ -1,7 +1,7 @@
 services:
   airsonic<__instance>:
     container_name: ${AIRSONIC<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.airsonic
+    env_file: .env.app.airsonic<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

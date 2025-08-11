@@ -1,7 +1,7 @@
 services:
   organizr<__instance>:
     container_name: ${ORGANIZR<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.organizr
+    env_file: .env.app.organizr<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

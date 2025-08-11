@@ -1,7 +1,7 @@
 services:
   postgres<__instance>:
     container_name: ${POSTGRES<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.postgres
+    env_file: .env.app.postgres<__instance>
     environment:
       - TZ=${TZ?}
     restart: ${POSTGRES<__INSTANCE>__RESTART?}

@@ -1,7 +1,7 @@
 services:
   transmission<__instance>:
     container_name: ${TRANSMISSION<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.transmission
+    env_file: .env.app.transmission<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

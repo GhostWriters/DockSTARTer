@@ -1,7 +1,7 @@
 services:
   nzbhydra2<__instance>:
     container_name: ${NZBHYDRA2<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.nzbhydra2
+    env_file: .env.app.nzbhydra2<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

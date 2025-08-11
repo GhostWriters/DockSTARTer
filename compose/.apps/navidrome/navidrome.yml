@@ -1,7 +1,7 @@
 services:
   navidrome<__instance>:
     container_name: ${NAVIDROME<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.navidrome
+    env_file: .env.app.navidrome<__instance>
     environment:
       - ND_DATAFOLDER=/data
       - ND_PORT=${NAVIDROME<__INSTANCE>__PORT_4533?}

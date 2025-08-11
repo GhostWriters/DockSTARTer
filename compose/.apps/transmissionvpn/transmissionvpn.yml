@@ -3,7 +3,7 @@ services:
     cap_add:
       - NET_ADMIN
     container_name: ${TRANSMISSIONVPN<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.transmissionvpn
+    env_file: .env.app.transmissionvpn<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

@@ -1,7 +1,7 @@
 services:
   tvheadend<__instance>:
     container_name: ${TVHEADEND<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.tvheadend
+    env_file: .env.app.tvheadend<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

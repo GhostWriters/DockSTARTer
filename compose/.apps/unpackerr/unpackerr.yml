@@ -1,7 +1,7 @@
 services:
   unpackerr<__instance>:
     container_name: ${UNPACKERR<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.unpackerr
+    env_file: .env.app.unpackerr<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

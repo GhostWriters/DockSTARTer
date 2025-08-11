@@ -1,7 +1,7 @@
 services:
   smokeping<__instance>:
     container_name: ${SMOKEPING<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.smokeping
+    env_file: .env.app.smokeping<__instance>
     dns:
       - ${SMOKEPING<__INSTANCE>__ENVIRONMENT_DNS1?}
       - ${SMOKEPING<__INSTANCE>__ENVIRONMENT_DNS2?}

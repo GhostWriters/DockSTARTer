@@ -1,7 +1,7 @@
 services:
   booksonicair<__instance>:
     container_name: ${BOOKSONICAIR<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.booksonicair
+    env_file: .env.app.booksonicair<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

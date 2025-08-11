@@ -1,7 +1,7 @@
 services:
   minecraftbedrockserver<__instance>:
     container_name: ${MINECRAFTBEDROCKSERVER<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.minecraftbedrockserver
+    env_file: .env.app.minecraftbedrockserver<__instance>
     environment:
       - GID=${PGID?}
       - TZ=${TZ?}

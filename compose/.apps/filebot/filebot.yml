@@ -1,7 +1,7 @@
 services:
   filebot<__instance>:
     container_name: ${FILEBOT<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.filebot
+    env_file: .env.app.filebot<__instance>
     environment:
       - GROUP_ID=${PGID?}
       - TZ=${TZ?}

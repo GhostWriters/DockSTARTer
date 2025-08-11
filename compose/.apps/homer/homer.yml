@@ -1,7 +1,7 @@
 services:
   homer<__instance>:
     container_name: ${HOMER<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.homer
+    env_file: .env.app.homer<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

@@ -1,7 +1,7 @@
 services:
   thelounge<__instance>:
     container_name: ${THELOUNGE<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.thelounge
+    env_file: .env.app.thelounge<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

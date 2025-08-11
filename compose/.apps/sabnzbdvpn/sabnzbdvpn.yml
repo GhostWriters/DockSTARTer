@@ -4,7 +4,7 @@ services:
       - NET_ADMIN
       - SYS_MODULE
     container_name: ${SABNZBDVPN<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.sabnzbdvpn
+    env_file: .env.app.sabnzbdvpn<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

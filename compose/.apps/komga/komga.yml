@@ -1,7 +1,7 @@
 services:
   komga<__instance>:
     container_name: ${KOMGA<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.komga
+    env_file: .env.app.komga<__instance>
     environment:
       - TZ=${TZ?}
     restart: ${KOMGA<__INSTANCE>__RESTART?}

@@ -1,7 +1,7 @@
 services:
   plexrequests<__instance>:
     container_name: ${PLEXREQUESTS<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.plexrequests
+    env_file: .env.app.plexrequests<__instance>
     environment:
       - URL_BASE=/plexrequests
       - PGID=${PGID?}

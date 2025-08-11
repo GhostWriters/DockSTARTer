@@ -1,7 +1,7 @@
 services:
   amd<__instance>:
     container_name: ${AMD<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.amd
+    env_file: .env.app.amd<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

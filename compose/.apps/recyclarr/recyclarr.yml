@@ -1,7 +1,7 @@
 services:
   recyclarr<__instance>:
     container_name: ${RECYCLARR<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.recyclarr
+    env_file: .env.app.recyclarr<__instance>
     environment:
       - TZ=${TZ?}
     restart: ${RECYCLARR<__INSTANCE>__RESTART?}

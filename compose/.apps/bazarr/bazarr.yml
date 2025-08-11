@@ -1,7 +1,7 @@
 services:
   bazarr<__instance>:
     container_name: ${BAZARR<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.bazarr
+    env_file: .env.app.bazarr<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

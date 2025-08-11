@@ -4,7 +4,7 @@ services:
       - NET_ADMIN
       - SYS_MODULE
     container_name: ${WIREGUARD<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.wireguard
+    env_file: .env.app.wireguard<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

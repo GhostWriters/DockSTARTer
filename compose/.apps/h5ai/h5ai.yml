@@ -1,7 +1,7 @@
 services:
   h5ai<__instance>:
     container_name: ${H5AI<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.h5ai
+    env_file: .env.app.h5ai<__instance>
     environment:
       - TZ=${TZ?}
     restart: ${H5AI<__INSTANCE>__RESTART?}

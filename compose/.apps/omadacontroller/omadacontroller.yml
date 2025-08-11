@@ -1,7 +1,7 @@
 services:
   omadacontroller<__instance>:
     container_name: ${OMADACONTROLLER<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.omadacontroller
+    env_file: .env.app.omadacontroller<__instance>
     environment:
       - MANAGE_HTTP_PORT=${OMADACONTROLLER<__INSTANCE>__PORT_8088?}
       - MANAGE_HTTPS_PORT=${OMADACONTROLLER<__INSTANCE>__PORT_8043?}

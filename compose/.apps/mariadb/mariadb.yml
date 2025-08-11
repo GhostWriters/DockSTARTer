@@ -1,7 +1,7 @@
 services:
   mariadb<__instance>:
     container_name: ${MARIADB<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.mariadb
+    env_file: .env.app.mariadb<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

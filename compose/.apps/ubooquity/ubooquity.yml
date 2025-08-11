@@ -1,7 +1,7 @@
 services:
   ubooquity<__instance>:
     container_name: ${UBOOQUITY<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.ubooquity
+    env_file: .env.app.ubooquity<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

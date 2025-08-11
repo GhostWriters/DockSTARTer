@@ -1,7 +1,7 @@
 services:
   readarr<__instance>:
     container_name: ${READARR<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.readarr
+    env_file: .env.app.readarr<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

@@ -1,7 +1,7 @@
 services:
   tandoor<__instance>:
     container_name: ${TANDOOR<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.tandoor
+    env_file: .env.app.tandoor<__instance>
     environment:
       - TZ=${TZ?}
     restart: ${TANDOOR<__INSTANCE>__RESTART?}

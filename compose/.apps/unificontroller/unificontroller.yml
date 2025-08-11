@@ -1,7 +1,7 @@
 services:
   unificontroller<__instance>:
     container_name: ${UNIFICONTROLLER<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.unificontroller
+    env_file: .env.app.unificontroller<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

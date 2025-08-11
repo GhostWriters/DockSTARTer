@@ -1,7 +1,7 @@
 services:
   handbrake<__instance>:
     container_name: ${HANDBRAKE<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.handbrake
+    env_file: .env.app.handbrake<__instance>
     environment:
       - GROUP_ID=${PGID?}
       - USER_ID=${PUID?}

@@ -4,7 +4,7 @@ services:
       - NET_ADMIN
       - SYS_MODULE
     container_name: ${NZBGETVPN<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.nzbgetvpn
+    env_file: .env.app.nzbgetvpn<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}
