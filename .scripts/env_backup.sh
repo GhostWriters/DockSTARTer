@@ -37,7 +37,7 @@ env_backup() {
         fatal "Failed to copy backup.\nFailing command: ${C["FailingCommand"]}cp \"${COMPOSE_ENV}\"/.env.app.* \"${BACKUP_FOLDER}/\""
     if [[ -n $(find "${COMPOSE_FOLDER}" -type f -maxdepth 1 -name ".env.app.*" 2> /dev/null) ]]; then
         cp "${COMPOSE_FOLDER}"/.env.app.* "${BACKUP_FOLDER}/" ||
-            fatal "Failed to copy backup.\nFailing command: ${C["FailingCommand"]}cp \"${COMPOSE_FOLDER}\" \"${BACKUP_FOLDER}/\""
+            fatal "Failed to copy backup.\nFailing command: ${C["FailingCommand"]}cp \"${COMPOSE_FOLDER}\"/.env.app.* \"${BACKUP_FOLDER}/\""
     fi
     if [[ -d ${APP_ENV_FOLDER} ]]; then
         info "Copying appplication env folder to ${C["Folder"]}${BACKUP_FOLDER}/${APP_ENV_FOLDER_NAME}${NC}"
