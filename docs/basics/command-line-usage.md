@@ -35,19 +35,19 @@ If you make any changes to your `.env` file (such as changing a port or enabling
 ds -u
 ```
 
-This should get you the latest changes to DockSTARTer. This will also backup and update your `.env`, `env_files/<appname>.env` files.
+This should get you the latest changes to DockSTARTer. This will also backup and update your `.env`, `.env.app.<appname>` files.
 
-You may separately backup and update your `.env` and `env_files/<appname>.env` files with the following command.
+You may separately backup and update your `.env` and `.env.app.<appname>` files with the following command.
 
 ```bash
 ds -e
 ```
 
-Then you may want to edit your `.env` and `env_files/<appname>.env` files and run the generator again to bring up new apps or changes to existing apps.
+Then you may want to edit your `.env` and `.env.app.<appname>` files and run the generator again to bring up new apps or changes to existing apps.
 
 ## Setup Your Environment
 
-If you do not yet have a `~/.docker/compose/.env` and/or `~/.docker/compose/env_file/<appname>.env`file:
+If you do not yet have a `~/.docker/compose/.env` and/or `~/.docker/compose.env.app.<appname>`files:
 
 ```bash
 ds -e
@@ -76,7 +76,7 @@ You may also need to fill in or adjust any other variables prefixed with the `<A
 
 This is the best place to change the app's external default ports.
 
-There will also be an application specific variable file created at `~/.docker/compose/env_files/<appname>.env`.  This may or not be populated with variables.  The variables included, if any, will entierly depend on the application installed.  If you need to edit the values of the variables, or include any new variables for the app, it is entirely safe to do so.
+There will also be an application specific variable file created at `~/.docker/compose/.env.app.<appname>`.  This may or not be populated with variables.  The variables included, if any, will entierly depend on the application installed.  If you need to edit the values of the variables, or include any new variables for the app, it is entirely safe to do so.
 
 #### Removing Apps
 

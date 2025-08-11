@@ -18,7 +18,7 @@ YML files are akin to XML files and below is an example:
 services:
   sonarr:
     container_name: ${SONARR__CONTAINER_NAME?}
-    env_file: env_files/sonarr.env
+    env_file: .env.app.sonarr
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

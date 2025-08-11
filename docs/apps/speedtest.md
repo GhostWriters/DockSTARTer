@@ -19,7 +19,7 @@
 
 ### Generate an Application Key
 
-Run the command below to generate a key, the key is required for encryption. Copy this key including the base64: prefix and paste it as your `APP_KEY` value in `env_files/speedtest.env`.
+Run the command below to generate a key, the key is required for encryption. Copy this key including the base64: prefix and paste it as your `APP_KEY` value in `.env.app.speedtest`.
 
 ```bash
 echo -n 'base64:'; openssl rand -base64 32;
@@ -27,15 +27,15 @@ echo -n 'base64:'; openssl rand -base64 32;
 
 ### DB Type
 
-`SQLite` is fine for most installs but you can also use more traditional relational databases like `MariaDB`, `MySQL` and `Postgres`. Update your `DB_CONNECTION` value in `env_files/speedtest.env`.
+`SQLite` is fine for most installs but you can also use more traditional relational databases like `MariaDB`, `MySQL` and `Postgres`. Update your `DB_CONNECTION` value in `.env.app.speedtest`.
 
 ### APP URL
 
-The IP:port or URL your application will be accessed on (ie. http://192.168.1.1:6875 or https://speedtest.mydomain.com). Update your `APP_URL` value in `env_files/speedtest.env`.
+The IP:port or URL your application will be accessed on (ie. http://192.168.1.1:6875 or https://speedtest.mydomain.com). Update your `APP_URL` value in `.env.app.speedtest`.
 
 ### Speedtest Servers
 
-A comma-separated list of server IDs to test against. Run the following command to get a list of nearby servers then update your `SPEEDTEST_SERVERS` value in `env_files/speedtest.env`.
+A comma-separated list of server IDs to test against. Run the following command to get a list of nearby servers then update your `SPEEDTEST_SERVERS` value in `.env.app.speedtest`.
 
 ```bash
 docker run -it --rm --entrypoint /bin/bash lscr.io/linuxserver/speedtest-tracker:latest list-servers

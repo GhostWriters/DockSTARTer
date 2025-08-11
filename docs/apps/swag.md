@@ -31,7 +31,7 @@ take more configuration, as DNS entries and certificate subject alternate names
 are required.
 
 The first thing to setup is your domain and email settings in
-`.docker/compose/env_files/swag.env`. Set the `EMAIL` and `URL`. If
+`.docker/compose/.env.app.swag`. Set the `EMAIL` and `URL`. If
 using subdomains ensure to add each subdomain to `SUBDOMAINS` as each
 subdomain prefix (e.g. `SUBDOMAINS=portainer,deluge,pihole`.
 

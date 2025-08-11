@@ -22,7 +22,7 @@ ds -a synclounge
 
 - Complete the DockSTARTer configuration.
 
-  - Make sure to set the `EXTERNAL_URL` in `env_files/synclounge.env` setting to the appropriate domain. E.g. - `synclouge.yourdomain.tld`
+  - Make sure to set the `EXTERNAL_URL` in `.env.app.synclounge` setting to the appropriate domain. E.g. - `synclouge.yourdomain.tld`
     Otherwise, keep the default settings until you make sure everything is working okay
 
 - Recreate the container so settings get applied:

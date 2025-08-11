@@ -10,7 +10,7 @@
 
 ## Install/Setup
 
-### env_files/httpserver.env
+### .env.app.httpserver
 
 The variable `FILE_SERVER_COLOR_SET` can be modified to use any of the colors listed on [here](https://getmdl.io/customize/index.html).
 
