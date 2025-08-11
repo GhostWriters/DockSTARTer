@@ -519,31 +519,31 @@ This is the main ${APPLICATION_NAME} script.
 For regular usage you can run without providing any options.
 
 Any command that takes a variable name, the variable name can also be in the
-form of app:var to refer to the variable in env_files/app.env.  Some commands
-that take app names can use the form app: to refer to the same file.
+form of 'app:var' to refer to the variable '<var>' in '.env.app.<app>'.  Some commands
+that take app names can use the form 'app:' to refer to the same file.
 
 -a --add <app> [<app> ...]
-    Add the default .env variables for the app(s) specified
+    Add the default '.env' variables for the app(s) specified
 -c --compose <pull/up/down/stop/restart/update> [<app> ...]
     Run docker compose commands. If no command is given, does an update.
     Update is the same as a 'pull' followed by an 'up'
 -c --compose <generate/merge>
     Generates the docker-compose.yml file
 -e --env
-    Update your .env file with new variables
+    Update your '.env' file with new variables
 --env-appvars <app> [<app> ...]
     List all variable names for the app(s) specified
 --env-appvars-lines <app> [<app> ...]
     List all variables and values for the app(s) specified
 --env-get <var> [<var> ...]
 --env-get=<var>
-    Get the value of a <var>iable in .env (variable name is forced to UPPER CASE)
+    Get the value of a <var>iable in '.env' (variable name is forced to UPPER CASE)
 --env-get-line <var> [<var> ...]
 --env-get-line=<var>
-    Get the line of a <var>iable in .env (variable name is forced to UPPER CASE)
+    Get the line of a <var>iable in '.env' (variable name is forced to UPPER CASE)
 --env-get-literal <var> [<var> ...]
 --env-get-literal=<var>
-    Get the literal value (including quotes) of a <var>iable in .env (variable name is forced to UPPER CASE)
+    Get the literal value (including quotes) of a <var>iable in '.env' (variable name is forced to UPPER CASE)
 --env-get-lower <var> [<var> ...]
 --env-get-lower=<var>
     Get the value of a <var>iable in .env
@@ -555,7 +555,7 @@ that take app names can use the form app: to refer to the same file.
     Get the literal value (including quotes) of a <var>iable in .env
 --env-set <var>=<val>
 --env-set=<var>,<val>
-    Set the <val>ue of a <var>iable in .env (variable name is forced to UPPER CASE)
+    Set the <val>ue of a <var>iable in '.env' (variable name is forced to UPPER CASE)
 --env-set-lower <var>=<val>
 --env-set-lower=<var>,<val>
     Set the <val>ue of a <var>iable in .env
@@ -580,7 +580,7 @@ that take app names can use the form app: to refer to the same file.
 --list-referenced
     List referenced apps (whether they are "built in" or not)
     An app is considered "referenced" if there is a variable matching the app's name in the
-    global .env file, or there are any variables in the file env_files/<appname>.env
+    global '.env' file, or there are any variables in the file '.env.app<appname>'.
 -h --help
     Show this usage information
 -i --install
@@ -588,9 +588,9 @@ that take app names can use the form app: to refer to the same file.
 -p --prune
     Remove unused docker resources
 -r --remove
-    Prompt to remove .env variables for all disabled apps
+    Prompt to remove '.env' variables for all disabled apps
 -r --remove <appname>
-    Prompt to remove the .env variables for the app specified
+    Prompt to remove the '.env' variables for the app specified
 -s --status <appname>
     Returns the enabled/disabled status for the app specified
 -S --select
@@ -1153,7 +1153,7 @@ main() {
         exit
     fi
 
-    # Create the .env file if it doesn't exists before the following command-line options
+    # Create the '.env' file if it doesn't exists before the following command-line options
     run_script 'env_create'
 
     if [[ -n ${COMPOSE-} ]]; then
