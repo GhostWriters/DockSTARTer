@@ -5,6 +5,8 @@ services:
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}
+      - AUTO_ASSIGN_PORT_MIN=${AZURACAST<__INSTANCE>__ENVIRONMENT_AUTO_ASSIGN_PORT_MIN?}
+      - AUTO_ASSIGN_PORT_MAX=${AZURACAST<__INSTANCE>__ENVIRONMENT_AUTO_ASSIGN_PORT_MAX?}
     restart: ${AZURACAST<__INSTANCE>__RESTART?}
     volumes:
       - ${DOCKER_VOLUME_CONFIG?}/shoutcast2/:/var/azuracast/servers/shoutcast2
