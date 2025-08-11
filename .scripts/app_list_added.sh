@@ -3,8 +3,8 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 app_list_added() {
-    local APPNAME_REGEX='^[A-Z][A-Z0-9]*(__[A-Z0-9]+)?'
-    local ADDED_APPS_REGEX="${APPNAME_REGEX}(?=__ENABLED\s*=)"
+    local APPNAME_REGEX='[A-Z][A-Z0-9]*(__[A-Z0-9]+)?'
+    local ADDED_APPS_REGEX="^${APPNAME_REGEX}(?=__ENABLED\s*=)"
     local -a AddedApps
 
     readarray -t AddedApps < <(grep --color=never -o -P "${ADDED_APPS_REGEX}" "${COMPOSE_ENV}" || true)

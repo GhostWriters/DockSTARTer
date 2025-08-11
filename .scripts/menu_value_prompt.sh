@@ -329,7 +329,7 @@ menu_value_prompt() {
                 fi
                 ;;
             EXTRA) # EDIT button
-                OptionValue["${CurrentValueOption}"]=$(grep -o -P "RENAMED (${ValidOptionsRegex}) \K.*" <<< "${SelectedValue}")
+                OptionValue["${CurrentValueOption}"]=$(grep -o -P "^RENAMED (${ValidOptionsRegex}) \K.*" <<< "${SelectedValue}")
                 ;;
             CANCEL | ESC) # DONE button
                 local ValueValid
