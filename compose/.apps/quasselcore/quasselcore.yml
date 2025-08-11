@@ -1,7 +1,7 @@
 services:
   quasselcore<__instance>:
     container_name: ${QUASSELCORE<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.quasselcore
+    env_file: .env.app.quasselcore<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

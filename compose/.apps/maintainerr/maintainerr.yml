@@ -1,7 +1,7 @@
 services:
   maintainerr<__instance>:
     container_name: ${MAINTAINERR<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.maintainerr
+    env_file: .env.app.maintainerr<__instance>
     environment:
       - TZ=${TZ}
     restart: ${MAINTAINERR<__INSTANCE>__RESTART?}

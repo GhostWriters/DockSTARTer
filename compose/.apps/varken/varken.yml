@@ -1,7 +1,7 @@
 services:
   varken<__instance>:
     container_name: ${VARKEN<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.varken
+    env_file: .env.app.varken<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

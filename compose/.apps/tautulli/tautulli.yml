@@ -1,7 +1,7 @@
 services:
   tautulli<__instance>:
     container_name: ${TAUTULLI<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.tautulli
+    env_file: .env.app.tautulli<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

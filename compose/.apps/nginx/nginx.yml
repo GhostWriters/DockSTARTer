@@ -1,7 +1,7 @@
 services:
   nginx<__instance>:
     container_name: ${NGINX<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.nginx
+    env_file: .env.app.nginx<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

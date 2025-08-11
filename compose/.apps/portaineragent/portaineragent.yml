@@ -1,7 +1,7 @@
 services:
   portaineragent<__instance>:
     container_name: ${PORTAINERAGENT<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.portaineragent
+    env_file: .env.app.portaineragent<__instance>
     environment:
       - TZ=${TZ?}
     restart: ${PORTAINERAGENT<__INSTANCE>__RESTART?}

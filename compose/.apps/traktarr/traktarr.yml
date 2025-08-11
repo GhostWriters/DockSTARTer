@@ -1,7 +1,7 @@
 services:
   traktarr<__instance>:
     container_name: ${TRAKTARR<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.traktarr
+    env_file: .env.app.traktarr<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

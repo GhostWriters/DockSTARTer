@@ -1,7 +1,7 @@
 services:
   prowlarr<__instance>:
     container_name: ${PROWLARR<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.prowlarr
+    env_file: .env.app.prowlarr<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

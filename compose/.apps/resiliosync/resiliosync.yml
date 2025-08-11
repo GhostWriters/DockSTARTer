@@ -1,7 +1,7 @@
 services:
   resiliosync<__instance>:
     container_name: ${RESILIOSYNC<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.resiliosync
+    env_file: .env.app.resiliosync<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

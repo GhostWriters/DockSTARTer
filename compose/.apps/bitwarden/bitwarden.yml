@@ -1,7 +1,7 @@
 services:
   bitwarden<__instance>:
     container_name: ${BITWARDEN<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.bitwarden
+    env_file: .env.app.bitwarden<__instance>
     environment:
       - TZ=${TZ?}
     restart: ${BITWARDEN<__INSTANCE>__RESTART?}

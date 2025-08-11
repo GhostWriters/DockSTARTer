@@ -1,7 +1,7 @@
 services:
   xteve<__instance>:
     container_name: ${XTEVE<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.xteve
+    env_file: .env.app.xteve<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

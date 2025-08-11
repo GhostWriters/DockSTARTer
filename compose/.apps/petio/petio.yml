@@ -1,7 +1,7 @@
 services:
   petio<__instance>:
     container_name: ${PETIO<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.petio
+    env_file: .env.app.petio<__instance>
     environment:
       - TZ=${TZ?}
     restart: ${PETIO<__INSTANCE>__RESTART?}

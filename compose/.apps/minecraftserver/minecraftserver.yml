@@ -1,7 +1,7 @@
 services:
   minecraftserver<__instance>:
     container_name: ${MINECRAFTSERVER<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.minecraftserver
+    env_file: .env.app.minecraftserver<__instance>
     environment:
       - GID=${PGID?}
       - TZ=${TZ?}

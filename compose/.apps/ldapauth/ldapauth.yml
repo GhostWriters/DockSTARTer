@@ -1,7 +1,7 @@
 services:
   ldapauth<__instance>:
     container_name: ${LDAPAUTH<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.ldapauth
+    env_file: .env.app.ldapauth<__instance>
     environment:
       - TZ=${TZ?}
     restart: ${LDAPAUTH<__INSTANCE>__RESTART?}

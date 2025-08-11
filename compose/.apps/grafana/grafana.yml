@@ -1,7 +1,7 @@
 services:
   grafana<__instance>:
     container_name: ${GRAFANA<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.grafana
+    env_file: .env.app.grafana<__instance>
     environment:
       - TZ=${TZ?}
     restart: ${GRAFANA<__INSTANCE>__RESTART?}

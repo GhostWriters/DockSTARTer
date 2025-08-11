@@ -1,7 +1,7 @@
 services:
   huginn<__instance>:
     container_name: ${HUGINN<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.huginn
+    env_file: .env.app.huginn<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

@@ -1,7 +1,7 @@
 services:
   pgbackup<__instance>:
     container_name: ${PGBACKUP<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.pgbackup
+    env_file: .env.app.pgbackup<__instance>
     environment:
       - TZ=${TZ?}
     restart: ${PGBACKUP<__INSTANCE>__RESTART?}

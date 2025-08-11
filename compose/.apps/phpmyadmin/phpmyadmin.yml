@@ -1,7 +1,7 @@
 services:
   phpmyadmin<__instance>:
     container_name: ${PHPMYADMIN<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.phpmyadmin
+    env_file: .env.app.phpmyadmin<__instance>
     environment:
       - TZ=${TZ?}
     restart: ${PHPMYADMIN<__INSTANCE>__RESTART?}

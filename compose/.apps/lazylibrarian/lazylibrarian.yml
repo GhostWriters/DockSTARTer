@@ -1,7 +1,7 @@
 services:
   lazylibrarian<__instance>:
     container_name: ${LAZYLIBRARIAN<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.lazylibrarian
+    env_file: .env.app.lazylibrarian<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

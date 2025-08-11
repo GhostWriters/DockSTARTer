@@ -1,7 +1,7 @@
 services:
   timemachine<__instance>:
     container_name: ${TIMEMACHINE<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.timemachine
+    env_file: .env.app.timemachine<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

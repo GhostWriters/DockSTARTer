@@ -1,7 +1,7 @@
 services:
   nzbget<__instance>:
     container_name: ${NZBGET<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.nzbget
+    env_file: .env.app.nzbget<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

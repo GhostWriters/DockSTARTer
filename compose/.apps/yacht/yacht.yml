@@ -1,7 +1,7 @@
 services:
   yacht<__instance>:
     container_name: ${YACHT<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.yacht
+    env_file: .env.app.yacht<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

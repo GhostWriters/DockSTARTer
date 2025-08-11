@@ -1,7 +1,7 @@
 services:
   qbittorrent<__instance>:
     container_name: ${QBITTORRENT<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.qbittorrent
+    env_file: .env.app.qbittorrent<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

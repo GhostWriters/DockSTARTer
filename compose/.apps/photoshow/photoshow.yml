@@ -1,7 +1,7 @@
 services:
   photoshow<__instance>:
     container_name: ${PHOTOSHOW<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.photoshow
+    env_file: .env.app.photoshow<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

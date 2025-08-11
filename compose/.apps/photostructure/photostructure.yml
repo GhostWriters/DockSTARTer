@@ -1,7 +1,7 @@
 services:
   photostructure<__instance>:
     container_name: ${PHOTOSTRUCTURE<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.photostructure
+    env_file: .env.app.photostructure<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

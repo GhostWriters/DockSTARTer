@@ -1,7 +1,7 @@
 services:
   doplarr<__instance>:
     container_name: ${DOPLARR<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.doplarr
+    env_file: .env.app.doplarr<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

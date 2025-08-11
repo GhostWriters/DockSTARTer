@@ -1,7 +1,7 @@
 services:
   beets<__instance>:
     container_name: ${BEETS<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.beets
+    env_file: .env.app.beets<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

@@ -1,7 +1,7 @@
 services:
   adminer<__instance>:
     container_name: ${ADMINER<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.adminer
+    env_file: .env.app.adminer<__instance>
     environment:
       - TZ=${TZ?}
     restart: ${ADMINER<__INSTANCE>__RESTART?}

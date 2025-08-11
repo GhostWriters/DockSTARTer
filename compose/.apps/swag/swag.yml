@@ -3,7 +3,7 @@ services:
     cap_add:
       - NET_ADMIN
     container_name: ${SWAG<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.swag
+    env_file: .env.app.swag<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

@@ -1,7 +1,7 @@
 services:
   pgadmin<__instance>:
     container_name: ${PGADMIN<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.pgadmin
+    env_file: .env.app.pgadmin<__instance>
     environment:
       - TZ=${TZ?}
     restart: ${PGADMIN<__INSTANCE>__RESTART?}

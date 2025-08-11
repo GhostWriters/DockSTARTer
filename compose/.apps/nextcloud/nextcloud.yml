@@ -1,7 +1,7 @@
 services:
   nextcloud<__instance>:
     container_name: ${NEXTCLOUD<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.nextcloud
+    env_file: .env.app.nextcloud<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

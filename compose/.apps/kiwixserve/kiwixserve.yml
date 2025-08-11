@@ -1,7 +1,7 @@
 services:
   kiwixserve<__instance>:
     container_name: ${KIWIXSERVE<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.kiwixserve
+    env_file: .env.app.kiwixserve<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

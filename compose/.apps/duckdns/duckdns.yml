@@ -1,7 +1,7 @@
 services:
   duckdns<__instance>:
     container_name: ${DUCKDNS<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.duckdns
+    env_file: .env.app.duckdns<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

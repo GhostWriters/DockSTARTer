@@ -1,7 +1,7 @@
 services:
   plex<__instance>:
     container_name: ${PLEX<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.plex
+    env_file: .env.app.plex<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

@@ -1,7 +1,7 @@
 services:
   headphones<__instance>:
     container_name: ${HEADPHONES<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.headphones
+    env_file: .env.app.headphones<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

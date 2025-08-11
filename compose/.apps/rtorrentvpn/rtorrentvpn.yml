@@ -4,7 +4,7 @@ services:
       - NET_ADMIN
       - SYS_MODULE
     container_name: ${RTORRENTVPN<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.rtorrentvpn
+    env_file: .env.app.rtorrentvpn<__instance>
     environment:
       - PGID=${PGID?}
       - PHP_TZ=${TZ?}

@@ -1,7 +1,7 @@
 services:
   murmur<__instance>:
     container_name: ${MURMUR<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.murmur
+    env_file: .env.app.murmur<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

@@ -1,7 +1,7 @@
 services:
   dozzle<__instance>:
     container_name: ${DOZZLE<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.dozzle
+    env_file: .env.app.dozzle<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}

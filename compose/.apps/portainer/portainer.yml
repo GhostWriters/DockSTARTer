@@ -2,7 +2,7 @@ services:
   portainer<__instance>:
     command: "-H unix:///var/run/docker.sock"
     container_name: ${PORTAINER<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.portainer
+    env_file: .env.app.portainer<__instance>
     environment:
       - TZ=${TZ?}
     restart: ${PORTAINER<__INSTANCE>__RESTART?}

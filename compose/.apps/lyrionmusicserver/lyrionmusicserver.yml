@@ -1,7 +1,7 @@
 services:
   lyrionmusicserver<__instance>:
     container_name: ${LYRIONMUSICSERVER<__INSTANCE>__CONTAINER_NAME?}
-    env_file: .env.app.lyrionmusicserver
+    env_file: .env.app.lyrionmusicserver<__instance>
     environment:
       - PGID=${PGID?}
       - PUID=${PUID?}
