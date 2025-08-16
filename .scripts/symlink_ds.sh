@@ -7,7 +7,14 @@ symlink_ds() {
 
     local SYMLINK_TARGETS=("/usr/bin/${APPLICATION_COMMAND}" "/usr/local/bin/${APPLICATION_COMMAND}")
 
-    if findmnt -n /usr | grep -P "\bro\b" > /dev/null; then
+    local FINDMNT_CHECK_TARGET="/usr"
+
+    # Checks if /usr is a distinct filesystem or if /usr is part of the root filesystem.
+    if mount | grep -vq " on /usr "; then
+        FINDMNT_CHECK_TARGET="/"
+    fi
+
+    if findmnt -n "${FINDMNT_CHECK_TARGET}" -o OPTIONS | grep -P "\bro\b" > /dev/null; then
         SYMLINK_TARGETS=("${HOME}/bin/${APPLICATION_COMMAND}" "${HOME}/.local/bin/${APPLICATION_COMMAND}")
     fi
 
