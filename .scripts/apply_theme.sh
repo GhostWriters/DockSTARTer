@@ -16,7 +16,7 @@ apply_theme() {
         if [[ ! -f ${MENU_INI_FILE} ]]; then
             cp "${DefaultMenuIniFile}" "${MENU_INI_FILE}"
         fi
-        ThemeName="$(run_script 'env_get' Theme "${MENU_INI_FILE}")"
+        ThemeName="$(run_script 'config_get' Theme "${MENU_INI_FILE}")"
         if ! run_script 'theme_exists' "${ThemeName}"; then
             for Name in "${DefaultThemes[@]}"; do
                 if run_script 'theme_exists' "${Name}"; then
@@ -80,7 +80,7 @@ apply_theme() {
     readarray -t VarList < <(run_script 'env_var_list' "${ThemeFile}")
     for VarName in "${VarList[@]-}"; do
         local Value
-        Value="$(run_script 'env_get' "${VarName}" "${ThemeFile}")"
+        Value="$(run_script 'config_get' "${VarName}" "${ThemeFile}")"
         Value="$(
             _B_="${_B_}" _C_="${_C_}" _G_="${_G_}" _K_="${_K_}" _M_="${_M_}" _R_="${_R_}" _W_="${_W_}" _Y_="${_Y_}" \
                 _RV_="${_RV_}" _NRV_="${_NRV_}" _BD_="${_BD_}" _NBD_="${_NBD_}" _U_="${_U_}" _NU_="${_NU_}" _NC_="${_NC_}" \
@@ -93,35 +93,35 @@ apply_theme() {
 
     local LineCharacters Borders Scrollbar Shadow
     if run_script 'env_var_exists' Scrollbar "${MENU_INI_FILE}"; then
-        Scrollbar="$(run_script 'env_get' Scrollbar "${MENU_INI_FILE}")"
+        Scrollbar="$(run_script 'config_get' Scrollbar "${MENU_INI_FILE}")"
     else
-        Scrollbar="$(run_script 'env_get' Scrollbar "${DefaultMenuIniFile}")"
-        run_script 'env_set' Scrollbar "${Scrollbar}" "${MENU_INI_FILE}"
+        Scrollbar="$(run_script 'config_get' Scrollbar "${DefaultMenuIniFile}")"
+        run_script 'config_set' Scrollbar "${Scrollbar}" "${MENU_INI_FILE}"
     fi
     if run_script 'env_var_exists' Shadow "${MENU_INI_FILE}"; then
-        Shadow="$(run_script 'env_get' Shadow "${MENU_INI_FILE}")"
+        Shadow="$(run_script 'config_get' Shadow "${MENU_INI_FILE}")"
     else
-        Shadow="$(run_script 'env_get' Shadow "${DefaultMenuIniFile}")"
-        run_script 'env_set' Shadow "${Shadow}" "${MENU_INI_FILE}"
+        Shadow="$(run_script 'config_get' Shadow "${DefaultMenuIniFile}")"
+        run_script 'config_set' Shadow "${Shadow}" "${MENU_INI_FILE}"
     fi
     # Migrate old LineCharacters variable to Borders if Borders doesn't exist
     if run_script 'env_var_exists' Borders "${MENU_INI_FILE}"; then
-        Borders="$(run_script 'env_get' Borders "${MENU_INI_FILE}")"
+        Borders="$(run_script 'config_get' Borders "${MENU_INI_FILE}")"
         if run_script 'env_var_exists' LineCharacters "${MENU_INI_FILE}"; then
-            LineCharacters="$(run_script 'env_get' LineCharacters "${MENU_INI_FILE}")"
+            LineCharacters="$(run_script 'config_get' LineCharacters "${MENU_INI_FILE}")"
         else
-            LineCharacters="$(run_script 'env_get' LineCharacters "${DefaultMenuIniFile}")"
-            run_script 'env_set' LineCharacters "${LineCharacters}" "${MENU_INI_FILE}"
+            LineCharacters="$(run_script 'config_get' LineCharacters "${DefaultMenuIniFile}")"
+            run_script 'config_set' LineCharacters "${LineCharacters}" "${MENU_INI_FILE}"
         fi
     else
         if run_script 'env_var_exists' LineCharacters "${MENU_INI_FILE}"; then
-            Borders="$(run_script 'env_get' LineCharacters "${MENU_INI_FILE}")"
+            Borders="$(run_script 'config_get' LineCharacters "${MENU_INI_FILE}")"
         else
-            Borders="$(run_script 'env_get' Borders "${DefaultMenuIniFile}")"
+            Borders="$(run_script 'config_get' Borders "${DefaultMenuIniFile}")"
         fi
-        run_script 'env_set' Borders "${Borders}" "${MENU_INI_FILE}"
-        LineCharacters="$(run_script 'env_get' LineCharacters "${DefaultMenuIniFile}")"
-        run_script 'env_set' LineCharacters "${LineCharacters}" "${MENU_INI_FILE}"
+        run_script 'config_set' Borders "${Borders}" "${MENU_INI_FILE}"
+        LineCharacters="$(run_script 'config_get' LineCharacters "${DefaultMenuIniFile}")"
+        run_script 'config_set' LineCharacters "${LineCharacters}" "${MENU_INI_FILE}"
     fi
     if [[ ${Borders^^} =~ ON|TRUE|YES ]]; then
         if [[ ! ${LineCharacters^^} =~ ON|TRUE|YES ]]; then
@@ -149,7 +149,7 @@ apply_theme() {
     echo "${DialogOptions}" > "${DIALOG_OPTIONS_FILE}"
 
     cp "${DialogFile}" "${DIALOGRC}"
-    run_script 'env_set' Theme "${ThemeName}" "${MENU_INI_FILE}"
+    run_script 'config_set' Theme "${ThemeName}" "${MENU_INI_FILE}"
     sort -o "${MENU_INI_FILE}" "${MENU_INI_FILE}"
 }
 

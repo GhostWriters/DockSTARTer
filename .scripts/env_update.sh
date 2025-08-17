@@ -3,6 +3,10 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 env_update() {
+    if [[ -z ${PROCESS_ENV_UPDATE} ]]; then
+        # Env files have already been updated, nothing to do
+        return
+    fi
     local ENV_LINES_FILE
     ENV_LINES_FILE=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.ENV_LINES_FILE.XXXXXXXXXX")
     run_script 'appvars_lines' "" > "${ENV_LINES_FILE}"
@@ -67,6 +71,7 @@ env_update() {
 
     #run_script 'env_sanitize'
     info "Environment file update complete."
+    declare -gx PROCESS_ENV_UPDATE=''
 }
 
 test_env_update() {

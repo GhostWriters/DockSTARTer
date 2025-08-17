@@ -11,6 +11,9 @@ declare -rx TARGET_BRANCH='main'
 export LC_ALL=C
 export PROMPT="CLI"
 export MENU=false
+declare -x PROCESS_APPVARS_CREATE_ALL=1
+declare -x PROCESS_ENV_UPDATE=1
+declare -x PROCESS_YML_MERGE=1
 
 # Script Information
 # https://stackoverflow.com/questions/59895/get-the-source-directory-of-a-bash-script-from-within-the-script-itself/246128#246128
@@ -349,8 +352,16 @@ run_script_dialog() {
     if use_dialog_box; then
         # Using the GUI, pipe output to a dialog box
         SubTitle="$(strip_ansi_colors "${SubTitle}")"
-        run_script "${SCRIPTSNAME}" "$@" |& dialog_pipe "${Title}" "${SubTitle}" "${TimeOut}"
-        return "${PIPESTATUS[0]}"
+        coproc {
+            dialog_pipe "${Title}" "${SubTitle}" "${TimeOut}"
+        }
+        local -i DialogBox_PID=${COPROC_PID}
+        local -i DialogBox_FD="${COPROC[1]}"
+        local -i result=0
+        run_script "${SCRIPTSNAME}" "$@" >&${DialogBox_FD} 2>&1 || result=$?
+        exec {DialogBox_FD}<&-
+        wait ${DialogBox_PID}
+        return ${result}
     else
         run_script "${SCRIPTSNAME}" "$@"
         return
@@ -1083,34 +1094,34 @@ main() {
                 ;;
             theme-shadow)
                 notice "Turning on GUI shadows."
-                run_script 'env_set' Shadow yes "${MENU_INI_FILE}"
+                run_script 'config_set' Shadow yes "${MENU_INI_FILE}"
                 if use_dialog_box; then
                     run_script 'menu_dialog_example' "Turned on shadows" "${APPLICATION_COMMAND} --theme-shadow"
                 fi
                 ;;
             theme-no-shadow)
-                run_script 'env_set' Shadow no "${MENU_INI_FILE}"
+                run_script 'config_set' Shadow no "${MENU_INI_FILE}"
                 notice "Turning off GUI shadows."
                 if use_dialog_box; then
                     run_script 'menu_dialog_example' "Turned off shadows" "${APPLICATION_COMMAND} --theme-no-shadow"
                 fi
                 ;;
             theme-scrollbar)
-                run_script 'env_set' Scrollbar yes "${MENU_INI_FILE}"
+                run_script 'config_set' Scrollbar yes "${MENU_INI_FILE}"
                 notice "Turning on GUI scrollbars."
                 if use_dialog_box; then
                     run_script 'menu_dialog_example' "Turned on scrollbars" "${APPLICATION_COMMAND} --theme-scrollbar"
                 fi
                 ;;
             theme-no-scrollbar)
-                run_script 'env_set' Scrollbar no "${MENU_INI_FILE}"
+                run_script 'config_set' Scrollbar no "${MENU_INI_FILE}"
                 notice "Turning off GUI scrollbars."
                 if use_dialog_box; then
                     run_script 'menu_dialog_example' "Turned off scrollbars" "${APPLICATION_COMMAND} --theme-no-scrollbar"
                 fi
                 ;;
             theme-lines)
-                run_script 'env_set' LineCharacters yes "${MENU_INI_FILE}"
+                run_script 'config_set' LineCharacters yes "${MENU_INI_FILE}"
                 notice "Turning on GUI line drawing characters."
                 if use_dialog_box; then
                     run_script 'menu_dialog_example' "Turned on line drawing" "${APPLICATION_COMMAND} --theme-lines"
@@ -1118,13 +1129,13 @@ main() {
                 ;;
             theme-no-lines)
                 notice "Turning off GUI line drawing characters."
-                run_script 'env_set' LineCharacters no "${MENU_INI_FILE}"
+                run_script 'config_set' LineCharacters no "${MENU_INI_FILE}"
                 if use_dialog_box; then
                     run_script 'menu_dialog_example' "Turned off line drawing" "${APPLICATION_COMMAND} --theme-no-lines"
                 fi
                 ;;
             theme-borders)
-                run_script 'env_set' Borders yes "${MENU_INI_FILE}"
+                run_script 'config_set' Borders yes "${MENU_INI_FILE}"
                 notice "Turning on GUI borders."
                 if use_dialog_box; then
                     run_script 'menu_dialog_example' "Turned on borders" "${APPLICATION_COMMAND} --theme-borders"
@@ -1132,7 +1143,7 @@ main() {
                 ;;
             theme-no-borders)
                 notice "Turning off GUI borders."
-                run_script 'env_set' Borders no "${MENU_INI_FILE}"
+                run_script 'config_set' Borders no "${MENU_INI_FILE}"
                 if use_dialog_box; then
                     run_script 'menu_dialog_example' "Turned off borders" "${APPLICATION_COMMAND} --theme-no-borders"
                 fi

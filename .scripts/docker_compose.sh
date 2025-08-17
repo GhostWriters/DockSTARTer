@@ -105,6 +105,11 @@ docker_compose() {
     esac
     if run_script 'question_prompt' Y "${Question}" "${Title}" "${FORCE:+Y}"; then
         if use_dialog_box; then
+            coproc {
+                dialog_pipe "${DC[TitleSuccess]}${Title}" "${YesNotice}${DC[NC]}\n${DC[CommandLine]} ${APPLICATION_COMMAND} --compose ${ComposeInput}"
+            }
+            local -i DialogBox_PID=${COPROC_PID}
+            local -i DialogBox_FD="${COPROC[1]}"
             {
                 [[ -n ${YesNotice-} ]] && notice "${YesNotice}"
                 run_script 'require_docker'
@@ -115,7 +120,9 @@ docker_compose() {
                     eval "${Command}" ||
                         fatal "Failed to run compose.\nFailing command: ${C["FailingCommand"]}${Command}"
                 done
-            } |& dialog_pipe "${DC[TitleSuccess]}${Title}" "${YesNotice}${DC[NC]}\n${DC[CommandLine]} ${APPLICATION_COMMAND} --compose ${ComposeInput}"
+            } >&${DialogBox_FD} 2>&1
+            exec {DialogBox_FD}<&-
+            wait ${DialogBox_PID}
         else
             [[ -n ${YesNotice-} ]] && notice "${YesNotice}"
             run_script 'require_docker'

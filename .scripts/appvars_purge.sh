@@ -92,6 +92,9 @@ appvars_purge() {
                 sed -i -E "/^\s*(${AppEnvVarsRegex})\s*=/d" "${AppEnvFile}" ||
                     fatal "Failed to purge ${C["App"]}${AppName}${NC} variables.\nFailing command: ${C["FailingCommand"]}sed -i -E \"/^\\\*(${AppEnvVarsRegex})\\\*/d\" \"${AppEnvFile}\""
             fi
+            declare -gx PROCESS_APPVARS_CREATE_ALL=1
+            declare -gx PROCESS_ENV_UPDATE=1
+            declare -gx PROCESS_YML_MERGE=1
         else
             info "Keeping ${C["App"]}${AppName}${NC} variables."
         fi

@@ -44,6 +44,9 @@ env_copy() {
     fi
     printf '\n%s\n' "${NEW_VAR_LINE}" >> "${TO_VAR_FILE}" ||
         fatal "Failed to add '${C["Var"]}${NEW_VAR_LINE}${NC}' in ${C["File"]}${TO_VAR_FILE}${NC}\nFailing command: ${C["FailingCommand"]}printf '\n%s\n' \"${NEW_VAR_LINE}\" >> \"${TO_VAR_FILE}\""
+    declare -gx PROCESS_APPVARS_CREATE_ALL=1
+    declare -gx PROCESS_ENV_UPDATE=1
+    declare -gx PROCESS_YML_MERGE=1
 }
 
 test_env_copy() {
