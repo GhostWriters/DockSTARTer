@@ -5,7 +5,14 @@ IFS=$'\n\t'
 merge_and_compose() {
     Title="Merge and run Docker Compose"
     if use_dialog_box; then
-        commands_merge_and_compose "$@" |& dialog_pipe "${Title}" "$@"
+        coproc {
+            dialog_pipe "${Title}" "$@"
+        }
+        local -i DialogBox_PID=${COPROC_PID}
+        local -i DialogBox_FD="${COPROC[1]}"
+        commands_merge_and_compose "$@" >&${DialogBox_FD} 2>&1
+        exec {DialogBox_FD}<&-
+        wait ${DialogBox_PID}
     else
         commands_merge_and_compose "$@"
     fi

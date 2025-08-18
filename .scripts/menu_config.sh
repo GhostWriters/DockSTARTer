@@ -8,10 +8,21 @@ menu_config() {
     fi
 
     local Title="Configuration Menu"
-    {
-        run_script 'env_backup'
-        run_script 'appvars_create_all' || true
-    } |& dialog_pipe "${DC[TitleSuccess]}Creating environment variables for added apps" "Please be patient, this can take a while.\n${DC[CommandLine]} ${APPLICATION_COMMAND} --env" "${DIALOGTIMEOUT}"
+
+    if [[ -n ${PROCESS_APPVARS_CREATE_ALL} ]]; then
+        coproc {
+            dialog_pipe "${DC[TitleSuccess]}Creating environment variables for added apps" "Please be patient, this can take a while.\n${DC[CommandLine]} ${APPLICATION_COMMAND} --env" "${DIALOGTIMEOUT}"
+        }
+        local -i DialogBox_PID=${COPROC_PID}
+        local -i DialogBox_FD="${COPROC[1]}"
+        {
+            run_script 'env_backup'
+            run_script 'appvars_create_all' || true
+        } >&${DialogBox_FD} 2>&1
+        exec {DialogBox_FD}<&-
+        wait ${DialogBox_PID}
+    fi
+
     local OptionFullSetup="Full Setup"
     local OptionEditGlobalVars="Edit Global Variables"
     local OptionSelectApps="Select Applications"

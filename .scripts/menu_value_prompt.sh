@@ -446,6 +446,11 @@ menu_value_prompt() {
                     if [[ -z ${OptionValue["${CurrentValueOption}"]-} ]]; then
                         if run_script 'question_prompt' N "${DialogHeading}\n\nDo you really want to delete ${DC[Highlight]}${CleanVarName}${DC[NC]}?\n" "Delete Variable" "" "Delete" "Back"; then
                             # Value is empty, delete the variable
+                            coproc {
+                                dialog_pipe "${DC["TitleSuccess"]}Deleting Variable" "${DialogHeading}" "${DIALOGTIMEOUT}"
+                            }
+                            local -i DialogBox_PID=${COPROC_PID}
+                            local -i DialogBox_FD="${COPROC[1]}"
                             {
                                 run_script 'env_delete' "${VarName}"
                                 if [[ -n ${APPNAME-} ]]; then
@@ -461,12 +466,19 @@ menu_value_prompt() {
                                     run_script 'env_sanitize'
                                     run_script 'env_update'
                                 fi
-                            } |& dialog_pipe "${DC["TitleSuccess"]}Deleting Variable" "${DialogHeading}" "${DIALOGTIMEOUT}"
+                            } >&${DialogBox_FD} 2>&1
+                            exec {DialogBox_FD}<&-
+                            wait ${DialogBox_PID}
                             return 0
                         fi
                     elif [[ ${OptionValue["${CurrentValueOption}"]-} == "${OptionValue["${OriginalValueOption}"]-}" ]]; then
                         if run_script 'question_prompt' N "${DialogHeading}\n\nThe value of ${DC[Highlight]}${CleanVarName}${DC[NC]} has not been changed, exit anyways?\n" "Save Variable" "" "Done" "Back"; then
                             # Value has not changed, confirm exiting
+                            coproc {
+                                dialog_pipe "${DC["TitleSuccess"]}Canceling Variable Edit" "${DialogHeading}" "${DIALOGTIMEOUT}"
+                            }
+                            local -i DialogBox_PID=${COPROC_PID}
+                            local -i DialogBox_FD="${COPROC[1]}"
                             {
                                 if [[ -n ${APPNAME-} ]]; then
                                     if ! run_script 'app_is_user_defined' "${APPNAME}"; then
@@ -481,12 +493,19 @@ menu_value_prompt() {
                                     run_script 'env_update'
                                     run_script 'env_sanitize'
                                 fi
-                            } |& dialog_pipe "${DC["TitleSuccess"]}Canceling Variable Edit" "${DialogHeading}" "${DIALOGTIMEOUT}"
+                            } >&${DialogBox_FD} 2>&1
+                            exec {DialogBox_FD}<&-
+                            wait ${DialogBox_PID}
                             return 0
                         fi
                     else
                         if run_script 'question_prompt' N "${DialogHeading}\n\nWould you like to save ${DC[Highlight]}${CleanVarName}${DC[NC]}?\n" "Save Variable" "" "Save" "Back"; then
                             # Value is valid, save it and exit
+                            coproc {
+                                dialog_pipe "${DC["TitleSuccess"]}Saving Variable" "${DialogHeading}" "${DIALOGTIMEOUT}"
+                            }
+                            local -i DialogBox_PID=${COPROC_PID}
+                            local -i DialogBox_FD="${COPROC[1]}"
                             {
                                 run_script 'env_set_literal' "${VarName}" "${OptionValue["${CurrentValueOption}"]}"
                                 if [[ -n ${APPNAME-} ]]; then
@@ -501,7 +520,9 @@ menu_value_prompt() {
                                     run_script 'env_update'
                                     run_script 'env_sanitize'
                                 fi
-                            } |& dialog_pipe "${DC["TitleSuccess"]}Saving Variable" "${DialogHeading}" "${DIALOGTIMEOUT}"
+                            } >&${DialogBox_FD} 2>&1
+                            exec {DialogBox_FD}<&-
+                            wait ${DialogBox_PID}
                             return 0
                         fi
                     fi

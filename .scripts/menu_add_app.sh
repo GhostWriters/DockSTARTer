@@ -95,11 +95,18 @@ menu_add_app() {
                     case ${DIALOG_BUTTONS[YesNoDialogButtonPressed]-} in
                         OK) # Built In
                             Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
+                            coproc {
+                                dialog_pipe "${DC[TitleSuccess]}Adding Built In Application" "${Heading}\n\n${DC[Subtitle]}Adding application:\n${DC[CommandLine]} ${APPLICATION_COMMAND} --add ${AppName}" "${DIALOGTIMEOUT}"
+                            }
+                            local -i DialogBox_PID=${COPROC_PID}
+                            local -i DialogBox_FD="${COPROC[1]}"
                             {
                                 run_script 'env_backup'
                                 run_script 'appvars_create' "${AppName}"
                                 run_script 'env_update'
-                            } |& dialog_pipe "${DC[TitleSuccess]}Adding Built In Application" "${Heading}\n\n${DC[Subtitle]}Adding application:\n${DC[CommandLine]} ${APPLICATION_COMMAND} --add ${AppName}" "${DIALOGTIMEOUT}"
+                            } >&${DialogBox_FD} 2>&1
+                            exec {DialogBox_FD}<&-
+                            wait ${DialogBox_PID}
                             return
                             ;;
                         EXTRA) # User Defined

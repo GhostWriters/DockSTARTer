@@ -7,6 +7,10 @@ yml_merge() {
 }
 
 commands_yml_merge() {
+    if [[ -z ${PROCESS_YML_MERGE} && -f ${COMPOSE_FOLDER}/docker-compose.yml ]]; then
+        # Compose file has already been created, nothing to do
+        return
+    fi
     run_script 'appvars_create_all'
     local COMPOSE_FILE=""
     notice "Adding enabled app templates to merge ${C["File"]}docker-compose.yml${NC}. Please be patient, this can take a while."
@@ -111,6 +115,7 @@ commands_yml_merge() {
     export COMPOSE_FILE="${COMPOSE_FILE#:}"
     eval "docker compose --project-directory ${COMPOSE_FOLDER}/ config > ${COMPOSE_FOLDER}/docker-compose.yml" || fatal "Failed to output compose config.\nFailing command: ${C["FailingCommand"]}docker compose --project-directory ${COMPOSE_FOLDER}/ config > \"${COMPOSE_FOLDER}/docker-compose.yml\""
     info "Merging ${C["File"]}docker-compose.yml${NC} complete."
+    declare -gx PROCESS_YML_MERGE=''
 }
 test_yml_merge() {
     run_script 'appvars_create' WATCHTOWER

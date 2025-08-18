@@ -203,6 +203,11 @@ menu_add_var() {
                             Heading="$(run_script 'menu_heading' ":${AppName}")"
                             if run_script 'question_prompt' N "${Heading}\n\n${Question}" "Create Stock Variables" "" "Create" "Back"; then
                                 Heading="$(run_script 'menu_heading' ":${AppName}" "${VarNameHeading}")"
+                                coproc {
+                                    dialog_pipe "${DC["TitleSuccess"]}Creating Stock Variables" "${Heading}"
+                                }
+                                local -i DialogBox_PID=${COPROC_PID}
+                                local -i DialogBox_FD="${COPROC[1]}"
                                 {
                                     notice "Adding variables to ${C["File"]}${COMPOSE_ENV}${NC}:"
                                     for Option in "${ValidStockOptions[@]}"; do
@@ -211,7 +216,9 @@ menu_add_var() {
                                         notice "   ${C["Var"]}${Option// /}=${DefaultValue}${NC}"
                                         run_script 'env_set_literal' "${Option// /}" "${DefaultValue}"
                                     done
-                                } |& dialog_pipe "${DC["TitleSuccess"]}Creating Stock Variables" "${Heading}" "${DIALOGTIMEOUT}"
+                                } >&${DialogBox_FD} 2>&1
+                                exec {DialogBox_FD}<&-
+                                wait ${DialogBox_PID}
                             fi
                             continue
                         elif [[ ${SelectedOption} =~ ${APPNAME__ENABLED}|${StockOptionsRegex} ]]; then

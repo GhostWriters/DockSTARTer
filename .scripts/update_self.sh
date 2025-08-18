@@ -78,6 +78,10 @@ update_self() {
         return 1
     fi
 
+    declare -gx PROCESS_APPVARS_CREATE_ALL=1
+    declare -gx PROCESS_ENV_UPDATE=1
+    declare -gx PROCESS_YML_MERGE=1
+
     if use_dialog_box; then
         commands_update_self "${BRANCH}" "${YesNotice}" "$@" |&
             dialog_pipe "${DC[TitleSuccess]}${Title}" "${YesNotice}\n${DC[CommandLine]} ${APPLICATION_COMMAND} --update $*"

@@ -16,6 +16,8 @@ override_var_rename() {
         # Replace $FromVar or ${FromVar followed by a word break to $ToVar or ${ToVar
         sed -i -E "s/([$]\{?)${FromVar}\b/\1${ToVar}/g" "${COMPOSE_OVERRIDE}" ||
             fatal "Failed to rename variable in override file.\nFailing command: ${C["FailingCommand"]} sed -i -E \"s/([$]\\{?)${FromVar}\\\\b/\\\\1${ToVar}/g\" \"${COMPOSE_OVERRIDE}\""
+        declare -gx PROCESS_YML_MERGE=1
+
     fi
 }
 

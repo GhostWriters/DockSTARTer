@@ -29,6 +29,9 @@ env_set_literal() {
     fi
     sed -i "/^\s*${SET_VAR}\s*=/d" "${VAR_FILE}" || true
     echo "${SET_VAR}=${NEW_VAL}" >> "${VAR_FILE}" || fatal "Failed to set ${C["Var"]}${SET_VAR}=${NEW_VAL}${NC}\nFailing command: ${C["FailingCommand"]} \"echo ${SET_VAR}=${NEW_VAL}\" >> \"${VAR_FILE}\""
+    declare -gx PROCESS_APPVARS_CREATE_ALL=1
+    declare -gx PROCESS_ENV_UPDATE=1
+    declare -gx PROCESS_YML_MERGE=1
 }
 
 test_env_set_literal() {
