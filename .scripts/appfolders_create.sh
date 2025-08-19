@@ -3,12 +3,11 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 appfolders_create() {
-    local APPNAME=${1-}
-    APPNAME=${APPNAME^^}
-
-    local appname=${APPNAME,,}
+    local -u APPNAME=${1-}
+    local -l appname=${APPNAME}
     local AppName
     AppName="$(run_script 'app_nicename' "${APPNAME}")"
+
     local APP_FOLDERS_FILE
     APP_FOLDERS_FILE="$(run_script 'app_instance_file' "${appname}" "*.folders")"
 

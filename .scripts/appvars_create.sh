@@ -6,7 +6,7 @@ appvars_create() {
     local AppList
     AppList="$(xargs -n 1 <<< "$*")"
     for APPNAME in ${AppList^^}; do
-        local appname=${APPNAME,,}
+        local -l appname=${APPNAME}
         local AppName
         AppName="$(run_script 'app_nicename' "${APPNAME}")"
 

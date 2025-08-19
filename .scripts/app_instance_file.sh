@@ -9,9 +9,8 @@ app_instance_file() {
     # app_instance_file "radarr" "*.labels.yml" will return a string similar to "/home/user/.docker/compose/.instances/radarr/radarr.labels.yml"
     # If the file does not exist, it is created from the matching file in the "templates" folder.
 
-    local appname=${1:-}
+    local -l appname=${1:-}
     local FilenameTemplate=${2:-}
-    local appname=${appname,,}
 
     if [[ ! -d ${INSTANCES_FOLDER} ]]; then
         mkdir -p "${INSTANCES_FOLDER}" ||
@@ -19,7 +18,7 @@ app_instance_file() {
         run_script 'set_permissions' "${INSTANCES_FOLDER}"
     fi
 
-    local baseapp
+    local -l baseapp
     baseapp="$(run_script 'appname_to_baseappname' "${appname}")"
 
     local TemplateFolder="${TEMPLATES_FOLDER}/${baseapp}"

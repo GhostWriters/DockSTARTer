@@ -3,13 +3,13 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 app_is_user_defined() {
-    local APPNAME=${1-}
+    local -u APPNAME=${1-}
 
     if ! run_script 'app_is_builtin' "${APPNAME}"; then
         true
         return
     fi
-    if ! run_script 'env_var_exists' "${APPNAME^^}__ENABLED"; then
+    if ! run_script 'env_var_exists' "${APPNAME}__ENABLED"; then
         true
         return
     fi

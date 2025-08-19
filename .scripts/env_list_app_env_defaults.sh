@@ -3,8 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 env_list_app_env_defaults() {
-    local APPNAME=${1-}
-    local appname=${APPNAME,,}
+    local -l appname=${1-}
     run_script 'env_var_list' "$(run_script 'app_instance_file' "${appname}" ".env.app.*")"
 }
 

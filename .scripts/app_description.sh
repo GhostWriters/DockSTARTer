@@ -4,8 +4,7 @@ IFS=$'\n\t'
 
 app_description() {
     # Return the description of the appname passed.
-    local appname=${1-}
-    appname="${appname,,}"
+    local -l appname=${1-}
     appname="${appname%:*}"
     if run_script 'app_is_user_defined' "${appname}"; then
         local AppName

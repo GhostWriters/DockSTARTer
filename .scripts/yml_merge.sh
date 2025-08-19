@@ -17,7 +17,7 @@ commands_yml_merge() {
     local ENABLED_APPS
     ENABLED_APPS="$(run_script 'app_list_enabled')"
     for APPNAME in ${ENABLED_APPS-}; do
-        local appname=${APPNAME,,}
+        local -l appname=${APPNAME}
         local AppName
         AppName="$(run_script 'app_nicename' "${APPNAME}")"
         local APP_FOLDER
