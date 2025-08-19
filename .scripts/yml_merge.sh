@@ -9,7 +9,7 @@ yml_merge() {
 commands_yml_merge() {
     if [[ -z ${PROCESS_YML_MERGE} && -f ${COMPOSE_FOLDER}/docker-compose.yml ]]; then
         # Compose file has already been created, nothing to do
-        return
+        return 0
     fi
     run_script 'appvars_create_all'
     local COMPOSE_FILE=""
@@ -109,13 +109,21 @@ commands_yml_merge() {
         fi
     done
     if [[ -z ${COMPOSE_FILE} ]]; then
-        fatal "No enabled apps found."
+        error "No enabled apps found."
+        return 1
     fi
+
     info "Running compose config to create '${C["File"]}docker-compose.yml${NC}' file from enabled templates."
     export COMPOSE_FILE="${COMPOSE_FILE#:}"
-    eval "docker compose --project-directory ${COMPOSE_FOLDER}/ config > ${COMPOSE_FOLDER}/docker-compose.yml" || fatal "Failed to output compose config.\nFailing command: ${C["FailingCommand"]}docker compose --project-directory ${COMPOSE_FOLDER}/ config > \"${COMPOSE_FOLDER}/docker-compose.yml\""
+    local -i result=0
+    eval "docker compose --project-directory ${COMPOSE_FOLDER}/ config > ${COMPOSE_FOLDER}/docker-compose.yml" || result=$?
+    if [[ ${result} != 0 ]]; then
+        error "Failed to output compose config.\nFailing command: ${C["FailingCommand"]}docker compose --project-directory ${COMPOSE_FOLDER}/ config > \"${COMPOSE_FOLDER}/docker-compose.yml\""
+        return ${result}
+    fi
     info "Merging '${C["File"]}docker-compose.yml${NC}' complete."
     declare -gx PROCESS_YML_MERGE=''
+    return 0
 }
 test_yml_merge() {
     run_script 'appvars_create' WATCHTOWER
