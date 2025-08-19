@@ -103,6 +103,8 @@ docker_compose() {
             ComposeCommand[1]="up -d --remove-orphans"
             ;;
     esac
+
+    local -i result=0
     if run_script 'question_prompt' Y "${Question}" "${Title}" "${FORCE:+Y}"; then
         if use_dialog_box; then
             coproc {
@@ -113,26 +115,38 @@ docker_compose() {
             {
                 [[ -n ${YesNotice-} ]] && notice "${YesNotice}"
                 run_script 'require_docker'
-                run_script 'yml_merge'
-                for index in "${!ComposeCommand[@]}"; do
-                    local Command="docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand[index]}"
-                    notice "Running: ${C["RunningCommand"]}${Command}${NC}"
-                    eval "${Command}" ||
-                        fatal "Failed to run compose.\nFailing command: ${C["FailingCommand"]}${Command}"
-                done
+                if run_script 'yml_merge'; then
+                    for index in "${!ComposeCommand[@]}"; do
+                        local Command="docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand[index]}"
+                        notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+                        eval "${Command}" || result=$?
+                        if [[ ${result} != 0 ]]; then
+                            error "Failed to run compose.\nFailing command: ${C["FailingCommand"]}${Command}"
+                            break
+                        fi
+                    done
+                else
+                    result=1
+                fi
             } >&${DialogBox_FD} 2>&1
             exec {DialogBox_FD}<&-
             wait ${DialogBox_PID}
         else
             [[ -n ${YesNotice-} ]] && notice "${YesNotice}"
             run_script 'require_docker'
-            run_script 'yml_merge'
-            for index in "${!ComposeCommand[@]}"; do
-                local Command="docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand[index]}"
-                notice "Running: ${C["RunningCommand"]}${Command}${NC}"
-                eval "${Command}" ||
-                    fatal "Failed to run compose.\nFailing command: ${C["FailingCommand"]}${Command}"
-            done
+            if run_script 'yml_merge'; then
+                for index in "${!ComposeCommand[@]}"; do
+                    local Command="docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand[index]}"
+                    notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+                    eval "${Command}" || result=$?
+                    if [[ ${result} != 0 ]]; then
+                        error "Failed to run compose.\nFailing command: ${C["FailingCommand"]}${Command}"
+                        break
+                    fi
+                done
+            else
+                result=1
+            fi
         fi
     else
         if use_dialog_box; then
@@ -141,6 +155,7 @@ docker_compose() {
             [[ -n ${NoNotice-} ]] && notice "${NoNotice}"
         fi
     fi
+    return ${result}
 }
 
 test_docker_compose() {
