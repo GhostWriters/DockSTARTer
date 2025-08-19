@@ -3,8 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 app_env_file() {
-    local appname=${1:-}
-    appname="${appname,,}"
+    local -l appname=${1:-}
 
     local AppEnvFilename=".env.app.${appname}"
     local OldAppEnvFilename="${appname}.env"

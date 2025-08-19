@@ -4,8 +4,8 @@ IFS=$'\n\t'
 
 app_is_added() {
     # Returns if the passed app is both built in and an APPNAME__ENABLED variable exists
-    local APPNAME=${1-}
-    local ENABLED_VAR="${APPNAME^^}__ENABLED"
+    local -u APPNAME=${1-}
+    local ENABLED_VAR="${APPNAME}__ENABLED"
     run_script 'app_is_builtin' "${APPNAME}" && run_script 'env_var_exists' "${ENABLED_VAR}"
 }
 

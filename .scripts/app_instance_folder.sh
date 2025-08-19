@@ -10,7 +10,7 @@ app_instance_folder() {
     # If the folder does not exist, it is created from the matching folder in the "templates" folder.
 
     local AppName=${1:-}
-    local appname=${AppName,,}
+    local -l appname=${AppName}
 
     local baseapp TemplateFolder InstanceFolder
     baseapp="$(run_script 'appname_to_baseappname' "${appname}")"

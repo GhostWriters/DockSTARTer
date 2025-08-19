@@ -6,8 +6,7 @@ appvars_lines() {
     # Return all lines in `.env` file for app APPNAME
     # If APPNAME ends in a ':', returns all lines in `.env.app.appname'
     # If APPNAME is empty, return all lines in `.env` file that are not for an app
-    local APPNAME=${1-}
-    APPNAME=${APPNAME^^}
+    local -u APPNAME=${1-}
     local VAR_FILE=${2:-$COMPOSE_ENV}
 
     if [[ -z ${APPNAME} ]]; then
@@ -15,7 +14,7 @@ appvars_lines() {
         local VAR_REGEX='[A-Z][A-Z0-9]*(__[A-Z0-9]+)+\w+'
         local APP_VARS_REGEX="^\s*${VAR_REGEX}\s*="
         grep -v -P '^\s*$|^\s*\#' "${VAR_FILE}" | grep --color=never -v -P "${APP_VARS_REGEX}" || true
-    elif [[ ${APPNAME} =~ ^[A-Za-z0-9_]+: ]]; then
+    elif [[ ${APPNAME} =~ ^[A-Z0-9_]+: ]]; then
         # APPNAME is in the form of "APPNAME:", list all variable lines in "appname.env"
         APPNAME=${APPNAME%%:*}
         VAR_FILE="$(run_script 'app_env_file' "${APPNAME}")"

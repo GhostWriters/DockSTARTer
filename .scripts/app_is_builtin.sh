@@ -3,11 +3,11 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 app_is_builtin() {
-    local APPNAME=${1-}
+    local -l appname=${1-}
 
-    local BaseApp
-    BaseApp="$(run_script 'appname_to_baseappname' "${APPNAME}")"
-    [[ -d "${TEMPLATES_FOLDER}/${BaseApp,,}" ]]
+    local -l baseapp
+    baseapp="$(run_script 'appname_to_baseappname' "${appname}")"
+    [[ -d "${TEMPLATES_FOLDER}/${baseapp}" ]]
 }
 
 test_app_is_builtin() {

@@ -6,15 +6,17 @@ enable_app() {
     # Enable the list of apps given.  Apps will be seperate arguments and/or seperated by spaces
     local AppList
     AppList="$(xargs -n 1 <<< "$*")"
-    for AppName in ${AppList}; do
-        if run_script 'app_is_builtin' "${AppName}"; then
-            EnabledVar="${AppName^^}__ENABLED"
-            info "Enabling application '${C["App"]}${AppName^^}${NC}'"
+    for APPNAME in ${AppList^^}; do
+        local AppName
+        AppName="$(run_script app_nicename "${APPNAME}")"
+        if run_script 'app_is_builtin' "${APPNAME}"; then
+            EnabledVar="${APPNAME}__ENABLED"
+            info "Enabling application '${C["App"]}${AppName}${NC}'"
             notice "Setting variable in ${C["File"]}${COMPOSE_ENV}${NC}:"
             notice "   ${C["Var"]}${EnabledVar}='true'${NC}"
             run_script 'env_set' "${EnabledVar}" true
         else
-            warn "Application '${C["App"]}${AppName^^}${NC}' does not exist."
+            warn "Application '${C["App"]}${AppName}${NC}' does not exist."
         fi
     done
 }

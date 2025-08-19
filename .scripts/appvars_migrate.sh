@@ -3,9 +3,8 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 appvars_migrate() {
-    local APPNAME=${1-}
-    APPNAME=${APPNAME^^}
-    local appname=${APPNAME,,}
+    local -u APPNAME=${1-}
+    local -l appname=${APPNAME}
 
     local MIGRATE_FILE
     MIGRATE_FILE="$(run_script 'app_instance_file' "${appname}" "*.migrate")"

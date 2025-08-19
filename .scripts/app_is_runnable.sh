@@ -3,10 +3,9 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 app_is_runnable() {
-    local appname=${1-}
-    local basename
+    local -l appname=${1-}
+    local -l basename
     basename=$(run_script 'appname_to_baseappname' "${appname}")
-    basename=${basename,,}
     local main_yml
     main_yml="$(run_script 'app_template_file' "${basename}" "*.yml")"
     local arch_yml

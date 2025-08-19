@@ -3,10 +3,9 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 app_is_nondeprecated() {
-    local AppName=${1-}
-    local baseappname
-    baseappname=$(run_script 'appname_to_baseappname' "${AppName}")
-    baseappname="${baseappname,,}"
+    local -l appname=${1-}
+    local -l baseappname
+    baseappname=$(run_script 'appname_to_baseappname' "${appname}")
     local labels_yml
     labels_yml="$(run_script 'app_template_file' "${baseappname}" "*.labels.yml")"
     local APP_DEPRECATED

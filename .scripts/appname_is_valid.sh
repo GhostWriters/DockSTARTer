@@ -3,13 +3,13 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 appname_is_valid() {
-    local AppName=${1-}
-    if [[ ${AppName-} == *":" ]]; then
-        AppName="${AppName%:*}"
-    elif [[ ${AppName-} == ":"* ]]; then
-        AppName="${AppName#:*}"
+    local -u APPNAME=${1-}
+    if [[ ${APPNAME-} == *":" ]]; then
+        APPNAME="${APPNAME%:*}"
+    elif [[ ${APPNAME-} == ":"* ]]; then
+        APPNAME="${APPNAME#:*}"
     fi
-    if [[ ${AppName} =~ ^[a-zA-Z][a-zA-Z0-9]*(__[a-zA-Z0-9]+)?$ ]]; then
+    if [[ ${APPNAME} =~ ^[A-Z][A-Z0-9]*(__[A-Z0-9]+)?$ ]]; then
         local -a InvalidInstanceNames=(
             CONTAINER
             DEVICE
@@ -31,9 +31,9 @@ appname_is_valid() {
             IFS='|'
             InvalidInstanceNamesRegex="${InvalidInstanceNames[*]}"
         }
-        local InstanceName
+        local -u InstanceName
         InstanceName="$(run_script 'appname_to_instancename' "${AppName}")"
-        [[ ! ${InstanceName^^} =~ ${InvalidInstanceNamesRegex} ]]
+        [[ ! ${InstanceName} =~ ${InvalidInstanceNamesRegex} ]]
         return
     fi
     false

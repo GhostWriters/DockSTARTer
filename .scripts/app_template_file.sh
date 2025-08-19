@@ -8,9 +8,8 @@ app_template_file() {
     #
     # app_template_file "radarr" "*.labels.yml" will return a string similar to "/home/user/.docker/compose/.apps/radarr/radarr.labels.yml"
 
-    local appname=${1:-}
+    local -l appname=${1:-}
     local FilenameTemplate=${2:-}
-    local appname=${appname,,}
 
     echo "${TEMPLATES_FOLDER}/${appname}/${FilenameTemplate//"*"/"${appname}"}"
 }
