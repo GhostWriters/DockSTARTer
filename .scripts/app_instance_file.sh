@@ -30,6 +30,8 @@ app_instance_file() {
     local InstanceTemplateFile="${InstanceTemplateFolder}/${FilenameTemplate//"*"/"${appname}"}"
     local InstanceFile="${InstanceFolder}/${FilenameTemplate//"*"/"${appname}"}"
 
+    echo "${InstanceFile}"
+
     if [[ ! -d ${TemplateFolder} ]]; then
         # Template folder doesn't exist, remove any instance folders associated with it and return
         for Folder in "${InstanceTemplateFolder}" "${InstanceFolder}"; do
@@ -53,8 +55,6 @@ app_instance_file() {
         done
         return
     fi
-
-    echo "${InstanceFile}"
 
     if [[ -f ${InstanceFile} && -f ${InstanceTemplateFile} ]] && cmp -s "${TemplateFile}" "${InstanceTemplateFile}"; then
         # The instance file exists, and the template file has not changed, nothing to do.

@@ -34,7 +34,7 @@ commands_yml_merge() {
                 arch_yml="$(run_script 'app_instance_file' "${appname}" "*.${ARCH}.yml")"
                 if [[ ! -f ${arch_yml} ]]; then
                     error "'${C["File"]}${arch_yml}${NC}' does not exist."
-                    continue
+                    return 1
                 fi
                 COMPOSE_FILE="${COMPOSE_FILE}:${arch_yml}"
                 local AppNetMode
@@ -101,11 +101,13 @@ commands_yml_merge() {
                 COMPOSE_FILE="${COMPOSE_FILE}:${main_yml}"
                 info "All configurations for '${C["App"]}${AppName}${NC}' are included."
             else
-                warn "'${C["File"]}${main_yml}${NC}' does not exist."
+                error "'${C["File"]}${main_yml}${NC}' does not exist."
+                return 1
             fi
             run_script 'appfolders_create' "${APPNAME}"
         else
-            error "'${C["File"]}${APP_FOLDER}/${NC}' does not exist."
+            error "'${C["Folder"]}${APP_FOLDER}/${NC}' does not exist."
+            return 1
         fi
     done
     if [[ -z ${COMPOSE_FILE} ]]; then
