@@ -131,6 +131,8 @@ declare -Agr C=( # Pre-defined colors
     ["UserCommand"]="${F[Y]}${BD}"
     ["Var"]="${F[M]}"
     ["Version"]="${F[C]}"
+    ["Yes"]="${F[G]}"
+    ["No"]="${F[R]}"
 )
 
 DIALOG=$(command -v dialog) || true

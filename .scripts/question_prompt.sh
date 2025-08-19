@@ -60,12 +60,12 @@ question_prompt() {
             case ${DIALOG_BUTTONS[YesNoDialogButtonPressed]-} in
                 OK)
                     YN="Y"
-                    notice "Answered: ${YN}" &> /dev/null
+                    notice "Answered: Yes" &> /dev/null
                     break
                     ;;
                 CANCEL | ESC)
                     YN="N"
-                    notice "Answered: ${YN}" &> /dev/null
+                    notice "Answered: No" &> /dev/null
                     break
                     ;;
                 *)
@@ -80,11 +80,11 @@ question_prompt() {
     elif [[ ${PROMPT:-CLI} == "CLI" ]]; then
         local YNPrompt
         if [[ ${Default} == Y ]]; then
-            YNPrompt='[Yn]'
+            YNPrompt="[Yn]"
         elif [[ ${Default} == N ]]; then
-            YNPrompt='[yN]'
+            YNPrompt="[yN]"
         else
-            YNPrompt='[YN]'
+            YNPrompt="[YN]"
         fi
         NoticeQuestion=$(strip_dialog_colors "${Question}")
         notice "${NoticeQuestion}"
@@ -105,7 +105,11 @@ question_prompt() {
                 *) ;;
             esac
         done
-        notice "Answered: ${YN}"
+        if [[ ${YN} == "Y" ]]; then
+            notice "Answered: ${C["Yes"]}Yes${NC}"
+        else
+            notice "Answered: ${C["No"]}No${NC}"
+        fi
     else
         YN=${Default:-Y}
     fi
