@@ -12,7 +12,7 @@ pm_pacman_upgrade() {
             #shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
             REDIRECT='run_command_dialog "${Title}" "${COMMAND}" "" '
         fi
-        eval "${REDIRECT}${COMMAND}" || fatal "Failed to upgrade packages from apt.\nFailing command: ${C["FailingCommand"]}${COMMAND}"
+        eval "${REDIRECT}${COMMAND}" || fatal "Failed to upgrade packages from pacman.\nFailing command: ${C["FailingCommand"]}${COMMAND}"
     fi
 }
 

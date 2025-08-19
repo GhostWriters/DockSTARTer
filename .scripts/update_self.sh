@@ -22,25 +22,25 @@ update_self() {
             return 1
         fi
         RemoteVersion="$(ds_version "${CurrentBranch}")"
-        Question="Would you like to update ${APPLICATION_NAME} from ${C["Version"]}${CurrentVersion}${NC} to ${C["Version"]}${RemoteVersion}${NC} now?"
+        Question="Would you like to update ${APPLICATION_NAME} from '${C["Version"]}${CurrentVersion}${NC}' to '${C["Version"]}${RemoteVersion}${NC}' now?"
         NoNotice="${APPLICATION_NAME} will not be updated."
-        YesNotice="Updating ${APPLICATION_NAME} from ${C["Version"]}${CurrentVersion}${NC} to ${C["Version"]}${RemoteVersion}${NC}"
+        YesNotice="Updating ${APPLICATION_NAME} from '${C["Version"]}${CurrentVersion}${NC}' to '${C["Version"]}${RemoteVersion}${NC}'"
     elif [[ ${BRANCH-} == "${CurrentBranch-}" ]]; then
         RemoteVersion="$(ds_version "${BRANCH}")"
         if [[ ${CurrentVersion} == "${RemoteVersion}" ]]; then
-            Question="Would you like to forcefully re-apply ${APPLICATION_NAME} update ${C["Version"]}${CurrentVersion}${NC}?"
+            Question="Would you like to forcefully re-apply ${APPLICATION_NAME} update '${C["Version"]}${CurrentVersion}${NC}'?"
             NoNotice="${APPLICATION_NAME} will not be updated."
-            YesNotice="Updating ${APPLICATION_NAME} to ${C["Version"]}${RemoteVersion}${NC}"
+            YesNotice="Updating ${APPLICATION_NAME} to '${C["Version"]}${RemoteVersion}${NC}'"
         else
-            Question="Would you like to update ${APPLICATION_NAME} from ${C["Version"]}${CurrentVersion}${NC} to ${C["Version"]}${RemoteVersion}${NC} now?"
-            NoNotice="${APPLICATION_NAME} will not be updated from ${C["Version"]}${CurrentVersion}${NC} to ${C["Version"]}${RemoteVersion}${NC}"
-            YesNotice="Updating ${APPLICATION_NAME} from ${C["Version"]}${CurrentVersion}${NC} to ${C["Version"]}${RemoteVersion}${NC}"
+            Question="Would you like to update ${APPLICATION_NAME} from '${C["Version"]}${CurrentVersion}${NC}' to '${C["Version"]}${RemoteVersion}${NC}' now?"
+            NoNotice="${APPLICATION_NAME} will not be updated from '${C["Version"]}${CurrentVersion}${NC}' to '${C["Version"]}${RemoteVersion}${NC}'"
+            YesNotice="Updating ${APPLICATION_NAME} from '${C["Version"]}${CurrentVersion}${NC}' to '${C["Version"]}${RemoteVersion}${NC}'"
         fi
     else
         RemoteVersion="$(ds_version "${BRANCH}")"
-        Question="Would you like to update ${APPLICATION_NAME} from ${C["Version"]}${CurrentVersion}${NC} to ${C["Version"]}${RemoteVersion}${NC} now?"
-        NoNotice="${APPLICATION_NAME} will not be updated from ${C["Version"]}${CurrentVersion}${NC} to ${C["Version"]}${RemoteVersion}${NC}"
-        YesNotice="Updating ${APPLICATION_NAME} from ${C["Version"]}${CurrentVersion}${NC} to ${C["Version"]}${RemoteVersion}${NC}"
+        Question="Would you like to update ${APPLICATION_NAME} from '${C["Version"]}${CurrentVersion}${NC}' to '${C["Version"]}${RemoteVersion}${NC}' now?"
+        NoNotice="${APPLICATION_NAME} will not be updated from '${C["Version"]}${CurrentVersion}${NC}' to '${C["Version"]}${RemoteVersion}${NC}'"
+        YesNotice="Updating ${APPLICATION_NAME} from '${C["Version"]}${CurrentVersion}${NC}' to '${C["Version"]}${RemoteVersion}${NC}'"
     fi
     popd &> /dev/null
 
@@ -58,12 +58,12 @@ update_self() {
     if [[ -z ${BRANCH-} && ${CurrentVersion} == "${RemoteVersion}" ]]; then
         if use_dialog_box; then
             {
-                notice "${APPLICATION_NAME} is already up to date on branch ${C["Branch"]}${CurrentBranch}${NC}."
-                notice "Current version is ${C["Version"]}${CurrentVersion}${NC}"
+                notice "${APPLICATION_NAME} is already up to date on branch '${C["Branch"]}${CurrentBranch}${NC}'."
+                notice "Current version is '${C["Version"]}${CurrentVersion}${NC}'"
             } |& dialog_pipe "${DC[TitleWarning]}${Title}" "${DC[CommandLine]} ${APPLICATION_COMMAND} --update $*"
         else
-            notice "${APPLICATION_NAME} is already up to date on branch ${C["Branch"]}${CurrentBranch}${NC}."
-            notice "Current version is ${C["Version"]}${CurrentVersion}${NC}"
+            notice "${APPLICATION_NAME} is already up to date on branch '${C["Branch"]}${CurrentBranch}${NC}'."
+            notice "Current version is '${C["Version"]}${CurrentVersion}${NC}'"
         fi
         return 0
     fi
@@ -110,8 +110,8 @@ commands_update_self() {
     info "Fetching recent changes from git."
     eval git fetch ${QUIET-} --all --prune || fatal "Failed to fetch recent changes from git.\nFailing command: ${C["FailingCommand"]}git fetch ${QUIET-} --all --prune"
     if [[ ${CI-} != true ]]; then
-        eval git switch ${QUIET-} --force "${BRANCH}" || fatal "Failed to switch to github branch ${C["Branch"]}${BRANCH}${NC}.\nFailing command: ${C["FailingCommand"]}git switch ${QUIET-} --force \"${BRANCH}\""
-        eval git reset ${QUIET-} --hard origin/"${BRANCH}" || fatal "Failed to reset to branch ${C["Branch"]}origin/${BRANCH}${NC}.\nFailing command: ${C["FailingCommand"]}git reset ${QUIET-} --hard origin/\"${BRANCH}\""
+        eval git switch ${QUIET-} --force "${BRANCH}" || fatal "Failed to switch to github branch '${C["Branch"]}${BRANCH}${NC}'.\nFailing command: ${C["FailingCommand"]}git switch ${QUIET-} --force \"${BRANCH}\""
+        eval git reset ${QUIET-} --hard origin/"${BRANCH}" || fatal "Failed to reset to branch '${C["Branch"]}origin/${BRANCH}${NC}'.\nFailing command: ${C["FailingCommand"]}git reset ${QUIET-} --hard origin/\"${BRANCH}\""
         info "Pulling recent changes from git."
         eval git pull ${QUIET-} || fatal "Failed to pull recent changes from git.\nFailing command: ${C["FailingCommand"]}git pull ${QUIET-}"
     fi
@@ -121,7 +121,7 @@ commands_update_self() {
     git ls-tree -rt --name-only "${BRANCH}" | xargs sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" > /dev/null 2>&1 || true
     sudo chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}/.git" > /dev/null 2>&1 || true
     sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}" > /dev/null 2>&1 || true
-    notice "Updated ${APPLICATION_NAME} to ${C["Version"]}$(ds_version)${NC}"
+    notice "Updated ${APPLICATION_NAME} to '${C["Version"]}$(ds_version)${NC}'"
     popd &> /dev/null
     if [[ -z $* ]]; then
         exec bash "${SCRIPTNAME}" -e

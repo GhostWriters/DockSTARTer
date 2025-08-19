@@ -10,7 +10,7 @@ env_rename() {
 
     if [[ ! -f ${FROM_VAR_FILE} ]]; then
         # Source file does not exist, warn and return
-        warn "File ${C["File"]}${FROM_VAR_FILE}${NC} does not exist."
+        warn "File '${C["File"]}${FROM_VAR_FILE}${NC}' does not exist."
         return
     fi
     if [[ ${FROM_VAR_FILE} == "${TO_VAR_FILE}" && ${FROM_VAR} == "${TO_VAR}" ]]; then
@@ -26,7 +26,7 @@ env_rename() {
     fi
     if [[ ! -f ${TO_VAR_FILE} ]]; then
         # Destination file does not exist, create it
-        notice "Creating ${C["File"]}${TO_VAR_FILE}${NC}"
+        notice "Creating '${C["File"]}${TO_VAR_FILE}${NC}'"
         touch "${TO_VAR_FILE}"
     fi
     if run_script 'env_var_exists' "${TO_VAR}" "${TO_VAR_FILE}"; then
@@ -43,9 +43,9 @@ env_rename() {
         notice "   ${C["Var"]}${TO_VAR}${NC} [${C["File"]}${TO_VAR_FILE}${NC}]"
     fi
     printf '\n%s\n' "${NEW_VAR_LINE}" >> "${TO_VAR_FILE}" ||
-        fatal "Failed to add '${C["Var"]}${NEW_VAR_LINE}${NC}' in ${C["File"]}${TO_VAR_FILE}${NC}\nFailing command: ${C["FailingCommand"]}printf '\n%s\n' \"${NEW_VAR_LINE}\" >> \"${TO_VAR_FILE}\""
+        fatal "Failed to add '${C["Var"]}${NEW_VAR_LINE}${NC}' in '${C["File"]}${TO_VAR_FILE}${NC}'\nFailing command: ${C["FailingCommand"]}printf '\n%s\n' \"${NEW_VAR_LINE}\" >> \"${TO_VAR_FILE}\""
     sed -i "/^\s*${FROM_VAR}\s*=/d" "${FROM_VAR_FILE}" ||
-        fatal "Failed to remove var ${C["Var"]}${FROM_VAR}${NC} in ${C["File"]}${FROM_VAR_FILE}${NC}\nFailing command: ${C["FailingCommand"]}sed -i \"/^\\s*${FROM_VAR}\\s*=/d\" \"${FROM_VAR_FILE}\""
+        fatal "Failed to remove var '${C["Var"]}${FROM_VAR}${NC}' in '${C["File"]}${FROM_VAR_FILE}${NC}'\nFailing command: ${C["FailingCommand"]}sed -i \"/^\\s*${FROM_VAR}\\s*=/d\" \"${FROM_VAR_FILE}\""
     declare -gx PROCESS_APPVARS_CREATE_ALL=1
     declare -gx PROCESS_ENV_UPDATE=1
     declare -gx PROCESS_YML_MERGE=1

@@ -26,10 +26,10 @@ appfolders_create() {
                 fi
             done
             if [[ -n ${FOLDERS_ARRAY[*]-} ]]; then
-                notice "Creating config folders for ${C["App"]}${AppName}${NC}."
+                notice "Creating config folders for '${C["App"]}${AppName}${NC}'."
                 for FOLDER in "${FOLDERS_ARRAY[@]-}"; do
-                    notice "Creating folder ${C["Folder"]}${FOLDER}${NC}"
-                    mkdir -p "${FOLDER}" || warn "Could not create folder ${C["Folder"]}${FOLDER}${NC}"
+                    notice "Creating folder '${C["Folder"]}${FOLDER}${NC}'"
+                    mkdir -p "${FOLDER}" || warn "Could not create folder '${C["Folder"]}${FOLDER}${NC}'"
                     if [[ -d ${FOLDER} ]]; then
                         run_script 'set_permissions' "${FOLDER}"
                     fi

@@ -9,8 +9,8 @@ setup_docker_group() {
     if [[ ${CI-} == true ]]; then
         notice "Skipping usermod in CI."
     else
-        info "Adding ${C["User"]}${DETECTED_UNAME}${NC} to docker group."
-        sudo usermod -aG docker "${DETECTED_UNAME}" > /dev/null 2>&1 || fatal "Failed to add ${C["User"]}${DETECTED_UNAME}${NC} to docker group.\nFailing command: ${C["FailingCommand"]}sudo usermod -aG docker \"${DETECTED_UNAME}\""
+        info "Adding '${C["User"]}${DETECTED_UNAME}${NC}' to docker group."
+        sudo usermod -aG docker "${DETECTED_UNAME}" > /dev/null 2>&1 || fatal "Failed to add '${C["User"]}${DETECTED_UNAME}${NC}' to docker group.\nFailing command: ${C["FailingCommand"]}sudo usermod -aG docker \"${DETECTED_UNAME}\""
     fi
 }
 

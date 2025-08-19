@@ -15,7 +15,7 @@ app_instance_file() {
 
     if [[ ! -d ${INSTANCES_FOLDER} ]]; then
         mkdir -p "${INSTANCES_FOLDER}" ||
-            fatal "Failed to create folder ${C["Folder"]}${INSTANCES_FOLDER}${NC}. Failing command: mkdir -p \"${INSTANCES_FOLDER}\""
+            fatal "Failed to create folder '${C["Folder"]}${INSTANCES_FOLDER}${NC}'. Failing command: mkdir -p \"${INSTANCES_FOLDER}\""
         run_script 'set_permissions' "${INSTANCES_FOLDER}"
     fi
 
@@ -66,7 +66,7 @@ app_instance_file() {
     if [[ ! -d ${InstanceFolder} ]]; then
         # Create the folder to place the instance file in
         mkdir -p "${InstanceFolder}" ||
-            fatal "Failed to create folder ${C["Folder"]}${InstanceFolder}${NC}. Failing command: ${C["FailingCommand"]}mkdir -p \"${InstanceFolder}\""
+            fatal "Failed to create folder '${C["Folder"]}${InstanceFolder}${NC}'. Failing command: ${C["FailingCommand"]}mkdir -p \"${InstanceFolder}\""
         run_script 'set_permissions' "${InstanceFolder}"
     fi
 
@@ -86,7 +86,7 @@ app_instance_file() {
     if [[ ! -d ${InstanceTemplateFolder} ]]; then
         # Create the folder to place the copy of the template file in
         mkdir -p "${InstanceTemplateFolder}" ||
-            fatal "Failed to create folder ${C["Folder"]}${InstanceTemplateFolder}${NC}. Failing command: ${C["FailingCommand"]}mkdir -p \"${InstanceTemplateFolder}\""
+            fatal "Failed to create folder '${C["Folder"]}${InstanceTemplateFolder}${NC}'. Failing command: ${C["FailingCommand"]}mkdir -p \"${InstanceTemplateFolder}\""
         run_script 'set_permissions' "${InstanceTemplateFolder}"
     fi
 

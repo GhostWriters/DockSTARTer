@@ -9,12 +9,12 @@ enable_app() {
     for AppName in ${AppList}; do
         if run_script 'app_is_builtin' "${AppName}"; then
             EnabledVar="${AppName^^}__ENABLED"
-            info "Enabling application ${C["App"]}${AppName^^}${NC}"
+            info "Enabling application '${C["App"]}${AppName^^}${NC}'"
             notice "Setting variable in ${C["File"]}${COMPOSE_ENV}${NC}:"
             notice "   ${C["Var"]}${EnabledVar}='true'${NC}"
             run_script 'env_set' "${EnabledVar}" true
         else
-            warn "Application ${C["App"]}${AppName^^}${NC} does not exist."
+            warn "Application '${C["App"]}${AppName^^}${NC}' does not exist."
         fi
     done
 }
