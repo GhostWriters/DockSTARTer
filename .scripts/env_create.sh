@@ -17,12 +17,8 @@ env_create() {
         else
             fatal "'${F[C]}${APP_ENV_FOLDER}${NC}' is a file, should be a folder"
         fi
-    else
-        warn "Folder '${C["Folder"]}${APP_ENV_FOLDER}${NC}' not found. Creating it."
-        mkdir -p "${APP_ENV_FOLDER}" ||
-            fatal "Failed to create folder.\nFailing command: ${C["FailingCommand"]}mkdir -p \"${APP_ENV_FOLDER}\""
+        run_script 'set_permissions' "${APP_ENV_FOLDER}"
     fi
-    run_script 'set_permissions' "${APP_ENV_FOLDER}"
 
     run_script 'env_backup'
     if [[ -f ${COMPOSE_ENV} ]]; then
