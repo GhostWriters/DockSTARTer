@@ -1011,7 +1011,7 @@ main() {
         if ds_update_available; then
             warn "${APPLICATION_NAME} [${C["Version"]}${APPLICATION_VERSION}${NC}]"
             warn "An update to ${APPLICATION_NAME} is available."
-            warn "Run '${C["UserCommand"]}${APPLICATION_COMMAND} -u${NC}' to update to version ${C["Version"]}$(ds_version "${Branch}")${NC}."
+            warn "Run '${C["UserCommand"]}${APPLICATION_COMMAND} -u${NC}' to update to version '${C["Version"]}$(ds_version "${Branch}")${NC}'."
         else
             info "${APPLICATION_NAME} [${C["Version"]}${APPLICATION_VERSION}${NC}]"
         fi
@@ -1021,11 +1021,11 @@ main() {
             MainBranch="${SOURCE_BRANCH}"
         fi
         warn "${APPLICATION_NAME} branch '${C["Branch"]}${Branch}${NC}' appears to no longer exist."
-        warn "${APPLICATION_NAME} is currently on version ${C["Version"]}$(ds_version)${NC}."
+        warn "${APPLICATION_NAME} is currently on version '${C["Version"]}$(ds_version)${NC}'."
         if ! ds_branch_exists "${MainBranch}"; then
             error "${APPLICATION_NAME} does not appear to have a '${C["Branch"]}${TARGET_BRANCH}${NC}' or '${C["Branch"]}${SOURCE_BRANCH}${NC}' branch."
         else
-            warn "Run '${C["UserCommand"]}${APPLICATION_COMMAND} -u ${MainBranch}${NC}' to update to the latest stable release ${C["Version"]}$(ds_version "${MainBranch}")${NC}."
+            warn "Run '${C["UserCommand"]}${APPLICATION_COMMAND} -u ${MainBranch}${NC}' to update to the latest stable release '${C["Version"]}$(ds_version "${MainBranch}")${NC}'."
         fi
     fi
     # Apply the GUI theme
