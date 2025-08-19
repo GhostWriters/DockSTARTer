@@ -997,7 +997,7 @@ main() {
         fi
     else
         if ! check_repo; then
-            warn "Attempting to clone ${APPLICATION_NAME} repo to ${C["Folder"]}'${DETECTED_HOMEDIR}/.docker${NC}' location."
+            warn "Attempting to clone ${APPLICATION_NAME} repo to '${C["Folder"]}${DETECTED_HOMEDIR}/.docker${NC}' location."
             git clone "${APPLICATION_REPO}" "${DETECTED_HOMEDIR}/.docker" || fatal "Failed to clone ${APPLICATION_NAME} repo.\nFailing command: ${C["FailingCommand"]}git clone \"${APPLICATION_REPO}\" \"${DETECTED_HOMEDIR}/.docker\""
             notice "Performing first run install."
             exec bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-fvi"

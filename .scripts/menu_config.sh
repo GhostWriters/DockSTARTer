@@ -101,7 +101,7 @@ menu_config() {
                             CANCEL | ESC) ;; # Cancel
                             *)
                                 if [[ -n ${DIALOG_BUTTONS[YesNoDialogButtonPressed]-} ]]; then
-                                    fatal "Unexpected dialog button '${DIALOG_BUTTONS[YesNoDialogButtonPressed]}' pressed in menu_add_app."
+                                    fatal "Unexpected dialog button '${DIALOG_BUTTONS[YesNoDialogButtonPressed]}' pressed in menu_config."
                                 else
                                     fatal "Unexpected dialog button value '${YesNoDialogButtonPressed}' pressed in menu_config."
                                 fi
