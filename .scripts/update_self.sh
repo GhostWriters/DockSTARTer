@@ -78,9 +78,9 @@ update_self() {
         return 1
     fi
 
-    declare -gx PROCESS_APPVARS_CREATE_ALL=1
-    declare -gx PROCESS_ENV_UPDATE=1
-    declare -gx PROCESS_YML_MERGE=1
+    unset PROCESSED_APPVARS_CREATE_ALL
+    unset PROCESSED_ENV_UPDATE
+    unset PROCESSED_YML_MERGE
 
     if use_dialog_box; then
         commands_update_self "${BRANCH}" "${YesNotice}" "$@" |&

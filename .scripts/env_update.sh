@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 env_update() {
-    if [[ -z ${PROCESS_ENV_UPDATE} ]]; then
+    if [[ -n ${PROCESSED_ENV_UPDATE-} ]]; then
         # Env files have already been updated, nothing to do
         return
     fi
@@ -71,7 +71,7 @@ env_update() {
 
     #run_script 'env_sanitize'
     info "Environment file update complete."
-    declare -gx PROCESS_ENV_UPDATE=''
+    declare -gx PROCESSED_ENV_UPDATE=1
 }
 
 test_env_update() {

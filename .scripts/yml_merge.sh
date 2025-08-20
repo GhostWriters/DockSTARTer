@@ -7,7 +7,7 @@ yml_merge() {
 }
 
 commands_yml_merge() {
-    if [[ -z ${PROCESS_YML_MERGE} && -f ${COMPOSE_FOLDER}/docker-compose.yml ]]; then
+    if [[ -n ${PROCESSED_YML_MERGE-} && -f ${COMPOSE_FOLDER}/docker-compose.yml ]]; then
         # Compose file has already been created, nothing to do
         return 0
     fi
@@ -124,7 +124,7 @@ commands_yml_merge() {
         return ${result}
     fi
     info "Merging '${C["File"]}docker-compose.yml${NC}' complete."
-    declare -gx PROCESS_YML_MERGE=''
+    declare -gx PROCESSED_YML_MERGE=1
     return 0
 }
 test_yml_merge() {
