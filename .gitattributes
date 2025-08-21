@@ -1,0 +1,14 @@
+# Auto detect text files and normalize to LF
+* text=auto eol=lf
+
+# Graphics (always binary)
+*.png binary
+*.ico binary
+
+# Shell-related formats (for GitHub's Linguist)
+.dialogrc linguist-language=Shell
+*.folders linguist-language=Shell
+*.migrate linguist-language=Shell
+
+# Markdown files
+*.md diff=markdown
