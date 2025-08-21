@@ -49,11 +49,13 @@ appvars_purge() {
 
         if [[ -z ${GlobalVarsToRemove[*]-} && -z ${AppEnvVarsToRemove[*]-} ]]; then
             local WarningText="'${DC["Highlight"]}${C["App"]}${APPNAME}${NC}${DC[NC]}' has no variables to remove."
+            local WarningTextNotice
+            WarningTextNotice="$(strip_dialog_colors "${WarningText}")"
             if use_dialog_box; then
                 dialog_warning "{Title}" "${WarningText}"
-                warn "${WarningText}" &> /dev/null
+                warn "${WarningTextNotice}" &> /dev/null
             else
-                warn "${WarningText}"
+                warn "${WarningTextNotice}"
             fi
             continue
         fi
