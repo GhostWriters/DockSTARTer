@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 appvars_create_all() {
-    if [[ -n ${PROCESSSED_APPVARS_CREATE_ALL-} ]]; then
+    if [[ -n ${PROCESSED_APPVARS_CREATE_ALL-} ]]; then
         # Application variables have already been created, nothing to do
         return
     fi
