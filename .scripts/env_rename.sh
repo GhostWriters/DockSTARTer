@@ -46,9 +46,9 @@ env_rename() {
         fatal "Failed to add '${C["Var"]}${NEW_VAR_LINE}${NC}' in '${C["File"]}${TO_VAR_FILE}${NC}'\nFailing command: ${C["FailingCommand"]}printf '\n%s\n' \"${NEW_VAR_LINE}\" >> \"${TO_VAR_FILE}\""
     sed -i "/^\s*${FROM_VAR}\s*=/d" "${FROM_VAR_FILE}" ||
         fatal "Failed to remove var '${C["Var"]}${FROM_VAR}${NC}' in '${C["File"]}${FROM_VAR_FILE}${NC}'\nFailing command: ${C["FailingCommand"]}sed -i \"/^\\s*${FROM_VAR}\\s*=/d\" \"${FROM_VAR_FILE}\""
-    declare -gx PROCESS_APPVARS_CREATE_ALL=1
-    declare -gx PROCESS_ENV_UPDATE=1
-    declare -gx PROCESS_YML_MERGE=1
+    unset PROCESSED_APPVARS_CREATE_ALL
+    unset PROCESSED_ENV_UPDATE
+    unset PROCESSED_YML_MERGE
 }
 
 test_env_rename() {
