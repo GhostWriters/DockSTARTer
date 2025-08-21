@@ -31,9 +31,9 @@ env_merge_newonly() {
                     unset 'MergeFromLines[$index]' 2> /dev/null
                 fi
             done
-            declare -gx PROCESS_APPVARS_CREATE_ALL=1
-            declare -gx PROCESS_ENV_UPDATE=1
-            declare -gx PROCESS_YML_MERGE=1
+            unset PROCESSED_APPVARS_CREATE_ALL
+            unset PROCESSED_ENV_UPDATE
+            unset PROCESSED_YML_MERGE
         fi
         if [[ ${#MergeFromLines[@]} != 0 ]]; then
             notice "Adding variables to ${C["File"]}${MergeToFile}${NC}:"
@@ -44,9 +44,9 @@ env_merge_newonly() {
                 env -i line="${line}" MergeToFile="${MergeToFile}" \
                     printf '%s\n' "${line}" >> "${MergeToFile}" 2> /dev/null || fatal "Failed to add variable to '${C["File"]}${MergeToFile}${NC}'\nFailing command: ${C["FailingCommand"]}printf '%s\n' \"${line}\" >> \"${MergeToFile}\""
             done
-            declare -gx PROCESS_APPVARS_CREATE_ALL=1
-            declare -gx PROCESS_ENV_UPDATE=1
-            declare -gx PROCESS_YML_MERGE=1
+            unset PROCESSED_APPVARS_CREATE_ALL
+            unset PROCESSED_ENV_UPDATE
+            unset PROCESSED_YML_MERGE
         fi
     fi
 }

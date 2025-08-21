@@ -11,9 +11,6 @@ declare -rx TARGET_BRANCH='main'
 export LC_ALL=C
 export PROMPT="CLI"
 export MENU=false
-declare -x PROCESS_APPVARS_CREATE_ALL=1
-declare -x PROCESS_ENV_UPDATE=1
-declare -x PROCESS_YML_MERGE=1
 
 # Script Information
 # https://stackoverflow.com/questions/59895/get-the-source-directory-of-a-bash-script-from-within-the-script-itself/246128#246128

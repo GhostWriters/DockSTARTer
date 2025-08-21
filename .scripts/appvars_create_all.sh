@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 appvars_create_all() {
-    if [[ -z ${PROCESS_APPVARS_CREATE_ALL} ]]; then
+    if [[ -n ${PROCESSSED_APPVARS_CREATE_ALL-} ]]; then
         # Application variables have already been created, nothing to do
         return
     fi
@@ -18,7 +18,7 @@ appvars_create_all() {
         notice "'${C["File"]}${COMPOSE_ENV}${NC}' does not contain any added apps."
     fi
     run_script 'env_update'
-    declare -gx PROCESS_APPVARS_CREATE_ALL=''
+    declare -gx PROCESSED_APPVARS_CREATE_ALL=1
 }
 
 test_appvars_create_all() {
