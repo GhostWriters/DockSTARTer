@@ -9,7 +9,7 @@ menu_config() {
 
     local Title="Configuration Menu"
 
-    if [[ -z ${PROCESSED_APPVARS_CREATE_ALL-} ]]; then
+    if run_script 'needs_appvars_create'; then
         coproc {
             dialog_pipe "${DC[TitleSuccess]}Creating environment variables for added apps" "Please be patient, this can take a while.\n${DC[CommandLine]} ${APPLICATION_COMMAND} --env" "${DIALOGTIMEOUT}"
         }

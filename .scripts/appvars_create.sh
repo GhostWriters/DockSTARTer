@@ -9,11 +9,17 @@ appvars_create() {
         local -l appname=${APPNAME}
         local AppName
         AppName="$(run_script 'app_nicename' "${APPNAME}")"
-
         if ! run_script 'appname_is_valid' "${appname}"; then
             error "'${C["App"]}${AppName}${NC}' is not a valid application name."
             continue
         fi
+
+        if ! run_script 'needs_appvars_create' "${appname}"; then
+            # Variables for app have already been created, nothing to do
+            notice "Environment variables already created for '${C["App"]}${AppName}${NC}'"
+            continue
+        fi
+
         if run_script 'app_is_builtin' "${AppName}"; then
             local AppDefaultGlobalEnvFile AppDefaultAppEnvFile AppEnvFile
             AppDefaultGlobalEnvFile="$(run_script 'app_instance_file' "${appname}" ".env")"
@@ -35,6 +41,7 @@ appvars_create() {
         else
             warn "Application '${C["App"]}${AppName}${NC}' does not exist."
         fi
+        run_script 'unset_needs_appvars_create' "${appname}"
     done
 }
 

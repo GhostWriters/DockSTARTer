@@ -7,8 +7,9 @@ yml_merge() {
 }
 
 commands_yml_merge() {
-    if [[ -n ${PROCESSED_YML_MERGE-} && -f ${COMPOSE_FOLDER}/docker-compose.yml ]]; then
+    if ! run_script 'needs_yml_merge'; then
         # Compose file has already been created, nothing to do
+        notice "Enabled app templates already merged to '${C["File"]}docker-compose.yml${NC}'."
         return 0
     fi
     run_script 'appvars_create_all'
@@ -124,7 +125,7 @@ commands_yml_merge() {
         return ${result}
     fi
     info "Merging '${C["File"]}docker-compose.yml${NC}' complete."
-    declare -gx PROCESSED_YML_MERGE=1
+    run_script 'unset_needs_yml_merge'
     return 0
 }
 test_yml_merge() {

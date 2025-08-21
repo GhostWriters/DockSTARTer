@@ -4,22 +4,22 @@ IFS=$'\n\t'
 
 appvars_purge() {
     local Title="Purge Variables"
-    local AppList
-    AppList="$(xargs -n 1 <<< "$*")"
-    for APPNAME in ${AppList^^}; do
+    local -l applist
+    applist="$(xargs -n 1 <<< "$*")"
+    for appname in ${applist}; do
         local AppName
-        AppName=$(run_script 'app_nicename' "${APPNAME}")
+        AppName=$(run_script 'app_nicename' "${appname}")
 
         local AppEnvFile
-        AppEnvFile="$(run_script 'app_env_file' "${APPNAME}")"
+        AppEnvFile="$(run_script 'app_env_file' "${appname}")"
 
         local -a CurrentGlobalVars DefaultGlobalVars GlobalVarsToRemove GlobalLinesToRemove
         local -a CurrentAppEnvVars DefaultAppEnvVars AppEnvVarsToRemove AppEnvLinesToRemove
         local GlobalVarsRegex AppEnvVarsRegex
 
-        readarray -t CurrentGlobalVars <<< "$(run_script 'appvars_list' "${APPNAME}")"
+        readarray -t CurrentGlobalVars <<< "$(run_script 'appvars_list' "${appname}")"
         if [[ -n ${CurrentGlobalVars-} ]]; then
-            readarray -t DefaultGlobalVars <<< "$(run_script 'env_list_app_global_defaults' "${APPNAME}")"
+            readarray -t DefaultGlobalVars <<< "$(run_script 'env_list_app_global_defaults' "${appname}")"
             # Get the list of current variables also in the default list
             readarray -t GlobalVarsToRemove <<< "$(
                 printf '%s\n' "${CurrentGlobalVars[@]-}" "${DefaultGlobalVars[@]-}" |
@@ -32,9 +32,9 @@ appvars_purge() {
             readarray -t GlobalLinesToRemove <<< "$(grep -P "^\s*${GlobalVarsRegex}\s*=" "${COMPOSE_ENV}" || true)"
         fi
 
-        readarray -t CurrentAppEnvVars <<< "$(run_script 'appvars_list' "${APPNAME}:")"
+        readarray -t CurrentAppEnvVars <<< "$(run_script 'appvars_list' "${appname}:")"
         if [[ -n ${CurrentAppEnvVars-} ]]; then
-            readarray -t DefaultAppEnvVars <<< "$(run_script 'env_list_app_env_defaults' "${APPNAME}")"
+            readarray -t DefaultAppEnvVars <<< "$(run_script 'env_list_app_env_defaults' "${appname}")"
             # Get the list of current variables also in the default list
             readarray -t AppEnvVarsToRemove <<< "$(
                 printf '%s\n' "${CurrentAppEnvVars[@]-}" "${DefaultAppEnvVars[@]-}" |
@@ -48,7 +48,7 @@ appvars_purge() {
         fi
 
         if [[ -z ${GlobalVarsToRemove[*]-} && -z ${AppEnvVarsToRemove[*]-} ]]; then
-            local WarningText="'${DC["Highlight"]}${C["App"]}${APPNAME}${NC}${DC[NC]}' has no variables to remove."
+            local WarningText="'${DC["Highlight"]}${C["App"]}${AppName}${NC}${DC[NC]}' has no variables to remove."
             local WarningTextNotice
             WarningTextNotice="$(strip_dialog_colors "${WarningText}")"
             if use_dialog_box; then
@@ -87,16 +87,13 @@ appvars_purge() {
                     fatal "Failed to purge '${C["App"]}${AppName}${NC}' variables.\nFailing command: ${C["FailingCommand"]}sed -i -E \"/^\\\*(${GlobalVarsRegex})\\\*/d\" \"${COMPOSE_ENV}\""
             fi
             if [[ -n ${AppEnvVarsToRemove[*]-} ]]; then
-                # Remove variables from file
+                # Remove variables from .env.app.appname file
                 notice \
                     "Removing variables from ${C["File"]}${AppEnvFile}${NC}:\n" \
                     "$(printf "${Indent}${C[Var]}%s${NC}\n" "${AppEnvLinesToRemove[@]-}")"
                 sed -i -E "/^\s*(${AppEnvVarsRegex})\s*=/d" "${AppEnvFile}" ||
                     fatal "Failed to purge '${C["App"]}${AppName}${NC}' variables.\nFailing command: ${C["FailingCommand"]}sed -i -E \"/^\\\*(${AppEnvVarsRegex})\\\*/d\" \"${AppEnvFile}\""
             fi
-            unset PROCESSED_APPVARS_CREATE_ALL
-            unset PROCESSED_ENV_UPDATE
-            unset PROCESSED_YML_MERGE
         else
             info "Keeping '${C["App"]}${AppName}${NC}' variables."
         fi

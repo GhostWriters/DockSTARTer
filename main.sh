@@ -12,6 +12,9 @@ export LC_ALL=C
 export PROMPT="CLI"
 export MENU=false
 
+declare -Ax PROCESSED_APPVARS_CREATE=()
+declare -Ax PROCESSED_ENV_UPDATE=()
+
 # Script Information
 # https://stackoverflow.com/questions/59895/get-the-source-directory-of-a-bash-script-from-within-the-script-itself/246128#246128
 get_scriptname() {
@@ -45,6 +48,7 @@ declare -rx THEME_FOLDER="${SCRIPTPATH}/${THEME_FOLDER_NAME}"
 declare -rx INSTANCES_FOLDER_NAME=".instances"
 declare -rx TEMPLATES_FOLDER_NAME=".apps"
 declare -rx APP_ENV_FOLDER_NAME="env_files"
+declare -rx DOCKER_COMPOSE_FILE="${COMPOSE_FOLDER}/docker-compose.yml"
 declare -rx COMPOSE_OVERRIDE_NAME="docker-compose.override.yml"
 declare -rx COMPOSE_ENV="${COMPOSE_FOLDER}/.env"
 declare -rx COMPOSE_ENV_DEFAULT_FILE="${COMPOSE_FOLDER}/.env.example"
@@ -52,6 +56,7 @@ declare -rx COMPOSE_OVERRIDE="${COMPOSE_FOLDER}/${COMPOSE_OVERRIDE_NAME}"
 declare -rx APP_ENV_FOLDER="${COMPOSE_FOLDER}/${APP_ENV_FOLDER_NAME}"
 declare -rx TEMPLATES_FOLDER="${COMPOSE_FOLDER}/${TEMPLATES_FOLDER_NAME}"
 declare -rx INSTANCES_FOLDER="${COMPOSE_FOLDER}/${INSTANCES_FOLDER_NAME}"
+declare -rx TIMESTAMPS_FOLDER="${COMPOSE_FOLDER}/.timestamps"
 
 # User/Group Information
 readonly DETECTED_PUID=${SUDO_UID:-$UID}
@@ -601,6 +606,9 @@ that take app names can use the form 'app:' to refer to the same file.
     Prompt to remove '.env' variables for all disabled apps
 -r --remove <appname>
     Prompt to remove the '.env' variables for the app specified
+-R --reset
+    Resets ${APPLICATION_NAME} to always process environment files.
+    This is usually not needed unless you have modified application templates yourself.
 -s --status <appname>
     Returns the enabled/disabled status for the app specified
 -S --select
@@ -675,7 +683,7 @@ trap 'cleanup' ERR EXIT SIGABRT SIGALRM SIGHUP SIGINT SIGQUIT SIGTERM
 # Command Line Arguments
 readonly ARGS=("$@")
 cmdline() {
-    while getopts ":-:a:c:efghilpr:s:St:T:u:vV:x" OPTION; do
+    while getopts ":-:a:c:efghilpr:Rs:St:T:u:vV:x" OPTION; do
         # support long options: https://stackoverflow.com/a/28466267/519360
         if [ "$OPTION" = "-" ]; then # long option: reformulate OPTION and OPTARG
             OPTION="${OPTARG}"       # extract long option name
@@ -819,6 +827,9 @@ cmdline() {
                     error "'${C["UserCommand"]}${OPTION}${NC}' requires an option."
                     exit 1
                 fi
+                ;;
+            R | reset)
+                readonly RESET=1
                 ;;
             status-*)
                 if [[ -n ${OPTARG-} ]]; then
@@ -1414,6 +1425,11 @@ main() {
             run_script 'env_update'
         fi
         exit
+    fi
+    if [[ -n ${RESET-} ]]; then
+        notice "Resetting ${APPLICATION_NAME} to process all actions."
+        run_script 'reset_needs'
+        exit 0
     fi
     if [[ -n ${SELECT-} ]]; then
         PROMPT='GUI'
