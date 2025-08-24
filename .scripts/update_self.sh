@@ -78,10 +78,6 @@ update_self() {
         return 1
     fi
 
-    unset PROCESSED_APPVARS_CREATE_ALL
-    unset PROCESSED_ENV_UPDATE
-    unset PROCESSED_YML_MERGE
-
     if use_dialog_box; then
         commands_update_self "${BRANCH}" "${YesNotice}" "$@" |&
             dialog_pipe "${DC[TitleSuccess]}${Title}" "${YesNotice}\n${DC[CommandLine]} ${APPLICATION_COMMAND} --update $*"
@@ -123,6 +119,13 @@ commands_update_self() {
     sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}" > /dev/null 2>&1 || true
     notice "Updated ${APPLICATION_NAME} to '${C["Version"]}$(ds_version)${NC}'"
     popd &> /dev/null
+
+    # run_script 'reset_needs' # Add script lines in-line below
+    if [[ -d ${TIMESTAMPS_FOLDER:?} ]]; then
+        run_script 'set_permissions' "${TIMESTAMPS_FOLDER:?}"
+        rm -rf "${TIMESTAMPS_FOLDER:?}/"* &> /dev/null || true
+    fi
+
     if [[ -z $* ]]; then
         exec bash "${SCRIPTNAME}" -e
     else
