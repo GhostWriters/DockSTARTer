@@ -9,4 +9,4 @@ services:
     restart: ${HUNTARR<__INSTANCE>__RESTART?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${DOCKER_VOLUME_CONFIG?}/huntarr<__instance>:/data
+      - ${DOCKER_VOLUME_CONFIG?}/huntarr<__instance>:/config
