@@ -19,28 +19,26 @@ env_merge_newonly() {
     if [[ ! -f ${MergeFromFile} ]]; then
         warn "File '${C["File"]}${MergeFromFile}${NC}' does not exist."
     else
-        local MergeFromLines=()
-        # Read all variable lines into an array, stripping whitespace before and after the variable name
-        readarray -t MergeFromLines < <(sed -n -E "s/^\s*(\w+)\s*=/\1=/p" "${MergeFromFile}" 2> /dev/null || true)
-        if [[ ${#MergeFromLines[@]} != 0 ]]; then
-            for index in "${!MergeFromLines[@]}"; do
-                local line="${MergeFromLines[index]}" 2> /dev/null
-                local VarName="${line%%=*}" 2> /dev/null
-                if grep -q -P "^\s*${VarName}\s*=\K.*" "${MergeToFile}" 2> /dev/null; then
-                    # Variable is already in file, skip it
-                    unset 'MergeFromLines[$index]' 2> /dev/null
-                fi
-            done
-        fi
-        if [[ ${#MergeFromLines[@]} != 0 ]]; then
-            notice "Adding variables to ${C["File"]}${MergeToFile}${NC}:"
-            echo >> "${MergeToFile}" || fatal "Failed to write to '${C["File"]}${MergeToFile}${NC}'.\nFailing command: ${C["FailingCommand"]}echo >> \"${MergeToFile}\"${NC}"
-            for index in "${!MergeFromLines[@]}"; do
-                local line="${MergeFromLines[index]}" 2> /dev/null
-                notice "   ${C["Var"]}${line}${NC}"
-                env -i line="${line}" MergeToFile="${MergeToFile}" \
-                    printf '%s\n' "${line}" >> "${MergeToFile}" 2> /dev/null || fatal "Failed to add variable to '${C["File"]}${MergeToFile}${NC}'\nFailing command: ${C["FailingCommand"]}printf '%s\n' \"${line}\" >> \"${MergeToFile}\""
-            done
+        local -a MergeFromVars MergeToVars VarsToAdd
+        readarray -t MergeFromVars < <(run_script 'env_var_list' "${MergeFromFile}")
+        readarray -t MergeToVars < <(run_script 'env_var_list' "${MergeToFile}")
+        readarray -t VarsToAdd < <(comm -23 <(printf '%s\n' "${MergeFromVars[@]}" | sort) <(printf '%s\n' "${MergeToVars[@]}" | sort))
+        if [[ -n ${VarsToAdd[*]-} ]]; then
+            local old_IFS="${IFS}"
+            IFS='|'
+            local VarsToAddRegex="${VarsToAdd[*]}"
+            IFS="${old_IFS}"
+            local MergeLines
+            readarray -t MergeLines < <(
+                run_script 'env_get_line_regex' "${VarsToAddRegex}" "${MergeFromFile}"
+            )
+            notice \
+                "Adding variables to ${C["File"]}${MergeToFile}${NC}:\n" \
+                "$(printf "   ${C[Var]}%s${NC}\n" "${MergeLines[@]}")"
+            {
+                printf '\n'
+                printf '%s\n' "${MergeLines[@]}"
+            } >> "${MergeToFile}" || fatal "Failed to add variables to '${C["File"]}${MergeToFile}${NC}"
         fi
     fi
 }
