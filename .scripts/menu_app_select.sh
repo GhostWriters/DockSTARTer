@@ -313,13 +313,13 @@ show_gauge() {
 
 close_gauge() {
     # Signal the dialog gauge and progress windows to terminate
-    kill -SIGTERM "${Dialog_PID}"
+    kill -SIGTERM "${Dialog_PID}" &> /dev/null || true
     wait "${Dialog_PID}"
     # Remove the communication pipes to dialog
-    exec {GaugePipe_fd}>&-
-    rm "${GaugePipe}" || true
-    exec {ProgressLog_fd}>&-
-    rm "${ProgressLog}" || true
+    exec {GaugePipe_fd}>&- &> /dev/null || true
+    rm "${GaugePipe}" &> /dev/null || true
+    exec {ProgressLog_fd}>&- &> /dev/null || true
+    rm "${ProgressLog}" &> /dev/null || true
 }
 
 init_gauge_text() {
