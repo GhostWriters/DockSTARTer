@@ -145,6 +145,7 @@ declare -rx MENU_INI_FILE="${SCRIPTPATH}/${MENU_INI_NAME}"
 declare -rx THEME_FILE_NAME='theme.ini'
 declare -rx DIALOGRC_NAME='.dialogrc'
 declare -rx DIALOGRC="${SCRIPTPATH}/${DIALOGRC_NAME}"
+declare -rx DIALOG_OPTIONS_FILE="${SCRIPTPATH}/.dialogoptions"
 
 declare -rix DIALOGTIMEOUT=3
 declare -rix DIALOG_OK=0

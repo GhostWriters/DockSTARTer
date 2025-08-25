@@ -142,11 +142,9 @@ apply_theme() {
     else
         DialogOptions+=" --no-shadow"
     fi
-    if [[ -z ${DIALOG_OPTIONS_FILE-} ]]; then
-        declare -gx DIALOG_OPTIONS_FILE
-        DIALOG_OPTIONS_FILE=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.DIALOG_OPTIONS_FILE.XXXXXXXXXX")
-    fi
-    echo "${DialogOptions}" > "${DIALOG_OPTIONS_FILE}"
+    echo "${DialogOptions}" > "${DIALOG_OPTIONS_FILE}" ||
+        fatal "Failed to save dialog options file.\nFailing command: ${C["FailingCommand"]}echo \"${DialogOptions}\" > \"${DIALOG_OPTIONS_FILE}\""
+    run_script 'set_permissions' "${DIALOG_OPTIONS_FILE}"
 
     cp "${DialogFile}" "${DIALOGRC}"
     run_script 'config_set' Theme "${ThemeName}" "${MENU_INI_FILE}"
