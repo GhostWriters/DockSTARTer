@@ -11,7 +11,7 @@ pm_apt_install() {
         #shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
         REDIRECT='run_command_dialog "${Title}" "${COMMAND}" "" '
     fi
-    COMMAND='sudo apt-get -y install curl dialog git grep sed'
+    COMMAND='sudo apt-get -y install bsdmainutils curl dialog gettext git grep sed util-linux'
     eval "${REDIRECT}${COMMAND}" || fatal "Failed to install dependencies from apt.\nFailing command: ${C["FailingCommand"]}${COMMAND}"
 }
 

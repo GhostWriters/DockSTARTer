@@ -11,7 +11,7 @@ pm_yum_install() {
         #shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
         REDIRECT='run_command_dialog "${Title}" "${COMMAND}" "" '
     fi
-    COMMAND='sudo yum -y install curl dialog git grep sed'
+    COMMAND='sudo yum -y install bsdmainutils curl dialog gettext git grep sed util-linux'
     eval "${REDIRECT}${COMMAND}" || fatal "Failed to install dependencies from yum.\nFailing command: ${C["FailingCommand"]}${COMMAND}"
 }
 
