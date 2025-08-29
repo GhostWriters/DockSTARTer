@@ -289,7 +289,7 @@ highlighted_list() {
     local List
     List=$(xargs <<< "$*")
     if [[ -n ${List-} ]]; then
-        echo "${DC["Subtitle"]}${List// /${DC[NC]} ${DC["Subtitle"]}}${DC[NC]}"
+        echo "${DC["Subtitle"]-}${List// /${DC["NC"]-} ${DC["Subtitle"]-}}${DC["NC"]-}"
     fi
 }
 
@@ -298,18 +298,18 @@ _dialog_backtitle_() {
     local CleanLeftBackTitle CleanRightBackTitle
 
     CleanLeftBackTitle="${APPLICATION_NAME}"
-    LeftBackTitle="${DC[ApplicationName]}${APPLICATION_NAME}${DC[NC]}"
+    LeftBackTitle="${DC["ApplicationName"]-}${APPLICATION_NAME}${DC["NC"]-}"
 
     CleanRightBackTitle=''
     RightBackTitle=''
     if ds_update_available; then
         CleanRightBackTitle="(Update Available)"
-        RightBackTitle="${DC[ApplicationUpdateBrackets]}(${DC[ApplicationUpdate]}Update Available${DC[ApplicationUpdateBrackets]})${DC[NC]}"
+        RightBackTitle="${DC["ApplicationUpdateBrackets"]-}(${DC["ApplicationUpdate"]-}Update Available${DC["ApplicationUpdateBrackets"]-})${DC["NC"]-}"
     fi
     if [[ ${APPLICATION_VERSION-} ]]; then
         if [[ -n ${CleanRightBackTitle-} ]]; then
             CleanRightBackTitle+=" "
-            RightBackTitle+="${DC[ApplicationVersionSpace]} "
+            RightBackTitle+="${DC["ApplicationVersionSpace"]-} "
         fi
         local CurrentVersion
         CurrentVersion="$(ds_version)"
@@ -317,7 +317,7 @@ _dialog_backtitle_() {
             CurrentVersion="$(ds_branch) Unknown Version"
         fi
         CleanRightBackTitle+="[${CurrentVersion}]"
-        RightBackTitle+="${DC[ApplicationVersionBrackets]}[${DC[ApplicationVersion]}${CurrentVersion}${DC[ApplicationVersionBrackets]}]${DC[NC]}"
+        RightBackTitle+="${DC["ApplicationVersionBrackets"]-}[${DC["ApplicationVersion"]-}${CurrentVersion}${DC["ApplicationVersionBrackets"]-}]${DC["NC"]-}"
     fi
 
     local -i IndentLength
@@ -343,9 +343,9 @@ dialog_pipe() {
     local SubTitle=${2:-}
     local TimeOut=${3:-0}
     _dialog_ \
-        --title "${DC["Title"]}${Title}" \
+        --title "${DC["Title"]-}${Title}" \
         --timeout "${TimeOut}" \
-        --programbox "${DC["Subtitle"]}${SubTitle}" \
+        --programbox "${DC["Subtitle"]-}${SubTitle}" \
         "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" || true
     echo -n "${BS}"
 }
@@ -423,19 +423,19 @@ dialog_error() {
     local Title=${1:-}
     local Message=${2:-}
     local TimeOut=${3:-0}
-    dialog_message "${DC["TitleError"]}${Title}" "${Message}" "${TimeOut}"
+    dialog_message "${DC["TitleError"]-}${Title}" "${Message}" "${TimeOut}"
 }
 dialog_warning() {
     local Title=${1:-}
     local Message=${2:-}
     local TimeOut=${3:-0}
-    dialog_message "${DC["TitleWarning"]}${Title}" "${Message}" "${TimeOut}"
+    dialog_message "${DC["TitleWarning"]-}${Title}" "${Message}" "${TimeOut}"
 }
 dialog_success() {
     local Title=${1:-}
     local Message=${2:-}
     local TimeOut=${3:-0}
-    dialog_message "${DC["TitleSuccess"]}${Title}" "${Message}" "${TimeOut}"
+    dialog_message "${DC["TitleSuccess"]-}${Title}" "${Message}" "${TimeOut}"
 }
 
 ds_branch() {
@@ -1181,7 +1181,7 @@ main() {
     if [[ -n ${ADD-} ]]; then
         local CommandLine
         CommandLine="${APPLICATION_COMMAND} --add $(run_script 'app_nicename' "${ADD}")"
-        run_script_dialog "Add Application" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}${DC[NC]}" "" \
+        run_script_dialog "Add Application" "${DC["NC"]-} ${DC["CommandLine"]-}${CommandLine}${DC["NC"]-}" "" \
             'appvars_create' "${ADD}"
         run_script 'env_update'
         exit
@@ -1207,7 +1207,7 @@ main() {
     if [[ -n ${ENVMETHOD-} ]]; then
         case "${ENVMETHOD-}" in
             env)
-                run_script_dialog "${DC["TitleSuccess"]}Creating environment variables for added apps" "Please be patient, this can take a while.\n${DC["CommandLine"]} ${APPLICATION_COMMAND} --env" "" \
+                run_script_dialog "${DC["TitleSuccess"]-}Creating environment variables for added apps" "Please be patient, this can take a while.\n${DC["CommandLine"]-} ${APPLICATION_COMMAND} --env" "" \
                     'appvars_create_all'
                 exit
                 ;;
@@ -1218,7 +1218,7 @@ main() {
                         CommandLine="${APPLICATION_COMMAND} --env-get ${ENVVAR^^}"
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
                             run_script 'env_get' "${VarName}"
-                        done |& dialog_pipe "Get Value of Variable" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
+                        done |& dialog_pipe "Get Value of Variable" "${DC["NC"]-} ${DC["CommandLine"]-}${CommandLine}" ""
                     else
                         for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
                             run_script 'env_get' "${VarName}"
@@ -1237,7 +1237,7 @@ main() {
                         CommandLine="${APPLICATION_COMMAND} --env-get-line ${ENVVAR}"
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
                             run_script 'env_get' "${VarName}"
-                        done |& dialog_pipe "Get Value of Variable" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
+                        done |& dialog_pipe "Get Value of Variable" "${DC["NC"]-} ${DC["CommandLine"]-}${CommandLine}" ""
                     else
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
                             run_script 'env_get' "${VarName}"
@@ -1256,7 +1256,7 @@ main() {
                         CommandLine="${APPLICATION_COMMAND} --env-get-line ${ENVVAR^^}"
                         for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
                             run_script 'env_get_line' "${VarName}"
-                        done |& dialog_pipe "Get Line of Variable" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
+                        done |& dialog_pipe "Get Line of Variable" "${DC["NC"]-} ${DC["CommandLine"]-}${CommandLine}" ""
                     else
                         for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
                             run_script 'env_get_line' "${VarName}"
@@ -1275,7 +1275,7 @@ main() {
                         CommandLine="${APPLICATION_COMMAND} --env-get-lower-line ${ENVVAR}"
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
                             run_script 'env_get_line' "${VarName}"
-                        done |& dialog_pipe "Get Line of Variable" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
+                        done |& dialog_pipe "Get Line of Variable" "${DC["NC"]-} ${DC["CommandLine"]-}${CommandLine}" ""
                     else
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
                             run_script 'env_get_line' "${VarName}"
@@ -1294,7 +1294,7 @@ main() {
                         CommandLine="${APPLICATION_COMMAND} --env-get-lower-literal ${ENVVAR^^}"
                         for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
                             run_script 'env_get_literal' "${VarName}"
-                        done |& dialog_pipe "Get Literal Value of Variable" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
+                        done |& dialog_pipe "Get Literal Value of Variable" "${DC["NC"]-} ${DC["CommandLine"]-}${CommandLine}" ""
                     else
                         for VarName in $(xargs -n1 <<< "${ENVVAR^^}"); do
                             run_script 'env_get_literal' "${VarName}"
@@ -1313,7 +1313,7 @@ main() {
                         CommandLine="${APPLICATION_COMMAND} --env-get-lower-literal ${ENVVAR}"
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
                             run_script 'env_get_literal' "${VarName}"
-                        done |& dialog_pipe "Get Literal Value of Variable" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
+                        done |& dialog_pipe "Get Literal Value of Variable" "${DC["NC"]-} ${DC["CommandLine"]-}${CommandLine}" ""
                     else
                         for VarName in $(xargs -n1 <<< "${ENVVAR}"); do
                             run_script 'env_get_literal' "${VarName}"
@@ -1352,7 +1352,7 @@ main() {
                         CommandLine="${APPLICATION_COMMAND} --env-appvars $(run_script 'app_nicename' "${ENVAPP}" | tr '\n' ' ')"
                         for AppName in $(xargs -n1 <<< "${ENVAPP}"); do
                             run_script 'appvars_list' "${AppName}"
-                        done |& dialog_pipe "Variables for Application" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
+                        done |& dialog_pipe "Variables for Application" "${DC["NC"]-} ${DC["CommandLine"]-}${CommandLine}" ""
                     else
                         for AppName in $(xargs -n1 <<< "${ENVAPP^^}"); do
                             run_script 'appvars_list' "${AppName}"
@@ -1370,7 +1370,7 @@ main() {
                         CommandLine="${APPLICATION_COMMAND} --env-appvars-lines $(run_script 'app_nicename' "${ENVAPP}" | tr '\n' ' ')"
                         for AppName in $(xargs -n1 <<< "${ENVAPP}"); do
                             run_script 'appvars_lines' "${AppName}"
-                        done |& dialog_pipe "Variable Lines for Application" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" ""
+                        done |& dialog_pipe "Variable Lines for Application" "${DC["NC"]-} ${DC["CommandLine"]-}${CommandLine}" ""
                     else
                         for AppName in $(xargs -n1 <<< "${ENVAPP}"); do
                             run_script 'appvars_lines' "${AppName}"
@@ -1455,7 +1455,7 @@ main() {
             status)
                 local CommandLine
                 CommandLine="${APPLICATION_COMMAND} --status $(run_script 'app_nicename' "${STATUS}" | tr '\n' ' ')"
-                run_script_dialog "Application Status" "${DC[NC]} ${DC["CommandLine"]}${CommandLine}" "" \
+                run_script_dialog "Application Status" "${DC["NC"]-} ${DC["CommandLine"]-}${CommandLine}" "" \
                     'app_status' "${STATUS}"
                 ;;
             status-enable)
