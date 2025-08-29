@@ -390,7 +390,7 @@ menu_value_prompt() {
                                     dialog_success "${Title}" "Returning to the previous menu to confirm selection."
                                 else
                                     ValueValid="false"
-                                    dialog_error "${Title}" "${DialogHeading}\n\nCannot use the ${DC["Highlight"]-}~${DC["NC"]-} shortcut in ${DC["Highlight"]-}${CleanVarName}${DC[DC]}. Please select another folder."
+                                    dialog_error "${Title}" "${DialogHeading}\n\nCannot use the ${DC["Highlight"]-}~${DC["NC"]-} shortcut in ${DC["Highlight"]-}${CleanVarName}${DC["NC"]-}. Please select another folder."
                                 fi
                             elif [[ -d ${StrippedValue} ]]; then
                                 if run_script 'question_prompt' Y "${DialogHeading}\n\nWould you like to set permissions on ${OptionValue["${CurrentValueOption}"]} ?" "${Title}"; then
