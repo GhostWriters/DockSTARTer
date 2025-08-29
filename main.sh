@@ -137,6 +137,8 @@ declare -Agr C=( # Pre-defined colors
     ["No"]="${F[R]}"
 )
 
+declare -Ax DC
+
 DIALOG=$(command -v dialog) || true
 export DIALOG
 
@@ -1040,7 +1042,9 @@ main() {
         fi
     fi
     # Apply the GUI theme
-    run_script 'apply_theme'
+    if [[ ${PROMPT:-CLI} == "GUI" ]]; then
+        run_script 'apply_theme'
+    fi
     # Check if we're running a test
     if [[ -n ${TEST-} ]]; then
         run_test "${TEST}"
@@ -1105,55 +1109,63 @@ main() {
                 ;;
             theme-shadow)
                 notice "Turning on GUI shadows."
+                run_script 'apply_theme'
                 run_script 'config_set' Shadow yes "${MENU_INI_FILE}"
                 if use_dialog_box; then
                     run_script 'menu_dialog_example' "Turned on shadows" "${APPLICATION_COMMAND} --theme-shadow"
                 fi
                 ;;
             theme-no-shadow)
-                run_script 'config_set' Shadow no "${MENU_INI_FILE}"
                 notice "Turning off GUI shadows."
+                run_script 'apply_theme'
+                run_script 'config_set' Shadow no "${MENU_INI_FILE}"
                 if use_dialog_box; then
                     run_script 'menu_dialog_example' "Turned off shadows" "${APPLICATION_COMMAND} --theme-no-shadow"
                 fi
                 ;;
             theme-scrollbar)
-                run_script 'config_set' Scrollbar yes "${MENU_INI_FILE}"
                 notice "Turning on GUI scrollbars."
+                run_script 'apply_theme'
+                run_script 'config_set' Scrollbar yes "${MENU_INI_FILE}"
                 if use_dialog_box; then
                     run_script 'menu_dialog_example' "Turned on scrollbars" "${APPLICATION_COMMAND} --theme-scrollbar"
                 fi
                 ;;
             theme-no-scrollbar)
-                run_script 'config_set' Scrollbar no "${MENU_INI_FILE}"
                 notice "Turning off GUI scrollbars."
+                run_script 'apply_theme'
+                run_script 'config_set' Scrollbar no "${MENU_INI_FILE}"
                 if use_dialog_box; then
                     run_script 'menu_dialog_example' "Turned off scrollbars" "${APPLICATION_COMMAND} --theme-no-scrollbar"
                 fi
                 ;;
             theme-lines)
-                run_script 'config_set' LineCharacters yes "${MENU_INI_FILE}"
                 notice "Turning on GUI line drawing characters."
+                run_script 'apply_theme'
+                run_script 'config_set' LineCharacters yes "${MENU_INI_FILE}"
                 if use_dialog_box; then
                     run_script 'menu_dialog_example' "Turned on line drawing" "${APPLICATION_COMMAND} --theme-lines"
                 fi
                 ;;
             theme-no-lines)
                 notice "Turning off GUI line drawing characters."
+                run_script 'apply_theme'
                 run_script 'config_set' LineCharacters no "${MENU_INI_FILE}"
                 if use_dialog_box; then
                     run_script 'menu_dialog_example' "Turned off line drawing" "${APPLICATION_COMMAND} --theme-no-lines"
                 fi
                 ;;
             theme-borders)
-                run_script 'config_set' Borders yes "${MENU_INI_FILE}"
                 notice "Turning on GUI borders."
+                run_script 'apply_theme'
+                run_script 'config_set' Borders yes "${MENU_INI_FILE}"
                 if use_dialog_box; then
                     run_script 'menu_dialog_example' "Turned on borders" "${APPLICATION_COMMAND} --theme-borders"
                 fi
                 ;;
             theme-no-borders)
                 notice "Turning off GUI borders."
+                run_script 'apply_theme'
                 run_script 'config_set' Borders no "${MENU_INI_FILE}"
                 if use_dialog_box; then
                     run_script 'menu_dialog_example' "Turned off borders" "${APPLICATION_COMMAND} --theme-no-borders"
@@ -1434,6 +1446,7 @@ main() {
     fi
     if [[ -n ${SELECT-} ]]; then
         PROMPT='GUI'
+        run_script 'apply_theme'
         run_script 'menu_app_select' || true
         exit
     fi
@@ -1463,6 +1476,7 @@ main() {
     if [[ -n ${DIALOG-} ]]; then
         MENU=true
         PROMPT="GUI"
+        run_script 'apply_theme'
         run_script 'menu_main'
     else
         error "The GUI requires the '${C["Program"]}dialog${NC}' command to be installed."
