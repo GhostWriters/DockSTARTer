@@ -16,10 +16,10 @@ menu_heading() {
         [CurrentValue]="Current Value: "
     )
     local -A Tag=(
-        [AppDeprecated]="${DC[HeadingTag]}[*DEPRECATED*]${DC[NC]}"
-        [AppDisabled]="${DC[HeadingTag]}(Disabled)${DC[NC]}"
-        [AppUserDefined]="${DC[HeadingTag]}(User Defined)${DC[NC]}"
-        [VarUserDefined]="${DC[HeadingTag]}(User Defined)${DC[NC]}"
+        [AppDeprecated]="${DC["HeadingTag"]-}[*DEPRECATED*]${DC["NC"]-}"
+        [AppDisabled]="${DC["HeadingTag"]-}(Disabled)${DC["NC"]-}"
+        [AppUserDefined]="${DC["HeadingTag"]-}(User Defined)${DC["NC"]-}"
+        [VarUserDefined]="${DC["HeadingTag"]-}(User Defined)${DC["NC"]-}"
     )
     local -i LabelWidth=0
     for LabelText in "${Label[@]}"; do
@@ -92,21 +92,21 @@ menu_heading() {
         fi
     fi
 
-    local Highlight="${DC[HeadingValue]}"
+    local Highlight="${DC["HeadingValue"]-}"
     for LabelName in CurrentValue OriginalValue Variable Filename Application; do
         case "${LabelName}" in
             Application)
                 if [[ -n ${AppName-} ]]; then
-                    Heading[Application]="${DC[NC]}${Label[Application]}${Highlight}${AppName}${DC[NC]}"
+                    Heading[Application]="${DC["NC"]-}${Label[Application]}${Highlight}${AppName}${DC["NC"]-}"
                     if [[ ${AppIsValid-} == "Y" ]]; then
                         if [[ ${AppIsDeprecated-} == "Y" ]]; then
-                            Heading[Application]+=" ${DC[HeadingTag]}${Tag[AppDeprecated]}${DC[NC]}"
+                            Heading[Application]+=" ${DC["HeadingTag"]-}${Tag[AppDeprecated]}${DC["NC"]-}"
                         fi
                         if [[ ${AppIsDisabled-} == "Y" ]]; then
-                            Heading[Application]+=" ${DC[HeadingTag]}${Tag[AppDisabled]}${DC[NC]}"
+                            Heading[Application]+=" ${DC["HeadingTag"]-}${Tag[AppDisabled]}${DC["NC"]-}"
                         fi
                         if [[ ${AppIsUserDefined-} == "Y" ]]; then
-                            Heading[Application]+=" ${DC[HeadingTag]}${Tag[AppUserDefined]}${DC[NC]}"
+                            Heading[Application]+=" ${DC["HeadingTag"]-}${Tag[AppUserDefined]}${DC["NC"]-}"
                         fi
                         Heading[Application]+="\n"
 
@@ -117,39 +117,39 @@ menu_heading() {
                         local -i TextWidth=$((ScreenCols - DC["WindowColsAdjust"] - DC["TextColsAdjust"] - LabelWidth))
                         local -a AppDesciptionArray
                         readarray -t AppDesciptionArray < <(fmt -w ${TextWidth} <<< "${AppDescription}")
-                        Heading[Application]+="$(printf "${Indent}${DC[HeadingAppDescription]}%s${DC[NC]}\n" "${AppDesciptionArray[@]-}")"
+                        Heading[Application]+="$(printf "${Indent}${DC[HeadingAppDescription]}%s${DC["NC"]-}\n" "${AppDesciptionArray[@]-}")"
                         Heading[Application]+="\n"
                     fi
                     Heading[Application]+="\n"
-                    Highlight="${DC[Heading]}"
+                    Highlight="${DC["Heading"]-}"
                 fi
                 ;;
             Filename)
                 if [[ -n ${VarFile-} ]]; then
-                    Heading[Filename]="${DC[NC]}${Label[Filename]}${Highlight}${VarFile}${DC[NC]}\n"
-                    Highlight="${DC[Heading]}"
+                    Heading[Filename]="${DC["NC"]-}${Label[Filename]}${Highlight}${VarFile}${DC["NC"]-}\n"
+                    Highlight="${DC["Heading"]-}"
                 fi
                 ;;
             Variable)
                 if [[ -n ${VarName-} ]]; then
-                    Heading[Variable]="${DC[NC]}${Label[Variable]}${Highlight}${VarName}${DC[NC]}"
+                    Heading[Variable]="${DC["NC"]-}${Label[Variable]}${Highlight}${VarName}${DC["NC"]-}"
                     if [[ ${VarIsUserDefined-} == "Y" ]]; then
-                        Heading[Variable]+=" ${DC[HeadingTag]}${Tag[VarUserDefined]}${DC[NC]}"
+                        Heading[Variable]+=" ${DC["HeadingTag"]-}${Tag[VarUserDefined]}${DC["NC"]-}"
                     fi
                     Heading[Variable]+="\n"
-                    Highlight="${DC[Heading]}"
+                    Highlight="${DC["Heading"]-}"
                 fi
                 ;;
             OriginalValue)
                 if [[ -n ${OriginalValue-} ]]; then
-                    Heading[OriginalValue]="\n${Label[OriginalValue]}${Highlight}${OriginalValue}${DC[NC]}\n"
-                    Highlight="${DC[Heading]}"
+                    Heading[OriginalValue]="\n${Label[OriginalValue]}${Highlight}${OriginalValue}${DC["NC"]-}\n"
+                    Highlight="${DC["Heading"]-}"
                 fi
                 ;;
             CurrentValue)
                 if [[ -n ${CurrentValue-} ]]; then
-                    Heading[CurrentValue]="${Label[CurrentValue]}${Highlight}${CurrentValue}${DC[NC]}\n"
-                    Highlight="${DC[Heading]}"
+                    Heading[CurrentValue]="${Label[CurrentValue]}${Highlight}${CurrentValue}${DC["NC"]-}\n"
+                    Highlight="${DC["Heading"]-}"
                 fi
                 ;;
         esac

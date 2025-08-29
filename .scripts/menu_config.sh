@@ -11,7 +11,7 @@ menu_config() {
 
     if run_script 'needs_appvars_create'; then
         coproc {
-            dialog_pipe "${DC[TitleSuccess]}Creating environment variables for added apps" "Please be patient, this can take a while.\n${DC[CommandLine]} ${APPLICATION_COMMAND} --env" "${DIALOGTIMEOUT}"
+            dialog_pipe "${DC["TitleSuccess"]-}Creating environment variables for added apps" "Please be patient, this can take a while.\n${DC["CommandLine"]-} ${APPLICATION_COMMAND} --env" "${DIALOGTIMEOUT}"
         }
         local -i DialogBox_PID=${COPROC_PID}
         local -i DialogBox_FD="${COPROC[1]}"
@@ -44,7 +44,7 @@ menu_config() {
     while true; do
         local -a ConfigChoiceDialog=(
             --output-fd 1
-            --title "${DC["Title"]}${Title}"
+            --title "${DC["Title"]-}${Title}"
             --ok-label "Select"
             --cancel-label "Back"
             --menu "What would you like to do?" 0 0 0
@@ -76,26 +76,26 @@ menu_config() {
                         ;;
                     "${OptionComposeDown}")
                         local Question
-                        Question="Would you like to ${DC["Highlight"]}Stop${DC[NC]} all containers, or bring all containers ${DC["Highlight"]}Down${DC[NC]}?\n\n${DC["Highlight"]}Stop${DC[NC]} will stop them, ${DC["Highlight"]}Down${DC[NC]} will stop and remove them."
+                        Question="Would you like to ${DC["Highlight"]-}Stop${DC["NC"]-} all containers, or bring all containers ${DC["Highlight"]-}Down${DC["NC"]-}?\n\n${DC["Highlight"]-}Stop${DC["NC"]-} will stop them, ${DC["Highlight"]-}Down${DC["NC"]-} will stop and remove them."
                         local -a YesNoDialog=(
-                            --title "${DC["TitleQuestion"]}Docker Compose"
+                            --title "${DC["TitleQuestion"]-}Docker Compose"
                             --no-collapse
                             --extra-button
                             --yes-label "Stop"
                             --extra-label "Down"
                             --no-label "Cancel"
-                            --yesno "${Question}${DC[NC]}"
+                            --yesno "${Question}${DC["NC"]-}"
                             "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
                         )
                         local -i YesNoDialogButtonPressed=0
                         _dialog_ "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?
                         case ${DIALOG_BUTTONS[YesNoDialogButtonPressed]-} in
                             OK) # Stop
-                                run_script_dialog "${DC["TitleSuccess"]}Docker Compose" "Stopping all running services.\n${DC["CommandLine"]} ${APPLICATION_COMMAND} --compose stop" "" \
+                                run_script_dialog "${DC["TitleSuccess"]-}Docker Compose" "Stopping all running services.\n${DC["CommandLine"]-} ${APPLICATION_COMMAND} --compose stop" "" \
                                     'docker_compose' "stop"
                                 ;;
                             EXTRA) # Down
-                                run_script_dialog "${DC["TitleSuccess"]}Docker Compose" "Stopping and removing all containers, networks, volumes, and images.\n${DC["CommandLine"]} ${APPLICATION_COMMAND} --compose down" "" \
+                                run_script_dialog "${DC["TitleSuccess"]-}Docker Compose" "Stopping and removing all containers, networks, volumes, and images.\n${DC["CommandLine"]-} ${APPLICATION_COMMAND} --compose down" "" \
                                     'docker_compose' "down"
                                 ;;
                             CANCEL | ESC) ;; # Cancel

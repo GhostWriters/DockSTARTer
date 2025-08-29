@@ -9,9 +9,9 @@ declare -A StatusText=(
 )
 
 declare -A StatusHighlight=(
-    ["_Waiting_"]="${DC["ProgressWaiting"]}"
-    ["_InProgress_"]="${DC["ProgressInProgress"]}"
-    ["_Completed_"]="${DC["ProgressCompleted"]}"
+    ["_Waiting_"]="${DC["ProgressWaiting"]-}"
+    ["_InProgress_"]="${DC["ProgressInProgress"]-}"
+    ["_Completed_"]="${DC["ProgressCompleted"]-}"
 )
 
 declare Title="Select Applications"
@@ -133,9 +133,9 @@ menu_app_select() {
     if [[ ${CI-} == true ]]; then
         SelectedAppsDialogButtonPressed=${DIALOG_CANCEL}
     else
-        local SelectAppsDialogText="Choose which apps you would like to install:\n Use ${DC["KeyCap"]}[up]${DC["NC"]}, ${DC["KeyCap"]}[down]${DC["NC"]}, and ${DC["KeyCap"]}[space]${DC["NC"]} to select apps, and ${DC["KeyCap"]}[tab]${DC["NC"]} to switch to the buttons at the bottom."
+        local SelectAppsDialogText="Choose which apps you would like to install:\n Use ${DC["KeyCap"]-}[up]${DC["NC"]-}, ${DC["KeyCap"]-}[down]${DC["NC"]-}, and ${DC["KeyCap"]-}[space]${DC["NC"]-} to select apps, and ${DC["KeyCap"]-}[tab]${DC["NC"]-} to switch to the buttons at the bottom."
         local SelectedAppsDialogParams=(
-            --title "${DC["Title"]}${Title}"
+            --title "${DC["Title"]-}${Title}"
             --output-fd 1
         )
         local -i MenuTextLines
@@ -286,7 +286,7 @@ show_gauge() {
 
     local -a GaugeDialog=(
         "${GlobalDialogOptions[@]}"
-        --title "${DC["TitleSuccess"]}${GaugeTitle}"
+        --title "${DC["TitleSuccess"]-}${GaugeTitle}"
         --begin "${GaugeDialogStartRow}" "${DialogStartCol}"
         --gauge "${DialogGaugeText}"
         "${GaugeDialogRows}" "${DialogCols}"
@@ -294,7 +294,7 @@ show_gauge() {
     )
     local -a LogDialog=(
         "${GlobalDialogOptions[@]}"
-        --title "${DC["Title"]}Log Output"
+        --title "${DC["Title"]-}Log Output"
         --begin "${LogDialogStartRow}" "${DialogStartCol}"
         --keep-window
         --tailboxbg "${ProgressLog}"
@@ -352,7 +352,7 @@ init_gauge_text() {
             HeadingPadCols=$((HeadingCols - ${#HeadingText[index]}))
             local HeadingPad
             HeadingPad="$(printf "%${HeadingPadCols}s" '')"
-            DialogGaugeText+="${WaitingHighlight}${HeadingText[index]}${DC["NC"]}${HeadingPad} ${WaitingHighlight}[${WaitingText}]${DC["NC"]}\n"
+            DialogGaugeText+="${WaitingHighlight}${HeadingText[index]}${DC["NC"]-}${HeadingPad} ${WaitingHighlight}[${WaitingText}]${DC["NC"]-}\n"
         fi
         if [[ -n ${Command[index]} ]]; then
             local -i CommandCols=${#Command[index]}
@@ -371,7 +371,7 @@ init_gauge_text() {
 
             # Get the color codes to add to the app names
             local BeginHighlight="${WaitingHighlight}"
-            local EndHighlight="${DC["NC"]}"
+            local EndHighlight="${DC["NC"]-}"
             # Escape the backslahes to be used in sed
             BeginHighlight="${BeginHighlight//\\/\\\\}"
             EndHighlight="${EndHighlight//\\/\\\\}"
@@ -380,7 +380,7 @@ init_gauge_text() {
             FormattedAppNames="$(sed -E "s/\<([A-Za-z0-9_]+)\>/${BeginHighlight}\1${EndHighlight}/g" <<< "${FormattedAppNames}")"
 
             # Add the command name to the first line
-            DialogGaugeText+="${Indent}${WaitingHighlight}${Command[index]}${DC["NC"]}${Space}${FormattedAppNames:AppsColumnStart}\n"
+            DialogGaugeText+="${Indent}${WaitingHighlight}${Command[index]}${DC["NC"]-}${Space}${FormattedAppNames:AppsColumnStart}\n"
         fi
         #DialogGaugeText+="\n"
     done

@@ -40,7 +40,7 @@ menu_config_apps() {
             local AppDescription
             AppDescription=$(run_script 'app_description' "${AppName}")
             if run_script 'app_is_user_defined' "${AppName}"; then
-                AppOptions+=("${AppName}" "${DC["ListAppUserDefined"]}${AppDescription}")
+                AppOptions+=("${AppName}" "${DC["ListAppUserDefined"]-}${AppDescription}")
             else
                 AppOptions+=("${AppName}" "${AppDescription}")
             fi
@@ -66,7 +66,7 @@ menu_config_apps() {
         WindowCols=$((WindowCols < WindowColsMax ? WindowCols : WindowColsMax))
         local -a AppChoiceDialog=(
             "${AppChoiceParams[@]}"
-            --title "${DC["Title"]}${Title}"
+            --title "${DC["Title"]-}${Title}"
             --ok-label "Select"
             --cancel-label "Done"
             --menu "${MenuText}"

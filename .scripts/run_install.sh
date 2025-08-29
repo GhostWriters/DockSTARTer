@@ -12,14 +12,14 @@ run_install() {
             {
                 notice "${YesNotice}"
                 run_install_commands
-            } |& dialog_pipe "${DC[TitleSuccess]}${Title}" "${YesNotice}\n${DC[CommandLine]} ${APPLICATION_COMMAND} --install"
+            } |& dialog_pipe "${DC["TitleSuccess"]-}${Title}" "${YesNotice}\n${DC["CommandLine"]-} ${APPLICATION_COMMAND} --install"
         else
             notice "${YesNotice}"
             run_install_commands
         fi
     else
         if use_dialog_box; then
-            notice "${NoNotice}" |& dialog_pipe "${DC[TitleError]}${Title}" "${NoNotice}"
+            notice "${NoNotice}" |& dialog_pipe "${DC["TitleError"]-}${Title}" "${NoNotice}"
         else
             notice "${NoNotice}"
         fi

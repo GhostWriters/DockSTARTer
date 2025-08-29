@@ -48,7 +48,7 @@ appvars_purge() {
         fi
 
         if [[ -z ${GlobalVarsToRemove[*]-} && -z ${AppEnvVarsToRemove[*]-} ]]; then
-            local WarningText="'${DC["Highlight"]}${C["App"]}${AppName}${NC}${DC[NC]}' has no variables to remove."
+            local WarningText="'${DC["Highlight"]-}${C["App"]}${AppName}${NC}${DC["NC"]-}' has no variables to remove."
             local WarningTextNotice
             WarningTextNotice="$(strip_dialog_colors "${WarningText}")"
             if use_dialog_box; then
@@ -62,15 +62,15 @@ appvars_purge() {
 
         local Indent='   '
         local Question
-        Question="Would you like to purge these settings for '${DC["Highlight"]}${C["App"]}${AppName}${NC}${DC[NC]}'?\n"
+        Question="Would you like to purge these settings for '${DC["Highlight"]-}${C["App"]}${AppName}${NC}${DC["NC"]-}'?\n"
         if [[ -n ${GlobalLinesToRemove[*]-} ]]; then
-            Question+="${Indent}${DC["Highlight"]}${C["Folder"]}${COMPOSE_ENV}${NC}${DC[NC]}:\n"
+            Question+="${Indent}${DC["Highlight"]-}${C["Folder"]}${COMPOSE_ENV}${NC}${DC["NC"]-}:\n"
             for line in "${GlobalLinesToRemove[@]}"; do
                 Question+="${Indent}${Indent}${C["Var"]}${line}${NC}\n"
             done
         fi
         if [[ -n ${AppEnvLinesToRemove[*]-} ]]; then
-            Question+="${Indent}${DC["Highlight"]}${C["Folder"]}${AppEnvFile}${NC}${DC[NC]}:\n"
+            Question+="${Indent}${DC["Highlight"]-}${C["Folder"]}${AppEnvFile}${NC}${DC["NC"]-}:\n"
             for line in "${AppEnvLinesToRemove[@]}"; do
                 Question+="${Indent}${Indent}${C["Var"]}${line}${NC}\n"
             done

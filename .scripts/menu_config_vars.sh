@@ -47,7 +47,7 @@ menu_config_vars() {
         # Add lines from global .env file to the dialog
         if [[ -n ${APPNAME-} ]]; then
             ((++LineNumber))
-            LineColor[LineNumber]="${DC[LineHeading]}"
+            LineColor[LineNumber]="${DC["LineHeading"]-}"
             CurrentValueOnLine[LineNumber]="*** ${COMPOSE_ENV} ***"
         fi
         run_script 'appvars_lines' "${APPNAME}" > "${CurrentGlobalEnvFile}"
@@ -65,9 +65,9 @@ menu_config_vars() {
                 local DefaultLine
                 DefaultLine="${VarName}=$(run_script 'var_default_value' "${VarName}")"
                 if [[ ${line} == "${DefaultLine}" ]]; then
-                    LineColor[LineNumber]="${DC[LineVar]}"
+                    LineColor[LineNumber]="${DC["LineVar"]-}"
                 else
-                    LineColor[LineNumber]="${DC[LineModifiedVar]}"
+                    LineColor[LineNumber]="${DC["LineModifiedVar"]-}"
                 fi
                 VarNameOnLine[LineNumber]="${VarName}"
                 if [[ -z ${FirstVarLine-} ]]; then
@@ -75,25 +75,25 @@ menu_config_vars() {
                 fi
             elif (grep -q -P '^\s*#' <<< "${line}"); then
                 # Line is a comment
-                LineColor[LineNumber]="${DC[LineComment]}"
+                LineColor[LineNumber]="${DC["LineComment"]-}"
             else
                 # Line is an unknowwn line
-                LineColor[LineNumber]="${DC[LineAddVariable]}"
+                LineColor[LineNumber]="${DC["LineAddVariable"]-}"
             fi
         done
         ((LineNumber++))
         local AddGlobalVariableLineNumber=${LineNumber}
         CurrentValueOnLine[LineNumber]="${AddVariableText}"
-        LineColor[LineNumber]="${DC[LineAddVariable]}"
+        LineColor[LineNumber]="${DC["LineAddVariable"]-}"
 
         if [[ -n ${APPNAME-} ]]; then
             # Add lines from appvar.env file to the dialog
             ((++LineNumber))
             CurrentValueOnLine[LineNumber]=""
-            LineColor[LineNumber]="${DC[LineOther]}"
+            LineColor[LineNumber]="${DC["LineOther"]-}"
             ((++LineNumber))
             CurrentValueOnLine[LineNumber]="*** $(run_script 'app_env_file' "${APPNAME}") ***"
-            LineColor[LineNumber]="${DC[LineHeading]}"
+            LineColor[LineNumber]="${DC["LineHeading"]-}"
             run_script 'appvars_lines' "${APPNAME}:" > "${CurrentAppEnvFile}"
             local -a CurrentAppEnvLines
             readarray -t CurrentAppEnvLines < <(
@@ -109,9 +109,9 @@ menu_config_vars() {
                     local DefaultLine
                     DefaultLine="${VarName}=$(run_script 'var_default_value' "${APPNAME}:${VarName}")"
                     if [[ ${line} == "${DefaultLine}" ]]; then
-                        LineColor[LineNumber]="${DC[LineVar]}"
+                        LineColor[LineNumber]="${DC["LineVar"]-}"
                     else
-                        LineColor[LineNumber]="${DC[LineModifiedVar]}"
+                        LineColor[LineNumber]="${DC["LineModifiedVar"]-}"
                     fi
                     VarNameOnLine[LineNumber]="${APPNAME}:${VarName}"
                     if [[ -z ${FirstVarLine-} ]]; then
@@ -119,16 +119,16 @@ menu_config_vars() {
                     fi
                 elif (grep -q -P '^\s*#' <<< "${line}"); then
                     # Line is a comment
-                    LineColor[LineNumber]="${DC[LineComment]}"
+                    LineColor[LineNumber]="${DC["LineComment"]-}"
                 else
                     # Line is an unknowwn line
-                    LineColor[LineNumber]="${DC[LineOther]}"
+                    LineColor[LineNumber]="${DC["LineOther"]-}"
                 fi
             done
             ((LineNumber++))
             local AddAppEnvVariableLineNumber=${LineNumber}
             CurrentValueOnLine[LineNumber]="${AddVariableText}"
-            LineColor[LineNumber]="${DC[LineAddVariable]}"
+            LineColor[LineNumber]="${DC["LineAddVariable"]-}"
         fi
 
         local TotalLines=$((10#${LineNumber}))
@@ -153,7 +153,7 @@ menu_config_vars() {
                 --ok-label "Select"
                 --extra-label "Remove"
                 --cancel-label "Done"
-                --title "${DC["Title"]}${Title}"
+                --title "${DC["Title"]-}${Title}"
                 --default-item "${LastLineChoice}"
                 --menu "${DialogHeading}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" -1
                 "${LineOptions[@]}"
@@ -188,11 +188,11 @@ menu_config_vars() {
                         if [[ ${CleanVarName} == *":"* ]]; then
                             CleanVarName="${CleanVarName#*:}"
                         fi
-                        local Question="Do you really want to delete ${DC[Highlight]}${CleanVarName}${DC[NC]}?"
+                        local Question="Do you really want to delete ${DC["Highlight"]-}${CleanVarName}${DC["NC"]-}?"
                         if run_script 'question_prompt' N "${DialogHeading}\n\n${Question}\n" "Delete Variable" "" "Delete" "Back"; then
                             DialogHeading="$(run_script 'menu_heading' "${APPNAME-}" "${VarName}")"
                             coproc {
-                                dialog_pipe "${DC["TitleSuccess"]}Deleting Variable" "${DialogHeading}" "${DIALOGTIMEOUT}"
+                                dialog_pipe "${DC["TitleSuccess"]-}Deleting Variable" "${DialogHeading}" "${DIALOGTIMEOUT}"
                             }
                             local -i DialogBox_PID=${COPROC_PID}
                             local -i DialogBox_FD="${COPROC[1]}"

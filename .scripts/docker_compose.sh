@@ -108,7 +108,7 @@ docker_compose() {
     if run_script 'question_prompt' Y "${Question}" "${Title}" "${FORCE:+Y}"; then
         if use_dialog_box; then
             coproc {
-                dialog_pipe "${DC[TitleSuccess]}${Title}" "${YesNotice}${DC[NC]}\n${DC[CommandLine]} ${APPLICATION_COMMAND} --compose ${ComposeInput}"
+                dialog_pipe "${DC["TitleSuccess"]-}${Title}" "${YesNotice}${DC["NC"]-}\n${DC["CommandLine"]-} ${APPLICATION_COMMAND} --compose ${ComposeInput}"
             }
             local -i DialogBox_PID=${COPROC_PID}
             local -i DialogBox_FD="${COPROC[1]}"
@@ -150,7 +150,7 @@ docker_compose() {
         fi
     else
         if use_dialog_box; then
-            [[ -n ${NoNotice-} ]] && notice "${NoNotice}" |& dialog_pipe "${DC[TitleError]}${Title}" "${NoNotice}"
+            [[ -n ${NoNotice-} ]] && notice "${NoNotice}" |& dialog_pipe "${DC["TitleError"]-}${Title}" "${NoNotice}"
         else
             [[ -n ${NoNotice-} ]] && notice "${NoNotice}"
         fi

@@ -6,7 +6,7 @@ menu_add_app() {
     local Title="Add Application"
 
     local AppNameMaxLength=256
-    local AppNameNone="${DC[Highlight]}[*NONE*]"
+    local AppNameNone="${DC["Highlight"]-}[*NONE*]"
 
     local AppName=""
     #local BaseAppName InstanceName
@@ -26,7 +26,7 @@ menu_add_app() {
         )
         local -a InputValueDialog=(
             --stdout
-            --title "${DC["Title"]}${Title}"
+            --title "${DC["Title"]-}${Title}"
             --max-input 256
             --form "${InputValueText}"
             "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" 0
@@ -58,7 +58,7 @@ menu_add_app() {
                     AppNameHeading="${AppName}"
                 else
                     AppNameHeading="${AppNameNone}"
-                    ErrorMessage="The application name ${DC[Highlight]}${AppName}${DC[NC]} is not a valid name.\n\n Please input another application name."
+                    ErrorMessage="The application name ${DC["Highlight"]-}${AppName}${DC["NC"]-} is not a valid name.\n\n Please input another application name."
                 fi
                 if [[ -n ${ErrorMessage} ]]; then
                     Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
@@ -68,7 +68,7 @@ menu_add_app() {
                 Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
                 if ! run_script 'app_is_builtin' "${AppName}"; then
                     local Question
-                    Question="Create user defined application ${DC[Highlight]}${AppName}${DC[NC]}?\n"
+                    Question="Create user defined application ${DC["Highlight"]-}${AppName}${DC["NC"]-}?\n"
                     Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
                     if run_script 'question_prompt' N "${Heading}\n\n${Question}" "Create Application" "" "User Defined" "Back"; then
                         Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
@@ -78,7 +78,7 @@ menu_add_app() {
                     fi
                 else
                     local Question
-                    Question="Application ${DC[Highlight]}${AppName}${DC[NC]} can be added as a built-in application.\n\nCreate ${DC[Highlight]}${AppName}${DC[NC]} as a ${DC[Highlight]}Built In${DC[NC]} or a ${DC[Highlight]}User Defined${DC[NC]} application?\n"
+                    Question="Application ${DC["Highlight"]-}${AppName}${DC["NC"]-} can be added as a built-in application.\n\nCreate ${DC["Highlight"]-}${AppName}${DC["NC"]-} as a ${DC["Highlight"]-}Built In${DC["NC"]-} or a ${DC["Highlight"]-}User Defined${DC["NC"]-} application?\n"
                     Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
                     local -a YesNoDialog=(
                         --title "${Title}"
@@ -96,7 +96,7 @@ menu_add_app() {
                         OK) # Built In
                             Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
                             coproc {
-                                dialog_pipe "${DC[TitleSuccess]}Adding Built In Application" "${Heading}\n\n${DC[Subtitle]}Adding application:\n${DC[CommandLine]} ${APPLICATION_COMMAND} --add ${AppName}" "${DIALOGTIMEOUT}"
+                                dialog_pipe "${DC["TitleSuccess"]-}Adding Built In Application" "${Heading}\n\n${DC["Subtitle"]-}Adding application:\n${DC["CommandLine"]-} ${APPLICATION_COMMAND} --add ${AppName}" "${DIALOGTIMEOUT}"
                             }
                             local -i DialogBox_PID=${COPROC_PID}
                             local -i DialogBox_FD="${COPROC[1]}"
@@ -111,7 +111,7 @@ menu_add_app() {
                             ;;
                         EXTRA) # User Defined
                             Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
-                            dialog_success "${DC[TitleSuccess]}Adding User Defined Application" "${Heading}" "${DIALOGTIMEOUT}"
+                            dialog_success "${DC["TitleSuccess"]-}Adding User Defined Application" "${Heading}" "${DIALOGTIMEOUT}"
                             run_script 'menu_add_var' "${AppName}"
                             return
                             ;;

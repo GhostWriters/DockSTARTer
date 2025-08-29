@@ -38,7 +38,7 @@ menu_display_options_theme() {
         done
         local -a ChoiceDialog=(
             --output-fd 1
-            --title "${DC["Title"]}${Title}"
+            --title "${DC["Title"]-}${Title}"
             --ok-label "Select"
             --cancel-label "Back"
             --radiolist "Select the theme to apply." 0 0 0
