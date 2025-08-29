@@ -19,7 +19,7 @@ menu_display_options() {
     while true; do
         local -a ChoiceDialog=(
             --output-fd 1
-            --title "${DC["Title"]}${Title}"
+            --title "${DC["Title"]-}${Title}"
             --ok-label "Select"
             --cancel-label "Back"
             --menu "What would you like to do?" 0 0 0

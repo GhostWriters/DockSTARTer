@@ -23,7 +23,7 @@ menu_main() {
     while true; do
         local -a MainChoiceDialog=(
             --output-fd 1
-            --title "${DC["Title"]}${Title}"
+            --title "${DC["Title"]-}${Title}"
             --ok-label "Select"
             --cancel-label "Exit"
             --menu "What would you like to do?" 0 0 0

@@ -23,27 +23,27 @@ menu_dialog_example() {
         if [[ -n ${Title-} ]]; then
             Title+=' '
         fi
-        Title+="${DC["${TitleStyle}"]}${TitleStyle}${DC[NC]}"
+        Title+="${DC["${TitleStyle}"]-}${TitleStyle}${DC["NC"]-}"
     done
 
     DialogText=''
-    DialogText+="${DC["Subtitle"]}${Message} and displaying sample${DC[NC]}\n"
-    DialogText+="  ${DC["CommandLine"]}${CommandLine}${DC[NC]}\n"
+    DialogText+="${DC["Subtitle"]-}${Message} and displaying sample${DC["NC"]-}\n"
+    DialogText+="  ${DC["CommandLine"]-}${CommandLine}${DC["NC"]-}\n"
     DialogText+="\n"
-    DialogText+="        Theme: ${DC[Heading]}${ThemeName}${DC[NC]}\n"
-    DialogText+="               ${DC["HeadingAppDescription"]}${ThemeDescription}${DC[NC]}\n"
+    DialogText+="        Theme: ${DC["Heading"]-}${ThemeName}${DC["NC"]-}\n"
+    DialogText+="               ${DC["HeadingAppDescription"]-}${ThemeDescription}${DC["NC"]-}\n"
     DialogText+="\n"
-    DialogText+=" Theme Author: ${DC[Heading]}${ThemeAuthor}${DC[NC]}\n"
+    DialogText+=" Theme Author: ${DC["Heading"]-}${ThemeAuthor}${DC["NC"]-}\n"
     DialogText+="\n"
-    DialogText+="Final Heading: ${DC["HeadingValue"]}AppName${DC[NC]}"
-    DialogText+=" ${DC["HeadingTag"]}[*HeadingTag*]${DC[NC]} ${DC["HeadingTag"]}(HeadingTag)${DC[NC]}\n"
+    DialogText+="Final Heading: ${DC["HeadingValue"]-}AppName${DC["NC"]-}"
+    DialogText+=" ${DC["HeadingTag"]-}[*HeadingTag*]${DC["NC"]-} ${DC["HeadingTag"]-}(HeadingTag)${DC["NC"]-}\n"
     DialogText+="\n"
-    DialogText+="     Key Caps: ${DC["KeyCap"]}[up]${DC[NC]} ${DC["KeyCap"]}[down]${DC[NC]} ${DC["KeyCap"]}[left]${DC[NC]} ${DC["KeyCap"]}[right]${DC[NC]}\n"
+    DialogText+="     Key Caps: ${DC["KeyCap"]-}[up]${DC["NC"]-} ${DC["KeyCap"]-}[down]${DC["NC"]-} ${DC["KeyCap"]-}[left]${DC["NC"]-} ${DC["KeyCap"]-}[right]${DC["NC"]-}\n"
     DialogText+="\n"
     DialogText+="Normal text\n"
-    DialogText+="${DC["Highlight"]}Highlighted text${DC[NC]}\n"
+    DialogText+="${DC["Highlight"]-}Highlighted text${DC["NC"]-}\n"
 
-    local Helpline="This is a sample help line with ${DC["Highlight"]}highlighted${DC[NC]} text."
+    local Helpline="This is a sample help line with ${DC["Highlight"]-}highlighted${DC["NC"]-} text."
 
     local -i MenuTextLines
     MenuTextLines="$(
@@ -57,14 +57,14 @@ menu_dialog_example() {
     local -a DialogOptions=(
         "" "" "${Helpline}"
         "BuiltInApp" "Built In App Description" "${Helpline}"
-        "UserDefinedApp" "${DC["ListAppUserDefined"]}User Defined App Description" "${Helpline}"
+        "UserDefinedApp" "${DC["ListAppUserDefined"]-}User Defined App Description" "${Helpline}"
         "" "" "${Helpline}"
-        "Variable File Heading" "${DC["LineHeading"]}*** ${COMPOSE_ENV} ***" "${Helpline}"
-        "Variable File Comment" "${DC["LineComment"]}### A comment in the variable file" "${Helpline}"
-        "Variable File Other" "${DC["LineOther"]}Any other line in the file" "${Helpline}"
-        "Variable File Variable" "${DC["LineVar"]}VarName='Default Value'" "${Helpline}"
-        "Variable File Mofified" "${DC["LineModifiedVar"]}VarName='Modified Value'" "${Helpline}"
-        "Variable File Add" "${DC["LineAddVariable"]}<ADD VARIABLE>" "${Helpline}"
+        "Variable File Heading" "${DC["LineHeading"]-}*** ${COMPOSE_ENV} ***" "${Helpline}"
+        "Variable File Comment" "${DC["LineComment"]-}### A comment in the variable file" "${Helpline}"
+        "Variable File Other" "${DC["LineOther"]-}Any other line in the file" "${Helpline}"
+        "Variable File Variable" "${DC["LineVar"]-}VarName='Default Value'" "${Helpline}"
+        "Variable File Mofified" "${DC["LineModifiedVar"]-}VarName='Modified Value'" "${Helpline}"
+        "Variable File Add" "${DC["LineAddVariable"]-}<ADD VARIABLE>" "${Helpline}"
         "" "" "${Helpline}"
         "" "" "${Helpline}"
         "" "" "${Helpline}"
