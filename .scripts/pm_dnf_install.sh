@@ -11,7 +11,7 @@ pm_dnf_install() {
         #shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
         REDIRECT='run_command_dialog "${Title}" "${COMMAND}" "" '
     fi
-    COMMAND='sudo dnf -y install curl dialog git grep sed'
+    COMMAND='sudo dnf -y install curl dialog gettext git grep sed'
     eval "${REDIRECT}${COMMAND}" || fatal "Failed to install dependencies from dnf.\nFailing command: ${C["FailingCommand"]}${COMMAND}"
 }
 
