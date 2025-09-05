@@ -159,6 +159,7 @@ menu_heading() {
 }
 
 test_menu_heading() {
+    run_script 'apply_theme'
     notice WATCHTOWER:
     run_script 'menu_heading' WATCHTOWER
     notice "WATCHTOWER WATCHTOWER__ENABLED:"
