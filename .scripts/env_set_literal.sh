@@ -9,10 +9,12 @@ env_set_literal() {
     # Sets the variable "SET_VAR"  If no "VAR_FILE" is given, uses the global .env file
     # If "APPNAME:" is provided, gets variable from ".env.app.appname"
 
-    set +u # suppress possible "parameter not set" errors when reading lines from the .env files
 
     local SET_VAR=${1-}
-    local NEW_VAL="${2-}"
+    local NEW_VAL_B64
+    set +u # suppress possible "parameter not set" errors when reading lines from the .env files
+    NEW_VAL_B64="$(base64 -w0 <<< "${2-}")"
+    set -u
     local VAR_FILE=${3:-$COMPOSE_ENV}
 
     if ! run_script 'varname_is_valid' "${SET_VAR}"; then
@@ -31,9 +33,10 @@ env_set_literal() {
         mkdir -p "${VAR_FILE%/*}" && touch "${VAR_FILE}"
     fi
     sed -i "/^\s*${SET_VAR}\s*=/d" "${VAR_FILE}" || true
-    echo "${SET_VAR}=${NEW_VAL}" >> "${VAR_FILE}" || fatal "Failed to set ${C["Var"]}${SET_VAR}=${NEW_VAL}${NC}\nFailing command: ${C["FailingCommand"]} echo \"${SET_VAR}=${NEW_VAL}\" >> \"${VAR_FILE}\""
-
-    set -u
+    printf '\n%s' "${SET_VAR}=" >> "${VAR_FILE}" ||
+        fatal "Failed to set ${C["Var"]}${SET_VAR}=${NEW_VAL}${NC}\nFailing command: ${C["FailingCommand"]} printf '\n%s' \"${SET_VAR}=\" >> \"${VAR_FILE}\""
+    base64 -d <<< "${NEW_VAL_B64}" >> "${VAR_FILE}" ||
+        fatal "Failed to set ${C["Var"]}${SET_VAR}=${NEW_VAL}${NC}\nFailing command: ${C["FailingCommand"]} base64 -d <<< \"${NEW_VAL_B64}\" >> \"${VAR_FILE}\""
 }
 
 test_env_set_literal() {
