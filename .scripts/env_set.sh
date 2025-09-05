@@ -9,7 +9,7 @@ env_set() {
     # Returns the variable "GET_VAR"  If no "VAR_FILE" is given, uses the global .env file
     # If "APPNAME:" is provided, gets variable from ".env.app.appname"
     local SET_VAR=${1-}
-    local NEW_VAL=${2-}
+    local NEW_VAL="${2-}"
     local VAR_FILE=${3:-$COMPOSE_ENV}
 
     if ! run_script 'varname_is_valid' "${SET_VAR}"; then
