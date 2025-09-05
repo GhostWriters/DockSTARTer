@@ -8,6 +8,9 @@ env_set_literal() {
     #
     # Sets the variable "SET_VAR"  If no "VAR_FILE" is given, uses the global .env file
     # If "APPNAME:" is provided, gets variable from ".env.app.appname"
+
+    set +u # suppress possible "parameter not set" errors when reading lines from the .env files
+
     local SET_VAR=${1-}
     local NEW_VAL=${2-}
     local VAR_FILE=${3:-$COMPOSE_ENV}
@@ -29,6 +32,8 @@ env_set_literal() {
     fi
     sed -i "/^\s*${SET_VAR}\s*=/d" "${VAR_FILE}" || true
     echo "${SET_VAR}=${NEW_VAL}" >> "${VAR_FILE}" || fatal "Failed to set ${C["Var"]}${SET_VAR}=${NEW_VAL}${NC}\nFailing command: ${C["FailingCommand"]} echo \"${SET_VAR}=${NEW_VAL}\" >> \"${VAR_FILE}\""
+
+    set -u
 }
 
 test_env_set_literal() {
