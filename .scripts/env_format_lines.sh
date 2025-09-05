@@ -15,6 +15,8 @@ env_format_lines() {
     local UserDefinedVarsTag=" (User Defined Variables)"
     local UserDefinedGlobalVarsTag=" (User Defined)"
 
+    set +u # suppress possible "parameter not set" errors when reading lines from the .env files
+
     local -a CurrentEnvLines=()
     readarray -t CurrentEnvLines < <(
         run_script 'env_lines' "${CurrentEnvFile}"
@@ -121,6 +123,8 @@ env_format_lines() {
         FormattedEnvLines+=("")
     fi
     printf "%s\n" "${FormattedEnvLines[@]-}"
+
+    set -u
 }
 
 test_env_format_lines() {
