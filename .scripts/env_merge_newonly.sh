@@ -28,6 +28,7 @@ env_merge_newonly() {
             IFS='|'
             local VarsToAddRegex="${VarsToAdd[*]}"
             IFS="${old_IFS}"
+            set +u # suppress possible "parameter not set" errors when reading lines from the .env files
             local MergeLines
             readarray -t MergeLines < <(
                 run_script 'env_get_line_regex' "${VarsToAddRegex}" "${MergeFromFile}"
@@ -39,6 +40,7 @@ env_merge_newonly() {
                 printf '\n'
                 printf '%s\n' "${MergeLines[@]}"
             } >> "${MergeToFile}" || fatal "Failed to add variables to '${C["File"]}${MergeToFile}${NC}"
+            set -u
         fi
     fi
 }
