@@ -13,7 +13,7 @@ env_set_literal() {
     local SET_VAR=${1-}
     local NEW_VAL_B64
     set +u # suppress possible "parameter not set" errors when reading lines from the .env files
-    NEW_VAL_B64="$(base64 -w0 <<< "${2-}")"
+    read -r NEW_VAL_B64 < <(base64 -w0 <<< "${2-}") || true
     set -u
     local VAR_FILE=${3:-$COMPOSE_ENV}
 
