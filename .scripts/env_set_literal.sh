@@ -12,7 +12,7 @@ env_set_literal() {
     set +u # suppress possible "parameter not set" errors when reading lines from the .env files
 
     local SET_VAR=${1-}
-    local NEW_VAL=${2-}
+    local NEW_VAL="${2-}"
     local VAR_FILE=${3:-$COMPOSE_ENV}
 
     if ! run_script 'varname_is_valid' "${SET_VAR}"; then
