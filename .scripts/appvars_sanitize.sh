@@ -7,6 +7,8 @@ appvars_sanitize() {
     local -a VarsToUpdate
     local -A UpdatedVarValue
 
+    set +u # suppress possible "parameter not set" errors when reading lines from the .env files
+
     local BaseAppName
     BaseAppName="$(run_script 'appname_to_baseappname' "${AppName}")"
     if [[ ${BaseAppName^^} == WATCHTOWER ]]; then
@@ -45,6 +47,8 @@ appvars_sanitize() {
             run_script 'env_set_literal' "${VarName}" "${Value}"
         done
     fi
+
+    set -u
 }
 
 test_appvars_sanitize() {
