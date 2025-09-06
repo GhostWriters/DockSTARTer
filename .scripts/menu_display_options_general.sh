@@ -13,8 +13,8 @@ menu_display_options_general() {
 
     local DrawLineOption="Draw Lines"
     local ShowBordersOption="Show Borders"
-    local ShowScrollbarOption="Show Scrollbar"
-    local ShowShadowOption="Show Shadow"
+    local ShowScrollbarOption="Show Scrollbars"
+    local ShowShadowOption="Show Shadows"
 
     local -A OptionDescription OptionVariable
 
