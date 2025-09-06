@@ -25,7 +25,7 @@ app_list_referenced() {
     )"
 
     # Add the list of referenced apps in the override file
-    REFERENCED_APPS_REGEX="^(?!.*#).*[ \t][.]env[.]app[.]\K[a-z][a-z0-9]*(__[a-z0-9]+)?$"
+    REFERENCED_APPS_REGEX="^(?!.*#).*[ \t][.]env[.]app[.]\K[a-z][a-z0-9]*(__[a-z0-9]+)?(?=[ \t]?.*|$)"
     readarray -O ${#ReferencedApps[@]} ReferencedApps <<< "$(
         grep --color=never -o -P "${REFERENCED_APPS_REGEX}" "${COMPOSE_OVERRIDE}" 2> /dev/null || true
     )"
