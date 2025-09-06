@@ -8,7 +8,7 @@ app_list_referenced() {
 
     local -a ReferencedApps=()
 
-    # Add the list of apps with appname.env an file with variables in it
+    # Add the list of apps with .env.app.appname files with variables in them
     local -a AppEnvFileList
     readarray -t AppEnvFileList < <(find "${COMPOSE_FOLDER}"/.env.app.* 2> /dev/null || true)
     for AppEnvFile in "${AppEnvFileList[@]}"; do
@@ -22,6 +22,12 @@ app_list_referenced() {
     local REFERENCED_APPS_REGEX="^${APPNAME_REGEX}(?=__[A-Za-z0-9]\w*\s*=)"
     readarray -O ${#ReferencedApps[@]} ReferencedApps <<< "$(
         grep --color=never -o -P "${REFERENCED_APPS_REGEX}" "${COMPOSE_ENV}" 2> /dev/null || true
+    )"
+
+    # Add the list of referenced apps in the override file
+    REFERENCED_APPS_REGEX="^(?!.*#).*[ \t][.]env[.]app[.]\K[a-z][a-z0-9]*(__[a-z0-9]+)?$"
+    readarray -O ${#ReferencedApps[@]} ReferencedApps <<< "$(
+        grep --color=never -o -P "${REFERENCED_APPS_REGEX}" "${COMPOSE_OVERRIDE}" 2> /dev/null || true
     )"
 
     # Output the sorted list, removing duplicates
