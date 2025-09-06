@@ -6,13 +6,15 @@ varfile_to_appname() {
     # Returns the DS application name based on the variable filename passed
 
     local VarFile=${1-}
-    local FileName
-    FileName="$(basename "${VarFile}")"
-    local Prefix='.env.app.'
-    local AppName="${FileName#"${Prefix}"}"
-    if [[ ${AppName} != "${FileName}" && ${AppName} == "${AppName,,}" ]] && run_script 'appname_is_valid' "${AppName}"; then
-        echo "${AppName}"
-    fi
+    for VarFile in "$@"; do
+        local FileName
+        FileName="$(basename "${VarFile}")"
+        local Prefix='.env.app.'
+        local AppName="${FileName#"${Prefix}"}"
+        if [[ -n ${AppName} && ${AppName} != "${FileName}" && ${AppName} == "${AppName,,}" ]] && run_script 'appname_is_valid' "${AppName}"; then
+            echo "${AppName}"
+        fi
+    done
 }
 
 test_varfile_to_appname() {
@@ -27,4 +29,5 @@ test_varfile_to_appname() {
     for filepath in "${PathList[@]}"; do
         notice "[${filepath}] [$(run_script 'varfile_to_appname' "${filepath}")]"
     done
+    notice "$(run_script 'varfile_to_appname' "${PathList[@]}")"
 }
