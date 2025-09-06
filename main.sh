@@ -634,9 +634,9 @@ that take app names can use the form 'app:' to refer to the same file.
 --theme-borders
 --theme-no-borders
     Turn the borders on and off inthe  GUI
---theme-shadow
---theme-no-shadow
-    Turn the shadow on or off in the GUI
+--theme-shadows
+--theme-no-shadows
+    Turn the shadows on or off in the GUI
 --theme-scrollbar
 --theme-no-scrollbar
     Turn the scrollbar on or off in the GUI
@@ -1082,6 +1082,14 @@ main() {
     fi
     if [[ -n ${THEMEMETHOD-} ]]; then
         case "${THEMEMETHOD}" in
+            theme-list)
+                run_script_dialog "List Themes" "" "" \
+                    'theme_list'
+                ;;
+            theme-table)
+                run_script_dialog "List Themes" "" "" \
+                    'theme_table'
+                ;;
             theme)
                 local NoticeText
                 local CommandLine
@@ -1099,33 +1107,28 @@ main() {
                     run_script 'apply_theme' "${THEME-}"
                 fi
                 ;;
-            theme-list)
-                run_script_dialog "List Themes" "" "" \
-                    'theme_list'
-                ;;
-            theme-table)
-                run_script_dialog "List Themes" "" "" \
-                    'theme_table'
-                ;;
-            theme-shadow)
-                notice "Turning on GUI shadows."
+            theme-shadows | theme-no-shadows) ;&
+            theme-scrollbar | theme-no-scrollbar) ;&
+            theme-lines | theme-no-lines) ;&
+            theme-borders | theme-no-borders)
                 run_script 'apply_theme'
+                ;;&
+            theme-shadows)
+                notice "Turning on GUI shadows."
                 run_script 'config_set' Shadow yes "${MENU_INI_FILE}"
                 if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned on shadows" "${APPLICATION_COMMAND} --theme-shadow"
+                    run_script 'menu_dialog_example' "Turned on shadows" "${APPLICATION_COMMAND} --theme-shadows"
                 fi
                 ;;
             theme-no-shadow)
                 notice "Turning off GUI shadows."
-                run_script 'apply_theme'
                 run_script 'config_set' Shadow no "${MENU_INI_FILE}"
                 if use_dialog_box; then
-                    run_script 'menu_dialog_example' "Turned off shadows" "${APPLICATION_COMMAND} --theme-no-shadow"
+                    run_script 'menu_dialog_example' "Turned off shadows" "${APPLICATION_COMMAND} --theme-no-shadows"
                 fi
                 ;;
             theme-scrollbar)
                 notice "Turning on GUI scrollbars."
-                run_script 'apply_theme'
                 run_script 'config_set' Scrollbar yes "${MENU_INI_FILE}"
                 if use_dialog_box; then
                     run_script 'menu_dialog_example' "Turned on scrollbars" "${APPLICATION_COMMAND} --theme-scrollbar"
@@ -1133,7 +1136,6 @@ main() {
                 ;;
             theme-no-scrollbar)
                 notice "Turning off GUI scrollbars."
-                run_script 'apply_theme'
                 run_script 'config_set' Scrollbar no "${MENU_INI_FILE}"
                 if use_dialog_box; then
                     run_script 'menu_dialog_example' "Turned off scrollbars" "${APPLICATION_COMMAND} --theme-no-scrollbar"
@@ -1141,7 +1143,6 @@ main() {
                 ;;
             theme-lines)
                 notice "Turning on GUI line drawing characters."
-                run_script 'apply_theme'
                 run_script 'config_set' LineCharacters yes "${MENU_INI_FILE}"
                 if use_dialog_box; then
                     run_script 'menu_dialog_example' "Turned on line drawing" "${APPLICATION_COMMAND} --theme-lines"
@@ -1149,7 +1150,6 @@ main() {
                 ;;
             theme-no-lines)
                 notice "Turning off GUI line drawing characters."
-                run_script 'apply_theme'
                 run_script 'config_set' LineCharacters no "${MENU_INI_FILE}"
                 if use_dialog_box; then
                     run_script 'menu_dialog_example' "Turned off line drawing" "${APPLICATION_COMMAND} --theme-no-lines"
@@ -1157,7 +1157,6 @@ main() {
                 ;;
             theme-borders)
                 notice "Turning on GUI borders."
-                run_script 'apply_theme'
                 run_script 'config_set' Borders yes "${MENU_INI_FILE}"
                 if use_dialog_box; then
                     run_script 'menu_dialog_example' "Turned on borders" "${APPLICATION_COMMAND} --theme-borders"
@@ -1165,7 +1164,6 @@ main() {
                 ;;
             theme-no-borders)
                 notice "Turning off GUI borders."
-                run_script 'apply_theme'
                 run_script 'config_set' Borders no "${MENU_INI_FILE}"
                 if use_dialog_box; then
                     run_script 'menu_dialog_example' "Turned off borders" "${APPLICATION_COMMAND} --theme-no-borders"
