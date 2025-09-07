@@ -108,5 +108,9 @@ test_appvars_purge() {
     local EnvFile
     EnvFile="$(run_script 'app_env_file' "watchtower")"
     echo "${EnvFile}:"
-    cat "${EnvFile}"
+    if [[ -f ${EnvFile} ]]; then
+        cat "${EnvFile}"
+    else
+        echo "*File Not Found*"
+    fi
 }
