@@ -20,7 +20,7 @@ app_is_referenced() {
         local AppEnvFile
         AppEnvFile="$(basename "$(run_script 'app_env_file' "${APPNAME}")")"
         local SearchString="${AppEnvFile//./[.]}"
-        if grep -q -P "^(?:[^#]*)(?:^|\s)(?<Q>['\"]?)${SearchString}(?=\k<Q>\s|$)" "${COMPOSE_OVERRIDE}" &> /dev/null; then
+        if grep -q -P "^(?:[^#]*)(?:\s|^)(?<Q>['\"]?)${SearchString}(?=\k<Q>(?:\s|$))" "${COMPOSE_OVERRIDE}" &> /dev/null; then
 
             return 0
         fi
