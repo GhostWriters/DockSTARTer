@@ -11,7 +11,7 @@ pm_pacman_install() {
         #shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
         REDIRECT='run_command_dialog "${Title}" "${COMMAND}" "" '
     fi
-    COMMAND='sudo pacman -Sy --noconfirm bsdmainutils curl dialog gettext git grep sed util-linux'
+    COMMAND='sudo pacman -Sy --noconfirm curl dialog gettext git grep sed util-linux'
     eval "${REDIRECT}${COMMAND}" || fatal "Failed to install dependencies from pacman.\nFailing command: ${C["FailingCommand"]}${COMMAND}"
 }
 
