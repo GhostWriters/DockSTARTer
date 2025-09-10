@@ -51,7 +51,7 @@ border_color = (BLACK,WHITE,OFF)
 border2_color = (BLACK,WHITE,OFF)
 
 # Dialog box title color
-title_color = (WHITE,BLACK,OFF)
+title_color = (BLACK,WHITE,OFF)
 
 # Active button color
 button_active_color = (WHITE,RED,ON)
