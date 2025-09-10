@@ -42,7 +42,7 @@ menu_config_apps() {
             if run_script 'app_is_user_defined' "${AppName}"; then
                 AppOptions+=("${AppName}" "${DC["ListAppUserDefined"]-}${AppDescription}")
             else
-                AppOptions+=("${AppName}" "${AppDescription}")
+                AppOptions+=("${AppName}" "${DC["ListApp"]}${AppDescription}")
             fi
             TagCols=$((${#AppName} > TagCols ? ${#AppName} : TagCols))
             ItemCols=$((${#AppDescription} > ItemCols ? ${#AppDescription} : ItemCols))
