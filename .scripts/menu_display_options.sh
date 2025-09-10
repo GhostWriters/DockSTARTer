@@ -11,8 +11,8 @@ menu_display_options() {
     local OptionChooseTheme="Choose Theme"
     local OptionGeneralOptions="General Options"
     local Opts=(
-        "${OptionChooseTheme}" "Choose a theme for ${APPLICATION_NAME}"
-        "${OptionGeneralOptions}" "Set general display options"
+        "${OptionChooseTheme}" "${DC["ListDefault"]}Choose a theme for ${APPLICATION_NAME}"
+        "${OptionGeneralOptions}" "${DC["ListDefault"]}Set general display options"
     )
 
     local LastChoice=""

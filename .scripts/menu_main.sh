@@ -13,10 +13,10 @@ menu_main() {
     local OptionUpdateVersion="Update ${APPLICATION_NAME}"
     local OptionDisplayOptions="Display Options"
     local MainOpts=(
-        "${OptionConfigure}" "Setup and start applications"
-        "${OptionInstallDependencies}" "Install required components"
-        "${OptionUpdateVersion}" "Get the latest version of ${APPLICATION_NAME}"
-        "${OptionDisplayOptions}" "Adjust display options for the GUI"
+        "${OptionConfigure}" "${DC["ListDefault"]}Setup and start applications"
+        "${OptionInstallDependencies}" "${DC["ListDefault"]}Install required components"
+        "${OptionUpdateVersion}" "${DC["ListDefault"]}Get the latest version of ${APPLICATION_NAME}"
+        "${OptionDisplayOptions}" "${DC["ListDefault"]}Adjust display options for the GUI"
     )
 
     local LastMainChoice=""

@@ -18,10 +18,10 @@ menu_display_options_general() {
 
     local -A OptionDescription OptionVariable
 
-    OptionDescription["${DrawLineOption}"]="Use line drawing characters"
-    OptionDescription["${ShowBordersOption}"]="Show borders in dialog boxes"
-    OptionDescription["${ShowScrollbarOption}"]="Show a scrollbar in dialog boxes"
-    OptionDescription["${ShowShadowOption}"]="Show a shadow under the dialog boxes"
+    OptionDescription["${DrawLineOption}"]="${DC["ListDefault"]}Use line drawing characters"
+    OptionDescription["${ShowBordersOption}"]="${DC["ListDefault"]}Show borders in dialog boxes"
+    OptionDescription["${ShowScrollbarOption}"]="${DC["ListDefault"]}Show a scrollbar in dialog boxes"
+    OptionDescription["${ShowShadowOption}"]="${DC["ListDefault"]}Show a shadow under the dialog boxes"
 
     OptionVariable["${DrawLineOption}"]="LineCharacters"
     OptionVariable["${ShowBordersOption}"]="Borders"

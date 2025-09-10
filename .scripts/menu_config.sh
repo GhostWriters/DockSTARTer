@@ -31,13 +31,13 @@ menu_config() {
     local OptionComposeDown="Stop All Applications"
     local OptionDockerPrune="Prune Docker System"
     local ConfigOpts=(
-        "${OptionFullSetup}" "This goes through selecting apps and editing variables. Recommended for first run"
-        "${OptionEditGlobalVars}" "Review and adjust global variables"
-        "${OptionSelectApps}" "Select which apps to run. Previously installed apps are remembered"
-        "${OptionEditAppVars}" "Review and adjust variables for installed apps"
-        "${OptionComposeUp}" "Run Docker Compose to start all applications"
-        "${OptionComposeDown}" "Run Docker Compose to stop all applications"
-        "${OptionDockerPrune}" "Remove all unused containers, networks, volumes, images and build cache"
+        "${OptionFullSetup}" "${DC["ListDefault"]}This goes through selecting apps and editing variables. Recommended for first run"
+        "${OptionEditGlobalVars}" "${DC["ListDefault"]}Review and adjust global variables"
+        "${OptionSelectApps}" "${DC["ListDefault"]}Select which apps to run. Previously installed apps are remembered"
+        "${OptionEditAppVars}" "${DC["ListDefault"]}Review and adjust variables for installed apps"
+        "${OptionComposeUp}" "${DC["ListDefault"]}Run Docker Compose to start all applications"
+        "${OptionComposeDown}" "${DC["ListDefault"]}Run Docker Compose to stop all applications"
+        "${OptionDockerPrune}" "${DC["ListDefault"]}Remove all unused containers, networks, volumes, images and build cache"
     )
 
     local LastConfigChoice=""
