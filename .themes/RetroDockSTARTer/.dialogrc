@@ -96,7 +96,7 @@ menubox_color = (BLACK,WHITE,OFF)
 menubox_border_color = border2_color
 
 # Item color
-item_color = (WHITE,MAGENTA,OFF)
+item_color = (BLACK,MAGENTA,OFF)
 
 # Selected item color
 item_selected_color = (WHITE,RED,OFF)
@@ -132,7 +132,7 @@ itemhelp_color = dialog_color
 form_active_text_color = tag_key_selected_color
 
 # Form text color
-form_text_color = (WHITE,MAGENTA,ON)
+form_text_color = (BLACK,MAGENTA,OFF)
 
 # Readonly form item color
 form_item_readonly_color = (WHITE,MAGENTA,OFF)
