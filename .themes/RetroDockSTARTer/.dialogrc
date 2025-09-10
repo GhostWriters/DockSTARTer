@@ -96,10 +96,10 @@ menubox_color = (BLACK,WHITE,OFF)
 menubox_border_color = border2_color
 
 # Item color
-item_color = (BLACK,BLUE,OFF)
+item_color = (WHITE,MAGENTA,OFF)
 
 # Selected item color
-item_selected_color = (BLACK,RED,OFF)
+item_selected_color = (WHITE,RED,OFF)
 
 # Tag color
 tag_color = dialog_color
