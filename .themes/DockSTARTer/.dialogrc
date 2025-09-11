@@ -51,7 +51,7 @@ border_color = (WHITE,CYAN,OFF)
 border2_color = (BLACK,CYAN,OFF)
 
 # Dialog box title color
-title_color = (BLUE,BLACK,OFF)
+title_color = (CYAN,BLACK,OFF)
 
 # Active button color
 button_active_color = (WHITE,RED,ON)
@@ -96,7 +96,7 @@ menubox_color = (BLACK,CYAN,OFF)
 menubox_border_color = border2_color
 
 # Item color
-item_color = (BLACK,BLUE,OFF)
+item_color = (BLACK,CYAN,OFF)
 
 # Selected item color
 item_selected_color = (BLACK,RED,OFF)
@@ -132,10 +132,10 @@ itemhelp_color = dialog_color
 form_active_text_color = tag_key_selected_color
 
 # Form text color
-form_text_color = (WHITE,BLUE,ON)
+form_text_color = (BLACK,CYAN,OFF)
 
 # Readonly form item color
-form_item_readonly_color = (BLUE,WHITE,ON)
+form_item_readonly_color = (BLACK,WHITE,OFF)
 
 # Dialog box gauge color
 gauge_color = (BLACK,CYAN,OFF)
