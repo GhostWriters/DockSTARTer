@@ -31,9 +31,9 @@ menu_display_options_theme() {
                 ItemText+=" [by ${ThemeAuthor["${ThemeName}"]}]"
             fi
             if [[ ${ThemeName} == "${CurrentTheme}" ]]; then
-                Opts+=("${ThemeName}" "${ItemText}" ON)
+                Opts+=("${ThemeName}" "${DC["AppList"]-}${ItemText}" ON)
             else
-                Opts+=("${ThemeName}" "${ItemText}" OFF)
+                Opts+=("${ThemeName}" "${DC["AppList"]-}${ItemText}" OFF)
             fi
         done
         local -a ChoiceDialog=(
