@@ -117,10 +117,14 @@ menu_app_select() {
             update_gauge 1 "${ProcessAppList}" "_InProgress_" "_InProgress_" "${AppName}"
             local AppDescription
             AppDescription=$(run_script 'app_description_from_template' "${AppName}")
+            local AppColor="${DC["ListApp"]-}"
+            if [[ -n $(run_script 'appname_to_instancename' "${AppName}") ]]; then
+                AppColor="${DC["ListAppUserDefined"]-}"
+            fi
             if [[ ${AppName} =~ ^(${AddedAppsRegex})$ ]]; then
-                AppList+=("${AppName}" "${AppDescription}" "on")
+                AppList+=("${AppName}" "${AppColor}${AppDescription}" "on")
             else
-                AppList+=("${AppName}" "${AppDescription}" "off")
+                AppList+=("${AppName}" "${AppColor}${AppDescription}" "off")
             fi
         done
         update_gauge 0 "${ProcessAppList}" "_InProgress_" "_Completed_"
