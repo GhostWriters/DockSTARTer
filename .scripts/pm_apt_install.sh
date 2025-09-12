@@ -2,19 +2,64 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+declare Title="Install Dependencies"
+
 pm_apt_install() {
-    local Title="Install Dependencies"
-    notice "Installing dependencies. Please be patient, this can take a while."
-    local COMMAND=""
-    local REDIRECT="> /dev/null 2>&1"
-    if run_script 'question_prompt' Y "Would you like to display the command output?" "${Title}" "${VERBOSE:+Y}"; then
-        #shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
-        REDIRECT='run_command_dialog "${Title}" "${COMMAND}" "" '
+    if use_dialog_box; then
+        coproc {
+            dialog_pipe "${DC["TitleSuccess"]-}Install Dependencies" "Please be patient, this can take a while.\n${DC["CommandLine"]-} ${APPLICATION_COMMAND} --install" ""
+        }
+        local -i DialogBox_PID=${COPROC_PID}
+        local -i DialogBox_FD="${COPROC[1]}"
+        pm_apt_install_commands >&${DialogBox_FD} 2>&1
+        exec {DialogBox_FD}<&-
+        wait ${DialogBox_PID}
+    else
+        pm_apt_install_commands
     fi
-    COMMAND='sudo apt-get -y install bsdmainutils curl dialog gettext-base git grep sed util-linux'
-    eval "${REDIRECT}${COMMAND}" || fatal "Failed to install dependencies from apt.\nFailing command: ${C["FailingCommand"]}${COMMAND}"
 }
 
+pm_apt_install_commands() {
+    local IgnorePackages='9base'
+    local Command=""
+
+    local REDIRECT='> /dev/null 2>&1 '
+    if run_script 'question_prompt' Y "Would you like to display the command output?" "${Title}" "${VERBOSE:+Y}"; then
+        REDIRECT='2>&1 '
+    fi
+
+    notice "Installing dependencies. Please be patient, this can take a while."
+
+    if [[ -z "$(command -v apt-file)" ]]; then
+        info "Installing '${C["Program"]}apt-file${NC}'."
+        Command="sudo apt-get -y install apt-file"
+        info "Running: ${C["RunningCommand"]}${Command}${NC}"
+        eval "${REDIRECT}${Command}" ||
+            fatal "Failed to install '${C["Program"]}apt-file${NC}' from apt.\nFailing command: ${C["FailingCommand"]}${Command}"
+        notice "Updating repositories."
+        Command='sudo apt-get -y update'
+        info "Running: ${C["RunningCommand"]}${Command}${NC}"
+        eval "${REDIRECT}${Command}" ||
+            fatal "Failed to get updates from apt.\nFailing command: ${C["FailingCommand"]}${Command}"
+    fi
+
+    notice "Determining packages to install."
+    local old_IFS="${IFS}"
+    IFS='|'
+    local DepsRegex="${COMMAND_DEPS[*]}"
+    IFS="${old_IFS}"
+    Command="apt-file search --regexp '/bin/(.*/)?(${DepsRegex})$'"
+    info "Running: ${C["RunningCommand"]}${Command}${NC}"
+    Packages="$(eval "2> /dev/null ${Command}")" ||
+        fatal "Failed to find packages to install.\nFailing command: ${C["FailingCommand"]}${Command}"
+    Packages="$(grep -E -v "\b(${IgnorePackages})\b" <<< "${Packages}" | cut -d : -f 1 | sort -u | xargs)"
+
+    notice "Installing packages."
+    Command="sudo apt-get -y install ${Packages}"
+    info "Running: ${C["RunningCommand"]}${Command}${NC}"
+    eval "${REDIRECT}${Command}" ||
+        fatal "Failed to install dependencies from apt.\nFailing command: ${C["FailingCommand"]}${Command}"
+}
 test_pm_apt_install() {
     run_script 'pm_apt_repos'
     run_script 'pm_apt_install'
