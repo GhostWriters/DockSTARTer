@@ -28,37 +28,57 @@ pm_apt_install_commands() {
         REDIRECT='2>&1 '
     fi
 
-    notice "Installing dependencies. Please be patient, this can take a while."
+    local -a Dependencies=("${COMMAND_DEPS[@]}")
+    if [[ ${FORCE-} != true ]]; then
+        for index in "${!Dependencies[@]}"; do
+            if [[ -n $(command -v "${Dependencies[index]}") ]]; then
+                unset 'Dependencies[index]'
+            fi
+        done
+        Dependencies=("${Dependencies[@]}")
+    fi
+    if [[ ${#Dependencies[@]} -eq 0 ]]; then
+        notice "All dependencies have already been installed."
+    else
+        notice "Installing dependencies. Please be patient, this can take a while."
 
-    if [[ -z "$(command -v apt-file)" ]]; then
-        info "Installing '${C["Program"]}apt-file${NC}'."
-        Command="sudo apt-get -y install apt-file"
+        if [[ -z "$(command -v apt-file)" ]]; then
+            info "Installing '${C["Program"]}apt-file${NC}'."
+            Command="sudo apt-get -y install apt-file"
+            info "Running: ${C["RunningCommand"]}${Command}${NC}"
+            eval "${REDIRECT}${Command}" ||
+                fatal "Failed to install '${C["Program"]}apt-file${NC}' from apt.\nFailing command: ${C["FailingCommand"]}${Command}"
+        fi
+        notice "Updating package information."
+        Command='sudo apt-file update'
         info "Running: ${C["RunningCommand"]}${Command}${NC}"
         eval "${REDIRECT}${Command}" ||
-            fatal "Failed to install '${C["Program"]}apt-file${NC}' from apt.\nFailing command: ${C["FailingCommand"]}${Command}"
+            fatal "Failed to get updates from apt.\nFailing command: ${C["FailingCommand"]}${Command}"
+
+        notice "Determining packages to install."
+        local old_IFS="${IFS}"
+        IFS='|'
+        local DepsRegex="${Dependencies[*]}"
+        IFS="${old_IFS}"
+        Command="apt-file search --regexp '/bin/(.*/)?(${DepsRegex})$'"
+        info "Running: ${C["RunningCommand"]}${Command}${NC}"
+        Packages="$(eval "2> /dev/null ${Command}")" ||
+            fatal "Failed to find packages to install.\nFailing command: ${C["FailingCommand"]}${Command}"
+        Packages="$(cut -d : -f 1 <<< "${Packages}")"
+        if [[ -n ${IgnorePackages} ]]; then
+            Packages="$(grep -E -v "\b(${IgnorePackages})\b" <<< "${Packages}")"
+        fi
+        Packages="$(sort -u <<< "${Packages}" | xargs)"
+        if [[ -z ${Packages} ]]; then
+            notice "No packages found to install."
+        else
+            notice "Installing packages."
+            Command="sudo apt-get -y install ${Packages}"
+            info "Running: ${C["RunningCommand"]}${Command}${NC}"
+            eval "${REDIRECT}${Command}" ||
+                fatal "Failed to install dependencies from apt.\nFailing command: ${C["FailingCommand"]}${Command}"
+        fi
     fi
-    notice "Updating package information."
-    Command='sudo apt-file update'
-    info "Running: ${C["RunningCommand"]}${Command}${NC}"
-    eval "${REDIRECT}${Command}" ||
-        fatal "Failed to get updates from apt.\nFailing command: ${C["FailingCommand"]}${Command}"
-
-    notice "Determining packages to install."
-    local old_IFS="${IFS}"
-    IFS='|'
-    local DepsRegex="${COMMAND_DEPS[*]}"
-    IFS="${old_IFS}"
-    Command="apt-file search --regexp '/bin/(.*/)?(${DepsRegex})$'"
-    info "Running: ${C["RunningCommand"]}${Command}${NC}"
-    Packages="$(eval "2> /dev/null ${Command}")" ||
-        fatal "Failed to find packages to install.\nFailing command: ${C["FailingCommand"]}${Command}"
-    Packages="$(grep -E -v "\b(${IgnorePackages})\b" <<< "${Packages}" | cut -d : -f 1 | sort -u | xargs)"
-
-    notice "Installing packages."
-    Command="sudo apt-get -y install ${Packages}"
-    info "Running: ${C["RunningCommand"]}${Command}${NC}"
-    eval "${REDIRECT}${Command}" ||
-        fatal "Failed to install dependencies from apt.\nFailing command: ${C["FailingCommand"]}${Command}"
 }
 test_pm_apt_install() {
     run_script 'pm_apt_repos'
