@@ -36,12 +36,12 @@ pm_apt_install_commands() {
         info "Running: ${C["RunningCommand"]}${Command}${NC}"
         eval "${REDIRECT}${Command}" ||
             fatal "Failed to install '${C["Program"]}apt-file${NC}' from apt.\nFailing command: ${C["FailingCommand"]}${Command}"
-        notice "Updating repositories."
-        Command='sudo apt-get -y update'
-        info "Running: ${C["RunningCommand"]}${Command}${NC}"
-        eval "${REDIRECT}${Command}" ||
-            fatal "Failed to get updates from apt.\nFailing command: ${C["FailingCommand"]}${Command}"
     fi
+    notice "Updating package information."
+    Command='sudo apt-file update'
+    info "Running: ${C["RunningCommand"]}${Command}${NC}"
+    eval "${REDIRECT}${Command}" ||
+        fatal "Failed to get updates from apt.\nFailing command: ${C["FailingCommand"]}${Command}"
 
     notice "Determining packages to install."
     local old_IFS="${IFS}"
