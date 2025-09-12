@@ -33,6 +33,15 @@ SCRIPTPATH=$(cd -P "$(dirname "$(get_scriptname)")" > /dev/null 2>&1 && pwd)
 readonly SCRIPTPATH
 SCRIPTNAME="${SCRIPTPATH}/$(basename "$(get_scriptname)")"
 readonly SCRIPTNAME
+declare -rx COMMAND_DEPS=(
+    "column"
+    "curl"
+    "dialog"
+    "envsubst"
+    "git"
+    "grep"
+    "sed"
+)
 
 # System Information
 ARCH=$(uname -m)

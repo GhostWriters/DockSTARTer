@@ -16,10 +16,9 @@ package_manager_run() {
         run_script "pm_yum_${ACTION}"
     else
         if [[ ${ACTION} == "install" ]]; then
-            local COMMAND_DEPS=("column" "curl" "dialog" "envsubst" "git" "grep" "sed")
-            for COMMAND_DEP in "${COMMAND_DEPS[@]}"; do
-                if [[ -z "$(command -v "${COMMAND_DEP}")" ]]; then
-                    fatal "'${C["Program"]}${COMMAND_DEP}${NC}' is not available. Please install '${C["Program"]}${COMMAND_DEP}${NC}' and try again."
+            for CommandDep in "${COMMAND_DEPS[@]}"; do
+                if [[ -z "$(command -v "${CommandDep}")" ]]; then
+                    fatal "'${C["Program"]}${CommandDep}${NC}' is not available. Please install '${C["Program"]}${CommandDep}${NC}' and try again."
                 fi
             done
         elif [[ ${ACTION} == "install_docker" ]]; then
