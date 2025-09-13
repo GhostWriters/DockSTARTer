@@ -4,18 +4,11 @@ IFS=$'\n\t'
 
 pm_dnf_install_docker() {
     # https://docs.docker.com/install/linux/docker-ce/fedora/
+    local RemovePackages="docker-client docker-client-latest docker-common docker-compose docker-engine docker-engine-selinux docker-latest docker-latest-logrotate docker-logrotate docker-selinux"
     info "Removing conflicting Docker packages."
-    sudo dnf -y remove docker \
-        docker-client \
-        docker-client-latest \
-        docker-common \
-        docker-compose \
-        docker-engine \
-        docker-engine-selinux \
-        docker-latest \
-        docker-latest-logrotate \
-        docker-logrotate \
-        docker-selinux > /dev/null 2>&1 || true
+    local Command="sudo dnf -y remove ${RemovePackages}"
+    info "Running: ${C["RunningCommand"]}${Command}${NC}"
+    eval "${Command}" > /dev/null 2>&1 || true
     run_script 'remove_snap_docker'
     run_script 'get_docker'
 }
