@@ -17,12 +17,12 @@ pm_nala_repos() {
     if vergt "${MINIMUM_APT_TRANSPORT_HTTPS}" "${INSTALLED_APT_TRANSPORT_HTTPS:-0}"; then
         info "Updating repositories (before installing apt-transport-https)."
         COMMAND="sudo nala update"
-        info "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
+        notice "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
         eval "${REDIRECT}${COMMAND}" ||
             fatal "Failed to get updates from nala.\nFailing command: ${C["FailingCommand"]}${COMMAND}"
         info "Installing APT transport for downloading via the HTTP Secure protocol (HTTPS)."
         COMMAND="sudo nala install -y apt-transport-https"
-        info "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
+        notice "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
         eval "${REDIRECT}${COMMAND}" ||
             fatal "Failed to install apt-transport-https from nala.\nFailing command: ${C["FailingCommand"]}${COMMAND}"
     fi
@@ -39,13 +39,13 @@ pm_nala_repos() {
     fi
     info "Updating repositories."
     COMMAND="sudo nala update"
-    info "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
+    notice "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
     eval "${REDIRECT}${COMMAND}" ||
         fatal "Failed to get updates from nala.\nFailing command: ${C["FailingCommand"]}${COMMAND}"
     if vergt "${MINIMUM_LIBSECCOMP2}" "${INSTALLED_LIBSECCOMP2:-0}"; then
         info "Installing libseccomp2 from buster-backports repo."
         COMMAND="sudo nala install -y -t buster-backports libseccomp2"
-        info "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
+        notice "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
         eval "${REDIRECT}${COMMAND}" ||
             fatal "Failed to install libseccomp2 from buster-backports repo.\nFailing command: ${C["FailingCommand"]}${COMMAND}"
     fi

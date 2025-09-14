@@ -20,7 +20,6 @@ pm_nala_install() {
 }
 
 pm_nala_install_commands() {
-    local IgnorePackages='9base'
     local Command=""
 
     local REDIRECT='> /dev/null 2>&1 '
@@ -45,23 +44,31 @@ pm_nala_install_commands() {
         if [[ -z "$(command -v apt-file)" ]]; then
             info "Installing '${C["Program"]}apt-file${NC}'."
             Command="sudo nala install -y apt-file"
-            info "Running: ${C["RunningCommand"]}${Command}${NC}"
+            notice "Running: ${C["RunningCommand"]}${Command}${NC}"
             eval "${REDIRECT}${Command}" ||
                 fatal "Failed to install '${C["Program"]}apt-file${NC}' from apt.\nFailing command: ${C["FailingCommand"]}${Command}"
         fi
         notice "Updating package information."
         Command='sudo apt-file update'
-        info "Running: ${C["RunningCommand"]}${Command}${NC}"
+        notice "Running: ${C["RunningCommand"]}${Command}${NC}"
         eval "${REDIRECT}${Command}" ||
             fatal "Failed to get updates from apt.\nFailing command: ${C["FailingCommand"]}${Command}"
 
         notice "Determining packages to install."
+
+        local IgnorePackages
+        local old_IFS="${IFS}"
+        IFS='|'
+        IgnorePackages="${PM_PACKAGE_BLACKLIST[*]}"
+        IFS="${old_IFS}"
+
         local old_IFS="${IFS}"
         IFS='|'
         local DepsRegex="${Dependencies[*]}"
         IFS="${old_IFS}"
-        Command="apt-file search --regexp '/bin/(.*/)?(${DepsRegex})$'"
-        info "Running: ${C["RunningCommand"]}${Command}${NC}"
+
+        Command="apt-file search --regexp '/bin/(?:${DepsRegex})$'"
+        notice "Running: ${C["RunningCommand"]}${Command}${NC}"
         Packages="$(eval "2> /dev/null ${Command}")" ||
             fatal "Failed to find packages to install.\nFailing command: ${C["FailingCommand"]}${Command}"
         Packages="$(cut -d : -f 1 <<< "${Packages}")"
@@ -74,7 +81,7 @@ pm_nala_install_commands() {
         else
             notice "Installing packages."
             Command="sudo nala install -y ${Packages}"
-            info "Running: ${C["RunningCommand"]}${Command}${NC}"
+            notice "Running: ${C["RunningCommand"]}${Command}${NC}"
             eval "${REDIRECT}${Command}" ||
                 fatal "Failed to install dependencies from nala.\nFailing command: ${C["FailingCommand"]}${Command}"
         fi

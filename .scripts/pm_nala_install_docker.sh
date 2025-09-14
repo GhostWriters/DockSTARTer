@@ -8,7 +8,7 @@ pm_nala_install_docker() {
     local RemovePackages="containerd docker docker-compose docker-engine docker.io runc"
     info "Removing conflicting Docker packages."
     local Command="sudo nala remove -y ${RemovePackages}"
-    info "Running: ${C["RunningCommand"]}${Command}${NC}"
+    notice "Running: ${C["RunningCommand"]}${Command}${NC}"
     eval "${Command}" > /dev/null 2>&1 || true
     run_script 'remove_snap_docker'
     run_script 'get_docker'

@@ -7,7 +7,7 @@ remove_snap_docker() {
         if snap services docker > /dev/null 2>&1; then
             info "Removing snap Docker package."
             local Command="sudo snap remove docker"
-            info "Running: ${C["RunningCommand"]}${Command}${NC}"
+            notice "Running: ${C["RunningCommand"]}${Command}${NC}"
             eval "${Command}" > /dev/null 2>&1 || true
         fi
     fi

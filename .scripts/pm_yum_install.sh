@@ -20,7 +20,6 @@ pm_yum_install() {
 }
 
 pm_yum_install_commands() {
-    local -a IgnorePackages='curl-minimal'
     local Command=""
 
     local REDIRECT='> /dev/null 2>&1 '
@@ -45,23 +44,30 @@ pm_yum_install_commands() {
         if [[ -z "$(command -v repoquery)" ]]; then
             info "Installing '${C["Program"]}repoquery${NC}'."
             Command="sudo yum -y install yum-utils"
-            info "Running: ${C["RunningCommand"]}${Command}${NC}"
+            notice "Running: ${C["RunningCommand"]}${Command}${NC}"
             eval "${REDIRECT}${Command}" ||
                 fatal "Failed to install '${C["Program"]}repoquery${NC}' from yum.\nFailing command: ${C["FailingCommand"]}${Command}"
         fi
         notice "Determining packages to install."
+
+        local IgnorePackages
+        local old_IFS="${IFS}"
+        IFS=','
+        IgnorePackages="${PM_PACKAGE_BLACKLIST[*]}"
+        IFS="${old_IFS}"
+
         local DepsList
         if [[ ${#Dependencies[@]} -eq 1 ]]; then
             DepsList="${Dependencies[0]}"
         else
+            DepsList="$(printf '*/bin/%s ' "${Dependencies[@]}" | xargs)"
             local old_IFS="${IFS}"
             IFS=','
             DepsList="${Dependencies[*]}"
             IFS="${old_IFS}"
-            DepsList="$(eval echo "*/bin/{${DepsList}}")"
         fi
-        Command="repoquery --archlist=${ARCH} --whatprovides ${DepsList} --qf %{name}"
-        info "Running: ${C["RunningCommand"]}${Command}${NC}"
+        Command="repoquery --whatprovides ${DepsList} --qf %{name}"
+        notice "Running: ${C["RunningCommand"]}${Command}${NC}"
         Packages="$(eval "${Command}" 2> /dev/null)" ||
             fatal "Failed to find packages to install.\nFailing command: ${C["FailingCommand"]}${Command}"
         if [[ -n ${IgnorePackages} ]]; then
@@ -73,7 +79,7 @@ pm_yum_install_commands() {
         else
             notice "Installing packages."
             Command="sudo yum -y install ${Packages}"
-            info "Running: ${C["RunningCommand"]}${Command}${NC}"
+            notice "Running: ${C["RunningCommand"]}${Command}${NC}"
             eval "${REDIRECT}${Command}" ||
                 fatal "Failed to install dependencies from yum.\nFailing command: ${C["FailingCommand"]}${Command}"
         fi
