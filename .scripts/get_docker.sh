@@ -26,13 +26,13 @@ command_get_docker() {
     info "Downloading docker install script."
     #shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
     COMMAND="curl -fsSL https://get.docker.com -o '${MKTEMP_GET_DOCKER}'"
-    info "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
+    notice "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
     eval "${COMMAND}" ||
         fatal "Failed to get docker install script.\nFailing command: ${C["FailingCommand"]}${COMMAND}"
     info "Running docker install script."
     #shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
     COMMAND="sh '${MKTEMP_GET_DOCKER}'"
-    info "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
+    notice "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
     eval "${COMMAND}" ||
         fatal "Failed to install docker.\nFailing command: ${C["FailingCommand"]}${COMMAND}"
     #shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
