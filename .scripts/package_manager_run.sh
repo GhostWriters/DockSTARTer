@@ -7,6 +7,7 @@ package_manager_run() {
 
     local -a PackageManagers=(
         apk
+        nala
         apt
         dnf
         pacman
@@ -14,6 +15,7 @@ package_manager_run() {
     )
     local -A PackageManagerCmd=(
         ["apk"]="apk"
+        ["nala"]="nala"
         ["apt"]="apt-get"
         ["dnf"]="dnf"
         ["pacman"]="pacman"
