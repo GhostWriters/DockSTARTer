@@ -20,7 +20,6 @@ pm_dnf_install() {
 }
 
 pm_dnf_install_commands() {
-    local -a IgnorePackages='curl-minimal'
     local Command=""
 
     local REDIRECT='> /dev/null 2>&1 '
@@ -43,18 +42,25 @@ pm_dnf_install_commands() {
         notice "Installing dependencies. Please be patient, this can take a while."
 
         notice "Determining packages to install."
+
+        local IgnorePackages
+        local old_IFS="${IFS}"
+        IFS=','
+        IgnorePackages="${PM_PACKAGE_BLACKLIST[*]}"
+        IFS="${old_IFS}"
+
         local DepsList
         if [[ ${#Dependencies[@]} -eq 1 ]]; then
             DepsList="${Dependencies[0]}"
         else
+            DepsList="$(printf '*/bin/%s ' "${Dependencies[@]}" | xargs)"
             local old_IFS="${IFS}"
             IFS=','
             DepsList="${Dependencies[*]}"
             IFS="${old_IFS}"
-            DepsList="$(eval echo "*/bin/{${DepsList}}")"
         fi
         Command="dnf --exclude \"${IgnorePackages}\" rq ${DepsList} --qf %{name}"
-        info "Running: ${C["RunningCommand"]}${Command}${NC}"
+        notice "Running: ${C["RunningCommand"]}${Command}${NC}"
         Packages="$(eval "${Command}" 2> /dev/null)" ||
             fatal "Failed to find packages to install.\nFailing command: ${C["FailingCommand"]}${Command}"
         Packages="$(xargs <<< "${Packages}")"
@@ -63,7 +69,7 @@ pm_dnf_install_commands() {
         else
             notice "Installing packages."
             Command="sudo dnf -y install ${Packages}"
-            info "Running: ${C["RunningCommand"]}${Command}${NC}"
+            notice "Running: ${C["RunningCommand"]}${Command}${NC}"
             eval "${REDIRECT}${Command}" ||
                 fatal "Failed to install dependencies from dnf.\nFailing command: ${C["FailingCommand"]}${Command}"
         fi

@@ -20,7 +20,6 @@ pm_apk_install() {
 }
 
 pm_apk_install_commands() {
-    local IgnorePackages=''
     local Command=""
 
     local REDIRECT='> /dev/null 2>&1 '
@@ -43,11 +42,18 @@ pm_apk_install_commands() {
         notice "Installing dependencies. Please be patient, this can take a while."
 
         notice "Determining packages to install."
+
+        local IgnorePackages
+        local old_IFS="${IFS}"
+        IFS='|'
+        IgnorePackages="${PM_PACKAGE_BLACKLIST[*]}"
+        IFS="${old_IFS}"
+
         local -a Packages
         local DepsSearch
         DepsSearch="$(printf 'cmd:%s ' "${Dependencies[@]}" | xargs)"
         Command="apk search -xqa ${DepsSearch}"
-        info "Running: ${C["RunningCommand"]}${Command}${NC}"
+        notice "Running: ${C["RunningCommand"]}${Command}${NC}"
         local Packages
         Packages="$(eval "${Command}" 2> /dev/null)" ||
             fatal "Failed to find packages to install.\nFailing command: ${C["FailingCommand"]}${Command}"
@@ -61,7 +67,7 @@ pm_apk_install_commands() {
         else
             notice "Installing packages."
             Command="sudo apk add ${Packages}"
-            info "Running: ${C["RunningCommand"]}${Command}${NC}"
+            notice "Running: ${C["RunningCommand"]}${Command}${NC}"
             eval "${REDIRECT}${Command}" ||
                 fatal "Failed to install dependencies from apk.\nFailing command: ${C["FailingCommand"]}${Command}"
         fi

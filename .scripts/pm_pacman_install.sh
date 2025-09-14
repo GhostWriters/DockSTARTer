@@ -20,7 +20,6 @@ pm_pacman_install() {
 }
 
 pm_pacman_install_commands() {
-    local IgnorePackages=''
     local Command=""
 
     local REDIRECT='> /dev/null 2>&1 '
@@ -45,21 +44,28 @@ pm_pacman_install_commands() {
         if [[ -z "$(command -v pkgfile)" ]]; then
             info "Installing '${C["Program"]}pkgfile${NC}'."
             Command="sudo pacman -Sy --noconfirm pkgfile"
-            info "Running: ${C["RunningCommand"]}${Command}${NC}"
+            notice "Running: ${C["RunningCommand"]}${Command}${NC}"
             eval "${REDIRECT}${Command}" ||
                 fatal "Failed to install '${C["Program"]}pkgfile${NC}' from pacman.\nFailing command: ${C["FailingCommand"]}${Command}"
         fi
         notice "Updating package information."
         Command='sudo pkgfile -u'
-        info "Running: ${C["RunningCommand"]}${Command}${NC}"
+        notice "Running: ${C["RunningCommand"]}${Command}${NC}"
         eval "${REDIRECT}${Command}" ||
             fatal "Failed to get updates from pkgfile.\nFailing command: ${C["FailingCommand"]}${Command}"
 
         notice "Determining packages to install."
+
+        local IgnorePackages
+        local old_IFS="${IFS}"
+        IFS='|'
+        IgnorePackages="${PM_PACKAGE_BLACKLIST[*]}"
+        IFS="${old_IFS}"
+
         local -a Packages
         for Dep in "${Dependencies[@]}"; do
             Command="pkgfile -b ${Dep}"
-            info "Running: ${C["RunningCommand"]}${Command}${NC}"
+            notice "Running: ${C["RunningCommand"]}${Command}${NC}"
             Package="$(eval "${Command}" 2> /dev/null)" ||
                 fatal "Failed to find packages to install.\nFailing command: ${C["FailingCommand"]}${Command}"
             Package="${Package##*/}"
@@ -75,7 +81,7 @@ pm_pacman_install_commands() {
             #shellcheck disable=SC2124 # Assigning an array to a string! Assign as array, or use * instead of @ to concatenate.
             local PackagesString="${Packages[@]}"
             Command="sudo pacman -Sy --noconfirm ${PackagesString}"
-            info "Running: ${C["RunningCommand"]}${Command}${NC}"
+            notice "Running: ${C["RunningCommand"]}${Command}${NC}"
             eval "${REDIRECT}${Command}" ||
                 fatal "Failed to install dependencies from pacman.\nFailing command: ${C["FailingCommand"]}${Command}"
         fi

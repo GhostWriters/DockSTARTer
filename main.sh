@@ -33,7 +33,7 @@ SCRIPTPATH=$(cd -P "$(dirname "$(get_scriptname)")" > /dev/null 2>&1 && pwd)
 readonly SCRIPTPATH
 SCRIPTNAME="${SCRIPTPATH}/$(basename "$(get_scriptname)")"
 readonly SCRIPTNAME
-declare -rx COMMAND_DEPS=(
+declare -arx COMMAND_DEPS=(
     "column"
     "curl"
     "dialog"
@@ -41,6 +41,14 @@ declare -rx COMMAND_DEPS=(
     "git"
     "grep"
     "sed"
+)
+
+declare -arx PM_PACKAGE_BLACKLIST=(
+    "9base"
+    "busybox-grep"
+    "busybox-sed"
+    "curl-minimal"
+    "gitlab-shell"
 )
 
 # System Information
