@@ -9,7 +9,7 @@ pm_nala_clean() {
 
     info "Cleaning up package cache."
     info "Running: ${C["RunningCommand"]}sudo nala clean${NC}"
-    sudo sudo nala clean > /dev/null 2>&1 || fatal "Failed to cleanup cache from nala.\nFailing command: ${C["FailingCommand"]}sudo nala clean"
+    sudo nala clean > /dev/null 2>&1 || fatal "Failed to cleanup cache from nala.\nFailing command: ${C["FailingCommand"]}sudo nala clean"
 }
 
 test_pm_nala_clean() {
