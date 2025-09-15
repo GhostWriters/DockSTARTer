@@ -39,7 +39,7 @@ package_manager_run() {
     run_script "pm_${pm}_${action}"
 
     if [[ ${action} == "install" ]]; then
-        for CommandDep in "${COMMAND_DEPS[@]}"; do
+        for CommandDep in "${PM_COMMAND_DEPS[@]}"; do
             if [[ -z "$(command -v "${CommandDep}")" ]]; then
                 fatal "'${C["Program"]}${CommandDep}${NC}' is not available. Please install '${C["Program"]}${CommandDep}${NC}' and try again."
             fi

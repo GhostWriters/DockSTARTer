@@ -27,7 +27,7 @@ pm_yum_install_commands() {
         REDIRECT='2>&1 '
     fi
 
-    local -a Dependencies=("${COMMAND_DEPS[@]}")
+    local -a Dependencies=("${PM_COMMAND_DEPS[@]}")
     if [[ ${FORCE-} != true ]]; then
         for index in "${!Dependencies[@]}"; do
             if [[ -n $(command -v "${Dependencies[index]}") ]]; then
