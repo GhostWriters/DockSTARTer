@@ -62,16 +62,19 @@ pm_nala_install_commands() {
         IgnorePackages="${PM_PACKAGE_BLACKLIST[*]}"
         IFS="${old_IFS}"
 
-        local old_IFS="${IFS}"
-        IFS='|'
-        local DepsRegex="${Dependencies[*]}"
-        IFS="${old_IFS}"
+        local Packages=''
+        for Dep in "${Dependencies[@]}"; do
+            Command="apt-file search bin/${Dep}"
+            notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+            local NewPackages
+            NewPackages="$(eval "${Command}" 2> /dev/null)" ||
+                fatal "Failed to find packages to install.\nFailing command: ${C["FailingCommand"]}${Command}"
+            NewPackages="$(grep -E "s?bin/${Dep}$" <<< "${NewPackages}")"
+            NewPackages="$(cut -d : -f 1 <<< "${NewPackages}")"
+            Packages+="${NewPackages}"
+            Packages+=$'\n'
+        done
 
-        Command="apt-file search --regexp '/bin/(?:${DepsRegex})$'"
-        notice "Running: ${C["RunningCommand"]}${Command}${NC}"
-        Packages="$(eval "2> /dev/null ${Command}")" ||
-            fatal "Failed to find packages to install.\nFailing command: ${C["FailingCommand"]}${Command}"
-        Packages="$(cut -d : -f 1 <<< "${Packages}")"
         if [[ -n ${IgnorePackages} ]]; then
             Packages="$(grep -E -v "\b(${IgnorePackages})\b" <<< "${Packages}")"
         fi
