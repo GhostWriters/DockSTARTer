@@ -129,8 +129,9 @@ commands_update_self() {
     if [[ -z $* ]]; then
         exec bash "${SCRIPTNAME}" -e
     else
-        exec "$@"
+        exec bash "${SCRIPTNAME}" "$@"
     fi
+    exit
 }
 
 test_update_self() {
