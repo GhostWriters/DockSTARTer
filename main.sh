@@ -2,8 +2,7 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-declare -a ARGS=()
-ARGS=("$@")
+readonly ARGS=("$@")
 
 # Github Token for CI
 if [[ ${CI-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS-} == true ]]; then
