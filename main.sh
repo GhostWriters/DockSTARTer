@@ -226,7 +226,7 @@ cleanup() {
 
     #if [[ ${PROMPT:-CLI} == "GUI" ]]; then
     #    tput reset
-    fi
+    #fi
 
     sudo sh -c "cat ${MKTEMP_LOG:-/dev/null} >> ${SCRIPTPATH}/dockstarter.log" || true
     sudo rm -f "${MKTEMP_LOG-}" || true
