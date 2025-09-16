@@ -224,9 +224,6 @@ cleanup() {
     local -ri EXIT_CODE=$?
     trap - ERR EXIT SIGABRT SIGALRM SIGHUP SIGINT SIGQUIT SIGTERM
 
-    #if [[ ${PROMPT:-CLI} == "GUI" ]]; then
-    #    tput reset
-    #fi
 
     sudo sh -c "cat ${MKTEMP_LOG:-/dev/null} >> ${SCRIPTPATH}/dockstarter.log" || true
     sudo rm -f "${MKTEMP_LOG-}" || true
@@ -239,6 +236,10 @@ cleanup() {
 
     if [[ ${EXIT_CODE} -ne 0 ]]; then
         echo "${APPLICATION_NAME} did not finish running successfully."
+    fi
+    if [[ ${PROMPT:-CLI} == "GUI" ]]; then
+        echo -n "${BS}"
+        #tput reset
     fi
 
     exit ${EXIT_CODE}
