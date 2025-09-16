@@ -322,7 +322,7 @@ init_check_update() {
 }
 
 init() {
-    # Verify the running environment is compaitble
+    # Verify the running environment is compatible
     init_check_system
     # Verify the repo is cloned
     init_check_cloned
