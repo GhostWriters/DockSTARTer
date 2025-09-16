@@ -273,7 +273,7 @@ init_check_cloned() {
 
 init_check_branch() {
     if check_repo; then
-        ds_switch_branch "${ARGS[@]-}"
+        ds_switch_branch
     fi
 }
 
