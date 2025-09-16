@@ -4,6 +4,21 @@ IFS=$'\n\t'
 
 declare -gx PROMPT="CLI"
 
+unset \
+    ADD \
+    COMPOSE \
+    DEBUG \
+    ENVMETHOD ENVAPP ENVVAR ENVARG \
+    FORCE \
+    INSTALL \
+    LIST LISTMETHOD \
+    PRUNE \
+    REMOVE RESET \
+    SELECT STATUS \
+    TEST THEME THEMEMETHOD \
+    UPDATE \
+    VERBOSE VERSION
+
 # Command Line Arguments
 cmdline() {
     while getopts ":-:a:c:efghilpr:Rs:St:T:u:vV:x" OPTION; do
