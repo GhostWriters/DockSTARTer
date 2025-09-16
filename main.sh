@@ -322,15 +322,15 @@ init_check_update() {
 }
 
 init() {
-    # Verify the running environment is compaitble
+    # Verify the running environment is compatible
     init_check_system
     # Verify the repo is cloned
     init_check_cloned
-    # Vefify we are on the correct brancb
+    # Verify we are on the correct brancb
     init_check_branch
-    # Vefify the symlink is created
+    # Verify the symlink is created
     init_check_symlink
-    # Vefify that we are on the latest version
+    # Verify that we are on the latest version
     init_check_update
 }
 
