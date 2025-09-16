@@ -2,8 +2,6 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-readonly ARGS=("$@")
-
 # Github Token for CI
 if [[ ${CI-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS-} == true ]]; then
     readonly GH_HEADER="Authorization: token ${GH_TOKEN}"
@@ -292,7 +290,7 @@ init_check_symlink() {
             warn "Attempting to run ${APPLICATION_NAME} from '${C["RunningCommand"]-}${DS_SYMLINK}${NC-}' location."
             bash "${DS_SYMLINK}" -fvu
             bash "${DS_SYMLINK}" -fvi
-            exec bash "${DS_SYMLINK}" "${ARGS[@]-}"
+            exec bash "${DS_SYMLINK}" "$@"
         fi
     fi
     # Create Symlink
@@ -333,16 +331,16 @@ init() {
     # Vefify we are on the correct brancb
     init_check_branch
     # Vefify the symlink is created
-    init_check_symlink
+    init_check_symlink "$@"
     # Vefify that we are on the latest version
-    init_check_update
+    init_check_update "$@"
 }
 
 # Main Function
 main() {
-    init
-    cmdline "${ARGS[@]-}"
+    init "$@"
+    cmdline "$@"
     process_commands
 }
 
-main
+main "$@"
