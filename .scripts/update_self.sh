@@ -127,9 +127,9 @@ commands_update_self() {
     fi
 
     if [[ -z $* ]]; then
-        env -i exec bash "${SCRIPTNAME}" -e
+        bash "${SCRIPTNAME}" -e
     else
-        env -i exec "$@"
+        exec bash "${SCRIPTNAME}" "$@"
     fi
 }
 
