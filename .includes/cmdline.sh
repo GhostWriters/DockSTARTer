@@ -456,24 +456,6 @@ run_command() {
             result=$?
             ;;
 
-        --theme-list)
-
-            run_script_dialog \
-                "List Themes" \
-                "" \
-                "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" \
-                'theme_list'
-            result=$?
-            ;;
-        --theme-table)
-            run_script_dialog \
-                "List Themes" \
-                "" \
-                "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" \
-                'theme_table'
-            result=$?
-            ;;
-
         -T | --theme)
             local NoticeText
             local ThemeName=${ParamsArray[0]-}
@@ -537,7 +519,9 @@ run_command() {
                 ["--theme-no-borders"]="no"
             )
             run_script 'apply_theme'
-            notice "${CommandNotice["${Command}"]}"
+            if [[ -n ${CommandNotice["${Command}"]-} ]]; then
+                notice "${CommandNotice["${Command}"]}"
+            fi
             run_script 'config_set' \
                 "${CommandVar["${Command}"]}" \
                 "${CommandValue["${Command}"]}" \
@@ -545,26 +529,44 @@ run_command() {
             result=$?
             if use_dialog_box; then
                 run_script 'menu_dialog_example' \
-                    "${CommandTitle["${Command}"]}" \
+                    "${CommandTitle["${Command}"]-}" \
                     "${FullCommandString}"
             fi
             ;;
 
-        -a | --add)
+        -a | --add) ;&
+        -r | --remove) ;&
+        --list) ;&
+        --theme-list) ;&
+        --theme-table)
+            local -A CommandNotice
+            local -A CommandTitle=(
+                ["-a"]="Add Application"
+                ["--add"]="Add Application"
+                ["-r"]="Remove Application"
+                ["--remove"]="Remove Application"
+                ["--list"]="List All Applications"
+                ["--theme-list"]="List Themes"
+                ["--theme-table"]="List Themes"
+            )
+            local -A CommandScript=(
+                ["-a"]="appvars_create"
+                ["--add"]="appvars_create"
+                ["-r"]="appvars_purge"
+                ["--remove"]="appvars_purge"
+                ["--list"]="app_list"
+                ["--theme-list"]="theme_list"
+                ["--theme-table"]="theme_table"
+            )
+            if [[ -n ${CommandNotice["${Command}"]-} ]]; then
+                notice "${CommandNotice["${Command}"]}"
+            fi
             run_script_dialog \
-                "Add Application" \
-                "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}${DC["NC"]-}" \
+                "${CommandTitle["${Command}"]-}" \
+                "${SubTitleCommandString}" \
                 "" \
-                'appvars_create' "${ParamsArray[@]}" && run_script 'env_update'
+                "${CommandScript["${Command}"]}" "${ParamsArray[@]}" && run_script 'env_update'
             result=$?
-            ;;
-
-        -r | --remove)
-            run_script_dialog \
-                "Remove Application" \
-                "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}${DC["NC"]-}" \
-                "" \
-                'appvars_purge' "${ParamsArray[@]}" && run_script 'env_update'
             ;;
 
         *)
@@ -661,14 +663,6 @@ run_command() {
             usage
             ;;
 
-        --list)
-            run_script_dialog \
-                "List All Applications" \
-                "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" \
-                "" \
-                'app_list'
-            ;;
-
         --list-builtin) ;&
         --list-deprecated) ;&
         --list-nondeprecated) ;&
@@ -685,15 +679,6 @@ run_command() {
                 ["--list-disabled"]="List Disabled Applications"
                 ["--list-referenced"]="List Referenced Applications"
             )
-            local -A CommandSubTitle=(
-                ["--list-builtin"]="${SubTitleCommandString}"
-                ["--list-deprecated"]="${SubTitleCommandString}"
-                ["--list-nondeprecated"]="${SubTitleCommandString}"
-                ["--list-added"]="${SubTitleCommandString}"
-                ["--list-enabled"]="${SubTitleCommandString}"
-                ["--list-disabled"]="${SubTitleCommandString}"
-                ["--list-referenced"]="${SubTitleCommandString}"
-            )
             local -A CommandScript=(
                 ["--list-builtin"]="app_list_builtin"
                 ["--list-deprecated"]="app_list_deprecated"
@@ -705,7 +690,7 @@ run_command() {
             )
             run_script_dialog \
                 "${CommandTitle["${Command}"]}" \
-                "${CommandSubTitle["${Command}"]}" \
+                "${SubTitleCommandString}" \
                 "" \
                 'app_nicename' "$(run_script "${CommandScript["${Command}"]}")"
             ;;
