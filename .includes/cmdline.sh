@@ -545,7 +545,7 @@ run_command() {
             if use_dialog_box; then
                 run_script 'menu_dialog_example' \
                     "${CommandTitle["${Command}"]}" \
-                    "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}"
+                    "${FullCommandString}"
             fi
             ;;
 
@@ -585,10 +585,12 @@ run_command() {
             result=$?
             ;;
 
-        --env-get | --env-get-line | env-get-literal)
+        --env-get | --env-get-line | env-get-literal) ;&
+        --env-set)
             # Force variable names to upper case
             ParamsArray=("${ParamsArray[@]^^}")
             ;;&
+
         --env-get | --env-get-lower)
             if use_dialog_box; then
                 for VarName in "${ParamsArray[@]}"; do
@@ -622,11 +624,6 @@ run_command() {
                 done
             fi
             ;;
-
-        --env-set)
-            # Force variable names to upper case
-            ParamsArray[0]="${ParamsArray[0]^^}"
-            ;;&
         --env-set | --env-set-lower)
             run_script 'env_backup'
             run_script 'env_set' "${ParamsArray[0]}" "${ParamsArray[1]}"
