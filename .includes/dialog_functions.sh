@@ -104,8 +104,8 @@ run_script_dialog() {
         local -i DialogBox_FD="${COPROC[1]}"
         local -i result=0
         run_script "${SCRIPTSNAME}" "$@" >&${DialogBox_FD} 2>&1 || result=$?
-        exec {DialogBox_FD}<&-
-        wait ${DialogBox_PID}
+        exec {DialogBox_FD}<&- &> /dev/null || true
+        wait ${DialogBox_PID} &> /dev/null || true
         return ${result}
     else
         run_script "${SCRIPTSNAME}" "$@"
