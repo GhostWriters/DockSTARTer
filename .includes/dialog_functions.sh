@@ -34,6 +34,9 @@ declare -gx BACKTITLE=''
 _dialog_backtitle_() {
     local LeftBackTitle RightBackTitle
     local CleanLeftBackTitle CleanRightBackTitle
+    if [[ -z ${DC["_defined_"]-} ]]; then
+        run_script 'apply_theme'
+    fi
 
     CleanLeftBackTitle="${APPLICATION_NAME}"
     LeftBackTitle="${DC["ApplicationName"]-}${APPLICATION_NAME}${DC["NC"]-}"
@@ -80,6 +83,9 @@ dialog_pipe() {
     local Title=${1:-}
     local SubTitle=${2:-}
     local TimeOut=${3:-0}
+    if [[ -z ${DC["_defined_"]-} ]]; then
+        run_script 'apply_theme'
+    fi
     _dialog_ \
         --title "${DC["Title"]-}${Title}" \
         --timeout "${TimeOut}" \
@@ -95,6 +101,9 @@ run_script_dialog() {
     local SCRIPTSNAME=${4-}
     shift 4
     if use_dialog_box; then
+        if [[ -z ${DC["_defined_"]-} ]]; then
+            run_script 'apply_theme'
+        fi
         # Using the GUI, pipe output to a dialog box
         SubTitle="$(strip_ansi_colors "${SubTitle}")"
         coproc {
@@ -104,8 +113,8 @@ run_script_dialog() {
         local -i DialogBox_FD="${COPROC[1]}"
         local -i result=0
         run_script "${SCRIPTSNAME}" "$@" >&${DialogBox_FD} 2>&1 || result=$?
-        exec {DialogBox_FD}<&-
-        wait ${DialogBox_PID}
+        exec {DialogBox_FD}<&- &> /dev/null || true
+        wait ${DialogBox_PID} &> /dev/null || true
         return ${result}
     else
         run_script "${SCRIPTSNAME}" "$@"
@@ -138,6 +147,9 @@ dialog_info() {
     local Message=${2:-}
     Title="$(strip_ansi_colors "${Title}")"
     Message="$(strip_ansi_colors "${Message}")"
+    if [[ -z ${DC["_defined_"]-} ]]; then
+        run_script 'apply_theme'
+    fi
     _dialog_ \
         --title "${Title}" \
         --infobox "${Message}" \
@@ -150,6 +162,9 @@ dialog_message() {
     local TimeOut=${3:-0}
     Title="$(strip_ansi_colors "${Title}")"
     Message="$(strip_ansi_colors "${Message}")"
+    if [[ -z ${DC["_defined_"]-} ]]; then
+        run_script 'apply_theme'
+    fi
     _dialog_ \
         --title "${Title}" \
         --timeout "${TimeOut}" \
@@ -161,17 +176,26 @@ dialog_error() {
     local Title=${1:-}
     local Message=${2:-}
     local TimeOut=${3:-0}
+    if [[ -z ${DC["_defined_"]-} ]]; then
+        run_script 'apply_theme'
+    fi
     dialog_message "${DC["TitleError"]-}${Title}" "${Message}" "${TimeOut}"
 }
 dialog_warning() {
     local Title=${1:-}
     local Message=${2:-}
     local TimeOut=${3:-0}
+    if [[ -z ${DC["_defined_"]-} ]]; then
+        run_script 'apply_theme'
+    fi
     dialog_message "${DC["TitleWarning"]-}${Title}" "${Message}" "${TimeOut}"
 }
 dialog_success() {
     local Title=${1:-}
     local Message=${2:-}
     local TimeOut=${3:-0}
+    if [[ -z ${DC["_defined_"]-} ]]; then
+        run_script 'apply_theme'
+    fi
     dialog_message "${DC["TitleSuccess"]-}${Title}" "${Message}" "${TimeOut}"
 }

@@ -6,7 +6,6 @@ declare -argx PM_COMMAND_DEPS=(
     "column"
     "curl"
     "dialog"
-    "envsubst"
     "git"
     "grep"
     "sed"

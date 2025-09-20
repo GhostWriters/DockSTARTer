@@ -3,7 +3,8 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 docker_compose() {
-    local ComposeInput=${1-}
+    local ComposeInput
+    ComposeInput="$(xargs <<< "$@")"
     local Command=${ComposeInput%% *}
     local APPNAME AppName
     if [[ ${ComposeInput} == *" "* ]]; then
