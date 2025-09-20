@@ -394,7 +394,7 @@ run_command() {
 
     # Execute the command passed
     local -i result=0
-    if [[ CommandLength -eq 0 || ${Command[0]} =~ -M|--menu ]]; then
+    if [[ CommandLength -eq 0 || ${Command[0]} =~ ^(-M|--menu)$ ]]; then
         # No option, -M, or --menu, load the menu system
         if [[ -z ${DIALOG-} ]]; then
             error \
@@ -409,7 +409,7 @@ run_command() {
         return
     fi
 
-    case "${Command[0]-}" in
+    case "${Command[0]}" in
         -t | --test)
             run_script 'apply_theme'
             run_test "${Command[@]:1}"
@@ -488,70 +488,52 @@ run_command() {
         --theme-scrollbar | --theme-no-scrollbar) ;&
         --theme-lines | --theme-no-lines) ;&
         --theme-borders | --theme-no-borders)
+            local -A ThemeCommandVar=(
+                ["--theme-shadows"]="Shadow"
+                ["--theme-no-shadows"]="Shadow"
+                ["--theme-scrollbar"]="Scrollbar"
+                ["--theme-no-scrollbar"]="Scrollbar"
+                ["--theme-lines"]="LineCharacters"
+                ["--theme-no-lines"]="LineCharacters"
+                ["--theme-borders"]="Borders"
+                ["--theme-no-borders"]="Borders"
+            )
+            local -A ThemeCommandValue=(
+                ["--theme-shadows"]="yes"
+                ["--theme-no-shadows"]="no"
+                ["--theme-scrollbar"]="yes"
+                ["--theme-no-scrollbar"]="no"
+                ["--theme-lines"]="yes"
+                ["--theme-no-lines"]="no"
+                ["--theme-borders"]="yes"
+                ["--theme-no-borders"]="no"
+            )
+            local -A ThemeCommandNotice=(
+                ["--theme-shadows"]="Turning on GUI shadows."
+                ["--theme-no-shadows"]="Turning off GUI shadows."
+                ["--theme-scrollbar"]="Turning on GUI scrollbars."
+                ["--theme-no-scrollbar"]="Turning off GUI scrollbars."
+                ["--theme-lines"]="Turning on GUI line drawing characters."
+                ["--theme-no-lines"]="Turning off GUI line drawing characters."
+                ["--theme-borders"]="Turning on GUI borders."
+                ["--theme-no-borders"]="Turning off GUI borders."
+            )
+            local -A ThemeCommandTitle=(
+                ["--theme-shadows"]="Turned on shadows"
+                ["--theme-no-shadows"]="Turned off shadows"
+                ["--theme-scrollbar"]="Turned on scrollbars"
+                ["--theme-no-scrollbar"]="Turned off scrollbars"
+                ["--theme-lines"]="Turned on line drawing"
+                ["--theme-no-lines"]="Turned off line drawing"
+                ["--theme-borders"]="Turned on borders"
+                ["--theme-no-borders"]="Turned off borders"
+            )
             run_script 'apply_theme'
-            ;;&
-        --theme-shadows)
-            notice "Turning on GUI shadows."
-            run_script 'config_set' Shadow yes "${MENU_INI_FILE}"
+            notice "${ThemeCommandNotice["${Command[0]}"]}"
+            run_script 'config_set' "${ThemeCommandVar["${Command[0]}"]}" "${ThemeCommandValue["${Command[0]}"]}"
             result=$?
             if use_dialog_box; then
-                run_script 'menu_dialog_example' "Turned on shadows" "${FullCommandString}"
-            fi
-            ;;
-        --theme-no-shadow)
-            notice "Turning off GUI shadows."
-            run_script 'config_set' Shadow no "${MENU_INI_FILE}"
-            result=$?
-            if use_dialog_box; then
-                run_script 'menu_dialog_example' "Turned off shadows" "${FullCommandString}"
-            fi
-            ;;
-        --theme-scrollbar)
-            notice "Turning on GUI scrollbars."
-            run_script 'config_set' Scrollbar yes "${MENU_INI_FILE}"
-            result=$?
-            if use_dialog_box; then
-                run_script 'menu_dialog_example' "Turned on scrollbars" "${FullCommandString}"
-            fi
-            ;;
-        --theme-no-scrollbar)
-            notice "Turning off GUI scrollbars."
-            run_script 'config_set' Scrollbar no "${MENU_INI_FILE}"
-            result=$?
-            if use_dialog_box; then
-                run_script 'menu_dialog_example' "Turned off scrollbars" "${FullCommandString}"
-            fi
-            ;;
-        --theme-lines)
-            notice "Turning on GUI line drawing characters."
-            run_script 'config_set' LineCharacters yes "${MENU_INI_FILE}"
-            result=$?
-            if use_dialog_box; then
-                run_script 'menu_dialog_example' "Turned on line drawing" "${FullCommandString}"
-            fi
-            ;;
-        --theme-no-lines)
-            notice "Turning off GUI line drawing characters."
-            run_script 'config_set' LineCharacters no "${MENU_INI_FILE}"
-            result=$?
-            if use_dialog_box; then
-                run_script 'menu_dialog_example' "Turned off line drawing" "${FullCommandString}"
-            fi
-            ;;
-        --theme-borders)
-            notice "Turning on GUI borders."
-            run_script 'config_set' Borders yes "${MENU_INI_FILE}"
-            result=$?
-            if use_dialog_box; then
-                run_script 'menu_dialog_example' "Turned on borders" "${FullCommandString}"
-            fi
-            ;;
-        --theme-no-borders)
-            notice "Turning off GUI borders."
-            result=$?
-            run_script 'config_set' Borders no "${MENU_INI_FILE}"
-            if use_dialog_box; then
-                run_script 'menu_dialog_example' "Turned off borders" "${FullCommandString}"
+                run_script 'menu_dialog_example' "${ThemeCommandTitle["${Command[0]}"]}" "${FullCommandString}"
             fi
             ;;
 
