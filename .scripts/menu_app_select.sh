@@ -318,7 +318,7 @@ show_gauge() {
 close_gauge() {
     # Signal the dialog gauge and progress windows to terminate
     kill -SIGTERM "${Dialog_PID}" &> /dev/null || true
-    wait "${Dialog_PID}"
+    wait "${Dialog_PID}" &> /dev/null || true
     # Remove the communication pipes to dialog
     exec {GaugePipe_fd}>&- &> /dev/null || true
     rm "${GaugePipe}" &> /dev/null || true

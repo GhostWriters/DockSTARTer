@@ -118,6 +118,7 @@ declare -Agr C=( # Pre-defined colors
     ["User"]="${F[C]}"
     ["URL"]="${F[C]}${UL}"
     ["UserCommand"]="${F[Y]}${BD}"
+    ["UserCommandError"]="${F[R]}${UL}"
     ["Var"]="${F[M]}"
     ["Version"]="${F[C]}"
     ["Yes"]="${F[G]}"
@@ -140,7 +141,7 @@ log() {
             # Stderr is not being redirected, output with color
             printf '%b\n' "${MESSAGE-}" >&2
         else
-            # Stderr is being redirected, output without colorr
+            # Stderr is being redirected, output without color
             printf '%b\n' "${STRIPPED_MESSAGE-}" >&2
         fi
     fi
@@ -338,7 +339,6 @@ init() {
 main() {
     init
     cmdline "${ARGS[@]-}"
-    process_commands
 }
 
 main
