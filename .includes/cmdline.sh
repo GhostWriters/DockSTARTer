@@ -390,6 +390,8 @@ run_command() {
     # Set the flags passed
     set_flags "${Flags[@]}"
 
+    local -a ParamArray=("${Command[@]:1}")
+
     # Execute the command passed
     local -i result=0
     if [[ CommandLength -eq 0 || ${Command[0]} =~ -M|--menu ]]; then
@@ -425,6 +427,7 @@ run_command() {
             run_script 'run_install'
             result=$?
             ;;
+
         -u | --update)
             if [[ -z ${Command[1]-} ]]; then
                 run_script 'update_self' "" "${RestOfArgs[@]}" || result=$?
@@ -434,6 +437,7 @@ run_command() {
                 result=$?
             fi
             ;;
+
         -V | --version)
             local Branch="${Command[1]-}"
             if [[ -z ${Branch} ]]; then
@@ -446,10 +450,12 @@ run_command() {
                 echo "${APPLICATION_NAME} [$(ds_version "${Branch}")]"
             fi
             ;;
+
         -p | --prune)
             run_script 'docker_prune'
             result=$?
             ;;
+
         --theme-list)
             run_script_dialog "List Themes" "" "${FullCommandString}" \
                 'theme_list'
@@ -460,6 +466,7 @@ run_command() {
                 'theme_table'
             result=$?
             ;;
+
         -T | --theme)
             local NoticeText
             if [[ -n ${Command[1]-} ]]; then
@@ -476,6 +483,7 @@ run_command() {
                 result=$?
             fi
             ;;
+
         --theme-shadows | --theme-no-shadows) ;&
         --theme-scrollbar | --theme-no-scrollbar) ;&
         --theme-lines | --theme-no-lines) ;&
@@ -546,6 +554,7 @@ run_command() {
                 run_script 'menu_dialog_example' "Turned off borders" "${FullCommandString}"
             fi
             ;;
+
         -a | --add)
             run_script_dialog \
                 "Add Application" \
@@ -554,6 +563,7 @@ run_command() {
                 'appvars_create' "${Command[@]:1}" && run_script 'env_update'
             result=$?
             ;;
+
         -r | --remove)
             run_script_dialog \
                 "Remove Application" \
@@ -571,19 +581,64 @@ run_command() {
             run_script 'docker_compose' "${Command[@]:1}"
             result=$?
             ;;
+
         -e | --env)
             run_script_dialog "${DC["TitleSuccess"]-}Creating environment variables for added apps" "Please be patient, this can take a while.\n${DC["CommandLine"]-} ${FullCommandString}" "" \
                 'appvars_create_all'
             result=$?
             ;;
+
+        --env-get | --env-get-line | env-get-literal)
+            # Force variable names to upper case
+            ParamArray=("${ParamArray[@]^^}")
+            ;;&
+        --env-get | --env-get-lower)
+            if use_dialog_box; then
+                for VarName in "${ParamArray[@]}"; do
+                    run_script 'env_get' "${VarName}"
+                done |& dialog_pipe "Get Value of Variable" "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" ""
+            else
+                for VarName in "${ParamArray[@]}"; do
+                    run_script 'env_get' "${VarName}"
+                done
+            fi
+            ;;
+        --env-get-line | --env-get-lower-line)
+            if use_dialog_box; then
+                for VarName in "${ParamArray[@]}"; do
+                    run_script 'env_get_line' "${VarName}"
+                done |& dialog_pipe "Get Line of Variable" "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" ""
+            else
+                for VarName in "${ParamArray[@]}"; do
+                    run_script 'env_get_line' "${VarName}"
+                done
+            fi
+            ;;
+        --env-get-literal | --env-get-lower-literal)
+            if use_dialog_box; then
+                for VarName in "${ParamArray[@]}"; do
+                    run_script 'env_get_literal' "${VarName}"
+                done |& dialog_pipe "Get Literal Value of Variable" "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" ""
+            else
+                for VarName in "${ParamArray[@]}"; do
+                    run_script 'env_get_literal' "${VarName}"
+                done
+            fi
+            ;;
+
+        --env-set)
+            # Force variable names to upper case
+            ParamArray[0]="${ParamArray[0]^^}"
+            ;;&
+        --env-set | --env-set-lower)
+            run_script 'env_backup'
+            run_script 'env_set' "${ParamArray[0]}" "${ParamArray[1]}"
+            ;;
         --env-get=* | --env-get-lower=*) ;;&
         --env-get-line=* | --env-get-lower-line=*) ;;&
         --env-get-literal=* | --env-get-lower-literal=*) ;;&
-        --env-set=* | --env-set-lowe=*r) ;;&
-        --env-get | --env-get-lower) ;;&
-        --env-get-line | --env-get-lower-line) ;;&
-        --env-get-literal | --env-get-lower-literal) ;;&
-        --env-set | --env-set-lower) ;;&
+        --env-set=* | --env-set-lower=*) ;;&
+
         --env-appvars)
             if use_dialog_box; then
                 for AppName in $(xargs -n1 <<< "${Command[@]:1}"); do
@@ -606,13 +661,16 @@ run_command() {
                 done
             fi
             ;;
+
         -h | --help)
             usage
             ;;
+
         --list)
             run_script_dialog "List All Applications" "" "${FullCommandString}" \
                 'app_list'
             ;;
+
         --list-builtin)
             run_script_dialog "List Builtin Applications" "" "${FullCommandString}" \
                 'app_nicename' "$(run_script 'app_list_builtin')"
@@ -641,10 +699,12 @@ run_command() {
             run_script_dialog "List Referenced Applications" "" "${FullCommandString}" \
                 'app_nicename' "$(run_script 'app_list_referenced')"
             ;;
+
         -R | --reset)
             notice "Resetting ${APPLICATION_NAME} to process all actions."
             run_script 'reset_needs'
             ;;
+
         -S | --select)
             if [[ -z ${DIALOG-} ]]; then
                 error \
@@ -658,10 +718,12 @@ run_command() {
             run_script 'menu_app_select'
             result=$?
             ;;
+
         -s | --status)
             run_script_dialog "Application Status" "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" "" \
                 'app_status' "${Command[@]:1}"
             ;;
+
         --status-enable)
             run_script 'enable_app' "${Command[@]:1}"
             run_script 'env_update'
@@ -670,6 +732,7 @@ run_command() {
             run_script 'disable_app' "${Command[@]:1}"
             run_script 'env_update'
             ;;
+
         *)
             fatal \
                 "Option '${C["UserCommand"]-}${Command[0]}${NC-}' not implemented.\n" \
