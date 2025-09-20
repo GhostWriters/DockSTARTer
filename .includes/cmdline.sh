@@ -354,18 +354,18 @@ unset_flags() {
 }
 
 run_command() {
-    # run_command (int FlagsLength, int CommandLength, array Flags, array Command, array RestOfArgs)
+    # run_command (int FlagsLength, int CommandLength, array Flags, array CommandArray, array RestOfArgs)
     local -i FlagsLength=${1}
     local -i CommandLength=${2}
     shift 2
 
-    # Split the arguments in FullCommand (flags + command), Flags, Command, and the remaining arguments
+    # Split the arguments in FullCommand (flags + command), Flags, CommandArray, and the remaining arguments
     local -i FullCommandLength
     FullCommandLength=$((FlagsLength + CommandLength))
     local -a FullCommand=("${@:1:FullCommandLength}")
     local -a Flags=("${@:1:FlagsLength}")
     shift ${FlagsLength}
-    local -a Command=("${@:1:CommandLength}")
+    local -a CommandArray=("${@:1:CommandLength}")
     shift ${CommandLength}
     local -a RestOfArgs=("$@")
     local FullCommandString=''
@@ -386,15 +386,15 @@ run_command() {
         # Prepend the application command, and remove any trailing space.
         FullCommandString="${APPLICATION_COMMAND} ${FullCommandString% }"
     fi
+    local Command="${CommandArray[0]-}"
+    local -a ParamsArray=("${CommandArray[@]:1}")
 
     # Set the flags passed
     set_flags "${Flags[@]}"
 
-    local -a ParamArray=("${Command[@]:1}")
-
     # Execute the command passed
     local -i result=0
-    if [[ CommandLength -eq 0 || ${Command[0]} =~ ^(-M|--menu)$ ]]; then
+    if [[ -z ${Command} || ${Command} =~ ^(-M|--menu)$ ]]; then
         # No option, -M, or --menu, load the menu system
         if [[ -z ${DIALOG-} ]]; then
             error \
@@ -409,10 +409,10 @@ run_command() {
         return
     fi
 
-    case "${Command[0]}" in
+    case "${Command}" in
         -t | --test)
             run_script 'apply_theme'
-            run_test "${Command[@]:1}"
+            run_test "${ParamsArray[@]}"
             result=$?
             ;;
 
@@ -429,17 +429,17 @@ run_command() {
             ;;
 
         -u | --update)
-            if [[ -z ${Command[1]-} ]]; then
+            if [[ -z ${CommandArray[1]-} ]]; then
                 run_script 'update_self' "" "${RestOfArgs[@]}" || result=$?
                 result=$?
             else
-                run_script 'update_self' "${Command[1]}" "${RestOfArgs[@]}" || result=$?
+                run_script 'update_self' "${ParamsArray[0]}" "${RestOfArgs[@]}" || result=$?
                 result=$?
             fi
             ;;
 
         -V | --version)
-            local Branch="${Command[1]-}"
+            local Branch="${ParamsArray[0]-}"
             if [[ -z ${Branch} ]]; then
                 echo "${APPLICATION_NAME} [$(ds_version)]"
             else
@@ -457,29 +457,30 @@ run_command() {
             ;;
 
         --theme-list)
-            run_script_dialog "List Themes" "" "${FullCommandString}" \
+            run_script_dialog "List Themes" "" "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" \
                 'theme_list'
             result=$?
             ;;
         --theme-table)
-            run_script_dialog "List Themes" "" "${FullCommandString}" \
+            run_script_dialog "List Themes" "" "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" \
                 'theme_table'
             result=$?
             ;;
 
         -T | --theme)
             local NoticeText
-            if [[ -n ${Command[1]-} ]]; then
-                NoticeText="Applying ${APPLICATION_NAME} theme '${C["Theme"]-}${Command[1]}${NC-}'"
+            local ThemeName=${ParamsArray[0]-}
+            if [[ -n ${ThemeName} ]]; then
+                NoticeText="Applying ${APPLICATION_NAME} theme '${C["Theme"]-}${ThemeName}${NC-}'"
             else
                 NoticeText="Re-applying ${APPLICATION_NAME} theme '${C["Theme"]-}$(run_script 'theme_name')${NC-}'"
             fi
             notice "${NoticeText}"
             if use_dialog_box; then
-                run_script 'apply_theme' "${Command[1]-}" && run_script 'menu_dialog_example' "" "${FullCommandString}"
+                run_script 'apply_theme' "${ThemeName}" && run_script 'menu_dialog_example' "" "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}"
                 result=$?
             else
-                run_script 'apply_theme' "${Command[1]-}"
+                run_script 'apply_theme' "${ThemeName}"
                 result=$?
             fi
             ;;
@@ -488,26 +489,6 @@ run_command() {
         --theme-scrollbar | --theme-no-scrollbar) ;&
         --theme-lines | --theme-no-lines) ;&
         --theme-borders | --theme-no-borders)
-            local -A ThemeCommandVar=(
-                ["--theme-shadows"]="Shadow"
-                ["--theme-no-shadows"]="Shadow"
-                ["--theme-scrollbar"]="Scrollbar"
-                ["--theme-no-scrollbar"]="Scrollbar"
-                ["--theme-lines"]="LineCharacters"
-                ["--theme-no-lines"]="LineCharacters"
-                ["--theme-borders"]="Borders"
-                ["--theme-no-borders"]="Borders"
-            )
-            local -A ThemeCommandValue=(
-                ["--theme-shadows"]="yes"
-                ["--theme-no-shadows"]="no"
-                ["--theme-scrollbar"]="yes"
-                ["--theme-no-scrollbar"]="no"
-                ["--theme-lines"]="yes"
-                ["--theme-no-lines"]="no"
-                ["--theme-borders"]="yes"
-                ["--theme-no-borders"]="no"
-            )
             local -A ThemeCommandNotice=(
                 ["--theme-shadows"]="Turning on GUI shadows."
                 ["--theme-no-shadows"]="Turning off GUI shadows."
@@ -528,12 +509,32 @@ run_command() {
                 ["--theme-borders"]="Turned on borders"
                 ["--theme-no-borders"]="Turned off borders"
             )
+            local -A ThemeCommandVar=(
+                ["--theme-shadows"]="Shadow"
+                ["--theme-no-shadows"]="Shadow"
+                ["--theme-scrollbar"]="Scrollbar"
+                ["--theme-no-scrollbar"]="Scrollbar"
+                ["--theme-lines"]="LineCharacters"
+                ["--theme-no-lines"]="LineCharacters"
+                ["--theme-borders"]="Borders"
+                ["--theme-no-borders"]="Borders"
+            )
+            local -A ThemeCommandValue=(
+                ["--theme-shadows"]="yes"
+                ["--theme-no-shadows"]="no"
+                ["--theme-scrollbar"]="yes"
+                ["--theme-no-scrollbar"]="no"
+                ["--theme-lines"]="yes"
+                ["--theme-no-lines"]="no"
+                ["--theme-borders"]="yes"
+                ["--theme-no-borders"]="no"
+            )
             run_script 'apply_theme'
-            notice "${ThemeCommandNotice["${Command[0]}"]}"
-            run_script 'config_set' "${ThemeCommandVar["${Command[0]}"]}" "${ThemeCommandValue["${Command[0]}"]}"
+            notice "${ThemeCommandNotice["${Command}"]}"
+            run_script 'config_set' "${ThemeCommandVar["${Command}"]}" "${ThemeCommandValue["${Command}"]}"
             result=$?
             if use_dialog_box; then
-                run_script 'menu_dialog_example' "${ThemeCommandTitle["${Command[0]}"]}" "${FullCommandString}"
+                run_script 'menu_dialog_example' "${ThemeCommandTitle["${Command}"]}" "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}"
             fi
             ;;
 
@@ -542,7 +543,7 @@ run_command() {
                 "Add Application" \
                 "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}${DC["NC"]-}" \
                 "" \
-                'appvars_create' "${Command[@]:1}" && run_script 'env_update'
+                'appvars_create' "${ParamsArray[@]}" && run_script 'env_update'
             result=$?
             ;;
 
@@ -551,7 +552,7 @@ run_command() {
                 "Remove Application" \
                 "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}${DC["NC"]-}" \
                 "" \
-                'appvars_purge' "${Command[@]:1}" && run_script 'env_update'
+                'appvars_purge' "${ParamsArray[@]}" && run_script 'env_update'
             ;;
 
         *)
@@ -560,7 +561,7 @@ run_command() {
             ;;&
 
         -c | --compose)
-            run_script 'docker_compose' "${Command[@]:1}"
+            run_script 'docker_compose' "${ParamsArray[@]}"
             result=$?
             ;;
 
@@ -572,37 +573,37 @@ run_command() {
 
         --env-get | --env-get-line | env-get-literal)
             # Force variable names to upper case
-            ParamArray=("${ParamArray[@]^^}")
+            ParamsArray=("${ParamsArray[@]^^}")
             ;;&
         --env-get | --env-get-lower)
             if use_dialog_box; then
-                for VarName in "${ParamArray[@]}"; do
+                for VarName in "${ParamsArray[@]}"; do
                     run_script 'env_get' "${VarName}"
                 done |& dialog_pipe "Get Value of Variable" "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" ""
             else
-                for VarName in "${ParamArray[@]}"; do
+                for VarName in "${ParamsArray[@]}"; do
                     run_script 'env_get' "${VarName}"
                 done
             fi
             ;;
         --env-get-line | --env-get-lower-line)
             if use_dialog_box; then
-                for VarName in "${ParamArray[@]}"; do
+                for VarName in "${ParamsArray[@]}"; do
                     run_script 'env_get_line' "${VarName}"
                 done |& dialog_pipe "Get Line of Variable" "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" ""
             else
-                for VarName in "${ParamArray[@]}"; do
+                for VarName in "${ParamsArray[@]}"; do
                     run_script 'env_get_line' "${VarName}"
                 done
             fi
             ;;
         --env-get-literal | --env-get-lower-literal)
             if use_dialog_box; then
-                for VarName in "${ParamArray[@]}"; do
+                for VarName in "${ParamsArray[@]}"; do
                     run_script 'env_get_literal' "${VarName}"
                 done |& dialog_pipe "Get Literal Value of Variable" "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" ""
             else
-                for VarName in "${ParamArray[@]}"; do
+                for VarName in "${ParamsArray[@]}"; do
                     run_script 'env_get_literal' "${VarName}"
                 done
             fi
@@ -610,11 +611,11 @@ run_command() {
 
         --env-set)
             # Force variable names to upper case
-            ParamArray[0]="${ParamArray[0]^^}"
+            ParamsArray[0]="${ParamsArray[0]^^}"
             ;;&
         --env-set | --env-set-lower)
             run_script 'env_backup'
-            run_script 'env_set' "${ParamArray[0]}" "${ParamArray[1]}"
+            run_script 'env_set' "${ParamsArray[0]}" "${ParamsArray[1]}"
             ;;
         --env-get=* | --env-get-lower=*) ;;&
         --env-get-line=* | --env-get-lower-line=*) ;;&
@@ -623,22 +624,22 @@ run_command() {
 
         --env-appvars)
             if use_dialog_box; then
-                for AppName in $(xargs -n1 <<< "${Command[@]:1}"); do
+                for AppName in $(xargs -n1 <<< "${ParamsArray[0]}"); do
                     run_script 'appvars_list' "${AppName}"
                 done |& dialog_pipe "Variables for Application" "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" ""
             else
-                for AppName in $(xargs -n1 <<< "${Command[@]:1}"); do
+                for AppName in $(xargs -n1 <<< "${ParamsArray[0]}"); do
                     run_script 'appvars_list' "${AppName}"
                 done
             fi
             ;;
         --env-appvars-lines)
             if use_dialog_box; then
-                for AppName in $(xargs -n1 <<< "${Command[@]:1}"); do
+                for AppName in $(xargs -n1 <<< "${ParamsArray[0]}"); do
                     run_script 'appvars_lines' "${AppName}"
                 done |& dialog_pipe "Variables for Application" "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" ""
             else
-                for AppName in $(xargs -n1 <<< "${Command[@]:1}"); do
+                for AppName in $(xargs -n1 <<< "${ParamsArray[0]}"); do
                     run_script 'appvars_list' "${AppName}"
                 done
             fi
@@ -649,37 +650,37 @@ run_command() {
             ;;
 
         --list)
-            run_script_dialog "List All Applications" "" "${FullCommandString}" \
+            run_script_dialog "List All Applications" "" "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" \
                 'app_list'
             ;;
 
-        --list-builtin)
-            run_script_dialog "List Builtin Applications" "" "${FullCommandString}" \
-                'app_nicename' "$(run_script 'app_list_builtin')"
-            ;;
-        --list-deprecated)
-            run_script_dialog "List Deprecated Applications" "" "${FullCommandString}" \
-                'app_nicename' "$(run_script 'app_list_deprecated')"
-            ;;
-        --list-nondeprecated)
-            run_script_dialog "List Non-Deprecated Applications" "" "${FullCommandString}" \
-                'app_nicename' "$(run_script 'app_list_nondeprecated')"
-            ;;
-        --list-added)
-            run_script_dialog "List Added Applications" "" "${FullCommandString}" \
-                'app_nicename' "$(run_script 'app_list_added')"
-            ;;
-        --list-enabled)
-            run_script_dialog "List Enabled Applications" "" "${FullCommandString}" \
-                'app_nicename' "$(run_script 'app_list_enabled')"
-            ;;
-        --list-disabled)
-            run_script_dialog "List Disabled Applications" "" "${FullCommandString}" \
-                'app_nicename' "$(run_script 'app_list_disabled')"
-            ;;
+        --list-builtin) ;&
+        --list-deprecated) ;&
+        --list-nondeprecated) ;&
+        --list-added) ;&
+        --list-enabled) ;&
+        --list-disabled) ;&
         --list-referenced)
-            run_script_dialog "List Referenced Applications" "" "${FullCommandString}" \
-                'app_nicename' "$(run_script 'app_list_referenced')"
+            local -A ListCommandTitle=(
+                ["--list-builtin"]="List Builtin Applications"
+                ["--list-deprecated"]="List Deprecated Applications"
+                ["--list-nondeprecated"]="List Non-Deprecated Applications"
+                ["--list-added"]="List Added Applications"
+                ["--list-enabled"]="List Enabled Applications"
+                ["--list-disabled"]="List Disabled Applications"
+                ["--list-referenced"]="List Referenced Applications"
+            )
+            local -A ListCommandScript=(
+                ["--list-builtin"]="app_list_builtin"
+                ["--list-deprecated"]="app_list_deprecated"
+                ["--list-nondeprecated"]="app_list_nondeprecated"
+                ["--list-added"]="app_list_added"
+                ["--list-enabled"]="app_list_enabled"
+                ["--list-disabled"]="app_list_disabled"
+                ["--list-referenced"]="app_list_referenced"
+            )
+            run_script_dialog "${ListCommandTitle["${Command}"]}" "" "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" \
+                'app_nicename' "$(run_script "${ListCommandScript["${Command}"]}")"
             ;;
 
         -R | --reset)
@@ -703,21 +704,21 @@ run_command() {
 
         -s | --status)
             run_script_dialog "Application Status" "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" "" \
-                'app_status' "${Command[@]:1}"
+                'app_status' "${ParamsArray[@]}"
             ;;
 
         --status-enable)
-            run_script 'enable_app' "${Command[@]:1}"
+            run_script 'enable_app' "${ParamsArray[@]}"
             run_script 'env_update'
             ;;
         --status-disable)
-            run_script 'disable_app' "${Command[@]:1}"
+            run_script 'disable_app' "${ParamsArray[@]}"
             run_script 'env_update'
             ;;
 
         *)
             fatal \
-                "Option '${C["UserCommand"]-}${Command[0]}${NC-}' not implemented.\n" \
+                "Option '${C["UserCommand"]-}${CommandArray[0]}${NC-}' not implemented.\n" \
                 "Please let the dev know."
             ;;
     esac
