@@ -477,7 +477,7 @@ run_command() {
             fi
             notice "${NoticeText}"
             if use_dialog_box; then
-                run_script 'apply_theme' "${ThemeName}" && run_script 'menu_dialog_example' "" "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}"
+                run_script 'apply_theme' "${ThemeName}" && run_script 'menu_dialog_example' "" "${FullCommandString}"
                 result=$?
             else
                 run_script 'apply_theme' "${ThemeName}"
@@ -489,7 +489,7 @@ run_command() {
         --theme-scrollbar | --theme-no-scrollbar) ;&
         --theme-lines | --theme-no-lines) ;&
         --theme-borders | --theme-no-borders)
-            local -A ThemeCommandNotice=(
+            local -A CommandNotice=(
                 ["--theme-shadows"]="Turning on GUI shadows."
                 ["--theme-no-shadows"]="Turning off GUI shadows."
                 ["--theme-scrollbar"]="Turning on GUI scrollbars."
@@ -499,7 +499,7 @@ run_command() {
                 ["--theme-borders"]="Turning on GUI borders."
                 ["--theme-no-borders"]="Turning off GUI borders."
             )
-            local -A ThemeCommandTitle=(
+            local -A CommandTitle=(
                 ["--theme-shadows"]="Turned on shadows"
                 ["--theme-no-shadows"]="Turned off shadows"
                 ["--theme-scrollbar"]="Turned on scrollbars"
@@ -509,7 +509,7 @@ run_command() {
                 ["--theme-borders"]="Turned on borders"
                 ["--theme-no-borders"]="Turned off borders"
             )
-            local -A ThemeCommandVar=(
+            local -A CommandVar=(
                 ["--theme-shadows"]="Shadow"
                 ["--theme-no-shadows"]="Shadow"
                 ["--theme-scrollbar"]="Scrollbar"
@@ -519,7 +519,7 @@ run_command() {
                 ["--theme-borders"]="Borders"
                 ["--theme-no-borders"]="Borders"
             )
-            local -A ThemeCommandValue=(
+            local -A CommandValue=(
                 ["--theme-shadows"]="yes"
                 ["--theme-no-shadows"]="no"
                 ["--theme-scrollbar"]="yes"
@@ -530,11 +530,16 @@ run_command() {
                 ["--theme-no-borders"]="no"
             )
             run_script 'apply_theme'
-            notice "${ThemeCommandNotice["${Command}"]}"
-            run_script 'config_set' "${ThemeCommandVar["${Command}"]}" "${ThemeCommandValue["${Command}"]}"
+            notice "${CommandNotice["${Command}"]}"
+            run_script 'config_set' \
+                "${CommandVar["${Command}"]}" \
+                "${CommandValue["${Command}"]}" \
+                "${MENU_INI_FILE}"
             result=$?
             if use_dialog_box; then
-                run_script 'menu_dialog_example' "${ThemeCommandTitle["${Command}"]}" "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}"
+                run_script 'menu_dialog_example' \
+                    "${CommandTitle["${Command}"]}" \
+                    "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}"
             fi
             ;;
 
@@ -661,7 +666,7 @@ run_command() {
         --list-enabled) ;&
         --list-disabled) ;&
         --list-referenced)
-            local -A ListCommandTitle=(
+            local -A CommandTitle=(
                 ["--list-builtin"]="List Builtin Applications"
                 ["--list-deprecated"]="List Deprecated Applications"
                 ["--list-nondeprecated"]="List Non-Deprecated Applications"
@@ -670,7 +675,7 @@ run_command() {
                 ["--list-disabled"]="List Disabled Applications"
                 ["--list-referenced"]="List Referenced Applications"
             )
-            local -A ListCommandScript=(
+            local -A CommandScript=(
                 ["--list-builtin"]="app_list_builtin"
                 ["--list-deprecated"]="app_list_deprecated"
                 ["--list-nondeprecated"]="app_list_nondeprecated"
@@ -679,8 +684,8 @@ run_command() {
                 ["--list-disabled"]="app_list_disabled"
                 ["--list-referenced"]="app_list_referenced"
             )
-            run_script_dialog "${ListCommandTitle["${Command}"]}" "" "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" \
-                'app_nicename' "$(run_script "${ListCommandScript["${Command}"]}")"
+            run_script_dialog "${CommandTitle["${Command}"]}" "" "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" \
+                'app_nicename' "$(run_script "${CommandScript["${Command}"]}")"
             ;;
 
         -R | --reset)
