@@ -2,274 +2,686 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-declare -gx PROMPT="CLI"
+declare -a ParsedArgs=()
 
-unset \
-    ADD \
-    COMPOSE \
-    DEBUG \
-    ENVMETHOD ENVAPP ENVVAR ENVARG \
-    FORCE \
-    INSTALL \
-    LIST LISTMETHOD \
-    PRUNE \
-    REMOVE RESET \
-    SELECT STATUS \
-    TEST THEME THEMEMETHOD \
-    UPDATE \
-    VERBOSE VERSION
+cmdline() {
+    parse_arguments parse "$@"
+    parse_arguments run "${ParsedArgs[@]}"
+}
 
 # Command Line Arguments
-cmdline() {
-    while getopts ":-:a:c:efghilpr:Rs:St:T:u:vV:x" OPTION; do
-        # support long options: https://stackoverflow.com/a/28466267/519360
-        if [ "$OPTION" = "-" ]; then # long option: reformulate OPTION and OPTARG
-            OPTION="${OPTARG}"       # extract long option name
-            OPTARG=''
-            if [[ -n ${!OPTIND-} ]]; then
-                OPTARG="${!OPTIND}"
-                OPTIND=$((OPTIND + 1))
-            fi
+parse_arguments() {
+    local mode=${1}
+    shift
+
+    if [[ ${mode} == "parse" ]]; then
+        ParsedArgs=()
+    fi
+
+    if [[ -z $* ]]; then
+        # No arguments on the command line, nothing to parse
+        if [[ ${mode} != "parse" ]]; then
+            run_command 0 0 "" ""
         fi
-        case ${OPTION} in
-            a | add)
-                if [[ -n ${OPTARG-} ]]; then
-                    local MULTIOPT
-                    MULTIOPT=("$OPTARG")
-                    until [[ -z ${!OPTIND-} || ${!OPTIND} =~ ^-.* ]]; do
-                        MULTIOPT+=("${!OPTIND}")
-                        OPTIND=$((OPTIND + 1))
+        return
+    fi
+
+    local -i OPTIND
+    local OPTARG
+    while [[ $# -gt 0 ]]; do
+        declare -gx PROMPT="CLI"
+        unset FORCE VERBOSE DEBUG
+        local -a CurrentFlags=()
+        local -a CurrentCommand=()
+
+        while getopts ":-:acefghilMprRsStTuvVx" OPTION; do
+            if [[ ${OPTION} == "-" ]]; then
+                # Rename the long option to --option
+                OPTION="--${OPTARG}"
+            else
+                # Rename the short option to -o
+                OPTION="-${OPTION}"
+            fi
+            case ${OPTION} in
+                # --flag
+                -f | --force) ;&
+                -g | --gui) ;&
+                -v | --verbose) ;&
+                -x | --debug)
+                    CurrentFlags+=("${OPTION}")
+                    ;;
+
+                # --command
+                -e | --env) ;&
+                -h | --help) ;&
+                -i | --install) ;&
+                -l | --list) ;&
+                --list-*) ;&
+                -M | --menu) ;&
+                -p | --prune) ;&
+                -R | --reset) ;&
+                -S | --select) ;&
+                --theme-shadows | --theme-no-shadows) ;&
+                --theme-scrollbar | --theme-no-scrollbar) ;&
+                --theme-lines | --theme-no-lines) ;&
+                --theme-borders | --theme-no-borders)
+                    CurrentCommand=("${OPTION}")
+                    break
+                    ;;
+
+                # --command param
+                -t | --test)
+                    if [[ -z ${!OPTIND-} || ${!OPTIND} == "-"* ]]; then
+                        local PreviousArgsString
+                        PreviousArgsString="${APPLICATION_COMMAND} $(xargs <<< "${ParsedArgs[@]-}")"
+                        PreviousArgsString="$(xargs <<< "${PreviousArgsString}")"
+                        error \
+                            "Error in command line:\n" \
+                            "\n" \
+                            "   '${C["UserCommand"]-}${PreviousArgsString}${NC-} ${C["UserCommandError"]-}${OPTION}${NC-}'\n" \
+                            "\n" \
+                            "   '${C["UserCommand"]-}${OPTION}${NC-}' requires an option.\n" \
+                            "\n" \
+                            "Usage is:\n" \
+                            "\n" \
+                            "$(usage "${OPTION}")\n" \
+                            "\n"
+                        exit 1
+                    fi
+                    CurrentCommand+=("${OPTION}" "${!OPTIND}")
+                    OPTIND+=1
+                    break
+                    ;;
+
+                # --command [param]
+                -T | --theme) ;&
+                -u | --update) ;&
+                -V | --version)
+                    CurrentCommand+=("${OPTION}")
+                    if [[ -n ${!OPTIND-} && ${!OPTIND} != "-"* ]]; then
+                        CurrentCommand+=("${!OPTIND}")
+                        OPTIND+=1
+                    fi
+                    break
+                    ;;
+
+                # --command=Param
+                --env-get=* | --env-get-lower=*) ;&
+                --env-get-line=* | --env-get-lower-line=*) ;&
+                --env-get-literal=* | --env-get-lower-literal=*)
+                    local Param=${OPTION%%=*}
+                    if [[ -z ${Param} ]]; then
+                        local Command="${OPTION%%=*}="
+                        local PreviousArgsString
+                        PreviousArgsString="${APPLICATION_COMMAND} $(xargs <<< "${ParsedArgs[@]-}")"
+                        PreviousArgsString="$(xargs <<< "${PreviousArgsString}")"
+                        error \
+                            "Error in command line:\n" \
+                            "\n" \
+                            "   '${C["UserCommand"]-}${PreviousArgsString}${NC-} ${C["UserCommandError"]-}${Command}${NC-}'\n" \
+                            "\n" \
+                            "   '${C["UserCommand"]-}${Command}${NC-}' requires an option.\n" \
+                            "\n" \
+                            "Usage is:\n" \
+                            "\n" \
+                            "$(usage "${Command}")\n" \
+                            "\n"
+                        exit 1
+                    fi
+                    CurrentCommand+=("${OPTION}" "${Param}")
+                    break
+                    ;;
+
+                # --command=parameter1,[paremeter2]
+                --env-set=* | env-set-lower=*)
+                    local Command="${OPTION%%=*}="
+                    local RestOfCommand=${OPTION#*=}
+                    if [[ ${RestOfCommand} != *","* ]]; then
+                        error \
+                            "'${C["UserCommand"]-}${APPLICATION_COMMAND}${NC-} ${C["UserCommandError"]-}${Command}${NC-}' must be in form of '${C["UserCommand"]-}${APPLICATION_COMMAND} ${Command}=Param1,Param2${NC-}'\n" \
+                            "\n" \
+                            "Usage is:\n" \
+                            "\n" \
+                            "$(usage "${Command}")\n" \
+                            "\n"
+                        exit 1
+                    fi
+                    CurrentCommand+=("${OPTION}")
+                    break
+                    ;;
+
+                # --command param1=[param2]
+                --env-set | --env-set-lower)
+                    if [[ -z ${!OPTIND-} || ${!OPTIND} == "-"* ]]; then
+                        local PreviousArgsString
+                        PreviousArgsString="${APPLICATION_COMMAND} $(xargs <<< "${ParsedArgs[@]-}")"
+                        PreviousArgsString="$(xargs <<< "${PreviousArgsString}")"
+                        error \
+                            "Error in command line:\n" \
+                            "\n" \
+                            "   '${C["UserCommand"]-}${PreviousArgsString}${NC-} ${C["UserCommandError"]-}${OPTION}${NC-}'\n" \
+                            "\n" \
+                            "   '${C["UserCommand"]-}${OPTION}${NC-}' requires an option.\n" \
+                            "\n" \
+                            "Usage is:\n" \
+                            "\n" \
+                            "$(usage "${OPTION}")\n" \
+                            "\n"
+                        exit 1
+                    fi
+                    CurrentCommand+=("${OPTION}" "${!OPTIND}}")
+                    OPTIND+=1
+                    break
+                    ;;
+
+                # --command param1 ...
+                -a | --add) ;&
+                --env-appvars | --env-appvars-lines) ;&
+                --env-get | --env-get-lower) ;&
+                --env-get-line | --env-get-lower-line) ;&
+                --env-get-literal | --env-get-lower-literal) ;&
+                -s | --status) ;&
+                --status-enable | --status-disable)
+                    if [[ -z ${!OPTIND-} || ${!OPTIND} == "-"* ]]; then
+                        local PreviousArgsString
+                        PreviousArgsString="${APPLICATION_COMMAND} $(xargs <<< "${ParsedArgs[@]-}")"
+                        PreviousArgsString="$(xargs <<< "${PreviousArgsString}")"
+                        error \
+                            "Error in command line:\n" \
+                            "\n" \
+                            "   '${C["UserCommand"]-}${PreviousArgsString}${NC-} ${C["UserCommandError"]-}${OPTION}${NC-}'\n" \
+                            "\n" \
+                            "   '${C["UserCommand"]-}${OPTION}${NC-}' requires an option.\n" \
+                            "\n" \
+                            "Usage is:\n" \
+                            "\n" \
+                            "$(usage "${OPTION}")\n" \
+                            "\n"
+                        exit 1
+                    fi
+                    CurrentCommand+=("${OPTION}")
+                    while [[ -n ${!OPTIND-} && ${!OPTIND} != "-"* ]]; do
+                        CurrentCommand+=("${!OPTIND}")
+                        OPTIND+=1
                     done
-                    ADD=$(printf "%s " "${MULTIOPT[@]}" | xargs)
-                    declare -gx ADD
-                else
-                    error "'${C["UserCommand"]-}${OPTION}${NC-}' requires an option."
+                    break
+                    ;;
+
+                # --command [param ...]
+                -r | --remove)
+                    CurrentCommand+=("${OPTION}")
+                    while [[ -n ${!OPTIND-} && ${!OPTIND} != "-"* ]]; do
+                        CurrentCommand+=("${!OPTIND}")
+                        OPTIND+=1
+                    done
+                    break
+                    ;;
+
+                # --compose [ [down|pull|stop|restart|update|up] [param ...] ]
+                -c | --compose)
+                    CurrentCommand+=("${OPTION}")
+                    if [[ -n ${!OPTIND-} && ${!OPTIND} != "-"* ]]; then
+                        case ${!OPTIND} in
+                            generate | merge) ;&
+                            down | pull | stop | restart | update | up) ;&
+                            "down "* | "pull "* | "stop "* | "restart "* | "update "* | "up "*)
+                                until [[ -z ${!OPTIND-} || ${!OPTIND} == "-"* ]]; do
+                                    CurrentCommand+=("${!OPTIND}")
+                                    OPTIND+=1
+                                done
+                                ;;
+                            *)
+                                local PreviousArgsString
+                                PreviousArgsString="${APPLICATION_COMMAND} $(xargs <<< "${ParsedArgs[@]-}")"
+                                PreviousArgsString="$(xargs <<< "${PreviousArgsString}") ${OPTION}"
+                                error \
+                                    "Error in command line:\n" \
+                                    "\n" \
+                                    "   '${C["UserCommand"]-}${PreviousArgsString}${NC-} ${C["UserCommandError"]-}${!OPTIND}${NC-}'\n" \
+                                    "\n" \
+                                    "   Invalid compose option '${C["UserCommand"]-}${!OPTIND}${NC-}'.\n" \
+                                    "\n" \
+                                    "Usage is:\n" \
+                                    "\n" \
+                                    "$(usage "${OPTION}")\n" \
+                                    "\n"
+                                exit 1
+                                ;;
+                        esac
+                    fi
+                    break
+                    ;;
+
+                -\?)
+                    # Unknown '-o'
+                    local PreviousArgsString
+                    PreviousArgsString="${APPLICATION_COMMAND} $(xargs <<< "${ParsedArgs[@]-}")"
+                    PreviousArgsString="$(xargs <<< "${PreviousArgsString}")"
+                    error \
+                        "Error in command line:\n" \
+                        "\n" \
+                        "   '${C["UserCommand"]-}${PreviousArgsString}${NC-} ${C["UserCommandError"]-}-${OPTARG}${NC-}'\n" \
+                        "\n" \
+                        "   Invalid option '${C["UserCommand"]-}${OPTARG}${NC-}'.\n" \
+                        "\n" \
+                        "Run '${C["UserCommand"]-}ds --help${NC-}' for usage.\n"
                     exit 1
-                fi
-                ;;
-            c | compose)
-                if [[ -n ${OPTARG-} ]]; then
-                    case ${OPTARG} in
-                        generate | merge) ;&
-                        down | pull | stop | restart | update | up) ;&
-                        "down "* | "pull "* | "stop "* | "restart "* | "update "* | "up "*)
-                            local MULTIOPT
-                            MULTIOPT=("$OPTARG")
-                            until [[ -z ${!OPTIND-} || ${!OPTIND} =~ ^-.* ]]; do
-                                MULTIOPT+=("${!OPTIND}")
-                                OPTIND=$((OPTIND + 1))
-                            done
-                            COMPOSE=$(printf "%s " "${MULTIOPT[@]}" | xargs)
-                            declare -gx COMPOSE
-                            ;;
-                        *)
-                            error "Invalid compose option '${C["UserCommand"]-}${OPTARG}${NC-}'."
-                            exit 1
-                            ;;
-                    esac
-                else
-                    declare -gx COMPOSE=update
-                fi
-                ;;
-            e | env)
-                declare -gx ENVMETHOD='env'
-                ;;
-            env-appvars | env-appvars-lines)
-                declare -gx ENVMETHOD=${OPTION}
-                local MULTIOPT
-                MULTIOPT=("$OPTARG")
-                until [[ -z ${!OPTIND-} || ${!OPTIND} =~ ^-.* ]]; do
-                    MULTIOPT+=("${!OPTIND}")
-                    OPTIND=$((OPTIND + 1))
-                done
-                ENVAPP=$(printf "%s " "${MULTIOPT[@]}" | xargs)
-                declare -gx ENVAPP
-                ;;
-            env-get=* | env-get-lower=* | env-get-line=* | env-get-lower-line=* | env-get-literal=* | env-get-lower-literal=*)
-                declare -gx ENVMETHOD=${OPTION%%=*}
-                declare -gx ENVARG=${OPTION#*=}
-                if [[ ${ENVMETHOD-} != "${ENVARG-}" ]]; then
-                    declare -gx ENVVAR=${ENVARG}
-                fi
-                ;;
-            env-set=* | env-set-lower=*)
-                declare -gx ENVMETHOD=${OPTION%%=*}
-                declare -gx ENVARG=${OPTION#*=}
-                if [[ ${ENVMETHOD-} != "${ENVARG-}" ]]; then
-                    declare -gx ENVVAR=${ENVARG%%,*}
-                    declare -gx ENVVAL=${ENVARG#*,}
-                fi
-                ;;
-            env-get | env-get-lower | env-get-line | env-get-lower-line | env-get-literal | env-get-lower-literal)
-                declare -gx ENVMETHOD=${OPTION}
-                if [[ -z ${ENVVAR-} ]]; then
-                    local MULTIOPT
-                    MULTIOPT=("$OPTARG")
-                    until [[ -z ${!OPTIND-} || ${!OPTIND} =~ ^-.* ]]; do
-                        MULTIOPT+=("${!OPTIND}")
-                        OPTIND=$((OPTIND + 1))
-                    done
-                    ENVVAR=$(printf "%s " "${MULTIOPT[@]}" | xargs)
-                    declare -gx ENVVAR
-                fi
-                ;;
-            env-set | env-set-lower)
-                declare -gx ENVMETHOD=${OPTION}
-                if [[ -z ${ENVVAR-} ]]; then
-                    declare -gx ENVARG=${OPTARG}
-                    declare -gx ENVVAR=${ENVARG%%=*}
-                    declare -gx ENVVAL=${ENVARG#*=}
-                fi
-                ;;
-            f | force)
+                    ;;
+                *)
+                    # Unknown '--option'
+                    local PreviousArgsString
+                    PreviousArgsString="${APPLICATION_COMMAND} $(xargs <<< "${ParsedArgs[@]-}")"
+                    PreviousArgsString="$(xargs <<< "${PreviousArgsString}")"
+                    error \
+                        "Error in command line:\n" \
+                        "\n" \
+                        "   '${C["UserCommand"]-}${PreviousArgsString}${NC-} ${C["UserCommandError"]-}${OPTION}${NC-}'\n" \
+                        "\n" \
+                        "   Invalid option '${C["UserCommand"]-}${OPTION}${NC-}'.\n" \
+                        "\n" \
+                        "Run '${C["UserCommand"]-}ds --help${NC-}' for usage.\n"
+                    exit 1
+                    ;;
+            esac
+        done
+
+        if [[ OPTIND -eq 1 && -n ${!OPTIND-} ]]; then
+            # Unknown 'option'
+            local PreviousArgsString
+            PreviousArgsString="${APPLICATION_COMMAND} $(xargs <<< "${ParsedArgs[@]-}")"
+            PreviousArgsString="$(xargs <<< "${PreviousArgsString}")"
+            error \
+                "Error in command line:\n" \
+                "\n" \
+                "   '${C["UserCommand"]-}${PreviousArgsString}${NC-} ${C["UserCommandError"]-}${!OPTIND-}${NC-}'\n" \
+                "\n" \
+                "   Invalid option '${C["UserCommand"]-}${C["UserCommand"]-}${!OPTIND-}${NC-}'.\n" \
+                "\n" \
+                "Run '${C["UserCommand"]-}ds --help${NC-}' for usage.\n"
+            exit 1
+        fi
+        # Remove the arguments just processed from the argument list
+        shift $((OPTIND - 1))
+        OPTIND=1
+
+        local -a CurrentArgs=("${CurrentFlags[@]}" "${CurrentCommand[@]}")
+        if [[ ${mode} == parse ]]; then
+            ParsedArgs+=("${CurrentArgs[@]}")
+            continue
+        fi
+
+        # Execute the current command
+        run_command ${#CurrentFlags[@]} ${#CurrentCommand[@]} "${CurrentArgs[@]}" "$@"
+    done
+    return
+}
+
+set_flags() {
+    for flag in "$@"; do
+        case "${flag}" in
+            -f | --force)
                 declare -gx FORCE=true
                 ;;
-            g | gui)
+            -g | --gui)
                 if [[ -n ${DIALOG-} ]]; then
                     declare -gx PROMPT="GUI"
                 else
-                    warn "The '${C["UserCommand"]-}--gui${NC-}' option requires the '${C["Program"]-}dialog$}NC}' command to be installed."
-                    warn "'${C["Program"]-}dialog${NC-}' command not found. Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -fiv${NC-}' to install all dependencies."
-                    warn "Coninuing without '${C["UserCommand"]-}--gui${NC-}' option."
+                    warn "The '${C["UserCommand"]-}${APPLICATION_COMMAND} ${flag}${NC-}' option requires the '${C["Program"]-}dialog$}NC}' command to be installed."
+                    warn "'${C["Program"]-}dialog${NC-}' command not found. Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -i${NC-}' to install all dependencies."
+                    warn "Coninuing without '${C["UserCommand"]-}${flag}${NC-}' option."
                 fi
                 ;;
-            h | help)
-                usage
-                exit
-                ;;
-            i | install)
-                declare -gx INSTALL=true
-                ;;
-            l | list)
-                declare -gx LISTMETHOD='list'
-                declare -gx LIST=true
-                ;;
-            list-*)
-                declare -gx LISTMETHOD=${OPTION}
-                ;;
-            p | prune)
-                declare -gx PRUNE=true
-                ;;
-            r | remove)
-                if [[ -n ${OPTARG-} ]]; then
-                    local MULTIOPT
-                    MULTIOPT=("$OPTARG")
-                    until [[ -z ${!OPTIND-} || ${!OPTIND} =~ ^-.* ]]; do
-                        MULTIOPT+=("${!OPTIND}")
-                        OPTIND=$((OPTIND + 1))
-                    done
-                    REMOVE=$(printf "%s " "${MULTIOPT[@]}" | xargs)
-                    declare -gx REMOVE
-                else
-                    error "'${C["UserCommand"]-}${OPTION}${NC-}' requires an option."
-                    exit 1
-                fi
-                ;;
-            R | reset)
-                declare -gx RESET=1
-                ;;
-            status-*)
-                if [[ -n ${OPTARG-} ]]; then
-                    declare -gx STATUSMETHOD=${OPTION}
-                    local MULTIOPT
-                    MULTIOPT=("$OPTARG")
-                    until [[ -z ${!OPTIND-} || ${!OPTIND} =~ ^-.* ]]; do
-                        MULTIOPT+=("${!OPTIND}")
-                        OPTIND=$((OPTIND + 1))
-                    done
-                    STATUS=$(printf "%s " "${MULTIOPT[@]}" | xargs)
-                    declare -gx STATUS
-                else
-                    error "'${C["UserCommand"]-}${OPTION}${NC-}' requires an option."
-                    exit 1
-                fi
-                ;;
-            s | status)
-                if [[ -n ${OPTARG-} ]]; then
-                    declare -gx STATUSMETHOD='status'
-                    local MULTIOPT
-                    MULTIOPT=("$OPTARG")
-                    until [[ -z ${!OPTIND-} || ${!OPTIND} =~ ^-.* ]]; do
-                        MULTIOPT+=("${!OPTIND}")
-                        OPTIND=$((OPTIND + 1))
-                    done
-                    STATUS=$(printf "%s " "${MULTIOPT[@]}" | xargs)
-                    declare -gx STATUS
-                else
-                    error "'${C["UserCommand"]-}${OPTION}${NC-}' requires an option."
-                    exit 1
-                fi
-                ;;
-            S | select)
-                declare -gx SELECT=1
-                ;;
-            t | test)
-                if [[ -n ${OPTARG-} ]]; then
-                    declare -gx TEST=${OPTARG}
-                else
-                    error "'${C["UserCommand"]-}${OPTION}${NC-}' requires an option."
-                    exit 1
-                fi
-                ;;
-            T | theme)
-                declare -gx THEMEMETHOD='theme'
-                if [[ -n ${OPTARG-} ]]; then
-                    declare -gx THEME="${OPTARG}"
-                    OPTIND=$((OPTIND + 1))
-                fi
-                ;;
-            theme-*)
-                declare -gx THEMEMETHOD=${OPTION}
-                ;;
-            u | update)
-                UPDATE=true
-                if [[ -n ${OPTARG-} ]]; then
-                    UPDATE="${OPTARG}"
-                fi
-                declare -gx UPDATE
-                ;;
-            v | verbose)
+            -v | --verbose)
                 declare -gx VERBOSE=1
                 ;;
-            V | version)
-                VERSION=''
-                if [[ -n ${OPTARG-} && ${OPTARG:0:1} != '-' ]]; then
-                    VERSION="${OPTARG}"
-                fi
-                declare -gx VERSION
-                ;;
-            x | debug)
+            -x | --debug)
                 declare -gx DEBUG=1
-                set -x
-                ;;
-            :)
-                case ${OPTARG} in
-                    c)
-                        declare -gx COMPOSE=update
-                        ;;
-                    r)
-                        declare -gx REMOVE=true
-                        ;;
-                    T)
-                        declare -gx THEMEMETHOD='theme'
-                        ;;
-                    u)
-                        declare -gx UPDATE=true
-                        ;;
-                    V)
-                        declare -gx VERSION=''
-                        ;;
-                    *)
-                        error "'${C["UserCommand"]-}${OPTARG}${NC-}' requires an option."
-                        exit 1
-                        ;;
-                esac
-                ;;
-            *)
-                usage
-                exit
                 ;;
         esac
     done
-    return
+    if [[ -n ${DEBUG-} && -n ${VERBOSE-} ]]; then
+        declare -gx TRACE=1
+    fi
+    if [[ -n ${DEBUG-} ]]; then
+        set -x
+    fi
+}
+
+unset_flags() {
+    set +x
+    declare -gx PROMPT="CLI"
+    unset FORCE VERBOSE DEBUG TRACE
+}
+
+run_command() {
+    # run_command (int FlagsLength, int CommandLength, array Flags, array Command, array RestOfArgs)
+    local -i FlagsLength=${1}
+    local -i CommandLength=${2}
+    shift 2
+
+    # Split the arguments in FullCommand (flags + command), Flags, Command, and the remaining arguments
+    local -i FullCommandLength
+    FullCommandLength=$((FlagsLength + CommandLength))
+    local -a FullCommand=("${@:1:FullCommandLength}")
+    local -a Flags=("${@:1:FlagsLength}")
+    shift ${FlagsLength}
+    local -a Command=("${@:1:CommandLength}")
+    shift ${CommandLength}
+    local -a RestOfArgs=("$@")
+    local FullCommandString=''
+    if [[ FullCommandLength -eq 0 ]]; then
+        # No arguments passed, just use the applicatin command
+        FullCommandString="${APPLICATION_COMMAND}"
+    else
+        # Quote any arguments with spaces in them
+        for element in "${FullCommand[@]}"; do
+            if [[ ${element} == *" "* ]]; then
+                # If the element contains spaces, quote it
+                FullCommandString+="\"${element}\" "
+            else
+                # Otherwise, add it as is
+                FullCommandString+="${element} "
+            fi
+        done
+        # Prepend the application command, and remove any trailing space.
+        FullCommandString="${APPLICATION_COMMAND} ${FullCommandString% }"
+    fi
+
+    # Set the flags passed
+    set_flags "${Flags[@]}"
+
+    # Execute the command passed
+    local -i result=0
+    if [[ CommandLength -eq 0 || ${Command[0]} =~ -M|--menu ]]; then
+        # No option, -M, or --menu, load the menu system
+        if [[ -z ${DIALOG-} ]]; then
+            error \
+                "The GUI requires the '${C["Program"]-}dialog${NC-}' command to be installed.\n" \
+                "'${C["Program"]-}dialog${NC-}' command not found. Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -i${NC-}' to install all dependencies.\n" \
+                "Unable to start GUI without '${C["Program"]-}dialog${NC-}' command.\n"
+            exit 1
+        fi
+        declare -gx PROMPT="GUI"
+        run_script 'apply_theme'
+        run_script 'menu_main'
+        return
+    fi
+
+    case "${Command[0]-}" in
+        -t | --test)
+            run_script 'apply_theme'
+            run_test "${Command[@]:1}"
+            result=$?
+            ;;
+
+        *)
+            # Apply the GUI theme if using the GUI before the following command line optins
+            if [[ ${PROMPT:-CLI} == "GUI" ]]; then
+                run_script 'apply_theme'
+            fi
+            ;;&
+
+        -i | --install)
+            run_script 'run_install'
+            result=$?
+            ;;
+        -u | --update)
+            if [[ -z ${Command[1]-} ]]; then
+                run_script 'update_self' "" "${RestOfArgs[@]}" || result=$?
+                result=$?
+            else
+                run_script 'update_self' "${Command[1]}" "${RestOfArgs[@]}" || result=$?
+                result=$?
+            fi
+            ;;
+        -V | --version)
+            local Branch="${Command[1]-}"
+            if [[ -z ${Branch} ]]; then
+                echo "${APPLICATION_NAME} [$(ds_version)]"
+            else
+                if ! ds_branch_exists "${Branch}"; then
+                    error "${APPLICATION_NAME} branch '${C["Branch"]-}${Branch}${NC-}' does not exist."
+                    exit 1
+                fi
+                echo "${APPLICATION_NAME} [$(ds_version "${Branch}")]"
+            fi
+            ;;
+        -p | --prune)
+            run_script 'docker_prune'
+            result=$?
+            ;;
+        --theme-list)
+            run_script_dialog "List Themes" "" "${FullCommandString}" \
+                'theme_list'
+            result=$?
+            ;;
+        --theme-table)
+            run_script_dialog "List Themes" "" "${FullCommandString}" \
+                'theme_table'
+            result=$?
+            ;;
+        -T | --theme)
+            local NoticeText
+            if [[ -n ${Command[1]-} ]]; then
+                NoticeText="Applying ${APPLICATION_NAME} theme '${C["Theme"]-}${Command[1]}${NC-}'"
+            else
+                NoticeText="Re-applying ${APPLICATION_NAME} theme '${C["Theme"]-}$(run_script 'theme_name')${NC-}'"
+            fi
+            notice "${NoticeText}"
+            if use_dialog_box; then
+                run_script 'apply_theme' "${Command[1]-}" && run_script 'menu_dialog_example' "" "${FullCommandString}"
+                result=$?
+            else
+                run_script 'apply_theme' "${Command[1]-}"
+                result=$?
+            fi
+            ;;
+        --theme-shadows | --theme-no-shadows) ;&
+        --theme-scrollbar | --theme-no-scrollbar) ;&
+        --theme-lines | --theme-no-lines) ;&
+        --theme-borders | --theme-no-borders)
+            run_script 'apply_theme'
+            ;;&
+        --theme-shadows)
+            notice "Turning on GUI shadows."
+            run_script 'config_set' Shadow yes "${MENU_INI_FILE}"
+            result=$?
+            if use_dialog_box; then
+                run_script 'menu_dialog_example' "Turned on shadows" "${FullCommandString}"
+            fi
+            ;;
+        --theme-no-shadow)
+            notice "Turning off GUI shadows."
+            run_script 'config_set' Shadow no "${MENU_INI_FILE}"
+            result=$?
+            if use_dialog_box; then
+                run_script 'menu_dialog_example' "Turned off shadows" "${FullCommandString}"
+            fi
+            ;;
+        --theme-scrollbar)
+            notice "Turning on GUI scrollbars."
+            run_script 'config_set' Scrollbar yes "${MENU_INI_FILE}"
+            result=$?
+            if use_dialog_box; then
+                run_script 'menu_dialog_example' "Turned on scrollbars" "${FullCommandString}"
+            fi
+            ;;
+        --theme-no-scrollbar)
+            notice "Turning off GUI scrollbars."
+            run_script 'config_set' Scrollbar no "${MENU_INI_FILE}"
+            result=$?
+            if use_dialog_box; then
+                run_script 'menu_dialog_example' "Turned off scrollbars" "${FullCommandString}"
+            fi
+            ;;
+        --theme-lines)
+            notice "Turning on GUI line drawing characters."
+            run_script 'config_set' LineCharacters yes "${MENU_INI_FILE}"
+            result=$?
+            if use_dialog_box; then
+                run_script 'menu_dialog_example' "Turned on line drawing" "${FullCommandString}"
+            fi
+            ;;
+        --theme-no-lines)
+            notice "Turning off GUI line drawing characters."
+            run_script 'config_set' LineCharacters no "${MENU_INI_FILE}"
+            result=$?
+            if use_dialog_box; then
+                run_script 'menu_dialog_example' "Turned off line drawing" "${FullCommandString}"
+            fi
+            ;;
+        --theme-borders)
+            notice "Turning on GUI borders."
+            run_script 'config_set' Borders yes "${MENU_INI_FILE}"
+            result=$?
+            if use_dialog_box; then
+                run_script 'menu_dialog_example' "Turned on borders" "${FullCommandString}"
+            fi
+            ;;
+        --theme-no-borders)
+            notice "Turning off GUI borders."
+            result=$?
+            run_script 'config_set' Borders no "${MENU_INI_FILE}"
+            if use_dialog_box; then
+                run_script 'menu_dialog_example' "Turned off borders" "${FullCommandString}"
+            fi
+            ;;
+        -a | --add)
+            run_script_dialog \
+                "Add Application" \
+                "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}${DC["NC"]-}" \
+                "" \
+                'appvars_create' "${Command[@]:1}" && run_script 'env_update'
+            result=$?
+            ;;
+        -r | --remove)
+            run_script_dialog \
+                "Remove Application" \
+                "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}${DC["NC"]-}" \
+                "" \
+                'appvars_purge' "${Command[@]:1}" && run_script 'env_update'
+            ;;
+
+        *)
+            # Create the '.env' file if it doesn't exists before the following command-line options
+            run_script 'env_create'
+            ;;&
+
+        -c | --compose)
+            run_script 'docker_compose' "${Command[@]:1}"
+            result=$?
+            ;;
+        -e | --env)
+            run_script_dialog "${DC["TitleSuccess"]-}Creating environment variables for added apps" "Please be patient, this can take a while.\n${DC["CommandLine"]-} ${FullCommandString}" "" \
+                'appvars_create_all'
+            result=$?
+            ;;
+        --env-get=* | --env-get-lower=*) ;;&
+        --env-get-line=* | --env-get-lower-line=*) ;;&
+        --env-get-literal=* | --env-get-lower-literal=*) ;;&
+        --env-set=* | --env-set-lowe=*r) ;;&
+        --env-get | --env-get-lower) ;;&
+        --env-get-line | --env-get-lower-line) ;;&
+        --env-get-literal | --env-get-lower-literal) ;;&
+        --env-set | --env-set-lower) ;;&
+        --env-appvars)
+            if use_dialog_box; then
+                for AppName in $(xargs -n1 <<< "${Command[@]:1}"); do
+                    run_script 'appvars_list' "${AppName}"
+                done |& dialog_pipe "Variables for Application" "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" ""
+            else
+                for AppName in $(xargs -n1 <<< "${Command[@]:1}"); do
+                    run_script 'appvars_list' "${AppName}"
+                done
+            fi
+            ;;
+        --env-appvars-lines)
+            if use_dialog_box; then
+                for AppName in $(xargs -n1 <<< "${Command[@]:1}"); do
+                    run_script 'appvars_lines' "${AppName}"
+                done |& dialog_pipe "Variables for Application" "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" ""
+            else
+                for AppName in $(xargs -n1 <<< "${Command[@]:1}"); do
+                    run_script 'appvars_list' "${AppName}"
+                done
+            fi
+            ;;
+        -h | --help)
+            usage
+            ;;
+        --list)
+            run_script_dialog "List All Applications" "" "${FullCommandString}" \
+                'app_list'
+            ;;
+        --list-builtin)
+            run_script_dialog "List Builtin Applications" "" "${FullCommandString}" \
+                'app_nicename' "$(run_script 'app_list_builtin')"
+            ;;
+        --list-deprecated)
+            run_script_dialog "List Deprecated Applications" "" "${FullCommandString}" \
+                'app_nicename' "$(run_script 'app_list_deprecated')"
+            ;;
+        --list-nondeprecated)
+            run_script_dialog "List Non-Deprecated Applications" "" "${FullCommandString}" \
+                'app_nicename' "$(run_script 'app_list_nondeprecated')"
+            ;;
+        --list-added)
+            run_script_dialog "List Added Applications" "" "${FullCommandString}" \
+                'app_nicename' "$(run_script 'app_list_added')"
+            ;;
+        --list-enabled)
+            run_script_dialog "List Enabled Applications" "" "${FullCommandString}" \
+                'app_nicename' "$(run_script 'app_list_enabled')"
+            ;;
+        --list-disabled)
+            run_script_dialog "List Disabled Applications" "" "${FullCommandString}" \
+                'app_nicename' "$(run_script 'app_list_disabled')"
+            ;;
+        --list-referenced)
+            run_script_dialog "List Referenced Applications" "" "${FullCommandString}" \
+                'app_nicename' "$(run_script 'app_list_referenced')"
+            ;;
+        -R | --reset)
+            notice "Resetting ${APPLICATION_NAME} to process all actions."
+            run_script 'reset_needs'
+            ;;
+        -S | --select)
+            if [[ -z ${DIALOG-} ]]; then
+                error \
+                    "The GUI requires the '${C["Program"]-}dialog${NC-}' command to be installed.\n" \
+                    "'${C["Program"]-}dialog${NC-}' command not found. Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -i${NC-}' to install all dependencies.\n" \
+                    "Unable to start GUI without '${C["Program"]-}dialog${NC-}' command.\n"
+                exit 1
+            fi
+            declare -gx PROMPT="GUI"
+            run_script 'apply_theme'
+            run_script 'menu_app_select'
+            result=$?
+            ;;
+        -s | --status)
+            run_script_dialog "Application Status" "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" "" \
+                'app_status' "${Command[@]:1}"
+            ;;
+        --status-enable)
+            run_script 'enable_app' "${Command[@]:1}"
+            run_script 'env_update'
+            ;;
+        --status-disable)
+            run_script 'disable_app' "${Command[@]:1}"
+            run_script 'env_update'
+            ;;
+        *)
+            fatal \
+                "Option '${C["UserCommand"]-}${Command[0]}${NC-}' not implemented.\n" \
+                "Please let the dev know."
+            ;;
+    esac
+
+    # Unset the flags
+    unset_flags
+
+    # Exit if the command had an error
+    if [[ ${result} != 0 ]]; then
+        exit ${result}
+    fi
 }
