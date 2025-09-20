@@ -457,12 +457,18 @@ run_command() {
             ;;
 
         --theme-list)
-            run_script_dialog "List Themes" "" "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" \
+            run_script_dialog \
+                "List Themes" \
+                "" \
+                "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" \
                 'theme_list'
             result=$?
             ;;
         --theme-table)
-            run_script_dialog "List Themes" "" "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" \
+            run_script_dialog \
+                "List Themes" \
+                "" \
+                "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" \
                 'theme_table'
             result=$?
             ;;
@@ -571,7 +577,10 @@ run_command() {
             ;;
 
         -e | --env)
-            run_script_dialog "${DC["TitleSuccess"]-}Creating environment variables for added apps" "Please be patient, this can take a while.\n${DC["CommandLine"]-} ${FullCommandString}" "" \
+            run_script_dialog \
+                "${DC["TitleSuccess"]-}Creating environment variables for added apps" \
+                "Please be patient, this can take a while.\n${DC["CommandLine"]-} ${FullCommandString}" \
+                "" \
                 'appvars_create_all'
             result=$?
             ;;
@@ -655,7 +664,10 @@ run_command() {
             ;;
 
         --list)
-            run_script_dialog "List All Applications" "" "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" \
+            run_script_dialog \
+                "List All Applications" \
+                "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" \
+                "" \
                 'app_list'
             ;;
 
@@ -684,7 +696,10 @@ run_command() {
                 ["--list-disabled"]="app_list_disabled"
                 ["--list-referenced"]="app_list_referenced"
             )
-            run_script_dialog "${CommandTitle["${Command}"]}" "" "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" \
+            run_script_dialog \
+                "${CommandTitle["${Command}"]}" \
+                "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" \
+                "" \
                 'app_nicename' "$(run_script "${CommandScript["${Command}"]}")"
             ;;
 
@@ -708,7 +723,10 @@ run_command() {
             ;;
 
         -s | --status)
-            run_script_dialog "Application Status" "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" "" \
+            run_script_dialog \
+                "Application Status" \
+                "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" \
+                "" \
                 'app_status' "${ParamsArray[@]}"
             ;;
 
