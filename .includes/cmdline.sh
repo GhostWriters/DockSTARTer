@@ -388,7 +388,7 @@ run_command() {
     fi
     local Command="${CommandArray[0]-}"
     local -a ParamsArray=("${CommandArray[@]:1}")
-
+    local SubTitleCommandString="${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}"
     # Set the flags passed
     set_flags "${Flags[@]}"
 
@@ -457,6 +457,7 @@ run_command() {
             ;;
 
         --theme-list)
+
             run_script_dialog \
                 "List Themes" \
                 "" \
@@ -684,6 +685,15 @@ run_command() {
                 ["--list-disabled"]="List Disabled Applications"
                 ["--list-referenced"]="List Referenced Applications"
             )
+            local -A CommandSubTitle=(
+                ["--list-builtin"]="${SubTitleCommandString}"
+                ["--list-deprecated"]="${SubTitleCommandString}"
+                ["--list-nondeprecated"]="${SubTitleCommandString}"
+                ["--list-added"]="${SubTitleCommandString}"
+                ["--list-enabled"]="${SubTitleCommandString}"
+                ["--list-disabled"]="${SubTitleCommandString}"
+                ["--list-referenced"]="${SubTitleCommandString}"
+            )
             local -A CommandScript=(
                 ["--list-builtin"]="app_list_builtin"
                 ["--list-deprecated"]="app_list_deprecated"
@@ -695,7 +705,7 @@ run_command() {
             )
             run_script_dialog \
                 "${CommandTitle["${Command}"]}" \
-                "${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}" \
+                "${CommandSubTitle["${Command}"]}" \
                 "" \
                 'app_nicename' "$(run_script "${CommandScript["${Command}"]}")"
             ;;
