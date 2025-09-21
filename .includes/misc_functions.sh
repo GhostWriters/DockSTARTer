@@ -37,6 +37,23 @@ highlighted_list() {
     fi
 }
 
+quote_elements_with_spaces() {
+    local Result
+    # Quote any arguments with spaces in them
+    for element in "$@"; do
+        if [[ ${element} == *" "* ]]; then
+            # If the element contains spaces, quote it
+            Result+="\"${element}\" "
+        else
+            # Otherwise, add it as is
+            Result+="${element} "
+        fi
+    done
+    # Remove any trailing space
+    Result="${Result% }"
+    printf '%s\n' "${Result}"
+}
+
 # Version Functions
 # https://stackoverflow.com/questions/4023830/how-to-compare-two-strings-in-dot-separated-version-format-in-bash#comment92693604_4024263
 vergte() { printf '%s\n%s' "${2}" "${1}" | sort -C -V; }

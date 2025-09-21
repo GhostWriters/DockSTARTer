@@ -118,6 +118,7 @@ declare -Agr C=( # Pre-defined colors
     ["User"]="${F[C]}"
     ["URL"]="${F[C]}${UL}"
     ["UserCommand"]="${F[Y]}${BD}"
+    ["UserCommandError"]="${F[R]}${UL}"
     ["Var"]="${F[M]}"
     ["Version"]="${F[C]}"
     ["Yes"]="${F[G]}"
@@ -140,7 +141,7 @@ log() {
             # Stderr is not being redirected, output with color
             printf '%b\n' "${MESSAGE-}" >&2
         else
-            # Stderr is being redirected, output without colorr
+            # Stderr is being redirected, output without color
             printf '%b\n' "${STRIPPED_MESSAGE-}" >&2
         fi
     fi
@@ -180,7 +181,6 @@ fatal() {
 [[ -f "${SCRIPTPATH}/.includes/test_functions.sh" ]] && source "${SCRIPTPATH}/.includes/test_functions.sh"
 [[ -f "${SCRIPTPATH}/.includes/usage.sh" ]] && source "${SCRIPTPATH}/.includes/usage.sh"
 [[ -f "${SCRIPTPATH}/.includes/cmdline.sh" ]] && source "${SCRIPTPATH}/.includes/cmdline.sh"
-[[ -f "${SCRIPTPATH}/.includes/process_commands.sh" ]] && source "${SCRIPTPATH}/.includes/process_commands.sh"
 
 # Check for supported CPU architecture
 check_arch() {
@@ -337,8 +337,8 @@ init() {
 # Main Function
 main() {
     init
+    run_script 'apply_theme'
     cmdline "${ARGS[@]-}"
-    process_commands
 }
 
 main
