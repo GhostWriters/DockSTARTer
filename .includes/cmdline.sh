@@ -78,7 +78,7 @@ parse_arguments() {
                 # --command param
                 -t | --test)
                     if [[ -z ${!OPTIND-} || ${!OPTIND} == "-"* ]]; then
-                        local FailingCommand=
+                        local FailingCommand
                         FailingCommand="$(quote_elements_with_spaces "${APPLICATION_COMMAND}" "${ParsedArgs[@]}" "${CurrentFlags[@]}")"
                         FailingOption="$(quote_elements_with_spaces "${OPTION}")"
                         FailingCommand="$(printf "'${C["UserCommand"]-}%s${NC-} ${C["UserCommandError"]-}%s${NC-}'" "${FailingCommand}" "${FailingOption}")"
