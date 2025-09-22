@@ -290,6 +290,9 @@ parse_arguments() {
         fi
 
         # Execute the current command
+        local CommandLineString
+        CommandLineString="$(quote_elements_with_spaces "${APPLICATION_COMMAND}" "${CurrentFlags[@]}" "${CurrentCommand[@]}")"
+        notice "${APPLICATION_NAME} command: '${C["UserCommand"]-}${CommandLineString}${NC-}'"
         run_command ${#CurrentFlags[@]} ${#CurrentCommand[@]} "${CurrentArgs[@]}" "$@"
     done
     return
