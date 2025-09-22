@@ -158,7 +158,7 @@ EOF
     Get the literal value (including quotes) of a <var>iable
 EOF
             ;;&
-        "")
+        --env-set | --env-set= | "")
             Found=1
             cat << EOF
 --env-set <var>=<val>
