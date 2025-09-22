@@ -78,7 +78,7 @@ parse_arguments() {
                 # --command param
                 -t | --test)
                     if [[ -z ${!OPTIND-} || ${!OPTIND} == "-"* ]]; then
-                        local FailingCommand="${APPLICATION_COMMAND}"
+                        local FailingCommand=
                         FailingCommand="$(quote_elements_with_spaces "${APPLICATION_COMMAND}" "${ParsedArgs[@]}" "${CurrentFlags[@]}")"
                         FailingOption="$(quote_elements_with_spaces "${OPTION}")"
                         FailingCommand="$(printf "'${C["UserCommand"]-}%s${NC-} ${C["UserCommandError"]-}%s${NC-}'" "${FailingCommand}" "${FailingOption}")"
@@ -164,7 +164,7 @@ parse_arguments() {
                 # --command param1=[param2]
                 --env-set | --env-set-lower)
                     if [[ -z ${!OPTIND-} || ${!OPTIND} != *"="* ]]; then
-                        local FailingCommand="${APPLICATION_COMMAND}"
+                        local FailingCommand
                         FailingCommand="$(quote_elements_with_spaces "${APPLICATION_COMMAND}" "${ParsedArgs[@]}" "${CurrentFlags[@]}")"
                         FailingOption="$(quote_elements_with_spaces "${OPTION}")"
                         FailingCommand="$(printf "'${C["UserCommand"]-}%s${NC-} ${C["UserCommandError"]-}%s${NC-}'" "${FailingCommand}" "${FailingOption}")"
@@ -190,7 +190,7 @@ parse_arguments() {
                 -s | --status) ;&
                 --status-enable | --status-disable)
                     if [[ -z ${!OPTIND-} || ${!OPTIND} == "-"* ]]; then
-                        local FailingCommand="${APPLICATION_COMMAND}"
+                        local FailingCommand
                         FailingCommand="$(quote_elements_with_spaces "${APPLICATION_COMMAND}" "${ParsedArgs[@]}" "${CurrentFlags[@]}")"
                         FailingOption="$(quote_elements_with_spaces "${OPTION}")"
                         FailingCommand="$(printf "'${C["UserCommand"]-}%s${NC-} ${C["UserCommandError"]-}%s${NC-}'" "${FailingCommand}" "${FailingOption}")"
@@ -234,11 +234,10 @@ parse_arguments() {
                                 done
                                 ;;
                             *)
-                                local PreviousArgsString
-                                PreviousArgsString="${APPLICATION_COMMAND} $(xargs <<< "${ParsedArgs[@]-}")"
-                                PreviousArgsString="$(xargs <<< "${PreviousArgsString}") ${OPTION}"
+                                local FailingCommand
+                                FailingCommand="$(quote_elements_with_spaces "${APPLICATION_COMMAND}" "${ParsedArgs[@]}" "${CurrentFlags[@]}" "${OPTION}")"
                                 local FailingMessage
-                                FailingMessage="'${C["UserCommand"]-}${PreviousArgsString}${NC-} ${C["UserCommandError"]-}${!OPTIND}${NC-}'\n\nInvalid compose option '${C["UserCommand"]-}${!OPTIND}${NC-}'."
+                                FailingMessage="'${C["UserCommand"]-}${FailingCommand}${NC-} ${C["UserCommandError"]-}${!OPTIND}${NC-}'\n\nInvalid compose option '${C["UserCommand"]-}${!OPTIND}${NC-}'."
                                 error "$(cmdline_error "${OPTION}" "${FailingMessage}")"
                                 exit 1
                                 ;;
