@@ -78,22 +78,16 @@ parse_arguments() {
                 # --command param
                 -t | --test)
                     if [[ -z ${!OPTIND-} || ${!OPTIND} == "-"* ]]; then
-                        local FailingCommand="${APPLICATION_COMMAND}"
+                        local FailingCommand=
                         FailingCommand="$(quote_elements_with_spaces "${APPLICATION_COMMAND}" "${ParsedArgs[@]}" "${CurrentFlags[@]}")"
                         FailingOption="$(quote_elements_with_spaces "${OPTION}")"
                         FailingCommand="$(printf "'${C["UserCommand"]-}%s${NC-} ${C["UserCommandError"]-}%s${NC-}'" "${FailingCommand}" "${FailingOption}")"
                         FailingOption="$(printf "'${C["UserCommand"]-}%s${NC-}%s${NC-}'" "${OPTION}")"
-                        error \
-                            "Error in command line:\n" \
-                            "\n" \
-                            "   ${FailingCommand}\n" \
-                            "\n" \
-                            "   Option ${FailingOption} requires a paramenter.\n" \
-                            "\n" \
-                            "Usage is:\n" \
-                            "\n" \
-                            "$(usage "${OPTION}")\n" \
-                            "\n"
+                        local FailingMessage
+                        FailingMessage=$(
+                            printf '%s\n\nOption %s requires a parameter.\n' "${FailingCommand}" "${FailingOption}"
+                        )
+                        error "$(cmdline_error "${OPTION}" "${FailingMessage}")"
                         exit 1
                     fi
                     CurrentCommand+=("${OPTION}" "${!OPTIND}")
@@ -130,17 +124,11 @@ parse_arguments() {
                         FailingCommandOption="$(quote_elements_with_spaces "${FailingCommandOption}")"
                         FailingCommand="$(printf "${NC-}'${C["UserCommand"]-}%s %s${NC-}'" "${FailingCommand}" "${FailingCommandOption}")"
                         FailingOption="$(printf "${NC-}'${C["UserCommand"]-}%s${NC-}'" "${Command}")"
-                        error \
-                            "Error in command line:\n" \
-                            "\n" \
-                            "   ${FailingCommand}\n" \
-                            "\n" \
-                            "   Option ${FailingOption} requires a variable.\n" \
-                            "\n" \
-                            "Usage is:\n" \
-                            "\n" \
-                            "$(usage "${Command}")\n" \
-                            "\n"
+                        local FailingMessage
+                        FailingMessage=$(
+                            printf '%s\n\nOption %s requires a variable.\n' "${FailingCommand}" "${FailingOption}"
+                        )
+                        error "$(cmdline_error "${OPTION}" "${FailingMessage}")"
                         exit 1
                     fi
                     CurrentCommand+=("${OPTION}")
@@ -162,17 +150,11 @@ parse_arguments() {
                         FailingCommandOption="$(quote_elements_with_spaces "${FailingCommandOption}")"
                         FailingCommand="$(printf "${NC-}'${C["UserCommand"]-}%s %s${NC-}'" "${FailingCommand}" "${FailingCommandOption}")"
                         FailingOption="$(printf "${NC-}'${C["UserCommand"]-}%s${NC-}'" "${Command}")"
-                        error \
-                            "Error in command line:\n" \
-                            "\n" \
-                            "   ${FailingCommand}\n" \
-                            "\n" \
-                            "   Option ${FailingOption} requires a variable and a value.\n" \
-                            "\n" \
-                            "Usage is:\n" \
-                            "\n" \
-                            "$(usage "${Command}")\n" \
-                            "\n"
+                        local FailingMessage
+                        FailingMessage=$(
+                            printf '%s\n\nOption %s requires a variable and a value.\n' "${FailingCommand}" "${FailingOption}"
+                        )
+                        error "$(cmdline_error "${OPTION}" "${FailingMessage}")"
                         exit 1
                     fi
                     CurrentCommand+=("${OPTION}")
@@ -182,22 +164,16 @@ parse_arguments() {
                 # --command param1=[param2]
                 --env-set | --env-set-lower)
                     if [[ -z ${!OPTIND-} || ${!OPTIND} != *"="* ]]; then
-                        local FailingCommand="${APPLICATION_COMMAND}"
+                        local FailingCommand
                         FailingCommand="$(quote_elements_with_spaces "${APPLICATION_COMMAND}" "${ParsedArgs[@]}" "${CurrentFlags[@]}")"
                         FailingOption="$(quote_elements_with_spaces "${OPTION}")"
                         FailingCommand="$(printf "'${C["UserCommand"]-}%s${NC-} ${C["UserCommandError"]-}%s${NC-}'" "${FailingCommand}" "${FailingOption}")"
                         FailingOption="$(printf "'${C["UserCommand"]-}%s${NC-}%s${NC-}'" "${OPTION}")"
-                        error \
-                            "Error in command line:\n" \
-                            "\n" \
-                            "   ${FailingCommand}\n" \
-                            "\n" \
-                            "   Option ${FailingOption} requires a variable and a value.\n" \
-                            "\n" \
-                            "Usage is:\n" \
-                            "\n" \
-                            "$(usage "${OPTION}")\n" \
-                            "\n"
+                        local FailingMessage
+                        FailingMessage=$(
+                            printf '%s\n\nOption %s requires a variable and a value.\n' "${FailingCommand}" "${FailingOption}"
+                        )
+                        error "$(cmdline_error "${OPTION}" "${FailingMessage}")"
                         exit 1
                     fi
                     CurrentCommand+=("${OPTION}" "${!OPTIND}")
@@ -214,22 +190,16 @@ parse_arguments() {
                 -s | --status) ;&
                 --status-enable | --status-disable)
                     if [[ -z ${!OPTIND-} || ${!OPTIND} == "-"* ]]; then
-                        local FailingCommand="${APPLICATION_COMMAND}"
+                        local FailingCommand
                         FailingCommand="$(quote_elements_with_spaces "${APPLICATION_COMMAND}" "${ParsedArgs[@]}" "${CurrentFlags[@]}")"
                         FailingOption="$(quote_elements_with_spaces "${OPTION}")"
                         FailingCommand="$(printf "'${C["UserCommand"]-}%s${NC-} ${C["UserCommandError"]-}%s${NC-}'" "${FailingCommand}" "${FailingOption}")"
                         FailingOption="$(printf "'${C["UserCommand"]-}%s${NC-}%s${NC-}'" "${OPTION}")"
-                        error \
-                            "Error in command line:\n" \
-                            "\n" \
-                            "   ${FailingCommand}\n" \
-                            "\n" \
-                            "   Option ${FailingOption} requires a parameter.\n" \
-                            "\n" \
-                            "Usage is:\n" \
-                            "\n" \
-                            "$(usage "${OPTION}")\n" \
-                            "\n"
+                        local FailingMessage
+                        FailingMessage=$(
+                            printf '%s\n\nOption %s requires a parameter.\n' "${FailingCommand}" "${FailingOption}"
+                        )
+                        error "$(cmdline_error "${OPTION}" "${FailingMessage}")"
                         exit 1
                     fi
                     CurrentCommand+=("${OPTION}")
@@ -264,20 +234,11 @@ parse_arguments() {
                                 done
                                 ;;
                             *)
-                                local PreviousArgsString
-                                PreviousArgsString="${APPLICATION_COMMAND} $(xargs <<< "${ParsedArgs[@]-}")"
-                                PreviousArgsString="$(xargs <<< "${PreviousArgsString}") ${OPTION}"
-                                error \
-                                    "Error in command line:\n" \
-                                    "\n" \
-                                    "   '${C["UserCommand"]-}${PreviousArgsString}${NC-} ${C["UserCommandError"]-}${!OPTIND}${NC-}'\n" \
-                                    "\n" \
-                                    "   Invalid compose option '${C["UserCommand"]-}${!OPTIND}${NC-}'.\n" \
-                                    "\n" \
-                                    "Usage is:\n" \
-                                    "\n" \
-                                    "$(usage "${OPTION}")\n" \
-                                    "\n"
+                                local FailingCommand
+                                FailingCommand="$(quote_elements_with_spaces "${APPLICATION_COMMAND}" "${ParsedArgs[@]}" "${CurrentFlags[@]}" "${OPTION}")"
+                                local FailingMessage
+                                FailingMessage="'${C["UserCommand"]-}${FailingCommand}${NC-} ${C["UserCommandError"]-}${!OPTIND}${NC-}'\n\nInvalid compose option '${C["UserCommand"]-}${!OPTIND}${NC-}'."
+                                error "$(cmdline_error "${OPTION}" "${FailingMessage}")"
                                 exit 1
                                 ;;
                         esac
@@ -876,4 +837,30 @@ unset_flags() {
     set +x
     declare -gx PROMPT="CLI"
     unset FORCE VERBOSE DEBUG TRACE
+}
+
+cmdline_error() {
+    local Command=${1-}
+    local Message=${2-}
+
+    local -i UsageIndent=3
+
+    Message=${Message//\\n/$'\n'}
+    Message="$(pr -e -t -o "${UsageIndent}" <<< "${Message}" | sed 's/[[:space:]]\+$//')"
+
+    local UsageText
+    if [[ -z ${Command} ]]; then
+        UsageText="Run '${C["UserCommand"]-}ds --help${NC-}' for usage."
+    else
+        local CommandUsage
+        CommandUsage="$(usage "${Command}")"
+        UsageText="Usage is:\n$(pr -e -t -o "${UsageIndent}" <<< "${CommandUsage}")"
+    fi
+    cat << EOF
+Error in command line:
+
+${Message}
+
+${UsageText}
+EOF
 }
