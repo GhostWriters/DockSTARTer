@@ -86,6 +86,8 @@ dialog_pipe() {
     if [[ -z ${DC["_defined_"]-} ]]; then
         run_script 'apply_theme'
     fi
+    Title="$(strip_ansi_colors "${Title}")"
+    SubTitle="$(strip_ansi_colors "${SubTitle}")"
     _dialog_ \
         --title "${DC["Title"]-}${Title}" \
         --timeout "${TimeOut}" \
@@ -105,7 +107,6 @@ run_script_dialog() {
             run_script 'apply_theme'
         fi
         # Using the GUI, pipe output to a dialog box
-        SubTitle="$(strip_ansi_colors "${SubTitle}")"
         coproc {
             dialog_pipe "${Title}" "${SubTitle}" "${TimeOut}"
         }
@@ -132,7 +133,6 @@ run_command_dialog() {
     if [[ -n ${CommandName-} ]]; then
         if use_dialog_box; then
             # Using the GUI, pipe output to a dialog box
-            SubTitle="$(strip_ansi_colors "${SubTitle}")"
             "${CommandName}" "$@" |& dialog_pipe "${Title}" "${SubTitle}" "${TimeOut}"
             return "${PIPESTATUS[0]}"
         else
