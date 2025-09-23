@@ -71,6 +71,7 @@ _dialog_backtitle_() {
 _dialog_() {
     _dialog_backtitle_
     ${DIALOG} --file "${DIALOG_OPTIONS_FILE}" --backtitle "${BACKTITLE}" "$@"
+    echo -n "${BS}"
 }
 
 # Check to see if we should use a dialog box
@@ -93,7 +94,6 @@ dialog_pipe() {
         --timeout "${TimeOut}" \
         --programbox "${DC["Subtitle"]-}${SubTitle}" \
         "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" || true
-    echo -n "${BS}"
 }
 # Script Dialog Runner Function
 run_script_dialog() {
@@ -154,7 +154,6 @@ dialog_info() {
         --title "${Title}" \
         --infobox "${Message}" \
         "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
-    echo -n "${BS}"
 }
 dialog_message() {
     local Title=${1:-}
@@ -170,7 +169,6 @@ dialog_message() {
         --timeout "${TimeOut}" \
         --msgbox "${Message}" \
         "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
-    echo -n "${BS}"
 }
 dialog_error() {
     local Title=${1:-}
