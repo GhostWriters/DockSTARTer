@@ -2,12 +2,12 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-menu_display_options_general() {
+menu_options_display() {
     if [[ ${CI-} == true ]]; then
         return
     fi
 
-    local Title="General Display Options"
+    local Title="Display Options"
 
     #run_script 'apply_theme'
 
@@ -82,15 +82,15 @@ menu_display_options_general() {
                 ;;
             *)
                 if [[ -n ${DIALOG_BUTTONS[DialogButtonPressed]-} ]]; then
-                    fatal "Unexpected dialog button '${DIALOG_BUTTONS[DialogButtonPressed]}' pressed in menu_display_options_general."
+                    fatal "Unexpected dialog button '${DIALOG_BUTTONS[DialogButtonPressed]}' pressed in menu_options_display."
                 else
-                    fatal "Unexpected dialog button value '${DialogButtonPressed}' pressed in menu_display_options_general."
+                    fatal "Unexpected dialog button value '${DialogButtonPressed}' pressed in menu_options_display."
                 fi
                 ;;
         esac
     done
 }
 
-test_menu_display_options_general() {
-    warn "CI does not test menu_display_options_general."
+test_menu_options_display() {
+    warn "CI does not test menu_options_display."
 }

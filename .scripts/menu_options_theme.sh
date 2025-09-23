@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-menu_display_options_theme() {
+menu_options_theme() {
     if [[ ${CI-} == true ]]; then
         return
     fi
@@ -62,15 +62,15 @@ menu_display_options_theme() {
                 ;;
             *)
                 if [[ -n ${DIALOG_BUTTONS[DialogButtonPressed]-} ]]; then
-                    fatal "Unexpected dialog button '${DIALOG_BUTTONS[DialogButtonPressed]}' pressed in menu_display_options_theme."
+                    fatal "Unexpected dialog button '${DIALOG_BUTTONS[DialogButtonPressed]}' pressed in menu_options_theme."
                 else
-                    fatal "Unexpected dialog button value '${DialogButtonPressed}' pressed in menu_display_options_theme."
+                    fatal "Unexpected dialog button value '${DialogButtonPressed}' pressed in menu_options_theme."
                 fi
                 ;;
         esac
     done
 }
 
-test_menu_display_options_theme() {
-    warn "CI does not test menu_display_options_theme."
+test_menu_options_theme() {
+    warn "CI does not test menu_options_theme."
 }

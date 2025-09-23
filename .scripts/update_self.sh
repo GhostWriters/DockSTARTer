@@ -79,6 +79,7 @@ update_self() {
     fi
 
     if use_dialog_box; then
+        YesNotice="$(strip_ansi_colors "${YesNotice}")"
         commands_update_self "${BRANCH}" "${YesNotice}" "$@" |&
             dialog_pipe "${DC["TitleSuccess"]-}${Title}" "${YesNotice}\n${DC["CommandLine"]-} ${APPLICATION_COMMAND} --update $*"
     else

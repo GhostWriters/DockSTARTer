@@ -2,17 +2,17 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-menu_display_options() {
+menu_options() {
     if [[ ${CI-} == true ]]; then
         return
     fi
 
-    local Title="Display Options"
-    local OptionChooseTheme="Choose Theme"
-    local OptionGeneralOptions="General Options"
+    local Title="Options"
+    local Option_Theme="Choose Theme"
+    local Option_Display="Display Options"
     local Opts=(
-        "${OptionChooseTheme}" "${DC["ListDefault"]}Choose a theme for ${APPLICATION_NAME}"
-        "${OptionGeneralOptions}" "${DC["ListDefault"]}Set general display options"
+        "${Option_Theme}" "${DC["ListDefault"]}Choose a theme for ${APPLICATION_NAME}"
+        "${Option_Display}" "${DC["ListDefault"]}Set display options"
     )
 
     local LastChoice=""
@@ -32,11 +32,11 @@ menu_display_options() {
         case ${DIALOG_BUTTONS[DialogButtonPressed]-} in
             OK)
                 case "${Choice}" in
-                    "${OptionChooseTheme}")
-                        run_script 'menu_display_options_theme' || true
+                    "${Option_Theme}")
+                        run_script 'menu_options_theme' || true
                         ;;
-                    "${OptionGeneralOptions}")
-                        run_script 'menu_display_options_general' || true
+                    "${Option_Display}")
+                        run_script 'menu_options_display' || true
                         ;;
                     *)
                         error "Invalid Option"
@@ -50,15 +50,15 @@ menu_display_options() {
                 ;;
             *)
                 if [[ -n ${DIALOG_BUTTONS[DialogButtonPressed]-} ]]; then
-                    fatal "Unexpected dialog button '${DIALOG_BUTTONS[DialogButtonPressed]}' pressed in menu_display_options."
+                    fatal "Unexpected dialog button '${DIALOG_BUTTONS[DialogButtonPressed]}' pressed in menu_options."
                 else
-                    fatal "Unexpected dialog button value '${DialogButtonPressed}' pressed in menu_display_options."
+                    fatal "Unexpected dialog button value '${DialogButtonPressed}' pressed in menu_options."
                 fi
                 ;;
         esac
     done
 }
 
-test_menu_display_options() {
-    warn "CI does not test menu_display_options."
+test_menu_options() {
+    warn "CI does not test menu_options."
 }

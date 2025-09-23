@@ -4,19 +4,21 @@ IFS=$'\n\t'
 
 usage() {
     local Option=${1-}
+    local NoHeading=${2-}
+
     local Found=''
     case "${Option}" in
-        "")
-            Found=1
-            local APPLICATION_HEADING="${APPLICATION_NAME}"
-            if [[ ${APPLICATION_VERSION-} ]]; then
-                APPLICATION_HEADING+=" [${C["Version"]-}${APPLICATION_VERSION}${NC-}]"
-            fi
-            if ds_update_available; then
-                APPLICATION_HEADING+=" (${C["Update"]-}Update Available${NC-})"
-            fi
-            cat << EOF
-Usage: ${APPLICATION_COMMAND} [ [<Flags>] [<Command>] ... ]
+        *)
+            if [[ -z ${NoHeading-} ]]; then
+                local APPLICATION_HEADING="${APPLICATION_NAME}"
+                if [[ ${APPLICATION_VERSION-} ]]; then
+                    APPLICATION_HEADING+=" [${C["Version"]-}${APPLICATION_VERSION}${NC-}]"
+                fi
+                if ds_update_available; then
+                    APPLICATION_HEADING+=" (${C["Update"]-}Update Available${NC-})"
+                fi
+                cat << EOF
+Usage: ${APPLICATION_COMMAND} [<Flags>] [<Command>] ...
 NOTE: ${APPLICATION_COMMAND} shortcut is only available after the first run of
     bash main.sh
 
@@ -33,9 +35,17 @@ in the global '.env' file. If the variable name used is in form of 'app:var', it
 will instead refer to the variable '<var>' in '.env.app.<app>'.  Some commands
 that take app names can use the form 'app:' to refer to the same file.
 
+EOF
+            fi
+            ;;&
+        "")
+            if [[ -z ${NoHeading-} ]]; then
+                cat << EOF
+
 Flags:
 
 EOF
+            fi
             ;;&
         -f | --force | "")
             Found=1
@@ -66,11 +76,13 @@ EOF
 EOF
             ;;&
         "")
-            cat << EOF
+            if [[ -z ${NoHeading-} ]]; then
+                cat << EOF
 
 CLI Commands:
 
 EOF
+            fi
             ;;&
         -a | --add | "")
             Found=1
@@ -82,10 +94,10 @@ EOF
         -c | --compose | "")
             Found=1
             cat << EOF
--c --compose <pull/up/down/stop/restart/update> [<app> ...]
+-c --compose < pull | up | down | stop | restart | update > [<app> ...]
     Run docker compose commands. If no command is given, does an update.
     Update is the same as a 'pull' followed by an 'up'
--c --compose <generate/merge>
+-c --compose < generate | merge >
     Generates the docker-compose.yml file
 EOF
             ;;&
@@ -174,13 +186,7 @@ EOF
     Set the <val>ue of a <var>iable in .env
 EOF
             ;;&
-        -l | --list | "")
-            Found=1
-            cat << EOF
--l --list
-    List all apps
-EOF
-            ;;&
+        -l | --list) ;&
         --list-added) ;&
         --list-builtin) ;&
         --list-deprecated) ;&
@@ -191,6 +197,8 @@ EOF
         "")
             Found=1
             cat << EOF
+-l --list
+    List all apps
 --list-added
     List added apps
 --list-builtin
@@ -214,6 +222,8 @@ EOF
             cat << EOF
 -h --help
     Show this usage information
+-h --help < Option >
+    Show the usage of the specified option
 EOF
             ;;&
         -i | --install | "")
@@ -279,6 +289,7 @@ EOF
     Applies the specified theme to the GUI
 EOF
             ;;&
+        -T | --theme | "") ;&
         --theme-list | "")
             Found=1
             cat << EOF
@@ -286,6 +297,7 @@ EOF
     Lists the available themes
 EOF
             ;;&
+        -T | --theme | "") ;&
         --theme-table | "")
             Found=1
             cat << EOF
@@ -293,6 +305,7 @@ EOF
     Lists the available themes in a table format
 EOF
             ;;&
+        -T | --theme | "") ;&
         --theme-lines | --theme-no-lines | "")
             Found=1
             cat << EOF
@@ -301,14 +314,16 @@ EOF
     Turn the line drawing characters on or off in the GUI
 EOF
             ;;&
+        -T | --theme | "") ;&
         --theme-borders | --theme-no-borders | "")
             Found=1
             cat << EOF
 --theme-borders
 --theme-no-borders
-    Turn the borders on and off inthe  GUI
+    Turn the borders on and off in the GUI
 EOF
             ;;&
+        -T | --theme | "") ;&
         --theme-shadows | --theme-no-shadows | "")
             Found=1
             cat << EOF
@@ -317,6 +332,7 @@ EOF
     Turn the shadows on or off in the GUI
 EOF
             ;;&
+        -T | --theme | "") ;&
         --theme-scrollbar | --theme-no-scrollbar | "")
             Found=1
             cat << EOF
@@ -342,33 +358,45 @@ EOF
 EOF
             ;;&
         "")
-            cat << EOF
+            if [[ -z ${NoHeading-} ]]; then
+                cat << EOF
 
 Menu Commands:
 
 EOF
+            fi
             ;;&
         -M | --menu | "")
             Found=1
+            #-M --menu < config-global | global >
+            #    Load the Global Configutation page in the menu.
             cat << EOF
 -M --menu
-    Load the menu system.
-    This is the same as typing 'ds' alone.
+    Start the menu system.
+    This is the same as typing 'ds'.
+-M --menu < main | config | options >
+    Load the specified page in the menu.
+-M --menu < config-apps | apps >
+    Load the Application Configuration page in the menu.
+-M --menu < options-display | display >
+    Load the Display Options page in the menu.
+-M --menu < options-theme | theme >
+    Load the Theme Chooser page in the menu.
+-M --menu < config-app-select | app-select | select >
+    Load the Theme Chooser page in the menu.
 EOF
             ;;&
-        -S | --select | "")
+        -S | --select | --menu-config-app-select | --menu-app-select | "")
             Found=1
             cat << EOF
 -S --select
-    Bring up the application selection menu
+    Load the Application Selection page in the menu.
 EOF
             ;;&
         *)
             if [[ -z ${Found-} ]]; then
                 cat << EOF
-${Option}
-    This option has no help usage message.
-    Please let the dev know.
+Unknown option '${Option}'.
 EOF
             fi
             ;;
