@@ -108,6 +108,8 @@ docker_compose() {
     local -i result=0
     if run_script 'question_prompt' Y "${Question}" "${Title}" "${FORCE:+Y}"; then
         if use_dialog_box; then
+            Title="$(strip_ansi_colors "${Title}")"
+            Question="$(strip_ansi_colors "${Question}")"
             coproc {
                 dialog_pipe "${DC["TitleSuccess"]-}${Title}" "${YesNotice}${DC["NC"]-}\n${DC["CommandLine"]-} ${APPLICATION_COMMAND} --compose ${ComposeInput}"
             }
