@@ -237,8 +237,8 @@ cleanup() {
         echo "${APPLICATION_NAME} did not finish running successfully."
     fi
     if [[ ${PROMPT:-CLI} == "GUI" ]]; then
-        # Try to reset the terminal without clearing the screen
-        tput rs3 sgr0 2> /dev/null
+        # Try to restore the terminal to a working state
+        stty cooked echo
         # Move the cursor to the bottom of the screen
         echo -n "${BS}"
     fi
