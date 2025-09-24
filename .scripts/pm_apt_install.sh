@@ -55,30 +55,9 @@ pm_apt_install_commands() {
             fatal "Failed to get updates from apt.\nFailing command: ${C["FailingCommand"]}${Command}"
 
         notice "Determining packages to install."
+        local Packages
+        Packages="$(detect_packages "${Dependencies[@]}" | xargs)"
 
-        local IgnorePackages
-        local old_IFS="${IFS}"
-        IFS='|'
-        IgnorePackages="${PM_PACKAGE_BLACKLIST[*]}"
-        IFS="${old_IFS}"
-
-        local Packages=''
-        for Dep in "${Dependencies[@]}"; do
-            Command="apt-file search bin/${Dep}"
-            notice "Running: ${C["RunningCommand"]}${Command}${NC}"
-            local NewPackages
-            NewPackages="$(eval "${Command}" 2> /dev/null)" ||
-                fatal "Failed to find packages to install.\nFailing command: ${C["FailingCommand"]}${Command}"
-            NewPackages="$(grep -E "s?bin/${Dep}$" <<< "${NewPackages}")"
-            NewPackages="$(cut -d : -f 1 <<< "${NewPackages}")"
-            Packages+="${NewPackages}"
-            Packages+=$'\n'
-        done
-
-        if [[ -n ${IgnorePackages} ]]; then
-            Packages="$(grep -E -v "\b(${IgnorePackages})\b" <<< "${Packages}")"
-        fi
-        Packages="$(sort -u <<< "${Packages}" | xargs)"
         if [[ -z ${Packages} ]]; then
             notice "No packages found to install."
         else
@@ -90,6 +69,32 @@ pm_apt_install_commands() {
         fi
     fi
 }
+
+detect_packages() {
+    local -a Dependencies=("$@")
+
+    Old_IFS="${IFS}"
+    IFS='|'
+    RegEx_Dependencies="(${Dependencies[*]})"
+    RegEx_Package_Blacklist="(${PM_PACKAGE_BLACKLIST[*]-})"
+    IFS="${Old_IFS}"
+
+    local RegEx_AptFile="^(.*):.*/s?bin/${RegEx_Dependencies}$"
+
+    for Dep in "${Dependencies[@]}"; do
+        local Command="apt-file search bin/${Dep}"
+        notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+        eval "${Command}" 2> /dev/null
+    done | while IFS= read -r line; do
+        if [[ ${line} =~ ${RegEx_AptFile} ]]; then
+            local Package="${BASH_REMATCH[1]}"
+            if [[ ! ${Package} =~ ^${RegEx_Package_Blacklist}$ ]]; then
+                echo "${Package}"
+            fi
+        fi
+    done | sort -u
+}
+
 test_pm_apt_install() {
     run_script 'pm_apt_repos'
     run_script 'pm_apt_install'
