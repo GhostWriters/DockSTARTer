@@ -43,7 +43,7 @@ pm_nala_install_commands() {
 
         if [[ -z "$(command -v apt-file)" ]]; then
             info "Installing '${C["Program"]}apt-file${NC}'."
-            Command="sudo nala install -y apt-file"
+            Command="sudo nala install --no-update -y apt-file"
             notice "Running: ${C["RunningCommand"]}${Command}${NC}"
             eval "${REDIRECT}${Command}" ||
                 fatal "Failed to install '${C["Program"]}apt-file${NC}' from apt.\nFailing command: ${C["FailingCommand"]}${Command}"
@@ -83,7 +83,7 @@ pm_nala_install_commands() {
             notice "No packages found to install."
         else
             notice "Installing packages."
-            Command="sudo nala install -y ${Packages}"
+            Command="sudo nala install --no-update -y ${Packages}"
             notice "Running: ${C["RunningCommand"]}${Command}${NC}"
             eval "${REDIRECT}${Command}" ||
                 fatal "Failed to install dependencies from nala.\nFailing command: ${C["FailingCommand"]}${Command}"
