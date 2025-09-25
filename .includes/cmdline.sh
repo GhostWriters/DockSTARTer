@@ -53,7 +53,6 @@ parse_arguments() {
 
                 # --command
                 -e | --env) ;&
-                -h | --help) ;&
                 -i | --install) ;&
                 -l | --list) ;&
                 --list-builtin) ;&
@@ -63,7 +62,6 @@ parse_arguments() {
                 --list-enabled) ;&
                 --list-disabled) ;&
                 --list-referenced) ;&
-                -M | --menu) ;&
                 -p | --prune) ;&
                 -R | --reset) ;&
                 -S | --select) ;&
@@ -75,20 +73,55 @@ parse_arguments() {
                     break
                     ;;
 
+                # --command [ --command ]
+                -h | --help)
+                    CurrentCommand+=("${OPTION}")
+                    if [[ -n ${!OPTIND-} && ${!OPTIND} == "-"* ]]; then
+                        CurrentCommand+=("${!OPTIND}")
+                        OPTIND+=1
+                    fi
+                    break
+                    ;;
+
                 # --command param
                 -t | --test)
                     if [[ -z ${!OPTIND-} || ${!OPTIND} == "-"* ]]; then
-                        local FailingCommand FailingOption FailingMessage
-                        FailingCommand="$(quote_elements_with_spaces "${APPLICATION_COMMAND}" "${ParsedArgs[@]}" "${CurrentFlags[@]}")"
-                        FailingOption="$(quote_elements_with_spaces "${OPTION}")"
-                        FailingCommand="$(printf "'${C["UserCommand"]-}%s${NC-} ${C["UserCommandError"]-}%s${NC-}'" "${FailingCommand}" "${FailingOption}")"
-                        FailingOption="$(printf "'${C["UserCommand"]-}%s${NC-}%s${NC-}'" "${OPTION}")"
-                        FailingMessage="Option ${FailingOption} requires a parameter."
-                        error "$(cmdline_error "${OPTION}" "${FailingCommand}" "${FailingMessage}")"
+                        cmdline_error \
+                            "${OPTION}" \
+                            "Command %c requires a script name." \
+                            "${ParsedArgs[@]}" "${CurrentFlags[@]}" "${CurrentCommand[@]}" "${OPTION}"
                         exit 1
                     fi
                     CurrentCommand+=("${OPTION}" "${!OPTIND}")
                     OPTIND+=1
+                    break
+                    ;;
+
+                -M | --menu)
+                    CurrentCommand=("${OPTION}")
+                    if [[ -n ${!OPTIND-} && ${!OPTIND} != "-"* ]]; then
+                        local MenuCommand=${!OPTIND}
+                        case "${MenuCommand,,}" in
+                            main) ;&
+                            config) ;&
+                            config-apps | apps) ;&
+                            config-app-select | app-select | select) ;&
+                            config-global | global) ;&
+                            options) ;&
+                            options-display | display) ;&
+                            options-theme | theme)
+                                CurrentCommand+=("${MenuCommand}")
+                                OPTIND+=1
+                                ;;
+                            *)
+                                cmdline_error \
+                                    "${OPTION}" \
+                                    "Invalid menu option %o" \
+                                    "${ParsedArgs[@]}" "${CurrentFlags[@]}" "${CurrentCommand[@]}" "${!OPTIND}"
+                                exit 1
+                                ;;
+                        esac
+                    fi
                     break
                     ;;
 
@@ -111,18 +144,10 @@ parse_arguments() {
                     local Command="${OPTION%%=*}="
                     local Param="${OPTION#*=}"
                     if [[ -z ${Param} ]]; then
-                        local FailingCommand FailingCommandOption FailingOption FailingMessage
-                        FailingCommand="$(quote_elements_with_spaces "${APPLICATION_COMMAND}" "${ParsedArgs[@]}" "${CurrentFlags[@]}")"
-                        if [[ -z ${Param} ]]; then
-                            FailingCommandOption="$(printf "${C["UserCommandError"]-}%s" "${Command}")"
-                        else
-                            FailingCommandOption="$(printf "${C["UserCommand"]-}%s${C["UserCommandError"]-}%s" "${Command}" "${Param}")"
-                        fi
-                        FailingCommandOption="$(quote_elements_with_spaces "${FailingCommandOption}")"
-                        FailingCommand="$(printf "${NC-}'${C["UserCommand"]-}%s %s${NC-}'" "${FailingCommand}" "${FailingCommandOption}")"
-                        FailingOption="$(printf "${NC-}'${C["UserCommand"]-}%s${NC-}'" "${Command}")"
-                        FailingMessage="Option ${FailingOption} requires a variable."
-                        error "$(cmdline_error "${OPTION}" "${FailingCommand}" "${FailingMessage}")"
+                        cmdline_error \
+                            "${Command}" \
+                            "Command %c requires a variable name." \
+                            "${ParsedArgs[@]}" "${CurrentFlags[@]}" "${CurrentCommand[@]}" "${OPTION}"
                         exit 1
                     fi
                     CurrentCommand+=("${OPTION}")
@@ -134,18 +159,10 @@ parse_arguments() {
                     local Command="${OPTION%%=*}="
                     local Param="${OPTION#*=}"
                     if [[ ${Param} != *","* ]]; then
-                        local FailingCommand FailingCommandOption FailingOption FailingMessage
-                        FailingCommand="$(quote_elements_with_spaces "${APPLICATION_COMMAND}" "${ParsedArgs[@]}" "${CurrentFlags[@]}")"
-                        if [[ -z ${Param} ]]; then
-                            FailingCommandOption="$(printf "${C["UserCommandError"]-}%s" "${Command}")"
-                        else
-                            FailingCommandOption="$(printf "${C["UserCommand"]-}%s${C["UserCommandError"]-}%s" "${Command}" "${Param}")"
-                        fi
-                        FailingOption="$(printf "${NC-}'${C["UserCommand"]-}%s${NC-}'" "${Command}")"
-                        FailingCommandOption="$(quote_elements_with_spaces "${FailingCommandOption}")"
-                        FailingCommand="$(printf "${NC-}'${C["UserCommand"]-}%s %s${NC-}'" "${FailingCommand}" "${FailingCommandOption}")"
-                        FailingMessage="Option ${FailingOption} requires a variable and a value."
-                        error "$(cmdline_error "${OPTION}" "${FailingCommand}" "${FailingMessage}")"
+                        cmdline_error \
+                            "${Command}" \
+                            "Command %c requires a variable name and a value." \
+                            "${ParsedArgs[@]}" "${CurrentFlags[@]}" "${CurrentCommand[@]}" "${OPTION}"
                         exit 1
                     fi
                     CurrentCommand+=("${OPTION}")
@@ -155,13 +172,10 @@ parse_arguments() {
                 # --command param1=[param2]
                 --env-set | --env-set-lower)
                     if [[ -z ${!OPTIND-} || ${!OPTIND} != *"="* ]]; then
-                        local FailingCommand FailingOption FailingMessage
-                        FailingCommand="$(quote_elements_with_spaces "${APPLICATION_COMMAND}" "${ParsedArgs[@]}" "${CurrentFlags[@]}")"
-                        FailingOption="$(quote_elements_with_spaces "${OPTION}")"
-                        FailingCommand="$(printf "'${C["UserCommand"]-}%s${NC-} ${C["UserCommandError"]-}%s${NC-}'" "${FailingCommand}" "${FailingOption}")"
-                        FailingOption="$(printf "'${C["UserCommand"]-}%s${NC-}%s${NC-}'" "${OPTION}")"
-                        FailingMessage="Option ${FailingOption} requires a variable and a value."
-                        error "$(cmdline_error "${OPTION}" "${FailingCommand}" "${FailingMessage}")"
+                        cmdline_error \
+                            "${OPTION}" \
+                            "Command %c requires a variable name and a value." \
+                            "${ParsedArgs[@]}" "${CurrentFlags[@]}" "${CurrentCommand[@]}" "${OPTION}"
                         exit 1
                     fi
                     CurrentCommand+=("${OPTION}" "${!OPTIND}")
@@ -172,19 +186,30 @@ parse_arguments() {
                 # --command param1 ...
                 -a | --add) ;&
                 --env-appvars | --env-appvars-lines) ;&
-                --env-get | --env-get-lower) ;&
-                --env-get-line | --env-get-lower-line) ;&
-                --env-get-literal | --env-get-lower-literal) ;&
                 -s | --status) ;&
                 --status-enable | --status-disable)
                     if [[ -z ${!OPTIND-} || ${!OPTIND} == "-"* ]]; then
-                        local FailingCommand FailingOption
-                        FailingCommand="$(quote_elements_with_spaces "${APPLICATION_COMMAND}" "${ParsedArgs[@]}" "${CurrentFlags[@]}")"
-                        FailingOption="$(quote_elements_with_spaces "${OPTION}")"
-                        FailingCommand="$(printf "'${C["UserCommand"]-}%s${NC-} ${C["UserCommandError"]-}%s${NC-}'" "${FailingCommand}" "${FailingOption}")"
-                        FailingOption="'${C["UserCommand"]-}${OPTION}${NC-}'"
-                        local FailingMessage="Option ${FailingOption} requires a parameter."
-                        error "$(cmdline_error "${OPTION}" "${FailingCommand}" "${FailingMessage}")"
+                        cmdline_error \
+                            "${OPTION}" \
+                            "Command %c requires one or more application names." \
+                            "${ParsedArgs[@]}" "${CurrentFlags[@]}" "${CurrentCommand[@]}" "${OPTION}"
+                        exit 1
+                    fi
+                    CurrentCommand+=("${OPTION}")
+                    while [[ -n ${!OPTIND-} && ${!OPTIND} != "-"* ]]; do
+                        CurrentCommand+=("${!OPTIND}")
+                        OPTIND+=1
+                    done
+                    break
+                    ;;
+                --env-get | --env-get-lower) ;&
+                --env-get-line | --env-get-lower-line) ;&
+                --env-get-literal | --env-get-lower-literal)
+                    if [[ -z ${!OPTIND-} || ${!OPTIND} == "-"* ]]; then
+                        cmdline_error \
+                            "${OPTION}" \
+                            "Command %c requires one or more variable names." \
+                            "${ParsedArgs[@]}" "${CurrentFlags[@]}" "${CurrentCommand[@]}" "${OPTION}"
                         exit 1
                     fi
                     CurrentCommand+=("${OPTION}")
@@ -219,11 +244,10 @@ parse_arguments() {
                                 done
                                 ;;
                             *)
-                                local FailingCommand FailingMessage
-                                FailingCommand="$(quote_elements_with_spaces "${APPLICATION_COMMAND}" "${ParsedArgs[@]}" "${CurrentFlags[@]}" "${OPTION}")"
-                                FailingCommand="'${C["UserCommand"]-}${FailingCommand}${NC-} ${C["UserCommandError"]-}${!OPTIND}${NC-}'"
-                                FailingMessage="Invalid compose option '${C["UserCommand"]-}${!OPTIND}${NC-}'."
-                                error "$(cmdline_error "${OPTION}" "${FailingCommand}" "${FailingMessage}")"
+                                cmdline_error \
+                                    "${OPTION}" \
+                                    "Invalid compose option %o" \
+                                    "${ParsedArgs[@]}" "${CurrentFlags[@]}" "${CurrentCommand[@]}" "${!OPTIND}"
                                 exit 1
                                 ;;
                         esac
@@ -236,29 +260,18 @@ parse_arguments() {
                     local PreviousArgsString
                     PreviousArgsString="${APPLICATION_COMMAND} $(xargs <<< "${ParsedArgs[@]-}")"
                     PreviousArgsString="$(xargs <<< "${PreviousArgsString}")"
-                    error \
-                        "Error in command line:\n" \
-                        "\n" \
-                        "   '${C["UserCommand"]-}${PreviousArgsString}${NC-} ${C["UserCommandError"]-}-${OPTARG}${NC-}'\n" \
-                        "\n" \
-                        "   Invalid option '${C["UserCommand"]-}${OPTARG}${NC-}'.\n" \
-                        "\n" \
-                        "Run '${C["UserCommand"]-}ds --help${NC-}' for usage.\n"
+                    cmdline_error \
+                        "" \
+                        "Invalid option %o" \
+                        "${ParsedArgs[@]}" "${CurrentFlags[@]}" "${CurrentCommand[@]}" "-${OPTARG}"
                     exit 1
                     ;;
                 *)
                     # Unknown '--option'
-                    local PreviousArgsString
-                    PreviousArgsString="${APPLICATION_COMMAND} $(xargs <<< "${ParsedArgs[@]-}")"
-                    PreviousArgsString="$(xargs <<< "${PreviousArgsString}")"
-                    error \
-                        "Error in command line:\n" \
-                        "\n" \
-                        "   '${C["UserCommand"]-}${PreviousArgsString}${NC-} ${C["UserCommandError"]-}${OPTION}${NC-}'\n" \
-                        "\n" \
-                        "   Invalid option '${C["UserCommand"]-}${OPTION}${NC-}'.\n" \
-                        "\n" \
-                        "Run '${C["UserCommand"]-}ds --help${NC-}' for usage.\n"
+                    cmdline_error \
+                        "" \
+                        "Invalid option %o" \
+                        "${ParsedArgs[@]}" "${CurrentFlags[@]}" "${CurrentCommand[@]}" "${OPTION}"
                     exit 1
                     ;;
             esac
@@ -269,14 +282,10 @@ parse_arguments() {
             local PreviousArgsString
             PreviousArgsString="${APPLICATION_COMMAND} $(xargs <<< "${ParsedArgs[@]-}")"
             PreviousArgsString="$(xargs <<< "${PreviousArgsString}")"
-            error \
-                "Error in command line:\n" \
-                "\n" \
-                "   '${C["UserCommand"]-}${PreviousArgsString}${NC-} ${C["UserCommandError"]-}${!OPTIND-}${NC-}'\n" \
-                "\n" \
-                "   Invalid option '${C["UserCommand"]-}${!OPTIND-}${NC-}'.\n" \
-                "\n" \
-                "Run '${C["UserCommand"]-}ds --help${NC-}' for usage.\n"
+            cmdline_error \
+                "" \
+                "Invalid option %o" \
+                "${ParsedArgs[@]}" "${CurrentFlags[@]}" "${CurrentCommand[@]}" "${!OPTIND}"
             exit 1
         fi
         # Remove the arguments just processed from the argument list
@@ -342,6 +351,11 @@ run_command() {
         CommandUpperCase \
         CommandConfigVar CommandConfigValue
 
+    local -A \
+        MenuCommandScript \
+        MenuCommandEnvBackup MenuCommandEnvCreate MenuCommandEnvUpdate \
+        MenuCommandUpperCase
+
     CommandScript+=(
         ["-a"]="appvars_create"
         ["--add"]="appvars_create"
@@ -370,8 +384,6 @@ run_command() {
         ["-i"]="run_install"
         ["--install"]="run_install"
         ["--list"]="app_list"
-        ["-M"]="menu_main"
-        ["--menu"]="menu_main"
         ["-p"]="docker_prune"
         ["--prune"]="docker_prune"
         ["-r"]="appvars_purge"
@@ -394,10 +406,30 @@ run_command() {
         ["--theme-list"]="theme_list"
         ["--theme-table"]="theme_table"
     )
-
+    MenuCommandScript+=(
+        ["main"]="menu_main"
+        ["config"]="menu_config"
+        ["config-apps"]="menu_config_apps"
+        ["apps"]="menu_config_apps"
+        ["config-global"]="menu_config_vars"
+        ["global"]="menu_config_vars"
+        ["config-app-select"]="menu_app_select"
+        ["select"]="menu_app_select"
+        ["app-select"]="menu_app_select"
+        ["options"]="menu_options"
+        ["options-display"]="menu_options_display"
+        ["display"]="menu_options_display"
+        ["options-theme"]="menu_options_theme"
+        ["theme"]="menu_options_theme"
+        ["env"]="menu_config_vars"
+    )
+    MenuCommandEnvCreate+=(
+        ["global"]=1
+    )
+    MenuCommandEnvBackup+=(
+        ["global"]=1
+    )
     CommandRequireDialog+=(
-        ["-M"]=1
-        ["--menu"]=1
         ["-S"]=1
         ["--select"]=1
     )
@@ -498,7 +530,6 @@ run_command() {
         ["--theme-borders"]="yes"
         ["--theme-no-borders"]="no"
     )
-
     CommandEnvCreate+=(
         ["--list-disabled"]=1
         ["--list-enabled"]=1
@@ -558,7 +589,7 @@ run_command() {
     local -i result=0
     case "${Command}" in
         -h | --help)
-            usage
+            usage "${ParamsArray[0]-}"
             ;;
 
         -t | --test)
@@ -584,12 +615,69 @@ run_command() {
             fi
             ;;
 
+        -M | --menu)
+            local -l MenuCommand=${ParamsArray[0]-main}
+            local Script="${MenuCommandScript["${MenuCommand}"]-}"
+            local EnvBackup="${MenuCommandEnvBackup["${MenuCommand}"]-}"
+            local EnvCreate="${MenuCommandEnvCreate["${MenuCommand}"]-}"
+            local EnvUpdate="${MenuCommandEnvUpdate["${MenuCommand}"]-}"
+            local UpperCase="${MenuCommandUpperCase["${MenuCommand}"]-}"
+            if [[ -z ${DIALOG-} ]]; then
+                fatal \
+                    "The GUI requires the '${C["Program"]-}dialog${NC-}' command to be installed.\n" \
+                    "'${C["Program"]-}dialog${NC-}' command not found. Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -i${NC-}' to install all dependencies.\n" \
+                    "\n" \
+                    "Unable to start GUI without the '${C["Program"]-}dialog${NC-}' command.\n"
+            fi
+
+            if [[ ${#ParamsArray[@]} -gt 1 ]]; then
+                # --menu MenuCommand Parameter ...
+                case "${MenuCommand}" in
+                    app) ;;
+                    env | env-lower) ;;
+                esac
+            else
+                # --menu MenuCommand
+                local Script=${MenuCommandScript["${MenuCommand}"]-}
+                case "${MenuCommand}" in
+                    main) ;&
+                    config) ;&
+                    config-apps | apps) ;&
+                    config-app-select | app-select | select) ;&
+                    config-global | global) ;&
+                    options) ;&
+                    options-display | display) ;&
+                    options-theme | theme)
+                        if [[ -z ${Script} ]]; then
+                            fatal \
+                                "No script is defined for menu command '${C["UserCommand"]-}${MenuCommand}${NC-}'.\n" \
+                                "Please let the dev know."
+                        fi
+                        if [[ -n ${EnvCreate-} ]]; then
+                            run_script 'env_create'
+                        fi
+                        if [[ -n ${EnvBackup-} ]]; then
+                            run_script 'env_backup'
+                        fi
+                        declare -gx PROMPT="GUI"
+                        run_script "${Script}"
+                        result=$?
+                        if [[ -n ${EnvUpdate-} ]]; then
+                            run_script 'env_update'
+                        fi
+                        ;;
+                esac
+            fi
+            ;;
         -a | --add) ;&
         -c | --compose) ;&
         -e | --env) ;&
         -i | --install) ;&
         --list) ;&
-        -M | --menu) ;&
+        --menu-config) ;&
+        --menu-config-global) ;&
+        --menu-app-select | --menu-config-app-select) ;&
+        --menu-display | --menu-display-display | --menu-display-theme) ;&
         -p | --prune) ;&
         -r | --remove) ;&
         -R | --reset) ;&
@@ -631,6 +719,37 @@ run_command() {
             fi
             if [[ -n ${EnvUpdate-} ]]; then
                 run_script 'env_update'
+            fi
+            ;;
+
+        --menu-config-app)
+            if [[ -z ${Script} ]]; then
+                fatal \
+                    "No script is defined for command '${C["UserCommand"]-}${Command}${NC-}'.\n" \
+                    "Please let the dev know."
+            fi
+            [[ -z ${DIALOG-} ]] && fatal \
+                "The GUI requires the '${C["Program"]-}dialog${NC-}' command to be installed.\n" \
+                "'${C["Program"]-}dialog${NC-}' command not found. Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -i${NC-}' to install all dependencies.\n" \
+                "\n" \
+                "Unable to start GUI without the '${C["Program"]-}dialog${NC-}' command.\n"
+            declare -gx PROMPT="GUI"
+            local AppName="${ParamsArray[0]-}"
+            if [[ -z ${AppName} ]]; then
+                run_script "${Script}"
+                result=$?
+            else
+                if ! run_script 'appname_is_valid' "${AppName}"; then
+                    error "'${AppName}' is not a valid application name."
+                    exit 1
+                fi
+                if ! run_script 'app_is_referenced' "${AppName}"; then
+                    error "'${AppName}' is not installed."
+                    exit 1
+                fi
+                run_script 'env_update'
+                run_script 'menu_config_vars' "${ParamsArray[0]-}"
+                result=$?
             fi
             ;;
 
@@ -828,23 +947,65 @@ unset_flags() {
 }
 
 cmdline_error() {
+    # 'cmdline_error'
+    # string FailingCommand, string Message, array FailingCommandLineArray
+    #
+    # In Message, '%c' will be replaced with FailingCommand,
+    # and '%o' will be replaced with the failing option (the last element in FailingCommandLineArray)
+    #
+    local FailingCommand=${1}
+    local Message=${2}
+    shift 2
+    local -a FailingCommandLineArray=("${APPLICATION_COMMAND}" "${@}")
+
+    local FailingCommandLine FailingOption
+    local FormattedFailingCommandLine FormattedFailingCommand
+    local FailingMessage
+
+    FailingCommandLine=$(
+        quote_elements_with_spaces "${FailingCommandLineArray[@]:0:$((${#FailingCommandLineArray[@]} - 1))}"
+    )
+    FailingOption=$(
+        quote_elements_with_spaces "${FailingCommandLineArray[-1]}"
+    )
+
+    FormattedFailingCommandLine="'${C["UserCommand"]-}${FailingCommandLine}${NC-} ${C["UserCommandError"]-}${FailingOption}${NC-}'"
+    FormattedFailingCommand="'${C["UserCommand"]-}${FailingCommand}${NC-}'"
+    FormattedFailingOption="'${C["UserCommand"]-}${FailingOption}${NC-}'"
+
+    FailingMessage="$(
+        sed "s/%c/${FormattedFailingCommand}/g ; s/%o/${FormattedFailingOption}/g" <<< "${Message}"
+    )"
+
+    error "$(
+        cmdline_error_text "${FailingCommand}" "${FormattedFailingCommandLine}" "${FailingMessage}"
+    )"
+}
+
+cmdline_error_text() {
+    # 'cmdline_error_text'
+    # string Command, string CommandLine, string Message
     local Command=${1-}
     local CommandLine=${2-}
     local Message=${3-}
 
-    local -i UsageIndent=3
+    local -i Indent=3
 
-    CommandLine="$(pr -e -t -o "${UsageIndent}" <<< "${CommandLine}" | sed 's/[[:space:]]\+$//')"
+    CommandLine="$(
+        pr -e -t -o "${Indent}" <<< "${CommandLine}" | sed 's/[[:space:]]\+$//'
+    )"
     Message=${Message//\\n/$'\n'}
-    Message="$(pr -e -t -o "${UsageIndent}" <<< "${Message}" | sed 's/[[:space:]]\+$//')"
+    Message="$(
+        pr -e -t -o "${Indent}" <<< "${Message}" | sed 's/[[:space:]]\+$//'
+    )"
 
     local UsageText
     if [[ -z ${Command} ]]; then
         UsageText="Run '${C["UserCommand"]-}ds --help${NC-}' for usage."
     else
         local CommandUsage
-        CommandUsage="$(usage "${Command}")"
-        UsageText="Usage is:\n$(pr -e -t -o "${UsageIndent}" <<< "${CommandUsage}")"
+        CommandUsage="$(usage "${Command}" NoHeading)"
+        UsageText="Usage is:\n$(pr -e -t -o "${Indent}" <<< "${CommandUsage}")"
     fi
     cat << EOF
 Error in command line:

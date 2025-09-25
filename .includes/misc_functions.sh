@@ -38,7 +38,7 @@ highlighted_list() {
 }
 
 quote_elements_with_spaces() {
-    local Result
+    local Result=''
     # Quote any arguments with spaces in them
     for element in "$@"; do
         if [[ ${element} == *" "* ]]; then
