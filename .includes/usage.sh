@@ -381,7 +381,7 @@ ${C["UsageCommand"]-}-M --menu${NC-} < ${C["UsageOption"]-}main${NC-} | ${C["Usa
 ${C["UsageCommand"]-}-M --menu${NC-} < ${C["UsageOption"]-}config-apps${NC-} | ${C["UsageOption"]-}apps${NC-} >${NC-}
     Load the ${C["UsagePage"]-}Application Configuration${NC-} page in the menu.
 ${C["UsageCommand"]-}-M --menu${NC-} < ${C["UsageOption"]-}options-display${NC-} | ${C["UsageOption"]-}display${NC-} >${NC-}
-    Load the ${C["UsagePage"]-}Display Option${NC-}s page in the menu.
+    Load the ${C["UsagePage"]-}Display Options${NC-} page in the menu.
 ${C["UsageCommand"]-}-M --menu${NC-} < ${C["UsageOption"]-}options-theme${NC-} | ${C["UsageOption"]-}theme${NC-} >${NC-}
     Load the ${C["UsagePage"]-}Theme Chooser${NC-} page in the menu.
 ${C["UsageCommand"]-}-M --menu${NC-} < ${C["UsageOption"]-}config-app-select${NC-} | ${C["UsageOption"]-}app-select${NC-} | ${C["UsageOption"]-}select${NC-} >${NC-}
