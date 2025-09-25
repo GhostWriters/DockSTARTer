@@ -18,8 +18,8 @@ usage() {
                     APPLICATION_HEADING+=" (${C["Update"]-}Update Available${NC-})"
                 fi
                 cat << EOF
-Usage: ${APPLICATION_COMMAND} [<Flags>] [<Command>] ...
-NOTE: ${APPLICATION_COMMAND} shortcut is only available after the first run of
+Usage: ${C["UserCommand"]-}${APPLICATION_COMMAND} [<Flags>] [<Command>] ...${NC-}
+NOTE: The '${C["UserCommand"]-}${APPLICATION_COMMAND}${NC-}' shortcut is only available after the first run of
     bash main.sh
 
 ${APPLICATION_HEADING}
@@ -50,28 +50,28 @@ EOF
         -f | --force | "")
             Found=1
             cat << EOF
--f --force
+${C["UserCommand"]-}-f --force${NC-}
     Force certain install/upgrade actions to run even if they would not be needed.
 EOF
             ;;&
         -g | --gui | "")
             Found=1
             cat << EOF
--g --gui
+${C["UserCommand"]-}-g --gui${NC-}
     Use dialog boxes
 EOF
             ;;&
         -v | --verbose | "")
             Found=1
             cat << EOF
--v --verbose
+${C["UserCommand"]-}-v --verbose${NC-}
     Verbose
 EOF
             ;;&
         -x | --debug | "")
             Found=1
             cat << EOF
--x --debug
+${C["UserCommand"]-}-x --debug${NC-}
     Debug
 EOF
             ;;&
@@ -87,102 +87,102 @@ EOF
         -a | --add | "")
             Found=1
             cat << EOF
--a --add <app> [<app> ...]
+${C["UserCommand"]-}-a --add <app> [<app> ...]${NC-}
     Add the default variables for the app(s) specified
 EOF
             ;;&
         -c | --compose | "")
             Found=1
             cat << EOF
--c --compose < pull | up | down | stop | restart | update > [<app> ...]
+${C["UserCommand"]-}-c --compose < pull | up | down | stop | restart | update > [<app> ...]${NC-}
     Run docker compose commands. If no command is given, does an update.
     Update is the same as a 'pull' followed by an 'up'
--c --compose < generate | merge >
+${C["UserCommand"]-}-c --compose < generate | merge >
     Generates the docker-compose.yml file
 EOF
             ;;&
         -e | --env | "")
             Found=1
             cat << EOF
--e --env
+${C["UserCommand"]-}-e --env${NC-}
     Update your '.env' files with new variables
 EOF
             ;;&
         --env-appvars | "")
             Found=1
             cat << EOF
---env-appvars <app> [<app> ...]
+${C["UserCommand"]-}--env-appvars <app> [<app> ...]${NC-}
     List all variable names for the app(s) specified
 EOF
             ;;&
         --env-appvars-lines | "")
             Found=1
             cat << EOF
---env-appvars-lines <app> [<app> ...]
+${C["UserCommand"]-}--env-appvars-lines <app> [<app> ...]${NC-}
     List all variables and values for the app(s) specified
 EOF
             ;;&
         --env-get | --env-get= | "")
             Found=1
             cat << EOF
---env-get <var> [<var> ...]
---env-get=<var>
+${C["UserCommand"]-}--env-get <var> [<var> ...]${NC-}
+${C["UserCommand"]-}--env-get=<var>${NC-}
     Get the value of a <var>iable (variable name is forced to UPPER CASE)
 EOF
             ;;&
         --env-get-line | --env-get-line= | "")
             Found=1
             cat << EOF
---env-get-line <var> [<var> ...]
---env-get-line=<var>
+${C["UserCommand"]-}--env-get-line <var> [<var> ...]${NC-}
+${C["UserCommand"]-}--env-get-line=<var>${NC-}
     Get the line of a <var>iable (variable name is forced to UPPER CASE)
 EOF
             ;;&
         --env-get-literal | --env-get-literal= | "")
             Found=1
             cat << EOF
---env-get-literal <var> [<var> ...]
---env-get-literal=<var>
+${C["UserCommand"]-}--env-get-literal <var> [<var> ...]${NC-}
+${C["UserCommand"]-}--env-get-literal=<var>${NC-}
     Get the literal value (including quotes) of a <var>iable (variable name is forced to UPPER CASE)
 EOF
             ;;&
         --env-get-lower | --env-get-lower= | "")
             Found=1
             cat << EOF
---env-get-lower <var> [<var> ...]
---env-get-lower=<var>
+${C["UserCommand"]-}--env-get-lower <var> [<var> ...]${NC-}
+${C["UserCommand"]-}--env-get-lower=<var>${NC-}
     Get the value of a <var>iable
 EOF
             ;;&
         --env-get-lower-line | --env-get-lower-line= | "")
             Found=1
             cat << EOF
---env-get-lower-line <var> [<var> ...]
---env-get-lower-line=<var>
+${C["UserCommand"]-}--env-get-lower-line <var> [<var> ...]
+${C["UserCommand"]-}--env-get-lower-line=<var>${NC-}
     Get the line of a <var>iable
 EOF
             ;;&
         --env-get-lower-literal | --env-get-lower-literal= | "")
             Found=1
             cat << EOF
---env-get-lower-literal <var> [<var> ...]
---env-get-lower-literal=<var>
+--env-get-lower-literal <var> [<var> ...]${NC-}
+--env-get-lower-literal=<var>${NC-}
     Get the literal value (including quotes) of a <var>iable
 EOF
             ;;&
         --env-set | --env-set= | "")
             Found=1
             cat << EOF
---env-set <var>=<val>
---env-set=<var>,<val>
+--env-set <var>=<val>${NC-}
+--env-set=<var>,<val>${NC-}
     Set the <val>ue of a <var>iable in '.env' (variable name is forced to UPPER CASE).
 EOF
             ;;&
         --env-set-lower | --env-set-lower= | "")
             Found=1
             cat << EOF
---env-set-lower <var>=<val>
---env-set-lower=<var>,<val>
+--env-set-lower <var>=<val>${NC-}
+--env-set-lower=<var>,<val>${NC-}
     Set the <val>ue of a <var>iable in .env
 EOF
             ;;&
@@ -197,21 +197,21 @@ EOF
         "")
             Found=1
             cat << EOF
--l --list
+${C["UserCommand"]-}-l --list${NC-}
     List all apps
---list-added
+${C["UserCommand"]-}--list-added${NC-}
     List added apps
---list-builtin
+${C["UserCommand"]-}--list-builtin${NC-}
     List builtin apps
---list-deprecated
+${C["UserCommand"]-}--list-deprecated${NC-}
     List deprecated apps
---list-enabled
+${C["UserCommand"]-}--list-enabled${NC-}
     List enabled apps
---list-disabled
+${C["UserCommand"]-}--list-disabled${NC-}
     List disabled apps
---list-nondeprecated
+${C["UserCommand"]-}--list-nondeprecated${NC-}
     List non-deprecated apps
---list-referenced
+${C["UserCommand"]-}--list-referenced${NC-}
     List referenced apps (whether they are "built in" or not).
     An app is considered "referenced" if there is a variable matching the app's name in the
     global '.env' file, or there are any variables in the file '.env.app<appname>'.
@@ -220,39 +220,39 @@ EOF
         -h | --help | "")
             Found=1
             cat << EOF
--h --help
+${C["UserCommand"]-}-h --help${NC-}
     Show this usage information
--h --help < Option >
+${C["UserCommand"]-}-h --help < Option >${NC-}
     Show the usage of the specified option
 EOF
             ;;&
         -i | --install | "")
             Found=1
             cat << EOF
--i --install
+${C["UserCommand"]-}-i --install${NC-}
     Install/update all dependencies
 EOF
             ;;&
         -p | --prune | "")
             Found=1
             cat << EOF
--p --prune
+${C["UserCommand"]-}-p --prune${NC-}
     Remove unused docker resources
 EOF
             ;;&
         -r | --remove | "")
             Found=1
             cat << EOF
--r --remove
+${C["UserCommand"]-}-r --remove${NC-}
     Prompt to remove '.env' variables for all disabled apps
--r --remove <appname>
+${C["UserCommand"]-}-r --remove <appname>${NC-}
     Prompt to remove the '.env' variables for the app specified
 EOF
             ;;&
         -R | --reset | "")
             Found=1
             cat << EOF
--R --reset
+${C["UserCommand"]-}-R --reset${NC-}
     Resets ${APPLICATION_NAME} to always process environment files.
     This is usually not needed unless you have modified application templates yourself.
 EOF
@@ -260,7 +260,7 @@ EOF
         -s | --status | "")
             Found=1
             cat << EOF
--s --status <appname>
+${C["UserCommand"]-}-s --status <appname>${NC-}
     Returns the enabled/disabled status for the app specified
 EOF
             ;;&
@@ -269,23 +269,23 @@ EOF
         "")
             Found=1
             cat << EOF
---status-disable <appname>
+${C["UserCommand"]-}--status-disable <appname>${NC-}
     Disable the app specified
---status-enable <appname>
+${C["UserCommand"]-}--status-enable <appname>${NC-}
     Enable the app specified
 EOF
             ;;&
         -t | --test | "")
             Found=1
             cat << EOF
--t --test <test_name>
+${C["UserCommand"]-}-t --test <test_name>${NC-}
     Run tests to check the program
 EOF
             ;;&
         -T | --theme | "")
             Found=1
             cat << EOF
--T --theme <themename>
+${C["UserCommand"]-}-T --theme <themename>${NC-}
     Applies the specified theme to the GUI
 EOF
             ;;&
@@ -293,7 +293,7 @@ EOF
         --theme-list | "")
             Found=1
             cat << EOF
---theme-list
+${C["UserCommand"]-}--theme-list${NC-}
     Lists the available themes
 EOF
             ;;&
@@ -301,7 +301,7 @@ EOF
         --theme-table | "")
             Found=1
             cat << EOF
---theme-table
+${C["UserCommand"]-}--theme-table${NC-}
     Lists the available themes in a table format
 EOF
             ;;&
@@ -309,8 +309,8 @@ EOF
         --theme-lines | --theme-no-lines | "")
             Found=1
             cat << EOF
---theme-lines
---theme-no-lines
+${C["UserCommand"]-}--theme-lines${NC-}
+${C["UserCommand"]-}--theme-no-lines${NC-}
     Turn the line drawing characters on or off in the GUI
 EOF
             ;;&
@@ -318,8 +318,8 @@ EOF
         --theme-borders | --theme-no-borders | "")
             Found=1
             cat << EOF
---theme-borders
---theme-no-borders
+${C["UserCommand"]-}--theme-borders${NC-}
+${C["UserCommand"]-}--theme-no-borders${NC-}
     Turn the borders on and off in the GUI
 EOF
             ;;&
@@ -327,8 +327,8 @@ EOF
         --theme-shadows | --theme-no-shadows | "")
             Found=1
             cat << EOF
---theme-shadows
---theme-no-shadows
+${C["UserCommand"]-}--theme-shadows${NC-}
+${C["UserCommand"]-}--theme-no-shadows${NC-}
     Turn the shadows on or off in the GUI
 EOF
             ;;&
@@ -336,24 +336,24 @@ EOF
         --theme-scrollbar | --theme-no-scrollbar | "")
             Found=1
             cat << EOF
---theme-scrollbar
---theme-no-scrollbar
+${C["UserCommand"]-}--theme-scrollbar${NC-}
+${C["UserCommand"]-}--theme-no-scrollbar${NC-}
     Turn the scrollbar on or off in the GUI
 EOF
             ;;&
         -u | --update | "")
             Found=1
             cat << EOF
--u --update
+${C["UserCommand"]-}-u --update${NC-}
     Update ${APPLICATION_NAME} to the latest stable commits
--u --update <branch>
+${C["UserCommand"]-}-u --update <branch>${NC-}
     Update ${APPLICATION_NAME} to the latest commits from the specified branch
 EOF
             ;;&
         -V | --version | "")
             Found=1
             cat << EOF
--V --version
+${C["UserCommand"]-}-V --version${NC-}
     Display version information
 EOF
             ;;&
@@ -368,35 +368,35 @@ EOF
             ;;&
         -M | --menu | "")
             Found=1
-            #-M --menu < config-global | global >
+            #-M --menu < config-global | global >${NC-}
             #    Load the Global Configutation page in the menu.
             cat << EOF
--M --menu
+${C["UserCommand"]-}${C["UserCommand"]-}-M --menu${NC-}
     Start the menu system.
     This is the same as typing 'ds'.
--M --menu < main | config | options >
+${C["UserCommand"]-}-M --menu < main | config | options >${NC-}
     Load the specified page in the menu.
--M --menu < config-apps | apps >
+${C["UserCommand"]-}-M --menu < config-apps | apps >${NC-}
     Load the Application Configuration page in the menu.
--M --menu < options-display | display >
+${C["UserCommand"]-}-M --menu < options-display | display >${NC-}
     Load the Display Options page in the menu.
--M --menu < options-theme | theme >
+${C["UserCommand"]-}-M --menu < options-theme | theme >${NC-}
     Load the Theme Chooser page in the menu.
--M --menu < config-app-select | app-select | select >
+${C["UserCommand"]-}-M --menu < config-app-select | app-select | select >${NC-}
     Load the Theme Chooser page in the menu.
 EOF
             ;;&
         -S | --select | --menu-config-app-select | --menu-app-select | "")
             Found=1
             cat << EOF
--S --select
+${C["UserCommand"]-}-S --select${NC-}
     Load the Application Selection page in the menu.
 EOF
             ;;&
         *)
             if [[ -z ${Found-} ]]; then
                 cat << EOF
-Unknown option '${Option}'.
+Unknown option '${C["UserCommand"]-}${Option}${NC-}'.
 EOF
             fi
             ;;
