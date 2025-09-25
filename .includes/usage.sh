@@ -181,8 +181,8 @@ EOF
         --env-set-lower | --env-set-lower= | "")
             Found=1
             cat << EOF
-${C["UsageCommand"]-}--env-set-lower${NC-} ${C["UsageVar"]-}<var>${NC-}=${C["UsageVar"]-}<val>${NC-}
-${C["UsageCommand"]-}--env-set-lower=${NC-}${C["UsageVar"]-}<var>${NC-},${C["UsageVar"]-}<val>${NC-}
+${C["UsageCommand"]-}--env-set-lower${NC-} ${C["UsageVar"]-}<var>=<val>${NC-}
+${C["UsageCommand"]-}--env-set-lower=${NC-}${C["UsageVar"]-}<var>,<val>${NC-}
     Set the ${C["UsageVar"]-}<val>${NC-}ue of a ${C["UsageVar"]-}<var>${NC-}iable
 EOF
             ;;&
