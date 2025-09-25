@@ -18,6 +18,7 @@ usage() {
                     APPLICATION_HEADING+=" (${C["Update"]-}Update Available${NC-})"
                 fi
                 cat << EOF
+Usage: ${C["UserCommand"]-}${APPLICATION_COMMAND}${NC-} [${C["UserCommand"]-}<Flags>${NC-}] [${C["UserCommand"]-}<Command>${NC-}] ...${NC-}
 NOTE: The '${C["UserCommand"]-}${APPLICATION_COMMAND}${NC-}' shortcut is only available after the first run of
     bash main.sh
 
