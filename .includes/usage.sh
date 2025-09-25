@@ -105,7 +105,7 @@ EOF
             Found=1
             cat << EOF
 ${C["UserCommand"]-}-e --env${NC-}
-    Update your '.env' files with new variables
+    Update your '${C["File"]-}.env${NC-}' files with new variables
 EOF
             ;;&
         --env-appvars | "")
@@ -175,7 +175,7 @@ EOF
             cat << EOF
 ${C["UserCommand"]-}--env-set${NC-} <var>=<val>${NC-}
 ${C["UserCommand"]-}--env-set=${NC-}<var>,<val>${NC-}
-    Set the <val>ue of a <var>iable in '.env' (variable name is forced to UPPER CASE).
+    Set the <val>ue of a <var>iable in '${C["File"]-}.env${NC-}' (variable name is forced to UPPER CASE).
 EOF
             ;;&
         --env-set-lower | --env-set-lower= | "")
@@ -214,7 +214,7 @@ ${C["UserCommand"]-}--list-nondeprecated${NC-}
 ${C["UserCommand"]-}--list-referenced${NC-}
     List referenced apps (whether they are "built in" or not).
     An app is considered "referenced" if there is a variable matching the app's name in the
-    global '.env' file, or there are any variables in the file '.env.app<appname>'.
+    global '${C["File"]-}.env${NC-}' file, or there are any variables in the file '${C["File"]-}.env.app.<appname>${NC-}'.
 EOF
             ;;&
         -h | --help | "")
@@ -244,9 +244,9 @@ EOF
             Found=1
             cat << EOF
 ${C["UserCommand"]-}-r --remove${NC-}
-    Prompt to remove '.env' variables for all disabled apps
+    Prompt to remove variables for all disabled apps
 ${C["UserCommand"]-}-r --remove${NC-} <appname>${NC-}
-    Prompt to remove the '.env' variables for the app specified
+    Prompt to remove the variables for the app specified
 EOF
             ;;&
         -R | --reset | "")
