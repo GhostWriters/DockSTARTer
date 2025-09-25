@@ -87,17 +87,17 @@ EOF
         -a | --add | "")
             Found=1
             cat << EOF
-${C["UserCommand"]-}-a --add <app> [<app> ...]${NC-}
+${C["UserCommand"]-}-a --add${NC-} <app> [<app> ...]${NC-}
     Add the default variables for the app(s) specified
 EOF
             ;;&
         -c | --compose | "")
             Found=1
             cat << EOF
-${C["UserCommand"]-}-c --compose < pull | up | down | stop | restart | update > [<app> ...]${NC-}
+${C["UserCommand"]-}-c --compose${NC-} < pull | up | down | stop | restart | update > [<app> ...]${NC-}
     Run docker compose commands. If no command is given, does an update.
     Update is the same as a 'pull' followed by an 'up'
-${C["UserCommand"]-}-c --compose < generate | merge >
+${C["UserCommand"]-}-c --compose${NC-} < generate | merge >${NC-}
     Generates the docker-compose.yml file
 EOF
             ;;&
@@ -111,53 +111,53 @@ EOF
         --env-appvars | "")
             Found=1
             cat << EOF
-${C["UserCommand"]-}--env-appvars <app> [<app> ...]${NC-}
+${C["UserCommand"]-}--env-appvars${NC-} <app> [<app> ...]${NC-}
     List all variable names for the app(s) specified
 EOF
             ;;&
         --env-appvars-lines | "")
             Found=1
             cat << EOF
-${C["UserCommand"]-}--env-appvars-lines <app> [<app> ...]${NC-}
+${C["UserCommand"]-}--env-appvars-lines${NC-} <app> [<app> ...]${NC-}
     List all variables and values for the app(s) specified
 EOF
             ;;&
         --env-get | --env-get= | "")
             Found=1
             cat << EOF
-${C["UserCommand"]-}--env-get <var> [<var> ...]${NC-}
-${C["UserCommand"]-}--env-get=<var>${NC-}
+${C["UserCommand"]-}--env-get${NC-} <var> [<var> ...]${NC-}
+${C["UserCommand"]-}--env-get=${NC-}<var>${NC-}
     Get the value of a <var>iable (variable name is forced to UPPER CASE)
 EOF
             ;;&
         --env-get-line | --env-get-line= | "")
             Found=1
             cat << EOF
-${C["UserCommand"]-}--env-get-line <var> [<var> ...]${NC-}
-${C["UserCommand"]-}--env-get-line=<var>${NC-}
+${C["UserCommand"]-}--env-get-line${NC-} <var> [<var> ...]${NC-}
+${C["UserCommand"]-}--env-get-line=${NC-}<var>${NC-}
     Get the line of a <var>iable (variable name is forced to UPPER CASE)
 EOF
             ;;&
         --env-get-literal | --env-get-literal= | "")
             Found=1
             cat << EOF
-${C["UserCommand"]-}--env-get-literal <var> [<var> ...]${NC-}
-${C["UserCommand"]-}--env-get-literal=<var>${NC-}
+${C["UserCommand"]-}--env-get-literal${NC-} <var> [<var> ...]${NC-}
+${C["UserCommand"]-}--env-get-literal${NC-}=<var>${NC-}
     Get the literal value (including quotes) of a <var>iable (variable name is forced to UPPER CASE)
 EOF
             ;;&
         --env-get-lower | --env-get-lower= | "")
             Found=1
             cat << EOF
-${C["UserCommand"]-}--env-get-lower <var> [<var> ...]${NC-}
-${C["UserCommand"]-}--env-get-lower=<var>${NC-}
+${C["UserCommand"]-}--env-get-lower${NC-} <var> [<var> ...]${NC-}
+${C["UserCommand"]-}--env-get-lower${NC-}=<var>${NC-}
     Get the value of a <var>iable
 EOF
             ;;&
         --env-get-lower-line | --env-get-lower-line= | "")
             Found=1
             cat << EOF
-${C["UserCommand"]-}--env-get-lower-line <var> [<var> ...]
+${C["UserCommand"]-}--env-get-lower-line${NC-} <var> [<var> ...]
 ${C["UserCommand"]-}--env-get-lower-line=<var>${NC-}
     Get the line of a <var>iable
 EOF
@@ -165,24 +165,24 @@ EOF
         --env-get-lower-literal | --env-get-lower-literal= | "")
             Found=1
             cat << EOF
---env-get-lower-literal <var> [<var> ...]${NC-}
---env-get-lower-literal=<var>${NC-}
+${C["UserCommand"]-}--env-get-lower-literal${NC-} <var> [<var> ...]${NC-}
+${C["UserCommand"]-}--env-get-lower-literal=${NC-}<var>${NC-}
     Get the literal value (including quotes) of a <var>iable
 EOF
             ;;&
         --env-set | --env-set= | "")
             Found=1
             cat << EOF
---env-set <var>=<val>${NC-}
---env-set=<var>,<val>${NC-}
+${C["UserCommand"]-}--env-set${NC-} <var>=<val>${NC-}
+${C["UserCommand"]-}--env-set=${NC-}<var>,<val>${NC-}
     Set the <val>ue of a <var>iable in '.env' (variable name is forced to UPPER CASE).
 EOF
             ;;&
         --env-set-lower | --env-set-lower= | "")
             Found=1
             cat << EOF
---env-set-lower <var>=<val>${NC-}
---env-set-lower=<var>,<val>${NC-}
+${C["UserCommand"]-}--env-set-lower${NC-} <var>=<val>${NC-}
+${C["UserCommand"]-}--env-set-lower=${NC-}<var>,<val>${NC-}
     Set the <val>ue of a <var>iable in .env
 EOF
             ;;&
@@ -222,7 +222,7 @@ EOF
             cat << EOF
 ${C["UserCommand"]-}-h --help${NC-}
     Show this usage information
-${C["UserCommand"]-}-h --help < Option >${NC-}
+${C["UserCommand"]-}-h --help${NC-} <option>${NC-}
     Show the usage of the specified option
 EOF
             ;;&
@@ -245,7 +245,7 @@ EOF
             cat << EOF
 ${C["UserCommand"]-}-r --remove${NC-}
     Prompt to remove '.env' variables for all disabled apps
-${C["UserCommand"]-}-r --remove <appname>${NC-}
+${C["UserCommand"]-}-r --remove${NC-} <appname>${NC-}
     Prompt to remove the '.env' variables for the app specified
 EOF
             ;;&
@@ -260,7 +260,7 @@ EOF
         -s | --status | "")
             Found=1
             cat << EOF
-${C["UserCommand"]-}-s --status <appname>${NC-}
+${C["UserCommand"]-}-s --status${NC-} <appname>${NC-}
     Returns the enabled/disabled status for the app specified
 EOF
             ;;&
@@ -269,23 +269,25 @@ EOF
         "")
             Found=1
             cat << EOF
-${C["UserCommand"]-}--status-disable <appname>${NC-}
+${C["UserCommand"]-}--status-disable${NC-} <appname>${NC-}
     Disable the app specified
-${C["UserCommand"]-}--status-enable <appname>${NC-}
+${C["UserCommand"]-}--status-enable${NC-} <appname>${NC-}
     Enable the app specified
 EOF
             ;;&
         -t | --test | "")
             Found=1
             cat << EOF
-${C["UserCommand"]-}-t --test <test_name>${NC-}
+${C["UserCommand"]-}-t --test${NC-} <test_name>${NC-}
     Run tests to check the program
 EOF
             ;;&
         -T | --theme | "")
             Found=1
             cat << EOF
-${C["UserCommand"]-}-T --theme <themename>${NC-}
+${C["UserCommand"]-}-T --theme${NC-}
+    Re-applies the current theme to the GUI
+${C["UserCommand"]-}-T --theme${NC-} <themename>${NC-}
     Applies the specified theme to the GUI
 EOF
             ;;&
@@ -346,7 +348,7 @@ EOF
             cat << EOF
 ${C["UserCommand"]-}-u --update${NC-}
     Update ${APPLICATION_NAME} to the latest stable commits
-${C["UserCommand"]-}-u --update <branch>${NC-}
+${C["UserCommand"]-}-u --update${NC-} <branch>${NC-}
     Update ${APPLICATION_NAME} to the latest commits from the specified branch
 EOF
             ;;&
@@ -368,21 +370,21 @@ EOF
             ;;&
         -M | --menu | "")
             Found=1
-            #-M --menu < config-global | global >${NC-}
+            #${C["UserCommand"]-}-M --menu${NC-} < config-global | global >${NC-}
             #    Load the Global Configutation page in the menu.
             cat << EOF
-${C["UserCommand"]-}${C["UserCommand"]-}-M --menu${NC-}
+${C["UserCommand"]-}-M --menu${NC-}
     Start the menu system.
     This is the same as typing 'ds'.
-${C["UserCommand"]-}-M --menu < main | config | options >${NC-}
+${C["UserCommand"]-}-M --menu${NC-} < main | config | options >${NC-}
     Load the specified page in the menu.
-${C["UserCommand"]-}-M --menu < config-apps | apps >${NC-}
+${C["UserCommand"]-}-M --menu${NC-} < config-apps | apps >${NC-}
     Load the Application Configuration page in the menu.
-${C["UserCommand"]-}-M --menu < options-display | display >${NC-}
+${C["UserCommand"]-}-M --menu${NC-} < options-display | display >${NC-}
     Load the Display Options page in the menu.
-${C["UserCommand"]-}-M --menu < options-theme | theme >${NC-}
+${C["UserCommand"]-}-M --menu${NC-} < options-theme | theme >${NC-}
     Load the Theme Chooser page in the menu.
-${C["UserCommand"]-}-M --menu < config-app-select | app-select | select >${NC-}
+${C["UserCommand"]-}-M --menu${NC-} < config-app-select | app-select | select >${NC-}
     Load the Theme Chooser page in the menu.
 EOF
             ;;&
