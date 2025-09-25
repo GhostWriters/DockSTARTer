@@ -10,7 +10,7 @@ usage() {
     case "${Option}" in
         *)
             if [[ -z ${NoHeading-} ]]; then
-                local APPLICATION_HEADING="${APPLICATION_NAME}"
+                local APPLICATION_HEADING="${C["Version"]-}${APPLICATION_NAME}${NC-}"
                 if [[ ${APPLICATION_VERSION-} ]]; then
                     APPLICATION_HEADING+=" [${C["Version"]-}${APPLICATION_VERSION}${NC-}]"
                 fi
@@ -31,9 +31,9 @@ the order given, only stopping on an error. Any flags included only apply to the
 following command, and get reset before the next command.
 
 Any command that takes a variable name, the variable will by default be looked for
-in the global '.env' file. If the variable name used is in form of 'app:var', it
-will instead refer to the variable '<var>' in '.env.app.<app>'.  Some commands
-that take app names can use the form 'app:' to refer to the same file.
+in the global '${C["File"]-}.env${NC-}' file. If the variable name used is in form of '${C["Var"]-}app:var${NC-}', it
+will instead refer to the variable '${C["Var"]-}<var>${NC-}' in '${C["File"]-}.env.app.<app>${NC-}'.  Some commands
+that take app names can use the form '${C["Var"]-}app:${NC-}' to refer to the same file.
 
 EOF
             fi
