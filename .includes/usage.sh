@@ -18,7 +18,6 @@ usage() {
                     APPLICATION_HEADING+=" (${C["Update"]-}Update Available${NC-})"
                 fi
                 cat << EOF
-Usage: ${C["UserCommand"]-}${APPLICATION_COMMAND} [<Flags>] [<Command>] ...${NC-}
 NOTE: The '${C["UserCommand"]-}${APPLICATION_COMMAND}${NC-}' shortcut is only available after the first run of
     bash main.sh
 
@@ -214,7 +213,7 @@ ${C["UserCommand"]-}--list-nondeprecated${NC-}
 ${C["UserCommand"]-}--list-referenced${NC-}
     List referenced apps (whether they are "built in" or not).
     An app is considered "referenced" if there is a variable matching the app's name in the
-    global '${C["File"]-}.env${NC-}' file, or there are any variables in the file '${C["File"]-}.env.app.<appname>${NC-}'.
+    global '${C["File"]-}.env${NC-}' file, or there are any variables in the file '${C["File"]-}.env.app.<app>${NC-}'.
 EOF
             ;;&
         -h | --help | "")
@@ -245,7 +244,7 @@ EOF
             cat << EOF
 ${C["UserCommand"]-}-r --remove${NC-}
     Prompt to remove variables for all disabled apps
-${C["UserCommand"]-}-r --remove${NC-} <appname>${NC-}
+${C["UserCommand"]-}-r --remove${NC-} <app>${NC-}
     Prompt to remove the variables for the app specified
 EOF
             ;;&
@@ -260,7 +259,7 @@ EOF
         -s | --status | "")
             Found=1
             cat << EOF
-${C["UserCommand"]-}-s --status${NC-} <appname>${NC-}
+${C["UserCommand"]-}-s --status${NC-} <app>${NC-}
     Returns the enabled/disabled status for the app specified
 EOF
             ;;&
@@ -269,9 +268,9 @@ EOF
         "")
             Found=1
             cat << EOF
-${C["UserCommand"]-}--status-disable${NC-} <appname>${NC-}
+${C["UserCommand"]-}--status-disable${NC-} <app>${NC-}
     Disable the app specified
-${C["UserCommand"]-}--status-enable${NC-} <appname>${NC-}
+${C["UserCommand"]-}--status-enable${NC-} <app>${NC-}
     Enable the app specified
 EOF
             ;;&
