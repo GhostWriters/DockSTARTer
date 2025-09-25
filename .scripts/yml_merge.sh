@@ -72,8 +72,8 @@ commands_yml_merge() {
                 fi
                 for Number in "${StorageNumbers[@]}"; do
                     local StorageOn
-                    StorageOn="$(run_script 'env_get' "${APPNAME}__STORAGE${Number}")"
-                    StorageOn="${StorageOn:-$(run_script 'env_get' "DOCKER_STORAGE${Number}")}"
+                    StorageOn="$(run_script 'env_get' "${APPNAME}__STORAGE_ON${Number}")"
+                    StorageOn="${StorageOn:-$(run_script 'env_get' "DOCKER_STORAGE_ON${Number}")}"
                     if [[ -n ${StorageOn-} && ${StorageOn^^} =~ ON|TRUE|YES ]]; then
                         local StorageVolume
                         StorageVolume="$(run_script 'env_get' "DOCKER_VOLUME_STORAGE${Number}")"
