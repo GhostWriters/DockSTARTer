@@ -33,7 +33,7 @@ following command, and get reset before the next command.
 Any command that takes a variable name, the variable will by default be looked for
 in the global '${C["UsageFile"]-}.env${NC-}' file. If the variable name used is in form of '${C["UsageVar"]-}app:var${NC-}', it
 will instead refer to the variable '${C["UsageVar"]-}${C["UsageVar"]-}<var>${NC-}' in '${C["UsageFile"]-}.env.app.<app>${NC-}'.  Some commands
-that take app names can use the form '${C["UsageVar"]-}app:${NC-}' to refer to the same file.
+that take app names can use the form '${C["UsageApp"]-}app:${NC-}' to refer to the same file.
 
 EOF
             fi
@@ -95,7 +95,7 @@ EOF
             Found=1
             cat << EOF
 ${C["UsageCommand"]-}-c --compose${NC-} < ${C["UsageOption"]-}pull${NC-} | ${C["UsageOption"]-}up${NC-} | ${C["UsageOption"]-}down${NC-} | ${C["UsageOption"]-}stop${NC-} | ${C["UsageOption"]-}restart${NC-} | ${C["UsageOption"]-}update${NC-} > [${C["UsageApp"]-}<app>${NC-} ...]${NC-}
-    Run docker compose commands. If no command is given, does an update.
+    Run docker compose commands. If no command is given, it does an '${C["UsageOption"]-}update${NC-}'.
     The '${C["UsageOption"]-}update${NC-}' command is the same as a '${C["UsageOption"]-}pull${NC-}' followed by an '${C["UsageOption"]-}up${NC-}'
 ${C["UsageCommand"]-}-c --compose${NC-} < ${C["UsageOption"]-}generate${NC-} | ${C["UsageOption"]-}merge${NC-} >${NC-}
     Generates the '${C["UsageFile"]-}docker-compose.yml${NC-} file
@@ -212,9 +212,10 @@ ${C["UsageCommand"]-}--list-disabled${NC-}
 ${C["UsageCommand"]-}--list-nondeprecated${NC-}
     List non-deprecated apps
 ${C["UsageCommand"]-}--list-referenced${NC-}
-    List referenced apps (whether they are "built in" or not).
-    An app is considered "referenced" if there is a variable matching the app's name in the
-    global '${C["UsageFile"]-}.env${NC-}' file, or there are any variables in the file '${C["UsageFile"]-}.env.app.<app>${NC-}'.
+    List referenced apps (whether they are "built in" or not). An app is considered
+    "referenced" if there is a variable matching the app's name in the global '${C["UsageFile"]-}.env${NC-}',
+    there are any variables in the file '${C["UsageFile"]-}.env.app.<app>${NC-}', or the file '${C["UsageFile"]-}.env.app.<app>${NC-}'
+    is referenced in '${C["UsageFile"]-}docker-compose.override.yml${NC-}'.
 EOF
             ;;&
         -h | --help | "")
