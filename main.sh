@@ -123,6 +123,15 @@ declare -Agr C=( # Pre-defined colors
     ["Version"]="${F[C]}"
     ["Yes"]="${F[G]}"
     ["No"]="${F[R]}"
+
+    ["UsageCommand"]="${F[Y]}${BD}"
+    ["UsageOption"]="${F[Y]}"
+    ["UsageApp"]="${F[C]}"
+    ["UsageBranch"]="${F[C]}"
+    ["UsageFile"]="${F[C]}${BD}"
+    ["UsagePage"]="${F[C]}${BD}"
+    ["UsageTheme"]="${F[C]}"
+    ["UsageVar"]="${F[M]}"
 )
 
 # Log Functions
