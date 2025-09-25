@@ -87,7 +87,7 @@ EOF
         -a | --add | "")
             Found=1
             cat << EOF
-${C["UserCommand"]-}-a --add${NC-} <app> [<app> ...]${NC-}
+${C["UserCommand"]-}-a --add${NC-} ${C["App"]-}<app>${NC-} [${C["App"]-}<app>${NC-} ...]${NC-}
     Add the default variables for the app(s) specified
 EOF
             ;;&
