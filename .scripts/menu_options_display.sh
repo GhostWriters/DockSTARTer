@@ -34,7 +34,7 @@ menu_options_display() {
         for Option in "${DrawLineOption}" "${ShowBordersOption}" "${ShowScrollbarOption}" "${ShowShadowOption}"; do
             local Value
             Value="$(run_script 'config_get' "${OptionVariable["${Option}"]}" "${MENU_INI_FILE}")"
-            if [[ ${Value^^} =~ ON|TRUE|YES ]]; then
+            if [[ ${Value^^} =~ ^(1|ON|TRUE|YES)$ ]]; then
                 EnabledOptions+=("${Option}")
                 Opts+=("${Option}" "${OptionDescription["${Option}"]}" ON)
             else
