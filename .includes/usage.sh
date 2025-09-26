@@ -386,7 +386,7 @@ ${C["UsageCommand"]-}-M --menu${NC-} < ${C["UsageOption"]-}options-display${NC-}
 ${C["UsageCommand"]-}-M --menu${NC-} < ${C["UsageOption"]-}options-theme${NC-} | ${C["UsageOption"]-}theme${NC-} >${NC-}
     Load the ${C["UsagePage"]-}Theme Chooser${NC-} page in the menu.
 ${C["UsageCommand"]-}-M --menu${NC-} < ${C["UsageOption"]-}config-app-select${NC-} | ${C["UsageOption"]-}app-select${NC-} | ${C["UsageOption"]-}select${NC-} >${NC-}
-    Load the ${C["UsagePage"]-}Theme Chooser${NC-} page in the menu.
+    Load the ${C["UsagePage"]-}Application Selection${NC-} page in the menu.
 EOF
             ;;&
         -S | --select | --menu-config-app-select | --menu-app-select | "")
