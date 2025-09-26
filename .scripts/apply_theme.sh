@@ -126,19 +126,19 @@ apply_theme() {
         LineCharacters="$(run_script 'config_get' LineCharacters "${DefaultMenuIniFile}")"
         run_script 'config_set' LineCharacters "${LineCharacters}" "${MENU_INI_FILE}"
     fi
-    if [[ ${Borders^^} =~ ^(1|ON|TRUE|YES)$ ]]; then
-        if [[ ! ${LineCharacters^^} =~ ^(1|ON|TRUE|YES)$ ]]; then
+    if is_true "${Borders}"; then
+        if is_false "${LineCharacters}"; then
             DialogOptions+=" --ascii-lines"
         fi
     else
         DialogOptions+=" --no-lines"
     fi
-    if [[ ${Scrollbar^^} =~ ^(1|ON|TRUE|YES)$ ]]; then
+    if is_true "${Scrollbar}"; then
         DialogOptions+=" --scrollbar"
     else
         DialogOptions+=" --no-scrollbar"
     fi
-    if [[ ${Shadow^^} =~ ^(1|ON|TRUE|YES)$ ]]; then
+    if is_true "${Shadow}"; then
         DialogOptions+=" --shadow"
         DC["WindowColsAdjust"]=$((DC["WindowColsAdjust"] + 2))
         DC["WindowRowsAdjust"]=$((DC["WindowRowsAdjust"] + 1))

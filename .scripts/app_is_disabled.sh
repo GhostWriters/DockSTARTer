@@ -8,9 +8,7 @@ app_is_disabled() {
         false
         return
     fi
-    local -u APP_ENABLED
-    APP_ENABLED="$(run_script 'env_get' "${APPNAME}__ENABLED")"
-    [[ ! ${APP_ENABLED} =~ ^(1|ON|TRUE|YES)$ ]]
+    is_false "$(run_script 'env_get' "${APPNAME}__ENABLED")"
 }
 
 test_app_is_disabled() {

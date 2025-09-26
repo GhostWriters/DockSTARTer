@@ -54,6 +54,15 @@ quote_elements_with_spaces() {
     printf '%s\n' "${Result}"
 }
 
+is_true() {
+    local -u Boolean=${1-}
+    [[ ${Boolean} =~ ^(1|ON|TRUE|YES)$ ]]
+}
+
+is_false() {
+    ! is_true "${1-}"
+}
+
 # Version Functions
 # https://stackoverflow.com/questions/4023830/how-to-compare-two-strings-in-dot-separated-version-format-in-bash#comment92693604_4024263
 vergte() { printf '%s\n%s' "${2}" "${1}" | sort -C -V; }
