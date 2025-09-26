@@ -8,6 +8,10 @@ GLUETUN<__INSTANCE>__PORT_8000                                         GLUETUN<_
 GLUETUN<__INSTANCE>__PORT_8388                                         GLUETUN<__INSTANCE>_PORT_8388
 GLUETUN<__INSTANCE>__PORT_8888                                         GLUETUN<__INSTANCE>_PORT_8888
 GLUETUN<__INSTANCE>__RESTART                                           GLUETUN<__INSTANCE>_RESTART
+GLUETUN<__INSTANCE>__STORAGE_ON                                        GLUETUN<__INSTANCE>__STORAGE
+GLUETUN<__INSTANCE>__STORAGE2_ON                                       GLUETUN<__INSTANCE>__STORAGE2
+GLUETUN<__INSTANCE>__STORAGE3_ON                                       GLUETUN<__INSTANCE>__STORAGE3
+GLUETUN<__INSTANCE>__STORAGE4_ON                                       GLUETUN<__INSTANCE>__STORAGE4
 GLUETUN<__INSTANCE>__TAG                                               GLUETUN<__INSTANCE>_TAG
 ###
 ### GLUETUN<__INSTANCE> - gluetun<__instance>.env:
