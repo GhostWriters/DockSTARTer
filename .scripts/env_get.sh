@@ -23,7 +23,7 @@ env_get() {
         GET_VAR=${GET_VAR#"${APPNAME}:"}
     fi
     if [[ -f ${VAR_FILE} ]]; then
-        grep --color=never -Po "^\s*${GET_VAR}\s*=\K.*" "${VAR_FILE}" | tail -1 | xargs || true
+        grep --color=never -Po "^\s*${GET_VAR}\s*=\K[^#]*" "${VAR_FILE}" | tail -1 | xargs || true
     else
         # VAR_FILE does not exist, give a warning
         warn "File '${C["File"]}${VAR_FILE}${NC}' does not exist."
