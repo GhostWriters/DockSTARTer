@@ -3,37 +3,62 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 env_get() {
-    # env_get GET_VAR [VAR_FILE]
-    # env_get APPNAME:GET_VAR
+    # env_get VarName [VarFile]
+    # env_get APPNAME:VarName
     #
-    # Returns the variable "GET_VAR"  If no "VAR_FILE" is given, uses the global .env file
+    # Returns the variable "VarName"  If no "VarFile" is given, uses the global .env file
     # If "APPNAME:" is provided, gets variable from ".env.app.appname"
-    local GET_VAR=${1-}
-    local VAR_FILE=${2:-$COMPOSE_ENV}
+    local VarName=${1-}
+    local VarFile=${2:-$COMPOSE_ENV}
 
-    if ! run_script 'varname_is_valid' "${GET_VAR}"; then
-        error "${F[C]}${GET_VAR}${NC} is an invalid variable name."
+    if ! run_script 'varname_is_valid' "${VarName}"; then
+        error "${F[C]}${VarName}${NC} is an invalid variable name."
         return
     fi
 
-    if [[ ${GET_VAR} =~ ^[A-Za-z0-9_]+: ]]; then
-        # GET_VAR is in the form of "APPNAME:VARIABLE", set new file to use
-        local APPNAME=${GET_VAR%%:*}
-        VAR_FILE="$(run_script 'app_env_file' "${APPNAME}")"
-        GET_VAR=${GET_VAR#"${APPNAME}:"}
+    if [[ ${VarName} =~ ^[A-Za-z0-9_]+: ]]; then
+        # VarName is in the form of "APPNAME:VARIABLE", set new file to use
+        local APPNAME=${VarName%%:*}
+        VarFile="$(run_script 'app_env_file' "${APPNAME}")"
+        VarName=${VarName#"${APPNAME}:"}
     fi
-    if [[ -f ${VAR_FILE} ]]; then
-        grep --color=never -Po "^\s*${GET_VAR}\s*=\K[^#]*" "${VAR_FILE}" | tail -1 | xargs || true
+    if [[ -f ${VarFile} ]]; then
+        local LiteralValue
+        LiteralValue="$(run_script 'env_get_literal' "${VarName}" "${VarFile}")"
+        grep --color=never -Po "^\s*(?:(?:(?<Q>['\"]).*\k<Q>)|(?:[^\s]*[^#]*))" <<< "${LiteralValue}" | xargs 2> /dev/null || true
     else
-        # VAR_FILE does not exist, give a warning
-        warn "File '${C["File"]}${VAR_FILE}${NC}' does not exist."
+        # VarFile does not exist, give a warning
+        warn "File '${C["File"]}${VarFile}${NC}' does not exist."
     fi
 
 }
 
 test_env_get() {
-    run_script 'appvars_create' WATCHTOWER
-    run_script 'env_get' WATCHTOWER__ENABLED
-    run_script 'env_get' WATCHTOWER:WATCHTOWER_NOTIFICATIONS
-    run_script 'appvars_purge' WATCHTOWER
+    local VarFile
+    VarFile=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.VarFile.XXXXXXXXXX")
+    cat > "${VarFile}" << EOF
+Test1='Value'
+    Test2='Value'
+Test3  ='Value'
+    Test4  ='Value'
+Test5=  'Value'
+Test6='Value'# Comment # kljkl
+    Test7='Value' # Comment
+Test8  ='Value' # Comment
+    Test9  ='Value' # Comment
+Test10=  'Value' # Comment
+Test11=  Value# Comment
+Test12=  '#Value' # Comment
+Test13=  #Value# Comment
+Test14=  'Va#lue' # Comment
+Test15=  Va# lue# Comment
+Test16=  Va# lue # Comment
+
+EOF
+
+    cat "${VarFile}"
+    for Number in {1..16}; do
+        notice "[Test${Number}] [$(run_script 'env_get' "Test${Number}" "${VarFile}")]"
+    done
+    rm -f "${VarFile}"
 }
