@@ -63,6 +63,31 @@ is_false() {
     ! is_true "${1-}"
 }
 
+longest_columns() {
+    # 'longest_columns' int NumberOfColumns, array Elements
+    if [[ ! ${1-} =~ ^[0-9]+$ || ${1} -lt 0 ]]; then
+        error "Fist argument must be a positive number."
+        return 1
+    fi
+    local -i NumberOfCols=${1-}
+    shift
+    local -a Elements=("$@")
+    local -i NumberOfElements=${#Elements[@]}
+    local -a ColLength
+    for ((col = 0; col < NumberOfCols; col += 1)); do
+        ColLength[col]=0
+    done
+    for ((index = 0; index < NumberOfElements; index++)); do
+        local -i col
+        col=$((index % NumberOfCols))
+        TestValue=${Elements[index]}
+        if [[ ${#TestValue} -gt $((ColLength[col])) ]]; then
+            ColLength[col]=${#TestValue}
+        fi
+    done
+    printf '%s\n' "${ColLength[@]}"
+}
+
 # Version Functions
 # https://stackoverflow.com/questions/4023830/how-to-compare-two-strings-in-dot-separated-version-format-in-bash#comment92693604_4024263
 vergte() { printf '%s\n%s' "${2}" "${1}" | sort -C -V; }

@@ -21,3 +21,80 @@ run_test() {
         fatal "${SCRIPTPATH}/.scripts/${SCRIPTSNAME}.sh not found."
     fi
 }
+
+run_unit_tests() {
+    local InputColor="${C["${1-Notice}"]-}"
+    local ExpectedColor="${C["${2-Notice}"]-}"
+    shift 2
+    local -a Test=("$@")
+    local -a Headings=(
+        "Input" "Expected Value" "Returned Value"
+    )
+
+    local -i InputCols ExpectedValueCols ReturnedValueCols
+    {
+        read -r InputCols
+        read -r ExpectedValueCols
+        read -r ReturnedValueCols
+    } < <(longest_columns 3 "${Headings[@]}" "${Test[@]}")
+    local Input="${Headings[0]}"
+    local ExpectedValue="${Headings[1]}"
+    local ReturnedValue="${Headings[2]}"
+
+    local -i InputPadSize ExpectedValuePadSize ReturnedValuePadSize
+    InputPadSize=$((InputCols - ${#Input}))
+    ExpectedValuePadSize=$((ExpectedValueCols - ${#ExpectedValue}))
+    ReturnedValuePadSize=$((ReturnedValueCols - ${#ReturnedValue}))
+
+    local InputPad ExpectedValuePad ReturnedValuePad
+    InputPad="$(printf "%*s" ${InputPadSize})"
+    ExpectedValuePad="$(printf "%*s" ${ExpectedValuePadSize})"
+    ReturnedValuePad="$(printf "%*s" ${ReturnedValuePadSize})"
+    local TableLine
+    TableLine="$(
+        printf "+ %*s   + %*s   +   %*s +" \
+            "${InputCols}" "" "${ExpectedValueCols}" "" "${ReturnedValueCols}" ""
+    )"
+    TableLine=${TableLine// /-}
+    local Heading
+    Heading="$(
+        printf "| %s  ${InputPad} | %s  ${ExpectedValuePad} | %s  ${ReturnedValuePad} |" \
+            "${Headings[0]}" "${Headings[1]}" "${Headings[2]}"
+    )"
+    notice "${TableLine}"
+    notice "${Heading}"
+    notice "${TableLine}"
+    local -i i
+    for ((i = 0; i < ${#Test[@]}; i += 3)); do
+        local Input="${Test[i]}"
+        local ExpectedValue="${Test[i + 1]}"
+        local ReturnedValue="${Test[i + 2]}"
+
+        local -i InputPadSize ExpectedValuePadSize ReturnedValuePadSize
+        InputPadSize=$((InputCols - ${#Input}))
+        ExpectedValuePadSize=$((ExpectedValueCols - ${#ExpectedValue}))
+        ReturnedValuePadSize=$((ReturnedValueCols - ${#ReturnedValue}))
+
+        local InputPad ExpectedValuePad ReturnedValuePad
+        InputPad="$(printf "%*s" ${InputPadSize})"
+        ExpectedValuePad="$(printf "%*s" ${ExpectedValuePadSize})"
+        ReturnedValuePad="$(printf "%*s" ${ReturnedValuePadSize})"
+
+        if [[ ${ReturnedValue} == "${ExpectedValue}" ]]; then
+            local SuccessLine
+            SuccessLine="$(
+                printf "| [${InputColor}%s${NC-}]${InputPad} | [${ExpectedColor}%s${NC-}]${ExpectedValuePad} | [${C["Notice"]-}%s${NC-}]${ReturnedValuePad} |" \
+                    "${Input}" "${ExpectedValue}" "${ReturnedValue}"
+            )"
+            notice "${SuccessLine}"
+        else
+            local FailLine
+            FailLine="$(
+                printf "| [${C["Error"]-}%s${NC-}]${InputPad} | [${C["Error"]-}%s${NC-}]${ExpectedValuePad} | [${C["Error"]-}%s${NC-}]${ReturnedValuePad} |" \
+                    "${Input}" "${ExpectedValue}" "${ReturnedValue}"
+            )"
+            error "${FailLine}"
+        fi
+    done
+    notice "${TableLine}"
+}
