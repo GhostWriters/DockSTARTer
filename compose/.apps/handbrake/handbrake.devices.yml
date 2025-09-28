@@ -1,0 +1,7 @@
+services:
+  handbrake<__instance>:
+    devices:
+      - ${HANDBRAKE<__INSTANCE>__DEVICE_DEV1}
+      - ${HANDBRAKE<__INSTANCE>__DEVICE_DEV2}
+      - ${HANDBRAKE<__INSTANCE>__DEVICE_DEV3}
+      - ${HANDBRAKE<__INSTANCE>__DEVICE_DEV4}
