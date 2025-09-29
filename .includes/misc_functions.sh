@@ -80,6 +80,7 @@ longest_columns() {
     for ((index = 0; index < NumberOfElements; index++)); do
         local -i col
         col=$((index % NumberOfCols))
+        local TestValue
         TestValue=${Elements[index]}
         if [[ ${#TestValue} -gt $((ColLength[col])) ]]; then
             ColLength[col]=${#TestValue}
