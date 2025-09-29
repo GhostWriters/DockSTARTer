@@ -22,7 +22,7 @@ env_get() {
         VarFile="$(run_script 'app_env_file' "${APPNAME}")"
         VarName=${VarName#"${APPNAME}:"}
     fi
-    if [[ -f ${VarFile} ]]; then
+    if [[ -e ${VarFile} ]]; then
         local LiteralValue
         LiteralValue="$(run_script 'env_get_literal' "${VarName}" "${VarFile}")"
         grep --color=never -Po "^\s*(?:(?:(?<Q>['\"]).*\k<Q>)|(?:[^\s]*[^#]*))" <<< "${LiteralValue}" | xargs 2> /dev/null || true
@@ -34,31 +34,31 @@ env_get() {
 }
 
 test_env_get() {
-    local VarFile
-    VarFile=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.VarFile.XXXXXXXXXX")
-    cat > "${VarFile}" << EOF
-Test1='Value'
-    Test2='Value'
-Test3  ='Value'
-    Test4  ='Value'
-Test5=  'Value'
-Test6='Value'# Comment # kljkl
-    Test7='Value' # Comment
-Test8  ='Value' # Comment
-    Test9  ='Value' # Comment
-Test10=  'Value' # Comment
-Test11=  Value# Comment
-Test12=  '#Value' # Comment
-Test13=  #Value# Comment
-Test14=  'Va#lue' # Comment
-Test15=  Va# lue# Comment
-Test16=  Va# lue # Comment
-
-EOF
-
-    cat "${VarFile}"
-    for Number in {1..16}; do
-        notice "[Test${Number}] [$(run_script 'env_get' "Test${Number}" "${VarFile}")]"
-    done
-    rm -f "${VarFile}"
+    local -a Test=(
+        "Test='Value'" Value
+        "    Test='Value'" Value
+        "Test  ='Value'" Value
+        "    Test  ='Value'" Value
+        "Test=  'Value'" Value
+        "Test='Value'# Comment # kljkl" Value
+        "    Test='Value' # Comment" Value
+        "Test  ='Value' # Comment" Value
+        "    Test  ='Value' # Comment" Value
+        "Test=  'Value' # Comment" Value
+        "Test=  Value# Not a Comment" "Value# Not a Comment"
+        "Test=  '#Value' # Comment" "#Value"
+        "Test=  #Value# Not a Comment" "#Value# Not a Comment"
+        "Test=  'Va#lue' # Comment" "Va#lue"
+        "Test=  Va# lue# Not a Comment" "Va# lue# Not a Comment"
+        "Test=  Va# lue # Comment" "Va# lue"
+    )
+    #shellcheck disable=SC2046 #(warning): Quote this to prevent word splitting.
+    run_unit_tests "Var" "Var" $(
+        for ((i = 0; i < ${#Test[@]}; i += 2)); do
+            printf '%s\n' \
+                "${Test[i]}" \
+                "${Test[i + 1]}" \
+                "$(run_script 'env_get' Test <(echo "${Test[i]}"))"
+        done
+    )
 }
