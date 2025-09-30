@@ -56,11 +56,17 @@ test_env_get() {
     )
     VarFile=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.VarFile.XXXXXXXXXX") ||
         fatal "Failed to create temporary file '${C["File"]}.env${NC}' file.\nFailing command: ${C["FailingCommand"]}mktemp -t \"${APPLICATION_NAME}.${FUNCNAME[0]}.VarFile.XXXXXXXXXX\""
-    printf "### ${APPLICATION_NAME}.${FUNCNAME[0]}.VarFile.XXXXXXXXXX\n" > "${VarFile}"
-    for ((i = 0; i < ${#Test[@]}; i += 3)); do
-        printf '%s\n' "${Test[i + 1]}"
-    done >> "${VarFile}"
+    {
+        printf '### %s\n' \
+            "" \
+            "${APPLICATION_NAME}.${FUNCNAME[0]}.VarFile.XXXXXXXXXX\n" \
+            ""
+        for ((i = 0; i < ${#Test[@]}; i += 3)); do
+            printf '%s\n' "${Test[i + 1]}"
+        done
+    } > "${VarFile}"
 
+    notice "$(cat "${VarFile}")"
     run_unit_tests_pipe "Var" "Var" < <(
         for ((i = 0; i < ${#Test[@]}; i += 3)); do
             printf '%s\n' \
