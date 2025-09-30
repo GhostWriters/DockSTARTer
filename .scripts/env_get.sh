@@ -59,7 +59,7 @@ test_env_get() {
     {
         printf '### %s\n' \
             "" \
-            "${APPLICATION_NAME}.${FUNCNAME[0]}.VarFile.XXXXXXXXXX\n" \
+            "${APPLICATION_NAME}.${FUNCNAME[0]}.VarFile.XXXXXXXXXX" \
             ""
         for ((i = 0; i < ${#Test[@]}; i += 3)); do
             printf '%s\n' "${Test[i + 1]}"
