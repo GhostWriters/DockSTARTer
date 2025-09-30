@@ -35,7 +35,7 @@ env_get() {
 
 test_env_get() {
     local ForcePass=1
-    local -i reseult=0
+    local -i result=0
     local -a Test=(
         Var_01 "Var_01='Value'" Value
         Var_02 "    Var_02='Value'" Value
