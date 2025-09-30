@@ -57,7 +57,7 @@ test_env_get_literal() {
         Var_16 "Var_16=  Va# lue # Comment" "  Va# lue # Comment"
     )
     VarFile=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.VarFile.XXXXXXXXXX") ||
-        fatal "Failed to create temporary file '${C["File"]}.env${NC}' file.\nFailing command: ${C["FailingCommand"]}mktemp -t \"${APPLICATION_NAME}.${FUNCNAME[0]}.VarFile.XXXXXXXXXX\""
+        fatal "Failed to create temporary file.\nFailing command: ${C["FailingCommand"]}mktemp -t \"${APPLICATION_NAME}.${FUNCNAME[0]}.VarFile.XXXXXXXXXX\""
     {
         printf '### %s\n' \
             "" \
@@ -82,8 +82,6 @@ test_env_get_literal() {
     rm -f "${VarFile}" ||
         warn "Failed to remove temporary file.\nFailing command: ${C["FailingCommand"]}rm -f \"${VarFile}\""
 
-    # Return a "pass" for now.
-    # There is an error to be fixed in "Test=  Va# lue# Not a Comment"
     [[ -n ${ForcePass-} ]] && return 0
     return ${result}
 }
