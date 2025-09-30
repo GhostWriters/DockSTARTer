@@ -106,9 +106,12 @@ run_unit_tests_pipe() {
         fi
     done
     notice "${TableLine}"
-    if [[ -n ${ForcePass} && ${result} != 0 ]]; then
-        warn "The '${C["Var"]-}ForcePass${NC-}' variable is set, passing test even though an error occured."
-        return 0
+    if [[ -n ${ForcePass} ]]; then
+        warn "The '${C["Var"]-}ForcePass${NC-}' variable is set."
+        if [[ ${result} != 0 ]]; then
+            error "Passing test even though an error occurred."
+            return 0
+        fi
     fi
     return ${result}
 }
