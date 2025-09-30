@@ -23,13 +23,14 @@ run_test() {
 }
 
 run_unit_tests() {
-    run_unit_tests_pipe "${1}" "${2}" < <(
-        printf '%s\n' "${@:3}"
+    run_unit_tests_pipe "${1}" "${2}" "${3}" < <(
+        printf '%s\n' "${@:4}"
     )
 }
 run_unit_tests_pipe() {
     local InputColor="${C["${1-Notice}"]-}"
     local ExpectedColor="${C["${2-Notice}"]-}"
+    local ForcePass=${3-}
     local -a Test
     readarray -t Test
 
@@ -62,10 +63,10 @@ run_unit_tests_pipe() {
         printf "+ %*s   + %*s   +   %*s +" \
             "${InputCols}" "" "${ExpectedValueCols}" "" "${ReturnedValueCols}" ""
     )"
-    TableLine=${TableLine// /-}
+    TableLine=" ${TableLine// /-} "
     local Heading
     Heading="$(
-        printf "| %s  ${InputPad} | %s  ${ExpectedValuePad} | %s  ${ReturnedValuePad} |" \
+        printf " | %s  ${InputPad} | %s  ${ExpectedValuePad} | %s  ${ReturnedValuePad} | " \
             "${Headings[0]}" "${Headings[1]}" "${Headings[2]}"
     )"
     notice "${TableLine}"
@@ -90,14 +91,14 @@ run_unit_tests_pipe() {
         if [[ ${ReturnedValue} == "${ExpectedValue}" ]]; then
             local SuccessLine
             SuccessLine="$(
-                printf "| [${InputColor}%s${NC-}]${InputPad} | [${ExpectedColor}%s${NC-}]${ExpectedValuePad} | [${C["Notice"]-}%s${NC-}]${ReturnedValuePad} |" \
+                printf " | [${InputColor}%s${NC-}]${InputPad} | [${ExpectedColor}%s${NC-}]${ExpectedValuePad} | [${C["Notice"]-}%s${NC-}]${ReturnedValuePad} | " \
                     "${Input}" "${ExpectedValue}" "${ReturnedValue}"
             )"
             notice "${SuccessLine}"
         else
             local FailLine
             FailLine="$(
-                printf "| [${C["Error"]-}%s${NC-}]${InputPad} | [${C["Error"]-}%s${NC-}]${ExpectedValuePad} | [${C["Error"]-}%s${NC-}]${ReturnedValuePad} |" \
+                printf "${C["Error"]-}>${NC-}| [${C["Error"]-}%s${NC-}]${InputPad} | [${C["Error"]-}%s${NC-}]${ExpectedValuePad} | [${C["Error"]-}%s${NC-}]${ReturnedValuePad} |${C["Error"]-}<${NC-}" \
                     "${Input}" "${ExpectedValue}" "${ReturnedValue}"
             )"
             error "${FailLine}"
@@ -105,5 +106,9 @@ run_unit_tests_pipe() {
         fi
     done
     notice "${TableLine}"
+    if [[ -n ${ForcePass} && ${result} != 0 ]]; then
+        warn "The '${C["Var"]-}ForcePass${NC-}' variable is set, passing test even though an error occured."
+        return 0
+    fi
     return ${result}
 }

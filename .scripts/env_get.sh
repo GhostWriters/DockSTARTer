@@ -69,7 +69,7 @@ test_env_get() {
     } > "${VarFile}"
 
     notice "$(cat "${VarFile}")"
-    run_unit_tests_pipe "Var" "Var" < <(
+    run_unit_tests_pipe "Var" "Var" "${ForcePass}" < <(
         for ((i = 0; i < ${#Test[@]}; i += 3)); do
             printf '%s\n' \
                 "${Test[i + 1]}" \
@@ -82,6 +82,5 @@ test_env_get() {
     rm -f "${VarFile}" ||
         warn "Failed to remove temporary file.\nFailing command: ${C["FailingCommand"]}rm -f \"${VarFile}\""
 
-    [[ -n ${ForcePass-} ]] && return 0
     return ${result}
 }
