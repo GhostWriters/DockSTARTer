@@ -23,10 +23,17 @@ run_test() {
 }
 
 run_unit_tests() {
+    run_unit_tests_pipe "${1}" "${2}" < <(
+        printf '%s\n' "${@:3}"
+    )
+}
+run_unit_tests_pipe() {
     local InputColor="${C["${1-Notice}"]-}"
     local ExpectedColor="${C["${2-Notice}"]-}"
-    shift 2
-    local -a Test=("$@")
+    local -a Test
+    readarray -t Test
+
+    local -i result=0
     local -a Headings=(
         "Input" "Expected Value" "Returned Value"
     )
@@ -66,9 +73,9 @@ run_unit_tests() {
     notice "${TableLine}"
     local -i i
     for ((i = 0; i < ${#Test[@]}; i += 3)); do
-        local Input="${Test[i]}"
-        local ExpectedValue="${Test[i + 1]}"
-        local ReturnedValue="${Test[i + 2]}"
+        local Input="${Test[i]-}"
+        local ExpectedValue="${Test[i + 1]-}"
+        local ReturnedValue="${Test[i + 2]-}"
 
         local -i InputPadSize ExpectedValuePadSize ReturnedValuePadSize
         InputPadSize=$((InputCols - ${#Input}))
@@ -94,7 +101,9 @@ run_unit_tests() {
                     "${Input}" "${ExpectedValue}" "${ReturnedValue}"
             )"
             error "${FailLine}"
+            result=1
         fi
     done
     notice "${TableLine}"
+    return ${result}
 }
