@@ -53,7 +53,7 @@ menu_app_select() {
         readarray -t AddedApps < <(run_script 'app_filter_runnable' "${AddedApps[@]-}" | sort -f -u)
         update_gauge 1
 
-        readarray -t AddedApps < <(run_script 'app_nicename' "${AddedApps[@]-}")
+        readarray -t AddedApps < <(run_script 'app_nicename_from_template' "${AddedApps[@]-}")
         update_gauge 1
 
         if [[ -n ${AddedApps[*]-} ]]; then
@@ -89,7 +89,7 @@ menu_app_select() {
         readarray -t BuiltinApps < <(run_script 'app_filter_runnable' "${BuiltinApps[@]}")
         update_gauge 1
 
-        readarray -t BuiltinApps < <(run_script 'app_nicename' "${BuiltinApps[@]}")
+        readarray -t BuiltinApps < <(run_script 'app_nicename_from_template' "${BuiltinApps[@]}")
         update_gauge 1
 
         local -a AllApps
