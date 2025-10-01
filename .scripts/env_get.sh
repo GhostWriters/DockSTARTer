@@ -36,7 +36,7 @@ env_get() {
 test_env_get() {
     # Return a "pass" for now.
     # There is an error to be fixed in "Var_15=  Va# lue# Not a Comment"
-    local ForcePass=1
+    local ForcePass=1 # Force the tests to pass even on failure if set to a non-empty value
     local -i result=0
     local -a Test=(
         Var_01 "Var_01='Value'" Value

@@ -32,7 +32,7 @@ env_get_line() {
 }
 
 test_env_get_line() {
-    local ForcePass=''
+    local ForcePass='' # Force the tests to pass even on failure if set to a non-empty value
     local -i result=0
     local -a Test=(
         Var_01 "Var_01='Value'" "Var_01='Value'"
