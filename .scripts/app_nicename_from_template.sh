@@ -8,20 +8,27 @@ app_nicename_from_template() {
     AppList="$(xargs -n 1 <<< "$*")"
     for APPNAME in ${AppList}; do
         local AppName="${APPNAME%:*}"
-        local -l appname=${AppName}
-        local LABELS_FILE
-        LABELS_FILE="$(run_script 'app_instance_file' "${appname}" "*.labels.yml")"
-        if [[ -f ${LABELS_FILE} ]]; then
-            grep --color=never -Po "\scom\.dockstarter\.appinfo\.nicename: \K.*" "${LABELS_FILE}" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo "${appname}"
-        else
-            sed -E "s/[[:alnum:]]+/\u&/g" <<< "${appname}"
+        local -l baseapp instance
+        local BaseApp Instance
+        baseapp=$(run_script 'appname_to_baseappname' "${AppName}")
+        BaseApp="${baseapp^}"
+        labels_yml="$(run_script 'app_instance_file' "${baseapp}" "*.labels.yml")"
+        if [[ -f ${labels_yml} ]]; then
+            BaseApp="$(
+                grep --color=never -Po "\scom\.dockstarter\.appinfo\.nicename: \K.*" "${labels_yml}" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs
+            )"
         fi
+        instance=$(run_script 'appname_to_instancename' "${AppName}")
+        Instance=""
+        if [[ -n ${instance} ]]; then
+            Instance="__${instance^}"
+        fi
+        echo "${BaseApp}${Instance}"
     done
-
 }
 
 test_app_nicename_from_template() {
-    for AppName in WATCHTOWER SAMBA RADARR NZBGET NONEXISTENTAPP; do
+    for AppName in WATCHTOWER SAMBA RADARR NZBGET NZBGET__INSTANCE NONEXISTENTAPP; do
         local Result="no"
         Result="$(run_script 'app_nicename_from_template' "${AppName}")"
         notice "[${AppName}] [${Result}]"
