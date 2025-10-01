@@ -28,9 +28,32 @@ app_nicename_from_template() {
 }
 
 test_app_nicename_from_template() {
-    for AppName in WATCHTOWER SAMBA RADARR NZBGET NZBGET__INSTANCE NONEXISTENTAPP; do
-        local Result="no"
-        Result="$(run_script 'app_nicename_from_template' "${AppName}")"
-        notice "[${AppName}] [${Result}]"
-    done
+    local ForcePass=''
+    local -i result=0
+    run_script 'appvars_create' WATCHTOWER NZBGET
+    local -a Test=(
+        WATCHTOWER Watchtower
+        SAMBA Samba
+        RADARR Radarr
+        nzbget NZBGet
+        NZBGet NZBGet
+        NZBGET NZBGet
+        NONEXISTENTAPP Nonexistentapp
+        WATCHTOWER__INSTANCE Watchtower__Instance
+        SAMBA__INSTANCE Samba__Instance
+        RADARR__INSTANCE Radarr__Instance
+        NZBGET__INSTANCE NZBGet__Instance
+        NONEXISTENTAPP__INSTANCE Nonexistentapp__Instance
+    )
+    run_unit_tests_pipe "App" "App" "${ForcePass}" < <(
+        for ((i = 0; i < ${#Test[@]}; i += 2)); do
+            printf '%s\n' \
+                "${Test[i]}" \
+                "${Test[i + 1]}" \
+                "$(run_script 'app_nicename_from_template' "${Test[i]}")"
+        done
+    )
+    result=$?
+    run_script 'appvars_purge' WATCHTOWER NZBGET
+    return ${result}
 }
