@@ -28,7 +28,7 @@ app_nicename() {
 }
 
 test_app_nicename() {
-    local ForcePass=''
+    local ForcePass='' # Force the tests to pass even on failure if set to a non-empty value
     local -i result=0
     run_script 'appvars_create' WATCHTOWER NZBGET
     local -a Test=(
