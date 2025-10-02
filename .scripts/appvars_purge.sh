@@ -75,7 +75,7 @@ appvars_purge() {
                 Question+="${Indent}${Indent}${C["Var"]}${line}${NC}\n"
             done
         fi
-        if [[ ${CI-} == true ]] || run_script 'question_prompt' Y "${Question}" "${Title}" "${FORCE:+Y}"; then
+        if [[ ${CI-} == true ]] || run_script 'question_prompt' Y "${Question}" "${Title}" "${ASSUMEYES:+Y}"; then
             info "Purging '${C["App"]}${AppName}${NC}' variables."
 
             if [[ -n ${GlobalVarsToRemove[*]-} ]]; then

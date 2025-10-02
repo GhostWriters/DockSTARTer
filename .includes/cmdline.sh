@@ -33,7 +33,7 @@ parse_arguments() {
         local -a CurrentFlags=()
         local -a CurrentCommand=()
 
-        while getopts ":-:acefghilMprRsStTuvVx" OPTION; do
+        while getopts ":-:acefghilMprRsStTuvVxy" OPTION; do
             if [[ ${OPTION} == "-" ]]; then
                 # Rename the long option to --option
                 OPTION="--${OPTARG}"
@@ -46,7 +46,8 @@ parse_arguments() {
                 -f | --force) ;&
                 -g | --gui) ;&
                 -v | --verbose) ;&
-                -x | --debug)
+                -x | --debug) ;&
+                -y | --yes)
                     CurrentFlags+=("${OPTION}")
                     continue
                     ;;
@@ -925,15 +926,18 @@ set_flags() {
                 fi
                 ;;
             -v | --verbose)
-                declare -gx VERBOSE=1
+                declare -gx VERBOSE=true
                 ;;
             -x | --debug)
-                declare -gx DEBUG=1
+                declare -gx DEBUG=true
+                ;;
+            -y | --yes)
+                declare -gx ASSUMEYES=true
                 ;;
         esac
     done
     if [[ -n ${DEBUG-} && -n ${VERBOSE-} ]]; then
-        declare -gx TRACE=1
+        declare -gx TRACE=true
     fi
     if [[ -n ${DEBUG-} ]]; then
         set -x
@@ -943,7 +947,7 @@ set_flags() {
 unset_flags() {
     set +x
     declare -gx PROMPT="CLI"
-    unset FORCE VERBOSE DEBUG TRACE
+    unset ASSUMEYES FORCE VERBOSE DEBUG TRACE
 }
 
 cmdline_error() {

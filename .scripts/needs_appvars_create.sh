@@ -8,6 +8,10 @@ declare Prefix="appvars_create_"
 needs_appvars_create() {
     return 0
 
+    if [[ -n ${FORCE-} ]]; then
+        return 0
+    fi
+
     if [[ $# -eq 0 ]]; then
         local -a AppList
         readarray -t AppList < <(run_script 'app_list_added')

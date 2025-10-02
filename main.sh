@@ -229,7 +229,7 @@ clone_repo() {
     git clone "${APPLICATION_REPO}" "${DETECTED_HOMEDIR}/.docker" ||
         fatal "Failed to clone ${APPLICATION_NAME} repo.\nFailing command: ${C["FailingCommand"]-}git clone \"${APPLICATION_REPO}\" \"${DETECTED_HOMEDIR}/.docker\""
     notice "Performing first run install."
-    exec bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-fvi"
+    exec bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-fyvi"
 }
 
 # Cleanup Function
@@ -301,8 +301,8 @@ init_check_symlink() {
                 fi
             fi
             warn "Attempting to run ${APPLICATION_NAME} from '${C["RunningCommand"]-}${DS_SYMLINK}${NC-}' location."
-            bash "${DS_SYMLINK}" -fvu
-            bash "${DS_SYMLINK}" -fvi
+            bash "${DS_SYMLINK}" -fvyu
+            bash "${DS_SYMLINK}" -fvyi
             exec bash "${DS_SYMLINK}" "${ARGS[@]-}"
         fi
     fi

@@ -75,6 +75,13 @@ ${C["UsageCommand"]-}-x --debug${NC-}
     Debug
 EOF
             ;;&
+        -y | --yes | "")
+            Found=1
+            cat << EOF
+${C["UsageCommand"]-}-y --yes${NC-}
+    Assume Yes for all prompts
+EOF
+            ;;&
         "")
             if [[ -z ${NoHeading-} ]]; then
                 cat << EOF
