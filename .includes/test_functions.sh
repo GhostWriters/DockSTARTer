@@ -91,14 +91,14 @@ run_unit_tests_pipe() {
         if [[ ${ReturnedValue} == "${ExpectedValue}" ]]; then
             local SuccessLine
             SuccessLine="$(
-                printf " | [${InputColor}%s${NC-}]${InputPad} | [${ExpectedColor}%s${NC-}]${ExpectedValuePad} | [${C["Notice"]-}%s${NC-}]${ReturnedValuePad} | " \
+                printf " | [${InputColor}%s${NC-}]${InputPad} | [${ExpectedColor}%s${NC-}]${ExpectedValuePad} | [${C["UnitTestPass"]-}%s${NC-}]${ReturnedValuePad} | " \
                     "${Input}" "${ExpectedValue}" "${ReturnedValue}"
             )"
             notice "${SuccessLine}"
         else
             local FailLine
             FailLine="$(
-                printf "${C["Error"]-}>${NC-}| [${C["Error"]-}%s${NC-}]${InputPad} | [${C["Error"]-}%s${NC-}]${ExpectedValuePad} | [${C["Error"]-}%s${NC-}]${ReturnedValuePad} |${C["Error"]-}<${NC-}" \
+                printf "${C["UnitTestFail"]-}>${NC-}| [${C["UnitTestFail"]-}%s${NC-}]${InputPad} | [${C["UnitTestFail"]-}%s${NC-}]${ExpectedValuePad} | [${C["UnitTestFail"]-}%s${NC-}]${ReturnedValuePad} |${C["UnitTestFail"]-}<${NC-}" \
                     "${Input}" "${ExpectedValue}" "${ReturnedValue}"
             )"
             error "${FailLine}"
