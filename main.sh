@@ -107,7 +107,7 @@ declare -Agr C=( # Pre-defined colors
     ["Fatal"]="${B[R]}${F[W]}"
 
     ["UnitTestPass"]="${F[G]}"
-    ["UnitTestFail"]="${F[K]}${B[R]}"
+    ["UnitTestFail"]="${F[R]}"
     ["UnitTestFailArrow"]="${F[R]}"
 
     ["App"]="${F[C]}"
