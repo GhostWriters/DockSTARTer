@@ -98,7 +98,7 @@ run_unit_tests_pipe() {
         else
             local FailLine
             FailLine="$(
-                printf "${C["UnitTestFail"]-}>${NC-}| [${C["UnitTestFail"]-}%s${NC-}]${InputPad} | [${C["UnitTestFail"]-}%s${NC-}]${ExpectedValuePad} | [${C["UnitTestFail"]-}%s${NC-}]${ReturnedValuePad} |${C["UnitTestFail"]-}<${NC-}" \
+                printf "${C["UnitTestFailArrow"]-}>${NC-}| [${C["UnitTestFail"]-}%s${NC-}]${InputPad} | [${C["UnitTestFail"]-}%s${NC-}]${ExpectedValuePad} | [${C["UnitTestFail"]-}%s${NC-}]${ReturnedValuePad} |${C["UnitTestFailArrow"]-}<${NC-}" \
                     "${Input}" "${ExpectedValue}" "${ReturnedValue}"
             )"
             error "${FailLine}"
