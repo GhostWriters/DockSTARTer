@@ -76,6 +76,7 @@ _dialog_backtitle_() {
     fi
 
     local -i HeadingLength
+    COLUMNS=$(tput cols)
     HeadingLength=$((COLUMNS - 2))
 
     local CleanLeftHeading CleanCenterHeading CleanRightHeading
