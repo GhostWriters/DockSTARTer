@@ -444,7 +444,7 @@ menu_value_prompt() {
                 fi
                 if ${ValueValid}; then
                     if [[ -z ${OptionValue["${CurrentValueOption}"]-} ]]; then
-                        if run_script 'question_prompt' N "${DialogHeading}\n\nDo you really want to delete ${DC["Highlight"]-}${CleanVarName}${DC["NC"]-}?\n" "Delete Variable" "" "Delete" "Back"; then
+                        if run_script 'question_prompt' N "${DialogHeading}\n\nDo you really want to delete ${DC["Highlight"]-}${CleanVarName}${DC["NC"]-}?\n" "Delete Variable" "${ASSUMEYES:+Y}" "Delete" "Back"; then
                             # Value is empty, delete the variable
                             coproc {
                                 dialog_pipe "${DC["TitleSuccess"]-}Deleting Variable" "${DialogHeading}" "${DIALOGTIMEOUT}"
@@ -472,7 +472,7 @@ menu_value_prompt() {
                             return 0
                         fi
                     elif [[ ${OptionValue["${CurrentValueOption}"]-} == "${OptionValue["${OriginalValueOption}"]-}" ]]; then
-                        if run_script 'question_prompt' N "${DialogHeading}\n\nThe value of ${DC["Highlight"]-}${CleanVarName}${DC["NC"]-} has not been changed, exit anyways?\n" "Save Variable" "" "Done" "Back"; then
+                        if run_script 'question_prompt' N "${DialogHeading}\n\nThe value of ${DC["Highlight"]-}${CleanVarName}${DC["NC"]-} has not been changed, exit anyways?\n" "Save Variable" "${ASSUMEYES:+Y}" "Done" "Back"; then
                             # Value has not changed, confirm exiting
                             coproc {
                                 dialog_pipe "${DC["TitleSuccess"]-}Canceling Variable Edit" "${DialogHeading}" "${DIALOGTIMEOUT}"
@@ -499,7 +499,7 @@ menu_value_prompt() {
                             return 0
                         fi
                     else
-                        if run_script 'question_prompt' N "${DialogHeading}\n\nWould you like to save ${DC["Highlight"]-}${CleanVarName}${DC["NC"]-}?\n" "Save Variable" "" "Save" "Back"; then
+                        if run_script 'question_prompt' N "${DialogHeading}\n\nWould you like to save ${DC["Highlight"]-}${CleanVarName}${DC["NC"]-}?\n" "Save Variable" "${ASSUMEYES:+Y}" "Save" "Back"; then
                             # Value is valid, save it and exit
                             coproc {
                                 dialog_pipe "${DC["TitleSuccess"]-}Saving Variable" "${DialogHeading}" "${DIALOGTIMEOUT}"
