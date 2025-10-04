@@ -45,7 +45,7 @@ _dialog_backtitle_() {
     for Flag in ASSUMEYES FORCE VERBOSE DEBUG; do
         if [[ -n ${!Flag-} ]]; then
             if [[ -n ${FlagsEnabled-} ]]; then
-                FlagsEnabled+="${DC["ApplicationFlagsSpace"]-} ${DC["NC"]-}"
+                FlagsEnabled+="${DC["ApplicationFlagsSpace"]-}|${DC["NC"]-}"
             fi
             FlagsEnabled+="${DC["ApplicationFlags"]-}${FlagOption["${Flag}"]}${DC["NC"]-}"
         fi
