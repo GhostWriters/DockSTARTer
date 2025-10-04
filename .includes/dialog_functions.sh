@@ -32,40 +32,86 @@ declare -ragx DIALOG_BUTTONS=(
 declare -gx BACKTITLE=''
 
 _dialog_backtitle_() {
-    local LeftBackTitle RightBackTitle
-    local CleanLeftBackTitle CleanRightBackTitle
-    if [[ -z ${DC["_defined_"]-} ]]; then
-        run_script 'apply_theme'
+    local LeftHeading CenterHeading RightHeading
+
+    local LeftHeading="${DC["Hostname"]-}${HOSTNAME}${DC["NC"]-}"
+    local -A FlagOption=(
+        ["ASSUMEYES"]="YES"
+        ["FORCE"]="FORCE"
+        ["VERBOSE"]="VERBOSE"
+        ["DEBUG"]="DEBUG"
+    )
+    local FlagsEnabled
+    for Flag in ASSUMEYES FORCE VERBOSE DEBUG; do
+        if [[ -n ${!Flag-} ]]; then
+            if [[ -n ${FlagsEnabled-} ]]; then
+                FlagsEnabled+="${DC["ApplicationFlagsSpace"]-}|${DC["NC"]-}"
+            fi
+            FlagsEnabled+="${DC["ApplicationFlags"]-}${FlagOption["${Flag}"]}${DC["NC"]-}"
+        fi
+    done
+    if [[ -n ${FlagsEnabled-} ]]; then
+        LeftHeading+=" ${DC["ApplicationFlagsBrackets"]-}|${FlagsEnabled}${DC["ApplicationFlagsBrackets"]-}|${DC["NC"]-}"
     fi
+    local CenterHeading="${DC["ApplicationName"]-}${APPLICATION_NAME}${DC["NC"]-}"
 
-    CleanLeftBackTitle="${APPLICATION_NAME}"
-    LeftBackTitle="${DC["ApplicationName"]-}${APPLICATION_NAME}${DC["NC"]-}"
+    local RightHeading=''
 
-    CleanRightBackTitle=''
-    RightBackTitle=''
     if ds_update_available; then
-        CleanRightBackTitle="(Update Available)"
-        RightBackTitle="${DC["ApplicationUpdateBrackets"]-}(${DC["ApplicationUpdate"]-}Update Available${DC["ApplicationUpdateBrackets"]-})${DC["NC"]-}"
+        if [[ -n ${RightHeading-} ]]; then
+            RightHeading+=" "
+        fi
+        RightHeading+="${DC["ApplicationUpdateBrackets"]-}(${DC["ApplicationUpdate"]-}Update Available${DC["ApplicationUpdateBrackets"]-})${DC["NC"]-}"
     fi
     if [[ ${APPLICATION_VERSION-} ]]; then
-        if [[ -n ${CleanRightBackTitle-} ]]; then
-            CleanRightBackTitle+=" "
-            RightBackTitle+="${DC["ApplicationVersionSpace"]-} "
+        if [[ -n ${RightHeading-} ]]; then
+            RightHeading+=" "
         fi
         local CurrentVersion
         CurrentVersion="$(ds_version)"
         if [[ -z ${CurrentVersion} ]]; then
             CurrentVersion="$(ds_branch) Unknown Version"
         fi
-        CleanRightBackTitle+="[${CurrentVersion}]"
-        RightBackTitle+="${DC["ApplicationVersionBrackets"]-}[${DC["ApplicationVersion"]-}${CurrentVersion}${DC["ApplicationVersionBrackets"]-}]${DC["NC"]-}"
+        RightHeading+="${DC["ApplicationVersionBrackets"]-}[${DC["ApplicationVersion"]-}${CurrentVersion}${DC["ApplicationVersionBrackets"]-}]${DC["NC"]-}"
     fi
 
-    local -i IndentLength
-    IndentLength=$((COLUMNS - ${#CleanLeftBackTitle} - ${#CleanRightBackTitle} - 2))
-    local Indent
-    Indent="$(printf %${IndentLength}s '')"
-    BACKTITLE="${LeftBackTitle}${Indent}${RightBackTitle}"
+    local -i HeadingLength
+    HeadingLength=$((COLUMNS - 2))
+
+    local CleanLeftHeading CleanCenterHeading CleanRightHeading
+    CleanLeftHeading="$(strip_dialog_colors "${LeftHeading}")"
+    CleanCenterHeading="$(strip_dialog_colors "${CenterHeading}")"
+    CleanRightHeading="$(strip_dialog_colors "${RightHeading}")"
+
+    # Get the length of each heading
+    local -i LeftHeadingLength=${#CleanLeftHeading}
+    local -i CenterHeadingLength=${#CleanCenterHeading}
+    local -i RightHeadingLength=${#CleanRightHeading}
+
+    # Calculate padding
+    local -i LeftPadding=$(((HeadingLength - CenterHeadingLength) / 2 - LeftHeadingLength))
+    # Ensure left padding is not negative
+    if [[ LeftPadding -lt 0 ]]; then
+        LeftPadding=0
+    fi
+    local -i EndOfCenterHeading=$((LeftHeadingLength + LeftPadding + CenterHeadingLength))
+
+    # Recalculate right padding based on adjusted left padding
+    local RightPadding=$((HeadingLength - EndOfCenterHeading - RightHeadingLength))
+
+    # Ensure right padding is not negative
+    if [[ RightPadding -lt 0 ]]; then
+        RightPadding=0
+    fi
+
+    BACKTITLE="$(
+        printf "%s%*s%s%*s%s" \
+            "${LeftHeading}" \
+            "${LeftPadding}" " " \
+            "${CenterHeading}" \
+            "${RightPadding}" " " \
+            "${RightHeading}"
+    )"
 }
 
 _dialog_() {
