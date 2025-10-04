@@ -9,7 +9,7 @@ docker_prune() {
     NoNotice="Nothing will be removed."
 
     local Command="docker system prune --all --force --volumes"
-    if run_script 'question_prompt' Y "${Question}" "${Title}" "${FORCE:+Y}"; then
+    if run_script 'question_prompt' Y "${Question}" "${Title}" "${ASSUMEYES:+Y}"; then
         if use_dialog_box; then
             {
                 notice "${YesNotice}"

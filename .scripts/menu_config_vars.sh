@@ -189,7 +189,7 @@ menu_config_vars() {
                             CleanVarName="${CleanVarName#*:}"
                         fi
                         local Question="Do you really want to delete ${DC["Highlight"]-}${CleanVarName}${DC["NC"]-}?"
-                        if run_script 'question_prompt' N "${DialogHeading}\n\n${Question}\n" "Delete Variable" "" "Delete" "Back"; then
+                        if run_script 'question_prompt' N "${DialogHeading}\n\n${Question}\n" "Delete Variable" "${ASSUMEYES:+Y}" "Delete" "Back"; then
                             DialogHeading="$(run_script 'menu_heading' "${APPNAME-}" "${VarName}")"
                             coproc {
                                 dialog_pipe "${DC["TitleSuccess"]-}Deleting Variable" "${DialogHeading}" "${DIALOGTIMEOUT}"

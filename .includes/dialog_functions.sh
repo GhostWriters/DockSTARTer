@@ -36,13 +36,13 @@ _dialog_backtitle_() {
 
     local LeftHeading="${DC["Hostname"]-}${HOSTNAME}${DC["NC"]-}"
     local -A FlagOption=(
-        ["ASSUMEYES"]="YES"
+        ["DEBUG"]="DEBUG"
         ["FORCE"]="FORCE"
         ["VERBOSE"]="VERBOSE"
-        ["DEBUG"]="DEBUG"
+        ["ASSUMEYES"]="YES"
     )
     local FlagsEnabled
-    for Flag in ASSUMEYES FORCE VERBOSE DEBUG; do
+    for Flag in DEBUG FORCE VERBOSE ASSUMEYES; do
         if [[ -n ${!Flag-} ]]; then
             if [[ -n ${FlagsEnabled-} ]]; then
                 FlagsEnabled+="${DC["ApplicationFlagsSpace"]-}|${DC["NC"]-}"
@@ -76,6 +76,7 @@ _dialog_backtitle_() {
     fi
 
     local -i HeadingLength
+    COLUMNS=$(tput cols)
     HeadingLength=$((COLUMNS - 2))
 
     local CleanLeftHeading CleanCenterHeading CleanRightHeading

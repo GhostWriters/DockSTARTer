@@ -7,7 +7,7 @@ declare Title="Install Dependencies"
 pm_apk_install() {
     if use_dialog_box; then
         coproc {
-            dialog_pipe "${DC["TitleSuccess"]-}Install Dependencies" "Please be patient, this can take a while.\n${DC["CommandLine"]-} ${APPLICATION_COMMAND} --install" ""
+            dialog_pipe "${DC["TitleSuccess"]-}${Title}" "Please be patient, this can take a while.\n${DC["CommandLine"]-} ${APPLICATION_COMMAND} --install" ""
         }
         local -i DialogBox_PID=${COPROC_PID}
         local -i DialogBox_FD="${COPROC[1]}"
@@ -23,7 +23,7 @@ pm_apk_install_commands() {
     local Command=""
 
     local REDIRECT='> /dev/null 2>&1 '
-    if run_script 'question_prompt' Y "Would you like to display the command output?" "${Title}" "${VERBOSE:+Y}"; then
+    if [[ -n ${VERBOSE-} ]]; then
         REDIRECT='2>&1 '
     fi
 

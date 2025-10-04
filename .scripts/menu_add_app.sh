@@ -70,7 +70,7 @@ menu_add_app() {
                     local Question
                     Question="Create user defined application ${DC["Highlight"]-}${AppName}${DC["NC"]-}?\n"
                     Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
-                    if run_script 'question_prompt' N "${Heading}\n\n${Question}" "Create Application" "" "User Defined" "Back"; then
+                    if run_script 'question_prompt' N "${Heading}\n\n${Question}" "Create Application" "${ASSUMEYES:+Y}" "User Defined" "Back"; then
                         Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
                         dialog_success "Adding User Defined Application" "${Heading}" "${DIALOGTIMEOUT}"
                         run_script 'menu_add_var' "${AppName}"

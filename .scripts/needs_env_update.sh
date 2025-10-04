@@ -7,6 +7,10 @@ declare Prefix="env_update_"
 needs_env_update() {
     local VarFile=${1-}
 
+    if [[ -n ${FORCE-} ]]; then
+        return 0
+    fi
+
     # Checking if we need to update .env
     if [[ ${VarFile} == "${COMPOSE_ENV}" ]]; then
         local filename

@@ -7,7 +7,7 @@ run_install() {
     local Question="Install or update all ${APPLICATION_NAME} dependencies?"
     local YesNotice="Installing or updating all ${APPLICATION_NAME} dependencies."
     local NoNotice="Not installing or updating all ${APPLICATION_NAME} dependencies."
-    if run_script 'question_prompt' Y "${Question}" "${Title}" "${FORCE:+Y}"; then
+    if run_script 'question_prompt' Y "${Question}" "${Title}" "${ASSUMEYES:+Y}"; then
         if use_dialog_box; then
             {
                 notice "${YesNotice}"
