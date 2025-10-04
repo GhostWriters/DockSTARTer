@@ -42,7 +42,7 @@ _dialog_backtitle_() {
         ["ASSUMEYES"]="YES"
     )
     local FlagsEnabled
-    for Flag in  DEBUG FORCE VERBOSE ASSUMEYES; do
+    for Flag in DEBUG FORCE VERBOSE ASSUMEYES; do
         if [[ -n ${!Flag-} ]]; then
             if [[ -n ${FlagsEnabled-} ]]; then
                 FlagsEnabled+="${DC["ApplicationFlagsSpace"]-}|${DC["NC"]-}"
