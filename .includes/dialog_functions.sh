@@ -51,7 +51,7 @@ _dialog_backtitle_() {
         fi
     done
     if [[ -n ${FlagsEnabled-} ]]; then
-        LeftHeading+=" ${DC["ApplicationFlagsBrackets"]-}[${FlagsEnabled}${DC["ApplicationFlagsBrackets"]-}]${DC["NC"]-}"
+        LeftHeading+=" ${DC["ApplicationFlagsBrackets"]-}|${FlagsEnabled}${DC["ApplicationFlagsBrackets"]-}|${DC["NC"]-}"
     fi
     local CenterHeading="${DC["ApplicationName"]-}${APPLICATION_NAME}${DC["NC"]-}"
 
