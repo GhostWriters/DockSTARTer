@@ -373,14 +373,14 @@ EOF
             Found=1
             #${C["UsageCommand"]-}-M --menu${NC-} < config-global | global >${NC-}
             #    Load the Global Configutation page in the menu.
+            #${C["UsageCommand"]-}-M --menu${NC-} < ${C["UsageOption"]-}config-apps${NC-} | ${C["UsageOption"]-}apps${NC-} >${NC-}
+            #    Load the ${C["UsagePage"]-}Application Configuration${NC-} page in the menu.
             cat << EOF
 ${C["UsageCommand"]-}-M --menu${NC-}
     Start the menu system.
     This is the same as typing '${C["UsageCommand"]-}ds${NC-}'.
 ${C["UsageCommand"]-}-M --menu${NC-} < ${C["UsageOption"]-}main${NC-} | ${C["UsageOption"]-}config${NC-} | ${C["UsageOption"]-}options${NC-} >${NC-}
     Load the specified page in the menu.
-${C["UsageCommand"]-}-M --menu${NC-} < ${C["UsageOption"]-}config-apps${NC-} | ${C["UsageOption"]-}apps${NC-} >${NC-}
-    Load the ${C["UsagePage"]-}Application Configuration${NC-} page in the menu.
 ${C["UsageCommand"]-}-M --menu${NC-} < ${C["UsageOption"]-}options-display${NC-} | ${C["UsageOption"]-}display${NC-} >${NC-}
     Load the ${C["UsagePage"]-}Display Options${NC-} page in the menu.
 ${C["UsageCommand"]-}-M --menu${NC-} < ${C["UsageOption"]-}options-theme${NC-} | ${C["UsageOption"]-}theme${NC-} >${NC-}
