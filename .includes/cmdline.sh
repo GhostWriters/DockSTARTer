@@ -106,7 +106,7 @@ parse_arguments() {
                         case "${MenuCommand,,}" in
                             main) ;&
                             config) ;&
-                            config-apps | apps) ;&
+                            #config-apps | apps) ;&
                             config-app-select | app-select | select) ;&
                             config-global | global) ;&
                             options) ;&
