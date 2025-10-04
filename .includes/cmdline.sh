@@ -65,6 +65,7 @@ parse_arguments() {
                 -p | --prune) ;&
                 -R | --reset) ;&
                 -S | --select) ;&
+                --theme-list | --theme-table) ;&
                 --theme-shadows | --theme-no-shadows) ;&
                 --theme-scrollbar | --theme-no-scrollbar) ;&
                 --theme-lines | --theme-no-lines) ;&
