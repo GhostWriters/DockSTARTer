@@ -5,45 +5,26 @@ IFS=$'\n\t'
 package_manager_run() {
     local -l action=${1-}
 
-    local -a PackageManagers=(
-        apk
-        nala
-        apt
-        dnf
-        pacman
-        yum
-    )
-    local -A PackageManagerCmd=(
-        ["apk"]="apk"
-        ["nala"]="nala"
-        ["apt"]="apt-get"
-        ["dnf"]="dnf"
-        ["pacman"]="pacman"
-        ["yum"]="yum"
-    )
-    local pm
-    for pmname in "${PackageManagers[@]}"; do
-        if [[ -n $(command -v "${PackageManagerCmd["${pmname}"]}") ]]; then
-            pm="${pmname}"
-            break
-        fi
-    done
-    if [[ -z ${pm-} ]]; then
+    if [[ -z ${PM-} ]]; then
         #shellcheck disable=SC2124 #Assigning an array to a string! Assign as array, or use * instead of @ to concatenate.
-        local pmlist="${PackageManagers[@]}"
+        local pmlist="${PM_PACKAGE_MANAGERS[@]}"
         pmlist="${pmlist// /${NC}\', \'${C["UserCommand"]}}"
         pmlist="${NC}'${C["UserCommand"]}${pmlist}${NC}'"
         fatal "Unable to detect a compatible package manager. Compatible packages managers are:\n   ${pmlist}"
     fi
-
-    run_script "pm_${pm}_${action}"
+    run_script "pm_${PM}_${action}"
 
     if [[ ${action} == "install" ]]; then
-        for CommandDep in "${PM_COMMAND_DEPS[@]}"; do
-            if [[ -z "$(command -v "${CommandDep}")" ]]; then
-                fatal "'${C["Program"]}${CommandDep}${NC}' is not available. Please install '${C["Program"]}${CommandDep}${NC}' and try again."
+        local failed=''
+        for Dep in "${PM_COMMAND_DEPS[@]}"; do
+            if ! pm_check_dependency "${Dep}"; then
+                error "'${C["Program"]}${Dep}${NC}' is not available. Please install '${C["Program"]}${Dep}${NC}' and try again."
+                failed="true"
             fi
         done
+        if [[ -n ${failed} ]]; then
+            fatal "Dependencies not installed."
+        fi
     elif [[ ${action} == "install_docker" ]]; then
         if [[ -z "$(command -v docker)" ]]; then
             fatal "'${C["Program"]}docker${NC}' is not available. Please install '${C["Program"]}docker${NC}' and try again."

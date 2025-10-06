@@ -7,7 +7,7 @@ app_list_added() {
     local ADDED_APPS_REGEX="^${APPNAME_REGEX}(?=__ENABLED\s*=)"
     local -a AddedApps
 
-    readarray -t AddedApps < <(grep --color=never -o -P "${ADDED_APPS_REGEX}" "${COMPOSE_ENV}" || true)
+    readarray -t AddedApps < <(${GREP} --color=never -o -P "${ADDED_APPS_REGEX}" "${COMPOSE_ENV}" || true)
     for AppName in "${AddedApps[@]-}"; do
         if run_script 'app_is_builtin' "${AppName}"; then
             echo "${AppName}"

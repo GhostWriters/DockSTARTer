@@ -19,7 +19,7 @@ env_rename() {
     fi
 
     local NEW_VAR_LINE
-    NEW_VAR_LINE="$(sed -n "s/^\s*${FROM_VAR}\s*=/${TO_VAR}=/gp" "${FROM_VAR_FILE}" | tail -1)"
+    NEW_VAR_LINE="$(${SED} -n "s/^\s*${FROM_VAR}\s*=/${TO_VAR}=/gp" "${FROM_VAR_FILE}" | tail -1)"
     if [[ -z ${NEW_VAR_LINE} ]]; then
         # Source variable does not exist, do nothing
         return
@@ -44,8 +44,8 @@ env_rename() {
     fi
     printf '\n%s\n' "${NEW_VAR_LINE}" >> "${TO_VAR_FILE}" ||
         fatal "Failed to add '${C["Var"]}${NEW_VAR_LINE}${NC}' in '${C["File"]}${TO_VAR_FILE}${NC}'\nFailing command: ${C["FailingCommand"]}printf '\n%s\n' \"${NEW_VAR_LINE}\" >> \"${TO_VAR_FILE}\""
-    sed -i "/^\s*${FROM_VAR}\s*=/d" "${FROM_VAR_FILE}" ||
-        fatal "Failed to remove var '${C["Var"]}${FROM_VAR}${NC}' in '${C["File"]}${FROM_VAR_FILE}${NC}'\nFailing command: ${C["FailingCommand"]}sed -i \"/^\\s*${FROM_VAR}\\s*=/d\" \"${FROM_VAR_FILE}\""
+    ${SED} -i "/^\s*${FROM_VAR}\s*=/d" "${FROM_VAR_FILE}" ||
+        fatal "Failed to remove var '${C["Var"]}${FROM_VAR}${NC}' in '${C["File"]}${FROM_VAR_FILE}${NC}'\nFailing command: ${C["FailingCommand"]}${SED} -i \"/^\\s*${FROM_VAR}\\s*=/d\" \"${FROM_VAR_FILE}\""
 }
 
 test_env_rename() {

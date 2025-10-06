@@ -12,7 +12,7 @@ appvars_migrate() {
     if [[ -f ${MIGRATE_FILE} ]]; then
         local -a MigrateLines=()
         # Read "migrate" file into an array. Remove comments. Convert whitespace to single spaces. Remove empty lines.
-        readarray -t MigrateLines < <(sed -E 's/#.*$//g ; s/\s+/ /g ; /^\s*$/d' "${MIGRATE_FILE}" || true)
+        readarray -t MigrateLines < <(${SED} -E 's/#.*$//g ; s/\s+/ /g ; /^\s*$/d' "${MIGRATE_FILE}" || true)
         for line in "${MigrateLines[@]}"; do
             local ToVar="${line%% *}"
             local FromVar="${line##"${ToVar}" }"

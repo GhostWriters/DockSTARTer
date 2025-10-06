@@ -8,7 +8,7 @@ app_list_disabled() {
     local -a BUILTIN_APPS
 
     readarray -t DISABLED_APPS < <(
-        grep --color=never -o -P "^${APPNAME_REGEX}(?=__ENABLED\s*=(?!(?<quote>['|\"]?)(?i:on|true|yes)\k<quote>))" "${COMPOSE_ENV}" | sort || true
+        ${GREP} --color=never -o -P "^${APPNAME_REGEX}(?=__ENABLED\s*=(?!(?<quote>['|\"]?)(?i:on|true|yes)\k<quote>))" "${COMPOSE_ENV}" | sort || true
     )
     readarray -t BUILTIN_APPS < <(run_script 'app_list_builtin')
     local -a COMBINED=("${DISABLED_APPS[@]}" "${BUILTIN_APPS[@]}")

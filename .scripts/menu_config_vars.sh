@@ -59,7 +59,7 @@ menu_config_vars() {
             LineNumber+=1
             CurrentValueOnLine[LineNumber]="${line}"
             local VarName
-            VarName="$(grep -o -P '^\w+(?=)' <<< "${line}")"
+            VarName="$(${GREP} -o -P '^\w+(?=)' <<< "${line}")"
             if [[ -n ${VarName-} ]]; then
                 # Line contains a variable
                 local DefaultLine
@@ -73,7 +73,7 @@ menu_config_vars() {
                 if [[ -z ${FirstVarLine-} ]]; then
                     FirstVarLine=${LineNumber}
                 fi
-            elif (grep -q -P '^\s*#' <<< "${line}"); then
+            elif (${GREP} -q -P '^\s*#' <<< "${line}"); then
                 # Line is a comment
                 LineColor[LineNumber]="${DC["LineComment"]-}"
             else
@@ -103,7 +103,7 @@ menu_config_vars() {
                 LineNumber+=1
                 CurrentValueOnLine[LineNumber]="${line}"
                 local VarName
-                VarName="$(grep -o -P '^\w+(?=)' <<< "${line}")"
+                VarName="$(${GREP} -o -P '^\w+(?=)' <<< "${line}")"
                 if [[ -n ${VarName-} ]]; then
                     # Line contains a variable
                     local DefaultLine
@@ -117,7 +117,7 @@ menu_config_vars() {
                     if [[ -z ${FirstVarLine-} ]]; then
                         FirstVarLine=${LineNumber}
                     fi
-                elif (grep -q -P '^\s*#' <<< "${line}"); then
+                elif (${GREP} -q -P '^\s*#' <<< "${line}"); then
                     # Line is a comment
                     LineColor[LineNumber]="${DC["LineComment"]-}"
                 else

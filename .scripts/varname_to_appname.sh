@@ -16,7 +16,7 @@ varname_to_appname() {
     if [[ ${VarName} == *":"* ]]; then
         echo "${VarName%:*}"
     else
-        echo "${VarName}" | (grep -o -P '^[A-Z][A-Z0-9]*(__[A-Z0-9]+)?(?=__[A-Za-z0-9])' || true)
+        echo "${VarName}" | (${GREP} -o -P '^[A-Z][A-Z0-9]*(__[A-Z0-9]+)?(?=__[A-Za-z0-9])' || true)
     fi
 }
 

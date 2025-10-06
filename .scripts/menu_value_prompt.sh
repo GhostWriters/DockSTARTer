@@ -329,7 +329,7 @@ menu_value_prompt() {
                 fi
                 ;;
             EXTRA) # EDIT button
-                OptionValue["${CurrentValueOption}"]=$(grep -o -P "^RENAMED (${ValidOptionsRegex}) \K.*" <<< "${SelectedValue}")
+                OptionValue["${CurrentValueOption}"]=$(${GREP} -o -P "^RENAMED (${ValidOptionsRegex}) \K.*" <<< "${SelectedValue}")
                 ;;
             CANCEL | ESC) # DONE button
                 local ValueValid
@@ -342,7 +342,7 @@ menu_value_prompt() {
                 else
                     local StrippedValue="${OptionValue["${CurrentValueOption}"]}"
                     # Unqauote the value
-                    StrippedValue="$(sed -E "s|^(['\"])(.*)\1$|\2|g" <<< "${StrippedValue}")"
+                    StrippedValue="$(${SED} -E "s|^(['\"])(.*)\1$|\2|g" <<< "${StrippedValue}")"
 
                     case "${VarName}" in
                         "${APPNAME}__ENABLED")

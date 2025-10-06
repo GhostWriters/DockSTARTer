@@ -15,7 +15,7 @@ app_nicename_from_template() {
         labels_yml="$(run_script 'app_instance_file' "${baseapp}" "*.labels.yml")"
         if [[ -f ${labels_yml} ]]; then
             BaseApp="$(
-                grep --color=never -Po "\scom\.dockstarter\.appinfo\.nicename: \K.*" "${labels_yml}" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs
+                ${GREP} --color=never -Po "\scom\.dockstarter\.appinfo\.nicename: \K.*" "${labels_yml}" | ${SED} -E 's/^([^"].*[^"])$/"\1"/' | xargs
             )"
         fi
         instance=$(run_script 'appname_to_instancename' "${AppName}")

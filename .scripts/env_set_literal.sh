@@ -27,7 +27,7 @@ env_set_literal() {
         # VAR_FILE does not exist, create it
         mkdir -p "${VAR_FILE%/*}" && touch "${VAR_FILE}"
     fi
-    sed -i "/^\s*${SET_VAR}\s*=/d" "${VAR_FILE}" || true
+    ${SED} -i "/^\s*${SET_VAR}\s*=/d" "${VAR_FILE}" || true
     echo "${SET_VAR}=${NEW_VAL}" >> "${VAR_FILE}" || fatal "Failed to set ${C["Var"]}${SET_VAR}=${NEW_VAL}${NC}\nFailing command: ${C["FailingCommand"]} echo \"${SET_VAR}=${NEW_VAL}\" >> \"${VAR_FILE}\""
 }
 

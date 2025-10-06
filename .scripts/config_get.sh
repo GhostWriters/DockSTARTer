@@ -8,7 +8,7 @@ config_get() {
     local VAR_FILE=${2:-}
 
     if [[ -f ${VAR_FILE} ]]; then
-        grep --color=never -Po "^\s*${GET_VAR}\s*=\K.*" "${VAR_FILE}" | tail -1 | xargs || true
+        ${SED} -nE "s/^\s*${GET_VAR}\s*=\s*(.*)/\1/p" "${VAR_FILE}" | tail -1 | xargs || true
     else
         # VAR_FILE does not exist, give a warning
         warn "File '${C["File"]}${VAR_FILE}${NC}' does not exist."

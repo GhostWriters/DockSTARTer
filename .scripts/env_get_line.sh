@@ -23,7 +23,7 @@ env_get_line() {
         VarName=${VarName#"${APPNAME}:"}
     fi
     if [[ -e ${VarFile} ]]; then
-        grep --color=never -Po "^\s*${VarName}\s*=.*" "${VarFile}" | tail -1 || true
+        ${GREP} --color=never -Po "^\s*${VarName}\s*=.*" "${VarFile}" | tail -1 || true
     else
         # VarFile does not exist, give a warning
         warn "${F[C]}${VarFile}${NC} does not exist."

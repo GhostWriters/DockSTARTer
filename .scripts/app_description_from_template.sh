@@ -10,7 +10,7 @@ app_description_from_template() {
         local labels_yml
         labels_yml="$(run_script 'app_instance_file' "${appname}" "*.labels.yml")"
         if [[ -f ${labels_yml} ]]; then
-            grep --color=never -Po "\scom\.dockstarter\.appinfo\.description: \K.*" "${labels_yml}" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo "! Missing description !"
+            ${GREP} --color=never -Po "\scom\.dockstarter\.appinfo\.description: \K.*" "${labels_yml}" | ${SED} -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo "! Missing description !"
         else
             echo "! Missing application !"
         fi

@@ -50,7 +50,7 @@ file_changed() {
     if [[ ! -f ${file} || ! -f ${timestamp_file} ]]; then
         return 0
     fi
-    [[ $(stat -c %Y "${file}") != $(stat -c %Y "${timestamp_file}") ]]
+    [[ $(${STAT} -c %Y "${file}") != $(${STAT} -c %Y "${timestamp_file}") ]]
 }
 
 test_needs_appvars_create() {

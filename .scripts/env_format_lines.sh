@@ -64,7 +64,7 @@ env_format_lines() {
     local -a VarLines=()
     # Make an array with the contents "line number:VARIABLE" in each element
     readarray -t VarLines < <(
-        printf '%s\n' "${FormattedEnvLines[@]}" | grep -n -o -P '^[A-Za-z0-9_]*(?=[=])' || true
+        printf '%s\n' "${FormattedEnvLines[@]}" | ${GREP} -n -o -P '^[A-Za-z0-9_]*(?=[=])' || true
     )
     for line in "${VarLines[@]}"; do
         local index=${line%:*}

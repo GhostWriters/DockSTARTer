@@ -227,7 +227,7 @@ menu_add_var() {
                         ;;
                     EXTRA) # EDIT button
                         local Option
-                        Option="$(grep -o -P "^RENAMED \K(${TemplateOptionsRegex})(?= )" <<< "${SelectedOption}")"
+                        Option="$(${GREP} -o -P "^RENAMED \K(${TemplateOptionsRegex})(?= )" <<< "${SelectedOption}")"
                         if [[ ${Option} =~ ^${TemplateOptionsRegex}$ ]]; then
                             local EditedValue="${SelectedOption#"RENAMED ${Option} "*}"
                             if [[ -n ${EditedValue} ]]; then

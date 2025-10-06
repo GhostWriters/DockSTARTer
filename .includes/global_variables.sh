@@ -2,9 +2,6 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-declare -rgx SOURCE_BRANCH='master'
-declare -rgx TARGET_BRANCH='main'
-
 declare -gx LC_ALL=C
 
 # Environment Information
