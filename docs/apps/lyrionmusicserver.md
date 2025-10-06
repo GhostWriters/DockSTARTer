@@ -1,4 +1,4 @@
-# Logitech Media Server
+# Lyrion Music Server
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/lmscommunity/lyrionmusicserver)](https://hub.docker.com/r/lmscommunity/lyrionmusicserver)
 [![GitHub Repo stars](https://img.shields.io/github/stars/LMS-Community/slimserver)](https://github.com/lms-community/slimserver)
