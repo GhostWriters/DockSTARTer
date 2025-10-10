@@ -23,21 +23,21 @@ menu_config() {
         wait ${DialogBox_PID}
     fi
 
-    local OptionFullSetup="Full Setup"
-    local OptionEditGlobalVars="Edit Global Variables"
-    local OptionSelectApps="Select Applications"
-    local OptionEditAppVars="Configure Applications"
-    local OptionComposeUp="Start All Applications"
-    local OptionComposeDown="Stop All Applications"
-    local OptionDockerPrune="Prune Docker System"
+    local Option_FullSetup="Full Setup"
+    local Option_EditGlobalVars="Edit Global Variables"
+    local Option_SelectApps="Select Applications"
+    local Option_EditAppVars="Configure Applications"
+    local Option_ComposeUp="Start All Applications"
+    local Option_ComposeDown="Stop All Applications"
+    local Option_DockerPrune="Prune Docker System"
     local ConfigOpts=(
-        "${OptionFullSetup}" "This goes through selecting apps and editing variables. Recommended for first run"
-        "${OptionEditGlobalVars}" "Review and adjust global variables"
-        "${OptionSelectApps}" "Select which apps to run. Previously installed apps are remembered"
-        "${OptionEditAppVars}" "Review and adjust variables for installed apps"
-        "${OptionComposeUp}" "Run Docker Compose to start all applications"
-        "${OptionComposeDown}" "Run Docker Compose to stop all applications"
-        "${OptionDockerPrune}" "Remove all unused containers, networks, volumes, images and build cache"
+        "${Option_FullSetup}" "${DC["ListDefault"]}This goes through selecting apps and editing variables. Recommended for first run"
+        "${Option_EditGlobalVars}" "${DC["ListDefault"]}Review and adjust global variables"
+        "${Option_SelectApps}" "${DC["ListDefault"]}Select which apps to run. Previously installed apps are remembered"
+        "${Option_EditAppVars}" "${DC["ListDefault"]}Review and adjust variables for installed apps"
+        "${Option_ComposeUp}" "${DC["ListDefault"]}Run Docker Compose to start all applications"
+        "${Option_ComposeDown}" "${DC["ListDefault"]}Run Docker Compose to stop all applications"
+        "${Option_DockerPrune}" "${DC["ListDefault"]}Remove all unused containers, networks, volumes, images and build cache"
     )
 
     local LastConfigChoice=""
@@ -57,24 +57,24 @@ menu_config() {
         case ${DIALOG_BUTTONS[ConfigDialogButtonPressed]-} in
             OK)
                 case "${ConfigChoice}" in
-                    "${OptionFullSetup}")
+                    "${Option_FullSetup}")
                         run_script 'menu_config_vars' || true
                         run_script 'menu_app_select' || true
                         run_script 'menu_config_apps' || true
                         ;;
-                    "${OptionEditGlobalVars}")
+                    "${Option_EditGlobalVars}")
                         run_script 'menu_config_vars' || true
                         ;;
-                    "${OptionSelectApps}")
+                    "${Option_SelectApps}")
                         run_script 'menu_app_select' || true
                         ;;
-                    "${OptionEditAppVars}")
+                    "${Option_EditAppVars}")
                         run_script 'menu_config_apps' || true
                         ;;
-                    "${OptionComposeUp}")
+                    "${Option_ComposeUp}")
                         run_script 'docker_compose' "update"
                         ;;
-                    "${OptionComposeDown}")
+                    "${Option_ComposeDown}")
                         local Question
                         Question="Would you like to ${DC["Highlight"]-}Stop${DC["NC"]-} all containers, or bring all containers ${DC["Highlight"]-}Down${DC["NC"]-}?\n\n${DC["Highlight"]-}Stop${DC["NC"]-} will stop them, ${DC["Highlight"]-}Down${DC["NC"]-} will stop and remove them."
                         local -a YesNoDialog=(
@@ -108,7 +108,7 @@ menu_config() {
                                 ;;
                         esac
                         ;;
-                    "${OptionDockerPrune}")
+                    "${Option_DockerPrune}")
                         run_script 'docker_prune'
                         ;;
                     *)

@@ -3,33 +3,54 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 package_manager_run() {
-    local ACTION=${1-}
-    if [[ -n "$(command -v apk)" ]]; then
-        run_script "pm_apk_${ACTION}"
-    elif [[ -n "$(command -v apt-get)" ]]; then
-        run_script "pm_apt_${ACTION}"
-    elif [[ -n "$(command -v dnf)" ]]; then
-        run_script "pm_dnf_${ACTION}"
-    elif [[ -n "$(command -v pacman)" ]]; then
-        run_script "pm_pacman_${ACTION}"
-    elif [[ -n "$(command -v yum)" ]]; then
-        run_script "pm_yum_${ACTION}"
-    else
-        if [[ ${ACTION} == "install" ]]; then
-            local COMMAND_DEPS=("column" "curl" "dialog" "envsubst" "git" "grep" "sed")
-            for COMMAND_DEP in "${COMMAND_DEPS[@]}"; do
-                if [[ -z "$(command -v "${COMMAND_DEP}")" ]]; then
-                    fatal "'${C["Program"]}${COMMAND_DEP}${NC}' is not available. Please install '${C["Program"]}${COMMAND_DEP}${NC}' and try again."
-                fi
-            done
-        elif [[ ${ACTION} == "install_docker" ]]; then
-            if [[ -z "$(command -v docker)" ]]; then
-                fatal "'${C["Program"]}docker${NC}' is not available. Please install '${C["Program"]}docker${NC}' and try again."
+    local -l action=${1-}
+
+    local -a PackageManagers=(
+        apk
+        nala
+        apt
+        dnf
+        pacman
+        yum
+    )
+    local -A PackageManagerCmd=(
+        ["apk"]="apk"
+        ["nala"]="nala"
+        ["apt"]="apt-get"
+        ["dnf"]="dnf"
+        ["pacman"]="pacman"
+        ["yum"]="yum"
+    )
+    local pm
+    for pmname in "${PackageManagers[@]}"; do
+        if [[ -n $(command -v "${PackageManagerCmd["${pmname}"]}") ]]; then
+            pm="${pmname}"
+            break
+        fi
+    done
+    if [[ -z ${pm-} ]]; then
+        #shellcheck disable=SC2124 #Assigning an array to a string! Assign as array, or use * instead of @ to concatenate.
+        local pmlist="${PackageManagers[@]}"
+        pmlist="${pmlist// /${NC}\', \'${C["UserCommand"]}}"
+        pmlist="${NC}'${C["UserCommand"]}${pmlist}${NC}'"
+        fatal "Unable to detect a compatible package manager. Compatible packages managers are:\n   ${pmlist}"
+    fi
+
+    run_script "pm_${pm}_${action}"
+
+    if [[ ${action} == "install" ]]; then
+        for CommandDep in "${PM_COMMAND_DEPS[@]}"; do
+            if [[ -z "$(command -v "${CommandDep}")" ]]; then
+                fatal "'${C["Program"]}${CommandDep}${NC}' is not available. Please install '${C["Program"]}${CommandDep}${NC}' and try again."
             fi
-            if ! docker compose version > /dev/null 2>&1; then
-                warn "Please see ${C["URL"]}https://docs.docker.com/compose/install/linux/${NC} to install '${C["Program"]}docker compose${NC}'"
-                fatal "'${C["Program"]}docker compose${NC}' is not available. Please install '${C["Program"]}docker compose${NC}' and try again."
-            fi
+        done
+    elif [[ ${action} == "install_docker" ]]; then
+        if [[ -z "$(command -v docker)" ]]; then
+            fatal "'${C["Program"]}docker${NC}' is not available. Please install '${C["Program"]}docker${NC}' and try again."
+        fi
+        if ! docker compose version > /dev/null 2>&1; then
+            warn "Please see ${C["URL"]}https://docs.docker.com/compose/install/linux/${NC} to install '${C["Program"]}docker compose${NC}'"
+            fatal "'${C["Program"]}docker compose${NC}' is not available. Please install '${C["Program"]}docker compose${NC}' and try again."
         fi
     fi
 }

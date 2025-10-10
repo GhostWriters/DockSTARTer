@@ -8,15 +8,15 @@ menu_main() {
     fi
 
     local Title="Main Menu"
-    local OptionConfigure="Configuration"
-    local OptionInstallDependencies="Install Dependencies"
-    local OptionUpdateVersion="Update ${APPLICATION_NAME}"
-    local OptionDisplayOptions="Display Options"
+    local Option_Configure="Configuration"
+    local Option_InstallDependencies="Install Dependencies"
+    local Option_UpdateVersion="Update ${APPLICATION_NAME}"
+    local Option_Options="Options"
     local MainOpts=(
-        "${OptionConfigure}" "Setup and start applications"
-        "${OptionInstallDependencies}" "Install required components"
-        "${OptionUpdateVersion}" "Get the latest version of ${APPLICATION_NAME}"
-        "${OptionDisplayOptions}" "Adjust display options for the GUI"
+        "${Option_Configure}" "${DC["ListDefault"]}Setup and start applications"
+        "${Option_InstallDependencies}" "${DC["ListDefault"]}Install required components"
+        "${Option_UpdateVersion}" "${DC["ListDefault"]}Get the latest version of ${APPLICATION_NAME}"
+        "${Option_Options}" "${DC["ListDefault"]}Adjust options for the GUI"
     )
 
     local LastMainChoice=""
@@ -36,17 +36,17 @@ menu_main() {
         case ${DIALOG_BUTTONS[MainDialogButtonPressed]-} in
             OK)
                 case "${MainChoice}" in
-                    "${OptionConfigure}")
+                    "${Option_Configure}")
                         run_script 'menu_config' || true
                         ;;
-                    "${OptionInstallDependencies}")
+                    "${Option_InstallDependencies}")
                         run_script 'run_install' || true
                         ;;
-                    "${OptionUpdateVersion}")
+                    "${Option_UpdateVersion}")
                         run_script 'update_self' || true
                         ;;
-                    "${OptionDisplayOptions}")
-                        run_script 'menu_display_options' || true
+                    "${Option_Options}")
+                        run_script 'menu_options' || true
                         ;;
                     *)
                         error "Invalid Option"

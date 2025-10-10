@@ -67,14 +67,14 @@ commands_yml_merge() {
                 local MultipleStorage
                 MultipleStorage="$(run_script 'env_get' DOCKER_MULTIPLE_STORAGE)"
                 local -a StorageNumbers=('')
-                if [[ -n ${MultipleStorage-} && ${MultipleStorage^^} =~ ON|TRUE|YES ]]; then
+                if is_true "${MultipleStorage}"; then
                     StorageNumbers+=(2 3 4)
                 fi
                 for Number in "${StorageNumbers[@]}"; do
                     local StorageOn
-                    StorageOn="$(run_script 'env_get' "${APPNAME}__STORAGE${Number}")"
-                    StorageOn="${StorageOn:-$(run_script 'env_get' "DOCKER_STORAGE${Number}")}"
-                    if [[ -n ${StorageOn-} && ${StorageOn^^} =~ ON|TRUE|YES ]]; then
+                    StorageOn="$(run_script 'env_get' "${APPNAME}__STORAGE${Number}_ON")"
+                    StorageOn="${StorageOn:-$(run_script 'env_get' "DOCKER_STORAGE${Number}_ON")}"
+                    if is_true "${StorageOn}"; then
                         local StorageVolume
                         StorageVolume="$(run_script 'env_get' "DOCKER_VOLUME_STORAGE${Number}")"
                         if [[ -n ${StorageVolume-} ]]; then
@@ -90,7 +90,7 @@ commands_yml_merge() {
                 done
                 local AppDevices
                 AppDevices="$(run_script 'env_get' "${APPNAME}__DEVICES")"
-                if [[ -n ${AppDevices-} && ${AppDevices^^} =~ ON|TRUE|YES ]]; then
+                if is_true "${AppDevices}"; then
                     local devices_yml
                     devices_yml="$(run_script 'app_instance_file' "${appname}" "*.devices.yml")"
                     if [[ -f ${devices_yml} ]]; then

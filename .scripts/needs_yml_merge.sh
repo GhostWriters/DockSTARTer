@@ -5,6 +5,10 @@ IFS=$'\n\t'
 declare Prefix="yml_merge_"
 
 needs_yml_merge() {
+    if [[ -n ${FORCE-} ]]; then
+        return 0
+    fi
+
     if [[ ! -f ${DOCKER_COMPOSE_FILE} ]]; then
         # Compose file doesn't exists, return true
         return 0

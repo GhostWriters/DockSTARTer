@@ -52,6 +52,9 @@ apply_theme() {
     local _NC_='\Zn'  # No Color
 
     declare -Agx DC=()
+    DC+=(
+        ["_defined_"]=1
+    )
     DC+=( # Dialog colors
         ["B"]="${_B_}"
         ["C"]="${_C_}"
@@ -84,7 +87,7 @@ apply_theme() {
         Value="$(
             _B_="${_B_}" _C_="${_C_}" _G_="${_G_}" _K_="${_K_}" _M_="${_M_}" _R_="${_R_}" _W_="${_W_}" _Y_="${_Y_}" \
                 _RV_="${_RV_}" _NRV_="${_NRV_}" _BD_="${_BD_}" _NBD_="${_NBD_}" _U_="${_U_}" _NU_="${_NU_}" _NC_="${_NC_}" \
-                envsubst <<< "${Value}"
+                eval echo "\"$(cat <<< "${Value}")\""
         )"
         DC["${VarName}"]="${Value}"
     done
@@ -123,19 +126,19 @@ apply_theme() {
         LineCharacters="$(run_script 'config_get' LineCharacters "${DefaultMenuIniFile}")"
         run_script 'config_set' LineCharacters "${LineCharacters}" "${MENU_INI_FILE}"
     fi
-    if [[ ${Borders^^} =~ ON|TRUE|YES ]]; then
-        if [[ ! ${LineCharacters^^} =~ ON|TRUE|YES ]]; then
+    if is_true "${Borders}"; then
+        if is_false "${LineCharacters}"; then
             DialogOptions+=" --ascii-lines"
         fi
     else
         DialogOptions+=" --no-lines"
     fi
-    if [[ ${Scrollbar^^} =~ ON|TRUE|YES ]]; then
+    if is_true "${Scrollbar}"; then
         DialogOptions+=" --scrollbar"
     else
         DialogOptions+=" --no-scrollbar"
     fi
-    if [[ ${Shadow^^} =~ ON|TRUE|YES ]]; then
+    if is_true "${Shadow}"; then
         DialogOptions+=" --shadow"
         DC["WindowColsAdjust"]=$((DC["WindowColsAdjust"] + 2))
         DC["WindowRowsAdjust"]=$((DC["WindowRowsAdjust"] + 1))

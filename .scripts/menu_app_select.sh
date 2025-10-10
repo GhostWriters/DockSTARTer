@@ -53,7 +53,7 @@ menu_app_select() {
         readarray -t AddedApps < <(run_script 'app_filter_runnable' "${AddedApps[@]-}" | sort -f -u)
         update_gauge 1
 
-        readarray -t AddedApps < <(run_script 'app_nicename' "${AddedApps[@]-}")
+        readarray -t AddedApps < <(run_script 'app_nicename_from_template' "${AddedApps[@]-}")
         update_gauge 1
 
         if [[ -n ${AddedApps[*]-} ]]; then
@@ -89,7 +89,7 @@ menu_app_select() {
         readarray -t BuiltinApps < <(run_script 'app_filter_runnable' "${BuiltinApps[@]}")
         update_gauge 1
 
-        readarray -t BuiltinApps < <(run_script 'app_nicename' "${BuiltinApps[@]}")
+        readarray -t BuiltinApps < <(run_script 'app_nicename_from_template' "${BuiltinApps[@]}")
         update_gauge 1
 
         local -a AllApps
@@ -117,10 +117,14 @@ menu_app_select() {
             update_gauge 1 "${ProcessAppList}" "_InProgress_" "_InProgress_" "${AppName}"
             local AppDescription
             AppDescription=$(run_script 'app_description_from_template' "${AppName}")
+            local AppColor="${DC["ListApp"]-}"
+            if [[ -n $(run_script 'appname_to_instancename' "${AppName}") ]]; then
+                AppColor="${DC["ListAppUserDefined"]-}"
+            fi
             if [[ ${AppName} =~ ^(${AddedAppsRegex})$ ]]; then
-                AppList+=("${AppName}" "${AppDescription}" "on")
+                AppList+=("${AppName}" "${AppColor}${AppDescription}" "on")
             else
-                AppList+=("${AppName}" "${AppDescription}" "off")
+                AppList+=("${AppName}" "${AppColor}${AppDescription}" "off")
             fi
         done
         update_gauge 0 "${ProcessAppList}" "_InProgress_" "_Completed_"
@@ -314,7 +318,7 @@ show_gauge() {
 close_gauge() {
     # Signal the dialog gauge and progress windows to terminate
     kill -SIGTERM "${Dialog_PID}" &> /dev/null || true
-    wait "${Dialog_PID}"
+    wait "${Dialog_PID}" &> /dev/null || true
     # Remove the communication pipes to dialog
     exec {GaugePipe_fd}>&- &> /dev/null || true
     rm "${GaugePipe}" &> /dev/null || true

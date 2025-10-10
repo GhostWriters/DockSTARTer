@@ -2,26 +2,26 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-menu_display_options_general() {
+menu_options_display() {
     if [[ ${CI-} == true ]]; then
         return
     fi
 
-    local Title="General Display Options"
+    local Title="Display Options"
 
     #run_script 'apply_theme'
 
     local DrawLineOption="Draw Lines"
     local ShowBordersOption="Show Borders"
-    local ShowScrollbarOption="Show Scrollbar"
-    local ShowShadowOption="Show Shadow"
+    local ShowScrollbarOption="Show Scrollbars"
+    local ShowShadowOption="Show Shadows"
 
     local -A OptionDescription OptionVariable
 
-    OptionDescription["${DrawLineOption}"]="Use line drawing characters"
-    OptionDescription["${ShowBordersOption}"]="Show borders in dialog boxes"
-    OptionDescription["${ShowScrollbarOption}"]="Show a scrollbar in dialog boxes"
-    OptionDescription["${ShowShadowOption}"]="Show a shadow under the dialog boxes"
+    OptionDescription["${DrawLineOption}"]="${DC["ListDefault"]}Use line drawing characters"
+    OptionDescription["${ShowBordersOption}"]="${DC["ListDefault"]}Show borders in dialog boxes"
+    OptionDescription["${ShowScrollbarOption}"]="${DC["ListDefault"]}Show a scrollbar in dialog boxes"
+    OptionDescription["${ShowShadowOption}"]="${DC["ListDefault"]}Show a shadow under the dialog boxes"
 
     OptionVariable["${DrawLineOption}"]="LineCharacters"
     OptionVariable["${ShowBordersOption}"]="Borders"
@@ -34,7 +34,7 @@ menu_display_options_general() {
         for Option in "${DrawLineOption}" "${ShowBordersOption}" "${ShowScrollbarOption}" "${ShowShadowOption}"; do
             local Value
             Value="$(run_script 'config_get' "${OptionVariable["${Option}"]}" "${MENU_INI_FILE}")"
-            if [[ ${Value^^} =~ ON|TRUE|YES ]]; then
+            if is_true "${Value}"; then
                 EnabledOptions+=("${Option}")
                 Opts+=("${Option}" "${OptionDescription["${Option}"]}" ON)
             else
@@ -82,15 +82,15 @@ menu_display_options_general() {
                 ;;
             *)
                 if [[ -n ${DIALOG_BUTTONS[DialogButtonPressed]-} ]]; then
-                    fatal "Unexpected dialog button '${DIALOG_BUTTONS[DialogButtonPressed]}' pressed in menu_display_options_general."
+                    fatal "Unexpected dialog button '${DIALOG_BUTTONS[DialogButtonPressed]}' pressed in menu_options_display."
                 else
-                    fatal "Unexpected dialog button value '${DialogButtonPressed}' pressed in menu_display_options_general."
+                    fatal "Unexpected dialog button value '${DialogButtonPressed}' pressed in menu_options_display."
                 fi
                 ;;
         esac
     done
 }
 
-test_menu_display_options_general() {
-    warn "CI does not test menu_display_options_general."
+test_menu_options_display() {
+    warn "CI does not test menu_options_display."
 }

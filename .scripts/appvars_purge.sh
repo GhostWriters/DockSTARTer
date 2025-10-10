@@ -75,7 +75,7 @@ appvars_purge() {
                 Question+="${Indent}${Indent}${C["Var"]}${line}${NC}\n"
             done
         fi
-        if [[ ${CI-} == true ]] || run_script 'question_prompt' Y "${Question}" "${Title}" "${FORCE:+Y}"; then
+        if [[ ${CI-} == true ]] || run_script 'question_prompt' Y "${Question}" "${Title}" "${ASSUMEYES:+Y}"; then
             info "Purging '${C["App"]}${AppName}${NC}' variables."
 
             if [[ -n ${GlobalVarsToRemove[*]-} ]]; then
@@ -108,5 +108,9 @@ test_appvars_purge() {
     local EnvFile
     EnvFile="$(run_script 'app_env_file' "watchtower")"
     echo "${EnvFile}:"
-    cat "${EnvFile}"
+    if [[ -f ${EnvFile} ]]; then
+        cat "${EnvFile}"
+    else
+        echo "*File Not Found*"
+    fi
 }

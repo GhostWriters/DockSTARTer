@@ -3,7 +3,8 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 docker_compose() {
-    local ComposeInput=${1-}
+    local ComposeInput
+    ComposeInput="$(xargs <<< "$@")"
     local Command=${ComposeInput%% *}
     local APPNAME AppName
     if [[ ${ComposeInput} == *" "* ]]; then
@@ -105,8 +106,10 @@ docker_compose() {
     esac
 
     local -i result=0
-    if run_script 'question_prompt' Y "${Question}" "${Title}" "${FORCE:+Y}"; then
+    if run_script 'question_prompt' Y "${Question}" "${Title}" "${ASSUMEYES:+Y}"; then
         if use_dialog_box; then
+            Title="$(strip_ansi_colors "${Title}")"
+            Question="$(strip_ansi_colors "${Question}")"
             coproc {
                 dialog_pipe "${DC["TitleSuccess"]-}${Title}" "${YesNotice}${DC["NC"]-}\n${DC["CommandLine"]-} ${APPLICATION_COMMAND} --compose ${ComposeInput}"
             }

@@ -3,12 +3,13 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 pm_dnf_upgrade() {
+    #shellcheck disable=SC2034 #(warning): Title appears unused. Verify use (or export if used externally).
     local Title="Upgrade Packages"
     if [[ ${CI-} != true ]]; then
         notice "Upgrading packages. Please be patient, this can take a while."
         local COMMAND='sudo dnf -y upgrade --refresh'
         local REDIRECT='> /dev/null 2>&1 '
-        if run_script 'question_prompt' Y "Would you like to display the command output?" "${Title}" "${VERBOSE:+Y}"; then
+        if [[ -n ${VERBOSE-} ]]; then
             #shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
             REDIRECT='run_command_dialog "${Title}" "${COMMAND}" "" '
         fi

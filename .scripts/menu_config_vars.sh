@@ -46,7 +46,7 @@ menu_config_vars() {
 
         # Add lines from global .env file to the dialog
         if [[ -n ${APPNAME-} ]]; then
-            ((++LineNumber))
+            LineNumber+=1
             LineColor[LineNumber]="${DC["LineHeading"]-}"
             CurrentValueOnLine[LineNumber]="*** ${COMPOSE_ENV} ***"
         fi
@@ -56,7 +56,7 @@ menu_config_vars() {
             run_script 'env_format_lines' "${CurrentGlobalEnvFile}" "${DefaultGlobalEnvFile}" "${APPNAME}"
         )
         for line in "${CurrentGlobalEnvLines[@]-}"; do
-            ((++LineNumber))
+            LineNumber+=1
             CurrentValueOnLine[LineNumber]="${line}"
             local VarName
             VarName="$(grep -o -P '^\w+(?=)' <<< "${line}")"
@@ -81,17 +81,17 @@ menu_config_vars() {
                 LineColor[LineNumber]="${DC["LineAddVariable"]-}"
             fi
         done
-        ((LineNumber++))
+        LineNumber+=1
         local AddGlobalVariableLineNumber=${LineNumber}
         CurrentValueOnLine[LineNumber]="${AddVariableText}"
         LineColor[LineNumber]="${DC["LineAddVariable"]-}"
 
         if [[ -n ${APPNAME-} ]]; then
             # Add lines from appvar.env file to the dialog
-            ((++LineNumber))
+            LineNumber+=1
             CurrentValueOnLine[LineNumber]=""
             LineColor[LineNumber]="${DC["LineOther"]-}"
-            ((++LineNumber))
+            LineNumber+=1
             CurrentValueOnLine[LineNumber]="*** $(run_script 'app_env_file' "${APPNAME}") ***"
             LineColor[LineNumber]="${DC["LineHeading"]-}"
             run_script 'appvars_lines' "${APPNAME}:" > "${CurrentAppEnvFile}"
@@ -100,7 +100,7 @@ menu_config_vars() {
                 run_script 'env_format_lines' "${CurrentAppEnvFile}" "${DefaultAppEnvFile}" "${APPNAME}"
             )
             for line in "${CurrentAppEnvLines[@]}"; do
-                ((++LineNumber))
+                LineNumber+=1
                 CurrentValueOnLine[LineNumber]="${line}"
                 local VarName
                 VarName="$(grep -o -P '^\w+(?=)' <<< "${line}")"
@@ -125,7 +125,7 @@ menu_config_vars() {
                     LineColor[LineNumber]="${DC["LineOther"]-}"
                 fi
             done
-            ((LineNumber++))
+            LineNumber+=1
             local AddAppEnvVariableLineNumber=${LineNumber}
             CurrentValueOnLine[LineNumber]="${AddVariableText}"
             LineColor[LineNumber]="${DC["LineAddVariable"]-}"
@@ -189,7 +189,7 @@ menu_config_vars() {
                             CleanVarName="${CleanVarName#*:}"
                         fi
                         local Question="Do you really want to delete ${DC["Highlight"]-}${CleanVarName}${DC["NC"]-}?"
-                        if run_script 'question_prompt' N "${DialogHeading}\n\n${Question}\n" "Delete Variable" "" "Delete" "Back"; then
+                        if run_script 'question_prompt' N "${DialogHeading}\n\n${Question}\n" "Delete Variable" "${ASSUMEYES:+Y}" "Delete" "Back"; then
                             DialogHeading="$(run_script 'menu_heading' "${APPNAME-}" "${VarName}")"
                             coproc {
                                 dialog_pipe "${DC["TitleSuccess"]-}Deleting Variable" "${DialogHeading}" "${DIALOGTIMEOUT}"
