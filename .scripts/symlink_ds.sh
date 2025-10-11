@@ -6,55 +6,63 @@ symlink_ds() {
     run_script 'set_permissions' "${SCRIPTNAME}"
 
     # The list of folders to try to create the symlink in
-    local -a SYMLINK_FOLDERS=(
+    local -a SymlinkFolders=(
         "/usr/bin"
         "/usr/local/bin"
         "${HOME}/bin"
         "${HOME}/.local/bin"
     )
 
-    notice "$(printf '%s\n' "SYMLINK_FOLDERS:" "${SYMLINK_FOLDERS[@]}")"
-    # Re-arrange the folders to the order they are listed in the PATH variable
-    local -a PathArray
-    readarray -d ':' -t PathArray <<< "${PATH}"
-    for symlink_index in "${!SYMLINK_FOLDERS[@]}"; do
-        local SymlinkFolder="${SYMLINK_FOLDERS[path_index]}"
-        for path_index in "${!PathArray[@]}"; do
-            local PathFolder="${PathArray[symlink_index]}"
-            if [[ ${PathFolder} == "${SymlinkFolder}" ]]; then
-                unset 'SYMLINK_FOLDERS[symlink_index]'
-            else
-                unset 'PathArray[path_index]'
-            fi
-        done
-    done
-    SYMLINK_FOLDERS=("${PathArray[@]}" "${SYMLINK_FOLDERS[@]}")
-    notice "$(printf '%s\n' "Sorted SYMLINK_FOLDERS:" "${SYMLINK_FOLDERS[@]}")"
+    notice "$(printf '%s\n' "SymlinkFolders:" "${SymlinkFolders[@]}")"
+    SymlinkFolders="$(path_order "${SymlinkFolders[@]}")"
+    notice "$(printf '%s\n' "Sorted SymlinkFolders:" "${SymlinkFolders[@]}")"
 
-    local FINAL_SYMLINK_FOLDER=''
-    for SYMLINK_FOLDER in "${SYMLINK_FOLDERS[@]}"; do
-        local SYMLINK_TARGET="${SYMLINK_FOLDER}/${APPLICATION_COMMAND}"
-        if [[ -L ${SYMLINK_TARGET} ]] && [[ ${SCRIPTNAME} != "$(readlink -f "${SYMLINK_TARGET}")" ]]; then
-            info "Attempting to remove '${C["File"]}${SYMLINK_TARGET}${NC}' symlink."
-            sudo rm -f "${SYMLINK_TARGET}" &> /dev/null || true
+    local FinalSymlinkFolder=''
+    for Folder in "${SymlinkFolders[@]}"; do
+        local SymlinkTarget="${Folder}/${APPLICATION_COMMAND}"
+        if [[ -L ${SymlinkTarget} ]] && [[ ${SCRIPTNAME} != "$(readlink -f "${SymlinkTarget}")" ]]; then
+            info "Attempting to remove '${C["File"]}${SymlinkTarget}${NC}' symlink."
+            sudo rm -f "${SymlinkTarget}" &> /dev/null || true
         fi
-        if [[ ! -L ${SYMLINK_TARGET} ]]; then
-            info "Creating '${C["File"]}${SYMLINK_TARGET}${NC}' symbolic link for ${APPLICATION_NAME}."
-            mkdir -p "${SYMLINK_FOLDER}" &> /dev/null || true
-            sudo ln -s -F "${SCRIPTNAME}" "${SYMLINK_TARGET}" &> /dev/null || true
+        if [[ ! -L ${SymlinkTarget} ]]; then
+            info "Creating '${C["File"]}${SymlinkTarget}${NC}' symbolic link for ${APPLICATION_NAME}."
+            mkdir -p "${Folder}" &> /dev/null || true
+            sudo ln -s -F "${SCRIPTNAME}" "${SymlinkTarget}" &> /dev/null || true
         fi
-        if [[ -L ${SYMLINK_TARGET} ]]; then
-            FINAL_SYMLINK_FOLDER="${SYMLINK_FOLDER}"
+        if [[ -L ${SymlinkTarget} ]]; then
+            FinalSymlinkFolder="${Folder}"
             break
         fi
     done
-    if [[ -n ${FINAL_SYMLINK_FOLDER} ]]; then
-        if [[ ":${PATH}:" != *":${FINAL_SYMLINK_FOLDER}:"* ]]; then
-            warn "'${C["File"]}${FINAL_SYMLINK_FOLDER}${NC}' not found in '${C["Var"]}PATH${NC}'. Please add it to your '${C["Var"]}PATH${NC}' in order to use the '${C["UserCommand"]}${APPLICATION_COMMAND}${NC}' command alias."
+    if [[ -n ${FinalSymlinkFolder} ]]; then
+        if [[ ":${PATH}:" != *":${FinalSymlinkFolder}:"* ]]; then
+            warn "'${C["File"]}${FinalSymlinkFolder}${NC}' not found in '${C["Var"]}PATH${NC}'. Please add it to your '${C["Var"]}PATH${NC}' in order to use the '${C["UserCommand"]}${APPLICATION_COMMAND}${NC}' command alias."
         fi
     else
         fatal "Failed to create symlink."
     fi
+}
+
+path_order() {
+    # Re-arrange the folders to the order they are listed in the PATH variable
+    local -a FoldersArray=("$@")
+    local -a PathArray
+    readarray -d ':' -t PathArray <<< "${PATH}"
+    for path_index in "${!PathArray[@]}"; do
+        local PathFolder="${PathArray[path_index]}"
+        local Folder
+        for folder_index in "${!FoldersArray[@]}"; do
+            Folder="${FoldersArray[folder_index]}"
+            if [[ ${Folder} == "${PathFolder}" ]]; then
+                unset 'FoldersArray[folder_index]'
+                break
+            fi
+        done
+        if [[ ${Folder} != "${PathFolder}" ]]; then
+            unset 'PathArray[path_index]'
+        fi
+    done
+    printf '%s\n' "${PathArray[@]}" "${FoldersArray[@]}"
 }
 
 test_symlink_ds() {
