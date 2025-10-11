@@ -14,7 +14,7 @@ symlink_ds() {
     )
 
     notice "$(printf '%s\n' "SymlinkFolders:" "${SymlinkFolders[@]}")"
-    readarray -t < <(path_order "${SymlinkFolders[@]}")
+    readarray -t SymlinkFolders < <(path_order "${SymlinkFolders[@]}")
     notice "$(printf '%s\n' "Sorted SymlinkFolders:" "${SymlinkFolders[@]}")"
 
     local FinalSymlinkFolder=''
