@@ -13,9 +13,8 @@ symlink_ds() {
         "${HOME}/.local/bin"
     )
 
-    notice "$(printf '%s\n' "SymlinkFolders:" "${SymlinkFolders[@]}")"
+    # Re-arrange the folders to the order they are listed in the PATH variable
     readarray -t SymlinkFolders < <(path_order "${SymlinkFolders[@]}")
-    notice "$(printf '%s\n' "Sorted SymlinkFolders:" "${SymlinkFolders[@]}")"
 
     local FinalSymlinkFolder=''
     for Folder in "${SymlinkFolders[@]}"; do
