@@ -19,7 +19,7 @@ symlink_ds() {
     readarray -d ':' -t PathArray <<< "${PATH}"
     for path_index in "${!PathArray[@]}"; do
         local PathFolder="${PathArray[path_index]}"
-        for symlink_index in "${!SYMLINK_FOLDERS[@]}"
+        for symlink_index in "${!SYMLINK_FOLDERS[@]}"; do
             local SymlinkFolder="${SYMLINK_FOLDERS[symlink_index]}"
             if [[ ${PathFolder} == "${SymlinkFolder}" ]]; then
                 unset 'SYMLINK_FOLDERS[symlink_index]'
