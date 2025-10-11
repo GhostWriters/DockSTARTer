@@ -17,10 +17,10 @@ symlink_ds() {
     # Re-arrange the folders to the order they are listed in the PATH variable
     local -a PathArray
     readarray -d ':' -t PathArray <<< "${PATH}"
-    for path_index in "${!PathArray[@]}"; do
-        local PathFolder="${PathArray[path_index]}"
-        for symlink_index in "${!SYMLINK_FOLDERS[@]}"; do
-            local SymlinkFolder="${SYMLINK_FOLDERS[symlink_index]}"
+    for symlink_index in "${!SYMLINK_FOLDERS[@]}"; do
+        local SymlinkFolder="${SYMLINK_FOLDERS[path_index]}"
+        for path_index in "${!PathArray[@]}"; do
+            local PathFolder="${PathArray[symlink_index]}"
             if [[ ${PathFolder} == "${SymlinkFolder}" ]]; then
                 unset 'SYMLINK_FOLDERS[symlink_index]'
             else
