@@ -5,12 +5,31 @@ IFS=$'\n\t'
 symlink_ds() {
     run_script 'set_permissions' "${SCRIPTNAME}"
 
+    # The list of folders to try to create the symlink in
     local -a SYMLINK_FOLDERS=(
         "/usr/bin"
         "/usr/local/bin"
         "${HOME}/bin"
         "${HOME}/.local/bin"
     )
+
+    notice "SYMLINK_FOLDERS:" "${SYMLINK_FOLDERS[@]}"
+    # Re-arrange the folders to the order they are listed in the PATH variable
+    local -a PathArray
+    readarray -d ':' -t PathArray <<< "${PATH}"
+    for path_index in "${!PathArray[@]}"; do
+        local PathFolder="${PathArray[path_index]}"
+        for symlink_index in "${!SYMLINK_FOLDERS[@]}"
+            local SymlinkFolder="${SYMLINK_FOLDERS[symlink_index]}"
+            if [[ ${PathFolder} == "${SymlinkFolder}" ]]; then
+                unset 'SYMLINK_FOLDERS[symlink_index]'
+            else
+                unset 'PathArray[path_index]'
+            fi
+        done
+    done
+    SYMLINK_FOLDERS=("${PathArray[@]}" "${SYMLINK_FOLDERS[@]}")
+    notice "Sorted SYMLINK_FOLDERS:" "${SYMLINK_FOLDERS[@]}"
 
     local FINAL_SYMLINK_FOLDER=''
     for SYMLINK_FOLDER in "${SYMLINK_FOLDERS[@]}"; do
