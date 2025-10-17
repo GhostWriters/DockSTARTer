@@ -2,6 +2,10 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+declare -a _dependencies_list=(
+    grep
+)
+
 override_var_exists() {
     local VarName=${1-}
 
@@ -10,7 +14,7 @@ override_var_exists() {
         return 1
     fi
     # Search for $VarName or ${VarName followed by a word break
-    grep -q -P "[$]\{?${VarName}\b" "${COMPOSE_OVERRIDE}"
+    ${GREP} -q -P "[$]\{?${VarName}\b" "${COMPOSE_OVERRIDE}"
 }
 
 test_override_var_exists() {

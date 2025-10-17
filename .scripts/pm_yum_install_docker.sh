@@ -13,7 +13,7 @@ pm_yum_install_docker() {
         docker-engine \
         docker-latest \
         docker-latest-logrotate \
-        docker-logrotate > /dev/null 2>&1 || true
+        docker-logrotate &> /dev/null || true
     run_script 'remove_snap_docker'
     run_script 'get_docker'
 }

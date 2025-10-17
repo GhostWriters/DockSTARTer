@@ -2,6 +2,10 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+declare -a _dependencies_list=(
+    grep
+)
+
 varname_to_appname() {
     # Returns the DS application name based on the variable name passed
     # The appname will be at the beginning of the variable, and will be in upper case
@@ -16,7 +20,7 @@ varname_to_appname() {
     if [[ ${VarName} == *":"* ]]; then
         echo "${VarName%:*}"
     else
-        echo "${VarName}" | (grep -o -P '^[A-Z][A-Z0-9]*(__[A-Z0-9]+)?(?=__[A-Za-z0-9])' || true)
+        echo "${VarName}" | (${GREP} -o -P '^[A-Z][A-Z0-9]*(__[A-Z0-9]+)?(?=__[A-Za-z0-9])' || true)
     fi
 }
 

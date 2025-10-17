@@ -2,6 +2,10 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+declare -a _dependencies_list=(
+    grep
+)
+
 env_get() {
     # env_get VarName [VarFile]
     # env_get APPNAME:VarName
@@ -25,7 +29,7 @@ env_get() {
     if [[ -e ${VarFile} ]]; then
         local LiteralValue
         LiteralValue="$(run_script 'env_get_literal' "${VarName}" "${VarFile}")"
-        grep --color=never -Po "^\s*(?:(?:(?<Q>['\"]).*\k<Q>)|(?:[^\s]*[^#]*))" <<< "${LiteralValue}" | xargs 2> /dev/null || true
+        ${GREP} --color=never -Po "^\s*(?:(?:(?<Q>['\"]).*\k<Q>)|(?:[^\s]*[^#]*))" <<< "${LiteralValue}" | xargs 2> /dev/null || true
     else
         # VarFile does not exist, give a warning
         warn "File '${C["File"]}${VarFile}${NC}' does not exist."

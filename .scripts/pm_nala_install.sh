@@ -2,72 +2,51 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-declare Title="Install Dependencies"
-
 pm_nala_install() {
-    if use_dialog_box; then
-        coproc {
-            dialog_pipe "${DC["TitleSuccess"]-}${Title}" "Please be patient, this can take a while.\n${DC["CommandLine"]-} ${APPLICATION_COMMAND} --install" ""
-        }
-        local -i DialogBox_PID=${COPROC_PID}
-        local -i DialogBox_FD="${COPROC[1]}"
-        pm_nala_install_commands >&${DialogBox_FD} 2>&1
-        exec {DialogBox_FD}<&-
-        wait ${DialogBox_PID}
-    else
-        pm_nala_install_commands
-    fi
-}
+    local -a Dependencies=("$@")
 
-pm_nala_install_commands() {
-    local Command=""
-
-    local REDIRECT='> /dev/null 2>&1 '
+    local REDIRECT='&> /dev/null '
     if [[ -n ${VERBOSE-} ]]; then
         REDIRECT='2>&1 '
     fi
 
-    local -a Dependencies=("${PM_COMMAND_DEPS[@]}")
-    if [[ ${FORCE-} != true ]]; then
-        for index in "${!Dependencies[@]}"; do
-            if [[ -n $(command -v "${Dependencies[index]}") ]]; then
-                unset 'Dependencies[index]'
-            fi
-        done
-        Dependencies=("${Dependencies[@]}")
-    fi
-    if [[ ${#Dependencies[@]} -eq 0 ]]; then
-        notice "All dependencies have already been installed."
-    else
-        notice "Installing dependencies. Please be patient, this can take a while."
-
-        if [[ -z "$(command -v apt-file)" ]]; then
-            info "Installing '${C["Program"]}apt-file${NC}'."
-            Command="sudo nala install --no-update -y apt-file"
-            notice "Running: ${C["RunningCommand"]}${Command}${NC}"
-            eval "${REDIRECT}${Command}" ||
-                fatal "Failed to install '${C["Program"]}apt-file${NC}' from apt.\nFailing command: ${C["FailingCommand"]}${Command}"
-        fi
-        notice "Updating package information."
-        Command='sudo apt-file update'
+    local Command
+    if [[ -z "$(command -v apt-file)" ]]; then
+        info "Installing '${C["Program"]}apt-file${NC}'."
+        Command="sudo nala install --no-update -y apt-file"
         notice "Running: ${C["RunningCommand"]}${Command}${NC}"
         eval "${REDIRECT}${Command}" ||
-            fatal "Failed to get updates from apt.\nFailing command: ${C["FailingCommand"]}${Command}"
-
-        notice "Determining packages to install."
-        local Packages
-        Packages="$(detect_packages "${Dependencies[@]}" | xargs)"
-
-        if [[ -z ${Packages} ]]; then
-            notice "No packages found to install."
-        else
-            notice "Installing packages."
-            Command="sudo nala install --no-update -y ${Packages}"
-            notice "Running: ${C["RunningCommand"]}${Command}${NC}"
-            eval "${REDIRECT}${Command}" ||
-                fatal "Failed to install dependencies from nala.\nFailing command: ${C["FailingCommand"]}${Command}"
-        fi
+            fatal \
+                "Failed to install '${C["Program"]}apt-file${NC}' from nala.\n" \
+                "Failing command: ${C["FailingCommand"]}${Command}"
     fi
+    notice "Updating package information."
+    Command='sudo apt-file update'
+    notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+    eval "${REDIRECT}${Command}" ||
+        fatal \
+            "Failed to get updates from apt-file.\n" \
+            "Failing command: ${C["FailingCommand"]}${Command}"
+
+    notice "Determining packages to install."
+    local -a Packages
+    readarray -t Packages < <(detect_packages "${Dependencies[@]}")
+
+    if [[ ${#Packages[@]} -eq 0 ]]; then
+        notice "No packages found to install."
+        return
+    fi
+
+    #shellcheck disable=SC2124 #Assigning an array to a string! Assign as array, or use * instead of @ to concatenate.
+    local PackagesString="${Packages[@]}"
+    local pkglist="${PackagesString// /${NC}\', \'${C["Program"]}}"
+    pkglist="${NC}'${C["Program"]}${pkglist}${NC}'"
+
+    notice "Installing packages: ${pkglist}"
+    Command="sudo nala install --no-update -y ${PackagesString}"
+    notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+    eval "${REDIRECT}${Command}" ||
+        fatal "Failed to install dependencies from nala.\nFailing command: ${C["FailingCommand"]}${Command}"
 }
 
 detect_packages() {
@@ -82,6 +61,10 @@ detect_packages() {
     local RegEx_AptFile="^(.*):.*/s?bin/${RegEx_Dependencies}$"
 
     for Dep in "${Dependencies[@]}"; do
+        if [[ -v PM_DEP_PACKAGE["${Dep}"] ]]; then
+            echo "${PM_DEP_PACKAGE["${Dep}"]}"
+            continue
+        fi
         local Command="apt-file search bin/${Dep}"
         notice "Running: ${C["RunningCommand"]}${Command}${NC}"
         eval "${Command}" 2> /dev/null

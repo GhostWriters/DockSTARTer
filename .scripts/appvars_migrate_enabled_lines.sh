@@ -2,11 +2,15 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+declare -a _dependencies_list=(
+    grep
+)
+
 appvars_migrate_enabled_lines() {
     local OldSuffix="_ENABLED"
     local NewSuffix="__ENABLED"
     local -a AppList
-    readarray -t AppList < <(grep --color=never -o -P "^\s*\K[A-Z][A-Z0-9]*(?=${OldSuffix}\s*=)" "${COMPOSE_ENV}" | sort -u || true)
+    readarray -t AppList < <(${GREP} --color=never -o -P "^\s*\K[A-Z][A-Z0-9]*(?=${OldSuffix}\s*=)" "${COMPOSE_ENV}" | sort -u || true)
     if [[ -n ${AppList[*]} ]]; then
         for APPNAME in "${AppList[@]}"; do
             run_script 'env_rename' "${APPNAME}${OldSuffix}" "${APPNAME}${NewSuffix}"

@@ -12,7 +12,7 @@ env_merge_newonly() {
 
     # If "MergeToFile" doesn't exists, create it
     if [[ ! -f ${MergeToFile} ]]; then
-        touch "${MergeToFile}"
+        touchfile "${MergeToFile}"
     fi
 
     # If "MergeFromFile" doesn't exists, give a warning

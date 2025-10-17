@@ -2,6 +2,10 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+declare -a _dependencies_list=(
+    stat
+)
+
 declare Prefix="appvars_create_"
 
 # shellcheck disable=SC2317  # Don't warn about unreachable commands in this function
@@ -50,7 +54,7 @@ file_changed() {
     if [[ ! -f ${file} || ! -f ${timestamp_file} ]]; then
         return 0
     fi
-    [[ $(stat -c %Y "${file}") != $(stat -c %Y "${timestamp_file}") ]]
+    [[ $(${STAT} -c %Y "${file}") != $(${STAT} -c %Y "${timestamp_file}") ]]
 }
 
 test_needs_appvars_create() {

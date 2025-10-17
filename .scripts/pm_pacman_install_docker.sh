@@ -7,7 +7,7 @@ pm_pacman_install_docker() {
     local Title="Install Docker"
     notice "Installing docker. Please be patient, this can take a while."
     local COMMAND='sudo pacman -Sy --noconfirm docker docker-compose'
-    local REDIRECT='> /dev/null 2>&1 '
+    local REDIRECT='&> /dev/null '
     if [[ -n ${VERBOSE-} ]]; then
         #shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
         REDIRECT='run_command_dialog "${Title}" "${COMMAND}" "" '

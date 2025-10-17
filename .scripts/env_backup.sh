@@ -2,6 +2,10 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+declare -a _dependencies_list=(
+    find
+)
+
 env_backup() {
     local DOCKER_VOLUME_CONFIG
     if [[ ! -f ${COMPOSE_ENV} ]]; then
@@ -23,7 +27,7 @@ env_backup() {
     DOCKER_VOLUME_CONFIG="$(run_script 'sanitize_path' "${DOCKER_VOLUME_CONFIG}")"
 
     info "Taking ownership of '${C["Folder"]}${DOCKER_VOLUME_CONFIG}${NC}' (non-recursive)."
-    sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${DOCKER_VOLUME_CONFIG}" > /dev/null 2>&1 || true
+    sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${DOCKER_VOLUME_CONFIG}" &> /dev/null || true
 
     local COMPOSE_BACKUPS_FOLDER="${DOCKER_VOLUME_CONFIG}/.compose.backups"
     local BACKUPTIME
@@ -35,7 +39,7 @@ env_backup() {
         fatal "Failed to make directory.\nFailing command: ${C["FailingCommand"]}mkdir -p \"${BACKUP_FOLDER}\""
     cp "${COMPOSE_ENV}" "${BACKUP_FOLDER}/" ||
         fatal "Failed to copy backup.\nFailing command: ${C["FailingCommand"]}cp \"${COMPOSE_ENV}\"/.env.app.* \"${BACKUP_FOLDER}/\""
-    if [[ -n $(find "${COMPOSE_FOLDER}" -type f -maxdepth 1 -name ".env.app.*" 2> /dev/null) ]]; then
+    if [[ -n $(${FIND} "${COMPOSE_FOLDER}" -type f -maxdepth 1 -name ".env.app.*" 2> /dev/null) ]]; then
         cp "${COMPOSE_FOLDER}"/.env.app.* "${BACKUP_FOLDER}/" ||
             fatal "Failed to copy backup.\nFailing command: ${C["FailingCommand"]}cp \"${COMPOSE_FOLDER}\"/.env.app.* \"${BACKUP_FOLDER}/\""
     fi
@@ -53,9 +57,9 @@ env_backup() {
     run_script 'set_permissions' "${COMPOSE_BACKUPS_FOLDER}"
 
     info "Removing old compose backups."
-    find "${COMPOSE_BACKUPS_FOLDER}" -type f -name ".env.*" -mtime +3 -delete > /dev/null 2>&1 ||
+    ${FIND} "${COMPOSE_BACKUPS_FOLDER}" -type f -name ".env.*" -mtime +3 -delete &> /dev/null ||
         warn "Old .env backups not removed."
-    find "${COMPOSE_BACKUPS_FOLDER}" -type d -name "${COMPOSE_FOLDER_NAME}.*" -mtime +3 -prune -exec rm -rf {} + > /dev/null 2>&1 ||
+    ${FIND} "${COMPOSE_BACKUPS_FOLDER}" -type d -name "${COMPOSE_FOLDER_NAME}.*" -mtime +3 -prune -exec rm -rf {} + &> /dev/null ||
         warn "Old compose backups not removed."
 
     # Backup location has moved
