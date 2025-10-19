@@ -2,6 +2,10 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+declare -a _dependencies_list=(
+    sed
+)
+
 env_set_literal() {
     # env_set_literal SET_VAR NEW_VAL [VAR_FILE]
     # env_set_literal APPNAME:SET_VAR NEW_VAL
@@ -25,9 +29,9 @@ env_set_literal() {
     fi
     if [[ ! -f ${VAR_FILE} ]]; then
         # VAR_FILE does not exist, create it
-        mkdir -p "${VAR_FILE%/*}" && touch "${VAR_FILE}"
+        touchfile "${VAR_FILE}"
     fi
-    sed -i "/^\s*${SET_VAR}\s*=/d" "${VAR_FILE}" || true
+    ${SED} -i "/^\s*${SET_VAR}\s*=/d" "${VAR_FILE}" || true
     echo "${SET_VAR}=${NEW_VAL}" >> "${VAR_FILE}" || fatal "Failed to set ${C["Var"]}${SET_VAR}=${NEW_VAL}${NC}\nFailing command: ${C["FailingCommand"]} echo \"${SET_VAR}=${NEW_VAL}\" >> \"${VAR_FILE}\""
 }
 

@@ -2,12 +2,17 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-declare -rgx SOURCE_BRANCH='master'
-declare -rgx TARGET_BRANCH='main'
-
 declare -gx LC_ALL=C
 
 # Environment Information
+declare -rgx TEMP_FOLDER="${SCRIPTPATH}/.temp"
+if [[ -e ${TEMP_FOLDER} ]]; then
+    sudo rm -rf "${TEMP_FOLDER}"
+fi
+mkdir "${TEMP_FOLDER}"
+sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${TEMP_FOLDER}"
+sudo chmod a=,a+rX,u+w,g+w "${TEMP_FOLDER}"
+
 declare -rgx COMPOSE_FOLDER_NAME="compose"
 declare -rgx THEME_FOLDER_NAME=".themes"
 declare -rgx COMPOSE_FOLDER="${SCRIPTPATH}/${COMPOSE_FOLDER_NAME}"

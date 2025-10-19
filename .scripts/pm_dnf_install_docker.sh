@@ -8,7 +8,7 @@ pm_dnf_install_docker() {
     info "Removing conflicting Docker packages."
     local Command="sudo dnf -y remove ${RemovePackages}"
     notice "Running: ${C["RunningCommand"]}${Command}${NC}"
-    eval "${Command}" > /dev/null 2>&1 || true
+    eval "${Command}" &> /dev/null || true
     run_script 'remove_snap_docker'
     run_script 'get_docker'
 }

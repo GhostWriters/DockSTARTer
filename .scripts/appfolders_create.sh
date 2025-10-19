@@ -2,6 +2,14 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+#!/usr/bin/env bash
+set -Eeuo pipefail
+IFS=$'\n\t'
+
+declare -a _dependencies_list=(
+    grep
+)
+
 appfolders_create() {
     local -u APPNAME=${1-}
     local -l appname=${APPNAME}
@@ -13,7 +21,7 @@ appfolders_create() {
 
     if [[ -f ${APP_FOLDERS_FILE} ]]; then
         local -a FOLDERS_ARRAY=()
-        readarray -t FOLDERS_ARRAY < <(grep -o -P '^\s*\K.*(?=\s*)$' "${APP_FOLDERS_FILE}" | grep -v '^$' || true)
+        readarray -t FOLDERS_ARRAY < <(${GREP} -o -P '^\s*\K.*(?=\s*)$' "${APP_FOLDERS_FILE}" | ${GREP} -v '^$' || true)
         if [[ -n ${FOLDERS_ARRAY[*]-} ]]; then
             local DOCKER_VOLUME_CONFIG
             DOCKER_VOLUME_CONFIG="$(run_script 'env_get' DOCKER_VOLUME_CONFIG)"

@@ -2,6 +2,10 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+declare -a _dependencies_list=(
+    grep
+)
+
 env_sanitize() {
     # Backup the user files
     run_script 'env_backup'
@@ -41,7 +45,7 @@ env_sanitize() {
     for VarName in "${VarList[@]-}"; do
         local Value
         Value="$(run_script 'env_get' "${VarName}")"
-        if [[ -z ${Value-} ]] || echo "${Value-}" | grep -q 'x'; then
+        if [[ -z ${Value-} ]] || echo "${Value-}" | ${GREP} -q 'x'; then
             # If the variable is empty or contains an "x", get the default value
             local Default
             Default="$(run_script 'var_default_value' "${VarName}")"

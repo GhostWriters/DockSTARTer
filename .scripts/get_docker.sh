@@ -16,7 +16,7 @@ get_docker() {
         fi
     else
         notice "Installing docker. Please be patient, this can take a while."
-        command_get_docker > /dev/null 2>&1
+        command_get_docker &> /dev/null
     fi
 }
 

@@ -2,6 +2,10 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+declare -a _dependencies_list=(
+    sed
+)
+
 appvars_rename() {
     local FROMAPP=${1-}
     local TOAPP=${2-}
@@ -13,7 +17,7 @@ appvars_rename() {
         DOCKER_VOLUME_CONFIG="$(run_script 'env_get' DOCKER_VOLUME_CONFIG)"
         mv "${DOCKER_VOLUME_CONFIG}/${FROMAPP,,}" "${DOCKER_VOLUME_CONFIG}/${TOAPP,,}" || warn "Failed to move folder.\nFailing command: ${C["FailingCommand"]}mv \"${DOCKER_VOLUME_CONFIG}/${FROMAPP,,}\" \"${DOCKER_VOLUME_CONFIG}/${TOAPP,,}\""
         notice "Migrating vars."
-        sed -i "s/^\s*${FROMAPP^^}__/${TOAPP^^}__/" "${COMPOSE_ENV}" || fatal "Failed to migrate vars from '${C["App"]}${FROMAPP^^}__${NC}' to '${C["App"]}${TOAPP^^}__${NC}'\nFailing command: ${C["FailingCommand"]}sed -i \"s/^\\s*${FROMAPP^^}__/${TOAPP^^}__/\" \"${COMPOSE_ENV}\""
+        ${SED} -i "s/^\s*${FROMAPP^^}__/${TOAPP^^}__/" "${COMPOSE_ENV}" || fatal "Failed to migrate vars from '${C["App"]}${FROMAPP^^}__${NC}' to '${C["App"]}${TOAPP^^}__${NC}'\nFailing command: ${C["FailingCommand"]}${SED} -i \"s/^\\s*${FROMAPP^^}__/${TOAPP^^}__/\" \"${COMPOSE_ENV}\""
         run_script 'appvars_create' "${TOAPP^^}"
         notice "Completed migrating from '${C["App"]}${FROMAPP^^}${NC}' to '${C["App"]}${TOAPP^^}${NC}'. Run '${C["UserCommand"]}${APPLICATION_COMMAND} -c${NC}' to create the new container."
     fi

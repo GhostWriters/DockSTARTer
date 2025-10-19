@@ -2,6 +2,11 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+declare -a _dependencies_list=(
+    grep
+    sed
+)
+
 app_env_file() {
     local -l appname=${1:-}
 
@@ -16,15 +21,15 @@ app_env_file() {
         mv "${OldAppEnvFile}" "${AppEnvFile}" ||
             fatal "Failed to rename file.\nFailing command: ${C["FailingCommand"]}mv \"${OldAppEnvFile}\" \"${AppEnvFile}\""
         local SearchString="${APP_ENV_FOLDER_NAME}/${OldAppEnvFilename}"
-        if [[ -f ${COMPOSE_OVERRIDE} ]] && grep -q -F "${SearchString}" "${COMPOSE_OVERRIDE}"; then
+        if [[ -f ${COMPOSE_OVERRIDE} ]] && ${GREP} -q -F "${SearchString}" "${COMPOSE_OVERRIDE}"; then
             local ReplaceString="${AppEnvFilename}"
             # Replace all references to 'env_files/appname.env' with '.env.app.appname' in the override file
             notice "Replacing in '${C["File"]}${COMPOSE_OVERRIDE}${NC}':"
             notice "   '${C["Var"]}${SearchString}${NC}' with '${C["Var"]}${ReplaceString}${NC}'"
             # Escape . to [.] to use in sed
             SearchString="${SearchString//./[.]}"
-            sed -i "s|${SearchString}|${ReplaceString}|g" "${COMPOSE_OVERRIDE}" ||
-                fatal "Failed to edit override file.\nFailing command: ${C["FailingCommand"]}sed -i \"s|${SearchString}|${ReplaceString}|g\" \"${COMPOSE_OVERRIDE}\""
+            ${SED} -i "s|${SearchString}|${ReplaceString}|g" "${COMPOSE_OVERRIDE}" ||
+                fatal "Failed to edit override file.\nFailing command: ${C["FailingCommand"]}${SED} -i \"s|${SearchString}|${ReplaceString}|g\" \"${COMPOSE_OVERRIDE}\""
         fi
     fi
     echo "${AppEnvFile}"

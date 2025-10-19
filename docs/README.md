@@ -85,6 +85,31 @@ You may choose to rely on DockSTARTer for various changes to your Docker system 
   sudo reboot
   ```
 
+- MacOS Systems ([Homebrew](https://brew.sh))
+
+  ```bash
+  brew update
+  brew upgrade --cask
+  brew upgrade
+  brew install --cask docker
+  brew install docker-compose
+  ```
+
+  or
+
+  ```bash
+  brew update
+  brew upgrade --cask
+  brew upgrade
+  brew install docker docker-compose
+  ```
+
+  ```bash
+  brew install bash curl git grep gnu-sed
+  bash -c "$(curl -fsSL https://get.dockstarter.com)"
+  sudo reboot
+  ```
+
 <details>
   <summary>Alternate install (any system)</summary>
 
@@ -96,6 +121,7 @@ sudo apt-get install curl git
 sudo dnf install curl git
 sudo pacman -Sy curl git
 sudo yum install curl git
+brew install bash curl git grep gnu-sed
 ```
 
 Then

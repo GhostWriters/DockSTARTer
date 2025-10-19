@@ -89,9 +89,69 @@ longest_columns() {
     printf '%s\n' "${ColLength[@]}"
 }
 
-# Version Functions
-# https://stackoverflow.com/questions/4023830/how-to-compare-two-strings-in-dot-separated-version-format-in-bash#comment92693604_4024263
-vergte() { printf '%s\n%s' "${2}" "${1}" | sort -C -V; }
-vergt() { ! vergte "${2}" "${1}"; }
-verlte() { printf '%s\n%s' "${1}" "${2}" | sort -C -V; }
-verlt() { ! verlte "${2}" "${1}"; }
+group_id() {
+    # group_id string GroupName
+    #
+    # Returns the GroupID
+
+    local GroupName=${1}
+
+    if [[ -n "$(command -v getent)" ]]; then
+        # Linux, use getent
+        cut -d: -f3 < <(getent group "${GroupName}")
+    elif [[ -n "$(command -v dscl)" ]]; then
+        # MacOS, use dscl
+        cut -d ' ' -f2 < <(dscl . -read /Groups/"${GroupName}" PrimaryGroupID)
+    else
+        warn "Unable to get group id of '${GroupName}'."
+    fi
+}
+
+add_user_to_group() {
+    local UserName=${1}
+    local GroupName=${2}
+
+    if [[ -n "$(command -v usermod)" ]]; then
+        # Linux, use usermod
+        sudo usermod -aG "${GroupName}" "${UserName}"
+        return
+    elif [[ -n "$(command -v dseditgroup)" ]]; then
+        # MacOS, use dseditgroup
+        sudo dseditgroup -o edit -a "${UserName}" -t user "${GroupName}"
+        return
+    else
+        return 1
+    fi
+}
+
+add_group() {
+    local GroupName=${1}
+
+    if [[ -n "$(command -v groupadd)" ]]; then
+        # Linux, use groupadd
+        sudo groupadd -f "${GroupName}"
+        return
+    elif [[ -n "$(command -v dseditgroup)" ]]; then
+        # MacOS, use dseditgroup
+        if ! dscl . -read /Groups/"${GroupName}" &> /dev/null; then
+            sudo dseditgroup -o create "${GroupName}"
+            return
+        fi
+        return 0
+    else
+        return 1
+    fi
+}
+
+touchfile() {
+    local File=${1}
+    if ! touch "${File}" &> /dev/null; then
+        # If touching the file fails, try creating the parent folder and taking ownership
+        local Folder
+        Folder="$(dirname "${File}")"
+        mkdir -p "${Folder}" &> /dev/null || sudo mkdir -p "${Folder}"
+        sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${Folder}"
+        sudo chmod a=,a+rX,u+w,g+w "${Folder}"
+        touch "${File}"
+    fi
+}

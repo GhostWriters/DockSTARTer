@@ -2,6 +2,10 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+declare -a _dependencies_list=(
+    grep
+)
+
 app_list_referenced() {
     local APPNAME_REGEX='^[A-Z][A-Z0-9]*(__[A-Z0-9]+)?'
     #local APPFILE_REGEX='^[a-z][a-z0-9]*(__[a-z0-9]+)?$'
@@ -22,13 +26,13 @@ app_list_referenced() {
     # Add the list of referenced apps in the global .env file
     local REFERENCED_APPS_REGEX="^${APPNAME_REGEX}(?=__[A-Za-z0-9]\w*\s*=)"
     readarray -O ${#ReferencedApps[@]} ReferencedApps < <(
-        grep --color=never -o -P "${REFERENCED_APPS_REGEX}" "${COMPOSE_ENV}" 2> /dev/null || true
+        ${GREP} --color=never -o -P "${REFERENCED_APPS_REGEX}" "${COMPOSE_ENV}" 2> /dev/null || true
     )
 
     # Add the list of referenced apps in the override file
     REFERENCED_APPS_REGEX="^(?:[^#]*)(?:\s|^)(?<Q>['\"]?)(?:[.]\/)?[.]env[.]app[.]\K([a-z][a-z0-9]*(?:__[a-z0-9]+)?)(?=\k<Q>(?:\s|$))"
     readarray -O ${#ReferencedApps[@]} ReferencedApps < <(
-        grep --color=never -o -P "${REFERENCED_APPS_REGEX}" "${COMPOSE_OVERRIDE}" 2> /dev/null || true
+        ${GREP} --color=never -o -P "${REFERENCED_APPS_REGEX}" "${COMPOSE_OVERRIDE}" 2> /dev/null || true
     )
 
     # Output the sorted list, removing duplicates

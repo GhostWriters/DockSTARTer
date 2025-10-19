@@ -2,6 +2,25 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+declare -rx APPLICATION_NAME='DockSTARTer'
+declare -rx APPLICATION_COMMAND='ds'
+declare -rx APPLICATION_REPO='https://github.com/GhostWriters/DockSTARTer'
+
+# Version Functions
+# https://stackoverflow.com/questions/4023830/how-to-compare-two-strings-in-dot-separated-version-format-in-bash#comment92693604_4024263
+vergte() { printf '%s\n%s' "${2}" "${1}" | sort -C -V; }
+vergt() { ! vergte "${2}" "${1}"; }
+verlte() { printf '%s\n%s' "${1}" "${2}" | sort -C -V; }
+verlt() { ! verlte "${2}" "${1}"; }
+
+# Check for supported bash version
+declare REQUIRED_BASH_VERSION="4"
+if verlt "${BASH_VERSION}" "${REQUIRED_BASH_VERSION}"; then
+    echo "Unsupported bash version."
+    echo "${APPLICATION_NAME} requires at least bash version ${REQUIRED_BASH_VERSION}, installed version is ${BASH_VERSION}."
+    exit 1
+fi
+
 readonly -a ARGS=("$@")
 
 # Github Token for CI
@@ -10,9 +29,8 @@ if [[ ${CI-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS-} == true ]]; then
     export GH_HEADER
 fi
 
-declare -rx APPLICATION_NAME='DockSTARTer'
-declare -rx APPLICATION_COMMAND='ds'
-declare -rx APPLICATION_REPO='https://github.com/GhostWriters/DockSTARTer'
+declare -rgx SOURCE_BRANCH='master'
+declare -rgx TARGET_BRANCH='main'
 
 declare DS_COMMAND
 DS_COMMAND=$(command -v "${APPLICATION_COMMAND}" || true)
@@ -198,7 +216,7 @@ fatal() {
 # Check for supported CPU architecture
 check_arch() {
     if [[ ${ARCH} != "aarch64" ]] && [[ ${ARCH} != "x86_64" ]]; then
-        fatal "Unsupported architecture."
+        fatal "Unsupported architecture.\nSupported architectures are 'aarch64' or 'x86_64', running architeture is '${ARCH}'."
     fi
 }
 
@@ -226,10 +244,10 @@ check_sudo() {
 }
 clone_repo() {
     warn "Attempting to clone ${APPLICATION_NAME} repo to '${C["Folder"]-}${DETECTED_HOMEDIR}/.docker${NC-}' location."
-    git clone "${APPLICATION_REPO}" "${DETECTED_HOMEDIR}/.docker" ||
-        fatal "Failed to clone ${APPLICATION_NAME} repo.\nFailing command: ${C["FailingCommand"]-}git clone \"${APPLICATION_REPO}\" \"${DETECTED_HOMEDIR}/.docker\""
+    git clone -b "${TARGET_BRANCH}" "${APPLICATION_REPO}" "${DETECTED_HOMEDIR}/.docker" ||
+        fatal "Failed to clone ${APPLICATION_NAME} repo.\nFailing command: ${C["FailingCommand"]-}git clone -b \"${TARGET_BRANCH}\" \"${APPLICATION_REPO}\" \"${DETECTED_HOMEDIR}/.docker\""
     notice "Performing first run install."
-    exec bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-fyvi"
+    exec bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-yvi"
 }
 
 # Cleanup Function
@@ -238,9 +256,14 @@ cleanup() {
     trap - ERR EXIT SIGABRT SIGALRM SIGHUP SIGINT SIGQUIT SIGTERM
 
     sudo sh -c "cat ${MKTEMP_LOG:-/dev/null} >> ${SCRIPTPATH}/dockstarter.log" || true
-    sudo rm -f "${MKTEMP_LOG-}" || true
+    if [[ -n ${MKTEMP_LOG-} && -f ${MKTEMP_LOG} ]]; then
+        sudo rm -f "${MKTEMP_LOG}" &> /dev/null || true
+    fi
     sudo sh -c "echo \"$(tail -1000 "${SCRIPTPATH}/dockstarter.log")\" > ${SCRIPTPATH}/dockstarter.log" || true
-    sudo -E chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || true
+    if [[ -n ${TEMP_FOLDER-} && -d ${TEMP_FOLDER} ]]; then
+        sudo rm -rf "${TEMP_FOLDER?}" &> /dev/null || true
+    fi
+    sudo -E chmod +x "${SCRIPTNAME}" &> /dev/null || true
 
     if [[ ${CI-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS-} == false ]]; then
         echo "TRAVIS_SECURE_ENV_VARS is false for Pull Requests from remote branches. Please retry failed builds!"
@@ -276,10 +299,20 @@ init_check_system() {
         check_sudo
     fi
 }
+
 init_check_cloned() {
-    if [[ ! -L ${DS_COMMAND} ]] && ! check_repo; then
+    if ! check_repo; then
         clone_repo
     fi
+}
+
+init_check_dependencies() {
+    if [[ -v PM_${PM^^}_COMMAND_DEPS ]]; then
+        declare -n COMMAND_DEPS="PM_${PM^^}_COMMAND_DEPS"
+    else
+        declare -n COMMAND_DEPS="PM_COMMAND_DEPS"
+    fi
+    pm_check_dependencies warn "${COMMAND_DEPS[@]}" || true
 }
 
 init_check_branch() {
@@ -301,8 +334,8 @@ init_check_symlink() {
                 fi
             fi
             warn "Attempting to run ${APPLICATION_NAME} from '${C["RunningCommand"]-}${DS_SYMLINK}${NC-}' location."
-            bash "${DS_SYMLINK}" -fvyu
-            bash "${DS_SYMLINK}" -fvyi
+            bash "${DS_SYMLINK}" -vyu
+            bash "${DS_SYMLINK}" -vyi
             exec bash "${DS_SYMLINK}" "${ARGS[@]-}"
         fi
     fi
@@ -338,14 +371,22 @@ init_check_update() {
 
 init() {
     # Verify the running environment is compatible
+    #notice "init_check_system"
     init_check_system
     # Verify the repo is cloned
+    #notice "init_check_cloned"
     init_check_cloned
-    # Verify we are on the correct brancb
+    # Verify the dependencies are installed
+    #notice "init_check_dependencies"
+    init_check_dependencies
+    # Verify we are on the correct branch
+    #notice "init_check_branch"
     init_check_branch
     # Verify the symlink is created
+    #notice "init_check_symlink"
     init_check_symlink
     # Verify that we are on the latest version
+    #notice "init_check_update"
     init_check_update
 }
 

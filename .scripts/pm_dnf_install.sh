@@ -2,78 +2,56 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-declare Title="Install Dependencies"
-
 pm_dnf_install() {
-    if use_dialog_box; then
-        coproc {
-            dialog_pipe "${DC["TitleSuccess"]-}${Title}" "Please be patient, this can take a while.\n${DC["CommandLine"]-} ${APPLICATION_COMMAND} --install" ""
-        }
-        local -i DialogBox_PID=${COPROC_PID}
-        local -i DialogBox_FD="${COPROC[1]}"
-        pm_dnf_install_commands >&${DialogBox_FD} 2>&1
-        exec {DialogBox_FD}<&-
-        wait ${DialogBox_PID}
-    else
-        pm_dnf_install_commands
-    fi
-}
+    local -a Dependencies=("$@")
 
-pm_dnf_install_commands() {
-    local Command=""
-
-    local REDIRECT='> /dev/null 2>&1 '
+    local REDIRECT='&> /dev/null '
     if [[ -n ${VERBOSE-} ]]; then
         REDIRECT='2>&1 '
     fi
 
-    local -a Dependencies=("${PM_COMMAND_DEPS[@]}")
-    if [[ ${FORCE-} != true ]]; then
-        for index in "${!Dependencies[@]}"; do
-            if [[ -n $(command -v "${Dependencies[index]}") ]]; then
-                unset 'Dependencies[index]'
-            fi
-        done
-        Dependencies=("${Dependencies[@]}")
+    local Command
+
+    notice "Determining packages to install."
+    local -a Packages
+    readarray -t Packages < <(detect_packages "${Dependencies[@]}")
+
+    if [[ ${#Packages[@]} -eq 0 ]]; then
+        notice "No packages found to install."
+        return
     fi
-    if [[ ${#Dependencies[@]} -eq 0 ]]; then
-        notice "All dependencies have already been installed."
-    else
-        notice "Installing dependencies. Please be patient, this can take a while."
 
-        notice "Determining packages to install."
+    #shellcheck disable=SC2124 #Assigning an array to a string! Assign as array, or use * instead of @ to concatenate.
+    local PackagesString="${Packages[@]}"
+    local pkglist="${PackagesString// /${NC}\', \'${C["Program"]}}"
+    pkglist="${NC}'${C["Program"]}${pkglist}${NC}'"
 
-        local IgnorePackages
-        local old_IFS="${IFS}"
-        IFS=','
-        IgnorePackages="${PM_PACKAGE_BLACKLIST[*]}"
-        IFS="${old_IFS}"
+    notice "Installing packages: ${pkglist}"
 
-        local DepsList
-        if [[ ${#Dependencies[@]} -eq 1 ]]; then
-            DepsList="${Dependencies[0]}"
-        else
-            DepsList="$(printf '*/bin/%s ' "${Dependencies[@]}" | xargs)"
-            local old_IFS="${IFS}"
-            IFS=','
-            DepsList="${Dependencies[*]}"
-            IFS="${old_IFS}"
-        fi
-        Command="dnf --exclude \"${IgnorePackages}\" rq ${DepsList} --qf %{name}"
-        notice "Running: ${C["RunningCommand"]}${Command}${NC}"
-        Packages="$(eval "${Command}" 2> /dev/null)" ||
-            fatal "Failed to find packages to install.\nFailing command: ${C["FailingCommand"]}${Command}"
-        Packages="$(xargs <<< "${Packages}")"
-        if [[ -z ${Packages} ]]; then
-            notice "No packages found to install."
-        else
-            notice "Installing packages."
-            Command="sudo dnf -y install ${Packages}"
-            notice "Running: ${C["RunningCommand"]}${Command}${NC}"
-            eval "${REDIRECT}${Command}" ||
-                fatal "Failed to install dependencies from dnf.\nFailing command: ${C["FailingCommand"]}${Command}"
-        fi
-    fi
+    Command="sudo dnf -y install ${PackagesString}"
+    notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+    eval "${REDIRECT}${Command}" ||
+        fatal \
+            "Failed to install dependencies from dnf.\n" \
+            "Failing command: ${C["FailingCommand"]}${Command}"
+}
+
+detect_packages() {
+    local -a Dependencies=("$@")
+
+    Old_IFS="${IFS}"
+    IFS=','
+    Package_Blacklist="${PM_PACKAGE_BLACKLIST[*]-}"
+    IFS="${Old_IFS}"
+
+    local DepsSearch
+    DepsSearch="$(printf '*/bin/%s ' "${Dependencies[@]}" | xargs)"
+    local Command="dnf --exclude \"${Package_Blacklist}\" rq ${DepsSearch} --qf %{name}"
+    notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+    eval "${Command}" 2> /dev/null ||
+        fatal \
+            "Failed to find packages to install.\n" \
+            "Failing command: ${C["FailingCommand"]}${Command}"
 }
 
 test_pm_dnf_install() {
