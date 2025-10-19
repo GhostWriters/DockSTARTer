@@ -1,12 +1,6 @@
 # Cache directory - created in .scripts/install_docker.sh and .scripts/install_yq.sh
 /.cache
 
-# Dialog configuration file - created by .scripts/menu.sh for dialog interface settings
-/.dialogrc
-
-# Dialog options file
-/.dialogoptions
-
 # Temporary folder
 /.temp/
 
