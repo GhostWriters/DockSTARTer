@@ -30,7 +30,7 @@ if [[ ${CI-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS-} == true ]]; then
 fi
 
 declare -rgx SOURCE_BRANCH='master'
-declare -rgx TARGET_BRANCH='macos'
+declare -rgx TARGET_BRANCH='main'
 
 declare DS_COMMAND
 DS_COMMAND=$(command -v "${APPLICATION_COMMAND}" || true)
