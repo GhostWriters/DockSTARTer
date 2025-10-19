@@ -2,6 +2,10 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+declare -a _dependencies_list=(
+    sed
+)
+
 env_copy() {
     local FROM_VAR=${1-}
     local TO_VAR=${2-}
@@ -19,7 +23,7 @@ env_copy() {
     fi
 
     local NEW_VAR_LINE
-    NEW_VAR_LINE="$(sed -n "s/^\s*${FROM_VAR}\s*=/${TO_VAR}=/gp" "${FROM_VAR_FILE}" | tail -1)"
+    NEW_VAR_LINE="$(${SED} -n "s/^\s*${FROM_VAR}\s*=/${TO_VAR}=/gp" "${FROM_VAR_FILE}" | tail -1)"
     if [[ -z ${NEW_VAR_LINE} ]]; then
         # Source variable does not exist, do nothing
         return
@@ -27,7 +31,7 @@ env_copy() {
     if [[ ! -f ${TO_VAR_FILE} ]]; then
         # Destination file does not exist, create it
         notice "Creating '${C["File"]}${TO_VAR_FILE}${NC}'"
-        touch "${TO_VAR_FILE}"
+        touchfile "${TO_VAR_FILE}"
     fi
     if run_script 'env_var_exists' "${TO_VAR}" "${TO_VAR_FILE}"; then
         # Destination variable exists, do nothing

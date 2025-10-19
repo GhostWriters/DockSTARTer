@@ -3,13 +3,27 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 pm_nala_clean() {
+    local REDIRECT='&> /dev/null '
+    if [[ -n ${VERBOSE-} ]]; then
+        REDIRECT='2>&1 '
+    fi
+
+    local Command
     info "Removing unused packages."
-    notice "Running: ${C["RunningCommand"]}sudo nala autoremove --no-update -y ${NC}"
-    sudo nala autoremove --no-update -y > /dev/null 2>&1 || fatal "Failed to remove unused packages from apt.\nFailing command: ${C["FailingCommand"]}sudo nala autoremove --no-update -y "
+    Command="sudo nala autoremove --no-update -y"
+    notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+    eval "${REDIRECT}${Command}" ||
+        warn \
+            "Failed to remove unused packages from nala.\n" \
+            "Failing command: ${C["FailingCommand"]}${Command}"
 
     info "Cleaning up package cache."
-    notice "Running: ${C["RunningCommand"]}sudo nala clean${NC}"
-    sudo nala clean > /dev/null 2>&1 || fatal "Failed to cleanup cache from nala.\nFailing command: ${C["FailingCommand"]}sudo nala clean"
+    Command="sudo nala clean"
+    notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+    eval "${REDIRECT}${Command}" ||
+        warn \
+            "Failed to cleanup cache from nala.\n" \
+            "Failing command: ${C["FailingCommand"]}${Command}"
 }
 
 test_pm_nala_clean() {

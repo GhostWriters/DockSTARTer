@@ -79,7 +79,7 @@ var_default_value() {
         GLOBAL)
             case "${CleanVarName}" in
                 DOCKER_GID)
-                    Default="'$(cut -d: -f3 < <(getent group docker))'"
+                    Default="'$(group_id docker)'"
                     ;;
                 DOCKER_HOSTNAME)
                     Default="'${HOSTNAME}'"

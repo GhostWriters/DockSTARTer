@@ -4,6 +4,7 @@ IFS=$'\n\t'
 
 run_install() {
     local Title="Install Dependencies"
+    local CommandLine="${CURRENT_COMMANDLINE:-${APPLICATION_COMMAND} --install}"
     local Question="Install or update all ${APPLICATION_NAME} dependencies?"
     local YesNotice="Installing or updating all ${APPLICATION_NAME} dependencies."
     local NoNotice="Not installing or updating all ${APPLICATION_NAME} dependencies."
@@ -12,7 +13,7 @@ run_install() {
             {
                 notice "${YesNotice}"
                 run_install_commands
-            } |& dialog_pipe "${DC["TitleSuccess"]-}${Title}" "${YesNotice}\n${DC["CommandLine"]-} ${APPLICATION_COMMAND} --install"
+            } |& dialog_pipe "${DC["TitleSuccess"]-}${Title}" "${YesNotice}\n${DC["CommandLine"]-} ${CommandLine}"
         else
             notice "${YesNotice}"
             run_install_commands

@@ -2,8 +2,12 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+declare -a _dependencies_list=(
+    find
+)
+
 app_list_builtin() {
-    find "${TEMPLATES_FOLDER}" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | tr '[:lower:]' '[:upper:]' | sort || true
+    ${FIND} "${TEMPLATES_FOLDER}" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | tr '[:lower:]' '[:upper:]' | sort || true
 }
 
 test_app_list_builtin() {

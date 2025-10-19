@@ -324,7 +324,8 @@ run_command() {
     local -a CommandArray=("${@:1:CommandLength}")
     shift ${CommandLength}
     local -a RestOfArgs=("$@")
-    FullCommandString="$(quote_elements_with_spaces "${APPLICATION_COMMAND}" "${FullCommand[@]}")"
+    declare -gx CURRENT_COMMANDLINE
+    CURRENT_COMMANDLINE="$(quote_elements_with_spaces "${APPLICATION_COMMAND}" "${FullCommand[@]}")"
 
     local Command="${CommandArray[0]-}"
     local EqualsParam
@@ -336,7 +337,7 @@ run_command() {
     fi
 
     local -a ParamsArray=("${CommandArray[@]:1}")
-    local SubTitleCommandString="${DC["NC"]-} ${DC["CommandLine"]-}${FullCommandString}"
+    local SubTitleCommandString="${DC["NC"]-} ${DC["CommandLine"]-}${CURRENT_COMMANDLINE}"
 
     if [[ -z ${Command-} ]]; then
         Command="--menu"
@@ -642,12 +643,12 @@ run_command() {
                 # --menu MenuCommand
                 local Script=${MenuCommandScript["${MenuCommand}"]-}
                 case "${MenuCommand}" in
-                    main) ;&
-                    config) ;&
+                    main | config | options)
+                        CURRENT_COMMANDLINE=""
+                        ;&
                     config-apps | apps) ;&
                     config-app-select | app-select | select) ;&
                     config-global | global) ;&
-                    options) ;&
                     options-display | display) ;&
                     options-theme | theme)
                         if [[ -z ${Script} ]]; then
@@ -765,7 +766,7 @@ run_command() {
             fi
             notice "${NoticeText}"
             if use_dialog_box; then
-                run_script 'apply_theme' "${ThemeName}" && run_script 'menu_dialog_example' "" "${FullCommandString}"
+                run_script 'apply_theme' "${ThemeName}" && run_script 'menu_dialog_example' "" "${CURRENT_COMMANDLINE}"
                 result=$?
             else
                 run_script 'apply_theme' "${ThemeName}"
@@ -788,7 +789,7 @@ run_command() {
             run_script 'config_set' "${ConfigVar}" "${ConfigValue}" "${MENU_INI_FILE}"
             result=$?
             if use_dialog_box; then
-                run_script 'menu_dialog_example' "${Title}" "${FullCommandString}"
+                run_script 'menu_dialog_example' "${Title}" "${CURRENT_COMMANDLINE}"
             fi
             ;;
 

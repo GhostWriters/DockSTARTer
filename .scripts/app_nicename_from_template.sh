@@ -2,6 +2,11 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+declare -a _dependencies_list=(
+    grep
+    sed
+)
+
 app_nicename_from_template() {
     # Return the "NiceName" of the appname(s) passed. If there is no "NiceName", return the "Title__Case" of "appname"
     local AppList
@@ -15,7 +20,7 @@ app_nicename_from_template() {
         labels_yml="$(run_script 'app_instance_file' "${baseapp}" "*.labels.yml")"
         if [[ -f ${labels_yml} ]]; then
             BaseApp="$(
-                grep --color=never -Po "\scom\.dockstarter\.appinfo\.nicename: \K.*" "${labels_yml}" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs
+                ${GREP} --color=never -Po "\scom\.dockstarter\.appinfo\.nicename: \K.*" "${labels_yml}" | ${SED} -E 's/^([^"].*[^"])$/"\1"/' | xargs
             )"
         fi
         instance=$(run_script 'appname_to_instancename' "${AppName}")

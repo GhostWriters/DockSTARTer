@@ -2,27 +2,32 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+declare -a _dependencies_list=(
+    grep
+)
+
 pm_nala_repos() {
-    #shellcheck disable=SC2034 #(warning): Title appears unused. Verify use (or export if used externally).
-    local Title="Update Repositories"
+    local REDIRECT='&> /dev/null '
+    if [[ -n ${VERBOSE-} ]]; then
+        REDIRECT='2>&1 '
+    fi
+
     notice "Updating repositories. Please be patient, this can take a while."
     local COMMAND=""
-    local REDIRECT='> /dev/null 2>&1 '
-    if [[ -n ${VERBOSE-} ]]; then
-        #shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
-        REDIRECT='run_command_dialog "${Title}" "${COMMAND}" "" '
-    fi
     local MINIMUM_APT_TRANSPORT_HTTPS="1"
     local INSTALLED_APT_TRANSPORT_HTTPS
-    INSTALLED_APT_TRANSPORT_HTTPS=$( (sudo apt-cache policy apt-transport-https | grep --color=never -Po 'Installed: \K.*') || echo "0")
+    INSTALLED_APT_TRANSPORT_HTTPS=$(
+        (sudo apt-cache policy apt-transport-https | ${GREP} --color=never -Po 'Installed: \K.*') || echo "0"
+    )
     if vergt "${MINIMUM_APT_TRANSPORT_HTTPS}" "${INSTALLED_APT_TRANSPORT_HTTPS:-0}"; then
-        info "Updating repositories (before installing apt-transport-https)."
         COMMAND="sudo nala update"
+        info "Updating repositories (before installing apt-transport-https)."
         notice "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
         eval "${REDIRECT}${COMMAND}" ||
             fatal "Failed to get updates from nala.\nFailing command: ${C["FailingCommand"]}${COMMAND}"
-        info "Installing APT transport for downloading via the HTTP Secure protocol (HTTPS)."
+
         COMMAND="sudo nala install --no-update -y apt-transport-https"
+        info "Installing APT transport for downloading via the HTTP Secure protocol (HTTPS)."
         notice "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
         eval "${REDIRECT}${COMMAND}" ||
             fatal "Failed to install apt-transport-https from nala.\nFailing command: ${C["FailingCommand"]}${COMMAND}"
@@ -30,7 +35,7 @@ pm_nala_repos() {
     local MINIMUM_LIBSECCOMP2="2.4.4"
     # Note compatibility from https://wiki.alpinelinux.org/wiki/Release_Notes_for_Alpine_3.14.0
     local INSTALLED_LIBSECCOMP2
-    INSTALLED_LIBSECCOMP2=$( (apt-cache policy libseccomp2 | grep --color=never -Po 'Installed: \K.*') || echo "0")
+    INSTALLED_LIBSECCOMP2=$( (apt-cache policy libseccomp2 | ${GREP} --color=never -Po 'Installed: \K.*') || echo "0")
     if vergt "${MINIMUM_LIBSECCOMP2}" "${INSTALLED_LIBSECCOMP2:-0}"; then
         info "Installing buster-backports repo for libseccomp2."
         sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 04EE7237B7D453EC 648ACFD622F3D138 ||

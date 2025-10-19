@@ -4,11 +4,11 @@ IFS=$'\n\t'
 
 remove_snap_docker() {
     if [[ -n "$(command -v snap)" ]]; then
-        if snap services docker > /dev/null 2>&1; then
+        if snap services docker &> /dev/null; then
             info "Removing snap Docker package."
             local Command="sudo snap remove docker"
             notice "Running: ${C["RunningCommand"]}${Command}${NC}"
-            eval "${Command}" > /dev/null 2>&1 || true
+            eval "${Command}" &> /dev/null || true
         fi
     fi
 }

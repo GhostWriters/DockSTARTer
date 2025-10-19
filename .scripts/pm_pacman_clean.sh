@@ -4,7 +4,10 @@ IFS=$'\n\t'
 
 pm_pacman_clean() {
     info "Cleaning up package cache."
-    sudo pacman -Sc --noconfirm > /dev/null 2>&1 || info "Failed to cleanup pacman cache.\nFailing command: ${C["FailingCommand"]}sudo pacman -Sc --noconfirm"
+    sudo pacman -Sc --noconfirm &> /dev/null ||
+        info \
+            "Failed to cleanup pacman cache.\n" \
+            "Failing command: ${C["FailingCommand"]}sudo pacman -Sc --noconfirm"
 }
 
 test_pm_pacman_clean() {

@@ -2,6 +2,10 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+declare -a _dependencies_list=(
+    grep
+)
+
 appvars_lines() {
     # Return all lines in `.env` file for app APPNAME
     # If APPNAME ends in a ':', returns all lines in `.env.app.appname'
@@ -13,7 +17,7 @@ appvars_lines() {
         # Search for all variables not for an app
         local VAR_REGEX='[A-Z][A-Z0-9]*(__[A-Z0-9]+)+\w+'
         local APP_VARS_REGEX="^\s*${VAR_REGEX}\s*="
-        grep -v -P '^\s*$|^\s*\#' "${VAR_FILE}" | grep --color=never -v -P "${APP_VARS_REGEX}" || true
+        ${GREP} -v -P '^\s*$|^\s*\#' "${VAR_FILE}" | ${GREP} --color=never -v -P "${APP_VARS_REGEX}" || true
     elif [[ ${APPNAME} =~ ^[A-Z0-9_]+: ]]; then
         # APPNAME is in the form of "APPNAME:", list all variable lines in "appname.env"
         APPNAME=${APPNAME%%:*}
@@ -23,7 +27,7 @@ appvars_lines() {
         # Search for all variables for app "APPNAME"
         local VAR_REGEX="${APPNAME}__(?![A-Za-z0-9]+__)\w+"
         local APP_VARS_REGEX="^\s*${VAR_REGEX}\s*="
-        grep --color=never -P "${APP_VARS_REGEX}" "${VAR_FILE}" || true
+        ${GREP} --color=never -P "${APP_VARS_REGEX}" "${VAR_FILE}" || true
     fi
 }
 

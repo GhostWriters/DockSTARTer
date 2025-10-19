@@ -8,12 +8,15 @@ pm_yum_upgrade() {
     if [[ ${CI-} != true ]]; then
         notice "Upgrading packages. Please be patient, this can take a while."
         local COMMAND='sudo yum -y upgrade'
-        local REDIRECT='> /dev/null 2>&1 '
+        local REDIRECT='&> /dev/null '
         if [[ -n ${VERBOSE-} ]]; then
             #shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
             REDIRECT='run_command_dialog "${Title}" "${COMMAND}" "" '
         fi
-        eval "${REDIRECT}${COMMAND}" || fatal "Failed to upgrade packages from yum.\nFailing command: ${C["FailingCommand"]}${COMMAND}"
+        eval "${REDIRECT}${COMMAND}" ||
+            fatal \
+                "Failed to upgrade packages from yum.\n" \
+                "Failing command: ${C["FailingCommand"]}${COMMAND}"
     fi
 }
 

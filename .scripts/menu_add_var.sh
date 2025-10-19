@@ -2,6 +2,10 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+declare -a _dependencies_list=(
+    grep
+)
+
 menu_add_var() {
     local APPNAME=${1-}
     local appname
@@ -227,7 +231,7 @@ menu_add_var() {
                         ;;
                     EXTRA) # EDIT button
                         local Option
-                        Option="$(grep -o -P "^RENAMED \K(${TemplateOptionsRegex})(?= )" <<< "${SelectedOption}")"
+                        Option="$(${GREP} -o -P "^RENAMED \K(${TemplateOptionsRegex})(?= )" <<< "${SelectedOption}")"
                         if [[ ${Option} =~ ^${TemplateOptionsRegex}$ ]]; then
                             local EditedValue="${SelectedOption#"RENAMED ${Option} "*}"
                             if [[ -n ${EditedValue} ]]; then

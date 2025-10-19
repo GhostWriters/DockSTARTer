@@ -27,12 +27,12 @@ set_permissions() {
     local CH_PGID=${3:-$DETECTED_PGID}
     if [[ ${CH_PUID} -ne 0 ]] && [[ ${CH_PGID} -ne 0 ]]; then
         info "Taking ownership of '${C["Folder"]}${CH_PATH}${NC}' for user '${C["User"]}${CH_PUID}${NC}' and group '${C["User"]}${CH_PGID}${NC}'"
-        sudo chown -R "${CH_PUID}":"${CH_PGID}" "${CH_PATH}" > /dev/null 2>&1 || true
+        sudo chown -R "${CH_PUID}":"${CH_PGID}" "${CH_PATH}" &> /dev/null || true
         info "Setting file and folder permissions in '${C["Folder"]}${CH_PATH}${NC}'"
-        sudo chmod -R a=,a+rX,u+w,g+w "${CH_PATH}" > /dev/null 2>&1 || true
+        sudo chmod -R a=,a+rX,u+w,g+w "${CH_PATH}" &> /dev/null || true
     fi
     info "Setting executable permission on '${C["File"]}${SCRIPTNAME}${NC}'"
-    sudo chmod +x "${SCRIPTNAME}" > /dev/null 2>&1 || fatal "'${C["UserCommand"]}${APPLICATION_COMMAND}${NC}' must be executable.\nFailing command: ${C["FailingCommand"]}sudo chmod +x \"${SCRIPTNAME}\""
+    sudo chmod +x "${SCRIPTNAME}" &> /dev/null || fatal "'${C["UserCommand"]}${APPLICATION_COMMAND}${NC}' must be executable.\nFailing command: ${C["FailingCommand"]}sudo chmod +x \"${SCRIPTNAME}\""
 }
 
 test_set_permissions() {

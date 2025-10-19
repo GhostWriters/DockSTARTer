@@ -2,10 +2,14 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+declare -a _dependencies_list=(
+    sed
+)
+
 env_lines() {
     local VAR_FILE=${1:-$COMPOSE_ENV}
     if [[ -f ${VAR_FILE} ]]; then
-        sed -n "s/^\s*\([A-Za-z0-9_]*\)\s*=/\1=/p" "${VAR_FILE}"
+        ${SED} -n "s/^\s*\([A-Za-z0-9_]*\)\s*=/\1=/p" "${VAR_FILE}"
     fi
 }
 
