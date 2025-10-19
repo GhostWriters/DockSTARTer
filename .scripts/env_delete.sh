@@ -2,6 +2,11 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+declare -a _dependencies_list=(
+    grep
+    sed
+)
+
 env_delete() {
     local DELETE_VAR=${1-}
     local VAR_FILE=${2:-$COMPOSE_ENV}
@@ -17,15 +22,15 @@ env_delete() {
         warn "File '${C["File"]}${VAR_FILE}${NC}' does not exist."
         return
     fi
-    if ! grep -q -P "^\s*\K${DELETE_VAR}(?=\s*=)" "${VAR_FILE}"; then
+    if ! ${GREP} -q -P "^\s*\K${DELETE_VAR}(?=\s*=)" "${VAR_FILE}"; then
         # Variable to delete does not exists, do nothing
         return
     fi
 
     notice "Removing variables from ${C["File"]}${VAR_FILE}${NC}:"
     notice "   ${C["Var"]}${DELETE_VAR}${NC}"
-    sed -i "/^\s*${DELETE_VAR}\s*=/d" "${VAR_FILE}" ||
-        fatal "Failed to remove var '${C["Var"]}${DELETE_VAR}${NC}' in '${C["File"]}${VAR_FILE}${NC}'\nFailing command: ${C["FailingCommand"]}sed -i \"/^\\s*${DELETE_VAR}\\s*=/d\" \"${VAR_FILE}\""
+    ${SED} -i "/^\s*${DELETE_VAR}\s*=/d" "${VAR_FILE}" ||
+        fatal "Failed to remove var '${C["Var"]}${DELETE_VAR}${NC}' in '${C["File"]}${VAR_FILE}${NC}'\nFailing command: ${C["FailingCommand"]}${SED} -i \"/^\\s*${DELETE_VAR}\\s*=/d\" \"${VAR_FILE}\""
 }
 
 test_env_delete() {

@@ -5,12 +5,14 @@ IFS=$'\n\t'
 setup_docker_group() {
     # https://docs.docker.com/install/linux/linux-postinstall/
     info "Creating docker group."
-    sudo groupadd -f docker > /dev/null 2>&1 || fatal "Failed to create docker group.\nFailing command: ${C["FailingCommand"]}sudo groupadd -f docker"
+    add_group docker &> /dev/null ||
+        fatal "Failed to create docker group."
     if [[ ${CI-} == true ]]; then
         notice "Skipping usermod in CI."
     else
         info "Adding '${C["User"]}${DETECTED_UNAME}${NC}' to docker group."
-        sudo usermod -aG docker "${DETECTED_UNAME}" > /dev/null 2>&1 || fatal "Failed to add '${C["User"]}${DETECTED_UNAME}${NC}' to docker group.\nFailing command: ${C["FailingCommand"]}sudo usermod -aG docker \"${DETECTED_UNAME}\""
+        add_user_to_group "${DETECTED_UNAME}" docker &> /dev/null ||
+            fatal "Failed to add '${C["User"]}${DETECTED_UNAME}${NC}' to docker group."
     fi
 }
 

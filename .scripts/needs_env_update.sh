@@ -2,6 +2,10 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+declare -a _dependencies_list=(
+    stat
+)
+
 declare Prefix="env_update_"
 
 needs_env_update() {
@@ -58,7 +62,7 @@ file_changed() {
     if [[ ! -f ${file1} || ! -f ${file2} ]]; then
         return 0
     fi
-    [[ $(stat -c %Y "${file1}") != $(stat -c %Y "${file2}") ]]
+    [[ $(${STAT} -c %Y "${file1}") != $(${STAT} -c %Y "${file2}") ]]
 }
 
 test_needs_env_update() {

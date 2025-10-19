@@ -2,6 +2,10 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+declare -a _dependencies_list=(
+    grep
+)
+
 env_migrate() {
     # env_migrate FromVar ToVar [FromVarFile] [ToVarFile]
     #
@@ -31,14 +35,14 @@ env_migrate() {
     if [[ ! -f ${ToVarFile} ]]; then
         # Destination file does not exist, create it
         notice "Creating '${C["File"]}${ToVarFile}${NC}'"
-        touch "${ToVarFile}"
+        touchfile "${ToVarFile}"
     fi
 
     if [[ ${FromVarFile} == "${ToVarFile}" ]]; then
         # Renaming variables in the same file (possibly handle override migrations here)
         local VarFile=${FromVarFile}
         local -a FoundVarList=()
-        readarray -t FoundVarList < <(grep -o -P "^\s*\K${FromVar}(?=\s*=)" "${VarFile}" || true)
+        readarray -t FoundVarList < <(${GREP} -o -P "^\s*\K${FromVar}(?=\s*=)" "${VarFile}" || true)
         for FoundVar in "${FoundVarList[@]}"; do
             run_script 'env_rename' "${FoundVar}" "${ToVar}" "${VarFile}"
             if [[ ${VarFile} == "${COMPOSE_ENV}" ]] && ! run_script 'env_var_exists' "${FoundVar}"; then
@@ -50,7 +54,7 @@ env_migrate() {
     else
         # Renaming variables in different files
         local -a FoundVarList=()
-        readarray -t FoundVarList < <(grep -o -P "^\s*\K${FromVar}(?=\s*=)" "${FromVarFile}" || true)
+        readarray -t FoundVarList < <(${GREP} -o -P "^\s*\K${FromVar}(?=\s*=)" "${FromVarFile}" || true)
         for FoundVar in "${FoundVarList[@]}"; do
             if [[ ${FromVarFile} == "${COMPOSE_ENV}" ]] && run_script 'override_var_exists' "${FoundVar}"; then
                 # Variable exists in user's override file, copy instead of move

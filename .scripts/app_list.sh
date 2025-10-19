@@ -2,6 +2,10 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+declare -a _dependencies_list=(
+    column
+)
+
 app_list() {
     local -a AppList
     readarray -t AppList < <(run_script 'app_nicename' "$(run_script 'app_list_builtin')")

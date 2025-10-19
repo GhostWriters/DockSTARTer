@@ -7,6 +7,9 @@
 # Dialog options file
 /.dialogoptions
 
+# Temporary folder
+/.temp/
+
 # Docker CLI plugins directory - referenced in .scripts/install_docker.sh for plugin installation
 /cli-plugins/
 

@@ -3,20 +3,22 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 pm_nala_upgrade() {
-    #shellcheck disable=SC2034 #(warning): Title appears unused. Verify use (or export if used externally).
-    local Title="Upgrade Packages"
-    if [[ ${CI-} != true ]]; then
-        notice "Upgrading packages. Please be patient, this can take a while."
-        local COMMAND='sudo nala upgrade --no-update --full -y'
-        local REDIRECT='> /dev/null 2>&1 '
-        if [[ -n ${VERBOSE-} ]]; then
-            #shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
-            REDIRECT='run_command_dialog "${Title}" "${COMMAND}" "" '
-        fi
-        notice "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
-        eval "${REDIRECT}${COMMAND}" ||
-            fatal "Failed to upgrade packages from nala.\nFailing command: ${C["FailingCommand"]}${COMMAND}"
+    if [[ ${CI-} == true ]]; then
+        return
     fi
+
+    local REDIRECT='&> /dev/null '
+    if [[ -n ${VERBOSE-} ]]; then
+        REDIRECT='2>&1 '
+    fi
+
+    local COMMAND='sudo nala upgrade --no-update --full -y'
+    notice "Upgrading packages. Please be patient, this can take a while."
+    notice "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
+    eval "${REDIRECT}${COMMAND}" ||
+        fatal \
+            "Failed to upgrade packages from nala.\n" \
+            "Failing command: ${C["FailingCommand"]}${COMMAND}"
 }
 
 test_pm_nala_upgrade() {

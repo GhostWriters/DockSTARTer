@@ -94,9 +94,9 @@ commands_update_self() {
     notice "${Notice}"
     cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${C["FailingCommand"]}cd \"${SCRIPTPATH}\""
     info "Setting file ownership on current repository files"
-    sudo chown -R "$(id -u)":"$(id -g)" "${SCRIPTPATH}/.git" > /dev/null 2>&1 || true
-    sudo chown "$(id -u)":"$(id -g)" "${SCRIPTPATH}" > /dev/null 2>&1 || true
-    git ls-tree -rt --name-only HEAD | xargs sudo chown "$(id -u)":"$(id -g)" > /dev/null 2>&1 || true
+    sudo chown -R "$(id -u)":"$(id -g)" "${SCRIPTPATH}/.git" &> /dev/null || true
+    sudo chown "$(id -u)":"$(id -g)" "${SCRIPTPATH}" &> /dev/null || true
+    git ls-tree -rt --name-only HEAD | xargs sudo chown "$(id -u)":"$(id -g)" &> /dev/null || true
 
     info "Fetching recent changes from git."
     eval git fetch ${QUIET-} --all --prune || fatal "Failed to fetch recent changes from git.\nFailing command: ${C["FailingCommand"]}git fetch ${QUIET-} --all --prune"
@@ -109,9 +109,9 @@ commands_update_self() {
     info "Cleaning up unnecessary files and optimizing the local repository."
     eval git gc ${QUIET-} || true
     info "Setting file ownership on new repository files"
-    git ls-tree -rt --name-only "${Branch}" | xargs sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" > /dev/null 2>&1 || true
-    sudo chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}/.git" > /dev/null 2>&1 || true
-    sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}" > /dev/null 2>&1 || true
+    git ls-tree -rt --name-only "${Branch}" | xargs sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" &> /dev/null || true
+    sudo chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}/.git" &> /dev/null || true
+    sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}" &> /dev/null || true
     notice "Updated ${APPLICATION_NAME} to '${C["Version"]}$(ds_version)${NC}'"
     popd &> /dev/null
 
@@ -119,6 +119,10 @@ commands_update_self() {
     if [[ -d ${TIMESTAMPS_FOLDER:?} ]]; then
         run_script 'set_permissions' "${TIMESTAMPS_FOLDER:?}"
         rm -rf "${TIMESTAMPS_FOLDER:?}/"* &> /dev/null || true
+    fi
+    if [[ -d ${TEMP_FOLDER:?} ]]; then
+        run_script 'set_permissions' "${TEMP_FOLDER:?}"
+        rm -rf "${TEMP_FOLDER:?}" &> /dev/null || true
     fi
 
     if [[ -z $* ]]; then

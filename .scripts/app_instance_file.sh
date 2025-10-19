@@ -2,6 +2,10 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+declare -a _dependencies_list=(
+    sed
+)
+
 app_instance_file() {
     # app_instance_file AppName FilenameTemplate
     # Returns the filename of a file in the instance folder for the app specified
@@ -78,7 +82,7 @@ app_instance_file() {
         __Instance="__${instance^}"
         __instance="__${instance,,}"
     fi
-    sed -e "s/<__INSTANCE>/${__INSTANCE-}/g ; s/<__instance>/${__instance-}/g ; s/<__Instance>/${__Instance-}/g" \
+    ${SED} -e "s/<__INSTANCE>/${__INSTANCE-}/g ; s/<__instance>/${__instance-}/g ; s/<__Instance>/${__Instance-}/g" \
         "${TemplateFile}" > "${InstanceFile}"
     run_script 'set_permissions' "${InstanceFile}"
 

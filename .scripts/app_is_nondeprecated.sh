@@ -2,6 +2,11 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+declare -a _dependencies_list=(
+    grep
+    sed
+)
+
 app_is_nondeprecated() {
     local -l appname=${1-}
     local -l baseappname
@@ -10,7 +15,7 @@ app_is_nondeprecated() {
     labels_yml="$(run_script 'app_template_file' "${baseappname}" "*.labels.yml")"
     local APP_DEPRECATED
     if [[ -f ${labels_yml} ]]; then
-        APP_DEPRECATED="$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" "${labels_yml}" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo false)"
+        APP_DEPRECATED="$(${GREP} --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" "${labels_yml}" | ${SED} -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo false)"
     fi
     if [[ ${APP_DEPRECATED-} == "false" ]]; then
         return 0
