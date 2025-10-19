@@ -15,7 +15,7 @@ verlt() { ! verlte "${2}" "${1}"; }
 
 # Check for supported bash version
 declare REQUIRED_BASH_VERSION="4"
-if verlt "${BASH_VERSION}" "${REQUIRED_BASH_VERSION}"l; then
+if verlt "${BASH_VERSION}" "${REQUIRED_BASH_VERSION}"; then
     echo "Unsupported bash version."
     echo "${APPLICATION_NAME} requres at least bash version ${REQUIRED_BASH_VERSION}, installed version is ${BASH_VERSION}."
     exit 1
