@@ -1,0 +1,3 @@
+services:
+  backrest<__instance>:
+    network_mode: ${BACKREST<__INSTANCE>__NETWORK_MODE?}
