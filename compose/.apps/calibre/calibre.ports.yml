@@ -3,3 +3,4 @@ services:
     ports:
       - ${CALIBRE<__INSTANCE>__PORT_8080?}:8080
       - ${CALIBRE<__INSTANCE>__PORT_8081?}:8081
+      - ${CALIBRE<__INSTANCE>__PORT_8181?}:8181
