@@ -1,0 +1,6 @@
+services:
+  backrest<__instance>:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Backrest is a web-accessible backup solution built on top of restic."
+      com.dockstarter.appinfo.nicename: "Backrest<__Instance>"

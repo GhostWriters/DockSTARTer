@@ -1,0 +1,4 @@
+${DOCKER_VOLUME_CONFIG}/backrest<__instance>
+${DOCKER_VOLUME_CONFIG}/backrest<__instance>/cache
+${DOCKER_VOLUME_CONFIG}/backrest<__instance>/config
+${DOCKER_VOLUME_CONFIG}/backrest<__instance>/data

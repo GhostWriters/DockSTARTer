@@ -1,0 +1,3 @@
+services:
+  backrest<__instance>:
+    hostname: ${BACKREST<__INSTANCE>__HOSTNAME?}
