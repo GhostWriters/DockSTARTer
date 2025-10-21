@@ -1,0 +1,4 @@
+services:
+  backrest<__instance>:
+    ports:
+      - ${BACKREST<__INSTANCE>__PORT_9898?}:9898

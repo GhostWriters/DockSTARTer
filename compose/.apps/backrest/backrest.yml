@@ -1,0 +1,17 @@
+services:
+  backrest<__instance>:
+    container_name: ${BACKREST<__INSTANCE>__CONTAINER_NAME?}
+    env_file: .env.app.backrest<__instance>
+    environment:
+      - BACKREST_CONFIG=/config/config.json
+      - BACKREST_DATA=/data
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+      - XDG_CACHE_HOME=/cache
+    restart: ${BACKREST<__INSTANCE>__RESTART?}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_VOLUME_CONFIG?}/backrest<__instance>/cache:/cache
+      - ${DOCKER_VOLUME_CONFIG?}/backrest<__instance>/config:/config
+      - ${DOCKER_VOLUME_CONFIG?}/backrest<__instance>/data:/data
