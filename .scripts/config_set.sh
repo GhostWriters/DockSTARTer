@@ -10,7 +10,7 @@ config_set() {
     # config_set SET_VAR NEW_VAL [VAR_FILE]
     local SET_VAR=${1-}
     local NEW_VAL=${2-}
-    local VAR_FILE=${3-}
+    local VAR_FILE=${3-$APPLICATION_INI_FILE}
 
     # https://unix.stackexchange.com/questions/422165/escape-double-quotes-in-variable/422170#422170
     NEW_VAL="$(printf "%s\n" "${NEW_VAL-}" | ${SED} -e "s/'/'\"'\"'/g" -e "1s/^/'/" -e "\$s/\$/'/")"
