@@ -10,13 +10,14 @@ apply_theme() {
         Default
     )
 
+    if [[ ! -f ${APPLICATION_INI_FILE} ]]; then
+        run_script 'config_create'
+    fi
+
     local ThemeFile DialogFile
-    local DefaultMenuIniFile="${THEME_FOLDER}/${MENU_INI_NAME}"
+    local DefaultIniFile="${DEFAULTS_FOLDER}/${APPLICATION_INI_NAME}"
     if [[ -z ${ThemeName-} ]]; then
-        if [[ ! -f ${MENU_INI_FILE} ]]; then
-            cp "${DefaultMenuIniFile}" "${MENU_INI_FILE}"
-        fi
-        ThemeName="$(run_script 'config_get' Theme "${MENU_INI_FILE}")"
+        ThemeName="$(run_script 'config_get' Theme)"
         if ! run_script 'theme_exists' "${ThemeName}"; then
             for Name in "${DefaultThemes[@]}"; do
                 if run_script 'theme_exists' "${Name}"; then
@@ -95,37 +96,39 @@ apply_theme() {
     local DialogOptions="--colors --output-fd 1 --cr-wrap --no-collapse"
 
     local LineCharacters Borders Scrollbar Shadow
-    if run_script 'env_var_exists' Scrollbar "${MENU_INI_FILE}"; then
-        Scrollbar="$(run_script 'config_get' Scrollbar "${MENU_INI_FILE}")"
+    if run_script 'env_var_exists' Scrollbar "${APPLICATION_INI_FILE}"; then
+        Scrollbar="$(run_script 'config_get' Scrollbar)"
     else
-        Scrollbar="$(run_script 'config_get' Scrollbar "${DefaultMenuIniFile}")"
-        run_script 'config_set' Scrollbar "${Scrollbar}" "${MENU_INI_FILE}"
+        Scrollbar="$(run_script 'config_get' Scrollbar "${DefaultIniFile}")"
+        run_script 'config_set' Scrollbar "${Scrollbar}"
     fi
-    if run_script 'env_var_exists' Shadow "${MENU_INI_FILE}"; then
-        Shadow="$(run_script 'config_get' Shadow "${MENU_INI_FILE}")"
+    if run_script 'env_var_exists' Shadow "${APPLICATION_INI_FILE}"; then
+        Shadow="$(run_script 'config_get' Shadow)"
     else
-        Shadow="$(run_script 'config_get' Shadow "${DefaultMenuIniFile}")"
-        run_script 'config_set' Shadow "${Shadow}" "${MENU_INI_FILE}"
+        Shadow="$(run_script 'config_get' Shadow "${DefaultIniFile}")"
+        run_script 'config_set' Shadow "${Shadow}"
     fi
     # Migrate old LineCharacters variable to Borders if Borders doesn't exist
-    if run_script 'env_var_exists' Borders "${MENU_INI_FILE}"; then
-        Borders="$(run_script 'config_get' Borders "${MENU_INI_FILE}")"
-        if run_script 'env_var_exists' LineCharacters "${MENU_INI_FILE}"; then
-            LineCharacters="$(run_script 'config_get' LineCharacters "${MENU_INI_FILE}")"
+    if run_script 'env_var_exists' Borders "${APPLICATION_INI_FILE}"; then
+        Borders="$(run_script 'config_get' Borders)"
+        if run_script 'env_var_exists' LineCharacters "${APPLICATION_INI_FILE}"; then
+            LineCharacters="$(run_script 'config_get' LineCharacters)"
         else
-            LineCharacters="$(run_script 'config_get' LineCharacters "${DefaultMenuIniFile}")"
-            run_script 'config_set' LineCharacters "${LineCharacters}" "${MENU_INI_FILE}"
+            LineCharacters="$(run_script 'config_get' LineCharacters "${DefaultIniFile}")"
+            run_script 'config_set' LineCharacters "${LineCharacters}"
         fi
     else
-        if run_script 'env_var_exists' LineCharacters "${MENU_INI_FILE}"; then
-            Borders="$(run_script 'config_get' LineCharacters "${MENU_INI_FILE}")"
+        if run_script 'env_var_exists' LineCharacters "${APPLICATION_INI_FILE}"; then
+            Borders="$(run_script 'config_get' LineCharacters)"
         else
-            Borders="$(run_script 'config_get' Borders "${DefaultMenuIniFile}")"
+            Borders="$(run_script 'config_get' Borders "${DefaultIniFile}")"
         fi
-        run_script 'config_set' Borders "${Borders}" "${MENU_INI_FILE}"
-        LineCharacters="$(run_script 'config_get' LineCharacters "${DefaultMenuIniFile}")"
-        run_script 'config_set' LineCharacters "${LineCharacters}" "${MENU_INI_FILE}"
+        run_script 'config_set' Borders "${Borders}"
+        LineCharacters="$(run_script 'config_get' LineCharacters "${DefaultIniFile}")"
+        run_script 'config_set' LineCharacters "${LineCharacters}"
     fi
+
+    # Set the dialog options based on the settings in the .ini file
     if is_true "${Borders}"; then
         if is_false "${LineCharacters}"; then
             DialogOptions+=" --ascii-lines"
@@ -145,13 +148,17 @@ apply_theme() {
     else
         DialogOptions+=" --no-shadow"
     fi
+
     echo "${DialogOptions}" > "${DIALOG_OPTIONS_FILE}" ||
-        fatal "Failed to save dialog options file.\nFailing command: ${C["FailingCommand"]}echo \"${DialogOptions}\" > \"${DIALOG_OPTIONS_FILE}\""
+        fatal \
+            "Failed to save dialog options file.\n" \
+            "Failing command: ${C["FailingCommand"]}echo \"${DialogOptions}\" > \"${DIALOG_OPTIONS_FILE}\""
     run_script 'set_permissions' "${DIALOG_OPTIONS_FILE}"
 
     cp "${DialogFile}" "${DIALOGRC}"
-    run_script 'config_set' Theme "${ThemeName}" "${MENU_INI_FILE}"
-    sort -o "${MENU_INI_FILE}" "${MENU_INI_FILE}"
+    run_script 'set_permissions' "${DIALOGRC}"
+
+    run_script 'config_set' Theme "${ThemeName}"
 }
 
 test_apply_theme() {

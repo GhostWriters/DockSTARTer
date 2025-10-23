@@ -1,6 +1,12 @@
 # Cache directory - created in .scripts/install_docker.sh and .scripts/install_yq.sh
 /.cache
 
+# Dialog options file
+/.dialogoptions
+
+# Dialog configuration file
+/.dialogrc
+
 # Temporary folder
 /.temp/
 
@@ -37,11 +43,11 @@
 # Alternative configuration directory - legacy path, referenced in migration scripts
 /configs/
 
+# DockSTARTer preferences file
+/dockstarter.ini
+
 # Application log file - created by .scripts/log.sh for DockSTARTer output
 /dockstarter.log
-
-# Menu configuration file - created by .scripts/menu.sh for storing menu preferences
-/menu.ini
 
 # Shared data directory - created by .scripts/compose_setup.sh for container volume mounts
 /share/

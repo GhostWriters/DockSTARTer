@@ -8,8 +8,10 @@ DIALOG=$(command -v dialog) || true
 declare -Agx DC
 
 declare -rgx DIALOGRC_NAME='.dialogrc'
-declare -rgx DIALOGRC="${TEMP_FOLDER}/${DIALOGRC_NAME}"
-declare -rgx DIALOG_OPTIONS_FILE="${TEMP_FOLDER}/.dialogoptions"
+declare -rgx DIALOG_OPTIONS_NAME='.dialogoptions'
+
+declare -rgx DIALOGRC="${SCRIPTPATH}/${DIALOGRC_NAME}"
+declare -rgx DIALOG_OPTIONS_FILE="${SCRIPTPATH}/${DIALOG_OPTIONS_NAME}"
 
 declare -rigx DIALOGTIMEOUT=3
 declare -rigx DIALOG_OK=0
