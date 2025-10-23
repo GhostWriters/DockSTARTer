@@ -393,7 +393,7 @@ init() {
 # Main Function
 main() {
     init
-    run_script 'apply_theme'
+    run_script 'apply_config'
     cmdline "${ARGS[@]-}"
 }
 

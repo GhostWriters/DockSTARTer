@@ -9,7 +9,7 @@ menu_options_display() {
 
     local Title="Display Options"
 
-    #run_script 'apply_theme'
+    run_script 'apply_theme' &> /dev/null
 
     local DrawLineOption="Draw Lines"
     local ShowBordersOption="Show Borders"
@@ -33,7 +33,7 @@ menu_options_display() {
         local Opts=()
         for Option in "${DrawLineOption}" "${ShowBordersOption}" "${ShowScrollbarOption}" "${ShowShadowOption}"; do
             local Value
-            Value="$(run_script 'config_get' "${OptionVariable["${Option}"]}" "${MENU_INI_FILE}")"
+            Value="$(run_script 'config_get' "${OptionVariable["${Option}"]}")"
             if is_true "${Value}"; then
                 EnabledOptions+=("${Option}")
                 Opts+=("${Option}" "${OptionDescription["${Option}"]}" ON)
@@ -66,15 +66,15 @@ menu_options_display() {
                 if [[ -n ${OptionsToTurnOff[*]-} || ${OptionsToTurnOn[*]-} ]]; then
                     if [[ -n ${OptionsToTurnOff[*]-} ]]; then
                         for Option in "${OptionsToTurnOff[@]}"; do
-                            run_script 'config_set' "${OptionVariable["${Option}"]}" OFF "${MENU_INI_FILE}"
+                            run_script 'config_set' "${OptionVariable["${Option}"]}" OFF
                         done
                     fi
                     if [[ -n ${OptionsToTurnOn[*]-} ]]; then
                         for Option in "${OptionsToTurnOn[@]}"; do
-                            run_script 'config_set' "${OptionVariable["${Option}"]}" ON "${MENU_INI_FILE}"
+                            run_script 'config_set' "${OptionVariable["${Option}"]}" ON
                         done
                     fi
-                    run_script 'apply_theme'
+                    run_script 'apply_theme' &> /dev/null
                 fi
                 ;;
             CANCEL | ESC)
