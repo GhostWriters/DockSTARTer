@@ -245,9 +245,15 @@ check_sudo() {
 clone_repo() {
     warn "Attempting to clone ${APPLICATION_NAME} repo to '${C["Folder"]-}${DETECTED_HOMEDIR}/.docker${NC-}' location."
     git clone -b "${TARGET_BRANCH}" "${APPLICATION_REPO}" "${DETECTED_HOMEDIR}/.docker" ||
-        fatal "Failed to clone ${APPLICATION_NAME} repo.\nFailing command: ${C["FailingCommand"]-}git clone -b \"${TARGET_BRANCH}\" \"${APPLICATION_REPO}\" \"${DETECTED_HOMEDIR}/.docker\""
-    notice "Performing first run install."
-    exec bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-yvi"
+        fatal \
+            "Failed to clone ${APPLICATION_NAME} repo.\n" \
+            "Failing command: ${C["FailingCommand"]-}git clone -b \"${TARGET_BRANCH}\" \"${APPLICATION_REPO}\" \"${DETECTED_HOMEDIR}/.docker\""
+    if [[ ${#ARGS[@]} -eq 0 ]]; then
+        notice "Performing first run install."
+        exec bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-yvi"
+    else
+        exec bash "${DETECTED_HOMEDIR}/.docker/main.sh" "${ARGS[@]}"
+    fi
 }
 
 # Cleanup Function
