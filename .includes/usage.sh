@@ -108,6 +108,15 @@ ${C["UsageCommand"]-}-c --compose${NC-} < ${C["UsageOption"]-}generate${NC-} | $
     Generates the '${C["UsageFile"]-}docker-compose.yml${NC-} file
 EOF
             ;;&
+        --config-pm | --config-pm-auto | "")
+            Found=1
+            cat << EOF
+${C["UsageCommand"]-}-T --config-pm${NC-} ${C["UsageOption"]-}<package manager>${NC-}
+    Select the specified package manager to install dependencies
+${C["UsageCommand"]-}-T --config-pm-auto${NC-}
+    Autodetect the package manager
+EOF
+            ;;&
         --config-pm-list | "")
             Found=1
             cat << EOF
