@@ -3,6 +3,9 @@ services:
     container_name: ${CALIBRE<__INSTANCE>__CONTAINER_NAME?}
     env_file: .env.app.calibre<__instance>
     environment:
+      - CUSTOM_HTTPS_PORT=8181
+      - CUSTOM_PORT=8080
+      - CUSTOM_WS_PORT=8081
       - PGID=${PGID?}
       - PUID=${PUID?}
       - TZ=${TZ?}

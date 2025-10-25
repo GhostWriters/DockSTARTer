@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 pm_dnf_repos() {
-    info "dnf does not require additional repositories."
+    info "Package manager '${C["UserCommand"]}dnf${NC}' does not require additional repositories."
 }
 
 test_pm_dnf_repos() {

@@ -8,8 +8,10 @@ DIALOG=$(command -v dialog) || true
 declare -Agx DC
 
 declare -rgx DIALOGRC_NAME='.dialogrc'
+declare -rgx DIALOG_OPTIONS_NAME='.dialogoptions'
+
 declare -rgx DIALOGRC="${SCRIPTPATH}/${DIALOGRC_NAME}"
-declare -rgx DIALOG_OPTIONS_FILE="${SCRIPTPATH}/.dialogoptions"
+declare -rgx DIALOG_OPTIONS_FILE="${SCRIPTPATH}/${DIALOG_OPTIONS_NAME}"
 
 declare -rigx DIALOGTIMEOUT=3
 declare -rigx DIALOG_OK=0
@@ -131,7 +133,7 @@ dialog_pipe() {
     local SubTitle=${2:-}
     local TimeOut=${3:-0}
     if [[ -z ${DC["_defined_"]-} ]]; then
-        run_script 'apply_theme'
+        run_script 'config_theme'
     fi
     Title="$(strip_ansi_colors "${Title}")"
     SubTitle="$(strip_ansi_colors "${SubTitle}")"
@@ -151,7 +153,7 @@ run_script_dialog() {
     shift 4
     if use_dialog_box; then
         if [[ -z ${DC["_defined_"]-} ]]; then
-            run_script 'apply_theme'
+            run_script 'config_theme'
         fi
         # Using the GUI, pipe output to a dialog box
         coproc {
@@ -195,7 +197,7 @@ dialog_info() {
     Title="$(strip_ansi_colors "${Title}")"
     Message="$(strip_ansi_colors "${Message}")"
     if [[ -z ${DC["_defined_"]-} ]]; then
-        run_script 'apply_theme'
+        run_script 'config_theme'
     fi
     _dialog_ \
         --title "${Title}" \
@@ -210,7 +212,7 @@ dialog_message() {
     Title="$(strip_ansi_colors "${Title}")"
     Message="$(strip_ansi_colors "${Message}")"
     if [[ -z ${DC["_defined_"]-} ]]; then
-        run_script 'apply_theme'
+        run_script 'config_theme'
     fi
     _dialog_ \
         --title "${Title}" \
@@ -224,7 +226,7 @@ dialog_error() {
     local Message=${2:-}
     local TimeOut=${3:-0}
     if [[ -z ${DC["_defined_"]-} ]]; then
-        run_script 'apply_theme'
+        run_script 'config_theme'
     fi
     dialog_message "${DC["TitleError"]-}${Title}" "${Message}" "${TimeOut}"
 }
@@ -233,7 +235,7 @@ dialog_warning() {
     local Message=${2:-}
     local TimeOut=${3:-0}
     if [[ -z ${DC["_defined_"]-} ]]; then
-        run_script 'apply_theme'
+        run_script 'config_theme'
     fi
     dialog_message "${DC["TitleWarning"]-}${Title}" "${Message}" "${TimeOut}"
 }
@@ -242,7 +244,7 @@ dialog_success() {
     local Message=${2:-}
     local TimeOut=${3:-0}
     if [[ -z ${DC["_defined_"]-} ]]; then
-        run_script 'apply_theme'
+        run_script 'config_theme'
     fi
     dialog_message "${DC["TitleSuccess"]-}${Title}" "${Message}" "${TimeOut}"
 }

@@ -245,9 +245,15 @@ check_sudo() {
 clone_repo() {
     warn "Attempting to clone ${APPLICATION_NAME} repo to '${C["Folder"]-}${DETECTED_HOMEDIR}/.docker${NC-}' location."
     git clone -b "${TARGET_BRANCH}" "${APPLICATION_REPO}" "${DETECTED_HOMEDIR}/.docker" ||
-        fatal "Failed to clone ${APPLICATION_NAME} repo.\nFailing command: ${C["FailingCommand"]-}git clone -b \"${TARGET_BRANCH}\" \"${APPLICATION_REPO}\" \"${DETECTED_HOMEDIR}/.docker\""
-    notice "Performing first run install."
-    exec bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-yvi"
+        fatal \
+            "Failed to clone ${APPLICATION_NAME} repo.\n" \
+            "Failing command: ${C["FailingCommand"]-}git clone -b \"${TARGET_BRANCH}\" \"${APPLICATION_REPO}\" \"${DETECTED_HOMEDIR}/.docker\""
+    if [[ ${#ARGS[@]} -eq 0 ]]; then
+        notice "Performing first run install."
+        exec bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-yvi"
+    else
+        exec bash "${DETECTED_HOMEDIR}/.docker/main.sh" "${ARGS[@]}"
+    fi
 }
 
 # Cleanup Function
@@ -307,10 +313,11 @@ init_check_cloned() {
 }
 
 init_check_dependencies() {
-    if [[ -v PM_${PM^^}_COMMAND_DEPS ]]; then
+    run_script 'package_manager_init'
+    if [[ -v PM && -v PM_${PM^^}_COMMAND_DEPS ]]; then
         declare -n COMMAND_DEPS="PM_${PM^^}_COMMAND_DEPS"
     else
-        declare -n COMMAND_DEPS="PM_COMMAND_DEPS"
+        declare -n COMMAND_DEPS="PM__COMMAND_DEPS"
     fi
     pm_check_dependencies warn "${COMMAND_DEPS[@]}" || true
 }
@@ -393,7 +400,7 @@ init() {
 # Main Function
 main() {
     init
-    run_script 'apply_theme'
+    run_script 'apply_config'
     cmdline "${ARGS[@]-}"
 }
 
