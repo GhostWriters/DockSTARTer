@@ -7,6 +7,6 @@ theme_name() {
 }
 
 test_theme_name() {
-    run_script 'apply_theme'
+    run_script 'config_theme'
     run_script 'theme_name'
 }

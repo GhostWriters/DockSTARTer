@@ -9,7 +9,7 @@ menu_options_theme() {
 
     local Title="Choose Theme"
 
-    run_script 'apply_theme'
+    run_script 'config_theme'
 
     local CurrentTheme
     CurrentTheme="$(run_script 'theme_name')"
@@ -51,7 +51,7 @@ menu_options_theme() {
         case ${DIALOG_BUTTONS[DialogButtonPressed]-} in
             OK)
                 CurrentTheme="${Choice}"
-                if run_script 'apply_theme' "${CurrentTheme}"; then
+                if run_script 'config_theme' "${CurrentTheme}"; then
                     run_script 'menu_dialog_example' "Applied theme ${CurrentTheme}" "${APPLICATION_COMMAND} --theme \"${CurrentTheme}\""
                 else
                     dialog_error "${Title}" "Unable to apply theme ${CurrentTheme}"

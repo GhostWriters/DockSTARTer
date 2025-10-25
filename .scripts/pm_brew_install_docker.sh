@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 pm_brew_install_docker() {
-    warn "brew does not currently install docker."
+    warn "Package manager '${C["UserCommand"]}brew${NC}' does not install docker."
 }
 
 test_pm_brew_install_docker() {

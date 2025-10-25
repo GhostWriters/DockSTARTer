@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 pm_pacman_repos() {
-    info "pacman does not require additional repositories."
+    info "Package manager '${C["UserCommand"]}pacman${NC}' does not require additional repositories."
 }
 
 test_pm_pacman_repos() {

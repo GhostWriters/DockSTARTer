@@ -10,9 +10,11 @@ menu_options() {
     local Title="Options"
     local Option_Theme="Choose Theme"
     local Option_Display="Display Options"
+    local Option_Package_Manager="Package Manager"
     local Opts=(
         "${Option_Theme}" "${DC["ListDefault"]}Choose a theme for ${APPLICATION_NAME}"
         "${Option_Display}" "${DC["ListDefault"]}Set display options"
+        "${Option_Package_Manager}" "${DC["ListDefault"]}Choose the package manager to use"
     )
 
     local LastChoice=""
@@ -37,6 +39,9 @@ menu_options() {
                         ;;
                     "${Option_Display}")
                         run_script 'menu_options_display' || true
+                        ;;
+                    "${Option_Package_Manager}")
+                        run_script 'menu_options_package_manager' || true
                         ;;
                     *)
                         error "Invalid Option"
