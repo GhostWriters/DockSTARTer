@@ -9,7 +9,7 @@ menu_options_display() {
 
     local Title="Display Options"
 
-    run_script 'apply_theme' &> /dev/null
+    run_script 'config_theme' &> /dev/null
 
     local DrawLineOption="Draw Lines"
     local ShowBordersOption="Show Borders"
@@ -74,7 +74,7 @@ menu_options_display() {
                             run_script 'config_set' "${OptionVariable["${Option}"]}" ON
                         done
                     fi
-                    run_script 'apply_theme' &> /dev/null
+                    run_script 'config_theme' &> /dev/null
                 fi
                 ;;
             CANCEL | ESC)

@@ -2,16 +2,15 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-declare -gx PM=''
-
 declare -argx PM_PACKAGE_MANAGERS=(
-    apk
     nala
     apt
-    dnf
+    apk
     pacman
+    dnf
     yum
     brew
+    none
 )
 
 declare -Argx PM_PACKAGE_MANAGER_COMMAND=(
@@ -23,6 +22,31 @@ declare -Argx PM_PACKAGE_MANAGER_COMMAND=(
     ["yum"]="yum"
     ["brew"]="brew"
     ["port"]="port"
+    ["none"]="bash"
+)
+
+declare -Argx PM_NICENAME=(
+    ["apk"]="APK"
+    ["nala"]="Nala"
+    ["apt"]="APT"
+    ["dnf"]="DNF"
+    ["pacman"]="Pacman"
+    ["yum"]="YUM"
+    ["brew"]="Homebrew"
+    ["port"]="MacPorts"
+    ["none"]="None"
+)
+
+declare -Argx PM_DESCRIPTION=(
+    ["apk"]="Alpine Package Keeper (Alpine Linux)"
+    ["nala"]="Nala alternative to Apt (Debian, Ubuntu)"
+    ["apt"]="Advanced Package Tool (Debian, Ubuntu)"
+    ["dnf"]="Dandified YUM (Fedora, CentOS)"
+    ["yum"]="Yellowdog Updater, Modified (Fedora, CentOS)"
+    ["pacman"]="Package Manager (Arch Linux)"
+    ["brew"]="Homebrew (macOS)"
+    ["port"]="MacPorts (macOS)"
+    ["none"]="No package manager"
 )
 
 declare -argx PM__COMMAND_DEPS=(
@@ -70,36 +94,24 @@ declare -argx PM_PORT_COMMAND_DEPS=(
     "ip"
 )
 
+declare -argx PM_NONE_COMMAND_DEPS=(
+    "column"
+    "curl"
+    "dialog"
+    "gfind"
+    "git"
+    "ggrep"
+    "gsed"
+    "gstat"
+    "ip"
+)
+
 declare -Argx PM_PORT_DEP_PACKAGE=(
     ["dialog"]="dialog"
     ["find"]="findutils"
     ["gsed"]="gnu-sed"
     ["ip"]="iproute2mac"
 )
-
-pm_find_package_manager() {
-    for pmname in "${PM_PACKAGE_MANAGERS[@]}"; do
-        if [[ -n $(command -v "${PM_PACKAGE_MANAGER_COMMAND["${pmname}"]}") ]]; then
-            PM="${pmname}"
-            break
-        fi
-    done
-    if [[ -v PM_${PM^^}_COMMAND_DEPS ]]; then
-        declare -ngx PM_COMMAND_DEPS="PM_${PM^^}_COMMAND_DEPS"
-    else
-        declare -ngx PM_COMMAND_DEPS="PM__COMMAND_DEPS"
-    fi
-    if [[ -v PM_${PM^^}_DEP_PACKAGE ]]; then
-        declare -ngx PM_DEP_PACKAGE="PM_${PM^^}_DEP_PACKAGE"
-    else
-        declare -ngx PM_DEP_PACKAGE="PM__DEP_PACKAGE"
-    fi
-    if [[ -v PM_${PM^^}_PACKAGE_BLACKLIST ]]; then
-        declare -ngx PM_PACKAGE_BLACKLIST="PM_${PM^^}_PACKAGE_BLACKLIST"
-    else
-        declare -ngx PM_PACKAGE_BLACKLIST="PM__PACKAGE_BLACKLIST"
-    fi
-}
 
 pm_check_dependency() {
     local Dep=${1}
@@ -195,5 +207,3 @@ pm_check_dependencies() {
     fi
     return 0
 }
-
-pm_find_package_manager

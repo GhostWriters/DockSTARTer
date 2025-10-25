@@ -313,10 +313,11 @@ init_check_cloned() {
 }
 
 init_check_dependencies() {
-    if [[ -v PM_${PM^^}_COMMAND_DEPS ]]; then
+    run_script 'package_manager_init'
+    if [[ -v PM && -v PM_${PM^^}_COMMAND_DEPS ]]; then
         declare -n COMMAND_DEPS="PM_${PM^^}_COMMAND_DEPS"
     else
-        declare -n COMMAND_DEPS="PM_COMMAND_DEPS"
+        declare -n COMMAND_DEPS="PM__COMMAND_DEPS"
     fi
     pm_check_dependencies warn "${COMMAND_DEPS[@]}" || true
 }

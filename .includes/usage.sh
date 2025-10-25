@@ -108,6 +108,34 @@ ${C["UsageCommand"]-}-c --compose${NC-} < ${C["UsageOption"]-}generate${NC-} | $
     Generates the '${C["UsageFile"]-}docker-compose.yml${NC-} file
 EOF
             ;;&
+        --config-pm-list | "")
+            Found=1
+            cat << EOF
+${C["UsageCommand"]-}--config-pm-list${NC-}
+    Lists the compatible package managers
+EOF
+            ;;&
+        --config-pm-table | "")
+            Found=1
+            cat << EOF
+${C["UsageCommand"]-}--config-pm-table${NC-}
+    Lists the compatible package managers in a table format
+EOF
+            ;;&
+        --config-pm-existing-list | "")
+            Found=1
+            cat << EOF
+${C["UsageCommand"]-}--config-pm-existing-list${NC-}
+    Lists the existing package managers
+EOF
+            ;;&
+        --config-pm-existing-table | "")
+            Found=1
+            cat << EOF
+${C["UsageCommand"]-}--config-pm-existing-table${NC-}
+    Lists the existing package managers in a table format
+EOF
+            ;;&
         -e | --env | "")
             Found=1
             cat << EOF

@@ -53,6 +53,9 @@ parse_arguments() {
                     ;;
 
                 # --command
+                --config-pm-auto) ;&
+                --config-pm-list | --config-pm-table) ;&
+                --config-pm-existing-list | --config-pm-existing-table) ;&
                 -e | --env) ;&
                 -i | --install) ;&
                 -l | --list) ;&
@@ -91,6 +94,19 @@ parse_arguments() {
                         cmdline_error \
                             "${OPTION}" \
                             "Command %c requires a script name." \
+                            "${ParsedArgs[@]}" "${CurrentFlags[@]}" "${CurrentCommand[@]}" "${OPTION}"
+                        exit 1
+                    fi
+                    CurrentCommand+=("${OPTION}" "${!OPTIND}")
+                    OPTIND+=1
+                    break
+                    ;;
+
+                --config-pm)
+                    if [[ -z ${!OPTIND-} || ${!OPTIND} == "-"* ]]; then
+                        cmdline_error \
+                            "${OPTION}" \
+                            "Command %c requires a package manager name." \
                             "${ParsedArgs[@]}" "${CurrentFlags[@]}" "${CurrentCommand[@]}" "${OPTION}"
                         exit 1
                     fi
@@ -364,6 +380,12 @@ run_command() {
         ["--add"]="appvars_create"
         ["-c"]="docker_compose"
         ["--compose"]="docker_compose"
+        ["--config-pm"]="config_package_manager"
+        ["--config-pm-auto"]="config_package_manager"
+        ["--config-pm-list"]="package_manager_list"
+        ["--config-pm-table"]="package_manager_table"
+        ["--config-pm-existing-list"]="package_manager_existing_list"
+        ["--config-pm-existing-table"]="package_manager_existing_table"
         ["-e"]="appvars_create_all"
         ["--env"]="appvars_create_all"
         ["--env-appvars"]="appvars_list"
@@ -441,6 +463,12 @@ run_command() {
         ["-a"]=1
         ["--add"]=1
         ["-e"]=1
+        ["--config-pm"]=1
+        ["--config-pm-auto"]=1
+        ["--config-pm-list"]=1
+        ["--config-pm-table"]=1
+        ["--config-pm-existing-list"]=1
+        ["--config-pm-existing-table"]=1
         ["--env"]=1
         ["--list"]=1
         ["-r"]=1
@@ -452,6 +480,12 @@ run_command() {
     CommandTitle+=(
         ["-a"]="Add Application"
         ["--add"]="Add Application"
+        ["--config-pm"]="Select package manager"
+        ["--config-pm-auto"]="Select package manager"
+        ["--config-pm-list"]="List known package managers"
+        ["--config-pm-table"]="List known package managers"
+        ["--config-pm-existing-list"]="List existing package managers"
+        ["--config-pm-existing-table"]="List existing package managers"
         ["-e"]="${DC["TitleSuccess"]-}Creating environment variables for added apps"
         ["--env"]="${DC["TitleSuccess"]-}Creating environment variables for added apps"
         ["--env-appvars"]="Variables for Application"
@@ -674,6 +708,9 @@ run_command() {
             ;;
         -a | --add) ;&
         -c | --compose) ;&
+        --config-pm) ;&
+        --config-pm-list | --config-pm-table) ;&
+        --config-pm-existing-list | --config-pm-existing-table) ;&
         -e | --env) ;&
         -i | --install) ;&
         --list) ;&
@@ -725,6 +762,44 @@ run_command() {
             fi
             ;;
 
+        --config-pm-auto)
+            if [[ -z ${Script} ]]; then
+                fatal \
+                    "No script is defined for command '${C["UserCommand"]-}${Command}${NC-}'.\n" \
+                    "Please let the dev know."
+            fi
+            if [[ -n ${EnvCreate-} ]]; then
+                run_script 'env_create'
+            fi
+            if [[ -n ${EnvBackup-} ]]; then
+                run_script 'env_backup'
+            fi
+            if [[ ${RequireDialog-} ]]; then
+                if [[ -z ${DIALOG-} ]]; then
+                    fatal \
+                        "The GUI requires the '${C["Program"]-}dialog${NC-}' command to be installed.\n" \
+                        "'${C["Program"]-}dialog${NC-}' command not found. Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -i${NC-}' to install all dependencies.\n" \
+                        "\n" \
+                        "Unable to start GUI without the '${C["Program"]-}dialog${NC-}' command.\n"
+                fi
+                declare -gx PROMPT="GUI"
+                run_script "${Script}" ""
+                result=$?
+            else
+                if [[ ${UseDialog} ]]; then
+                    run_script_dialog "${Title}" "${SubTitle}" "" \
+                        "${Script}" ""
+                    result=$?
+                else
+                    run_script "${Script}" ""
+                    result=$?
+                fi
+            fi
+            if [[ -n ${EnvUpdate-} ]]; then
+                run_script 'env_update'
+            fi
+            ;;
+
         --menu-config-app)
             if [[ -z ${Script} ]]; then
                 fatal \
@@ -766,10 +841,10 @@ run_command() {
             fi
             notice "${NoticeText}"
             if use_dialog_box; then
-                run_script 'apply_theme' "${ThemeName}" && run_script 'menu_dialog_example' "" "${CURRENT_COMMANDLINE}"
+                run_script 'config_theme' "${ThemeName}" && run_script 'menu_dialog_example' "" "${CURRENT_COMMANDLINE}"
                 result=$?
             else
-                run_script 'apply_theme' "${ThemeName}"
+                run_script 'config_theme' "${ThemeName}"
                 result=$?
             fi
             ;;
