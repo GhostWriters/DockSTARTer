@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-apply_theme() {
+config_theme() {
     local ThemeName=${1-}
 
     local DefaultThemes=(
@@ -161,6 +161,6 @@ apply_theme() {
     run_script 'config_set' Theme "${ThemeName}"
 }
 
-test_apply_theme() {
-    warn "CI does not test apply_theme."
+test_config_theme() {
+    warn "CI does not test config_theme."
 }

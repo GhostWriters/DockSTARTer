@@ -3,6 +3,8 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 pm__install() {
+    # Make sure a compatible package manager is available
+    run_script 'package_manager_init'
     # Determine the dependencies needing to be installed
     local -a Dependencies=("${PM_COMMAND_DEPS[@]}")
     if [[ ${FORCE-} != true ]]; then
@@ -18,9 +20,6 @@ pm__install() {
         notice "All dependencies have already been installed."
         return
     fi
-
-    # Make sure a compatible package manager is available
-    run_script 'pm__check_package_manager'
 
     #shellcheck disable=SC2124 #Assigning an array to a string! Assign as array, or use * instead of @ to concatenate.
     local deplist="${Dependencies[@]}"

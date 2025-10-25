@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 pm__install_docker() {
     # Make sure a compatible package manager is available
-    run_script 'pm__check_package_manager'
+    run_script 'package_manager_init'
 
     run_script "pm_${PM}_install_docker"
 }

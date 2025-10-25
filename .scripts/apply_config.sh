@@ -6,7 +6,8 @@ apply_config() {
     if [[ ! -f ${APPLICATION_INI_FILE} ]]; then
         run_script 'config_create'
     fi
-    run_script 'apply_theme'
+    run_script 'config_theme'
+    run_script 'config_package_manager'
     sort -o "${APPLICATION_INI_FILE}" "${APPLICATION_INI_FILE}"
 }
 

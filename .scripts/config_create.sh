@@ -4,6 +4,7 @@ IFS=$'\n\t'
 
 config_create() {
     if [[ ! -f ${APPLICATION_INI_FILE} ]]; then
+        unset 'PM'
         local OldIniFile="${SCRIPTPATH}/menu.ini"
         if [[ -f ${OldIniFile} ]]; then
             # Migrate from the old menu.ini file

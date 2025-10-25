@@ -14,6 +14,6 @@ theme_author() {
 }
 
 test_theme_author() {
-    run_script 'apply_theme'
+    run_script 'config_theme'
     run_script 'theme_author'
 }
