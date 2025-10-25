@@ -111,9 +111,9 @@ EOF
         --config-pm | --config-pm-auto | "")
             Found=1
             cat << EOF
-${C["UsageCommand"]-}-T --config-pm${NC-} ${C["UsageOption"]-}<package manager>${NC-}
+${C["UsageCommand"]-}--config-pm${NC-} ${C["UsageOption"]-}<package manager>${NC-}
     Select the specified package manager to install dependencies
-${C["UsageCommand"]-}-T --config-pm-auto${NC-}
+${C["UsageCommand"]-}--config-pm-auto${NC-}
     Autodetect the package manager
 EOF
             ;;&
