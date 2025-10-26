@@ -61,7 +61,7 @@ detect_packages() {
     if [[ ${#PM_PACKAGE_BLACKLIST[@]} -gt 0 ]]; then
         Old_IFS="${IFS}"
         IFS='|'
-        RegEx_Package_Blacklist="(${PM_PACKAGE_BLACKLIST[*]-})"
+        RegEx_Package_Blacklist="^(${PM_PACKAGE_BLACKLIST[*]-})$"
         IFS="${Old_IFS}"
     fi
 

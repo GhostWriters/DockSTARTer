@@ -43,10 +43,13 @@ pm_nala_install() {
     pkglist="${NC}'${C["Program"]}${pkglist}${NC}'"
 
     notice "Installing packages: ${pkglist}"
+
     Command="sudo nala install --no-update -y ${PackagesString}"
     notice "Running: ${C["RunningCommand"]}${Command}${NC}"
     eval "${REDIRECT}${Command}" ||
-        fatal "Failed to install dependencies from nala.\nFailing command: ${C["FailingCommand"]}${Command}"
+        fatal \
+            "Failed to install dependencies from nala.\n" \
+            "Failing command: ${C["FailingCommand"]}${Command}"
 }
 
 detect_packages() {
@@ -55,7 +58,7 @@ detect_packages() {
     Old_IFS="${IFS}"
     IFS='|'
     RegEx_Dependencies="(${Dependencies[*]})"
-    RegEx_Package_Blacklist="(${PM_PACKAGE_BLACKLIST[*]-})"
+    RegEx_Package_Blacklist="^(${PM_PACKAGE_BLACKLIST[*]-})$"
     IFS="${Old_IFS}"
 
     local RegEx_AptFile="^(.*):.*/s?bin/${RegEx_Dependencies}$"
@@ -71,7 +74,7 @@ detect_packages() {
     done | while IFS= read -r line; do
         if [[ ${line} =~ ${RegEx_AptFile} ]]; then
             local Package="${BASH_REMATCH[1]}"
-            if [[ ! ${Package} =~ ^${RegEx_Package_Blacklist}$ ]]; then
+            if [[ ! ${Package} =~ ${RegEx_Package_Blacklist} ]]; then
                 echo "${Package}"
             fi
         fi
