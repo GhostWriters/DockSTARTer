@@ -39,7 +39,7 @@ detect_packages() {
 
     Old_IFS="${IFS}"
     IFS='|'
-    RegEx_Package_Blacklist="(${PM_PACKAGE_BLACKLIST[*]-})"
+    RegEx_Package_Blacklist="^(${PM_PACKAGE_BLACKLIST[*]-})$"
     IFS="${Old_IFS}"
 
     local DepsSearch
@@ -48,7 +48,7 @@ detect_packages() {
     local Command="apk search -xqa ${DepsSearch}"
     notice "Running: ${C["RunningCommand"]}${Command}${NC}"
     eval "${Command}" 2> /dev/null | while IFS= read -r line; do
-        if [[ ! ${line} =~ ^${RegEx_Package_Blacklist}$ ]]; then
+        if [[ ! ${line} =~ ${RegEx_Package_Blacklist} ]]; then
             echo "${line}"
         fi
     done | sort -u

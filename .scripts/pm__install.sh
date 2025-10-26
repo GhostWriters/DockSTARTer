@@ -5,6 +5,7 @@ IFS=$'\n\t'
 pm__install() {
     # Make sure a compatible package manager is available
     run_script 'package_manager_init'
+
     # Determine the dependencies needing to be installed
     local -a Dependencies=("${PM_COMMAND_DEPS[@]}")
     if [[ ${FORCE-} != true ]]; then

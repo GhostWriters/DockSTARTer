@@ -40,18 +40,19 @@ detect_packages() {
     local -a Dependencies=("$@")
 
     Old_IFS="${IFS}"
-    IFS=','
-    Package_Blacklist="${PM_PACKAGE_BLACKLIST[*]-}"
+    IFS='|'
+    RegEx_Package_Blacklist="${PM_PACKAGE_BLACKLIST[*]-}"
     IFS="${Old_IFS}"
 
     local DepsSearch
     DepsSearch="$(printf '*/bin/%s ' "${Dependencies[@]}" | xargs)"
-    local Command="dnf --exclude \"${Package_Blacklist}\" rq ${DepsSearch} --qf %{name}"
+    local Command="dnf rq ${DepsSearch} --qf %{name}"
     notice "Running: ${C["RunningCommand"]}${Command}${NC}"
-    eval "${Command}" 2> /dev/null ||
-        fatal \
-            "Failed to find packages to install.\n" \
-            "Failing command: ${C["FailingCommand"]}${Command}"
+    eval "${Command}" 2> /dev/null | while IFS= read -r line; do
+        if [[ ! ${line} =~ ${RegEx_Package_Blacklist} ]]; then
+            echo "${line}"
+        fi
+    done | sort -u
 }
 
 test_pm_dnf_install() {
