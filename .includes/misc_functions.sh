@@ -96,10 +96,10 @@ group_id() {
 
     local GroupName=${1}
 
-    if [[ -n "$(command -v getent)" ]]; then
+    if command -v getent &> /dev/null; then
         # Linux, use getent
         cut -d: -f3 < <(getent group "${GroupName}")
-    elif [[ -n "$(command -v dscl)" ]]; then
+    elif command -v dscl &> /dev/null; then
         # MacOS, use dscl
         cut -d ' ' -f2 < <(dscl . -read /Groups/"${GroupName}" PrimaryGroupID)
     else
@@ -111,11 +111,11 @@ add_user_to_group() {
     local UserName=${1}
     local GroupName=${2}
 
-    if [[ -n "$(command -v usermod)" ]]; then
+    if sudo which usermod &> /dev/null; then
         # Linux, use usermod
         sudo usermod -aG "${GroupName}" "${UserName}"
         return
-    elif [[ -n "$(command -v dseditgroup)" ]]; then
+    elif command -v dseditgroup &> /dev/null; then
         # MacOS, use dseditgroup
         sudo dseditgroup -o edit -a "${UserName}" -t user "${GroupName}"
         return
@@ -127,20 +127,24 @@ add_user_to_group() {
 add_group() {
     local GroupName=${1}
 
-    if [[ -n "$(command -v groupadd)" ]]; then
-        # Linux, use groupadd
+    if command -v getent &> /dev/null; then
+        # Linux, use getent and groupadd
+        if getent group "${GroupName}" &> /dev/null; then
+            # Group alrady exists, nothing to do
+            return 0
+        fi
         sudo groupadd -f "${GroupName}"
         return
-    elif [[ -n "$(command -v dseditgroup)" ]]; then
-        # MacOS, use dseditgroup
-        if ! dscl . -read /Groups/"${GroupName}" &> /dev/null; then
-            sudo dseditgroup -o create "${GroupName}"
-            return
+    elif command -v dseditgroup &> /dev/null; then
+        # MacOS, use dscl and dseditgroup
+        if dscl . -read /Groups/"${GroupName}" &> /dev/null; then
+            # Group alrady exists, nothing to do
+            return 0
         fi
-        return 0
-    else
-        return 1
+        sudo dseditgroup -o create "${GroupName}"
+        return
     fi
+    return 1
 }
 
 touchfile() {
