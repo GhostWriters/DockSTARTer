@@ -19,8 +19,7 @@ menu_config_apps() {
         #ScreenSize="$(_dialog_ --output-fd 1 --print-maxsize)"
         #ScreenRows="$(echo "${ScreenSize}" | cut -d ' ' -f 2 | cut -d ',' -f 1)"
         #ScreenCols="$(echo "${ScreenSize}" | cut -d ' ' -f 3)"
-        COLUMNS=$(tput cols)
-        LINES=$(tput lines)
+        set_screen_size
         ScreenRows="${LINES}"
         ScreenCols="${COLUMNS}"
         WindowRowsMax=$((ScreenRows - DC["WindowRowsAdjust"]))

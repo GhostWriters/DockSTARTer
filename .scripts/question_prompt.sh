@@ -44,8 +44,7 @@ question_prompt() {
             fi
             notice "${NoticeQuestion}" &> /dev/null
             notice "${YNPrompt}" &> /dev/null
-            COLUMNS=$(tput cols)
-            LINES=$(tput lines)
+            set_screen_size
             # shellcheck disable=SC2206 # (warning): Quote to prevent word splitting/globbing, or split robustly with mapfile or read -a.
             local -a YesNoDialog=(
                 --output-fd 1

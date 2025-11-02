@@ -68,8 +68,7 @@ menu_app_select() {
             AddedAppsRegex="${AddedApps[*]}"
             IFS="${old_IFS}"
 
-            COLUMNS=$(tput cols)
-            LINES=$(tput lines)
+            set_screen_size
             printf "\nCurrently installed applications:\n\n"
             local -i TextCols
             TextCols=$((COLUMNS - DC["WindowColsAdjust"] - DC["TextColsAdjust"]))
@@ -145,8 +144,7 @@ menu_app_select() {
     if [[ ${CI-} == true ]]; then
         SelectedAppsDialogButtonPressed=${DIALOG_CANCEL}
     else
-        COLUMNS=$(tput cols)
-        LINES=$(tput lines)
+        set_screen_size
         local SelectAppsDialogText="Choose which apps you would like to install:\n Use ${DC["KeyCap"]-}[up]${DC["NC"]-}, ${DC["KeyCap"]-}[down]${DC["NC"]-}, and ${DC["KeyCap"]-}[space]${DC["NC"]-} to select apps, and ${DC["KeyCap"]-}[tab]${DC["NC"]-} to switch to the buttons at the bottom."
         local SelectedAppsDialogParams=(
             --title "${DC["Title"]-}${Title}"
@@ -265,8 +263,7 @@ show_gauge() {
         --backtitle "${BACKTITLE}"
     )
 
-    COLUMNS=$(tput cols)
-    LINES=$(tput lines)
+    set_screen_size
     local -i ScreenRows=${LINES}
     local -i ScreenCols=${COLUMNS}
     local -i DialogCols
@@ -339,8 +336,7 @@ close_gauge() {
 }
 
 init_gauge_text() {
-    COLUMNS=$(tput cols)
-    LINES=$(tput lines)
+    set_screen_size
     local IndentCols=3
     local SpaceCols=1
     local Indent Space

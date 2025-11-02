@@ -92,8 +92,7 @@ menu_add_var() {
             AddAllHelpLine="This will add all stock variables listed below."
             local -A OptionValue=()
             while true; do
-                COLUMNS=$(tput cols)
-                LINES=$(tput lines)
+                set_screen_size
                 VarNameHeading="${VarName:-${VarNameNone}}"
                 Heading="$(run_script 'menu_heading' ":${AppName}" "${VarNameHeading}")"
                 local -a TemplateValueOptions ClearValueOptions EnabledValueOptions AddAllValueOptions StockValueOptions
@@ -182,8 +181,7 @@ menu_add_var() {
                     --no-hot-list
                     --title "${DC["Title"]-}${Title}"
                 )
-                COLUMNS=$(tput cols)
-                LINES=$(tput lines)
+                set_screen_size
                 local -i MenuTextLines
                 MenuTextLines="$(_dialog_ "${SelectValueDialogParams[@]}" --print-text-size "${SelectValueMenuText}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" | cut -d ' ' -f 1)"
                 local -i SelectValueDialogButtonPressed=0
@@ -293,8 +291,7 @@ menu_add_var() {
                 AppNameHeading="${AppName}:"
             fi
             while true; do
-                COLUMNS=$(tput cols)
-                LINES=$(tput lines)
+                set_screen_size
                 VarNameHeading="${VarName:-${VarNameNone}}"
                 local InputValueText
                 Heading="$(run_script 'menu_heading' "${AppNameHeading}" "")"

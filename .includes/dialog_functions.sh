@@ -33,6 +33,13 @@ declare -ragx DIALOG_BUTTONS=(
 
 declare -gx BACKTITLE=''
 
+declare -igx LINES COLUMNS
+
+set_screen_size() {
+    COLUMNS=$(tput cols)
+    LINES=$(tput lines)
+}
+
 _dialog_backtitle_() {
     local LeftHeading CenterHeading RightHeading
 
@@ -78,7 +85,7 @@ _dialog_backtitle_() {
     fi
 
     local -i HeadingLength
-    COLUMNS=$(tput cols)
+    set_screen_size
     HeadingLength=$((COLUMNS - 2))
 
     local CleanLeftHeading CleanCenterHeading CleanRightHeading
@@ -137,8 +144,7 @@ dialog_pipe() {
     fi
     Title="$(strip_ansi_colors "${Title}")"
     SubTitle="$(strip_ansi_colors "${SubTitle}")"
-    COLUMNS=$(tput cols)
-    LINES=$(tput lines)
+    set_screen_size
     _dialog_ \
         --title "${DC["Title"]-}${Title}" \
         --timeout "${TimeOut}" \
@@ -201,8 +207,7 @@ dialog_info() {
     if [[ -z ${DC["_defined_"]-} ]]; then
         run_script 'config_theme'
     fi
-    COLUMNS=$(tput cols)
-    LINES=$(tput lines)
+    set_screen_size
     _dialog_ \
         --title "${Title}" \
         --infobox "${Message}" \
@@ -218,8 +223,7 @@ dialog_message() {
     if [[ -z ${DC["_defined_"]-} ]]; then
         run_script 'config_theme'
     fi
-    COLUMNS=$(tput cols)
-    LINES=$(tput lines)
+    set_screen_size
     _dialog_ \
         --title "${Title}" \
         --timeout "${TimeOut}" \

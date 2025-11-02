@@ -11,8 +11,7 @@ menu_add_app() {
     local AppName=""
     #local BaseAppName InstanceName
     while true; do
-        COLUMNS=$(tput cols)
-        LINES=$(tput lines)
+        set_screen_size
         local AppNameHeading="${AppName}"
         if ! run_script 'appname_is_valid' "${AppName}"; then
             AppNameHeading="${AppNameNone}"

@@ -149,8 +149,7 @@ menu_config_vars() {
             LastLineChoice="$(printf "%0${PadSize}d" "${TotalLines}")"
         fi
         while true; do
-            COLUMNS=$(tput cols)
-            LINES=$(tput lines)
+            set_screen_size
             local DialogHeading
             DialogHeading="$(run_script 'menu_heading' "${APPNAME-}")"
             local -a LineDialog=(
