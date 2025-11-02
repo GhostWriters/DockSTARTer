@@ -16,7 +16,7 @@ menu_main() {
         "${Option_Configure}" "${DC["ListDefault"]}Setup and start applications"
         "${Option_InstallDependencies}" "${DC["ListDefault"]}Install required components"
         "${Option_UpdateVersion}" "${DC["ListDefault"]}Get the latest version of ${APPLICATION_NAME}"
-        "${Option_Options}" "${DC["ListDefault"]}Adjust options for the GUI"
+        "${Option_Options}" "${DC["ListDefault"]}Adjust options for ${APPLICATION_NAME}"
     )
 
     local LastMainChoice=""
