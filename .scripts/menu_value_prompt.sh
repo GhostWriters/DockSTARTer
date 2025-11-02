@@ -302,8 +302,7 @@ menu_value_prompt() {
             --title "${DC["Title"]-}${Title}"
             --item-help
         )
-        COLUMNS=$(tput cols)
-        LINES=$(tput lines)
+        set_screen_size
         local -i MenuTextLines
         MenuTextLines="$(_dialog_ "${SelectValueDialogParams[@]}" --print-text-size "${SelectValueMenuText}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" | cut -d ' ' -f 1)"
         local -i SelectValueDialogButtonPressed=0
