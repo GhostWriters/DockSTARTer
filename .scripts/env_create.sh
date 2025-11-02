@@ -27,7 +27,9 @@ env_create() {
     else
         warn "${F[C]}${COMPOSE_ENV}${NC} not found. Copying example template."
         cp "${COMPOSE_ENV_DEFAULT_FILE}" "${COMPOSE_ENV}" ||
-            fatal "Failed to copy file.\nFailing command: ${C["FailingCommand"]}cp \"${COMPOSE_ENV_DEFAULT_FILE}\" \"${COMPOSE_ENV}\""
+            fatal \
+                "Failed to copy file.\n" \
+                "Failing command: ${C["FailingCommand"]}cp \"${COMPOSE_ENV_DEFAULT_FILE}\" \"${COMPOSE_ENV}\""
         run_script 'set_permissions' "${COMPOSE_ENV}"
         run_script 'env_sanitize'
         if [[ -n ${DefaultApps-} && -z $(run_script 'app_list_referenced') ]]; then

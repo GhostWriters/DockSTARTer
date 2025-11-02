@@ -16,13 +16,17 @@ pm_apt_install() {
         Command="sudo apt-get -y install apt-file"
         notice "Running: ${C["RunningCommand"]}${Command}${NC}"
         eval "${REDIRECT}${Command}" ||
-            fatal "Failed to install '${C["Program"]}apt-file${NC}' from apt.\nFailing command: ${C["FailingCommand"]}${Command}"
+            fatal \
+                "Failed to install '${C["Program"]}apt-file${NC}' from apt.\n" \
+                "Failing command: ${C["FailingCommand"]}${Command}"
     fi
     notice "Updating package information."
     Command='sudo apt-file update'
     notice "Running: ${C["RunningCommand"]}${Command}${NC}"
     eval "${REDIRECT}${Command}" ||
-        fatal "Failed to get updates from apt.\nFailing command: ${C["FailingCommand"]}${Command}"
+        fatal \
+            "Failed to get updates from apt.\n" \
+            "Failing command: ${C["FailingCommand"]}${Command}"
 
     notice "Determining packages to install."
     local -a Packages

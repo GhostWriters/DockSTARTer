@@ -319,7 +319,8 @@ parse_arguments() {
         # Execute the current command
         local CommandLineString
         CommandLineString="$(quote_elements_with_spaces "${APPLICATION_COMMAND}" "${CurrentFlags[@]}" "${CurrentCommand[@]}")"
-        notice "${APPLICATION_NAME} command: '${C["UserCommand"]-}${CommandLineString}${NC-}'"
+        notice \
+            "${APPLICATION_NAME} command: '${C["UserCommand"]-}${CommandLineString}${NC-}'"
         run_command ${#CurrentFlags[@]} ${#CurrentCommand[@]} "${CurrentArgs[@]}" "$@"
     done
     return
@@ -645,7 +646,8 @@ run_command() {
                 echo "${APPLICATION_NAME} [$(ds_version)]"
             else
                 if ! ds_branch_exists "${Branch}"; then
-                    error "${APPLICATION_NAME} branch '${C["Branch"]-}${Branch}${NC-}' does not exist."
+                    error \
+                        "${APPLICATION_NAME} branch '${C["Branch"]-}${Branch}${NC-}' does not exist."
                     exit 1
                 fi
                 echo "${APPLICATION_NAME} [$(ds_version "${Branch}")]"
@@ -818,11 +820,13 @@ run_command() {
                 result=$?
             else
                 if ! run_script 'appname_is_valid' "${AppName}"; then
-                    error "'${AppName}' is not a valid application name."
+                    error \
+                        "'${AppName}' is not a valid application name."
                     exit 1
                 fi
                 if ! run_script 'app_is_referenced' "${AppName}"; then
-                    error "'${AppName}' is not installed."
+                    error \
+                        "'${AppName}' is not installed."
                     exit 1
                 fi
                 run_script 'env_update'
@@ -839,7 +843,8 @@ run_command() {
             else
                 NoticeText="Re-applying ${APPLICATION_NAME} theme '${C["Theme"]-}$(run_script 'theme_name')${NC-}'"
             fi
-            notice "${NoticeText}"
+            notice \
+                "${NoticeText}"
             if use_dialog_box; then
                 run_script 'config_theme' "${ThemeName}" && run_script 'menu_dialog_example' "" "${CURRENT_COMMANDLINE}"
                 result=$?
@@ -859,7 +864,8 @@ run_command() {
                     "Please let the dev know."
             fi
             if [[ -n ${Notice-} ]]; then
-                notice "${Notice}"
+                notice \
+                    "${Notice}"
             fi
             run_script 'config_set' "${ConfigVar}" "${ConfigValue}" "${MENU_INI_FILE}"
             result=$?

@@ -57,7 +57,9 @@ test_env_get_line() {
         Var_16 "Var_16=  Va# lue # Comment" "Var_16=  Va# lue # Comment"
     )
     VarFile=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.VarFile.XXXXXXXXXX") ||
-        fatal "Failed to create temporary file.\nFailing command: ${C["FailingCommand"]}mktemp -t \"${APPLICATION_NAME}.${FUNCNAME[0]}.VarFile.XXXXXXXXXX\""
+        fatal \
+            "Failed to create temporary file.\n" \
+            "Failing command: ${C["FailingCommand"]}mktemp -t \"${APPLICATION_NAME}.${FUNCNAME[0]}.VarFile.XXXXXXXXXX\""
     {
         printf '### %s\n' \
             "" \
@@ -80,7 +82,9 @@ test_env_get_line() {
     result=$?
 
     rm -f "${VarFile}" ||
-        warn "Failed to remove temporary file.\nFailing command: ${C["FailingCommand"]}rm -f \"${VarFile}\""
+        warn \
+            "Failed to remove temporary file.\n" \
+            "Failing command: ${C["FailingCommand"]}rm -f \"${VarFile}\""
 
     return ${result}
 }

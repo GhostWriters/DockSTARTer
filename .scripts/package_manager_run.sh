@@ -6,13 +6,6 @@ package_manager_run() {
     local -l action=${1-}
 
     run_script 'package_manager_init'
-    #if [[ -z ${PM-} ]]; then
-    #    #shellcheck disable=SC2124 #Assigning an array to a string! Assign as array, or use * instead of @ to concatenate.
-    #    local pmlist="${PM_PACKAGE_MANAGERS[@]}"
-    #    pmlist="${pmlist// /${NC}\', \'${C["UserCommand"]}}"
-    #    pmlist="${NC}'${C["UserCommand"]}${pmlist}${NC}'"
-    #    fatal "Unable to detect a compatible package manager. Compatible packages managers are:\n   ${pmlist}"
-    #fi
     run_script "pm__${action}"
 
     case "${action}" in
@@ -21,7 +14,8 @@ package_manager_run() {
             ;;
         install_docker)
             [[ -n "$(command -v docker)" ]] ||
-                fatal "'${C["Program"]}docker${NC}' is not available. Please install '${C["Program"]}docker${NC}' and try again."
+                fatal \
+                    "'${C["Program"]}docker${NC}' is not available. Please install '${C["Program"]}docker${NC}' and try again."
             docker compose version &> /dev/null ||
                 fatal \
                     "Please see ${C["URL"]}https://docs.docker.com/compose/install/linux/${NC} to install '${C["Program"]}docker compose${NC}'\n" \

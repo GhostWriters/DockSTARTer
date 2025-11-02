@@ -66,7 +66,8 @@ is_false() {
 longest_columns() {
     # 'longest_columns' int NumberOfColumns, array Elements
     if [[ ! ${1-} =~ ^[0-9]+$ || ${1} -lt 0 ]]; then
-        error "First argument must be a positive number."
+        error \
+            "First argument must be a positive number."
         return 1
     fi
     local -i NumberOfCols=${1-}

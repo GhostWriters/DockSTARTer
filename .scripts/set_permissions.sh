@@ -32,7 +32,10 @@ set_permissions() {
         sudo chmod -R a=,a+rX,u+w,g+w "${CH_PATH}" &> /dev/null || true
     fi
     info "Setting executable permission on '${C["File"]}${SCRIPTNAME}${NC}'"
-    sudo chmod +x "${SCRIPTNAME}" &> /dev/null || fatal "'${C["UserCommand"]}${APPLICATION_COMMAND}${NC}' must be executable.\nFailing command: ${C["FailingCommand"]}sudo chmod +x \"${SCRIPTNAME}\""
+    sudo chmod +x "${SCRIPTNAME}" &> /dev/null ||
+        fatal \
+            "'${C["UserCommand"]}${APPLICATION_COMMAND}${NC}' must be executable.\n" \
+            "Failing command: ${C["FailingCommand"]}sudo chmod +x \"${SCRIPTNAME}\""
 }
 
 test_set_permissions() {

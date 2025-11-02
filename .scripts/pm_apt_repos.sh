@@ -24,13 +24,17 @@ pm_apt_repos() {
         info "Updating repositories (before installing apt-transport-https)."
         notice "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
         eval "${REDIRECT}${COMMAND}" ||
-            fatal "Failed to get updates from apt.\nFailing command: ${C["FailingCommand"]}${COMMAND}"
+            fatal \
+                "Failed to get updates from apt.\n" \
+                "Failing command: ${C["FailingCommand"]}${COMMAND}"
 
         COMMAND="sudo apt-get -y install apt-transport-https"
         info "Installing APT transport for downloading via the HTTP Secure protocol (HTTPS)."
         notice "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
         eval "${REDIRECT}${COMMAND}" ||
-            fatal "Failed to install apt-transport-https from apt.\nFailing command: ${C["FailingCommand"]}${COMMAND}"
+            fatal \
+                "Failed to install apt-transport-https from apt.\n" \
+                "Failing command: ${C["FailingCommand"]}${COMMAND}"
     fi
     local MINIMUM_LIBSECCOMP2="2.4.4"
     # Note compatibility from https://wiki.alpinelinux.org/wiki/Release_Notes_for_Alpine_3.14.0
@@ -39,21 +43,29 @@ pm_apt_repos() {
     if vergt "${MINIMUM_LIBSECCOMP2}" "${INSTALLED_LIBSECCOMP2:-0}"; then
         info "Installing buster-backports repo for libseccomp2."
         sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 04EE7237B7D453EC 648ACFD622F3D138 ||
-            error "Failed to get apt key for buster-backports repo.\nFailing command: ${C["FailingCommand"]}sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 04EE7237B7D453EC 648ACFD622F3D138"
+            error \
+                "Failed to get apt key for buster-backports repo.\n" \
+                "Failing command: ${C["FailingCommand"]}sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 04EE7237B7D453EC 648ACFD622F3D138"
         echo "deb http://deb.debian.org/debian buster-backports main" | sudo tee -a /etc/apt/sources.list.d/buster-backports.list ||
-            error "Failed to add buster-backports repo to sources.\nFailing command: ${C["FailingCommand"]}echo \"deb http://deb.debian.org/debian buster-backports main\" | sudo tee -a /etc/apt/sources.list.d/buster-backports.list"
+            error \
+                "Failed to add buster-backports repo to sources.\n" \
+                "Failing command: ${C["FailingCommand"]}echo \"deb http://deb.debian.org/debian buster-backports main\" | sudo tee -a /etc/apt/sources.list.d/buster-backports.list"
     fi
     COMMAND="sudo apt-get -y update"
     info "Updating repositories."
     notice "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
     eval "${REDIRECT}${COMMAND}" ||
-        fatal "Failed to get updates from apt.\nFailing command: ${C["FailingCommand"]}${COMMAND}"
+        fatal \
+            "Failed to get updates from apt.\n" \
+            "Failing command: ${C["FailingCommand"]}${COMMAND}"
     if vergt "${MINIMUM_LIBSECCOMP2}" "${INSTALLED_LIBSECCOMP2:-0}"; then
         COMMAND="sudo apt-get -y install -t buster-backports libseccomp2"
         info "Installing libseccomp2 from buster-backports repo."
         notice "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
         eval "${REDIRECT}${COMMAND}" ||
-            fatal "Failed to install libseccomp2 from buster-backports repo.\nFailing command: ${C["FailingCommand"]}${COMMAND}"
+            fatal \
+                "Failed to install libseccomp2 from buster-backports repo.\n" \
+                "Failing command: ${C["FailingCommand"]}${COMMAND}"
     fi
 }
 

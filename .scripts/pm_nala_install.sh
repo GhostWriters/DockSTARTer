@@ -46,7 +46,9 @@ pm_nala_install() {
     Command="sudo nala install --no-update -y ${PackagesString}"
     notice "Running: ${C["RunningCommand"]}${Command}${NC}"
     eval "${REDIRECT}${Command}" ||
-        fatal "Failed to install dependencies from nala.\nFailing command: ${C["FailingCommand"]}${Command}"
+        fatal \
+            "Failed to install dependencies from nala.\n" \
+            "Failing command: ${C["FailingCommand"]}${Command}"
 }
 
 detect_packages() {

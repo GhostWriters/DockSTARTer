@@ -28,8 +28,9 @@ commands_yml_merge() {
             main_yml="$(run_script 'app_instance_file' "${appname}" "*.yml")"
             if [[ -f ${main_yml} ]]; then
                 if run_script 'app_is_deprecated' "${APPNAME}"; then
-                    warn "'${C["App"]}${AppName}${NC}' IS DEPRECATED!"
-                    warn "Please run '${C["UserCommand"]}${APPLICATION_COMMAND} --status-disable ${AppName}${NC}' to disable it."
+                    warn \
+                        "'${C["App"]}${AppName}${NC}' IS DEPRECATED!\n" \
+                        "Please run '${C["UserCommand"]}${APPLICATION_COMMAND} --status-disable ${AppName}${NC}' to disable it."
                 fi
                 local arch_yml
                 arch_yml="$(run_script 'app_instance_file' "${appname}" "*.${ARCH}.yml")"
@@ -121,7 +122,9 @@ commands_yml_merge() {
     local -i result=0
     eval "docker compose --project-directory ${COMPOSE_FOLDER}/ config > ${COMPOSE_FOLDER}/docker-compose.yml" || result=$?
     if [[ ${result} != 0 ]]; then
-        error "Failed to output compose config.\nFailing command: ${C["FailingCommand"]}docker compose --project-directory ${COMPOSE_FOLDER}/ config > \"${COMPOSE_FOLDER}/docker-compose.yml\""
+        error \
+            "Failed to output compose config.\n" \
+            "Failing command: ${C["FailingCommand"]}docker compose --project-directory ${COMPOSE_FOLDER}/ config > \"${COMPOSE_FOLDER}/docker-compose.yml\""
         return ${result}
     fi
     info "Merging '${C["File"]}docker-compose.yml${NC}' complete."
@@ -132,6 +135,9 @@ test_yml_merge() {
     run_script 'appvars_create' WATCHTOWER
     cat "${COMPOSE_ENV}"
     run_script 'yml_merge'
-    eval "docker compose --project-directory ${COMPOSE_FOLDER}/ config" || fatal "Failed to display compose config.\nFailing command: ${C["FailingCommand"]}docker compose --project-directory ${COMPOSE_FOLDER}/ config"
+    eval "docker compose --project-directory ${COMPOSE_FOLDER}/ config" ||
+        fatal \
+            "Failed to display compose config.\n" \
+            "Failing command: ${C["FailingCommand"]}docker compose --project-directory ${COMPOSE_FOLDER}/ config"
     run_script 'appvars_purge' WATCHTOWER
 }

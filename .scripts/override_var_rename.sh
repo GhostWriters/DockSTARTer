@@ -19,7 +19,9 @@ override_var_rename() {
         notice "   ${C["Var"]}${FromVar}${NC} to ${C["Var"]}${ToVar}${NC}"
         # Replace $FromVar or ${FromVar followed by a word break to $ToVar or ${ToVar
         ${SED} -i -E "s/([$]\{?)${FromVar}\b/\1${ToVar}/g" "${COMPOSE_OVERRIDE}" ||
-            fatal "Failed to rename variable in override file.\nFailing command: ${C["FailingCommand"]} ${SED} -i -E \"s/([$]\\{?)${FromVar}\\\\b/\\\\1${ToVar}/g\" \"${COMPOSE_OVERRIDE}\""
+            fatal \
+                "Failed to rename variable in override file.\n" \
+                "Failing command: ${C["FailingCommand"]} ${SED} -i -E \"s/([$]\\{?)${FromVar}\\\\b/\\\\1${ToVar}/g\" \"${COMPOSE_OVERRIDE}\""
 
     fi
 }

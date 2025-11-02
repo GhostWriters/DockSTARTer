@@ -20,11 +20,15 @@ menu_config_vars() {
     while true; do
         if [[ -n ${CurrentGlobalEnvFile-} ]]; then
             rm -f "${CurrentGlobalEnvFile}" ||
-                warn "Failed to remove temporary '${C["File"]}.env${NC}' file.\nFailing command: ${C["FailingCommand"]}rm -f \"${CurrentGlobalEnvFile}\""
+                warn \
+                    "Failed to remove temporary '${C["File"]}.env${NC}' file.\n" \
+                    "Failing command: ${C["FailingCommand"]}rm -f \"${CurrentGlobalEnvFile}\""
         fi
         if [[ -n ${CurrentAppEnvFile-} ]]; then
             rm -f "${CurrentAppEnvFile}" ||
-                warn "Failed to remove temporary '${C["File"]}.env.app.${appname}${NC}' file.\nFailing command: ${C["FailingCommand"]}rm -f \"${CurrentAppEnvFile}\""
+                warn \
+                    "Failed to remove temporary '${C["File"]}.env.app.${appname}${NC}' file.\n" \
+                    "Failing command: ${C["FailingCommand"]}rm -f \"${CurrentAppEnvFile}\""
         fi
         local DefaultGlobalEnvFile=''
         local DefaultAppEnvFile=''
@@ -239,11 +243,15 @@ menu_config_vars() {
     done
     if [[ -n ${CurrentGlobalEnvFile-} ]]; then
         rm -f "${CurrentGlobalEnvFile}" ||
-            warn "Failed to remove temporary '${C["File"]}.env${NC}' file.\nFailing command: ${C["FailingCommand"]}rm -f \"${CurrentGlobalEnvFile}\""
+            warn \
+                "Failed to remove temporary '${C["File"]}.env${NC}' file.\n" \
+                "Failing command: ${C["FailingCommand"]}rm -f \"${CurrentGlobalEnvFile}\""
     fi
     if [[ -n ${CurrentAppEnvFile-} ]]; then
         rm -f "${CurrentAppEnvFile}" ||
-            warn "Failed to remove temporary '${C["File"]}.env.app.${appname}${NC}' file.\nFailing command: ${C["FailingCommand"]}rm -f \"${CurrentAppEnvFile}\""
+            warn \
+                "Failed to remove temporary '${C["File"]}.env.app.${appname}${NC}' file.\n" \
+                "Failing command: ${C["FailingCommand"]}rm -f \"${CurrentAppEnvFile}\""
     fi
 }
 
