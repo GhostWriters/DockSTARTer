@@ -11,17 +11,22 @@ run_test() {
     local script_file="${SCRIPTPATH}/.scripts/${script_name}.sh"
     local test_function="${function_prefix}${script_name}"
 
-    notice "Testing '${C["RunningCommand"]-}${script_name}${NC-}'."
+    notice \
+        "Testing '${C["RunningCommand"]-}${script_name}${NC-}'."
     [[ -f ${script_file} ]] ||
-        fatal "Script file '${C["File"]-}${script_file}${NC-}' not found."
+        fatal \
+            "Script file '${C["File"]-}${script_file}${NC-}' not found."
 
     # shellcheck source=/dev/null
     source "${script_file}"
     declare -F "${test_function}" &> /dev/null ||
-        fatal "Function '${C["RunningCommand"]-}${test_function}${NC-}' not found in script file '${C["File"]-}${script_file}${NC-}'."
+        fatal \
+            "Function '${C["RunningCommand"]-}${test_function}${NC-}' not found in script file '${C["File"]-}${script_file}${NC-}'."
     "${test_function}" "$@" ||
-        fatal "Test of '${C["FailingCommand"]-}${script_name}${NC-}' failed."
-    notice "Completed testing '${C["RunningCommand"]-}${script_name}${NC-}'."
+        fatal \
+            "Test of '${C["FailingCommand"]-}${script_name}${NC-}' failed."
+    notice \
+        "Completed testing '${C["RunningCommand"]-}${script_name}${NC-}'."
 }
 
 run_unit_tests() {
@@ -71,9 +76,10 @@ run_unit_tests_pipe() {
         printf " | %s  ${InputPad} | %s  ${ExpectedValuePad} | %s  ${ReturnedValuePad} | " \
             "${Headings[0]}" "${Headings[1]}" "${Headings[2]}"
     )"
-    notice "${TableLine}"
-    notice "${Heading}"
-    notice "${TableLine}"
+    notice \
+        "${TableLine}" \
+        "${Heading}\n" \
+        "${TableLine}\n"
     local -i i
     for ((i = 0; i < ${#Test[@]}; i += 3)); do
         local Input="${Test[i]-}"
@@ -96,22 +102,26 @@ run_unit_tests_pipe() {
                 printf " | [${InputColor}%s${NC-}]${InputPad} | [${ExpectedColor}%s${NC-}]${ExpectedValuePad} | [${C["UnitTestPass"]-}%s${NC-}]${ReturnedValuePad} | " \
                     "${Input}" "${ExpectedValue}" "${ReturnedValue}"
             )"
-            notice "${SuccessLine}"
+            notice \
+                "${SuccessLine}"
         else
             local FailLine
             FailLine="$(
                 printf "${C["UnitTestFailArrow"]-}>${NC-}| [${C["UnitTestFail"]-}%s${NC-}]${InputPad} | [${C["UnitTestFail"]-}%s${NC-}]${ExpectedValuePad} | [${C["UnitTestFail"]-}%s${NC-}]${ReturnedValuePad} |${C["UnitTestFailArrow"]-}<${NC-}" \
                     "${Input}" "${ExpectedValue}" "${ReturnedValue}"
             )"
-            error "${FailLine}"
+            error \
+                "${FailLine}"
             result=1
         fi
     done
-    notice "${TableLine}"
+    notice \
+        "${TableLine}"
     if [[ -n ${ForcePass} ]]; then
         warn "The '${C["Var"]-}ForcePass${NC-}' variable is set."
         if [[ ${result} != 0 ]]; then
-            error "Passing test even though an error occurred."
+            error \
+                "Passing test even though an error occurred."
             return 0
         fi
     fi

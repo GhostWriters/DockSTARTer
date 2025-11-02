@@ -38,7 +38,9 @@ env_merge_newonly() {
             {
                 printf '\n'
                 printf '%s\n' "${MergeLines[@]}"
-            } >> "${MergeToFile}" || fatal "Failed to add variables to '${C["File"]}${MergeToFile}${NC}"
+            } >> "${MergeToFile}" ||
+                fatal \
+                    "Failed to add variables to '${C["File"]}${MergeToFile}${NC}"
         fi
     fi
 }

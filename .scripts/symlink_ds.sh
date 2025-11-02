@@ -35,7 +35,8 @@ symlink_ds() {
     done
     if [[ -n ${FinalSymlinkFolder} ]]; then
         if [[ ":${PATH}:" != *":${FinalSymlinkFolder}:"* ]]; then
-            warn "'${C["File"]}${FinalSymlinkFolder}${NC}' not found in '${C["Var"]}PATH${NC}'. Please add it to your '${C["Var"]}PATH${NC}' in order to use the '${C["UserCommand"]}${APPLICATION_COMMAND}${NC}' command alias."
+            warn \
+                "'${C["File"]}${FinalSymlinkFolder}${NC}' not found in '${C["Var"]}PATH${NC}'. Please add it to your '${C["Var"]}PATH${NC}' in order to use the '${C["UserCommand"]}${APPLICATION_COMMAND}${NC}' command alias."
         fi
     else
         fatal "Failed to create symlink."

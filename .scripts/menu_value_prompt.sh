@@ -407,7 +407,10 @@ menu_value_prompt() {
                             else
                                 if run_script 'question_prompt' Y "${DialogHeading}\n\n${DC["Highlight"]-}${OptionValue["${CurrentValueOption}"]}${DC["NC"]-} is not a valid path. Would you like to attempt to create it?" "${Title}"; then
                                     {
-                                        mkdir -p "${StrippedValue}" || fatal "Failed to make directory.\nFailing command: ${C["FailingCommand"]}mkdir -p \"${StrippedValue}\""
+                                        mkdir -p "${StrippedValue}" ||
+                                            fatal \
+                                                "Failed to make directory.\n" \
+                                                "Failing command: ${C["FailingCommand"]}mkdir -p \"${StrippedValue}\""
                                         run_script 'set_permissions' "${StrippedValue}"
                                     } |& dialog_pipe "Creating folder and settings permissions" "${OptionValue["${CurrentValueOption}"]}" "${DIALOGTIMEOUT}"
                                     dialog_error "${DC["TitleSuccess"]-}${Title}" --msgbox "${DC["Highlight"]-}${OptionValue["${CurrentValueOption}"]}${DC["NC"]-} folder was created successfully." "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"

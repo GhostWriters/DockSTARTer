@@ -124,7 +124,9 @@ docker_compose() {
                         notice "Running: ${C["RunningCommand"]}${Command}${NC}"
                         eval "${Command}" || result=$?
                         if [[ ${result} != 0 ]]; then
-                            error "Failed to run compose.\nFailing command: ${C["FailingCommand"]}${Command}"
+                            error \
+                                "Failed to run compose.\n" \
+                                "Failing command: ${C["FailingCommand"]}${Command}"
                             break
                         fi
                     done
@@ -143,7 +145,9 @@ docker_compose() {
                     notice "Running: ${C["RunningCommand"]}${Command}${NC}"
                     eval "${Command}" || result=$?
                     if [[ ${result} != 0 ]]; then
-                        error "Failed to run compose.\nFailing command: ${C["FailingCommand"]}${Command}"
+                        error \
+                            "Failed to run compose.\n" \
+                            "Failing command: ${C["FailingCommand"]}${Command}"
                         break
                     fi
                 done
@@ -165,6 +169,9 @@ test_docker_compose() {
     run_script 'appvars_create' WATCHTOWER
     cat "${COMPOSE_ENV}"
     run_script 'yml_merge'
-    eval "docker compose --project-directory ${COMPOSE_FOLDER}/ config" || fatal "Failed to display compose config.\nFailing command: ${C["FailingCommand"]}docker compose --project-directory ${COMPOSE_FOLDER}/ config"
+    eval "docker compose --project-directory ${COMPOSE_FOLDER}/ config" ||
+        fatal \
+            "Failed to display compose config.\n" \
+            "Failing command: ${C["FailingCommand"]}docker compose --project-directory ${COMPOSE_FOLDER}/ config"
     run_script 'docker_compose'
 }

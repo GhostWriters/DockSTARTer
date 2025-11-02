@@ -21,7 +21,9 @@ env_update() {
             run_script 'set_permissions' "${AppEnvFile}"
             notice "Deleting '${C["File"]}${AppEnvFile}${NC}'."
             rm -f "${AppEnvFile}" ||
-                warn "Failed to remove '${C["File"]}${AppEnvFile}${NC}'.\nFailing command: ${C["FailingCommand"]}rm -f \"${AppEnvFile}\""
+                warn \
+                    "Failed to remove '${C["File"]}${AppEnvFile}${NC}'.\n" \
+                    "Failing command: ${C["FailingCommand"]}rm -f \"${AppEnvFile}\""
         fi
     done
 
@@ -56,16 +58,26 @@ env_update() {
             done
         fi
         rm -f "${ENV_LINES_FILE}" ||
-            warn "Failed to remove temporary '${C["File"]}.env${NC}' update file.\nFailing command: ${C["FailingCommand"]}rm -f \"${ENV_LINES_FILE}\""
+            warn \
+                "Failed to remove temporary '${C["File"]}.env${NC}' update file.\n" \
+                "Failing command: ${C["FailingCommand"]}rm -f \"${ENV_LINES_FILE}\""
 
         local MKTEMP_ENV_UPDATED
         MKTEMP_ENV_UPDATED=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.MKTEMP_ENV_UPDATED.XXXXXXXXXX") ||
-            fatal "Failed to create temporary update '${C["File"]}.env${NC}' file.\nFailing command: ${C["FailingCommand"]}mktemp -t \"${APPLICATION_NAME}.${FUNCNAME[0]}.MKTEMP_ENV_UPDATED.XXXXXXXXXX\""
-        printf '%s\n' "${UPDATED_ENV_LINES[@]}" > "${MKTEMP_ENV_UPDATED}" || fatal "Failed to write temporary '${C["File"]}.env${NC}' update file."
+            fatal \
+                "Failed to create temporary update '${C["File"]}.env${NC}' file.\n" \
+                "Failing command: ${C["FailingCommand"]}mktemp -t \"${APPLICATION_NAME}.${FUNCNAME[0]}.MKTEMP_ENV_UPDATED.XXXXXXXXXX\""
+        printf '%s\n' "${UPDATED_ENV_LINES[@]}" > "${MKTEMP_ENV_UPDATED}" ||
+            fatal \
+                "Failed to write temporary '${C["File"]}.env${NC}' update file."
         cp -f "${MKTEMP_ENV_UPDATED}" "${COMPOSE_ENV}" ||
-            fatal "Failed to copy file.\nFailing command: ${C["FailingCommand"]}cp -f \"${MKTEMP_ENV_UPDATED}\" \"${COMPOSE_ENV}\""
+            fatal \
+                "Failed to copy file.\n" \
+                "Failing command: ${C["FailingCommand"]}cp -f \"${MKTEMP_ENV_UPDATED}\" \"${COMPOSE_ENV}\""
         rm -f "${MKTEMP_ENV_UPDATED}" ||
-            warn "Failed to remove temporary ${C["File"]}.env${NC} update file.\nFailing command: ${C["FailingCommand"]}rm -f \"${MKTEMP_ENV_UPDATED}\""
+            warn \
+                "Failed to remove temporary ${C["File"]}.env${NC} update file.\n" \
+                "Failing command: ${C["FailingCommand"]}rm -f \"${MKTEMP_ENV_UPDATED}\""
         run_script 'set_permissions' "${COMPOSE_ENV}"
         #run_script 'unset_needs_env_update' "${COMPOSE_ENV}"
     fi
@@ -93,13 +105,20 @@ env_update() {
                 )
                 local MKTEMP_APP_ENV_UPDATED
                 MKTEMP_APP_ENV_UPDATED=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.MKTEMP_APP_ENV_UPDATED.XXXXXXXXXX") ||
-                    fatal "Failed to create temporary update '${C["File"]}.env.app.${appname}${NC}' file.\nFailing command: ${C["FailingCommand"]}mktemp -t \"${APPLICATION_NAME}.${FUNCNAME[0]}.MKTEMP_APP_ENV_UPDATED.XXXXXXXXXX\"${NC}"
+                    fatal \
+                        "Failed to create temporary update '${C["File"]}.env.app.${appname}${NC}' file.\n" \
+                        "Failing command: ${C["FailingCommand"]}mktemp -t \"${APPLICATION_NAME}.${FUNCNAME[0]}.MKTEMP_APP_ENV_UPDATED.XXXXXXXXXX\"${NC}"
                 printf '%s\n' "${UPDATED_APP_ENV_LINES[@]}" > "${MKTEMP_APP_ENV_UPDATED}" ||
-                    fatal "Failed to write temporary '${C["File"]}.env.app.${appname}${NC}' update file."
+                    fatal \
+                        "Failed to write temporary '${C["File"]}.env.app.${appname}${NC}' update file."
                 cp -f "${MKTEMP_APP_ENV_UPDATED}" "${APP_ENV_FILE}" ||
-                    fatal "Failed to copy file.\nFailing command: ${C["FailingCommand"]}cp -f \"${MKTEMP_APP_ENV_UPDATED}\" \"${APP_ENV_FILE}\""
+                    fatal \
+                        "Failed to copy file.\n" \
+                        "Failing command: ${C["FailingCommand"]}cp -f \"${MKTEMP_APP_ENV_UPDATED}\" \"${APP_ENV_FILE}\""
                 rm -f "${MKTEMP_APP_ENV_UPDATED}" ||
-                    warn "Failed to remove temporary '${C["File"]}.env.app.${appname}${NC}' update file.\nFailing command: ${C["FailingCommand"]}rm -f \"${MKTEMP_APP_ENV_UPDATED}\""
+                    warn \
+                        "Failed to remove temporary '${C["File"]}.env.app.${appname}${NC}' update file.\n" \
+                        "Failing command: ${C["FailingCommand"]}rm -f \"${MKTEMP_APP_ENV_UPDATED}\""
                 run_script 'set_permissions' "${APP_ENV_FILE}"
                 #run_script 'unset_needs_env_update' "${APP_ENV_FILE}"
             fi

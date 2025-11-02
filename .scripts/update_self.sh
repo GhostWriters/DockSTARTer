@@ -14,7 +14,10 @@ update_self() {
     local Title="Update ${APPLICATION_NAME}"
     local Question YesNotice NoNotice
 
-    pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${C["FailingCommand"]}push \"${SCRIPTPATH}\""
+    pushd "${SCRIPTPATH}" &> /dev/null ||
+        fatal \
+            "Failed to change directory.\n" \
+            "Failing command: ${C["FailingCommand"]}push \"${SCRIPTPATH}\""
 
     if [[ -z ${Branch-} ]]; then
         Branch="$(ds_branch)"
@@ -86,25 +89,43 @@ commands_update_self() {
     local Notice=${2-}
     shift 2
 
-    pushd "${SCRIPTPATH}" &> /dev/null || fatal "Failed to change directory.\nFailing command: ${C["FailingCommand"]}push \"${SCRIPTPATH}\""
+    pushd "${SCRIPTPATH}" &> /dev/null ||
+        fatal \
+            "Failed to change directory.\n" \
+            "Failing command: ${C["FailingCommand"]}push \"${SCRIPTPATH}\""
     local QUIET=''
     if [[ -z ${VERBOSE-} ]]; then
         QUIET='--quiet'
     fi
     notice "${Notice}"
-    cd "${SCRIPTPATH}" || fatal "Failed to change directory.\nFailing command: ${C["FailingCommand"]}cd \"${SCRIPTPATH}\""
+    cd "${SCRIPTPATH}" ||
+        fatal \
+            "Failed to change directory.\n" \
+            "Failing command: ${C["FailingCommand"]}cd \"${SCRIPTPATH}\""
     info "Setting file ownership on current repository files"
     sudo chown -R "$(id -u)":"$(id -g)" "${SCRIPTPATH}/.git" &> /dev/null || true
     sudo chown "$(id -u)":"$(id -g)" "${SCRIPTPATH}" &> /dev/null || true
     git ls-tree -rt --name-only HEAD | xargs sudo chown "$(id -u)":"$(id -g)" &> /dev/null || true
 
     info "Fetching recent changes from git."
-    eval git fetch ${QUIET-} --all --prune || fatal "Failed to fetch recent changes from git.\nFailing command: ${C["FailingCommand"]}git fetch ${QUIET-} --all --prune"
+    eval git fetch ${QUIET-} --all --prune ||
+        fatal \
+            "Failed to fetch recent changes from git.\n" \
+            "Failing command: ${C["FailingCommand"]}git fetch ${QUIET-} --all --prune"
     if [[ ${CI-} != true ]]; then
-        eval git checkout ${QUIET-} --force "${Branch}" || fatal "Failed to switch to github branch '${C["Branch"]}${Branch}${NC}'.\nFailing command: ${C["FailingCommand"]}git checkout ${QUIET-} --force \"${Branch}\""
-        eval git reset ${QUIET-} --hard origin/"${Branch}" || fatal "Failed to reset to branch '${C["Branch"]}origin/${Branch}${NC}'.\nFailing command: ${C["FailingCommand"]}git reset ${QUIET-} --hard origin/\"${Branch}\""
+        eval git checkout ${QUIET-} --force "${Branch}" ||
+            fatal \
+                "Failed to switch to github branch '${C["Branch"]}${Branch}${NC}'.\n" \
+                "Failing command: ${C["FailingCommand"]}git checkout ${QUIET-} --force \"${Branch}\""
+        eval git reset ${QUIET-} --hard origin/"${Branch}" ||
+            fatal \
+                "Failed to reset to branch '${C["Branch"]}origin/${Branch}${NC}'.\n" \
+                "Failing command: ${C["FailingCommand"]}git reset ${QUIET-} --hard origin/\"${Branch}\""
         info "Pulling recent changes from git."
-        eval git pull ${QUIET-} || fatal "Failed to pull recent changes from git.\nFailing command: ${C["FailingCommand"]}git pull ${QUIET-}"
+        eval git pull ${QUIET-} ||
+            fatal \
+                "Failed to pull recent changes from git.\n" \
+                "Failing command: ${C["FailingCommand"]}git pull ${QUIET-}"
     fi
     info "Cleaning up unnecessary files and optimizing the local repository."
     eval git gc ${QUIET-} || true

@@ -216,7 +216,9 @@ fatal() {
 # Check for supported CPU architecture
 check_arch() {
     if [[ ${ARCH} != "aarch64" ]] && [[ ${ARCH} != "x86_64" ]]; then
-        fatal "Unsupported architecture.\nSupported architectures are 'aarch64' or 'x86_64', running architeture is '${ARCH}'."
+        fatal \
+            "Unsupported architecture.\n" \
+            "Supported architectures are 'aarch64' or 'x86_64', running architeture is '${ARCH}'."
     fi
 }
 
@@ -232,24 +234,30 @@ check_repo() {
 # Check if running as root
 check_root() {
     if [[ ${DETECTED_PUID} == "0" ]] || [[ ${DETECTED_HOMEDIR} == "/root" ]]; then
-        fatal "Running as '${C["User"]-}root${NC-}' is not supported.\nPlease run as a standard user."
+        fatal \
+            "Running as '${C["User"]-}root${NC-}' is not supported.\n" \
+            "Please run as a standard user."
     fi
 }
 
 # Check if running with sudo
 check_sudo() {
     if [[ ${EUID} -eq 0 ]]; then
-        fatal "Running with '${C["UserCommand"]-}sudo${NC-}' is not supported.\nCommands requiring '${C["UserCommand"]-}sudo${NC-}' will prompt automatically when required."
+        fatal \
+            "Running with '${C["UserCommand"]-}sudo${NC-}' is not supported.\n" \
+            "Commands requiring '${C["UserCommand"]-}sudo${NC-}' will prompt automatically when required."
     fi
 }
 clone_repo() {
-    warn "Attempting to clone ${APPLICATION_NAME} repo to '${C["Folder"]-}${DETECTED_HOMEDIR}/.docker${NC-}' location."
+    warn \
+        "Attempting to clone ${APPLICATION_NAME} repo to '${C["Folder"]-}${DETECTED_HOMEDIR}/.docker${NC-}' location."
     git clone -b "${TARGET_BRANCH}" "${APPLICATION_REPO}" "${DETECTED_HOMEDIR}/.docker" ||
         fatal \
             "Failed to clone ${APPLICATION_NAME} repo.\n" \
             "Failing command: ${C["FailingCommand"]-}git clone -b \"${TARGET_BRANCH}\" \"${APPLICATION_REPO}\" \"${DETECTED_HOMEDIR}/.docker\""
     if [[ ${#ARGS[@]} -eq 0 ]]; then
-        notice "Performing first run install."
+        notice \
+            "Performing first run install."
         exec bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-yvi"
     else
         exec bash "${DETECTED_HOMEDIR}/.docker/main.sh" "${ARGS[@]}"
@@ -340,7 +348,8 @@ init_check_symlink() {
                     DS_SYMLINK=$(readlink -f "${DS_COMMAND}")
                 fi
             fi
-            warn "Attempting to run ${APPLICATION_NAME} from '${C["RunningCommand"]-}${DS_SYMLINK}${NC-}' location."
+            warn \
+                "Attempting to run ${APPLICATION_NAME} from '${C["RunningCommand"]-}${DS_SYMLINK}${NC-}' location."
             bash "${DS_SYMLINK}" -vyu
             bash "${DS_SYMLINK}" -vyi
             exec bash "${DS_SYMLINK}" "${ARGS[@]-}"
@@ -355,45 +364,44 @@ init_check_update() {
     Branch="$(ds_branch)"
     if ds_branch_exists "${Branch}"; then
         if ds_update_available; then
-            warn "${APPLICATION_NAME} [${C["Version"]-}${APPLICATION_VERSION}${NC-}]"
-            warn "An update to ${APPLICATION_NAME} is available."
-            warn "Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -u${NC-}' to update to version '${C["Version"]-}$(ds_version "${Branch}")${NC-}'."
+            warn \
+                "${APPLICATION_NAME} [${C["Version"]-}${APPLICATION_VERSION}${NC-}]\n" \
+                "An update to ${APPLICATION_NAME} is available.\n" \
+                "Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -u${NC-}' to update to version '${C["Version"]-}$(ds_version "${Branch}")${NC-}'."
         else
-            info "${APPLICATION_NAME} [${C["Version"]-}${APPLICATION_VERSION}${NC-}]"
+            info \
+                "${APPLICATION_NAME} [${C["Version"]-}${APPLICATION_VERSION}${NC-}]"
         fi
     else
         local MainBranch="${TARGET_BRANCH}"
         if ! ds_branch_exists "${MainBranch}"; then
             MainBranch="${SOURCE_BRANCH}"
         fi
-        warn "${APPLICATION_NAME} branch '${C["Branch"]-}${Branch}${NC-}' appears to no longer exist."
-        warn "${APPLICATION_NAME} is currently on version '${C["Version"]-}$(ds_version)${NC-}'."
+        warn \
+            "${APPLICATION_NAME} branch '${C["Branch"]-}${Branch}${NC-}' appears to no longer exist.\n" \
+            "${APPLICATION_NAME} is currently on version '${C["Version"]-}$(ds_version)${NC-}'."
         if ! ds_branch_exists "${MainBranch}"; then
-            error "${APPLICATION_NAME} does not appear to have a '${C["Branch"]-}${TARGET_BRANCH}${NC-}' or '${C["Branch"]-}${SOURCE_BRANCH}${NC-}' branch."
+            error \
+                "${APPLICATION_NAME} does not appear to have a '${C["Branch"]-}${TARGET_BRANCH}${NC-}' or '${C["Branch"]-}${SOURCE_BRANCH}${NC-}' branch."
         else
-            warn "Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -u ${MainBranch}${NC-}' to update to the latest stable release '${C["Version"]-}$(ds_version "${MainBranch}")${NC-}'."
+            warn \
+                "Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -u ${MainBranch}${NC-}' to update to the latest stable release '${C["Version"]-}$(ds_version "${MainBranch}")${NC-}'."
         fi
     fi
 }
 
 init() {
     # Verify the running environment is compatible
-    #notice "init_check_system"
     init_check_system
     # Verify the repo is cloned
-    #notice "init_check_cloned"
     init_check_cloned
     # Verify the dependencies are installed
-    #notice "init_check_dependencies"
     init_check_dependencies
     # Verify we are on the correct branch
-    #notice "init_check_branch"
     init_check_branch
     # Verify the symlink is created
-    #notice "init_check_symlink"
     init_check_symlink
     # Verify that we are on the latest version
-    #notice "init_check_update"
     init_check_update
 }
 
