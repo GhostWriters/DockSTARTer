@@ -42,6 +42,8 @@ menu_config() {
 
     local LastConfigChoice=""
     while true; do
+        COLUMNS=$(tput cols)
+        LINES=$(tput lines)
         local -a ConfigChoiceDialog=(
             --output-fd 1
             --title "${DC["Title"]-}${Title}"

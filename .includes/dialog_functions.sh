@@ -137,6 +137,8 @@ dialog_pipe() {
     fi
     Title="$(strip_ansi_colors "${Title}")"
     SubTitle="$(strip_ansi_colors "${SubTitle}")"
+    COLUMNS=$(tput cols)
+    LINES=$(tput lines)
     _dialog_ \
         --title "${DC["Title"]-}${Title}" \
         --timeout "${TimeOut}" \
@@ -199,6 +201,8 @@ dialog_info() {
     if [[ -z ${DC["_defined_"]-} ]]; then
         run_script 'config_theme'
     fi
+    COLUMNS=$(tput cols)
+    LINES=$(tput lines)
     _dialog_ \
         --title "${Title}" \
         --infobox "${Message}" \
@@ -214,6 +218,8 @@ dialog_message() {
     if [[ -z ${DC["_defined_"]-} ]]; then
         run_script 'config_theme'
     fi
+    COLUMNS=$(tput cols)
+    LINES=$(tput lines)
     _dialog_ \
         --title "${Title}" \
         --timeout "${TimeOut}" \

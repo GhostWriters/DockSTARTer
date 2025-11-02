@@ -45,6 +45,8 @@ menu_dialog_example() {
 
     local Helpline="This is a sample help line with ${DC["Highlight"]-}highlighted${DC["NC"]-} text."
 
+    COLUMNS=$(tput cols)
+    LINES=$(tput lines)
     local -i MenuTextLines
     MenuTextLines="$(
         _dialog_ \
