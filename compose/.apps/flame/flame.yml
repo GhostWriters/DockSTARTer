@@ -6,3 +6,4 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${FLAME<__INSTANCE>__VOLUME_DOCKER_SOCKET?}:/var/run/docker.sock
+      - ${DOCKER_VOLUME_CONFIG?}/flame<__instance>:/app/data
