@@ -33,7 +33,7 @@ That's it! Your containers should fire right back up as if nothing has changed. 
 
 This tool is extremely useful for people getting used to running Docker. Its official documentation should explain why but you can disable it if you want.
 
-> [Watchtower](https://hub.docker.com/r/containrrr/watchtower) will pull down your new image, gracefully shut down your existing container and restart it with the same options that were used when it was deployed initially.
+> [Watchtower](https://hub.docker.com/r/nickfedor/watchtower) will pull down your new image, gracefully shut down your existing container and restart it with the same options that were used when it was deployed initially.
 
 In short, Watchtower keeps your containers up to date.
 
