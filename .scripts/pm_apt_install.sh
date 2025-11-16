@@ -58,19 +58,23 @@ detect_packages() {
     Old_IFS="${IFS}"
     IFS='|'
     RegEx_Dependencies="(${Dependencies[*]})"
-    RegEx_Package_Blacklist="(${PM_PACKAGE_BLACKLIST[*]-})"
+    RegEx_Package_Blacklist="^(${PM_PACKAGE_BLACKLIST[*]-})$"
     IFS="${Old_IFS}"
 
     local RegEx_AptFile="^(.*):.*/s?bin/${RegEx_Dependencies}$"
 
     for Dep in "${Dependencies[@]}"; do
+        if [[ -v PM_DEP_PACKAGE["${Dep}"] ]]; then
+            echo "${PM_DEP_PACKAGE["${Dep}"]}"
+            continue
+        fi
         local Command="apt-file search bin/${Dep}"
         notice "Running: ${C["RunningCommand"]}${Command}${NC}"
         eval "${Command}" 2> /dev/null
     done | while IFS= read -r line; do
         if [[ ${line} =~ ${RegEx_AptFile} ]]; then
             local Package="${BASH_REMATCH[1]}"
-            if [[ ! ${Package} =~ ^${RegEx_Package_Blacklist}$ ]]; then
+            if [[ ! ${Package} =~ ${RegEx_Package_Blacklist} ]]; then
                 echo "${Package}"
             fi
         fi

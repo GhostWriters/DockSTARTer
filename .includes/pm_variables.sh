@@ -15,37 +15,40 @@ declare -argx PM_PACKAGE_MANAGERS=(
 
 declare -Argx PM_PACKAGE_MANAGER_COMMAND=(
     ["apk"]="apk"
-    ["nala"]="nala"
     ["apt"]="apt-get"
-    ["dnf"]="dnf"
-    ["pacman"]="pacman"
-    ["yum"]="yum"
     ["brew"]="brew"
+    ["dnf"]="dnf"
+    ["nala"]="nala"
+    ["pacman"]="pacman"
     ["port"]="port"
+    ["yum"]="yum"
+    ["zypper"]="zypper"
     ["none"]="bash"
 )
 
 declare -Argx PM_NICENAME=(
     ["apk"]="APK"
-    ["nala"]="Nala"
     ["apt"]="APT"
-    ["dnf"]="DNF"
-    ["pacman"]="Pacman"
-    ["yum"]="YUM"
     ["brew"]="Homebrew"
+    ["dnf"]="DNF"
+    ["nala"]="Nala"
+    ["pacman"]="Pacman"
     ["port"]="MacPorts"
+    ["yum"]="YUM"
+    ["zypper"]="Zypper"
     ["none"]="None"
 )
 
 declare -Argx PM_DESCRIPTION=(
     ["apk"]="Alpine Package Keeper (Alpine Linux)"
-    ["nala"]="Nala alternative to Apt (Debian, Ubuntu)"
     ["apt"]="Advanced Package Tool (Debian, Ubuntu)"
-    ["dnf"]="Dandified YUM (Fedora, CentOS)"
-    ["yum"]="Yellowdog Updater, Modified (Fedora, CentOS)"
-    ["pacman"]="Package Manager (Arch Linux)"
     ["brew"]="Homebrew (macOS)"
+    ["dnf"]="Dandified YUM (Fedora, CentOS)"
+    ["nala"]="Nala alternative to Apt (Debian, Ubuntu)"
+    ["pacman"]="Package Manager (Arch Linux)"
     ["port"]="MacPorts (macOS)"
+    ["yum"]="Yellowdog Updater, Modified (Fedora, CentOS)"
+    ["zypper"]="Zypper package manager (SUSE, openSUSE)"
     ["none"]="No package manager"
 )
 
@@ -56,18 +59,9 @@ declare -argx PM__COMMAND_DEPS=(
     "find"
     "git"
     "grep"
+    "ip"
     "sed"
     "stat"
-)
-
-declare -Argx PM__DEP_PACKAGE=()
-
-declare -argx PM__PACKAGE_BLACKLIST=(
-    "9base"
-    "busybox-grep"
-    "busybox-sed"
-    "curl-minimal"
-    "gitlab-shell"
 )
 
 declare -argx PM_BREW_COMMAND_DEPS=(
@@ -77,9 +71,9 @@ declare -argx PM_BREW_COMMAND_DEPS=(
     "gfind"
     "git"
     "ggrep"
+    "ip"
     "gsed"
     "gstat"
-    "ip"
 )
 
 declare -argx PM_PORT_COMMAND_DEPS=(
@@ -89,28 +83,31 @@ declare -argx PM_PORT_COMMAND_DEPS=(
     "gfind"
     "git"
     "ggrep"
+    "ip"
     "gsed"
     "gstat"
-    "ip"
 )
 
-declare -argx PM_NONE_COMMAND_DEPS=(
-    "column"
-    "curl"
-    "dialog"
-    "gfind"
-    "git"
-    "ggrep"
-    "gsed"
-    "gstat"
-    "ip"
-)
+declare -Argx PM__DEP_PACKAGE=()
 
 declare -Argx PM_PORT_DEP_PACKAGE=(
     ["dialog"]="dialog"
     ["find"]="findutils"
-    ["gsed"]="gnu-sed"
     ["ip"]="iproute2mac"
+    ["gsed"]="gnu-sed"
+)
+
+declare -Argx PM_ZYPPER_DEP_PACKAGE=(
+    ["ip"]="iproute2"
+    ["find"]="findutils"
+)
+
+declare -argx PM__PACKAGE_BLACKLIST=(
+    "busybox-.*"
+    "9base"
+    "coreutils-single"
+    "curl-minimal"
+    "gitlab-shell"
 )
 
 pm_check_dependency() {
