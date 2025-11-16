@@ -26,7 +26,7 @@ symlink_ds() {
         if [[ ! -L ${SymlinkTarget} ]]; then
             info "Creating '${C["File"]}${SymlinkTarget}${NC}' symbolic link for ${APPLICATION_NAME}."
             mkdir -p "${Folder}" &> /dev/null || true
-            sudo ln -s -F "${SCRIPTNAME}" "${SymlinkTarget}" &> /dev/null || true
+            sudo ln -s "${SCRIPTNAME}" "${SymlinkTarget}" &> /dev/null || true
         fi
         if [[ -L ${SymlinkTarget} ]]; then
             FinalSymlinkFolder="${Folder}"
