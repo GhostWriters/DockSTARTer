@@ -103,8 +103,10 @@ declare -Argx PM_ZYPPER_DEP_PACKAGE=(
 )
 
 declare -argx PM__PACKAGE_BLACKLIST=(
-    "busybox-.*"
+    ".*busybox.*"
+    ".*toybox.*"
     "9base"
+    "coreutils-from-gnu"
     "coreutils-single"
     "curl-minimal"
     "gitlab-shell"
