@@ -22,8 +22,10 @@ menu_options() {
         local -a ChoiceDialog=(
             --output-fd 1
             --title "${DC["Title"]-}${Title}"
+            --extra-button
             --ok-label "Select"
-            --cancel-label "Back"
+            --extra-label "Back"
+            --cancel-label "Exit"
             --menu "What would you like to do?" 0 0 0
             "${Opts[@]}"
         )
@@ -32,7 +34,7 @@ menu_options() {
         Choice=$(_dialog_ --default-item "${LastChoice}" "${ChoiceDialog[@]}") || DialogButtonPressed=$?
         LastChoice=${Choice}
         case ${DIALOG_BUTTONS[DialogButtonPressed]-} in
-            OK)
+            OK) # Select
                 case "${Choice}" in
                     "${Option_Theme}")
                         run_script 'menu_options_theme' || true
@@ -48,10 +50,11 @@ menu_options() {
                         ;;
                 esac
                 ;;
-            CANCEL | ESC)
-                clear
-                info "Exiting ${APPLICATION_NAME}."
+            EXTRA | ESC) # Back
                 return
+                ;;
+            CANCEL) # Exit
+                run_script 'menu_exit'
                 ;;
             *)
                 if [[ -n ${DIALOG_BUTTONS[DialogButtonPressed]-} ]]; then

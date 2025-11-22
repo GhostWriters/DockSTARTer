@@ -161,7 +161,7 @@ menu_config_vars() {
                 --extra-button
                 --ok-label "Select"
                 --extra-label "Remove"
-                --cancel-label "Done"
+                --cancel-label "Back"
                 --title "${DC["Title"]-}${Title}"
                 --default-item "${LastLineChoice}"
                 --menu "${DialogHeading}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" -1
@@ -228,7 +228,7 @@ menu_config_vars() {
                         fi
                     fi
                     ;;
-                CANCEL | ESC) # Done
+                CANCEL | ESC) # Back
                     return
                     ;;
                 *)
