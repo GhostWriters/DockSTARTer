@@ -105,9 +105,9 @@ menu_config() {
                                 ;;
                             *)
                                 if [[ -n ${DIALOG_BUTTONS[YesNoDialogButtonPressed]-} ]]; then
-                                    fatal "Unexpected dialog button '${DIALOG_BUTTONS[YesNoDialogButtonPressed]}' pressed in ${FUNCNAME[0]}."
+                                    fatal "Unexpected dialog button '${F[C]}${DIALOG_BUTTONS[YesNoDialogButtonPressed]}' pressed in '${C["RunningCommand"]-}${FUNCNAME[0]}${NC}'."
                                 else
-                                    fatal "Unexpected dialog button value '${YesNoDialogButtonPressed}' pressed in ${FUNCNAME[0]}."
+                                    fatal "Unexpected dialog button value '${YesNoDialogButtonPressed}' pressed in '${C["RunningCommand"]-}${FUNCNAME[0]}${NC}'."
                                 fi
                                 ;;
                         esac
@@ -128,9 +128,9 @@ menu_config() {
                 ;;
             *)
                 if [[ -n ${DIALOG_BUTTONS[ConfigDialogButtonPressed]-} ]]; then
-                    fatal "Unexpected dialog button '${DIALOG_BUTTONS[ConfigDialogButtonPressed]}' pressed in ${FUNCNAME[0]}."
+                    fatal "Unexpected dialog button '${F[C]}${DIALOG_BUTTONS[ConfigDialogButtonPressed]}' pressed in '${C["RunningCommand"]-}${FUNCNAME[0]}${NC}'."
                 else
-                    fatal "Unexpected dialog button value '${ConfigDialogButtonPressed}' pressed in ${FUNCNAME[0]}."
+                    fatal "Unexpected dialog button value '${ConfigDialogButtonPressed}' pressed in '${C["RunningCommand"]-}${FUNCNAME[0]}${NC}'."
                 fi
                 ;;
         esac
