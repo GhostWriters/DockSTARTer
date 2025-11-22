@@ -97,9 +97,9 @@ menu_config_apps() {
                 ;;
             *)
                 if [[ -n ${DIALOG_BUTTONS[AppChoiceButtonPressed]-} ]]; then
-                    fatal "Unexpected dialog button '${DIALOG_BUTTONS[AppChoiceButtonPressed]}' pressed in menu_config_apps."
+                    fatal "Unexpected dialog button '${DIALOG_BUTTONS[AppChoiceButtonPressed]}' pressed in ${FUNCNAME[0]}."
                 else
-                    fatal "Unexpected dialog button value '${AppChoiceButtonPressed}' pressed in menu_config_apps."
+                    fatal "Unexpected dialog button value '${AppChoiceButtonPressed}' pressed in ${FUNCNAME[0]}."
                 fi
                 ;;
         esac

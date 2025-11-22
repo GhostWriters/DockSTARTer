@@ -60,9 +60,9 @@ menu_main() {
                 ;;
             *)
                 if [[ -n ${DIALOG_BUTTONS[MainDialogButtonPressed]-} ]]; then
-                    fatal "Unexpected dialog button '${DIALOG_BUTTONS[MainDialogButtonPressed]}' pressed in menu_main."
+                    fatal "Unexpected dialog button '${DIALOG_BUTTONS[MainDialogButtonPressed]}' pressed in ${FUNCNAME[0]}."
                 else
-                    fatal "Unexpected dialog button value '${MainDialogButtonPressed}' pressed in menu_main."
+                    fatal "Unexpected dialog button value '${MainDialogButtonPressed}' pressed in ${FUNCNAME[0]}."
                 fi
                 ;;
         esac

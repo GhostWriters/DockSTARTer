@@ -120,9 +120,9 @@ menu_add_app() {
                             ;;
                         *)
                             if [[ -n ${DIALOG_BUTTONS[YesNoDialogButtonPressed]-} ]]; then
-                                fatal "Unexpected dialog button '${F[C]}${DIALOG_BUTTONS[YesNoDialogButtonPressed]}${NC}' pressed in menu_add_app."
+                                fatal "Unexpected dialog button '${F[C]}${DIALOG_BUTTONS[YesNoDialogButtonPressed]}${NC}' pressed in ${FUNCNAME[0]}."
                             else
-                                fatal "Unexpected dialog button value '${F[C]}${YesNoDialogButtonPressed}${NC}' pressed in menu_add_app."
+                                fatal "Unexpected dialog button value '${F[C]}${YesNoDialogButtonPressed}${NC}' pressed in ${FUNCNAME[0]}."
                             fi
                             ;;
                     esac
@@ -133,9 +133,9 @@ menu_add_app() {
                 ;;
             *)
                 if [[ -n ${DIALOG_BUTTONS[InputValueDialogButtonPressed]-} ]]; then
-                    fatal "Unexpected dialog button '${F[C]}${DIALOG_BUTTONS[InputValueDialogButtonPressed]}${NC}' pressed in menu_add_app."
+                    fatal "Unexpected dialog button '${F[C]}${DIALOG_BUTTONS[InputValueDialogButtonPressed]}${NC}' pressed in ${FUNCNAME[0]}."
                 else
-                    fatal "Unexpected dialog button value '${F[C]}${InputValueDialogButtonPressed}${NC}' pressed in menu_add_app."
+                    fatal "Unexpected dialog button value '${F[C]}${InputValueDialogButtonPressed}${NC}' pressed in ${FUNCNAME[0]}."
                 fi
                 ;;
         esac
