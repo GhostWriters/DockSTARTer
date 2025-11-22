@@ -56,7 +56,7 @@ menu_main() {
             CANCEL | ESC)
                 clear
                 info "Exiting ${APPLICATION_NAME}."
-                return
+                exit 0
                 ;;
             *)
                 if [[ -n ${DIALOG_BUTTONS[MainDialogButtonPressed]-} ]]; then

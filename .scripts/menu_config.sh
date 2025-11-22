@@ -46,8 +46,10 @@ menu_config() {
         local -a ConfigChoiceDialog=(
             --output-fd 1
             --title "${DC["Title"]-}${Title}"
+            --extra-button
             --ok-label "Select"
-            --cancel-label "Back"
+            --extra-label "Back"
+            --cancel-label "Exit"
             --menu "What would you like to do?" 0 0 0
             "${ConfigOpts[@]}"
         )
@@ -56,7 +58,7 @@ menu_config() {
         ConfigChoice=$(_dialog_ --default-item "${LastConfigChoice}" "${ConfigChoiceDialog[@]}") || ConfigDialogButtonPressed=$?
         LastConfigChoice=${ConfigChoice}
         case ${DIALOG_BUTTONS[ConfigDialogButtonPressed]-} in
-            OK)
+            OK) # Select
                 case "${ConfigChoice}" in
                     "${Option_FullSetup}")
                         run_script 'menu_config_vars' || true
@@ -99,7 +101,8 @@ menu_config() {
                                 run_script_dialog "${DC["TitleSuccess"]-}Docker Compose" "Stopping and removing all containers, networks, volumes, and images.\n${DC["CommandLine"]-} ${APPLICATION_COMMAND} --compose down" "" \
                                     'docker_compose' "down"
                                 ;;
-                            CANCEL | ESC) ;; # Cancel
+                            CANCEL | ESC) # Cancel
+                                ;;
                             *)
                                 if [[ -n ${DIALOG_BUTTONS[YesNoDialogButtonPressed]-} ]]; then
                                     fatal "Unexpected dialog button '${DIALOG_BUTTONS[YesNoDialogButtonPressed]}' pressed in menu_config."
@@ -117,8 +120,11 @@ menu_config() {
                         ;;
                 esac
                 ;;
-            CANCEL | ESC)
+            EXTRA | ESC) # Back
                 return
+                ;;
+            CANCEL) # Exit
+                run_script 'menu_exit'
                 ;;
             *)
                 if [[ -n ${DIALOG_BUTTONS[ConfigDialogButtonPressed]-} ]]; then

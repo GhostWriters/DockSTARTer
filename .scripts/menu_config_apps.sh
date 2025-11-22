@@ -68,8 +68,10 @@ menu_config_apps() {
         local -a AppChoiceDialog=(
             "${AppChoiceParams[@]}"
             --title "${DC["Title"]-}${Title}"
+            --extra-button
             --ok-label "Select"
-            --cancel-label "Done"
+            --extra-label "Back"
+            --cancel-label "Exit"
             --menu "${MenuText}"
             "${WindowRows}" "${WindowCols}"
             "${WindowListRows}"
@@ -80,15 +82,18 @@ menu_config_apps() {
         AppChoice=$(_dialog_ --default-item "${LastAppChoice}" "${AppChoiceDialog[@]}") || AppChoiceButtonPressed=$?
         LastAppChoice=${AppChoice}
         case ${DIALOG_BUTTONS[AppChoiceButtonPressed]-} in
-            OK)
+            OK) # Select
                 if [[ ${AppChoice} == "${AddAplicationText}" ]]; then
                     run_script 'menu_add_app'
                 else
                     run_script 'menu_config_vars' "${AppChoice}"
                 fi
                 ;;
-            CANCEL | ESC)
+            EXTRA | ESC) # Back
                 return
+                ;;
+            CANCEL) # Exit
+                run_script 'menu_exit'
                 ;;
             *)
                 if [[ -n ${DIALOG_BUTTONS[AppChoiceButtonPressed]-} ]]; then
