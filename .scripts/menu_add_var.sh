@@ -372,9 +372,9 @@ menu_add_var() {
                         ;;
                     *)
                         if [[ -n ${DIALOG_BUTTONS[InputValueDialogButtonPressed]-} ]]; then
-                            fatal "Unexpected dialog button '${DIALOG_BUTTONS[InputValueDialogButtonPressed]}' pressed in ${FUNCNAME[0]}."
+                            fatal "Unexpected dialog button '${F[C]}${DIALOG_BUTTONS[InputValueDialogButtonPressed]}${NC}' pressed in '${C["RunningCommand"]-}${FUNCNAME[0]}${NC}'."
                         else
-                            fatal "Unexpected dialog button value '${InputValueDialogButtonPressed}' pressed in ${FUNCNAME[0]}."
+                            fatal "Unexpected dialog button value '${F[C]}${InputValueDialogButtonPressed}${NC}' pressed in '${C["RunningCommand"]-}${FUNCNAME[0]}${NC}'."
                         fi
                         ;;
                 esac
