@@ -246,11 +246,8 @@ menu_app_select() {
             return 1
             ;;
         *)
-            if [[ -n ${DIALOG_BUTTONS[SelectedAppsDialogButtonPressed]-} ]]; then
-                fatal "Unexpected dialog button '${F[C]}${DIALOG_BUTTONS[SelectedAppsDialogButtonPressed]}${NC}' pressed in '${C["RunningCommand"]-}${FUNCNAME[0]}${NC}'."
-            else
-                fatal "Unexpected dialog button value '${SelectedAppsDialogButtonPressed}' pressed in '${C["RunningCommand"]-}${FUNCNAME[0]}${NC}'."
-            fi
+            invalid_dialog_button \
+                fatal ${SelectedAppsDialogButtonPressed}
             ;;
     esac
 }

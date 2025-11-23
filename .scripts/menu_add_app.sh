@@ -119,11 +119,8 @@ menu_add_app() {
                         CANCEL | ESC) # Back
                             ;;
                         *)
-                            if [[ -n ${DIALOG_BUTTONS[YesNoDialogButtonPressed]-} ]]; then
-                                fatal "Unexpected dialog button '${F[C]}${DIALOG_BUTTONS[YesNoDialogButtonPressed]}${NC}' pressed in '${C["RunningCommand"]-}${FUNCNAME[0]}${NC}'."
-                            else
-                                fatal "Unexpected dialog button value '${F[C]}${YesNoDialogButtonPressed}${NC}' pressed in '${C["RunningCommand"]-}${FUNCNAME[0]}${NC}'."
-                            fi
+                            invalid_dialog_button \
+                                fatal ${YesNoDialogButtonPressed}
                             ;;
                     esac
                 fi
@@ -132,11 +129,8 @@ menu_add_app() {
                 return
                 ;;
             *)
-                if [[ -n ${DIALOG_BUTTONS[InputValueDialogButtonPressed]-} ]]; then
-                    fatal "Unexpected dialog button '${F[C]}${DIALOG_BUTTONS[InputValueDialogButtonPressed]}${NC}' pressed in '${C["RunningCommand"]-}${FUNCNAME[0]}${NC}'."
-                else
-                    fatal "Unexpected dialog button value '${F[C]}${InputValueDialogButtonPressed}${NC}' pressed in '${C["RunningCommand"]-}${FUNCNAME[0]}${NC}'."
-                fi
+                invalid_dialog_button \
+                    fatal ${InputValueDialogButtonPressed}
                 ;;
         esac
     done

@@ -258,3 +258,12 @@ dialog_success() {
     fi
     dialog_message "${DC["TitleSuccess"]-}${Title}" "${Message}" "${TimeOut}"
 }
+
+invalid_dialog_button() {
+    local -l NoticeType=${1:-notice}
+    local -i DialogButtonNumber=${2}
+    local DialogButton="${DIALOG_BUTTONS[DialogButtonNumber]-#${DialogButtonNumber}}"
+    ${NoticeType} \
+        "Error in '${C["File"]}${BASH_SOURCE[1]}${NC}', function '${C["RunningCommand"]}${FUNCNAME[1]}${NC}', line '${C["RunningCommand"]}${BASH_LINENO[0]}${NC}'.\n" \
+        "Unexpected dialog button '${F[C]}${DialogButton}${NC}' pressed."
+}
