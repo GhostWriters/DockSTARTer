@@ -200,13 +200,11 @@ notice() { timestamped_log true "${C["Notice"]-}[NOTICE]${NC-}" "$@"; }
 warn() { timestamped_log true "${C["Warn"]-}[WARN  ]${NC-}" "$@"; }
 error() { timestamped_log true "${C["Error"]-}[ERROR ]${NC-}" "$@"; }
 fatal_notrace() {
-    timestamped_log true \
-        "${C["Fatal"]-}[FATAL ]${NC}" \
-        "$@"
+    timestamped_log true "${C["Fatal"]-}[FATAL ]${NC}" "$@"
     exit 1
 }
 fatal() {
-    local -a stack=("${C["Fatal"]}Stack trace:${NC}\n")
+    local -a stack=("${C["Error"]}Stack trace:${NC}\n")
     local stack_size=${#FUNCNAME[@]}
     local -i i
     local indent="  "
@@ -218,18 +216,14 @@ fatal() {
         stack+=("${indent}└ ${C["File"]}$src${NC}:${C["RunningCommand"]}$line${NC} (${C["RunningCommand"]}$func${NC})\n")
         indent="${indent}    "
     done
-    #(IFS=$'\n'; echo "${stack[*]}")
 
-    #local ErrorLine="Error in '${C["File"]}${BASH_SOURCE[1]}${NC}', function '${C["RunningCommand"]}${FUNCNAME[1]}${NC}', line '${C["RunningCommand"]}${BASH_LINENO[0]}${NC}'."
-    timestamped_log true \
-        "${C["Fatal"]-}[FATAL ]${NC}" \
+    fatal_notrace \
         "$@" \
         "\n" \
         "\n" \
         "${stack[@]}" \
         "\n" \
-        "${C["Fatal"]}Please let the dev know of this error.${NC}"
-    exit 1
+        "${C["Error"]}Please let the dev know of this error.${NC}"
 }
 
 [[ -f "${SCRIPTPATH}/.includes/global_variables.sh" ]] && source "${SCRIPTPATH}/.includes/global_variables.sh"
