@@ -161,26 +161,26 @@ MKTEMP_LOG=$(mktemp -t "${APPLICATION_NAME}.log.XXXXXXXXXX") || echo -e "Failed 
 readonly MKTEMP_LOG
 echo "DockSTARTer Log" > "${MKTEMP_LOG}"
 log() {
-    local TOTERM=${1-}
-    local MESSAGE=${2-}
-    local STRIPPED_MESSAGE
+    local ToTerm=${1-}
+    local Message=${2-}
+    local StrippedMessage=${Message}
     if declare -F strip_ansi_colors > /dev/null; then
-        STRIPPED_MESSAGE=$(strip_ansi_colors "${MESSAGE-}")
+        StrippedMessage=$(strip_ansi_colors "${StrippedMessage-}")
     fi
-    if [[ -n ${TOTERM} ]]; then
+    if [[ -n ${ToTerm} ]]; then
         if [[ -t 2 ]]; then
             # Stderr is not being redirected, output with color
-            printf '%b\n' "${MESSAGE-}" >&2
+            printf '%b\n' "${Message}" >&2
         else
             # Stderr is being redirected, output without color
-            printf '%b\n' "${STRIPPED_MESSAGE-}" >&2
+            printf '%b\n' "${StrippedMessage}" >&2
         fi
     fi
     # Output the message to the log file without color
-    printf '%b\n' "${STRIPPED_MESSAGE-}" >> "${MKTEMP_LOG}"
+    printf '%b\n' "${StrippedMessage}" >> "${MKTEMP_LOG}"
 }
 timestamped_log() {
-    local TOTERM=${1-}
+    local ToTerm=${1-}
     local LogLevelTag=${2-}
     shift 2
     LogMessage=$(printf '%b' "$@")
@@ -188,8 +188,9 @@ timestamped_log() {
     local Timestamp
     Timestamp=$(date +"%F %T")
     # Create separate notices with the same timestamp for each line in a log message
+    local line
     while IFS= read -r line; do
-        log "${TOTERM-}" "${NC}${C["Timestamp"]-}${Timestamp}${NC-} ${LogLevelTag}   ${line}${NC}"
+        log "${ToTerm-}" "${NC}${C["Timestamp"]-}${Timestamp}${NC-} ${LogLevelTag}   ${line}${NC}"
     done <<< "${LogMessage}"
 }
 trace() { timestamped_log "${TRACE-}" "${C["Trace"]-}[TRACE ]${NC-}" "$@"; }
@@ -198,8 +199,36 @@ info() { timestamped_log "${VERBOSE-}" "${C["Info"]-}[INFO  ]${NC-}" "$@"; }
 notice() { timestamped_log true "${C["Notice"]-}[NOTICE]${NC-}" "$@"; }
 warn() { timestamped_log true "${C["Warn"]-}[WARN  ]${NC-}" "$@"; }
 error() { timestamped_log true "${C["Error"]-}[ERROR ]${NC-}" "$@"; }
+fatal_notrace() {
+    timestamped_log true \
+        "${C["Fatal"]-}[FATAL ]${NC}" \
+        "$@"
+    exit 1
+}
 fatal() {
-    timestamped_log true "${C["Fatal"]-}[FATAL ]${NC}" "$@"
+    local -a stack=("${C["Fatal"]}Stack trace:${NC}\n")
+    local stack_size=${#FUNCNAME[@]}
+    local -i i
+    local indent="  "
+    # to avoid noise we start with 1 to skip the stack function
+    for ((i = 1; i < stack_size; i++)); do
+        local func="${FUNCNAME[$i]:-(top level)}"
+        local -i line="${BASH_LINENO[$((i - 1))]}"
+        local src="${BASH_SOURCE[$i]:-(no file)}"
+        stack+=("${indent}└ ${C["File"]}$src${NC}:${C["RunningCommand"]}$line${NC} (${C["RunningCommand"]}$func${NC})\n")
+        indent="${indent}    "
+    done
+    #(IFS=$'\n'; echo "${stack[*]}")
+
+    #local ErrorLine="Error in '${C["File"]}${BASH_SOURCE[1]}${NC}', function '${C["RunningCommand"]}${FUNCNAME[1]}${NC}', line '${C["RunningCommand"]}${BASH_LINENO[0]}${NC}'."
+    timestamped_log true \
+        "${C["Fatal"]-}[FATAL ]${NC}" \
+        "$@" \
+        "\n" \
+        "\n" \
+        "${stack[@]}" \
+        "\n" \
+        "${C["Fatal"]}Please let the dev know of this error.${NC}"
     exit 1
 }
 
