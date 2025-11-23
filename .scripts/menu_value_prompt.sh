@@ -538,11 +538,8 @@ menu_value_prompt() {
                 fi
                 ;;
             *)
-                if [[ -n ${DIALOG_BUTTONS[SelectValueDialogButtonPressed]-} ]]; then
-                    fatal "Unexpected dialog button '${F[C]}${DIALOG_BUTTONS[SelectValueDialogButtonPressed]}${NC}' pressed in '${C["RunningCommand"]-}${FUNCNAME[0]}${NC}'."
-                else
-                    fatal "Unexpected dialog button value '${F[C]}${SelectValueDialogButtonPressed}${NC}' pressed in '${C["RunningCommand"]-}${FUNCNAME[0]}${NC}'."
-                fi
+                invalid_dialog_button \
+                    fatal ${SelectValueDialogButtonPressed}
                 ;;
         esac
     done

@@ -104,11 +104,8 @@ menu_config() {
                             CANCEL | ESC) # Cancel
                                 ;;
                             *)
-                                if [[ -n ${DIALOG_BUTTONS[YesNoDialogButtonPressed]-} ]]; then
-                                    fatal "Unexpected dialog button '${F[C]}${DIALOG_BUTTONS[YesNoDialogButtonPressed]}' pressed in '${C["RunningCommand"]-}${FUNCNAME[0]}${NC}'."
-                                else
-                                    fatal "Unexpected dialog button value '${YesNoDialogButtonPressed}' pressed in '${C["RunningCommand"]-}${FUNCNAME[0]}${NC}'."
-                                fi
+                                invalid_dialog_button \
+                                    fatal ${YesNoDialogButtonPressed}
                                 ;;
                         esac
                         ;;
@@ -127,11 +124,8 @@ menu_config() {
                 run_script 'menu_exit'
                 ;;
             *)
-                if [[ -n ${DIALOG_BUTTONS[ConfigDialogButtonPressed]-} ]]; then
-                    fatal "Unexpected dialog button '${F[C]}${DIALOG_BUTTONS[ConfigDialogButtonPressed]}' pressed in '${C["RunningCommand"]-}${FUNCNAME[0]}${NC}'."
-                else
-                    fatal "Unexpected dialog button value '${ConfigDialogButtonPressed}' pressed in '${C["RunningCommand"]-}${FUNCNAME[0]}${NC}'."
-                fi
+                invalid_dialog_button \
+                    fatal ${ConfigDialogButtonPressed}
                 ;;
         esac
     done

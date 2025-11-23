@@ -96,11 +96,8 @@ menu_config_apps() {
                 run_script 'menu_exit'
                 ;;
             *)
-                if [[ -n ${DIALOG_BUTTONS[AppChoiceButtonPressed]-} ]]; then
-                    fatal "Unexpected dialog button '${F[C]}${DIALOG_BUTTONS[AppChoiceButtonPressed]}${NC}' pressed in '${C["RunningCommand"]-}${FUNCNAME[0]}${NC}'."
-                else
-                    fatal "Unexpected dialog button value '${AppChoiceButtonPressed}' pressed in '${C["RunningCommand"]-}${FUNCNAME[0]}${NC}'."
-                fi
+                invalid_dialog_button \
+                    fatal ${AppChoiceButtonPressed}
                 ;;
         esac
     done

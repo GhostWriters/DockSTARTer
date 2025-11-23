@@ -70,11 +70,8 @@ question_prompt() {
                     break
                     ;;
                 *)
-                    if [[ -n ${DIALOG_BUTTONS[YesNoDialogButtonPressed]-} ]]; then
-                        fatal "Unexpected dialog button '${F[C]}${DIALOG_BUTTONS[YesNoDialogButtonPressed]}${NC}' pressed in '${C["RunningCommand"]-}${FUNCNAME[0]}${NC}'."
-                    else
-                        fatal "Unexpected dialog button value '${YesNoDialogButtonPressed}' pressed in '${C["RunningCommand"]-}${FUNCNAME[0]}${NC}'."
-                    fi
+                    invalid_dialog_button \
+                        fatal ${YesNoDialogButtonPressed}
                     ;;
             esac
         done
