@@ -662,7 +662,7 @@ run_command() {
             local EnvUpdate="${MenuCommandEnvUpdate["${MenuCommand}"]-}"
             local UpperCase="${MenuCommandUpperCase["${MenuCommand}"]-}"
             if [[ -z ${DIALOG-} ]]; then
-                fatal \
+                fatal_notrace \
                     "The GUI requires the '${C["Program"]-}dialog${NC-}' command to be installed.\n" \
                     "'${C["Program"]-}dialog${NC-}' command not found. Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -i${NC-}' to install all dependencies.\n" \
                     "\n" \
@@ -689,8 +689,7 @@ run_command() {
                     options-theme | theme)
                         if [[ -z ${Script} ]]; then
                             fatal \
-                                "No script is defined for menu command '${C["UserCommand"]-}${MenuCommand}${NC-}'.\n" \
-                                "Please let the dev know."
+                                "No script is defined for menu command '${C["UserCommand"]-}${MenuCommand}${NC-}'."
                         fi
                         if [[ -n ${EnvCreate-} ]]; then
                             run_script 'env_create'
@@ -729,8 +728,7 @@ run_command() {
         --theme-list | --theme-table)
             if [[ -z ${Script} ]]; then
                 fatal \
-                    "No script is defined for command '${C["UserCommand"]-}${Command}${NC-}'.\n" \
-                    "Please let the dev know."
+                    "No script is defined for command '${C["UserCommand"]-}${Command}${NC-}'."
             fi
             if [[ -n ${EnvCreate-} ]]; then
                 run_script 'env_create'
@@ -740,7 +738,7 @@ run_command() {
             fi
             if [[ ${RequireDialog-} ]]; then
                 if [[ -z ${DIALOG-} ]]; then
-                    fatal \
+                    fatal_notrace \
                         "The GUI requires the '${C["Program"]-}dialog${NC-}' command to be installed.\n" \
                         "'${C["Program"]-}dialog${NC-}' command not found. Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -i${NC-}' to install all dependencies.\n" \
                         "\n" \
@@ -767,8 +765,7 @@ run_command() {
         --config-pm-auto)
             if [[ -z ${Script} ]]; then
                 fatal \
-                    "No script is defined for command '${C["UserCommand"]-}${Command}${NC-}'.\n" \
-                    "Please let the dev know."
+                    "No script is defined for command '${C["UserCommand"]-}${Command}${NC-}'."
             fi
             if [[ -n ${EnvCreate-} ]]; then
                 run_script 'env_create'
@@ -805,10 +802,9 @@ run_command() {
         --menu-config-app)
             if [[ -z ${Script} ]]; then
                 fatal \
-                    "No script is defined for command '${C["UserCommand"]-}${Command}${NC-}'.\n" \
-                    "Please let the dev know."
+                    "No script is defined for command '${C["UserCommand"]-}${Command}${NC-}'."
             fi
-            [[ -z ${DIALOG-} ]] && fatal \
+            [[ -z ${DIALOG-} ]] && fatal_notrace \
                 "The GUI requires the '${C["Program"]-}dialog${NC-}' command to be installed.\n" \
                 "'${C["Program"]-}dialog${NC-}' command not found. Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -i${NC-}' to install all dependencies.\n" \
                 "\n" \
@@ -860,8 +856,7 @@ run_command() {
         --theme-borders | --theme-no-borders)
             if [[ -z ${ConfigVar-} || ${ConfigValue-} ]]; then
                 fatal \
-                    "The configuration variable and value are not defined for command '${C["UserCommand"]-}${C["UserCommand"]-}${Command}${NC-}${NC-}'.\n" \
-                    "Please let the dev know."
+                    "The configuration variable and value are not defined for command '${C["UserCommand"]-}${Command}${NC-}${NC-}'."
             fi
             if [[ -n ${Notice-} ]]; then
                 notice \
@@ -877,8 +872,7 @@ run_command() {
         --env-appvars | --env-appvars-lines)
             if [[ -z ${Script-} ]]; then
                 fatal \
-                    "No script is defined for command '${C["UserCommand"]-}${Command}${NC-}'.\n" \
-                    "Please let the dev know."
+                    "No script is defined for command '${C["UserCommand"]-}${Command}${NC-}'."
             fi
             if use_dialog_box; then
                 for AppName in $(xargs -n1 <<< "${ParamsArray[0]}"); do
@@ -896,8 +890,7 @@ run_command() {
         --env-get-literal | --env-get-lower-literal)
             if [[ -z ${Script-} ]]; then
                 fatal \
-                    "No script is defined for command '${C["UserCommand"]-}${Command}${NC-}'.\n" \
-                    "Please let the dev know."
+                    "No script is defined for command '${C["UserCommand"]-}${Command}${NC-}'."
             fi
             [[ -n ${UpperCase} ]] && ParamsArray=("${ParamsArray[@]^^}")
             if use_dialog_box; then
@@ -916,8 +909,7 @@ run_command() {
         --env-get-literal= | --env-get-lower-literal=)
             if [[ -z ${Script-} ]]; then
                 fatal \
-                    "No script is defined for command '${C["UserCommand"]-}${Command}${NC-}'.\n" \
-                    "Please let the dev know."
+                    "No script is defined for command '${C["UserCommand"]-}${Command}${NC-}'."
             fi
             [[ -n ${UpperCase} ]] && EqualsParam="${EqualsParam^^}"
             if use_dialog_box; then
@@ -931,8 +923,7 @@ run_command() {
         --env-set | --env-set-lower)
             if [[ -z ${Script-} ]]; then
                 fatal \
-                    "No script is defined for command '${C["UserCommand"]-}${Command}${NC-}'.\n" \
-                    "Please let the dev know."
+                    "No script is defined for command '${C["UserCommand"]-}${Command}${NC-}'."
             fi
             run_script 'env_backup'
             local VarName="${ParamsArray[0]%%=*}"
@@ -945,8 +936,7 @@ run_command() {
         --env-set=* | --env-set-lower=*)
             if [[ -z ${Script-} ]]; then
                 fatal \
-                    "No script is defined for command '${C["UserCommand"]-}${Command}${NC-}'.\n" \
-                    "Please let the dev know."
+                    "No script is defined for command '${C["UserCommand"]-}${Command}${NC-}'."
             fi
             run_script 'env_backup'
             local VarName="${EqualsParam%%,*}"
@@ -965,8 +955,7 @@ run_command() {
         --list-referenced)
             if [[ -z ${Script-} ]]; then
                 fatal \
-                    "No script is defined for command '${C["UserCommand"]-}${Command}${NC-}'.\n" \
-                    "Please let the dev know."
+                    "No script is defined for command '${C["UserCommand"]-}${Command}${NC-}'."
             fi
             run_script_dialog \
                 "${Title}" \
@@ -977,8 +966,7 @@ run_command() {
 
         *)
             fatal \
-                "Option '${C["UserCommand"]-}${Command}${NC-}' not implemented.\n" \
-                "Please let the dev know."
+                "Option '${C["UserCommand"]-}${Command}${NC-}' not implemented."
             ;;
     esac
 
