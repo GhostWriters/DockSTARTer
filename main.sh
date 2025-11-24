@@ -239,9 +239,9 @@ fatal() {
 # Check for supported CPU architecture
 check_arch() {
     if [[ ${ARCH} != "aarch64" ]] && [[ ${ARCH} != "x86_64" ]]; then
-        fatal \
-            "Unsupported architecture.\n" \
-            "Supported architectures are 'aarch64' or 'x86_64', running architeture is '${ARCH}'."
+        fatal_notrace \
+            "Unsupported architeture.\n" \
+            "Supported architetures are 'aarch64' or 'x86_64', running architeture is '${ARCH}'."
     fi
 }
 
@@ -257,7 +257,7 @@ check_repo() {
 # Check if running as root
 check_root() {
     if [[ ${DETECTED_PUID} == "0" ]] || [[ ${DETECTED_HOMEDIR} == "/root" ]]; then
-        fatal \
+        fatal_notrace \
             "Running as '${C["User"]-}root${NC-}' is not supported.\n" \
             "Please run as a standard user."
     fi
@@ -266,7 +266,7 @@ check_root() {
 # Check if running with sudo
 check_sudo() {
     if [[ ${EUID} -eq 0 ]]; then
-        fatal \
+        fatal_notrace \
             "Running with '${C["UserCommand"]-}sudo${NC-}' is not supported.\n" \
             "Commands requiring '${C["UserCommand"]-}sudo${NC-}' will prompt automatically when required."
     fi
