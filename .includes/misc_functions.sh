@@ -41,12 +41,33 @@ quote_elements_with_spaces() {
     local Result=''
     # Quote any arguments with spaces in them
     for element in "$@"; do
-        if [[ ${element} == *" "* ]]; then
-            # If the element contains spaces, quote it
+        if [[ -z ${element} || ${element} == *" "* ]]; then
+            # If the element is an empty string or contains spaces, quote it
             Result+="\"${element}\" "
         else
             # Otherwise, add it as is
             Result+="${element} "
+        fi
+    done
+    # Remove any trailing space
+    Result="${Result% }"
+    printf '%s\n' "${Result}"
+}
+
+custom_quote_elements_with_spaces() {
+    local Quote=${1}
+    local Color=${2}
+    shift 2
+
+    local Result=''
+    # Quote any arguments with spaces in them
+    for element in "$@"; do
+        if [[ -z ${element} || ${element} == *" "* ]]; then
+            # If the element is an empty string or contains spaces, quote it
+            Result+="${Quote}${Color}${element}${NC}${Quote}${NC} "
+        else
+            # Otherwise, add it as is
+            Result+="${Color}${element}${NC} "
         fi
     done
     # Remove any trailing space
