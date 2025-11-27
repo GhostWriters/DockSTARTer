@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+shopt -s extdebug
 set -Eeuo pipefail
 IFS=$'\n\t'
 
@@ -204,24 +205,74 @@ fatal_notrace() {
     exit 1
 }
 fatal() {
-    local -a stack=("${C["Error"]}Stack trace:${NC}\n")
-    local stack_size=${#FUNCNAME[@]}
-    local -i i
-    local indent="  "
-    # to avoid noise we start with 1 to skip the stack function
-    for ((i = 1; i < stack_size; i++)); do
-        local func="${FUNCNAME[$i]:-(top level)}"
-        local -i line="${BASH_LINENO[$((i - 1))]}"
-        local src="${BASH_SOURCE[$i]:-(no file)}"
-        stack+=("${indent}└ ${C["File"]}$src${NC}:${C["RunningCommand"]}$line${NC} (${C["RunningCommand"]}$func${NC})\n")
-        indent="${indent}    "
+    local -i thisFuncLine=$((LINENO - 1))
+    local -a Stack=("${C["Error"]}Stack trace:${NC}\n")
+    local StackSize=${#FUNCNAME[@]}
+    local -i FrameNumberLength
+    FrameNumberLength=$((${#StackSize} / 10))
+    local indent=" "
+    local NoFile="<nofile>"
+    local NoFunction="<nofunction>"
+
+    local SourceFile="${BASH_SOURCE[0]:-$NoFile}"
+    local -i line="${thisFuncLine}"
+    local func="${FUNCNAME[0]:-$NoFunction}"
+    local cmd
+    local -i CurrentArg=0
+    local -i CmdArgCount=0
+    for ((Frame = 0; Frame <= StackSize; Frame++)); do
+        local StackLineFormat="  ${C["RunningCommand"]}%${FrameNumberLength}d${NC}:${indent}└ ${C["File"]}%s${NC}:${C["RunningCommand"]}%d${NC} (${C["RunningCommand"]}%s${NC})\n"
+
+        # shellcheck disable=SC2059 # Don't use variables in the printf format string.
+        Stack+=(
+            "$(
+                printf "${StackLineFormat}" "${Frame}" "${SourceFile}" "${line}" "${func}"
+            )\n"
+        )
+        if [[ -n ${cmd-} ]]; then
+            local -a cmdArgs=()
+            local -i j
+            for ((j = CurrentArg + CmdArgCount - 1; j >= CurrentArg; j--)); do
+                cmdArgs+=("$(strip_ansi_colors "${BASH_ARGV[$j]}")")
+            done
+            cmdString="$(
+                custom_quote_elements_with_spaces "${NC}'" "${C["RunningCommand"]}" "${cmd}" "${cmdArgs[@]}"
+            )"
+            local StackCmdFormat="  %${FrameNumberLength}s${indent}    %s\n"
+            # shellcheck disable=SC2059 # Don't use variables in the printf format string.
+            Stack+=(
+                "$(
+                    printf "${StackCmdFormat}" "" "${cmdString}"
+                )\n"
+            )
+        fi
+        SourceFile="${BASH_SOURCE[Frame + 1]:-$NoFile}"
+        line="${BASH_LINENO[Frame]:-0}"
+        func="${FUNCNAME[Frame + 1]:-$NoFunction}"
+        cmd="${FUNCNAME[Frame]:-$NoFunction}"
+        CurrentArg+=${CmdArgCount}
+        CmdArgCount=${BASH_ARGC[Frame]-}
+        indent+="  "
     done
+
+    #local -a stack=("${C["Error"]}Stack trace:${NC}\n")
+    #local stack_size=${#FUNCNAME[@]}
+    #local -i i
+    #local indent="  "
+    ## to avoid noise we start with 1 to skip the stack function
+    #for ((i = 1; i < stack_size; i++)); do
+    #    local func="${FUNCNAME[$i]:-(top level)}"
+    #    local -i line="${BASH_LINENO[$((i - 1))]}"
+    #    local src="${BASH_SOURCE[$i]:-(no file)}"
+    #    stack+=("${indent}└ ${C["File"]}$src${NC}:${C["RunningCommand"]}$line${NC} (${C["RunningCommand"]}$func${NC})\n")
+    #    indent="${indent}    "
+    #done
 
     fatal_notrace \
         "$@" \
         "\n" \
         "\n" \
-        "${stack[@]}" \
+        "${Stack[@]}" \
         "\n" \
         "${C["Error"]}Please let the dev know of this error.${NC}"
 }
