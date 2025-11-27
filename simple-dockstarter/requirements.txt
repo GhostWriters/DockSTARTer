@@ -1,0 +1,6 @@
+# Simple DockSTARTer - Python Dependencies
+# Install with: pip3 install -r requirements.txt
+
+InquirerPy>=0.3.4
+rich>=13.0.0
+PyYAML>=6.0

@@ -1,0 +1,9 @@
+description: "Watchtower - Automatic Docker container updates"
+image: "containrrr/watchtower:latest"
+volumes:
+  - "/var/run/docker.sock:/var/run/docker.sock"
+environment:
+  - TZ=${TZ}
+  - WATCHTOWER_CLEANUP=true
+  - WATCHTOWER_SCHEDULE=0 0 4 * * *
+restart: unless-stopped

@@ -1,0 +1,13 @@
+description: "Radarr - Movie management and automation"
+image: "lscr.io/linuxserver/radarr:latest"
+ports:
+  - "7878:7878"
+volumes:
+  - "${DATA_DIR}/radarr:/config"
+  - "${DATA_DIR}/media:/media"
+  - "${DATA_DIR}/downloads:/downloads"
+environment:
+  - PUID=${PUID}
+  - PGID=${PGID}
+  - TZ=${TZ}
+restart: unless-stopped

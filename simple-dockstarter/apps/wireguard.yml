@@ -1,0 +1,18 @@
+description: "WireGuard - Fast and modern VPN"
+image: "lscr.io/linuxserver/wireguard:latest"
+ports:
+  - "51820:51820/udp"
+volumes:
+  - "${DATA_DIR}/wireguard:/config"
+  - "/lib/modules:/lib/modules"
+environment:
+  - PUID=${PUID}
+  - PGID=${PGID}
+  - TZ=${TZ}
+  - SERVERURL=auto
+  - SERVERPORT=51820
+  - PEERS=1
+cap_add:
+  - NET_ADMIN
+  - SYS_MODULE
+restart: unless-stopped
