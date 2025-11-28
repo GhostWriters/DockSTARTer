@@ -37,6 +37,22 @@ Simple DockSTARTer ist ein modernes Python-Tool zur einfachen Verwaltung von Doc
 
 ## 🚀 Installation
 
+### Schritt 0: Dateien herunterladen
+
+**⚠️ Wichtig:** Simple DockSTARTer ist eine eigenständige Variante und noch nicht im offiziellen DockSTARTer Repository!
+
+**Hast du die Dateien bereits?** Prüfe mit:
+```bash
+ls ~/DockSTARTer/simple-dockstarter/
+```
+
+**Wenn du Dateien siehst** → Du bist bereit! Weiter zu Schritt 1.
+
+**Wenn du die Dateien haben willst:**
+→ Siehe **DOWNLOAD.md** für alle Download-Optionen (ZIP, GitHub, Teilen, etc.)
+
+---
+
 ### Methode 1: Automatische Installation (empfohlen!)
 
 ```bash

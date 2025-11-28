@@ -10,7 +10,24 @@ Simple DockSTARTer hilft dir, einfach Docker-Container (Apps wie Jellyfin, Plex,
 
 ---
 
-## ⚡ Schnellstart (3 Schritte)
+## ⚡ Schnellstart (4 Schritte)
+
+### 0️⃣ Dateien herunterladen (wenn du sie noch nicht hast)
+
+**⚠️ Wichtig:** Simple DockSTARTer ist eigenständig, nicht im offiziellen DockSTARTer!
+
+**Hast du die Dateien schon?** Prüfe mit:
+```bash
+ls ~/DockSTARTer/simple-dockstarter/
+```
+
+**Siehst du Dateien wie dockstarter.py, install.sh, apps/?**
+→ Ja! Springe zu Schritt 1️⃣
+
+**Nichts da?**
+→ Schau in **DOWNLOAD.md** - dort steht wie du sie bekommst (ZIP, GitHub, etc.)
+
+---
 
 ### 1️⃣ Terminal öffnen
 

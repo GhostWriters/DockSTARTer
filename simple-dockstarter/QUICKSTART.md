@@ -2,6 +2,23 @@
 
 Schnellstart-Anleitung für Simple DockSTARTer in 5 Minuten.
 
+## 0️⃣ Dateien herunterladen (falls nötig)
+
+**⚠️ Hinweis:** Simple DockSTARTer ist eigenständig und noch nicht im offiziellen Repository!
+
+**Prüfe ob du die Dateien schon hast:**
+```bash
+ls ~/DockSTARTer/simple-dockstarter/
+```
+
+**Siehst du Dateien (dockstarter.py, install.sh, apps/, etc.)?**
+→ Perfekt! Springe zu Schritt 1️⃣
+
+**Keine Dateien vorhanden?**
+→ Siehe **DOWNLOAD.md** für Download-Optionen
+
+---
+
 ## 1️⃣ Installation (2 Minuten)
 
 **So einfach geht's - Schritt für Schritt:**
