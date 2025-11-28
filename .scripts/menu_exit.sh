@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 menu_exit() {
     if run_script 'question_prompt' Y "Do you want to exit ${APPLICATION_NAME}?" "Exit ${APPLICATION_NAME}" "${ASSUMEYES:+Y}"; then
-        clear
+        reset -Q || clear
         info "Exiting ${APPLICATION_NAME}."
         exit 0
     fi
