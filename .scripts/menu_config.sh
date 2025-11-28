@@ -104,8 +104,7 @@ menu_config() {
                             CANCEL | ESC) # Cancel
                                 ;;
                             *)
-                                invalid_dialog_button \
-                                    fatal ${YesNoDialogButtonPressed}
+                                invalid_dialog_button ${YesNoDialogButtonPressed}
                                 ;;
                         esac
                         ;;
@@ -124,8 +123,7 @@ menu_config() {
                 run_script 'menu_exit'
                 ;;
             *)
-                invalid_dialog_button \
-                    fatal ${ConfigDialogButtonPressed}
+                invalid_dialog_button ${ConfigDialogButtonPressed}
                 ;;
         esac
     done

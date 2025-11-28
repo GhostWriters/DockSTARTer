@@ -96,8 +96,7 @@ menu_config_apps() {
                 run_script 'menu_exit'
                 ;;
             *)
-                invalid_dialog_button \
-                    fatal ${AppChoiceButtonPressed}
+                invalid_dialog_button ${AppChoiceButtonPressed}
                 ;;
         esac
     done

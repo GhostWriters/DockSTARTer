@@ -260,8 +260,8 @@ dialog_success() {
 }
 
 invalid_dialog_button() {
-    local -l NoticeType=${1:-notice}
-    local -i DialogButtonNumber=${2}
+    local -i DialogButtonNumber=${1}
+    local -l NoticeType=${2:-fatal}
     local DialogButton="${DIALOG_BUTTONS[DialogButtonNumber]-#${DialogButtonNumber}}"
     ${NoticeType} "Unexpected dialog button '${F[C]}${DialogButton}${NC}' pressed."
 }

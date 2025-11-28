@@ -538,8 +538,7 @@ menu_value_prompt() {
                 fi
                 ;;
             *)
-                invalid_dialog_button \
-                    fatal ${SelectValueDialogButtonPressed}
+                invalid_dialog_button ${SelectValueDialogButtonPressed}
                 ;;
         esac
     done

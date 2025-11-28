@@ -246,8 +246,7 @@ menu_app_select() {
             return 1
             ;;
         *)
-            invalid_dialog_button \
-                fatal ${SelectedAppsDialogButtonPressed}
+            invalid_dialog_button ${SelectedAppsDialogButtonPressed}
             ;;
     esac
 }

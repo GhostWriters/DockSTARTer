@@ -371,8 +371,7 @@ menu_add_var() {
                         return
                         ;;
                     *)
-                        invalid_dialog_button \
-                            fatal ${InputValueDialogButtonPressed}
+                        invalid_dialog_button ${InputValueDialogButtonPressed}
                         ;;
                 esac
             done
