@@ -128,6 +128,7 @@ declare -Agr C=( # Pre-defined colors
     ["TraceHeading"]="${F[R]}"
     ["TraceFooter"]="${F[R]}"
     ["TraceFrameNumber"]="${F[R]}"
+    ["TraceFrameLines"]="${F[R]}"
     ["TraceSourceFile"]="${F[C]}${BD}"
     ["TraceLineNumber"]="${F[Y]}${BD}"
     ["TraceFunction"]="${F[G]}${BD}"
@@ -219,7 +220,6 @@ fatal() {
     local StackSize=${#FUNCNAME[@]}
     local -i FrameNumberLength
     FrameNumberLength=$((${#StackSize} / 10))
-    local indent=" "
     local NoFile="<nofile>"
     local NoFunction="<nofunction>"
 
@@ -229,8 +229,10 @@ fatal() {
     local cmd
     local -i CurrentArg=0
     local -i CmdArgCount=0
+    local indent=""
+    local FramePrefix="  "
     for ((Frame = 0; Frame <= StackSize; Frame++)); do
-        local StackLineFormat="  ${C["TraceFrameNumber"]}%${FrameNumberLength}d${NC}:${indent}└ ${C["TraceSourceFile"]}%s${NC}:${C["TraceLineNumber"]}%d${NC} (${C["TraceFunction"]}%s${NC})\n"
+        local StackLineFormat="  ${C["TraceFrameNumber"]}%${FrameNumberLength}d${NC}:${indent}${FramePrefix}${C["TraceSourceFile"]}%s${NC}:${C["TraceLineNumber"]}%d${NC} (${C["TraceFunction"]}%s${NC})\n"
 
         # shellcheck disable=SC2059 # Don't use variables in the printf format string.
         Stack+=(
@@ -250,11 +252,18 @@ fatal() {
                     custom_quote_elements_with_spaces "${NC}'" "${C["TraceCmdArgs"]}" "${cmdArgs[@]}"
                 )"
             fi
-            local StackCmdFormat="  %${FrameNumberLength}s${indent}    %s\n"
+            local StackCmdIndent
+            StackCmdIndent="$(printf "  %${FrameNumberLength}s${indent}    " "")"
+            local StackCmdFormat="%s\n"
+            # Replaced \n with a literal newline
+            local NL=$'\n'
+            cmdString="${cmdString//\\n/$NL}"
+            # Indent each line of the string
+            cmdString="$(pr -t -o ${#StackCmdIndent} <<< "${cmdString}")"
             # shellcheck disable=SC2059 # Don't use variables in the printf format string.
             Stack+=(
                 "$(
-                    printf "${StackCmdFormat}" "" "${cmdString}"
+                    printf "${StackCmdFormat}" "${cmdString}"
                 )\n"
             )
         fi
@@ -265,6 +274,7 @@ fatal() {
         CurrentArg+=${CmdArgCount}
         CmdArgCount=${BASH_ARGC[Frame]-}
         indent+="  "
+        FramePrefix="${C["TraceFrameLines"]}└─${NC}"
     done
 
     fatal_notrace \
