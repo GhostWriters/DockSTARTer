@@ -39,17 +39,17 @@ Simple DockSTARTer ist ein modernes Python-Tool zur einfachen Verwaltung von Doc
 
 ### Schritt 0: Dateien herunterladen
 
-**⚠️ Wichtig:** Simple DockSTARTer ist eine eigenständige Variante und noch nicht im offiziellen DockSTARTer Repository!
+**Simple DockSTARTer ist ein eigenständiges Projekt!**
 
-**Hast du die Dateien bereits?** Prüfe mit:
-```bash
-ls ~/DockSTARTer/simple-dockstarter/
-```
+**Hast du die Dateien bereits?** Prüfe ob du diese siehst:
+- `dockstarter.py` ✅
+- `install.sh` ✅
+- `apps/` Verzeichnis ✅
 
-**Wenn du Dateien siehst** → Du bist bereit! Weiter zu Schritt 1.
-
-**Wenn du die Dateien haben willst:**
-→ Siehe **DOWNLOAD.md** für alle Download-Optionen (ZIP, GitHub, Teilen, etc.)
+**Noch keine Dateien?** → Siehe **DOWNLOAD.md** für:
+- ZIP/TAR Download
+- GitHub Repository erstellen
+- Distribution an andere
 
 ---
 
@@ -57,7 +57,8 @@ ls ~/DockSTARTer/simple-dockstarter/
 
 ```bash
 # Gehe zum simple-dockstarter Verzeichnis
-cd ~/DockSTARTer/simple-dockstarter
+# (Pfad kann bei dir anders sein!)
+cd simple-dockstarter
 
 # Führe das Installations-Skript aus
 ./install.sh
@@ -77,14 +78,14 @@ Das `install.sh` Skript macht automatisch:
 Falls du lieber Schritt für Schritt vorgehen willst:
 
 ```bash
-# 1. Gehe zum Verzeichnis
-cd ~/DockSTARTer/simple-dockstarter
+# 1. Gehe zum Verzeichnis (Pfad anpassen!)
+cd simple-dockstarter
 
 # 2. Python-Abhängigkeiten installieren
 pip3 install --user InquirerPy rich PyYAML
 
 # 3. Skript ausführbar machen
-chmod +x dockstarter.py
+chmod +x dockstarter.py install.sh
 
 # 4. Starten
 ./dockstarter.py
@@ -95,7 +96,8 @@ chmod +x dockstarter.py
 Wenn du von überall `simple-ds` eingeben willst:
 
 ```bash
-sudo ln -s ~/DockSTARTer/simple-dockstarter/dockstarter.py /usr/local/bin/simple-ds
+# Im simple-dockstarter Verzeichnis:
+sudo ln -s $(pwd)/dockstarter.py /usr/local/bin/simple-ds
 
 # Dann von überall:
 simple-ds
@@ -309,43 +311,54 @@ docker compose config
 
 ## 🆚 Warum Simple DockSTARTer?
 
-### Original DockSTARTer Probleme:
+Simple DockSTARTer wurde entwickelt als **radikal vereinfachte Alternative** zu komplexen Docker-Management-Tools:
 
-- ❌ **Zu komplex** - 199 Bash-Skripte, schwer zu verstehen
-- ❌ **Schwer wartbar** - Änderungen erfordern Kenntnis vieler Dateien
-- ❌ **Steile Lernkurve** - Bash-spezifische Eigenheiten
-- ❌ **Over-engineered** - Features die 99% nicht brauchen
-- ❌ **Langsam** - Viele Subshells und Script-Aufrufe
+### Design-Philosophie:
 
-### Simple DockSTARTer Vorteile:
-
-- ✅ **Einfach** - Ein Skript, klare Struktur
-- ✅ **Wartbar** - Python ist lesbarer als Bash
-- ✅ **Schnell** - Keine Overhead durch Script-Loading
+- ✅ **KISS-Prinzip** - Keep It Simple, Stupid
+- ✅ **Ein Skript** - Alles in 321 Zeilen Python
+- ✅ **Wartbar** - Python ist lesbarer und moderner als Bash
+- ✅ **Schnell** - Kein Overhead durch Script-Loading
 - ✅ **Modern** - Aktuelle Python-Libraries
 - ✅ **Fokussiert** - Nur was wirklich gebraucht wird
 - ✅ **Erweiterbar** - Eigene Apps in 2 Minuten hinzugefügt
+- ✅ **Eigenständig** - Keine komplexen Abhängigkeiten
 
-## 🤝 Beitragen
+### Für wen ist es gedacht?
 
-Eigene Apps hinzufügen:
+- **Anfänger** - Die Docker nutzen wollen ohne Befehle zu lernen
+- **Pragmatiker** - Die funktionierende Lösungen statt Features wollen
+- **Bastler** - Die eigene Apps einfach hinzufügen wollen
+- **Minimalisten** - Die keine 199-Skript-Monster wollen
+
+## 🤝 Anpassen & Erweitern
+
+Eigene Apps hinzufügen ist super einfach:
 
 1. YAML-Datei in `apps/` erstellen
 2. Format von anderen Apps übernehmen
-3. Fertig!
+3. Fertig - erscheint automatisch im Menü!
 
-Das Skript ist bewusst einfach gehalten, damit jeder es verstehen und anpassen kann.
+Das Skript ist bewusst einfach gehalten, damit **jeder** es verstehen und anpassen kann.
 
 ## 📝 Lizenz
 
-MIT License - Frei verwendbar für private und kommerzielle Projekte
+**MIT License** - Frei verwendbar für private und kommerzielle Projekte!
 
-## 🙏 Credits
+```
+Copyright (c) 2025 Simple DockSTARTer
 
-- **Original DockSTARTer** - [GhostWriters/DockSTARTer](https://github.com/GhostWriters/DockSTARTer)
-- **LinuxServer.io** - Für die meisten Docker Images
-- **InquirerPy** - Interaktive CLI
-- **Rich** - Terminal Formatting
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software.
+```
+
+## 🙏 Credits & Inspiration
+
+- **Inspiriert von** - Original DockSTARTer Projekt (Idee der einfachen Container-Verwaltung)
+- **Docker Images** - Hauptsächlich von [LinuxServer.io](https://fleet.linuxserver.io/)
+- **Python Libraries** - [InquirerPy](https://github.com/kazhala/InquirerPy) (Interaktive CLI), [Rich](https://github.com/Textualize/rich) (Terminal UI)
+- **Community** - Danke an alle die Docker und Open Source möglich machen!
 
 ## 📚 Weiterführende Links
 
