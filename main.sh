@@ -255,8 +255,8 @@ fatal() {
             local StackCmdIndent
             StackCmdIndent="$(printf "  %${FrameNumberLength}s${indent}    " "")"
             local StackCmdFormat="%s\n"
-            # Escape \n so it will print \n instead of a newline
-            cmdString="${cmdString//\\n/\\\\\\\\n}"
+            # Escape \ to \\
+            cmdString="${cmdString//\\/\\\\\\\\}"
             # Indent each line of the string
             cmdString="$(pr -t -o ${#StackCmdIndent} <<< "${cmdString}")"
             # shellcheck disable=SC2059 # Don't use variables in the printf format string.
