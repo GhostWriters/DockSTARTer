@@ -1067,11 +1067,11 @@ cmdline_error_text() {
     local -i Indent=3
 
     CommandLine="$(
-        pr -t -o "${Indent}" <<< "${CommandLine}" | expand | sed 's/[[:space:]]\+$//'
+        pr -e -t -o "${Indent}" <<< "${CommandLine}" | sed 's/[[:space:]]\+$//'
     )"
     Message=${Message//\\n/$'\n'}
     Message="$(
-        pr -t -o "${Indent}" <<< "${Message}" | expand | sed 's/[[:space:]]\+$//'
+        pr -e -t -o "${Indent}" <<< "${Message}" | sed 's/[[:space:]]\+$//'
     )"
 
     local UsageText
@@ -1080,7 +1080,7 @@ cmdline_error_text() {
     else
         local CommandUsage
         CommandUsage="$(usage "${Command}" NoHeading)"
-        UsageText="Usage is:\n$(pr -t -o "${Indent}" <<< "${CommandUsage}" | expand)"
+        UsageText="Usage is:\n$(pr -e -t -o "${Indent}" <<< "${CommandUsage}")"
     fi
     cat << EOF
 Error in command line:
