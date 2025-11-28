@@ -4,19 +4,32 @@ Schnellstart-Anleitung für Simple DockSTARTer in 5 Minuten.
 
 ## 1️⃣ Installation (2 Minuten)
 
-```bash
-# Navigiere zum Verzeichnis
-cd ~/DockSTARTer/simple-dockstarter
+**So einfach geht's - Schritt für Schritt:**
 
-# Führe Installations-Skript aus
+### Schritt 1: Terminal öffnen
+Öffne ein Terminal auf deinem System
+
+### Schritt 2: Zum Verzeichnis gehen
+```bash
+cd ~/DockSTARTer/simple-dockstarter
+```
+
+### Schritt 3: Installations-Skript ausführen
+```bash
 ./install.sh
 ```
 
-Das Skript wird:
-- ✅ System-Anforderungen prüfen
-- ✅ Docker installieren (falls nicht vorhanden)
-- ✅ Python-Abhängigkeiten installieren
-- ✅ Setup durchführen
+**Das Skript wird dich fragen:**
+- "Docker installieren?" → Tippe `y` und Enter (wenn Docker noch nicht installiert ist)
+- "Globalen Befehl erstellen?" → Tippe `y` für ja oder `n` für nein
+
+**Was automatisch passiert:**
+- ✅ Prüft ob Docker installiert ist (installiert es wenn gewünscht)
+- ✅ Installiert Python-Pakete (InquirerPy, Rich, PyYAML)
+- ✅ Macht das Skript ausführbar
+- ✅ Zeigt dir alle verfügbaren Apps
+
+**Nach der Installation siehst du eine Bestätigung!**
 
 ## 2️⃣ Erste Schritte (3 Minuten)
 

@@ -37,16 +37,35 @@ Simple DockSTARTer ist ein modernes Python-Tool zur einfachen Verwaltung von Doc
 
 ## 🚀 Installation
 
-### Schnell-Installation
+### Methode 1: Automatische Installation (empfohlen!)
 
 ```bash
-# 1. Repository klonen oder herunterladen
-cd ~
-git clone https://github.com/GhostWriters/DockSTARTer.git
-cd DockSTARTer/simple-dockstarter
+# Gehe zum simple-dockstarter Verzeichnis
+cd ~/DockSTARTer/simple-dockstarter
+
+# Führe das Installations-Skript aus
+./install.sh
+
+# Fertig! Starten mit:
+./dockstarter.py
+```
+
+Das `install.sh` Skript macht automatisch:
+- ✅ Prüft ob Docker installiert ist (installiert es wenn nötig)
+- ✅ Installiert Python-Abhängigkeiten
+- ✅ Macht das Skript ausführbar
+- ✅ Fragt ob du einen globalen `simple-ds` Befehl willst
+
+### Methode 2: Manuelle Installation
+
+Falls du lieber Schritt für Schritt vorgehen willst:
+
+```bash
+# 1. Gehe zum Verzeichnis
+cd ~/DockSTARTer/simple-dockstarter
 
 # 2. Python-Abhängigkeiten installieren
-pip3 install InquirerPy rich PyYAML
+pip3 install --user InquirerPy rich PyYAML
 
 # 3. Skript ausführbar machen
 chmod +x dockstarter.py
@@ -55,13 +74,14 @@ chmod +x dockstarter.py
 ./dockstarter.py
 ```
 
-### Alternative: Systemweite Installation
+### Optional: Globaler Befehl
+
+Wenn du von überall `simple-ds` eingeben willst:
 
 ```bash
-# Symlink erstellen für globalen Zugriff
 sudo ln -s ~/DockSTARTer/simple-dockstarter/dockstarter.py /usr/local/bin/simple-ds
 
-# Dann einfach ausführen:
+# Dann von überall:
 simple-ds
 ```
 
