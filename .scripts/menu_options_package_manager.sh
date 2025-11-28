@@ -75,8 +75,7 @@ menu_options_package_manager() {
                 return
                 ;;
             *)
-                invalid_dialog_button \
-                    fatal ${DialogButtonPressed}
+                invalid_dialog_button ${DialogButtonPressed}
                 ;;
         esac
     done

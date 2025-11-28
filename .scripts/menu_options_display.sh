@@ -81,8 +81,7 @@ menu_options_display() {
                 return
                 ;;
             *)
-                invalid_dialog_button \
-                    fatal ${DialogButtonPressed}
+                invalid_dialog_button ${DialogButtonPressed}
                 ;;
         esac
     done

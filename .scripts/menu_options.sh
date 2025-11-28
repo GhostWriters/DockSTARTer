@@ -57,8 +57,7 @@ menu_options() {
                 run_script 'menu_exit'
                 ;;
             *)
-                invalid_dialog_button \
-                    fatal ${DialogButtonPressed}
+                invalid_dialog_button ${DialogButtonPressed}
                 ;;
         esac
     done

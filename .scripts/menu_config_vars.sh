@@ -232,8 +232,7 @@ menu_config_vars() {
                     return
                     ;;
                 *)
-                    invalid_dialog_button \
-                        fatal ${LineDialogButtonPressed}
+                    invalid_dialog_button ${LineDialogButtonPressed}
                     ;;
             esac
         done

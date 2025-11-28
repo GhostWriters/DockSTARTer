@@ -61,8 +61,7 @@ menu_options_theme() {
                 return
                 ;;
             *)
-                invalid_dialog_button \
-                    fatal ${DialogButtonPressed}
+                invalid_dialog_button ${DialogButtonPressed}
                 ;;
         esac
     done

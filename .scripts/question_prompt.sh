@@ -70,8 +70,7 @@ question_prompt() {
                     break
                     ;;
                 *)
-                    invalid_dialog_button \
-                        fatal ${YesNoDialogButtonPressed}
+                    invalid_dialog_button ${YesNoDialogButtonPressed}
                     ;;
             esac
         done

@@ -59,8 +59,7 @@ menu_main() {
                 exit 0
                 ;;
             *)
-                invalid_dialog_button \
-                    fatal ${MainDialogButtonPressed}
+                invalid_dialog_button ${MainDialogButtonPressed}
                 ;;
         esac
     done

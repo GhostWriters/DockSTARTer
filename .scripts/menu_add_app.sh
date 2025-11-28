@@ -119,8 +119,7 @@ menu_add_app() {
                         CANCEL | ESC) # Back
                             ;;
                         *)
-                            invalid_dialog_button \
-                                fatal ${YesNoDialogButtonPressed}
+                            invalid_dialog_button ${YesNoDialogButtonPressed}
                             ;;
                     esac
                 fi
@@ -129,8 +128,7 @@ menu_add_app() {
                 return
                 ;;
             *)
-                invalid_dialog_button \
-                    fatal ${InputValueDialogButtonPressed}
+                invalid_dialog_button ${InputValueDialogButtonPressed}
                 ;;
         esac
     done
