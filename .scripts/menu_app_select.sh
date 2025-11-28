@@ -78,8 +78,7 @@ menu_app_select() {
             readarray -t AddedAppsTable < <(
                 printf "%s\n" "${AddedAppsTable[@]}" |
                     column -c "$((TextCols - ${#Indent}))" |
-                    pr -t -o "${#Indent}" |
-                    expand
+                    pr -e -t -o "${#Indent}"
             )
         fi
         update_gauge 1
@@ -377,8 +376,7 @@ init_gauge_text() {
             FormattedAppNames="$(
                 printf "%s\n" "${AppNamesArray[@]}" |
                     fmt -w "$((TextCols - AppsColumnStart))" |
-                    pr -t -o "${AppsColumnStart}" |
-                    expand
+                    pr -e -t -o "${AppsColumnStart}"
             )"
 
             # Get the color codes to add to the app names
