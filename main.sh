@@ -242,17 +242,19 @@ fatal() {
         )
         if [[ -n ${cmd-} ]]; then
             local FrameCmdPrefix=""
-            local FrameArgPrefix="${C["TraceFrameLines"]}│${C["TraceCmdArgs"]}"
+            local FrameArgPrefix="${C["TraceFrameLines"]}│"
             local cmdString="${C["TraceCmd"]}${cmd}${NC}"
             local -a cmdArray=()
             cmdArray+=("${FrameCmdPrefix}${cmdString}")
             if [[ CmdArgCount -ne 0 ]]; then
                 local -i j
                 for ((j = CurrentArg + CmdArgCount - 1; j >= CurrentArg; j--)); do
-                    local cmdArgString="${BASH_ARGV[$j]//\\/\\\\\\\\}"
-                    cmdArgString="${NC}'${C["TraceCmdArgs"]}$(strip_ansi_colors "${cmdArgString}")${NC}'"
+                    local cmdArgString="${BASH_ARGV[$j]}"
+                    cmdArgString="$(strip_ansi_colors "${cmdArgString}")"
+                    cmdArgString="${cmdArgString//\\/\\\\\\\\}"
+                    cmdArgString="${NC}«${C["TraceCmdArgs"]}${cmdArgString}${NC}»"
                     while read -r cmdLine; do
-                        cmdArray+=("${FrameArgPrefix}${cmdLine}")
+                        cmdArray+=("${FrameArgPrefix}${C["TraceCmdArgs"]}${cmdLine}")
                     done <<< "${cmdArgString}"
                 done
             fi
