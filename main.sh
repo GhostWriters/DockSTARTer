@@ -241,7 +241,7 @@ fatal() {
             )\n"
         )
         if [[ -n ${cmd-} ]]; then
-            local FrameCmdPrefix=""
+            local FrameCmdPrefix="${C["TraceFrameLines"]}│"
             local FrameArgPrefix="${C["TraceFrameLines"]}│"
             local cmdString="${C["TraceCmd"]}${cmd}${NC}"
             local -a cmdArray=()
