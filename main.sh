@@ -80,6 +80,9 @@ SCRIPTNAME="${SCRIPTPATH}/$(basename "$(get_scriptname)")"
 readonly SCRIPTNAME
 export SCRIPTNAME
 
+declare -rgx APPLICATION_LOG="${SCRIPTPATH}/${APPLICATION_NAME,,}.log"
+declare -rgx FATAL_LOG="${SCRIPTPATH}/fatal.log"
+
 # Terminal Colors
 declare -Agr B=( # Background
     [B]=$(tput setab 4 2> /dev/null || echo -e "\e[44m") # Blue
@@ -126,7 +129,7 @@ declare -Agr C=( # Pre-defined colors
     ["Fatal"]="${B[R]}${F[W]}"
 
     ["FatalFooter"]="${NC}"
-    ["TraceHeading"]="${F[R]}"
+    ["TraceHeader"]="${F[R]}"
     ["TraceFooter"]="${F[R]}"
     ["TraceFrameNumber"]="${F[R]}"
     ["TraceFrameLines"]="${F[R]}"
@@ -281,7 +284,7 @@ fatal() {
     done
 
     fatal_notrace \
-        "${C["TraceHeading"]}### BEGIN STACK TRACE ###\n" \
+        "${C["TraceHeader"]}### BEGIN STACK TRACE ###\n" \
         "${Stack[@]}" \
         "${C["TraceFooter"]}### END STACK TRACE ###\n" \
         "\n" \
@@ -289,7 +292,7 @@ fatal() {
         "\n" \
         "\n" \
         "${C["FatalFooter"]}Please let the dev know of this error.\n" \
-        "${C["FatalFooter"]}It has been recorded in '${C["File"]}${SCRIPTPATH}/dockstarter.log${C["FatalFooter"]}'.\n"
+        "${C["FatalFooter"]}It has been recorded in '${C["File"]}${APPLICATION_LOG}${C["FatalFooter"]}'.\n"
 }
 
 [[ -f "${SCRIPTPATH}/.includes/global_variables.sh" ]] && source "${SCRIPTPATH}/.includes/global_variables.sh"
@@ -358,11 +361,11 @@ cleanup() {
     local -ri EXIT_CODE=$?
     trap - ERR EXIT SIGABRT SIGALRM SIGHUP SIGINT SIGQUIT SIGTERM
 
-    sudo sh -c "cat ${MKTEMP_LOG:-/dev/null} >> ${SCRIPTPATH}/dockstarter.log" || true
+    sudo sh -c "cat ${MKTEMP_LOG:-/dev/null} >> ${APPLICATION_LOG}" || true
     if [[ -n ${MKTEMP_LOG-} && -f ${MKTEMP_LOG} ]]; then
         sudo rm -f "${MKTEMP_LOG}" &> /dev/null || true
     fi
-    sudo sh -c "echo \"$(tail -1000 "${SCRIPTPATH}/dockstarter.log")\" > ${SCRIPTPATH}/dockstarter.log" || true
+    sudo sh -c "echo \"$(tail -1000 "${APPLICATION_LOG}")\" > ${APPLICATION_LOG}" || true
     if [[ -n ${TEMP_FOLDER-} && -d ${TEMP_FOLDER} ]]; then
         sudo rm -rf "${TEMP_FOLDER?}" &> /dev/null || true
     fi

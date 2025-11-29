@@ -7,6 +7,9 @@ menu_main() {
         return
     fi
 
+    fatal \
+        "Failed to create temporary update '${C["File"]}.env${NC}' file.\n" \
+        "Failing command: ${C["FailingCommand"]}mktemp -t \"${APPLICATION_NAME}.${FUNCNAME[0]}.MKTEMP_ENV_UPDATED.XXXXXXXXXX\""
     local Title="Main Menu"
     local Option_Configure="Configuration"
     local Option_InstallDependencies="Install Dependencies"
