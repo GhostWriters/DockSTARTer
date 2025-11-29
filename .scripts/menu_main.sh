@@ -54,7 +54,7 @@ menu_main() {
                 esac
                 ;;
             CANCEL | ESC)
-                clear
+                reset -Q || clear
                 info "Exiting ${APPLICATION_NAME}."
                 exit 0
                 ;;
