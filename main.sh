@@ -241,30 +241,31 @@ fatal() {
             )\n"
         )
         if [[ -n ${cmd-} ]]; then
+            local FrameCmdPrefix=""
+            local FrameArgPrefix="${C["TraceFrameLines"]}│${C["TraceCmdArgs"]}"
             local cmdString="${C["TraceCmd"]}${cmd}${NC}"
+            local -a cmdArray=()
+            cmdArray+=("${FrameCmdPrefix}${cmdString}")
             if [[ CmdArgCount -ne 0 ]]; then
-                local -a cmdArgs=()
                 local -i j
                 for ((j = CurrentArg + CmdArgCount - 1; j >= CurrentArg; j--)); do
-                    cmdArgs+=("$(strip_ansi_colors "${BASH_ARGV[$j]}")")
+                    local cmdArgString="${BASH_ARGV[$j]//\\/\\\\\\\\}"
+                    cmdArgString="${NC}'${C["TraceCmdArgs"]}$(strip_ansi_colors "${cmdArgString}")${NC}'"
+                    while read -r cmdLine; do
+                        cmdArray+=("${FrameArgPrefix}${cmdLine}")
+                    done <<< "${cmdArgString}"
                 done
-                cmdString+=" $(
-                    custom_quote_elements_with_spaces "${NC}'" "${C["TraceCmdArgs"]}" "${cmdArgs[@]}"
-                )"
             fi
             local StackCmdIndent
             StackCmdIndent="$(printf "  %${FrameNumberLength}s${indent}    " "")"
-            local StackCmdFormat="%s\n"
-            # Escape \ to \\
-            cmdString="${cmdString//\\/\\\\\\\\}"
-            # Indent each line of the string
-            cmdString="$(pr -t -o ${#StackCmdIndent} <<< "${cmdString}")"
+            local cmdLines
+            cmdLines="$(
+                pr -t -o ${#StackCmdIndent} <<< "$(
+                    printf "%s\n" "${cmdArray[@]}"
+                )"
+            )"
             # shellcheck disable=SC2059 # Don't use variables in the printf format string.
-            Stack+=(
-                "$(
-                    printf "${StackCmdFormat}" "${cmdString}"
-                )\n"
-            )
+            Stack+=("${cmdLines}\n")
         fi
         SourceFile="${BASH_SOURCE[Frame + 1]:-$NoFile}"
         line="${BASH_LINENO[Frame]:-0}"
