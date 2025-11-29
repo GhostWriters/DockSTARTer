@@ -125,6 +125,7 @@ declare -Agr C=( # Pre-defined colors
     ["Error"]="${F[R]}"
     ["Fatal"]="${B[R]}${F[W]}"
 
+    ["FatalFooter"]="${NC}"
     ["TraceHeading"]="${F[R]}"
     ["TraceFooter"]="${F[R]}"
     ["TraceFrameNumber"]="${F[R]}"
@@ -216,7 +217,7 @@ fatal_notrace() {
 }
 fatal() {
     local -i thisFuncLine=$((LINENO - 1))
-    local -a Stack=("${C["TraceHeading"]}Stack trace:${NC}\n")
+    local -a Stack=()
     local StackSize=${#FUNCNAME[@]}
     local -i FrameNumberLength
     FrameNumberLength=$((${#StackSize} / 10))
@@ -280,12 +281,15 @@ fatal() {
     done
 
     fatal_notrace \
+        "${C["TraceHeading"]}### BEGIN STACK TRACE ###\n" \
+        "${Stack[@]}" \
+        "${C["TraceFooter"]}### END STACK TRACE ###\n" \
+        "\n" \
         "$@" \
         "\n" \
         "\n" \
-        "${Stack[@]}" \
-        "\n" \
-        "${C["TraceFooter"]}Please let the dev know of this error.${NC}"
+        "${C["FatalFooter"]}Please let the dev know of this error.\n" \
+        "${C["FatalFooter"]}It has been recorded in '${C["File"]}${SCRIPTPATH}/dockstarter.log${C["FatalFooter"]}'.\n"
 }
 
 [[ -f "${SCRIPTPATH}/.includes/global_variables.sh" ]] && source "${SCRIPTPATH}/.includes/global_variables.sh"
