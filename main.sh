@@ -171,6 +171,31 @@ declare -Agr C=( # Pre-defined colors
     ["UsageVar"]="${F[M]}"
 )
 
+get_system_info() {
+    local Output=""
+    Output+="${C["RunningCommand"]}echo \${BASH_VERSION}${NC}:\n"
+    Output+="${BASH_VERSION}\n"
+    if command -v uname &> /dev/null; then
+        Output+="\n"
+        Output+="${C["RunningCommand"]}uname -a${NC}:\n"
+        Output+="$(uname -a)\n"
+    fi
+    if [[ -f /etc/os-release ]]; then
+        Output+="\n"
+        Output+="${C["RunningCommand"]}cat /etc/os-release${NC}:\n"
+        Output+="$(cat /etc/os-release)\n"
+    elif command -v lsb_release &> /dev/null; then
+        Output+="\n"
+        Output+="${C["RunningCommand"]}lsb_release -a${NC}:\n"
+        Output+="$(lsb_release -a)\n"
+    elif command -v system_profiler &> /dev/null; then
+        Output+="\n"
+        Output+="${C["RunningCommand"]}system_profiler SPSoftwareDataType${NC}:\n"
+        Output+="$(system_profiler SPSoftwareDataType)\n"
+    fi
+    printf '%b\n' "${Output:-Unable to determine system information.}"
+}
+
 # Log Functions
 MKTEMP_LOG=$(mktemp -t "${APPLICATION_NAME}.log.XXXXXXXXXX") || echo -e "Failed to create temporary log file.\nFailing command: ${C["FailingCommand"]}mktemp -t \"${APPLICATION_NAME}.log.XXXXXXXXXX\""
 readonly MKTEMP_LOG
@@ -226,6 +251,10 @@ fatal_notrace() {
 }
 fatal() {
     local -i thisFuncLine=$((LINENO - 1))
+
+    local SystemInfo
+    SystemInfo="$(get_system_info)"
+
     local -a Stack=()
     local StackSize=${#FUNCNAME[@]}
     local -i FrameNumberLength=${#StackSize}
@@ -241,7 +270,7 @@ fatal() {
     local indent=""
     local FramePrefix="  "
     for ((Frame = 0; Frame <= StackSize; Frame++)); do
-        local StackLineFormat="  ${C["TraceFrameNumber"]}%${FrameNumberLength}d${NC}:${indent}${FramePrefix}${C["TraceSourceFile"]}%s${NC}:${C["TraceLineNumber"]}%d${NC} (${C["TraceFunction"]}%s${NC})"
+        local StackLineFormat="${C["TraceFrameNumber"]}%${FrameNumberLength}d${NC}:${indent}${FramePrefix}${C["TraceSourceFile"]}%s${NC}:${C["TraceLineNumber"]}%d${NC} (${C["TraceFunction"]}%s${NC})"
 
         # shellcheck disable=SC2059 # Don't use variables in the printf format string.
         Stack+=(
@@ -268,10 +297,10 @@ fatal() {
                 done
             fi
             local StackCmdIndent
-            StackCmdIndent="$(printf "  %${FrameNumberLength}s${indent}   " "")"
+            StackCmdIndent="$(printf "%${FrameNumberLength}s ${indent}  " "")"
             local cmdLines
             cmdLines="$(
-                pr -t -o ${#StackCmdIndent} <<< "$(
+                pr -e -t -o ${#StackCmdIndent} <<< "$(
                     printf "%s\n" "${cmdArray[@]}"
                 )"
             )"
@@ -288,10 +317,19 @@ fatal() {
         FramePrefix="${C["TraceFrameLines"]}└─${NC}"
     done
 
+    SystemInfo="$(pr -e -t -o 2 <<< "${SystemInfo}")"
+    local StackTrace
+    StackTrace="$(
+        pr -e -t -o 2 <<< "$(
+            printf "%s\n" "${Stack[@]}"
+        )"
+    )"
     fatal_notrace \
-        "${C["TraceHeader"]}### BEGIN STACK TRACE ###" \
-        "${Stack[@]}" \
-        "${C["TraceFooter"]}### END STACK TRACE ###" \
+        "${C["TraceHeader"]}### BEGIN SYSTEM INFORMATION AND STACK TRACE ###" \
+        "${SystemInfo}" \
+        "" \
+        "${StackTrace}" \
+        "${C["TraceFooter"]}### END SYSTEM INFORMATION AND STACK TRACE ###" \
         "" \
         "$@" \
         "" \
