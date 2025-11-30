@@ -34,7 +34,7 @@ set_permissions() {
     info "Setting executable permission on '${C["File"]}${SCRIPTNAME}${NC}'"
     sudo chmod +x "${SCRIPTNAME}" &> /dev/null ||
         fatal \
-            "'${C["UserCommand"]}${APPLICATION_COMMAND}${NC}' must be executable.\n" \
+            "'${C["UserCommand"]}${APPLICATION_COMMAND}${NC}' must be executable." \
             "Failing command: ${C["FailingCommand"]}sudo chmod +x \"${SCRIPTNAME}\""
 }
 

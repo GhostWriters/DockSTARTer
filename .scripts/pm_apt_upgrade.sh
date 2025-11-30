@@ -17,7 +17,7 @@ pm_apt_upgrade() {
     notice "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
     eval "${REDIRECT}${COMMAND}" ||
         fatal \
-            "Failed to upgrade packages from apt.\n" \
+            "Failed to upgrade packages from apt." \
             "Failing command: ${C["FailingCommand"]}${COMMAND}"
 }
 

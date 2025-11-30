@@ -18,12 +18,12 @@ enable_docker_service() {
         info "Enabling docker service."
         eval "sudo ${DOCKER_SERVICE_ENABLE}" &> /dev/null ||
             fatal \
-                "Failed to enable docker service.\n" \
+                "Failed to enable docker service." \
                 "Failing command: ${C["FailingCommand"]}${DOCKER_SERVICE_ENABLE}"
         info "Starting docker service."
         eval "sudo ${DOCKER_SERVICE_START}" &> /dev/null ||
             fatal \
-                "Failed to start docker service.\n" \
+                "Failed to start docker service." \
                 "Failing command: ${C["FailingCommand"]}${DOCKER_SERVICE_START}"
     fi
 }

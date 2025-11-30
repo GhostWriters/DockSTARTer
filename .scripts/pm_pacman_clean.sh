@@ -6,7 +6,7 @@ pm_pacman_clean() {
     info "Cleaning up package cache."
     sudo pacman -Sc --noconfirm &> /dev/null ||
         info \
-            "Failed to cleanup pacman cache.\n" \
+            "Failed to cleanup pacman cache." \
             "Failing command: ${C["FailingCommand"]}sudo pacman -Sc --noconfirm"
 }
 

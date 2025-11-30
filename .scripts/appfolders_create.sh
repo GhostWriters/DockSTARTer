@@ -38,7 +38,7 @@ appfolders_create() {
                     notice "Creating folder '${C["Folder"]}${FOLDER}${NC}'"
                     mkdir -p "${FOLDER}" ||
                         warn \
-                            "Could not create folder '${C["Folder"]}${FOLDER}${NC}'\n" \
+                            "Could not create folder '${C["Folder"]}${FOLDER}${NC}'" \
                             "Failing command: ${C["FailingCommand"]}mkdir -p  \"${FOLDER}\""
                     if [[ -d ${FOLDER} ]]; then
                         run_script 'set_permissions' "${FOLDER}"

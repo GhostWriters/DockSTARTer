@@ -14,7 +14,7 @@ pm_apk_install_docker() {
     fi
     eval "${REDIRECT}${COMMAND}" ||
         fatal \
-            "Failed to install docker and docker-compose using apk.\n" \
+            "Failed to install docker and docker-compose using apk." \
             "Failing command: ${C["FailingCommand"]}${COMMAND}"
 }
 

@@ -19,11 +19,11 @@ override_backup() {
         info "Copying '${C["File"]}docker-compose.override.yml${NC}' file to '${C["File"]}${DOCKER_VOLUME_CONFIG}/.compose.backups/docker-compose.override.yml.${BACKUPTIME}${NC}'"
         mkdir -p "${DOCKER_VOLUME_CONFIG}/.compose.backups" ||
             fatal \
-                "Failed to make directory.\n" \
+                "Failed to make directory." \
                 "Failing command: ${C["FailingCommand"]}mkdir -p \"${DOCKER_VOLUME_CONFIG}/.compose.backups\""
         cp "${COMPOSE_FOLDER}/docker-compose.override.yml" "${DOCKER_VOLUME_CONFIG}/.compose.backups/docker-compose.override.yml.${BACKUPTIME}" ||
             fatal \
-                "Failed to copy file.\n" \
+                "Failed to copy file." \
                 "Failing command: ${C["FailingCommand"]}cp \"${COMPOSE_FOLDER}/docker-compose.override.yml\" \"${DOCKER_VOLUME_CONFIG}/.compose.backups/docker-compose.override.yml.${BACKUPTIME}\""
         run_script 'set_permissions' "${DOCKER_VOLUME_CONFIG}/.compose.backups"
         info "Removing old '${C["File"]}docker-compose.override.yml${NC}' backups."

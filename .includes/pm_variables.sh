@@ -197,8 +197,8 @@ pm_check_dependencies() {
                     printf \
                         "Dependency '${C["Program"]-}%s${NC-}' is not installed.\n" \
                         "${Dependencies[@]}"
-                )\n" \
-                    "Not all dependencies are installed.\n" \
+                )" \
+                    "Not all dependencies are installed." \
                     "Either install them manually, or run '${C["UserCommand"]-}${APPLICATION_COMMAND} -i${NC-}' to install dependencies."
                 ;;
         esac

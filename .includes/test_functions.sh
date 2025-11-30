@@ -78,8 +78,8 @@ run_unit_tests_pipe() {
     )"
     notice \
         "${TableLine}" \
-        "${Heading}\n" \
-        "${TableLine}\n"
+        "${Heading}" \
+        "${TableLine}"
     local -i i
     for ((i = 0; i < ${#Test[@]}; i += 3)); do
         local Input="${Test[i]-}"

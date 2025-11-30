@@ -48,7 +48,7 @@ env_copy() {
     fi
     printf '\n%s\n' "${NEW_VAR_LINE}" >> "${TO_VAR_FILE}" ||
         fatal \
-            "Failed to add '${C["Var"]}${NEW_VAR_LINE}${NC}' in '${C["File"]}${TO_VAR_FILE}${NC}'\n" \
+            "Failed to add '${C["Var"]}${NEW_VAR_LINE}${NC}' in '${C["File"]}${TO_VAR_FILE}${NC}'" \
             "Failing command: ${C["FailingCommand"]}printf '\n%s\n' \"${NEW_VAR_LINE}\" >> \"${TO_VAR_FILE}\""
 }
 

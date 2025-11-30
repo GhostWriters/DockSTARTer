@@ -27,7 +27,7 @@ command_get_docker() {
     #shellcheck disable=SC2034 # (warning): MKTEMP_GET_DOCKER appears unused. Verify use (or export if used externally).
     MKTEMP_GET_DOCKER=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.MKTEMP_GET_DOCKER.XXXXXXXXXX") ||
         fatal \
-            "Failed to create temporary docker install script.\n" \
+            "Failed to create temporary docker install script." \
             "Failing command: ${C["FailingCommand"]}mktemp -t \"${APPLICATION_NAME}.${FUNCNAME[0]}.MKTEMP_GET_DOCKER.XXXXXXXXXX\""
     info "Downloading docker install script."
     #shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
@@ -35,7 +35,7 @@ command_get_docker() {
     notice "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
     eval "${COMMAND}" ||
         fatal \
-            "Failed to get docker install script.\n" \
+            "Failed to get docker install script." \
             "Failing command: ${C["FailingCommand"]}${COMMAND}"
     info "Running docker install script."
     #shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
@@ -43,7 +43,7 @@ command_get_docker() {
     notice "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
     eval "${COMMAND}" ||
         fatal \
-            "Failed to install docker.\n" \
+            "Failed to install docker." \
             "Failing command: ${C["FailingCommand"]}${COMMAND}"
     #shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
     COMMAND='rm -f "${MKTEMP_GET_DOCKER}"'
@@ -56,10 +56,10 @@ test_get_docker() {
     run_script 'get_docker'
     docker --version ||
         fatal \
-            "Failed to determine docker version.\n" \
+            "Failed to determine docker version." \
             "Failing command: ${C["FailingCommand"]}docker --version"
     docker compose version ||
         fatal \
-            "Failed to determine docker compose version.\n" \
+            "Failed to determine docker compose version." \
             "Failing command: ${C["FailingCommand"]}docker compose version"
 }

@@ -32,7 +32,7 @@ pm_pacman_install() {
     notice "Running: ${C["RunningCommand"]}${Command}${NC}"
     eval "${REDIRECT}${Command}" ||
         fatal \
-            "Failed to install dependencies from pacman.\n" \
+            "Failed to install dependencies from pacman." \
             "Failing command: ${C["FailingCommand"]}${Command}"
 }
 
@@ -46,7 +46,7 @@ detect_packages() {
         notice "Running: ${C["RunningCommand"]}${Command}${NC}"
         eval "${REDIRECT}${Command}" ||
             fatal \
-                "Failed to install '${C["Program"]}pkgfile${NC}' from pacman.\n" \
+                "Failed to install '${C["Program"]}pkgfile${NC}' from pacman." \
                 "Failing command: ${C["FailingCommand"]}${Command}"
     fi
     notice "Updating package information."
@@ -54,7 +54,7 @@ detect_packages() {
     notice "Running: ${C["RunningCommand"]}${Command}${NC}"
     eval "${REDIRECT}${Command}" ||
         fatal \
-            "Failed to get updates from pkgfile.\n" \
+            "Failed to get updates from pkgfile." \
             "Failing command: ${C["FailingCommand"]}${Command}"
 
     local RegEx_Package_Blacklist
@@ -71,7 +71,7 @@ detect_packages() {
         notice "Running: ${C["RunningCommand"]}${Command}${NC}"
         Package="$(eval "${Command}" 2> /dev/null)" ||
             fatal \
-                "Failed to find packages to install.\n" \
+                "Failed to find packages to install." \
                 "Failing command: ${C["FailingCommand"]}${Command}"
         Package="${Package##*/}"
         if [[ -n ${Package} && (-z ${RegEx_Package_Blacklist-} || ! ${Package} =~ ${RegEx_Package_Blacklist}) ]]; then

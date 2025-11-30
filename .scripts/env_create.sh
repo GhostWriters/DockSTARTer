@@ -28,7 +28,7 @@ env_create() {
         warn "${F[C]}${COMPOSE_ENV}${NC} not found. Copying example template."
         cp "${COMPOSE_ENV_DEFAULT_FILE}" "${COMPOSE_ENV}" ||
             fatal \
-                "Failed to copy file.\n" \
+                "Failed to copy file." \
                 "Failing command: ${C["FailingCommand"]}cp \"${COMPOSE_ENV_DEFAULT_FILE}\" \"${COMPOSE_ENV}\""
         run_script 'set_permissions' "${COMPOSE_ENV}"
         run_script 'env_sanitize'

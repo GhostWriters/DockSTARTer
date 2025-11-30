@@ -125,7 +125,7 @@ docker_compose() {
                         eval "${Command}" || result=$?
                         if [[ ${result} != 0 ]]; then
                             error \
-                                "Failed to run compose.\n" \
+                                "Failed to run compose." \
                                 "Failing command: ${C["FailingCommand"]}${Command}"
                             break
                         fi
@@ -146,7 +146,7 @@ docker_compose() {
                     eval "${Command}" || result=$?
                     if [[ ${result} != 0 ]]; then
                         error \
-                            "Failed to run compose.\n" \
+                            "Failed to run compose." \
                             "Failing command: ${C["FailingCommand"]}${Command}"
                         break
                     fi
@@ -171,7 +171,7 @@ test_docker_compose() {
     run_script 'yml_merge'
     eval "docker compose --project-directory ${COMPOSE_FOLDER}/ config" ||
         fatal \
-            "Failed to display compose config.\n" \
+            "Failed to display compose config." \
             "Failing command: ${C["FailingCommand"]}docker compose --project-directory ${COMPOSE_FOLDER}/ config"
     run_script 'docker_compose'
 }

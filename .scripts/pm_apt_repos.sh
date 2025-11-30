@@ -25,7 +25,7 @@ pm_apt_repos() {
         notice "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
         eval "${REDIRECT}${COMMAND}" ||
             fatal \
-                "Failed to get updates from apt.\n" \
+                "Failed to get updates from apt." \
                 "Failing command: ${C["FailingCommand"]}${COMMAND}"
 
         COMMAND="sudo apt-get -y install apt-transport-https"
@@ -33,7 +33,7 @@ pm_apt_repos() {
         notice "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
         eval "${REDIRECT}${COMMAND}" ||
             fatal \
-                "Failed to install apt-transport-https from apt.\n" \
+                "Failed to install apt-transport-https from apt." \
                 "Failing command: ${C["FailingCommand"]}${COMMAND}"
     fi
     local MINIMUM_LIBSECCOMP2="2.4.4"
@@ -44,11 +44,11 @@ pm_apt_repos() {
         info "Installing buster-backports repo for libseccomp2."
         sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 04EE7237B7D453EC 648ACFD622F3D138 ||
             error \
-                "Failed to get apt key for buster-backports repo.\n" \
+                "Failed to get apt key for buster-backports repo." \
                 "Failing command: ${C["FailingCommand"]}sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 04EE7237B7D453EC 648ACFD622F3D138"
         echo "deb http://deb.debian.org/debian buster-backports main" | sudo tee -a /etc/apt/sources.list.d/buster-backports.list ||
             error \
-                "Failed to add buster-backports repo to sources.\n" \
+                "Failed to add buster-backports repo to sources." \
                 "Failing command: ${C["FailingCommand"]}echo \"deb http://deb.debian.org/debian buster-backports main\" | sudo tee -a /etc/apt/sources.list.d/buster-backports.list"
     fi
     COMMAND="sudo apt-get -y update"
@@ -56,7 +56,7 @@ pm_apt_repos() {
     notice "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
     eval "${REDIRECT}${COMMAND}" ||
         fatal \
-            "Failed to get updates from apt.\n" \
+            "Failed to get updates from apt." \
             "Failing command: ${C["FailingCommand"]}${COMMAND}"
     if vergt "${MINIMUM_LIBSECCOMP2}" "${INSTALLED_LIBSECCOMP2:-0}"; then
         COMMAND="sudo apt-get -y install -t buster-backports libseccomp2"
@@ -64,7 +64,7 @@ pm_apt_repos() {
         notice "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
         eval "${REDIRECT}${COMMAND}" ||
             fatal \
-                "Failed to install libseccomp2 from buster-backports repo.\n" \
+                "Failed to install libseccomp2 from buster-backports repo." \
                 "Failing command: ${C["FailingCommand"]}${COMMAND}"
     fi
 }

@@ -26,7 +26,7 @@ app_instance_folder() {
         if [[ ! -d ${InstanceFolder} ]]; then
             mkdir -p "${InstanceFolder}" ||
                 fatal \
-                    "Failed to create folder '${C["Folder"]}${InstanceFolder}${NC}'.\n" \
+                    "Failed to create folder '${C["Folder"]}${InstanceFolder}${NC}'." \
                     "Failing command: ${C["FailingCommand"]}mkdir -p \"${InstanceFolder}\""
             run_script 'set_permissions' "${InstanceFolder}"
         fi

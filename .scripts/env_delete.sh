@@ -31,7 +31,7 @@ env_delete() {
     notice "   ${C["Var"]}${DELETE_VAR}${NC}"
     ${SED} -i "/^\s*${DELETE_VAR}\s*=/d" "${VAR_FILE}" ||
         fatal \
-            "Failed to remove var '${C["Var"]}${DELETE_VAR}${NC}' in '${C["File"]}${VAR_FILE}${NC}'\n" \
+            "Failed to remove var '${C["Var"]}${DELETE_VAR}${NC}' in '${C["File"]}${VAR_FILE}${NC}'" \
             "Failing command: ${C["FailingCommand"]}${SED} -i \"/^\\s*${DELETE_VAR}\\s*=/d\" \"${VAR_FILE}\""
 }
 

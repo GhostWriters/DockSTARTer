@@ -13,7 +13,7 @@ pm_brew_repos() {
     notice "Running: ${C["RunningCommand"]}${Command}${NC}"
     eval "${REDIRECT}${Command}" ||
         fatal \
-            "Failed to get updates from brew.\n" \
+            "Failed to get updates from brew." \
             "Failing command: ${C["FailingCommand"]}${Command}"
 }
 

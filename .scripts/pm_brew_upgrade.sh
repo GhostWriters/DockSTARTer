@@ -13,7 +13,7 @@ pm_brew_upgrade() {
         notice "Running: ${C["RunningCommand"]}${Command}${NC}"
         eval "${REDIRECT}${Command}" ||
             fatal \
-                "Failed to upgrade packages from brew.\n" \
+                "Failed to upgrade packages from brew." \
                 "Failing command: ${C["FailingCommand"]}${Command}"
     done
 }

@@ -17,7 +17,7 @@ pm_nala_upgrade() {
     notice "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
     eval "${REDIRECT}${COMMAND}" ||
         fatal \
-            "Failed to upgrade packages from nala.\n" \
+            "Failed to upgrade packages from nala." \
             "Failing command: ${C["FailingCommand"]}${COMMAND}"
 }
 

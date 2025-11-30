@@ -185,37 +185,43 @@ log() {
     if [[ -n ${ToTerm} ]]; then
         if [[ -t 2 ]]; then
             # Stderr is not being redirected, output with color
-            printf '%b\n' "${Message}" >&2
+            printf '%s\n' "${Message}" >&2
         else
             # Stderr is being redirected, output without color
-            printf '%b\n' "${StrippedMessage}" >&2
+            printf '%s\n' "${StrippedMessage}" >&2
         fi
     fi
     # Output the message to the log file without color
-    printf '%b\n' "${StrippedMessage}" >> "${MKTEMP_LOG}"
+    printf '%s\n' "${StrippedMessage}" >> "${MKTEMP_LOG}" || true
 }
 timestamped_log() {
-    local ToTerm=${1-}
-    local LogLevelTag=${2-}
-    shift 2
-    LogMessage=$(printf '%b' "$@")
+    local LogLevelTag=${1-}
+    shift 1
+    local LogMessage
+    LogMessage=$(printf '%b\n' "$@")
     # Create a notice for each argument passed to the function
     local Timestamp
     Timestamp=$(date +"%F %T")
     # Create separate notices with the same timestamp for each line in a log message
     local line
     while IFS= read -r line; do
-        log "${ToTerm-}" "${NC}${C["Timestamp"]-}${Timestamp}${NC-} ${LogLevelTag}   ${line}${NC}"
+        printf "${NC}${C["Timestamp"]-}${Timestamp}${NC-} ${LogLevelTag}   %s${NC}\n" "${line}"
     done <<< "${LogMessage}"
 }
-trace() { timestamped_log "${TRACE-}" "${C["Trace"]-}[TRACE ]${NC-}" "$@"; }
-debug() { timestamped_log "${DEBUG-}" "${C["Debug"]-}[DEBUG ]${NC-}" "$@"; }
-info() { timestamped_log "${VERBOSE-}" "${C["Info"]-}[INFO  ]${NC-}" "$@"; }
-notice() { timestamped_log true "${C["Notice"]-}[NOTICE]${NC-}" "$@"; }
-warn() { timestamped_log true "${C["Warn"]-}[WARN  ]${NC-}" "$@"; }
-error() { timestamped_log true "${C["Error"]-}[ERROR ]${NC-}" "$@"; }
+trace() { log "${TRACE-}" "$(timestamped_log "${C["Trace"]-}[TRACE ]${NC-}" "$@")"; }
+debug() { log "${DEBUG-}" "$(timestamped_log "${C["Debug"]-}[DEBUG ]${NC-}" "$@")"; }
+info() { log "${VERBOSE-}" "$(timestamped_log "${C["Info"]-}[INFO  ]${NC-}" "$@")"; }
+notice() { log true "$(timestamped_log "${C["Notice"]-}[NOTICE]${NC-}" "$@")"; }
+warn() { log true "$(timestamped_log "${C["Warn"]-}[WARN  ]${NC-}" "$@")"; }
+error() { log true "$(timestamped_log "${C["Error"]-}[ERROR ]${NC-}" "$@")"; }
 fatal_notrace() {
-    timestamped_log true "${C["Fatal"]-}[FATAL ]${NC}" "$@"
+    local LogMessage
+    LogMessage="$(timestamped_log "${C["Fatal"]-}[FATAL ]${NC}" "$@")"
+    log true "${LogMessage}"
+    if declare -F strip_ansi_colors > /dev/null; then
+        LogMessage=$(strip_ansi_colors "${LogMessage-}")
+    fi
+    printf '%s\n' "${LogMessage}" > "${FATAL_LOG}" || true
     exit 1
 }
 fatal() {
@@ -236,13 +242,13 @@ fatal() {
     local indent=""
     local FramePrefix="  "
     for ((Frame = 0; Frame <= StackSize; Frame++)); do
-        local StackLineFormat="  ${C["TraceFrameNumber"]}%${FrameNumberLength}d${NC}:${indent}${FramePrefix}${C["TraceSourceFile"]}%s${NC}:${C["TraceLineNumber"]}%d${NC} (${C["TraceFunction"]}%s${NC})\n"
+        local StackLineFormat="  ${C["TraceFrameNumber"]}%${FrameNumberLength}d${NC}:${indent}${FramePrefix}${C["TraceSourceFile"]}%s${NC}:${C["TraceLineNumber"]}%d${NC} (${C["TraceFunction"]}%s${NC})"
 
         # shellcheck disable=SC2059 # Don't use variables in the printf format string.
         Stack+=(
             "$(
                 printf "${StackLineFormat}" "${Frame}" "${SourceFile}" "${line}" "${func}"
-            )\n"
+            )"
         )
         if [[ -n ${cmd-} ]]; then
             local FrameCmdPrefix="${C["TraceFrameLines"]}│"
@@ -255,7 +261,7 @@ fatal() {
                 for ((j = CurrentArg + CmdArgCount - 1; j >= CurrentArg; j--)); do
                     local cmdArgString="${BASH_ARGV[$j]}"
                     cmdArgString="$(strip_ansi_colors "${cmdArgString}")"
-                    cmdArgString="${cmdArgString//\\/\\\\\\\\}"
+                    cmdArgString="${cmdArgString//\\/\\\\}"
                     cmdArgString="${NC}«${C["TraceCmdArgs"]}${cmdArgString}${NC}»"
                     while read -r cmdLine; do
                         cmdArray+=("${FrameArgPrefix}${C["TraceCmdArgs"]}${cmdLine}")
@@ -271,7 +277,7 @@ fatal() {
                 )"
             )"
             # shellcheck disable=SC2059 # Don't use variables in the printf format string.
-            Stack+=("${cmdLines}\n")
+            Stack+=("${cmdLines}")
         fi
         SourceFile="${BASH_SOURCE[Frame + 1]:-$NoFile}"
         line="${BASH_LINENO[Frame]:-0}"
@@ -284,15 +290,14 @@ fatal() {
     done
 
     fatal_notrace \
-        "${C["TraceHeader"]}### BEGIN STACK TRACE ###\n" \
+        "${C["TraceHeader"]}### BEGIN STACK TRACE ###" \
         "${Stack[@]}" \
-        "${C["TraceFooter"]}### END STACK TRACE ###\n" \
-        "\n" \
+        "${C["TraceFooter"]}### END STACK TRACE ###" \
+        "" \
         "$@" \
-        "\n" \
-        "\n" \
-        "${C["FatalFooter"]}Please let the dev know of this error.\n" \
-        "${C["FatalFooter"]}It has been recorded in '${C["File"]}${APPLICATION_LOG}${C["FatalFooter"]}'.\n"
+        "" \
+        "${C["FatalFooter"]}Please let the dev know of this error." \
+        "${C["FatalFooter"]}It has been written to '${C["File"]}${FATAL_LOG}${C["FatalFooter"]}', and appended to '${C["File"]}${APPLICATION_LOG}${C["FatalFooter"]}'."
 }
 
 [[ -f "${SCRIPTPATH}/.includes/global_variables.sh" ]] && source "${SCRIPTPATH}/.includes/global_variables.sh"
@@ -309,7 +314,7 @@ fatal() {
 check_arch() {
     if [[ ${ARCH} != "aarch64" ]] && [[ ${ARCH} != "x86_64" ]]; then
         fatal_notrace \
-            "Unsupported architeture.\n" \
+            "Unsupported architeture." \
             "Supported architetures are 'aarch64' or 'x86_64', running architeture is '${ARCH}'."
     fi
 }
@@ -327,7 +332,7 @@ check_repo() {
 check_root() {
     if [[ ${DETECTED_PUID} == "0" ]] || [[ ${DETECTED_HOMEDIR} == "/root" ]]; then
         fatal_notrace \
-            "Running as '${C["User"]-}root${NC-}' is not supported.\n" \
+            "Running as '${C["User"]-}root${NC-}' is not supported." \
             "Please run as a standard user."
     fi
 }
@@ -336,7 +341,7 @@ check_root() {
 check_sudo() {
     if [[ ${EUID} -eq 0 ]]; then
         fatal_notrace \
-            "Running with '${C["UserCommand"]-}sudo${NC-}' is not supported.\n" \
+            "Running with '${C["UserCommand"]-}sudo${NC-}' is not supported." \
             "Commands requiring '${C["UserCommand"]-}sudo${NC-}' will prompt automatically when required."
     fi
 }
@@ -345,7 +350,7 @@ clone_repo() {
         "Attempting to clone ${APPLICATION_NAME} repo to '${C["Folder"]-}${DETECTED_HOMEDIR}/.docker${NC-}' location."
     git clone -b "${TARGET_BRANCH}" "${APPLICATION_REPO}" "${DETECTED_HOMEDIR}/.docker" ||
         fatal \
-            "Failed to clone ${APPLICATION_NAME} repo.\n" \
+            "Failed to clone ${APPLICATION_NAME} repo." \
             "Failing command: ${C["FailingCommand"]-}git clone -b \"${TARGET_BRANCH}\" \"${APPLICATION_REPO}\" \"${DETECTED_HOMEDIR}/.docker\""
     if [[ ${#ARGS[@]} -eq 0 ]]; then
         notice \
@@ -457,8 +462,8 @@ init_check_update() {
     if ds_branch_exists "${Branch}"; then
         if ds_update_available; then
             warn \
-                "${APPLICATION_NAME} [${C["Version"]-}${APPLICATION_VERSION}${NC-}]\n" \
-                "An update to ${APPLICATION_NAME} is available.\n" \
+                "${APPLICATION_NAME} [${C["Version"]-}${APPLICATION_VERSION}${NC-}]" \
+                "An update to ${APPLICATION_NAME} is available." \
                 "Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -u${NC-}' to update to version '${C["Version"]-}$(ds_version "${Branch}")${NC-}'."
         else
             info \
@@ -470,7 +475,7 @@ init_check_update() {
             MainBranch="${SOURCE_BRANCH}"
         fi
         warn \
-            "${APPLICATION_NAME} branch '${C["Branch"]-}${Branch}${NC-}' appears to no longer exist.\n" \
+            "${APPLICATION_NAME} branch '${C["Branch"]-}${Branch}${NC-}' appears to no longer exist." \
             "${APPLICATION_NAME} is currently on version '${C["Version"]-}$(ds_version)${NC-}'."
         if ! ds_branch_exists "${MainBranch}"; then
             error \

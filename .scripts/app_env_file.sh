@@ -20,7 +20,7 @@ app_env_file() {
         notice "Renaming '${C["File"]}${OldAppEnvFile}${NC}' to '${C["File"]}${AppEnvFile}${NC}'"
         mv "${OldAppEnvFile}" "${AppEnvFile}" ||
             fatal \
-                "Failed to rename file.\n" \
+                "Failed to rename file." \
                 "Failing command: ${C["FailingCommand"]}mv \"${OldAppEnvFile}\" \"${AppEnvFile}\""
         local SearchString="${APP_ENV_FOLDER_NAME}/${OldAppEnvFilename}"
         if [[ -f ${COMPOSE_OVERRIDE} ]] && ${GREP} -q -F "${SearchString}" "${COMPOSE_OVERRIDE}"; then
@@ -32,7 +32,7 @@ app_env_file() {
             SearchString="${SearchString//./[.]}"
             ${SED} -i "s|${SearchString}|${ReplaceString}|g" "${COMPOSE_OVERRIDE}" ||
                 fatal \
-                    "Failed to edit override file.\n" \
+                    "Failed to edit override file." \
                     "Failing command: ${C["FailingCommand"]}${SED} -i \"s|${SearchString}|${ReplaceString}|g\" \"${COMPOSE_OVERRIDE}\""
         fi
     fi

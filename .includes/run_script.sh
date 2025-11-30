@@ -25,7 +25,7 @@ check_script() {
 
     pm_check_dependencies error "${_dependencies_list[@]}" ||
         fatal \
-            "Fatal error in '${C["RunningCommand"]-}${script_name}${NC-}'.\n"
+            "Fatal error in '${C["RunningCommand"]-}${script_name}${NC-}'."
 }
 
 # Script Runner Function

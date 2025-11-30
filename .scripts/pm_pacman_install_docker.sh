@@ -14,7 +14,7 @@ pm_pacman_install_docker() {
     fi
     eval "${REDIRECT}${COMMAND}" ||
         fatal \
-            "Failed to install docker and docker-compose using pacman.\n" \
+            "Failed to install docker and docker-compose using pacman." \
             "Failing command: ${C["FailingCommand"]}${COMMAND}"
 }
 

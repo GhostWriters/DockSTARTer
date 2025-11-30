@@ -26,11 +26,11 @@ config_package_manager() {
         if [[ -n ${PackageManager} ]]; then
             if ! run_script 'package_manager_is_valid' "${PackageManager}"; then
                 error \
-                    "Selected package manager '${C["UserCommand"]}${PackageManager}${NC}' unknown.\n" \
-                    "\n" \
-                    "Known package managers are:\n" \
-                    "\n" \
-                    "$(run_script 'package_manager_table')\n"
+                    "Selected package manager '${C["UserCommand"]}${PackageManager}${NC}' unknown." \
+                    "" \
+                    "Known package managers are:" \
+                    "" \
+                    "$(run_script 'package_manager_table')"
                 return 1
             fi
             run_script 'config_set' PackageManager "${PackageManager}"
@@ -42,11 +42,11 @@ config_package_manager() {
 
         if [[ -n ${PackageManager} ]] && ! run_script 'package_manager_exists' "${PackageManager}"; then
             warn \
-                "Selected package manager '${C["UserCommand"]}${PackageManager}${NC}' not detected.\n" \
-                "\n" \
-                "Detected package managers are:\n" \
-                "\n" \
-                "$(run_script 'package_manager_existing_table')\n"
+                "Selected package manager '${C["UserCommand"]}${PackageManager}${NC}' not detected." \
+                "" \
+                "Detected package managers are:" \
+                "" \
+                "$(run_script 'package_manager_existing_table')"
         fi
     fi
 

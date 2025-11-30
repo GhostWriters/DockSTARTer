@@ -29,7 +29,7 @@ commands_yml_merge() {
             if [[ -f ${main_yml} ]]; then
                 if run_script 'app_is_deprecated' "${APPNAME}"; then
                     warn \
-                        "'${C["App"]}${AppName}${NC}' IS DEPRECATED!\n" \
+                        "'${C["App"]}${AppName}${NC}' IS DEPRECATED!" \
                         "Please run '${C["UserCommand"]}${APPLICATION_COMMAND} --status-disable ${AppName}${NC}' to disable it."
                 fi
                 local arch_yml
@@ -123,7 +123,7 @@ commands_yml_merge() {
     eval "docker compose --project-directory ${COMPOSE_FOLDER}/ config > ${COMPOSE_FOLDER}/docker-compose.yml" || result=$?
     if [[ ${result} != 0 ]]; then
         error \
-            "Failed to output compose config.\n" \
+            "Failed to output compose config." \
             "Failing command: ${C["FailingCommand"]}docker compose --project-directory ${COMPOSE_FOLDER}/ config > \"${COMPOSE_FOLDER}/docker-compose.yml\""
         return ${result}
     fi
@@ -137,7 +137,7 @@ test_yml_merge() {
     run_script 'yml_merge'
     eval "docker compose --project-directory ${COMPOSE_FOLDER}/ config" ||
         fatal \
-            "Failed to display compose config.\n" \
+            "Failed to display compose config." \
             "Failing command: ${C["FailingCommand"]}docker compose --project-directory ${COMPOSE_FOLDER}/ config"
     run_script 'appvars_purge' WATCHTOWER
 }

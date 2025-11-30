@@ -32,7 +32,7 @@ pm_dnf_install() {
     notice "Running: ${C["RunningCommand"]}${Command}${NC}"
     eval "${REDIRECT}${Command}" ||
         fatal \
-            "Failed to install dependencies from dnf.\n" \
+            "Failed to install dependencies from dnf." \
             "Failing command: ${C["FailingCommand"]}${Command}"
 }
 
