@@ -75,6 +75,14 @@ custom_quote_elements_with_spaces() {
     printf '%s\n' "${Result}"
 }
 
+indent_text() {
+    local -i IndentSize=${1}
+    shift
+    pr -e -t -o ${IndentSize} <<< "$(
+        printf "%s\n" "$@"
+    )"
+}
+
 is_true() {
     local -u Boolean=${1-}
     [[ ${Boolean} =~ ^(1|ON|TRUE|YES)$ ]]
