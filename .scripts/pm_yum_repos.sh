@@ -9,12 +9,12 @@ pm_yum_repos() {
     local MKTEMP_GET_IUS
     MKTEMP_GET_IUS=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.MKTEMP_GET_IUS.XXXXXXXXXX") ||
         fatal \
-            "Failed to create temporary IUS repo install script.\n" \
+            "Failed to create temporary IUS repo install script." \
             "Failing command: ${C["FailingCommand"]}mktemp -t \"${APPLICATION_NAME}.${FUNCNAME[0]}.MKTEMP_GET_IUS.XXXXXXXXXX\""
     info "Downloading IUS install script."
     curl -fsSL setup.ius.io -o "${MKTEMP_GET_IUS}" &> /dev/null ||
         fatal \
-            "Failed to get IUS install script.\n" \
+            "Failed to get IUS install script." \
             "Failing command: ${C["FailingCommand"]}curl -fsSL setup.ius.io -o \"${MKTEMP_GET_IUS}\""
 
     info "Running IUS install script."
@@ -27,11 +27,11 @@ pm_yum_repos() {
     COMMAND="sudo bash ${MKTEMP_GET_IUS}"
     eval "${REDIRECT}${COMMAND}" ||
         warn \
-            "Failed to install IUS.\n" \
+            "Failed to install IUS." \
             "Failing command: ${C["FailingCommand"]}${COMMAND}"
     rm -f "${MKTEMP_GET_IUS}" ||
         warn \
-            "Failed to remove temporary IUS repo install script.\n" \
+            "Failed to remove temporary IUS repo install script." \
             "Failing command: ${C["FailingCommand"]}rm -f \"${MKTEMP_GET_IUS}\""
 }
 

@@ -663,10 +663,10 @@ run_command() {
             local UpperCase="${MenuCommandUpperCase["${MenuCommand}"]-}"
             if [[ -z ${DIALOG-} ]]; then
                 fatal_notrace \
-                    "The GUI requires the '${C["Program"]-}dialog${NC-}' command to be installed.\n" \
-                    "'${C["Program"]-}dialog${NC-}' command not found. Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -i${NC-}' to install all dependencies.\n" \
-                    "\n" \
-                    "Unable to start GUI without the '${C["Program"]-}dialog${NC-}' command.\n"
+                    "The GUI requires the '${C["Program"]-}dialog${NC-}' command to be installed." \
+                    "'${C["Program"]-}dialog${NC-}' command not found. Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -i${NC-}' to install all dependencies." \
+                    "" \
+                    "Unable to start GUI without the '${C["Program"]-}dialog${NC-}' command."
             fi
 
             if [[ ${#ParamsArray[@]} -gt 1 ]]; then
@@ -739,10 +739,10 @@ run_command() {
             if [[ ${RequireDialog-} ]]; then
                 if [[ -z ${DIALOG-} ]]; then
                     fatal_notrace \
-                        "The GUI requires the '${C["Program"]-}dialog${NC-}' command to be installed.\n" \
-                        "'${C["Program"]-}dialog${NC-}' command not found. Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -i${NC-}' to install all dependencies.\n" \
-                        "\n" \
-                        "Unable to start GUI without the '${C["Program"]-}dialog${NC-}' command.\n"
+                        "The GUI requires the '${C["Program"]-}dialog${NC-}' command to be installed." \
+                        "'${C["Program"]-}dialog${NC-}' command not found. Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -i${NC-}' to install all dependencies." \
+                        "" \
+                        "Unable to start GUI without the '${C["Program"]-}dialog${NC-}' command."
                 fi
                 declare -gx PROMPT="GUI"
                 run_script "${Script}" "${ParamsArray[@]-}"
@@ -776,10 +776,10 @@ run_command() {
             if [[ ${RequireDialog-} ]]; then
                 if [[ -z ${DIALOG-} ]]; then
                     fatal \
-                        "The GUI requires the '${C["Program"]-}dialog${NC-}' command to be installed.\n" \
-                        "'${C["Program"]-}dialog${NC-}' command not found. Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -i${NC-}' to install all dependencies.\n" \
-                        "\n" \
-                        "Unable to start GUI without the '${C["Program"]-}dialog${NC-}' command.\n"
+                        "The GUI requires the '${C["Program"]-}dialog${NC-}' command to be installed." \
+                        "'${C["Program"]-}dialog${NC-}' command not found. Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -i${NC-}' to install all dependencies." \
+                        "" \
+                        "Unable to start GUI without the '${C["Program"]-}dialog${NC-}' command."
                 fi
                 declare -gx PROMPT="GUI"
                 run_script "${Script}" ""
@@ -805,10 +805,10 @@ run_command() {
                     "No script is defined for command '${C["UserCommand"]-}${Command}${NC-}'."
             fi
             [[ -z ${DIALOG-} ]] && fatal_notrace \
-                "The GUI requires the '${C["Program"]-}dialog${NC-}' command to be installed.\n" \
-                "'${C["Program"]-}dialog${NC-}' command not found. Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -i${NC-}' to install all dependencies.\n" \
-                "\n" \
-                "Unable to start GUI without the '${C["Program"]-}dialog${NC-}' command.\n"
+                "The GUI requires the '${C["Program"]-}dialog${NC-}' command to be installed." \
+                "'${C["Program"]-}dialog${NC-}' command not found. Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -i${NC-}' to install all dependencies." \
+                "" \
+                "Unable to start GUI without the '${C["Program"]-}dialog${NC-}' command."
             declare -gx PROMPT="GUI"
             local AppName="${ParamsArray[0]-}"
             if [[ -z ${AppName} ]]; then
@@ -992,7 +992,7 @@ set_flags() {
                     warn \
                         "The '${C["UserCommand"]-}${APPLICATION_COMMAND} ${flag}${NC-}' option requires the '${C["Program"]-}dialog$}NC}' command to be installed." \
                         "'${C["Program"]-}dialog${NC-}' command not found. Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -i${NC-}' to install all dependencies." \
-                        "\n" \
+                        "" \
                         "Coninuing without '${C["UserCommand"]-}${flag}${NC-}' option."
                 fi
                 ;;

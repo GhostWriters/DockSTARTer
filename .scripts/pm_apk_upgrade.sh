@@ -15,7 +15,7 @@ pm_apk_upgrade() {
         fi
         eval "${REDIRECT}${COMMAND}" ||
             fatal \
-                "Failed to upgrade packages from apk.\n" \
+                "Failed to upgrade packages from apk." \
                 "Failing command: ${C["FailingCommand"]}${COMMAND}"
     fi
 }

@@ -14,7 +14,7 @@ pm_brew_clean() {
     notice "Running: ${C["RunningCommand"]}${Command}${NC}"
     eval "${REDIRECT}${Command}" ||
         warn \
-            "Failed to remove unused packages from brew.\n" \
+            "Failed to remove unused packages from brew." \
             "Failing command: ${C["FailingCommand"]}${Command}"
 
     info "Cleaning up package cache."
@@ -22,7 +22,7 @@ pm_brew_clean() {
     notice "Running: ${C["RunningCommand"]}${Command}${NC}"
     eval "${REDIRECT}${Command}" ||
         warn \
-            "Failed to cleanup cache from brew.\n" \
+            "Failed to cleanup cache from brew." \
             "Failing command: ${C["FailingCommand"]}${Command}"
 }
 

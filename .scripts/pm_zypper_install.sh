@@ -32,7 +32,7 @@ pm_zypper_install() {
     notice "Running: ${C["RunningCommand"]}${Command}${NC}"
     eval "${REDIRECT}${Command}" ||
         fatal \
-            "Failed to install dependencies from zypper.\n" \
+            "Failed to install dependencies from zypper." \
             "Failing command: ${C["FailingCommand"]}${Command}"
 }
 

@@ -15,7 +15,7 @@ pm_dnf_upgrade() {
         fi
         eval "${REDIRECT}${COMMAND}" ||
             fatal \
-                "Failed to upgrade packages from dnf.\n" \
+                "Failed to upgrade packages from dnf." \
                 "Failing command: ${C["FailingCommand"]}${COMMAND}"
     fi
 }

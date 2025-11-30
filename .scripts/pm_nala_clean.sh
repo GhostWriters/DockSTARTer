@@ -14,7 +14,7 @@ pm_nala_clean() {
     notice "Running: ${C["RunningCommand"]}${Command}${NC}"
     eval "${REDIRECT}${Command}" ||
         warn \
-            "Failed to remove unused packages from nala.\n" \
+            "Failed to remove unused packages from nala." \
             "Failing command: ${C["FailingCommand"]}${Command}"
 
     info "Cleaning up package cache."
@@ -22,7 +22,7 @@ pm_nala_clean() {
     notice "Running: ${C["RunningCommand"]}${Command}${NC}"
     eval "${REDIRECT}${Command}" ||
         warn \
-            "Failed to cleanup cache from nala.\n" \
+            "Failed to cleanup cache from nala." \
             "Failing command: ${C["FailingCommand"]}${Command}"
 }
 

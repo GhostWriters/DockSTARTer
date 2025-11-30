@@ -151,7 +151,7 @@ config_theme() {
 
     echo "${DialogOptions}" > "${DIALOG_OPTIONS_FILE}" ||
         fatal \
-            "Failed to save dialog options file.\n" \
+            "Failed to save dialog options file." \
             "Failing command: ${C["FailingCommand"]}echo \"${DialogOptions}\" > \"${DIALOG_OPTIONS_FILE}\""
     run_script 'set_permissions' "${DIALOG_OPTIONS_FILE}"
 

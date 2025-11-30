@@ -16,7 +16,7 @@ update_self() {
 
     pushd "${SCRIPTPATH}" &> /dev/null ||
         fatal \
-            "Failed to change directory.\n" \
+            "Failed to change directory." \
             "Failing command: ${C["FailingCommand"]}push \"${SCRIPTPATH}\""
 
     if [[ -z ${Branch-} ]]; then
@@ -91,7 +91,7 @@ commands_update_self() {
 
     pushd "${SCRIPTPATH}" &> /dev/null ||
         fatal \
-            "Failed to change directory.\n" \
+            "Failed to change directory." \
             "Failing command: ${C["FailingCommand"]}push \"${SCRIPTPATH}\""
     local QUIET=''
     if [[ -z ${VERBOSE-} ]]; then
@@ -100,7 +100,7 @@ commands_update_self() {
     notice "${Notice}"
     cd "${SCRIPTPATH}" ||
         fatal \
-            "Failed to change directory.\n" \
+            "Failed to change directory." \
             "Failing command: ${C["FailingCommand"]}cd \"${SCRIPTPATH}\""
     info "Setting file ownership on current repository files"
     sudo chown -R "$(id -u)":"$(id -g)" "${SCRIPTPATH}/.git" &> /dev/null || true
@@ -110,21 +110,21 @@ commands_update_self() {
     info "Fetching recent changes from git."
     eval git fetch ${QUIET-} --all --prune ||
         fatal \
-            "Failed to fetch recent changes from git.\n" \
+            "Failed to fetch recent changes from git." \
             "Failing command: ${C["FailingCommand"]}git fetch ${QUIET-} --all --prune"
     if [[ ${CI-} != true ]]; then
         eval git checkout ${QUIET-} --force "${Branch}" ||
             fatal \
-                "Failed to switch to github branch '${C["Branch"]}${Branch}${NC}'.\n" \
+                "Failed to switch to github branch '${C["Branch"]}${Branch}${NC}'." \
                 "Failing command: ${C["FailingCommand"]}git checkout ${QUIET-} --force \"${Branch}\""
         eval git reset ${QUIET-} --hard origin/"${Branch}" ||
             fatal \
-                "Failed to reset to branch '${C["Branch"]}origin/${Branch}${NC}'.\n" \
+                "Failed to reset to branch '${C["Branch"]}origin/${Branch}${NC}'." \
                 "Failing command: ${C["FailingCommand"]}git reset ${QUIET-} --hard origin/\"${Branch}\""
         info "Pulling recent changes from git."
         eval git pull ${QUIET-} ||
             fatal \
-                "Failed to pull recent changes from git.\n" \
+                "Failed to pull recent changes from git." \
                 "Failing command: ${C["FailingCommand"]}git pull ${QUIET-}"
     fi
     info "Cleaning up unnecessary files and optimizing the local repository."

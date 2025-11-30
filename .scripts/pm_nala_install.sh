@@ -17,7 +17,7 @@ pm_nala_install() {
         notice "Running: ${C["RunningCommand"]}${Command}${NC}"
         eval "${REDIRECT}${Command}" ||
             fatal \
-                "Failed to install '${C["Program"]}apt-file${NC}' from nala.\n" \
+                "Failed to install '${C["Program"]}apt-file${NC}' from nala." \
                 "Failing command: ${C["FailingCommand"]}${Command}"
     fi
     notice "Updating package information."
@@ -25,7 +25,7 @@ pm_nala_install() {
     notice "Running: ${C["RunningCommand"]}${Command}${NC}"
     eval "${REDIRECT}${Command}" ||
         fatal \
-            "Failed to get updates from apt-file.\n" \
+            "Failed to get updates from apt-file." \
             "Failing command: ${C["FailingCommand"]}${Command}"
 
     notice "Determining packages to install."
@@ -48,7 +48,7 @@ pm_nala_install() {
     notice "Running: ${C["RunningCommand"]}${Command}${NC}"
     eval "${REDIRECT}${Command}" ||
         fatal \
-            "Failed to install dependencies from nala.\n" \
+            "Failed to install dependencies from nala." \
             "Failing command: ${C["FailingCommand"]}${Command}"
 }
 

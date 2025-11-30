@@ -32,7 +32,7 @@ pm_yum_install() {
     notice "Running: ${C["RunningCommand"]}${Command}${NC}"
     eval "${REDIRECT}${Command}" ||
         fatal \
-            "Failed to install dependencies from yum.\n" \
+            "Failed to install dependencies from yum." \
             "Failing command: ${C["FailingCommand"]}${Command}"
 }
 
@@ -45,7 +45,7 @@ detect_packages() {
         notice "Running: ${C["RunningCommand"]}${Command}${NC}"
         eval "${REDIRECT}${Command}" ||
             fatal \
-                "Failed to install '${C["Program"]}repoquery${NC}' from yum.\n" \
+                "Failed to install '${C["Program"]}repoquery${NC}' from yum." \
                 "Failing command: ${C["FailingCommand"]}${Command}"
     fi
 

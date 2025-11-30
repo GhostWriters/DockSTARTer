@@ -30,7 +30,7 @@ pm_apk_install() {
     notice "Running: ${C["RunningCommand"]}${Command}${NC}"
     eval "${REDIRECT}${Command}" ||
         fatal \
-            "Failed to install dependencies from apk.\n" \
+            "Failed to install dependencies from apk." \
             "Failing command: ${C["FailingCommand"]}${Command}"
 }
 

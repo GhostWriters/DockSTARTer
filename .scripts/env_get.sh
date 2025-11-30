@@ -62,7 +62,7 @@ test_env_get() {
     )
     VarFile=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.VarFile.XXXXXXXXXX") ||
         fatal \
-            "Failed to create temporary file.\n" \
+            "Failed to create temporary file." \
             "Failing command: ${C["FailingCommand"]}mktemp -t \"${APPLICATION_NAME}.${FUNCNAME[0]}.VarFile.XXXXXXXXXX\""
     {
         printf '### %s\n' \
@@ -87,7 +87,7 @@ test_env_get() {
 
     rm -f "${VarFile}" ||
         warn \
-            "Failed to remove temporary file.\n" \
+            "Failed to remove temporary file." \
             "Failing command: ${C["FailingCommand"]}rm -f \"${VarFile}\""
 
     return ${result}

@@ -33,7 +33,7 @@ env_merge_newonly() {
                 run_script 'env_get_line_regex' "${VarsToAddRegex}" "${MergeFromFile}"
             )
             notice \
-                "Adding variables to ${C["File"]}${MergeToFile}${NC}:\n" \
+                "Adding variables to ${C["File"]}${MergeToFile}${NC}:" \
                 "$(printf "   ${C[Var]}%s${NC}\n" "${MergeLines[@]}")"
             {
                 printf '\n'

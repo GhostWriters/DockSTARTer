@@ -11,7 +11,7 @@ config_create() {
             notice "Renaming '${C["File"]-}${OldIniFile}${NC-}' to '${C["File"]-}${APPLICATION_INI_FILE}${NC-}'."
             mv "${OldIniFile}" "${APPLICATION_INI_FILE}" ||
                 fatal \
-                    "Failed to rename old config file.\n" \
+                    "Failed to rename old config file." \
                     "Failing command: ${C["FailingCommand"]}mv \"${OldIniFile}\" \"${APPLICATION_INI_FILE}\""
 
         else
@@ -20,7 +20,7 @@ config_create() {
             notice "Copying '${C["File"]-}${DefaultIniFile}${NC-}' to '${C["File"]-}${APPLICATION_INI_FILE}${NC-}'."
             cp "${DefaultIniFile}" "${APPLICATION_INI_FILE}" ||
                 fatal \
-                    "Failed to copy default config file.\n" \
+                    "Failed to copy default config file." \
                     "Failing command: ${C["FailingCommand"]}cp \"${DefaultIniFile}\" \"${APPLICATION_INI_FILE}\""
 
         fi

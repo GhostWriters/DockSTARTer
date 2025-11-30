@@ -48,11 +48,11 @@ env_rename() {
     fi
     printf '\n%s\n' "${NEW_VAR_LINE}" >> "${TO_VAR_FILE}" ||
         fatal \
-            "Failed to add '${C["Var"]}${NEW_VAR_LINE}${NC}' in '${C["File"]}${TO_VAR_FILE}${NC}'\n" \
+            "Failed to add '${C["Var"]}${NEW_VAR_LINE}${NC}' in '${C["File"]}${TO_VAR_FILE}${NC}'" \
             "Failing command: ${C["FailingCommand"]}printf '\n%s\n' \"${NEW_VAR_LINE}\" >> \"${TO_VAR_FILE}\""
     ${SED} -i "/^\s*${FROM_VAR}\s*=/d" "${FROM_VAR_FILE}" ||
         fatal \
-            "Failed to remove var '${C["Var"]}${FROM_VAR}${NC}' in '${C["File"]}${FROM_VAR_FILE}${NC}'\n" \
+            "Failed to remove var '${C["Var"]}${FROM_VAR}${NC}' in '${C["File"]}${FROM_VAR_FILE}${NC}'" \
             "Failing command: ${C["FailingCommand"]}${SED} -i \"/^\\s*${FROM_VAR}\\s*=/d\" \"${FROM_VAR_FILE}\""
 }
 

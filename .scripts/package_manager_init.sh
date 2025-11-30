@@ -18,21 +18,21 @@ package_manager_init() {
         if ! run_script 'package_manager_is_valid' "${PreferredPackageManager}"; then
             NoticeType="warn"
             ${NoticeType} \
-                "Selected package manager '${C["UserCommand"]}${PreferredPackageManager}${NC}' unknown.\n" \
-                "\n" \
-                "Known package managers are:\n" \
-                "\n" \
-                "$(run_script 'package_manager_table')\n" \
+                "Selected package manager '${C["UserCommand"]}${PreferredPackageManager}${NC}' unknown." \
+                "" \
+                "Known package managers are:" \
+                "" \
+                "$(run_script 'package_manager_table')" \
                 " "
         elif ! run_script 'package_manager_exists' "${PreferredPackageManager}"; then
             NoticeType="warn"
             ${NoticeType} \
-                "Selected package manager '${C["UserCommand"]}${PreferredPackageManager}${NC}' not detected.\n" \
-                "\n" \
-                "Detected package managers are:\n" \
-                "\n" \
-                "$(run_script 'package_manager_existing_table')\n" \
-                " "
+                "Selected package manager '${C["UserCommand"]}${PreferredPackageManager}${NC}' not detected." \
+                "" \
+                "Detected package managers are:" \
+                "" \
+                "$(run_script 'package_manager_existing_table')" \
+                ""
         else
             PM="${PreferredPackageManager}"
         fi
@@ -49,11 +49,11 @@ package_manager_init() {
     if [[ -z ${PM-} ]]; then
         fatal \
             "Unable to detect a compatible package manager." \
-            "\n" \
-            "Known package managers are:\n" \
-            "\n" \
-            "$(run_script 'package_manager_table')\n" \
-            " "
+            "" \
+            "Known package managers are:" \
+            "" \
+            "$(run_script 'package_manager_table')" \
+            ""
     fi
 
     local NoticeText

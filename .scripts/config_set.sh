@@ -26,7 +26,7 @@ config_set() {
     ${SED} -i "/^\s*${SET_VAR}\s*=/d" "${VAR_FILE}" || true
     echo "${SET_VAR}=${NEW_VAL}" >> "${VAR_FILE}" ||
         fatal \
-            "Failed to set ${C["Var"]}${SET_VAR}=${NEW_VAL}${NC}\n" \
+            "Failed to set ${C["Var"]}${SET_VAR}=${NEW_VAL}${NC}" \
             "Failing command: ${C["FailingCommand"]} \"echo ${SET_VAR}=${NEW_VAL}\" >> \"${VAR_FILE}\""
 }
 

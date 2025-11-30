@@ -30,7 +30,7 @@ pm_brew_install() {
     notice "Running: ${C["RunningCommand"]}${Command}${NC}"
     eval "${REDIRECT}${Command}" ||
         fatal \
-            "Failed to install dependencies from brew.\n" \
+            "Failed to install dependencies from brew." \
             "Failing command: ${C["FailingCommand"]}${Command}"
 }
 

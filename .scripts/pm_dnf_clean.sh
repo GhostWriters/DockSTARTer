@@ -6,13 +6,13 @@ pm_dnf_clean() {
     info "Removing unused packages."
     sudo dnf -y autoremove &> /dev/null ||
         warn \
-            "Failed to remove unused packages from dnf.\n" \
+            "Failed to remove unused packages from dnf." \
             "Failing command: ${C["FailingCommand"]}sudo dnf -y autoremove"
 
     info "Cleaning up package cache."
     sudo dnf -y clean all &> /dev/null ||
         warn \
-            "Failed to cleanup cache from dnf.\n" \
+            "Failed to cleanup cache from dnf." \
             "Failing command: ${C["FailingCommand"]}sudo dnf -y clean all"
 }
 

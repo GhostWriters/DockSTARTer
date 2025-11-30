@@ -5,7 +5,7 @@ IFS=$'\n\t'
 ds_branch() {
     pushd "${SCRIPTPATH}" &> /dev/null ||
         fatal \
-            "Failed to change directory.\n" \
+            "Failed to change directory." \
             "Failing command: ${C["FailingCommand"]}pushd \"${SCRIPTPATH}\""
     git fetch --quiet &> /dev/null || true
     git symbolic-ref --short HEAD 2> /dev/null || true
@@ -20,7 +20,7 @@ ds_branch_exists() {
 
     pushd "${SCRIPTPATH}" &> /dev/null ||
         fatal \
-            "Failed to change directory.\n" \
+            "Failed to change directory." \
             "Failing command: ${C["FailingCommand"]}pushd \"${SCRIPTPATH}\""
     local -i result=0
     git ls-remote --exit-code --heads origin "${CheckBranch}" &> /dev/null || result=$?
@@ -42,7 +42,7 @@ ds_version() {
 
     pushd "${SCRIPTPATH}" &> /dev/null ||
         fatal \
-            "Failed to change directory.\n" \
+            "Failed to change directory." \
             "Failing command: ${C["FailingCommand"]}pushd \"${SCRIPTPATH}\""
     if [[ -z ${CheckBranch-} ]] || ds_branch_exists "${Branch}"; then
         # Get the current tag. If no tag, use the commit instead.
@@ -61,7 +61,7 @@ ds_version() {
 ds_update_available() {
     pushd "${SCRIPTPATH}" &> /dev/null ||
         fatal \
-            "Failed to change directory.\n" \
+            "Failed to change directory." \
             "Failing command: ${C["FailingCommand"]}pushd \"${SCRIPTPATH}\""
     git fetch --quiet &> /dev/null
     local -i result=0

@@ -15,7 +15,7 @@ pm_zypper_repos() {
     notice "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
     eval "${REDIRECT}${COMMAND}" ||
         fatal \
-            "Failed to get updates from zypper.\n" \
+            "Failed to get updates from zypper." \
             "Failing command: ${C["FailingCommand"]}${COMMAND}"
 }
 
