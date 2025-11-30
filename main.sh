@@ -228,8 +228,7 @@ fatal() {
     local -i thisFuncLine=$((LINENO - 1))
     local -a Stack=()
     local StackSize=${#FUNCNAME[@]}
-    local -i FrameNumberLength
-    FrameNumberLength=$((${#StackSize} / 10))
+    local -i FrameNumberLength=${#StackSize}
     local NoFile="<nofile>"
     local NoFunction="<nofunction>"
 
@@ -251,8 +250,8 @@ fatal() {
             )"
         )
         if [[ -n ${cmd-} ]]; then
-            local FrameCmdPrefix="${C["TraceFrameLines"]}│"
-            local FrameArgPrefix="${C["TraceFrameLines"]}│"
+            local FrameCmdPrefix="${C["TraceFrameLines"]}│${NC}"
+            local FrameArgPrefix="${C["TraceFrameLines"]}│${NC}"
             local cmdString="${C["TraceCmd"]}${cmd}${NC}"
             local -a cmdArray=()
             cmdArray+=("${FrameCmdPrefix}${cmdString}")
@@ -269,7 +268,7 @@ fatal() {
                 done
             fi
             local StackCmdIndent
-            StackCmdIndent="$(printf "  %${FrameNumberLength}s${indent}    " "")"
+            StackCmdIndent="$(printf "  %${FrameNumberLength}s${indent}   " "")"
             local cmdLines
             cmdLines="$(
                 pr -t -o ${#StackCmdIndent} <<< "$(
