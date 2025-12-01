@@ -241,7 +241,7 @@ warn() { log true "$(timestamped_log "${C["Warn"]-}[WARN  ]${NC-}" "$@")"; }
 error() { log true "$(timestamped_log "${C["Error"]-}[ERROR ]${NC-}" "$@")"; }
 fatal_notrace() {
     local LogMessage
-    LogMessage="$(timestamped_log "${C["Fatal"]-}[FATAL ]${NC}" "$@")"
+    LogMessage=$(timestamped_log "${C["Fatal"]-}[FATAL ]${NC}" "$@")
     log true "${LogMessage}"
     if declare -F strip_ansi_colors > /dev/null; then
         LogMessage=$(strip_ansi_colors "${LogMessage-}")
@@ -253,7 +253,7 @@ fatal() {
     local -i thisFuncLine=$((LINENO - 1))
 
     local SystemInfo
-    SystemInfo="$(get_system_info)"
+    SystemInfo=$(get_system_info)
 
     local -a Stack=()
     local StackSize=${#FUNCNAME[@]}
