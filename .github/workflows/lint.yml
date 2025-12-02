@@ -12,7 +12,7 @@ jobs:
       options: --user 0:0
     steps:
       - name: Checkout
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       - name: editorconfig-checker
         run: editorconfig-checker .
 
@@ -23,7 +23,7 @@ jobs:
       options: --user 0:0
     steps:
       - name: Checkout
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       - name: markdownlint
         run: markdownlint-cli2 **.{md,markdown}
 
@@ -34,7 +34,7 @@ jobs:
       options: --user 0:0
     steps:
       - name: Checkout
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       - name: install alpine packages
         run: apk add --no-cache findutils
       - name: shellcheck
@@ -47,7 +47,7 @@ jobs:
       options: --user 0:0
     steps:
       - name: Checkout
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       - name: install alpine packages
         run: apk add --no-cache findutils
       - name: shfmt
@@ -60,6 +60,6 @@ jobs:
       options: --user 0:0
     steps:
       - name: Checkout
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       - name: yamllint
         run: yamllint .
