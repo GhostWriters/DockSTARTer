@@ -1,0 +1,13 @@
+description: "Pi-hole - Network-wide ad blocking"
+image: "pihole/pihole:latest"
+ports:
+  - "53:53/tcp"
+  - "53:53/udp"
+  - "8053:80"
+volumes:
+  - "${DATA_DIR}/pihole:/etc/pihole"
+  - "${DATA_DIR}/pihole/dnsmasq.d:/etc/dnsmasq.d"
+environment:
+  - TZ=${TZ}
+  - WEBPASSWORD=admin
+restart: unless-stopped

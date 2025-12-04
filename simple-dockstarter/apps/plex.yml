@@ -1,0 +1,13 @@
+description: "Plex - Popular media server"
+image: "lscr.io/linuxserver/plex:latest"
+ports:
+  - "32400:32400"
+volumes:
+  - "${DATA_DIR}/plex:/config"
+  - "${DATA_DIR}/media:/media"
+environment:
+  - PUID=${PUID}
+  - PGID=${PGID}
+  - TZ=${TZ}
+  - VERSION=docker
+restart: unless-stopped
