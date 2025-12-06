@@ -269,17 +269,20 @@ fatal() {
     local -i CmdArgCount=0
     local indent=""
     local FramePrefix="  "
+    local -i StartFrame=1
     for ((Frame = 0; Frame <= StackSize; Frame++)); do
         local StackLineFormat="${C["TraceFrameNumber"]}%${FrameNumberLength}d${NC}:${indent}${FramePrefix}${C["TraceSourceFile"]}%s${NC}:${C["TraceLineNumber"]}%d${NC} (${C["TraceFunction"]}%s${NC})"
 
-        # shellcheck disable=SC2059 # Don't use variables in the printf format string.
-        Stack+=(
-            "$(
-                printf "${StackLineFormat}" "${Frame}" "${SourceFile}" "${line}" "${func}"
-            )"
-        )
+        if [[ Frame -ge StartFrame ]]; then
+            # shellcheck disable=SC2059 # Don't use variables in the printf format string.
+            Stack+=(
+                "$(
+                    printf "${StackLineFormat}" "${Frame}" "${SourceFile}" "${line}" "${func}"
+                )"
+            )
+        fi
         if [[ -n ${cmd-} ]]; then
-            local FrameCmdPrefix="${C["TraceFrameLines"]}│${NC}"
+            local FrameCmdPrefix="${C["TraceFrameLines"]}▲${NC}"
             local FrameArgPrefix="${C["TraceFrameLines"]}│${NC}"
             local cmdString="${C["TraceCmd"]}${cmd}${NC}"
             local -a cmdArray=()
@@ -304,8 +307,10 @@ fatal() {
                     printf "%s\n" "${cmdArray[@]}"
                 )"
             )"
-            # shellcheck disable=SC2059 # Don't use variables in the printf format string.
-            Stack+=("${cmdLines}")
+            if [[ Frame -ge StartFrame ]]; then
+                # shellcheck disable=SC2059 # Don't use variables in the printf format string.
+                Stack+=("${cmdLines}")
+            fi
         fi
         SourceFile="${BASH_SOURCE[Frame + 1]:-$NoFile}"
         line="${BASH_LINENO[Frame]:-0}"
@@ -313,8 +318,10 @@ fatal() {
         cmd="${FUNCNAME[Frame]:-$NoFunction}"
         CurrentArg+=${CmdArgCount}
         CmdArgCount=${BASH_ARGC[Frame]-}
-        indent+="  "
-        FramePrefix="${C["TraceFrameLines"]}└─${NC}"
+        if [[ Frame -ge StartFrame ]]; then
+            indent+="  "
+            FramePrefix="${C["TraceFrameLines"]}└─${NC}"
+        fi
     done
 
     SystemInfo="$(pr -e -t -o 2 <<< "${SystemInfo}")"
