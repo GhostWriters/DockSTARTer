@@ -127,8 +127,8 @@ brew install bash curl git grep gnu-sed
 Then
 
 ```bash
-git clone https://github.com/GhostWriters/DockSTARTer "/home/${USER}/.docker"
-bash /home/"${USER}"/.docker/main.sh -vi
+git clone https://github.com/GhostWriters/DockSTARTer "/home/${USER}/.dockstarter"
+bash /home/"${USER}"/.dockstarter/main.sh -vi
 sudo reboot
 ```
 
