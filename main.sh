@@ -6,6 +6,7 @@ IFS=$'\n\t'
 declare -rx APPLICATION_NAME='DockSTARTer'
 declare -rx APPLICATION_COMMAND='ds'
 declare -rx APPLICATION_REPO='https://github.com/GhostWriters/DockSTARTer'
+declare -rx APPLICATION_FOLDER_NAME_DEFAULT='.dockstarter'
 
 # Version Functions
 # https://stackoverflow.com/questions/4023830/how-to-compare-two-strings-in-dot-separated-version-format-in-bash#comment92693604_4024263
@@ -346,17 +347,17 @@ check_sudo() {
 }
 clone_repo() {
     warn \
-        "Attempting to clone ${APPLICATION_NAME} repo to '${C["Folder"]-}${DETECTED_HOMEDIR}/.docker${NC-}' location."
-    git clone -b "${TARGET_BRANCH}" "${APPLICATION_REPO}" "${DETECTED_HOMEDIR}/.docker" ||
+        "Attempting to clone ${APPLICATION_NAME} repo to '${C["Folder"]-}${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}${NC-}' location."
+    git clone -b "${TARGET_BRANCH}" "${APPLICATION_REPO}" "${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}" ||
         fatal \
             "Failed to clone ${APPLICATION_NAME} repo." \
-            "Failing command: ${C["FailingCommand"]-}git clone -b \"${TARGET_BRANCH}\" \"${APPLICATION_REPO}\" \"${DETECTED_HOMEDIR}/.docker\""
+            "Failing command: ${C["FailingCommand"]-}git clone -b \"${TARGET_BRANCH}\" \"${APPLICATION_REPO}\" \"${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}\""
     if [[ ${#ARGS[@]} -eq 0 ]]; then
         notice \
             "Performing first run install."
-        exec bash "${DETECTED_HOMEDIR}/.docker/main.sh" "-yvi"
+        exec bash "${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}/main.sh" "-yvi"
     else
-        exec bash "${DETECTED_HOMEDIR}/.docker/main.sh" "${ARGS[@]}"
+        exec bash "${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}/main.sh" "${ARGS[@]}"
     fi
 }
 

@@ -6,7 +6,7 @@ Refer to our [Support Page](https://dockstarter.com/basics/support/) for our Sup
 
 ## Relocating `appdata`
 
-For new installs the default `DOCKER_VOLUME_CONFIG` is `~/.config/appdata`. Users who ran DockSTARTer before this location became the default may have `~/.docker/config`, and we advise relocating.
+For new installs the default `DOCKER_VOLUME_CONFIG` is `~/.config/appdata`. Users who ran DockSTARTer before this location became the default may have `~/.dockstarter/config`, and we advise relocating.
 
 If you'd like to move your existing config to a new location you can do the following:
 Edit `~/. docker/compose/.env` (in any text editor) and set
@@ -23,7 +23,7 @@ Then run the following commands:
 ds -u
 ds -c down
 # Move your current config folder to the new location, ex:
-sudo mv ~/.docker/config ~/.config/appdata
+sudo mv ~/.dockstarter/config ~/.config/appdata
 ds -c
 ```
 

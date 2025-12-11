@@ -18,19 +18,19 @@ Min, Med, and Max support pre/post commands for the entire run. These commands c
 It is recommended to setup a cron job using `sudo crontab -e` and adding a line like
 
 ```bash
-0 2 * * * /home/<USER>/.docker/main.sh -b min
+0 2 * * * /home/<USER>/.dockstarter/main.sh -b min
 ```
 
 or
 
 ```bash
-0 2 * * * /home/<USER>/.docker/main.sh -b med
+0 2 * * * /home/<USER>/.dockstarter/main.sh -b med
 ```
 
 or
 
 ```bash
-0 2 * * * /home/<USER>/.docker/main.sh -b max
+0 2 * * * /home/<USER>/.dockstarter/main.sh -b max
 ```
 
 Which would make a daily backup at 2 AM.
