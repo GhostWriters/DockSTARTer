@@ -55,6 +55,9 @@ export DETECTED_HOMEDIR
 
 # System Information
 ARCH=$(uname -m)
+if [[ ${ARCH} == arm64 ]]; then
+    ARCH="aarch64"
+fi
 readonly ARCH
 export ARCH
 
@@ -312,7 +315,7 @@ fatal() {
 
 # Check for supported CPU architecture
 check_arch() {
-    if [[ ${ARCH} != "arm64" ]] && [[ ${ARCH} != "aarch64" ]] && [[ ${ARCH} != "x86_64" ]]; then
+    if [[ ${ARCH} != "aarch64" ]] && [[ ${ARCH} != "x86_64" ]]; then
         fatal_notrace \
             "Unsupported architeture." \
             "Supported architetures are 'aarch64' or 'x86_64', running architeture is '${ARCH}'."
