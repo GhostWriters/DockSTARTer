@@ -110,6 +110,12 @@ You may choose to rely on DockSTARTer for various changes to your Docker system 
   sudo reboot
   ```
 
+  Additional Steps for MacOS:
+  - Run Docker at start up:
+    - In docker desktop (Docker.app) open settings and ensure "Start Docker Desktop when you sign in to your computer" is enabled in the General heading. This step is required to to start docker automatically after a restart and allow DockSTARTer to communicate with the docker daemon.
+  - Approve Docker keychain permissions:
+    - At least once after installing DockSTARTer open the terminal.app from the MacOS desktop and run the DockSTARTer command `ds -c`. A keychain access dialog will pop up. Type your MacOS login password into the dialog and click on "Always Allow".
+
 <details>
   <summary>Alternate install (any system)</summary>
 
