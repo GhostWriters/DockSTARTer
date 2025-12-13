@@ -1,0 +1,13 @@
+description: "Sonarr - TV show management and automation"
+image: "lscr.io/linuxserver/sonarr:latest"
+ports:
+  - "8989:8989"
+volumes:
+  - "${DATA_DIR}/sonarr:/config"
+  - "${DATA_DIR}/media:/media"
+  - "${DATA_DIR}/downloads:/downloads"
+environment:
+  - PUID=${PUID}
+  - PGID=${PGID}
+  - TZ=${TZ}
+restart: unless-stopped
