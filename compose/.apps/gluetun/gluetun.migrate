@@ -16,14 +16,19 @@ GLUETUN<__INSTANCE>__TAG                                               GLUETUN<_
 ###
 ### GLUETUN<__INSTANCE> - gluetun<__instance>.env:
 ###
+gluetun<__instance>:DNS_SERVER                                         gluetun<__instance>:DOT
+gluetun<__instance>:DNS_CACHING                                        gluetun<__instance>:DOT_CACHING
+gluetun<__instance>:DNS_UPSTREAM_IPV6                                  gluetun<__instance>:DOT_IPV6
+gluetun<__instance>:DNS_UPSTREAM_RESOLVERS                             gluetun<__instance>:DOT_PROVIDERS
+gluetun<__instance>:HEALTH_SERVER_ADDRESSES                            gluetun<__instance>:HEALTH_SERVER_ADDRESS
 gluetun<__instance>:BLOCK_ADS                                          GLUETUN<__INSTANCE>_BLOCK_ADS|GLUETUN<__INSTANCE>_ENVIRONMENT_BLOCK_ADS
 gluetun<__instance>:BLOCK_MALICIOUS                                    GLUETUN<__INSTANCE>_BLOCK_MALICIOUS|GLUETUN<__INSTANCE>_ENVIRONMENT_BLOCK_MALICIOUS
 gluetun<__instance>:BLOCK_SURVEILLANCE                                 GLUETUN<__INSTANCE>_BLOCK_SURVEILLANCE|GLUETUN<__INSTANCE>_ENVIRONMENT_BLOCK_SURVEILLANCE
-gluetun<__instance>:DOT                                                GLUETUN<__INSTANCE>_DOT|GLUETUN<__INSTANCE>_ENVIRONMENT_DOT
-gluetun<__instance>:DOT_CACHING                                        GLUETUN<__INSTANCE>_DOT_CACHING|GLUETUN<__INSTANCE>_ENVIRONMENT_DOT_CACHING
-gluetun<__instance>:DOT_IPV6                                           GLUETUN<__INSTANCE>_DOT_IPV6|GLUETUN<__INSTANCE>_ENVIRONMENT_DOT_IPV6
+gluetun<__instance>:DNS_SERVER                                         GLUETUN<__INSTANCE>_DOT|GLUETUN<__INSTANCE>_ENVIRONMENT_DOT
+gluetun<__instance>:DNS_CACHING                                        GLUETUN<__INSTANCE>_DOT_CACHING|GLUETUN<__INSTANCE>_ENVIRONMENT_DOT_CACHING
+gluetun<__instance>:DNS_UPSTREAM_IPV6                                  GLUETUN<__INSTANCE>_DOT_IPV6|GLUETUN<__INSTANCE>_ENVIRONMENT_DOT_IPV6
 gluetun<__instance>:DOT_PRIVATE_ADDRESS                                GLUETUN<__INSTANCE>_DOT_PRIVATE_ADDRESS|GLUETUN<__INSTANCE>_ENVIRONMENT_DOT_PRIVATE_ADDRESS
-gluetun<__instance>:DOT_PROVIDERS                                      GLUETUN<__INSTANCE>_DOT_PROVIDERS|GLUETUN<__INSTANCE>_ENVIRONMENT_DOT_PROVIDERS
+gluetun<__instance>:DNS_UPSTREAM_RESOLVERS                             GLUETUN<__INSTANCE>_DOT_PROVIDERS|GLUETUN<__INSTANCE>_ENVIRONMENT_DOT_PROVIDERS
 gluetun<__instance>:DNS_ADDRESS                                        GLUETUN<__INSTANCE>_DNS_ADDRESS|GLUETUN<__INSTANCE>_ENVIRONMENT_DNS_ADDRESS
 gluetun<__instance>:DNS_KEEP_NAMESERVER                                GLUETUN<__INSTANCE>_DNS_KEEP_NAMESERVER|GLUETUN<__INSTANCE>_ENVIRONMENT_DNS_KEEP_NAMESERVER
 gluetun<__instance>:DNS_UPDATE_PERIOD                                  GLUETUN<__INSTANCE>_DNS_UPDATE_PERIOD|GLUETUN<__INSTANCE>_ENVIRONMENT_DNS_UPDATE_PERIOD
