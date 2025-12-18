@@ -20,7 +20,7 @@ gluetun<__instance>:DNS_SERVER                                         gluetun<_
 gluetun<__instance>:DNS_CACHING                                        gluetun<__instance>:DOT_CACHING
 gluetun<__instance>:DNS_UPSTREAM_IPV6                                  gluetun<__instance>:DOT_IPV6
 gluetun<__instance>:DNS_UPSTREAM_RESOLVERS                             gluetun<__instance>:DOT_PROVIDERS
-gluetun<__instance>:HEALTH_SERVER_ADDRESSES                            gluetun<__instance>:HEALTH_SERVER_ADDRESS
+gluetun<__instance>:HEALTH_TARGET_ADDRESSES                            gluetun<__instance>:HEALTH_TARGET_ADDRESS
 gluetun<__instance>:BLOCK_ADS                                          GLUETUN<__INSTANCE>_BLOCK_ADS|GLUETUN<__INSTANCE>_ENVIRONMENT_BLOCK_ADS
 gluetun<__instance>:BLOCK_MALICIOUS                                    GLUETUN<__INSTANCE>_BLOCK_MALICIOUS|GLUETUN<__INSTANCE>_ENVIRONMENT_BLOCK_MALICIOUS
 gluetun<__instance>:BLOCK_SURVEILLANCE                                 GLUETUN<__INSTANCE>_BLOCK_SURVEILLANCE|GLUETUN<__INSTANCE>_ENVIRONMENT_BLOCK_SURVEILLANCE
@@ -39,7 +39,7 @@ gluetun<__instance>:FIREWALL_VPN_INPUT_PORTS                           GLUETUN<_
 gluetun<__instance>:FREE_ONLY                                          GLUETUN<__INSTANCE>_FREE_ONLY|GLUETUN<__INSTANCE>_ENVIRONMENT_FREE_ONLY
 gluetun<__instance>:HEALTH_SERVER_ADDRESS                              GLUETUN<__INSTANCE>_HEALTH_SERVER_ADDRESS|GLUETUN<__INSTANCE>_ENVIRONMENT_HEALTH_SERVER_ADDRESS
 gluetun<__instance>:HEALTH_SUCCESS_WAIT_DURATION                       GLUETUN<__INSTANCE>_HEALTH_SUCCESS_WAIT_DURATION|GLUETUN<__INSTANCE>_ENVIRONMENT_HEALTH_SUCCESS_WAIT_DURATION
-gluetun<__instance>:HEALTH_TARGET_ADDRESS                              GLUETUN<__INSTANCE>_HEALTH_TARGET_ADDRESS|GLUETUN<__INSTANCE>_ENVIRONMENT_HEALTH_TARGET_ADDRESS
+gluetun<__instance>:HEALTH_TARGET_ADDRESSES                            GLUETUN<__INSTANCE>_HEALTH_TARGET_ADDRESS|GLUETUN<__INSTANCE>_ENVIRONMENT_HEALTH_TARGET_ADDRESS
 gluetun<__instance>:HEALTH_VPN_DURATION_INITIAL                        GLUETUN<__INSTANCE>_HEALTH_VPN_DURATION_INITIAL|GLUETUN<__INSTANCE>_ENVIRONMENT_HEALTH_VPN_DURATION_INITIAL
 gluetun<__instance>:HEALTH_VPN_DURATION_ADDITION                       GLUETUN<__INSTANCE>_HEALTH_VPN_DURATION_ADDITION|GLUETUN<__INSTANCE>_ENVIRONMENT_HEALTH_VPN_DURATION_ADDITION
 gluetun<__instance>:HTTP_CONTROL_SERVER_ADDRESS                        GLUETUN<__INSTANCE>_HTTP_CONTROL_SERVER_ADDRESS|GLUETUN<__INSTANCE>_ENVIRONMENT_HTTP_CONTROL_SERVER_ADDRESS
