@@ -7,21 +7,21 @@ enable_docker_service() {
     DOCKER_SERVICE_START=""
     if [[ -n "$(command -v systemctl)" ]]; then
         info "Systemd detected."
-        DOCKER_SERVICE_ENABLE="systemctl enable docker"
-        DOCKER_SERVICE_START="systemctl start docker"
+        DOCKER_SERVICE_ENABLE="sudo systemctl enable docker"
+        DOCKER_SERVICE_START="sudo systemctl start docker"
     elif [[ -n "$(command -v rc-update)" ]]; then
         info "OpenRC detected."
-        DOCKER_SERVICE_ENABLE="rc-update add docker boot"
-        DOCKER_SERVICE_START="service docker start"
+        DOCKER_SERVICE_ENABLE="sudo rc-update add docker boot"
+        DOCKER_SERVICE_START="sudo service docker start"
     fi
     if [[ -n ${DOCKER_SERVICE_ENABLE} ]]; then
         info "Enabling docker service."
-        eval "sudo ${DOCKER_SERVICE_ENABLE}" &> /dev/null ||
+        eval "${DOCKER_SERVICE_ENABLE}" &> /dev/null ||
             fatal \
                 "Failed to enable docker service." \
                 "Failing command: ${C["FailingCommand"]}${DOCKER_SERVICE_ENABLE}"
         info "Starting docker service."
-        eval "sudo ${DOCKER_SERVICE_START}" &> /dev/null ||
+        eval "${DOCKER_SERVICE_START}" &> /dev/null ||
             fatal \
                 "Failed to start docker service." \
                 "Failing command: ${C["FailingCommand"]}${DOCKER_SERVICE_START}"
