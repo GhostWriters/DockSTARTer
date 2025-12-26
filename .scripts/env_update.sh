@@ -32,7 +32,7 @@ env_update() {
     )
     # Format the global .env file
     if ! run_script 'needs_env_update' "${COMPOSE_ENV}"; then
-        info "'${C["File"]}${COMPOSE_ENV}'${NC} already updated."
+        info "'${C["File"]}${COMPOSE_ENV}${NC}' already updated."
     else
         notice "Updating '${C["File"]}${COMPOSE_ENV}${NC}'."
         local ENV_LINES_FILE
@@ -88,7 +88,7 @@ env_update() {
             local APP_ENV_FILE
             APP_ENV_FILE="$(run_script 'app_env_file' "${appname}")"
             if ! run_script 'needs_env_update' "${APP_ENV_FILE}"; then
-                info "'${C["File"]}${APP_ENV_FILE}'${NC} already updated."
+                info "'${C["File"]}${APP_ENV_FILE}${NC}' already updated."
             else
                 if [[ ! -f ${APP_ENV_FILE} ]]; then
                     notice "Creating '${C["File"]}${APP_ENV_FILE}${NC}'."

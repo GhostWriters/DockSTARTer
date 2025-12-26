@@ -84,7 +84,7 @@ commands_yml_merge() {
                             if [[ -f ${storage_yml} ]]; then
                                 COMPOSE_FILE="${COMPOSE_FILE}:${storage_yml}"
                             else
-                                info "File '${F[C]}${storage_yml}${NC}' does not exist."
+                                info "File '${C["File"]}${storage_yml}${NC}' does not exist."
                             fi
                         fi
                     fi

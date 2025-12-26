@@ -17,7 +17,7 @@ env_set_literal() {
     local VAR_FILE=${3:-$COMPOSE_ENV}
 
     if ! run_script 'varname_is_valid' "${SET_VAR}"; then
-        error "${F[C]}${SET_VAR}${NC} is an invalid variable name."
+        error "'${C["Var"]}${SET_VAR}${NC}' is an invalid variable name."
         return
     fi
 

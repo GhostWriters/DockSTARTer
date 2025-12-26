@@ -40,7 +40,7 @@ varname_is_valid() {
             ;;
         "_APPNAME_:")
             # _APPNAME_:
-            # Accepts a variable in any "appname.env" file (specifies "appname:varname")
+            # Accepts a variable in any ".env.app.appname" file (specifies "appname:varname")
             if [[ ${VarName} == *":"* ]]; then
                 local AppName="${VarName%:*}"
                 if run_script 'appname_is_valid' "${AppName}"; then
@@ -53,7 +53,7 @@ varname_is_valid() {
             ;;
         *":")
             # <appname>:
-            # Accepts a variable in "appname.env" file (specifies "appname:varname")
+            # Accepts a variable in ".env.app.appname" file (specifies "appname:varname")
             if [[ ${VarName} == *":"* ]]; then
                 local AppName="${VarName%:*}"
                 if [[ "${AppName^^}:" == "${VarType^^}" ]]; then
