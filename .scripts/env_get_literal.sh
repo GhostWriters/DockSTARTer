@@ -14,7 +14,7 @@ env_get_literal() {
     local VarFile=${2:-$COMPOSE_ENV}
 
     if ! run_script 'varname_is_valid' "${VarName}"; then
-        error "${F[C]}${VarName}${NC} is an invalid variable name."
+        error "'${C["Var"]}${VarName}${NC}' is an invalid variable name."
         return
     fi
 
@@ -30,7 +30,7 @@ env_get_literal() {
         echo "${Line#*=}"
     else
         # VarFile does not exist, give a warning
-        warn "${C["File"]}${VarFile}${NC} does not exist."
+        warn "File '${C["File"]}${VarFile}${NC}' does not exist."
     fi
 
 }

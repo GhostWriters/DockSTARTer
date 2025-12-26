@@ -7,7 +7,7 @@ update_self() {
     Branch=${1-}
     shift || true
     if [[ ${Branch-} == "${SOURCE_BRANCH}" ]] && ds_branch_exists "${TARGET_BRANCH}"; then
-        warn "Updating to branch '${F[C]}${TARGET_BRANCH}${NC}' instead of '${F[C]}${SOURCE_BRANCH}${NC}'."
+        warn "Updating to branch '${C["Branch"]}${TARGET_BRANCH}${NC}' instead of '${C["Branch"]}${SOURCE_BRANCH}${NC}'."
         Branch="${TARGET_BRANCH}"
     fi
 

@@ -328,10 +328,10 @@ menu_value_prompt() {
                     if [[ -n ${OptionValue["${SelectedValue}"]-} ]]; then
                         OptionValue["${CurrentValueOption}"]="${OptionValue["${SelectedValue}"]}"
                     else
-                        error "Unset value '${F[C]}${SelectedValue}${NC}'"
+                        error "Unset value '${C["Var"]}${SelectedValue}${NC}'"
                     fi
                 else
-                    error "Invalid option '${F[C]}${SelectedValue}${NC}'"
+                    error "Invalid option '${C["Var"]}${SelectedValue}${NC}'"
                 fi
                 ;;
             EXTRA) # EDIT button
