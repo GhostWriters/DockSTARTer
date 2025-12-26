@@ -30,7 +30,7 @@ env_get_literal() {
         echo "${Line#*=}"
     else
         # VarFile does not exist, give a warning
-        warn "${F[C]}${VarFile}${NC} does not exist."
+        warn "${C["File"]}${VarFile}${NC} does not exist."
     fi
 
 }

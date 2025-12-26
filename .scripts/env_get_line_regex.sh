@@ -25,7 +25,7 @@ env_get_line_regex() {
         ${GREP} --color=never -Po "^\s*(${GET_VAR})\s*=.*" "${VAR_FILE}" || true
     else
         # VAR_FILE does not exist, give a warning
-        warn "${F[C]}${VAR_FILE}${NC} does not exist."
+        warn "${C["File"]}${VAR_FILE}${NC} does not exist."
     fi
 
 }
