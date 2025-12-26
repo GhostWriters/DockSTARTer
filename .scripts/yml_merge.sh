@@ -35,7 +35,7 @@ commands_yml_merge() {
                 local arch_yml
                 arch_yml="$(run_script 'app_instance_file' "${appname}" "*.${ARCH}.yml")"
                 if [[ ! -f ${arch_yml} ]]; then
-                    error "'${C["File"]}${arch_yml}${NC}' does not exist."
+                    error "File '${C["File"]}${arch_yml}${NC}' does not exist."
                     return 1
                 fi
                 COMPOSE_FILE="${COMPOSE_FILE}:${arch_yml}"
@@ -47,14 +47,14 @@ commands_yml_merge() {
                     if [[ -f ${hostname_yml} ]]; then
                         COMPOSE_FILE="${COMPOSE_FILE}:${hostname_yml}"
                     else
-                        info "'${C["File"]}${hostname_yml}${NC}' does not exist."
+                        info "File '${C["File"]}${hostname_yml}${NC}' does not exist."
                     fi
                     local ports_yml
                     ports_yml="$(run_script 'app_instance_file' "${appname}" "*.ports.yml")"
                     if [[ -f ${ports_yml} ]]; then
                         COMPOSE_FILE="${COMPOSE_FILE}:${ports_yml}"
                     else
-                        info "'${C["File"]}${ports_yml}${NC}' does not exist."
+                        info "File '${C["File"]}${ports_yml}${NC}' does not exist."
                     fi
                 elif [[ -n ${AppNetMode} ]]; then
                     local netmode_yml
@@ -62,7 +62,7 @@ commands_yml_merge() {
                     if [[ -f ${netmode_yml} ]]; then
                         COMPOSE_FILE="${COMPOSE_FILE}:${netmode_yml}"
                     else
-                        info "'${C["File"]}${netmode_yml}${NC}' does not exist."
+                        info "File '${C["File"]}${netmode_yml}${NC}' does not exist."
                     fi
                 fi
                 local MultipleStorage
@@ -84,7 +84,7 @@ commands_yml_merge() {
                             if [[ -f ${storage_yml} ]]; then
                                 COMPOSE_FILE="${COMPOSE_FILE}:${storage_yml}"
                             else
-                                info "'${F[C]}${storage_yml}${NC}' does not exist."
+                                info "File '${F[C]}${storage_yml}${NC}' does not exist."
                             fi
                         fi
                     fi
@@ -97,18 +97,18 @@ commands_yml_merge() {
                     if [[ -f ${devices_yml} ]]; then
                         COMPOSE_FILE="${COMPOSE_FILE}:${devices_yml}"
                     else
-                        info "'${C["File"]}${devices_yml}${NC}' does not exist."
+                        info "File '${C["File"]}${devices_yml}${NC}' does not exist."
                     fi
                 fi
                 COMPOSE_FILE="${COMPOSE_FILE}:${main_yml}"
                 info "All configurations for '${C["App"]}${AppName}${NC}' are included."
             else
-                error "'${C["File"]}${main_yml}${NC}' does not exist."
+                error "File '${C["File"]}${main_yml}${NC}' does not exist."
                 return 1
             fi
             run_script 'appfolders_create' "${APPNAME}"
         else
-            error "'${C["Folder"]}${APP_FOLDER}/${NC}' does not exist."
+            error "Folder '${C["Folder"]}${APP_FOLDER}/${NC}' does not exist."
             return 1
         fi
     done

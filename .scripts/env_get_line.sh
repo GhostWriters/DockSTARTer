@@ -30,7 +30,7 @@ env_get_line() {
         ${GREP} --color=never -Po "^\s*${VarName}\s*=.*" "${VarFile}" | tail -1 || true
     else
         # VarFile does not exist, give a warning
-        warn "${F[C]}${VarFile}${NC} does not exist."
+        warn "${C["File"]}${VarFile}${NC} does not exist."
     fi
 
 }
