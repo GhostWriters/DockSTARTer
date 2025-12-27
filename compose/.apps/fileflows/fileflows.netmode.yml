@@ -1,0 +1,3 @@
+services:
+  fileflows<__instance>:
+    network_mode: ${FILEFLOWS<__INSTANCE>__NETWORK_MODE?}

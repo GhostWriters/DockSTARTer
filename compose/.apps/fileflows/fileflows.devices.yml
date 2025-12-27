@@ -1,0 +1,7 @@
+services:
+  fileflows<__instance>:
+    devices:
+      - ${FILEFLOWS<__INSTANCE>__DEVICE_DEV1}
+      - ${FILEFLOWS<__INSTANCE>__DEVICE_DEV2}
+      - ${FILEFLOWS<__INSTANCE>__DEVICE_DEV3}
+      - ${FILEFLOWS<__INSTANCE>__DEVICE_DEV4}

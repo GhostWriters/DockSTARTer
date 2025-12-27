@@ -1,0 +1,12 @@
+services:
+  fileflows<__instance>:
+    container_name: ${FILEFLOWS<__INSTANCE>__CONTAINER_NAME?}
+    env_file: .env.app.fileflows<__instance>
+    environment:
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${FILEFLOWS<__INSTANCE>__RESTART?}
+    volumes:
+      - ${FILEFLOWS<__INSTANCE>__VOLUME_DOCKER_SOCKET?}:/var/run/docker.sock:ro
+      - ${DOCKER_VOLUME_CONFIG?}/fileflows<__instance>:/app/Data
