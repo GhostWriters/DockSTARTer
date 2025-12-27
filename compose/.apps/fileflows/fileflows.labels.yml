@@ -1,0 +1,6 @@
+services:
+  fileflows<__instance>:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "FileFlows lets you monitor and process any file type with custom flows. Videos, audio, images, archives, comics, eBooks—you name it!"
+      com.dockstarter.appinfo.nicename: "FileFlows<__Instance>"

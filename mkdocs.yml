@@ -151,6 +151,7 @@ nav:
       - apps/fail2ban.md
       - apps/filebot.md
       - apps/filebrowser.md
+      - apps/fileflows.md
       - apps/fireflyiii.md
       - apps/flame.md
       - apps/flaresolverr.md

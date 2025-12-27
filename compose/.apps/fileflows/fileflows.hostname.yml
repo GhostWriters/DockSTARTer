@@ -1,0 +1,3 @@
+services:
+  fileflows<__instance>:
+    hostname: ${FILEFLOWS<__INSTANCE>__HOSTNAME?}
