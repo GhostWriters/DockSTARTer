@@ -450,11 +450,14 @@ cleanup() {
     local -ri EXIT_CODE=$?
     trap - ERR EXIT SIGABRT SIGALRM SIGHUP SIGINT SIGQUIT SIGTERM
 
-    sudo sh -c "cat ${MKTEMP_LOG:-/dev/null} >> ${APPLICATION_LOG}" || true
+    if [[ -e ${APPLICATION_LOG} ]]; then
+        sudo chown "${DETECTED_PUID}:${DETECTED_PGID}" "${APPLICATION_LOG}" || true
+    fi
+    cat "${MKTEMP_LOG:-/dev/null}" >> "${APPLICATION_LOG}" || true
     if [[ -n ${MKTEMP_LOG-} && -f ${MKTEMP_LOG} ]]; then
         sudo rm -f "${MKTEMP_LOG}" &> /dev/null || true
     fi
-    tail -1000 "${APPLICATION_LOG}" | sudo tee "${APPLICATION_LOG}" > /dev/null || true
+    tail -1000 "${APPLICATION_LOG}" | tee "${APPLICATION_LOG}" > /dev/null || true
     if [[ -n ${TEMP_FOLDER-} && -d ${TEMP_FOLDER} ]]; then
         sudo rm -rf "${TEMP_FOLDER?}" &> /dev/null || true
     fi
