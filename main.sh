@@ -303,7 +303,7 @@ fatal() {
 
     local -a Stack=()
 
-    get_system_info | readarray -t Stack
+    readarray -t Stack < <(get_system_info)
     Stack+=("")
 
     local StackSize=${#FUNCNAME[@]}
