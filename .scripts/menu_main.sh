@@ -7,7 +7,6 @@ menu_main() {
         return
     fi
 
-    fatal "Super Fatal Error"
     local Title="Main Menu"
     local Option_Configure="Configuration"
     local Option_InstallDependencies="Install Dependencies"
