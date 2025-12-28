@@ -1,0 +1,4 @@
+services:
+  fileflows<__instance>:
+    ports:
+      - ${FILEFLOWS<__INSTANCE>__PORT_5000?}:5000

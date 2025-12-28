@@ -56,6 +56,9 @@ export DETECTED_HOMEDIR
 
 # System Information
 ARCH=$(uname -m)
+if [[ ${ARCH} == arm64 ]]; then
+    ARCH="aarch64"
+fi
 readonly ARCH
 export ARCH
 
