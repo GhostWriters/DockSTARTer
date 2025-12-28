@@ -395,8 +395,8 @@ fatal() {
 check_arch() {
     if [[ ${ARCH} != "arm64" ]] && [[ ${ARCH} != "aarch64" ]] && [[ ${ARCH} != "x86_64" ]]; then
         fatal_notrace \
-            "Unsupported architeture." \
-            "Supported architetures are 'aarch64' or 'x86_64', running architeture is '${ARCH}'."
+            "Unsupported architecture." \
+            "Supported architectures are 'aarch64' or 'x86_64', running architecture is '${ARCH}'."
     fi
 }
 
