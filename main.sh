@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 shopt -s extdebug
+set +o posix
 set -Eeuo pipefail
 IFS=$'\n\t'
 
@@ -175,6 +176,78 @@ declare -Agr C=( # Pre-defined colors
     ["UsageVar"]="${F[M]}"
 )
 
+indent_text() {
+    local -i IndentSize=${1}
+    shift
+    pr -e -t -o ${IndentSize} <<< "$(
+        printf "%s\n" "$@"
+    )"
+}
+
+get_system_info() {
+    local -a Output=()
+
+    Output+=(
+        "${C["Version"]-}${APPLICATION_NAME-}${NC-} [${C["Version"]-}${APPLICATION_VERSION-}${NC-}]"
+        ""
+        "Currently running as: $0 (PID $$)"
+        "Shell name from /proc/$$/exe: $(readlink /proc/$$/exe)"
+        ""
+        "ARCH:             ${ARCH-}"
+        "SCRIPTPATH:       ${SCRIPTPATH-}"
+        "SCRIPTNAME:       ${SCRIPTNAME-}"
+        ""
+        "DETECTED_PUID:    ${DETECTED_PUID-}"
+        "DETECTED_UNAME:   ${DETECTED_UNAME-}"
+        "DETECTED_PGID:    ${DETECTED_PGID-}"
+        "DETECTED_UGROUP:  ${DETECTED_UGROUP-}"
+        "DETECTED_HOMEDIR: ${DETECTED_HOMEDIR-}"
+    )
+
+    Output+=(
+        ""
+        "${C["RunningCommand"]}echo \${BASH_VERSION}${NC}:"
+        "${BASH_VERSION-}"
+    )
+
+    [[ -f /etc/os-release ]] &&
+        Output+=(
+            ""
+            "${C["RunningCommand"]}cat /etc/os-release${NC}:"
+            "$(cat /etc/os-release)"
+        )
+
+    [[ -f /etc/lsb-release ]] &&
+        Output+=(
+            ""
+            "${C["RunningCommand"]}cat /etc/lsb-release${NC}:"
+            "$(cat /etc/lsb-release)"
+        )
+
+    command -v lsb_release &> /dev/null &&
+        Output+=(
+            ""
+            "${C["RunningCommand"]}lsb_release -a${NC}:"
+            "$(lsb_release -a)"
+        )
+
+    command -v uname &> /dev/null &&
+        Output+=(
+            ""
+            "${C["RunningCommand"]}uname -a${NC}:"
+            "$(uname -a)"
+        )
+
+    command -v system_profiler &> /dev/null &&
+        Output+=(
+            ""
+            "${C["RunningCommand"]}system_profiler SPSoftwareDataType${NC}:"
+            "$(system_profiler SPSoftwareDataType)"
+        )
+
+    printf '%s\n' "${Output[@]}"
+}
+
 # Log Functions
 MKTEMP_LOG=$(mktemp -t "${APPLICATION_NAME}.log.XXXXXXXXXX") || echo -e "Failed to create temporary log file.\nFailing command: ${C["FailingCommand"]}mktemp -t \"${APPLICATION_NAME}.log.XXXXXXXXXX\""
 readonly MKTEMP_LOG
@@ -220,7 +293,7 @@ warn() { log true "$(timestamped_log "${C["Warn"]-}[WARN  ]${NC-}" "$@")"; }
 error() { log true "$(timestamped_log "${C["Error"]-}[ERROR ]${NC-}" "$@")"; }
 fatal_notrace() {
     local LogMessage
-    LogMessage="$(timestamped_log "${C["Fatal"]-}[FATAL ]${NC}" "$@")"
+    LogMessage=$(timestamped_log "${C["Fatal"]-}[FATAL ]${NC}" "$@")
     log true "${LogMessage}"
     if declare -F strip_ansi_colors > /dev/null; then
         LogMessage=$(strip_ansi_colors "${LogMessage-}")
@@ -230,7 +303,12 @@ fatal_notrace() {
 }
 fatal() {
     local -i thisFuncLine=$((LINENO - 1))
+
     local -a Stack=()
+
+    readarray -t Stack < <(get_system_info)
+    Stack+=("")
+
     local StackSize=${#FUNCNAME[@]}
     local -i FrameNumberLength=${#StackSize}
     local NoFile="<nofile>"
@@ -244,17 +322,19 @@ fatal() {
     local -i CmdArgCount=0
     local indent=""
     local FramePrefix="  "
+    local -i StartFrame=1
     for ((Frame = 0; Frame <= StackSize; Frame++)); do
-        local StackLineFormat="  ${C["TraceFrameNumber"]}%${FrameNumberLength}d${NC}:${indent}${FramePrefix}${C["TraceSourceFile"]}%s${NC}:${C["TraceLineNumber"]}%d${NC} (${C["TraceFunction"]}%s${NC})"
+        local StackLineFormat="${C["TraceFrameNumber"]}%${FrameNumberLength}d${NC}:${indent}${FramePrefix}${C["TraceSourceFile"]}%s${NC}:${C["TraceLineNumber"]}%d${NC} (${C["TraceFunction"]}%s${NC})"
 
-        # shellcheck disable=SC2059 # Don't use variables in the printf format string.
-        Stack+=(
-            "$(
-                printf "${StackLineFormat}" "${Frame}" "${SourceFile}" "${line}" "${func}"
-            )"
-        )
+        if [[ Frame -ge StartFrame ]]; then
+            # shellcheck disable=SC2059 # Don't use variables in the printf format string.
+            Stack+=(
+                "$(printf "${StackLineFormat}" "${Frame}" "${SourceFile}" "${line}" "${func}")"
+            )
+        fi
+
         if [[ -n ${cmd-} ]]; then
-            local FrameCmdPrefix="${C["TraceFrameLines"]}│${NC}"
+            local FrameCmdPrefix="${C["TraceFrameLines"]}▲${NC}"
             local FrameArgPrefix="${C["TraceFrameLines"]}│${NC}"
             local cmdString="${C["TraceCmd"]}${cmd}${NC}"
             local -a cmdArray=()
@@ -267,20 +347,19 @@ fatal() {
                     cmdArgString="${cmdArgString//\\/\\\\}"
                     cmdArgString="${NC}«${C["TraceCmdArgs"]}${cmdArgString}${NC}»"
                     while read -r cmdLine; do
-                        cmdArray+=("${FrameArgPrefix}${C["TraceCmdArgs"]}${cmdLine}")
+                        cmdArray+=(
+                            "${FrameArgPrefix}${C["TraceCmdArgs"]}${cmdLine}"
+                        )
                     done <<< "${cmdArgString}"
                 done
             fi
-            local StackCmdIndent
-            StackCmdIndent="$(printf "  %${FrameNumberLength}s${indent}   " "")"
-            local cmdLines
-            cmdLines="$(
-                pr -t -o ${#StackCmdIndent} <<< "$(
-                    printf "%s\n" "${cmdArray[@]}"
-                )"
-            )"
-            # shellcheck disable=SC2059 # Don't use variables in the printf format string.
-            Stack+=("${cmdLines}")
+            if [[ Frame -ge StartFrame ]]; then
+                local -i StackCmdIndent
+                StackCmdIndent=$((FrameNumberLength + 1 + ${#indent} + 2))
+                Stack+=(
+                    "$(indent_text ${StackCmdIndent} "${cmdArray[@]}")"
+                )
+            fi
         fi
         SourceFile="${BASH_SOURCE[Frame + 1]:-$NoFile}"
         line="${BASH_LINENO[Frame]:-0}"
@@ -288,14 +367,16 @@ fatal() {
         cmd="${FUNCNAME[Frame]:-$NoFunction}"
         CurrentArg+=${CmdArgCount}
         CmdArgCount=${BASH_ARGC[Frame]-}
-        indent+="  "
-        FramePrefix="${C["TraceFrameLines"]}└─${NC}"
+        if [[ Frame -ge StartFrame ]]; then
+            indent+="  "
+            FramePrefix="${C["TraceFrameLines"]}└─${NC}"
+        fi
     done
 
     fatal_notrace \
-        "${C["TraceHeader"]}### BEGIN STACK TRACE ###" \
-        "${Stack[@]}" \
-        "${C["TraceFooter"]}### END STACK TRACE ###" \
+        "${C["TraceHeader"]}### BEGIN SYSTEM INFORMATION AND STACK TRACE ###" \
+        "$(indent_text 2 "${Stack[@]}")" \
+        "${C["TraceFooter"]}### END SYSTEM INFORMATION AND STACK TRACE ###" \
         "" \
         "$@" \
         "" \
@@ -315,10 +396,10 @@ fatal() {
 
 # Check for supported CPU architecture
 check_arch() {
-    if [[ ${ARCH} != "aarch64" ]] && [[ ${ARCH} != "x86_64" ]]; then
+    if [[ ${ARCH} != "arm64" ]] && [[ ${ARCH} != "aarch64" ]] && [[ ${ARCH} != "x86_64" ]]; then
         fatal_notrace \
-            "Unsupported architeture." \
-            "Supported architetures are 'aarch64' or 'x86_64', running architeture is '${ARCH}'."
+            "Unsupported architecture." \
+            "Supported architectures are 'aarch64' or 'x86_64', running architecture is '${ARCH}'."
     fi
 }
 
@@ -373,7 +454,7 @@ cleanup() {
     if [[ -n ${MKTEMP_LOG-} && -f ${MKTEMP_LOG} ]]; then
         sudo rm -f "${MKTEMP_LOG}" &> /dev/null || true
     fi
-    sudo sh -c "echo \"$(tail -1000 "${APPLICATION_LOG}")\" > ${APPLICATION_LOG}" || true
+    tail -1000 "${APPLICATION_LOG}" | sudo tee "${APPLICATION_LOG}" > /dev/null || true
     if [[ -n ${TEMP_FOLDER-} && -d ${TEMP_FOLDER} ]]; then
         sudo rm -rf "${TEMP_FOLDER?}" &> /dev/null || true
     fi
