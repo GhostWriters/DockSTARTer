@@ -76,7 +76,7 @@ You may also need to fill in or adjust any other variables prefixed with the `<A
 
 This is the best place to change the app's external default ports.
 
-There will also be an application specific variable file created at `~/.dockstarter/compose/.env.app.<appname>`.  This may or not be populated with variables.  The variables included, if any, will entierly depend on the application installed.  If you need to edit the values of the variables, or include any new variables for the app, it is entirely safe to do so.
+There will also be an application specific variable file created at `~/.dockstarter/compose/.env.app.<appname>`.  This may or may not be populated with variables.  The variables included, if any, will entirely depend on the application installed.  If you need to edit the values of the variables, or include any new variables for the app, it is entirely safe to do so.
 
 #### Removing Apps
 
