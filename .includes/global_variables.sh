@@ -13,33 +13,41 @@ mkdir "${TEMP_FOLDER}"
 sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${TEMP_FOLDER}"
 sudo chmod a=,a+rX,u+w,g+w "${TEMP_FOLDER}"
 
-declare -rgx COMPOSE_FOLDER_NAME="compose"
-declare -rgx DEFAULTS_FOLDER_NAME=".defaults"
-declare -rgx THEME_FOLDER_NAME=".themes"
+declare -gx DEFAULTS_FOLDER_NAME=".defaults"
+declare -gx TEMPLATES_FOLDER_NAME=".apps"
+declare -gx INSTANCES_FOLDER_NAME=".instances"
+declare -gx THEME_FOLDER_NAME=".themes"
+declare -gx TIMESTAMPS_FOLDER_NAME=".timestamps"
+declare -gx APP_ENV_FOLDER_NAME="env_files"
 
-declare -rgx COMPOSE_FOLDER="${SCRIPTPATH}/${COMPOSE_FOLDER_NAME}"
-declare -rgx DEFAULTS_FOLDER="${SCRIPTPATH}/${DEFAULTS_FOLDER_NAME}"
-declare -rgx THEME_FOLDER="${SCRIPTPATH}/${THEME_FOLDER_NAME}"
+declare -gx DEFAULTS_FOLDER="${SCRIPTPATH}/${DEFAULTS_FOLDER_NAME}"
+declare -gx TEMPLATES_FOLDER="${SCRIPTPATH}/${TEMPLATES_FOLDER_NAME}"
+declare -gx INSTANCES_FOLDER="${SCRIPTPATH}/${INSTANCES_FOLDER_NAME}"
+declare -gx THEME_FOLDER="${SCRIPTPATH}/${THEME_FOLDER_NAME}"
 
-declare -rgx DOCKER_COMPOSE_FILE="${COMPOSE_FOLDER}/docker-compose.yml"
-declare -rgx COMPOSE_OVERRIDE_NAME="docker-compose.override.yml"
-declare -rgx COMPOSE_ENV="${COMPOSE_FOLDER}/.env"
-declare -rgx COMPOSE_ENV_DEFAULT_FILE="${COMPOSE_FOLDER}/.env.example"
-declare -rgx COMPOSE_OVERRIDE="${COMPOSE_FOLDER}/${COMPOSE_OVERRIDE_NAME}"
+declare -gx APPLICATION_INI_NAME="${APPLICATION_NAME,,}.ini"
+declare -gx APPLICATION_INI_FILE="${DETECTED_HOMEDIR}/${APPLICATION_INI_NAME}"
+declare -gx DEFAULT_INI_FILE="${DEFAULTS_FOLDER}/${APPLICATION_INI_NAME}"
+declare -gx THEME_FILE_NAME="theme.ini"
 
-declare -rgx INSTANCES_FOLDER_NAME=".instances"
-declare -rgx TEMPLATES_FOLDER_NAME=".apps"
+declare -gx COMPOSE_ENV_DEFAULT_FILE="${SCRIPTPATH}/compose/.env.example"
 
-declare -rgx APP_ENV_FOLDER_NAME="env_files"
-declare -rgx TIMESTAMPS_FOLDER_NAME=".timestamps"
+declare -gx COMPOSE_FOLDER
+declare -gx CONFIG_FOLDER
 
-declare -rgx INSTANCES_FOLDER="${SCRIPTPATH}/${INSTANCES_FOLDER_NAME}"
-declare -rgx TEMPLATES_FOLDER="${SCRIPTPATH}/${TEMPLATES_FOLDER_NAME}"
-
-declare -rgx APP_ENV_FOLDER="${COMPOSE_FOLDER}/${APP_ENV_FOLDER_NAME}"
-declare -rgx TIMESTAMPS_FOLDER="${COMPOSE_FOLDER}/${TIMESTAMPS_FOLDER_NAME}"
-
-declare -rgx APPLICATION_INI_NAME="dockstarter.ini"
-declare -rgx APPLICATION_INI_FILE="${SCRIPTPATH}/${APPLICATION_INI_NAME}"
-
-declare -rgx THEME_FILE_NAME="theme.ini"
+set_global_variables() {
+    if [[ -z ${CONFIG_FOLDER} ]]; then
+        fatal "'${C["Var"]}CONFIG_FOLDER${NC}' is not set."
+    fi
+    if [[ -z ${COMPOSE_FOLDER} ]]; then
+        fatal "'${C["Var"]}COMPOSE_FOLDER${NC}' is not set."
+    fi
+    declare -gx COMPOSE_FOLDER_NAME
+    COMPOSE_FOLDER_NAME="$(basename "${COMPOSE_FOLDER}")"
+    declare -gx DOCKER_COMPOSE_FILE="${COMPOSE_FOLDER}/docker-compose.yml"
+    declare -gx COMPOSE_OVERRIDE_NAME="docker-compose.override.yml"
+    declare -gx COMPOSE_OVERRIDE="${COMPOSE_FOLDER}/${COMPOSE_OVERRIDE_NAME}"
+    declare -gx COMPOSE_ENV="${COMPOSE_FOLDER}/.env"
+    declare -gx APP_ENV_FOLDER="${COMPOSE_FOLDER}/${APP_ENV_FOLDER_NAME}"
+    declare -gx TIMESTAMPS_FOLDER="${COMPOSE_FOLDER}/${TIMESTAMPS_FOLDER_NAME}"
+}
