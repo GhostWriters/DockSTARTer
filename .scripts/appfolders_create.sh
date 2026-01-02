@@ -23,11 +23,30 @@ appfolders_create() {
         local -a FOLDERS_ARRAY=()
         readarray -t FOLDERS_ARRAY < <(${GREP} -o -P '^\s*\K.*(?=\s*)$' "${APP_FOLDERS_FILE}" | ${GREP} -v '^$' || true)
         if [[ -n ${FOLDERS_ARRAY[*]-} ]]; then
-            local DOCKER_VOLUME_CONFIG
+            local HOME DOCKER_CONFIG_FOLDER DOCKER_VOLUME_CONFIG
+            HOME="$(run_script 'env_get' HOME)"
+            DOCKER_CONFIG_FOLDER="$(run_script 'env_get' DOCKER_CONFIG_FOLDER)"
             DOCKER_VOLUME_CONFIG="$(run_script 'env_get' DOCKER_VOLUME_CONFIG)"
+            DOCKER_CONFIG_FOLDER="$(
+                echo "${DOCKER_CONFIG_FOLDER}" | \
+                    HOME="${HOME}" XDG_CONFIG_HOME="${XDG_CONFIG_HOME}" \
+                    envsubst
+            )"
+            DOCKER_VOLUME_CONFIG="$(
+                echo "${DOCKER_VOLUME_CONFIG}" | \
+                    HOME="${HOME}" XDG_CONFIG_HOME="${XDG_CONFIG_HOME}" DOCKER_CONFIG_FOLDER="${DOCKER_CONFIG_FOLDER-}" \
+                    envsubst
+            )"
             for index in "${!FOLDERS_ARRAY[@]}"; do
                 local FOLDER
-                FOLDERS_ARRAY[index]="$(echo "${FOLDERS_ARRAY[$index]}" | DOCKER_VOLUME_CONFIG="${DOCKER_VOLUME_CONFIG-}" envsubst)"
+                FOLDERS_ARRAY[index]="$(
+                    echo "${FOLDERS_ARRAY[$index]}" | \
+                        HOME="${HOME}" \
+                        XDG_CONFIG_HOME="${XDG_CONFIG_HOME}" \
+                        DOCKER_CONFIG_FOLDER="${CONFIG_FOLDER-}" \
+                        DOCKER_VOLUME_CONFIG="${DOCKER_VOLUME_CONFIG-}" \
+                        envsubst
+                )"
                 if [[ -z ${FOLDERS_ARRAY[$index]} || -d ${FOLDERS_ARRAY[$index]} ]]; then
                     unset 'FOLDERS_ARRAY[index]'
                 fi

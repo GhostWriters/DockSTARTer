@@ -12,6 +12,18 @@ env_backup() {
         warn "No .env file to back up."
         return
     fi
+    # Update CONFIG_FOLDER and LITERAL_CONFIG_FOLDER based on DOCKER_CONFIG_FOLDER
+    local DOCKER_CONFIG_FOLDER
+    DOCKER_CONFIG_FOLDER="$(run_script 'env_get' DOCKER_CONFIG_FOLDER)"
+    if [[ -z ${DOCKER_CONFIG_FOLDER-} ]]; then
+        DOCKER_CONFIG_FOLDER="$(run_script 'var_default_value' DOCKER_CONFIG_FOLDER)"
+    fi
+    DOCKER_CONFIG_FOLDER="$(run_script 'sanitize_path' "${DOCKER_CONFIG_FOLDER}")"
+    LITERAL_CONFIG_FOLDER="${DOCKER_CONFIG_FOLDER}"
+    CONFIG_FOLDER="$(
+        HOME="${HOME}" XDG_CONFIG_HOME="${XDG_CONFIG_HOME}" \
+            envsubst <<< "${LITERAL_CONFIG_FOLDER}"
+    )"
     DOCKER_VOLUME_CONFIG="$(run_script 'env_get' DOCKER_VOLUME_CONFIG)"
     if [[ -z ${DOCKER_VOLUME_CONFIG-} ]]; then
         DOCKER_VOLUME_CONFIG="$(run_script 'env_get' DOCKERCONFDIR)"
@@ -25,6 +37,10 @@ env_backup() {
         fatal \
             "Variable '${C["Var"]}DOCKER_VOLUME_CONFIG${NC}' is not set in the '${C["File"]}.env${NC}' file"
     fi
+    DOCKER_VOLUME_CONFIG="$(
+        HOME="${HOME}" XDG_CONFIG_HOME="${XDG_CONFIG_HOME}" DOCKER_CONFIG_FOLDER="${DOCKER_CONFIG_FOLDER-}" \
+            envsubst <<< "${DOCKER_VOLUME_CONFIG}"
+    )"
     DOCKER_VOLUME_CONFIG="$(run_script 'sanitize_path' "${DOCKER_VOLUME_CONFIG}")"
 
     info "Taking ownership of '${C["Folder"]}${DOCKER_VOLUME_CONFIG}${NC}' (non-recursive)."

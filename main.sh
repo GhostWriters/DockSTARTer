@@ -85,8 +85,21 @@ SCRIPTNAME="${SCRIPTPATH}/$(basename "$(get_scriptname)")"
 readonly SCRIPTNAME
 export SCRIPTNAME
 
-declare -rgx APPLICATION_LOG="${SCRIPTPATH}/${APPLICATION_NAME,,}.log"
-declare -rgx FATAL_LOG="${SCRIPTPATH}/fatal.log"
+[[ -z ${XDG_DATA_HOME-} ]] && declare -gx XDG_DATA_HOME="${DETECTED_HOMEDIR}/.local/share"
+[[ -z ${XDG_CONFIG_HOME-} ]] && declare -gx XDG_CONFIG_HOME="${DETECTED_HOMEDIR}/.config"
+[[ -z ${XDG_CACHE_HOME-} ]] && declare -gx XDG_CACHE_HOME="${DETECTED_HOMEDIR}/.cache"
+[[ -z ${XDG_STATE_HOME-} ]] && declare -gx XDG_STATE_HOME="${DETECTED_HOMEDIR}/.local/state"
+[[ -z ${XDG_RUNTIME_DIR-} ]] && declare -gx XDG_RUNTIME_DIR="/run/user/${DETECTED_PUID}"
+
+[[ ! -d ${XDG_STATE_HOME}/${APPLICATION_NAME,,} ]] && mkdir -p "${XDG_STATE_HOME}/${APPLICATION_NAME,,}"
+declare -rgx APPLICATION_LOG="${XDG_STATE_HOME}/${APPLICATION_NAME,,}/${APPLICATION_NAME,,}.log"
+declare -rgx FATAL_LOG="${XDG_STATE_HOME}/${APPLICATION_NAME,,}/fatal.log"
+if [[ ! -f ${APPLICATION_LOG} && -f ${SCRIPTPATH}/${APPLICATION_NAME,,}.log ]]; then
+    mv "${SCRIPTPATH}/${APPLICATION_NAME,,}.log" "${APPLICATION_LOG}" || true
+fi
+if [[ ! -f ${FATAL_LOG} && -f ${SCRIPTPATH}/fatal.log ]]; then
+    mv "${SCRIPTPATH}/fatal.log" "${FATAL_LOG}" || true
+fi
 
 # Terminal Colors
 declare -Agr B=( # Background

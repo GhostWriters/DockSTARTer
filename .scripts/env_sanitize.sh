@@ -7,6 +7,35 @@ declare -a _dependencies_list=(
 )
 
 env_sanitize() {
+    local -a VarsToUpdate
+    local -A UpdatedVarValue
+
+    # Update the HOME variable if it is not set to the detected home directory
+    local HOME
+    HOME="$(run_script 'env_get' HOME)"
+    if [[ ${HOME} != ${DETECTED_HOMEDIR} ]]; then
+        VarsToUpdate+=(HOME)
+        UpdatedVarValue["HOME"]="'${DETECTED_HOMEDIR}'"
+    fi
+
+    # Update CONFIG_FOLDER and LITERAL_CONFIG_FOLDER based on DOCKER_CONFIG_FOLDER
+    local DOCKER_CONFIG_FOLDER
+    DOCKER_CONFIG_FOLDER="$(run_script 'env_get' DOCKER_CONFIG_FOLDER)"
+    if [[ -z ${DOCKER_CONFIG_FOLDER-} ]]; then
+        DOCKER_CONFIG_FOLDER="$(run_script 'var_default_value' DOCKER_CONFIG_FOLDER)"
+    fi
+    LITERAL_CONFIG_FOLDER="$(run_script 'sanitize_path' "${DOCKER_CONFIG_FOLDER}")"
+    CONFIG_FOLDER="$( \
+        HOME="${HOME}" XDG_CONFIG_HOME="${XDG_CONFIG_HOME}" \
+        envsubst <<< "${LITERAL_CONFIG_FOLDER}"
+    )"
+    set_global_variables
+    if [[ ${DOCKER_CONFIG_FOLDER} != ${CONFIG_FOLDER} ]]; then
+        DOCKER_CONFIG_FOLDER="${CONFIG_FOLDER}"
+        VarsToUpdate+=(DOCKER_CONFIG_FOLDER)
+        UpdatedVarValue["DOCKER_CONFIG_FOLDER"]="\"${DOCKER_CONFIG_FOLDER}\""
+    fi
+
     # Backup the user files
     run_script 'env_backup'
 
@@ -15,13 +44,11 @@ env_sanitize() {
 
     # Add any default global variables that might have been deleted
     run_script 'env_merge_newonly' "${COMPOSE_ENV}" "${COMPOSE_ENV_DEFAULT_FILE}"
-    local -a VarsToUpdate
-    local -A UpdatedVarValue
-    local VarList
+
+    local -a VarList
 
     # Set defaults for some "special cases" of the global variables
     VarList=(
-        DOCKER_CONFIG_FOLDER
         DOCKER_HOSTNAME
         TZ
     )
@@ -57,8 +84,6 @@ env_sanitize() {
 
     # Replace ~ with /home/username
     local -a VarList=(
-        HOME
-        DOCKER_CONFIG_FOLDER
         DOCKER_VOLUME_CONFIG
         DOCKER_VOLUME_STORAGE
         DOCKER_VOLUME_STORAGE2
