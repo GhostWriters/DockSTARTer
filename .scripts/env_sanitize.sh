@@ -21,6 +21,7 @@ env_sanitize() {
 
     # Set defaults for some "special cases" of the global variables
     VarList=(
+        DOCKER_CONFIG_FOLDER
         DOCKER_HOSTNAME
         TZ
     )
@@ -56,11 +57,13 @@ env_sanitize() {
 
     # Replace ~ with /home/username
     local -a VarList=(
-        "DOCKER_VOLUME_CONFIG"
-        "DOCKER_VOLUME_STORAGE"
-        "DOCKER_VOLUME_STORAGE2"
-        "DOCKER_VOLUME_STORAGE3"
-        "DOCKER_VOLUME_STORAGE4"
+        HOME
+        DOCKER_CONFIG_FOLDER
+        DOCKER_VOLUME_CONFIG
+        DOCKER_VOLUME_STORAGE
+        DOCKER_VOLUME_STORAGE2
+        DOCKER_VOLUME_STORAGE3
+        DOCKER_VOLUME_STORAGE4
     )
     for VarName in "${VarList[@]-}"; do
         # Get the value including quotes

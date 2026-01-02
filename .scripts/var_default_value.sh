@@ -78,17 +78,14 @@ var_default_value() {
             ;;
         GLOBAL)
             case "${CleanVarName}" in
+                DOCKER_CONFIG_FOLDER)
+                    Default="'${CONFIG_FOLDER}'"
+                    ;;
                 DOCKER_GID)
                     Default="'$(group_id docker)'"
                     ;;
                 DOCKER_HOSTNAME)
                     Default="'${HOSTNAME}'"
-                    ;;
-                DOCKER_VOLUME_CONFIG)
-                    Default="'${DETECTED_HOMEDIR}/.config/appdata'"
-                    ;;
-                DOCKER_VOLUME_STORAGE)
-                    Default="'${DETECTED_HOMEDIR}/storage'"
                     ;;
                 GLOBAL_LAN_NETWORK)
                     Default="'$(run_script 'detect_lan_network')'"
