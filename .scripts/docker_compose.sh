@@ -169,6 +169,7 @@ test_docker_compose() {
     run_script 'appvars_create' WATCHTOWER
     cat "${COMPOSE_ENV}"
     run_script 'yml_merge'
+    notice "COMPOSE_FOLDER: ${COMPOSE_FOLDER}"
     eval "docker compose --project-directory ${COMPOSE_FOLDER}/ config" ||
         fatal \
             "Failed to display compose config." \

@@ -20,47 +20,28 @@ appfolders_create() {
     APP_FOLDERS_FILE="$(run_script 'app_instance_file' "${appname}" "*.folders")"
 
     if [[ -f ${APP_FOLDERS_FILE} ]]; then
-        local -a FOLDERS_ARRAY=()
-        readarray -t FOLDERS_ARRAY < <(${GREP} -o -P '^\s*\K.*(?=\s*)$' "${APP_FOLDERS_FILE}" | ${GREP} -v '^$' || true)
-        if [[ -n ${FOLDERS_ARRAY[*]-} ]]; then
-            local HOME DOCKER_CONFIG_FOLDER DOCKER_VOLUME_CONFIG
-            HOME="$(run_script 'env_get' HOME)"
-            DOCKER_CONFIG_FOLDER="$(run_script 'env_get' DOCKER_CONFIG_FOLDER)"
-            DOCKER_VOLUME_CONFIG="$(run_script 'env_get' DOCKER_VOLUME_CONFIG)"
-            DOCKER_CONFIG_FOLDER="$(
-                echo "${DOCKER_CONFIG_FOLDER}" | \
-                    HOME="${HOME}" XDG_CONFIG_HOME="${XDG_CONFIG_HOME}" \
-                    envsubst
-            )"
-            DOCKER_VOLUME_CONFIG="$(
-                echo "${DOCKER_VOLUME_CONFIG}" | \
-                    HOME="${HOME}" XDG_CONFIG_HOME="${XDG_CONFIG_HOME}" DOCKER_CONFIG_FOLDER="${DOCKER_CONFIG_FOLDER-}" \
-                    envsubst
-            )"
-            for index in "${!FOLDERS_ARRAY[@]}"; do
-                local FOLDER
-                FOLDERS_ARRAY[index]="$(
-                    echo "${FOLDERS_ARRAY[$index]}" | \
-                        HOME="${HOME}" \
-                        XDG_CONFIG_HOME="${XDG_CONFIG_HOME}" \
-                        DOCKER_CONFIG_FOLDER="${CONFIG_FOLDER-}" \
-                        DOCKER_VOLUME_CONFIG="${DOCKER_VOLUME_CONFIG-}" \
-                        envsubst
+        local -a FoldersArray=()
+        readarray -t FoldersArray < <(${GREP} -o -P '^\s*\K.*(?=\s*)$' "${APP_FOLDERS_FILE}" | ${GREP} -v '^$' || true)
+        if [[ -n ${FoldersArray[*]-} ]]; then
+            for index in "${!FoldersArray[@]}"; do
+                local Folder
+                FoldersArray[index]="$(
+                    run_script 'expand_vars_using_varfile' "${FoldersArray[$index]}"
                 )"
-                if [[ -z ${FOLDERS_ARRAY[$index]} || -d ${FOLDERS_ARRAY[$index]} ]]; then
-                    unset 'FOLDERS_ARRAY[index]'
+                if [[ -z ${FoldersArray[$index]} || -d ${FoldersArray[$index]} ]]; then
+                    unset 'FoldersArray[index]'
                 fi
             done
-            if [[ -n ${FOLDERS_ARRAY[*]-} ]]; then
-                notice "Creating config folders for '${C["App"]}${AppName}${NC}'."
-                for FOLDER in "${FOLDERS_ARRAY[@]-}"; do
-                    notice "Creating folder '${C["Folder"]}${FOLDER}${NC}'"
-                    mkdir -p "${FOLDER}" ||
+            if [[ -n ${FoldersArray[*]-} ]]; then
+                notice "Creating config folders for '${C["App"]-}${AppName}${NC-}'."
+                for Folder in "${FoldersArray[@]-}"; do
+                    notice "Creating folder '${C["Folder"]-}${Folder}${NC-}'"
+                    mkdir -p "${Folder}" ||
                         warn \
-                            "Could not create folder '${C["Folder"]}${FOLDER}${NC}'" \
-                            "Failing command: ${C["FailingCommand"]}mkdir -p  \"${FOLDER}\""
-                    if [[ -d ${FOLDER} ]]; then
-                        run_script 'set_permissions' "${FOLDER}"
+                            "Could not create folder '${C["Folder"]-}${Folder}${NC-}'" \
+                            "Failing command: ${C["FailingCommand"]-}mkdir -p  \"${Folder}\""
+                    if [[ -d ${Folder} ]]; then
+                        run_script 'set_permissions' "${Folder}"
                     fi
                 done
             fi

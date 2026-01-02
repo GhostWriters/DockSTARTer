@@ -5,11 +5,16 @@ IFS=$'\n\t'
 declare -gx LC_ALL=C
 
 # Environment Information
-declare -rgx TEMP_FOLDER="${SCRIPTPATH}/.temp"
+declare -rgx APPLICATION_CACHE_FOLDER="${XDG_CACHE_HOME}/${APPLICATION_NAME,,}"
+mkdir -p "${APPLICATION_CACHE_FOLDER}"
+sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${APPLICATION_CACHE_FOLDER}"
+sudo chmod a=,a+rX,u+w,g+w "${APPLICATION_CACHE_FOLDER}"
+
+declare -rgx TEMP_FOLDER="${APPLICATION_CACHE_FOLDER}/.temp"
 if [[ -e ${TEMP_FOLDER} ]]; then
     sudo rm -rf "${TEMP_FOLDER}"
 fi
-mkdir "${TEMP_FOLDER}"
+mkdir -p "${TEMP_FOLDER}"
 sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${TEMP_FOLDER}"
 sudo chmod a=,a+rX,u+w,g+w "${TEMP_FOLDER}"
 
@@ -44,13 +49,14 @@ if [[ -d ${SCRIPTPATH}/compose/${INSTANCES_FOLDER_NAME} ]]; then
     fi
 fi
 
+declare -gx APPLICATION_INI_FOLDER="${XDG_CONFIG_HOME}"
 declare -gx APPLICATION_INI_NAME="${APPLICATION_NAME,,}.ini"
-declare -gx APPLICATION_INI_FILE="${XDG_CONFIG_HOME}/${APPLICATION_INI_NAME}"
+declare -gx APPLICATION_INI_FILE="${APPLICATION_INI_FOLDER}/${APPLICATION_INI_NAME}"
 declare -gx DEFAULT_INI_FILE="${DEFAULTS_FOLDER}/${APPLICATION_INI_NAME}"
 
 declare -gx THEME_FILE_NAME="theme.ini"
 
-declare -gx COMPOSE_ENV_DEFAULT_FILE="${SCRIPTPATH}/compose/.env.example"
+declare -gx COMPOSE_ENV_DEFAULT_FILE="${SCRIPTPATH}/.env.example"
 
 declare -gx COMPOSE_FOLDER
 declare -gx CONFIG_FOLDER
@@ -64,18 +70,27 @@ set_global_variables() {
     if [[ -z ${LITERAL_COMPOSE_FOLDER} ]]; then
         fatal "'${C["Var"]}LITERAL_COMPOSE_FOLDER${NC}' is not set."
     fi
-    CONFIG_FOLDER="$( \
-        HOME="${DETECTED_HOMEDIR}" \
-        ScriptFolder="${SCRIPTPATH}" \
-        XDG_CONFIG_HOME="${XDG_CONFIG_HOME}" \
-        eval echo "${LITERAL_CONFIG_FOLDER}"
+    CONFIG_FOLDER="$(
+        expand_vars "${LITERAL_CONFIG_FOLDER}" \
+            ScriptFolder "${SCRIPTPATH}" \
+            XDG_CONFIG_HOME "${XDG_CONFIG_HOME}" \
+            HOME "${DETECTED_HOMEDIR}"
     )"
-    COMPOSE_FOLDER="$( \
-        HOME="${DETECTED_HOMEDIR}" \
-        ScriptFolder="${SCRIPTPATH}" \
-        XDG_CONFIG_HOME="${XDG_CONFIG_HOME}" \
-        DOCKER_CONFIG_FOLDER="${CONFIG_FOLDER}" \
-        eval echo "${LITERAL_COMPOSE_FOLDER}"
+    LITERAL_CONFIG_FOLDER="$(
+        replace_with_vars "${CONFIG_FOLDER}" \
+            HOME "${DETECTED_HOMEDIR}"
+    )"
+    COMPOSE_FOLDER="$(
+        expand_vars "${LITERAL_COMPOSE_FOLDER}" \
+            DOCKER_CONFIG_FOLDER "${CONFIG_FOLDER}" \
+            ScriptFolder "${SCRIPTPATH}" \
+            XDG_CONFIG_HOME "${XDG_CONFIG_HOME}" \
+            HOME "${DETECTED_HOMEDIR}"
+    )"
+    LITERAL_COMPOSE_FOLDER="$(
+        replace_with_vars "${COMPOSE_FOLDER}" \
+            DOCKER_CONFIG_FOLDER "${CONFIG_FOLDER}" \
+            HOME "${DETECTED_HOMEDIR}"
     )"
     declare -gx COMPOSE_FOLDER_NAME
     COMPOSE_FOLDER_NAME="$(basename "${COMPOSE_FOLDER}")"

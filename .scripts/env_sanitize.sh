@@ -13,27 +13,40 @@ env_sanitize() {
     # Update the HOME variable if it is not set to the detected home directory
     local HOME
     HOME="$(run_script 'env_get' HOME)"
-    if [[ ${HOME} != ${DETECTED_HOMEDIR} ]]; then
+    if [[ ${HOME} != "${DETECTED_HOMEDIR}" ]]; then
+        HOME="${DETECTED_HOMEDIR}"
         VarsToUpdate+=(HOME)
-        UpdatedVarValue["HOME"]="'${DETECTED_HOMEDIR}'"
+        UpdatedVarValue["HOME"]="${DETECTED_HOMEDIR}"
     fi
 
-    # Update CONFIG_FOLDER and LITERAL_CONFIG_FOLDER based on DOCKER_CONFIG_FOLDER
-    local DOCKER_CONFIG_FOLDER
-    DOCKER_CONFIG_FOLDER="$(run_script 'env_get' DOCKER_CONFIG_FOLDER)"
+    local DOCKER_CONFIG_FOLDER DOCKER_COMPOSE_FOLDER ORIG_CONFIG_FOLDER ORIG_COMPOSE_FOLDER
+
+    ORIG_CONFIG_FOLDER="$(run_script 'env_get' DOCKER_CONFIG_FOLDER)"
+    DOCKER_CONFIG_FOLDER="${ORIG_CONFIG_FOLDER}"
     if [[ -z ${DOCKER_CONFIG_FOLDER-} ]]; then
         DOCKER_CONFIG_FOLDER="$(run_script 'var_default_value' DOCKER_CONFIG_FOLDER)"
     fi
-    LITERAL_CONFIG_FOLDER="$(run_script 'sanitize_path' "${DOCKER_CONFIG_FOLDER}")"
-    CONFIG_FOLDER="$( \
-        HOME="${HOME}" XDG_CONFIG_HOME="${XDG_CONFIG_HOME}" \
-        envsubst <<< "${LITERAL_CONFIG_FOLDER}"
-    )"
+
+    ORIG_COMPOSE_FOLDER="$(run_script 'env_get' DOCKER_COMPOSE_FOLDER)"
+    DOCKER_COMPOSE_FOLDER="${ORIG_COMPOSE_FOLDER}"
+    if [[ -z ${DOCKER_COMPOSE_FOLDER-} ]]; then
+        DOCKER_COMPOSE_FOLDER="$(run_script 'var_default_value' DOCKER_COMPOSE_FOLDER)"
+    fi
+
+    LITERAL_CONFIG_FOLDER="${DOCKER_CONFIG_FOLDER}"
+    LITERAL_COMPOSE_FOLDER="${DOCKER_COMPOSE_FOLDER}"
+
     set_global_variables
-    if [[ ${DOCKER_CONFIG_FOLDER} != ${CONFIG_FOLDER} ]]; then
-        DOCKER_CONFIG_FOLDER="${CONFIG_FOLDER}"
+
+    if [[ ${ORIG_CONFIG_FOLDER} != "${LITERAL_CONFIG_FOLDER}" ]]; then
+        DOCKER_CONFIG_FOLDER="${LITERAL_CONFIG_FOLDER}"
         VarsToUpdate+=(DOCKER_CONFIG_FOLDER)
-        UpdatedVarValue["DOCKER_CONFIG_FOLDER"]="\"${DOCKER_CONFIG_FOLDER}\""
+        UpdatedVarValue["DOCKER_CONFIG_FOLDER"]="${DOCKER_CONFIG_FOLDER}"
+    fi
+    if [[ ${ORIG_COMPOSE_FOLDER} != "${LITERAL_COMPOSE_FOLDER}" ]]; then
+        DOCKER_COMPOSE_FOLDER="${LITERAL_COMPOSE_FOLDER}"
+        VarsToUpdate+=(DOCKER_COMPOSE_FOLDER)
+        UpdatedVarValue["DOCKER_COMPOSE_FOLDER"]="${DOCKER_COMPOSE_FOLDER}"
     fi
 
     # Backup the user files
@@ -93,12 +106,18 @@ env_sanitize() {
     for VarName in "${VarList[@]-}"; do
         # Get the value including quotes
         local Value
-        Value="$(run_script 'env_get_literal' "${VarName}")"
+        Value="$(run_script 'env_get' "${VarName}")"
         local UpdatedValue
         UpdatedValue="$(run_script 'sanitize_path' "${Value}")"
+        UpdatedValue="$(
+            replace_with_vars \
+                "${UpdatedValue}" \
+                DOCKER_CONFIG_FOLDER "${DOCKER_CONFIG_FOLDER}" \
+                HOME "${HOME}"
+        )"
         if [[ ${Value} != "${UpdatedValue}" ]]; then
             VarsToUpdate+=("${VarName}")
-            UpdatedVarValue["${VarName}"]="${UpdatedValue}"
+            UpdatedVarValue["${VarName}"]="\"${UpdatedValue}\""
         fi
     done
 

@@ -33,7 +33,7 @@ if [[ ${CI-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS-} == true ]]; then
 fi
 
 declare -rgx SOURCE_BRANCH='master'
-declare -rgx TARGET_BRANCH='main'
+declare -rgx TARGET_BRANCH='Updates'
 
 declare DS_COMMAND
 DS_COMMAND=$(command -v "${APPLICATION_COMMAND}" || true)
@@ -90,15 +90,26 @@ export SCRIPTNAME
 [[ -z ${XDG_CACHE_HOME-} ]] && declare -gx XDG_CACHE_HOME="${DETECTED_HOMEDIR}/.cache"
 [[ -z ${XDG_STATE_HOME-} ]] && declare -gx XDG_STATE_HOME="${DETECTED_HOMEDIR}/.local/state"
 [[ -z ${XDG_RUNTIME_DIR-} ]] && declare -gx XDG_RUNTIME_DIR="/run/user/${DETECTED_PUID}"
+for XDG_FOLDER in "${XDG_DATA_HOME}" "${XDG_CONFIG_HOME}" "${XDG_CACHE_HOME}" "${XDG_STATE_HOME}" "${XDG_RUNTIME_DIR}"; do
+    if [[ ! -d ${XDG_FOLDER} ]]; then
+        mkdir -p "${XDG_FOLDER}"
+    fi
+done
+if [[ ! -d ${XDG_STATE_HOME}/${APPLICATION_NAME,,} ]]; then
+    mkdir -p "${XDG_STATE_HOME}/${APPLICATION_NAME,,}"
+fi
 
-[[ ! -d ${XDG_STATE_HOME}/${APPLICATION_NAME,,} ]] && mkdir -p "${XDG_STATE_HOME}/${APPLICATION_NAME,,}"
 declare -rgx APPLICATION_LOG="${XDG_STATE_HOME}/${APPLICATION_NAME,,}/${APPLICATION_NAME,,}.log"
 declare -rgx FATAL_LOG="${XDG_STATE_HOME}/${APPLICATION_NAME,,}/fatal.log"
-if [[ ! -f ${APPLICATION_LOG} && -f ${SCRIPTPATH}/${APPLICATION_NAME,,}.log ]]; then
-    mv "${SCRIPTPATH}/${APPLICATION_NAME,,}.log" "${APPLICATION_LOG}" || true
+if [[ ${APPLICATION_LOG} != "${SCRIPTPATH}/${APPLICATION_NAME,,}.log" ]]; then
+    if [[ ! -f ${APPLICATION_LOG} && -f "${SCRIPTPATH}/${APPLICATION_NAME,,}.log" ]]; then
+        mv "${SCRIPTPATH}/${APPLICATION_NAME,,}.log" "${APPLICATION_LOG}" || true
+    fi
 fi
-if [[ ! -f ${FATAL_LOG} && -f ${SCRIPTPATH}/fatal.log ]]; then
-    mv "${SCRIPTPATH}/fatal.log" "${FATAL_LOG}" || true
+if [[ ${FATAL_LOG} != "${SCRIPTPATH}/fatal.log" ]]; then
+    if [[ ! -f ${FATAL_LOG} && -f "${SCRIPTPATH}/fatal.log" ]]; then
+        mv "${SCRIPTPATH}/fatal.log" "${FATAL_LOG}" || true
+    fi
 fi
 
 # Terminal Colors
@@ -209,7 +220,10 @@ get_system_info() {
         "ARCH:             ${ARCH-}"
         "SCRIPTPATH:       ${SCRIPTPATH-}"
         "SCRIPTNAME:       ${SCRIPTNAME-}"
+        "COMPOSE_FOLDER:   ${COMPOSE_FOLDER-}"
+        "CONFIG_FOLDER:    ${CONFIG_FOLDER-}"
         ""
+        "APPLICATION_INI_FILE: ${APPLICATION_INI_FILE-}"
         "DETECTED_PUID:    ${DETECTED_PUID-}"
         "DETECTED_UNAME:   ${DETECTED_UNAME-}"
         "DETECTED_PGID:    ${DETECTED_PGID-}"
@@ -397,9 +411,9 @@ fatal() {
         "${C["FatalFooter"]}It has been written to '${C["File"]}${FATAL_LOG}${C["FatalFooter"]}', and appended to '${C["File"]}${APPLICATION_LOG}${C["FatalFooter"]}'."
 }
 
+[[ -f "${SCRIPTPATH}/.includes/misc_functions.sh" ]] && source "${SCRIPTPATH}/.includes/misc_functions.sh"
 [[ -f "${SCRIPTPATH}/.includes/global_variables.sh" ]] && source "${SCRIPTPATH}/.includes/global_variables.sh"
 [[ -f "${SCRIPTPATH}/.includes/pm_variables.sh" ]] && source "${SCRIPTPATH}/.includes/pm_variables.sh"
-[[ -f "${SCRIPTPATH}/.includes/misc_functions.sh" ]] && source "${SCRIPTPATH}/.includes/misc_functions.sh"
 [[ -f "${SCRIPTPATH}/.includes/run_script.sh" ]] && source "${SCRIPTPATH}/.includes/run_script.sh"
 [[ -f "${SCRIPTPATH}/.includes/dialog_functions.sh" ]] && source "${SCRIPTPATH}/.includes/dialog_functions.sh"
 [[ -f "${SCRIPTPATH}/.includes/ds_functions.sh" ]] && source "${SCRIPTPATH}/.includes/ds_functions.sh"
@@ -471,8 +485,8 @@ cleanup() {
         sudo rm -f "${MKTEMP_LOG}" &> /dev/null || true
     fi
     tail -1000 "${APPLICATION_LOG}" | tee "${APPLICATION_LOG}" > /dev/null || true
-    if [[ -n ${TEMP_FOLDER-} && -d ${TEMP_FOLDER} ]]; then
-        sudo rm -rf "${TEMP_FOLDER?}" &> /dev/null || true
+    if [[ -n ${APPLICATION_CACHE_FOLDER-} && -d ${APPLICATION_CACHE_FOLDER} ]]; then
+        sudo rm -rf "${APPLICATION_CACHE_FOLDER?}" &> /dev/null || true
     fi
     sudo -E chmod +x "${SCRIPTNAME}" &> /dev/null || true
 

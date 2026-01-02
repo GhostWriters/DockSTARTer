@@ -181,3 +181,67 @@ touchfile() {
         touch "${File}"
     fi
 }
+
+expand_vars() {
+    local String="$1"
+    shift
+    local -A Vars
+    while (($# >= 2)); do
+        Vars["$1"]="$2"
+        shift 2
+    done
+
+    # Recursively expand variables
+    local Changed=1
+    local -i LoopCount=0
+    local -i MaxLoops=10
+
+    while [[ ${Changed} -eq 1 && ${LoopCount} -lt ${MaxLoops} ]]; do
+        Changed=0
+        for Key in "${!Vars[@]}"; do
+            if [[ ${String} == *"\${${Key}?}"* ]]; then
+                local NewString="${String//\$\{${Key}\?\}/${Vars[${Key}]}}"
+                if [[ ${NewString} != "${String}" ]]; then
+                    String="${NewString}"
+                    Changed=1
+                fi
+            fi
+            if [[ ${String} == *"\${${Key}}"* ]]; then
+                local NewString="${String//\$\{${Key}\}/${Vars[${Key}]}}"
+                if [[ ${NewString} != "${String}" ]]; then
+                    String="${NewString}"
+                    Changed=1
+                fi
+            fi
+        done
+        LoopCount+=1
+    done
+    echo "${String}"
+}
+
+replace_with_vars() {
+    local String="$1"
+    shift
+    local -A Vars
+    local -a Keys
+    while (($# >= 2)); do
+        Vars["$1"]="$2"
+        Keys+=("$1")
+        shift 2
+    done
+
+    for Key in "${Keys[@]}"; do
+        local Value="${Vars[$Key]}"
+        if [[ -n ${Value-} ]]; then
+            local Pattern="${Value//\\/\\\\}" # Escape backslash first
+            Pattern="${Pattern//\*/\\*}"      # Escape *
+            Pattern="${Pattern//\?/\\?}"      # Escape ?
+            Pattern="${Pattern//\[/\\[}"      # Escape [
+            Pattern="${Pattern//\]/\\]}"      # Escape ]
+
+            local Replacement="\${${Key}?}"
+            String="${String//${Pattern}/${Replacement}}"
+        fi
+    done
+    echo "${String}"
+}

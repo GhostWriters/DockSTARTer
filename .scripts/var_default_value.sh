@@ -78,8 +78,11 @@ var_default_value() {
             ;;
         GLOBAL)
             case "${CleanVarName}" in
+                DOCKER_COMPOSE_FOLDER)
+                    Default="${LITERAL_COMPOSE_FOLDER}"
+                    ;;
                 DOCKER_CONFIG_FOLDER)
-                    Default="\"${LITERAL_CONFIG_FOLDER}\""
+                    Default="${LITERAL_CONFIG_FOLDER}"
                     ;;
                 DOCKER_GID)
                     Default="'$(group_id docker)'"

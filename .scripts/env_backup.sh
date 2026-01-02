@@ -20,9 +20,9 @@ env_backup() {
     fi
     DOCKER_CONFIG_FOLDER="$(run_script 'sanitize_path' "${DOCKER_CONFIG_FOLDER}")"
     LITERAL_CONFIG_FOLDER="${DOCKER_CONFIG_FOLDER}"
-    CONFIG_FOLDER="$(
+    DOCKER_CONFIG_FOLDER="$(
         HOME="${HOME}" XDG_CONFIG_HOME="${XDG_CONFIG_HOME}" \
-            envsubst <<< "${LITERAL_CONFIG_FOLDER}"
+            eval echo "${LITERAL_CONFIG_FOLDER}"
     )"
     DOCKER_VOLUME_CONFIG="$(run_script 'env_get' DOCKER_VOLUME_CONFIG)"
     if [[ -z ${DOCKER_VOLUME_CONFIG-} ]]; then
@@ -39,7 +39,7 @@ env_backup() {
     fi
     DOCKER_VOLUME_CONFIG="$(
         HOME="${HOME}" XDG_CONFIG_HOME="${XDG_CONFIG_HOME}" DOCKER_CONFIG_FOLDER="${DOCKER_CONFIG_FOLDER-}" \
-            envsubst <<< "${DOCKER_VOLUME_CONFIG}"
+            eval echo "${DOCKER_VOLUME_CONFIG}"
     )"
     DOCKER_VOLUME_CONFIG="$(run_script 'sanitize_path' "${DOCKER_VOLUME_CONFIG}")"
 
