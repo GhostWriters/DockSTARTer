@@ -7,20 +7,19 @@ set_permissions() {
     case "${CH_PATH}" in
         # https://en.wikipedia.org/wiki/Unix_filesystem
         # Split into two in order to keep the lines shorter
-        "/" | "/bin" | "/boot" | "/dev" | "/etc" | "/home" | "/lib" | "/media" | "/mnt" | "/opt" | "/proc" | "/root" | "/sbin" | "/srv" | "/sys" | "/tmp" | "/unix")
+        "/" | "/bin" | "/boot" | "/dev" | "/etc" | "/home" | "/lib" | "/media") ;&
+        "/mnt" | "/opt" | "/proc" | "/root" | "/sbin" | "/srv" | "/sys" | "/tmp" | "/unix") ;&
+        "/usr" | "/usr/include" | "/usr/lib" | "/usr/libexec" | "/usr/local" | "/usr/share") ;&
+        "/var" | "/var/log" | "/var/mail" | "/var/spool" | "/var/tmp")
             error "Skipping permissions on '${C["Folder"]}${CH_PATH}${NC}' because it is a system path."
             return
             ;;
-        "/usr" | "/usr/include" | "/usr/lib" | "/usr/libexec" | "/usr/local" | "/usr/share" | "/var" | "/var/log" | "/var/mail" | "/var/spool" | "/var/tmp")
-            error "Skipping permissions on '${C["Folder"]}${CH_PATH}${NC}' because it is a system path."
-            return
-            ;;
-        ${DETECTED_HOMEDIR}*)
+        ${DETECTED_HOMEDIR}/*)
             info "Setting permissions for '${C["Folder"]}${CH_PATH}${NC}'"
             ;;
         *)
             # TODO: Consider adding a prompt to confirm setting permissions
-            warn "Setting permissions for ${CH_PATH} outside of ${DETECTED_HOMEDIR} may be unsafe."
+            warn "Setting permissions for '${C["Folder"]}${CH_PATH}${NC}' outside of '${C["Folder"]}${DETECTED_HOMEDIR}${NC}' may be unsafe."
             ;;
     esac
     local CH_PUID=${2:-$DETECTED_PUID}
