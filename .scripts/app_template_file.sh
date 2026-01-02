@@ -6,7 +6,7 @@ app_template_file() {
     # app_template_file AppName FilenameTemplate
     # Returns the filename of a file in the template folder for the app specified
     #
-    # app_template_file "radarr" "*.labels.yml" will return a string similar to "/home/user/.docker/compose/.apps/radarr/radarr.labels.yml"
+    # app_template_file "radarr" "*.labels.yml" will return a string similar to "/home/user/.dockstarter/.apps/radarr/radarr.labels.yml"
 
     local -l appname=${1:-}
     local FilenameTemplate=${2:-}

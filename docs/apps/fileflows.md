@@ -2,7 +2,7 @@
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/revenz/fileflows?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/revenz/fileflows/)
 [![GitHub Stars](https://img.shields.io/github/stars/fileflows/community-repository?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/fileflows/community-repository)
-[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/compose/.apps/fileflows)
+[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/.apps/fileflows)
 
 ## Description
 

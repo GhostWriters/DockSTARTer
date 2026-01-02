@@ -2,7 +2,7 @@
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/goofball222/murmur?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/goofball222/murmur)
 [![GitHub Stars](https://img.shields.io/github/stars/goofball222/murmur?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/goofball222/murmur)
-[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/compose/.apps/murmur)
+[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/.apps/murmur)
 
 ## Description
 
