@@ -9,11 +9,11 @@ apply_config() {
     CONFIG_FOLDER="$(run_script 'config_get' ConfigFolder)"
     COMPOSE_FOLDER="$(run_script 'config_get' ComposeFolder)"
     CONFIG_FOLDER="$(
-        HOME="${DETECTED_HOMEDIR}" ScriptFolder="${SCRIPTPATH}" \
+        ScriptFolder="${SCRIPTPATH}" \
             eval echo "\"$(cat <<< "${CONFIG_FOLDER}")\""
     )"
     COMPOSE_FOLDER="$(
-        HOME="${DETECTED_HOMEDIR}" ScriptFolder="${SCRIPTPATH}" ConfigFolder="${CONFIG_FOLDER}" \
+        ScriptFolder="${SCRIPTPATH}" \
             eval echo "\"$(cat <<< "${COMPOSE_FOLDER}")\""
     )"
     set_global_variables
