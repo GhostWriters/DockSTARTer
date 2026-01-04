@@ -82,6 +82,7 @@ set_global_variables() {
     )"
     COMPOSE_FOLDER="$(
         expand_vars "${LITERAL_COMPOSE_FOLDER}" \
+            ConfigFolder "${CONFIG_FOLDER}" \
             DOCKER_CONFIG_FOLDER "${CONFIG_FOLDER}" \
             ScriptFolder "${SCRIPTPATH}" \
             XDG_CONFIG_HOME "${XDG_CONFIG_HOME}" \
