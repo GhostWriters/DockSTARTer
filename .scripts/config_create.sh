@@ -15,7 +15,7 @@ config_create() {
             fatal \
                 "Failed to create config folder." \
                 "Failing command: ${C["FailingCommand"]}mkdir -p \"${APPLICATION_INI_FOLDER}\""
-        set_permissions "${APPLICATION_INI_FOLDER}"
+        run_script 'set_permissions' "${APPLICATION_INI_FOLDER}"
     fi
 
     local ConfigFolder ComposeFolder
@@ -31,7 +31,7 @@ config_create() {
                 break
             fi
         done
-        set_permissions "${APPLICATION_INI_FILE}"
+        run_script 'set_permissions' "${APPLICATION_INI_FILE}"
         if ! run_script 'env_var_exists' ConfigFolder "${APPLICATION_INI_FILE}"; then
             ConfigFolder="$(run_script 'config_get' ConfigFolder "${DEFAULT_INI_FILE}")"
             run_script 'config_set' ConfigFolder "${ConfigFolder}"
