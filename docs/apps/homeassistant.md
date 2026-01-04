@@ -34,7 +34,7 @@ environment:
 Reference:
 [Endless InsecureRequestWarning errors with UniFi](https://community.home-assistant.io/t/endless-insecurerequestwarning-errors-with-unifi/31831/12)
 
-To make sure your Home Assistant instance can see your local network devices you might want to set your network mode to `host` on your `.docker/compose/.env` file.
+To make sure your Home Assistant instance can see your local network devices you might want to set your network mode to `host` on your `.config/compose/.env` file.
 
 ```env
 HOMEASSISTANT__NETWORK_MODE=host

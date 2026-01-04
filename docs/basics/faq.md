@@ -9,7 +9,7 @@ Refer to our [Support Page](https://dockstarter.com/basics/support/) for our Sup
 For new installs the default `DOCKER_VOLUME_CONFIG` is `~/.config/appdata`. Users who ran DockSTARTer before this location became the default may have `~/.dockstarter/config`, and we advise relocating.
 
 If you'd like to move your existing config to a new location you can do the following:
-Edit `~/. docker/compose/.env` (in any text editor) and set
+Edit `~/.config/compose/.env` (in any text editor) and set
 
 ```bash
 DOCKER_VOLUME_CONFIG=~/.config/appdata

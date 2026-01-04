@@ -2,7 +2,7 @@
 
 Blurb from our Discord follows:
 
-> ... you can remove everything in `~/.dockstarter` with exception to `~/.dockstarter/config` (which you may not have if your config is at `~/.config/appdata`). However, you may want to consider keeping the `~/.dockstarter/compose/docker-compose.yml` and `~/.dockstarter/compose/.env` to rebuild it using `sudo docker-compose` and pass the envs.
+> ... you can remove everything in `~/.dockstarter` (or `~/docker` on older installs)with exception to `~/.dockstarter/config` (which you may not have if your config is at `~/.config/appdata`). On older installs of DockSTARTer, you may also have either a `~/.dockstarter/compose` or `~/.docker/compose` folder, in which case you'll want to keep the `~/.dockstarter/compose/docker-compose.yml` and `~/.dockstarter/compose/.env` to rebuild it using `sudo docker-compose` and pass the envs. On newer installs, the compose folder is at `~/.config/compose`.
 >
 > ... you should see your containers in `docker ps -a` or GUI such as Portainer.
 >
