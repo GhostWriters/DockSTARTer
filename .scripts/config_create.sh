@@ -3,11 +3,6 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 config_create() {
-    if [[ -f ${APPLICATION_INI_FILE} ]]; then
-        # Config file already exists, do nothing
-        return
-    fi
-    unset 'PM'
 
     if [[ ! -d ${APPLICATION_INI_FOLDER} ]]; then
         notice "Creating '${C["Folder"]-}${APPLICATION_INI_FOLDER}${NC-}'."
@@ -19,10 +14,16 @@ config_create() {
     fi
 
     local ConfigFolder ComposeFolder
+    local ShowNotice=false
+    local FreshInstall=false
+
+    # Handle legacy config files
     if [[ -f ${SCRIPTPATH}/${APPLICATION_INI_NAME} || -f ${SCRIPTPATH}/menu.ini ]]; then
-        # At least one legacy config file exists, migrate it
         for LegacyIniFile in "${SCRIPTPATH}/${APPLICATION_INI_NAME}" "${SCRIPTPATH}/menu.ini"; do
             if [[ -f ${LegacyIniFile} ]]; then
+                if [[ ${LegacyIniFile} == "${APPLICATION_INI_FILE}" ]]; then
+                    continue
+                fi
                 notice "Renaming '${C["File"]-}${LegacyIniFile}${NC-}' to '${C["File"]-}${APPLICATION_INI_FILE}${NC-}'."
                 mv "${LegacyIniFile}" "${APPLICATION_INI_FILE}" ||
                     fatal \
@@ -32,29 +33,9 @@ config_create() {
             fi
         done
         run_script 'set_permissions' "${APPLICATION_INI_FILE}"
-        if ! run_script 'env_var_exists' ConfigFolder "${APPLICATION_INI_FILE}"; then
-            ConfigFolder="$(run_script 'config_get' ConfigFolder "${DEFAULT_INI_FILE}")"
-            run_script 'config_set' ConfigFolder "${ConfigFolder}"
-        else
-            ConfigFolder="$(run_script 'config_get' ConfigFolder)"
-        fi
-        if ! run_script 'env_var_exists' ComposeFolder "${APPLICATION_INI_FILE}"; then
-            local LegacyComposeFolder="${SCRIPTPATH}/compose"
-            shopt -s nullglob
-            local LegacyComposeFiles=("${LegacyComposeFolder}/env_files/{emv_files,.env,.env.app.*,docker-compose.*}")
-            shopt -u nullglob
-            if [[ ${#LegacyComposeFiles[@]} -gt 0 ]]; then
-                # The legacy compose folder location was being used, keep it
-                ComposeFolder="${LegacyComposeFolder}"
-            else
-                ComposeFolder="$(run_script 'config_get' ComposeFolder "${DEFAULT_INI_FILE}")"
-            fi
-            run_script 'config_set' ComposeFolder "${ComposeFolder}"
-        else
-            ComposeFolder="$(run_script 'config_get' ComposeFolder)"
-        fi
     fi
 
+    # Handle missing config file
     if [[ ! -f ${APPLICATION_INI_FILE} ]]; then
         # Copy the default .ini file
         notice "Copying '${C["File"]-}${DEFAULT_INI_FILE}${NC-}' to '${C["File"]-}${APPLICATION_INI_FILE}${NC-}'."
@@ -62,9 +43,19 @@ config_create() {
             fatal \
                 "Failed to copy default config file." \
                 "Failing command: ${C["FailingCommand"]}cp \"${DEFAULT_INI_FILE}\" \"${APPLICATION_INI_FILE}\""
-        ConfigFolder="$(run_script 'config_get' ConfigFolder)"
-        ComposeFolder="$(run_script 'config_get' ComposeFolder)"
+        ShowNotice=true
+        FreshInstall=true
     fi
+
+    # Ensure ConfigFolder is set
+    if ! run_script 'env_var_exists' ConfigFolder "${APPLICATION_INI_FILE}"; then
+        ConfigFolder="$(run_script 'config_get' ConfigFolder "${DEFAULT_INI_FILE}")"
+        run_script 'config_set' ConfigFolder "${ConfigFolder}"
+        ShowNotice=true
+    else
+        ConfigFolder="$(run_script 'config_get' ConfigFolder)"
+    fi
+
     local -a ExpandVarList=(
         ScriptFolder "${SCRIPTPATH}"
         XDG_CONFIG_HOME "${XDG_CONFIG_HOME}"
@@ -76,12 +67,66 @@ config_create() {
         DOCKER_CONFIG_FOLDER "${ExpandedConfigFolder}"
         "${ExpandVarList[@]}"
     )
+
+    # Ensure ComposeFolder is set
+    if [[ ${FreshInstall} == true ]] || ! run_script 'env_var_exists' ComposeFolder "${APPLICATION_INI_FILE}"; then
+        # shellcheck disable=SC2016 # Expressions don't expand in single quotes, use double quotes for that.
+        local LegacyComposeFolder='${ScriptFolder}/compose'
+        local ExpandedLegacyComposeFolder
+        ExpandedLegacyComposeFolder="$(expand_vars "${LegacyComposeFolder}" "${ExpandVarList[@]}")"
+
+        local LegacyHasFiles=false
+        if [[ -d ${ExpandedLegacyComposeFolder} ]] && ! folder_is_empty "${ExpandedLegacyComposeFolder}"; then
+            LegacyHasFiles=true
+        fi
+
+        local DefaultComposeFolder
+        DefaultComposeFolder="$(run_script 'config_get' ComposeFolder "${DEFAULT_INI_FILE}")"
+        local ExpandedDefaultComposeFolder
+        ExpandedDefaultComposeFolder="$(expand_vars "${DefaultComposeFolder}" "${ExpandVarList[@]}")"
+
+        local DefaultHasFiles=false
+        if [[ -d ${ExpandedDefaultComposeFolder} ]] && ! folder_is_empty "${ExpandedDefaultComposeFolder}"; then
+            DefaultHasFiles=true
+        fi
+
+        if [[ ${LegacyHasFiles} == true ]] && [[ ${DefaultHasFiles} == true ]] && [[ ${ExpandedLegacyComposeFolder} != "${ExpandedDefaultComposeFolder}" ]]; then
+            # Both the legacy and default compose folders have files in them, ask which to use
+            local PromptMessage="Existing docker compose folders found in multiple locations.\n   Legacy:  '${C["Folder"]-}${ExpandedLegacyComposeFolder}${NC-}'\n   Default: '${C["Folder"]-}${ExpandedDefaultComposeFolder}${NC-}'\n\nWould you like to use the Legacy location?"
+            if run_script 'question_prompt' "Y" "${PromptMessage}" "Multiple Compose Folders Detected" "" "Legacy" "Default"; then
+                notice \
+                    "Chose the Legacy compose folder location:" \
+                    "   '${C["Folder"]-}${ExpandedLegacyComposeFolder}${NC-}'"
+                ComposeFolder="${LegacyComposeFolder}"
+            else
+                notice \
+                    "Chose the Default compose folder location:" \
+                    "   '${C["Folder"]-}${ExpandedDefaultComposeFolder}${NC-}'"
+                ComposeFolder="${DefaultComposeFolder}"
+            fi
+        elif [[ ${LegacyHasFiles} == true ]]; then
+            # The legacy compose folder location was being used, keep it
+            ComposeFolder="${LegacyComposeFolder}"
+        else
+            ComposeFolder="${DefaultComposeFolder}"
+        fi
+        run_script 'config_set' ComposeFolder "${ComposeFolder}"
+        ShowNotice=true
+    else
+        ComposeFolder="$(run_script 'config_get' ComposeFolder)"
+    fi
+
     ExpandedComposeFolder="$(expand_vars "${ComposeFolder}" "${ExpandVarList[@]}")"
-    notice \
-        "Config folder location set to '${C["Folder"]-}${ConfigFolder}${NC-}'" \
-        "   ('${C["Folder"]-}${ExpandedConfigFolder}${NC-}')" \
-        "Compose folder location set to '${C["Folder"]-}${ComposeFolder}${NC-}'" \
-        "   ('${C["Folder"]-}${ExpandedComposeFolder}${NC-}')"
+    if [[ ${ShowNotice} == true ]]; then
+        notice \
+            "" \
+            "Config folder location set to:  '${C["Folder"]-}${ConfigFolder}${NC-}'" \
+            "                                '${C["Folder"]-}${ExpandedConfigFolder}${NC-}'" \
+            "" \
+            "Compose folder location set to: '${C["Folder"]-}${ComposeFolder}${NC-}'" \
+            "                                '${C["Folder"]-}${ExpandedComposeFolder}${NC-}'"
+        notice ""
+    fi
 }
 
 test_config_create() {

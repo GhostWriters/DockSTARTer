@@ -22,19 +22,24 @@ env_sanitize() {
     local DOCKER_CONFIG_FOLDER DOCKER_COMPOSE_FOLDER ORIG_CONFIG_FOLDER ORIG_COMPOSE_FOLDER
 
     ORIG_CONFIG_FOLDER="$(run_script 'env_get' DOCKER_CONFIG_FOLDER)"
-    DOCKER_CONFIG_FOLDER="${ORIG_CONFIG_FOLDER}"
-    if [[ -z ${DOCKER_CONFIG_FOLDER-} ]]; then
-        DOCKER_CONFIG_FOLDER="$(run_script 'var_default_value' DOCKER_CONFIG_FOLDER)"
+    LITERAL_CONFIG_FOLDER="$(run_script 'config_get' ConfigFolder)"
+    if [[ -z ${LITERAL_CONFIG_FOLDER-} ]]; then
+        LITERAL_CONFIG_FOLDER="$(run_script 'config_get' ConfigFolder "${DEFAULT_INI_FILE}")"
     fi
+    if [[ -z ${LITERAL_CONFIG_FOLDER-} ]]; then
+        LITERAL_CONFIG_FOLDER="${ORIG_CONFIG_FOLDER}"
+    fi
+    DOCKER_CONFIG_FOLDER="${LITERAL_CONFIG_FOLDER}"
 
     ORIG_COMPOSE_FOLDER="$(run_script 'env_get' DOCKER_COMPOSE_FOLDER)"
-    DOCKER_COMPOSE_FOLDER="${ORIG_COMPOSE_FOLDER}"
-    if [[ -z ${DOCKER_COMPOSE_FOLDER-} ]]; then
-        DOCKER_COMPOSE_FOLDER="$(run_script 'var_default_value' DOCKER_COMPOSE_FOLDER)"
+    LITERAL_COMPOSE_FOLDER="$(run_script 'config_get' ComposeFolder)"
+    if [[ -z ${LITERAL_COMPOSE_FOLDER-} ]]; then
+        LITERAL_COMPOSE_FOLDER="$(run_script 'config_get' ComposeFolder "${DEFAULT_INI_FILE}")"
     fi
-
-    LITERAL_CONFIG_FOLDER="${DOCKER_CONFIG_FOLDER}"
-    LITERAL_COMPOSE_FOLDER="${DOCKER_COMPOSE_FOLDER}"
+    if [[ -z ${LITERAL_COMPOSE_FOLDER-} ]]; then
+        LITERAL_COMPOSE_FOLDER="${ORIG_COMPOSE_FOLDER}"
+    fi
+    DOCKER_COMPOSE_FOLDER="${LITERAL_COMPOSE_FOLDER}"
 
     set_global_variables
 
