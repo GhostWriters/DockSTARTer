@@ -84,6 +84,15 @@ is_false() {
     ! is_true "${1-}"
 }
 
+folder_is_empty() {
+    local dir=${1}
+    (
+        shopt -s dotglob nullglob
+        set -- "${dir}"/*
+        (($# == 0))
+    )
+}
+
 longest_columns() {
     # 'longest_columns' int NumberOfColumns, array Elements
     if [[ ! ${1-} =~ ^[0-9]+$ || ${1} -lt 0 ]]; then

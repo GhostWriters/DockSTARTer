@@ -22,7 +22,7 @@ env_var_exists() {
         VAR_NAME=${VAR_NAME#"${APPNAME}:"}
     fi
     if [[ -f ${VAR_FILE} ]]; then
-        ${GREP} --color=never -q -P "^\s*${VAR_NAME}\s*=\K.*" "${VAR_FILE}"
+        ${GREP} --color=never -q -E "^\s*${VAR_NAME}\s*=" "${VAR_FILE}"
         return $?
     else
         # VAR_FILE does not exist, give a warning
