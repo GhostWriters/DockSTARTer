@@ -116,15 +116,9 @@ config_create() {
         ComposeFolder="$(run_script 'config_get' ComposeFolder)"
     fi
 
-    ExpandedComposeFolder="$(expand_vars "${ComposeFolder}" "${ExpandVarList[@]}")"
     if [[ ${ShowNotice} == true ]]; then
-        notice \
-            "" \
-            "Config folder location set to:  '${C["Folder"]-}${ConfigFolder}${NC-}'" \
-            "                                '${C["Folder"]-}${ExpandedConfigFolder}${NC-}'" \
-            "" \
-            "Compose folder location set to: '${C["Folder"]-}${ComposeFolder}${NC-}'" \
-            "                                '${C["Folder"]-}${ExpandedComposeFolder}${NC-}'"
+        notice ""
+        notice "$(run_script 'config_show')"
         notice ""
     fi
 }

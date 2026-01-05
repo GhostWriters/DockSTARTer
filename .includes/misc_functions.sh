@@ -254,3 +254,71 @@ replace_with_vars() {
     done
     echo "${String}"
 }
+
+table_pipe() {
+    local -i Cols=${1}
+    shift
+    local -a Headings=("${@}")
+
+    local -a Data
+    readarray -t Data
+
+    local -a AllData=("${Headings[@]}" "${Data[@]}")
+    local -a VisibleData
+    for item in "${AllData[@]}"; do
+        VisibleData+=("$(strip_ansi_colors "${item}")")
+    done
+
+    local -a ColWidths
+    readarray -t ColWidths < <(longest_columns "${Cols}" "${VisibleData[@]}")
+
+    local Separator="+"
+    for ((i = 0; i < Cols; i++)); do
+        local Width=${ColWidths[i]}
+        local Dashes
+        Dashes="$(printf "%*s" $((Width + 2)) "")"
+        Separator="${Separator}${Dashes// /-}+"
+    done
+
+    echo "${Separator}"
+
+    # Print Headings
+    local RowStr="|"
+    for ((c = 0; c < Cols; c++)); do
+        local Item="${Headings[c]-}"
+        local VisItem="${VisibleData[c]-}"
+        local Width=${ColWidths[c]}
+        local PadSize=$((Width - ${#VisItem}))
+        local Padding
+        Padding="$(printf "%*s" "${PadSize}" "")"
+        RowStr="${RowStr} ${Item}${Padding} |"
+    done
+    echo "${RowStr}"
+    echo "${Separator}"
+
+    # Print Data
+    local -i TotalItems=${#Data[@]}
+    for ((i = 0; i < TotalItems; i += Cols)); do
+        local RowStr="|"
+        for ((c = 0; c < Cols; c++)); do
+            local Idx=$((i + c))
+            local Item="${Data[Idx]-}"
+            local VisItem="${VisibleData[Cols + Idx]-}" # Offset by Headings count (Cols)
+            local Width=${ColWidths[c]}
+            local PadSize=$((Width - ${#VisItem}))
+            local Padding
+            Padding="$(printf "%*s" "${PadSize}" "")"
+            RowStr="${RowStr} ${Item}${Padding} |"
+        done
+        echo "${RowStr}"
+    done
+    echo "${Separator}"
+}
+
+table() {
+    local -i Cols=${1}
+    shift
+    local -a Headings=("${@:1:Cols}")
+    local -a Data=("${@:Cols+1}")
+    printf '%s\n' "${Data[@]}" | table_pipe "${Cols}" "${Headings[@]}"
+}

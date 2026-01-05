@@ -56,6 +56,7 @@ parse_arguments() {
                 --config-pm-auto) ;&
                 --config-pm-list | --config-pm-table) ;&
                 --config-pm-existing-list | --config-pm-existing-table) ;&
+                --config-show | --show-config) ;&
                 -e | --env) ;&
                 -i | --install) ;&
                 -l | --list) ;&
@@ -387,6 +388,8 @@ run_command() {
         ["--config-pm-table"]="package_manager_table"
         ["--config-pm-existing-list"]="package_manager_existing_list"
         ["--config-pm-existing-table"]="package_manager_existing_table"
+        ["--config-show"]="config_show"
+        ["--show-config"]="config_show"
         ["-e"]="appvars_create_all"
         ["--env"]="appvars_create_all"
         ["--env-appvars"]="appvars_list"
@@ -487,6 +490,8 @@ run_command() {
         ["--config-pm-table"]="List known package managers"
         ["--config-pm-existing-list"]="List existing package managers"
         ["--config-pm-existing-table"]="List existing package managers"
+        ["--config-show"]="Show Configuration"
+        ["--show-config"]="Show Configuration"
         ["-e"]="${DC["TitleSuccess"]-}Creating environment variables for added apps"
         ["--env"]="${DC["TitleSuccess"]-}Creating environment variables for added apps"
         ["--env-appvars"]="Variables for Application"
@@ -712,6 +717,7 @@ run_command() {
         --config-pm) ;&
         --config-pm-list | --config-pm-table) ;&
         --config-pm-existing-list | --config-pm-existing-table) ;&
+        --config-show | --show-config) ;&
         -e | --env) ;&
         -i | --install) ;&
         --list) ;&

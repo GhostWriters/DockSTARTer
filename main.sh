@@ -466,7 +466,7 @@ clone_repo() {
     if [[ ${#ARGS[@]} -eq 0 ]]; then
         notice \
             "Performing first run install."
-        exec bash "${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}/main.sh" "-yvi"
+        exec bash "${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}/main.sh" -yvi --config-show
     else
         exec bash "${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}/main.sh" "${ARGS[@]}"
     fi
@@ -562,7 +562,7 @@ init_check_symlink() {
             warn \
                 "Attempting to run ${APPLICATION_NAME} from '${C["RunningCommand"]-}${DS_SYMLINK}${NC-}' location."
             bash "${DS_SYMLINK}" -vyu
-            bash "${DS_SYMLINK}" -vyi
+            bash "${DS_SYMLINK}" -vyi --config-show
             exec bash "${DS_SYMLINK}" "${ARGS[@]-}"
         fi
     fi
