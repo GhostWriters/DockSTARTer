@@ -1,0 +1,4 @@
+services:
+  homarr<__instance>:
+    ports:
+      - ${HOMARR<__INSTANCE>__PORT_7575?}:7575

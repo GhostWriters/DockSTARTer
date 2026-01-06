@@ -1,0 +1,14 @@
+services:
+  homarr<__instance>:
+    container_name: ${HOMARR<__INSTANCE>__CONTAINER_NAME?}
+    env_file: .env.app.homarr<__instance>
+    environment:
+      - PGID=${PGID?}
+      - PUID=${PUID?}
+      - TZ=${TZ?}
+    restart: ${HOMARR<__INSTANCE>__RESTART?}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${DOCKER_VOLUME_CONFIG?}/homarr<__instance>:/appdata
+      - ${DOCKER_VOLUME_CONFIG?}/homarr<__instance>/icons:/app/public/icons
+      - ${DOCKER_VOLUME_CONFIG?}/homarr<__instance>/imgs:/app/public/imgs

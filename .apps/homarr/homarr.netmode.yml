@@ -1,0 +1,3 @@
+services:
+  homarr<__instance>:
+    network_mode: ${HOMARR<__INSTANCE>__NETWORK_MODE?}

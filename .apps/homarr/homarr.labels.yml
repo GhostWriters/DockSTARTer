@@ -1,0 +1,6 @@
+services:
+  homarr<__instance>:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "A simple, yet powerful dashboard for your server."
+      com.dockstarter.appinfo.nicename: "Homarr<__Instance>"
