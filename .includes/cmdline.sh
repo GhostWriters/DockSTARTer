@@ -860,7 +860,7 @@ run_command() {
 		--theme-scrollbar | --theme-no-scrollbar) ;&
 		--theme-lines | --theme-no-lines) ;&
 		--theme-borders | --theme-no-borders)
-			if [[ -z ${ConfigVar-} || ${ConfigValue-} ]]; then
+			if [[ -z ${ConfigVar-} || -z ${ConfigValue-} ]]; then
 				fatal \
 					"The configuration variable and value are not defined for command '${C["UserCommand"]-}${Command}${NC-}${NC-}'."
 			fi
@@ -868,7 +868,7 @@ run_command() {
 				notice \
 					"${Notice}"
 			fi
-			run_script 'config_set' "${ConfigVar}" "${ConfigValue}" "${MENU_INI_FILE}"
+			run_script 'config_set' "${ConfigVar}" "${ConfigValue}"
 			result=$?
 			if use_dialog_box; then
 				run_script 'menu_dialog_example' "${Title}" "${CURRENT_COMMANDLINE}"
