@@ -1,0 +1,10 @@
+group:
+  - files:
+      - source: .apps/
+        dest: .apps/
+      - source: docs/apps/
+        dest: docs/apps/
+    repos:
+      - GhostWriters/DockSTARTer-Templates
+    options:
+      COMMIT_AS_PR: false

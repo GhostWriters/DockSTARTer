@@ -1,0 +1,26 @@
+name: Sync to Templates
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - ".apps/**"
+      - "docs/apps/**"
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Sync Files
+        uses: BetaHuhn/repo-file-sync-action@v1
+        with:
+          GH_PAT: ${{ secrets.GH_PAT }}
+          CONFIG_PATH: .github/sync.yml
+          PR_LABELS: sync
+          COMMIT_PREFIX: "chore: sync from DockSTARTer"
