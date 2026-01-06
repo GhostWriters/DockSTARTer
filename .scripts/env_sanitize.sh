@@ -7,6 +7,53 @@ declare -a _dependencies_list=(
 )
 
 env_sanitize() {
+    local -a VarsToUpdate
+    local -A UpdatedVarValue
+
+    # Update the HOME variable if it is not set to the detected home directory
+    local HOME
+    HOME="$(run_script 'env_get' HOME)"
+    if [[ ${HOME} != "${DETECTED_HOMEDIR}" ]]; then
+        HOME="${DETECTED_HOMEDIR}"
+        VarsToUpdate+=(HOME)
+        UpdatedVarValue["HOME"]="${DETECTED_HOMEDIR}"
+    fi
+
+    local DOCKER_CONFIG_FOLDER DOCKER_COMPOSE_FOLDER ORIG_CONFIG_FOLDER ORIG_COMPOSE_FOLDER
+
+    ORIG_CONFIG_FOLDER="$(run_script 'env_get' DOCKER_CONFIG_FOLDER)"
+    LITERAL_CONFIG_FOLDER="$(run_script 'config_get' ConfigFolder)"
+    if [[ -z ${LITERAL_CONFIG_FOLDER-} ]]; then
+        LITERAL_CONFIG_FOLDER="$(run_script 'config_get' ConfigFolder "${DEFAULT_INI_FILE}")"
+    fi
+    if [[ -z ${LITERAL_CONFIG_FOLDER-} ]]; then
+        LITERAL_CONFIG_FOLDER="${ORIG_CONFIG_FOLDER}"
+    fi
+    DOCKER_CONFIG_FOLDER="${LITERAL_CONFIG_FOLDER}"
+
+    ORIG_COMPOSE_FOLDER="$(run_script 'env_get' DOCKER_COMPOSE_FOLDER)"
+    LITERAL_COMPOSE_FOLDER="$(run_script 'config_get' ComposeFolder)"
+    if [[ -z ${LITERAL_COMPOSE_FOLDER-} ]]; then
+        LITERAL_COMPOSE_FOLDER="$(run_script 'config_get' ComposeFolder "${DEFAULT_INI_FILE}")"
+    fi
+    if [[ -z ${LITERAL_COMPOSE_FOLDER-} ]]; then
+        LITERAL_COMPOSE_FOLDER="${ORIG_COMPOSE_FOLDER}"
+    fi
+    DOCKER_COMPOSE_FOLDER="${LITERAL_COMPOSE_FOLDER}"
+
+    set_global_variables
+
+    if [[ ${ORIG_CONFIG_FOLDER} != "${LITERAL_CONFIG_FOLDER}" ]]; then
+        DOCKER_CONFIG_FOLDER="${LITERAL_CONFIG_FOLDER}"
+        VarsToUpdate+=(DOCKER_CONFIG_FOLDER)
+        UpdatedVarValue["DOCKER_CONFIG_FOLDER"]="${DOCKER_CONFIG_FOLDER}"
+    fi
+    if [[ ${ORIG_COMPOSE_FOLDER} != "${LITERAL_COMPOSE_FOLDER}" ]]; then
+        DOCKER_COMPOSE_FOLDER="${LITERAL_COMPOSE_FOLDER}"
+        VarsToUpdate+=(DOCKER_COMPOSE_FOLDER)
+        UpdatedVarValue["DOCKER_COMPOSE_FOLDER"]="${DOCKER_COMPOSE_FOLDER}"
+    fi
+
     # Backup the user files
     run_script 'env_backup'
 
@@ -15,9 +62,8 @@ env_sanitize() {
 
     # Add any default global variables that might have been deleted
     run_script 'env_merge_newonly' "${COMPOSE_ENV}" "${COMPOSE_ENV_DEFAULT_FILE}"
-    local -a VarsToUpdate
-    local -A UpdatedVarValue
-    local VarList
+
+    local -a VarList
 
     # Set defaults for some "special cases" of the global variables
     VarList=(
@@ -56,21 +102,27 @@ env_sanitize() {
 
     # Replace ~ with /home/username
     local -a VarList=(
-        "DOCKER_VOLUME_CONFIG"
-        "DOCKER_VOLUME_STORAGE"
-        "DOCKER_VOLUME_STORAGE2"
-        "DOCKER_VOLUME_STORAGE3"
-        "DOCKER_VOLUME_STORAGE4"
+        DOCKER_VOLUME_CONFIG
+        DOCKER_VOLUME_STORAGE
+        DOCKER_VOLUME_STORAGE2
+        DOCKER_VOLUME_STORAGE3
+        DOCKER_VOLUME_STORAGE4
     )
     for VarName in "${VarList[@]-}"; do
         # Get the value including quotes
         local Value
-        Value="$(run_script 'env_get_literal' "${VarName}")"
+        Value="$(run_script 'env_get' "${VarName}")"
         local UpdatedValue
         UpdatedValue="$(run_script 'sanitize_path' "${Value}")"
+        UpdatedValue="$(
+            replace_with_vars \
+                "${UpdatedValue}" \
+                DOCKER_CONFIG_FOLDER "${DOCKER_CONFIG_FOLDER}" \
+                HOME "${HOME}"
+        )"
         if [[ ${Value} != "${UpdatedValue}" ]]; then
             VarsToUpdate+=("${VarName}")
-            UpdatedVarValue["${VarName}"]="${UpdatedValue}"
+            UpdatedVarValue["${VarName}"]="\"${UpdatedValue}\""
         fi
     done
 

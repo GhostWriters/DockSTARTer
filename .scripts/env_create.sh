@@ -7,20 +7,17 @@ env_create() {
         WATCHTOWER
     )
 
-    if [[ -f ${COMPOSE_OVERRIDE} ]]; then
-        run_script 'set_permissions' "${COMPOSE_OVERRIDE}"
+    if ! [[ -d ${COMPOSE_FOLDER} ]]; then
+        notice "Creating folder '${C["Folder"]}${COMPOSE_FOLDER}${NC}'."
+        mkdir -p "${COMPOSE_FOLDER}" ||
+            fatal \
+                "Failed to create folder." \
+                "Failing command: ${C["FailingCommand"]}mkdir -p \"${COMPOSE_FOLDER}\""
     fi
 
-    if [[ -e ${APP_ENV_FOLDER} ]]; then
-        if [[ -d ${APP_ENV_FOLDER} ]]; then
-            info "Folder '${C["Folder"]}${APP_ENV_FOLDER}${NC}' found."
-        else
-            fatal "'${C["File"]}${APP_ENV_FOLDER}${NC}' is a file, should be a folder."
-        fi
-        run_script 'set_permissions' "${APP_ENV_FOLDER}"
-    fi
-
+    run_script 'set_permissions' "${COMPOSE_FOLDER}"
     run_script 'env_backup'
+
     if [[ -f ${COMPOSE_ENV} ]]; then
         info "File '${C["File"]}${COMPOSE_ENV}${NC}' found."
         run_script 'env_sanitize'

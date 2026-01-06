@@ -15,7 +15,6 @@ config_theme() {
     fi
 
     local ThemeFile DialogFile
-    local DefaultIniFile="${DEFAULTS_FOLDER}/${APPLICATION_INI_NAME}"
     if [[ -z ${ThemeName-} ]]; then
         ThemeName="$(run_script 'config_get' Theme)"
         if ! run_script 'theme_exists' "${ThemeName}"; then
@@ -99,13 +98,13 @@ config_theme() {
     if run_script 'env_var_exists' Scrollbar "${APPLICATION_INI_FILE}"; then
         Scrollbar="$(run_script 'config_get' Scrollbar)"
     else
-        Scrollbar="$(run_script 'config_get' Scrollbar "${DefaultIniFile}")"
+        Scrollbar="$(run_script 'config_get' Scrollbar "${DEFAULT_INI_FILE}")"
         run_script 'config_set' Scrollbar "${Scrollbar}"
     fi
     if run_script 'env_var_exists' Shadow "${APPLICATION_INI_FILE}"; then
         Shadow="$(run_script 'config_get' Shadow)"
     else
-        Shadow="$(run_script 'config_get' Shadow "${DefaultIniFile}")"
+        Shadow="$(run_script 'config_get' Shadow "${DEFAULT_INI_FILE}")"
         run_script 'config_set' Shadow "${Shadow}"
     fi
     # Migrate old LineCharacters variable to Borders if Borders doesn't exist
@@ -114,17 +113,17 @@ config_theme() {
         if run_script 'env_var_exists' LineCharacters "${APPLICATION_INI_FILE}"; then
             LineCharacters="$(run_script 'config_get' LineCharacters)"
         else
-            LineCharacters="$(run_script 'config_get' LineCharacters "${DefaultIniFile}")"
+            LineCharacters="$(run_script 'config_get' LineCharacters "${DEFAULT_INI_FILE}")"
             run_script 'config_set' LineCharacters "${LineCharacters}"
         fi
     else
         if run_script 'env_var_exists' LineCharacters "${APPLICATION_INI_FILE}"; then
             Borders="$(run_script 'config_get' LineCharacters)"
         else
-            Borders="$(run_script 'config_get' Borders "${DefaultIniFile}")"
+            Borders="$(run_script 'config_get' Borders "${DEFAULT_INI_FILE}")"
         fi
         run_script 'config_set' Borders "${Borders}"
-        LineCharacters="$(run_script 'config_get' LineCharacters "${DefaultIniFile}")"
+        LineCharacters="$(run_script 'config_get' LineCharacters "${DEFAULT_INI_FILE}")"
         run_script 'config_set' LineCharacters "${LineCharacters}"
     fi
 

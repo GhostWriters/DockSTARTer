@@ -1,7 +1,7 @@
 # crossseed
 
 [![GitHub Stars](https://img.shields.io/github/stars/cross-seed/cross-seed?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/cross-seed/cross-seed)
-[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/compose/.apps/crossseed)
+[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/.apps/crossseed)
 
 ## Description
 

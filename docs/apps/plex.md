@@ -2,7 +2,7 @@
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/plex?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/linuxserver/plex)
 [![GitHub Stars](https://img.shields.io/github/stars/linuxserver/docker-plex?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/linuxserver/docker-plex)
-[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/compose/.apps/plex)
+[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/.apps/plex)
 
 ## Description
 
@@ -62,7 +62,7 @@ rm -rf ~/.config/appdata/plex
 ```
 
 ```bash
-sudo nano ~/.dockstarter/compose/.env.app.plex
+sudo nano ~/.config/compose/.env.app.plex
 # with the nano file editor open locate the PLEX_CLAIM variable
 # go to https://www.plex.tv/claim/ in your browser and get the claim token set your PLEX_CLAIM variable
 # the token expires in 5 minutes, so we'll want to get the rest done quickly
@@ -122,7 +122,7 @@ docker restart plex
 
 ### How To Run Plex Different Pass Versions
 
-Edit `~/.dockstarter/compose/.env.app.plex` and set:
+Edit `~/.config/compose/.env.app.plex` and set:
 
 ```bash
 VERSION=plexpass

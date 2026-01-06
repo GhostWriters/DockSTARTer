@@ -139,7 +139,7 @@ commands_update_self() {
     # run_script 'reset_needs' # Add script lines in-line below
     if [[ -d ${TIMESTAMPS_FOLDER:?} ]]; then
         run_script 'set_permissions' "${TIMESTAMPS_FOLDER:?}"
-        rm -rf "${TIMESTAMPS_FOLDER:?}/"* &> /dev/null || true
+        rm -rf "${TIMESTAMPS_FOLDER:?}" &> /dev/null || true
     fi
     if [[ -d ${TEMP_FOLDER:?} ]]; then
         run_script 'set_permissions' "${TEMP_FOLDER:?}"

@@ -2,7 +2,7 @@
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/louislam/uptime-kuma?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/louislam/uptime-kuma)
 [![GitHub Stars](https://img.shields.io/github/stars/louislam/uptime-kuma?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/louislam/uptime-kuma/)
-[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/compose/.apps/uptimekuma)
+[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/.apps/uptimekuma)
 
 ## Description
 

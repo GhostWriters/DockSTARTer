@@ -12,9 +12,9 @@ jobs:
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       - name: Validate Documentation
         run: |
-          for APPFOLDER in compose/.apps/*; do
+          for APPFOLDER in .apps/*; do
               APPNAME=$(basename "${APPFOLDER}")
-              APPDEPRECATED=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" "compose/.apps/${APPNAME}/${APPNAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo false)
+              APPDEPRECATED=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" ".apps/${APPNAME}/${APPNAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo false)
               if [[ ${APPDEPRECATED} == true ]]; then
                   continue
               fi
@@ -35,14 +35,14 @@ jobs:
   #       uses: actions/checkout@v4.2.2
   #     - name: Validate Images
   #       run: |
-  #         for APPFOLDER in compose/.apps/*; do
+  #         for APPFOLDER in .apps/*; do
   #             APPNAME=$(basename "${APPFOLDER}")
-  #             APPDEPRECATED=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" "compose/.apps/${APPNAME}/${APPNAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo false)
+  #             APPDEPRECATED=$(grep --color=never -Po "\scom\.dockstarter\.appinfo\.deprecated: \K.*" ".apps/${APPNAME}/${APPNAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo false)
   #             if [[ ${APPDEPRECATED} == true ]]; then
   #                 continue
   #             fi
-  #             APPIMAGE=$(grep --color=never -Po "\simage: \K.*" "compose/.apps/${APPNAME}/${APPNAME}.x86_64.yml" | sed -E 's/([^:]+):[^:]+/\1/' | xargs || echo false)
-  #             APPTAG=$(grep --color=never -Po "\scom\.dockstarter\.appvars\.${APPNAME}_tag: \K.*" "compose/.apps/${APPNAME}/${APPNAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo false)
+  #             APPIMAGE=$(grep --color=never -Po "\simage: \K.*" ".apps/${APPNAME}/${APPNAME}.x86_64.yml" | sed -E 's/([^:]+):[^:]+/\1/' | xargs || echo false)
+  #             APPTAG=$(grep --color=never -Po "\scom\.dockstarter\.appvars\.${APPNAME}_tag: \K.*" ".apps/${APPNAME}/${APPNAME}.labels.yml" | sed -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo false)
   #             echo "Image: ${APPIMAGE}:${APPTAG}"
   #             docker run --rm mplatform/mquery "${APPIMAGE}:${APPTAG}"
   #         done

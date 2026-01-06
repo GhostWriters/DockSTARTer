@@ -2,7 +2,7 @@
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/swag?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/linuxserver/swag)
 [![GitHub Stars](https://img.shields.io/github/stars/linuxserver/docker-swag?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/linuxserver/docker-swag)
-[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/compose/.apps/swag)
+[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/.apps/swag)
 
 ## Description
 
@@ -31,7 +31,7 @@ take more configuration, as DNS entries and certificate subject alternate names
 are required.
 
 The first thing to setup is your domain and email settings in
-`.docker/compose/.env.app.swag`. Set the `EMAIL` and `URL`. If
+`.config/compose/.env.app.swag`. Set the `EMAIL` and `URL`. If
 using subdomains ensure to add each subdomain to `SUBDOMAINS` as each
 subdomain prefix (e.g. `SUBDOMAINS=portainer,deluge,pihole`.
 

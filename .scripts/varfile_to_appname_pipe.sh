@@ -13,12 +13,12 @@ varfile_to_appname_pipe() {
 
 test_varfile_to_appname_pipe() {
     local -a PathList=(
-        '/home/test/.docker/.env'
-        '/home/test/.docker/.env.app.radarr'
-        '/home/test/.docker/.env.app.Radarr'
-        '/home/test/.docker/.env.app.1radarr'
-        '/home/test/.docker/.env.app.radarr__4k'
-        '/home/test/.docker/.env.app.radarr___4k'
+        '/home/test/.dockstarter/.env'
+        '/home/test/.dockstarter/.env.app.radarr'
+        '/home/test/.dockstarter/.env.app.Radarr'
+        '/home/test/.dockstarter/.env.app.1radarr'
+        '/home/test/.dockstarter/.env.app.radarr__4k'
+        '/home/test/.dockstarter/.env.app.radarr___4k'
     )
     notice "$(run_script 'varfile_to_appname_pipe' < <(printf '%s\n' "${PathList[@]}"))"
 }
