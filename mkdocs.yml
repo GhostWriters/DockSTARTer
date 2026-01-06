@@ -48,6 +48,8 @@ extra:
       link: https://dockstarter.com/discord
     - icon: fontawesome/brands/github
       link: https://github.com/GhostWriters/DockSTARTer
+  status:
+    deprecated: This app is deprecated. Use at your own risk.
 
 extra_javascript:
   - https://unpkg.com/tablesort@5.3.0/dist/tablesort.min.js
