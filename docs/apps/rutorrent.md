@@ -1,3 +1,6 @@
+---
+status: deprecated
+---
 # ruTorrent
 
 ## DEPRECATED
