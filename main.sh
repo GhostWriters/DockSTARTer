@@ -203,9 +203,12 @@ declare -Agr C=( # Pre-defined colors
 indent_text() {
 	local -i IndentSize=${1}
 	shift
-	pr -e -t -o ${IndentSize} <<< "$(
-		printf "%s\n" "$@"
-	)"
+	local IndentString
+	printf -v IndentString "%*s" "${IndentSize}" ""
+	local line
+	while IFS= read -r line; do
+		printf '%s%s\n' "${IndentString}" "${line}"
+	done <<< "$(printf '%s\n' "$@")"
 }
 
 get_system_info() {
