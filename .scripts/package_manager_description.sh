@@ -3,15 +3,15 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 package_manager_description() {
-    local -l PackageManager=${1-}
+	local -l PackageManager=${1-}
 
-    if ! run_script 'package_manager_is_valid' "${PackageManager}"; then
-        printf '%s\n' "${PackageManager^}"
-    else
-        printf '%s\n' "${PM_DESCRIPTION["${PackageManager}"]}"
-    fi
+	if ! run_script 'package_manager_is_valid' "${PackageManager}"; then
+		printf '%s\n' "${PackageManager^}"
+	else
+		printf '%s\n' "${PM_DESCRIPTION["${PackageManager}"]}"
+	fi
 }
 
 test_package_manager_description() {
-    warn "CI does not test package_manager_description."
+	warn "CI does not test package_manager_description."
 }
