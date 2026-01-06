@@ -1,3 +1,6 @@
+---
+status: deprecated
+---
 # Bitwarden
 
 ## DEPRECATED

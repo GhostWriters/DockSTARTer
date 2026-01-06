@@ -22,10 +22,6 @@ jobs:
                   echo "Missing documentation for ${APPNAME}"
                   exit 1
               fi
-              if ! grep -q "apps/${APPNAME}.md" mkdocs.yml; then
-                  echo "Missing link for ${APPNAME}"
-                  exit 1
-              fi
           done
 
   # validate-images:

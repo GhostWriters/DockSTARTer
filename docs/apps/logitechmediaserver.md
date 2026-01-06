@@ -1,3 +1,6 @@
+---
+status: deprecated
+---
 # Logitech Media Server
 
 ## DEPRECATED
