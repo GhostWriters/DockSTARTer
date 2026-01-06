@@ -61,7 +61,7 @@ config_create() {
         XDG_CONFIG_HOME "${XDG_CONFIG_HOME}"
         HOME "${DETECTED_HOMEDIR}"
     )
-    local ExpandedConfigFolder ExpandedComposeFolder
+    local ExpandedConfigFolder
     ExpandedConfigFolder="$(expand_vars "${ConfigFolder}" "${ExpandVarList[@]}")"
     ExpandVarList=(
         DOCKER_CONFIG_FOLDER "${ExpandedConfigFolder}"
