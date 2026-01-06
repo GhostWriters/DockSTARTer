@@ -56,7 +56,7 @@ declare -gx DEFAULT_INI_FILE="${DEFAULTS_FOLDER}/${APPLICATION_INI_NAME}"
 
 declare -gx THEME_FILE_NAME="theme.ini"
 
-declare -gx COMPOSE_ENV_DEFAULT_FILE="${SCRIPTPATH}/.env.example"
+declare -gx COMPOSE_ENV_DEFAULT_FILE="${DEFAULTS_FOLDER}/.env.example"
 
 declare -gx COMPOSE_FOLDER
 declare -gx CONFIG_FOLDER
