@@ -2,7 +2,7 @@
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/homeassistant/home-assistant?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/homeassistant/home-assistant)
 [![GitHub Stars](https://img.shields.io/github/stars/home-assistant/core?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/home-assistant/core)
-[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/compose/.apps/homeassistant)
+[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/.apps/homeassistant)
 
 ## Description
 
@@ -34,7 +34,7 @@ environment:
 Reference:
 [Endless InsecureRequestWarning errors with UniFi](https://community.home-assistant.io/t/endless-insecurerequestwarning-errors-with-unifi/31831/12)
 
-To make sure your Home Assistant instance can see your local network devices you might want to set your network mode to `host` on your `.docker/compose/.env` file.
+To make sure your Home Assistant instance can see your local network devices you might want to set your network mode to `host` on your `.config/compose/.env` file.
 
 ```env
 HOMEASSISTANT__NETWORK_MODE=host

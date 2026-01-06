@@ -24,8 +24,10 @@ When the script finishes it will display a message informing you to reboot if th
 ds -c
 ```
 
-This script verifies the dependencies above and installs or updates them as needed, then creates a file `~/.dockstarter/compose/docker-compose.yml` based on the variables you configured in your `~/.dockstarter/compose/.env` file. The generator script will run your selected containers after creating the file.
+This script verifies the dependencies above and installs or updates them as needed, then creates a file `~/.config/compose/docker-compose.yml` based on the variables you configured in your `~/.config/compose/.env` file. The generator script will run your selected containers after creating the file.
 We encourage you to have a look at the generated `docker-compose.yml` file, however if you wish to make changes please consider using overrides. Please review the [Technical Info](https://dockstarter.com/advanced/technical-info) and [Overrides / Introduction](https://dockstarter.com/overrides/introduction) pages.
+
+> Note: On older installs of DockSTARTer, `~/.config/compose` might be either `~/.dockstarter/compose` or `~/.docker/compose`.
 
 If you make any changes to your `.env` file (such as changing a port or enabling a new app) you need to rerun the generator which will rebuild only the affected containers.
 
@@ -47,13 +49,13 @@ Then you may want to edit your `.env` and `.env.app.<appname>` files and run the
 
 ## Setup Your Environment
 
-If you do not yet have a `~/.dockstarter/compose/.env` and/or `~/.dockstarter/compose.env.app.<appname>`files:
+If you do not yet have a `~/.config/compose/.env` and/or `~/.config/compose.env.app.<appname>`files:
 
 ```bash
 ds -e
 ```
 
-Edit the file using something like `nano ~/.dockstarter/compose/.env` (CTRL+X will prompt to save and exit the nano editor)
+Edit the file using something like `nano ~/.config/compose/.env` (CTRL+X will prompt to save and exit the nano editor)
 
 ### Application Specific Variables
 
@@ -76,7 +78,7 @@ You may also need to fill in or adjust any other variables prefixed with the `<A
 
 This is the best place to change the app's external default ports.
 
-There will also be an application specific variable file created at `~/.dockstarter/compose/.env.app.<appname>`.  This may or may not be populated with variables.  The variables included, if any, will entirely depend on the application installed.  If you need to edit the values of the variables, or include any new variables for the app, it is entirely safe to do so.
+There will also be an application specific variable file created at `~/.config/compose/.env.app.<appname>`.  This may or may not be populated with variables.  The variables included, if any, will entirely depend on the application installed.  If you need to edit the values of the variables, or include any new variables for the app, it is entirely safe to do so.
 
 #### Removing Apps
 

@@ -2,7 +2,7 @@
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/huntarr/huntarr?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/huntarr/huntarr)
 [![GitHub Stars](https://img.shields.io/github/stars/plexguide/Huntarr.io?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/plexguide/Huntarr.io)
-[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/compose/.apps/huntarr)
+[![Compose Templates](https://img.shields.io/static/v1?style=flat-square&color=607D8B&label=compose&message=templates)](https://github.com/GhostWriters/DockSTARTer/tree/main/.apps/huntarr)
 
 ## Description
 

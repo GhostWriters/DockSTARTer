@@ -145,6 +145,14 @@ ${C["UsageCommand"]-}--config-pm-existing-table${NC-}
     Lists the existing package managers in a table format
 EOF
             ;;&
+        --config-show | --show-config | "")
+            Found=1
+            cat << EOF
+${C["UsageCommand"]-}--config-show${NC-}
+${C["UsageCommand"]-}--show-config${NC-}
+    Shows the current configuration options
+EOF
+            ;;&
         -e | --env | "")
             Found=1
             cat << EOF

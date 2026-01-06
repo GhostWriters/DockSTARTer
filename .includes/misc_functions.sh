@@ -84,6 +84,15 @@ is_false() {
     ! is_true "${1-}"
 }
 
+folder_is_empty() {
+    local dir=${1}
+    (
+        shopt -s dotglob nullglob
+        set -- "${dir}"/*
+        (($# == 0))
+    )
+}
+
 longest_columns() {
     # 'longest_columns' int NumberOfColumns, array Elements
     if [[ ! ${1-} =~ ^[0-9]+$ || ${1} -lt 0 ]]; then
@@ -180,4 +189,136 @@ touchfile() {
         sudo chmod a=,a+rX,u+w,g+w "${Folder}"
         touch "${File}"
     fi
+}
+
+expand_vars() {
+    local String="$1"
+    shift
+    local -A Vars
+    while (($# >= 2)); do
+        Vars["$1"]="$2"
+        shift 2
+    done
+
+    # Recursively expand variables
+    local Changed=1
+    local -i LoopCount=0
+    local -i MaxLoops=10
+
+    while [[ ${Changed} -eq 1 && ${LoopCount} -lt ${MaxLoops} ]]; do
+        Changed=0
+        for Key in "${!Vars[@]}"; do
+            if [[ ${String} == *"\${${Key}?}"* ]]; then
+                local NewString="${String//\$\{${Key}\?\}/${Vars[${Key}]}}"
+                if [[ ${NewString} != "${String}" ]]; then
+                    String="${NewString}"
+                    Changed=1
+                fi
+            fi
+            if [[ ${String} == *"\${${Key}}"* ]]; then
+                local NewString="${String//\$\{${Key}\}/${Vars[${Key}]}}"
+                if [[ ${NewString} != "${String}" ]]; then
+                    String="${NewString}"
+                    Changed=1
+                fi
+            fi
+        done
+        LoopCount+=1
+    done
+    echo "${String}"
+}
+
+replace_with_vars() {
+    local String="$1"
+    shift
+    local -A Vars
+    local -a Keys
+    while (($# >= 2)); do
+        Vars["$1"]="$2"
+        Keys+=("$1")
+        shift 2
+    done
+
+    for Key in "${Keys[@]}"; do
+        local Value="${Vars[$Key]}"
+        if [[ -n ${Value-} ]]; then
+            local Pattern="${Value//\\/\\\\}" # Escape backslash first
+            Pattern="${Pattern//\*/\\*}"      # Escape *
+            Pattern="${Pattern//\?/\\?}"      # Escape ?
+            Pattern="${Pattern//\[/\\[}"      # Escape [
+            Pattern="${Pattern//\]/\\]}"      # Escape ]
+
+            local Replacement="\${${Key}?}"
+            String="${String//${Pattern}/${Replacement}}"
+        fi
+    done
+    echo "${String}"
+}
+
+table_pipe() {
+    local -i Cols=${1}
+    shift
+    local -a Headings=("${@}")
+
+    local -a Data
+    readarray -t Data
+
+    local -a AllData=("${Headings[@]}" "${Data[@]}")
+    local -a VisibleData
+    for item in "${AllData[@]}"; do
+        VisibleData+=("$(strip_ansi_colors "${item}")")
+    done
+
+    local -a ColWidths
+    readarray -t ColWidths < <(longest_columns "${Cols}" "${VisibleData[@]}")
+
+    local Separator="+"
+    for ((i = 0; i < Cols; i++)); do
+        local Width=${ColWidths[i]}
+        local Dashes
+        Dashes="$(printf "%*s" $((Width + 2)) "")"
+        Separator="${Separator}${Dashes// /-}+"
+    done
+
+    echo "${Separator}"
+
+    # Print Headings
+    local RowStr="|"
+    for ((c = 0; c < Cols; c++)); do
+        local Item="${Headings[c]-}"
+        local VisItem="${VisibleData[c]-}"
+        local Width=${ColWidths[c]}
+        local PadSize=$((Width - ${#VisItem}))
+        local Padding
+        Padding="$(printf "%*s" "${PadSize}" "")"
+        RowStr="${RowStr} ${Item}${Padding} |"
+    done
+    echo "${RowStr}"
+    echo "${Separator}"
+
+    # Print Data
+    local -i TotalItems=${#Data[@]}
+    for ((i = 0; i < TotalItems; i += Cols)); do
+        local RowStr="|"
+        for ((c = 0; c < Cols; c++)); do
+            local Idx=$((i + c))
+            local Item="${Data[Idx]-}"
+            local VisItem="${VisibleData[Cols + Idx]-}" # Offset by Headings count (Cols)
+            local Width=${ColWidths[c]}
+            local PadSize=$((Width - ${#VisItem}))
+            local Padding
+            Padding="$(printf "%*s" "${PadSize}" "")"
+            RowStr="${RowStr} ${Item}${Padding} |"
+        done
+        echo "${RowStr}"
+    done
+    echo "${Separator}"
+}
+
+table() {
+    local -i Cols=${1}
+    shift
+    local -a Headings=("${@:1:Cols}")
+    local -a Data=("${@:Cols+1}")
+    printf '%s\n' "${Data[@]}" | table_pipe "${Cols}" "${Headings[@]}"
 }
