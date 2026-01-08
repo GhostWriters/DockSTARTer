@@ -82,7 +82,7 @@ plugins:
       nav_repos:
         - name: apps
           import_url: https://github.com/GhostWriters/DockSTARTer-Templates?branch=main
-          imports: [docs/apps]
+          imports: [docs/apps/*]
   - redirects:
       redirect_maps:
         advanced/overrides.md: https://dockstarter.com/overrides/introduction/
