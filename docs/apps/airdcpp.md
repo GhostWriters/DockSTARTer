@@ -1,11 +1,4 @@
----
-status: deprecated
----
 # AirDC++
-
-## DEPRECATED
-
-DEPRECATION NOTICE: This image is deprecated as of 2022-06-09 due to failure to pass CI manifest checks. The failing command is: `docker manifest inspect gangefors/airdcpp-webclient`. It appears the image should still work fine, and if this issue is resolved in the future we can reverse the deprecation.
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/gangefors/airdcpp-webclient?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/gangefors/airdcpp-webclient)
 [![GitHub Stars](https://img.shields.io/github/stars/gangefors/docker-airdcpp-webclient?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/gangefors/docker-airdcpp-webclient)
