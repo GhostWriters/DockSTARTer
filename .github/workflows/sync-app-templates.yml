@@ -1,4 +1,6 @@
 name: Sync Templates with History
+permissions:
+  contents: read
 on:
   push:
     branches:
