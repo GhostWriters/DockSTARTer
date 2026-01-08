@@ -24,8 +24,8 @@ jobs:
 
       - name: Isolate Folder History
         run: |
-          # Filters history to ONLY include these paths while keeping original structure
-          git filter-repo --path .apps/ --path docs/apps/ --force
+          # Filters history on the current branch to ONLY include these paths while keeping original structure
+          git filter-repo --refs HEAD --path .apps/ --path docs/apps/ --force
 
       - name: Merge into Destination (DockSTARTer-Templates)
         env:
