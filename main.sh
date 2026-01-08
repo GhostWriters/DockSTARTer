@@ -89,8 +89,8 @@ export SCRIPTNAME
 [[ -z ${XDG_CONFIG_HOME-} ]] && declare -gx XDG_CONFIG_HOME="${DETECTED_HOMEDIR}/.config"
 [[ -z ${XDG_CACHE_HOME-} ]] && declare -gx XDG_CACHE_HOME="${DETECTED_HOMEDIR}/.cache"
 [[ -z ${XDG_STATE_HOME-} ]] && declare -gx XDG_STATE_HOME="${DETECTED_HOMEDIR}/.local/state"
-[[ -z ${XDG_RUNTIME_DIR-} ]] && declare -gx XDG_RUNTIME_DIR="/run/user/${DETECTED_PUID}"
-for XDG_FOLDER in "${XDG_DATA_HOME}" "${XDG_CONFIG_HOME}" "${XDG_CACHE_HOME}" "${XDG_STATE_HOME}" "${XDG_RUNTIME_DIR}"; do
+#[[ -z ${XDG_RUNTIME_DIR-} ]] && declare -gx XDG_RUNTIME_DIR="/run/user/${DETECTED_PUID}"
+for XDG_FOLDER in "${XDG_DATA_HOME}" "${XDG_CONFIG_HOME}" "${XDG_CACHE_HOME}" "${XDG_STATE_HOME}"; do
 	if [[ ! -d ${XDG_FOLDER} ]]; then
 		mkdir -p "${XDG_FOLDER}"
 	fi
