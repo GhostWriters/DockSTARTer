@@ -5,7 +5,7 @@ status: deprecated
 
 ## DEPRECATED
 
-DEPRECATION NOTICE: This image is deprecated as of 2024-02-18. Use Deluge, qBittorrent, or Transmission with Gluetun or PrivoxyVPN.
+DEPRECATION NOTICE: This image is deprecated as of 2024-02-18. Use [Deluge](deluge.md), [qBittorrent](qbittorrent.md), or [Transmission](transmission.md) with [Gluetun](gluetun.md) or [PrivoxyVPN](privoxyvpn.md).
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/binhex/arch-rtorrentvpn?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/binhex/arch-rtorrentvpn)
 [![GitHub Stars](https://img.shields.io/github/stars/binhex/arch-rtorrentvpn?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/binhex/arch-rtorrentvpn)

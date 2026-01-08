@@ -5,7 +5,7 @@ status: deprecated
 
 ## DEPRECATED
 
-DEPRECATION NOTICE: This image is deprecated as of 2024-02-18. Use Watchtower.
+DEPRECATION NOTICE: This image is deprecated as of 2024-02-18. Use [Watchtower](watchtower.md).
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/pyouroboros/ouroboros?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/pyouroboros/ouroboros)
 [![GitHub Stars](https://img.shields.io/github/stars/pyouroboros/ouroboros?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/pyouroboros/ouroboros)
