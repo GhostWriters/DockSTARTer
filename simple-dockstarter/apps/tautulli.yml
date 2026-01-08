@@ -1,0 +1,11 @@
+description: "Tautulli - Plex monitoring and statistics"
+image: "lscr.io/linuxserver/tautulli:latest"
+ports:
+  - "8181:8181"
+volumes:
+  - "${DATA_DIR}/tautulli:/config"
+environment:
+  - PUID=${PUID}
+  - PGID=${PGID}
+  - TZ=${TZ}
+restart: unless-stopped
