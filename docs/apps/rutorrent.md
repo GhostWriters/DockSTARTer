@@ -5,7 +5,7 @@ status: deprecated
 
 ## DEPRECATED
 
-DEPRECATION NOTICE: This image is deprecated as of 2024-02-18. Use Deluge, qBittorrent, or Transmission.
+DEPRECATION NOTICE: This image is deprecated as of 2024-02-18. Use [Deluge](deluge.md), [qBittorrent](qbittorrent.md), or [Transmission](transmission.md).
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/rutorrent?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/linuxserver/rutorrent)
 [![GitHub Stars](https://img.shields.io/github/stars/linuxserver/docker-rutorrent?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/linuxserver/docker-rutorrent)

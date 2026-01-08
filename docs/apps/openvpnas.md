@@ -5,7 +5,7 @@ status: deprecated
 
 ## DEPRECATED
 
-DEPRECATION NOTICE: This image is deprecated as of 2023-06-02. Use Gluetun or PrivoxyVPN.
+DEPRECATION NOTICE: This image is deprecated as of 2023-06-02. Use [Gluetun](gluetun.md) or [PrivoxyVPN](privoxyvpn.md).
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/openvpn-as?style=flat-square&color=607D8B&label=docker%20pulls&logo=docker)](https://hub.docker.com/r/linuxserver/openvpn-as)
 [![GitHub Stars](https://img.shields.io/github/stars/linuxserver/docker-openvpn-as?style=flat-square&color=607D8B&label=github%20stars&logo=github)](https://github.com/linuxserver/docker-openvpn-as)
