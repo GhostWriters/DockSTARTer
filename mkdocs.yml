@@ -71,9 +71,6 @@ markdown_extensions:
   - toc:
       permalink: true
 
-exclude_docs: |
-  apps/
-
 plugins:
   - git-revision-date-localized:
       enable_creation_date: true
@@ -82,11 +79,10 @@ plugins:
       minify_html: true
   - multirepo:
       cleanup: true
-      keep_docs_dir: true
-      nav_repos:
-        - name: apps
+      keep_docs_dir: false
+      repos:
+        - section: apps
           import_url: https://github.com/GhostWriters/DockSTARTer-Templates?branch=main
-          imports: [docs/apps/*]
   - redirects:
       redirect_maps:
         advanced/overrides.md: https://dockstarter.com/overrides/introduction/
