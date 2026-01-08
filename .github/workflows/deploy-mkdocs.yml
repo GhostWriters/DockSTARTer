@@ -2,8 +2,17 @@ name: Build and Deploy mkdocs
 
 on:
   push:
+    branches:
+      - main
+    paths-ignore:
+      - '.apps/**'
+      - 'docs/apps/**'
   pull_request:
-
+  workflow_run:
+    workflows: ["Sync Templates with History"]
+    types:
+      - completed
+    if: github.event.workflow_run.conclusion == 'success'
 jobs:
   mkdocs:
     name: Build and Deploy mkdocs
@@ -15,14 +24,17 @@ jobs:
           fetch-depth: 0
           sparse-checkout: |
             docs
+
       - name: Setup python
         uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
           python-version: 3.x
+
       - name: Get pip cache directory
         id: pip-cache
         run: |
           echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
+
       - name: Cache dependencies
         uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
         with:
@@ -30,10 +42,13 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
+
       - name: Install dependencies
         run: pip install -r docs/requirements.txt
+
       - name: Build documentation
         run: mkdocs build
+
       - name: Deploy to GitHub Pages
-        if: github.event_name == 'push' && contains(fromJson('["refs/heads/main"]'), github.ref)
+        if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_run' && github.event.workflow_run.head_branch == 'main')
         run: mkdocs gh-deploy --force

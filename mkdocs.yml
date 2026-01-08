@@ -74,9 +74,15 @@ markdown_extensions:
 plugins:
   - git-revision-date-localized:
       enable_creation_date: true
-  - include_dir_to_nav
   - minify:
       minify_html: true
+  - multirepo:
+      cleanup: true
+      keep_docs_dir: false
+      nav_repos:
+        - name: apps
+          import_url: https://github.com/GhostWriters/DockSTARTer-Templates?branch=main
+          imports: [docs/apps]
   - redirects:
       redirect_maps:
         advanced/overrides.md: https://dockstarter.com/overrides/introduction/
