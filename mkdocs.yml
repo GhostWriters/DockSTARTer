@@ -82,7 +82,7 @@ plugins:
       minify_html: true
   - multirepo:
       cleanup: true
-      keep_docs_dir: false
+      keep_docs_dir: true
       nav_repos:
         - name: apps
           import_url: https://github.com/GhostWriters/DockSTARTer-Templates?branch=main
