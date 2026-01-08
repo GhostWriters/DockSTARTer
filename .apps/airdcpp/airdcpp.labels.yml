@@ -2,5 +2,5 @@ services:
   airdcpp<__instance>:
     labels:
       com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: " AirDC++ is an easy to use client for Advanced Direct Connect and Direct Connect networks."
+      com.dockstarter.appinfo.description: "AirDC++ is an easy to use client for Advanced Direct Connect and Direct Connect networks."
       com.dockstarter.appinfo.nicename: "AirdcPP<__Instance>"
