@@ -17,12 +17,20 @@ usage() {
 				if ds_update_available; then
 					APPLICATION_HEADING+=" (${C["Update"]-}Update Available${NC-})"
 				fi
+				local TEMPLATES_HEADING="${C["Version"]-}${APPLICATION_NAME} Templates${NC-}"
+				if [[ ${TEMPLATES_VERSION-} ]]; then
+					TEMPLATES_HEADING+=" [${C["Version"]-}${TEMPLATES_VERSION}${NC-}]"
+				fi
+				if ds_update_available; then
+					TEMPLATES_HEADING+=" (${C["Update"]-}Update Available${NC-})"
+				fi
 				cat << EOF
 Usage: ${C["UsageCommand"]-}${APPLICATION_COMMAND}${NC-} [${C["UsageCommand"]-}<Flags>${NC-}] [${C["UsageCommand"]-}<Command>${NC-}] ...
 NOTE: The '${C["UsageCommand"]-}${APPLICATION_COMMAND}${NC-}' shortcut is only available after the first run of
 	bash main.sh
 
 ${APPLICATION_HEADING}
+${TEMPLATES_HEADING}
 This is the main ${APPLICATION_NAME} script.
 For regular usage you can run without providing any options.
 
@@ -396,12 +404,22 @@ ${C["UsageCommand"]-}--theme-no-scrollbar${NC-}
 	Turn the scrollbar on or off in the GUI
 EOF
 			;;&
-		-u | --update | "")
+		-u | --update | "") ;&
+		-U | --update-templates | "") ;&
+		--update-app | "")
 			Found=1
 			cat << EOF
 ${C["UsageCommand"]-}-u --update${NC-}
-	Update ${APPLICATION_NAME} to the latest stable commits
-${C["UsageCommand"]-}-u --update${NC-} ${C["UsageBranch"]-}<branch>${NC-}
+	Update ${APPLICATION_NAME} and ${APPLICATION_NAME} Templates to the latest commits from the current branch
+${C["UsageCommand"]-}-u --update${NC-} ${C["UsageBranch"]-}<AppBranch>${NC-} ${C["UsageBranch"]-}<TemplateBranch>${NC-}
+	Update ${APPLICATION_NAME} and ${APPLICATION_NAME} Templates to the latest commits from the specified branches
+${C["UsageCommand"]-}-U --update-templates${NC-}
+	Update ${APPLICATION_NAME} Templates to the latest commits from the current branch
+${C["UsageCommand"]-}-U --update-templates${NC-} ${C["UsageBranch"]-}<TemplateBranch>${NC-}
+	Update ${APPLICATION_NAME} Templates to the latest commits from the specified branch
+${C["UsageCommand"]-}--update-app${NC-}
+	Update ${APPLICATION_NAME} to the latest commits from the current branch
+${C["UsageCommand"]-}--update-app${NC-} ${C["UsageBranch"]-}<AppBranch>${NC-}
 	Update ${APPLICATION_NAME} to the latest commits from the specified branch
 EOF
 			;;&
@@ -410,6 +428,8 @@ EOF
 			cat << EOF
 ${C["UsageCommand"]-}-V --version${NC-}
 	Display version information
+${C["UsageCommand"]-}-V --version${NC-} ${C["UsageBranch"]-}<AppBranch>${NC-} ${C["UsageBranch"]-}<TemplateBranch>${NC-}
+	Display version information for the specified branches
 EOF
 			;;&
 		"")

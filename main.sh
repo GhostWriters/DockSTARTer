@@ -488,16 +488,16 @@ clone_repo() {
 
 clone_templates_repo() {
 	warn \
-		"Attempting to clone ${APPLICATION_NAME} templates repo to '${C["Folder"]-}${TEMPLATES_PARENT_FOLDER}${NC-}' location."
-	if [[ -d ${TEMPLATES_PARENT_FOLDER-} ]]; then
-		rm -rf "${TEMPLATES_PARENT_FOLDER-}" ||
+		"Attempting to clone ${APPLICATION_NAME} Templates repo to '${C["Folder"]-}${TEMPLATES_PARENT_FOLDER}${NC-}' location."
+	if [[ -d ${TEMPLATES_PARENT_FOLDER?} ]]; then
+		rm -rf "${TEMPLATES_PARENT_FOLDER?}" ||
 			fatal \
-				"Failed to remove ${TEMPLATES_PARENT_FOLDER-}." \
-				"Failing command: ${C["FailingCommand"]-}rm -rf \"${TEMPLATES_PARENT_FOLDER-}\""
+				"Failed to remove ${TEMPLATES_PARENT_FOLDER?}." \
+				"Failing command: ${C["FailingCommand"]-}rm -rf \"${TEMPLATES_PARENT_FOLDER?}\""
 	fi
 	git clone -b "${TEMPLATES_DEFAULT_BRANCH}" "${TEMPLATES_REPO}" "${TEMPLATES_PARENT_FOLDER}" ||
 		fatal \
-			"Failed to clone ${APPLICATION_NAME} templates repo." \
+			"Failed to clone ${APPLICATION_NAME} Templates repo." \
 			"Failing command: ${C["FailingCommand"]-}git clone -b \"${TEMPLATES_DEFAULT_BRANCH}\" \"${TEMPLATES_REPO}\" \"${TEMPLATES_PARENT_FOLDER}\""
 }
 

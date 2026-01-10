@@ -33,7 +33,7 @@ parse_arguments() {
 		local -a CurrentFlags=()
 		local -a CurrentCommand=()
 
-		while getopts ":-:acefghilMprRsStTuvVxy" OPTION; do
+		while getopts ":-:acefghilMprRsStTuUvVxy" OPTION; do
 			if [[ ${OPTION} == "-" ]]; then
 				# Rename the long option to --option
 				OPTION="--${OPTARG}"
@@ -146,9 +146,24 @@ parse_arguments() {
 
 				# --command [param]
 				-T | --theme) ;&
+				--update-app) ;&
+				-U | --update-templates)
+					CurrentCommand+=("${OPTION}")
+					if [[ -n ${!OPTIND-} && ${!OPTIND} != "-"* ]]; then
+						CurrentCommand+=("${!OPTIND}")
+						OPTIND+=1
+					fi
+					break
+					;;
+
+				# --command [param] [param]
 				-u | --update) ;&
 				-V | --version)
 					CurrentCommand+=("${OPTION}")
+					if [[ -n ${!OPTIND-} && ${!OPTIND} != "-"* ]]; then
+						CurrentCommand+=("${!OPTIND}")
+						OPTIND+=1
+					fi
 					if [[ -n ${!OPTIND-} && ${!OPTIND} != "-"* ]]; then
 						CurrentCommand+=("${!OPTIND}")
 						OPTIND+=1
@@ -641,21 +656,45 @@ run_command() {
 			;;
 
 		-u | --update)
+			local AppBranch="${ParamsArray[0]-}"
+			local TemplatesBranch="${ParamsArray[1]-}"
+			run_script 'update_templates' "${TemplatesBranch-}"
+			run_script 'update_self' "${AppBranch-}" "${RestOfArgs[@]}"
+			result=$?
+			;;
+
+		-U | --update-templates)
+			run_script 'update_templates' "${ParamsArray[0]-}"
+			result=$?
+			;;
+
+		--update-app)
 			run_script 'update_self' "${ParamsArray[0]-}" "${RestOfArgs[@]}"
 			result=$?
 			;;
 
 		-V | --version)
-			local Branch="${ParamsArray[0]-}"
-			if [[ -z ${Branch} ]]; then
+			local AppBranch="${ParamsArray[0]-}"
+			local TemplatesBranch="${ParamsArray[1]-}"
+			if [[ -z ${AppBranch} ]]; then
 				echo "${APPLICATION_NAME} [$(ds_version)]"
 			else
-				if ! ds_branch_exists "${Branch}"; then
+				if ! ds_branch_exists "${AppBranch}"; then
 					error \
-						"${APPLICATION_NAME} branch '${C["Branch"]-}${Branch}${NC-}' does not exist."
+						"${APPLICATION_NAME} branch '${C["Branch"]-}${AppBranch}${NC-}' does not exist."
 					exit 1
 				fi
-				echo "${APPLICATION_NAME} [$(ds_version "${Branch}")]"
+				echo "${APPLICATION_NAME} [$(ds_version "${AppBranch}")]"
+			fi
+			if [[ -z ${TemplatesBranch} ]]; then
+				echo "${APPLICATION_NAME} Templates [$(templates_version)]"
+			else
+				if ! templates_branch_exists "${TemplatesBranch}"; then
+					error \
+						"${APPLICATION_NAME} Templates branch '${C["Branch"]-}${TemplatesBranch}${NC-}' does not exist."
+					exit 1
+				fi
+				echo "${APPLICATION_NAME} Templates [$(templates_version "${TemplatesBranch}")]"
 			fi
 			;;
 
