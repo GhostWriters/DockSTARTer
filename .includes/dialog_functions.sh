@@ -66,23 +66,32 @@ _dialog_backtitle_() {
 
 	local RightHeading=''
 
+	local UpdateFlag="${DC["ApplicationUpdate"]-}*${DC["NC"]-}"
+	local ApplicationUpdateFlag=" "
+	local ApplicationVersionColor="${DC["ApplicationVersion"]-}"
+	local TemplatesUpdateFlag=" "
+	local TemplatesVersionColor="${DC["ApplicationVersion"]-}"
+
+	local CurrentVersion
+	CurrentVersion="$(ds_version)"
+	if [[ -z ${CurrentVersion} ]]; then
+		CurrentVersion="$(ds_branch) Unknown Version"
+	fi
+	local CurrentTemplatesVersion
+	CurrentTemplatesVersion="$(templates_version)"
+	if [[ -z ${CurrentTemplatesVersion} ]]; then
+		CurrentTemplatesVersion="$(templates_branch) Unknown Version"
+	fi
 	if ds_update_available; then
-		if [[ -n ${RightHeading-} ]]; then
-			RightHeading+=" "
-		fi
-		RightHeading+="${DC["ApplicationUpdateBrackets"]-}(${DC["ApplicationUpdate"]-}Update Available${DC["ApplicationUpdateBrackets"]-})${DC["NC"]-}"
+		ApplicationUpdateFlag=${UpdateFlag}
+		ApplicationVersionColor="${DC["ApplicationUpdate"]-}"
 	fi
-	if [[ ${APPLICATION_VERSION-} ]]; then
-		if [[ -n ${RightHeading-} ]]; then
-			RightHeading+=" "
-		fi
-		local CurrentVersion
-		CurrentVersion="$(ds_version)"
-		if [[ -z ${CurrentVersion} ]]; then
-			CurrentVersion="$(ds_branch) Unknown Version"
-		fi
-		RightHeading+="${DC["ApplicationVersionBrackets"]-}[${DC["ApplicationVersion"]-}${CurrentVersion}${DC["ApplicationVersionBrackets"]-}]${DC["NC"]-}"
+	if templates_update_available; then
+		TemplatesUpdateFlag=${UpdateFlag}
+		TemplatesVersionColor="${DC["ApplicationUpdate"]-}"
 	fi
+	RightHeading+="${ApplicationUpdateFlag}${DC["ApplicationVersionBrackets"]-}[${ApplicationVersionColor}${CurrentVersion}${DC["ApplicationVersionBrackets"]-}]${DC["NC"]-}"
+	RightHeading+="${TemplatesUpdateFlag}${DC["ApplicationVersionBrackets"]-}[${TemplatesVersionColor}${CurrentTemplatesVersion}${DC["ApplicationVersionBrackets"]-}]${DC["NC"]-}"
 
 	local -i HeadingLength
 	set_screen_size
