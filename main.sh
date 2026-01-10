@@ -33,7 +33,8 @@ if [[ ${CI-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS-} == true ]]; then
 fi
 
 declare -rgx SOURCE_BRANCH='master'
-declare -rgx TARGET_BRANCH='Updates'
+declare -rgx TARGET_BRANCH='TemplatesRepo'
+declare -rgx TEMPLATES_DEFAULT_BRANCH='main'
 
 declare DS_COMMAND
 DS_COMMAND=$(command -v "${APPLICATION_COMMAND}" || true)
