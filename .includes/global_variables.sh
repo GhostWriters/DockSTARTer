@@ -5,27 +5,46 @@ IFS=$'\n\t'
 declare -gx LC_ALL=C
 
 # Environment Information
+
 declare -rgx APPLICATION_CACHE_FOLDER="${XDG_CACHE_HOME}/${APPLICATION_NAME,,}"
-mkdir -p "${APPLICATION_CACHE_FOLDER}"
-sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${APPLICATION_CACHE_FOLDER}"
-sudo chmod a=,a+rX,u+w,g+w "${APPLICATION_CACHE_FOLDER}"
-
-declare -rgx TEMP_FOLDER="${APPLICATION_CACHE_FOLDER}/.temp"
-if [[ -e ${TEMP_FOLDER} ]]; then
-	sudo rm -rf "${TEMP_FOLDER}"
+if [[ -e ${APPLICATION_CACHE_FOLDER} ]]; then
+	sudo rm -rf "${APPLICATION_CACHE_FOLDER}"
 fi
-mkdir -p "${TEMP_FOLDER}"
-sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${TEMP_FOLDER}"
-sudo chmod a=,a+rX,u+w,g+w "${TEMP_FOLDER}"
+declare -rgx APPLICATION_STATE_FOLDER="${XDG_STATE_HOME}/${APPLICATION_NAME,,}"
 
-declare -gx DEFAULTS_FOLDER_NAME=".defaults"
-declare -gx TEMPLATES_FOLDER_NAME=".apps"
-declare -gx INSTANCES_FOLDER_NAME=".instances"
-declare -gx THEME_FOLDER_NAME=".themes"
-declare -gx TIMESTAMPS_FOLDER_NAME=".timestamps"
-declare -gx APP_ENV_FOLDER_NAME="env_files"
+declare -rgx DEFAULTS_FOLDER_NAME=".defaults"
+declare -rgx THEME_FOLDER_NAME=".themes"
+declare -rgx APP_ENV_FOLDER_NAME="env_files"
 
-declare -gx TIMESTAMPS_FOLDER="${XDG_STATE_HOME}/${APPLICATION_NAME,,}/${TIMESTAMPS_FOLDER_NAME}"
+declare -rgx TEMPLATES_PARENT_FOLDER_NAME="templates"
+declare -rgx TEMPLATES_FOLDER_NAME=".apps"
+declare -rgx INSTANCES_FOLDER_NAME=".instances"
+declare -rgx TIMESTAMPS_FOLDER_NAME=".timestamps"
+declare -rgx TEMP_FOLDER_NAME=".temp"
+declare -rgx COMPOSE_ENV_DEFAULT_FILE_NAME=".env.example"
+declare -rgx APPLICATION_INI_NAME="${APPLICATION_NAME,,}.ini"
+declare -rgx THEME_FILE_NAME="theme.ini"
+
+declare -rgx TEMPLATES_PARENT_FOLDER="${APPLICATION_STATE_FOLDER}/${TEMPLATES_PARENT_FOLDER_NAME}"
+declare -rgx TEMPLATES_FOLDER="${TEMPLATES_PARENT_FOLDER}/${TEMPLATES_FOLDER_NAME}"
+declare -rgx TEMP_FOLDER="${APPLICATION_CACHE_FOLDER}/${TEMP_FOLDER_NAME}"
+
+declare -a FolderList=(
+	"${APPLICATION_CACHE_FOLDER}"
+	"${APPLICATION_STATE_FOLDER}"
+	"${TEMPLATES_PARENT_FOLDER}"
+	"${TEMPLATES_FOLDER}"
+	"${TEMP_FOLDER}"
+)
+for Folder in "${FolderList[@]}"; do
+	if [[ ! -e ${Folder} ]]; then
+		mkdir -p "${Folder}"
+	fi
+	sudo chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${Folder}"
+	sudo chmod -R a=,a+rX,u+w,g+w "${Folder}"
+done
+
+declare -rgx TIMESTAMPS_FOLDER="${APPLICATION_STATE_FOLDER}/${TIMESTAMPS_FOLDER_NAME}"
 if [[ -d ${SCRIPTPATH}/compose/${TIMESTAMPS_FOLDER_NAME} ]]; then
 	# Migrate old timestamps folder
 	if [[ ! -d ${TIMESTAMPS_FOLDER} ]]; then
@@ -35,11 +54,7 @@ if [[ -d ${SCRIPTPATH}/compose/${TIMESTAMPS_FOLDER_NAME} ]]; then
 	fi
 fi
 
-declare -gx DEFAULTS_FOLDER="${SCRIPTPATH}/${DEFAULTS_FOLDER_NAME}"
-declare -gx TEMPLATES_FOLDER="${SCRIPTPATH}/${TEMPLATES_FOLDER_NAME}"
-declare -gx THEME_FOLDER="${SCRIPTPATH}/${THEME_FOLDER_NAME}"
-
-declare -gx INSTANCES_FOLDER="${XDG_STATE_HOME}/${APPLICATION_NAME,,}/${INSTANCES_FOLDER_NAME}"
+declare -gx INSTANCES_FOLDER="${APPLICATION_STATE_FOLDER}/${INSTANCES_FOLDER_NAME}"
 if [[ -d ${SCRIPTPATH}/compose/${INSTANCES_FOLDER_NAME} ]]; then
 	# Migrate old instances folder
 	if [[ ! -d ${INSTANCES_FOLDER} ]]; then
@@ -50,18 +65,19 @@ if [[ -d ${SCRIPTPATH}/compose/${INSTANCES_FOLDER_NAME} ]]; then
 fi
 
 declare -gx APPLICATION_INI_FOLDER="${XDG_CONFIG_HOME}"
-declare -gx APPLICATION_INI_NAME="${APPLICATION_NAME,,}.ini"
 declare -gx APPLICATION_INI_FILE="${APPLICATION_INI_FOLDER}/${APPLICATION_INI_NAME}"
+
+declare -gx DEFAULTS_FOLDER="${SCRIPTPATH}/${DEFAULTS_FOLDER_NAME}"
 declare -gx DEFAULT_INI_FILE="${DEFAULTS_FOLDER}/${APPLICATION_INI_NAME}"
+declare -gx COMPOSE_ENV_DEFAULT_FILE="${DEFAULTS_FOLDER}/${COMPOSE_ENV_DEFAULT_FILE_NAME}"
 
-declare -gx THEME_FILE_NAME="theme.ini"
-
-declare -gx COMPOSE_ENV_DEFAULT_FILE="${DEFAULTS_FOLDER}/.env.example"
+declare -gx THEME_FOLDER="${SCRIPTPATH}/${THEME_FOLDER_NAME}"
 
 declare -gx COMPOSE_FOLDER
 declare -gx CONFIG_FOLDER
 declare -gx LITERAL_COMPOSE_FOLDER
 declare -gx LITERAL_CONFIG_FOLDER
+declare -gx APP_ENV_FOLDER
 
 set_global_variables() {
 	if [[ -z ${LITERAL_CONFIG_FOLDER} ]]; then
