@@ -10,14 +10,14 @@ usage() {
 	case "${Option}" in
 		*)
 			if [[ -z ${NoHeading-} ]]; then
-				local APPLICATION_HEADING="${C["Version"]-}${APPLICATION_NAME}${NC-}"
+				local APPLICATION_HEADING="${C["ApplicationName"]-}${APPLICATION_NAME}${NC-}"
 				if [[ ${APPLICATION_VERSION-} ]]; then
 					APPLICATION_HEADING+=" [${C["Version"]-}${APPLICATION_VERSION}${NC-}]"
 				fi
 				if ds_update_available; then
 					APPLICATION_HEADING+=" (${C["Update"]-}Update Available${NC-})"
 				fi
-				local TEMPLATES_HEADING="${C["Version"]-}${APPLICATION_NAME} Templates${NC-}"
+				local TEMPLATES_HEADING="${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-}"
 				if [[ ${TEMPLATES_VERSION-} ]]; then
 					TEMPLATES_HEADING+=" [${C["Version"]-}${TEMPLATES_VERSION}${NC-}]"
 				fi
@@ -31,7 +31,7 @@ NOTE: The '${C["UsageCommand"]-}${APPLICATION_COMMAND}${NC-}' shortcut is only a
 
 ${APPLICATION_HEADING}
 ${TEMPLATES_HEADING}
-This is the main ${APPLICATION_NAME} script.
+This is the main ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} script.
 For regular usage you can run without providing any options.
 
 You may include multiple commands on the command-line, and they will be executed in
@@ -314,7 +314,7 @@ EOF
 			Found=1
 			cat << EOF
 ${C["UsageCommand"]-}-R --reset${NC-}
-	Resets ${APPLICATION_NAME} to always process environment files.
+	Resets ${C["ApplicationName"]-}${APPLICATION_NAME} to always process environment files.
 	This is usually not needed unless you have modified application templates yourself.
 EOF
 			;;&
@@ -410,17 +410,17 @@ EOF
 			Found=1
 			cat << EOF
 ${C["UsageCommand"]-}-u --update${NC-}
-	Update ${APPLICATION_NAME} and ${APPLICATION_NAME} Templates to the latest commits from the current branch
+	Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} and ${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} to the latest commits from the current branch
 ${C["UsageCommand"]-}-u --update${NC-} ${C["UsageBranch"]-}<AppBranch>${NC-} ${C["UsageBranch"]-}<TemplateBranch>${NC-}
-	Update ${APPLICATION_NAME} and ${APPLICATION_NAME} Templates to the latest commits from the specified branches
+	Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} and ${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} to the latest commits from the specified branches
 ${C["UsageCommand"]-}-U --update-templates${NC-}
-	Update ${APPLICATION_NAME} Templates to the latest commits from the current branch
+	Update ${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} to the latest commits from the current branch
 ${C["UsageCommand"]-}-U --update-templates${NC-} ${C["UsageBranch"]-}<TemplateBranch>${NC-}
-	Update ${APPLICATION_NAME} Templates to the latest commits from the specified branch
+	Update ${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} to the latest commits from the specified branch
 ${C["UsageCommand"]-}--update-app${NC-}
-	Update ${APPLICATION_NAME} to the latest commits from the current branch
+	Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} to the latest commits from the current branch
 ${C["UsageCommand"]-}--update-app${NC-} ${C["UsageBranch"]-}<AppBranch>${NC-}
-	Update ${APPLICATION_NAME} to the latest commits from the specified branch
+	Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} to the latest commits from the specified branch
 EOF
 			;;&
 		-V | --version | "")

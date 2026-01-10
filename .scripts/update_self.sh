@@ -11,7 +11,7 @@ update_self() {
 		Branch="${TARGET_BRANCH}"
 	fi
 
-	local Title="Update ${APPLICATION_NAME}"
+	local Title="Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC}"
 	local Question YesNotice NoNotice
 
 	pushd "${SCRIPTPATH}" &> /dev/null ||
@@ -31,19 +31,19 @@ update_self() {
 	RemoteVersion="$(ds_version "${Branch}")"
 	if [[ ${CurrentVersion-} == "${RemoteVersion-}" ]]; then
 		if [[ -n ${FORCE-} ]]; then
-			Question="Would you like to forcefully re-apply ${APPLICATION_NAME} update '${C["Version"]}${CurrentVersion}${NC}'?"
-			NoNotice="${APPLICATION_NAME} will not be updated."
-			YesNotice="Forcefully re-applying ${APPLICATION_NAME} update '${C["Version"]}${RemoteVersion}${NC}'"
+			Question="Would you like to forcefully re-apply ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} update '${C["Version"]}${CurrentVersion}${NC}'?"
+			NoNotice="${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} will not be updated."
+			YesNotice="Forcefully re-applying ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} update '${C["Version"]}${RemoteVersion}${NC}'"
 		fi
 	else
-		Question="Would you like to update ${APPLICATION_NAME} from '${C["Version"]}${CurrentVersion}${NC}' to '${C["Version"]}${RemoteVersion}${NC}' now?"
-		NoNotice="${APPLICATION_NAME} will not be updated."
-		YesNotice="Updating ${APPLICATION_NAME} from '${C["Version"]}${CurrentVersion}${NC}' to '${C["Version"]}${RemoteVersion}${NC}'"
+		Question="Would you like to update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} from '${C["Version"]}${CurrentVersion}${NC}' to '${C["Version"]}${RemoteVersion}${NC}' now?"
+		NoNotice="${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} will not be updated."
+		YesNotice="Updating ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} from '${C["Version"]}${CurrentVersion}${NC}' to '${C["Version"]}${RemoteVersion}${NC}'"
 	fi
 	popd &> /dev/null
 
 	if ! ds_branch_exists "${Branch}"; then
-		local ErrorMessage="${APPLICATION_NAME} branch '${C["Branch"]}${Branch}${NC}' does not exists."
+		local ErrorMessage="${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} branch '${C["Branch"]}${Branch}${NC}' does not exists."
 		if use_dialog_box; then
 			error "${ErrorMessage}" |&
 				dialog_pipe "${DC["TitleError"]-}${Title}" "${DC["CommandLine"]-} ${APPLICATION_COMMAND} --update $*"
@@ -56,11 +56,11 @@ update_self() {
 	if [[ -z ${FORCE-} && ${CurrentVersion} == "${RemoteVersion}" ]]; then
 		if use_dialog_box; then
 			{
-				notice "${APPLICATION_NAME} is already up to date on branch '${C["Branch"]}${Branch}${NC}'."
+				notice "${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} is already up to date on branch '${C["Branch"]}${Branch}${NC}'."
 				notice "Current version is '${C["Version"]}${CurrentVersion}${NC}'"
 			} |& dialog_pipe "${DC["TitleWarning"]-}${Title}" "${DC[CommandLine]-} ${APPLICATION_COMMAND} --update $*"
 		else
-			notice "${APPLICATION_NAME} is already up to date on branch '${C["Branch"]}${Branch}${NC}'."
+			notice "${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} is already up to date on branch '${C["Branch"]}${Branch}${NC}'."
 			notice "Current version is '${C["Version"]}${CurrentVersion}${NC}'"
 		fi
 		return 0

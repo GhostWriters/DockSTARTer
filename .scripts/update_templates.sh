@@ -28,19 +28,19 @@ update_templates() {
 	RemoteVersion="$(templates_version "${Branch}")"
 	if [[ ${CurrentVersion-} == "${RemoteVersion-}" ]]; then
 		if [[ -n ${FORCE-} ]]; then
-			Question="Would you like to forcefully re-apply ${TargetName} update '${C["Version"]}${CurrentVersion}${NC}'?"
-			NoNotice="${TargetName} will not be updated."
-			YesNotice="Forcefully re-applying ${TargetName} update '${C["Version"]}${RemoteVersion}${NC}'"
+			Question="Would you like to forcefully re-apply ${C["ApplicationName"]-}${TargetName}${NC-} update '${C["Version"]}${CurrentVersion}${NC}'?"
+			NoNotice="${C["ApplicationName"]-}${TargetName}${NC-} will not be updated."
+			YesNotice="Forcefully re-applying ${C["ApplicationName"]-}${TargetName}${NC-} update '${C["Version"]}${RemoteVersion}${NC}'"
 		fi
 	else
-		Question="Would you like to update ${TargetName} from '${C["Version"]}${CurrentVersion}${NC}' to '${C["Version"]}${RemoteVersion}${NC}' now?"
-		NoNotice="${TargetName} will not be updated."
-		YesNotice="Updating ${TargetName} from '${C["Version"]}${CurrentVersion}${NC}' to '${C["Version"]}${RemoteVersion}${NC}'"
+		Question="Would you like to update ${C["ApplicationName"]-}${TargetName}${NC-} from '${C["Version"]}${CurrentVersion}${NC}' to '${C["Version"]}${RemoteVersion}${NC}' now?"
+		NoNotice="${C["ApplicationName"]-}${TargetName}${NC-} will not be updated."
+		YesNotice="Updating ${C["ApplicationName"]-}${TargetName}${NC-} from '${C["Version"]}${CurrentVersion}${NC}' to '${C["Version"]}${RemoteVersion}${NC}'"
 	fi
 	popd &> /dev/null
 
 	if ! templates_branch_exists "${Branch}"; then
-		local ErrorMessage="${TargetName} branch '${C["Branch"]}${Branch}${NC}' does not exists."
+		local ErrorMessage="${C["ApplicationName"]-}${TargetName}${NC-} branch '${C["Branch"]}${Branch}${NC}' does not exists."
 		if use_dialog_box; then
 			error "${ErrorMessage}" |&
 				dialog_pipe "${DC["TitleError"]-}${Title}" "${DC["CommandLine"]-} ${APPLICATION_COMMAND} --update $*"
@@ -53,11 +53,11 @@ update_templates() {
 	if [[ -z ${FORCE-} && ${CurrentVersion} == "${RemoteVersion}" ]]; then
 		if use_dialog_box; then
 			{
-				notice "${TargetName} is already up to date on branch '${C["Branch"]}${Branch}${NC}'."
+				notice "${C["ApplicationName"]-}${TargetName}${NC-} is already up to date on branch '${C["Branch"]}${Branch}${NC}'."
 				notice "Current version is '${C["Version"]}${CurrentVersion}${NC}'"
 			} |& dialog_pipe "${DC["TitleWarning"]-}${Title}" "${DC[CommandLine]-} ${APPLICATION_COMMAND} --update-templates $*"
 		else
-			notice "${TargetName} is already up to date on branch '${C["Branch"]}${Branch}${NC}'."
+			notice "${C["ApplicationName"]-}${TargetName}${NC-} is already up to date on branch '${C["Branch"]}${Branch}${NC}'."
 			notice "Current version is '${C["Version"]}${CurrentVersion}${NC}'"
 		fi
 		return 0

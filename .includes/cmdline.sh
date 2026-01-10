@@ -535,8 +535,8 @@ run_command() {
 		["--list-referenced"]="List Referenced Applications"
 		["-r"]="Remove Application"
 		["--remove"]="Remove Application"
-		["-R"]="Resetting ${APPLICATION_NAME} to process all actions."
-		["--reset"]="Resetting ${APPLICATION_NAME} to process all actions."
+		["-R"]="Resetting ${C["ApplicationName"]-}${APPLICATION_NAME}${C["NC"]-} to process all actions."
+		["--reset"]="Resetting ${C["ApplicationName"]-}${APPLICATION_NAME}${C["NC"]-} to process all actions."
 		["-s"]="Application Status"
 		["--status"]="Application Status"
 		["--theme-shadows"]="Turned on shadows"
@@ -677,24 +677,24 @@ run_command() {
 			local AppBranch="${ParamsArray[0]-}"
 			local TemplatesBranch="${ParamsArray[1]-}"
 			if [[ -z ${AppBranch} ]]; then
-				echo "${APPLICATION_NAME} [$(ds_version)]"
+				echo "${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} [$(ds_version)]"
 			else
 				if ! ds_branch_exists "${AppBranch}"; then
 					error \
-						"${APPLICATION_NAME} branch '${C["Branch"]-}${AppBranch}${NC-}' does not exist."
+						"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} branch '${C["Branch"]-}${AppBranch}${NC-}' does not exist."
 					exit 1
 				fi
-				echo "${APPLICATION_NAME} [$(ds_version "${AppBranch}")]"
+				echo "${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} [$(ds_version "${AppBranch}")]"
 			fi
 			if [[ -z ${TemplatesBranch} ]]; then
-				echo "${APPLICATION_NAME} Templates [$(templates_version)]"
+				echo "${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} [$(templates_version)]"
 			else
 				if ! templates_branch_exists "${TemplatesBranch}"; then
 					error \
-						"${APPLICATION_NAME} Templates branch '${C["Branch"]-}${TemplatesBranch}${NC-}' does not exist."
+						"${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} branch '${C["Branch"]-}${TemplatesBranch}${NC-}' does not exist."
 					exit 1
 				fi
-				echo "${APPLICATION_NAME} Templates [$(templates_version "${TemplatesBranch}")]"
+				echo "${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} [$(templates_version "${TemplatesBranch}")]"
 			fi
 			;;
 

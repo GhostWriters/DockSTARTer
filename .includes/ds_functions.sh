@@ -110,7 +110,7 @@ ds_switch_branch() {
 		export FORCE=true
 		export PROMPT="CLI"
 		notice \
-			"Automatically switching from ${APPLICATION_NAME} branch '${C["Branch"]}${SOURCE_BRANCH}${NC}' to '${C["Branch"]}${TARGET_BRANCH}${NC}'."
+			"Automatically switching from ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} branch '${C["Branch"]}${SOURCE_BRANCH}${NC}' to '${C["Branch"]}${TARGET_BRANCH}${NC}'."
 		run_script 'update_self' "${TARGET_BRANCH}" "${ARGS[@]}"
 		exit
 	fi

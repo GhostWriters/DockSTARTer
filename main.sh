@@ -175,6 +175,7 @@ declare -Agr C=( # Pre-defined colors
 	["UnitTestFailArrow"]="${F[R]}"
 
 	["App"]="${F[C]}"
+	["ApplicationName"]="${F[C]}${BD}"
 	["Branch"]="${F[C]}"
 	["FailingCommand"]="${F[R]}"
 	["File"]="${F[C]}${BD}"
@@ -217,8 +218,8 @@ get_system_info() {
 	local -a Output=()
 
 	Output+=(
-		"${C["Version"]-}${APPLICATION_NAME-}${NC-} [${C["Version"]-}${APPLICATION_VERSION-}${NC-}]"
-		"${C["Version"]-}${APPLICATION_NAME-} Templates [${C["Version"]-}${TEMPLATES_VERSION-}${NC-}]"
+		"${C["ApplicationName"]-}${APPLICATION_NAME-}${NC-} [${C["Version"]-}${APPLICATION_VERSION-}${NC-}]"
+		"${C["ApplicationName"]-}${APPLICATION_NAME-} Templates${NC-} [${C["Version"]-}${TEMPLATES_VERSION-}${NC-}]"
 		""
 		"Currently running as: $0 (PID $$)"
 		"Shell name from /proc/$$/exe: $(readlink /proc/$$/exe)"
@@ -472,10 +473,10 @@ check_sudo() {
 }
 clone_repo() {
 	warn \
-		"Attempting to clone ${APPLICATION_NAME} repo to '${C["Folder"]-}${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}${NC-}' location."
+		"Attempting to clone ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} repo to '${C["Folder"]-}${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}${NC-}' location."
 	git clone -b "${TARGET_BRANCH}" "${APPLICATION_REPO}" "${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}" ||
 		fatal \
-			"Failed to clone ${APPLICATION_NAME} repo." \
+			"Failed to clone ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} repo." \
 			"Failing command: ${C["FailingCommand"]-}git clone -b \"${TARGET_BRANCH}\" \"${APPLICATION_REPO}\" \"${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}\""
 	if [[ ${#ARGS[@]} -eq 0 ]]; then
 		notice \
@@ -488,7 +489,7 @@ clone_repo() {
 
 clone_templates_repo() {
 	warn \
-		"Attempting to clone ${APPLICATION_NAME} Templates repo to '${C["Folder"]-}${TEMPLATES_PARENT_FOLDER}${NC-}' location."
+		"Attempting to clone ${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} repo to '${C["Folder"]-}${TEMPLATES_PARENT_FOLDER}${NC-}' location."
 	if [[ -d ${TEMPLATES_PARENT_FOLDER?} ]]; then
 		rm -rf "${TEMPLATES_PARENT_FOLDER?}" ||
 			fatal \
@@ -497,7 +498,7 @@ clone_templates_repo() {
 	fi
 	git clone -b "${TEMPLATES_DEFAULT_BRANCH}" "${TEMPLATES_REPO}" "${TEMPLATES_PARENT_FOLDER}" ||
 		fatal \
-			"Failed to clone ${APPLICATION_NAME} Templates repo." \
+			"Failed to clone ${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} repo." \
 			"Failing command: ${C["FailingCommand"]-}git clone -b \"${TEMPLATES_DEFAULT_BRANCH}\" \"${TEMPLATES_REPO}\" \"${TEMPLATES_PARENT_FOLDER}\""
 }
 
@@ -524,7 +525,7 @@ cleanup() {
 	fi
 
 	if [[ ${EXIT_CODE} -ne 0 ]]; then
-		echo "${APPLICATION_NAME} did not finish running successfully."
+		echo "${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} did not finish running successfully."
 	fi
 	if [[ ${PROMPT:-CLI} == "GUI" ]]; then
 		# Try to restore the terminal to a working state
@@ -597,14 +598,14 @@ init_check_symlink() {
 		DS_SYMLINK=$(readlink -f "${DS_COMMAND}")
 		if [[ ${SCRIPTNAME} != "${DS_SYMLINK}" ]]; then
 			if check_repo; then
-				if run_script 'question_prompt' "${PROMPT:-CLI}" N "${APPLICATION_NAME} installation found at '${C["File"]-}${DS_SYMLINK}${NC-}' location. Would you like to run '${C["UserCommand"]-}${SCRIPTNAME}${NC-}' instead?"; then
+				if run_script 'question_prompt' "${PROMPT:-CLI}" N "${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} installation found at '${C["File"]-}${DS_SYMLINK}${NC-}' location. Would you like to run '${C["UserCommand"]-}${SCRIPTNAME}${NC-}' instead?"; then
 					run_script 'symlink_ds'
 					DS_COMMAND=$(command -v "${APPLICATION_COMMAND}" || true)
 					DS_SYMLINK=$(readlink -f "${DS_COMMAND}")
 				fi
 			fi
 			warn \
-				"Attempting to run ${APPLICATION_NAME} from '${C["RunningCommand"]-}${DS_SYMLINK}${NC-}' location."
+				"Attempting to run ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} from '${C["RunningCommand"]-}${DS_SYMLINK}${NC-}' location."
 			bash "${DS_SYMLINK}" -vyu
 			bash "${DS_SYMLINK}" -vyi --config-show
 			exec bash "${DS_SYMLINK}" "${ARGS[@]-}"
@@ -620,12 +621,12 @@ init_check_update() {
 	if ds_branch_exists "${Branch}"; then
 		if ds_update_available; then
 			warn \
-				"${APPLICATION_NAME} [${C["Version"]-}${APPLICATION_VERSION}${NC-}]" \
-				"An update to ${APPLICATION_NAME} is available." \
+				"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} [${C["Version"]-}${APPLICATION_VERSION}${NC-}]" \
+				"An update to ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} is available." \
 				"Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -u${NC-}' to update to version '${C["Version"]-}$(ds_version "${Branch}")${NC-}'."
 		else
 			info \
-				"${APPLICATION_NAME} [${C["Version"]-}${APPLICATION_VERSION}${NC-}]"
+				"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} [${C["Version"]-}${APPLICATION_VERSION}${NC-}]"
 		fi
 	else
 		local MainBranch="${TARGET_BRANCH}"
@@ -633,11 +634,11 @@ init_check_update() {
 			MainBranch="${SOURCE_BRANCH}"
 		fi
 		warn \
-			"${APPLICATION_NAME} branch '${C["Branch"]-}${Branch}${NC-}' appears to no longer exist." \
-			"${APPLICATION_NAME} is currently on version '${C["Version"]-}$(ds_version)${NC-}'."
+			"${	C["ApplicationName"]-}${APPLICATION_NAME}${NC-} branch '${C["Branch"]-}${Branch}${NC-}' appears to no longer exist." \
+			"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} is currently on version '${C["Version"]-}$(ds_version)${NC-}'."
 		if ! ds_branch_exists "${MainBranch}"; then
 			error \
-				"${APPLICATION_NAME} does not appear to have a '${C["Branch"]-}${TARGET_BRANCH}${NC-}' or '${C["Branch"]-}${SOURCE_BRANCH}${NC-}' branch."
+				"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} does not appear to have a '${C["Branch"]-}${TARGET_BRANCH}${NC-}' or '${C["Branch"]-}${SOURCE_BRANCH}${NC-}' branch."
 		else
 			warn \
 				"Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -u ${MainBranch}${NC-}' to update to the latest stable release '${C["Version"]-}$(ds_version "${MainBranch}")${NC-}'."
