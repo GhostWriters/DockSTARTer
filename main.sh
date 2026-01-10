@@ -6,8 +6,9 @@ IFS=$'\n\t'
 
 declare -rx APPLICATION_NAME='DockSTARTer'
 declare -rx APPLICATION_COMMAND='ds'
-declare -rx APPLICATION_REPO='https://github.com/GhostWriters/DockSTARTer'
 declare -rx APPLICATION_FOLDER_NAME_DEFAULT='.dockstarter'
+declare -rx APPLICATION_REPO='https://github.com/GhostWriters/DockSTARTer'
+declare -rx TEMPLATES_REPO='https://github.com/GhostWriters/DockSTARTer-Templates'
 
 # Version Functions
 # https://stackoverflow.com/questions/4023830/how-to-compare-two-strings-in-dot-separated-version-format-in-bash#comment92693604_4024263
@@ -217,6 +218,7 @@ get_system_info() {
 
 	Output+=(
 		"${C["Version"]-}${APPLICATION_NAME-}${NC-} [${C["Version"]-}${APPLICATION_VERSION-}${NC-}]"
+		"${C["Version"]-}${APPLICATION_NAME-} Templates [${C["Version"]-}${TEMPLATES_VERSION-}${NC-}]"
 		""
 		"Currently running as: $0 (PID $$)"
 		"Shell name from /proc/$$/exe: $(readlink /proc/$$/exe)"
@@ -443,6 +445,14 @@ check_repo() {
 	fi
 }
 
+# Check if the templates repo exists relative to the ${TEMPLATES_PARENT_FOLDER}
+check_templates_repo() {
+	if [[ -d ${TEMPLATES_PARENT_FOLDER}/.git ]]; then
+		return
+	else
+		return 1
+	fi
+}
 # Check if running as root
 check_root() {
 	if [[ ${DETECTED_PUID} == "0" ]] || [[ ${DETECTED_HOMEDIR} == "/root" ]]; then
@@ -474,6 +484,21 @@ clone_repo() {
 	else
 		exec bash "${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}/main.sh" "${ARGS[@]}"
 	fi
+}
+
+clone_templates_repo() {
+	warn \
+		"Attempting to clone ${APPLICATION_NAME} templates repo to '${C["Folder"]-}${TEMPLATES_PARENT_FOLDER}${NC-}' location."
+	if [[ -d ${TEMPLATES_PARENT_FOLDER-} ]]; then
+		rm -rf "${TEMPLATES_PARENT_FOLDER-}" ||
+			fatal \
+				"Failed to remove ${TEMPLATES_PARENT_FOLDER-}." \
+				"Failing command: ${C["FailingCommand"]-}rm -rf \"${TEMPLATES_PARENT_FOLDER-}\""
+	fi
+	git clone -b "${TEMPLATES_DEFAULT_BRANCH}" "${TEMPLATES_REPO}" "${TEMPLATES_PARENT_FOLDER}" ||
+		fatal \
+			"Failed to clone ${APPLICATION_NAME} templates repo." \
+			"Failing command: ${C["FailingCommand"]-}git clone -b \"${TEMPLATES_DEFAULT_BRANCH}\" \"${TEMPLATES_REPO}\" \"${TEMPLATES_PARENT_FOLDER}\""
 }
 
 # Cleanup Function
@@ -513,10 +538,19 @@ cleanup() {
 trap 'cleanup' ERR EXIT SIGABRT SIGALRM SIGHUP SIGINT SIGQUIT SIGTERM
 
 declare -gx APPLICATION_VERSION="Unknown Version"
-if check_repo && declare -F ds_version > /dev/null; then
-	APPLICATION_VERSION="$(ds_version)"
-	if [[ -z ${APPLICATION_VERSION} ]]; then
-		APPLICATION_VERSION="$(ds_branch) Unknown Version"
+declare -gx TEMPLATES_VERSION="Unknown Version"
+if check_repo; then
+	if declare -F ds_version > /dev/null; then
+		APPLICATION_VERSION="$(ds_version)"
+		if [[ -z ${APPLICATION_VERSION} ]]; then
+			APPLICATION_VERSION="$(ds_branch) Unknown Version"
+		fi
+	fi
+	if declare -F templates_version > /dev/null; then
+		TEMPLATES_VERSION="$(templates_version)"
+		if [[ -z ${TEMPLATES_VERSION} ]]; then
+			TEMPLATES_VERSION="$(templates_branch) Unknown Version"
+		fi
 	fi
 fi
 
@@ -532,6 +566,12 @@ init_check_system() {
 init_check_cloned() {
 	if ! check_repo; then
 		clone_repo
+	fi
+}
+
+init_check_templates() {
+	if ! check_templates_repo; then
+		clone_templates_repo
 	fi
 }
 
@@ -618,6 +658,8 @@ init() {
 	init_check_symlink
 	# Verify that we are on the latest version
 	init_check_update
+	# Verify the templates repo is cloned
+	init_check_templates
 }
 
 # Main Function
