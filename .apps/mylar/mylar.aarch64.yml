@@ -1,3 +1,0 @@
-services:
-  mylar<__instance>:
-    image: lscr.io/linuxserver/mylar:${MYLAR<__INSTANCE>__TAG?}

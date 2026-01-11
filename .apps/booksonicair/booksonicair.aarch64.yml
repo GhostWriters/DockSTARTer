@@ -1,3 +1,0 @@
-services:
-  booksonicair<__instance>:
-    image: lscr.io/linuxserver/booksonic-air:${BOOKSONICAIR<__INSTANCE>__TAG?}

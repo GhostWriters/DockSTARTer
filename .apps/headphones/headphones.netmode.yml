@@ -1,3 +1,0 @@
-services:
-  headphones<__instance>:
-    network_mode: ${HEADPHONES<__INSTANCE>__NETWORK_MODE?}

@@ -1,3 +1,0 @@
-services:
-  portaineragent<__instance>:
-    image: portainer/agent:${PORTAINERAGENT<__INSTANCE>__TAG?}

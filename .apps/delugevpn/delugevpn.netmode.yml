@@ -1,3 +1,0 @@
-services:
-  delugevpn<__instance>:
-    network_mode: ${DELUGEVPN<__INSTANCE>__NETWORK_MODE?}

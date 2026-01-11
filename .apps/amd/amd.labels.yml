@@ -1,6 +1,0 @@
-services:
-  amd<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Lidarr companion script to automatically download music for Lidarr"
-      com.dockstarter.appinfo.nicename: "AMD<__Instance>"

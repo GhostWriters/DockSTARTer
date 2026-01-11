@@ -1,3 +1,0 @@
-services:
-  transmission<__instance>:
-    image: lscr.io/linuxserver/transmission:${TRANSMISSION<__INSTANCE>__TAG?}

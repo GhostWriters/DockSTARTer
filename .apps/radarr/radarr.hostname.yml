@@ -1,3 +1,0 @@
-services:
-  radarr<__instance>:
-    hostname: ${RADARR<__INSTANCE>__HOSTNAME?}

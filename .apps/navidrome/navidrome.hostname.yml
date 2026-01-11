@@ -1,3 +1,0 @@
-services:
-  navidrome<__instance>:
-    hostname: ${NAVIDROME<__INSTANCE>__HOSTNAME?}

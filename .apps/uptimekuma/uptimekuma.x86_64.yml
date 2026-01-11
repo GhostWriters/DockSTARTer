@@ -1,3 +1,0 @@
-services:
-  uptimekuma<__instance>:
-    image: louislam/uptime-kuma:${UPTIMEKUMA<__INSTANCE>__TAG?}

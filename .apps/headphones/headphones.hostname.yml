@@ -1,3 +1,0 @@
-services:
-  headphones<__instance>:
-    hostname: ${HEADPHONES<__INSTANCE>__HOSTNAME?}

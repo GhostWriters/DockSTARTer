@@ -1,6 +1,0 @@
-services:
-  youtubedl<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Simple Web and REST interface for downloading YouTube videos onto a server."
-      com.dockstarter.appinfo.nicename: "YoutubeDL<__Instance>"

@@ -1,3 +1,0 @@
-services:
-  deemix<__instance>:
-    image: registry.gitlab.com/bockiii/deemix-docker:${DEEMIX<__INSTANCE>__TAG?}

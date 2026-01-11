@@ -82,7 +82,7 @@ parse_arguments() {
 				# --command [ --command ]
 				-h | --help)
 					CurrentCommand+=("${OPTION}")
-					if [[ -n ${!OPTIND-} && ${!OPTIND} == "-"* ]]; then
+					if [[ ${OPTIND} -le $# && ${!OPTIND} == "-"* ]]; then
 						CurrentCommand+=("${!OPTIND}")
 						OPTIND+=1
 					fi
@@ -91,7 +91,7 @@ parse_arguments() {
 
 				# --command param
 				-t | --test)
-					if [[ -z ${!OPTIND-} || ${!OPTIND} == "-"* ]]; then
+					if [[ ${OPTIND} -gt $# || ${!OPTIND} == "-"* ]]; then
 						cmdline_error \
 							"${OPTION}" \
 							"Command %c requires a script name." \
@@ -104,7 +104,7 @@ parse_arguments() {
 					;;
 
 				--config-pm)
-					if [[ -z ${!OPTIND-} || ${!OPTIND} == "-"* ]]; then
+					if [[ ${OPTIND} -gt $# || ${!OPTIND} == "-"* ]]; then
 						cmdline_error \
 							"${OPTION}" \
 							"Command %c requires a package manager name." \
@@ -118,7 +118,7 @@ parse_arguments() {
 
 				-M | --menu)
 					CurrentCommand=("${OPTION}")
-					if [[ -n ${!OPTIND-} && ${!OPTIND} != "-"* ]]; then
+					if [[ ${OPTIND} -le $# && ${!OPTIND} != "-"* ]]; then
 						local MenuCommand=${!OPTIND}
 						case "${MenuCommand,,}" in
 							main) ;&
@@ -146,10 +146,25 @@ parse_arguments() {
 
 				# --command [param]
 				-T | --theme) ;&
+				--update-app) ;&
+				--update-templates)
+					CurrentCommand+=("${OPTION}")
+					if [[ ${OPTIND} -le $# && ${!OPTIND} != "-"* ]]; then
+						CurrentCommand+=("${!OPTIND}")
+						OPTIND+=1
+					fi
+					break
+					;;
+
+				# --command [param] [param]
 				-u | --update) ;&
 				-V | --version)
 					CurrentCommand+=("${OPTION}")
-					if [[ -n ${!OPTIND-} && ${!OPTIND} != "-"* ]]; then
+					if [[ ${OPTIND} -le $# && ${!OPTIND} != "-"* ]]; then
+						CurrentCommand+=("${!OPTIND}")
+						OPTIND+=1
+					fi
+					if [[ ${OPTIND} -le $# && ${!OPTIND} != "-"* ]]; then
 						CurrentCommand+=("${!OPTIND}")
 						OPTIND+=1
 					fi
@@ -190,7 +205,7 @@ parse_arguments() {
 
 				# --command param1=[param2]
 				--env-set | --env-set-lower)
-					if [[ -z ${!OPTIND-} || ${!OPTIND} != *"="* ]]; then
+					if [[ ${OPTIND} -gt $# || ${!OPTIND} != *"="* ]]; then
 						cmdline_error \
 							"${OPTION}" \
 							"Command %c requires a variable name and a value." \
@@ -207,7 +222,7 @@ parse_arguments() {
 				--env-appvars | --env-appvars-lines) ;&
 				-s | --status) ;&
 				--status-enable | --status-disable)
-					if [[ -z ${!OPTIND-} || ${!OPTIND} == "-"* ]]; then
+					if [[ ${OPTIND} -gt $# || ${!OPTIND} == "-"* ]]; then
 						cmdline_error \
 							"${OPTION}" \
 							"Command %c requires one or more application names." \
@@ -215,7 +230,7 @@ parse_arguments() {
 						exit 1
 					fi
 					CurrentCommand+=("${OPTION}")
-					while [[ -n ${!OPTIND-} && ${!OPTIND} != "-"* ]]; do
+					while [[ ${OPTIND} -le $# && ${!OPTIND} != "-"* ]]; do
 						CurrentCommand+=("${!OPTIND}")
 						OPTIND+=1
 					done
@@ -224,7 +239,7 @@ parse_arguments() {
 				--env-get | --env-get-lower) ;&
 				--env-get-line | --env-get-lower-line) ;&
 				--env-get-literal | --env-get-lower-literal)
-					if [[ -z ${!OPTIND-} || ${!OPTIND} == "-"* ]]; then
+					if [[ ${OPTIND} -gt $# || ${!OPTIND} == "-"* ]]; then
 						cmdline_error \
 							"${OPTION}" \
 							"Command %c requires one or more variable names." \
@@ -232,7 +247,7 @@ parse_arguments() {
 						exit 1
 					fi
 					CurrentCommand+=("${OPTION}")
-					while [[ -n ${!OPTIND-} && ${!OPTIND} != "-"* ]]; do
+					while [[ ${OPTIND} -le $# && ${!OPTIND} != "-"* ]]; do
 						CurrentCommand+=("${!OPTIND}")
 						OPTIND+=1
 					done
@@ -242,7 +257,7 @@ parse_arguments() {
 				# --command [param ...]
 				-r | --remove)
 					CurrentCommand+=("${OPTION}")
-					while [[ -n ${!OPTIND-} && ${!OPTIND} != "-"* ]]; do
+					while [[ ${OPTIND} -le $# && ${!OPTIND} != "-"* ]]; do
 						CurrentCommand+=("${!OPTIND}")
 						OPTIND+=1
 					done
@@ -257,7 +272,7 @@ parse_arguments() {
 							generate | merge) ;&
 							down | pull | stop | restart | update | up) ;&
 							"down "* | "pull "* | "stop "* | "restart "* | "update "* | "up "*)
-								until [[ -z ${!OPTIND-} || ${!OPTIND} == "-"* ]]; do
+								until [[ ${OPTIND} -gt $# || ${!OPTIND} == "-"* ]]; do
 									CurrentCommand+=("${!OPTIND}")
 									OPTIND+=1
 								done
@@ -296,7 +311,7 @@ parse_arguments() {
 			esac
 		done
 
-		if [[ OPTIND -eq 1 && -n ${!OPTIND-} ]]; then
+		if [[ OPTIND -eq 1 && ${OPTIND} -le $# ]]; then
 			# Unknown 'option'
 			local PreviousArgsString
 			PreviousArgsString="${APPLICATION_COMMAND} $(xargs <<< "${ParsedArgs[@]-}")"
@@ -520,8 +535,8 @@ run_command() {
 		["--list-referenced"]="List Referenced Applications"
 		["-r"]="Remove Application"
 		["--remove"]="Remove Application"
-		["-R"]="Resetting ${APPLICATION_NAME} to process all actions."
-		["--reset"]="Resetting ${APPLICATION_NAME} to process all actions."
+		["-R"]="Resetting ${C["ApplicationName"]-}${APPLICATION_NAME}${C["NC"]-} to process all actions."
+		["--reset"]="Resetting ${C["ApplicationName"]-}${APPLICATION_NAME}${C["NC"]-} to process all actions."
 		["-s"]="Application Status"
 		["--status"]="Application Status"
 		["--theme-shadows"]="Turned on shadows"
@@ -641,21 +656,45 @@ run_command() {
 			;;
 
 		-u | --update)
+			local AppBranch="${ParamsArray[0]-}"
+			local TemplatesBranch="${ParamsArray[1]-}"
+			run_script 'update_templates' "${TemplatesBranch-}"
+			run_script 'update_self' "${AppBranch-}" "${RestOfArgs[@]}"
+			result=$?
+			;;
+
+		--update-templates)
+			run_script 'update_templates' "${ParamsArray[0]-}"
+			result=$?
+			;;
+
+		--update-app)
 			run_script 'update_self' "${ParamsArray[0]-}" "${RestOfArgs[@]}"
 			result=$?
 			;;
 
 		-V | --version)
-			local Branch="${ParamsArray[0]-}"
-			if [[ -z ${Branch} ]]; then
-				echo "${APPLICATION_NAME} [$(ds_version)]"
+			local AppBranch="${ParamsArray[0]-}"
+			local TemplatesBranch="${ParamsArray[1]-}"
+			if [[ -z ${AppBranch} ]]; then
+				echo "${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} [${C["Version"]-}${APPLICATION_VERSION}${NC-}]"
 			else
-				if ! ds_branch_exists "${Branch}"; then
+				if ! ds_branch_exists "${AppBranch}"; then
 					error \
-						"${APPLICATION_NAME} branch '${C["Branch"]-}${Branch}${NC-}' does not exist."
+						"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} branch '${C["Branch"]-}${AppBranch}${NC-}' does not exist."
 					exit 1
 				fi
-				echo "${APPLICATION_NAME} [$(ds_version "${Branch}")]"
+				echo "${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} [${C["Version"]-}$(ds_version "${AppBranch}")}${NC-}]"
+			fi
+			if [[ -z ${TemplatesBranch} ]]; then
+				echo "${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} [${C["Version"]-}$(templates_version)}${NC-}]"
+			else
+				if ! templates_branch_exists "${TemplatesBranch}"; then
+					error \
+						"${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} branch '${C["Branch"]-}${TemplatesBranch}${NC-}' does not exist."
+					exit 1
+				fi
+				echo "${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} [${C["Version"]-}$(templates_version "${TemplatesBranch}")}${NC-}]"
 			fi
 			;;
 

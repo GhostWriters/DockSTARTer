@@ -1,6 +1,0 @@
-services:
-  quasselcore<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Modern, cross-platform, distributed IRC client"
-      com.dockstarter.appinfo.nicename: "QuasselCore<__Instance>"

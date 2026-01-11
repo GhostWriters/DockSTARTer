@@ -1,3 +1,0 @@
-services:
-  ouroboros<__instance>:
-    image: pyouroboros/ouroboros:${OUROBOROS<__INSTANCE>__TAG?}

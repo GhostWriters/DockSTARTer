@@ -29,15 +29,15 @@ docker_compose() {
 				NoNotice="Not stopping and removing: ${C["App"]}${AppName}${NC}."
 				YesNotice="Stopping and removing ${C["App"]}${AppName}${NC}."
 			else
-				Question="Stop and remove containers, networks, volumes, and images created by ${APPLICATION_NAME}?"
-				NoNotice="Not stopping and removing containers, networks, volumes, and images created by ${APPLICATION_NAME}."
-				YesNotice="Stopping and removing containers, networks, volumes, and images created by ${APPLICATION_NAME}."
+				Question="Stop and remove containers, networks, volumes, and images created by ${C["ApplicationName"]-}${APPLICATION_NAME}?"
+				NoNotice="Not stopping and removing containers, networks, volumes, and images created by ${C["ApplicationName"]-}${APPLICATION_NAME}."
+				YesNotice="Stopping and removing containers, networks, volumes, and images created by ${C["ApplicationName"]-}${APPLICATION_NAME}."
 			fi
 			ComposeCommand[0]="down --remove-orphans ${APPNAME-}"
 			;;
 		pull)
 			if [[ -n ${AppName-} ]]; then
-				Question="Pull the latest images for: ${AppName}?"
+				Question="Pull the latest images for: ${C["App"]}${AppName}${NC}?"
 				NoNotice="Not pulling the latest images for: ${C["App"]}${AppName}${NC}."
 				YesNotice="Pulling the latest images for: ${C["App"]}${AppName}${NC}."
 			else
@@ -49,7 +49,7 @@ docker_compose() {
 			;;
 		restart)
 			if [[ -n ${AppName-} ]]; then
-				Question="Restart: ${AppName}?"
+				Question="Restart: ${C["App"]}${AppName}${NC}?"
 				NoNotice="Not restarting: ${C["App"]}${AppName}${NC}."
 				YesNotice="Restarting: ${C["App"]}${AppName}${NC}."
 			else
@@ -61,7 +61,7 @@ docker_compose() {
 			;;
 		stop)
 			if [[ -n ${AppName-} ]]; then
-				Question="Stop: ${AppName}?"
+				Question="Stop: ${C["App"]}${AppName}${NC}?"
 				NoNotice="Not stopping: ${C["App"]}${AppName}${NC}."
 				YesNotice="Stopping: ${C["App"]}${AppName}${NC}."
 			else
@@ -73,7 +73,7 @@ docker_compose() {
 			;;
 		update)
 			if [[ -n ${AppName-} ]]; then
-				Question="Update and start: ${AppName}?"
+				Question="Update and start: ${C["App"]}${AppName}${NC}?"
 				NoNotice="Not updating and starting: ${C["App"]}${AppName}${NC}."
 				YesNotice="Updating and starting: ${C["App"]}${AppName}${NC}."
 			else
@@ -86,7 +86,7 @@ docker_compose() {
 			;;
 		up)
 			if [[ -n ${AppName-} ]]; then
-				Question="Start: ${AppName}?"
+				Question="Start: ${C["App"]}${AppName}${NC}?"
 				NoNotice="Not starting: ${C["App"]}${AppName}${NC}."
 				YesNotice="Starting: ${C["App"]}${AppName}${NC}."
 			else

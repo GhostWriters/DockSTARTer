@@ -1,3 +1,0 @@
-services:
-  calibre<__instance>:
-    image: lscr.io/linuxserver/calibre:${CALIBRE<__INSTANCE>__TAG?}

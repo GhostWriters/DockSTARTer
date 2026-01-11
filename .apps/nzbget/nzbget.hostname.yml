@@ -1,3 +1,0 @@
-services:
-  nzbget<__instance>:
-    hostname: ${NZBGET<__INSTANCE>__HOSTNAME?}

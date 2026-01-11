@@ -1,3 +1,0 @@
-services:
-  azuracast<__instance>:
-    hostname: ${AZURACAST<__INSTANCE>__HOSTNAME?}

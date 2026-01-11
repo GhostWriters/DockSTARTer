@@ -1,5 +1,0 @@
-services:
-  glances<__instance>:
-    ports:
-      - ${GLANCES<__INSTANCE>__PORT_61208?}:61208
-      - ${GLANCES<__INSTANCE>__PORT_61209?}:61209

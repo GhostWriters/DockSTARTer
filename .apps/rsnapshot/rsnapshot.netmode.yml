@@ -1,3 +1,0 @@
-services:
-  rsnapshot<__instance>:
-    network_mode: ${RSNAPSHOT<__INSTANCE>__NETWORK_MODE?}

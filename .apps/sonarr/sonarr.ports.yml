@@ -1,4 +1,0 @@
-services:
-  sonarr<__instance>:
-    ports:
-      - ${SONARR<__INSTANCE>__PORT_8989?}:8989

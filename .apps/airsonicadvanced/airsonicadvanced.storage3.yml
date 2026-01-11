@@ -1,4 +1,0 @@
-services:
-  airsonicadvanced<__instance>:
-    volumes:
-      - ${DOCKER_VOLUME_STORAGE3?}:/storage3

@@ -1,3 +1,0 @@
-services:
-  handbrake<__instance>:
-    image: jlesage/handbrake:${HANDBRAKE<__INSTANCE>__TAG?}

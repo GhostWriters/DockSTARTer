@@ -1,3 +1,0 @@
-services:
-  emby<__instance>:
-    image: lscr.io/linuxserver/emby:${EMBY<__INSTANCE>__TAG?}

@@ -1,6 +1,0 @@
-services:
-  filebrowser<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Filebrowser provides a file managing interface within a specified directory"
-      com.dockstarter.appinfo.nicename: "Filebrowser<__Instance>"

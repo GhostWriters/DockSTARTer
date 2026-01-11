@@ -1,3 +1,0 @@
-services:
-  jdownloader2<__instance>:
-    hostname: ${JDOWNLOADER2<__INSTANCE>__HOSTNAME?}

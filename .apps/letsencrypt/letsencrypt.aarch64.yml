@@ -1,3 +1,0 @@
-services:
-  letsencrypt<__instance>:
-    image: lscr.io/linuxserver/letsencrypt:${LETSENCRYPT<__INSTANCE>__TAG?}

@@ -1,3 +1,0 @@
-services:
-  ombi<__instance>:
-    hostname: ${OMBI<__INSTANCE>__HOSTNAME?}

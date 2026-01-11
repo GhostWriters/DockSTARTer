@@ -1,3 +1,0 @@
-services:
-  tsdproxy<__instance>:
-    network_mode: ${TSDPROXY<__INSTANCE>__NETWORK_MODE?}

@@ -1,3 +1,0 @@
-services:
-  plexrequests<__instance>:
-    network_mode: ${PLEXREQUESTS<__INSTANCE>__NETWORK_MODE?}

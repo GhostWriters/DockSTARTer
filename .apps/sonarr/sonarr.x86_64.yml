@@ -1,3 +1,0 @@
-services:
-  sonarr<__instance>:
-    image: lscr.io/linuxserver/sonarr:${SONARR<__INSTANCE>__TAG?}

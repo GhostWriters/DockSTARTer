@@ -1,3 +1,0 @@
-services:
-  recyclarr<__instance>:
-    network_mode: ${RECYCLARR<__INSTANCE>__NETWORK_MODE?}

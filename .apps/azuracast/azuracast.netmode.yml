@@ -1,3 +1,0 @@
-services:
-  azuracast<__instance>:
-    network_mode: ${AZURACAST<__INSTANCE>__NETWORK_MODE?}

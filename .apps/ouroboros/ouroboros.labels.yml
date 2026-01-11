@@ -1,6 +1,0 @@
-services:
-  ouroboros<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "true"
-      com.dockstarter.appinfo.description: "(DEPRECATED) Use Watchtower"
-      com.dockstarter.appinfo.nicename: "Ouroboros<__Instance>"

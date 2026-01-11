@@ -1,3 +1,0 @@
-services:
-  freshrss<__instance>:
-    image: lscr.io/linuxserver/freshrss:${FRESHRSS<__INSTANCE>__TAG?}

@@ -1,6 +1,0 @@
-services:
-  ombi<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Allow your users to Request Movies, TV Shows and Albums"
-      com.dockstarter.appinfo.nicename: "Ombi<__Instance>"

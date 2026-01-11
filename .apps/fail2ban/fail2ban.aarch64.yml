@@ -1,3 +1,0 @@
-services:
-  fail2ban<__instance>:
-    image: lscr.io/linuxserver/fail2ban:${FAIL2BAN<__INSTANCE>__TAG?}

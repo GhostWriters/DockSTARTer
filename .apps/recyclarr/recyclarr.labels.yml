@@ -1,6 +1,0 @@
-services:
-  recyclarr<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Application to synchronize settings from the TRaSH guides to your Sonarr/Radarr instances"
-      com.dockstarter.appinfo.nicename: "Recyclarr<__Instance>"

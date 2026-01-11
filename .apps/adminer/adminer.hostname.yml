@@ -1,3 +1,0 @@
-services:
-  adminer<__instance>:
-    hostname: ${ADMINER<__INSTANCE>__HOSTNAME?}

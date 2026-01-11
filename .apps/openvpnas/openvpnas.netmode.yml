@@ -1,3 +1,0 @@
-services:
-  openvpnas<__instance>:
-    network_mode: ${OPENVPNAS<__INSTANCE>__NETWORK_MODE?}

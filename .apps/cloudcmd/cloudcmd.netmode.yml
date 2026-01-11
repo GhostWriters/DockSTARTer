@@ -1,3 +1,0 @@
-services:
-  cloudcmd<__instance>:
-    network_mode: ${CLOUDCMD<__INSTANCE>__NETWORK_MODE?}

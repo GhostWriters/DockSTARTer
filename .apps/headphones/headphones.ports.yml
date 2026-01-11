@@ -1,4 +1,0 @@
-services:
-  headphones<__instance>:
-    ports:
-      - ${HEADPHONES<__INSTANCE>__PORT_8181?}:8181

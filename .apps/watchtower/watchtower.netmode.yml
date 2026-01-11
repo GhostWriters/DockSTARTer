@@ -1,3 +1,0 @@
-services:
-  watchtower<__instance>:
-    network_mode: ${WATCHTOWER<__INSTANCE>__NETWORK_MODE?}

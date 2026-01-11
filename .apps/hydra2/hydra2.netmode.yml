@@ -1,3 +1,0 @@
-services:
-  hydra2<__instance>:
-    network_mode: ${HYDRA2<__INSTANCE>__NETWORK_MODE?}

@@ -1,6 +1,0 @@
-services:
-  homer<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "A dead simple static HOMepage for your servER"
-      com.dockstarter.appinfo.nicename: "Homer<__Instance>"

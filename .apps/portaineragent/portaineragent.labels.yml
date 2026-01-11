@@ -1,6 +1,0 @@
-services:
-  portaineragent<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "An agent used to manage all the resources in a Swarm cluster"
-      com.dockstarter.appinfo.nicename: "PortainerAgent<__Instance>"

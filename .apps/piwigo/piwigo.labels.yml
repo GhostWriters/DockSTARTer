@@ -1,6 +1,0 @@
-services:
-  piwigo<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Photo gallery software for the web"
-      com.dockstarter.appinfo.nicename: "Piwigo<__Instance>"

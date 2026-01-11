@@ -1,3 +1,0 @@
-services:
-  homarr<__instance>:
-    image: ghcr.io/homarr-labs/homarr:${HOMARR<__INSTANCE>__TAG?}

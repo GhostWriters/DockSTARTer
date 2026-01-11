@@ -1,3 +1,0 @@
-services:
-  plexanisync<__instance>:
-    image: rickdb/plexanisync:${PLEXANISYNC<__INSTANCE>__TAG?}

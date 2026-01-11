@@ -1,3 +1,0 @@
-services:
-  sabnzbd<__instance>:
-    hostname: ${SABNZBD<__INSTANCE>__HOSTNAME?}

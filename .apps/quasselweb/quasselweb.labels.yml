@@ -1,6 +1,0 @@
-services:
-  quasselweb<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Web client for Quassel. A Quassel-Core instance is required"
-      com.dockstarter.appinfo.nicename: "QuasselWeb<__Instance>"

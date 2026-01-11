@@ -1,3 +1,0 @@
-services:
-  filebrowser<__instance>:
-    hostname: ${FILEBROWSER<__INSTANCE>__HOSTNAME?}

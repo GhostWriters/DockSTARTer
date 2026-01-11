@@ -1,3 +1,0 @@
-services:
-  apcupsd<__instance>:
-    image: atribe/apcupsd-influxdb-exporter:${APCUPSD<__INSTANCE>__TAG?}

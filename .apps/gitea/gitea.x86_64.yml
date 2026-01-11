@@ -1,3 +1,0 @@
-services:
-  gitea<__instance>:
-    image: gitea/gitea:${GITEA<__INSTANCE>__TAG?}

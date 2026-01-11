@@ -1,3 +1,0 @@
-services:
-  prowlarr<__instance>:
-    network_mode: ${PROWLARR<__INSTANCE>__NETWORK_MODE?}

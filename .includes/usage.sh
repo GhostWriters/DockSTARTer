@@ -10,12 +10,19 @@ usage() {
 	case "${Option}" in
 		*)
 			if [[ -z ${NoHeading-} ]]; then
-				local APPLICATION_HEADING="${C["Version"]-}${APPLICATION_NAME}${NC-}"
+				local APPLICATION_HEADING="${C["ApplicationName"]-}${APPLICATION_NAME}${NC-}"
 				if [[ ${APPLICATION_VERSION-} ]]; then
 					APPLICATION_HEADING+=" [${C["Version"]-}${APPLICATION_VERSION}${NC-}]"
 				fi
 				if ds_update_available; then
 					APPLICATION_HEADING+=" (${C["Update"]-}Update Available${NC-})"
+				fi
+				local TEMPLATES_HEADING="${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-}"
+				if [[ ${TEMPLATES_VERSION-} ]]; then
+					TEMPLATES_HEADING+=" [${C["Version"]-}${TEMPLATES_VERSION}${NC-}]"
+				fi
+				if templates_update_available; then
+					TEMPLATES_HEADING+=" (${C["Update"]-}Update Available${NC-})"
 				fi
 				cat << EOF
 Usage: ${C["UsageCommand"]-}${APPLICATION_COMMAND}${NC-} [${C["UsageCommand"]-}<Flags>${NC-}] [${C["UsageCommand"]-}<Command>${NC-}] ...
@@ -23,7 +30,8 @@ NOTE: The '${C["UsageCommand"]-}${APPLICATION_COMMAND}${NC-}' shortcut is only a
 	bash main.sh
 
 ${APPLICATION_HEADING}
-This is the main ${APPLICATION_NAME} script.
+${TEMPLATES_HEADING}
+This is the main ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} script.
 For regular usage you can run without providing any options.
 
 You may include multiple commands on the command-line, and they will be executed in
@@ -306,7 +314,7 @@ EOF
 			Found=1
 			cat << EOF
 ${C["UsageCommand"]-}-R --reset${NC-}
-	Resets ${APPLICATION_NAME} to always process environment files.
+	Resets ${C["ApplicationName"]-}${APPLICATION_NAME} to always process environment files.
 	This is usually not needed unless you have modified application templates yourself.
 EOF
 			;;&
@@ -396,13 +404,23 @@ ${C["UsageCommand"]-}--theme-no-scrollbar${NC-}
 	Turn the scrollbar on or off in the GUI
 EOF
 			;;&
-		-u | --update | "")
+		-u | --update | "") ;&
+		--update-app | "") ;&
+		--update-templates | "")
 			Found=1
 			cat << EOF
 ${C["UsageCommand"]-}-u --update${NC-}
-	Update ${APPLICATION_NAME} to the latest stable commits
-${C["UsageCommand"]-}-u --update${NC-} ${C["UsageBranch"]-}<branch>${NC-}
-	Update ${APPLICATION_NAME} to the latest commits from the specified branch
+	Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} and ${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} to the latest commits from the current branch
+${C["UsageCommand"]-}-u --update${NC-} ${C["UsageBranch"]-}<AppBranch>${NC-} ${C["UsageBranch"]-}<TemplateBranch>${NC-}
+	Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} and ${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} to the latest commits from the specified branches
+${C["UsageCommand"]-}--update-app${NC-}
+	Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} to the latest commits from the current branch
+${C["UsageCommand"]-}--update-app${NC-} ${C["UsageBranch"]-}<AppBranch>${NC-}
+	Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} to the latest commits from the specified branch
+${C["UsageCommand"]-}--update-templates${NC-}
+	Update ${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} to the latest commits from the current branch
+${C["UsageCommand"]-}--update-templates${NC-} ${C["UsageBranch"]-}<TemplateBranch>${NC-}
+	Update ${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} to the latest commits from the specified branch
 EOF
 			;;&
 		-V | --version | "")
@@ -410,6 +428,8 @@ EOF
 			cat << EOF
 ${C["UsageCommand"]-}-V --version${NC-}
 	Display version information
+${C["UsageCommand"]-}-V --version${NC-} ${C["UsageBranch"]-}<AppBranch>${NC-} ${C["UsageBranch"]-}<TemplateBranch>${NC-}
+	Display version information for the specified branches
 EOF
 			;;&
 		"")

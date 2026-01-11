@@ -1,5 +1,0 @@
-services:
-  quasselweb<__instance>:
-    ports:
-      - ${QUASSELWEB<__INSTANCE>__PORT_64080?}:64080
-      - ${QUASSELWEB<__INSTANCE>__PORT_64443?}:64443

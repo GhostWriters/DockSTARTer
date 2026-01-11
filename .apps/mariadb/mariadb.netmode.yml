@@ -1,3 +1,0 @@
-services:
-  mariadb<__instance>:
-    network_mode: ${MARIADB<__INSTANCE>__NETWORK_MODE?}

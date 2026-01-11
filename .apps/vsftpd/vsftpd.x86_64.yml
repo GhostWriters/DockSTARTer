@@ -1,3 +1,0 @@
-services:
-  vsftpd<__instance>:
-    image: fauria/vsftpd:${VSFTPD<__INSTANCE>__TAG?}

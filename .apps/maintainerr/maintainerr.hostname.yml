@@ -1,3 +1,0 @@
-services:
-  maintainerr<__instance>:
-    hostname: ${MAINTAINERR<__INSTANCE>__HOSTNAME?}

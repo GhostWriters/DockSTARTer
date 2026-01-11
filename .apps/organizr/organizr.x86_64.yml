@@ -1,3 +1,0 @@
-services:
-  organizr<__instance>:
-    image: ghcr.io/organizr/organizr:${ORGANIZR<__INSTANCE>__TAG?}

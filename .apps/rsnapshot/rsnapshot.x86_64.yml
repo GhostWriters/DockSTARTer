@@ -1,3 +1,0 @@
-services:
-  rsnapshot<__instance>:
-    image: lscr.io/linuxserver/rsnapshot:${RSNAPSHOT<__INSTANCE>__TAG?}

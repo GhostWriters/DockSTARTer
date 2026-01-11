@@ -1,3 +1,0 @@
-services:
-  vsftpd<__instance>:
-    network_mode: ${VSFTPD<__INSTANCE>__NETWORK_MODE?}

@@ -1,4 +1,0 @@
-services:
-  netdata<__instance>:
-    ports:
-      - ${NETDATA<__INSTANCE>__PORT_19999?}:19999

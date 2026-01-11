@@ -1,6 +1,0 @@
-services:
-  huntarr<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Find Missing & Upgrade Media Items"
-      com.dockstarter.appinfo.nicename: "Huntarr<__Instance>"

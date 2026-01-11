@@ -1,3 +1,0 @@
-services:
-  homepage<__instance>:
-    image: ghcr.io/gethomepage/homepage:${HOMEPAGE<__INSTANCE>__TAG?}

@@ -1,6 +1,0 @@
-services:
-  minecraftbedrockserver<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Minecraft Bedrock Server"
-      com.dockstarter.appinfo.nicename: "MinecraftBedrockServer<__Instance>"

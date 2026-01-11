@@ -1,3 +1,0 @@
-services:
-  jfago<__instance>:
-    hostname: ${JFAGO<__INSTANCE>__HOSTNAME?}

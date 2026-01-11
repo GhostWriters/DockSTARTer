@@ -1,3 +1,0 @@
-services:
-  watchtower<__instance>:
-    image: nickfedor/watchtower:${WATCHTOWER<__INSTANCE>__TAG?}

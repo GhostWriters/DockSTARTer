@@ -1,6 +1,0 @@
-services:
-  smokeping<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Latency logging, graphing, and alerting system"
-      com.dockstarter.appinfo.nicename: "SmokePing<__Instance>"

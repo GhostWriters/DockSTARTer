@@ -1,3 +1,0 @@
-services:
-  deemix<__instance>:
-    hostname: ${DEEMIX<__INSTANCE>__HOSTNAME?}

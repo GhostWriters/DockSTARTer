@@ -1,3 +1,0 @@
-services:
-  fireflyiii<__instance>:
-    network_mode: ${FIREFLYIII<__INSTANCE>__NETWORK_MODE?}

@@ -1,4 +1,0 @@
-services:
-  httpserver<__instance>:
-    ports:
-      - ${HTTPSERVER<__INSTANCE>__PORT_5000?}:5000

@@ -1,4 +1,0 @@
-services:
-  photoshow<__instance>:
-    ports:
-      - ${PHOTOSHOW<__INSTANCE>__PORT_80?}:80

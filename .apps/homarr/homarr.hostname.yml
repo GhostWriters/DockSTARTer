@@ -1,3 +1,0 @@
-services:
-  homarr<__instance>:
-    hostname: ${HOMARR<__INSTANCE>__HOSTNAME?}

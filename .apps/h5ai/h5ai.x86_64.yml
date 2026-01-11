@@ -1,3 +1,0 @@
-services:
-  h5ai<__instance>:
-    image: bixidock/h5ai:${H5AI<__INSTANCE>__TAG?}

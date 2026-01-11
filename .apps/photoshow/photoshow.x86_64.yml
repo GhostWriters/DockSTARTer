@@ -1,3 +1,0 @@
-services:
-  photoshow<__instance>:
-    image: lscr.io/linuxserver/photoshow:${PHOTOSHOW<__INSTANCE>__TAG?}

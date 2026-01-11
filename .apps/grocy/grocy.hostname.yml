@@ -1,3 +1,0 @@
-services:
-  grocy<__instance>:
-    hostname: ${GROCY<__INSTANCE>__HOSTNAME?}

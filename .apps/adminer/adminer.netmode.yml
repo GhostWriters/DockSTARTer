@@ -1,3 +1,0 @@
-services:
-  adminer<__instance>:
-    network_mode: ${ADMINER<__INSTANCE>__NETWORK_MODE?}

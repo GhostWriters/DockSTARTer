@@ -1,6 +1,0 @@
-services:
-  sonarr<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Smart TV show PVR via Usenet and BitTorrent"
-      com.dockstarter.appinfo.nicename: "Sonarr<__Instance>"

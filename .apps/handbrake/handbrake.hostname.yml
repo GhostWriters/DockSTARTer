@@ -1,3 +1,0 @@
-services:
-  handbrake<__instance>:
-    hostname: ${HANDBRAKE<__INSTANCE>__HOSTNAME?}

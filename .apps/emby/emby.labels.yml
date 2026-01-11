@@ -1,6 +1,0 @@
-services:
-  emby<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Organize, play, and stream audio and video"
-      com.dockstarter.appinfo.nicename: "Emby<__Instance>"

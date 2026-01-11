@@ -1,3 +1,0 @@
-services:
-  guacamole<__instance>:
-    network_mode: ${GUACAMOLE<__INSTANCE>__NETWORK_MODE?}

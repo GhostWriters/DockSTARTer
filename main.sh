@@ -4,10 +4,18 @@ set +o posix
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-declare -rx APPLICATION_NAME='DockSTARTer'
-declare -rx APPLICATION_COMMAND='ds'
-declare -rx APPLICATION_REPO='https://github.com/GhostWriters/DockSTARTer'
-declare -rx APPLICATION_FOLDER_NAME_DEFAULT='.dockstarter'
+declare -rgx APPLICATION_NAME='DockSTARTer'
+declare -rgx APPLICATION_COMMAND='ds'
+declare -rgx APPLICATION_REPO='https://github.com/GhostWriters/DockSTARTer'
+declare -rgx APPLICATION_LEGACY_BRANCH='master'
+declare -rgx APPLICATION_DEFAULT_BRANCH='main'
+declare -rgx APPLICATION_FOLDER_NAME_DEFAULT='.dockstarter'
+
+declare -rgx TEMPLATES_NAME='DockSTARTer-Templates'
+declare -rgx TEMPLATES_REPO='https://github.com/GhostWriters/DockSTARTer-Templates'
+declare -rgx TEMPLATES_DEFAULT_BRANCH='main'
+declare -rgx TEMPLATES_PARENT_FOLDER_NAME='templates'
+declare -rgx TEMPLATES_REPO_FOLDER_NAME='DockSTARTer-Templates'
 
 # Version Functions
 # https://stackoverflow.com/questions/4023830/how-to-compare-two-strings-in-dot-separated-version-format-in-bash#comment92693604_4024263
@@ -31,9 +39,6 @@ if [[ ${CI-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS-} == true ]]; then
 	readonly GH_HEADER="Authorization: token ${GH_TOKEN}"
 	export GH_HEADER
 fi
-
-declare -rgx SOURCE_BRANCH='master'
-declare -rgx TARGET_BRANCH='main'
 
 declare DS_COMMAND
 DS_COMMAND=$(command -v "${APPLICATION_COMMAND}" || true)
@@ -90,14 +95,17 @@ export SCRIPTNAME
 [[ -z ${XDG_CACHE_HOME-} ]] && declare -gx XDG_CACHE_HOME="${DETECTED_HOMEDIR}/.cache"
 [[ -z ${XDG_STATE_HOME-} ]] && declare -gx XDG_STATE_HOME="${DETECTED_HOMEDIR}/.local/state"
 #[[ -z ${XDG_RUNTIME_DIR-} ]] && declare -gx XDG_RUNTIME_DIR="/run/user/${DETECTED_PUID}"
-for XDG_FOLDER in "${XDG_DATA_HOME}" "${XDG_CONFIG_HOME}" "${XDG_CACHE_HOME}" "${XDG_STATE_HOME}"; do
+for XDG_FOLDER in "${XDG_DATA_HOME}" "${XDG_CONFIG_HOME}" "${XDG_CACHE_HOME}" "${XDG_STATE_HOME}" "${XDG_STATE_HOME}/${APPLICATION_NAME,,}"; do
 	if [[ ! -d ${XDG_FOLDER} ]]; then
+		if [[ -f ${XDG_FOLDER} ]]; then
+			# XDG_FOLDER exists, but it's not a folder, so remove it
+			sudo rm -f "${XDG_FOLDER}"
+		fi
 		mkdir -p "${XDG_FOLDER}"
+		sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${XDG_FOLDER}"
+		sudo chmod 700 "${XDG_FOLDER}"
 	fi
 done
-if [[ ! -d ${XDG_STATE_HOME}/${APPLICATION_NAME,,} ]]; then
-	mkdir -p "${XDG_STATE_HOME}/${APPLICATION_NAME,,}"
-fi
 
 declare -rgx APPLICATION_LOG="${XDG_STATE_HOME}/${APPLICATION_NAME,,}/${APPLICATION_NAME,,}.log"
 declare -rgx FATAL_LOG="${XDG_STATE_HOME}/${APPLICATION_NAME,,}/fatal.log"
@@ -173,6 +181,7 @@ declare -Agr C=( # Pre-defined colors
 	["UnitTestFailArrow"]="${F[R]}"
 
 	["App"]="${F[C]}"
+	["ApplicationName"]="${F[C]}${BD}"
 	["Branch"]="${F[C]}"
 	["FailingCommand"]="${F[R]}"
 	["File"]="${F[C]}${BD}"
@@ -215,7 +224,8 @@ get_system_info() {
 	local -a Output=()
 
 	Output+=(
-		"${C["Version"]-}${APPLICATION_NAME-}${NC-} [${C["Version"]-}${APPLICATION_VERSION-}${NC-}]"
+		"${C["ApplicationName"]-}${APPLICATION_NAME-}${NC-} [${C["Version"]-}${APPLICATION_VERSION-}${NC-}]"
+		"${C["ApplicationName"]-}${TEMPLATES_NAME-}${NC-} [${C["Version"]-}${TEMPLATES_VERSION-}${NC-}]"
 		""
 		"Currently running as: $0 (PID $$)"
 		"Shell name from /proc/$$/exe: $(readlink /proc/$$/exe)"
@@ -442,6 +452,14 @@ check_repo() {
 	fi
 }
 
+# Check if the templates repo exists relative to the ${TEMPLATES_PARENT_FOLDER}
+check_templates_repo() {
+	if [[ -d ${TEMPLATES_PARENT_FOLDER}/.git ]]; then
+		return
+	else
+		return 1
+	fi
+}
 # Check if running as root
 check_root() {
 	if [[ ${DETECTED_PUID} == "0" ]] || [[ ${DETECTED_HOMEDIR} == "/root" ]]; then
@@ -461,11 +479,11 @@ check_sudo() {
 }
 clone_repo() {
 	warn \
-		"Attempting to clone ${APPLICATION_NAME} repo to '${C["Folder"]-}${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}${NC-}' location."
-	git clone -b "${TARGET_BRANCH}" "${APPLICATION_REPO}" "${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}" ||
+		"Attempting to clone ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} repo to '${C["Folder"]-}${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}${NC-}' location."
+	git clone -b "${APPLICATION_DEFAULT_BRANCH}" "${APPLICATION_REPO}" "${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}" ||
 		fatal \
-			"Failed to clone ${APPLICATION_NAME} repo." \
-			"Failing command: ${C["FailingCommand"]-}git clone -b \"${TARGET_BRANCH}\" \"${APPLICATION_REPO}\" \"${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}\""
+			"Failed to clone ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} repo." \
+			"Failing command: ${C["FailingCommand"]-}git clone -b \"${APPLICATION_DEFAULT_BRANCH}\" \"${APPLICATION_REPO}\" \"${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}\""
 	if [[ ${#ARGS[@]} -eq 0 ]]; then
 		notice \
 			"Performing first run install."
@@ -473,6 +491,21 @@ clone_repo() {
 	else
 		exec bash "${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}/main.sh" "${ARGS[@]}"
 	fi
+}
+
+clone_templates_repo() {
+	warn \
+		"Attempting to clone ${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} repo to '${C["Folder"]-}${TEMPLATES_PARENT_FOLDER}${NC-}' location."
+	if [[ -d ${TEMPLATES_PARENT_FOLDER?} ]]; then
+		sudo rm -rf "${TEMPLATES_PARENT_FOLDER?}" ||
+			fatal \
+				"Failed to remove ${TEMPLATES_PARENT_FOLDER?}." \
+				"Failing command: ${C["FailingCommand"]-}rm -rf \"${TEMPLATES_PARENT_FOLDER?}\""
+	fi
+	git clone -b "${TEMPLATES_DEFAULT_BRANCH}" "${TEMPLATES_REPO}" "${TEMPLATES_PARENT_FOLDER}" ||
+		fatal \
+			"Failed to clone ${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} repo." \
+			"Failing command: ${C["FailingCommand"]-}git clone -b \"${TEMPLATES_DEFAULT_BRANCH}\" \"${TEMPLATES_REPO}\" \"${TEMPLATES_PARENT_FOLDER}\""
 }
 
 # Cleanup Function
@@ -498,7 +531,7 @@ cleanup() {
 	fi
 
 	if [[ ${EXIT_CODE} -ne 0 ]]; then
-		echo "${APPLICATION_NAME} did not finish running successfully."
+		echo "${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} did not finish running successfully."
 	fi
 	if [[ ${PROMPT:-CLI} == "GUI" ]]; then
 		# Try to restore the terminal to a working state
@@ -512,10 +545,19 @@ cleanup() {
 trap 'cleanup' ERR EXIT SIGABRT SIGALRM SIGHUP SIGINT SIGQUIT SIGTERM
 
 declare -gx APPLICATION_VERSION="Unknown Version"
-if check_repo && declare -F ds_version > /dev/null; then
-	APPLICATION_VERSION="$(ds_version)"
-	if [[ -z ${APPLICATION_VERSION} ]]; then
-		APPLICATION_VERSION="$(ds_branch) Unknown Version"
+declare -gx TEMPLATES_VERSION="Unknown Version"
+if check_repo; then
+	if declare -F ds_version > /dev/null; then
+		APPLICATION_VERSION="$(ds_version)"
+		if [[ -z ${APPLICATION_VERSION} ]]; then
+			APPLICATION_VERSION="$(ds_branch) Unknown Version"
+		fi
+	fi
+	if declare -F templates_version > /dev/null; then
+		TEMPLATES_VERSION="$(templates_version)"
+		if [[ -z ${TEMPLATES_VERSION} ]]; then
+			TEMPLATES_VERSION="$(templates_branch) Unknown Version"
+		fi
 	fi
 fi
 
@@ -531,6 +573,12 @@ init_check_system() {
 init_check_cloned() {
 	if ! check_repo; then
 		clone_repo
+	fi
+}
+
+init_check_templates() {
+	if ! check_templates_repo; then
+		clone_templates_repo
 	fi
 }
 
@@ -556,14 +604,14 @@ init_check_symlink() {
 		DS_SYMLINK=$(readlink -f "${DS_COMMAND}")
 		if [[ ${SCRIPTNAME} != "${DS_SYMLINK}" ]]; then
 			if check_repo; then
-				if run_script 'question_prompt' "${PROMPT:-CLI}" N "${APPLICATION_NAME} installation found at '${C["File"]-}${DS_SYMLINK}${NC-}' location. Would you like to run '${C["UserCommand"]-}${SCRIPTNAME}${NC-}' instead?"; then
+				if run_script 'question_prompt' "${PROMPT:-CLI}" N "${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} installation found at '${C["File"]-}${DS_SYMLINK}${NC-}' location. Would you like to run '${C["UserCommand"]-}${SCRIPTNAME}${NC-}' instead?"; then
 					run_script 'symlink_ds'
 					DS_COMMAND=$(command -v "${APPLICATION_COMMAND}" || true)
 					DS_SYMLINK=$(readlink -f "${DS_COMMAND}")
 				fi
 			fi
 			warn \
-				"Attempting to run ${APPLICATION_NAME} from '${C["RunningCommand"]-}${DS_SYMLINK}${NC-}' location."
+				"Attempting to run ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} from '${C["RunningCommand"]-}${DS_SYMLINK}${NC-}' location."
 			bash "${DS_SYMLINK}" -vyu
 			bash "${DS_SYMLINK}" -vyi --config-show
 			exec bash "${DS_SYMLINK}" "${ARGS[@]-}"
@@ -579,27 +627,51 @@ init_check_update() {
 	if ds_branch_exists "${Branch}"; then
 		if ds_update_available; then
 			warn \
-				"${APPLICATION_NAME} [${C["Version"]-}${APPLICATION_VERSION}${NC-}]" \
-				"An update to ${APPLICATION_NAME} is available." \
+				"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} [${C["Version"]-}${APPLICATION_VERSION}${NC-}]" \
+				"An update to ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} is available." \
 				"Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -u${NC-}' to update to version '${C["Version"]-}$(ds_version "${Branch}")${NC-}'."
 		else
 			info \
-				"${APPLICATION_NAME} [${C["Version"]-}${APPLICATION_VERSION}${NC-}]"
+				"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} [${C["Version"]-}${APPLICATION_VERSION}${NC-}]"
 		fi
 	else
-		local MainBranch="${TARGET_BRANCH}"
+		local MainBranch="${APPLICATION_DEFAULT_BRANCH}"
 		if ! ds_branch_exists "${MainBranch}"; then
-			MainBranch="${SOURCE_BRANCH}"
+			MainBranch="${APPLICATION_LEGACY_BRANCH}"
 		fi
 		warn \
-			"${APPLICATION_NAME} branch '${C["Branch"]-}${Branch}${NC-}' appears to no longer exist." \
-			"${APPLICATION_NAME} is currently on version '${C["Version"]-}$(ds_version)${NC-}'."
+			"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} branch '${C["Branch"]-}${Branch}${NC-}' appears to no longer exist." \
+			"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} is currently on version '${C["Version"]-}$(ds_version)${NC-}'."
 		if ! ds_branch_exists "${MainBranch}"; then
 			error \
-				"${APPLICATION_NAME} does not appear to have a '${C["Branch"]-}${TARGET_BRANCH}${NC-}' or '${C["Branch"]-}${SOURCE_BRANCH}${NC-}' branch."
+				"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} does not appear to have a '${C["Branch"]-}${APPLICATION_DEFAULT_BRANCH}${NC-}' or '${C["Branch"]-}${APPLICATION_LEGACY_BRANCH}${NC-}' branch."
 		else
 			warn \
 				"Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -u ${MainBranch}${NC-}' to update to the latest stable release '${C["Version"]-}$(ds_version "${MainBranch}")${NC-}'."
+		fi
+	fi
+	Branch="$(templates_branch)"
+	if templates_branch_exists "${Branch}"; then
+		if templates_update_available; then
+			warn \
+				"${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} [${C["Version"]-}${TEMPLATES_VERSION}${NC-}]" \
+				"An update to ${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} is available." \
+				"Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -u${NC-}' to update to version '${C["Version"]-}$(templates_version "${Branch}")${NC-}'."
+		else
+			info \
+				"${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} [${C["Version"]-}${TEMPLATES_VERSION}${NC-}]"
+		fi
+	else
+		Branch="${TEMPLATES_DEFAULT_BRANCH}"
+		warn \
+			"${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} branch '${C["Branch"]-}${Branch}${NC-}' appears to no longer exist." \
+			"${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} is currently on version '${C["Version"]-}$(templates_version)${NC-}'."
+		if ! templates_branch_exists "${Branch}"; then
+			error \
+				"${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} does not appear to have a '${C["Branch"]-}${TEMPLATES_DEFAULT_BRANCH}${NC-}' branch."
+		else
+			warn \
+				"Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -u ${Branch}${NC-}' to update to the latest stable release '${C["Version"]-}$(templates_version "${Branch}")${NC-}'."
 		fi
 	fi
 }
@@ -609,6 +681,8 @@ init() {
 	init_check_system
 	# Verify the repo is cloned
 	init_check_cloned
+	# Verify the templates repo is cloned
+	init_check_templates
 	# Verify the dependencies are installed
 	init_check_dependencies
 	# Verify we are on the correct branch

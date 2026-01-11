@@ -1,3 +1,0 @@
-services:
-  adminer<__instance>:
-    image: adminer:${ADMINER<__INSTANCE>__TAG?}

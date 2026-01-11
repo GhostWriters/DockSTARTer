@@ -1,3 +1,0 @@
-services:
-  gluetun<__instance>:
-    hostname: ${GLUETUN<__INSTANCE>__HOSTNAME?}

@@ -1,6 +1,0 @@
-services:
-  speedtest<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Monitors the performance and uptime of your internet connection."
-      com.dockstarter.appinfo.nicename: "speedtest<__Instance>"

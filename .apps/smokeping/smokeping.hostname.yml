@@ -1,3 +1,0 @@
-services:
-  smokeping<__instance>:
-    hostname: ${SMOKEPING<__INSTANCE>__HOSTNAME?}

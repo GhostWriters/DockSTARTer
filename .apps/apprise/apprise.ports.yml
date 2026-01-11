@@ -1,4 +1,0 @@
-services:
-  apprise<__instance>:
-    ports:
-      - ${APPRISE<__INSTANCE>__PORT_8000?}:8000

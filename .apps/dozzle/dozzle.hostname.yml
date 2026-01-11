@@ -1,3 +1,0 @@
-services:
-  dozzle<__instance>:
-    hostname: ${DOZZLE<__INSTANCE>__HOSTNAME?}

@@ -24,7 +24,7 @@ symlink_ds() {
 			sudo rm -f "${SymlinkTarget}" &> /dev/null || true
 		fi
 		if [[ ! -L ${SymlinkTarget} ]]; then
-			info "Creating '${C["File"]}${SymlinkTarget}${NC}' symbolic link for ${APPLICATION_NAME}."
+			info "Creating '${C["File"]}${SymlinkTarget}${NC}' symbolic link for ${C["ApplicationName"]-}${APPLICATION_NAME}."
 			mkdir -p "${Folder}" &> /dev/null || true
 			sudo ln -s "${SCRIPTNAME}" "${SymlinkTarget}" &> /dev/null || true
 		fi

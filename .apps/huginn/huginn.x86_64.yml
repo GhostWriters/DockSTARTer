@@ -1,3 +1,0 @@
-services:
-  huginn<__instance>:
-    image: huginn/huginn:${HUGINN<__INSTANCE>__TAG?}

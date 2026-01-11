@@ -1,6 +1,0 @@
-services:
-  jfago<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "User management app for Jellyfin"
-      com.dockstarter.appinfo.nicename: "jfago<__Instance>"

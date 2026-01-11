@@ -1,3 +1,0 @@
-services:
-  nzbhydra2<__instance>:
-    hostname: ${NZBHYDRA2<__INSTANCE>__HOSTNAME?}

@@ -1,4 +1,0 @@
-services:
-  pyload<__instance>:
-    ports:
-      - ${PYLOAD<__INSTANCE>__PORT_8000?}:8000

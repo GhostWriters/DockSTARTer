@@ -1,3 +1,0 @@
-services:
-  homer<__instance>:
-    image: b4bz/homer:${HOMER<__INSTANCE>__TAG?}

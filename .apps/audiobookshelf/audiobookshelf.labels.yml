@@ -1,6 +1,0 @@
-services:
-  audiobookshelf<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Self-hosted audiobook and podcast server"
-      com.dockstarter.appinfo.nicename: "audiobookshelf<__Instance>"

@@ -1,4 +1,0 @@
-services:
-  handbrake<__instance>:
-    ports:
-      - ${HANDBRAKE<__INSTANCE>__PORT_5800?}:5800

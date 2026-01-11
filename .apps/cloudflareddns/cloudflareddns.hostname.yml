@@ -1,3 +1,0 @@
-services:
-  cloudflareddns<__instance>:
-    hostname: ${CLOUDFLAREDDNS<__INSTANCE>__HOSTNAME?}

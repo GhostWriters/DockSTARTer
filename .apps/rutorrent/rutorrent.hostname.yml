@@ -1,3 +1,0 @@
-services:
-  rutorrent<__instance>:
-    hostname: ${RUTORRENT<__INSTANCE>__HOSTNAME?}

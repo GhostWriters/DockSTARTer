@@ -1,3 +1,0 @@
-services:
-  homer<__instance>:
-    network_mode: ${HOMER<__INSTANCE>__NETWORK_MODE?}

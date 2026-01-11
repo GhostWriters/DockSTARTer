@@ -1,6 +1,0 @@
-services:
-  openvpnas<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Secure network tunneling VPN"
-      com.dockstarter.appinfo.nicename: "OpenVPNAS<__Instance>"

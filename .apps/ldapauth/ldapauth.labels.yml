@@ -1,6 +1,0 @@
-services:
-  ldapauth<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Ldap-auth software is for authenticating users who request protected resources from servers proxied by nginx."
-      com.dockstarter.appinfo.nicename: "ldapAuth<__Instance>"

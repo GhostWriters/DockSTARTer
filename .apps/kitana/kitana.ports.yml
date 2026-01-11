@@ -1,4 +1,0 @@
-services:
-  kitana<__instance>:
-    ports:
-      - ${KITANA<__INSTANCE>__PORT_31337?}:31337

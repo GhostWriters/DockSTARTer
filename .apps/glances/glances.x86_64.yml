@@ -1,3 +1,0 @@
-services:
-  glances<__instance>:
-    image: nicolargo/glances:${GLANCES<__INSTANCE>__TAG?}

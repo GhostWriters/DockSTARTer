@@ -1,6 +1,0 @@
-services:
-  pyload<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Python Download Manager"
-      com.dockstarter.appinfo.nicename: "pyLoad<__Instance>"

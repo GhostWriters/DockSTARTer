@@ -1,3 +1,0 @@
-services:
-  filebrowser<__instance>:
-    image: filebrowser/filebrowser:${FILEBROWSER<__INSTANCE>__TAG?}

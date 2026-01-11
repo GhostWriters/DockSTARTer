@@ -1,6 +1,0 @@
-services:
-  overseerr<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "A request management and media discovery tool"
-      com.dockstarter.appinfo.nicename: "Overseerr<__Instance>"

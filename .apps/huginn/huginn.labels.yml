@@ -1,6 +1,0 @@
-services:
-  huginn<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Huginn is a system for building agents that perform automated tasks for you online."
-      com.dockstarter.appinfo.nicename: "Huginn<__Instance>"

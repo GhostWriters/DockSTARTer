@@ -1,3 +1,0 @@
-services:
-  homepage<__instance>:
-    hostname: ${HOMEPAGE<__INSTANCE>__HOSTNAME?}

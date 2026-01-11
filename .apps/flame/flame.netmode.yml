@@ -1,3 +1,0 @@
-services:
-  flame<__instance>:
-    network_mode: ${FLAME<__INSTANCE>__NETWORK_MODE?}

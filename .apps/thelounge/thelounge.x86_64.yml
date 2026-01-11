@@ -1,3 +1,0 @@
-services:
-  thelounge<__instance>:
-    image: lscr.io/linuxserver/thelounge:${THELOUNGE<__INSTANCE>__TAG?}

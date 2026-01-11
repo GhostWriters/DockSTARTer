@@ -1,3 +1,0 @@
-services:
-  fileflows<__instance>:
-    image: revenz/fileflows:${FILEFLOWS<__INSTANCE>__TAG?}

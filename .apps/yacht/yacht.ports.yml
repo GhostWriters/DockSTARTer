@@ -1,4 +1,0 @@
-services:
-  yacht<__instance>:
-    ports:
-      - ${YACHT<__INSTANCE>__PORT_8000?}:8000

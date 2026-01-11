@@ -1,3 +1,0 @@
-services:
-  actualbudget<__instance>:
-    image: actualbudget/actual-server:${ACTUALBUDGET<__INSTANCE>__TAG?}

@@ -1,3 +1,0 @@
-services:
-  freshrss<__instance>:
-    hostname: ${FRESHRSS<__INSTANCE>__HOSTNAME?}

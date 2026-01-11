@@ -1,3 +1,0 @@
-services:
-  rutorrent<__instance>:
-    network_mode: ${RUTORRENT<__INSTANCE>__NETWORK_MODE?}

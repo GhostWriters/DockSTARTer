@@ -1,3 +1,0 @@
-services:
-  transmissionvpn<__instance>:
-    network_mode: ${TRANSMISSIONVPN<__INSTANCE>__NETWORK_MODE?}

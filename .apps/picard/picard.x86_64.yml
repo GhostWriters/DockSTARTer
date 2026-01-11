@@ -1,3 +1,0 @@
-services:
-  picard<__instance>:
-    image: mikenye/picard:${PICARD<__INSTANCE>__TAG?}

@@ -1,3 +1,0 @@
-services:
-  backrest<__instance>:
-    image: garethgeorge/backrest:${BACKREST__TAG?}

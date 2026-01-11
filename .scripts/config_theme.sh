@@ -28,7 +28,7 @@ config_theme() {
 	fi
 
 	if ! run_script 'theme_exists' "${ThemeName}"; then
-		error "${APPLICATION_NAME} theme '${C["Theme"]}${ThemeName}${NC}' does not exist."
+		error "${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} theme '${C["Theme"]}${ThemeName}${NC}' does not exist."
 		return 1
 	fi
 

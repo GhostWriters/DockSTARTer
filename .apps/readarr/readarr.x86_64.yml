@@ -1,3 +1,0 @@
-services:
-  readarr<__instance>:
-    image: lscr.io/linuxserver/readarr:${READARR<__INSTANCE>__TAG?}

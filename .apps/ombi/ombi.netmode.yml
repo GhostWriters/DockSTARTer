@@ -1,3 +1,0 @@
-services:
-  ombi<__instance>:
-    network_mode: ${OMBI<__INSTANCE>__NETWORK_MODE?}

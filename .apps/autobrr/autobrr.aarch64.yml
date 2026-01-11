@@ -1,3 +1,0 @@
-services:
-  autobrr<__instance>:
-    image: ghcr.io/autobrr/autobrr:${AUTOBRR<__INSTANCE>__TAG?}

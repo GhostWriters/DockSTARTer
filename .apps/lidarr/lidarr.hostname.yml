@@ -1,3 +1,0 @@
-services:
-  lidarr<__instance>:
-    hostname: ${LIDARR<__INSTANCE>__HOSTNAME?}

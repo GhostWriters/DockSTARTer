@@ -1,3 +1,0 @@
-services:
-  tvheadend<__instance>:
-    image: lscr.io/linuxserver/tvheadend:${TVHEADEND<__INSTANCE>__TAG?}

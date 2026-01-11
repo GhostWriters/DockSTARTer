@@ -1,6 +1,0 @@
-services:
-  limnoria<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "User/programmer-friendly IRC bot"
-      com.dockstarter.appinfo.nicename: "Limnoria<__Instance>"

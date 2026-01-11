@@ -1,3 +1,0 @@
-services:
-  makemkv<__instance>:
-    network_mode: ${MAKEMKV<__INSTANCE>__NETWORK_MODE?}

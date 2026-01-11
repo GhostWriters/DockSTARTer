@@ -1,6 +1,0 @@
-services:
-  dozzle<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Dozzle is a simple, lightweight application that provides you with a web based interface to monitor your Docker container logs live."
-      com.dockstarter.appinfo.nicename: "Dozzle<__Instance>"
