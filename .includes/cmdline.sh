@@ -677,24 +677,24 @@ run_command() {
 			local AppBranch="${ParamsArray[0]-}"
 			local TemplatesBranch="${ParamsArray[1]-}"
 			if [[ -z ${AppBranch} ]]; then
-				echo "${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} [$(ds_version)]"
+				echo "${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} [${C["Version"]-}${APPLICATION_VERSION}${NC-}]"
 			else
 				if ! ds_branch_exists "${AppBranch}"; then
 					error \
 						"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} branch '${C["Branch"]-}${AppBranch}${NC-}' does not exist."
 					exit 1
 				fi
-				echo "${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} [$(ds_version "${AppBranch}")]"
+				echo "${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} [${C["Version"]-}$(ds_version "${AppBranch}")}${NC-}]"
 			fi
 			if [[ -z ${TemplatesBranch} ]]; then
-				echo "${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} [$(templates_version)]"
+				echo "${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} [${C["Version"]-}$(templates_version)}${NC-}]"
 			else
 				if ! templates_branch_exists "${TemplatesBranch}"; then
 					error \
 						"${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} branch '${C["Branch"]-}${TemplatesBranch}${NC-}' does not exist."
 					exit 1
 				fi
-				echo "${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} [$(templates_version "${TemplatesBranch}")]"
+				echo "${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} [${C["Version"]-}$(templates_version "${TemplatesBranch}")}${NC-}]"
 			fi
 			;;
 
