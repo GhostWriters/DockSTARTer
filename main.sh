@@ -4,11 +4,15 @@ set +o posix
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-declare -rx APPLICATION_NAME='DockSTARTer'
-declare -rx APPLICATION_COMMAND='ds'
-declare -rx APPLICATION_FOLDER_NAME_DEFAULT='.dockstarter'
-declare -rx APPLICATION_REPO='https://github.com/GhostWriters/DockSTARTer'
-declare -rx TEMPLATES_REPO='https://github.com/GhostWriters/DockSTARTer-Templates'
+declare -rgx APPLICATION_NAME='DockSTARTer'
+declare -rgx APPLICATION_COMMAND='ds'
+declare -rgx APPLICATION_FOLDER_NAME_DEFAULT='.dockstarter'
+declare -rgx APPLICATION_REPO='https://github.com/GhostWriters/DockSTARTer'
+declare -rgx TEMPLATES_REPO='https://github.com/GhostWriters/DockSTARTer-Templates'
+declare -rgx SOURCE_BRANCH='master'
+declare -rgx TARGET_BRANCH='TemplatesRepo'
+declare -rgx TEMPLATES_DEFAULT_BRANCH='main'
+
 
 # Version Functions
 # https://stackoverflow.com/questions/4023830/how-to-compare-two-strings-in-dot-separated-version-format-in-bash#comment92693604_4024263
@@ -32,10 +36,6 @@ if [[ ${CI-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS-} == true ]]; then
 	readonly GH_HEADER="Authorization: token ${GH_TOKEN}"
 	export GH_HEADER
 fi
-
-declare -rgx SOURCE_BRANCH='master'
-declare -rgx TARGET_BRANCH='TemplatesRepo'
-declare -rgx TEMPLATES_DEFAULT_BRANCH='main'
 
 declare DS_COMMAND
 DS_COMMAND=$(command -v "${APPLICATION_COMMAND}" || true)
