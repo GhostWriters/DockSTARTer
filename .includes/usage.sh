@@ -405,22 +405,22 @@ ${C["UsageCommand"]-}--theme-no-scrollbar${NC-}
 EOF
 			;;&
 		-u | --update | "") ;&
-		-U | --update-templates | "") ;&
-		--update-app | "")
+		--update-app | "") ;&
+		--update-templates | "")
 			Found=1
 			cat << EOF
 ${C["UsageCommand"]-}-u --update${NC-}
 	Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} and ${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} to the latest commits from the current branch
 ${C["UsageCommand"]-}-u --update${NC-} ${C["UsageBranch"]-}<AppBranch>${NC-} ${C["UsageBranch"]-}<TemplateBranch>${NC-}
 	Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} and ${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} to the latest commits from the specified branches
-${C["UsageCommand"]-}-U --update-templates${NC-}
-	Update ${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} to the latest commits from the current branch
-${C["UsageCommand"]-}-U --update-templates${NC-} ${C["UsageBranch"]-}<TemplateBranch>${NC-}
-	Update ${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} to the latest commits from the specified branch
 ${C["UsageCommand"]-}--update-app${NC-}
 	Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} to the latest commits from the current branch
 ${C["UsageCommand"]-}--update-app${NC-} ${C["UsageBranch"]-}<AppBranch>${NC-}
 	Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} to the latest commits from the specified branch
+${C["UsageCommand"]-}--update-templates${NC-}
+	Update ${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} to the latest commits from the current branch
+${C["UsageCommand"]-}--update-templates${NC-} ${C["UsageBranch"]-}<TemplateBranch>${NC-}
+	Update ${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} to the latest commits from the specified branch
 EOF
 			;;&
 		-V | --version | "")

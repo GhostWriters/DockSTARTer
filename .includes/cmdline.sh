@@ -33,7 +33,7 @@ parse_arguments() {
 		local -a CurrentFlags=()
 		local -a CurrentCommand=()
 
-		while getopts ":-:acefghilMprRsStTuUvVxy" OPTION; do
+		while getopts ":-:acefghilMprRsStTuvVxy" OPTION; do
 			if [[ ${OPTION} == "-" ]]; then
 				# Rename the long option to --option
 				OPTION="--${OPTARG}"
@@ -147,7 +147,7 @@ parse_arguments() {
 				# --command [param]
 				-T | --theme) ;&
 				--update-app) ;&
-				-U | --update-templates)
+				--update-templates)
 					CurrentCommand+=("${OPTION}")
 					if [[ ${OPTIND} -le $# && ${!OPTIND} != "-"* ]]; then
 						CurrentCommand+=("${!OPTIND}")
@@ -663,7 +663,7 @@ run_command() {
 			result=$?
 			;;
 
-		-U | --update-templates)
+		--update-templates)
 			run_script 'update_templates' "${ParamsArray[0]-}"
 			result=$?
 			;;
