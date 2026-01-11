@@ -4,15 +4,8 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - '.apps/**'
-      - 'docs/apps/**'
   pull_request:
-  workflow_run:
-    workflows: ["Sync Templates with History"]
-    types:
-      - completed
-    if: github.event.workflow_run.conclusion == 'success'
+
 jobs:
   mkdocs:
     name: Build and Deploy mkdocs
@@ -50,5 +43,5 @@ jobs:
         run: mkdocs build
 
       - name: Deploy to GitHub Pages
-        if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_run' && github.event.workflow_run.head_branch == 'main')
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: mkdocs gh-deploy --force
