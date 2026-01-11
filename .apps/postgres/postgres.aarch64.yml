@@ -1,3 +1,0 @@
-services:
-  postgres<__instance>:
-    image: postgres:${POSTGRES<__INSTANCE>__TAG?}

@@ -1,3 +1,0 @@
-services:
-  handbrake<__instance>:
-    network_mode: ${HANDBRAKE<__INSTANCE>__NETWORK_MODE?}

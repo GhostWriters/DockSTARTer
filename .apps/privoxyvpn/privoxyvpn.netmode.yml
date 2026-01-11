@@ -1,3 +1,0 @@
-services:
-  privoxyvpn<__instance>:
-    network_mode: ${PRIVOXYVPN<__INSTANCE>__NETWORK_MODE?}

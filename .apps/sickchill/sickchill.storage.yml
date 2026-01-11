@@ -1,4 +1,0 @@
-services:
-  sickchill<__instance>:
-    volumes:
-      - ${DOCKER_VOLUME_STORAGE?}:/storage

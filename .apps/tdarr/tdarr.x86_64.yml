@@ -1,3 +1,0 @@
-services:
-  tdarr<__instance>:
-    image: haveagitgat/tdarr:${TDARR<__INSTANCE>__TAG?}

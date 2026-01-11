@@ -1,4 +1,0 @@
-services:
-  calibreweb<__instance>:
-    volumes:
-      - ${DOCKER_VOLUME_STORAGE?}:/storage

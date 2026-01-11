@@ -1,6 +1,0 @@
-services:
-  filebot<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Tool for organizing your media"
-      com.dockstarter.appinfo.nicename: "FileBot<__Instance>"

@@ -1,6 +1,0 @@
-services:
-  rustdesk<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "RustDesk server software including hbbs (rendezvous server) and hbbr (relay server) program, an open-source self-hosted TeamViewer alternative"
-      com.dockstarter.appinfo.nicename: "RustDesk<__Instance>"

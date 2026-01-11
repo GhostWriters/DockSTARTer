@@ -1,3 +1,0 @@
-services:
-  xbackbone<__instance>:
-    image: ghcr.io/linuxserver/xbackbone:${XBACKBONE<__INSTANCE>__TAG?}

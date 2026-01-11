@@ -1,3 +1,0 @@
-services:
-  netdata<__instance>:
-    network_mode: ${NETDATA<__INSTANCE>__NETWORK_MODE?}

@@ -1,3 +1,0 @@
-services:
-  syncthing<__instance>:
-    image: lscr.io/linuxserver/syncthing:${SYNCTHING<__INSTANCE>__TAG?}

@@ -1,3 +1,0 @@
-services:
-  kanboard<__instance>:
-    network_mode: ${KANBOARD<__INSTANCE>__NETWORK_MODE?}

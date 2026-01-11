@@ -1,3 +1,0 @@
-services:
-  komga<__instance>:
-    image: gotson/komga:${KOMGA<__INSTANCE>__TAG?}

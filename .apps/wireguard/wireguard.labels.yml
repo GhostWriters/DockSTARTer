@@ -1,6 +1,0 @@
-services:
-  wireguard<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "WireGuard is an extremely simple yet fast and modern VPN that utilizes state-of-the-art cryptography."
-      com.dockstarter.appinfo.nicename: "Wireguard<__Instance>"

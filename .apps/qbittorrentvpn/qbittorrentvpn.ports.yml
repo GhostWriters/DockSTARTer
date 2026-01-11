@@ -1,7 +1,0 @@
-services:
-  qbittorrentvpn<__instance>:
-    ports:
-      - ${QBITTORRENTVPN<__INSTANCE>__PORT_6881?}:6881
-      - ${QBITTORRENTVPN<__INSTANCE>__PORT_6881?}:6881/udp
-      - ${QBITTORRENTVPN<__INSTANCE>__PORT_8080?}:${QBITTORRENTVPN<__INSTANCE>__PORT_8080?}
-      - ${QBITTORRENTVPN<__INSTANCE>__PORT_8118?}:8118

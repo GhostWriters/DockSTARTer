@@ -1,3 +1,0 @@
-services:
-  sickchill<__instance>:
-    network_mode: ${SICKCHILL<__INSTANCE>__NETWORK_MODE?}

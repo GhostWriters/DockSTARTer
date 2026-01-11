@@ -1,3 +1,0 @@
-services:
-  sabnzbdvpn<__instance>:
-    image: ghcr.io/binhex/arch-sabnzbdvpn:${SABNZBDVPN<__INSTANCE>__TAG?}

@@ -1,3 +1,0 @@
-services:
-  nextcloud<__instance>:
-    network_mode: ${NEXTCLOUD<__INSTANCE>__NETWORK_MODE?}

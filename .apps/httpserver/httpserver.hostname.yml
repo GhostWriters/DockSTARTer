@@ -1,3 +1,0 @@
-services:
-  httpserver<__instance>:
-    hostname: ${HTTPSERVER<__INSTANCE>__HOSTNAME?}

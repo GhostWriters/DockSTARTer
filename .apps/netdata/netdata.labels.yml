@@ -1,6 +1,0 @@
-services:
-  netdata<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Distributed real-time performance and health monitoring"
-      com.dockstarter.appinfo.nicename: "Netdata<__Instance>"

@@ -1,3 +1,0 @@
-services:
-  radarr<__instance>:
-    image: lscr.io/linuxserver/radarr:${RADARR<__INSTANCE>__TAG?}

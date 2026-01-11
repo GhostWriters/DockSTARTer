@@ -1,6 +1,0 @@
-services:
-  thelounge<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Web IRC client that you host on your own server"
-      com.dockstarter.appinfo.nicename: "TheLounge<__Instance>"

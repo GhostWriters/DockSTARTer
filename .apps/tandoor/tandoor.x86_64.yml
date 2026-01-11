@@ -1,3 +1,0 @@
-services:
-  tandoor<__instance>:
-    image: docker.io/vabene1111/recipes:${TANDOOR<__INSTANCE>__TAG?}

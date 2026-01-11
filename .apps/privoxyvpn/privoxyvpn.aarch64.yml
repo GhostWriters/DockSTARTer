@@ -1,3 +1,0 @@
-services:
-  privoxyvpn<__instance>:
-    image: ghcr.io/binhex/arch-privoxyvpn:${PRIVOXYVPN<__INSTANCE>__TAG?}

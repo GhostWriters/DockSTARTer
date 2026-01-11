@@ -1,3 +1,0 @@
-services:
-  nextcloud<__instance>:
-    image: lscr.io/linuxserver/nextcloud:${NEXTCLOUD<__INSTANCE>__TAG?}

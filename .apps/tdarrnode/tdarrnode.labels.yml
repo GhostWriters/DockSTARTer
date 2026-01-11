@@ -1,6 +1,0 @@
-services:
-  tdarrnode<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Tdarr Node is a self hosted module used for encoding in conjunction with Tdarr"
-      com.dockstarter.appinfo.nicename: "TdarrNode<__Instance>"

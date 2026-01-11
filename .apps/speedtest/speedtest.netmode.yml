@@ -1,3 +1,0 @@
-services:
-  speedtest<__instance>:
-    network_mode: ${SPEEDTEST<__INSTANCE>__NETWORK_MODE?}

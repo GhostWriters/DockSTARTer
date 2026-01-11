@@ -1,6 +1,0 @@
-services:
-  qbittorrent<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Cross-platform free and open-source BitTorrent client"
-      com.dockstarter.appinfo.nicename: "qBittorrent<__Instance>"

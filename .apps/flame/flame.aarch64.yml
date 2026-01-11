@@ -1,3 +1,0 @@
-services:
-  flame<__instance>:
-    image: pawelmalak/flame:${FLAME<__INSTANCE>__TAG?}

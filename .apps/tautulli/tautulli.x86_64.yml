@@ -1,3 +1,0 @@
-services:
-  tautulli<__instance>:
-    image: lscr.io/linuxserver/tautulli:${TAUTULLI<__INSTANCE>__TAG?}

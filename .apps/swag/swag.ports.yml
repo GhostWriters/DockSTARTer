@@ -1,5 +1,0 @@
-services:
-  swag<__instance>:
-    ports:
-      - ${SWAG<__INSTANCE>__PORT_443?}:443
-      - ${SWAG<__INSTANCE>__PORT_80?}:80

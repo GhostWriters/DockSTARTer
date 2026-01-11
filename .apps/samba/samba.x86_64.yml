@@ -1,3 +1,0 @@
-services:
-  samba<__instance>:
-    image: dperson/samba:${SAMBA<__INSTANCE>__TAG?}

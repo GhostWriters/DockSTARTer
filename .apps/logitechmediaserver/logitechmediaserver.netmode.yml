@@ -1,3 +1,0 @@
-services:
-  logitechmediaserver<__instance>:
-    network_mode: ${LOGITECHMEDIASERVER<__INSTANCE>__NETWORK_MODE?}

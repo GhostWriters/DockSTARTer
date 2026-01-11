@@ -1,3 +1,0 @@
-services:
-  autobrr<__instance>:
-    network_mode: ${AUTOBRR<__INSTANCE>__NETWORK_MODE?}

@@ -1,6 +1,0 @@
-services:
-  nzbhydra2<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Meta search for NZB indexers"
-      com.dockstarter.appinfo.nicename: "NZBHydra2<__Instance>"

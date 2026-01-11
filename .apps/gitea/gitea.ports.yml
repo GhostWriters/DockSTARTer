@@ -1,4 +1,0 @@
-services:
-  gitea<__instance>:
-    ports:
-      - ${GITEA<__INSTANCE>__PORT_3000?}:3000

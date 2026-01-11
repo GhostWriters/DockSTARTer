@@ -1,3 +1,0 @@
-services:
-  telegraf<__instance>:
-    network_mode: ${TELEGRAF<__INSTANCE>__NETWORK_MODE?}

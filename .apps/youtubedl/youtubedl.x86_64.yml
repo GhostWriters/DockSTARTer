@@ -1,3 +1,0 @@
-services:
-  youtubedl<__instance>:
-    image: nbr23/youtube-dl-server:${YOUTUBEDL<__INSTANCE>__TAG?}

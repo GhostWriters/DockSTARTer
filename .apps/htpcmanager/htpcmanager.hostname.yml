@@ -1,3 +1,0 @@
-services:
-  htpcmanager<__instance>:
-    hostname: ${HTPCMANAGER<__INSTANCE>__HOSTNAME?}

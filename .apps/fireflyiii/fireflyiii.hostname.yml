@@ -1,3 +1,0 @@
-services:
-  fireflyiii<__instance>:
-    hostname: ${FIREFLYIII<__INSTANCE>__HOSTNAME?}

@@ -1,8 +1,0 @@
-services:
-  airdcpp<__instance>:
-    ports:
-      - ${AIRDCPP<__INSTANCE>__PORT_21248?}:21248
-      - ${AIRDCPP<__INSTANCE>__PORT_21248?}:21248/udp
-      - ${AIRDCPP<__INSTANCE>__PORT_21249?}:21249
-      - ${AIRDCPP<__INSTANCE>__PORT_5600?}:5600
-      - ${AIRDCPP<__INSTANCE>__PORT_5601?}:5601

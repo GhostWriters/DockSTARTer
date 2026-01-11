@@ -1,3 +1,0 @@
-services:
-  pgadmin<__instance>:
-    hostname: ${PGADMIN<__INSTANCE>__HOSTNAME?}

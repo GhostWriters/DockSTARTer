@@ -1,3 +1,0 @@
-services:
-  librespeed<__instance>:
-    hostname: ${LIBRESPEED<__INSTANCE>__HOSTNAME?}

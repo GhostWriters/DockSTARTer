@@ -1,6 +1,0 @@
-services:
-  guacamole<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Web application to remote desktop"
-      com.dockstarter.appinfo.nicename: "Guacamole<__Instance>"

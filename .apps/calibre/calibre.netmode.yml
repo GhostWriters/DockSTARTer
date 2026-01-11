@@ -1,3 +1,0 @@
-services:
-  calibre<__instance>:
-    network_mode: ${CALIBRE<__INSTANCE>__NETWORK_MODE?}

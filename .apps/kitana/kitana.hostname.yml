@@ -1,3 +1,0 @@
-services:
-  kitana<__instance>:
-    hostname: ${KITANA<__INSTANCE>__HOSTNAME?}

@@ -1,6 +1,0 @@
-services:
-  rsnapshot<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Make periodic snapshots of local machines, and remote machines over ssh"
-      com.dockstarter.appinfo.nicename: "Rsnapshot<__Instance>"

@@ -1,3 +1,0 @@
-services:
-  headphones<__instance>:
-    image: lscr.io/linuxserver/headphones:${HEADPHONES<__INSTANCE>__TAG?}

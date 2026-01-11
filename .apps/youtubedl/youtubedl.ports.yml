@@ -1,4 +1,0 @@
-services:
-  youtubedl<__instance>:
-    ports:
-      - ${YOUTUBEDL<__INSTANCE>__PORT_8080?}:8080

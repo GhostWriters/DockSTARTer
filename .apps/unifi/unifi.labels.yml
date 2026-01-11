@@ -1,6 +1,0 @@
-services:
-  unifi<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "true"
-      com.dockstarter.appinfo.description: "(DEPRECATED) Use UnifiController"
-      com.dockstarter.appinfo.nicename: "Unifi<__Instance>"

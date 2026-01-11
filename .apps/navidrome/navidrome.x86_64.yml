@@ -1,3 +1,0 @@
-services:
-  navidrome<__instance>:
-    image: ghcr.io/navidrome/navidrome:${NAVIDROME<__INSTANCE>__TAG?}

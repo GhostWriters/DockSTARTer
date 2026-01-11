@@ -1,3 +1,0 @@
-services:
-  prometheus<__instance>:
-    network_mode: ${PROMETHEUS<__INSTANCE>__NETWORK_MODE?}

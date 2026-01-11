@@ -1,3 +1,0 @@
-services:
-  duplicacy<__instance>:
-    hostname: ${DUPLICACY<__INSTANCE>__HOSTNAME?}

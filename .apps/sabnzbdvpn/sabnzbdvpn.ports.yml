@@ -1,6 +1,0 @@
-services:
-  sabnzbdvpn<__instance>:
-    ports:
-      - ${SABNZBDVPN<__INSTANCE>__PORT_8080?}:8080
-      - ${SABNZBDVPN<__INSTANCE>__PORT_8090?}:8090
-      - ${SABNZBDVPN<__INSTANCE>__PORT_8118?}:8118

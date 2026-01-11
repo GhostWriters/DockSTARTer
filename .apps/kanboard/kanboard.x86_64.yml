@@ -1,3 +1,0 @@
-services:
-  kanboard<__instance>:
-    image: webhippie/kanboard:${KANBOARD<__INSTANCE>__TAG?}

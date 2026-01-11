@@ -1,5 +1,0 @@
-services:
-  resiliosync<__instance>:
-    ports:
-      - ${RESILIOSYNC<__INSTANCE>__PORT_8888?}:8888
-      - ${RESILIOSYNC<__INSTANCE>__PORT_55555?}:55555

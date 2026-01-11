@@ -1,3 +1,0 @@
-services:
-  kavita<__instance>:
-    network_mode: ${KAVITA<__INSTANCE>__NETWORK_MODE?}

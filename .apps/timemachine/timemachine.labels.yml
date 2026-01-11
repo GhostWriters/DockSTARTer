@@ -1,6 +1,0 @@
-services:
-  timemachine<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Docker image to run Samba to provide a compatible Time Machine for macOS"
-      com.dockstarter.appinfo.nicename: "TimeMachine<__Instance>"

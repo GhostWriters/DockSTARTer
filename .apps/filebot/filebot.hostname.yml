@@ -1,3 +1,0 @@
-services:
-  filebot<__instance>:
-    hostname: ${FILEBOT<__INSTANCE>__HOSTNAME?}

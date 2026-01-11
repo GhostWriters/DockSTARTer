@@ -1,6 +1,0 @@
-services:
-  beets<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Music library manager and MusicBrainz tagger"
-      com.dockstarter.appinfo.nicename: "Beets<__Instance>"

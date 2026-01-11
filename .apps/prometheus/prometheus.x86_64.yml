@@ -1,3 +1,0 @@
-services:
-  prometheus<__instance>:
-    image: prom/prometheus:${PROMETHEUS<__INSTANCE>__TAG?}

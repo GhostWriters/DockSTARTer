@@ -1,3 +1,0 @@
-services:
-  nodered<__instance>:
-    network_mode: ${NODERED<__INSTANCE>__NETWORK_MODE?}

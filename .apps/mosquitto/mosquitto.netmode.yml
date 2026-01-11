@@ -1,3 +1,0 @@
-services:
-  mosquitto<__instance>:
-    network_mode: ${MOSQUITTO<__INSTANCE>__NETWORK_MODE?}

@@ -1,3 +1,0 @@
-services:
-  sabnzbd<__instance>:
-    image: lscr.io/linuxserver/sabnzbd:${SABNZBD<__INSTANCE>__TAG?}

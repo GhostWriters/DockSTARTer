@@ -1,3 +1,0 @@
-services:
-  deluge<__instance>:
-    network_mode: ${DELUGE<__INSTANCE>__NETWORK_MODE?}

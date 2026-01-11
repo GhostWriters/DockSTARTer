@@ -1,6 +1,0 @@
-services:
-  photostructure<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "PhotoStructure is your new home for all your photos & videos."
-      com.dockstarter.appinfo.nicename: "PhotoStructure<__Instance>"

@@ -1,3 +1,0 @@
-services:
-  portainer<__instance>:
-    image: portainer/portainer-ce:${PORTAINER<__INSTANCE>__TAG?}

@@ -1,3 +1,0 @@
-services:
-  letsencrypt<__instance>:
-    hostname: ${LETSENCRYPT<__INSTANCE>__HOSTNAME?}

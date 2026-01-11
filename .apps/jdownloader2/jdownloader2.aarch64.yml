@@ -1,3 +1,0 @@
-services:
-  jdownloader2<__instance>:
-    image: jlesage/jdownloader-2:${JDOWNLOADER2<__INSTANCE>__TAG?}

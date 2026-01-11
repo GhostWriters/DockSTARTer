@@ -1,4 +1,0 @@
-services:
-  filebot<__instance>:
-    ports:
-      - ${FILEBOT<__INSTANCE>__PORT_5800?}:5800

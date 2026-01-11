@@ -1,3 +1,0 @@
-services:
-  lazylibrarian<__instance>:
-    network_mode: ${LAZYLIBRARIAN<__INSTANCE>__NETWORK_MODE?}

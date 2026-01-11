@@ -1,3 +1,0 @@
-services:
-  airsonic<__instance>:
-    image: lscr.io/linuxserver/airsonic:${AIRSONIC<__INSTANCE>__TAG?}

@@ -1,3 +1,0 @@
-services:
-  bookstack<__instance>:
-    hostname: ${BOOKSTACK<__INSTANCE>__HOSTNAME?}

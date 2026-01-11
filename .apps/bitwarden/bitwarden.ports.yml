@@ -1,5 +1,0 @@
-services:
-  bitwarden<__instance>:
-    ports:
-      - ${BITWARDEN<__INSTANCE>__PORT_3012?}:3012
-      - ${BITWARDEN<__INSTANCE>__PORT_80?}:80

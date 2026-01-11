@@ -1,3 +1,0 @@
-services:
-  synclounge<__instance>:
-    hostname: ${SYNCLOUNGE<__INSTANCE>__HOSTNAME?}

@@ -1,6 +1,0 @@
-services:
-  telegraf<__instance>:
-    ports:
-      - ${TELEGRAF<__INSTANCE>__PORT_8092?}:8092/udp
-      - ${TELEGRAF<__INSTANCE>__PORT_8094?}:8094
-      - ${TELEGRAF<__INSTANCE>__PORT_8125?}:8125

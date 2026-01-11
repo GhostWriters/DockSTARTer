@@ -1,3 +1,0 @@
-services:
-  huginn<__instance>:
-    network_mode: ${HUGINN<__INSTANCE>__NETWORK_MODE?}

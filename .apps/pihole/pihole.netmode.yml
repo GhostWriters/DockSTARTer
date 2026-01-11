@@ -1,3 +1,0 @@
-services:
-  pihole<__instance>:
-    network_mode: ${PIHOLE<__INSTANCE>__NETWORK_MODE?}

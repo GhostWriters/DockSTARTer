@@ -1,6 +1,0 @@
-services:
-  homebridge<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Homebridge is a lightweight NodeJS server you can run on your home network that emulates the iOS HomeKit API"
-      com.dockstarter.appinfo.nicename: "Homebridge<__Instance>"

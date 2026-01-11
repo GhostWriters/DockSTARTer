@@ -1,4 +1,0 @@
-services:
-  freshrss<__instance>:
-    ports:
-      - ${FRESHRSS<__INSTANCE>__PORT_80?}:80

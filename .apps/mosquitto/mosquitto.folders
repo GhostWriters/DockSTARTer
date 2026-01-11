@@ -1,3 +1,0 @@
-${DOCKER_VOLUME_CONFIG}/mosquitto<__instance>
-${DOCKER_VOLUME_CONFIG}/mosquitto<__instance>/data
-${DOCKER_VOLUME_CONFIG}/mosquitto<__instance>/log

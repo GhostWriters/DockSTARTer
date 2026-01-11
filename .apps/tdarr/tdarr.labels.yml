@@ -1,6 +1,0 @@
-services:
-  tdarr<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Audio/Video Library Analytics & Transcode/Remux Automation"
-      com.dockstarter.appinfo.nicename: "Tdarr<__Instance>"

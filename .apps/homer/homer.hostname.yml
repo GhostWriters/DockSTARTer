@@ -1,3 +1,0 @@
-services:
-  homer<__instance>:
-    hostname: ${HOMER<__INSTANCE>__HOSTNAME?}

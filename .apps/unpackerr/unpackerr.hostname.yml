@@ -1,3 +1,0 @@
-services:
-  unpackerr<__instance>:
-    hostname: ${UNPACKERR<__INSTANCE>__HOSTNAME?}

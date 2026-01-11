@@ -1,3 +1,0 @@
-services:
-  swag<__instance>:
-    network_mode: ${SWAG<__INSTANCE>__NETWORK_MODE?}

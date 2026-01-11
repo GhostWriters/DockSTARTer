@@ -1,4 +1,0 @@
-services:
-  booksonic<__instance>:
-    ports:
-      - ${BOOKSONIC<__INSTANCE>__PORT_4040?}:4040

@@ -1,3 +1,0 @@
-services:
-  unpackerr<__instance>:
-    network_mode: ${UNPACKERR<__INSTANCE>__NETWORK_MODE?}

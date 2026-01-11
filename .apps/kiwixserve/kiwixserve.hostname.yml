@@ -1,3 +1,0 @@
-services:
-  kiwixserve<__instance>:
-    hostname: ${KIWIXSERVE<__INSTANCE>__HOSTNAME?}

@@ -1,3 +1,0 @@
-services:
-  znc<__instance>:
-    network_mode: ${znc_NETWORK_MODE?}

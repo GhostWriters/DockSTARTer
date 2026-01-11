@@ -1,3 +1,0 @@
-services:
-  limnoria<__instance>:
-    hostname: ${LIMNORIA<__INSTANCE>__HOSTNAME?}

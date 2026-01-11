@@ -1,3 +1,0 @@
-services:
-  jellyseerr<__instance>:
-    network_mode: ${JELLYSEERR<__INSTANCE>__NETWORK_MODE?}

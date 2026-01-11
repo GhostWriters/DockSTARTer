@@ -1,6 +1,0 @@
-services:
-  radarr<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Automatically download movies via Usenet and BitTorrent"
-      com.dockstarter.appinfo.nicename: "Radarr<__Instance>"

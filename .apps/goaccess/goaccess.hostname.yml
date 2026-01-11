@@ -1,3 +1,0 @@
-services:
-  goaccess<__instance>:
-    hostname: ${GOACCESS<__INSTANCE>__HOSTNAME?}

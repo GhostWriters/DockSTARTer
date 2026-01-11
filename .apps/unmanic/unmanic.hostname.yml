@@ -1,3 +1,0 @@
-services:
-  unmanic<__instance>:
-    hostname: ${UNMANIC<__INSTANCE>__HOSTNAME?}

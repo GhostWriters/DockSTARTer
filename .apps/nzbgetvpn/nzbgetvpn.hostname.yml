@@ -1,3 +1,0 @@
-services:
-  nzbgetvpn<__instance>:
-    hostname: ${NZBGETVPN<__INSTANCE>__HOSTNAME?}

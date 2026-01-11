@@ -1,6 +1,0 @@
-services:
-  organizr<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "HTPC/Homelab Services Organizer"
-      com.dockstarter.appinfo.nicename: "Organizr<__Instance>"

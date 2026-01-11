@@ -1,3 +1,0 @@
-services:
-  mylar<__instance>:
-    network_mode: ${MYLAR<__INSTANCE>__NETWORK_MODE?}

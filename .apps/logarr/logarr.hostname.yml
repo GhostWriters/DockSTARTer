@@ -1,3 +1,0 @@
-services:
-  logarr<__instance>:
-    hostname: ${LOGARR<__INSTANCE>__HOSTNAME?}

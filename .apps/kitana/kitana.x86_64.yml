@@ -1,3 +1,0 @@
-services:
-  kitana<__instance>:
-    image: pannal/kitana:${KITANA<__INSTANCE>__TAG?}

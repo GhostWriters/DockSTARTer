@@ -1,3 +1,0 @@
-services:
-  lidarr<__instance>:
-    network_mode: ${LIDARR<__INSTANCE>__NETWORK_MODE?}

@@ -1,3 +1,0 @@
-services:
-  jackett<__instance>:
-    hostname: ${JACKETT<__INSTANCE>__HOSTNAME?}

@@ -1,3 +1,0 @@
-services:
-  quasselweb<__instance>:
-    hostname: ${QUASSELWEB<__INSTANCE>__HOSTNAME?}

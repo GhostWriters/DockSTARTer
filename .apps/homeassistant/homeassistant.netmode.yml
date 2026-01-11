@@ -1,3 +1,0 @@
-services:
-  homeassistant<__instance>:
-    network_mode: ${HOMEASSISTANT<__INSTANCE>__NETWORK_MODE?}

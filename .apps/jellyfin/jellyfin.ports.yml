@@ -1,5 +1,0 @@
-services:
-  jellyfin<__instance>:
-    ports:
-      - ${JELLYFIN<__INSTANCE>__PORT_8096?}:8096
-      - ${JELLYFIN<__INSTANCE>__PORT_8920?}:8920

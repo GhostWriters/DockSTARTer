@@ -1,3 +1,0 @@
-services:
-  autobrr<__instance>:
-    hostname: ${AUTOBRR<__INSTANCE>__HOSTNAME?}

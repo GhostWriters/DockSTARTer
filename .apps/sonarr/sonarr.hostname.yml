@@ -1,3 +1,0 @@
-services:
-  sonarr<__instance>:
-    hostname: ${SONARR<__INSTANCE>__HOSTNAME?}

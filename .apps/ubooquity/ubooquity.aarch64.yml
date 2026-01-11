@@ -1,3 +1,0 @@
-services:
-  ubooquity<__instance>:
-    image: lscr.io/linuxserver/ubooquity:${UBOOQUITY<__INSTANCE>__TAG?}

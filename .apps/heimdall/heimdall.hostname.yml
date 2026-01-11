@@ -1,3 +1,0 @@
-services:
-  heimdall<__instance>:
-    hostname: ${HEIMDALL<__INSTANCE>__HOSTNAME?}

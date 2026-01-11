@@ -1,3 +1,0 @@
-services:
-  ouroboros<__instance>:
-    hostname: ${OUROBOROS<__INSTANCE>__HOSTNAME?}

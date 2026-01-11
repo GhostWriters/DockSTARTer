@@ -1,3 +1,0 @@
-services:
-  tvheadend<__instance>:
-    hostname: ${TVHEADEND<__INSTANCE>__HOSTNAME?}

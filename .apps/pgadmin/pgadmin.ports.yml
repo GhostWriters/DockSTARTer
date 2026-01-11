@@ -1,4 +1,0 @@
-services:
-  pgadmin<__instance>:
-    ports:
-      - ${PGADMIN<__INSTANCE>__PORT_80?}:80

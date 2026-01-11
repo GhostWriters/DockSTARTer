@@ -1,6 +1,0 @@
-services:
-  monitorr<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Webfront to live display the status of any webapp or service"
-      com.dockstarter.appinfo.nicename: "Monitorr<__Instance>"

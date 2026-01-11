@@ -1,3 +1,0 @@
-services:
-  tdarr<__instance>:
-    network_mode: ${TDARR<__INSTANCE>__NETWORK_MODE?}

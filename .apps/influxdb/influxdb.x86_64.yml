@@ -1,3 +1,0 @@
-services:
-  influxdb<__instance>:
-    image: influxdb:${INFLUXDB<__INSTANCE>__TAG?}

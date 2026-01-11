@@ -1,3 +1,0 @@
-services:
-  dozzle<__instance>:
-    network_mode: ${DOZZLE<__INSTANCE>__NETWORK_MODE?}

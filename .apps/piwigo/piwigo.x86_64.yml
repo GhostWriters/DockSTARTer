@@ -1,3 +1,0 @@
-services:
-  piwigo<__instance>:
-    image: lscr.io/linuxserver/piwigo:${PIWIGO<__INSTANCE>__TAG?}

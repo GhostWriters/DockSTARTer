@@ -1,3 +1,0 @@
-services:
-  lyrionmusicserver<__instance>:
-    network_mode: ${LYRIONMUSICSERVER<__INSTANCE>__NETWORK_MODE?}

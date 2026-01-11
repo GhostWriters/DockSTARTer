@@ -1,4 +1,0 @@
-services:
-  portainer<__instance>:
-    volumes:
-      - ${DOCKER_VOLUME_STORAGE?}:/storage

@@ -1,3 +1,0 @@
-services:
-  fail2ban<__instance>:
-    hostname: ${FAIL2BAN<__INSTANCE>__HOSTNAME?}

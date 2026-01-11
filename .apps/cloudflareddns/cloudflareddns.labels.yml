@@ -1,6 +1,0 @@
-services:
-  cloudflareddns<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Free service which will point a DNS to an IP of your choice"
-      com.dockstarter.appinfo.nicename: "CloudFlareDDNS<__Instance>"

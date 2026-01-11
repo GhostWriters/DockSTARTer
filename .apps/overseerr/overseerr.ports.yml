@@ -1,4 +1,0 @@
-services:
-  overseerr<__instance>:
-    ports:
-      - ${OVERSEERR<__INSTANCE>__PORT_5055?}:5055

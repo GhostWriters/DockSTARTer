@@ -1,3 +1,0 @@
-services:
-  plexrequests<__instance>:
-    image: lscr.io/linuxserver/plexrequests:${PLEXREQUESTS<__INSTANCE>__TAG?}

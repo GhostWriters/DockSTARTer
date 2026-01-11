@@ -1,6 +1,0 @@
-services:
-  autobrr<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "autobrr is the modern download automation tool for torrents and usenet."
-      com.dockstarter.appinfo.nicename: "autobrr<__Instance>"

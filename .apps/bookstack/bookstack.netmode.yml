@@ -1,3 +1,0 @@
-services:
-  bookstack<__instance>:
-    network_mode: ${BOOKSTACK<__INSTANCE>__NETWORK_MODE?}

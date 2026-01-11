@@ -1,3 +1,0 @@
-services:
-  photoshow<__instance>:
-    hostname: ${PHOTOSHOW<__INSTANCE>__HOSTNAME?}
