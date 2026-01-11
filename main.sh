@@ -6,12 +6,16 @@ IFS=$'\n\t'
 
 declare -rgx APPLICATION_NAME='DockSTARTer'
 declare -rgx APPLICATION_COMMAND='ds'
-declare -rgx APPLICATION_FOLDER_NAME_DEFAULT='.dockstarter'
 declare -rgx APPLICATION_REPO='https://github.com/GhostWriters/DockSTARTer'
-declare -rgx TEMPLATES_REPO='https://github.com/GhostWriters/DockSTARTer-Templates'
 declare -rgx APPLICATION_LEGACY_BRANCH='master'
 declare -rgx APPLICATION_DEFAULT_BRANCH='TemplatesRepo'
+declare -rgx APPLICATION_FOLDER_NAME_DEFAULT='.dockstarter'
+
+declare -rgx TEMPLATES_NAME='DockSTARTer-Templates'
+declare -rgx TEMPLATES_REPO='https://github.com/GhostWriters/DockSTARTer-Templates'
 declare -rgx TEMPLATES_DEFAULT_BRANCH='main'
+declare -rgx TEMPLATES_PARENT_FOLDER_NAME='templates'
+declare -rgx TEMPLATES_REPO_FOLDER_NAME='DockSTARTer-Templates'
 
 # Version Functions
 # https://stackoverflow.com/questions/4023830/how-to-compare-two-strings-in-dot-separated-version-format-in-bash#comment92693604_4024263
@@ -93,11 +97,15 @@ export SCRIPTNAME
 #[[ -z ${XDG_RUNTIME_DIR-} ]] && declare -gx XDG_RUNTIME_DIR="/run/user/${DETECTED_PUID}"
 for XDG_FOLDER in "${XDG_DATA_HOME}" "${XDG_CONFIG_HOME}" "${XDG_CACHE_HOME}" "${XDG_STATE_HOME}"; do
 	if [[ ! -d ${XDG_FOLDER} ]]; then
-		mkdir -p "${XDG_FOLDER}"
+		sudo mkdir -p "${XDG_FOLDER}"
+		sudo chown "${DETECTED_PUID}:${DETECTED_PGID}" "${XDG_FOLDER}"
+		sudo chmod 700 "${XDG_FOLDER}"
 	fi
 done
 if [[ ! -d ${XDG_STATE_HOME}/${APPLICATION_NAME,,} ]]; then
-	mkdir -p "${XDG_STATE_HOME}/${APPLICATION_NAME,,}"
+	sudo mkdir -p "${XDG_STATE_HOME}/${APPLICATION_NAME,,}"
+	sudo chown "${DETECTED_PUID}:${DETECTED_PGID}" "${XDG_STATE_HOME}/${APPLICATION_NAME,,}"
+	sudo chmod 700 "${XDG_STATE_HOME}/${APPLICATION_NAME,,}"
 fi
 
 declare -rgx APPLICATION_LOG="${XDG_STATE_HOME}/${APPLICATION_NAME,,}/${APPLICATION_NAME,,}.log"
@@ -218,7 +226,7 @@ get_system_info() {
 
 	Output+=(
 		"${C["ApplicationName"]-}${APPLICATION_NAME-}${NC-} [${C["Version"]-}${APPLICATION_VERSION-}${NC-}]"
-		"${C["ApplicationName"]-}${APPLICATION_NAME-} Templates${NC-} [${C["Version"]-}${TEMPLATES_VERSION-}${NC-}]"
+		"${C["ApplicationName"]-}${TEMPLATES_NAME-}${NC-} [${C["Version"]-}${TEMPLATES_VERSION-}${NC-}]"
 		""
 		"Currently running as: $0 (PID $$)"
 		"Shell name from /proc/$$/exe: $(readlink /proc/$$/exe)"
@@ -490,7 +498,7 @@ clone_templates_repo() {
 	warn \
 		"Attempting to clone ${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} repo to '${C["Folder"]-}${TEMPLATES_PARENT_FOLDER}${NC-}' location."
 	if [[ -d ${TEMPLATES_PARENT_FOLDER?} ]]; then
-		rm -rf "${TEMPLATES_PARENT_FOLDER?}" ||
+		sudo rm -rf "${TEMPLATES_PARENT_FOLDER?}" ||
 			fatal \
 				"Failed to remove ${TEMPLATES_PARENT_FOLDER?}." \
 				"Failing command: ${C["FailingCommand"]-}rm -rf \"${TEMPLATES_PARENT_FOLDER?}\""

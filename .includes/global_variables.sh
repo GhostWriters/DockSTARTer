@@ -11,13 +11,11 @@ if [[ -e ${APPLICATION_CACHE_FOLDER} ]]; then
 	sudo rm -rf "${APPLICATION_CACHE_FOLDER}"
 fi
 declare -rgx APPLICATION_STATE_FOLDER="${XDG_STATE_HOME}/${APPLICATION_NAME,,}"
-declare -rgx TEMPLATES_STATE_FOLDER="${XDG_STATE_HOME}/DockSTARTer-Templates"
 
 declare -rgx DEFAULTS_FOLDER_NAME=".defaults"
 declare -rgx THEME_FOLDER_NAME=".themes"
 declare -rgx APP_ENV_FOLDER_NAME="env_files"
 
-declare -rgx TEMPLATES_PARENT_FOLDER_NAME="templates"
 declare -rgx TEMPLATES_FOLDER_NAME=".apps"
 declare -rgx INSTANCES_FOLDER_NAME=".instances"
 declare -rgx TIMESTAMPS_FOLDER_NAME=".timestamps"
@@ -26,20 +24,19 @@ declare -rgx COMPOSE_ENV_DEFAULT_FILE_NAME=".env.example"
 declare -rgx APPLICATION_INI_NAME="${APPLICATION_NAME,,}.ini"
 declare -rgx THEME_FILE_NAME="theme.ini"
 
-declare -rgx TEMPLATES_PARENT_FOLDER="${TEMPLATES_STATE_FOLDER}/${TEMPLATES_PARENT_FOLDER_NAME}"
+declare -rgx TEMPLATES_PARENT_FOLDER="${APPLICATION_STATE_FOLDER}/${TEMPLATES_PARENT_FOLDER_NAME}/${TEMPLATES_REPO_FOLDER_NAME}"
 declare -rgx TEMPLATES_FOLDER="${TEMPLATES_PARENT_FOLDER}/${TEMPLATES_FOLDER_NAME}"
 declare -rgx TEMP_FOLDER="${APPLICATION_CACHE_FOLDER}/${TEMP_FOLDER_NAME}"
 
 declare -a FolderList=(
 	"${APPLICATION_CACHE_FOLDER}"
 	"${APPLICATION_STATE_FOLDER}"
-	"${TEMPLATES_STATE_FOLDER}"
 	"${TEMPLATES_PARENT_FOLDER}"
 	"${TEMP_FOLDER}"
 )
 for Folder in "${FolderList[@]}"; do
-	if [[ ! -e ${Folder} ]]; then
-		mkdir -p "${Folder}"
+	if [[ ! -d ${Folder} ]]; then
+		sudo mkdir -p "${Folder}"
 	fi
 	sudo chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${Folder}"
 	sudo chmod -R a=,a+rX,u+w,g+w "${Folder}"
