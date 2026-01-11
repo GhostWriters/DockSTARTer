@@ -90,8 +90,8 @@ _dialog_backtitle_() {
 		TemplatesUpdateFlag=${UpdateFlag}
 		TemplatesVersionColor="${DC["ApplicationUpdate"]-}"
 	fi
-	RightHeading+="${ApplicationUpdateFlag}${DC["ApplicationVersionBrackets"]-}[${ApplicationVersionColor}${CurrentVersion}${DC["ApplicationVersionBrackets"]-}]${DC["NC"]-}"
-	RightHeading+="${TemplatesUpdateFlag}${DC["ApplicationVersionBrackets"]-}[${TemplatesVersionColor}${CurrentTemplatesVersion}${DC["ApplicationVersionBrackets"]-}]${DC["NC"]-}"
+	RightHeading+="${ApplicationUpdateFlag}${DC["ApplicationVersionBrackets"]-}A:[${DC["NC"]-}${ApplicationVersionColor}${CurrentVersion}${DC["ApplicationVersionBrackets"]-}]${DC["NC"]-}"
+	RightHeading+="${TemplatesUpdateFlag}${DC["ApplicationVersionBrackets"]-}T:[${DC["NC"]-}${TemplatesVersionColor}${CurrentTemplatesVersion}${DC["ApplicationVersionBrackets"]-}]${DC["NC"]-}"
 
 	local -i HeadingLength
 	set_screen_size
