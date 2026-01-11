@@ -8,7 +8,7 @@ declare -rgx APPLICATION_NAME='DockSTARTer'
 declare -rgx APPLICATION_COMMAND='ds'
 declare -rgx APPLICATION_REPO='https://github.com/GhostWriters/DockSTARTer'
 declare -rgx APPLICATION_LEGACY_BRANCH='master'
-declare -rgx APPLICATION_DEFAULT_BRANCH='TemplatesRepo'
+declare -rgx APPLICATION_DEFAULT_BRANCH='main'
 declare -rgx APPLICATION_FOLDER_NAME_DEFAULT='.dockstarter'
 
 declare -rgx TEMPLATES_NAME='DockSTARTer-Templates'
