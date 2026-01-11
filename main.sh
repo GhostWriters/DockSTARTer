@@ -634,7 +634,7 @@ init_check_update() {
 			MainBranch="${SOURCE_BRANCH}"
 		fi
 		warn \
-			"${	C["ApplicationName"]-}${APPLICATION_NAME}${NC-} branch '${C["Branch"]-}${Branch}${NC-}' appears to no longer exist." \
+			"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} branch '${C["Branch"]-}${Branch}${NC-}' appears to no longer exist." \
 			"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} is currently on version '${C["Version"]-}$(ds_version)${NC-}'."
 		if ! ds_branch_exists "${MainBranch}"; then
 			error \
@@ -644,6 +644,30 @@ init_check_update() {
 				"Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -u ${MainBranch}${NC-}' to update to the latest stable release '${C["Version"]-}$(ds_version "${MainBranch}")${NC-}'."
 		fi
 	fi
+	Branch="$(templates_branch)"
+	if templates_branch_exists "${Branch}"; then
+		if templates_update_available; then
+			warn \
+				"${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} [${C["Version"]-}${TEMPLATES_VERSION}${NC-}]" \
+				"An update to ${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} is available." \
+				"Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -u${NC-}' to update to version '${C["Version"]-}$(templates_version "${Branch}")${NC-}'."
+		else
+			info \
+				"${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} [${C["Version"]-}${TEMPLATES_VERSION}${NC-}]"
+		fi
+	else
+		Branch="${TEMPLATES_DEFAULT_BRANCH}"
+		warn \
+			"${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} branch '${C["Branch"]-}${Branch}${NC-}' appears to no longer exist." \
+			"${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} is currently on version '${C["Version"]-}$(templates_version)${NC-}'."
+		if ! templates_branch_exists "${Branch}"; then
+			error \
+				"${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} does not appear to have a '${C["Branch"]-}${TEMPLATES_DEFAULT_BRANCH}${NC-}' branch."
+		else
+			warn \
+				"Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -u ${Branch}${NC-}' to update to the latest stable release '${C["Version"]-}$(templates_version "${Branch}")${NC-}'."
+		fi
+	fi
 }
 
 init() {
@@ -651,6 +675,8 @@ init() {
 	init_check_system
 	# Verify the repo is cloned
 	init_check_cloned
+	# Verify the templates repo is cloned
+	init_check_templates
 	# Verify the dependencies are installed
 	init_check_dependencies
 	# Verify we are on the correct branch
@@ -659,8 +685,6 @@ init() {
 	init_check_symlink
 	# Verify that we are on the latest version
 	init_check_update
-	# Verify the templates repo is cloned
-	init_check_templates
 }
 
 # Main Function

@@ -21,7 +21,7 @@ usage() {
 				if [[ ${TEMPLATES_VERSION-} ]]; then
 					TEMPLATES_HEADING+=" [${C["Version"]-}${TEMPLATES_VERSION}${NC-}]"
 				fi
-				if ds_update_available; then
+				if templates_update_available; then
 					TEMPLATES_HEADING+=" (${C["Update"]-}Update Available${NC-})"
 				fi
 				cat << EOF
