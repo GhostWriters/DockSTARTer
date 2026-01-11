@@ -17,7 +17,7 @@ usage() {
 				if ds_update_available; then
 					APPLICATION_HEADING+=" (${C["Update"]-}Update Available${NC-})"
 				fi
-				local TEMPLATES_HEADING="${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-}"
+				local TEMPLATES_HEADING="${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-}"
 				if [[ ${TEMPLATES_VERSION-} ]]; then
 					TEMPLATES_HEADING+=" [${C["Version"]-}${TEMPLATES_VERSION}${NC-}]"
 				fi
@@ -410,17 +410,17 @@ EOF
 			Found=1
 			cat << EOF
 ${C["UsageCommand"]-}-u --update${NC-}
-	Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} and ${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} to the latest commits from the current branch
+	Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} and ${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} to the latest commits from the current branch
 ${C["UsageCommand"]-}-u --update${NC-} ${C["UsageBranch"]-}<AppBranch>${NC-} ${C["UsageBranch"]-}<TemplateBranch>${NC-}
-	Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} and ${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} to the latest commits from the specified branches
+	Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} and ${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} to the latest commits from the specified branches
 ${C["UsageCommand"]-}--update-app${NC-}
 	Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} to the latest commits from the current branch
 ${C["UsageCommand"]-}--update-app${NC-} ${C["UsageBranch"]-}<AppBranch>${NC-}
 	Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} to the latest commits from the specified branch
 ${C["UsageCommand"]-}--update-templates${NC-}
-	Update ${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} to the latest commits from the current branch
+	Update ${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} to the latest commits from the current branch
 ${C["UsageCommand"]-}--update-templates${NC-} ${C["UsageBranch"]-}<TemplateBranch>${NC-}
-	Update ${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} to the latest commits from the specified branch
+	Update ${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} to the latest commits from the specified branch
 EOF
 			;;&
 		-V | --version | "")

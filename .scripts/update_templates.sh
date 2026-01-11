@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-declare TargetName="${APPLICATION_NAME} Templates"
+declare TargetName="${TEMPLATES_NAME}"
 
 update_templates() {
 	local Branch CurrentVersion RemoteVersion

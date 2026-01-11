@@ -687,14 +687,14 @@ run_command() {
 				echo "${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} [${C["Version"]-}$(ds_version "${AppBranch}")}${NC-}]"
 			fi
 			if [[ -z ${TemplatesBranch} ]]; then
-				echo "${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} [${C["Version"]-}$(templates_version)}${NC-}]"
+				echo "${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} [${C["Version"]-}$(templates_version)}${NC-}]"
 			else
 				if ! templates_branch_exists "${TemplatesBranch}"; then
 					error \
-						"${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} branch '${C["Branch"]-}${TemplatesBranch}${NC-}' does not exist."
+						"${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} branch '${C["Branch"]-}${TemplatesBranch}${NC-}' does not exist."
 					exit 1
 				fi
-				echo "${C["ApplicationName"]-}${APPLICATION_NAME} Templates${NC-} [${C["Version"]-}$(templates_version "${TemplatesBranch}")}${NC-}]"
+				echo "${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} [${C["Version"]-}$(templates_version "${TemplatesBranch}")}${NC-}]"
 			fi
 			;;
 
