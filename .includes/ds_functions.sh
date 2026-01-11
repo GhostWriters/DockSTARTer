@@ -106,12 +106,12 @@ templates_update_available() {
 ds_switch_branch() {
 	local CurrentBranch
 	CurrentBranch="$(ds_branch)"
-	if [[ ${CurrentBranch} == "${SOURCE_BRANCH}" ]] && ds_branch_exists "${TARGET_BRANCH}"; then
+	if [[ ${CurrentBranch} == "${APPLICATION_LEGACY_BRANCH}" ]] && ds_branch_exists "${APPLICATION_DEFAULT_BRANCH}"; then
 		export FORCE=true
 		export PROMPT="CLI"
 		notice \
-			"Automatically switching from ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} branch '${C["Branch"]}${SOURCE_BRANCH}${NC}' to '${C["Branch"]}${TARGET_BRANCH}${NC}'."
-		run_script 'update_self' "${TARGET_BRANCH}" "${ARGS[@]}"
+			"Automatically switching from ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} branch '${C["Branch"]}${APPLICATION_LEGACY_BRANCH}${NC}' to '${C["Branch"]}${APPLICATION_DEFAULT_BRANCH}${NC}'."
+		run_script 'update_self' "${APPLICATION_DEFAULT_BRANCH}" "${ARGS[@]}"
 		exit
 	fi
 }

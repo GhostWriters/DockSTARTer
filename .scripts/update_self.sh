@@ -6,9 +6,9 @@ update_self() {
 	local Branch CurrentVersion RemoteVersion
 	Branch=${1-}
 	shift || true
-	if [[ ${Branch-} == "${SOURCE_BRANCH}" ]] && ds_branch_exists "${TARGET_BRANCH}"; then
-		warn "Updating to branch '${C["Branch"]}${TARGET_BRANCH}${NC}' instead of '${C["Branch"]}${SOURCE_BRANCH}${NC}'."
-		Branch="${TARGET_BRANCH}"
+	if [[ ${Branch-} == "${APPLICATION_LEGACY_BRANCH}" ]] && ds_branch_exists "${APPLICATION_DEFAULT_BRANCH}"; then
+		warn "Updating to branch '${C["Branch"]}${APPLICATION_DEFAULT_BRANCH}${NC}' instead of '${C["Branch"]}${APPLICATION_LEGACY_BRANCH}${NC}'."
+		Branch="${APPLICATION_DEFAULT_BRANCH}"
 	fi
 
 	local Title="Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC}"

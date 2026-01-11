@@ -9,10 +9,9 @@ declare -rgx APPLICATION_COMMAND='ds'
 declare -rgx APPLICATION_FOLDER_NAME_DEFAULT='.dockstarter'
 declare -rgx APPLICATION_REPO='https://github.com/GhostWriters/DockSTARTer'
 declare -rgx TEMPLATES_REPO='https://github.com/GhostWriters/DockSTARTer-Templates'
-declare -rgx SOURCE_BRANCH='master'
-declare -rgx TARGET_BRANCH='TemplatesRepo'
+declare -rgx APPLICATION_LEGACY_BRANCH='master'
+declare -rgx APPLICATION_DEFAULT_BRANCH='TemplatesRepo'
 declare -rgx TEMPLATES_DEFAULT_BRANCH='main'
-
 
 # Version Functions
 # https://stackoverflow.com/questions/4023830/how-to-compare-two-strings-in-dot-separated-version-format-in-bash#comment92693604_4024263
@@ -474,10 +473,10 @@ check_sudo() {
 clone_repo() {
 	warn \
 		"Attempting to clone ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} repo to '${C["Folder"]-}${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}${NC-}' location."
-	git clone -b "${TARGET_BRANCH}" "${APPLICATION_REPO}" "${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}" ||
+	git clone -b "${APPLICATION_DEFAULT_BRANCH}" "${APPLICATION_REPO}" "${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}" ||
 		fatal \
 			"Failed to clone ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} repo." \
-			"Failing command: ${C["FailingCommand"]-}git clone -b \"${TARGET_BRANCH}\" \"${APPLICATION_REPO}\" \"${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}\""
+			"Failing command: ${C["FailingCommand"]-}git clone -b \"${APPLICATION_DEFAULT_BRANCH}\" \"${APPLICATION_REPO}\" \"${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}\""
 	if [[ ${#ARGS[@]} -eq 0 ]]; then
 		notice \
 			"Performing first run install."
@@ -629,16 +628,16 @@ init_check_update() {
 				"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} [${C["Version"]-}${APPLICATION_VERSION}${NC-}]"
 		fi
 	else
-		local MainBranch="${TARGET_BRANCH}"
+		local MainBranch="${APPLICATION_DEFAULT_BRANCH}"
 		if ! ds_branch_exists "${MainBranch}"; then
-			MainBranch="${SOURCE_BRANCH}"
+			MainBranch="${APPLICATION_LEGACY_BRANCH}"
 		fi
 		warn \
 			"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} branch '${C["Branch"]-}${Branch}${NC-}' appears to no longer exist." \
 			"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} is currently on version '${C["Version"]-}$(ds_version)${NC-}'."
 		if ! ds_branch_exists "${MainBranch}"; then
 			error \
-				"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} does not appear to have a '${C["Branch"]-}${TARGET_BRANCH}${NC-}' or '${C["Branch"]-}${SOURCE_BRANCH}${NC-}' branch."
+				"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} does not appear to have a '${C["Branch"]-}${APPLICATION_DEFAULT_BRANCH}${NC-}' or '${C["Branch"]-}${APPLICATION_LEGACY_BRANCH}${NC-}' branch."
 		else
 			warn \
 				"Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -u ${MainBranch}${NC-}' to update to the latest stable release '${C["Version"]-}$(ds_version "${MainBranch}")${NC-}'."
