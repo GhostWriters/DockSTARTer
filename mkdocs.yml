@@ -79,9 +79,8 @@ plugins:
   - multirepo:
       cleanup: true
       keep_docs_dir: false
-      docs_dir: docs/apps
-      repos:
-        - section: apps
+      nav_repos:
+        - name: apps
           import_url: https://github.com/GhostWriters/DockSTARTer-Templates?branch=main
   - include_dir_to_nav
   - redirects:
