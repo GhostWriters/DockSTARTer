@@ -79,6 +79,9 @@ plugins:
   - multirepo:
       cleanup: true
       keep_docs_dir: false
+      nav_repos:
+        - name: apps
+          import_url: https://github.com/GhostWriters/DockSTARTer-Templates?branch=main
   - include_dir_to_nav
   - redirects:
       redirect_maps:
@@ -121,8 +124,6 @@ nav:
       - advanced/technical-info.md
       - advanced/uninstall.md
       - advanced/vpn-info.md
-  - App Specifics:
-      - !import https://github.com/GhostWriters/DockSTARTer-Templates?branch=main
   - Overrides:
       - overrides/introduction.md
       - overrides/autoscan.md
