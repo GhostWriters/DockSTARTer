@@ -41,6 +41,19 @@ jobs:
       - name: Install dependencies
         run: pip install -r docs/requirements.txt
 
+      - name: Checkout Templates
+        uses: actions/checkout@v4
+        with:
+          repository: GhostWriters/DockSTARTer-Templates
+          path: templates-repo
+          sparse-checkout: docs/apps
+
+      - name: Prepare Apps Documentation
+        run: |
+          mkdir -p docs/apps
+          cp -r templates-repo/docs/apps/* docs/apps/
+          rm -rf templates-repo
+
       - name: Build documentation
         run: mkdocs build > build.log 2>&1 || (cat build.log && exit 1)
 
