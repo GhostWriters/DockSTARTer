@@ -76,12 +76,6 @@ plugins:
       enable_creation_date: true
   - minify:
       minify_html: true
-  - multirepo:
-      cleanup: true
-      keep_docs_dir: false
-      repos:
-        - section: apps
-          import_url: https://github.com/GhostWriters/DockSTARTer-Templates?branch=main
   - include_dir_to_nav
   - redirects:
       redirect_maps:
