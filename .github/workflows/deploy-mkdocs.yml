@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - Docs
   repository_dispatch:
     types: [templates-update]
   pull_request:
