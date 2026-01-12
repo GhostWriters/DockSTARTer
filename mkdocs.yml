@@ -122,7 +122,7 @@ nav:
       - advanced/uninstall.md
       - advanced/vpn-info.md
   - App Specifics:
-      - '!import https://github.com/GhostWriters/DockSTARTer-Templates?branch=main'
+      - !import https://github.com/GhostWriters/DockSTARTer-Templates?branch=main
   - Overrides:
       - overrides/introduction.md
       - overrides/autoscan.md
