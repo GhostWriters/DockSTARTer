@@ -34,6 +34,19 @@ fi
 
 readonly -a ARGS=("$@")
 
+# Check if tty is writable
+if [[ ${CI-} != true && ! -w $(tty) ]]; then
+	case "$(uname -s)" in
+		Linux) exec script -qefc "$(printf "%q " "$0" "${ARGS[@]}")" /dev/null ;;
+		Darwin) exec script -q /dev/null "$0" "${ARGS[@]}" ;;
+		*)
+			echo "The TTY is not writable."
+			echo "${APPLICATION_NAME} requires a writable TTY."
+			exit 1
+			;;
+	esac
+fi
+
 # Github Token for CI
 if [[ ${CI-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS-} == true ]]; then
 	readonly GH_HEADER="Authorization: token ${GH_TOKEN}"
