@@ -34,19 +34,6 @@ fi
 
 readonly -a ARGS=("$@")
 
-# Check if tty is writable
-if [[ ${CI-} != true && ! -w $(tty) ]]; then
-	case "$(uname -s)" in
-		Linux) exec script -qefc "$(printf "%q " "$0" "${ARGS[@]}")" /dev/null ;;
-		Darwin) exec script -q /dev/null "$0" "${ARGS[@]}" ;;
-		*)
-			echo "The TTY is not writable."
-			echo "${APPLICATION_NAME} requires a writable TTY."
-			exit 1
-			;;
-	esac
-fi
-
 # Github Token for CI
 if [[ ${CI-} == true ]] && [[ ${TRAVIS_SECURE_ENV_VARS-} == true ]]; then
 	readonly GH_HEADER="Authorization: token ${GH_TOKEN}"
@@ -589,6 +576,20 @@ init_check_cloned() {
 	fi
 }
 
+init_check_tty() {
+	# Check if tty is writable
+	if [[ ${CI-} != true && ! -w $(tty) ]]; then
+		case "$(uname -s)" in
+			Linux) exec script -qefc "$(printf "%q " "$0" "${ARGS[@]}")" /dev/null ;;
+			Darwin) exec script -q /dev/null "$0" "${ARGS[@]}" ;;
+			*)
+				echo "The TTY is not writable."
+				echo "${APPLICATION_NAME} requires a writable TTY."
+				exit 1
+				;;
+		esac
+	fi
+}
 init_check_templates() {
 	if ! check_templates_repo; then
 		clone_templates_repo
@@ -696,6 +697,8 @@ init() {
 	init_check_cloned
 	# Verify the templates repo is cloned
 	init_check_templates
+	# Verify the terminal is writable
+	init_check_tty
 	# Verify the dependencies are installed
 	init_check_dependencies
 	# Verify we are on the correct branch
