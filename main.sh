@@ -583,8 +583,9 @@ init_check_tty() {
 			Linux) exec script -qefc "$(printf "%q " "$0" "${ARGS[@]}")" /dev/null ;;
 			Darwin) exec script -q /dev/null "$0" "${ARGS[@]}" ;;
 			*)
-				echo "The TTY is not writable."
-				echo "${APPLICATION_NAME} requires a writable TTY."
+				error \
+					"The TTY is not writable." \
+					"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} requires a writable TTY."
 				exit 1
 				;;
 		esac
