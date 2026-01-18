@@ -349,38 +349,61 @@ fatal() {
 	readarray -t Stack < <(get_system_info)
 	Stack+=("")
 
-	local StackSize=${#FUNCNAME[@]}
+	local -i StackSize=${#FUNCNAME[@]}
 	local -i FrameNumberLength=${#StackSize}
 	local NoFile="<nofile>"
 	local NoFunction="<nofunction>"
 
-	local SourceFile="${BASH_SOURCE[0]:-$NoFile}"
-	local -i line="${thisFuncLine}"
-	local func="${FUNCNAME[0]:-$NoFunction}"
-	local cmd
-	local -i CurrentArg=0
-	local -i CmdArgCount=0
-	local indent=""
-	local FramePrefix="  "
-	local -i StartFrame=1
-	for ((Frame = 0; Frame <= StackSize; Frame++)); do
-		local StackLineFormat="${C["TraceFrameNumber"]}%${FrameNumberLength}d${NC}:${indent}${FramePrefix}${C["TraceSourceFile"]}%s${NC}:${C["TraceLineNumber"]}%d${NC} (${C["TraceFunction"]}%s${NC})"
+	# Pre-calculate Arg Offsets for LIFO BASH_ARGV (with extdebug)
+	local -a ArgOffsets=()
+	local -i Offset=0
+	local -i j
+	for ((j = 0; j < StackSize; j++)); do
+		ArgOffsets[j]=${Offset}
+		Offset+=${BASH_ARGC[j]-0}
+	done
 
-		if [[ Frame -ge StartFrame ]]; then
-			# shellcheck disable=SC2059 # Don't use variables in the printf format string.
-			Stack+=(
-				"$(printf "${StackLineFormat}" "${Frame}" "${SourceFile}" "${line}" "${func}")"
-			)
+	local indent=""
+	local -i i
+	for ((i = StackSize - 1; i >= 0; i--)); do
+		local func="${FUNCNAME[i]:-$NoFunction}"
+		local SourceFile="${BASH_SOURCE[i]:-$NoFile}"
+		local -i line="${thisFuncLine}"
+		if ((i > 0)); then
+			line="${BASH_LINENO[i - 1]:-0}"
 		fi
 
-		if [[ -n ${cmd-} ]]; then
-			local FrameCmdPrefix="${C["TraceFrameLines"]}▲${NC}"
+		local prefix=""
+		local arrowIndent="${indent}"
+		if ((i < StackSize - 1)); then
+			prefix="${C["TraceFrameLines"]}└>${NC}"
+			if [[ ${#indent} -ge 2 ]]; then
+				arrowIndent="${indent%  }"
+			fi
+		fi
+
+		# Format: "Num: [Indent]Arrow File:Line (Function)"
+		local StackLineFormat="${C["TraceFrameNumber"]}%${FrameNumberLength}d${NC}: ${arrowIndent}${prefix}${C["TraceSourceFile"]}%s${NC}:${C["TraceLineNumber"]}%d${NC} (${C["TraceFunction"]}%s${NC})"
+		# shellcheck disable=SC2059 # Dynamic format string for padding
+		Stack+=(
+			"$(printf "${StackLineFormat}" "${i}" "${SourceFile##*/}" "${line}" "${func}")"
+		)
+
+		# Command and Arguments for this frame (Show what this frame CALLED)
+		if ((i > 0)); then
+			local next_i=$((i - 1))
+			local cmd="${FUNCNAME[next_i]:-$NoFunction}"
+			local -i CmdArgCount=${BASH_ARGC[next_i]-0}
+			local -i CurrentArg=${ArgOffsets[next_i]-0}
+
+			local FrameCmdPrefix="${C["TraceFrameLines"]}│${NC}"
 			local FrameArgPrefix="${C["TraceFrameLines"]}│${NC}"
+
 			local cmdString="${C["TraceCmd"]}${cmd}${NC}"
 			local -a cmdArray=()
 			cmdArray+=("${FrameCmdPrefix}${cmdString}")
+
 			if [[ CmdArgCount -ne 0 ]]; then
-				local -i j
 				for ((j = CurrentArg + CmdArgCount - 1; j >= CurrentArg; j--)); do
 					local cmdArgString="${BASH_ARGV[$j]}"
 					cmdArgString="$(strip_ansi_colors "${cmdArgString}")"
@@ -393,24 +416,15 @@ fatal() {
 					done <<< "${cmdArgString}"
 				done
 			fi
-			if [[ Frame -ge StartFrame ]]; then
-				local -i StackCmdIndent
-				StackCmdIndent=$((FrameNumberLength + 1 + ${#indent} + 2))
-				Stack+=(
-					"$(indent_text ${StackCmdIndent} "${cmdArray[@]}")"
-				)
-			fi
+
+			# Align command block with the start of the frame text
+			local -i StackCmdIndent=$((FrameNumberLength + 2 + ${#indent}))
+			Stack+=(
+				"$(indent_text ${StackCmdIndent} "${cmdArray[@]}")"
+			)
 		fi
-		SourceFile="${BASH_SOURCE[Frame + 1]:-$NoFile}"
-		line="${BASH_LINENO[Frame]:-0}"
-		func="${FUNCNAME[Frame + 1]:-$NoFunction}"
-		cmd="${FUNCNAME[Frame]:-$NoFunction}"
-		CurrentArg+=${CmdArgCount}
-		CmdArgCount=${BASH_ARGC[Frame]-}
-		if [[ Frame -ge StartFrame ]]; then
-			indent+="  "
-			FramePrefix="${C["TraceFrameLines"]}└─${NC}"
-		fi
+
+		indent+="  "
 	done
 
 	fatal_notrace \
