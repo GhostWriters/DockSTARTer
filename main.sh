@@ -142,6 +142,9 @@ declare -Agr F=( # Foreground
 	[Y]=$(tput setaf 3 2> /dev/null || echo -e "\e[33m") # Yellow
 )
 
+DM=$(tput dim 2> /dev/null || echo -e "\e[2m") # Dim
+readonly DM
+export DM
 BD=$(tput bold 2> /dev/null || echo -e "\e[1m") # Bold
 readonly BD
 export BD
@@ -156,7 +159,7 @@ readonly BS
 export BS
 
 declare -Agr C=( # Pre-defined colors
-	["Timestamp"]="${NC}"
+	["Timestamp"]="${DM}"
 	["Trace"]="${F[B]}"
 	["Debug"]="${F[B]}"
 	["Info"]="${F[B]}"
