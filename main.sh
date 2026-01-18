@@ -4,6 +4,8 @@ set +o posix
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+RANDOM=$(($(date +%s) + $$))
+
 declare -rgx APPLICATION_NAME='DockSTARTer'
 declare -rgx APPLICATION_COMMAND='ds'
 declare -rgx APPLICATION_REPO='https://github.com/GhostWriters/DockSTARTer'
@@ -325,10 +327,18 @@ timestamped_log() {
 	# Create a notice for each argument passed to the function
 	local Timestamp
 	Timestamp=$(date +"%F %T")
+
 	# Create separate notices with the same timestamp for each line in a log message
 	local line
 	while IFS= read -r line; do
-		printf "${NC}${C["Timestamp"]-}${Timestamp}${NC-} ${LogLevelTag}   %s${NC}\n" "${line}"
+		if declare -F strip_ansi_colors > /dev/null; then
+			line=$(strip_ansi_colors "${line}")
+		fi
+
+		local party_line
+		party_line=$(random_color "${line}")
+
+		printf "${NC}${C["Timestamp"]-}${Timestamp}${NC-} ${LogLevelTag}   %s${NC}\n" "${party_line}"
 	done <<< "${LogMessage}"
 }
 trace() { log "${TRACE-}" "$(timestamped_log "${C["Trace"]-}[TRACE ]${NC-}" "$@")"; }

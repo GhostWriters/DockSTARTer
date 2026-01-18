@@ -322,3 +322,26 @@ table() {
 	local -a Data=("${@:Cols+1}")
 	printf '%s\n' "${Data[@]}" | table_pipe "${Cols}" "${Headings[@]}"
 }
+
+random_color() {
+	# shellcheck disable=SC2154 # F, BL, NC are defined in main.sh
+	local -a colors=("${F[B]}" "${F[C]}" "${F[G]}" "${F[M]}" "${F[R]}" "${F[W]}" "${F[Y]}")
+	if [[ $# -eq 0 ]]; then
+		printf '%s' "${BL}${colors[RANDOM % ${#colors[@]}]}"
+		return
+	fi
+
+	local InputString="${1-}"
+	local Offset=$((RANDOM % 2))
+	local Result=""
+	local i
+	for ((i = 0; i < ${#InputString}; i++)); do
+		local char="${InputString:i:1}"
+		if (((i + Offset) % 2 == 0)); then
+			Result+="${BL}${colors[RANDOM % ${#colors[@]}]}${char}${NC}"
+		else
+			Result+="${char}"
+		fi
+	done
+	printf '%s' "${Result}"
+}
