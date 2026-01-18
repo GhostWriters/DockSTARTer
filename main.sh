@@ -145,6 +145,9 @@ declare -Agr F=( # Foreground
 DM=$(tput dim 2> /dev/null || echo -e "\e[2m") # Dim
 readonly DM
 export DM
+BL=$(tput blink 2> /dev/null || echo -e "\e[5m") # Blink
+readonly BL
+export BL
 BD=$(tput bold 2> /dev/null || echo -e "\e[1m") # Bold
 readonly BD
 export BD
