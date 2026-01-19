@@ -200,6 +200,7 @@ declare -Agr C=( # Pre-defined colors
 	["URL"]="${F[C]}${UL}"
 	["UserCommand"]="${F[Y]}${BD}"
 	["UserCommandError"]="${F[R]}${UL}"
+	["UserCommandErrorMarker"]="${F[R]}"
 	["Var"]="${F[M]}"
 	["Version"]="${F[C]}"
 	["Yes"]="${F[G]}"
