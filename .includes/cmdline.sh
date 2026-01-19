@@ -1097,17 +1097,24 @@ cmdline_error() {
 		sed "s/%c/${FormattedFailingCommand}/g ; s/%o/${FormattedFailingOption}/g" <<< "${Message}"
 	)"
 
+	local PrefixString="'${FailingCommandLine}"
+	if [[ -n ${FailingCommandLine} ]]; then
+		PrefixString+=" "
+	fi
+	local -i CaretOffset=${#PrefixString}
+
 	error "$(
-		cmdline_error_text "${FailingCommand}" "${FormattedFailingCommandLine}" "${FailingMessage}"
+		cmdline_error_text "${FailingCommand}" "${FormattedFailingCommandLine}" "${FailingMessage}" "${CaretOffset}"
 	)"
 }
 
 cmdline_error_text() {
 	# 'cmdline_error_text'
-	# string Command, string CommandLine, string Message
+	# string Command, string CommandLine, string Message, int CaretOffset
 	local Command=${1-}
 	local CommandLine=${2-}
 	local Message=${3-}
+	local -i CaretOffset=${4-0}
 
 	local -i Indent=3
 
@@ -1127,10 +1134,17 @@ cmdline_error_text() {
 		CommandUsage="$(usage "${Command}" NoHeading)"
 		UsageText="Usage is:\n$(pr -e -t -o "${Indent}" <<< "${CommandUsage}")"
 	fi
+
+	local PointerLine
+	if [[ ${CaretOffset} -gt 0 ]]; then
+		printf -v PointerLine "%*s%s%s" $((Indent + CaretOffset)) "" "${C["UserCommandErrorMarker"]-}^" "${NC-}"
+	fi
+
 	cat << EOF
 Error in command line:
 
 ${CommandLine}
+${PointerLine}
 
 ${Message}
 
