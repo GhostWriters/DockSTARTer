@@ -127,6 +127,13 @@ config_theme() {
 		run_script 'config_set' LineCharacters "${LineCharacters}"
 	fi
 
+	DC+=(
+		["Borders"]="${Borders}"
+		["LineCharacters"]="${LineCharacters}"
+		["Scrollbar"]="${Scrollbar}"
+		["Shadow"]="${Shadow}"
+	)
+
 	# Set the dialog options based on the settings in the .ini file
 	if is_true "${Borders}"; then
 		if is_false "${LineCharacters}"; then
