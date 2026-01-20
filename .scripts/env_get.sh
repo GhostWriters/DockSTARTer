@@ -29,7 +29,7 @@ env_get() {
 	if [[ -e ${VarFile} ]]; then
 		local LiteralValue
 		LiteralValue="$(run_script 'env_get_literal' "${VarName}" "${VarFile}")"
-		${GREP} --color=never -Po "^\s*(?:(?:(?<Q>['\"]).*\k<Q>)|(?:[^\s]*[^#]*))" <<< "${LiteralValue}" | xargs 2> /dev/null || true
+		${GREP} --color=never -Po "^\s*(?:(?:(?<Q>['\"]).*\k<Q>)|(?:[^\s]+(?:\s+(?!#)[^\s]+)*))" <<< "${LiteralValue}" | xargs 2> /dev/null || true
 	else
 		# VarFile does not exist, give a warning
 		warn "File '${C["File"]}${VarFile}${NC}' does not exist."
@@ -40,7 +40,7 @@ env_get() {
 test_env_get() {
 	# Return a "pass" for now.
 	# There is an error to be fixed in "Var_15=  Va# lue# Not a Comment"
-	local ForcePass=1 # Force the tests to pass even on failure if set to a non-empty value
+	local ForcePass='' # Force the tests to pass even on failure if set to a non-empty value
 	local -i result=0
 	local -a Test=(
 		Var_01 "Var_01='Value'" Value
