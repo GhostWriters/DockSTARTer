@@ -272,18 +272,62 @@ table_pipe() {
 	local -a ColWidths
 	readarray -t ColWidths < <(longest_columns "${Cols}" "${VisibleData[@]}")
 
-	local Separator="+"
+	local -A CharSet
+	if is_true "${DC["LineCharacters"]-}"; then
+		CharSet=(
+			["TopLeft"]="┌"
+			["TopRight"]="┐"
+			["BottomLeft"]="└"
+			["BottomRight"]="┘"
+			["Horizontal"]="─"
+			["Vertical"]="│"
+			["Cross"]="┼"
+			["TLeft"]="├"
+			["TRight"]="┤"
+			["TTop"]="┬"
+			["TBottom"]="┴"
+		)
+	else
+		CharSet=(
+			["TopLeft"]="+"
+			["TopRight"]="+"
+			["BottomLeft"]="+"
+			["BottomRight"]="+"
+			["Horizontal"]="-"
+			["Vertical"]="|"
+			["Cross"]="+"
+			["TLeft"]="|"
+			["TRight"]="|"
+			["TTop"]="-"
+			["TBottom"]="-"
+		)
+	fi
+
+	local TopBorder="${CharSet["TopLeft"]}"
+	local MiddleBorder="${CharSet["TLeft"]}"
+	local BottomBorder="${CharSet["BottomLeft"]}"
+
 	for ((i = 0; i < Cols; i++)); do
 		local Width=${ColWidths[i]}
 		local Dashes
 		Dashes="$(printf "%*s" $((Width + 2)) "")"
-		Separator="${Separator}${Dashes// /-}+"
+		Dashes="${Dashes// /${CharSet["Horizontal"]}}"
+
+		if ((i < Cols - 1)); then
+			TopBorder+="${Dashes}${CharSet["TTop"]}"
+			MiddleBorder+="${Dashes}${CharSet["Cross"]}"
+			BottomBorder+="${Dashes}${CharSet["TBottom"]}"
+		else
+			TopBorder+="${Dashes}${CharSet["TopRight"]}"
+			MiddleBorder+="${Dashes}${CharSet["TRight"]}"
+			BottomBorder+="${Dashes}${CharSet["BottomRight"]}"
+		fi
 	done
 
-	echo "${Separator}"
+	echo "${TopBorder}"
 
 	# Print Headings
-	local RowStr="|"
+	local RowStr="${CharSet["Vertical"]}"
 	for ((c = 0; c < Cols; c++)); do
 		local Item="${Headings[c]-}"
 		local VisItem="${VisibleData[c]-}"
@@ -291,15 +335,15 @@ table_pipe() {
 		local PadSize=$((Width - ${#VisItem}))
 		local Padding
 		Padding="$(printf "%*s" "${PadSize}" "")"
-		RowStr="${RowStr} ${Item}${Padding} |"
+		RowStr="${RowStr} ${Item}${Padding} ${CharSet["Vertical"]}"
 	done
 	echo "${RowStr}"
-	echo "${Separator}"
+	echo "${MiddleBorder}"
 
 	# Print Data
 	local -i TotalItems=${#Data[@]}
 	for ((i = 0; i < TotalItems; i += Cols)); do
-		local RowStr="|"
+		local RowStr="${CharSet["Vertical"]}"
 		for ((c = 0; c < Cols; c++)); do
 			local Idx=$((i + c))
 			local Item="${Data[Idx]-}"
@@ -308,11 +352,11 @@ table_pipe() {
 			local PadSize=$((Width - ${#VisItem}))
 			local Padding
 			Padding="$(printf "%*s" "${PadSize}" "")"
-			RowStr="${RowStr} ${Item}${Padding} |"
+			RowStr="${RowStr} ${Item}${Padding} ${CharSet["Vertical"]}"
 		done
 		echo "${RowStr}"
 	done
-	echo "${Separator}"
+	echo "${BottomBorder}"
 }
 
 table() {

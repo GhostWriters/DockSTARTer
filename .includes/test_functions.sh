@@ -46,77 +46,71 @@ run_unit_tests_pipe() {
 		"Input" "Expected Value" "Returned Value"
 	)
 
-	local -i InputCols ExpectedValueCols ReturnedValueCols
-	{
-		read -r InputCols
-		read -r ExpectedValueCols
-		read -r ReturnedValueCols
-	} < <(longest_columns 3 "${Headings[@]}" "${Test[@]}")
-	local Input="${Headings[0]}"
-	local ExpectedValue="${Headings[1]}"
-	local ReturnedValue="${Headings[2]}"
+	local -a TableData
+	local -a LeftPointers
+	local -a RightPointers
 
-	local -i InputPadSize ExpectedValuePadSize ReturnedValuePadSize
-	InputPadSize=$((InputCols - ${#Input}))
-	ExpectedValuePadSize=$((ExpectedValueCols - ${#ExpectedValue}))
-	ReturnedValuePadSize=$((ReturnedValueCols - ${#ReturnedValue}))
+	# Calculate Padding
+	local FailLeft="${C["UnitTestFailArrow"]-}>"
+	local FailRight="<${C["UnitTestFailArrow"]-}"
+	local VisFailLeft
+	VisFailLeft="$(strip_ansi_colors "${FailLeft}")"
+	local VisFailRight
+	VisFailRight="$(strip_ansi_colors "${FailRight}")"
+	local -i LeftPadSize=${#VisFailLeft}
+	local -i RightPadSize=${#VisFailRight}
+	local LeftSpacer
+	LeftSpacer="$(printf "%*s" "${LeftPadSize}" "")"
+	local RightSpacer
+	RightSpacer="$(printf "%*s" "${RightPadSize}" "")"
 
-	local InputPad ExpectedValuePad ReturnedValuePad
-	InputPad="$(printf "%*s" ${InputPadSize})"
-	ExpectedValuePad="$(printf "%*s" ${ExpectedValuePadSize})"
-	ReturnedValuePad="$(printf "%*s" ${ReturnedValuePadSize})"
-	local TableLine
-	TableLine="$(
-		printf "+ %*s   + %*s   +   %*s +" \
-			"${InputCols}" "" "${ExpectedValueCols}" "" "${ReturnedValueCols}" ""
-	)"
-	TableLine=" ${TableLine// /-} "
-	local Heading
-	Heading="$(
-		printf " | %s  ${InputPad} | %s  ${ExpectedValuePad} | %s  ${ReturnedValuePad} | " \
-			"${Headings[0]}" "${Headings[1]}" "${Headings[2]}"
-	)"
-	notice \
-		"${TableLine}" \
-		"${Heading}" \
-		"${TableLine}"
+	# Padding for Top Border, Header, Middle Border
+	LeftPointers+=("${LeftSpacer}" "${LeftSpacer}" "${LeftSpacer}")
+	RightPointers+=("${RightSpacer}" "${RightSpacer}" "${RightSpacer}")
+
 	local -i i
 	for ((i = 0; i < ${#Test[@]}; i += 3)); do
 		local Input="${Test[i]-}"
 		local ExpectedValue="${Test[i + 1]-}"
 		local ReturnedValue="${Test[i + 2]-}"
 
-		local -i InputPadSize ExpectedValuePadSize ReturnedValuePadSize
-		InputPadSize=$((InputCols - ${#Input}))
-		ExpectedValuePadSize=$((ExpectedValueCols - ${#ExpectedValue}))
-		ReturnedValuePadSize=$((ReturnedValueCols - ${#ReturnedValue}))
-
-		local InputPad ExpectedValuePad ReturnedValuePad
-		InputPad="$(printf "%*s" ${InputPadSize})"
-		ExpectedValuePad="$(printf "%*s" ${ExpectedValuePadSize})"
-		ReturnedValuePad="$(printf "%*s" ${ReturnedValuePadSize})"
-
 		if [[ ${ReturnedValue} == "${ExpectedValue}" ]]; then
-			local SuccessLine
-			SuccessLine="$(
-				printf " | [${InputColor}%s${NC-}]${InputPad} | [${ExpectedColor}%s${NC-}]${ExpectedValuePad} | [${C["UnitTestPass"]-}%s${NC-}]${ReturnedValuePad} | " \
-					"${Input}" "${ExpectedValue}" "${ReturnedValue}"
-			)"
-			notice \
-				"${SuccessLine}"
+			LeftPointers+=("${LeftSpacer}")
+			RightPointers+=("${RightSpacer}")
+			TableData+=(
+				"${InputColor}${Input}${NC-}"
+				"${ExpectedColor}${ExpectedValue}${NC-}"
+				"${C["UnitTestPass"]-}${ReturnedValue}${NC-}"
+			)
 		else
-			local FailLine
-			FailLine="$(
-				printf "${C["UnitTestFailArrow"]-}>${NC-}| [${C["UnitTestFail"]-}%s${NC-}]${InputPad} | [${C["UnitTestFail"]-}%s${NC-}]${ExpectedValuePad} | [${C["UnitTestFail"]-}%s${NC-}]${ReturnedValuePad} |${C["UnitTestFailArrow"]-}<${NC-}" \
-					"${Input}" "${ExpectedValue}" "${ReturnedValue}"
-			)"
-			error \
-				"${FailLine}"
+			LeftPointers+=("${C["UnitTestFailArrow"]-}>${NC-}")
+			RightPointers+=("${C["UnitTestFailArrow"]-}<${NC-}")
+			TableData+=(
+				"${C["UnitTestFail"]-}${Input}${NC-}"
+				"${C["UnitTestFail"]-}${ExpectedValue}${NC-}"
+				"${C["UnitTestFail"]-}${ReturnedValue}${NC-}"
+			)
 			result=1
 		fi
 	done
-	notice \
-		"${TableLine}"
+
+	# Padding for Bottom Border
+	LeftPointers+=("${LeftSpacer}")
+	RightPointers+=("${RightSpacer}")
+
+	# Paste pointers and table together
+	paste -d '' \
+		<(printf '%s\n' "${LeftPointers[@]}") \
+		<(printf '%s\n' "${TableData[@]}" | table_pipe 3 "${Headings[@]}") \
+		<(printf '%s\n' "${RightPointers[@]}") |
+		while IFS= read -r line; do
+			if [[ ${result} != 0 && ${line} == *"${C["UnitTestFailArrow"]-}>${NC-}"* ]]; then
+				error "${line}"
+			else
+				notice "${line}"
+			fi
+		done
+
 	if [[ -n ${ForcePass} ]]; then
 		warn "The '${C["Var"]-}ForcePass${NC-}' variable is set."
 		if [[ ${result} != 0 ]]; then
