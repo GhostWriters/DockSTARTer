@@ -93,10 +93,11 @@ commands_update_templates() {
 		fatal \
 			"Failed to change directory." \
 			"Failing command: ${C["FailingCommand"]}push \"${TEMPLATES_PARENT_FOLDER}\""
-	local QUIET=''
-	if [[ -z ${VERBOSE-} ]]; then
-		QUIET='--quiet'
-	fi
+
+	local -i result
+	local Command
+	local CommandOutput
+
 	notice "${Notice}"
 	cd "${TEMPLATES_PARENT_FOLDER}" ||
 		fatal \
@@ -108,31 +109,53 @@ commands_update_templates() {
 	git ls-tree -rt --name-only HEAD | xargs sudo chown "$(id -u)":"$(id -g)" &> /dev/null || true
 
 	info "Fetching recent changes from git."
-	eval git fetch ${QUIET-} --all --prune ||
+	Command="git fetch --all --prune -v"
+	info "Running: ${C["RunningCommand"]}${Command}${NC}"
+	CommandOutput=$(eval "${Command}" 2>&1)
+	result=$?
+	info "${CommandOutput}"
+	[[ ${result} -eq 0 ]] ||
 		fatal \
 			"Failed to fetch recent changes from git." \
-			"Failing command: ${C["FailingCommand"]}git fetch ${QUIET-} --all --prune"
+			"Failing command: ${C["FailingCommand"]}${Command}"
+
 	if [[ ${CI-} != true ]]; then
-		eval git checkout ${QUIET-} --force "${Branch}" ||
+		Command="git checkout --force \"${Branch}\""
+		info "Running: ${C["RunningCommand"]}${Command}${NC}"
+		CommandOutput=$(eval "${Command}" 2>&1)
+		result=$?
+		info "${CommandOutput}"
+		[[ ${result} -eq 0 ]] ||
 			fatal \
 				"Failed to switch to github ref '${C["Branch"]}${Branch}${NC}'." \
-				"Failing command: ${C["FailingCommand"]}git checkout ${QUIET-} --force \"${Branch}\""
+				"Failing command: ${C["FailingCommand"]}${Command}"
 
 		# If it's a branch (not a tag or SHA), perform reset and pull
 		if git ls-remote --exit-code --heads origin "${Branch}" &> /dev/null; then
-			eval git reset ${QUIET-} --hard origin/"${Branch}" ||
+			Command="git reset --hard origin/\"${Branch}\""
+			info "Running: ${C["RunningCommand"]}${Command}${NC}"
+			CommandOutput=$(eval "${Command}" 2>&1)
+			result=$?
+			info "${CommandOutput}"
+			[[ ${result} -eq 0 ]] ||
 				fatal \
 					"Failed to reset to branch '${C["Branch"]}origin/${Branch}${NC}'." \
-					"Failing command: ${C["FailingCommand"]}git reset ${QUIET-} --hard origin/\"${Branch}\""
+					"Failing command: ${C["FailingCommand"]}${Command}"
+
 			info "Pulling recent changes from git."
-			eval git pull ${QUIET-} ||
+			Command="git pull"
+			info "Running: ${C["RunningCommand"]}${Command}${NC}"
+			CommandOutput=$(eval "${Command}" 2>&1)
+			result=$?
+			info "${CommandOutput}"
+			[[ ${result} -eq 0 ]] ||
 				fatal \
 					"Failed to pull recent changes from git." \
-					"Failing command: ${C["FailingCommand"]}git pull ${QUIET-}"
+					"Failing command: ${C["FailingCommand"]}${Command}"
 		fi
 	fi
 	info "Cleaning up unnecessary files and optimizing the local repository."
-	eval git gc ${QUIET-} || true
+	info "$(git gc 2>&1 || true)"
 	info "Setting file ownership on new repository files"
 	git ls-tree -rt --name-only "${Branch}" | xargs sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" &> /dev/null || true
 	sudo chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${TEMPLATES_PARENT_FOLDER}/.git" &> /dev/null || true
