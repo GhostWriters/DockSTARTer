@@ -17,46 +17,31 @@ git_branch() {
 
 git_branch_exists() {
 	local GitPath=${1}
-	local CurrentBranch
-	CurrentBranch="$(git_branch "${GitPath}")"
-	local CheckBranch=${2:-"${CurrentBranch}"}
-	pushd "${GitPath}" &> /dev/null ||
-		fatal \
-			"Failed to change directory." \
-			"Failing command: ${C["FailingCommand"]}pushd \"${GitPath}\""
-	local -i result=0
-	git ls-remote --exit-code --heads origin "${CheckBranch}" &> /dev/null || result=$?
+	local Branch=${2-}
+	pushd "${GitPath}" &> /dev/null || return 1
+	git ls-remote --quiet --exit-code --heads origin "${Branch}" &> /dev/null
+	local result=$?
 	popd &> /dev/null
 	return ${result}
 }
 
 git_tag_exists() {
 	local GitPath=${1}
-	local CheckTag=${2}
-	pushd "${GitPath}" &> /dev/null ||
-		fatal \
-			"Failed to change directory." \
-			"Failing command: ${C["FailingCommand"]}pushd \"${GitPath}\""
-	local -i result=0
-	git ls-remote --exit-code origin "refs/tags/${CheckTag}" &> /dev/null || result=$?
+	local Tag=${2-}
+	pushd "${GitPath}" &> /dev/null || return 1
+	git ls-remote --quiet --exit-code --tags origin "${Tag}" &> /dev/null
+	local result=$?
 	popd &> /dev/null
 	return ${result}
 }
 
 git_commit_exists() {
 	local GitPath=${1}
-	local CheckCommit=${2}
-	# Basic regex for 7-40 characters of hex
-	if [[ ! ${CheckCommit} =~ ^[0-9a-fA-F]{7,40}$ ]]; then
-		return 1
-	fi
-	pushd "${GitPath}" &> /dev/null ||
-		fatal \
-			"Failed to change directory." \
-			"Failing command: ${C["FailingCommand"]}pushd \"${GitPath}\""
-	local -i result=0
-	# Try to see if we have it locally
-	git rev-parse --quiet --verify "${CheckCommit}^{commit}" &> /dev/null || result=$?
+	local Commit=${2-}
+	[[ ${Commit} =~ ^[0-9a-fA-F]{7,40}$ ]] || return 1
+	pushd "${GitPath}" &> /dev/null || return 1
+	git rev-parse --quiet --verify "${Commit}^{commit}" &> /dev/null
+	local result=$?
 	popd &> /dev/null
 	return ${result}
 }
@@ -64,7 +49,12 @@ git_commit_exists() {
 git_version() {
 	local GitPath=${1}
 	local CheckBranch=${2-}
-	local commitish Branch
+	local commitish Branch result
+	pushd "${GitPath}" &> /dev/null ||
+		fatal \
+			"Failed to change directory." \
+			"Failing command: ${C["FailingCommand"]}pushd \"${GitPath}\""
+
 	if [[ -n ${CheckBranch-} ]]; then
 		if git show-ref --quiet --tags "${CheckBranch}"; then
 			commitish="${CheckBranch}"
@@ -92,10 +82,6 @@ git_version() {
 		fi
 	fi
 
-	pushd "${GitPath}" &> /dev/null ||
-		fatal \
-			"Failed to change directory." \
-			"Failing command: ${C["FailingCommand"]}pushd \"${GitPath}\""
 	if [[ -z ${CheckBranch-} ]] || git_branch_exists "${GitPath}" "${Branch}" || git_tag_exists "${GitPath}" "${Branch}" || git_commit_exists "${GitPath}" "${Branch}"; then
 		# Get the current tag. If no tag, use the commit instead.
 		local VersionString
