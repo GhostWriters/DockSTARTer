@@ -660,12 +660,16 @@ init_check_symlink() {
 init_check_update() {
 	local Branch
 	Branch="$(ds_branch)"
-	if ds_branch_exists "${Branch}"; then
-		if ds_update_available; then
+	local TargetBranch="${Branch}"
+	if ds_tag_exists "${Branch}"; then
+		TargetBranch="$(ds_best_branch)"
+	fi
+	if ds_ref_exists "${Branch}"; then
+		if ds_update_available "${Branch}" "${TargetBranch}"; then
 			warn \
 				"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} [${C["Version"]-}${APPLICATION_VERSION}${NC-}]" \
 				"An update to ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} is available." \
-				"Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -u${NC-}' to update to version '${C["Version"]-}$(ds_version "${Branch}")${NC-}'."
+				"Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -u${NC-}' to update to version '${C["Version"]-}$(ds_version "${TargetBranch}")${NC-}'."
 		else
 			info \
 				"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} [${C["Version"]-}${APPLICATION_VERSION}${NC-}]"
@@ -687,12 +691,16 @@ init_check_update() {
 		fi
 	fi
 	Branch="$(templates_branch)"
-	if templates_branch_exists "${Branch}"; then
-		if templates_update_available; then
+	local TargetBranch="${Branch}"
+	if templates_tag_exists "${Branch}"; then
+		TargetBranch="$(templates_best_branch)"
+	fi
+	if templates_ref_exists "${Branch}"; then
+		if templates_update_available "${Branch}" "${TargetBranch}"; then
 			warn \
 				"${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} [${C["Version"]-}${TEMPLATES_VERSION}${NC-}]" \
 				"An update to ${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} is available." \
-				"Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -u${NC-}' to update to version '${C["Version"]-}$(templates_version "${Branch}")${NC-}'."
+				"Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -u${NC-}' to update to version '${C["Version"]-}$(templates_version "${TargetBranch}")${NC-}'."
 		else
 			info \
 				"${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} [${C["Version"]-}${TEMPLATES_VERSION}${NC-}]"
