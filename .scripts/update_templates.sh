@@ -11,10 +11,9 @@ update_templates() {
 	local Title="Update ${TargetName}"
 	local Question YesNotice NoNotice
 
-	pushd "${TEMPLATES_PARENT_FOLDER}" &> /dev/null ||
-		fatal \
-			"Failed to change directory." \
-			"Failing command: ${C["FailingCommand"]}push \"${TEMPLATES_PARENT_FOLDER}\""
+	RunAndLog "" "OutToNull|ErrToNull" \
+		fatal "Failed to change directory." \
+		pushd "${TEMPLATES_PARENT_FOLDER}"
 
 	if [[ -z ${Branch-} ]]; then
 		Branch="$(templates_branch)"
@@ -56,12 +55,14 @@ update_templates() {
 	if [[ -z ${FORCE-} && ${CurrentVersion} == "${RemoteVersion}" ]]; then
 		if use_dialog_box; then
 			{
-				notice "${C["ApplicationName"]-}${TargetName}${NC-} is already up to date on branch '${C["Branch"]}${Branch}${NC}'."
-				notice "Current version is '${C["Version"]}${CurrentVersion}${NC}'"
+				notice \
+					"${C["ApplicationName"]-}${TargetName}${NC-} is already up to date on branch '${C["Branch"]}${Branch}${NC}'." \
+					"Current version is '${C["Version"]}${CurrentVersion}${NC}'"
 			} |& dialog_pipe "${DC["TitleWarning"]-}${Title}" "${DC[CommandLine]-} ${APPLICATION_COMMAND} --update-templates $*"
 		else
-			notice "${C["ApplicationName"]-}${TargetName}${NC-} is already up to date on branch '${C["Branch"]}${Branch}${NC}'."
-			notice "Current version is '${C["Version"]}${CurrentVersion}${NC}'"
+			notice \
+				"${C["ApplicationName"]-}${TargetName}${NC-} is already up to date on branch '${C["Branch"]}${Branch}${NC}'." \
+				"Current version is '${C["Version"]}${CurrentVersion}${NC}'"
 		fi
 		return 0
 	fi
@@ -89,69 +90,34 @@ commands_update_templates() {
 	local Notice=${2-}
 	shift 2
 
-	pushd "${TEMPLATES_PARENT_FOLDER}" &> /dev/null ||
-		fatal \
-			"Failed to change directory." \
-			"Failing command: ${C["FailingCommand"]}push \"${TEMPLATES_PARENT_FOLDER}\""
-
-	local -i result
-	local Command
-	local CommandOutput
+	RunAndLog "" "OutToNull|ErrToNull" \
+		fatal "Failed to change directory." \
+		pushd "${TEMPLATES_PARENT_FOLDER}"
 
 	notice "${Notice}"
-	cd "${TEMPLATES_PARENT_FOLDER}" ||
-		fatal \
-			"Failed to change directory." \
-			"Failing command: ${C["FailingCommand"]}cd \"${TEMPLATES_PARENT_FOLDER}\""
 	info "Setting file ownership on current repository files"
 	sudo chown -R "$(id -u)":"$(id -g)" "${TEMPLATES_PARENT_FOLDER}/.git" &> /dev/null || true
 	sudo chown "$(id -u)":"$(id -g)" "${TEMPLATES_PARENT_FOLDER}" &> /dev/null || true
 	git ls-tree -rt --name-only HEAD | xargs sudo chown "$(id -u)":"$(id -g)" &> /dev/null || true
 
 	info "Fetching recent changes from git."
-	Command="git fetch --all --prune -v"
-	info "Running: ${C["RunningCommand"]}${Command}${NC}"
-	CommandOutput=$(eval "${Command}" 2>&1)
-	result=$?
-	info "${CommandOutput}"
-	[[ ${result} -eq 0 ]] ||
-		fatal \
-			"Failed to fetch recent changes from git." \
-			"Failing command: ${C["FailingCommand"]}${Command}"
-
+	RunAndLog info info \
+		fatal "Failed to fetch recent changes from git." \
+		git fetch --all --prune -v
 	if [[ ${CI-} != true ]]; then
-		Command="git checkout --force \"${Branch}\""
-		info "Running: ${C["RunningCommand"]}${Command}${NC}"
-		CommandOutput=$(eval "${Command}" 2>&1)
-		result=$?
-		info "${CommandOutput}"
-		[[ ${result} -eq 0 ]] ||
-			fatal \
-				"Failed to switch to github ref '${C["Branch"]}${Branch}${NC}'." \
-				"Failing command: ${C["FailingCommand"]}${Command}"
+		RunAndLog info info \
+			fatal "Failed to switch to github ref '${C["Branch"]}${Branch}${NC}'." \
+			git checkout --force "${Branch}"
 
 		# If it's a branch (not a tag or SHA), perform reset and pull
 		if git ls-remote --exit-code --heads origin "${Branch}" &> /dev/null; then
-			Command="git reset --hard origin/\"${Branch}\""
-			info "Running: ${C["RunningCommand"]}${Command}${NC}"
-			CommandOutput=$(eval "${Command}" 2>&1)
-			result=$?
-			info "${CommandOutput}"
-			[[ ${result} -eq 0 ]] ||
-				fatal \
-					"Failed to reset to branch '${C["Branch"]}origin/${Branch}${NC}'." \
-					"Failing command: ${C["FailingCommand"]}${Command}"
-
+			RunAndLog info info \
+				fatal "Failed to reset to branch '${C["Branch"]}origin/${Branch}${NC}'." \
+				git reset --hard origin/"${Branch}"
 			info "Pulling recent changes from git."
-			Command="git pull"
-			info "Running: ${C["RunningCommand"]}${Command}${NC}"
-			CommandOutput=$(eval "${Command}" 2>&1)
-			result=$?
-			info "${CommandOutput}"
-			[[ ${result} -eq 0 ]] ||
-				fatal \
-					"Failed to pull recent changes from git." \
-					"Failing command: ${C["FailingCommand"]}${Command}"
+			RunAndLog info info \
+				fatal "Failed to pull recent changes from git." \
+				git pull
 		fi
 	fi
 	info "Cleaning up unnecessary files and optimizing the local repository."
