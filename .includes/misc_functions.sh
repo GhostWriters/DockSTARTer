@@ -366,3 +366,65 @@ table() {
 	local -a Data=("${@:Cols+1}")
 	printf '%s\n' "${Data[@]}" | table_pipe "${Cols}" "${Headings[@]}"
 }
+
+RunAndLog() {
+	# RunAndLog [RunningNoticeType] [OutputNoticeType] [ErrorNoticeType] [ErrorMessage] [Command]
+	local -l RunningNoticeType=${1-}
+	local -l OutputNoticeType=${2-}
+	local -l ErrorNoticeType=${3-}
+	local ErrorMessage=${4-}
+	shift 4
+	local -a Command=("${@}")
+
+	local OutputFile
+
+	local CommandText
+	CommandText="$(printf '%q ' "${Command[@]}" | xargs 2> /dev/null)"
+
+	# If the running notice type is set, log the command being run
+	[[ -n ${RunningNoticeType-} ]] &&
+		"${RunningNoticeType}" \
+			"Running: ${C["RunningCommand"]}${CommandText}"
+
+	local ErrToNull=false
+	local OutToNull=false
+	if [[ ${OutputNoticeType-} =~ info|notice|warn|error|debug|trace ]]; then
+		OutputFile=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.RunAndLogOutputFile.XXXXXXXXXX")
+	fi
+	if [[ ${OutputNoticeType-} =~ errtonull ]]; then
+		ErrToNull=true
+	fi
+	if [[ ${OutputNoticeType-} =~ outtonull ]]; then
+		OutToNull=true
+	fi
+	local -i result=0
+	if [[ ${ErrToNull} == true && ${OutToNull} == true ]]; then
+		# Both stdout and stderr are redirected to /dev/null
+		"${Command[@]}" &> /dev/null || result=$?
+	elif [[ -n ${OutputFile-} && ${ErrToNull} == true ]]; then
+		# stderr redircted to null, stdout redirected to output file
+		"${Command[@]}" > "${OutputFile}" 2> /dev/null || result=$?
+	elif [[ -n ${OutputFile-} && ${OutToNull} == true ]]; then
+		# stdout redircted to null, stderr redirected to output file
+		"${Command[@]}" 2> "${OutputFile}" > /dev/null || result=$?
+	elif [[ -n ${OutputFile-} ]]; then
+		# Both stdout and stderr redirected to output file
+		"${Command[@]}" &> "${OutputFile}" || result=$?
+	else
+		# No redirection
+		"${Command[@]}" || result=$?
+	fi
+
+	if [[ -n ${OutputFile-} && -n $(< "${OutputFile}") ]]; then
+		"${OutputNoticeType}" \
+			"$(< "${OutputFile}")"
+		rm -f "${OutputFile}"
+	fi
+
+	[[ ${result} -eq 0 ]] && return
+
+	${ErrorNoticeType} \
+		"${ErrorMessage}" \
+		"Failing command: ${C["FailingCommand"]}${CommandText}"
+	return ${result}
+}
