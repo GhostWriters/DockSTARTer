@@ -120,13 +120,13 @@ docker_compose() {
 				run_script 'require_docker'
 				if run_script 'yml_merge'; then
 					for index in "${!ComposeCommand[@]}"; do
-						local Command="docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand[index]}"
-						notice "Running: ${C["RunningCommand"]}${Command}${NC}"
-						eval "${Command}" || result=$?
-						if [[ ${result} != 0 ]]; then
-							error \
-								"Failed to run compose." \
-								"Failing command: ${C["FailingCommand"]}${Command}"
+						local -a Command=(
+							docker compose --project-directory "${COMPOSE_FOLDER}/"
+						)
+						local -a CommandArgs
+						IFS=' ' read -ra CommandArgs <<< "${ComposeCommand[index]}"
+						if ! RunAndLog notice "" error "Failed to run compose." "${Command[@]}" "${CommandArgs[@]}"; then
+							result=1
 							break
 						fi
 					done
@@ -141,13 +141,13 @@ docker_compose() {
 			run_script 'require_docker'
 			if run_script 'yml_merge'; then
 				for index in "${!ComposeCommand[@]}"; do
-					local Command="docker compose --project-directory ${COMPOSE_FOLDER}/ ${ComposeCommand[index]}"
-					notice "Running: ${C["RunningCommand"]}${Command}${NC}"
-					eval "${Command}" || result=$?
-					if [[ ${result} != 0 ]]; then
-						error \
-							"Failed to run compose." \
-							"Failing command: ${C["FailingCommand"]}${Command}"
+					local -a Command=(
+						docker compose --project-directory "${COMPOSE_FOLDER}/"
+					)
+					local -a CommandArgs
+					IFS=' ' read -ra CommandArgs <<< "${ComposeCommand[index]}"
+					if ! RunAndLog notice "" error "Failed to run compose." "${Command[@]}" "${CommandArgs[@]}"; then
+						result=1
 						break
 					fi
 				done
