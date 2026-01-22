@@ -56,8 +56,11 @@ git_version() {
 			"Failing command: ${C["FailingCommand"]}pushd \"${GitPath}\""
 
 	if [[ -n ${CheckBranch-} ]]; then
-		if git show-ref --quiet --tags "${CheckBranch}"; then
+		if git show-ref --quiet --tags "${CheckBranch}" &> /dev/null; then
 			commitish="${CheckBranch}"
+			Branch="${CheckBranch}"
+		elif git ls-remote --quiet --exit-code --heads origin "${CheckBranch}" &> /dev/null; then
+			commitish="origin/${CheckBranch}"
 			Branch="${CheckBranch}"
 		elif git rev-parse --quiet --verify "${CheckBranch}^{commit}" &> /dev/null; then
 			commitish="${CheckBranch}"
@@ -87,9 +90,7 @@ git_version() {
 		local VersionString
 		VersionString="$(git describe --tags --exact-match "${commitish}" 2> /dev/null || true)"
 		if [[ -n ${VersionString-} ]]; then
-			if [[ ${VersionString} == "${Branch}" ]] || [[ ${Branch} == "main" ]]; then
-				VersionString="${VersionString}"
-			else
+			if [[ ${VersionString} != "${Branch}" ]] && [[ ${Branch} != "main" || ${VersionString} == "main" ]]; then
 				VersionString="${Branch} ${VersionString}"
 			fi
 		else
@@ -129,16 +130,19 @@ git_update_available() {
 		# If CurrentRef is a tag, we compare against TargetRef (usually a branch)
 		# Even if it's a tag, we compare the current hash against the target branch/ref hash
 		Remote=$(git rev-parse "origin/${TargetRef}" 2> /dev/null || true)
-		[[ ${Current} != "${Remote}" ]] || result=$?
+		[[ ${Current} != "${Remote}" ]]
+		result=$?
 	else
 		# Default behavior: compare HEAD to upstream
 		Remote=$(git rev-parse '@{u}' 2> /dev/null || true)
 		if [[ -n ${Remote} ]]; then
-			[[ ${Current} != "${Remote}" ]] || result=$?
+			[[ ${Current} != "${Remote}" ]]
+			result=$?
 		else
 			# No upstream (detached), check against origin/main as fallback
 			Remote=$(git rev-parse "origin/main" 2> /dev/null || true)
-			[[ ${Current} != "${Remote}" ]] || result=$?
+			[[ ${Current} != "${Remote}" ]]
+			result=$?
 		fi
 	fi
 	popd &> /dev/null
