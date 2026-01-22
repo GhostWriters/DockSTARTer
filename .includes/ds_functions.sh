@@ -101,8 +101,8 @@ git_version() {
 		local VersionString
 		VersionString="$(git describe --tags --exact-match "${commitish}" 2> /dev/null || true)"
 		if [[ -n ${VersionString-} ]]; then
-			if [[ ${VersionString} == "${Branch}" ]]; then
-				VersionString="${Branch}"
+			if [[ ${VersionString} == "${Branch}" ]] || [[ ${Branch} == "main" ]]; then
+				VersionString="${VersionString}"
 			else
 				VersionString="${Branch} ${VersionString}"
 			fi
