@@ -21,6 +21,9 @@ update_self() {
 
 	if [[ -z ${Branch-} ]]; then
 		Branch="$(ds_branch)"
+		if ds_tag_exists "${Branch-}"; then
+			Branch="$(ds_best_branch)"
+		fi
 		if [[ -z ${Branch-} ]]; then
 			error "You need to specify a branch to update to."
 			return 1
@@ -42,8 +45,8 @@ update_self() {
 	fi
 	popd &> /dev/null
 
-	if ! ds_branch_exists "${Branch}"; then
-		local ErrorMessage="${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} branch '${C["Branch"]}${Branch}${NC}' does not exists."
+	if ! ds_branch_exists "${Branch}" && ! ds_tag_exists "${Branch}" && ! ds_commit_exists "${Branch}"; then
+		local ErrorMessage="${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} ref '${C["Branch"]}${Branch}${NC}' does not exist on origin."
 		if use_dialog_box; then
 			error "${ErrorMessage}" |&
 				dialog_pipe "${DC["TitleError"]-}${Title}" "${DC["CommandLine"]-} ${APPLICATION_COMMAND} --update $*"
@@ -115,17 +118,21 @@ commands_update_self() {
 	if [[ ${CI-} != true ]]; then
 		eval git checkout ${QUIET-} --force "${Branch}" ||
 			fatal \
-				"Failed to switch to github branch '${C["Branch"]}${Branch}${NC}'." \
+				"Failed to switch to github ref '${C["Branch"]}${Branch}${NC}'." \
 				"Failing command: ${C["FailingCommand"]}git checkout ${QUIET-} --force \"${Branch}\""
-		eval git reset ${QUIET-} --hard origin/"${Branch}" ||
-			fatal \
-				"Failed to reset to branch '${C["Branch"]}origin/${Branch}${NC}'." \
-				"Failing command: ${C["FailingCommand"]}git reset ${QUIET-} --hard origin/\"${Branch}\""
-		info "Pulling recent changes from git."
-		eval git pull ${QUIET-} ||
-			fatal \
-				"Failed to pull recent changes from git." \
-				"Failing command: ${C["FailingCommand"]}git pull ${QUIET-}"
+
+		# If it's a branch (not a tag or SHA), perform reset and pull
+		if git ls-remote --exit-code --heads origin "${Branch}" &> /dev/null; then
+			eval git reset ${QUIET-} --hard origin/"${Branch}" ||
+				fatal \
+					"Failed to reset to branch '${C["Branch"]}origin/${Branch}${NC}'." \
+					"Failing command: ${C["FailingCommand"]}git reset ${QUIET-} --hard origin/\"${Branch}\""
+			info "Pulling recent changes from git."
+			eval git pull ${QUIET-} ||
+				fatal \
+					"Failed to pull recent changes from git." \
+					"Failing command: ${C["FailingCommand"]}git pull ${QUIET-}"
+		fi
 	fi
 	info "Cleaning up unnecessary files and optimizing the local repository."
 	eval git gc ${QUIET-} || true

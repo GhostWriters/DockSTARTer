@@ -411,16 +411,16 @@ EOF
 			cat << EOF
 ${C["UsageCommand"]-}-u --update${NC-}
 	Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} and ${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} to the latest commits from the current branch
-${C["UsageCommand"]-}-u --update${NC-} ${C["UsageBranch"]-}<AppBranch>${NC-} ${C["UsageBranch"]-}<TemplateBranch>${NC-}
-	Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} and ${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} to the latest commits from the specified branches
+${C["UsageCommand"]-}-u --update${NC-} ${C["UsageBranch"]-}<AppRef>${NC-} ${C["UsageBranch"]-}<TemplateRef>${NC-}
+	Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} and ${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} to specified branches, tags, or commits
 ${C["UsageCommand"]-}--update-app${NC-}
 	Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} to the latest commits from the current branch
-${C["UsageCommand"]-}--update-app${NC-} ${C["UsageBranch"]-}<AppBranch>${NC-}
-	Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} to the latest commits from the specified branch
+${C["UsageCommand"]-}--update-app${NC-} ${C["UsageBranch"]-}<AppRef>${NC-}
+	Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} to the specified branch, tag, or commit
 ${C["UsageCommand"]-}--update-templates${NC-}
 	Update ${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} to the latest commits from the current branch
-${C["UsageCommand"]-}--update-templates${NC-} ${C["UsageBranch"]-}<TemplateBranch>${NC-}
-	Update ${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} to the latest commits from the specified branch
+${C["UsageCommand"]-}--update-templates${NC-} ${C["UsageBranch"]-}<TemplateRef>${NC-}
+	Update ${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} to the specified branch, tag, or commit
 EOF
 			;;&
 		-V | --version | "")
@@ -428,8 +428,8 @@ EOF
 			cat << EOF
 ${C["UsageCommand"]-}-V --version${NC-}
 	Display version information
-${C["UsageCommand"]-}-V --version${NC-} ${C["UsageBranch"]-}<AppBranch>${NC-} ${C["UsageBranch"]-}<TemplateBranch>${NC-}
-	Display version information for the specified branches
+${C["UsageCommand"]-}-V --version${NC-} ${C["UsageBranch"]-}<AppRef>${NC-} ${C["UsageBranch"]-}<TemplateRef>${NC-}
+	Display version information for the specified branches, tags, or commits
 EOF
 			;;&
 		"")

@@ -679,9 +679,9 @@ run_command() {
 			if [[ -z ${AppBranch} ]]; then
 				echo "${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} [${C["Version"]-}${APPLICATION_VERSION}${NC-}]"
 			else
-				if ! ds_branch_exists "${AppBranch}"; then
+				if ! ds_ref_exists "${AppBranch}"; then
 					error \
-						"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} branch '${C["Branch"]-}${AppBranch}${NC-}' does not exist."
+						"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} ref '${C["Branch"]-}${AppBranch}${NC-}' does not exist."
 					exit 1
 				fi
 				echo "${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} [${C["Version"]-}$(ds_version "${AppBranch}")${NC-}]"
@@ -689,9 +689,9 @@ run_command() {
 			if [[ -z ${TemplatesBranch} ]]; then
 				echo "${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} [${C["Version"]-}$(templates_version)${NC-}]"
 			else
-				if ! templates_branch_exists "${TemplatesBranch}"; then
+				if ! templates_ref_exists "${TemplatesBranch}"; then
 					error \
-						"${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} branch '${C["Branch"]-}${TemplatesBranch}${NC-}' does not exist."
+						"${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} ref '${C["Branch"]-}${TemplatesBranch}${NC-}' does not exist."
 					exit 1
 				fi
 				echo "${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} [${C["Version"]-}$(templates_version "${TemplatesBranch}")${NC-}]"
