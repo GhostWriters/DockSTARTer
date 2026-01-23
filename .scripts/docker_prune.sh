@@ -8,24 +8,22 @@ docker_prune() {
 	YesNotice="Removing unused docker resources."
 	NoNotice="Nothing will be removed."
 
-	local Command="docker system prune --all --force --volumes"
+	local -a Command=(docker system prune --all --force --volumes)
+	local CommandText
+	CommandText=$(printf "%q " "${Command[@]}" | xargs)
 	if run_script 'question_prompt' Y "${Question}" "${Title}" "${ASSUMEYES:+Y}"; then
 		if use_dialog_box; then
 			{
 				notice "${YesNotice}"
-				notice "Running: ${C["RunningCommand"]}${Command}${NC}"
-				eval "${Command}" ||
-					error \
-						"Failed to remove unused docker resources." \
-						"Failing command: ${C["FailingCommand"]}${Command}"
-			} |& dialog_pipe "${DC["TitleSuccess"]-}${Title}" "${YesNotice}${DC["NC"]-}\n${DC["CommandLine"]-} ${Command}"
+				RunAndLog notice notice \
+					error "Failed to remove unused docker resources." \
+					"${Command[@]}"
+			} |& dialog_pipe "${DC["TitleSuccess"]-}${Title}" "${YesNotice}${DC["NC"]-}\n${DC["CommandLine"]-} ${CommandText}"
 		else
 			notice "${YesNotice}"
-			notice "Running: ${C["RunningCommand"]}${Command}${NC}"
-			eval "${Command}" ||
-				error \
-					"Failed to remove unused docker resources." \
-					"Failing command: ${C["FailingCommand"]}${Command}"
+			RunAndLog notice notice \
+				error "Failed to remove unused docker resources." \
+				"${Command[@]}"
 		fi
 	else
 		if use_dialog_box; then
