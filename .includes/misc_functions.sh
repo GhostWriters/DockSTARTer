@@ -5,7 +5,7 @@ IFS=$'\n\t'
 create_strip_ansi_colors_SEDSTRING() {
 	# Create the search string to strip ANSI colors
 	# String is saved after creation, so this is only done on the first call
-	local -a ANSICOLORS=("${F[@]}" "${B[@]}" "${BD}" "${UL}" "${NC}" "${BS}")
+	local -a ANSICOLORS=("${F[@]}" "${B[@]}" "${BD}" "${UL}" "${NC}" "${BS}" "${DM}" "${BL}")
 	for index in "${!ANSICOLORS[@]}"; do
 		# Escape characters used by sed
 		ANSICOLORS[index]=$(printf '%s' "${ANSICOLORS[index]}" | sed -E 's/[]{}()[/{}\.''''$]/\\&/g')
