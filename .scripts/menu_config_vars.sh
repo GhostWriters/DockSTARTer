@@ -19,16 +19,14 @@ menu_config_vars() {
 	local LastLineChoice=""
 	while true; do
 		if [[ -n ${CurrentGlobalEnvFile-} ]]; then
-			rm -f "${CurrentGlobalEnvFile}" ||
-				warn \
-					"Failed to remove temporary '${C["File"]}.env${NC}' file." \
-					"Failing command: ${C["FailingCommand"]}rm -f \"${CurrentGlobalEnvFile}\""
+			RunAndLog "" info \
+				warn "Failed to remove temporary '${C["File"]}.env${NC}' file." \
+				rm -f "${CurrentGlobalEnvFile}"
 		fi
 		if [[ -n ${CurrentAppEnvFile-} ]]; then
-			rm -f "${CurrentAppEnvFile}" ||
-				warn \
-					"Failed to remove temporary '${C["File"]}.env.app.${appname}${NC}' file." \
-					"Failing command: ${C["FailingCommand"]}rm -f \"${CurrentAppEnvFile}\""
+			RunAndLog "" info \
+				warn "Failed to remove temporary '${C["File"]}.env.app.${appname}${NC}' file." \
+				rm -f "${CurrentAppEnvFile}"
 		fi
 		local DefaultGlobalEnvFile=''
 		local DefaultAppEnvFile=''
@@ -238,16 +236,14 @@ menu_config_vars() {
 		done
 	done
 	if [[ -n ${CurrentGlobalEnvFile-} ]]; then
-		rm -f "${CurrentGlobalEnvFile}" ||
-			warn \
-				"Failed to remove temporary '${C["File"]}.env${NC}' file." \
-				"Failing command: ${C["FailingCommand"]}rm -f \"${CurrentGlobalEnvFile}\""
+		RunAndLog "" info \
+			warn "Failed to remove temporary '${C["File"]}.env${NC}' file." \
+			rm -f "${CurrentGlobalEnvFile}"
 	fi
 	if [[ -n ${CurrentAppEnvFile-} ]]; then
-		rm -f "${CurrentAppEnvFile}" ||
-			warn \
-				"Failed to remove temporary '${C["File"]}.env.app.${appname}${NC}' file." \
-				"Failing command: ${C["FailingCommand"]}rm -f \"${CurrentAppEnvFile}\""
+		RunAndLog "" info \
+			warn "Failed to remove temporary '${C["File"]}.env.app.${appname}${NC}' file." \
+			rm -f "${CurrentAppEnvFile}"
 	fi
 }
 
