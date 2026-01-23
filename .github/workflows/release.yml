@@ -1,0 +1,139 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      force_release:
+        description: 'Force release even if no meaningful changes detected'
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check for Changes
+        id: check
+        run: |
+          FORCE="${{ inputs.force_release }}"
+          echo "Force Release: $FORCE"
+
+          if [ "$FORCE" == "true" ]; then
+            echo "Release forced by user."
+            echo "skip=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          git fetch --tags --force
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+
+          if [ -z "$LAST_TAG" ]; then
+            echo "No tags found. Assuming first release."
+            echo "skip=false" >> $GITHUB_OUTPUT
+          else
+            echo "Last tag: $LAST_TAG"
+            CHANGED=$(git diff --name-only "$LAST_TAG" HEAD)
+
+            if [ -z "$CHANGED" ]; then
+              echo "No file changes found."
+              echo "skip=true" >> $GITHUB_OUTPUT
+            else
+              echo "Changed files:"
+              echo "$CHANGED"
+
+              # Check for non-ignored files
+              if echo "$CHANGED" | grep -Eqv '^(docs/|\.github/|\.gitignore|\.editorconfig|README\.md|LICENSE)'; then
+                echo "Meaningful changes detected."
+                echo "skip=false" >> $GITHUB_OUTPUT
+              else
+                echo "No meaningful changes detected."
+                echo "skip=true" >> $GITHUB_OUTPUT
+              fi
+            fi
+          fi
+
+      - name: Generate Version Tag
+        if: steps.check.outputs.skip == 'false'
+        id: tag
+        run: |
+          # Versioning Scheme: v1.YYYYMMDD.N[-Suffix]
+          # Major: 1
+          # Minor: YYYYMMDD
+          # Patch: N (Daily build counter)
+
+          # Example: v1.20260121.1
+
+          TODAY_INT=$(date -u +'%Y%m%d')
+          PREFIX="v1.${TODAY_INT}"
+
+          git fetch --tags --force
+
+          if [[ "${{ github.ref_name }}" == "main" ]]; then
+            SUFFIX=""
+            # Match v1.YYYYMMDD.N
+            REGEX="^${PREFIX}\.[0-9]+$"
+          else
+            SAFE_BRANCH=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9]/-/g')
+            SUFFIX="-${SAFE_BRANCH}"
+            # Match v1.YYYYMMDD.N-branch
+            REGEX="^${PREFIX}\.[0-9]+${SUFFIX}$"
+          fi
+
+          echo "Scope: ${{ github.ref_name }}"
+          echo "Suffix: '$SUFFIX'"
+          echo "Regex: '$REGEX'"
+
+          MAX_N="-1"
+
+          # Get all tags for this "Minor" version (v1.YYYYMMDD.*)
+          TAGS=$(git tag -l "${PREFIX}*")
+
+          for tag in $TAGS; do
+            if [[ "$tag" =~ $REGEX ]]; then
+              # Strip suffix: v1.YYYYMMDD.N
+              base="${tag%$SUFFIX}"
+              # Extract Patch (N): Remove v1.YYYYMMDD.
+              n="${base#$PREFIX.}"
+
+              # Ensure n is numeric
+              if [[ "$n" =~ ^[0-9]+$ ]]; then
+                if (( n > MAX_N )); then
+                  MAX_N=$n
+                fi
+              fi
+            fi
+          done
+
+          if [ "$MAX_N" == "-1" ]; then
+            NEXT_N=1
+          else
+            NEXT_N=$((MAX_N + 1))
+          fi
+
+          FINAL_VER="${PREFIX}.${NEXT_N}${SUFFIX}"
+
+          echo "Generated Version: $FINAL_VER"
+          echo "version=$FINAL_VER" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        if: steps.check.outputs.skip == 'false'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG_NAME="${{ steps.tag.outputs.version }}"
+          echo "Creating release for $TAG_NAME"
+
+          # Create tag and release
+          gh release create "$TAG_NAME" \
+            --title "Release $TAG_NAME" \
+            --generate-notes \
+            --target "${{ github.ref_name }}"
