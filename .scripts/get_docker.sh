@@ -33,7 +33,7 @@ command_get_docker() {
 		curl -fsSL https://get.docker.com -o "${MKTEMP_GET_DOCKER}"
 
 	info "Running docker install script."
-	RunAndLog notice notice \
+	RunAndLog notice "" \
 		warn "Failed to install docker." \
 		sh "${MKTEMP_GET_DOCKER}"
 
