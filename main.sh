@@ -501,10 +501,9 @@ check_sudo() {
 clone_repo() {
 	warn \
 		"Attempting to clone ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} repo to '${C["Folder"]-}${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}${NC-}' location."
-	git clone -b "${APPLICATION_DEFAULT_BRANCH}" "${APPLICATION_REPO}" "${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}" ||
-		fatal \
-			"Failed to clone ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} repo." \
-			"Failing command: ${C["FailingCommand"]-}git clone -b \"${APPLICATION_DEFAULT_BRANCH}\" \"${APPLICATION_REPO}\" \"${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}\""
+	RunAndLog notice notice \
+		fatal "Failed to clone ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} repo." \
+		git clone -b "${APPLICATION_DEFAULT_BRANCH}" "${APPLICATION_REPO}" "${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}"
 	if [[ ${#ARGS[@]} -eq 0 ]]; then
 		notice \
 			"Performing first run install."
@@ -518,15 +517,13 @@ clone_templates_repo() {
 	warn \
 		"Attempting to clone ${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} repo to '${C["Folder"]-}${TEMPLATES_PARENT_FOLDER}${NC-}' location."
 	if [[ -d ${TEMPLATES_PARENT_FOLDER?} ]]; then
-		sudo rm -rf "${TEMPLATES_PARENT_FOLDER?}" ||
-			fatal \
-				"Failed to remove ${TEMPLATES_PARENT_FOLDER?}." \
-				"Failing command: ${C["FailingCommand"]-}rm -rf \"${TEMPLATES_PARENT_FOLDER?}\""
+		RunAndLog notice notice \
+			fatal "Failed to remove ${TEMPLATES_PARENT_FOLDER?}." \
+			sudo rm -rf "${TEMPLATES_PARENT_FOLDER?}"
 	fi
-	git clone -b "${TEMPLATES_DEFAULT_BRANCH}" "${TEMPLATES_REPO}" "${TEMPLATES_PARENT_FOLDER}" ||
-		fatal \
-			"Failed to clone ${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} repo." \
-			"Failing command: ${C["FailingCommand"]-}git clone -b \"${TEMPLATES_DEFAULT_BRANCH}\" \"${TEMPLATES_REPO}\" \"${TEMPLATES_PARENT_FOLDER}\""
+	RunAndLog notice notice \
+		fatal "Failed to clone ${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} repo." \
+		git clone -b "${TEMPLATES_DEFAULT_BRANCH}" "${TEMPLATES_REPO}" "${TEMPLATES_PARENT_FOLDER}"
 }
 
 # Cleanup Function
