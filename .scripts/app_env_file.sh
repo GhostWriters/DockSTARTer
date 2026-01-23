@@ -18,10 +18,9 @@ app_env_file() {
 	if [[ ! -f ${AppEnvFile} && -f ${OldAppEnvFile} ]]; then
 		# Migrate from the old env_files/appname.env files to .env.app.appname
 		notice "Renaming '${C["File"]}${OldAppEnvFile}${NC}' to '${C["File"]}${AppEnvFile}${NC}'"
-		mv "${OldAppEnvFile}" "${AppEnvFile}" ||
-			fatal \
-				"Failed to rename file." \
-				"Failing command: ${C["FailingCommand"]}mv \"${OldAppEnvFile}\" \"${AppEnvFile}\""
+		RunAndLog "" notice \
+			fatal "Failed to rename file." \
+			mv "${OldAppEnvFile}" "${AppEnvFile}"
 		local SearchString="${APP_ENV_FOLDER_NAME}/${OldAppEnvFilename}"
 		if [[ -f ${COMPOSE_OVERRIDE} ]] && ${GREP} -q -F "${SearchString}" "${COMPOSE_OVERRIDE}"; then
 			local ReplaceString="${AppEnvFilename}"
@@ -30,10 +29,9 @@ app_env_file() {
 			notice "   '${C["Var"]}${SearchString}${NC}' with '${C["Var"]}${ReplaceString}${NC}'"
 			# Escape . to [.] to use in sed
 			SearchString="${SearchString//./[.]}"
-			${SED} -i "s|${SearchString}|${ReplaceString}|g" "${COMPOSE_OVERRIDE}" ||
-				fatal \
-					"Failed to edit override file." \
-					"Failing command: ${C["FailingCommand"]}${SED} -i \"s|${SearchString}|${ReplaceString}|g\" \"${COMPOSE_OVERRIDE}\""
+			RunAndLog "" notice \
+				fatal "Failed to edit override file." \
+				"${SED}" -i "s|${SearchString}|${ReplaceString}|g" "${COMPOSE_OVERRIDE}"
 		fi
 	fi
 	echo "${AppEnvFile}"
