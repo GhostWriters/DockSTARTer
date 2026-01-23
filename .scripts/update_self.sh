@@ -14,10 +14,9 @@ update_self() {
 	local Title="Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC}"
 	local Question YesNotice NoNotice
 
-	pushd "${SCRIPTPATH}" &> /dev/null ||
-		fatal \
-			"Failed to change directory." \
-			"Failing command: ${C["FailingCommand"]}push \"${SCRIPTPATH}\""
+	RunAndLog "" "OutToNull|ErrToNull" \
+		fatal "Failed to change directory." \
+		pushd "${SCRIPTPATH}"
 
 	if [[ -z ${Branch-} ]]; then
 		Branch="$(ds_branch)"
@@ -59,12 +58,14 @@ update_self() {
 	if [[ -z ${FORCE-} && ${CurrentVersion} == "${RemoteVersion}" ]]; then
 		if use_dialog_box; then
 			{
-				notice "${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} is already up to date on branch '${C["Branch"]}${Branch}${NC}'."
-				notice "Current version is '${C["Version"]}${CurrentVersion}${NC}'"
+				notice \
+					"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} is already up to date on branch '${C["Branch"]}${Branch}${NC}'." \
+					"Current version is '${C["Version"]}${CurrentVersion}${NC}'"
 			} |& dialog_pipe "${DC["TitleWarning"]-}${Title}" "${DC[CommandLine]-} ${APPLICATION_COMMAND} --update $*"
 		else
-			notice "${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} is already up to date on branch '${C["Branch"]}${Branch}${NC}'."
-			notice "Current version is '${C["Version"]}${CurrentVersion}${NC}'"
+			notice \
+				"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} is already up to date on branch '${C["Branch"]}${Branch}${NC}'." \
+				"Current version is '${C["Version"]}${CurrentVersion}${NC}'"
 		fi
 		return 0
 	fi
@@ -92,76 +93,47 @@ commands_update_self() {
 	local Notice=${2-}
 	shift 2
 
-	pushd "${SCRIPTPATH}" &> /dev/null ||
-		fatal \
-			"Failed to change directory." \
-			"Failing command: ${C["FailingCommand"]}push \"${SCRIPTPATH}\""
-
-	local -i result
-	local Command
-	local CommandOutput
+	RunAndLog "" "OutToNull|ErrToNull" \
+		fatal "Failed to change directory." \
+		pushd "${SCRIPTPATH}"
 
 	notice "${Notice}"
-	cd "${SCRIPTPATH}" ||
-		fatal \
-			"Failed to change directory." \
-			"Failing command: ${C["FailingCommand"]}cd \"${SCRIPTPATH}\""
+
 	info "Setting file ownership on current repository files"
 	sudo chown -R "$(id -u)":"$(id -g)" "${SCRIPTPATH}/.git" &> /dev/null || true
 	sudo chown "$(id -u)":"$(id -g)" "${SCRIPTPATH}" &> /dev/null || true
 	git ls-tree -rt --name-only HEAD | xargs sudo chown "$(id -u)":"$(id -g)" &> /dev/null || true
 
 	info "Fetching recent changes from git."
-	Command="git fetch --all --prune -v"
-	info "Running: ${C["RunningCommand"]}${Command}${NC}"
-	CommandOutput=$(eval "${Command}" 2>&1)
-	result=$?
-	info "${CommandOutput}"
-	[[ ${result} -eq 0 ]] ||
-		fatal \
-			"Failed to fetch recent changes from git." \
-			"Failing command: ${C["FailingCommand"]}${Command}"
+	RunAndLog info info \
+		fatal "Failed to fetch recent changes from git." \
+		git fetch --all --prune -v
 	if [[ ${CI-} != true ]]; then
-		Command="git checkout --force \"${Branch}\""
-		info "Running: ${C["RunningCommand"]}${Command}${NC}"
-		CommandOutput=$(eval "${Command}" 2>&1)
-		result=$?
-		info "${CommandOutput}"
-		[[ ${result} -eq 0 ]] ||
-			fatal \
-				"Failed to switch to github ref '${C["Branch"]}${Branch}${NC}'." \
-				"Failing command: ${C["FailingCommand"]}${Command}"
+		RunAndLog info info \
+			fatal "Failed to switch to github ref '${C["Branch"]}${Branch}${NC}'." \
+			git checkout --force "${Branch}"
 
 		# If it's a branch (not a tag or SHA), perform reset and pull
 		if git ls-remote --exit-code --heads origin "${Branch}" &> /dev/null; then
-			Command="git reset --hard origin/\"${Branch}\""
-			info "Running: ${C["RunningCommand"]}${Command}${NC}"
-			CommandOutput=$(eval "${Command}" 2>&1)
-			result=$?
-			info "${CommandOutput}"
-			[[ ${result} -eq 0 ]] ||
-				fatal \
-					"Failed to reset to branch '${C["Branch"]}origin/${Branch}${NC}'." \
-					"Failing command: ${C["FailingCommand"]}${Command}"
+			RunAndLog info info \
+				fatal "Failed to reset to branch '${C["Branch"]}origin/${Branch}${NC}'." \
+				git reset --hard origin/"${Branch}"
 			info "Pulling recent changes from git."
-			Command="git pull"
-			info "Running: ${C["RunningCommand"]}${Command}${NC}"
-			CommandOutput=$(eval "${Command}" 2>&1)
-			result=$?
-			info "${CommandOutput}"
-			[[ ${result} -eq 0 ]] ||
-				fatal \
-					"Failed to pull recent changes from git." \
-					"Failing command: ${C["FailingCommand"]}${Command}"
+			RunAndLog info info \
+				fatal "Failed to pull recent changes from git." \
+				git pull
 		fi
 	fi
-	info "Cleaning up unnecessary files and optimizing the local repository."
-	info "$(git gc 2>&1 || true)"
-	info "Setting file ownership on new repository files"
-	git ls-tree -rt --name-only "${Branch}" | xargs sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" &> /dev/null || true
-	sudo chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}/.git" &> /dev/null || true
-	sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}" &> /dev/null || true
-	notice "Updated ${APPLICATION_NAME} to '${C["Version"]}$(ds_version)${NC}'"
+	info \
+		"Cleaning up unnecessary files and optimizing the local repository." \
+		"$(git gc 2>&1 || true)"
+	info \
+		"Setting file ownership on new repository files" \
+		"$(git ls-tree -rt --name-only "${Branch}" | xargs sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" &> /dev/null || true)" \
+		"$(sudo chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}/.git" &> /dev/null || true)" \
+		"$(sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}" &> /dev/null || true)"
+	notice \
+		"Updated ${APPLICATION_NAME} to '${C["Version"]}$(ds_version)${NC}'"
 	popd &> /dev/null
 
 	# run_script 'reset_needs' # Add script lines in-line below
