@@ -11,7 +11,7 @@ update_self() {
 		Branch="${APPLICATION_DEFAULT_BRANCH}"
 	fi
 
-	local Title="Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC}"
+	local Title="Update ${APPLICATION_NAME}"
 	local Question YesNotice NoNotice
 
 	RunAndLog "" "OutToNull|ErrToNull" \
@@ -44,11 +44,13 @@ update_self() {
 	fi
 	popd &> /dev/null
 
+	local CommandLineText
+	CommandLineText="$(printf '%q ' "${APPLICATION_COMMAND}" "--update" "$@" | xargs)"
 	if ! ds_branch_exists "${Branch}" && ! ds_tag_exists "${Branch}" && ! ds_commit_exists "${Branch}"; then
 		local ErrorMessage="${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} ref '${C["Branch"]}${Branch}${NC}' does not exist on origin."
 		if use_dialog_box; then
 			error "${ErrorMessage}" |&
-				dialog_pipe "${DC["TitleError"]-}${Title}" "${DC["CommandLine"]-} ${APPLICATION_COMMAND} --update $*"
+				dialog_pipe "${DC["TitleError"]-}${Title}" "${DC["CommandLine"]-} ${CommandLineText}"
 		else
 			error "${ErrorMessage}"
 		fi
@@ -63,7 +65,7 @@ update_self() {
 						"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} is already up to date on branch '${C["Branch"]}${Branch}${NC}'." \
 						"Current version is '${C["Version"]}${CurrentVersion}${NC}'"
 				} || true
-			} |& dialog_pipe "${DC["TitleWarning"]-}${Title}" "${DC[CommandLine]-} ${APPLICATION_COMMAND} --update $*"
+			} |& dialog_pipe "${DC["TitleWarning"]-}${Title}" "${DC[CommandLine]-} ${CommandLineText}"
 		else
 			notice \
 				"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} is already up to date on branch '${C["Branch"]}${Branch}${NC}'." \
@@ -84,7 +86,7 @@ update_self() {
 	if use_dialog_box; then
 		YesNotice="$(strip_ansi_colors "${YesNotice}")"
 		{ commands_update_self_logic "${Branch}" "${YesNotice}" "$@" |&
-			dialog_pipe "${DC["TitleSuccess"]-}${Title}" "${YesNotice}\n${DC["CommandLine"]-} ${APPLICATION_COMMAND} --update $*"; } || true
+			dialog_pipe "${DC["TitleSuccess"]-}${Title}" "${YesNotice}\n${DC["CommandLine"]-} ${CommandLineText}"; } || true
 	else
 		commands_update_self_logic "${Branch}" "${YesNotice}" "$@"
 	fi

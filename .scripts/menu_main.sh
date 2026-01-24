@@ -44,7 +44,7 @@ menu_main() {
 						;;
 					"${Option_UpdateVersion}")
 						run_script 'update_templates' || true
-						run_script 'update_self' "" --menu "${REST_OF_ARGS[@]-}" || true
+						run_script 'update_self' "" "${CURRENT_FLAGS_ARRAY[@]}" --menu "${REST_OF_ARGS_ARRAY[@]}" || true
 						;;
 					"${Option_Options}")
 						run_script 'menu_options' || true
