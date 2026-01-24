@@ -501,7 +501,7 @@ check_sudo() {
 clone_repo() {
 	warn \
 		"Attempting to clone ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} repo to '${C["Folder"]-}${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}${NC-}' location."
-	RunAndLog notice notice \
+	RunAndLog notice "git:notice" \
 		fatal "Failed to clone ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} repo." \
 		git clone -b "${APPLICATION_DEFAULT_BRANCH}" "${APPLICATION_REPO}" "${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}"
 	if [[ ${#ARGS[@]} -eq 0 ]]; then
@@ -517,11 +517,11 @@ clone_templates_repo() {
 	warn \
 		"Attempting to clone ${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} repo to '${C["Folder"]-}${TEMPLATES_PARENT_FOLDER}${NC-}' location."
 	if [[ -d ${TEMPLATES_PARENT_FOLDER?} ]]; then
-		RunAndLog notice notice \
+		RunAndLog notice "rm:notice" \
 			fatal "Failed to remove ${TEMPLATES_PARENT_FOLDER?}." \
 			sudo rm -rf "${TEMPLATES_PARENT_FOLDER?}"
 	fi
-	RunAndLog notice notice \
+	RunAndLog notice "git:notice" \
 		fatal "Failed to clone ${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} repo." \
 		git clone -b "${TEMPLATES_DEFAULT_BRANCH}" "${TEMPLATES_REPO}" "${TEMPLATES_PARENT_FOLDER}"
 }

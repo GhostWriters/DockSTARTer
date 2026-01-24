@@ -28,7 +28,7 @@ command_get_docker() {
 			"Failed to create temporary docker install script." \
 			"Failing command: ${C["FailingCommand"]}mktemp -t \"${APPLICATION_NAME}.${FUNCNAME[0]}.MKTEMP_GET_DOCKER.XXXXXXXXXX\""
 	info "Downloading docker install script."
-	RunAndLog notice notice \
+	RunAndLog notice "curl:notice" \
 		fatal "Failed to get docker install script." \
 		curl -fsSL https://get.docker.com -o "${MKTEMP_GET_DOCKER}"
 
@@ -38,7 +38,7 @@ command_get_docker() {
 		sh "${MKTEMP_GET_DOCKER}"
 
 	info "Removing temporary docker install script."
-	RunAndLog notice notice \
+	RunAndLog notice "rm:notice" \
 		warn "Failed to remove temporary docker install script." \
 		rm -f "${MKTEMP_GET_DOCKER}"
 }
@@ -46,10 +46,10 @@ command_get_docker() {
 test_get_docker() {
 	run_script 'remove_snap_docker'
 	run_script 'get_docker'
-	RunAndLog notice notice \
+	RunAndLog notice "docker:notice" \
 		fatal "Failed to determine docker version." \
 		docker --version
-	RunAndLog notice notice \
+	RunAndLog notice "docker:notice" \
 		fatal "Failed to determine docker compose version." \
 		docker compose version
 }
