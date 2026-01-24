@@ -2,6 +2,9 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+declare -gxa REST_OF_ARGS_ARRAY=()
+declare -gxa CURRENT_FLAGS_ARRAY=()
+
 declare -a ParsedArgs=()
 
 cmdline() {
@@ -21,7 +24,7 @@ parse_arguments() {
 	if [[ -z $* ]]; then
 		# No arguments on the command line, nothing to parse
 		if [[ ${mode} != "parse" ]]; then
-			run_command 0 0 "" ""
+			run_command 0 0
 		fi
 		return
 	fi
@@ -343,7 +346,7 @@ parse_arguments() {
 }
 
 run_command() {
-	# run_command (int FlagsLength, int CommandLength, array Flags, array CommandArray, array RestOfArgs)
+	# run_command (int FlagsLength, int CommandLength, array Flags, array CommandArray, array REST_OF_ARGS_ARRAY)
 	local -i FlagsLength=${1}
 	local -i CommandLength=${2}
 	shift 2
@@ -351,14 +354,18 @@ run_command() {
 	# Split the arguments in FullCommand (flags + command), Flags, CommandArray, and the remaining arguments
 	local -i FullCommandLength
 	FullCommandLength=$((FlagsLength + CommandLength))
+
 	local -a FullCommand=("${@:1:FullCommandLength}")
-	local -a Flags=("${@:1:FlagsLength}")
+	CURRENT_FLAGS_ARRAY=("${@:1:FlagsLength}")
 	shift ${FlagsLength}
+
 	local -a CommandArray=("${@:1:CommandLength}")
 	shift ${CommandLength}
-	local -a RestOfArgs=("$@")
+
+	REST_OF_ARGS_ARRAY=("$@")
+
 	declare -gx CURRENT_COMMANDLINE
-	CURRENT_COMMANDLINE="$(quote_elements_with_spaces "${APPLICATION_COMMAND}" "${FullCommand[@]}")"
+	CURRENT_COMMANDLINE="$(quote_elements_with_spaces "${APPLICATION_COMMAND}" "${FullCommand[@]-}")"
 
 	local Command="${CommandArray[0]-}"
 	local EqualsParam
@@ -377,7 +384,7 @@ run_command() {
 	fi
 
 	# Set the flags passed
-	set_flags "${Flags[@]}"
+	set_flags "${CURRENT_FLAGS_ARRAY[@]}"
 
 	local -A \
 		CommandScript \
@@ -659,7 +666,7 @@ run_command() {
 			local AppBranch="${ParamsArray[0]-}"
 			local TemplatesBranch="${ParamsArray[1]-}"
 			run_script 'update_templates' "${TemplatesBranch-}"
-			run_script 'update_self' "${AppBranch-}" "${RestOfArgs[@]}"
+			run_script 'update_self' "${AppBranch-}" "${REST_OF_ARGS_ARRAY[@]}"
 			result=$?
 			;;
 
@@ -669,7 +676,7 @@ run_command() {
 			;;
 
 		--update-app)
-			run_script 'update_self' "${ParamsArray[0]-}" "${RestOfArgs[@]}"
+			run_script 'update_self' "${ParamsArray[0]-}" "${REST_OF_ARGS_ARRAY[@]}"
 			result=$?
 			;;
 
