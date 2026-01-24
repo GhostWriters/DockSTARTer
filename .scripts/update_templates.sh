@@ -55,9 +55,11 @@ update_templates() {
 	if [[ -z ${FORCE-} && ${CurrentVersion} == "${RemoteVersion}" ]]; then
 		if use_dialog_box; then
 			{
-				notice \
-					"${C["ApplicationName"]-}${TargetName}${NC-} is already up to date on branch '${C["Branch"]}${Branch}${NC}'." \
-					"Current version is '${C["Version"]}${CurrentVersion}${NC}'"
+				{
+					notice \
+						"${C["ApplicationName"]-}${TargetName}${NC-} is already up to date on branch '${C["Branch"]}${Branch}${NC}'." \
+						"Current version is '${C["Version"]}${CurrentVersion}${NC}'"
+				} || true
 			} |& dialog_pipe "${DC["TitleWarning"]-}${Title}" "${DC[CommandLine]-} ${APPLICATION_COMMAND} --update-templates $*"
 		else
 			notice \
@@ -69,7 +71,7 @@ update_templates() {
 
 	if ! run_script 'question_prompt' Y "${Question}" "${Title}" "${ASSUMEYES:+Y}"; then
 		if use_dialog_box; then
-			notice "${NoNotice}" |& dialog_pipe "${DC["TitleError"]-}${Title}" "${NoNotice}"
+			{ notice "${NoNotice}" || true; } |& dialog_pipe "${DC["TitleError"]-}${Title}" "${NoNotice}"
 		else
 			notice "${NoNotice}"
 		fi
@@ -78,7 +80,7 @@ update_templates() {
 
 	if use_dialog_box; then
 		YesNotice="$(strip_ansi_colors "${YesNotice}")"
-		commands_update_templates "${Branch}" "${YesNotice}" "$@" |&
+		{ commands_update_templates "${Branch}" "${YesNotice}" "$@" || true; } |&
 			dialog_pipe "${DC["TitleSuccess"]-}${Title}" "${YesNotice}\n${DC["CommandLine"]-} ${APPLICATION_COMMAND} --update $*"
 	else
 		commands_update_templates "${Branch}" "${YesNotice}" "$@"

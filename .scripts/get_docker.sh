@@ -7,8 +7,10 @@ get_docker() {
 	if [[ -n ${VERBOSE-} ]]; then
 		if use_dialog_box; then
 			{
-				notice "Installing docker. Please be patient, this can take a while."
-				command_get_docker
+				{
+					notice "Installing docker. Please be patient, this can take a while."
+					command_get_docker
+				} || true
 			} |& dialog_pipe "${Title}" "Installing docker. Please be patient, this can take a while."
 		else
 			notice "Installing docker. Please be patient, this can take a while."

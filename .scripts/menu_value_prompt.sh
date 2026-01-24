@@ -407,11 +407,13 @@ menu_value_prompt() {
 							else
 								if run_script 'question_prompt' Y "${DialogHeading}\n\n${DC["Highlight"]-}${OptionValue["${CurrentValueOption}"]}${DC["NC"]-} is not a valid path. Would you like to attempt to create it?" "${Title}"; then
 									{
-										mkdir -p "${StrippedValue}" ||
-											fatal \
-												"Failed to make directory.\n" \
-												"Failing command: ${C["FailingCommand"]}mkdir -p \"${StrippedValue}\""
-										run_script 'set_permissions' "${StrippedValue}"
+										{
+											mkdir -p "${StrippedValue}" ||
+												fatal \
+													"Failed to make directory.\n" \
+													"Failing command: ${C["FailingCommand"]}mkdir -p \"${StrippedValue}\""
+											run_script 'set_permissions' "${StrippedValue}"
+										} || true
 									} |& dialog_pipe "Creating folder and settings permissions" "${OptionValue["${CurrentValueOption}"]}" "${DIALOGTIMEOUT}"
 									dialog_error "${DC["TitleSuccess"]-}${Title}" --msgbox "${DC["Highlight"]-}${OptionValue["${CurrentValueOption}"]}${DC["NC"]-} folder was created successfully." "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
 									ValueValid="true"
@@ -475,7 +477,7 @@ menu_value_prompt() {
 									run_script 'env_sanitize'
 									run_script 'env_update'
 								fi
-							} >&${DialogBox_FD} 2>&1
+							} >&${DialogBox_FD} 2>&1 || true
 							exec {DialogBox_FD}<&-
 							wait ${DialogBox_PID}
 							return 0
@@ -502,7 +504,7 @@ menu_value_prompt() {
 									run_script 'env_update'
 									run_script 'env_sanitize'
 								fi
-							} >&${DialogBox_FD} 2>&1
+							} >&${DialogBox_FD} 2>&1 || true
 							exec {DialogBox_FD}<&-
 							wait ${DialogBox_PID}
 							return 0
@@ -529,7 +531,7 @@ menu_value_prompt() {
 									run_script 'env_update'
 									run_script 'env_sanitize'
 								fi
-							} >&${DialogBox_FD} 2>&1
+							} >&${DialogBox_FD} 2>&1 || true
 							exec {DialogBox_FD}<&-
 							wait ${DialogBox_PID}
 							return 0

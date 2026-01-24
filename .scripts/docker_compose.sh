@@ -133,7 +133,7 @@ docker_compose() {
 				else
 					result=1
 				fi
-			} >&${DialogBox_FD} 2>&1
+			} >&${DialogBox_FD} 2>&1 || true
 			exec {DialogBox_FD}<&-
 			wait ${DialogBox_PID}
 		else
@@ -157,7 +157,7 @@ docker_compose() {
 		fi
 	else
 		if use_dialog_box; then
-			[[ -n ${NoNotice-} ]] && notice "${NoNotice}" |& dialog_pipe "${DC["TitleError"]-}${Title}" "${NoNotice}"
+			{ [[ -n ${NoNotice-} ]] && notice "${NoNotice}" || true; } |& dialog_pipe "${DC["TitleError"]-}${Title}" "${NoNotice}"
 		else
 			[[ -n ${NoNotice-} ]] && notice "${NoNotice}"
 		fi

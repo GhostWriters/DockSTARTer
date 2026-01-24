@@ -58,9 +58,11 @@ update_self() {
 	if [[ -z ${FORCE-} && ${CurrentVersion} == "${RemoteVersion}" ]]; then
 		if use_dialog_box; then
 			{
-				notice \
-					"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} is already up to date on branch '${C["Branch"]}${Branch}${NC}'." \
-					"Current version is '${C["Version"]}${CurrentVersion}${NC}'"
+				{
+					notice \
+						"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} is already up to date on branch '${C["Branch"]}${Branch}${NC}'." \
+						"Current version is '${C["Version"]}${CurrentVersion}${NC}'"
+				} || true
 			} |& dialog_pipe "${DC["TitleWarning"]-}${Title}" "${DC[CommandLine]-} ${APPLICATION_COMMAND} --update $*"
 		else
 			notice \
@@ -72,7 +74,7 @@ update_self() {
 
 	if ! run_script 'question_prompt' Y "${Question}" "${Title}" "${ASSUMEYES:+Y}"; then
 		if use_dialog_box; then
-			notice "${NoNotice}" |& dialog_pipe "${DC["TitleError"]-}${Title}" "${NoNotice}"
+			{ notice "${NoNotice}" || true; } |& dialog_pipe "${DC["TitleError"]-}${Title}" "${NoNotice}"
 		else
 			notice "${NoNotice}"
 		fi
