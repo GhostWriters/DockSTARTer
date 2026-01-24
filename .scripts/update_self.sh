@@ -83,14 +83,26 @@ update_self() {
 
 	if use_dialog_box; then
 		YesNotice="$(strip_ansi_colors "${YesNotice}")"
-		commands_update_self "${Branch}" "${YesNotice}" "$@" |&
-			dialog_pipe "${DC["TitleSuccess"]-}${Title}" "${YesNotice}\n${DC["CommandLine"]-} ${APPLICATION_COMMAND} --update $*"
+		{ commands_update_self_logic "${Branch}" "${YesNotice}" "$@" |&
+			dialog_pipe "${DC["TitleSuccess"]-}${Title}" "${YesNotice}\n${DC["CommandLine"]-} ${APPLICATION_COMMAND} --update $*"; } || true
 	else
-		commands_update_self "${Branch}" "${YesNotice}" "$@"
+		commands_update_self_logic "${Branch}" "${YesNotice}" "$@"
 	fi
+
+	local -a CommandArray
+	if [[ -z $* ]]; then
+		CommandArray=(bash "${SCRIPTNAME}" "-e")
+	else
+		CommandArray=(bash "${SCRIPTNAME}" "$@")
+	fi
+	local CommandNotice
+	CommandNotice="exec $(printf '%q ' "${CommandArray[@]}" | xargs)"
+	notice "Running: ${C["RunningCommand"]}${CommandNotice}${NC}"
+	exec "${CommandArray[@]}"
+	exit
 }
 
-commands_update_self() {
+commands_update_self_logic() {
 	local Branch=${1-}
 	local Notice=${2-}
 	shift 2
@@ -147,18 +159,6 @@ commands_update_self() {
 		run_script 'set_permissions' "${TEMP_FOLDER:?}"
 		rm -rf "${TEMP_FOLDER:?}" &> /dev/null || true
 	fi
-
-	local -a CommandArray
-	local CommandNotice
-	if [[ -z $* ]]; then
-		CommandArray=(bash "${SCRIPTNAME}" "-e")
-	else
-		CommandArray=(bash "${SCRIPTNAME}" "$@")
-	fi
-	CommandNotice="exec $(printf '%q ' "${CommandArray[@]}" | xargs)"
-	notice "Running: ${C["RunningCommand"]}${CommandNotice}${NC}"
-	exec "${CommandArray[@]}"
-	exit
 }
 
 test_update_self() {

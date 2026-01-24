@@ -2,6 +2,7 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+declare -a REST_OF_ARGS=()
 declare -a ParsedArgs=()
 
 cmdline() {
@@ -343,7 +344,7 @@ parse_arguments() {
 }
 
 run_command() {
-	# run_command (int FlagsLength, int CommandLength, array Flags, array CommandArray, array RestOfArgs)
+	# run_command (int FlagsLength, int CommandLength, array Flags, array CommandArray, array REST_OF_ARGS)
 	local -i FlagsLength=${1}
 	local -i CommandLength=${2}
 	shift 2
@@ -356,7 +357,7 @@ run_command() {
 	shift ${FlagsLength}
 	local -a CommandArray=("${@:1:CommandLength}")
 	shift ${CommandLength}
-	local -a RestOfArgs=("$@")
+	REST_OF_ARGS=("$@")
 	declare -gx CURRENT_COMMANDLINE
 	CURRENT_COMMANDLINE="$(quote_elements_with_spaces "${APPLICATION_COMMAND}" "${FullCommand[@]}")"
 
@@ -659,7 +660,7 @@ run_command() {
 			local AppBranch="${ParamsArray[0]-}"
 			local TemplatesBranch="${ParamsArray[1]-}"
 			run_script 'update_templates' "${TemplatesBranch-}"
-			run_script 'update_self' "${AppBranch-}" "${RestOfArgs[@]}"
+			run_script 'update_self' "${AppBranch-}" "${REST_OF_ARGS[@]}"
 			result=$?
 			;;
 
@@ -669,7 +670,7 @@ run_command() {
 			;;
 
 		--update-app)
-			run_script 'update_self' "${ParamsArray[0]-}" "${RestOfArgs[@]}"
+			run_script 'update_self' "${ParamsArray[0]-}" "${REST_OF_ARGS[@]}"
 			result=$?
 			;;
 
