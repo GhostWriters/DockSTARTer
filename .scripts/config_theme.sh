@@ -155,12 +155,12 @@ config_theme() {
 		DialogOptions+=" --no-shadow"
 	fi
 
-	RunAndLog "" info \
+	RunAndLog "" "cp:info" \
 		fatal "Failed to save dialog options file." \
 		cp <(printf "%s" "${DialogOptions}") "${DIALOG_OPTIONS_FILE}"
 	run_script 'set_permissions' "${DIALOG_OPTIONS_FILE}"
 
-	RunAndLog "" info \
+	RunAndLog "" "cp:info" \
 		fatal "Failed to copy dialogrc file." \
 		cp "${DialogFile}" "${DIALOGRC}"
 	run_script 'set_permissions' "${DIALOGRC}"

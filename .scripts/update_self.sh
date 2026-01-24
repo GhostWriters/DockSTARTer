@@ -107,21 +107,21 @@ commands_update_self() {
 	git ls-tree -rt --name-only HEAD | xargs sudo chown "$(id -u)":"$(id -g)" &> /dev/null || true
 
 	info "Fetching recent changes from git."
-	RunAndLog info info \
+	RunAndLog info "git:info" \
 		fatal "Failed to fetch recent changes from git." \
 		git fetch --all --prune -v
 	if [[ ${CI-} != true ]]; then
-		RunAndLog info info \
+		RunAndLog info "git:info" \
 			fatal "Failed to switch to github ref '${C["Branch"]}${Branch}${NC}'." \
 			git checkout --force "${Branch}"
 
 		# If it's a branch (not a tag or SHA), perform reset and pull
 		if git ls-remote --exit-code --heads origin "${Branch}" &> /dev/null; then
-			RunAndLog info info \
+			RunAndLog info "git:info" \
 				fatal "Failed to reset to branch '${C["Branch"]}origin/${Branch}${NC}'." \
 				git reset --hard origin/"${Branch}"
 			info "Pulling recent changes from git."
-			RunAndLog info info \
+			RunAndLog info "git:info" \
 				fatal "Failed to pull recent changes from git." \
 				git pull
 		fi

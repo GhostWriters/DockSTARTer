@@ -18,7 +18,7 @@ app_env_file() {
 	if [[ ! -f ${AppEnvFile} && -f ${OldAppEnvFile} ]]; then
 		# Migrate from the old env_files/appname.env files to .env.app.appname
 		notice "Renaming '${C["File"]}${OldAppEnvFile}${NC}' to '${C["File"]}${AppEnvFile}${NC}'"
-		RunAndLog "" notice \
+		RunAndLog "" "mv:notice" \
 			fatal "Failed to rename file." \
 			mv "${OldAppEnvFile}" "${AppEnvFile}"
 		local SearchString="${APP_ENV_FOLDER_NAME}/${OldAppEnvFilename}"
@@ -29,7 +29,7 @@ app_env_file() {
 			notice "   '${C["Var"]}${SearchString}${NC}' with '${C["Var"]}${ReplaceString}${NC}'"
 			# Escape . to [.] to use in sed
 			SearchString="${SearchString//./[.]}"
-			RunAndLog "" notice \
+			RunAndLog "" "sed:notice" \
 				fatal "Failed to edit override file." \
 				"${SED}" -i "s|${SearchString}|${ReplaceString}|g" "${COMPOSE_OVERRIDE}"
 		fi

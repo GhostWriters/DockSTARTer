@@ -19,12 +19,12 @@ menu_config_vars() {
 	local LastLineChoice=""
 	while true; do
 		if [[ -n ${CurrentGlobalEnvFile-} ]]; then
-			RunAndLog "" info \
+			RunAndLog "" "rm:info" \
 				warn "Failed to remove temporary '${C["File"]}.env${NC}' file." \
 				rm -f "${CurrentGlobalEnvFile}"
 		fi
 		if [[ -n ${CurrentAppEnvFile-} ]]; then
-			RunAndLog "" info \
+			RunAndLog "" "rm:info" \
 				warn "Failed to remove temporary '${C["File"]}.env.app.${appname}${NC}' file." \
 				rm -f "${CurrentAppEnvFile}"
 		fi
@@ -236,12 +236,12 @@ menu_config_vars() {
 		done
 	done
 	if [[ -n ${CurrentGlobalEnvFile-} ]]; then
-		RunAndLog "" info \
+		RunAndLog "" "rm:info" \
 			warn "Failed to remove temporary '${C["File"]}.env${NC}' file." \
 			rm -f "${CurrentGlobalEnvFile}"
 	fi
 	if [[ -n ${CurrentAppEnvFile-} ]]; then
-		RunAndLog "" info \
+		RunAndLog "" "rm:info" \
 			warn "Failed to remove temporary '${C["File"]}.env.app.${appname}${NC}' file." \
 			rm -f "${CurrentAppEnvFile}"
 	fi

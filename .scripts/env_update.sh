@@ -57,7 +57,7 @@ env_update() {
 				)
 			done
 		fi
-		RunAndLog "" notice \
+		RunAndLog "" "rm:notice" \
 			warn "Failed to remove temporary '${C["File"]}.env${NC}' update file." \
 			rm -f "${ENV_LINES_FILE}"
 
@@ -69,10 +69,10 @@ env_update() {
 		printf '%s\n' "${UPDATED_ENV_LINES[@]}" > "${MKTEMP_ENV_UPDATED}" ||
 			fatal \
 				"Failed to write temporary '${C["File"]}.env${NC}' update file."
-		RunAndLog "" notice \
+		RunAndLog "" "cp:notice" \
 			fatal "Failed to copy file." \
 			cp -f "${MKTEMP_ENV_UPDATED}" "${COMPOSE_ENV}"
-		RunAndLog "" notice \
+		RunAndLog "" "rm:notice" \
 			warn "Failed to remove temporary ${C["File"]}.env${NC} update file." \
 			rm -f "${MKTEMP_ENV_UPDATED}"
 		run_script 'set_permissions' "${COMPOSE_ENV}"
@@ -108,10 +108,10 @@ env_update() {
 				printf '%s\n' "${UPDATED_APP_ENV_LINES[@]}" > "${MKTEMP_APP_ENV_UPDATED}" ||
 					fatal \
 						"Failed to write temporary '${C["File"]}.env.app.${appname}${NC}' update file."
-				RunAndLog "" notice \
+				RunAndLog "" "cp:notice" \
 					fatal "Failed to copy file." \
 					cp -f "${MKTEMP_APP_ENV_UPDATED}" "${APP_ENV_FILE}"
-				RunAndLog "" notice \
+				RunAndLog "" "rm:notice" \
 					warn "Failed to remove temporary '${C["File"]}.env.app.${appname}${NC}' update file." \
 					rm -f "${MKTEMP_APP_ENV_UPDATED}"
 				run_script 'set_permissions' "${APP_ENV_FILE}"

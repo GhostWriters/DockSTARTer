@@ -23,7 +23,7 @@ docker_prune() {
 			} |& dialog_pipe "${DC["TitleSuccess"]-}${Title}" "${YesNotice}${DC["NC"]-}\n${DC["CommandLine"]-} ${CommandText}"
 		else
 			notice "${YesNotice}"
-			RunAndLog notice notice \
+			RunAndLog notice "docker:notice" \
 				error "Failed to remove unused docker resources." \
 				"${Command[@]}"
 		fi
