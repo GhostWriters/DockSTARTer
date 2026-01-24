@@ -25,12 +25,13 @@ usage() {
 					TEMPLATES_HEADING+=" (${C["Update"]-}Update Available${NC-})"
 				fi
 				cat << EOF
+${APPLICATION_HEADING}
+${TEMPLATES_HEADING}
+
 Usage: ${C["UsageCommand"]-}${APPLICATION_COMMAND}${NC-} [${C["UsageCommand"]-}<Flags>${NC-}] [${C["UsageCommand"]-}<Command>${NC-}] ...
 NOTE: The '${C["UsageCommand"]-}${APPLICATION_COMMAND}${NC-}' shortcut is only available after the first run of
 	bash main.sh
 
-${APPLICATION_HEADING}
-${TEMPLATES_HEADING}
 This is the main ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} script.
 For regular usage you can run without providing any options.
 
