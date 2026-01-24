@@ -367,6 +367,18 @@ table() {
 	printf '%s\n' "${Data[@]}" | table_pipe "${Cols}" "${Headings[@]}"
 }
 
+PrefixFileLines() {
+	local Prefix="${1}"
+	local FileName="${2}"
+
+	# Count lines in the Content string using process substitution
+	local LineCount
+	LineCount=$(wc -l < "${FileName}")
+
+	# Join the repeated prefix stream and the content stream
+	paste -d '' <(yes "${Prefix}" | head -n "${LineCount}" || true) "${FileName}"
+}
+
 RunAndLog() {
 	# RunAndLog [RunningNoticeType] [OutputNoticeType] [ErrorNoticeType] [ErrorMessage] [Command]
 	local -l RunningNoticeType=${1-}
@@ -375,6 +387,13 @@ RunAndLog() {
 	local ErrorMessage=${4-}
 	shift 4
 	local -a Command=("${@}")
+
+	local Prefix=''
+	if [[ ${OutputNoticeType} == *:* ]]; then
+		Prefix="${OutputNoticeType%%:*}:"
+		OutputNoticeType=${OutputNoticeType#"${Prefix}"}
+		Prefix="${C["RunningCommand"]}${Prefix}${NC-} "
+	fi
 
 	local OutputFile
 
@@ -415,9 +434,9 @@ RunAndLog() {
 		"${Command[@]}" || result=$?
 	fi
 
-	if [[ -n ${OutputFile-} && -n $(< "${OutputFile}") ]]; then
+	if [[ -n ${OutputFile-} && -n $(cat "${OutputFile}") ]]; then
 		"${OutputNoticeType}" \
-			"$(< "${OutputFile}")"
+			"$(PrefixFileLines "${Prefix}" "${OutputFile}")"
 		rm -f "${OutputFile}"
 	fi
 
