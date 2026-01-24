@@ -11,8 +11,10 @@ run_install() {
 	if run_script 'question_prompt' Y "${Question}" "${Title}" "${ASSUMEYES:+Y}"; then
 		if use_dialog_box; then
 			{
-				notice "${YesNotice}"
-				run_install_commands
+				{
+					notice "${YesNotice}"
+					run_install_commands
+				} || true
 			} |& dialog_pipe "${DC["TitleSuccess"]-}${Title}" "${YesNotice}\n${DC["CommandLine"]-} ${CommandLine}"
 		else
 			notice "${YesNotice}"

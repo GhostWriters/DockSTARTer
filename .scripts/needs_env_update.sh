@@ -24,7 +24,7 @@ needs_env_update() {
 		if file_changed "${VarFile}"; then
 			return 0
 		fi
-		if [[ ! -f ${ReferencedAppsFile} ]] || ! cmp -s "${ReferencedAppsFile}" <(run_script 'app_list_referenced'); then
+		if [[ ! -f ${ReferencedAppsFile} ]] || ! cmp -s "${ReferencedAppsFile}" <(run_script 'app_list_referenced' || true); then
 			return 0
 		fi
 		return 1
@@ -41,7 +41,7 @@ needs_env_update() {
 		APPNAME="$(run_script 'varfile_to_appname' "${VarFile}")"
 		local AppEnabledFile
 		AppEnabledFile="$(timestamp_file "${filename}_${APPNAME}__ENABLED")"
-		if ! cmp -s "${AppEnabledFile}" <(run_script 'env_get_line' "${APPNAME}__ENABLED"); then
+		if ! cmp -s "${AppEnabledFile}" <(run_script 'env_get_line' "${APPNAME}__ENABLED" || true); then
 			return 0
 		fi
 	fi
