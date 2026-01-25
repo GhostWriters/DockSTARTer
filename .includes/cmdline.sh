@@ -273,8 +273,8 @@ parse_arguments() {
 					if [[ -n ${!OPTIND-} && ${!OPTIND} != "-"* ]]; then
 						case ${!OPTIND} in
 							generate | merge) ;&
-							down | pull | stop | restart | update | up) ;&
-							"down "* | "pull "* | "stop "* | "restart "* | "update "* | "up "*)
+							down | pause | pull | stop | restart | unpause | update | up) ;&
+							"down "* | "pause "* | "pull "* | "stop "* | "restart "* | "unpause "* | "update "* | "up "*)
 								until [[ ${OPTIND} -gt $# || ${!OPTIND} == "-"* ]]; do
 									CurrentCommand+=("${!OPTIND}")
 									OPTIND+=1

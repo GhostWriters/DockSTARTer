@@ -35,6 +35,18 @@ docker_compose() {
 			fi
 			ComposeCommand[0]="down --remove-orphans ${APPNAME-}"
 			;;
+		pause)
+			if [[ -n ${AppName-} ]]; then
+				Question="Pause: ${C["App"]}${AppName}${NC}?"
+				NoNotice="Not pausing: ${C["App"]}${AppName}${NC}."
+				YesNotice="Pausing: ${C["App"]}${AppName}${NC}."
+			else
+				Question="Pause all running containers?"
+				NoNotice="Not pausing all running containers."
+				YesNotice="Pausing all running containers."
+			fi
+			ComposeCommand[0]="pause ${APPNAME-}"
+			;;
 		pull)
 			if [[ -n ${AppName-} ]]; then
 				Question="Pull the latest images for: ${C["App"]}${AppName}${NC}?"
@@ -70,6 +82,18 @@ docker_compose() {
 				YesNotice="Stopping all running services."
 			fi
 			ComposeCommand[0]="stop ${APPNAME-}"
+			;;
+		unpause)
+			if [[ -n ${AppName-} ]]; then
+				Question="Unpause: ${C["App"]}${AppName}${NC}?"
+				NoNotice="Not unpausing: ${C["App"]}${AppName}${NC}."
+				YesNotice="Unpausing: ${C["App"]}${AppName}${NC}."
+			else
+				Question="Unpause all running containers?"
+				NoNotice="Not unpausing all running containers."
+				YesNotice="Unpausing all running containers."
+			fi
+			ComposeCommand[0]="unpause ${APPNAME-}"
 			;;
 		update)
 			if [[ -n ${AppName-} ]]; then
