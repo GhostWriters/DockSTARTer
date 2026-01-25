@@ -110,7 +110,7 @@ EOF
 		-c | --compose | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}-c --compose${NC-} < ${C["UsageOption"]-}pull${NC-} | ${C["UsageOption"]-}up${NC-} | ${C["UsageOption"]-}down${NC-} | ${C["UsageOption"]-}stop${NC-} | ${C["UsageOption"]-}restart${NC-} | ${C["UsageOption"]-}update${NC-} > [${C["UsageApp"]-}<app>${NC-} ...]${NC-}
+${C["UsageCommand"]-}-c --compose${NC-} < ${C["UsageOption"]-}pull${NC-} | ${C["UsageOption"]-}up${NC-} | ${C["UsageOption"]-}down${NC-} | ${C["UsageOption"]-}stop${NC-} | ${C["UsageOption"]-}restart${NC-} | ${C["UsageOption"]-}pause${NC-} | ${C["UsageOption"]-}unpause${NC-} | ${C["UsageOption"]-}update${NC-} > [${C["UsageApp"]-}<app>${NC-} ...]${NC-}
 	Run docker compose commands. If no command is given, it does an '${C["UsageOption"]-}update${NC-}'.
 	The '${C["UsageOption"]-}update${NC-}' command is the same as a '${C["UsageOption"]-}pull${NC-}' followed by an '${C["UsageOption"]-}up${NC-}'
 ${C["UsageCommand"]-}-c --compose${NC-} < ${C["UsageOption"]-}generate${NC-} | ${C["UsageOption"]-}merge${NC-} >${NC-}
