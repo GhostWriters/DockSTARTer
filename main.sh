@@ -95,7 +95,7 @@ export SCRIPTNAME
 [[ -z ${XDG_CACHE_HOME-} ]] && declare -gx XDG_CACHE_HOME="${DETECTED_HOMEDIR}/.cache"
 [[ -z ${XDG_STATE_HOME-} ]] && declare -gx XDG_STATE_HOME="${DETECTED_HOMEDIR}/.local/state"
 #[[ -z ${XDG_RUNTIME_DIR-} ]] && declare -gx XDG_RUNTIME_DIR="/run/user/${DETECTED_PUID}"
-for XDG_FOLDER in "${XDG_DATA_HOME}" "${XDG_CONFIG_HOME}" "${XDG_CACHE_HOME}" "${XDG_STATE_HOME}" "${XDG_STATE_HOME}/${APPLICATION_NAME,,}"; do
+for XDG_FOLDER in "${XDG_DATA_HOME}" "${XDG_CONFIG_HOME}" "${XDG_CONFIG_HOME}/${APPLICATION_NAME,,}" "${XDG_CACHE_HOME}" "${XDG_STATE_HOME}" "${XDG_STATE_HOME}/${APPLICATION_NAME,,}"; do
 	if [[ ! -d ${XDG_FOLDER} ]]; then
 		if [[ -f ${XDG_FOLDER} ]]; then
 			# XDG_FOLDER exists, but it's not a folder, so remove it
