@@ -1,0 +1,9 @@
+description: "Nginx - Web server and reverse proxy"
+image: "nginx:latest"
+ports:
+  - "80:80"
+  - "443:443"
+volumes:
+  - "${DATA_DIR}/nginx:/etc/nginx/conf.d"
+  - "${DATA_DIR}/nginx/html:/usr/share/nginx/html"
+restart: unless-stopped

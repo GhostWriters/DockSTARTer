@@ -1,0 +1,13 @@
+description: "Jellyfin - Free media server (alternative to Plex)"
+image: "lscr.io/linuxserver/jellyfin:latest"
+ports:
+  - "8096:8096"
+  - "8920:8920"
+volumes:
+  - "${DATA_DIR}/jellyfin:/config"
+  - "${DATA_DIR}/media:/media"
+environment:
+  - PUID=${PUID}
+  - PGID=${PGID}
+  - TZ=${TZ}
+restart: unless-stopped
