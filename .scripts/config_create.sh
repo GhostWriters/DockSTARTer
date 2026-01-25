@@ -18,8 +18,8 @@ config_create() {
 	local FreshInstall=false
 
 	# Handle legacy config files
-	if [[ -f ${SCRIPTPATH}/${APPLICATION_INI_NAME} || -f ${SCRIPTPATH}/menu.ini ]]; then
-		for LegacyIniFile in "${SCRIPTPATH}/${APPLICATION_INI_NAME}" "${SCRIPTPATH}/menu.ini"; do
+	if [[ -f ${SCRIPTPATH}/${APPLICATION_INI_NAME} || -f ${SCRIPTPATH}/menu.ini || -f ${XDG_CONFIG_HOME}/${APPLICATION_INI_NAME} ]]; then
+		for LegacyIniFile in "${XDG_CONFIG_HOME}/${APPLICATION_INI_NAME}" "${SCRIPTPATH}/${APPLICATION_INI_NAME}" "${SCRIPTPATH}/menu.ini"; do
 			if [[ -f ${LegacyIniFile} ]]; then
 				if [[ ${LegacyIniFile} == "${APPLICATION_INI_FILE}" ]]; then
 					continue
