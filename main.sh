@@ -442,7 +442,8 @@ fatal() {
 		"$@" \
 		"" \
 		"${C["FatalFooter"]}Please let the dev know of this error." \
-		"${C["FatalFooter"]}It has been written to '${C["File"]}${FATAL_LOG}${C["FatalFooter"]}', and appended to '${C["File"]}${APPLICATION_LOG}${C["FatalFooter"]}'."
+		"${C["FatalFooter"]}It has been written to '${C["File"]}${FATAL_LOG}${C["FatalFooter"]}'," \
+		"${C["FatalFooter"]}and appended to '${C["File"]}${APPLICATION_LOG}${C["FatalFooter"]}'."
 }
 
 [[ -f "${SCRIPTPATH}/.includes/misc_functions.sh" ]] && source "${SCRIPTPATH}/.includes/misc_functions.sh"
@@ -549,7 +550,9 @@ cleanup() {
 	fi
 
 	if [[ ${EXIT_CODE} -ne 0 ]]; then
-		echo "${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} did not finish running successfully."
+		printf '%s\n' \
+			"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} did not finish running successfully." \
+			"Check logs in '${C["File"]}${APPLICATION_LOG}${NC-}'."
 	fi
 	if [[ ${PROMPT:-CLI} == "GUI" ]]; then
 		# Try to restore the terminal to a working state
