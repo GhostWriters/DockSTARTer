@@ -11,10 +11,6 @@ update_templates() {
 	local Title="Update ${TargetName}"
 	local Question YesNotice NoNotice
 
-	RunAndLog "" "BothToNull" \
-		fatal "Failed to change directory." \
-		pushd "${TEMPLATES_PARENT_FOLDER}"
-
 	if [[ -z ${Branch-} ]]; then
 		Branch="$(templates_branch)"
 		if templates_tag_exists "${Branch-}"; then
@@ -39,7 +35,6 @@ update_templates() {
 		NoNotice="${C["ApplicationName"]-}${TargetName}${NC-} will not be updated."
 		YesNotice="Updating ${C["ApplicationName"]-}${TargetName}${NC-} from '${C["Version"]}${CurrentVersion}${NC}' to '${C["Version"]}${RemoteVersion}${NC}'"
 	fi
-	popd &> /dev/null
 
 	if ! templates_branch_exists "${Branch}" && ! templates_tag_exists "${Branch}" && ! templates_commit_exists "${Branch}"; then
 		local ErrorMessage="${C["ApplicationName"]-}${TargetName}${NC-} ref '${C["Branch"]}${Branch}${NC}' does not exist on origin."
@@ -92,46 +87,43 @@ commands_update_templates() {
 	local Notice=${2-}
 	shift 2
 
-	RunAndLog "" "BothToNull" \
-		fatal "Failed to change directory." \
-		pushd "${TEMPLATES_PARENT_FOLDER}"
-
 	notice "${Notice}"
 	info "Setting file ownership on current repository files"
 	sudo chown -R "$(id -u)":"$(id -g)" "${TEMPLATES_PARENT_FOLDER}/.git" &> /dev/null || true
 	sudo chown "$(id -u)":"$(id -g)" "${TEMPLATES_PARENT_FOLDER}" &> /dev/null || true
-	git ls-tree -rt --name-only HEAD | xargs sudo chown "$(id -u)":"$(id -g)" &> /dev/null || true
+	git -C "${TEMPLATES_PARENT_FOLDER}" ls-tree -rt --name-only HEAD | xargs sudo chown "$(id -u)":"$(id -g)" &> /dev/null || true
 
 	info "Fetching recent changes from git."
 	RunAndLog info "git:info" \
 		fatal "Failed to fetch recent changes from git." \
-		git fetch --all --prune -v
+		git -C "${TEMPLATES_PARENT_FOLDER}" fetch --all --prune -v
 	if [[ ${CI-} != true ]]; then
 		RunAndLog info "git:info" \
 			fatal "Failed to switch to github ref '${C["Branch"]}${Branch}${NC}'." \
-			git checkout --force "${Branch}"
+			git -C "${TEMPLATES_PARENT_FOLDER}" checkout --force "${Branch}"
 
 		# If it's a branch (not a tag or SHA), perform reset and pull
-		if git ls-remote --exit-code --heads origin "${Branch}" &> /dev/null; then
+		if git -C "${TEMPLATES_PARENT_FOLDER}" ls-remote --exit-code --heads origin "${Branch}" &> /dev/null; then
 			RunAndLog info "git:info" \
 				fatal "Failed to reset to branch '${C["Branch"]}origin/${Branch}${NC}'." \
-				git reset --hard origin/"${Branch}"
+				git -C "${TEMPLATES_PARENT_FOLDER}" reset --hard origin/"${Branch}"
 			info "Pulling recent changes from git."
 			RunAndLog info "git:info" \
 				fatal "Failed to pull recent changes from git." \
-				git pull
+				git -C "${TEMPLATES_PARENT_FOLDER}" pull
 		fi
 	fi
 	info "Cleaning up unnecessary files and optimizing the local repository."
-	info "$(git gc 2>&1 || true)"
+	RunAndLog info "git:info" \
+		"" "" \
+		git -C "${TEMPLATES_PARENT_FOLDER}" gc || true
 	info "Setting file ownership on new repository files"
-	git ls-tree -rt --name-only "${Branch}" | xargs sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" &> /dev/null || true
+	git -C "${TEMPLATES_PARENT_FOLDER}" ls-tree -rt --name-only "${Branch}" | xargs sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" &> /dev/null || true
 	sudo chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${TEMPLATES_PARENT_FOLDER}/.git" &> /dev/null || true
 	sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${TEMPLATES_PARENT_FOLDER}" &> /dev/null || true
 	notice "Updated ${TargetName} to '${C["Version"]}$(templates_version)${NC}'"
-	popd &> /dev/null
 
-	run_script 'reset_needs' # Add script lines in-line below
+	run_script 'reset_needs'
 }
 
 test_update_templates() {
