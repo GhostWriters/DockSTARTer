@@ -465,7 +465,7 @@ PrefixFileLines() {
 	LineCount=$(wc -l < "${FileName}")
 
 	# Join the repeated prefix stream and the content stream
-	paste -d '' <(yes "${Prefix}" | head -n "${LineCount}" || true) "${FileName}"
+	paste -d '\0' <(yes "${Prefix}" | head -n "${LineCount}" || true) "${FileName}"
 }
 
 RunAndLog() {
