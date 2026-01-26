@@ -2,6 +2,4 @@
 /.github/       @GhostWriters/ds-scripts @GhostWriters/ds-apps @GhostWriters/ds-docs
 /.scripts/      @GhostWriters/ds-scripts
 /compose/       @GhostWriters/ds-scripts @GhostWriters/ds-apps
-/docs/          @GhostWriters/ds-scripts @GhostWriters/ds-apps @GhostWriters/ds-docs
-/mkdocs.yml     @GhostWriters/ds-scripts @GhostWriters/ds-apps @GhostWriters/ds-docs
 /README.md      @GhostWriters/ds-scripts @GhostWriters/ds-apps @GhostWriters/ds-docs
