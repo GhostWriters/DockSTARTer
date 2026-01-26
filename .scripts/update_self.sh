@@ -14,7 +14,7 @@ update_self() {
 	local Title="Update ${APPLICATION_NAME}"
 	local Question YesNotice NoNotice
 
-	RunAndLog "" "OutToNull|ErrToNull" \
+	RunAndLog "" BothToNull \
 		fatal "Failed to change directory." \
 		pushd "${SCRIPTPATH}"
 
@@ -109,7 +109,7 @@ commands_update_self_logic() {
 	local Notice=${2-}
 	shift 2
 
-	RunAndLog "" "OutToNull|ErrToNull" \
+	RunAndLog "" "BothToNull" \
 		fatal "Failed to change directory." \
 		pushd "${SCRIPTPATH}"
 

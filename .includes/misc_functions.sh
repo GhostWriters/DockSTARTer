@@ -380,13 +380,16 @@ PrefixFileLines() {
 }
 
 RunAndLog() {
-	# RunAndLog [RunningNoticeType] [OutputNoticeType] [ErrorNoticeType] [ErrorMessage] [Command]
+	# RunAndLog [RunningNoticeType] [Prefix:[OutputNoticeType]] [ErrorNoticeType] [ErrorMessage] [Command]
+	# To skip an optional argument, pass an empty string
 	local -l RunningNoticeType=${1-}
 	local -l OutputNoticeType=${2-}
 	local -l ErrorNoticeType=${3-}
 	local ErrorMessage=${4-}
 	shift 4
 	local -a Command=("${@}")
+
+	local NoticeTypes_Regex='info|notice|warn|error|debug|trace'
 
 	local Prefix=''
 	if [[ ${OutputNoticeType} == *:* ]]; then
@@ -407,24 +410,25 @@ RunAndLog() {
 
 	local ErrToNull=false
 	local OutToNull=false
-	if [[ ${OutputNoticeType-} =~ info|notice|warn|error|debug|trace ]]; then
-		OutputFile=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.RunAndLogOutputFile.XXXXXXXXXX")
-	fi
-	if [[ ${OutputNoticeType-} =~ errtonull ]]; then
+	if [[ ${OutputNoticeType-} =~ errtonull|bothtonull ]]; then
 		ErrToNull=true
 	fi
-	if [[ ${OutputNoticeType-} =~ outtonull ]]; then
+	if [[ ${OutputNoticeType-} =~ outtonull|bothtonull ]]; then
 		OutToNull=true
+	fi
+	if [[ ${ErrToNull} != true || ${OutToNull} != true ]] && [[ ${OutputNoticeType-} =~ ${NoticeTypes_Regex} ]]; then
+		# If the output notice type is set, save the output to a file
+		OutputFile=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.RunAndLogOutputFile.XXXXXXXXXX")
 	fi
 	local -i result=0
 	if [[ ${ErrToNull} == true && ${OutToNull} == true ]]; then
 		# Both stdout and stderr are redirected to /dev/null
 		"${Command[@]}" &> /dev/null || result=$?
-	elif [[ -n ${OutputFile-} && ${ErrToNull} == true ]]; then
-		# stderr redircted to null, stdout redirected to output file
+	elif [[ ${ErrToNull} == true && -n ${OutputFile-} ]]; then
+		# stderr redircted to /dev/null, stdout redirected to output file
 		"${Command[@]}" > "${OutputFile}" 2> /dev/null || result=$?
-	elif [[ -n ${OutputFile-} && ${OutToNull} == true ]]; then
-		# stdout redircted to null, stderr redirected to output file
+	elif [[ ${OutToNull} == true && -n ${OutputFile-} ]]; then
+		# stdout redircted to /dev/null, stderr redirected to output file
 		"${Command[@]}" 2> "${OutputFile}" > /dev/null || result=$?
 	elif [[ -n ${OutputFile-} ]]; then
 		# Both stdout and stderr redirected to output file
@@ -442,8 +446,11 @@ RunAndLog() {
 
 	[[ ${result} -eq 0 ]] && return
 
-	${ErrorNoticeType} \
-		"${ErrorMessage}" \
-		"Failing command: ${C["FailingCommand"]}${CommandText}"
+	if [[ -n ${ErrorNoticeType-} ]]; then
+		# If the error notice type is set, log the error
+		${ErrorNoticeType} \
+			"${ErrorMessage}" \
+			"Failing command: ${C["FailingCommand"]}${CommandText}"
+	fi
 	return ${result}
 }
