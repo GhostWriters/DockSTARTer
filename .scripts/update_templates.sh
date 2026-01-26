@@ -11,7 +11,7 @@ update_templates() {
 	local Title="Update ${TargetName}"
 	local Question YesNotice NoNotice
 
-	RunAndLog "" "OutToNull|ErrToNull" \
+	RunAndLog "" "BothToNull" \
 		fatal "Failed to change directory." \
 		pushd "${TEMPLATES_PARENT_FOLDER}"
 
@@ -92,7 +92,7 @@ commands_update_templates() {
 	local Notice=${2-}
 	shift 2
 
-	RunAndLog "" "OutToNull|ErrToNull" \
+	RunAndLog "" "BothToNull" \
 		fatal "Failed to change directory." \
 		pushd "${TEMPLATES_PARENT_FOLDER}"
 
