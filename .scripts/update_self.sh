@@ -14,10 +14,6 @@ update_self() {
 	local Title="Update ${APPLICATION_NAME}"
 	local Question YesNotice NoNotice
 
-	RunAndLog "" BothToNull \
-		fatal "Failed to change directory." \
-		pushd "${SCRIPTPATH}"
-
 	if [[ -z ${Branch-} ]]; then
 		Branch="$(ds_branch)"
 		if ds_tag_exists "${Branch-}"; then
@@ -42,7 +38,6 @@ update_self() {
 		NoNotice="${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} will not be updated."
 		YesNotice="Updating ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} from '${C["Version"]}${CurrentVersion}${NC}' to '${C["Version"]}${RemoteVersion}${NC}'"
 	fi
-	popd &> /dev/null
 
 	local CommandLineText
 	CommandLineText="$(printf '%q ' "${APPLICATION_COMMAND}" "--update" "$@" | xargs)"
@@ -109,48 +104,43 @@ commands_update_self_logic() {
 	local Notice=${2-}
 	shift 2
 
-	RunAndLog "" "BothToNull" \
-		fatal "Failed to change directory." \
-		pushd "${SCRIPTPATH}"
-
 	notice "${Notice}"
 
 	info "Setting file ownership on current repository files"
 	sudo chown -R "$(id -u)":"$(id -g)" "${SCRIPTPATH}/.git" &> /dev/null || true
 	sudo chown "$(id -u)":"$(id -g)" "${SCRIPTPATH}" &> /dev/null || true
-	git ls-tree -rt --name-only HEAD | xargs sudo chown "$(id -u)":"$(id -g)" &> /dev/null || true
+	git -C "${SCRIPTPATH}" ls-tree -rt --name-only HEAD | xargs sudo chown "$(id -u)":"$(id -g)" &> /dev/null || true
 
 	info "Fetching recent changes from git."
 	RunAndLog info "git:info" \
 		fatal "Failed to fetch recent changes from git." \
-		git fetch --all --prune -v
+		git -C "${SCRIPTPATH}" fetch --all --prune -v
 	if [[ ${CI-} != true ]]; then
 		RunAndLog info "git:info" \
 			fatal "Failed to switch to github ref '${C["Branch"]}${Branch}${NC}'." \
-			git checkout --force "${Branch}"
+			git -C "${SCRIPTPATH}" checkout --force "${Branch}"
 
 		# If it's a branch (not a tag or SHA), perform reset and pull
-		if git ls-remote --exit-code --heads origin "${Branch}" &> /dev/null; then
+		if git -C "${SCRIPTPATH}" ls-remote --exit-code --heads origin "${Branch}" &> /dev/null; then
 			RunAndLog info "git:info" \
 				fatal "Failed to reset to branch '${C["Branch"]}origin/${Branch}${NC}'." \
-				git reset --hard origin/"${Branch}"
+				git -C "${SCRIPTPATH}" reset --hard origin/"${Branch}"
 			info "Pulling recent changes from git."
 			RunAndLog info "git:info" \
 				fatal "Failed to pull recent changes from git." \
-				git pull
+				git -C "${SCRIPTPATH}" pull
 		fi
 	fi
-	info \
-		"Cleaning up unnecessary files and optimizing the local repository." \
-		"$(git gc 2>&1 || true)"
-	info \
-		"Setting file ownership on new repository files" \
-		"$(git ls-tree -rt --name-only "${Branch}" | xargs sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" &> /dev/null || true)" \
-		"$(sudo chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}/.git" &> /dev/null || true)" \
-		"$(sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}" &> /dev/null || true)"
+	info "Cleaning up unnecessary files and optimizing the local repository."
+	RunAndLog info "git:info" \
+		"" "" \
+		git -C "${SCRIPTPATH}" gc || true
+	info "Setting file ownership on new repository files"
+	git -C "${SCRIPTPATH}" ls-tree -rt --name-only "${Branch}" | xargs sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" &> /dev/null || true
+	sudo chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}/.git" &> /dev/null || true
+	sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}" &> /dev/null || true
 	notice \
 		"Updated ${APPLICATION_NAME} to '${C["Version"]}$(ds_version)${NC}'"
-	popd &> /dev/null
 
 	# run_script 'reset_needs' # Add script lines in-line below
 	if [[ -d ${TIMESTAMPS_FOLDER:?} ]]; then

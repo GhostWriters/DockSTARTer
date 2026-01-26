@@ -665,8 +665,8 @@ run_command() {
 		-u | --update)
 			local AppBranch="${ParamsArray[0]-}"
 			local TemplatesBranch="${ParamsArray[1]-}"
-			run_script 'update_templates' "${TemplatesBranch-}"
-			run_script 'update_self' "${AppBranch-}" "${REST_OF_ARGS_ARRAY[@]}"
+			run_script 'update_templates' "${TemplatesBranch-}" || true
+			run_script 'update_self' "${AppBranch-}" "${REST_OF_ARGS_ARRAY[@]}" || true
 			result=$?
 			;;
 
