@@ -467,8 +467,12 @@ check_arch() {
 
 # Check if the repo exists relative to the SCRIPTPATH
 check_repo() {
-	if [[ -d ${SCRIPTPATH}/.git ]] && [[ -d ${SCRIPTPATH}/.includes ]] && [[ -d ${SCRIPTPATH}/.scripts ]]; then
-		return
+	if RunAndLog notice "git:notice" warn "Script repo has not been cloned." git -C "${SCRIPTPATH}" rev-parse --is-inside-work-tree; then
+		if [[ -d ${SCRIPTPATH}/.includes ]] && [[ -d ${SCRIPTPATH}/.scripts ]]; then
+			return
+		else
+			return 1
+		fi
 	else
 		return 1
 	fi
@@ -476,7 +480,7 @@ check_repo() {
 
 # Check if the templates repo exists relative to the ${TEMPLATES_PARENT_FOLDER}
 check_templates_repo() {
-	if [[ -d ${TEMPLATES_PARENT_FOLDER}/.git ]]; then
+	if RunAndLog notice "git:notice" warn "Templates repo has not been cloned." git -C "${TEMPLATES_PARENT_FOLDER}" rev-parse --is-inside-work-tree; then
 		return
 	else
 		return 1
