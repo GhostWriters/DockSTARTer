@@ -6,7 +6,7 @@ declare -rgx DEPSCHECK_FOLDER="${TEMP_FOLDER}/depcheck"
 
 check_script() {
 	local script_name=${1-}
-	local script_file="${SCRIPTPATH}/.scripts/${script_name}.sh"
+	local script_file="${SCRIPTPATH}/scripts/${script_name}.sh"
 
 	[[ -f ${script_file} ]] ||
 		fatal \
@@ -33,7 +33,7 @@ run_script() {
 	local script_name=${1-}
 	shift
 
-	local script_file="${SCRIPTPATH}/.scripts/${script_name}.sh"
+	local script_file="${SCRIPTPATH}/scripts/${script_name}.sh"
 
 	[[ -f ${script_file} ]] ||
 		fatal \

@@ -8,7 +8,7 @@ run_test() {
 	shift
 
 	local function_prefix="test_"
-	local script_file="${SCRIPTPATH}/.scripts/${script_name}.sh"
+	local script_file="${SCRIPTPATH}/scripts/${script_name}.sh"
 	local test_function="${function_prefix}${script_name}"
 
 	notice \

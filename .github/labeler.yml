@@ -9,7 +9,7 @@ ci:
 core:
   - changed-files:
       - any-glob-to-any-file:
-          ["./*.sh", "./**/*.sh", ".scripts/*", ".scripts/**/*"]
+          ["./*.sh", "./**/*.sh", "scripts/*", "scripts/**/*"]
 
 
 repo:
