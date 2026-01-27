@@ -34,7 +34,6 @@ run_script() {
 	shift
 
 	local script_file="${SCRIPTPATH}/scripts/${script_name}.sh"
-
 	[[ -f ${script_file} ]] ||
 		fatal \
 			"Script file '${C["File"]}${script_file}${NC}' not found."
