@@ -1,3 +1,0 @@
-services:
-  youtubedl<__instance>:
-    network_mode: ${YOUTUBEDL<__INSTANCE>__NETWORK_MODE?}

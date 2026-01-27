@@ -1,3 +1,0 @@
-services:
-  freshrss<__instance>:
-    network_mode: ${FRESHRSS<__INSTANCE>__NETWORK_MODE?}

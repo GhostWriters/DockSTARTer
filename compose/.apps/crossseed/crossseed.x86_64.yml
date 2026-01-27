@@ -1,3 +1,0 @@
-services:
-  crossseed<__instance>:
-    image: ghcr.io/cross-seed/cross-seed:${CROSSSEED<__INSTANCE>__TAG?}

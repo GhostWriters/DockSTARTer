@@ -1,5 +1,0 @@
-services:
-  openldap<__instance>:
-    ports:
-      - ${OPENLDAP<__INSTANCE>__PORT_389?}:389
-      - ${OPENLDAP<__INSTANCE>__PORT_636?}:636

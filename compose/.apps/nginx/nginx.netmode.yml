@@ -1,3 +1,0 @@
-services:
-  nginx<__instance>:
-    network_mode: ${NGINX<__INSTANCE>__NETWORK_MODE?}

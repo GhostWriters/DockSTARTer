@@ -1,6 +1,0 @@
-services:
-  sabnzbd<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "NZB Newsgrabber / Downloader"
-      com.dockstarter.appinfo.nicename: "SABnzbd<__Instance>"

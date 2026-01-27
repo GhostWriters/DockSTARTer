@@ -1,6 +1,0 @@
-services:
-  sabnzbdvpn<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "SABnzbd with PrivoxyVPN"
-      com.dockstarter.appinfo.nicename: "SABnzbdVPN<__Instance>"

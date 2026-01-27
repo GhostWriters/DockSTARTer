@@ -1,3 +1,0 @@
-services:
-  grocy<__instance>:
-    network_mode: ${GROCY<__INSTANCE>__NETWORK_MODE?}

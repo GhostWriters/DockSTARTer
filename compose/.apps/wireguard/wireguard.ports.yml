@@ -1,4 +1,0 @@
-services:
-  wireguard<__instance>:
-    ports:
-      - ${WIREGUARD<__INSTANCE>__PORT_51820?}:${WIREGUARD<__INSTANCE>__PORT_51820?}/udp

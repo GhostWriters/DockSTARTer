@@ -1,3 +1,0 @@
-services:
-  petio<__instance>:
-    network_mode: ${PETIO<__INSTANCE>__NETWORK_MODE?}

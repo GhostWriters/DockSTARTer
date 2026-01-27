@@ -1,4 +1,0 @@
-services:
-  grocy<__instance>:
-    ports:
-      - ${GROCY<__INSTANCE>__PORT_80?}:80

@@ -1,6 +1,0 @@
-services:
-  booksonicair<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Web-based streamer for your audiobooks."
-      com.dockstarter.appinfo.nicename: "Booksonicair<__Instance>"

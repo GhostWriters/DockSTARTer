@@ -1,3 +1,0 @@
-services:
-  duplicati<__instance>:
-    network_mode: ${DUPLICATI<__INSTANCE>__NETWORK_MODE?}

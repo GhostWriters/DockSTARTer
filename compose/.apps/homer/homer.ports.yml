@@ -1,4 +1,0 @@
-services:
-  homer<__instance>:
-    ports:
-      - ${HOMER<__INSTANCE>__PORT_8080?}:8080

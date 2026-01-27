@@ -1,3 +1,0 @@
-services:
-  uptimekuma<__instance>:
-    network_mode: ${UPTIMEKUMA<__INSTANCE>__NETWORK_MODE?}

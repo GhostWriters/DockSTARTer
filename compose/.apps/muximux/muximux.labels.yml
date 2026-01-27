@@ -1,6 +1,0 @@
-services:
-  muximux<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "true"
-      com.dockstarter.appinfo.description: "(DEPRECATED) Use Heimdall or Organizr"
-      com.dockstarter.appinfo.nicename: "Muximux<__Instance>"

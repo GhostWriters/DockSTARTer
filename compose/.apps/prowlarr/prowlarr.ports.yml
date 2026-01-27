@@ -1,4 +1,0 @@
-services:
-  prowlarr<__instance>:
-    ports:
-      - ${PROWLARR<__INSTANCE>__PORT_9696?}:9696

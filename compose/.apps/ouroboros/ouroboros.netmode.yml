@@ -1,3 +1,0 @@
-services:
-  ouroboros<__instance>:
-    network_mode: ${OUROBOROS<__INSTANCE>__NETWORK_MODE?}

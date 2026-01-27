@@ -1,3 +1,0 @@
-services:
-  rtorrentvpn<__instance>:
-    image: ghcr.io/binhex/arch-rtorrentvpn:${RTORRENTVPN<__INSTANCE>__TAG?}

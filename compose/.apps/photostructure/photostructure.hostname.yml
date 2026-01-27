@@ -1,3 +1,0 @@
-services:
-  photostructure<__instance>:
-    hostname: ${PHOTOSTRUCTURE<__INSTANCE>__HOSTNAME?}

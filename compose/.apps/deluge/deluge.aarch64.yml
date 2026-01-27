@@ -1,3 +1,0 @@
-services:
-  deluge<__instance>:
-    image: lscr.io/linuxserver/deluge:${DELUGE<__INSTANCE>__TAG?}

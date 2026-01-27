@@ -1,3 +1,0 @@
-services:
-  requestrr<__instance>:
-    network_mode: ${REQUESTRR<__INSTANCE>__NETWORK_MODE?}

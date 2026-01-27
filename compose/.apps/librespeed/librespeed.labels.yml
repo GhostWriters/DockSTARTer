@@ -1,6 +1,0 @@
-services:
-  librespeed<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Lightweight Speedtest implementation"
-      com.dockstarter.appinfo.nicename: "LibreSpeed<__Instance>"

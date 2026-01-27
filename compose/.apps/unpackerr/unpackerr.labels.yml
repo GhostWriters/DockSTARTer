@@ -1,6 +1,0 @@
-services:
-  unpackerr<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Checks for completed downloads and extracts them so Radarr, Lidarr, Sonarr, and Readarr may import them"
-      com.dockstarter.appinfo.nicename: "Unpackerr<__Instance>"

@@ -1,6 +1,0 @@
-services:
-  jackett<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "API Support for your favorite private trackers"
-      com.dockstarter.appinfo.nicename: "Jackett<__Instance>"

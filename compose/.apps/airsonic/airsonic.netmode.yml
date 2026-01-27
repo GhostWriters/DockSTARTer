@@ -1,3 +1,0 @@
-services:
-  airsonic<__instance>:
-    network_mode: ${AIRSONIC<__INSTANCE>__NETWORK_MODE?}

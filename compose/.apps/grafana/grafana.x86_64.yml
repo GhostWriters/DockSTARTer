@@ -1,3 +1,0 @@
-services:
-  grafana<__instance>:
-    image: grafana/grafana:${GRAFANA<__INSTANCE>__TAG?}

@@ -1,3 +1,0 @@
-services:
-  quasselweb<__instance>:
-    network_mode: ${QUASSELWEB<__INSTANCE>__NETWORK_MODE?}

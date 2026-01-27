@@ -1,4 +1,0 @@
-services:
-  limnoria<__instance>:
-    ports:
-      - ${LIMNORIA<__INSTANCE>__PORT_8080?}:8080

@@ -1,3 +1,0 @@
-services:
-  netdata<__instance>:
-    image: netdata/netdata:${NETDATA<__INSTANCE>__TAG?}

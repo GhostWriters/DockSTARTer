@@ -1,4 +1,0 @@
-services:
-  codeserver<__instance>:
-    ports:
-      - ${CODESERVER<__INSTANCE>__PORT_8443?}:8443

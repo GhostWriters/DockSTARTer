@@ -1,4 +1,0 @@
-services:
-  actualbudget<__instance>:
-    ports:
-      - ${ACTUALBUDGET<__INSTANCE>__PORT_5006?}:5006

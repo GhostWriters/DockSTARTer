@@ -1,3 +1,0 @@
-services:
-  homepage<__instance>:
-    network_mode: ${HOMEPAGE<__INSTANCE>__NETWORK_MODE?}

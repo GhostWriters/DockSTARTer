@@ -1,3 +1,0 @@
-services:
-  recyclarr<__instance>:
-    image: ghcr.io/recyclarr/recyclarr:${RECYCLARR<__INSTANCE>__TAG?}

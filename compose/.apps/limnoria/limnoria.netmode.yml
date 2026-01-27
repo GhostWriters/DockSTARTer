@@ -1,3 +1,0 @@
-services:
-  limnoria<__instance>:
-    network_mode: ${LIMNORIA<__INSTANCE>__NETWORK_MODE?}

@@ -1,3 +1,0 @@
-services:
-  unpackerr<__instance>:
-    image: ghcr.io/hotio/unpackerr:${UNPACKERR<__INSTANCE>__TAG?}

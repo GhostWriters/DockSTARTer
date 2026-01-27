@@ -1,3 +1,0 @@
-services:
-  jfago<__instance>:
-    image: hrfee/jfa-go:${JFAGO<__INSTANCE>__TAG?}

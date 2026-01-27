@@ -1,3 +1,0 @@
-services:
-  navidrome<__instance>:
-    network_mode: ${NAVIDROME<__INSTANCE>__NETWORK_MODE?}

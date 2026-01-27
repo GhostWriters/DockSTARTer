@@ -1,4 +1,0 @@
-services:
-  ombi<__instance>:
-    ports:
-      - ${OMBI<__INSTANCE>__PORT_3579?}:3579

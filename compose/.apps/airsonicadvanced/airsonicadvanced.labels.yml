@@ -1,6 +1,0 @@
-services:
-  airsonicadvanced<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Web-based media streamer providing ubiquitous access to your music"
-      com.dockstarter.appinfo.nicename: "AirsonicAdvanced<__Instance>"

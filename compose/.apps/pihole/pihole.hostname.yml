@@ -1,3 +1,0 @@
-services:
-  pihole<__instance>:
-    hostname: ${PIHOLE<__INSTANCE>__HOSTNAME?}

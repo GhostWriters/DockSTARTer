@@ -1,3 +1,0 @@
-services:
-  mariadb<__instance>:
-    image: lscr.io/linuxserver/mariadb:${MARIADB<__INSTANCE>__TAG?}

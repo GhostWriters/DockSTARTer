@@ -1,3 +1,0 @@
-services:
-  overseerr<__instance>:
-    network_mode: ${OVERSEERR<__INSTANCE>__NETWORK_MODE?}

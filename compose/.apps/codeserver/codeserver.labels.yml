@@ -1,6 +1,0 @@
-services:
-  codeserver<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "VS Code running on a remote server, accessible through the browser"
-      com.dockstarter.appinfo.nicename: "codeserver<__Instance>"

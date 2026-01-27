@@ -1,3 +1,0 @@
-services:
-  glances<__instance>:
-    hostname: ${GLANCES<__INSTANCE>__HOSTNAME?}

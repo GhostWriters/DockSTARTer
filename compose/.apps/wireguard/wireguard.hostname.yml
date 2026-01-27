@@ -1,3 +1,0 @@
-services:
-  wireguard<__instance>:
-    hostname: ${WIREGUARD<__INSTANCE>__HOSTNAME?}

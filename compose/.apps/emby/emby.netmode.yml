@@ -1,3 +1,0 @@
-services:
-  emby<__instance>:
-    network_mode: ${EMBY<__INSTANCE>__NETWORK_MODE?}

@@ -1,4 +1,0 @@
-services:
-  huginn<__instance>:
-    ports:
-      - ${HUGINN<__INSTANCE>__PORT_3000?}:3000

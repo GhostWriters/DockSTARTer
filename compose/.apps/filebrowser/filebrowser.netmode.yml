@@ -1,3 +1,0 @@
-services:
-  filebrowser<__instance>:
-    network_mode: ${FILEBROWSER<__INSTANCE>__NETWORK_MODE?}

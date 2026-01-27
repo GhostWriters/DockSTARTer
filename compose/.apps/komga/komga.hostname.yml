@@ -1,3 +1,0 @@
-services:
-  komga<__instance>:
-    hostname: ${KOMGA<__INSTANCE>__HOSTNAME?}

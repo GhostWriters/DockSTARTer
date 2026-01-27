@@ -1,6 +1,0 @@
-services:
-  logarr<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Self-hosted, single-page, log consolidation tool"
-      com.dockstarter.appinfo.nicename: "Logarr<__Instance>"

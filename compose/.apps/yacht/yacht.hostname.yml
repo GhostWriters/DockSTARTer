@@ -1,3 +1,0 @@
-services:
-  yacht<__instance>:
-    hostname: ${YACHT<__INSTANCE>__HOSTNAME?}

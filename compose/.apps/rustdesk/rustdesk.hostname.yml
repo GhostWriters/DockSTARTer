@@ -1,3 +1,0 @@
-services:
-  rustdesk<__instance>:
-    hostname: ${RUSTDESK<__INSTANCE>__HOSTNAME?}

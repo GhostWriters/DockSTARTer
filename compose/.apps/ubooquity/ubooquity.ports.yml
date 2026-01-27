@@ -1,5 +1,0 @@
-services:
-  ubooquity<__instance>:
-    ports:
-      - ${UBOOQUITY<__INSTANCE>__PORT_2202?}:2202
-      - ${UBOOQUITY<__INSTANCE>__PORT_2203?}:2203

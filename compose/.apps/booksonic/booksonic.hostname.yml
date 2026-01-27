@@ -1,3 +1,0 @@
-services:
-  booksonic<__instance>:
-    hostname: ${BOOKSONIC<__INSTANCE>__HOSTNAME?}

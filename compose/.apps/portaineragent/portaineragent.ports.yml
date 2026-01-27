@@ -1,4 +1,0 @@
-services:
-  portaineragent<__instance>:
-    ports:
-      - ${PORTAINERAGENT<__INSTANCE>__PORT_9001?}:9001

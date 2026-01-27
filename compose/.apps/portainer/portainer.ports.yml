@@ -1,4 +1,0 @@
-services:
-  portainer<__instance>:
-    ports:
-      - ${PORTAINER<__INSTANCE>__PORT_9000?}:9000

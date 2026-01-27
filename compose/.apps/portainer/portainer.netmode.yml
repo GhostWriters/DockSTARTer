@@ -1,3 +1,0 @@
-services:
-  portainer<__instance>:
-    network_mode: ${PORTAINER<__INSTANCE>__NETWORK_MODE?}

@@ -1,4 +1,0 @@
-services:
-  plexrequests<__instance>:
-    ports:
-      - ${PLEXREQUESTS<__INSTANCE>__PORT_3000?}:3000

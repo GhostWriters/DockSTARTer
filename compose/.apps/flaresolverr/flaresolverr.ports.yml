@@ -1,4 +1,0 @@
-services:
-  flaresolverr<__instance>:
-    ports:
-      - ${FLARESOLVERR<__INSTANCE>__PORT_8191?}:${FLARESOLVERR<__INSTANCE>__PORT_8191?}

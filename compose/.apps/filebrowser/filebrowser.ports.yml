@@ -1,4 +1,0 @@
-services:
-  filebrowser<__instance>:
-    ports:
-      - ${FILEBROWSER<__INSTANCE>__PORT_80?}:80

@@ -1,3 +1,0 @@
-services:
-  pyload<__instance>:
-    hostname: ${PYLOAD<__INSTANCE>__HOSTNAME?}

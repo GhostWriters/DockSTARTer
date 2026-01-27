@@ -1,6 +1,0 @@
-services:
-  pihole<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "A black hole for internet advertisements"
-      com.dockstarter.appinfo.nicename: "PiHole<__Instance>"

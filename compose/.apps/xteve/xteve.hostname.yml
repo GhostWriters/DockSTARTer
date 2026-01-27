@@ -1,3 +1,0 @@
-services:
-  xteve<__instance>:
-    hostname: ${XTEVE<__INSTANCE>__HOSTNAME?}

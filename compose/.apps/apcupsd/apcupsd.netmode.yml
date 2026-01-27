@@ -1,3 +1,0 @@
-services:
-  apcupsd<__instance>:
-    network_mode: ${APCUPSD<__INSTANCE>__NETWORK_MODE?}

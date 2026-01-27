@@ -1,3 +1,0 @@
-services:
-  deluge<__instance>:
-    hostname: ${DELUGE<__INSTANCE>__HOSTNAME?}

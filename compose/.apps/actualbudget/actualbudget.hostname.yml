@@ -1,3 +1,0 @@
-services:
-  actualbudget<__instance>:
-    hostname: ${ACTUALBUDGET<__INSTANCE>__HOSTNAME?}

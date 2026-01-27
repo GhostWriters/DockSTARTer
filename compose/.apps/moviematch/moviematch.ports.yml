@@ -1,4 +1,0 @@
-services:
-  moviematch<__instance>:
-    ports:
-      - ${MOVIEMATCH<__INSTANCE>__PORT_8000?}:8000

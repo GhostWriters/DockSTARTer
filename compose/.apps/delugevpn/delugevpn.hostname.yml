@@ -1,3 +1,0 @@
-services:
-  delugevpn<__instance>:
-    hostname: ${DELUGEVPN<__INSTANCE>__HOSTNAME?}

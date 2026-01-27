@@ -1,7 +1,0 @@
-services:
-  azuracast<__instance>:
-    ports:
-      - ${AZURACAST<__INSTANCE>__PORT_STATION_PORT_RANGE?}:${AZURACAST<__INSTANCE>__PORT_STATION_PORT_RANGE?}
-      - ${AZURACAST<__INSTANCE>__PORT_2022?}:2022
-      - ${AZURACAST<__INSTANCE>__PORT_443?}:443
-      - ${AZURACAST<__INSTANCE>__PORT_80?}:80

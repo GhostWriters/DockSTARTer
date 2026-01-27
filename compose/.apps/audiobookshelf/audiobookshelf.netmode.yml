@@ -1,3 +1,0 @@
-services:
-  audiobookshelf<__instance>:
-    network_mode: ${AUDIOBOOKSHELF<__INSTANCE>__NETWORK_MODE?}

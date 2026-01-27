@@ -1,3 +1,0 @@
-services:
-  netdata<__instance>:
-    hostname: ${NETDATA<__INSTANCE>__HOSTNAME?}

@@ -1,3 +1,0 @@
-services:
-  overseerr<__instance>:
-    image: lscr.io/linuxserver/overseerr:${OVERSEERR<__INSTANCE>__TAG?}

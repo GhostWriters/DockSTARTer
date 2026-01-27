@@ -1,3 +1,0 @@
-services:
-  apprise<__instance>:
-    image: lscr.io/linuxserver/apprise-api:${APPRISE<__INSTANCE>__TAG?}

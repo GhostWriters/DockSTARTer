@@ -1,3 +1,0 @@
-services:
-  synclounge<__instance>:
-    network_mode: ${SYNCLOUNGE<__INSTANCE>__NETWORK_MODE?}

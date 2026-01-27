@@ -1,3 +1,0 @@
-services:
-  monitorr<__instance>:
-    hostname: ${MONITORR<__INSTANCE>__HOSTNAME?}

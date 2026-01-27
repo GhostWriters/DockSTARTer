@@ -1,3 +1,0 @@
-services:
-  picard<__instance>:
-    network_mode: ${PICARD<__INSTANCE>__NETWORK_MODE?}

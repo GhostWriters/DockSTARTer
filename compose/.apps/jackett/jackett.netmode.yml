@@ -1,3 +1,0 @@
-services:
-  jackett<__instance>:
-    network_mode: ${JACKETT<__INSTANCE>__NETWORK_MODE?}

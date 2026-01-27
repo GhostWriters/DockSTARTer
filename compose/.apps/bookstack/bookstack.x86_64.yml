@@ -1,3 +1,0 @@
-services:
-  bookstack<__instance>:
-    image: lscr.io/linuxserver/bookstack:${BOOKSTACK<__INSTANCE>__TAG?}

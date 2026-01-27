@@ -1,6 +1,0 @@
-services:
-  medusa<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Automatic Video Library Manager for TV Shows"
-      com.dockstarter.appinfo.nicename: "Medusa<__Instance>"

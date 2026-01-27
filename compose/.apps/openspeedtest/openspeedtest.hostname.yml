@@ -1,3 +1,0 @@
-services:
-  openspeedtest<__instance>:
-    hostname: ${OPENSPEEDTEST<__INSTANCE>__HOSTNAME?}

@@ -1,3 +1,0 @@
-services:
-  calibre<__instance>:
-    hostname: ${CALIBRE<__INSTANCE>__HOSTNAME?}

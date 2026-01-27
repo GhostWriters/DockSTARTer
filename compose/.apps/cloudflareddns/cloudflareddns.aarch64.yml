@@ -1,3 +1,0 @@
-services:
-  cloudflareddns<__instance>:
-    image: ghcr.io/hotio/cloudflareddns:${CLOUDFLAREDDNS<__INSTANCE>__TAG?}

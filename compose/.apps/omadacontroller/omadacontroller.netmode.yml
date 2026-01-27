@@ -1,3 +1,0 @@
-services:
-  omadacontroller<__instance>:
-    network_mode: ${OMADACONTROLLER<__INSTANCE>__NETWORK_MODE?}

@@ -1,3 +1,0 @@
-services:
-  nzbget<__instance>:
-    network_mode: ${NZBGET<__INSTANCE>__NETWORK_MODE?}

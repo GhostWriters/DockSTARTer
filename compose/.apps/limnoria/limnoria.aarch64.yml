@@ -1,3 +1,0 @@
-services:
-  limnoria<__instance>:
-    image: lscr.io/linuxserver/limnoria:${LIMNORIA<__INSTANCE>__TAG?}

@@ -1,3 +1,0 @@
-services:
-  requestrr<__instance>:
-    hostname: ${REQUESTRR<__INSTANCE>__HOSTNAME?}

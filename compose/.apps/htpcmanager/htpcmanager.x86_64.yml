@@ -1,3 +1,0 @@
-services:
-  htpcmanager<__instance>:
-    image: lscr.io/linuxserver/htpcmanager:${HTPCMANAGER<__INSTANCE>__TAG?}

@@ -1,3 +1,0 @@
-services:
-  maintainerr<__instance>:
-    network_mode: ${MAINTAINERR<__INSTANCE>__NETWORK_MODE?}

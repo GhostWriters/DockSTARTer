@@ -1,3 +1,0 @@
-services:
-  openvpnas<__instance>:
-    hostname: ${OPENVPNAS<__INSTANCE>__HOSTNAME?}

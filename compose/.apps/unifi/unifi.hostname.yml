@@ -1,3 +1,0 @@
-services:
-  unifi<__instance>:
-    hostname: ${UNIFI<__INSTANCE>__HOSTNAME?}

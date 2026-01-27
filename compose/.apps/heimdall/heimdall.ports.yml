@@ -1,5 +1,0 @@
-services:
-  heimdall<__instance>:
-    ports:
-      - ${HEIMDALL<__INSTANCE>__PORT_443?}:443
-      - ${HEIMDALL<__INSTANCE>__PORT_80?}:80

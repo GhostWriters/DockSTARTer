@@ -1,6 +1,0 @@
-services:
-  tvheadend<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "TV streaming server and recorder"
-      com.dockstarter.appinfo.nicename: "Tvheadend<__Instance>"

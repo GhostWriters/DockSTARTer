@@ -1,3 +1,0 @@
-services:
-  privoxyvpn<__instance>:
-    hostname: ${PRIVOXYVPN<__INSTANCE>__HOSTNAME?}

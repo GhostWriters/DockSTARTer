@@ -1,3 +1,0 @@
-services:
-  xteve<__instance>:
-    image: dnsforge/xteve:${XTEVE<__INSTANCE>__TAG?}

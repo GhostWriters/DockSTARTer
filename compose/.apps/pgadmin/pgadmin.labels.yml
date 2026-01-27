@@ -1,6 +1,0 @@
-services:
-  pgadmin<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: pgAdmin 4 is a web based administration tool for the PostgreSQL database.
-      com.dockstarter.appinfo.nicename: pgAdmin

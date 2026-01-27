@@ -9,11 +9,8 @@ ci:
 core:
   - changed-files:
       - any-glob-to-any-file:
-          ["./*.sh", "./**/*.sh", ".scripts/*", ".scripts/**/*"]
-docs:
-  - changed-files:
-      - any-glob-to-any-file:
-          ["./*.md", "./**/*.md", "./mkdocs.yml", "docs/*", "docs/**/*"]
+          ["./*.sh", "./**/*.sh", "scripts/*", "scripts/**/*"]
+
 
 repo:
   - changed-files:

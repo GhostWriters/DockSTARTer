@@ -1,3 +1,0 @@
-services:
-  portainer<__instance>:
-    hostname: ${PORTAINER<__INSTANCE>__HOSTNAME?}

@@ -1,6 +1,0 @@
-services:
-  headphones<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Music PVR Client"
-      com.dockstarter.appinfo.nicename: "Headphones<__Instance>"

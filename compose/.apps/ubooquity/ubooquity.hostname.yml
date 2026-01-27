@@ -1,3 +1,0 @@
-services:
-  ubooquity<__instance>:
-    hostname: ${UBOOQUITY<__INSTANCE>__HOSTNAME?}

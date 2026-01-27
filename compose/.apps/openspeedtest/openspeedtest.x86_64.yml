@@ -1,3 +1,0 @@
-services:
-  openspeedtest<__instance>:
-    image: openspeedtest/latest:${OPENSPEEDTEST<__INSTANCE>__TAG?}

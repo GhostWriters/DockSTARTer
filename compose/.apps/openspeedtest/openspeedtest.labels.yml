@@ -1,6 +1,0 @@
-services:
-  openspeedtest<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "This is a self-hosted speedtest service"
-      com.dockstarter.appinfo.nicename: "OpenSpeedTest<__Instance>"

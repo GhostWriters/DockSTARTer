@@ -1,3 +1,0 @@
-services:
-  yacht<__instance>:
-    image: selfhostedpro/yacht:${YACHT<__INSTANCE>__TAG?}

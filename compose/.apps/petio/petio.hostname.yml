@@ -1,3 +1,0 @@
-services:
-  petio<__instance>:
-    hostname: ${PETIO<__INSTANCE>__HOSTNAME?}

@@ -1,3 +1,0 @@
-services:
-  fireflyiii<__instance>:
-    image: fireflyiii/core:${FIREFLYIII<__INSTANCE>__TAG?}

@@ -1,3 +1,0 @@
-services:
-  kavita<__instance>:
-    hostname: ${KAVITA<__INSTANCE>__HOSTNAME?}

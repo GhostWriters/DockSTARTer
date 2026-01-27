@@ -1,4 +1,0 @@
-services:
-  jellyseerr<__instance>:
-    ports:
-      - ${JELLYSEERR<__INSTANCE>__PORT_5055?}:5055

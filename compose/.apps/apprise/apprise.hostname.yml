@@ -1,3 +1,0 @@
-services:
-  apprise<__instance>:
-    hostname: ${APPRISE<__INSTANCE>__HOSTNAME?}

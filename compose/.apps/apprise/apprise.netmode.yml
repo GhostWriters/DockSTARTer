@@ -1,3 +1,0 @@
-services:
-  apprise<__instance>:
-    network_mode: ${APPRISE<__INSTANCE>__NETWORK_MODE?}

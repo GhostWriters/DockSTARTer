@@ -1,3 +1,0 @@
-services:
-  phpmyadmin<__instance>:
-    hostname: ${PHPMYADMIN<__INSTANCE>__HOSTNAME?}

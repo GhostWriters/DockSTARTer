@@ -1,3 +1,0 @@
-services:
-  rustdesk<__instance>:
-    network_mode: ${RUSTDESK<__INSTANCE>__NETWORK_MODE?}

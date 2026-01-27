@@ -1,3 +1,0 @@
-services:
-  homeassistant<__instance>:
-    hostname: ${HOMEASSISTANT<__INSTANCE>__HOSTNAME?}

@@ -1,3 +1,0 @@
-services:
-  monitorr<__instance>:
-    image: monitorr/monitorr:${MONITORR<__INSTANCE>__TAG?}

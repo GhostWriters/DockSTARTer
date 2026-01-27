@@ -1,4 +1,0 @@
-services:
-  photostructure<__instance>:
-    ports:
-      - ${PHOTOSTRUCTURE<__INSTANCE>__PORT_1787?}:1787

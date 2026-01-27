@@ -1,3 +1,0 @@
-services:
-  jdownloader2<__instance>:
-    network_mode: ${JDOWNLOADER2<__INSTANCE>__NETWORK_MODE?}

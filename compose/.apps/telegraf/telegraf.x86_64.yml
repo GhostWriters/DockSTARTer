@@ -1,3 +1,0 @@
-services:
-  telegraf<__instance>:
-    image: telegraf:${TELEGRAF<__INSTANCE>__TAG?}

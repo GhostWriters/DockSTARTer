@@ -1,4 +1,0 @@
-services:
-  mylar<__instance>:
-    volumes:
-      - ${DOCKER_VOLUME_STORAGE?}:/storage

@@ -1,3 +1,0 @@
-services:
-  phpmyadmin<__instance>:
-    image: phpmyadmin:${PHPMYADMIN<__INSTANCE>__TAG?}

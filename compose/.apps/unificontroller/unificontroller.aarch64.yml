@@ -1,3 +1,0 @@
-services:
-  unificontroller<__instance>:
-    image: lscr.io/linuxserver/unifi-controller:${UNIFICONTROLLER<__INSTANCE>__TAG?}

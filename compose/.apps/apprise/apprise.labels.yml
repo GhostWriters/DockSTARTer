@@ -1,6 +1,0 @@
-services:
-  apprise<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Apprise API - Push Notifications that work with just about every platform"
-      com.dockstarter.appinfo.nicename: "Apprise<__Instance>"

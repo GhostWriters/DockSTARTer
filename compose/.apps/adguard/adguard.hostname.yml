@@ -1,3 +1,0 @@
-services:
-  adguard<__instance>:
-    hostname: ${ADGUARD<__INSTANCE>__HOSTNAME?}

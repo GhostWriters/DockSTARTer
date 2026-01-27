@@ -1,3 +1,0 @@
-services:
-  mosquitto<__instance>:
-    image: eclipse-mosquitto:${MOSQUITTO<__INSTANCE>__TAG?}

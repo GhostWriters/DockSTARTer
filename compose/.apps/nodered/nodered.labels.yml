@@ -1,6 +1,0 @@
-services:
-  nodered<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Low-code programming for event-driven applications"
-      com.dockstarter.appinfo.nicename: "Nodered<__Instance>"

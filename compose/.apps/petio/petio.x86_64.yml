@@ -1,3 +1,0 @@
-services:
-  petio<__instance>:
-    image: ghcr.io/petio-team/petio:${PETIO<__INSTANCE>__TAG?}

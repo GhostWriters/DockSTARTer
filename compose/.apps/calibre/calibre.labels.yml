@@ -1,6 +1,0 @@
-services:
-  calibre<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Easy to use e-book manager"
-      com.dockstarter.appinfo.nicename: "Calibre<__Instance>"

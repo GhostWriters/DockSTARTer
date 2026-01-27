@@ -1,3 +1,0 @@
-services:
-  overseerr<__instance>:
-    hostname: ${OVERSEERR<__INSTANCE>__HOSTNAME?}

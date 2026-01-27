@@ -1,3 +1,0 @@
-services:
-  plexrequests<__instance>:
-    hostname: ${PLEXREQUESTS<__INSTANCE>__HOSTNAME?}

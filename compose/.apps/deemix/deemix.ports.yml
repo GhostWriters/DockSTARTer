@@ -1,4 +1,0 @@
-services:
-  deemix<__instance>:
-    ports:
-      - ${DEEMIX<__INSTANCE>__PORT_6595?}:6595

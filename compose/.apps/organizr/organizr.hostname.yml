@@ -1,3 +1,0 @@
-services:
-  organizr<__instance>:
-    hostname: ${ORGANIZR<__INSTANCE>__HOSTNAME?}

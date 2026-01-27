@@ -1,5 +1,0 @@
-services:
-  tdarr<__instance>:
-    ports:
-      - ${TDARR<__INSTANCE>__PORT_8265?}:8265
-      - ${TDARR<__INSTANCE>__PORT_8266?}:8266

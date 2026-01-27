@@ -1,3 +1,0 @@
-services:
-  audiobookshelf<__instance>:
-    hostname: ${AUDIOBOOKSHELF<__INSTANCE>__HOSTNAME?}

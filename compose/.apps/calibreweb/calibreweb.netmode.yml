@@ -1,3 +1,0 @@
-services:
-  calibreweb<__instance>:
-    network_mode: ${CALIBREWEB<__INSTANCE>__NETWORK_MODE?}

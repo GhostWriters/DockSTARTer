@@ -1,3 +1,0 @@
-services:
-  huntarr<__instance>:
-    network_mode: ${HUNTARR<__INSTANCE>__NETWORK_MODE?}

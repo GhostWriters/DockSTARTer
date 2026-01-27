@@ -1,3 +1,0 @@
-services:
-  yacht<__instance>:
-    network_mode: ${YACHT<__INSTANCE>__NETWORK_MODE?}

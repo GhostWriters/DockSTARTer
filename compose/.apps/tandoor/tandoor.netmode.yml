@@ -1,3 +1,0 @@
-services:
-  tandoor<__instance>:
-    network_mode: ${TANDOOR<__INSTANCE>__NETWORK_MODE?}

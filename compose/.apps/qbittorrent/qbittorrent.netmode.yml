@@ -1,3 +1,0 @@
-services:
-  qbittorrent<__instance>:
-    network_mode: ${QBITTORRENT<__INSTANCE>__NETWORK_MODE?}

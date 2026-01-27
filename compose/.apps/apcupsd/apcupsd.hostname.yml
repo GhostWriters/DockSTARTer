@@ -1,3 +1,0 @@
-services:
-  apcupsd<__instance>:
-    hostname: ${APCUPSD<__INSTANCE>__HOSTNAME?}

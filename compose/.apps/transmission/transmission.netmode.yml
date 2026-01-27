@@ -1,3 +1,0 @@
-services:
-  transmission<__instance>:
-    network_mode: ${TRANSMISSION<__INSTANCE>__NETWORK_MODE?}

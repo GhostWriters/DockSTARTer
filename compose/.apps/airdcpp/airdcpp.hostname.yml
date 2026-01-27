@@ -1,3 +1,0 @@
-services:
-  airdcpp<__instance>:
-    hostname: ${AIRDCPP<__INSTANCE>__HOSTNAME?}

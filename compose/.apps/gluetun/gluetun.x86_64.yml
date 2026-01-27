@@ -1,3 +1,0 @@
-services:
-  gluetun<__instance>:
-    image: ghcr.io/qdm12/gluetun:${GLUETUN<__INSTANCE>__TAG?}

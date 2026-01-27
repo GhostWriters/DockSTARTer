@@ -1,3 +1,0 @@
-services:
-  watchtower<__instance>:
-    image: ghcr.io/containrrr/watchtower:${WATCHTOWER<__INSTANCE>__TAG?}

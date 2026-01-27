@@ -1,6 +1,0 @@
-services:
-  kitana<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "A Plex plugin web frontend"
-      com.dockstarter.appinfo.nicename: "Kitana<__Instance>"

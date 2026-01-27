@@ -1,3 +1,0 @@
-services:
-  rustdesk<__instance>:
-    image: rustdesk/rustdesk-server-s6:${RUSTDESK<__INSTANCE>__TAG?}

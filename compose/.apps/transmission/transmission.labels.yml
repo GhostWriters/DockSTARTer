@@ -1,6 +1,0 @@
-services:
-  transmission<__instance>:
-    labels:
-      com.dockstarter.appinfo.deprecated: "false"
-      com.dockstarter.appinfo.description: "Fast, easy, and free BitTorrent client"
-      com.dockstarter.appinfo.nicename: "Transmission<__Instance>"

@@ -1,3 +1,0 @@
-services:
-  vaultwarden<__instance>:
-    network_mode: ${VAULTWARDEN<__INSTANCE>__NETWORK_MODE?}

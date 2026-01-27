@@ -1,5 +1,0 @@
-services:
-  mosquitto<__instance>:
-    ports:
-      - ${MOSQUITTO<__INSTANCE>__PORT_1883?}:1883
-      - ${MOSQUITTO<__INSTANCE>__PORT_9001?}:9001

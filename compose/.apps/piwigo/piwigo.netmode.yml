@@ -1,3 +1,0 @@
-services:
-  piwigo<__instance>:
-    network_mode: ${PIWIGO<__INSTANCE>__NETWORK_MODE?}

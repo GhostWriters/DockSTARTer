@@ -1,3 +1,0 @@
-services:
-  hydra2<__instance>:
-    hostname: ${HYDRA2<__INSTANCE>__HOSTNAME?}

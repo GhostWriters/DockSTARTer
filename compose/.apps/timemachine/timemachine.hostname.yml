@@ -1,3 +1,0 @@
-services:
-  timemachine<__instance>:
-    hostname: ${TIMEMACHINE<__INSTANCE>__HOSTNAME?}

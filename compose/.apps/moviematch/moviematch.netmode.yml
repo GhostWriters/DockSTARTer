@@ -1,3 +1,0 @@
-services:
-  moviematch<__instance>:
-    network_mode: ${MOVIEMATCH<__INSTANCE>__NETWORK_MODE?}

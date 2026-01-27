@@ -1,3 +1,0 @@
-services:
-  flaresolverr<__instance>:
-    hostname: ${FLARESOLVERR<__INSTANCE>__HOSTNAME?}

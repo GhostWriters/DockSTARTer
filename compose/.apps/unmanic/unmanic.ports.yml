@@ -1,4 +1,0 @@
-services:
-  unmanic<__instance>:
-    ports:
-      - ${UNMANIC<__INSTANCE>__PORT_8888?}:8888

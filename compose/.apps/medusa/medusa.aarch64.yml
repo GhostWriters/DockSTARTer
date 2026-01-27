@@ -1,3 +1,0 @@
-services:
-  medusa<__instance>:
-    image: lscr.io/linuxserver/medusa:${MEDUSA<__INSTANCE>__TAG?}

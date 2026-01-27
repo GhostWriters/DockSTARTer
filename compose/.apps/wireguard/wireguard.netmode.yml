@@ -1,3 +1,0 @@
-services:
-  wireguard<__instance>:
-    network_mode: ${WIREGUARD<__INSTANCE>__NETWORK_MODE?}

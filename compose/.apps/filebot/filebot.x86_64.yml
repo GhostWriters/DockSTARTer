@@ -1,3 +1,0 @@
-services:
-  filebot<__instance>:
-    image: jlesage/filebot:${FILEBOT<__INSTANCE>__TAG?}
