@@ -10,7 +10,7 @@ app_instance_file() {
 	# app_instance_file AppName FilenameTemplate
 	# Returns the filename of a file in the instance folder for the app specified
 	#
-	# app_instance_file "radarr" "*.labels.yml" will return a string similar to "/home/user/.dockstarter/.instances/radarr/radarr.labels.yml"
+	# app_instance_file "radarr" "*.labels.yml" will return a string similar to "/home/user/.dockstarter/instances/radarr/radarr.labels.yml"
 	# If the file does not exist, it is created from the matching file in the "templates" folder.
 
 	local -l appname=${1:-}

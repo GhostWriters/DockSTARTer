@@ -1,4 +1,4 @@
-# Cache directory - created in .scripts/install_docker.sh and .scripts/install_yq.sh
+# Cache directory - created in scripts/install_docker.sh and scripts/install_yq.sh
 /.cache
 
 # Dialog options file
@@ -8,10 +8,10 @@
 /.dialogrc
 
 # Temporary folder
-/.temp/
+/temp/
 
-# Compose instances directory - created by .scripts/compose_setup.sh for multiple compose instances
-/.instances/
+# Compose instances directory - created by scripts/compose_setup.sh for multiple compose instances
+/instances/
 
 # Local directory
 /.local/
@@ -19,13 +19,13 @@
 # Configuration directory
 /.config/
 
-# Docker CLI plugins directory - referenced in .scripts/install_docker.sh for plugin installation
+# Docker CLI plugins directory - referenced in scripts/install_docker.sh for plugin installation
 /cli-plugins/
 
-# Compose directory - created by .scripts/compose_setup.sh for storing compose files
+# Compose directory - created by scripts/compose_setup.sh for storing compose files
 /compose/
 
-# Docker daemon configuration - created by .scripts/install_docker.sh
+# Docker daemon configuration - created by scripts/install_docker.sh
 /config.json
 
 # Configuration directory - created by main.sh for storing app configs
@@ -46,7 +46,7 @@
 # Fatal log file
 /fatal.log
 
-# Shared data directory - created by .scripts/compose_setup.sh for container volume mounts
+# Shared data directory - created by scripts/compose_setup.sh for container volume mounts
 /share/
 
 # Alternative shared data directory - legacy path for backwards compatibility

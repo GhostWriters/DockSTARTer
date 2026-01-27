@@ -6,7 +6,7 @@ app_instance_folder() {
 	# app_instance_folder AppName
 	# Returns the folder name of a folder in the instance folder for the app specified
 	#
-	# app_instance_folder "radarr"" will return a string similar to "/home/user/.dockstarter/.instances/radarr"
+	# app_instance_folder "radarr"" will return a string similar to "/home/user/.dockstarter/instances/radarr"
 	# If the folder does not exist, it is created from the matching folder in the "templates" folder.
 
 	local AppName=${1:-}

@@ -108,17 +108,7 @@ for XDG_FOLDER in "${XDG_DATA_HOME}" "${XDG_CONFIG_HOME}" "${XDG_CONFIG_HOME}/${
 done
 
 declare -rgx APPLICATION_LOG="${XDG_STATE_HOME}/${APPLICATION_NAME,,}/${APPLICATION_NAME,,}.log"
-declare -rgx FATAL_LOG="${XDG_STATE_HOME}/${APPLICATION_NAME,,}/fatal.log"
-if [[ ${APPLICATION_LOG} != "${SCRIPTPATH}/${APPLICATION_NAME,,}.log" ]]; then
-	if [[ ! -f ${APPLICATION_LOG} && -f "${SCRIPTPATH}/${APPLICATION_NAME,,}.log" ]]; then
-		mv "${SCRIPTPATH}/${APPLICATION_NAME,,}.log" "${APPLICATION_LOG}" || true
-	fi
-fi
-if [[ ${FATAL_LOG} != "${SCRIPTPATH}/fatal.log" ]]; then
-	if [[ ! -f ${FATAL_LOG} && -f "${SCRIPTPATH}/fatal.log" ]]; then
-		mv "${SCRIPTPATH}/fatal.log" "${FATAL_LOG}" || true
-	fi
-fi
+declare -rgx FATAL_LOG="${XDG_STATE_HOME}/${APPLICATION_NAME,,}/${APPLICATION_NAME,,}.fatal.log"
 
 # Terminal Colors
 declare -Agr B=( # Background
@@ -446,16 +436,6 @@ fatal() {
 		"${C["FatalFooter"]}and appended to '${C["File"]}${APPLICATION_LOG}${C["FatalFooter"]}'."
 }
 
-[[ -f "${SCRIPTPATH}/.includes/misc_functions.sh" ]] && source "${SCRIPTPATH}/.includes/misc_functions.sh"
-[[ -f "${SCRIPTPATH}/.includes/global_variables.sh" ]] && source "${SCRIPTPATH}/.includes/global_variables.sh"
-[[ -f "${SCRIPTPATH}/.includes/pm_variables.sh" ]] && source "${SCRIPTPATH}/.includes/pm_variables.sh"
-[[ -f "${SCRIPTPATH}/.includes/run_script.sh" ]] && source "${SCRIPTPATH}/.includes/run_script.sh"
-[[ -f "${SCRIPTPATH}/.includes/dialog_functions.sh" ]] && source "${SCRIPTPATH}/.includes/dialog_functions.sh"
-[[ -f "${SCRIPTPATH}/.includes/ds_functions.sh" ]] && source "${SCRIPTPATH}/.includes/ds_functions.sh"
-[[ -f "${SCRIPTPATH}/.includes/test_functions.sh" ]] && source "${SCRIPTPATH}/.includes/test_functions.sh"
-[[ -f "${SCRIPTPATH}/.includes/usage.sh" ]] && source "${SCRIPTPATH}/.includes/usage.sh"
-[[ -f "${SCRIPTPATH}/.includes/cmdline.sh" ]] && source "${SCRIPTPATH}/.includes/cmdline.sh"
-
 PrefixFileLines() {
 	local Prefix="${1}"
 	local FileName="${2}"
@@ -544,6 +524,20 @@ RunAndLog() {
 	return ${result}
 }
 
+[[ -f "${SCRIPTPATH}/includes/misc_functions.sh" ]] && source "${SCRIPTPATH}/includes/misc_functions.sh"
+[[ -f "${SCRIPTPATH}/includes/global_variables.sh" ]] && source "${SCRIPTPATH}/includes/global_variables.sh"
+[[ -f "${SCRIPTPATH}/includes/migration_functions.sh" ]] && source "${SCRIPTPATH}/includes/migration_functions.sh"
+if declare -F MigrateFilesAndFolders > /dev/null; then
+	MigrateFilesAndFolders
+fi
+[[ -f "${SCRIPTPATH}/includes/pm_variables.sh" ]] && source "${SCRIPTPATH}/includes/pm_variables.sh"
+[[ -f "${SCRIPTPATH}/includes/run_script.sh" ]] && source "${SCRIPTPATH}/includes/run_script.sh"
+[[ -f "${SCRIPTPATH}/includes/dialog_functions.sh" ]] && source "${SCRIPTPATH}/includes/dialog_functions.sh"
+[[ -f "${SCRIPTPATH}/includes/ds_functions.sh" ]] && source "${SCRIPTPATH}/includes/ds_functions.sh"
+[[ -f "${SCRIPTPATH}/includes/test_functions.sh" ]] && source "${SCRIPTPATH}/includes/test_functions.sh"
+[[ -f "${SCRIPTPATH}/includes/usage.sh" ]] && source "${SCRIPTPATH}/includes/usage.sh"
+[[ -f "${SCRIPTPATH}/includes/cmdline.sh" ]] && source "${SCRIPTPATH}/includes/cmdline.sh"
+
 # Check for supported CPU architecture
 check_arch() {
 	if [[ ${ARCH} != "arm64" ]] && [[ ${ARCH} != "aarch64" ]] && [[ ${ARCH} != "x86_64" ]]; then
@@ -556,7 +550,7 @@ check_arch() {
 # Check if the repo exists relative to the SCRIPTPATH
 check_repo() {
 	if RunAndLog info "git:info" "" "" git -C "${SCRIPTPATH}" rev-parse --is-inside-work-tree; then
-		if [[ -d ${SCRIPTPATH}/.includes ]] && [[ -d ${SCRIPTPATH}/.scripts ]]; then
+		if [[ -d ${SCRIPTPATH}/includes ]] && [[ -d ${SCRIPTPATH}/scripts ]]; then
 			return
 		else
 			return 1
