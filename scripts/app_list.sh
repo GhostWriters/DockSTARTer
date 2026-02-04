@@ -9,21 +9,23 @@ declare -a _dependencies_list=(
 app_list() {
 	local -a AppList
 	readarray -t AppList < <(run_script 'app_nicename' "$(run_script 'app_list_builtin')")
-	for index in "${!AppList[@]}"; do
-		local AppName=${AppList[index]}
-		AppList[index]+=','
+	local -a TableContents=(Application Deprecated Added Disabled)
+	for AppName in "${AppList[@]}"; do
+		local Deprecated=''
+		local Added=''
+		local Disabled=''
 		if run_script 'app_is_deprecated' "${AppName}"; then
-			AppList[index]+='[*DEPRECATED*]'
+			Deprecated='[*DEPRECATED*]'
 		fi
-		AppList[index]+=','
 		if run_script 'app_is_added' "${AppName}"; then
-			AppList[index]+='*ADDED*'
+			Added='*ADDED*'
 			if run_script 'app_is_disabled' "${AppName}"; then
-				AppList[index]+=',(Disabled)'
+				Disabled='(Disabled)'
 			fi
 		fi
+		TableContents+=("${AppName}" "${Deprecated}" "${Added}" "${Disabled}")
 	done
-	printf '%s\n' "${AppList[@]}" | column -t -s ','
+	table 4 "${TableContents[@]-}"
 }
 
 test_app_list() {
