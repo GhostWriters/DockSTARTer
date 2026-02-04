@@ -434,6 +434,7 @@ run_command() {
 		["--env-set-lower="]="env_set"
 		["-i"]="run_install"
 		["--install"]="run_install"
+		["-l"]="app_list"
 		["--list"]="app_list"
 		["-p"]="docker_prune"
 		["--prune"]="docker_prune"
@@ -496,6 +497,7 @@ run_command() {
 		["--config-pm-existing-list"]=1
 		["--config-pm-existing-table"]=1
 		["--env"]=1
+		["-l"]=1
 		["--list"]=1
 		["-r"]=1
 		["--remove"]=1
@@ -532,6 +534,7 @@ run_command() {
 		["--env-get-lower-literal="]="Get Literal Value of Variable"
 		["--env-set"]="Set Value of Variable"
 		["--env-set-lower"]="Set Value of Variable"
+		["-l"]="List All Applications"
 		["--list"]="List All Applications"
 		["--list-builtin"]="List Builtin Applications"
 		["--list-deprecated"]="List Deprecated Applications"
@@ -766,7 +769,7 @@ run_command() {
 		--config-show | --show-config) ;&
 		-e | --env) ;&
 		-i | --install) ;&
-		--list) ;&
+		-l | --list) ;&
 		--menu-config) ;&
 		--menu-config-global) ;&
 		--menu-app-select | --menu-config-app-select) ;&
