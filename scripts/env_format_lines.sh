@@ -34,7 +34,7 @@ env_format_lines() {
 			AppIsUserDefined='Y'
 		fi
 		AppName="$(run_script 'app_nicename' "${APPNAME}")"
-		AppDescription="$(run_script 'app_description' "${APPNAME}" | fold -s -w 75)"
+		AppDescription="$(run_script 'app_description' "${APPNAME}" | fmt -w 75 -g 75)"
 		local HeadingTitle="${AppName}"
 		if [[ ${AppIsUserDefined} == Y ]]; then
 			HeadingTitle+="${AppUserDefinedTag}"
