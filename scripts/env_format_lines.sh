@@ -49,10 +49,10 @@ env_format_lines() {
 		HeadingText+=("")
 		readarray -t -O ${#HeadingText[@]} HeadingText < <(printf '%b\n' "${AppDescription}")
 		HeadingText+=("")
-
-		readarray -t -O ${#FormattedEnvLines[@]} FormattedEnvLines < <(
-			printf '### %b\n' "${HeadingText[@]}"
-		)
+		for line in "${HeadingText[@]}"; do
+			local trimmed="${line%"${line##*[![:space:]]}"}"
+			FormattedEnvLines+=("###${trimmed:+ ${trimmed}}")
+		done
 	fi
 	if [[ -n ${DefaultEnvFile} && -f ${DefaultEnvFile} ]]; then
 		# Default file is specified and exists, add the contents verbatim
@@ -102,9 +102,10 @@ env_format_lines() {
 				HeadingText+=("")
 				readarray -t -O ${#HeadingText[@]} HeadingText < <(printf '%b\n' "${HeadingTitle}")
 				HeadingText+=("")
-				readarray -t -O ${#FormattedEnvLines[@]} FormattedEnvLines < <(
-					printf '### %b\n' "${HeadingText[@]}"
-				)
+				for line in "${HeadingText[@]}"; do
+					local trimmed="${line%"${line##*[![:space:]]}"}"
+					FormattedEnvLines+=("###${trimmed:+ ${trimmed}}")
+				done
 			fi
 			# Add the user defined variables
 			for index in "${!CurrentEnvLines[@]}"; do
