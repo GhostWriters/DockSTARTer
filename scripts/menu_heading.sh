@@ -116,7 +116,7 @@ menu_heading() {
 						ScreenCols=$(stty size | cut -d ' ' -f 2)
 						local -i TextWidth=$((ScreenCols - DC["WindowColsAdjust"] - DC["TextColsAdjust"] - LabelWidth))
 						local -a AppDesciptionArray
-						readarray -t AppDesciptionArray < <(fmt -w ${TextWidth} <<< "${AppDescription}")
+						readarray -t AppDesciptionArray < <(fmt -w ${TextWidth} -g ${TextWidth} <<< "${AppDescription}")
 						Heading[Application]+="$(printf "${Indent}${DC[HeadingAppDescription]}%s${DC["NC"]-}\n" "${AppDesciptionArray[@]-}")"
 						Heading[Application]+="\n"
 					fi
