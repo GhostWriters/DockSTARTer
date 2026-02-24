@@ -86,17 +86,23 @@ file_changed() {
 	local file=${1-}
 	local timestamp_file
 	timestamp_file="${timestamps_folder}/$(basename "${file}")"
+
 	if [[ ! -f ${file} || ! -f ${timestamp_file} ]]; then
+		# File or timestamp record is missing, return true (change detected)
 		return 0
 	fi
-	# Use cmp -s for global .env to avoid touch-only triggers
+
 	if [[ $(${STAT} -c %Y "${file}") != $(${STAT} -c %Y "${timestamp_file}") ]]; then
 		if cmp -s "${file}" "${timestamp_file}"; then
+			# Contents are same, sync timestamp to avoid re-check and return false
 			touch -r "${file}" "${timestamp_file}"
 			return 1
 		fi
+		# Contents differ, return true
 		return 0
 	fi
+
+	# No change detected, return false
 	return 1
 }
 

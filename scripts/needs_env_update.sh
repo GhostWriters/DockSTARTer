@@ -49,65 +49,32 @@ needs_env_update() {
 }
 
 file_changed() {
-	local file1=${1-}
-	local file2=${2-}
+	local file=${1-}
+	local timestamp_alias=${2-}
 	local timestamp_file
-	if [[ -n ${file2-} ]]; then
-		# file2 is specified, use it for the timestamp
-		timestamp_file="${timestamps_folder:?}/${file2}"
-		if [[ ! -f ${file1} || ! -f ${timestamp_file} ]]; then
-			# file1 or timestamp_file doesn't exist, return false
-			return 0
-		fi
-		if [[ $(${STAT} -c %Y "${file1}") != $(${STAT} -c %Y "${timestamp_file}") ]]; then
-			if cmp -s "${file1}" "${timestamp_file}"; then
-				# Files are identical, update timestamp and return false
-				touch -r "${file1}" "${timestamp_file}"
-				return 1
-			fi
-			# Files are different, return true
-			return 0
-		fi
-		return 1
+
+	if [[ -n ${timestamp_alias} ]]; then
+		timestamp_file="${timestamps_folder}/${timestamp_alias}"
+	else
+		timestamp_file="${timestamps_folder}/$(basename "${file}")"
 	fi
 
-	# file2 is not specified, use the file1 name for the timestamp
-	timestamp_file="${timestamps_folder:?}/$(basename "${file1}")"
-	if [[ ! -f ${file1} && ! -f ${timestamp_file} ]]; then
-		# File doesn't exist and timestamp doesn't exist, return false
-		return 1
-	fi
-	if [[ -f ${file1} && ! -f ${timestamp_file} ]]; then
-		# File exists but timestamp doesn't, return true
+	if [[ ! -f ${file} || ! -f ${timestamp_file} ]]; then
+		# File or timestamp record is missing, return true (change detected)
 		return 0
 	fi
-	if [[ ! -f ${file1} && -f ${timestamp_file} ]]; then
-		# File doesn't exist but timestamp does, return true
-		return 0
-	fi
-	# File exists and timestamp exists
-	if [[ $(${STAT} -c %Y "${file1}") != $(${STAT} -c %Y "${timestamp_file}") ]]; then
-		# Timestamp doesn't match file
-		if cmp -s "${file1}" "${timestamp_file}"; then
-			# Files are identical, update timestamp and return false
-			touch -r "${file1}" "${timestamp_file}"
+
+	if [[ $(${STAT} -c %Y "${file}") != $(${STAT} -c %Y "${timestamp_file}") ]]; then
+		if cmp -s "${file}" "${timestamp_file}"; then
+			# Contents are same, sync timestamp to avoid re-check and return false
+			touch -r "${file}" "${timestamp_file}"
 			return 1
 		fi
-		# Files are different, return true
+		# Contents differ, return true
 		return 0
 	fi
-	# File hasn't changed
-	if [[ ! -f ${timestamp_file} ]]; then
-		# Timestamp doesn't exist, create it
-		if [[ ! -d ${timestamps_folder} ]]; then
-			# Timestamp folder doesn't exist, create it
-			mkdir -p "${timestamps_folder}"
-		fi
-		cp -a "${file1}" "${timestamp_file}"
-	else
-		# Timestamp exists, update it
-		touch -r "${file1}" "${timestamp_file}"
-	fi
+
+	# No change detected, return false
 	return 1
 }
 

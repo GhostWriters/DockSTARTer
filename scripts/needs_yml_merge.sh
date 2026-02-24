@@ -38,44 +38,26 @@ needs_yml_merge() {
 }
 
 file_changed() {
-	local file=${1}
+	local file=${1-}
 	local timestamp_file
-	timestamp_file="${timestamps_folder:?}/$(basename "${file}")"
-	if [[ ! -f ${file} && ! -f ${timestamp_file} ]]; then
-		# File doesn't exist and timestamp doesn't exist, return false
-		return 1
-	fi
-	if [[ -f ${file} && ! -f ${timestamp_file} ]]; then
-		# File exists but timestamp doesn't, return true
+	timestamp_file="${timestamps_folder}/$(basename "${file}")"
+
+	if [[ ! -f ${file} || ! -f ${timestamp_file} ]]; then
+		# File or timestamp record is missing, return true (change detected)
 		return 0
 	fi
-	if [[ ! -f ${file} && -f ${timestamp_file} ]]; then
-		# File doesn't exist but timestamp does, return true
-		return 0
-	fi
-	# File exists and timestamp exists
+
 	if [[ $(${STAT} -c %Y "${file}") != $(${STAT} -c %Y "${timestamp_file}") ]]; then
-		# Timestamp doesn't match file
 		if cmp -s "${file}" "${timestamp_file}"; then
-			# Files are identical, update timestamp and return false
+			# Contents are same, sync timestamp to avoid re-check and return false
 			touch -r "${file}" "${timestamp_file}"
 			return 1
 		fi
-		# Files are different, return true
+		# Contents differ, return true
 		return 0
 	fi
-	# File hasn't changed
-	if [[ ! -f ${timestamp_file} ]]; then
-		# Timestamp doesn't exist, create it
-		if [[ ! -d ${timestamps_folder} ]]; then
-			# Timestamp folder doesn't exist, create it
-			mkdir -p "${timestamps_folder}"
-		fi
-		cp -a "${file}" "${timestamp_file}"
-	else
-		# Timestamp exists, update it
-		touch -r "${file}" "${timestamp_file}"
-	fi
+
+	# No change detected, return false
 	return 1
 }
 
