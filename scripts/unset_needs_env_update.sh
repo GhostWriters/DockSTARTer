@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-declare Prefix="env_update_"
+declare timestamps_folder="${TIMESTAMPS_FOLDER:?}/env_update"
 
 unset_needs_env_update() {
 	local VarFile=${1-}
@@ -15,32 +15,30 @@ unset_needs_env_update() {
 		return
 	fi
 
-	if [[ ! -d ${TIMESTAMPS_FOLDER:?} ]]; then
-		mkdir "${TIMESTAMPS_FOLDER:?}"
-		run_script 'set_permissions' "${TIMESTAMPS_FOLDER:?}"
+	if [[ ! -d ${timestamps_folder} ]]; then
+		mkdir "${timestamps_folder}"
+		run_script 'set_permissions' "${timestamps_folder}"
 	fi
 
 	local filename
 	filename="$(basename "${VarFile}")"
 
-	rm -f "$(timestamp_file "${filename}")"* &> /dev/null || true
+	rm -f "${timestamps_folder}/${filename}"* &> /dev/null || true
 
-	touch -r "${VarFile}" "$(timestamp_file "${filename}")"
+	cp -a "${VarFile}" "${timestamps_folder}/${filename}"
 	if [[ ${VarFile} == "${COMPOSE_ENV}" ]]; then
 		local ReferencedAppsFile
-		ReferencedAppsFile="$(timestamp_file "${filename}_ReferencedApps")"
+		ReferencedAppsFile="${timestamps_folder}/${filename}_ReferencedApps"
 		run_script 'app_list_referenced' > "${ReferencedAppsFile}"
 	else
 		local -u APPNAME
 		APPNAME="$(run_script 'varfile_to_appname' "${VarFile}")"
 		local AppEnabledFile
-		AppEnabledFile="$(timestamp_file "${filename}_${APPNAME}__ENABLED")"
+		AppEnabledFile="${timestamps_folder}/${filename}_${APPNAME}__ENABLED"
 		run_script 'env_get_line' "${APPNAME}__ENABLED" > "${AppEnabledFile}"
+		# Record the state of the global .env for this specific app
+		cp -a "${COMPOSE_ENV}" "${timestamps_folder}/${filename}_$(basename "${COMPOSE_ENV}")"
 	fi
-}
-
-timestamp_file() {
-	printf "${TIMESTAMPS_FOLDER:?}/${Prefix}%s\n" "$1"
 }
 
 test_unset_needs_env_update() {
