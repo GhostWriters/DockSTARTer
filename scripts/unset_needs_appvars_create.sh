@@ -2,35 +2,37 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-declare Prefix="appvars_create_"
+declare timestamps_folder="${TIMESTAMPS_FOLDER:?}/appvars_create"
 
 # shellcheck disable=SC2317  # Don't warn about unreachable commands in this function
 unset_needs_appvars_create() {
-	return
-
-	if [[ -d ${TIMESTAMPS_FOLDER:?} ]]; then
-		rm -f "${TIMESTAMPS_FOLDER:?}/${Prefix}"* &> /dev/null || true
-	else
-		mkdir -p "${TIMESTAMPS_FOLDER:?}"
-		run_script 'set_permissions' "${TIMESTAMPS_FOLDER:?}"
+	if [[ ! -d ${timestamps_folder} ]]; then
+		mkdir -p "${timestamps_folder}"
+		run_script 'set_permissions' "${timestamps_folder}"
 	fi
 
-	if [[ $# -gt 0 ]]; then
-		for AppName in "$@"; do
-			local VarFile
-			VarFile="$(run_script 'app_env_file' "${AppName}")"
-			if [[ -f ${VarFile} ]]; then
-				touch -r "${VarFile}" "${TIMESTAMPS_FOLDER:?}/${Prefix}$(basename "${VarFile}")"
-			fi
-		done
+	if [[ $# -eq 0 ]]; then
+		# BULK UNSET
+		# 1. Record Global .env state
+		cp -a "${COMPOSE_ENV}" "${timestamps_folder}/$(basename "${COMPOSE_ENV}")"
+
+		# 2. Record Added Apps List
+		run_script 'app_list_added' > "${timestamps_folder}/AddedApps"
+
+		# 3. Create LastSynced sentinel
+		touch "${timestamps_folder}/LastSynced"
 		return
 	fi
 
-	for AppName in $(run_script 'app_list_added'); do
-		local VarFile
-		VarFile="$(run_script 'app_env_file' "${AppName}")"
-		if [[ -f ${VarFile} ]]; then
-			touch -r "${VarFile}" "${TIMESTAMPS_FOLDER:?}/${Prefix}$(basename "${VarFile}")"
+	# PRECISE UNSET
+	for AppName in "$@"; do
+		local -u APPNAME=${AppName^^}
+		touch "${timestamps_folder}/LastSynced_${APPNAME}"
+		# Also update the app env timestamp if it exists
+		local AppEnvFile
+		AppEnvFile="$(run_script 'app_env_file' "${AppName}")"
+		if [[ -f ${AppEnvFile} ]]; then
+			cp -a "${AppEnvFile}" "${timestamps_folder}/$(basename "${AppEnvFile}")"
 		fi
 	done
 }

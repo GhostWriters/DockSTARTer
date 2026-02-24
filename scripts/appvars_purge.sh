@@ -107,6 +107,7 @@ appvars_purge() {
 			info "Keeping '${C["App"]}${AppName}${NC}' variables."
 		fi
 	done
+	run_script 'unset_needs_appvars_create'
 }
 
 test_appvars_purge() {
