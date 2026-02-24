@@ -13,6 +13,11 @@ commands_yml_merge() {
 		return 0
 	fi
 	run_script 'appvars_create_all'
+	if ! run_script 'needs_yml_merge'; then
+		# Compose file has already been created, nothing to do
+		notice "Enabled app templates already merged to '${C["File"]}docker-compose.yml${NC}'."
+		return 0
+	fi
 	local COMPOSE_FILE=""
 	notice "Adding enabled app templates to merge '${C["File"]}docker-compose.yml${NC}'. Please be patient, this can take a while."
 	local ENABLED_APPS
