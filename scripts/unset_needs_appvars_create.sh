@@ -11,7 +11,7 @@ unset_needs_appvars_create() {
 	if [[ -d ${TIMESTAMPS_FOLDER:?} ]]; then
 		rm -f "${TIMESTAMPS_FOLDER:?}/${Prefix}"* &> /dev/null || true
 	else
-		mkdir "${TIMESTAMPS_FOLDER:?}"
+		mkdir -p "${TIMESTAMPS_FOLDER:?}"
 		run_script 'set_permissions' "${TIMESTAMPS_FOLDER:?}"
 	fi
 

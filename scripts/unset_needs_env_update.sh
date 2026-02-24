@@ -16,7 +16,7 @@ unset_needs_env_update() {
 	fi
 
 	if [[ ! -d ${timestamps_folder} ]]; then
-		mkdir "${timestamps_folder}"
+		mkdir -p "${timestamps_folder}"
 		run_script 'set_permissions' "${timestamps_folder}"
 	fi
 
