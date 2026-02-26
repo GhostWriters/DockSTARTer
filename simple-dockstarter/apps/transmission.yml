@@ -1,0 +1,14 @@
+description: "Transmission - Lightweight BitTorrent client"
+image: "lscr.io/linuxserver/transmission:latest"
+ports:
+  - "9091:9091"
+  - "51413:51413"
+  - "51413:51413/udp"
+volumes:
+  - "${DATA_DIR}/transmission:/config"
+  - "${DATA_DIR}/downloads:/downloads"
+environment:
+  - PUID=${PUID}
+  - PGID=${PGID}
+  - TZ=${TZ}
+restart: unless-stopped

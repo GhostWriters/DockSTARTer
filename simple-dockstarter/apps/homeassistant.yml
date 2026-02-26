@@ -1,0 +1,11 @@
+description: "Home Assistant - Smart home automation platform"
+image: "ghcr.io/home-assistant/home-assistant:stable"
+ports:
+  - "8123:8123"
+volumes:
+  - "${DATA_DIR}/homeassistant:/config"
+  - "/etc/localtime:/etc/localtime:ro"
+environment:
+  - TZ=${TZ}
+restart: unless-stopped
+privileged: true

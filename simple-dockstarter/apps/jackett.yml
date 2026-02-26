@@ -1,0 +1,12 @@
+description: "Jackett - Torrent indexer proxy"
+image: "lscr.io/linuxserver/jackett:latest"
+ports:
+  - "9117:9117"
+volumes:
+  - "${DATA_DIR}/jackett:/config"
+  - "${DATA_DIR}/downloads:/downloads"
+environment:
+  - PUID=${PUID}
+  - PGID=${PGID}
+  - TZ=${TZ}
+restart: unless-stopped

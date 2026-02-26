@@ -1,0 +1,11 @@
+description: "Nextcloud - Self-hosted cloud storage and collaboration"
+image: "nextcloud:latest"
+ports:
+  - "8081:80"
+volumes:
+  - "${DATA_DIR}/nextcloud:/var/www/html"
+environment:
+  - PUID=${PUID}
+  - PGID=${PGID}
+  - TZ=${TZ}
+restart: unless-stopped

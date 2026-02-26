@@ -1,0 +1,10 @@
+description: "Homer - Simple dashboard for your services"
+image: "b4bz/homer:latest"
+ports:
+  - "8080:8080"
+volumes:
+  - "${DATA_DIR}/homer:/www/assets"
+environment:
+  - UID=${PUID}
+  - GID=${PGID}
+restart: unless-stopped
