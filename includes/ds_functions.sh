@@ -2,11 +2,21 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+git_fetch() {
+	local GitPath=${1}
+	local ForceRefresh=${2-false}
+	# Git touches FETCH_HEAD after each `git fetch`, so we use it to
+	# limit fetches to 1 per day per repo (unless forced).
+	if $ForceRefresh || [ -z "$(find "${GitPath}/.git/FETCH_HEAD" -mtime -1 2> /dev/null)" ]; then
+		git -C "${GitPath}" fetch --quiet --tags &> /dev/null || true
+	fi
+}
+
 git_branch() {
 	local GitPath=${1}
 	local DefaultBranch=${2-}
 	local LegacyBranch=${3-}
-	git -C "${GitPath}" fetch --quiet --tags &> /dev/null || true
+	git_fetch "${GitPath}"
 	git -C "${GitPath}" symbolic-ref --short HEAD 2> /dev/null || git -C "${GitPath}" describe --tags --exact-match 2> /dev/null || git_best_branch "${GitPath}" "${DefaultBranch-}" "${LegacyBranch-}"
 }
 
@@ -97,7 +107,7 @@ git_update_available() {
 	local GitPath=${1}
 	local CurrentRef=${2-}
 	local TargetRef=${3-}
-	git -C "${GitPath}" fetch --quiet --tags &> /dev/null || true
+	git_fetch "${GitPath}"
 	local -i result=0
 	local Current Remote
 	Current=$(git -C "${GitPath}" rev-parse HEAD 2> /dev/null || true)
@@ -128,6 +138,10 @@ git_update_available() {
 	return ${result}
 }
 
+ds_fetch() {
+	local ForceRefresh=${1-false}
+	git_fetch "${SCRIPTPATH}" "${ForceRefresh}"
+}
 ds_branch() {
 	git_branch "${SCRIPTPATH}" "${APPLICATION_DEFAULT_BRANCH-}" "${APPLICATION_LEGACY_BRANCH-}"
 }
@@ -157,6 +171,10 @@ ds_update_available() {
 	git_update_available "${SCRIPTPATH}" "${CurrentRef-}" "${TargetRef-}"
 }
 
+templates_fetch() {
+	local ForceRefresh=${1-false}
+	git_fetch "${TEMPLATES_PARENT_FOLDER}" "${ForceRefresh}"
+}
 templates_branch() {
 	git_branch "${TEMPLATES_PARENT_FOLDER}" "${TEMPLATES_DEFAULT_BRANCH-}"
 }

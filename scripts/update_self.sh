@@ -6,6 +6,7 @@ update_self() {
 	local Branch CurrentVersion RemoteVersion
 	Branch=${1-}
 	shift || true
+	ds_fetch true
 	if [[ ${Branch-} == "${APPLICATION_LEGACY_BRANCH}" ]] && ds_branch_exists "${APPLICATION_DEFAULT_BRANCH}"; then
 		warn "Updating to branch '${C["Branch"]}${APPLICATION_DEFAULT_BRANCH}${NC}' instead of '${C["Branch"]}${APPLICATION_LEGACY_BRANCH}${NC}'."
 		Branch="${APPLICATION_DEFAULT_BRANCH}"
