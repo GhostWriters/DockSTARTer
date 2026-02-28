@@ -217,6 +217,11 @@ indent_text() {
 	done <<< "$(printf '%s\n' "$@")"
 }
 
+indent_string_pipe() {
+	local -i IndentSize=${1}
+	indent_text ${IndentSize} "$(cat -)"
+}
+
 get_system_info() {
 	local -a Output=()
 
