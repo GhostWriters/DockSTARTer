@@ -324,7 +324,7 @@ timestamped_log() {
 	# Create separate notices with the same timestamp for each line in a log message
 	local line
 	while IFS= read -r line; do
-		printf "${NC}${C["Timestamp"]-}${Timestamp}${NC-} ${LogLevelTag}   %s${NC}\n" "${line}"
+		printf "${NC}${C["Timestamp"]-}${Timestamp}${NC-} ${LogLevelTag} %s${NC}\n" "${line}"
 	done <<< "${LogMessage}"
 }
 trace() { log "${TRACE-}" "$(timestamped_log "${C["Trace"]-}[TRACE ]${NC-}" "$@")"; }
