@@ -52,6 +52,9 @@ env_update() {
 					APP_DEFAULT_GLOBAL_ENV_FILE="$(run_script 'app_instance_file' "${appname}" ".env")"
 				fi
 				run_script 'appvars_lines' "${appname}" > "${ENV_LINES_FILE}"
+				if ((${#UPDATED_ENV_LINES[@]} > 0)); then
+					UPDATED_ENV_LINES+=("")
+				fi
 				readarray -t -O ${#UPDATED_ENV_LINES[@]} UPDATED_ENV_LINES < <(
 					run_script 'env_format_lines' "${ENV_LINES_FILE}" "${APP_DEFAULT_GLOBAL_ENV_FILE}" "${appname}"
 				)
