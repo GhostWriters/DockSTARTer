@@ -15,7 +15,7 @@ appvars_lines() {
 
 	if [[ -z ${APPNAME} ]]; then
 		# Search for all variables not for an app
-		local VAR_REGEX='[A-Z][A-Z0-9]*(__[A-Z0-9]+)+\w+'
+		local VAR_REGEX='[A-Z][A-Z0-9]*(__[a-zA-Z0-9_]+)+\w+'
 		local APP_VARS_REGEX="^\s*${VAR_REGEX}\s*="
 		${GREP} -v -P '^\s*$|^\s*\#' "${VAR_FILE}" | ${GREP} --color=never -v -P "${APP_VARS_REGEX}" || true
 	elif [[ ${APPNAME} =~ ^[A-Z0-9_]+: ]]; then
