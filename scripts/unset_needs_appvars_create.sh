@@ -17,9 +17,20 @@ unset_needs_appvars_create() {
 		cp -a "${COMPOSE_ENV}" "${timestamps_folder}/$(basename "${COMPOSE_ENV}")"
 
 		# 2. Record Added Apps List
-		run_script 'app_list_added' > "${timestamps_folder}/AddedApps"
+		local AddedApps
+		AddedApps="$(run_script 'app_list_added')"
+		printf '%s\n' "${AddedApps}" > "${timestamps_folder}/AddedApps"
 
-		# 3. Create LastSynced sentinel
+		# 3. Record app-specific .env state for all added apps
+		for AppName in ${AddedApps}; do
+			local AppEnvFile
+			AppEnvFile="$(run_script 'app_env_file' "${AppName}")"
+			if [[ -f ${AppEnvFile} ]]; then
+				cp -a "${AppEnvFile}" "${timestamps_folder}/$(basename "${AppEnvFile}")"
+			fi
+		done
+
+		# 4. Create LastSynced sentinel
 		touch "${timestamps_folder}/LastSynced"
 		return
 	fi
