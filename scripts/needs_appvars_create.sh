@@ -22,23 +22,35 @@ needs_appvars_create() {
 		# BULK MODE
 		# 2. Check Added Apps List
 		local AddedAppsFile="${timestamps_folder}/AddedApps"
-		if [[ ! -f ${AddedAppsFile} ]] || ! cmp -s "${AddedAppsFile}" <(run_script 'app_list_added'); then
+		local AddedApps
+		AddedApps="$(run_script 'app_list_added')"
+		if [[ ! -f ${AddedAppsFile} ]] || ! cmp -s "${AddedAppsFile}" <(printf '%s\n' "${AddedApps}"); then
 			return 0
 		fi
 
-		# 3. Bulk Scan (Templates and App Env Files)
+		# 3. Bulk Scan (Templates and App Env Files for added apps only)
 		local SentinelFile="${timestamps_folder}/LastSynced"
 		if [[ ! -f ${SentinelFile} ]]; then
 			return 0
 		fi
-		# Check if ANY template file is newer than our last sync
-		if [[ -n $(find "${TEMPLATES_FOLDER}" -newer "${SentinelFile}" -print -quit) ]]; then
-			return 0
-		fi
-		# Check if ANY app-specific env file in the root is newer than our last sync
-		if [[ -n $(find "${COMPOSE_FOLDER}" -maxdepth 1 -name ".env.app.*" -newer "${SentinelFile}" -print -quit) ]]; then
-			return 0
-		fi
+
+		for AppName in ${AddedApps}; do
+			local -l appname=${AppName}
+			local AppEnvFile
+			AppEnvFile="$(run_script 'app_env_file' "${appname}")"
+			if file_changed "${AppEnvFile}"; then
+				return 0
+			fi
+
+			local baseappname
+			baseappname="$(run_script 'appname_to_baseappname' "${appname}")"
+			local AppTemplateDir="${TEMPLATES_FOLDER:?}/${baseappname}"
+			if [[ -d ${AppTemplateDir} ]]; then
+				if [[ -n $(find "${AppTemplateDir}" -newer "${SentinelFile}" -print -quit) ]]; then
+					return 0
+				fi
+			fi
+		done
 		return 1
 	fi
 
