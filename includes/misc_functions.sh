@@ -366,3 +366,24 @@ table() {
 	local -a Data=("${@:Cols+1}")
 	printf '%s\n' "${Data[@]}" | table_pipe "${Cols}" "${Headings[@]}"
 }
+
+strip_trailing_spaces() {
+	local line
+	while IFS= read -r line || [[ -n ${line} ]]; do
+		# Use parameter expansion to remove trailing whitespace
+		printf '%s\n' "${line%"${line##*[![:space:]]}"}"
+	done
+}
+
+wordwrap_pipe() {
+	local -i Width=${1:-80}
+
+	fold -s -w ${Width} | strip_trailing_spaces
+}
+
+wordwrap() {
+	local String=${1}
+	local -i Width=${2:-80}
+
+	wordwrap_pipe ${Width} <<< "${String}"
+}

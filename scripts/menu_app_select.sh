@@ -376,7 +376,7 @@ init_gauge_text() {
 			local FormattedAppNames
 			FormattedAppNames="$(
 				printf "%s\n" "${AppNamesArray[@]}" |
-					fmt -w "$((TextCols - AppsColumnStart))" -g "$((TextCols - AppsColumnStart))" |
+					wordwrap_pipe "$((TextCols - AppsColumnStart))" |
 					expand |
 					indent_string_pipe "${AppsColumnStart}"
 			)"
