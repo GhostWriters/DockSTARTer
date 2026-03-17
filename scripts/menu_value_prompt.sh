@@ -288,10 +288,10 @@ menu_value_prompt() {
 		ValueOptions+=("${DeleteOption}" "" "${DeleteHelpLine-}")
 
 		local ValidOptionsRegex
-		{
-			IFS='|'
-			ValidOptionsRegex="${ValidOptions[*]}"
-		}
+		local Old_IFS="${IFS}"
+		IFS='|'
+		ValidOptionsRegex="${ValidOptions[*]}"
+		IFS="${Old_IFS}"
 
 		local DialogHeading
 		local CurrentValueHeading="${OptionValue["${CurrentValueOption}"]:-${VarDeletedTag}}"
@@ -335,10 +335,10 @@ menu_value_prompt() {
 				fi
 				;;
 			EXTRA) # EDIT button
-				OptionValue["${CurrentValueOption}"]=$(${GREP} -o -P "^RENAMED (${ValidOptionsRegex}) \K.*" <<< "${SelectedValue}")
+				OptionValue["${CurrentValueOption}"]=$(${GREP} -o -P "^RENAMED (${ValidOptionsRegex}) \K.*" <<< "${SelectedValue}" || true)
 				;;
 			CANCEL | ESC) # DONE button
-				local ValueValid
+				local ValueValid="false"
 				if [[ -z ${OptionValue["${CurrentValueOption}"]-} ]]; then
 					# Value is empty, variable will be deleted
 					ValueValid="true"
@@ -386,8 +386,8 @@ menu_value_prompt() {
 							;;
 						"${APPNAME}__VOLUME_"*)
 							if [[ ${StrippedValue} == "/" ]]; then
-								dialog_error "${Title}" "${DialogHeading}\n\nCannot use ${DC["Highlight"]-}/${DC["NC"]-} for ${DC["Highlight"]-}${CleanVarName}${DC["NC"]-}. Please select another folder."
 								ValueValid="false"
+								dialog_error "${Title}" "${DialogHeading}\n\nCannot use ${DC["Highlight"]-}/${DC["NC"]-} for ${DC["Highlight"]-}${CleanVarName}${DC["NC"]-}. Please select another folder."
 							elif [[ ${StrippedValue} == *~* ]]; then
 								local CORRECTED_DIR="${OptionValue["${CurrentValueOption}"]//\~/"${DETECTED_HOMEDIR}"}"
 								if run_script 'question_prompt' Y "${DialogHeading}\n\nCannot use the ${DC["Highlight"]-}~${DC["NC"]-} shortcut in ${DC["Highlight"]-}${CleanVarName}${DC["NC"]-}. Would you like to use ${DC["Highlight"]-}${CORRECTED_DIR}${DC["NC"]-} instead?" "${Title}"; then
@@ -453,7 +453,7 @@ menu_value_prompt() {
 							;;
 					esac
 				fi
-				if ${ValueValid}; then
+				if [[ ${ValueValid} == "true" ]]; then
 					if [[ -z ${OptionValue["${CurrentValueOption}"]-} ]]; then
 						if run_script 'question_prompt' N "${DialogHeading}\n\nDo you really want to delete ${DC["Highlight"]-}${CleanVarName}${DC["NC"]-}?\n" "Delete Variable" "${ASSUMEYES:+Y}" "Delete" "Back"; then
 							# Value is empty, delete the variable
