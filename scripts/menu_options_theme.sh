@@ -60,9 +60,9 @@ menu_options_theme() {
 				ItemText="${DC["ListApp"]-}${ItemText}"
 			fi
 			if [[ ${ConfigValue} == "${CurrentTheme}" ]]; then
-				Opts+=("${ConfigValue}" "${DisplayName} — ${ItemText}" ON)
+				Opts+=("${ConfigValue}" "${ItemText}" ON)
 			else
-				Opts+=("${ConfigValue}" "${DisplayName} — ${ItemText}" OFF)
+				Opts+=("${ConfigValue}" "${ItemText}" OFF)
 			fi
 		done
 		local -a ChoiceDialog=(
