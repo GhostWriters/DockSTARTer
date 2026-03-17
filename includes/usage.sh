@@ -350,7 +350,12 @@ EOF
 ${C["UsageCommand"]-}-T --theme${NC-}
 	Re-applies the current theme to the GUI
 ${C["UsageCommand"]-}-T --theme${NC-} ${C["UsageTheme"]-}<themename>${NC-}
-	Applies the specified theme to the GUI
+	Applies a named embedded theme
+${C["UsageCommand"]-}-T --theme${NC-} ${C["UsageTheme"]-}user:<themename>${NC-}
+	Applies a user theme from the user themes folder
+${C["UsageCommand"]-}-T --theme${NC-} ${C["UsageTheme"]-}<path>.dstheme${NC-}
+${C["UsageCommand"]-}-T --theme${NC-} ${C["UsageTheme"]-}file:<path>${NC-}
+	Applies a theme from an arbitrary file path
 EOF
 			;;&
 		-T | --theme | "") ;&
@@ -403,6 +408,22 @@ EOF
 ${C["UsageCommand"]-}--theme-scrollbar${NC-}
 ${C["UsageCommand"]-}--theme-no-scrollbar${NC-}
 	Turn the scrollbar on or off in the GUI
+EOF
+			;;&
+		-T | --theme | "") ;&
+		--theme-extract | "")
+			Found=1
+			cat << EOF
+${C["UsageCommand"]-}--theme-extract${NC-} ${C["UsageTheme"]-}<themename>${NC-} ${C["UsageOption"]-}<destdir>${NC-} ${C["UsageOption"]-}<filename>${NC-}
+	Extract a theme to a file (use ${C["UsageTheme"]-}user:<name>${NC-} for user themes; ${C["UsageOption"]-}user:${NC-} as destdir for the user themes folder)
+EOF
+			;;&
+		-T | --theme | "") ;&
+		--theme-extract-all | "")
+			Found=1
+			cat << EOF
+${C["UsageCommand"]-}--theme-extract-all${NC-} ${C["UsageOption"]-}<destdir>${NC-}
+	Extract all embedded themes to a directory (use ${C["UsageOption"]-}user:${NC-} for the user themes folder)
 EOF
 			;;&
 		-u | --update | "") ;&
