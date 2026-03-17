@@ -1,6 +1,72 @@
+<==> theme.ini
+#
+# DockSTARTer theme file
+# theme.ini
+#
+# Color List:
+#
+# ${_B_}   Blue
+# ${_C_}   Cyan
+# ${_G_}   Green
+# ${_K_}   Black
+# ${_M_}   Magenta
+# ${_R_}   Red
+# ${_W_}   White
+# ${_Y_}   Yellow
+# ${_RV_}  Reverse
+# ${_NRV_} No Reverse
+# ${_BD_}  Bold
+# ${_NBD_} No Bold
+# ${_U_}   Underline
+# ${_NU_}  No Underline
+# ${_NC_}  No Color
+
+ThemeName='Murica'
+ThemeDescription='Dockstarter Murica Heck Yea! theme'
+ThemeAuthor='Westlin'
+
+ApplicationName="${_NC_}${_RV_}"
+ApplicationVersion="${_NC_}${_RV_}"
+ApplicationVersionBrackets="${_NC_}${_RV_}"
+ApplicationVersionSpace="${_NC_}"
+ApplicationVersionBrackets="${_NC_}${_RV_}"
+ApplicationVersionSpace="${_NC_}"
+ApplicationFlags="${_NC_}${_NBD_}"
+ApplicationFlagsBrackets="${_NC_}${_RV_}"
+ApplicationFlagsSpace="${_NC_}${_RV_}"
+ApplicationUpdate="${_NC_}"
+ApplicationUpdateBrackets="${_NC_}"
+Hostname="${_NC_}${_RV_}"
+Title="${_NC_}${_U_}"
+Subtitle="${_NC_}${_RV_}"
+TitleSuccess="${_NC_}${_RV_}"
+TitleError="${_NC_}${_BD_}${_RV_}"
+TitleWarning="${_NC_}${_RV_}"
+TitleQuestion="${_NC_}${_RV_}"
+Heading="${_NC_}${_RV_}"
+HeadingTag="${_NC_}${_BD_}"
+HeadingValue="${_NC_}${_BD_}${_U_}"
+HeadingAppDescription="${_NC_}"
+Highlight="${_NC_}${_BD_}"
+LineHeading="${_NC_}${_U_}"
+LineComment="${_NC_}${_BD_}"
+LineOther="${_NC_}"
+LineVar="${_NC_}"
+LineModifiedVar="${_NC_}${_RV_}"
+LineAddVariable="${_NC_}${_RV_}"
+ListDefault=""
+ListApp=""
+ListAppUserDefined="${_RV_}"
+CommandLine="${_NC_}"
+KeyCap="${_NC_}${_RV_}"
+ProgressWaiting="${_NC_}"
+ProgressInProgress="${_NC_}${_BD_}"
+ProgressCompleted="${_NC_}${_RV_}"
+
+<==> .dialogrc
 # $Id: debian.rc,v 1.7 2011/10/15 01:00:09 tom Exp $
 # vile:confmode
-# Run-time configuration file for dialog, Dockstarter Whiptail ripoff theme
+# Run-time configuration file for dialog, Dockstarter Murica Heck Yea! theme
 # (these are the default values for dialog)
 #
 # Types of values:
@@ -10,9 +76,7 @@
 # Boolean    -  <ON|OFF>
 # Attribute  -  (foreground,background,highlight?)
 
-# $Id: whiptail.rc,v 1.6 2012/12/01 01:15:04 tom Exp $
 # vile:confmode
-# Run-time configuration file for dialog, matches whiptail's color scheme.
 #
 # Types of values:
 #
@@ -40,13 +104,13 @@ use_shadow = ON
 use_colors = ON
 
 # Screen color
-screen_color = (YELLOW,BLUE,ON)
+screen_color = (WHITE,BLUE,ON)
 
 # Shadow color
-shadow_color = (BLACK,BLACK,ON)
+shadow_color = (WHITE,WHITE,ON)
 
 # Dialog box color
-dialog_color = (BLACK,WHITE,OFF)
+dialog_color = (RED,WHITE,OFF)
 
 # Dialog box title color
 title_color = (RED,WHITE,ON)
@@ -70,7 +134,7 @@ button_key_inactive_color = dialog_color
 button_label_active_color = button_active_color
 
 # Inactive button label color
-button_label_inactive_color = (BLACK,WHITE,ON)
+button_label_inactive_color = (BLUE,WHITE,ON)
 
 # Input box color
 inputbox_color = dialog_color
@@ -91,7 +155,7 @@ searchbox_border_color = border_color
 position_indicator_color = title_color
 
 # Menu box color
-menubox_color = (YELLOW,BLUE,OFF)
+menubox_color = (RED,BLUE,OFF)
 
 # Menu box border color
 menubox_border_color = screen_color
@@ -112,7 +176,7 @@ tag_selected_color = screen_color
 tag_key_color = menubox_color
 
 # Selected tag key color
-tag_key_selected_color = (WHITE,BLUE,ON)
+tag_key_selected_color = (RED,BLUE,ON)
 
 # Check box color
 check_color = menubox_color
@@ -127,16 +191,16 @@ uarrow_color = screen_color
 darrow_color = screen_color
 
 # Item help-text color
-itemhelp_color = (WHITE,BLACK,OFF)
+itemhelp_color = (WHITE,BLUE,OFF)
 
 # Active form text color
 form_active_text_color = tag_key_selected_color
 
 # Form text color
-form_text_color = (WHITE,CYAN,ON)
+form_text_color = (WHITE,BLUE,ON)
 
 # Readonly form item color
-form_item_readonly_color = (CYAN,WHITE,ON)
+form_item_readonly_color = (BLUE,WHITE,ON)
 
 # Dialog box gauge color
 gauge_color = (BLUE,WHITE,ON)

@@ -8,9 +8,9 @@ theme_description() {
 	if [[ -z ${ThemeName} ]]; then
 		ThemeName="$(run_script 'theme_name')"
 	fi
-	local ThemeFile="${THEME_FOLDER}/${ThemeName}/${THEME_FILE_NAME}"
+	local ThemeArchive="${THEME_FOLDER}/${ThemeName}${THEME_FILE_EXT}"
 
-	run_script 'env_get' ThemeDescription "${ThemeFile}"
+	hrx_env_get "${ThemeArchive}" "${THEME_FILE_NAME}" "ThemeDescription"
 }
 
 test_theme_description() {

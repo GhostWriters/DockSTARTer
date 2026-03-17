@@ -506,3 +506,57 @@ set_toml_val() {
 		fatal \
 			"Failed to write to '${C["File"]-}${file}${NC-}'."
 }
+
+hrx_extract_file() {
+	# hrx_extract_file ArchiveFile InternalPath DestFile
+	# Extracts a named file from an HRX archive to DestFile.
+	# The boundary is auto-detected from the first line of the archive.
+	local archive=${1-}
+	local internal_path=${2-}
+	local dest=${3-}
+	local boundary="" capturing=0
+	local -a lines=()
+	while IFS= read -r line || [[ -n ${line} ]]; do
+		if [[ -z ${boundary} ]]; then
+			[[ ${line} =~ ^(<[=]+>)[[:space:]] ]] && boundary="${BASH_REMATCH[1]}" || continue
+		fi
+		if [[ ${line} == "${boundary} "* ]]; then
+			[[ ${capturing} -eq 1 ]] && break
+			[[ "${line#"${boundary} "}" == "${internal_path}" ]] && capturing=1
+			continue
+		fi
+		[[ ${capturing} -eq 1 ]] && lines+=("${line}")
+	done < "${archive}"
+	[[ ${#lines[@]} -gt 0 ]] && printf '%s\n' "${lines[@]}" > "${dest}"
+}
+
+hrx_env_get() {
+	# hrx_env_get ArchiveFile InternalPath VarName
+	# Returns the value of VarName from a KEY=VALUE file within an HRX archive.
+	# The boundary is auto-detected from the first line of the archive.
+	local archive=${1-}
+	local internal_path=${2-}
+	local var_name=${3-}
+	local boundary="" capturing=0 found_val=""
+	while IFS= read -r line || [[ -n ${line} ]]; do
+		if [[ -z ${boundary} ]]; then
+			[[ ${line} =~ ^(<[=]+>)[[:space:]] ]] && boundary="${BASH_REMATCH[1]}" || continue
+		fi
+		if [[ ${line} == "${boundary} "* ]]; then
+			[[ ${capturing} -eq 1 ]] && break
+			[[ "${line#"${boundary} "}" == "${internal_path}" ]] && capturing=1
+			continue
+		fi
+		if [[ ${capturing} -eq 1 ]]; then
+			[[ -z ${line} || ${line} =~ ^[[:space:]]*# ]] && continue
+			if [[ ${line} =~ ^[[:space:]]*${var_name}[[:space:]]*= ]]; then
+				local val="${line#*=}"
+				val="${val#"${val%%[! ]*}"}"; val="${val%"${val##*[! ]}"}"
+				if [[ ${val} == \"*\" ]]; then val="${val#\"}"; val="${val%\"}"
+				elif [[ ${val} == \'*\' ]]; then val="${val#\'}"; val="${val%\'}"; fi
+				found_val="${val}"
+			fi
+		fi
+	done < "${archive}"
+	printf '%s\n' "${found_val}"
+}

@@ -5,11 +5,9 @@ IFS=$'\n\t'
 theme_exists() {
 	local ThemeName=${1-}
 
-	local ThemeFolder="${THEME_FOLDER}/${ThemeName}"
-	local ThemeFile="${ThemeFolder}/${THEME_FILE_NAME}"
-	local DialogFile="${ThemeFolder}/${DIALOGRC_NAME}"
+	local ThemeArchive="${THEME_FOLDER}/${ThemeName}${THEME_FILE_EXT}"
 
-	[[ -f ${ThemeFile} && -f ${DialogFile} ]]
+	[[ -f ${ThemeArchive} ]]
 }
 
 test_theme_exists() {
