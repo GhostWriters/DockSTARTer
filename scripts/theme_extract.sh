@@ -9,6 +9,7 @@ theme_extract() {
 	# FileName defaults to <stem>.dstheme.
 	local ThemeName=${1-}
 	local DestDir=${2:-.}
+	[[ ${DestDir} == "user:" ]] && DestDir="${USER_THEMES_FOLDER}"
 	local FileName=${3-}
 
 	if [[ -z ${ThemeName} ]]; then

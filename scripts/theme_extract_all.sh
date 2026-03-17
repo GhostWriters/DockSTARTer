@@ -6,6 +6,7 @@ theme_extract_all() {
 	# theme_extract_all [DestDir]
 	# Extracts all embedded themes to DestDir (default: current directory).
 	local DestDir=${1:-.}
+	[[ ${DestDir} == "user:" ]] && DestDir="${USER_THEMES_FOLDER}"
 	mkdir -p "${DestDir}"
 
 	local -i Extracted=0
