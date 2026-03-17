@@ -74,12 +74,16 @@ config_theme() {
 	if [[ -z ${ThemeName-} ]]; then
 		ThemeName="$(get_toml_val "${APPLICATION_TOML_FILE}" "ui.theme")"
 		if ! run_script 'theme_exists' "${ThemeName}"; then
-			for Name in "${DefaultThemes[@]}"; do
-				if run_script 'theme_exists' "${Name}"; then
-					ThemeName="${Name}"
-					break
-				fi
-			done
+			# Only fall back to a default when there is no cached active theme to use.
+			# If ACTIVE_THEME_FILE exists, ensure_theme_extracted will use it below.
+			if [[ ! -f ${ACTIVE_THEME_FILE} ]]; then
+				for Name in "${DefaultThemes[@]}"; do
+					if run_script 'theme_exists' "${Name}"; then
+						ThemeName="${Name}"
+						break
+					fi
+				done
+			fi
 		fi
 	fi
 
