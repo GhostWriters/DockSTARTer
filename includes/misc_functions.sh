@@ -518,11 +518,15 @@ hrx_extract_file() {
 	local -a lines=()
 	while IFS= read -r line || [[ -n ${line} ]]; do
 		if [[ -z ${boundary} ]]; then
-			[[ ${line} =~ ^(<[=]+>)[[:space:]] ]] && boundary="${BASH_REMATCH[1]}" || continue
+			if [[ ${line} =~ ^(<[=]+>)[[:space:]] ]]; then
+				boundary="${BASH_REMATCH[1]}"
+			else
+				continue
+			fi
 		fi
 		if [[ ${line} == "${boundary} "* ]]; then
 			[[ ${capturing} -eq 1 ]] && break
-			[[ "${line#"${boundary} "}" == "${internal_path}" ]] && capturing=1
+			[[ ${line#"${boundary} "} == "${internal_path}" ]] && capturing=1
 			continue
 		fi
 		[[ ${capturing} -eq 1 ]] && lines+=("${line}")
@@ -540,20 +544,30 @@ hrx_env_get() {
 	local boundary="" capturing=0 found_val=""
 	while IFS= read -r line || [[ -n ${line} ]]; do
 		if [[ -z ${boundary} ]]; then
-			[[ ${line} =~ ^(<[=]+>)[[:space:]] ]] && boundary="${BASH_REMATCH[1]}" || continue
+			if [[ ${line} =~ ^(<[=]+>)[[:space:]] ]]; then
+				boundary="${BASH_REMATCH[1]}"
+			else
+				continue
+			fi
 		fi
 		if [[ ${line} == "${boundary} "* ]]; then
 			[[ ${capturing} -eq 1 ]] && break
-			[[ "${line#"${boundary} "}" == "${internal_path}" ]] && capturing=1
+			[[ ${line#"${boundary} "} == "${internal_path}" ]] && capturing=1
 			continue
 		fi
 		if [[ ${capturing} -eq 1 ]]; then
 			[[ -z ${line} || ${line} =~ ^[[:space:]]*# ]] && continue
 			if [[ ${line} =~ ^[[:space:]]*${var_name}[[:space:]]*= ]]; then
 				local val="${line#*=}"
-				val="${val#"${val%%[! ]*}"}"; val="${val%"${val##*[! ]}"}"
-				if [[ ${val} == \"*\" ]]; then val="${val#\"}"; val="${val%\"}"
-				elif [[ ${val} == \'*\' ]]; then val="${val#\'}"; val="${val%\'}"; fi
+				val="${val#"${val%%[! ]*}"}"
+				val="${val%"${val##*[! ]}"}"
+				if [[ ${val} == \"*\" ]]; then
+					val="${val#\"}"
+					val="${val%\"}"
+				elif [[ ${val} == \'*\' ]]; then
+					val="${val#\'}"
+					val="${val%\'}"
+				fi
 				found_val="${val}"
 			fi
 		fi
