@@ -2,6 +2,38 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+# resolve_theme_archive <ThemeNameOrURI> <OutVar>
+# Sets OutVar to the path of the .dstheme archive for the given name or URI.
+# Returns 1 if the name/URI format is unrecognised.
+resolve_theme_archive() {
+	local NameOrURI=${1-}
+	local -n _OutVar=${2}
+	if [[ ${NameOrURI} == user:* ]]; then
+		_OutVar="${USER_THEMES_FOLDER}/${NameOrURI#user:}${THEME_FILE_EXT}"
+	else
+		_OutVar="${THEME_FOLDER}/${NameOrURI}${THEME_FILE_EXT}"
+	fi
+}
+
+# ensure_theme_extracted <ThemeArchive>
+# Copies the archive to ACTIVE_THEME_FILE when the content differs.
+# If the source archive is missing but ACTIVE_THEME_FILE already exists,
+# silently returns success (uses cached version).
+ensure_theme_extracted() {
+	local ThemeArchive=${1-}
+	if [[ ! -f ${ThemeArchive} ]]; then
+		# Source gone — use existing active theme file if available
+		if [[ -f ${ACTIVE_THEME_FILE} ]]; then
+			return 0
+		fi
+		return 1
+	fi
+	if ! cmp -s "${ThemeArchive}" "${ACTIVE_THEME_FILE}" 2>/dev/null; then
+		cp "${ThemeArchive}" "${ACTIVE_THEME_FILE}"
+		run_script 'set_permissions' "${ACTIVE_THEME_FILE}"
+	fi
+}
+
 config_theme() {
 	local ThemeName=${1-}
 
@@ -14,7 +46,6 @@ config_theme() {
 		run_script 'config_create'
 	fi
 
-	local ThemeFile
 	if [[ -z ${ThemeName-} ]]; then
 		ThemeName="$(get_toml_val "${APPLICATION_TOML_FILE}" "ui.theme")"
 		if ! run_script 'theme_exists' "${ThemeName}"; then
@@ -27,15 +58,17 @@ config_theme() {
 		fi
 	fi
 
-	if ! run_script 'theme_exists' "${ThemeName}"; then
+	local ThemeArchive
+	resolve_theme_archive "${ThemeName}" ThemeArchive
+
+	if ! ensure_theme_extracted "${ThemeArchive}"; then
 		error "${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} theme '${C["Theme"]}${ThemeName}${NC}' does not exist."
 		return 1
 	fi
 
-	local ThemeArchive="${THEME_FOLDER}/${ThemeName}${THEME_FILE_EXT}"
-	ThemeFile="${EXTRACTED_THEME_FILE}"
-	hrx_extract_file "${ThemeArchive}" "${THEME_FILE_NAME}" "${ThemeFile}"
-	hrx_extract_file "${ThemeArchive}" "${DIALOGRC_NAME}" "${DIALOGRC}"
+	local ThemeFile="${EXTRACTED_THEME_FILE}"
+	hrx_extract_file "${ACTIVE_THEME_FILE}" "${THEME_FILE_NAME}" "${ThemeFile}"
+	hrx_extract_file "${ACTIVE_THEME_FILE}" "${DIALOGRC_NAME}" "${DIALOGRC}"
 	run_script 'set_permissions' "${ThemeFile}"
 
 	local _B_='\Z4'   # Blue

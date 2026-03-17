@@ -8,7 +8,13 @@ theme_author() {
 	if [[ -z ${ThemeName} ]]; then
 		ThemeName="$(run_script 'theme_name')"
 	fi
-	local ThemeArchive="${THEME_FOLDER}/${ThemeName}${THEME_FILE_EXT}"
+
+	local ThemeArchive
+	if [[ ${ThemeName} == user:* ]]; then
+		ThemeArchive="${USER_THEMES_FOLDER}/${ThemeName#user:}${THEME_FILE_EXT}"
+	else
+		ThemeArchive="${THEME_FOLDER}/${ThemeName}${THEME_FILE_EXT}"
+	fi
 
 	hrx_env_get "${ThemeArchive}" "${THEME_FILE_NAME}" "ThemeAuthor"
 }

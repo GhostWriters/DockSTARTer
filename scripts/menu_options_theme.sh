@@ -14,26 +14,55 @@ menu_options_theme() {
 	local CurrentTheme
 	CurrentTheme="$(run_script 'theme_name')"
 
-	local -a ThemeList
+	# Build parallel arrays from structured theme_list output (DisplayName|ConfigValue|IsUserTheme)
+	local -a DisplayNames=() ConfigValues=() IsUserTheme=()
 	local -A ThemeDescription ThemeAuthor
-	readarray -t ThemeList < <(run_script 'theme_list')
-	for ThemeName in "${ThemeList[@]-}"; do
-		ThemeDescription["${ThemeName}"]="$(run_script 'theme_description' "${ThemeName}")"
-		ThemeAuthor["${ThemeName}"]="$(run_script 'theme_author' "${ThemeName}")"
+	while IFS='|' read -r DisplayName ConfigValue UserTheme; do
+		DisplayNames+=("${DisplayName}")
+		ConfigValues+=("${ConfigValue}")
+		IsUserTheme+=("${UserTheme}")
+		ThemeDescription["${ConfigValue}"]="$(run_script 'theme_description' "${ConfigValue}")"
+		ThemeAuthor["${ConfigValue}"]="$(run_script 'theme_author' "${ConfigValue}")"
+	done < <(run_script 'theme_list')
+
+	# Check if the configured theme appears in the list; if not, prepend an orphaned placeholder
+	local FoundCurrent=false
+	for ConfigValue in "${ConfigValues[@]-}"; do
+		if [[ ${ConfigValue} == "${CurrentTheme}" ]]; then
+			FoundCurrent=true
+			break
+		fi
 	done
+	if [[ ${FoundCurrent} == false && -n ${CurrentTheme} ]]; then
+		local OrphanDisplay="(missing) ${CurrentTheme}"
+		DisplayNames=("${OrphanDisplay}" "${DisplayNames[@]-}")
+		ConfigValues=("${CurrentTheme}" "${ConfigValues[@]-}")
+		IsUserTheme=("true" "${IsUserTheme[@]-}")
+		ThemeDescription["${CurrentTheme}"]="Source file not found — using cached version"
+		ThemeAuthor["${CurrentTheme}"]=""
+	fi
 
 	local LastChoice="${CurrentTheme}"
 	while true; do
 		local -a Opts=()
-		for ThemeName in "${ThemeList[@]-}"; do
-			local ItemText="${ThemeDescription["${ThemeName}"]}"
-			if [[ -n ${ThemeAuthor["${ThemeName}"]} ]]; then
-				ItemText+=" [by ${ThemeAuthor["${ThemeName}"]}]"
+		local -i i=0
+		for i in "${!ConfigValues[@]}"; do
+			local ConfigValue="${ConfigValues[${i}]}"
+			local DisplayName="${DisplayNames[${i}]}"
+			local ItemText="${ThemeDescription["${ConfigValue}"]-}"
+			if [[ -n ${ThemeAuthor["${ConfigValue}"]-} ]]; then
+				ItemText+=" [by ${ThemeAuthor["${ConfigValue}"]}]"
 			fi
-			if [[ ${ThemeName} == "${CurrentTheme}" ]]; then
-				Opts+=("${ThemeName}" "${DC["ListApp"]-}${ItemText}" ON)
+			# Prefix description with user-theme colour if applicable
+			if [[ ${IsUserTheme[${i}]} == true ]]; then
+				ItemText="${DC["ListAppUserDefined"]-}${ItemText}"
 			else
-				Opts+=("${ThemeName}" "${DC["ListApp"]-}${ItemText}" OFF)
+				ItemText="${DC["ListApp"]-}${ItemText}"
+			fi
+			if [[ ${ConfigValue} == "${CurrentTheme}" ]]; then
+				Opts+=("${ConfigValue}" "${DisplayName} — ${ItemText}" ON)
+			else
+				Opts+=("${ConfigValue}" "${DisplayName} — ${ItemText}" OFF)
 			fi
 		done
 		local -a ChoiceDialog=(
