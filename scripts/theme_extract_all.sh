@@ -14,7 +14,7 @@ theme_extract_all() {
 		[[ -f ${ThemeFile} ]] || continue
 		local FileName="${ThemeFile##*/}"
 		local Dest="${DestDir}/${FileName}"
-		if cp "${ThemeFile}" "${Dest}" 2>/dev/null; then
+		if cp "${ThemeFile}" "${Dest}" 2> /dev/null; then
 			notice "  Extracted: ${C["Theme"]-}${FileName}${NC-}"
 			Extracted+=1
 		else

@@ -28,7 +28,7 @@ ensure_theme_extracted() {
 		fi
 		return 1
 	fi
-	if ! cmp -s "${ThemeArchive}" "${ACTIVE_THEME_FILE}" 2>/dev/null; then
+	if ! cmp -s "${ThemeArchive}" "${ACTIVE_THEME_FILE}" 2> /dev/null; then
 		cp "${ThemeArchive}" "${ACTIVE_THEME_FILE}"
 		run_script 'set_permissions' "${ACTIVE_THEME_FILE}"
 	fi
