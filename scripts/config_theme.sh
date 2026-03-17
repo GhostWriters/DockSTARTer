@@ -2,13 +2,27 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+# is_theme_file_path <Arg>
+# Returns 0 if the argument looks like a file path rather than a theme name.
+# file: prefix, bare .dstheme extension, or path separators all qualify.
+# user: URIs are always treated as named themes, never as file paths.
+is_theme_file_path() {
+	local Arg=${1-}
+	[[ ${Arg} == user:* ]] && return 1
+	[[ ${Arg} == file:* ]] && return 0
+	[[ ${Arg} == *"${THEME_FILE_EXT}" ]] && return 0
+	[[ ${Arg} == */* ]] && return 0
+	return 1
+}
+
 # resolve_theme_archive <ThemeNameOrURI> <OutVar>
 # Sets OutVar to the path of the .dstheme archive for the given name or URI.
-# Returns 1 if the name/URI format is unrecognised.
 resolve_theme_archive() {
 	local NameOrURI=${1-}
 	local -n _OutVar=${2}
-	if [[ ${NameOrURI} == user:* ]]; then
+	if [[ ${NameOrURI} == file:* ]]; then
+		_OutVar="${NameOrURI#file:}"
+	elif [[ ${NameOrURI} == user:* ]]; then
 		_OutVar="${USER_THEMES_FOLDER}/${NameOrURI#user:}${THEME_FILE_EXT}"
 	else
 		_OutVar="${THEME_FOLDER}/${NameOrURI}${THEME_FILE_EXT}"
@@ -46,12 +60,19 @@ config_theme() {
 		run_script 'config_create'
 	fi
 
-	# Normalise: strip .dstheme extension if user passed the filename directly
-	[[ ${ThemeName} != user:* ]] && ThemeName="${ThemeName%"${THEME_FILE_EXT}"}"
+	# If the argument looks like a file path, resolve it to an absolute file: URI.
+	if [[ -n ${ThemeName-} ]] && is_theme_file_path "${ThemeName}"; then
+		local FilePath="${ThemeName#file:}"
+		FilePath="$(realpath -m "${FilePath}")"
+		if [[ ! -f ${FilePath} ]]; then
+			error "Theme file not found: '${C["File"]-}${FilePath}${NC-}'"
+			return 1
+		fi
+		ThemeName="file:${FilePath}"
+	fi
 
 	if [[ -z ${ThemeName-} ]]; then
 		ThemeName="$(get_toml_val "${APPLICATION_TOML_FILE}" "ui.theme")"
-		[[ ${ThemeName} != user:* ]] && ThemeName="${ThemeName%"${THEME_FILE_EXT}"}"
 		if ! run_script 'theme_exists' "${ThemeName}"; then
 			for Name in "${DefaultThemes[@]}"; do
 				if run_script 'theme_exists' "${Name}"; then

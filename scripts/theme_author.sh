@@ -10,7 +10,9 @@ theme_author() {
 	fi
 
 	local ThemeArchive
-	if [[ ${ThemeName} == user:* ]]; then
+	if [[ ${ThemeName} == file:* ]]; then
+		ThemeArchive="${ThemeName#file:}"
+	elif [[ ${ThemeName} == user:* ]]; then
 		ThemeArchive="${USER_THEMES_FOLDER}/${ThemeName#user:}${THEME_FILE_EXT}"
 	else
 		ThemeArchive="${THEME_FOLDER}/${ThemeName}${THEME_FILE_EXT}"
