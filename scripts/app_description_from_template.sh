@@ -48,7 +48,7 @@ test_app_description_from_template() {
 		for ((i = 0; i < ${#Test[@]}; i += 2)); do
 			printf '%s\n' \
 				"${Test[i]}" \
-				"${Test[i + 1]}" \
+				"${Test[i+1]}" \
 				"$(run_script 'app_description_from_template' "${Test[i]}")"
 		done
 	)

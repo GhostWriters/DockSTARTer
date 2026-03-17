@@ -70,7 +70,7 @@ test_env_get() {
 			"${VarFile}" \
 			""
 		for ((i = 0; i < ${#Test[@]}; i += 3)); do
-			printf '%s\n' "${Test[i + 1]}"
+			printf '%s\n' "${Test[i+1]}"
 		done
 	} > "${VarFile}"
 
@@ -78,8 +78,8 @@ test_env_get() {
 	run_unit_tests_pipe "Var" "Var" "${ForcePass}" < <(
 		for ((i = 0; i < ${#Test[@]}; i += 3)); do
 			printf '%s\n' \
-				"${Test[i + 1]}" \
-				"${Test[i + 2]}" \
+				"${Test[i+1]}" \
+				"${Test[i+2]}" \
 				"$(run_script 'env_get' "${Test[i]}" "${VarFile}")"
 		done
 	)

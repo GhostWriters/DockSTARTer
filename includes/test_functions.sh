@@ -71,8 +71,8 @@ run_unit_tests_pipe() {
 	local -i i
 	for ((i = 0; i < ${#Test[@]}; i += 3)); do
 		local Input="${Test[i]-}"
-		local ExpectedValue="${Test[i + 1]-}"
-		local ReturnedValue="${Test[i + 2]-}"
+		local ExpectedValue="${Test[i+1]-}"
+		local ReturnedValue="${Test[i+2]-}"
 
 		if [[ ${ReturnedValue} == "${ExpectedValue}" ]]; then
 			LeftPointers+=("${LeftSpacer}")

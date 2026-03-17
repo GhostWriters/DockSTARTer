@@ -158,9 +158,9 @@ SHORT_LONG='LongValue'
 	run_unit_tests_pipe "Input" "Input" "${ForcePass}" < <(
 		for ((i = 0; i < ${#Test[@]}; i += 4)); do
 			printf '%s\n' \
-				"String='${Test[i + 1]}' Skip='${Test[i + 2]}'" \
-				"${Test[i + 3]}" \
-				"$(run_script 'expand_vars_using_varfile' "${Test[i + 1]}" "${Test[i + 2]}" "${VarFile}")"
+				"String='${Test[i+1]}' Skip='${Test[i+2]}'" \
+				"${Test[i+3]}" \
+				"$(run_script 'expand_vars_using_varfile' "${Test[i+1]}" "${Test[i+2]}" "${VarFile}")"
 		done
 	)
 	result=$?
