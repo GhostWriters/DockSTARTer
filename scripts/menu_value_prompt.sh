@@ -81,6 +81,7 @@ menu_value_prompt() {
 					)
 					;;
 				DOCKER_VOLUME_CONFIG)
+					ValueDescription="\n\n The path where application ${DC["Highlight"]-}config data${DC["NC"]-} is stored."
 					PossibleOptions+=(
 						"Home Folder"
 					)
@@ -89,6 +90,7 @@ menu_value_prompt() {
 					)
 					;;
 				DOCKER_VOLUME_STORAGE)
+					ValueDescription="\n\n The path where application ${DC["Highlight"]-}storage data${DC["NC"]-} is stored."
 					PossibleOptions+=(
 						"Home Folder"
 						"Mount Folder"
@@ -99,7 +101,7 @@ menu_value_prompt() {
 					)
 					;;
 				GLOBAL_LAN_NETWORK)
-					ValueDescription="\n\n This is used to define your home LAN network, do NOT confuse this with the IP address of your router or your server, the value for this key defines your network NOT a single host. Please Google CIDR Notation to learn more."
+					ValueDescription="\n\n This is used to define your home LAN network. Do NOT confuse this with the IP address of your router or your server — the value for this key defines your ${DC["Highlight"]-}network${DC["NC"]-}, NOT a single host. See CIDR Notation for more information (e.g. ${DC["Highlight"]-}192.168.1.0/24${DC["NC"]-})."
 					PossibleOptions+=(
 						"${SystemValueOption}"
 					)
@@ -126,7 +128,7 @@ menu_value_prompt() {
 					)
 					;;
 				TZ)
-					ValueDescription="\n\n If this is not the correct timezone please exit and set your system timezone."
+					ValueDescription="\n\n If this is not the correct timezone, please exit and set your ${DC["Highlight"]-}system timezone${DC["NC"]-} first."
 					PossibleOptions+=(
 						"${SystemValueOption}"
 					)
@@ -219,7 +221,7 @@ menu_value_prompt() {
 					)
 					;;
 				"${APPNAME}__VOLUME_"*)
-					ValueDescription="\n\n If the directory selected does not exist we will attempt to create it."
+					ValueDescription="\n\n If the directory selected does not exist, DockSTARTer will attempt to create it."
 					PossibleOptions+=(
 						"${DefaultValueOption}"
 					)
