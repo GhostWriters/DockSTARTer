@@ -2,6 +2,52 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+# is_theme_file_path <Arg>
+# Returns 0 if the argument looks like a file path rather than a theme name.
+# file: prefix, bare .dstheme extension, or path separators all qualify.
+# user: URIs are always treated as named themes, never as file paths.
+is_theme_file_path() {
+	local Arg=${1-}
+	[[ ${Arg} == user:* ]] && return 1
+	[[ ${Arg} == file:* ]] && return 0
+	[[ ${Arg} == *"${THEME_FILE_EXT}" ]] && return 0
+	[[ ${Arg} == */* ]] && return 0
+	return 1
+}
+
+# resolve_theme_archive <ThemeNameOrURI> <OutVar>
+# Sets OutVar to the path of the .dstheme archive for the given name or URI.
+resolve_theme_archive() {
+	local NameOrURI=${1-}
+	local -n _OutVar=${2}
+	if [[ ${NameOrURI} == file:* ]]; then
+		_OutVar="${NameOrURI#file:}"
+	elif [[ ${NameOrURI} == user:* ]]; then
+		_OutVar="${USER_THEMES_FOLDER}/${NameOrURI#user:}${THEME_FILE_EXT}"
+	else
+		_OutVar="${THEME_FOLDER}/${NameOrURI}${THEME_FILE_EXT}"
+	fi
+}
+
+# ensure_theme_extracted <ThemeArchive>
+# Copies the archive to ACTIVE_THEME_FILE when the content differs.
+# If the source archive is missing but ACTIVE_THEME_FILE already exists,
+# silently returns success (uses cached version).
+ensure_theme_extracted() {
+	local ThemeArchive=${1-}
+	if [[ ! -f ${ThemeArchive} ]]; then
+		# Source gone — use existing active theme file if available
+		if [[ -f ${ACTIVE_THEME_FILE} ]]; then
+			return 0
+		fi
+		return 1
+	fi
+	if ! cmp -s "${ThemeArchive}" "${ACTIVE_THEME_FILE}" 2> /dev/null; then
+		cp "${ThemeArchive}" "${ACTIVE_THEME_FILE}"
+		run_script 'set_permissions' "${ACTIVE_THEME_FILE}"
+	fi
+}
+
 config_theme() {
 	local ThemeName=${1-}
 
@@ -14,28 +60,44 @@ config_theme() {
 		run_script 'config_create'
 	fi
 
-	local ThemeFile
+	# If the argument looks like a file path, resolve it to an absolute file: URI.
+	if [[ -n ${ThemeName-} ]] && is_theme_file_path "${ThemeName}"; then
+		local FilePath="${ThemeName#file:}"
+		FilePath="$(realpath -m "${FilePath}")"
+		if [[ ! -f ${FilePath} ]]; then
+			error "Theme file not found: '${C["File"]-}${FilePath}${NC-}'"
+			return 1
+		fi
+		ThemeName="file:${FilePath}"
+	fi
+
 	if [[ -z ${ThemeName-} ]]; then
 		ThemeName="$(get_toml_val "${APPLICATION_TOML_FILE}" "ui.theme")"
 		if ! run_script 'theme_exists' "${ThemeName}"; then
-			for Name in "${DefaultThemes[@]}"; do
-				if run_script 'theme_exists' "${Name}"; then
-					ThemeName="${Name}"
-					break
-				fi
-			done
+			# Only fall back to a default when there is no cached active theme to use.
+			# If ACTIVE_THEME_FILE exists, ensure_theme_extracted will use it below.
+			if [[ ! -f ${ACTIVE_THEME_FILE} ]]; then
+				for Name in "${DefaultThemes[@]}"; do
+					if run_script 'theme_exists' "${Name}"; then
+						ThemeName="${Name}"
+						break
+					fi
+				done
+			fi
 		fi
 	fi
 
-	if ! run_script 'theme_exists' "${ThemeName}"; then
+	local ThemeArchive
+	resolve_theme_archive "${ThemeName}" ThemeArchive
+
+	if ! ensure_theme_extracted "${ThemeArchive}"; then
 		error "${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} theme '${C["Theme"]}${ThemeName}${NC}' does not exist."
 		return 1
 	fi
 
-	local ThemeArchive="${THEME_FOLDER}/${ThemeName}${THEME_FILE_EXT}"
-	ThemeFile="${EXTRACTED_THEME_FILE}"
-	hrx_extract_file "${ThemeArchive}" "${THEME_FILE_NAME}" "${ThemeFile}"
-	hrx_extract_file "${ThemeArchive}" "${DIALOGRC_NAME}" "${DIALOGRC}"
+	local ThemeFile="${EXTRACTED_THEME_FILE}"
+	hrx_extract_file "${ACTIVE_THEME_FILE}" "${THEME_FILE_NAME}" "${ThemeFile}"
+	hrx_extract_file "${ACTIVE_THEME_FILE}" "${DIALOGRC_NAME}" "${DIALOGRC}"
 	run_script 'set_permissions' "${ThemeFile}"
 
 	local _B_='\Z4'   # Blue

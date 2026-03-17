@@ -149,9 +149,33 @@ parse_arguments() {
 
 				# --command [param]
 				-T | --theme) ;&
+				--theme-extract-all) ;&
 				--update-app) ;&
 				--update-templates)
 					CurrentCommand+=("${OPTION}")
+					if [[ ${OPTIND} -le $# && ${!OPTIND} != "-"* ]]; then
+						CurrentCommand+=("${!OPTIND}")
+						OPTIND+=1
+					fi
+					break
+					;;
+
+				# --command param [param] [param]
+				--theme-extract)
+					CurrentCommand+=("${OPTION}")
+					if [[ ${OPTIND} -le $# && ${!OPTIND} != "-"* ]]; then
+						CurrentCommand+=("${!OPTIND}")
+						OPTIND+=1
+					else
+						cmdline_error "$(printf "'%s' requires a theme name." "${OPTION}")"
+						break
+					fi
+					# Optional destination dir
+					if [[ ${OPTIND} -le $# && ${!OPTIND} != "-"* ]]; then
+						CurrentCommand+=("${!OPTIND}")
+						OPTIND+=1
+					fi
+					# Optional filename
 					if [[ ${OPTIND} -le $# && ${!OPTIND} != "-"* ]]; then
 						CurrentCommand+=("${!OPTIND}")
 						OPTIND+=1
@@ -559,6 +583,8 @@ run_command() {
 		["--theme-no-borders"]="Turned off borders"
 		["--theme-list"]="List Themes"
 		["--theme-table"]="List Themes"
+		["--theme-extract"]="Extract Theme"
+		["--theme-extract-all"]="Extract All Themes"
 	)
 
 	CommandSubTitle+=(
@@ -903,6 +929,17 @@ run_command() {
 				run_script 'config_theme' "${ThemeName}"
 				result=$?
 			fi
+			;;
+
+		--theme-extract)
+			run_script 'theme_extract' "${ParamsArray[@]-}"
+			result=$?
+			;;
+
+		--theme-extract-all)
+			notice "Extracting all embedded themes."
+			run_script 'theme_extract_all' "${ParamsArray[0]-}"
+			result=$?
 			;;
 
 		--theme-shadows | --theme-no-shadows) ;&
