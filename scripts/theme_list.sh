@@ -2,17 +2,13 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-declare -a _dependencies_list=(
-	find
-)
-
 theme_list() {
-	local -a ThemeList
-	readarray -t ThemeList < <(${FIND} "${THEME_FOLDER}" -maxdepth 1 -type d ! -path "${THEME_FOLDER}" -printf "%f\n" | sort)
-	for ThemeName in "${ThemeList[@]-}"; do
-		if run_script 'theme_exists' "${ThemeName}"; then
-			echo "${ThemeName}"
-		fi
+	local -a ThemeFiles=("${THEME_FOLDER}"/*"${THEME_FILE_EXT}")
+	for ThemeFile in "${ThemeFiles[@]-}"; do
+		[[ -f ${ThemeFile} ]] || continue
+		local ThemeName="${ThemeFile##*/}"
+		ThemeName="${ThemeName%"${THEME_FILE_EXT}"}"
+		echo "${ThemeName}"
 	done
 }
 

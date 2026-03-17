@@ -1,3 +1,67 @@
+<==> theme.ini
+#
+# DockSTARTer theme file
+# theme.ini
+#
+# Color List:
+#
+# ${_B_}   Blue
+# ${_C_}   Cyan
+# ${_G_}   Green
+# ${_K_}   Black
+# ${_M_}   Magenta
+# ${_R_}   Red
+# ${_W_}   White
+# ${_Y_}   Yellow
+# ${_RV_}  Reverse
+# ${_NRV_} No Reverse
+# ${_BD_}  Bold
+# ${_NBD_} No Bold
+# ${_U_}   Underline
+# ${_NU_}  No Underline
+# ${_NC_}  No Color
+
+ThemeName='Old DockSTARTer'
+ThemeDescription='The old DockSTARTer theme'
+ThemeAuthor='CLHatch'
+
+ApplicationName="${_NC_}${_BD_}${_RV_}${_B_}"
+ApplicationVersion="${_NC_}${_BD_}${_RV_}${_B_}"
+ApplicationVersionBrackets="${_NC_}${_BD_}${_RV_}${_B_}"
+ApplicationVersionSpace="${_NC_}"
+ApplicationFlags="${_NC_}${_NBD_}"
+ApplicationFlagsBrackets="${_NC_}${_RV_}"
+ApplicationFlagsSpace="${_NC_}${_RV_}"
+ApplicationUpdate="${_NC_}${_RV_}"
+ApplicationUpdateBrackets="${_NC_}${_RV_}"
+Hostname="${_NC_}${_BD_}${_RV_}${_B_}"
+Title="${_NC_}${_B_}${_U_}${_RV_}"
+Subtitle="${_NC_}${_RV_}${_BD_}"
+TitleSuccess="${_NC_}${_RV_}${_G_}"
+TitleError="${_NC_}${_RV_}${_R_}"
+TitleWarning="${_NC_}${_RV_}${_Y_}"
+TitleQuestion="${_NC_}${_RV_}${_Y_}"
+Heading="${_NC_}${_RV_}"
+HeadingTag="${_NC_}${_RV_}${_W_}"
+HeadingValue="${_NC_}${_BD_}${_RV_}"
+HeadingAppDescription="${_NC_}${_Y_}${_NBD_}"
+Highlight="${_NC_}${_Y_}${_BD_}"
+LineHeading="${_NC_}${_B_}${_BD_}${_U_}${_RV_}"
+LineComment="${_NC_}${_K_}${_BD_}${_RV_}"
+LineOther="${_NC_}${_K_}${_BD_}${_RV_}"
+LineVar="${_NC_}${_K_}${_NBD_}${_RV_}"
+LineModifiedVar="${_NC_}"
+LineAddVariable="${_NC_}${_K_}${_NBD_}${_RV_}"
+ListDefault=""
+ListApp=""
+ListAppUserDefined="${_K_}${_RV_}"
+CommandLine="${_NC_}${_Y_}${_BD_}"
+KeyCap="${_NC_}${_RV_}"
+ProgressWaiting="${_NC_}${_Y_}${_BD_}"
+ProgressInProgress="${_NC_}${_RV_}${_W_}"
+ProgressCompleted="${_NC_}${_RV_}${_BD_}"
+
+<==> .dialogrc
 # DockSTARTer theme file
 # .dialogrc
 #
@@ -42,16 +106,13 @@ screen_color = (BLACK,WHITE,OFF)
 shadow_color = (BLACK,BLACK,ON)
 
 # Dialog box color
-dialog_color = (BLACK,CYAN,OFF)
-
-# Dialog box border color
-border_color = (WHITE,CYAN,OFF)
-
-# Dialog box border2 color
-border2_color = (BLACK,CYAN,OFF)
+dialog_color = (BLACK,BLUE,OFF)
 
 # Dialog box title color
 title_color = (CYAN,BLACK,OFF)
+
+# Dialog box border color
+border_color = (CYAN,BLUE,OFF)
 
 # Active button color
 button_active_color = (WHITE,RED,ON)
@@ -90,10 +151,10 @@ searchbox_border_color = border_color
 position_indicator_color = (WHITE,BLACK,OFF)
 
 # Menu box color
-menubox_color = (BLACK,CYAN,OFF)
+menubox_color = (BLACK,BLUE,OFF)
 
 # Menu box border color
-menubox_border_color = border2_color
+menubox_border_color = dialog_color
 
 # Item color
 item_color = (BLACK,CYAN,OFF)
@@ -108,7 +169,7 @@ tag_color = dialog_color
 tag_selected_color = item_selected_color
 
 # Tag key color
-tag_key_color = (RED,CYAN,OFF)
+tag_key_color = (RED,BLUE,OFF)
 
 # Selected tag key color
 tag_key_selected_color = item_selected_color
@@ -120,7 +181,7 @@ check_color = menubox_color
 check_selected_color = item_selected_color
 
 # Up arrow color
-uarrow_color = (WHITE,CYAN,OFF)
+uarrow_color = (WHITE,BLUE,OFF)
 
 # Down arrow color
 darrow_color = uarrow_color
@@ -132,13 +193,16 @@ itemhelp_color = dialog_color
 form_active_text_color = tag_key_selected_color
 
 # Form text color
-form_text_color = (BLACK,CYAN,OFF)
+form_text_color = (WHITE,CYAN,ON)
 
 # Readonly form item color
-form_item_readonly_color = (BLACK,WHITE,OFF)
+form_item_readonly_color = (CYAN,WHITE,ON)
 
 # Dialog box gauge color
-gauge_color = (BLACK,CYAN,OFF)
+gauge_color = (WHITE,BLUE,ON)
+
+# Dialog box border2 color
+border2_color = dialog_color
 
 # Input box border2 color
 inputbox_border2_color = border_color

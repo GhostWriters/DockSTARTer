@@ -14,7 +14,7 @@ config_theme() {
 		run_script 'config_create'
 	fi
 
-	local ThemeFile DialogFile
+	local ThemeFile
 	if [[ -z ${ThemeName-} ]]; then
 		ThemeName="$(get_toml_val "${APPLICATION_TOML_FILE}" "ui.theme")"
 		if ! run_script 'theme_exists' "${ThemeName}"; then
@@ -32,8 +32,11 @@ config_theme() {
 		return 1
 	fi
 
-	ThemeFile="${THEME_FOLDER}/${ThemeName}/${THEME_FILE_NAME}"
-	DialogFile="${THEME_FOLDER}/${ThemeName}/${DIALOGRC_NAME}"
+	local ThemeArchive="${THEME_FOLDER}/${ThemeName}${THEME_FILE_EXT}"
+	ThemeFile="${EXTRACTED_THEME_FILE}"
+	hrx_extract_file "${ThemeArchive}" "${THEME_FILE_NAME}" "${ThemeFile}"
+	hrx_extract_file "${ThemeArchive}" "${DIALOGRC_NAME}" "${DIALOGRC}"
+	run_script 'set_permissions' "${ThemeFile}"
 
 	local _B_='\Z4'   # Blue
 	local _C_='\Z6'   # Cyan
@@ -133,9 +136,6 @@ config_theme() {
 		cp <(printf "%s" "${DialogOptions}") "${DIALOG_OPTIONS_FILE}"
 	run_script 'set_permissions' "${DIALOG_OPTIONS_FILE}"
 
-	RunAndLog "" "cp:info" \
-		fatal "Failed to copy dialogrc file." \
-		cp "${DialogFile}" "${DIALOGRC}"
 	run_script 'set_permissions' "${DIALOGRC}"
 
 	set_toml_val "${APPLICATION_TOML_FILE}" "ui.theme" "${ThemeName}"
