@@ -6,13 +6,12 @@ apply_config() {
 	run_script 'config_create'
 
 	#shellcheck disable=SC2034 # (warning): LITERAL_CONFIG_FOLDER appears unused. Verify use (or export if used externally).
-	LITERAL_CONFIG_FOLDER="$(run_script 'config_get' ConfigFolder)"
+	LITERAL_CONFIG_FOLDER="$(get_toml_val "${APPLICATION_TOML_FILE}" "paths.config_folder")"
 	#shellcheck disable=SC2034 # (warning): LITERAL_COMPOSE_FOLDER appears unused. Verify use (or export if used externally).
-	LITERAL_COMPOSE_FOLDER="$(run_script 'config_get' ComposeFolder)"
+	LITERAL_COMPOSE_FOLDER="$(get_toml_val "${APPLICATION_TOML_FILE}" "paths.compose_folder")"
 	set_global_variables
 	run_script 'config_theme'
 	run_script 'config_package_manager'
-	sort -o "${APPLICATION_INI_FILE}" "${APPLICATION_INI_FILE}"
 }
 
 test_apply_config() {

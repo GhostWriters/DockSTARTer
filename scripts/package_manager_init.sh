@@ -13,7 +13,7 @@ package_manager_init() {
 
 	local NoticeType="info"
 	local PreferredPackageManager
-	PreferredPackageManager="$(run_script 'config_get' PackageManager)"
+	PreferredPackageManager="$(get_toml_val "${APPLICATION_TOML_FILE}" "pm.package_manager")"
 	if [[ -n ${PreferredPackageManager} ]]; then
 		if ! run_script 'package_manager_is_valid' "${PreferredPackageManager}"; then
 			NoticeType="warn"

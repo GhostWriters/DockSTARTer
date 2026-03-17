@@ -392,3 +392,117 @@ wordwrap() {
 
 	wordwrap_pipe "${Width}" <<< "${String}"
 }
+
+get_toml_val() {
+	# get_toml_val FILE SECTION.KEY
+	# Returns the value of KEY within [SECTION] in FILE.
+	# Returns empty string (exit 0) if the key or section is not found.
+	local file=${1-}
+	local section="${2%%.*}"
+	local target_key="${2#*.}"
+	local current_section=""
+
+	while IFS='= ' read -r key val || [[ -n ${key}${val} ]]; do
+		# Track the current section [header]
+		if [[ ${key} =~ ^\[(.*)\]$ ]]; then
+			current_section="${BASH_REMATCH[1]}"
+			continue
+		fi
+
+		# Only process keys in the correct section
+		if [[ ${current_section} == "${section}" && ${key} == "${target_key}" ]]; then
+			# Trim leading and trailing whitespace
+			val="${val#"${val%%[![:space:]]*}"}"
+			val="${val%"${val##*[![:space:]]}"}"
+
+			# Strip quotes; for quoted strings, # is literal (not a comment)
+			if [[ ${val} == \"*\" ]]; then
+				val="${val#\"}"
+				val="${val%\"}"
+			elif [[ ${val} == \'*\' ]]; then
+				val="${val#\'}"
+				val="${val%\'}"
+			else
+				# Unquoted: strip inline comment, then trim trailing whitespace
+				val="${val%%#*}"
+				val="${val%"${val##*[![:space:]]}"}"
+			fi
+
+			printf '%s\n' "${val}"
+			return 0
+		fi
+	done < "${file}"
+	return 0
+}
+
+set_toml_val() {
+	# set_toml_val FILE SECTION.KEY VALUE
+	# Creates or updates KEY = "VALUE" within [SECTION] in FILE.
+	# Creates the file, section, or key if any do not exist.
+	local file=${1-}
+	local section="${2%%.*}"
+	local target_key="${2#*.}"
+	local new_val=${3-}
+
+	if [[ ! -f ${file} ]]; then
+		touchfile "${file}"
+	fi
+
+	# Escape double quotes in the value
+	new_val="${new_val//\"/\\\"}"
+	local new_line="${target_key} = \"${new_val}\""
+
+	local -a content=()
+	while IFS= read -r line || [[ -n ${line} ]]; do
+		content+=("${line}")
+	done < "${file}"
+
+	local -i n=${#content[@]}
+	local -i in_section=0
+	local -i section_found=0
+	local -i key_written=0
+	local -a output=()
+
+	local -i i
+	for ((i = 0; i < n; i++)); do
+		local line="${content[i]}"
+		if [[ ${line} =~ ^\[(.+)\]$ ]]; then
+			if [[ ${in_section} -eq 1 && ${key_written} -eq 0 ]]; then
+				# Leaving our section without finding the key: insert it now
+				output+=("${new_line}")
+				key_written=1
+			fi
+			in_section=0
+			if [[ ${BASH_REMATCH[1]} == "${section}" ]]; then
+				in_section=1
+				section_found=1
+			fi
+		elif [[ ${in_section} -eq 1 && ${key_written} -eq 0 ]]; then
+			# Check if this line contains our key
+			if [[ ${line} =~ ^[[:space:]]*${target_key}[[:space:]]*= ]]; then
+				output+=("${new_line}")
+				key_written=1
+				continue # drop the old line
+			fi
+		fi
+		output+=("${line}")
+	done
+
+	# Handle key not found at end of file while still in section
+	if [[ ${in_section} -eq 1 && ${key_written} -eq 0 ]]; then
+		output+=("${new_line}")
+	fi
+
+	# Handle section not found: append section and key at end of file
+	if [[ ${section_found} -eq 0 ]]; then
+		if [[ ${#output[@]} -gt 0 && -n ${output[-1]} ]]; then
+			output+=("")
+		fi
+		output+=("[${section}]")
+		output+=("${new_line}")
+	fi
+
+	printf '%s\n' "${output[@]}" > "${file}" ||
+		fatal \
+			"Failed to write to '${C["File"]-}${file}${NC-}'."
+}

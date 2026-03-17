@@ -578,25 +578,25 @@ run_command() {
 	)
 
 	CommandConfigVar+=(
-		["--theme-shadows"]="Shadow"
-		["--theme-no-shadows"]="Shadow"
-		["--theme-scrollbar"]="Scrollbar"
-		["--theme-no-scrollbar"]="Scrollbar"
-		["--theme-lines"]="LineCharacters"
-		["--theme-no-lines"]="LineCharacters"
-		["--theme-borders"]="Borders"
-		["--theme-no-borders"]="Borders"
+		["--theme-shadows"]="shadow"
+		["--theme-no-shadows"]="shadow"
+		["--theme-scrollbar"]="scrollbar"
+		["--theme-no-scrollbar"]="scrollbar"
+		["--theme-lines"]="line_characters"
+		["--theme-no-lines"]="line_characters"
+		["--theme-borders"]="borders"
+		["--theme-no-borders"]="borders"
 	)
 
 	CommandConfigValue=(
-		["--theme-shadows"]="yes"
-		["--theme-no-shadows"]="no"
-		["--theme-scrollbar"]="yes"
-		["--theme-no-scrollbar"]="no"
-		["--theme-lines"]="yes"
-		["--theme-no-lines"]="no"
-		["--theme-borders"]="yes"
-		["--theme-no-borders"]="no"
+		["--theme-shadows"]="true"
+		["--theme-no-shadows"]="false"
+		["--theme-scrollbar"]="true"
+		["--theme-no-scrollbar"]="false"
+		["--theme-lines"]="true"
+		["--theme-no-lines"]="false"
+		["--theme-borders"]="true"
+		["--theme-no-borders"]="false"
 	)
 	CommandEnvCreate+=(
 		["--list-disabled"]=1
@@ -917,7 +917,7 @@ run_command() {
 				notice \
 					"${Notice}"
 			fi
-			run_script 'config_set' "${ConfigVar}" "${ConfigValue}"
+			set_toml_val "${APPLICATION_TOML_FILE}" "ui.${ConfigVar}" "${ConfigValue}"
 			result=$?
 			if use_dialog_box; then
 				run_script 'menu_dialog_example' "${Title}" "${CURRENT_COMMANDLINE}"
