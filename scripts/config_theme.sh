@@ -46,8 +46,12 @@ config_theme() {
 		run_script 'config_create'
 	fi
 
+	# Normalise: strip .dstheme extension if user passed the filename directly
+	[[ ${ThemeName} != user:* ]] && ThemeName="${ThemeName%"${THEME_FILE_EXT}"}"
+
 	if [[ -z ${ThemeName-} ]]; then
 		ThemeName="$(get_toml_val "${APPLICATION_TOML_FILE}" "ui.theme")"
+		[[ ${ThemeName} != user:* ]] && ThemeName="${ThemeName%"${THEME_FILE_EXT}"}"
 		if ! run_script 'theme_exists' "${ThemeName}"; then
 			for Name in "${DefaultThemes[@]}"; do
 				if run_script 'theme_exists' "${Name}"; then
