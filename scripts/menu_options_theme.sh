@@ -34,12 +34,29 @@ menu_options_theme() {
 		fi
 	done
 	if [[ ${FoundCurrent} == false && -n ${CurrentTheme} ]]; then
-		local OrphanDisplay="(missing) ${CurrentTheme}"
+		local OrphanDisplay
+		if [[ ${CurrentTheme} == file:* ]]; then
+			# Shorten file: URI to just file:stem for display
+			local FileStem="${CurrentTheme##*/}"
+			FileStem="${FileStem%"${THEME_FILE_EXT}"}"
+			if run_script 'theme_exists' "${CurrentTheme}"; then
+				# File still exists — show as normal entry with real metadata
+				OrphanDisplay="file:${FileStem}"
+				ThemeDescription["${CurrentTheme}"]="$(run_script 'theme_description' "${CurrentTheme}")"
+				ThemeAuthor["${CurrentTheme}"]="$(run_script 'theme_author' "${CurrentTheme}")"
+			else
+				OrphanDisplay="(missing) file:${FileStem}"
+				ThemeDescription["${CurrentTheme}"]="Source file not found — using cached version"
+				ThemeAuthor["${CurrentTheme}"]=""
+			fi
+		else
+			OrphanDisplay="(missing) ${CurrentTheme}"
+			ThemeDescription["${CurrentTheme}"]="Source file not found — using cached version"
+			ThemeAuthor["${CurrentTheme}"]=""
+		fi
 		DisplayNames=("${OrphanDisplay}" "${DisplayNames[@]-}")
 		ConfigValues=("${CurrentTheme}" "${ConfigValues[@]-}")
 		IsUserTheme=("true" "${IsUserTheme[@]-}")
-		ThemeDescription["${CurrentTheme}"]="Source file not found — using cached version"
-		ThemeAuthor["${CurrentTheme}"]=""
 	fi
 
 	local LastChoice="${CurrentTheme}"
