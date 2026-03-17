@@ -23,17 +23,17 @@ menu_options_display() {
 	OptionDescription["${ShowScrollbarOption}"]="${DC["ListDefault"]}Show a scrollbar in dialog boxes"
 	OptionDescription["${ShowShadowOption}"]="${DC["ListDefault"]}Show a shadow under the dialog boxes"
 
-	OptionVariable["${DrawLineOption}"]="LineCharacters"
-	OptionVariable["${ShowBordersOption}"]="Borders"
-	OptionVariable["${ShowScrollbarOption}"]="Scrollbar"
-	OptionVariable["${ShowShadowOption}"]="Shadow"
+	OptionVariable["${DrawLineOption}"]="line_characters"
+	OptionVariable["${ShowBordersOption}"]="borders"
+	OptionVariable["${ShowScrollbarOption}"]="scrollbar"
+	OptionVariable["${ShowShadowOption}"]="shadow"
 
 	while true; do
 		local EnabledOptions=()
 		local Opts=()
 		for Option in "${DrawLineOption}" "${ShowBordersOption}" "${ShowScrollbarOption}" "${ShowShadowOption}"; do
 			local Value
-			Value="$(run_script 'config_get' "${OptionVariable["${Option}"]}")"
+			Value="$(get_toml_val "${APPLICATION_TOML_FILE}" "ui.${OptionVariable["${Option}"]}")"
 			if is_true "${Value}"; then
 				EnabledOptions+=("${Option}")
 				Opts+=("${Option}" "${OptionDescription["${Option}"]}" ON)
@@ -66,12 +66,12 @@ menu_options_display() {
 				if [[ -n ${OptionsToTurnOff[*]-} || ${OptionsToTurnOn[*]-} ]]; then
 					if [[ -n ${OptionsToTurnOff[*]-} ]]; then
 						for Option in "${OptionsToTurnOff[@]}"; do
-							run_script 'config_set' "${OptionVariable["${Option}"]}" OFF
+							set_toml_val "${APPLICATION_TOML_FILE}" "ui.${OptionVariable["${Option}"]}" "false"
 						done
 					fi
 					if [[ -n ${OptionsToTurnOn[*]-} ]]; then
 						for Option in "${OptionsToTurnOn[@]}"; do
-							run_script 'config_set' "${OptionVariable["${Option}"]}" ON
+							set_toml_val "${APPLICATION_TOML_FILE}" "ui.${OptionVariable["${Option}"]}" "true"
 						done
 					fi
 					run_script 'config_theme' &> /dev/null

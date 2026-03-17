@@ -10,13 +10,13 @@ config_theme() {
 		Default
 	)
 
-	if [[ ! -f ${APPLICATION_INI_FILE} ]]; then
+	if [[ ! -f ${APPLICATION_TOML_FILE} ]]; then
 		run_script 'config_create'
 	fi
 
 	local ThemeFile DialogFile
 	if [[ -z ${ThemeName-} ]]; then
-		ThemeName="$(run_script 'config_get' Theme)"
+		ThemeName="$(get_toml_val "${APPLICATION_TOML_FILE}" "ui.theme")"
 		if ! run_script 'theme_exists' "${ThemeName}"; then
 			for Name in "${DefaultThemes[@]}"; do
 				if run_script 'theme_exists' "${Name}"; then
@@ -95,37 +95,10 @@ config_theme() {
 	local DialogOptions="--colors --output-fd 1 --cr-wrap --no-collapse"
 
 	local LineCharacters Borders Scrollbar Shadow
-	if run_script 'env_var_exists' Scrollbar "${APPLICATION_INI_FILE}"; then
-		Scrollbar="$(run_script 'config_get' Scrollbar)"
-	else
-		Scrollbar="$(run_script 'config_get' Scrollbar "${DEFAULT_INI_FILE}")"
-		run_script 'config_set' Scrollbar "${Scrollbar}"
-	fi
-	if run_script 'env_var_exists' Shadow "${APPLICATION_INI_FILE}"; then
-		Shadow="$(run_script 'config_get' Shadow)"
-	else
-		Shadow="$(run_script 'config_get' Shadow "${DEFAULT_INI_FILE}")"
-		run_script 'config_set' Shadow "${Shadow}"
-	fi
-	# Migrate old LineCharacters variable to Borders if Borders doesn't exist
-	if run_script 'env_var_exists' Borders "${APPLICATION_INI_FILE}"; then
-		Borders="$(run_script 'config_get' Borders)"
-		if run_script 'env_var_exists' LineCharacters "${APPLICATION_INI_FILE}"; then
-			LineCharacters="$(run_script 'config_get' LineCharacters)"
-		else
-			LineCharacters="$(run_script 'config_get' LineCharacters "${DEFAULT_INI_FILE}")"
-			run_script 'config_set' LineCharacters "${LineCharacters}"
-		fi
-	else
-		if run_script 'env_var_exists' LineCharacters "${APPLICATION_INI_FILE}"; then
-			Borders="$(run_script 'config_get' LineCharacters)"
-		else
-			Borders="$(run_script 'config_get' Borders "${DEFAULT_INI_FILE}")"
-		fi
-		run_script 'config_set' Borders "${Borders}"
-		LineCharacters="$(run_script 'config_get' LineCharacters "${DEFAULT_INI_FILE}")"
-		run_script 'config_set' LineCharacters "${LineCharacters}"
-	fi
+	Borders="$(get_toml_val "${APPLICATION_TOML_FILE}" "ui.borders")"
+	LineCharacters="$(get_toml_val "${APPLICATION_TOML_FILE}" "ui.line_characters")"
+	Scrollbar="$(get_toml_val "${APPLICATION_TOML_FILE}" "ui.scrollbar")"
+	Shadow="$(get_toml_val "${APPLICATION_TOML_FILE}" "ui.shadow")"
 
 	DC+=(
 		["Borders"]="${Borders}"
@@ -134,7 +107,7 @@ config_theme() {
 		["Shadow"]="${Shadow}"
 	)
 
-	# Set the dialog options based on the settings in the .ini file
+	# Set the dialog options based on the settings in the .toml file
 	if is_true "${Borders}"; then
 		if is_false "${LineCharacters}"; then
 			DialogOptions+=" --ascii-lines"
@@ -165,7 +138,7 @@ config_theme() {
 		cp "${DialogFile}" "${DIALOGRC}"
 	run_script 'set_permissions' "${DIALOGRC}"
 
-	run_script 'config_set' Theme "${ThemeName}"
+	set_toml_val "${APPLICATION_TOML_FILE}" "ui.theme" "${ThemeName}"
 }
 
 test_config_theme() {
