@@ -72,7 +72,7 @@ var_helpline() {
 			VOLUME_*)
 				echo "Path to a volume directory for this application."
 				;;
-			PORT_+([0-9]))
+			PORT_[0-9]*)
 				echo "A port number between ${DC["Highlight"]-}0${DC["NC"]-} and ${DC["Highlight"]-}65535${DC["NC"]-}."
 				;;
 		esac
