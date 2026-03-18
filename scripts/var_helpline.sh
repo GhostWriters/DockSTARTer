@@ -72,8 +72,10 @@ var_helpline() {
 			VOLUME_*)
 				echo "Path to a volume directory for this application."
 				;;
-			PORT_[0-9]*)
-				echo "A port number between ${DC["Highlight"]-}0${DC["NC"]-} and ${DC["Highlight"]-}65535${DC["NC"]-}."
+			*)
+				if [[ ${Suffix} =~ ^PORT_[0-9]+$ ]]; then
+					echo "A port number between ${DC["Highlight"]-}0${DC["NC"]-} and ${DC["Highlight"]-}65535${DC["NC"]-}."
+				fi
 				;;
 		esac
 	fi
