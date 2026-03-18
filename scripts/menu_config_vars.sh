@@ -142,7 +142,11 @@ menu_config_vars() {
 		for LineNumber in "${!CurrentValueOnLine[@]}"; do
 			local PaddedLineNumber=""
 			PaddedLineNumber="$(printf "%0${PadSize}d" "${LineNumber}")"
-			LineOptions+=("${PaddedLineNumber}" "${LineColor[LineNumber]-}${CurrentValueOnLine[LineNumber]}")
+			local HelpLine=""
+			if [[ -n ${VarNameOnLine[LineNumber]-} ]]; then
+				HelpLine="$(run_script 'var_helpline' "${VarNameOnLine[LineNumber]}")"
+			fi
+			LineOptions+=("${PaddedLineNumber}" "${LineColor[LineNumber]-}${CurrentValueOnLine[LineNumber]}" "${HelpLine}")
 		done
 		if [[ -z ${LastLineChoice-} ]]; then
 			# Set the default line to the first line with a variable on it
@@ -162,6 +166,7 @@ menu_config_vars() {
 				--cancel-label "Back"
 				--title "${DC["Title"]-}${Title}"
 				--default-item "${LastLineChoice}"
+				--item-help
 				--menu "${DialogHeading}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" -1
 				"${LineOptions[@]}"
 			)
