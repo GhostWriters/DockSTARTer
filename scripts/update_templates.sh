@@ -123,7 +123,7 @@ commands_update_templates() {
 	sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${TEMPLATES_PARENT_FOLDER}" &> /dev/null || true
 	notice "Updated ${TargetName} to '${C["Version"]}$(templates_version)${NC}'"
 
-	run_script 'reset_needs'
+	# run_script 'reset_needs' (DELETED in favor of granular detection)
 }
 
 test_update_templates() {
