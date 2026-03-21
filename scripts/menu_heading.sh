@@ -16,10 +16,10 @@ menu_heading() {
 		[CurrentValue]="Current Value: "
 	)
 	local -A Tag=(
-		[AppDeprecated]="${DC["HeadingTag"]-}[*DEPRECATED*]${DC["NC"]-}"
-		[AppDisabled]="${DC["HeadingTag"]-}(Disabled)${DC["NC"]-}"
-		[AppUserDefined]="${DC["HeadingTag"]-}(User Defined)${DC["NC"]-}"
-		[VarUserDefined]="${DC["HeadingTag"]-}(User Defined)${DC["NC"]-}"
+		[AppDeprecated]="{{|HeadingTag|}}[*DEPRECATED*]{{[-]}}"
+		[AppDisabled]="{{|HeadingTag|}}(Disabled){{[-]}}"
+		[AppUserDefined]="{{|HeadingTag|}}(User Defined){{[-]}}"
+		[VarUserDefined]="{{|HeadingTag|}}(User Defined){{[-]}}"
 	)
 	local -i LabelWidth=0
 	for LabelText in "${Label[@]}"; do
@@ -92,64 +92,66 @@ menu_heading() {
 		fi
 	fi
 
-	local Highlight="${DC["HeadingValue"]-}"
+	local Highlight="{{|HeadingValue|}}"
 	for LabelName in CurrentValue OriginalValue Variable Filename Application; do
 		case "${LabelName}" in
 			Application)
 				if [[ -n ${AppName-} ]]; then
-					Heading[Application]="${DC["NC"]-}${Label[Application]}${Highlight}${AppName}${DC["NC"]-}"
+					Heading[Application]="{{[-]}}${Label[Application]}${Highlight}${AppName}{{[-]}}"
 					if [[ ${AppIsValid-} == "Y" ]]; then
 						if [[ ${AppIsDeprecated-} == "Y" ]]; then
-							Heading[Application]+=" ${DC["HeadingTag"]-}${Tag[AppDeprecated]}${DC["NC"]-}"
+							Heading[Application]+=" {{|HeadingTag|}}${Tag[AppDeprecated]}{{[-]}}"
 						fi
 						if [[ ${AppIsDisabled-} == "Y" ]]; then
-							Heading[Application]+=" ${DC["HeadingTag"]-}${Tag[AppDisabled]}${DC["NC"]-}"
+							Heading[Application]+=" {{|HeadingTag|}}${Tag[AppDisabled]}{{[-]}}"
 						fi
 						if [[ ${AppIsUserDefined-} == "Y" ]]; then
-							Heading[Application]+=" ${DC["HeadingTag"]-}${Tag[AppUserDefined]}${DC["NC"]-}"
+							Heading[Application]+=" {{|HeadingTag|}}${Tag[AppUserDefined]}{{[-]}}"
 						fi
 						Heading[Application]+="\n"
 
 						local AppDescription
 						AppDescription="$(run_script 'app_description' "${AppName}")"
-						local -i ScreenCols
-						ScreenCols=$(stty size | cut -d ' ' -f 2)
-						local -i TextWidth=$((ScreenCols - DC["WindowColsAdjust"] - DC["TextColsAdjust"] - LabelWidth))
+						set_screen_size
+						local -i ScreenCols=${COLUMNS}
+						local -i TextWidth=$((ScreenCols - D["WindowColsAdjust"] - D["TextColsAdjust"] - LabelWidth))
 						local -a AppDesciptionArray
 						readarray -t AppDesciptionArray < <(wordwrap "${AppDescription}" ${TextWidth})
-						Heading[Application]+="$(printf "${Indent}${DC[HeadingAppDescription]}%s${DC["NC"]-}\n" "${AppDesciptionArray[@]-}")"
-						Heading[Application]+="\n"
+						local DescriptionLine
+						for DescriptionLine in "${AppDesciptionArray[@]-}"; do
+							Heading[Application]+="${Indent}{{|HeadingAppDescription|}}${DescriptionLine}{{[-]}}\n"
+						done
 					fi
 					Heading[Application]+="\n"
-					Highlight="${DC["Heading"]-}"
+					Highlight="{{|Heading|}}"
 				fi
 				;;
 			Filename)
 				if [[ -n ${VarFile-} ]]; then
-					Heading[Filename]="${DC["NC"]-}${Label[Filename]}${Highlight}${VarFile}${DC["NC"]-}\n"
-					Highlight="${DC["Heading"]-}"
+					Heading[Filename]="{{[-]}}${Label[Filename]}${Highlight}${VarFile}{{[-]}}\n"
+					Highlight="{{|Heading|}}"
 				fi
 				;;
 			Variable)
 				if [[ -n ${VarName-} ]]; then
-					Heading[Variable]="${DC["NC"]-}${Label[Variable]}${Highlight}${VarName}${DC["NC"]-}"
+					Heading[Variable]="{{[-]}}${Label[Variable]}${Highlight}${VarName}{{[-]}}"
 					if [[ ${VarIsUserDefined-} == "Y" ]]; then
-						Heading[Variable]+=" ${DC["HeadingTag"]-}${Tag[VarUserDefined]}${DC["NC"]-}"
+						Heading[Variable]+=" {{|HeadingTag|}}${Tag[VarUserDefined]}{{[-]}}"
 					fi
 					Heading[Variable]+="\n"
-					Highlight="${DC["Heading"]-}"
+					Highlight="{{|Heading|}}"
 				fi
 				;;
 			OriginalValue)
 				if [[ -n ${OriginalValue-} ]]; then
-					Heading[OriginalValue]="\n${Label[OriginalValue]}${Highlight}${OriginalValue}${DC["NC"]-}\n"
-					Highlight="${DC["Heading"]-}"
+					Heading[OriginalValue]="\n${Label[OriginalValue]}${Highlight}${OriginalValue}{{[-]}}\n"
+					Highlight="{{|Heading|}}"
 				fi
 				;;
 			CurrentValue)
 				if [[ -n ${CurrentValue-} ]]; then
-					Heading[CurrentValue]="${Label[CurrentValue]}${Highlight}${CurrentValue}${DC["NC"]-}\n"
-					Highlight="${DC["Heading"]-}"
+					Heading[CurrentValue]="${Label[CurrentValue]}${Highlight}${CurrentValue}{{[-]}}\n"
+					Highlight="{{|Heading|}}"
 				fi
 				;;
 		esac

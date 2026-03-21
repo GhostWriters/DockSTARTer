@@ -11,19 +11,19 @@ pm_apt_clean() {
 	local Command
 	info "Removing unused packages."
 	Command="sudo apt-get -y autoremove"
-	notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+	notice "Running: {{|RunningCommand|}}${Command}{{[-]}}"
 	eval "${REDIRECT}${Command}" ||
 		warn \
 			"Failed to remove unused packages from apt." \
-			"Failing command: ${C["FailingCommand"]}${Command}"
+			"Failing command: {{|FailingCommand|}}${Command}"
 
 	info "Cleaning up package cache."
 	Command="sudo apt-get -y autoclean"
-	notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+	notice "Running: {{|RunningCommand|}}${Command}{{[-]}}"
 	eval "${REDIRECT}${Command}" ||
 		warn \
 			"Failed to cleanup cache from apt." \
-			"Failing command: ${C["FailingCommand"]}${Command}"
+			"Failing command: {{|FailingCommand|}}${Command}"
 }
 
 test_pm_apt_clean() {

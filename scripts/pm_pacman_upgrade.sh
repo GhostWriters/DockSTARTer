@@ -16,7 +16,7 @@ pm_pacman_upgrade() {
 		eval "${REDIRECT}${COMMAND}" ||
 			fatal \
 				"Failed to upgrade packages from pacman." \
-				"Failing command: ${C["FailingCommand"]}${COMMAND}"
+				"Failing command: {{|FailingCommand|}}${COMMAND}"
 	fi
 }
 

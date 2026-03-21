@@ -20,7 +20,7 @@ docker_prune() {
 						error "Failed to remove unused docker resources." \
 						"${Command[@]}"
 				} || true
-			} |& dialog_pipe "${DC["TitleSuccess"]-}${Title}" "${YesNotice}${DC["NC"]-}\n${DC["CommandLine"]-} ${CommandText}"
+			} |& dialog_pipe "{{|TitleSuccess|}}${Title}" "${YesNotice}{{[-]}}\n{{|CommandLine|}} ${CommandText}"
 		else
 			notice "${YesNotice}"
 			RunAndLog notice "docker:notice" \
@@ -29,7 +29,7 @@ docker_prune() {
 		fi
 	else
 		if use_dialog_box; then
-			{ notice "${NoNotice}" || true; } |& dialog_pipe "${DC[TitleError]}${Title}" "${NoNotice}"
+			{ notice "${NoNotice}" || true; } |& dialog_pipe "{{|TitleError|}}${Title}" "${NoNotice}"
 		else
 			notice "${NoNotice}"
 		fi

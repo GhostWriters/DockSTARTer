@@ -40,23 +40,23 @@ config_show() {
 			)"
 		fi
 
-		local ValueColor="${C["Var"]-}"
+		local ValueColor="{{|Var|}}"
 		if [[ ${Key} == "paths.config_folder" || ${Key} == "paths.compose_folder" ]]; then
-			ValueColor="${C["Folder"]-}"
+			ValueColor="{{|Folder|}}"
 		fi
 
-		local DisplayValue="${ValueColor}${Value}${NC-}"
+		local DisplayValue="${ValueColor}${Value}{{[-]}}"
 		local DisplayExpandedValue=""
 		if [[ -n ${ExpandedValue} ]]; then
-			DisplayExpandedValue="${ValueColor}${ExpandedValue}${NC-}"
+			DisplayExpandedValue="${ValueColor}${ExpandedValue}{{[-]}}"
 		fi
 
 		TableArray+=("${DisplayNames[${Key}]}" "${DisplayValue}" "${DisplayExpandedValue}")
 	done
 
-	echo "Configuration options stored in '${C["File"]}${APPLICATION_TOML_FILE}${NC}':"
+	resolve_strings C "Configuration options stored in '{{|File|}}${APPLICATION_TOML_FILE}{{[-]}}':"
 	table 3 \
-		"${C["UsageCommand"]}Option${NC}" "${C["UsageCommand"]}Value${NC}" "${C["UsageCommand"]}Expanded Value${NC}" \
+		"{{|UsageCommand|}}Option{{[-]}}" "{{|UsageCommand|}}Value{{[-]}}" "{{|UsageCommand|}}Expanded Value{{[-]}}" \
 		"${TableArray[@]}"
 }
 

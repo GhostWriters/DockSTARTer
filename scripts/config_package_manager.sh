@@ -16,7 +16,7 @@ config_package_manager() {
 		if [[ -n ${PackageManager} ]]; then
 			if ! run_script 'package_manager_is_valid' "${PackageManager}"; then
 				error \
-					"Selected package manager '${C["UserCommand"]}${PackageManager}${NC}' unknown." \
+					"Selected package manager '{{|UserCommand|}}${PackageManager}{{[-]}}' unknown." \
 					"" \
 					"Known package managers are:" \
 					"" \
@@ -24,7 +24,7 @@ config_package_manager() {
 				return 1
 			fi
 			set_toml_val "${APPLICATION_TOML_FILE}" "pm.package_manager" "${PackageManager}"
-			notice "Package manager set to '${C["UserCommand"]}${PackageManager}${NC}'."
+			notice "Package manager set to '{{|UserCommand|}}${PackageManager}{{[-]}}'."
 		else
 			set_toml_val "${APPLICATION_TOML_FILE}" "pm.package_manager" ""
 			notice "Package manager set to autodetect."
@@ -32,7 +32,7 @@ config_package_manager() {
 
 		if [[ -n ${PackageManager} ]] && ! run_script 'package_manager_exists' "${PackageManager}"; then
 			warn \
-				"Selected package manager '${C["UserCommand"]}${PackageManager}${NC}' not detected." \
+				"Selected package manager '{{|UserCommand|}}${PackageManager}{{[-]}}' not detected." \
 				"" \
 				"Detected package managers are:" \
 				"" \

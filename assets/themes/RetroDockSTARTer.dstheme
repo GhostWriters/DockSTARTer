@@ -5,61 +5,61 @@
 #
 # Color List:
 #
-# ${_B_}   Blue
-# ${_C_}   Cyan
-# ${_G_}   Green
-# ${_K_}   Black
-# ${_M_}   Magenta
-# ${_R_}   Red
-# ${_W_}   White
-# ${_Y_}   Yellow
-# ${_RV_}  Reverse
-# ${_NRV_} No Reverse
-# ${_BD_}  Bold
-# ${_NBD_} No Bold
-# ${_U_}   Underline
-# ${_NU_}  No Underline
-# ${_NC_}  No Color
+# {{[blue]}}    Blue
+# {{[cyan]}}    Cyan
+# {{[green]}}   Green
+# {{[black]}}   Black
+# {{[magenta]}} Magenta
+# {{[red]}}     Red
+# {{[white]}}   White
+# {{[yellow]}}  Yellow
+# {{[::R]}}     Reverse
+# {{[::r]}}     No Reverse
+# {{[::B]}}     Bold
+# {{[::b]}}     No Bold
+# {{[::U]}}     Underline
+# {{[::u]}}     No Underline
+# {{[-]}}       No Color
 
 ThemeName='RetroDockSTARTer'
 ThemeDescription='The retro DockSTARTer theme'
 ThemeAuthor='CLHatch'
 
-ApplicationName="${_NC_}${_NBD_}${_RV_}"
-ApplicationVersion="${_NC_}${_NBD_}${_RV_}"
-ApplicationVersionBrackets="${_NC_}${_NBD_}${_RV_}"
-ApplicationVersionSpace="${_NC_}"
-ApplicationFlags="${_NC_}"
-ApplicationFlagsBrackets="${_NC_}${_RV_}"
-ApplicationFlagsSpace="${_NC_}${_RV_}"
-ApplicationUpdate="${_NC_}${_W_}${_RV_}"
-ApplicationUpdateBrackets="${_NC_}${_W_}${_RV_}"
-Hostname="${_NC_}${_NBD_}${_RV_}"
-Title="${_NC_}${_W_}${_U_}"
-Subtitle="${_NC_}${_RV_}${_BD_}"
-TitleSuccess="${_NC_}${_G_}${_RV_}"
-TitleError="${_NC_}${_R_}${_RV_}"
-TitleWarning="${_NC_}${_Y_}${_RV_}"
-TitleQuestion="${_NC_}${_Y_}${_RV_}"
-Heading="${_NC_}${_RV_}"
-HeadingTag="${_NC_}${_RV_}${_W_}"
-HeadingValue="${_NC_}${_BD_}${_RV_}"
-HeadingAppDescription="${_NC_}${_BD_}"
-Highlight="${_NC_}${_BD_}"
-LineHeading="${_NC_}${_W_}${_BD_}${_U_}"
-LineComment="${_NC_}${_K_}${_BD_}${_RV_}"
-LineOther="${_NC_}${_K_}${_BD_}${_RV_}"
-LineVar="${_NC_}${_K_}${_NBD_}${_RV_}"
-LineModifiedVar="${_NC_}"
-LineAddVariable="${_NC_}${_K_}${_NBD_}${_RV_}"
-ListDefault="${_NC_}${_K_}"
+ApplicationName="{{[-]}}{{[::Rb]}}"
+ApplicationVersion="{{|ApplicationName|}}"
+ApplicationVersionBrackets="{{|ApplicationName|}}"
+ApplicationVersionSpace="{{[-]}}"
+ApplicationFlags="{{[-]}}"
+ApplicationFlagsBrackets="{{[-]}}{{[::R]}}"
+ApplicationFlagsSpace="{{[-]}}{{[::R]}}"
+ApplicationUpdate="{{[-]}}{{[white::R]}}"
+ApplicationUpdateBrackets="{{[-]}}{{[white::R]}}"
+Hostname="{{|ApplicationName|}}"
+Title="{{[-]}}{{[white::U]}}"
+Subtitle="{{[-]}}{{[::RB]}}"
+TitleSuccess="{{[-]}}{{[green::R]}}"
+TitleError="{{[-]}}{{[red::R]}}"
+TitleWarning="{{[-]}}{{[yellow::R]}}"
+TitleQuestion="{{[-]}}{{[yellow::R]}}"
+Heading="{{[-]}}{{[::R]}}"
+HeadingTag="{{[-]}}{{[white::R]}}"
+HeadingValue="{{[-]}}{{[::RB]}}"
+HeadingAppDescription="{{[-]}}{{[::B]}}"
+Highlight="{{[-]}}{{[::B]}}"
+LineHeading="{{[-]}}{{[white::BU]}}"
+LineComment="{{[-]}}{{[black::RB]}}"
+LineOther="{{[-]}}{{[black::RB]}}"
+LineVar="{{[-]}}{{[black::Rb]}}"
+LineModifiedVar="{{[-]}}"
+LineAddVariable="{{[-]}}{{[black::Rb]}}"
+ListDefault="{{[-]}}{{[black]}}"
 ListApp=""
-ListAppUserDefined="${_K_}${_RV_}"
-CommandLine="${_NC_}${_BD_}"
-KeyCap="${_NC_}${_RV_}"
-ProgressWaiting="${_NC_}${_BD_}"
-ProgressInProgress="${_NC_}${_RV_}${_W_}"
-ProgressCompleted="${_NC_}${_RV_}${_BD_}"
+ListAppUserDefined="{{[-]}}{{[black::R]}}"
+CommandLine="{{[-]}}{{[::B]}}"
+KeyCap="{{[-]}}{{[::R]}}"
+ProgressWaiting="{{[-]}}{{[::B]}}"
+ProgressInProgress="{{[-]}}{{[white::R]}}"
+ProgressCompleted="{{[-]}}{{[::RB]}}"
 
 <==> .dialogrc
 # DockSTARTer theme file

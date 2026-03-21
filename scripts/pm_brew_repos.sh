@@ -10,11 +10,11 @@ pm_brew_repos() {
 
 	notice "Updating repositories. Please be patient, this can take a while."
 	local Command="brew update"
-	notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+	notice "Running: {{|RunningCommand|}}${Command}{{[-]}}"
 	eval "${REDIRECT}${Command}" ||
 		fatal \
 			"Failed to get updates from brew." \
-			"Failing command: ${C["FailingCommand"]}${Command}"
+			"Failing command: {{|FailingCommand|}}${Command}"
 }
 
 test_pm_brew_repos() {

@@ -6,7 +6,7 @@ menu_add_app() {
 	local Title="Add Application"
 
 	local AppNameMaxLength=256
-	local AppNameNone="${DC["Highlight"]-}[*NONE*]"
+	local AppNameNone="{{|Highlight|}}[*NONE*]"
 
 	local AppName=""
 	#local BaseAppName InstanceName
@@ -26,15 +26,16 @@ menu_add_app() {
 			"${AppNameMaxLength}" "${AppNameMaxLength}"
 		)
 		local -a InputValueDialog=(
-			--stdout
-			--title "${DC["Title"]-}${Title}"
-			--max-input 256
-			--form "${InputValueText}"
-			"$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" 0
+			"${Title}"
+			"${InputValueText}"
+			--maximized
+			--ok-label:Select
+			--cancel-label:Exit
+			0
 			"${ValueOptions[@]}"
 		)
 		local InputValueDialogButtonPressed=0
-		AppName=$(_dialog_ "${InputValueDialog[@]}") || InputValueDialogButtonPressed=$?
+		AppName=$(dialog_form "${InputValueDialog[@]}") || InputValueDialogButtonPressed=$?
 		case ${DIALOG_BUTTONS[InputValueDialogButtonPressed]-} in
 			OK)
 				# Sanitize the input
@@ -59,7 +60,7 @@ menu_add_app() {
 					AppNameHeading="${AppName}"
 				else
 					AppNameHeading="${AppNameNone}"
-					ErrorMessage="The application name ${DC["Highlight"]-}${AppName}${DC["NC"]-} is not a valid name.\n\n Please input another application name."
+					ErrorMessage="The application name {{|Highlight|}}${AppName}{{[-]}} is not a valid name.\n\n Please input another application name."
 				fi
 				if [[ -n ${ErrorMessage} ]]; then
 					Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
@@ -69,7 +70,7 @@ menu_add_app() {
 				Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
 				if ! run_script 'app_is_builtin' "${AppName}"; then
 					local Question
-					Question="Create user defined application ${DC["Highlight"]-}${AppName}${DC["NC"]-}?\n"
+					Question="Create user defined application {{|Highlight|}}${AppName}{{[-]}}?\n"
 					Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
 					if run_script 'question_prompt' N "${Heading}\n\n${Question}" "Create Application" "${ASSUMEYES:+Y}" "User Defined" "Back"; then
 						Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
@@ -79,25 +80,25 @@ menu_add_app() {
 					fi
 				else
 					local Question
-					Question="Application ${DC["Highlight"]-}${AppName}${DC["NC"]-} can be added as a built-in application.\n\nCreate ${DC["Highlight"]-}${AppName}${DC["NC"]-} as a ${DC["Highlight"]-}Built In${DC["NC"]-} or a ${DC["Highlight"]-}User Defined${DC["NC"]-} application?\n"
+					Question="Application {{|Highlight|}}${AppName}{{[-]}} can be added as a built-in application.\n\nCreate {{|Highlight|}}${AppName}{{[-]}} as a {{|Highlight|}}Built In{{[-]}} or a {{|Highlight|}}User Defined{{[-]}} application?\n"
 					Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
 					local -a YesNoDialog=(
-						--title "${Title}"
+						"${Title}"
+						"${Heading}\n\n${Question}"
+						--maximized
 						--no-collapse
 						--extra-button
 						--yes-label "Built In"
 						--extra-label "User Defined"
 						--no-label "Back"
-						--yesno "${Heading}\n\n${Question}"
-						"$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
 					)
 					local -i YesNoDialogButtonPressed=0
-					_dialog_ "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?
+					dialog_yesno "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?
 					case ${DIALOG_BUTTONS[YesNoDialogButtonPressed]-} in
 						OK) # Built In
 							Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
 							coproc {
-								dialog_pipe "${DC["TitleSuccess"]-}Adding Built In Application" "${Heading}\n\n${DC["Subtitle"]-}Adding application:\n${DC["CommandLine"]-} ${APPLICATION_COMMAND} --add ${AppName}" "${DIALOGTIMEOUT}"
+								dialog_pipe "{{|TitleSuccess|}}Adding Built In Application" "${Heading}\n\n{{|Subtitle|}}Adding application:\n{{|CommandLine|}} ${APPLICATION_COMMAND} --add ${AppName}" "${DIALOGTIMEOUT}"
 							}
 							local -i DialogBox_PID=${COPROC_PID}
 							local -i DialogBox_FD="${COPROC[1]}"
@@ -112,7 +113,7 @@ menu_add_app() {
 							;;
 						EXTRA) # User Defined
 							Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
-							dialog_success "${DC["TitleSuccess"]-}Adding User Defined Application" "${Heading}" "${DIALOGTIMEOUT}"
+							dialog_success "{{|TitleSuccess|}}Adding User Defined Application" "${Heading}" "${DIALOGTIMEOUT}"
 							run_script 'menu_add_var' "${AppName}"
 							return
 							;;

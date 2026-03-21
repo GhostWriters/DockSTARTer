@@ -95,10 +95,10 @@ declare -gx APP_ENV_FOLDER
 
 set_global_variables() {
 	if [[ -z ${LITERAL_CONFIG_FOLDER} ]]; then
-		fatal "'${C["Var"]}LITERAL_CONFIG_FOLDER${NC}' is not set."
+		fatal "'{{|Var|}}LITERAL_CONFIG_FOLDER{{[-]}}' is not set."
 	fi
 	if [[ -z ${LITERAL_COMPOSE_FOLDER} ]]; then
-		fatal "'${C["Var"]}LITERAL_COMPOSE_FOLDER${NC}' is not set."
+		fatal "'{{|Var|}}LITERAL_COMPOSE_FOLDER{{[-]}}' is not set."
 	fi
 	CONFIG_FOLDER="$(
 		expand_vars "${LITERAL_CONFIG_FOLDER}" \

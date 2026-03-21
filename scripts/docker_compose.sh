@@ -19,27 +19,27 @@ docker_compose() {
 	local -a ComposeCommand
 	case ${Command} in
 		merge | generate)
-			Question="Merge enabled app templates to '${C["File"]}docker-compose.yml${NC}'?"
-			NoNotice="Not merging enabled app templates to '${C["File"]}docker-compose.yml${NC}'."
-			YesNotice="Merging enabled app templates to '${C["File"]}docker-compose.yml${NC}'."
+			Question="Merge enabled app templates to '{{|File|}}docker-compose.yml{{[-]}}'?"
+			NoNotice="Not merging enabled app templates to '{{|File|}}docker-compose.yml{{[-]}}'."
+			YesNotice="Merging enabled app templates to '{{|File|}}docker-compose.yml{{[-]}}'."
 			;;
 		down)
 			if [[ -n ${AppName-} ]]; then
 				Question="Stop and remove: ${AppName}?"
-				NoNotice="Not stopping and removing: ${C["App"]}${AppName}${NC}."
-				YesNotice="Stopping and removing ${C["App"]}${AppName}${NC}."
+				NoNotice="Not stopping and removing: {{|App|}}${AppName}{{[-]}}."
+				YesNotice="Stopping and removing {{|App|}}${AppName}{{[-]}}."
 			else
-				Question="Stop and remove containers, networks, volumes, and images created by ${C["ApplicationName"]-}${APPLICATION_NAME}?"
-				NoNotice="Not stopping and removing containers, networks, volumes, and images created by ${C["ApplicationName"]-}${APPLICATION_NAME}."
-				YesNotice="Stopping and removing containers, networks, volumes, and images created by ${C["ApplicationName"]-}${APPLICATION_NAME}."
+				Question="Stop and remove containers, networks, volumes, and images created by {{|ApplicationName|}}${APPLICATION_NAME}?"
+				NoNotice="Not stopping and removing containers, networks, volumes, and images created by {{|ApplicationName|}}${APPLICATION_NAME}."
+				YesNotice="Stopping and removing containers, networks, volumes, and images created by {{|ApplicationName|}}${APPLICATION_NAME}."
 			fi
 			ComposeCommand[0]="down --remove-orphans ${APPNAME-}"
 			;;
 		pause)
 			if [[ -n ${AppName-} ]]; then
-				Question="Pause: ${C["App"]}${AppName}${NC}?"
-				NoNotice="Not pausing: ${C["App"]}${AppName}${NC}."
-				YesNotice="Pausing: ${C["App"]}${AppName}${NC}."
+				Question="Pause: {{|App|}}${AppName}{{[-]}}?"
+				NoNotice="Not pausing: {{|App|}}${AppName}{{[-]}}."
+				YesNotice="Pausing: {{|App|}}${AppName}{{[-]}}."
 			else
 				Question="Pause all running containers?"
 				NoNotice="Not pausing all running containers."
@@ -49,9 +49,9 @@ docker_compose() {
 			;;
 		pull)
 			if [[ -n ${AppName-} ]]; then
-				Question="Pull the latest images for: ${C["App"]}${AppName}${NC}?"
-				NoNotice="Not pulling the latest images for: ${C["App"]}${AppName}${NC}."
-				YesNotice="Pulling the latest images for: ${C["App"]}${AppName}${NC}."
+				Question="Pull the latest images for: {{|App|}}${AppName}{{[-]}}?"
+				NoNotice="Not pulling the latest images for: {{|App|}}${AppName}{{[-]}}."
+				YesNotice="Pulling the latest images for: {{|App|}}${AppName}{{[-]}}."
 			else
 				Question="Pull the latest images for all enabled services?"
 				NoNotice="Not pulling the latest images for all enabled services."
@@ -61,9 +61,9 @@ docker_compose() {
 			;;
 		restart)
 			if [[ -n ${AppName-} ]]; then
-				Question="Restart: ${C["App"]}${AppName}${NC}?"
-				NoNotice="Not restarting: ${C["App"]}${AppName}${NC}."
-				YesNotice="Restarting: ${C["App"]}${AppName}${NC}."
+				Question="Restart: {{|App|}}${AppName}{{[-]}}?"
+				NoNotice="Not restarting: {{|App|}}${AppName}{{[-]}}."
+				YesNotice="Restarting: {{|App|}}${AppName}{{[-]}}."
 			else
 				Question="Restart all stopped and running containers?"
 				NoNotice="Not restarting all stopped and running containers."
@@ -73,9 +73,9 @@ docker_compose() {
 			;;
 		stop)
 			if [[ -n ${AppName-} ]]; then
-				Question="Stop: ${C["App"]}${AppName}${NC}?"
-				NoNotice="Not stopping: ${C["App"]}${AppName}${NC}."
-				YesNotice="Stopping: ${C["App"]}${AppName}${NC}."
+				Question="Stop: {{|App|}}${AppName}{{[-]}}?"
+				NoNotice="Not stopping: {{|App|}}${AppName}{{[-]}}."
+				YesNotice="Stopping: {{|App|}}${AppName}{{[-]}}."
 			else
 				Question="Stop all running services?"
 				NoNotice="Not stopping all running services."
@@ -85,9 +85,9 @@ docker_compose() {
 			;;
 		unpause)
 			if [[ -n ${AppName-} ]]; then
-				Question="Unpause: ${C["App"]}${AppName}${NC}?"
-				NoNotice="Not unpausing: ${C["App"]}${AppName}${NC}."
-				YesNotice="Unpausing: ${C["App"]}${AppName}${NC}."
+				Question="Unpause: {{|App|}}${AppName}{{[-]}}?"
+				NoNotice="Not unpausing: {{|App|}}${AppName}{{[-]}}."
+				YesNotice="Unpausing: {{|App|}}${AppName}{{[-]}}."
 			else
 				Question="Unpause all running containers?"
 				NoNotice="Not unpausing all running containers."
@@ -97,9 +97,9 @@ docker_compose() {
 			;;
 		update)
 			if [[ -n ${AppName-} ]]; then
-				Question="Update and start: ${C["App"]}${AppName}${NC}?"
-				NoNotice="Not updating and starting: ${C["App"]}${AppName}${NC}."
-				YesNotice="Updating and starting: ${C["App"]}${AppName}${NC}."
+				Question="Update and start: {{|App|}}${AppName}{{[-]}}?"
+				NoNotice="Not updating and starting: {{|App|}}${AppName}{{[-]}}."
+				YesNotice="Updating and starting: {{|App|}}${AppName}{{[-]}}."
 			else
 				Question="Update and start containers for all enabled services?"
 				NoNotice="Not updating and starting containers for all enabled services."
@@ -110,9 +110,9 @@ docker_compose() {
 			;;
 		up)
 			if [[ -n ${AppName-} ]]; then
-				Question="Start: ${C["App"]}${AppName}${NC}?"
-				NoNotice="Not starting: ${C["App"]}${AppName}${NC}."
-				YesNotice="Starting: ${C["App"]}${AppName}${NC}."
+				Question="Start: {{|App|}}${AppName}{{[-]}}?"
+				NoNotice="Not starting: {{|App|}}${AppName}{{[-]}}."
+				YesNotice="Starting: {{|App|}}${AppName}{{[-]}}."
 			else
 				Question="Start containers for all enabled services?"
 				NoNotice="Not starting containers for all enabled services."
@@ -132,10 +132,8 @@ docker_compose() {
 	local -i result=0
 	if run_script 'question_prompt' Y "${Question}" "${Title}" "${ASSUMEYES:+Y}"; then
 		if use_dialog_box; then
-			Title="$(strip_ansi_colors "${Title}")"
-			Question="$(strip_ansi_colors "${Question}")"
 			coproc {
-				dialog_pipe "${DC["TitleSuccess"]-}${Title}" "${YesNotice}${DC["NC"]-}\n${DC["CommandLine"]-} ${APPLICATION_COMMAND} --compose ${ComposeInput}"
+				dialog_pipe "{{|TitleSuccess|}}${Title}" "${YesNotice}{{[-]}}\n{{|CommandLine|}} ${APPLICATION_COMMAND} --compose ${ComposeInput}"
 			}
 			local -i DialogBox_PID=${COPROC_PID}
 			local -i DialogBox_FD="${COPROC[1]}"
@@ -181,7 +179,7 @@ docker_compose() {
 		fi
 	else
 		if use_dialog_box; then
-			{ [[ -n ${NoNotice-} ]] && notice "${NoNotice}" || true; } |& dialog_pipe "${DC["TitleError"]-}${Title}" "${NoNotice}"
+			{ [[ -n ${NoNotice-} ]] && notice "${NoNotice}" || true; } |& dialog_pipe "{{|TitleError|}}${Title}" "${NoNotice}"
 		else
 			[[ -n ${NoNotice-} ]] && notice "${NoNotice}"
 		fi
@@ -197,6 +195,6 @@ test_docker_compose() {
 	eval "docker compose --project-directory ${COMPOSE_FOLDER}/ config" ||
 		fatal \
 			"Failed to display compose config." \
-			"Failing command: ${C["FailingCommand"]}docker compose --project-directory ${COMPOSE_FOLDER}/ config"
+			"Failing command: {{|FailingCommand|}}docker compose --project-directory ${COMPOSE_FOLDER}/ config"
 	run_script 'docker_compose'
 }

@@ -5,9 +5,9 @@ IFS=$'\n\t'
 run_install() {
 	local Title="Install Dependencies"
 	local CommandLine="${CURRENT_COMMANDLINE:-${APPLICATION_COMMAND} --install}"
-	local Question="Install or update all ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} dependencies?"
-	local YesNotice="Installing or updating all ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} dependencies."
-	local NoNotice="Not installing or updating all ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} dependencies."
+	local Question="Install or update all {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} dependencies?"
+	local YesNotice="Installing or updating all {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} dependencies."
+	local NoNotice="Not installing or updating all {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} dependencies."
 	if run_script 'question_prompt' Y "${Question}" "${Title}" "${ASSUMEYES:+Y}"; then
 		if use_dialog_box; then
 			{
@@ -15,14 +15,14 @@ run_install() {
 					notice "${YesNotice}"
 					run_install_commands
 				} || true
-			} |& dialog_pipe "${DC["TitleSuccess"]-}${Title}" "${YesNotice}\n${DC["CommandLine"]-} ${CommandLine}"
+			} |& dialog_pipe "{{|TitleSuccess|}}${Title}" "${YesNotice}\n{{|CommandLine|}} ${CommandLine}"
 		else
 			notice "${YesNotice}"
 			run_install_commands
 		fi
 	else
 		if use_dialog_box; then
-			notice "${NoNotice}" |& dialog_pipe "${DC["TitleError"]-}${Title}" "${NoNotice}"
+			notice "${NoNotice}" |& dialog_pipe "{{|TitleError|}}${Title}" "${NoNotice}"
 		else
 			notice "${NoNotice}"
 		fi

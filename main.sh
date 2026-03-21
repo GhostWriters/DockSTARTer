@@ -67,7 +67,7 @@ fi
 readonly ARCH
 export ARCH
 
-declare -A C DC
+declare -Ag C DC
 
 # Script Information
 # https://stackoverflow.com/questions/59895/get-the-source-directory-of-a-bash-script-from-within-the-script-itself/246128#246128
@@ -110,101 +110,279 @@ done
 declare -rgx APPLICATION_LOG="${XDG_STATE_HOME}/${APPLICATION_NAME,,}/${APPLICATION_NAME,,}.log"
 declare -rgx FATAL_LOG="${XDG_STATE_HOME}/${APPLICATION_NAME,,}/${APPLICATION_NAME,,}.fatal.log"
 
+declare -Agx ColorCodes=(
+	[black]=K [red]=R [green]=G [yellow]=Y
+	[blue]=B [magenta]=M [cyan]=C [white]=W
+)
+
+resolve_styles() {
+	local style_map_name="$1"
+	local -n style_map="$1"
+	local val="$2"
+	local regex='\{\{(\[|\|)([^]|}]+)(\]|\|)\}\}'
+	local last_val=""
+
+	local -i MaxResolves=100
+	while [[ ${val} =~ ${regex} ]] && [[ ${val} != "${last_val}" ]] && [[ ${MaxResolves} -gt 0 ]]; do
+		MaxResolves=$((MaxResolves - 1))
+		last_val="${val}"
+		local full_match="${BASH_REMATCH[0]}"
+		local type="${BASH_REMATCH[1]}"
+		local content="${BASH_REMATCH[2]}"
+
+		if [[ ${type} == "|" && ${content} == *":"* ]]; then
+			local base="${content%%:*}"
+			local mod="${content#*:}"
+			local replacement="{{|${base}|}}{{[${mod}]}}"
+			local prefix="${val%%"${full_match}"*}"
+			local suffix="${val#*"${prefix}${full_match}"}"
+			val="${prefix}${replacement}${suffix}"
+			continue
+		fi
+
+		local replacement=""
+		if [[ -v style_map["${full_match}"] ]]; then
+			replacement="${style_map["${full_match}"]}"
+		elif [[ ${type} == "[" ]]; then
+			# Dynamic parsing for {{[...]}}
+			local fg="" bg="" flags="" resolved=""
+			if [[ ${content} == "-" ]]; then
+				# Reset tag
+				if [[ ${style_map_name} == "DC" ]]; then
+					resolved='\Zn'
+				else
+					resolved="${S["-"]}"
+				fi
+			elif [[ ${content} == *":"* ]]; then
+				fg="${content%%:*}"
+				local rest="${content#*:}"
+				if [[ ${rest} == *":"* ]]; then
+					bg="${rest%%:*}"
+					flags="${rest#*:}"
+				else
+					bg="${rest}"
+					flags=""
+				fi
+			else
+				# Single part tag: is it a color name or a flag?
+				if [[ -v ColorCodes[${content}] ]]; then
+					fg="${content}"
+				else
+					flags="${content}"
+				fi
+			fi
+
+			if [[ -z ${resolved} ]]; then
+				if [[ ${style_map_name} == "DC" ]]; then
+					# Dialog (DC) Map logic
+					# Foreground
+					if [[ ${fg} == "-" ]]; then
+						resolved+='\Zn'
+					elif [[ -n ${fg} && -v ColorCodes[${fg}] ]]; then
+						local -A ZColors=([K]=0 [R]=1 [G]=2 [Y]=3 [B]=4 [M]=5 [C]=6 [W]=7)
+						resolved+="\Z${ZColors[${ColorCodes[${fg}]}]}"
+					fi
+					# Background (Ignored for DC)
+					# Flags
+					local i
+					for ((i = 0; i < ${#flags}; i++)); do
+						local char="${flags:i:1}"
+						case "${char}" in
+							B) resolved+='\Zb' ;;
+							b) resolved+='\ZB' ;;
+							U) resolved+='\Zu' ;;
+							u) resolved+='\ZU' ;;
+							R) resolved+='\Zr' ;;
+							r) resolved+='\ZR' ;;
+							-) resolved+='\ZB\ZU\ZR' ;; # Reset flags (Bold, Underline, Reverse)
+						esac
+					done
+				else
+					# CLI (C) Map logic
+					# Foreground
+					if [[ ${fg} == "-" ]]; then
+						resolved+="${F["-"]}"
+					elif [[ -n ${fg} && -v ColorCodes[${fg}] ]]; then
+						resolved+="${F[${ColorCodes[${fg}]}]}"
+					fi
+					# Background
+					if [[ ${bg} == "-" ]]; then
+						resolved+="${B["-"]}"
+					elif [[ -n ${bg} && -v ColorCodes[${bg}] ]]; then
+						resolved+="${B[${ColorCodes[${bg}]}]}"
+					fi
+					# Flags
+					local i
+					for ((i = 0; i < ${#flags}; i++)); do
+						local char="${flags:i:1}"
+						if [[ ${char} == "-" ]]; then
+							resolved+="${S[b]}${S[u]}${S[r]}${S[d]}${S[l]}" # Reset all flags
+						elif [[ -v S[${char}] ]]; then
+							resolved+="${S[${char}]}"
+						fi
+					done
+				fi
+			fi
+			style_map["${full_match}"]="${resolved}"
+			replacement="${resolved}"
+		else
+			replacement=""
+		fi
+		local prefix="${val%%"${full_match}"*}"
+		local suffix="${val#*"${prefix}${full_match}"}"
+		val="${prefix}${replacement}${suffix}"
+	done
+	printf '%s\n' "${val}"
+}
+
+resolve_strings() {
+	local array_name="$1"
+	shift
+
+	# Process every argument (and every line within those arguments), or read from STDIN if no arguments
+	if [[ $# -gt 0 ]]; then
+		printf '%s\n' "$@"
+	else
+		cat
+	fi | while IFS= read -r line || [[ -n ${line} ]]; do
+		if [[ -t 1 ]]; then
+			# Call the single-string resolver for each line
+			resolve_styles "$array_name" "$line"
+		else
+			# Call the single-string stripper for each line
+			strip_styles "$line"
+		fi
+	done
+}
+
+strip_styles() {
+	local val="${1:-}"
+	local extglob_on=0
+	shopt -q extglob || extglob_on=$?
+
+	shopt -s extglob
+	# Remove {{|...|}} and {{[...]}}
+	val="${val//\{\{\|*([!|])|\}\}/}"
+	val="${val//\{\{\[*([!\]])\]\}\}/}"
+
+	# Only turn extglob off if it was off before
+	[[ ${extglob_on} -ne 0 ]] && shopt -u extglob || true
+
+	printf '%s\n' "${val}"
+}
+
+# shellcheck disable=SC2120
+strip_strings() {
+	# Process every argument (and every line within those arguments), or read from STDIN if no arguments
+	if [[ $# -gt 0 ]]; then
+		printf '%s\n' "$@"
+	else
+		cat
+	fi | while IFS= read -r line || [[ -n ${line} ]]; do
+		# Call the single-string stripper for each line
+		strip_styles "$line"
+	done
+}
+
 # Terminal Colors
 declare -Agr B=( # Background
-	[B]=$(tput setab 4 2> /dev/null || echo -e "\e[44m") # Blue
-	[C]=$(tput setab 6 2> /dev/null || echo -e "\e[46m") # Cyan
-	[G]=$(tput setab 2 2> /dev/null || echo -e "\e[42m") # Green
-	[K]=$(tput setab 0 2> /dev/null || echo -e "\e[40m") # Black
-	[M]=$(tput setab 5 2> /dev/null || echo -e "\e[45m") # Magenta
-	[R]=$(tput setab 1 2> /dev/null || echo -e "\e[41m") # Red
-	[W]=$(tput setab 7 2> /dev/null || echo -e "\e[47m") # White
-	[Y]=$(tput setab 3 2> /dev/null || echo -e "\e[43m") # Yellow
+	[B]=$(tput setab 4 2> /dev/null || echo -e "\e[44m")   # Blue
+	[C]=$(tput setab 6 2> /dev/null || echo -e "\e[46m")   # Cyan
+	[G]=$(tput setab 2 2> /dev/null || echo -e "\e[42m")   # Green
+	[K]=$(tput setab 0 2> /dev/null || echo -e "\e[40m")   # Black
+	[M]=$(tput setab 5 2> /dev/null || echo -e "\e[45m")   # Magenta
+	[R]=$(tput setab 1 2> /dev/null || echo -e "\e[41m")   # Red
+	[W]=$(tput setab 7 2> /dev/null || echo -e "\e[47m")   # White
+	[Y]=$(tput setab 3 2> /dev/null || echo -e "\e[43m")   # Yellow
+	["-"]=$(tput setab 9 2> /dev/null || echo -e "\e[49m") # Default
 )
 declare -Agr F=( # Foreground
-	[B]=$(tput setaf 4 2> /dev/null || echo -e "\e[34m") # Blue
-	[C]=$(tput setaf 6 2> /dev/null || echo -e "\e[36m") # Cyan
-	[G]=$(tput setaf 2 2> /dev/null || echo -e "\e[32m") # Green
-	[K]=$(tput setaf 0 2> /dev/null || echo -e "\e[30m") # Black
-	[M]=$(tput setaf 5 2> /dev/null || echo -e "\e[35m") # Magenta
-	[R]=$(tput setaf 1 2> /dev/null || echo -e "\e[31m") # Red
-	[W]=$(tput setaf 7 2> /dev/null || echo -e "\e[37m") # White
-	[Y]=$(tput setaf 3 2> /dev/null || echo -e "\e[33m") # Yellow
+	[B]=$(tput setaf 4 2> /dev/null || echo -e "\e[34m")   # Blue
+	[C]=$(tput setaf 6 2> /dev/null || echo -e "\e[36m")   # Cyan
+	[G]=$(tput setaf 2 2> /dev/null || echo -e "\e[32m")   # Green
+	[K]=$(tput setaf 0 2> /dev/null || echo -e "\e[30m")   # Black
+	[M]=$(tput setaf 5 2> /dev/null || echo -e "\e[35m")   # Magenta
+	[R]=$(tput setaf 1 2> /dev/null || echo -e "\e[31m")   # Red
+	[W]=$(tput setaf 7 2> /dev/null || echo -e "\e[37m")   # White
+	[Y]=$(tput setaf 3 2> /dev/null || echo -e "\e[33m")   # Yellow
+	["-"]=$(tput setaf 9 2> /dev/null || echo -e "\e[39m") # Default
+)
+declare -Agr S=(
+	[BS]=$(tput cup 1000 0 2> /dev/null || true)       # Bottom of screen
+	["-"]=$(tput sgr0 2> /dev/null || echo -e "\e[0m") # No Color
+	[D]=$(tput dim 2> /dev/null || echo -e "\e[2m")    # Dim
+	[d]=$(tput sgr0 2> /dev/null || echo -e "\e[0m")   # No Dim
+	[L]=$(tput blink 2> /dev/null || echo -e "\e[5m")  # Blink
+	[l]=$(tput sgr0 2> /dev/null || echo -e "\e[0m")   # No Blink
+	[B]=$(tput bold 2> /dev/null || echo -e "\e[1m")   # Bold
+	[b]=$(tput sgr0 2> /dev/null || echo -e "\e[0m")   # No Bold
+	[U]=$(tput smul 2> /dev/null || echo -e "\e[4m")   # Underline
+	[u]=$(tput rmul 2> /dev/null || echo -e "\e[24m")  # No Underline
+	[R]=$(tput rev 2> /dev/null || echo -e "\e[7m")    # Reverse Video
+	[r]=$(tput sgr0 2> /dev/null || echo -e "\e[0m")   # No Reverse Video
 )
 
-DM=$(tput dim 2> /dev/null || echo -e "\e[2m") # Dim
-readonly DM
-export DM
-BL=$(tput blink 2> /dev/null || echo -e "\e[5m") # Blink
-readonly BL
-export BL
-BD=$(tput bold 2> /dev/null || echo -e "\e[1m") # Bold
-readonly BD
-export BD
-UL=$(tput smul 2> /dev/null || echo -e "\e[4m") # Underline
-readonly UL
-export UL
-NC=$(tput sgr0 2> /dev/null || echo -e "\e[0m") # No Color
-readonly NC
-export NC
-BS=$(tput cup 1000 0 2> /dev/null || true) # Bottom of screen
-readonly BS
-export BS
+C+=( # Pre-defined colors
+	["{{|Timestamp|}}"]="{{[::D]}}"
+	["{{|Trace|}}"]="{{[blue]}}"
+	["{{|Debug|}}"]="{{[blue]}}"
+	["{{|Info|}}"]="{{[blue]}}"
+	["{{|Notice|}}"]="{{[green]}}"
+	["{{|Warn|}}"]="{{[yellow]}}"
+	["{{|Error|}}"]="{{[red]}}"
+	["{{|Fatal|}}"]="{{[white]}}{{[:red]}}"
 
-declare -Agr C=( # Pre-defined colors
-	["Timestamp"]="${DM}"
-	["Trace"]="${F[B]}"
-	["Debug"]="${F[B]}"
-	["Info"]="${F[B]}"
-	["Notice"]="${F[G]}"
-	["Warn"]="${F[Y]}"
-	["Error"]="${F[R]}"
-	["Fatal"]="${B[R]}${F[W]}"
+	["{{|FatalFooter|}}"]="{{[-]}}"
+	["{{|TraceHeader|}}"]="{{[red]}}"
+	["{{|TraceFooter|}}"]="{{[red]}}"
+	["{{|TraceFrameNumber|}}"]="{{[red]}}"
+	["{{|TraceFrameLines|}}"]="{{[red]}}"
+	["{{|TraceSourceFile|}}"]="{{[cyan]}}{{[::B]}}"
+	["{{|TraceLineNumber|}}"]="{{[yellow]}}{{[::B]}}"
+	["{{|TraceFunction|}}"]="{{[green]}}{{[::B]}}"
+	["{{|TraceCmd|}}"]="{{[green]}}{{[::B]}}"
+	["{{|TraceCmdArgs|}}"]="{{[green]}}"
 
-	["FatalFooter"]="${NC}"
-	["TraceHeader"]="${F[R]}"
-	["TraceFooter"]="${F[R]}"
-	["TraceFrameNumber"]="${F[R]}"
-	["TraceFrameLines"]="${F[R]}"
-	["TraceSourceFile"]="${F[C]}${BD}"
-	["TraceLineNumber"]="${F[Y]}${BD}"
-	["TraceFunction"]="${F[G]}${BD}"
-	["TraceCmd"]="${F[G]}${BD}"
-	["TraceCmdArgs"]="${F[G]}"
+	["{{|UnitTestPass|}}"]="{{[green]}}"
+	["{{|UnitTestFail|}}"]="{{[red]}}"
+	["{{|UnitTestFailArrow|}}"]="{{[red]}}"
 
-	["UnitTestPass"]="${F[G]}"
-	["UnitTestFail"]="${F[R]}"
-	["UnitTestFailArrow"]="${F[R]}"
+	["{{|App|}}"]="{{[cyan]}}"
+	["{{|ApplicationName|}}"]="{{[cyan]}}{{[::B]}}"
+	["{{|Branch|}}"]="{{[cyan]}}"
+	["{{|FailingCommand|}}"]="{{[red]}}"
+	["{{|File|}}"]="{{[cyan]}}{{[::B]}}"
+	["{{|Folder|}}"]="{{[cyan]}}{{[::B]}}"
+	["{{|Program|}}"]="{{[cyan]}}"
+	["{{|RunningCommand|}}"]="{{[green]}}{{[::B]}}"
+	["{{|Theme|}}"]="{{[cyan]}}"
+	["{{|Update|}}"]="{{[green]}}"
+	["{{|User|}}"]="{{[cyan]}}"
+	["{{|URL|}}"]="{{[cyan]}}{{[::U]}}"
+	["{{|UserCommand|}}"]="{{[yellow]}}{{[::B]}}"
+	["{{|UserCommandError|}}"]="{{[red]}}{{[::U]}}"
+	["{{|UserCommandErrorMarker|}}"]="{{[red]}}"
+	["{{|Var|}}"]="{{[magenta]}}"
+	["{{|Version|}}"]="{{[cyan]}}"
+	["{{|Yes|}}"]="{{[green]}}"
+	["{{|No|}}"]="{{[red]}}"
 
-	["App"]="${F[C]}"
-	["ApplicationName"]="${F[C]}${BD}"
-	["Branch"]="${F[C]}"
-	["FailingCommand"]="${F[R]}"
-	["File"]="${F[C]}${BD}"
-	["Folder"]="${F[C]}${BD}"
-	["Program"]="${F[C]}"
-	["RunningCommand"]="${F[G]}${BD}"
-	["Theme"]="${F[C]}"
-	["Update"]="${F[G]}"
-	["User"]="${F[C]}"
-	["URL"]="${F[C]}${UL}"
-	["UserCommand"]="${F[Y]}${BD}"
-	["UserCommandError"]="${F[R]}${UL}"
-	["UserCommandErrorMarker"]="${F[R]}"
-	["Var"]="${F[M]}"
-	["Version"]="${F[C]}"
-	["Yes"]="${F[G]}"
-	["No"]="${F[R]}"
+	["{{|ButtonName|}}"]="{{[cyan]}}"
 
-	["UsageCommand"]="${F[Y]}${BD}"
-	["UsageOption"]="${F[Y]}"
-	["UsageApp"]="${F[C]}"
-	["UsageBranch"]="${F[C]}"
-	["UsageFile"]="${F[C]}${BD}"
-	["UsagePage"]="${F[C]}${BD}"
-	["UsageTheme"]="${F[C]}"
-	["UsageVar"]="${F[M]}"
+	["{{|UsageCommand|}}"]="{{[yellow]}}{{[::B]}}"
+	["{{|UsageOption|}}"]="{{[yellow]}}"
+	["{{|UsageApp|}}"]="{{[cyan]}}"
+	["{{|UsageBranch|}}"]="{{[cyan]}}"
+	["{{|UsageFile|}}"]="{{[cyan]}}{{[::B]}}"
+	["{{|UsagePage|}}"]="{{[cyan]}}{{[::B]}}"
+	["{{|UsageTheme|}}"]="{{[cyan]}}"
+	["{{|UsageVar|}}"]="{{[magenta]}}"
 )
+
+for Style in "${!C[@]}"; do
+	C["$Style"]="$(resolve_styles C "${C["$Style"]}")"
+done
+# C must not be readonly so that dynamic styles can be cached!
 
 indent_text() {
 	local -i IndentSize=${1}
@@ -226,8 +404,8 @@ get_system_info() {
 	local -a Output=()
 
 	Output+=(
-		"${C["ApplicationName"]-}${APPLICATION_NAME-}${NC-} [${C["Version"]-}${APPLICATION_VERSION-}${NC-}]"
-		"${C["ApplicationName"]-}${TEMPLATES_NAME-}${NC-} [${C["Version"]-}${TEMPLATES_VERSION-}${NC-}]"
+		"{{|ApplicationName|}}${APPLICATION_NAME-}{{[-]}} [{{|Version|}}${APPLICATION_VERSION-}{{[-]}}]"
+		"{{|ApplicationName|}}${TEMPLATES_NAME-}{{[-]}} [{{|Version|}}${TEMPLATES_VERSION-}{{[-]}}]"
 		""
 		"Currently running as: $0 (PID $$)"
 		"Shell name from /proc/$$/exe: $(readlink /proc/$$/exe)"
@@ -246,44 +424,45 @@ get_system_info() {
 		"DETECTED_HOMEDIR: ${DETECTED_HOMEDIR-}"
 	)
 
+	# shellcheck disable=SC2016 # Expressions don't expand in single quotes, use double quotes for that.
 	Output+=(
 		""
-		"${C["RunningCommand"]}echo \${BASH_VERSION}${NC}:"
+		'{{|RunningCommand|}}echo ${BASH_VERSION}{{[-]}}:'
 		"${BASH_VERSION-}"
 	)
 
 	[[ -f /etc/os-release ]] &&
 		Output+=(
 			""
-			"${C["RunningCommand"]}cat /etc/os-release${NC}:"
+			'{{|RunningCommand|}}cat /etc/os-release{{[-]}}:'
 			"$(cat /etc/os-release)"
 		)
 
 	[[ -f /etc/lsb-release ]] &&
 		Output+=(
 			""
-			"${C["RunningCommand"]}cat /etc/lsb-release${NC}:"
+			'{{|RunningCommand|}}cat /etc/lsb-release{{[-]}}:'
 			"$(cat /etc/lsb-release)"
 		)
 
 	command -v lsb_release &> /dev/null &&
 		Output+=(
 			""
-			"${C["RunningCommand"]}lsb_release -a${NC}:"
+			'{{|RunningCommand|}}lsb_release -a{{[-]}}:'
 			"$(lsb_release -a)"
 		)
 
 	command -v uname &> /dev/null &&
 		Output+=(
 			""
-			"${C["RunningCommand"]}uname -a${NC}:"
+			'{{|RunningCommand|}}uname -a{{[-]}}:'
 			"$(uname -a)"
 		)
 
 	command -v system_profiler &> /dev/null &&
 		Output+=(
 			""
-			"${C["RunningCommand"]}system_profiler SPSoftwareDataType${NC}:"
+			'{{|RunningCommand|}}system_profiler SPSoftwareDataType{{[-]}}:'
 			"$(system_profiler SPSoftwareDataType)"
 		)
 
@@ -291,19 +470,18 @@ get_system_info() {
 }
 
 # Log Functions
-MKTEMP_LOG=$(mktemp -t "${APPLICATION_NAME}.log.XXXXXXXXXX") || echo -e "Failed to create temporary log file.\nFailing command: ${C["FailingCommand"]}mktemp -t \"${APPLICATION_NAME}.log.XXXXXXXXXX\""
+MKTEMP_LOG=$(mktemp -t "${APPLICATION_NAME}.log.XXXXXXXXXX") || resolve_strings C "Failed to create temporary log file." "Failing command: {{|FailingCommand|}}mktemp -t \"${APPLICATION_NAME}.log.XXXXXXXXXX\""
 readonly MKTEMP_LOG
 echo "DockSTARTer Log" > "${MKTEMP_LOG}"
 log() {
 	local ToTerm=${1-}
 	local Message=${2-}
-	local StrippedMessage=${Message}
-	if declare -F strip_ansi_colors > /dev/null; then
-		StrippedMessage=$(strip_ansi_colors "${StrippedMessage-}")
-	fi
+	local StrippedMessage
+	StrippedMessage=$(strip_styles "${Message}")
 	if [[ -n ${ToTerm} ]]; then
 		if [[ -t 2 ]]; then
 			# Stderr is not being redirected, output with color
+			Message=$(resolve_styles C "${Message}")
 			printf '%s\n' "${Message}" >&2
 		else
 			# Stderr is being redirected, output without color
@@ -324,22 +502,20 @@ timestamped_log() {
 	# Create separate notices with the same timestamp for each line in a log message
 	local line
 	while IFS= read -r line; do
-		printf "${NC}${C["Timestamp"]-}${Timestamp}${NC-} ${LogLevelTag} %s${NC}\n" "${line}"
+		printf "{{[-]}}{{|Timestamp|}}${Timestamp}{{[-]}} ${LogLevelTag} %s{{[-]}}\n" "${line}"
 	done <<< "${LogMessage}"
 }
-trace() { log "${TRACE-}" "$(timestamped_log "${C["Trace"]-}[TRACE ]${NC-}" "$@")"; }
-debug() { log "${DEBUG-}" "$(timestamped_log "${C["Debug"]-}[DEBUG ]${NC-}" "$@")"; }
-info() { log "${VERBOSE-}" "$(timestamped_log "${C["Info"]-}[INFO  ]${NC-}" "$@")"; }
-notice() { log true "$(timestamped_log "${C["Notice"]-}[NOTICE]${NC-}" "$@")"; }
-warn() { log true "$(timestamped_log "${C["Warn"]-}[WARN  ]${NC-}" "$@")"; }
-error() { log true "$(timestamped_log "${C["Error"]-}[ERROR ]${NC-}" "$@")"; }
+trace() { log "${TRACE-}" "$(timestamped_log "{{|Trace|}}[TRACE ]{{[-]}}" "$@")"; }
+debug() { log "${DEBUG-}" "$(timestamped_log "{{|Debug|}}[DEBUG ]{{[-]}}" "$@")"; }
+info() { log "${VERBOSE-}" "$(timestamped_log "{{|Info|}}[INFO  ]{{[-]}}" "$@")"; }
+notice() { log true "$(timestamped_log "{{|Notice|}}[NOTICE]{{[-]}}" "$@")"; }
+warn() { log true "$(timestamped_log "{{|Warn|}}[WARN  ]{{[-]}}" "$@")"; }
+error() { log true "$(timestamped_log "{{|Error|}}[ERROR ]{{[-]}}" "$@")"; }
 fatal_notrace() {
 	local LogMessage
-	LogMessage=$(timestamped_log "${C["Fatal"]-}[FATAL ]${NC}" "$@")
+	LogMessage=$(timestamped_log "{{|Fatal|}}[FATAL ]{{[-]}}" "$@")
 	log true "${LogMessage}"
-	if declare -F strip_ansi_colors > /dev/null; then
-		LogMessage=$(strip_ansi_colors "${LogMessage-}")
-	fi
+	LogMessage=$(strip_styles "${LogMessage-}")
 	printf '%s\n' "${LogMessage}" > "${FATAL_LOG}" || true
 	exit 1
 }
@@ -378,14 +554,14 @@ fatal() {
 		local prefix=""
 		local arrowIndent="${indent}"
 		if ((i < StackSize - 1)); then
-			prefix="${C["TraceFrameLines"]}└>${NC}"
+			prefix="{{|TraceFrameLines|}}└>{{[-]}}"
 			if [[ ${#indent} -ge 2 ]]; then
 				arrowIndent="${indent%  }"
 			fi
 		fi
 
 		# Format: "Num: [Indent]Arrow File:Line (Function)"
-		local StackLineFormat="${C["TraceFrameNumber"]}%${FrameNumberLength}d${NC}: ${arrowIndent}${prefix}${C["TraceSourceFile"]}%s${NC}:${C["TraceLineNumber"]}%d${NC} (${C["TraceFunction"]}%s${NC})"
+		local StackLineFormat="{{|TraceFrameNumber|}}%${FrameNumberLength}d{{[-]}}: ${arrowIndent}${prefix}{{|TraceSourceFile|}}%s{{[-]}}:{{|TraceLineNumber|}}%d{{[-]}} ({{|TraceFunction|}}%s{{[-]}})"
 		# shellcheck disable=SC2059 # Dynamic format string for padding
 		Stack+=(
 			"$(printf "${StackLineFormat}" "${i}" "${SourceFile##*/}" "${line}" "${func}")"
@@ -398,22 +574,22 @@ fatal() {
 			local -i CmdArgCount=${BASH_ARGC[next_i]-0}
 			local -i CurrentArg=${ArgOffsets[next_i]-0}
 
-			local FrameCmdPrefix="${C["TraceFrameLines"]}│${NC}"
-			local FrameArgPrefix="${C["TraceFrameLines"]}│${NC}"
+			local FrameCmdPrefix="{{|TraceFrameLines|}}│{{[-]}}"
+			local FrameArgPrefix="{{|TraceFrameLines|}}│{{[-]}}"
 
-			local cmdString="${C["TraceCmd"]}${cmd}${NC}"
+			local cmdString="{{|TraceCmd|}}${cmd}{{[-]}}"
 			local -a cmdArray=()
 			cmdArray+=("${FrameCmdPrefix}${cmdString}")
 
 			if [[ CmdArgCount -ne 0 ]]; then
 				for ((j = CurrentArg + CmdArgCount - 1; j >= CurrentArg; j--)); do
 					local cmdArgString="${BASH_ARGV[$j]}"
-					cmdArgString="$(strip_ansi_colors "${cmdArgString}")"
+					#cmdArgString="$(strip_styles "${cmdArgString}")"
 					cmdArgString="${cmdArgString//\\/\\\\}"
-					cmdArgString="${NC}«${C["TraceCmdArgs"]}${cmdArgString}${NC}»"
+					cmdArgString="{{[-]}}«{{|TraceCmdArgs|}}${cmdArgString}{{[-]}}»"
 					while read -r cmdLine; do
 						cmdArray+=(
-							"${FrameArgPrefix}${C["TraceCmdArgs"]}${cmdLine}"
+							"${FrameArgPrefix}{{|TraceCmdArgs|}}${cmdLine}"
 						)
 					done <<< "${cmdArgString}"
 				done
@@ -430,15 +606,15 @@ fatal() {
 	done
 
 	fatal_notrace \
-		"${C["TraceHeader"]}### BEGIN SYSTEM INFORMATION AND STACK TRACE ###" \
+		"{{|TraceHeader|}}### BEGIN SYSTEM INFORMATION AND STACK TRACE ###" \
 		"$(indent_text 2 "${Stack[@]}")" \
-		"${C["TraceFooter"]}### END SYSTEM INFORMATION AND STACK TRACE ###" \
+		"{{|TraceFooter|}}### END SYSTEM INFORMATION AND STACK TRACE ###" \
 		"" \
 		"$@" \
 		"" \
-		"${C["FatalFooter"]}Please let the dev know of this error." \
-		"${C["FatalFooter"]}It has been written to '${C["File"]}${FATAL_LOG}${C["FatalFooter"]}'," \
-		"${C["FatalFooter"]}and appended to '${C["File"]}${APPLICATION_LOG}${C["FatalFooter"]}'."
+		"{{|FatalFooter|}}Please let the dev know of this error." \
+		"{{|FatalFooter|}}It has been written to '{{|File|}}${FATAL_LOG}{{|FatalFooter|}}'," \
+		"{{|FatalFooter|}}and appended to '{{|File|}}${APPLICATION_LOG}{{|FatalFooter|}}'."
 }
 
 PrefixFileLines() {
@@ -469,7 +645,7 @@ RunAndLog() {
 	if [[ ${OutputNoticeType} == *:* ]]; then
 		Prefix="${OutputNoticeType%%:*}:"
 		OutputNoticeType=${OutputNoticeType#"${Prefix}"}
-		Prefix="${C["RunningCommand"]}${Prefix}${NC-} "
+		Prefix="{{|RunningCommand|}}${Prefix}{{[-]}} "
 	fi
 
 	local OutputFile
@@ -480,7 +656,7 @@ RunAndLog() {
 	# If the running notice type is set, log the command being run
 	[[ -n ${RunningNoticeType-} ]] &&
 		"${RunningNoticeType}" \
-			"Running: ${C["RunningCommand"]}${CommandText}"
+			"Running: {{|RunningCommand|}}${CommandText}"
 
 	local ErrToNull=false
 	local OutToNull=false
@@ -524,7 +700,7 @@ RunAndLog() {
 		# If the error notice type is set, log the error
 		${ErrorNoticeType} \
 			"${ErrorMessage}" \
-			"Failing command: ${C["FailingCommand"]}${CommandText}"
+			"Failing command: {{|FailingCommand|}}${CommandText}"
 	fi
 	return ${result}
 }
@@ -577,7 +753,7 @@ check_templates_repo() {
 check_root() {
 	if [[ ${DETECTED_PUID} == "0" ]] || [[ ${DETECTED_HOMEDIR} == "/root" ]]; then
 		fatal_notrace \
-			"Running as '${C["User"]-}root${NC-}' is not supported." \
+			"Running as '{{|User|}}root{{[-]}}' is not supported." \
 			"Please run as a standard user."
 	fi
 }
@@ -586,15 +762,15 @@ check_root() {
 check_sudo() {
 	if [[ ${EUID} -eq 0 ]]; then
 		fatal_notrace \
-			"Running with '${C["UserCommand"]-}sudo${NC-}' is not supported." \
-			"Commands requiring '${C["UserCommand"]-}sudo${NC-}' will prompt automatically when required."
+			"Running with '{{|UserCommand|}}sudo{{[-]}}' is not supported." \
+			"Commands requiring '{{|UserCommand|}}sudo{{[-]}}' will prompt automatically when required."
 	fi
 }
 clone_repo() {
 	warn \
-		"Attempting to clone ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} repo to '${C["Folder"]-}${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}${NC-}' location."
+		"Attempting to clone {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} repo to '{{|Folder|}}${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}{{[-]}}' location."
 	RunAndLog notice "git:notice" \
-		fatal "Failed to clone ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} repo." \
+		fatal "Failed to clone {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} repo." \
 		git clone -b "${APPLICATION_DEFAULT_BRANCH}" "${APPLICATION_REPO}" "${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}"
 	if [[ ${#ARGS[@]} -eq 0 ]]; then
 		notice \
@@ -607,14 +783,14 @@ clone_repo() {
 
 clone_templates_repo() {
 	warn \
-		"Attempting to clone ${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} repo to '${C["Folder"]-}${TEMPLATES_PARENT_FOLDER}${NC-}' location."
+		"Attempting to clone {{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} repo to '{{|Folder|}}${TEMPLATES_PARENT_FOLDER}{{[-]}}' location."
 	if [[ -d ${TEMPLATES_PARENT_FOLDER?} ]]; then
 		RunAndLog notice "rm:notice" \
 			fatal "Failed to remove ${TEMPLATES_PARENT_FOLDER?}." \
 			sudo rm -rf "${TEMPLATES_PARENT_FOLDER?}"
 	fi
 	RunAndLog notice "git:notice" \
-		fatal "Failed to clone ${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} repo." \
+		fatal "Failed to clone {{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} repo." \
 		git clone -b "${TEMPLATES_DEFAULT_BRANCH}" "${TEMPLATES_REPO}" "${TEMPLATES_PARENT_FOLDER}"
 }
 
@@ -641,15 +817,15 @@ cleanup() {
 	fi
 
 	if [[ ${EXIT_CODE} -ne 0 ]]; then
-		printf '%s\n' \
-			"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} did not finish running successfully." \
-			"Check logs in '${C["File"]}${APPLICATION_LOG}${NC-}'."
+		resolve_strings C \
+			"{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} did not finish running successfully." \
+			"Check logs in '{{|File|}}${APPLICATION_LOG}{{[-]}}'."
 	fi
 	if [[ ${PROMPT:-CLI} == "GUI" ]]; then
 		# Try to restore the terminal to a working state
 		stty cooked echo
 		# Move the cursor to the bottom of the screen
-		echo -n "${BS}"
+		echo -n "${S[BS]}"
 	fi
 
 	exit ${EXIT_CODE}
@@ -697,7 +873,7 @@ init_check_tty() {
 			*)
 				error \
 					"The TTY is not writable." \
-					"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} requires a writable TTY."
+					"{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} requires a writable TTY."
 				exit 1
 				;;
 		esac
@@ -731,14 +907,14 @@ init_check_symlink() {
 		DS_SYMLINK=$(readlink -f "${DS_COMMAND}")
 		if [[ ${SCRIPTNAME} != "${DS_SYMLINK}" ]]; then
 			if check_repo; then
-				if run_script 'question_prompt' "${PROMPT:-CLI}" N "${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} installation found at '${C["File"]-}${DS_SYMLINK}${NC-}' location. Would you like to run '${C["UserCommand"]-}${SCRIPTNAME}${NC-}' instead?"; then
+				if run_script 'question_prompt' "${PROMPT:-CLI}" N "{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} installation found at '{{|File|}}${DS_SYMLINK}{{[-]}}' location. Would you like to run '{{|UserCommand|}}${SCRIPTNAME}{{[-]}}' instead?"; then
 					run_script 'symlink_ds'
 					DS_COMMAND=$(command -v "${APPLICATION_COMMAND}" || true)
 					DS_SYMLINK=$(readlink -f "${DS_COMMAND}")
 				fi
 			fi
 			warn \
-				"Attempting to run ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} from '${C["RunningCommand"]-}${DS_SYMLINK}${NC-}' location."
+				"Attempting to run {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} from '{{|RunningCommand|}}${DS_SYMLINK}{{[-]}}' location."
 			bash "${DS_SYMLINK}" -vyu
 			bash "${DS_SYMLINK}" -vyi --config-show
 			exec bash "${DS_SYMLINK}" "${ARGS[@]-}"
@@ -758,12 +934,12 @@ init_check_update() {
 	if ds_ref_exists "${Branch}"; then
 		if ds_update_available "${Branch}" "${TargetBranch}"; then
 			warn \
-				"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} [${C["Version"]-}${APPLICATION_VERSION}${NC-}]" \
-				"An update to ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} is available." \
-				"Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -u${NC-}' to update to version '${C["Version"]-}$(ds_version "${TargetBranch}")${NC-}'."
+				"{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} [{{|Version|}}${APPLICATION_VERSION}{{[-]}}]" \
+				"An update to {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} is available." \
+				"Run '{{|UserCommand|}}${APPLICATION_COMMAND} -u{{[-]}}' to update to version '{{|Version|}}$(ds_version "${TargetBranch}"){{[-]}}'."
 		else
 			info \
-				"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} [${C["Version"]-}${APPLICATION_VERSION}${NC-}]"
+				"{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} [{{|Version|}}${APPLICATION_VERSION}{{[-]}}]"
 		fi
 	else
 		local MainBranch="${APPLICATION_DEFAULT_BRANCH}"
@@ -771,14 +947,14 @@ init_check_update() {
 			MainBranch="${APPLICATION_LEGACY_BRANCH}"
 		fi
 		warn \
-			"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} branch '${C["Branch"]-}${Branch}${NC-}' appears to no longer exist." \
-			"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} is currently on version '${C["Version"]-}$(ds_version)${NC-}'."
+			"{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} branch '{{|Branch|}}${Branch}{{[-]}}' appears to no longer exist." \
+			"{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} is currently on version '{{|Version|}}$(ds_version){{[-]}}'."
 		if ! ds_branch_exists "${MainBranch}"; then
 			error \
-				"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} does not appear to have a '${C["Branch"]-}${APPLICATION_DEFAULT_BRANCH}${NC-}' or '${C["Branch"]-}${APPLICATION_LEGACY_BRANCH}${NC-}' branch."
+				"{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} does not appear to have a '{{|Branch|}}${APPLICATION_DEFAULT_BRANCH}{{[-]}}' or '{{|Branch|}}${APPLICATION_LEGACY_BRANCH}{{[-]}}' branch."
 		else
 			warn \
-				"Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -u ${MainBranch}${NC-}' to update to the latest stable release '${C["Version"]-}$(ds_version "${MainBranch}")${NC-}'."
+				"Run '{{|UserCommand|}}${APPLICATION_COMMAND} -u ${MainBranch}{{[-]}}' to update to the latest stable release '{{|Version|}}$(ds_version "${MainBranch}"){{[-]}}'."
 		fi
 	fi
 	Branch="$(templates_branch)"
@@ -789,24 +965,24 @@ init_check_update() {
 	if templates_ref_exists "${Branch}"; then
 		if templates_update_available "${Branch}" "${TargetBranch}"; then
 			warn \
-				"${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} [${C["Version"]-}${TEMPLATES_VERSION}${NC-}]" \
-				"An update to ${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} is available." \
-				"Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -u${NC-}' to update to version '${C["Version"]-}$(templates_version "${TargetBranch}")${NC-}'."
+				"{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} [{{|Version|}}${TEMPLATES_VERSION}{{[-]}}]" \
+				"An update to {{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} is available." \
+				"Run '{{|UserCommand|}}${APPLICATION_COMMAND} -u{{[-]}}' to update to version '{{|Version|}}$(templates_version "${TargetBranch}"){{[-]}}'."
 		else
 			info \
-				"${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} [${C["Version"]-}${TEMPLATES_VERSION}${NC-}]"
+				"{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} [{{|Version|}}${TEMPLATES_VERSION}{{[-]}}]"
 		fi
 	else
 		Branch="${TEMPLATES_DEFAULT_BRANCH}"
 		warn \
-			"${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} branch '${C["Branch"]-}${Branch}${NC-}' appears to no longer exist." \
-			"${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} is currently on version '${C["Version"]-}$(templates_version)${NC-}'."
+			"{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} branch '{{|Branch|}}${Branch}{{[-]}}' appears to no longer exist." \
+			"{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} is currently on version '{{|Version|}}$(templates_version){{[-]}}'."
 		if ! templates_branch_exists "${Branch}"; then
 			error \
-				"${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} does not appear to have a '${C["Branch"]-}${TEMPLATES_DEFAULT_BRANCH}${NC-}' branch."
+				"{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} does not appear to have a '{{|Branch|}}${TEMPLATES_DEFAULT_BRANCH}{{[-]}}' branch."
 		else
 			warn \
-				"Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -u ${Branch}${NC-}' to update to the latest stable release '${C["Version"]-}$(templates_version "${Branch}")${NC-}'."
+				"Run '{{|UserCommand|}}${APPLICATION_COMMAND} -u ${Branch}{{[-]}}' to update to the latest stable release '{{|Version|}}$(templates_version "${Branch}"){{[-]}}'."
 		fi
 	fi
 }

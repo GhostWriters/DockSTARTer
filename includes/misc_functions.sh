@@ -5,7 +5,7 @@ IFS=$'\n\t'
 create_strip_ansi_colors_SEDSTRING() {
 	# Create the search string to strip ANSI colors
 	# String is saved after creation, so this is only done on the first call
-	local -a ANSICOLORS=("${F[@]}" "${B[@]}" "${BD}" "${UL}" "${NC}" "${BS}" "${DM}" "${BL}")
+	local -a ANSICOLORS=("${F[@]}" "${B[@]}" "${S[@]}")
 	for index in "${!ANSICOLORS[@]}"; do
 		# Escape characters used by sed
 		ANSICOLORS[index]=$(printf '%s' "${ANSICOLORS[index]}" | sed -E 's/[]{}()[/{}\.''''$]/\\&/g')
@@ -33,7 +33,7 @@ highlighted_list() {
 	local List
 	List=$(xargs <<< "$*")
 	if [[ -n ${List-} ]]; then
-		echo "${DC["Subtitle"]-}${List// /${DC["NC"]-} ${DC["Subtitle"]-}}${DC["NC"]-}"
+		echo "{{|Subtitle|}}${List// /{{[-]}} {{|Subtitle|}}}{{[-]}}"
 	fi
 }
 
@@ -64,10 +64,10 @@ custom_quote_elements_with_spaces() {
 	for element in "$@"; do
 		if [[ -z ${element} || ${element} == *" "* ]]; then
 			# If the element is an empty string or contains spaces, quote it
-			Result+="${Quote}${Color}${element}${NC}${Quote}${NC} "
+			Result+="${Quote}${Color}${element}{{[-]}}${Quote}{{[-]}} "
 		else
 			# Otherwise, add it as is
-			Result+="${Color}${element}${NC} "
+			Result+="${Color}${element}{{[-]}} "
 		fi
 	done
 	# Remove any trailing space
@@ -266,14 +266,14 @@ table_pipe() {
 	local -a AllData=("${Headings[@]}" "${Data[@]}")
 	local -a VisibleData
 	for item in "${AllData[@]}"; do
-		VisibleData+=("$(strip_ansi_colors "${item}")")
+		VisibleData+=("$(strip_styles "${item}")")
 	done
 
 	local -a ColWidths
 	readarray -t ColWidths < <(longest_columns "${Cols}" "${VisibleData[@]}")
 
 	local -A CharSet
-	if is_true "${DC["LineCharacters"]-}"; then
+	if is_true "${D["LineCharacters"]-}"; then
 		CharSet=(
 			["TopLeft"]="┌"
 			["TopRight"]="┐"
@@ -364,14 +364,14 @@ table() {
 	shift
 	local -a Headings=("${@:1:Cols}")
 	local -a Data=("${@:Cols+1}")
-	printf '%s\n' "${Data[@]}" | table_pipe "${Cols}" "${Headings[@]}"
+	printf '%s\n' "${Data[@]}" | table_pipe "${Cols}" "${Headings[@]}" | resolve_strings C
 }
 
 wordwrap_pipe() {
 	local -i Width=${1:-80}
 
 	local Word
-	local Word Line=""
+	local Line=""
 
 	while IFS=$' \t\n' read -r -a Words; do
 		for Word in "${Words[@]}"; do
@@ -504,7 +504,7 @@ set_toml_val() {
 
 	printf '%s\n' "${output[@]}" > "${file}" ||
 		fatal \
-			"Failed to write to '${C["File"]-}${file}${NC-}'."
+			"Failed to write to '{{|File|}}${file}{{[-]}}'."
 }
 
 hrx_extract_file() {

@@ -23,17 +23,17 @@ pm_pacman_install() {
 
 	#shellcheck disable=SC2124 #Assigning an array to a string! Assign as array, or use * instead of @ to concatenate.
 	local PackagesString="${Packages[@]}"
-	local pkglist="${PackagesString// /${NC}\', \'${C["Program"]}}"
-	pkglist="${NC}'${C["Program"]}${pkglist}${NC}'"
+	local pkglist="${PackagesString// /{{[-]}}\', \'{{|Folder|}}}"
+	pkglist="{{[-]}}'{{|Folder|}}${pkglist}{{[-]}}'"
 
 	notice "Installing packages: ${pkglist}"
 
 	Command="sudo pacman -Sy --noconfirm ${PackagesString}"
-	notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+	notice "Running: {{|RunningCommand|}}${Command}{{[-]}}"
 	eval "${REDIRECT}${Command}" ||
 		fatal \
 			"Failed to install dependencies from pacman." \
-			"Failing command: ${C["FailingCommand"]}${Command}"
+			"Failing command: {{|FailingCommand|}}${Command}"
 }
 
 detect_packages() {
@@ -41,21 +41,21 @@ detect_packages() {
 
 	local Command
 	if [[ -z "$(command -v pkgfile)" ]]; then
-		info "Installing '${C["Program"]}pkgfile${NC}'."
+		info "Installing '{{|Folder|}}pkgfile{{[-]}}'."
 		Command="sudo pacman -Sy --noconfirm pkgfile"
-		notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+		notice "Running: {{|RunningCommand|}}${Command}{{[-]}}"
 		eval "${REDIRECT}${Command}" ||
 			fatal \
-				"Failed to install '${C["Program"]}pkgfile${NC}' from pacman." \
-				"Failing command: ${C["FailingCommand"]}${Command}"
+				"Failed to install '{{|Folder|}}pkgfile{{[-]}}' from pacman." \
+				"Failing command: {{|FailingCommand|}}${Command}"
 	fi
 	notice "Updating package information."
 	Command='sudo pkgfile -u'
-	notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+	notice "Running: {{|RunningCommand|}}${Command}{{[-]}}"
 	eval "${REDIRECT}${Command}" ||
 		fatal \
 			"Failed to get updates from pkgfile." \
-			"Failing command: ${C["FailingCommand"]}${Command}"
+			"Failing command: {{|FailingCommand|}}${Command}"
 
 	local RegEx_Package_Blacklist
 	if [[ ${#PM_PACKAGE_BLACKLIST[@]} -gt 0 ]]; then
@@ -68,11 +68,11 @@ detect_packages() {
 	for Dep in "${Dependencies[@]}"; do
 		local Package
 		Command="pkgfile -b ${Dep}"
-		notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+		notice "Running: {{|RunningCommand|}}${Command}{{[-]}}"
 		Package="$(eval "${Command}" 2> /dev/null)" ||
 			fatal \
 				"Failed to find packages to install." \
-				"Failing command: ${C["FailingCommand"]}${Command}"
+				"Failing command: {{|FailingCommand|}}${Command}"
 		Package="${Package##*/}"
 		if [[ -n ${Package} && (-z ${RegEx_Package_Blacklist-} || ! ${Package} =~ ${RegEx_Package_Blacklist}) ]]; then
 			echo "${Package}"

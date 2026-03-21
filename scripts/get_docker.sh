@@ -28,7 +28,7 @@ command_get_docker() {
 	MKTEMP_GET_DOCKER=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.MKTEMP_GET_DOCKER.XXXXXXXXXX") ||
 		fatal \
 			"Failed to create temporary docker install script." \
-			"Failing command: ${C["FailingCommand"]}mktemp -t \"${APPLICATION_NAME}.${FUNCNAME[0]}.MKTEMP_GET_DOCKER.XXXXXXXXXX\""
+			"Failing command: {{|FailingCommand|}}mktemp -t \"${APPLICATION_NAME}.${FUNCNAME[0]}.MKTEMP_GET_DOCKER.XXXXXXXXXX\""
 	info "Downloading docker install script."
 	RunAndLog notice "curl:notice" \
 		fatal "Failed to get docker install script." \

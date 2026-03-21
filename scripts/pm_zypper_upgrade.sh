@@ -16,7 +16,7 @@ pm_zypper_upgrade() {
 		eval "${REDIRECT}${COMMAND}" ||
 			fatal \
 				"Failed to upgrade packages from zypper." \
-				"Failing command: ${C["FailingCommand"]}${COMMAND}"
+				"Failing command: {{|FailingCommand|}}${COMMAND}"
 	fi
 }
 

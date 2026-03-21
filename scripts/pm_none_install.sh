@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 pm_none_install() {
-	info "Package manager '${C["UserCommand"]}none${NC}' does not install dependencies."
+	info "Package manager '{{|UserCommand|}}none{{[-]}}' does not install dependencies."
 }
 
 test_pm_none_install() {

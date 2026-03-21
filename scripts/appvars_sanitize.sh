@@ -42,10 +42,10 @@ appvars_sanitize() {
 	done
 
 	if [[ -n ${VarsToUpdate[*]-} ]]; then
-		notice "Setting variables in ${C["File"]}${COMPOSE_ENV}${NC}:"
+		notice "Setting variables in {{|File|}}${COMPOSE_ENV}{{[-]}}:"
 		for VarName in "${VarsToUpdate[@]}"; do
 			local Value="${UpdatedVarValue["${VarName}"]}"
-			notice "   ${C["Var"]}${VarName}=${Value}${NC}"
+			notice "   {{|Var|}}${VarName}=${Value}{{[-]}}"
 			run_script 'env_set_literal' "${VarName}" "${Value}"
 		done
 	fi

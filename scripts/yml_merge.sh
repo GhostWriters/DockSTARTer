@@ -9,17 +9,17 @@ yml_merge() {
 commands_yml_merge() {
 	if ! run_script 'needs_yml_merge'; then
 		# Compose file has already been created, nothing to do
-		notice "Enabled app templates already merged to '${C["File"]}docker-compose.yml${NC}'."
+		notice "Enabled app templates already merged to '{{|File|}}docker-compose.yml{{[-]}}'."
 		return 0
 	fi
 	run_script 'appvars_create_all'
 	if ! run_script 'needs_yml_merge'; then
 		# Compose file has already been created, nothing to do
-		notice "Enabled app templates already merged to '${C["File"]}docker-compose.yml${NC}'."
+		notice "Enabled app templates already merged to '{{|File|}}docker-compose.yml{{[-]}}'."
 		return 0
 	fi
 	local COMPOSE_FILE=""
-	notice "Adding enabled app templates to merge '${C["File"]}docker-compose.yml${NC}'. Please be patient, this can take a while."
+	notice "Adding enabled app templates to merge '{{|File|}}docker-compose.yml{{[-]}}'. Please be patient, this can take a while."
 	local ENABLED_APPS
 	ENABLED_APPS="$(run_script 'app_list_enabled')"
 	for APPNAME in ${ENABLED_APPS-}; do
@@ -34,13 +34,13 @@ commands_yml_merge() {
 			if [[ -f ${main_yml} ]]; then
 				if run_script 'app_is_deprecated' "${APPNAME}"; then
 					warn \
-						"'${C["App"]}${AppName}${NC}' IS DEPRECATED!" \
-						"Please run '${C["UserCommand"]}${APPLICATION_COMMAND} --status-disable ${AppName}${NC}' to disable it."
+						"'{{|App|}}${AppName}{{[-]}}' IS DEPRECATED!" \
+						"Please run '{{|UserCommand|}}${APPLICATION_COMMAND} --status-disable ${AppName}{{[-]}}' to disable it."
 				fi
 				local arch_yml
 				arch_yml="$(run_script 'app_instance_file' "${appname}" "*.${ARCH}.yml")"
 				if [[ ! -f ${arch_yml} ]]; then
-					error "File '${C["File"]}${arch_yml}${NC}' does not exist."
+					error "File '{{|File|}}${arch_yml}{{[-]}}' does not exist."
 					return 1
 				fi
 				COMPOSE_FILE="${COMPOSE_FILE}:${arch_yml}"
@@ -52,14 +52,14 @@ commands_yml_merge() {
 					if [[ -f ${hostname_yml} ]]; then
 						COMPOSE_FILE="${COMPOSE_FILE}:${hostname_yml}"
 					else
-						info "File '${C["File"]}${hostname_yml}${NC}' does not exist."
+						info "File '{{|File|}}${hostname_yml}{{[-]}}' does not exist."
 					fi
 					local ports_yml
 					ports_yml="$(run_script 'app_instance_file' "${appname}" "*.ports.yml")"
 					if [[ -f ${ports_yml} ]]; then
 						COMPOSE_FILE="${COMPOSE_FILE}:${ports_yml}"
 					else
-						info "File '${C["File"]}${ports_yml}${NC}' does not exist."
+						info "File '{{|File|}}${ports_yml}{{[-]}}' does not exist."
 					fi
 				elif [[ -n ${AppNetMode} ]]; then
 					local netmode_yml
@@ -67,7 +67,7 @@ commands_yml_merge() {
 					if [[ -f ${netmode_yml} ]]; then
 						COMPOSE_FILE="${COMPOSE_FILE}:${netmode_yml}"
 					else
-						info "File '${C["File"]}${netmode_yml}${NC}' does not exist."
+						info "File '{{|File|}}${netmode_yml}{{[-]}}' does not exist."
 					fi
 				fi
 				local MultipleStorage
@@ -89,7 +89,7 @@ commands_yml_merge() {
 							if [[ -f ${storage_yml} ]]; then
 								COMPOSE_FILE="${COMPOSE_FILE}:${storage_yml}"
 							else
-								info "File '${C["File"]}${storage_yml}${NC}' does not exist."
+								info "File '{{|File|}}${storage_yml}{{[-]}}' does not exist."
 							fi
 						fi
 					fi
@@ -102,18 +102,18 @@ commands_yml_merge() {
 					if [[ -f ${devices_yml} ]]; then
 						COMPOSE_FILE="${COMPOSE_FILE}:${devices_yml}"
 					else
-						info "File '${C["File"]}${devices_yml}${NC}' does not exist."
+						info "File '{{|File|}}${devices_yml}{{[-]}}' does not exist."
 					fi
 				fi
 				COMPOSE_FILE="${COMPOSE_FILE}:${main_yml}"
-				info "All configurations for '${C["App"]}${AppName}${NC}' are included."
+				info "All configurations for '{{|App|}}${AppName}{{[-]}}' are included."
 			else
-				error "File '${C["File"]}${main_yml}${NC}' does not exist."
+				error "File '{{|File|}}${main_yml}{{[-]}}' does not exist."
 				return 1
 			fi
 			run_script 'appfolders_create' "${APPNAME}"
 		else
-			error "Folder '${C["Folder"]}${APP_FOLDER}/${NC}' does not exist."
+			error "Folder '{{|Folder|}}${APP_FOLDER}/{{[-]}}' does not exist."
 			return 1
 		fi
 	done
@@ -122,17 +122,17 @@ commands_yml_merge() {
 		return 1
 	fi
 
-	info "Running compose config to create '${C["File"]}docker-compose.yml${NC}' file from enabled templates."
+	info "Running compose config to create '{{|File|}}docker-compose.yml{{[-]}}' file from enabled templates."
 	export COMPOSE_FILE="${COMPOSE_FILE#:}"
 	local -i result=0
 	eval "docker compose --project-directory ${COMPOSE_FOLDER}/ config > ${COMPOSE_FOLDER}/docker-compose.yml" || result=$?
 	if [[ ${result} != 0 ]]; then
 		error \
 			"Failed to output compose config." \
-			"Failing command: ${C["FailingCommand"]}docker compose --project-directory ${COMPOSE_FOLDER}/ config > \"${COMPOSE_FOLDER}/docker-compose.yml\""
+			"Failing command: {{|FailingCommand|}}docker compose --project-directory ${COMPOSE_FOLDER}/ config > \"${COMPOSE_FOLDER}/docker-compose.yml\""
 		return ${result}
 	fi
-	info "Merging '${C["File"]}docker-compose.yml${NC}' complete."
+	info "Merging '{{|File|}}docker-compose.yml{{[-]}}' complete."
 	run_script 'unset_needs_yml_merge'
 	return 0
 }
@@ -143,6 +143,6 @@ test_yml_merge() {
 	eval "docker compose --project-directory ${COMPOSE_FOLDER}/ config" ||
 		fatal \
 			"Failed to display compose config." \
-			"Failing command: ${C["FailingCommand"]}docker compose --project-directory ${COMPOSE_FOLDER}/ config"
+			"Failing command: {{|FailingCommand|}}docker compose --project-directory ${COMPOSE_FOLDER}/ config"
 	run_script 'appvars_purge' WATCHTOWER
 }

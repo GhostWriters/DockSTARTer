@@ -35,7 +35,7 @@ env_backup() {
 	fi
 	if [[ -z ${DOCKER_VOLUME_CONFIG-} ]]; then
 		fatal \
-			"Variable '${C["Var"]}DOCKER_VOLUME_CONFIG${NC}' is not set in the '${C["File"]}.env${NC}' file"
+			"Variable '{{|Var|}}DOCKER_VOLUME_CONFIG{{[-]}}' is not set in the '{{|File|}}.env{{[-]}}' file"
 	fi
 	DOCKER_VOLUME_CONFIG="$(
 		HOME="${HOME}" XDG_CONFIG_HOME="${XDG_CONFIG_HOME}" DOCKER_CONFIG_FOLDER="${DOCKER_CONFIG_FOLDER-}" \
@@ -43,7 +43,7 @@ env_backup() {
 	)"
 	DOCKER_VOLUME_CONFIG="$(run_script 'sanitize_path' "${DOCKER_VOLUME_CONFIG}")"
 
-	info "Taking ownership of '${C["Folder"]}${DOCKER_VOLUME_CONFIG}${NC}' (non-recursive)."
+	info "Taking ownership of '{{|Folder|}}${DOCKER_VOLUME_CONFIG}{{[-]}}' (non-recursive)."
 	sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${DOCKER_VOLUME_CONFIG}" &> /dev/null || true
 
 	local COMPOSE_BACKUPS_FOLDER="${DOCKER_VOLUME_CONFIG}/.compose.backups"
@@ -51,34 +51,34 @@ env_backup() {
 	BACKUPTIME="$(date +"%Y%m%d.%H.%M.%S")"
 	local BACKUP_FOLDER="${COMPOSE_BACKUPS_FOLDER}/${COMPOSE_FOLDER_NAME}.${BACKUPTIME}"
 
-	info "Copying '${C["File"]}.env${NC}' file to '${C["Folder"]}${BACKUP_FOLDER}/.env${NC}'"
+	info "Copying '{{|File|}}.env{{[-]}}' file to '{{|Folder|}}${BACKUP_FOLDER}/.env{{[-]}}'"
 	mkdir -p "${BACKUP_FOLDER}" ||
 		fatal \
 			"Failed to make directory." \
-			"Failing command: ${C["FailingCommand"]}mkdir -p \"${BACKUP_FOLDER}\""
+			"Failing command: {{|FailingCommand|}}mkdir -p \"${BACKUP_FOLDER}\""
 	cp "${COMPOSE_ENV}" "${BACKUP_FOLDER}/" ||
 		fatal \
 			"Failed to copy backup." \
-			"Failing command: ${C["FailingCommand"]}cp \"${COMPOSE_ENV}\"/.env.app.* \"${BACKUP_FOLDER}/\""
+			"Failing command: {{|FailingCommand|}}cp \"${COMPOSE_ENV}\"/.env.app.* \"${BACKUP_FOLDER}/\""
 	if [[ -n $(${FIND} "${COMPOSE_FOLDER}" -type f -maxdepth 1 -name ".env.app.*" 2> /dev/null) ]]; then
 		cp "${COMPOSE_FOLDER}"/.env.app.* "${BACKUP_FOLDER}/" ||
 			fatal \
 				"Failed to copy backup." \
-				"Failing command: ${C["FailingCommand"]}cp \"${COMPOSE_FOLDER}\"/.env.app.* \"${BACKUP_FOLDER}/\""
+				"Failing command: {{|FailingCommand|}}cp \"${COMPOSE_FOLDER}\"/.env.app.* \"${BACKUP_FOLDER}/\""
 	fi
 	if [[ -d ${APP_ENV_FOLDER} ]]; then
-		info "Copying appplication env folder to '${C["Folder"]}${BACKUP_FOLDER}/${APP_ENV_FOLDER_NAME}${NC}'"
+		info "Copying appplication env folder to '{{|Folder|}}${BACKUP_FOLDER}/${APP_ENV_FOLDER_NAME}{{[-]}}'"
 		cp -r "${APP_ENV_FOLDER}" "${BACKUP_FOLDER}/" ||
 			fatal \
 				"Failed to copy backup." \
-				"Failing command: ${C["FailingCommand"]}cp -r \"${APP_ENV_FOLDER}\" \"${BACKUP_FOLDER}/\""
+				"Failing command: {{|FailingCommand|}}cp -r \"${APP_ENV_FOLDER}\" \"${BACKUP_FOLDER}/\""
 	fi
 	if [[ -f ${COMPOSE_OVERRIDE} ]]; then
-		info "Copying override file to '${C["Folder"]}${BACKUP_FOLDER}/${COMPOSE_OVERRIDE_NAME}${NC}'"
+		info "Copying override file to '{{|Folder|}}${BACKUP_FOLDER}/${COMPOSE_OVERRIDE_NAME}{{[-]}}'"
 		cp "${COMPOSE_OVERRIDE}" "${BACKUP_FOLDER}/" ||
 			fatal \
 				"Failed to copy backup." \
-				"Failing command: ${C["FailingCommand"]}cp \"${COMPOSE_OVERRIDE}\" \"${BACKUP_FOLDER}/\""
+				"Failing command: {{|FailingCommand|}}cp \"${COMPOSE_OVERRIDE}\" \"${BACKUP_FOLDER}/\""
 	fi
 
 	run_script 'set_permissions' "${COMPOSE_BACKUPS_FOLDER}"
@@ -95,7 +95,7 @@ env_backup() {
 		rm -rf "${DOCKER_VOLUME_CONFIG}/.env.backups" ||
 			fatal \
 				"Failed to remove directory." \
-				"Failing command: ${C["FailingCommand"]}rm -rf \"${DOCKER_VOLUME_CONFIG}/.env.backups\""
+				"Failing command: {{|FailingCommand|}}rm -rf \"${DOCKER_VOLUME_CONFIG}/.env.backups\""
 	fi
 }
 

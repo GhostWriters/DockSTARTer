@@ -16,13 +16,13 @@ theme_extract_all() {
 		local FileName="${ThemeFile##*/}"
 		local Dest="${DestDir}/${FileName}"
 		if cp "${ThemeFile}" "${Dest}" 2> /dev/null; then
-			notice "  Extracted: ${C["Theme"]-}${FileName}${NC-}"
+			notice "  Extracted: {{|Theme|}}${FileName}{{[-]}}"
 			Extracted+=1
 		else
-			warn "Failed to extract '${C["Theme"]-}${FileName}${NC-}' to '${C["Folder"]-}${DestDir}${NC-}'."
+			warn "Failed to extract '{{|Theme|}}${FileName}{{[-]}}' to '{{|Folder|}}${DestDir}{{[-]}}'."
 		fi
 	done
-	notice "${Extracted} theme(s) extracted to: ${C["Folder"]-}${DestDir}${NC-}"
+	notice "${Extracted} theme(s) extracted to: {{|Folder|}}${DestDir}{{[-]}}"
 }
 
 test_theme_extract_all() {

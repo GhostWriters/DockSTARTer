@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 pm_none_install_docker() {
-	info "Package manager '${C["UserCommand"]}none${NC}' does not install docker."
+	info "Package manager '{{|UserCommand|}}none{{[-]}}' does not install docker."
 }
 
 test_pm_none_install_docker() {
