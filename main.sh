@@ -119,32 +119,87 @@ resolve_styles() {
 	local style_map_name="$1"
 	local -n style_map="$1"
 	local val="$2"
-	local regex='\{\{(\[|\|)([^]|}]+)(\]|\|)\}\}'
 	local last_val=""
-
 	local -i MaxResolves=100
-	while [[ ${val} =~ ${regex} ]] && [[ ${val} != "${last_val}" ]] && [[ ${MaxResolves} -gt 0 ]]; do
-		MaxResolves=$((MaxResolves - 1))
-		last_val="${val}"
-		local full_match="${BASH_REMATCH[0]}"
-		local type="${BASH_REMATCH[1]}"
-		local content="${BASH_REMATCH[2]}"
 
-		if [[ ${type} == "|" && ${content} == *":"* ]]; then
-			local base="${content%%:*}"
-			local mod="${content#*:}"
-			local replacement="{{|${base}|}}{{[${mod}]}}"
-			local prefix="${val%%"${full_match}"*}"
-			local suffix="${val#*"${prefix}${full_match}"}"
-			val="${prefix}${replacement}${suffix}"
-			continue
+	local sem_p="${3-}" sem_s="${4-}"
+	local dir_p="${5-}" dir_s="${6-}"
+
+	while [[ ${MaxResolves} -gt 0 ]]; do
+		local regex p_tag content s_tag full_match
+		if [[ -n ${sem_p-} ]]; then
+			# Custom syntax
+			local esc_sem_p="${sem_p//\[/\\\[}"
+			esc_sem_p="${esc_sem_p//\|/\\|}"
+			esc_sem_p="${esc_sem_p//\{/\\\{}"
+			local esc_sem_s="${sem_s//\]/\\\]}"
+			esc_sem_s="${esc_sem_s//\|/\\|}"
+			esc_sem_s="${esc_sem_s//\}/\\\}}"
+			local esc_dir_p="${dir_p//\[/\\\[}"
+			esc_dir_p="${esc_dir_p//\|/\\|}"
+			esc_dir_p="${esc_dir_p//\{/\\\{}"
+			local esc_dir_s="${dir_s//\]/\\\]}"
+			esc_dir_s="${esc_dir_s//\|/\\|}"
+			esc_dir_s="${esc_dir_s//\}/\\\}}"
+			regex="(${esc_sem_p}|${esc_dir_p})([^]|}]+)(${esc_sem_s}|${esc_dir_s})"
+
+			[[ ${val} =~ ${regex} ]] || break
+			full_match="${BASH_REMATCH[0]}"
+			p_tag="${BASH_REMATCH[1]}"
+			content="${BASH_REMATCH[2]}"
+			s_tag="${BASH_REMATCH[3]}"
+
+			# Ensure matching prefix/suffix types
+			if [[ ${p_tag} == "${sem_p}" && ${s_tag} == "${sem_s}" ]]; then
+				if [[ ${content} == *":"* ]]; then
+					local base="${content%%:*}"
+					local mod="${content#*:}"
+					val="${val//"${full_match}"/"${sem_p}${base}${sem_s}${dir_p}${mod}${dir_s}"}"
+					continue
+				fi
+			elif [[ ${p_tag} != "${dir_p}" || ${s_tag} != "${dir_s}" ]]; then
+				# Mismatched tags
+				break
+			fi
+		else
+			# Default syntax: {{|...|}} or {{[...]}}
+			regex='\{\{(\[|\|)([^]|}]+)(\]|\|)\}\}'
+			[[ ${val} =~ ${regex} ]] || break
+			full_match="${BASH_REMATCH[0]}"
+			local type="${BASH_REMATCH[1]}"
+			content="${BASH_REMATCH[2]}"
+			local end_type="${BASH_REMATCH[3]}"
+
+			# Ensure matching start/end types (| with | and [ with ])
+			if [[ ${type} == "|" && ${end_type} == "|" ]]; then
+				p_tag="${type}"
+				s_tag="${end_type}"
+				if [[ ${content} == *":"* ]]; then
+					local base="${content%%:*}"
+					local mod="${content#*:}"
+					val="${val//"${full_match}"/"{{|${base}|}}{{[${mod}]}}"}"
+					continue
+				fi
+			elif [[ ${type} == "[" && ${end_type} == "]" ]]; then
+				p_tag="${type}"
+				s_tag="${end_type}"
+			else
+				break
+			fi
 		fi
 
+		[[ ${val} == "${last_val}" ]] && break
+		MaxResolves=$((MaxResolves - 1))
+		last_val="${val}"
+
 		local replacement=""
-		if [[ -v style_map["${full_match}"] ]]; then
-			replacement="${style_map["${full_match}"]}"
-		elif [[ ${type} == "[" ]]; then
-			# Dynamic parsing for {{[...]}}
+		if [[ ${p_tag} == "|" || ${p_tag} == "${sem_p-}" ]]; then
+			# Semantic tag: lookup in map (Raw key)
+			if [[ -v style_map["${content}"] ]]; then
+				replacement="${style_map["${content}"]}"
+			fi
+		elif [[ ${p_tag} == "[" || ${p_tag} == "${dir_p-}" ]]; then
+			# Direct tag: Dynamic parsing for {{[...]}} or custom direct tags
 			local fg="" bg="" flags="" resolved=""
 			if [[ ${content} == "-" ]]; then
 				# Reset tag
@@ -153,84 +208,70 @@ resolve_styles() {
 				else
 					resolved="${S["-"]}"
 				fi
-			elif [[ ${content} == *":"* ]]; then
-				fg="${content%%:*}"
-				local rest="${content#*:}"
-				if [[ ${rest} == *":"* ]]; then
-					bg="${rest%%:*}"
-					flags="${rest#*:}"
-				else
-					bg="${rest}"
-					flags=""
-				fi
 			else
-				# Single part tag: is it a color name or a flag?
-				if [[ -v ColorCodes[${content}] ]]; then
-					fg="${content}"
+				# Parse [fg:bg:flags]
+				if [[ ${content} == *":"* ]]; then
+					fg="${content%%:*}"
+					local rest="${content#*:}"
+					if [[ ${rest} == *":"* ]]; then
+						bg="${rest%%:*}"
+						flags="${rest#*:}"
+					else
+						bg="${rest}"
+						flags=""
+					fi
 				else
-					flags="${content}"
+					# Single part tag: is it a color name or a code or a flag?
+					local content_lower="${content,,}"
+					local content_upper="${content^^}"
+					if [[ -v ColorCodes[${content_lower}] ]]; then
+						fg="${content_lower}"
+					elif [[ -v F[${content_upper}] ]]; then
+						fg="${content_upper}"
+					else
+						flags="${content}"
+					fi
 				fi
-			fi
 
-			if [[ -z ${resolved} ]]; then
-				if [[ ${style_map_name} == "DC" ]]; then
-					# Dialog (DC) Map logic
-					# Foreground
-					if [[ ${fg} == "-" ]]; then
-						resolved+='\Zn'
-					elif [[ -n ${fg} && -v ColorCodes[${fg}] ]]; then
-						local -A ZColors=([K]=0 [R]=1 [G]=2 [Y]=3 [B]=4 [M]=5 [C]=6 [W]=7)
-						resolved+="\Z${ZColors[${ColorCodes[${fg}]}]}"
+				# Resolve FG, BG, Flags
+				local -A ZC=([K]=0 [R]=1 [G]=2 [Y]=3 [B]=4 [M]=5 [C]=6 [W]=7)
+				if [[ -n ${fg} ]]; then
+					local fg_code="${ColorCodes[${fg,,}]-${fg^^}}"
+					if [[ ${style_map_name} == "DC" ]]; then
+						resolved+="\Z${ZC[${fg_code}]-0}"
+					elif [[ -v F[${fg_code}] ]]; then
+						resolved+="${F[${fg_code}]}"
 					fi
-					# Background (Ignored for DC)
-					# Flags
-					local i
-					for ((i = 0; i < ${#flags}; i++)); do
-						local char="${flags:i:1}"
-						case "${char}" in
-							B) resolved+='\Zb' ;;
-							b) resolved+='\ZB' ;;
-							U) resolved+='\Zu' ;;
-							u) resolved+='\ZU' ;;
-							R) resolved+='\Zr' ;;
-							r) resolved+='\ZR' ;;
-							-) resolved+='\ZB\ZU\ZR' ;; # Reset flags (Bold, Underline, Reverse)
-						esac
-					done
-				else
-					# CLI (C) Map logic
-					# Foreground
-					if [[ ${fg} == "-" ]]; then
-						resolved+="${F["-"]}"
-					elif [[ -n ${fg} && -v ColorCodes[${fg}] ]]; then
-						resolved+="${F[${ColorCodes[${fg}]}]}"
+				fi
+				if [[ -n ${bg} ]]; then
+					local bg_code="${ColorCodes[${bg,,}]-${bg^^}}"
+					if [[ ${style_map_name} == "DC" ]]; then
+						resolved+="\z${ZC[${bg_code}]-0}"
+					elif [[ -v B[${bg_code}] ]]; then
+						resolved+="${B[${bg_code}]}"
 					fi
-					# Background
-					if [[ ${bg} == "-" ]]; then
-						resolved+="${B["-"]}"
-					elif [[ -n ${bg} && -v ColorCodes[${bg}] ]]; then
-						resolved+="${B[${ColorCodes[${bg}]}]}"
-					fi
-					# Flags
-					local i
-					for ((i = 0; i < ${#flags}; i++)); do
-						local char="${flags:i:1}"
-						if [[ ${char} == "-" ]]; then
-							resolved+="${S[b]}${S[u]}${S[r]}${S[d]}${S[l]}" # Reset all flags
+				fi
+				if [[ -n ${flags} ]]; then
+					local -i k
+					for ((k = 0; k < ${#flags}; k++)); do
+						local char="${flags:k:1}"
+						if [[ ${style_map_name} == "DC" ]]; then
+							case ${char} in
+								B) resolved+='\Zb' ;;
+								D) resolved+='\Zd' ;;
+								L) resolved+='\Zl' ;;
+								R) resolved+='\Zr' ;;
+								U) resolved+='\Zu' ;;
+							esac
 						elif [[ -v S[${char}] ]]; then
 							resolved+="${S[${char}]}"
 						fi
 					done
 				fi
 			fi
-			style_map["${full_match}"]="${resolved}"
 			replacement="${resolved}"
-		else
-			replacement=""
 		fi
-		local prefix="${val%%"${full_match}"*}"
-		local suffix="${val#*"${prefix}${full_match}"}"
-		val="${prefix}${replacement}${suffix}"
+		val="${val//"${full_match}"/"${replacement}"}"
 	done
 	printf '%s\n' "${val}"
 }
@@ -322,61 +363,80 @@ declare -Agr S=(
 	[r]=$(tput sgr0 2> /dev/null || echo -e "\e[0m")   # No Reverse Video
 )
 
-C+=( # Pre-defined colors
-	["{{|Timestamp|}}"]="{{[::D]}}"
-	["{{|Trace|}}"]="{{[blue]}}"
-	["{{|Debug|}}"]="{{[blue]}}"
-	["{{|Info|}}"]="{{[blue]}}"
-	["{{|Notice|}}"]="{{[green]}}"
-	["{{|Warn|}}"]="{{[yellow]}}"
-	["{{|Error|}}"]="{{[red]}}"
-	["{{|Fatal|}}"]="{{[white]}}{{[:red]}}"
+DM="${S[D]}"
+readonly DM
+export DM
+BL="${S[L]}"
+readonly BL
+export BL
+BD="${S[B]}"
+readonly BD
+export BD
+UL="${S[U]}"
+readonly UL
+export UL
+NC="${S["-"]}"
+readonly NC
+export NC
+BS="${S[BS]}"
+readonly BS
+export BS
 
-	["{{|FatalFooter|}}"]="{{[-]}}"
-	["{{|TraceHeader|}}"]="{{[red]}}"
-	["{{|TraceFooter|}}"]="{{[red]}}"
-	["{{|TraceFrameNumber|}}"]="{{[red]}}"
-	["{{|TraceFrameLines|}}"]="{{[red]}}"
-	["{{|TraceSourceFile|}}"]="{{[cyan]}}{{[::B]}}"
-	["{{|TraceLineNumber|}}"]="{{[yellow]}}{{[::B]}}"
-	["{{|TraceFunction|}}"]="{{[green]}}{{[::B]}}"
-	["{{|TraceCmd|}}"]="{{[green]}}{{[::B]}}"
-	["{{|TraceCmdArgs|}}"]="{{[green]}}"
+declare -Ag C=( # Pre-defined colors
+	[Timestamp]="{{[::D]}}"
+	[Trace]="{{[blue]}}"
+	[Debug]="{{[blue]}}"
+	[Info]="{{[blue]}}"
+	[Notice]="{{[green]}}"
+	[Warn]="{{[yellow]}}"
+	[Error]="{{[red]}}"
+	[Fatal]="{{[white]}}{{[:red]}}"
 
-	["{{|UnitTestPass|}}"]="{{[green]}}"
-	["{{|UnitTestFail|}}"]="{{[red]}}"
-	["{{|UnitTestFailArrow|}}"]="{{[red]}}"
+	[FatalFooter]="{{[-]}}"
+	[TraceHeader]="{{[red]}}"
+	[TraceFooter]="{{[red]}}"
+	[TraceFrameNumber]="{{[red]}}"
+	[TraceFrameLines]="{{[red]}}"
+	[TraceSourceFile]="{{[cyan]}}{{[::B]}}"
+	[TraceLineNumber]="{{[yellow]}}{{[::B]}}"
+	[TraceFunction]="{{[green]}}{{[::B]}}"
+	[TraceCmd]="{{[green]}}{{[::B]}}"
+	[TraceCmdArgs]="{{[green]}}"
 
-	["{{|App|}}"]="{{[cyan]}}"
-	["{{|ApplicationName|}}"]="{{[cyan]}}{{[::B]}}"
-	["{{|Branch|}}"]="{{[cyan]}}"
-	["{{|FailingCommand|}}"]="{{[red]}}"
-	["{{|File|}}"]="{{[cyan]}}{{[::B]}}"
-	["{{|Folder|}}"]="{{[cyan]}}{{[::B]}}"
-	["{{|Program|}}"]="{{[cyan]}}"
-	["{{|RunningCommand|}}"]="{{[green]}}{{[::B]}}"
-	["{{|Theme|}}"]="{{[cyan]}}"
-	["{{|Update|}}"]="{{[green]}}"
-	["{{|User|}}"]="{{[cyan]}}"
-	["{{|URL|}}"]="{{[cyan]}}{{[::U]}}"
-	["{{|UserCommand|}}"]="{{[yellow]}}{{[::B]}}"
-	["{{|UserCommandError|}}"]="{{[red]}}{{[::U]}}"
-	["{{|UserCommandErrorMarker|}}"]="{{[red]}}"
-	["{{|Var|}}"]="{{[magenta]}}"
-	["{{|Version|}}"]="{{[cyan]}}"
-	["{{|Yes|}}"]="{{[green]}}"
-	["{{|No|}}"]="{{[red]}}"
+	[UnitTestPass]="{{[green]}}"
+	[UnitTestFail]="{{[red]}}"
+	[UnitTestFailArrow]="{{[red]}}"
 
-	["{{|ButtonName|}}"]="{{[cyan]}}"
+	[App]="{{[cyan]}}"
+	[ApplicationName]="{{[cyan]}}{{[::B]}}"
+	[Branch]="{{[cyan]}}"
+	[FailingCommand]="{{[red]}}"
+	[File]="{{[cyan]}}{{[::B]}}"
+	[Folder]="{{[cyan]}}{{[::B]}}"
+	[Program]="{{[cyan]}}"
+	[RunningCommand]="{{[green]}}{{[::B]}}"
+	[Theme]="{{[cyan]}}"
+	[Update]="{{[green]}}"
+	[User]="{{[cyan]}}"
+	[URL]="{{[cyan]}}{{[::U]}}"
+	[UserCommand]="{{[yellow]}}{{[::B]}}"
+	[UserCommandError]="{{[red]}}{{[::U]}}"
+	[UserCommandErrorMarker]="{{[red]}}"
+	[Var]="{{[magenta]}}"
+	[Version]="{{[cyan]}}"
+	[Yes]="{{[green]}}"
+	[No]="{{[red]}}"
 
-	["{{|UsageCommand|}}"]="{{[yellow]}}{{[::B]}}"
-	["{{|UsageOption|}}"]="{{[yellow]}}"
-	["{{|UsageApp|}}"]="{{[cyan]}}"
-	["{{|UsageBranch|}}"]="{{[cyan]}}"
-	["{{|UsageFile|}}"]="{{[cyan]}}{{[::B]}}"
-	["{{|UsagePage|}}"]="{{[cyan]}}{{[::B]}}"
-	["{{|UsageTheme|}}"]="{{[cyan]}}"
-	["{{|UsageVar|}}"]="{{[magenta]}}"
+	[ButtonName]="{{[cyan]}}"
+
+	[UsageCommand]="{{[yellow]}}{{[::B]}}"
+	[UsageOption]="{{[yellow]}}"
+	[UsageApp]="{{[cyan]}}"
+	[UsageBranch]="{{[cyan]}}"
+	[UsageFile]="{{[cyan]}}{{[::B]}}"
+	[UsagePage]="{{[cyan]}}{{[::B]}}"
+	[UsageTheme]="{{[cyan]}}"
+	[UsageVar]="{{[magenta]}}"
 )
 
 for Style in "${!C[@]}"; do
@@ -434,55 +494,27 @@ get_system_info() {
 	[[ -f /etc/os-release ]] &&
 		Output+=(
 			""
-			'{{|RunningCommand|}}cat /etc/os-release{{[-]}}:'
-			"$(cat /etc/os-release)"
-		)
-
-	[[ -f /etc/lsb-release ]] &&
-		Output+=(
-			""
-			'{{|RunningCommand|}}cat /etc/lsb-release{{[-]}}:'
-			"$(cat /etc/lsb-release)"
-		)
-
-	command -v lsb_release &> /dev/null &&
-		Output+=(
-			""
-			'{{|RunningCommand|}}lsb_release -a{{[-]}}:'
-			"$(lsb_release -a)"
-		)
-
-	command -v uname &> /dev/null &&
-		Output+=(
-			""
-			'{{|RunningCommand|}}uname -a{{[-]}}:'
-			"$(uname -a)"
-		)
-
-	command -v system_profiler &> /dev/null &&
-		Output+=(
-			""
-			'{{|RunningCommand|}}system_profiler SPSoftwareDataType{{[-]}}:'
-			"$(system_profiler SPSoftwareDataType)"
+			"{{|RunningCommand|}}cat /etc/os-release{{[-]}}:"
+			"$(PrefixFileLines '  ' /etc/os-release)"
 		)
 
 	printf '%s\n' "${Output[@]}"
 }
 
 # Log Functions
-MKTEMP_LOG=$(mktemp -t "${APPLICATION_NAME}.log.XXXXXXXXXX") || resolve_strings C "Failed to create temporary log file." "Failing command: {{|FailingCommand|}}mktemp -t \"${APPLICATION_NAME}.log.XXXXXXXXXX\""
+MKTEMP_LOG=$(mktemp -t "${APPLICATION_NAME,,}.log.XXXXXXXXXX") || resolve_strings C "Failed to create temporary log file." "Failing command: {{|FailingCommand|}}mktemp -t \"${APPLICATION_NAME,,}.log.XXXXXXXXXX\""
 readonly MKTEMP_LOG
-echo "DockSTARTer Log" > "${MKTEMP_LOG}"
+echo "${APPLICATION_NAME} Log" > "${MKTEMP_LOG}"
+
 log() {
-	local ToTerm=${1-}
+	local LogToTerminal=${1-}
 	local Message=${2-}
 	local StrippedMessage
-	StrippedMessage=$(strip_styles "${Message}")
-	if [[ -n ${ToTerm} ]]; then
+	StrippedMessage=$(strip_styles "${Message-}")
+	if [[ ${LogToTerminal} == true ]]; then
 		if [[ -t 2 ]]; then
-			# Stderr is not being redirected, output with color
-			Message=$(resolve_styles C "${Message}")
-			printf '%s\n' "${Message}" >&2
+			# Stderr is a TTY, output with color
+			resolve_strings C "${Message}" >&2
 		else
 			# Stderr is being redirected, output without color
 			printf '%s\n' "${StrippedMessage}" >&2

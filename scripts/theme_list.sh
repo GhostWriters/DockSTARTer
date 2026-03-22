@@ -3,24 +3,22 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 theme_list() {
-	# Outputs one line per theme (the theme name/stem).
+	local -a ThemeFiles=()
+	ThemeFiles+=("${THEME_FOLDER}/"*"${THEME_FILE_EXT}")
+	if [[ -d ${USER_THEMES_FOLDER} ]]; then
+		ThemeFiles+=("${USER_THEMES_FOLDER}/"*"${THEME_FILE_EXT}")
+	fi
 
-	# 1. Collect embedded themes
-	local -a EmbeddedFiles=("${THEME_FOLDER}"/*"${THEME_FILE_EXT}")
-	for ThemeFile in "${EmbeddedFiles[@]-}"; do
-		[[ -f ${ThemeFile} ]] || continue
-		local Stem="${ThemeFile##*/}"
-		Stem="${Stem%"${THEME_FILE_EXT}"}"
-		echo "${Stem}"
-	done
-
-	# 2. Collect user themes
-	local -a UserFiles=("${USER_THEMES_FOLDER}"/*"${THEME_FILE_EXT}")
-	for ThemeFile in "${UserFiles[@]-}"; do
-		[[ -f ${ThemeFile} ]] || continue
-		local Stem="${ThemeFile##*/}"
-		Stem="${Stem%"${THEME_FILE_EXT}"}"
-		echo "user:${Stem}"
+	local File
+	for File in "${ThemeFiles[@]-}"; do
+		[[ -f ${File} ]] || continue
+		local Stem
+		Stem="$(basename "${File}" "${THEME_FILE_EXT}")"
+		if [[ ${File} == "${USER_THEMES_FOLDER}/"* ]]; then
+			echo "user:${Stem}"
+		else
+			echo "${Stem}"
+		fi
 	done
 }
 
