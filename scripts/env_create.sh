@@ -8,25 +8,25 @@ env_create() {
 	)
 
 	if ! [[ -d ${COMPOSE_FOLDER} ]]; then
-		notice "Creating folder '${C["Folder"]}${COMPOSE_FOLDER}${NC}'."
+		notice "Creating folder '{{|Folder|}}${COMPOSE_FOLDER}{{[-]}}'."
 		mkdir -p "${COMPOSE_FOLDER}" ||
 			fatal \
 				"Failed to create folder." \
-				"Failing command: ${C["FailingCommand"]}mkdir -p \"${COMPOSE_FOLDER}\""
+				"Failing command: {{|FailingCommand|}}mkdir -p \"${COMPOSE_FOLDER}\""
 	fi
 
 	run_script 'set_permissions' "${COMPOSE_FOLDER}"
 	run_script 'env_backup'
 
 	if [[ -f ${COMPOSE_ENV} ]]; then
-		info "File '${C["File"]}${COMPOSE_ENV}${NC}' found."
+		info "File '{{|File|}}${COMPOSE_ENV}{{[-]}}' found."
 		run_script 'env_sanitize'
 	else
-		warn "File '${C["File"]}${COMPOSE_ENV}${NC}' not found. Copying example template."
+		warn "File '{{|File|}}${COMPOSE_ENV}{{[-]}}' not found. Copying example template."
 		cp "${COMPOSE_ENV_DEFAULT_FILE}" "${COMPOSE_ENV}" ||
 			fatal \
 				"Failed to copy file." \
-				"Failing command: ${C["FailingCommand"]}cp \"${COMPOSE_ENV_DEFAULT_FILE}\" \"${COMPOSE_ENV}\""
+				"Failing command: {{|FailingCommand|}}cp \"${COMPOSE_ENV_DEFAULT_FILE}\" \"${COMPOSE_ENV}\""
 		run_script 'set_permissions' "${COMPOSE_ENV}"
 		run_script 'env_sanitize'
 		if [[ -n ${DefaultApps-} && -z $(run_script 'app_list_referenced') ]]; then

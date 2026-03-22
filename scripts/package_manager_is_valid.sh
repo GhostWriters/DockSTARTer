@@ -28,7 +28,7 @@ test_package_manager_is_valid() {
 		for ((i = 0; i < ${#Test[@]}; i += 2)); do
 			printf '%s\n' \
 				"${Test[i]}" \
-				"${Test[i + 1]}" \
+				"${Test[i+1]}" \
 				"$(run_script 'package_manager_is_valid' "${Test[i]}" && echo "YES" || echo "NO")"
 		done
 	)

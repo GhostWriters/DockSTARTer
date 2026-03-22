@@ -13,9 +13,9 @@ test_require_docker() {
 	docker --version ||
 		fatal \
 			"Failed to determine docker version." \
-			"Failing command: ${C["FailingCommand"]}docker --version"
+			"Failing command: {{|FailingCommand|}}docker --version"
 	docker compose version ||
 		fatal \
 			"Failed to determine docker compose version." \
-			"Failing command: ${C["FailingCommand"]}docker compose version"
+			"Failing command: {{|FailingCommand|}}docker compose version"
 }

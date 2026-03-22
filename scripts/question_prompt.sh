@@ -3,6 +3,19 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 question_prompt() {
+	local -a DialogOptions=()
+	while [[ $# -gt 0 ]]; do
+		case "${1}" in
+			--maximized)
+				DialogOptions+=("${1}")
+				;;
+			*)
+				break
+				;;
+		esac
+		shift
+	done
+
 	local Default=${1-Y}
 	Default=${Default^^:0:1}
 	if [[ ${Default} != Y && ${Default} != N ]]; then
@@ -29,10 +42,6 @@ question_prompt() {
 		if [[ ${Default} == "N" ]]; then
 			DIALOG_DEFAULT="--defaultno"
 		fi
-		local NoticeQuestion
-		NoticeQuestion=$(strip_dialog_colors "${Question}")
-		local DialogQuestion
-		DialogQuestion=$(strip_ansi_colors "${Question}")
 		while true; do
 			local YNPrompt
 			if [[ ${Default} == Y ]]; then
@@ -42,22 +51,21 @@ question_prompt() {
 			else
 				YNPrompt='[YN]'
 			fi
-			notice "${NoticeQuestion}" &> /dev/null
+			notice "${Question}" &> /dev/null
 			notice "${YNPrompt}" &> /dev/null
 			set_screen_size
 			# shellcheck disable=SC2206 # (warning): Quote to prevent word splitting/globbing, or split robustly with mapfile or read -a.
 			local -a YesNoDialog=(
-				--output-fd 1
-				--no-collapse
-				--yes-label "${YesButton}"
-				--no-label "${NoButton}"
-				--title "${DC["TitleQuestion"]-}${Title}${DC["NC"]-}"
+				"${Title}"
+				"${Question}"
+				--maximized
+				"${DialogOptions[@]}"
+				"--yes-label:${YesButton}"
+				"--no-label:${NoButton}"
 				${DIALOG_DEFAULT-}
-				--yesno "${DC["NC"]-}${DialogQuestion}${DC["NC"]-}"
-				"$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
 			)
 			local -i YesNoDialogButtonPressed=0
-			_dialog_ "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?
+			dialog_yesno "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?
 			case ${DIALOG_BUTTONS[YesNoDialogButtonPressed]-} in
 				OK)
 					YN="Y"
@@ -83,8 +91,7 @@ question_prompt() {
 		else
 			YNPrompt="[YN]"
 		fi
-		NoticeQuestion=$(strip_dialog_colors "${Question}")
-		notice "${NoticeQuestion}"
+		notice "${Question}"
 		notice "${YNPrompt}"
 		while true; do
 			read -rsn1 YN < /dev/tty
@@ -103,9 +110,9 @@ question_prompt() {
 			esac
 		done
 		if [[ ${YN} == "Y" ]]; then
-			notice "Answered: ${C["Yes"]}Yes${NC}"
+			notice "Answered: {{|Yes|}}Yes{{[-]}}"
 		else
-			notice "Answered: ${C["No"]}No${NC}"
+			notice "Answered: {{|No|}}No{{[-]}}"
 		fi
 	else
 		YN=${Default:-Y}

@@ -12,21 +12,21 @@ run_test() {
 	local test_function="${function_prefix}${script_name}"
 
 	notice \
-		"Testing '${C["RunningCommand"]-}${script_name}${NC-}'."
+		"Testing '{{|RunningCommand|}}${script_name}{{[-]}}'."
 	[[ -f ${script_file} ]] ||
 		fatal \
-			"Script file '${C["File"]-}${script_file}${NC-}' not found."
+			"Script file '{{|File|}}${script_file}{{[-]}}' not found."
 
 	# shellcheck source=/dev/null
 	source "${script_file}"
 	declare -F "${test_function}" &> /dev/null ||
 		fatal \
-			"Function '${C["RunningCommand"]-}${test_function}${NC-}' not found in script file '${C["File"]-}${script_file}${NC-}'."
+			"Function '{{|RunningCommand|}}${test_function}{{[-]}}' not found in script file '{{|File|}}${script_file}{{[-]}}'."
 	"${test_function}" "$@" ||
 		fatal \
-			"Test of '${C["FailingCommand"]-}${script_name}${NC-}' failed."
+			"Test of '{{|FailingCommand|}}${script_name}{{[-]}}' failed."
 	notice \
-		"Completed testing '${C["RunningCommand"]-}${script_name}${NC-}'."
+		"Completed testing '{{|RunningCommand|}}${script_name}{{[-]}}'."
 }
 
 run_unit_tests() {
@@ -35,8 +35,8 @@ run_unit_tests() {
 	)
 }
 run_unit_tests_pipe() {
-	local InputColor="${C["${1-Notice}"]-}"
-	local ExpectedColor="${C["${2-Notice}"]-}"
+	local InputColor="{{|${1-Notice}}|}}"
+	local ExpectedColor="{{|${2-Notice}}|}}"
 	local ForcePass=${3-}
 	local -a Test
 	readarray -t Test
@@ -51,12 +51,12 @@ run_unit_tests_pipe() {
 	local -a RightPointers
 
 	# Calculate Padding
-	local FailLeft="${C["UnitTestFailArrow"]-}>"
-	local FailRight="<${C["UnitTestFailArrow"]-}"
+	local FailLeft="{{|UnitTestFailArrow|}}>{{[-]}}"
+	local FailRight="<{{|UnitTestFailArrow|}}{{[-]}}"
 	local VisFailLeft
-	VisFailLeft="$(strip_ansi_colors "${FailLeft}")"
+	VisFailLeft="$(strip_styles "${FailLeft}")"
 	local VisFailRight
-	VisFailRight="$(strip_ansi_colors "${FailRight}")"
+	VisFailRight="$(strip_styles "${FailRight}")"
 	local -i LeftPadSize=${#VisFailLeft}
 	local -i RightPadSize=${#VisFailRight}
 	local LeftSpacer
@@ -71,24 +71,24 @@ run_unit_tests_pipe() {
 	local -i i
 	for ((i = 0; i < ${#Test[@]}; i += 3)); do
 		local Input="${Test[i]-}"
-		local ExpectedValue="${Test[i + 1]-}"
-		local ReturnedValue="${Test[i + 2]-}"
+		local ExpectedValue="${Test[i+1]-}"
+		local ReturnedValue="${Test[i+2]-}"
 
 		if [[ ${ReturnedValue} == "${ExpectedValue}" ]]; then
 			LeftPointers+=("${LeftSpacer}")
 			RightPointers+=("${RightSpacer}")
 			TableData+=(
-				"${InputColor}${Input}${NC-}"
-				"${ExpectedColor}${ExpectedValue}${NC-}"
-				"${C["UnitTestPass"]-}${ReturnedValue}${NC-}"
+				"${InputColor}${Input}{{[-]}}"
+				"${ExpectedColor}${ExpectedValue}{{[-]}}"
+				"{{|UnitTestPass|}}${ReturnedValue}{{[-]}}"
 			)
 		else
-			LeftPointers+=("${C["UnitTestFailArrow"]-}>${NC-}")
-			RightPointers+=("${C["UnitTestFailArrow"]-}<${NC-}")
+			LeftPointers+=("{{|UnitTestFailArrow|}}>{{[-]}}")
+			RightPointers+=("{{|UnitTestFailArrow|}}<{{[-]}}")
 			TableData+=(
-				"${C["UnitTestFail"]-}${Input}${NC-}"
-				"${C["UnitTestFail"]-}${ExpectedValue}${NC-}"
-				"${C["UnitTestFail"]-}${ReturnedValue}${NC-}"
+				"{{|UnitTestFail|}}${Input}{{[-]}}"
+				"{{|UnitTestFail|}}${ExpectedValue}{{[-]}}"
+				"{{|UnitTestFail|}}${ReturnedValue}{{[-]}}"
 			)
 			result=1
 		fi
@@ -104,7 +104,7 @@ run_unit_tests_pipe() {
 		<(printf '%s\n' "${TableData[@]}" | table_pipe 3 "${Headings[@]}") \
 		<(printf '%s\n' "${RightPointers[@]}") |
 		while IFS= read -r line; do
-			if [[ ${result} != 0 && ${line} == *"${C["UnitTestFailArrow"]-}>${NC-}"* ]]; then
+			if [[ ${result} != 0 && ${line} == *"{{|UnitTestFailArrow|}}>{{[-]}}"* ]]; then
 				error "${line}"
 			else
 				notice "${line}"
@@ -112,7 +112,7 @@ run_unit_tests_pipe() {
 		done
 
 	if [[ -n ${ForcePass} ]]; then
-		warn "The '${C["Var"]-}ForcePass${NC-}' variable is set."
+		warn "The '{{|Var|}}ForcePass{{[-]}}' variable is set."
 		if [[ ${result} != 0 ]]; then
 			error \
 				"Passing test even though an error occurred."

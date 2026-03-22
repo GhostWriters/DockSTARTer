@@ -14,11 +14,11 @@ pm_nala_upgrade() {
 
 	local COMMAND='sudo nala upgrade --no-update --full -y'
 	notice "Upgrading packages. Please be patient, this can take a while."
-	notice "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
+	notice "Running: {{|RunningCommand|}}${COMMAND}{{[-]}}"
 	eval "${REDIRECT}${COMMAND}" ||
 		fatal \
 			"Failed to upgrade packages from nala." \
-			"Failing command: ${C["FailingCommand"]}${COMMAND}"
+			"Failing command: {{|FailingCommand|}}${COMMAND}"
 }
 
 test_pm_nala_upgrade() {

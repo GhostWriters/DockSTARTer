@@ -8,7 +8,7 @@ update_self() {
 	shift || true
 	ds_fetch true
 	if [[ ${Branch-} == "${APPLICATION_LEGACY_BRANCH}" ]] && ds_branch_exists "${APPLICATION_DEFAULT_BRANCH}"; then
-		warn "Updating to branch '${C["Branch"]}${APPLICATION_DEFAULT_BRANCH}${NC}' instead of '${C["Branch"]}${APPLICATION_LEGACY_BRANCH}${NC}'."
+		warn "Updating to branch '{{|Branch|}}${APPLICATION_DEFAULT_BRANCH}{{[-]}}' instead of '{{|Branch|}}${APPLICATION_LEGACY_BRANCH}{{[-]}}'."
 		Branch="${APPLICATION_DEFAULT_BRANCH}"
 	fi
 
@@ -30,23 +30,23 @@ update_self() {
 	RemoteVersion="$(ds_version "${Branch}")"
 	if [[ ${CurrentVersion-} == "${RemoteVersion-}" ]]; then
 		if [[ -n ${FORCE-} ]]; then
-			Question="Would you like to forcefully re-apply ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} update '${C["Version"]}${CurrentVersion}${NC}'?"
-			NoNotice="${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} will not be updated."
-			YesNotice="Forcefully re-applying ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} update '${C["Version"]}${RemoteVersion}${NC}'"
+			Question="Would you like to forcefully re-apply {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} update '{{|Version|}}${CurrentVersion}{{[-]}}'?"
+			NoNotice="{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} will not be updated."
+			YesNotice="Forcefully re-applying {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} update '{{|Version|}}${RemoteVersion}{{[-]}}'"
 		fi
 	else
-		Question="Would you like to update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} from '${C["Version"]}${CurrentVersion}${NC}' to '${C["Version"]}${RemoteVersion}${NC}' now?"
-		NoNotice="${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} will not be updated."
-		YesNotice="Updating ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} from '${C["Version"]}${CurrentVersion}${NC}' to '${C["Version"]}${RemoteVersion}${NC}'"
+		Question="Would you like to update {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} from '{{|Version|}}${CurrentVersion}{{[-]}}' to '{{|Version|}}${RemoteVersion}{{[-]}}' now?"
+		NoNotice="{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} will not be updated."
+		YesNotice="Updating {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} from '{{|Version|}}${CurrentVersion}{{[-]}}' to '{{|Version|}}${RemoteVersion}{{[-]}}'"
 	fi
 
 	local CommandLineText
 	CommandLineText="$(printf '%q ' "${APPLICATION_COMMAND}" "--update" "$@" | xargs)"
 	if ! ds_branch_exists "${Branch}" && ! ds_tag_exists "${Branch}" && ! ds_commit_exists "${Branch}"; then
-		local ErrorMessage="${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} ref '${C["Branch"]}${Branch}${NC}' does not exist on origin."
+		local ErrorMessage="{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} ref '{{|Branch|}}${Branch}{{[-]}}' does not exist on origin."
 		if use_dialog_box; then
 			error "${ErrorMessage}" |&
-				dialog_pipe "${DC["TitleError"]-}${Title}" "${DC["CommandLine"]-} ${CommandLineText}"
+				dialog_pipe "{{|TitleError|}}${Title}" "{{|CommandLine|}} ${CommandLineText}"
 		else
 			error "${ErrorMessage}"
 		fi
@@ -58,21 +58,21 @@ update_self() {
 			{
 				{
 					notice \
-						"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} is already up to date on branch '${C["Branch"]}${Branch}${NC}'." \
-						"Current version is '${C["Version"]}${CurrentVersion}${NC}'"
+						"{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} is already up to date on branch '{{|Branch|}}${Branch}{{[-]}}'." \
+						"Current version is '{{|Version|}}${CurrentVersion}{{[-]}}'"
 				} || true
-			} |& dialog_pipe "${DC["TitleWarning"]-}${Title}" "${DC[CommandLine]-} ${CommandLineText}"
+			} |& dialog_pipe "{{|TitleWarning|}}${Title}" "{{|CommandLine|}} ${CommandLineText}"
 		else
 			notice \
-				"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} is already up to date on branch '${C["Branch"]}${Branch}${NC}'." \
-				"Current version is '${C["Version"]}${CurrentVersion}${NC}'"
+				"{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} is already up to date on branch '{{|Branch|}}${Branch}{{[-]}}'." \
+				"Current version is '{{|Version|}}${CurrentVersion}{{[-]}}'"
 		fi
 		return 0
 	fi
 
 	if ! run_script 'question_prompt' Y "${Question}" "${Title}" "${ASSUMEYES:+Y}"; then
 		if use_dialog_box; then
-			{ notice "${NoNotice}" || true; } |& dialog_pipe "${DC["TitleError"]-}${Title}" "${NoNotice}"
+			{ notice "${NoNotice}" || true; } |& dialog_pipe "{{|TitleError|}}${Title}" "${NoNotice}"
 		else
 			notice "${NoNotice}"
 		fi
@@ -80,9 +80,8 @@ update_self() {
 	fi
 
 	if use_dialog_box; then
-		YesNotice="$(strip_ansi_colors "${YesNotice}")"
 		{ commands_update_self_logic "${Branch}" "${YesNotice}" "$@" |&
-			dialog_pipe "${DC["TitleSuccess"]-}${Title}" "${YesNotice}\n${DC["CommandLine"]-} ${CommandLineText}"; } || true
+			dialog_pipe "{{|TitleSuccess|}}${Title}" "${YesNotice}\n{{|CommandLine|}} ${CommandLineText}"; } || true
 	else
 		commands_update_self_logic "${Branch}" "${YesNotice}" "$@"
 	fi
@@ -95,7 +94,7 @@ update_self() {
 	fi
 	local CommandNotice
 	CommandNotice="exec $(printf '%q ' "${CommandArray[@]}" | xargs)"
-	notice "Running: ${C["RunningCommand"]}${CommandNotice}${NC}"
+	notice "Running: {{|RunningCommand|}}${CommandNotice}{{[-]}}"
 	exec "${CommandArray[@]}"
 	exit
 }
@@ -118,13 +117,13 @@ commands_update_self_logic() {
 		git -C "${SCRIPTPATH}" fetch --all --prune -v
 	if [[ ${CI-} != true ]]; then
 		RunAndLog info "git:info" \
-			fatal "Failed to switch to github ref '${C["Branch"]}${Branch}${NC}'." \
+			fatal "Failed to switch to github ref '{{|Branch|}}${Branch}{{[-]}}'." \
 			git -C "${SCRIPTPATH}" checkout --force "${Branch}"
 
 		# If it's a branch (not a tag or SHA), perform reset and pull
 		if git -C "${SCRIPTPATH}" ls-remote --exit-code --heads origin "${Branch}" &> /dev/null; then
 			RunAndLog info "git:info" \
-				fatal "Failed to reset to branch '${C["Branch"]}origin/${Branch}${NC}'." \
+				fatal "Failed to reset to branch '{{|Branch|}}origin/${Branch}{{[-]}}'." \
 				git -C "${SCRIPTPATH}" reset --hard origin/"${Branch}"
 			info "Pulling recent changes from git."
 			RunAndLog info "git:info" \
@@ -141,7 +140,7 @@ commands_update_self_logic() {
 	sudo chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}/.git" &> /dev/null || true
 	sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}" &> /dev/null || true
 	notice \
-		"Updated ${APPLICATION_NAME} to '${C["Version"]}$(ds_version)${NC}'"
+		"Updated ${APPLICATION_NAME} to '{{|Version|}}$(ds_version){{[-]}}'"
 
 	# run_script 'reset_needs' # Add script lines in-line below
 	if [[ -d ${TIMESTAMPS_FOLDER:?} ]]; then

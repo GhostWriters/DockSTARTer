@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 pm_apk_repos() {
-	info "Package manager '${C["UserCommand"]}apk${NC}' does not require additional repositories."
+	info "Package manager '{{|UserCommand|}}apk{{[-]}}' does not require additional repositories."
 }
 
 test_pm_apk_repos() {

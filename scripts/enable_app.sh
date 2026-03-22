@@ -11,12 +11,12 @@ enable_app() {
 		AppName="$(run_script app_nicename "${APPNAME}")"
 		if run_script 'app_is_builtin' "${APPNAME}"; then
 			EnabledVar="${APPNAME}__ENABLED"
-			info "Enabling application '${C["App"]}${AppName}${NC}'"
-			notice "Setting variable in ${C["File"]}${COMPOSE_ENV}${NC}:"
-			notice "   ${C["Var"]}${EnabledVar}='true'${NC}"
+			info "Enabling application '{{|App|}}${AppName}{{[-]}}'"
+			notice "Setting variable in {{|File|}}${COMPOSE_ENV}{{[-]}}:"
+			notice "   {{|Var|}}${EnabledVar}='true'{{[-]}}"
 			run_script 'env_set' "${EnabledVar}" true
 		else
-			warn "Application '${C["App"]}${AppName}${NC}' does not exist."
+			warn "Application '{{|App|}}${AppName}{{[-]}}' does not exist."
 		fi
 	done
 }

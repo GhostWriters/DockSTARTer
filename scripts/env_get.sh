@@ -16,7 +16,7 @@ env_get() {
 	local VarFile=${2:-$COMPOSE_ENV}
 
 	if ! run_script 'varname_is_valid' "${VarName}"; then
-		error "${F[C]}${VarName}${NC} is an invalid variable name."
+		error "{{[cyan]}}${VarName}{{[-]}} is an invalid variable name."
 		return
 	fi
 
@@ -32,7 +32,7 @@ env_get() {
 		${GREP} --color=never -Po "^\s*(?:(?:(?<Q>['\"]).*\k<Q>)|(?:[^\s]+(?:\s+(?!#)[^\s]+)*))" <<< "${LiteralValue}" | xargs 2> /dev/null || true
 	else
 		# VarFile does not exist, give a warning
-		warn "File '${C["File"]}${VarFile}${NC}' does not exist."
+		warn "File '{{|File|}}${VarFile}{{[-]}}' does not exist."
 	fi
 
 }
@@ -63,14 +63,14 @@ test_env_get() {
 	VarFile=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.VarFile.XXXXXXXXXX") ||
 		fatal \
 			"Failed to create temporary file." \
-			"Failing command: ${C["FailingCommand"]}mktemp -t \"${APPLICATION_NAME}.${FUNCNAME[0]}.VarFile.XXXXXXXXXX\""
+			"Failing command: {{|FailingCommand|}}mktemp -t \"${APPLICATION_NAME}.${FUNCNAME[0]}.VarFile.XXXXXXXXXX\""
 	{
 		printf '### %s\n' \
 			"" \
 			"${VarFile}" \
 			""
 		for ((i = 0; i < ${#Test[@]}; i += 3)); do
-			printf '%s\n' "${Test[i + 1]}"
+			printf '%s\n' "${Test[i+1]}"
 		done
 	} > "${VarFile}"
 
@@ -78,8 +78,8 @@ test_env_get() {
 	run_unit_tests_pipe "Var" "Var" "${ForcePass}" < <(
 		for ((i = 0; i < ${#Test[@]}; i += 3)); do
 			printf '%s\n' \
-				"${Test[i + 1]}" \
-				"${Test[i + 2]}" \
+				"${Test[i+1]}" \
+				"${Test[i+2]}" \
 				"$(run_script 'env_get' "${Test[i]}" "${VarFile}")"
 		done
 	)
@@ -88,7 +88,7 @@ test_env_get() {
 	rm -f "${VarFile}" ||
 		warn \
 			"Failed to remove temporary file." \
-			"Failing command: ${C["FailingCommand"]}rm -f \"${VarFile}\""
+			"Failing command: {{|FailingCommand|}}rm -f \"${VarFile}\""
 
 	return ${result}
 }

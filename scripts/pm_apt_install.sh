@@ -12,21 +12,21 @@ pm_apt_install() {
 
 	local Command
 	if [[ -z "$(command -v apt-file)" ]]; then
-		info "Installing '${C["Program"]}apt-file${NC}'."
+		info "Installing '{{|Folder|}}apt-file{{[-]}}'."
 		Command="sudo apt-get -y install apt-file"
-		notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+		notice "Running: {{|RunningCommand|}}${Command}{{[-]}}"
 		eval "${REDIRECT}${Command}" ||
 			fatal \
-				"Failed to install '${C["Program"]}apt-file${NC}' from apt." \
-				"Failing command: ${C["FailingCommand"]}${Command}"
+				"Failed to install '{{|Folder|}}apt-file{{[-]}}' from apt." \
+				"Failing command: {{|FailingCommand|}}${Command}"
 	fi
 	notice "Updating package information."
 	Command='sudo apt-file update'
-	notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+	notice "Running: {{|RunningCommand|}}${Command}{{[-]}}"
 	eval "${REDIRECT}${Command}" ||
 		fatal \
 			"Failed to get updates from apt." \
-			"Failing command: ${C["FailingCommand"]}${Command}"
+			"Failing command: {{|FailingCommand|}}${Command}"
 
 	notice "Determining packages to install."
 	local -a Packages
@@ -39,17 +39,17 @@ pm_apt_install() {
 
 	#shellcheck disable=SC2124 #Assigning an array to a string! Assign as array, or use * instead of @ to concatenate.
 	local PackagesString="${Packages[@]}"
-	local pkglist="${PackagesString// /${NC}\', \'${C["Program"]}}"
-	pkglist="${NC}'${C["Program"]}${pkglist}${NC}'"
+	local pkglist="${PackagesString// /{{[-]}}\', \'{{|Folder|}}}"
+	pkglist="{{[-]}}'{{|Folder|}}${pkglist}{{[-]}}'"
 
 	notice "Installing packages: ${pkglist}"
 
 	Command="sudo apt-get -y install ${PackagesString}"
-	notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+	notice "Running: {{|RunningCommand|}}${Command}{{[-]}}"
 	eval "${REDIRECT}${Command}" ||
 		fatal \
 			"Failed to install dependencies from apt." \
-			"Failing command: ${C["FailingCommand"]}${Command}"
+			"Failing command: {{|FailingCommand|}}${Command}"
 }
 
 detect_packages() {
@@ -69,7 +69,7 @@ detect_packages() {
 			continue
 		fi
 		local Command="apt-file search bin/${Dep}"
-		notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+		notice "Running: {{|RunningCommand|}}${Command}{{[-]}}"
 		eval "${Command}" 2> /dev/null
 	done | while IFS= read -r line; do
 		if [[ ${line} =~ ${RegEx_AptFile} ]]; then

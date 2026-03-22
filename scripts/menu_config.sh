@@ -11,7 +11,7 @@ menu_config() {
 
 	if run_script 'needs_appvars_create'; then
 		coproc {
-			dialog_pipe "${DC["TitleSuccess"]-}Creating environment variables for added apps" "Please be patient, this can take a while.\n${DC["CommandLine"]-} ${APPLICATION_COMMAND} --env" "${DIALOGTIMEOUT}"
+			dialog_pipe "{{|TitleSuccess|}}Creating environment variables for added apps" "Please be patient, this can take a while.\n{{|CommandLine|}} ${APPLICATION_COMMAND} --env" "${DIALOGTIMEOUT}"
 		}
 		local -i DialogBox_PID=${COPROC_PID}
 		local -i DialogBox_FD="${COPROC[1]}"
@@ -31,31 +31,30 @@ menu_config() {
 	local Option_ComposeDown="Stop All Applications"
 	local Option_DockerPrune="Prune Docker System"
 	local ConfigOpts=(
-		"${Option_FullSetup}" "${DC["ListDefault"]}This goes through selecting apps and editing variables. Recommended for first run"
-		"${Option_EditGlobalVars}" "${DC["ListDefault"]}Review and adjust global variables"
-		"${Option_SelectApps}" "${DC["ListDefault"]}Select which apps to run. Previously installed apps are remembered"
-		"${Option_EditAppVars}" "${DC["ListDefault"]}Review and adjust variables for installed apps"
-		"${Option_ComposeUp}" "${DC["ListDefault"]}Run Docker Compose to start all applications"
-		"${Option_ComposeDown}" "${DC["ListDefault"]}Run Docker Compose to stop all applications"
-		"${Option_DockerPrune}" "${DC["ListDefault"]}Remove all unused containers, networks, volumes, images and build cache"
+		"${Option_FullSetup}" "{{|ListDefault|}}This goes through selecting apps and editing variables. Recommended for first run" ""
+		"${Option_EditGlobalVars}" "{{|ListDefault|}}Review and adjust global variables" ""
+		"${Option_SelectApps}" "{{|ListDefault|}}Select which apps to run. Previously installed apps are remembered" ""
+		"${Option_EditAppVars}" "{{|ListDefault|}}Review and adjust variables for installed apps" ""
+		"${Option_ComposeUp}" "{{|ListDefault|}}Run Docker Compose to start all applications" ""
+		"${Option_ComposeDown}" "{{|ListDefault|}}Run Docker Compose to stop all applications" ""
+		"${Option_DockerPrune}" "{{|ListDefault|}}Remove all unused containers, networks, volumes, images and build cache" ""
 	)
 
 	local LastConfigChoice=""
 	while true; do
-		set_screen_size
 		local -a ConfigChoiceDialog=(
-			--output-fd 1
-			--title "${DC["Title"]-}${Title}"
-			--extra-button
-			--ok-label "Select"
-			--extra-label "Back"
-			--cancel-label "Exit"
-			--menu "What would you like to do?" 0 0 0
+			"${Title}"
+			"What would you like to do?"
+			--item-help
+			"--ok-label:Select"
+			"--extra-label:Back"
+			"--cancel-label:Exit"
+			"--default-item:${LastConfigChoice}"
 			"${ConfigOpts[@]}"
 		)
 		local ConfigChoice
 		local -i ConfigDialogButtonPressed=0
-		ConfigChoice=$(_dialog_ --default-item "${LastConfigChoice}" "${ConfigChoiceDialog[@]}") || ConfigDialogButtonPressed=$?
+		ConfigChoice=$(dialog_menu "${ConfigChoiceDialog[@]}") || ConfigDialogButtonPressed=$?
 		LastConfigChoice=${ConfigChoice}
 		case ${DIALOG_BUTTONS[ConfigDialogButtonPressed]-} in
 			OK) # Select
@@ -79,26 +78,27 @@ menu_config() {
 						;;
 					"${Option_ComposeDown}")
 						local Question
-						Question="Would you like to ${DC["Highlight"]-}Stop${DC["NC"]-} all containers, or bring all containers ${DC["Highlight"]-}Down${DC["NC"]-}?\n\n${DC["Highlight"]-}Stop${DC["NC"]-} will stop them, ${DC["Highlight"]-}Down${DC["NC"]-} will stop and remove them."
+						Question="Would you like to {{|Highlight|}}Stop{{[-]}} all containers, or bring all containers {{|Highlight|}}Down{{[-]}}?\n\n{{|Highlight|}}Stop{{[-]}} will stop them, {{|Highlight|}}Down{{[-]}} will stop and remove them."
+						set_screen_size
 						local -a YesNoDialog=(
-							--title "${DC["TitleQuestion"]-}Docker Compose"
+							"Docker Compose"
+							"${Question}{{[-]}}"
+							--maximized
 							--no-collapse
 							--extra-button
-							--yes-label "Stop"
-							--extra-label "Down"
-							--no-label "Cancel"
-							--yesno "${Question}${DC["NC"]-}"
-							"$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+							--yes-label:Stop
+							--extra-label:Down
+							--cancel-label:Cancel
 						)
 						local -i YesNoDialogButtonPressed=0
-						_dialog_ "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?
+						dialog_yesno "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?
 						case ${DIALOG_BUTTONS[YesNoDialogButtonPressed]-} in
 							OK) # Stop
-								run_script_dialog "${DC["TitleSuccess"]-}Docker Compose" "Stopping all running services.\n${DC["CommandLine"]-} ${APPLICATION_COMMAND} --compose stop" "" \
+								run_script_dialog "{{|TitleSuccess|}}Docker Compose" "Stopping all running services.\n{{|CommandLine|}} ${APPLICATION_COMMAND} --compose stop" "" \
 									'docker_compose' "stop"
 								;;
 							EXTRA) # Down
-								run_script_dialog "${DC["TitleSuccess"]-}Docker Compose" "Stopping and removing all containers, networks, volumes, and images.\n${DC["CommandLine"]-} ${APPLICATION_COMMAND} --compose down" "" \
+								run_script_dialog "{{|TitleSuccess|}}Docker Compose" "Stopping and removing all containers, networks, volumes, and images.\n{{|CommandLine|}} ${APPLICATION_COMMAND} --compose down" "" \
 									'docker_compose' "down"
 								;;
 							CANCEL | ESC) # Cancel

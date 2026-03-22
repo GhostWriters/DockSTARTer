@@ -15,7 +15,7 @@ menu_options_package_manager() {
 	run_script 'config_package_manager' &> /dev/null
 
 	local CurrentPackageManager
-	CurrentPackageManager="$(run_script 'config_get' PackageManager)"
+	CurrentPackageManager="$(get_toml_val "${APPLICATION_TOML_FILE}" "pm.package_manager")"
 
 	local -a PackageManagerList
 	readarray -t PackageManagerList < <(run_script 'package_manager_list')
@@ -42,27 +42,29 @@ menu_options_package_manager() {
 	while true; do
 		local -a Opts=()
 		for Tag in "${PM_Tag[@]-}"; do
-			local ItemColor="${DC["ListAppUserDefined"]-}"
+			local ItemColor="{{|ListAppUserDefined|}}"
 			if [[ ${Tag} == "${PM_AutoDetect_Tag}" ]] || run_script 'package_manager_exists' "${PM_PackageManager["${Tag}"]}"; then
-				ItemColor="${DC["ListApp"]-}"
+				ItemColor="{{|ListApp|}}"
 			fi
 			if [[ ${PM_PackageManager["${Tag}"]} == "${CurrentPackageManager}" ]]; then
-				Opts+=("${Tag}" "${ItemColor}${PM_Item["${Tag}"]}" ON)
+				Opts+=("${Tag}" "${ItemColor}${PM_Item["${Tag}"]}" ON "")
 			else
-				Opts+=("${Tag}" "${ItemColor}${PM_Item["${Tag}"]}" OFF)
+				Opts+=("${Tag}" "${ItemColor}${PM_Item["${Tag}"]}" OFF "")
 			fi
 		done
 		local -a ChoiceDialog=(
-			--output-fd 1
-			--title "${DC["Title"]-}${Title}"
-			--ok-label "Select"
-			--cancel-label "Back"
-			--radiolist "Select the package manager to use. Detected package managers are highlighted." 0 0 0
+			"${Title}"
+			"Select the package manager to use. Detected package managers are highlighted."
+			--item-help
+			--ok-label:Select
+			--extra-label:Back
+			--cancel-label:Exit
+			--default-item:"${LastChoice}"
 			"${Opts[@]}"
 		)
 		local Choice
 		local -i DialogButtonPressed=0
-		Choice=$(_dialog_ --default-item "${LastChoice}" "${ChoiceDialog[@]}") || DialogButtonPressed=$?
+		Choice=$(dialog_radiolist "${ChoiceDialog[@]}") || DialogButtonPressed=$?
 		LastChoice=${Choice}
 		case ${DIALOG_BUTTONS[DialogButtonPressed]-} in
 			OK)
@@ -71,8 +73,11 @@ menu_options_package_manager() {
 					run_script 'config_package_manager' "${CurrentPackageManager}" &> /dev/null
 				fi
 				;;
-			CANCEL | ESC)
+			EXTRA | ESC)
 				return
+				;;
+			CANCEL)
+				run_script 'menu_exit' || true
 				;;
 			*)
 				invalid_dialog_button ${DialogButtonPressed}

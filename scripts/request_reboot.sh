@@ -9,7 +9,7 @@ request_reboot() {
 		"If this is your first run reboot is required." \
 		"Failure to reboot on first run can cause errors with other operations."
 	notice \
-		"Please run '${C["UserCommand"]}sudo reboot${NC}' manually." \
+		"Please run '{{|UserCommand|}}sudo reboot{{[-]}}' manually." \
 		"If this is not your first run you may disregard this message."
 }
 

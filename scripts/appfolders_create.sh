@@ -33,13 +33,13 @@ appfolders_create() {
 				fi
 			done
 			if [[ -n ${FoldersArray[*]-} ]]; then
-				notice "Creating config folders for '${C["App"]-}${AppName}${NC-}'."
+				notice "Creating config folders for '{{|App|}}${AppName}{{[-]}}'."
 				for Folder in "${FoldersArray[@]-}"; do
-					notice "Creating folder '${C["Folder"]-}${Folder}${NC-}'"
+					notice "Creating folder '{{|Folder|}}${Folder}{{[-]}}'"
 					mkdir -p "${Folder}" ||
 						warn \
-							"Could not create folder '${C["Folder"]-}${Folder}${NC-}'" \
-							"Failing command: ${C["FailingCommand"]-}mkdir -p  \"${Folder}\""
+							"Could not create folder '{{|Folder|}}${Folder}{{[-]}}'" \
+							"Failing command: {{|FailingCommand|}}mkdir -p  \"${Folder}\""
 					if [[ -d ${Folder} ]]; then
 						run_script 'set_permissions' "${Folder}"
 					fi

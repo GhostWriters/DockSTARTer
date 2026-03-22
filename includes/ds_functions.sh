@@ -211,7 +211,7 @@ ds_switch_branch() {
 		export FORCE=true
 		export PROMPT="CLI"
 		notice \
-			"Automatically switching from ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} branch '${C["Branch"]}${APPLICATION_LEGACY_BRANCH}${NC}' to '${C["Branch"]}${APPLICATION_DEFAULT_BRANCH}${NC}'."
+			"Automatically switching from {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} branch '{{|Branch|}}${APPLICATION_LEGACY_BRANCH}{{[-]}}' to '{{|Branch|}}${APPLICATION_DEFAULT_BRANCH}{{[-]}}'."
 		run_script 'update_self' "${APPLICATION_DEFAULT_BRANCH}" "${ARGS[@]}"
 		exit
 	fi

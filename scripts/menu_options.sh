@@ -12,26 +12,26 @@ menu_options() {
 	local Option_Display="Display Options"
 	local Option_Package_Manager="Package Manager"
 	local Opts=(
-		"${Option_Theme}" "${DC["ListDefault"]}Choose a theme for ${APPLICATION_NAME}"
-		"${Option_Display}" "${DC["ListDefault"]}Set display options"
-		"${Option_Package_Manager}" "${DC["ListDefault"]}Choose the package manager to use"
+		"${Option_Theme}" "{{|ListDefault|}}Choose a theme for ${APPLICATION_NAME}" ""
+		"${Option_Display}" "{{|ListDefault|}}Set display options" ""
+		"${Option_Package_Manager}" "{{|ListDefault|}}Choose the package manager to use" ""
 	)
 
 	local LastChoice=""
 	while true; do
 		local -a ChoiceDialog=(
-			--output-fd 1
-			--title "${DC["Title"]-}${Title}"
-			--extra-button
-			--ok-label "Select"
-			--extra-label "Back"
-			--cancel-label "Exit"
-			--menu "What would you like to do?" 0 0 0
+			"${Title}"
+			"What would you like to do?"
+			"--ok-label:Select"
+			"--extra-label:Back"
+			"--cancel-label:Exit"
+			"--default-item:${LastChoice}"
+			--item-help
 			"${Opts[@]}"
 		)
 		local Choice
 		local -i DialogButtonPressed=0
-		Choice=$(_dialog_ --default-item "${LastChoice}" "${ChoiceDialog[@]}") || DialogButtonPressed=$?
+		Choice=$(dialog_menu "${ChoiceDialog[@]}") || DialogButtonPressed=$?
 		LastChoice=${Choice}
 		case ${DIALOG_BUTTONS[DialogButtonPressed]-} in
 			OK) # Select

@@ -14,11 +14,11 @@ pm_apt_upgrade() {
 
 	local COMMAND='sudo apt-get -y dist-upgrade'
 	notice "Upgrading packages. Please be patient, this can take a while."
-	notice "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
+	notice "Running: {{|RunningCommand|}}${COMMAND}{{[-]}}"
 	eval "${REDIRECT}${COMMAND}" ||
 		fatal \
 			"Failed to upgrade packages from apt." \
-			"Failing command: ${C["FailingCommand"]}${COMMAND}"
+			"Failing command: {{|FailingCommand|}}${COMMAND}"
 }
 
 test_pm_apt_upgrade() {

@@ -53,60 +53,59 @@ appvars_purge() {
 		fi
 
 		if [[ -z ${GlobalVarsToRemove[*]-} && -z ${AppEnvVarsToRemove[*]-} ]]; then
-			local WarningText="'${DC["Highlight"]-}${C["App"]}${AppName}${NC}${DC["NC"]-}' has no variables to remove."
-			local WarningTextNotice
-			WarningTextNotice="$(strip_dialog_colors "${WarningText}")"
+			local WarningText="'{{|Highlight|}}{{|App|}}${AppName}{{[-]}}{{[-]}}' has no variables to remove."
 			if use_dialog_box; then
 				dialog_warning "{Title}" "${WarningText}"
-				warn "${WarningTextNotice}" &> /dev/null
+				warn "${WarningText}" &> /dev/null
 			else
-				warn "${WarningTextNotice}"
+				warn "${WarningText}"
 			fi
 			continue
 		fi
 
 		local Indent='   '
 		local Question
-		Question="Would you like to purge these settings for '${DC["Highlight"]-}${C["App"]}${AppName}${NC}${DC["NC"]-}'?\n"
+		Question="Would you like to purge these settings for '{{|Highlight|}}{{|App|}}${AppName}{{[-]}}{{[-]}}'?\n"
 		if [[ -n ${GlobalLinesToRemove[*]-} ]]; then
-			Question+="${Indent}${DC["Highlight"]-}${C["Folder"]}${COMPOSE_ENV}${NC}${DC["NC"]-}:\n"
+			Question+="${Indent}{{|Highlight|}}{{|Folder|}}${COMPOSE_ENV}{{[-]}}{{[-]}}:\n"
 			for line in "${GlobalLinesToRemove[@]}"; do
-				Question+="${Indent}${Indent}${C["Var"]}${line}${NC}\n"
+				Question+="${Indent}${Indent}{{|Var|}}${line}{{[-]}}\n"
 			done
 		fi
 		if [[ -n ${AppEnvLinesToRemove[*]-} ]]; then
-			Question+="${Indent}${DC["Highlight"]-}${C["Folder"]}${AppEnvFile}${NC}${DC["NC"]-}:\n"
+			Question+="${Indent}{{|Highlight|}}{{|Folder|}}${AppEnvFile}{{[-]}}{{[-]}}:\n"
 			for line in "${AppEnvLinesToRemove[@]}"; do
-				Question+="${Indent}${Indent}${C["Var"]}${line}${NC}\n"
+				Question+="${Indent}${Indent}{{|Var|}}${line}{{[-]}}\n"
 			done
 		fi
 		if [[ ${CI-} == true ]] || run_script 'question_prompt' Y "${Question}" "${Title}" "${ASSUMEYES:+Y}"; then
-			info "Purging '${C["App"]}${AppName}${NC}' variables."
+			info "Purging '{{|App|}}${AppName}{{[-]}}' variables."
 
 			if [[ -n ${GlobalVarsToRemove[*]-} ]]; then
 				# Remove variables from global .env file
 				notice \
-					"Removing variables from ${C["File"]}${COMPOSE_ENV}${NC}:" \
-					"$(printf "${Indent}${C[Var]}%s${NC}\n" "${GlobalLinesToRemove[@]}")"
+					"Removing variables from {{|File|}}${COMPOSE_ENV}{{[-]}}:" \
+					"$(printf "${Indent}{{|Var|}}%s{{[-]}}\n" "${GlobalLinesToRemove[@]}")"
 				${SED} -i -E "/^\s*(${GlobalVarsRegex})\s*=/d" "${COMPOSE_ENV}" ||
 					fatal \
-						"Failed to purge '${C["App"]}${AppName}${NC}' variables." \
-						"Failing command: ${C["FailingCommand"]}${SED} -i -E \"/^\\\*(${GlobalVarsRegex})\\\*/d\" \"${COMPOSE_ENV}\""
+						"Failed to purge '{{|App|}}${AppName}{{[-]}}' variables." \
+						"Failing command: {{|FailingCommand|}}${SED} -i -E \"/^\\\*(${GlobalVarsRegex})\\\*/d\" \"${COMPOSE_ENV}\""
 			fi
 			if [[ -n ${AppEnvVarsToRemove[*]-} ]]; then
 				# Remove variables from .env.app.appname file
 				notice \
-					"Removing variables from ${C["File"]}${AppEnvFile}${NC}:" \
-					"$(printf "${Indent}${C[Var]}%s${NC}\n" "${AppEnvLinesToRemove[@]-}")"
+					"Removing variables from {{|File|}}${AppEnvFile}{{[-]}}:" \
+					"$(printf "${Indent}{{|Var|}}%s{{[-]}}\n" "${AppEnvLinesToRemove[@]-}")"
 				${SED} -i -E "/^\s*(${AppEnvVarsRegex})\s*=/d" "${AppEnvFile}" ||
 					fatal \
-						"Failed to purge '${C["App"]}${AppName}${NC}' variables." \
-						"Failing command: ${C["FailingCommand"]}${SED} -i -E \"/^\\\*(${AppEnvVarsRegex})\\\*/d\" \"${AppEnvFile}\""
+						"Failed to purge '{{|App|}}${AppName}{{[-]}}' variables." \
+						"Failing command: {{|FailingCommand|}}${SED} -i -E \"/^\\\*(${AppEnvVarsRegex})\\\*/d\" \"${AppEnvFile}\""
 			fi
 		else
-			info "Keeping '${C["App"]}${AppName}${NC}' variables."
+			info "Keeping '{{|App|}}${AppName}{{[-]}}' variables."
 		fi
 	done
+	run_script 'unset_needs_appvars_create'
 }
 
 test_appvars_purge() {

@@ -49,7 +49,7 @@ test_app_nicename() {
 		for ((i = 0; i < ${#Test[@]}; i += 2)); do
 			printf '%s\n' \
 				"${Test[i]}" \
-				"${Test[i + 1]}" \
+				"${Test[i+1]}" \
 				"$(run_script 'app_nicename' "${Test[i]}")"
 		done
 	)

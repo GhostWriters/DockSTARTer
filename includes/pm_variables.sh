@@ -195,11 +195,11 @@ pm_check_dependencies() {
 			notice | warn | error | fatal)
 				${NoticeType} "$(
 					printf \
-						"Dependency '${C["Program"]-}%s${NC-}' is not installed.\n" \
+						"Dependency '{{|Folder|}}%s{{[-]}}' is not installed.\n" \
 						"${Dependencies[@]}"
 				)" \
 					"Not all dependencies are installed." \
-					"Either install them manually, or run '${C["UserCommand"]-}${APPLICATION_COMMAND} -i${NC-}' to install dependencies."
+					"Either install them manually, or run '{{|UserCommand|}}${APPLICATION_COMMAND} -i{{[-]}}' to install dependencies."
 				;;
 		esac
 		return 1

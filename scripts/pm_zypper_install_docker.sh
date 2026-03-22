@@ -5,7 +5,7 @@ IFS=$'\n\t'
 pm_zypper_install_docker() {
 	notice "Installing docker. Please be patient, this can take a while."
 	local Command="sudo zypper -n install docker docker-compose"
-	notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+	notice "Running: {{|RunningCommand|}}${Command}{{[-]}}"
 	eval "${Command}" &> /dev/null || true
 }
 
