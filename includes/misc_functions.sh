@@ -574,3 +574,83 @@ hrx_env_get() {
 	done < "${archive}"
 	printf '%s\n' "${found_val}"
 }
+
+get_toml_section_key_list() {
+	# get_toml_section_key_list FILE SECTION
+	# Returns a list of all keys within [SECTION] in FILE.
+	local file=${1-}
+	local section=${2-}
+	local current_section=""
+
+	while IFS='= ' read -r key val || [[ -n ${key}${val} ]]; do
+		if [[ ${key} =~ ^\[(.*)\]$ ]]; then
+			current_section="${BASH_REMATCH[1]}"
+			continue
+		fi
+
+		if [[ ${current_section} == "${section}" && -n ${key} && -n ${val} ]]; then
+			printf '%s\n' "${key}"
+		fi
+	done < "${file}"
+}
+
+hrx_toml_get() {
+	# hrx_toml_get ArchiveFile InternalPath SECTION.KEY
+	# Returns the value of KEY from SECTION in a TOML file within an HRX archive.
+	local archive=${1-}
+	local internal_path=${2-}
+	local section_key=${3-}
+	local section="${section_key%%.*}"
+	local target_key="${section_key#*.}"
+	local boundary="" capturing=0 current_section="" found_val=""
+
+	while IFS= read -r line || [[ -n ${line} ]]; do
+		if [[ -z ${boundary} ]]; then
+			if [[ ${line} =~ ^(<[=]+>)[[:space:]] ]]; then
+				boundary="${BASH_REMATCH[1]}"
+			else
+				continue
+			fi
+		fi
+		if [[ ${line} == "${boundary} "* ]]; then
+			[[ ${capturing} -eq 1 ]] && break
+			[[ ${line#"${boundary} "} == "${internal_path}" ]] && capturing=1
+			continue
+		fi
+		if [[ ${capturing} -eq 1 ]]; then
+			# Skip comments and empty lines
+			[[ ${line} =~ ^[[:space:]]*# ]] && continue
+			[[ ${line} =~ ^[[:space:]]*$ ]] && continue
+
+			if [[ ${line} =~ ^\[(.*)\]$ ]]; then
+				current_section="${BASH_REMATCH[1]}"
+				continue
+			fi
+			if [[ ${current_section} == "${section}" && ${line} == *[[:space:]]*=[[:space:]]* ]]; then
+				local key="${line%%=*}"
+				local val="${line#*=}"
+				# Trim key
+				key="${key#"${key%%[![:space:]]*}"}"
+				key="${key%"${key##*[![:space:]]}"}"
+
+				if [[ ${key} == "${target_key}" ]]; then
+					# Trim leading and trailing whitespace from val
+					val="${val#"${val%%[![:space:]]*}"}"
+					val="${val%"${val##*[![:space:]]}"}"
+					if [[ ${val} == \"*\" ]]; then
+						val="${val#\"}"
+						val="${val%\"}"
+					elif [[ ${val} == \'*\' ]]; then
+						val="${val#\'}"
+						val="${val%\'}"
+					else
+						val="${val%%#*}"
+						val="${val%"${val##*[![:space:]]}"}"
+					fi
+					found_val="${val}"
+				fi
+			fi
+		fi
+	done < "${archive}"
+	printf '%s\n' "${found_val}"
+}

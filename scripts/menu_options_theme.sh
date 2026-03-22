@@ -23,7 +23,7 @@ menu_options_theme() {
 		IsUserTheme+=("${UserTheme}")
 		ThemeDescription["${ConfigValue}"]="$(run_script 'theme_description' "${ConfigValue}")"
 		ThemeAuthor["${ConfigValue}"]="$(run_script 'theme_author' "${ConfigValue}")"
-	done < <(run_script 'theme_list')
+	done < <(run_script 'theme_list_data')
 
 	# Check if the configured theme appears in the list; if not, prepend an orphaned placeholder
 	local FoundCurrent=false

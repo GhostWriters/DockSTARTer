@@ -114,9 +114,9 @@ config_theme() {
 	)
 
 	local -a VarList
-	readarray -t VarList < <(run_script 'env_var_list' "${ThemeFile}")
+	readarray -t VarList < <(get_toml_section_key_list "${ThemeFile}" "colors")
 	for VarName in "${VarList[@]-}"; do
-		DC["{{|${VarName}|}}"]="$(run_script 'config_get' "${VarName}" "${ThemeFile}")"
+		DC["{{|${VarName}|}}"]="$(get_toml_val "${ThemeFile}" "colors.${VarName}")"
 	done
 	for Style in "${!DC[@]}"; do
 		DC["$Style"]="$(resolve_styles DC "${DC["$Style"]}")"

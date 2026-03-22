@@ -55,7 +55,7 @@ menu_dialog_example() {
 		"Variable File Comment" "{{|LineComment|}}### A comment in the variable file" "${Helpline}"
 		"Variable File Other" "{{|LineOther|}}Any other line in the file" "${Helpline}"
 		"Variable File Variable" "{{|LineVar|}}VarName='Default Value'" "${Helpline}"
-		"Variable File Mofified" "{{|LineModifiedVar|}}VarName='Modified Value'" "${Helpline}"
+		"Variable File Mofified" "{{|ModifiedText|}}VarName='Modified Value'" "${Helpline}"
 		"Variable File Add" "{{|LineAddVariable|}}<ADD VARIABLE>" "${Helpline}"
 		"" "" "${Helpline}"
 		"" "" "${Helpline}"

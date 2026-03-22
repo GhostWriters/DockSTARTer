@@ -25,7 +25,7 @@ declare -rgx TEMP_FOLDER_NAME="temp"
 declare -rgx COMPOSE_ENV_DEFAULT_FILE_NAME=".env.example"
 declare -rgx APPLICATION_INI_NAME="${APPLICATION_NAME,,}.ini"
 declare -rgx APPLICATION_TOML_NAME="${APPLICATION_NAME,,}.toml"
-declare -rgx THEME_FILE_NAME="theme.ini"
+declare -rgx THEME_FILE_NAME="theme.toml"
 declare -rgx THEME_FILE_EXT=".dstheme"
 
 declare -rgx TEMPLATES_PARENT_FOLDER="${APPLICATION_STATE_FOLDER}/${TEMPLATES_PARENT_FOLDER_NAME}/${TEMPLATES_REPO_FOLDER_NAME}"
