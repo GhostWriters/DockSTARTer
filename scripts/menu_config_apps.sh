@@ -10,7 +10,7 @@ menu_config_apps() {
 	local LastAppChoice=""
 	while true; do
 		local AddedApps
-		AddedApps="$(run_script 'app_list_referenced')"
+		AddedApps="$(run_script 'app_list_referenced' | run_script 'app_nicename_pipe')"
 		local -a AppOptions=()
 		for AppName in ${AddedApps}; do
 			local AppDescription
