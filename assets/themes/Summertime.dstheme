@@ -1,7 +1,7 @@
-<==> theme.ini
+<==> theme.toml
 #
 # DockSTARTer theme file
-# theme.ini
+# theme.toml
 #
 # Color List:
 #
@@ -21,45 +21,55 @@
 # {{[::u]}}     No Underline
 # {{[-]}}       No Color
 
-ThemeName='Summertime'
-ThemeDescription='Dockstarter Summertime theme'
-ThemeAuthor='Westlin'
+[metadata]
+name = "Summertime"
+description = "Dockstarter Summertime theme"
+author = "Westlin"
 
-ApplicationName="{{[-]}}{{[::R]}}"
-ApplicationVersion="{{|ApplicationName|}}"
-ApplicationVersionBrackets="{{|ApplicationName|}}"
-ApplicationVersionSpace="{{[-]}}"
-ApplicationFlags="{{[-]}}{{[::b]}}"
-ApplicationFlagsBrackets="{{[-]}}{{[::R]}}"
-ApplicationFlagsSpace="{{[-]}}{{[::R]}}"
-ApplicationUpdate="{{[-]}}"
-ApplicationUpdateBrackets="{{[-]}}"
-Hostname="{{|ApplicationName|}}"
-Title="{{[-]}}{{[::bU]}}"
-Subtitle="{{[-]}}{{[::R]}}"
-TitleSuccess="{{[-]}}{{[green::BU]}}"
-TitleError="{{[-]}}{{[red::BU]}}"
-TitleWarning="{{[-]}}{{[yellow::BU]}}"
-TitleQuestion="{{[-]}}{{[yellow::BU]}}"
-Heading="{{[-]}}{{[::R]}}"
-HeadingTag="{{[-]}}{{[::B]}}"
-HeadingValue="{{[-]}}{{[::BU]}}"
-HeadingAppDescription="{{[-]}}"
-Highlight="{{[-]}}{{[::B]}}"
-LineHeading="{{[-]}}{{[::U]}}"
-LineComment="{{[-]}}{{[::B]}}"
-LineOther="{{[-]}}"
-LineVar="{{[-]}}"
-LineModifiedVar="{{[-]}}{{[::R]}}"
-LineAddVariable="{{[-]}}{{[::R]}}"
-ListDefault=""
-ListApp=""
-ListAppUserDefined="{{[-]}}{{[::R]}}"
-CommandLine="{{[-]}}"
-KeyCap="{{[-]}}{{[::R]}}"
-ProgressWaiting="{{[-]}}"
-ProgressInProgress="{{[-]}}{{[::B]}}"
-ProgressCompleted="{{[-]}}{{[::R]}}"
+
+[syntax]
+semantic_prefix = "{{|"
+semantic_suffix = "|}}"
+direct_prefix = "{{["
+direct_suffix = "]}}"
+
+[colors]
+ApplicationName = "{{[-]}}{{[::R]}}"
+ApplicationVersion = "{{|ApplicationName|}}"
+ApplicationVersionBrackets = "{{|ApplicationName|}}"
+ApplicationVersionSpace = "{{[-]}}"
+ApplicationFlags = "{{[-]}}{{[::b]}}"
+ApplicationFlagsBrackets = "{{[-]}}{{[::R]}}"
+ApplicationFlagsSpace = "{{[-]}}{{[::R]}}"
+ApplicationUpdate = "{{[-]}}"
+ApplicationUpdateBrackets = "{{[-]}}"
+Hostname = "{{|ApplicationName|}}"
+Title = "{{[-]}}{{[::bU]}}"
+Subtitle = "{{[-]}}{{[::R]}}"
+TitleSuccess = "{{[-]}}{{[green::BU]}}"
+TitleError = "{{[-]}}{{[red::BU]}}"
+TitleWarning = "{{[-]}}{{[yellow::BU]}}"
+TitleQuestion = "{{[-]}}{{[yellow::BU]}}"
+Heading = "{{[-]}}{{[::R]}}"
+HeadingTag = "{{[-]}}{{[::B]}}"
+HeadingValue = "{{[-]}}{{[::BU]}}"
+HeadingAppDescription = "{{[-]}}"
+Highlight = "{{[-]}}{{[::B]}}"
+LineHeading = "{{[-]}}{{[::U]}}"
+LineComment = "{{[-]}}{{[::B]}}"
+LineOther = "{{[-]}}"
+LineVar = "{{[-]}}"
+ModifiedText = "{{[-]}}{{[::R]}}"
+LineAddVariable = "{{[-]}}{{[::R]}}"
+ListDefault = ""
+ListApp = ""
+ListAppUserDefined = "{{[-]}}{{[::R]}}"
+CommandLine = "{{[-]}}"
+KeyCap = "{{[-]}}{{[::R]}}"
+ProgressWaiting = "{{[-]}}"
+ProgressInProgress = "{{[-]}}{{[::B]}}"
+ProgressCompleted = "{{[-]}}{{[::R]}}"
+
 
 <==> .dialogrc
 # $Id: debian.rc,v 1.7 2011/10/15 01:00:09 tom Exp $

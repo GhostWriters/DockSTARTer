@@ -18,7 +18,7 @@ theme_author() {
 		ThemeArchive="${THEME_FOLDER}/${ThemeName}${THEME_FILE_EXT}"
 	fi
 
-	hrx_env_get "${ThemeArchive}" "${THEME_FILE_NAME}" "ThemeAuthor"
+	hrx_toml_get "${ThemeArchive}" "${THEME_FILE_NAME}" "metadata.author"
 }
 
 test_theme_author() {

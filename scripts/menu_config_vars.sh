@@ -73,7 +73,7 @@ menu_config_vars() {
 				if [[ ${line} == "${DefaultLine}" ]]; then
 					LineColor[LineNumber]="{{|LineVar|}}"
 				else
-					LineColor[LineNumber]="{{|LineModifiedVar|}}"
+					LineColor[LineNumber]="{{|ModifiedText|}}"
 				fi
 				VarNameOnLine[LineNumber]="${VarName}"
 				if [[ -z ${FirstVarLine-} ]]; then
@@ -117,7 +117,7 @@ menu_config_vars() {
 					if [[ ${line} == "${DefaultLine}" ]]; then
 						LineColor[LineNumber]="{{|LineVar|}}"
 					else
-						LineColor[LineNumber]="{{|LineModifiedVar|}}"
+						LineColor[LineNumber]="{{|ModifiedText|}}"
 					fi
 					VarNameOnLine[LineNumber]="${APPNAME}:${VarName}"
 					if [[ -z ${FirstVarLine-} ]]; then

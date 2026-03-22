@@ -1,7 +1,7 @@
-<==> theme.ini
+<==> theme.toml
 #
 # DockSTARTer theme file
-# theme.ini
+# theme.toml
 #
 # Color List:
 #
@@ -21,45 +21,55 @@
 # {{[::u]}}     No Underline
 # {{[-]}}       No Color
 
-ThemeName='Old DockSTARTer'
-ThemeDescription='The old DockSTARTer theme'
-ThemeAuthor='CLHatch'
+[metadata]
+name = "Old DockSTARTer"
+description = "The old DockSTARTer theme"
+author = "CLHatch"
 
-ApplicationName="{{[-]}}{{[blue::RB]}}"
-ApplicationVersion="{{|ApplicationName|}}"
-ApplicationVersionBrackets="{{|ApplicationName|}}"
-ApplicationVersionSpace="{{[-]}}"
-ApplicationFlags="{{[-]}}{{[::b]}}"
-ApplicationFlagsBrackets="{{[-]}}{{[::R]}}"
-ApplicationFlagsSpace="{{[-]}}{{[::R]}}"
-ApplicationUpdate="{{[-]}}{{[::R]}}"
-ApplicationUpdateBrackets="{{[-]}}{{[::R]}}"
-Hostname="{{|ApplicationName|}}"
-Title="{{[-]}}{{[blue::UR]}}"
-Subtitle="{{[-]}}{{[::RB]}}"
-TitleSuccess="{{[-]}}{{[green::R]}}"
-TitleError="{{[-]}}{{[red::R]}}"
-TitleWarning="{{[-]}}{{[yellow::R]}}"
-TitleQuestion="{{[-]}}{{[yellow::R]}}"
-Heading="{{[-]}}{{[::R]}}"
-HeadingTag="{{[-]}}{{[white::R]}}"
-HeadingValue="{{[-]}}{{[::RB]}}"
-HeadingAppDescription="{{[-]}}{{[yellow::b]}}"
-Highlight="{{[-]}}{{[yellow::B]}}"
-LineHeading="{{[-]}}{{[blue::RBU]}}"
-LineComment="{{[-]}}{{[black::RB]}}"
-LineOther="{{[-]}}{{[black::RB]}}"
-LineVar="{{[-]}}{{[black::Rb]}}"
-LineModifiedVar="{{[-]}}"
-LineAddVariable="{{[-]}}{{[black::Rb]}}"
-ListDefault=""
-ListApp=""
-ListAppUserDefined="{{[-]}}{{[black::R]}}"
-CommandLine="{{[-]}}{{[yellow::B]}}"
-KeyCap="{{[-]}}{{[::R]}}"
-ProgressWaiting="{{[-]}}{{[yellow::B]}}"
-ProgressInProgress="{{[-]}}{{[white::R]}}"
-ProgressCompleted="{{[-]}}{{[::RB]}}"
+
+[syntax]
+semantic_prefix = "{{|"
+semantic_suffix = "|}}"
+direct_prefix = "{{["
+direct_suffix = "]}}"
+
+[colors]
+ApplicationName = "{{[-]}}{{[blue::RB]}}"
+ApplicationVersion = "{{|ApplicationName|}}"
+ApplicationVersionBrackets = "{{|ApplicationName|}}"
+ApplicationVersionSpace = "{{[-]}}"
+ApplicationFlags = "{{[-]}}{{[::b]}}"
+ApplicationFlagsBrackets = "{{[-]}}{{[::R]}}"
+ApplicationFlagsSpace = "{{[-]}}{{[::R]}}"
+ApplicationUpdate = "{{[-]}}{{[::R]}}"
+ApplicationUpdateBrackets = "{{[-]}}{{[::R]}}"
+Hostname = "{{|ApplicationName|}}"
+Title = "{{[-]}}{{[blue::UR]}}"
+Subtitle = "{{[-]}}{{[::RB]}}"
+TitleSuccess = "{{[-]}}{{[green::R]}}"
+TitleError = "{{[-]}}{{[red::R]}}"
+TitleWarning = "{{[-]}}{{[yellow::R]}}"
+TitleQuestion = "{{[-]}}{{[yellow::R]}}"
+Heading = "{{[-]}}{{[::R]}}"
+HeadingTag = "{{[-]}}{{[white::R]}}"
+HeadingValue = "{{[-]}}{{[::RB]}}"
+HeadingAppDescription = "{{[-]}}{{[yellow::b]}}"
+Highlight = "{{[-]}}{{[yellow::B]}}"
+LineHeading = "{{[-]}}{{[blue::RBU]}}"
+LineComment = "{{[-]}}{{[black::RB]}}"
+LineOther = "{{[-]}}{{[black::RB]}}"
+LineVar = "{{[-]}}{{[black::Rb]}}"
+ModifiedText = "{{[-]}}"
+LineAddVariable = "{{[-]}}{{[black::Rb]}}"
+ListDefault = ""
+ListApp = ""
+ListAppUserDefined = "{{[-]}}{{[black::R]}}"
+CommandLine = "{{[-]}}{{[yellow::B]}}"
+KeyCap = "{{[-]}}{{[::R]}}"
+ProgressWaiting = "{{[-]}}{{[yellow::B]}}"
+ProgressInProgress = "{{[-]}}{{[white::R]}}"
+ProgressCompleted = "{{[-]}}{{[::RB]}}"
+
 
 <==> .dialogrc
 # DockSTARTer theme file
