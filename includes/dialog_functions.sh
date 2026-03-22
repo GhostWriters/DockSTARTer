@@ -460,7 +460,7 @@ dialog_menu() {
 	local SubTitle="${1-}"
 	shift || true
 	local -a DialogOptions=()
-	local -i Maximized=0 ItemHelp=0 Step=2
+	local -i Maximized=0 Step=2
 
 	while [[ ${1-} == --* ]]; do
 		case "${1}" in
@@ -471,10 +471,7 @@ dialog_menu() {
 				DialogOptions+=("${1%:*}" "${1#*:}")
 				;;
 			--default-item:*) DialogOptions+=("--default-item" "${1#*:}") ;;
-			--item-help)
-				ItemHelp=1
-				DialogOptions+=("${1}")
-				;;
+			--item-help) DialogOptions+=("${1}") ;;
 			--*) DialogOptions+=("${1}") ;;
 			*) break ;;
 		esac
@@ -491,16 +488,15 @@ dialog_menu() {
 
 	local -i WindowHeight=0 WindowWidth=0 MenuHeight=0
 
+	local -i SubTitleHeight SubTitleWidth
+	read -r SubTitleHeight SubTitleWidth < <("${DIALOG}" --output-fd 1 --print-text-size --msgbox "$(strip_styles "${SubTitle}")" 0 0 2> /dev/null | cut -d ' ' -f 1,2)
+
 	if [[ ${Maximized} -eq 1 ]]; then
 		WindowHeight=${WindowHeightMax}
 		WindowWidth=${WindowWidthMax}
-		local -i TextRows
-		TextRows="$("${DIALOG}" --output-fd 1 --print-text-size --msgbox "$(strip_styles "${SubTitle}")" "${WindowHeight}" "${WindowWidth}" 2> /dev/null | cut -d ' ' -f 1)"
-		MenuHeight=$((LINES - D["TextRowsAdjust"] - TextRows))
 	else
 		local -i LabelWidth=0 TagWidth=0 ItemWidth=0
 		local -i i
-		[[ ${ItemHelp} -eq 1 ]] && Step=3
 		for ((i = 0; i < ${#Items[@]}; i += Step)); do
 			local Tag Item
 			Tag="$(strip_styles "${Items[i]-}")"
@@ -510,15 +506,24 @@ dialog_menu() {
 		done
 		LabelWidth=$((3 + TagWidth + 2 + ItemWidth + 3))
 		[[ LabelWidth -gt WindowWidthMax ]] && LabelWidth=${WindowWidthMax}
-
-		local -i SubTitleWidth
-		SubTitleWidth="$("${DIALOG}" --output-fd 1 --print-text-size --msgbox "$(strip_styles "${SubTitle}")" 0 0 2> /dev/null | cut -d ' ' -f 2)"
 		[[ SubTitleWidth -gt WindowWidthMax ]] && SubTitleWidth=${WindowWidthMax}
 
 		local -i ContentWidth=$((LabelWidth > SubTitleWidth ? LabelWidth : SubTitleWidth))
 		local -i TitleWidth=$((3 + 12 + ${#Title} + 3))
 		local -i RequiredWidth=$((ContentWidth > TitleWidth ? ContentWidth : TitleWidth))
 		[[ RequiredWidth -ge WindowWidthMax ]] && WindowWidth=${WindowWidthMax} || WindowWidth=0
+
+		local -i ItemRows=$((${#Items[@]} / Step))
+		local -i RequiredHeight=$((SubTitleHeight + ItemRows + 8))
+		[[ RequiredHeight -ge WindowHeightMax ]] && WindowHeight=${WindowHeightMax} || WindowHeight=0
+	fi
+
+	if [[ ${WindowHeight} -gt 0 ]]; then
+		local -i TextRows
+		TextRows="$("${DIALOG}" --output-fd 1 --print-text-size --msgbox "$(strip_styles "${SubTitle}")" "${WindowHeight}" "${WindowWidth}" 2> /dev/null | cut -d ' ' -f 1)"
+		MenuHeight=$((LINES - D["TextRowsAdjust"] - TextRows))
+	else
+		MenuHeight=0
 	fi
 
 	local StyledSubTitle=""
@@ -536,7 +541,7 @@ dialog_checklist() {
 	local SubTitle="${1-}"
 	shift || true
 	local -a DialogOptions=()
-	local -i Maximized=0 ItemHelp=0 Step=3
+	local -i Maximized=0 Step=3
 
 	while [[ ${1-} == --* ]]; do
 		case "${1}" in
@@ -563,12 +568,12 @@ dialog_checklist() {
 
 	local -i WindowHeight=0 WindowWidth=0 MenuHeight=0
 
+	local -i SubTitleHeight SubTitleWidth
+	read -r SubTitleHeight SubTitleWidth < <("${DIALOG}" --output-fd 1 --print-text-size --msgbox "$(strip_styles "${SubTitle}")" 0 0 2> /dev/null | cut -d ' ' -f 1,2)
+
 	if [[ ${Maximized} -eq 1 ]]; then
 		WindowHeight=${WindowHeightMax}
 		WindowWidth=${WindowWidthMax}
-		local -i TextRows
-		TextRows="$("${DIALOG}" --output-fd 1 --print-text-size --msgbox "$(strip_styles "${SubTitle}")" "${WindowHeight}" "${WindowWidth}" 2> /dev/null | cut -d ' ' -f 1)"
-		MenuHeight=$((LINES - D["TextRowsAdjust"] - TextRows))
 	else
 		local -i LabelWidth=0 TagWidth=0 ItemWidth=0
 		local -i i
@@ -581,15 +586,24 @@ dialog_checklist() {
 		done
 		LabelWidth=$((3 + 2 + 3 + TagWidth + 2 + ItemWidth + 3))
 		[[ LabelWidth -gt WindowWidthMax ]] && LabelWidth=${WindowWidthMax}
-
-		local -i SubTitleWidth
-		SubTitleWidth="$("${DIALOG}" --output-fd 1 --print-text-size --msgbox "$(strip_styles "${SubTitle}")" 0 0 2> /dev/null | cut -d ' ' -f 2)"
 		[[ SubTitleWidth -gt WindowWidthMax ]] && SubTitleWidth=${WindowWidthMax}
 
 		local -i ContentWidth=$((LabelWidth > SubTitleWidth ? LabelWidth : SubTitleWidth))
 		local -i TitleWidth=$((3 + 12 + ${#Title} + 3))
 		local -i RequiredWidth=$((ContentWidth > TitleWidth ? ContentWidth : TitleWidth))
 		[[ RequiredWidth -ge WindowWidthMax ]] && WindowWidth=${WindowWidthMax} || WindowWidth=0
+
+		local -i ItemRows=$((${#Items[@]} / Step))
+		local -i RequiredHeight=$((SubTitleHeight + ItemRows + 8))
+		[[ RequiredHeight -ge WindowHeightMax ]] && WindowHeight=${WindowHeightMax} || WindowHeight=0
+	fi
+
+	if [[ ${WindowHeight} -gt 0 ]]; then
+		local -i TextRows
+		TextRows="$("${DIALOG}" --output-fd 1 --print-text-size --msgbox "$(strip_styles "${SubTitle}")" "${WindowHeight}" "${WindowWidth}" 2> /dev/null | cut -d ' ' -f 1)"
+		MenuHeight=$((LINES - D["TextRowsAdjust"] - TextRows))
+	else
+		MenuHeight=0
 	fi
 
 	local StyledSubTitle=""
@@ -607,7 +621,7 @@ dialog_radiolist() {
 	local SubTitle="${1-}"
 	shift || true
 	local -a DialogOptions=()
-	local -i Maximized=0 ItemHelp=0 Step=3
+	local -i Maximized=0 Step=3
 
 	while [[ ${1-} == --* ]]; do
 		case "${1}" in
@@ -634,12 +648,12 @@ dialog_radiolist() {
 
 	local -i WindowHeight=0 WindowWidth=0 MenuHeight=0
 
+	local -i SubTitleHeight SubTitleWidth
+	read -r SubTitleHeight SubTitleWidth < <("${DIALOG}" --output-fd 1 --print-text-size --msgbox "$(strip_styles "${SubTitle}")" 0 0 2> /dev/null | cut -d ' ' -f 1,2)
+
 	if [[ ${Maximized} -eq 1 ]]; then
 		WindowHeight=${WindowHeightMax}
 		WindowWidth=${WindowWidthMax}
-		local -i TextRows
-		TextRows="$("${DIALOG}" --output-fd 1 --print-text-size --msgbox "$(strip_styles "${SubTitle}")" "${WindowHeight}" "${WindowWidth}" 2> /dev/null | cut -d ' ' -f 1)"
-		MenuHeight=$((LINES - D["TextRowsAdjust"] - TextRows))
 	else
 		local -i LabelWidth=0 TagWidth=0 ItemWidth=0
 		local -i i
@@ -652,15 +666,24 @@ dialog_radiolist() {
 		done
 		LabelWidth=$((3 + 2 + 3 + TagWidth + 2 + ItemWidth + 3))
 		[[ LabelWidth -gt WindowWidthMax ]] && LabelWidth=${WindowWidthMax}
-
-		local -i SubTitleWidth
-		SubTitleWidth="$("${DIALOG}" --output-fd 1 --print-text-size --msgbox "$(strip_styles "${SubTitle}")" 0 0 2> /dev/null | cut -d ' ' -f 2)"
 		[[ SubTitleWidth -gt WindowWidthMax ]] && SubTitleWidth=${WindowWidthMax}
 
 		local -i ContentWidth=$((LabelWidth > SubTitleWidth ? LabelWidth : SubTitleWidth))
 		local -i TitleWidth=$((3 + 12 + ${#Title} + 3))
 		local -i RequiredWidth=$((ContentWidth > TitleWidth ? ContentWidth : TitleWidth))
 		[[ RequiredWidth -ge WindowWidthMax ]] && WindowWidth=${WindowWidthMax} || WindowWidth=0
+
+		local -i ItemRows=$((${#Items[@]} / Step))
+		local -i RequiredHeight=$((SubTitleHeight + ItemRows + 8))
+		[[ RequiredHeight -ge WindowHeightMax ]] && WindowHeight=${WindowHeightMax} || WindowHeight=0
+	fi
+
+	if [[ ${WindowHeight} -gt 0 ]]; then
+		local -i TextRows
+		TextRows="$("${DIALOG}" --output-fd 1 --print-text-size --msgbox "$(strip_styles "${SubTitle}")" "${WindowHeight}" "${WindowWidth}" 2> /dev/null | cut -d ' ' -f 1)"
+		MenuHeight=$((LINES - D["TextRowsAdjust"] - TextRows))
+	else
+		MenuHeight=0
 	fi
 
 	local StyledSubTitle=""
@@ -678,7 +701,7 @@ dialog_inputmenu() {
 	local SubTitle="${1-}"
 	shift || true
 	local -a DialogOptions=()
-	local -i Maximized=0 ItemHelp=0 Step=3
+	local -i Maximized=0 Step=3
 
 	while [[ ${1-} == --* ]]; do
 		case "${1}" in
@@ -705,12 +728,12 @@ dialog_inputmenu() {
 
 	local -i WindowHeight=0 WindowWidth=0 MenuHeight=0
 
+	local -i SubTitleHeight SubTitleWidth
+	read -r SubTitleHeight SubTitleWidth < <("${DIALOG}" --output-fd 1 --print-text-size --msgbox "$(strip_styles "${SubTitle}")" 0 0 2> /dev/null | cut -d ' ' -f 1,2)
+
 	if [[ ${Maximized} -eq 1 ]]; then
 		WindowHeight=${WindowHeightMax}
 		WindowWidth=${WindowWidthMax}
-		local -i TextRows
-		TextRows="$("${DIALOG}" --output-fd 1 --print-text-size --msgbox "$(strip_styles "${SubTitle}")" "${WindowHeight}" "${WindowWidth}" 2> /dev/null | cut -d ' ' -f 1)"
-		MenuHeight=$((LINES - D["TextRowsAdjust"] - TextRows))
 	else
 		local -i LabelWidth=0 TagWidth=0 ItemWidth=0
 		local -i i
@@ -723,15 +746,24 @@ dialog_inputmenu() {
 		done
 		LabelWidth=$((3 + TagWidth + 2 + ItemWidth + 3))
 		[[ LabelWidth -gt WindowWidthMax ]] && LabelWidth=${WindowWidthMax}
-
-		local -i SubTitleWidth
-		SubTitleWidth="$("${DIALOG}" --output-fd 1 --print-text-size --msgbox "$(strip_styles "${SubTitle}")" 0 0 2> /dev/null | cut -d ' ' -f 2)"
 		[[ SubTitleWidth -gt WindowWidthMax ]] && SubTitleWidth=${WindowWidthMax}
 
 		local -i ContentWidth=$((LabelWidth > SubTitleWidth ? LabelWidth : SubTitleWidth))
 		local -i TitleWidth=$((3 + 12 + ${#Title} + 3))
 		local -i RequiredWidth=$((ContentWidth > TitleWidth ? ContentWidth : TitleWidth))
 		[[ RequiredWidth -ge WindowWidthMax ]] && WindowWidth=${WindowWidthMax} || WindowWidth=0
+
+		local -i ItemRows=$((${#Items[@]} / Step))
+		local -i RequiredHeight=$((SubTitleHeight + ItemRows + 8))
+		[[ RequiredHeight -ge WindowHeightMax ]] && WindowHeight=${WindowHeightMax} || WindowHeight=0
+	fi
+
+	if [[ ${WindowHeight} -gt 0 ]]; then
+		local -i TextRows
+		TextRows="$("${DIALOG}" --output-fd 1 --print-text-size --msgbox "$(strip_styles "${SubTitle}")" "${WindowHeight}" "${WindowWidth}" 2> /dev/null | cut -d ' ' -f 1)"
+		MenuHeight=$((LINES - D["TextRowsAdjust"] - TextRows))
+	else
+		MenuHeight=0
 	fi
 
 	local StyledSubTitle=""
