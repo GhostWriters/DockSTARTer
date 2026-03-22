@@ -7,7 +7,7 @@ git_fetch() {
 	local ForceRefresh=${2-false}
 	# Git touches FETCH_HEAD after each `git fetch`, so we use it to
 	# limit fetches to 1 per day per repo (unless forced).
-	if [[ -z ${FORCE-} ]] || $ForceRefresh || [ -z "$(find "${GitPath}/.git/FETCH_HEAD" -mtime -1 2> /dev/null)" ]; then
+	if [[ -n ${FORCE-} ]] || $ForceRefresh || [ -z "$(find "${GitPath}/.git/FETCH_HEAD" -mtime -1 2> /dev/null)" ]; then
 		git -C "${GitPath}" fetch --quiet --tags &> /dev/null || true
 	fi
 }
