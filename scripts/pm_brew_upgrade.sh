@@ -10,11 +10,11 @@ pm_brew_upgrade() {
 
 	notice "Upgrading packages. Please be patient, this can take a while."
 	for Command in "brew upgrade --cask" "brew upgrade"; do
-		notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+		notice "Running: {{|RunningCommand|}}${Command}{{[-]}}"
 		eval "${REDIRECT}${Command}" ||
 			fatal \
 				"Failed to upgrade packages from brew." \
-				"Failing command: ${C["FailingCommand"]}${Command}"
+				"Failing command: {{|FailingCommand|}}${Command}"
 	done
 }
 

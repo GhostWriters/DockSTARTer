@@ -5,7 +5,7 @@ IFS=$'\n\t'
 create_strip_ansi_colors_SEDSTRING() {
 	# Create the search string to strip ANSI colors
 	# String is saved after creation, so this is only done on the first call
-	local -a ANSICOLORS=("${F[@]}" "${B[@]}" "${BD}" "${UL}" "${NC}" "${BS}" "${DM}" "${BL}")
+	local -a ANSICOLORS=("${F[@]}" "${B[@]}" "${S[@]}")
 	for index in "${!ANSICOLORS[@]}"; do
 		# Escape characters used by sed
 		ANSICOLORS[index]=$(printf '%s' "${ANSICOLORS[index]}" | sed -E 's/[]{}()[/{}\.''''$]/\\&/g')
@@ -33,7 +33,7 @@ highlighted_list() {
 	local List
 	List=$(xargs <<< "$*")
 	if [[ -n ${List-} ]]; then
-		echo "${DC["Subtitle"]-}${List// /${DC["NC"]-} ${DC["Subtitle"]-}}${DC["NC"]-}"
+		echo "{{|Subtitle|}}${List// /{{[-]}} {{|Subtitle|}}}{{[-]}}"
 	fi
 }
 
@@ -64,10 +64,10 @@ custom_quote_elements_with_spaces() {
 	for element in "$@"; do
 		if [[ -z ${element} || ${element} == *" "* ]]; then
 			# If the element is an empty string or contains spaces, quote it
-			Result+="${Quote}${Color}${element}${NC}${Quote}${NC} "
+			Result+="${Quote}${Color}${element}{{[-]}}${Quote}{{[-]}} "
 		else
 			# Otherwise, add it as is
-			Result+="${Color}${element}${NC} "
+			Result+="${Color}${element}{{[-]}} "
 		fi
 	done
 	# Remove any trailing space
@@ -266,14 +266,14 @@ table_pipe() {
 	local -a AllData=("${Headings[@]}" "${Data[@]}")
 	local -a VisibleData
 	for item in "${AllData[@]}"; do
-		VisibleData+=("$(strip_ansi_colors "${item}")")
+		VisibleData+=("$(strip_styles "${item}")")
 	done
 
 	local -a ColWidths
 	readarray -t ColWidths < <(longest_columns "${Cols}" "${VisibleData[@]}")
 
 	local -A CharSet
-	if is_true "${DC["LineCharacters"]-}"; then
+	if is_true "${D["LineCharacters"]-}"; then
 		CharSet=(
 			["TopLeft"]="┌"
 			["TopRight"]="┐"
@@ -364,14 +364,14 @@ table() {
 	shift
 	local -a Headings=("${@:1:Cols}")
 	local -a Data=("${@:Cols+1}")
-	printf '%s\n' "${Data[@]}" | table_pipe "${Cols}" "${Headings[@]}"
+	printf '%s\n' "${Data[@]}" | table_pipe "${Cols}" "${Headings[@]}" | resolve_strings C
 }
 
 wordwrap_pipe() {
 	local -i Width=${1:-80}
 
 	local Word
-	local Word Line=""
+	local Line=""
 
 	while IFS=$' \t\n' read -r -a Words; do
 		for Word in "${Words[@]}"; do
@@ -504,7 +504,7 @@ set_toml_val() {
 
 	printf '%s\n' "${output[@]}" > "${file}" ||
 		fatal \
-			"Failed to write to '${C["File"]-}${file}${NC-}'."
+			"Failed to write to '{{|File|}}${file}{{[-]}}'."
 }
 
 hrx_extract_file() {
@@ -569,6 +569,86 @@ hrx_env_get() {
 					val="${val%\'}"
 				fi
 				found_val="${val}"
+			fi
+		fi
+	done < "${archive}"
+	printf '%s\n' "${found_val}"
+}
+
+get_toml_section_key_list() {
+	# get_toml_section_key_list FILE SECTION
+	# Returns a list of all keys within [SECTION] in FILE.
+	local file=${1-}
+	local section=${2-}
+	local current_section=""
+
+	while IFS='= ' read -r key val || [[ -n ${key}${val} ]]; do
+		if [[ ${key} =~ ^\[(.*)\]$ ]]; then
+			current_section="${BASH_REMATCH[1]}"
+			continue
+		fi
+
+		if [[ ${current_section} == "${section}" && -n ${key} && -n ${val} ]]; then
+			printf '%s\n' "${key}"
+		fi
+	done < "${file}"
+}
+
+hrx_toml_get() {
+	# hrx_toml_get ArchiveFile InternalPath SECTION.KEY
+	# Returns the value of KEY from SECTION in a TOML file within an HRX archive.
+	local archive=${1-}
+	local internal_path=${2-}
+	local section_key=${3-}
+	local section="${section_key%%.*}"
+	local target_key="${section_key#*.}"
+	local boundary="" capturing=0 current_section="" found_val=""
+
+	while IFS= read -r line || [[ -n ${line} ]]; do
+		if [[ -z ${boundary} ]]; then
+			if [[ ${line} =~ ^(<[=]+>)[[:space:]] ]]; then
+				boundary="${BASH_REMATCH[1]}"
+			else
+				continue
+			fi
+		fi
+		if [[ ${line} == "${boundary} "* ]]; then
+			[[ ${capturing} -eq 1 ]] && break
+			[[ ${line#"${boundary} "} == "${internal_path}" ]] && capturing=1
+			continue
+		fi
+		if [[ ${capturing} -eq 1 ]]; then
+			# Skip comments and empty lines
+			[[ ${line} =~ ^[[:space:]]*# ]] && continue
+			[[ ${line} =~ ^[[:space:]]*$ ]] && continue
+
+			if [[ ${line} =~ ^\[(.*)\]$ ]]; then
+				current_section="${BASH_REMATCH[1]}"
+				continue
+			fi
+			if [[ ${current_section} == "${section}" && ${line} == *[[:space:]]*=[[:space:]]* ]]; then
+				local key="${line%%=*}"
+				local val="${line#*=}"
+				# Trim key
+				key="${key#"${key%%[![:space:]]*}"}"
+				key="${key%"${key##*[![:space:]]}"}"
+
+				if [[ ${key} == "${target_key}" ]]; then
+					# Trim leading and trailing whitespace from val
+					val="${val#"${val%%[![:space:]]*}"}"
+					val="${val%"${val##*[![:space:]]}"}"
+					if [[ ${val} == \"*\" ]]; then
+						val="${val#\"}"
+						val="${val%\"}"
+					elif [[ ${val} == \'*\' ]]; then
+						val="${val#\'}"
+						val="${val%\'}"
+					else
+						val="${val%%#*}"
+						val="${val%"${val##*[![:space:]]}"}"
+					fi
+					found_val="${val}"
+				fi
 			fi
 		fi
 	done < "${archive}"

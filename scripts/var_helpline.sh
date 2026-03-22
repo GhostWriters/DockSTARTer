@@ -29,28 +29,28 @@ var_helpline() {
 		# GLOBAL variable — exact name match
 		case "${VarName}" in
 			DOCKER_GID)
-				echo "The ${DC["Highlight"]-}Docker group ID${DC["NC"]-} on your system."
+				echo "The {{|Highlight|}}Docker group ID{{[-]}} on your system."
 				;;
 			DOCKER_HOSTNAME)
-				echo "Your ${DC["Highlight"]-}system hostname${DC["NC"]-}."
+				echo "Your {{|Highlight|}}system hostname{{[-]}}."
 				;;
 			DOCKER_VOLUME_CONFIG)
-				echo "Path to the application ${DC["Highlight"]-}config data${DC["NC"]-} directory."
+				echo "Path to the application {{|Highlight|}}config data{{[-]}} directory."
 				;;
 			DOCKER_VOLUME_STORAGE)
-				echo "Path to the application ${DC["Highlight"]-}storage data${DC["NC"]-} directory."
+				echo "Path to the application {{|Highlight|}}storage data{{[-]}} directory."
 				;;
 			GLOBAL_LAN_NETWORK)
-				echo "Your home LAN network in CIDR notation (e.g. ${DC["Highlight"]-}192.168.1.0/24${DC["NC"]-})."
+				echo "Your home LAN network in CIDR notation (e.g. {{|Highlight|}}192.168.1.0/24{{[-]}})."
 				;;
 			PGID)
-				echo "Your ${DC["Highlight"]-}user group ID${DC["NC"]-}."
+				echo "Your {{|Highlight|}}user group ID{{[-]}}."
 				;;
 			PUID)
-				echo "Your ${DC["Highlight"]-}user account ID${DC["NC"]-}."
+				echo "Your {{|Highlight|}}user account ID{{[-]}}."
 				;;
 			TZ)
-				echo "Your ${DC["Highlight"]-}system timezone${DC["NC"]-} (e.g. ${DC["Highlight"]-}America/New_York${DC["NC"]-})."
+				echo "Your {{|Highlight|}}system timezone{{[-]}} (e.g. {{|Highlight|}}America/New_York{{[-]}})."
 				;;
 		esac
 	else
@@ -58,23 +58,23 @@ var_helpline() {
 		local Suffix="${VarName#"${APPNAME}__"}"
 		case "${Suffix}" in
 			ENABLED)
-				echo "Enable or disable this application (${DC["Highlight"]-}true${DC["NC"]-}/${DC["Highlight"]-}false${DC["NC"]-})."
+				echo "Enable or disable this application ({{|Highlight|}}true{{[-]}}/{{|Highlight|}}false{{[-]}})."
 				;;
 			NETWORK_MODE)
-				echo "Docker network mode (blank, ${DC["Highlight"]-}bridge${DC["NC"]-}, ${DC["Highlight"]-}host${DC["NC"]-}, ${DC["Highlight"]-}none${DC["NC"]-}, ${DC["Highlight"]-}service:X${DC["NC"]-}, ${DC["Highlight"]-}container:X${DC["NC"]-})."
+				echo "Docker network mode (blank, {{|Highlight|}}bridge{{[-]}}, {{|Highlight|}}host{{[-]}}, {{|Highlight|}}none{{[-]}}, {{|Highlight|}}service:X{{[-]}}, {{|Highlight|}}container:X{{[-]}})."
 				;;
 			RESTART)
-				echo "Container restart policy (${DC["Highlight"]-}unless-stopped${DC["NC"]-}, ${DC["Highlight"]-}no${DC["NC"]-}, ${DC["Highlight"]-}always${DC["NC"]-}, ${DC["Highlight"]-}on-failure${DC["NC"]-})."
+				echo "Container restart policy ({{|Highlight|}}unless-stopped{{[-]}}, {{|Highlight|}}no{{[-]}}, {{|Highlight|}}always{{[-]}}, {{|Highlight|}}on-failure{{[-]}})."
 				;;
 			TAG)
-				echo "Docker image tag (usually ${DC["Highlight"]-}latest${DC["NC"]-})."
+				echo "Docker image tag (usually {{|Highlight|}}latest{{[-]}})."
 				;;
 			VOLUME_*)
 				echo "Path to a volume directory for this application."
 				;;
 			*)
 				if [[ ${Suffix} =~ ^PORT_[0-9]+$ ]]; then
-					echo "A port number between ${DC["Highlight"]-}0${DC["NC"]-} and ${DC["Highlight"]-}65535${DC["NC"]-}."
+					echo "A port number between {{|Highlight|}}0{{[-]}} and {{|Highlight|}}65535{{[-]}}."
 				fi
 				;;
 		esac

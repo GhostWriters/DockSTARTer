@@ -15,11 +15,11 @@ package_manager_run() {
 		install_docker)
 			[[ -n "$(command -v docker)" ]] ||
 				fatal \
-					"'${C["Program"]}docker${NC}' is not available. Please install '${C["Program"]}docker${NC}' and try again."
+					"'{{|Folder|}}docker{{[-]}}' is not available. Please install '{{|Folder|}}docker{{[-]}}' and try again."
 			docker compose version &> /dev/null ||
 				fatal \
-					"Please see ${C["URL"]}https://docs.docker.com/compose/install/linux/${NC} to install '${C["Program"]}docker compose${NC}'" \
-					"'${C["Program"]}docker compose${NC}' is not available. Please install '${C["Program"]}docker compose${NC}' and try again."
+					"Please see {{|URL|}}https://docs.docker.com/compose/install/linux/{{[-]}} to install '{{|Folder|}}docker compose{{[-]}}'" \
+					"'{{|Folder|}}docker compose{{[-]}}' is not available. Please install '{{|Folder|}}docker compose{{[-]}}' and try again."
 			;;
 	esac
 }

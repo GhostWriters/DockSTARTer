@@ -12,11 +12,11 @@ pm_zypper_repos() {
 	local COMMAND=""
 	COMMAND="sudo zypper -n refresh"
 	info "Updating repositories."
-	notice "Running: ${C["RunningCommand"]}${COMMAND}${NC}"
+	notice "Running: {{|RunningCommand|}}${COMMAND}{{[-]}}"
 	eval "${REDIRECT}${COMMAND}" ||
 		fatal \
 			"Failed to get updates from zypper." \
-			"Failing command: ${C["FailingCommand"]}${COMMAND}"
+			"Failing command: {{|FailingCommand|}}${COMMAND}"
 }
 
 test_pm_zypper_repos() {

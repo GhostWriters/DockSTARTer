@@ -23,30 +23,30 @@ pm_yum_install() {
 
 	#shellcheck disable=SC2124 #Assigning an array to a string! Assign as array, or use * instead of @ to concatenate.
 	local PackagesString="${Packages[@]}"
-	local pkglist="${PackagesString// /${NC}\', \'${C["Program"]}}"
-	pkglist="${NC}'${C["Program"]}${pkglist}${NC}'"
+	local pkglist="${PackagesString// /{{[-]}}\', \'{{|Folder|}}}"
+	pkglist="{{[-]}}'{{|Folder|}}${pkglist}{{[-]}}'"
 
 	notice "Installing packages: ${pkglist}"
 
 	Command="sudo yum -y install ${PackagesString}"
-	notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+	notice "Running: {{|RunningCommand|}}${Command}{{[-]}}"
 	eval "${REDIRECT}${Command}" ||
 		fatal \
 			"Failed to install dependencies from yum." \
-			"Failing command: ${C["FailingCommand"]}${Command}"
+			"Failing command: {{|FailingCommand|}}${Command}"
 }
 
 detect_packages() {
 	local -a Dependencies=("$@")
 
 	if [[ -z "$(command -v repoquery)" ]]; then
-		info "Installing '${C["Program"]}repoquery${NC}'."
+		info "Installing '{{|Folder|}}repoquery{{[-]}}'."
 		Command="sudo yum -y install yum-utils"
-		notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+		notice "Running: {{|RunningCommand|}}${Command}{{[-]}}"
 		eval "${REDIRECT}${Command}" ||
 			fatal \
-				"Failed to install '${C["Program"]}repoquery${NC}' from yum." \
-				"Failing command: ${C["FailingCommand"]}${Command}"
+				"Failed to install '{{|Folder|}}repoquery{{[-]}}' from yum." \
+				"Failing command: {{|FailingCommand|}}${Command}"
 	fi
 
 	Old_IFS="${IFS}"
@@ -57,7 +57,7 @@ detect_packages() {
 	local DepsSearch
 	DepsSearch="$(printf '*/bin/%s ' "${Dependencies[@]}" | xargs)"
 	local Command="repoquery --whatprovides ${DepsSearch} --qf %{name}"
-	notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+	notice "Running: {{|RunningCommand|}}${Command}{{[-]}}"
 	eval "${Command}" 2> /dev/null | while IFS= read -r line; do
 		if [[ ! ${line} =~ ${RegEx_Package_Blacklist} ]]; then
 			echo "${line}"

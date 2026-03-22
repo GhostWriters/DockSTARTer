@@ -23,7 +23,7 @@ menu_options_theme() {
 		IsUserTheme+=("${UserTheme}")
 		ThemeDescription["${ConfigValue}"]="$(run_script 'theme_description' "${ConfigValue}")"
 		ThemeAuthor["${ConfigValue}"]="$(run_script 'theme_author' "${ConfigValue}")"
-	done < <(run_script 'theme_list')
+	done < <(run_script 'theme_list_data')
 
 	# Check if the configured theme appears in the list; if not, prepend an orphaned placeholder
 	local FoundCurrent=false
@@ -72,9 +72,9 @@ menu_options_theme() {
 			fi
 			# Prefix description with user-theme colour if applicable
 			if [[ ${IsUserTheme[${i}]} == true ]]; then
-				ItemText="${DC["ListAppUserDefined"]-}${ItemText}"
+				ItemText="{{|ListAppUserDefined|}}${ItemText}"
 			else
-				ItemText="${DC["ListApp"]-}${ItemText}"
+				ItemText="{{|ListApp|}}${ItemText}"
 			fi
 			if [[ ${ConfigValue} == "${CurrentTheme}" ]]; then
 				Opts+=("${ConfigValue}" "${ItemText}" ON)
@@ -83,16 +83,17 @@ menu_options_theme() {
 			fi
 		done
 		local -a ChoiceDialog=(
-			--output-fd 1
-			--title "${DC["Title"]-}${Title}"
-			--ok-label "Select"
-			--cancel-label "Back"
-			--radiolist "Select the theme to apply." 0 0 0
+			"${Title}"
+			"Select the theme to apply."
+			--ok-label:Select
+			--extra-label:Back
+			--cancel-label:Exit
+			--default-item:"${LastChoice}"
 			"${Opts[@]}"
 		)
 		local Choice
 		local -i DialogButtonPressed=0
-		Choice=$(_dialog_ --default-item "${LastChoice}" "${ChoiceDialog[@]}") || DialogButtonPressed=$?
+		Choice=$(dialog_radiolist "${ChoiceDialog[@]}") || DialogButtonPressed=$?
 		LastChoice=${Choice}
 		case ${DIALOG_BUTTONS[DialogButtonPressed]-} in
 			OK)
@@ -103,8 +104,11 @@ menu_options_theme() {
 					dialog_error "${Title}" "Unable to apply theme ${CurrentTheme}"
 				fi
 				;;
-			CANCEL | ESC)
+			EXTRA | ESC)
 				return
+				;;
+			CANCEL)
+				run_script 'menu_exit' || true
 				;;
 			*)
 				invalid_dialog_button ${DialogButtonPressed}

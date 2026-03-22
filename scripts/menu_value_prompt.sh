@@ -17,7 +17,7 @@ menu_value_prompt() {
 
 	local APPNAME AppName
 
-	local VarDeletedTag="${DC["Highlight"]-}[*DELETED*]"
+	local VarDeletedTag="{{|Highlight|}}[*DELETED*]"
 
 	local Title
 	local CleanVarName="${VarName}"
@@ -63,7 +63,7 @@ menu_value_prompt() {
 		GLOBAL)
 			case "${VarName}" in
 				DOCKER_GID)
-					ValueDescription="\n\n This should be the Docker group ID. If you are unsure, select ${DC["Highlight"]-}${SystemValueOption}${DC["NC"]-}."
+					ValueDescription="\n\n This should be the Docker group ID. If you are unsure, select {{|Highlight|}}${SystemValueOption}{{[-]}}."
 					PossibleOptions+=(
 						"${SystemValueOption}"
 					)
@@ -72,7 +72,7 @@ menu_value_prompt() {
 					)
 					;;
 				DOCKER_HOSTNAME)
-					ValueDescription="\n\n This should be your system hostname. If you are unsure, select ${DC["Highlight"]-}${SystemValueOption}${DC["NC"]-}."
+					ValueDescription="\n\n This should be your system hostname. If you are unsure, select {{|Highlight|}}${SystemValueOption}{{[-]}}."
 					PossibleOptions+=(
 						"${SystemValueOption}"
 					)
@@ -81,7 +81,7 @@ menu_value_prompt() {
 					)
 					;;
 				DOCKER_VOLUME_CONFIG)
-					ValueDescription="\n\n The path where application ${DC["Highlight"]-}config data${DC["NC"]-} is stored."
+					ValueDescription="\n\n The path where application {{|Highlight|}}config data{{[-]}} is stored."
 					PossibleOptions+=(
 						"Home Folder"
 					)
@@ -90,7 +90,7 @@ menu_value_prompt() {
 					)
 					;;
 				DOCKER_VOLUME_STORAGE)
-					ValueDescription="\n\n The path where application ${DC["Highlight"]-}storage data${DC["NC"]-} is stored."
+					ValueDescription="\n\n The path where application {{|Highlight|}}storage data{{[-]}} is stored."
 					PossibleOptions+=(
 						"Home Folder"
 						"Mount Folder"
@@ -101,7 +101,7 @@ menu_value_prompt() {
 					)
 					;;
 				GLOBAL_LAN_NETWORK)
-					ValueDescription="\n\n This is used to define your home LAN network. Do NOT confuse this with the IP address of your router or your server — the value for this key defines your ${DC["Highlight"]-}network${DC["NC"]-}, NOT a single host. See CIDR Notation for more information (e.g. ${DC["Highlight"]-}192.168.1.0/24${DC["NC"]-})."
+					ValueDescription="\n\n This is used to define your home LAN network. Do NOT confuse this with the IP address of your router or your server — the value for this key defines your {{|Highlight|}}network{{[-]}}, NOT a single host. See CIDR Notation for more information (e.g. {{|Highlight|}}192.168.1.0/24{{[-]}})."
 					PossibleOptions+=(
 						"${SystemValueOption}"
 					)
@@ -110,7 +110,7 @@ menu_value_prompt() {
 					)
 					;;
 				PGID)
-					ValueDescription="\n\n This should be your user group ID. If you are unsure, select ${DC["Highlight"]-}${SystemValueOption}${DC["NC"]-}."
+					ValueDescription="\n\n This should be your user group ID. If you are unsure, select {{|Highlight|}}${SystemValueOption}{{[-]}}."
 					PossibleOptions+=(
 						"${SystemValueOption}"
 					)
@@ -119,7 +119,7 @@ menu_value_prompt() {
 					)
 					;;
 				PUID)
-					ValueDescription="\n\n This should be your user account ID. If you are unsure, select ${DC["Highlight"]-}${SystemValueOption}${DC["NC"]-}."
+					ValueDescription="\n\n This should be your user account ID. If you are unsure, select {{|Highlight|}}${SystemValueOption}{{[-]}}."
 					PossibleOptions+=(
 						"${SystemValueOption}"
 					)
@@ -128,7 +128,7 @@ menu_value_prompt() {
 					)
 					;;
 				TZ)
-					ValueDescription="\n\n If this is not the correct timezone, please exit and set your ${DC["Highlight"]-}system timezone${DC["NC"]-} first."
+					ValueDescription="\n\n If this is not the correct timezone, please exit and set your {{|Highlight|}}system timezone{{[-]}} first."
 					PossibleOptions+=(
 						"${SystemValueOption}"
 					)
@@ -150,7 +150,7 @@ menu_value_prompt() {
 		APP)
 			case "${VarName}" in
 				"${APPNAME}__ENABLED")
-					ValueDescription="\n\n This is used to set the application as enabled or disabled. If this variable is removed, the application will not be controlled by ${APPLICATION_NAME}. Must be ${DC["Highlight"]-}true${DC["NC"]-} or ${DC["Highlight"]-}false${DC["NC"]-}."
+					ValueDescription="\n\n This is used to set the application as enabled or disabled. If this variable is removed, the application will not be controlled by ${APPLICATION_NAME}. Must be {{|Highlight|}}true{{[-]}} or {{|Highlight|}}false{{[-]}}."
 					PossibleOptions+=(
 						"Enabled"
 						"Disabled"
@@ -163,7 +163,7 @@ menu_value_prompt() {
 					)
 					;;
 				"${APPNAME}__NETWORK_MODE")
-					ValueDescription="\n\n Network Mode is usually left blank but can also be ${DC["Highlight"]-}bridge${DC["NC"]-}, ${DC["Highlight"]-}host${DC["NC"]-}, ${DC["Highlight"]-}none${DC["NC"]-}, ${DC["Highlight"]-}service:<appname>${DC["NC"]-}, or ${DC["Highlight"]-}container:<appname>${DC["NC"]-}."
+					ValueDescription="\n\n Network Mode is usually left blank but can also be {{|Highlight|}}bridge{{[-]}}, {{|Highlight|}}host{{[-]}}, {{|Highlight|}}none{{[-]}}, {{|Highlight|}}service:<appname>{{[-]}}, or {{|Highlight|}}container:<appname>{{[-]}}."
 					PossibleOptions+=(
 						"${DefaultValueOption}"
 						"Bridge Network"
@@ -173,11 +173,11 @@ menu_value_prompt() {
 						"Use PrivoxyVPN"
 					)
 					OptionHelpLine+=(
-						["Bridge Network"]="Connects ${DC["Highlight"]-}${AppName}${DC["NC"]-} to the internal Docker bridge network. Same as leaving the value empty."
-						["Host Network"]="Connects ${DC["Highlight"]-}${AppName}${DC["NC"]-} to the host OS's network."
-						["No Network"]="Leaves ${DC["Highlight"]-}${AppName}${DC["NC"]-} without a network connection."
-						["Use Gluetun"]="Connects ${DC["Highlight"]-}${AppName}${DC["NC"]-} to the VPN running in the ${DC["Highlight"]-}Gluetun${DC["NC"]-} container if running."
-						["Use PrivoxyVPN"]="Connects ${DC["Highlight"]-}${AppName}${DC["NC"]-} to the VPN running in the ${DC["Highlight"]-}PrivoxyVPN${DC["NC"]-} container if running."
+						["Bridge Network"]="Connects {{|Highlight|}}${AppName}{{[-]}} to the internal Docker bridge network. Same as leaving the value empty."
+						["Host Network"]="Connects {{|Highlight|}}${AppName}{{[-]}} to the host OS's network."
+						["No Network"]="Leaves {{|Highlight|}}${AppName}{{[-]}} without a network connection."
+						["Use Gluetun"]="Connects {{|Highlight|}}${AppName}{{[-]}} to the VPN running in the {{|Highlight|}}Gluetun{{[-]}} container if running."
+						["Use PrivoxyVPN"]="Connects {{|Highlight|}}${AppName}{{[-]}} to the VPN running in the {{|Highlight|}}PrivoxyVPN{{[-]}} container if running."
 					)
 					OptionValue+=(
 						["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
@@ -189,7 +189,7 @@ menu_value_prompt() {
 					)
 					;;
 				"${APPNAME}__RESTART")
-					ValueDescription="\n\n Restart is usually ${DC["Highlight"]-}unless-stopped${DC["NC"]-} but can also be ${DC["Highlight"]-}no${DC["NC"]-}, ${DC["Highlight"]-}always${DC["NC"]-}, or ${DC["Highlight"]-}on-failure${DC["NC"]-}."
+					ValueDescription="\n\n Restart is usually {{|Highlight|}}unless-stopped{{[-]}} but can also be {{|Highlight|}}no{{[-]}}, {{|Highlight|}}always{{[-]}}, or {{|Highlight|}}on-failure{{[-]}}."
 					PossibleOptions+=(
 						"${DefaultValueOption}"
 						"Restart Unless Stopped"
@@ -231,7 +231,7 @@ menu_value_prompt() {
 					;;
 				*)
 					if [[ ${VarName} =~ ^${APPNAME}__PORT_[0-9]+$ ]]; then
-						ValueDescription="\n\n Must be an unused port between ${DC["Highlight"]-}0${DC["NC"]-} and ${DC["Highlight"]-}65535${DC["NC"]-}."
+						ValueDescription="\n\n Must be an unused port between {{|Highlight|}}0{{[-]}} and {{|Highlight|}}65535{{[-]}}."
 						PossibleOptions+=(
 							"${DefaultValueOption}"
 						)
@@ -298,29 +298,20 @@ menu_value_prompt() {
 		local DialogHeading
 		local CurrentValueHeading="${OptionValue["${CurrentValueOption}"]:-${VarDeletedTag}}"
 		DialogHeading="$(run_script 'menu_heading' "${APPNAME}" "${VarName}" "${OptionValue["${OriginalValueOption}"]-}" "${CurrentValueHeading}")"
-		local SelectValueMenuText="${DialogHeading}\n\nWhat would you like set for ${DC["Highlight"]-}${CleanVarName}${DC["NC"]-}?${ValueDescription}"
-		local SelectValueDialogParams=(
-			--output-fd 1
-			--title "${DC["Title"]-}${Title}"
-			--item-help
-		)
-		set_screen_size
-		local -i MenuTextLines
-		MenuTextLines="$(_dialog_ "${SelectValueDialogParams[@]}" --print-text-size "${SelectValueMenuText}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" | cut -d ' ' -f 1)"
-		local -i SelectValueDialogButtonPressed=0
-		local SelectedValue
+		local SelectValueMenuText="${DialogHeading}\n\nWhat would you like set for {{|Highlight|}}${CleanVarName}{{[-]}}?${ValueDescription}"
 		local -a SelectValueDialog=(
-			"${SelectValueDialogParams[@]}"
-			--ok-label "Select"
-			--extra-label "Edit"
-			--cancel-label "Done"
-			--inputmenu "${SelectValueMenuText}"
-			"$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
-			"$((LINES - DC["TextRowsAdjust"] - MenuTextLines))"
+			"${Title}"
+			"${SelectValueMenuText}"
+			--maximized
+			--item-help
+			--ok-label:Select
+			--extra-label:Edit
+			--cancel-label:Done
 			"${ValueOptions[@]}"
 		)
-		SelectValueDialogButtonPressed=0
-		SelectedValue=$(_dialog_ "${SelectValueDialog[@]}") || SelectValueDialogButtonPressed=$?
+		local -i SelectValueDialogButtonPressed=0
+		local SelectedValue
+		SelectedValue=$(dialog_inputmenu "${SelectValueDialog[@]}") || SelectValueDialogButtonPressed=$?
 
 		case ${DIALOG_BUTTONS[SelectValueDialogButtonPressed]-} in
 			OK) # SELECT button
@@ -330,10 +321,10 @@ menu_value_prompt() {
 					if [[ -n ${OptionValue["${SelectedValue}"]-} ]]; then
 						OptionValue["${CurrentValueOption}"]="${OptionValue["${SelectedValue}"]}"
 					else
-						error "Unset value '${C["Var"]}${SelectedValue}${NC}'"
+						error "Unset value '{{|Var|}}${SelectedValue}{{[-]}}'"
 					fi
 				else
-					error "Invalid option '${C["Var"]}${SelectedValue}${NC}'"
+					error "Invalid option '{{|Var|}}${SelectedValue}{{[-]}}'"
 				fi
 				;;
 			EXTRA) # EDIT button
@@ -360,7 +351,7 @@ menu_value_prompt() {
 									;;
 								*)
 									ValueValid="false"
-									dialog_error "${Title}" "${DialogHeading}\n${DC["Highlight"]-}${OptionValue["${CurrentValueOption}"]}${DC["NC"]-} is not ${DC["Highlight"]-}true${DC["NC"]-}/${DC["Highlight"]-}on${DC["NC"]-}/${DC["Highlight"]-}yes${DC["NC"]-} or ${DC["Highlight"]-}false${DC["NC"]-}/${DC["Highlight"]-}off${DC["NC"]-}/${DC["Highlight"]-}no${DC["NC"]-}. Please try setting ${DC["Highlight"]-}${CleanVarName}${DC["NC"]-} again."
+									dialog_error "--maximized" "${Title}" "${DialogHeading}\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not {{|Highlight|}}true{{[-]}}/{{|Highlight|}}on{{[-]}}/{{|Highlight|}}yes{{[-]}} or {{|Highlight|}}false{{[-]}}/{{|Highlight|}}off{{[-]}}/{{|Highlight|}}no{{[-]}}. Please try setting {{|Highlight|}}${CleanVarName}{{[-]}} again."
 									;;
 							esac
 							;;
@@ -371,7 +362,7 @@ menu_value_prompt() {
 									;;
 								*)
 									ValueValid="false"
-									dialog_error "${Title}" "${DialogHeading}\n\n${DC["Highlight"]-}${OptionValue["${CurrentValueOption}"]}${DC["NC"]-} is not a valid network mode. Please try setting ${DC["Highlight"]-}${CleanVarName}${DC["NC"]-} again."
+									dialog_error "--maximized" "${Title}" "${DialogHeading}\n\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not a valid network mode. Please try setting {{|Highlight|}}${CleanVarName}{{[-]}} again."
 									;;
 							esac
 							;;
@@ -382,45 +373,45 @@ menu_value_prompt() {
 									;;
 								*)
 									ValueValid="false"
-									dialog_error "${Title}" "${DialogHeading}\n\n${DC["Highlight"]-}${OptionValue["${CurrentValueOption}"]}${DC["NC"]-} is not a valid restart value. Please try setting ${DC["Highlight"]-}${CleanVarName}${DC["NC"]-} again."
+									dialog_error "--maximized" "${Title}" "${DialogHeading}\n\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not a valid restart value. Please try setting {{|Highlight|}}${CleanVarName}{{[-]}} again."
 									;;
 							esac
 							;;
 						"${APPNAME}__VOLUME_"*)
 							if [[ ${StrippedValue} == "/" ]]; then
 								ValueValid="false"
-								dialog_error "${Title}" "${DialogHeading}\n\nCannot use ${DC["Highlight"]-}/${DC["NC"]-} for ${DC["Highlight"]-}${CleanVarName}${DC["NC"]-}. Please select another folder."
+								dialog_error "--maximized" "${Title}" "${DialogHeading}\n\nCannot use {{|Highlight|}}/{{[-]}} for {{|Highlight|}}${CleanVarName}{{[-]}}. Please select another folder."
 							elif [[ ${StrippedValue} == *~* ]]; then
 								local CORRECTED_DIR="${OptionValue["${CurrentValueOption}"]//\~/"${DETECTED_HOMEDIR}"}"
-								if run_script 'question_prompt' Y "${DialogHeading}\n\nCannot use the ${DC["Highlight"]-}~${DC["NC"]-} shortcut in ${DC["Highlight"]-}${CleanVarName}${DC["NC"]-}. Would you like to use ${DC["Highlight"]-}${CORRECTED_DIR}${DC["NC"]-} instead?" "${Title}"; then
+								if run_script 'question_prompt' --maximized Y "${DialogHeading}\n\nCannot use the {{|Highlight|}}~{{[-]}} shortcut in {{|Highlight|}}${CleanVarName}{{[-]}}. Would you like to use {{|Highlight|}}${CORRECTED_DIR}{{[-]}} instead?" "${Title}"; then
 									OptionValue["${CurrentValueOption}"]="${CORRECTED_DIR}"
 									ValueValid="false"
-									dialog_success "${Title}" "Returning to the previous menu to confirm selection."
+									dialog_success "--maximized" "${Title}" "Returning to the previous menu to confirm selection."
 								else
 									ValueValid="false"
-									dialog_error "${Title}" "${DialogHeading}\n\nCannot use the ${DC["Highlight"]-}~${DC["NC"]-} shortcut in ${DC["Highlight"]-}${CleanVarName}${DC["NC"]-}. Please select another folder."
+									dialog_error "--maximized" "${Title}" "${DialogHeading}\n\nCannot use the {{|Highlight|}}~{{[-]}} shortcut in {{|Highlight|}}${CleanVarName}{{[-]}}. Please select another folder."
 								fi
 							elif [[ -d ${StrippedValue} ]]; then
-								if run_script 'question_prompt' Y "${DialogHeading}\n\nWould you like to set permissions on ${OptionValue["${CurrentValueOption}"]} ?" "${Title}" "${ASSUMEYES:+Y}"; then
-									run_script_dialog "Setting Permissions" "${DC["Heading"]-}${StrippedValue}${DC["NC"]-}" "${DIALOGTIMEOUT}" \
+								if run_script 'question_prompt' --maximized Y "${DialogHeading}\n\nWould you like to set permissions on ${OptionValue["${CurrentValueOption}"]} ?" "${Title}" "${ASSUMEYES:+Y}"; then
+									run_script_dialog "Setting Permissions" "{{|Heading|}}${StrippedValue}{{[-]}}" "${DIALOGTIMEOUT}" \
 										'set_permissions' "${StrippedValue}"
 								fi
 								ValueValid="true"
 							else
-								if run_script 'question_prompt' Y "${DialogHeading}\n\n${DC["Highlight"]-}${OptionValue["${CurrentValueOption}"]}${DC["NC"]-} is not a valid path. Would you like to attempt to create it?" "${Title}"; then
+								if run_script 'question_prompt' --maximized Y "${DialogHeading}\n\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not a valid path. Would you like to attempt to create it?" "${Title}"; then
 									{
 										{
 											mkdir -p "${StrippedValue}" ||
 												fatal \
 													"Failed to make directory.\n" \
-													"Failing command: ${C["FailingCommand"]}mkdir -p \"${StrippedValue}\""
+													"Failing command: {{|FailingCommand|}}mkdir -p \"${StrippedValue}\""
 											run_script 'set_permissions' "${StrippedValue}"
 										} || true
 									} |& dialog_pipe "Creating folder and settings permissions" "${OptionValue["${CurrentValueOption}"]}" "${DIALOGTIMEOUT}"
-									dialog_error "${DC["TitleSuccess"]-}${Title}" --msgbox "${DC["Highlight"]-}${OptionValue["${CurrentValueOption}"]}${DC["NC"]-} folder was created successfully." "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
+									dialog_msgbox --maximized "{{|TitleSuccess|}}${Title}" "{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} folder was created successfully."
 									ValueValid="true"
 								else
-									dialog_error "${Title}" "${DialogHeading}\n\n${DC["Highlight"]-}${OptionValue["${CurrentValueOption}"]}${DC["NC"]-} is not a valid path. Please try setting ${DC["Highlight"]-}${CleanVarName}${DC["NC"]-} again."
+									dialog_error "--maximized" "${Title}" "${DialogHeading}\n\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not a valid path. Please try setting {{|Highlight|}}${CleanVarName}{{[-]}} again."
 									ValueValid="false"
 								fi
 							fi
@@ -428,7 +419,7 @@ menu_value_prompt() {
 						P[GU]ID)
 							if [[ ${StrippedValue} =~ ^[0-9]+$ ]]; then
 								if [[ ${StrippedValue} -eq 0 ]]; then
-									if run_script 'question_prompt' Y "${DialogHeading}\n\nRunning as ${DC["Highlight"]-}root${DC["NC"]-} is not recommended. Would you like to select a different ID?" "${Title}" ""; then
+									if run_script 'question_prompt' --maximized Y "${DialogHeading}\n\nRunning as {{|Highlight|}}root{{[-]}} is not recommended. Would you like to select a different ID?" "${Title}" ""; then
 										ValueValid="false"
 									else
 										ValueValid="true"
@@ -437,7 +428,7 @@ menu_value_prompt() {
 									ValueValid="true"
 								fi
 							else
-								dialog_error "${Title}" "${DialogHeading}\n\n${DC["Highlight"]-}${OptionValue["${CurrentValueOption}"]}${DC["NC"]-} is not a valid ${CleanVarName}. Please try setting ${DC["Highlight"]-}${CleanVarName}${DC["NC"]-} again."
+								dialog_error "--maximized" "${Title}" "${DialogHeading}\n\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not a valid ${CleanVarName}. Please try setting {{|Highlight|}}${CleanVarName}{{[-]}} again."
 								ValueValid="false"
 							fi
 							;;
@@ -447,7 +438,7 @@ menu_value_prompt() {
 									ValueValid="true"
 								else
 									ValueValid="false"
-									dialog_error "${Title}" "${DialogHeading}\n\n${DC["Highlight"]-}${OptionValue["${CurrentValueOption}"]}${DC["NC"]-} is not a valid port. Please try setting ${DC["Highlight"]-}${CleanVarName}${DC["NC"]-} again."
+									dialog_error "--maximized" "${Title}" "${DialogHeading}\n\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not a valid port. Please try setting {{|Highlight|}}${CleanVarName}{{[-]}} again."
 								fi
 							else
 								ValueValid="true"
@@ -457,10 +448,10 @@ menu_value_prompt() {
 				fi
 				if [[ ${ValueValid} == "true" ]]; then
 					if [[ -z ${OptionValue["${CurrentValueOption}"]-} ]]; then
-						if run_script 'question_prompt' N "${DialogHeading}\n\nDo you really want to delete ${DC["Highlight"]-}${CleanVarName}${DC["NC"]-}?\n" "Delete Variable" "${ASSUMEYES:+Y}" "Delete" "Back"; then
+						if run_script 'question_prompt' --maximized N "${DialogHeading}\n\nDo you really want to delete {{|Highlight|}}${CleanVarName}{{[-]}}?\n" "Delete Variable" "${ASSUMEYES:+Y}" "Delete" "Back"; then
 							# Value is empty, delete the variable
 							coproc {
-								dialog_pipe "${DC["TitleSuccess"]-}Deleting Variable" "${DialogHeading}" "${DIALOGTIMEOUT}"
+								dialog_pipe "{{|TitleSuccess|}}Deleting Variable" "${DialogHeading}" "${DIALOGTIMEOUT}"
 							}
 							local -i DialogBox_PID=${COPROC_PID}
 							local -i DialogBox_FD="${COPROC[1]}"
@@ -485,10 +476,10 @@ menu_value_prompt() {
 							return 0
 						fi
 					elif [[ ${OptionValue["${CurrentValueOption}"]-} == "${OptionValue["${OriginalValueOption}"]-}" ]]; then
-						if run_script 'question_prompt' N "${DialogHeading}\n\nThe value of ${DC["Highlight"]-}${CleanVarName}${DC["NC"]-} has not been changed, exit anyways?\n" "Save Variable" "${ASSUMEYES:+Y}" "Done" "Back"; then
+						if run_script 'question_prompt' --maximized N "${DialogHeading}\n\nThe value of {{|Highlight|}}${CleanVarName}{{[-]}} has not been changed, exit anyways?\n" "Save Variable" "${ASSUMEYES:+Y}" "Done" "Back"; then
 							# Value has not changed, confirm exiting
 							coproc {
-								dialog_pipe "${DC["TitleSuccess"]-}Canceling Variable Edit" "${DialogHeading}" "${DIALOGTIMEOUT}"
+								dialog_pipe "{{|TitleSuccess|}}Canceling Variable Edit" "${DialogHeading}" "${DIALOGTIMEOUT}"
 							}
 							local -i DialogBox_PID=${COPROC_PID}
 							local -i DialogBox_FD="${COPROC[1]}"
@@ -512,10 +503,10 @@ menu_value_prompt() {
 							return 0
 						fi
 					else
-						if run_script 'question_prompt' N "${DialogHeading}\n\nWould you like to save ${DC["Highlight"]-}${CleanVarName}${DC["NC"]-}?\n" "Save Variable" "${ASSUMEYES:+Y}" "Save" "Back"; then
+						if run_script 'question_prompt' --maximized N "${DialogHeading}\n\nWould you like to save {{|Highlight|}}${CleanVarName}{{[-]}}?\n" "Save Variable" "${ASSUMEYES:+Y}" "Save" "Back"; then
 							# Value is valid, save it and exit
 							coproc {
-								dialog_pipe "${DC["TitleSuccess"]-}Saving Variable" "${DialogHeading}" "${DIALOGTIMEOUT}"
+								dialog_pipe "{{|TitleSuccess|}}Saving Variable" "${DialogHeading}" "${DIALOGTIMEOUT}"
 							}
 							local -i DialogBox_PID=${COPROC_PID}
 							local -i DialogBox_FD="${COPROC[1]}"

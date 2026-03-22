@@ -28,14 +28,14 @@ theme_extract() {
 	fi
 
 	if [[ ! -f ${ThemeArchive} ]]; then
-		error "Theme '${C["Theme"]-}${ThemeName}${NC-}' not found."
+		error "Theme '{{|Theme|}}${ThemeName}{{[-]}}' not found."
 		exit 1
 	fi
 
 	mkdir -p "${DestDir}"
 	local Dest="${DestDir}/${FileName}"
 	cp "${ThemeArchive}" "${Dest}"
-	notice "Theme '${C["Theme"]-}${ThemeName}${NC-}' extracted to: ${C["File"]-}${Dest}${NC-}"
+	notice "Theme '{{|Theme|}}${ThemeName}{{[-]}}' extracted to: {{|File|}}${Dest}{{[-]}}"
 }
 
 test_theme_extract() {

@@ -10,9 +10,9 @@ setup_docker_group() {
 	if [[ ${CI-} == true ]]; then
 		notice "Skipping usermod in CI."
 	else
-		info "Adding '${C["User"]}${DETECTED_UNAME}${NC}' to docker group."
+		info "Adding '{{|User|}}${DETECTED_UNAME}{{[-]}}' to docker group."
 		add_user_to_group "${DETECTED_UNAME}" docker &> /dev/null ||
-			fatal "Failed to add '${C["User"]}${DETECTED_UNAME}${NC}' to docker group."
+			fatal "Failed to add '{{|User|}}${DETECTED_UNAME}{{[-]}}' to docker group."
 	fi
 }
 

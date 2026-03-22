@@ -17,7 +17,7 @@ env_merge_newonly() {
 
 	# If "MergeFromFile" doesn't exists, give a warning
 	if [[ ! -f ${MergeFromFile} ]]; then
-		warn "File '${C["File"]}${MergeFromFile}${NC}' does not exist."
+		warn "File '{{|File|}}${MergeFromFile}{{[-]}}' does not exist."
 	else
 		local -a MergeFromVars MergeToVars VarsToAdd
 		readarray -t MergeFromVars < <(run_script 'env_var_list' "${MergeFromFile}")
@@ -33,14 +33,14 @@ env_merge_newonly() {
 				run_script 'env_get_line_regex' "${VarsToAddRegex}" "${MergeFromFile}"
 			)
 			notice \
-				"Adding variables to ${C["File"]}${MergeToFile}${NC}:" \
-				"$(printf "   ${C[Var]}%s${NC}\n" "${MergeLines[@]}")"
+				"Adding variables to {{|File|}}${MergeToFile}{{[-]}}:" \
+				"$(printf "   {{|Var|}}%s{{[-]}}\n" "${MergeLines[@]}")"
 			{
 				printf '\n'
 				printf '%s\n' "${MergeLines[@]}"
 			} >> "${MergeToFile}" ||
 				fatal \
-					"Failed to add variables to '${C["File"]}${MergeToFile}${NC}"
+					"Failed to add variables to '{{|File|}}${MergeToFile}{{[-]}}"
 		fi
 	fi
 }

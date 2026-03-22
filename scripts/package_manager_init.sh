@@ -18,7 +18,7 @@ package_manager_init() {
 		if ! run_script 'package_manager_is_valid' "${PreferredPackageManager}"; then
 			NoticeType="warn"
 			${NoticeType} \
-				"Selected package manager '${C["UserCommand"]}${PreferredPackageManager}${NC}' unknown." \
+				"Selected package manager '{{|UserCommand|}}${PreferredPackageManager}{{[-]}}' unknown." \
 				"" \
 				"Known package managers are:" \
 				"" \
@@ -27,7 +27,7 @@ package_manager_init() {
 		elif ! run_script 'package_manager_exists' "${PreferredPackageManager}"; then
 			NoticeType="warn"
 			${NoticeType} \
-				"Selected package manager '${C["UserCommand"]}${PreferredPackageManager}${NC}' not detected." \
+				"Selected package manager '{{|UserCommand|}}${PreferredPackageManager}{{[-]}}' not detected." \
 				"" \
 				"Detected package managers are:" \
 				"" \
@@ -58,9 +58,9 @@ package_manager_init() {
 
 	local NoticeText
 	if [[ ${PM} == "${PreferredPackageManager}" ]]; then
-		NoticeText="Using selected package manager '${C["UserCommand"]}${PM}${NC}'."
+		NoticeText="Using selected package manager '{{|UserCommand|}}${PM}{{[-]}}'."
 	else
-		NoticeText="Using detected package manager '${C["UserCommand"]}${PM}${NC}'."
+		NoticeText="Using detected package manager '{{|UserCommand|}}${PM}{{[-]}}'."
 	fi
 	${NoticeType} "${NoticeText}"
 

@@ -15,13 +15,13 @@ declare -A StatusText=(
 )
 
 declare -A StatusHighlight=(
-	["_Waiting_"]="${DC["ProgressWaiting"]-}"
-	["_InProgress_"]="${DC["ProgressInProgress"]-}"
-	["_Completed_"]="${DC["ProgressCompleted"]-}"
+	["_Waiting_"]="{{|ProgressWaiting|}}"
+	["_InProgress_"]="{{|ProgressInProgress|}}"
+	["_Completed_"]="{{|ProgressCompleted|}}"
 )
 
 declare Title="Select Applications"
-declare DialogGaugeText FullDialogGaugeText
+declare DialogGaugeText FullDialogGaugeText ExpandedDialogGaugeText
 declare -i ProgressSteps ProgressStepNumber
 
 declare GaugePipe ProgressLog
@@ -71,7 +71,7 @@ menu_app_select() {
 			set_screen_size
 			printf "\nCurrently installed applications:\n\n"
 			local -i TextCols
-			TextCols=$((COLUMNS - DC["WindowColsAdjust"] - DC["TextColsAdjust"]))
+			TextCols=$((COLUMNS - D["WindowColsAdjust"] - D["TextColsAdjust"]))
 			local Indent='   '
 			local -a AddedAppsTable
 			readarray -t AddedAppsTable < <(printf "%s\n" "${AddedApps[@]}")
@@ -125,9 +125,9 @@ menu_app_select() {
 			update_gauge 1 "${ProcessAppList}" "_InProgress_" "_InProgress_" "${AppName}"
 			local AppDescription
 			AppDescription=$(run_script 'app_description_from_template' "${AppName}")
-			local AppColor="${DC["ListApp"]-}"
+			local AppColor="{{|ListApp|}}"
 			if [[ -n $(run_script 'appname_to_instancename' "${AppName}") ]]; then
-				AppColor="${DC["ListAppUserDefined"]-}"
+				AppColor="{{|ListAppUserDefined|}}"
 			fi
 			if [[ ${AppName} =~ ^(${AddedAppsRegex})$ ]]; then
 				AppList+=("${AppName}" "${AppColor}${AppDescription}" "on")
@@ -146,26 +146,18 @@ menu_app_select() {
 		SelectedAppsDialogButtonPressed=${DIALOG_CANCEL}
 	else
 		set_screen_size
-		local SelectAppsDialogText="Choose which apps you would like to install:\n Use ${DC["KeyCap"]-}[up]${DC["NC"]-}, ${DC["KeyCap"]-}[down]${DC["NC"]-}, and ${DC["KeyCap"]-}[space]${DC["NC"]-} to select apps, and ${DC["KeyCap"]-}[tab]${DC["NC"]-} to switch to the buttons at the bottom."
-		local SelectedAppsDialogParams=(
-			--title "${DC["Title"]-}${Title}"
-			--output-fd 1
-		)
-		local -i MenuTextLines
-		MenuTextLines="$(_dialog_ "${SelectedAppsDialogParams[@]}" --print-text-size "${SelectAppsDialogText}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" | cut -d ' ' -f 1)"
+		local SelectAppsDialogText="{{[-]}}Choose which apps you would like to install:\n Use {{|KeyCap|}}[up]{{[-]}}, {{|KeyCap|}}[down]{{[-]}}, and {{|KeyCap|}}[space]{{[-]}} to select apps, and {{|KeyCap|}}[tab]{{[-]}} to switch to the buttons at the bottom."
 		local -a SelectedAppsDialog=(
-			"${SelectedAppsDialogParams[@]}"
-			--ok-label "Done"
-			--cancel-label "Cancel"
-			--separate-output
-			--checklist
+			"${Title}"
 			"${SelectAppsDialogText}"
-			"$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
-			"$((LINES - DC["TextRowsAdjust"] - MenuTextLines))"
+			--maximized
+			--ok-label:Done
+			--cancel-label:Cancel
+			--separate-output
 			"${AppList[@]}"
 		)
 		SelectedAppsDialogButtonPressed=0
-		SelectedApps=$(_dialog_ "${SelectedAppsDialog[@]}") || SelectedAppsDialogButtonPressed=$?
+		SelectedApps=$(dialog_checklist "${SelectedAppsDialog[@]}") || SelectedAppsDialogButtonPressed=$?
 	fi
 	case ${DIALOG_BUTTONS[SelectedAppsDialogButtonPressed]-} in
 		OK)
@@ -278,14 +270,14 @@ show_gauge() {
 	GaugeDialogStartRow=2
 	DialogStartCol=2
 
-	#DialogRows=$((ScreenRows - DC["WindowRowsAdjust"]))
-	DialogCols=$((ScreenCols - DC["WindowColsAdjust"]))
+	#DialogRows=$((ScreenRows - D["WindowRowsAdjust"]))
+	DialogCols=$((ScreenCols - D["WindowColsAdjust"]))
 
 	GaugeDialogTextRows=$(wc -l <<< "${FullDialogGaugeText}")
-	GaugeDialogRows=$((GaugeDialogTextRows + DC["TextRowsAdjust"]))
+	GaugeDialogRows=$((GaugeDialogTextRows + D["TextRowsAdjust"]))
 
-	LogDialogStartRow="$((GaugeDialogStartRow + GaugeDialogRows + (DC["WindowRowsAdjust"] - 3)))"
-	LogDialogRows="$((ScreenRows - LogDialogStartRow - (DC["WindowRowsAdjust"] - 3) - 1))"
+	LogDialogStartRow="$((GaugeDialogStartRow + GaugeDialogRows + (D["WindowRowsAdjust"] - 3)))"
+	LogDialogRows="$((ScreenRows - LogDialogStartRow - (D["WindowRowsAdjust"] - 3) - 1))"
 
 	# Create the pipes to communicate with the gauge and log dialog windows
 	GaugePipe=$(mktemp -u -t "${APPLICATION_NAME}.${FUNCNAME[0]}.GaugePipe.XXXXXXXXXX")
@@ -296,15 +288,15 @@ show_gauge() {
 
 	local -a GaugeDialog=(
 		"${GlobalDialogOptions[@]}"
-		--title "${DC["TitleSuccess"]-}${GaugeTitle}"
+		--title "{{|TitleSuccess|}}${GaugeTitle}"
 		--begin "${GaugeDialogStartRow}" "${DialogStartCol}"
-		--gauge "${DialogGaugeText}"
+		--gauge "${ExpandedDialogGaugeText}"
 		"${GaugeDialogRows}" "${DialogCols}"
 		0
 	)
 	local -a LogDialog=(
 		"${GlobalDialogOptions[@]}"
-		--title "${DC["Title"]-}Log Output"
+		--title "{{|Title|}}Log Output"
 		--begin "${LogDialogStartRow}" "${DialogStartCol}"
 		--keep-window
 		--tailboxbg "${ProgressLog}"
@@ -317,6 +309,10 @@ show_gauge() {
 	)
 
 	# Start the gauge and progress dialog windows in the background, and get the process id
+	local index
+	for index in "${!DialogOptions[@]}"; do
+		DialogOptions["${index}"]=$(resolve_styles DC "${DialogOptions["${index}"]}")
+	done
 	"${DIALOG}" "${DialogOptions[@]}" < "${GaugePipe}" &
 	Dialog_PID=$!
 }
@@ -363,13 +359,13 @@ init_gauge_text() {
 			HeadingPadCols=$((HeadingCols - ${#HeadingText[index]}))
 			local HeadingPad
 			HeadingPad="$(printf "%${HeadingPadCols}s" '')"
-			DialogGaugeText+="${WaitingHighlight}${HeadingText[index]}${DC["NC"]-}${HeadingPad} ${WaitingHighlight}[${WaitingText}]${DC["NC"]-}\n"
+			DialogGaugeText+="${WaitingHighlight}${HeadingText[index]}{{[-]}}${HeadingPad} ${WaitingHighlight}[${WaitingText}]{{[-]}}\n"
 		fi
 		if [[ -n ${Command[index]} ]]; then
 			local -i CommandCols=${#Command[index]}
 			local -i TextCols
 			AppsColumnStart=$((IndentCols + CommandCols + SpaceCols))
-			TextCols=$((COLUMNS - DC["WindowColsAdjust"] - DC["TextColsAdjust"]))
+			TextCols=$((COLUMNS - D["WindowColsAdjust"] - D["TextColsAdjust"]))
 			local -a AppNamesArray
 			readarray -t AppNamesArray < <(xargs -n 1 <<< "${AppNames[index]}")
 
@@ -383,7 +379,7 @@ init_gauge_text() {
 
 			# Get the color codes to add to the app names
 			local BeginHighlight="${WaitingHighlight}"
-			local EndHighlight="${DC["NC"]-}"
+			local EndHighlight="{{[-]}}"
 			# Escape the backslahes to be used in sed
 			BeginHighlight="${BeginHighlight//\\/\\\\}"
 			EndHighlight="${EndHighlight//\\/\\\\}"
@@ -392,12 +388,13 @@ init_gauge_text() {
 			FormattedAppNames="$(${SED} -E "s/\<([A-Za-z0-9_]+)\>/${BeginHighlight}\1${EndHighlight}/g" <<< "${FormattedAppNames}")"
 
 			# Add the command name to the first line
-			DialogGaugeText+="${Indent}${WaitingHighlight}${Command[index]}${DC["NC"]-}${Space}${FormattedAppNames:AppsColumnStart}\n"
+			DialogGaugeText+="${Indent}${WaitingHighlight}${Command[index]}{{[-]}}${Space}${FormattedAppNames:AppsColumnStart}\n"
 		fi
 		#DialogGaugeText+="\n"
 	done
 	DialogGaugeText="$(printf '%b' "${DialogGaugeText}" | expand)"
 	FullDialogGaugeText="${DialogGaugeText}"
+	ExpandedDialogGaugeText="$(resolve_styles DC "${DialogGaugeText}")"
 }
 
 init_gauge() {
@@ -408,31 +405,57 @@ init_gauge() {
 }
 
 update_gauge_text() {
-	local SearchItem=${1-}
-	local OldStatus=${2-}
-	local NewStatus=${3-}
-	local NewStatusTag=${4-}
-	if [[ -z ${NewStatusTag} ]]; then
-		NewStatusTag="${NewStatus}"
-	fi
+	# 1. Save and enable extglob locally
+	local extglob_on=0
+	shopt -q extglob || extglob_on=$?
+	shopt -s extglob
+
+	local SearchItem="${1-}"
+	local OldStatus="${2-}"
+	local NewStatus="${3-}"
+	local NewStatusTag="${4:-$NewStatus}"
+
+	# Resolve Status Tags
 	if [[ ${NewStatusTag} =~ _Waiting_|_InProgress_|_Completed_ ]]; then
 		NewStatusTag="${StatusText["${NewStatusTag}"]}"
 	fi
-	if [[ -n ${OldStatus-} && -n ${NewStatus-} && -n ${StatusHighlight["${OldStatus-}"]-} && -n ${StatusHighlight["${NewStatus-}"]-} ]]; then
-		# Search item specified, change "Old Status" to "New Status" in text if found
-		# Escape the \ to use in sed
-		local OldHighlight="${StatusHighlight["${OldStatus}"]//\\/\\\\}"
-		local NewHighlight="${StatusHighlight["${NewStatus}"]//\\/\\\\}"
-		local EndHighlight="${DC["NC"]//\\/\\\\}"
+
+	# Validation check
+	if [[ -n ${SearchItem} && -n ${OldStatus} && -n ${StatusHighlight["$OldStatus"]} ]]; then
+		local OldHighlight="${StatusHighlight["$OldStatus"]}"
+		local NewHighlight="${StatusHighlight["$NewStatus"]}"
+		local EndHighlight="{{[-]}}"
+
 		local OldString="${OldHighlight}${SearchItem}${EndHighlight}"
 		local NewString="${NewHighlight}${SearchItem}${EndHighlight}"
-		# Escape the [ and ] to use in a ${SED} serach string
-		local OldStatusString="${OldHighlight}\\[[A-Za-z0-9_ ]\\+\\]${EndHighlight}"
-		local NewStatusString="${NewHighlight}[${NewStatusTag}]${EndHighlight}"
-		DialogGaugeText="$(${SED} "s/\(^${OldString}[ ]\+\)${OldStatusString}/\1${NewStatusString}/ ; s/${OldString}/${NewString}/" <<< "${DialogGaugeText}")"
 
+		local NewStatusString="${NewHighlight}[${NewStatusTag}]${EndHighlight}"
+
+		# --- THE 6-STEP EXPANSION ---
+		# Use quoted "$OldString" to treat your highlight tags as literal text
+		local prefix="${DialogGaugeText%"${OldString}"*}"
+		local target_and_suffix="${DialogGaugeText#"$prefix"}"
+		local target_line="${target_and_suffix%%$'\n'*}"
+		local suffix="${target_and_suffix#"$target_line"}"
+
+		# Perform the swaps on the isolated line
+		if [[ -n ${target_line} ]]; then
+			# 1. Update the status box (e.g., [Waiting] -> [Completed])
+			# By fully quoting "$OldHighlight" and "$EndHighlight", Bash treats them literally
+			# while allowing the unquoted \[+([^\]])\] pattern to act as an extglob match!
+			target_line="${target_line/%"$OldHighlight"\[+([^\]])\]"$EndHighlight"/$NewStatusString}"
+			# 2. Update the name/highlight at the start of the line (Literal match)
+			target_line="${target_line/"$OldString"/"$NewString"}"
+		fi
+
+		# Reassemble
+		DialogGaugeText="${prefix}${target_line}${suffix}"
 		FullDialogGaugeText="${DialogGaugeText}"
+		ExpandedDialogGaugeText="$(resolve_styles DC "${DialogGaugeText}")"
 	fi
+
+	# 2. Restore original shell state
+	[[ ${extglob_on} -ne 0 ]] && shopt -u extglob || true
 }
 
 update_gauge_percent_value() {
@@ -459,7 +482,7 @@ update_gauge() {
 	if [[ $# -gt 0 ]]; then
 		update_gauge_text "$@"
 	fi
-	printf 'XXX\n%s\n%s\nXXX\n' "${ProgressPercent}" "${FullDialogGaugeText}" > "${GaugePipe}"
+	printf 'XXX\n%s\n%s\nXXX\n' "${ProgressPercent}" "${ExpandedDialogGaugeText}" > "${GaugePipe}"
 }
 
 test_menu_app_select() {

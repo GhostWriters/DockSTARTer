@@ -7,7 +7,7 @@ pm_dnf_install_docker() {
 	local RemovePackages="docker-client docker-client-latest docker-common docker-compose docker-engine docker-engine-selinux docker-latest docker-latest-logrotate docker-logrotate docker-selinux"
 	info "Removing conflicting Docker packages."
 	local Command="sudo dnf -y remove ${RemovePackages}"
-	notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+	notice "Running: {{|RunningCommand|}}${Command}{{[-]}}"
 	eval "${Command}" &> /dev/null || true
 	run_script 'remove_snap_docker'
 	run_script 'get_docker'

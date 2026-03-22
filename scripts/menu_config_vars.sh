@@ -20,12 +20,12 @@ menu_config_vars() {
 	while true; do
 		if [[ -n ${CurrentGlobalEnvFile-} ]]; then
 			RunAndLog "" "rm:info" \
-				warn "Failed to remove temporary '${C["File"]}.env${NC}' file." \
+				warn "Failed to remove temporary '{{|File|}}.env{{[-]}}' file." \
 				rm -f "${CurrentGlobalEnvFile}"
 		fi
 		if [[ -n ${CurrentAppEnvFile-} ]]; then
 			RunAndLog "" "rm:info" \
-				warn "Failed to remove temporary '${C["File"]}.env.app.${appname}${NC}' file." \
+				warn "Failed to remove temporary '{{|File|}}.env.app.${appname}{{[-]}}' file." \
 				rm -f "${CurrentAppEnvFile}"
 		fi
 		local DefaultGlobalEnvFile=''
@@ -53,7 +53,7 @@ menu_config_vars() {
 		# Add lines from global .env file to the dialog
 		if [[ -n ${APPNAME-} ]]; then
 			LineNumber+=1
-			LineColor[LineNumber]="${DC["LineHeading"]-}"
+			LineColor[LineNumber]="{{|LineHeading|}}"
 			CurrentValueOnLine[LineNumber]="*** ${COMPOSE_ENV} ***"
 		fi
 		run_script 'appvars_lines' "${APPNAME}" > "${CurrentGlobalEnvFile}"
@@ -71,9 +71,9 @@ menu_config_vars() {
 				local DefaultLine
 				DefaultLine="${VarName}=$(run_script 'var_default_value' "${VarName}")"
 				if [[ ${line} == "${DefaultLine}" ]]; then
-					LineColor[LineNumber]="${DC["LineVar"]-}"
+					LineColor[LineNumber]="{{|LineVar|}}"
 				else
-					LineColor[LineNumber]="${DC["LineModifiedVar"]-}"
+					LineColor[LineNumber]="{{|ModifiedText|}}"
 				fi
 				VarNameOnLine[LineNumber]="${VarName}"
 				if [[ -z ${FirstVarLine-} ]]; then
@@ -81,25 +81,25 @@ menu_config_vars() {
 				fi
 			elif (${GREP} -q -P '^\s*#' <<< "${line}"); then
 				# Line is a comment
-				LineColor[LineNumber]="${DC["LineComment"]-}"
+				LineColor[LineNumber]="{{|LineComment|}}"
 			else
 				# Line is an unknowwn line
-				LineColor[LineNumber]="${DC["LineAddVariable"]-}"
+				LineColor[LineNumber]="{{|LineAddVariable|}}"
 			fi
 		done
 		LineNumber+=1
 		local AddGlobalVariableLineNumber=${LineNumber}
 		CurrentValueOnLine[LineNumber]="${AddVariableText}"
-		LineColor[LineNumber]="${DC["LineAddVariable"]-}"
+		LineColor[LineNumber]="{{|LineAddVariable|}}"
 
 		if [[ -n ${APPNAME-} ]]; then
 			# Add lines from appvar.env file to the dialog
 			LineNumber+=1
 			CurrentValueOnLine[LineNumber]=""
-			LineColor[LineNumber]="${DC["LineOther"]-}"
+			LineColor[LineNumber]="{{|LineOther|}}"
 			LineNumber+=1
 			CurrentValueOnLine[LineNumber]="*** $(run_script 'app_env_file' "${APPNAME}") ***"
-			LineColor[LineNumber]="${DC["LineHeading"]-}"
+			LineColor[LineNumber]="{{|LineHeading|}}"
 			run_script 'appvars_lines' "${APPNAME}:" > "${CurrentAppEnvFile}"
 			local -a CurrentAppEnvLines
 			readarray -t CurrentAppEnvLines < <(
@@ -115,9 +115,9 @@ menu_config_vars() {
 					local DefaultLine
 					DefaultLine="${VarName}=$(run_script 'var_default_value' "${APPNAME}:${VarName}")"
 					if [[ ${line} == "${DefaultLine}" ]]; then
-						LineColor[LineNumber]="${DC["LineVar"]-}"
+						LineColor[LineNumber]="{{|LineVar|}}"
 					else
-						LineColor[LineNumber]="${DC["LineModifiedVar"]-}"
+						LineColor[LineNumber]="{{|ModifiedText|}}"
 					fi
 					VarNameOnLine[LineNumber]="${APPNAME}:${VarName}"
 					if [[ -z ${FirstVarLine-} ]]; then
@@ -125,16 +125,16 @@ menu_config_vars() {
 					fi
 				elif (${GREP} -q -P '^\s*#' <<< "${line}"); then
 					# Line is a comment
-					LineColor[LineNumber]="${DC["LineComment"]-}"
+					LineColor[LineNumber]="{{|LineComment|}}"
 				else
 					# Line is an unknowwn line
-					LineColor[LineNumber]="${DC["LineOther"]-}"
+					LineColor[LineNumber]="{{|LineOther|}}"
 				fi
 			done
 			LineNumber+=1
 			local AddAppEnvVariableLineNumber=${LineNumber}
 			CurrentValueOnLine[LineNumber]="${AddVariableText}"
-			LineColor[LineNumber]="${DC["LineAddVariable"]-}"
+			LineColor[LineNumber]="{{|LineAddVariable|}}"
 		fi
 
 		local TotalLines=$((10#${LineNumber}))
@@ -155,23 +155,21 @@ menu_config_vars() {
 			LastLineChoice="$(printf "%0${PadSize}d" "${TotalLines}")"
 		fi
 		while true; do
-			set_screen_size
 			local DialogHeading
 			DialogHeading="$(run_script 'menu_heading' "${APPNAME-}")"
 			local -a LineDialog=(
-				--output-fd 1
-				--extra-button
-				--ok-label "Select"
-				--extra-label "Remove"
-				--cancel-label "Back"
-				--title "${DC["Title"]-}${Title}"
-				--default-item "${LastLineChoice}"
+				"${Title}"
+				"${DialogHeading}"
+				--maximized
+				--ok-label:Select
+				--extra-label:Remove
+				--cancel-label:Back
+				--default-item:"${LastLineChoice}"
 				--item-help
-				--menu "${DialogHeading}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" -1
 				"${LineOptions[@]}"
 			)
 			local -i LineDialogButtonPressed=0
-			LineChoice=$(_dialog_ "${LineDialog[@]}") || LineDialogButtonPressed=$?
+			LineChoice=$(dialog_menu "${LineDialog[@]}") || LineDialogButtonPressed=$?
 			case ${DIALOG_BUTTONS[LineDialogButtonPressed]-} in
 				OK) # Select
 					LastLineChoice="${LineChoice}"
@@ -200,11 +198,11 @@ menu_config_vars() {
 						if [[ ${CleanVarName} == *":"* ]]; then
 							CleanVarName="${CleanVarName#*:}"
 						fi
-						local Question="Do you really want to delete ${DC["Highlight"]-}${CleanVarName}${DC["NC"]-}?"
+						local Question="Do you really want to delete {{|Highlight|}}${CleanVarName}{{[-]}}?"
 						if run_script 'question_prompt' N "${DialogHeading}\n\n${Question}\n" "Delete Variable" "${ASSUMEYES:+Y}" "Delete" "Back"; then
 							DialogHeading="$(run_script 'menu_heading' "${APPNAME-}" "${VarName}")"
 							coproc {
-								dialog_pipe "${DC["TitleSuccess"]-}Deleting Variable" "${DialogHeading}" "${DIALOGTIMEOUT}"
+								dialog_pipe "{{|TitleSuccess|}}Deleting Variable" "${DialogHeading}" "${DIALOGTIMEOUT}"
 							}
 							local -i DialogBox_PID=${COPROC_PID}
 							local -i DialogBox_FD="${COPROC[1]}"
@@ -242,12 +240,12 @@ menu_config_vars() {
 	done
 	if [[ -n ${CurrentGlobalEnvFile-} ]]; then
 		RunAndLog "" "rm:info" \
-			warn "Failed to remove temporary '${C["File"]}.env${NC}' file." \
+			warn "Failed to remove temporary '{{|File|}}.env{{[-]}}' file." \
 			rm -f "${CurrentGlobalEnvFile}"
 	fi
 	if [[ -n ${CurrentAppEnvFile-} ]]; then
 		RunAndLog "" "rm:info" \
-			warn "Failed to remove temporary '${C["File"]}.env.app.${appname}${NC}' file." \
+			warn "Failed to remove temporary '{{|File|}}.env.app.${appname}{{[-]}}' file." \
 			rm -f "${CurrentAppEnvFile}"
 	fi
 }

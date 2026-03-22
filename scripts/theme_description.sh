@@ -18,7 +18,7 @@ theme_description() {
 		ThemeArchive="${THEME_FOLDER}/${ThemeName}${THEME_FILE_EXT}"
 	fi
 
-	hrx_env_get "${ThemeArchive}" "${THEME_FILE_NAME}" "ThemeDescription"
+	hrx_toml_get "${ThemeArchive}" "${THEME_FILE_NAME}" "metadata.description"
 }
 
 test_theme_description() {

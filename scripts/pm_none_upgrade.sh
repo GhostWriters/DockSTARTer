@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 pm_none_upgrade() {
-	info "Package manager '${C["UserCommand"]}none${NC}' does not require upgrades."
+	info "Package manager '{{|UserCommand|}}none{{[-]}}' does not require upgrades."
 }
 
 test_pm_none_upgrade() {

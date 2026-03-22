@@ -7,7 +7,7 @@ pm_pacman_clean() {
 	sudo pacman -Sc --noconfirm &> /dev/null ||
 		info \
 			"Failed to cleanup pacman cache." \
-			"Failing command: ${C["FailingCommand"]}sudo pacman -Sc --noconfirm"
+			"Failing command: {{|FailingCommand|}}sudo pacman -Sc --noconfirm"
 }
 
 test_pm_pacman_clean() {

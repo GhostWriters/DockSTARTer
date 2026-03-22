@@ -7,13 +7,13 @@ pm_yum_clean() {
 	sudo yum -y autoremove &> /dev/null ||
 		warn \
 			"Failed to remove unused packages from yum." \
-			"Failing command: ${C["FailingCommand"]}sudo yum -y autoremove"
+			"Failing command: {{|FailingCommand|}}sudo yum -y autoremove"
 
 	info "Cleaning up package cache."
 	sudo yum -y clean all &> /dev/null ||
 		warn \
 			"Failed to cleanup cache from yum." \
-			"Failing command: ${C["FailingCommand"]}sudo yum -y clean all"
+			"Failing command: {{|FailingCommand|}}sudo yum -y clean all"
 }
 
 test_pm_yum_clean() {

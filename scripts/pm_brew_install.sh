@@ -21,17 +21,17 @@ pm_brew_install() {
 
 	#shellcheck disable=SC2124 #Assigning an array to a string! Assign as array, or use * instead of @ to concatenate.
 	local PackagesString="${Packages[@]}"
-	local pkglist="${PackagesString// /${NC}\', \'${C["Program"]}}"
-	pkglist="${NC}'${C["Program"]}${pkglist}${NC}'"
+	local pkglist="${PackagesString// /{{[-]}}\', \'{{|Folder|}}}"
+	pkglist="{{[-]}}'{{|Folder|}}${pkglist}{{[-]}}'"
 
 	notice "Installing packages: ${pkglist}"
 
 	Command="brew install ${PackagesString}"
-	notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+	notice "Running: {{|RunningCommand|}}${Command}{{[-]}}"
 	eval "${REDIRECT}${Command}" ||
 		fatal \
 			"Failed to install dependencies from brew." \
-			"Failing command: ${C["FailingCommand"]}${Command}"
+			"Failing command: {{|FailingCommand|}}${Command}"
 }
 
 detect_packages() {
@@ -46,7 +46,7 @@ detect_packages() {
 	DepsSearch="$(printf '%s ' "${Dependencies[@]}" | xargs)"
 
 	local Command="brew which-formula ${DepsSearch}"
-	notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+	notice "Running: {{|RunningCommand|}}${Command}{{[-]}}"
 	eval "${Command}" 2> /dev/null | while IFS= read -r line; do
 		if [[ ! ${line} =~ ^${RegEx_Package_Blacklist}$ ]]; then
 			echo "${line}"

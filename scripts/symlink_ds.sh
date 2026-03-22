@@ -20,11 +20,11 @@ symlink_ds() {
 	for Folder in "${SymlinkFolders[@]}"; do
 		local SymlinkTarget="${Folder}/${APPLICATION_COMMAND}"
 		if [[ -L ${SymlinkTarget} ]] && [[ ${SCRIPTNAME} != "$(readlink -f "${SymlinkTarget}")" ]]; then
-			info "Attempting to remove '${C["File"]}${SymlinkTarget}${NC}' symlink."
+			info "Attempting to remove '{{|File|}}${SymlinkTarget}{{[-]}}' symlink."
 			sudo rm -f "${SymlinkTarget}" &> /dev/null || true
 		fi
 		if [[ ! -L ${SymlinkTarget} ]]; then
-			info "Creating '${C["File"]}${SymlinkTarget}${NC}' symbolic link for ${C["ApplicationName"]-}${APPLICATION_NAME}."
+			info "Creating '{{|File|}}${SymlinkTarget}{{[-]}}' symbolic link for {{|ApplicationName|}}${APPLICATION_NAME}."
 			mkdir -p "${Folder}" &> /dev/null || true
 			sudo ln -s "${SCRIPTNAME}" "${SymlinkTarget}" &> /dev/null || true
 		fi
@@ -36,7 +36,7 @@ symlink_ds() {
 	if [[ -n ${FinalSymlinkFolder} ]]; then
 		if [[ ":${PATH}:" != *":${FinalSymlinkFolder}:"* ]]; then
 			warn \
-				"'${C["File"]}${FinalSymlinkFolder}${NC}' not found in '${C["Var"]}PATH${NC}'. Please add it to your '${C["Var"]}PATH${NC}' in order to use the '${C["UserCommand"]}${APPLICATION_COMMAND}${NC}' command alias."
+				"'{{|File|}}${FinalSymlinkFolder}{{[-]}}' not found in '{{|Var|}}PATH{{[-]}}'. Please add it to your '{{|Var|}}PATH{{[-]}}' in order to use the '{{|UserCommand|}}${APPLICATION_COMMAND}{{[-]}}' command alias."
 		fi
 	else
 		fatal "Failed to create symlink."

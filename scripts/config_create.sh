@@ -10,11 +10,11 @@ config_create() {
 	fi
 
 	if [[ ! -d ${APPLICATION_CONFIG_FOLDER} ]]; then
-		notice "Creating '${C["Folder"]-}${APPLICATION_CONFIG_FOLDER}${NC-}'."
+		notice "Creating '{{|Folder|}}${APPLICATION_CONFIG_FOLDER}{{[-]}}'."
 		mkdir -p "${APPLICATION_CONFIG_FOLDER}" ||
 			fatal \
 				"Failed to create config folder." \
-				"Failing command: ${C["FailingCommand"]}mkdir -p \"${APPLICATION_CONFIG_FOLDER}\""
+				"Failing command: {{|FailingCommand|}}mkdir -p \"${APPLICATION_CONFIG_FOLDER}\""
 		run_script 'set_permissions' "${APPLICATION_CONFIG_FOLDER}"
 	fi
 
@@ -25,11 +25,11 @@ config_create() {
 				if [[ ${LegacyIniFile} == "${APPLICATION_INI_FILE}" ]]; then
 					continue
 				fi
-				notice "Renaming '${C["File"]-}${LegacyIniFile}${NC-}' to '${C["File"]-}${APPLICATION_INI_FILE}${NC-}'."
+				notice "Renaming '{{|File|}}${LegacyIniFile}{{[-]}}' to '{{|File|}}${APPLICATION_INI_FILE}{{[-]}}'."
 				mv "${LegacyIniFile}" "${APPLICATION_INI_FILE}" ||
 					fatal \
 						"Failed to rename old config file." \
-						"Failing command: ${C["FailingCommand"]}mv \"${LegacyIniFile}\" \"${APPLICATION_INI_FILE}\""
+						"Failing command: {{|FailingCommand|}}mv \"${LegacyIniFile}\" \"${APPLICATION_INI_FILE}\""
 				break
 			fi
 		done
@@ -77,7 +77,7 @@ config_create() {
 
 		PackageManager="$(run_script 'config_get' PackageManager)"
 
-		notice "Migrating '${C["File"]-}${APPLICATION_INI_FILE}${NC-}' to '${C["File"]-}${APPLICATION_TOML_FILE}${NC-}'."
+		notice "Migrating '{{|File|}}${APPLICATION_INI_FILE}{{[-]}}' to '{{|File|}}${APPLICATION_TOML_FILE}{{[-]}}'."
 
 		set_toml_val "${APPLICATION_TOML_FILE}" "paths.config_folder" "${ConfigFolder}"
 		set_toml_val "${APPLICATION_TOML_FILE}" "paths.compose_folder" "${ComposeFolder}"
@@ -91,11 +91,11 @@ config_create() {
 		run_script 'set_permissions' "${APPLICATION_TOML_FILE}"
 	else
 		# Fresh install: copy the default TOML file
-		notice "Copying '${C["File"]-}${DEFAULT_TOML_FILE}${NC-}' to '${C["File"]-}${APPLICATION_TOML_FILE}${NC-}'."
+		notice "Copying '{{|File|}}${DEFAULT_TOML_FILE}{{[-]}}' to '{{|File|}}${APPLICATION_TOML_FILE}{{[-]}}'."
 		cp "${DEFAULT_TOML_FILE}" "${APPLICATION_TOML_FILE}" ||
 			fatal \
 				"Failed to copy default config file." \
-				"Failing command: ${C["FailingCommand"]}cp \"${DEFAULT_TOML_FILE}\" \"${APPLICATION_TOML_FILE}\""
+				"Failing command: {{|FailingCommand|}}cp \"${DEFAULT_TOML_FILE}\" \"${APPLICATION_TOML_FILE}\""
 		run_script 'set_permissions' "${APPLICATION_TOML_FILE}"
 
 		# Check for a legacy compose folder and update ComposeFolder if needed
@@ -133,16 +133,16 @@ config_create() {
 		fi
 
 		if [[ ${LegacyHasFiles} == true ]] && [[ ${DefaultHasFiles} == true ]] && [[ ${ExpandedLegacyComposeFolder} != "${ExpandedDefaultComposeFolder}" ]]; then
-			local PromptMessage="Existing docker compose folders found in multiple locations.\n   Legacy:  '${C["Folder"]-}${ExpandedLegacyComposeFolder}${NC-}'\n   Default: '${C["Folder"]-}${ExpandedDefaultComposeFolder}${NC-}'\n\nWould you like to use the Legacy location?"
+			local PromptMessage="Existing docker compose folders found in multiple locations.\n   Legacy:  '{{|Folder|}}${ExpandedLegacyComposeFolder}{{[-]}}'\n   Default: '{{|Folder|}}${ExpandedDefaultComposeFolder}{{[-]}}'\n\nWould you like to use the Legacy location?"
 			if run_script 'question_prompt' "Y" "${PromptMessage}" "Multiple Compose Folders Detected" "" "Legacy" "Default"; then
 				notice \
 					"Chose the Legacy compose folder location:" \
-					"   '${C["Folder"]-}${ExpandedLegacyComposeFolder}${NC-}'"
+					"   '{{|Folder|}}${ExpandedLegacyComposeFolder}{{[-]}}'"
 				set_toml_val "${APPLICATION_TOML_FILE}" "paths.compose_folder" "${LegacyComposeFolder}"
 			else
 				notice \
 					"Chose the Default compose folder location:" \
-					"   '${C["Folder"]-}${ExpandedDefaultComposeFolder}${NC-}'"
+					"   '{{|Folder|}}${ExpandedDefaultComposeFolder}{{[-]}}'"
 			fi
 		elif [[ ${LegacyHasFiles} == true ]]; then
 			set_toml_val "${APPLICATION_TOML_FILE}" "paths.compose_folder" "${LegacyComposeFolder}"

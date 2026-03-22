@@ -19,9 +19,9 @@ MigrateFilesAndFolders() {
 		local NewFile="${MigrationFileMap[${OldFile}]}"
 
 		if [[ ! -f ${NewFile} && -f ${OldFile} ]]; then
-			warn "Migrating '${C["File"]}${OldFile}${NC}' to '${C["File"]}${NewFile}${NC}'."
+			warn "Migrating '{{|File|}}${OldFile}{{[-]}}' to '{{|File|}}${NewFile}{{[-]}}'."
 			RunAndLog warn "mv:warn" \
-				warn "Failed to migrate '${C["File"]}${OldFile}${NC}'." \
+				warn "Failed to migrate '{{|File|}}${OldFile}{{[-]}}'." \
 				mv "${OldFile}" "${NewFile}" || true
 		fi
 	done
@@ -30,9 +30,9 @@ MigrateFilesAndFolders() {
 		local NewFolder="${MigrationFolderMap[${OldFolder}]}"
 
 		if [[ ! -d ${NewFolder} && -d ${OldFolder} ]]; then
-			warn "Migrating '${C["Folder"]}${OldFolder}${NC}' to '${C["Folder"]}${NewFolder}${NC}'."
+			warn "Migrating '{{|Folder|}}${OldFolder}{{[-]}}' to '{{|Folder|}}${NewFolder}{{[-]}}'."
 			RunAndLog warn "mv:warn" \
-				warn "Failed to migrate '${C["Folder"]}${OldFolder}${NC}'." \
+				warn "Failed to migrate '{{|Folder|}}${OldFolder}{{[-]}}'." \
 				mv "${OldFolder}" "${NewFolder}" || true
 		fi
 	done

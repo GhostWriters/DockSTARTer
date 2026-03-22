@@ -16,7 +16,7 @@ menu_add_var() {
 	local Heading
 	local VarNameMaxLength=256
 	local VarNameHeading
-	local VarNameNone="${DC["Highlight"]-}[*NONE*]"
+	local VarNameNone="{{|Highlight|}}[*NONE*]"
 	Heading=""
 	if [[ -z ${APPNAME-} ]]; then
 		# No appname specified, creating a global variable in .env
@@ -78,15 +78,15 @@ menu_add_var() {
 			}
 			local -A OptionHelpLine=(
 				["${APPNAME__}"]="Complete this with any variable you want."
-				["${APPNAME__ENVIRONMENT_}"]="Complete this with a var to use in the ${DC["Highlight"]-}environment:${DC["NC"]-} section of your override. Suggest adding to ${DC["Highlight"]-}${DC["Highlight"]-}env_files/${APPNAME,,}.env${DC["NC"]-} instead."
-				["${APPNAME__PORT_}"]="Complete this with a var to use in the ${DC["Highlight"]-}ports:${DC["NC"]-} section of your override."
-				["${APPNAME__VOLUME_}"]="Complete this with a var to use in the ${DC["Highlight"]-}volumes:${DC["NC"]-} section of your override."
-				["${APPNAME__CONTAINER_NAME}"]="This can be used in the ${DC["Highlight"]-}container_name:${DC["NC"]-} section in your override."
+				["${APPNAME__ENVIRONMENT_}"]="Complete this with a var to use in the {{|Highlight|}}environment:{{[-]}} section of your override. Suggest adding to {{|Highlight|}}{{|Highlight|}}env_files/${APPNAME,,}.env{{[-]}} instead."
+				["${APPNAME__PORT_}"]="Complete this with a var to use in the {{|Highlight|}}ports:{{[-]}} section of your override."
+				["${APPNAME__VOLUME_}"]="Complete this with a var to use in the {{|Highlight|}}volumes:{{[-]}} section of your override."
+				["${APPNAME__CONTAINER_NAME}"]="This can be used in the {{|Highlight|}}container_name:{{[-]}} section in your override."
 				["${APPNAME__ENABLED}"]="Creating this variable will cause the app to be controlled by ${APPLICATION_NAME} with no override needed."
-				["${APPNAME__HOSTNAME}"]="This can be used in the ${DC["Highlight"]-}hostname:${DC["NC"]-} section of your override."
-				["${APPNAME__NETWORK_MODE}"]="This can be used in the ${DC["Highlight"]-}network_mode:${DC["NC"]-} section of your override."
-				["${APPNAME__RESTART}"]="This can be used in the ${DC["Highlight"]-}restart:${DC["NC"]-} section of your override."
-				["${APPNAME__TAG}"]="This can be used in the ${DC["Highlight"]-}image:${DC["NC"]-} section of your override. Add it at the end as ${DC["Highlight"]-}:\${${APPNAME__TAG// /}}${DC["NC"]-}."
+				["${APPNAME__HOSTNAME}"]="This can be used in the {{|Highlight|}}hostname:{{[-]}} section of your override."
+				["${APPNAME__NETWORK_MODE}"]="This can be used in the {{|Highlight|}}network_mode:{{[-]}} section of your override."
+				["${APPNAME__RESTART}"]="This can be used in the {{|Highlight|}}restart:{{[-]}} section of your override."
+				["${APPNAME__TAG}"]="This can be used in the {{|Highlight|}}image:{{[-]}} section of your override. Add it at the end as {{|Highlight|}}:\${${APPNAME__TAG// /}}{{[-]}}."
 			)
 			ClearHelpLine="This will clear any variable name already entered."
 			AddAllHelpLine="This will add all stock variables listed below."
@@ -174,52 +174,44 @@ menu_add_var() {
 					)
 				fi
 				Heading="$(run_script 'menu_heading' ":${AppName}" "${VarNameHeading}")"
-				local SelectValueMenuText="${Heading}\n\nWhat variable would you like create for application ${DC["Highlight"]-}${AppName}${DC["NC"]-}?"
-				local SelectValueDialogParams=(
-					--stdout
+				local SelectValueMenuText="${Heading}\n\nWhat variable would you like create for application {{|Highlight|}}${AppName}{{[-]}}?"
+				local -a SelectValueDialog=(
+					"${Title}"
+					"${SelectValueMenuText}"
+					--maximized
 					--item-help
 					--no-hot-list
-					--title "${DC["Title"]-}${Title}"
-				)
-				set_screen_size
-				local -i MenuTextLines
-				MenuTextLines="$(_dialog_ "${SelectValueDialogParams[@]}" --print-text-size "${SelectValueMenuText}" "$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" | cut -d ' ' -f 1)"
-				local -i SelectValueDialogButtonPressed=0
-				local -a SelectValueDialog=(
-					"${SelectValueDialogParams[@]}"
-					--ok-label "Select"
-					--extra-label "Edit"
-					--cancel-label "Done"
-					--inputmenu "${SelectValueMenuText}"
-					"$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
-					"$((LINES - DC["TextRowsAdjust"] - MenuTextLines))"
+					--ok-label:Select
+					--extra-label:Edit
+					--cancel-label:Done
 					"${ValueOptions[@]}"
 				)
-				SelectValueDialogButtonPressed=0
-				SelectedOption=$(_dialog_ "${SelectValueDialog[@]}") || SelectValueDialogButtonPressed=$?
+				local -i SelectValueDialogButtonPressed=0
+				local SelectedOption
+				SelectedOption=$(dialog_inputmenu "${SelectValueDialog[@]}") || SelectValueDialogButtonPressed=$?
 				case ${DIALOG_BUTTONS[SelectValueDialogButtonPressed]-} in
 					OK) # SELECT button
 						if [[ ${SelectedOption} == "${OptionClear}" ]]; then
 							VarName=""
 						elif [[ ${SelectedOption} == "${OptionAddAll}" ]]; then
-							local Question="${DC["NC"]-}Would you like to create the following stock variables to use in your override file?\n"
+							local Question="{{[-]}}Would you like to create the following stock variables to use in your override file?\n"
 							for Option in "${ValidStockOptions[@]}"; do
-								Question+="\n   ${DC["Highlight"]-}${Option// /}${DC["NC"]-}"
+								Question+="\n   {{|Highlight|}}${Option// /}{{[-]}}"
 							done
 							Heading="$(run_script 'menu_heading' ":${AppName}")"
 							if run_script 'question_prompt' N "${Heading}\n\n${Question}" "Create Stock Variables" "${ASSUMEYES:+Y}" "Create" "Back"; then
 								Heading="$(run_script 'menu_heading' ":${AppName}" "${VarNameHeading}")"
 								coproc {
-									dialog_pipe "${DC["TitleSuccess"]-}Creating Stock Variables" "${Heading}"
+									dialog_pipe "{{|TitleSuccess|}}Creating Stock Variables" "${Heading}"
 								}
 								local -i DialogBox_PID=${COPROC_PID}
 								local -i DialogBox_FD="${COPROC[1]}"
 								{
-									notice "Adding variables to ${C["File"]}${COMPOSE_ENV}${NC}:"
+									notice "Adding variables to {{|File|}}${COMPOSE_ENV}{{[-]}}:"
 									for Option in "${ValidStockOptions[@]}"; do
 										local DefaultValue
 										DefaultValue="$(run_script 'var_default_value' "${Option// /}")"
-										notice "   ${C["Var"]}${Option// /}=${DefaultValue}${NC}"
+										notice "   {{|Var|}}${Option// /}=${DefaultValue}{{[-]}}"
 										run_script 'env_set_literal' "${Option// /}" "${DefaultValue}"
 									done
 								} >&${DialogBox_FD} 2>&1
@@ -254,15 +246,15 @@ menu_add_var() {
 							fi
 							continue
 						elif ! run_script 'varname_is_valid' "${VarName}" "_BARE_"; then
-							ErrorMessage="The variable name ${DC["Highlight"]-}${VarName}${DC["NC"]-} is not a valid name.\n\n Please input another variable name."
+							ErrorMessage="The variable name {{|Highlight|}}${VarName}{{[-]}} is not a valid name.\n\n Please input another variable name."
 						elif run_script 'env_var_exists' "${VarName}"; then
-							ErrorMessage="The variable ${DC["Highlight"]-}${VarName}${DC["NC"]-} already exists.\n\n Please input another variable name."
+							ErrorMessage="The variable {{|Highlight|}}${VarName}{{[-]}} already exists.\n\n Please input another variable name."
 						else
 							DetectedAppName="$(run_script 'app_nicename' "$(run_script 'varname_to_appname' "${VarName}")")"
 							if [[ ${DetectedAppName^^} == "" ]]; then
-								ErrorMessage="The variable name ${DC["Highlight"]-}${VarName}${DC["NC"]-} is not a valid name for app ${DC["Highlight"]-}${AppName}${DC["NC"]-}. It would be a global variable.\n\n Please input another variable name."
+								ErrorMessage="The variable name {{|Highlight|}}${VarName}{{[-]}} is not a valid name for app {{|Highlight|}}${AppName}{{[-]}}. It would be a global variable.\n\n Please input another variable name."
 							elif [[ ${DetectedAppName^^} != "${APPNAME}" ]]; then
-								ErrorMessage="The variable name ${DC["Highlight"]-}${VarName}${DC["NC"]-} is not a valid name for app ${DC["Highlight"]-}${AppName}${DC["NC"]-}. It would be a variable for an app named ${DC["Highlight"]-}${DetectedAppName}${DC["NC"]-}.\n\n Please input another variable name."
+								ErrorMessage="The variable name {{|Highlight|}}${VarName}{{[-]}} is not a valid name for app {{|Highlight|}}${AppName}{{[-]}}. It would be a variable for an app named {{|Highlight|}}${DetectedAppName}{{[-]}}.\n\n Please input another variable name."
 							fi
 						fi
 						if [[ -n ${ErrorMessage-} ]]; then
@@ -270,12 +262,12 @@ menu_add_var() {
 							dialog_error "${Title}" "${Heading}\n\n${ErrorMessage}"
 							continue
 						fi
-						Question="Create variable ${DC["Highlight"]-}${VarName}${DC["NC"]-} for application ${DC["Highlight"]-}${AppName}${DC["NC"]-}?\n"
+						Question="Create variable {{|Highlight|}}${VarName}{{[-]}} for application {{|Highlight|}}${AppName}{{[-]}}?\n"
 						Heading="$(run_script 'menu_heading' "$:{AppName}" "${VarNameHeading}")"
 						if run_script 'question_prompt' N "${Heading}\n\n${Question}" "Create Variable" "${ASSUMEYES:+Y}" "Create" "Back"; then
 							Default="$(run_script 'var_default_value' "${VarName}")"
 							Heading="$(run_script 'menu_heading' ":${AppName}" "${VarNameHeading}")"
-							run_script_dialog "${DC["TitleSuccess"]-}Creating Variable" "${Heading}\n\n" "${DIALOGTIMEOUT}" \
+							run_script_dialog "{{|TitleSuccess|}}Creating Variable" "${Heading}\n\n" "${DIALOGTIMEOUT}" \
 								'env_set_literal' "${VarName}" "${Default}"
 							run_script 'menu_value_prompt' "${VarName}"
 							return
@@ -296,7 +288,7 @@ menu_add_var() {
 				local InputValueText
 				Heading="$(run_script 'menu_heading' "${AppNameHeading}" "")"
 				if [[ ${VarType} == APPENV ]]; then
-					InputValueText="${Heading}\n\nWhat variable would you like create for application ${DC["Highlight"]-}${AppName}${DC["NC"]-}?\n"
+					InputValueText="${Heading}\n\nWhat variable would you like create for application {{|Highlight|}}${AppName}{{[-]}}?\n"
 				else # GLOBAL
 					InputValueText="${Heading}\n\nWhat global variable would you like create?\n"
 				fi
@@ -309,15 +301,16 @@ menu_add_var() {
 					"${VarNameMaxLength}" "${VarNameMaxLength}"
 				)
 				local -a InputValueDialog=(
-					--stdout
-					--title "${DC["Title"]-}${Title}"
-					--max-input 256
-					--form "${InputValueText}"
-					"$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" 0
+					"${Title}"
+					"${InputValueText}"
+					--maximized
+					--ok-label:Select
+					--cancel-label:Exit
+					0
 					"${ValueOptions[@]}"
 				)
 				local InputValueDialogButtonPressed=0
-				VarName=$(_dialog_ "${InputValueDialog[@]}") || InputValueDialogButtonPressed=$?
+				VarName=$(dialog_form "${InputValueDialog[@]}") || InputValueDialogButtonPressed=$?
 				case ${DIALOG_BUTTONS[InputValueDialogButtonPressed]-} in
 					OK)
 						local Default
@@ -327,13 +320,13 @@ menu_add_var() {
 						fi
 						VarNameHeading="${VarName:-${VarNameNone}}"
 						if ! run_script 'varname_is_valid' "${VarName}" "_BARE_"; then
-							ErrorMessage="The variable name ${DC["Highlight"]-}${VarName}${DC["NC"]-} is not a valid name.\n\n Please input another variable name."
+							ErrorMessage="The variable name {{|Highlight|}}${VarName}{{[-]}} is not a valid name.\n\n Please input another variable name."
 						elif run_script 'env_var_exists' "${VarName}" "${VarFile}"; then
-							ErrorMessage="The variable ${DC["Highlight"]-}${VarName}${DC["NC"]-} already exists.\n\n Please input another variable name."
+							ErrorMessage="The variable {{|Highlight|}}${VarName}{{[-]}} already exists.\n\n Please input another variable name."
 						elif [[ ${VarType} == GLOBAL ]]; then
 							DetectedAppName="$(run_script 'app_nicename' "$(run_script 'varname_to_appname' "${VarName}")")"
 							if [[ ${DetectedAppName} != "" ]]; then
-								ErrorMessage="The variable name ${DC["Highlight"]-}${VarName}${DC["NC"]-} is not a valid global variable name. It would be a variable for an app named ${DC["Highlight"]-}${DetectedAppName}${DC["NC"]-}\n\n Please input another variable name."
+								ErrorMessage="The variable name {{|Highlight|}}${VarName}{{[-]}} is not a valid global variable name. It would be a variable for an app named {{|Highlight|}}${DetectedAppName}{{[-]}}\n\n Please input another variable name."
 							fi
 						fi
 						if [[ -n ${ErrorMessage} ]]; then
@@ -343,24 +336,24 @@ menu_add_var() {
 						fi
 						Heading="$(run_script 'menu_heading' "${AppNameHeading}" "${VarNameHeading}")"
 						local Question
-						Question="Create variable ${DC["Highlight"]-}${VarName}${DC["NC"]-}?\n"
+						Question="Create variable {{|Highlight|}}${VarName}{{[-]}}?\n"
 						if [[ ${VarType} == "APPENV" ]]; then
-							Question="Create variable ${DC["Highlight"]-}${VarName}${DC["NC"]-} for application ${DC["Highlight"]-}${AppName}${DC["NC"]-}?\n"
+							Question="Create variable {{|Highlight|}}${VarName}{{[-]}} for application {{|Highlight|}}${AppName}{{[-]}}?\n"
 							if run_script 'question_prompt' N "${Heading}\n\n${Question}" "Create Variable" "${ASSUMEYES:+Y}" "Create" "Back"; then
 								Default="$(run_script 'var_default_value' "${AppName}:${VarName}")"
 								Heading="$(run_script 'menu_heading' "${AppNameHeading}" "${VarNameHeading}")"
-								run_script_dialog "${DC["TitleSuccess"]-}Creating Variable" "${Heading}\n\n" "${DIALOGTIMEOUT}" \
+								run_script_dialog "{{|TitleSuccess|}}Creating Variable" "${Heading}\n\n" "${DIALOGTIMEOUT}" \
 									'env_set_literal' "${appname}:${VarName}" "${Default}"
 								run_script 'menu_value_prompt' "${appname}:${VarName}"
 								return
 							fi
 						else # GLOBAL
 							Heading="$(run_script 'menu_heading' "${AppNameHeading}" "${VarNameHeading}")"
-							Question="Create global variable ${DC["Highlight"]-}${VarName}${DC["NC"]-}?\n"
+							Question="Create global variable {{|Highlight|}}${VarName}{{[-]}}?\n"
 							if run_script 'question_prompt' N "${Heading}\n\n${Question}" "Create Variable" "${ASSUMEYES:+Y}" "Create" "Back"; then
 								Default="$(run_script 'var_default_value' "${VarName}")"
 								Heading="$(run_script 'menu_heading' "${AppNameHeading}" "${VarNameHeading}")"
-								run_script_dialog "${DC["TitleSuccess"]-}Creating Variable" "${Heading}\n\n" "${DIALOGTIMEOUT}" \
+								run_script_dialog "{{|TitleSuccess|}}Creating Variable" "${Heading}\n\n" "${DIALOGTIMEOUT}" \
 									'env_set_literal' "${VarName}" "${Default}"
 								run_script 'menu_value_prompt' "${VarName}"
 								return

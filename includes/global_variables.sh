@@ -25,7 +25,7 @@ declare -rgx TEMP_FOLDER_NAME="temp"
 declare -rgx COMPOSE_ENV_DEFAULT_FILE_NAME=".env.example"
 declare -rgx APPLICATION_INI_NAME="${APPLICATION_NAME,,}.ini"
 declare -rgx APPLICATION_TOML_NAME="${APPLICATION_NAME,,}.toml"
-declare -rgx THEME_FILE_NAME="theme.ini"
+declare -rgx THEME_FILE_NAME="theme.toml"
 declare -rgx THEME_FILE_EXT=".dstheme"
 
 declare -rgx TEMPLATES_PARENT_FOLDER="${APPLICATION_STATE_FOLDER}/${TEMPLATES_PARENT_FOLDER_NAME}/${TEMPLATES_REPO_FOLDER_NAME}"
@@ -95,10 +95,10 @@ declare -gx APP_ENV_FOLDER
 
 set_global_variables() {
 	if [[ -z ${LITERAL_CONFIG_FOLDER} ]]; then
-		fatal "'${C["Var"]}LITERAL_CONFIG_FOLDER${NC}' is not set."
+		fatal "'{{|Var|}}LITERAL_CONFIG_FOLDER{{[-]}}' is not set."
 	fi
 	if [[ -z ${LITERAL_COMPOSE_FOLDER} ]]; then
-		fatal "'${C["Var"]}LITERAL_COMPOSE_FOLDER${NC}' is not set."
+		fatal "'{{|Var|}}LITERAL_COMPOSE_FOLDER{{[-]}}' is not set."
 	fi
 	CONFIG_FOLDER="$(
 		expand_vars "${LITERAL_CONFIG_FOLDER}" \

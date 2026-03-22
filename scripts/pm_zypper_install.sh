@@ -23,17 +23,17 @@ pm_zypper_install() {
 
 	#shellcheck disable=SC2124 #Assigning an array to a string! Assign as array, or use * instead of @ to concatenate.
 	local PackagesString="${Packages[@]}"
-	local pkglist="${PackagesString// /${NC}\', \'${C["Program"]}}"
-	pkglist="${NC}'${C["Program"]}${pkglist}${NC}'"
+	local pkglist="${PackagesString// /{{[-]}}\', \'{{|Folder|}}}"
+	pkglist="{{[-]}}'{{|Folder|}}${pkglist}{{[-]}}'"
 
 	notice "Installing packages: ${pkglist}"
 
 	Command="sudo zypper -n install ${PackagesString}"
-	notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+	notice "Running: {{|RunningCommand|}}${Command}{{[-]}}"
 	eval "${REDIRECT}${Command}" ||
 		fatal \
 			"Failed to install dependencies from zypper." \
-			"Failing command: ${C["FailingCommand"]}${Command}"
+			"Failing command: {{|FailingCommand|}}${Command}"
 }
 
 detect_packages() {
@@ -52,7 +52,7 @@ detect_packages() {
 	IFS=' '
 	local CommandString="${Command[*]}"
 	IFS="${Old_IFS}"
-	notice "Running: ${C["RunningCommand"]}${CommandString}${NC}"
+	notice "Running: {{|RunningCommand|}}${CommandString}{{[-]}}"
 	"${Command[@]}" 2> /dev/null | while IFS= read -r line; do
 		if [[ ${line} =~ ${RegEx_XML} ]]; then
 			local Package="${BASH_REMATCH[1]}"

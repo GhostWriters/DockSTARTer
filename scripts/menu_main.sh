@@ -13,25 +13,26 @@ menu_main() {
 	local Option_UpdateVersion="Update ${APPLICATION_NAME}"
 	local Option_Options="Options"
 	local MainOpts=(
-		"${Option_Configure}" "${DC["ListDefault"]}Setup and start applications"
-		"${Option_InstallDependencies}" "${DC["ListDefault"]}Install required components"
-		"${Option_UpdateVersion}" "${DC["ListDefault"]}Get the latest version of ${APPLICATION_NAME}"
-		"${Option_Options}" "${DC["ListDefault"]}Adjust options for ${APPLICATION_NAME}"
+		"${Option_Configure}" "{{|ListDefault|}}Setup and start applications" ""
+		"${Option_InstallDependencies}" "{{|ListDefault|}}Install required components" ""
+		"${Option_UpdateVersion}" "{{|ListDefault|}}Get the latest version of ${APPLICATION_NAME}" ""
+		"${Option_Options}" "{{|ListDefault|}}Adjust options for ${APPLICATION_NAME}" ""
 	)
 
 	local LastMainChoice=""
 	while true; do
 		local -a MainChoiceDialog=(
-			--output-fd 1
-			--title "${DC["Title"]-}${Title}"
-			--ok-label "Select"
-			--cancel-label "Exit"
-			--menu "What would you like to do?" 0 0 0
+			"${Title}"
+			"What would you like to do?"
+			"--ok-label:Select"
+			"--cancel-label:Exit"
+			"--default-item:${LastMainChoice}"
+			--item-help
 			"${MainOpts[@]}"
 		)
 		local MainChoice
 		local -i MainDialogButtonPressed=0
-		MainChoice=$(_dialog_ --default-item "${LastMainChoice}" "${MainChoiceDialog[@]}") || MainDialogButtonPressed=$?
+		MainChoice=$(dialog_menu "${MainChoiceDialog[@]}") || MainDialogButtonPressed=$?
 		LastMainChoice=${MainChoice}
 		case ${DIALOG_BUTTONS[MainDialogButtonPressed]-} in
 			OK)
