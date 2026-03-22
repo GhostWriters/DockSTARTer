@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
-set -Eeuo pipefail
-IFS=$'\n\t'
-
 theme_list_data() {
-	# Outputs one line per theme: "DisplayName|ConfigValue|IsUserTheme"
+	# Outputs one line per theme for TUI: "URI|DisplayName"
 	# Embedded themes first, user themes appended.
 	# If a user theme's display name collides with an embedded name, it is
 	# shown as "user:Name" to disambiguate.
@@ -12,17 +9,26 @@ theme_list_data() {
 	local -A EmbeddedDisplayNames=()
 
 	# 1. Collect embedded themes
+	local ThemeFile
 	local -a EmbeddedFiles=("${THEME_FOLDER}"/*"${THEME_FILE_EXT}")
 	for ThemeFile in "${EmbeddedFiles[@]-}"; do
 		[[ -f ${ThemeFile} ]] || continue
 		local Stem="${ThemeFile##*/}"
 		Stem="${Stem%"${THEME_FILE_EXT}"}"
+
+		# Extract metadata from TOML
+		local ExtractedFile
+		ExtractedFile=$(mktemp -t "${APPLICATION_NAME}.theme_list_data.XXXXXXXXXX")
+		hrx_extract_file "${ThemeFile}" "${THEME_FILE_NAME}" "${ExtractedFile}"
+
 		local DisplayName
-		DisplayName="$(hrx_toml_get "${ThemeFile}" "${THEME_FILE_NAME}" "metadata.name")"
+		DisplayName="$(get_toml_val "${ExtractedFile}" "metadata.name")"
 		[[ -z ${DisplayName} ]] && DisplayName="${Stem}"
+		rm -f "${ExtractedFile}"
+
 		EmbeddedNames+=("${Stem}")
 		EmbeddedDisplayNames["${Stem}"]="${DisplayName}"
-		echo "${DisplayName}|${Stem}|false"
+		echo "${Stem}|${DisplayName}"
 	done
 
 	# 2. Collect user themes, disambiguating name collisions
@@ -31,11 +37,20 @@ theme_list_data() {
 		[[ -f ${ThemeFile} ]] || continue
 		local Stem="${ThemeFile##*/}"
 		Stem="${Stem%"${THEME_FILE_EXT}"}"
+
+		# Extract metadata from TOML
+		local ExtractedFile
+		ExtractedFile=$(mktemp -t "${APPLICATION_NAME}.theme_list_data_user.XXXXXXXXXX")
+		hrx_extract_file "${ThemeFile}" "${THEME_FILE_NAME}" "${ExtractedFile}"
+
 		local DisplayName
-		DisplayName="$(hrx_toml_get "${ThemeFile}" "${THEME_FILE_NAME}" "metadata.name")"
+		DisplayName="$(get_toml_val "${ExtractedFile}" "metadata.name")"
 		[[ -z ${DisplayName} ]] && DisplayName="${Stem}"
+		rm -f "${ExtractedFile}"
+
 		# Check for collision with any embedded display name
 		local Collides=false
+		local EmbStem
 		for EmbStem in "${EmbeddedNames[@]-}"; do
 			if [[ ${EmbeddedDisplayNames["${EmbStem}"]} == "${DisplayName}" ]]; then
 				Collides=true
@@ -45,10 +60,8 @@ theme_list_data() {
 		if [[ ${Collides} == true ]]; then
 			DisplayName="user:${DisplayName}"
 		fi
-		echo "${DisplayName}|user:${Stem}|true"
+		echo "user:${Stem}|${DisplayName}"
 	done
 }
 
-test_theme_list() {
-	run_script 'theme_list'
-}
+theme_list_data

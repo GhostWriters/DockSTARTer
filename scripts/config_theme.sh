@@ -113,16 +113,28 @@ config_theme() {
 		["TextRowsAdjust"]=5
 	)
 
+	local sem_p sem_s dir_p dir_s
+	sem_p="$(get_toml_val "${ThemeFile}" "syntax.semantic_prefix")"
+	[[ -z ${sem_p} ]] && sem_p="{{|"
+	sem_s="$(get_toml_val "${ThemeFile}" "syntax.semantic_suffix")"
+	[[ -z ${sem_s} ]] && sem_s="|}}"
+	dir_p="$(get_toml_val "${ThemeFile}" "syntax.direct_prefix")"
+	[[ -z ${dir_p} ]] && dir_p="{{["
+	dir_s="$(get_toml_val "${ThemeFile}" "syntax.direct_suffix")"
+	[[ -z ${dir_s} ]] && dir_s="]}}"
+
 	local -a VarList
 	readarray -t VarList < <(get_toml_section_key_list "${ThemeFile}" "colors")
+	local VarName
 	for VarName in "${VarList[@]-}"; do
-		DC["{{|${VarName}|}}"]="$(get_toml_val "${ThemeFile}" "colors.${VarName}")"
+		DC["${VarName}"]="$(get_toml_val "${ThemeFile}" "colors.${VarName}")"
 	done
-	for Style in "${!DC[@]}"; do
-		DC["$Style"]="$(resolve_styles DC "${DC["$Style"]}")"
+	local StyleName
+	for StyleName in "${!DC[@]}"; do
+		DC["${StyleName}"]="$(resolve_styles DC "${DC["${StyleName}"]}" "${sem_p}" "${sem_s}" "${dir_p}" "${dir_s}")"
 	done
 
-	D["ThemeName"]="${ThemeName}"
+	D["ThemeName"]="$(get_toml_val "${ThemeFile}" "metadata.name")"
 	local DialogOptions="--colors --output-fd 1 --cr-wrap --no-collapse"
 
 	local LineCharacters Borders Scrollbar Shadow
