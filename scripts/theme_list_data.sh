@@ -63,5 +63,3 @@ theme_list_data() {
 		echo "${DisplayName}|user:${Stem}|true"
 	done
 }
-
-theme_list_data
