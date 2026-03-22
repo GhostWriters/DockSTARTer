@@ -958,7 +958,7 @@ init_check_symlink() {
 
 init_check_update() {
 	# Only check for updates once per 24 hours, as it can be quite slow.
-	[ -n "$(find "${APPLICATION_UPDATE_RECORD}" -mtime -1 2>/dev/null)" ] && return
+	[ -n "$(find "${APPLICATION_UPDATE_RECORD}" -mtime -1 2> /dev/null)" ] && return
 	local Branch
 	Branch="$(ds_branch)"
 	local TargetBranch="${Branch}"
