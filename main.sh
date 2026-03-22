@@ -652,13 +652,10 @@ fatal() {
 PrefixFileLines() {
 	local Prefix="${1}"
 	local FileName="${2}"
-
-	# Count lines in the Content string using process substitution
-	local LineCount
-	LineCount=$(wc -l < "${FileName}")
-
-	# Join the repeated prefix stream and the content stream
-	paste -d '\0' <(yes "${Prefix}" | head -n "${LineCount}" || true) "${FileName}"
+	local line
+	while IFS= read -r line || [[ -n ${line} ]]; do
+		printf '%s%s\n' "${Prefix}" "${line}"
+	done < "${FileName}"
 }
 
 RunAndLog() {
@@ -720,9 +717,11 @@ RunAndLog() {
 		"${Command[@]}" || result=$?
 	fi
 
-	if [[ -n ${OutputFile-} && -n $(cat "${OutputFile}") ]]; then
-		"${OutputNoticeType}" \
-			"$(PrefixFileLines "${Prefix}" "${OutputFile}")"
+	if [[ -n ${OutputFile-} && -s ${OutputFile} ]]; then
+		local line
+		while IFS= read -r line || [[ -n ${line} ]]; do
+			"${OutputNoticeType}" "${Prefix}${line}"
+		done < "${OutputFile}"
 		rm -f "${OutputFile}"
 	fi
 
