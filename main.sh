@@ -110,6 +110,7 @@ done
 declare -rgx APPLICATION_LOG="${XDG_STATE_HOME}/${APPLICATION_NAME,,}/${APPLICATION_NAME,,}.log"
 declare -rgx FATAL_LOG="${XDG_STATE_HOME}/${APPLICATION_NAME,,}/${APPLICATION_NAME,,}.fatal.log"
 
+declare -rgx APPLICATION_UPDATE_RECORD="${XDG_STATE_HOME}/${APPLICATION_NAME,,}/${APPLICATION_NAME,,}.updated"
 declare -Agx ColorCodes=(
 	[black]=K [red]=R [green]=G [yellow]=Y
 	[blue]=B [magenta]=M [cyan]=C [white]=W
@@ -956,6 +957,8 @@ init_check_symlink() {
 }
 
 init_check_update() {
+	# Only check for updates once per 24 hours, as it can be quite slow.
+	[ -n "$(find "${APPLICATION_UPDATE_RECORD}" -mtime -1 2> /dev/null)" ] && return
 	local Branch
 	Branch="$(ds_branch)"
 	local TargetBranch="${Branch}"
@@ -1016,6 +1019,7 @@ init_check_update() {
 				"Run '{{|UserCommand|}}${APPLICATION_COMMAND} -u ${Branch}{{[-]}}' to update to the latest stable release '{{|Version|}}$(templates_version "${Branch}"){{[-]}}'."
 		fi
 	fi
+	touch "${APPLICATION_UPDATE_RECORD}"
 }
 
 init() {

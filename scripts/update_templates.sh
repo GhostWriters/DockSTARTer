@@ -11,6 +11,7 @@ update_templates() {
 	local Title="Update ${TargetName}"
 	local Question YesNotice NoNotice
 
+	templates_fetch true
 	if [[ -z ${Branch-} ]]; then
 		Branch="$(templates_branch)"
 		if templates_tag_exists "${Branch-}"; then
