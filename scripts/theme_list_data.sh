@@ -28,7 +28,7 @@ theme_list_data() {
 
 		EmbeddedNames+=("${Stem}")
 		EmbeddedDisplayNames["${Stem}"]="${DisplayName}"
-		echo "${Stem}|${DisplayName}"
+		echo "${DisplayName}|${Stem}|false"
 	done
 
 	# 2. Collect user themes, disambiguating name collisions
@@ -60,7 +60,7 @@ theme_list_data() {
 		if [[ ${Collides} == true ]]; then
 			DisplayName="user:${DisplayName}"
 		fi
-		echo "user:${Stem}|${DisplayName}"
+		echo "${DisplayName}|user:${Stem}|true"
 	done
 }
 
