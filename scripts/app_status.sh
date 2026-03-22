@@ -12,17 +12,17 @@ app_status() {
 		if run_script 'app_is_referenced' "${AppName}"; then
 			if run_script 'app_is_added' "${AppName}"; then
 				if run_script 'app_is_enabled' "${AppName}"; then
-					echo "${AppName} is enabled."
+					resolve_strings C "{{|App|}}${AppName}{{[-]}} is enabled."
 				else
-					echo "${AppName} is disabled."
+					resolve_strings C "{{|App|}}${AppName}{{[-]}} is disabled."
 				fi
 			else
-				echo "${AppName} is referenced."
+				resolve_strings C "{{|App|}}${AppName}{{[-]}} is referenced."
 			fi
 		elif run_script 'app_is_builtin' "${AppName}"; then
-			echo "${AppName} is not added."
+			resolve_strings C "{{|App|}}${AppName}{{[-]}} is not added."
 		else
-			echo "${AppName} does not exist."
+			resolve_strings C "{{|App|}}${AppName}{{[-]}} does not exist."
 		fi
 	done
 }
