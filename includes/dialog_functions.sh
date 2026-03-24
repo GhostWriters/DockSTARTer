@@ -212,25 +212,70 @@ run_command_dialog() {
 	fi
 }
 
+# _parse_dialog_options_ DialogOptionsRef MaximizedRef CountRef "$@"
+# Parses common --option[:value] flags from positional params into a DialogOptions array.
+# Uses namerefs to modify the caller's DialogOptions and Maximized variables directly.
+# Saves the count of consumed positional args to CountRef — caller must: shift "${CountRef}"
+_parse_dialog_options_() {
+	local -n _pdo_opts_="${1}"
+	local -n _pdo_max_="${2}"
+	local -n _pdo_cnt_="${3}"
+	_pdo_max_=0
+	_pdo_cnt_=0
+	shift 3
+	while [[ ${1-} == --* ]]; do
+		case "${1}" in
+			--maximized) _pdo_max_=1 ;;
+			--timeout:*) _pdo_opts_+=("--timeout" "${1#*:}") ;;
+			--extra-label:*) _pdo_opts_+=("--extra-button" "--extra-label" "${1#*:}") ;;
+			--help-label:*) _pdo_opts_+=("--help-button" "--help-label" "${1#*:}") ;;
+			--ok-label:* | --yes-label:* | --no-label:* | --cancel-label:* | --exit-label:*)
+				_pdo_opts_+=("${1%:*}" "${1#*:}")
+				;;
+			--default-item:*) _pdo_opts_+=("--default-item" "${1#*:}") ;;
+			--item-help) _pdo_opts_+=("${1}") ;;
+			--*) _pdo_opts_+=("${1}") ;;
+			*) break ;;
+		esac
+		shift
+		((_pdo_cnt_++))
+	done
+}
+
+# _dialog_calc_text_size_ WindowHeightRef WindowWidthRef Message Title Maximized
+# Computes WindowHeight and WindowWidth for text-based dialogs (msgbox, inputbox, form, yesno).
+# Uses namerefs to set the caller's WindowHeight and WindowWidth variables directly.
+_dialog_calc_text_size_() {
+	local -n _dcts_h_="${1}"
+	local -n _dcts_w_="${2}"
+	local _dcts_msg_="${3}"
+	local _dcts_title_="${4}"
+	local -i _dcts_max_="${5:-0}"
+	set_screen_size
+	local -i _dcts_hmax_=$((LINES - D["WindowRowsAdjust"]))
+	local -i _dcts_wmax_=$((COLUMNS - D["WindowColsAdjust"]))
+	if [[ ${_dcts_max_} -eq 1 ]]; then
+		_dcts_h_=${_dcts_hmax_}
+		_dcts_w_=${_dcts_wmax_}
+		return
+	fi
+	local -i _dcts_tw_
+	_dcts_tw_="$("${DIALOG}" --output-fd 1 --print-text-size --msgbox "$(strip_styles "${_dcts_msg_}")" 0 0 2> /dev/null | cut -d ' ' -f 2)"
+	local -i _dcts_titlew_=$((3 + 12 + ${#_dcts_title_} + 3))
+	local -i _dcts_reqw_=$(((_dcts_tw_ + D["TextColsAdjust"]) > _dcts_titlew_ ? (_dcts_tw_ + D["TextColsAdjust"]) : _dcts_titlew_))
+	_dcts_h_=0
+	[[ _dcts_reqw_ -ge _dcts_wmax_ ]] && _dcts_w_=${_dcts_wmax_} || _dcts_w_=0
+}
+
 dialog_info() {
 	local Title="${1-}"
 	shift || true
 	local Message="${1-}"
 	shift || true
 	local -a DialogOptions=()
-	while [[ ${1-} == --* ]]; do
-		case "${1}" in
-			--timeout:*) DialogOptions+=("--timeout" "${1#*:}") ;;
-			--extra-label:*) DialogOptions+=("--extra-button" "--extra-label" "${1#*:}") ;;
-			--help-label:*) DialogOptions+=("--help-button" "--help-label" "${1#*:}") ;;
-			--ok-label:* | --yes-label:* | --no-label:* | --cancel-label:* | --exit-label:*)
-				DialogOptions+=("${1%:*}" "${1#*:}")
-				;;
-			--*) DialogOptions+=("${1}") ;;
-			*) break ;;
-		esac
-		shift
-	done
+	local -i Maximized=0 _n_=0
+	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
+	shift "${_n_}"
 	local -i result=0
 	_dialog_ "${DialogOptions[@]}" --infobox "${Message}" 0 0 || result=$?
 	echo -n "${S["BS"]}" >&2
@@ -266,40 +311,15 @@ dialog_yesno() {
 	local -i Maximized=0
 	local BoxType="--yesno"
 
-	while [[ ${1-} == --* ]]; do
-		case "${1}" in
-			--maximized) Maximized=1 ;;
-			--extra-label:*) DialogOptions+=("--extra-button" "--extra-label" "${1#*:}") ;;
-			--help-label:*) DialogOptions+=("--help-button" "--help-label" "${1#*:}") ;;
-			--ok-label:* | --yes-label:* | --no-label:* | --cancel-label:* | --exit-label:*)
-				DialogOptions+=("${1%:*}" "${1#*:}")
-				;;
-			--*) DialogOptions+=("${1}") ;;
-			*) break ;;
-		esac
-		shift
-	done
+	local -i _n_=0
+	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
+	shift "${_n_}"
 
-	Title="{{|TitleQuestion|}}${Title}"
 	DialogOptions+=(--output-fd 1)
-	[[ -n ${Title} ]] && DialogOptions+=(--title "${Title}")
-
-	set_screen_size
-	local -i WindowHeightMax=$((LINES - D["WindowRowsAdjust"]))
-	local -i WindowWidthMax=$((COLUMNS - D["WindowColsAdjust"]))
+	[[ -n ${Title} ]] && DialogOptions+=(--title "{{|TitleQuestion|}}${Title}")
 
 	local -i WindowHeight=0 WindowWidth=0
-
-	if [[ ${Maximized} -eq 1 ]]; then
-		WindowHeight=${WindowHeightMax}
-		WindowWidth=${WindowWidthMax}
-	else
-		local -i TextWidth
-		TextWidth="$("${DIALOG}" --output-fd 1 --print-text-size --msgbox "$(strip_styles "${Message}")" 0 0 2> /dev/null | cut -d ' ' -f 2)"
-		local -i TitleWidth=$((3 + 12 + ${#Title} + 3))
-		local -i RequiredWidth=$(((TextWidth + D["TextColsAdjust"]) > TitleWidth ? (TextWidth + D["TextColsAdjust"]) : TitleWidth))
-		[[ RequiredWidth -ge WindowWidthMax ]] && WindowWidth=${WindowWidthMax} || WindowWidth=0
-	fi
+	_dialog_calc_text_size_ WindowHeight WindowWidth "${Message}" "${Title}" "${Maximized}"
 
 	local -i result=0
 	_dialog_ "${DialogOptions[@]}" "${BoxType}" "${Message}" "${WindowHeight}" "${WindowWidth}" "$@" || result=$?
@@ -314,44 +334,19 @@ dialog_msgbox() {
 	shift || true
 	local -a DialogOptions=()
 	local -i Maximized=0
-	local BoxType="--msgbox"
 
-	while [[ ${1-} == --* ]]; do
-		case "${1}" in
-			--maximized) Maximized=1 ;;
-			--extra-label:*) DialogOptions+=("--extra-button" "--extra-label" "${1#*:}") ;;
-			--help-label:*) DialogOptions+=("--help-button" "--help-label" "${1#*:}") ;;
-			--ok-label:* | --yes-label:* | --no-label:* | --cancel-label:* | --exit-label:*)
-				DialogOptions+=("${1%:*}" "${1#*:}")
-				;;
-			--*) DialogOptions+=("${1}") ;;
-			*) break ;;
-		esac
-		shift
-	done
+	local -i _n_=0
+	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
+	shift "${_n_}"
 
 	DialogOptions+=(--output-fd 1)
 	[[ -n ${Title} ]] && DialogOptions+=(--title "{{|Title|}}${Title}")
 
-	set_screen_size
-	local -i WindowHeightMax=$((LINES - D["WindowRowsAdjust"]))
-	local -i WindowWidthMax=$((COLUMNS - D["WindowColsAdjust"]))
-
 	local -i WindowHeight=0 WindowWidth=0
-
-	if [[ ${Maximized} -eq 1 ]]; then
-		WindowHeight=${WindowHeightMax}
-		WindowWidth=${WindowWidthMax}
-	else
-		local -i TextWidth
-		TextWidth="$("${DIALOG}" --output-fd 1 --print-text-size --msgbox "$(strip_styles "${Message}")" 0 0 2> /dev/null | cut -d ' ' -f 2)"
-		local -i TitleWidth=$((3 + 12 + ${#Title} + 3))
-		local -i RequiredWidth=$(((TextWidth + D["TextColsAdjust"]) > TitleWidth ? (TextWidth + D["TextColsAdjust"]) : TitleWidth))
-		[[ RequiredWidth -ge WindowWidthMax ]] && WindowWidth=${WindowWidthMax} || WindowWidth=0
-	fi
+	_dialog_calc_text_size_ WindowHeight WindowWidth "${Message}" "${Title}" "${Maximized}"
 
 	local -i result=0
-	_dialog_ "${DialogOptions[@]}" "${BoxType}" "${Message}" "${WindowHeight}" "${WindowWidth}" "$@" || result=$?
+	_dialog_ "${DialogOptions[@]}" --msgbox "${Message}" "${WindowHeight}" "${WindowWidth}" "$@" || result=$?
 	echo -n "${S["BS"]}" >&2
 	return ${result}
 }
@@ -363,44 +358,19 @@ dialog_inputbox() {
 	shift || true
 	local -a DialogOptions=()
 	local -i Maximized=0
-	local BoxType="--inputbox"
 
-	while [[ ${1-} == --* ]]; do
-		case "${1}" in
-			--maximized) Maximized=1 ;;
-			--extra-label:*) DialogOptions+=("--extra-button" "--extra-label" "${1#*:}") ;;
-			--help-label:*) DialogOptions+=("--help-button" "--help-label" "${1#*:}") ;;
-			--ok-label:* | --yes-label:* | --no-label:* | --cancel-label:* | --exit-label:*)
-				DialogOptions+=("${1%:*}" "${1#*:}")
-				;;
-			--*) DialogOptions+=("${1}") ;;
-			*) break ;;
-		esac
-		shift
-	done
+	local -i _n_=0
+	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
+	shift "${_n_}"
 
 	DialogOptions+=(--output-fd 1)
 	[[ -n ${Title} ]] && DialogOptions+=(--title "{{|Title|}}${Title}")
 
-	set_screen_size
-	local -i WindowHeightMax=$((LINES - D["WindowRowsAdjust"]))
-	local -i WindowWidthMax=$((COLUMNS - D["WindowColsAdjust"]))
-
 	local -i WindowHeight=0 WindowWidth=0
-
-	if [[ ${Maximized} -eq 1 ]]; then
-		WindowHeight=${WindowHeightMax}
-		WindowWidth=${WindowWidthMax}
-	else
-		local -i TextWidth
-		TextWidth="$("${DIALOG}" --output-fd 1 --print-text-size --msgbox "$(strip_styles "${Message}")" 0 0 2> /dev/null | cut -d ' ' -f 2)"
-		local -i TitleWidth=$((3 + 12 + ${#Title} + 3)) # Buffer for Title styles
-		local -i RequiredWidth=$(((TextWidth + D["TextColsAdjust"]) > TitleWidth ? (TextWidth + D["TextColsAdjust"]) : TitleWidth))
-		[[ RequiredWidth -ge WindowWidthMax ]] && WindowWidth=${WindowWidthMax} || WindowWidth=0
-	fi
+	_dialog_calc_text_size_ WindowHeight WindowWidth "${Message}" "${Title}" "${Maximized}"
 
 	local -i result=0
-	_dialog_ "${DialogOptions[@]}" "${BoxType}" "${Message}" "${WindowHeight}" "${WindowWidth}" "$@" || result=$?
+	_dialog_ "${DialogOptions[@]}" --inputbox "${Message}" "${WindowHeight}" "${WindowWidth}" "$@" || result=$?
 	echo -n "${S["BS"]}" >&2
 	return ${result}
 }
@@ -412,44 +382,20 @@ dialog_form() {
 	shift || true
 	local -a DialogOptions=()
 	local -i Maximized=0
-	local BoxType="--form"
 
-	while [[ ${1-} == --* ]]; do
-		case "${1}" in
-			--maximized) Maximized=1 ;;
-			--extra-label:*) DialogOptions+=("--extra-button" "--extra-label" "${1#*:}") ;;
-			--help-label:*) DialogOptions+=("--help-button" "--help-label" "${1#*:}") ;;
-			--ok-label:* | --yes-label:* | --no-label:* | --cancel-label:* | --exit-label:*)
-				DialogOptions+=("${1%:*}" "${1#*:}")
-				;;
-			--*) DialogOptions+=("${1}") ;;
-			*) break ;;
-		esac
-		shift
-	done
+	local -i _n_=0
+	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
+	shift "${_n_}"
 
 	DialogOptions+=(--output-fd 1)
 	[[ -n ${Title} ]] && DialogOptions+=(--title "{{|Title|}}${Title}")
 
-	set_screen_size
-	local -i WindowHeightMax=$((LINES - D["WindowRowsAdjust"]))
-	local -i WindowWidthMax=$((COLUMNS - D["WindowColsAdjust"]))
-
 	local -i WindowHeight=0 WindowWidth=0
-
-	if [[ ${Maximized} -eq 1 ]]; then
-		WindowHeight=${WindowHeightMax}
-		WindowWidth=${WindowWidthMax}
-	else
-		local -i TextWidth
-		TextWidth="$("${DIALOG}" --output-fd 1 --print-text-size --msgbox "$(strip_styles "${Message}")" 0 0 2> /dev/null | cut -d ' ' -f 2)"
-		local -i TitleWidth=$((3 + 12 + ${#Title} + 3)) # Buffer for Title styles
-		local -i RequiredWidth=$(((TextWidth + D["TextColsAdjust"]) > TitleWidth ? (TextWidth + D["TextColsAdjust"]) : TitleWidth))
-		[[ RequiredWidth -ge WindowWidthMax ]] && WindowWidth=${WindowWidthMax} || WindowWidth=0
-	fi
+	_dialog_calc_text_size_ WindowHeight WindowWidth "${Message}" "${Title}" "${Maximized}"
 
 	local -i result=0
-	_dialog_ "${DialogOptions[@]}" "${BoxType}" "${Message}" "${WindowHeight}" "${WindowWidth}" 0 "$@" || result=$?
+	# form_height=0 (auto-size) is always appended before the field definitions in "$@"
+	_dialog_ "${DialogOptions[@]}" --form "${Message}" "${WindowHeight}" "${WindowWidth}" 0 "$@" || result=$?
 	echo -n "${S["BS"]}" >&2
 	return ${result}
 }
@@ -462,21 +408,9 @@ dialog_menu() {
 	local -a DialogOptions=()
 	local -i Maximized=0 Step=2
 
-	while [[ ${1-} == --* ]]; do
-		case "${1}" in
-			--maximized) Maximized=1 ;;
-			--extra-label:*) DialogOptions+=("--extra-button" "--extra-label" "${1#*:}") ;;
-			--help-label:*) DialogOptions+=("--help-button" "--help-label" "${1#*:}") ;;
-			--ok-label:* | --yes-label:* | --no-label:* | --cancel-label:* | --exit-label:*)
-				DialogOptions+=("${1%:*}" "${1#*:}")
-				;;
-			--default-item:*) DialogOptions+=("--default-item" "${1#*:}") ;;
-			--item-help) DialogOptions+=("${1}") ;;
-			--*) DialogOptions+=("${1}") ;;
-			*) break ;;
-		esac
-		shift
-	done
+	local -i _n_=0
+	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
+	shift "${_n_}"
 	local -a Items=("$@")
 
 	DialogOptions+=(--output-fd 1)
@@ -543,20 +477,9 @@ dialog_checklist() {
 	local -a DialogOptions=()
 	local -i Maximized=0 Step=3
 
-	while [[ ${1-} == --* ]]; do
-		case "${1}" in
-			--maximized) Maximized=1 ;;
-			--extra-label:*) DialogOptions+=("--extra-button" "--extra-label" "${1#*:}") ;;
-			--help-label:*) DialogOptions+=("--help-button" "--help-label" "${1#*:}") ;;
-			--ok-label:* | --yes-label:* | --no-label:* | --cancel-label:* | --exit-label:*)
-				DialogOptions+=("${1%:*}" "${1#*:}")
-				;;
-			--default-item:*) DialogOptions+=("--default-item" "${1#*:}") ;;
-			--*) DialogOptions+=("${1}") ;;
-			*) break ;;
-		esac
-		shift
-	done
+	local -i _n_=0
+	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
+	shift "${_n_}"
 	local -a Items=("$@")
 
 	DialogOptions+=(--output-fd 1)
@@ -623,20 +546,9 @@ dialog_radiolist() {
 	local -a DialogOptions=()
 	local -i Maximized=0 Step=3
 
-	while [[ ${1-} == --* ]]; do
-		case "${1}" in
-			--maximized) Maximized=1 ;;
-			--extra-label:*) DialogOptions+=("--extra-button" "--extra-label" "${1#*:}") ;;
-			--help-label:*) DialogOptions+=("--help-button" "--help-label" "${1#*:}") ;;
-			--ok-label:* | --yes-label:* | --no-label:* | --cancel-label:* | --exit-label:*)
-				DialogOptions+=("${1%:*}" "${1#*:}")
-				;;
-			--default-item:*) DialogOptions+=("--default-item" "${1#*:}") ;;
-			--*) DialogOptions+=("${1}") ;;
-			*) break ;;
-		esac
-		shift
-	done
+	local -i _n_=0
+	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
+	shift "${_n_}"
 	local -a Items=("$@")
 
 	DialogOptions+=(--output-fd 1)
@@ -703,20 +615,9 @@ dialog_inputmenu() {
 	local -a DialogOptions=()
 	local -i Maximized=0 Step=3
 
-	while [[ ${1-} == --* ]]; do
-		case "${1}" in
-			--maximized) Maximized=1 ;;
-			--extra-label:*) DialogOptions+=("--extra-button" "--extra-label" "${1#*:}") ;;
-			--help-label:*) DialogOptions+=("--help-button" "--help-label" "${1#*:}") ;;
-			--ok-label:* | --yes-label:* | --no-label:* | --cancel-label:* | --exit-label:*)
-				DialogOptions+=("${1%:*}" "${1#*:}")
-				;;
-			--default-item:*) DialogOptions+=("--default-item" "${1#*:}") ;;
-			--*) DialogOptions+=("${1}") ;;
-			*) break ;;
-		esac
-		shift
-	done
+	local -i _n_=0
+	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
+	shift "${_n_}"
 	local -a Items=("$@")
 
 	DialogOptions+=(--output-fd 1)

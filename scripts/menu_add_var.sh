@@ -305,8 +305,8 @@ menu_add_var() {
 					"${InputValueText}"
 					--maximized
 					--ok-label:Select
+					"--extra-label:Back"
 					--cancel-label:Exit
-					0
 					"${ValueOptions[@]}"
 				)
 				local InputValueDialogButtonPressed=0
@@ -360,8 +360,12 @@ menu_add_var() {
 							fi
 						fi
 						;;
-					CANCEL | ESC)
+					EXTRA)
 						return
+						;;
+					CANCEL | ESC)
+						run_script 'menu_exit'
+						continue
 						;;
 					*)
 						invalid_dialog_button ${InputValueDialogButtonPressed}
