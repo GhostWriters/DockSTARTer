@@ -351,7 +351,7 @@ menu_value_prompt() {
 									;;
 								*)
 									ValueValid="false"
-									dialog_error "--maximized" "${Title}" "${DialogHeading}\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not {{|Highlight|}}true{{[-]}}/{{|Highlight|}}on{{[-]}}/{{|Highlight|}}yes{{[-]}} or {{|Highlight|}}false{{[-]}}/{{|Highlight|}}off{{[-]}}/{{|Highlight|}}no{{[-]}}. Please try setting {{|Highlight|}}${CleanVarName}{{[-]}} again."
+									dialog_error "${Title}" "${DialogHeading}\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not {{|Highlight|}}true{{[-]}}/{{|Highlight|}}on{{[-]}}/{{|Highlight|}}yes{{[-]}} or {{|Highlight|}}false{{[-]}}/{{|Highlight|}}off{{[-]}}/{{|Highlight|}}no{{[-]}}. Please try setting {{|Highlight|}}${CleanVarName}{{[-]}} again."
 									;;
 							esac
 							;;
@@ -362,7 +362,7 @@ menu_value_prompt() {
 									;;
 								*)
 									ValueValid="false"
-									dialog_error "--maximized" "${Title}" "${DialogHeading}\n\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not a valid network mode. Please try setting {{|Highlight|}}${CleanVarName}{{[-]}} again."
+									dialog_error "${Title}" "${DialogHeading}\n\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not a valid network mode. Please try setting {{|Highlight|}}${CleanVarName}{{[-]}} again."
 									;;
 							esac
 							;;
@@ -373,23 +373,23 @@ menu_value_prompt() {
 									;;
 								*)
 									ValueValid="false"
-									dialog_error "--maximized" "${Title}" "${DialogHeading}\n\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not a valid restart value. Please try setting {{|Highlight|}}${CleanVarName}{{[-]}} again."
+									dialog_error "${Title}" "${DialogHeading}\n\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not a valid restart value. Please try setting {{|Highlight|}}${CleanVarName}{{[-]}} again."
 									;;
 							esac
 							;;
 						"${APPNAME}__VOLUME_"*)
 							if [[ ${StrippedValue} == "/" ]]; then
 								ValueValid="false"
-								dialog_error "--maximized" "${Title}" "${DialogHeading}\n\nCannot use {{|Highlight|}}/{{[-]}} for {{|Highlight|}}${CleanVarName}{{[-]}}. Please select another folder."
+								dialog_error "${Title}" "${DialogHeading}\n\nCannot use {{|Highlight|}}/{{[-]}} for {{|Highlight|}}${CleanVarName}{{[-]}}. Please select another folder."
 							elif [[ ${StrippedValue} == *~* ]]; then
 								local CORRECTED_DIR="${OptionValue["${CurrentValueOption}"]//\~/"${DETECTED_HOMEDIR}"}"
 								if run_script 'question_prompt' --maximized Y "${DialogHeading}\n\nCannot use the {{|Highlight|}}~{{[-]}} shortcut in {{|Highlight|}}${CleanVarName}{{[-]}}. Would you like to use {{|Highlight|}}${CORRECTED_DIR}{{[-]}} instead?" "${Title}"; then
 									OptionValue["${CurrentValueOption}"]="${CORRECTED_DIR}"
 									ValueValid="false"
-									dialog_success "--maximized" "${Title}" "Returning to the previous menu to confirm selection."
+									dialog_success "${Title}" "Returning to the previous menu to confirm selection."
 								else
 									ValueValid="false"
-									dialog_error "--maximized" "${Title}" "${DialogHeading}\n\nCannot use the {{|Highlight|}}~{{[-]}} shortcut in {{|Highlight|}}${CleanVarName}{{[-]}}. Please select another folder."
+									dialog_error "${Title}" "${DialogHeading}\n\nCannot use the {{|Highlight|}}~{{[-]}} shortcut in {{|Highlight|}}${CleanVarName}{{[-]}}. Please select another folder."
 								fi
 							elif [[ -d ${StrippedValue} ]]; then
 								if run_script 'question_prompt' --maximized Y "${DialogHeading}\n\nWould you like to set permissions on ${OptionValue["${CurrentValueOption}"]} ?" "${Title}" "${ASSUMEYES:+Y}"; then
@@ -408,10 +408,10 @@ menu_value_prompt() {
 											run_script 'set_permissions' "${StrippedValue}"
 										} || true
 									} |& dialog_pipe "Creating folder and settings permissions" "${OptionValue["${CurrentValueOption}"]}" "${DIALOGTIMEOUT}"
-									dialog_msgbox --maximized "{{|TitleSuccess|}}${Title}" "{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} folder was created successfully."
+									dialog_msgbox "{{|TitleSuccess|}}${Title}" "{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} folder was created successfully." --maximized
 									ValueValid="true"
 								else
-									dialog_error "--maximized" "${Title}" "${DialogHeading}\n\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not a valid path. Please try setting {{|Highlight|}}${CleanVarName}{{[-]}} again."
+									dialog_error "${Title}" "${DialogHeading}\n\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not a valid path. Please try setting {{|Highlight|}}${CleanVarName}{{[-]}} again."
 									ValueValid="false"
 								fi
 							fi
@@ -428,7 +428,7 @@ menu_value_prompt() {
 									ValueValid="true"
 								fi
 							else
-								dialog_error "--maximized" "${Title}" "${DialogHeading}\n\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not a valid ${CleanVarName}. Please try setting {{|Highlight|}}${CleanVarName}{{[-]}} again."
+								dialog_error "${Title}" "${DialogHeading}\n\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not a valid ${CleanVarName}. Please try setting {{|Highlight|}}${CleanVarName}{{[-]}} again."
 								ValueValid="false"
 							fi
 							;;
@@ -438,7 +438,7 @@ menu_value_prompt() {
 									ValueValid="true"
 								else
 									ValueValid="false"
-									dialog_error "--maximized" "${Title}" "${DialogHeading}\n\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not a valid port. Please try setting {{|Highlight|}}${CleanVarName}{{[-]}} again."
+									dialog_error "${Title}" "${DialogHeading}\n\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not a valid port. Please try setting {{|Highlight|}}${CleanVarName}{{[-]}} again."
 								fi
 							else
 								ValueValid="true"

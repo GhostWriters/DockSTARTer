@@ -30,6 +30,7 @@ menu_add_app() {
 			"${InputValueText}"
 			--maximized
 			--ok-label:Select
+			"--extra-label:Back"
 			--cancel-label:Exit
 			"${ValueOptions[@]}"
 		)
@@ -86,10 +87,9 @@ menu_add_app() {
 						"${Heading}\n\n${Question}"
 						--maximized
 						--no-collapse
-						--extra-button
-						--yes-label "Built In"
-						--extra-label "User Defined"
-						--no-label "Back"
+						"--yes-label:Built In"
+						"--extra-label:User Defined"
+						"--no-label:Back"
 					)
 					local -i YesNoDialogButtonPressed=0
 					dialog_yesno "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?
@@ -124,8 +124,12 @@ menu_add_app() {
 					esac
 				fi
 				;;
-			CANCEL | ESC)
+			EXTRA)
 				return
+				;;
+			CANCEL | ESC)
+				run_script 'menu_exit'
+				continue
 				;;
 			*)
 				invalid_dialog_button ${InputValueDialogButtonPressed}
