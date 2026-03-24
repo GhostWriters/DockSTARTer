@@ -306,7 +306,6 @@ menu_add_var() {
 					--maximized
 					--ok-label:Select
 					--cancel-label:Exit
-					0
 					"${ValueOptions[@]}"
 				)
 				local InputValueDialogButtonPressed=0

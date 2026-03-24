@@ -31,7 +31,6 @@ menu_add_app() {
 			--maximized
 			--ok-label:Select
 			--cancel-label:Exit
-			0
 			"${ValueOptions[@]}"
 		)
 		local InputValueDialogButtonPressed=0
