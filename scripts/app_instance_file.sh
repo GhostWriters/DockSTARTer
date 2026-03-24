@@ -87,7 +87,10 @@ app_instance_file() {
 	local __INSTANCE __Instance __instance
 	if [[ -n ${instance} ]]; then
 		__INSTANCE="__${instance^^}"
-		__Instance="__${instance^}"
+		local cap_prefix cap_rest
+		cap_prefix="${instance%%[a-zA-Z]*}"
+		cap_rest="${instance#"${cap_prefix}"}"
+		__Instance="__${cap_prefix}${cap_rest^}"
 		__instance="__${instance,,}"
 	fi
 	${SED} -e "s/<__INSTANCE>/${__INSTANCE-}/g ; s/<__instance>/${__instance-}/g ; s/<__Instance>/${__Instance-}/g" \
