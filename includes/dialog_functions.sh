@@ -230,7 +230,8 @@ _parse_dialog_options_() {
 			--extra-label:*) _pdo_opts_+=("--extra-button" "--extra-label" "${1#*:}") ;;
 			--help-label:*) _pdo_opts_+=("--help-button" "--help-label" "${1#*:}") ;;
 			--ok-label:* | --yes-label:* | --no-label:* | --cancel-label:* | --exit-label:*)
-				_pdo_opts_+=("${1%:*}" "${1#*:}") ;;
+				_pdo_opts_+=("${1%:*}" "${1#*:}")
+				;;
 			--default-item:*) _pdo_opts_+=("--default-item" "${1#*:}") ;;
 			--item-help) _pdo_opts_+=("${1}") ;;
 			--*) _pdo_opts_+=("${1}") ;;
