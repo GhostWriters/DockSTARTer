@@ -263,6 +263,30 @@ _dialog_calc_text_size_() {
 	fi
 }
 
+# _dialog_calc_list_size_ WindowHeightRef WindowWidthRef MenuHeightRef SubTitle Maximized
+# Computes WindowHeight, WindowWidth, and MenuHeight for list-based dialogs (menu, checklist, radiolist, inputmenu).
+# Uses namerefs to set the caller's WindowHeight, WindowWidth, and MenuHeight variables directly.
+_dialog_calc_list_size_() {
+	local -n _dcls_h_="${1}"
+	local -n _dcls_w_="${2}"
+	local -n _dcls_m_="${3}"
+	local _dcls_sub_="${4}"
+	local -i _dcls_max_="${5:-0}"
+	set_screen_size
+	local -i _dcls_hmax_=$((LINES - D["WindowRowsAdjust"]))
+	local -i _dcls_wmax_=$((COLUMNS - D["WindowColsAdjust"]))
+	_dcls_h_=0
+	_dcls_w_=0
+	_dcls_m_=0
+	if [[ ${_dcls_max_} -eq 1 ]]; then
+		_dcls_h_=${_dcls_hmax_}
+		_dcls_w_=${_dcls_wmax_}
+		local -i _dcls_tr_
+		_dcls_tr_="$("${DIALOG}" --output-fd 1 --print-text-size "$(strip_styles "${_dcls_sub_}")" "${_dcls_h_}" "${_dcls_w_}" 2> /dev/null | cut -d ' ' -f 1)"
+		_dcls_m_=$((LINES - D["TextRowsAdjust"] - _dcls_tr_))
+	fi
+}
+
 dialog_info() {
 	local Title="${1-}"
 	shift || true
@@ -402,7 +426,7 @@ dialog_menu() {
 	local SubTitle="${1-}"
 	shift || true
 	local -a DialogOptions=()
-	local -i Maximized=0 Step=2
+	local -i Maximized=0
 
 	local -i _n_=0
 	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
@@ -412,19 +436,8 @@ dialog_menu() {
 	DialogOptions+=(--output-fd 1)
 	[[ -n ${Title} ]] && DialogOptions+=(--title "{{|Title|}}${Title}")
 
-	set_screen_size
-	local -i WindowHeightMax=$((LINES - D["WindowRowsAdjust"]))
-	local -i WindowWidthMax=$((COLUMNS - D["WindowColsAdjust"]))
-
 	local -i WindowHeight=0 WindowWidth=0 MenuHeight=0
-
-	if [[ ${Maximized} -eq 1 ]]; then
-		WindowHeight=${WindowHeightMax}
-		WindowWidth=${WindowWidthMax}
-		local -i TextRows
-		TextRows="$("${DIALOG}" --output-fd 1 --print-text-size "$(strip_styles "${SubTitle}")" "${WindowHeight}" "${WindowWidth}" 2> /dev/null | cut -d ' ' -f 1)"
-		MenuHeight=$((LINES - D["TextRowsAdjust"] - TextRows))
-	fi
+	_dialog_calc_list_size_ WindowHeight WindowWidth MenuHeight "${SubTitle}" "${Maximized}"
 
 	local StyledSubTitle=""
 	[[ -n ${SubTitle} ]] && StyledSubTitle="{{|Subtitle|}}${SubTitle}"
@@ -441,7 +454,7 @@ dialog_checklist() {
 	local SubTitle="${1-}"
 	shift || true
 	local -a DialogOptions=()
-	local -i Maximized=0 Step=3
+	local -i Maximized=0
 
 	local -i _n_=0
 	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
@@ -451,19 +464,8 @@ dialog_checklist() {
 	DialogOptions+=(--output-fd 1)
 	[[ -n ${Title} ]] && DialogOptions+=(--title "{{|Title|}}${Title}")
 
-	set_screen_size
-	local -i WindowHeightMax=$((LINES - D["WindowRowsAdjust"]))
-	local -i WindowWidthMax=$((COLUMNS - D["WindowColsAdjust"]))
-
 	local -i WindowHeight=0 WindowWidth=0 MenuHeight=0
-
-	if [[ ${Maximized} -eq 1 ]]; then
-		WindowHeight=${WindowHeightMax}
-		WindowWidth=${WindowWidthMax}
-		local -i TextRows
-		TextRows="$("${DIALOG}" --output-fd 1 --print-text-size "$(strip_styles "${SubTitle}")" "${WindowHeight}" "${WindowWidth}" 2> /dev/null | cut -d ' ' -f 1)"
-		MenuHeight=$((LINES - D["TextRowsAdjust"] - TextRows))
-	fi
+	_dialog_calc_list_size_ WindowHeight WindowWidth MenuHeight "${SubTitle}" "${Maximized}"
 
 	local StyledSubTitle=""
 	[[ -n ${SubTitle} ]] && StyledSubTitle="{{|Subtitle|}}${SubTitle}"
@@ -480,7 +482,7 @@ dialog_radiolist() {
 	local SubTitle="${1-}"
 	shift || true
 	local -a DialogOptions=()
-	local -i Maximized=0 Step=3
+	local -i Maximized=0
 
 	local -i _n_=0
 	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
@@ -490,19 +492,8 @@ dialog_radiolist() {
 	DialogOptions+=(--output-fd 1)
 	[[ -n ${Title} ]] && DialogOptions+=(--title "{{|Title|}}${Title}")
 
-	set_screen_size
-	local -i WindowHeightMax=$((LINES - D["WindowRowsAdjust"]))
-	local -i WindowWidthMax=$((COLUMNS - D["WindowColsAdjust"]))
-
 	local -i WindowHeight=0 WindowWidth=0 MenuHeight=0
-
-	if [[ ${Maximized} -eq 1 ]]; then
-		WindowHeight=${WindowHeightMax}
-		WindowWidth=${WindowWidthMax}
-		local -i TextRows
-		TextRows="$("${DIALOG}" --output-fd 1 --print-text-size "$(strip_styles "${SubTitle}")" "${WindowHeight}" "${WindowWidth}" 2> /dev/null | cut -d ' ' -f 1)"
-		MenuHeight=$((LINES - D["TextRowsAdjust"] - TextRows))
-	fi
+	_dialog_calc_list_size_ WindowHeight WindowWidth MenuHeight "${SubTitle}" "${Maximized}"
 
 	local StyledSubTitle=""
 	[[ -n ${SubTitle} ]] && StyledSubTitle="{{|Subtitle|}}${SubTitle}"
@@ -519,7 +510,7 @@ dialog_inputmenu() {
 	local SubTitle="${1-}"
 	shift || true
 	local -a DialogOptions=()
-	local -i Maximized=0 Step=3
+	local -i Maximized=0
 
 	local -i _n_=0
 	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
@@ -529,19 +520,8 @@ dialog_inputmenu() {
 	DialogOptions+=(--output-fd 1)
 	[[ -n ${Title} ]] && DialogOptions+=(--title "{{|Title|}}${Title}")
 
-	set_screen_size
-	local -i WindowHeightMax=$((LINES - D["WindowRowsAdjust"]))
-	local -i WindowWidthMax=$((COLUMNS - D["WindowColsAdjust"]))
-
 	local -i WindowHeight=0 WindowWidth=0 MenuHeight=0
-
-	if [[ ${Maximized} -eq 1 ]]; then
-		WindowHeight=${WindowHeightMax}
-		WindowWidth=${WindowWidthMax}
-		local -i TextRows
-		TextRows="$("${DIALOG}" --output-fd 1 --print-text-size "$(strip_styles "${SubTitle}")" "${WindowHeight}" "${WindowWidth}" 2> /dev/null | cut -d ' ' -f 1)"
-		MenuHeight=$((LINES - D["TextRowsAdjust"] - TextRows))
-	fi
+	_dialog_calc_list_size_ WindowHeight WindowWidth MenuHeight "${SubTitle}" "${Maximized}"
 
 	local StyledSubTitle=""
 	[[ -n ${SubTitle} ]] && StyledSubTitle="{{|Subtitle|}}${SubTitle}"
