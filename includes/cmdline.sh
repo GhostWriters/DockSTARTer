@@ -1162,7 +1162,7 @@ cmdline_error_text() {
 		UsageText="Run '{{|UserCommand|}}ds --help{{[-]}}' for usage."
 	else
 		local CommandUsage
-		CommandUsage="$(usage "${Command}" NoHeading)"
+		CommandUsage="$(usage_raw "${Command}" NoHeading)"
 		UsageText="Usage is:\n$(pr -e -t -o "${Indent}" <<< "${CommandUsage}")"
 	fi
 

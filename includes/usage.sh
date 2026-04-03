@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-usage() {
+usage_raw() {
 	local Option=${1-}
 	local NoHeading=${2-}
 
@@ -498,4 +498,8 @@ EOF
 			fi
 			;;
 	esac
+}
+
+usage() {
+	usage_raw "$@" | resolve_strings C
 }
