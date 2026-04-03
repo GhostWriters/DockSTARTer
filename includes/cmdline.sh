@@ -1150,10 +1150,12 @@ cmdline_error_text() {
 	local -i Indent=3
 
 	CommandLine="$(
-		pr -e -t -o "${Indent}" <<< "${CommandLine}" | sed 's/[[:space:]]\+$//'
+		expand <<< "${CommandLine}" | indent_string_pipe "${Indent}" | sed 's/[[:space:]]\+$//'
 	)"
 	Message=${Message//\\n/$'\n'}
-	Message="$(expand <<< "${Message}" | indent_string_pipe "${Indent}" | sed 's/[[:space:]]\+$//')"
+	Message="$(
+		expand <<< "${Message}" | indent_string_pipe "${Indent}" | sed 's/[[:space:]]\+$//'
+	)"
 
 	local UsageText
 	if [[ -z ${Command} ]]; then
