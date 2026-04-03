@@ -1153,9 +1153,7 @@ cmdline_error_text() {
 		pr -e -t -o "${Indent}" <<< "${CommandLine}" | sed 's/[[:space:]]\+$//'
 	)"
 	Message=${Message//\\n/$'\n'}
-	Message="$(
-		pr -e -t -o "${Indent}" <<< "${Message}" | sed 's/[[:space:]]\+$//'
-	)"
+	Message="$(expand <<< "${Message}" | indent_string_pipe "${Indent}" | sed 's/[[:space:]]\+$//')"
 
 	local UsageText
 	if [[ -z ${Command} ]]; then
@@ -1163,7 +1161,7 @@ cmdline_error_text() {
 	else
 		local CommandUsage
 		CommandUsage="$(usage_raw "${Command}" NoHeading)"
-		UsageText="Usage is:\n$(pr -e -t -o "${Indent}" <<< "${CommandUsage}")"
+		UsageText="Usage is:\n$(expand <<< "${CommandUsage}" | indent_string_pipe "${Indent}")"
 	fi
 
 	local PointerLine
