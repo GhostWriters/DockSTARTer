@@ -105,8 +105,7 @@ docker_compose() {
 				NoNotice="Not updating and starting containers for all enabled services."
 				YesNotice="Updating and starting containers for all enabled services."
 			fi
-			ComposeCommand[0]="pull --include-deps ${APPNAME-}"
-			ComposeCommand[1]="up -d --remove-orphans ${APPNAME-}"
+			ComposeCommand[0]="up -d --remove-orphans --pull always ${APPNAME-}"
 			;;
 		up)
 			if [[ -n ${AppName-} ]]; then
@@ -118,14 +117,13 @@ docker_compose() {
 				NoNotice="Not starting containers for all enabled services."
 				YesNotice="Starting containers for all enabled services."
 			fi
-			ComposeCommand[0]="up -d --remove-orphans ${APPNAME-}"
+			ComposeCommand[0]="up -d --remove-orphans --pull missing ${APPNAME-}"
 			;;
 		*)
 			Question="Update containers for all enabled services?"
 			NoNotice="Not updating containers for all enabled services."
 			YesNotice="Updating containers for all enabled services."
-			ComposeCommand[0]="pull --include-deps"
-			ComposeCommand[1]="up -d --remove-orphans"
+			ComposeCommand[0]="up -d --remove-orphans --pull always"
 			;;
 	esac
 
