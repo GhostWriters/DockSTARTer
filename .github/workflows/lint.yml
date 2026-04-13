@@ -8,7 +8,7 @@ jobs:
   editorconfig-checker:
     runs-on: ubuntu-latest
     container:
-      image: mstruebing/editorconfig-checker:v3.6.0@sha256:3fee6fe35c9ec21367b92ca50b3bea856ffc8a7a186044c329ac8bb23b33284a
+      image: mstruebing/editorconfig-checker:v3.6.1@sha256:af556694c3eb0a16b598efbe84c1171d40dfb779fdac6f01b89baedde065556f
       options: --user 0:0
     steps:
       - name: Checkout
@@ -19,7 +19,7 @@ jobs:
   markdownlint:
     runs-on: ubuntu-latest
     container:
-      image: davidanson/markdownlint-cli2:v0.20.0@sha256:8f7487027e6786a583da1c8be8b0541bbd17582a4b8fbe3e27a29d9f29fa77d0
+      image: davidanson/markdownlint-cli2:v0.22.0@sha256:ea33f1f6a0f062f88a3dddfc49f6d6b5621648a93a0ff49a58bf8ac5a15330b9
       options: --user 0:0
     steps:
       - name: Checkout
@@ -43,7 +43,7 @@ jobs:
   shfmt:
     runs-on: ubuntu-latest
     container:
-      image: mvdan/shfmt:v3.12.0-alpine@sha256:204a4d2d876123342ad394bd9a28fb91e165abc03868790d4b39cfa73233f150
+      image: mvdan/shfmt:v3.13.0-alpine@sha256:25fc1e8cb4d9333ed07305c63fdf00e1bdf2d849ebad49afcf92950a75ad4e7d
       options: --user 0:0
     steps:
       - name: Checkout

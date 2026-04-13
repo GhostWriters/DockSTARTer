@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 pm_none_clean() {
-	info "Package manager '${C["UserCommand"]}none${NC}' does not require cleanup."
+	info "Package manager '{{|UserCommand|}}none{{[-]}}' does not require cleanup."
 }
 
 test_pm_none_clean() {

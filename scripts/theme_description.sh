@@ -8,9 +8,17 @@ theme_description() {
 	if [[ -z ${ThemeName} ]]; then
 		ThemeName="$(run_script 'theme_name')"
 	fi
-	local ThemeFile="${THEME_FOLDER}/${ThemeName}/${THEME_FILE_NAME}"
 
-	run_script 'env_get' ThemeDescription "${ThemeFile}"
+	local ThemeArchive
+	if [[ ${ThemeName} == file:* ]]; then
+		ThemeArchive="${ThemeName#file:}"
+	elif [[ ${ThemeName} == user:* ]]; then
+		ThemeArchive="${USER_THEMES_FOLDER}/${ThemeName#user:}${THEME_FILE_EXT}"
+	else
+		ThemeArchive="${THEME_FOLDER}/${ThemeName}${THEME_FILE_EXT}"
+	fi
+
+	hrx_toml_get "${ThemeArchive}" "${THEME_FILE_NAME}" "metadata.description"
 }
 
 test_theme_description() {

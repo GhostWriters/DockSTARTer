@@ -20,14 +20,14 @@ app_instance_folder() {
 	echo "${InstanceFolder}"
 	if [[ ! -d ${InstanceFolder} ]]; then
 		if [[ ! -d ${TemplateFolder} ]]; then
-			warn "Folder '${C["Folder"]}${TemplateFolder}${NC}' does not exist."
+			warn "Folder '{{|Folder|}}${TemplateFolder}{{[-]}}' does not exist."
 			return
 		fi
 		if [[ ! -d ${InstanceFolder} ]]; then
 			mkdir -p "${InstanceFolder}" ||
 				fatal \
-					"Failed to create folder '${C["Folder"]}${InstanceFolder}${NC}'." \
-					"Failing command: ${C["FailingCommand"]}mkdir -p \"${InstanceFolder}\""
+					"Failed to create folder '{{|Folder|}}${InstanceFolder}{{[-]}}'." \
+					"Failing command: {{|FailingCommand|}}mkdir -p \"${InstanceFolder}\""
 			run_script 'set_permissions' "${InstanceFolder}"
 		fi
 	fi

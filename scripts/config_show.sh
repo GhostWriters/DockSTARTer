@@ -4,59 +4,59 @@ IFS=$'\n\t'
 
 config_show() {
 	local -a Keys=(
-		"ConfigFolder"
-		"ComposeFolder"
-		"PackageManager"
-		"Theme"
-		"Borders"
-		"LineCharacters"
-		"Scrollbar"
-		"Shadow"
+		"paths.config_folder"
+		"paths.compose_folder"
+		"pm.package_manager"
+		"ui.theme"
+		"ui.borders"
+		"ui.line_characters"
+		"ui.scrollbar"
+		"ui.shadow"
 	)
 
 	local -A DisplayNames=(
-		["ConfigFolder"]="Config Folder"
-		["ComposeFolder"]="Compose Folder"
-		["PackageManager"]="Package Manager"
-		["Theme"]="Theme"
-		["Borders"]="Borders"
-		["LineCharacters"]="Line Characters"
-		["Scrollbar"]="Scrollbar"
-		["Shadow"]="Shadow"
+		["paths.config_folder"]="Config Folder"
+		["paths.compose_folder"]="Compose Folder"
+		["pm.package_manager"]="Package Manager"
+		["ui.theme"]="Theme"
+		["ui.borders"]="Borders"
+		["ui.line_characters"]="Line Characters"
+		["ui.scrollbar"]="Scrollbar"
+		["ui.shadow"]="Shadow"
 	)
 
 	local -a TableArray=()
 	for Key in "${Keys[@]}"; do
 		local Value
-		Value="$(run_script 'config_get' "${Key}")"
+		Value="$(get_toml_val "${APPLICATION_TOML_FILE}" "${Key}")"
 
 		local ExpandedValue=""
-		if [[ ${Key} == "ConfigFolder" || ${Key} == "ComposeFolder" ]]; then
+		if [[ ${Key} == "paths.config_folder" || ${Key} == "paths.compose_folder" ]]; then
 			ExpandedValue="$(
-				run_script 'expand_vars_using_varfile' "${Value}" "${Key}" "${APPLICATION_INI_FILE}" \
+				expand_vars "${Value}" \
 					HOME "${DETECTED_HOMEDIR}" \
 					ScriptFolder "${SCRIPTPATH}" \
 					XDG_CONFIG_HOME "${XDG_CONFIG_HOME}"
 			)"
 		fi
 
-		local ValueColor="${C["Var"]-}"
-		if [[ ${Key} == "ConfigFolder" || ${Key} == "ComposeFolder" ]]; then
-			ValueColor="${C["Folder"]-}"
+		local ValueColor="{{|Var|}}"
+		if [[ ${Key} == "paths.config_folder" || ${Key} == "paths.compose_folder" ]]; then
+			ValueColor="{{|Folder|}}"
 		fi
 
-		local DisplayValue="${ValueColor}${Value}${NC-}"
+		local DisplayValue="${ValueColor}${Value}{{[-]}}"
 		local DisplayExpandedValue=""
 		if [[ -n ${ExpandedValue} ]]; then
-			DisplayExpandedValue="${ValueColor}${ExpandedValue}${NC-}"
+			DisplayExpandedValue="${ValueColor}${ExpandedValue}{{[-]}}"
 		fi
 
 		TableArray+=("${DisplayNames[${Key}]}" "${DisplayValue}" "${DisplayExpandedValue}")
 	done
 
-	echo "Configuration options stored in '${C["File"]}${APPLICATION_INI_FILE}${NC}':"
+	resolve_strings C "Configuration options stored in '{{|File|}}${APPLICATION_TOML_FILE}{{[-]}}':"
 	table 3 \
-		"${C["UsageCommand"]}Option${NC}" "${C["UsageCommand"]}Value${NC}" "${C["UsageCommand"]}Expanded Value${NC}" \
+		"{{|UsageCommand|}}Option{{[-]}}" "{{|UsageCommand|}}Value{{[-]}}" "{{|UsageCommand|}}Expanded Value{{[-]}}" \
 		"${TableArray[@]}"
 }
 

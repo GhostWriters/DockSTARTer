@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-usage() {
+usage_raw() {
 	local Option=${1-}
 	local NoHeading=${2-}
 
@@ -10,29 +10,29 @@ usage() {
 	case "${Option}" in
 		*)
 			if [[ -z ${NoHeading-} ]]; then
-				local APPLICATION_HEADING="${C["ApplicationName"]-}${APPLICATION_NAME}${NC-}"
+				local APPLICATION_HEADING="{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}}"
 				if [[ ${APPLICATION_VERSION-} ]]; then
-					APPLICATION_HEADING+=" [${C["Version"]-}${APPLICATION_VERSION}${NC-}]"
+					APPLICATION_HEADING+=" [{{|Version|}}${APPLICATION_VERSION}{{[-]}}]"
 				fi
 				if ds_update_available; then
-					APPLICATION_HEADING+=" (${C["Update"]-}Update Available${NC-})"
+					APPLICATION_HEADING+=" ({{|Update|}}Update Available{{[-]}})"
 				fi
-				local TEMPLATES_HEADING="${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-}"
+				local TEMPLATES_HEADING="{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}}"
 				if [[ ${TEMPLATES_VERSION-} ]]; then
-					TEMPLATES_HEADING+=" [${C["Version"]-}${TEMPLATES_VERSION}${NC-}]"
+					TEMPLATES_HEADING+=" [{{|Version|}}${TEMPLATES_VERSION}{{[-]}}]"
 				fi
 				if templates_update_available; then
-					TEMPLATES_HEADING+=" (${C["Update"]-}Update Available${NC-})"
+					TEMPLATES_HEADING+=" ({{|Update|}}Update Available{{[-]}})"
 				fi
 				cat << EOF
 ${APPLICATION_HEADING}
 ${TEMPLATES_HEADING}
 
-Usage: ${C["UsageCommand"]-}${APPLICATION_COMMAND}${NC-} [${C["UsageCommand"]-}<Flags>${NC-}] [${C["UsageCommand"]-}<Command>${NC-}] ...
-NOTE: The '${C["UsageCommand"]-}${APPLICATION_COMMAND}${NC-}' shortcut is only available after the first run of
+Usage: {{|UsageCommand|}}${APPLICATION_COMMAND}{{[-]}} [{{|UsageCommand|}}<Flags>{{[-]}}] [{{|UsageCommand|}}<Command>{{[-]}}] ...
+NOTE: The '{{|UsageCommand|}}${APPLICATION_COMMAND}{{[-]}}' shortcut is only available after the first run of
 	bash main.sh
 
-This is the main ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} script.
+This is the main {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} script.
 For regular usage you can run without providing any options.
 
 You may include multiple commands on the command-line, and they will be executed in
@@ -40,9 +40,9 @@ the order given, only stopping on an error. Any flags included only apply to the
 following command, and get reset before the next command.
 
 Any command that takes a variable name, the variable will by default be looked for
-in the global '${C["UsageFile"]-}.env${NC-}' file. If the variable name used is in form of '${C["UsageVar"]-}app:var${NC-}', it
-will instead refer to the variable '${C["UsageVar"]-}${C["UsageVar"]-}<var>${NC-}' in '${C["UsageFile"]-}.env.app.<app>${NC-}'.  Some commands
-that take app names can use the form '${C["UsageApp"]-}app:${NC-}' to refer to the same file.
+in the global '{{|UsageFile|}}.env{{[-]}}' file. If the variable name used is in form of '{{|UsageVar|}}app:var{{[-]}}', it
+will instead refer to the variable '{{|UsageVar|}}<var>{{[-]}}' in '{{|UsageFile|}}.env.app.<app>{{[-]}}'.  Some commands
+that take app names can use the form '{{|UsageApp|}}app:{{[-]}}' to refer to the same file.
 
 EOF
 			fi
@@ -59,35 +59,35 @@ EOF
 		-f | --force | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}-f --force${NC-}
+{{|UsageCommand|}}-f --force{{[-]}}
 	Force certain install/upgrade actions to run even if they would not be needed.
 EOF
 			;;&
 		-g | --gui | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}-g --gui${NC-}
+{{|UsageCommand|}}-g --gui{{[-]}}
 	Use dialog boxes
 EOF
 			;;&
 		-v | --verbose | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}-v --verbose${NC-}
+{{|UsageCommand|}}-v --verbose{{[-]}}
 	Verbose
 EOF
 			;;&
 		-x | --debug | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}-x --debug${NC-}
+{{|UsageCommand|}}-x --debug{{[-]}}
 	Debug
 EOF
 			;;&
 		-y | --yes | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}-y --yes${NC-}
+{{|UsageCommand|}}-y --yes{{[-]}}
 	Assume Yes for all prompts
 EOF
 			;;&
@@ -103,148 +103,148 @@ EOF
 		-a | --add | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}-a --add${NC-} ${C["UsageApp"]-}<app>${NC-} [${C["UsageApp"]-}<app>${NC-} ...]${NC-}
+{{|UsageCommand|}}-a --add{{[-]}} {{|UsageApp|}}<app>{{[-]}} [{{|UsageApp|}}<app>{{[-]}} ...]{{[-]}}
 	Add the default variables for the app(s) specified
 EOF
 			;;&
 		-c | --compose | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}-c --compose${NC-} < ${C["UsageOption"]-}pull${NC-} | ${C["UsageOption"]-}up${NC-} | ${C["UsageOption"]-}down${NC-} | ${C["UsageOption"]-}stop${NC-} | ${C["UsageOption"]-}restart${NC-} | ${C["UsageOption"]-}pause${NC-} | ${C["UsageOption"]-}unpause${NC-} | ${C["UsageOption"]-}update${NC-} > [${C["UsageApp"]-}<app>${NC-} ...]${NC-}
-	Run docker compose commands. If no command is given, it does an '${C["UsageOption"]-}update${NC-}'.
-	The '${C["UsageOption"]-}update${NC-}' command is the same as a '${C["UsageOption"]-}pull${NC-}' followed by an '${C["UsageOption"]-}up${NC-}'
-${C["UsageCommand"]-}-c --compose${NC-} < ${C["UsageOption"]-}generate${NC-} | ${C["UsageOption"]-}merge${NC-} >${NC-}
-	Generates the '${C["UsageFile"]-}docker-compose.yml${NC-} file
+{{|UsageCommand|}}-c --compose{{[-]}} < {{|UsageOption|}}pull{{[-]}} | {{|UsageOption|}}up{{[-]}} | {{|UsageOption|}}down{{[-]}} | {{|UsageOption|}}stop{{[-]}} | {{|UsageOption|}}restart{{[-]}} | {{|UsageOption|}}pause{{[-]}} | {{|UsageOption|}}unpause{{[-]}} | {{|UsageOption|}}update{{[-]}} > [{{|UsageApp|}}<app>{{[-]}} ...]{{[-]}}
+	Run docker compose commands. If no command is given, it does an '{{|UsageOption|}}update{{[-]}}'.
+	The '{{|UsageOption|}}update{{[-]}}' command is the same as a '{{|UsageOption|}}pull{{[-]}}' followed by an '{{|UsageOption|}}up{{[-]}}'
+{{|UsageCommand|}}-c --compose{{[-]}} < {{|UsageOption|}}generate{{[-]}} | {{|UsageOption|}}merge{{[-]}} >{{[-]}}
+	Generates the '{{|UsageFile|}}docker-compose.yml{{[-]}} file
 EOF
 			;;&
 		--config-pm | --config-pm-auto | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}--config-pm${NC-} ${C["UsageOption"]-}<package manager>${NC-}
+{{|UsageCommand|}}--config-pm{{[-]}} {{|UsageOption|}}<package manager>{{[-]}}
 	Select the specified package manager to install dependencies
-${C["UsageCommand"]-}--config-pm-auto${NC-}
+{{|UsageCommand|}}--config-pm-auto{{[-]}}
 	Autodetect the package manager
 EOF
 			;;&
 		--config-pm-list | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}--config-pm-list${NC-}
+{{|UsageCommand|}}--config-pm-list{{[-]}}
 	Lists the compatible package managers
 EOF
 			;;&
 		--config-pm-table | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}--config-pm-table${NC-}
+{{|UsageCommand|}}--config-pm-table{{[-]}}
 	Lists the compatible package managers in a table format
 EOF
 			;;&
 		--config-pm-existing-list | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}--config-pm-existing-list${NC-}
+{{|UsageCommand|}}--config-pm-existing-list{{[-]}}
 	Lists the existing package managers
 EOF
 			;;&
 		--config-pm-existing-table | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}--config-pm-existing-table${NC-}
+{{|UsageCommand|}}--config-pm-existing-table{{[-]}}
 	Lists the existing package managers in a table format
 EOF
 			;;&
 		--config-show | --show-config | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}--config-show${NC-}
-${C["UsageCommand"]-}--show-config${NC-}
+{{|UsageCommand|}}--config-show{{[-]}}
+{{|UsageCommand|}}--show-config{{[-]}}
 	Shows the current configuration options
 EOF
 			;;&
 		-e | --env | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}-e --env${NC-}
-	Update your '${C["UsageFile"]-}.env${NC-}' files with new variables
+{{|UsageCommand|}}-e --env{{[-]}}
+	Update your '{{|UsageFile|}}.env{{[-]}}' files with new variables
 EOF
 			;;&
 		--env-appvars | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}--env-appvars${NC-} ${C["UsageApp"]-}<app>${NC-} [${C["UsageApp"]-}<app>${NC-} ...]${NC-}
+{{|UsageCommand|}}--env-appvars{{[-]}} {{|UsageApp|}}<app>{{[-]}} [{{|UsageApp|}}<app>{{[-]}} ...]{{[-]}}
 	List all variable names for the app(s) specified
 EOF
 			;;&
 		--env-appvars-lines | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}--env-appvars-lines${NC-} ${C["UsageApp"]-}<app>${NC-} [${C["UsageApp"]-}<app>${NC-} ...]${NC-}
+{{|UsageCommand|}}--env-appvars-lines{{[-]}} {{|UsageApp|}}<app>{{[-]}} [{{|UsageApp|}}<app>{{[-]}} ...]{{[-]}}
 	List all variables and values for the app(s) specified
 EOF
 			;;&
 		--env-get | --env-get= | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}--env-get${NC-} ${C["UsageVar"]-}<var>${NC-} [${C["UsageVar"]-}<var>${NC-} ...]${NC-}
-${C["UsageCommand"]-}--env-get=${NC-}${C["UsageVar"]-}<var>${NC-}
-	Get the value of a ${C["UsageVar"]-}<var>${NC-}iable (variable name is forced to UPPER CASE)
+{{|UsageCommand|}}--env-get{{[-]}} {{|UsageVar|}}<var>{{[-]}} [{{|UsageVar|}}<var>{{[-]}} ...]{{[-]}}
+{{|UsageCommand|}}--env-get={{[-]}}{{|UsageVar|}}<var>{{[-]}}
+	Get the value of a {{|UsageVar|}}<var>{{[-]}}iable (variable name is forced to UPPER CASE)
 EOF
 			;;&
 		--env-get-line | --env-get-line= | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}--env-get-line${NC-} ${C["UsageVar"]-}<var>${NC-} [${C["UsageVar"]-}<var>${NC-} ...]${NC-}
-${C["UsageCommand"]-}--env-get-line=${NC-}${C["UsageVar"]-}<var>${NC-}
-	Get the line of a ${C["UsageVar"]-}<var>${NC-}iable (variable name is forced to UPPER CASE)
+{{|UsageCommand|}}--env-get-line{{[-]}} {{|UsageVar|}}<var>{{[-]}} [{{|UsageVar|}}<var>{{[-]}} ...]{{[-]}}
+{{|UsageCommand|}}--env-get-line={{[-]}}{{|UsageVar|}}<var>{{[-]}}
+	Get the line of a {{|UsageVar|}}<var>{{[-]}}iable (variable name is forced to UPPER CASE)
 EOF
 			;;&
 		--env-get-literal | --env-get-literal= | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}--env-get-literal${NC-} ${C["UsageVar"]-}<var>${NC-} [${C["UsageVar"]-}<var>${NC-} ...]${NC-}
-${C["UsageCommand"]-}--env-get-literal${NC-}=${C["UsageVar"]-}<var>${NC-}
-	Get the literal value (including quotes) of a ${C["UsageVar"]-}<var>${NC-}iable (variable name is forced to UPPER CASE)
+{{|UsageCommand|}}--env-get-literal{{[-]}} {{|UsageVar|}}<var>{{[-]}} [{{|UsageVar|}}<var>{{[-]}} ...]{{[-]}}
+{{|UsageCommand|}}--env-get-literal{{[-]}}={{|UsageVar|}}<var>{{[-]}}
+	Get the literal value (including quotes) of a {{|UsageVar|}}<var>{{[-]}}iable (variable name is forced to UPPER CASE)
 EOF
 			;;&
 		--env-get-lower | --env-get-lower= | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}--env-get-lower${NC-} ${C["UsageVar"]-}<var>${NC-} [${C["UsageVar"]-}<var>${NC-} ...]${NC-}
-${C["UsageCommand"]-}--env-get-lower${NC-}=${C["UsageVar"]-}<var>${NC-}
-	Get the value of a ${C["UsageVar"]-}<var>${NC-}iable
+{{|UsageCommand|}}--env-get-lower{{[-]}} {{|UsageVar|}}<var>{{[-]}} [{{|UsageVar|}}<var>{{[-]}} ...]{{[-]}}
+{{|UsageCommand|}}--env-get-lower{{[-]}}={{|UsageVar|}}<var>{{[-]}}
+	Get the value of a {{|UsageVar|}}<var>{{[-]}}iable
 EOF
 			;;&
 		--env-get-lower-line | --env-get-lower-line= | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}--env-get-lower-line${NC-} ${C["UsageVar"]-}<var>${NC-} [${C["UsageVar"]-}<var>${NC-} ...]
-${C["UsageCommand"]-}--env-get-lower-line=${NC-}${C["UsageVar"]-}<var>${NC-}
-	Get the line of a ${C["UsageVar"]-}<var>${NC-}iable
+{{|UsageCommand|}}--env-get-lower-line{{[-]}} {{|UsageVar|}}<var>{{[-]}} [{{|UsageVar|}}<var>{{[-]}} ...]
+{{|UsageCommand|}}--env-get-lower-line={{[-]}}{{|UsageVar|}}<var>{{[-]}}
+	Get the line of a {{|UsageVar|}}<var>{{[-]}}iable
 EOF
 			;;&
 		--env-get-lower-literal | --env-get-lower-literal= | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}--env-get-lower-literal${NC-} ${C["UsageVar"]-}<var>${NC-} [${C["UsageVar"]-}<var>${NC-} ...]${NC-}
-${C["UsageCommand"]-}--env-get-lower-literal=${NC-}${C["UsageVar"]-}<var>${NC-}
-	Get the literal value (including quotes) of a ${C["UsageVar"]-}<var>${NC-}iable
+{{|UsageCommand|}}--env-get-lower-literal{{[-]}} {{|UsageVar|}}<var>{{[-]}} [{{|UsageVar|}}<var>{{[-]}} ...]{{[-]}}
+{{|UsageCommand|}}--env-get-lower-literal={{[-]}}{{|UsageVar|}}<var>{{[-]}}
+	Get the literal value (including quotes) of a {{|UsageVar|}}<var>{{[-]}}iable
 EOF
 			;;&
 		--env-set | --env-set= | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}--env-set${NC-} ${C["UsageVar"]-}<var>=<val>${NC-}
-${C["UsageCommand"]-}--env-set=${NC-}${C["UsageVar"]-}<var>,<val>${NC-}
-	Set the ${C["UsageVar"]-}<val>${NC-}ue of a ${C["UsageVar"]-}<var>${NC-}iable (variable name is forced to UPPER CASE).
+{{|UsageCommand|}}--env-set{{[-]}} {{|UsageVar|}}<var>=<val>{{[-]}}
+{{|UsageCommand|}}--env-set={{[-]}}{{|UsageVar|}}<var>,<val>{{[-]}}
+	Set the {{|UsageVar|}}<val>{{[-]}}ue of a {{|UsageVar|}}<var>{{[-]}}iable (variable name is forced to UPPER CASE).
 EOF
 			;;&
 		--env-set-lower | --env-set-lower= | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}--env-set-lower${NC-} ${C["UsageVar"]-}<var>=<val>${NC-}
-${C["UsageCommand"]-}--env-set-lower=${NC-}${C["UsageVar"]-}<var>,<val>${NC-}
-	Set the ${C["UsageVar"]-}<val>${NC-}ue of a ${C["UsageVar"]-}<var>${NC-}iable
+{{|UsageCommand|}}--env-set-lower{{[-]}} {{|UsageVar|}}<var>=<val>{{[-]}}
+{{|UsageCommand|}}--env-set-lower={{[-]}}{{|UsageVar|}}<var>,<val>{{[-]}}
+	Set the {{|UsageVar|}}<val>{{[-]}}ue of a {{|UsageVar|}}<var>{{[-]}}iable
 EOF
 			;;&
 		-l | --list) ;&
@@ -258,71 +258,71 @@ EOF
 		"")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}-l --list${NC-}
+{{|UsageCommand|}}-l --list{{[-]}}
 	List all apps
-${C["UsageCommand"]-}--list-added${NC-}
+{{|UsageCommand|}}--list-added{{[-]}}
 	List added apps
-${C["UsageCommand"]-}--list-builtin${NC-}
+{{|UsageCommand|}}--list-builtin{{[-]}}
 	List builtin apps
-${C["UsageCommand"]-}--list-deprecated${NC-}
+{{|UsageCommand|}}--list-deprecated{{[-]}}
 	List deprecated apps
-${C["UsageCommand"]-}--list-enabled${NC-}
+{{|UsageCommand|}}--list-enabled{{[-]}}
 	List enabled apps
-${C["UsageCommand"]-}--list-disabled${NC-}
+{{|UsageCommand|}}--list-disabled{{[-]}}
 	List disabled apps
-${C["UsageCommand"]-}--list-nondeprecated${NC-}
+{{|UsageCommand|}}--list-nondeprecated{{[-]}}
 	List non-deprecated apps
-${C["UsageCommand"]-}--list-referenced${NC-}
+{{|UsageCommand|}}--list-referenced{{[-]}}
 	List referenced apps (whether they are "built in" or not). An app is considered
-	"referenced" if there is a variable matching the app's name in the global '${C["UsageFile"]-}.env${NC-}',
-	there are any variables in the file '${C["UsageFile"]-}.env.app.<app>${NC-}', or the file '${C["UsageFile"]-}.env.app.<app>${NC-}'
-	is referenced in '${C["UsageFile"]-}docker-compose.override.yml${NC-}'.
+	"referenced" if there is a variable matching the app's name in the global '{{|UsageFile|}}.env{{[-]}}',
+	there are any variables in the file '{{|UsageFile|}}.env.app.<app>{{[-]}}', or the file '{{|UsageFile|}}.env.app.<app>{{[-]}}'
+	is referenced in '{{|UsageFile|}}docker-compose.override.yml{{[-]}}'.
 EOF
 			;;&
 		-h | --help | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}-h --help${NC-}
+{{|UsageCommand|}}-h --help{{[-]}}
 	Show this usage information
-${C["UsageCommand"]-}-h --help${NC-} ${C["UsageOption"]-}<option>${NC-}
+{{|UsageCommand|}}-h --help{{[-]}} {{|UsageOption|}}<option>{{[-]}}
 	Show the usage of the specified option
 EOF
 			;;&
 		-i | --install | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}-i --install${NC-}
+{{|UsageCommand|}}-i --install{{[-]}}
 	Install/update all dependencies
 EOF
 			;;&
 		-p | --prune | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}-p --prune${NC-}
+{{|UsageCommand|}}-p --prune{{[-]}}
 	Remove unused docker resources
 EOF
 			;;&
 		-r | --remove | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}-r --remove${NC-}
+{{|UsageCommand|}}-r --remove{{[-]}}
 	Prompt to remove variables for all disabled apps
-${C["UsageCommand"]-}-r --remove${NC-} ${C["UsageApp"]-}<app>${NC-} [${C["UsageApp"]-}<app>${NC-} ...]${NC-}
+{{|UsageCommand|}}-r --remove{{[-]}} {{|UsageApp|}}<app>{{[-]}} [{{|UsageApp|}}<app>{{[-]}} ...]{{[-]}}
 	Prompt to remove the variables for the app specified
 EOF
 			;;&
 		-R | --reset | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}-R --reset${NC-}
-	Resets ${C["ApplicationName"]-}${APPLICATION_NAME} to always process environment files.
+{{|UsageCommand|}}-R --reset{{[-]}}
+	Resets {{|ApplicationName|}}${APPLICATION_NAME} to always process environment files.
 	This is usually not needed unless you have modified application templates yourself.
 EOF
 			;;&
 		-s | --status | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}-s --status${NC-} ${C["UsageApp"]-}<app>${NC-} [${C["UsageApp"]-}<app>${NC-} ...]${NC-}
+{{|UsageCommand|}}-s --status{{[-]}} {{|UsageApp|}}<app>{{[-]}} [{{|UsageApp|}}<app>{{[-]}} ...]{{[-]}}
 	Returns the enabled/disabled status for the app specified
 EOF
 			;;&
@@ -331,33 +331,38 @@ EOF
 		"")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}--status-disable${NC-} ${C["UsageApp"]-}<app>${NC-} [${C["UsageApp"]-}<app>${NC-} ...]${NC-}
+{{|UsageCommand|}}--status-disable{{[-]}} {{|UsageApp|}}<app>{{[-]}} [{{|UsageApp|}}<app>{{[-]}} ...]{{[-]}}
 	Disable the app specified
-${C["UsageCommand"]-}--status-enable${NC-} ${C["UsageApp"]-}<app>${NC-} [${C["UsageApp"]-}<app>${NC-} ...]${NC-}
+{{|UsageCommand|}}--status-enable{{[-]}} {{|UsageApp|}}<app>{{[-]}} [{{|UsageApp|}}<app>{{[-]}} ...]{{[-]}}
 	Enable the app specified
 EOF
 			;;&
 		-t | --test | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}-t --test${NC-} ${C["UsageFile"]-}<test_name>${NC-}
+{{|UsageCommand|}}-t --test{{[-]}} {{|UsageFile|}}<test_name>{{[-]}}
 	Run tests to check the program
 EOF
 			;;&
 		-T | --theme | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}-T --theme${NC-}
+{{|UsageCommand|}}-T --theme{{[-]}}
 	Re-applies the current theme to the GUI
-${C["UsageCommand"]-}-T --theme${NC-} ${C["UsageTheme"]-}<themename>${NC-}
-	Applies the specified theme to the GUI
+{{|UsageCommand|}}-T --theme{{[-]}} {{|UsageTheme|}}<themename>{{[-]}}
+	Applies a named embedded theme
+{{|UsageCommand|}}-T --theme{{[-]}} {{|UsageTheme|}}user:<themename>{{[-]}}
+	Applies a user theme from the user themes folder
+{{|UsageCommand|}}-T --theme{{[-]}} {{|UsageTheme|}}<path>.dstheme{{[-]}}
+{{|UsageCommand|}}-T --theme{{[-]}} {{|UsageTheme|}}file:<path>{{[-]}}
+	Applies a theme from an arbitrary file path
 EOF
 			;;&
 		-T | --theme | "") ;&
 		--theme-list | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}--theme-list${NC-}
+{{|UsageCommand|}}--theme-list{{[-]}}
 	Lists the available themes
 EOF
 			;;&
@@ -365,7 +370,7 @@ EOF
 		--theme-table | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}--theme-table${NC-}
+{{|UsageCommand|}}--theme-table{{[-]}}
 	Lists the available themes in a table format
 EOF
 			;;&
@@ -373,8 +378,8 @@ EOF
 		--theme-lines | --theme-no-lines | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}--theme-lines${NC-}
-${C["UsageCommand"]-}--theme-no-lines${NC-}
+{{|UsageCommand|}}--theme-lines{{[-]}}
+{{|UsageCommand|}}--theme-no-lines{{[-]}}
 	Turn the line drawing characters on or off in the GUI
 EOF
 			;;&
@@ -382,8 +387,8 @@ EOF
 		--theme-borders | --theme-no-borders | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}--theme-borders${NC-}
-${C["UsageCommand"]-}--theme-no-borders${NC-}
+{{|UsageCommand|}}--theme-borders{{[-]}}
+{{|UsageCommand|}}--theme-no-borders{{[-]}}
 	Turn the borders on and off in the GUI
 EOF
 			;;&
@@ -391,8 +396,8 @@ EOF
 		--theme-shadows | --theme-no-shadows | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}--theme-shadows${NC-}
-${C["UsageCommand"]-}--theme-no-shadows${NC-}
+{{|UsageCommand|}}--theme-shadows{{[-]}}
+{{|UsageCommand|}}--theme-no-shadows{{[-]}}
 	Turn the shadows on or off in the GUI
 EOF
 			;;&
@@ -400,9 +405,25 @@ EOF
 		--theme-scrollbar | --theme-no-scrollbar | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}--theme-scrollbar${NC-}
-${C["UsageCommand"]-}--theme-no-scrollbar${NC-}
+{{|UsageCommand|}}--theme-scrollbar{{[-]}}
+{{|UsageCommand|}}--theme-no-scrollbar{{[-]}}
 	Turn the scrollbar on or off in the GUI
+EOF
+			;;&
+		-T | --theme | "") ;&
+		--theme-extract | "")
+			Found=1
+			cat << EOF
+{{|UsageCommand|}}--theme-extract{{[-]}} {{|UsageTheme|}}<themename>{{[-]}} {{|UsageOption|}}<destdir>{{[-]}} {{|UsageOption|}}<filename>{{[-]}}
+	Extract a theme to a file (use {{|UsageTheme|}}user:<name>{{[-]}} for user themes; {{|UsageOption|}}user:{{[-]}} as destdir for the user themes folder)
+EOF
+			;;&
+		-T | --theme | "") ;&
+		--theme-extract-all | "")
+			Found=1
+			cat << EOF
+{{|UsageCommand|}}--theme-extract-all{{[-]}} {{|UsageOption|}}<destdir>{{[-]}}
+	Extract all embedded themes to a directory (use {{|UsageOption|}}user:{{[-]}} for the user themes folder)
 EOF
 			;;&
 		-u | --update | "") ;&
@@ -410,26 +431,26 @@ EOF
 		--update-templates | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}-u --update${NC-}
-	Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} and ${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} to the latest commits from the current branch
-${C["UsageCommand"]-}-u --update${NC-} ${C["UsageBranch"]-}<AppRef>${NC-} ${C["UsageBranch"]-}<TemplateRef>${NC-}
-	Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} and ${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} to specified branches, tags, or commits
-${C["UsageCommand"]-}--update-app${NC-}
-	Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} to the latest commits from the current branch
-${C["UsageCommand"]-}--update-app${NC-} ${C["UsageBranch"]-}<AppRef>${NC-}
-	Update ${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} to the specified branch, tag, or commit
-${C["UsageCommand"]-}--update-templates${NC-}
-	Update ${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} to the latest commits from the current branch
-${C["UsageCommand"]-}--update-templates${NC-} ${C["UsageBranch"]-}<TemplateRef>${NC-}
-	Update ${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} to the specified branch, tag, or commit
+{{|UsageCommand|}}-u --update{{[-]}}
+	Update {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} and {{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} to the latest commits from the current branch
+{{|UsageCommand|}}-u --update{{[-]}} {{|UsageBranch|}}<AppRef>{{[-]}} {{|UsageBranch|}}<TemplateRef>{{[-]}}
+	Update {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} and {{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} to specified branches, tags, or commits
+{{|UsageCommand|}}--update-app{{[-]}}
+	Update {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} to the latest commits from the current branch
+{{|UsageCommand|}}--update-app{{[-]}} {{|UsageBranch|}}<AppRef>{{[-]}}
+	Update {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} to the specified branch, tag, or commit
+{{|UsageCommand|}}--update-templates{{[-]}}
+	Update {{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} to the latest commits from the current branch
+{{|UsageCommand|}}--update-templates{{[-]}} {{|UsageBranch|}}<TemplateRef>{{[-]}}
+	Update {{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} to the specified branch, tag, or commit
 EOF
 			;;&
 		-V | --version | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}-V --version${NC-}
+{{|UsageCommand|}}-V --version{{[-]}}
 	Display version information
-${C["UsageCommand"]-}-V --version${NC-} ${C["UsageBranch"]-}<AppRef>${NC-} ${C["UsageBranch"]-}<TemplateRef>${NC-}
+{{|UsageCommand|}}-V --version{{[-]}} {{|UsageBranch|}}<AppRef>{{[-]}} {{|UsageBranch|}}<TemplateRef>{{[-]}}
 	Display version information for the specified branches, tags, or commits
 EOF
 			;;&
@@ -444,37 +465,41 @@ EOF
 			;;&
 		-M | --menu | "")
 			Found=1
-			#${C["UsageCommand"]-}-M --menu${NC-} < config-global | global >${NC-}
+			#{{|UsageCommand|}}-M --menu{{[-]}} < config-global | global >{{[-]}}
 			#    Load the Global Configutation page in the menu.
-			#${C["UsageCommand"]-}-M --menu${NC-} < ${C["UsageOption"]-}config-apps${NC-} | ${C["UsageOption"]-}apps${NC-} >${NC-}
-			#    Load the ${C["UsagePage"]-}Application Configuration${NC-} page in the menu.
+			#{{|UsageCommand|}}-M --menu{{[-]}} < {{|UsageOption|}}config-apps{{[-]}} | {{|UsageOption|}}apps{{[-]}} >{{[-]}}
+			#    Load the {{|UsagePage|}}Application Configuration{{[-]}} page in the menu.
 			cat << EOF
-${C["UsageCommand"]-}-M --menu${NC-}
+{{|UsageCommand|}}-M --menu{{[-]}}
 	Start the menu system.
-	This is the same as typing '${C["UsageCommand"]-}ds${NC-}'.
-${C["UsageCommand"]-}-M --menu${NC-} < ${C["UsageOption"]-}main${NC-} | ${C["UsageOption"]-}config${NC-} | ${C["UsageOption"]-}options${NC-} >${NC-}
+	This is the same as typing '{{|UsageCommand|}}ds{{[-]}}'.
+{{|UsageCommand|}}-M --menu{{[-]}} < {{|UsageOption|}}main{{[-]}} | {{|UsageOption|}}config{{[-]}} | {{|UsageOption|}}options{{[-]}} >{{[-]}}
 	Load the specified page in the menu.
-${C["UsageCommand"]-}-M --menu${NC-} < ${C["UsageOption"]-}options-display${NC-} | ${C["UsageOption"]-}display${NC-} >${NC-}
-	Load the ${C["UsagePage"]-}Display Options${NC-} page in the menu.
-${C["UsageCommand"]-}-M --menu${NC-} < ${C["UsageOption"]-}options-theme${NC-} | ${C["UsageOption"]-}theme${NC-} >${NC-}
-	Load the ${C["UsagePage"]-}Theme Chooser${NC-} page in the menu.
-${C["UsageCommand"]-}-M --menu${NC-} < ${C["UsageOption"]-}config-app-select${NC-} | ${C["UsageOption"]-}app-select${NC-} | ${C["UsageOption"]-}select${NC-} >${NC-}
-	Load the ${C["UsagePage"]-}Application Selection${NC-} page in the menu.
+{{|UsageCommand|}}-M --menu{{[-]}} < {{|UsageOption|}}options-display{{[-]}} | {{|UsageOption|}}display{{[-]}} >{{[-]}}
+	Load the {{|UsagePage|}}Display Options{{[-]}} page in the menu.
+{{|UsageCommand|}}-M --menu{{[-]}} < {{|UsageOption|}}options-theme{{[-]}} | {{|UsageOption|}}theme{{[-]}} >{{[-]}}
+	Load the {{|UsagePage|}}Theme Chooser{{[-]}} page in the menu.
+{{|UsageCommand|}}-M --menu{{[-]}} < {{|UsageOption|}}config-app-select{{[-]}} | {{|UsageOption|}}app-select{{[-]}} | {{|UsageOption|}}select{{[-]}} >{{[-]}}
+	Load the {{|UsagePage|}}Application Selection{{[-]}} page in the menu.
 EOF
 			;;&
 		-S | --select | --menu-config-app-select | --menu-app-select | "")
 			Found=1
 			cat << EOF
-${C["UsageCommand"]-}-S --select${NC-}
-	Load the ${C["UsagePage"]-}Application Selection${NC-} page in the menu.
+{{|UsageCommand|}}-S --select{{[-]}}
+	Load the {{|UsagePage|}}Application Selection{{[-]}} page in the menu.
 EOF
 			;;&
 		*)
 			if [[ -z ${Found-} ]]; then
 				cat << EOF
-Unknown option '${C["UsageCommand"]-}${Option}${NC-}'.
+Unknown option '{{|UsageCommand|}}${Option}{{[-]}}'.
 EOF
 			fi
 			;;
 	esac
+}
+
+usage() {
+	usage_raw "$@" | resolve_strings C
 }

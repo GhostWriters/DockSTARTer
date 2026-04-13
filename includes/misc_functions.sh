@@ -5,7 +5,7 @@ IFS=$'\n\t'
 create_strip_ansi_colors_SEDSTRING() {
 	# Create the search string to strip ANSI colors
 	# String is saved after creation, so this is only done on the first call
-	local -a ANSICOLORS=("${F[@]}" "${B[@]}" "${BD}" "${UL}" "${NC}" "${BS}" "${DM}" "${BL}")
+	local -a ANSICOLORS=("${F[@]}" "${B[@]}" "${S[@]}")
 	for index in "${!ANSICOLORS[@]}"; do
 		# Escape characters used by sed
 		ANSICOLORS[index]=$(printf '%s' "${ANSICOLORS[index]}" | sed -E 's/[]{}()[/{}\.''''$]/\\&/g')
@@ -33,7 +33,7 @@ highlighted_list() {
 	local List
 	List=$(xargs <<< "$*")
 	if [[ -n ${List-} ]]; then
-		echo "${DC["Subtitle"]-}${List// /${DC["NC"]-} ${DC["Subtitle"]-}}${DC["NC"]-}"
+		echo "{{|Subtitle|}}${List// /{{[-]}} {{|Subtitle|}}}{{[-]}}"
 	fi
 }
 
@@ -64,10 +64,10 @@ custom_quote_elements_with_spaces() {
 	for element in "$@"; do
 		if [[ -z ${element} || ${element} == *" "* ]]; then
 			# If the element is an empty string or contains spaces, quote it
-			Result+="${Quote}${Color}${element}${NC}${Quote}${NC} "
+			Result+="${Quote}${Color}${element}{{[-]}}${Quote}{{[-]}} "
 		else
 			# Otherwise, add it as is
-			Result+="${Color}${element}${NC} "
+			Result+="${Color}${element}{{[-]}} "
 		fi
 	done
 	# Remove any trailing space
@@ -266,14 +266,14 @@ table_pipe() {
 	local -a AllData=("${Headings[@]}" "${Data[@]}")
 	local -a VisibleData
 	for item in "${AllData[@]}"; do
-		VisibleData+=("$(strip_ansi_colors "${item}")")
+		VisibleData+=("$(strip_styles "${item}")")
 	done
 
 	local -a ColWidths
 	readarray -t ColWidths < <(longest_columns "${Cols}" "${VisibleData[@]}")
 
 	local -A CharSet
-	if is_true "${DC["LineCharacters"]-}"; then
+	if is_true "${D["LineCharacters"]-}"; then
 		CharSet=(
 			["TopLeft"]="┌"
 			["TopRight"]="┐"
@@ -347,7 +347,7 @@ table_pipe() {
 		for ((c = 0; c < Cols; c++)); do
 			local Idx=$((i + c))
 			local Item="${Data[Idx]-}"
-			local VisItem="${VisibleData[Cols + Idx]-}" # Offset by Headings count (Cols)
+			local VisItem="${VisibleData[Cols+Idx]-}" # Offset by Headings count (Cols)
 			local Width=${ColWidths[c]}
 			local PadSize=$((Width - ${#VisItem}))
 			local Padding
@@ -364,5 +364,293 @@ table() {
 	shift
 	local -a Headings=("${@:1:Cols}")
 	local -a Data=("${@:Cols+1}")
-	printf '%s\n' "${Data[@]}" | table_pipe "${Cols}" "${Headings[@]}"
+	printf '%s\n' "${Data[@]}" | table_pipe "${Cols}" "${Headings[@]}" | resolve_strings C
+}
+
+wordwrap_pipe() {
+	local -i Width=${1:-80}
+
+	local Word
+	local Line=""
+
+	while IFS=$' \t\n' read -r -a Words; do
+		for Word in "${Words[@]}"; do
+			if ((${#Line} > 0 && ${#Line} + 1 + ${#Word} > Width)); then
+				printf '%s\n' "${Line}"
+				Line="${Word}"
+			else
+				Line="${Line:+$Line }${Word}"
+			fi
+		done
+	done
+	[[ -n ${Line} ]] && printf '%s\n' "${Line}"
+}
+
+wordwrap() {
+	local String=${1}
+	local -i Width=${2:-80}
+
+	wordwrap_pipe "${Width}" <<< "${String}"
+}
+
+get_toml_val() {
+	# get_toml_val FILE SECTION.KEY
+	# Returns the value of KEY within [SECTION] in FILE.
+	# Returns empty string (exit 0) if the key or section is not found.
+	local file=${1-}
+	local section="${2%%.*}"
+	local target_key="${2#*.}"
+	local current_section=""
+
+	while IFS='= ' read -r key val || [[ -n ${key}${val} ]]; do
+		# Track the current section [header]
+		if [[ ${key} =~ ^\[(.*)\]$ ]]; then
+			current_section="${BASH_REMATCH[1]}"
+			continue
+		fi
+
+		# Only process keys in the correct section
+		if [[ ${current_section} == "${section}" && ${key} == "${target_key}" ]]; then
+			# Trim leading and trailing whitespace
+			val="${val#"${val%%[![:space:]]*}"}"
+			val="${val%"${val##*[![:space:]]}"}"
+
+			# Strip quotes; for quoted strings, # is literal (not a comment)
+			if [[ ${val} == \"*\" ]]; then
+				val="${val#\"}"
+				val="${val%\"}"
+			elif [[ ${val} == \'*\' ]]; then
+				val="${val#\'}"
+				val="${val%\'}"
+			else
+				# Unquoted: strip inline comment, then trim trailing whitespace
+				val="${val%%#*}"
+				val="${val%"${val##*[![:space:]]}"}"
+			fi
+
+			printf '%s\n' "${val}"
+			return 0
+		fi
+	done < "${file}"
+	return 0
+}
+
+set_toml_val() {
+	# set_toml_val FILE SECTION.KEY VALUE
+	# Creates or updates KEY = "VALUE" within [SECTION] in FILE.
+	# Creates the file, section, or key if any do not exist.
+	local file=${1-}
+	local section="${2%%.*}"
+	local target_key="${2#*.}"
+	local new_val=${3-}
+
+	if [[ ! -f ${file} ]]; then
+		touchfile "${file}"
+	fi
+
+	# Escape double quotes in the value
+	new_val="${new_val//\"/\\\"}"
+	local new_line="${target_key} = \"${new_val}\""
+
+	local -a content=()
+	while IFS= read -r line || [[ -n ${line} ]]; do
+		content+=("${line}")
+	done < "${file}"
+
+	local -i n=${#content[@]}
+	local -i in_section=0
+	local -i section_found=0
+	local -i key_written=0
+	local -a output=()
+
+	local -i i
+	for ((i = 0; i < n; i++)); do
+		local line="${content[i]}"
+		if [[ ${line} =~ ^\[(.+)\]$ ]]; then
+			if [[ ${in_section} -eq 1 && ${key_written} -eq 0 ]]; then
+				# Leaving our section without finding the key: insert it now
+				output+=("${new_line}")
+				key_written=1
+			fi
+			in_section=0
+			if [[ ${BASH_REMATCH[1]} == "${section}" ]]; then
+				in_section=1
+				section_found=1
+			fi
+		elif [[ ${in_section} -eq 1 && ${key_written} -eq 0 ]]; then
+			# Check if this line contains our key
+			if [[ ${line} =~ ^[[:space:]]*${target_key}[[:space:]]*= ]]; then
+				output+=("${new_line}")
+				key_written=1
+				continue # drop the old line
+			fi
+		fi
+		output+=("${line}")
+	done
+
+	# Handle key not found at end of file while still in section
+	if [[ ${in_section} -eq 1 && ${key_written} -eq 0 ]]; then
+		output+=("${new_line}")
+	fi
+
+	# Handle section not found: append section and key at end of file
+	if [[ ${section_found} -eq 0 ]]; then
+		if [[ ${#output[@]} -gt 0 && -n ${output[-1]} ]]; then
+			output+=("")
+		fi
+		output+=("[${section}]")
+		output+=("${new_line}")
+	fi
+
+	printf '%s\n' "${output[@]}" > "${file}" ||
+		fatal \
+			"Failed to write to '{{|File|}}${file}{{[-]}}'."
+}
+
+hrx_extract_file() {
+	# hrx_extract_file ArchiveFile InternalPath DestFile
+	# Extracts a named file from an HRX archive to DestFile.
+	# The boundary is auto-detected from the first line of the archive.
+	local archive=${1-}
+	local internal_path=${2-}
+	local dest=${3-}
+	local boundary="" capturing=0
+	local -a lines=()
+	while IFS= read -r line || [[ -n ${line} ]]; do
+		if [[ -z ${boundary} ]]; then
+			if [[ ${line} =~ ^(<[=]+>)[[:space:]] ]]; then
+				boundary="${BASH_REMATCH[1]}"
+			else
+				continue
+			fi
+		fi
+		if [[ ${line} == "${boundary} "* ]]; then
+			[[ ${capturing} -eq 1 ]] && break
+			[[ ${line#"${boundary} "} == "${internal_path}" ]] && capturing=1
+			continue
+		fi
+		[[ ${capturing} -eq 1 ]] && lines+=("${line}")
+	done < "${archive}"
+	[[ ${#lines[@]} -gt 0 ]] && printf '%s\n' "${lines[@]}" > "${dest}"
+}
+
+hrx_env_get() {
+	# hrx_env_get ArchiveFile InternalPath VarName
+	# Returns the value of VarName from a KEY=VALUE file within an HRX archive.
+	# The boundary is auto-detected from the first line of the archive.
+	local archive=${1-}
+	local internal_path=${2-}
+	local var_name=${3-}
+	local boundary="" capturing=0 found_val=""
+	while IFS= read -r line || [[ -n ${line} ]]; do
+		if [[ -z ${boundary} ]]; then
+			if [[ ${line} =~ ^(<[=]+>)[[:space:]] ]]; then
+				boundary="${BASH_REMATCH[1]}"
+			else
+				continue
+			fi
+		fi
+		if [[ ${line} == "${boundary} "* ]]; then
+			[[ ${capturing} -eq 1 ]] && break
+			[[ ${line#"${boundary} "} == "${internal_path}" ]] && capturing=1
+			continue
+		fi
+		if [[ ${capturing} -eq 1 ]]; then
+			[[ -z ${line} || ${line} =~ ^[[:space:]]*# ]] && continue
+			if [[ ${line} =~ ^[[:space:]]*${var_name}[[:space:]]*= ]]; then
+				local val="${line#*=}"
+				val="${val#"${val%%[! ]*}"}"
+				val="${val%"${val##*[! ]}"}"
+				if [[ ${val} == \"*\" ]]; then
+					val="${val#\"}"
+					val="${val%\"}"
+				elif [[ ${val} == \'*\' ]]; then
+					val="${val#\'}"
+					val="${val%\'}"
+				fi
+				found_val="${val}"
+			fi
+		fi
+	done < "${archive}"
+	printf '%s\n' "${found_val}"
+}
+
+get_toml_section_key_list() {
+	# get_toml_section_key_list FILE SECTION
+	# Returns a list of all keys within [SECTION] in FILE.
+	local file=${1-}
+	local section=${2-}
+	local current_section=""
+
+	while IFS='= ' read -r key val || [[ -n ${key}${val} ]]; do
+		if [[ ${key} =~ ^\[(.*)\]$ ]]; then
+			current_section="${BASH_REMATCH[1]}"
+			continue
+		fi
+
+		if [[ ${current_section} == "${section}" && -n ${key} && -n ${val} ]]; then
+			printf '%s\n' "${key}"
+		fi
+	done < "${file}"
+}
+
+hrx_toml_get() {
+	# hrx_toml_get ArchiveFile InternalPath SECTION.KEY
+	# Returns the value of KEY from SECTION in a TOML file within an HRX archive.
+	local archive=${1-}
+	local internal_path=${2-}
+	local section_key=${3-}
+	local section="${section_key%%.*}"
+	local target_key="${section_key#*.}"
+	local boundary="" capturing=0 current_section="" found_val=""
+
+	while IFS= read -r line || [[ -n ${line} ]]; do
+		if [[ -z ${boundary} ]]; then
+			if [[ ${line} =~ ^(<[=]+>)[[:space:]] ]]; then
+				boundary="${BASH_REMATCH[1]}"
+			else
+				continue
+			fi
+		fi
+		if [[ ${line} == "${boundary} "* ]]; then
+			[[ ${capturing} -eq 1 ]] && break
+			[[ ${line#"${boundary} "} == "${internal_path}" ]] && capturing=1
+			continue
+		fi
+		if [[ ${capturing} -eq 1 ]]; then
+			# Skip comments and empty lines
+			[[ ${line} =~ ^[[:space:]]*# ]] && continue
+			[[ ${line} =~ ^[[:space:]]*$ ]] && continue
+
+			if [[ ${line} =~ ^\[(.*)\]$ ]]; then
+				current_section="${BASH_REMATCH[1]}"
+				continue
+			fi
+			if [[ ${current_section} == "${section}" && ${line} == *[[:space:]]*=[[:space:]]* ]]; then
+				local key="${line%%=*}"
+				local val="${line#*=}"
+				# Trim key
+				key="${key#"${key%%[![:space:]]*}"}"
+				key="${key%"${key##*[![:space:]]}"}"
+
+				if [[ ${key} == "${target_key}" ]]; then
+					# Trim leading and trailing whitespace from val
+					val="${val#"${val%%[![:space:]]*}"}"
+					val="${val%"${val##*[![:space:]]}"}"
+					if [[ ${val} == \"*\" ]]; then
+						val="${val#\"}"
+						val="${val%\"}"
+					elif [[ ${val} == \'*\' ]]; then
+						val="${val#\'}"
+						val="${val%\'}"
+					else
+						val="${val%%#*}"
+						val="${val%"${val##*[![:space:]]}"}"
+					fi
+					found_val="${val}"
+				fi
+			fi
+		fi
+	done < "${archive}"
+	printf '%s\n' "${found_val}"
 }

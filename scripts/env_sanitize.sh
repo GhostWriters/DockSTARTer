@@ -22,9 +22,9 @@ env_sanitize() {
 	local DOCKER_CONFIG_FOLDER DOCKER_COMPOSE_FOLDER ORIG_CONFIG_FOLDER ORIG_COMPOSE_FOLDER
 
 	ORIG_CONFIG_FOLDER="$(run_script 'env_get' DOCKER_CONFIG_FOLDER)"
-	LITERAL_CONFIG_FOLDER="$(run_script 'config_get' ConfigFolder)"
+	LITERAL_CONFIG_FOLDER="$(get_toml_val "${APPLICATION_TOML_FILE}" "paths.config_folder")"
 	if [[ -z ${LITERAL_CONFIG_FOLDER-} ]]; then
-		LITERAL_CONFIG_FOLDER="$(run_script 'config_get' ConfigFolder "${DEFAULT_INI_FILE}")"
+		LITERAL_CONFIG_FOLDER="$(get_toml_val "${DEFAULT_TOML_FILE}" "paths.config_folder")"
 	fi
 	if [[ -z ${LITERAL_CONFIG_FOLDER-} ]]; then
 		LITERAL_CONFIG_FOLDER="${ORIG_CONFIG_FOLDER}"
@@ -32,9 +32,9 @@ env_sanitize() {
 	DOCKER_CONFIG_FOLDER="${LITERAL_CONFIG_FOLDER}"
 
 	ORIG_COMPOSE_FOLDER="$(run_script 'env_get' DOCKER_COMPOSE_FOLDER)"
-	LITERAL_COMPOSE_FOLDER="$(run_script 'config_get' ComposeFolder)"
+	LITERAL_COMPOSE_FOLDER="$(get_toml_val "${APPLICATION_TOML_FILE}" "paths.compose_folder")"
 	if [[ -z ${LITERAL_COMPOSE_FOLDER-} ]]; then
-		LITERAL_COMPOSE_FOLDER="$(run_script 'config_get' ComposeFolder "${DEFAULT_INI_FILE}")"
+		LITERAL_COMPOSE_FOLDER="$(get_toml_val "${DEFAULT_TOML_FILE}" "paths.compose_folder")"
 	fi
 	if [[ -z ${LITERAL_COMPOSE_FOLDER-} ]]; then
 		LITERAL_COMPOSE_FOLDER="${ORIG_COMPOSE_FOLDER}"
@@ -128,10 +128,10 @@ env_sanitize() {
 
 	# Process the variable value changes
 	if [[ -n ${VarsToUpdate[*]-} ]]; then
-		notice "Setting variables in ${C["File"]}${COMPOSE_ENV}${NC}:"
+		notice "Setting variables in {{|File|}}${COMPOSE_ENV}{{[-]}}:"
 		for VarName in "${VarsToUpdate[@]}"; do
 			local Value="${UpdatedVarValue["${VarName}"]}"
-			notice "   ${C["Var"]}${VarName}=${Value}${NC}"
+			notice "   {{|Var|}}${VarName}=${Value}{{[-]}}"
 			run_script 'env_set_literal' "${VarName}" "${Value}"
 		done
 	fi

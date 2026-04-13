@@ -16,7 +16,7 @@ pm_yum_upgrade() {
 		eval "${REDIRECT}${COMMAND}" ||
 			fatal \
 				"Failed to upgrade packages from yum." \
-				"Failing command: ${C["FailingCommand"]}${COMMAND}"
+				"Failing command: {{|FailingCommand|}}${COMMAND}"
 	fi
 }
 

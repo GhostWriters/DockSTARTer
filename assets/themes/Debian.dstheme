@@ -1,3 +1,77 @@
+<==> theme.toml
+#
+# DockSTARTer theme file
+# theme.toml
+#
+# Color List:
+#
+# {{[blue]}}    Blue
+# {{[cyan]}}    Cyan
+# {{[green]}}   Green
+# {{[black]}}   Black
+# {{[magenta]}} Magenta
+# {{[red]}}     Red
+# {{[white]}}   White
+# {{[yellow]}}  Yellow
+# {{[::R]}}     Reverse
+# {{[::r]}}     No Reverse
+# {{[::B]}}     Bold
+# {{[::b]}}     No Bold
+# {{[::U]}}     Underline
+# {{[::u]}}     No Underline
+# {{[-]}}       No Color
+
+[metadata]
+name = "Debian"
+description = "Debian colors"
+author = "CLHatch"
+
+
+[syntax]
+semantic_prefix = "{{|"
+semantic_suffix = "|}}"
+direct_prefix = "{{["
+direct_suffix = "]}}"
+
+[colors]
+ApplicationName = "{{[-]}}{{[::R]}}"
+ApplicationVersion = "{{|ApplicationName|}}"
+ApplicationVersionBrackets = "{{|ApplicationName|}}"
+ApplicationVersionSpace = "{{[-]}}"
+ApplicationFlags = "{{[-]}}{{[::b]}}"
+ApplicationFlagsBrackets = "{{[-]}}{{[::R]}}"
+ApplicationFlagsSpace = "{{[-]}}{{[::R]}}"
+ApplicationUpdate = "{{[-]}}"
+ApplicationUpdateBrackets = "{{[-]}}"
+Hostname = "{{|ApplicationName|}}"
+Title = "{{[-]}}{{[::bU]}}"
+Subtitle = "{{[-]}}{{[::R]}}"
+TitleSuccess = "{{[-]}}{{[green::UR]}}"
+TitleError = "{{[-]}}{{[red::UR]}}"
+TitleWarning = "{{[-]}}{{[yellow::U]}}"
+TitleQuestion = "{{[-]}}{{[yellow::U]}}"
+Heading = "{{[-]}}{{[::R]}}"
+HeadingTag = "{{[-]}}{{[::B]}}"
+HeadingValue = "{{[-]}}{{[::BU]}}"
+HeadingAppDescription = "{{[-]}}"
+Highlight = "{{[-]}}{{[::B]}}"
+LineHeading = "{{[-]}}{{[::U]}}"
+LineComment = "{{[-]}}{{[::B]}}"
+LineOther = "{{[-]}}"
+LineVar = "{{[-]}}"
+ModifiedText = "{{[-]}}{{[::R]}}"
+LineAddVariable = "{{[-]}}{{[::R]}}"
+ListDefault = ""
+ListApp = ""
+ListAppUserDefined = "{{[-]}}{{[::R]}}"
+CommandLine = "{{[-]}}"
+KeyCap = "{{[-]}}{{[::R]}}"
+ProgressWaiting = "{{[-]}}"
+ProgressInProgress = "{{[-]}}{{[::B]}}"
+ProgressCompleted = "{{[-]}}{{[::R]}}"
+
+
+<==> .dialogrc
 # $Id: debian.rc,v 1.7 2011/10/15 01:00:09 tom Exp $
 # vile:confmode
 # Run-time configuration file for dialog, matches Debian color scheme.
@@ -23,28 +97,28 @@ tab_len = 0
 visit_items = OFF
 
 # Shadow dialog boxes? This also turns on color.
-#use_shadow = ON
+use_shadow = ON
 
 # Turn color support ON or OFF
-use_colors = OFF
+use_colors = ON
 
 # Screen color
-screen_color = (BLACK,WHITE,ON)
+screen_color = (CYAN,BLUE,ON)
 
 # Shadow color
-#shadow_color = (BLACK,BLACK,ON)
+shadow_color = (BLACK,BLACK,ON)
 
 # Dialog box color
-dialog_color = (WHITE,BLACK,OFF)
+dialog_color = (BLACK,WHITE,OFF)
 
 # Dialog box title color
-title_color = (BLACK,BLACK,ON)
+title_color = (BLUE,WHITE,ON)
 
 # Dialog box border color
-border_color = (BLACK,BLACK,ON)
+border_color = (WHITE,WHITE,ON)
 
 # Active button color
-button_active_color = (WHITE,BLACK,ON)
+button_active_color = (WHITE,BLUE,ON)
 
 # Inactive button color
 button_inactive_color = dialog_color
@@ -53,13 +127,13 @@ button_inactive_color = dialog_color
 button_key_active_color = button_active_color
 
 # Inactive button key color
-button_key_inactive_color = (WHITE,BLACK,OFF)
+button_key_inactive_color = (RED,WHITE,OFF)
 
 # Active button label color
-button_label_active_color = (WHITE,BLACK,ON)
+button_label_active_color = (YELLOW,BLUE,ON)
 
 # Inactive button label color
-button_label_inactive_color = (WHITE,BLACK,ON)
+button_label_inactive_color = (BLACK,WHITE,ON)
 
 # Input box color
 inputbox_color = dialog_color
@@ -101,7 +175,7 @@ tag_selected_color = button_label_active_color
 tag_key_color = button_key_inactive_color
 
 # Selected tag key color
-tag_key_selected_color = (WHITE,BLACK,ON)
+tag_key_selected_color = (RED,BLUE,ON)
 
 # Check box color
 check_color = dialog_color
@@ -110,7 +184,7 @@ check_color = dialog_color
 check_selected_color = button_active_color
 
 # Up arrow color
-uarrow_color = (WHITE,BLACK,ON)
+uarrow_color = (GREEN,WHITE,ON)
 
 # Down arrow color
 darrow_color = uarrow_color
@@ -122,10 +196,10 @@ itemhelp_color = (WHITE,BLACK,OFF)
 form_active_text_color = button_active_color
 
 # Form text color
-form_text_color = (WHITE,BLACK,ON)
+form_text_color = (WHITE,CYAN,ON)
 
 # Readonly form item color
-form_item_readonly_color = (WHITE,BLACK,ON)
+form_item_readonly_color = (CYAN,WHITE,ON)
 
 # Dialog box gauge color
 gauge_color = title_color

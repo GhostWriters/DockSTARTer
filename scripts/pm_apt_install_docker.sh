@@ -8,7 +8,7 @@ pm_apt_install_docker() {
 	local RemovePackages="containerd docker docker-compose docker-engine docker.io runc"
 	local Command="sudo apt-get -y remove ${RemovePackages}"
 	info "Removing conflicting Docker packages."
-	notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+	notice "Running: {{|RunningCommand|}}${Command}{{[-]}}"
 	eval "${Command}" &> /dev/null || true
 
 	run_script 'remove_snap_docker'

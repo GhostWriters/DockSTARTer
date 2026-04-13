@@ -99,7 +99,7 @@ expand_vars_using_varfile() {
 				fi
 			elif [[ -n ${MissingVars[${Key}]+x} ]]; then
 				if [[ ${String} == *"\${${Key}?}"* ]]; then
-					fatal "Variable '${C["Var"]-}${Key}${NC-}' is required but not defined."
+					fatal "Variable '{{|Var|}}${Key}{{[-]}}' is required but not defined."
 				fi
 			fi
 		done
@@ -146,11 +146,11 @@ SHORT_LONG='LongValue'
 	VarFile=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.VarFile.XXXXXXXXXX") ||
 		fatal \
 			"Failed to create temporary file." \
-			"Failing command: ${C["FailingCommand"]-}mktemp -t \"${APPLICATION_NAME}.${FUNCNAME[0]}.VarFile.XXXXXXXXXX\""
+			"Failing command: {{|FailingCommand|}}mktemp -t \"${APPLICATION_NAME}.${FUNCNAME[0]}.VarFile.XXXXXXXXXX\""
 	echo "${VarFileContent}" > "${VarFile}"
 
 	notice \
-		"Contents of file '${C["File"]-}${VarFile}${NC-}':" \
+		"Contents of file '{{|File|}}${VarFile}{{[-]}}':" \
 		"${VarFileContent}"
 	notice \
 		""
@@ -158,9 +158,9 @@ SHORT_LONG='LongValue'
 	run_unit_tests_pipe "Input" "Input" "${ForcePass}" < <(
 		for ((i = 0; i < ${#Test[@]}; i += 4)); do
 			printf '%s\n' \
-				"String='${Test[i + 1]}' Skip='${Test[i + 2]}'" \
-				"${Test[i + 3]}" \
-				"$(run_script 'expand_vars_using_varfile' "${Test[i + 1]}" "${Test[i + 2]}" "${VarFile}")"
+				"String='${Test[i+1]}' Skip='${Test[i+2]}'" \
+				"${Test[i+3]}" \
+				"$(run_script 'expand_vars_using_varfile' "${Test[i+1]}" "${Test[i+2]}" "${VarFile}")"
 		done
 	)
 	result=$?
@@ -168,7 +168,7 @@ SHORT_LONG='LongValue'
 	rm -f "${VarFile}" ||
 		warn \
 			"Failed to remove temporary file." \
-			"Failing command: ${C["FailingCommand"]-}rm -f \"${VarFile}\""
+			"Failing command: {{|FailingCommand|}}rm -f \"${VarFile}\""
 
 	return ${result}
 }

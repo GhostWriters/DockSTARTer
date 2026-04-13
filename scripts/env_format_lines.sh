@@ -34,7 +34,7 @@ env_format_lines() {
 			AppIsUserDefined='Y'
 		fi
 		AppName="$(run_script 'app_nicename' "${APPNAME}")"
-		AppDescription="$(run_script 'app_description' "${APPNAME}" | fold -s -w 75)"
+		AppDescription="$(run_script 'app_description' "${APPNAME}" | wordwrap_pipe 75)"
 		local HeadingTitle="${AppName}"
 		if [[ ${AppIsUserDefined} == Y ]]; then
 			HeadingTitle+="${AppUserDefinedTag}"
@@ -49,10 +49,10 @@ env_format_lines() {
 		HeadingText+=("")
 		readarray -t -O ${#HeadingText[@]} HeadingText < <(printf '%b\n' "${AppDescription}")
 		HeadingText+=("")
-
-		readarray -t -O ${#FormattedEnvLines[@]} FormattedEnvLines < <(
-			printf '### %b\n' "${HeadingText[@]}"
-		)
+		for line in "${HeadingText[@]}"; do
+			local trimmed="${line%"${line##*[![:space:]]}"}"
+			FormattedEnvLines+=("###${trimmed:+ ${trimmed}}")
+		done
 	fi
 	if [[ -n ${DefaultEnvFile} && -f ${DefaultEnvFile} ]]; then
 		# Default file is specified and exists, add the contents verbatim
@@ -102,9 +102,10 @@ env_format_lines() {
 				HeadingText+=("")
 				readarray -t -O ${#HeadingText[@]} HeadingText < <(printf '%b\n' "${HeadingTitle}")
 				HeadingText+=("")
-				readarray -t -O ${#FormattedEnvLines[@]} FormattedEnvLines < <(
-					printf '### %b\n' "${HeadingText[@]}"
-				)
+				for line in "${HeadingText[@]}"; do
+					local trimmed="${line%"${line##*[![:space:]]}"}"
+					FormattedEnvLines+=("###${trimmed:+ ${trimmed}}")
+				done
 			fi
 			# Add the user defined variables
 			for index in "${!CurrentEnvLines[@]}"; do
@@ -123,6 +124,12 @@ env_format_lines() {
 		fi
 	else
 		FormattedEnvLines+=("")
+	fi
+
+	# Remove last element if it is an empty string to avoid extra newline from printf
+	# This ensures parity with Go's strings.Join which doesn't add a trailing delimiter.
+	if [[ ${FormattedEnvLines[${#FormattedEnvLines[@]}-1]-} == "" ]]; then
+		unset 'FormattedEnvLines[${#FormattedEnvLines[@]}-1]'
 	fi
 	printf "%s\n" "${FormattedEnvLines[@]-}"
 }

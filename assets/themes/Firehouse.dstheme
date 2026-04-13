@@ -1,3 +1,77 @@
+<==> theme.toml
+#
+# DockSTARTer theme file
+# theme.toml
+#
+# Color List:
+#
+# {{[blue]}}    Blue
+# {{[cyan]}}    Cyan
+# {{[green]}}   Green
+# {{[black]}}   Black
+# {{[magenta]}} Magenta
+# {{[red]}}     Red
+# {{[white]}}   White
+# {{[yellow]}}  Yellow
+# {{[::R]}}     Reverse
+# {{[::r]}}     No Reverse
+# {{[::B]}}     Bold
+# {{[::b]}}     No Bold
+# {{[::U]}}     Underline
+# {{[::u]}}     No Underline
+# {{[-]}}       No Color
+
+[metadata]
+name = "Firehouse"
+description = "Dockstarter Firehouse theme"
+author = "Westlin"
+
+
+[syntax]
+semantic_prefix = "{{|"
+semantic_suffix = "|}}"
+direct_prefix = "{{["
+direct_suffix = "]}}"
+
+[colors]
+ApplicationName = "{{[-]}}{{[::R]}}"
+ApplicationVersion = "{{|ApplicationName|}}"
+ApplicationVersionBrackets = "{{|ApplicationName|}}"
+ApplicationVersionSpace = "{{[-]}}"
+ApplicationFlags = "{{[-]}}{{[::b]}}"
+ApplicationFlagsBrackets = "{{[-]}}{{[::R]}}"
+ApplicationFlagsSpace = "{{[-]}}{{[::R]}}"
+ApplicationUpdate = "{{[-]}}"
+ApplicationUpdateBrackets = "{{[-]}}"
+Hostname = "{{|ApplicationName|}}"
+Title = "{{[-]}}{{[::U]}}"
+Subtitle = "{{[-]}}{{[::R]}}"
+TitleSuccess = "{{[-]}}{{[::R]}}"
+TitleError = "{{[-]}}{{[::RB]}}"
+TitleWarning = "{{[-]}}{{[::R]}}"
+TitleQuestion = "{{[-]}}{{[::R]}}"
+Heading = "{{[-]}}{{[::R]}}"
+HeadingTag = "{{[-]}}{{[::B]}}"
+HeadingValue = "{{[-]}}{{[::BU]}}"
+HeadingAppDescription = "{{[-]}}"
+Highlight = "{{[-]}}{{[::B]}}"
+LineHeading = "{{[-]}}{{[::U]}}"
+LineComment = "{{[-]}}{{[::B]}}"
+LineOther = "{{[-]}}"
+LineVar = "{{[-]}}"
+ModifiedText = "{{[-]}}{{[::R]}}"
+LineAddVariable = "{{[-]}}{{[::R]}}"
+ListDefault = ""
+ListApp = ""
+ListAppUserDefined = "{{[-]}}{{[::R]}}"
+CommandLine = "{{[-]}}"
+KeyCap = "{{[-]}}{{[::R]}}"
+ProgressWaiting = "{{[-]}}"
+ProgressInProgress = "{{[-]}}{{[::B]}}"
+ProgressCompleted = "{{[-]}}{{[::R]}}"
+
+
+<==> .dialogrc
 # $Id: debian.rc,v 1.7 2011/10/15 01:00:09 tom Exp $
 # vile:confmode
 # Run-time configuration file for dialog, Dockstarter Firehouse theme

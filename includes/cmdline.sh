@@ -149,9 +149,33 @@ parse_arguments() {
 
 				# --command [param]
 				-T | --theme) ;&
+				--theme-extract-all) ;&
 				--update-app) ;&
 				--update-templates)
 					CurrentCommand+=("${OPTION}")
+					if [[ ${OPTIND} -le $# && ${!OPTIND} != "-"* ]]; then
+						CurrentCommand+=("${!OPTIND}")
+						OPTIND+=1
+					fi
+					break
+					;;
+
+				# --command param [param] [param]
+				--theme-extract)
+					CurrentCommand+=("${OPTION}")
+					if [[ ${OPTIND} -le $# && ${!OPTIND} != "-"* ]]; then
+						CurrentCommand+=("${!OPTIND}")
+						OPTIND+=1
+					else
+						cmdline_error "$(printf "'%s' requires a theme name." "${OPTION}")"
+						break
+					fi
+					# Optional destination dir
+					if [[ ${OPTIND} -le $# && ${!OPTIND} != "-"* ]]; then
+						CurrentCommand+=("${!OPTIND}")
+						OPTIND+=1
+					fi
+					# Optional filename
 					if [[ ${OPTIND} -le $# && ${!OPTIND} != "-"* ]]; then
 						CurrentCommand+=("${!OPTIND}")
 						OPTIND+=1
@@ -339,7 +363,7 @@ parse_arguments() {
 		local CommandLineString
 		CommandLineString="$(quote_elements_with_spaces "${APPLICATION_COMMAND}" "${CurrentFlags[@]}" "${CurrentCommand[@]}")"
 		notice \
-			"${APPLICATION_NAME} command: '${C["UserCommand"]-}${CommandLineString}${NC-}'"
+			"${APPLICATION_NAME} command: '{{|UserCommand|}}${CommandLineString}{{[-]}}'"
 		run_command ${#CurrentFlags[@]} ${#CurrentCommand[@]} "${CurrentArgs[@]}" "$@"
 	done
 	return
@@ -377,7 +401,7 @@ run_command() {
 	fi
 
 	local -a ParamsArray=("${CommandArray[@]:1}")
-	local SubTitleCommandString="${DC["NC"]-} ${DC["CommandLine"]-}${CURRENT_COMMANDLINE}"
+	local SubTitleCommandString="{{[-]}} {{|CommandLine|}}${CURRENT_COMMANDLINE}"
 
 	if [[ -z ${Command-} ]]; then
 		Command="--menu"
@@ -434,6 +458,7 @@ run_command() {
 		["--env-set-lower="]="env_set"
 		["-i"]="run_install"
 		["--install"]="run_install"
+		["-l"]="app_list"
 		["--list"]="app_list"
 		["-p"]="docker_prune"
 		["--prune"]="docker_prune"
@@ -496,7 +521,10 @@ run_command() {
 		["--config-pm-existing-list"]=1
 		["--config-pm-existing-table"]=1
 		["--env"]=1
+		["-l"]=1
 		["--list"]=1
+		["--config-show"]=1
+		["--show-config"]=1
 		["-r"]=1
 		["--remove"]=1
 		["--theme-list"]=1
@@ -514,8 +542,8 @@ run_command() {
 		["--config-pm-existing-table"]="List existing package managers"
 		["--config-show"]="Show Configuration"
 		["--show-config"]="Show Configuration"
-		["-e"]="${DC["TitleSuccess"]-}Creating environment variables for added apps"
-		["--env"]="${DC["TitleSuccess"]-}Creating environment variables for added apps"
+		["-e"]="{{|TitleSuccess|}}Creating environment variables for added apps"
+		["--env"]="{{|TitleSuccess|}}Creating environment variables for added apps"
 		["--env-appvars"]="Variables for Application"
 		["--env-appvars-lines"]="Variable lines for Application"
 		["--env-get"]="Get Value of Variable"
@@ -532,6 +560,7 @@ run_command() {
 		["--env-get-lower-literal="]="Get Literal Value of Variable"
 		["--env-set"]="Set Value of Variable"
 		["--env-set-lower"]="Set Value of Variable"
+		["-l"]="List All Applications"
 		["--list"]="List All Applications"
 		["--list-builtin"]="List Builtin Applications"
 		["--list-deprecated"]="List Deprecated Applications"
@@ -542,8 +571,8 @@ run_command() {
 		["--list-referenced"]="List Referenced Applications"
 		["-r"]="Remove Application"
 		["--remove"]="Remove Application"
-		["-R"]="Resetting ${C["ApplicationName"]-}${APPLICATION_NAME}${C["NC"]-} to process all actions."
-		["--reset"]="Resetting ${C["ApplicationName"]-}${APPLICATION_NAME}${C["NC"]-} to process all actions."
+		["-R"]="Resetting {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} to process all actions."
+		["--reset"]="Resetting {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} to process all actions."
 		["-s"]="Application Status"
 		["--status"]="Application Status"
 		["--theme-shadows"]="Turned on shadows"
@@ -556,6 +585,8 @@ run_command() {
 		["--theme-no-borders"]="Turned off borders"
 		["--theme-list"]="List Themes"
 		["--theme-table"]="List Themes"
+		["--theme-extract"]="Extract Theme"
+		["--theme-extract-all"]="Extract All Themes"
 	)
 
 	CommandSubTitle+=(
@@ -575,25 +606,25 @@ run_command() {
 	)
 
 	CommandConfigVar+=(
-		["--theme-shadows"]="Shadow"
-		["--theme-no-shadows"]="Shadow"
-		["--theme-scrollbar"]="Scrollbar"
-		["--theme-no-scrollbar"]="Scrollbar"
-		["--theme-lines"]="LineCharacters"
-		["--theme-no-lines"]="LineCharacters"
-		["--theme-borders"]="Borders"
-		["--theme-no-borders"]="Borders"
+		["--theme-shadows"]="shadow"
+		["--theme-no-shadows"]="shadow"
+		["--theme-scrollbar"]="scrollbar"
+		["--theme-no-scrollbar"]="scrollbar"
+		["--theme-lines"]="line_characters"
+		["--theme-no-lines"]="line_characters"
+		["--theme-borders"]="borders"
+		["--theme-no-borders"]="borders"
 	)
 
 	CommandConfigValue=(
-		["--theme-shadows"]="yes"
-		["--theme-no-shadows"]="no"
-		["--theme-scrollbar"]="yes"
-		["--theme-no-scrollbar"]="no"
-		["--theme-lines"]="yes"
-		["--theme-no-lines"]="no"
-		["--theme-borders"]="yes"
-		["--theme-no-borders"]="no"
+		["--theme-shadows"]="true"
+		["--theme-no-shadows"]="false"
+		["--theme-scrollbar"]="true"
+		["--theme-no-scrollbar"]="false"
+		["--theme-lines"]="true"
+		["--theme-no-lines"]="false"
+		["--theme-borders"]="true"
+		["--theme-no-borders"]="false"
 	)
 	CommandEnvCreate+=(
 		["--list-disabled"]=1
@@ -658,50 +689,46 @@ run_command() {
 			;;
 
 		-t | --test)
-			run_test "${ParamsArray[0]}"
-			result=$?
+			run_test "${ParamsArray[0]}" || result=$?
 			;;
 
 		-u | --update)
 			local AppBranch="${ParamsArray[0]-}"
 			local TemplatesBranch="${ParamsArray[1]-}"
 			run_script 'update_templates' "${TemplatesBranch-}" || true
-			run_script 'update_self' "${AppBranch-}" "${REST_OF_ARGS_ARRAY[@]}" || true
-			result=$?
+			run_script 'update_self' "${AppBranch-}" "${REST_OF_ARGS_ARRAY[@]}" || result=$?
 			;;
 
 		--update-templates)
-			run_script 'update_templates' "${ParamsArray[0]-}"
-			result=$?
+			run_script 'update_templates' "${ParamsArray[0]-}" || result=$?
 			;;
 
 		--update-app)
-			run_script 'update_self' "${ParamsArray[0]-}" "${REST_OF_ARGS_ARRAY[@]}"
-			result=$?
+			run_script 'update_self' "${ParamsArray[0]-}" "${REST_OF_ARGS_ARRAY[@]}" || result=$?
 			;;
 
 		-V | --version)
 			local AppBranch="${ParamsArray[0]-}"
 			local TemplatesBranch="${ParamsArray[1]-}"
 			if [[ -z ${AppBranch} ]]; then
-				echo "${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} [${C["Version"]-}${APPLICATION_VERSION}${NC-}]"
+				resolve_strings C "{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} [{{|Version|}}${APPLICATION_VERSION}{{[-]}}]"
 			else
 				if ! ds_ref_exists "${AppBranch}"; then
 					error \
-						"${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} ref '${C["Branch"]-}${AppBranch}${NC-}' does not exist."
+						"{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} ref '{{|Branch|}}${AppBranch}{{[-]}}' does not exist."
 					exit 1
 				fi
-				echo "${C["ApplicationName"]-}${APPLICATION_NAME}${NC-} [${C["Version"]-}$(ds_version "${AppBranch}")${NC-}]"
+				resolve_strings C "{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} [{{|Version|}}$(ds_version "${AppBranch}"){{[-]}}]"
 			fi
 			if [[ -z ${TemplatesBranch} ]]; then
-				echo "${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} [${C["Version"]-}$(templates_version)${NC-}]"
+				resolve_strings C "{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} [{{|Version|}}$(templates_version){{[-]}}]"
 			else
 				if ! templates_ref_exists "${TemplatesBranch}"; then
 					error \
-						"${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} ref '${C["Branch"]-}${TemplatesBranch}${NC-}' does not exist."
+						"{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} ref '{{|Branch|}}${TemplatesBranch}{{[-]}}' does not exist."
 					exit 1
 				fi
-				echo "${C["ApplicationName"]-}${TEMPLATES_NAME}${NC-} [${C["Version"]-}$(templates_version "${TemplatesBranch}")${NC-}]"
+				resolve_strings C "{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} [{{|Version|}}$(templates_version "${TemplatesBranch}"){{[-]}}]"
 			fi
 			;;
 
@@ -714,10 +741,10 @@ run_command() {
 			local UpperCase="${MenuCommandUpperCase["${MenuCommand}"]-}"
 			if [[ -z ${DIALOG-} ]]; then
 				fatal_notrace \
-					"The GUI requires the '${C["Program"]-}dialog${NC-}' command to be installed." \
-					"'${C["Program"]-}dialog${NC-}' command not found. Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -i${NC-}' to install all dependencies." \
+					"The GUI requires the '{{|Folder|}}dialog{{[-]}}' command to be installed." \
+					"'{{|Folder|}}dialog{{[-]}}' command not found. Run '{{|UserCommand|}}${APPLICATION_COMMAND} -i{{[-]}}' to install all dependencies." \
 					"" \
-					"Unable to start GUI without the '${C["Program"]-}dialog${NC-}' command."
+					"Unable to start GUI without the '{{|Folder|}}dialog{{[-]}}' command."
 			fi
 
 			if [[ ${#ParamsArray[@]} -gt 1 ]]; then
@@ -740,7 +767,7 @@ run_command() {
 					options-theme | theme)
 						if [[ -z ${Script} ]]; then
 							fatal \
-								"No script is defined for menu command '${C["UserCommand"]-}${MenuCommand}${NC-}'."
+								"No script is defined for menu command '{{|UserCommand|}}${MenuCommand}{{[-]}}'."
 						fi
 						if [[ -n ${EnvCreate-} ]]; then
 							run_script 'env_create'
@@ -749,8 +776,7 @@ run_command() {
 							run_script 'env_backup'
 						fi
 						declare -gx PROMPT="GUI"
-						run_script "${Script}"
-						result=$?
+						run_script "${Script}" || result=$?
 						if [[ -n ${EnvUpdate-} ]]; then
 							run_script 'env_update'
 						fi
@@ -766,7 +792,7 @@ run_command() {
 		--config-show | --show-config) ;&
 		-e | --env) ;&
 		-i | --install) ;&
-		--list) ;&
+		-l | --list) ;&
 		--menu-config) ;&
 		--menu-config-global) ;&
 		--menu-app-select | --menu-config-app-select) ;&
@@ -780,7 +806,7 @@ run_command() {
 		--theme-list | --theme-table)
 			if [[ -z ${Script} ]]; then
 				fatal \
-					"No script is defined for command '${C["UserCommand"]-}${Command}${NC-}'."
+					"No script is defined for command '{{|UserCommand|}}${Command}{{[-]}}'."
 			fi
 			if [[ -n ${EnvCreate-} ]]; then
 				run_script 'env_create'
@@ -791,22 +817,19 @@ run_command() {
 			if [[ ${RequireDialog-} ]]; then
 				if [[ -z ${DIALOG-} ]]; then
 					fatal_notrace \
-						"The GUI requires the '${C["Program"]-}dialog${NC-}' command to be installed." \
-						"'${C["Program"]-}dialog${NC-}' command not found. Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -i${NC-}' to install all dependencies." \
+						"The GUI requires the '{{|Folder|}}dialog{{[-]}}' command to be installed." \
+						"'{{|Folder|}}dialog{{[-]}}' command not found. Run '{{|UserCommand|}}${APPLICATION_COMMAND} -i{{[-]}}' to install all dependencies." \
 						"" \
-						"Unable to start GUI without the '${C["Program"]-}dialog${NC-}' command."
+						"Unable to start GUI without the '{{|Folder|}}dialog{{[-]}}' command."
 				fi
 				declare -gx PROMPT="GUI"
-				run_script "${Script}" "${ParamsArray[@]-}"
-				result=$?
+				run_script "${Script}" "${ParamsArray[@]-}" || result=$?
 			else
 				if [[ ${UseDialog} ]]; then
 					run_script_dialog "${Title}" "${SubTitle}" "" \
-						"${Script}" "${ParamsArray[@]-}"
-					result=$?
+						"${Script}" "${ParamsArray[@]-}" || result=$?
 				else
-					run_script "${Script}" "${ParamsArray[@]-}"
-					result=$?
+					run_script "${Script}" "${ParamsArray[@]-}" || result=$?
 				fi
 			fi
 			if [[ -n ${EnvUpdate-} ]]; then
@@ -817,7 +840,7 @@ run_command() {
 		--config-pm-auto)
 			if [[ -z ${Script} ]]; then
 				fatal \
-					"No script is defined for command '${C["UserCommand"]-}${Command}${NC-}'."
+					"No script is defined for command '{{|UserCommand|}}${Command}{{[-]}}'."
 			fi
 			if [[ -n ${EnvCreate-} ]]; then
 				run_script 'env_create'
@@ -828,22 +851,19 @@ run_command() {
 			if [[ ${RequireDialog-} ]]; then
 				if [[ -z ${DIALOG-} ]]; then
 					fatal \
-						"The GUI requires the '${C["Program"]-}dialog${NC-}' command to be installed." \
-						"'${C["Program"]-}dialog${NC-}' command not found. Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -i${NC-}' to install all dependencies." \
+						"The GUI requires the '{{|Folder|}}dialog{{[-]}}' command to be installed." \
+						"'{{|Folder|}}dialog{{[-]}}' command not found. Run '{{|UserCommand|}}${APPLICATION_COMMAND} -i{{[-]}}' to install all dependencies." \
 						"" \
-						"Unable to start GUI without the '${C["Program"]-}dialog${NC-}' command."
+						"Unable to start GUI without the '{{|Folder|}}dialog{{[-]}}' command."
 				fi
 				declare -gx PROMPT="GUI"
-				run_script "${Script}" ""
-				result=$?
+				run_script "${Script}" "" || result=$?
 			else
 				if [[ ${UseDialog} ]]; then
 					run_script_dialog "${Title}" "${SubTitle}" "" \
-						"${Script}" ""
-					result=$?
+						"${Script}" "" || result=$?
 				else
-					run_script "${Script}" ""
-					result=$?
+					run_script "${Script}" "" || result=$?
 				fi
 			fi
 			if [[ -n ${EnvUpdate-} ]]; then
@@ -854,18 +874,17 @@ run_command() {
 		--menu-config-app)
 			if [[ -z ${Script} ]]; then
 				fatal \
-					"No script is defined for command '${C["UserCommand"]-}${Command}${NC-}'."
+					"No script is defined for command '{{|UserCommand|}}${Command}{{[-]}}'."
 			fi
 			[[ -z ${DIALOG-} ]] && fatal_notrace \
-				"The GUI requires the '${C["Program"]-}dialog${NC-}' command to be installed." \
-				"'${C["Program"]-}dialog${NC-}' command not found. Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -i${NC-}' to install all dependencies." \
+				"The GUI requires the '{{|Folder|}}dialog{{[-]}}' command to be installed." \
+				"'{{|Folder|}}dialog{{[-]}}' command not found. Run '{{|UserCommand|}}${APPLICATION_COMMAND} -i{{[-]}}' to install all dependencies." \
 				"" \
-				"Unable to start GUI without the '${C["Program"]-}dialog${NC-}' command."
+				"Unable to start GUI without the '{{|Folder|}}dialog{{[-]}}' command."
 			declare -gx PROMPT="GUI"
 			local AppName="${ParamsArray[0]-}"
 			if [[ -z ${AppName} ]]; then
-				run_script "${Script}"
-				result=$?
+				run_script "${Script}" || result=$?
 			else
 				if ! run_script 'appname_is_valid' "${AppName}"; then
 					error \
@@ -878,8 +897,7 @@ run_command() {
 					exit 1
 				fi
 				run_script 'env_update'
-				run_script 'menu_config_vars' "${ParamsArray[0]-}"
-				result=$?
+				run_script 'menu_config_vars' "${ParamsArray[0]-}" || result=$?
 			fi
 			;;
 
@@ -887,19 +905,26 @@ run_command() {
 			local NoticeText
 			local ThemeName=${ParamsArray[0]-}
 			if [[ -n ${ThemeName} ]]; then
-				NoticeText="Applying ${APPLICATION_NAME} theme '${C["Theme"]-}${ThemeName}${NC-}'"
+				NoticeText="Applying ${APPLICATION_NAME} theme '{{|Theme|}}${ThemeName}{{[-]}}'"
 			else
-				NoticeText="Re-applying ${APPLICATION_NAME} theme '${C["Theme"]-}$(run_script 'theme_name')${NC-}'"
+				NoticeText="Re-applying ${APPLICATION_NAME} theme '{{|Theme|}}$(run_script 'theme_name'){{[-]}}'"
 			fi
 			notice \
 				"${NoticeText}"
 			if use_dialog_box; then
-				run_script 'config_theme' "${ThemeName}" && run_script 'menu_dialog_example' "" "${CURRENT_COMMANDLINE}"
-				result=$?
+				run_script 'config_theme' "${ThemeName}" && run_script 'menu_dialog_example' "" "${CURRENT_COMMANDLINE}" || result=$?
 			else
-				run_script 'config_theme' "${ThemeName}"
-				result=$?
+				run_script 'config_theme' "${ThemeName}" || result=$?
 			fi
+			;;
+
+		--theme-extract)
+			run_script 'theme_extract' "${ParamsArray[@]-}" || result=$?
+			;;
+
+		--theme-extract-all)
+			notice "Extracting all embedded themes."
+			run_script 'theme_extract_all' "${ParamsArray[0]-}" || result=$?
 			;;
 
 		--theme-shadows | --theme-no-shadows) ;&
@@ -908,14 +933,13 @@ run_command() {
 		--theme-borders | --theme-no-borders)
 			if [[ -z ${ConfigVar-} || -z ${ConfigValue-} ]]; then
 				fatal \
-					"The configuration variable and value are not defined for command '${C["UserCommand"]-}${Command}${NC-}${NC-}'."
+					"The configuration variable and value are not defined for command '{{|UserCommand|}}${Command}{{[-]}}{{[-]}}'."
 			fi
 			if [[ -n ${Notice-} ]]; then
 				notice \
 					"${Notice}"
 			fi
-			run_script 'config_set' "${ConfigVar}" "${ConfigValue}"
-			result=$?
+			set_toml_val "${APPLICATION_TOML_FILE}" "ui.${ConfigVar}" "${ConfigValue}" || result=$?
 			if use_dialog_box; then
 				run_script 'menu_dialog_example' "${Title}" "${CURRENT_COMMANDLINE}"
 			fi
@@ -924,7 +948,7 @@ run_command() {
 		--env-appvars | --env-appvars-lines)
 			if [[ -z ${Script-} ]]; then
 				fatal \
-					"No script is defined for command '${C["UserCommand"]-}${Command}${NC-}'."
+					"No script is defined for command '{{|UserCommand|}}${Command}{{[-]}}'."
 			fi
 			if use_dialog_box; then
 				for AppName in $(xargs -n1 <<< "${ParamsArray[0]}"); do
@@ -933,7 +957,7 @@ run_command() {
 			else
 				for AppName in $(xargs -n1 <<< "${ParamsArray[0]}"); do
 					run_script "${Script}" "${AppName}"
-				done
+				done || result=$?
 			fi
 			;;
 
@@ -942,7 +966,7 @@ run_command() {
 		--env-get-literal | --env-get-lower-literal)
 			if [[ -z ${Script-} ]]; then
 				fatal \
-					"No script is defined for command '${C["UserCommand"]-}${Command}${NC-}'."
+					"No script is defined for command '{{|UserCommand|}}${Command}{{[-]}}'."
 			fi
 			[[ -n ${UpperCase} ]] && ParamsArray=("${ParamsArray[@]^^}")
 			if use_dialog_box; then
@@ -952,7 +976,7 @@ run_command() {
 			else
 				for VarName in "${ParamsArray[@]}"; do
 					run_script "${Script}" "${VarName}"
-				done
+				done || result=$?
 			fi
 			;;
 
@@ -961,21 +985,21 @@ run_command() {
 		--env-get-literal= | --env-get-lower-literal=)
 			if [[ -z ${Script-} ]]; then
 				fatal \
-					"No script is defined for command '${C["UserCommand"]-}${Command}${NC-}'."
+					"No script is defined for command '{{|UserCommand|}}${Command}{{[-]}}'."
 			fi
 			[[ -n ${UpperCase} ]] && EqualsParam="${EqualsParam^^}"
 			if use_dialog_box; then
 				run_script_dialog "${Title}" "${SubTitle}" "" \
 					"${Script}" "${EqualsParam}"
 			else
-				run_script "${Script}" "${EqualsParam}"
+				run_script "${Script}" "${EqualsParam}" || result=$?
 			fi
 			;;
 
 		--env-set | --env-set-lower)
 			if [[ -z ${Script-} ]]; then
 				fatal \
-					"No script is defined for command '${C["UserCommand"]-}${Command}${NC-}'."
+					"No script is defined for command '{{|UserCommand|}}${Command}{{[-]}}'."
 			fi
 			run_script 'env_backup'
 			local VarName="${ParamsArray[0]%%=*}"
@@ -988,7 +1012,7 @@ run_command() {
 		--env-set=* | --env-set-lower=*)
 			if [[ -z ${Script-} ]]; then
 				fatal \
-					"No script is defined for command '${C["UserCommand"]-}${Command}${NC-}'."
+					"No script is defined for command '{{|UserCommand|}}${Command}{{[-]}}'."
 			fi
 			run_script 'env_backup'
 			local VarName="${EqualsParam%%,*}"
@@ -1007,7 +1031,7 @@ run_command() {
 		--list-referenced)
 			if [[ -z ${Script-} ]]; then
 				fatal \
-					"No script is defined for command '${C["UserCommand"]-}${Command}${NC-}'."
+					"No script is defined for command '{{|UserCommand|}}${Command}{{[-]}}'."
 			fi
 			run_script_dialog \
 				"${Title}" \
@@ -1018,7 +1042,7 @@ run_command() {
 
 		*)
 			fatal \
-				"Option '${C["UserCommand"]-}${Command}${NC-}' not implemented."
+				"Option '{{|UserCommand|}}${Command}{{[-]}}' not implemented."
 			;;
 	esac
 
@@ -1042,10 +1066,10 @@ set_flags() {
 					declare -gx PROMPT="GUI"
 				else
 					warn \
-						"The '${C["UserCommand"]-}${APPLICATION_COMMAND} ${flag}${NC-}' option requires the '${C["Program"]-}dialog$}NC}' command to be installed." \
-						"'${C["Program"]-}dialog${NC-}' command not found. Run '${C["UserCommand"]-}${APPLICATION_COMMAND} -i${NC-}' to install all dependencies." \
+						"The '{{|UserCommand|}}${APPLICATION_COMMAND} ${flag}{{[-]}}' option requires the '{{|Folder|}}dialog$}NC}' command to be installed." \
+						"'{{|Folder|}}dialog{{[-]}}' command not found. Run '{{|UserCommand|}}${APPLICATION_COMMAND} -i{{[-]}}' to install all dependencies." \
 						"" \
-						"Coninuing without '${C["UserCommand"]-}${flag}${NC-}' option."
+						"Coninuing without '{{|UserCommand|}}${flag}{{[-]}}' option."
 				fi
 				;;
 			-v | --verbose)
@@ -1096,9 +1120,9 @@ cmdline_error() {
 		quote_elements_with_spaces "${FailingCommandLineArray[-1]}"
 	)
 
-	FormattedFailingCommandLine="'${C["UserCommand"]-}${FailingCommandLine}${NC-} ${C["UserCommandError"]-}${FailingOption}${NC-}'"
-	FormattedFailingCommand="'${C["UserCommand"]-}${FailingCommand}${NC-}'"
-	FormattedFailingOption="'${C["UserCommand"]-}${FailingOption}${NC-}'"
+	FormattedFailingCommandLine="'{{|UserCommand|}}${FailingCommandLine}{{[-]}} {{|UserCommandError|}}${FailingOption}{{[-]}}'"
+	FormattedFailingCommand="'{{|UserCommand|}}${FailingCommand}{{[-]}}'"
+	FormattedFailingOption="'{{|UserCommand|}}${FailingOption}{{[-]}}'"
 
 	FailingMessage="$(
 		sed "s/%c/${FormattedFailingCommand}/g ; s/%o/${FormattedFailingOption}/g" <<< "${Message}"
@@ -1126,25 +1150,25 @@ cmdline_error_text() {
 	local -i Indent=3
 
 	CommandLine="$(
-		pr -e -t -o "${Indent}" <<< "${CommandLine}" | sed 's/[[:space:]]\+$//'
+		expand <<< "${CommandLine}" | indent_string_pipe "${Indent}" | sed 's/[[:space:]]\+$//'
 	)"
 	Message=${Message//\\n/$'\n'}
 	Message="$(
-		pr -e -t -o "${Indent}" <<< "${Message}" | sed 's/[[:space:]]\+$//'
+		expand <<< "${Message}" | indent_string_pipe "${Indent}" | sed 's/[[:space:]]\+$//'
 	)"
 
 	local UsageText
 	if [[ -z ${Command} ]]; then
-		UsageText="Run '${C["UserCommand"]-}ds --help${NC-}' for usage."
+		UsageText="Run '{{|UserCommand|}}ds --help{{[-]}}' for usage."
 	else
 		local CommandUsage
-		CommandUsage="$(usage "${Command}" NoHeading)"
-		UsageText="Usage is:\n$(pr -e -t -o "${Indent}" <<< "${CommandUsage}")"
+		CommandUsage="$(usage_raw "${Command}" NoHeading)"
+		UsageText="Usage is:\n$(expand <<< "${CommandUsage}" | indent_string_pipe "${Indent}")"
 	fi
 
 	local PointerLine
 	if [[ ${CaretOffset} -gt 0 ]]; then
-		printf -v PointerLine "%*s%s%s" $((Indent + CaretOffset)) "" "${C["UserCommandErrorMarker"]-}^" "${NC-}"
+		printf -v PointerLine "%*s%s%s" $((Indent + CaretOffset)) "" "{{|UserCommandErrorMarker|}}^" "{{[-]}}"
 	fi
 
 	cat << EOF

@@ -11,19 +11,19 @@ pm_brew_clean() {
 	local Command
 	info "Removing unused packages."
 	Command="brew autoremove"
-	notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+	notice "Running: {{|RunningCommand|}}${Command}{{[-]}}"
 	eval "${REDIRECT}${Command}" ||
 		warn \
 			"Failed to remove unused packages from brew." \
-			"Failing command: ${C["FailingCommand"]}${Command}"
+			"Failing command: {{|FailingCommand|}}${Command}"
 
 	info "Cleaning up package cache."
 	Command="brew cleanup"
-	notice "Running: ${C["RunningCommand"]}${Command}${NC}"
+	notice "Running: {{|RunningCommand|}}${Command}{{[-]}}"
 	eval "${REDIRECT}${Command}" ||
 		warn \
 			"Failed to cleanup cache from brew." \
-			"Failing command: ${C["FailingCommand"]}${Command}"
+			"Failing command: {{|FailingCommand|}}${Command}"
 }
 
 test_pm_brew_clean() {

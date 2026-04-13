@@ -18,22 +18,22 @@ menu_options_display() {
 
 	local -A OptionDescription OptionVariable
 
-	OptionDescription["${DrawLineOption}"]="${DC["ListDefault"]}Use line drawing characters"
-	OptionDescription["${ShowBordersOption}"]="${DC["ListDefault"]}Show borders in dialog boxes"
-	OptionDescription["${ShowScrollbarOption}"]="${DC["ListDefault"]}Show a scrollbar in dialog boxes"
-	OptionDescription["${ShowShadowOption}"]="${DC["ListDefault"]}Show a shadow under the dialog boxes"
+	OptionDescription["${DrawLineOption}"]="{{|ListDefault|}}Use line drawing characters"
+	OptionDescription["${ShowBordersOption}"]="{{|ListDefault|}}Show borders in dialog boxes"
+	OptionDescription["${ShowScrollbarOption}"]="{{|ListDefault|}}Show a scrollbar in dialog boxes"
+	OptionDescription["${ShowShadowOption}"]="{{|ListDefault|}}Show a shadow under the dialog boxes"
 
-	OptionVariable["${DrawLineOption}"]="LineCharacters"
-	OptionVariable["${ShowBordersOption}"]="Borders"
-	OptionVariable["${ShowScrollbarOption}"]="Scrollbar"
-	OptionVariable["${ShowShadowOption}"]="Shadow"
+	OptionVariable["${DrawLineOption}"]="line_characters"
+	OptionVariable["${ShowBordersOption}"]="borders"
+	OptionVariable["${ShowScrollbarOption}"]="scrollbar"
+	OptionVariable["${ShowShadowOption}"]="shadow"
 
 	while true; do
 		local EnabledOptions=()
 		local Opts=()
 		for Option in "${DrawLineOption}" "${ShowBordersOption}" "${ShowScrollbarOption}" "${ShowShadowOption}"; do
 			local Value
-			Value="$(run_script 'config_get' "${OptionVariable["${Option}"]}")"
+			Value="$(get_toml_val "${APPLICATION_TOML_FILE}" "ui.${OptionVariable["${Option}"]}")"
 			if is_true "${Value}"; then
 				EnabledOptions+=("${Option}")
 				Opts+=("${Option}" "${OptionDescription["${Option}"]}" ON)
@@ -42,17 +42,17 @@ menu_options_display() {
 			fi
 		done
 		local -a ChoiceDialog=(
-			--output-fd 1
-			--title "${DC["Title"]-}${Title}"
-			--ok-label "Select"
-			--cancel-label "Back"
+			"${Title}"
+			"Choose the options to enable."
+			--ok-label:Select
+			--extra-label:Back
+			--cancel-label:Exit
 			--separate-output
-			--checklist "Choose the options to enable." 0 0 0
 			"${Opts[@]}"
 		)
 		local Choices
 		local -i DialogButtonPressed=0
-		Choices=$(_dialog_ "${ChoiceDialog[@]}") || DialogButtonPressed=$?
+		Choices=$(dialog_checklist "${ChoiceDialog[@]}") || DialogButtonPressed=$?
 		case ${DIALOG_BUTTONS[DialogButtonPressed]-} in
 			OK)
 				local -a ChoicesArray OptionsToTurnOff OptionsToTurnOn
@@ -66,19 +66,22 @@ menu_options_display() {
 				if [[ -n ${OptionsToTurnOff[*]-} || ${OptionsToTurnOn[*]-} ]]; then
 					if [[ -n ${OptionsToTurnOff[*]-} ]]; then
 						for Option in "${OptionsToTurnOff[@]}"; do
-							run_script 'config_set' "${OptionVariable["${Option}"]}" OFF
+							set_toml_val "${APPLICATION_TOML_FILE}" "ui.${OptionVariable["${Option}"]}" "false"
 						done
 					fi
 					if [[ -n ${OptionsToTurnOn[*]-} ]]; then
 						for Option in "${OptionsToTurnOn[@]}"; do
-							run_script 'config_set' "${OptionVariable["${Option}"]}" ON
+							set_toml_val "${APPLICATION_TOML_FILE}" "ui.${OptionVariable["${Option}"]}" "true"
 						done
 					fi
 					run_script 'config_theme' &> /dev/null
 				fi
 				;;
-			CANCEL | ESC)
+			EXTRA | ESC)
 				return
+				;;
+			CANCEL)
+				run_script 'menu_exit' || true
 				;;
 			*)
 				invalid_dialog_button ${DialogButtonPressed}

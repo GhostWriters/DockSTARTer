@@ -6,6 +6,7 @@ declare -gx DIALOG
 DIALOG=$(command -v dialog) || true
 
 declare -Agx DC
+declare -Agx D
 
 declare -rgx DIALOGRC_NAME='.dialogrc'
 declare -rgx DIALOG_OPTIONS_NAME='.dialogoptions'
@@ -36,6 +37,9 @@ declare -gx BACKTITLE=''
 declare -igx LINES COLUMNS
 
 set_screen_size() {
+	if [[ -z ${D["_defined_"]-} ]]; then
+		run_script 'config_theme'
+	fi
 	COLUMNS=$(tput cols)
 	LINES=$(tput lines)
 }
@@ -43,7 +47,7 @@ set_screen_size() {
 _dialog_backtitle_() {
 	local LeftHeading CenterHeading RightHeading
 
-	local LeftHeading="${DC["Hostname"]-}${HOSTNAME}${DC["NC"]-}"
+	local LeftHeading="{{|Hostname|}}${HOSTNAME}{{[-]}}"
 	local -A FlagOption=(
 		["DEBUG"]="DEBUG"
 		["FORCE"]="FORCE"
@@ -54,23 +58,23 @@ _dialog_backtitle_() {
 	for Flag in DEBUG FORCE VERBOSE ASSUMEYES; do
 		if [[ -n ${!Flag-} ]]; then
 			if [[ -n ${FlagsEnabled-} ]]; then
-				FlagsEnabled+="${DC["ApplicationFlagsSpace"]-}|${DC["NC"]-}"
+				FlagsEnabled+="{{|ApplicationFlagsSpace|}}|{{[-]}}"
 			fi
-			FlagsEnabled+="${DC["ApplicationFlags"]-}${FlagOption["${Flag}"]}${DC["NC"]-}"
+			FlagsEnabled+="{{|ApplicationFlags|}}${FlagOption["${Flag}"]}{{[-]}}"
 		fi
 	done
 	if [[ -n ${FlagsEnabled-} ]]; then
-		LeftHeading+=" ${DC["ApplicationFlagsBrackets"]-}|${FlagsEnabled}${DC["ApplicationFlagsBrackets"]-}|${DC["NC"]-}"
+		LeftHeading+=" {{|ApplicationFlagsBrackets|}}|${FlagsEnabled}{{|ApplicationFlagsBrackets|}}|{{[-]}}"
 	fi
-	local CenterHeading="${DC["ApplicationName"]-}${APPLICATION_NAME}${DC["NC"]-}"
+	local CenterHeading="{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}}"
 
 	local RightHeading=''
 
-	local UpdateFlag="${DC["ApplicationUpdate"]-}*${DC["NC"]-}"
+	local UpdateFlag="{{|ApplicationUpdate|}}*{{[-]}}"
 	local ApplicationUpdateFlag=" "
-	local ApplicationVersionColor="${DC["ApplicationVersion"]-}"
+	local ApplicationVersionColor="{{|ApplicationVersion|}}"
 	local TemplatesUpdateFlag=" "
-	local TemplatesVersionColor="${DC["ApplicationVersion"]-}"
+	local TemplatesVersionColor="{{|ApplicationVersion|}}"
 
 	local CurrentVersion
 	CurrentVersion="$(ds_version)"
@@ -84,23 +88,23 @@ _dialog_backtitle_() {
 	fi
 	if ds_update_available; then
 		ApplicationUpdateFlag=${UpdateFlag}
-		ApplicationVersionColor="${DC["ApplicationUpdate"]-}"
+		ApplicationVersionColor="{{|ApplicationUpdate|}}"
 	fi
 	if templates_update_available; then
 		TemplatesUpdateFlag=${UpdateFlag}
-		TemplatesVersionColor="${DC["ApplicationUpdate"]-}"
+		TemplatesVersionColor="{{|ApplicationUpdate|}}"
 	fi
-	RightHeading+="${ApplicationUpdateFlag}${DC["ApplicationVersionBrackets"]-}A:[${DC["NC"]-}${ApplicationVersionColor}${CurrentVersion}${DC["ApplicationVersionBrackets"]-}]${DC["NC"]-}"
-	RightHeading+="${TemplatesUpdateFlag}${DC["ApplicationVersionBrackets"]-}T:[${DC["NC"]-}${TemplatesVersionColor}${CurrentTemplatesVersion}${DC["ApplicationVersionBrackets"]-}]${DC["NC"]-}"
+	RightHeading+="${ApplicationUpdateFlag}{{|ApplicationVersionBrackets|}}A:[{{[-]}}${ApplicationVersionColor}${CurrentVersion}{{|ApplicationVersionBrackets|}}]{{[-]}}"
+	RightHeading+="${TemplatesUpdateFlag}{{|ApplicationVersionBrackets|}}T:[{{[-]}}${TemplatesVersionColor}${CurrentTemplatesVersion}{{|ApplicationVersionBrackets|}}]{{[-]}}"
 
 	local -i HeadingLength
 	set_screen_size
 	HeadingLength=$((COLUMNS - 2))
 
 	local CleanLeftHeading CleanCenterHeading CleanRightHeading
-	CleanLeftHeading="$(strip_dialog_colors "${LeftHeading}")"
-	CleanCenterHeading="$(strip_dialog_colors "${CenterHeading}")"
-	CleanRightHeading="$(strip_dialog_colors "${RightHeading}")"
+	CleanLeftHeading="$(strip_styles "${LeftHeading}")"
+	CleanCenterHeading="$(strip_styles "${CenterHeading}")"
+	CleanRightHeading="$(strip_styles "${RightHeading}")"
 
 	# Get the length of each heading
 	local -i LeftHeadingLength=${#CleanLeftHeading}
@@ -131,11 +135,17 @@ _dialog_backtitle_() {
 			"${RightPadding}" " " \
 			"${RightHeading}"
 	)"
+	BACKTITLE=$(resolve_styles DC "${BACKTITLE}")
 }
 
 _dialog_() {
+	local -a DialogOptions=()
+	local Option
+	for Option in "$@"; do
+		DialogOptions+=("$(resolve_styles DC "${Option}")")
+	done
 	_dialog_backtitle_
-	${DIALOG} --file "${DIALOG_OPTIONS_FILE}" --backtitle "${BACKTITLE}" "$@"
+	${DIALOG} --file "${DIALOG_OPTIONS_FILE}" --backtitle "${BACKTITLE}" "${DialogOptions[@]}"
 }
 
 # Check to see if we should use a dialog box
@@ -148,18 +158,15 @@ dialog_pipe() {
 	local Title=${1:-}
 	local SubTitle=${2:-}
 	local TimeOut=${3:-0}
-	if [[ -z ${DC["_defined_"]-} ]]; then
-		run_script 'config_theme'
-	fi
-	Title="$(strip_ansi_colors "${Title}")"
-	SubTitle="$(strip_ansi_colors "${SubTitle}")"
 	set_screen_size
-	_dialog_ \
-		--title "${DC["Title"]-}${Title}" \
+	local -i result=0
+	strip_strings | _dialog_ \
+		--title "{{|Title|}}${Title}" \
 		--timeout "${TimeOut}" \
-		--programbox "${DC["Subtitle"]-}${SubTitle}" \
-		"$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))" || true
-	echo -n "${BS}"
+		--programbox "{{|Subtitle|}}${SubTitle}" \
+		"$((LINES - D["WindowRowsAdjust"]))" "$((COLUMNS - D["WindowColsAdjust"]))" || result=$?
+	echo -n "${S["BS"]}" >&2
+	return ${result}
 }
 # Script Dialog Runner Function
 run_script_dialog() {
@@ -169,9 +176,6 @@ run_script_dialog() {
 	local SCRIPTSNAME=${4-}
 	shift 4
 	if use_dialog_box; then
-		if [[ -z ${DC["_defined_"]-} ]]; then
-			run_script 'config_theme'
-		fi
 		# Using the GUI, pipe output to a dialog box
 		coproc {
 			dialog_pipe "${Title}" "${SubTitle}" "${TimeOut}"
@@ -208,69 +212,329 @@ run_command_dialog() {
 	fi
 }
 
+# _parse_dialog_options_ DialogOptionsRef MaximizedRef CountRef "$@"
+# Parses common --option[:value] flags from positional params into a DialogOptions array.
+# Uses namerefs to modify the caller's DialogOptions and Maximized variables directly.
+# Saves the count of consumed positional args to CountRef — caller must: shift "${CountRef}"
+_parse_dialog_options_() {
+	local -n _pdo_opts_="${1}"
+	local -n _pdo_max_="${2}"
+	local -n _pdo_cnt_="${3}"
+	_pdo_max_=0
+	_pdo_cnt_=0
+	shift 3
+	while [[ ${1-} == --* ]]; do
+		case "${1}" in
+			--maximized) _pdo_max_=1 ;;
+			--timeout:*) _pdo_opts_+=("--timeout" "${1#*:}") ;;
+			--extra-label:*) _pdo_opts_+=("--extra-button" "--extra-label" "${1#*:}") ;;
+			--help-label:*) _pdo_opts_+=("--help-button" "--help-label" "${1#*:}") ;;
+			--ok-label:* | --yes-label:* | --no-label:* | --cancel-label:* | --exit-label:*)
+				_pdo_opts_+=("${1%:*}" "${1#*:}")
+				;;
+			--default-item:*) _pdo_opts_+=("--default-item" "${1#*:}") ;;
+			--item-help) _pdo_opts_+=("${1}") ;;
+			--*) _pdo_opts_+=("${1}") ;;
+			*) break ;;
+		esac
+		shift
+		((_pdo_cnt_++))
+	done
+}
+
+# _dialog_calc_text_size_ WindowHeightRef WindowWidthRef Message Title Maximized
+# Computes WindowHeight and WindowWidth for text-based dialogs (msgbox, inputbox, form, yesno).
+# Uses namerefs to set the caller's WindowHeight and WindowWidth variables directly.
+_dialog_calc_text_size_() {
+	local -n _dcts_h_="${1}"
+	local -n _dcts_w_="${2}"
+	local _dcts_msg_="${3}"
+	local _dcts_title_="${4}"
+	local -i _dcts_max_="${5:-0}"
+	set_screen_size
+	local -i _dcts_hmax_=$((LINES - D["WindowRowsAdjust"]))
+	local -i _dcts_wmax_=$((COLUMNS - D["WindowColsAdjust"]))
+	if [[ ${_dcts_max_} -eq 1 ]]; then
+		_dcts_h_=${_dcts_hmax_}
+		_dcts_w_=${_dcts_wmax_}
+	else
+		_dcts_h_=0
+		_dcts_w_=0
+	fi
+}
+
+# _dialog_calc_list_size_ WindowHeightRef WindowWidthRef MenuHeightRef SubTitle Maximized
+# Computes WindowHeight, WindowWidth, and MenuHeight for list-based dialogs (menu, checklist, radiolist, inputmenu).
+# Uses namerefs to set the caller's WindowHeight, WindowWidth, and MenuHeight variables directly.
+_dialog_calc_list_size_() {
+	local -n _dcls_h_="${1}"
+	local -n _dcls_w_="${2}"
+	local -n _dcls_m_="${3}"
+	local _dcls_sub_="${4}"
+	local -i _dcls_max_="${5:-0}"
+	set_screen_size
+	local -i _dcls_hmax_=$((LINES - D["WindowRowsAdjust"]))
+	local -i _dcls_wmax_=$((COLUMNS - D["WindowColsAdjust"]))
+	_dcls_h_=0
+	_dcls_w_=0
+	_dcls_m_=0
+	if [[ ${_dcls_max_} -eq 1 ]]; then
+		_dcls_h_=${_dcls_hmax_}
+		_dcls_w_=${_dcls_wmax_}
+		local -i _dcls_tr_
+		_dcls_tr_="$("${DIALOG}" --output-fd 1 --print-text-size "$(strip_styles "${_dcls_sub_}")" "${_dcls_h_}" "${_dcls_w_}" 2> /dev/null | cut -d ' ' -f 1)"
+		_dcls_m_=$((LINES - D["TextRowsAdjust"] - _dcls_tr_))
+	fi
+}
+
 dialog_info() {
-	local Title=${1:-}
-	local Message=${2:-}
-	Title="$(strip_ansi_colors "${Title}")"
-	Message="$(strip_ansi_colors "${Message}")"
-	if [[ -z ${DC["_defined_"]-} ]]; then
-		run_script 'config_theme'
-	fi
-	set_screen_size
-	_dialog_ \
-		--title "${Title}" \
-		--infobox "${Message}" \
-		"$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
-	echo -n "${BS}"
+	local Title="${1-}"
+	shift || true
+	local Message="${1-}"
+	shift || true
+	local -a DialogOptions=()
+	local -i Maximized=0 _n_=0
+	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
+	shift "${_n_}"
+	local -i result=0
+	_dialog_ "${DialogOptions[@]}" --infobox "${Message}" 0 0 || result=$?
+	echo -n "${S["BS"]}" >&2
+	return ${result}
 }
+
 dialog_message() {
-	local Title=${1:-}
-	local Message=${2:-}
-	local TimeOut=${3:-0}
-	Title="$(strip_ansi_colors "${Title}")"
-	Message="$(strip_ansi_colors "${Message}")"
-	if [[ -z ${DC["_defined_"]-} ]]; then
-		run_script 'config_theme'
-	fi
-	set_screen_size
-	_dialog_ \
-		--title "${Title}" \
-		--timeout "${TimeOut}" \
-		--msgbox "${Message}" \
-		"$((LINES - DC["WindowRowsAdjust"]))" "$((COLUMNS - DC["WindowColsAdjust"]))"
-	echo -n "${BS}"
+	local Title="${1-}"
+	shift || true
+	local Message="${1-}"
+	shift || true
+	dialog_msgbox "${Title}" "${Message}" "$@"
 }
+
 dialog_error() {
-	local Title=${1:-}
-	local Message=${2:-}
-	local TimeOut=${3:-0}
-	if [[ -z ${DC["_defined_"]-} ]]; then
-		run_script 'config_theme'
-	fi
-	dialog_message "${DC["TitleError"]-}${Title}" "${Message}" "${TimeOut}"
+	dialog_message "{{|TitleError|}}${1-}" "${2-}" "--maximized"
 }
+
 dialog_warning() {
-	local Title=${1:-}
-	local Message=${2:-}
-	local TimeOut=${3:-0}
-	if [[ -z ${DC["_defined_"]-} ]]; then
-		run_script 'config_theme'
-	fi
-	dialog_message "${DC["TitleWarning"]-}${Title}" "${Message}" "${TimeOut}"
+	dialog_message "{{|TitleWarning|}}${1-}" "${2-}" "--maximized"
 }
+
 dialog_success() {
-	local Title=${1:-}
-	local Message=${2:-}
-	local TimeOut=${3:-0}
-	if [[ -z ${DC["_defined_"]-} ]]; then
-		run_script 'config_theme'
-	fi
-	dialog_message "${DC["TitleSuccess"]-}${Title}" "${Message}" "${TimeOut}"
+	dialog_message "{{|TitleSuccess|}}${1-}" "${2-}" "--maximized"
+}
+
+dialog_yesno() {
+	local Title="${1-}"
+	shift || true
+	local Message="${1-}"
+	shift || true
+	local -a DialogOptions=()
+	local -i Maximized=0
+	local BoxType="--yesno"
+
+	local -i _n_=0
+	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
+	shift "${_n_}"
+
+	DialogOptions+=(--output-fd 1)
+	[[ -n ${Title} ]] && DialogOptions+=(--title "{{|TitleQuestion|}}${Title}")
+
+	local -i WindowHeight=0 WindowWidth=0
+	_dialog_calc_text_size_ WindowHeight WindowWidth "${Message}" "${Title}" "${Maximized}"
+
+	local -i result=0
+	_dialog_ "${DialogOptions[@]}" "${BoxType}" "${Message}" "${WindowHeight}" "${WindowWidth}" "$@" || result=$?
+	echo -n "${S["BS"]}" >&2
+	return ${result}
+}
+
+dialog_msgbox() {
+	local Title="${1-}"
+	shift || true
+	local Message="${1-}"
+	shift || true
+	local -a DialogOptions=()
+	local -i Maximized=0
+
+	local -i _n_=0
+	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
+	shift "${_n_}"
+
+	DialogOptions+=(--output-fd 1)
+	[[ -n ${Title} ]] && DialogOptions+=(--title "{{|Title|}}${Title}")
+
+	local -i WindowHeight=0 WindowWidth=0
+	_dialog_calc_text_size_ WindowHeight WindowWidth "${Message}" "${Title}" "${Maximized}"
+
+	local -i result=0
+	_dialog_ "${DialogOptions[@]}" --msgbox "${Message}" "${WindowHeight}" "${WindowWidth}" "$@" || result=$?
+	echo -n "${S["BS"]}" >&2
+	return ${result}
+}
+
+dialog_inputbox() {
+	local Title="${1-}"
+	shift || true
+	local Message="${1-}"
+	shift || true
+	local -a DialogOptions=()
+	local -i Maximized=0
+
+	local -i _n_=0
+	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
+	shift "${_n_}"
+
+	DialogOptions+=(--output-fd 1)
+	[[ -n ${Title} ]] && DialogOptions+=(--title "{{|Title|}}${Title}")
+
+	local -i WindowHeight=0 WindowWidth=0
+	_dialog_calc_text_size_ WindowHeight WindowWidth "${Message}" "${Title}" "${Maximized}"
+
+	local -i result=0
+	_dialog_ "${DialogOptions[@]}" --inputbox "${Message}" "${WindowHeight}" "${WindowWidth}" "$@" || result=$?
+	echo -n "${S["BS"]}" >&2
+	return ${result}
+}
+
+dialog_form() {
+	local Title="${1-}"
+	shift || true
+	local Message="${1-}"
+	shift || true
+	local -a DialogOptions=()
+	local -i Maximized=0
+
+	local -i _n_=0
+	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
+	shift "${_n_}"
+
+	DialogOptions+=(--output-fd 1)
+	[[ -n ${Title} ]] && DialogOptions+=(--title "{{|Title|}}${Title}")
+
+	local -i WindowHeight=0 WindowWidth=0
+	_dialog_calc_text_size_ WindowHeight WindowWidth "${Message}" "${Title}" "${Maximized}"
+
+	local -i result=0
+	# form_height=0 (auto-size) is always appended before the field definitions in "$@"
+	_dialog_ "${DialogOptions[@]}" --form "${Message}" "${WindowHeight}" "${WindowWidth}" 0 "$@" || result=$?
+	echo -n "${S["BS"]}" >&2
+	return ${result}
+}
+
+dialog_menu() {
+	local Title="${1-}"
+	shift || true
+	local SubTitle="${1-}"
+	shift || true
+	local -a DialogOptions=()
+	local -i Maximized=0
+
+	local -i _n_=0
+	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
+	shift "${_n_}"
+	local -a Items=("$@")
+
+	DialogOptions+=(--output-fd 1)
+	[[ -n ${Title} ]] && DialogOptions+=(--title "{{|Title|}}${Title}")
+
+	local -i WindowHeight=0 WindowWidth=0 MenuHeight=0
+	_dialog_calc_list_size_ WindowHeight WindowWidth MenuHeight "${SubTitle}" "${Maximized}"
+
+	local StyledSubTitle=""
+	[[ -n ${SubTitle} ]] && StyledSubTitle="{{|Subtitle|}}${SubTitle}"
+
+	local -i result=0
+	_dialog_ "${DialogOptions[@]}" --menu "${StyledSubTitle}" "${WindowHeight}" "${WindowWidth}" "${MenuHeight}" "${Items[@]}" || result=$?
+	echo -n "${S["BS"]}" >&2
+	return ${result}
+}
+
+dialog_checklist() {
+	local Title="${1-}"
+	shift || true
+	local SubTitle="${1-}"
+	shift || true
+	local -a DialogOptions=()
+	local -i Maximized=0
+
+	local -i _n_=0
+	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
+	shift "${_n_}"
+	local -a Items=("$@")
+
+	DialogOptions+=(--output-fd 1)
+	[[ -n ${Title} ]] && DialogOptions+=(--title "{{|Title|}}${Title}")
+
+	local -i WindowHeight=0 WindowWidth=0 MenuHeight=0
+	_dialog_calc_list_size_ WindowHeight WindowWidth MenuHeight "${SubTitle}" "${Maximized}"
+
+	local StyledSubTitle=""
+	[[ -n ${SubTitle} ]] && StyledSubTitle="{{|Subtitle|}}${SubTitle}"
+
+	local -i result=0
+	_dialog_ "${DialogOptions[@]}" --checklist "${StyledSubTitle}" "${WindowHeight}" "${WindowWidth}" "${MenuHeight}" "${Items[@]}" || result=$?
+	echo -n "${S["BS"]}" >&2
+	return ${result}
+}
+
+dialog_radiolist() {
+	local Title="${1-}"
+	shift || true
+	local SubTitle="${1-}"
+	shift || true
+	local -a DialogOptions=()
+	local -i Maximized=0
+
+	local -i _n_=0
+	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
+	shift "${_n_}"
+	local -a Items=("$@")
+
+	DialogOptions+=(--output-fd 1)
+	[[ -n ${Title} ]] && DialogOptions+=(--title "{{|Title|}}${Title}")
+
+	local -i WindowHeight=0 WindowWidth=0 MenuHeight=0
+	_dialog_calc_list_size_ WindowHeight WindowWidth MenuHeight "${SubTitle}" "${Maximized}"
+
+	local StyledSubTitle=""
+	[[ -n ${SubTitle} ]] && StyledSubTitle="{{|Subtitle|}}${SubTitle}"
+
+	local -i result=0
+	_dialog_ "${DialogOptions[@]}" --radiolist "${StyledSubTitle}" "${WindowHeight}" "${WindowWidth}" "${MenuHeight}" "${Items[@]}" || result=$?
+	echo -n "${S["BS"]}" >&2
+	return ${result}
+}
+
+dialog_inputmenu() {
+	local Title="${1-}"
+	shift || true
+	local SubTitle="${1-}"
+	shift || true
+	local -a DialogOptions=()
+	local -i Maximized=0
+
+	local -i _n_=0
+	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
+	shift "${_n_}"
+	local -a Items=("$@")
+
+	DialogOptions+=(--output-fd 1)
+	[[ -n ${Title} ]] && DialogOptions+=(--title "{{|Title|}}${Title}")
+
+	local -i WindowHeight=0 WindowWidth=0 MenuHeight=0
+	_dialog_calc_list_size_ WindowHeight WindowWidth MenuHeight "${SubTitle}" "${Maximized}"
+
+	local StyledSubTitle=""
+	[[ -n ${SubTitle} ]] && StyledSubTitle="{{|Subtitle|}}${SubTitle}"
+
+	local -i result=0
+	_dialog_ "${DialogOptions[@]}" --inputmenu "${StyledSubTitle}" "${WindowHeight}" "${WindowWidth}" "${MenuHeight}" "${Items[@]}" || result=$?
+	echo -n "${S["BS"]}" >&2
+	return ${result}
 }
 
 invalid_dialog_button() {
 	local -i DialogButtonNumber=${1}
 	local -l NoticeType=${2:-fatal}
 	local DialogButton="${DIALOG_BUTTONS[DialogButtonNumber]-#${DialogButtonNumber}}"
-	${NoticeType} "Unexpected dialog button '${F[C]}${DialogButton}${NC}' pressed."
+	${NoticeType} "Unexpected dialog button '{{|ButtonName|}}${DialogButton}{{[-]}}' pressed."
 }

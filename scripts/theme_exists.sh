@@ -5,11 +5,16 @@ IFS=$'\n\t'
 theme_exists() {
 	local ThemeName=${1-}
 
-	local ThemeFolder="${THEME_FOLDER}/${ThemeName}"
-	local ThemeFile="${ThemeFolder}/${THEME_FILE_NAME}"
-	local DialogFile="${ThemeFolder}/${DIALOGRC_NAME}"
+	local ThemeArchive
+	if [[ ${ThemeName} == file:* ]]; then
+		ThemeArchive="${ThemeName#file:}"
+	elif [[ ${ThemeName} == user:* ]]; then
+		ThemeArchive="${USER_THEMES_FOLDER}/${ThemeName#user:}${THEME_FILE_EXT}"
+	else
+		ThemeArchive="${THEME_FOLDER}/${ThemeName}${THEME_FILE_EXT}"
+	fi
 
-	[[ -f ${ThemeFile} && -f ${DialogFile} ]]
+	[[ -f ${ThemeArchive} ]]
 }
 
 test_theme_exists() {

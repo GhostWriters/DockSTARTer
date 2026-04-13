@@ -24,8 +24,8 @@ pm__install() {
 
 	#shellcheck disable=SC2124 #Assigning an array to a string! Assign as array, or use * instead of @ to concatenate.
 	local deplist="${Dependencies[@]}"
-	deplist="${deplist// /${NC}\', \'${C["Program"]}}"
-	deplist="${NC}'${C["Program"]}${deplist}${NC}'"
+	deplist="${deplist// /"{{[-]}}', '{{|Folder|}}"}"
+	deplist="{{[-]}}'{{|Folder|}}${deplist}{{[-]}}'"
 
 	# Install missing dependencies using the package manager
 	notice "Installing dependencies: ${deplist}"

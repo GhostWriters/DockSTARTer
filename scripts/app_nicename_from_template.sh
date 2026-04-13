@@ -26,7 +26,12 @@ app_nicename_from_template() {
 		instance=$(run_script 'appname_to_instancename' "${AppName}")
 		Instance=""
 		if [[ -n ${instance} ]]; then
-			Instance="__${instance^}"
+			# Capitalize first letter character, skipping any leading digits.
+			# e.g. "4k" → "4K", "instance" → "Instance"
+			local cap_prefix cap_rest
+			cap_prefix="${instance%%[a-zA-Z]*}"
+			cap_rest="${instance#"${cap_prefix}"}"
+			Instance="__${cap_prefix}${cap_rest^}"
 		fi
 		echo "${BaseApp}${Instance}"
 	done
@@ -49,12 +54,14 @@ test_app_nicename_from_template() {
 		RADARR__INSTANCE Radarr__Instance
 		NZBGET__INSTANCE NZBGet__Instance
 		NONEXISTENTAPP__INSTANCE Nonexistentapp__Instance
+		NONEXISTENTAPP__4K Nonexistentapp__4K
+		NONEXISTENTAPP__23KKK Nonexistentapp__23Kkk
 	)
 	run_unit_tests_pipe "App" "App" "${ForcePass}" < <(
 		for ((i = 0; i < ${#Test[@]}; i += 2)); do
 			printf '%s\n' \
 				"${Test[i]}" \
-				"${Test[i + 1]}" \
+				"${Test[i+1]}" \
 				"$(run_script 'app_nicename_from_template' "${Test[i]}")"
 		done
 	)
