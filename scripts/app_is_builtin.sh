@@ -31,7 +31,7 @@ test_app_is_builtin() {
 		for ((i = 0; i < ${#Test[@]}; i += 2)); do
 			printf '%s\n' \
 				"${Test[i]}" \
-				"${Test[i+1]}" \
+				"${Test[i + 1]}" \
 				"$(run_script 'app_is_builtin' "${Test[i]}" && echo "YES" || echo "NO")"
 		done
 	)
