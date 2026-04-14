@@ -347,7 +347,7 @@ table_pipe() {
 		for ((c = 0; c < Cols; c++)); do
 			local Idx=$((i + c))
 			local Item="${Data[Idx]-}"
-			local VisItem="${VisibleData[Cols+Idx]-}" # Offset by Headings count (Cols)
+			local VisItem="${VisibleData[Cols + Idx]-}" # Offset by Headings count (Cols)
 			local Width=${ColWidths[c]}
 			local PadSize=$((Width - ${#VisItem}))
 			local Padding

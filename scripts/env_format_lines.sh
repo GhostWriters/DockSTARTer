@@ -128,7 +128,7 @@ env_format_lines() {
 
 	# Remove last element if it is an empty string to avoid extra newline from printf
 	# This ensures parity with Go's strings.Join which doesn't add a trailing delimiter.
-	if [[ ${FormattedEnvLines[${#FormattedEnvLines[@]}-1]-} == "" ]]; then
+	if [[ ${FormattedEnvLines[${#FormattedEnvLines[@]} - 1]-} == "" ]]; then
 		unset 'FormattedEnvLines[${#FormattedEnvLines[@]}-1]'
 	fi
 	printf "%s\n" "${FormattedEnvLines[@]-}"

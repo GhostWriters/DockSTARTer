@@ -581,7 +581,7 @@ fatal() {
 		local SourceFile="${BASH_SOURCE[i]:-$NoFile}"
 		local -i line="${thisFuncLine}"
 		if ((i > 0)); then
-			line="${BASH_LINENO[i-1]:-0}"
+			line="${BASH_LINENO[i - 1]:-0}"
 		fi
 
 		local prefix=""
