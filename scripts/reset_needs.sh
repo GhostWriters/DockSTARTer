@@ -3,6 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 reset_needs() {
+	notice "Resetting {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} to process all actions."
 	if [[ -d ${TIMESTAMPS_FOLDER:?} ]]; then
 		run_script 'set_permissions' "${TIMESTAMPS_FOLDER:?}"
 		rm -rf "${TIMESTAMPS_FOLDER:?}/"* &> /dev/null || true
