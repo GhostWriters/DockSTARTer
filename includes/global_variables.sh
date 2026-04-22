@@ -57,22 +57,22 @@ for Folder in "${FolderList[@]}"; do
 done
 
 declare -rgx TIMESTAMPS_FOLDER="${APPLICATION_STATE_FOLDER}/${TIMESTAMPS_FOLDER_NAME}"
-if [[ -d ${SCRIPTPATH}/compose/${TIMESTAMPS_FOLDER_NAME} ]]; then
+if [[ -d ${SCRIPTPATH}/compose/.timestamps ]]; then
 	# Migrate old timestamps folder
 	if [[ ! -d ${TIMESTAMPS_FOLDER} ]]; then
-		mv "${SCRIPTPATH}/compose/${TIMESTAMPS_FOLDER_NAME}" "${TIMESTAMPS_FOLDER}" || true
+		mv "${SCRIPTPATH}/compose/.timestamps" "${TIMESTAMPS_FOLDER}" || true
 	else
-		rm -rf "${SCRIPTPATH}/compose/${TIMESTAMPS_FOLDER_NAME}" || true
+		rm -rf "${SCRIPTPATH}/compose/.timestamps" || true
 	fi
 fi
 
 declare -gx INSTANCES_FOLDER="${APPLICATION_STATE_FOLDER}/${INSTANCES_FOLDER_NAME}"
-if [[ -d ${SCRIPTPATH}/compose/${INSTANCES_FOLDER_NAME} ]]; then
+if [[ -d ${SCRIPTPATH}/compose/.instances ]]; then
 	# Migrate old instances folder
 	if [[ ! -d ${INSTANCES_FOLDER} ]]; then
-		mv "${SCRIPTPATH}/compose/${INSTANCES_FOLDER_NAME}" "${INSTANCES_FOLDER}" || true
+		mv "${SCRIPTPATH}/compose/.instances" "${INSTANCES_FOLDER}" || true
 	else
-		rm -rf "${SCRIPTPATH}/compose/${INSTANCES_FOLDER_NAME}" || true
+		rm -rf "${SCRIPTPATH}/compose/.instances" || true
 	fi
 fi
 
