@@ -54,8 +54,6 @@ config_create() {
 		)
 
 		local -A TOMLtoINIMap_booleans=(
-			["ui.borders"]="Borders:LineCharacters"
-			["ui.line_characters"]="LineCharacters"
 			["ui.scrollbar"]="Scrollbar:Scrollbars"
 			["ui.shadow"]="Shadow:Shadows"
 		)
@@ -76,6 +74,25 @@ config_create() {
 					"$(run_script 'config_get' "${TOMLtoINIMap_strings["${Key}"]}" "${APPLICATION_INI_FILE}")"
 			fi
 		done
+
+		# Migrate LineCharacters to ui.borders if Borders doesn't exist (old INI settings)
+		if run_script 'env_var_exists' Borders "${APPLICATION_INI_FILE}"; then
+			set_toml_val \
+				"${APPLICATION_TOML_FILE}" \
+				ui.borders \
+				"$(string_to_bool "$(run_script 'config_get' Borders "${APPLICATION_INI_FILE}")")"
+			if run_script 'env_var_exists' LineCharacters "${APPLICATION_INI_FILE}"; then
+				set_toml_val \
+					"${APPLICATION_TOML_FILE}" \
+					ui.line_characters \
+					"$(string_to_bool "$(run_script 'config_get' LineCharacters "${APPLICATION_INI_FILE}")")"
+			fi
+		elif run_script 'env_var_exists' LineCharacters "${APPLICATION_INI_FILE}"; then
+			set_toml_val \
+				"${APPLICATION_TOML_FILE}" \
+				ui.borders \
+				"$(string_to_bool "$(run_script 'config_get' LineCharacters "${APPLICATION_INI_FILE}")")"
+		fi
 
 		for Key in "${!TOMLtoINIMap_booleans[@]}"; do
 			local VarList
