@@ -84,6 +84,10 @@ is_false() {
 	! is_true "${1-}"
 }
 
+string_to_bool() {
+	is_true "${1-}" && echo "true" || echo "false"
+}
+
 folder_is_empty() {
 	local dir=${1}
 	(
