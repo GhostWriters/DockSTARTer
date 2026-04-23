@@ -484,6 +484,9 @@ set_toml_val() {
 		elif [[ ${in_section} -eq 1 && ${key_written} -eq 0 ]]; then
 			# Check if this line contains our key
 			if [[ ${line} =~ ^[[:space:]]*${target_key}[[:space:]]*= ]]; then
+				if [[ ${new_line} == "${line}" ]]; then
+					return 0 # Value already set to what we want it to be
+				fi
 				output+=("${new_line}")
 				key_written=1
 				continue # drop the old line
