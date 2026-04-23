@@ -70,38 +70,31 @@ config_create() {
 
 		# Handle old installs where LineCharacters was used in place of Borders
 		if run_script 'env_var_exists' Borders "${APPLICATION_INI_FILE}"; then
-			Borders="$(run_script 'config_get' Borders "${APPLICATION_INI_FILE}")"
-			is_true "${Borders}" && Borders="true" || Borders="false"
+			Borders=$(string_to_bool "$(run_script 'config_get' Borders "${APPLICATION_INI_FILE}")")
 			set_toml_val "${APPLICATION_TOML_FILE}" ui.borders "${Borders}"
 		elif run_script 'env_var_exists' LineCharacters "${APPLICATION_INI_FILE}"; then
-			Borders="$(run_script 'config_get' LineCharacters "${APPLICATION_INI_FILE}")"
-			is_true "${Borders}" && Borders="true" || Borders="false"
+			Borders=$(string_to_bool "$(run_script 'config_get' LineCharacters "${APPLICATION_INI_FILE}")")
 			set_toml_val "${APPLICATION_TOML_FILE}" ui.borders "${Borders}"
 		fi
 
 		if run_script 'env_var_exists' LineCharacters "${APPLICATION_INI_FILE}"; then
-			LineCharacters="$(run_script 'config_get' LineCharacters "${APPLICATION_INI_FILE}")"
-			is_true "${LineCharacters}" && LineCharacters="true" || LineCharacters="false"
+			LineCharacters=$(string_to_bool "$(run_script 'config_get' LineCharacters "${APPLICATION_INI_FILE}")")
 			set_toml_val "${APPLICATION_TOML_FILE}" ui.line_characters "${LineCharacters}"
 		fi
 
 		if run_script 'env_var_exists' Scrollbar "${APPLICATION_INI_FILE}"; then
-			Scrollbar="$(run_script 'config_get' Scrollbar "${APPLICATION_INI_FILE}")"
-			is_true "${Scrollbar}" && Scrollbar="true" || Scrollbar="false"
+			Scrollbar=$(string_to_bool "$(run_script 'config_get' Scrollbar "${APPLICATION_INI_FILE}")")
 			set_toml_val "${APPLICATION_TOML_FILE}" ui.scrollbar "${Scrollbar}"
 		elif run_script 'env_var_exists' Scrollbars "${APPLICATION_INI_FILE}"; then
-			Scrollbar="$(run_script 'config_get' Scrollbars "${APPLICATION_INI_FILE}")"
-			is_true "${Scrollbar}" && Scrollbar="true" || Scrollbar="false"
+			Scrollbar=$(string_to_bool "$(run_script 'config_get' Scrollbars "${APPLICATION_INI_FILE}")")
 			set_toml_val "${APPLICATION_TOML_FILE}" ui.scrollbar "${Scrollbar}"
 		fi
 
 		if run_script 'env_var_exists' Shadow "${APPLICATION_INI_FILE}"; then
-			Shadow="$(run_script 'config_get' Shadow "${APPLICATION_INI_FILE}")"
-			is_true "${Shadow}" && Shadow="true" || Shadow="false"
+			Shadow=$(string_to_bool "$(run_script 'config_get' Shadow "${APPLICATION_INI_FILE}")")
 			set_toml_val "${APPLICATION_TOML_FILE}" ui.shadow "${Shadow}"
 		elif run_script 'env_var_exists' Shadows "${APPLICATION_INI_FILE}"; then
-			Shadow="$(run_script 'config_get' Shadows "${APPLICATION_INI_FILE}")"
-			is_true "${Shadow}" && Shadow="true" || Shadow="false"
+			Shadow=$(string_to_bool "$(run_script 'config_get' Shadows "${APPLICATION_INI_FILE}")")
 			set_toml_val "${APPLICATION_TOML_FILE}" ui.shadow "${Shadow}"
 		fi
 
