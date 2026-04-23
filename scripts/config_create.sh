@@ -18,6 +18,7 @@ config_create() {
 		run_script 'set_permissions' "${APPLICATION_CONFIG_FOLDER}"
 	fi
 
+	local ComposeFolderFound=false
 	# Handle legacy config files
 	if [[ -f ${SCRIPTPATH}/${APPLICATION_INI_NAME} || -f ${SCRIPTPATH}/menu.ini || -f ${XDG_CONFIG_HOME}/${APPLICATION_INI_NAME} ]]; then
 		for LegacyIniFile in "${XDG_CONFIG_HOME}/${APPLICATION_INI_NAME}" "${SCRIPTPATH}/${APPLICATION_INI_NAME}" "${SCRIPTPATH}/menu.ini"; do
@@ -36,8 +37,6 @@ config_create() {
 		run_script 'set_permissions' "${APPLICATION_INI_FILE}"
 	fi
 
-	local ConfigFolder ComposeFolder Theme Borders LineCharacters Scrollbar Shadow PackageManager
-
 	if [[ -f ${APPLICATION_INI_FILE} ]]; then
 		# Migrate from INI to TOML
 		notice "Migrating '{{|File|}}${APPLICATION_INI_FILE}{{[-]}}' to '{{|File|}}${APPLICATION_TOML_FILE}{{[-]}}'."
@@ -48,59 +47,49 @@ config_create() {
 				"Failing command: {{|FailingCommand|}}cp \"${DEFAULT_TOML_FILE}\" \"${APPLICATION_TOML_FILE}\""
 		run_script 'set_permissions' "${APPLICATION_TOML_FILE}"
 
-		if run_script 'env_var_exists' ConfigFolder "${APPLICATION_INI_FILE}"; then
-			ConfigFolder="$(run_script 'config_get' ConfigFolder "${APPLICATION_INI_FILE}")"
-			set_toml_val "${APPLICATION_TOML_FILE}" paths.config_folder "${ConfigFolder}"
-		fi
+		local -A TOMLtoINIMap_strings=(
+			["paths.config_folder"]="ConfigFolder"
+			["ui.theme"]="Theme"
+			["pm.package_manager"]="PackageManager"
+		)
+
+		local -A TOMLtoINIMap_booleans=(
+			["ui.borders"]="Borders:LineCharacters"
+			["ui.line_characters"]="LineCharacters"
+			["ui.scrollbar"]="Scrollbar:Scrollbars"
+			["ui.shadow"]="Shadow:Shadows"
+		)
 
 		if run_script 'env_var_exists' ComposeFolder "${APPLICATION_INI_FILE}"; then
-			ComposeFolder="$(run_script 'config_get' ComposeFolder "${APPLICATION_INI_FILE}")"
-			set_toml_val "${APPLICATION_TOML_FILE}" paths.compose_folder "${ComposeFolder}"
+			set_toml_val \
+				"${APPLICATION_TOML_FILE}" \
+				paths.compose_folder \
+				"$(run_script 'config_get' ComposeFolder "${APPLICATION_INI_FILE}")"
+			ComposeFolderFound=true
 		fi
 
-		if run_script 'env_var_exists' Theme "${APPLICATION_INI_FILE}"; then
-			Theme="$(run_script 'config_get' Theme "${APPLICATION_INI_FILE}")"
-			set_toml_val "${APPLICATION_TOML_FILE}" ui.theme "${Theme}"
-		fi
+		for Key in "${!TOMLtoINIMap_strings[@]}"; do
+			if run_script 'env_var_exists' "${TOMLtoINIMap_strings["${Key}"]}" "${APPLICATION_INI_FILE}"; then
+				set_toml_val \
+					"${APPLICATION_TOML_FILE}" \
+					"${Key}" \
+					"$(run_script 'config_get' "${TOMLtoINIMap_strings["${Key}"]}" "${APPLICATION_INI_FILE}")"
+			fi
+		done
 
-		if run_script 'env_var_exists' PackageManager "${APPLICATION_INI_FILE}"; then
-			PackageManager="$(run_script 'config_get' PackageManager "${APPLICATION_INI_FILE}")"
-			set_toml_val "${APPLICATION_TOML_FILE}" pm.package_manager "${PackageManager}"
-		fi
-
-		# Handle old installs where LineCharacters was used in place of Borders
-		if run_script 'env_var_exists' Borders "${APPLICATION_INI_FILE}"; then
-			Borders=$(string_to_bool "$(run_script 'config_get' Borders "${APPLICATION_INI_FILE}")")
-			set_toml_val "${APPLICATION_TOML_FILE}" ui.borders "${Borders}"
-		elif run_script 'env_var_exists' LineCharacters "${APPLICATION_INI_FILE}"; then
-			Borders=$(string_to_bool "$(run_script 'config_get' LineCharacters "${APPLICATION_INI_FILE}")")
-			set_toml_val "${APPLICATION_TOML_FILE}" ui.borders "${Borders}"
-		fi
-
-		if run_script 'env_var_exists' LineCharacters "${APPLICATION_INI_FILE}"; then
-			LineCharacters=$(string_to_bool "$(run_script 'config_get' LineCharacters "${APPLICATION_INI_FILE}")")
-			set_toml_val "${APPLICATION_TOML_FILE}" ui.line_characters "${LineCharacters}"
-		fi
-
-		if run_script 'env_var_exists' Scrollbar "${APPLICATION_INI_FILE}"; then
-			Scrollbar=$(string_to_bool "$(run_script 'config_get' Scrollbar "${APPLICATION_INI_FILE}")")
-			set_toml_val "${APPLICATION_TOML_FILE}" ui.scrollbar "${Scrollbar}"
-		elif run_script 'env_var_exists' Scrollbars "${APPLICATION_INI_FILE}"; then
-			Scrollbar=$(string_to_bool "$(run_script 'config_get' Scrollbars "${APPLICATION_INI_FILE}")")
-			set_toml_val "${APPLICATION_TOML_FILE}" ui.scrollbar "${Scrollbar}"
-		fi
-
-		if run_script 'env_var_exists' Shadow "${APPLICATION_INI_FILE}"; then
-			Shadow=$(string_to_bool "$(run_script 'config_get' Shadow "${APPLICATION_INI_FILE}")")
-			set_toml_val "${APPLICATION_TOML_FILE}" ui.shadow "${Shadow}"
-		elif run_script 'env_var_exists' Shadows "${APPLICATION_INI_FILE}"; then
-			Shadow=$(string_to_bool "$(run_script 'config_get' Shadows "${APPLICATION_INI_FILE}")")
-			set_toml_val "${APPLICATION_TOML_FILE}" ui.shadow "${Shadow}"
-		fi
-
-		if [[ -z ${ComposeFolder-} ]]; then
-			detect_compose_folder
-		fi
+		for Key in "${!TOMLtoINIMap_booleans[@]}"; do
+			local VarList
+			VarList="${TOMLtoINIMap_booleans["${Key}"]}"
+			for Val in ${VarList//:/ }; do
+				if run_script 'env_var_exists' "${Val}" "${APPLICATION_INI_FILE}"; then
+					set_toml_val \
+						"${APPLICATION_TOML_FILE}" \
+						"${Key}" \
+						"$(string_to_bool "$(run_script 'config_get' "${Val}" "${APPLICATION_INI_FILE}")")"
+					break
+				fi
+			done
+		done
 	else
 		# Fresh install: copy the default TOML file
 		notice "Copying '{{|File|}}${DEFAULT_TOML_FILE}{{[-]}}' to '{{|File|}}${APPLICATION_TOML_FILE}{{[-]}}'."
@@ -109,7 +98,9 @@ config_create() {
 				"Failed to copy default config file." \
 				"Failing command: {{|FailingCommand|}}cp \"${DEFAULT_TOML_FILE}\" \"${APPLICATION_TOML_FILE}\""
 		run_script 'set_permissions' "${APPLICATION_TOML_FILE}"
+	fi
 
+	if [[ ${ComposeFolderFound} == false ]]; then
 		detect_compose_folder
 	fi
 
