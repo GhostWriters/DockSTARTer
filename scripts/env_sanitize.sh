@@ -22,9 +22,9 @@ env_sanitize() {
 	local DOCKER_CONFIG_FOLDER DOCKER_COMPOSE_FOLDER ORIG_CONFIG_FOLDER ORIG_COMPOSE_FOLDER
 
 	ORIG_CONFIG_FOLDER="$(run_script 'env_get' DOCKER_CONFIG_FOLDER)"
-	LITERAL_CONFIG_FOLDER="$(get_toml_val "${APPLICATION_TOML_FILE}" "paths.config_folder")"
+	LITERAL_CONFIG_FOLDER="$(get_toml_val_string "${APPLICATION_TOML_FILE}" "paths.config_folder")"
 	if [[ -z ${LITERAL_CONFIG_FOLDER-} ]]; then
-		LITERAL_CONFIG_FOLDER="$(get_toml_val "${DEFAULT_TOML_FILE}" "paths.config_folder")"
+		LITERAL_CONFIG_FOLDER="$(get_toml_val_string "${DEFAULT_TOML_FILE}" "paths.config_folder")"
 	fi
 	if [[ -z ${LITERAL_CONFIG_FOLDER-} ]]; then
 		LITERAL_CONFIG_FOLDER="${ORIG_CONFIG_FOLDER}"
@@ -32,9 +32,9 @@ env_sanitize() {
 	DOCKER_CONFIG_FOLDER="${LITERAL_CONFIG_FOLDER}"
 
 	ORIG_COMPOSE_FOLDER="$(run_script 'env_get' DOCKER_COMPOSE_FOLDER)"
-	LITERAL_COMPOSE_FOLDER="$(get_toml_val "${APPLICATION_TOML_FILE}" "paths.compose_folder")"
+	LITERAL_COMPOSE_FOLDER="$(get_toml_val_string "${APPLICATION_TOML_FILE}" "paths.compose_folder")"
 	if [[ -z ${LITERAL_COMPOSE_FOLDER-} ]]; then
-		LITERAL_COMPOSE_FOLDER="$(get_toml_val "${DEFAULT_TOML_FILE}" "paths.compose_folder")"
+		LITERAL_COMPOSE_FOLDER="$(get_toml_val_string "${DEFAULT_TOML_FILE}" "paths.compose_folder")"
 	fi
 	if [[ -z ${LITERAL_COMPOSE_FOLDER-} ]]; then
 		LITERAL_COMPOSE_FOLDER="${ORIG_COMPOSE_FOLDER}"

@@ -72,7 +72,7 @@ config_theme() {
 	fi
 
 	if [[ -z ${ThemeName-} ]]; then
-		ThemeName="$(get_toml_val "${APPLICATION_TOML_FILE}" "ui.theme")"
+		ThemeName="$(get_toml_val_string "${APPLICATION_TOML_FILE}" "ui.theme")"
 		if ! run_script 'theme_exists' "${ThemeName}"; then
 			# Only fall back to a default when there is no cached active theme to use.
 			# If ACTIVE_THEME_FILE exists, ensure_theme_extracted will use it below.
@@ -114,34 +114,34 @@ config_theme() {
 	)
 
 	local sem_p sem_s dir_p dir_s
-	sem_p="$(get_toml_val "${ThemeFile}" "syntax.semantic_prefix")"
+	sem_p="$(get_toml_val_string "${ThemeFile}" "syntax.semantic_prefix")"
 	[[ -z ${sem_p} ]] && sem_p="{{|"
-	sem_s="$(get_toml_val "${ThemeFile}" "syntax.semantic_suffix")"
+	sem_s="$(get_toml_val_string "${ThemeFile}" "syntax.semantic_suffix")"
 	[[ -z ${sem_s} ]] && sem_s="|}}"
-	dir_p="$(get_toml_val "${ThemeFile}" "syntax.direct_prefix")"
+	dir_p="$(get_toml_val_string "${ThemeFile}" "syntax.direct_prefix")"
 	[[ -z ${dir_p} ]] && dir_p="{{["
-	dir_s="$(get_toml_val "${ThemeFile}" "syntax.direct_suffix")"
+	dir_s="$(get_toml_val_string "${ThemeFile}" "syntax.direct_suffix")"
 	[[ -z ${dir_s} ]] && dir_s="]}}"
 
 	local -a VarList
 	readarray -t VarList < <(get_toml_section_key_list "${ThemeFile}" "colors")
 	local VarName
 	for VarName in "${VarList[@]-}"; do
-		DC["${VarName}"]="$(get_toml_val "${ThemeFile}" "colors.${VarName}")"
+		DC["${VarName}"]="$(get_toml_val_string "${ThemeFile}" "colors.${VarName}")"
 	done
 	local StyleName
 	for StyleName in "${!DC[@]}"; do
 		DC["${StyleName}"]="$(resolve_styles DC "${DC["${StyleName}"]}" "${sem_p}" "${sem_s}" "${dir_p}" "${dir_s}")"
 	done
 
-	D["ThemeName"]="$(get_toml_val "${ThemeFile}" "metadata.name")"
+	D["ThemeName"]="$(get_toml_val_string "${ThemeFile}" "metadata.name")"
 	local DialogOptions="--colors --output-fd 1 --cr-wrap --no-collapse"
 
 	local LineCharacters Borders Scrollbar Shadow
-	Borders="$(get_toml_val "${APPLICATION_TOML_FILE}" "ui.borders")"
-	LineCharacters="$(get_toml_val "${APPLICATION_TOML_FILE}" "ui.line_characters")"
-	Scrollbar="$(get_toml_val "${APPLICATION_TOML_FILE}" "ui.scrollbar")"
-	Shadow="$(get_toml_val "${APPLICATION_TOML_FILE}" "ui.shadow")"
+	Borders="$(get_toml_val_bool "${APPLICATION_TOML_FILE}" "ui.borders")"
+	LineCharacters="$(get_toml_val_bool "${APPLICATION_TOML_FILE}" "ui.line_characters")"
+	Scrollbar="$(get_toml_val_bool "${APPLICATION_TOML_FILE}" "ui.scrollbar")"
+	Shadow="$(get_toml_val_bool "${APPLICATION_TOML_FILE}" "ui.shadow")"
 
 	D+=(
 		["Borders"]="${Borders}"
@@ -177,7 +177,7 @@ config_theme() {
 
 	run_script 'set_permissions' "${DIALOGRC}"
 
-	set_toml_val "${APPLICATION_TOML_FILE}" "ui.theme" "${ThemeName}"
+	set_toml_val_string "${APPLICATION_TOML_FILE}" "ui.theme" "${ThemeName}"
 }
 
 test_config_theme() {

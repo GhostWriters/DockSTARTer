@@ -59,7 +59,7 @@ config_create() {
 		)
 
 		if run_script 'env_var_exists' ComposeFolder "${APPLICATION_INI_FILE}"; then
-			set_toml_val \
+			set_toml_val_string \
 				"${APPLICATION_TOML_FILE}" \
 				paths.compose_folder \
 				"$(run_script 'config_get' ComposeFolder "${APPLICATION_INI_FILE}")"
@@ -68,7 +68,7 @@ config_create() {
 
 		for Key in "${!TOMLtoINIMap_strings[@]}"; do
 			if run_script 'env_var_exists' "${TOMLtoINIMap_strings["${Key}"]}" "${APPLICATION_INI_FILE}"; then
-				set_toml_val \
+				set_toml_val_string \
 					"${APPLICATION_TOML_FILE}" \
 					"${Key}" \
 					"$(run_script 'config_get' "${TOMLtoINIMap_strings["${Key}"]}" "${APPLICATION_INI_FILE}")"
@@ -77,21 +77,21 @@ config_create() {
 
 		# Migrate LineCharacters to ui.borders if Borders doesn't exist (old INI settings)
 		if run_script 'env_var_exists' Borders "${APPLICATION_INI_FILE}"; then
-			set_toml_val \
+			set_toml_val_bool \
 				"${APPLICATION_TOML_FILE}" \
 				ui.borders \
-				"$(string_to_bool "$(run_script 'config_get' Borders "${APPLICATION_INI_FILE}")")"
+				"$(run_script 'config_get' Borders "${APPLICATION_INI_FILE}")"
 			if run_script 'env_var_exists' LineCharacters "${APPLICATION_INI_FILE}"; then
-				set_toml_val \
+				set_toml_val_bool \
 					"${APPLICATION_TOML_FILE}" \
 					ui.line_characters \
-					"$(string_to_bool "$(run_script 'config_get' LineCharacters "${APPLICATION_INI_FILE}")")"
+					"$(run_script 'config_get' LineCharacters "${APPLICATION_INI_FILE}")"
 			fi
 		elif run_script 'env_var_exists' LineCharacters "${APPLICATION_INI_FILE}"; then
-			set_toml_val \
+			set_toml_val_bool \
 				"${APPLICATION_TOML_FILE}" \
 				ui.borders \
-				"$(string_to_bool "$(run_script 'config_get' LineCharacters "${APPLICATION_INI_FILE}")")"
+				"$(run_script 'config_get' LineCharacters "${APPLICATION_INI_FILE}")"
 		fi
 
 		for Key in "${!TOMLtoINIMap_booleans[@]}"; do
@@ -99,10 +99,10 @@ config_create() {
 			VarList="${TOMLtoINIMap_booleans["${Key}"]}"
 			for Val in ${VarList//:/ }; do
 				if run_script 'env_var_exists' "${Val}" "${APPLICATION_INI_FILE}"; then
-					set_toml_val \
+					set_toml_val_bool \
 						"${APPLICATION_TOML_FILE}" \
 						"${Key}" \
-						"$(string_to_bool "$(run_script 'config_get' "${Val}" "${APPLICATION_INI_FILE}")")"
+						"$(run_script 'config_get' "${Val}" "${APPLICATION_INI_FILE}")"
 					break
 				fi
 			done
@@ -129,7 +129,7 @@ config_create() {
 detect_compose_folder() {
 	# Check for a legacy compose folder and update ComposeFolder if needed
 	local ConfigFolder
-	ConfigFolder="$(get_toml_val "${APPLICATION_TOML_FILE}" paths.config_folder)"
+	ConfigFolder="$(get_toml_val_string "${APPLICATION_TOML_FILE}" paths.config_folder)"
 
 	local -a ExpandVarList=(
 		ScriptFolder "${SCRIPTPATH}"
@@ -154,7 +154,7 @@ detect_compose_folder() {
 	fi
 
 	local DefaultComposeFolder
-	DefaultComposeFolder="$(get_toml_val "${APPLICATION_TOML_FILE}" paths.compose_folder)"
+	DefaultComposeFolder="$(get_toml_val_string "${APPLICATION_TOML_FILE}" paths.compose_folder)"
 	local ExpandedDefaultComposeFolder
 	ExpandedDefaultComposeFolder="$(expand_vars "${DefaultComposeFolder}" "${ExpandVarList[@]}")"
 
@@ -169,14 +169,14 @@ detect_compose_folder() {
 			notice \
 				"Chose the Legacy compose folder location:" \
 				"   '{{|Folder|}}${ExpandedLegacyComposeFolder}{{[-]}}'"
-			set_toml_val "${APPLICATION_TOML_FILE}" paths.compose_folder "${LegacyComposeFolder}"
+			set_toml_val_string "${APPLICATION_TOML_FILE}" paths.compose_folder "${LegacyComposeFolder}"
 		else
 			notice \
 				"Chose the Default compose folder location:" \
 				"   '{{|Folder|}}${ExpandedDefaultComposeFolder}{{[-]}}'"
 		fi
 	elif [[ ${LegacyHasFiles} == true ]]; then
-		set_toml_val "${APPLICATION_TOML_FILE}" paths.compose_folder "${LegacyComposeFolder}"
+		set_toml_val_string "${APPLICATION_TOML_FILE}" paths.compose_folder "${LegacyComposeFolder}"
 	fi
 }
 
