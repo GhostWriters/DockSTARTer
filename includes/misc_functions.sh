@@ -88,6 +88,14 @@ string_to_bool() {
 	is_true "${1-}" && echo "true" || echo "false"
 }
 
+string_to_int() {
+	local val=${1:-"0"}
+	if ! [[ ${val} =~ ^[0-9]+$ ]]; then
+		val="0"
+	fi
+	echo "${val}"
+}
+
 folder_is_empty() {
 	local dir=${1}
 	(
@@ -452,9 +460,7 @@ set_toml_val() {
 		touchfile "${file}"
 	fi
 
-	# Escape double quotes in the value
-	new_val="${new_val//\"/\\\"}"
-	local new_line="${target_key} = \"${new_val}\""
+	local new_line="${target_key} = ${new_val}"
 
 	local -a content=()
 	while IFS= read -r line || [[ -n ${line} ]]; do
@@ -512,6 +518,75 @@ set_toml_val() {
 	printf '%s\n' "${output[@]}" > "${file}" ||
 		fatal \
 			"Failed to write to '{{|File|}}${file}{{[-]}}'."
+}
+
+get_toml_val_string() {
+	# get_toml_val_string FILE SECTION.KEY
+	# Returns the value of KEY within [SECTION] in FILE.
+	local file=${1-}
+	local section_key="${2-}"
+	get_toml_val "${file}" "${section_key}"
+}
+
+set_toml_val_string() {
+	# set_toml_val FILE SECTION.KEY VALUE
+	# Creates or updates KEY = "VALUE" within [SECTION] in FILE.
+	# Creates the file, section, or key if any do not exist.
+	local file=${1-}
+	local section="${2%%.*}"
+	local target_key="${2#*.}"
+	local new_val=${3-}
+
+	# If the string contains single quotes, we MUST use double quotes
+	if [[ ${new_val} == *"'"* ]]; then
+		# Escape double quotes and wrap in double quotes
+		new_val="\"${new_val//\"/\\\"}\""
+	else
+		# Use clean single quotes for everything else
+		new_val="'${new_val}'"
+	fi
+
+	set_toml_val "${file}" "${section}.${target_key}" "${new_val}"
+}
+
+get_toml_val_bool() {
+	# get_toml_val_bool FILE SECTION.KEY
+	# Returns the value of KEY within [SECTION] in FILE, normalized to "true" or "false".
+	local file=${1-}
+	local section_key="${2-}"
+
+	string_to_bool "$(get_toml_val "${file}" "${section_key}")"
+}
+
+set_toml_val_bool() {
+	# set_toml_val FILE SECTION.KEY VALUE
+	# Creates or updates KEY = "VALUE" within [SECTION] in FILE.
+	# Creates the file, section, or key if any do not exist.
+	local file=${1-}
+	local section_key="${2-}"
+	local new_val=${3-}
+
+	set_toml_val "${file}" "${section_key}" "$(string_to_bool "${new_val}")"
+}
+
+get_toml_val_int() {
+	# get_toml_val_int FILE SECTION.KEY
+	# Returns the value of KEY within [SECTION] in FILE, normalized to an integer.
+	local file=${1-}
+	local section_key="${2-}"
+
+	string_to_int "$(get_toml_val "${file}" "${section_key}")"
+}
+
+set_toml_val_int() {
+	# set_toml_val FILE SECTION.KEY VALUE
+	# Creates or updates KEY = "VALUE" within [SECTION] in FILE.
+	# Creates the file, section, or key if any do not exist.
+	local file=${1-}
+	local section_key="${2-}"
+	local new_val=${3-}
+
+	set_toml_val "${file}" "${section_key}" "$(string_to_int "${new_val}")"
 }
 
 hrx_extract_file() {

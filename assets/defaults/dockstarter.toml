@@ -1,13 +1,13 @@
 [paths]
-config_folder = "${XDG_CONFIG_HOME}"
-compose_folder = "${XDG_CONFIG_HOME}/compose"
+config_folder = '${XDG_CONFIG_HOME}'
+compose_folder = '${XDG_CONFIG_HOME}/compose'
 
 [ui]
-theme = "DockSTARTer"
-borders = "true"
-line_characters = "true"
-scrollbar = "true"
-shadow = "true"
+theme = 'DockSTARTer'
+borders = true
+line_characters = true
+scrollbar = true
+shadow = true
 
 [pm]
-package_manager = ""
+package_manager = ''
