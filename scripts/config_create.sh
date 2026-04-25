@@ -137,7 +137,7 @@ detect_compose_folder() {
 	fi
 
 	if [[ ${LegacyHasFiles} == true ]] && [[ ${DefaultHasFiles} == true ]] && [[ ${ExpandedLegacyComposeFolder} != "${ExpandedDefaultComposeFolder}" ]]; then
-		local PromptMessage="Existing docker compose folders detected in multiple locations.\n   Legacy:  '{{|Folder|}}${ExpandedLegacyComposeFolder}{{[-]}}'\n   Default: '{{|Folder|}}${ExpandedDefaultComposeFolder}{{[-]}}'\n\nWould you like to use the Legacy location?"
+		local PromptMessage="Detected compose folders in multiple locations.\n   Legacy:  '{{|Folder|}}${ExpandedLegacyComposeFolder}{{[-]}}'\n   Default: '{{|Folder|}}${ExpandedDefaultComposeFolder}{{[-]}}'\n\nWould you like to use the Legacy location?"
 		if run_script 'question_prompt' "Y" "${PromptMessage}" "Multiple Compose Folders Detected" "" "Legacy" "Default"; then
 			notice \
 				"Chose the Legacy compose folder location:" \
@@ -150,7 +150,7 @@ detect_compose_folder() {
 			run_script 'config_set' paths.compose_folder "${DefaultComposeFolder}"
 		fi
 	elif [[ ${LegacyHasFiles} == true ]]; then
-		notice "Compose folder detected at '{{|Folder|}}${ExpandedLegacyComposeFolder}{{[-]}}'."
+		notice "Detected compose folder at '{{|Folder|}}${ExpandedLegacyComposeFolder}{{[-]}}'."
 		run_script 'config_set' paths.compose_folder "${LegacyComposeFolder}"
 	fi
 }
