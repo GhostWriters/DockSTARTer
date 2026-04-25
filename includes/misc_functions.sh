@@ -285,21 +285,7 @@ table_pipe() {
 	readarray -t ColWidths < <(longest_columns "${Cols}" "${VisibleData[@]}")
 
 	local -A CharSet
-	if is_true "${D["LineCharacters"]-}"; then
-		CharSet=(
-			["TopLeft"]="┌"
-			["TopRight"]="┐"
-			["BottomLeft"]="└"
-			["BottomRight"]="┘"
-			["Horizontal"]="─"
-			["Vertical"]="│"
-			["Cross"]="┼"
-			["TLeft"]="├"
-			["TRight"]="┤"
-			["TTop"]="┬"
-			["TBottom"]="┴"
-		)
-	else
+	if is_false "${D["LineCharacters"]-}" || in_dialog_box; then
 		CharSet=(
 			["TopLeft"]="+"
 			["TopRight"]="+"
@@ -312,6 +298,20 @@ table_pipe() {
 			["TRight"]="|"
 			["TTop"]="-"
 			["TBottom"]="-"
+		)
+	else
+		CharSet=(
+			["TopLeft"]="┌"
+			["TopRight"]="┐"
+			["BottomLeft"]="└"
+			["BottomRight"]="┘"
+			["Horizontal"]="─"
+			["Vertical"]="│"
+			["Cross"]="┼"
+			["TLeft"]="├"
+			["TRight"]="┤"
+			["TTop"]="┬"
+			["TBottom"]="┴"
 		)
 	fi
 
@@ -376,7 +376,13 @@ table() {
 	shift
 	local -a Headings=("${@:1:Cols}")
 	local -a Data=("${@:Cols+1}")
-	printf '%s\n' "${Data[@]}" | table_pipe "${Cols}" "${Headings[@]}" | resolve_strings C
+	if use_dialog_box || [[ -t 1 ]]; then
+		printf '%s\n' "${Data[@]}" | table_pipe "${Cols}" "${Headings[@]}" | resolve_strings C
+	else
+		# Captured/Piped call: Output RAW TAGS
+		# (This lets notice handle the resolution later)
+		printf '%s\n' "${Data[@]}" | table_pipe "${Cols}" "${Headings[@]}"
+	fi
 }
 
 wordwrap_pipe() {
@@ -444,7 +450,90 @@ get_toml_val() {
 			return 0
 		fi
 	done < "${file}"
+
+	# Key or section not found
+	return 1
+}
+
+get_ini_val() {
+	# get_ini_val VarFile VarName
+	local ConfigFile=${1-}
+	local VarName=${2-}
+
+	if [[ -z ${VarName} || -z ${ConfigFile} || ! -f ${ConfigFile} ]]; then
+		# VarName or ConfigFile empty strings, or ConfigFile does not exist, return
+		return 1
+	fi
+
+	local Line
+	local Val=""
+	local Found=false
+	while IFS= read -r Line || [[ -n ${Line} ]]; do
+		# Skip comments and empty lines
+		[[ ${Line} =~ ^[[:space:]]*# ]] && continue
+		[[ -z ${Line} ]] && continue
+
+		# Check if line contains Key=Value
+		if [[ ${Line} =~ ^[[:space:]]*${VarName}[[:space:]]*= ]]; then
+			# Extract Key and Value
+			local Key="${Line%%=*}"
+			local Value="${Line#*=}"
+
+			# Trim whitespace from Key
+			Key="${Key#"${Key%%[![:space:]]*}"}"
+			Key="${Key%"${Key##*[![:space:]]}"}"
+
+			# Check if this is the requested key
+			if [[ ${Key} == "${VarName}" ]]; then
+				Val="${Value}"
+				Found=true
+				# Keep reading to get the last occurrence (tail -1 behavior)
+			fi
+		fi
+	done < "${ConfigFile}"
+
+	if [[ ${Found} == false ]]; then
+		# Key was not found in the config file
+		return 1
+	fi
+
+	# Trim leading whitespace
+	Val="${Val#"${Val%%[![:space:]]*}"}"
+	# Trim trailing whitespace
+	Val="${Val%"${Val##*[![:space:]]}"}"
+
+	# Strip single quotes if present on both ends
+	if [[ ${Val} == \'*\' ]]; then
+		Val="${Val#\'}"
+		Val="${Val%\'}"
+	# Strip double quotes if present on both ends
+	elif [[ ${Val} == \"*\" ]]; then
+		Val="${Val#\"}"
+		Val="${Val%\"}"
+	fi
+
+	printf '%s\n' "${Val}"
 	return 0
+}
+
+get_ini_val_string() {
+	get_ini_val "$@"
+}
+
+get_ini_val_bool() {
+	# get_ini_val_bool FILE KEY
+	# Returns the value of KEY in FILE, normalized to "true" or "false".
+	local file=${1-}
+	local key=${2-}
+
+	local Value
+	if Value="$(get_ini_val "${file}" "${key}")"; then
+		string_to_bool "${Value}"
+		return 0
+	fi
+
+	# Key not found
+	return 1
 }
 
 set_toml_val() {
@@ -525,7 +614,14 @@ get_toml_val_string() {
 	# Returns the value of KEY within [SECTION] in FILE.
 	local file=${1-}
 	local section_key="${2-}"
-	get_toml_val "${file}" "${section_key}"
+	local Value
+	if Value="$(get_toml_val "${file}" "${section_key}")"; then
+		printf '%s\n' "${Value}"
+		return 0
+	fi
+
+	# Key or section not found
+	return 1
 }
 
 set_toml_val_string() {
@@ -555,7 +651,14 @@ get_toml_val_bool() {
 	local file=${1-}
 	local section_key="${2-}"
 
-	string_to_bool "$(get_toml_val "${file}" "${section_key}")"
+	local Value
+	if Value="$(get_toml_val "${file}" "${section_key}")"; then
+		string_to_bool "${Value}"
+		return 0
+	fi
+
+	# Key or section not found
+	return 1
 }
 
 set_toml_val_bool() {
@@ -575,7 +678,14 @@ get_toml_val_int() {
 	local file=${1-}
 	local section_key="${2-}"
 
-	string_to_int "$(get_toml_val "${file}" "${section_key}")"
+	local Value
+	if Value="$(get_toml_val "${file}" "${section_key}")"; then
+		string_to_int "${Value}"
+		return 0
+	fi
+
+	# Key or section not found
+	return 1
 }
 
 set_toml_val_int() {

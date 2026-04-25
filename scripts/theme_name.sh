@@ -3,7 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 theme_name() {
-	get_toml_val_string "${APPLICATION_TOML_FILE}" "ui.theme"
+	run_script 'config_get' ui.theme
 }
 
 test_theme_name() {
