@@ -148,22 +148,22 @@ _dialog_() {
 	${DIALOG} --file "${DIALOG_OPTIONS_FILE}" --backtitle "${BACKTITLE}" "${DialogOptions[@]}"
 }
 
-# Check to see if we should use a dialog box
-use_dialog_box() {
-	# Not in GUI mode? Definitely NO.
-	[[ ${PROMPT:-CLI} != GUI ]] && return 1
-	# Are we ready to start a new one? (Both stdout/stderr are TTYs)
-	if [[ -t 1 && -t 2 ]]; then
-		return 0
-	fi
-	# Otherwise (like a notice capture where only stdout is redirected), return NO.
-	return 1
-}
-
+# Check to see if we are already inside a dialog box
 in_dialog_box() {
 	# If we are in GUI mode, AND stdout is redirected, AND stderr is ALSO redirected
 	# then we are almost certainly inside a '|& dialog_pipe' call.
 	[[ ${PROMPT:-CLI} == GUI && ! -t 1 && ! -t 2 ]]
+}
+
+# Check to see if we should use a dialog box
+use_dialog_box() {
+	[[ ${PROMPT:-CLI} != GUI ]] && return 1
+
+	# TRUE if Ready to start OR already inside one
+	if in_dialog_box || [[ -t 1 && -t 2 ]]; then
+		return 0
+	fi
+	return 1
 }
 
 # Pipe to Dialog Box Function

@@ -33,9 +33,9 @@ config_create() {
 		fi
 	done
 	if [[ -n ${LegacyIniFile} ]]; then
-		# Display the configuration options in the old config file
-		notice "Migrating '{{|File|}}${LegacyIniFile}{{[-]}}' to '{{|File|}}${APPLICATION_TOML_FILE}{{[-]}}'."
-		local Heading="Configuration options in old config file '{{|File|}}${LegacyIniFile}{{[-]}}':"
+		# Display the configuration options in the legacy config file
+		notice "Detected legacy config file at '{{|File|}}${LegacyIniFile}{{[-]}}'."
+		local Heading="Configuration options in legacy config file '{{|File|}}${LegacyIniFile}{{[-]}}':"
 		notice ""
 		notice "$(run_script 'config_show' "${LegacyIniFile}" "${Heading}")"
 		notice ""
@@ -44,7 +44,7 @@ config_create() {
 			notice "Renaming '{{|File|}}${LegacyIniFile}{{[-]}}' to '{{|File|}}${APPLICATION_INI_FILE}{{[-]}}'."
 			mv "${LegacyIniFile}" "${APPLICATION_INI_FILE}" ||
 				fatal \
-					"Failed to rename old config file." \
+					"Failed to rename legacy config file." \
 					"Failing command: {{|FailingCommand|}}mv \"${LegacyIniFile}\" \"${APPLICATION_INI_FILE}\""
 			run_script 'set_permissions' "${APPLICATION_INI_FILE}"
 		fi
@@ -55,6 +55,8 @@ config_create() {
 				"Failed to copy default config file." \
 				"Failing command: {{|FailingCommand|}}cp \"${DEFAULT_TOML_FILE}\" \"${APPLICATION_TOML_FILE}\""
 		run_script 'set_permissions' "${APPLICATION_TOML_FILE}"
+
+		notice "Migrating '{{|File|}}${APPLICATION_INI_FILE}{{[-]}}' to '{{|File|}}${APPLICATION_TOML_FILE}{{[-]}}'."
 
 		local -a ConfigOptions=(
 			"paths.config_folder"
@@ -71,7 +73,6 @@ config_create() {
 			run_script 'config_set' paths.compose_folder "${Value}"
 			ComposeFolderFound=true
 		fi
-
 		for Key in "${ConfigOptions[@]}"; do
 			if Value=$(run_script 'config_get' "${Key}" "${APPLICATION_INI_FILE}"); then
 				run_script 'config_set' "${Key}" "${Value}"
@@ -136,7 +137,7 @@ detect_compose_folder() {
 	fi
 
 	if [[ ${LegacyHasFiles} == true ]] && [[ ${DefaultHasFiles} == true ]] && [[ ${ExpandedLegacyComposeFolder} != "${ExpandedDefaultComposeFolder}" ]]; then
-		local PromptMessage="Existing docker compose folders found in multiple locations.\n   Legacy:  '{{|Folder|}}${ExpandedLegacyComposeFolder}{{[-]}}'\n   Default: '{{|Folder|}}${ExpandedDefaultComposeFolder}{{[-]}}'\n\nWould you like to use the Legacy location?"
+		local PromptMessage="Detected compose folders in multiple locations.\n   Legacy:  '{{|Folder|}}${ExpandedLegacyComposeFolder}{{[-]}}'\n   Default: '{{|Folder|}}${ExpandedDefaultComposeFolder}{{[-]}}'\n\nWould you like to use the Legacy location?"
 		if run_script 'question_prompt' "Y" "${PromptMessage}" "Multiple Compose Folders Detected" "" "Legacy" "Default"; then
 			notice \
 				"Chose the Legacy compose folder location:" \
@@ -149,6 +150,7 @@ detect_compose_folder() {
 			run_script 'config_set' paths.compose_folder "${DefaultComposeFolder}"
 		fi
 	elif [[ ${LegacyHasFiles} == true ]]; then
+		notice "Detected compose folder at '{{|Folder|}}${ExpandedLegacyComposeFolder}{{[-]}}'."
 		run_script 'config_set' paths.compose_folder "${LegacyComposeFolder}"
 	fi
 }

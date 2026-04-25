@@ -72,7 +72,7 @@ config_ini_get() {
 			;;
 		*)
 			if [[ -v IniMap["${section_key}"] ]]; then
-				for Var in ${IniMap["${section_key}"]//:/ }; do
+				for Var in ${IniMap["${section_key}"]//:/$'\n'}; do
 					local Value
 					if ! Value=$(get_ini_val_${VarType} "${config_file}" "${Var}"); then
 						continue
