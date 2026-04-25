@@ -15,7 +15,7 @@ menu_options_package_manager() {
 	run_script 'config_package_manager' &> /dev/null
 
 	local CurrentPackageManager
-	CurrentPackageManager="$(get_toml_val_string "${APPLICATION_TOML_FILE}" "pm.package_manager")"
+	CurrentPackageManager="$(run_script 'config_get' pm.package_manager)"
 
 	local -a PackageManagerList
 	readarray -t PackageManagerList < <(run_script 'package_manager_list')

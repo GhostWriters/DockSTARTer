@@ -150,7 +150,20 @@ _dialog_() {
 
 # Check to see if we should use a dialog box
 use_dialog_box() {
-	[[ ${PROMPT:-CLI} == GUI && -t 1 && -t 2 ]]
+	# Not in GUI mode? Definitely NO.
+	[[ ${PROMPT:-CLI} != GUI ]] && return 1
+	# Are we ready to start a new one? (Both stdout/stderr are TTYs)
+	if [[ -t 1 && -t 2 ]]; then
+		return 0
+	fi
+	# Otherwise (like a notice capture where only stdout is redirected), return NO.
+	return 1
+}
+
+in_dialog_box() {
+	# If we are in GUI mode, AND stdout is redirected, AND stderr is ALSO redirected
+	# then we are almost certainly inside a '|& dialog_pipe' call.
+	[[ ${PROMPT:-CLI} == GUI && ! -t 1 && ! -t 2 ]]
 }
 
 # Pipe to Dialog Box Function
@@ -175,7 +188,7 @@ run_script_dialog() {
 	local TimeOut=${3:-0}
 	local SCRIPTSNAME=${4-}
 	shift 4
-	if use_dialog_box; then
+	if use_dialog_box && ! in_dialog_box; then
 		# Using the GUI, pipe output to a dialog box
 		coproc {
 			dialog_pipe "${Title}" "${SubTitle}" "${TimeOut}"

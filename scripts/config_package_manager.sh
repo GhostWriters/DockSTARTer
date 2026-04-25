@@ -23,10 +23,10 @@ config_package_manager() {
 					"$(run_script 'package_manager_table')"
 				return 1
 			fi
-			set_toml_val_string "${APPLICATION_TOML_FILE}" "pm.package_manager" "${PackageManager}"
+			run_script 'config_set' pm.package_manager "${PackageManager}"
 			notice "Package manager set to '{{|UserCommand|}}${PackageManager}{{[-]}}'."
 		else
-			set_toml_val_string "${APPLICATION_TOML_FILE}" "pm.package_manager" ""
+			run_script 'config_set' pm.package_manager ""
 			notice "Package manager set to autodetect."
 		fi
 

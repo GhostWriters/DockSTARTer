@@ -114,17 +114,17 @@ config_theme() {
 	)
 
 	local sem_p sem_s dir_p dir_s
-	sem_p="$(get_toml_val_string "${ThemeFile}" "syntax.semantic_prefix")"
+	sem_p="$(get_toml_val_string "${ThemeFile}" syntax.semantic_prefix)"
 	[[ -z ${sem_p} ]] && sem_p="{{|"
-	sem_s="$(get_toml_val_string "${ThemeFile}" "syntax.semantic_suffix")"
+	sem_s="$(get_toml_val_string "${ThemeFile}" syntax.semantic_suffix)"
 	[[ -z ${sem_s} ]] && sem_s="|}}"
-	dir_p="$(get_toml_val_string "${ThemeFile}" "syntax.direct_prefix")"
+	dir_p="$(get_toml_val_string "${ThemeFile}" syntax.direct_prefix)"
 	[[ -z ${dir_p} ]] && dir_p="{{["
-	dir_s="$(get_toml_val_string "${ThemeFile}" "syntax.direct_suffix")"
+	dir_s="$(get_toml_val_string "${ThemeFile}" syntax.direct_suffix)"
 	[[ -z ${dir_s} ]] && dir_s="]}}"
 
 	local -a VarList
-	readarray -t VarList < <(get_toml_section_key_list "${ThemeFile}" "colors")
+	readarray -t VarList < <(get_toml_section_key_list "${ThemeFile}" colors)
 	local VarName
 	for VarName in "${VarList[@]-}"; do
 		DC["${VarName}"]="$(get_toml_val_string "${ThemeFile}" "colors.${VarName}")"
@@ -134,14 +134,14 @@ config_theme() {
 		DC["${StyleName}"]="$(resolve_styles DC "${DC["${StyleName}"]}" "${sem_p}" "${sem_s}" "${dir_p}" "${dir_s}")"
 	done
 
-	D["ThemeName"]="$(get_toml_val_string "${ThemeFile}" "metadata.name")"
+	D["ThemeName"]="$(get_toml_val_string "${ThemeFile}" metadata.name)"
 	local DialogOptions="--colors --output-fd 1 --cr-wrap --no-collapse"
 
 	local LineCharacters Borders Scrollbar Shadow
-	Borders="$(get_toml_val_bool "${APPLICATION_TOML_FILE}" "ui.borders")"
-	LineCharacters="$(get_toml_val_bool "${APPLICATION_TOML_FILE}" "ui.line_characters")"
-	Scrollbar="$(get_toml_val_bool "${APPLICATION_TOML_FILE}" "ui.scrollbar")"
-	Shadow="$(get_toml_val_bool "${APPLICATION_TOML_FILE}" "ui.shadow")"
+	Borders="$(run_script 'config_get' ui.borders)"
+	LineCharacters="$(run_script 'config_get' ui.line_characters)"
+	Scrollbar="$(run_script 'config_get' ui.scrollbar)"
+	Shadow="$(run_script 'config_get' ui.shadow)"
 
 	D+=(
 		["Borders"]="${Borders}"
@@ -177,7 +177,7 @@ config_theme() {
 
 	run_script 'set_permissions' "${DIALOGRC}"
 
-	set_toml_val_string "${APPLICATION_TOML_FILE}" "ui.theme" "${ThemeName}"
+	run_script 'config_set' ui.theme "${ThemeName}"
 }
 
 test_config_theme() {

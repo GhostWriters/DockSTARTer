@@ -606,14 +606,14 @@ run_command() {
 	)
 
 	CommandConfigVar+=(
-		["--theme-shadows"]="shadow"
-		["--theme-no-shadows"]="shadow"
-		["--theme-scrollbar"]="scrollbar"
-		["--theme-no-scrollbar"]="scrollbar"
-		["--theme-lines"]="line_characters"
-		["--theme-no-lines"]="line_characters"
-		["--theme-borders"]="borders"
-		["--theme-no-borders"]="borders"
+		["--theme-shadows"]="ui.shadow"
+		["--theme-no-shadows"]="ui.shadow"
+		["--theme-scrollbar"]="ui.scrollbar"
+		["--theme-no-scrollbar"]="ui.scrollbar"
+		["--theme-lines"]="ui.line_characters"
+		["--theme-no-lines"]="ui.line_characters"
+		["--theme-borders"]="ui.borders"
+		["--theme-no-borders"]="ui.borders"
 	)
 
 	CommandConfigValue=(
@@ -939,7 +939,7 @@ run_command() {
 				notice \
 					"${Notice}"
 			fi
-			set_toml_val "${APPLICATION_TOML_FILE}" "ui.${ConfigVar}" "${ConfigValue}" || result=$?
+			run_script 'config_set' "${ConfigVar}" "${ConfigValue}" || result=$?
 			if use_dialog_box; then
 				run_script 'menu_dialog_example' "${Title}" "${CURRENT_COMMANDLINE}"
 			fi

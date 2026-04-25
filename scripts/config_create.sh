@@ -3,7 +3,6 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 config_create() {
-
 	# Early return if the TOML config already exists
 	if [[ -f ${APPLICATION_TOML_FILE} ]]; then
 		return 0
@@ -20,92 +19,63 @@ config_create() {
 
 	local ComposeFolderFound=false
 	# Handle legacy config files
-	if [[ -f ${SCRIPTPATH}/${APPLICATION_INI_NAME} || -f ${SCRIPTPATH}/menu.ini || -f ${XDG_CONFIG_HOME}/${APPLICATION_INI_NAME} ]]; then
-		for LegacyIniFile in "${XDG_CONFIG_HOME}/${APPLICATION_INI_NAME}" "${SCRIPTPATH}/${APPLICATION_INI_NAME}" "${SCRIPTPATH}/menu.ini"; do
-			if [[ -f ${LegacyIniFile} ]]; then
-				if [[ ${LegacyIniFile} == "${APPLICATION_INI_FILE}" ]]; then
-					continue
-				fi
-				notice "Renaming '{{|File|}}${LegacyIniFile}{{[-]}}' to '{{|File|}}${APPLICATION_INI_FILE}{{[-]}}'."
-				mv "${LegacyIniFile}" "${APPLICATION_INI_FILE}" ||
-					fatal \
-						"Failed to rename old config file." \
-						"Failing command: {{|FailingCommand|}}mv \"${LegacyIniFile}\" \"${APPLICATION_INI_FILE}\""
-				break
-			fi
-		done
-		run_script 'set_permissions' "${APPLICATION_INI_FILE}"
+	local -a LegacyIniFiles=(
+		"${APPLICATION_INI_FILE}"
+		"${XDG_CONFIG_HOME}/${APPLICATION_INI_NAME}"
+		"${SCRIPTPATH}/${APPLICATION_INI_NAME}"
+		"${SCRIPTPATH}/menu.ini"
+	)
+	local LegacyIniFile=""
+	for CheckLegacyIniFile in "${LegacyIniFiles[@]}"; do
+		if [[ -f ${CheckLegacyIniFile} ]]; then
+			LegacyIniFile="${CheckLegacyIniFile}"
+			break
+		fi
+	done
+	if [[ -n ${LegacyIniFile} ]]; then
+		# Display the configuration options in the old config file
+		notice "Migrating '{{|File|}}${LegacyIniFile}{{[-]}}' to '{{|File|}}${APPLICATION_TOML_FILE}{{[-]}}'."
+		local Heading="Configuration options in old config file '{{|File|}}${LegacyIniFile}{{[-]}}':"
+		notice ""
+		notice "$(run_script 'config_show' "${LegacyIniFile}" "${Heading}")"
+		notice ""
+		if [[ ${LegacyIniFile} != "${APPLICATION_INI_FILE}" ]]; then
+			# Move the found legacy config file to the standard location
+			notice "Renaming '{{|File|}}${LegacyIniFile}{{[-]}}' to '{{|File|}}${APPLICATION_INI_FILE}{{[-]}}'."
+			mv "${LegacyIniFile}" "${APPLICATION_INI_FILE}" ||
+				fatal \
+					"Failed to rename old config file." \
+					"Failing command: {{|FailingCommand|}}mv \"${LegacyIniFile}\" \"${APPLICATION_INI_FILE}\""
+			run_script 'set_permissions' "${APPLICATION_INI_FILE}"
+		fi
 	fi
-
 	if [[ -f ${APPLICATION_INI_FILE} ]]; then
-		# Migrate from INI to TOML
-		notice "Migrating '{{|File|}}${APPLICATION_INI_FILE}{{[-]}}' to '{{|File|}}${APPLICATION_TOML_FILE}{{[-]}}'."
-
 		cp "${DEFAULT_TOML_FILE}" "${APPLICATION_TOML_FILE}" ||
 			fatal \
 				"Failed to copy default config file." \
 				"Failing command: {{|FailingCommand|}}cp \"${DEFAULT_TOML_FILE}\" \"${APPLICATION_TOML_FILE}\""
 		run_script 'set_permissions' "${APPLICATION_TOML_FILE}"
 
-		local -A TOMLtoINIMap_strings=(
-			["paths.config_folder"]="ConfigFolder"
-			["ui.theme"]="Theme"
-			["pm.package_manager"]="PackageManager"
+		local -a ConfigOptions=(
+			"paths.config_folder"
+			"ui.theme"
+			"pm.package_manager"
+			"ui.scrollbar"
+			"ui.shadow"
+			"ui.borders"
+			"ui.line_characters"
 		)
 
-		local -A TOMLtoINIMap_booleans=(
-			["ui.scrollbar"]="Scrollbar:Scrollbars"
-			["ui.shadow"]="Shadow:Shadows"
-		)
-
-		if run_script 'env_var_exists' ComposeFolder "${APPLICATION_INI_FILE}"; then
-			set_toml_val_string \
-				"${APPLICATION_TOML_FILE}" \
-				paths.compose_folder \
-				"$(run_script 'config_get' ComposeFolder "${APPLICATION_INI_FILE}")"
+		local Value
+		if Value=$(run_script 'config_get' paths.compose_folder "${APPLICATION_INI_FILE}"); then
+			run_script 'config_set' paths.compose_folder "${Value}"
 			ComposeFolderFound=true
 		fi
 
-		for Key in "${!TOMLtoINIMap_strings[@]}"; do
-			if run_script 'env_var_exists' "${TOMLtoINIMap_strings["${Key}"]}" "${APPLICATION_INI_FILE}"; then
-				set_toml_val_string \
-					"${APPLICATION_TOML_FILE}" \
-					"${Key}" \
-					"$(run_script 'config_get' "${TOMLtoINIMap_strings["${Key}"]}" "${APPLICATION_INI_FILE}")"
+		for Key in "${ConfigOptions[@]}"; do
+			if Value=$(run_script 'config_get' "${Key}" "${APPLICATION_INI_FILE}"); then
+				run_script 'config_set' "${Key}" "${Value}"
 			fi
-		done
-
-		# Migrate LineCharacters to ui.borders if Borders doesn't exist (old INI settings)
-		if run_script 'env_var_exists' Borders "${APPLICATION_INI_FILE}"; then
-			set_toml_val_bool \
-				"${APPLICATION_TOML_FILE}" \
-				ui.borders \
-				"$(run_script 'config_get' Borders "${APPLICATION_INI_FILE}")"
-			if run_script 'env_var_exists' LineCharacters "${APPLICATION_INI_FILE}"; then
-				set_toml_val_bool \
-					"${APPLICATION_TOML_FILE}" \
-					ui.line_characters \
-					"$(run_script 'config_get' LineCharacters "${APPLICATION_INI_FILE}")"
-			fi
-		elif run_script 'env_var_exists' LineCharacters "${APPLICATION_INI_FILE}"; then
-			set_toml_val_bool \
-				"${APPLICATION_TOML_FILE}" \
-				ui.borders \
-				"$(run_script 'config_get' LineCharacters "${APPLICATION_INI_FILE}")"
-		fi
-
-		for Key in "${!TOMLtoINIMap_booleans[@]}"; do
-			local VarList
-			VarList="${TOMLtoINIMap_booleans["${Key}"]}"
-			for Val in ${VarList//:/ }; do
-				if run_script 'env_var_exists' "${Val}" "${APPLICATION_INI_FILE}"; then
-					set_toml_val_bool \
-						"${APPLICATION_TOML_FILE}" \
-						"${Key}" \
-						"$(run_script 'config_get' "${Val}" "${APPLICATION_INI_FILE}")"
-					break
-				fi
-			done
 		done
 	else
 		# Fresh install: copy the default TOML file
@@ -121,6 +91,8 @@ config_create() {
 		detect_compose_folder
 	fi
 
+	run_script 'apply_config'
+
 	notice ""
 	notice "$(run_script 'config_show')"
 	notice ""
@@ -129,7 +101,7 @@ config_create() {
 detect_compose_folder() {
 	# Check for a legacy compose folder and update ComposeFolder if needed
 	local ConfigFolder
-	ConfigFolder="$(get_toml_val_string "${APPLICATION_TOML_FILE}" paths.config_folder)"
+	ConfigFolder="$(run_script 'config_get' paths.config_folder)"
 
 	local -a ExpandVarList=(
 		ScriptFolder "${SCRIPTPATH}"
@@ -154,7 +126,7 @@ detect_compose_folder() {
 	fi
 
 	local DefaultComposeFolder
-	DefaultComposeFolder="$(get_toml_val_string "${APPLICATION_TOML_FILE}" paths.compose_folder)"
+	DefaultComposeFolder="$(run_script 'config_get' paths.compose_folder)"
 	local ExpandedDefaultComposeFolder
 	ExpandedDefaultComposeFolder="$(expand_vars "${DefaultComposeFolder}" "${ExpandVarList[@]}")"
 
@@ -169,14 +141,15 @@ detect_compose_folder() {
 			notice \
 				"Chose the Legacy compose folder location:" \
 				"   '{{|Folder|}}${ExpandedLegacyComposeFolder}{{[-]}}'"
-			set_toml_val_string "${APPLICATION_TOML_FILE}" paths.compose_folder "${LegacyComposeFolder}"
+			run_script 'config_set' paths.compose_folder "${LegacyComposeFolder}"
 		else
 			notice \
 				"Chose the Default compose folder location:" \
 				"   '{{|Folder|}}${ExpandedDefaultComposeFolder}{{[-]}}'"
+			run_script 'config_set' paths.compose_folder "${DefaultComposeFolder}"
 		fi
 	elif [[ ${LegacyHasFiles} == true ]]; then
-		set_toml_val_string "${APPLICATION_TOML_FILE}" paths.compose_folder "${LegacyComposeFolder}"
+		run_script 'config_set' paths.compose_folder "${LegacyComposeFolder}"
 	fi
 }
 

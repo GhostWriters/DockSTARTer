@@ -33,7 +33,7 @@ menu_options_display() {
 		local Opts=()
 		for Option in "${DrawLineOption}" "${ShowBordersOption}" "${ShowScrollbarOption}" "${ShowShadowOption}"; do
 			local Value
-			Value="$(get_toml_val_bool "${APPLICATION_TOML_FILE}" "ui.${OptionVariable["${Option}"]}")"
+			Value="$(run_script 'config_get' "ui.${OptionVariable["${Option}"]}")"
 			if is_true "${Value}"; then
 				EnabledOptions+=("${Option}")
 				Opts+=("${Option}" "${OptionDescription["${Option}"]}" ON)
@@ -66,12 +66,12 @@ menu_options_display() {
 				if [[ -n ${OptionsToTurnOff[*]-} || ${OptionsToTurnOn[*]-} ]]; then
 					if [[ -n ${OptionsToTurnOff[*]-} ]]; then
 						for Option in "${OptionsToTurnOff[@]}"; do
-							set_toml_val_bool "${APPLICATION_TOML_FILE}" "ui.${OptionVariable["${Option}"]}" "false"
+							run_script 'config_set' "ui.${OptionVariable["${Option}"]}" false
 						done
 					fi
 					if [[ -n ${OptionsToTurnOn[*]-} ]]; then
 						for Option in "${OptionsToTurnOn[@]}"; do
-							set_toml_val_bool "${APPLICATION_TOML_FILE}" "ui.${OptionVariable["${Option}"]}" "true"
+							run_script 'config_set' "ui.${OptionVariable["${Option}"]}" true
 						done
 					fi
 					run_script 'config_theme' &> /dev/null
