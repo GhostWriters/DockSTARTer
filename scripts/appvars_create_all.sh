@@ -16,7 +16,7 @@ appvars_create_all() {
 		notice "Creating environment variables for added apps. Please be patient, this can take a while."
 		run_script 'appvars_create' "${AddedApps}"
 	else
-		notice "'{{|File|}}${COMPOSE_ENV}{{[-]}}' does not contain any added apps."
+		notice "Var file '{{|File|}}${COMPOSE_ENV}{{[-]}}' does not contain any added apps."
 	fi
 	run_script 'env_update'
 	run_script 'unset_needs_appvars_create'

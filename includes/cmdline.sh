@@ -742,7 +742,7 @@ run_command() {
 			if [[ -z ${DIALOG-} ]]; then
 				fatal_notrace \
 					"The GUI requires the '{{|Folder|}}dialog{{[-]}}' command to be installed." \
-					"'{{|Folder|}}dialog{{[-]}}' command not found. Run '{{|UserCommand|}}${APPLICATION_COMMAND} -i{{[-]}}' to install all dependencies." \
+					"'{{|Program|}}dialog{{[-]}}' command not found. Run '{{|UserCommand|}}${APPLICATION_COMMAND} -i{{[-]}}' to install all dependencies." \
 					"" \
 					"Unable to start GUI without the '{{|Folder|}}dialog{{[-]}}' command."
 			fi
@@ -818,7 +818,7 @@ run_command() {
 				if [[ -z ${DIALOG-} ]]; then
 					fatal_notrace \
 						"The GUI requires the '{{|Folder|}}dialog{{[-]}}' command to be installed." \
-						"'{{|Folder|}}dialog{{[-]}}' command not found. Run '{{|UserCommand|}}${APPLICATION_COMMAND} -i{{[-]}}' to install all dependencies." \
+						"'{{|Program|}}dialog{{[-]}}' command not found. Run '{{|UserCommand|}}${APPLICATION_COMMAND} -i{{[-]}}' to install all dependencies." \
 						"" \
 						"Unable to start GUI without the '{{|Folder|}}dialog{{[-]}}' command."
 				fi
@@ -852,7 +852,7 @@ run_command() {
 				if [[ -z ${DIALOG-} ]]; then
 					fatal \
 						"The GUI requires the '{{|Folder|}}dialog{{[-]}}' command to be installed." \
-						"'{{|Folder|}}dialog{{[-]}}' command not found. Run '{{|UserCommand|}}${APPLICATION_COMMAND} -i{{[-]}}' to install all dependencies." \
+						"'{{|Program|}}dialog{{[-]}}' command not found. Run '{{|UserCommand|}}${APPLICATION_COMMAND} -i{{[-]}}' to install all dependencies." \
 						"" \
 						"Unable to start GUI without the '{{|Folder|}}dialog{{[-]}}' command."
 				fi
@@ -878,7 +878,7 @@ run_command() {
 			fi
 			[[ -z ${DIALOG-} ]] && fatal_notrace \
 				"The GUI requires the '{{|Folder|}}dialog{{[-]}}' command to be installed." \
-				"'{{|Folder|}}dialog{{[-]}}' command not found. Run '{{|UserCommand|}}${APPLICATION_COMMAND} -i{{[-]}}' to install all dependencies." \
+				"'{{|Program|}}dialog{{[-]}}' command not found. Run '{{|UserCommand|}}${APPLICATION_COMMAND} -i{{[-]}}' to install all dependencies." \
 				"" \
 				"Unable to start GUI without the '{{|Folder|}}dialog{{[-]}}' command."
 			declare -gx PROMPT="GUI"
@@ -1067,7 +1067,7 @@ set_flags() {
 				else
 					warn \
 						"The '{{|UserCommand|}}${APPLICATION_COMMAND} ${flag}{{[-]}}' option requires the '{{|Folder|}}dialog$}NC}' command to be installed." \
-						"'{{|Folder|}}dialog{{[-]}}' command not found. Run '{{|UserCommand|}}${APPLICATION_COMMAND} -i{{[-]}}' to install all dependencies." \
+						"'{{|Program|}}dialog{{[-]}}' command not found. Run '{{|UserCommand|}}${APPLICATION_COMMAND} -i{{[-]}}' to install all dependencies." \
 						"" \
 						"Coninuing without '{{|UserCommand|}}${flag}{{[-]}}' option."
 				fi
