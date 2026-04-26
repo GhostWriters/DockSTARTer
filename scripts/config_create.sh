@@ -8,6 +8,8 @@ config_create() {
 		return 0
 	fi
 
+	notice "No {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} config file detected. Performing initial configuration."
+
 	if [[ ! -d ${APPLICATION_CONFIG_FOLDER} ]]; then
 		notice "Creating '{{|Folder|}}${APPLICATION_CONFIG_FOLDER}{{[-]}}'."
 		mkdir -p "${APPLICATION_CONFIG_FOLDER}" ||

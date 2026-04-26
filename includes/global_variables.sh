@@ -48,11 +48,25 @@ for Folder in "${FolderList[@]}"; do
 	if [[ ! -d ${Folder} ]]; then
 		if [[ -f ${Folder} ]]; then
 			# Folder exists, but it's not a folder, so remove it
-			sudo rm -f "${Folder}"
+			info "Removing existing file '${Folder}' before folder can be created."
+			sudo rm -f "${Folder}" ||
+				fatal \
+					"Failed to remove existing file." \
+					"Failing command: {{|FailingCommand|}}sudo rm -f \"${Folder}\""
 		fi
-		mkdir -p "${Folder}"
-		sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${Folder}"
-		sudo chmod 700 "${Folder}"
+		info "Creating folder '{{|Folder|}}${Folder}{{[-]}}'."
+		mkdir -p "${Folder}" ||
+			fatal \
+				"Failed to create folder." \
+				"Failing command: {{|FailingCommand|}}mkdir -p \"${Folder}\""
+		sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${Folder}" ||
+			fatal \
+				"Failed to set ownership of folder." \
+				"Failing command: {{|FailingCommand|}}sudo chown \"${DETECTED_PUID}\":\"${DETECTED_PGID}\" \"${Folder}\""
+		sudo chmod 700 "${Folder}" ||
+			fatal \
+				"Failed to set permissions of folder." \
+				"Failing command: {{|FailingCommand|}}sudo chmod 700 \"${Folder}\""
 	fi
 done
 
