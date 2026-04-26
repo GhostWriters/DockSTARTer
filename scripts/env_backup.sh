@@ -52,12 +52,16 @@ env_backup() {
 		${FIND} "${COMPOSE_FOLDER}" -maxdepth 1 \
 			\( \
 			-type d \
+			\( \
 			-name "${APP_ENV_FOLDER_NAME}" \
+			\) \
 			-exec echo "{}/" \; \
 			\) -o \( -type f \
+			\( \
 			-name "${COMPOSE_OVERRIDE_NAME}" -o \
 			-name ".env" -o \
 			-name ".env.app.*" \
+			\) \
 			-exec echo "{}" \; \
 			\) | sort 2> /dev/null || true
 	)
