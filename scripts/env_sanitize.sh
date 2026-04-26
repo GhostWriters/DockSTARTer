@@ -9,6 +9,7 @@ declare -a _dependencies_list=(
 env_sanitize() {
 	local -a VarsToUpdate
 	local -A UpdatedVarValue
+	local SkipBackup=${1-}
 
 	# Update the HOME variable if it is not set to the detected home directory
 	local HOME
@@ -55,7 +56,9 @@ env_sanitize() {
 	fi
 
 	# Backup the user files
-	run_script 'env_backup'
+	if [[ ${SkipBackup-} != "--skip-backup" ]]; then
+		run_script 'env_backup'
+	fi
 
 	# Migrate from old global variable names
 	run_script 'env_migrate_global'
