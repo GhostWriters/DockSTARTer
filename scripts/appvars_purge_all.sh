@@ -14,7 +14,7 @@ appvars_purge_all() {
 			done
 		fi
 	else
-		notice "Var file '{{|File|}}${COMPOSE_ENV}{{[-]}}' does not contain any disabled apps."
+		notice "File '{{|File|}}${COMPOSE_ENV}{{[-]}}' does not contain any disabled apps."
 	fi
 }
 
