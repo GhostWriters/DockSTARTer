@@ -79,6 +79,8 @@ env_backup() {
 			fatal \
 				"Failed to copy file." \
 				"Failing command: {{|FailingCommand|}}cp -R $(printf '"%s" ' "${BackupList[@]}") \"${BACKUP_FOLDER}/\""
+	else
+		info "No files to backup."
 	fi
 
 	run_script 'set_permissions' "${COMPOSE_BACKUPS_FOLDER}"
