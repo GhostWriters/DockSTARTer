@@ -303,14 +303,19 @@ strip_styles() {
 	shopt -q extglob || extglob_on=$?
 
 	shopt -s extglob
-	# Remove {{|...|}} and {{[...]}}
-	val="${val//\{\{\|*([!|])|\}\}/}"
-	val="${val//\{\{\[*([!\]])\]\}\}/}"
+	local line result=""
+	while IFS= read -r line; do
+		# Remove {{|...|}} and {{[...]}}
+		line="${line//\{\{\|*([!|])|\}\}/}"
+		line="${line//\{\{\[*([!\]])\]\}\}/}"
+		result+="${line}"$'\n'
+	done <<< "${val}"
+	result="${result%$'\n'}"
 
 	# Only turn extglob off if it was off before
 	[[ ${extglob_on} -ne 0 ]] && shopt -u extglob || true
 
-	printf '%s\n' "${val}"
+	printf '%s\n' "${result}"
 }
 
 # shellcheck disable=SC2120
