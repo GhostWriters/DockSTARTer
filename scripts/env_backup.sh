@@ -47,8 +47,6 @@ env_backup() {
 	BACKUPTIME="$(date +"%Y%m%d.%H.%M.%S")"
 	local BACKUP_FOLDER="${COMPOSE_BACKUPS_FOLDER}/${COMPOSE_FOLDER_NAME}.${BACKUPTIME}"
 
-	info "Gathering files to backup from '{{|Folder|}}${COMPOSE_FOLDER}{{[-]}}'"
-
 	local -a BackupList
 	readarray -t BackupList < <(
 		${FIND} "${COMPOSE_FOLDER}" -maxdepth 1 \
