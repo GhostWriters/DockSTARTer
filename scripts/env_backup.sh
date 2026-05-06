@@ -75,18 +75,18 @@ env_backup() {
 		info \
 			"Backing up files:" \
 			"$(printf "${Indent}{{|File|}}%s{{[-]}}\n" "${BackupList[@]}")"
-		cp -t "${BACKUP_FOLDER}/" -r "${BackupList[@]}" ||
+		cp -R "${BackupList[@]}" "${BACKUP_FOLDER}/" ||
 			fatal \
 				"Failed to copy file." \
-				"Failing command: {{|FailingCommand|}}cp -t \"${BACKUP_FOLDER}/\" -r $(printf '"%s" ' "${BackupList[@]}")"
+				"Failing command: {{|FailingCommand|}}cp -R $(printf '"%s" ' "${BackupList[@]}") \"${BACKUP_FOLDER}/\""
 	fi
 
 	run_script 'set_permissions' "${COMPOSE_BACKUPS_FOLDER}"
 
 	info "Removing old compose backups."
-	${FIND} "${COMPOSE_BACKUPS_FOLDER}" -type f -name ".env.*" -mtime +3 -delete &> /dev/null ||
+	${FIND} "${COMPOSE_BACKUPS_FOLDER}" -maxdepth 1 -type f -name ".env.*" -mtime +3 -delete &> /dev/null ||
 		warn "Old .env backups not removed."
-	${FIND} "${COMPOSE_BACKUPS_FOLDER}" -type d -name "${COMPOSE_FOLDER_NAME}.*" -mtime +3 -prune -exec rm -rf {} + &> /dev/null ||
+	${FIND} "${COMPOSE_BACKUPS_FOLDER}" -maxdepth 1 -type d -name "${COMPOSE_FOLDER_NAME}.*" -mtime +3 -exec rm -rf {} + &> /dev/null ||
 		warn "Old compose backups not removed."
 
 	# Backup location has moved
