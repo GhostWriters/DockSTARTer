@@ -47,6 +47,8 @@ env_backup() {
 	BACKUPTIME="$(date +"%Y%m%d.%H.%M.%S")"
 	local BACKUP_FOLDER="${COMPOSE_BACKUPS_FOLDER}/${COMPOSE_FOLDER_NAME}.${BACKUPTIME}"
 
+	info "Gathering files to backup from '{{|Folder|}}${COMPOSE_FOLDER}{{[-]}}'"
+
 	local -a BackupList
 	readarray -t BackupList < <(
 		${FIND} "${COMPOSE_FOLDER}" -maxdepth 1 \
@@ -79,6 +81,8 @@ env_backup() {
 			fatal \
 				"Failed to copy file." \
 				"Failing command: {{|FailingCommand|}}cp -R $(printf '"%s" ' "${BackupList[@]}") \"${BACKUP_FOLDER}/\""
+	else
+		info "No files to backup."
 	fi
 
 	run_script 'set_permissions' "${COMPOSE_BACKUPS_FOLDER}"
