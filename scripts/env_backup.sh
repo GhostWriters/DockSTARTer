@@ -72,7 +72,7 @@ env_backup() {
 	if [[ ${#BackupList[@]} -gt 0 ]]; then
 		notice \
 			"Backing up user files to folder:" \
-			"\t{{|Folder|}}${BACKUP_FOLDER}{{[-]}}"
+			"\t'{{|Folder|}}${BACKUP_FOLDER}{{[-]}}'"
 		info "Creating folder '{{|Folder|}}${BACKUP_FOLDER}{{[-]}}'"
 		mkdir -p "${BACKUP_FOLDER}" ||
 			fatal \
@@ -80,7 +80,7 @@ env_backup() {
 				"Failing command: {{|FailingCommand|}}mkdir -p \"${BACKUP_FOLDER}\""
 		info \
 			"Backing up files:" \
-			"$(printf "${Indent}{{|File|}}%s{{[-]}}\n" "${BackupList[@]}")"
+			"$(printf "${Indent}'{{|File|}}%s{{[-]}}'\n" "${BackupList[@]}")"
 		cp -R "${BackupList[@]}" "${BACKUP_FOLDER}/" ||
 			fatal \
 				"Failed to copy file." \
