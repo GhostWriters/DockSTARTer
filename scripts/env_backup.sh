@@ -43,9 +43,15 @@ env_backup() {
 	sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${DOCKER_VOLUME_CONFIG}" &> /dev/null || true
 
 	local COMPOSE_BACKUPS_FOLDER="${DOCKER_VOLUME_CONFIG}/.compose.backups"
-	local BACKUPTIME
-	BACKUPTIME="$(date +"%Y%m%d.%H.%M.%S")"
-	local BACKUP_FOLDER="${COMPOSE_BACKUPS_FOLDER}/${COMPOSE_FOLDER_NAME}.${BACKUPTIME}"
+	local BACKUP_FOLDER
+	while true; do
+		BACKUP_FOLDER="${COMPOSE_BACKUPS_FOLDER}/${COMPOSE_FOLDER_NAME}.$(date +"%Y%m%d.%H.%M.%S")"
+		if [[ ! -d ${BACKUP_FOLDER} ]]; then
+			break
+		fi
+		# Backup folder already exists, try again.
+		sleep 1
+	done
 
 	local -a BackupList
 	readarray -t BackupList < <(
