@@ -124,14 +124,27 @@ commands_yml_merge() {
 
 	info "Running compose config to create '{{|File|}}docker-compose.yml{{[-]}}' file from enabled templates."
 	export COMPOSE_FILE="${COMPOSE_FILE#:}"
+	local MKTEMP_COMPOSE_YML
+	MKTEMP_COMPOSE_YML=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.MKTEMP_COMPOSE_YML.XXXXXXXXXX") ||
+		fatal \
+			"Failed to create temporary '{{|File|}}docker-compose.yml{{[-]}}' file." \
+			"Failing command: {{|FailingCommand|}}mktemp -t \"${APPLICATION_NAME}.${FUNCNAME[0]}.MKTEMP_COMPOSE_YML.XXXXXXXXXX\""
 	local -i result=0
-	eval "docker compose --project-directory ${COMPOSE_FOLDER}/ config > ${COMPOSE_FOLDER}/docker-compose.yml" || result=$?
+	docker compose --project-directory "${COMPOSE_FOLDER}/" config > "${MKTEMP_COMPOSE_YML}" || result=$?
 	if [[ ${result} != 0 ]]; then
+		rm -f "${MKTEMP_COMPOSE_YML}"
 		error \
 			"Failed to output compose config." \
-			"Failing command: {{|FailingCommand|}}docker compose --project-directory ${COMPOSE_FOLDER}/ config > \"${COMPOSE_FOLDER}/docker-compose.yml\""
+			"Failing command: {{|FailingCommand|}}docker compose --project-directory ${COMPOSE_FOLDER}/ config > \"${MKTEMP_COMPOSE_YML}\""
 		return ${result}
 	fi
+	if [[ ! -f ${COMPOSE_FOLDER}/docker-compose.yml ]] || ! cmp -s "${MKTEMP_COMPOSE_YML}" "${COMPOSE_FOLDER}/docker-compose.yml"; then
+		cp -f "${MKTEMP_COMPOSE_YML}" "${COMPOSE_FOLDER}/docker-compose.yml" ||
+			fatal \
+				"Failed to copy file." \
+				"Failing command: {{|FailingCommand|}}cp -f \"${MKTEMP_COMPOSE_YML}\" \"${COMPOSE_FOLDER}/docker-compose.yml\""
+	fi
+	rm -f "${MKTEMP_COMPOSE_YML}"
 	info "Merging '{{|File|}}docker-compose.yml{{[-]}}' complete."
 	run_script 'unset_needs_yml_merge'
 	return 0
