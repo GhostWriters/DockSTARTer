@@ -72,9 +72,11 @@ env_update() {
 		printf '%s\n' "${UPDATED_ENV_LINES[@]}" > "${MKTEMP_ENV_UPDATED}" ||
 			fatal \
 				"Failed to write temporary '{{|File|}}.env{{[-]}}' update file."
-		RunAndLog "" "cp:notice" \
-			fatal "Failed to copy file." \
-			cp -f "${MKTEMP_ENV_UPDATED}" "${COMPOSE_ENV}"
+		if [[ ! -f ${COMPOSE_ENV} ]] || ! cmp -s "${MKTEMP_ENV_UPDATED}" "${COMPOSE_ENV}" 2> /dev/null; then
+			RunAndLog "" "cp:notice" \
+				fatal "Failed to copy file." \
+				cp -f "${MKTEMP_ENV_UPDATED}" "${COMPOSE_ENV}"
+		fi
 		RunAndLog "" "rm:notice" \
 			warn "Failed to remove temporary {{|File|}}.env{{[-]}} update file." \
 			rm -f "${MKTEMP_ENV_UPDATED}"
@@ -111,9 +113,11 @@ env_update() {
 				printf '%s\n' "${UPDATED_APP_ENV_LINES[@]}" > "${MKTEMP_APP_ENV_UPDATED}" ||
 					fatal \
 						"Failed to write temporary '{{|File|}}.env.app.${appname}{{[-]}}' update file."
-				RunAndLog "" "cp:notice" \
-					fatal "Failed to copy file." \
-					cp -f "${MKTEMP_APP_ENV_UPDATED}" "${APP_ENV_FILE}"
+				if [[ ! -f ${APP_ENV_FILE} ]] || ! cmp -s "${MKTEMP_APP_ENV_UPDATED}" "${APP_ENV_FILE}" 2> /dev/null; then
+					RunAndLog "" "cp:notice" \
+						fatal "Failed to copy file." \
+						cp -f "${MKTEMP_APP_ENV_UPDATED}" "${APP_ENV_FILE}"
+				fi
 				RunAndLog "" "rm:notice" \
 					warn "Failed to remove temporary '{{|File|}}.env.app.${appname}{{[-]}}' update file." \
 					rm -f "${MKTEMP_APP_ENV_UPDATED}"
