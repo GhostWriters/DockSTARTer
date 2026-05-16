@@ -39,7 +39,7 @@ pm_apt_install() {
 
 	#shellcheck disable=SC2124 #Assigning an array to a string! Assign as array, or use * instead of @ to concatenate.
 	local PackagesString="${Packages[@]}"
-	local pkglist="${PackagesString// /{{[-]}}\', \'{{|Folder|}}}"
+	local pkglist="${PackagesString// /{{[-]\}\}\', \'{{|Folder|\}\}}"
 	pkglist="{{[-]}}'{{|Folder|}}${pkglist}{{[-]}}'"
 
 	notice "Installing packages: ${pkglist}"
