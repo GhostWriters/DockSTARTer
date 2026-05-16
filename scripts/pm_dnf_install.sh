@@ -45,7 +45,7 @@ detect_packages() {
 	IFS="${Old_IFS}"
 
 	local DepsSearch
-	DepsSearch="$(printf '*/bin/%s ' "${Dependencies[@]}" | xargs)"
+	DepsSearch="$(printf '*/bin/%s,' "${Dependencies[@]}")"
 	local Command="dnf rq ${DepsSearch} --qf '%{name} '"
 	notice "Running: {{|RunningCommand|}}${Command}{{[-]}}"
 	local -a Packages

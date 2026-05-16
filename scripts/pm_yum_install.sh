@@ -55,12 +55,12 @@ detect_packages() {
 	IFS="${Old_IFS}"
 
 	local DepsSearch
-	DepsSearch="$(printf '*/bin/%s ' "${Dependencies[@]}" | xargs)"
+	DepsSearch="$(printf '*/bin/%s,' "${Dependencies[@]}")"
 	local Command="repoquery --whatprovides ${DepsSearch} --qf %{name}"
 	notice "Running: {{|RunningCommand|}}${Command}{{[-]}}"
 	eval "${Command}" 2> /dev/null | while IFS= read -r line; do
-		if [[ ! ${line} =~ ${RegEx_Package_Blacklist} ]]; then
-			echo "${line}"
+		if [[ -n ${line} && ! ${line} =~ ${RegEx_Package_Blacklist} ]]; then
+			printf '%s\n' "${line}"
 		fi
 	done | sort -u
 }
