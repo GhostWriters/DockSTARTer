@@ -39,9 +39,9 @@ pm_dnf_install() {
 detect_packages() {
 	local -a Dependencies=("$@")
 
-	Old_IFS="${IFS}"
+	local Old_IFS="${IFS}"
 	IFS='|'
-	RegEx_Package_Blacklist="${PM_PACKAGE_BLACKLIST[*]-}"
+	local RegEx_Package_Blacklist="${PM_PACKAGE_BLACKLIST[*]-}"
 	IFS="${Old_IFS}"
 
 	local DepsSearch
