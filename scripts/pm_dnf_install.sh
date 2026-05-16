@@ -50,7 +50,7 @@ detect_packages() {
 	notice "Running: {{|RunningCommand|}}${Command}{{[-]}}"
 	local -a Packages
 	read -ra Packages <<< "$(eval "${Command}" 2> /dev/null)"
-	for Package in "${Packages[@]-}"; do
+	for Package in "${Packages[@]}"; do
 		if [[ -n ${Package} && ! ${Package} =~ ${RegEx_Package_Blacklist} ]]; then
 			printf '%s\n' "${Package}"
 		fi
