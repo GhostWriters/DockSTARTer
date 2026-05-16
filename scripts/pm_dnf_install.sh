@@ -51,10 +51,10 @@ detect_packages() {
 	local -a Packages
 	read -ra Packages <<< "$(eval "${Command}" 2> /dev/null)"
 	for Package in "${Packages[@]-}"; do
-		if [[ ! ${Package} =~ ${RegEx_Package_Blacklist} ]]; then
-			echo "${Package}"
+		if [[ -n ${Package} && ! ${Package} =~ ${RegEx_Package_Blacklist} ]]; then
+			printf '%s\n' "${Package}"
 		fi
-	done | xargs -n1 | sort -u
+	done | sort -u
 }
 
 test_pm_dnf_install() {
