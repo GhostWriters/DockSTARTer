@@ -272,7 +272,10 @@ resolve_styles() {
 			fi
 			replacement="${resolved}"
 		fi
-		val="${val//"${full_match}"/"${replacement}"}"
+		local safe_match="${full_match//\[/\\[}"
+		safe_match="${safe_match//\*/\\*}"
+		safe_match="${safe_match//\?/\\?}"
+		val="${val//"${safe_match}"/"${replacement}"}"
 	done
 	printf '%s\n' "${val}"
 }
