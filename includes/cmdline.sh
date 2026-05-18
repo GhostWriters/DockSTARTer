@@ -24,6 +24,8 @@ parse_arguments() {
 	if [[ -z $* ]]; then
 		# No arguments on the command line, nothing to parse
 		if [[ ${mode} != "parse" ]]; then
+			notice \
+				"${APPLICATION_NAME} command: '{{|UserCommand|}}${APPLICATION_COMMAND}{{[-]}}'"
 			run_command 0 0
 		fi
 		return
