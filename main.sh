@@ -142,7 +142,7 @@ resolve_styles() {
 			local esc_dir_s="${dir_s//\]/\\\]}"
 			esc_dir_s="${esc_dir_s//\|/\\|}"
 			esc_dir_s="${esc_dir_s//\}/\\\}}"
-			regex="(${esc_sem_p}|${esc_dir_p})([^]|}]+)(${esc_sem_s}|${esc_dir_s})"
+			regex="(${esc_sem_p}|${esc_dir_p})([^]|}]*)(${esc_sem_s}|${esc_dir_s})"
 
 			[[ ${val} =~ ${regex} ]] || break
 			full_match="${BASH_REMATCH[0]}"
@@ -164,7 +164,7 @@ resolve_styles() {
 			fi
 		else
 			# Default syntax: {{|...|}} or {{[...]}}
-			regex='\{\{(\[|\|)([^]|}]+)(\]|\|)\}\}'
+			regex='\{\{(\[|\|)([^]|}]*)(\]|\|)\}\}'
 			[[ ${val} =~ ${regex} ]] || break
 			full_match="${BASH_REMATCH[0]}"
 			local type="${BASH_REMATCH[1]}"
