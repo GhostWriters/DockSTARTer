@@ -8,7 +8,7 @@ appvars_create() {
 	for APPNAME in ${AppList^^}; do
 		local -l appname=${APPNAME}
 		local AppName
-		AppName="$(run_script 'app_nicename' "${APPNAME}")"
+		run_script 'app_nicename_into' AppName "${APPNAME}"
 		if ! run_script 'appname_is_valid' "${appname}"; then
 			error "'{{|App|}}${AppName}{{[-]}}' is not a valid application name."
 			continue
@@ -22,8 +22,8 @@ appvars_create() {
 
 		if run_script 'app_is_builtin' "${AppName}"; then
 			local AppDefaultGlobalEnvFile AppDefaultAppEnvFile AppEnvFile
-			AppDefaultGlobalEnvFile="$(run_script 'app_instance_file' "${appname}" ".env")"
-			AppDefaultAppEnvFile="$(run_script 'app_instance_file' "${appname}" ".env.app.*")"
+			run_script 'app_instance_file_into' AppDefaultGlobalEnvFile "${appname}" ".env"
+			run_script 'app_instance_file_into' AppDefaultAppEnvFile "${appname}" ".env.app.*"
 			AppEnvFile="$(run_script 'app_env_file' "${appname}")"
 
 			info "Creating environment variables for '{{|App|}}${AppName}{{[-]}}'."

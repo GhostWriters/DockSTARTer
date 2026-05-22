@@ -36,7 +36,7 @@ menu_value_prompt() {
 		else
 			VarType="APP"
 		fi
-		AppName="$(run_script 'app_nicename' "${APPNAME}")"
+		run_script 'app_nicename_into' AppName "${APPNAME}"
 	else
 		Title="Edit Global Variable"
 		VarType="GLOBAL"
@@ -50,7 +50,7 @@ menu_value_prompt() {
 	local ValueDescription=""
 	local -A OptionHelpLine=()
 	local -A OptionValue=()
-	OptionValue["${OriginalValueOption}"]=$(run_script 'env_get_literal' "${VarName}")
+	run_script 'env_get_literal_into' OptionValue["${OriginalValueOption}"] "${VarName}"
 	OptionHelpLine["${OriginalValueOption}"]="This is the original value before before entering the editor."
 	OptionValue["${CurrentValueOption}"]="${OptionValue["${OriginalValueOption}"]}"
 	OptionHelpLine["${CurrentValueOption}"]="This is the value that will be saved when you select Done."

@@ -14,10 +14,10 @@ appfolders_create() {
 	local -u APPNAME=${1-}
 	local -l appname=${APPNAME}
 	local AppName
-	AppName="$(run_script 'app_nicename' "${APPNAME}")"
+	run_script 'app_nicename_into' AppName "${APPNAME}"
 
 	local APP_FOLDERS_FILE
-	APP_FOLDERS_FILE="$(run_script 'app_instance_file' "${appname}" "*.folders")"
+	run_script 'app_instance_file_into' APP_FOLDERS_FILE "${appname}" "*.folders"
 
 	if [[ -f ${APP_FOLDERS_FILE} ]]; then
 		local -a FoldersArray=()

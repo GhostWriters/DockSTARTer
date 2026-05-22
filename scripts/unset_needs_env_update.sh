@@ -35,7 +35,9 @@ unset_needs_env_update() {
 		APPNAME="$(run_script 'varfile_to_appname' "${VarFile}")"
 		local AppEnabledFile
 		AppEnabledFile="${timestamps_folder}/${filename}_${APPNAME}__ENABLED"
-		run_script 'env_get_line' "${APPNAME}__ENABLED" > "${AppEnabledFile}"
+		local _uneu_enabled_line_
+		run_script 'env_get_line_into' _uneu_enabled_line_ "${APPNAME}__ENABLED"
+		echo "${_uneu_enabled_line_}" > "${AppEnabledFile}"
 		# Record the state of the global .env for this specific app
 		cp -a "${COMPOSE_ENV}" "${timestamps_folder}/${filename}_$(basename "${COMPOSE_ENV}")"
 	fi

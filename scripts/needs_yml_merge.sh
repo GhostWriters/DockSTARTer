@@ -39,7 +39,7 @@ needs_yml_merge() {
 		# Check app-specific template directory
 		if [[ -f ${SentinelFile} ]]; then
 			local baseappname
-			baseappname="$(run_script 'appname_to_baseappname' "${appname}")"
+			run_script 'appname_to_baseappname_into' baseappname "${appname}"
 			local AppTemplateDir="${TEMPLATES_FOLDER:?}/${baseappname}"
 			if [[ -d ${AppTemplateDir} ]]; then
 				if [[ -n $(find "${AppTemplateDir}" -newer "${SentinelFile}" -print -quit) ]]; then

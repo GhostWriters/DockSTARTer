@@ -6,7 +6,7 @@ app_is_builtin() {
 	local -l appname=${1-}
 
 	local -l baseapp
-	baseapp="$(run_script 'appname_to_baseappname' "${appname}")"
+	run_script 'appname_to_baseappname_into' baseapp "${appname}"
 	[[ -d "${TEMPLATES_FOLDER}/${baseapp}" ]]
 }
 

@@ -8,7 +8,9 @@ app_is_enabled() {
 		false
 		return
 	fi
-	is_true "$(run_script 'env_get' "${APPNAME}__ENABLED")"
+	local _aie_enabled_
+	run_script 'env_get_into' _aie_enabled_ "${APPNAME}__ENABLED"
+	is_true "${_aie_enabled_}"
 }
 
 test_app_is_enabled() {

@@ -13,7 +13,7 @@ appvars_purge() {
 	applist="$(xargs -n 1 <<< "$*")"
 	for appname in ${applist}; do
 		local AppName
-		AppName=$(run_script 'app_nicename' "${appname}")
+		run_script 'app_nicename_into' AppName "${appname}"
 
 		local AppEnvFile
 		AppEnvFile="$(run_script 'app_env_file' "${appname}")"

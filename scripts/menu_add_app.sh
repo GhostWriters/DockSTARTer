@@ -56,7 +56,7 @@ menu_add_app() {
 
 				local ErrorMessage=''
 				if run_script 'appname_is_valid' "${AppName}"; then
-					AppName="$(run_script 'app_nicename' "${AppName}")"
+					run_script 'app_nicename_into' AppName "${AppName}"
 					AppNameHeading="${AppName}"
 				else
 					AppNameHeading="${AppNameNone}"

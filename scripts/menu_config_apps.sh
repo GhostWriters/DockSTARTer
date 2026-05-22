@@ -14,7 +14,7 @@ menu_config_apps() {
 		local -a AppOptions=()
 		for AppName in ${AddedApps}; do
 			local AppDescription
-			AppDescription=$(run_script 'app_description' "${AppName}")
+			run_script 'app_description_into' AppDescription "${AppName}"
 			if run_script 'app_is_user_defined' "${AppName}"; then
 				AppOptions+=("${AppName}" "{{|ListAppUserDefined|}}${AppDescription}")
 			else

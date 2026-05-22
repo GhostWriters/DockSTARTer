@@ -16,7 +16,7 @@ env_get_and_expand() {
 		shift $#
 	fi
 	local String=""
-	String="$(run_script 'env_get' "${VarName}" "${VarFile}")"
+	run_script 'env_get_into' String "${VarName}" "${VarFile}"
 	if [[ -z ${String} ]]; then
 		return
 	fi
