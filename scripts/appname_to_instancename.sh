@@ -3,9 +3,9 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 appname_to_instancename() {
-	local _atin_result_
-	run_script 'appname_to_instancename_into' _atin_result_ "$@"
-	echo "${_atin_result_}"
+	local result
+	run_script 'appname_to_instancename_into' result "$@"
+	echo "${result}"
 }
 
 test_appname_to_instancename() {

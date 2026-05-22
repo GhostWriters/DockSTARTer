@@ -5,9 +5,9 @@ IFS=$'\n\t'
 declare -a _dependencies_list=()
 
 app_env_file() {
-	local _aef_result_
-	run_script 'app_env_file_into' _aef_result_ "$@"
-	echo "${_aef_result_}"
+	local result
+	run_script 'app_env_file_into' result "$@"
+	echo "${result}"
 }
 
 test_app_env_file() {

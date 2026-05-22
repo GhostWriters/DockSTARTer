@@ -5,9 +5,9 @@ IFS=$'\n\t'
 declare -a _dependencies_list=()
 
 env_get() {
-	local _eg_result_
-	run_script 'env_get_into' _eg_result_ "$@"
-	echo "${_eg_result_}"
+	local result
+	run_script 'env_get_into' result "$@"
+	echo "${result}"
 }
 
 test_env_get() {

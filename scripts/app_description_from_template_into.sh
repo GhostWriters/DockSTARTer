@@ -2,10 +2,7 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-declare -a _dependencies_list=(
-	grep
-	sed
-)
+declare -a _dependencies_list=()
 
 app_description_from_template_into() {
 	# Return the description of a single appname.
@@ -16,7 +13,17 @@ app_description_from_template_into() {
 		local _adft_labels_yml_
 		run_script 'app_instance_file_into' _adft_labels_yml_ "${_adft_appname_}" "*.labels.yml"
 		if [[ -f ${_adft_labels_yml_} ]]; then
-			_adft_out_="$(${GREP} --color=never -Po "\scom\.dockstarter\.appinfo\.description: \K.*" "${_adft_labels_yml_}" | ${SED} -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo "! Missing description !")"
+			_adft_out_="! Missing description !"
+			local _adft_line_ _adft_pattern_='[[:space:]]com\.dockstarter\.appinfo\.description: (.*)'
+			while IFS= read -r _adft_line_; do
+				if [[ ${_adft_line_} =~ ${_adft_pattern_} ]]; then
+					local _adft_val_="${BASH_REMATCH[1]}"
+					_adft_val_="${_adft_val_#\"}"
+					_adft_val_="${_adft_val_%\"}"
+					_adft_out_="${_adft_val_}"
+					break
+				fi
+			done < "${_adft_labels_yml_}"
 		else
 			_adft_out_="! Missing application !"
 		fi

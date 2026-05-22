@@ -16,9 +16,9 @@ unset_needs_yml_merge() {
 	local -a EnabledApps
 	run_script 'app_list_enabled_into' EnabledApps
 	for AppName in "${EnabledApps[@]-}"; do
-		local _AppEnvFile_
-		run_script 'app_env_file_into' _AppEnvFile_ "${AppName}"
-		make_timestamp_file "${_AppEnvFile_}"
+		local AppEnvFile
+		run_script 'app_env_file_into' AppEnvFile "${AppName}"
+		make_timestamp_file "${AppEnvFile}"
 	done
 }
 

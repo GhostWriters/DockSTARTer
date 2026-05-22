@@ -5,9 +5,9 @@ IFS=$'\n\t'
 declare -a _dependencies_list=()
 
 env_get_literal() {
-	local _egl_result_
-	run_script 'env_get_literal_into' _egl_result_ "$@"
-	echo "${_egl_result_}"
+	local result
+	run_script 'env_get_literal_into' result "$@"
+	echo "${result}"
 }
 
 test_env_get_literal() {

@@ -12,9 +12,9 @@ unset_needs_env_update() {
 		local -a ReferencedApps
 		run_script 'app_list_referenced_into' ReferencedApps
 		for AppName in "${ReferencedApps[@]-}"; do
-			local _AppEnvFile_
-			run_script 'app_env_file_into' _AppEnvFile_ "${AppName}"
-			run_script 'unset_needs_env_update' "${_AppEnvFile_}"
+			local AppEnvFile
+			run_script 'app_env_file_into' AppEnvFile "${AppName}"
+			run_script 'unset_needs_env_update' "${AppEnvFile}"
 		done
 		return
 	fi

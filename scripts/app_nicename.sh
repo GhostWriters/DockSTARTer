@@ -7,9 +7,9 @@ app_nicename() {
 	local AppList
 	AppList="$(xargs -n 1 <<< "$*")"
 	for APPNAME in ${AppList}; do
-		local _an_result_
-		run_script 'app_nicename_into' _an_result_ "${APPNAME}"
-		echo "${_an_result_}"
+		local result
+		run_script 'app_nicename_into' result "${APPNAME}"
+		echo "${result}"
 	done
 }
 

@@ -3,9 +3,9 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 app_description() {
-	local _ad_result_
-	run_script 'app_description_into' _ad_result_ "$@"
-	echo "${_ad_result_}"
+	local result
+	run_script 'app_description_into' result "$@"
+	echo "${result}"
 }
 
 test_app_description() {

@@ -33,9 +33,9 @@ menu_options_package_manager() {
 		run_script 'package_manager_nicename_into' Tag "${PackageManager}"
 		PM_Tag+=("${Tag}")
 		PM_PackageManager["${Tag}"]="${PackageManager}"
-		local _pm_desc_
-		run_script 'package_manager_description_into' _pm_desc_ "${PackageManager}"
-		PM_Item["${Tag}"]="${_pm_desc_}"
+		local desc
+		run_script 'package_manager_description_into' desc "${PackageManager}"
+		PM_Item["${Tag}"]="${desc}"
 		if [[ ${PackageManager} == "${CurrentPackageManager}" ]]; then
 			LastChoice="${Tag}"
 		fi

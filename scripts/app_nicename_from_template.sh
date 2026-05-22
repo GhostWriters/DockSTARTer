@@ -9,9 +9,9 @@ app_nicename_from_template() {
 	local AppList
 	AppList="$(xargs -n 1 <<< "$*")"
 	for APPNAME in ${AppList}; do
-		local _anft_result_
-		run_script 'app_nicename_from_template_into' _anft_result_ "${APPNAME}"
-		echo "${_anft_result_}"
+		local result
+		run_script 'app_nicename_from_template_into' result "${APPNAME}"
+		echo "${result}"
 	done
 }
 

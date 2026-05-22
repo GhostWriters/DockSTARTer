@@ -3,9 +3,9 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 appname_to_baseappname() {
-	local _atbn_result_
-	run_script 'appname_to_baseappname_into' _atbn_result_ "$@"
-	echo "${_atbn_result_}"
+	local result
+	run_script 'appname_to_baseappname_into' result "$@"
+	echo "${result}"
 }
 
 test_appname_to_baseappname() {
