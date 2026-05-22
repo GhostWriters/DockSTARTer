@@ -9,7 +9,9 @@ unset_needs_env_update() {
 
 	if [[ -z ${VarFile} ]]; then
 		run_script 'unset_needs_env_update' "${COMPOSE_ENV}"
-		for AppName in $(run_script 'app_list_referenced'); do
+		local -a ReferencedApps
+		run_script 'app_list_referenced_into' ReferencedApps
+		for AppName in "${ReferencedApps[@]-}"; do
 			local _AppEnvFile_
 			run_script 'app_env_file_into' _AppEnvFile_ "${AppName}"
 			run_script 'unset_needs_env_update' "${_AppEnvFile_}"
@@ -31,7 +33,9 @@ unset_needs_env_update() {
 	if [[ ${VarFile} == "${COMPOSE_ENV}" ]]; then
 		local ReferencedAppsFile
 		ReferencedAppsFile="${timestamps_folder}/${filename}_ReferencedApps"
-		run_script 'app_list_referenced' > "${ReferencedAppsFile}"
+		local -a ReferencedApps
+		run_script 'app_list_referenced_into' ReferencedApps
+		printf '%s\n' "${ReferencedApps[@]-}" > "${ReferencedAppsFile}"
 	else
 		local -u APPNAME
 		APPNAME="$(run_script 'varfile_to_appname' "${VarFile}")"

@@ -29,7 +29,9 @@ env_create() {
 				"Failing command: {{|FailingCommand|}}cp \"${COMPOSE_ENV_DEFAULT_FILE}\" \"${COMPOSE_ENV}\""
 		run_script 'set_permissions' "${COMPOSE_ENV}"
 		run_script 'env_sanitize' --skip-backup
-		if [[ -n ${DefaultApps-} && -z $(run_script 'app_list_referenced') ]]; then
+		local -a ReferencedApps
+		run_script 'app_list_referenced_into' ReferencedApps
+		if [[ -n ${DefaultApps-} && -z ${ReferencedApps[*]-} ]]; then
 			info "Installing default applications."
 			run_script 'appvars_create' "${DefaultApps[@]}"
 			run_script 'env_sanitize' --skip-backup

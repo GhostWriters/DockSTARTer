@@ -18,7 +18,9 @@ app_list_referenced() {
 		run_script 'app_list_hasvarfile'
 	)
 	for AppName in "${AppList[@]-}"; do
-		if [[ -n ${AppName} && -n $(run_script 'appvars_list' "${AppName}:") ]]; then
+		local -a AppVars
+		run_script 'appvars_list_into' AppVars "${AppName}:"
+		if [[ -n ${AppName} && -n ${AppVars[*]-} ]]; then
 			ReferencedApps+=("${AppName}")
 		fi
 	done

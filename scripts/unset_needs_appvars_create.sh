@@ -17,12 +17,12 @@ unset_needs_appvars_create() {
 		cp -a "${COMPOSE_ENV}" "${timestamps_folder}/$(basename "${COMPOSE_ENV}")"
 
 		# 2. Record Added Apps List
-		local AddedApps
-		AddedApps="$(run_script 'app_list_added')"
-		printf '%s\n' "${AddedApps}" > "${timestamps_folder}/AddedApps"
+		local -a AddedApps
+		run_script 'app_list_added_into' AddedApps
+		printf '%s\n' "${AddedApps[@]-}" > "${timestamps_folder}/AddedApps"
 
 		# 3. Record app-specific .env state for all added apps
-		for AppName in ${AddedApps}; do
+		for AppName in "${AddedApps[@]-}"; do
 			local AppEnvFile
 			run_script 'app_env_file_into' AppEnvFile "${AppName}"
 			if [[ -f ${AppEnvFile} ]]; then
@@ -41,7 +41,7 @@ unset_needs_appvars_create() {
 		touch "${timestamps_folder}/LastSynced_${APPNAME}"
 		# Also update the app env timestamp if it exists
 		local AppEnvFile
-		AppEnvFile="$(run_script 'app_env_file' "${AppName}")"
+		run_script 'app_env_file_into' AppEnvFile "${AppName}"
 		if [[ -f ${AppEnvFile} ]]; then
 			cp -a "${AppEnvFile}" "${timestamps_folder}/$(basename "${AppEnvFile}")"
 		fi

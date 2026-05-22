@@ -58,9 +58,7 @@ menu_config_vars() {
 		fi
 		run_script 'appvars_lines' "${APPNAME}" > "${CurrentGlobalEnvFile}"
 		local -a CurrentGlobalEnvLines
-		readarray -t CurrentGlobalEnvLines < <(
-			run_script 'env_format_lines' "${CurrentGlobalEnvFile}" "${DefaultGlobalEnvFile}" "${APPNAME}"
-		)
+		run_script 'env_format_lines_into' CurrentGlobalEnvLines "${CurrentGlobalEnvFile}" "${DefaultGlobalEnvFile}" "${APPNAME}"
 		for line in "${CurrentGlobalEnvLines[@]-}"; do
 			LineNumber+=1
 			CurrentValueOnLine[LineNumber]="${line}"
@@ -105,9 +103,7 @@ menu_config_vars() {
 			LineColor[LineNumber]="{{|LineHeading|}}"
 			run_script 'appvars_lines' "${APPNAME}:" > "${CurrentAppEnvFile}"
 			local -a CurrentAppEnvLines
-			readarray -t CurrentAppEnvLines < <(
-				run_script 'env_format_lines' "${CurrentAppEnvFile}" "${DefaultAppEnvFile}" "${APPNAME}"
-			)
+			run_script 'env_format_lines_into' CurrentAppEnvLines "${CurrentAppEnvFile}" "${DefaultAppEnvFile}" "${APPNAME}"
 			for line in "${CurrentAppEnvLines[@]}"; do
 				LineNumber+=1
 				CurrentValueOnLine[LineNumber]="${line}"

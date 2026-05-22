@@ -53,7 +53,7 @@ menu_app_select() {
 		local -a AppList AddedApps BuiltinApps
 		local AddedAppsRegex=''
 
-		readarray -t AddedApps < <(run_script 'app_list_added')
+		run_script 'app_list_added_into' AddedApps
 		update_gauge 1
 
 		readarray -t AddedApps < <(run_script 'app_filter_runnable' "${AddedApps[@]-}" | sort -f -u)
@@ -91,7 +91,7 @@ menu_app_select() {
 		ProgressStepNumber=0
 		update_gauge 0 "${FindBuiltinApps}" "_Waiting_" "_InProgress_"
 
-		readarray -t BuiltinApps < <(run_script 'app_list_nondeprecated')
+		run_script 'app_list_nondeprecated_into' BuiltinApps
 		update_gauge 1
 
 		readarray -t BuiltinApps < <(run_script 'app_filter_runnable' "${BuiltinApps[@]}")
