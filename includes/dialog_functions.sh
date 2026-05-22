@@ -255,6 +255,36 @@ _parse_dialog_options_() {
 	done
 }
 
+# _dialog_calc_list_width_ WindowWidthRef Title SubTitle FieldsPerItem Items...
+# Computes WindowWidth for non-maximized list dialogs based on content.
+# Sets width to wmax if content overflows, 0 (auto) otherwise.
+_dialog_calc_list_width_() {
+	local -n _dclw_w_="${1}"
+	local _dclw_title_="${2}"
+	local _dclw_sub_="${3}"
+	local -i _dclw_fpi_="${4}"
+	shift 4
+	set_screen_size
+	local -i _dclw_wmax_=$((COLUMNS - D["WindowColsAdjust"]))
+	local -i _dclw_tagw_=0 _dclw_itemw_=0
+	local -i _dclw_i_
+	for ((_dclw_i_ = 0; _dclw_i_ < $#; _dclw_i_ += _dclw_fpi_)); do
+		local _dclw_tag_ _dclw_item_
+		_dclw_tag_="$(strip_styles "${@:$((_dclw_i_ + 1)):1}")"  # field 1: tag
+		_dclw_item_="$(strip_styles "${@:$((_dclw_i_ + 2)):1}")" # field 2: description (never item-help)
+		[[ ${#_dclw_tag_} -gt _dclw_tagw_ ]] && _dclw_tagw_=${#_dclw_tag_}
+		[[ ${#_dclw_item_} -gt _dclw_itemw_ ]] && _dclw_itemw_=${#_dclw_item_}
+		[[ $((3 + _dclw_tagw_ + 2 + _dclw_itemw_ + 3)) -ge _dclw_wmax_ ]] && _dclw_w_=${_dclw_wmax_} && return
+	done
+	local -i _dclw_labelw_=$((3 + _dclw_tagw_ + 2 + _dclw_itemw_ + 3))
+	local -i _dclw_subw_
+	_dclw_subw_="$("${DIALOG}" --output-fd 1 --print-text-size "$(strip_styles "${_dclw_sub_}")" 0 0 2> /dev/null | cut -d ' ' -f 2)"
+	local -i _dclw_titlew_=$((3 + 12 + ${#_dclw_title_} + 3))
+	local -i _dclw_req_=$((_dclw_labelw_ > _dclw_subw_ ? _dclw_labelw_ : _dclw_subw_))
+	_dclw_req_=$((_dclw_req_ > _dclw_titlew_ ? _dclw_req_ : _dclw_titlew_))
+	[[ ${_dclw_req_} -ge ${_dclw_wmax_} ]] && _dclw_w_=${_dclw_wmax_} || _dclw_w_=0
+}
+
 # _dialog_calc_text_size_ WindowHeightRef WindowWidthRef Message Title Maximized
 # Computes WindowHeight and WindowWidth for text-based dialogs (msgbox, inputbox, form, yesno).
 # Uses namerefs to set the caller's WindowHeight and WindowWidth variables directly.
@@ -276,7 +306,7 @@ _dialog_calc_text_size_() {
 	fi
 }
 
-# _dialog_calc_list_size_ WindowHeightRef WindowWidthRef MenuHeightRef SubTitle Maximized
+# _dialog_calc_list_size_ WindowHeightRef WindowWidthRef MenuHeightRef SubTitle Maximized ItemCount
 # Computes WindowHeight, WindowWidth, and MenuHeight for list-based dialogs (menu, checklist, radiolist, inputmenu).
 # Uses namerefs to set the caller's WindowHeight, WindowWidth, and MenuHeight variables directly.
 _dialog_calc_list_size_() {
@@ -297,6 +327,19 @@ _dialog_calc_list_size_() {
 		local -i _dcls_tr_
 		_dcls_tr_="$("${DIALOG}" --output-fd 1 --print-text-size "$(strip_styles "${_dcls_sub_}")" "${_dcls_h_}" "${_dcls_w_}" 2> /dev/null | cut -d ' ' -f 1)"
 		_dcls_m_=$((LINES - D["TextRowsAdjust"] - _dcls_tr_))
+	else
+		local -i _dcls_sh_
+		_dcls_sh_="$("${DIALOG}" --output-fd 1 --print-text-size "$(strip_styles "${_dcls_sub_}")" 0 0 2> /dev/null | cut -d ' ' -f 1)"
+		local -i _dcls_ic_="${6:-0}"
+		local -i _dcls_required_=$((_dcls_sh_ + _dcls_ic_ + 8))
+		if [[ ${_dcls_required_} -ge ${_dcls_hmax_} ]]; then
+			_dcls_h_=${_dcls_hmax_}
+			local -i _dcls_tr_
+			_dcls_tr_="$("${DIALOG}" --output-fd 1 --print-text-size "$(strip_styles "${_dcls_sub_}")" "${_dcls_h_}" "${_dcls_w_}" 2> /dev/null | cut -d ' ' -f 1)"
+			_dcls_m_=$((LINES - D["TextRowsAdjust"] - _dcls_tr_))
+		else
+			_dcls_m_=${_dcls_ic_}
+		fi
 	fi
 }
 
@@ -449,8 +492,15 @@ dialog_menu() {
 	DialogOptions+=(--output-fd 1)
 	[[ -n ${Title} ]] && DialogOptions+=(--title "{{|Title|}}${Title}")
 
+	local -i FieldsPerItem=2
+	local _opt_
+	for _opt_ in "${DialogOptions[@]}"; do
+		[[ ${_opt_} == "--item-help" ]] && FieldsPerItem=3 && break
+	done
+	local -i ItemCount=$((${#Items[@]} / FieldsPerItem))
 	local -i WindowHeight=0 WindowWidth=0 MenuHeight=0
-	_dialog_calc_list_size_ WindowHeight WindowWidth MenuHeight "${SubTitle}" "${Maximized}"
+	_dialog_calc_list_size_ WindowHeight WindowWidth MenuHeight "${SubTitle}" "${Maximized}" "${ItemCount}"
+	[[ ${Maximized} -eq 0 ]] && _dialog_calc_list_width_ WindowWidth "${Title}" "${SubTitle}" "${FieldsPerItem}" "${Items[@]}"
 
 	local StyledSubTitle=""
 	[[ -n ${SubTitle} ]] && StyledSubTitle="{{|Subtitle|}}${SubTitle}"
@@ -477,8 +527,15 @@ dialog_checklist() {
 	DialogOptions+=(--output-fd 1)
 	[[ -n ${Title} ]] && DialogOptions+=(--title "{{|Title|}}${Title}")
 
+	local -i FieldsPerItem=3
+	local _opt_
+	for _opt_ in "${DialogOptions[@]}"; do
+		[[ ${_opt_} == "--item-help" ]] && FieldsPerItem=4 && break
+	done
+	local -i ItemCount=$((${#Items[@]} / FieldsPerItem))
 	local -i WindowHeight=0 WindowWidth=0 MenuHeight=0
-	_dialog_calc_list_size_ WindowHeight WindowWidth MenuHeight "${SubTitle}" "${Maximized}"
+	_dialog_calc_list_size_ WindowHeight WindowWidth MenuHeight "${SubTitle}" "${Maximized}" "${ItemCount}"
+	[[ ${Maximized} -eq 0 ]] && _dialog_calc_list_width_ WindowWidth "${Title}" "${SubTitle}" "${FieldsPerItem}" "${Items[@]}"
 
 	local StyledSubTitle=""
 	[[ -n ${SubTitle} ]] && StyledSubTitle="{{|Subtitle|}}${SubTitle}"
@@ -505,8 +562,15 @@ dialog_radiolist() {
 	DialogOptions+=(--output-fd 1)
 	[[ -n ${Title} ]] && DialogOptions+=(--title "{{|Title|}}${Title}")
 
+	local -i FieldsPerItem=3
+	local _opt_
+	for _opt_ in "${DialogOptions[@]}"; do
+		[[ ${_opt_} == "--item-help" ]] && FieldsPerItem=4 && break
+	done
+	local -i ItemCount=$((${#Items[@]} / FieldsPerItem))
 	local -i WindowHeight=0 WindowWidth=0 MenuHeight=0
-	_dialog_calc_list_size_ WindowHeight WindowWidth MenuHeight "${SubTitle}" "${Maximized}"
+	_dialog_calc_list_size_ WindowHeight WindowWidth MenuHeight "${SubTitle}" "${Maximized}" "${ItemCount}"
+	[[ ${Maximized} -eq 0 ]] && _dialog_calc_list_width_ WindowWidth "${Title}" "${SubTitle}" "${FieldsPerItem}" "${Items[@]}"
 
 	local StyledSubTitle=""
 	[[ -n ${SubTitle} ]] && StyledSubTitle="{{|Subtitle|}}${SubTitle}"
@@ -533,8 +597,15 @@ dialog_inputmenu() {
 	DialogOptions+=(--output-fd 1)
 	[[ -n ${Title} ]] && DialogOptions+=(--title "{{|Title|}}${Title}")
 
+	local -i FieldsPerItem=2
+	local _opt_
+	for _opt_ in "${DialogOptions[@]}"; do
+		[[ ${_opt_} == "--item-help" ]] && FieldsPerItem=3 && break
+	done
+	local -i ItemCount=$((${#Items[@]} / FieldsPerItem))
 	local -i WindowHeight=0 WindowWidth=0 MenuHeight=0
-	_dialog_calc_list_size_ WindowHeight WindowWidth MenuHeight "${SubTitle}" "${Maximized}"
+	_dialog_calc_list_size_ WindowHeight WindowWidth MenuHeight "${SubTitle}" "${Maximized}" "${ItemCount}"
+	[[ ${Maximized} -eq 0 ]] && _dialog_calc_list_width_ WindowWidth "${Title}" "${SubTitle}" "${FieldsPerItem}" "${Items[@]}"
 
 	local StyledSubTitle=""
 	[[ -n ${SubTitle} ]] && StyledSubTitle="{{|Subtitle|}}${SubTitle}"
