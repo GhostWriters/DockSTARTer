@@ -53,13 +53,13 @@ menu_app_select() {
 		local -a AppList AddedApps BuiltinApps
 		local AddedAppsRegex=''
 
-		run_script 'app_list_added_into' AddedApps
+		run_script 'app_list_added_into_array' AddedApps
 		update_gauge 1
 
 		readarray -t AddedApps < <(run_script 'app_filter_runnable' "${AddedApps[@]-}" | sort -f -u)
 		update_gauge 1
 
-		readarray -t AddedApps < <(run_script 'app_nicename_from_template' "${AddedApps[@]-}")
+		run_script 'app_nicename_from_template_into_array' AddedApps "${AddedApps[@]-}"
 		update_gauge 1
 
 		if [[ -n ${AddedApps[*]-} ]]; then
@@ -74,7 +74,7 @@ menu_app_select() {
 			TextCols=$((COLUMNS - D["WindowColsAdjust"] - D["TextColsAdjust"]))
 			local Indent='   '
 			local -a AddedAppsTable
-			readarray -t AddedAppsTable < <(printf "%s\n" "${AddedApps[@]}")
+			AddedAppsTable=("${AddedApps[@]}")
 			readarray -t AddedAppsTable < <(
 				printf "%s\n" "${AddedAppsTable[@]}" |
 					column -c "$((TextCols - ${#Indent}))" |
@@ -91,13 +91,13 @@ menu_app_select() {
 		ProgressStepNumber=0
 		update_gauge 0 "${FindBuiltinApps}" "_Waiting_" "_InProgress_"
 
-		run_script 'app_list_nondeprecated_into' BuiltinApps
+		run_script 'app_list_nondeprecated_into_array' BuiltinApps
 		update_gauge 1
 
 		readarray -t BuiltinApps < <(run_script 'app_filter_runnable' "${BuiltinApps[@]}")
 		update_gauge 1
 
-		readarray -t BuiltinApps < <(run_script 'app_nicename_from_template' "${BuiltinApps[@]}")
+		run_script 'app_nicename_from_template_into_array' BuiltinApps "${BuiltinApps[@]}"
 		update_gauge 1
 
 		local -a AllApps

@@ -11,7 +11,7 @@ appvars_create_all() {
 	run_script 'env_create'
 	run_script 'appvars_migrate_enabled_lines'
 	local -a AddedApps
-	run_script 'app_list_added_into' AddedApps
+	run_script 'app_list_added_into_array' AddedApps
 	if [[ -n ${AddedApps[*]-} ]]; then
 		notice "Creating environment variables for added apps. Please be patient, this can take a while."
 		run_script 'appvars_create' "${AddedApps[@]}"

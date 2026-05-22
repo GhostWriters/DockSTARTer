@@ -56,7 +56,7 @@ menu_config_vars() {
 		fi
 		run_script 'appvars_lines' "${APPNAME}" > "${CurrentGlobalEnvFile}"
 		local -a CurrentGlobalEnvLines
-		run_script 'env_format_lines_into' CurrentGlobalEnvLines "${CurrentGlobalEnvFile}" "${DefaultGlobalEnvFile}" "${APPNAME}"
+		run_script 'env_format_lines_into_array' CurrentGlobalEnvLines "${CurrentGlobalEnvFile}" "${DefaultGlobalEnvFile}" "${APPNAME}"
 		for line in "${CurrentGlobalEnvLines[@]-}"; do
 			LineNumber+=1
 			CurrentValueOnLine[LineNumber]="${line}"
@@ -101,17 +101,17 @@ menu_config_vars() {
 			LineColor[LineNumber]="{{|LineHeading|}}"
 			run_script 'appvars_lines' "${APPNAME}:" > "${CurrentAppEnvFile}"
 			local -a CurrentAppEnvLines
-			run_script 'env_format_lines_into' CurrentAppEnvLines "${CurrentAppEnvFile}" "${DefaultAppEnvFile}" "${APPNAME}"
+			run_script 'env_format_lines_into_array' CurrentAppEnvLines "${CurrentAppEnvFile}" "${DefaultAppEnvFile}" "${APPNAME}"
 			for line in "${CurrentAppEnvLines[@]}"; do
 				LineNumber+=1
 				CurrentValueOnLine[LineNumber]="${line}"
-				local VarName
-				VarName="$(${GREP} -o -P '^\w+(?=)' <<< "${line}")"
+				local VarName=""
+				[[ ${line} =~ ^([[:alnum:]_]+) ]] && VarName="${BASH_REMATCH[1]}"
 				if [[ -n ${VarName-} ]]; then
 					# Line contains a variable
-					local DefaultLine _DefaultVal_
-					run_script 'var_default_value_into' _DefaultVal_ "${APPNAME}:${VarName}"
-					DefaultLine="${VarName}=${_DefaultVal_}"
+					local DefaultLine DefaultVal
+					run_script 'var_default_value_into' DefaultVal "${APPNAME}:${VarName}"
+					DefaultLine="${VarName}=${DefaultVal}"
 					if [[ ${line} == "${DefaultLine}" ]]; then
 						LineColor[LineNumber]="{{|LineVar|}}"
 					else

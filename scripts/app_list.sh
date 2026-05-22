@@ -9,7 +9,7 @@ declare -a _dependencies_list=(
 app_list() {
 	local -a AppList
 	local -a BuiltinApps
-	run_script 'app_list_builtin_into' BuiltinApps
+	run_script 'app_list_builtin_into_array' BuiltinApps
 	readarray -t AppList < <(run_script 'app_nicename' "${BuiltinApps[*]}")
 	local -a TableContents=(Application Deprecated Added Disabled)
 	for AppName in "${AppList[@]}"; do

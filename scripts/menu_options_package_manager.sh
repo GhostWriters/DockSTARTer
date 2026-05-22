@@ -18,7 +18,7 @@ menu_options_package_manager() {
 	run_script 'config_get_into' CurrentPackageManager pm.package_manager || true
 
 	local -a PackageManagerList
-	run_script 'package_manager_list_into' PackageManagerList
+	run_script 'package_manager_list_into_array' PackageManagerList
 
 	local LastChoice="${PM_AutoDetect_Tag}"
 

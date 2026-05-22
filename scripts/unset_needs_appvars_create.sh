@@ -18,7 +18,7 @@ unset_needs_appvars_create() {
 
 		# 2. Record Added Apps List
 		local -a AddedApps
-		run_script 'app_list_added_into' AddedApps
+		run_script 'app_list_added_into_array' AddedApps
 		printf '%s\n' "${AddedApps[@]-}" > "${timestamps_folder}/AddedApps"
 
 		# 3. Record app-specific .env state for all added apps

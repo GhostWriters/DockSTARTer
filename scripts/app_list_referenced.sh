@@ -19,7 +19,7 @@ app_list_referenced() {
 	)
 	for AppName in "${AppList[@]-}"; do
 		local -a AppVars
-		run_script 'appvars_list_into' AppVars "${AppName}:"
+		run_script 'appvars_list_into_array' AppVars "${AppName}:"
 		if [[ -n ${AppName} && -n ${AppVars[*]-} ]]; then
 			ReferencedApps+=("${AppName}")
 		fi

@@ -5,7 +5,7 @@ IFS=$'\n\t'
 appvars_purge_all() {
 	local Title="Purge All Variables"
 	local -a DisabledApps
-	run_script 'app_list_disabled_into' DisabledApps
+	run_script 'app_list_disabled_into_array' DisabledApps
 	if [[ -n ${DisabledApps[*]-} ]]; then
 		if [[ ${CI-} == true ]] || run_script 'question_prompt' Y "Would you like to purge variables for all disabled apps?" "${Title}" "${ASSUMEYES:+Y}"; then
 			info "Purging disabled app variables."
