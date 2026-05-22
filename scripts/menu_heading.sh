@@ -44,11 +44,11 @@ menu_heading() {
 		if [[ ${AppName-} == ":"* ]]; then # ":AppName", using .env
 			AppName="${AppName#:*}"
 			VarFile="${COMPOSE_ENV}"
-			DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" ".env")"
+			run_script 'app_instance_file_into' DefaultVarFile "${AppName}" ".env"
 		elif [[ ${AppName-} == *":" ]]; then # "AppName:", using appname.env
 			AppName="${AppName%:*}"
 			VarFile="$(run_script 'app_env_file' "${AppName}")"
-			DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" ".env.app.*")"
+			run_script 'app_instance_file_into' DefaultVarFile "${AppName}" ".env.app.*"
 		fi
 		if [[ -n ${VarName-} ]] && run_script 'varname_is_valid' "${VarName}"; then # "appname:varname", using appname.env
 			VarIsValid='Y'
@@ -56,11 +56,11 @@ menu_heading() {
 				AppName="${VarName%:*}"
 				VarName="${VarName#*:}"
 				VarFile="$(run_script 'app_env_file' "${AppName}")"
-				DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" ".env.app.*")"
+				run_script 'app_instance_file_into' DefaultVarFile "${AppName}" ".env.app.*"
 			fi
 			if [[ -z ${VarFile-} ]]; then
 				VarFile="${COMPOSE_ENV}"
-				DefaultVarFile="$(run_script 'app_instance_file' "${AppName}" ".env")"
+				run_script 'app_instance_file_into' DefaultVarFile "${AppName}" ".env"
 			fi
 		fi
 
@@ -82,7 +82,7 @@ menu_heading() {
 					VarIsUserDefined='Y'
 				fi
 			fi
-			AppName=$(run_script 'app_nicename' "${AppName}")
+			run_script 'app_nicename_into' AppName "${AppName}"
 		else # Global File or Variable
 			VarFile="${COMPOSE_ENV}"
 			DefaultVarFile="${COMPOSE_ENV_DEFAULT_FILE}"
@@ -111,7 +111,7 @@ menu_heading() {
 						Heading[Application]+="\n"
 
 						local AppDescription
-						AppDescription="$(run_script 'app_description' "${AppName}")"
+						run_script 'app_description_into' AppDescription "${AppName}"
 						set_screen_size
 						local -i ScreenCols=${COLUMNS}
 						local -i TextWidth=$((ScreenCols - D["WindowColsAdjust"] - D["TextColsAdjust"] - LabelWidth))

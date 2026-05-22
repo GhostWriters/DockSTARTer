@@ -13,7 +13,7 @@ env_sanitize() {
 
 	# Update the HOME variable if it is not set to the detected home directory
 	local HOME
-	HOME="$(run_script 'env_get' HOME)"
+	run_script 'env_get_into' HOME HOME
 	if [[ ${HOME} != "${DETECTED_HOMEDIR}" ]]; then
 		HOME="${DETECTED_HOMEDIR}"
 		VarsToUpdate+=(HOME)
@@ -22,7 +22,7 @@ env_sanitize() {
 
 	local DOCKER_CONFIG_FOLDER DOCKER_COMPOSE_FOLDER ORIG_CONFIG_FOLDER ORIG_COMPOSE_FOLDER
 
-	ORIG_CONFIG_FOLDER="$(run_script 'env_get' DOCKER_CONFIG_FOLDER)"
+	run_script 'env_get_into' ORIG_CONFIG_FOLDER DOCKER_CONFIG_FOLDER
 	LITERAL_CONFIG_FOLDER="$(run_script 'config_get' paths.config_folder)"
 	if [[ -z ${LITERAL_CONFIG_FOLDER-} ]]; then
 		LITERAL_CONFIG_FOLDER="$(run_script 'config_get' paths.config_folder "${DEFAULT_TOML_FILE}")"
@@ -32,7 +32,7 @@ env_sanitize() {
 	fi
 	DOCKER_CONFIG_FOLDER="${LITERAL_CONFIG_FOLDER}"
 
-	ORIG_COMPOSE_FOLDER="$(run_script 'env_get' DOCKER_COMPOSE_FOLDER)"
+	run_script 'env_get_into' ORIG_COMPOSE_FOLDER DOCKER_COMPOSE_FOLDER
 	LITERAL_COMPOSE_FOLDER="$(run_script 'config_get' paths.compose_folder)"
 	if [[ -z ${LITERAL_COMPOSE_FOLDER-} ]]; then
 		LITERAL_COMPOSE_FOLDER="$(run_script 'config_get' paths.compose_folder "${DEFAULT_TOML_FILE}")"
@@ -75,7 +75,7 @@ env_sanitize() {
 	)
 	for VarName in "${VarList[@]-}"; do
 		local Value
-		Value="$(run_script 'env_get' "${VarName}")"
+		run_script 'env_get_into' Value "${VarName}"
 		if [[ -z ${Value-} ]]; then
 			# If the variable is empty get the default value
 			local Default
@@ -93,7 +93,7 @@ env_sanitize() {
 	)
 	for VarName in "${VarList[@]-}"; do
 		local Value
-		Value="$(run_script 'env_get' "${VarName}")"
+		run_script 'env_get_into' Value "${VarName}"
 		if [[ -z ${Value-} ]] || echo "${Value-}" | ${GREP} -q 'x'; then
 			# If the variable is empty or contains an "x", get the default value
 			local Default
@@ -114,7 +114,7 @@ env_sanitize() {
 	for VarName in "${VarList[@]-}"; do
 		# Get the value including quotes
 		local Value
-		Value="$(run_script 'env_get' "${VarName}")"
+		run_script 'env_get_into' Value "${VarName}"
 		local UpdatedValue
 		UpdatedValue="$(run_script 'sanitize_path' "${Value}")"
 		UpdatedValue="$(

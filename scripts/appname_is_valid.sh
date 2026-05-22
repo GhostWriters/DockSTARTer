@@ -32,7 +32,7 @@ appname_is_valid() {
 			InvalidInstanceNamesRegex="${InvalidInstanceNames[*]}"
 		}
 		local -u InstanceName
-		InstanceName="$(run_script 'appname_to_instancename' "${APPNAME}")"
+		run_script 'appname_to_instancename_into' InstanceName "${APPNAME}"
 		[[ ! ${InstanceName} =~ ${InvalidInstanceNamesRegex} ]]
 		return
 	fi

@@ -38,7 +38,7 @@ menu_add_var() {
 			appname="${APPNAME,,}"
 			VarFile="${COMPOSE_ENV}"
 		fi
-		AppName="$(run_script 'app_nicename' "${APPNAME}")"
+		run_script 'app_nicename_into' AppName "${APPNAME}"
 	fi
 
 	case "${VarType}" in
@@ -250,7 +250,9 @@ menu_add_var() {
 						elif run_script 'env_var_exists' "${VarName}"; then
 							ErrorMessage="The variable {{|Highlight|}}${VarName}{{[-]}} already exists.\n\n Please input another variable name."
 						else
-							DetectedAppName="$(run_script 'app_nicename' "$(run_script 'varname_to_appname' "${VarName}")")"
+							local _mav_detectedapp_
+							_mav_detectedapp_="$(run_script 'varname_to_appname' "${VarName}")"
+							run_script 'app_nicename_into' DetectedAppName "${_mav_detectedapp_}"
 							if [[ ${DetectedAppName^^} == "" ]]; then
 								ErrorMessage="The variable name {{|Highlight|}}${VarName}{{[-]}} is not a valid name for app {{|Highlight|}}${AppName}{{[-]}}. It would be a global variable.\n\n Please input another variable name."
 							elif [[ ${DetectedAppName^^} != "${APPNAME}" ]]; then
@@ -324,7 +326,9 @@ menu_add_var() {
 						elif run_script 'env_var_exists' "${VarName}" "${VarFile}"; then
 							ErrorMessage="The variable {{|Highlight|}}${VarName}{{[-]}} already exists.\n\n Please input another variable name."
 						elif [[ ${VarType} == GLOBAL ]]; then
-							DetectedAppName="$(run_script 'app_nicename' "$(run_script 'varname_to_appname' "${VarName}")")"
+							local _mav_detectedapp_
+							_mav_detectedapp_="$(run_script 'varname_to_appname' "${VarName}")"
+							run_script 'app_nicename_into' DetectedAppName "${_mav_detectedapp_}"
 							if [[ ${DetectedAppName} != "" ]]; then
 								ErrorMessage="The variable name {{|Highlight|}}${VarName}{{[-]}} is not a valid global variable name. It would be a variable for an app named {{|Highlight|}}${DetectedAppName}{{[-]}}\n\n Please input another variable name."
 							fi

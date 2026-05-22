@@ -33,7 +33,7 @@ env_format_lines() {
 		if run_script 'app_is_user_defined' "${APPNAME}"; then
 			AppIsUserDefined='Y'
 		fi
-		AppName="$(run_script 'app_nicename' "${APPNAME}")"
+		run_script 'app_nicename_into' AppName "${APPNAME}"
 		AppDescription="$(run_script 'app_description' "${APPNAME}" | wordwrap_pipe 75)"
 		local HeadingTitle="${AppName}"
 		if [[ ${AppIsUserDefined} == Y ]]; then

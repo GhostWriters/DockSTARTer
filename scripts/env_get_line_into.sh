@@ -2,15 +2,40 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-declare -a _dependencies_list=()
+declare -a _dependencies_list=(
+	grep
+)
 
-env_get_line() {
-	local _egl_result_
-	run_script 'env_get_line_into' _egl_result_ "$@"
-	echo "${_egl_result_}"
+env_get_line_into() {
+	# env_get_line_into OutVar VarName [VarFile]
+	# env_get_line_into OutVar APPNAME:VarName
+	#
+	# Returns the variable "VarName" If no "VarFile" is given, uses the global .env file
+	# If "APPNAME:" is provided, gets variable from ".env.app.appname"
+	local -n _egli_out_="${1}"
+	local _egli_VarName_=${2-}
+	local _egli_VarFile_=${3:-$COMPOSE_ENV}
+
+	if ! run_script 'varname_is_valid' "${_egli_VarName_}"; then
+		error "'{{|Var|}}${_egli_VarName_}{{[-]}}' is an invalid variable name."
+		return
+	fi
+
+	if [[ ${_egli_VarName_} =~ ^[A-Za-z0-9_]+: ]]; then
+		# VarName is in the form of "APPNAME:VARIABLE", set new file to use
+		local _egli_APPNAME_=${_egli_VarName_%%:*}
+		run_script 'app_env_file_into' _egli_VarFile_ "${_egli_APPNAME_}"
+		_egli_VarName_=${_egli_VarName_#"${_egli_APPNAME_}:"}
+	fi
+	if [[ -e ${_egli_VarFile_} ]]; then
+		_egli_out_="$(${GREP} --color=never -Po "^\s*${_egli_VarName_}\s*=.*" "${_egli_VarFile_}" | tail -1 || true)"
+	else
+		# VarFile does not exist, give a warning
+		warn "File '{{|File|}}${_egli_VarFile_}{{[-]}}' does not exist."
+	fi
 }
 
-test_env_get_line() {
+test_env_get_line_into() {
 	local ForcePass='' # Force the tests to pass even on failure if set to a non-empty value
 	local -i result=0
 	local -a Test=(
@@ -48,10 +73,12 @@ test_env_get_line() {
 	notice "$(cat "${VarFile}")"
 	run_unit_tests_pipe "Var" "Var" "${ForcePass}" < <(
 		for ((i = 0; i < ${#Test[@]}; i += 3)); do
+			local Result
+			run_script 'env_get_line_into' Result "${Test[i]}" "${VarFile}"
 			printf '%s\n' \
 				"${Test[i + 1]}" \
 				"${Test[i + 2]}" \
-				"$(run_script 'env_get_line' "${Test[i]}" "${VarFile}")"
+				"${Result}"
 		done
 	)
 	result=$?

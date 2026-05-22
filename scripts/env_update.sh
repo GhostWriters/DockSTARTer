@@ -49,7 +49,7 @@ env_update() {
 				local APP_DEFAULT_GLOBAL_ENV_FILE=""
 				local -a UPDATED_APP_ENV_LINES=()
 				if ! run_script 'app_is_user_defined' "${appname}"; then
-					APP_DEFAULT_GLOBAL_ENV_FILE="$(run_script 'app_instance_file' "${appname}" ".env")"
+					run_script 'app_instance_file_into' APP_DEFAULT_GLOBAL_ENV_FILE "${appname}" ".env"
 				fi
 				run_script 'appvars_lines' "${appname}" > "${ENV_LINES_FILE}"
 				if ((${#UPDATED_ENV_LINES[@]} > 0)); then
@@ -99,7 +99,7 @@ env_update() {
 				fi
 				local APP_DEFAULT_ENV_FILE=""
 				if ! run_script 'app_is_user_defined' "${appname}"; then
-					APP_DEFAULT_ENV_FILE="$(run_script 'app_instance_file' "${appname}" ".env.app.*")"
+					run_script 'app_instance_file_into' APP_DEFAULT_ENV_FILE "${appname}" ".env.app.*"
 				fi
 				local -a UPDATED_APP_ENV_LINES=()
 				readarray -t UPDATED_APP_ENV_LINES < <(

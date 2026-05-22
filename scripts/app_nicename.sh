@@ -7,29 +7,10 @@ app_nicename() {
 	local AppList
 	AppList="$(xargs -n 1 <<< "$*")"
 	for APPNAME in ${AppList}; do
-		local AppName="${APPNAME%:*}"
-		if ! run_script 'app_is_user_defined' "${AppName}"; then
-			run_script 'app_nicename_from_template' "${AppName}"
-			continue
-		fi
-
-		local -l baseapp instance
-		local BaseApp Instance
-		baseapp=$(run_script 'appname_to_baseappname' "${AppName}")
-		BaseApp="${baseapp^}"
-		instance=$(run_script 'appname_to_instancename' "${AppName}")
-		Instance=""
-		if [[ -n ${instance} ]]; then
-			# Capitalize first letter character, skipping any leading digits.
-			# e.g. "4k" → "4K", "instance" → "Instance"
-			local cap_prefix cap_rest
-			cap_prefix="${instance%%[a-zA-Z]*}"
-			cap_rest="${instance#"${cap_prefix}"}"
-			Instance="__${cap_prefix}${cap_rest^}"
-		fi
-		echo "${BaseApp}${Instance}"
+		local _an_result_
+		run_script 'app_nicename_into' _an_result_ "${APPNAME}"
+		echo "${_an_result_}"
 	done
-
 }
 
 test_app_nicename() {

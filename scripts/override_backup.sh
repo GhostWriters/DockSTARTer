@@ -9,7 +9,7 @@ declare -a _dependencies_list=(
 override_backup() {
 	if [[ -f "${SCRIPTPATH}/compose/docker-compose.override.yml" ]]; then
 		local DOCKER_VOLUME_CONFIG
-		DOCKER_VOLUME_CONFIG="$(run_script 'env_get' DOCKER_VOLUME_CONFIG)"
+		run_script 'env_get_into' DOCKER_VOLUME_CONFIG DOCKER_VOLUME_CONFIG
 		if [[ -z ${DOCKER_VOLUME_CONFIG-} ]]; then
 			fatal \
 				"'{{|Var|}}DOCKER_VOLUME_CONFIG{{[-]}}' is not set in '{{|File|}}${COMPOSE_ENV}{{[-]}}'"

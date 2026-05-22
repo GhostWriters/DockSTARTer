@@ -4,13 +4,40 @@ IFS=$'\n\t'
 
 declare -a _dependencies_list=()
 
-env_get_literal() {
-	local _egl_result_
-	run_script 'env_get_literal_into' _egl_result_ "$@"
-	echo "${_egl_result_}"
+env_get_literal_into() {
+	# env_get_literal_into OutVar VarName [VarFile]
+	# env_get_literal_into OutVar APPNAME:VarName
+	#
+	# The string returned will be the literal value after `=`, including quotes and comments
+	#
+	# Returns the variable "VarName" If no "VarFile" is given, uses the global .env file
+	# If "APPNAME:" is provided, gets variable from ".env.app.appname"
+	local -n _eglli_out_="${1}"
+	local _eglli_VarName_=${2-}
+	local _eglli_VarFile_=${3:-$COMPOSE_ENV}
+
+	if ! run_script 'varname_is_valid' "${_eglli_VarName_}"; then
+		error "'{{|Var|}}${_eglli_VarName_}{{[-]}}' is an invalid variable name."
+		return
+	fi
+
+	if [[ ${_eglli_VarName_} =~ ^[A-Za-z0-9_]+: ]]; then
+		# VarName is in the form of "APPNAME:VARIABLE", set new file to use
+		local _eglli_APPNAME_=${_eglli_VarName_%%:*}
+		run_script 'app_env_file_into' _eglli_VarFile_ "${_eglli_APPNAME_}"
+		_eglli_VarName_=${_eglli_VarName_#"${_eglli_APPNAME_}:"}
+	fi
+	if [[ -e ${_eglli_VarFile_} ]]; then
+		local _eglli_Line_
+		run_script 'env_get_line_into' _eglli_Line_ "${_eglli_VarName_}" "${_eglli_VarFile_}"
+		_eglli_out_="${_eglli_Line_#*=}"
+	else
+		# VarFile does not exist, give a warning
+		warn "File '{{|File|}}${_eglli_VarFile_}{{[-]}}' does not exist."
+	fi
 }
 
-test_env_get_literal() {
+test_env_get_literal_into() {
 	local ForcePass='' # Force the tests to pass even on failure if set to a non-empty value
 	local -i result=0
 	local -a Test=(
@@ -48,10 +75,12 @@ test_env_get_literal() {
 	notice "$(cat "${VarFile}")"
 	run_unit_tests_pipe "Var" "Var" "${ForcePass}" < <(
 		for ((i = 0; i < ${#Test[@]}; i += 3)); do
+			local Result
+			run_script 'env_get_literal_into' Result "${Test[i]}" "${VarFile}"
 			printf '%s\n' \
 				"${Test[i + 1]}" \
 				"${Test[i + 2]}" \
-				"$(run_script 'env_get_literal' "${Test[i]}" "${VarFile}")"
+				"${Result}"
 		done
 	)
 	result=$?

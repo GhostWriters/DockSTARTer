@@ -13,7 +13,7 @@ var_default_value() {
 	if [[ -n ${APPNAME} ]]; then
 		APPNAME="${APPNAME^^}"
 		appname="${APPNAME,,}"
-		AppName="$(run_script 'app_nicename' "${APPNAME}")"
+		run_script 'app_nicename_into' AppName "${APPNAME}"
 		if [[ ${VarName} == *":"* ]]; then
 			VarType="APPENV"
 			CleanVarName=${VarName#*:}
@@ -28,10 +28,12 @@ var_default_value() {
 	case "${VarType}" in
 		APP)
 			local DefaultAppVarFile
-			DefaultAppVarFile="$(run_script 'app_instance_file' "${APPNAME}" ".env")"
+			run_script 'app_instance_file_into' DefaultAppVarFile "${APPNAME}" ".env"
 			if [[ -f ${DefaultAppVarFile} ]] && run_script 'env_var_exists' "${CleanVarName}" "${DefaultAppVarFile}"; then
 				# Variable is listed in the default file, output it and return
-				run_script 'env_get_literal' "${CleanVarName}" "${DefaultAppVarFile}"
+				local _vdv_literal_
+				run_script 'env_get_literal_into' _vdv_literal_ "${CleanVarName}" "${DefaultAppVarFile}"
+				echo "${_vdv_literal_}"
 				return
 			fi
 			case "${CleanVarName}" in
@@ -68,10 +70,12 @@ var_default_value() {
 			;;
 		APPENV)
 			local DefaultAppVarFile
-			DefaultAppVarFile="$(run_script 'app_instance_file' "${APPNAME}" ".env.app.*")"
+			run_script 'app_instance_file_into' DefaultAppVarFile "${APPNAME}" ".env.app.*"
 			if [[ -f ${DefaultAppVarFile} ]] && run_script 'env_var_exists' "${CleanVarName}" "${DefaultAppVarFile}"; then
 				# Variable is listed in the default file, output it and return
-				run_script 'env_get_literal' "${CleanVarName}" "${DefaultAppVarFile}"
+				local _vdv_literal_
+				run_script 'env_get_literal_into' _vdv_literal_ "${CleanVarName}" "${DefaultAppVarFile}"
+				echo "${_vdv_literal_}"
 				return
 			fi
 			Default="''"
@@ -109,7 +113,7 @@ var_default_value() {
 				*)
 					if [[ -f ${COMPOSE_ENV_DEFAULT_FILE} ]] && run_script 'env_var_exists' "${CleanVarName}" "${COMPOSE_ENV_DEFAULT_FILE}"; then
 						# Variable is listed in the default file, output it and return
-						Default="$(run_script 'env_get_literal' "${CleanVarName}" "${COMPOSE_ENV_DEFAULT_FILE}")"
+						run_script 'env_get_literal_into' Default "${CleanVarName}" "${COMPOSE_ENV_DEFAULT_FILE}"
 					else
 						Default="''"
 					fi

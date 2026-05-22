@@ -2,39 +2,12 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-declare -a _dependencies_list=(
-	grep
-	sed
-)
+declare -a _dependencies_list=()
 
 app_env_file() {
-	local -l appname=${1:-}
-
-	local AppEnvFilename=".env.app.${appname}"
-	local OldAppEnvFilename="${appname}.env"
-	local AppEnvFile="${COMPOSE_FOLDER}/${AppEnvFilename}"
-	local OldAppEnvFile="${APP_ENV_FOLDER}/${OldAppEnvFilename}"
-
-	if [[ ! -f ${AppEnvFile} && -f ${OldAppEnvFile} ]]; then
-		# Migrate from the old env_files/appname.env files to .env.app.appname
-		notice "Renaming '{{|File|}}${OldAppEnvFile}{{[-]}}' to '{{|File|}}${AppEnvFile}{{[-]}}'"
-		RunAndLog "" "mv:notice" \
-			fatal "Failed to rename file." \
-			mv "${OldAppEnvFile}" "${AppEnvFile}"
-		local SearchString="${APP_ENV_FOLDER_NAME}/${OldAppEnvFilename}"
-		if [[ -f ${COMPOSE_OVERRIDE} ]] && ${GREP} -q -F "${SearchString}" "${COMPOSE_OVERRIDE}"; then
-			local ReplaceString="${AppEnvFilename}"
-			# Replace all references to 'env_files/appname.env' with '.env.app.appname' in the override file
-			notice "Replacing in '{{|File|}}${COMPOSE_OVERRIDE}{{[-]}}':"
-			notice "   '{{|Var|}}${SearchString}{{[-]}}' with '{{|Var|}}${ReplaceString}{{[-]}}'"
-			# Escape . to [.] to use in sed
-			SearchString="${SearchString//./[.]}"
-			RunAndLog "" "sed:notice" \
-				fatal "Failed to edit override file." \
-				"${SED}" -i "s|${SearchString}|${ReplaceString}|g" "${COMPOSE_OVERRIDE}"
-		fi
-	fi
-	echo "${AppEnvFile}"
+	local _aef_result_
+	run_script 'app_env_file_into' _aef_result_ "$@"
+	echo "${_aef_result_}"
 }
 
 test_app_env_file() {

@@ -10,7 +10,7 @@ env_backup() {
 	local DOCKER_VOLUME_CONFIG
 	# Update CONFIG_FOLDER and LITERAL_CONFIG_FOLDER based on DOCKER_CONFIG_FOLDER
 	local DOCKER_CONFIG_FOLDER
-	DOCKER_CONFIG_FOLDER="$(run_script 'env_get' DOCKER_CONFIG_FOLDER)"
+	run_script 'env_get_into' DOCKER_CONFIG_FOLDER DOCKER_CONFIG_FOLDER
 	if [[ -z ${DOCKER_CONFIG_FOLDER-} ]]; then
 		DOCKER_CONFIG_FOLDER="$(run_script 'var_default_value' DOCKER_CONFIG_FOLDER)"
 	fi
@@ -20,9 +20,9 @@ env_backup() {
 		HOME="${HOME}" XDG_CONFIG_HOME="${XDG_CONFIG_HOME}" \
 			eval echo "${LITERAL_CONFIG_FOLDER}"
 	)"
-	DOCKER_VOLUME_CONFIG="$(run_script 'env_get' DOCKER_VOLUME_CONFIG)"
+	run_script 'env_get_into' DOCKER_VOLUME_CONFIG DOCKER_VOLUME_CONFIG
 	if [[ -z ${DOCKER_VOLUME_CONFIG-} ]]; then
-		DOCKER_VOLUME_CONFIG="$(run_script 'env_get' DOCKERCONFDIR)"
+		run_script 'env_get_into' DOCKER_VOLUME_CONFIG DOCKERCONFDIR
 	fi
 	if [[ -z ${DOCKER_VOLUME_CONFIG-} ]]; then
 		DOCKER_VOLUME_CONFIG="$(run_script 'var_default_value' DOCKER_VOLUME_CONFIG)"

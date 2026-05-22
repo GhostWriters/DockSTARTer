@@ -2,13 +2,23 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-app_description() {
-	local _ad_result_
-	run_script 'app_description_into' _ad_result_ "$@"
-	echo "${_ad_result_}"
+declare -a _dependencies_list=()
+
+app_description_into() {
+	# Return the description of a single appname.
+	local -n _adi_out_="${1}"
+	local -l _adi_appname_=${2-}
+	_adi_appname_="${_adi_appname_%:*}"
+	if run_script 'app_is_user_defined' "${_adi_appname_}"; then
+		local _adi_AppName_
+		run_script 'app_nicename_into' _adi_AppName_ "${_adi_appname_}"
+		_adi_out_="${_adi_AppName_} is a user defined application"
+	else
+		run_script 'app_description_from_template_into' _adi_out_ "${_adi_appname_}"
+	fi
 }
 
-test_app_description() {
+test_app_description_into() {
 	local ForcePass='' # Force the tests to pass even on failure if set to a non-empty value
 	local -i result=0
 	run_script 'appvars_create' WATCHTOWER NZBGET
@@ -28,10 +38,12 @@ test_app_description() {
 	)
 	run_unit_tests_pipe "App" "App" "${ForcePass}" < <(
 		for ((i = 0; i < ${#Test[@]}; i += 2)); do
+			local Result
+			run_script 'app_description_into' Result "${Test[i]}"
 			printf '%s\n' \
 				"${Test[i]}" \
 				"${Test[i + 1]}" \
-				"$(run_script 'app_description' "${Test[i]}")"
+				"${Result}"
 		done
 	)
 	result=$?

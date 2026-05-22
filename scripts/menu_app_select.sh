@@ -124,9 +124,11 @@ menu_app_select() {
 			LastAppLetter=${AppLetter}
 			update_gauge 1 "${ProcessAppList}" "_InProgress_" "_InProgress_" "${AppName}"
 			local AppDescription
-			AppDescription=$(run_script 'app_description_from_template' "${AppName}")
+			run_script 'app_description_from_template_into' AppDescription "${AppName}"
 			local AppColor="{{|ListApp|}}"
-			if [[ -n $(run_script 'appname_to_instancename' "${AppName}") ]]; then
+			local _mas_instance_
+			run_script 'appname_to_instancename_into' _mas_instance_ "${AppName}"
+			if [[ -n ${_mas_instance_} ]]; then
 				AppColor="{{|ListAppUserDefined|}}"
 			fi
 			if [[ ${AppName} =~ ^(${AddedAppsRegex})$ ]]; then

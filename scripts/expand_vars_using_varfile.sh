@@ -60,7 +60,7 @@ expand_vars_using_varfile() {
 
 			# Look for the variable in the file
 			if run_script 'env_var_exists' "${Key}" "${VarFile}"; then
-				Vars["${Key}"]="$(run_script 'env_get' "${Key}" "${VarFile}")"
+				run_script 'env_get_into' Vars["${Key}"] "${Key}" "${VarFile}"
 			else
 				MissingVars["${Key}"]=1
 			fi

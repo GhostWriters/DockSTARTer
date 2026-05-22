@@ -8,7 +8,7 @@ app_status() {
 	AppList="$(xargs -n 1 <<< "$*")"
 	for APPNAME in ${AppList}; do
 		local AppName
-		AppName="$(run_script 'app_nicename' "${APPNAME}")"
+		run_script 'app_nicename_into' AppName "${APPNAME}"
 		if run_script 'app_is_referenced' "${AppName}"; then
 			if run_script 'app_is_added' "${AppName}"; then
 				if run_script 'app_is_enabled' "${AppName}"; then

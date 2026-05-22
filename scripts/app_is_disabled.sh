@@ -8,7 +8,9 @@ app_is_disabled() {
 		false
 		return
 	fi
-	is_false "$(run_script 'env_get' "${APPNAME}__ENABLED")"
+	local _aid_enabled_
+	run_script 'env_get_into' _aid_enabled_ "${APPNAME}__ENABLED"
+	is_false "${_aid_enabled_}"
 }
 
 test_app_is_disabled() {
