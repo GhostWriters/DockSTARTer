@@ -2,9 +2,7 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-declare -a _dependencies_list=(
-	grep
-)
+declare -a _dependencies_list=()
 
 env_sanitize() {
 	local -a VarsToUpdate
@@ -94,7 +92,7 @@ env_sanitize() {
 	for VarName in "${VarList[@]-}"; do
 		local Value
 		run_script 'env_get_into' Value "${VarName}"
-		if [[ -z ${Value-} ]] || echo "${Value-}" | ${GREP} -q 'x'; then
+		if [[ -z ${Value-} || ${Value-} == *x* ]]; then
 			# If the variable is empty or contains an "x", get the default value
 			local Default
 			run_script 'var_default_value_into' Default "${VarName}"
