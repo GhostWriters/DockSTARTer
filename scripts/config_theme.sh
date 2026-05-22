@@ -131,7 +131,7 @@ config_theme() {
 	done
 	local StyleName
 	for StyleName in "${!DC[@]}"; do
-		DC["${StyleName}"]="$(resolve_styles DC "${DC["${StyleName}"]}" "${sem_p}" "${sem_s}" "${dir_p}" "${dir_s}")"
+		resolve_styles_into DC["${StyleName}"] DC "${DC["${StyleName}"]}" "${sem_p}" "${sem_s}" "${dir_p}" "${dir_s}"
 	done
 
 	D["ThemeName"]="$(get_toml_val_string "${ThemeFile}" metadata.name)"

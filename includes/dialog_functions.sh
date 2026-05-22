@@ -135,14 +135,15 @@ _dialog_backtitle_() {
 			"${RightPadding}" " " \
 			"${RightHeading}"
 	)"
-	BACKTITLE=$(resolve_styles DC "${BACKTITLE}")
+	resolve_styles_into BACKTITLE DC "${BACKTITLE}"
 }
 
 _dialog_() {
 	local -a DialogOptions=()
-	local Option
+	local Option _rsi_opt_
 	for Option in "$@"; do
-		DialogOptions+=("$(resolve_styles DC "${Option}")")
+		resolve_styles_into _rsi_opt_ DC "${Option}"
+		DialogOptions+=("${_rsi_opt_}")
 	done
 	_dialog_backtitle_
 	${DIALOG} --file "${DIALOG_OPTIONS_FILE}" --backtitle "${BACKTITLE}" "${DialogOptions[@]}"
@@ -270,8 +271,8 @@ _dialog_calc_list_width_() {
 	local -i _dclw_i_
 	for ((_dclw_i_ = 0; _dclw_i_ < $#; _dclw_i_ += _dclw_fpi_)); do
 		local _dclw_tag_ _dclw_item_
-		_dclw_tag_="$(strip_styles "${@:$((_dclw_i_ + 1)):1}")"  # field 1: tag
-		_dclw_item_="$(strip_styles "${@:$((_dclw_i_ + 2)):1}")" # field 2: description (never item-help)
+		strip_styles_into _dclw_tag_ "${@:$((_dclw_i_ + 1)):1}"  # field 1: tag
+		strip_styles_into _dclw_item_ "${@:$((_dclw_i_ + 2)):1}" # field 2: description (never item-help)
 		[[ ${#_dclw_tag_} -gt _dclw_tagw_ ]] && _dclw_tagw_=${#_dclw_tag_}
 		[[ ${#_dclw_item_} -gt _dclw_itemw_ ]] && _dclw_itemw_=${#_dclw_item_}
 		[[ $((3 + _dclw_tagw_ + 2 + _dclw_itemw_ + 3)) -ge _dclw_wmax_ ]] && _dclw_w_=${_dclw_wmax_} && return

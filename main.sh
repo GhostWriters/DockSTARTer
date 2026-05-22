@@ -117,14 +117,21 @@ declare -Agx ColorCodes=(
 )
 
 resolve_styles() {
-	local style_map_name="$1"
-	local -n style_map="$1"
-	local val="$2"
+	local _rs_val_
+	resolve_styles_into _rs_val_ "$@"
+	printf '%s\n' "${_rs_val_}"
+}
+
+resolve_styles_into() {
+	local -n _rsi_out_="${1}"
+	local style_map_name="${2}"
+	local -n style_map="${2}"
+	local val="${3}"
 	local last_val=""
 	local -i MaxResolves=100
 
-	local sem_p="${3-}" sem_s="${4-}"
-	local dir_p="${5-}" dir_s="${6-}"
+	local sem_p="${4-}" sem_s="${5-}"
+	local dir_p="${6-}" dir_s="${7-}"
 
 	while [[ ${MaxResolves} -gt 0 ]]; do
 		local regex p_tag content s_tag full_match
@@ -274,48 +281,59 @@ resolve_styles() {
 		fi
 		val="${val//"${full_match}"/"${replacement}"}"
 	done
-	printf '%s\n' "${val}"
+	_rsi_out_="${val}"
 }
 
 resolve_strings() {
 	local array_name="$1"
 	shift
 
+	local _rs_line_ _rs_out_
+	_resolve_strings_line_() {
+		if [[ -t 1 ]]; then
+			resolve_styles_into _rs_out_ "${array_name}" "${_rs_line_}"
+		else
+			strip_styles_into _rs_out_ "${_rs_line_}"
+		fi
+		printf '%s\n' "${_rs_out_}"
+	}
+
 	# Process every argument (and every line within those arguments), or read from STDIN if no arguments
 	if [[ $# -gt 0 ]]; then
-		printf '%s\n' "$@"
+		local arg
+		for arg in "$@"; do
+			while IFS= read -r _rs_line_; do
+				_resolve_strings_line_
+			done <<< "${arg}"
+		done
 	else
-		cat
-	fi | while IFS= read -r line || [[ -n ${line} ]]; do
-		if [[ -t 1 ]]; then
-			# Call the single-string resolver for each line
-			resolve_styles "$array_name" "$line"
-		else
-			# Call the single-string stripper for each line
-			strip_styles "$line"
-		fi
-	done
+		while IFS= read -r _rs_line_ || [[ -n ${_rs_line_} ]]; do
+			_resolve_strings_line_
+		done
+	fi
 }
 
 strip_styles() {
-	local val="${1:-}"
-	local extglob_on=0
-	shopt -q extglob || extglob_on=$?
+	local _ss_val_
+	strip_styles_into _ss_val_ "${1:-}"
+	printf '%s\n' "${_ss_val_}"
+}
 
+strip_styles_into() {
+	local -n _ssi_out_="${1}"
+	local _ssi_val_="${2:-}"
+	local _ssi_extglob_=0
+	shopt -q extglob || _ssi_extglob_=$?
 	shopt -s extglob
-	local line result=""
-	while IFS= read -r line; do
-		# Remove {{|...|}} and {{[...]}}
-		line="${line//\{\{\|*([!|])|\}\}/}"
-		line="${line//\{\{\[*([!\]])\]\}\}/}"
-		result+="${line}"$'\n'
-	done <<< "${val}"
-	result="${result%$'\n'}"
-
-	# Only turn extglob off if it was off before
-	[[ ${extglob_on} -ne 0 ]] && shopt -u extglob || true
-
-	printf '%s\n' "${result}"
+	local _ssi_line_ _ssi_result_=""
+	while IFS= read -r _ssi_line_; do
+		_ssi_line_="${_ssi_line_//\{\{\|*([!|])|\}\}/}"
+		_ssi_line_="${_ssi_line_//\{\{\[*([!\]])\]\}\}/}"
+		_ssi_result_+="${_ssi_line_}"$'\n'
+	done <<< "${_ssi_val_}"
+	_ssi_result_="${_ssi_result_%$'\n'}"
+	[[ ${_ssi_extglob_} -ne 0 ]] && shopt -u extglob || true
+	_ssi_out_="${_ssi_result_}"
 }
 
 # shellcheck disable=SC2120
@@ -446,7 +464,7 @@ declare -Ag C=( # Pre-defined colors
 )
 
 for Style in "${!C[@]}"; do
-	C["$Style"]="$(resolve_styles C "${C["$Style"]}")"
+	resolve_styles_into C["$Style"] C "${C["$Style"]}"
 done
 # C must not be readonly so that dynamic styles can be cached!
 
