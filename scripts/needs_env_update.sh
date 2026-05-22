@@ -41,9 +41,9 @@ needs_env_update() {
 		APPNAME="$(run_script 'varfile_to_appname' "${VarFile}")"
 		local AppEnabledFile
 		AppEnabledFile="${timestamps_folder:?}/${filename}_${APPNAME}__ENABLED"
-		local _neu_enabled_line_
-		run_script 'env_get_line_into' _neu_enabled_line_ "${APPNAME}__ENABLED" || true
-		if ! cmp -s "${AppEnabledFile}" <<< "${_neu_enabled_line_}"; then
+		local EnabledLine
+		run_script 'env_get_line_into' EnabledLine "${APPNAME}__ENABLED" || true
+		if ! cmp -s "${AppEnabledFile}" <<< "${EnabledLine}"; then
 			return 0
 		fi
 	fi

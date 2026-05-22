@@ -24,7 +24,7 @@ unset_needs_appvars_create() {
 		# 3. Record app-specific .env state for all added apps
 		for AppName in ${AddedApps}; do
 			local AppEnvFile
-			AppEnvFile="$(run_script 'app_env_file' "${AppName}")"
+			run_script 'app_env_file_into' AppEnvFile "${AppName}"
 			if [[ -f ${AppEnvFile} ]]; then
 				cp -a "${AppEnvFile}" "${timestamps_folder}/$(basename "${AppEnvFile}")"
 			fi

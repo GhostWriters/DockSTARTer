@@ -24,7 +24,7 @@ appvars_create() {
 			local AppDefaultGlobalEnvFile AppDefaultAppEnvFile AppEnvFile
 			run_script 'app_instance_file_into' AppDefaultGlobalEnvFile "${appname}" ".env"
 			run_script 'app_instance_file_into' AppDefaultAppEnvFile "${appname}" ".env.app.*"
-			AppEnvFile="$(run_script 'app_env_file' "${appname}")"
+			run_script 'app_env_file_into' AppEnvFile "${appname}"
 
 			info "Creating environment variables for '{{|App|}}${AppName}{{[-]}}'."
 			if ! run_script 'env_var_exists' "${APPNAME}_ENABLED"; then

@@ -4,24 +4,9 @@ IFS=$'\n\t'
 
 config_get() {
 	# config_get section_key [config_file]
-	local section_key=${1-}
-	local config_file=${2:-$APPLICATION_TOML_FILE}
-
-	local file_extension=${config_file##*.}
-
-	case ${file_extension} in
-		toml)
-			run_script 'config_toml_get' "${section_key}" "${config_file}"
-			return
-			;;
-		ini)
-			run_script 'config_ini_get' "${section_key}" "${config_file}"
-			return
-			;;
-	esac
-
-	# Invalid file extension
-	return 1
+	local result
+	run_script 'config_get_into' result "$@" || return 1
+	echo "${result}"
 }
 
 test_config_get() {

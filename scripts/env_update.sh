@@ -17,7 +17,7 @@ env_update() {
 	for appname in "${applist[@]}"; do
 		if ! run_script 'app_is_referenced' "${appname}"; then
 			local AppEnvFile
-			AppEnvFile="$(run_script 'app_env_file' "${appname}")"
+			run_script 'app_env_file_into' AppEnvFile "${appname}"
 			run_script 'set_permissions' "${AppEnvFile}"
 			notice "Deleting '{{|File|}}${AppEnvFile}{{[-]}}'."
 			rm -f "${AppEnvFile}" ||
@@ -88,7 +88,7 @@ env_update() {
 	if [[ -n ${applist[*]-} ]]; then
 		for appname in "${applist[@]-}"; do
 			local APP_ENV_FILE
-			APP_ENV_FILE="$(run_script 'app_env_file' "${appname}")"
+			run_script 'app_env_file_into' APP_ENV_FILE "${appname}"
 			if ! run_script 'needs_env_update' "${APP_ENV_FILE}"; then
 				info "File '{{|File|}}${APP_ENV_FILE}{{[-]}}' already updated."
 			else

@@ -9,9 +9,9 @@ apply_config() {
 	fi
 
 	#shellcheck disable=SC2034 # (warning): LITERAL_CONFIG_FOLDER appears unused. Verify use (or export if used externally).
-	LITERAL_CONFIG_FOLDER="$(run_script 'config_get' paths.config_folder)"
+	run_script 'config_get_into' LITERAL_CONFIG_FOLDER paths.config_folder || true
 	#shellcheck disable=SC2034 # (warning): LITERAL_COMPOSE_FOLDER appears unused. Verify use (or export if used externally).
-	LITERAL_COMPOSE_FOLDER="$(run_script 'config_get' paths.compose_folder)"
+	run_script 'config_get_into' LITERAL_COMPOSE_FOLDER paths.compose_folder || true
 	set_global_variables
 	run_script 'config_theme'
 	run_script 'config_package_manager'

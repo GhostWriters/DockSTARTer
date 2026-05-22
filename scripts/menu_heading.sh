@@ -47,7 +47,7 @@ menu_heading() {
 			run_script 'app_instance_file_into' DefaultVarFile "${AppName}" ".env"
 		elif [[ ${AppName-} == *":" ]]; then # "AppName:", using appname.env
 			AppName="${AppName%:*}"
-			VarFile="$(run_script 'app_env_file' "${AppName}")"
+			run_script 'app_env_file_into' VarFile "${AppName}"
 			run_script 'app_instance_file_into' DefaultVarFile "${AppName}" ".env.app.*"
 		fi
 		if [[ -n ${VarName-} ]] && run_script 'varname_is_valid' "${VarName}"; then # "appname:varname", using appname.env
@@ -55,7 +55,7 @@ menu_heading() {
 			if [[ ${VarName} == *":"* ]]; then
 				AppName="${VarName%:*}"
 				VarName="${VarName#*:}"
-				VarFile="$(run_script 'app_env_file' "${AppName}")"
+				run_script 'app_env_file_into' VarFile "${AppName}"
 				run_script 'app_instance_file_into' DefaultVarFile "${AppName}" ".env.app.*"
 			fi
 			if [[ -z ${VarFile-} ]]; then

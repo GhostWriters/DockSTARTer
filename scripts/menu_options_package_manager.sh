@@ -15,7 +15,7 @@ menu_options_package_manager() {
 	run_script 'config_package_manager' &> /dev/null
 
 	local CurrentPackageManager
-	CurrentPackageManager="$(run_script 'config_get' pm.package_manager)"
+	run_script 'config_get_into' CurrentPackageManager pm.package_manager || true
 
 	local -a PackageManagerList
 	readarray -t PackageManagerList < <(run_script 'package_manager_list')

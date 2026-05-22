@@ -12,7 +12,7 @@ appvars_list() {
 		# APPNAME is in the form of "APPNAME:", list all variable in ".env.app.appname"
 		APPNAME=${APPNAME%%:*}
 		local VAR_FILE
-		VAR_FILE="$(run_script 'app_env_file' "${APPNAME}")"
+		run_script 'app_env_file_into' VAR_FILE "${APPNAME}"
 		run_script 'env_var_list' "${VAR_FILE}"
 	else
 		local VAR_REGEX="${APPNAME}__(?![A-Za-z0-9]+__)\w+"

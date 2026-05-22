@@ -6,7 +6,7 @@ theme_author() {
 	local ThemeName=${1-}
 
 	if [[ -z ${ThemeName} ]]; then
-		ThemeName="$(run_script 'theme_name')"
+		run_script 'theme_name_into' ThemeName
 	fi
 
 	local ThemeArchive

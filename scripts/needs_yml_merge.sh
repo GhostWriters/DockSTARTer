@@ -31,7 +31,9 @@ needs_yml_merge() {
 
 	for AppName in $(run_script 'app_list_enabled'); do
 		local -l appname=${AppName}
-		if file_changed "$(run_script 'app_env_file' "${appname}")"; then
+		local _AppEnvFile_
+		run_script 'app_env_file_into' _AppEnvFile_ "${appname}"
+		if file_changed "${_AppEnvFile_}"; then
 			# .env.app.appname has changed, return true
 			return 0
 		fi

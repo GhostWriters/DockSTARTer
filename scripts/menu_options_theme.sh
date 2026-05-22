@@ -12,7 +12,7 @@ menu_options_theme() {
 	run_script 'config_theme'
 
 	local CurrentTheme
-	CurrentTheme="$(run_script 'theme_name')"
+	run_script 'theme_name_into' CurrentTheme
 
 	# Build parallel arrays from structured theme_list output (DisplayName|ConfigValue|IsUserTheme)
 	local -a DisplayNames=() ConfigValues=() IsUserTheme=()

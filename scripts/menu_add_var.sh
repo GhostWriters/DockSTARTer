@@ -31,7 +31,7 @@ menu_add_var() {
 			VarType="APPENV"
 			APPNAME="${APPNAME%:}"
 			appname=${APPNAME,,}
-			VarFile="$(run_script 'app_env_file' "${appname}")"
+			run_script 'app_env_file_into' VarFile "${appname}"
 		else
 			# appname specified, creating an APPNAME__* variable in .env
 			VarType="APP"
@@ -210,7 +210,7 @@ menu_add_var() {
 									notice "Adding variables to {{|File|}}${COMPOSE_ENV}{{[-]}}:"
 									for Option in "${ValidStockOptions[@]}"; do
 										local DefaultValue
-										DefaultValue="$(run_script 'var_default_value' "${Option// /}")"
+										run_script 'var_default_value_into' DefaultValue "${Option// /}"
 										notice "   {{|Var|}}${Option// /}=${DefaultValue}{{[-]}}"
 										run_script 'env_set_literal' "${Option// /}" "${DefaultValue}"
 									done
@@ -250,9 +250,9 @@ menu_add_var() {
 						elif run_script 'env_var_exists' "${VarName}"; then
 							ErrorMessage="The variable {{|Highlight|}}${VarName}{{[-]}} already exists.\n\n Please input another variable name."
 						else
-							local _mav_detectedapp_
-							_mav_detectedapp_="$(run_script 'varname_to_appname' "${VarName}")"
-							run_script 'app_nicename_into' DetectedAppName "${_mav_detectedapp_}"
+							local DetectedApp
+							run_script 'varname_to_appname_into' DetectedApp "${VarName}"
+							run_script 'app_nicename_into' DetectedAppName "${DetectedApp}"
 							if [[ ${DetectedAppName^^} == "" ]]; then
 								ErrorMessage="The variable name {{|Highlight|}}${VarName}{{[-]}} is not a valid name for app {{|Highlight|}}${AppName}{{[-]}}. It would be a global variable.\n\n Please input another variable name."
 							elif [[ ${DetectedAppName^^} != "${APPNAME}" ]]; then
@@ -267,7 +267,7 @@ menu_add_var() {
 						Question="Create variable {{|Highlight|}}${VarName}{{[-]}} for application {{|Highlight|}}${AppName}{{[-]}}?\n"
 						Heading="$(run_script 'menu_heading' "$:{AppName}" "${VarNameHeading}")"
 						if run_script 'question_prompt' N "${Heading}\n\n${Question}" "Create Variable" "${ASSUMEYES:+Y}" "Create" "Back"; then
-							Default="$(run_script 'var_default_value' "${VarName}")"
+							run_script 'var_default_value_into' Default "${VarName}"
 							Heading="$(run_script 'menu_heading' ":${AppName}" "${VarNameHeading}")"
 							run_script_dialog "{{|TitleSuccess|}}Creating Variable" "${Heading}\n\n" "${DIALOGTIMEOUT}" \
 								'env_set_literal' "${VarName}" "${Default}"
@@ -326,9 +326,9 @@ menu_add_var() {
 						elif run_script 'env_var_exists' "${VarName}" "${VarFile}"; then
 							ErrorMessage="The variable {{|Highlight|}}${VarName}{{[-]}} already exists.\n\n Please input another variable name."
 						elif [[ ${VarType} == GLOBAL ]]; then
-							local _mav_detectedapp_
-							_mav_detectedapp_="$(run_script 'varname_to_appname' "${VarName}")"
-							run_script 'app_nicename_into' DetectedAppName "${_mav_detectedapp_}"
+							local DetectedApp
+							run_script 'varname_to_appname_into' DetectedApp "${VarName}"
+							run_script 'app_nicename_into' DetectedAppName "${DetectedApp}"
 							if [[ ${DetectedAppName} != "" ]]; then
 								ErrorMessage="The variable name {{|Highlight|}}${VarName}{{[-]}} is not a valid global variable name. It would be a variable for an app named {{|Highlight|}}${DetectedAppName}{{[-]}}\n\n Please input another variable name."
 							fi
@@ -344,7 +344,7 @@ menu_add_var() {
 						if [[ ${VarType} == "APPENV" ]]; then
 							Question="Create variable {{|Highlight|}}${VarName}{{[-]}} for application {{|Highlight|}}${AppName}{{[-]}}?\n"
 							if run_script 'question_prompt' N "${Heading}\n\n${Question}" "Create Variable" "${ASSUMEYES:+Y}" "Create" "Back"; then
-								Default="$(run_script 'var_default_value' "${AppName}:${VarName}")"
+								run_script 'var_default_value_into' Default "${AppName}:${VarName}"
 								Heading="$(run_script 'menu_heading' "${AppNameHeading}" "${VarNameHeading}")"
 								run_script_dialog "{{|TitleSuccess|}}Creating Variable" "${Heading}\n\n" "${DIALOGTIMEOUT}" \
 									'env_set_literal' "${appname}:${VarName}" "${Default}"
@@ -355,7 +355,7 @@ menu_add_var() {
 							Heading="$(run_script 'menu_heading' "${AppNameHeading}" "${VarNameHeading}")"
 							Question="Create global variable {{|Highlight|}}${VarName}{{[-]}}?\n"
 							if run_script 'question_prompt' N "${Heading}\n\n${Question}" "Create Variable" "${ASSUMEYES:+Y}" "Create" "Back"; then
-								Default="$(run_script 'var_default_value' "${VarName}")"
+								run_script 'var_default_value_into' Default "${VarName}"
 								Heading="$(run_script 'menu_heading' "${AppNameHeading}" "${VarNameHeading}")"
 								run_script_dialog "{{|TitleSuccess|}}Creating Variable" "${Heading}\n\n" "${DIALOGTIMEOUT}" \
 									'env_set_literal' "${VarName}" "${Default}"

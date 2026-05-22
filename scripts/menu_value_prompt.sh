@@ -25,7 +25,7 @@ menu_value_prompt() {
 	local VarType
 
 	local APPNAME
-	APPNAME="$(run_script 'varname_to_appname' "${VarName}")"
+	run_script 'varname_to_appname_into' APPNAME "${VarName}"
 	APPNAME="${APPNAME^^}"
 	if [[ -n ${APPNAME} ]]; then
 		Title="Edit Application Variable"
@@ -67,8 +67,10 @@ menu_value_prompt() {
 					PossibleOptions+=(
 						"${SystemValueOption}"
 					)
+					local Default
+					run_script 'var_default_value_into' Default "${VarName}"
 					OptionValue+=(
-						["${SystemValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+						["${SystemValueOption}"]="${Default}"
 					)
 					;;
 				DOCKER_HOSTNAME)
@@ -76,8 +78,10 @@ menu_value_prompt() {
 					PossibleOptions+=(
 						"${SystemValueOption}"
 					)
+					local Default
+					run_script 'var_default_value_into' Default "${VarName}"
 					OptionValue+=(
-						["${SystemValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+						["${SystemValueOption}"]="${Default}"
 					)
 					;;
 				DOCKER_VOLUME_CONFIG)
@@ -105,8 +109,10 @@ menu_value_prompt() {
 					PossibleOptions+=(
 						"${SystemValueOption}"
 					)
+					local Default
+					run_script 'var_default_value_into' Default "${VarName}"
 					OptionValue+=(
-						["${SystemValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+						["${SystemValueOption}"]="${Default}"
 					)
 					;;
 				PGID)
@@ -114,8 +120,10 @@ menu_value_prompt() {
 					PossibleOptions+=(
 						"${SystemValueOption}"
 					)
+					local Default
+					run_script 'var_default_value_into' Default "${VarName}"
 					OptionValue+=(
-						["${SystemValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+						["${SystemValueOption}"]="${Default}"
 					)
 					;;
 				PUID)
@@ -123,8 +131,10 @@ menu_value_prompt() {
 					PossibleOptions+=(
 						"${SystemValueOption}"
 					)
+					local Default
+					run_script 'var_default_value_into' Default "${VarName}"
 					OptionValue+=(
-						["${SystemValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+						["${SystemValueOption}"]="${Default}"
 					)
 					;;
 				TZ)
@@ -132,8 +142,10 @@ menu_value_prompt() {
 					PossibleOptions+=(
 						"${SystemValueOption}"
 					)
+					local Default
+					run_script 'var_default_value_into' Default "${VarName}"
 					OptionValue+=(
-						["${SystemValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+						["${SystemValueOption}"]="${Default}"
 					)
 					;;
 				*)
@@ -141,8 +153,10 @@ menu_value_prompt() {
 					PossibleOptions+=(
 						"${DefaultValueOption}"
 					)
+					local Default
+					run_script 'var_default_value_into' Default "${VarName}"
 					OptionValue+=(
-						["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+						["${DefaultValueOption}"]="${Default}"
 					)
 					;;
 			esac
@@ -156,10 +170,12 @@ menu_value_prompt() {
 						"Disabled"
 						"${DefaultValueOption}"
 					)
+					local Default
+					run_script 'var_default_value_into' Default "${VarName}"
 					OptionValue+=(
 						["Enabled"]="'true'"
 						["Disabled"]="'false'"
-						["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+						["${DefaultValueOption}"]="${Default}"
 					)
 					;;
 				"${APPNAME}__NETWORK_MODE")
@@ -179,8 +195,10 @@ menu_value_prompt() {
 						["Use Gluetun"]="Connects {{|Highlight|}}${AppName}{{[-]}} to the VPN running in the {{|Highlight|}}Gluetun{{[-]}} container if running."
 						["Use PrivoxyVPN"]="Connects {{|Highlight|}}${AppName}{{[-]}} to the VPN running in the {{|Highlight|}}PrivoxyVPN{{[-]}} container if running."
 					)
+					local Default
+					run_script 'var_default_value_into' Default "${VarName}"
 					OptionValue+=(
-						["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+						["${DefaultValueOption}"]="${Default}"
 						["Bridge Network"]="'bridge'"
 						["Host Network"]="'host'"
 						["No Network"]="'none'"
@@ -203,8 +221,10 @@ menu_value_prompt() {
 						["Always Restart"]="This will cause the application to always restart"
 						["Restart On Failure"]="This will cause the application to restart if it stops due to a failure."
 					)
+					local Default
+					run_script 'var_default_value_into' Default "${VarName}"
 					OptionValue+=(
-						["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+						["${DefaultValueOption}"]="${Default}"
 						["Restart Unless Stopped"]="'unless-stopped'"
 						["Never Restart"]="'no'"
 						["Always Restart"]="'always'"
@@ -216,8 +236,10 @@ menu_value_prompt() {
 					PossibleOptions+=(
 						"${DefaultValueOption}"
 					)
+					local Default
+					run_script 'var_default_value_into' Default "${VarName}"
 					OptionValue+=(
-						["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+						["${DefaultValueOption}"]="${Default}"
 					)
 					;;
 				"${APPNAME}__VOLUME_"*)
@@ -225,8 +247,10 @@ menu_value_prompt() {
 					PossibleOptions+=(
 						"${DefaultValueOption}"
 					)
+					local Default
+					run_script 'var_default_value_into' Default "${VarName}"
 					OptionValue+=(
-						["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+						["${DefaultValueOption}"]="${Default}"
 					)
 					;;
 				*)
@@ -235,16 +259,20 @@ menu_value_prompt() {
 						PossibleOptions+=(
 							"${DefaultValueOption}"
 						)
+						local Default
+						run_script 'var_default_value_into' Default "${VarName}"
 						OptionValue+=(
-							["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+							["${DefaultValueOption}"]="${Default}"
 						)
 					else
 						ValueDescription=""
 						PossibleOptions+=(
 							"${DefaultValueOption}"
 						)
+						local Default
+						run_script 'var_default_value_into' Default "${VarName}"
 						OptionValue+=(
-							["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+							["${DefaultValueOption}"]="${Default}"
 						)
 					fi
 					;;
@@ -256,8 +284,10 @@ menu_value_prompt() {
 					PossibleOptions+=(
 						"${DefaultValueOption}"
 					)
+					local Default
+					run_script 'var_default_value_into' Default "${VarName}"
 					OptionValue+=(
-						["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+						["${DefaultValueOption}"]="${Default}"
 					)
 					;;
 			esac

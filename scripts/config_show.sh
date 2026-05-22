@@ -32,7 +32,7 @@ config_show() {
 	local -a TableArray=()
 	for Key in "${Keys[@]}"; do
 		local Value
-		if ! Value="$(run_script 'config_get' "${Key}" "${ConfigFile}")"; then
+		if ! run_script 'config_get_into' Value "${Key}" "${ConfigFile}"; then
 			continue
 		fi
 		local ValueColor ExpandedValue

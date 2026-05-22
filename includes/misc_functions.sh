@@ -455,6 +455,42 @@ get_toml_val() {
 	return 1
 }
 
+get_toml_val_into() {
+	# get_toml_val_into OutVar FILE SECTION.KEY
+	local -n _gtvi_out_="${1}"
+	local _gtvi_file_=${2-}
+	local _gtvi_section_key_="${3-}"
+	local _gtvi_section_="${_gtvi_section_key_%%.*}"
+	local _gtvi_target_key_="${_gtvi_section_key_#*.}"
+	local _gtvi_current_section_=""
+
+	local _gtvi_key_ _gtvi_val_
+	while IFS='= ' read -r _gtvi_key_ _gtvi_val_ || [[ -n ${_gtvi_key_}${_gtvi_val_} ]]; do
+		if [[ ${_gtvi_key_} =~ ^\[(.*)\]$ ]]; then
+			_gtvi_current_section_="${BASH_REMATCH[1]}"
+			continue
+		fi
+		if [[ ${_gtvi_current_section_} == "${_gtvi_section_}" && ${_gtvi_key_} == "${_gtvi_target_key_}" ]]; then
+			_gtvi_val_="${_gtvi_val_#"${_gtvi_val_%%[![:space:]]*}"}"
+			_gtvi_val_="${_gtvi_val_%"${_gtvi_val_##*[![:space:]]}"}"
+			if [[ ${_gtvi_val_} == \"*\" ]]; then
+				_gtvi_val_="${_gtvi_val_#\"}"
+				_gtvi_val_="${_gtvi_val_%\"}"
+			elif [[ ${_gtvi_val_} == \'*\' ]]; then
+				_gtvi_val_="${_gtvi_val_#\'}"
+				_gtvi_val_="${_gtvi_val_%\'}"
+			else
+				_gtvi_val_="${_gtvi_val_%%#*}"
+				_gtvi_val_="${_gtvi_val_%"${_gtvi_val_##*[![:space:]]}"}"
+			fi
+			_gtvi_out_="${_gtvi_val_}"
+			return 0
+		fi
+	done < "${_gtvi_file_}"
+
+	return 1
+}
+
 get_ini_val() {
 	# get_ini_val VarFile VarName
 	local ConfigFile=${1-}
@@ -516,8 +552,63 @@ get_ini_val() {
 	return 0
 }
 
+get_ini_val_into() {
+	# get_ini_val_into OutVar VarFile VarName
+	local -n _givi_out_="${1}"
+	local _givi_ConfigFile_=${2-}
+	local _givi_VarName_=${3-}
+
+	if [[ -z ${_givi_VarName_} || -z ${_givi_ConfigFile_} || ! -f ${_givi_ConfigFile_} ]]; then
+		return 1
+	fi
+
+	local _givi_Line_ _givi_Val_="" _givi_Found_=false
+	while IFS= read -r _givi_Line_ || [[ -n ${_givi_Line_} ]]; do
+		[[ ${_givi_Line_} =~ ^[[:space:]]*# ]] && continue
+		[[ -z ${_givi_Line_} ]] && continue
+		if [[ ${_givi_Line_} =~ ^[[:space:]]*${_givi_VarName_}[[:space:]]*= ]]; then
+			local _givi_Key_="${_givi_Line_%%=*}"
+			local _givi_Value_="${_givi_Line_#*=}"
+			_givi_Key_="${_givi_Key_#"${_givi_Key_%%[![:space:]]*}"}"
+			_givi_Key_="${_givi_Key_%"${_givi_Key_##*[![:space:]]}"}"
+			if [[ ${_givi_Key_} == "${_givi_VarName_}" ]]; then
+				_givi_Val_="${_givi_Value_}"
+				_givi_Found_=true
+			fi
+		fi
+	done < "${_givi_ConfigFile_}"
+
+	if [[ ${_givi_Found_} == false ]]; then
+		return 1
+	fi
+
+	_givi_Val_="${_givi_Val_#"${_givi_Val_%%[![:space:]]*}"}"
+	_givi_Val_="${_givi_Val_%"${_givi_Val_##*[![:space:]]}"}"
+
+	if [[ ${_givi_Val_} == \'*\' ]]; then
+		_givi_Val_="${_givi_Val_#\'}"
+		_givi_Val_="${_givi_Val_%\'}"
+	elif [[ ${_givi_Val_} == \"*\" ]]; then
+		_givi_Val_="${_givi_Val_#\"}"
+		_givi_Val_="${_givi_Val_%\"}"
+	fi
+
+	_givi_out_="${_givi_Val_}"
+	return 0
+}
+
 get_ini_val_string() {
 	get_ini_val "$@"
+}
+
+get_ini_val_string_into() {
+	local -n _givsi_out_="${1}"
+	local _givsi_val_
+	if get_ini_val_into _givsi_val_ "${2-}" "${3-}"; then
+		_givsi_out_="${_givsi_val_}"
+		return 0
+	fi
+	return 1
 }
 
 get_ini_val_bool() {
@@ -533,6 +624,16 @@ get_ini_val_bool() {
 	fi
 
 	# Key not found
+	return 1
+}
+
+get_ini_val_bool_into() {
+	local -n _givbi_out_="${1}"
+	local _givbi_val_
+	if get_ini_val_into _givbi_val_ "${2-}" "${3-}"; then
+		is_true "${_givbi_val_}" && _givbi_out_="true" || _givbi_out_="false"
+		return 0
+	fi
 	return 1
 }
 
@@ -624,6 +725,16 @@ get_toml_val_string() {
 	return 1
 }
 
+get_toml_val_string_into() {
+	local -n _gtvsi_out_="${1}"
+	local _gtvsi_val_
+	if get_toml_val_into _gtvsi_val_ "${2-}" "${3-}"; then
+		_gtvsi_out_="${_gtvsi_val_}"
+		return 0
+	fi
+	return 1
+}
+
 set_toml_val_string() {
 	# set_toml_val FILE SECTION.KEY VALUE
 	# Creates or updates KEY = "VALUE" within [SECTION] in FILE.
@@ -658,6 +769,16 @@ get_toml_val_bool() {
 	fi
 
 	# Key or section not found
+	return 1
+}
+
+get_toml_val_bool_into() {
+	local -n _gtvbi_out_="${1}"
+	local _gtvbi_val_
+	if get_toml_val_into _gtvbi_val_ "${2-}" "${3-}"; then
+		is_true "${_gtvbi_val_}" && _gtvbi_out_="true" || _gtvbi_out_="false"
+		return 0
+	fi
 	return 1
 }
 

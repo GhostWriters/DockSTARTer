@@ -18,7 +18,7 @@ env_get_line_regex() {
 	if [[ ${GET_VAR} == *:* ]]; then
 		# GET_VAR is in the form of "APPNAME:VARIABLE", set new file to use
 		local APPNAME=${GET_VAR%%:*}
-		VAR_FILE="$(run_script 'app_env_file' "${APPNAME}")"
+		run_script 'app_env_file_into' VAR_FILE "${APPNAME}"
 		GET_VAR=${GET_VAR#"${APPNAME}:"}
 	fi
 	if [[ -f ${VAR_FILE} ]]; then

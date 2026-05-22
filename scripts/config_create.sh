@@ -71,12 +71,12 @@ config_create() {
 		)
 
 		local Value
-		if Value=$(run_script 'config_get' paths.compose_folder "${APPLICATION_INI_FILE}"); then
+		if run_script 'config_get_into' Value paths.compose_folder "${APPLICATION_INI_FILE}"; then
 			run_script 'config_set' paths.compose_folder "${Value}"
 			ComposeFolderFound=true
 		fi
 		for Key in "${ConfigOptions[@]}"; do
-			if Value=$(run_script 'config_get' "${Key}" "${APPLICATION_INI_FILE}"); then
+			if run_script 'config_get_into' Value "${Key}" "${APPLICATION_INI_FILE}"; then
 				run_script 'config_set' "${Key}" "${Value}"
 			fi
 		done
@@ -104,7 +104,7 @@ config_create() {
 detect_compose_folder() {
 	# Check for a legacy compose folder and update ComposeFolder if needed
 	local ConfigFolder
-	ConfigFolder="$(run_script 'config_get' paths.config_folder)"
+	run_script 'config_get_into' ConfigFolder paths.config_folder || true
 
 	local -a ExpandVarList=(
 		ScriptFolder "${SCRIPTPATH}"
@@ -129,7 +129,7 @@ detect_compose_folder() {
 	fi
 
 	local DefaultComposeFolder
-	DefaultComposeFolder="$(run_script 'config_get' paths.compose_folder)"
+	run_script 'config_get_into' DefaultComposeFolder paths.compose_folder || true
 	local ExpandedDefaultComposeFolder
 	ExpandedDefaultComposeFolder="$(expand_vars "${DefaultComposeFolder}" "${ExpandVarList[@]}")"
 
