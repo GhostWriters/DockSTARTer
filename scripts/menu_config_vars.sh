@@ -66,9 +66,9 @@ menu_config_vars() {
 			VarName="$(${GREP} -o -P '^\w+(?=)' <<< "${line}")"
 			if [[ -n ${VarName-} ]]; then
 				# Line contains a variable
-				local DefaultLine _DefaultVal_
-				run_script 'var_default_value_into' _DefaultVal_ "${VarName}"
-				DefaultLine="${VarName}=${_DefaultVal_}"
+				local DefaultLine DefaultVal
+				run_script 'var_default_value_into' DefaultVal "${VarName}"
+				DefaultLine="${VarName}=${DefaultVal}"
 				if [[ ${line} == "${DefaultLine}" ]]; then
 					LineColor[LineNumber]="{{|LineVar|}}"
 				else
@@ -97,9 +97,9 @@ menu_config_vars() {
 			CurrentValueOnLine[LineNumber]=""
 			LineColor[LineNumber]="{{|LineOther|}}"
 			LineNumber+=1
-			local _AppEnvFilePath_
-			run_script 'app_env_file_into' _AppEnvFilePath_ "${APPNAME}"
-			CurrentValueOnLine[LineNumber]="*** ${_AppEnvFilePath_} ***"
+			local AppEnvFilePath
+			run_script 'app_env_file_into' AppEnvFilePath "${APPNAME}"
+			CurrentValueOnLine[LineNumber]="*** ${AppEnvFilePath} ***"
 			LineColor[LineNumber]="{{|LineHeading|}}"
 			run_script 'appvars_lines' "${APPNAME}:" > "${CurrentAppEnvFile}"
 			local -a CurrentAppEnvLines

@@ -33,9 +33,9 @@ needs_yml_merge() {
 	run_script 'app_list_enabled_into' EnabledApps
 	for AppName in "${EnabledApps[@]-}"; do
 		local -l appname=${AppName}
-		local _AppEnvFile_
-		run_script 'app_env_file_into' _AppEnvFile_ "${appname}"
-		if file_changed "${_AppEnvFile_}"; then
+		local AppEnvFile
+		run_script 'app_env_file_into' AppEnvFile "${appname}"
+		if file_changed "${AppEnvFile}"; then
 			# .env.app.appname has changed, return true
 			return 0
 		fi

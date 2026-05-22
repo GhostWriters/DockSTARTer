@@ -5,9 +5,9 @@ IFS=$'\n\t'
 declare -a _dependencies_list=()
 
 app_description_from_template() {
-	local _adft_result_
-	run_script 'app_description_from_template_into' _adft_result_ "$@"
-	echo "${_adft_result_}"
+	local result
+	run_script 'app_description_from_template_into' result "$@"
+	echo "${result}"
 }
 
 test_app_description_from_template() {

@@ -2,10 +2,7 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-declare -a _dependencies_list=(
-	grep
-	sed
-)
+declare -a _dependencies_list=()
 
 app_nicename_from_template_into() {
 	# Return the "NiceName" of a single appname. If there is no "NiceName", return the "Title__Case" of "appname"
@@ -18,9 +15,16 @@ app_nicename_from_template_into() {
 	_anft_BaseApp_="${_anft_baseapp_^}"
 	run_script 'app_instance_file_into' _anft_labels_yml_ "${_anft_baseapp_}" "*.labels.yml"
 	if [[ -f ${_anft_labels_yml_} ]]; then
-		_anft_BaseApp_="$(
-			${GREP} --color=never -Po "\scom\.dockstarter\.appinfo\.nicename: \K.*" "${_anft_labels_yml_}" | ${SED} -E 's/^([^"].*[^"])$/"\1"/' | xargs
-		)"
+		local _anft_line_ _anft_pattern_='[[:space:]]com\.dockstarter\.appinfo\.nicename: (.*)'
+		while IFS= read -r _anft_line_; do
+			if [[ ${_anft_line_} =~ ${_anft_pattern_} ]]; then
+				local _anft_val_="${BASH_REMATCH[1]}"
+				_anft_val_="${_anft_val_#\"}"
+				_anft_val_="${_anft_val_%\"}"
+				_anft_BaseApp_="${_anft_val_}"
+				break
+			fi
+		done < "${_anft_labels_yml_}"
 	fi
 	run_script 'appname_to_instancename_into' _anft_instance_ "${_anft_AppName_}"
 	_anft_Instance_=""

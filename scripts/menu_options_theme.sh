@@ -21,11 +21,11 @@ menu_options_theme() {
 		DisplayNames+=("${DisplayName}")
 		ConfigValues+=("${ConfigValue}")
 		IsUserTheme+=("${UserTheme}")
-		local _td_ _ta_
-		run_script 'theme_description_into' _td_ "${ConfigValue}"
-		run_script 'theme_author_into' _ta_ "${ConfigValue}"
-		ThemeDescription["${ConfigValue}"]="${_td_}"
-		ThemeAuthor["${ConfigValue}"]="${_ta_}"
+		local desc author
+		run_script 'theme_description_into' desc "${ConfigValue}"
+		run_script 'theme_author_into' author "${ConfigValue}"
+		ThemeDescription["${ConfigValue}"]="${desc}"
+		ThemeAuthor["${ConfigValue}"]="${author}"
 	done < <(run_script 'theme_list_data')
 
 	# Check if the configured theme appears in the list; if not, prepend an orphaned placeholder

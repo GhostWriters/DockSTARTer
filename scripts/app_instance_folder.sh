@@ -3,9 +3,9 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 app_instance_folder() {
-	local _aifld_result_
-	run_script 'app_instance_folder_into' _aifld_result_ "$@"
-	echo "${_aifld_result_}"
+	local result
+	run_script 'app_instance_folder_into' result "$@"
+	echo "${result}"
 }
 
 test_app_instance_folder() {

@@ -10,9 +10,9 @@ app_instance_file() {
 	#
 	# app_instance_file "radarr" "*.labels.yml" will return a string similar to "/home/user/.dockstarter/instances/radarr/radarr.labels.yml"
 	# If the file does not exist, it is created from the matching file in the "templates" folder.
-	local _aif_result_
-	run_script 'app_instance_file_into' _aif_result_ "$@"
-	echo "${_aif_result_}"
+	local result
+	run_script 'app_instance_file_into' result "$@"
+	echo "${result}"
 }
 
 test_app_instance_file() {
