@@ -23,9 +23,9 @@ env_sanitize() {
 	local DOCKER_CONFIG_FOLDER DOCKER_COMPOSE_FOLDER ORIG_CONFIG_FOLDER ORIG_COMPOSE_FOLDER
 
 	run_script 'env_get_into' ORIG_CONFIG_FOLDER DOCKER_CONFIG_FOLDER
-	LITERAL_CONFIG_FOLDER="$(run_script 'config_get' paths.config_folder)"
+	run_script 'config_get_into' LITERAL_CONFIG_FOLDER paths.config_folder || true
 	if [[ -z ${LITERAL_CONFIG_FOLDER-} ]]; then
-		LITERAL_CONFIG_FOLDER="$(run_script 'config_get' paths.config_folder "${DEFAULT_TOML_FILE}")"
+		run_script 'config_get_into' LITERAL_CONFIG_FOLDER paths.config_folder "${DEFAULT_TOML_FILE}" || true
 	fi
 	if [[ -z ${LITERAL_CONFIG_FOLDER-} ]]; then
 		LITERAL_CONFIG_FOLDER="${ORIG_CONFIG_FOLDER}"
@@ -33,9 +33,9 @@ env_sanitize() {
 	DOCKER_CONFIG_FOLDER="${LITERAL_CONFIG_FOLDER}"
 
 	run_script 'env_get_into' ORIG_COMPOSE_FOLDER DOCKER_COMPOSE_FOLDER
-	LITERAL_COMPOSE_FOLDER="$(run_script 'config_get' paths.compose_folder)"
+	run_script 'config_get_into' LITERAL_COMPOSE_FOLDER paths.compose_folder || true
 	if [[ -z ${LITERAL_COMPOSE_FOLDER-} ]]; then
-		LITERAL_COMPOSE_FOLDER="$(run_script 'config_get' paths.compose_folder "${DEFAULT_TOML_FILE}")"
+		run_script 'config_get_into' LITERAL_COMPOSE_FOLDER paths.compose_folder "${DEFAULT_TOML_FILE}" || true
 	fi
 	if [[ -z ${LITERAL_COMPOSE_FOLDER-} ]]; then
 		LITERAL_COMPOSE_FOLDER="${ORIG_COMPOSE_FOLDER}"
@@ -79,7 +79,7 @@ env_sanitize() {
 		if [[ -z ${Value-} ]]; then
 			# If the variable is empty get the default value
 			local Default
-			Default="$(run_script 'var_default_value' "${VarName}")"
+			run_script 'var_default_value_into' Default "${VarName}"
 			VarsToUpdate+=("${VarName}")
 			UpdatedVarValue["${VarName}"]="${Default}"
 		fi
@@ -97,7 +97,7 @@ env_sanitize() {
 		if [[ -z ${Value-} ]] || echo "${Value-}" | ${GREP} -q 'x'; then
 			# If the variable is empty or contains an "x", get the default value
 			local Default
-			Default="$(run_script 'var_default_value' "${VarName}")"
+			run_script 'var_default_value_into' Default "${VarName}"
 			VarsToUpdate+=("${VarName}")
 			UpdatedVarValue["${VarName}"]="${Default}"
 		fi

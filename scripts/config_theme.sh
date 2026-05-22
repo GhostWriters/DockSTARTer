@@ -138,10 +138,10 @@ config_theme() {
 	local DialogOptions="--colors --output-fd 1 --cr-wrap --no-collapse"
 
 	local LineCharacters Borders Scrollbar Shadow
-	Borders="$(run_script 'config_get' ui.borders)"
-	LineCharacters="$(run_script 'config_get' ui.line_characters)"
-	Scrollbar="$(run_script 'config_get' ui.scrollbar)"
-	Shadow="$(run_script 'config_get' ui.shadow)"
+	run_script 'config_get_into' Borders ui.borders || true
+	run_script 'config_get_into' LineCharacters ui.line_characters || true
+	run_script 'config_get_into' Scrollbar ui.scrollbar || true
+	run_script 'config_get_into' Shadow ui.shadow || true
 
 	D+=(
 		["Borders"]="${Borders}"

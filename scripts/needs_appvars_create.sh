@@ -37,7 +37,7 @@ needs_appvars_create() {
 		for AppName in ${AddedApps}; do
 			local -l appname=${AppName}
 			local AppEnvFile
-			AppEnvFile="$(run_script 'app_env_file' "${appname}")"
+			run_script 'app_env_file_into' AppEnvFile "${appname}"
 			if file_changed "${AppEnvFile}"; then
 				return 0
 			fi
@@ -62,7 +62,7 @@ needs_appvars_create() {
 		fi
 
 		local AppEnvFile
-		AppEnvFile="$(run_script 'app_env_file' "${appname}")"
+		run_script 'app_env_file_into' AppEnvFile "${appname}"
 		if file_changed "${AppEnvFile}"; then
 			return 0
 		fi

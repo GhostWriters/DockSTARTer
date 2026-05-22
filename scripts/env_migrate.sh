@@ -24,11 +24,11 @@ env_migrate() {
 
 	# Change the .env file to use `appname.env' if 'appname:' preceeds the variable name, and remove 'appname:' from the name
 	if [[ ${FromVar} == *":"* ]]; then
-		FromVarFile="$(run_script 'app_env_file' "${FromVar%:*}")"
+		run_script 'app_env_file_into' FromVarFile "${FromVar%:*}"
 		FromVar="${FromVar#*:}"
 	fi
 	if [[ ${ToVar} == *":"* ]]; then
-		ToVarFile="$(run_script 'app_env_file' "${ToVar%:*}")"
+		run_script 'app_env_file_into' ToVarFile "${ToVar%:*}"
 		ToVar="${ToVar#*:}"
 	fi
 

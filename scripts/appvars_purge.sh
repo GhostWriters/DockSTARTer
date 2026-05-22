@@ -16,7 +16,7 @@ appvars_purge() {
 		run_script 'app_nicename_into' AppName "${appname}"
 
 		local AppEnvFile
-		AppEnvFile="$(run_script 'app_env_file' "${appname}")"
+		run_script 'app_env_file_into' AppEnvFile "${appname}"
 
 		local -a CurrentGlobalVars DefaultGlobalVars GlobalVarsToRemove GlobalLinesToRemove
 		local -a CurrentAppEnvVars DefaultAppEnvVars AppEnvVarsToRemove AppEnvLinesToRemove

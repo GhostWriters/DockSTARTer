@@ -33,7 +33,7 @@ menu_options_display() {
 		local Opts=()
 		for Option in "${DrawLineOption}" "${ShowBordersOption}" "${ShowScrollbarOption}" "${ShowShadowOption}"; do
 			local Value
-			Value="$(run_script 'config_get' "ui.${OptionVariable["${Option}"]}")"
+			run_script 'config_get_into' Value "ui.${OptionVariable["${Option}"]}" || true
 			if is_true "${Value}"; then
 				EnabledOptions+=("${Option}")
 				Opts+=("${Option}" "${OptionDescription["${Option}"]}" ON)

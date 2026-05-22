@@ -22,7 +22,7 @@ var_helpline() {
 
 	# Use varname_to_appname to distinguish global vs app var (mirrors VarNameToAppName in Go)
 	local APPNAME
-	APPNAME="$(run_script 'varname_to_appname' "${VarName}")"
+	run_script 'varname_to_appname_into' APPNAME "${VarName}"
 	APPNAME="${APPNAME^^}"
 
 	if [[ -z ${APPNAME} ]]; then

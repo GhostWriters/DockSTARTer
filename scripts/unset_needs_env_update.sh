@@ -10,7 +10,9 @@ unset_needs_env_update() {
 	if [[ -z ${VarFile} ]]; then
 		run_script 'unset_needs_env_update' "${COMPOSE_ENV}"
 		for AppName in $(run_script 'app_list_referenced'); do
-			run_script 'unset_needs_env_update' "$(run_script 'app_env_file' "${AppName}")"
+			local _AppEnvFile_
+			run_script 'app_env_file_into' _AppEnvFile_ "${AppName}"
+			run_script 'unset_needs_env_update' "${_AppEnvFile_}"
 		done
 		return
 	fi
@@ -35,9 +37,9 @@ unset_needs_env_update() {
 		APPNAME="$(run_script 'varfile_to_appname' "${VarFile}")"
 		local AppEnabledFile
 		AppEnabledFile="${timestamps_folder}/${filename}_${APPNAME}__ENABLED"
-		local _uneu_enabled_line_
-		run_script 'env_get_line_into' _uneu_enabled_line_ "${APPNAME}__ENABLED"
-		echo "${_uneu_enabled_line_}" > "${AppEnabledFile}"
+		local EnabledLine
+		run_script 'env_get_line_into' EnabledLine "${APPNAME}__ENABLED"
+		echo "${EnabledLine}" > "${AppEnabledFile}"
 		# Record the state of the global .env for this specific app
 		cp -a "${COMPOSE_ENV}" "${timestamps_folder}/${filename}_$(basename "${COMPOSE_ENV}")"
 	fi

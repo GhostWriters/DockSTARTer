@@ -7,7 +7,7 @@ menu_dialog_example() {
 	local CommandLine=${2-}
 
 	local ThemeName ThemeDescription ThemeAuthor
-	ThemeName="$(run_script 'theme_name')"
+	run_script 'theme_name_into' ThemeName
 	ThemeDescription="$(run_script 'theme_description' "${ThemeName}")"
 	ThemeAuthor="$(run_script 'theme_author' "${ThemeName}")"
 

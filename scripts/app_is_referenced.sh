@@ -22,7 +22,8 @@ app_is_referenced() {
 	# Check for an un-commented reference to .env.app.appname in the override file
 	if [[ -f ${COMPOSE_OVERRIDE} ]]; then
 		local AppEnvFile
-		AppEnvFile="$(basename "$(run_script 'app_env_file' "${APPNAME}")")"
+		run_script 'app_env_file_into' AppEnvFile "${APPNAME}"
+		AppEnvFile="$(basename "${AppEnvFile}")"
 		local SearchString="${AppEnvFile//./[.]}"
 		if ${GREP} -q -P "^(?:[^#]*)(?:\s|^)(?<Q>['\"]?)(?:[.]\/)?${SearchString}(?=\k<Q>(?:\s|$))" "${COMPOSE_OVERRIDE}" &> /dev/null; then
 

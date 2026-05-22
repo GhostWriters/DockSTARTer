@@ -909,7 +909,8 @@ run_command() {
 			if [[ -n ${ThemeName} ]]; then
 				NoticeText="Applying ${APPLICATION_NAME} theme '{{|Theme|}}${ThemeName}{{[-]}}'"
 			else
-				NoticeText="Re-applying ${APPLICATION_NAME} theme '{{|Theme|}}$(run_script 'theme_name'){{[-]}}'"
+				run_script 'theme_name_into' ThemeName
+				NoticeText="Re-applying ${APPLICATION_NAME} theme '{{|Theme|}}${ThemeName}{{[-]}}'"
 			fi
 			notice \
 				"${NoticeText}"

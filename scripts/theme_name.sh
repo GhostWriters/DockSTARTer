@@ -3,7 +3,9 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 theme_name() {
-	run_script 'config_get' ui.theme
+	local result
+	run_script 'theme_name_into' result
+	echo "${result}"
 }
 
 test_theme_name() {
