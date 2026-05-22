@@ -13,7 +13,9 @@ unset_needs_yml_merge() {
 	fi
 	make_timestamp_file "${DOCKER_COMPOSE_FILE}"
 	make_timestamp_file "${COMPOSE_ENV}"
-	for AppName in $(run_script 'app_list_enabled'); do
+	local -a EnabledApps
+	run_script 'app_list_enabled_into' EnabledApps
+	for AppName in "${EnabledApps[@]-}"; do
 		local _AppEnvFile_
 		run_script 'app_env_file_into' _AppEnvFile_ "${AppName}"
 		make_timestamp_file "${_AppEnvFile_}"

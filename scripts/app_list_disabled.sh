@@ -14,7 +14,7 @@ app_list_disabled() {
 	readarray -t DISABLED_APPS < <(
 		${GREP} --color=never -o -P "^${APPNAME_REGEX}(?=__ENABLED\s*=(?!(?<quote>['|\"]?)(?i:on|true|yes)\k<quote>))" "${COMPOSE_ENV}" | sort || true
 	)
-	readarray -t BUILTIN_APPS < <(run_script 'app_list_builtin')
+	run_script 'app_list_builtin_into' BUILTIN_APPS
 	local -a COMBINED=("${DISABLED_APPS[@]}" "${BUILTIN_APPS[@]}")
 	printf "%s\n" "${COMBINED[@]}" | sort | uniq -d
 }

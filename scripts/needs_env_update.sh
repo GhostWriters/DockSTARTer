@@ -24,7 +24,9 @@ needs_env_update() {
 		if file_changed "${VarFile}"; then
 			return 0
 		fi
-		if [[ ! -f ${ReferencedAppsFile} ]] || ! cmp -s "${ReferencedAppsFile}" <(run_script 'app_list_referenced' || true); then
+		local -a ReferencedApps
+		run_script 'app_list_referenced_into' ReferencedApps || true
+		if [[ ! -f ${ReferencedAppsFile} ]] || ! cmp -s "${ReferencedAppsFile}" <(printf '%s\n' "${ReferencedApps[@]-}"); then
 			return 0
 		fi
 		return 1

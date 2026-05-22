@@ -22,9 +22,9 @@ needs_appvars_create() {
 		# BULK MODE
 		# 2. Check Added Apps List
 		local AddedAppsFile="${timestamps_folder}/AddedApps"
-		local AddedApps
-		AddedApps="$(run_script 'app_list_added')"
-		if [[ ! -f ${AddedAppsFile} ]] || ! cmp -s "${AddedAppsFile}" <(printf '%s\n' "${AddedApps}"); then
+		local -a AddedApps
+		run_script 'app_list_added_into' AddedApps
+		if [[ ! -f ${AddedAppsFile} ]] || ! cmp -s "${AddedAppsFile}" <(printf '%s\n' "${AddedApps[@]-}"); then
 			return 0
 		fi
 
@@ -34,7 +34,7 @@ needs_appvars_create() {
 			return 0
 		fi
 
-		for AppName in ${AddedApps}; do
+		for AppName in "${AddedApps[@]-}"; do
 			local -l appname=${AppName}
 			local AppEnvFile
 			run_script 'app_env_file_into' AppEnvFile "${appname}"
