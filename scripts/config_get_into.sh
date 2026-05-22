@@ -5,6 +5,7 @@ IFS=$'\n\t'
 config_get_into() {
 	# config_get_into OutVar section_key [config_file]
 	local -n _cgi_out_="${1}"
+	assert_nameref_is_string "${1}"
 	local _cgi_section_key_=${2-}
 	local _cgi_config_file_=${3:-$APPLICATION_TOML_FILE}
 

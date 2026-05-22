@@ -9,7 +9,7 @@ declare -a _dependencies_list=(
 package_manager_table() {
 	local -a TableArray=()
 	local -a PackageManagerList
-	run_script 'package_manager_list_into' PackageManagerList
+	run_script 'package_manager_list_into_array' PackageManagerList
 	for PackageManagerName in "${PackageManagerList[@]-}"; do
 		local PackageManagerDescription PackageManagerNicename
 		run_script 'package_manager_description_into' PackageManagerDescription "${PackageManagerName}"

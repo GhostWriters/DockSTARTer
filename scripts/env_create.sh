@@ -30,7 +30,7 @@ env_create() {
 		run_script 'set_permissions' "${COMPOSE_ENV}"
 		run_script 'env_sanitize' --skip-backup
 		local -a ReferencedApps
-		run_script 'app_list_referenced_into' ReferencedApps
+		run_script 'app_list_referenced_into_array' ReferencedApps
 		if [[ -n ${DefaultApps-} && -z ${ReferencedApps[*]-} ]]; then
 			info "Installing default applications."
 			run_script 'appvars_create' "${DefaultApps[@]}"

@@ -11,13 +11,13 @@ app_is_referenced() {
 
 	# Check for app variables in the global .env file
 	local -a AppVars
-	run_script 'appvars_list_into' AppVars "${APPNAME}"
+	run_script 'appvars_list_into_array' AppVars "${APPNAME}"
 	if [[ -n ${AppVars[*]-} ]]; then
 		return 0
 	fi
 
 	# Check for app variables in the .env.app.appname file
-	run_script 'appvars_list_into' AppVars "${APPNAME}:"
+	run_script 'appvars_list_into_array' AppVars "${APPNAME}:"
 	if [[ -n ${AppVars[*]-} ]]; then
 		return 0
 	fi

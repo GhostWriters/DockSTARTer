@@ -423,6 +423,7 @@ get_toml_val() {
 get_toml_val_into() {
 	# get_toml_val_into OutVar FILE SECTION.KEY
 	local -n _gtvi_out_="${1}"
+	assert_nameref_is_string "${1}"
 	local _gtvi_file_=${2-}
 	local _gtvi_section_key_="${3-}"
 	local _gtvi_section_="${_gtvi_section_key_%%.*}"
@@ -466,6 +467,7 @@ get_ini_val() {
 get_ini_val_into() {
 	# get_ini_val_into OutVar VarFile VarName
 	local -n _givi_out_="${1}"
+	assert_nameref_is_string "${1}"
 	local _givi_ConfigFile_=${2-}
 	local _givi_VarName_=${3-}
 
@@ -516,6 +518,7 @@ get_ini_val_string() {
 
 get_ini_val_string_into() {
 	local -n _givsi_out_="${1}"
+	assert_nameref_is_string "${1}"
 	local _givsi_val_
 	if get_ini_val_into _givsi_val_ "${2-}" "${3-}"; then
 		_givsi_out_="${_givsi_val_}"
@@ -533,6 +536,7 @@ get_ini_val_bool() {
 
 get_ini_val_bool_into() {
 	local -n _givbi_out_="${1}"
+	assert_nameref_is_string "${1}"
 	local _givbi_val_
 	if get_ini_val_into _givbi_val_ "${2-}" "${3-}"; then
 		is_true "${_givbi_val_}" && _givbi_out_="true" || _givbi_out_="false"
@@ -623,6 +627,7 @@ get_toml_val_string() {
 
 get_toml_val_string_into() {
 	local -n _gtvsi_out_="${1}"
+	assert_nameref_is_string "${1}"
 	local _gtvsi_val_
 	if get_toml_val_into _gtvsi_val_ "${2-}" "${3-}"; then
 		_gtvsi_out_="${_gtvsi_val_}"
@@ -661,6 +666,7 @@ get_toml_val_bool() {
 
 get_toml_val_bool_into() {
 	local -n _gtvbi_out_="${1}"
+	assert_nameref_is_string "${1}"
 	local _gtvbi_val_
 	if get_toml_val_into _gtvbi_val_ "${2-}" "${3-}"; then
 		is_true "${_gtvbi_val_}" && _gtvbi_out_="true" || _gtvbi_out_="false"
@@ -804,6 +810,7 @@ hrx_toml_get() {
 hrx_toml_get_into() {
 	# hrx_toml_get_into OutVar ArchiveFile InternalPath SECTION.KEY
 	local -n _htgi_out_="${1}"
+	assert_nameref_is_string "${1}"
 	local _htgi_archive_="${2-}"
 	local _htgi_internal_path_="${3-}"
 	local _htgi_section_key_="${4-}"

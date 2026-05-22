@@ -25,7 +25,7 @@ needs_env_update() {
 			return 0
 		fi
 		local -a ReferencedApps
-		run_script 'app_list_referenced_into' ReferencedApps || true
+		run_script 'app_list_referenced_into_array' ReferencedApps || true
 		if [[ ! -f ${ReferencedAppsFile} ]] || ! cmp -s "${ReferencedAppsFile}" <(printf '%s\n' "${ReferencedApps[@]-}"); then
 			return 0
 		fi

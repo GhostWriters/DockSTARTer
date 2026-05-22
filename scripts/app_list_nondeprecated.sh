@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 app_list_nondeprecated() {
 	local -a BuiltinApps
-	run_script 'app_list_builtin_into' BuiltinApps
+	run_script 'app_list_builtin_into_array' BuiltinApps
 	for APPNAME in "${BuiltinApps[@]-}"; do
 		if run_script 'app_is_nondeprecated' "${APPNAME}"; then
 			echo "${APPNAME}"

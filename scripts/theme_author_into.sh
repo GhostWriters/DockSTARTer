@@ -4,6 +4,7 @@ IFS=$'\n\t'
 
 theme_author_into() {
 	local -n _tai_out_="${1}"
+	assert_nameref_is_string "${1}"
 	local _tai_ThemeName_="${2-}"
 
 	if [[ -z ${_tai_ThemeName_} ]]; then

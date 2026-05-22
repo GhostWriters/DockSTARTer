@@ -5,6 +5,7 @@ IFS=$'\n\t'
 config_ini_get_into() {
 	# config_ini_get_into OutVar section_key [config_file]
 	local -n _cigi_out_="${1}"
+	assert_nameref_is_string "${1}"
 	local _cigi_section_key_=${2-}
 	local _cigi_config_file_=${3:-$APPLICATION_INI_FILE}
 

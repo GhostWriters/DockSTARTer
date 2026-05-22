@@ -4,6 +4,7 @@ IFS=$'\n\t'
 
 menu_heading_into() {
 	local -n _mhi_out_="${1}"
+	assert_nameref_is_string "${1}"
 	shift
 
 	local _mhi_AppName_=${1-}

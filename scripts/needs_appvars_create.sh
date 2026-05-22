@@ -23,7 +23,7 @@ needs_appvars_create() {
 		# 2. Check Added Apps List
 		local AddedAppsFile="${timestamps_folder}/AddedApps"
 		local -a AddedApps
-		run_script 'app_list_added_into' AddedApps
+		run_script 'app_list_added_into_array' AddedApps
 		if [[ ! -f ${AddedAppsFile} ]] || ! cmp -s "${AddedAppsFile}" <(printf '%s\n' "${AddedApps[@]-}"); then
 			return 0
 		fi

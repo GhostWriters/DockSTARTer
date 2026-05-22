@@ -7,6 +7,7 @@ declare -a _dependencies_list=()
 app_nicename_into() {
 	# Return the "NiceName" of a single appname. If there is no "NiceName", return the "Title__Case" of "appname"
 	local -n _ani_out_="${1}"
+	assert_nameref_is_string "${1}"
 	local _ani_AppName_="${2-}"
 	_ani_AppName_="${_ani_AppName_%:*}"
 	if ! run_script 'app_is_user_defined' "${_ani_AppName_}"; then

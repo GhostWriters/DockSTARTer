@@ -4,6 +4,7 @@ IFS=$'\n\t'
 
 var_default_value_into() {
 	local -n _vdvi_out_="${1}"
+	assert_nameref_is_string "${1}"
 	local _vdvi_VarName_=${2-}
 	local _vdvi_CleanVarName_="${_vdvi_VarName_}"
 

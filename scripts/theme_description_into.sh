@@ -4,6 +4,7 @@ IFS=$'\n\t'
 
 theme_description_into() {
 	local -n _tdi_out_="${1}"
+	assert_nameref_is_string "${1}"
 	local _tdi_ThemeName_="${2-}"
 
 	if [[ -z ${_tdi_ThemeName_} ]]; then

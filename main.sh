@@ -17,6 +17,18 @@ declare -rgx TEMPLATES_DEFAULT_BRANCH='main'
 declare -rgx TEMPLATES_PARENT_FOLDER_NAME='templates'
 declare -rgx TEMPLATES_REPO_FOLDER_NAME='DockSTARTer-Templates'
 
+assert_nameref_is_string() {
+	local type_info
+	type_info=$(declare -p "${1}" 2> /dev/null) || return 0
+	[[ ! ${type_info} =~ ^declare\ -[a-zA-Z]*[aA] ]] || fatal "Variable '{{|Var|}}${1}{{[-]}}' is an array, expected a string"
+}
+
+assert_nameref_is_array() {
+	local type_info
+	type_info=$(declare -p "${1}" 2> /dev/null) || return 0
+	[[ ${type_info} =~ ^declare\ -[a-zA-Z]*a ]] || fatal "Variable '{{|Var|}}${1}{{[-]}}' is a string, expected an array"
+}
+
 # Version Functions
 # https://stackoverflow.com/questions/4023830/how-to-compare-two-strings-in-dot-separated-version-format-in-bash#comment92693604_4024263
 vergte() { printf '%s\n%s' "${2}" "${1}" | sort -C -V; }
@@ -124,6 +136,7 @@ resolve_styles() {
 
 resolve_styles_into() {
 	local -n _rsi_out_="${1}"
+	assert_nameref_is_string "${1}"
 	local style_map_name="${2}"
 	local -n style_map="${2}"
 	local val="${3}"
@@ -321,6 +334,7 @@ strip_styles() {
 
 strip_styles_into() {
 	local -n _ssi_out_="${1}"
+	assert_nameref_is_string "${1}"
 	local _ssi_val_="${2:-}"
 	local _ssi_extglob_=0
 	shopt -q extglob || _ssi_extglob_=$?
@@ -549,6 +563,7 @@ log() {
 }
 timestamped_log_into() {
 	local -n _tli_out_="${1}"
+	assert_nameref_is_string "${1}"
 	local _tli_LogLevelTag_="${2-}"
 	shift 2
 	local _tli_LogMessage_

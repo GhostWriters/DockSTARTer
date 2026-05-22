@@ -9,6 +9,7 @@ declare -a _dependencies_list=(
 
 app_env_file_into() {
 	local -n _aefi_out_="${1}"
+	assert_nameref_is_string "${1}"
 	local -l _aefi_appname_=${2:-}
 
 	local _aefi_AppEnvFilename_=".env.app.${_aefi_appname_}"

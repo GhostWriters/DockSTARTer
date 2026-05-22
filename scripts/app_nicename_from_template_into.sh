@@ -7,6 +7,7 @@ declare -a _dependencies_list=()
 app_nicename_from_template_into() {
 	# Return the "NiceName" of a single appname. If there is no "NiceName", return the "Title__Case" of "appname"
 	local -n _anft_out_="${1}"
+	assert_nameref_is_string "${1}"
 	local _anft_AppName_="${2-}"
 	_anft_AppName_="${_anft_AppName_%:*}"
 	local -l _anft_baseapp_ _anft_instance_

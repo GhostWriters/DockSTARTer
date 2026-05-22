@@ -4,6 +4,7 @@ IFS=$'\n\t'
 
 var_helpline_into() {
 	local -n _vhli_out_="${1}"
+	assert_nameref_is_string "${1}"
 	local _vhli_VarName_="${2-}"
 
 	_vhli_VarName_="${_vhli_VarName_#*:}"

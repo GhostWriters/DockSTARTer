@@ -30,7 +30,7 @@ needs_yml_merge() {
 	local SentinelFile="${timestamps_folder}/docker-compose.yml"
 
 	local -a EnabledApps
-	run_script 'app_list_enabled_into' EnabledApps
+	run_script 'app_list_enabled_into_array' EnabledApps
 	for AppName in "${EnabledApps[@]-}"; do
 		local -l appname=${AppName}
 		local AppEnvFile

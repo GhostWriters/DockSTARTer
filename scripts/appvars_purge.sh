@@ -22,7 +22,7 @@ appvars_purge() {
 		local -a CurrentAppEnvVars DefaultAppEnvVars AppEnvVarsToRemove AppEnvLinesToRemove
 		local GlobalVarsRegex AppEnvVarsRegex
 
-		run_script 'appvars_list_into' CurrentGlobalVars "${appname}"
+		run_script 'appvars_list_into_array' CurrentGlobalVars "${appname}"
 		if [[ -n ${CurrentGlobalVars-} ]]; then
 			readarray -t DefaultGlobalVars <<< "$(run_script 'env_list_app_global_defaults' "${appname}")"
 			# Get the list of current variables also in the default list
@@ -37,7 +37,7 @@ appvars_purge() {
 			readarray -t GlobalLinesToRemove <<< "$(${GREP} -P "^\s*${GlobalVarsRegex}\s*=" "${COMPOSE_ENV}" || true)"
 		fi
 
-		run_script 'appvars_list_into' CurrentAppEnvVars "${appname}:"
+		run_script 'appvars_list_into_array' CurrentAppEnvVars "${appname}:"
 		if [[ -n ${CurrentAppEnvVars-} ]]; then
 			readarray -t DefaultAppEnvVars <<< "$(run_script 'env_list_app_env_defaults' "${appname}")"
 			# Get the list of current variables also in the default list

@@ -21,7 +21,7 @@ commands_yml_merge() {
 	local COMPOSE_FILE=""
 	notice "Adding enabled app templates to merge '{{|File|}}docker-compose.yml{{[-]}}'. Please be patient, this can take a while."
 	local -a EnabledApps
-	run_script 'app_list_enabled_into' EnabledApps
+	run_script 'app_list_enabled_into_array' EnabledApps
 	for APPNAME in "${EnabledApps[@]-}"; do
 		local -l appname=${APPNAME}
 		local AppName
