@@ -13,6 +13,7 @@ env_get_literal_into() {
 	# Returns the variable "VarName" If no "VarFile" is given, uses the global .env file
 	# If "APPNAME:" is provided, gets variable from ".env.app.appname"
 	local -n _eglli_out_="${1}"
+	assert_nameref_is_string "${1}"
 	local _eglli_VarName_=${2-}
 	local _eglli_VarFile_=${3:-$COMPOSE_ENV}
 

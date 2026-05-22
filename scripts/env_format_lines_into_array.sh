@@ -4,6 +4,7 @@ IFS=$'\n\t'
 
 env_format_lines_into_array() {
 	local -n _efli_out_="${1}"
+	assert_nameref_is_array "${1}"
 	shift
 	readarray -t _efli_out_ < <(run_script 'env_format_lines' "$@")
 }

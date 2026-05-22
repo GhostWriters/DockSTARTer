@@ -4,6 +4,7 @@ IFS=$'\n\t'
 
 appvars_list_into_array() {
 	local -n _avli_out_="${1}"
+	assert_nameref_is_array "${1}"
 	shift
 	readarray -t _avli_out_ < <(run_script 'appvars_list' "$@")
 }

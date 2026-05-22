@@ -6,6 +6,7 @@ declare -a _dependencies_list=()
 
 appname_to_instancename_into() {
 	local -n _atin_out_="${1}"
+	assert_nameref_is_string "${1}"
 	local _atin_AppName_=${2-}
 	if [[ ${_atin_AppName_} == *"__"* ]]; then
 		_atin_out_="${_atin_AppName_#*__}"

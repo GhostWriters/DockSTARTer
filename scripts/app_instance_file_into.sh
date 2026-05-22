@@ -8,6 +8,7 @@ declare -a _dependencies_list=(
 
 app_instance_file_into() {
 	local -n _aifi_out_="${1}"
+	assert_nameref_is_string "${1}"
 	shift
 	local -l _aifi_appname_=${1:-}
 	local _aifi_FilenameTemplate_=${2:-}

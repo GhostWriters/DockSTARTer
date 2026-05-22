@@ -11,6 +11,7 @@ app_instance_folder_into() {
 	# app_instance_folder_into Result "radarr" will set Result to a string similar to "/home/user/.dockstarter/instances/radarr"
 	# If the folder does not exist, it is created from the matching folder in the "templates" folder.
 	local -n _aifld_out_="${1}"
+	assert_nameref_is_string "${1}"
 	local _aifld_AppName_=${2:-}
 	local -l _aifld_appname_=${_aifld_AppName_}
 

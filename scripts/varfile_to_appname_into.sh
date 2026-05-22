@@ -4,6 +4,7 @@ IFS=$'\n\t'
 
 varfile_to_appname_into() {
 	local -n _vtai_out_="${1}"
+	assert_nameref_is_string "${1}"
 	_vtai_out_=""
 	local _vtai_VarFile_="${2-}"
 	local _vtai_FileName_="${_vtai_VarFile_##*/}"

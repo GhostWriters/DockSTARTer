@@ -6,6 +6,7 @@ declare -a _dependencies_list=()
 
 app_nicename_from_template_into_array() {
 	local -n _anftia_out_="${1}"
+	assert_nameref_is_array "${1}"
 	shift
 	_anftia_out_=()
 	local _anftia_name_

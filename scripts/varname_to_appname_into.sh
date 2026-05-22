@@ -4,6 +4,7 @@ IFS=$'\n\t'
 
 varname_to_appname_into() {
 	local -n _vtai_out_="${1}"
+	assert_nameref_is_string "${1}"
 	local _vtai_VarName_=${2-}
 	if [[ ${_vtai_VarName_} == *":"* ]]; then
 		_vtai_out_="${_vtai_VarName_%:*}"

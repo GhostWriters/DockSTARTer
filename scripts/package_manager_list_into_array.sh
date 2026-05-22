@@ -4,6 +4,7 @@ IFS=$'\n\t'
 
 package_manager_list_into_array() {
 	local -n _pmli_out_="${1}"
+	assert_nameref_is_array "${1}"
 	readarray -t _pmli_out_ < <(run_script 'package_manager_list')
 }
 

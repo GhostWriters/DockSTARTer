@@ -7,6 +7,7 @@ declare -a _dependencies_list=()
 app_description_into() {
 	# Return the description of a single appname.
 	local -n _adi_out_="${1}"
+	assert_nameref_is_string "${1}"
 	local -l _adi_appname_=${2-}
 	_adi_appname_="${_adi_appname_%:*}"
 	if run_script 'app_is_user_defined' "${_adi_appname_}"; then

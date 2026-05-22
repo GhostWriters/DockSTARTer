@@ -5,6 +5,7 @@ IFS=$'\n\t'
 config_toml_get_into() {
 	# config_toml_get_into OutVar section_key [config_file]
 	local -n _ctgi_out_="${1}"
+	assert_nameref_is_string "${1}"
 	local _ctgi_section_key_=${2-}
 	local _ctgi_config_file_=${3:-$APPLICATION_TOML_FILE}
 

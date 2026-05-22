@@ -6,6 +6,7 @@ declare -a _dependencies_list=()
 
 appname_to_baseappname_into() {
 	local -n _atbn_out_="${1}"
+	assert_nameref_is_string "${1}"
 	local _atbn_AppName_=${2-}
 	_atbn_out_="${_atbn_AppName_%__*}"
 }

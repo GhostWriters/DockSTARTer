@@ -7,6 +7,7 @@ declare -a _dependencies_list=()
 app_description_from_template_into() {
 	# Return the description of a single appname.
 	local -n _adft_out_="${1}"
+	assert_nameref_is_string "${1}"
 	local _adft_appname_=${2-}
 	_adft_appname_=${_adft_appname_,,}
 	if run_script 'app_is_builtin' "${_adft_appname_}"; then

@@ -13,6 +13,7 @@ env_get_into() {
 	# Returns the variable "VarName" If no "VarFile" is given, uses the global .env file
 	# If "APPNAME:" is provided, gets variable from ".env.app.appname"
 	local -n _egi_out_="${1}"
+	assert_nameref_is_string "${1}"
 	local _egi_VarName_=${2-}
 	local _egi_VarFile_=${3:-$COMPOSE_ENV}
 

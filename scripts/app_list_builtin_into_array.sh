@@ -4,6 +4,7 @@ IFS=$'\n\t'
 
 app_list_builtin_into_array() {
 	local -n _albi_out_="${1}"
+	assert_nameref_is_array "${1}"
 	readarray -t _albi_out_ < <(run_script 'app_list_builtin')
 }
 
