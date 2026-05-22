@@ -16,8 +16,8 @@ menu_add_app() {
 		if ! run_script 'appname_is_valid' "${AppName}"; then
 			AppNameHeading="${AppNameNone}"
 		fi
-		local InputValueText
-		Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
+		local Heading InputValueText
+		run_script 'menu_heading_into' Heading "${AppNameHeading}"
 		InputValueText="${Heading}\n\nWhat application would you like add?\n"
 		local ValueOptions
 		ValueOptions=(
@@ -63,17 +63,17 @@ menu_add_app() {
 					ErrorMessage="The application name {{|Highlight|}}${AppName}{{[-]}} is not a valid name.\n\n Please input another application name."
 				fi
 				if [[ -n ${ErrorMessage} ]]; then
-					Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
+					run_script 'menu_heading_into' Heading "${AppNameHeading}"
 					dialog_error "${Title}" "${Heading}\n\n${ErrorMessage}"
 					continue
 				fi
-				Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
+				run_script 'menu_heading_into' Heading "${AppNameHeading}"
 				if ! run_script 'app_is_builtin' "${AppName}"; then
 					local Question
 					Question="Create user defined application {{|Highlight|}}${AppName}{{[-]}}?\n"
-					Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
+					run_script 'menu_heading_into' Heading "${AppNameHeading}"
 					if run_script 'question_prompt' N "${Heading}\n\n${Question}" "Create Application" "${ASSUMEYES:+Y}" "User Defined" "Back"; then
-						Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
+						run_script 'menu_heading_into' Heading "${AppNameHeading}"
 						dialog_success "Adding User Defined Application" "${Heading}" "${DIALOGTIMEOUT}"
 						run_script 'menu_add_var' "${AppName}"
 						return
@@ -81,7 +81,7 @@ menu_add_app() {
 				else
 					local Question
 					Question="Application {{|Highlight|}}${AppName}{{[-]}} can be added as a built-in application.\n\nCreate {{|Highlight|}}${AppName}{{[-]}} as a {{|Highlight|}}Built In{{[-]}} or a {{|Highlight|}}User Defined{{[-]}} application?\n"
-					Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
+					run_script 'menu_heading_into' Heading "${AppNameHeading}"
 					local -a YesNoDialog=(
 						"${Title}"
 						"${Heading}\n\n${Question}"
@@ -95,7 +95,7 @@ menu_add_app() {
 					dialog_yesno "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?
 					case ${DIALOG_BUTTONS[YesNoDialogButtonPressed]-} in
 						OK) # Built In
-							Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
+							run_script 'menu_heading_into' Heading "${AppNameHeading}"
 							coproc {
 								dialog_pipe "{{|TitleSuccess|}}Adding Built In Application" "${Heading}\n\n{{|Subtitle|}}Adding application:\n{{|CommandLine|}} ${APPLICATION_COMMAND} --add ${AppName}" "${DIALOGTIMEOUT}"
 							}
@@ -111,7 +111,7 @@ menu_add_app() {
 							return
 							;;
 						EXTRA) # User Defined
-							Heading="$(run_script 'menu_heading' "${AppNameHeading}")"
+							run_script 'menu_heading_into' Heading "${AppNameHeading}"
 							dialog_success "{{|TitleSuccess|}}Adding User Defined Application" "${Heading}" "${DIALOGTIMEOUT}"
 							run_script 'menu_add_var' "${AppName}"
 							return

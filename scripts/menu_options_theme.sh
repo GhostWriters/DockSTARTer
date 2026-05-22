@@ -21,8 +21,11 @@ menu_options_theme() {
 		DisplayNames+=("${DisplayName}")
 		ConfigValues+=("${ConfigValue}")
 		IsUserTheme+=("${UserTheme}")
-		ThemeDescription["${ConfigValue}"]="$(run_script 'theme_description' "${ConfigValue}")"
-		ThemeAuthor["${ConfigValue}"]="$(run_script 'theme_author' "${ConfigValue}")"
+		local _td_ _ta_
+		run_script 'theme_description_into' _td_ "${ConfigValue}"
+		run_script 'theme_author_into' _ta_ "${ConfigValue}"
+		ThemeDescription["${ConfigValue}"]="${_td_}"
+		ThemeAuthor["${ConfigValue}"]="${_ta_}"
 	done < <(run_script 'theme_list_data')
 
 	# Check if the configured theme appears in the list; if not, prepend an orphaned placeholder
@@ -42,8 +45,11 @@ menu_options_theme() {
 			if run_script 'theme_exists' "${CurrentTheme}"; then
 				# File still exists — show as normal entry with real metadata
 				OrphanDisplay="file:${FileStem}"
-				ThemeDescription["${CurrentTheme}"]="$(run_script 'theme_description' "${CurrentTheme}")"
-				ThemeAuthor["${CurrentTheme}"]="$(run_script 'theme_author' "${CurrentTheme}")"
+				local _td_ _ta_
+				run_script 'theme_description_into' _td_ "${CurrentTheme}"
+				run_script 'theme_author_into' _ta_ "${CurrentTheme}"
+				ThemeDescription["${CurrentTheme}"]="${_td_}"
+				ThemeAuthor["${CurrentTheme}"]="${_ta_}"
 			else
 				OrphanDisplay="(missing) file:${FileStem}"
 				ThemeDescription["${CurrentTheme}"]="Source file not found — using cached version"

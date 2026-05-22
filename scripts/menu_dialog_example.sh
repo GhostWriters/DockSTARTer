@@ -8,8 +8,8 @@ menu_dialog_example() {
 
 	local ThemeName ThemeDescription ThemeAuthor
 	run_script 'theme_name_into' ThemeName
-	ThemeDescription="$(run_script 'theme_description' "${ThemeName}")"
-	ThemeAuthor="$(run_script 'theme_author' "${ThemeName}")"
+	run_script 'theme_description_into' ThemeDescription "${ThemeName}"
+	run_script 'theme_author_into' ThemeAuthor "${ThemeName}"
 
 	if [[ -z ${Message} ]]; then
 		Message="Applied theme ${ThemeName}"

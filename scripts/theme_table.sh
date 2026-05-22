@@ -23,8 +23,8 @@ theme_table() {
 
 		# Metadata extraction scripts handle URI/Names
 		local ThemeDescription ThemeAuthor
-		ThemeDescription="$(run_script 'theme_description' "${URI}")"
-		ThemeAuthor="$(run_script 'theme_author' "${URI}")"
+		run_script 'theme_description_into' ThemeDescription "${URI}"
+		run_script 'theme_author_into' ThemeAuthor "${URI}"
 		TableArray+=("${URI}" "${ThemeDescription}" "${ThemeAuthor}")
 	done
 	table 3 "Theme" "Description" "Author" "${TableArray[@]}"

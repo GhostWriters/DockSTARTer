@@ -14,7 +14,7 @@ env_backup() {
 	if [[ -z ${DOCKER_CONFIG_FOLDER-} ]]; then
 		run_script 'var_default_value_into' DOCKER_CONFIG_FOLDER DOCKER_CONFIG_FOLDER
 	fi
-	DOCKER_CONFIG_FOLDER="$(run_script 'sanitize_path' "${DOCKER_CONFIG_FOLDER}")"
+	run_script 'sanitize_path_into' DOCKER_CONFIG_FOLDER "${DOCKER_CONFIG_FOLDER}"
 	LITERAL_CONFIG_FOLDER="${DOCKER_CONFIG_FOLDER}"
 	DOCKER_CONFIG_FOLDER="$(
 		HOME="${HOME}" XDG_CONFIG_HOME="${XDG_CONFIG_HOME}" \
@@ -37,7 +37,7 @@ env_backup() {
 		HOME="${HOME}" XDG_CONFIG_HOME="${XDG_CONFIG_HOME}" DOCKER_CONFIG_FOLDER="${DOCKER_CONFIG_FOLDER-}" \
 			eval echo "${DOCKER_VOLUME_CONFIG}"
 	)"
-	DOCKER_VOLUME_CONFIG="$(run_script 'sanitize_path' "${DOCKER_VOLUME_CONFIG}")"
+	run_script 'sanitize_path_into' DOCKER_VOLUME_CONFIG "${DOCKER_VOLUME_CONFIG}"
 
 	info "Taking ownership of '{{|Folder|}}${DOCKER_VOLUME_CONFIG}{{[-]}}' (non-recursive)."
 	sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${DOCKER_VOLUME_CONFIG}" &> /dev/null || true

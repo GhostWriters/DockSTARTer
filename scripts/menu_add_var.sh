@@ -94,7 +94,7 @@ menu_add_var() {
 			while true; do
 				set_screen_size
 				VarNameHeading="${VarName:-${VarNameNone}}"
-				Heading="$(run_script 'menu_heading' ":${AppName}" "${VarNameHeading}")"
+				run_script 'menu_heading_into' Heading ":${AppName}" "${VarNameHeading}"
 				local -a TemplateValueOptions ClearValueOptions EnabledValueOptions AddAllValueOptions StockValueOptions
 				unset TemplateValueOptions ClearValueOptions EnabledValueOptions AddAllValueOptions StockValueOptions
 				local -i OptionsLength=0
@@ -173,7 +173,7 @@ menu_add_var() {
 						"${StockValueOptions[@]-}"
 					)
 				fi
-				Heading="$(run_script 'menu_heading' ":${AppName}" "${VarNameHeading}")"
+				run_script 'menu_heading_into' Heading ":${AppName}" "${VarNameHeading}"
 				local SelectValueMenuText="${Heading}\n\nWhat variable would you like create for application {{|Highlight|}}${AppName}{{[-]}}?"
 				local -a SelectValueDialog=(
 					"${Title}"
@@ -198,9 +198,9 @@ menu_add_var() {
 							for Option in "${ValidStockOptions[@]}"; do
 								Question+="\n   {{|Highlight|}}${Option// /}{{[-]}}"
 							done
-							Heading="$(run_script 'menu_heading' ":${AppName}")"
+							run_script 'menu_heading_into' Heading ":${AppName}"
 							if run_script 'question_prompt' N "${Heading}\n\n${Question}" "Create Stock Variables" "${ASSUMEYES:+Y}" "Create" "Back"; then
-								Heading="$(run_script 'menu_heading' ":${AppName}" "${VarNameHeading}")"
+								run_script 'menu_heading_into' Heading ":${AppName}" "${VarNameHeading}"
 								coproc {
 									dialog_pipe "{{|TitleSuccess|}}Creating Stock Variables" "${Heading}"
 								}
@@ -239,7 +239,7 @@ menu_add_var() {
 						local ErrorMessage=''
 						local DetectedAppName
 						if [[ -z ${VarName-} ]]; then
-							Heading="$(run_script 'menu_heading' ":${AppName}" "${VarNameHeading}")"
+							run_script 'menu_heading_into' Heading ":${AppName}" "${VarNameHeading}"
 							if run_script 'question_prompt' N "${Heading}\n\nDo you really want to cancel adding a variable?\n" "Cancel Adding Variable" "${ASSUMEYES:+Y}" "Done" "Back"; then
 								# Value is empty, exit
 								return
@@ -260,15 +260,15 @@ menu_add_var() {
 							fi
 						fi
 						if [[ -n ${ErrorMessage-} ]]; then
-							Heading="$(run_script 'menu_heading' ":${AppName}" "${VarNameHeading}")"
+							run_script 'menu_heading_into' Heading ":${AppName}" "${VarNameHeading}"
 							dialog_error "${Title}" "${Heading}\n\n${ErrorMessage}"
 							continue
 						fi
 						Question="Create variable {{|Highlight|}}${VarName}{{[-]}} for application {{|Highlight|}}${AppName}{{[-]}}?\n"
-						Heading="$(run_script 'menu_heading' "$:{AppName}" "${VarNameHeading}")"
+						run_script 'menu_heading_into' Heading "$:{AppName}" "${VarNameHeading}"
 						if run_script 'question_prompt' N "${Heading}\n\n${Question}" "Create Variable" "${ASSUMEYES:+Y}" "Create" "Back"; then
 							run_script 'var_default_value_into' Default "${VarName}"
-							Heading="$(run_script 'menu_heading' ":${AppName}" "${VarNameHeading}")"
+							run_script 'menu_heading_into' Heading ":${AppName}" "${VarNameHeading}"
 							run_script_dialog "{{|TitleSuccess|}}Creating Variable" "${Heading}\n\n" "${DIALOGTIMEOUT}" \
 								'env_set_literal' "${VarName}" "${Default}"
 							run_script 'menu_value_prompt' "${VarName}"
@@ -288,7 +288,7 @@ menu_add_var() {
 				set_screen_size
 				VarNameHeading="${VarName:-${VarNameNone}}"
 				local InputValueText
-				Heading="$(run_script 'menu_heading' "${AppNameHeading}" "")"
+				run_script 'menu_heading_into' Heading "${AppNameHeading}" ""
 				if [[ ${VarType} == APPENV ]]; then
 					InputValueText="${Heading}\n\nWhat variable would you like create for application {{|Highlight|}}${AppName}{{[-]}}?\n"
 				else # GLOBAL
@@ -334,29 +334,29 @@ menu_add_var() {
 							fi
 						fi
 						if [[ -n ${ErrorMessage} ]]; then
-							Heading="$(run_script 'menu_heading' "${AppNameHeading}" "${VarNameHeading}")"
+							run_script 'menu_heading_into' Heading "${AppNameHeading}" "${VarNameHeading}"
 							dialog_error "${Title}" "${Heading}\n\n${ErrorMessage}"
 							continue
 						fi
-						Heading="$(run_script 'menu_heading' "${AppNameHeading}" "${VarNameHeading}")"
+						run_script 'menu_heading_into' Heading "${AppNameHeading}" "${VarNameHeading}"
 						local Question
 						Question="Create variable {{|Highlight|}}${VarName}{{[-]}}?\n"
 						if [[ ${VarType} == "APPENV" ]]; then
 							Question="Create variable {{|Highlight|}}${VarName}{{[-]}} for application {{|Highlight|}}${AppName}{{[-]}}?\n"
 							if run_script 'question_prompt' N "${Heading}\n\n${Question}" "Create Variable" "${ASSUMEYES:+Y}" "Create" "Back"; then
 								run_script 'var_default_value_into' Default "${AppName}:${VarName}"
-								Heading="$(run_script 'menu_heading' "${AppNameHeading}" "${VarNameHeading}")"
+								run_script 'menu_heading_into' Heading "${AppNameHeading}" "${VarNameHeading}"
 								run_script_dialog "{{|TitleSuccess|}}Creating Variable" "${Heading}\n\n" "${DIALOGTIMEOUT}" \
 									'env_set_literal' "${appname}:${VarName}" "${Default}"
 								run_script 'menu_value_prompt' "${appname}:${VarName}"
 								return
 							fi
 						else # GLOBAL
-							Heading="$(run_script 'menu_heading' "${AppNameHeading}" "${VarNameHeading}")"
+							run_script 'menu_heading_into' Heading "${AppNameHeading}" "${VarNameHeading}"
 							Question="Create global variable {{|Highlight|}}${VarName}{{[-]}}?\n"
 							if run_script 'question_prompt' N "${Heading}\n\n${Question}" "Create Variable" "${ASSUMEYES:+Y}" "Create" "Back"; then
 								run_script 'var_default_value_into' Default "${VarName}"
-								Heading="$(run_script 'menu_heading' "${AppNameHeading}" "${VarNameHeading}")"
+								run_script 'menu_heading_into' Heading "${AppNameHeading}" "${VarNameHeading}"
 								run_script_dialog "{{|TitleSuccess|}}Creating Variable" "${Heading}\n\n" "${DIALOGTIMEOUT}" \
 									'env_set_literal' "${VarName}" "${Default}"
 								run_script 'menu_value_prompt' "${VarName}"

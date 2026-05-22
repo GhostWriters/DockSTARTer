@@ -1036,11 +1036,13 @@ run_command() {
 				fatal \
 					"No script is defined for command '{{|UserCommand|}}${Command}{{[-]}}'."
 			fi
+			local -a _list_
+			run_script "${Script}_into" _list_
 			run_script_dialog \
 				"${Title}" \
 				"${SubTitle}" \
 				"" \
-				'app_nicename' "$(run_script "${Script}")"
+				'app_nicename' ${_list_[@]+"${_list_[@]}"}
 			;;
 
 		*)

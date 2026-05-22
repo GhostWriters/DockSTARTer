@@ -144,7 +144,7 @@ menu_config_vars() {
 			PaddedLineNumber="$(printf "%0${PadSize}d" "${LineNumber}")"
 			local HelpLine=""
 			if [[ -n ${VarNameOnLine[LineNumber]-} ]]; then
-				HelpLine="$(run_script 'var_helpline' "${VarNameOnLine[LineNumber]}")"
+				run_script 'var_helpline_into' HelpLine "${VarNameOnLine[LineNumber]}"
 			fi
 			LineOptions+=("${PaddedLineNumber}" "${LineColor[LineNumber]-}${CurrentValueOnLine[LineNumber]}" "${HelpLine}")
 		done
@@ -156,7 +156,7 @@ menu_config_vars() {
 		fi
 		while true; do
 			local DialogHeading
-			DialogHeading="$(run_script 'menu_heading' "${APPNAME-}")"
+			run_script 'menu_heading_into' DialogHeading "${APPNAME-}"
 			local -a LineDialog=(
 				"${Title}"
 				"${DialogHeading}"
@@ -193,14 +193,14 @@ menu_config_vars() {
 					local VarName="${VarNameOnLine[LineNumber]-}"
 					if [[ -n ${VarName} ]]; then
 						local DialogHeading
-						DialogHeading="$(run_script 'menu_heading' "${APPNAME-}" "${VarName}")"
+						run_script 'menu_heading_into' DialogHeading "${APPNAME-}" "${VarName}"
 						local CleanVarName="${VarName}"
 						if [[ ${CleanVarName} == *":"* ]]; then
 							CleanVarName="${CleanVarName#*:}"
 						fi
 						local Question="Do you really want to delete {{|Highlight|}}${CleanVarName}{{[-]}}?"
 						if run_script 'question_prompt' N "${DialogHeading}\n\n${Question}\n" "Delete Variable" "${ASSUMEYES:+Y}" "Delete" "Back"; then
-							DialogHeading="$(run_script 'menu_heading' "${APPNAME-}" "${VarName}")"
+							run_script 'menu_heading_into' DialogHeading "${APPNAME-}" "${VarName}"
 							coproc {
 								dialog_pipe "{{|TitleSuccess|}}Deleting Variable" "${DialogHeading}" "${DIALOGTIMEOUT}"
 							}

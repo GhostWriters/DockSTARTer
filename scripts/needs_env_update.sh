@@ -40,7 +40,7 @@ needs_env_update() {
 	filename="$(basename "${VarFile}")"
 	if file_changed "${COMPOSE_ENV}" "${filename}_$(basename "${COMPOSE_ENV}")"; then
 		local -u APPNAME
-		APPNAME="$(run_script 'varfile_to_appname' "${VarFile}")"
+		run_script 'varfile_to_appname_into' APPNAME "${VarFile}"
 		local AppEnabledFile
 		AppEnabledFile="${timestamps_folder:?}/${filename}_${APPNAME}__ENABLED"
 		local EnabledLine

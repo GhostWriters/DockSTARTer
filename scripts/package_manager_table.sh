@@ -12,8 +12,8 @@ package_manager_table() {
 	run_script 'package_manager_list_into' PackageManagerList
 	for PackageManagerName in "${PackageManagerList[@]-}"; do
 		local PackageManagerDescription PackageManagerNicename
-		PackageManagerDescription="$(run_script 'package_manager_description' "${PackageManagerName}")"
-		PackageManagerNicename="$(run_script 'package_manager_nicename' "${PackageManagerName}")"
+		run_script 'package_manager_description_into' PackageManagerDescription "${PackageManagerName}"
+		run_script 'package_manager_nicename_into' PackageManagerNicename "${PackageManagerName}"
 		TableArray+=("${PackageManagerName}" "${PackageManagerNicename}" "${PackageManagerDescription}")
 	done
 	table 3 "Package Manager" "Name" "Description" "${TableArray[@]}"

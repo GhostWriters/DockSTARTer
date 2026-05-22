@@ -116,7 +116,7 @@ env_sanitize() {
 		local Value
 		run_script 'env_get_into' Value "${VarName}"
 		local UpdatedValue
-		UpdatedValue="$(run_script 'sanitize_path' "${Value}")"
+		run_script 'sanitize_path_into' UpdatedValue "${Value}"
 		UpdatedValue="$(
 			replace_with_vars \
 				"${UpdatedValue}" \
