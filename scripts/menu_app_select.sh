@@ -311,7 +311,7 @@ show_gauge() {
 	# Start the gauge and progress dialog windows in the background, and get the process id
 	local index
 	for index in "${!DialogOptions[@]}"; do
-		DialogOptions["${index}"]=$(resolve_styles DC "${DialogOptions["${index}"]}")
+		resolve_styles_into DialogOptions["${index}"] DC "${DialogOptions["${index}"]}"
 	done
 	"${DIALOG}" "${DialogOptions[@]}" < "${GaugePipe}" &
 	Dialog_PID=$!
@@ -394,7 +394,7 @@ init_gauge_text() {
 	done
 	DialogGaugeText="$(printf '%b' "${DialogGaugeText}" | expand)"
 	FullDialogGaugeText="${DialogGaugeText}"
-	ExpandedDialogGaugeText="$(resolve_styles DC "${DialogGaugeText}")"
+	resolve_styles_into ExpandedDialogGaugeText DC "${DialogGaugeText}"
 }
 
 init_gauge() {
@@ -451,7 +451,7 @@ update_gauge_text() {
 		# Reassemble
 		DialogGaugeText="${prefix}${target_line}${suffix}"
 		FullDialogGaugeText="${DialogGaugeText}"
-		ExpandedDialogGaugeText="$(resolve_styles DC "${DialogGaugeText}")"
+		resolve_styles_into ExpandedDialogGaugeText DC "${DialogGaugeText}"
 	fi
 
 	# 2. Restore original shell state
