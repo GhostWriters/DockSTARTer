@@ -534,7 +534,7 @@ log() {
 	local LogToTerminal=${1-}
 	local Message=${2-}
 	local StrippedMessage
-	StrippedMessage=$(strip_styles "${Message-}")
+	strip_styles_into StrippedMessage "${Message-}"
 	if [[ ${LogToTerminal} == true ]]; then
 		if [[ -t 2 ]]; then
 			# Stderr is a TTY, output with color
@@ -547,31 +547,62 @@ log() {
 	# Output the message to the log file without color
 	printf '%s\n' "${StrippedMessage}" >> "${MKTEMP_LOG}" || true
 }
-timestamped_log() {
-	local LogLevelTag=${1-}
-	shift 1
-	local LogMessage
-	LogMessage=$(printf '%b\n' "$@")
-	# Create a notice for each argument passed to the function
-	local Timestamp
-	Timestamp=$(date +"%F %T")
-	# Create separate notices with the same timestamp for each line in a log message
-	local line
-	while IFS= read -r line; do
-		printf "{{[-]}}{{|Timestamp|}}${Timestamp}{{[-]}} ${LogLevelTag} %s{{[-]}}\n" "${line}"
-	done <<< "${LogMessage}"
+timestamped_log_into() {
+	local -n _tli_out_="${1}"
+	local _tli_LogLevelTag_="${2-}"
+	shift 2
+	local _tli_LogMessage_
+	printf -v _tli_LogMessage_ '%b\n' "$@"
+	_tli_LogMessage_="${_tli_LogMessage_%$'\n'}"
+	local _tli_Timestamp_
+	printf -v _tli_Timestamp_ '%(%F %T)T' -1
+	local _tli_result_="" _tli_line_ _tli_formatted_line_
+	while IFS= read -r _tli_line_; do
+		printf -v _tli_formatted_line_ "{{[-]}}{{|Timestamp|}}${_tli_Timestamp_}{{[-]}} ${_tli_LogLevelTag_} %s{{[-]}}\n" "${_tli_line_}"
+		_tli_result_+="${_tli_formatted_line_}"
+	done <<< "${_tli_LogMessage_}"
+	_tli_out_="${_tli_result_%$'\n'}"
 }
-trace() { log "${TRACE-}" "$(timestamped_log "{{|Trace|}}[TRACE ]{{[-]}}" "$@")"; }
-debug() { log "${DEBUG-}" "$(timestamped_log "{{|Debug|}}[DEBUG ]{{[-]}}" "$@")"; }
-info() { log "${VERBOSE-}" "$(timestamped_log "{{|Info|}}[INFO  ]{{[-]}}" "$@")"; }
-notice() { log true "$(timestamped_log "{{|Notice|}}[NOTICE]{{[-]}}" "$@")"; }
-warn() { log true "$(timestamped_log "{{|Warn|}}[WARN  ]{{[-]}}" "$@")"; }
-error() { log true "$(timestamped_log "{{|Error|}}[ERROR ]{{[-]}}" "$@")"; }
+timestamped_log() {
+	local _tl_result_
+	timestamped_log_into _tl_result_ "$@"
+	printf '%s\n' "${_tl_result_}"
+}
+trace() {
+	local _msg_
+	timestamped_log_into _msg_ "{{|Trace|}}[TRACE ]{{[-]}}" "$@"
+	log "${TRACE-}" "${_msg_}"
+}
+debug() {
+	local _msg_
+	timestamped_log_into _msg_ "{{|Debug|}}[DEBUG ]{{[-]}}" "$@"
+	log "${DEBUG-}" "${_msg_}"
+}
+info() {
+	local _msg_
+	timestamped_log_into _msg_ "{{|Info|}}[INFO  ]{{[-]}}" "$@"
+	log "${VERBOSE-}" "${_msg_}"
+}
+notice() {
+	local _msg_
+	timestamped_log_into _msg_ "{{|Notice|}}[NOTICE]{{[-]}}" "$@"
+	log true "${_msg_}"
+}
+warn() {
+	local _msg_
+	timestamped_log_into _msg_ "{{|Warn|}}[WARN  ]{{[-]}}" "$@"
+	log true "${_msg_}"
+}
+error() {
+	local _msg_
+	timestamped_log_into _msg_ "{{|Error|}}[ERROR ]{{[-]}}" "$@"
+	log true "${_msg_}"
+}
 fatal_notrace() {
 	local LogMessage
-	LogMessage=$(timestamped_log "{{|Fatal|}}[FATAL ]{{[-]}}" "$@")
+	timestamped_log_into LogMessage "{{|Fatal|}}[FATAL ]{{[-]}}" "$@"
 	log true "${LogMessage}"
-	LogMessage=$(strip_styles "${LogMessage-}")
+	strip_styles_into LogMessage "${LogMessage-}"
 	printf '%s\n' "${LogMessage}" > "${FATAL_LOG}" || true
 	exit 1
 }

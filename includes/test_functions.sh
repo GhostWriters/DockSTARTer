@@ -54,9 +54,9 @@ run_unit_tests_pipe() {
 	local FailLeft="{{|UnitTestFailArrow|}}>{{[-]}}"
 	local FailRight="<{{|UnitTestFailArrow|}}{{[-]}}"
 	local VisFailLeft
-	VisFailLeft="$(strip_styles "${FailLeft}")"
+	strip_styles_into VisFailLeft "${FailLeft}"
 	local VisFailRight
-	VisFailRight="$(strip_styles "${FailRight}")"
+	strip_styles_into VisFailRight "${FailRight}"
 	local -i LeftPadSize=${#VisFailLeft}
 	local -i RightPadSize=${#VisFailRight}
 	local LeftSpacer

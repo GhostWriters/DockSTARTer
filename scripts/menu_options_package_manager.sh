@@ -30,10 +30,12 @@ menu_options_package_manager() {
 	PM_Item["${PM_AutoDetect_Tag}"]="${PM_Autodetect_Item}"
 	for PackageManager in "${PackageManagerList[@]}"; do
 		local Tag
-		Tag="$(run_script 'package_manager_nicename' "${PackageManager}")"
+		run_script 'package_manager_nicename_into' Tag "${PackageManager}"
 		PM_Tag+=("${Tag}")
 		PM_PackageManager["${Tag}"]="${PackageManager}"
-		PM_Item["${Tag}"]="$(run_script 'package_manager_description' "${PackageManager}")"
+		local _pm_desc_
+		run_script 'package_manager_description_into' _pm_desc_ "${PackageManager}"
+		PM_Item["${Tag}"]="${_pm_desc_}"
 		if [[ ${PackageManager} == "${CurrentPackageManager}" ]]; then
 			LastChoice="${Tag}"
 		fi

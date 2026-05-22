@@ -102,9 +102,9 @@ _dialog_backtitle_() {
 	HeadingLength=$((COLUMNS - 2))
 
 	local CleanLeftHeading CleanCenterHeading CleanRightHeading
-	CleanLeftHeading="$(strip_styles "${LeftHeading}")"
-	CleanCenterHeading="$(strip_styles "${CenterHeading}")"
-	CleanRightHeading="$(strip_styles "${RightHeading}")"
+	strip_styles_into CleanLeftHeading "${LeftHeading}"
+	strip_styles_into CleanCenterHeading "${CenterHeading}"
+	strip_styles_into CleanRightHeading "${RightHeading}"
 
 	# Get the length of each heading
 	local -i LeftHeadingLength=${#CleanLeftHeading}
@@ -278,8 +278,10 @@ _dialog_calc_list_width_() {
 		[[ $((3 + _dclw_tagw_ + 2 + _dclw_itemw_ + 3)) -ge _dclw_wmax_ ]] && _dclw_w_=${_dclw_wmax_} && return
 	done
 	local -i _dclw_labelw_=$((3 + _dclw_tagw_ + 2 + _dclw_itemw_ + 3))
+	local _dclw_clean_sub_
+	strip_styles_into _dclw_clean_sub_ "${_dclw_sub_}"
 	local -i _dclw_subw_
-	_dclw_subw_="$("${DIALOG}" --output-fd 1 --print-text-size "$(strip_styles "${_dclw_sub_}")" 0 0 2> /dev/null | cut -d ' ' -f 2)"
+	_dclw_subw_="$("${DIALOG}" --output-fd 1 --print-text-size "${_dclw_clean_sub_}" 0 0 2> /dev/null | cut -d ' ' -f 2)"
 	local -i _dclw_titlew_=$((3 + 12 + ${#_dclw_title_} + 3))
 	local -i _dclw_req_=$((_dclw_labelw_ > _dclw_subw_ ? _dclw_labelw_ : _dclw_subw_))
 	_dclw_req_=$((_dclw_req_ > _dclw_titlew_ ? _dclw_req_ : _dclw_titlew_))
@@ -322,21 +324,23 @@ _dialog_calc_list_size_() {
 	_dcls_h_=0
 	_dcls_w_=0
 	_dcls_m_=0
+	local _dcls_clean_sub_
+	strip_styles_into _dcls_clean_sub_ "${_dcls_sub_}"
 	if [[ ${_dcls_max_} -eq 1 ]]; then
 		_dcls_h_=${_dcls_hmax_}
 		_dcls_w_=${_dcls_wmax_}
 		local -i _dcls_tr_
-		_dcls_tr_="$("${DIALOG}" --output-fd 1 --print-text-size "$(strip_styles "${_dcls_sub_}")" "${_dcls_h_}" "${_dcls_w_}" 2> /dev/null | cut -d ' ' -f 1)"
+		_dcls_tr_="$("${DIALOG}" --output-fd 1 --print-text-size "${_dcls_clean_sub_}" "${_dcls_h_}" "${_dcls_w_}" 2> /dev/null | cut -d ' ' -f 1)"
 		_dcls_m_=$((LINES - D["TextRowsAdjust"] - _dcls_tr_))
 	else
 		local -i _dcls_sh_
-		_dcls_sh_="$("${DIALOG}" --output-fd 1 --print-text-size "$(strip_styles "${_dcls_sub_}")" 0 0 2> /dev/null | cut -d ' ' -f 1)"
+		_dcls_sh_="$("${DIALOG}" --output-fd 1 --print-text-size "${_dcls_clean_sub_}" 0 0 2> /dev/null | cut -d ' ' -f 1)"
 		local -i _dcls_ic_="${6:-0}"
 		local -i _dcls_required_=$((_dcls_sh_ + _dcls_ic_ + 8))
 		if [[ ${_dcls_required_} -ge ${_dcls_hmax_} ]]; then
 			_dcls_h_=${_dcls_hmax_}
 			local -i _dcls_tr_
-			_dcls_tr_="$("${DIALOG}" --output-fd 1 --print-text-size "$(strip_styles "${_dcls_sub_}")" "${_dcls_h_}" "${_dcls_w_}" 2> /dev/null | cut -d ' ' -f 1)"
+			_dcls_tr_="$("${DIALOG}" --output-fd 1 --print-text-size "${_dcls_clean_sub_}" "${_dcls_h_}" "${_dcls_w_}" 2> /dev/null | cut -d ' ' -f 1)"
 			_dcls_m_=$((LINES - D["TextRowsAdjust"] - _dcls_tr_))
 		else
 			_dcls_m_=${_dcls_ic_}

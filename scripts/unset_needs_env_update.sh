@@ -38,7 +38,7 @@ unset_needs_env_update() {
 		printf '%s\n' "${ReferencedApps[@]-}" > "${ReferencedAppsFile}"
 	else
 		local -u APPNAME
-		APPNAME="$(run_script 'varfile_to_appname' "${VarFile}")"
+		run_script 'varfile_to_appname_into' APPNAME "${VarFile}"
 		local AppEnabledFile
 		AppEnabledFile="${timestamps_folder}/${filename}_${APPNAME}__ENABLED"
 		local EnabledLine

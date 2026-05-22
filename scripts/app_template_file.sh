@@ -3,15 +3,9 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 app_template_file() {
-	# app_template_file AppName FilenameTemplate
-	# Returns the filename of a file in the template folder for the app specified
-	#
-	# app_template_file "radarr" "*.labels.yml" will return a string similar to "/home/user/.dockstarter/.apps/radarr/radarr.labels.yml"
-
-	local -l appname=${1:-}
-	local FilenameTemplate=${2:-}
-
-	echo "${TEMPLATES_FOLDER}/${appname}/${FilenameTemplate//"*"/"${appname}"}"
+	local result
+	run_script 'app_template_file_into' result "${1:-}" "${2:-}"
+	printf '%s\n' "${result}"
 }
 
 test_app_template_file() {
