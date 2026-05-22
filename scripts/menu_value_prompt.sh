@@ -4,7 +4,6 @@ IFS=$'\n\t'
 
 declare -a _dependencies_list=(
 	grep
-	sed
 )
 
 menu_value_prompt() {
@@ -371,7 +370,10 @@ menu_value_prompt() {
 				else
 					local StrippedValue="${OptionValue["${CurrentValueOption}"]}"
 					# Unqauote the value
-					StrippedValue="$(${SED} -E "s|^(['\"])(.*)\1$|\2|g" <<< "${StrippedValue}")"
+					case "${StrippedValue}" in
+						"'"*"'") StrippedValue="${StrippedValue:1:${#StrippedValue}-2}" ;;
+						'"'*'"') StrippedValue="${StrippedValue:1:${#StrippedValue}-2}" ;;
+					esac
 
 					case "${VarName}" in
 						"${APPNAME}__ENABLED")

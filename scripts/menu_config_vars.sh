@@ -2,9 +2,7 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-declare -a _dependencies_list=(
-	grep
-)
+declare -a _dependencies_list=()
 
 menu_config_vars() {
 	local APPNAME=${1-}
@@ -62,8 +60,8 @@ menu_config_vars() {
 		for line in "${CurrentGlobalEnvLines[@]-}"; do
 			LineNumber+=1
 			CurrentValueOnLine[LineNumber]="${line}"
-			local VarName
-			VarName="$(${GREP} -o -P '^\w+(?=)' <<< "${line}")"
+			local VarName=""
+			[[ ${line} =~ ^([[:alnum:]_]+) ]] && VarName="${BASH_REMATCH[1]}"
 			if [[ -n ${VarName-} ]]; then
 				# Line contains a variable
 				local DefaultLine DefaultVal
@@ -78,7 +76,7 @@ menu_config_vars() {
 				if [[ -z ${FirstVarLine-} ]]; then
 					FirstVarLine=${LineNumber}
 				fi
-			elif (${GREP} -q -P '^\s*#' <<< "${line}"); then
+			elif [[ ${line} =~ ^[[:space:]]*# ]]; then
 				# Line is a comment
 				LineColor[LineNumber]="{{|LineComment|}}"
 			else
@@ -123,7 +121,7 @@ menu_config_vars() {
 					if [[ -z ${FirstVarLine-} ]]; then
 						FirstVarLine=${LineNumber}
 					fi
-				elif (${GREP} -q -P '^\s*#' <<< "${line}"); then
+				elif [[ ${line} =~ ^[[:space:]]*# ]]; then
 					# Line is a comment
 					LineColor[LineNumber]="{{|LineComment|}}"
 				else
