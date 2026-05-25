@@ -148,6 +148,18 @@ commands_yml_merge() {
 	fi
 	rm -f "${MKTEMP_COMPOSE_YML}"
 	info "Merging '{{|File|}}docker-compose.yml{{[-]}}' complete."
+
+	# Auto-integration hook: when GLOBAL_AUTO_INTEGRATE is enabled, run
+	# integration scripts (key collection + app-to-app wiring + NPM
+	# proxy hosts). Failures are best-effort and never block the
+	# compose run itself.
+	local AutoIntegrate=""
+	run_script 'env_get_into' AutoIntegrate "GLOBAL_AUTO_INTEGRATE" 2> /dev/null || true
+	if is_true "${AutoIntegrate-}" && [[ -f ${SCRIPTPATH}/scripts/integrate_all.sh ]]; then
+		notice "GLOBAL_AUTO_INTEGRATE is enabled; running integrations."
+		run_script 'integrate_all' || warn "Auto-integration reported errors; continuing."
+	fi
+
 	run_script 'unset_needs_yml_merge'
 	return 0
 }

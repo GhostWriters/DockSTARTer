@@ -70,6 +70,10 @@ for Folder in "${FolderList[@]}"; do
 	fi
 done
 
+declare -rgx API_KEYS_TOML_FILE="${APPLICATION_STATE_FOLDER}/api_keys.toml"
+declare -rgx INTEGRATION_LOG_FILE="${APPLICATION_STATE_FOLDER}/integration.log"
+declare -rgx API_KEYS_ENV_FILE_NAME=".env.app.keys"
+
 declare -rgx TIMESTAMPS_FOLDER="${APPLICATION_STATE_FOLDER}/${TIMESTAMPS_FOLDER_NAME}"
 if [[ -d ${SCRIPTPATH}/compose/.timestamps ]]; then
 	# Migrate old timestamps folder

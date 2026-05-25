@@ -56,42 +56,80 @@ declare -argx PM__COMMAND_DEPS=(
 	"column"
 	"curl"
 	"dialog"
+	"dig"
 	"find"
 	"git"
 	"grep"
 	"ip"
+	"jq"
 	"sed"
 	"stat"
+	"xmlstarlet"
 )
 
 declare -argx PM_BREW_COMMAND_DEPS=(
 	"column"
 	"curl"
 	"dialog"
+	"dig"
 	"gfind"
 	"git"
 	"ggrep"
 	"ip"
+	"jq"
 	"gsed"
 	"gstat"
+	"xmlstarlet"
 )
 
 declare -argx PM_PORT_COMMAND_DEPS=(
 	"column"
 	"curl"
 	"dialog"
+	"dig"
 	"gfind"
 	"git"
 	"ggrep"
 	"ip"
+	"jq"
 	"gsed"
 	"gstat"
+	"xmlstarlet"
 )
 
 declare -Argx PM__DEP_PACKAGE=()
 
+declare -Argx PM_APT_DEP_PACKAGE=(
+	["dig"]="dnsutils"
+)
+
+declare -Argx PM_NALA_DEP_PACKAGE=(
+	["dig"]="dnsutils"
+)
+
+declare -Argx PM_APK_DEP_PACKAGE=(
+	["dig"]="bind-tools"
+)
+
+declare -Argx PM_PACMAN_DEP_PACKAGE=(
+	["dig"]="bind"
+)
+
+declare -Argx PM_DNF_DEP_PACKAGE=(
+	["dig"]="bind-utils"
+)
+
+declare -Argx PM_YUM_DEP_PACKAGE=(
+	["dig"]="bind-utils"
+)
+
+declare -Argx PM_BREW_DEP_PACKAGE=(
+	["dig"]="bind"
+)
+
 declare -Argx PM_PORT_DEP_PACKAGE=(
 	["dialog"]="dialog"
+	["dig"]="bind"
 	["find"]="findutils"
 	["ip"]="iproute2mac"
 	["gsed"]="gnu-sed"
@@ -100,6 +138,7 @@ declare -Argx PM_PORT_DEP_PACKAGE=(
 declare -Argx PM_ZYPPER_DEP_PACKAGE=(
 	["ip"]="iproute2"
 	["find"]="findutils"
+	["dig"]="bind-utils"
 )
 
 declare -argx PM__PACKAGE_BLACKLIST=(

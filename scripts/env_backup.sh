@@ -64,7 +64,7 @@ env_backup() {
 			\( -type f \( \
 			-name "${COMPOSE_OVERRIDE_NAME}" -o \
 			-name ".env" -o \
-			-name ".env.app.*" \
+			\( -name ".env.app.*" ! -name ".env.app.keys" \) \
 			\) -exec echo "{}" \; \
 			\) | sort 2> /dev/null || true
 	)

@@ -1,0 +1,17 @@
+services:
+  nginxproxymanager<__instance>:
+    container_name: ${NGINXPROXYMANAGER<__INSTANCE>__CONTAINER_NAME?}
+    env_file: .env.app.nginxproxymanager<__instance>
+    environment:
+      - TZ=${TZ?}
+      - PUID=${PUID?}
+      - PGID=${PGID?}
+    ports:
+      - "${NGINXPROXYMANAGER<__INSTANCE>__PORT_80?}:80"
+      - "${NGINXPROXYMANAGER<__INSTANCE>__PORT_81?}:81"
+      - "${NGINXPROXYMANAGER<__INSTANCE>__PORT_443?}:443"
+    restart: ${NGINXPROXYMANAGER<__INSTANCE>__RESTART?}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${NGINXPROXYMANAGER<__INSTANCE>__VOLUME_DATA?}:/data
+      - ${NGINXPROXYMANAGER<__INSTANCE>__VOLUME_LETSENCRYPT?}:/etc/letsencrypt

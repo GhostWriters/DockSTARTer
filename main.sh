@@ -544,6 +544,25 @@ MKTEMP_LOG=$(mktemp -t "${APPLICATION_NAME,,}.log.XXXXXXXXXX") || resolve_string
 readonly MKTEMP_LOG
 echo "${APPLICATION_NAME} Log" > "${MKTEMP_LOG}"
 
+redact_secrets_into() {
+	# redact_secrets_into OutVar Message
+	# Replaces likely secrets in MESSAGE with *** before logging.
+	# Patterns: bearer tokens, X-Api-Key headers, ApiKey/api_key values,
+	# password/passwd values, and bare 32-hex strings (the canonical arr
+	# API key length). This is best-effort; do not rely on it as a security
+	# boundary. Anything sensitive should be stored only in
+	# ${APPLICATION_STATE_FOLDER}/api_keys.toml (mode 0600).
+	local -n _rsi_out_="${1}"
+	local _rsi_msg_=${2-}
+	_rsi_msg_=${_rsi_msg_//$'\r'/}
+	# Bearer / Authorization headers
+	_rsi_msg_=$(printf '%s' "${_rsi_msg_}" | sed -E \
+		-e 's/(Bearer )[A-Za-z0-9._~+/=-]+/\1***REDACTED***/g' \
+		-e 's/(X-Api-Key:[[:space:]]*)[A-Za-z0-9._~+/=-]+/\1***REDACTED***/gI' \
+		-e 's/((api[_-]?key|apikey|password|passwd|secret|token)["'"'"']?[[:space:]]*[:=][[:space:]]*["'"'"']?)[A-Za-z0-9._~+/=-]{8,}/\1***REDACTED***/gI' \
+		-e 's/\b[a-f0-9]{32}\b/***REDACTED***/g')
+	_rsi_out_="${_rsi_msg_}"
+}
 log() {
 	local LogToTerminal=${1-}
 	local Message=${2-}
@@ -558,8 +577,10 @@ log() {
 			printf '%s\n' "${StrippedMessage}" >&2
 		fi
 	fi
-	# Output the message to the log file without color
-	printf '%s\n' "${StrippedMessage}" >> "${MKTEMP_LOG}" || true
+	# Output the message to the log file without color, with secrets redacted
+	local RedactedMessage
+	redact_secrets_into RedactedMessage "${StrippedMessage}"
+	printf '%s\n' "${RedactedMessage}" >> "${MKTEMP_LOG}" || true
 }
 timestamped_log_into() {
 	local -n _tli_out_="${1}"

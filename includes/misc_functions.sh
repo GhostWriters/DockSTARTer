@@ -545,6 +545,57 @@ get_ini_val_bool_into() {
 	return 1
 }
 
+set_ini_val() {
+	# set_ini_val FILE KEY VALUE
+	# Creates or updates KEY=VALUE in FILE.
+	# Operates on flat key=value INI files (no [section] grouping).
+	# For section-aware files use set_toml_val.
+	local file=${1-}
+	local target_key=${2-}
+	local new_val=${3-}
+
+	if [[ -z ${target_key} || -z ${file} ]]; then
+		return 1
+	fi
+
+	if [[ ! -f ${file} ]]; then
+		touchfile "${file}"
+	fi
+
+	local new_line="${target_key}=${new_val}"
+
+	local -a content=()
+	while IFS= read -r line || [[ -n ${line} ]]; do
+		content+=("${line}")
+	done < "${file}"
+
+	local -i n=${#content[@]}
+	local -i key_written=0
+	local -a output=()
+
+	local -i i
+	for ((i = 0; i < n; i++)); do
+		local line="${content[i]}"
+		if [[ ${key_written} -eq 0 && ${line} =~ ^[[:space:]]*${target_key}[[:space:]]*= ]]; then
+			if [[ ${new_line} == "${line}" ]]; then
+				return 0 # Value already set
+			fi
+			output+=("${new_line}")
+			key_written=1
+			continue
+		fi
+		output+=("${line}")
+	done
+
+	if [[ ${key_written} -eq 0 ]]; then
+		output+=("${new_line}")
+	fi
+
+	printf '%s\n' "${output[@]}" > "${file}" ||
+		fatal \
+			"Failed to write to '{{|File|}}${file}{{[-]}}'."
+}
+
 set_toml_val() {
 	# set_toml_val FILE SECTION.KEY VALUE
 	# Creates or updates KEY = "VALUE" within [SECTION] in FILE.

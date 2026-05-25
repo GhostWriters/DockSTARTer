@@ -27,6 +27,7 @@ menu_config() {
 	local Option_EditGlobalVars="Edit Global Variables"
 	local Option_SelectApps="Select Applications"
 	local Option_EditAppVars="Configure Applications"
+	local Option_Integrations="Integrations"
 	local Option_ComposeUp="Start All Applications"
 	local Option_ComposeDown="Stop All Applications"
 	local Option_DockerPrune="Prune Docker System"
@@ -35,6 +36,7 @@ menu_config() {
 		"${Option_EditGlobalVars}" "{{|ListDefault|}}Review and adjust global variables" ""
 		"${Option_SelectApps}" "{{|ListDefault|}}Select which apps to run. Previously installed apps are remembered" ""
 		"${Option_EditAppVars}" "{{|ListDefault|}}Review and adjust variables for installed apps" ""
+		"${Option_Integrations}" "{{|ListDefault|}}Collect API keys from enabled apps and auto-wire integrations (Prowlarr<->arrs, download clients, NPM proxy hosts)" ""
 		"${Option_ComposeUp}" "{{|ListDefault|}}Run Docker Compose to start all applications" ""
 		"${Option_ComposeDown}" "{{|ListDefault|}}Run Docker Compose to stop all applications" ""
 		"${Option_DockerPrune}" "{{|ListDefault|}}Remove all unused containers, networks, volumes, images and build cache" ""
@@ -72,6 +74,9 @@ menu_config() {
 						;;
 					"${Option_EditAppVars}")
 						run_script 'menu_config_apps' || true
+						;;
+					"${Option_Integrations}")
+						run_script 'menu_integrations' || true
 						;;
 					"${Option_ComposeUp}")
 						run_script 'docker_compose' "update"

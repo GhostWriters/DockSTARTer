@@ -24,7 +24,8 @@ app_instance_file_into() {
 	local -l _aifi_baseapp_
 	run_script 'appname_to_baseappname_into' _aifi_baseapp_ "${_aifi_appname_}"
 
-	local _aifi_TemplateFolder_="${TEMPLATES_FOLDER}/${_aifi_baseapp_}"
+	local _aifi_TemplateFolder_
+	run_script 'app_template_folder_into' _aifi_TemplateFolder_ "${_aifi_appname_}"
 	local _aifi_InstanceTemplateFolder_="${INSTANCES_FOLDER}/${TEMPLATES_FOLDER_NAME}/${_aifi_appname_}"
 	local _aifi_InstanceFolder_="${INSTANCES_FOLDER}/${_aifi_appname_}"
 

@@ -1,0 +1,3 @@
+services:
+  nginxproxymanager<__instance>:
+    image: jc21/nginx-proxy-manager:${NGINXPROXYMANAGER<__INSTANCE>__TAG?}

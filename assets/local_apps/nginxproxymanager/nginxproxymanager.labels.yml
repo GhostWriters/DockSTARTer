@@ -1,0 +1,6 @@
+services:
+  nginxproxymanager<__instance>:
+    labels:
+      com.dockstarter.appinfo.deprecated: "false"
+      com.dockstarter.appinfo.description: "Reverse proxy and TLS certificate manager with a web UI"
+      com.dockstarter.appinfo.nicename: "Nginx Proxy Manager<__Instance>"
