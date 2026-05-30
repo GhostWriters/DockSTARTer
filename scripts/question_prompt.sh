@@ -37,7 +37,7 @@ question_prompt() {
 		YN=${Default:-Y}
 	elif [[ -n ${Override-} ]]; then
 		YN="${Override}"
-	elif use_dialog_box; then
+	elif use_tui_box; then
 		local DIALOG_DEFAULT
 		if [[ ${Default} == "N" ]]; then
 			DIALOG_DEFAULT="--defaultno"
@@ -65,7 +65,7 @@ question_prompt() {
 				${DIALOG_DEFAULT-}
 			)
 			local -i YesNoDialogButtonPressed=0
-			dialog_yesno "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?
+			tui_yesno "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?
 			case ${DIALOG_BUTTONS[YesNoDialogButtonPressed]-} in
 				OK)
 					YN="Y"
@@ -78,7 +78,7 @@ question_prompt() {
 					break
 					;;
 				*)
-					invalid_dialog_button ${YesNoDialogButtonPressed}
+					invalid_tui_button ${YesNoDialogButtonPressed}
 					;;
 			esac
 		done

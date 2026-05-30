@@ -9,23 +9,22 @@ run_install() {
 	local YesNotice="Installing or updating all {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} dependencies."
 	local NoNotice="Not installing or updating all {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} dependencies."
 	if run_script 'question_prompt' Y "${Question}" "${Title}" "${ASSUMEYES:+Y}"; then
-		if use_dialog_box; then
+		#shellcheck disable=SC2034 # (warning): PipePID is passed by name to tui_pipe_open/close via nameref and appears unused to shellcheck.
+		local -i PipeFD PipePID
+		tui_pipe_open PipeFD PipePID "{{|TitleSuccess|}}${Title}" "${YesNotice}\n{{|CommandLine|}} ${CommandLine}"
+		{
 			{
-				{
-					notice "${YesNotice}"
-					run_install_commands
-				} || true
-			} |& dialog_pipe "{{|TitleSuccess|}}${Title}" "${YesNotice}\n{{|CommandLine|}} ${CommandLine}"
-		else
-			notice "${YesNotice}"
-			run_install_commands
-		fi
+				notice "${YesNotice}"
+				run_install_commands
+			} || true
+		} >&${PipeFD} 2>&1
+		tui_pipe_close PipeFD PipePID
 	else
-		if use_dialog_box; then
-			notice "${NoNotice}" |& dialog_pipe "{{|TitleError|}}${Title}" "${NoNotice}"
-		else
-			notice "${NoNotice}"
-		fi
+		#shellcheck disable=SC2034 # (warning): PipePID is passed by name to tui_pipe_open/close via nameref and appears unused to shellcheck.
+		local -i PipeFD PipePID
+		tui_pipe_open PipeFD PipePID "{{|TitleError|}}${Title}" "${NoNotice}"
+		notice "${NoNotice}" >&${PipeFD} 2>&1
+		tui_pipe_close PipeFD PipePID
 	fi
 }
 

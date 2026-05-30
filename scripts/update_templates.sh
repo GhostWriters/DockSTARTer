@@ -39,47 +39,41 @@ update_templates() {
 
 	if ! templates_branch_exists "${Branch}" && ! templates_tag_exists "${Branch}" && ! templates_commit_exists "${Branch}"; then
 		local ErrorMessage="{{|ApplicationName|}}${TargetName}{{[-]}} ref '{{|Branch|}}${Branch}{{[-]}}' does not exist on origin."
-		if use_dialog_box; then
-			error "${ErrorMessage}" |&
-				dialog_pipe "{{|TitleError|}}${Title}" "{{|CommandLine|}} ${APPLICATION_COMMAND} --update $*"
-		else
-			error "${ErrorMessage}"
-		fi
+		#shellcheck disable=SC2034 # (warning): PipePID is passed by name to tui_pipe_open/close via nameref and appears unused to shellcheck.
+		local -i PipeFD PipePID
+		tui_pipe_open PipeFD PipePID "{{|TitleError|}}${Title}" "{{|CommandLine|}} ${APPLICATION_COMMAND} --update $*"
+		error "${ErrorMessage}" >&${PipeFD} 2>&1
+		tui_pipe_close PipeFD PipePID
 		return 1
 	fi
 
 	if [[ -z ${FORCE-} && ${CurrentVersion} == "${RemoteVersion}" ]]; then
-		if use_dialog_box; then
-			{
-				{
-					notice \
-						"{{|ApplicationName|}}${TargetName}{{[-]}} is already up to date on branch '{{|Branch|}}${Branch}{{[-]}}'." \
-						"Current version is '{{|Version|}}${CurrentVersion}{{[-]}}'"
-				} || true
-			} |& dialog_pipe "{{|TitleWarning|}}${Title}" "{{|CommandLine|}} ${APPLICATION_COMMAND} --update-templates $*"
-		else
+		#shellcheck disable=SC2034 # (warning): PipePID is passed by name to tui_pipe_open/close via nameref and appears unused to shellcheck.
+		local -i PipeFD PipePID
+		tui_pipe_open PipeFD PipePID "{{|TitleWarning|}}${Title}" "{{|CommandLine|}} ${APPLICATION_COMMAND} --update-templates $*"
+		{
 			notice \
 				"{{|ApplicationName|}}${TargetName}{{[-]}} is already up to date on branch '{{|Branch|}}${Branch}{{[-]}}'." \
-				"Current version is '{{|Version|}}${CurrentVersion}{{[-]}}'"
-		fi
+				"Current version is '{{|Version|}}${CurrentVersion}{{[-]}}'" || true
+		} >&${PipeFD} 2>&1
+		tui_pipe_close PipeFD PipePID
 		return 0
 	fi
 
 	if ! run_script 'question_prompt' Y "${Question}" "${Title}" "${ASSUMEYES:+Y}"; then
-		if use_dialog_box; then
-			{ notice "${NoNotice}" || true; } |& dialog_pipe "{{|TitleError|}}${Title}" "${NoNotice}"
-		else
-			notice "${NoNotice}"
-		fi
+		#shellcheck disable=SC2034 # (warning): PipePID is passed by name to tui_pipe_open/close via nameref and appears unused to shellcheck.
+		local -i PipeFD PipePID
+		tui_pipe_open PipeFD PipePID "{{|TitleError|}}${Title}" "${NoNotice}"
+		{ notice "${NoNotice}" || true; } >&${PipeFD} 2>&1
+		tui_pipe_close PipeFD PipePID
 		return 1
 	fi
 
-	if use_dialog_box; then
-		{ commands_update_templates "${Branch}" "${YesNotice}" "$@" || true; } |&
-			dialog_pipe "{{|TitleSuccess|}}${Title}" "${YesNotice}\n{{|CommandLine|}} ${APPLICATION_COMMAND} --update $*"
-	else
-		commands_update_templates "${Branch}" "${YesNotice}" "$@"
-	fi
+	#shellcheck disable=SC2034 # (warning): PipePID is passed by name to tui_pipe_open/close via nameref and appears unused to shellcheck.
+	local -i PipeFD PipePID
+	tui_pipe_open PipeFD PipePID "{{|TitleSuccess|}}${Title}" "${YesNotice}\n{{|CommandLine|}} ${APPLICATION_COMMAND} --update $*"
+	{ commands_update_templates "${Branch}" "${YesNotice}" "$@" || true; } >&${PipeFD} 2>&1
+	tui_pipe_close PipeFD PipePID
 }
 
 commands_update_templates() {

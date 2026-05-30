@@ -15,6 +15,7 @@ menu_options_display() {
 	local ShowBordersOption="Show Borders"
 	local ShowScrollbarOption="Show Scrollbars"
 	local ShowShadowOption="Show Shadows"
+	local LargeButtonsOption="Large Buttons"
 
 	local -A OptionDescription OptionVariable
 
@@ -22,18 +23,20 @@ menu_options_display() {
 	OptionDescription["${ShowBordersOption}"]="{{|ListDefault|}}Show borders in dialog boxes"
 	OptionDescription["${ShowScrollbarOption}"]="{{|ListDefault|}}Show a scrollbar in dialog boxes"
 	OptionDescription["${ShowShadowOption}"]="{{|ListDefault|}}Show a shadow under the dialog boxes"
+	OptionDescription["${LargeButtonsOption}"]="{{|ListDefault|}}Use large buttons (Whiptail)"
 
-	OptionVariable["${DrawLineOption}"]="line_characters"
-	OptionVariable["${ShowBordersOption}"]="borders"
-	OptionVariable["${ShowScrollbarOption}"]="scrollbar"
-	OptionVariable["${ShowShadowOption}"]="shadow"
+	OptionVariable["${DrawLineOption}"]="ui.line_characters"
+	OptionVariable["${ShowBordersOption}"]="ui.borders"
+	OptionVariable["${ShowScrollbarOption}"]="ui.scrollbar"
+	OptionVariable["${ShowShadowOption}"]="ui.shadow"
+	OptionVariable["${LargeButtonsOption}"]="ui.large_buttons"
 
 	while true; do
 		local EnabledOptions=()
 		local Opts=()
-		for Option in "${DrawLineOption}" "${ShowBordersOption}" "${ShowScrollbarOption}" "${ShowShadowOption}"; do
+		for Option in "${DrawLineOption}" "${ShowBordersOption}" "${ShowScrollbarOption}" "${ShowShadowOption}" "${LargeButtonsOption}"; do
 			local Value
-			run_script 'config_get_into' Value "ui.${OptionVariable["${Option}"]}" || true
+			run_script 'config_get_into' Value "${OptionVariable["${Option}"]}" || true
 			if is_true "${Value}"; then
 				EnabledOptions+=("${Option}")
 				Opts+=("${Option}" "${OptionDescription["${Option}"]}" ON)
@@ -45,14 +48,14 @@ menu_options_display() {
 			"${Title}"
 			"Choose the options to enable."
 			--ok-label:Select
-			--extra-label:Back
-			--cancel-label:Exit
+			--cancel-label:Back
+			--exit-button
 			--separate-output
 			"${Opts[@]}"
 		)
 		local Choices
 		local -i DialogButtonPressed=0
-		Choices=$(dialog_checklist "${ChoiceDialog[@]}") || DialogButtonPressed=$?
+		Choices=$(tui_checklist "${ChoiceDialog[@]}") || DialogButtonPressed=$?
 		case ${DIALOG_BUTTONS[DialogButtonPressed]-} in
 			OK)
 				local -a ChoicesArray OptionsToTurnOff OptionsToTurnOn
@@ -66,25 +69,25 @@ menu_options_display() {
 				if [[ -n ${OptionsToTurnOff[*]-} || ${OptionsToTurnOn[*]-} ]]; then
 					if [[ -n ${OptionsToTurnOff[*]-} ]]; then
 						for Option in "${OptionsToTurnOff[@]}"; do
-							run_script 'config_set' "ui.${OptionVariable["${Option}"]}" false
+							run_script 'config_set' "${OptionVariable["${Option}"]}" false
 						done
 					fi
 					if [[ -n ${OptionsToTurnOn[*]-} ]]; then
 						for Option in "${OptionsToTurnOn[@]}"; do
-							run_script 'config_set' "ui.${OptionVariable["${Option}"]}" true
+							run_script 'config_set' "${OptionVariable["${Option}"]}" true
 						done
 					fi
 					run_script 'config_theme' &> /dev/null
 				fi
 				;;
-			EXTRA | ESC)
+			CANCEL | ESC)
 				return
 				;;
-			CANCEL)
+			EXIT)
 				run_script 'menu_exit' || true
 				;;
 			*)
-				invalid_dialog_button ${DialogButtonPressed}
+				invalid_tui_button ${DialogButtonPressed}
 				;;
 		esac
 	done

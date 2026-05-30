@@ -26,14 +26,14 @@ menu_config_apps() {
 			"${Title}"
 			"Select the application to configure"
 			--ok-label:Select
-			--extra-label:Back
-			--cancel-label:Exit
+			--cancel-label:Back
+			--exit-button
 			--default-item:"${LastAppChoice}"
 			"${AppOptions[@]}"
 		)
 		local AppChoice
 		local -i AppChoiceButtonPressed=0
-		AppChoice=$(dialog_menu "${AppChoiceDialog[@]}") || AppChoiceButtonPressed=$?
+		AppChoice=$(tui_menu "${AppChoiceDialog[@]}") || AppChoiceButtonPressed=$?
 		LastAppChoice=${AppChoice}
 		case ${DIALOG_BUTTONS[AppChoiceButtonPressed]-} in
 			OK) # Select
@@ -43,14 +43,14 @@ menu_config_apps() {
 					run_script 'menu_config_vars' "${AppChoice}"
 				fi
 				;;
-			EXTRA | ESC) # Back
+			CANCEL | ESC) # Back
 				return
 				;;
-			CANCEL) # Exit
+			EXIT) # Exit
 				run_script 'menu_exit'
 				;;
 			*)
-				invalid_dialog_button ${AppChoiceButtonPressed}
+				invalid_tui_button ${AppChoiceButtonPressed}
 				;;
 		esac
 	done

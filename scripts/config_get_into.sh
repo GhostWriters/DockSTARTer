@@ -17,6 +17,13 @@ config_get_into() {
 			if run_script 'config_toml_get_into' _cgi_val_ "${_cgi_section_key_}" "${_cgi_config_file_}"; then
 				_cgi_out_="${_cgi_val_}"
 				return 0
+			elif [[ ${_cgi_config_file_:-} == "${APPLICATION_TOML_FILE}" ]]; then
+				# Load default value if not found in main config file
+				if run_script 'config_toml_get_into' _cgi_val_ "${_cgi_section_key_}" "${DEFAULT_TOML_FILE}"; then
+					run_script 'config_toml_set' "${_cgi_section_key_}" "${_cgi_val_}" "${_cgi_config_file_}"
+					_cgi_out_="${_cgi_val_}"
+					return 0
+				fi
 			fi
 			;;
 		ini)

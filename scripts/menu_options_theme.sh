@@ -92,14 +92,14 @@ menu_options_theme() {
 			"${Title}"
 			"Select the theme to apply."
 			--ok-label:Select
-			--extra-label:Back
-			--cancel-label:Exit
+			--cancel-label:Back
+			--exit-button
 			--default-item:"${LastChoice}"
 			"${Opts[@]}"
 		)
 		local Choice
 		local -i DialogButtonPressed=0
-		Choice=$(dialog_radiolist "${ChoiceDialog[@]}") || DialogButtonPressed=$?
+		Choice=$(tui_radiolist "${ChoiceDialog[@]}") || DialogButtonPressed=$?
 		LastChoice=${Choice}
 		case ${DIALOG_BUTTONS[DialogButtonPressed]-} in
 			OK)
@@ -107,17 +107,17 @@ menu_options_theme() {
 				if run_script 'config_theme' "${CurrentTheme}"; then
 					run_script 'menu_dialog_example' "Applied theme ${CurrentTheme}" "${APPLICATION_COMMAND} --theme \"${CurrentTheme}\""
 				else
-					dialog_error "${Title}" "Unable to apply theme ${CurrentTheme}"
+					tui_error "${Title}" "Unable to apply theme ${CurrentTheme}"
 				fi
 				;;
-			EXTRA | ESC)
+			CANCEL | ESC)
 				return
 				;;
-			CANCEL)
+			EXIT)
 				run_script 'menu_exit' || true
 				;;
 			*)
-				invalid_dialog_button ${DialogButtonPressed}
+				invalid_tui_button ${DialogButtonPressed}
 				;;
 		esac
 	done

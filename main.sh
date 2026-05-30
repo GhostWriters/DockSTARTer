@@ -814,7 +814,7 @@ if declare -F MigrateFilesAndFolders > /dev/null; then
 fi
 [[ -f "${SCRIPTPATH}/includes/pm_variables.sh" ]] && source "${SCRIPTPATH}/includes/pm_variables.sh"
 [[ -f "${SCRIPTPATH}/includes/run_script.sh" ]] && source "${SCRIPTPATH}/includes/run_script.sh"
-[[ -f "${SCRIPTPATH}/includes/dialog_functions.sh" ]] && source "${SCRIPTPATH}/includes/dialog_functions.sh"
+[[ -f "${SCRIPTPATH}/includes/tui_functions.sh" ]] && source "${SCRIPTPATH}/includes/tui_functions.sh"
 [[ -f "${SCRIPTPATH}/includes/ds_functions.sh" ]] && source "${SCRIPTPATH}/includes/ds_functions.sh"
 [[ -f "${SCRIPTPATH}/includes/test_functions.sh" ]] && source "${SCRIPTPATH}/includes/test_functions.sh"
 [[ -f "${SCRIPTPATH}/includes/usage.sh" ]] && source "${SCRIPTPATH}/includes/usage.sh"

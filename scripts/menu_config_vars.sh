@@ -167,7 +167,7 @@ menu_config_vars() {
 				"${LineOptions[@]}"
 			)
 			local -i LineDialogButtonPressed=0
-			LineChoice=$(dialog_menu "${LineDialog[@]}") || LineDialogButtonPressed=$?
+			LineChoice=$(tui_menu "${LineDialog[@]}") || LineDialogButtonPressed=$?
 			case ${DIALOG_BUTTONS[LineDialogButtonPressed]-} in
 				OK) # Select
 					LastLineChoice="${LineChoice}"
@@ -199,11 +199,9 @@ menu_config_vars() {
 						local Question="Do you really want to delete {{|Highlight|}}${CleanVarName}{{[-]}}?"
 						if run_script 'question_prompt' N "${DialogHeading}\n\n${Question}\n" "Delete Variable" "${ASSUMEYES:+Y}" "Delete" "Back"; then
 							run_script 'menu_heading_into' DialogHeading "${APPNAME-}" "${VarName}"
-							coproc {
-								dialog_pipe "{{|TitleSuccess|}}Deleting Variable" "${DialogHeading}" "${DIALOGTIMEOUT}"
-							}
-							local -i DialogBox_PID=${COPROC_PID}
-							local -i DialogBox_FD="${COPROC[1]}"
+							#shellcheck disable=SC2034 # (warning): PipePID is passed by name to tui_pipe_open/close via nameref and appears unused to shellcheck.
+							local -i PipeFD PipePID
+							tui_pipe_open PipeFD PipePID "{{|TitleSuccess|}}Deleting Variable" "${DialogHeading}" "${DIALOGTIMEOUT}"
 							{
 								run_script 'env_delete' "${VarName}"
 								if [[ -n ${APPNAME-} ]]; then
@@ -220,9 +218,8 @@ menu_config_vars() {
 									run_script 'env_sanitize'
 									run_script 'env_update'
 								fi
-							} >&${DialogBox_FD} 2>&1
-							exec {DialogBox_FD}<&-
-							wait ${DialogBox_PID}
+							} >&${PipeFD} 2>&1
+							tui_pipe_close PipeFD PipePID
 							break
 						fi
 					fi
@@ -231,7 +228,7 @@ menu_config_vars() {
 					return
 					;;
 				*)
-					invalid_dialog_button ${LineDialogButtonPressed}
+					invalid_tui_button ${LineDialogButtonPressed}
 					;;
 			esac
 		done

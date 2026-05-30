@@ -11,22 +11,26 @@ config_show() {
 		"paths.config_folder"
 		"paths.compose_folder"
 		"pm.package_manager"
+		"ui.display_engine"
 		"ui.theme"
 		"ui.borders"
 		"ui.line_characters"
 		"ui.scrollbar"
 		"ui.shadow"
+		"ui.large_buttons"
 	)
 
 	local -A DisplayNames=(
 		["paths.config_folder"]="Config Folder"
 		["paths.compose_folder"]="Compose Folder"
 		["pm.package_manager"]="Package Manager"
+		["ui.display_engine"]="Display Engine"
 		["ui.theme"]="Theme"
 		["ui.borders"]="Borders"
 		["ui.line_characters"]="Line Characters"
 		["ui.scrollbar"]="Scrollbar"
 		["ui.shadow"]="Shadow"
+		["ui.large_buttons"]="Large Buttons"
 	)
 
 	local -a TableArray=()

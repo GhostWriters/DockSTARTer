@@ -59,14 +59,14 @@ menu_options_package_manager() {
 			"Select the package manager to use. Detected package managers are highlighted."
 			--item-help
 			--ok-label:Select
-			--extra-label:Back
-			--cancel-label:Exit
+			--cancel-label:Back
+			--exit-button
 			--default-item:"${LastChoice}"
 			"${Opts[@]}"
 		)
 		local Choice
 		local -i DialogButtonPressed=0
-		Choice=$(dialog_radiolist "${ChoiceDialog[@]}") || DialogButtonPressed=$?
+		Choice=$(tui_radiolist "${ChoiceDialog[@]}") || DialogButtonPressed=$?
 		LastChoice=${Choice}
 		case ${DIALOG_BUTTONS[DialogButtonPressed]-} in
 			OK)
@@ -75,14 +75,14 @@ menu_options_package_manager() {
 					run_script 'config_package_manager' "${CurrentPackageManager}" &> /dev/null
 				fi
 				;;
-			EXTRA | ESC)
+			CANCEL | ESC)
 				return
 				;;
-			CANCEL)
+			EXIT)
 				run_script 'menu_exit' || true
 				;;
 			*)
-				invalid_dialog_button ${DialogButtonPressed}
+				invalid_tui_button ${DialogButtonPressed}
 				;;
 		esac
 	done

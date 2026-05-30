@@ -4,6 +4,8 @@ IFS=$'\n\t'
 
 declare -gx DIALOG
 DIALOG=$(command -v dialog) || true
+declare -gx WHIPTAIL
+WHIPTAIL=$(command -v whiptail) || true
 
 declare -Agx DC
 declare -Agx D
@@ -14,12 +16,13 @@ declare -rgx DIALOG_OPTIONS_NAME='.dialogoptions'
 declare -rgx DIALOGRC="${TEMP_FOLDER}/${DIALOGRC_NAME}"
 declare -rgx DIALOG_OPTIONS_FILE="${TEMP_FOLDER}/${DIALOG_OPTIONS_NAME}"
 
+declare -rigx DIALOG_CANCEL=1
 declare -rigx DIALOGTIMEOUT=3
 declare -rigx DIALOG_OK=0
-declare -rigx DIALOG_CANCEL=1
 declare -rigx DIALOG_HELP=2
 declare -rigx DIALOG_EXTRA=3
 declare -rigx DIALOG_ITEM_HELP=4
+declare -rigx DIALOG_EXIT=5
 declare -rigx DIALOG_ERROR=254
 declare -rigx DIALOG_ESC=255
 declare -ragx DIALOG_BUTTONS=(
@@ -28,13 +31,24 @@ declare -ragx DIALOG_BUTTONS=(
 	[DIALOG_HELP]="HELP"
 	[DIALOG_EXTRA]="EXTRA"
 	[DIALOG_ITEM_HELP]="ITEM_HELP"
+	[DIALOG_EXIT]="EXIT"
 	[DIALOG_ERROR]="ERROR"
 	[DIALOG_ESC]="ESC"
 )
 
+declare -agx WHIPTAIL_OPTIONS=''
+
 declare -gx BACKTITLE=''
 
 declare -igx LINES COLUMNS
+
+use_dialog() {
+	[[ ${D["ui.display_engine"]-} == dialog && -n ${DIALOG-} ]]
+}
+
+use_whiptail() {
+	[[ ${D["ui.display_engine"]-} == whiptail && -n ${WHIPTAIL-} ]]
+}
 
 set_screen_size() {
 	if [[ -z ${D["_defined_"]-} ]]; then
@@ -44,7 +58,7 @@ set_screen_size() {
 	LINES=$(tput lines)
 }
 
-_dialog_backtitle_() {
+_tui_backtitle_() {
 	local LeftHeading CenterHeading RightHeading
 
 	local LeftHeading="{{|Hostname|}}${HOSTNAME}{{[-]}}"
@@ -127,15 +141,18 @@ _dialog_backtitle_() {
 		RightPadding=0
 	fi
 
-	BACKTITLE="$(
-		printf "%s%*s%s%*s%s" \
-			"${LeftHeading}" \
-			"${LeftPadding}" " " \
-			"${CenterHeading}" \
-			"${RightPadding}" " " \
-			"${RightHeading}"
-	)"
-	resolve_styles_into BACKTITLE DC "${BACKTITLE}"
+	printf -v BACKTITLE "%s%*s%s%*s%s" \
+		"${LeftHeading}" \
+		"${LeftPadding}" " " "${CenterHeading}" "${RightPadding}" " " \
+		"${RightHeading}"
+
+	if use_dialog; then
+		# Using dialog, resolve styles to dialog codes
+		resolve_styles_into BACKTITLE DC "${BACKTITLE}"
+	else
+		# Using whiptail, strip styles
+		strip_styles_into BACKTITLE "${BACKTITLE}"
+	fi
 }
 
 _dialog_() {
@@ -145,23 +162,35 @@ _dialog_() {
 		resolve_styles_into _rsi_opt_ DC "${Option}"
 		DialogOptions+=("${_rsi_opt_}")
 	done
-	_dialog_backtitle_
+
+	_tui_backtitle_
 	${DIALOG} --file "${DIALOG_OPTIONS_FILE}" --backtitle "${BACKTITLE}" "${DialogOptions[@]}"
+}
+_whiptail_() {
+	local -a WhiptailOptions=()
+	local Option _ssi_opt_
+	for Option in "$@"; do
+		strip_styles_into _ssi_opt_ "${Option}"
+		WhiptailOptions+=("${_ssi_opt_}")
+	done
+
+	_tui_backtitle_
+	${WHIPTAIL} "${WHIPTAIL_OPTIONS[@]}" --backtitle "${BACKTITLE}" "${WhiptailOptions[@]}" 3>&1 1>&2 2>&3
 }
 
 # Check to see if we are already inside a dialog box
-in_dialog_box() {
+in_tui_box() {
 	# If we are in GUI mode, AND stdout is redirected, AND stderr is ALSO redirected
-	# then we are almost certainly inside a '|& dialog_pipe' call.
+	# then we are almost certainly inside a '|& tui_pipe' call.
 	[[ ${PROMPT:-CLI} == GUI && ! -t 1 && ! -t 2 ]]
 }
 
 # Check to see if we should use a dialog box
-use_dialog_box() {
+use_tui_box() {
 	[[ ${PROMPT:-CLI} != GUI ]] && return 1
 
 	# TRUE if Ready to start OR already inside one
-	if in_dialog_box || [[ -t 1 && -t 2 ]]; then
+	if in_tui_box || [[ -t 1 && -t 2 ]]; then
 		return 0
 	fi
 	return 1
@@ -182,15 +211,53 @@ dialog_pipe() {
 	echo -n "${S["BS"]}" >&2
 	return ${result}
 }
-# Script Dialog Runner Function
-run_script_dialog() {
+whiptail_pipe() {
+	if [[ -t 1 ]]; then
+		cat
+	else
+		cat > /dev/tty
+	fi
+}
+tui_pipe() {
+	if use_dialog; then
+		dialog_pipe "$@"
+	else
+		whiptail_pipe "$@"
+	fi
+}
+
+tui_pipe_open() {
+	local -n _tpo_fd_="${1}"
+	local -n _tpo_pid_="${2}"
+	local Title="${3:-}" SubTitle="${4:-}" TimeOut="${5:-0}"
+	if use_dialog && use_tui_box; then
+		coproc {
+			dialog_pipe "${Title}" "${SubTitle}" "${TimeOut}"
+		}
+		_tpo_fd_=${COPROC[1]}
+		_tpo_pid_=${COPROC_PID}
+	else
+		_tpo_fd_=1
+		_tpo_pid_=0
+	fi
+}
+tui_pipe_close() {
+	local -n _tpc_fd_="${1}"
+	local -n _tpc_pid_="${2}"
+	if [[ _tpc_fd_ -ne 1 ]]; then
+		local _tpc_fd_val_=${_tpc_fd_}
+		exec {_tpc_fd_val_}<&- &> /dev/null || true
+		wait "${_tpc_pid_}" &> /dev/null || true
+	fi
+}
+
+dialog_run_script() {
 	local Title=${1:-}
 	local SubTitle=${2:-}
 	local TimeOut=${3:-0}
 	local SCRIPTSNAME=${4-}
 	shift 4
-	if use_dialog_box && ! in_dialog_box; then
-		# Using the GUI, pipe output to a dialog box
+	if ! in_tui_box; then
 		coproc {
 			dialog_pipe "${Title}" "${SubTitle}" "${TimeOut}"
 		}
@@ -203,56 +270,128 @@ run_script_dialog() {
 		return ${result}
 	else
 		run_script "${SCRIPTSNAME}" "$@"
-		return
+	fi
+}
+whiptail_run_script() {
+	local Title=${1:-}
+	local SubTitle=${2:-}
+	local TimeOut=${3:-0}
+	local SCRIPTSNAME=${4-}
+	shift 4
+	run_script "${SCRIPTSNAME}" "$@"
+}
+run_script_tui() {
+	if use_dialog && use_tui_box; then
+		dialog_run_script "$@"
+	else
+		whiptail_run_script "$@"
 	fi
 }
 
-# Command Dialog Runner Function
-run_command_dialog() {
+dialog_run_command() {
 	local Title=${1:-}
 	local SubTitle=${2:-}
 	local TimeOut=${3:-0}
 	local CommandName=${4-}
 	shift 4
 	if [[ -n ${CommandName-} ]]; then
-		if use_dialog_box; then
-			# Using the GUI, pipe output to a dialog box
-			"${CommandName}" "$@" |& dialog_pipe "${Title}" "${SubTitle}" "${TimeOut}"
-			return "${PIPESTATUS[0]}"
-		else
-			"${CommandName}" "$@"
-			return
-		fi
+		"${CommandName}" "$@" |& dialog_pipe "${Title}" "${SubTitle}" "${TimeOut}"
+		return "${PIPESTATUS[0]}"
+	fi
+}
+whiptail_run_command() {
+	local Title=${1:-}
+	local SubTitle=${2:-}
+	local TimeOut=${3:-0}
+	local CommandName=${4-}
+	shift 4
+	if [[ -n ${CommandName-} ]]; then
+		"${CommandName}" "$@"
+	fi
+}
+run_command_tui() {
+	if use_dialog && use_tui_box; then
+		dialog_run_command "$@"
+	else
+		whiptail_run_command "$@"
 	fi
 }
 
-# _parse_dialog_options_ DialogOptionsRef MaximizedRef CountRef "$@"
+# _dialog_parse_options_ DialogOptionsRef MaximizedRef CountRef "$@"
 # Parses common --option[:value] flags from positional params into a DialogOptions array.
 # Uses namerefs to modify the caller's DialogOptions and Maximized variables directly.
 # Saves the count of consumed positional args to CountRef — caller must: shift "${CountRef}"
-_parse_dialog_options_() {
-	local -n _pdo_opts_="${1}"
-	local -n _pdo_max_="${2}"
-	local -n _pdo_cnt_="${3}"
-	_pdo_max_=0
-	_pdo_cnt_=0
+# Sets _DIALOG_EXIT_BUTTON_ to 1 if --exit-button was present (caller must remap return codes).
+_dialog_parse_options_() {
+	local -n _dpo_opts_="${1}"
+	local -n _dpo_max_="${2}"
+	local -n _dpo_cnt_="${3}"
+	_dpo_max_=0
+	_dpo_cnt_=0
+	_DIALOG_EXIT_BUTTON_=0
+	local _dpo_exit_btn_=0
+	local _dpo_cancel_label_=""
 	shift 3
 	while [[ ${1-} == --* ]]; do
 		case "${1}" in
-			--maximized) _pdo_max_=1 ;;
-			--timeout:*) _pdo_opts_+=("--timeout" "${1#*:}") ;;
-			--extra-label:*) _pdo_opts_+=("--extra-button" "--extra-label" "${1#*:}") ;;
-			--help-label:*) _pdo_opts_+=("--help-button" "--help-label" "${1#*:}") ;;
-			--ok-label:* | --yes-label:* | --no-label:* | --cancel-label:* | --exit-label:*)
-				_pdo_opts_+=("${1%:*}" "${1#*:}")
+			--maximized) _dpo_max_=1 ;;
+			--timeout:*) _dpo_opts_+=("--timeout" "${1#*:}") ;;
+			--exit-button) _dpo_exit_btn_=1 ;;
+			--extra-label:*) _dpo_opts_+=("--extra-button" "--extra-label" "${1#*:}") ;;
+			--help-label:*) _dpo_opts_+=("--help-button" "--help-label" "${1#*:}") ;;
+			--cancel-label:*) _dpo_cancel_label_="${1#*:}" ;;
+			--ok-label:* | --yes-label:* | --no-label:* | --exit-label:*)
+				_dpo_opts_+=("${1%:*}" "${1#*:}")
 				;;
-			--default-item:*) _pdo_opts_+=("--default-item" "${1#*:}") ;;
-			--item-help) _pdo_opts_+=("${1}") ;;
-			--*) _pdo_opts_+=("${1}") ;;
+			--default-item:*) _dpo_opts_+=("--default-item" "${1#*:}") ;;
+			--item-help) _dpo_opts_+=("${1}") ;;
+			--*) _dpo_opts_+=("${1}") ;;
 			*) break ;;
 		esac
 		shift
-		((_pdo_cnt_++))
+		((_dpo_cnt_++))
+	done
+	if [[ _dpo_exit_btn_ -eq 1 ]]; then
+		_DIALOG_EXIT_BUTTON_=1
+		_dpo_opts_+=("--extra-button" "--extra-label" "${_dpo_cancel_label_:-Cancel}" "--cancel-label" "Exit")
+	elif [[ -n ${_dpo_cancel_label_} ]]; then
+		_dpo_opts_+=("--cancel-label" "${_dpo_cancel_label_}")
+	fi
+}
+
+# _whiptail_parse_options_ WhiptailOptionsRef MaximizedRef CountRef "$@"
+# Parses common --option[:value] flags from positional params into a WhiptailOptions array.
+# Uses namerefs to modify the caller's WhiptailOptions and Maximized variables directly.
+# Saves the count of consumed positional args to CountRef — caller must: shift "${CountRef}"
+_whiptail_parse_options_() {
+	local -n _wpo_opts_="${1}"
+	local -n _wpo_max_="${2}"
+	local -n _wpo_cnt_="${3}"
+	_wpo_max_=0
+	_wpo_cnt_=0
+	shift 3
+	while [[ ${1-} == --* ]]; do
+		case "${1}" in
+			--maximized) _wpo_max_=1 ;;
+			--timeout:*) ;;     # ignore
+			--exit-button) ;;   # ignore — whiptail shows default OK + Cancel
+			--extra-button) ;;  # ignore — no third button in whiptail
+			--extra-label:*) ;; # ignore
+			--help-label:*) ;;  # ignore
+			--no-collapse) ;;   # ignore — dialog-only
+			--no-hot-list) ;;   # ignore — dialog-only
+			--ok-label:*) _wpo_opts_+=("--ok-button" "${1#*:}") ;;
+			--yes-label:*) _wpo_opts_+=("--yes-button" "${1#*:}") ;;
+			--no-label:*) _wpo_opts_+=("--no-button" "${1#*:}") ;;
+			--cancel-label:*) _wpo_opts_+=("--cancel-button" "${1#*:}") ;;
+			--exit-label:*) ;; # ignore
+			--default-item:*) _wpo_opts_+=("--default-item" "${1#*:}") ;;
+			--item-help) _wpo_opts_+=("${1}") ;;
+			--*) _wpo_opts_+=("${1}") ;;
+			*) break ;;
+		esac
+		shift
+		((_wpo_cnt_++))
 	done
 }
 
@@ -288,10 +427,43 @@ _dialog_calc_list_width_() {
 	[[ ${_dclw_req_} -ge ${_dclw_wmax_} ]] && _dclw_w_=${_dclw_wmax_} || _dclw_w_=0
 }
 
+# _whiptail_calc_list_width_ WindowWidthRef Title SubTitle FieldsPerItem Items...
+# Computes WindowWidth for non-maximized list dialogs based on content.
+# Sets width to wmax if content overflows, 0 (auto) otherwise.
+_whiptail_calc_list_width_() {
+	local -n _dclw_w_="${1}"
+	local _dclw_title_="${2}"
+	local _dclw_sub_="${3}"
+	local -i _dclw_fpi_="${4}"
+	shift 4
+	_dclw_w_=0
+}
+
 # _dialog_calc_text_size_ WindowHeightRef WindowWidthRef Message Title Maximized
 # Computes WindowHeight and WindowWidth for text-based dialogs (msgbox, inputbox, form, yesno).
 # Uses namerefs to set the caller's WindowHeight and WindowWidth variables directly.
 _dialog_calc_text_size_() {
+	local -n _dcts_h_="${1}"
+	local -n _dcts_w_="${2}"
+	local _dcts_msg_="${3}"
+	local _dcts_title_="${4}"
+	local -i _dcts_max_="${5:-0}"
+	set_screen_size
+	local -i _dcts_hmax_=$((LINES - D["WindowRowsAdjust"]))
+	local -i _dcts_wmax_=$((COLUMNS - D["WindowColsAdjust"]))
+	if [[ ${_dcts_max_} -eq 1 ]]; then
+		_dcts_h_=${_dcts_hmax_}
+		_dcts_w_=${_dcts_wmax_}
+	else
+		_dcts_h_=0
+		_dcts_w_=0
+	fi
+}
+
+# _whiptail_calc_text_size_ WindowHeightRef WindowWidthRef Message Title Maximized
+# Computes WindowHeight and WindowWidth for text-based dialogs (msgbox, inputbox, form, yesno).
+# Uses namerefs to set the caller's WindowHeight and WindowWidth variables directly.
+_whiptail_calc_text_size_() {
 	local -n _dcts_h_="${1}"
 	local -n _dcts_w_="${2}"
 	local _dcts_msg_="${3}"
@@ -348,6 +520,35 @@ _dialog_calc_list_size_() {
 	fi
 }
 
+# _whiptail_calc_list_size_ WindowHeightRef WindowWidthRef MenuHeightRef SubTitle Maximized ItemCount
+# Computes WindowHeight, WindowWidth, and MenuHeight for list-based dialogs (menu, checklist, radiolist, inputmenu).
+# Uses namerefs to set the caller's WindowHeight, WindowWidth, and MenuHeight variables directly.
+_whiptail_calc_list_size_() {
+	local -n _dcls_h_="${1}"
+	local -n _dcls_w_="${2}"
+	local -n _dcls_m_="${3}"
+	#local _dcls_sub_="${4}"
+	#local -i _dcls_max_="${5:-0}"
+	_dcls_h_=0
+	_dcls_w_=0
+	_dcls_m_=0
+}
+
+# _strip_helptext_in_place_ <ArrayName> [<Interval>]
+# Removes every Nth element from an array, starting from the Nth element.
+_strip_helptext_in_place_() {
+	local -n _shtip_ref_arr=${1}
+	local -i Interval=${2:-3}
+
+	[[ ${#_shtip_ref_arr[@]} -eq 0 ]] && return 0
+
+	local -i ArraySize=${#_shtip_ref_arr[@]}
+	for ((i = Interval - 1; i < ArraySize; i += Interval)); do
+		unset "_shtip_ref_arr[$i]"
+	done
+	_shtip_ref_arr=("${_shtip_ref_arr[@]}")
+}
+
 dialog_info() {
 	local Title="${1-}"
 	shift || true
@@ -355,32 +556,58 @@ dialog_info() {
 	shift || true
 	local -a DialogOptions=()
 	local -i Maximized=0 _n_=0
-	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
+	local BoxType="--infobox"
+
+	_dialog_parse_options_ DialogOptions Maximized _n_ "$@"
 	shift "${_n_}"
 	local -i result=0
-	_dialog_ "${DialogOptions[@]}" --infobox "${Message}" 0 0 || result=$?
+	_dialog_ "${DialogOptions[@]}" "${BoxType}" "${Message}" 0 0 || result=$?
 	echo -n "${S["BS"]}" >&2
 	return ${result}
 }
-
-dialog_message() {
+whiptail_info() {
 	local Title="${1-}"
 	shift || true
 	local Message="${1-}"
 	shift || true
-	dialog_msgbox "${Title}" "${Message}" "$@"
+	local -a WhiptailOptions=()
+	local -i Maximized=0 _n_=0
+	local BoxType="--infobox"
+
+	_whiptail_parse_options_ WhiptailOptions Maximized _n_ "$@"
+	shift "${_n_}"
+	[[ -n ${Title} ]] && WhiptailOptions+=(--title "${Title}")
+	local -i result=0
+	_whiptail_ "${WhiptailOptions[@]}" "${BoxType}" "${Message}" 0 0 || result=$?
+	echo -n "${S["BS"]}" >&2
+	return ${result}
+}
+tui_info() {
+	if use_dialog; then
+		dialog_info "$@"
+	else
+		whiptail_info "$@"
+	fi
 }
 
-dialog_error() {
-	dialog_message "{{|TitleError|}}${1-}" "${2-}" "--maximized"
+tui_message() {
+	local Title="${1-}"
+	shift || true
+	local Message="${1-}"
+	shift || true
+	tui_msgbox "${Title}" "${Message}" "$@"
 }
 
-dialog_warning() {
-	dialog_message "{{|TitleWarning|}}${1-}" "${2-}" "--maximized"
+tui_error() {
+	tui_msgbox "{{|TitleError|}}${1-}" "${2-}" "--maximized"
 }
 
-dialog_success() {
-	dialog_message "{{|TitleSuccess|}}${1-}" "${2-}" "--maximized"
+tui_warning() {
+	tui_message "{{|TitleWarning|}}${1-}" "${2-}" "--maximized"
+}
+
+tui_success() {
+	tui_message "{{|TitleSuccess|}}${1-}" "${2-}" "--maximized"
 }
 
 dialog_yesno() {
@@ -393,10 +620,9 @@ dialog_yesno() {
 	local BoxType="--yesno"
 
 	local -i _n_=0
-	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
+	_dialog_parse_options_ DialogOptions Maximized _n_ "$@"
 	shift "${_n_}"
 
-	DialogOptions+=(--output-fd 1)
 	[[ -n ${Title} ]] && DialogOptions+=(--title "{{|TitleQuestion|}}${Title}")
 
 	local -i WindowHeight=0 WindowWidth=0
@@ -407,6 +633,36 @@ dialog_yesno() {
 	echo -n "${S["BS"]}" >&2
 	return ${result}
 }
+whiptail_yesno() {
+	local Title="${1-}"
+	shift || true
+	local Message="${1-}"
+	shift || true
+	local -a WhiptailOptions=()
+	local -i Maximized=0
+	local BoxType="--yesno"
+
+	local -i _n_=0
+	_whiptail_parse_options_ WhiptailOptions Maximized _n_ "$@"
+	shift "${_n_}"
+
+	[[ -n ${Title} ]] && WhiptailOptions+=(--title "${Title}")
+
+	local -i WindowHeight=0 WindowWidth=0
+	_whiptail_calc_text_size_ WindowHeight WindowWidth "${Message}" "${Title}" "${Maximized}"
+
+	local -i result=0
+	_whiptail_ "${WhiptailOptions[@]}" "${BoxType}" "${Message}" "${WindowHeight}" "${WindowWidth}" "$@" || result=$?
+	echo -n "${S["BS"]}" >&2
+	return ${result}
+}
+tui_yesno() {
+	if use_dialog; then
+		dialog_yesno "$@"
+	else
+		whiptail_yesno "$@"
+	fi
+}
 
 dialog_msgbox() {
 	local Title="${1-}"
@@ -415,21 +671,51 @@ dialog_msgbox() {
 	shift || true
 	local -a DialogOptions=()
 	local -i Maximized=0
+	local BoxType="--msgbox"
 
 	local -i _n_=0
-	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
+	_dialog_parse_options_ DialogOptions Maximized _n_ "$@"
 	shift "${_n_}"
 
-	DialogOptions+=(--output-fd 1)
 	[[ -n ${Title} ]] && DialogOptions+=(--title "{{|Title|}}${Title}")
 
 	local -i WindowHeight=0 WindowWidth=0
 	_dialog_calc_text_size_ WindowHeight WindowWidth "${Message}" "${Title}" "${Maximized}"
 
 	local -i result=0
-	_dialog_ "${DialogOptions[@]}" --msgbox "${Message}" "${WindowHeight}" "${WindowWidth}" "$@" || result=$?
+	_dialog_ "${DialogOptions[@]}" "${BoxType}" "${Message}" "${WindowHeight}" "${WindowWidth}" "$@" || result=$?
 	echo -n "${S["BS"]}" >&2
 	return ${result}
+}
+whiptail_msgbox() {
+	local Title="${1-}"
+	shift || true
+	local Message="${1-}"
+	shift || true
+	local -a WhiptailOptions=()
+	local -i Maximized=0
+	local BoxType="--msgbox"
+
+	local -i _n_=0
+	_whiptail_parse_options_ WhiptailOptions Maximized _n_ "$@"
+	shift "${_n_}"
+
+	[[ -n ${Title} ]] && WhiptailOptions+=(--title "${Title}")
+
+	local -i WindowHeight=0 WindowWidth=0
+	_whiptail_calc_text_size_ WindowHeight WindowWidth "${Message}" "${Title}" "${Maximized}"
+
+	local -i result=0
+	_whiptail_ "${WhiptailOptions[@]}" "${BoxType}" "${Message}" "${WindowHeight}" "${WindowWidth}" "$@" || result=$?
+	echo -n "${S["BS"]}" >&2
+	return ${result}
+}
+tui_msgbox() {
+	if use_dialog; then
+		dialog_msgbox "$@"
+	else
+		whiptail_msgbox "$@"
+	fi
 }
 
 dialog_inputbox() {
@@ -441,10 +727,9 @@ dialog_inputbox() {
 	local -i Maximized=0
 
 	local -i _n_=0
-	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
+	_dialog_parse_options_ DialogOptions Maximized _n_ "$@"
 	shift "${_n_}"
 
-	DialogOptions+=(--output-fd 1)
 	[[ -n ${Title} ]] && DialogOptions+=(--title "{{|Title|}}${Title}")
 
 	local -i WindowHeight=0 WindowWidth=0
@@ -454,6 +739,35 @@ dialog_inputbox() {
 	_dialog_ "${DialogOptions[@]}" --inputbox "${Message}" "${WindowHeight}" "${WindowWidth}" "$@" || result=$?
 	echo -n "${S["BS"]}" >&2
 	return ${result}
+}
+whiptail_inputbox() {
+	local Title="${1-}"
+	shift || true
+	local Message="${1-}"
+	shift || true
+	local -a DialogOptions=()
+	local -i Maximized=0
+
+	local -i _n_=0
+	_whiptail_parse_options_ WhiptailOptions Maximized _n_ "$@"
+	shift "${_n_}"
+
+	[[ -n ${Title} ]] && WhiptailOptions+=(--title "${Title}")
+
+	local -i WindowHeight=0 WindowWidth=0
+	_whiptail_calc_text_size_ WindowHeight WindowWidth "${Message}" "${Title}" "${Maximized}"
+
+	local -i result=0
+	_whiptail_ "${WhiptailOptions[@]}" --inputbox "${Message}" "${WindowHeight}" "${WindowWidth}" "$@" || result=$?
+	echo -n "${S["BS"]}" >&2
+	return ${result}
+}
+tui_inputbox() {
+	if use_dialog; then
+		dialog_inputbox "$@"
+	else
+		whiptail_inputbox "$@"
+	fi
 }
 
 dialog_form() {
@@ -465,10 +779,10 @@ dialog_form() {
 	local -i Maximized=0
 
 	local -i _n_=0
-	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
+	local -i _DIALOG_EXIT_BUTTON_=0
+	_dialog_parse_options_ DialogOptions Maximized _n_ "$@"
 	shift "${_n_}"
 
-	DialogOptions+=(--output-fd 1)
 	[[ -n ${Title} ]] && DialogOptions+=(--title "{{|Title|}}${Title}")
 
 	local -i WindowHeight=0 WindowWidth=0
@@ -478,7 +792,39 @@ dialog_form() {
 	# form_height=0 (auto-size) is always appended before the field definitions in "$@"
 	_dialog_ "${DialogOptions[@]}" --form "${Message}" "${WindowHeight}" "${WindowWidth}" 0 "$@" || result=$?
 	echo -n "${S["BS"]}" >&2
+	[[ _DIALOG_EXIT_BUTTON_ -eq 1 && result -eq DIALOG_CANCEL ]] && return ${DIALOG_EXIT}
+	[[ _DIALOG_EXIT_BUTTON_ -eq 1 && result -eq DIALOG_EXTRA ]] && return ${DIALOG_CANCEL}
 	return ${result}
+}
+whiptail_form() {
+	local Title="${1-}"
+	shift || true
+	local Message="${1-}"
+	shift || true
+	local -a WhiptailOptions=()
+	local -i Maximized=0
+
+	local -i _n_=0
+	_whiptail_parse_options_ WhiptailOptions Maximized _n_ "$@"
+	shift "${_n_}"
+
+	[[ -n ${Title} ]] && WhiptailOptions+=(--title "${Title}")
+
+	local -i WindowHeight=0 WindowWidth=0
+	_whiptail_calc_text_size_ WindowHeight WindowWidth "${Message}" "${Title}" "${Maximized}"
+
+	local -i result=0
+	# form_height=0 (auto-size) is always appended before the field definitions in "$@"
+	_whiptail_ "${WhiptailOptions[@]}" --form "${Message}" "${WindowHeight}" "${WindowWidth}" 0 "$@" || result=$?
+	echo -n "${S["BS"]}" >&2
+	return ${result}
+}
+tui_form() {
+	if use_dialog; then
+		dialog_form "$@"
+	else
+		whiptail_form "$@"
+	fi
 }
 
 dialog_menu() {
@@ -490,11 +836,11 @@ dialog_menu() {
 	local -i Maximized=0
 
 	local -i _n_=0
-	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
+	local -i _DIALOG_EXIT_BUTTON_=0
+	_dialog_parse_options_ DialogOptions Maximized _n_ "$@"
 	shift "${_n_}"
 	local -a Items=("$@")
 
-	DialogOptions+=(--output-fd 1)
 	[[ -n ${Title} ]] && DialogOptions+=(--title "{{|Title|}}${Title}")
 
 	local -i FieldsPerItem=2
@@ -513,7 +859,57 @@ dialog_menu() {
 	local -i result=0
 	_dialog_ "${DialogOptions[@]}" --menu "${StyledSubTitle}" "${WindowHeight}" "${WindowWidth}" "${MenuHeight}" "${Items[@]}" || result=$?
 	echo -n "${S["BS"]}" >&2
+	[[ _DIALOG_EXIT_BUTTON_ -eq 1 && result -eq DIALOG_CANCEL ]] && return ${DIALOG_EXIT}
+	[[ _DIALOG_EXIT_BUTTON_ -eq 1 && result -eq DIALOG_EXTRA ]] && return ${DIALOG_CANCEL}
 	return ${result}
+}
+
+whiptail_menu() {
+	local Title="${1-}"
+	shift || true
+	local SubTitle="${1-}"
+	shift || true
+	local -a WhiptailOptions=()
+	local -i Maximized=0
+
+	local -i _n_=0
+	_whiptail_parse_options_ WhiptailOptions Maximized _n_ "$@"
+	shift "${_n_}"
+	local -a Items=("$@")
+
+	[[ -n ${Title} ]] && WhiptailOptions+=(--title "${Title}")
+
+	local -i FieldsPerItem=2
+	local Option
+	local -a FilteredOptions=()
+	for Option in "${WhiptailOptions[@]}"; do
+		if [[ ${Option} == "--item-help" ]]; then
+			FieldsPerItem=3
+		else
+			FilteredOptions+=("${Option}")
+		fi
+	done
+	WhiptailOptions=("${FilteredOptions[@]}")
+	local -i ItemCount=$((${#Items[@]} / FieldsPerItem))
+	if [[ FieldsPerItem -eq 3 ]]; then
+		_strip_helptext_in_place_ Items 3
+		FieldsPerItem=2
+	fi
+	local -i WindowHeight=0 WindowWidth=0 MenuHeight=0
+	_whiptail_calc_list_size_ WindowHeight WindowWidth MenuHeight "${SubTitle}" "${Maximized}" "${ItemCount}"
+	[[ ${Maximized} -eq 0 ]] && _whiptail_calc_list_width_ WindowWidth "${Title}" "${SubTitle}" "${FieldsPerItem}" "${Items[@]}"
+
+	local -i result=0
+	_whiptail_ "${WhiptailOptions[@]}" --menu "${SubTitle}" "${WindowHeight}" "${WindowWidth}" "${MenuHeight}" "${Items[@]}" || result=$?
+	echo -n "${S["BS"]}" >&2
+	return ${result}
+}
+tui_menu() {
+	if use_dialog; then
+		dialog_menu "$@"
+	else
+		whiptail_menu "$@"
+	fi
 }
 
 dialog_checklist() {
@@ -525,11 +921,11 @@ dialog_checklist() {
 	local -i Maximized=0
 
 	local -i _n_=0
-	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
+	local -i _DIALOG_EXIT_BUTTON_=0
+	_dialog_parse_options_ DialogOptions Maximized _n_ "$@"
 	shift "${_n_}"
 	local -a Items=("$@")
 
-	DialogOptions+=(--output-fd 1)
 	[[ -n ${Title} ]] && DialogOptions+=(--title "{{|Title|}}${Title}")
 
 	local -i FieldsPerItem=3
@@ -548,7 +944,56 @@ dialog_checklist() {
 	local -i result=0
 	_dialog_ "${DialogOptions[@]}" --checklist "${StyledSubTitle}" "${WindowHeight}" "${WindowWidth}" "${MenuHeight}" "${Items[@]}" || result=$?
 	echo -n "${S["BS"]}" >&2
+	[[ _DIALOG_EXIT_BUTTON_ -eq 1 && result -eq DIALOG_CANCEL ]] && return ${DIALOG_EXIT}
+	[[ _DIALOG_EXIT_BUTTON_ -eq 1 && result -eq DIALOG_EXTRA ]] && return ${DIALOG_CANCEL}
 	return ${result}
+}
+whiptail_checklist() {
+	local Title="${1-}"
+	shift || true
+	local SubTitle="${1-}"
+	shift || true
+	local -a WhiptailOptions=()
+	local -i Maximized=0
+
+	local -i _n_=0
+	_whiptail_parse_options_ WhiptailOptions Maximized _n_ "$@"
+	shift "${_n_}"
+	local -a Items=("$@")
+
+	[[ -n ${Title} ]] && WhiptailOptions+=(--title "${Title}")
+
+	local -i FieldsPerItem=3
+	local Option
+	local -a FilteredOptions=()
+	for Option in "${WhiptailOptions[@]}"; do
+		if [[ ${Option} == "--item-help" ]]; then
+			FieldsPerItem=4
+		else
+			FilteredOptions+=("${Option}")
+		fi
+	done
+	WhiptailOptions=("${FilteredOptions[@]}")
+	local -i ItemCount=$((${#Items[@]} / FieldsPerItem))
+	if [[ FieldsPerItem -eq 4 ]]; then
+		_strip_helptext_in_place_ Items 4
+		FieldsPerItem=3
+	fi
+	local -i WindowHeight=0 WindowWidth=0 MenuHeight=0
+	_whiptail_calc_list_size_ WindowHeight WindowWidth MenuHeight "${SubTitle}" "${Maximized}" "${ItemCount}"
+	[[ ${Maximized} -eq 0 ]] && _whiptail_calc_list_width_ WindowWidth "${Title}" "${SubTitle}" "${FieldsPerItem}" "${Items[@]}"
+
+	local -i result=0
+	_whiptail_ "${WhiptailOptions[@]}" --checklist "${SubTitle}" "${WindowHeight}" "${WindowWidth}" "${MenuHeight}" "${Items[@]}" || result=$?
+	echo -n "${S["BS"]}" >&2
+	return ${result}
+}
+tui_checklist() {
+	if use_dialog; then
+		dialog_checklist "$@"
+	else
+		whiptail_checklist "$@"
+	fi
 }
 
 dialog_radiolist() {
@@ -560,11 +1005,11 @@ dialog_radiolist() {
 	local -i Maximized=0
 
 	local -i _n_=0
-	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
+	local -i _DIALOG_EXIT_BUTTON_=0
+	_dialog_parse_options_ DialogOptions Maximized _n_ "$@"
 	shift "${_n_}"
 	local -a Items=("$@")
 
-	DialogOptions+=(--output-fd 1)
 	[[ -n ${Title} ]] && DialogOptions+=(--title "{{|Title|}}${Title}")
 
 	local -i FieldsPerItem=3
@@ -583,7 +1028,56 @@ dialog_radiolist() {
 	local -i result=0
 	_dialog_ "${DialogOptions[@]}" --radiolist "${StyledSubTitle}" "${WindowHeight}" "${WindowWidth}" "${MenuHeight}" "${Items[@]}" || result=$?
 	echo -n "${S["BS"]}" >&2
+	[[ _DIALOG_EXIT_BUTTON_ -eq 1 && result -eq DIALOG_CANCEL ]] && return ${DIALOG_EXIT}
+	[[ _DIALOG_EXIT_BUTTON_ -eq 1 && result -eq DIALOG_EXTRA ]] && return ${DIALOG_CANCEL}
 	return ${result}
+}
+whiptail_radiolist() {
+	local Title="${1-}"
+	shift || true
+	local SubTitle="${1-}"
+	shift || true
+	local -a WhiptailOptions=()
+	local -i Maximized=0
+
+	local -i _n_=0
+	_whiptail_parse_options_ WhiptailOptions Maximized _n_ "$@"
+	shift "${_n_}"
+	local -a Items=("$@")
+
+	[[ -n ${Title} ]] && WhiptailOptions+=(--title "${Title}")
+
+	local -i FieldsPerItem=3
+	local Option
+	local -a FilteredOptions=()
+	for Option in "${WhiptailOptions[@]}"; do
+		if [[ ${Option} == "--item-help" ]]; then
+			FieldsPerItem=4
+		else
+			FilteredOptions+=("${Option}")
+		fi
+	done
+	WhiptailOptions=("${FilteredOptions[@]}")
+	local -i ItemCount=$((${#Items[@]} / FieldsPerItem))
+	if [[ FieldsPerItem -eq 4 ]]; then
+		_strip_helptext_in_place_ Items 4
+		FieldsPerItem=3
+	fi
+	local -i WindowHeight=0 WindowWidth=0 MenuHeight=0
+	_whiptail_calc_list_size_ WindowHeight WindowWidth MenuHeight "${SubTitle}" "${Maximized}" "${ItemCount}"
+	[[ ${Maximized} -eq 0 ]] && _whiptail_calc_list_width_ WindowWidth "${Title}" "${SubTitle}" "${FieldsPerItem}" "${Items[@]}"
+
+	local -i result=0
+	_whiptail_ "${WhiptailOptions[@]}" --radiolist "${SubTitle}" "${WindowHeight}" "${WindowWidth}" "${MenuHeight}" "${Items[@]}" || result=$?
+	echo -n "${S["BS"]}" >&2
+	return ${result}
+}
+tui_radiolist() {
+	if use_dialog; then
+		dialog_radiolist "$@"
+	else
+		whiptail_radiolist "$@"
+	fi
 }
 
 dialog_inputmenu() {
@@ -595,11 +1089,10 @@ dialog_inputmenu() {
 	local -i Maximized=0
 
 	local -i _n_=0
-	_parse_dialog_options_ DialogOptions Maximized _n_ "$@"
+	_dialog_parse_options_ DialogOptions Maximized _n_ "$@"
 	shift "${_n_}"
 	local -a Items=("$@")
 
-	DialogOptions+=(--output-fd 1)
 	[[ -n ${Title} ]] && DialogOptions+=(--title "{{|Title|}}${Title}")
 
 	local -i FieldsPerItem=2
@@ -621,7 +1114,7 @@ dialog_inputmenu() {
 	return ${result}
 }
 
-invalid_dialog_button() {
+invalid_tui_button() {
 	local -i DialogButtonNumber=${1}
 	local -l NoticeType=${2:-fatal}
 	local DialogButton="${DIALOG_BUTTONS[DialogButtonNumber]-#${DialogButtonNumber}}"

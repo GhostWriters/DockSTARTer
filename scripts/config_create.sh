@@ -5,7 +5,19 @@ IFS=$'\n\t'
 config_create() {
 	# Early return if the TOML config already exists
 	if [[ -f ${APPLICATION_TOML_FILE} ]]; then
-		return 0
+		if run_script 'config_toml_key_exists' paths.compose_folder; then
+			return 0
+		fi
+		notice "Detected {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} config file with no compose folder defined. Detecting compose folder location."
+
+		detect_compose_folder
+		run_script 'apply_config'
+
+		notice ""
+		notice "$(run_script 'config_show')"
+		notice ""
+
+		return
 	fi
 
 	notice "No {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} config file detected. Performing initial configuration."
@@ -104,7 +116,10 @@ config_create() {
 detect_compose_folder() {
 	# Check for a legacy compose folder and update ComposeFolder if needed
 	local ConfigFolder
-	run_script 'config_get_into' ConfigFolder paths.config_folder || true
+	run_script 'config_get_into' ConfigFolder paths.config_folder ||
+		fatal \
+			"Failed to get config folder." \
+			"Failing command: {{|FailingCommand|}}run_script 'config_get_into' ConfigFolder paths.config_folder"
 
 	local -a ExpandVarList=(
 		ScriptFolder "${SCRIPTPATH}"
@@ -128,8 +143,8 @@ detect_compose_folder() {
 		LegacyHasFiles=true
 	fi
 
-	local DefaultComposeFolder
-	run_script 'config_get_into' DefaultComposeFolder paths.compose_folder || true
+	local DefaultComposeFolder=""
+	run_script 'config_get_into' DefaultComposeFolder paths.compose_folder "${DEFAULT_TOML_FILE}" || true
 	local ExpandedDefaultComposeFolder
 	ExpandedDefaultComposeFolder="$(expand_vars "${DefaultComposeFolder}" "${ExpandVarList[@]}")"
 
@@ -152,8 +167,14 @@ detect_compose_folder() {
 			run_script 'config_set' paths.compose_folder "${DefaultComposeFolder}"
 		fi
 	elif [[ ${LegacyHasFiles} == true ]]; then
-		notice "Detected compose folder at '{{|Folder|}}${ExpandedLegacyComposeFolder}{{[-]}}'."
+		notice "Detected compose folder at legacy location '{{|Folder|}}${ExpandedLegacyComposeFolder}{{[-]}}'."
 		run_script 'config_set' paths.compose_folder "${LegacyComposeFolder}"
+	elif [[ ${DefaultHasFiles} == true ]]; then
+		notice "Detected compose folder at default location '{{|Folder|}}${ExpandedDefaultComposeFolder}{{[-]}}'."
+		run_script 'config_set' paths.compose_folder "${DefaultComposeFolder}"
+	else
+		notice "No compose folder detected. Using default location '{{|Folder|}}${ExpandedDefaultComposeFolder}{{[-]}}'."
+		run_script 'config_set' paths.compose_folder "${DefaultComposeFolder}"
 	fi
 }
 
