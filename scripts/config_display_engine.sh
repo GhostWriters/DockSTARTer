@@ -12,6 +12,7 @@ config_display_engine() {
 	case "${DisplayEngine}" in
 		dialog | whiptail)
 			run_script 'config_set' ui.display_engine "${DisplayEngine}"
+			run_script 'config_theme'
 			notice "Display engine set to '{{|UserCommand|}}${DisplayEngine}{{[-]}}'."
 			return 0
 			;;
