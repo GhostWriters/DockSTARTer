@@ -287,7 +287,7 @@ table_pipe() {
 	readarray -t ColWidths < <(longest_columns "${Cols}" "${VisibleData[@]}")
 
 	local -A CharSet
-	if is_false "${D["ui.LineCharacters"]-}" || in_tui_box; then
+	if is_false "${D["ui.line_characters"]-}" || in_tui_box; then
 		CharSet=(
 			["TopLeft"]="+"
 			["TopRight"]="+"
