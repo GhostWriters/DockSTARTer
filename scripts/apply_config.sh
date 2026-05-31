@@ -3,10 +3,7 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 apply_config() {
-	if [[ ! -f ${APPLICATION_TOML_FILE} ]]; then
-		run_script 'config_create'
-		return
-	fi
+	run_script 'config_create'
 
 	#shellcheck disable=SC2034 # (warning): LITERAL_CONFIG_FOLDER appears unused. Verify use (or export if used externally).
 	run_script 'config_get_into' LITERAL_CONFIG_FOLDER paths.config_folder || true

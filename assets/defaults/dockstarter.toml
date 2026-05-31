@@ -3,11 +3,13 @@ config_folder = '${XDG_CONFIG_HOME}'
 compose_folder = '${XDG_CONFIG_HOME}/compose'
 
 [ui]
+display_engine = 'dialog'
 theme = 'DockSTARTer'
 borders = true
 line_characters = true
 scrollbar = true
 shadow = true
+large_buttons = true
 
 [pm]
 package_manager = ''

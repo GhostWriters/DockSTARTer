@@ -78,7 +78,7 @@ menu_dialog_example() {
 		"${DialogOptions[@]}"
 	)
 
-	dialog_menu "${MenuDialog[@]}" > /dev/null || true
+	tui_menu "${MenuDialog[@]}" > /dev/null || true
 }
 
 test_menu_dialog_example() {

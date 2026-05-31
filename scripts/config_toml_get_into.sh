@@ -15,6 +15,7 @@ config_toml_get_into() {
 	fi
 
 	local -A _ctgi_Config_booleans_=(
+		["ui.large_buttons"]=1
 		["ui.borders"]=1
 		["ui.line_characters"]=1
 		["ui.scrollbar"]=1

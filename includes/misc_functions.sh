@@ -287,7 +287,7 @@ table_pipe() {
 	readarray -t ColWidths < <(longest_columns "${Cols}" "${VisibleData[@]}")
 
 	local -A CharSet
-	if is_false "${D["LineCharacters"]-}" || in_dialog_box; then
+	if is_false "${D["ui.LineCharacters"]-}" || in_tui_box; then
 		CharSet=(
 			["TopLeft"]="+"
 			["TopRight"]="+"
@@ -378,7 +378,7 @@ table() {
 	shift
 	local -a Headings=("${@:1:Cols}")
 	local -a Data=("${@:Cols+1}")
-	if use_dialog_box || [[ -t 1 ]]; then
+	if use_tui_box || [[ -t 1 ]]; then
 		printf '%s\n' "${Data[@]}" | table_pipe "${Cols}" "${Headings[@]}" | resolve_strings C
 	else
 		# Captured/Piped call: Output RAW TAGS

@@ -5,17 +5,16 @@ IFS=$'\n\t'
 get_docker() {
 	Title="Install Docker"
 	if [[ -n ${VERBOSE-} ]]; then
-		if use_dialog_box; then
+		#shellcheck disable=SC2034 # (warning): PipePID is passed by name to tui_pipe_open/close via nameref and appears unused to shellcheck.
+		local -i PipeFD PipePID
+		tui_pipe_open PipeFD PipePID "${Title}" "Installing docker. Please be patient, this can take a while."
+		{
 			{
-				{
-					notice "Installing docker. Please be patient, this can take a while."
-					command_get_docker
-				} || true
-			} |& dialog_pipe "${Title}" "Installing docker. Please be patient, this can take a while."
-		else
-			notice "Installing docker. Please be patient, this can take a while."
-			command_get_docker
-		fi
+				notice "Installing docker. Please be patient, this can take a while."
+				command_get_docker
+			} || true
+		} >&${PipeFD} 2>&1
+		tui_pipe_close PipeFD PipePID
 	else
 		notice "Installing docker. Please be patient, this can take a while."
 		command_get_docker &> /dev/null

@@ -117,6 +117,13 @@ EOF
 	Generates the '{{|UsageFile|}}docker-compose.yml{{[-]}} file
 EOF
 			;;&
+		--config-display-engine | --display-engine | "")
+			Found=1
+			cat << EOF
+{{|UsageCommand|}}--config-display-engine{{[-]}} < {{|UsageOption|}}dialog{{[-]}} | {{|UsageOption|}}whiptail{{[-]}} >{{[-]}}
+	Select the display engine used for the TUI.
+EOF
+			;;&
 		--config-pm | --config-pm-auto | "")
 			Found=1
 			cat << EOF
@@ -477,6 +484,8 @@ EOF
 	Load the specified page in the menu.
 {{|UsageCommand|}}-M --menu{{[-]}} < {{|UsageOption|}}options-display{{[-]}} | {{|UsageOption|}}display{{[-]}} >{{[-]}}
 	Load the {{|UsagePage|}}Display Options{{[-]}} page in the menu.
+{{|UsageCommand|}}-M --menu{{[-]}} < {{|UsageOption|}}options-display-engine{{[-]}} | {{|UsageOption|}}display-engine{{[-]}} >{{[-]}}
+	Load the {{|UsagePage|}}Display Engine{{[-]}} page in the menu.
 {{|UsageCommand|}}-M --menu{{[-]}} < {{|UsageOption|}}options-theme{{[-]}} | {{|UsageOption|}}theme{{[-]}} >{{[-]}}
 	Load the {{|UsagePage|}}Theme Chooser{{[-]}} page in the menu.
 {{|UsageCommand|}}-M --menu{{[-]}} < {{|UsageOption|}}config-app-select{{[-]}} | {{|UsageOption|}}app-select{{[-]}} | {{|UsageOption|}}select{{[-]}} >{{[-]}}

@@ -4,7 +4,6 @@ IFS=$'\n\t'
 
 declare -a _dependencies_list=(
 	column
-	dialog
 	sed
 )
 
@@ -25,8 +24,8 @@ declare DialogGaugeText FullDialogGaugeText ExpandedDialogGaugeText
 declare -i ProgressSteps ProgressStepNumber
 
 declare GaugePipe ProgressLog
-declare -i GaugePipe_fd ProgressLog_fd
-declare Dialog_PID
+declare -i GaugePipe_fd ProgressLog_fd=0
+declare -i Dialog_PID=0
 
 menu_app_select() {
 	local -a ProcessInfo
@@ -159,7 +158,7 @@ menu_app_select() {
 			"${AppList[@]}"
 		)
 		SelectedAppsDialogButtonPressed=0
-		SelectedApps=$(dialog_checklist "${SelectedAppsDialog[@]}") || SelectedAppsDialogButtonPressed=$?
+		SelectedApps=$(tui_checklist "${SelectedAppsDialog[@]}") || SelectedAppsDialogButtonPressed=$?
 	fi
 	case ${DIALOG_BUTTONS[SelectedAppsDialogButtonPressed]-} in
 		OK)
@@ -240,15 +239,15 @@ menu_app_select() {
 			return 1
 			;;
 		*)
-			invalid_dialog_button ${SelectedAppsDialogButtonPressed}
+			invalid_tui_button ${SelectedAppsDialogButtonPressed}
 			;;
 	esac
 }
 
-show_gauge() {
+dialog_show_gauge() {
 	local GaugeTitle="${1-${Title}}"
 
-	_dialog_backtitle_
+	_tui_backtitle_
 	local -a GlobalDialogOptions=(
 		--file "${DIALOG_OPTIONS_FILE}"
 		--backtitle "${BACKTITLE}"
@@ -258,7 +257,6 @@ show_gauge() {
 	local -i ScreenRows=${LINES}
 	local -i ScreenCols=${COLUMNS}
 	local -i DialogCols
-	#local -i DialogRows
 
 	local -i GaugeDialogStartRow
 	local -i LogDialogStartRow
@@ -272,7 +270,6 @@ show_gauge() {
 	GaugeDialogStartRow=2
 	DialogStartCol=2
 
-	#DialogRows=$((ScreenRows - D["WindowRowsAdjust"]))
 	DialogCols=$((ScreenCols - D["WindowColsAdjust"]))
 
 	GaugeDialogTextRows=$(wc -l <<< "${FullDialogGaugeText}")
@@ -281,7 +278,6 @@ show_gauge() {
 	LogDialogStartRow="$((GaugeDialogStartRow + GaugeDialogRows + (D["WindowRowsAdjust"] - 3)))"
 	LogDialogRows="$((ScreenRows - LogDialogStartRow - (D["WindowRowsAdjust"] - 3) - 1))"
 
-	# Create the pipes to communicate with the gauge and log dialog windows
 	GaugePipe=$(mktemp -u -t "${APPLICATION_NAME}.${FUNCNAME[0]}.GaugePipe.XXXXXXXXXX")
 	mkfifo "${GaugePipe}"
 	exec {GaugePipe_fd}<> "${GaugePipe}"
@@ -310,7 +306,6 @@ show_gauge() {
 		"${GaugeDialog[@]}"
 	)
 
-	# Start the gauge and progress dialog windows in the background, and get the process id
 	local index
 	for index in "${!DialogOptions[@]}"; do
 		resolve_styles_into DialogOptions["${index}"] DC "${DialogOptions["${index}"]}"
@@ -318,16 +313,36 @@ show_gauge() {
 	"${DIALOG}" "${DialogOptions[@]}" < "${GaugePipe}" &
 	Dialog_PID=$!
 }
+whiptail_show_gauge() {
+	ProgressLog=/dev/tty
+	Dialog_PID=0
+}
+show_gauge() {
+	if use_dialog; then
+		dialog_show_gauge "$@"
+	else
+		whiptail_show_gauge "$@"
+	fi
+}
 
-close_gauge() {
-	# Signal the dialog gauge and progress windows to terminate
+dialog_close_gauge() {
 	kill -SIGTERM "${Dialog_PID}" &> /dev/null || true
 	wait "${Dialog_PID}" &> /dev/null || true
-	# Remove the communication pipes to dialog
 	exec {GaugePipe_fd}>&- &> /dev/null || true
 	rm "${GaugePipe}" &> /dev/null || true
 	exec {ProgressLog_fd}>&- &> /dev/null || true
 	rm "${ProgressLog}" &> /dev/null || true
+}
+whiptail_close_gauge() {
+	true
+}
+
+close_gauge() {
+	if use_dialog; then
+		dialog_close_gauge
+	else
+		whiptail_close_gauge
+	fi
 }
 
 init_gauge_text() {
@@ -478,13 +493,23 @@ update_gauge_percent() {
 	echo "${ProgressPercent}" > "${GaugePipe}"
 }
 
-update_gauge() {
+dialog_update_gauge() {
 	update_gauge_percent_value "${1-0}"
 	shift 1 || true
 	if [[ $# -gt 0 ]]; then
 		update_gauge_text "$@"
 	fi
 	printf 'XXX\n%s\n%s\nXXX\n' "${ProgressPercent}" "${ExpandedDialogGaugeText}" > "${GaugePipe}"
+}
+whiptail_update_gauge() {
+	true
+}
+update_gauge() {
+	if use_dialog; then
+		dialog_update_gauge "$@"
+	else
+		whiptail_update_gauge "$@"
+	fi
 }
 
 test_menu_app_select() {

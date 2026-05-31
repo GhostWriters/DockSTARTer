@@ -6,6 +6,68 @@ declare -a _dependencies_list=(
 	grep
 )
 
+menu_add_var_select_dialog() {
+	dialog_inputmenu "$@"
+}
+
+menu_add_var_select_whiptail() {
+	local Title="${1-}"
+	shift || true
+	local Message="${1-}"
+	shift || true
+	#shellcheck disable=SC2034 # (warning): ParsedOptions is passed by name to _whiptail_parse_options_ via nameref and appears unused to shellcheck.
+	local -a ParsedOptions=()
+	#shellcheck disable=SC2034 # (warning): Maximized is passed by name to _whiptail_parse_options_ via nameref and appears unused to shellcheck.
+	local -i _n_=0 Maximized=0
+	_whiptail_parse_options_ ParsedOptions Maximized _n_ "$@"
+	shift "${_n_}"
+	local -a Items=("$@")
+	local -a MenuDialog=(
+		"${Title}"
+		"${Message}"
+		--maximized
+		--item-help
+		--ok-label:Select
+		--cancel-label:Done
+		"${Items[@]}"
+	)
+	local -i result=0
+	local Selected
+	Selected=$(tui_menu "${MenuDialog[@]}") || result=$?
+	case ${DIALOG_BUTTONS[result]-} in
+		OK)
+			local StrippedSelected="${Selected// /}"
+			if [[ ${StrippedSelected} == *_ ]]; then
+				local NewValue
+				NewValue=$(tui_inputbox "${Title}" "${Message}" --maximized) || result=$?
+				case ${DIALOG_BUTTONS[result]-} in
+					OK)
+						echo "RENAMED ${Selected} ${NewValue}"
+						return "${DIALOG_EXTRA}"
+						;;
+					*)
+						return ${result}
+						;;
+				esac
+			else
+				echo "${Selected}"
+				return "${DIALOG_OK}"
+			fi
+			;;
+		*)
+			return ${result}
+			;;
+	esac
+}
+
+menu_add_var_select() {
+	if use_dialog; then
+		menu_add_var_select_dialog "$@"
+	else
+		menu_add_var_select_whiptail "$@"
+	fi
+}
+
 menu_add_var() {
 	local APPNAME=${1-}
 	local appname
@@ -14,7 +76,6 @@ menu_add_var() {
 	local VarType
 	local VarName=""
 	local Heading
-	local VarNameMaxLength=256
 	local VarNameHeading
 	local VarNameNone="{{|Highlight|}}[*NONE*]"
 	Heading=""
@@ -188,7 +249,7 @@ menu_add_var() {
 				)
 				local -i SelectValueDialogButtonPressed=0
 				local SelectedOption
-				SelectedOption=$(dialog_inputmenu "${SelectValueDialog[@]}") || SelectValueDialogButtonPressed=$?
+				SelectedOption=$(menu_add_var_select "${SelectValueDialog[@]}") || SelectValueDialogButtonPressed=$?
 				case ${DIALOG_BUTTONS[SelectValueDialogButtonPressed]-} in
 					OK) # SELECT button
 						if [[ ${SelectedOption} == "${OptionClear}" ]]; then
@@ -201,11 +262,9 @@ menu_add_var() {
 							run_script 'menu_heading_into' Heading ":${AppName}"
 							if run_script 'question_prompt' N "${Heading}\n\n${Question}" "Create Stock Variables" "${ASSUMEYES:+Y}" "Create" "Back"; then
 								run_script 'menu_heading_into' Heading ":${AppName}" "${VarNameHeading}"
-								coproc {
-									dialog_pipe "{{|TitleSuccess|}}Creating Stock Variables" "${Heading}"
-								}
-								local -i DialogBox_PID=${COPROC_PID}
-								local -i DialogBox_FD="${COPROC[1]}"
+								#shellcheck disable=SC2034 # (warning): PipePID is passed by name to tui_pipe_open/close via nameref and appears unused to shellcheck.
+								local -i PipeFD PipePID
+								tui_pipe_open PipeFD PipePID "{{|TitleSuccess|}}Creating Stock Variables" "${Heading}"
 								{
 									notice "Adding variables to {{|File|}}${COMPOSE_ENV}{{[-]}}:"
 									for Option in "${ValidStockOptions[@]}"; do
@@ -214,9 +273,8 @@ menu_add_var() {
 										notice "   {{|Var|}}${Option// /}=${DefaultValue}{{[-]}}"
 										run_script 'env_set_literal' "${Option// /}" "${DefaultValue}"
 									done
-								} >&${DialogBox_FD} 2>&1
-								exec {DialogBox_FD}<&-
-								wait ${DialogBox_PID}
+								} >&${PipeFD} 2>&1
+								tui_pipe_close PipeFD PipePID
 							fi
 							continue
 						elif [[ ${SelectedOption} =~ ${APPNAME__ENABLED}|${StockOptionsRegex} ]]; then
@@ -261,7 +319,7 @@ menu_add_var() {
 						fi
 						if [[ -n ${ErrorMessage-} ]]; then
 							run_script 'menu_heading_into' Heading ":${AppName}" "${VarNameHeading}"
-							dialog_error "${Title}" "${Heading}\n\n${ErrorMessage}"
+							tui_error "${Title}" "${Heading}\n\n${ErrorMessage}"
 							continue
 						fi
 						Question="Create variable {{|Highlight|}}${VarName}{{[-]}} for application {{|Highlight|}}${AppName}{{[-]}}?\n"
@@ -269,7 +327,7 @@ menu_add_var() {
 						if run_script 'question_prompt' N "${Heading}\n\n${Question}" "Create Variable" "${ASSUMEYES:+Y}" "Create" "Back"; then
 							run_script 'var_default_value_into' Default "${VarName}"
 							run_script 'menu_heading_into' Heading ":${AppName}" "${VarNameHeading}"
-							run_script_dialog "{{|TitleSuccess|}}Creating Variable" "${Heading}\n\n" "${DIALOGTIMEOUT}" \
+							run_script_tui "{{|TitleSuccess|}}Creating Variable" "${Heading}\n\n" "${DIALOGTIMEOUT}" \
 								'env_set_literal' "${VarName}" "${Default}"
 							run_script 'menu_value_prompt' "${VarName}"
 							return
@@ -296,23 +354,17 @@ menu_add_var() {
 				fi
 				local ErrorMessage=''
 				local DetectedAppName=''
-				local ValueOptions
-				ValueOptions=(
-					"" 1 1
-					"${VarName}" 1 1
-					"${VarNameMaxLength}" "${VarNameMaxLength}"
-				)
 				local -a InputValueDialog=(
 					"${Title}"
 					"${InputValueText}"
 					--maximized
 					--ok-label:Select
-					"--extra-label:Back"
-					--cancel-label:Exit
-					"${ValueOptions[@]}"
+					--cancel-label:Back
+					--exit-button
+					"${VarName}"
 				)
 				local InputValueDialogButtonPressed=0
-				VarName=$(dialog_form "${InputValueDialog[@]}") || InputValueDialogButtonPressed=$?
+				VarName=$(tui_inputbox "${InputValueDialog[@]}") || InputValueDialogButtonPressed=$?
 				case ${DIALOG_BUTTONS[InputValueDialogButtonPressed]-} in
 					OK)
 						local Default
@@ -335,7 +387,7 @@ menu_add_var() {
 						fi
 						if [[ -n ${ErrorMessage} ]]; then
 							run_script 'menu_heading_into' Heading "${AppNameHeading}" "${VarNameHeading}"
-							dialog_error "${Title}" "${Heading}\n\n${ErrorMessage}"
+							tui_error "${Title}" "${Heading}\n\n${ErrorMessage}"
 							continue
 						fi
 						run_script 'menu_heading_into' Heading "${AppNameHeading}" "${VarNameHeading}"
@@ -346,7 +398,7 @@ menu_add_var() {
 							if run_script 'question_prompt' N "${Heading}\n\n${Question}" "Create Variable" "${ASSUMEYES:+Y}" "Create" "Back"; then
 								run_script 'var_default_value_into' Default "${AppName}:${VarName}"
 								run_script 'menu_heading_into' Heading "${AppNameHeading}" "${VarNameHeading}"
-								run_script_dialog "{{|TitleSuccess|}}Creating Variable" "${Heading}\n\n" "${DIALOGTIMEOUT}" \
+								run_script_tui "{{|TitleSuccess|}}Creating Variable" "${Heading}\n\n" "${DIALOGTIMEOUT}" \
 									'env_set_literal' "${appname}:${VarName}" "${Default}"
 								run_script 'menu_value_prompt' "${appname}:${VarName}"
 								return
@@ -357,22 +409,22 @@ menu_add_var() {
 							if run_script 'question_prompt' N "${Heading}\n\n${Question}" "Create Variable" "${ASSUMEYES:+Y}" "Create" "Back"; then
 								run_script 'var_default_value_into' Default "${VarName}"
 								run_script 'menu_heading_into' Heading "${AppNameHeading}" "${VarNameHeading}"
-								run_script_dialog "{{|TitleSuccess|}}Creating Variable" "${Heading}\n\n" "${DIALOGTIMEOUT}" \
+								run_script_tui "{{|TitleSuccess|}}Creating Variable" "${Heading}\n\n" "${DIALOGTIMEOUT}" \
 									'env_set_literal' "${VarName}" "${Default}"
 								run_script 'menu_value_prompt' "${VarName}"
 								return
 							fi
 						fi
 						;;
-					EXTRA)
+					CANCEL | ESC)
 						return
 						;;
-					CANCEL | ESC)
+					EXIT)
 						run_script 'menu_exit'
 						continue
 						;;
 					*)
-						invalid_dialog_button ${InputValueDialogButtonPressed}
+						invalid_tui_button ${InputValueDialogButtonPressed}
 						;;
 				esac
 			done
