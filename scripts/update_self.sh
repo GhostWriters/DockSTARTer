@@ -16,9 +16,9 @@ update_self() {
 	local Question YesNotice NoNotice
 
 	if [[ -z ${Branch-} ]]; then
-		Branch="$(ds_branch)"
+		ds_branch_into Branch
 		if ds_tag_exists "${Branch-}"; then
-			Branch="$(ds_best_branch)"
+			ds_best_branch_into Branch
 		fi
 		if [[ -z ${Branch-} ]]; then
 			error "You need to specify a branch to update to."
@@ -26,8 +26,8 @@ update_self() {
 		fi
 	fi
 
-	CurrentVersion="$(ds_version)"
-	RemoteVersion="$(ds_version "${Branch}")"
+	ds_version_into CurrentVersion
+	ds_version_into RemoteVersion "${Branch}"
 	if [[ ${CurrentVersion-} == "${RemoteVersion-}" ]]; then
 		if [[ -n ${FORCE-} ]]; then
 			Question="Would you like to forcefully re-apply {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} update '{{|Version|}}${CurrentVersion}{{[-]}}'?"
@@ -133,8 +133,10 @@ commands_update_self_logic() {
 	git -C "${SCRIPTPATH}" ls-tree -rt --name-only "${Branch}" | xargs sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" &> /dev/null || true
 	sudo chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}/.git" &> /dev/null || true
 	sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}" &> /dev/null || true
+	local UpdatedVersion
+	ds_version_into UpdatedVersion
 	notice \
-		"Updated ${APPLICATION_NAME} to '{{|Version|}}$(ds_version){{[-]}}'"
+		"Updated ${APPLICATION_NAME} to '{{|Version|}}${UpdatedVersion}{{[-]}}'"
 
 	# run_script 'reset_needs' # Add script lines in-line below
 	if [[ -d ${TIMESTAMPS_FOLDER:?} ]]; then

@@ -51,7 +51,7 @@ menu_config() {
 		)
 		local ConfigChoice
 		local -i ConfigDialogButtonPressed=0
-		ConfigChoice=$(tui_menu "${ConfigChoiceDialog[@]}") || ConfigDialogButtonPressed=$?
+		tui_menu_into ConfigChoice "${ConfigChoiceDialog[@]}" || ConfigDialogButtonPressed=$?
 		LastConfigChoice=${ConfigChoice}
 		case ${DIALOG_BUTTONS[ConfigDialogButtonPressed]-} in
 			OK) # Select

@@ -9,10 +9,11 @@ menu_config_apps() {
 
 	local LastAppChoice=""
 	while true; do
-		local AddedApps
-		AddedApps="$(run_script 'app_list_referenced' | run_script 'app_nicename_pipe')"
+		local -a ReferencedApps AddedApps
+		run_script 'app_list_referenced_into_array' ReferencedApps
+		run_script 'app_nicename_into_array' AddedApps "${ReferencedApps[@]}"
 		local -a AppOptions=()
-		for AppName in ${AddedApps}; do
+		for AppName in "${AddedApps[@]}"; do
 			local AppDescription
 			run_script 'app_description_into' AppDescription "${AppName}"
 			if run_script 'app_is_user_defined' "${AppName}"; then
@@ -33,7 +34,7 @@ menu_config_apps() {
 		)
 		local AppChoice
 		local -i AppChoiceButtonPressed=0
-		AppChoice=$(tui_menu "${AppChoiceDialog[@]}") || AppChoiceButtonPressed=$?
+		tui_menu_into AppChoice "${AppChoiceDialog[@]}" || AppChoiceButtonPressed=$?
 		LastAppChoice=${AppChoice}
 		case ${DIALOG_BUTTONS[AppChoiceButtonPressed]-} in
 			OK) # Select

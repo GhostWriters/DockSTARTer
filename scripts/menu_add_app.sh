@@ -28,7 +28,7 @@ menu_add_app() {
 			"${AppName}"
 		)
 		local InputValueDialogButtonPressed=0
-		AppName=$(tui_inputbox "${InputValueDialog[@]}") || InputValueDialogButtonPressed=$?
+		tui_inputbox_into AppName "${InputValueDialog[@]}" || InputValueDialogButtonPressed=$?
 		case ${DIALOG_BUTTONS[InputValueDialogButtonPressed]-} in
 			OK)
 				# Sanitize the input

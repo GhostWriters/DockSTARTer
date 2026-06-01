@@ -9,9 +9,9 @@ declare -a _dependencies_list=(
 
 appvars_purge() {
 	local Title="Purge Variables"
-	local -l applist
-	applist="$(xargs -n 1 <<< "$*")"
-	for appname in ${applist}; do
+	local -a applist
+	IFS=$' \t\n\r' read -d '' -ra applist <<< "${*,,}" || true
+	for appname in "${applist[@]}"; do
 		local AppName
 		run_script 'app_nicename_into' AppName "${appname}"
 
@@ -24,7 +24,9 @@ appvars_purge() {
 
 		run_script 'appvars_list_into_array' CurrentGlobalVars "${appname}"
 		if [[ -n ${CurrentGlobalVars-} ]]; then
-			readarray -t DefaultGlobalVars <<< "$(run_script 'env_list_app_global_defaults' "${appname}")"
+			local AppDefaultGlobalEnvFile
+			run_script 'app_instance_file_into' AppDefaultGlobalEnvFile "${appname}" ".env"
+			run_script 'env_var_list_into_array' DefaultGlobalVars "${AppDefaultGlobalEnvFile}"
 			# Get the list of current variables also in the default list
 			readarray -t GlobalVarsToRemove <<< "$(
 				printf '%s\n' "${CurrentGlobalVars[@]-}" "${DefaultGlobalVars[@]-}" |
@@ -39,7 +41,9 @@ appvars_purge() {
 
 		run_script 'appvars_list_into_array' CurrentAppEnvVars "${appname}:"
 		if [[ -n ${CurrentAppEnvVars-} ]]; then
-			readarray -t DefaultAppEnvVars <<< "$(run_script 'env_list_app_env_defaults' "${appname}")"
+			local AppDefaultAppEnvFile
+			run_script 'app_instance_file_into' AppDefaultAppEnvFile "${appname}" ".env.app.*"
+			run_script 'env_var_list_into_array' DefaultAppEnvVars "${AppDefaultAppEnvFile}"
 			# Get the list of current variables also in the default list
 			readarray -t AppEnvVarsToRemove <<< "$(
 				printf '%s\n' "${CurrentAppEnvVars[@]-}" "${DefaultAppEnvVars[@]-}" |

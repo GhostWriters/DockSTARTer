@@ -153,7 +153,7 @@ menu_config_vars() {
 			LastLineChoice="$(printf "%0${PadSize}d" "${TotalLines}")"
 		fi
 		while true; do
-			local DialogHeading
+			local DialogHeading LineChoice=""
 			run_script 'menu_heading_into' DialogHeading "${APPNAME-}"
 			local -a LineDialog=(
 				"${Title}"
@@ -167,7 +167,7 @@ menu_config_vars() {
 				"${LineOptions[@]}"
 			)
 			local -i LineDialogButtonPressed=0
-			LineChoice=$(tui_menu "${LineDialog[@]}") || LineDialogButtonPressed=$?
+			tui_menu_into LineChoice "${LineDialog[@]}" || LineDialogButtonPressed=$?
 			case ${DIALOG_BUTTONS[LineDialogButtonPressed]-} in
 				OK) # Select
 					LastLineChoice="${LineChoice}"

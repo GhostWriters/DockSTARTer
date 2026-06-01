@@ -99,7 +99,7 @@ menu_options_theme() {
 		)
 		local Choice
 		local -i DialogButtonPressed=0
-		Choice=$(tui_radiolist "${ChoiceDialog[@]}") || DialogButtonPressed=$?
+		tui_radiolist_into Choice "${ChoiceDialog[@]}" || DialogButtonPressed=$?
 		LastChoice=${Choice}
 		case ${DIALOG_BUTTONS[DialogButtonPressed]-} in
 			OK)

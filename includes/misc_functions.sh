@@ -30,9 +30,14 @@ strip_dialog_colors() {
 
 # Take whitespace and newline delimited words and output a single line highlighted list for dialog
 highlighted_list() {
-	local List
-	List=$(xargs <<< "$*")
-	if [[ -n ${List-} ]]; then
+	local -a ListArray
+	IFS=$' \t\n\r' read -d '' -ra ListArray <<< "$*" || true
+	if [[ ${#ListArray[@]} -gt 0 ]]; then
+		local List
+		local old_IFS="${IFS}"
+		IFS=' '
+		List="${ListArray[*]}"
+		IFS="${old_IFS}"
 		echo "{{|Subtitle|}}${List// /{{[-]}} {{|Subtitle|}}}{{[-]}}"
 	fi
 }

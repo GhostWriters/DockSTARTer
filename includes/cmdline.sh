@@ -334,8 +334,10 @@ parse_arguments() {
 				-\?)
 					# Unknown '-o'
 					local PreviousArgsString
-					PreviousArgsString="${APPLICATION_COMMAND} $(xargs <<< "${ParsedArgs[@]-}")"
-					PreviousArgsString="$(xargs <<< "${PreviousArgsString}")"
+					local -a ArgsList
+					IFS=' ' read -ra ArgsList <<< "${APPLICATION_COMMAND} ${ParsedArgs[*]-}"
+					printf -v PreviousArgsString '%s ' "${ArgsList[@]}"
+					PreviousArgsString="${PreviousArgsString% }"
 					cmdline_error \
 						"" \
 						"Invalid option %o" \
@@ -356,8 +358,10 @@ parse_arguments() {
 		if [[ OPTIND -eq 1 && ${OPTIND} -le $# ]]; then
 			# Unknown 'option'
 			local PreviousArgsString
-			PreviousArgsString="${APPLICATION_COMMAND} $(xargs <<< "${ParsedArgs[@]-}")"
-			PreviousArgsString="$(xargs <<< "${PreviousArgsString}")"
+			local -a ArgsList
+			IFS=' ' read -ra ArgsList <<< "${APPLICATION_COMMAND} ${ParsedArgs[*]-}"
+			printf -v PreviousArgsString '%s ' "${ArgsList[@]}"
+			PreviousArgsString="${PreviousArgsString% }"
 			cmdline_error \
 				"" \
 				"Invalid option %o" \
@@ -738,17 +742,23 @@ run_command() {
 						"{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} ref '{{|Branch|}}${AppBranch}{{[-]}}' does not exist."
 					exit 1
 				fi
-				resolve_strings C "{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} [{{|Version|}}$(ds_version "${AppBranch}"){{[-]}}]"
+				local AppVersion
+				ds_version_into AppVersion "${AppBranch}"
+				resolve_strings C "{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} [{{|Version|}}${AppVersion}{{[-]}}]"
 			fi
 			if [[ -z ${TemplatesBranch} ]]; then
-				resolve_strings C "{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} [{{|Version|}}$(templates_version){{[-]}}]"
+				local TempVersion
+				templates_version_into TempVersion
+				resolve_strings C "{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} [{{|Version|}}${TempVersion}{{[-]}}]"
 			else
 				if ! templates_ref_exists "${TemplatesBranch}"; then
 					error \
 						"{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} ref '{{|Branch|}}${TemplatesBranch}{{[-]}}' does not exist."
 					exit 1
 				fi
-				resolve_strings C "{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} [{{|Version|}}$(templates_version "${TemplatesBranch}"){{[-]}}]"
+				local TempVersion
+				templates_version_into TempVersion "${TemplatesBranch}"
+				resolve_strings C "{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} [{{|Version|}}${TempVersion}{{[-]}}]"
 			fi
 			;;
 
@@ -955,7 +965,9 @@ run_command() {
 			#shellcheck disable=SC2034 # (warning): PipePID is passed by name to tui_pipe_open/close via nameref and appears unused to shellcheck.
 			local -i PipeFD PipePID
 			tui_pipe_open PipeFD PipePID "${Title}" "${SubTitle}" ""
-			for AppName in $(xargs -n1 <<< "${ParamsArray[0]}"); do
+			local -a AppList
+			IFS=$' \t\n\r' read -d '' -ra AppList <<< "${ParamsArray[0]}" || true
+			for AppName in "${AppList[@]}"; do
 				run_script "${Script}" "${AppName}"
 			done >&${PipeFD} 2>&1 || result=$?
 			tui_pipe_close PipeFD PipePID

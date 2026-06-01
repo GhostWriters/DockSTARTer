@@ -37,6 +37,8 @@ question_prompt() {
 		YN=${Default:-Y}
 	elif [[ -n ${Override-} ]]; then
 		YN="${Override}"
+	elif in_tui_box; then
+		YN=${Default:-Y}
 	elif use_tui_box; then
 		local DIALOG_DEFAULT
 		if [[ ${Default} == "N" ]]; then

@@ -6,11 +6,10 @@ declare -a _dependencies_list=(
 	grep
 )
 
-menu_add_var_select_dialog() {
-	dialog_inputmenu "$@"
-}
-
-menu_add_var_select_whiptail() {
+menu_add_var_select_whiptail_into() {
+	local -n _mavswi_out_="${1}"
+	assert_nameref_is_string "${1}"
+	shift
 	local Title="${1-}"
 	shift || true
 	local Message="${1-}"
@@ -33,16 +32,16 @@ menu_add_var_select_whiptail() {
 	)
 	local -i result=0
 	local Selected
-	Selected=$(tui_menu "${MenuDialog[@]}") || result=$?
+	tui_menu_into Selected "${MenuDialog[@]}" || result=$?
 	case ${DIALOG_BUTTONS[result]-} in
 		OK)
 			local StrippedSelected="${Selected// /}"
 			if [[ ${StrippedSelected} == *_ ]]; then
 				local NewValue
-				NewValue=$(tui_inputbox "${Title}" "${Message}" --maximized) || result=$?
+				tui_inputbox_into NewValue "${Title}" "${Message}" --maximized || result=$?
 				case ${DIALOG_BUTTONS[result]-} in
 					OK)
-						echo "RENAMED ${Selected} ${NewValue}"
+						_mavswi_out_="RENAMED ${Selected} ${NewValue}"
 						return "${DIALOG_EXTRA}"
 						;;
 					*)
@@ -50,7 +49,7 @@ menu_add_var_select_whiptail() {
 						;;
 				esac
 			else
-				echo "${Selected}"
+				_mavswi_out_="${Selected}"
 				return "${DIALOG_OK}"
 			fi
 			;;
@@ -60,11 +59,20 @@ menu_add_var_select_whiptail() {
 	esac
 }
 
-menu_add_var_select() {
+menu_add_var_select_into() {
+	local -n _mavsi_out_="${1}"
+	assert_nameref_is_string "${1}"
+	shift
+	local -i result=0
+	local temp_file="${TEMP_FOLDER}/${APPLICATION_NAME,,}.${FUNCNAME[0]}.$$.tmp"
 	if use_dialog; then
-		menu_add_var_select_dialog "$@"
+		dialog_inputmenu "$@" > "${temp_file}" || result=$?
+		read -r _mavsi_out_ < "${temp_file}" || true
+		rm -f "${temp_file}"
+		return ${result}
 	else
-		menu_add_var_select_whiptail "$@"
+		menu_add_var_select_whiptail_into _mavsi_out_ "$@" || result=$?
+		return ${result}
 	fi
 }
 
@@ -249,7 +257,7 @@ menu_add_var() {
 				)
 				local -i SelectValueDialogButtonPressed=0
 				local SelectedOption
-				SelectedOption=$(menu_add_var_select "${SelectValueDialog[@]}") || SelectValueDialogButtonPressed=$?
+				menu_add_var_select_into SelectedOption "${SelectValueDialog[@]}" || SelectValueDialogButtonPressed=$?
 				case ${DIALOG_BUTTONS[SelectValueDialogButtonPressed]-} in
 					OK) # SELECT button
 						if [[ ${SelectedOption} == "${OptionClear}" ]]; then
@@ -364,7 +372,7 @@ menu_add_var() {
 					"${VarName}"
 				)
 				local InputValueDialogButtonPressed=0
-				VarName=$(tui_inputbox "${InputValueDialog[@]}") || InputValueDialogButtonPressed=$?
+				tui_inputbox_into VarName "${InputValueDialog[@]}" || InputValueDialogButtonPressed=$?
 				case ${DIALOG_BUTTONS[InputValueDialogButtonPressed]-} in
 					OK)
 						local Default
