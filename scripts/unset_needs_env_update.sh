@@ -27,7 +27,11 @@ unset_needs_env_update() {
 	local filename
 	filename="$(basename "${VarFile}")"
 
-	rm -f "${timestamps_folder}/${filename}"* &> /dev/null || true
+	if [[ ${filename} == ".env" ]]; then
+		rm -f "${timestamps_folder}/.env" "${timestamps_folder}/.env_ReferencedApps" &> /dev/null || true
+	else
+		rm -f "${timestamps_folder}/${filename}" "${timestamps_folder}/${filename}"_* &> /dev/null || true
+	fi
 
 	cp -a "${VarFile}" "${timestamps_folder}/${filename}"
 	if [[ ${VarFile} == "${COMPOSE_ENV}" ]]; then
