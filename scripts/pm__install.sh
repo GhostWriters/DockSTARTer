@@ -23,7 +23,7 @@ pm__install() {
 	fi
 
 	local deplist
-	deplist=$(printf ", '{{|Folder|}}%s{{[-]}}'" "${Dependencies[@]}")
+	printf -v deplist ", '{{|Folder|}}%s{{[-]}}'" "${Dependencies[@]}"
 	deplist="${deplist:2}"
 
 	# Install missing dependencies using the package manager
