@@ -22,10 +22,9 @@ pm__install() {
 		return
 	fi
 
-	#shellcheck disable=SC2124 #Assigning an array to a string! Assign as array, or use * instead of @ to concatenate.
-	local deplist="${Dependencies[@]}"
-	deplist="${deplist// /"{{[-]\}\}\', \'{{|Folder|\}\}"}"
-	deplist="{{[-]}}'{{|Folder|}}${deplist}{{[-]}}'"
+	local deplist
+	printf -v deplist ", '{{|Folder|}}%s{{[-]}}'" "${Dependencies[@]}"
+	deplist="${deplist:2}"
 
 	# Install missing dependencies using the package manager
 	notice "Installing dependencies: ${deplist}"
