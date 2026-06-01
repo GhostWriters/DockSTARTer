@@ -937,15 +937,19 @@ declare -gx APPLICATION_VERSION="Unknown Version"
 declare -gx TEMPLATES_VERSION="Unknown Version"
 if check_repo; then
 	if declare -F ds_version > /dev/null; then
-		APPLICATION_VERSION="$(ds_version)"
+		ds_version_into APPLICATION_VERSION
 		if [[ -z ${APPLICATION_VERSION} ]]; then
-			APPLICATION_VERSION="$(ds_branch) Unknown Version"
+			declare _ds_br_
+			ds_branch_into _ds_br_
+			APPLICATION_VERSION="${_ds_br_} Unknown Version"
 		fi
 	fi
 	if declare -F templates_version > /dev/null; then
-		TEMPLATES_VERSION="$(templates_version)"
+		templates_version_into TEMPLATES_VERSION
 		if [[ -z ${TEMPLATES_VERSION} ]]; then
-			TEMPLATES_VERSION="$(templates_branch) Unknown Version"
+			declare _temp_br_
+			templates_branch_into _temp_br_
+			TEMPLATES_VERSION="${_temp_br_} Unknown Version"
 		fi
 	fi
 fi
@@ -1029,17 +1033,19 @@ init_check_update() {
 	# Only check for updates once per 24 hours, as it can be quite slow.
 	[ -n "$(find "${APPLICATION_UPDATE_RECORD}" -mtime -1 2> /dev/null)" ] && return
 	local Branch
-	Branch="$(ds_branch)"
+	ds_branch_into Branch
 	local TargetBranch="${Branch}"
 	if ds_tag_exists "${Branch}"; then
-		TargetBranch="$(ds_best_branch)"
+		ds_best_branch_into TargetBranch
 	fi
 	if ds_ref_exists "${Branch}"; then
 		if ds_update_available "${Branch}" "${TargetBranch}"; then
+			local TargetVersion
+			ds_version_into TargetVersion "${TargetBranch}"
 			warn \
 				"{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} [{{|Version|}}${APPLICATION_VERSION}{{[-]}}]" \
 				"An update to {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} is available." \
-				"Run '{{|UserCommand|}}${APPLICATION_COMMAND} -u{{[-]}}' to update to version '{{|Version|}}$(ds_version "${TargetBranch}"){{[-]}}'."
+				"Run '{{|UserCommand|}}${APPLICATION_COMMAND} -u{{[-]}}' to update to version '{{|Version|}}${TargetVersion}{{[-]}}'."
 		else
 			info \
 				"{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} [{{|Version|}}${APPLICATION_VERSION}{{[-]}}]"
@@ -1049,43 +1055,53 @@ init_check_update() {
 		if ! ds_branch_exists "${MainBranch}"; then
 			MainBranch="${APPLICATION_LEGACY_BRANCH}"
 		fi
+		local CurrentVersion
+		ds_version_into CurrentVersion
 		warn \
 			"{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} branch '{{|Branch|}}${Branch}{{[-]}}' appears to no longer exist." \
-			"{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} is currently on version '{{|Version|}}$(ds_version){{[-]}}'."
+			"{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} is currently on version '{{|Version|}}${CurrentVersion}{{[-]}}'."
 		if ! ds_branch_exists "${MainBranch}"; then
 			error \
 				"{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} does not appear to have a '{{|Branch|}}${APPLICATION_DEFAULT_BRANCH}{{[-]}}' or '{{|Branch|}}${APPLICATION_LEGACY_BRANCH}{{[-]}}' branch."
 		else
+			local MainVersion
+			ds_version_into MainVersion "${MainBranch}"
 			warn \
-				"Run '{{|UserCommand|}}${APPLICATION_COMMAND} -u ${MainBranch}{{[-]}}' to update to the latest stable release '{{|Version|}}$(ds_version "${MainBranch}"){{[-]}}'."
+				"Run '{{|UserCommand|}}${APPLICATION_COMMAND} -u ${MainBranch}{{[-]}}' to update to the latest stable release '{{|Version|}}${MainVersion}{{[-]}}'."
 		fi
 	fi
-	Branch="$(templates_branch)"
+	templates_branch_into Branch
 	local TargetBranch="${Branch}"
 	if templates_tag_exists "${Branch}"; then
-		TargetBranch="$(templates_best_branch)"
+		templates_best_branch_into TargetBranch
 	fi
 	if templates_ref_exists "${Branch}"; then
 		if templates_update_available "${Branch}" "${TargetBranch}"; then
+			local TargetVersion
+			templates_version_into TargetVersion "${TargetBranch}"
 			warn \
 				"{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} [{{|Version|}}${TEMPLATES_VERSION}{{[-]}}]" \
 				"An update to {{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} is available." \
-				"Run '{{|UserCommand|}}${APPLICATION_COMMAND} -u{{[-]}}' to update to version '{{|Version|}}$(templates_version "${TargetBranch}"){{[-]}}'."
+				"Run '{{|UserCommand|}}${APPLICATION_COMMAND} -u{{[-]}}' to update to version '{{|Version|}}${TargetVersion}{{[-]}}'."
 		else
 			info \
 				"{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} [{{|Version|}}${TEMPLATES_VERSION}{{[-]}}]"
 		fi
 	else
 		Branch="${TEMPLATES_DEFAULT_BRANCH}"
+		local CurrentVersion
+		templates_version_into CurrentVersion
 		warn \
 			"{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} branch '{{|Branch|}}${Branch}{{[-]}}' appears to no longer exist." \
-			"{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} is currently on version '{{|Version|}}$(templates_version){{[-]}}'."
+			"{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} is currently on version '{{|Version|}}${CurrentVersion}{{[-]}}'."
 		if ! templates_branch_exists "${Branch}"; then
 			error \
 				"{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} does not appear to have a '{{|Branch|}}${TEMPLATES_DEFAULT_BRANCH}{{[-]}}' branch."
 		else
+			local StableVersion
+			templates_version_into StableVersion "${Branch}"
 			warn \
-				"Run '{{|UserCommand|}}${APPLICATION_COMMAND} -u ${Branch}{{[-]}}' to update to the latest stable release '{{|Version|}}$(templates_version "${Branch}"){{[-]}}'."
+				"Run '{{|UserCommand|}}${APPLICATION_COMMAND} -u ${Branch}{{[-]}}' to update to the latest stable release '{{|Version|}}${StableVersion}{{[-]}}'."
 		fi
 	fi
 	touch "${APPLICATION_UPDATE_RECORD}"

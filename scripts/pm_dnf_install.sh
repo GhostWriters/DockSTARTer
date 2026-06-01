@@ -49,7 +49,7 @@ detect_packages() {
 	local Command="dnf rq ${DepsSearch} --qf '%{name} '"
 	notice "Running: {{|RunningCommand|}}${Command}{{[-]}}"
 	local -a Packages
-	read -ra Packages <<< "$(eval "${Command}" 2> /dev/null)"
+	IFS=$' \t\n\r' read -d '' -ra Packages <<< "$(eval "${Command}" 2> /dev/null)" || true
 	for Package in "${Packages[@]-}"; do
 		if [[ ! ${Package} =~ ${RegEx_Package_Blacklist} ]]; then
 			echo "${Package}"

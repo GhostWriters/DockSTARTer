@@ -78,7 +78,9 @@ menu_dialog_example() {
 		"${DialogOptions[@]}"
 	)
 
-	tui_menu "${MenuDialog[@]}" > /dev/null || true
+	#shellcheck disable=SC2034 # (warning): SelectedChoice is populated by example TUI call but is intentionally unused.
+	local SelectedChoice
+	tui_menu_into SelectedChoice "${MenuDialog[@]}" || true
 }
 
 test_menu_dialog_example() {

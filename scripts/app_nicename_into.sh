@@ -5,29 +5,39 @@ IFS=$'\n\t'
 declare -a _dependencies_list=()
 
 app_nicename_into() {
-	# Return the "NiceName" of a single appname. If there is no "NiceName", return the "Title__Case" of "appname"
+	# Return the "NiceName" of the appname(s) passed. If there is no "NiceName", return the "Title__Case" of "appname"
 	local -n _ani_out_="${1}"
 	assert_nameref_is_string "${1}"
 	local _ani_AppName_="${2-}"
-	_ani_AppName_="${_ani_AppName_%:*}"
-	if ! run_script 'app_is_user_defined' "${_ani_AppName_}"; then
-		run_script 'app_nicename_from_template_into' _ani_out_ "${_ani_AppName_}"
-		return
-	fi
 
-	local -l _ani_baseapp_ _ani_instance_
-	local _ani_BaseApp_ _ani_Instance_
-	run_script 'appname_to_baseappname_into' _ani_baseapp_ "${_ani_AppName_}"
-	_ani_BaseApp_="${_ani_baseapp_^}"
-	run_script 'appname_to_instancename_into' _ani_instance_ "${_ani_AppName_}"
-	_ani_Instance_=""
-	if [[ -n ${_ani_instance_} ]]; then
-		local _ani_cap_prefix_ _ani_cap_rest_
-		_ani_cap_prefix_="${_ani_instance_%%[a-zA-Z]*}"
-		_ani_cap_rest_="${_ani_instance_#"${_ani_cap_prefix_}"}"
-		_ani_Instance_="__${_ani_cap_prefix_}${_ani_cap_rest_^}"
-	fi
-	_ani_out_="${_ani_BaseApp_}${_ani_Instance_}"
+	local -a _ani_AppList_
+	IFS=$' \t\n\r' read -d '' -ra _ani_AppList_ <<< "${_ani_AppName_}" || true
+
+	local _ani_Result_=""
+	local _ani_App_
+	for _ani_App_ in "${_ani_AppList_[@]}"; do
+		local _ani_SingleNice_
+		_ani_App_="${_ani_App_%:*}"
+		if ! run_script 'app_is_user_defined' "${_ani_App_}"; then
+			run_script 'app_nicename_from_template_into' _ani_SingleNice_ "${_ani_App_}"
+		else
+			local -l _ani_baseapp_ _ani_instance_
+			local _ani_BaseApp_ _ani_Instance_
+			run_script 'appname_to_baseappname_into' _ani_baseapp_ "${_ani_App_}"
+			_ani_BaseApp_="${_ani_baseapp_^}"
+			run_script 'appname_to_instancename_into' _ani_instance_ "${_ani_App_}"
+			_ani_Instance_=""
+			if [[ -n ${_ani_instance_} ]]; then
+				local _ani_cap_prefix_ _ani_cap_rest_
+				_ani_cap_prefix_="${_ani_instance_%%[a-zA-Z]*}"
+				_ani_cap_rest_="${_ani_instance_#"${_ani_cap_prefix_}"}"
+				_ani_Instance_="__${_ani_cap_prefix_}${_ani_cap_rest_^}"
+			fi
+			_ani_SingleNice_="${_ani_BaseApp_}${_ani_Instance_}"
+		fi
+		_ani_Result_+="${_ani_SingleNice_} "
+	done
+	_ani_out_="${_ani_Result_% }"
 }
 
 test_app_nicename_into() {

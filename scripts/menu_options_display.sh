@@ -53,13 +53,12 @@ menu_options_display() {
 			--separate-output
 			"${Opts[@]}"
 		)
-		local Choices
+		local -a ChoicesArray=()
 		local -i DialogButtonPressed=0
-		Choices=$(tui_checklist "${ChoiceDialog[@]}") || DialogButtonPressed=$?
+		tui_checklist_into_array ChoicesArray "${ChoiceDialog[@]}" || DialogButtonPressed=$?
 		case ${DIALOG_BUTTONS[DialogButtonPressed]-} in
 			OK)
-				local -a ChoicesArray OptionsToTurnOff OptionsToTurnOn
-				readarray -t ChoicesArray <<< "${Choices}"
+				local -a OptionsToTurnOff OptionsToTurnOn
 				readarray -t OptionsToTurnOff < <(
 					printf '%s\n' "${EnabledOptions[@]}" "${ChoicesArray[@]}" "${ChoicesArray[@]}" | sort -f | uniq -u
 				)

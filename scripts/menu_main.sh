@@ -32,7 +32,7 @@ menu_main() {
 		)
 		local MainChoice
 		local -i MainDialogButtonPressed=0
-		MainChoice=$(tui_menu "${MainChoiceDialog[@]}") || MainDialogButtonPressed=$?
+		tui_menu_into MainChoice "${MainChoiceDialog[@]}" || MainDialogButtonPressed=$?
 		LastMainChoice=${MainChoice}
 		case ${DIALOG_BUTTONS[MainDialogButtonPressed]-} in
 			OK)

@@ -55,7 +55,7 @@ menu_app_select() {
 		run_script 'app_list_added_into_array' AddedApps
 		update_gauge 1
 
-		readarray -t AddedApps < <(run_script 'app_filter_runnable' "${AddedApps[@]-}" | sort -f -u)
+		run_script 'app_filter_runnable_into_array' AddedApps "${AddedApps[@]-}"
 		update_gauge 1
 
 		run_script 'app_nicename_from_template_into_array' AddedApps "${AddedApps[@]-}"
@@ -93,7 +93,7 @@ menu_app_select() {
 		run_script 'app_list_nondeprecated_into_array' BuiltinApps
 		update_gauge 1
 
-		readarray -t BuiltinApps < <(run_script 'app_filter_runnable' "${BuiltinApps[@]}")
+		run_script 'app_filter_runnable_into_array' BuiltinApps "${BuiltinApps[@]}"
 		update_gauge 1
 
 		run_script 'app_nicename_from_template_into_array' BuiltinApps "${BuiltinApps[@]}"
@@ -142,7 +142,7 @@ menu_app_select() {
 	close_gauge
 
 	local -i SelectedAppsDialogButtonPressed
-	local SelectedApps
+	local -a SelectedApps=()
 	if [[ ${CI-} == true ]]; then
 		SelectedAppsDialogButtonPressed=${DIALOG_CANCEL}
 	else
@@ -158,7 +158,7 @@ menu_app_select() {
 			"${AppList[@]}"
 		)
 		SelectedAppsDialogButtonPressed=0
-		SelectedApps=$(tui_checklist "${SelectedAppsDialog[@]}") || SelectedAppsDialogButtonPressed=$?
+		tui_checklist_into_array SelectedApps "${SelectedAppsDialog[@]}" || SelectedAppsDialogButtonPressed=$?
 	fi
 	case ${DIALOG_BUTTONS[SelectedAppsDialogButtonPressed]-} in
 		OK)
@@ -343,6 +343,7 @@ close_gauge() {
 	else
 		whiptail_close_gauge
 	fi
+	tui_box_exit
 }
 
 init_gauge_text() {
@@ -419,6 +420,7 @@ init_gauge() {
 	shift || true
 	init_gauge_text "$@"
 	show_gauge "${Title}"
+	tui_box_enter
 }
 
 update_gauge_text() {

@@ -13,9 +13,9 @@ update_templates() {
 
 	templates_fetch true
 	if [[ -z ${Branch-} ]]; then
-		Branch="$(templates_branch)"
+		templates_branch_into Branch
 		if templates_tag_exists "${Branch-}"; then
-			Branch="$(templates_best_branch)"
+			templates_best_branch_into Branch
 		fi
 		if [[ -z ${Branch-} ]]; then
 			error "You need to specify a branch to update to."
@@ -23,8 +23,8 @@ update_templates() {
 		fi
 	fi
 
-	CurrentVersion="$(templates_version)"
-	RemoteVersion="$(templates_version "${Branch}")"
+	templates_version_into CurrentVersion
+	templates_version_into RemoteVersion "${Branch}"
 	if [[ ${CurrentVersion-} == "${RemoteVersion-}" ]]; then
 		if [[ -n ${FORCE-} ]]; then
 			Question="Would you like to forcefully re-apply {{|ApplicationName|}}${TargetName}{{[-]}} update '{{|Version|}}${CurrentVersion}{{[-]}}'?"
@@ -115,7 +115,9 @@ commands_update_templates() {
 	git -C "${TEMPLATES_PARENT_FOLDER}" ls-tree -rt --name-only "${Branch}" | xargs sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" &> /dev/null || true
 	sudo chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${TEMPLATES_PARENT_FOLDER}/.git" &> /dev/null || true
 	sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${TEMPLATES_PARENT_FOLDER}" &> /dev/null || true
-	notice "Updated ${TargetName} to '{{|Version|}}$(templates_version){{[-]}}'"
+	local UpdatedVersion
+	templates_version_into UpdatedVersion
+	notice "Updated ${TargetName} to '{{|Version|}}${UpdatedVersion}{{[-]}}'"
 
 	# run_script 'reset_needs' (DELETED in favor of granular detection)
 }

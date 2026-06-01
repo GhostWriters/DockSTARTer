@@ -3,9 +3,9 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 app_filter_runnable() {
-	local AppList
-	AppList="$(xargs -n 1 <<< "$*")"
-	for AppName in ${AppList}; do
+	local -a AppList
+	IFS=$' \t\n\r' read -d '' -ra AppList <<< "$*" || true
+	for AppName in "${AppList[@]}"; do
 		local -l basename
 		run_script 'appname_to_baseappname_into' basename "${AppName}"
 		local main_yml="${TEMPLATES_FOLDER}/${basename}/${basename}.yml"

@@ -12,12 +12,25 @@ git_fetch() {
 	fi
 }
 
-git_branch() {
-	local GitPath=${1}
-	local DefaultBranch=${2-}
-	local LegacyBranch=${3-}
+git_branch_into() {
+	local -n _gbi_out_="${1}"
+	assert_nameref_is_string "${1}"
+	local GitPath=${2}
+	local DefaultBranch=${3-}
+	local LegacyBranch=${4-}
 	git_fetch "${GitPath}"
-	git -C "${GitPath}" symbolic-ref --short HEAD 2> /dev/null || git -C "${GitPath}" describe --tags --exact-match 2> /dev/null || git_best_branch "${GitPath}" "${DefaultBranch-}" "${LegacyBranch-}"
+	local _gbi_val_
+	_gbi_val_=$(git -C "${GitPath}" symbolic-ref --short HEAD 2> /dev/null || git -C "${GitPath}" describe --tags --exact-match 2> /dev/null) || true
+	if [[ -z ${_gbi_val_} ]]; then
+		git_best_branch_into _gbi_val_ "${GitPath}" "${DefaultBranch-}" "${LegacyBranch-}"
+	fi
+	_gbi_out_="${_gbi_val_}"
+}
+
+git_branch() {
+	local result
+	git_branch_into result "$@"
+	echo "${result}"
 }
 
 git_branch_exists() {
@@ -45,10 +58,12 @@ git_commit_exists() {
 	return ${result}
 }
 
-git_version() {
-	local GitPath=${1}
-	local CheckBranch=${2-}
-	local commitish Branch result
+git_version_into() {
+	local -n _gvi_out_="${1}"
+	assert_nameref_is_string "${1}"
+	local GitPath=${2}
+	local CheckBranch=${3-}
+	local commitish Branch
 
 	if [[ -n ${CheckBranch-} ]]; then
 		if git -C "${GitPath}" show-ref --quiet --tags "${CheckBranch}" &> /dev/null; then
@@ -59,8 +74,7 @@ git_version() {
 			Branch="${CheckBranch}"
 		elif git -C "${GitPath}" rev-parse --quiet --verify "${CheckBranch}^{commit}" &> /dev/null; then
 			commitish="${CheckBranch}"
-			# Try to find a branch name if we were given a SHA
-			Branch="$(git_best_branch "${GitPath}")"
+			git_best_branch_into Branch "${GitPath}"
 			if [[ -z ${Branch-} ]]; then
 				Branch="${CheckBranch}"
 			fi
@@ -70,19 +84,17 @@ git_version() {
 		fi
 	else
 		commitish='HEAD'
-		# We need to know which repo we're in to pass the right defaults to git_branch
 		if [[ ${GitPath} == "${SCRIPTPATH}" ]]; then
-			Branch="$(ds_branch)"
+			ds_branch_into Branch
 		elif [[ ${GitPath} == "${TEMPLATES_PARENT_FOLDER}" ]]; then
-			Branch="$(templates_branch)"
+			templates_branch_into Branch
 		else
-			Branch="$(git_branch "${GitPath}")"
+			git_branch_into Branch "${GitPath}"
 		fi
 	fi
 
+	local VersionString=''
 	if [[ -z ${CheckBranch-} ]] || git_branch_exists "${GitPath}" "${Branch}" || git_tag_exists "${GitPath}" "${Branch}" || git_commit_exists "${GitPath}" "${Branch}"; then
-		# Get the current tag. If no tag, use the commit instead.
-		local VersionString
 		VersionString="$(git -C "${GitPath}" describe --tags --exact-match "${commitish}" 2> /dev/null || true)"
 		if [[ -n ${VersionString-} ]]; then
 			if [[ ${VersionString} != "${Branch}" ]] && [[ ${Branch} != "main" || ${VersionString} == "main" ]]; then
@@ -97,10 +109,14 @@ git_version() {
 				VersionString="${Branch} commit ${CommitHash}"
 			fi
 		fi
-	else
-		VersionString=''
 	fi
-	echo "${VersionString}"
+	_gvi_out_="${VersionString}"
+}
+
+git_version() {
+	local result
+	git_version_into result "$@"
+	echo "${result}"
 }
 
 git_update_available() {
@@ -142,29 +158,51 @@ ds_fetch() {
 	local ForceRefresh=${1-false}
 	git_fetch "${SCRIPTPATH}" "${ForceRefresh}"
 }
-ds_branch() {
-	git_branch "${SCRIPTPATH}" "${APPLICATION_DEFAULT_BRANCH-}" "${APPLICATION_LEGACY_BRANCH-}"
+
+ds_branch_into() {
+	local -n _dbi_out_="${1}"
+	assert_nameref_is_string "${1}"
+	git_branch_into _dbi_out_ "${SCRIPTPATH}" "${APPLICATION_DEFAULT_BRANCH-}" "${APPLICATION_LEGACY_BRANCH-}"
 }
+
+ds_branch() {
+	local result
+	ds_branch_into result "$@"
+	echo "${result}"
+}
+
 ds_branch_exists() {
 	local Branch=${1-}
 	git_branch_exists "${SCRIPTPATH}" "${Branch-}"
 }
+
 ds_tag_exists() {
 	local Tag=${1-}
 	git_tag_exists "${SCRIPTPATH}" "${Tag-}"
 }
+
 ds_commit_exists() {
 	local Commit=${1-}
 	git_commit_exists "${SCRIPTPATH}" "${Commit-}"
 }
+
 ds_ref_exists() {
 	local Ref=${1-}
 	ds_branch_exists "${Ref}" || ds_tag_exists "${Ref}" || ds_commit_exists "${Ref}"
 }
-ds_version() {
-	local Branch=${1-}
-	git_version "${SCRIPTPATH}" "${Branch-}"
+
+ds_version_into() {
+	local -n _dvi_out_="${1}"
+	assert_nameref_is_string "${1}"
+	git_version_into _dvi_out_ "${SCRIPTPATH}" "${2-}"
 }
+
+ds_version() {
+	local result
+	ds_version_into result "$@"
+	echo "${result}"
+}
+
 ds_update_available() {
 	local CurrentRef=${1-}
 	local TargetRef=${2-}
@@ -175,29 +213,51 @@ templates_fetch() {
 	local ForceRefresh=${1-false}
 	git_fetch "${TEMPLATES_PARENT_FOLDER}" "${ForceRefresh}"
 }
-templates_branch() {
-	git_branch "${TEMPLATES_PARENT_FOLDER}" "${TEMPLATES_DEFAULT_BRANCH-}"
+
+templates_branch_into() {
+	local -n _tbi_out_="${1}"
+	assert_nameref_is_string "${1}"
+	git_branch_into _tbi_out_ "${TEMPLATES_PARENT_FOLDER}" "${TEMPLATES_DEFAULT_BRANCH-}"
 }
+
+templates_branch() {
+	local result
+	templates_branch_into result "$@"
+	echo "${result}"
+}
+
 templates_branch_exists() {
 	local Branch=${1-}
 	git_branch_exists "${TEMPLATES_PARENT_FOLDER}" "${Branch-}"
 }
+
 templates_tag_exists() {
 	local Tag=${1-}
 	git_tag_exists "${TEMPLATES_PARENT_FOLDER}" "${Tag-}"
 }
+
 templates_commit_exists() {
 	local Commit=${1-}
 	git_commit_exists "${TEMPLATES_PARENT_FOLDER}" "${Commit-}"
 }
+
 templates_ref_exists() {
 	local Ref=${1-}
 	templates_branch_exists "${Ref}" || templates_tag_exists "${Ref}" || templates_commit_exists "${Ref}"
 }
-templates_version() {
-	local Branch=${1-}
-	git_version "${TEMPLATES_PARENT_FOLDER}" "${Branch-}"
+
+templates_version_into() {
+	local -n _tvi_out_="${1}"
+	assert_nameref_is_string "${1}"
+	git_version_into _tvi_out_ "${TEMPLATES_PARENT_FOLDER}" "${2-}"
 }
+
+templates_version() {
+	local result
+	templates_version_into result "$@"
+	echo "${result}"
+}
+
 templates_update_available() {
 	local CurrentRef=${1-}
 	local TargetRef=${2-}
@@ -206,7 +266,7 @@ templates_update_available() {
 
 ds_switch_branch() {
 	local CurrentBranch
-	CurrentBranch="$(ds_branch)"
+	ds_branch_into CurrentBranch
 	if [[ ${CurrentBranch} == "${APPLICATION_LEGACY_BRANCH}" ]] && ds_branch_exists "${APPLICATION_DEFAULT_BRANCH}"; then
 		export FORCE=true
 		export PROMPT="CLI"
@@ -217,12 +277,13 @@ ds_switch_branch() {
 	fi
 }
 
-git_best_branch() {
-	local GitPath=${1}
-	local DefaultBranch=${2-}
-	local LegacyBranch=${3-}
+git_best_branch_into() {
+	local -n _gbbi_out_="${1}"
+	assert_nameref_is_string "${1}"
+	local GitPath=${2}
+	local DefaultBranch=${3-}
+	local LegacyBranch=${4-}
 	local -a Branches=()
-	# Get remote branches containing current HEAD
 	readarray -t Branches < <(git -C "${GitPath}" branch -r --contains HEAD 2> /dev/null | sed 's/^[[:space:]]*origin\///' | grep -v 'HEAD ->')
 	local BestBranch=""
 	if [[ ${#Branches[@]} -gt 0 ]]; then
@@ -259,13 +320,35 @@ git_best_branch() {
 	if [[ -z ${BestBranch} ]]; then
 		BestBranch="${DefaultBranch}"
 	fi
-	echo "${BestBranch}"
+	_gbbi_out_="${BestBranch}"
+}
+
+git_best_branch() {
+	local result
+	git_best_branch_into result "$@"
+	echo "${result}"
+}
+
+ds_best_branch_into() {
+	local -n _dbbi_out_="${1}"
+	assert_nameref_is_string "${1}"
+	git_best_branch_into _dbbi_out_ "${SCRIPTPATH}" "${APPLICATION_DEFAULT_BRANCH-}" "${APPLICATION_LEGACY_BRANCH-}"
 }
 
 ds_best_branch() {
-	git_best_branch "${SCRIPTPATH}" "${APPLICATION_DEFAULT_BRANCH-}" "${APPLICATION_LEGACY_BRANCH-}"
+	local result
+	ds_best_branch_into result "$@"
+	echo "${result}"
+}
+
+templates_best_branch_into() {
+	local -n _tbbi_out_="${1}"
+	assert_nameref_is_string "${1}"
+	git_best_branch_into _tbbi_out_ "${TEMPLATES_PARENT_FOLDER}" "${TEMPLATES_DEFAULT_BRANCH-}"
 }
 
 templates_best_branch() {
-	git_best_branch "${TEMPLATES_PARENT_FOLDER}" "${TEMPLATES_DEFAULT_BRANCH-}"
+	local result
+	templates_best_branch_into result "$@"
+	echo "${result}"
 }

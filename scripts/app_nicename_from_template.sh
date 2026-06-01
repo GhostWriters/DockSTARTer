@@ -6,9 +6,9 @@ declare -a _dependencies_list=()
 
 app_nicename_from_template() {
 	# Return the "NiceName" of the appname(s) passed. If there is no "NiceName", return the "Title__Case" of "appname"
-	local AppList
-	AppList="$(xargs -n 1 <<< "$*")"
-	for APPNAME in ${AppList}; do
+	local -a AppList
+	IFS=$' \t\n\r' read -d '' -ra AppList <<< "$*" || true
+	for APPNAME in "${AppList[@]}"; do
 		local result
 		run_script 'app_nicename_from_template_into' result "${APPNAME}"
 		echo "${result}"

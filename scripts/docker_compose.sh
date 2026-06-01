@@ -3,14 +3,20 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 docker_compose() {
+	local -a InputList
+	IFS=$' \t\n\r' read -d '' -ra InputList <<< "$*" || true
 	local ComposeInput
-	ComposeInput="$(xargs <<< "$@")"
+	printf -v ComposeInput '%s ' "${InputList[@]}"
+	ComposeInput="${ComposeInput% }"
 	local Command=${ComposeInput%% *}
 	local APPNAME AppName
 	if [[ ${ComposeInput} == *" "* ]]; then
 		APPNAME=${ComposeInput#* }
-		run_script 'app_nicename_into' AppName "${APPNAME}"
-		AppName="${AppName// /, }"
+		local -a AppList AppNameArray
+		IFS=$' \t\n\r' read -d '' -ra AppList <<< "${APPNAME}" || true
+		run_script 'app_nicename_into_array' AppNameArray "${AppList[@]}"
+		printf -v AppName '%s, ' "${AppNameArray[@]}"
+		AppName="${AppName%, }"
 	fi
 
 	local Title="Docker Compose"

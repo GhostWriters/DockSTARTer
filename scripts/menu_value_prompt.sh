@@ -340,7 +340,7 @@ menu_value_prompt() {
 		)
 		local -i SelectValueDialogButtonPressed=0
 		local SelectedValue
-		SelectedValue=$(menu_value_prompt_select "${SelectValueDialog[@]}") || SelectValueDialogButtonPressed=$?
+		menu_value_prompt_select_into SelectedValue "${SelectValueDialog[@]}" || SelectValueDialogButtonPressed=$?
 
 		case ${DIALOG_BUTTONS[SelectValueDialogButtonPressed]-} in
 			OK) # SELECT button
@@ -566,11 +566,10 @@ menu_value_prompt() {
 	done
 }
 
-menu_value_prompt_select_dialog() {
-	dialog_inputmenu "$@"
-}
-
-menu_value_prompt_select_whiptail() {
+menu_value_prompt_select_whiptail_into() {
+	local -n _mvpswi_out_="${1}"
+	assert_nameref_is_string "${1}"
+	shift
 	local Title="${1-}"
 	shift || true
 	local Message="${1-}"
@@ -605,15 +604,15 @@ menu_value_prompt_select_whiptail() {
 	)
 	local -i result=0
 	local Selected
-	Selected=$(tui_menu "${MenuDialog[@]}") || result=$?
+	tui_menu_into Selected "${MenuDialog[@]}" || result=$?
 	case ${DIALOG_BUTTONS[result]-} in
 		OK)
 			if [[ ${Selected} == "${EnterCustom}" ]]; then
 				local NewValue
-				NewValue=$(tui_inputbox "${Title}" "${Message}" --maximized) || result=$?
+				tui_inputbox_into NewValue "${Title}" "${Message}" --maximized || result=$?
 				case ${DIALOG_BUTTONS[result]-} in
 					OK)
-						echo "RENAMED Current Value ${NewValue}"
+						_mvpswi_out_="RENAMED Current Value ${NewValue}"
 						return "${DIALOG_EXTRA}"
 						;;
 					*)
@@ -621,7 +620,7 @@ menu_value_prompt_select_whiptail() {
 						;;
 				esac
 			else
-				echo "${Selected}"
+				_mvpswi_out_="${Selected}"
 				return "${DIALOG_OK}"
 			fi
 			;;
@@ -631,11 +630,20 @@ menu_value_prompt_select_whiptail() {
 	esac
 }
 
-menu_value_prompt_select() {
+menu_value_prompt_select_into() {
+	local -n _mvpsi_out_="${1}"
+	assert_nameref_is_string "${1}"
+	shift
+	local -i result=0
+	local temp_file="${TEMP_FOLDER}/${APPLICATION_NAME,,}.${FUNCNAME[0]}.$$.tmp"
 	if use_dialog; then
-		menu_value_prompt_select_dialog "$@"
+		dialog_inputmenu "$@" > "${temp_file}" || result=$?
+		read -r _mvpsi_out_ < "${temp_file}" || true
+		rm -f "${temp_file}"
+		return ${result}
 	else
-		menu_value_prompt_select_whiptail "$@"
+		menu_value_prompt_select_whiptail_into _mvpsi_out_ "$@" || result=$?
+		return ${result}
 	fi
 }
 

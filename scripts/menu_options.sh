@@ -33,7 +33,7 @@ menu_options() {
 		)
 		local Choice
 		local -i DialogButtonPressed=0
-		Choice=$(tui_menu "${ChoiceDialog[@]}") || DialogButtonPressed=$?
+		tui_menu_into Choice "${ChoiceDialog[@]}" || DialogButtonPressed=$?
 		LastChoice=${Choice}
 		case ${DIALOG_BUTTONS[DialogButtonPressed]-} in
 			OK) # Select

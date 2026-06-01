@@ -91,14 +91,18 @@ _tui_backtitle_() {
 	local TemplatesVersionColor="{{|ApplicationVersion|}}"
 
 	local CurrentVersion
-	CurrentVersion="$(ds_version)"
+	ds_version_into CurrentVersion
 	if [[ -z ${CurrentVersion} ]]; then
-		CurrentVersion="$(ds_branch) Unknown Version"
+		local _ds_br_
+		ds_branch_into _ds_br_
+		CurrentVersion="${_ds_br_} Unknown Version"
 	fi
 	local CurrentTemplatesVersion
-	CurrentTemplatesVersion="$(templates_version)"
+	templates_version_into CurrentTemplatesVersion
 	if [[ -z ${CurrentTemplatesVersion} ]]; then
-		CurrentTemplatesVersion="$(templates_branch) Unknown Version"
+		local _temp_br_
+		templates_branch_into _temp_br_
+		CurrentTemplatesVersion="${_temp_br_} Unknown Version"
 	fi
 	if ds_update_available; then
 		ApplicationUpdateFlag=${UpdateFlag}
@@ -178,11 +182,18 @@ _whiptail_() {
 	${WHIPTAIL} "${WHIPTAIL_OPTIONS[@]}" --backtitle "${BACKTITLE}" "${WhiptailOptions[@]}" 3>&1 1>&2 2>&3
 }
 
+tui_box_enter() {
+	declare -gx TUI_IN_BOX=$((${TUI_IN_BOX:-0} + 1))
+}
+tui_box_exit() {
+	declare -gx TUI_IN_BOX=$((${TUI_IN_BOX:-0} - 1))
+	if [[ ${TUI_IN_BOX:-0} -le 0 ]]; then
+		unset TUI_IN_BOX
+	fi
+}
 # Check to see if we are already inside a dialog box
 in_tui_box() {
-	# If we are in GUI mode, AND stdout is redirected, AND stderr is ALSO redirected
-	# then we are almost certainly inside a '|& tui_pipe' call.
-	[[ ${PROMPT:-CLI} == GUI && ! -t 1 && ! -t 2 ]]
+	[[ ${TUI_IN_BOX:-0} -gt 0 || ${TUI_IN_BOX-} == true ]]
 }
 
 # Check to see if we should use a dialog box
@@ -236,6 +247,7 @@ tui_pipe_open() {
 		}
 		_tpo_fd_=${COPROC[1]}
 		_tpo_pid_=${COPROC_PID}
+		tui_box_enter
 	else
 		_tpo_fd_=1
 		_tpo_pid_=0
@@ -248,6 +260,7 @@ tui_pipe_close() {
 		local _tpc_fd_val_=${_tpc_fd_}
 		exec {_tpc_fd_val_}<&- &> /dev/null || true
 		wait "${_tpc_pid_}" &> /dev/null || true
+		tui_box_exit
 	fi
 }
 
@@ -264,7 +277,9 @@ dialog_run_script() {
 		local -i DialogBox_PID=${COPROC_PID}
 		local -i DialogBox_FD="${COPROC[1]}"
 		local -i result=0
+		tui_box_enter
 		run_script "${SCRIPTSNAME}" "$@" >&${DialogBox_FD} 2>&1 || result=$?
+		tui_box_exit
 		exec {DialogBox_FD}<&- &> /dev/null || true
 		wait ${DialogBox_PID} &> /dev/null || true
 		return ${result}
@@ -295,7 +310,7 @@ dialog_run_command() {
 	local CommandName=${4-}
 	shift 4
 	if [[ -n ${CommandName-} ]]; then
-		"${CommandName}" "$@" |& dialog_pipe "${Title}" "${SubTitle}" "${TimeOut}"
+		TUI_IN_BOX=1 "${CommandName}" "$@" |& dialog_pipe "${Title}" "${SubTitle}" "${TimeOut}"
 		return "${PIPESTATUS[0]}"
 	fi
 }
@@ -762,13 +777,6 @@ whiptail_inputbox() {
 	echo -n "${S["BS"]}" >&2
 	return ${result}
 }
-tui_inputbox() {
-	if use_dialog; then
-		dialog_inputbox "$@"
-	else
-		whiptail_inputbox "$@"
-	fi
-}
 
 dialog_form() {
 	local Title="${1-}"
@@ -904,13 +912,6 @@ whiptail_menu() {
 	echo -n "${S["BS"]}" >&2
 	return ${result}
 }
-tui_menu() {
-	if use_dialog; then
-		dialog_menu "$@"
-	else
-		whiptail_menu "$@"
-	fi
-}
 
 dialog_checklist() {
 	local Title="${1-}"
@@ -987,13 +988,6 @@ whiptail_checklist() {
 	_whiptail_ "${WhiptailOptions[@]}" --checklist "${SubTitle}" "${WindowHeight}" "${WindowWidth}" "${MenuHeight}" "${Items[@]}" || result=$?
 	echo -n "${S["BS"]}" >&2
 	return ${result}
-}
-tui_checklist() {
-	if use_dialog; then
-		dialog_checklist "$@"
-	else
-		whiptail_checklist "$@"
-	fi
 }
 
 dialog_radiolist() {
@@ -1072,13 +1066,6 @@ whiptail_radiolist() {
 	echo -n "${S["BS"]}" >&2
 	return ${result}
 }
-tui_radiolist() {
-	if use_dialog; then
-		dialog_radiolist "$@"
-	else
-		whiptail_radiolist "$@"
-	fi
-}
 
 dialog_inputmenu() {
 	local Title="${1-}"
@@ -1119,4 +1106,68 @@ invalid_tui_button() {
 	local -l NoticeType=${2:-fatal}
 	local DialogButton="${DIALOG_BUTTONS[DialogButtonNumber]-#${DialogButtonNumber}}"
 	${NoticeType} "Unexpected dialog button '{{|ButtonName|}}${DialogButton}{{[-]}}' pressed."
+}
+
+tui_inputbox_into() {
+	local -n _tibi_out_="${1}"
+	assert_nameref_is_string "${1}"
+	shift
+	local -i result=0
+	local temp_file="${TEMP_FOLDER}/${APPLICATION_NAME,,}.${FUNCNAME[0]}.$$.tmp"
+	if use_dialog; then
+		dialog_inputbox "$@" > "${temp_file}" || result=$?
+	else
+		whiptail_inputbox "$@" > "${temp_file}" || result=$?
+	fi
+	read -r _tibi_out_ < "${temp_file}" || true
+	rm -f "${temp_file}"
+	return ${result}
+}
+
+tui_menu_into() {
+	local -n _tbmi_out_="${1}"
+	assert_nameref_is_string "${1}"
+	shift
+	local -i result=0
+	local temp_file="${TEMP_FOLDER}/${APPLICATION_NAME,,}.${FUNCNAME[0]}.$$.tmp"
+	if use_dialog; then
+		dialog_menu "$@" > "${temp_file}" || result=$?
+	else
+		whiptail_menu "$@" > "${temp_file}" || result=$?
+	fi
+	read -r _tbmi_out_ < "${temp_file}" || true
+	rm -f "${temp_file}"
+	return ${result}
+}
+
+tui_checklist_into_array() {
+	local -n _tcia_out_="${1}"
+	assert_nameref_is_array "${1}"
+	shift
+	local -i result=0
+	local temp_file="${TEMP_FOLDER}/${APPLICATION_NAME,,}.${FUNCNAME[0]}.$$.tmp"
+	if use_dialog; then
+		dialog_checklist "$@" > "${temp_file}" || result=$?
+	else
+		whiptail_checklist "$@" > "${temp_file}" || result=$?
+	fi
+	readarray -t _tcia_out_ < "${temp_file}"
+	rm -f "${temp_file}"
+	return ${result}
+}
+
+tui_radiolist_into() {
+	local -n _tbri_out_="${1}"
+	assert_nameref_is_string "${1}"
+	shift
+	local -i result=0
+	local temp_file="${TEMP_FOLDER}/${APPLICATION_NAME,,}.${FUNCNAME[0]}.$$.tmp"
+	if use_dialog; then
+		dialog_radiolist "$@" > "${temp_file}" || result=$?
+	else
+		whiptail_radiolist "$@" > "${temp_file}" || result=$?
+	fi
+	read -r _tbri_out_ < "${temp_file}" || true
+	rm -f "${temp_file}"
+	return ${result}
 }

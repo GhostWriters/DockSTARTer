@@ -3,9 +3,9 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 appvars_create() {
-	local AppList
-	AppList="$(xargs -n 1 <<< "$*")"
-	for APPNAME in ${AppList^^}; do
+	local -a AppList
+	IFS=$' \t\n\r' read -d '' -ra AppList <<< "${*^^}" || true
+	for APPNAME in "${AppList[@]}"; do
 		local -l appname=${APPNAME}
 		local AppName
 		run_script 'app_nicename_into' AppName "${APPNAME}"

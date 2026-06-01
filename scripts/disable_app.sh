@@ -4,9 +4,9 @@ IFS=$'\n\t'
 
 disable_app() {
 	# Disable the list of apps given.  Apps will be seperate arguments and/or seperated by spaces
-	local AppList
-	AppList="$(xargs -n 1 <<< "$*")"
-	for APPNAME in ${AppList^^}; do
+	local -a AppList
+	IFS=$' \t\n\r' read -d '' -ra AppList <<< "${*^^}" || true
+	for APPNAME in "${AppList[@]}"; do
 		local AppName
 		run_script 'app_nicename_into' AppName "${APPNAME}"
 		if run_script 'app_is_builtin' "${APPNAME}"; then
