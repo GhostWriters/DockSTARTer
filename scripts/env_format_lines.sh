@@ -113,14 +113,13 @@ env_format_lines() {
 
 	# Remove all trailing empty strings to avoid extra newlines from printf
 	# This ensures parity with Go's strings.Join which doesn't add a trailing delimiter.
-	while true; do
-		if [[ ${#FormattedEnvLines[@]} -gt 0 && -z ${FormattedEnvLines[-1]-} ]]; then
-			FormattedEnvLines=("${FormattedEnvLines[@]:0:${#FormattedEnvLines[@]}-1}")
-		else
-			break
-		fi
+	while [[ ${#FormattedEnvLines[@]} -gt 0 && -z ${FormattedEnvLines[-1]-} ]]; do
+		unset 'FormattedEnvLines[-1]'
 	done
-	printf "%s\n" "${FormattedEnvLines[@]+"${FormattedEnvLines[@]}"}"
+
+	if [[ ${#FormattedEnvLines[@]} -gt 0 ]]; then
+		printf "%s\n" "${FormattedEnvLines[@]}"
+	fi
 }
 
 _build_var_index() {
