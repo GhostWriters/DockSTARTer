@@ -29,6 +29,18 @@ docker_compose() {
 			NoNotice="Not merging enabled app templates to '{{|File|}}docker-compose.yml{{[-]}}'."
 			YesNotice="Merging enabled app templates to '{{|File|}}docker-compose.yml{{[-]}}'."
 			;;
+		create)
+			if [[ -n ${AppName-} ]]; then
+				Question="Create containers for: {{|App|}}${AppName}{{[-]}}?"
+				NoNotice="Not creating containers for: {{|App|}}${AppName}{{[-]}}."
+				YesNotice="Creating containers for: {{|App|}}${AppName}{{[-]}}."
+			else
+				Question="Create containers for all enabled services?"
+				NoNotice="Not creating containers for all enabled services."
+				YesNotice="Creating containers for all enabled services."
+			fi
+			ComposeCommand[0]="create --remove-orphans ${APPNAME-}"
+			;;
 		down)
 			if [[ -n ${AppName-} ]]; then
 				Question="Stop and remove: ${AppName}?"
@@ -40,6 +52,18 @@ docker_compose() {
 				YesNotice="Stopping and removing containers, networks, volumes, and images created by {{|ApplicationName|}}${APPLICATION_NAME}."
 			fi
 			ComposeCommand[0]="down --remove-orphans ${APPNAME-}"
+			;;
+		kill)
+			if [[ -n ${AppName-} ]]; then
+				Question="Force stop: {{|App|}}${AppName}{{[-]}}?"
+				NoNotice="Not force stopping: {{|App|}}${AppName}{{[-]}}."
+				YesNotice="Force stopping: {{|App|}}${AppName}{{[-]}}."
+			else
+				Question="Force stop all running containers?"
+				NoNotice="Not force stopping all running containers."
+				YesNotice="Force stopping all running containers."
+			fi
+			ComposeCommand[0]="kill ${APPNAME-}"
 			;;
 		pause)
 			if [[ -n ${AppName-} ]]; then
@@ -65,6 +89,18 @@ docker_compose() {
 			fi
 			ComposeCommand[0]="pull --include-deps ${APPNAME-}"
 			;;
+		rm)
+			if [[ -n ${AppName-} ]]; then
+				Question="Remove stopped containers for: {{|App|}}${AppName}{{[-]}}?"
+				NoNotice="Not removing stopped containers for: {{|App|}}${AppName}{{[-]}}."
+				YesNotice="Removing stopped containers for: {{|App|}}${AppName}{{[-]}}."
+			else
+				Question="Remove stopped containers?"
+				NoNotice="Not removing stopped containers."
+				YesNotice="Removing stopped containers."
+			fi
+			ComposeCommand[0]="rm ${APPNAME-}"
+			;;
 		restart)
 			if [[ -n ${AppName-} ]]; then
 				Question="Restart: {{|App|}}${AppName}{{[-]}}?"
@@ -76,6 +112,18 @@ docker_compose() {
 				YesNotice="Restarting all stopped and running containers."
 			fi
 			ComposeCommand[0]="restart ${APPNAME-}"
+			;;
+		start)
+			if [[ -n ${AppName-} ]]; then
+				Question="Start: {{|App|}}${AppName}{{[-]}}?"
+				NoNotice="Not starting: {{|App|}}${AppName}{{[-]}}."
+				YesNotice="Starting: {{|App|}}${AppName}{{[-]}}."
+			else
+				Question="Start all stopped containers?"
+				NoNotice="Not starting all stopped containers."
+				YesNotice="Starting all stopped containers."
+			fi
+			ComposeCommand[0]="start ${APPNAME-}"
 			;;
 		stop)
 			if [[ -n ${AppName-} ]]; then

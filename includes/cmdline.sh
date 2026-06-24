@@ -306,14 +306,14 @@ parse_arguments() {
 					break
 					;;
 
-				# --compose [ [down|pull|stop|restart|update|up] [param ...] ]
+				# --compose [ [create|down|kill|pause|pull|rm|start|stop|restart|unpause|update|up] [param ...] ]
 				-c | --compose)
 					CurrentCommand+=("${OPTION}")
 					if [[ -n ${!OPTIND-} && ${!OPTIND} != "-"* ]]; then
 						case ${!OPTIND} in
 							generate | merge) ;&
-							down | pause | pull | stop | restart | unpause | update | up) ;&
-							"down "* | "pause "* | "pull "* | "stop "* | "restart "* | "unpause "* | "update "* | "up "*)
+							create | down | kill | pause | pull | rm | start | stop | restart | unpause | update | up) ;&
+							"create "* | "down "* | "kill "* | "pause "* | "pull "* | "rm "* | "start "* | "stop "* | "restart "* | "unpause "* | "update "* | "up "*)
 								until [[ ${OPTIND} -gt $# || ${!OPTIND} == "-"* ]]; do
 									CurrentCommand+=("${!OPTIND}")
 									OPTIND+=1
