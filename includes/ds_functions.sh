@@ -161,8 +161,13 @@ git_resolve_update_target_into() {
 		return
 	fi
 
+	# Sort by actual tag creation date (--sort=-creatordate), not the tag
+	# name string (sort -V): this repo has switched tag-naming schemes over
+	# time (e.g. v2026.01.19-1 -> v1.20260628.1), and comparing differently-
+	# shaped version strings against each other picks the wrong "latest" --
+	# creation date is immune to that since it doesn't depend on the name.
 	local LatestTag
-	LatestTag=$(git -C "${GitPath}" tag --merged "origin/${DefaultBranch}" 2> /dev/null | sort -V | tail -1) || true
+	LatestTag=$(git -C "${GitPath}" tag --merged "origin/${DefaultBranch}" --sort=-creatordate 2> /dev/null | head -1) || true
 
 	if [[ -z ${LatestTag} ]]; then
 		# No reachable tag yet -- fall back to the default branch's tip.
