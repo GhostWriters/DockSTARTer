@@ -7,13 +7,19 @@ declare TargetName="${TEMPLATES_NAME}"
 update_templates() {
 	local Branch CurrentVersion RemoteVersion
 	Branch=${1-}
+	local WasExplicit=true
+	[[ -z ${Branch} ]] && WasExplicit=false
 	shift || true
 	local Title="Update ${TargetName}"
 	local Question YesNotice NoNotice
 
 	templates_fetch true
+
+	local CurrentBranch
+	templates_branch_into CurrentBranch
+
 	if [[ -z ${Branch-} ]]; then
-		templates_branch_into Branch
+		Branch="${CurrentBranch}"
 		if templates_tag_exists "${Branch-}"; then
 			templates_best_branch_into Branch
 		fi
@@ -22,6 +28,13 @@ update_templates() {
 			return 1
 		fi
 	fi
+
+	# On the default branch (unless a specific tag/commit was explicitly
+	# requested), restrict to the latest tagged release instead of the
+	# branch's literal tip -- see git_resolve_update_target_into's doc
+	# comment for why. Downstream logic (version lookup, checkout) is
+	# unchanged: it already treats a tag name exactly like a branch name.
+	git_resolve_update_target_into Branch "${TEMPLATES_PARENT_FOLDER}" "${TEMPLATES_DEFAULT_BRANCH}" "${Branch}" "${CurrentBranch}" "${WasExplicit}"
 
 	templates_version_into CurrentVersion
 	templates_version_into RemoteVersion "${Branch}"

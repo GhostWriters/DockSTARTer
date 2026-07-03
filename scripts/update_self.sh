@@ -5,6 +5,8 @@ IFS=$'\n\t'
 update_self() {
 	local Branch CurrentVersion RemoteVersion
 	Branch=${1-}
+	local WasExplicit=true
+	[[ -z ${Branch} ]] && WasExplicit=false
 	shift || true
 	ds_fetch true
 	if [[ ${Branch-} == "${APPLICATION_LEGACY_BRANCH}" ]] && ds_branch_exists "${APPLICATION_DEFAULT_BRANCH}"; then
@@ -15,8 +17,11 @@ update_self() {
 	local Title="Update ${APPLICATION_NAME}"
 	local Question YesNotice NoNotice
 
+	local CurrentBranch
+	ds_branch_into CurrentBranch
+
 	if [[ -z ${Branch-} ]]; then
-		ds_branch_into Branch
+		Branch="${CurrentBranch}"
 		if ds_tag_exists "${Branch-}"; then
 			ds_best_branch_into Branch
 		fi
@@ -25,6 +30,13 @@ update_self() {
 			return 1
 		fi
 	fi
+
+	# On the default branch (unless a specific tag/commit was explicitly
+	# requested), restrict to the latest tagged release instead of the
+	# branch's literal tip -- see git_resolve_update_target_into's doc
+	# comment for why. Downstream logic (version lookup, checkout) is
+	# unchanged: it already treats a tag name exactly like a branch name.
+	git_resolve_update_target_into Branch "${SCRIPTPATH}" "${APPLICATION_DEFAULT_BRANCH}" "${Branch}" "${CurrentBranch}" "${WasExplicit}"
 
 	ds_version_into CurrentVersion
 	ds_version_into RemoteVersion "${Branch}"
