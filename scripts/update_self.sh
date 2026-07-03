@@ -131,7 +131,7 @@ commands_update_self_logic() {
 			info "Pulling recent changes from git."
 			RunAndLog info "git:info" \
 				fatal "Failed to pull recent changes from git." \
-				git -C "${SCRIPTPATH}" pull
+				git -C "${SCRIPTPATH}" pull origin "${Branch}"
 		fi
 	fi
 	info "Cleaning up unnecessary files and optimizing the local repository."

@@ -114,7 +114,7 @@ commands_update_templates() {
 			info "Pulling recent changes from git."
 			RunAndLog info "git:info" \
 				fatal "Failed to pull recent changes from git." \
-				git -C "${TEMPLATES_PARENT_FOLDER}" pull
+				git -C "${TEMPLATES_PARENT_FOLDER}" pull origin "${Branch}"
 		fi
 	fi
 	info "Cleaning up unnecessary files and optimizing the local repository."
