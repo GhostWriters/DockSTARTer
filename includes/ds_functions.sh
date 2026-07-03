@@ -121,13 +121,20 @@ git_version() {
 
 git_resolve_update_target_into() {
 	# Resolves the branch/tag name that should actually be checked out for
-	# an update, applying a release policy when the caller auto-detected
-	# (didn't explicitly request) the default branch: CI (e.g. renovate)
-	# commits land on the default branch between releases, so its literal
-	# tip is frequently not the commit anyone actually meant to update to.
-	# Restrict to the latest tag reachable from the default branch's
-	# history instead. Falls back to the default branch's tip if no
-	# reachable tag exists yet (e.g. before any release).
+	# an update, applying a release policy whenever the resolved branch is
+	# the default branch: CI (e.g. renovate) commits land on the default
+	# branch between releases, so its literal tip is frequently not the
+	# commit anyone actually meant to update to. Restrict to the latest tag
+	# reachable from the default branch's history instead. Falls back to
+	# the default branch's tip if no reachable tag exists yet (e.g. before
+	# any release).
+	#
+	# This applies whether RequestedBranch reached "the default branch"
+	# via auto-detection or because the caller typed the branch name
+	# explicitly (e.g. `ds -u "" main`) -- naming the branch is "pick which
+	# branch to track", not "opt out of the release policy". Only an
+	# explicit literal tag name or commit hash bypasses this, and those
+	# naturally never equal DefaultBranch's name.
 	#
 	# Everything downstream (git_version_into, git checkout) already treats
 	# a tag name exactly like a branch name, so callers just use this
@@ -142,18 +149,14 @@ git_resolve_update_target_into() {
 	# skipped when switching branches (CurrentBranch != RequestedBranch):
 	# a different branch happening to descend from the default branch's
 	# latest tag must never block the switch itself.
-	#
-	# Only an explicit tag/commit request (WasExplicit=true) bypasses this
-	# policy entirely and is returned unchanged.
 	local -n _grti_out_="${1}"
 	assert_nameref_is_string "${1}"
 	local GitPath=${2}
 	local DefaultBranch=${3}
 	local RequestedBranch=${4}
 	local CurrentBranch=${5-}
-	local WasExplicit=${6-false}
 
-	if $WasExplicit || [[ ${RequestedBranch} != "${DefaultBranch}" ]]; then
+	if [[ ${RequestedBranch} != "${DefaultBranch}" ]]; then
 		_grti_out_="${RequestedBranch}"
 		return
 	fi
