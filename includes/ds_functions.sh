@@ -119,6 +119,79 @@ git_version() {
 	echo "${result}"
 }
 
+git_resolve_update_target_into() {
+	# Resolves the branch/tag name that should actually be checked out for
+	# an update, applying a release policy whenever the resolved branch is
+	# the default branch: CI (e.g. renovate) commits land on the default
+	# branch between releases, so its literal tip is frequently not the
+	# commit anyone actually meant to update to. Restrict to the latest tag
+	# reachable from the default branch's history instead. Falls back to
+	# the default branch's tip if no reachable tag exists yet (e.g. before
+	# any release).
+	#
+	# This applies whether RequestedBranch reached "the default branch"
+	# via auto-detection or because the caller typed the branch name
+	# explicitly (e.g. `ds -u "" main`) -- naming the branch is "pick which
+	# branch to track", not "opt out of the release policy". Only an
+	# explicit literal tag name or commit hash bypasses this, and those
+	# naturally never equal DefaultBranch's name.
+	#
+	# Everything downstream (git_version_into, git checkout) already treats
+	# a tag name exactly like a branch name, so callers just use this
+	# function's output as "Branch" for the rest of their update flow --
+	# no other logic needs to change.
+	#
+	# If CurrentBranch (the branch actually checked out right now) equals
+	# the resolved default-branch target, and the latest reachable tag is
+	# an ancestor of (or equal to) current HEAD, this returns CurrentBranch
+	# unchanged instead of the tag -- i.e. "no update available" rather than
+	# incorrectly offering to move backward to an older tag. This check is
+	# skipped when switching branches (CurrentBranch != RequestedBranch):
+	# a different branch happening to descend from the default branch's
+	# latest tag must never block the switch itself.
+	local -n _grti_out_="${1}"
+	assert_nameref_is_string "${1}"
+	local GitPath=${2}
+	local DefaultBranch=${3}
+	local RequestedBranch=${4}
+	local CurrentBranch=${5-}
+
+	if [[ ${RequestedBranch} != "${DefaultBranch}" ]]; then
+		_grti_out_="${RequestedBranch}"
+		return
+	fi
+
+	# Sort by actual tag creation date (--sort=-creatordate), not the tag
+	# name string (sort -V): this repo has switched tag-naming schemes over
+	# time (e.g. v2026.01.19-1 -> v1.20260628.1), and comparing differently-
+	# shaped version strings against each other picks the wrong "latest" --
+	# creation date is immune to that since it doesn't depend on the name.
+	local LatestTag
+	LatestTag=$(git -C "${GitPath}" tag --merged "origin/${DefaultBranch}" --sort=-creatordate 2> /dev/null | head -1) || true
+
+	if [[ -z ${LatestTag} ]]; then
+		# No reachable tag yet -- fall back to the default branch's tip.
+		_grti_out_="${RequestedBranch}"
+		return
+	fi
+
+	if [[ ${CurrentBranch} == "${RequestedBranch}" ]] && git -C "${GitPath}" merge-base --is-ancestor "${LatestTag}" HEAD 2> /dev/null; then
+		# Current HEAD is already at or ahead of the latest tag and we're
+		# staying on the same branch -- report no update by returning the
+		# current branch name unchanged.
+		_grti_out_="${CurrentBranch}"
+		return
+	fi
+
+	_grti_out_="${LatestTag}"
+}
+
+git_resolve_update_target() {
+	local result
+	git_resolve_update_target_into result "$@"
+	echo "${result}"
+}
+
 git_update_available() {
 	local GitPath=${1}
 	local CurrentRef=${2-}

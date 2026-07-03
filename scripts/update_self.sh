@@ -15,8 +15,11 @@ update_self() {
 	local Title="Update ${APPLICATION_NAME}"
 	local Question YesNotice NoNotice
 
+	local CurrentBranch
+	ds_branch_into CurrentBranch
+
 	if [[ -z ${Branch-} ]]; then
-		ds_branch_into Branch
+		Branch="${CurrentBranch}"
 		if ds_tag_exists "${Branch-}"; then
 			ds_best_branch_into Branch
 		fi
@@ -25,6 +28,12 @@ update_self() {
 			return 1
 		fi
 	fi
+
+	# On the default branch, restrict to the latest tagged release instead
+	# of the branch's literal tip -- see git_resolve_update_target_into's
+	# doc comment for why. Downstream logic (version lookup, checkout) is
+	# unchanged: it already treats a tag name exactly like a branch name.
+	git_resolve_update_target_into Branch "${SCRIPTPATH}" "${APPLICATION_DEFAULT_BRANCH}" "${Branch}" "${CurrentBranch}"
 
 	ds_version_into CurrentVersion
 	ds_version_into RemoteVersion "${Branch}"
@@ -122,7 +131,7 @@ commands_update_self_logic() {
 			info "Pulling recent changes from git."
 			RunAndLog info "git:info" \
 				fatal "Failed to pull recent changes from git." \
-				git -C "${SCRIPTPATH}" pull
+				git -C "${SCRIPTPATH}" pull origin "${Branch}"
 		fi
 	fi
 	info "Cleaning up unnecessary files and optimizing the local repository."
