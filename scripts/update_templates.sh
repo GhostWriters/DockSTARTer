@@ -129,7 +129,13 @@ commands_update_templates() {
 	templates_version_into UpdatedVersion
 	notice "Updated ${TargetName} to '{{|Version|}}${UpdatedVersion}{{[-]}}'"
 
-	# run_script 'reset_needs' (DELETED in favor of granular detection)
+	# Resync per-app env files against the (possibly changed) templates.
+	# needs_env_update's template-dependency check makes this a no-op for
+	# apps whose template didn't actually change -- without this call,
+	# though, nothing ever re-checks after a templates update, so an
+	# edited default/comment/ordering would sit unnoticed until the user
+	# happened to trigger env_update some other way (or reset_needs).
+	run_script 'env_update' || true
 }
 
 test_update_templates() {

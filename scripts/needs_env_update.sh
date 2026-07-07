@@ -38,9 +38,27 @@ needs_env_update() {
 	fi
 	local filename
 	filename="$(basename "${VarFile}")"
+
+	local -u APPNAME
+	run_script 'varfile_to_appname_into' APPNAME "${VarFile}"
+
+	# Check if the app's template default file changed (e.g. an
+	# --update-templates edited its .env.app.* defaults/ordering/comments).
+	# Without this, editing an app's template was never picked up by a
+	# plain templates update -- only a fresh .env.app.* file (no marker
+	# yet) or a full reset_needs (which wipes every marker) would trigger a
+	# resync. app_instance_file_into already detects template drift and
+	# regenerates the instance file to match; we just need to also notice
+	# when it did.
+	if [[ -n ${APPNAME} ]] && ! run_script 'app_is_user_defined' "${APPNAME}"; then
+		local AppDefaultFile
+		run_script 'app_instance_file_into' AppDefaultFile "${APPNAME}" ".env.app.*"
+		if [[ -n ${AppDefaultFile} ]] && file_changed "${AppDefaultFile}" "${filename}_template"; then
+			return 0
+		fi
+	fi
+
 	if file_changed "${COMPOSE_ENV}" "${filename}_$(basename "${COMPOSE_ENV}")"; then
-		local -u APPNAME
-		run_script 'varfile_to_appname_into' APPNAME "${VarFile}"
 		local AppEnabledFile
 		AppEnabledFile="${timestamps_folder:?}/${filename}_${APPNAME}__ENABLED"
 		local EnabledLine

@@ -50,6 +50,15 @@ unset_needs_env_update() {
 		echo "${EnabledLine}" > "${AppEnabledFile}"
 		# Record the state of the global .env for this specific app
 		cp -a "${COMPOSE_ENV}" "${timestamps_folder}/${filename}_$(basename "${COMPOSE_ENV}")"
+
+		# Record the app's template-default dependency (see needs_env_update).
+		if ! run_script 'app_is_user_defined' "${APPNAME}"; then
+			local AppDefaultFile
+			run_script 'app_instance_file_into' AppDefaultFile "${APPNAME}" ".env.app.*"
+			if [[ -n ${AppDefaultFile} && -f ${AppDefaultFile} ]]; then
+				cp -a "${AppDefaultFile}" "${timestamps_folder}/${filename}_template"
+			fi
+		fi
 	fi
 }
 
