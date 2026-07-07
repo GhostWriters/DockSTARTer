@@ -744,7 +744,7 @@ RunAndLog() {
 	if [[ ${OutputNoticeType} == *:* ]]; then
 		Prefix="${OutputNoticeType%%:*}:"
 		OutputNoticeType=${OutputNoticeType#"${Prefix}"}
-		Prefix="{{|RunningCommand|}}${Prefix}{{[-]}} "
+		Prefix="\t{{|RunningCommand|}}${Prefix}{{[-]}} "
 	fi
 
 	local OutputFile
