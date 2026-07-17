@@ -19,7 +19,7 @@ jobs:
   markdownlint:
     runs-on: ubuntu-latest
     container:
-      image: davidanson/markdownlint-cli2:v0.23.0@sha256:97996d59837fa7cc27fc5f0e16d72eae71d0cefee15c437ee1d7cdbccb5552be
+      image: davidanson/markdownlint-cli2:v0.23.1@sha256:f382ea4fdc949883e79de678009437fb40c339323654c7b0dd4d5221cda8ed20
       options: --user 0:0
     steps:
       - name: Checkout
