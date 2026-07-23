@@ -5,11 +5,34 @@ IFS=$'\n\t'
 git_fetch() {
 	local GitPath=${1}
 	local ForceRefresh=${2-false}
-	# Git touches FETCH_HEAD after each `git fetch`, so we use it to
-	# limit fetches to 1 per day per repo (unless forced).
-	if [[ -n ${FORCE-} ]] || $ForceRefresh || [ -z "$(find "${GitPath}/.git/FETCH_HEAD" -mtime -1 2> /dev/null)" ]; then
+
+	if [[ -n ${FORCE-} ]] || $ForceRefresh; then
 		git -C "${GitPath}" fetch --quiet --tags &> /dev/null || true
+		return
 	fi
+
+	# Cheap pre-check: compare the current branch's remote-tracking hash and
+	# the remote's tag count against what's already local, and skip the full
+	# fetch only when both match. Tags need their own check because a new
+	# tag can point at a commit that's already the local tip -- a branch-
+	# hash-only comparison would miss that release entirely.
+	local CurrentBranch
+	CurrentBranch=$(git -C "${GitPath}" symbolic-ref --short HEAD 2> /dev/null) || true
+	if [[ -n ${CurrentBranch} ]]; then
+		local RemoteHash LocalHash
+		RemoteHash=$(git -C "${GitPath}" ls-remote --quiet origin "refs/heads/${CurrentBranch}" 2> /dev/null | cut -f1) || true
+		LocalHash=$(git -C "${GitPath}" rev-parse --quiet --verify "refs/remotes/origin/${CurrentBranch}" 2> /dev/null) || true
+		if [[ -n ${RemoteHash} && ${RemoteHash} == "${LocalHash}" ]]; then
+			local RemoteTagCount LocalTagCount
+			RemoteTagCount=$(git -C "${GitPath}" ls-remote --quiet --tags origin 2> /dev/null | grep -vc '\^{}') || true
+			LocalTagCount=$(git -C "${GitPath}" tag 2> /dev/null | wc -l) || true
+			if [[ ${RemoteTagCount} == "${LocalTagCount}" ]]; then
+				return
+			fi
+		fi
+	fi
+
+	git -C "${GitPath}" fetch --quiet --tags &> /dev/null || true
 }
 
 git_branch_into() {
@@ -119,6 +142,30 @@ git_version() {
 	echo "${result}"
 }
 
+git_latest_reachable_tag_into() {
+	# Returns the most recently created tag (by tag creation date, not tag
+	# name string) reachable from DefaultBranch's history on origin. Empty
+	# if no tag is reachable yet.
+	#
+	# Sort by actual tag creation date (--sort=-creatordate), not the tag
+	# name string (sort -V): this repo has switched tag-naming schemes over
+	# time (e.g. v2026.01.19-1 -> v1.20260628.1), and comparing differently-
+	# shaped version strings against each other picks the wrong "latest" --
+	# creation date is immune to that since it doesn't depend on the name.
+	local -n _glrti_out_="${1}"
+	assert_nameref_is_string "${1}"
+	local GitPath=${2}
+	local DefaultBranch=${3}
+
+	_glrti_out_=$(git -C "${GitPath}" tag --merged "origin/${DefaultBranch}" --sort=-creatordate 2> /dev/null | head -1) || true
+}
+
+git_latest_reachable_tag() {
+	local result
+	git_latest_reachable_tag_into result "$@"
+	echo "${result}"
+}
+
 git_resolve_update_target_into() {
 	# Resolves the branch/tag name that should actually be checked out for
 	# an update, applying a release policy whenever the resolved branch is
@@ -161,13 +208,8 @@ git_resolve_update_target_into() {
 		return
 	fi
 
-	# Sort by actual tag creation date (--sort=-creatordate), not the tag
-	# name string (sort -V): this repo has switched tag-naming schemes over
-	# time (e.g. v2026.01.19-1 -> v1.20260628.1), and comparing differently-
-	# shaped version strings against each other picks the wrong "latest" --
-	# creation date is immune to that since it doesn't depend on the name.
 	local LatestTag
-	LatestTag=$(git -C "${GitPath}" tag --merged "origin/${DefaultBranch}" --sort=-creatordate 2> /dev/null | head -1) || true
+	git_latest_reachable_tag_into LatestTag "${GitPath}" "${DefaultBranch}"
 
 	if [[ -z ${LatestTag} ]]; then
 		# No reachable tag yet -- fall back to the default branch's tip.
@@ -335,6 +377,45 @@ templates_update_available() {
 	local CurrentRef=${1-}
 	local TargetRef=${2-}
 	git_update_available "${TEMPLATES_PARENT_FOLDER}" "${CurrentRef-}" "${TargetRef-}"
+}
+
+git_checkout_latest_release_after_clone() {
+	# Called only right after a fresh clone whose tip is on DefaultBranch and
+	# therefore always at or ahead of the latest tag -- git_resolve_update_
+	# target_into's "no update" ancestor check would always fire here, so
+	# this resolves the latest reachable tag directly instead, bypassing
+	# that check, and skips entirely (no checkout, no logging) when the
+	# cloned tip already is that release.
+	local GitPath=${1}
+	local DefaultBranch=${2}
+	local TargetName=${3}
+
+	local LatestTag
+	git_latest_reachable_tag_into LatestTag "${GitPath}" "${DefaultBranch}"
+	if [[ -z ${LatestTag} ]]; then
+		# No tagged release reachable yet -- the default branch's tip stands.
+		return 0
+	fi
+	if git -C "${GitPath}" merge-base --is-ancestor "${LatestTag}" HEAD 2> /dev/null; then
+		# The cloned tip already is the latest release -- nothing to check out.
+		return 0
+	fi
+
+	notice "Checking out {{|ApplicationName|}}${TargetName}{{[-]}} release '{{|Version|}}${LatestTag}{{[-]}}'"
+	RunAndLog info "git:info" \
+		fatal "Failed to switch to github ref '{{|Branch|}}${LatestTag}{{[-]}}'." \
+		git -C "${GitPath}" checkout --force "${LatestTag}"
+	info "Cleaning up unnecessary files and optimizing the local repository."
+	RunAndLog info "git:info" \
+		"" "" \
+		git -C "${GitPath}" gc || true
+	local UpdatedVersion
+	git_version_into UpdatedVersion "${GitPath}"
+	notice "Updated ${TargetName} to '{{|Version|}}${UpdatedVersion}{{[-]}}'"
+}
+
+templates_checkout_latest_release_after_clone() {
+	git_checkout_latest_release_after_clone "${TEMPLATES_PARENT_FOLDER}" "${TEMPLATES_DEFAULT_BRANCH}" "${TEMPLATES_NAME}"
 }
 
 ds_switch_branch() {
