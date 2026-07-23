@@ -248,9 +248,14 @@ git_update_available() {
 			TargetRef="${CurrentRef}"
 		fi
 
-		# If CurrentRef is a tag, we compare against TargetRef (usually a branch)
-		# Even if it's a tag, we compare the current hash against the target branch/ref hash
-		Remote=$(git -C "${GitPath}" rev-parse "origin/${TargetRef}" 2> /dev/null || true)
+		# TargetRef can be a tag (e.g. the latest-release policy in
+		# git_resolve_update_target_into resolving to a tag name) or a
+		# branch -- tags aren't under refs/remotes/origin/, so try TargetRef
+		# as a tag first and fall back to origin/TargetRef as a branch.
+		Remote=$(git -C "${GitPath}" rev-parse --quiet --verify "refs/tags/${TargetRef}" 2> /dev/null) || true
+		if [[ -z ${Remote} ]]; then
+			Remote=$(git -C "${GitPath}" rev-parse "origin/${TargetRef}" 2> /dev/null || true)
+		fi
 		[[ ${Current} != "${Remote}" ]]
 		result=$?
 	else
