@@ -1064,6 +1064,7 @@ init_check_update() {
 	if ds_tag_exists "${Branch}"; then
 		ds_best_branch_into TargetBranch
 	fi
+	git_resolve_update_target_into TargetBranch "${SCRIPTPATH}" "${APPLICATION_DEFAULT_BRANCH}" "${TargetBranch}" "${Branch}"
 	if ds_ref_exists "${Branch}"; then
 		if ds_update_available "${Branch}" "${TargetBranch}"; then
 			local TargetVersion
@@ -1101,6 +1102,7 @@ init_check_update() {
 	if templates_tag_exists "${Branch}"; then
 		templates_best_branch_into TargetBranch
 	fi
+	git_resolve_update_target_into TargetBranch "${TEMPLATES_PARENT_FOLDER}" "${TEMPLATES_DEFAULT_BRANCH}" "${TargetBranch}" "${Branch}"
 	if templates_ref_exists "${Branch}"; then
 		if templates_update_available "${Branch}" "${TargetBranch}"; then
 			local TargetVersion
