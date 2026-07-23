@@ -124,7 +124,7 @@ commands_update_self_logic() {
 			git -C "${SCRIPTPATH}" checkout --force "${Branch}"
 
 		# If it's a branch (not a tag or SHA), perform reset and pull
-		if git -C "${SCRIPTPATH}" ls-remote --exit-code --heads origin "${Branch}" &> /dev/null; then
+		if ds_branch_exists "${Branch}"; then
 			RunAndLog info "git:info" \
 				fatal "Failed to reset to branch '{{|Branch|}}origin/${Branch}{{[-]}}'." \
 				git -C "${SCRIPTPATH}" reset --hard origin/"${Branch}"

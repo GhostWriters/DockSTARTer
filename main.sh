@@ -873,6 +873,26 @@ clone_repo() {
 	RunAndLog notice "git:notice" \
 		fatal "Failed to clone {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} repo." \
 		git clone -b "${APPLICATION_DEFAULT_BRANCH}" "${APPLICATION_REPO}" "${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}"
+
+	# This bootstrap copy runs from outside the cloned repo, so
+	# includes/ds_functions.sh isn't sourced yet -- use plain git directly.
+	local ClonedGitPath="${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}"
+	local ClonedVersion
+	ClonedVersion="$(git -C "${ClonedGitPath}" describe --tags --exact-match 2> /dev/null || true)"
+	if [[ -z ${ClonedVersion} ]]; then
+		ClonedVersion="${APPLICATION_DEFAULT_BRANCH} commit $(git -C "${ClonedGitPath}" rev-parse --short HEAD 2> /dev/null)"
+	fi
+	notice "Cloned {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} at '{{|Version|}}${ClonedVersion}{{[-]}}'."
+
+	local LatestTag
+	LatestTag="$(git -C "${ClonedGitPath}" tag --merged "origin/${APPLICATION_DEFAULT_BRANCH}" --sort=-creatordate 2> /dev/null | head -1)" || true
+	if [[ -n ${LatestTag} ]] && ! git -C "${ClonedGitPath}" merge-base --is-ancestor "${LatestTag}" HEAD 2> /dev/null; then
+		notice "Checking out {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} release '{{|Version|}}${LatestTag}{{[-]}}'"
+		RunAndLog info "git:info" \
+			fatal "Failed to switch to github ref '{{|Branch|}}${LatestTag}{{[-]}}'." \
+			git -C "${ClonedGitPath}" checkout --force "${LatestTag}"
+	fi
+
 	if [[ ${#ARGS[@]} -eq 0 ]]; then
 		notice \
 			"Performing first run install."
@@ -893,6 +913,12 @@ clone_templates_repo() {
 	RunAndLog notice "git:notice" \
 		fatal "Failed to clone {{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} repo." \
 		git clone -b "${TEMPLATES_DEFAULT_BRANCH}" "${TEMPLATES_REPO}" "${TEMPLATES_PARENT_FOLDER}"
+
+	local ClonedVersion
+	templates_version_into ClonedVersion
+	notice "Cloned {{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} at '{{|Version|}}${ClonedVersion}{{[-]}}'."
+
+	templates_checkout_latest_release_after_clone
 }
 
 # Cleanup Function
@@ -1030,8 +1056,8 @@ init_check_symlink() {
 }
 
 init_check_update() {
-	# Only check for updates once per 24 hours, as it can be quite slow.
-	[ -n "$(find "${APPLICATION_UPDATE_RECORD}" -mtime -1 2> /dev/null)" ] && return
+	# Only check for updates once every 15 minutes.
+	[ -n "$(find "${APPLICATION_UPDATE_RECORD}" -mmin -15 2> /dev/null)" ] && return
 	local Branch
 	ds_branch_into Branch
 	local TargetBranch="${Branch}"

@@ -107,7 +107,7 @@ commands_update_templates() {
 			git -C "${TEMPLATES_PARENT_FOLDER}" checkout --force "${Branch}"
 
 		# If it's a branch (not a tag or SHA), perform reset and pull
-		if git -C "${TEMPLATES_PARENT_FOLDER}" ls-remote --exit-code --heads origin "${Branch}" &> /dev/null; then
+		if templates_branch_exists "${Branch}"; then
 			RunAndLog info "git:info" \
 				fatal "Failed to reset to branch '{{|Branch|}}origin/${Branch}{{[-]}}'." \
 				git -C "${TEMPLATES_PARENT_FOLDER}" reset --hard origin/"${Branch}"
