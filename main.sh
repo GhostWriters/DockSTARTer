@@ -886,11 +886,16 @@ clone_repo() {
 
 	local LatestTag
 	LatestTag="$(git -C "${ClonedGitPath}" tag --merged "origin/${APPLICATION_DEFAULT_BRANCH}" --sort=-creatordate 2> /dev/null | head -1)" || true
-	if [[ -n ${LatestTag} ]] && ! git -C "${ClonedGitPath}" merge-base --is-ancestor "${LatestTag}" HEAD 2> /dev/null; then
-		notice "Checking out {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} release '{{|Version|}}${LatestTag}{{[-]}}'"
-		RunAndLog info "git:info" \
-			fatal "Failed to switch to github ref '{{|Branch|}}${LatestTag}{{[-]}}'." \
-			git -C "${ClonedGitPath}" checkout --force "${LatestTag}"
+	if [[ -n ${LatestTag} ]]; then
+		local TagHash HeadHash
+		TagHash="$(git -C "${ClonedGitPath}" rev-parse --quiet --verify "${LatestTag}^{commit}" 2> /dev/null)" || true
+		HeadHash="$(git -C "${ClonedGitPath}" rev-parse --quiet --verify HEAD 2> /dev/null)" || true
+		if [[ -z ${TagHash} || ${TagHash} != "${HeadHash}" ]]; then
+			notice "Checking out {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} release '{{|Version|}}${LatestTag}{{[-]}}'"
+			RunAndLog info "git:info" \
+				fatal "Failed to switch to github ref '{{|Branch|}}${LatestTag}{{[-]}}'." \
+				git -C "${ClonedGitPath}" checkout --force "${LatestTag}"
+		fi
 	fi
 
 	if [[ ${#ARGS[@]} -eq 0 ]]; then
