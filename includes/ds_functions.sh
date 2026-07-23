@@ -473,7 +473,7 @@ git_best_branch_into() {
 
 	# 4. If we ended up with the Legacy Branch but the Default Branch exists, force use of Default Branch
 	if [[ ${BestBranch} == "${LegacyBranch}" ]] && [[ -n ${DefaultBranch} ]]; then
-		if git -C "${GitPath}" show-ref --quiet --verify "refs/remotes/origin/${DefaultBranch}"; then
+		if git -C "${GitPath}" show-ref --quiet --verify "refs/remotes/origin/${DefaultBranch}" 2> /dev/null; then
 			BestBranch="${DefaultBranch}"
 		fi
 	fi
