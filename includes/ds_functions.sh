@@ -396,7 +396,10 @@ git_checkout_latest_release_after_clone() {
 		# No tagged release reachable yet -- the default branch's tip stands.
 		return 0
 	fi
-	if git -C "${GitPath}" merge-base --is-ancestor "${LatestTag}" HEAD 2> /dev/null; then
+	local TagHash HeadHash
+	TagHash=$(git -C "${GitPath}" rev-parse --quiet --verify "${LatestTag}^{commit}" 2> /dev/null) || true
+	HeadHash=$(git -C "${GitPath}" rev-parse --quiet --verify HEAD 2> /dev/null) || true
+	if [[ -n ${TagHash} && ${TagHash} == "${HeadHash}" ]]; then
 		# The cloned tip already is the latest release -- nothing to check out.
 		return 0
 	fi
