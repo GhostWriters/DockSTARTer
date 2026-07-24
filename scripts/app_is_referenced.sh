@@ -10,19 +10,23 @@ app_is_referenced() {
 	local APPNAME=${1:-}
 
 	# Check for app variables in the global .env file
-	if [[ -n $(run_script 'appvars_list' "${APPNAME}") ]]; then
+	local -a AppVars
+	run_script 'appvars_list_into_array' AppVars "${APPNAME}"
+	if [[ -n ${AppVars[*]-} ]]; then
 		return 0
 	fi
 
 	# Check for app variables in the .env.app.appname file
-	if [[ -n $(run_script 'appvars_list' "${APPNAME}:") ]]; then
+	run_script 'appvars_list_into_array' AppVars "${APPNAME}:"
+	if [[ -n ${AppVars[*]-} ]]; then
 		return 0
 	fi
 
 	# Check for an un-commented reference to .env.app.appname in the override file
 	if [[ -f ${COMPOSE_OVERRIDE} ]]; then
 		local AppEnvFile
-		AppEnvFile="$(basename "$(run_script 'app_env_file' "${APPNAME}")")"
+		run_script 'app_env_file_into' AppEnvFile "${APPNAME}"
+		AppEnvFile="$(basename "${AppEnvFile}")"
 		local SearchString="${AppEnvFile//./[.]}"
 		if ${GREP} -q -P "^(?:[^#]*)(?:\s|^)(?<Q>['\"]?)(?:[.]\/)?${SearchString}(?=\k<Q>(?:\s|$))" "${COMPOSE_OVERRIDE}" &> /dev/null; then
 

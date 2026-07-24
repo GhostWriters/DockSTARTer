@@ -11,7 +11,7 @@ pm_dnf_upgrade() {
 		local REDIRECT='&> /dev/null '
 		if [[ -n ${VERBOSE-} ]]; then
 			#shellcheck disable=SC2016 # (info): Expressions don't expand in single quotes, use double quotes for that.
-			REDIRECT='run_command_dialog "${Title}" "${COMMAND}" "" '
+			REDIRECT='run_command_tui "${Title}" "${COMMAND}" "" '
 		fi
 		eval "${REDIRECT}${COMMAND}" ||
 			fatal \

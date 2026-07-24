@@ -22,9 +22,9 @@ needs_appvars_create() {
 		# BULK MODE
 		# 2. Check Added Apps List
 		local AddedAppsFile="${timestamps_folder}/AddedApps"
-		local AddedApps
-		AddedApps="$(run_script 'app_list_added')"
-		if [[ ! -f ${AddedAppsFile} ]] || ! cmp -s "${AddedAppsFile}" <(printf '%s\n' "${AddedApps}"); then
+		local -a AddedApps
+		run_script 'app_list_added_into_array' AddedApps
+		if [[ ! -f ${AddedAppsFile} ]] || ! cmp -s "${AddedAppsFile}" <(printf '%s\n' "${AddedApps[@]-}"); then
 			return 0
 		fi
 
@@ -34,16 +34,16 @@ needs_appvars_create() {
 			return 0
 		fi
 
-		for AppName in ${AddedApps}; do
+		for AppName in "${AddedApps[@]-}"; do
 			local -l appname=${AppName}
 			local AppEnvFile
-			AppEnvFile="$(run_script 'app_env_file' "${appname}")"
+			run_script 'app_env_file_into' AppEnvFile "${appname}"
 			if file_changed "${AppEnvFile}"; then
 				return 0
 			fi
 
 			local baseappname
-			baseappname="$(run_script 'appname_to_baseappname' "${appname}")"
+			run_script 'appname_to_baseappname_into' baseappname "${appname}"
 			local AppTemplateDir="${TEMPLATES_FOLDER:?}/${baseappname}"
 			if [[ -d ${AppTemplateDir} ]]; then
 				if [[ -n $(find "${AppTemplateDir}" -newer "${SentinelFile}" -print -quit) ]]; then
@@ -62,13 +62,13 @@ needs_appvars_create() {
 		fi
 
 		local AppEnvFile
-		AppEnvFile="$(run_script 'app_env_file' "${appname}")"
+		run_script 'app_env_file_into' AppEnvFile "${appname}"
 		if file_changed "${AppEnvFile}"; then
 			return 0
 		fi
 
 		local baseappname
-		baseappname="$(run_script 'appname_to_baseappname' "${appname}")"
+		run_script 'appname_to_baseappname_into' baseappname "${appname}"
 		local AppTemplateDir="${TEMPLATES_FOLDER:?}/${baseappname}"
 
 		local GlobalSentinel="${timestamps_folder}/LastSynced"

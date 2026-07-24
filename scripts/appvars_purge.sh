@@ -9,22 +9,24 @@ declare -a _dependencies_list=(
 
 appvars_purge() {
 	local Title="Purge Variables"
-	local -l applist
-	applist="$(xargs -n 1 <<< "$*")"
-	for appname in ${applist}; do
+	local -a applist
+	IFS=$' \t\n\r' read -d '' -ra applist <<< "${*,,}" || true
+	for appname in "${applist[@]}"; do
 		local AppName
-		AppName=$(run_script 'app_nicename' "${appname}")
+		run_script 'app_nicename_into' AppName "${appname}"
 
 		local AppEnvFile
-		AppEnvFile="$(run_script 'app_env_file' "${appname}")"
+		run_script 'app_env_file_into' AppEnvFile "${appname}"
 
 		local -a CurrentGlobalVars DefaultGlobalVars GlobalVarsToRemove GlobalLinesToRemove
 		local -a CurrentAppEnvVars DefaultAppEnvVars AppEnvVarsToRemove AppEnvLinesToRemove
 		local GlobalVarsRegex AppEnvVarsRegex
 
-		readarray -t CurrentGlobalVars <<< "$(run_script 'appvars_list' "${appname}")"
+		run_script 'appvars_list_into_array' CurrentGlobalVars "${appname}"
 		if [[ -n ${CurrentGlobalVars-} ]]; then
-			readarray -t DefaultGlobalVars <<< "$(run_script 'env_list_app_global_defaults' "${appname}")"
+			local AppDefaultGlobalEnvFile
+			run_script 'app_instance_file_into' AppDefaultGlobalEnvFile "${appname}" ".env"
+			run_script 'env_var_list_into_array' DefaultGlobalVars "${AppDefaultGlobalEnvFile}"
 			# Get the list of current variables also in the default list
 			readarray -t GlobalVarsToRemove <<< "$(
 				printf '%s\n' "${CurrentGlobalVars[@]-}" "${DefaultGlobalVars[@]-}" |
@@ -37,9 +39,11 @@ appvars_purge() {
 			readarray -t GlobalLinesToRemove <<< "$(${GREP} -P "^\s*${GlobalVarsRegex}\s*=" "${COMPOSE_ENV}" || true)"
 		fi
 
-		readarray -t CurrentAppEnvVars <<< "$(run_script 'appvars_list' "${appname}:")"
+		run_script 'appvars_list_into_array' CurrentAppEnvVars "${appname}:"
 		if [[ -n ${CurrentAppEnvVars-} ]]; then
-			readarray -t DefaultAppEnvVars <<< "$(run_script 'env_list_app_env_defaults' "${appname}")"
+			local AppDefaultAppEnvFile
+			run_script 'app_instance_file_into' AppDefaultAppEnvFile "${appname}" ".env.app.*"
+			run_script 'env_var_list_into_array' DefaultAppEnvVars "${AppDefaultAppEnvFile}"
 			# Get the list of current variables also in the default list
 			readarray -t AppEnvVarsToRemove <<< "$(
 				printf '%s\n' "${CurrentAppEnvVars[@]-}" "${DefaultAppEnvVars[@]-}" |
@@ -54,8 +58,8 @@ appvars_purge() {
 
 		if [[ -z ${GlobalVarsToRemove[*]-} && -z ${AppEnvVarsToRemove[*]-} ]]; then
 			local WarningText="'{{|Highlight|}}{{|App|}}${AppName}{{[-]}}{{[-]}}' has no variables to remove."
-			if use_dialog_box; then
-				dialog_warning "${Title}" "${WarningText}"
+			if use_tui_box; then
+				tui_warning "${Title}" "${WarningText}"
 				warn "${WarningText}" &> /dev/null
 			else
 				warn "${WarningText}"

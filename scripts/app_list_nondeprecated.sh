@@ -3,7 +3,9 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 app_list_nondeprecated() {
-	for APPNAME in $(run_script 'app_list_builtin'); do
+	local -a BuiltinApps
+	run_script 'app_list_builtin_into_array' BuiltinApps
+	for APPNAME in "${BuiltinApps[@]-}"; do
 		if run_script 'app_is_nondeprecated' "${APPNAME}"; then
 			echo "${APPNAME}"
 		fi

@@ -10,17 +10,14 @@ menu_config() {
 	local Title="Configuration Menu"
 
 	if run_script 'needs_appvars_create'; then
-		coproc {
-			dialog_pipe "{{|TitleSuccess|}}Creating environment variables for added apps" "Please be patient, this can take a while.\n{{|CommandLine|}} ${APPLICATION_COMMAND} --env" "${DIALOGTIMEOUT}"
-		}
-		local -i DialogBox_PID=${COPROC_PID}
-		local -i DialogBox_FD="${COPROC[1]}"
+		#shellcheck disable=SC2034 # (warning): PipePID is passed by name to tui_pipe_open/close via nameref and appears unused to shellcheck.
+		local -i PipeFD PipePID
+		tui_pipe_open PipeFD PipePID "{{|TitleSuccess|}}Creating environment variables for added apps" "Please be patient, this can take a while.\n{{|CommandLine|}} ${APPLICATION_COMMAND} --env" "${DIALOGTIMEOUT}"
 		{
 			run_script 'env_backup'
 			run_script 'appvars_create_all' || true
-		} >&${DialogBox_FD} 2>&1
-		exec {DialogBox_FD}<&-
-		wait ${DialogBox_PID}
+		} >&${PipeFD} 2>&1
+		tui_pipe_close PipeFD PipePID
 	fi
 
 	local Option_FullSetup="Full Setup"
@@ -47,14 +44,14 @@ menu_config() {
 			"What would you like to do?"
 			--item-help
 			"--ok-label:Select"
-			"--extra-label:Back"
-			"--cancel-label:Exit"
+			--cancel-label:Back
+			--exit-button
 			"--default-item:${LastConfigChoice}"
 			"${ConfigOpts[@]}"
 		)
 		local ConfigChoice
 		local -i ConfigDialogButtonPressed=0
-		ConfigChoice=$(dialog_menu "${ConfigChoiceDialog[@]}") || ConfigDialogButtonPressed=$?
+		tui_menu_into ConfigChoice "${ConfigChoiceDialog[@]}" || ConfigDialogButtonPressed=$?
 		LastConfigChoice=${ConfigChoice}
 		case ${DIALOG_BUTTONS[ConfigDialogButtonPressed]-} in
 			OK) # Select
@@ -85,26 +82,25 @@ menu_config() {
 							"${Question}{{[-]}}"
 							--maximized
 							--no-collapse
-							--extra-button
 							--yes-label:Stop
 							--extra-label:Down
 							--cancel-label:Cancel
 						)
 						local -i YesNoDialogButtonPressed=0
-						dialog_yesno "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?
+						tui_yesno "${YesNoDialog[@]}" || YesNoDialogButtonPressed=$?
 						case ${DIALOG_BUTTONS[YesNoDialogButtonPressed]-} in
 							OK) # Stop
-								run_script_dialog "{{|TitleSuccess|}}Docker Compose" "Stopping all running services.\n{{|CommandLine|}} ${APPLICATION_COMMAND} --compose stop" "" \
+								run_script_tui "{{|TitleSuccess|}}Docker Compose" "Stopping all running services.\n{{|CommandLine|}} ${APPLICATION_COMMAND} --compose stop" "" \
 									'docker_compose' "stop"
 								;;
 							EXTRA) # Down
-								run_script_dialog "{{|TitleSuccess|}}Docker Compose" "Stopping and removing all containers, networks, volumes, and images.\n{{|CommandLine|}} ${APPLICATION_COMMAND} --compose down" "" \
+								run_script_tui "{{|TitleSuccess|}}Docker Compose" "Stopping and removing all containers, networks, volumes, and images.\n{{|CommandLine|}} ${APPLICATION_COMMAND} --compose down" "" \
 									'docker_compose' "down"
 								;;
 							CANCEL | ESC) # Cancel
 								;;
 							*)
-								invalid_dialog_button ${YesNoDialogButtonPressed}
+								invalid_tui_button ${YesNoDialogButtonPressed}
 								;;
 						esac
 						;;
@@ -116,14 +112,14 @@ menu_config() {
 						;;
 				esac
 				;;
-			EXTRA | ESC) # Back
+			CANCEL | ESC) # Back
 				return
 				;;
-			CANCEL) # Exit
+			EXIT) # Exit
 				run_script 'menu_exit'
 				;;
 			*)
-				invalid_dialog_button ${ConfigDialogButtonPressed}
+				invalid_tui_button ${ConfigDialogButtonPressed}
 				;;
 		esac
 	done

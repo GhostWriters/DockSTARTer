@@ -23,8 +23,9 @@ pm_yum_install() {
 
 	#shellcheck disable=SC2124 #Assigning an array to a string! Assign as array, or use * instead of @ to concatenate.
 	local PackagesString="${Packages[@]}"
-	local pkglist="${PackagesString// /{{[-]}}\', \'{{|Folder|}}}"
-	pkglist="{{[-]}}'{{|Folder|}}${pkglist}{{[-]}}'"
+	local pkglist
+	printf -v pkglist ", '{{|Folder|}}%s{{[-]}}'" "${Packages[@]}"
+	pkglist="${pkglist:2}"
 
 	notice "Installing packages: ${pkglist}"
 

@@ -15,19 +15,15 @@ update_self() {
 	local Title="Update ${APPLICATION_NAME}"
 	local Question YesNotice NoNotice
 
-	if [[ -z ${Branch-} ]]; then
-		Branch="$(ds_branch)"
-		if ds_tag_exists "${Branch-}"; then
-			Branch="$(ds_best_branch)"
-		fi
-		if [[ -z ${Branch-} ]]; then
-			error "You need to specify a branch to update to."
-			return 1
-		fi
+	# Resolves to the latest tagged release when Branch lands on the default
+	# branch -- see ds_resolve_update_branch_into's doc comment for why.
+	if ! ds_resolve_update_branch_into Branch "${Branch}"; then
+		error "You need to specify a branch to update to."
+		return 1
 	fi
 
-	CurrentVersion="$(ds_version)"
-	RemoteVersion="$(ds_version "${Branch}")"
+	ds_version_into CurrentVersion
+	ds_version_into RemoteVersion "${Branch}"
 	if [[ ${CurrentVersion-} == "${RemoteVersion-}" ]]; then
 		if [[ -n ${FORCE-} ]]; then
 			Question="Would you like to forcefully re-apply {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} update '{{|Version|}}${CurrentVersion}{{[-]}}'?"
@@ -44,47 +40,41 @@ update_self() {
 	CommandLineText="$(printf '%q ' "${APPLICATION_COMMAND}" "--update" "$@" | xargs)"
 	if ! ds_branch_exists "${Branch}" && ! ds_tag_exists "${Branch}" && ! ds_commit_exists "${Branch}"; then
 		local ErrorMessage="{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} ref '{{|Branch|}}${Branch}{{[-]}}' does not exist on origin."
-		if use_dialog_box; then
-			error "${ErrorMessage}" |&
-				dialog_pipe "{{|TitleError|}}${Title}" "{{|CommandLine|}} ${CommandLineText}"
-		else
-			error "${ErrorMessage}"
-		fi
+		#shellcheck disable=SC2034 # (warning): PipePID is passed by name to tui_pipe_open/close via nameref and appears unused to shellcheck.
+		local -i PipeFD PipePID
+		tui_pipe_open PipeFD PipePID "{{|TitleError|}}${Title}" "{{|CommandLine|}} ${CommandLineText}"
+		error "${ErrorMessage}" >&${PipeFD} 2>&1
+		tui_pipe_close PipeFD PipePID
 		return 1
 	fi
 
 	if [[ -z ${FORCE-} && ${CurrentVersion} == "${RemoteVersion}" ]]; then
-		if use_dialog_box; then
-			{
-				{
-					notice \
-						"{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} is already up to date on branch '{{|Branch|}}${Branch}{{[-]}}'." \
-						"Current version is '{{|Version|}}${CurrentVersion}{{[-]}}'"
-				} || true
-			} |& dialog_pipe "{{|TitleWarning|}}${Title}" "{{|CommandLine|}} ${CommandLineText}"
-		else
+		#shellcheck disable=SC2034 # (warning): PipePID is passed by name to tui_pipe_open/close via nameref and appears unused to shellcheck.
+		local -i PipeFD PipePID
+		tui_pipe_open PipeFD PipePID "{{|TitleWarning|}}${Title}" "{{|CommandLine|}} ${CommandLineText}"
+		{
 			notice \
 				"{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} is already up to date on branch '{{|Branch|}}${Branch}{{[-]}}'." \
-				"Current version is '{{|Version|}}${CurrentVersion}{{[-]}}'"
-		fi
+				"Current version is '{{|Version|}}${CurrentVersion}{{[-]}}'" || true
+		} >&${PipeFD} 2>&1
+		tui_pipe_close PipeFD PipePID
 		return 0
 	fi
 
 	if ! run_script 'question_prompt' Y "${Question}" "${Title}" "${ASSUMEYES:+Y}"; then
-		if use_dialog_box; then
-			{ notice "${NoNotice}" || true; } |& dialog_pipe "{{|TitleError|}}${Title}" "${NoNotice}"
-		else
-			notice "${NoNotice}"
-		fi
+		#shellcheck disable=SC2034 # (warning): PipePID is passed by name to tui_pipe_open/close via nameref and appears unused to shellcheck.
+		local -i PipeFD PipePID
+		tui_pipe_open PipeFD PipePID "{{|TitleError|}}${Title}" "${NoNotice}"
+		{ notice "${NoNotice}" || true; } >&${PipeFD} 2>&1
+		tui_pipe_close PipeFD PipePID
 		return 1
 	fi
 
-	if use_dialog_box; then
-		{ commands_update_self_logic "${Branch}" "${YesNotice}" "$@" |&
-			dialog_pipe "{{|TitleSuccess|}}${Title}" "${YesNotice}\n{{|CommandLine|}} ${CommandLineText}"; } || true
-	else
-		commands_update_self_logic "${Branch}" "${YesNotice}" "$@"
-	fi
+	#shellcheck disable=SC2034 # (warning): PipePID is passed by name to tui_pipe_open/close via nameref and appears unused to shellcheck.
+	local -i PipeFD PipePID
+	tui_pipe_open PipeFD PipePID "{{|TitleSuccess|}}${Title}" "${YesNotice}\n{{|CommandLine|}} ${CommandLineText}"
+	{ commands_update_self_logic "${Branch}" "${YesNotice}" "$@" || true; } >&${PipeFD} 2>&1
+	tui_pipe_close PipeFD PipePID
 
 	local -a CommandArray
 	if [[ -z $* ]]; then
@@ -121,14 +111,14 @@ commands_update_self_logic() {
 			git -C "${SCRIPTPATH}" checkout --force "${Branch}"
 
 		# If it's a branch (not a tag or SHA), perform reset and pull
-		if git -C "${SCRIPTPATH}" ls-remote --exit-code --heads origin "${Branch}" &> /dev/null; then
+		if ds_branch_exists "${Branch}"; then
 			RunAndLog info "git:info" \
 				fatal "Failed to reset to branch '{{|Branch|}}origin/${Branch}{{[-]}}'." \
 				git -C "${SCRIPTPATH}" reset --hard origin/"${Branch}"
 			info "Pulling recent changes from git."
 			RunAndLog info "git:info" \
 				fatal "Failed to pull recent changes from git." \
-				git -C "${SCRIPTPATH}" pull
+				git -C "${SCRIPTPATH}" pull origin "${Branch}"
 		fi
 	fi
 	info "Cleaning up unnecessary files and optimizing the local repository."
@@ -139,8 +129,10 @@ commands_update_self_logic() {
 	git -C "${SCRIPTPATH}" ls-tree -rt --name-only "${Branch}" | xargs sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" &> /dev/null || true
 	sudo chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}/.git" &> /dev/null || true
 	sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${SCRIPTPATH}" &> /dev/null || true
+	local UpdatedVersion
+	ds_version_into UpdatedVersion
 	notice \
-		"Updated ${APPLICATION_NAME} to '{{|Version|}}$(ds_version){{[-]}}'"
+		"Updated ${APPLICATION_NAME} to '{{|Version|}}${UpdatedVersion}{{[-]}}'"
 
 	# run_script 'reset_needs' # Add script lines in-line below
 	if [[ -d ${TIMESTAMPS_FOLDER:?} ]]; then

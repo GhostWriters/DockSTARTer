@@ -9,8 +9,12 @@ unset_needs_env_update() {
 
 	if [[ -z ${VarFile} ]]; then
 		run_script 'unset_needs_env_update' "${COMPOSE_ENV}"
-		for AppName in $(run_script 'app_list_referenced'); do
-			run_script 'unset_needs_env_update' "$(run_script 'app_env_file' "${AppName}")"
+		local -a ReferencedApps
+		run_script 'app_list_referenced_into_array' ReferencedApps
+		for AppName in "${ReferencedApps[@]-}"; do
+			local AppEnvFile
+			run_script 'app_env_file_into' AppEnvFile "${AppName}"
+			run_script 'unset_needs_env_update' "${AppEnvFile}"
 		done
 		return
 	fi
@@ -23,21 +27,38 @@ unset_needs_env_update() {
 	local filename
 	filename="$(basename "${VarFile}")"
 
-	rm -f "${timestamps_folder}/${filename}"* &> /dev/null || true
+	if [[ ${filename} == ".env" ]]; then
+		rm -f "${timestamps_folder}/.env" "${timestamps_folder}/.env_ReferencedApps" &> /dev/null || true
+	else
+		rm -f "${timestamps_folder}/${filename}" "${timestamps_folder}/${filename}"_* &> /dev/null || true
+	fi
 
 	cp -a "${VarFile}" "${timestamps_folder}/${filename}"
 	if [[ ${VarFile} == "${COMPOSE_ENV}" ]]; then
 		local ReferencedAppsFile
 		ReferencedAppsFile="${timestamps_folder}/${filename}_ReferencedApps"
-		run_script 'app_list_referenced' > "${ReferencedAppsFile}"
+		local -a ReferencedApps
+		run_script 'app_list_referenced_into_array' ReferencedApps
+		printf '%s\n' "${ReferencedApps[@]-}" > "${ReferencedAppsFile}"
 	else
 		local -u APPNAME
-		APPNAME="$(run_script 'varfile_to_appname' "${VarFile}")"
+		run_script 'varfile_to_appname_into' APPNAME "${VarFile}"
 		local AppEnabledFile
 		AppEnabledFile="${timestamps_folder}/${filename}_${APPNAME}__ENABLED"
-		run_script 'env_get_line' "${APPNAME}__ENABLED" > "${AppEnabledFile}"
+		local EnabledLine
+		run_script 'env_get_line_into' EnabledLine "${APPNAME}__ENABLED"
+		echo "${EnabledLine}" > "${AppEnabledFile}"
 		# Record the state of the global .env for this specific app
 		cp -a "${COMPOSE_ENV}" "${timestamps_folder}/${filename}_$(basename "${COMPOSE_ENV}")"
+
+		# Record the app's template-default dependency (see needs_env_update).
+		if ! run_script 'app_is_user_defined' "${APPNAME}"; then
+			local AppDefaultFile
+			run_script 'app_instance_file_into' AppDefaultFile "${APPNAME}" ".env.app.*"
+			if [[ -n ${AppDefaultFile} && -f ${AppDefaultFile} ]]; then
+				cp -a "${AppDefaultFile}" "${timestamps_folder}/${filename}_template"
+			fi
+		fi
 	fi
 }
 

@@ -15,10 +15,10 @@ menu_options_package_manager() {
 	run_script 'config_package_manager' &> /dev/null
 
 	local CurrentPackageManager
-	CurrentPackageManager="$(get_toml_val "${APPLICATION_TOML_FILE}" "pm.package_manager")"
+	run_script 'config_get_into' CurrentPackageManager pm.package_manager || true
 
 	local -a PackageManagerList
-	readarray -t PackageManagerList < <(run_script 'package_manager_list')
+	run_script 'package_manager_list_into_array' PackageManagerList
 
 	local LastChoice="${PM_AutoDetect_Tag}"
 
@@ -30,10 +30,12 @@ menu_options_package_manager() {
 	PM_Item["${PM_AutoDetect_Tag}"]="${PM_Autodetect_Item}"
 	for PackageManager in "${PackageManagerList[@]}"; do
 		local Tag
-		Tag="$(run_script 'package_manager_nicename' "${PackageManager}")"
+		run_script 'package_manager_nicename_into' Tag "${PackageManager}"
 		PM_Tag+=("${Tag}")
 		PM_PackageManager["${Tag}"]="${PackageManager}"
-		PM_Item["${Tag}"]="$(run_script 'package_manager_description' "${PackageManager}")"
+		local desc
+		run_script 'package_manager_description_into' desc "${PackageManager}"
+		PM_Item["${Tag}"]="${desc}"
 		if [[ ${PackageManager} == "${CurrentPackageManager}" ]]; then
 			LastChoice="${Tag}"
 		fi
@@ -57,14 +59,14 @@ menu_options_package_manager() {
 			"Select the package manager to use. Detected package managers are highlighted."
 			--item-help
 			--ok-label:Select
-			--extra-label:Back
-			--cancel-label:Exit
+			--cancel-label:Back
+			--exit-button
 			--default-item:"${LastChoice}"
 			"${Opts[@]}"
 		)
 		local Choice
 		local -i DialogButtonPressed=0
-		Choice=$(dialog_radiolist "${ChoiceDialog[@]}") || DialogButtonPressed=$?
+		tui_radiolist_into Choice "${ChoiceDialog[@]}" || DialogButtonPressed=$?
 		LastChoice=${Choice}
 		case ${DIALOG_BUTTONS[DialogButtonPressed]-} in
 			OK)
@@ -73,14 +75,14 @@ menu_options_package_manager() {
 					run_script 'config_package_manager' "${CurrentPackageManager}" &> /dev/null
 				fi
 				;;
-			EXTRA | ESC)
+			CANCEL | ESC)
 				return
 				;;
-			CANCEL)
+			EXIT)
 				run_script 'menu_exit' || true
 				;;
 			*)
-				invalid_dialog_button ${DialogButtonPressed}
+				invalid_tui_button ${DialogButtonPressed}
 				;;
 		esac
 	done

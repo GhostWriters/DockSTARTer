@@ -4,32 +4,13 @@ IFS=$'\n\t'
 
 app_nicename() {
 	# Return the "NiceName" of the appname(s) passed. If there is no "NiceName", return the "Title__Case" of "appname"
-	local AppList
-	AppList="$(xargs -n 1 <<< "$*")"
-	for APPNAME in ${AppList}; do
-		local AppName="${APPNAME%:*}"
-		if ! run_script 'app_is_user_defined' "${AppName}"; then
-			run_script 'app_nicename_from_template' "${AppName}"
-			continue
-		fi
-
-		local -l baseapp instance
-		local BaseApp Instance
-		baseapp=$(run_script 'appname_to_baseappname' "${AppName}")
-		BaseApp="${baseapp^}"
-		instance=$(run_script 'appname_to_instancename' "${AppName}")
-		Instance=""
-		if [[ -n ${instance} ]]; then
-			# Capitalize first letter character, skipping any leading digits.
-			# e.g. "4k" → "4K", "instance" → "Instance"
-			local cap_prefix cap_rest
-			cap_prefix="${instance%%[a-zA-Z]*}"
-			cap_rest="${instance#"${cap_prefix}"}"
-			Instance="__${cap_prefix}${cap_rest^}"
-		fi
-		echo "${BaseApp}${Instance}"
+	local -a AppList
+	IFS=$' \t\n\r' read -d '' -ra AppList <<< "$*" || true
+	for APPNAME in "${AppList[@]}"; do
+		local result
+		run_script 'app_nicename_into' result "${APPNAME}"
+		echo "${result}"
 	done
-
 }
 
 test_app_nicename() {
@@ -56,7 +37,7 @@ test_app_nicename() {
 		for ((i = 0; i < ${#Test[@]}; i += 2)); do
 			printf '%s\n' \
 				"${Test[i]}" \
-				"${Test[i+1]}" \
+				"${Test[i + 1]}" \
 				"$(run_script 'app_nicename' "${Test[i]}")"
 		done
 	)

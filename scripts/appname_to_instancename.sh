@@ -3,12 +3,9 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 appname_to_instancename() {
-	local AppName=${1-}
-	if [[ ${AppName} == *"__"* ]]; then
-		echo "${AppName#*__}"
-	else
-		echo ""
-	fi
+	local result
+	run_script 'appname_to_instancename_into' result "$@"
+	echo "${result}"
 }
 
 test_appname_to_instancename() {

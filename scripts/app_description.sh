@@ -3,16 +3,9 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 app_description() {
-	# Return the description of the appname passed.
-	local -l appname=${1-}
-	appname="${appname%:*}"
-	if run_script 'app_is_user_defined' "${appname}"; then
-		local AppName
-		AppName="$(run_script 'app_nicename' "${appname}")"
-		echo "${AppName} is a user defined application"
-	else
-		run_script 'app_description_from_template' "${appname}"
-	fi
+	local result
+	run_script 'app_description_into' result "$@"
+	echo "${result}"
 }
 
 test_app_description() {
@@ -37,7 +30,7 @@ test_app_description() {
 		for ((i = 0; i < ${#Test[@]}; i += 2)); do
 			printf '%s\n' \
 				"${Test[i]}" \
-				"${Test[i+1]}" \
+				"${Test[i + 1]}" \
 				"$(run_script 'app_description' "${Test[i]}")"
 		done
 	)

@@ -6,7 +6,7 @@ app_is_builtin() {
 	local -l appname=${1-}
 
 	local -l baseapp
-	baseapp="$(run_script 'appname_to_baseappname' "${appname}")"
+	run_script 'appname_to_baseappname_into' baseapp "${appname}"
 	[[ -d "${TEMPLATES_FOLDER}/${baseapp}" ]]
 }
 
@@ -31,7 +31,7 @@ test_app_is_builtin() {
 		for ((i = 0; i < ${#Test[@]}; i += 2)); do
 			printf '%s\n' \
 				"${Test[i]}" \
-				"${Test[i+1]}" \
+				"${Test[i + 1]}" \
 				"$(run_script 'app_is_builtin' "${Test[i]}" && echo "YES" || echo "NO")"
 		done
 	)

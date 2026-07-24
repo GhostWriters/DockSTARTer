@@ -24,6 +24,8 @@ parse_arguments() {
 	if [[ -z $* ]]; then
 		# No arguments on the command line, nothing to parse
 		if [[ ${mode} != "parse" ]]; then
+			notice \
+				"${APPLICATION_NAME} command: '{{|UserCommand|}}${APPLICATION_COMMAND}{{[-]}}'"
 			run_command 0 0
 		fi
 		return
@@ -98,6 +100,19 @@ parse_arguments() {
 						cmdline_error \
 							"${OPTION}" \
 							"Command %c requires a script name." \
+							"${ParsedArgs[@]}" "${CurrentFlags[@]}" "${CurrentCommand[@]}" "${OPTION}"
+						exit 1
+					fi
+					CurrentCommand+=("${OPTION}" "${!OPTIND}")
+					OPTIND+=1
+					break
+					;;
+
+				--config-display-engine)
+					if [[ ${OPTIND} -gt $# || ${!OPTIND} == "-"* ]]; then
+						cmdline_error \
+							"${OPTION}" \
+							"Command %c requires a display engine name." \
 							"${ParsedArgs[@]}" "${CurrentFlags[@]}" "${CurrentCommand[@]}" "${OPTION}"
 						exit 1
 					fi
@@ -319,8 +334,10 @@ parse_arguments() {
 				-\?)
 					# Unknown '-o'
 					local PreviousArgsString
-					PreviousArgsString="${APPLICATION_COMMAND} $(xargs <<< "${ParsedArgs[@]-}")"
-					PreviousArgsString="$(xargs <<< "${PreviousArgsString}")"
+					local -a ArgsList
+					IFS=' ' read -ra ArgsList <<< "${APPLICATION_COMMAND} ${ParsedArgs[*]-}"
+					printf -v PreviousArgsString '%s ' "${ArgsList[@]}"
+					PreviousArgsString="${PreviousArgsString% }"
 					cmdline_error \
 						"" \
 						"Invalid option %o" \
@@ -341,8 +358,10 @@ parse_arguments() {
 		if [[ OPTIND -eq 1 && ${OPTIND} -le $# ]]; then
 			# Unknown 'option'
 			local PreviousArgsString
-			PreviousArgsString="${APPLICATION_COMMAND} $(xargs <<< "${ParsedArgs[@]-}")"
-			PreviousArgsString="$(xargs <<< "${PreviousArgsString}")"
+			local -a ArgsList
+			IFS=' ' read -ra ArgsList <<< "${APPLICATION_COMMAND} ${ParsedArgs[*]-}"
+			printf -v PreviousArgsString '%s ' "${ArgsList[@]}"
+			PreviousArgsString="${PreviousArgsString% }"
 			cmdline_error \
 				"" \
 				"Invalid option %o" \
@@ -428,6 +447,7 @@ run_command() {
 		["--add"]="appvars_create"
 		["-c"]="docker_compose"
 		["--compose"]="docker_compose"
+		["--config-display-engine"]="config_display_engine"
 		["--config-pm"]="config_package_manager"
 		["--config-pm-auto"]="config_package_manager"
 		["--config-pm-list"]="package_manager_list"
@@ -494,6 +514,8 @@ run_command() {
 		["app-select"]="menu_app_select"
 		["options"]="menu_options"
 		["options-display"]="menu_options_display"
+		["options-display-engine"]="menu_options_display_engine"
+		["display-engine"]="menu_options_display_engine"
 		["display"]="menu_options_display"
 		["options-theme"]="menu_options_theme"
 		["theme"]="menu_options_theme"
@@ -514,6 +536,7 @@ run_command() {
 		["-a"]=1
 		["--add"]=1
 		["-e"]=1
+		["--config-display-engine"]=1
 		["--config-pm"]=1
 		["--config-pm-auto"]=1
 		["--config-pm-list"]=1
@@ -534,6 +557,7 @@ run_command() {
 	CommandTitle+=(
 		["-a"]="Add Application"
 		["--add"]="Add Application"
+		["--config-display-engine"]="Select display engine"
 		["--config-pm"]="Select package manager"
 		["--config-pm-auto"]="Select package manager"
 		["--config-pm-list"]="List known package managers"
@@ -606,14 +630,14 @@ run_command() {
 	)
 
 	CommandConfigVar+=(
-		["--theme-shadows"]="shadow"
-		["--theme-no-shadows"]="shadow"
-		["--theme-scrollbar"]="scrollbar"
-		["--theme-no-scrollbar"]="scrollbar"
-		["--theme-lines"]="line_characters"
-		["--theme-no-lines"]="line_characters"
-		["--theme-borders"]="borders"
-		["--theme-no-borders"]="borders"
+		["--theme-shadows"]="ui.shadow"
+		["--theme-no-shadows"]="ui.shadow"
+		["--theme-scrollbar"]="ui.scrollbar"
+		["--theme-no-scrollbar"]="ui.scrollbar"
+		["--theme-lines"]="ui.line_characters"
+		["--theme-no-lines"]="ui.line_characters"
+		["--theme-borders"]="ui.borders"
+		["--theme-no-borders"]="ui.borders"
 	)
 
 	CommandConfigValue=(
@@ -718,17 +742,23 @@ run_command() {
 						"{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} ref '{{|Branch|}}${AppBranch}{{[-]}}' does not exist."
 					exit 1
 				fi
-				resolve_strings C "{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} [{{|Version|}}$(ds_version "${AppBranch}"){{[-]}}]"
+				local AppVersion
+				ds_version_into AppVersion "${AppBranch}"
+				resolve_strings C "{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} [{{|Version|}}${AppVersion}{{[-]}}]"
 			fi
 			if [[ -z ${TemplatesBranch} ]]; then
-				resolve_strings C "{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} [{{|Version|}}$(templates_version){{[-]}}]"
+				local TempVersion
+				templates_version_into TempVersion
+				resolve_strings C "{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} [{{|Version|}}${TempVersion}{{[-]}}]"
 			else
 				if ! templates_ref_exists "${TemplatesBranch}"; then
 					error \
 						"{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} ref '{{|Branch|}}${TemplatesBranch}{{[-]}}' does not exist."
 					exit 1
 				fi
-				resolve_strings C "{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} [{{|Version|}}$(templates_version "${TemplatesBranch}"){{[-]}}]"
+				local TempVersion
+				templates_version_into TempVersion "${TemplatesBranch}"
+				resolve_strings C "{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} [{{|Version|}}${TempVersion}{{[-]}}]"
 			fi
 			;;
 
@@ -739,13 +769,8 @@ run_command() {
 			local EnvCreate="${MenuCommandEnvCreate["${MenuCommand}"]-}"
 			local EnvUpdate="${MenuCommandEnvUpdate["${MenuCommand}"]-}"
 			local UpperCase="${MenuCommandUpperCase["${MenuCommand}"]-}"
-			if [[ -z ${DIALOG-} ]]; then
-				fatal_notrace \
-					"The GUI requires the '{{|Folder|}}dialog{{[-]}}' command to be installed." \
-					"'{{|Folder|}}dialog{{[-]}}' command not found. Run '{{|UserCommand|}}${APPLICATION_COMMAND} -i{{[-]}}' to install all dependencies." \
-					"" \
-					"Unable to start GUI without the '{{|Folder|}}dialog{{[-]}}' command."
-			fi
+
+			check_display_engine
 
 			if [[ ${#ParamsArray[@]} -gt 1 ]]; then
 				# --menu MenuCommand Parameter ...
@@ -763,6 +788,7 @@ run_command() {
 					config-apps | apps) ;&
 					config-app-select | app-select | select) ;&
 					config-global | global) ;&
+					config-display-engine | display-engine) ;&
 					options-display | display) ;&
 					options-theme | theme)
 						if [[ -z ${Script} ]]; then
@@ -786,6 +812,7 @@ run_command() {
 			;;
 		-a | --add) ;&
 		-c | --compose) ;&
+		--config-display-engine) ;&
 		--config-pm) ;&
 		--config-pm-list | --config-pm-table) ;&
 		--config-pm-existing-list | --config-pm-existing-table) ;&
@@ -815,18 +842,12 @@ run_command() {
 				run_script 'env_backup'
 			fi
 			if [[ ${RequireDialog-} ]]; then
-				if [[ -z ${DIALOG-} ]]; then
-					fatal_notrace \
-						"The GUI requires the '{{|Folder|}}dialog{{[-]}}' command to be installed." \
-						"'{{|Folder|}}dialog{{[-]}}' command not found. Run '{{|UserCommand|}}${APPLICATION_COMMAND} -i{{[-]}}' to install all dependencies." \
-						"" \
-						"Unable to start GUI without the '{{|Folder|}}dialog{{[-]}}' command."
-				fi
+				check_display_engine
 				declare -gx PROMPT="GUI"
 				run_script "${Script}" "${ParamsArray[@]-}" || result=$?
 			else
 				if [[ ${UseDialog} ]]; then
-					run_script_dialog "${Title}" "${SubTitle}" "" \
+					run_script_tui "${Title}" "${SubTitle}" "" \
 						"${Script}" "${ParamsArray[@]-}" || result=$?
 				else
 					run_script "${Script}" "${ParamsArray[@]-}" || result=$?
@@ -849,18 +870,12 @@ run_command() {
 				run_script 'env_backup'
 			fi
 			if [[ ${RequireDialog-} ]]; then
-				if [[ -z ${DIALOG-} ]]; then
-					fatal \
-						"The GUI requires the '{{|Folder|}}dialog{{[-]}}' command to be installed." \
-						"'{{|Folder|}}dialog{{[-]}}' command not found. Run '{{|UserCommand|}}${APPLICATION_COMMAND} -i{{[-]}}' to install all dependencies." \
-						"" \
-						"Unable to start GUI without the '{{|Folder|}}dialog{{[-]}}' command."
-				fi
+				check_display_engine
 				declare -gx PROMPT="GUI"
 				run_script "${Script}" "" || result=$?
 			else
 				if [[ ${UseDialog} ]]; then
-					run_script_dialog "${Title}" "${SubTitle}" "" \
+					run_script_tui "${Title}" "${SubTitle}" "" \
 						"${Script}" "" || result=$?
 				else
 					run_script "${Script}" "" || result=$?
@@ -876,11 +891,7 @@ run_command() {
 				fatal \
 					"No script is defined for command '{{|UserCommand|}}${Command}{{[-]}}'."
 			fi
-			[[ -z ${DIALOG-} ]] && fatal_notrace \
-				"The GUI requires the '{{|Folder|}}dialog{{[-]}}' command to be installed." \
-				"'{{|Folder|}}dialog{{[-]}}' command not found. Run '{{|UserCommand|}}${APPLICATION_COMMAND} -i{{[-]}}' to install all dependencies." \
-				"" \
-				"Unable to start GUI without the '{{|Folder|}}dialog{{[-]}}' command."
+			check_display_engine
 			declare -gx PROMPT="GUI"
 			local AppName="${ParamsArray[0]-}"
 			if [[ -z ${AppName} ]]; then
@@ -907,11 +918,12 @@ run_command() {
 			if [[ -n ${ThemeName} ]]; then
 				NoticeText="Applying ${APPLICATION_NAME} theme '{{|Theme|}}${ThemeName}{{[-]}}'"
 			else
-				NoticeText="Re-applying ${APPLICATION_NAME} theme '{{|Theme|}}$(run_script 'theme_name'){{[-]}}'"
+				run_script 'theme_name_into' ThemeName
+				NoticeText="Re-applying ${APPLICATION_NAME} theme '{{|Theme|}}${ThemeName}{{[-]}}'"
 			fi
 			notice \
 				"${NoticeText}"
-			if use_dialog_box; then
+			if use_tui_box; then
 				run_script 'config_theme' "${ThemeName}" && run_script 'menu_dialog_example' "" "${CURRENT_COMMANDLINE}" || result=$?
 			else
 				run_script 'config_theme' "${ThemeName}" || result=$?
@@ -939,8 +951,8 @@ run_command() {
 				notice \
 					"${Notice}"
 			fi
-			set_toml_val "${APPLICATION_TOML_FILE}" "ui.${ConfigVar}" "${ConfigValue}" || result=$?
-			if use_dialog_box; then
+			run_script 'config_set' "${ConfigVar}" "${ConfigValue}" || result=$?
+			if use_tui_box; then
 				run_script 'menu_dialog_example' "${Title}" "${CURRENT_COMMANDLINE}"
 			fi
 			;;
@@ -950,15 +962,15 @@ run_command() {
 				fatal \
 					"No script is defined for command '{{|UserCommand|}}${Command}{{[-]}}'."
 			fi
-			if use_dialog_box; then
-				for AppName in $(xargs -n1 <<< "${ParamsArray[0]}"); do
-					run_script "${Script}" "${AppName}"
-				done |& dialog_pipe "${Title}" "${SubTitle}" ""
-			else
-				for AppName in $(xargs -n1 <<< "${ParamsArray[0]}"); do
-					run_script "${Script}" "${AppName}"
-				done || result=$?
-			fi
+			#shellcheck disable=SC2034 # (warning): PipePID is passed by name to tui_pipe_open/close via nameref and appears unused to shellcheck.
+			local -i PipeFD PipePID
+			tui_pipe_open PipeFD PipePID "${Title}" "${SubTitle}" ""
+			local -a AppList
+			IFS=$' \t\n\r' read -d '' -ra AppList <<< "${ParamsArray[0]}" || true
+			for AppName in "${AppList[@]}"; do
+				run_script "${Script}" "${AppName}"
+			done >&${PipeFD} 2>&1 || result=$?
+			tui_pipe_close PipeFD PipePID
 			;;
 
 		--env-get | --env-get-lower) ;&
@@ -969,15 +981,13 @@ run_command() {
 					"No script is defined for command '{{|UserCommand|}}${Command}{{[-]}}'."
 			fi
 			[[ -n ${UpperCase} ]] && ParamsArray=("${ParamsArray[@]^^}")
-			if use_dialog_box; then
-				for VarName in "${ParamsArray[@]}"; do
-					run_script "${Script}" "${VarName}"
-				done |& dialog_pipe "${Title}" "${SubTitle}" ""
-			else
-				for VarName in "${ParamsArray[@]}"; do
-					run_script "${Script}" "${VarName}"
-				done || result=$?
-			fi
+			#shellcheck disable=SC2034 # (warning): PipePID is passed by name to tui_pipe_open/close via nameref and appears unused to shellcheck.
+			local -i PipeFD PipePID
+			tui_pipe_open PipeFD PipePID "${Title}" "${SubTitle}" ""
+			for VarName in "${ParamsArray[@]}"; do
+				run_script "${Script}" "${VarName}"
+			done >&${PipeFD} 2>&1 || result=$?
+			tui_pipe_close PipeFD PipePID
 			;;
 
 		--env-get= | --env-get-lower=) ;&
@@ -988,8 +998,8 @@ run_command() {
 					"No script is defined for command '{{|UserCommand|}}${Command}{{[-]}}'."
 			fi
 			[[ -n ${UpperCase} ]] && EqualsParam="${EqualsParam^^}"
-			if use_dialog_box; then
-				run_script_dialog "${Title}" "${SubTitle}" "" \
+			if use_tui_box; then
+				run_script_tui "${Title}" "${SubTitle}" "" \
 					"${Script}" "${EqualsParam}"
 			else
 				run_script "${Script}" "${EqualsParam}" || result=$?
@@ -1033,11 +1043,13 @@ run_command() {
 				fatal \
 					"No script is defined for command '{{|UserCommand|}}${Command}{{[-]}}'."
 			fi
-			run_script_dialog \
+			local -a _list_
+			run_script "${Script}_into" _list_
+			run_script_tui \
 				"${Title}" \
 				"${SubTitle}" \
 				"" \
-				'app_nicename' "$(run_script "${Script}")"
+				'app_nicename' ${_list_[@]+"${_list_[@]}"}
 			;;
 
 		*)
@@ -1062,12 +1074,12 @@ set_flags() {
 				declare -gx FORCE=true
 				;;
 			-g | --gui)
-				if [[ -n ${DIALOG-} ]]; then
+				if [[ -n ${DIALOG-} || -n ${WHIPTAIL-} ]]; then
 					declare -gx PROMPT="GUI"
 				else
 					warn \
-						"The '{{|UserCommand|}}${APPLICATION_COMMAND} ${flag}{{[-]}}' option requires the '{{|Folder|}}dialog$}NC}' command to be installed." \
-						"'{{|Folder|}}dialog{{[-]}}' command not found. Run '{{|UserCommand|}}${APPLICATION_COMMAND} -i{{[-]}}' to install all dependencies." \
+						"The '{{|UserCommand|}}${APPLICATION_COMMAND} ${flag}{{[-]}}' option requires the '{{|Folder|}}dialog$}NC}' or '{{|Folder|}}whiptail$}NC}' command to be installed." \
+						"'{{|Program|}}dialog{{[-]}}' or '{{|Program|}}whiptail{{[-]}}' command not found. Run '{{|UserCommand|}}${APPLICATION_COMMAND} -i{{[-]}}' to install all dependencies." \
 						"" \
 						"Coninuing without '{{|UserCommand|}}${flag}{{[-]}}' option."
 				fi
@@ -1181,4 +1193,13 @@ ${Message}
 
 ${UsageText}
 EOF
+}
+
+check_display_engine() {
+	[[ -n ${DIALOG-} || -n ${WHIPTAIL-} ]] && return
+	fatal_notrace \
+		"The GUI requires the '{{|UserCommand|}}dialog{{[-]}}' or '{{|UserCommand|}}whiptail{{[-]}}' command to be installed." \
+		"'{{|UserCommand|}}dialog{{[-]}}' or '{{|UserCommand|}}whiptail{{[-]}}' command not found. Run '{{|UserCommand|}}${APPLICATION_COMMAND} -i{{[-]}}' to install all dependencies." \
+		"" \
+		"Unable to start GUI without the '{{|UserCommand|}}dialog{{[-]}}' or '{{|UserCommand|}}whiptail{{[-]}}' command."
 }

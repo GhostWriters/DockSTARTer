@@ -2,37 +2,12 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
+declare -a _dependencies_list=()
+
 env_get_literal() {
-	# env_get_literal VarName [VarFile]
-	# env_get_literal APPNAME:VarName
-	#
-	# The string returned will be the literal value after `=`, including quotes and comments
-	#
-	# Returns the variable "VarName"  If no "VarFile" is given, uses the global .env file
-	# If "APPNAME:" is provided, gets variable from ".env.app.appname"
-	local VarName=${1-}
-	local VarFile=${2:-$COMPOSE_ENV}
-
-	if ! run_script 'varname_is_valid' "${VarName}"; then
-		error "'{{|Var|}}${VarName}{{[-]}}' is an invalid variable name."
-		return
-	fi
-
-	if [[ ${VarName} =~ ^[A-Za-z0-9_]+: ]]; then
-		# VarName is in the form of "APPNAME:VARIABLE", set new file to use
-		local APPNAME=${VarName%%:*}
-		VarFile="$(run_script 'app_env_file' "${APPNAME}")"
-		VarName=${VarName#"${APPNAME}:"}
-	fi
-	if [[ -e ${VarFile} ]]; then
-		local Line
-		Line="$(run_script 'env_get_line' "${VarName}" "${VarFile}")"
-		echo "${Line#*=}"
-	else
-		# VarFile does not exist, give a warning
-		warn "File '{{|File|}}${VarFile}{{[-]}}' does not exist."
-	fi
-
+	local result
+	run_script 'env_get_literal_into' result "$@"
+	echo "${result}"
 }
 
 test_env_get_literal() {
@@ -66,7 +41,7 @@ test_env_get_literal() {
 			"${VarFile}" \
 			""
 		for ((i = 0; i < ${#Test[@]}; i += 3)); do
-			printf '%s\n' "${Test[i+1]}"
+			printf '%s\n' "${Test[i + 1]}"
 		done
 	} > "${VarFile}"
 
@@ -74,8 +49,8 @@ test_env_get_literal() {
 	run_unit_tests_pipe "Var" "Var" "${ForcePass}" < <(
 		for ((i = 0; i < ${#Test[@]}; i += 3)); do
 			printf '%s\n' \
-				"${Test[i+1]}" \
-				"${Test[i+2]}" \
+				"${Test[i + 1]}" \
+				"${Test[i + 2]}" \
 				"$(run_script 'env_get_literal' "${Test[i]}" "${VarFile}")"
 		done
 	)

@@ -17,7 +17,7 @@ env_update() {
 	for appname in "${applist[@]}"; do
 		if ! run_script 'app_is_referenced' "${appname}"; then
 			local AppEnvFile
-			AppEnvFile="$(run_script 'app_env_file' "${appname}")"
+			run_script 'app_env_file_into' AppEnvFile "${appname}"
 			run_script 'set_permissions' "${AppEnvFile}"
 			notice "Deleting '{{|File|}}${AppEnvFile}{{[-]}}'."
 			rm -f "${AppEnvFile}" ||
@@ -32,7 +32,7 @@ env_update() {
 	)
 	# Format the global .env file
 	if ! run_script 'needs_env_update' "${COMPOSE_ENV}"; then
-		info "'{{|File|}}${COMPOSE_ENV}{{[-]}}' already updated."
+		info "File '{{|File|}}${COMPOSE_ENV}{{[-]}}' already updated."
 	else
 		notice "Updating '{{|File|}}${COMPOSE_ENV}{{[-]}}'."
 		local ENV_LINES_FILE
@@ -40,24 +40,22 @@ env_update() {
 		run_script 'appvars_lines' "" > "${ENV_LINES_FILE}"
 
 		local -a UPDATED_ENV_LINES=()
-		readarray -t UPDATED_ENV_LINES < <(
-			run_script 'env_format_lines' "${ENV_LINES_FILE}" "${COMPOSE_ENV_DEFAULT_FILE}" ""
-		)
+		run_script 'env_format_lines_into_array' UPDATED_ENV_LINES "${ENV_LINES_FILE}" "${COMPOSE_ENV_DEFAULT_FILE}" ""
 
 		if [[ -n ${applist[*]-} ]]; then
 			for appname in "${applist[@]}"; do
 				local APP_DEFAULT_GLOBAL_ENV_FILE=""
 				local -a UPDATED_APP_ENV_LINES=()
 				if ! run_script 'app_is_user_defined' "${appname}"; then
-					APP_DEFAULT_GLOBAL_ENV_FILE="$(run_script 'app_instance_file' "${appname}" ".env")"
+					run_script 'app_instance_file_into' APP_DEFAULT_GLOBAL_ENV_FILE "${appname}" ".env"
 				fi
 				run_script 'appvars_lines' "${appname}" > "${ENV_LINES_FILE}"
 				if ((${#UPDATED_ENV_LINES[@]} > 0)); then
 					UPDATED_ENV_LINES+=("")
 				fi
-				readarray -t -O ${#UPDATED_ENV_LINES[@]} UPDATED_ENV_LINES < <(
-					run_script 'env_format_lines' "${ENV_LINES_FILE}" "${APP_DEFAULT_GLOBAL_ENV_FILE}" "${appname}"
-				)
+				local -a NewLines
+				run_script 'env_format_lines_into_array' NewLines "${ENV_LINES_FILE}" "${APP_DEFAULT_GLOBAL_ENV_FILE}" "${appname}"
+				UPDATED_ENV_LINES+=("${NewLines[@]-}")
 			done
 		fi
 		RunAndLog "" "rm:notice" \
@@ -72,9 +70,11 @@ env_update() {
 		printf '%s\n' "${UPDATED_ENV_LINES[@]}" > "${MKTEMP_ENV_UPDATED}" ||
 			fatal \
 				"Failed to write temporary '{{|File|}}.env{{[-]}}' update file."
-		RunAndLog "" "cp:notice" \
-			fatal "Failed to copy file." \
-			cp -f "${MKTEMP_ENV_UPDATED}" "${COMPOSE_ENV}"
+		if [[ ! -f ${COMPOSE_ENV} ]] || ! cmp -s "${MKTEMP_ENV_UPDATED}" "${COMPOSE_ENV}" 2> /dev/null; then
+			RunAndLog "" "cp:notice" \
+				fatal "Failed to copy file." \
+				cp -f "${MKTEMP_ENV_UPDATED}" "${COMPOSE_ENV}"
+		fi
 		RunAndLog "" "rm:notice" \
 			warn "Failed to remove temporary {{|File|}}.env{{[-]}} update file." \
 			rm -f "${MKTEMP_ENV_UPDATED}"
@@ -86,9 +86,9 @@ env_update() {
 	if [[ -n ${applist[*]-} ]]; then
 		for appname in "${applist[@]-}"; do
 			local APP_ENV_FILE
-			APP_ENV_FILE="$(run_script 'app_env_file' "${appname}")"
+			run_script 'app_env_file_into' APP_ENV_FILE "${appname}"
 			if ! run_script 'needs_env_update' "${APP_ENV_FILE}"; then
-				info "'{{|File|}}${APP_ENV_FILE}{{[-]}}' already updated."
+				info "File '{{|File|}}${APP_ENV_FILE}{{[-]}}' already updated."
 			else
 				if [[ ! -f ${APP_ENV_FILE} ]]; then
 					notice "Creating '{{|File|}}${APP_ENV_FILE}{{[-]}}'."
@@ -97,12 +97,10 @@ env_update() {
 				fi
 				local APP_DEFAULT_ENV_FILE=""
 				if ! run_script 'app_is_user_defined' "${appname}"; then
-					APP_DEFAULT_ENV_FILE="$(run_script 'app_instance_file' "${appname}" ".env.app.*")"
+					run_script 'app_instance_file_into' APP_DEFAULT_ENV_FILE "${appname}" ".env.app.*"
 				fi
 				local -a UPDATED_APP_ENV_LINES=()
-				readarray -t UPDATED_APP_ENV_LINES < <(
-					run_script 'env_format_lines' "${APP_ENV_FILE}" "${APP_DEFAULT_ENV_FILE}" "${appname}"
-				)
+				run_script 'env_format_lines_into_array' UPDATED_APP_ENV_LINES "${APP_ENV_FILE}" "${APP_DEFAULT_ENV_FILE}" "${appname}"
 				local MKTEMP_APP_ENV_UPDATED
 				MKTEMP_APP_ENV_UPDATED=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.MKTEMP_APP_ENV_UPDATED.XXXXXXXXXX") ||
 					fatal \
@@ -111,9 +109,11 @@ env_update() {
 				printf '%s\n' "${UPDATED_APP_ENV_LINES[@]}" > "${MKTEMP_APP_ENV_UPDATED}" ||
 					fatal \
 						"Failed to write temporary '{{|File|}}.env.app.${appname}{{[-]}}' update file."
-				RunAndLog "" "cp:notice" \
-					fatal "Failed to copy file." \
-					cp -f "${MKTEMP_APP_ENV_UPDATED}" "${APP_ENV_FILE}"
+				if [[ ! -f ${APP_ENV_FILE} ]] || ! cmp -s "${MKTEMP_APP_ENV_UPDATED}" "${APP_ENV_FILE}" 2> /dev/null; then
+					RunAndLog "" "cp:notice" \
+						fatal "Failed to copy file." \
+						cp -f "${MKTEMP_APP_ENV_UPDATED}" "${APP_ENV_FILE}"
+				fi
 				RunAndLog "" "rm:notice" \
 					warn "Failed to remove temporary '{{|File|}}.env.app.${appname}{{[-]}}' update file." \
 					rm -f "${MKTEMP_APP_ENV_UPDATED}"

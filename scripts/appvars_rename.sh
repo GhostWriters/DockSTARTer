@@ -17,7 +17,7 @@ appvars_rename() {
 				"Failing command: {{|FailingCommand|}}docker stop ${FROMAPP,,}"
 		notice "Moving config folder."
 		local DOCKER_VOLUME_CONFIG
-		DOCKER_VOLUME_CONFIG="$(run_script 'env_get' DOCKER_VOLUME_CONFIG)"
+		run_script 'env_get_into' DOCKER_VOLUME_CONFIG DOCKER_VOLUME_CONFIG
 		mv "${DOCKER_VOLUME_CONFIG}/${FROMAPP,,}" "${DOCKER_VOLUME_CONFIG}/${TOAPP,,}" ||
 			warn \
 				"Failed to move folder." \

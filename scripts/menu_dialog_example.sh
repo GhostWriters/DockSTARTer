@@ -7,9 +7,9 @@ menu_dialog_example() {
 	local CommandLine=${2-}
 
 	local ThemeName ThemeDescription ThemeAuthor
-	ThemeName="$(run_script 'theme_name')"
-	ThemeDescription="$(run_script 'theme_description' "${ThemeName}")"
-	ThemeAuthor="$(run_script 'theme_author' "${ThemeName}")"
+	run_script 'theme_name_into' ThemeName
+	run_script 'theme_description_into' ThemeDescription "${ThemeName}"
+	run_script 'theme_author_into' ThemeAuthor "${ThemeName}"
 
 	if [[ -z ${Message} ]]; then
 		Message="Applied theme ${ThemeName}"
@@ -78,7 +78,9 @@ menu_dialog_example() {
 		"${DialogOptions[@]}"
 	)
 
-	dialog_menu "${MenuDialog[@]}" > /dev/null || true
+	#shellcheck disable=SC2034 # (warning): SelectedChoice is populated by example TUI call but is intentionally unused.
+	local SelectedChoice
+	tui_menu_into SelectedChoice "${MenuDialog[@]}" || true
 }
 
 test_menu_dialog_example() {

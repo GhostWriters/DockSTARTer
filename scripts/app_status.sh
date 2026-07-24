@@ -4,11 +4,11 @@ IFS=$'\n\t'
 
 app_status() {
 	# Enable the status of apps given.  Apps will be seperate arguments and/or seperated by spaces
-	local AppList
-	AppList="$(xargs -n 1 <<< "$*")"
-	for APPNAME in ${AppList}; do
+	local -a AppList
+	IFS=$' \t\n\r' read -d '' -ra AppList <<< "$*" || true
+	for APPNAME in "${AppList[@]}"; do
 		local AppName
-		AppName="$(run_script 'app_nicename' "${APPNAME}")"
+		run_script 'app_nicename_into' AppName "${APPNAME}"
 		if run_script 'app_is_referenced' "${AppName}"; then
 			if run_script 'app_is_added' "${AppName}"; then
 				if run_script 'app_is_enabled' "${AppName}"; then

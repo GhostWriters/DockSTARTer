@@ -17,6 +17,18 @@ declare -rgx TEMPLATES_DEFAULT_BRANCH='main'
 declare -rgx TEMPLATES_PARENT_FOLDER_NAME='templates'
 declare -rgx TEMPLATES_REPO_FOLDER_NAME='DockSTARTer-Templates'
 
+assert_nameref_is_string() {
+	local type_info
+	type_info=$(declare -p "${1}" 2> /dev/null) || return 0
+	[[ ! ${type_info} =~ ^declare\ -[a-zA-Z]*[aA] ]] || fatal "Variable '{{|Var|}}${1}{{[-]}}' is an array, expected a string"
+}
+
+assert_nameref_is_array() {
+	local type_info
+	type_info=$(declare -p "${1}" 2> /dev/null) || return 0
+	[[ ${type_info} =~ ^declare\ -[a-zA-Z]*a ]] || fatal "Variable '{{|Var|}}${1}{{[-]}}' is a string, expected an array"
+}
+
 # Version Functions
 # https://stackoverflow.com/questions/4023830/how-to-compare-two-strings-in-dot-separated-version-format-in-bash#comment92693604_4024263
 vergte() { printf '%s\n%s' "${2}" "${1}" | sort -C -V; }
@@ -107,8 +119,8 @@ for XDG_FOLDER in "${XDG_DATA_HOME}" "${XDG_CONFIG_HOME}" "${XDG_CONFIG_HOME}/${
 	fi
 done
 
-declare -rgx APPLICATION_LOG="${XDG_STATE_HOME}/${APPLICATION_NAME,,}/${APPLICATION_NAME,,}.log"
-declare -rgx FATAL_LOG="${XDG_STATE_HOME}/${APPLICATION_NAME,,}/${APPLICATION_NAME,,}.fatal.log"
+declare -rgx APPLICATION_LOG="${XDG_CONFIG_HOME}/${APPLICATION_NAME,,}/${APPLICATION_NAME,,}.log"
+declare -rgx FATAL_LOG="${XDG_CONFIG_HOME}/${APPLICATION_NAME,,}/${APPLICATION_NAME,,}.fatal.log"
 
 declare -rgx APPLICATION_UPDATE_RECORD="${XDG_STATE_HOME}/${APPLICATION_NAME,,}/${APPLICATION_NAME,,}.updated"
 declare -Agx ColorCodes=(
@@ -117,14 +129,22 @@ declare -Agx ColorCodes=(
 )
 
 resolve_styles() {
-	local style_map_name="$1"
-	local -n style_map="$1"
-	local val="$2"
+	local _rs_val_
+	resolve_styles_into _rs_val_ "$@"
+	printf '%s\n' "${_rs_val_}"
+}
+
+resolve_styles_into() {
+	local -n _rsi_out_="${1}"
+	assert_nameref_is_string "${1}"
+	local style_map_name="${2}"
+	local -n style_map="${2}"
+	local val="${3}"
 	local last_val=""
 	local -i MaxResolves=100
 
-	local sem_p="${3-}" sem_s="${4-}"
-	local dir_p="${5-}" dir_s="${6-}"
+	local sem_p="${4-}" sem_s="${5-}"
+	local dir_p="${6-}" dir_s="${7-}"
 
 	while [[ ${MaxResolves} -gt 0 ]]; do
 		local regex p_tag content s_tag full_match
@@ -142,7 +162,7 @@ resolve_styles() {
 			local esc_dir_s="${dir_s//\]/\\\]}"
 			esc_dir_s="${esc_dir_s//\|/\\|}"
 			esc_dir_s="${esc_dir_s//\}/\\\}}"
-			regex="(${esc_sem_p}|${esc_dir_p})([^]|}]+)(${esc_sem_s}|${esc_dir_s})"
+			regex="(${esc_sem_p}|${esc_dir_p})([^]|}]*)(${esc_sem_s}|${esc_dir_s})"
 
 			[[ ${val} =~ ${regex} ]] || break
 			full_match="${BASH_REMATCH[0]}"
@@ -164,7 +184,7 @@ resolve_styles() {
 			fi
 		else
 			# Default syntax: {{|...|}} or {{[...]}}
-			regex='\{\{(\[|\|)([^]|}]+)(\]|\|)\}\}'
+			regex='\{\{(\[|\|)([^]|}]*)(\]|\|)\}\}'
 			[[ ${val} =~ ${regex} ]] || break
 			full_match="${BASH_REMATCH[0]}"
 			local type="${BASH_REMATCH[1]}"
@@ -274,43 +294,60 @@ resolve_styles() {
 		fi
 		val="${val//"${full_match}"/"${replacement}"}"
 	done
-	printf '%s\n' "${val}"
+	_rsi_out_="${val}"
 }
 
 resolve_strings() {
 	local array_name="$1"
 	shift
 
+	local _rs_line_ _rs_out_
+	_resolve_strings_line_() {
+		if [[ -t 1 ]]; then
+			resolve_styles_into _rs_out_ "${array_name}" "${_rs_line_}"
+		else
+			strip_styles_into _rs_out_ "${_rs_line_}"
+		fi
+		printf '%s\n' "${_rs_out_}"
+	}
+
 	# Process every argument (and every line within those arguments), or read from STDIN if no arguments
 	if [[ $# -gt 0 ]]; then
-		printf '%s\n' "$@"
+		local arg
+		for arg in "$@"; do
+			while IFS= read -r _rs_line_; do
+				_resolve_strings_line_
+			done <<< "${arg}"
+		done
 	else
-		cat
-	fi | while IFS= read -r line || [[ -n ${line} ]]; do
-		if [[ -t 1 ]]; then
-			# Call the single-string resolver for each line
-			resolve_styles "$array_name" "$line"
-		else
-			# Call the single-string stripper for each line
-			strip_styles "$line"
-		fi
-	done
+		while IFS= read -r _rs_line_ || [[ -n ${_rs_line_} ]]; do
+			_resolve_strings_line_
+		done
+	fi
 }
 
 strip_styles() {
-	local val="${1:-}"
-	local extglob_on=0
-	shopt -q extglob || extglob_on=$?
+	local _ss_val_
+	strip_styles_into _ss_val_ "${1:-}"
+	printf '%s\n' "${_ss_val_}"
+}
 
+strip_styles_into() {
+	local -n _ssi_out_="${1}"
+	assert_nameref_is_string "${1}"
+	local _ssi_val_="${2:-}"
+	local _ssi_extglob_=0
+	shopt -q extglob || _ssi_extglob_=$?
 	shopt -s extglob
-	# Remove {{|...|}} and {{[...]}}
-	val="${val//\{\{\|*([!|])|\}\}/}"
-	val="${val//\{\{\[*([!\]])\]\}\}/}"
-
-	# Only turn extglob off if it was off before
-	[[ ${extglob_on} -ne 0 ]] && shopt -u extglob || true
-
-	printf '%s\n' "${val}"
+	local _ssi_line_ _ssi_result_=""
+	while IFS= read -r _ssi_line_; do
+		_ssi_line_="${_ssi_line_//\{\{\|*([!|])|\}\}/}"
+		_ssi_line_="${_ssi_line_//\{\{\[*([!\]])\]\}\}/}"
+		_ssi_result_+="${_ssi_line_}"$'\n'
+	done <<< "${_ssi_val_}"
+	_ssi_result_="${_ssi_result_%$'\n'}"
+	[[ ${_ssi_extglob_} -ne 0 ]] && shopt -u extglob || true
+	_ssi_out_="${_ssi_result_}"
 }
 
 # shellcheck disable=SC2120
@@ -441,7 +478,7 @@ declare -Ag C=( # Pre-defined colors
 )
 
 for Style in "${!C[@]}"; do
-	C["$Style"]="$(resolve_styles C "${C["$Style"]}")"
+	resolve_styles_into C["$Style"] C "${C["$Style"]}"
 done
 # C must not be readonly so that dynamic styles can be cached!
 
@@ -511,7 +548,7 @@ log() {
 	local LogToTerminal=${1-}
 	local Message=${2-}
 	local StrippedMessage
-	StrippedMessage=$(strip_styles "${Message-}")
+	strip_styles_into StrippedMessage "${Message-}"
 	if [[ ${LogToTerminal} == true ]]; then
 		if [[ -t 2 ]]; then
 			# Stderr is a TTY, output with color
@@ -524,31 +561,63 @@ log() {
 	# Output the message to the log file without color
 	printf '%s\n' "${StrippedMessage}" >> "${MKTEMP_LOG}" || true
 }
-timestamped_log() {
-	local LogLevelTag=${1-}
-	shift 1
-	local LogMessage
-	LogMessage=$(printf '%b\n' "$@")
-	# Create a notice for each argument passed to the function
-	local Timestamp
-	Timestamp=$(date +"%F %T")
-	# Create separate notices with the same timestamp for each line in a log message
-	local line
-	while IFS= read -r line; do
-		printf "{{[-]}}{{|Timestamp|}}${Timestamp}{{[-]}} ${LogLevelTag} %s{{[-]}}\n" "${line}"
-	done <<< "${LogMessage}"
+timestamped_log_into() {
+	local -n _tli_out_="${1}"
+	assert_nameref_is_string "${1}"
+	local _tli_LogLevelTag_="${2-}"
+	shift 2
+	local _tli_LogMessage_
+	printf -v _tli_LogMessage_ '%b\n' "$@"
+	_tli_LogMessage_="${_tli_LogMessage_%$'\n'}"
+	local _tli_Timestamp_
+	printf -v _tli_Timestamp_ '%(%F %T)T' -1
+	local _tli_result_="" _tli_line_ _tli_formatted_line_
+	while IFS= read -r _tli_line_; do
+		printf -v _tli_formatted_line_ "{{[-]}}{{|Timestamp|}}${_tli_Timestamp_}{{[-]}} ${_tli_LogLevelTag_} %s{{[-]}}\n" "${_tli_line_}"
+		_tli_result_+="${_tli_formatted_line_}"
+	done <<< "${_tli_LogMessage_}"
+	_tli_out_="${_tli_result_%$'\n'}"
 }
-trace() { log "${TRACE-}" "$(timestamped_log "{{|Trace|}}[TRACE ]{{[-]}}" "$@")"; }
-debug() { log "${DEBUG-}" "$(timestamped_log "{{|Debug|}}[DEBUG ]{{[-]}}" "$@")"; }
-info() { log "${VERBOSE-}" "$(timestamped_log "{{|Info|}}[INFO  ]{{[-]}}" "$@")"; }
-notice() { log true "$(timestamped_log "{{|Notice|}}[NOTICE]{{[-]}}" "$@")"; }
-warn() { log true "$(timestamped_log "{{|Warn|}}[WARN  ]{{[-]}}" "$@")"; }
-error() { log true "$(timestamped_log "{{|Error|}}[ERROR ]{{[-]}}" "$@")"; }
+timestamped_log() {
+	local _tl_result_
+	timestamped_log_into _tl_result_ "$@"
+	printf '%s\n' "${_tl_result_}"
+}
+trace() {
+	local _msg_
+	timestamped_log_into _msg_ "{{|Trace|}}[TRACE ]{{[-]}}" "$@"
+	log "${TRACE-}" "${_msg_}"
+}
+debug() {
+	local _msg_
+	timestamped_log_into _msg_ "{{|Debug|}}[DEBUG ]{{[-]}}" "$@"
+	log "${DEBUG-}" "${_msg_}"
+}
+info() {
+	local _msg_
+	timestamped_log_into _msg_ "{{|Info|}}[INFO  ]{{[-]}}" "$@"
+	log "${VERBOSE-}" "${_msg_}"
+}
+notice() {
+	local _msg_
+	timestamped_log_into _msg_ "{{|Notice|}}[NOTICE]{{[-]}}" "$@"
+	log true "${_msg_}"
+}
+warn() {
+	local _msg_
+	timestamped_log_into _msg_ "{{|Warn|}}[WARN  ]{{[-]}}" "$@"
+	log true "${_msg_}"
+}
+error() {
+	local _msg_
+	timestamped_log_into _msg_ "{{|Error|}}[ERROR ]{{[-]}}" "$@"
+	log true "${_msg_}"
+}
 fatal_notrace() {
 	local LogMessage
-	LogMessage=$(timestamped_log "{{|Fatal|}}[FATAL ]{{[-]}}" "$@")
+	timestamped_log_into LogMessage "{{|Fatal|}}[FATAL ]{{[-]}}" "$@"
 	log true "${LogMessage}"
-	LogMessage=$(strip_styles "${LogMessage-}")
+	strip_styles_into LogMessage "${LogMessage-}"
 	printf '%s\n' "${LogMessage}" > "${FATAL_LOG}" || true
 	exit 1
 }
@@ -581,7 +650,7 @@ fatal() {
 		local SourceFile="${BASH_SOURCE[i]:-$NoFile}"
 		local -i line="${thisFuncLine}"
 		if ((i > 0)); then
-			line="${BASH_LINENO[i-1]:-0}"
+			line="${BASH_LINENO[i - 1]:-0}"
 		fi
 
 		local prefix=""
@@ -675,7 +744,7 @@ RunAndLog() {
 	if [[ ${OutputNoticeType} == *:* ]]; then
 		Prefix="${OutputNoticeType%%:*}:"
 		OutputNoticeType=${OutputNoticeType#"${Prefix}"}
-		Prefix="{{|RunningCommand|}}${Prefix}{{[-]}} "
+		Prefix="\t{{|RunningCommand|}}${Prefix}{{[-]}} "
 	fi
 
 	local OutputFile
@@ -745,7 +814,7 @@ if declare -F MigrateFilesAndFolders > /dev/null; then
 fi
 [[ -f "${SCRIPTPATH}/includes/pm_variables.sh" ]] && source "${SCRIPTPATH}/includes/pm_variables.sh"
 [[ -f "${SCRIPTPATH}/includes/run_script.sh" ]] && source "${SCRIPTPATH}/includes/run_script.sh"
-[[ -f "${SCRIPTPATH}/includes/dialog_functions.sh" ]] && source "${SCRIPTPATH}/includes/dialog_functions.sh"
+[[ -f "${SCRIPTPATH}/includes/tui_functions.sh" ]] && source "${SCRIPTPATH}/includes/tui_functions.sh"
 [[ -f "${SCRIPTPATH}/includes/ds_functions.sh" ]] && source "${SCRIPTPATH}/includes/ds_functions.sh"
 [[ -f "${SCRIPTPATH}/includes/test_functions.sh" ]] && source "${SCRIPTPATH}/includes/test_functions.sh"
 [[ -f "${SCRIPTPATH}/includes/usage.sh" ]] && source "${SCRIPTPATH}/includes/usage.sh"
@@ -804,6 +873,31 @@ clone_repo() {
 	RunAndLog notice "git:notice" \
 		fatal "Failed to clone {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} repo." \
 		git clone -b "${APPLICATION_DEFAULT_BRANCH}" "${APPLICATION_REPO}" "${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}"
+
+	# This bootstrap copy runs from outside the cloned repo, so
+	# includes/ds_functions.sh isn't sourced yet -- use plain git directly.
+	local ClonedGitPath="${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}"
+	local ClonedVersion
+	ClonedVersion="$(git -C "${ClonedGitPath}" describe --tags --exact-match 2> /dev/null || true)"
+	if [[ -z ${ClonedVersion} ]]; then
+		ClonedVersion="${APPLICATION_DEFAULT_BRANCH} commit $(git -C "${ClonedGitPath}" rev-parse --short HEAD 2> /dev/null)"
+	fi
+	notice "Cloned {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} at '{{|Version|}}${ClonedVersion}{{[-]}}'."
+
+	local LatestTag
+	LatestTag="$(git -C "${ClonedGitPath}" tag --merged "origin/${APPLICATION_DEFAULT_BRANCH}" --sort=-creatordate 2> /dev/null | head -1)" || true
+	if [[ -n ${LatestTag} ]]; then
+		local TagHash HeadHash
+		TagHash="$(git -C "${ClonedGitPath}" rev-parse --quiet --verify "${LatestTag}^{commit}" 2> /dev/null)" || true
+		HeadHash="$(git -C "${ClonedGitPath}" rev-parse --quiet --verify HEAD 2> /dev/null)" || true
+		if [[ -z ${TagHash} || ${TagHash} != "${HeadHash}" ]]; then
+			notice "Checking out {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} release '{{|Version|}}${LatestTag}{{[-]}}'"
+			RunAndLog info "git:info" \
+				fatal "Failed to switch to github ref '{{|Branch|}}${LatestTag}{{[-]}}'." \
+				git -C "${ClonedGitPath}" checkout --force "${LatestTag}"
+		fi
+	fi
+
 	if [[ ${#ARGS[@]} -eq 0 ]]; then
 		notice \
 			"Performing first run install."
@@ -824,6 +918,12 @@ clone_templates_repo() {
 	RunAndLog notice "git:notice" \
 		fatal "Failed to clone {{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} repo." \
 		git clone -b "${TEMPLATES_DEFAULT_BRANCH}" "${TEMPLATES_REPO}" "${TEMPLATES_PARENT_FOLDER}"
+
+	local ClonedVersion
+	templates_version_into ClonedVersion
+	notice "Cloned {{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} at '{{|Version|}}${ClonedVersion}{{[-]}}'."
+
+	templates_checkout_latest_release_after_clone
 }
 
 # Cleanup Function
@@ -868,15 +968,19 @@ declare -gx APPLICATION_VERSION="Unknown Version"
 declare -gx TEMPLATES_VERSION="Unknown Version"
 if check_repo; then
 	if declare -F ds_version > /dev/null; then
-		APPLICATION_VERSION="$(ds_version)"
+		ds_version_into APPLICATION_VERSION
 		if [[ -z ${APPLICATION_VERSION} ]]; then
-			APPLICATION_VERSION="$(ds_branch) Unknown Version"
+			declare _ds_br_
+			ds_branch_into _ds_br_
+			APPLICATION_VERSION="${_ds_br_} Unknown Version"
 		fi
 	fi
 	if declare -F templates_version > /dev/null; then
-		TEMPLATES_VERSION="$(templates_version)"
+		templates_version_into TEMPLATES_VERSION
 		if [[ -z ${TEMPLATES_VERSION} ]]; then
-			TEMPLATES_VERSION="$(templates_branch) Unknown Version"
+			declare _temp_br_
+			templates_branch_into _temp_br_
+			TEMPLATES_VERSION="${_temp_br_} Unknown Version"
 		fi
 	fi
 fi
@@ -957,20 +1061,23 @@ init_check_symlink() {
 }
 
 init_check_update() {
-	# Only check for updates once per 24 hours, as it can be quite slow.
-	[ -n "$(find "${APPLICATION_UPDATE_RECORD}" -mtime -1 2> /dev/null)" ] && return
+	# Only check for updates once every 15 minutes.
+	[ -n "$(find "${APPLICATION_UPDATE_RECORD}" -mmin -15 2> /dev/null)" ] && return
 	local Branch
-	Branch="$(ds_branch)"
+	ds_branch_into Branch
 	local TargetBranch="${Branch}"
 	if ds_tag_exists "${Branch}"; then
-		TargetBranch="$(ds_best_branch)"
+		ds_best_branch_into TargetBranch
 	fi
+	git_resolve_update_target_into TargetBranch "${SCRIPTPATH}" "${APPLICATION_DEFAULT_BRANCH}" "${TargetBranch}" "${Branch}"
 	if ds_ref_exists "${Branch}"; then
 		if ds_update_available "${Branch}" "${TargetBranch}"; then
+			local TargetVersion
+			ds_version_into TargetVersion "${TargetBranch}"
 			warn \
 				"{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} [{{|Version|}}${APPLICATION_VERSION}{{[-]}}]" \
 				"An update to {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} is available." \
-				"Run '{{|UserCommand|}}${APPLICATION_COMMAND} -u{{[-]}}' to update to version '{{|Version|}}$(ds_version "${TargetBranch}"){{[-]}}'."
+				"Run '{{|UserCommand|}}${APPLICATION_COMMAND} -u{{[-]}}' to update to version '{{|Version|}}${TargetVersion}{{[-]}}'."
 		else
 			info \
 				"{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} [{{|Version|}}${APPLICATION_VERSION}{{[-]}}]"
@@ -980,43 +1087,54 @@ init_check_update() {
 		if ! ds_branch_exists "${MainBranch}"; then
 			MainBranch="${APPLICATION_LEGACY_BRANCH}"
 		fi
+		local CurrentVersion
+		ds_version_into CurrentVersion
 		warn \
 			"{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} branch '{{|Branch|}}${Branch}{{[-]}}' appears to no longer exist." \
-			"{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} is currently on version '{{|Version|}}$(ds_version){{[-]}}'."
+			"{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} is currently on version '{{|Version|}}${CurrentVersion}{{[-]}}'."
 		if ! ds_branch_exists "${MainBranch}"; then
 			error \
 				"{{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} does not appear to have a '{{|Branch|}}${APPLICATION_DEFAULT_BRANCH}{{[-]}}' or '{{|Branch|}}${APPLICATION_LEGACY_BRANCH}{{[-]}}' branch."
 		else
+			local MainVersion
+			ds_version_into MainVersion "${MainBranch}"
 			warn \
-				"Run '{{|UserCommand|}}${APPLICATION_COMMAND} -u ${MainBranch}{{[-]}}' to update to the latest stable release '{{|Version|}}$(ds_version "${MainBranch}"){{[-]}}'."
+				"Run '{{|UserCommand|}}${APPLICATION_COMMAND} -u ${MainBranch}{{[-]}}' to update to the latest stable release '{{|Version|}}${MainVersion}{{[-]}}'."
 		fi
 	fi
-	Branch="$(templates_branch)"
+	templates_branch_into Branch
 	local TargetBranch="${Branch}"
 	if templates_tag_exists "${Branch}"; then
-		TargetBranch="$(templates_best_branch)"
+		templates_best_branch_into TargetBranch
 	fi
+	git_resolve_update_target_into TargetBranch "${TEMPLATES_PARENT_FOLDER}" "${TEMPLATES_DEFAULT_BRANCH}" "${TargetBranch}" "${Branch}"
 	if templates_ref_exists "${Branch}"; then
 		if templates_update_available "${Branch}" "${TargetBranch}"; then
+			local TargetVersion
+			templates_version_into TargetVersion "${TargetBranch}"
 			warn \
 				"{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} [{{|Version|}}${TEMPLATES_VERSION}{{[-]}}]" \
 				"An update to {{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} is available." \
-				"Run '{{|UserCommand|}}${APPLICATION_COMMAND} -u{{[-]}}' to update to version '{{|Version|}}$(templates_version "${TargetBranch}"){{[-]}}'."
+				"Run '{{|UserCommand|}}${APPLICATION_COMMAND} -u{{[-]}}' to update to version '{{|Version|}}${TargetVersion}{{[-]}}'."
 		else
 			info \
 				"{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} [{{|Version|}}${TEMPLATES_VERSION}{{[-]}}]"
 		fi
 	else
 		Branch="${TEMPLATES_DEFAULT_BRANCH}"
+		local CurrentVersion
+		templates_version_into CurrentVersion
 		warn \
 			"{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} branch '{{|Branch|}}${Branch}{{[-]}}' appears to no longer exist." \
-			"{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} is currently on version '{{|Version|}}$(templates_version){{[-]}}'."
+			"{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} is currently on version '{{|Version|}}${CurrentVersion}{{[-]}}'."
 		if ! templates_branch_exists "${Branch}"; then
 			error \
 				"{{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} does not appear to have a '{{|Branch|}}${TEMPLATES_DEFAULT_BRANCH}{{[-]}}' branch."
 		else
+			local StableVersion
+			templates_version_into StableVersion "${Branch}"
 			warn \
-				"Run '{{|UserCommand|}}${APPLICATION_COMMAND} -u ${Branch}{{[-]}}' to update to the latest stable release '{{|Version|}}$(templates_version "${Branch}"){{[-]}}'."
+				"Run '{{|UserCommand|}}${APPLICATION_COMMAND} -u ${Branch}{{[-]}}' to update to the latest stable release '{{|Version|}}${StableVersion}{{[-]}}'."
 		fi
 	fi
 	touch "${APPLICATION_UPDATE_RECORD}"

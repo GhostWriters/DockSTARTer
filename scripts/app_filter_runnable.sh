@@ -3,11 +3,11 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 app_filter_runnable() {
-	local AppList
-	AppList="$(xargs -n 1 <<< "$*")"
-	for AppName in ${AppList}; do
+	local -a AppList
+	IFS=$' \t\n\r' read -d '' -ra AppList <<< "$*" || true
+	for AppName in "${AppList[@]}"; do
 		local -l basename
-		basename=$(run_script 'appname_to_baseappname' "${AppName}")
+		run_script 'appname_to_baseappname_into' basename "${AppName}"
 		local main_yml="${TEMPLATES_FOLDER}/${basename}/${basename}.yml"
 		local arch_yml="${TEMPLATES_FOLDER}/${basename}/${basename}.${ARCH}.yml"
 		if [[ -f ${main_yml} && -f ${arch_yml} ]]; then

@@ -18,7 +18,7 @@ env_var_exists() {
 	if [[ ${VAR_NAME} =~ ^[A-Za-z0-9_]+: ]]; then
 		# VAR_NAME is in the form of "APPNAME:VARIABLE", set new file to use
 		local APPNAME=${VAR_NAME%%:*}
-		VAR_FILE="$(run_script 'app_env_file' "${APPNAME}")"
+		run_script 'app_env_file_into' VAR_FILE "${APPNAME}"
 		VAR_NAME=${VAR_NAME#"${APPNAME}:"}
 	fi
 	if [[ -f ${VAR_FILE} ]]; then

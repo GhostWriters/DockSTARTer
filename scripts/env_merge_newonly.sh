@@ -20,8 +20,8 @@ env_merge_newonly() {
 		warn "File '{{|File|}}${MergeFromFile}{{[-]}}' does not exist."
 	else
 		local -a MergeFromVars MergeToVars VarsToAdd
-		readarray -t MergeFromVars < <(run_script 'env_var_list' "${MergeFromFile}")
-		readarray -t MergeToVars < <(run_script 'env_var_list' "${MergeToFile}")
+		run_script 'env_var_list_into_array' MergeFromVars "${MergeFromFile}"
+		run_script 'env_var_list_into_array' MergeToVars "${MergeToFile}"
 		readarray -t VarsToAdd < <(comm -23 <(printf '%s\n' "${MergeFromVars[@]}" | sort) <(printf '%s\n' "${MergeToVars[@]}" | sort))
 		if [[ -n ${VarsToAdd[*]-} ]]; then
 			local old_IFS="${IFS}"

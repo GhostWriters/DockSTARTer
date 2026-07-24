@@ -20,7 +20,7 @@ env_create() {
 
 	if [[ -f ${COMPOSE_ENV} ]]; then
 		info "File '{{|File|}}${COMPOSE_ENV}{{[-]}}' found."
-		run_script 'env_sanitize'
+		run_script 'env_sanitize' --skip-backup
 	else
 		warn "File '{{|File|}}${COMPOSE_ENV}{{[-]}}' not found. Copying example template."
 		cp "${COMPOSE_ENV_DEFAULT_FILE}" "${COMPOSE_ENV}" ||
@@ -28,11 +28,13 @@ env_create() {
 				"Failed to copy file." \
 				"Failing command: {{|FailingCommand|}}cp \"${COMPOSE_ENV_DEFAULT_FILE}\" \"${COMPOSE_ENV}\""
 		run_script 'set_permissions' "${COMPOSE_ENV}"
-		run_script 'env_sanitize'
-		if [[ -n ${DefaultApps-} && -z $(run_script 'app_list_referenced') ]]; then
+		run_script 'env_sanitize' --skip-backup
+		local -a ReferencedApps
+		run_script 'app_list_referenced_into_array' ReferencedApps
+		if [[ -n ${DefaultApps-} && -z ${ReferencedApps[*]-} ]]; then
 			info "Installing default applications."
 			run_script 'appvars_create' "${DefaultApps[@]}"
-			run_script 'env_sanitize'
+			run_script 'env_sanitize' --skip-backup
 		fi
 	fi
 }

@@ -12,7 +12,7 @@ menu_options_theme() {
 	run_script 'config_theme'
 
 	local CurrentTheme
-	CurrentTheme="$(run_script 'theme_name')"
+	run_script 'theme_name_into' CurrentTheme
 
 	# Build parallel arrays from structured theme_list output (DisplayName|ConfigValue|IsUserTheme)
 	local -a DisplayNames=() ConfigValues=() IsUserTheme=()
@@ -21,8 +21,11 @@ menu_options_theme() {
 		DisplayNames+=("${DisplayName}")
 		ConfigValues+=("${ConfigValue}")
 		IsUserTheme+=("${UserTheme}")
-		ThemeDescription["${ConfigValue}"]="$(run_script 'theme_description' "${ConfigValue}")"
-		ThemeAuthor["${ConfigValue}"]="$(run_script 'theme_author' "${ConfigValue}")"
+		local desc author
+		run_script 'theme_description_into' desc "${ConfigValue}"
+		run_script 'theme_author_into' author "${ConfigValue}"
+		ThemeDescription["${ConfigValue}"]="${desc}"
+		ThemeAuthor["${ConfigValue}"]="${author}"
 	done < <(run_script 'theme_list_data')
 
 	# Check if the configured theme appears in the list; if not, prepend an orphaned placeholder
@@ -42,8 +45,11 @@ menu_options_theme() {
 			if run_script 'theme_exists' "${CurrentTheme}"; then
 				# File still exists — show as normal entry with real metadata
 				OrphanDisplay="file:${FileStem}"
-				ThemeDescription["${CurrentTheme}"]="$(run_script 'theme_description' "${CurrentTheme}")"
-				ThemeAuthor["${CurrentTheme}"]="$(run_script 'theme_author' "${CurrentTheme}")"
+				local _td_ _ta_
+				run_script 'theme_description_into' _td_ "${CurrentTheme}"
+				run_script 'theme_author_into' _ta_ "${CurrentTheme}"
+				ThemeDescription["${CurrentTheme}"]="${_td_}"
+				ThemeAuthor["${CurrentTheme}"]="${_ta_}"
 			else
 				OrphanDisplay="(missing) file:${FileStem}"
 				ThemeDescription["${CurrentTheme}"]="Source file not found — using cached version"
@@ -86,14 +92,14 @@ menu_options_theme() {
 			"${Title}"
 			"Select the theme to apply."
 			--ok-label:Select
-			--extra-label:Back
-			--cancel-label:Exit
+			--cancel-label:Back
+			--exit-button
 			--default-item:"${LastChoice}"
 			"${Opts[@]}"
 		)
 		local Choice
 		local -i DialogButtonPressed=0
-		Choice=$(dialog_radiolist "${ChoiceDialog[@]}") || DialogButtonPressed=$?
+		tui_radiolist_into Choice "${ChoiceDialog[@]}" || DialogButtonPressed=$?
 		LastChoice=${Choice}
 		case ${DIALOG_BUTTONS[DialogButtonPressed]-} in
 			OK)
@@ -101,17 +107,17 @@ menu_options_theme() {
 				if run_script 'config_theme' "${CurrentTheme}"; then
 					run_script 'menu_dialog_example' "Applied theme ${CurrentTheme}" "${APPLICATION_COMMAND} --theme \"${CurrentTheme}\""
 				else
-					dialog_error "${Title}" "Unable to apply theme ${CurrentTheme}"
+					tui_error "${Title}" "Unable to apply theme ${CurrentTheme}"
 				fi
 				;;
-			EXTRA | ESC)
+			CANCEL | ESC)
 				return
 				;;
-			CANCEL)
+			EXIT)
 				run_script 'menu_exit' || true
 				;;
 			*)
-				invalid_dialog_button ${DialogButtonPressed}
+				invalid_tui_button ${DialogButtonPressed}
 				;;
 		esac
 	done

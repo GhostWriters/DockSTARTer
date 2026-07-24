@@ -2,9 +2,7 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-declare -a _dependencies_list=(
-	grep
-)
+declare -a _dependencies_list=()
 
 menu_config_vars() {
 	local APPNAME=${1-}
@@ -35,8 +33,8 @@ menu_config_vars() {
 			CurrentGlobalEnvFile=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.CurrentGlobalEnvFile.XXXXXXXXXX")
 			CurrentAppEnvFile=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.CurrentAppEnvFile.XXXXXXXXXX")
 			if ! run_script 'app_is_user_defined' "${APPNAME}"; then
-				DefaultGlobalEnvFile="$(run_script 'app_instance_file' "${APPNAME}" ".env")"
-				DefaultAppEnvFile="$(run_script 'app_instance_file' "${APPNAME}" ".env.app.*")"
+				run_script 'app_instance_file_into' DefaultGlobalEnvFile "${APPNAME}" ".env"
+				run_script 'app_instance_file_into' DefaultAppEnvFile "${APPNAME}" ".env.app.*"
 			fi
 		else
 			Title="Edit Global Variables"
@@ -58,18 +56,17 @@ menu_config_vars() {
 		fi
 		run_script 'appvars_lines' "${APPNAME}" > "${CurrentGlobalEnvFile}"
 		local -a CurrentGlobalEnvLines
-		readarray -t CurrentGlobalEnvLines < <(
-			run_script 'env_format_lines' "${CurrentGlobalEnvFile}" "${DefaultGlobalEnvFile}" "${APPNAME}"
-		)
+		run_script 'env_format_lines_into_array' CurrentGlobalEnvLines "${CurrentGlobalEnvFile}" "${DefaultGlobalEnvFile}" "${APPNAME}"
 		for line in "${CurrentGlobalEnvLines[@]-}"; do
 			LineNumber+=1
 			CurrentValueOnLine[LineNumber]="${line}"
-			local VarName
-			VarName="$(${GREP} -o -P '^\w+(?=)' <<< "${line}")"
+			local VarName=""
+			[[ ${line} =~ ^([[:alnum:]_]+) ]] && VarName="${BASH_REMATCH[1]}"
 			if [[ -n ${VarName-} ]]; then
 				# Line contains a variable
-				local DefaultLine
-				DefaultLine="${VarName}=$(run_script 'var_default_value' "${VarName}")"
+				local DefaultLine DefaultVal
+				run_script 'var_default_value_into' DefaultVal "${VarName}"
+				DefaultLine="${VarName}=${DefaultVal}"
 				if [[ ${line} == "${DefaultLine}" ]]; then
 					LineColor[LineNumber]="{{|LineVar|}}"
 				else
@@ -79,7 +76,7 @@ menu_config_vars() {
 				if [[ -z ${FirstVarLine-} ]]; then
 					FirstVarLine=${LineNumber}
 				fi
-			elif (${GREP} -q -P '^\s*#' <<< "${line}"); then
+			elif [[ ${line} =~ ^[[:space:]]*# ]]; then
 				# Line is a comment
 				LineColor[LineNumber]="{{|LineComment|}}"
 			else
@@ -98,22 +95,23 @@ menu_config_vars() {
 			CurrentValueOnLine[LineNumber]=""
 			LineColor[LineNumber]="{{|LineOther|}}"
 			LineNumber+=1
-			CurrentValueOnLine[LineNumber]="*** $(run_script 'app_env_file' "${APPNAME}") ***"
+			local AppEnvFilePath
+			run_script 'app_env_file_into' AppEnvFilePath "${APPNAME}"
+			CurrentValueOnLine[LineNumber]="*** ${AppEnvFilePath} ***"
 			LineColor[LineNumber]="{{|LineHeading|}}"
 			run_script 'appvars_lines' "${APPNAME}:" > "${CurrentAppEnvFile}"
 			local -a CurrentAppEnvLines
-			readarray -t CurrentAppEnvLines < <(
-				run_script 'env_format_lines' "${CurrentAppEnvFile}" "${DefaultAppEnvFile}" "${APPNAME}"
-			)
+			run_script 'env_format_lines_into_array' CurrentAppEnvLines "${CurrentAppEnvFile}" "${DefaultAppEnvFile}" "${APPNAME}"
 			for line in "${CurrentAppEnvLines[@]}"; do
 				LineNumber+=1
 				CurrentValueOnLine[LineNumber]="${line}"
-				local VarName
-				VarName="$(${GREP} -o -P '^\w+(?=)' <<< "${line}")"
+				local VarName=""
+				[[ ${line} =~ ^([[:alnum:]_]+) ]] && VarName="${BASH_REMATCH[1]}"
 				if [[ -n ${VarName-} ]]; then
 					# Line contains a variable
-					local DefaultLine
-					DefaultLine="${VarName}=$(run_script 'var_default_value' "${APPNAME}:${VarName}")"
+					local DefaultLine DefaultVal
+					run_script 'var_default_value_into' DefaultVal "${APPNAME}:${VarName}"
+					DefaultLine="${VarName}=${DefaultVal}"
 					if [[ ${line} == "${DefaultLine}" ]]; then
 						LineColor[LineNumber]="{{|LineVar|}}"
 					else
@@ -123,7 +121,7 @@ menu_config_vars() {
 					if [[ -z ${FirstVarLine-} ]]; then
 						FirstVarLine=${LineNumber}
 					fi
-				elif (${GREP} -q -P '^\s*#' <<< "${line}"); then
+				elif [[ ${line} =~ ^[[:space:]]*# ]]; then
 					# Line is a comment
 					LineColor[LineNumber]="{{|LineComment|}}"
 				else
@@ -144,7 +142,7 @@ menu_config_vars() {
 			PaddedLineNumber="$(printf "%0${PadSize}d" "${LineNumber}")"
 			local HelpLine=""
 			if [[ -n ${VarNameOnLine[LineNumber]-} ]]; then
-				HelpLine="$(run_script 'var_helpline' "${VarNameOnLine[LineNumber]}")"
+				run_script 'var_helpline_into' HelpLine "${VarNameOnLine[LineNumber]}"
 			fi
 			LineOptions+=("${PaddedLineNumber}" "${LineColor[LineNumber]-}${CurrentValueOnLine[LineNumber]}" "${HelpLine}")
 		done
@@ -155,8 +153,8 @@ menu_config_vars() {
 			LastLineChoice="$(printf "%0${PadSize}d" "${TotalLines}")"
 		fi
 		while true; do
-			local DialogHeading
-			DialogHeading="$(run_script 'menu_heading' "${APPNAME-}")"
+			local DialogHeading LineChoice=""
+			run_script 'menu_heading_into' DialogHeading "${APPNAME-}"
 			local -a LineDialog=(
 				"${Title}"
 				"${DialogHeading}"
@@ -169,7 +167,7 @@ menu_config_vars() {
 				"${LineOptions[@]}"
 			)
 			local -i LineDialogButtonPressed=0
-			LineChoice=$(dialog_menu "${LineDialog[@]}") || LineDialogButtonPressed=$?
+			tui_menu_into LineChoice "${LineDialog[@]}" || LineDialogButtonPressed=$?
 			case ${DIALOG_BUTTONS[LineDialogButtonPressed]-} in
 				OK) # Select
 					LastLineChoice="${LineChoice}"
@@ -193,19 +191,17 @@ menu_config_vars() {
 					local VarName="${VarNameOnLine[LineNumber]-}"
 					if [[ -n ${VarName} ]]; then
 						local DialogHeading
-						DialogHeading="$(run_script 'menu_heading' "${APPNAME-}" "${VarName}")"
+						run_script 'menu_heading_into' DialogHeading "${APPNAME-}" "${VarName}"
 						local CleanVarName="${VarName}"
 						if [[ ${CleanVarName} == *":"* ]]; then
 							CleanVarName="${CleanVarName#*:}"
 						fi
 						local Question="Do you really want to delete {{|Highlight|}}${CleanVarName}{{[-]}}?"
 						if run_script 'question_prompt' N "${DialogHeading}\n\n${Question}\n" "Delete Variable" "${ASSUMEYES:+Y}" "Delete" "Back"; then
-							DialogHeading="$(run_script 'menu_heading' "${APPNAME-}" "${VarName}")"
-							coproc {
-								dialog_pipe "{{|TitleSuccess|}}Deleting Variable" "${DialogHeading}" "${DIALOGTIMEOUT}"
-							}
-							local -i DialogBox_PID=${COPROC_PID}
-							local -i DialogBox_FD="${COPROC[1]}"
+							run_script 'menu_heading_into' DialogHeading "${APPNAME-}" "${VarName}"
+							#shellcheck disable=SC2034 # (warning): PipePID is passed by name to tui_pipe_open/close via nameref and appears unused to shellcheck.
+							local -i PipeFD PipePID
+							tui_pipe_open PipeFD PipePID "{{|TitleSuccess|}}Deleting Variable" "${DialogHeading}" "${DIALOGTIMEOUT}"
 							{
 								run_script 'env_delete' "${VarName}"
 								if [[ -n ${APPNAME-} ]]; then
@@ -222,9 +218,8 @@ menu_config_vars() {
 									run_script 'env_sanitize'
 									run_script 'env_update'
 								fi
-							} >&${DialogBox_FD} 2>&1
-							exec {DialogBox_FD}<&-
-							wait ${DialogBox_PID}
+							} >&${PipeFD} 2>&1
+							tui_pipe_close PipeFD PipePID
 							break
 						fi
 					fi
@@ -233,7 +228,7 @@ menu_config_vars() {
 					return
 					;;
 				*)
-					invalid_dialog_button ${LineDialogButtonPressed}
+					invalid_tui_button ${LineDialogButtonPressed}
 					;;
 			esac
 		done

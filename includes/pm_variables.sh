@@ -62,6 +62,7 @@ declare -argx PM__COMMAND_DEPS=(
 	"ip"
 	"sed"
 	"stat"
+	"whiptail"
 )
 
 declare -argx PM_BREW_COMMAND_DEPS=(
@@ -74,6 +75,7 @@ declare -argx PM_BREW_COMMAND_DEPS=(
 	"ip"
 	"gsed"
 	"gstat"
+	"whiptail"
 )
 
 declare -argx PM_PORT_COMMAND_DEPS=(
@@ -86,6 +88,7 @@ declare -argx PM_PORT_COMMAND_DEPS=(
 	"ip"
 	"gsed"
 	"gstat"
+	"whiptail"
 )
 
 declare -Argx PM__DEP_PACKAGE=()
@@ -119,6 +122,12 @@ pm_check_dependency() {
 			declare -gx DIALOG
 			DIALOG="$(command -v "${Dep}")"
 			[[ -n ${DIALOG} ]]
+			return
+			;;
+		whiptail)
+			declare -gx WHIPTAIL
+			WHIPTAIL="$(command -v "${Dep}")"
+			[[ -n ${WHIPTAIL} ]]
 			return
 			;;
 		gfind | find)
@@ -195,7 +204,7 @@ pm_check_dependencies() {
 			notice | warn | error | fatal)
 				${NoticeType} "$(
 					printf \
-						"Dependency '{{|Folder|}}%s{{[-]}}' is not installed.\n" \
+						"Dependency '{{|UserCommand|}}%s{{[-]}}' is not installed.\n" \
 						"${Dependencies[@]}"
 				)" \
 					"Not all dependencies are installed." \

@@ -4,17 +4,17 @@ IFS=$'\n\t'
 
 appvars_purge_all() {
 	local Title="Purge All Variables"
-	local DISABLED_APPS
-	DISABLED_APPS="$(run_script 'app_list_disabled')"
-	if [[ -n ${DISABLED_APPS-} ]]; then
+	local -a DisabledApps
+	run_script 'app_list_disabled_into_array' DisabledApps
+	if [[ -n ${DisabledApps[*]-} ]]; then
 		if [[ ${CI-} == true ]] || run_script 'question_prompt' Y "Would you like to purge variables for all disabled apps?" "${Title}" "${ASSUMEYES:+Y}"; then
 			info "Purging disabled app variables."
-			for APPNAME in ${DISABLED_APPS-}; do
+			for APPNAME in "${DisabledApps[@]-}"; do
 				run_script 'appvars_purge' "${APPNAME}"
 			done
 		fi
 	else
-		notice "'{{|File|}}${COMPOSE_ENV}{{[-]}}' does not contain any disabled apps."
+		notice "File '{{|File|}}${COMPOSE_ENV}{{[-]}}' does not contain any disabled apps."
 	fi
 }
 

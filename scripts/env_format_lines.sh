@@ -2,9 +2,7 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-declare -a _dependencies_list=(
-	grep
-)
+declare -a _dependencies_list=()
 
 env_format_lines() {
 	local CurrentEnvFile=${1-}
@@ -20,9 +18,7 @@ env_format_lines() {
 	local UserDefinedGlobalVarsTag=" (User Defined)"
 
 	local -a CurrentEnvLines=()
-	readarray -t CurrentEnvLines < <(
-		run_script 'env_lines' "${CurrentEnvFile}"
-	)
+	run_script 'env_lines_into_array' CurrentEnvLines "${CurrentEnvFile}"
 
 	local AppName=''
 	local AppDescription=''
@@ -33,7 +29,7 @@ env_format_lines() {
 		if run_script 'app_is_user_defined' "${APPNAME}"; then
 			AppIsUserDefined='Y'
 		fi
-		AppName="$(run_script 'app_nicename' "${APPNAME}")"
+		run_script 'app_nicename_into' AppName "${APPNAME}"
 		AppDescription="$(run_script 'app_description' "${APPNAME}" | wordwrap_pipe 75)"
 		local HeadingTitle="${AppName}"
 		if [[ ${AppIsUserDefined} == Y ]]; then
@@ -65,17 +61,7 @@ env_format_lines() {
 
 	# FormattedEnvVarIndex["VarName"]=index position of line in FormattedEnvLines
 	local -A FormattedEnvVarIndex=()
-	local -a VarLines=()
-	# Make an array with the contents "line number:VARIABLE" in each element
-	readarray -t VarLines < <(
-		printf '%s\n' "${FormattedEnvLines[@]}" | ${GREP} -n -o -P '^[A-Za-z0-9_]*(?=[=])' || true
-	)
-	for line in "${VarLines[@]}"; do
-		local index=${line%:*}
-		index=$((index - 1))
-		local VarName=${line#*:}
-		FormattedEnvVarIndex[$VarName]=$index
-	done
+	_build_var_index
 
 	if [[ -n ${CurrentEnvLines[*]} ]]; then
 		# Update the default variables
@@ -84,7 +70,7 @@ env_format_lines() {
 			local VarName=${line%%=*}
 			if [[ -n ${FormattedEnvVarIndex[$VarName]-} ]]; then
 				# Variable already exists, update its value
-				FormattedEnvLines[${FormattedEnvVarIndex[$VarName]}]=$line
+				_update_line "${line}" "${VarName}"
 				unset 'CurrentEnvLines[index]'
 			fi
 		done
@@ -113,11 +99,10 @@ env_format_lines() {
 				local VarName=${line%%=*}
 				if [[ -n ${FormattedEnvVarIndex[$VarName]-} ]]; then
 					# Variable already exists, update its value
-					FormattedEnvLines[${FormattedEnvVarIndex[$VarName]}]=$line
+					_update_line "${line}" "${VarName}"
 				else
 					# Variable is new, add it
-					FormattedEnvLines+=("$line")
-					FormattedEnvVarIndex[$VarName]=$((${#FormattedEnvLines[@]} - 1))
+					_add_line "${line}" "${VarName}"
 				fi
 			done
 			FormattedEnvLines+=("")
@@ -126,12 +111,39 @@ env_format_lines() {
 		FormattedEnvLines+=("")
 	fi
 
-	# Remove last element if it is an empty string to avoid extra newline from printf
+	# Remove all trailing empty strings to avoid extra newlines from printf
 	# This ensures parity with Go's strings.Join which doesn't add a trailing delimiter.
-	if [[ ${FormattedEnvLines[${#FormattedEnvLines[@]}-1]-} == "" ]]; then
-		unset 'FormattedEnvLines[${#FormattedEnvLines[@]}-1]'
+	while [[ ${#FormattedEnvLines[@]} -gt 0 && -z ${FormattedEnvLines[-1]-} ]]; do
+		unset 'FormattedEnvLines[-1]'
+	done
+
+	if [[ ${#FormattedEnvLines[@]} -gt 0 ]]; then
+		printf "%s\n" "${FormattedEnvLines[@]}"
 	fi
-	printf "%s\n" "${FormattedEnvLines[@]-}"
+}
+
+_build_var_index() {
+	FormattedEnvVarIndex=()
+	local i line
+	for i in "${!FormattedEnvLines[@]}"; do
+		line="${FormattedEnvLines[${i}]}"
+		if [[ ${line} =~ ^([A-Za-z0-9_]+)= ]]; then
+			FormattedEnvVarIndex["${BASH_REMATCH[1]}"]="${i}"
+		fi
+	done
+}
+
+_update_line() {
+	local line="${1}"
+	local varname="${2:-${line%%=*}}"
+	FormattedEnvLines[${FormattedEnvVarIndex[${varname}]}]="${line}"
+}
+
+_add_line() {
+	local line="${1}"
+	local varname="${2:-${line%%=*}}"
+	FormattedEnvLines+=("${line}")
+	FormattedEnvVarIndex["${varname}"]=$((${#FormattedEnvLines[@]} - 1))
 }
 
 test_env_format_lines() {

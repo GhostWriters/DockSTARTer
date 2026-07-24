@@ -60,7 +60,7 @@ expand_vars_using_varfile() {
 
 			# Look for the variable in the file
 			if run_script 'env_var_exists' "${Key}" "${VarFile}"; then
-				Vars["${Key}"]="$(run_script 'env_get' "${Key}" "${VarFile}")"
+				run_script 'env_get_into' Vars["${Key}"] "${Key}" "${VarFile}"
 			else
 				MissingVars["${Key}"]=1
 			fi
@@ -158,9 +158,9 @@ SHORT_LONG='LongValue'
 	run_unit_tests_pipe "Input" "Input" "${ForcePass}" < <(
 		for ((i = 0; i < ${#Test[@]}; i += 4)); do
 			printf '%s\n' \
-				"String='${Test[i+1]}' Skip='${Test[i+2]}'" \
-				"${Test[i+3]}" \
-				"$(run_script 'expand_vars_using_varfile' "${Test[i+1]}" "${Test[i+2]}" "${VarFile}")"
+				"String='${Test[i + 1]}' Skip='${Test[i + 2]}'" \
+				"${Test[i + 3]}" \
+				"$(run_script 'expand_vars_using_varfile' "${Test[i + 1]}" "${Test[i + 2]}" "${VarFile}")"
 		done
 	)
 	result=$?

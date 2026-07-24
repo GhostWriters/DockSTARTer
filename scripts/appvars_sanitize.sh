@@ -12,12 +12,12 @@ appvars_sanitize() {
 	local -A UpdatedVarValue
 
 	local BaseAppName
-	BaseAppName="$(run_script 'appname_to_baseappname' "${AppName}")"
+	run_script 'appname_to_baseappname_into' BaseAppName "${AppName}"
 	if [[ ${BaseAppName^^} == WATCHTOWER ]]; then
 		# Don't set WATCHTOWER__NETWORK_MODE to none
 		local VarName="${AppName^^}__NETWORK_MODE"
 		local Value
-		Value="$(run_script 'env_get' "${VarName}")"
+		run_script 'env_get_into' Value "${VarName}"
 		if [[ ${Value-} == "none" ]]; then
 			VarsToUpdate+=("${VarName}")
 			UpdatedVarValue["${VarName}"]="''"
@@ -32,9 +32,9 @@ appvars_sanitize() {
 	for VarName in "${VarList[@]}"; do
 		# Get the value including quotes
 		local Value
-		Value="$(run_script 'env_get_literal' "${VarName}")"
+		run_script 'env_get_literal_into' Value "${VarName}"
 		local UpdatedValue
-		UpdatedValue="$(run_script 'sanitize_path' "${Value}")"
+		run_script 'sanitize_path_into' UpdatedValue "${Value}"
 		if [[ ${Value} != "${UpdatedValue}" ]]; then
 			VarsToUpdate+=("${VarName}")
 			UpdatedVarValue["${VarName}"]="${UpdatedValue}"

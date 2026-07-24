@@ -2,17 +2,16 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-declare -a _dependencies_list=(
-	grep
-)
+declare -a _dependencies_list=()
 
 env_sanitize() {
 	local -a VarsToUpdate
 	local -A UpdatedVarValue
+	local SkipBackup=${1-}
 
 	# Update the HOME variable if it is not set to the detected home directory
 	local HOME
-	HOME="$(run_script 'env_get' HOME)"
+	run_script 'env_get_into' HOME HOME
 	if [[ ${HOME} != "${DETECTED_HOMEDIR}" ]]; then
 		HOME="${DETECTED_HOMEDIR}"
 		VarsToUpdate+=(HOME)
@@ -21,20 +20,20 @@ env_sanitize() {
 
 	local DOCKER_CONFIG_FOLDER DOCKER_COMPOSE_FOLDER ORIG_CONFIG_FOLDER ORIG_COMPOSE_FOLDER
 
-	ORIG_CONFIG_FOLDER="$(run_script 'env_get' DOCKER_CONFIG_FOLDER)"
-	LITERAL_CONFIG_FOLDER="$(get_toml_val "${APPLICATION_TOML_FILE}" "paths.config_folder")"
+	run_script 'env_get_into' ORIG_CONFIG_FOLDER DOCKER_CONFIG_FOLDER
+	run_script 'config_get_into' LITERAL_CONFIG_FOLDER paths.config_folder || true
 	if [[ -z ${LITERAL_CONFIG_FOLDER-} ]]; then
-		LITERAL_CONFIG_FOLDER="$(get_toml_val "${DEFAULT_TOML_FILE}" "paths.config_folder")"
+		run_script 'config_get_into' LITERAL_CONFIG_FOLDER paths.config_folder "${DEFAULT_TOML_FILE}" || true
 	fi
 	if [[ -z ${LITERAL_CONFIG_FOLDER-} ]]; then
 		LITERAL_CONFIG_FOLDER="${ORIG_CONFIG_FOLDER}"
 	fi
 	DOCKER_CONFIG_FOLDER="${LITERAL_CONFIG_FOLDER}"
 
-	ORIG_COMPOSE_FOLDER="$(run_script 'env_get' DOCKER_COMPOSE_FOLDER)"
-	LITERAL_COMPOSE_FOLDER="$(get_toml_val "${APPLICATION_TOML_FILE}" "paths.compose_folder")"
+	run_script 'env_get_into' ORIG_COMPOSE_FOLDER DOCKER_COMPOSE_FOLDER
+	run_script 'config_get_into' LITERAL_COMPOSE_FOLDER paths.compose_folder || true
 	if [[ -z ${LITERAL_COMPOSE_FOLDER-} ]]; then
-		LITERAL_COMPOSE_FOLDER="$(get_toml_val "${DEFAULT_TOML_FILE}" "paths.compose_folder")"
+		run_script 'config_get_into' LITERAL_COMPOSE_FOLDER paths.compose_folder "${DEFAULT_TOML_FILE}" || true
 	fi
 	if [[ -z ${LITERAL_COMPOSE_FOLDER-} ]]; then
 		LITERAL_COMPOSE_FOLDER="${ORIG_COMPOSE_FOLDER}"
@@ -55,7 +54,9 @@ env_sanitize() {
 	fi
 
 	# Backup the user files
-	run_script 'env_backup'
+	if [[ ${SkipBackup-} != "--skip-backup" ]]; then
+		run_script 'env_backup'
+	fi
 
 	# Migrate from old global variable names
 	run_script 'env_migrate_global'
@@ -72,11 +73,11 @@ env_sanitize() {
 	)
 	for VarName in "${VarList[@]-}"; do
 		local Value
-		Value="$(run_script 'env_get' "${VarName}")"
+		run_script 'env_get_into' Value "${VarName}"
 		if [[ -z ${Value-} ]]; then
 			# If the variable is empty get the default value
 			local Default
-			Default="$(run_script 'var_default_value' "${VarName}")"
+			run_script 'var_default_value_into' Default "${VarName}"
 			VarsToUpdate+=("${VarName}")
 			UpdatedVarValue["${VarName}"]="${Default}"
 		fi
@@ -90,11 +91,11 @@ env_sanitize() {
 	)
 	for VarName in "${VarList[@]-}"; do
 		local Value
-		Value="$(run_script 'env_get' "${VarName}")"
-		if [[ -z ${Value-} ]] || echo "${Value-}" | ${GREP} -q 'x'; then
+		run_script 'env_get_into' Value "${VarName}"
+		if [[ -z ${Value-} || ${Value-} == *x* ]]; then
 			# If the variable is empty or contains an "x", get the default value
 			local Default
-			Default="$(run_script 'var_default_value' "${VarName}")"
+			run_script 'var_default_value_into' Default "${VarName}"
 			VarsToUpdate+=("${VarName}")
 			UpdatedVarValue["${VarName}"]="${Default}"
 		fi
@@ -111,9 +112,9 @@ env_sanitize() {
 	for VarName in "${VarList[@]-}"; do
 		# Get the value including quotes
 		local Value
-		Value="$(run_script 'env_get' "${VarName}")"
+		run_script 'env_get_into' Value "${VarName}"
 		local UpdatedValue
-		UpdatedValue="$(run_script 'sanitize_path' "${Value}")"
+		run_script 'sanitize_path_into' UpdatedValue "${Value}"
 		UpdatedValue="$(
 			replace_with_vars \
 				"${UpdatedValue}" \

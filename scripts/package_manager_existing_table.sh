@@ -9,11 +9,11 @@ declare -a _dependencies_list=(
 package_manager_existing_table() {
 	local -a TableArray=()
 	local -a PackageManagerList
-	readarray -t PackageManagerList < <(run_script 'package_manager_existing_list')
+	run_script 'package_manager_existing_list_into_array' PackageManagerList
 	for PackageManagerName in "${PackageManagerList[@]-}"; do
 		local PackageManagerDescription PackageManagerNicename
-		PackageManagerDescription="$(run_script 'package_manager_description' "${PackageManagerName}")"
-		PackageManagerNicename="$(run_script 'package_manager_nicename' "${PackageManagerName}")"
+		run_script 'package_manager_description_into' PackageManagerDescription "${PackageManagerName}"
+		run_script 'package_manager_nicename_into' PackageManagerNicename "${PackageManagerName}"
 		TableArray+=("${PackageManagerName}" "${PackageManagerNicename}" "${PackageManagerDescription}")
 	done
 	table 3 "Package Manager" "Name" "Description" "${TableArray[@]}"

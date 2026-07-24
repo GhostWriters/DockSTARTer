@@ -3,47 +3,58 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 config_show() {
+	local ConfigFile=${1:-${APPLICATION_TOML_FILE}}
+	local DefaultTitle="Configuration options stored in '{{|File|}}${ConfigFile}{{[-]}}':"
+	local ConfigTitle=${2-${DefaultTitle}}
+
 	local -a Keys=(
 		"paths.config_folder"
 		"paths.compose_folder"
 		"pm.package_manager"
+		"ui.display_engine"
 		"ui.theme"
 		"ui.borders"
 		"ui.line_characters"
 		"ui.scrollbar"
 		"ui.shadow"
+		"ui.large_buttons"
 	)
 
 	local -A DisplayNames=(
 		["paths.config_folder"]="Config Folder"
 		["paths.compose_folder"]="Compose Folder"
 		["pm.package_manager"]="Package Manager"
+		["ui.display_engine"]="Display Engine"
 		["ui.theme"]="Theme"
 		["ui.borders"]="Borders"
 		["ui.line_characters"]="Line Characters"
 		["ui.scrollbar"]="Scrollbar"
 		["ui.shadow"]="Shadow"
+		["ui.large_buttons"]="Large Buttons"
 	)
 
 	local -a TableArray=()
 	for Key in "${Keys[@]}"; do
 		local Value
-		Value="$(get_toml_val "${APPLICATION_TOML_FILE}" "${Key}")"
-
-		local ExpandedValue=""
-		if [[ ${Key} == "paths.config_folder" || ${Key} == "paths.compose_folder" ]]; then
-			ExpandedValue="$(
-				expand_vars "${Value}" \
-					HOME "${DETECTED_HOMEDIR}" \
-					ScriptFolder "${SCRIPTPATH}" \
-					XDG_CONFIG_HOME "${XDG_CONFIG_HOME}"
-			)"
+		if ! run_script 'config_get_into' Value "${Key}" "${ConfigFile}"; then
+			continue
 		fi
-
-		local ValueColor="{{|Var|}}"
-		if [[ ${Key} == "paths.config_folder" || ${Key} == "paths.compose_folder" ]]; then
-			ValueColor="{{|Folder|}}"
-		fi
+		local ValueColor ExpandedValue
+		case ${Key} in
+			paths.config_folder | paths.compose_folder)
+				ValueColor="{{|Folder|}}"
+				ExpandedValue="$(
+					expand_vars "${Value}" \
+						HOME "${DETECTED_HOMEDIR}" \
+						ScriptFolder "${SCRIPTPATH}" \
+						XDG_CONFIG_HOME "${XDG_CONFIG_HOME}"
+				)"
+				;;
+			*)
+				ValueColor="{{|Var|}}"
+				ExpandedValue=""
+				;;
+		esac
 
 		local DisplayValue="${ValueColor}${Value}{{[-]}}"
 		local DisplayExpandedValue=""
@@ -54,7 +65,16 @@ config_show() {
 		TableArray+=("${DisplayNames[${Key}]}" "${DisplayValue}" "${DisplayExpandedValue}")
 	done
 
-	resolve_strings C "Configuration options stored in '{{|File|}}${APPLICATION_TOML_FILE}{{[-]}}':"
+	if [[ -n ${ConfigTitle} ]]; then
+		if [[ -t 1 ]]; then
+			# Direct CLI call: Resolve now
+			resolve_strings C "${ConfigTitle}"
+		else
+			# Captured for a notice: Output raw tags
+			printf '%s\n' "${ConfigTitle}"
+		fi
+	fi
+
 	table 3 \
 		"{{|UsageCommand|}}Option{{[-]}}" "{{|UsageCommand|}}Value{{[-]}}" "{{|UsageCommand|}}Expanded Value{{[-]}}" \
 		"${TableArray[@]}"

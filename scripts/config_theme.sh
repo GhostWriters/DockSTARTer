@@ -72,7 +72,7 @@ config_theme() {
 	fi
 
 	if [[ -z ${ThemeName-} ]]; then
-		ThemeName="$(get_toml_val "${APPLICATION_TOML_FILE}" "ui.theme")"
+		ThemeName="$(get_toml_val_string "${APPLICATION_TOML_FILE}" "ui.theme")"
 		if ! run_script 'theme_exists' "${ThemeName}"; then
 			# Only fall back to a default when there is no cached active theme to use.
 			# If ACTIVE_THEME_FILE exists, ensure_theme_extracted will use it below.
@@ -102,7 +102,6 @@ config_theme() {
 
 	declare -Agx DC=()
 	declare -Agx D=()
-
 	D+=(
 		["_defined_"]=1
 	)
@@ -114,62 +113,69 @@ config_theme() {
 	)
 
 	local sem_p sem_s dir_p dir_s
-	sem_p="$(get_toml_val "${ThemeFile}" "syntax.semantic_prefix")"
+	sem_p="$(get_toml_val_string "${ThemeFile}" syntax.semantic_prefix)"
 	[[ -z ${sem_p} ]] && sem_p="{{|"
-	sem_s="$(get_toml_val "${ThemeFile}" "syntax.semantic_suffix")"
+	sem_s="$(get_toml_val_string "${ThemeFile}" syntax.semantic_suffix)"
 	[[ -z ${sem_s} ]] && sem_s="|}}"
-	dir_p="$(get_toml_val "${ThemeFile}" "syntax.direct_prefix")"
+	dir_p="$(get_toml_val_string "${ThemeFile}" syntax.direct_prefix)"
 	[[ -z ${dir_p} ]] && dir_p="{{["
-	dir_s="$(get_toml_val "${ThemeFile}" "syntax.direct_suffix")"
+	dir_s="$(get_toml_val_string "${ThemeFile}" syntax.direct_suffix)"
 	[[ -z ${dir_s} ]] && dir_s="]}}"
 
 	local -a VarList
-	readarray -t VarList < <(get_toml_section_key_list "${ThemeFile}" "colors")
+	readarray -t VarList < <(get_toml_section_key_list "${ThemeFile}" colors)
 	local VarName
 	for VarName in "${VarList[@]-}"; do
-		DC["${VarName}"]="$(get_toml_val "${ThemeFile}" "colors.${VarName}")"
+		DC["${VarName}"]="$(get_toml_val_string "${ThemeFile}" "colors.${VarName}")"
 	done
 	local StyleName
 	for StyleName in "${!DC[@]}"; do
-		DC["${StyleName}"]="$(resolve_styles DC "${DC["${StyleName}"]}" "${sem_p}" "${sem_s}" "${dir_p}" "${dir_s}")"
+		resolve_styles_into DC["${StyleName}"] DC "${DC["${StyleName}"]}" "${sem_p}" "${sem_s}" "${dir_p}" "${dir_s}"
 	done
 
-	D["ThemeName"]="$(get_toml_val "${ThemeFile}" "metadata.name")"
+	D["ThemeName"]="$(get_toml_val_string "${ThemeFile}" metadata.name)"
 	local DialogOptions="--colors --output-fd 1 --cr-wrap --no-collapse"
+	local -a WhiptailOptions=()
 
-	local LineCharacters Borders Scrollbar Shadow
-	Borders="$(get_toml_val "${APPLICATION_TOML_FILE}" "ui.borders")"
-	LineCharacters="$(get_toml_val "${APPLICATION_TOML_FILE}" "ui.line_characters")"
-	Scrollbar="$(get_toml_val "${APPLICATION_TOML_FILE}" "ui.scrollbar")"
-	Shadow="$(get_toml_val "${APPLICATION_TOML_FILE}" "ui.shadow")"
-
-	D+=(
-		["Borders"]="${Borders}"
-		["LineCharacters"]="${LineCharacters}"
-		["Scrollbar"]="${Scrollbar}"
-		["Shadow"]="${Shadow}"
+	local -a UIKeys=(
+		'ui.display_engine'
+		'ui.large_buttons'
+		'ui.line_characters'
+		'ui.borders'
+		'ui.scrollbar'
+		'ui.shadow'
 	)
+	for Key in "${UIKeys[@]}"; do
+		local value=''
+		run_script 'config_get_into' value "${Key}" || true
+		D["${Key}"]="${value}"
+	done
 
-	# Set the dialog options based on the settings in the .toml file
-	if is_true "${Borders}"; then
-		if is_false "${LineCharacters}"; then
+	if is_true "${D["ui.large_buttons"]}"; then
+		WhiptailOptions+=(--fullbuttons)
+	fi
+
+	if is_true "${D["ui.borders"]}"; then
+		if is_false "${D["ui.line_characters"]}"; then
 			DialogOptions+=" --ascii-lines"
 		fi
 	else
 		DialogOptions+=" --no-lines"
 	fi
-	if is_true "${Scrollbar}"; then
+	if is_true "${D["ui.scrollbar"]}"; then
 		DialogOptions+=" --scrollbar"
+		WhiptailOptions+=(--scrolltext)
 	else
 		DialogOptions+=" --no-scrollbar"
 	fi
-	if is_true "${Shadow}"; then
+	if is_true "${D["ui.shadow"]}"; then
 		DialogOptions+=" --shadow"
 		D["WindowColsAdjust"]=$((D["WindowColsAdjust"] + 2))
 		D["WindowRowsAdjust"]=$((D["WindowRowsAdjust"] + 1))
 	else
 		DialogOptions+=" --no-shadow"
 	fi
+	declare -agx WHIPTAIL_OPTIONS=("${WhiptailOptions[@]}")
 	RunAndLog "" "cp:info" \
 		fatal "Failed to save dialog options file." \
 		cp <(printf "%s" "${DialogOptions}") "${DIALOG_OPTIONS_FILE}"
@@ -177,7 +183,7 @@ config_theme() {
 
 	run_script 'set_permissions' "${DIALOGRC}"
 
-	set_toml_val "${APPLICATION_TOML_FILE}" "ui.theme" "${ThemeName}"
+	run_script 'config_set' ui.theme "${ThemeName}"
 }
 
 test_config_theme() {

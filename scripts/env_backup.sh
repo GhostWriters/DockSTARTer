@@ -8,30 +8,26 @@ declare -a _dependencies_list=(
 
 env_backup() {
 	local DOCKER_VOLUME_CONFIG
-	if [[ ! -f ${COMPOSE_ENV} ]]; then
-		warn "No .env file to back up."
-		return
-	fi
 	# Update CONFIG_FOLDER and LITERAL_CONFIG_FOLDER based on DOCKER_CONFIG_FOLDER
 	local DOCKER_CONFIG_FOLDER
-	DOCKER_CONFIG_FOLDER="$(run_script 'env_get' DOCKER_CONFIG_FOLDER)"
+	run_script 'env_get_into' DOCKER_CONFIG_FOLDER DOCKER_CONFIG_FOLDER
 	if [[ -z ${DOCKER_CONFIG_FOLDER-} ]]; then
-		DOCKER_CONFIG_FOLDER="$(run_script 'var_default_value' DOCKER_CONFIG_FOLDER)"
+		run_script 'var_default_value_into' DOCKER_CONFIG_FOLDER DOCKER_CONFIG_FOLDER
 	fi
-	DOCKER_CONFIG_FOLDER="$(run_script 'sanitize_path' "${DOCKER_CONFIG_FOLDER}")"
+	run_script 'sanitize_path_into' DOCKER_CONFIG_FOLDER "${DOCKER_CONFIG_FOLDER}"
 	LITERAL_CONFIG_FOLDER="${DOCKER_CONFIG_FOLDER}"
 	DOCKER_CONFIG_FOLDER="$(
 		HOME="${HOME}" XDG_CONFIG_HOME="${XDG_CONFIG_HOME}" \
 			eval echo "${LITERAL_CONFIG_FOLDER}"
 	)"
-	DOCKER_VOLUME_CONFIG="$(run_script 'env_get' DOCKER_VOLUME_CONFIG)"
+	run_script 'env_get_into' DOCKER_VOLUME_CONFIG DOCKER_VOLUME_CONFIG
 	if [[ -z ${DOCKER_VOLUME_CONFIG-} ]]; then
-		DOCKER_VOLUME_CONFIG="$(run_script 'env_get' DOCKERCONFDIR)"
+		run_script 'env_get_into' DOCKER_VOLUME_CONFIG DOCKERCONFDIR
 	fi
 	if [[ -z ${DOCKER_VOLUME_CONFIG-} ]]; then
-		DOCKER_VOLUME_CONFIG="$(run_script 'var_default_value' DOCKER_VOLUME_CONFIG)"
-		run_script 'env_set_literal' DOCKER_VOLUME_CONFIG "${DOCKER_VOLUME_CONFIG}"
-		DOCKER_VOLUME_CONFIG="$(run_script 'env_get' DOCKER_VOLUME_CONFIG)"
+		run_script 'var_default_value_into' DOCKER_VOLUME_CONFIG DOCKER_VOLUME_CONFIG
+		DOCKER_VOLUME_CONFIG="${DOCKER_VOLUME_CONFIG#[\"\']}"
+		DOCKER_VOLUME_CONFIG="${DOCKER_VOLUME_CONFIG%[\"\']}"
 	fi
 	if [[ -z ${DOCKER_VOLUME_CONFIG-} ]]; then
 		fatal \
@@ -41,52 +37,64 @@ env_backup() {
 		HOME="${HOME}" XDG_CONFIG_HOME="${XDG_CONFIG_HOME}" DOCKER_CONFIG_FOLDER="${DOCKER_CONFIG_FOLDER-}" \
 			eval echo "${DOCKER_VOLUME_CONFIG}"
 	)"
-	DOCKER_VOLUME_CONFIG="$(run_script 'sanitize_path' "${DOCKER_VOLUME_CONFIG}")"
+	run_script 'sanitize_path_into' DOCKER_VOLUME_CONFIG "${DOCKER_VOLUME_CONFIG}"
 
 	info "Taking ownership of '{{|Folder|}}${DOCKER_VOLUME_CONFIG}{{[-]}}' (non-recursive)."
 	sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${DOCKER_VOLUME_CONFIG}" &> /dev/null || true
 
 	local COMPOSE_BACKUPS_FOLDER="${DOCKER_VOLUME_CONFIG}/.compose.backups"
-	local BACKUPTIME
-	BACKUPTIME="$(date +"%Y%m%d.%H.%M.%S")"
-	local BACKUP_FOLDER="${COMPOSE_BACKUPS_FOLDER}/${COMPOSE_FOLDER_NAME}.${BACKUPTIME}"
+	local BACKUP_FOLDER
+	while true; do
+		BACKUP_FOLDER="${COMPOSE_BACKUPS_FOLDER}/${COMPOSE_FOLDER_NAME}.$(date +"%Y%m%d.%H.%M.%S")"
+		if [[ ! -d ${BACKUP_FOLDER} ]]; then
+			break
+		fi
+		# Backup folder already exists, try again.
+		sleep 1
+	done
 
-	info "Copying '{{|File|}}.env{{[-]}}' file to '{{|Folder|}}${BACKUP_FOLDER}/.env{{[-]}}'"
-	mkdir -p "${BACKUP_FOLDER}" ||
-		fatal \
-			"Failed to make directory." \
-			"Failing command: {{|FailingCommand|}}mkdir -p \"${BACKUP_FOLDER}\""
-	cp "${COMPOSE_ENV}" "${BACKUP_FOLDER}/" ||
-		fatal \
-			"Failed to copy backup." \
-			"Failing command: {{|FailingCommand|}}cp \"${COMPOSE_ENV}\"/.env.app.* \"${BACKUP_FOLDER}/\""
-	if [[ -n $(${FIND} "${COMPOSE_FOLDER}" -type f -maxdepth 1 -name ".env.app.*" 2> /dev/null) ]]; then
-		cp "${COMPOSE_FOLDER}"/.env.app.* "${BACKUP_FOLDER}/" ||
+	local -a BackupList
+	readarray -t BackupList < <(
+		${FIND} "${COMPOSE_FOLDER}" -maxdepth 1 \
+			\( \
+			\( -type d \
+			-name "${APP_ENV_FOLDER_NAME}" \
+			\) -exec echo "{}/" \; \
+			\) -o \
+			\( -type f \( \
+			-name "${COMPOSE_OVERRIDE_NAME}" -o \
+			-name ".env" -o \
+			-name ".env.app.*" \
+			\) -exec echo "{}" \; \
+			\) | sort 2> /dev/null || true
+	)
+	local Indent='\t'
+	if [[ ${#BackupList[@]} -gt 0 ]]; then
+		notice \
+			"Backing up user files to folder:" \
+			"\t'{{|Folder|}}${BACKUP_FOLDER}{{[-]}}'"
+		info "Creating folder '{{|Folder|}}${BACKUP_FOLDER}{{[-]}}'"
+		mkdir -p "${BACKUP_FOLDER}" ||
 			fatal \
-				"Failed to copy backup." \
-				"Failing command: {{|FailingCommand|}}cp \"${COMPOSE_FOLDER}\"/.env.app.* \"${BACKUP_FOLDER}/\""
-	fi
-	if [[ -d ${APP_ENV_FOLDER} ]]; then
-		info "Copying appplication env folder to '{{|Folder|}}${BACKUP_FOLDER}/${APP_ENV_FOLDER_NAME}{{[-]}}'"
-		cp -r "${APP_ENV_FOLDER}" "${BACKUP_FOLDER}/" ||
+				"Failed to make directory." \
+				"Failing command: {{|FailingCommand|}}mkdir -p \"${BACKUP_FOLDER}\""
+		info \
+			"Backing up files:" \
+			"$(printf "${Indent}'{{|File|}}%s{{[-]}}'\n" "${BackupList[@]}")"
+		cp -R "${BackupList[@]}" "${BACKUP_FOLDER}/" ||
 			fatal \
-				"Failed to copy backup." \
-				"Failing command: {{|FailingCommand|}}cp -r \"${APP_ENV_FOLDER}\" \"${BACKUP_FOLDER}/\""
-	fi
-	if [[ -f ${COMPOSE_OVERRIDE} ]]; then
-		info "Copying override file to '{{|Folder|}}${BACKUP_FOLDER}/${COMPOSE_OVERRIDE_NAME}{{[-]}}'"
-		cp "${COMPOSE_OVERRIDE}" "${BACKUP_FOLDER}/" ||
-			fatal \
-				"Failed to copy backup." \
-				"Failing command: {{|FailingCommand|}}cp \"${COMPOSE_OVERRIDE}\" \"${BACKUP_FOLDER}/\""
+				"Failed to copy file." \
+				"Failing command: {{|FailingCommand|}}cp -R $(printf '"%s" ' "${BackupList[@]}") \"${BACKUP_FOLDER}/\""
+	else
+		info "No files to backup."
 	fi
 
 	run_script 'set_permissions' "${COMPOSE_BACKUPS_FOLDER}"
 
 	info "Removing old compose backups."
-	${FIND} "${COMPOSE_BACKUPS_FOLDER}" -type f -name ".env.*" -mtime +3 -delete &> /dev/null ||
+	${FIND} "${COMPOSE_BACKUPS_FOLDER}" -maxdepth 1 -type f -name ".env.*" -mtime +3 -delete &> /dev/null ||
 		warn "Old .env backups not removed."
-	${FIND} "${COMPOSE_BACKUPS_FOLDER}" -type d -name "${COMPOSE_FOLDER_NAME}.*" -mtime +3 -prune -exec rm -rf {} + &> /dev/null ||
+	${FIND} "${COMPOSE_BACKUPS_FOLDER}" -maxdepth 1 -type d -name "${COMPOSE_FOLDER_NAME}.*" -mtime +3 -exec rm -rf {} + &> /dev/null ||
 		warn "Old compose backups not removed."
 
 	# Backup location has moved

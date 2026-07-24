@@ -4,7 +4,6 @@ IFS=$'\n\t'
 
 declare -a _dependencies_list=(
 	column
-	dialog
 	sed
 )
 
@@ -25,8 +24,8 @@ declare DialogGaugeText FullDialogGaugeText ExpandedDialogGaugeText
 declare -i ProgressSteps ProgressStepNumber
 
 declare GaugePipe ProgressLog
-declare -i GaugePipe_fd ProgressLog_fd
-declare Dialog_PID
+declare -i GaugePipe_fd ProgressLog_fd=0
+declare -i Dialog_PID=0
 
 menu_app_select() {
 	local -a ProcessInfo
@@ -53,13 +52,13 @@ menu_app_select() {
 		local -a AppList AddedApps BuiltinApps
 		local AddedAppsRegex=''
 
-		readarray -t AddedApps < <(run_script 'app_list_added')
+		run_script 'app_list_added_into_array' AddedApps
 		update_gauge 1
 
-		readarray -t AddedApps < <(run_script 'app_filter_runnable' "${AddedApps[@]-}" | sort -f -u)
+		run_script 'app_filter_runnable_into_array' AddedApps "${AddedApps[@]-}"
 		update_gauge 1
 
-		readarray -t AddedApps < <(run_script 'app_nicename_from_template' "${AddedApps[@]-}")
+		run_script 'app_nicename_from_template_into_array' AddedApps "${AddedApps[@]-}"
 		update_gauge 1
 
 		if [[ -n ${AddedApps[*]-} ]]; then
@@ -74,7 +73,7 @@ menu_app_select() {
 			TextCols=$((COLUMNS - D["WindowColsAdjust"] - D["TextColsAdjust"]))
 			local Indent='   '
 			local -a AddedAppsTable
-			readarray -t AddedAppsTable < <(printf "%s\n" "${AddedApps[@]}")
+			AddedAppsTable=("${AddedApps[@]}")
 			readarray -t AddedAppsTable < <(
 				printf "%s\n" "${AddedAppsTable[@]}" |
 					column -c "$((TextCols - ${#Indent}))" |
@@ -91,13 +90,13 @@ menu_app_select() {
 		ProgressStepNumber=0
 		update_gauge 0 "${FindBuiltinApps}" "_Waiting_" "_InProgress_"
 
-		readarray -t BuiltinApps < <(run_script 'app_list_nondeprecated')
+		run_script 'app_list_nondeprecated_into_array' BuiltinApps
 		update_gauge 1
 
-		readarray -t BuiltinApps < <(run_script 'app_filter_runnable' "${BuiltinApps[@]}")
+		run_script 'app_filter_runnable_into_array' BuiltinApps "${BuiltinApps[@]}"
 		update_gauge 1
 
-		readarray -t BuiltinApps < <(run_script 'app_nicename_from_template' "${BuiltinApps[@]}")
+		run_script 'app_nicename_from_template_into_array' BuiltinApps "${BuiltinApps[@]}"
 		update_gauge 1
 
 		local -a AllApps
@@ -124,9 +123,11 @@ menu_app_select() {
 			LastAppLetter=${AppLetter}
 			update_gauge 1 "${ProcessAppList}" "_InProgress_" "_InProgress_" "${AppName}"
 			local AppDescription
-			AppDescription=$(run_script 'app_description_from_template' "${AppName}")
+			run_script 'app_description_from_template_into' AppDescription "${AppName}"
 			local AppColor="{{|ListApp|}}"
-			if [[ -n $(run_script 'appname_to_instancename' "${AppName}") ]]; then
+			local _mas_instance_
+			run_script 'appname_to_instancename_into' _mas_instance_ "${AppName}"
+			if [[ -n ${_mas_instance_} ]]; then
 				AppColor="{{|ListAppUserDefined|}}"
 			fi
 			if [[ ${AppName} =~ ^(${AddedAppsRegex})$ ]]; then
@@ -141,7 +142,7 @@ menu_app_select() {
 	close_gauge
 
 	local -i SelectedAppsDialogButtonPressed
-	local SelectedApps
+	local -a SelectedApps=()
 	if [[ ${CI-} == true ]]; then
 		SelectedAppsDialogButtonPressed=${DIALOG_CANCEL}
 	else
@@ -157,7 +158,7 @@ menu_app_select() {
 			"${AppList[@]}"
 		)
 		SelectedAppsDialogButtonPressed=0
-		SelectedApps=$(dialog_checklist "${SelectedAppsDialog[@]}") || SelectedAppsDialogButtonPressed=$?
+		tui_checklist_into_array SelectedApps "${SelectedAppsDialog[@]}" || SelectedAppsDialogButtonPressed=$?
 	fi
 	case ${DIALOG_BUTTONS[SelectedAppsDialogButtonPressed]-} in
 		OK)
@@ -238,15 +239,15 @@ menu_app_select() {
 			return 1
 			;;
 		*)
-			invalid_dialog_button ${SelectedAppsDialogButtonPressed}
+			invalid_tui_button ${SelectedAppsDialogButtonPressed}
 			;;
 	esac
 }
 
-show_gauge() {
+dialog_show_gauge() {
 	local GaugeTitle="${1-${Title}}"
 
-	_dialog_backtitle_
+	_tui_backtitle_
 	local -a GlobalDialogOptions=(
 		--file "${DIALOG_OPTIONS_FILE}"
 		--backtitle "${BACKTITLE}"
@@ -256,7 +257,6 @@ show_gauge() {
 	local -i ScreenRows=${LINES}
 	local -i ScreenCols=${COLUMNS}
 	local -i DialogCols
-	#local -i DialogRows
 
 	local -i GaugeDialogStartRow
 	local -i LogDialogStartRow
@@ -270,7 +270,6 @@ show_gauge() {
 	GaugeDialogStartRow=2
 	DialogStartCol=2
 
-	#DialogRows=$((ScreenRows - D["WindowRowsAdjust"]))
 	DialogCols=$((ScreenCols - D["WindowColsAdjust"]))
 
 	GaugeDialogTextRows=$(wc -l <<< "${FullDialogGaugeText}")
@@ -279,7 +278,6 @@ show_gauge() {
 	LogDialogStartRow="$((GaugeDialogStartRow + GaugeDialogRows + (D["WindowRowsAdjust"] - 3)))"
 	LogDialogRows="$((ScreenRows - LogDialogStartRow - (D["WindowRowsAdjust"] - 3) - 1))"
 
-	# Create the pipes to communicate with the gauge and log dialog windows
 	GaugePipe=$(mktemp -u -t "${APPLICATION_NAME}.${FUNCNAME[0]}.GaugePipe.XXXXXXXXXX")
 	mkfifo "${GaugePipe}"
 	exec {GaugePipe_fd}<> "${GaugePipe}"
@@ -308,24 +306,44 @@ show_gauge() {
 		"${GaugeDialog[@]}"
 	)
 
-	# Start the gauge and progress dialog windows in the background, and get the process id
 	local index
 	for index in "${!DialogOptions[@]}"; do
-		DialogOptions["${index}"]=$(resolve_styles DC "${DialogOptions["${index}"]}")
+		resolve_styles_into DialogOptions["${index}"] DC "${DialogOptions["${index}"]}"
 	done
 	"${DIALOG}" "${DialogOptions[@]}" < "${GaugePipe}" &
 	Dialog_PID=$!
 }
+whiptail_show_gauge() {
+	ProgressLog=/dev/tty
+	Dialog_PID=0
+}
+show_gauge() {
+	if use_dialog; then
+		dialog_show_gauge "$@"
+	else
+		whiptail_show_gauge "$@"
+	fi
+}
 
-close_gauge() {
-	# Signal the dialog gauge and progress windows to terminate
+dialog_close_gauge() {
 	kill -SIGTERM "${Dialog_PID}" &> /dev/null || true
 	wait "${Dialog_PID}" &> /dev/null || true
-	# Remove the communication pipes to dialog
 	exec {GaugePipe_fd}>&- &> /dev/null || true
 	rm "${GaugePipe}" &> /dev/null || true
 	exec {ProgressLog_fd}>&- &> /dev/null || true
 	rm "${ProgressLog}" &> /dev/null || true
+}
+whiptail_close_gauge() {
+	true
+}
+
+close_gauge() {
+	if use_dialog; then
+		dialog_close_gauge
+	else
+		whiptail_close_gauge
+	fi
+	tui_box_exit
 }
 
 init_gauge_text() {
@@ -394,7 +412,7 @@ init_gauge_text() {
 	done
 	DialogGaugeText="$(printf '%b' "${DialogGaugeText}" | expand)"
 	FullDialogGaugeText="${DialogGaugeText}"
-	ExpandedDialogGaugeText="$(resolve_styles DC "${DialogGaugeText}")"
+	resolve_styles_into ExpandedDialogGaugeText DC "${DialogGaugeText}"
 }
 
 init_gauge() {
@@ -402,6 +420,7 @@ init_gauge() {
 	shift || true
 	init_gauge_text "$@"
 	show_gauge "${Title}"
+	tui_box_enter
 }
 
 update_gauge_text() {
@@ -451,7 +470,7 @@ update_gauge_text() {
 		# Reassemble
 		DialogGaugeText="${prefix}${target_line}${suffix}"
 		FullDialogGaugeText="${DialogGaugeText}"
-		ExpandedDialogGaugeText="$(resolve_styles DC "${DialogGaugeText}")"
+		resolve_styles_into ExpandedDialogGaugeText DC "${DialogGaugeText}"
 	fi
 
 	# 2. Restore original shell state
@@ -476,13 +495,23 @@ update_gauge_percent() {
 	echo "${ProgressPercent}" > "${GaugePipe}"
 }
 
-update_gauge() {
+dialog_update_gauge() {
 	update_gauge_percent_value "${1-0}"
 	shift 1 || true
 	if [[ $# -gt 0 ]]; then
 		update_gauge_text "$@"
 	fi
 	printf 'XXX\n%s\n%s\nXXX\n' "${ProgressPercent}" "${ExpandedDialogGaugeText}" > "${GaugePipe}"
+}
+whiptail_update_gauge() {
+	true
+}
+update_gauge() {
+	if use_dialog; then
+		dialog_update_gauge "$@"
+	else
+		whiptail_update_gauge "$@"
+	fi
 }
 
 test_menu_app_select() {

@@ -54,9 +54,9 @@ run_unit_tests_pipe() {
 	local FailLeft="{{|UnitTestFailArrow|}}>{{[-]}}"
 	local FailRight="<{{|UnitTestFailArrow|}}{{[-]}}"
 	local VisFailLeft
-	VisFailLeft="$(strip_styles "${FailLeft}")"
+	strip_styles_into VisFailLeft "${FailLeft}"
 	local VisFailRight
-	VisFailRight="$(strip_styles "${FailRight}")"
+	strip_styles_into VisFailRight "${FailRight}"
 	local -i LeftPadSize=${#VisFailLeft}
 	local -i RightPadSize=${#VisFailRight}
 	local LeftSpacer
@@ -71,8 +71,8 @@ run_unit_tests_pipe() {
 	local -i i
 	for ((i = 0; i < ${#Test[@]}; i += 3)); do
 		local Input="${Test[i]-}"
-		local ExpectedValue="${Test[i+1]-}"
-		local ReturnedValue="${Test[i+2]-}"
+		local ExpectedValue="${Test[i + 1]-}"
+		local ReturnedValue="${Test[i + 2]-}"
 
 		if [[ ${ReturnedValue} == "${ExpectedValue}" ]]; then
 			LeftPointers+=("${LeftSpacer}")

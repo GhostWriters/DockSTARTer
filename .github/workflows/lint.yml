@@ -8,22 +8,22 @@ jobs:
   editorconfig-checker:
     runs-on: ubuntu-latest
     container:
-      image: mstruebing/editorconfig-checker:v3.6.1@sha256:af556694c3eb0a16b598efbe84c1171d40dfb779fdac6f01b89baedde065556f
+      image: mstruebing/editorconfig-checker:v3.8.0@sha256:eb478136c4342af399bb90537319722a7da289b8a7a8d2471592e3d7a5f5bfa7
       options: --user 0:0
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: editorconfig-checker
         run: editorconfig-checker .
 
   markdownlint:
     runs-on: ubuntu-latest
     container:
-      image: davidanson/markdownlint-cli2:v0.22.0@sha256:ea33f1f6a0f062f88a3dddfc49f6d6b5621648a93a0ff49a58bf8ac5a15330b9
+      image: davidanson/markdownlint-cli2:v0.23.1@sha256:f382ea4fdc949883e79de678009437fb40c339323654c7b0dd4d5221cda8ed20
       options: --user 0:0
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: markdownlint
         run: markdownlint-cli2 **.{md,markdown}
 
@@ -34,7 +34,7 @@ jobs:
       options: --user 0:0
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: install alpine packages
         run: apk add --no-cache findutils
       - name: shellcheck
@@ -43,11 +43,11 @@ jobs:
   shfmt:
     runs-on: ubuntu-latest
     container:
-      image: mvdan/shfmt:v3.13.0-alpine@sha256:25fc1e8cb4d9333ed07305c63fdf00e1bdf2d849ebad49afcf92950a75ad4e7d
+      image: mvdan/shfmt:v3.13.1-alpine@sha256:3bd333f7861b51081af39a8ba722c0023983362b46332849aaf57c6d32d96b25
       options: --user 0:0
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: install alpine packages
         run: apk add --no-cache findutils
       - name: shfmt
@@ -60,6 +60,6 @@ jobs:
       options: --user 0:0
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: yamllint
         run: yamllint .

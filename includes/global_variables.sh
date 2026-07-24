@@ -48,31 +48,45 @@ for Folder in "${FolderList[@]}"; do
 	if [[ ! -d ${Folder} ]]; then
 		if [[ -f ${Folder} ]]; then
 			# Folder exists, but it's not a folder, so remove it
-			sudo rm -f "${Folder}"
+			info "Removing existing file '${Folder}' before folder can be created."
+			sudo rm -f "${Folder}" ||
+				fatal \
+					"Failed to remove existing file." \
+					"Failing command: {{|FailingCommand|}}sudo rm -f \"${Folder}\""
 		fi
-		mkdir -p "${Folder}"
-		sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${Folder}"
-		sudo chmod 700 "${Folder}"
+		info "Creating folder '{{|Folder|}}${Folder}{{[-]}}'."
+		mkdir -p "${Folder}" ||
+			fatal \
+				"Failed to create folder." \
+				"Failing command: {{|FailingCommand|}}mkdir -p \"${Folder}\""
+		sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${Folder}" ||
+			fatal \
+				"Failed to set ownership of folder." \
+				"Failing command: {{|FailingCommand|}}sudo chown \"${DETECTED_PUID}\":\"${DETECTED_PGID}\" \"${Folder}\""
+		sudo chmod 700 "${Folder}" ||
+			fatal \
+				"Failed to set permissions of folder." \
+				"Failing command: {{|FailingCommand|}}sudo chmod 700 \"${Folder}\""
 	fi
 done
 
 declare -rgx TIMESTAMPS_FOLDER="${APPLICATION_STATE_FOLDER}/${TIMESTAMPS_FOLDER_NAME}"
-if [[ -d ${SCRIPTPATH}/compose/${TIMESTAMPS_FOLDER_NAME} ]]; then
+if [[ -d ${SCRIPTPATH}/compose/.timestamps ]]; then
 	# Migrate old timestamps folder
 	if [[ ! -d ${TIMESTAMPS_FOLDER} ]]; then
-		mv "${SCRIPTPATH}/compose/${TIMESTAMPS_FOLDER_NAME}" "${TIMESTAMPS_FOLDER}" || true
+		mv "${SCRIPTPATH}/compose/.timestamps" "${TIMESTAMPS_FOLDER}" || true
 	else
-		rm -rf "${SCRIPTPATH}/compose/${TIMESTAMPS_FOLDER_NAME}" || true
+		rm -rf "${SCRIPTPATH}/compose/.timestamps" || true
 	fi
 fi
 
 declare -gx INSTANCES_FOLDER="${APPLICATION_STATE_FOLDER}/${INSTANCES_FOLDER_NAME}"
-if [[ -d ${SCRIPTPATH}/compose/${INSTANCES_FOLDER_NAME} ]]; then
+if [[ -d ${SCRIPTPATH}/compose/.instances ]]; then
 	# Migrate old instances folder
 	if [[ ! -d ${INSTANCES_FOLDER} ]]; then
-		mv "${SCRIPTPATH}/compose/${INSTANCES_FOLDER_NAME}" "${INSTANCES_FOLDER}" || true
+		mv "${SCRIPTPATH}/compose/.instances" "${INSTANCES_FOLDER}" || true
 	else
-		rm -rf "${SCRIPTPATH}/compose/${INSTANCES_FOLDER_NAME}" || true
+		rm -rf "${SCRIPTPATH}/compose/.instances" || true
 	fi
 fi
 
@@ -81,7 +95,6 @@ declare -gx APPLICATION_INI_FILE="${APPLICATION_INI_FOLDER}/${APPLICATION_INI_NA
 declare -gx APPLICATION_TOML_FILE="${APPLICATION_CONFIG_FOLDER}/${APPLICATION_TOML_NAME}"
 
 declare -gx DEFAULTS_FOLDER="${APPLICATION_ASSETS_FOLDER}/${DEFAULTS_FOLDER_NAME}"
-declare -gx DEFAULT_INI_FILE="${DEFAULTS_FOLDER}/${APPLICATION_INI_NAME}"
 declare -gx DEFAULT_TOML_FILE="${DEFAULTS_FOLDER}/${APPLICATION_TOML_NAME}"
 declare -gx COMPOSE_ENV_DEFAULT_FILE="${DEFAULTS_FOLDER}/${COMPOSE_ENV_DEFAULT_FILE_NAME}"
 

@@ -4,7 +4,6 @@ IFS=$'\n\t'
 
 declare -a _dependencies_list=(
 	grep
-	sed
 )
 
 menu_value_prompt() {
@@ -25,7 +24,7 @@ menu_value_prompt() {
 	local VarType
 
 	local APPNAME
-	APPNAME="$(run_script 'varname_to_appname' "${VarName}")"
+	run_script 'varname_to_appname_into' APPNAME "${VarName}"
 	APPNAME="${APPNAME^^}"
 	if [[ -n ${APPNAME} ]]; then
 		Title="Edit Application Variable"
@@ -36,7 +35,7 @@ menu_value_prompt() {
 		else
 			VarType="APP"
 		fi
-		AppName="$(run_script 'app_nicename' "${APPNAME}")"
+		run_script 'app_nicename_into' AppName "${APPNAME}"
 	else
 		Title="Edit Global Variable"
 		VarType="GLOBAL"
@@ -50,7 +49,7 @@ menu_value_prompt() {
 	local ValueDescription=""
 	local -A OptionHelpLine=()
 	local -A OptionValue=()
-	OptionValue["${OriginalValueOption}"]=$(run_script 'env_get_literal' "${VarName}")
+	run_script 'env_get_literal_into' OptionValue["${OriginalValueOption}"] "${VarName}"
 	OptionHelpLine["${OriginalValueOption}"]="This is the original value before before entering the editor."
 	OptionValue["${CurrentValueOption}"]="${OptionValue["${OriginalValueOption}"]}"
 	OptionHelpLine["${CurrentValueOption}"]="This is the value that will be saved when you select Done."
@@ -67,8 +66,10 @@ menu_value_prompt() {
 					PossibleOptions+=(
 						"${SystemValueOption}"
 					)
+					local Default
+					run_script 'var_default_value_into' Default "${VarName}"
 					OptionValue+=(
-						["${SystemValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+						["${SystemValueOption}"]="${Default}"
 					)
 					;;
 				DOCKER_HOSTNAME)
@@ -76,8 +77,10 @@ menu_value_prompt() {
 					PossibleOptions+=(
 						"${SystemValueOption}"
 					)
+					local Default
+					run_script 'var_default_value_into' Default "${VarName}"
 					OptionValue+=(
-						["${SystemValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+						["${SystemValueOption}"]="${Default}"
 					)
 					;;
 				DOCKER_VOLUME_CONFIG)
@@ -105,8 +108,10 @@ menu_value_prompt() {
 					PossibleOptions+=(
 						"${SystemValueOption}"
 					)
+					local Default
+					run_script 'var_default_value_into' Default "${VarName}"
 					OptionValue+=(
-						["${SystemValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+						["${SystemValueOption}"]="${Default}"
 					)
 					;;
 				PGID)
@@ -114,8 +119,10 @@ menu_value_prompt() {
 					PossibleOptions+=(
 						"${SystemValueOption}"
 					)
+					local Default
+					run_script 'var_default_value_into' Default "${VarName}"
 					OptionValue+=(
-						["${SystemValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+						["${SystemValueOption}"]="${Default}"
 					)
 					;;
 				PUID)
@@ -123,8 +130,10 @@ menu_value_prompt() {
 					PossibleOptions+=(
 						"${SystemValueOption}"
 					)
+					local Default
+					run_script 'var_default_value_into' Default "${VarName}"
 					OptionValue+=(
-						["${SystemValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+						["${SystemValueOption}"]="${Default}"
 					)
 					;;
 				TZ)
@@ -132,8 +141,10 @@ menu_value_prompt() {
 					PossibleOptions+=(
 						"${SystemValueOption}"
 					)
+					local Default
+					run_script 'var_default_value_into' Default "${VarName}"
 					OptionValue+=(
-						["${SystemValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+						["${SystemValueOption}"]="${Default}"
 					)
 					;;
 				*)
@@ -141,8 +152,10 @@ menu_value_prompt() {
 					PossibleOptions+=(
 						"${DefaultValueOption}"
 					)
+					local Default
+					run_script 'var_default_value_into' Default "${VarName}"
 					OptionValue+=(
-						["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+						["${DefaultValueOption}"]="${Default}"
 					)
 					;;
 			esac
@@ -156,10 +169,12 @@ menu_value_prompt() {
 						"Disabled"
 						"${DefaultValueOption}"
 					)
+					local Default
+					run_script 'var_default_value_into' Default "${VarName}"
 					OptionValue+=(
 						["Enabled"]="'true'"
 						["Disabled"]="'false'"
-						["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+						["${DefaultValueOption}"]="${Default}"
 					)
 					;;
 				"${APPNAME}__NETWORK_MODE")
@@ -179,8 +194,10 @@ menu_value_prompt() {
 						["Use Gluetun"]="Connects {{|Highlight|}}${AppName}{{[-]}} to the VPN running in the {{|Highlight|}}Gluetun{{[-]}} container if running."
 						["Use PrivoxyVPN"]="Connects {{|Highlight|}}${AppName}{{[-]}} to the VPN running in the {{|Highlight|}}PrivoxyVPN{{[-]}} container if running."
 					)
+					local Default
+					run_script 'var_default_value_into' Default "${VarName}"
 					OptionValue+=(
-						["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+						["${DefaultValueOption}"]="${Default}"
 						["Bridge Network"]="'bridge'"
 						["Host Network"]="'host'"
 						["No Network"]="'none'"
@@ -203,8 +220,10 @@ menu_value_prompt() {
 						["Always Restart"]="This will cause the application to always restart"
 						["Restart On Failure"]="This will cause the application to restart if it stops due to a failure."
 					)
+					local Default
+					run_script 'var_default_value_into' Default "${VarName}"
 					OptionValue+=(
-						["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+						["${DefaultValueOption}"]="${Default}"
 						["Restart Unless Stopped"]="'unless-stopped'"
 						["Never Restart"]="'no'"
 						["Always Restart"]="'always'"
@@ -216,8 +235,10 @@ menu_value_prompt() {
 					PossibleOptions+=(
 						"${DefaultValueOption}"
 					)
+					local Default
+					run_script 'var_default_value_into' Default "${VarName}"
 					OptionValue+=(
-						["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+						["${DefaultValueOption}"]="${Default}"
 					)
 					;;
 				"${APPNAME}__VOLUME_"*)
@@ -225,8 +246,10 @@ menu_value_prompt() {
 					PossibleOptions+=(
 						"${DefaultValueOption}"
 					)
+					local Default
+					run_script 'var_default_value_into' Default "${VarName}"
 					OptionValue+=(
-						["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+						["${DefaultValueOption}"]="${Default}"
 					)
 					;;
 				*)
@@ -235,16 +258,20 @@ menu_value_prompt() {
 						PossibleOptions+=(
 							"${DefaultValueOption}"
 						)
+						local Default
+						run_script 'var_default_value_into' Default "${VarName}"
 						OptionValue+=(
-							["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+							["${DefaultValueOption}"]="${Default}"
 						)
 					else
 						ValueDescription=""
 						PossibleOptions+=(
 							"${DefaultValueOption}"
 						)
+						local Default
+						run_script 'var_default_value_into' Default "${VarName}"
 						OptionValue+=(
-							["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+							["${DefaultValueOption}"]="${Default}"
 						)
 					fi
 					;;
@@ -256,8 +283,10 @@ menu_value_prompt() {
 					PossibleOptions+=(
 						"${DefaultValueOption}"
 					)
+					local Default
+					run_script 'var_default_value_into' Default "${VarName}"
 					OptionValue+=(
-						["${DefaultValueOption}"]="$(run_script 'var_default_value' "${VarName}")"
+						["${DefaultValueOption}"]="${Default}"
 					)
 					;;
 			esac
@@ -297,7 +326,7 @@ menu_value_prompt() {
 
 		local DialogHeading
 		local CurrentValueHeading="${OptionValue["${CurrentValueOption}"]:-${VarDeletedTag}}"
-		DialogHeading="$(run_script 'menu_heading' "${APPNAME}" "${VarName}" "${OptionValue["${OriginalValueOption}"]-}" "${CurrentValueHeading}")"
+		run_script 'menu_heading_into' DialogHeading "${APPNAME}" "${VarName}" "${OptionValue["${OriginalValueOption}"]-}" "${CurrentValueHeading}"
 		local SelectValueMenuText="${DialogHeading}\n\nWhat would you like set for {{|Highlight|}}${CleanVarName}{{[-]}}?${ValueDescription}"
 		local -a SelectValueDialog=(
 			"${Title}"
@@ -311,7 +340,7 @@ menu_value_prompt() {
 		)
 		local -i SelectValueDialogButtonPressed=0
 		local SelectedValue
-		SelectedValue=$(dialog_inputmenu "${SelectValueDialog[@]}") || SelectValueDialogButtonPressed=$?
+		menu_value_prompt_select_into SelectedValue "${SelectValueDialog[@]}" || SelectValueDialogButtonPressed=$?
 
 		case ${DIALOG_BUTTONS[SelectValueDialogButtonPressed]-} in
 			OK) # SELECT button
@@ -341,7 +370,10 @@ menu_value_prompt() {
 				else
 					local StrippedValue="${OptionValue["${CurrentValueOption}"]}"
 					# Unqauote the value
-					StrippedValue="$(${SED} -E "s|^(['\"])(.*)\1$|\2|g" <<< "${StrippedValue}")"
+					case "${StrippedValue}" in
+						"'"*"'") StrippedValue="${StrippedValue:1:${#StrippedValue}-2}" ;;
+						'"'*'"') StrippedValue="${StrippedValue:1:${#StrippedValue}-2}" ;;
+					esac
 
 					case "${VarName}" in
 						"${APPNAME}__ENABLED")
@@ -351,7 +383,7 @@ menu_value_prompt() {
 									;;
 								*)
 									ValueValid="false"
-									dialog_error "${Title}" "${DialogHeading}\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not {{|Highlight|}}true{{[-]}}/{{|Highlight|}}on{{[-]}}/{{|Highlight|}}yes{{[-]}} or {{|Highlight|}}false{{[-]}}/{{|Highlight|}}off{{[-]}}/{{|Highlight|}}no{{[-]}}. Please try setting {{|Highlight|}}${CleanVarName}{{[-]}} again."
+									tui_error "${Title}" "${DialogHeading}\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not {{|Highlight|}}true{{[-]}}/{{|Highlight|}}on{{[-]}}/{{|Highlight|}}yes{{[-]}} or {{|Highlight|}}false{{[-]}}/{{|Highlight|}}off{{[-]}}/{{|Highlight|}}no{{[-]}}. Please try setting {{|Highlight|}}${CleanVarName}{{[-]}} again."
 									;;
 							esac
 							;;
@@ -362,7 +394,7 @@ menu_value_prompt() {
 									;;
 								*)
 									ValueValid="false"
-									dialog_error "${Title}" "${DialogHeading}\n\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not a valid network mode. Please try setting {{|Highlight|}}${CleanVarName}{{[-]}} again."
+									tui_error "${Title}" "${DialogHeading}\n\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not a valid network mode. Please try setting {{|Highlight|}}${CleanVarName}{{[-]}} again."
 									;;
 							esac
 							;;
@@ -373,32 +405,35 @@ menu_value_prompt() {
 									;;
 								*)
 									ValueValid="false"
-									dialog_error "${Title}" "${DialogHeading}\n\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not a valid restart value. Please try setting {{|Highlight|}}${CleanVarName}{{[-]}} again."
+									tui_error "${Title}" "${DialogHeading}\n\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not a valid restart value. Please try setting {{|Highlight|}}${CleanVarName}{{[-]}} again."
 									;;
 							esac
 							;;
 						"${APPNAME}__VOLUME_"*)
 							if [[ ${StrippedValue} == "/" ]]; then
 								ValueValid="false"
-								dialog_error "${Title}" "${DialogHeading}\n\nCannot use {{|Highlight|}}/{{[-]}} for {{|Highlight|}}${CleanVarName}{{[-]}}. Please select another folder."
+								tui_error "${Title}" "${DialogHeading}\n\nCannot use {{|Highlight|}}/{{[-]}} for {{|Highlight|}}${CleanVarName}{{[-]}}. Please select another folder."
 							elif [[ ${StrippedValue} == *~* ]]; then
 								local CORRECTED_DIR="${OptionValue["${CurrentValueOption}"]//\~/"${DETECTED_HOMEDIR}"}"
 								if run_script 'question_prompt' --maximized Y "${DialogHeading}\n\nCannot use the {{|Highlight|}}~{{[-]}} shortcut in {{|Highlight|}}${CleanVarName}{{[-]}}. Would you like to use {{|Highlight|}}${CORRECTED_DIR}{{[-]}} instead?" "${Title}"; then
 									OptionValue["${CurrentValueOption}"]="${CORRECTED_DIR}"
 									ValueValid="false"
-									dialog_success "${Title}" "Returning to the previous menu to confirm selection."
+									tui_success "${Title}" "Returning to the previous menu to confirm selection."
 								else
 									ValueValid="false"
-									dialog_error "${Title}" "${DialogHeading}\n\nCannot use the {{|Highlight|}}~{{[-]}} shortcut in {{|Highlight|}}${CleanVarName}{{[-]}}. Please select another folder."
+									tui_error "${Title}" "${DialogHeading}\n\nCannot use the {{|Highlight|}}~{{[-]}} shortcut in {{|Highlight|}}${CleanVarName}{{[-]}}. Please select another folder."
 								fi
 							elif [[ -d ${StrippedValue} ]]; then
 								if run_script 'question_prompt' --maximized Y "${DialogHeading}\n\nWould you like to set permissions on ${OptionValue["${CurrentValueOption}"]} ?" "${Title}" "${ASSUMEYES:+Y}"; then
-									run_script_dialog "Setting Permissions" "{{|Heading|}}${StrippedValue}{{[-]}}" "${DIALOGTIMEOUT}" \
+									run_script_tui "Setting Permissions" "{{|Heading|}}${StrippedValue}{{[-]}}" "${DIALOGTIMEOUT}" \
 										'set_permissions' "${StrippedValue}"
 								fi
 								ValueValid="true"
 							else
 								if run_script 'question_prompt' --maximized Y "${DialogHeading}\n\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not a valid path. Would you like to attempt to create it?" "${Title}"; then
+									#shellcheck disable=SC2034 # (warning): PipePID is passed by name to tui_pipe_open/close via nameref and appears unused to shellcheck.
+									local -i PipeFD PipePID
+									tui_pipe_open PipeFD PipePID "Creating folder and settings permissions" "${OptionValue["${CurrentValueOption}"]}" "${DIALOGTIMEOUT}"
 									{
 										{
 											mkdir -p "${StrippedValue}" ||
@@ -407,11 +442,12 @@ menu_value_prompt() {
 													"Failing command: {{|FailingCommand|}}mkdir -p \"${StrippedValue}\""
 											run_script 'set_permissions' "${StrippedValue}"
 										} || true
-									} |& dialog_pipe "Creating folder and settings permissions" "${OptionValue["${CurrentValueOption}"]}" "${DIALOGTIMEOUT}"
-									dialog_msgbox "{{|TitleSuccess|}}${Title}" "{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} folder was created successfully." --maximized
+									} >&${PipeFD} 2>&1
+									tui_pipe_close PipeFD PipePID
+									tui_msgbox "{{|TitleSuccess|}}${Title}" "{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} folder was created successfully." --maximized
 									ValueValid="true"
 								else
-									dialog_error "${Title}" "${DialogHeading}\n\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not a valid path. Please try setting {{|Highlight|}}${CleanVarName}{{[-]}} again."
+									tui_error "${Title}" "${DialogHeading}\n\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not a valid path. Please try setting {{|Highlight|}}${CleanVarName}{{[-]}} again."
 									ValueValid="false"
 								fi
 							fi
@@ -428,7 +464,7 @@ menu_value_prompt() {
 									ValueValid="true"
 								fi
 							else
-								dialog_error "${Title}" "${DialogHeading}\n\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not a valid ${CleanVarName}. Please try setting {{|Highlight|}}${CleanVarName}{{[-]}} again."
+								tui_error "${Title}" "${DialogHeading}\n\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not a valid ${CleanVarName}. Please try setting {{|Highlight|}}${CleanVarName}{{[-]}} again."
 								ValueValid="false"
 							fi
 							;;
@@ -438,7 +474,7 @@ menu_value_prompt() {
 									ValueValid="true"
 								else
 									ValueValid="false"
-									dialog_error "${Title}" "${DialogHeading}\n\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not a valid port. Please try setting {{|Highlight|}}${CleanVarName}{{[-]}} again."
+									tui_error "${Title}" "${DialogHeading}\n\n{{|Highlight|}}${OptionValue["${CurrentValueOption}"]}{{[-]}} is not a valid port. Please try setting {{|Highlight|}}${CleanVarName}{{[-]}} again."
 								fi
 							else
 								ValueValid="true"
@@ -450,11 +486,9 @@ menu_value_prompt() {
 					if [[ -z ${OptionValue["${CurrentValueOption}"]-} ]]; then
 						if run_script 'question_prompt' --maximized N "${DialogHeading}\n\nDo you really want to delete {{|Highlight|}}${CleanVarName}{{[-]}}?\n" "Delete Variable" "${ASSUMEYES:+Y}" "Delete" "Back"; then
 							# Value is empty, delete the variable
-							coproc {
-								dialog_pipe "{{|TitleSuccess|}}Deleting Variable" "${DialogHeading}" "${DIALOGTIMEOUT}"
-							}
-							local -i DialogBox_PID=${COPROC_PID}
-							local -i DialogBox_FD="${COPROC[1]}"
+							#shellcheck disable=SC2034 # (warning): PipePID is passed by name to tui_pipe_open/close via nameref and appears unused to shellcheck.
+							local -i PipeFD PipePID
+							tui_pipe_open PipeFD PipePID "{{|TitleSuccess|}}Deleting Variable" "${DialogHeading}" "${DIALOGTIMEOUT}"
 							{
 								run_script 'env_delete' "${VarName}"
 								if [[ -n ${APPNAME-} ]]; then
@@ -470,19 +504,16 @@ menu_value_prompt() {
 									run_script 'env_sanitize'
 									run_script 'env_update'
 								fi
-							} >&${DialogBox_FD} 2>&1 || true
-							exec {DialogBox_FD}<&-
-							wait ${DialogBox_PID}
+							} >&${PipeFD} 2>&1 || true
+							tui_pipe_close PipeFD PipePID
 							return 0
 						fi
 					elif [[ ${OptionValue["${CurrentValueOption}"]-} == "${OptionValue["${OriginalValueOption}"]-}" ]]; then
 						if run_script 'question_prompt' --maximized N "${DialogHeading}\n\nThe value of {{|Highlight|}}${CleanVarName}{{[-]}} has not been changed, exit anyways?\n" "Save Variable" "${ASSUMEYES:+Y}" "Done" "Back"; then
 							# Value has not changed, confirm exiting
-							coproc {
-								dialog_pipe "{{|TitleSuccess|}}Canceling Variable Edit" "${DialogHeading}" "${DIALOGTIMEOUT}"
-							}
-							local -i DialogBox_PID=${COPROC_PID}
-							local -i DialogBox_FD="${COPROC[1]}"
+							#shellcheck disable=SC2034 # (warning): PipePID is passed by name to tui_pipe_open/close via nameref and appears unused to shellcheck.
+							local -i PipeFD PipePID
+							tui_pipe_open PipeFD PipePID "{{|TitleSuccess|}}Canceling Variable Edit" "${DialogHeading}" "${DIALOGTIMEOUT}"
 							{
 								if [[ -n ${APPNAME-} ]]; then
 									if ! run_script 'app_is_user_defined' "${APPNAME}"; then
@@ -497,19 +528,16 @@ menu_value_prompt() {
 									run_script 'env_update'
 									run_script 'env_sanitize'
 								fi
-							} >&${DialogBox_FD} 2>&1 || true
-							exec {DialogBox_FD}<&-
-							wait ${DialogBox_PID}
+							} >&${PipeFD} 2>&1 || true
+							tui_pipe_close PipeFD PipePID
 							return 0
 						fi
 					else
 						if run_script 'question_prompt' --maximized N "${DialogHeading}\n\nWould you like to save {{|Highlight|}}${CleanVarName}{{[-]}}?\n" "Save Variable" "${ASSUMEYES:+Y}" "Save" "Back"; then
 							# Value is valid, save it and exit
-							coproc {
-								dialog_pipe "{{|TitleSuccess|}}Saving Variable" "${DialogHeading}" "${DIALOGTIMEOUT}"
-							}
-							local -i DialogBox_PID=${COPROC_PID}
-							local -i DialogBox_FD="${COPROC[1]}"
+							#shellcheck disable=SC2034 # (warning): PipePID is passed by name to tui_pipe_open/close via nameref and appears unused to shellcheck.
+							local -i PipeFD PipePID
+							tui_pipe_open PipeFD PipePID "{{|TitleSuccess|}}Saving Variable" "${DialogHeading}" "${DIALOGTIMEOUT}"
 							{
 								run_script 'env_set_literal' "${VarName}" "${OptionValue["${CurrentValueOption}"]}"
 								if [[ -n ${APPNAME-} ]]; then
@@ -524,19 +552,99 @@ menu_value_prompt() {
 									run_script 'env_update'
 									run_script 'env_sanitize'
 								fi
-							} >&${DialogBox_FD} 2>&1 || true
-							exec {DialogBox_FD}<&-
-							wait ${DialogBox_PID}
+							} >&${PipeFD} 2>&1 || true
+							tui_pipe_close PipeFD PipePID
 							return 0
 						fi
 					fi
 				fi
 				;;
 			*)
-				invalid_dialog_button ${SelectValueDialogButtonPressed}
+				invalid_tui_button ${SelectValueDialogButtonPressed}
 				;;
 		esac
 	done
+}
+
+menu_value_prompt_select_whiptail_into() {
+	local -n _mvpswi_out_="${1}"
+	assert_nameref_is_string "${1}"
+	shift
+	local Title="${1-}"
+	shift || true
+	local Message="${1-}"
+	shift || true
+	#shellcheck disable=SC2034 # (warning): ParsedOptions is passed by name to _whiptail_parse_options_ via nameref and appears unused to shellcheck.
+	local -a ParsedOptions=()
+	#shellcheck disable=SC2034 # (warning): Maximized is passed by name to _whiptail_parse_options_ via nameref and appears unused to shellcheck.
+	local -i _n_=0 Maximized=0
+	_whiptail_parse_options_ ParsedOptions Maximized _n_ "$@"
+	shift "${_n_}"
+	local -a Items=("$@")
+	local -i OptionsLength=0
+	local -i i
+	for ((i = 0; i < ${#Items[@]}; i += 3)); do
+		if [[ ${#Items[i]} -gt OptionsLength ]]; then
+			OptionsLength=${#Items[i]}
+		fi
+	done
+	local EnterCustom="<CUSTOM VALUE>"
+	local CustomBar
+	CustomBar=$(printf "%$(((OptionsLength - ${#EnterCustom}) / 2))s" '')
+	EnterCustom="${CustomBar}${EnterCustom}${CustomBar}"
+	Items+=("${EnterCustom}" "" "")
+	local -a MenuDialog=(
+		"${Title}"
+		"${Message}"
+		--maximized
+		--item-help
+		--ok-label:Select
+		--cancel-label:Done
+		"${Items[@]}"
+	)
+	local -i result=0
+	local Selected
+	tui_menu_into Selected "${MenuDialog[@]}" || result=$?
+	case ${DIALOG_BUTTONS[result]-} in
+		OK)
+			if [[ ${Selected} == "${EnterCustom}" ]]; then
+				local NewValue
+				tui_inputbox_into NewValue "${Title}" "${Message}" --maximized || result=$?
+				case ${DIALOG_BUTTONS[result]-} in
+					OK)
+						_mvpswi_out_="RENAMED Current Value ${NewValue}"
+						return "${DIALOG_EXTRA}"
+						;;
+					*)
+						return ${result}
+						;;
+				esac
+			else
+				_mvpswi_out_="${Selected}"
+				return "${DIALOG_OK}"
+			fi
+			;;
+		*)
+			return ${result}
+			;;
+	esac
+}
+
+menu_value_prompt_select_into() {
+	local -n _mvpsi_out_="${1}"
+	assert_nameref_is_string "${1}"
+	shift
+	local -i result=0
+	local temp_file="${TEMP_FOLDER}/${APPLICATION_NAME,,}.${FUNCNAME[0]}.$$.tmp"
+	if use_dialog; then
+		dialog_inputmenu "$@" > "${temp_file}" || result=$?
+		read -r _mvpsi_out_ < "${temp_file}" || true
+		rm -f "${temp_file}"
+		return ${result}
+	else
+		menu_value_prompt_select_whiptail_into _mvpsi_out_ "$@" || result=$?
+		return ${result}
+	fi
 }
 
 test_menu_value_prompt() {

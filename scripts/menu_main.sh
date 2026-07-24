@@ -32,7 +32,7 @@ menu_main() {
 		)
 		local MainChoice
 		local -i MainDialogButtonPressed=0
-		MainChoice=$(dialog_menu "${MainChoiceDialog[@]}") || MainDialogButtonPressed=$?
+		tui_menu_into MainChoice "${MainChoiceDialog[@]}" || MainDialogButtonPressed=$?
 		LastMainChoice=${MainChoice}
 		case ${DIALOG_BUTTONS[MainDialogButtonPressed]-} in
 			OK)
@@ -61,7 +61,7 @@ menu_main() {
 				exit 0
 				;;
 			*)
-				invalid_dialog_button ${MainDialogButtonPressed}
+				invalid_tui_button ${MainDialogButtonPressed}
 				;;
 		esac
 	done

@@ -29,9 +29,13 @@ needs_yml_merge() {
 	# Sentinel file for YML merge (use docker-compose.yml marker as reference)
 	local SentinelFile="${timestamps_folder}/docker-compose.yml"
 
-	for AppName in $(run_script 'app_list_enabled'); do
+	local -a EnabledApps
+	run_script 'app_list_enabled_into_array' EnabledApps
+	for AppName in "${EnabledApps[@]-}"; do
 		local -l appname=${AppName}
-		if file_changed "$(run_script 'app_env_file' "${appname}")"; then
+		local AppEnvFile
+		run_script 'app_env_file_into' AppEnvFile "${appname}"
+		if file_changed "${AppEnvFile}"; then
 			# .env.app.appname has changed, return true
 			return 0
 		fi
@@ -39,7 +43,7 @@ needs_yml_merge() {
 		# Check app-specific template directory
 		if [[ -f ${SentinelFile} ]]; then
 			local baseappname
-			baseappname="$(run_script 'appname_to_baseappname' "${appname}")"
+			run_script 'appname_to_baseappname_into' baseappname "${appname}"
 			local AppTemplateDir="${TEMPLATES_FOLDER:?}/${baseappname}"
 			if [[ -d ${AppTemplateDir} ]]; then
 				if [[ -n $(find "${AppTemplateDir}" -newer "${SentinelFile}" -print -quit) ]]; then

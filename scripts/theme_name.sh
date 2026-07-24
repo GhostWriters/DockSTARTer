@@ -3,7 +3,9 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 theme_name() {
-	get_toml_val "${APPLICATION_TOML_FILE}" "ui.theme"
+	local result
+	run_script 'theme_name_into' result
+	echo "${result}"
 }
 
 test_theme_name() {

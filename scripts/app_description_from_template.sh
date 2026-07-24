@@ -2,28 +2,12 @@
 set -Eeuo pipefail
 IFS=$'\n\t'
 
-declare -a _dependencies_list=(
-	grep
-	sed
-)
+declare -a _dependencies_list=()
 
 app_description_from_template() {
-	# Return the description of the appname passed.
-	local appname=${1-}
-	appname=${appname,,}
-	if run_script 'app_is_builtin' "${appname}"; then
-		local labels_yml
-		labels_yml="$(run_script 'app_instance_file' "${appname}" "*.labels.yml")"
-		if [[ -f ${labels_yml} ]]; then
-			${GREP} --color=never -Po "\scom\.dockstarter\.appinfo\.description: \K.*" "${labels_yml}" | ${SED} -E 's/^([^"].*[^"])$/"\1"/' | xargs || echo "! Missing description !"
-		else
-			echo "! Missing application !"
-		fi
-	else
-		local AppName
-		AppName="$(run_script 'app_nicename' "${appname}")"
-		echo "${AppName} is a user defined application"
-	fi
+	local result
+	run_script 'app_description_from_template_into' result "$@"
+	echo "${result}"
 }
 
 test_app_description_from_template() {
@@ -48,7 +32,7 @@ test_app_description_from_template() {
 		for ((i = 0; i < ${#Test[@]}; i += 2)); do
 			printf '%s\n' \
 				"${Test[i]}" \
-				"${Test[i+1]}" \
+				"${Test[i + 1]}" \
 				"$(run_script 'app_description_from_template' "${Test[i]}")"
 		done
 	)

@@ -10,13 +10,13 @@ appvars_create_all() {
 	fi
 	run_script 'env_create'
 	run_script 'appvars_migrate_enabled_lines'
-	local AddedApps
-	AddedApps="$(run_script 'app_list_added')"
-	if [[ -n ${AddedApps-} ]]; then
+	local -a AddedApps
+	run_script 'app_list_added_into_array' AddedApps
+	if [[ -n ${AddedApps[*]-} ]]; then
 		notice "Creating environment variables for added apps. Please be patient, this can take a while."
-		run_script 'appvars_create' "${AddedApps}"
+		run_script 'appvars_create' "${AddedApps[@]}"
 	else
-		notice "'{{|File|}}${COMPOSE_ENV}{{[-]}}' does not contain any added apps."
+		notice "File '{{|File|}}${COMPOSE_ENV}{{[-]}}' does not contain any added apps."
 	fi
 	run_script 'env_update'
 	run_script 'unset_needs_appvars_create'

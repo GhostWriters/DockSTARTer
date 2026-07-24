@@ -3,14 +3,20 @@ set -Eeuo pipefail
 IFS=$'\n\t'
 
 docker_compose() {
+	local -a InputList
+	IFS=$' \t\n\r' read -d '' -ra InputList <<< "$*" || true
 	local ComposeInput
-	ComposeInput="$(xargs <<< "$@")"
+	printf -v ComposeInput '%s ' "${InputList[@]}"
+	ComposeInput="${ComposeInput% }"
 	local Command=${ComposeInput%% *}
 	local APPNAME AppName
 	if [[ ${ComposeInput} == *" "* ]]; then
 		APPNAME=${ComposeInput#* }
-		AppName="$(run_script 'app_nicename' "${APPNAME}" | xargs)"
-		AppName="${AppName// /, }"
+		local -a AppList AppNameArray
+		IFS=$' \t\n\r' read -d '' -ra AppList <<< "${APPNAME}" || true
+		run_script 'app_nicename_into_array' AppNameArray "${AppList[@]}"
+		printf -v AppName '%s, ' "${AppNameArray[@]}"
+		AppName="${AppName%, }"
 	fi
 
 	local Title="Docker Compose"
@@ -129,34 +135,10 @@ docker_compose() {
 
 	local -i result=0
 	if run_script 'question_prompt' Y "${Question}" "${Title}" "${ASSUMEYES:+Y}"; then
-		if use_dialog_box; then
-			coproc {
-				dialog_pipe "{{|TitleSuccess|}}${Title}" "${YesNotice}{{[-]}}\n{{|CommandLine|}} ${APPLICATION_COMMAND} --compose ${ComposeInput}"
-			}
-			local -i DialogBox_PID=${COPROC_PID}
-			local -i DialogBox_FD="${COPROC[1]}"
-			{
-				[[ -n ${YesNotice-} ]] && notice "${YesNotice}"
-				run_script 'require_docker'
-				if run_script 'yml_merge'; then
-					for index in "${!ComposeCommand[@]}"; do
-						local -a Command=(
-							docker compose --project-directory "${COMPOSE_FOLDER}/"
-						)
-						local -a CommandArgs
-						IFS=' ' read -ra CommandArgs <<< "${ComposeCommand[index]}"
-						if ! RunAndLog notice "" error "Failed to run compose." "${Command[@]}" "${CommandArgs[@]}"; then
-							result=1
-							break
-						fi
-					done
-				else
-					result=1
-				fi
-			} >&${DialogBox_FD} 2>&1 || true
-			exec {DialogBox_FD}<&-
-			wait ${DialogBox_PID}
-		else
+		#shellcheck disable=SC2034 # (warning): PipePID is passed by name to tui_pipe_open/close via nameref and appears unused to shellcheck.
+		local -i PipeFD PipePID
+		tui_pipe_open PipeFD PipePID "{{|TitleSuccess|}}${Title}" "${YesNotice}{{[-]}}\n{{|CommandLine|}} ${APPLICATION_COMMAND} --compose ${ComposeInput}"
+		{
 			[[ -n ${YesNotice-} ]] && notice "${YesNotice}"
 			run_script 'require_docker'
 			if run_script 'yml_merge'; then
@@ -174,13 +156,14 @@ docker_compose() {
 			else
 				result=1
 			fi
-		fi
+		} >&${PipeFD} 2>&1 || true
+		tui_pipe_close PipeFD PipePID
 	else
-		if use_dialog_box; then
-			{ [[ -n ${NoNotice-} ]] && notice "${NoNotice}" || true; } |& dialog_pipe "{{|TitleError|}}${Title}" "${NoNotice}"
-		else
-			[[ -n ${NoNotice-} ]] && notice "${NoNotice}"
-		fi
+		#shellcheck disable=SC2034 # (warning): PipePID is passed by name to tui_pipe_open/close via nameref and appears unused to shellcheck.
+		local -i PipeFD PipePID
+		tui_pipe_open PipeFD PipePID "{{|TitleError|}}${Title}" "${NoNotice}"
+		{ [[ -n ${NoNotice-} ]] && notice "${NoNotice}" || true; } >&${PipeFD} 2>&1
+		tui_pipe_close PipeFD PipePID
 	fi
 	return ${result}
 }

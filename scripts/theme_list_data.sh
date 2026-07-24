@@ -22,7 +22,7 @@ theme_list_data() {
 		hrx_extract_file "${ThemeFile}" "${THEME_FILE_NAME}" "${ExtractedFile}"
 
 		local DisplayName
-		DisplayName="$(get_toml_val "${ExtractedFile}" "metadata.name")"
+		DisplayName="$(get_toml_val_string "${ExtractedFile}" "metadata.name")"
 		[[ -z ${DisplayName} ]] && DisplayName="${Stem}"
 		rm -f "${ExtractedFile}"
 
@@ -44,7 +44,7 @@ theme_list_data() {
 		hrx_extract_file "${ThemeFile}" "${THEME_FILE_NAME}" "${ExtractedFile}"
 
 		local DisplayName
-		DisplayName="$(get_toml_val "${ExtractedFile}" "metadata.name")"
+		DisplayName="$(get_toml_val_string "${ExtractedFile}" "metadata.name")"
 		[[ -z ${DisplayName} ]] && DisplayName="${Stem}"
 		rm -f "${ExtractedFile}"
 

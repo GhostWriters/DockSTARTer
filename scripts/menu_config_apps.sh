@@ -9,12 +9,13 @@ menu_config_apps() {
 
 	local LastAppChoice=""
 	while true; do
-		local AddedApps
-		AddedApps="$(run_script 'app_list_referenced' | run_script 'app_nicename_pipe')"
+		local -a ReferencedApps AddedApps
+		run_script 'app_list_referenced_into_array' ReferencedApps
+		run_script 'app_nicename_into_array' AddedApps "${ReferencedApps[@]}"
 		local -a AppOptions=()
-		for AppName in ${AddedApps}; do
+		for AppName in "${AddedApps[@]}"; do
 			local AppDescription
-			AppDescription=$(run_script 'app_description' "${AppName}")
+			run_script 'app_description_into' AppDescription "${AppName}"
 			if run_script 'app_is_user_defined' "${AppName}"; then
 				AppOptions+=("${AppName}" "{{|ListAppUserDefined|}}${AppDescription}")
 			else
@@ -26,14 +27,14 @@ menu_config_apps() {
 			"${Title}"
 			"Select the application to configure"
 			--ok-label:Select
-			--extra-label:Back
-			--cancel-label:Exit
+			--cancel-label:Back
+			--exit-button
 			--default-item:"${LastAppChoice}"
 			"${AppOptions[@]}"
 		)
 		local AppChoice
 		local -i AppChoiceButtonPressed=0
-		AppChoice=$(dialog_menu "${AppChoiceDialog[@]}") || AppChoiceButtonPressed=$?
+		tui_menu_into AppChoice "${AppChoiceDialog[@]}" || AppChoiceButtonPressed=$?
 		LastAppChoice=${AppChoice}
 		case ${DIALOG_BUTTONS[AppChoiceButtonPressed]-} in
 			OK) # Select
@@ -43,14 +44,14 @@ menu_config_apps() {
 					run_script 'menu_config_vars' "${AppChoice}"
 				fi
 				;;
-			EXTRA | ESC) # Back
+			CANCEL | ESC) # Back
 				return
 				;;
-			CANCEL) # Exit
+			EXIT) # Exit
 				run_script 'menu_exit'
 				;;
 			*)
-				invalid_dialog_button ${AppChoiceButtonPressed}
+				invalid_tui_button ${AppChoiceButtonPressed}
 				;;
 		esac
 	done

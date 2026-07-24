@@ -23,8 +23,9 @@ pm_dnf_install() {
 
 	#shellcheck disable=SC2124 #Assigning an array to a string! Assign as array, or use * instead of @ to concatenate.
 	local PackagesString="${Packages[@]}"
-	local pkglist="${PackagesString// /{{[-]}}\', \'{{|Folder|}}}"
-	pkglist="{{[-]}}'{{|Folder|}}${pkglist}{{[-]}}'"
+	local pkglist
+	printf -v pkglist ", '{{|Folder|}}%s{{[-]}}'" "${Packages[@]}"
+	pkglist="${pkglist:2}"
 
 	notice "Installing packages: ${pkglist}"
 
@@ -46,13 +47,15 @@ detect_packages() {
 
 	local DepsSearch
 	DepsSearch="$(printf '*/bin/%s ' "${Dependencies[@]}" | xargs)"
-	local Command="dnf rq ${DepsSearch} --qf %{name}"
+	local Command="dnf rq ${DepsSearch} --qf '%{name} '"
 	notice "Running: {{|RunningCommand|}}${Command}{{[-]}}"
-	eval "${Command}" 2> /dev/null | while IFS= read -r line; do
-		if [[ ! ${line} =~ ${RegEx_Package_Blacklist} ]]; then
-			echo "${line}"
+	local -a Packages
+	IFS=$' \t\n\r' read -d '' -ra Packages <<< "$(eval "${Command}" 2> /dev/null)" || true
+	for Package in "${Packages[@]-}"; do
+		if [[ ! ${Package} =~ ${RegEx_Package_Blacklist} ]]; then
+			echo "${Package}"
 		fi
-	done | sort -u
+	done | xargs -n1 | sort -u
 }
 
 test_pm_dnf_install() {

@@ -9,9 +9,11 @@ menu_options() {
 
 	local Title="Options"
 	local Option_Theme="Choose Theme"
+	local Option_Display_Engine="Display Engine"
 	local Option_Display="Display Options"
 	local Option_Package_Manager="Package Manager"
 	local Opts=(
+		"${Option_Display_Engine}" "{{|ListDefault|}}Set display engine for menus" ""
 		"${Option_Theme}" "{{|ListDefault|}}Choose a theme for ${APPLICATION_NAME}" ""
 		"${Option_Display}" "{{|ListDefault|}}Set display options" ""
 		"${Option_Package_Manager}" "{{|ListDefault|}}Choose the package manager to use" ""
@@ -23,19 +25,22 @@ menu_options() {
 			"${Title}"
 			"What would you like to do?"
 			"--ok-label:Select"
-			"--extra-label:Back"
-			"--cancel-label:Exit"
+			--cancel-label:Back
+			--exit-button
 			"--default-item:${LastChoice}"
 			--item-help
 			"${Opts[@]}"
 		)
 		local Choice
 		local -i DialogButtonPressed=0
-		Choice=$(dialog_menu "${ChoiceDialog[@]}") || DialogButtonPressed=$?
+		tui_menu_into Choice "${ChoiceDialog[@]}" || DialogButtonPressed=$?
 		LastChoice=${Choice}
 		case ${DIALOG_BUTTONS[DialogButtonPressed]-} in
 			OK) # Select
 				case "${Choice}" in
+					"${Option_Display_Engine}")
+						run_script 'menu_options_display_engine' || true
+						;;
 					"${Option_Theme}")
 						run_script 'menu_options_theme' || true
 						;;
@@ -50,14 +55,14 @@ menu_options() {
 						;;
 				esac
 				;;
-			EXTRA | ESC) # Back
+			CANCEL | ESC) # Back
 				return
 				;;
-			CANCEL) # Exit
+			EXIT) # Exit
 				run_script 'menu_exit'
 				;;
 			*)
-				invalid_dialog_button ${DialogButtonPressed}
+				invalid_tui_button ${DialogButtonPressed}
 				;;
 		esac
 	done

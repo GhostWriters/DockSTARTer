@@ -12,19 +12,17 @@ update_templates() {
 	local Question YesNotice NoNotice
 
 	templates_fetch true
-	if [[ -z ${Branch-} ]]; then
-		Branch="$(templates_branch)"
-		if templates_tag_exists "${Branch-}"; then
-			Branch="$(templates_best_branch)"
-		fi
-		if [[ -z ${Branch-} ]]; then
-			error "You need to specify a branch to update to."
-			return 1
-		fi
+
+	# Resolves to the latest tagged release when Branch lands on the default
+	# branch -- see templates_resolve_update_branch_into's doc comment for
+	# why.
+	if ! templates_resolve_update_branch_into Branch "${Branch}"; then
+		error "You need to specify a branch to update to."
+		return 1
 	fi
 
-	CurrentVersion="$(templates_version)"
-	RemoteVersion="$(templates_version "${Branch}")"
+	templates_version_into CurrentVersion
+	templates_version_into RemoteVersion "${Branch}"
 	if [[ ${CurrentVersion-} == "${RemoteVersion-}" ]]; then
 		if [[ -n ${FORCE-} ]]; then
 			Question="Would you like to forcefully re-apply {{|ApplicationName|}}${TargetName}{{[-]}} update '{{|Version|}}${CurrentVersion}{{[-]}}'?"
@@ -39,47 +37,41 @@ update_templates() {
 
 	if ! templates_branch_exists "${Branch}" && ! templates_tag_exists "${Branch}" && ! templates_commit_exists "${Branch}"; then
 		local ErrorMessage="{{|ApplicationName|}}${TargetName}{{[-]}} ref '{{|Branch|}}${Branch}{{[-]}}' does not exist on origin."
-		if use_dialog_box; then
-			error "${ErrorMessage}" |&
-				dialog_pipe "{{|TitleError|}}${Title}" "{{|CommandLine|}} ${APPLICATION_COMMAND} --update $*"
-		else
-			error "${ErrorMessage}"
-		fi
+		#shellcheck disable=SC2034 # (warning): PipePID is passed by name to tui_pipe_open/close via nameref and appears unused to shellcheck.
+		local -i PipeFD PipePID
+		tui_pipe_open PipeFD PipePID "{{|TitleError|}}${Title}" "{{|CommandLine|}} ${APPLICATION_COMMAND} --update $*"
+		error "${ErrorMessage}" >&${PipeFD} 2>&1
+		tui_pipe_close PipeFD PipePID
 		return 1
 	fi
 
 	if [[ -z ${FORCE-} && ${CurrentVersion} == "${RemoteVersion}" ]]; then
-		if use_dialog_box; then
-			{
-				{
-					notice \
-						"{{|ApplicationName|}}${TargetName}{{[-]}} is already up to date on branch '{{|Branch|}}${Branch}{{[-]}}'." \
-						"Current version is '{{|Version|}}${CurrentVersion}{{[-]}}'"
-				} || true
-			} |& dialog_pipe "{{|TitleWarning|}}${Title}" "{{|CommandLine|}} ${APPLICATION_COMMAND} --update-templates $*"
-		else
+		#shellcheck disable=SC2034 # (warning): PipePID is passed by name to tui_pipe_open/close via nameref and appears unused to shellcheck.
+		local -i PipeFD PipePID
+		tui_pipe_open PipeFD PipePID "{{|TitleWarning|}}${Title}" "{{|CommandLine|}} ${APPLICATION_COMMAND} --update-templates $*"
+		{
 			notice \
 				"{{|ApplicationName|}}${TargetName}{{[-]}} is already up to date on branch '{{|Branch|}}${Branch}{{[-]}}'." \
-				"Current version is '{{|Version|}}${CurrentVersion}{{[-]}}'"
-		fi
+				"Current version is '{{|Version|}}${CurrentVersion}{{[-]}}'" || true
+		} >&${PipeFD} 2>&1
+		tui_pipe_close PipeFD PipePID
 		return 0
 	fi
 
 	if ! run_script 'question_prompt' Y "${Question}" "${Title}" "${ASSUMEYES:+Y}"; then
-		if use_dialog_box; then
-			{ notice "${NoNotice}" || true; } |& dialog_pipe "{{|TitleError|}}${Title}" "${NoNotice}"
-		else
-			notice "${NoNotice}"
-		fi
+		#shellcheck disable=SC2034 # (warning): PipePID is passed by name to tui_pipe_open/close via nameref and appears unused to shellcheck.
+		local -i PipeFD PipePID
+		tui_pipe_open PipeFD PipePID "{{|TitleError|}}${Title}" "${NoNotice}"
+		{ notice "${NoNotice}" || true; } >&${PipeFD} 2>&1
+		tui_pipe_close PipeFD PipePID
 		return 1
 	fi
 
-	if use_dialog_box; then
-		{ commands_update_templates "${Branch}" "${YesNotice}" "$@" || true; } |&
-			dialog_pipe "{{|TitleSuccess|}}${Title}" "${YesNotice}\n{{|CommandLine|}} ${APPLICATION_COMMAND} --update $*"
-	else
-		commands_update_templates "${Branch}" "${YesNotice}" "$@"
-	fi
+	#shellcheck disable=SC2034 # (warning): PipePID is passed by name to tui_pipe_open/close via nameref and appears unused to shellcheck.
+	local -i PipeFD PipePID
+	tui_pipe_open PipeFD PipePID "{{|TitleSuccess|}}${Title}" "${YesNotice}\n{{|CommandLine|}} ${APPLICATION_COMMAND} --update $*"
+	{ commands_update_templates "${Branch}" "${YesNotice}" "$@" || true; } >&${PipeFD} 2>&1
+	tui_pipe_close PipeFD PipePID
 }
 
 commands_update_templates() {
@@ -103,14 +95,14 @@ commands_update_templates() {
 			git -C "${TEMPLATES_PARENT_FOLDER}" checkout --force "${Branch}"
 
 		# If it's a branch (not a tag or SHA), perform reset and pull
-		if git -C "${TEMPLATES_PARENT_FOLDER}" ls-remote --exit-code --heads origin "${Branch}" &> /dev/null; then
+		if templates_branch_exists "${Branch}"; then
 			RunAndLog info "git:info" \
 				fatal "Failed to reset to branch '{{|Branch|}}origin/${Branch}{{[-]}}'." \
 				git -C "${TEMPLATES_PARENT_FOLDER}" reset --hard origin/"${Branch}"
 			info "Pulling recent changes from git."
 			RunAndLog info "git:info" \
 				fatal "Failed to pull recent changes from git." \
-				git -C "${TEMPLATES_PARENT_FOLDER}" pull
+				git -C "${TEMPLATES_PARENT_FOLDER}" pull origin "${Branch}"
 		fi
 	fi
 	info "Cleaning up unnecessary files and optimizing the local repository."
@@ -121,9 +113,17 @@ commands_update_templates() {
 	git -C "${TEMPLATES_PARENT_FOLDER}" ls-tree -rt --name-only "${Branch}" | xargs sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" &> /dev/null || true
 	sudo chown -R "${DETECTED_PUID}":"${DETECTED_PGID}" "${TEMPLATES_PARENT_FOLDER}/.git" &> /dev/null || true
 	sudo chown "${DETECTED_PUID}":"${DETECTED_PGID}" "${TEMPLATES_PARENT_FOLDER}" &> /dev/null || true
-	notice "Updated ${TargetName} to '{{|Version|}}$(templates_version){{[-]}}'"
+	local UpdatedVersion
+	templates_version_into UpdatedVersion
+	notice "Updated ${TargetName} to '{{|Version|}}${UpdatedVersion}{{[-]}}'"
 
-	# run_script 'reset_needs' (DELETED in favor of granular detection)
+	# Resync per-app env files against the (possibly changed) templates.
+	# needs_env_update's template-dependency check makes this a no-op for
+	# apps whose template didn't actually change -- without this call,
+	# though, nothing ever re-checks after a templates update, so an
+	# edited default/comment/ordering would sit unnoticed until the user
+	# happened to trigger env_update some other way (or reset_needs).
+	run_script 'env_update' || true
 }
 
 test_update_templates() {

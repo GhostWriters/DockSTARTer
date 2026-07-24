@@ -5,11 +5,11 @@ IFS=$'\n\t'
 app_is_runnable() {
 	local -l appname=${1-}
 	local -l basename
-	basename=$(run_script 'appname_to_baseappname' "${appname}")
+	run_script 'appname_to_baseappname_into' basename "${appname}"
 	local main_yml
-	main_yml="$(run_script 'app_template_file' "${basename}" "*.yml")"
+	run_script 'app_template_file_into' main_yml "${basename}" "*.yml"
 	local arch_yml
-	arch_yml="$(run_script 'app_template_file' "${basename}" "*.${ARCH}.yml")"
+	run_script 'app_template_file_into' arch_yml "${basename}" "*.${ARCH}.yml"
 	[[ -f ${main_yml} && -f ${arch_yml} ]]
 }
 

@@ -30,9 +30,14 @@ strip_dialog_colors() {
 
 # Take whitespace and newline delimited words and output a single line highlighted list for dialog
 highlighted_list() {
-	local List
-	List=$(xargs <<< "$*")
-	if [[ -n ${List-} ]]; then
+	local -a ListArray
+	IFS=$' \t\n\r' read -d '' -ra ListArray <<< "$*" || true
+	if [[ ${#ListArray[@]} -gt 0 ]]; then
+		local List
+		local old_IFS="${IFS}"
+		IFS=' '
+		List="${ListArray[*]}"
+		IFS="${old_IFS}"
 		echo "{{|Subtitle|}}${List// /{{[-]}} {{|Subtitle|}}}{{[-]}}"
 	fi
 }
@@ -82,6 +87,18 @@ is_true() {
 
 is_false() {
 	! is_true "${1-}"
+}
+
+string_to_bool() {
+	is_true "${1-}" && echo "true" || echo "false"
+}
+
+string_to_int() {
+	local val=${1:-"0"}
+	if ! [[ ${val} =~ ^[0-9]+$ ]]; then
+		val="0"
+	fi
+	echo "${val}"
 }
 
 folder_is_empty() {
@@ -266,28 +283,16 @@ table_pipe() {
 	local -a AllData=("${Headings[@]}" "${Data[@]}")
 	local -a VisibleData
 	for item in "${AllData[@]}"; do
-		VisibleData+=("$(strip_styles "${item}")")
+		local _vs_item_
+		strip_styles_into _vs_item_ "${item}"
+		VisibleData+=("${_vs_item_}")
 	done
 
 	local -a ColWidths
 	readarray -t ColWidths < <(longest_columns "${Cols}" "${VisibleData[@]}")
 
 	local -A CharSet
-	if is_true "${D["LineCharacters"]-}"; then
-		CharSet=(
-			["TopLeft"]="┌"
-			["TopRight"]="┐"
-			["BottomLeft"]="└"
-			["BottomRight"]="┘"
-			["Horizontal"]="─"
-			["Vertical"]="│"
-			["Cross"]="┼"
-			["TLeft"]="├"
-			["TRight"]="┤"
-			["TTop"]="┬"
-			["TBottom"]="┴"
-		)
-	else
+	if is_false "${D["ui.line_characters"]-}" || in_tui_box; then
 		CharSet=(
 			["TopLeft"]="+"
 			["TopRight"]="+"
@@ -300,6 +305,20 @@ table_pipe() {
 			["TRight"]="|"
 			["TTop"]="-"
 			["TBottom"]="-"
+		)
+	else
+		CharSet=(
+			["TopLeft"]="┌"
+			["TopRight"]="┐"
+			["BottomLeft"]="└"
+			["BottomRight"]="┘"
+			["Horizontal"]="─"
+			["Vertical"]="│"
+			["Cross"]="┼"
+			["TLeft"]="├"
+			["TRight"]="┤"
+			["TTop"]="┬"
+			["TBottom"]="┴"
 		)
 	fi
 
@@ -347,7 +366,7 @@ table_pipe() {
 		for ((c = 0; c < Cols; c++)); do
 			local Idx=$((i + c))
 			local Item="${Data[Idx]-}"
-			local VisItem="${VisibleData[Cols+Idx]-}" # Offset by Headings count (Cols)
+			local VisItem="${VisibleData[Cols + Idx]-}" # Offset by Headings count (Cols)
 			local Width=${ColWidths[c]}
 			local PadSize=$((Width - ${#VisItem}))
 			local Padding
@@ -364,7 +383,13 @@ table() {
 	shift
 	local -a Headings=("${@:1:Cols}")
 	local -a Data=("${@:Cols+1}")
-	printf '%s\n' "${Data[@]}" | table_pipe "${Cols}" "${Headings[@]}" | resolve_strings C
+	if use_tui_box || [[ -t 1 ]]; then
+		printf '%s\n' "${Data[@]}" | table_pipe "${Cols}" "${Headings[@]}" | resolve_strings C
+	else
+		# Captured/Piped call: Output RAW TAGS
+		# (This lets notice handle the resolution later)
+		printf '%s\n' "${Data[@]}" | table_pipe "${Cols}" "${Headings[@]}"
+	fi
 }
 
 wordwrap_pipe() {
@@ -395,44 +420,134 @@ wordwrap() {
 
 get_toml_val() {
 	# get_toml_val FILE SECTION.KEY
-	# Returns the value of KEY within [SECTION] in FILE.
-	# Returns empty string (exit 0) if the key or section is not found.
-	local file=${1-}
-	local section="${2%%.*}"
-	local target_key="${2#*.}"
-	local current_section=""
+	local result
+	get_toml_val_into result "${1-}" "${2-}" || return 1
+	printf '%s\n' "${result}"
+}
 
-	while IFS='= ' read -r key val || [[ -n ${key}${val} ]]; do
-		# Track the current section [header]
-		if [[ ${key} =~ ^\[(.*)\]$ ]]; then
-			current_section="${BASH_REMATCH[1]}"
+get_toml_val_into() {
+	# get_toml_val_into OutVar FILE SECTION.KEY
+	local -n _gtvi_out_="${1}"
+	assert_nameref_is_string "${1}"
+	local _gtvi_file_=${2-}
+	local _gtvi_section_key_="${3-}"
+	local _gtvi_section_="${_gtvi_section_key_%%.*}"
+	local _gtvi_target_key_="${_gtvi_section_key_#*.}"
+	local _gtvi_current_section_=""
+
+	local _gtvi_key_ _gtvi_val_
+	while IFS='= ' read -r _gtvi_key_ _gtvi_val_ || [[ -n ${_gtvi_key_}${_gtvi_val_} ]]; do
+		if [[ ${_gtvi_key_} =~ ^\[(.*)\]$ ]]; then
+			_gtvi_current_section_="${BASH_REMATCH[1]}"
 			continue
 		fi
-
-		# Only process keys in the correct section
-		if [[ ${current_section} == "${section}" && ${key} == "${target_key}" ]]; then
-			# Trim leading and trailing whitespace
-			val="${val#"${val%%[![:space:]]*}"}"
-			val="${val%"${val##*[![:space:]]}"}"
-
-			# Strip quotes; for quoted strings, # is literal (not a comment)
-			if [[ ${val} == \"*\" ]]; then
-				val="${val#\"}"
-				val="${val%\"}"
-			elif [[ ${val} == \'*\' ]]; then
-				val="${val#\'}"
-				val="${val%\'}"
+		if [[ ${_gtvi_current_section_} == "${_gtvi_section_}" && ${_gtvi_key_} == "${_gtvi_target_key_}" ]]; then
+			_gtvi_val_="${_gtvi_val_#"${_gtvi_val_%%[![:space:]]*}"}"
+			_gtvi_val_="${_gtvi_val_%"${_gtvi_val_##*[![:space:]]}"}"
+			if [[ ${_gtvi_val_} == \"*\" ]]; then
+				_gtvi_val_="${_gtvi_val_#\"}"
+				_gtvi_val_="${_gtvi_val_%\"}"
+			elif [[ ${_gtvi_val_} == \'*\' ]]; then
+				_gtvi_val_="${_gtvi_val_#\'}"
+				_gtvi_val_="${_gtvi_val_%\'}"
 			else
-				# Unquoted: strip inline comment, then trim trailing whitespace
-				val="${val%%#*}"
-				val="${val%"${val##*[![:space:]]}"}"
+				_gtvi_val_="${_gtvi_val_%%#*}"
+				_gtvi_val_="${_gtvi_val_%"${_gtvi_val_##*[![:space:]]}"}"
 			fi
-
-			printf '%s\n' "${val}"
+			_gtvi_out_="${_gtvi_val_}"
 			return 0
 		fi
-	done < "${file}"
+	done < "${_gtvi_file_}"
+
+	return 1
+}
+
+get_ini_val() {
+	# get_ini_val VarFile VarName
+	local result
+	get_ini_val_into result "${1-}" "${2-}" || return 1
+	printf '%s\n' "${result}"
+}
+
+get_ini_val_into() {
+	# get_ini_val_into OutVar VarFile VarName
+	local -n _givi_out_="${1}"
+	assert_nameref_is_string "${1}"
+	local _givi_ConfigFile_=${2-}
+	local _givi_VarName_=${3-}
+
+	if [[ -z ${_givi_VarName_} || -z ${_givi_ConfigFile_} || ! -f ${_givi_ConfigFile_} ]]; then
+		return 1
+	fi
+
+	local _givi_Line_ _givi_Val_="" _givi_Found_=false
+	while IFS= read -r _givi_Line_ || [[ -n ${_givi_Line_} ]]; do
+		[[ ${_givi_Line_} =~ ^[[:space:]]*# ]] && continue
+		[[ -z ${_givi_Line_} ]] && continue
+		if [[ ${_givi_Line_} =~ ^[[:space:]]*${_givi_VarName_}[[:space:]]*= ]]; then
+			local _givi_Key_="${_givi_Line_%%=*}"
+			local _givi_Value_="${_givi_Line_#*=}"
+			_givi_Key_="${_givi_Key_#"${_givi_Key_%%[![:space:]]*}"}"
+			_givi_Key_="${_givi_Key_%"${_givi_Key_##*[![:space:]]}"}"
+			if [[ ${_givi_Key_} == "${_givi_VarName_}" ]]; then
+				_givi_Val_="${_givi_Value_}"
+				_givi_Found_=true
+			fi
+		fi
+	done < "${_givi_ConfigFile_}"
+
+	if [[ ${_givi_Found_} == false ]]; then
+		return 1
+	fi
+
+	_givi_Val_="${_givi_Val_#"${_givi_Val_%%[![:space:]]*}"}"
+	_givi_Val_="${_givi_Val_%"${_givi_Val_##*[![:space:]]}"}"
+
+	if [[ ${_givi_Val_} == \'*\' ]]; then
+		_givi_Val_="${_givi_Val_#\'}"
+		_givi_Val_="${_givi_Val_%\'}"
+	elif [[ ${_givi_Val_} == \"*\" ]]; then
+		_givi_Val_="${_givi_Val_#\"}"
+		_givi_Val_="${_givi_Val_%\"}"
+	fi
+
+	_givi_out_="${_givi_Val_}"
 	return 0
+}
+
+get_ini_val_string() {
+	local result
+	get_ini_val_string_into result "${1-}" "${2-}" || return 1
+	printf '%s\n' "${result}"
+}
+
+get_ini_val_string_into() {
+	local -n _givsi_out_="${1}"
+	assert_nameref_is_string "${1}"
+	local _givsi_val_
+	if get_ini_val_into _givsi_val_ "${2-}" "${3-}"; then
+		_givsi_out_="${_givsi_val_}"
+		return 0
+	fi
+	return 1
+}
+
+get_ini_val_bool() {
+	# get_ini_val_bool FILE KEY
+	local result
+	get_ini_val_bool_into result "${1-}" "${2-}" || return 1
+	printf '%s\n' "${result}"
+}
+
+get_ini_val_bool_into() {
+	local -n _givbi_out_="${1}"
+	assert_nameref_is_string "${1}"
+	local _givbi_val_
+	if get_ini_val_into _givbi_val_ "${2-}" "${3-}"; then
+		is_true "${_givbi_val_}" && _givbi_out_="true" || _givbi_out_="false"
+		return 0
+	fi
+	return 1
 }
 
 set_toml_val() {
@@ -448,9 +563,7 @@ set_toml_val() {
 		touchfile "${file}"
 	fi
 
-	# Escape double quotes in the value
-	new_val="${new_val//\"/\\\"}"
-	local new_line="${target_key} = \"${new_val}\""
+	local new_line="${target_key} = ${new_val}"
 
 	local -a content=()
 	while IFS= read -r line || [[ -n ${line} ]]; do
@@ -480,6 +593,9 @@ set_toml_val() {
 		elif [[ ${in_section} -eq 1 && ${key_written} -eq 0 ]]; then
 			# Check if this line contains our key
 			if [[ ${line} =~ ^[[:space:]]*${target_key}[[:space:]]*= ]]; then
+				if [[ ${new_line} == "${line}" ]]; then
+					return 0 # Value already set to what we want it to be
+				fi
 				output+=("${new_line}")
 				key_written=1
 				continue # drop the old line
@@ -505,6 +621,101 @@ set_toml_val() {
 	printf '%s\n' "${output[@]}" > "${file}" ||
 		fatal \
 			"Failed to write to '{{|File|}}${file}{{[-]}}'."
+}
+
+get_toml_val_string() {
+	# get_toml_val_string FILE SECTION.KEY
+	local result
+	get_toml_val_string_into result "${1-}" "${2-}" || return 1
+	printf '%s\n' "${result}"
+}
+
+get_toml_val_string_into() {
+	local -n _gtvsi_out_="${1}"
+	assert_nameref_is_string "${1}"
+	local _gtvsi_val_
+	if get_toml_val_into _gtvsi_val_ "${2-}" "${3-}"; then
+		_gtvsi_out_="${_gtvsi_val_}"
+		return 0
+	fi
+	return 1
+}
+
+set_toml_val_string() {
+	# set_toml_val FILE SECTION.KEY VALUE
+	# Creates or updates KEY = "VALUE" within [SECTION] in FILE.
+	# Creates the file, section, or key if any do not exist.
+	local file=${1-}
+	local section="${2%%.*}"
+	local target_key="${2#*.}"
+	local new_val=${3-}
+
+	# If the string contains single quotes, we MUST use double quotes
+	if [[ ${new_val} == *"'"* ]]; then
+		# Escape double quotes and wrap in double quotes
+		new_val="\"${new_val//\"/\\\"}\""
+	else
+		# Use clean single quotes for everything else
+		new_val="'${new_val}'"
+	fi
+
+	set_toml_val "${file}" "${section}.${target_key}" "${new_val}"
+}
+
+get_toml_val_bool() {
+	# get_toml_val_bool FILE SECTION.KEY
+	local result
+	get_toml_val_bool_into result "${1-}" "${2-}" || return 1
+	printf '%s\n' "${result}"
+}
+
+get_toml_val_bool_into() {
+	local -n _gtvbi_out_="${1}"
+	assert_nameref_is_string "${1}"
+	local _gtvbi_val_
+	if get_toml_val_into _gtvbi_val_ "${2-}" "${3-}"; then
+		is_true "${_gtvbi_val_}" && _gtvbi_out_="true" || _gtvbi_out_="false"
+		return 0
+	fi
+	return 1
+}
+
+set_toml_val_bool() {
+	# set_toml_val FILE SECTION.KEY VALUE
+	# Creates or updates KEY = "VALUE" within [SECTION] in FILE.
+	# Creates the file, section, or key if any do not exist.
+	local file=${1-}
+	local section_key="${2-}"
+	local new_val=${3-}
+
+	set_toml_val "${file}" "${section_key}" "$(string_to_bool "${new_val}")"
+}
+
+get_toml_val_int() {
+	# get_toml_val_int FILE SECTION.KEY
+	# Returns the value of KEY within [SECTION] in FILE, normalized to an integer.
+	local file=${1-}
+	local section_key="${2-}"
+
+	local Value
+	if Value="$(get_toml_val "${file}" "${section_key}")"; then
+		string_to_int "${Value}"
+		return 0
+	fi
+
+	# Key or section not found
+	return 1
+}
+
+set_toml_val_int() {
+	# set_toml_val FILE SECTION.KEY VALUE
+	# Creates or updates KEY = "VALUE" within [SECTION] in FILE.
+	# Creates the file, section, or key if any do not exist.
+	local file=${1-}
+	local section_key="${2-}"
+	local new_val=${3-}
+
+	set_toml_val "${file}" "${section_key}" "$(string_to_int "${new_val}")"
 }
 
 hrx_extract_file() {
@@ -596,61 +807,65 @@ get_toml_section_key_list() {
 
 hrx_toml_get() {
 	# hrx_toml_get ArchiveFile InternalPath SECTION.KEY
-	# Returns the value of KEY from SECTION in a TOML file within an HRX archive.
-	local archive=${1-}
-	local internal_path=${2-}
-	local section_key=${3-}
-	local section="${section_key%%.*}"
-	local target_key="${section_key#*.}"
-	local boundary="" capturing=0 current_section="" found_val=""
+	local _htg_result_
+	hrx_toml_get_into _htg_result_ "${1-}" "${2-}" "${3-}"
+	printf '%s\n' "${_htg_result_}"
+}
 
-	while IFS= read -r line || [[ -n ${line} ]]; do
-		if [[ -z ${boundary} ]]; then
-			if [[ ${line} =~ ^(<[=]+>)[[:space:]] ]]; then
-				boundary="${BASH_REMATCH[1]}"
+hrx_toml_get_into() {
+	# hrx_toml_get_into OutVar ArchiveFile InternalPath SECTION.KEY
+	local -n _htgi_out_="${1}"
+	assert_nameref_is_string "${1}"
+	local _htgi_archive_="${2-}"
+	local _htgi_internal_path_="${3-}"
+	local _htgi_section_key_="${4-}"
+	local _htgi_section_="${_htgi_section_key_%%.*}"
+	local _htgi_target_key_="${_htgi_section_key_#*.}"
+	local _htgi_boundary_="" _htgi_capturing_=0 _htgi_current_section_="" _htgi_found_val_=""
+
+	local _htgi_line_
+	while IFS= read -r _htgi_line_ || [[ -n ${_htgi_line_} ]]; do
+		if [[ -z ${_htgi_boundary_} ]]; then
+			if [[ ${_htgi_line_} =~ ^(<[=]+>)[[:space:]] ]]; then
+				_htgi_boundary_="${BASH_REMATCH[1]}"
 			else
 				continue
 			fi
 		fi
-		if [[ ${line} == "${boundary} "* ]]; then
-			[[ ${capturing} -eq 1 ]] && break
-			[[ ${line#"${boundary} "} == "${internal_path}" ]] && capturing=1
+		if [[ ${_htgi_line_} == "${_htgi_boundary_} "* ]]; then
+			[[ ${_htgi_capturing_} -eq 1 ]] && break
+			[[ ${_htgi_line_#"${_htgi_boundary_} "} == "${_htgi_internal_path_}" ]] && _htgi_capturing_=1
 			continue
 		fi
-		if [[ ${capturing} -eq 1 ]]; then
-			# Skip comments and empty lines
-			[[ ${line} =~ ^[[:space:]]*# ]] && continue
-			[[ ${line} =~ ^[[:space:]]*$ ]] && continue
-
-			if [[ ${line} =~ ^\[(.*)\]$ ]]; then
-				current_section="${BASH_REMATCH[1]}"
+		if [[ ${_htgi_capturing_} -eq 1 ]]; then
+			[[ ${_htgi_line_} =~ ^[[:space:]]*# ]] && continue
+			[[ ${_htgi_line_} =~ ^[[:space:]]*$ ]] && continue
+			if [[ ${_htgi_line_} =~ ^\[(.*)\]$ ]]; then
+				_htgi_current_section_="${BASH_REMATCH[1]}"
 				continue
 			fi
-			if [[ ${current_section} == "${section}" && ${line} == *[[:space:]]*=[[:space:]]* ]]; then
-				local key="${line%%=*}"
-				local val="${line#*=}"
-				# Trim key
-				key="${key#"${key%%[![:space:]]*}"}"
-				key="${key%"${key##*[![:space:]]}"}"
-
-				if [[ ${key} == "${target_key}" ]]; then
-					# Trim leading and trailing whitespace from val
-					val="${val#"${val%%[![:space:]]*}"}"
-					val="${val%"${val##*[![:space:]]}"}"
-					if [[ ${val} == \"*\" ]]; then
-						val="${val#\"}"
-						val="${val%\"}"
-					elif [[ ${val} == \'*\' ]]; then
-						val="${val#\'}"
-						val="${val%\'}"
+			if [[ ${_htgi_current_section_} == "${_htgi_section_}" && ${_htgi_line_} == *[[:space:]]*=[[:space:]]* ]]; then
+				local _htgi_key_="${_htgi_line_%%=*}"
+				local _htgi_val_="${_htgi_line_#*=}"
+				_htgi_key_="${_htgi_key_#"${_htgi_key_%%[![:space:]]*}"}"
+				_htgi_key_="${_htgi_key_%"${_htgi_key_##*[![:space:]]}"}"
+				if [[ ${_htgi_key_} == "${_htgi_target_key_}" ]]; then
+					_htgi_val_="${_htgi_val_#"${_htgi_val_%%[![:space:]]*}"}"
+					_htgi_val_="${_htgi_val_%"${_htgi_val_##*[![:space:]]}"}"
+					if [[ ${_htgi_val_} == \"*\" ]]; then
+						_htgi_val_="${_htgi_val_#\"}"
+						_htgi_val_="${_htgi_val_%\"}"
+					elif [[ ${_htgi_val_} == \'*\' ]]; then
+						_htgi_val_="${_htgi_val_#\'}"
+						_htgi_val_="${_htgi_val_%\'}"
 					else
-						val="${val%%#*}"
-						val="${val%"${val##*[![:space:]]}"}"
+						_htgi_val_="${_htgi_val_%%#*}"
+						_htgi_val_="${_htgi_val_%"${_htgi_val_##*[![:space:]]}"}"
 					fi
-					found_val="${val}"
+					_htgi_found_val_="${_htgi_val_}"
 				fi
 			fi
 		fi
-	done < "${archive}"
-	printf '%s\n' "${found_val}"
+	done < "${_htgi_archive_}"
+	_htgi_out_="${_htgi_found_val_}"
 }

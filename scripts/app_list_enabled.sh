@@ -14,7 +14,9 @@ app_list_enabled() {
 		${GREP} --color=never -o -P "^${APPNAME_REGEX}(?=__ENABLED\s*=(?<quote>['|\"]?)(?i:on|true|yes)\k<quote>)" "${COMPOSE_ENV}" | sort || true
 	)
 	for AppName in "${ENABLED_APPS[@]}"; do
-		if [[ -d "$(run_script 'app_instance_folder' "${AppName}")" ]]; then
+		local folder
+		run_script 'app_instance_folder_into' folder "${AppName}"
+		if [[ -d ${folder} ]]; then
 			echo "${AppName}"
 		fi
 	done
