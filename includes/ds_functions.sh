@@ -323,9 +323,54 @@ ds_version() {
 	echo "${result}"
 }
 
+ds_resolve_update_branch_into() {
+	# Resolves the branch/tag that an update should target, applying the
+	# "latest reachable tag" release policy (see
+	# git_resolve_update_target_into's doc comment). RequestedBranch defaults
+	# to the current branch when empty; if that default is itself a tag
+	# (i.e. currently on a release), resolves to the best branch first so
+	# the policy has a real branch to compare against. Returns non-zero (with
+	# empty output) only when no branch could be determined at all.
+	local -n _drubi_out_="${1}"
+	assert_nameref_is_string "${1}"
+	local RequestedBranch=${2-}
+
+	local CurrentBranch
+	ds_branch_into CurrentBranch
+
+	if [[ -z ${RequestedBranch-} ]]; then
+		RequestedBranch="${CurrentBranch}"
+		if ds_tag_exists "${RequestedBranch-}"; then
+			ds_best_branch_into RequestedBranch
+		fi
+	fi
+	if [[ -z ${RequestedBranch-} ]]; then
+		_drubi_out_=""
+		return 1
+	fi
+
+	git_resolve_update_target_into _drubi_out_ "${SCRIPTPATH}" "${APPLICATION_DEFAULT_BRANCH}" "${RequestedBranch}" "${CurrentBranch}"
+}
+
 ds_update_available() {
 	local CurrentRef=${1-}
 	local TargetRef=${2-}
+	if [[ -z ${CurrentRef-} && -z ${TargetRef-} ]]; then
+		# Compares resolved version strings rather than raw commit hashes:
+		# a detached HEAD (checked out at a release tag) has no upstream,
+		# and origin/main is routinely ahead of the latest tag between
+		# releases, so a hash-based compare would report an update as
+		# available even when already on the latest release.
+		local TargetBranch
+		if ! ds_resolve_update_branch_into TargetBranch; then
+			return 1
+		fi
+		local CurrentVersion RemoteVersion
+		ds_version_into CurrentVersion
+		ds_version_into RemoteVersion "${TargetBranch}"
+		[[ ${CurrentVersion-} != "${RemoteVersion-}" ]]
+		return $?
+	fi
 	git_update_available "${SCRIPTPATH}" "${CurrentRef-}" "${TargetRef-}"
 }
 
@@ -378,9 +423,50 @@ templates_version() {
 	echo "${result}"
 }
 
+templates_resolve_update_branch_into() {
+	# templates_ counterpart to ds_resolve_update_branch_into -- see its doc
+	# comment. Shared by update_templates and templates_update_available.
+	local -n _trubi_out_="${1}"
+	assert_nameref_is_string "${1}"
+	local RequestedBranch=${2-}
+
+	local CurrentBranch
+	templates_branch_into CurrentBranch
+
+	if [[ -z ${RequestedBranch-} ]]; then
+		RequestedBranch="${CurrentBranch}"
+		if templates_tag_exists "${RequestedBranch-}"; then
+			templates_best_branch_into RequestedBranch
+		fi
+	fi
+	if [[ -z ${RequestedBranch-} ]]; then
+		_trubi_out_=""
+		return 1
+	fi
+
+	git_resolve_update_target_into _trubi_out_ "${TEMPLATES_PARENT_FOLDER}" "${TEMPLATES_DEFAULT_BRANCH}" "${RequestedBranch}" "${CurrentBranch}"
+}
+
 templates_update_available() {
 	local CurrentRef=${1-}
 	local TargetRef=${2-}
+	if [[ -z ${CurrentRef-} && -z ${TargetRef-} ]]; then
+		# Compares resolved version strings rather than raw commit hashes:
+		# a detached HEAD (checked out at a release tag, the normal state
+		# for Templates) has no upstream, and origin/main is routinely
+		# ahead of the latest tag between releases, so a hash-based compare
+		# would report an update as available even when already on the
+		# latest release.
+		local TargetBranch
+		if ! templates_resolve_update_branch_into TargetBranch; then
+			return 1
+		fi
+		local CurrentVersion RemoteVersion
+		templates_version_into CurrentVersion
+		templates_version_into RemoteVersion "${TargetBranch}"
+		[[ ${CurrentVersion-} != "${RemoteVersion-}" ]]
+		return $?
+	fi
 	git_update_available "${TEMPLATES_PARENT_FOLDER}" "${CurrentRef-}" "${TargetRef-}"
 }
 
