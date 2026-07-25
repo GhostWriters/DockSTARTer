@@ -1044,7 +1044,7 @@ run_command() {
 					"No script is defined for command '{{|UserCommand|}}${Command}{{[-]}}'."
 			fi
 			local -a _list_
-			run_script "${Script}_into" _list_
+			run_script "${Script}_into_array" _list_
 			run_script_tui \
 				"${Title}" \
 				"${SubTitle}" \
