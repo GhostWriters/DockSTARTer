@@ -934,11 +934,12 @@ cleanup() {
 	if [[ -e ${APPLICATION_LOG} ]]; then
 		sudo chown "${DETECTED_PUID}:${DETECTED_PGID}" "${APPLICATION_LOG}" || true
 	fi
+	touch "${APPLICATION_LOG}"
 	cat "${MKTEMP_LOG:-/dev/null}" >> "${APPLICATION_LOG}" || true
-	if [[ -n ${MKTEMP_LOG-} && -f ${MKTEMP_LOG} ]]; then
-		sudo rm -f "${MKTEMP_LOG}" &> /dev/null || true
-	fi
-	tail -1000 "${APPLICATION_LOG}" | tee "${APPLICATION_LOG}" > /dev/null || true
+	tail -n 1000 "${APPLICATION_LOG}" > "${MKTEMP_LOG}" || true
+	cat "${MKTEMP_LOG}" > "${APPLICATION_LOG}" || true
+	rm -f "${MKTEMP_LOG}" &> /dev/null || true
+
 	if [[ -n ${APPLICATION_CACHE_FOLDER-} && -d ${APPLICATION_CACHE_FOLDER} ]]; then
 		sudo rm -rf "${APPLICATION_CACHE_FOLDER?}" &> /dev/null || true
 	fi
