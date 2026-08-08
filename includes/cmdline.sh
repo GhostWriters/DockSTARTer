@@ -79,7 +79,8 @@ parse_arguments() {
 				--theme-shadows | --theme-no-shadows) ;&
 				--theme-scrollbar | --theme-no-scrollbar) ;&
 				--theme-lines | --theme-no-lines) ;&
-				--theme-borders | --theme-no-borders)
+				--theme-borders | --theme-no-borders) ;&
+				--uninstall)
 					CurrentCommand=("${OPTION}")
 					break
 					;;
@@ -501,6 +502,7 @@ run_command() {
 		["--list-referenced"]="app_list_referenced"
 		["--theme-list"]="theme_list"
 		["--theme-table"]="theme_table"
+		["--uninstall"]="uninstall"
 	)
 	MenuCommandScript+=(
 		["main"]="menu_main"
@@ -830,7 +832,8 @@ run_command() {
 		-s | --status) ;&
 		-S | --select) ;&
 		--status-disable | --status-enable) ;&
-		--theme-list | --theme-table)
+		--theme-list | --theme-table) ;&
+		--uninstall)
 			if [[ -z ${Script} ]]; then
 				fatal \
 					"No script is defined for command '{{|UserCommand|}}${Command}{{[-]}}'."
@@ -850,6 +853,7 @@ run_command() {
 					run_script_tui "${Title}" "${SubTitle}" "" \
 						"${Script}" "${ParamsArray[@]-}" || result=$?
 				else
+					declare -gx PROMPT="CLI"
 					run_script "${Script}" "${ParamsArray[@]-}" || result=$?
 				fi
 			fi

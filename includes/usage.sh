@@ -452,6 +452,13 @@ EOF
 	Update {{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}} to the specified branch, tag, or commit
 EOF
 			;;&
+		-u | --uninstall | "")
+			Found=1
+			cat << EOF
+{{|UsageCommand|}}-u --uninstall{{[-]}}
+	Uninstall {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}}
+EOF
+			;;&
 		-V | --version | "")
 			Found=1
 			cat << EOF
