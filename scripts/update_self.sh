@@ -85,6 +85,8 @@ update_self() {
 	local CommandNotice
 	CommandNotice="exec $(printf '%q ' "${CommandArray[@]}" | xargs)"
 	notice "Running: {{|RunningCommand|}}${CommandNotice}{{[-]}}"
+
+	flush_logs
 	exec "${CommandArray[@]}"
 	exit
 }

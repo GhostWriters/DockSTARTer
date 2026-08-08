@@ -544,6 +544,17 @@ MKTEMP_LOG=$(mktemp -t "${APPLICATION_NAME,,}.log.XXXXXXXXXX") || resolve_string
 readonly MKTEMP_LOG
 echo "${APPLICATION_NAME} Log" > "${MKTEMP_LOG}"
 
+flush_logs() {
+	if [[ -e ${APPLICATION_LOG} ]]; then
+		sudo chown "${DETECTED_PUID}:${DETECTED_PGID}" "${APPLICATION_LOG}" || true
+	fi
+	touch "${APPLICATION_LOG}"
+	cat "${MKTEMP_LOG:-/dev/null}" >> "${APPLICATION_LOG}" || true
+	tail -n 1000 "${APPLICATION_LOG}" > "${MKTEMP_LOG}" || true
+	cat "${MKTEMP_LOG}" > "${APPLICATION_LOG}" || true
+	rm -f "${MKTEMP_LOG}" &> /dev/null || true
+}
+
 log() {
 	local LogToTerminal=${1-}
 	local Message=${2-}
@@ -931,14 +942,7 @@ cleanup() {
 	local -ri EXIT_CODE=$?
 	trap - ERR EXIT SIGABRT SIGALRM SIGHUP SIGINT SIGQUIT SIGTERM
 
-	if [[ -e ${APPLICATION_LOG} ]]; then
-		sudo chown "${DETECTED_PUID}:${DETECTED_PGID}" "${APPLICATION_LOG}" || true
-	fi
-	touch "${APPLICATION_LOG}"
-	cat "${MKTEMP_LOG:-/dev/null}" >> "${APPLICATION_LOG}" || true
-	tail -n 1000 "${APPLICATION_LOG}" > "${MKTEMP_LOG}" || true
-	cat "${MKTEMP_LOG}" > "${APPLICATION_LOG}" || true
-	rm -f "${MKTEMP_LOG}" &> /dev/null || true
+	flush_logs
 
 	if [[ -n ${APPLICATION_CACHE_FOLDER-} && -d ${APPLICATION_CACHE_FOLDER} ]]; then
 		sudo rm -rf "${APPLICATION_CACHE_FOLDER?}" &> /dev/null || true
