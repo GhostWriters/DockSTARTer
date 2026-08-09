@@ -35,6 +35,7 @@ uninstall() {
 		ExcludePaths+=("${DOCKER_VOLUME_CONFIG}")
 	fi
 
+	local ds2_found=false
 	if ds2_installed; then
 		# Keep the templates folder
 		local TemplatesFolder="${APPLICATION_STATE_FOLDER}/${TEMPLATES_PARENT_FOLDER_NAME}"
@@ -43,6 +44,7 @@ uninstall() {
 			"{{|ApplicationName|}}DockSTARTer2{{[-]}} install detected. Keeping downloaded templates in '{{|Folder|}}${TemplatesFolder}{{[-]}}'."
 			""
 		)
+		ds2_found=true
 	fi
 
 	for path_index in "${!ExcludePaths[@]}"; do
@@ -78,11 +80,22 @@ uninstall() {
 	# Remove the application state folder if it's empty
 	sudo rmdir "${APPLICATION_STATE_FOLDER}" 2> /dev/null || true
 
-	# Exec into this script to remove the DockSTARTer script folder
-	notice "Removing {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} symlinks and script folder"
+	while true; do
+		hash -r
+		local symlink
+		symlink="$(command -v "${APPLICATION_COMMAND}" 2> /dev/null)" || break
+		if [[ ! -L ${symlink} ]] || [[ "$(readlink -f "${symlink}")" != "${SCRIPTNAME}" ]]; then
+			break
+		fi
+		notice "Removing {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} symlink '{{|File|}}${symlink}{{[-]}}'"
+		sudo rm "${symlink}"
+	done
 
+	notice "Removing {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} scripts folder '{{|Folder|}}${SCRIPTPATH}{{[-]}}'"
+
+	# Flush logs and exec into this script to remove the DockSTARTer script folder
 	flush_logs
-	exec bash "${BASH_SOURCE[0]}" "${SCRIPTPATH}" "${SCRIPTNAME}" "${APPLICATION_COMMAND}" "${ExcludeFindArgs[@]}"
+	exec bash "${BASH_SOURCE[0]}" "${ds2_found}" "${SCRIPTPATH}" "${ExcludeFindArgs[@]}"
 }
 
 ds2_installed() {
@@ -95,25 +108,35 @@ test_uninstall() {
 }
 
 uninstall_finalize() {
-	local script_folder=${1}
-	local script=${2}
-	local symlink_name=${3}
-	shift 3
+	local ds2_found=${1}
+	local script_folder=${2}
+	shift 2
 	local -a ExcludeFindArgs=("$@")
-	while true; do
-		hash -r
-		local symlink
-		symlink="$(command -v "${symlink_name}" 2> /dev/null)" || break
-		if [[ ! -L ${symlink} ]] || [[ "$(readlink -f "${symlink}")" != "${script}" ]]; then
-			break
-		fi
-		echo "Removing symlink: ${symlink}"
-		sudo rm "${symlink}"
-	done
-	echo "Removing script folder: ${script_folder}"
+
 	find "${script_folder}" -mindepth 1 -maxdepth 1 "${ExcludeFindArgs[@]}" -exec sudo rm -rf {} +
 	sudo rmdir "${script_folder}" 2> /dev/null || true
-	echo "DockSTARTer has been uninstalled."
+
+	#shellcheck disable=SC2016 #(info): Expressions don't expand in single quotes, use double quotes for that.
+	local -a message=(
+		'DockSTARTer has been uninstalled.'
+		''
+		'To reinstall DockSTARTer, run the following command:'
+		'\tbash -c "$(curl -fsSL https://get.dockstarter.com)"'
+		''
+	)
+	if [[ ${ds2_found} == "true" ]]; then
+		message+=(
+			'DockSTARTer2 appears to be installed.'
+			"To run DockSTARTer2, you can generally type 'ds2'."
+		)
+	else
+		#shellcheck disable=SC2016 #(info): Expressions don't expand in single quotes, use double quotes for that.
+		message+=(
+			'To install DockSTARTer2, run the following command:'
+			'\tsh -c "$(curl -fsSL https://getv2.dockstarter.com)"'
+		)
+	fi
+	printf "%b\n" "${message[@]}"
 }
 
 [[ ${BASH_SOURCE[0]} == "${0}" ]] && uninstall_finalize "$@"
