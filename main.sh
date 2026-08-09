@@ -912,7 +912,7 @@ clone_repo() {
 	if [[ ${#ARGS[@]} -eq 0 ]]; then
 		notice \
 			"Performing first run install."
-		exec bash "${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}/main.sh" -yvi --config-show
+		exec bash "${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}/main.sh" -yvi --config-show --version
 	else
 		exec bash "${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}/main.sh" "${ARGS[@]}"
 	fi
