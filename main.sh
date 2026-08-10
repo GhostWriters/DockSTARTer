@@ -879,11 +879,36 @@ check_sudo() {
 	fi
 }
 clone_repo() {
+	local TargetPath="${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}"
 	warn \
-		"Attempting to clone {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} repo to '{{|Folder|}}${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}{{[-]}}' location."
+		"Attempting to clone {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} repo to '{{|Folder|}}${TargetPath}{{[-]}}' location."
+
+	# Safely create and initialize the directory
+	RunAndLog notice "mkdir:notice" \
+		fatal "Failed to create {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} repo directory." \
+		mkdir -p "${TargetPath}"
+
 	RunAndLog notice "git:notice" \
-		fatal "Failed to clone {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} repo." \
-		git clone -b "${APPLICATION_DEFAULT_BRANCH}" "${APPLICATION_REPO}" "${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}"
+		fatal "Failed to initialize {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} repo." \
+		git -C "${TargetPath}" init -b "${APPLICATION_DEFAULT_BRANCH}"
+
+	# Handle the remote origin dynamically (avoids fatal error if already exists)
+	git -C "${TargetPath}" remote set-url origin "${APPLICATION_REPO}" 2> /dev/null || git -C "${TargetPath}" remote add origin "${APPLICATION_REPO}"
+
+	# Fetch specifically the target branch to save bandwidth
+	RunAndLog notice "git:notice" \
+		fatal "Failed to fetch {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} repo." \
+		git -C "${TargetPath}" fetch origin "${APPLICATION_DEFAULT_BRANCH}"
+
+	# Force overwrite all tracked files to match the remote branch
+	RunAndLog notice "git:notice" \
+		fatal "Failed to reset {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} repo." \
+		git -C "${TargetPath}" reset --hard "origin/${APPLICATION_DEFAULT_BRANCH}"
+
+	# Clean untracked files, skipping everything in .gitignore (like your compose folder)
+	RunAndLog notice "git:notice" \
+		fatal "Failed to clean {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} repo." \
+		git -C "$TargetPath" clean -df
 
 	# This bootstrap copy runs from outside the cloned repo, so
 	# includes/ds_functions.sh isn't sourced yet -- use plain git directly.
