@@ -8,6 +8,14 @@ env_update() {
 	#    notice "Environment variable files already updated."
 	#    return
 	#fi
+	if ! [[ -d ${COMPOSE_FOLDER} ]]; then
+		notice "Creating folder '{{|Folder|}}${COMPOSE_FOLDER}{{[-]}}'."
+		mkdir -p "${COMPOSE_FOLDER}" ||
+			fatal \
+				"Failed to create folder." \
+				"Failing command: {{|FailingCommand|}}mkdir -p \"${COMPOSE_FOLDER}\""
+	fi
+
 	notice "Updating environment variable files."
 
 	local -al applist
