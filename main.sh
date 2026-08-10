@@ -893,7 +893,9 @@ clone_repo() {
 		git -C "${TargetPath}" init -b "${APPLICATION_DEFAULT_BRANCH}"
 
 	# Handle the remote origin dynamically (avoids fatal error if already exists)
-	git -C "${TargetPath}" remote set-url origin "${APPLICATION_REPO}" 2> /dev/null || git -C "${TargetPath}" remote add origin "${APPLICATION_REPO}"
+	if ! RunAndLog notice "git:notice" warn "Failed to set origin, retrying with '{{|UserCommand|}}git remote add{{[-]}}'" git -C "${TargetPath}" remote set-url origin "${APPLICATION_REPO}"; then
+		RunAndLog notice "git:notice" fatal "Failed to add origin." git -C "${TargetPath}" remote add origin "${APPLICATION_REPO}"
+	fi
 
 	# Fetch specifically the target branch to save bandwidth
 	RunAndLog notice "git:notice" \
