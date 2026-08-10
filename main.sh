@@ -878,10 +878,39 @@ check_sudo() {
 			"Commands requiring '{{|UserCommand|}}sudo{{[-]}}' will prompt automatically when required."
 	fi
 }
+
 clone_repo() {
-	local TargetPath="${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}"
+	local default_path="${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}"
+	local TargetPath=""
+
+	local symlink
+	symlink="$(command -v "${APPLICATION_COMMAND}" 2> /dev/null || true)"
+	if [[ -L ${symlink} ]]; then
+		local link_path
+		link_path=$(readlink -f "${symlink}")
+		if [[ $(basename "${link_path}") == "main.sh" ]]; then
+			TargetPath="$(dirname "${link_path}")"
+			warn "Existing {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} install found at '{{|Folder|}}${TargetPath}{{[-]}}', reinstalling to that location."
+		fi
+	fi
+	if [[ -z ${TargetPath} ]]; then
+		local Folder
+		for Folder in "${DETECTED_HOMEDIR}/.dockstarter" "${DETECTED_HOMEDIR}/.docker"; do
+			if [[ -d "${Folder}/compose" ]]; then
+				TargetPath="${Folder}"
+				warn "Existing compose folder found in '{{|Folder|}}${TargetPath}{{[-]}}', reinstalling to that location."
+				break
+			fi
+		done
+	fi
+
+	if [[ -z ${TargetPath} ]]; then
+		TargetPath="${default_path}"
+	fi
+
 	warn \
-		"Attempting to clone {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} repo to '{{|Folder|}}${TargetPath}{{[-]}}' location."
+		"Installing {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} to '{{|Folder|}}${TargetPath}{{[-]}}'." \
+		""
 
 	# Safely create and initialize the directory
 	RunAndLog notice "mkdir:notice" \
@@ -914,34 +943,33 @@ clone_repo() {
 
 	# This bootstrap copy runs from outside the cloned repo, so
 	# includes/ds_functions.sh isn't sourced yet -- use plain git directly.
-	local ClonedGitPath="${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}"
 	local ClonedVersion
-	ClonedVersion="$(git -C "${ClonedGitPath}" describe --tags --exact-match 2> /dev/null || true)"
+	ClonedVersion="$(git -C "${TargetPath}" describe --tags --exact-match 2> /dev/null || true)"
 	if [[ -z ${ClonedVersion} ]]; then
-		ClonedVersion="${APPLICATION_DEFAULT_BRANCH} commit $(git -C "${ClonedGitPath}" rev-parse --short HEAD 2> /dev/null)"
+		ClonedVersion="${APPLICATION_DEFAULT_BRANCH} commit $(git -C "${TargetPath}" rev-parse --short HEAD 2> /dev/null)"
 	fi
 	notice "Cloned {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} at '{{|Version|}}${ClonedVersion}{{[-]}}'."
 
 	local LatestTag
-	LatestTag="$(git -C "${ClonedGitPath}" tag --merged "origin/${APPLICATION_DEFAULT_BRANCH}" --sort=-creatordate 2> /dev/null | head -1)" || true
+	LatestTag="$(git -C "${TargetPath}" tag --merged "origin/${APPLICATION_DEFAULT_BRANCH}" --sort=-creatordate 2> /dev/null | head -1)" || true
 	if [[ -n ${LatestTag} ]]; then
 		local TagHash HeadHash
-		TagHash="$(git -C "${ClonedGitPath}" rev-parse --quiet --verify "${LatestTag}^{commit}" 2> /dev/null)" || true
-		HeadHash="$(git -C "${ClonedGitPath}" rev-parse --quiet --verify HEAD 2> /dev/null)" || true
+		TagHash="$(git -C "${TargetPath}" rev-parse --quiet --verify "${LatestTag}^{commit}" 2> /dev/null)" || true
+		HeadHash="$(git -C "${TargetPath}" rev-parse --quiet --verify HEAD 2> /dev/null)" || true
 		if [[ -z ${TagHash} || ${TagHash} != "${HeadHash}" ]]; then
 			notice "Checking out {{|ApplicationName|}}${APPLICATION_NAME}{{[-]}} release '{{|Version|}}${LatestTag}{{[-]}}'"
 			RunAndLog info "git:info" \
 				fatal "Failed to switch to github ref '{{|Branch|}}${LatestTag}{{[-]}}'." \
-				git -C "${ClonedGitPath}" checkout --force "${LatestTag}"
+				git -C "${TargetPath}" checkout --force "${LatestTag}"
 		fi
 	fi
 
 	if [[ ${#ARGS[@]} -eq 0 ]]; then
 		notice \
 			"Performing first run install."
-		exec bash "${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}/main.sh" -yvi --config-show --version
+		exec bash "${TargetPath}/main.sh" -yvi --config-show --version
 	else
-		exec bash "${DETECTED_HOMEDIR}/${APPLICATION_FOLDER_NAME_DEFAULT}/main.sh" "${ARGS[@]}"
+		exec bash "${TargetPath}/main.sh" "${ARGS[@]}"
 	fi
 }
 
