@@ -7,7 +7,14 @@ declare -a _dependencies_list=(
 )
 
 app_list_builtin() {
-	${FIND} "${TEMPLATES_FOLDER}" -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | tr '[:lower:]' '[:upper:]' | sort || true
+	local dir name
+	while IFS= read -r dir; do
+		name="$(basename "${dir}")"
+		name="${name^^}"
+		if run_script 'appname_is_valid' "${name}"; then
+			echo "${name}"
+		fi
+	done < <(${FIND} "${TEMPLATES_FOLDER}" -maxdepth 1 -mindepth 1 -type d 2> /dev/null || true) | sort
 }
 
 test_app_list_builtin() {
