@@ -78,7 +78,14 @@ var_default_value_into() {
 			;;
 		APPENV)
 			local _vdvi_DefaultAppVarFile_
-			run_script 'app_instance_file_into' _vdvi_DefaultAppVarFile_ "${_vdvi_APPNAME_}" ".env.app.*"
+			# _vdvi_APPNAMEQ_ minus the bare app name leaves just the
+			# service/shared marker (e.g. "-DATABASE", "___POSTGRES", or
+			# empty for the plain file) -- rebuild the "*"-wildcarded
+			# pattern for THIS specific file, rather than always resolving
+			# the plain ".env.app.*" default regardless of which qualified
+			# file was actually requested.
+			local _vdvi_FileMarker_="${_vdvi_APPNAMEQ_#"${_vdvi_APPNAME_}"}"
+			run_script 'app_instance_file_into' _vdvi_DefaultAppVarFile_ "${_vdvi_APPNAME_}" ".env.app.*${_vdvi_FileMarker_,,}"
 			if [[ -f ${_vdvi_DefaultAppVarFile_} ]] && run_script 'env_var_exists' "${_vdvi_CleanVarName_}" "${_vdvi_DefaultAppVarFile_}"; then
 				run_script 'env_get_literal_into' _vdvi_out_ "${_vdvi_CleanVarName_}" "${_vdvi_DefaultAppVarFile_}"
 				return
