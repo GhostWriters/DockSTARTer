@@ -7,11 +7,9 @@ varfile_to_appname() {
 
 	local VarFile=${1-}
 	for VarFile in "$@"; do
-		local FileName
-		FileName="$(basename "${VarFile}")"
-		local Prefix='.env.app.'
-		local AppName="${FileName#"${Prefix}"}"
-		if [[ -n ${AppName} && ${AppName} != "${FileName}" && ${AppName} == "${AppName,,}" ]] && run_script 'appname_is_valid' "${AppName}"; then
+		local AppName
+		run_script 'varfile_to_appname_into' AppName "${VarFile}"
+		if [[ -n ${AppName} ]]; then
 			echo "${AppName}"
 		fi
 	done
@@ -25,6 +23,7 @@ test_varfile_to_appname() {
 		'/home/test/.dockstarter/.env.app.1radarr'
 		'/home/test/.dockstarter/.env.app.radarr__4k'
 		'/home/test/.dockstarter/.env.app.radarr___4k'
+		'/home/test/.dockstarter/.env.app.radarr-4k'
 	)
 	for filepath in "${PathList[@]}"; do
 		notice "[${filepath}] [$(run_script 'varfile_to_appname' "${filepath}")]"

@@ -10,8 +10,11 @@ var_helpline_into() {
 	_vhli_VarName_="${_vhli_VarName_#*:}"
 	_vhli_VarName_="${_vhli_VarName_^^}"
 
+	# Keep any service/shared qualifier (e.g. "IMMICH___ML") -- needed below
+	# to correctly strip the full "APPNAME___SERVICE__" prefix off the var
+	# name; see varname_to_appname_service_into.
 	local _vhli_APPNAME_
-	run_script 'varname_to_appname_into' _vhli_APPNAME_ "${_vhli_VarName_}"
+	run_script 'varname_to_appname_service_into' _vhli_APPNAME_ "${_vhli_VarName_}"
 	_vhli_APPNAME_="${_vhli_APPNAME_^^}"
 
 	_vhli_out_=""
