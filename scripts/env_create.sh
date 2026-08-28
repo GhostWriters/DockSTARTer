@@ -23,6 +23,11 @@ env_create() {
 		run_script 'env_sanitize' --skip-backup
 	else
 		warn "File '{{|File|}}${COMPOSE_ENV}{{[-]}}' not found. Copying example template."
+		if [[ ! -f ${COMPOSE_ENV_DEFAULT_FILE} ]]; then
+			fatal_notrace \
+				"Global .env template '{{|File|}}${COMPOSE_ENV_DEFAULT_FILE}{{[-]}}' not found." \
+				"Run '{{|UserCommand|}}${APPLICATION_COMMAND} -u{{[-]}}' to update {{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}}."
+		fi
 		cp "${COMPOSE_ENV_DEFAULT_FILE}" "${COMPOSE_ENV}" ||
 			fatal \
 				"Failed to copy file." \
