@@ -263,6 +263,7 @@ parse_arguments() {
 				# --command param1 ...
 				-a | --add) ;&
 				--env-appvars | --env-appvars-lines) ;&
+				--env-appfiles) ;&
 				-s | --status) ;&
 				--status-enable | --status-disable)
 					if [[ ${OPTIND} -gt $# || ${!OPTIND} == "-"* ]]; then
@@ -461,6 +462,7 @@ run_command() {
 		["--env"]="appvars_create_all"
 		["--env-appvars"]="appvars_list"
 		["--env-appvars-lines"]="appvars_lines"
+		["--env-appfiles"]="env_appfiles"
 		["--env-get"]="env_get"
 		["--env-get-lower"]="env_get"
 		["--env-get-line"]="env_get_line"
@@ -572,6 +574,7 @@ run_command() {
 		["--env"]="{{|TitleSuccess|}}Creating environment variables for added apps"
 		["--env-appvars"]="Variables for Application"
 		["--env-appvars-lines"]="Variable lines for Application"
+		["--env-appfiles"]="App Var Files"
 		["--env-get"]="Get Value of Variable"
 		["--env-get-lower"]="Get Value of Variable"
 		["--env-get-line"]="Get Line of Variable"
@@ -961,7 +964,8 @@ run_command() {
 			fi
 			;;
 
-		--env-appvars | --env-appvars-lines)
+		--env-appvars | --env-appvars-lines) ;&
+		--env-appfiles)
 			if [[ -z ${Script-} ]]; then
 				fatal \
 					"No script is defined for command '{{|UserCommand|}}${Command}{{[-]}}'."
