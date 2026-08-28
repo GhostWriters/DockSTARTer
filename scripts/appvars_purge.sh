@@ -15,12 +15,8 @@ appvars_purge() {
 		local AppName
 		run_script 'app_nicename_into' AppName "${appname}"
 
-		local AppEnvFile
-		run_script 'app_env_file_into' AppEnvFile "${appname}"
-
 		local -a CurrentGlobalVars DefaultGlobalVars GlobalVarsToRemove GlobalLinesToRemove
-		local -a CurrentAppEnvVars DefaultAppEnvVars AppEnvVarsToRemove AppEnvLinesToRemove
-		local GlobalVarsRegex AppEnvVarsRegex
+		local GlobalVarsRegex
 
 		run_script 'appvars_list_into_array' CurrentGlobalVars "${appname}"
 		if [[ -n ${CurrentGlobalVars-} ]]; then
@@ -39,24 +35,55 @@ appvars_purge() {
 			readarray -t GlobalLinesToRemove <<< "$(${GREP} -P "^\s*${GlobalVarsRegex}\s*=" "${COMPOSE_ENV}" || true)"
 		fi
 
-		run_script 'appvars_list_into_array' CurrentAppEnvVars "${appname}:"
-		if [[ -n ${CurrentAppEnvVars-} ]]; then
+		# A multi-service app can have more than one ".env.app.*" file --
+		# appvars_filelist_into finds every one that currently exists on
+		# disk (only existing files have anything to purge). A removal
+		# plan is built for each, keyed by its own qualified name (e.g.
+		# "immich-database"), and all shown together in one combined
+		# confirmation prompt below.
+		local -a AppFiles
+		run_script 'appvars_filelist_into' AppFiles "${appname}"
+
+		local -a AppFileQualifiedNames=()
+		local -A AppEnvFileByName=()
+		local -A AppEnvVarsRegexByName=()
+		local -A AppEnvLinesToRemoveByName=()
+		local AppFileName
+		for AppFileName in "${AppFiles[@]}"; do
+			local QualifiedAppName="${AppFileName#.env.app.}"
+			local AppEnvFile
+			run_script 'app_env_file_into' AppEnvFile "${QualifiedAppName}"
+
+			local -a CurrentAppEnvVars DefaultAppEnvVars AppEnvVarsToRemove
+			run_script 'appvars_list_into_array' CurrentAppEnvVars "${QualifiedAppName}:"
+			[[ -n ${CurrentAppEnvVars-} ]] || continue
+
 			local AppDefaultAppEnvFile
-			run_script 'app_instance_file_into' AppDefaultAppEnvFile "${appname}" ".env.app.*"
+			local FileTemplate="${AppFileName/"${appname}"/\*}"
+			run_script 'app_instance_file_into' AppDefaultAppEnvFile "${appname}" "${FileTemplate}"
 			run_script 'env_var_list_into_array' DefaultAppEnvVars "${AppDefaultAppEnvFile}"
-			# Get the list of current variables also in the default list
 			readarray -t AppEnvVarsToRemove <<< "$(
 				printf '%s\n' "${CurrentAppEnvVars[@]-}" "${DefaultAppEnvVars[@]-}" |
 					tr ' ' '\n' | sort | uniq -d || true
 			)"
+			[[ -n ${AppEnvVarsToRemove[*]-} ]] || continue
+
+			local AppEnvVarsRegex
 			{
 				IFS='|'
 				AppEnvVarsRegex="${AppEnvVarsToRemove[*]}"
 			}
+			local -a AppEnvLinesToRemove
 			readarray -t AppEnvLinesToRemove <<< "$(${GREP} -P "^\s*${AppEnvVarsRegex}\s*=" "${AppEnvFile}" || true)"
-		fi
+			[[ -n ${AppEnvLinesToRemove[*]-} ]] || continue
 
-		if [[ -z ${GlobalVarsToRemove[*]-} && -z ${AppEnvVarsToRemove[*]-} ]]; then
+			AppFileQualifiedNames+=("${QualifiedAppName}")
+			AppEnvFileByName["${QualifiedAppName}"]="${AppEnvFile}"
+			AppEnvVarsRegexByName["${QualifiedAppName}"]="${AppEnvVarsRegex}"
+			AppEnvLinesToRemoveByName["${QualifiedAppName}"]="$(printf '%s\n' "${AppEnvLinesToRemove[@]}")"
+		done
+
+		if [[ -z ${GlobalVarsToRemove[*]-} && -z ${AppFileQualifiedNames[*]-} ]]; then
 			local WarningText="'{{|Highlight|}}{{|App|}}${AppName}{{[-]}}{{[-]}}' has no variables to remove."
 			if use_tui_box; then
 				tui_warning "${Title}" "${WarningText}"
@@ -76,12 +103,13 @@ appvars_purge() {
 				Question+="${Indent}${Indent}{{|Var|}}${line}{{[-]}}\n"
 			done
 		fi
-		if [[ -n ${AppEnvLinesToRemove[*]-} ]]; then
-			Question+="${Indent}{{|Highlight|}}{{|Folder|}}${AppEnvFile}{{[-]}}{{[-]}}:\n"
-			for line in "${AppEnvLinesToRemove[@]}"; do
+		for QualifiedAppName in "${AppFileQualifiedNames[@]}"; do
+			Question+="${Indent}{{|Highlight|}}{{|Folder|}}${AppEnvFileByName["${QualifiedAppName}"]}{{[-]}}{{[-]}}:\n"
+			while IFS= read -r line; do
+				[[ -n ${line} ]] || continue
 				Question+="${Indent}${Indent}{{|Var|}}${line}{{[-]}}\n"
-			done
-		fi
+			done <<< "${AppEnvLinesToRemoveByName["${QualifiedAppName}"]}"
+		done
 		if [[ ${CI-} == true ]] || run_script 'question_prompt' Y "${Question}" "${Title}" "${ASSUMEYES:+Y}"; then
 			info "Purging '{{|App|}}${AppName}{{[-]}}' variables."
 
@@ -95,16 +123,18 @@ appvars_purge() {
 						"Failed to purge '{{|App|}}${AppName}{{[-]}}' variables." \
 						"Failing command: {{|FailingCommand|}}${SED} -i -E \"/^\\\*(${GlobalVarsRegex})\\\*/d\" \"${COMPOSE_ENV}\""
 			fi
-			if [[ -n ${AppEnvVarsToRemove[*]-} ]]; then
-				# Remove variables from .env.app.appname file
+			for QualifiedAppName in "${AppFileQualifiedNames[@]}"; do
+				local AppEnvFile="${AppEnvFileByName["${QualifiedAppName}"]}"
+				local AppEnvVarsRegex="${AppEnvVarsRegexByName["${QualifiedAppName}"]}"
+				# Remove variables from the .env.app.* file
 				notice \
 					"Removing variables from {{|File|}}${AppEnvFile}{{[-]}}:" \
-					"$(printf "${Indent}{{|Var|}}%s{{[-]}}\n" "${AppEnvLinesToRemove[@]-}")"
+					"$(printf "${Indent}{{|Var|}}%s{{[-]}}\n" "${AppEnvLinesToRemoveByName["${QualifiedAppName}"]}")"
 				${SED} -i -E "/^\s*(${AppEnvVarsRegex})\s*=/d" "${AppEnvFile}" ||
 					fatal \
 						"Failed to purge '{{|App|}}${AppName}{{[-]}}' variables." \
 						"Failing command: {{|FailingCommand|}}${SED} -i -E \"/^\\\*(${AppEnvVarsRegex})\\\*/d\" \"${AppEnvFile}\""
-			fi
+			done
 		else
 			info "Keeping '{{|App|}}${AppName}{{[-]}}' variables."
 		fi

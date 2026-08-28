@@ -190,6 +190,13 @@ EOF
 	List all variables and values for the app(s) specified
 EOF
 			;;&
+		--env-appfiles | "")
+			Found=1
+			cat << EOF
+{{|UsageCommand|}}--env-appfiles{{[-]}} {{|UsageApp|}}<app>{{[-]}} [{{|UsageApp|}}<app>{{[-]}} ...]{{[-]}}
+	List all '{{|UsageFile|}}.env.app.*{{[-]}}' var files for the app(s) specified
+EOF
+			;;&
 		--env-get | --env-get= | "")
 			Found=1
 			cat << EOF

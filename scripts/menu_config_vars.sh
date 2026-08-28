@@ -12,7 +12,8 @@ menu_config_vars() {
 	local Title
 	local AddVariableText='<ADD VARIABLE>'
 
-	local CurrentGlobalEnvFile CurrentAppEnvFile DefaultGlobalEnvFile DefaultAppEnvFile
+	local CurrentGlobalEnvFile DefaultGlobalEnvFile
+	local -a CurrentAppEnvFiles=()
 
 	local LastLineChoice=""
 	while true; do
@@ -21,20 +22,23 @@ menu_config_vars() {
 				warn "Failed to remove temporary '{{|File|}}.env{{[-]}}' file." \
 				rm -f "${CurrentGlobalEnvFile}"
 		fi
-		if [[ -n ${CurrentAppEnvFile-} ]]; then
+		local TempFile
+		for TempFile in "${CurrentAppEnvFiles[@]-}"; do
+			[[ -n ${TempFile} ]] || continue
 			RunAndLog "" "rm:info" \
-				warn "Failed to remove temporary '{{|File|}}.env.app.${appname}{{[-]}}' file." \
-				rm -f "${CurrentAppEnvFile}"
-		fi
+				warn "Failed to remove temporary app env file." \
+				rm -f "${TempFile}"
+		done
+		CurrentAppEnvFiles=()
 		local DefaultGlobalEnvFile=''
-		local DefaultAppEnvFile=''
+		local IsUserDefined=''
 		if [[ -n ${APPNAME-} ]]; then
 			Title="Edit Application Variables"
 			CurrentGlobalEnvFile=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.CurrentGlobalEnvFile.XXXXXXXXXX")
-			CurrentAppEnvFile=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.CurrentAppEnvFile.XXXXXXXXXX")
-			if ! run_script 'app_is_user_defined' "${APPNAME}"; then
+			if run_script 'app_is_user_defined' "${APPNAME}"; then
+				IsUserDefined='Y'
+			else
 				run_script 'app_instance_file_into' DefaultGlobalEnvFile "${APPNAME}" ".env"
-				run_script 'app_instance_file_into' DefaultAppEnvFile "${APPNAME}" ".env.app.*"
 			fi
 		else
 			Title="Edit Global Variables"
@@ -90,49 +94,96 @@ menu_config_vars() {
 		LineColor[LineNumber]="{{|LineAddVariable|}}"
 
 		if [[ -n ${APPNAME-} ]]; then
-			# Add lines from appvar.env file to the dialog
-			LineNumber+=1
-			CurrentValueOnLine[LineNumber]=""
-			LineColor[LineNumber]="{{|LineOther|}}"
-			LineNumber+=1
-			local AppEnvFilePath
-			run_script 'app_env_file_into' AppEnvFilePath "${APPNAME}"
-			CurrentValueOnLine[LineNumber]="*** ${AppEnvFilePath} ***"
-			LineColor[LineNumber]="{{|LineHeading|}}"
-			run_script 'appvars_lines' "${APPNAME}:" > "${CurrentAppEnvFile}"
-			local -a CurrentAppEnvLines
-			run_script 'env_format_lines_into_array' CurrentAppEnvLines "${CurrentAppEnvFile}" "${DefaultAppEnvFile}" "${APPNAME}"
-			for line in "${CurrentAppEnvLines[@]}"; do
-				LineNumber+=1
-				CurrentValueOnLine[LineNumber]="${line}"
-				local VarName=""
-				[[ ${line} =~ ^([[:alnum:]_]+) ]] && VarName="${BASH_REMATCH[1]}"
-				if [[ -n ${VarName-} ]]; then
-					# Line contains a variable
-					local DefaultLine DefaultVal
-					run_script 'var_default_value_into' DefaultVal "${APPNAME}:${VarName}"
-					DefaultLine="${VarName}=${DefaultVal}"
-					if [[ ${line} == "${DefaultLine}" ]]; then
-						LineColor[LineNumber]="{{|LineVar|}}"
-					else
-						LineColor[LineNumber]="{{|ModifiedText|}}"
-					fi
-					VarNameOnLine[LineNumber]="${APPNAME}:${VarName}"
-					if [[ -z ${FirstVarLine-} ]]; then
-						FirstVarLine=${LineNumber}
-					fi
-				elif [[ ${line} =~ ^[[:space:]]*# ]]; then
-					# Line is a comment
-					LineColor[LineNumber]="{{|LineComment|}}"
-				else
-					# Line is an unknowwn line
-					LineColor[LineNumber]="{{|LineOther|}}"
+			# A multi-service app ships more than one ".env.app.*" file
+			# (the plain one, any real per-service "___service" file, any
+			# shared/virtual "-suffix" file) -- one section per file below,
+			# same as DockSTARTer2's tabbed editor. Built-in apps use the
+			# template-defined set (apptemplate_filelist_into -- guaranteed
+			# to already exist as real files by the time this editor opens,
+			# since appvars_create touches all of them into existence);
+			# user-defined apps have no template, so fall back to whatever
+			# files actually exist on disk (appvars_filelist_into).
+			local -a AppFileTemplates=()
+			if [[ ${IsUserDefined} != Y ]]; then
+				run_script 'apptemplate_filelist_into' AppFileTemplates "${appname}"
+			fi
+			if [[ -z ${AppFileTemplates[*]-} ]]; then
+				local -a ExistingAppFiles
+				run_script 'appvars_filelist_into' ExistingAppFiles "${appname}"
+				local ExistingFile
+				for ExistingFile in "${ExistingAppFiles[@]-}"; do
+					AppFileTemplates+=("${ExistingFile/"${appname}"/\*}")
+				done
+			fi
+			if [[ -z ${AppFileTemplates[*]-} ]]; then
+				AppFileTemplates=(".env.app.*")
+			fi
+
+			# AddAppEnvVariableLineNumberFor[N]=1 marks LineNumber N as the
+			# "add variable" row for section index N's file/app-name below.
+			local -A AddAppEnvVariableLineNumberFor=()
+			local -a QualifiedAppNameForSection=()
+			local -i SectionIndex=0
+			local FileTemplate
+			for FileTemplate in "${AppFileTemplates[@]}"; do
+				local QualifiedAppName="${FileTemplate//"*"/"${appname}"}"
+				QualifiedAppName="${QualifiedAppName#.env.app.}"
+				QualifiedAppNameForSection[SectionIndex]="${QualifiedAppName}"
+
+				local DefaultAppEnvFile=''
+				if [[ ${IsUserDefined} != Y ]]; then
+					run_script 'app_instance_file_into' DefaultAppEnvFile "${APPNAME}" "${FileTemplate}"
 				fi
+
+				LineNumber+=1
+				CurrentValueOnLine[LineNumber]=""
+				LineColor[LineNumber]="{{|LineOther|}}"
+				LineNumber+=1
+				local AppEnvFilePath
+				run_script 'app_env_file_into' AppEnvFilePath "${QualifiedAppName}"
+				CurrentValueOnLine[LineNumber]="*** ${AppEnvFilePath} ***"
+				LineColor[LineNumber]="{{|LineHeading|}}"
+
+				local CurrentAppEnvFile
+				CurrentAppEnvFile=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.CurrentAppEnvFile.XXXXXXXXXX")
+				CurrentAppEnvFiles+=("${CurrentAppEnvFile}")
+				run_script 'appvars_lines' "${QualifiedAppName}:" > "${CurrentAppEnvFile}"
+				local -a CurrentAppEnvLines
+				run_script 'env_format_lines_into_array' CurrentAppEnvLines "${CurrentAppEnvFile}" "${DefaultAppEnvFile}" "${APPNAME}" "$(basename "${AppEnvFilePath}")"
+				for line in "${CurrentAppEnvLines[@]}"; do
+					LineNumber+=1
+					CurrentValueOnLine[LineNumber]="${line}"
+					local VarName=""
+					[[ ${line} =~ ^([[:alnum:]_]+) ]] && VarName="${BASH_REMATCH[1]}"
+					if [[ -n ${VarName-} ]]; then
+						# Line contains a variable
+						local DefaultLine DefaultVal
+						run_script 'var_default_value_into' DefaultVal "${QualifiedAppName}:${VarName}"
+						DefaultLine="${VarName}=${DefaultVal}"
+						if [[ ${line} == "${DefaultLine}" ]]; then
+							LineColor[LineNumber]="{{|LineVar|}}"
+						else
+							LineColor[LineNumber]="{{|ModifiedText|}}"
+						fi
+						VarNameOnLine[LineNumber]="${QualifiedAppName}:${VarName}"
+						if [[ -z ${FirstVarLine-} ]]; then
+							FirstVarLine=${LineNumber}
+						fi
+					elif [[ ${line} =~ ^[[:space:]]*# ]]; then
+						# Line is a comment
+						LineColor[LineNumber]="{{|LineComment|}}"
+					else
+						# Line is an unknowwn line
+						LineColor[LineNumber]="{{|LineOther|}}"
+					fi
+				done
+				LineNumber+=1
+				CurrentValueOnLine[LineNumber]="${AddVariableText}"
+				LineColor[LineNumber]="{{|LineAddVariable|}}"
+				AddAppEnvVariableLineNumberFor[${LineNumber}]="${SectionIndex}"
+
+				SectionIndex+=1
 			done
-			LineNumber+=1
-			local AddAppEnvVariableLineNumber=${LineNumber}
-			CurrentValueOnLine[LineNumber]="${AddVariableText}"
-			LineColor[LineNumber]="{{|LineAddVariable|}}"
 		fi
 
 		local TotalLines=$((10#${LineNumber}))
@@ -176,8 +227,9 @@ menu_config_vars() {
 					if [[ ${LineNumber} == "${AddGlobalVariableLineNumber-}" ]]; then
 						run_script 'menu_add_var' "${APPNAME}"
 						break
-					elif [[ ${LineNumber} == "${AddAppEnvVariableLineNumber-}" ]]; then
-						run_script 'menu_add_var' "${APPNAME}:"
+					elif [[ -n ${AddAppEnvVariableLineNumberFor[${LineNumber}]-} ]]; then
+						local -i SectionIndex="${AddAppEnvVariableLineNumberFor[${LineNumber}]}"
+						run_script 'menu_add_var' "${QualifiedAppNameForSection[SectionIndex]}:"
 						break
 					elif [[ -n ${VarNameOnLine[LineNumber]-} ]]; then
 						run_script 'menu_value_prompt' "${VarNameOnLine[LineNumber]}"
@@ -238,11 +290,13 @@ menu_config_vars() {
 			warn "Failed to remove temporary '{{|File|}}.env{{[-]}}' file." \
 			rm -f "${CurrentGlobalEnvFile}"
 	fi
-	if [[ -n ${CurrentAppEnvFile-} ]]; then
+	local TempFile
+	for TempFile in "${CurrentAppEnvFiles[@]-}"; do
+		[[ -n ${TempFile} ]] || continue
 		RunAndLog "" "rm:info" \
-			warn "Failed to remove temporary '{{|File|}}.env.app.${appname}{{[-]}}' file." \
-			rm -f "${CurrentAppEnvFile}"
-	fi
+			warn "Failed to remove temporary app env file." \
+			rm -f "${TempFile}"
+	done
 }
 
 test_menu_config_vars() {

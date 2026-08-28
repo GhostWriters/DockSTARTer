@@ -25,8 +25,14 @@ app_list_referenced() {
 		fi
 	done
 
-	# Add the list of referenced apps in the global .env file
-	local REFERENCED_APPS_REGEX="^${APPNAME_REGEX}(?=__[A-Za-z0-9]\w*\s*=)"
+	# Add the list of referenced apps in the global .env file. The lookahead
+	# alternation's second branch recognizes a multi-service app's own
+	# global vars ("APPNAME[__INST]___SERVICE__VARNAME") -- without it, a
+	# service-qualified var never satisfies the lookahead (its "___SERVICE"
+	# marker isn't a valid "__[A-Za-z0-9]" continuation), silently dropping
+	# that app from detection here even though app_list_hasvarfile still
+	# finds it via its .env.app.* files.
+	local REFERENCED_APPS_REGEX="^${APPNAME_REGEX}(?=__[A-Za-z0-9]\w*\s*=|___[A-Z0-9]+__[A-Za-z0-9]\w*\s*=)"
 	readarray -O ${#ReferencedApps[@]} ReferencedApps < <(
 		${GREP} --color=never -o -P "${REFERENCED_APPS_REGEX}" "${COMPOSE_ENV}" 2> /dev/null || true
 	)

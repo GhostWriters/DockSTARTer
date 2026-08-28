@@ -8,6 +8,7 @@ env_format_lines() {
 	local CurrentEnvFile=${1-}
 	local DefaultEnvFile=${2-}
 	local APPNAME=${3-}
+	local FileLabel=${4-}
 	APPNAME=${APPNAME^^}
 
 	local GlobalVarsHeading="Global Variables"
@@ -25,6 +26,15 @@ env_format_lines() {
 	local AppIsUserDefined=''
 	local -a FormattedEnvLines=()
 	if [[ -n ${APPNAME-} ]]; then
+		# FileLabel, when set, is a single standalone line placed above the
+		# heading block below (which is otherwise unchanged) -- the file's
+		# own basename, shown on every app .env.app.* file (not just a
+		# multi-service app's, and not gated on there being more than one),
+		# so it's always clear which file a given tab/section is.
+		if [[ -n ${FileLabel} ]]; then
+			FormattedEnvLines+=("### ${FileLabel}")
+			FormattedEnvLines+=("")
+		fi
 		# APPNAME is specified and added, output main app heading
 		if run_script 'app_is_user_defined' "${APPNAME}"; then
 			AppIsUserDefined='Y'
@@ -147,6 +157,33 @@ _add_line() {
 }
 
 test_env_format_lines() {
-	#run_script 'env_format_lines' WATCHTOWER
-	warn "CI does not test env_format_lines."
+	local CurrentEnvFile DefaultEnvFile
+	CurrentEnvFile=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.CurrentEnvFile.XXXXXXXXXX")
+	DefaultEnvFile=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.DefaultEnvFile.XXXXXXXXXX")
+	printf 'ALLOW_CORS=1\n' > "${CurrentEnvFile}"
+
+	notice "Without a FileLabel (existing behavior, unchanged):"
+	run_script 'env_format_lines' "${CurrentEnvFile}" "${DefaultEnvFile}" "WATCHTOWER" | while IFS= read -r line; do notice "[${line}]"; done
+
+	notice "With a FileLabel (standalone line above the unchanged heading block):"
+	local -a Result
+	readarray -t Result < <(run_script 'env_format_lines' "${CurrentEnvFile}" "${DefaultEnvFile}" "WATCHTOWER" ".env.app.watchtower-database")
+	printf '[%s]\n' "${Result[@]}" | while IFS= read -r line; do notice "${line}"; done
+
+	local -i result=0
+	if [[ ${Result[0]} != "### .env.app.watchtower-database" ]]; then
+		error "Expected first line to be the FileLabel, got [${Result[0]}]"
+		result=1
+	fi
+	if [[ ${Result[1]-UNSET} != "" ]]; then
+		error "Expected second line to be blank, got [${Result[1]-UNSET}]"
+		result=1
+	fi
+	if [[ ${Result[2]} != "###" ]]; then
+		error "Expected third line to start the unchanged heading block ('###'), got [${Result[2]}]"
+		result=1
+	fi
+
+	rm -f "${CurrentEnvFile}" "${DefaultEnvFile}"
+	return ${result}
 }

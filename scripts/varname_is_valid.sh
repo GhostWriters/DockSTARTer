@@ -47,7 +47,14 @@ varname_is_valid() {
 			# Accepts a variable in any ".env.app.appname" file (specifies "appname:varname")
 			if [[ ${VarName} == *":"* ]]; then
 				local AppName="${VarName%:*}"
-				if run_script 'appname_is_valid' "${AppName}"; then
+				# The colon prefix may carry a service/shared qualifier
+				# (e.g. "immich-database", "immich___postgres") identifying
+				# which .env.app.* file it targets; appname_is_valid only
+				# recognizes real app[__instance] names, so validate
+				# against the app name with that qualifier stripped.
+				local BaseAppName
+				run_script 'appname_strip_service_suffix_into' BaseAppName "${AppName}"
+				if run_script 'appname_is_valid' "${BaseAppName}"; then
 					run_script 'varname_is_valid' "${VarName#"${AppName}:"*}" "_BARE_"
 					return
 				fi
@@ -94,4 +101,29 @@ test_varname_is_valid() {
 			fi
 		done
 	done
+
+	# Multi-service: a service/shared-qualified colon prefix must validate
+	# against "_APPNAME_:" and its own exact qualified VarType, same as a
+	# plain appname does -- this is the exact bug class confirmed live on
+	# DockSTARTer2 (2026-08-28) where the equivalent unstripped check always
+	# rejected these.
+	local -i result=0
+	local -a Tests=(
+		"immich-database:DB_HOSTNAME" "_APPNAME_:" 0
+		"immich-database:DB_HOSTNAME" "immich-database:" 0
+		"immich___postgres:POSTGRES_DB" "_APPNAME_:" 0
+		"immich___postgres:POSTGRES_DB" "immich___postgres:" 0
+	)
+	for ((i = 0; i < ${#Tests[@]}; i += 3)); do
+		local VarName="${Tests[i]}" VarType="${Tests[i + 1]}" Expected="${Tests[i + 2]}"
+		local -i Actual=1
+		run_script 'varname_is_valid' "${VarName}" "${VarType}" && Actual=0
+		if [[ ${Actual} != "${Expected}" ]]; then
+			error "varname_is_valid(${VarName}, ${VarType}) = ${Actual}; want ${Expected}"
+			result=1
+		else
+			notice "varname_is_valid(${VarName}, ${VarType}) = ${Actual}"
+		fi
+	done
+	return ${result}
 }
