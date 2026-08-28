@@ -31,22 +31,40 @@ appvars_create() {
 			if ! run_script 'app_is_added' "${AppName}"; then
 				run_script 'enable_app' "${AppName}"
 			fi
-			run_script 'appvars_migrate' "${AppName}"
-			run_script 'env_merge_newonly' "${COMPOSE_ENV}" "${AppDefaultGlobalEnvFile}"
 
 			# A multi-service app ships more than one ".env.app.*" file
 			# template (the plain one, any real per-service "___service"
 			# file, any shared/virtual "-suffix" file) -- apptemplate_filelist_into
 			# discovers all of them (as "*"-wildcarded patterns) so each
-			# gets created/merged in turn, same pattern DockSTARTer2 uses
-			# (AppVarFileNames -> loop). Falls back to the plain file alone
-			# if the template folder has no ".env.app.*" file at all yet.
+			# gets touched/created/merged in turn, same pattern DockSTARTer2
+			# uses (AppVarFileNames -> loop). Falls back to the plain file
+			# alone if the template folder has no ".env.app.*" file at all yet.
 			local -a AppFileTemplates
 			run_script 'apptemplate_filelist_into' AppFileTemplates "${appname}"
 			if [[ -z ${AppFileTemplates[*]-} ]]; then
 				AppFileTemplates=(".env.app.*")
 			fi
+
+			# Touch every app file into existence (even if still empty)
+			# before running appvars_migrate below -- a .migrate entry can
+			# target any of an app's qualified files by name (e.g.
+			# "immich-database:DB_HOSTNAME"), and would otherwise fail to
+			# find a file that hasn't been created yet, since this loop
+			# used to run after the migrate step.
 			local FileTemplate
+			for FileTemplate in "${AppFileTemplates[@]}"; do
+				local QualifiedAppName="${FileTemplate//"*"/"${appname}"}"
+				QualifiedAppName="${QualifiedAppName#.env.app.}"
+				local AppEnvFile
+				run_script 'app_env_file_into' AppEnvFile "${QualifiedAppName}"
+				if [[ ! -f ${AppEnvFile} ]]; then
+					touchfile "${AppEnvFile}"
+				fi
+			done
+
+			run_script 'appvars_migrate' "${AppName}"
+			run_script 'env_merge_newonly' "${COMPOSE_ENV}" "${AppDefaultGlobalEnvFile}"
+
 			for FileTemplate in "${AppFileTemplates[@]}"; do
 				local AppDefaultAppEnvFile AppEnvFile QualifiedAppName
 				run_script 'app_instance_file_into' AppDefaultAppEnvFile "${appname}" "${FileTemplate}"
