@@ -7,6 +7,12 @@ env_create() {
 		WATCHTOWER
 	)
 
+	if [[ ! -f ${COMPOSE_ENV} && ! -f ${COMPOSE_ENV_DEFAULT_FILE} ]]; then
+		fatal_notrace \
+			"Global .env template '{{|File|}}${COMPOSE_ENV_DEFAULT_FILE}{{[-]}}' not found." \
+			"Run '{{|UserCommand|}}${APPLICATION_COMMAND} -u{{[-]}}' to update {{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}}."
+	fi
+
 	if ! [[ -d ${COMPOSE_FOLDER} ]]; then
 		notice "Creating folder '{{|Folder|}}${COMPOSE_FOLDER}{{[-]}}'."
 		mkdir -p "${COMPOSE_FOLDER}" ||

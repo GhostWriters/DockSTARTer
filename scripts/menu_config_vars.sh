@@ -60,7 +60,7 @@ menu_config_vars() {
 		fi
 		run_script 'appvars_lines' "${APPNAME}" > "${CurrentGlobalEnvFile}"
 		local -a CurrentGlobalEnvLines
-		run_script 'env_format_lines_into_array' CurrentGlobalEnvLines "${CurrentGlobalEnvFile}" "${DefaultGlobalEnvFile}" "${APPNAME}"
+		run_script 'env_format_lines_into_array' CurrentGlobalEnvLines "${CurrentGlobalEnvFile}" "${DefaultGlobalEnvFile}" "${APPNAME}" "${COMPOSE_ENV}"
 		for line in "${CurrentGlobalEnvLines[@]-}"; do
 			LineNumber+=1
 			CurrentValueOnLine[LineNumber]="${line}"
@@ -149,7 +149,7 @@ menu_config_vars() {
 				CurrentAppEnvFiles+=("${CurrentAppEnvFile}")
 				run_script 'appvars_lines' "${QualifiedAppName}:" > "${CurrentAppEnvFile}"
 				local -a CurrentAppEnvLines
-				run_script 'env_format_lines_into_array' CurrentAppEnvLines "${CurrentAppEnvFile}" "${DefaultAppEnvFile}" "${APPNAME}" "$(basename "${AppEnvFilePath}")"
+				run_script 'env_format_lines_into_array' CurrentAppEnvLines "${CurrentAppEnvFile}" "${DefaultAppEnvFile}" "${APPNAME}" "${AppEnvFilePath}"
 				for line in "${CurrentAppEnvLines[@]}"; do
 					LineNumber+=1
 					CurrentValueOnLine[LineNumber]="${line}"
