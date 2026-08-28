@@ -123,7 +123,7 @@ menu_config_vars() {
 			# "add variable" row for section index N's file/app-name below.
 			local -A AddAppEnvVariableLineNumberFor=()
 			local -a QualifiedAppNameForSection=()
-			local SectionIndex=0
+			local -i SectionIndex=0
 			local FileTemplate
 			for FileTemplate in "${AppFileTemplates[@]}"; do
 				local QualifiedAppName="${FileTemplate//"*"/"${appname}"}"
@@ -228,7 +228,7 @@ menu_config_vars() {
 						run_script 'menu_add_var' "${APPNAME}"
 						break
 					elif [[ -n ${AddAppEnvVariableLineNumberFor[${LineNumber}]-} ]]; then
-						local SectionIndex="${AddAppEnvVariableLineNumberFor[${LineNumber}]}"
+						local -i SectionIndex="${AddAppEnvVariableLineNumberFor[${LineNumber}]}"
 						run_script 'menu_add_var' "${QualifiedAppNameForSection[SectionIndex]}:"
 						break
 					elif [[ -n ${VarNameOnLine[LineNumber]-} ]]; then
