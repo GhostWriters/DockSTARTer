@@ -43,7 +43,7 @@ jobs:
   shfmt:
     runs-on: ubuntu-latest
     container:
-      image: mvdan/shfmt:v3.13.1-alpine@sha256:3bd333f7861b51081af39a8ba722c0023983362b46332849aaf57c6d32d96b25
+      image: mvdan/shfmt:v3.14.0-alpine@sha256:e26dfbf1550504bdc81592becf03ecfee94fd27d5a0bdb6f72fc471c0a2349da
       options: --user 0:0
     steps:
       - name: Checkout
