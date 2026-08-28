@@ -7,6 +7,27 @@ declare -a _dependencies_list=(
 )
 
 env_backup() {
+	local -a BackupList
+	readarray -t BackupList < <(
+		${FIND} "${COMPOSE_FOLDER}" -maxdepth 1 \
+			\( \
+			\( -type d \
+			-name "${APP_ENV_FOLDER_NAME}" \
+			\) -exec echo "{}/" \; \
+			\) -o \
+			\( -type f \( \
+			-name "${COMPOSE_OVERRIDE_NAME}" -o \
+			-name ".env" -o \
+			-name ".env.app.*" \
+			\) -exec echo "{}" \; \
+			\) | sort 2> /dev/null || true
+	)
+
+	if [[ ${#BackupList[@]} -eq 0 ]]; then
+		info "No files to backup."
+		return
+	fi
+
 	local DOCKER_VOLUME_CONFIG
 	# Update CONFIG_FOLDER and LITERAL_CONFIG_FOLDER based on DOCKER_CONFIG_FOLDER
 	local DOCKER_CONFIG_FOLDER
@@ -30,6 +51,11 @@ env_backup() {
 		DOCKER_VOLUME_CONFIG="${DOCKER_VOLUME_CONFIG%[\"\']}"
 	fi
 	if [[ -z ${DOCKER_VOLUME_CONFIG-} ]]; then
+		if [[ ! -f ${COMPOSE_ENV_DEFAULT_FILE} ]]; then
+			fatal_notrace \
+				"Global .env template '{{|File|}}${COMPOSE_ENV_DEFAULT_FILE}{{[-]}}' not found." \
+				"Run '{{|UserCommand|}}${APPLICATION_COMMAND} -u{{[-]}}' to update {{|ApplicationName|}}${TEMPLATES_NAME}{{[-]}}."
+		fi
 		fatal \
 			"Variable '{{|Var|}}DOCKER_VOLUME_CONFIG{{[-]}}' is not set in the '{{|File|}}.env{{[-]}}' file"
 	fi
@@ -53,21 +79,6 @@ env_backup() {
 		sleep 1
 	done
 
-	local -a BackupList
-	readarray -t BackupList < <(
-		${FIND} "${COMPOSE_FOLDER}" -maxdepth 1 \
-			\( \
-			\( -type d \
-			-name "${APP_ENV_FOLDER_NAME}" \
-			\) -exec echo "{}/" \; \
-			\) -o \
-			\( -type f \( \
-			-name "${COMPOSE_OVERRIDE_NAME}" -o \
-			-name ".env" -o \
-			-name ".env.app.*" \
-			\) -exec echo "{}" \; \
-			\) | sort 2> /dev/null || true
-	)
 	local Indent='\t'
 	if [[ ${#BackupList[@]} -gt 0 ]]; then
 		notice \
