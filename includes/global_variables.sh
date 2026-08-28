@@ -22,7 +22,6 @@ declare -rgx TEMPLATES_FOLDER_NAME=".apps"
 declare -rgx INSTANCES_FOLDER_NAME="instances"
 declare -rgx TIMESTAMPS_FOLDER_NAME="timestamps"
 declare -rgx TEMP_FOLDER_NAME="temp"
-declare -rgx COMPOSE_ENV_DEFAULT_FILE_NAME=".env.example"
 declare -rgx APPLICATION_INI_NAME="${APPLICATION_NAME,,}.ini"
 declare -rgx APPLICATION_TOML_NAME="${APPLICATION_NAME,,}.toml"
 declare -rgx THEME_FILE_NAME="theme.toml"
@@ -96,7 +95,10 @@ declare -gx APPLICATION_TOML_FILE="${APPLICATION_CONFIG_FOLDER}/${APPLICATION_TO
 
 declare -gx DEFAULTS_FOLDER="${APPLICATION_ASSETS_FOLDER}/${DEFAULTS_FOLDER_NAME}"
 declare -gx DEFAULT_TOML_FILE="${DEFAULTS_FOLDER}/${APPLICATION_TOML_NAME}"
-declare -gx COMPOSE_ENV_DEFAULT_FILE="${DEFAULTS_FOLDER}/${COMPOSE_ENV_DEFAULT_FILE_NAME}"
+# Lives in the DockSTARTer-Templates repo root (fetched/cached the same way
+# as every per-app template), not as a local embedded asset -- keeps DS1 and
+# DockSTARTer2 reading the exact same file instead of two separate copies.
+declare -gx COMPOSE_ENV_DEFAULT_FILE="${TEMPLATES_PARENT_FOLDER}/.env"
 
 declare -gx THEME_FOLDER="${APPLICATION_ASSETS_FOLDER}/${THEME_FOLDER_NAME}"
 

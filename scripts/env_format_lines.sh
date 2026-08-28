@@ -25,16 +25,18 @@ env_format_lines() {
 	local AppDescription=''
 	local AppIsUserDefined=''
 	local -a FormattedEnvLines=()
+	# FileLabel, when set, is a single standalone line placed above whatever
+	# heading block follows (unconditionally -- the global .env case has no
+	# app heading of its own, but still gets this line) -- the file's own
+	# full path, shown on every file (global .env and every app's
+	# .env.app.*, not gated on a multi-service app having more than one), so
+	# it's always clear which file this is even when read outside DS
+	# (a direct edit, or a backed-up copy found later).
+	if [[ -n ${FileLabel} ]]; then
+		FormattedEnvLines+=("### ${FileLabel}")
+		FormattedEnvLines+=("")
+	fi
 	if [[ -n ${APPNAME-} ]]; then
-		# FileLabel, when set, is a single standalone line placed above the
-		# heading block below (which is otherwise unchanged) -- the file's
-		# own basename, shown on every app .env.app.* file (not just a
-		# multi-service app's, and not gated on there being more than one),
-		# so it's always clear which file a given tab/section is.
-		if [[ -n ${FileLabel} ]]; then
-			FormattedEnvLines+=("### ${FileLabel}")
-			FormattedEnvLines+=("")
-		fi
 		# APPNAME is specified and added, output main app heading
 		if run_script 'app_is_user_defined' "${APPNAME}"; then
 			AppIsUserDefined='Y'
@@ -181,6 +183,19 @@ test_env_format_lines() {
 	fi
 	if [[ ${Result[2]} != "###" ]]; then
 		error "Expected third line to start the unchanged heading block ('###'), got [${Result[2]}]"
+		result=1
+	fi
+
+	notice "With a FileLabel and no APPNAME (global .env case, no app heading):"
+	local -a GlobalResult
+	readarray -t GlobalResult < <(run_script 'env_format_lines' "${CurrentEnvFile}" "${DefaultEnvFile}" "" "/home/user/.config/compose/.env")
+	printf '[%s]\n' "${GlobalResult[@]}" | while IFS= read -r line; do notice "${line}"; done
+	if [[ ${GlobalResult[0]} != "### /home/user/.config/compose/.env" ]]; then
+		error "Expected first line to be the FileLabel even with no APPNAME, got [${GlobalResult[0]}]"
+		result=1
+	fi
+	if [[ ${GlobalResult[1]-UNSET} != "" ]]; then
+		error "Expected second line to be blank, got [${GlobalResult[1]-UNSET}]"
 		result=1
 	fi
 

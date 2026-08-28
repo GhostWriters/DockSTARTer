@@ -55,7 +55,7 @@ env_update() {
 		run_script 'appvars_lines' "" > "${ENV_LINES_FILE}"
 
 		local -a UPDATED_ENV_LINES=()
-		run_script 'env_format_lines_into_array' UPDATED_ENV_LINES "${ENV_LINES_FILE}" "${COMPOSE_ENV_DEFAULT_FILE}" ""
+		run_script 'env_format_lines_into_array' UPDATED_ENV_LINES "${ENV_LINES_FILE}" "${COMPOSE_ENV_DEFAULT_FILE}" "" "${COMPOSE_ENV}"
 
 		if [[ -n ${applist[*]-} ]]; then
 			for appname in "${applist[@]}"; do
@@ -131,7 +131,7 @@ env_update() {
 					run_script 'app_instance_file_into' APP_DEFAULT_ENV_FILE "${appname}" "${FileTemplate}"
 				fi
 				local -a UPDATED_APP_ENV_LINES=()
-				run_script 'env_format_lines_into_array' UPDATED_APP_ENV_LINES "${APP_ENV_FILE}" "${APP_DEFAULT_ENV_FILE}" "${appname}" "$(basename "${APP_ENV_FILE}")"
+				run_script 'env_format_lines_into_array' UPDATED_APP_ENV_LINES "${APP_ENV_FILE}" "${APP_DEFAULT_ENV_FILE}" "${appname}" "${APP_ENV_FILE}"
 				local MKTEMP_APP_ENV_UPDATED
 				MKTEMP_APP_ENV_UPDATED=$(mktemp -t "${APPLICATION_NAME}.${FUNCNAME[0]}.MKTEMP_APP_ENV_UPDATED.XXXXXXXXXX") ||
 					fatal \
