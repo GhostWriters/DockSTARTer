@@ -21,10 +21,8 @@ appvars_create() {
 		fi
 
 		if run_script 'app_is_builtin' "${AppName}"; then
-			local AppDefaultGlobalEnvFile AppDefaultAppEnvFile AppEnvFile
+			local AppDefaultGlobalEnvFile
 			run_script 'app_instance_file_into' AppDefaultGlobalEnvFile "${appname}" ".env"
-			run_script 'app_instance_file_into' AppDefaultAppEnvFile "${appname}" ".env.app.*"
-			run_script 'app_env_file_into' AppEnvFile "${appname}"
 
 			info "Creating environment variables for '{{|App|}}${AppName}{{[-]}}'."
 			if ! run_script 'env_var_exists' "${APPNAME}_ENABLED"; then
@@ -35,7 +33,29 @@ appvars_create() {
 			fi
 			run_script 'appvars_migrate' "${AppName}"
 			run_script 'env_merge_newonly' "${COMPOSE_ENV}" "${AppDefaultGlobalEnvFile}"
-			run_script 'env_merge_newonly' "${AppEnvFile}" "${AppDefaultAppEnvFile}"
+
+			# A multi-service app ships more than one ".env.app.*" file
+			# template (the plain one, any real per-service "___service"
+			# file, any shared/virtual "-suffix" file) -- apptemplate_filelist_into
+			# discovers all of them (as "*"-wildcarded patterns) so each
+			# gets created/merged in turn, same pattern DockSTARTer2 uses
+			# (AppVarFileNames -> loop). Falls back to the plain file alone
+			# if the template folder has no ".env.app.*" file at all yet.
+			local -a AppFileTemplates
+			run_script 'apptemplate_filelist_into' AppFileTemplates "${appname}"
+			if [[ -z ${AppFileTemplates[*]-} ]]; then
+				AppFileTemplates=(".env.app.*")
+			fi
+			local FileTemplate
+			for FileTemplate in "${AppFileTemplates[@]}"; do
+				local AppDefaultAppEnvFile AppEnvFile QualifiedAppName
+				run_script 'app_instance_file_into' AppDefaultAppEnvFile "${appname}" "${FileTemplate}"
+				QualifiedAppName="${FileTemplate//"*"/"${appname}"}"
+				QualifiedAppName="${QualifiedAppName#.env.app.}"
+				run_script 'app_env_file_into' AppEnvFile "${QualifiedAppName}"
+				run_script 'env_merge_newonly' "${AppEnvFile}" "${AppDefaultAppEnvFile}"
+			done
+
 			run_script 'appvars_sanitize' "${AppName}"
 			info "Environment variables created for '{{|App|}}${AppName}{{[-]}}'."
 		else
