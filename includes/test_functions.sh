@@ -35,8 +35,8 @@ run_unit_tests() {
 	)
 }
 run_unit_tests_pipe() {
-	local InputColor="{{|${1-Notice}}|}}"
-	local ExpectedColor="{{|${2-Notice}}|}}"
+	local InputColor="{{|${1-Notice}|}}"
+	local ExpectedColor="{{|${2-Notice}|}}"
 	local ForcePass=${3-}
 	local -a Test
 	readarray -t Test
