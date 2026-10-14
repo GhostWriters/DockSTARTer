@@ -70,7 +70,7 @@ jobs:
           # Minor: YYYYMMDD
           # Patch: N (Daily build counter)
 
-          # Example: v1.20260121.1
+          # Example: v1.20260121.0
 
           TODAY_INT=$(date -u +'%Y%m%d')
           PREFIX="v1.${TODAY_INT}"
@@ -113,11 +113,7 @@ jobs:
             fi
           done
 
-          if [ "$MAX_N" == "-1" ]; then
-            NEXT_N=1
-          else
-            NEXT_N=$((MAX_N + 1))
-          fi
+          NEXT_N=$((MAX_N + 1))
 
           FINAL_VER="${PREFIX}.${NEXT_N}${SUFFIX}"
 
